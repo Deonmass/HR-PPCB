@@ -18,7 +18,8 @@ interface GithubRepoTarget {
 
 function resolveGithubTarget(): GithubRepoTarget | null {
   const token = (
-    process.env.GITHUB_TOKEN
+    process.env.HR_GITHUB_TOKEN
+    || process.env.GITHUB_TOKEN
     || process.env.GH_TOKEN
     || process.env.GITHUB_PAT
     || ''
@@ -65,10 +66,10 @@ export function assertDurableRemoteConfigured(action = 'sauvegarder'): void {
   if (!needsDurableRemote()) return;
   if (isDurableRemoteEnabled()) return;
   throw new Error(
-    `Impossible de ${action} dans Excel/ sur Vercel sans accès GitHub. `
-      + 'Ajoutez GITHUB_TOKEN (droit Contents: Read and write) dans '
-      + 'Vercel → Settings → Environment Variables, puis redéployez. '
-      + 'Les fichiers seront mis à jour dans Excel/Params.xlsx et data/auth/permissions.json du dépôt.',
+    `Impossible de ${action} dans Excel/ sur Vercel : GITHUB_TOKEN absent au runtime. `
+      + '1) Vérifiez la variable GITHUB_TOKEN (Production). '
+      + '2) Redeployez le projet (Deployments → … → Redeploy) — les variables ne s’appliquent qu’après un nouveau déploiement. '
+      + '3) Le token fine-grained doit avoir Contents: Read and write sur Deonmass/HR-PPCB.',
   );
 }
 
