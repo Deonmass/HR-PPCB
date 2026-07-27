@@ -17,13 +17,16 @@ interface GithubRepoTarget {
 }
 
 function resolveGithubTarget(): GithubRepoTarget | null {
-  const token = (
+  // Prefer HR_GITHUB_TOKEN — Vercel/GitHub may interfere with a bare GITHUB_TOKEN name.
+  const raw = (
     process.env.HR_GITHUB_TOKEN
-    || process.env.GITHUB_TOKEN
     || process.env.GH_TOKEN
     || process.env.GITHUB_PAT
+    || process.env.GITHUB_TOKEN
     || ''
   ).trim();
+  // Users sometimes paste the value with quotes in Vercel.
+  const token = raw.replace(/^['"]+|['"]+$/g, '').trim();
   if (!token) return null;
 
   const fromEnv = (process.env.GITHUB_REPOSITORY || process.env.GITHUB_REPO || '').trim();
@@ -66,11 +69,28 @@ export function assertDurableRemoteConfigured(action = 'sauvegarder'): void {
   if (!needsDurableRemote()) return;
   if (isDurableRemoteEnabled()) return;
   throw new Error(
-    `Impossible de ${action} dans Excel/ sur Vercel : GITHUB_TOKEN absent au runtime. `
-      + '1) Vérifiez la variable GITHUB_TOKEN (Production). '
-      + '2) Redeployez le projet (Deployments → … → Redeploy) — les variables ne s’appliquent qu’après un nouveau déploiement. '
-      + '3) Le token fine-grained doit avoir Contents: Read and write sur Deonmass/HR-PPCB.',
+    `Impossible de ${action} dans Excel/ sur Vercel : token GitHub absent au runtime. `
+      + 'Ajoutez HR_GITHUB_TOKEN (Production + Preview), puis Redeploy. '
+      + 'Fine-grained token : repository Deonmass/HR-PPCB, Contents = Read and write.',
   );
+}
+
+function formatGithubHttpError(action: string, repoPath: string, status: number, body: string): Error {
+  if (status === 401) {
+    return new Error(
+      `GitHub ${action} ${repoPath} : token invalide (401 Bad credentials). `
+        + 'Le token est révoqué, mal collé, ou la variable Vercel est obsolète. '
+        + 'Créez un nouveau fine-grained token, mettez-le dans HR_GITHUB_TOKEN (sans guillemets), '
+        + 'supprimez l’ancienne variable GITHUB_TOKEN si besoin, puis Redeploy.',
+    );
+  }
+  if (status === 403) {
+    return new Error(
+      `GitHub ${action} ${repoPath} : accès refusé (403). `
+        + 'Sur le token fine-grained, activez Contents: Read and write pour Deonmass/HR-PPCB.',
+    );
+  }
+  return new Error(`GitHub ${action} ${repoPath} échouée (${status}): ${body.slice(0, 200)}`);
 }
 
 async function githubRequest(
@@ -103,7 +123,7 @@ async function readGithubFile(
   if (res.status === 404) return null;
   if (!res.ok) {
     const text = await res.text();
-    throw new Error(`GitHub lecture ${repoPath} échouée (${res.status}): ${text.slice(0, 200)}`);
+    throw formatGithubHttpError('lecture', repoPath, res.status, text);
   }
 
   const json = (await res.json()) as { content?: string; encoding?: string; sha?: string; download_url?: string };
@@ -111,11 +131,14 @@ async function readGithubFile(
     const fileRes = await fetch(json.download_url, {
       headers: {
         Authorization: `Bearer ${target.token}`,
+        Accept: 'application/vnd.github.raw',
         'User-Agent': 'hr-rh-app',
+        'X-GitHub-Api-Version': '2022-11-28',
       },
     });
     if (!fileRes.ok) {
-      throw new Error(`GitHub download ${repoPath} échoué (${fileRes.status})`);
+      const text = await fileRes.text();
+      throw formatGithubHttpError('download', repoPath, fileRes.status, text);
     }
     const buffer = Buffer.from(await fileRes.arrayBuffer());
     return { buffer, sha: json.sha || '' };
@@ -171,14 +194,14 @@ async function writeGithubFile(
     );
     if (!retry.ok) {
       const text = await retry.text();
-      throw new Error(`GitHub écriture ${repoPath} échouée (${retry.status}): ${text.slice(0, 200)}`);
+      throw formatGithubHttpError('écriture', repoPath, retry.status, text);
     }
     return;
   }
 
   if (!res.ok) {
     const text = await res.text();
-    throw new Error(`GitHub écriture ${repoPath} échouée (${res.status}): ${text.slice(0, 200)}`);
+    throw formatGithubHttpError('écriture', repoPath, res.status, text);
   }
 }
 
