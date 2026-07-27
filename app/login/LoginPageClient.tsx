@@ -7,8 +7,8 @@ import { showError } from '@/lib/swal';
 export default function LoginPageClient() {
   const router = useRouter();
   const searchParams = useSearchParams();
-  const [username, setUsername] = useState('admin');
-  const [password, setPassword] = useState('123');
+  const [username, setUsername] = useState('');
+  const [password, setPassword] = useState('');
   const [loading, setLoading] = useState(false);
 
   const handleSubmit = async (event: FormEvent) => {
@@ -74,8 +74,6 @@ export default function LoginPageClient() {
             {loading ? 'Connexion…' : 'Se connecter'}
           </button>
         </form>
-
-        <p className="login-hint">Identifiants par défaut : admin / 123</p>
       </div>
     </div>
   );
