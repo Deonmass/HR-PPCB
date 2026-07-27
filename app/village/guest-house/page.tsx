@@ -572,36 +572,44 @@ export default function VillageGuestHousePage() {
                   className="card card-glow card-glow-cyan guest-house-kpi-card"
                   onClick={() => setKpiModal('rooms')}
                 >
+                  <div className="guest-house-kpi-text">
+                    <div className="card-label">Total chambres</div>
+                    <div className="card-value">{dashboard.totalRooms}</div>
+                  </div>
                   <span className="guest-house-kpi-icon"><IconDoor /></span>
-                  <div className="card-label">Total chambres</div>
-                  <div className="card-value">{dashboard.totalRooms}</div>
                 </button>
                 <button
                   type="button"
                   className="card card-glow card-glow-green guest-house-kpi-card"
                   onClick={() => setKpiModal('occupied')}
                 >
+                  <div className="guest-house-kpi-text">
+                    <div className="card-label">Occupées</div>
+                    <div className="card-value">{dashboard.occupied}</div>
+                  </div>
                   <span className="guest-house-kpi-icon"><IconUsers /></span>
-                  <div className="card-label">Occupées</div>
-                  <div className="card-value">{dashboard.occupied}</div>
                 </button>
                 <button
                   type="button"
                   className="card card-glow card-glow-violet guest-house-kpi-card"
                   onClick={() => setKpiModal('empty')}
                 >
+                  <div className="guest-house-kpi-text">
+                    <div className="card-label">Vides</div>
+                    <div className="card-value">{dashboard.empty}</div>
+                  </div>
                   <span className="guest-house-kpi-icon"><IconEmpty /></span>
-                  <div className="card-label">Vides</div>
-                  <div className="card-value">{dashboard.empty}</div>
                 </button>
                 <button
                   type="button"
                   className="card card-glow card-glow-orange guest-house-kpi-card"
                   onClick={() => setKpiModal('pending')}
                 >
+                  <div className="guest-house-kpi-text">
+                    <div className="card-label">En attente</div>
+                    <div className="card-value">{dashboard.pendingReservations}</div>
+                  </div>
                   <span className="guest-house-kpi-icon"><IconClock /></span>
-                  <div className="card-label">En attente</div>
-                  <div className="card-value">{dashboard.pendingReservations}</div>
                 </button>
               </div>
 
@@ -659,9 +667,14 @@ export default function VillageGuestHousePage() {
                     <p className="text-muted">{pending.length} demande(s)</p>
                   </div>
                   {canCreate && (
-                    <button type="button" className="btn btn-primary btn-sm btn-with-icon" onClick={openReservationCreate}>
-                      <IconPlus size={13} />
-                      Nouvelle réservation
+                    <button
+                      type="button"
+                      className="btn btn-primary btn-sm guest-house-icon-btn"
+                      onClick={openReservationCreate}
+                      title="Nouvelle réservation"
+                      aria-label="Nouvelle réservation"
+                    >
+                      <IconPlus size={16} />
                     </button>
                   )}
                 </div>

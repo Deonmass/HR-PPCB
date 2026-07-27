@@ -87,8 +87,6 @@ export default function GuestHouseMonthlyChart({ years, monthlyByYear }: Props) 
     };
   }), [points, maxReservations]);
 
-  const hovered = hover != null ? bars[hover] : null;
-
   return (
     <div className="panel panel-padded guest-house-chart-panel">
       <div className="guest-house-chart-head">
@@ -129,14 +127,9 @@ export default function GuestHouseMonthlyChart({ years, monthlyByYear }: Props) 
       </div>
 
       <div className="guest-house-chart-legend">
-        <span className="is-reservations">Réservations du mois (barre entière)</span>
-        <span className="is-occupied">Approuvées / occupées (remplissage)</span>
+        <span className="is-reservations">Réservations du mois</span>
+        <span className="is-occupied">Approuvées / occupées</span>
       </div>
-      <p className="guest-house-chart-help">
-        Exemple de lecture : sur <strong>10</strong> réservations, <strong>9</strong> ont été
-        approuvées et occupées (taux 90 %). La hauteur = total des réservations ;
-        le vert part du bas = nombre d’approbations.
-      </p>
 
       {bars.length === 0 ? (
         <div className="guest-house-chart-empty">
@@ -210,12 +203,6 @@ export default function GuestHouseMonthlyChart({ years, monthlyByYear }: Props) 
               </div>
             ))}
           </div>
-
-          {hovered ? null : (
-            <div className="guest-house-histo-hint">
-              Survolez une barre pour le détail
-            </div>
-          )}
         </div>
       )}
     </div>
