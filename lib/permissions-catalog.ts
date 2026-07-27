@@ -73,7 +73,7 @@ export const PERMISSION_MENU_CATALOG: PermissionMenuGroup[] = [
       { id: 'village.dependants-dashboard', label: 'Dashboard (Village/Kimpese)' },
       { id: 'village.dependants-liste', label: 'Liste (Village/Kimpese)' },
       { id: 'village.maisons', label: 'Maisons' },
-      { id: 'village.guest-house', label: 'Guest house' },
+      { id: 'village.guest-house', label: 'Guest house — réservations & occupation' },
     ],
   },
   {
@@ -123,7 +123,7 @@ export function mergePermissionsWithCatalog(menus: MenuPermission[]): MenuPermis
     if (!existing) return defaultMenu;
     return {
       menuId: defaultMenu.menuId,
-      label: existing.label || defaultMenu.label,
+      label: defaultMenu.label,
       actions: {
         view: Boolean(existing.actions.view),
         create: Boolean(existing.actions.create),

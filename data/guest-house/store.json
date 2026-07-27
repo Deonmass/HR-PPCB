@@ -1,5 +1,51 @@
 {
-  "rooms": [],
-  "reservations": [],
-  "nextReservationSeq": 1
+  "rooms": [
+    {
+      "id": "9038385f-cfde-4963-8050-a15e72e62ea7",
+      "roomNumber": "1",
+      "building": "A",
+      "characteristics": "",
+      "createdAt": "2026-07-27T14:57:57.941Z",
+      "updatedAt": "2026-07-27T14:57:57.941Z"
+    },
+    {
+      "id": "89705039-192d-4d63-96a5-f879cc4f3ae4",
+      "roomNumber": "2",
+      "building": "A",
+      "characteristics": "",
+      "createdAt": "2026-07-27T14:58:11.363Z",
+      "updatedAt": "2026-07-27T14:58:11.363Z"
+    }
+  ],
+  "reservations": [
+    {
+      "id": "7b93d73c-1cde-49f0-a66f-6fb2f225699d",
+      "numero": "GH-2026-0001",
+      "createdAt": "2026-07-27T14:59:01.369Z",
+      "personName": "MASSADI GEDEON GEDEON",
+      "matricule": "70000308",
+      "isAgent": true,
+      "motif": "xxxxxxx",
+      "startDate": "2026-07-17",
+      "endDate": "2026-07-29",
+      "status": "confirmed",
+      "updatedAt": "2026-07-27T14:59:41.866Z",
+      "roomId": "9038385f-cfde-4963-8050-a15e72e62ea7"
+    }
+  ],
+  "passages": [
+    {
+      "id": "passage-gh-2026-0001",
+      "roomId": "9038385f-cfde-4963-8050-a15e72e62ea7",
+      "reservationId": "7b93d73c-1cde-49f0-a66f-6fb2f225699d",
+      "numero": "GH-2026-0001",
+      "personName": "MASSADI GEDEON GEDEON",
+      "matricule": "70000308",
+      "motif": "xxxxxxx",
+      "startDate": "2026-07-17",
+      "endDate": "2026-07-29",
+      "checkedInAt": "2026-07-27T14:59:41.866Z"
+    }
+  ],
+  "nextReservationSeq": 2
 }

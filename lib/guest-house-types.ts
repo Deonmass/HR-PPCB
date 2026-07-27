@@ -31,9 +31,25 @@ export interface GuestReservation {
   updatedAt: string;
 }
 
+/** Historique des passages (séjours) par chambre. */
+export interface GuestRoomPassage {
+  id: string;
+  roomId: string;
+  reservationId: string;
+  numero: string;
+  personName: string;
+  matricule?: string;
+  motif: string;
+  startDate: string;
+  endDate: string;
+  checkedInAt: string;
+  checkedOutAt?: string;
+}
+
 export interface GuestHouseStoreData {
   rooms: GuestRoom[];
   reservations: GuestReservation[];
+  passages: GuestRoomPassage[];
   nextReservationSeq: number;
 }
 
@@ -54,6 +70,16 @@ export interface GuestReservationInput {
   notes?: string;
 }
 
+export interface GuestHouseMonthlyPoint {
+  key: string;
+  month: number;
+  label: string;
+  /** Nombre total de réservations créées ce mois. */
+  reservations: number;
+  /** Nombre de réservations approuvées / occupées ce mois. */
+  approved: number;
+}
+
 export interface GuestHouseDashboard {
   totalRooms: number;
   occupied: number;
@@ -67,11 +93,10 @@ export interface GuestHouseDashboard {
     daysLeft: number;
     roomNumber: string;
   }>;
-  monthly: Array<{
-    key: string;
-    label: string;
-    reservations: number;
-    occupiedDays: number;
-    emptyDays: number;
-  }>;
+  /** Années disponibles pour le filtre (desc). */
+  years: number[];
+  /** Points mensuels Jan–Déc indexés par année. */
+  monthlyByYear: Record<number, GuestHouseMonthlyPoint[]>;
+  occupiedReservations: GuestReservation[];
+  emptyRooms: GuestRoom[];
 }

@@ -2,6 +2,7 @@ import { NextResponse } from 'next/server';
 import { readDependantsData } from '@/lib/dependants-store';
 import { excelErrorResponse } from '@/lib/excel-io';
 import { readEmployees } from '@/lib/employees-store';
+import { getGuestHouseBundle } from '@/lib/guest-house-store';
 import { checkAnyPermission } from '@/lib/require-permission';
 import { readAffectationHistory } from '@/lib/village-affectation-history';
 import { readAffectationSuggestions } from '@/lib/village-affectation-suggestions';
@@ -16,17 +17,19 @@ export async function GET() {
     { menuId: 'village.dependants-dashboard', action: 'export' },
     { menuId: 'village.dependants-liste', action: 'export' },
     { menuId: 'village.maisons', action: 'export' },
+    { menuId: 'village.guest-house', action: 'export' },
   ]);
   if (denied) return denied;
 
   try {
     // Pas de sync Excel lourde ici — l’export doit rester < 10 s.
-    const [employees, dependantsData, catalog, history, suggestions] = await Promise.all([
+    const [employees, dependantsData, catalog, history, suggestions, guestHouse] = await Promise.all([
       readEmployees(),
       readDependantsData(),
       readVillageCatalog(),
       readAffectationHistory().catch(() => []),
       readAffectationSuggestions().catch(() => []),
+      getGuestHouseBundle().catch(() => null),
     ]);
     const buffer = await buildVillageExportBuffer(
       employees,
@@ -35,6 +38,7 @@ export async function GET() {
       catalog.tailles,
       history,
       suggestions,
+      guestHouse,
     );
     const filename = buildVillageExportFilename();
     return new NextResponse(new Uint8Array(buffer), {

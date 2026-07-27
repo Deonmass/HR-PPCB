@@ -16,6 +16,8 @@ import {
   HORS_EFFECTIF_DEPT,
   splitVillageKimpese,
 } from './village-agents';
+import type { GuestHouseStoreData } from './guest-house-types';
+import { appendGuestHouseSheetsToWorkbook } from './guest-house-export.server';
 import type { VillageMaison, VillageTaille } from './village-types';
 import {
   EXPORT_TEMPLATE_FILES,
@@ -482,6 +484,7 @@ export async function buildVillageExportBuffer(
   tailles: VillageTaille[],
   history: VillageAffectationHistoryEntry[] = [],
   suggestions: VillageAffectationSuggestion[] = [],
+  guestHouse?: GuestHouseStoreData | null,
 ): Promise<Buffer> {
   const templatePath = VILLAGE_EXPORT_TEMPLATE_PATH;
   if (!fs.existsSync(templatePath)) {
@@ -564,6 +567,10 @@ export async function buildVillageExportBuffer(
   );
   clearSheetData(sugSheet, 2, SUG_HEADERS.length);
   writeAoa(sugSheet, suggestionExportRows(vacant, kimpese, suggestions), 2);
+
+  if (guestHouse) {
+    appendGuestHouseSheetsToWorkbook(workbook, guestHouse);
+  }
 
   const output = await workbook.outputAsync();
   return Buffer.from(output);

@@ -11,14 +11,21 @@ import {
 } from './durable-fs';
 import type {
   GuestHouseDashboard,
+  GuestHouseMonthlyPoint,
   GuestHouseStoreData,
   GuestReservation,
   GuestReservationInput,
   GuestReservationStatus,
   GuestRoom,
   GuestRoomInput,
+  GuestRoomPassage,
 } from './guest-house-types';
 import { canPersistProjectFiles, getWritableDataRoot } from './runtime-mode';
+
+const MONTH_LABELS = [
+  'Janvier', 'Février', 'Mars', 'Avril', 'Mai', 'Juin',
+  'Juillet', 'Août', 'Septembre', 'Octobre', 'Novembre', 'Décembre',
+];
 
 function resolveStorePath(): string {
   if (canPersistProjectFiles()) {
@@ -38,7 +45,7 @@ function resolveStorePath(): string {
 }
 
 function emptyStore(): GuestHouseStoreData {
-  return { rooms: [], reservations: [], nextReservationSeq: 1 };
+  return { rooms: [], reservations: [], passages: [], nextReservationSeq: 1 };
 }
 
 function str(value: unknown): string {
@@ -75,19 +82,50 @@ function isActiveOn(reservation: GuestReservation, day: string): boolean {
   );
 }
 
+function ensurePassages(data: GuestHouseStoreData): GuestHouseStoreData {
+  const passages = [...data.passages];
+  let changed = false;
+  for (const item of data.reservations) {
+    if (item.status !== 'confirmed' && item.status !== 'completed') continue;
+    if (!item.roomId) continue;
+    if (passages.some((p) => p.reservationId === item.id)) continue;
+    passages.unshift({
+      id: randomUUID(),
+      roomId: item.roomId,
+      reservationId: item.id,
+      numero: item.numero,
+      personName: item.personName,
+      matricule: item.matricule,
+      motif: item.motif,
+      startDate: item.startDate,
+      endDate: item.endDate,
+      checkedInAt: item.updatedAt || item.createdAt,
+      checkedOutAt: item.status === 'completed' ? item.updatedAt : undefined,
+    });
+    changed = true;
+  }
+  return changed ? { ...data, passages } : data;
+}
+
 async function readStore(): Promise<GuestHouseStoreData> {
   const storePath = resolveStorePath();
   await hydrateDurableFile(DURABLE_GUEST_HOUSE_KEY, storePath);
   try {
     const raw = await fsPromises.readFile(storePath, 'utf8');
     const parsed = JSON.parse(raw) as GuestHouseStoreData;
-    return {
+    const data: GuestHouseStoreData = {
       rooms: Array.isArray(parsed.rooms) ? parsed.rooms : [],
       reservations: Array.isArray(parsed.reservations) ? parsed.reservations : [],
+      passages: Array.isArray(parsed.passages) ? parsed.passages : [],
       nextReservationSeq: Number(parsed.nextReservationSeq) > 0
         ? Number(parsed.nextReservationSeq)
         : 1,
     };
+    const ensured = ensurePassages(data);
+    if (ensured.passages.length !== data.passages.length) {
+      await writeStore(ensured);
+    }
+    return ensured;
   } catch (err) {
     const code = (err as NodeJS.ErrnoException)?.code;
     if (code === 'ENOENT') return emptyStore();
@@ -107,6 +145,26 @@ function nextNumero(seq: number): string {
   return `GH-${year}-${String(seq).padStart(4, '0')}`;
 }
 
+function buildYearMonthly(data: GuestHouseStoreData, year: number): GuestHouseMonthlyPoint[] {
+  const points: GuestHouseMonthlyPoint[] = [];
+  for (let month = 1; month <= 12; month += 1) {
+    const key = `${year}-${String(month).padStart(2, '0')}`;
+    const monthReservations = data.reservations.filter((item) => item.createdAt.startsWith(key));
+    const reservations = monthReservations.length;
+    const approved = monthReservations.filter(
+      (item) => item.status === 'confirmed' || item.status === 'completed',
+    ).length;
+    points.push({
+      key,
+      month,
+      label: MONTH_LABELS[month - 1],
+      reservations,
+      approved,
+    });
+  }
+  return points;
+}
+
 export async function getGuestHouseBundle(): Promise<GuestHouseStoreData & { dashboard: GuestHouseDashboard }> {
   const data = await readStore();
   return { ...data, dashboard: buildDashboard(data) };
@@ -114,17 +172,14 @@ export async function getGuestHouseBundle(): Promise<GuestHouseStoreData & { das
 
 export function buildDashboard(data: GuestHouseStoreData): GuestHouseDashboard {
   const today = todayIso();
-  const occupiedRoomIds = new Set(
-    data.reservations
-      .filter((item) => isActiveOn(item, today))
-      .map((item) => item.roomId!)
-      .filter(Boolean),
-  );
+  const roomsById = new Map(data.rooms.map((room) => [room.id, room]));
+  const occupiedReservations = data.reservations.filter((item) => isActiveOn(item, today));
+  const occupiedRoomIds = new Set(occupiedReservations.map((item) => item.roomId!).filter(Boolean));
   const occupied = occupiedRoomIds.size;
   const totalRooms = data.rooms.length;
   const empty = Math.max(0, totalRooms - occupied);
+  const emptyRooms = data.rooms.filter((room) => !occupiedRoomIds.has(room.id));
 
-  const roomsById = new Map(data.rooms.map((room) => [room.id, room]));
   const endingSoon = data.reservations
     .filter((item) => item.status === 'confirmed' && item.endDate >= today)
     .map((item) => {
@@ -144,53 +199,18 @@ export function buildDashboard(data: GuestHouseStoreData): GuestHouseDashboard {
       roomNumber: item.roomId ? roomsById.get(item.roomId)?.roomNumber ?? '—' : '—',
     }));
 
-  const monthlyMap = new Map<string, { reservations: number; occupiedDays: number; emptyDays: number }>();
-  const now = new Date();
-  for (let offset = 11; offset >= 0; offset -= 1) {
-    const cursor = new Date(now.getFullYear(), now.getMonth() - offset, 1);
-    const key = `${cursor.getFullYear()}-${String(cursor.getMonth() + 1).padStart(2, '0')}`;
-    monthlyMap.set(key, { reservations: 0, occupiedDays: 0, emptyDays: 0 });
+  const yearSet = new Set<number>([new Date().getFullYear()]);
+  for (const item of data.reservations) {
+    const y = Number(item.createdAt.slice(0, 4));
+    if (Number.isFinite(y)) yearSet.add(y);
+    const ys = Number(item.startDate.slice(0, 4));
+    if (Number.isFinite(ys)) yearSet.add(ys);
   }
-
-  for (const reservation of data.reservations) {
-    const createdKey = reservation.createdAt.slice(0, 7);
-    const bucket = monthlyMap.get(createdKey);
-    if (bucket) bucket.reservations += 1;
+  const years = [...yearSet].sort((a, b) => b - a);
+  const monthlyByYear: Record<number, GuestHouseMonthlyPoint[]> = {};
+  for (const year of years) {
+    monthlyByYear[year] = buildYearMonthly(data, year);
   }
-
-  for (const [key, bucket] of monthlyMap) {
-    const [yearStr, monthStr] = key.split('-');
-    const year = Number(yearStr);
-    const month = Number(monthStr);
-    const daysInMonth = new Date(year, month, 0).getDate();
-    const capacityDays = totalRooms * daysInMonth;
-    let occupiedDays = 0;
-    for (let day = 1; day <= daysInMonth; day += 1) {
-      const iso = `${key}-${String(day).padStart(2, '0')}`;
-      const occupiedThatDay = new Set(
-        data.reservations
-          .filter((item) => isActiveOn(item, iso) || (
-            item.status === 'confirmed'
-            && item.roomId
-            && item.startDate <= iso
-            && item.endDate >= iso
-          ))
-          .map((item) => item.roomId!),
-      ).size;
-      occupiedDays += occupiedThatDay;
-    }
-    bucket.occupiedDays = occupiedDays;
-    bucket.emptyDays = Math.max(0, capacityDays - occupiedDays);
-  }
-
-  const monthly = [...monthlyMap.entries()].map(([key, value]) => {
-    const [year, month] = key.split('-');
-    const label = new Date(Number(year), Number(month) - 1, 1).toLocaleDateString('fr-FR', {
-      month: 'short',
-      year: '2-digit',
-    });
-    return { key, label, ...value };
-  });
 
   return {
     totalRooms,
@@ -198,7 +218,10 @@ export function buildDashboard(data: GuestHouseStoreData): GuestHouseDashboard {
     empty,
     pendingReservations: data.reservations.filter((item) => item.status === 'pending').length,
     endingSoon,
-    monthly,
+    years,
+    monthlyByYear,
+    occupiedReservations,
+    emptyRooms,
   };
 }
 
@@ -318,13 +341,43 @@ export async function updateGuestReservationStatus(
     if (conflict) throw new Error('Cette chambre est déjà réservée sur cette période');
   }
 
+  const now = new Date().toISOString();
   const updated: GuestReservation = {
     ...current,
     status,
     roomId: nextRoomId,
-    updatedAt: new Date().toISOString(),
+    updatedAt: now,
   };
   data.reservations[index] = updated;
+
+  if (status === 'confirmed' && nextRoomId) {
+    const existingPassage = data.passages.find((p) => p.reservationId === id);
+    if (!existingPassage) {
+      const passage: GuestRoomPassage = {
+        id: randomUUID(),
+        roomId: nextRoomId,
+        reservationId: id,
+        numero: updated.numero,
+        personName: updated.personName,
+        matricule: updated.matricule,
+        motif: updated.motif,
+        startDate: updated.startDate,
+        endDate: updated.endDate,
+        checkedInAt: now,
+      };
+      data.passages.unshift(passage);
+    } else {
+      existingPassage.roomId = nextRoomId;
+      existingPassage.startDate = updated.startDate;
+      existingPassage.endDate = updated.endDate;
+    }
+  }
+
+  if (status === 'completed' || status === 'cancelled' || status === 'rejected') {
+    const passage = data.passages.find((p) => p.reservationId === id && !p.checkedOutAt);
+    if (passage) passage.checkedOutAt = now;
+  }
+
   await writeStore(data);
   return updated;
 }
