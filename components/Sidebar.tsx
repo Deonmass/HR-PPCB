@@ -153,7 +153,6 @@ const NAV: NavSection[] = [
         menuIds: ['village.maisons', 'village.dependants-dashboard', 'village.dependants-liste'],
         activePrefixes: ['/village/maisons', '/village/dashboard', '/village/liste'],
       },
-      { href: '/village/club-house', label: 'Club house', icon: 'village', menuId: 'village.club-house' },
       { href: '/village/guest-house', label: 'Guest house', icon: 'village', menuId: 'village.guest-house' },
     ],
   },

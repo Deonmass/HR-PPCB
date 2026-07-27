@@ -8,6 +8,7 @@ import { getDataBackend, isVercelRuntime } from './runtime-mode';
 /** Paths inside the git repository (source of truth for users / permissions). */
 export const DURABLE_PARAMS_KEY = 'Excel/Params.xlsx';
 export const DURABLE_PERMISSIONS_KEY = 'data/auth/permissions.json';
+export const DURABLE_GUEST_HOUSE_KEY = 'data/guest-house/store.json';
 
 interface GithubRepoTarget {
   owner: string;

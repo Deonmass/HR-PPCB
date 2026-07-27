@@ -10,12 +10,14 @@ const nextConfig: NextConfig = {
     '/api/**/*': [
       './Excel/**/*',
       './data/auth/permissions.json',
+      './data/guest-house/store.json',
       './data/employees.json',
       './data/projects.json',
     ],
     '/*': [
       './Excel/**/*',
       './data/auth/permissions.json',
+      './data/guest-house/store.json',
     ],
   },
 };

@@ -288,18 +288,10 @@ export async function buildHomeDashboard(menus: MenuPermission[]): Promise<HomeD
     });
   }
 
-  if (can(menus, 'village.club-house')) {
-    placeholders.push({
-      label: 'Club house',
-      description: 'Gestion du club house du village',
-      href: '/village/club-house',
-    });
-  }
-
   if (can(menus, 'village.guest-house')) {
     placeholders.push({
       label: 'Guest house',
-      description: 'Gestion de la guest house du village',
+      description: 'Réservations et gestion des chambres',
       href: '/village/guest-house',
     });
   }

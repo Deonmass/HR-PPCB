@@ -78,7 +78,6 @@ export function PermissionProvider({ children }: { children: ReactNode }) {
       '/sante',
       '/charroi-automobile',
       '/village/maisons',
-      '/village/club-house',
       '/village/guest-house',
       '/parametres/departements',
       '/parametres/centres-de-cout',

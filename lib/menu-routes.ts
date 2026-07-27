@@ -23,7 +23,6 @@ export const ROUTE_MENU_MAP: RouteMenuEntry[] = [
   { prefix: '/heures-supplementaires', menuId: 'employes.heures' },
   { prefix: '/check-documents', menuId: 'employes.check-documents' },
   { prefix: '/village/guest-house', menuId: 'village.guest-house' },
-  { prefix: '/village/club-house', menuId: 'village.club-house' },
   { prefix: '/village/maisons', menuId: 'village.maisons' },
   { prefix: '/village/dashboard', menuId: 'village.maisons' },
   { prefix: '/village/liste', menuId: 'village.maisons' },

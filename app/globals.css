@@ -14582,3 +14582,218 @@ html[data-theme='light'] .village-dept-taille-table td:first-child {
     grid-template-columns: 1fr;
   }
 }
+
+/* —— Guest house —— */
+.guest-house-page {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  min-height: 100%;
+}
+
+.guest-house-sticky {
+  position: sticky;
+  top: 0;
+  z-index: 20;
+  background: var(--bg);
+  padding-bottom: 0.35rem;
+  border-bottom: 1px solid color-mix(in srgb, var(--border) 80%, transparent);
+}
+
+.guest-house-body {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  padding-top: 1rem;
+}
+
+.guest-house-dashboard {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.guest-house-kpi-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 0.75rem;
+}
+
+@media (max-width: 900px) {
+  .guest-house-kpi-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+.guest-house-section-head {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-bottom: 0.85rem;
+}
+
+.guest-house-section-head h3 {
+  margin: 0;
+  font-size: 1.05rem;
+}
+
+.guest-house-section-head p {
+  margin: 0.2rem 0 0;
+}
+
+.guest-house-alerts h3 {
+  margin: 0 0 0.75rem;
+  font-size: 1rem;
+}
+
+.guest-house-person-cell {
+  display: flex;
+  flex-direction: column;
+  gap: 0.15rem;
+}
+
+.guest-house-row-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.35rem;
+}
+
+.guest-house-days-left {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.15rem 0.45rem;
+  border-radius: 999px;
+  background: color-mix(in srgb, #14b8a6 18%, transparent);
+  color: #0f766e;
+  font-weight: 600;
+  font-size: 0.82rem;
+}
+
+.guest-house-days-left.is-critical {
+  background: color-mix(in srgb, #e30613 16%, transparent);
+  color: #b91c1c;
+}
+
+html[data-theme='dark'] .guest-house-days-left,
+html:not([data-theme='light']) .guest-house-days-left {
+  color: #5eead4;
+}
+
+html[data-theme='dark'] .guest-house-days-left.is-critical,
+html:not([data-theme='light']) .guest-house-days-left.is-critical {
+  color: #fca5a5;
+}
+
+.guest-house-chart-panel {
+  display: flex;
+  flex-direction: column;
+  gap: 0.85rem;
+}
+
+.guest-house-chart-head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+}
+
+.guest-house-chart-head h3 {
+  margin: 0;
+  font-size: 1rem;
+}
+
+.guest-house-chart-legend {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  font-size: 0.78rem;
+  color: var(--muted);
+}
+
+.guest-house-chart-legend span::before {
+  content: '';
+  display: inline-block;
+  width: 0.55rem;
+  height: 0.55rem;
+  border-radius: 2px;
+  margin-right: 0.35rem;
+  vertical-align: middle;
+}
+
+.guest-house-chart-legend .is-reservations::before { background: #06b6d4; }
+.guest-house-chart-legend .is-occupied::before { background: #22c55e; }
+.guest-house-chart-legend .is-empty::before { background: #94a3b8; }
+
+.guest-house-chart-bars {
+  display: grid;
+  grid-template-columns: repeat(12, minmax(0, 1fr));
+  gap: 0.35rem;
+  align-items: end;
+  min-height: 180px;
+  padding: 0.5rem 0.25rem 0;
+}
+
+.guest-house-chart-col {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.4rem;
+  background: transparent;
+  border: 0;
+  padding: 0;
+  cursor: pointer;
+  color: inherit;
+}
+
+.guest-house-chart-stack {
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  gap: 2px;
+  width: 100%;
+  height: 150px;
+  padding: 0 2px;
+  border-radius: 8px;
+  background: color-mix(in srgb, var(--border) 35%, transparent);
+}
+
+.guest-house-chart-col.is-active .guest-house-chart-stack {
+  background: color-mix(in srgb, #14b8a6 14%, transparent);
+}
+
+.guest-house-bar {
+  display: block;
+  width: 28%;
+  min-height: 2px;
+  border-radius: 3px 3px 0 0;
+}
+
+.guest-house-bar.is-reservations { background: #06b6d4; }
+.guest-house-bar.is-occupied { background: #22c55e; }
+.guest-house-bar.is-empty { background: #94a3b8; }
+
+.guest-house-chart-label {
+  font-size: 0.68rem;
+  color: var(--muted);
+  text-transform: capitalize;
+}
+
+.guest-house-chart-tooltip {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem 1.1rem;
+  font-size: 0.82rem;
+  color: var(--muted);
+}
+
+.guest-house-chart-tooltip strong {
+  color: var(--text);
+}
+
+@media (max-width: 700px) {
+  .guest-house-chart-bars {
+    grid-template-columns: repeat(6, minmax(0, 1fr));
+  }
+}

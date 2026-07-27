@@ -73,7 +73,6 @@ export const PERMISSION_MENU_CATALOG: PermissionMenuGroup[] = [
       { id: 'village.dependants-dashboard', label: 'Dashboard (Village/Kimpese)' },
       { id: 'village.dependants-liste', label: 'Liste (Village/Kimpese)' },
       { id: 'village.maisons', label: 'Maisons' },
-      { id: 'village.club-house', label: 'Club house' },
       { id: 'village.guest-house', label: 'Guest house' },
     ],
   },
