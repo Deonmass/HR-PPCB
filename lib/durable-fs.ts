@@ -14,19 +14,21 @@ interface GithubRepoTarget {
   repo: string;
   branch: string;
   token: string;
+  tokenSource: 'HR_GITHUB_TOKEN';
+}
+
+function sanitizeToken(raw: string): string {
+  return raw
+    .replace(/^\uFEFF/, '')
+    .replace(/^['"]+|['"]+$/g, '')
+    .replace(/\s+/g, '')
+    .trim();
 }
 
 function resolveGithubTarget(): GithubRepoTarget | null {
-  // Prefer HR_GITHUB_TOKEN — Vercel/GitHub may interfere with a bare GITHUB_TOKEN name.
-  const raw = (
-    process.env.HR_GITHUB_TOKEN
-    || process.env.GH_TOKEN
-    || process.env.GITHUB_PAT
-    || process.env.GITHUB_TOKEN
-    || ''
-  ).trim();
-  // Users sometimes paste the value with quotes in Vercel.
-  const token = raw.replace(/^['"]+|['"]+$/g, '').trim();
+  // ONLY HR_GITHUB_TOKEN — never fall back to GITHUB_TOKEN (often revoked / wrong on Vercel).
+  const raw = (process.env.HR_GITHUB_TOKEN || '').trim();
+  const token = sanitizeToken(raw);
   if (!token) return null;
 
   const fromEnv = (process.env.GITHUB_REPOSITORY || process.env.GITHUB_REPO || '').trim();
@@ -50,7 +52,7 @@ function resolveGithubTarget(): GithubRepoTarget | null {
     || 'main'
   ).trim() || 'main';
 
-  return { owner, repo, branch, token };
+  return { owner, repo, branch, token, tokenSource: 'HR_GITHUB_TOKEN' };
 }
 
 export function needsDurableRemote(): boolean {
@@ -61,33 +63,29 @@ export function isDurableRemoteEnabled(): boolean {
   return needsDurableRemote() && Boolean(resolveGithubTarget());
 }
 
-/**
- * On Vercel the project folder is read-only, so we sync Excel/JSON back into the
- * GitHub repository (same files as in your project directory).
- */
 export function assertDurableRemoteConfigured(action = 'sauvegarder'): void {
   if (!needsDurableRemote()) return;
   if (isDurableRemoteEnabled()) return;
   throw new Error(
-    `Impossible de ${action} dans Excel/ sur Vercel : token GitHub absent au runtime. `
-      + 'Ajoutez HR_GITHUB_TOKEN (Production + Preview), puis Redeploy. '
-      + 'Fine-grained token : repository Deonmass/HR-PPCB, Contents = Read and write.',
+    `Impossible de ${action} dans Excel/ sur Vercel : HR_GITHUB_TOKEN manquant. `
+      + 'Ajoutez uniquement HR_GITHUB_TOKEN (pas GITHUB_TOKEN), Production + Preview, sans guillemets, puis Redeploy.',
   );
 }
 
 function formatGithubHttpError(action: string, repoPath: string, status: number, body: string): Error {
   if (status === 401) {
     return new Error(
-      `GitHub ${action} ${repoPath} : token invalide (401 Bad credentials). `
-        + 'Le token est révoqué, mal collé, ou la variable Vercel est obsolète. '
-        + 'Créez un nouveau fine-grained token, mettez-le dans HR_GITHUB_TOKEN (sans guillemets), '
-        + 'supprimez l’ancienne variable GITHUB_TOKEN si besoin, puis Redeploy.',
+      `GitHub ${action} ${repoPath} : 401 Bad credentials. `
+        + '1) Supprimez GITHUB_TOKEN dans Vercel. '
+        + '2) Créez un NOUVEAU fine-grained token (Contents: Read and write sur Deonmass/HR-PPCB). '
+        + '3) Mettez-le dans HR_GITHUB_TOKEN seulement (valeur qui commence par github_pat_). '
+        + '4) Redeploy. L’ancien token affiché à l’écran est invalide s’il a été révoqué.',
     );
   }
   if (status === 403) {
     return new Error(
-      `GitHub ${action} ${repoPath} : accès refusé (403). `
-        + 'Sur le token fine-grained, activez Contents: Read and write pour Deonmass/HR-PPCB.',
+      `GitHub ${action} ${repoPath} : 403 accès refusé. `
+        + 'Sur le token fine-grained : Repository access = Deonmass/HR-PPCB, Contents = Read and write.',
     );
   }
   return new Error(`GitHub ${action} ${repoPath} échouée (${status}): ${body.slice(0, 200)}`);
@@ -104,10 +102,95 @@ async function githubRequest(
       Accept: 'application/vnd.github+json',
       Authorization: `Bearer ${target.token}`,
       'X-GitHub-Api-Version': '2022-11-28',
-      'User-Agent': 'hr-rh-app',
+      'User-Agent': 'hr-rh-app-durable',
       ...(init?.headers ?? {}),
     },
   });
+}
+
+/** Public diagnostic for admins (no secret leaked). */
+export async function probeDurableGithub(): Promise<{
+  needed: boolean;
+  configured: boolean;
+  tokenSource: string | null;
+  tokenPrefix: string | null;
+  owner: string | null;
+  repo: string | null;
+  branch: string | null;
+  authOk: boolean;
+  login: string | null;
+  repoOk: boolean;
+  error: string | null;
+}> {
+  const needed = needsDurableRemote();
+  const target = resolveGithubTarget();
+  if (!needed) {
+    return {
+      needed: false,
+      configured: true,
+      tokenSource: null,
+      tokenPrefix: null,
+      owner: null,
+      repo: null,
+      branch: null,
+      authOk: true,
+      login: null,
+      repoOk: true,
+      error: null,
+    };
+  }
+  if (!target) {
+    return {
+      needed: true,
+      configured: false,
+      tokenSource: null,
+      tokenPrefix: null,
+      owner: null,
+      repo: null,
+      branch: null,
+      authOk: false,
+      login: null,
+      repoOk: false,
+      error: 'HR_GITHUB_TOKEN absent au runtime (ajoutez-le puis Redeploy)',
+    };
+  }
+
+  const tokenPrefix = target.token.slice(0, 11);
+  const userRes = await githubRequest(target, '/user');
+  if (!userRes.ok) {
+    const text = await userRes.text();
+    return {
+      needed: true,
+      configured: true,
+      tokenSource: target.tokenSource,
+      tokenPrefix,
+      owner: target.owner,
+      repo: target.repo,
+      branch: target.branch,
+      authOk: false,
+      login: null,
+      repoOk: false,
+      error: `Auth GitHub ${userRes.status}: ${text.slice(0, 120)}`,
+    };
+  }
+  const userJson = (await userRes.json()) as { login?: string };
+  const repoRes = await githubRequest(
+    target,
+    `/repos/${target.owner}/${target.repo}`,
+  );
+  return {
+    needed: true,
+    configured: true,
+    tokenSource: target.tokenSource,
+    tokenPrefix,
+    owner: target.owner,
+    repo: target.repo,
+    branch: target.branch,
+    authOk: true,
+    login: userJson.login ?? null,
+    repoOk: repoRes.ok,
+    error: repoRes.ok ? null : `Repo ${target.owner}/${target.repo} inaccessible (${repoRes.status})`,
+  };
 }
 
 async function readGithubFile(
@@ -127,12 +210,20 @@ async function readGithubFile(
   }
 
   const json = (await res.json()) as { content?: string; encoding?: string; sha?: string; download_url?: string };
+  // Prefer inline base64 from Contents API (avoids a second authenticated download URL).
+  if (json.content && json.encoding === 'base64') {
+    return {
+      buffer: Buffer.from(json.content.replace(/\n/g, ''), 'base64'),
+      sha: json.sha || '',
+    };
+  }
+
   if (json.download_url) {
     const fileRes = await fetch(json.download_url, {
       headers: {
         Authorization: `Bearer ${target.token}`,
         Accept: 'application/vnd.github.raw',
-        'User-Agent': 'hr-rh-app',
+        'User-Agent': 'hr-rh-app-durable',
         'X-GitHub-Api-Version': '2022-11-28',
       },
     });
@@ -140,17 +231,13 @@ async function readGithubFile(
       const text = await fileRes.text();
       throw formatGithubHttpError('download', repoPath, fileRes.status, text);
     }
-    const buffer = Buffer.from(await fileRes.arrayBuffer());
-    return { buffer, sha: json.sha || '' };
+    return {
+      buffer: Buffer.from(await fileRes.arrayBuffer()),
+      sha: json.sha || '',
+    };
   }
 
-  if (!json.content || json.encoding !== 'base64') {
-    throw new Error(`Contenu GitHub invalide pour ${repoPath}`);
-  }
-  return {
-    buffer: Buffer.from(json.content.replace(/\n/g, ''), 'base64'),
-    sha: json.sha || '',
-  };
+  throw new Error(`Contenu GitHub invalide pour ${repoPath}`);
 }
 
 async function writeGithubFile(
@@ -180,7 +267,6 @@ async function writeGithubFile(
   );
 
   if (res.status === 409) {
-    // Concurrent update — retry once with fresh sha.
     const latest = await readGithubFile(target, repoPath);
     if (latest?.sha) body.sha = latest.sha;
     const retry = await githubRequest(
@@ -205,7 +291,6 @@ async function writeGithubFile(
   }
 }
 
-/** Pull Excel/JSON from the GitHub repo into the local working path (Vercel /tmp). */
 export async function hydrateDurableFile(repoPath: string, localPath: string): Promise<void> {
   if (!isDurableRemoteEnabled()) return;
   const target = resolveGithubTarget();
@@ -222,20 +307,19 @@ export async function hydrateDurableFile(repoPath: string, localPath: string): P
   }
 }
 
-/**
- * Persist local working copy:
- * - local/dev: already written under Excel/ or data/auth/ (no-op here)
- * - Vercel: commit the file into the GitHub repository path
- */
 export async function persistDurableFile(repoPath: string, localPath: string): Promise<void> {
-  if (!needsDurableRemote()) {
-    // Local mode already saved into the project Excel/data directories.
-    return;
-  }
+  if (!needsDurableRemote()) return;
 
   assertDurableRemoteConfigured('persister');
   const target = resolveGithubTarget();
   if (!target) return;
+
+  if (!target.token.startsWith('github_pat_') && !target.token.startsWith('ghp_')) {
+    throw new Error(
+      'HR_GITHUB_TOKEN ne ressemble pas à un token GitHub (doit commencer par github_pat_ ou ghp_). '
+        + 'Vérifiez la valeur collée dans Vercel (sans guillemets), puis Redeploy.',
+    );
+  }
 
   const body = await fsPromises.readFile(localPath);
   const label = path.basename(repoPath);
