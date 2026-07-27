@@ -2,21 +2,26 @@ import 'server-only';
 
 import fs from 'fs';
 import path from 'path';
+import { getDataBackend, resolveWorkbookPath } from './runtime-mode';
 
 const EXCEL_DIR = path.join(process.cwd(), 'Excel');
 const OVERTIMES_DIR = path.join(EXCEL_DIR, 'overtimes');
-
-export function getOvertimesDirectory(): string {
-  return process.env.OVERTIMES_DIR?.trim()
-    ? path.resolve(process.env.OVERTIMES_DIR.trim())
-    : OVERTIMES_DIR;
-}
 
 export const OVERTIMES_FILES = {
   data: 'OVERTIMES_DATA.xlsx',
   exportLegacy: 'OVERTIMES.xlsx',
   timesheetTemplate: 'Timesheet template.xlsx',
 } as const;
+
+export function getOvertimesDirectory(): string {
+  if (process.env.OVERTIMES_DIR?.trim()) {
+    return path.resolve(process.env.OVERTIMES_DIR.trim());
+  }
+  if (getDataBackend() === 'tmp') {
+    return path.dirname(resolveWorkbookPath(`overtimes/${OVERTIMES_FILES.data}`));
+  }
+  return OVERTIMES_DIR;
+}
 
 /**
  * Résout un fichier overtime :
@@ -41,11 +46,10 @@ export function resolveOvertimesFile(
   return preferred;
 }
 
-export const OVERTIMES_DATA_XLSX_PATH = resolveOvertimesFile(
-  OVERTIMES_FILES.data,
-  process.env.OVERTIMES_DATA_XLSX,
-  [path.join(EXCEL_DIR, OVERTIMES_FILES.data)],
-);
+/** Workbook mutable (saisies OT) — copie /tmp sur Vercel. */
+export const OVERTIMES_DATA_XLSX_PATH = process.env.OVERTIMES_DATA_XLSX?.trim()
+  ? path.resolve(process.env.OVERTIMES_DATA_XLSX.trim())
+  : resolveWorkbookPath(`overtimes/${OVERTIMES_FILES.data}`);
 
 export const OVERTIMES_EXPORT_XLSX_PATH = resolveOvertimesFile(
   OVERTIMES_FILES.exportLegacy,

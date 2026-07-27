@@ -24,8 +24,9 @@ import {
   populateWriteRowValues,
   savePopulateWorkbook,
 } from './dependants-xlsx-mutate.server';
+import { getEmployeeWorkbookPath } from './excel-data-paths';
 
-const EXCEL_PATH = process.env.EMPLOYEE_XLSX || path.join(process.cwd(), 'Excel', 'EMPLOYEE.xlsx');
+const EXCEL_PATH = getEmployeeWorkbookPath();
 
 const EMPLOYEE_SHEET = 'EMPLOYEE';
 const EMPLOYEE_DATA_START = 2;

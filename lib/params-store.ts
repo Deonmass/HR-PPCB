@@ -1,6 +1,5 @@
 import 'server-only';
 
-import path from 'path';
 import {
   cloneRowStyle,
   getSheet,
@@ -13,8 +12,9 @@ import {
   type AoaRow,
 } from './excel-io';
 import type { CostCenterSetting, DepartmentSetting } from './auth-types';
+import { resolveWorkbookPath } from './runtime-mode';
 
-const PARAMS_PATH = process.env.PARAMS_XLSX || path.join(process.cwd(), 'Excel', 'Params.xlsx');
+const PARAMS_PATH = resolveWorkbookPath('Params.xlsx', process.env.PARAMS_XLSX);
 const SHEET_NAME = 'Sheet1';
 const DATA_START = 1;
 const COL_DEPARTMENT = 0;

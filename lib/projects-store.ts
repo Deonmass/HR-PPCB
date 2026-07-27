@@ -14,6 +14,7 @@ import {
 } from './excel-io';
 import type { ProjectExpense, ProjectRecord, ProjectsData } from './project-types';
 import type { WorkSheet } from 'xlsx-js-style';
+import { getProjectsSnapshotPath, getProjectsWorkbookPath } from './excel-data-paths';
 
 /**
  * `Excel/PROJECTS.xlsx` is the live database for the Project module.
@@ -33,8 +34,8 @@ import type { WorkSheet } from 'xlsx-js-style';
  * Legacy rows without a sync id yet are backfilled automatically on first read.
  */
 
-const EXCEL_PATH = process.env.PROJECTS_XLSX || path.join(process.cwd(), 'Excel', 'PROJECTS.xlsx');
-const SNAPSHOT_PATH = path.join(process.cwd(), 'data', 'projects.json');
+const EXCEL_PATH = getProjectsWorkbookPath();
+const SNAPSHOT_PATH = getProjectsSnapshotPath();
 
 const PROJECTS_SHEET = 'PROJECTS';
 const PROJECTS_DATA_START = 4;

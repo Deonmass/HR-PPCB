@@ -1,6 +1,6 @@
 import 'server-only';
 
-import { randomBytes } from 'crypto';
+import { createHmac, randomBytes, timingSafeEqual } from 'crypto';
 import fs from 'fs/promises';
 import path from 'path';
 import {
@@ -28,20 +28,22 @@ import type {
   SessionUser,
   UserPermissions,
 } from './auth-types';
+import { SESSION_COOKIE_NAME } from './auth-constants';
+import {
+  getWritableAuthDir,
+  resolveSessionSecret,
+  useStatelessSessions,
+} from './runtime-mode';
 
-// Vercel mount `/var/task` is read-only. Use a writable dir for session persistence.
-// - Local/dev: keep existing `data/auth`.
-// - Vercel: default to `/tmp/hr-rh-auth` (override with `AUTH_DATA_DIR` if needed).
-const AUTH_DIR = process.env.AUTH_DATA_DIR
-  ? path.resolve(process.env.AUTH_DATA_DIR)
-  : process.env.VERCEL
-    ? path.join('/tmp', 'hr-rh-auth')
-    : path.join(process.cwd(), 'data', 'auth');
+const AUTH_DIR = getWritableAuthDir();
 const SESSIONS_PATH = path.join(AUTH_DIR, 'sessions.json');
 
-import { SESSION_COOKIE_NAME } from './auth-constants';
-
 const SESSION_TTL_MS = 7 * 24 * 60 * 60 * 1000;
+const USE_STATELESS_SESSIONS = useStatelessSessions();
+
+function getSessionSecret(): string {
+  return resolveSessionSecret();
+}
 
 interface SessionsFile {
   sessions: AuthSession[];
@@ -49,6 +51,51 @@ interface SessionsFile {
 
 function nowIso(): string {
   return new Date().toISOString();
+}
+
+function toBase64Url(input: string): string {
+  return Buffer.from(input, 'utf8').toString('base64url');
+}
+
+function fromBase64Url(input: string): string {
+  return Buffer.from(input, 'base64url').toString('utf8');
+}
+
+function signSessionPayload(payload: string): string {
+  return createHmac('sha256', getSessionSecret()).update(payload).digest('base64url');
+}
+
+function encodeStatelessSession(session: AuthSession): string {
+  const payload = JSON.stringify({
+    userId: session.userId,
+    user: session.user,
+    menus: session.menus,
+    createdAt: session.createdAt,
+    expiresAt: session.expiresAt,
+  });
+  const encoded = toBase64Url(payload);
+  const signature = signSessionPayload(encoded);
+  return `${encoded}.${signature}`;
+}
+
+function decodeStatelessSession(token?: string | null): AuthSession | null {
+  if (!token?.trim()) return null;
+  const [encoded, signature] = token.split('.');
+  if (!encoded || !signature) return null;
+
+  const expected = signSessionPayload(encoded);
+  const sigBuf = Buffer.from(signature);
+  const expectedBuf = Buffer.from(expected);
+  if (sigBuf.length !== expectedBuf.length || !timingSafeEqual(sigBuf, expectedBuf)) {
+    return null;
+  }
+
+  try {
+    const parsed = JSON.parse(fromBase64Url(encoded)) as Omit<AuthSession, 'token'>;
+    return { ...parsed, token };
+  } catch {
+    return null;
+  }
 }
 
 async function ensureAuthDir(): Promise<void> {
@@ -113,16 +160,22 @@ export async function createSession(
   user: SessionUser,
   menus: MenuPermission[],
 ): Promise<AuthSession> {
-  const sessionsData = await readSessionsFile();
-  const token = randomBytes(32).toString('hex');
-  const session: AuthSession = {
-    token,
+  const baseSession: AuthSession = {
+    token: '',
     userId: user.id,
     user,
     menus,
     createdAt: nowIso(),
     expiresAt: new Date(Date.now() + SESSION_TTL_MS).toISOString(),
   };
+  if (USE_STATELESS_SESSIONS) {
+    const token = encodeStatelessSession(baseSession);
+    return { ...baseSession, token };
+  }
+
+  const sessionsData = await readSessionsFile();
+  const token = randomBytes(32).toString('hex');
+  const session = { ...baseSession, token };
   sessionsData.sessions = sessionsData.sessions.filter((item) => item.userId !== user.id);
   sessionsData.sessions.push(session);
   await writeSessionsFile(sessionsData);
@@ -130,6 +183,7 @@ export async function createSession(
 }
 
 export async function destroySession(token: string): Promise<void> {
+  if (USE_STATELESS_SESSIONS) return;
   const sessionsData = await readSessionsFile();
   sessionsData.sessions = sessionsData.sessions.filter((item) => item.token !== token);
   await writeSessionsFile(sessionsData);
@@ -137,6 +191,13 @@ export async function destroySession(token: string): Promise<void> {
 
 async function findValidSession(token?: string | null): Promise<AuthSession | null> {
   if (!token?.trim()) return null;
+  if (USE_STATELESS_SESSIONS) {
+    const session = decodeStatelessSession(token);
+    if (!session) return null;
+    if (new Date(session.expiresAt).getTime() < Date.now()) return null;
+    if (!session.user || !session.menus) return null;
+    return session;
+  }
   const sessionsData = await readSessionsFile();
   const session = sessionsData.sessions.find((item) => item.token === token);
   if (!session) return null;
@@ -169,6 +230,7 @@ async function refreshSessionsForUser(
   userId: string,
   patch: Partial<Pick<AuthSession, 'user' | 'menus'>>,
 ): Promise<void> {
+  if (USE_STATELESS_SESSIONS) return;
   const sessionsData = await readSessionsFile();
   let changed = false;
   for (const session of sessionsData.sessions) {
@@ -181,6 +243,7 @@ async function refreshSessionsForUser(
 }
 
 async function destroySessionsForUser(userId: string): Promise<void> {
+  if (USE_STATELESS_SESSIONS) return;
   const sessionsData = await readSessionsFile();
   const next = sessionsData.sessions.filter((item) => item.userId !== userId);
   if (next.length === sessionsData.sessions.length) return;

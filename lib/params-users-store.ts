@@ -1,6 +1,5 @@
 import 'server-only';
 
-import path from 'path';
 import { buildDefaultPermissions, mergePermissionsWithCatalog } from './permissions-catalog';
 import {
   cloneRowStyle,
@@ -15,8 +14,9 @@ import {
 } from './excel-io';
 import type { AuthUser, LinkedEmployeeSnapshot, MenuPermission } from './auth-types';
 import { getEmployee } from './employees-store';
+import { resolveWorkbookPath } from './runtime-mode';
 
-const PARAMS_PATH = process.env.PARAMS_XLSX || path.join(process.cwd(), 'Excel', 'Params.xlsx');
+const PARAMS_PATH = resolveWorkbookPath('Params.xlsx', process.env.PARAMS_XLSX);
 const USERS_SHEET = 'users';
 const DATA_START = 1;
 const COL_USERNAME = 0;

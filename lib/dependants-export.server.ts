@@ -1,9 +1,9 @@
 import 'server-only';
 
-import path from 'path';
 import { buildFormattedDependantsWorkbookBuffer } from './dependants-export-xlsx.server';
+import { getEmployeeWorkbookPath } from './excel-data-paths';
 
-const EXCEL_PATH = process.env.EMPLOYEE_XLSX || path.join(process.cwd(), 'Excel', 'EMPLOYEE.xlsx');
+const EXCEL_PATH = getEmployeeWorkbookPath();
 
 export function buildDependantsExportFilename(): string {
   const d = new Date();

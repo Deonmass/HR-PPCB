@@ -4,8 +4,28 @@ import fs from 'fs/promises';
 import path from 'path';
 import type { MenuPermission, PermissionsData, RolePermissions } from './auth-types';
 import { mergePermissionsWithCatalog } from './permissions-catalog';
+import { getWritableAuthDir, canPersistProjectFiles } from './runtime-mode';
+import fsSync from 'fs';
 
-const PERMISSIONS_PATH = path.join(process.cwd(), 'data', 'auth', 'permissions.json');
+function resolvePermissionsPath(): string {
+  const writable = path.join(getWritableAuthDir(), 'permissions.json');
+  if (canPersistProjectFiles()) {
+    return path.join(process.cwd(), 'data', 'auth', 'permissions.json');
+  }
+  // Seed from bundled file once on Vercel/tmp.
+  const bundled = path.join(process.cwd(), 'data', 'auth', 'permissions.json');
+  try {
+    if (!fsSync.existsSync(writable) && fsSync.existsSync(bundled)) {
+      fsSync.mkdirSync(path.dirname(writable), { recursive: true });
+      fsSync.copyFileSync(bundled, writable);
+    }
+  } catch {
+    // ignore seed errors
+  }
+  return writable;
+}
+
+const PERMISSIONS_PATH = resolvePermissionsPath();
 
 function mergeRoleMenus(role: RolePermissions): RolePermissions {
   return {

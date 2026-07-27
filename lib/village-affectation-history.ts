@@ -16,8 +16,9 @@ import {
   AFFECTATION_HISTO_HEADERS,
   AFFECTATION_HISTO_SHEET,
 } from './village-columns';
+import { getEmployeeWorkbookPath } from './excel-data-paths';
 
-const EXCEL_PATH = process.env.EMPLOYEE_XLSX || path.join(process.cwd(), 'Excel', 'EMPLOYEE.xlsx');
+const EXCEL_PATH = getEmployeeWorkbookPath();
 
 export interface VillageAffectationHistoryEntry {
   date: string;

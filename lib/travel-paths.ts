@@ -1,4 +1,5 @@
 import path from 'path';
+import { canPersistProjectFiles, getWritableDataRoot } from './runtime-mode';
 
 const INVALID_FILE_CHARS = /[<>:"/\\|?*\x00-\x1f]/g;
 
@@ -38,7 +39,9 @@ export function resolveTravelSaveDirectory(input?: string): string {
   const raw =
     input?.trim() ||
     process.env.TRAVEL_OUTPUT_DIR?.trim() ||
-    path.join(process.cwd(), 'data', 'travel', 'output');
+    (canPersistProjectFiles()
+      ? path.join(process.cwd(), 'data', 'travel', 'output')
+      : path.join(getWritableDataRoot(), 'travel', 'output'));
   return path.resolve(raw);
 }
 
