@@ -8,15 +8,13 @@ import {
   readWorkbook,
   saveWorkbook,
   shiftRowsUp,
-  withExcelLock,
   writeRowValues,
   type AoaRow,
 } from './excel-io';
 import type { AuthUser, LinkedEmployeeSnapshot, MenuPermission } from './auth-types';
 import { getEmployee } from './employees-store';
-import { resolveWorkbookPath } from './runtime-mode';
+import { getParamsPath, withParamsLock } from './params-workbook';
 
-const PARAMS_PATH = resolveWorkbookPath('Params.xlsx', process.env.PARAMS_XLSX);
 const USERS_SHEET = 'users';
 const DATA_START = 1;
 const COL_USERNAME = 0;
@@ -152,10 +150,11 @@ function sanitizeUser(user: AuthUser): Omit<AuthUser, 'password'> {
 }
 
 async function loadState(): Promise<UsersWorkbookState> {
-  const wb = await readWorkbook(PARAMS_PATH);
+  const filePath = getParamsPath();
+  const wb = await readWorkbook(filePath);
   const ws = getSheet(wb, USERS_SHEET);
   const sheet = getSheetBlock(wb, USERS_SHEET, DATA_START);
-  return { filePath: PARAMS_PATH, wb, ws, dataRows: sheet.dataRows };
+  return { filePath, wb, ws, dataRows: sheet.dataRows };
 }
 
 function ensureHeader(ws: UsersWorkbookState['ws']): void {
@@ -200,7 +199,7 @@ function userToRowValues(
 }
 
 export async function listUsersFromParams(): Promise<Omit<AuthUser, 'password'>[]> {
-  return withExcelLock(PARAMS_PATH, async () => {
+  return withParamsLock(async () => {
     const state = await loadState();
     return state.dataRows
       .map((row) => rowToUser(row))
@@ -210,7 +209,7 @@ export async function listUsersFromParams(): Promise<Omit<AuthUser, 'password'>[
 }
 
 export async function findUserByUsernameFromParams(username: string): Promise<AuthUser | null> {
-  return withExcelLock(PARAMS_PATH, async () => {
+  return withParamsLock(async () => {
     const state = await loadState();
     const rowIndex = findRowIndexByUsername(state.dataRows, username);
     if (rowIndex < 0) return null;
@@ -223,7 +222,7 @@ export async function findUserByIdFromParams(userId: string): Promise<AuthUser |
 }
 
 export async function getUserPermissionsFromParams(userId: string): Promise<MenuPermission[]> {
-  return withExcelLock(PARAMS_PATH, async () => {
+  return withParamsLock(async () => {
     const state = await loadState();
     const rowIndex = findRowIndexByUsername(state.dataRows, userId);
     if (rowIndex < 0) return buildDefaultPermissions();
@@ -234,7 +233,7 @@ export async function getUserPermissionsFromParams(userId: string): Promise<Menu
 export async function upsertUserInParams(
   input: Omit<AuthUser, 'createdAt' | 'password'> & { password?: string },
 ): Promise<Omit<AuthUser, 'password'>> {
-  return withExcelLock(PARAMS_PATH, async () => {
+  return withParamsLock(async () => {
     const state = await loadState();
     ensureHeader(state.ws);
 
@@ -298,25 +297,25 @@ export async function upsertUserInParams(
 
     await saveWorkbook(state.wb, state.filePath);
     return sanitizeUser(user);
-  });
+  }, { persist: true });
 }
 
 export async function deleteUserFromParams(userId: string): Promise<boolean> {
-  return withExcelLock(PARAMS_PATH, async () => {
+  return withParamsLock(async () => {
     const state = await loadState();
     const rowIndex = findRowIndexByUsername(state.dataRows, userId);
     if (rowIndex < 0) return false;
     shiftRowsUp(state.ws, DATA_START + rowIndex, 1);
     await saveWorkbook(state.wb, state.filePath);
     return true;
-  });
+  }, { persist: true });
 }
 
 export async function saveUserPermissionsInParams(
   userId: string,
   menus: MenuPermission[],
 ): Promise<MenuPermission[]> {
-  return withExcelLock(PARAMS_PATH, async () => {
+  return withParamsLock(async () => {
     const state = await loadState();
     const rowIndex = findRowIndexByUsername(state.dataRows, userId);
     if (rowIndex < 0) throw new Error('Utilisateur introuvable');
@@ -336,5 +335,5 @@ export async function saveUserPermissionsInParams(
     ]);
     await saveWorkbook(state.wb, state.filePath);
     return merged;
-  });
+  }, { persist: true });
 }

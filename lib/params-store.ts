@@ -7,14 +7,12 @@ import {
   readWorkbook,
   saveWorkbook,
   shiftRowsUp,
-  withExcelLock,
   writeRowValues,
   type AoaRow,
 } from './excel-io';
 import type { CostCenterSetting, DepartmentSetting } from './auth-types';
-import { resolveWorkbookPath } from './runtime-mode';
+import { getParamsPath, withParamsLock } from './params-workbook';
 
-const PARAMS_PATH = resolveWorkbookPath('Params.xlsx', process.env.PARAMS_XLSX);
 const SHEET_NAME = 'Sheet1';
 const DATA_START = 1;
 const COL_DEPARTMENT = 0;
@@ -59,10 +57,11 @@ function parseCostCenterRowId(id: string): number | null {
 }
 
 async function loadState(): Promise<ParamsWorkbookState> {
-  const wb = await readWorkbook(PARAMS_PATH);
+  const filePath = getParamsPath();
+  const wb = await readWorkbook(filePath);
   const ws = getSheet(wb, SHEET_NAME);
   const sheet = getSheetBlock(wb, SHEET_NAME, DATA_START);
-  return { filePath: PARAMS_PATH, wb, ws, dataRows: sheet.dataRows };
+  return { filePath, wb, ws, dataRows: sheet.dataRows };
 }
 
 function findNextEmptyRow(dataRows: AoaRow[]): number {
@@ -92,7 +91,7 @@ function findDepartmentNameById(dataRows: AoaRow[], id: string): string | null {
 }
 
 export async function listDepartmentsFromParams(): Promise<DepartmentSetting[]> {
-  return withExcelLock(PARAMS_PATH, async () => {
+  return withParamsLock(async () => {
     const state = await loadState();
     return rowToDepartmentNames(state.dataRows).map((name) => ({
       id: departmentIdFromName(name),
@@ -104,7 +103,7 @@ export async function listDepartmentsFromParams(): Promise<DepartmentSetting[]> 
 }
 
 export async function listCostCentersFromParams(): Promise<CostCenterSetting[]> {
-  return withExcelLock(PARAMS_PATH, async () => {
+  return withParamsLock(async () => {
     const state = await loadState();
     const items: CostCenterSetting[] = [];
 
@@ -128,7 +127,7 @@ export async function listCostCentersFromParams(): Promise<CostCenterSetting[]> 
 }
 
 export async function upsertDepartmentInParams(item: DepartmentSetting): Promise<DepartmentSetting> {
-  return withExcelLock(PARAMS_PATH, async () => {
+  return withParamsLock(async () => {
     const state = await loadState();
     ensureHeader(state.ws);
 
@@ -157,11 +156,11 @@ export async function upsertDepartmentInParams(item: DepartmentSetting): Promise
       code: item.code?.trim() || nextName,
       active: item.active ?? true,
     };
-  });
+  }, { persist: true });
 }
 
 export async function deleteDepartmentFromParams(id: string): Promise<boolean> {
-  return withExcelLock(PARAMS_PATH, async () => {
+  return withParamsLock(async () => {
     const state = await loadState();
     const departmentName = findDepartmentNameById(state.dataRows, id);
     if (!departmentName) return false;
@@ -178,11 +177,11 @@ export async function deleteDepartmentFromParams(id: string): Promise<boolean> {
 
     await saveWorkbook(state.wb, state.filePath);
     return true;
-  });
+  }, { persist: true });
 }
 
 export async function upsertCostCenterInParams(item: CostCenterSetting): Promise<CostCenterSetting> {
-  return withExcelLock(PARAMS_PATH, async () => {
+  return withParamsLock(async () => {
     const state = await loadState();
     ensureHeader(state.ws);
 
@@ -221,11 +220,11 @@ export async function upsertCostCenterInParams(item: CostCenterSetting): Promise
       departmentId: departmentName ? departmentIdFromName(departmentName) : undefined,
       active: item.active ?? true,
     };
-  });
+  }, { persist: true });
 }
 
 export async function deleteCostCenterFromParams(id: string): Promise<boolean> {
-  return withExcelLock(PARAMS_PATH, async () => {
+  return withParamsLock(async () => {
     const rowIndex = parseCostCenterRowId(id);
     if (rowIndex === null) return false;
 
@@ -235,7 +234,7 @@ export async function deleteCostCenterFromParams(id: string): Promise<boolean> {
     shiftRowsUp(state.ws, rowIndex, 1);
     await saveWorkbook(state.wb, state.filePath);
     return true;
-  });
+  }, { persist: true });
 }
 
 export function createDepartmentId(name: string): string {
