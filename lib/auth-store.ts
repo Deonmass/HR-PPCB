@@ -65,20 +65,25 @@ function signSessionPayload(payload: string): string {
   return createHmac('sha256', getSessionSecret()).update(payload).digest('base64url');
 }
 
+/** Cookie minimal (< 4 Ko) : uniquement userId + dates. Menus rechargés côté serveur. */
+interface StatelessTicket {
+  uid: string;
+  iat: string;
+  exp: string;
+}
+
 function encodeStatelessSession(session: AuthSession): string {
   const payload = JSON.stringify({
-    userId: session.userId,
-    user: session.user,
-    menus: session.menus,
-    createdAt: session.createdAt,
-    expiresAt: session.expiresAt,
-  });
+    uid: session.userId,
+    iat: session.createdAt,
+    exp: session.expiresAt,
+  } satisfies StatelessTicket);
   const encoded = toBase64Url(payload);
   const signature = signSessionPayload(encoded);
   return `${encoded}.${signature}`;
 }
 
-function decodeStatelessSession(token?: string | null): AuthSession | null {
+function decodeStatelessTicket(token?: string | null): StatelessTicket | null {
   if (!token?.trim()) return null;
   const [encoded, signature] = token.split('.');
   if (!encoded || !signature) return null;
@@ -91,11 +96,40 @@ function decodeStatelessSession(token?: string | null): AuthSession | null {
   }
 
   try {
-    const parsed = JSON.parse(fromBase64Url(encoded)) as Omit<AuthSession, 'token'>;
-    return { ...parsed, token };
+    const parsed = JSON.parse(fromBase64Url(encoded)) as Partial<StatelessTicket> & {
+      userId?: string;
+      user?: unknown;
+      menus?: unknown;
+    };
+    // Anciens cookies « gros » (user+menus) : invalides → forcer une reconnexion.
+    if (parsed.user || parsed.menus) return null;
+    const uid = parsed.uid || parsed.userId;
+    const iat = parsed.iat;
+    const exp = parsed.exp;
+    if (!uid || !iat || !exp) return null;
+    return { uid, iat, exp };
   } catch {
     return null;
   }
+}
+
+async function hydrateStatelessSession(token: string): Promise<AuthSession | null> {
+  const ticket = decodeStatelessTicket(token);
+  if (!ticket) return null;
+  if (new Date(ticket.exp).getTime() < Date.now()) return null;
+
+  const fullUser = await findUserByIdFromParams(ticket.uid);
+  if (!fullUser || !fullUser.active) return null;
+
+  const menus = await getUserPermissionsFromParams(fullUser.id);
+  return {
+    token,
+    userId: fullUser.id,
+    user: toSessionUser(fullUser),
+    menus,
+    createdAt: ticket.iat,
+    expiresAt: ticket.exp,
+  };
 }
 
 async function ensureAuthDir(): Promise<void> {
@@ -192,11 +226,7 @@ export async function destroySession(token: string): Promise<void> {
 async function findValidSession(token?: string | null): Promise<AuthSession | null> {
   if (!token?.trim()) return null;
   if (USE_STATELESS_SESSIONS) {
-    const session = decodeStatelessSession(token);
-    if (!session) return null;
-    if (new Date(session.expiresAt).getTime() < Date.now()) return null;
-    if (!session.user || !session.menus) return null;
-    return session;
+    return hydrateStatelessSession(token);
   }
   const sessionsData = await readSessionsFile();
   const session = sessionsData.sessions.find((item) => item.token === token);
