@@ -1,5 +1,12 @@
+'use client';
+
+import PermissionGate from '@/components/PermissionGate';
 import PlaceholderPage from '@/components/PlaceholderPage';
 
 export default function SantePage() {
-  return <PlaceholderPage title="Santé" description="Suivi médical et dossiers santé employés" />;
+  return (
+    <PermissionGate menuId="sante" action="view">
+      <PlaceholderPage title="Santé" description="Suivi médical et dossiers santé employés" />
+    </PermissionGate>
+  );
 }

@@ -2,7 +2,7 @@ import fs from 'fs/promises';
 import { NextResponse } from 'next/server';
 import { excelErrorResponse } from '@/lib/excel-io';
 import { getCashRequest } from '@/lib/cash-request-store';
-import { checkPermission } from '@/lib/require-permission';
+import { checkAnyPermission } from '@/lib/require-permission';
 import type { TravelFileType } from '@/lib/travel-types';
 
 type Params = { params: Promise<{ id: string }> };
@@ -35,7 +35,12 @@ function travelFileContentType(fileName: string): string {
 }
 
 export async function GET(request: Request, { params }: Params) {
-  const denied = await checkPermission('travel.historique', 'export');
+  const denied = await checkAnyPermission([
+    { menuId: 'travel.historique', action: 'export' },
+    { menuId: 'travel.etablir', action: 'export' },
+    { menuId: 'travel.etablir', action: 'create' },
+    { menuId: 'travel.etablir', action: 'edit' },
+  ]);
   if (denied) return denied;
   try {
     const { id } = await params;

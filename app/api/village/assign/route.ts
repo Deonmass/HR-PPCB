@@ -8,8 +8,7 @@ import { readVillageCatalog, setMaisonOccupantExterne } from '@/lib/village-stor
 export async function POST(request: Request) {
   const denied = await checkAnyPermission([
     { menuId: 'village.maisons', action: 'edit' },
-    { menuId: 'employes.liste', action: 'edit' },
-    { menuId: 'employes.dependants', action: 'edit' },
+    { menuId: 'village.dependants-liste', action: 'edit' },
   ]);
   if (denied) return denied;
 

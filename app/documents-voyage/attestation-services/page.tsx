@@ -4,6 +4,7 @@ import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import PermissionGate from '@/components/PermissionGate';
 import RefreshButton from '@/components/RefreshButton';
 import { EmployeeSuggestInput } from '@/components/EmployeePicker';
+import { usePermissions } from '@/contexts/PermissionContext';
 import { localizeJobTitle } from '@/lib/job-title-i18n';
 import type { ServiceAttestationFormData, ServiceAttestationRecord } from '@/lib/service-attestation-types';
 import type { Employee } from '@/lib/types';
@@ -63,7 +64,12 @@ function downloadUrl(id: string, type: 'docx' | 'pdf'): string {
 }
 
 export default function AttestationServicesPage() {
-  const [pageTab, setPageTab] = useState<PageTab>('form');
+  const { can } = usePermissions();
+  const canCreate = can('travel.attestation', 'create');
+  const canExport = can('travel.attestation', 'export');
+  const [pageTab, setPageTab] = useState<PageTab>(() =>
+    can('travel.attestation', 'create') ? 'form' : 'history',
+  );
   const [employees, setEmployees] = useState<Employee[]>([]);
   const [loading, setLoading] = useState(true);
   const [submitting, setSubmitting] = useState(false);
@@ -322,13 +328,7 @@ export default function AttestationServicesPage() {
   if (loading) return <div className="loading">Chargement...</div>;
 
   return (
-    <PermissionGate
-      anyOf={[
-        { menuId: 'travel.attestation', action: 'view' },
-        { menuId: 'travel.historique', action: 'view' },
-        { menuId: 'travel.etablir', action: 'view' },
-      ]}
-    >
+    <PermissionGate menuId="travel.attestation" action="view">
       <div className="service-attestation-page">
         <div className="service-attestation-sticky">
           <div className="page-header page-header-with-tabs service-attestation-header">
@@ -340,13 +340,15 @@ export default function AttestationServicesPage() {
               <p>{historyCountLabel}</p>
             </div>
             <div className="tabs header-tabs header-tabs-dashboard header-tabs-compact">
-              <button
-                type="button"
-                className={`tab-btn tab-btn-sm tab-btn-dashboard${pageTab === 'form' ? ' active' : ''}`}
-                onClick={() => setPageTab('form')}
-              >
-                Formulaire
-              </button>
+              {canCreate && (
+                <button
+                  type="button"
+                  className={`tab-btn tab-btn-sm tab-btn-dashboard${pageTab === 'form' ? ' active' : ''}`}
+                  onClick={() => setPageTab('form')}
+                >
+                  Formulaire
+                </button>
+              )}
               <button
                 type="button"
                 className={`tab-btn tab-btn-sm tab-btn-dashboard${pageTab === 'history' ? ' active' : ''}`}
@@ -360,7 +362,7 @@ export default function AttestationServicesPage() {
 
         {error && <div className="alert alert-danger">{error}</div>}
 
-        {pageTab === 'form' && (
+        {pageTab === 'form' && canCreate && (
           <div className="service-attestation-layout has-preview">
             <form className="panel panel-padded service-attestation-form" onSubmit={handleSubmit}>
               <div className="form-group">
@@ -570,37 +572,41 @@ export default function AttestationServicesPage() {
                         <td>{record.language === 'en' ? 'EN' : 'FR'}</td>
                         <td>
                           <div className="service-attestation-row-actions">
-                            <button
-                              type="button"
-                              className="btn btn-ghost btn-sm"
-                              onClick={() => {
-                                setForm((prev) => ({
-                                  ...prev,
-                                  language: record.language,
-                                  documentDate: record.documentDate,
-                                  hodGenre: record.hodGenre,
-                                  hodName: record.hodName,
-                                  hodFunction: record.hodFunction,
-                                  employeeGenre: record.employeeGenre,
-                                  employeeName: record.employeeName,
-                                  employeeMatricule: record.employeeMatricule,
-                                  dateEmbauche: record.dateEmbauche ?? '',
-                                  employeeFunction: record.employeeFunction,
-                                  employeeDepartment: record.employeeDepartment,
-                                }));
-                                setPageTab('form');
-                              }}
-                            >
-                              Voir
-                            </button>
-                            <a
-                              href={downloadUrl(record.id, 'docx')}
-                              className="btn btn-ghost btn-sm"
-                              download
-                            >
-                              Word
-                            </a>
-                            {record.pdfPath && (
+                            {canCreate && (
+                              <button
+                                type="button"
+                                className="btn btn-ghost btn-sm"
+                                onClick={() => {
+                                  setForm((prev) => ({
+                                    ...prev,
+                                    language: record.language,
+                                    documentDate: record.documentDate,
+                                    hodGenre: record.hodGenre,
+                                    hodName: record.hodName,
+                                    hodFunction: record.hodFunction,
+                                    employeeGenre: record.employeeGenre,
+                                    employeeName: record.employeeName,
+                                    employeeMatricule: record.employeeMatricule,
+                                    dateEmbauche: record.dateEmbauche ?? '',
+                                    employeeFunction: record.employeeFunction,
+                                    employeeDepartment: record.employeeDepartment,
+                                  }));
+                                  setPageTab('form');
+                                }}
+                              >
+                                Réutiliser
+                              </button>
+                            )}
+                            {canExport && (
+                              <a
+                                href={downloadUrl(record.id, 'docx')}
+                                className="btn btn-ghost btn-sm"
+                                download
+                              >
+                                Word
+                              </a>
+                            )}
+                            {canExport && record.pdfPath && (
                               <a
                                 href={downloadUrl(record.id, 'pdf')}
                                 className="btn btn-ghost btn-sm"
@@ -609,12 +615,7 @@ export default function AttestationServicesPage() {
                                 PDF
                               </a>
                             )}
-                            <PermissionGate
-                              anyOf={[
-                                { menuId: 'travel.attestation', action: 'delete' },
-                                { menuId: 'travel.historique', action: 'delete' },
-                              ]}
-                            >
+                            <PermissionGate menuId="travel.attestation" action="delete">
                               <button
                                 type="button"
                                 className="btn btn-ghost btn-sm btn-danger-text"

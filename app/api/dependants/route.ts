@@ -7,7 +7,6 @@ import { checkAnyPermission } from '@/lib/require-permission';
 export async function GET() {
   const denied = await checkAnyPermission([
     { menuId: 'employes.dependants', action: 'view' },
-    { menuId: 'employes.liste', action: 'view' },
     { menuId: 'village.dependants-dashboard', action: 'view' },
     { menuId: 'village.dependants-liste', action: 'view' },
     { menuId: 'village.maisons', action: 'view' },
@@ -26,7 +25,6 @@ export async function GET() {
 export async function POST(request: Request) {
   const denied = await checkAnyPermission([
     { menuId: 'employes.dependants', action: 'create' },
-    { menuId: 'employes.liste', action: 'create' },
   ]);
   if (denied) return denied;
 

@@ -124,6 +124,7 @@ export default function ProjectsPage() {
   }
 
   return (
+    <PermissionGate menuId="project.projects" action="view">
     <div className="projects-page">
       <div className="projects-sticky">
         <div className="page-header page-header-with-tabs projects-header">
@@ -206,5 +207,6 @@ export default function ProjectsPage() {
         />
       )}
     </div>
+    </PermissionGate>
   );
 }

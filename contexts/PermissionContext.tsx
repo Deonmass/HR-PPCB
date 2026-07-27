@@ -59,7 +59,39 @@ export function PermissionProvider({ children }: { children: ReactNode }) {
     [menus],
   );
 
-  const firstAccessiblePath = useMemo(() => '/accueil', []);
+  const firstAccessiblePath = useMemo(() => {
+    const candidates = [
+      '/accueil',
+      '/employes',
+      '/employes/dependants',
+      '/check-documents',
+      '/heures-supplementaires',
+      '/project/dashboard',
+      '/project/projects',
+      '/project/expenses-details',
+      '/documents-voyage/historique',
+      '/documents-voyage/etablir',
+      '/documents-voyage/attestation-services',
+      '/factures-fournisseurs/factures',
+      '/factures-fournisseurs/soa',
+      '/factures-fournisseurs/fournisseurs',
+      '/sante',
+      '/charroi-automobile',
+      '/village/maisons',
+      '/village/club-house',
+      '/village/guest-house',
+      '/parametres/departements',
+      '/parametres/centres-de-cout',
+      '/parametres/utilisateurs',
+      '/parametres/permissions',
+    ];
+    for (const path of candidates) {
+      const menuIds = routeViewMenuIds(path);
+      if (menuIds.length === 0) return path;
+      if (menuIds.some((menuId) => canPerformAction(menus, menuId, 'view'))) return path;
+    }
+    return '/accueil';
+  }, [menus]);
 
   const canViewPath = useCallback(
     (pathname: string) => {

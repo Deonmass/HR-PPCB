@@ -1,6 +1,7 @@
 'use client';
 
 import { useCallback, useEffect, useState } from 'react';
+import PermissionGate from '@/components/PermissionGate';
 import ProjectDashboardView from '@/components/ProjectDashboardView';
 import RefreshButton from '@/components/RefreshButton';
 import { fetchProjectsData } from '@/lib/fetch-projects-api';
@@ -36,6 +37,7 @@ export default function ProjectDashboardPage() {
   const typeProjet = tab === 'csr' ? 'CSR' : 'Cahier de charges';
 
   return (
+    <PermissionGate menuId="project.dashboard" action="view">
     <div className="project-dashboard-page">
       <div className="project-dashboard-sticky">
         <div className="page-header page-header-with-tabs project-dashboard-header">
@@ -81,5 +83,6 @@ export default function ProjectDashboardPage() {
         )}
       </div>
     </div>
+    </PermissionGate>
   );
 }

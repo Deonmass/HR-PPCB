@@ -373,11 +373,11 @@ export default function DependantsListTab({
 }: Props) {
   const { can } = usePermissions();
   const canCreate =
-    !readOnly && (can('employes.dependants', 'create') || can('employes.liste', 'create'));
+    !readOnly && can('employes.dependants', 'create');
   const canEdit =
-    !readOnly && (can('employes.dependants', 'edit') || can('employes.liste', 'edit'));
+    !readOnly && can('employes.dependants', 'edit');
   const canDelete =
-    !readOnly && (can('employes.dependants', 'delete') || can('employes.liste', 'delete'));
+    !readOnly && can('employes.dependants', 'delete');
 
   const [expanded, setExpanded] = useState<Record<string, boolean>>({});
   const [contextMenu, setContextMenu] = useState<{ x: number; y: number; member: Dependant } | null>(null);

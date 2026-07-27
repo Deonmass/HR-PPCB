@@ -51,20 +51,15 @@ export function routeViewMenuIds(pathname: string): string[] {
   if (normalized === '/heures-supplementaires' || normalized.startsWith('/heures-supplementaires/')) {
     return ['employes.heures', 'employes.heures.dept', 'employes.heures.all'];
   }
-  if (normalized === '/employes/dependants' || normalized.startsWith('/employes/dependants/')) {
-    return ['employes.dependants', 'employes.liste'];
-  }
   if (
-    normalized === '/documents-voyage/attestation-services' ||
-    normalized.startsWith('/documents-voyage/attestation-services/')
+    normalized === '/village/maisons'
+    || normalized.startsWith('/village/maisons/')
+    || normalized === '/village/dashboard'
+    || normalized.startsWith('/village/dashboard/')
+    || normalized === '/village/liste'
+    || normalized.startsWith('/village/liste/')
   ) {
-    return ['travel.attestation', 'travel.historique', 'travel.etablir'];
-  }
-  if (
-    normalized === '/factures-fournisseurs/soa'
-    || normalized.startsWith('/factures-fournisseurs/soa/')
-  ) {
-    return ['factures.fournisseur.soa', 'factures.fournisseur.factures'];
+    return ['village.maisons', 'village.dependants-dashboard', 'village.dependants-liste'];
   }
   const menuId = pathnameToMenuId(pathname);
   return menuId ? [menuId] : [];

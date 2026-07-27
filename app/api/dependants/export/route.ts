@@ -9,7 +9,6 @@ import { checkAnyPermission } from '@/lib/require-permission';
 export async function GET() {
   const denied = await checkAnyPermission([
     { menuId: 'employes.dependants', action: 'export' },
-    { menuId: 'employes.liste', action: 'export' },
   ]);
   if (denied) return denied;
 

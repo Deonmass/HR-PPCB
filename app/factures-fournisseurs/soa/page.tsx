@@ -1,6 +1,7 @@
 'use client';
 
 import { useCallback, useEffect, useMemo, useState } from 'react';
+import PermissionGate from '@/components/PermissionGate';
 import RefreshButton from '@/components/RefreshButton';
 import type { Fournisseur } from '@/lib/fournisseurs-types';
 import type { FactureSuivi } from '@/lib/factures-fournisseurs/types';
@@ -184,6 +185,7 @@ export default function FacturesSoaPage() {
   }
 
   return (
+    <PermissionGate menuId="factures.fournisseur.soa" action="view">
     <div className="factures-soa-page">
       <div className="page-header factures-soa-sticky">
         <div className="page-header-title-row">
@@ -340,5 +342,6 @@ export default function FacturesSoaPage() {
         </section>
       </div>
     </div>
+    </PermissionGate>
   );
 }

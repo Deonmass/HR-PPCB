@@ -6,7 +6,6 @@ import { checkAnyPermission } from '@/lib/require-permission';
 export async function PUT(request: Request) {
   const denied = await checkAnyPermission([
     { menuId: 'employes.dependants', action: 'edit' },
-    { menuId: 'employes.liste', action: 'edit' },
   ]);
   if (denied) return denied;
 

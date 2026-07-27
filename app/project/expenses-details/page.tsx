@@ -192,6 +192,7 @@ export default function ExpensesDetailsPage() {
   }
 
   return (
+    <PermissionGate menuId="project.expenses" action="view">
     <div className="projects-page expenses-page">
       <div className="projects-sticky">
         <div className="page-header page-header-with-tabs projects-header">
@@ -260,5 +261,6 @@ export default function ExpensesDetailsPage() {
         />
       )}
     </div>
+    </PermissionGate>
   );
 }

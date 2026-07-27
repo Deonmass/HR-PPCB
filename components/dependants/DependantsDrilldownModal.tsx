@@ -47,9 +47,9 @@ export default function DependantsDrilldownModal({
   onFamilyUpdated,
 }: Props) {
   const { can } = usePermissions();
-  const canCreate = can('employes.dependants', 'create') || can('employes.liste', 'create');
-  const canEdit = can('employes.dependants', 'edit') || can('employes.liste', 'edit');
-  const canDelete = can('employes.dependants', 'delete') || can('employes.liste', 'delete');
+  const canCreate = can('employes.dependants', 'create');
+  const canEdit = can('employes.dependants', 'edit');
+  const canDelete = can('employes.dependants', 'delete');
 
   const [search, setSearch] = useState('');
   const [expanded, setExpanded] = useState<Record<string, boolean>>({});

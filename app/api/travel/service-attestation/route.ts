@@ -22,8 +22,6 @@ function validateForm(body: Partial<ServiceAttestationFormData>): string | null 
 export async function GET() {
   const denied = await checkAnyPermission([
     { menuId: 'travel.attestation', action: 'view' },
-    { menuId: 'travel.historique', action: 'view' },
-    { menuId: 'travel.etablir', action: 'view' },
   ]);
   if (denied) return denied;
 
@@ -39,7 +37,6 @@ export async function GET() {
 export async function POST(request: Request) {
   const denied = await checkAnyPermission([
     { menuId: 'travel.attestation', action: 'create' },
-    { menuId: 'travel.etablir', action: 'create' },
   ]);
   if (denied) return denied;
 
@@ -74,7 +71,6 @@ export async function POST(request: Request) {
 export async function DELETE(request: Request) {
   const denied = await checkAnyPermission([
     { menuId: 'travel.attestation', action: 'delete' },
-    { menuId: 'travel.historique', action: 'delete' },
   ]);
   if (denied) return denied;
 

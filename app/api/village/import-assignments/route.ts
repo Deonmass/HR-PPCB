@@ -8,7 +8,6 @@ export async function POST() {
   const denied = await checkAnyPermission([
     { menuId: 'village.maisons', action: 'edit' },
     { menuId: 'village.dependants-liste', action: 'edit' },
-    { menuId: 'employes.liste', action: 'edit' },
   ]);
   if (denied) return denied;
 

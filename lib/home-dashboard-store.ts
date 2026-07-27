@@ -85,7 +85,7 @@ export async function buildHomeDashboard(menus: MenuPermission[]): Promise<HomeD
     });
   }
 
-  if (can(menus, 'employes.dependants') || can(menus, 'employes.liste')) {
+  if (can(menus, 'employes.dependants')) {
     const dependantsData = await readDependantsData();
     const kpisDash = dependantsData.dashboard.kpis;
     result.dependants = {
@@ -156,9 +156,9 @@ export async function buildHomeDashboard(menus: MenuPermission[]): Promise<HomeD
       projectCount: data.projects.length,
       expenseCount: expenses.length,
       expensesTotal: expenses.reduce((sum, item) => sum + item.montant, 0),
-      hrefDashboard: '/project/dashboard',
-      hrefProjects: '/project/projects',
-      hrefExpenses: '/project/expenses-details',
+      hrefDashboard: can(menus, 'project.dashboard') ? '/project/dashboard' : '',
+      hrefProjects: can(menus, 'project.projects') ? '/project/projects' : '',
+      hrefExpenses: can(menus, 'project.expenses') ? '/project/expenses-details' : '',
     };
 
     kpis.push({
@@ -174,7 +174,7 @@ export async function buildHomeDashboard(menus: MenuPermission[]): Promise<HomeD
     result.travel = {
       dashboard: travel.dashboard,
       hrefHistorique: '/documents-voyage/historique',
-      hrefEtablir: '/documents-voyage/etablir',
+      hrefEtablir: can(menus, 'travel.etablir') ? '/documents-voyage/etablir' : '',
     };
     kpis.push({
       label: 'Voyages',
@@ -182,17 +182,34 @@ export async function buildHomeDashboard(menus: MenuPermission[]): Promise<HomeD
       meta: `${travel.dashboard.tripsThisMonth} ce mois`,
       color: 'violet',
     });
+  } else if (can(menus, 'travel.etablir')) {
+    placeholders.push({
+      label: 'Établir un voyage',
+      description: 'Créer un dossier de mission',
+      href: '/documents-voyage/etablir',
+    });
+  }
+
+  if (can(menus, 'travel.attestation')) {
+    placeholders.push({
+      label: 'Attestation de service',
+      description: 'Générer et consulter les attestations',
+      href: '/documents-voyage/attestation-services',
+    });
   }
 
   if (
     can(menus, 'settings.departements') ||
     can(menus, 'settings.centres') ||
-    can(menus, 'settings.utilisateurs')
+    can(menus, 'settings.utilisateurs') ||
+    can(menus, 'settings.permissions')
   ) {
     const [departments, costCenters, users] = await Promise.all([
       can(menus, 'settings.departements') ? listDepartments() : Promise.resolve([]),
       can(menus, 'settings.centres') ? listCostCenters() : Promise.resolve([]),
-      can(menus, 'settings.utilisateurs') ? listUsers() : Promise.resolve([]),
+      can(menus, 'settings.utilisateurs') || can(menus, 'settings.permissions')
+        ? listUsers()
+        : Promise.resolve([]),
     ]);
 
     result.settings = {
@@ -200,10 +217,10 @@ export async function buildHomeDashboard(menus: MenuPermission[]): Promise<HomeD
       costCenters: costCenters.length,
       users: users.length,
       activeUsers: users.filter((user) => user.active).length,
-      hrefDepartements: '/parametres/departements',
-      hrefCentres: '/parametres/centres-de-cout',
-      hrefUtilisateurs: '/parametres/utilisateurs',
-      hrefPermissions: '/parametres/permissions',
+      hrefDepartements: can(menus, 'settings.departements') ? '/parametres/departements' : '',
+      hrefCentres: can(menus, 'settings.centres') ? '/parametres/centres-de-cout' : '',
+      hrefUtilisateurs: can(menus, 'settings.utilisateurs') ? '/parametres/utilisateurs' : '',
+      hrefPermissions: can(menus, 'settings.permissions') ? '/parametres/permissions' : '',
     };
 
     if (can(menus, 'settings.utilisateurs')) {
@@ -259,7 +276,11 @@ export async function buildHomeDashboard(menus: MenuPermission[]): Promise<HomeD
     });
   }
 
-  if (can(menus, 'village.maisons')) {
+  if (
+    can(menus, 'village.maisons')
+    || can(menus, 'village.dependants-dashboard')
+    || can(menus, 'village.dependants-liste')
+  ) {
     placeholders.push({
       label: 'Maisons',
       description: 'Gestion des maisons du village',

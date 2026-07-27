@@ -11,7 +11,6 @@ interface RouteParams {
 export async function PUT(request: Request, { params }: RouteParams) {
   const denied = await checkAnyPermission([
     { menuId: 'employes.dependants', action: 'edit' },
-    { menuId: 'employes.liste', action: 'edit' },
   ]);
   if (denied) return denied;
 
@@ -37,7 +36,6 @@ export async function PUT(request: Request, { params }: RouteParams) {
 export async function DELETE(_request: Request, { params }: RouteParams) {
   const denied = await checkAnyPermission([
     { menuId: 'employes.dependants', action: 'delete' },
-    { menuId: 'employes.liste', action: 'delete' },
   ]);
   if (denied) return denied;
 

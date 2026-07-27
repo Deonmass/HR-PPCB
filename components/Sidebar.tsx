@@ -67,7 +67,7 @@ const NAV: NavSection[] = [
     color: '#e30613',
     items: [
       { href: '/employes', label: 'Liste', icon: 'users', menuId: 'employes.liste', excludePrefixes: ['/employes/dependants'] },
-      { href: '/employes/dependants', label: 'Dependants', icon: 'users', menuIds: ['employes.dependants', 'employes.liste'] },
+      { href: '/employes/dependants', label: 'Dependants', icon: 'users', menuId: 'employes.dependants' },
       { href: '/check-documents', label: 'Check documents', icon: 'docs', menuId: 'employes.check-documents' },
       { href: '/heures-supplementaires', label: 'Heures supplémentaires', icon: 'clock', menuIds: ['employes.heures', 'employes.heures.dept', 'employes.heures.all'] },
     ],
@@ -93,16 +93,21 @@ const NAV: NavSection[] = [
     items: [
       {
         href: '/documents-voyage/historique',
-        label: 'Voyage',
+        label: 'Historique voyage',
         icon: 'travel',
-        menuIds: ['travel.historique', 'travel.etablir'],
-        activePrefixes: ['/documents-voyage/historique', '/documents-voyage/etablir'],
+        menuId: 'travel.historique',
+      },
+      {
+        href: '/documents-voyage/etablir',
+        label: 'Établir voyage',
+        icon: 'edit',
+        menuId: 'travel.etablir',
       },
       {
         href: '/documents-voyage/attestation-services',
         label: 'Attestation de service',
         icon: 'docs',
-        menuIds: ['travel.attestation', 'travel.historique', 'travel.etablir'],
+        menuId: 'travel.attestation',
       },
     ],
   },
@@ -114,7 +119,7 @@ const NAV: NavSection[] = [
     color: '#f97316',
     items: [
       { href: '/factures-fournisseurs/factures', label: 'Factures', icon: 'docs', menuId: 'factures.fournisseur.factures' },
-      { href: '/factures-fournisseurs/soa', label: 'SOA', icon: 'docs', menuIds: ['factures.fournisseur.soa', 'factures.fournisseur.factures'] },
+      { href: '/factures-fournisseurs/soa', label: 'SOA', icon: 'docs', menuId: 'factures.fournisseur.soa' },
       { href: '/factures-fournisseurs/fournisseurs', label: 'Fournisseurs', icon: 'docs', menuId: 'factures.fournisseur.fournisseurs' },
     ],
   },

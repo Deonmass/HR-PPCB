@@ -74,9 +74,7 @@ export default function VillageListeTab() {
   } | null>(null);
 
   const canAssign = can('village.maisons', 'edit')
-    || can('village.dependants-liste', 'edit')
-    || can('employes.liste', 'edit')
-    || can('employes.dependants', 'edit');
+    || can('village.dependants-liste', 'edit');
 
   const load = useCallback(async () => {
     setLoading(true);

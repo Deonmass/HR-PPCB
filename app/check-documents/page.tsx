@@ -83,6 +83,7 @@ export default function CheckDocumentsPage() {
   }
 
   return (
+    <PermissionGate menuId="employes.check-documents" action="view">
     <div className="check-docs-page">
       <div className="check-docs-sticky">
         <div className="page-header page-header-with-tabs check-docs-header">
@@ -182,5 +183,6 @@ export default function CheckDocumentsPage() {
         )}
       </div>
     </div>
+    </PermissionGate>
   );
 }

@@ -1,10 +1,13 @@
 import { NextResponse } from 'next/server';
 import { excelErrorResponse } from '@/lib/excel-io';
 import { createTravelDocuments, listCashRequests } from '@/lib/cash-request-store';
+import { checkAnyPermission, checkPermission } from '@/lib/require-permission';
 import type { TravelFormFields } from '@/lib/travel-form';
 import type { CashRequestLine } from '@/lib/travel-types';
 
 export async function GET() {
+  const denied = await checkPermission('travel.historique', 'view');
+  if (denied) return denied;
   try {
     const items = await listCashRequests();
     return NextResponse.json(items);
@@ -15,6 +18,11 @@ export async function GET() {
 }
 
 export async function POST(request: Request) {
+  const denied = await checkAnyPermission([
+    { menuId: 'travel.etablir', action: 'create' },
+    { menuId: 'travel.etablir', action: 'edit' },
+  ]);
+  if (denied) return denied;
   try {
     const body = (await request.json()) as {
       employeeMatricule?: string;

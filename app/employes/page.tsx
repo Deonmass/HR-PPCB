@@ -227,6 +227,7 @@ export default function EmployesPage() {
   if (loading) return <div className="loading">Chargement...</div>;
 
   return (
+    <PermissionGate menuId="employes.liste" action="view">
     <div className="employees-page">
       <div className="employees-sticky">
         <div className="page-header page-header-with-tabs employees-header">
@@ -452,5 +453,6 @@ export default function EmployesPage() {
         />
       )}
     </div>
+    </PermissionGate>
   );
 }

@@ -39,8 +39,7 @@ function normalizeForm(body: Partial<ServiceAttestationFormData>): ServiceAttest
 export async function POST(request: Request) {
   const denied = await checkAnyPermission([
     { menuId: 'travel.attestation', action: 'view' },
-    { menuId: 'travel.historique', action: 'view' },
-    { menuId: 'travel.etablir', action: 'view' },
+    { menuId: 'travel.attestation', action: 'create' },
   ]);
   if (denied) return denied;
 

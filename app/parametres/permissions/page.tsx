@@ -3,6 +3,7 @@
 import { Suspense, useCallback, useEffect, useMemo, useState } from 'react';
 import { useSearchParams } from 'next/navigation';
 import RefreshButton from '@/components/RefreshButton';
+import PermissionGate from '@/components/PermissionGate';
 import {
   PERMISSION_ACTIONS,
   PERMISSION_MENU_CATALOG,
@@ -210,6 +211,7 @@ function PermissionsContent() {
         : 'Sélectionnez un utilisateur';
 
   return (
+    <PermissionGate menuId="settings.permissions" action="view">
     <>
       <div className="page-header">
         <div>
@@ -449,6 +451,7 @@ function PermissionsContent() {
         </section>
       </div>
     </>
+    </PermissionGate>
   );
 }
 

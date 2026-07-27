@@ -135,14 +135,6 @@ export function mergePermissionsWithCatalog(menus: MenuPermission[]): MenuPermis
     };
   });
 
-  // Hérite SOA des droits Factures si SOA n'a encore jamais été configuré.
-  const soa = merged.find((menu) => menu.menuId === 'factures.fournisseur.soa');
-  const factures = merged.find((menu) => menu.menuId === 'factures.fournisseur.factures');
-  const soaWasConfigured = menus.some((menu) => menu.menuId === 'factures.fournisseur.soa');
-  if (soa && factures && !soaWasConfigured && factures.actions.view) {
-    soa.actions = { ...factures.actions };
-  }
-
   return merged;
 }
 

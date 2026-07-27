@@ -171,6 +171,7 @@ export default function HistoriqueVoyagesPage() {
   if (loading) return <div className="loading">Chargement...</div>;
 
   return (
+    <PermissionGate menuId="travel.historique" action="view">
     <div className="travel-history-page">
       <div className="travel-history-sticky">
         <div className="page-header page-header-with-tabs travel-history-header">
@@ -310,5 +311,6 @@ export default function HistoriqueVoyagesPage() {
 
       <TravelHistoryDetailModal row={selectedRow} onClose={() => setSelectedRow(null)} />
     </div>
+    </PermissionGate>
   );
 }

@@ -15,7 +15,6 @@ export const dynamic = 'force-dynamic';
 export async function POST(request: Request) {
   const denied = await checkAnyPermission([
     { menuId: 'employes.dependants', action: 'view' },
-    { menuId: 'employes.liste', action: 'view' },
   ]);
   if (denied) return denied;
 
@@ -33,9 +32,7 @@ export async function POST(request: Request) {
     if (mode === 'consolidate') {
       const createDenied = await checkAnyPermission([
         { menuId: 'employes.dependants', action: 'create' },
-        { menuId: 'employes.liste', action: 'create' },
         { menuId: 'employes.dependants', action: 'edit' },
-        { menuId: 'employes.liste', action: 'edit' },
       ]);
       if (createDenied) return createDenied;
 

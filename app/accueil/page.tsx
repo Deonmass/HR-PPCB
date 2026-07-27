@@ -146,7 +146,11 @@ export default function AccueilPage() {
     [data],
   );
   const documentsSectorPlaceholders = useMemo(
-    () => (data?.placeholders ?? []).filter((item) => item.href.startsWith('/factures-fournisseurs')),
+    () => (data?.placeholders ?? []).filter(
+      (item) =>
+        item.href.startsWith('/factures-fournisseurs')
+        || item.href.startsWith('/documents-voyage/'),
+    ),
     [data],
   );
   const villagePlaceholders = useMemo(
@@ -336,7 +340,7 @@ export default function AccueilPage() {
                   <ModuleHead
                     title="Projets & dépenses"
                     subtitle="Effectifs, budgets et dépenses"
-                    href={data.projects.hrefDashboard}
+                    href={data.projects.hrefDashboard || data.projects.hrefProjects || undefined}
                   />
                   <div className="home-project-scopes">
                     {data.projects.scopes.map((scope) => (
@@ -368,10 +372,14 @@ export default function AccueilPage() {
                     ))}
                   </div>
                   <div className="home-module-links">
-                    <Link href={data.projects.hrefProjects}>Projects →</Link>
-                    <Link href={data.projects.hrefExpenses}>
-                      Expenses ({data.projects.expenseCount}) →
-                    </Link>
+                    {data.projects.hrefProjects ? (
+                      <Link href={data.projects.hrefProjects}>Projects →</Link>
+                    ) : null}
+                    {data.projects.hrefExpenses ? (
+                      <Link href={data.projects.hrefExpenses}>
+                        Expenses ({data.projects.expenseCount}) →
+                      </Link>
+                    ) : null}
                     <span className="home-module-links-meta">
                       Total dépenses : {formatUsdShort(data.projects.expensesTotal)}
                     </span>
@@ -421,14 +429,16 @@ export default function AccueilPage() {
                     <TravelDepartmentChart departments={data.travel.dashboard.departments} />
                     <div className="home-module-links">
                       <Link href={data.travel.hrefHistorique}>Historique des voyages →</Link>
-                      <Link href={data.travel.hrefEtablir}>Établir un dossier →</Link>
+                      {data.travel.hrefEtablir ? (
+                        <Link href={data.travel.hrefEtablir}>Établir un dossier →</Link>
+                      ) : null}
                     </div>
                   </section>
                 )}
 
                 {documentsSectorPlaceholders.length > 0 && (
                   <section className="panel home-module-panel home-module-placeholders">
-                    <ModuleHead title="Factures fournisseur" subtitle="Module en préparation" />
+                    <ModuleHead title="Documents" subtitle="Modules accessibles" />
                     <PlaceholderGrid items={documentsSectorPlaceholders} />
                   </section>
                 )}
@@ -458,7 +468,13 @@ export default function AccueilPage() {
                   <ModuleHead
                     title="Référentiels & administration"
                     subtitle="Données de configuration"
-                    href={data.settings.hrefUtilisateurs}
+                    href={
+                      data.settings.hrefUtilisateurs
+                      || data.settings.hrefDepartements
+                      || data.settings.hrefCentres
+                      || data.settings.hrefPermissions
+                      || undefined
+                    }
                   />
                   <div className="home-stat-grid">
                     <div className="home-stat-box">
@@ -479,10 +495,18 @@ export default function AccueilPage() {
                     </div>
                   </div>
                   <div className="home-module-links">
-                    <Link href={data.settings.hrefDepartements}>Départements →</Link>
-                    <Link href={data.settings.hrefCentres}>Centres de coût →</Link>
-                    <Link href={data.settings.hrefUtilisateurs}>Utilisateurs →</Link>
-                    <Link href={data.settings.hrefPermissions}>Permissions →</Link>
+                    {data.settings.hrefDepartements ? (
+                      <Link href={data.settings.hrefDepartements}>Départements →</Link>
+                    ) : null}
+                    {data.settings.hrefCentres ? (
+                      <Link href={data.settings.hrefCentres}>Centres de coût →</Link>
+                    ) : null}
+                    {data.settings.hrefUtilisateurs ? (
+                      <Link href={data.settings.hrefUtilisateurs}>Utilisateurs →</Link>
+                    ) : null}
+                    {data.settings.hrefPermissions ? (
+                      <Link href={data.settings.hrefPermissions}>Permissions →</Link>
+                    ) : null}
                   </div>
                 </section>
               </div>

@@ -8,11 +8,13 @@ import { emptyEmployeeHrProfile } from '@/lib/types';
 export async function GET() {
   const denied = await checkAnyPermission([
     { menuId: 'employes.liste', action: 'view' },
+    { menuId: 'employes.dependants', action: 'view' },
     { menuId: 'employes.check-documents', action: 'view' },
     { menuId: 'employes.heures', action: 'view' },
     { menuId: 'employes.heures.dept', action: 'view' },
     { menuId: 'employes.heures.all', action: 'view' },
     { menuId: 'travel.etablir', action: 'view' },
+    { menuId: 'travel.attestation', action: 'view' },
     { menuId: 'settings.utilisateurs', action: 'view' },
     { menuId: 'village.dependants-dashboard', action: 'view' },
     { menuId: 'village.dependants-liste', action: 'view' },

@@ -1,13 +1,18 @@
 import { NextResponse } from 'next/server';
 import { excelErrorResponse } from '@/lib/excel-io';
 import { getCashRequest } from '@/lib/cash-request-store';
-import { checkPermission } from '@/lib/require-permission';
+import { checkAnyPermission } from '@/lib/require-permission';
 
 type Params = { params: Promise<{ id: string }> };
 
 export async function GET(_request: Request, { params }: Params) {
-  const denied = await checkPermission('travel.historique', 'view');
-  if (denied) return denied;  try {
+  const denied = await checkAnyPermission([
+    { menuId: 'travel.historique', action: 'view' },
+    { menuId: 'travel.etablir', action: 'view' },
+    { menuId: 'travel.etablir', action: 'edit' },
+  ]);
+  if (denied) return denied;
+  try {
     const { id } = await params;
     const record = await getCashRequest(id);
     if (!record) {

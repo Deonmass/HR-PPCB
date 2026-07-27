@@ -18,8 +18,6 @@ function fileContentType(fileName: string): string {
 export async function GET(request: Request, { params }: Params) {
   const denied = await checkAnyPermission([
     { menuId: 'travel.attestation', action: 'export' },
-    { menuId: 'travel.historique', action: 'export' },
-    { menuId: 'travel.etablir', action: 'export' },
   ]);
   if (denied) return denied;
 

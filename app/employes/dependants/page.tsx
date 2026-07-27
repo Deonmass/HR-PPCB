@@ -50,7 +50,7 @@ export default function DependantsPage() {
   const [dashboardLocalisation, setDashboardLocalisation] = useState('');
   const [drilldown, setDrilldown] = useState<{ title: string; items: Dependant[] } | null>(null);
 
-  const canExport = can('employes.dependants', 'export') || can('employes.liste', 'export');
+  const canExport = can('employes.dependants', 'export');
 
   const load = useCallback(async (isRefresh = false) => {
     if (isRefresh) setRefreshing(true);
@@ -194,7 +194,6 @@ export default function DependantsPage() {
     <PermissionGate
       anyOf={[
         { menuId: 'employes.dependants', action: 'view' },
-        { menuId: 'employes.liste', action: 'view' },
       ]}
     >
       <div className="dependants-page">
