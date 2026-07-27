@@ -1,0 +1,76 @@
+export interface RouteMenuEntry {
+  prefix: string;
+  menuId: string;
+}
+
+/** Longest-prefix wins — order by descending prefix length when matching. */
+export const ROUTE_MENU_MAP: RouteMenuEntry[] = [
+  { prefix: '/documents-voyage/attestation-services', menuId: 'travel.attestation' },
+  { prefix: '/documents-voyage/historique', menuId: 'travel.historique' },
+  { prefix: '/documents-voyage/etablir', menuId: 'travel.etablir' },
+  { prefix: '/factures-fournisseurs/fournisseurs', menuId: 'factures.fournisseur.fournisseurs' },
+  { prefix: '/factures-fournisseurs/liste', menuId: 'factures.fournisseur.liste' },
+  { prefix: '/factures-fournisseurs/factures', menuId: 'factures.fournisseur.factures' },
+  { prefix: '/factures-fournisseurs/soa', menuId: 'factures.fournisseur.soa' },
+  { prefix: '/employes/dependants', menuId: 'employes.dependants' },
+  { prefix: '/parametres/permissions', menuId: 'settings.permissions' },
+  { prefix: '/parametres/utilisateurs', menuId: 'settings.utilisateurs' },
+  { prefix: '/parametres/centres-de-cout', menuId: 'settings.centres' },
+  { prefix: '/parametres/departements', menuId: 'settings.departements' },
+  { prefix: '/project/expenses-details', menuId: 'project.expenses' },
+  { prefix: '/project/projects', menuId: 'project.projects' },
+  { prefix: '/project/dashboard', menuId: 'project.dashboard' },
+  { prefix: '/heures-supplementaires', menuId: 'employes.heures' },
+  { prefix: '/check-documents', menuId: 'employes.check-documents' },
+  { prefix: '/village/guest-house', menuId: 'village.guest-house' },
+  { prefix: '/village/club-house', menuId: 'village.club-house' },
+  { prefix: '/village/maisons', menuId: 'village.maisons' },
+  { prefix: '/village/dashboard', menuId: 'village.maisons' },
+  { prefix: '/village/liste', menuId: 'village.maisons' },
+  { prefix: '/charroi-automobile', menuId: 'charroi' },
+  { prefix: '/employes', menuId: 'employes.liste' },
+  { prefix: '/sante', menuId: 'sante' },
+];
+
+const SORTED_ROUTES = [...ROUTE_MENU_MAP].sort((a, b) => b.prefix.length - a.prefix.length);
+
+export function pathnameToMenuId(pathname: string): string | null {
+  const normalized = pathname.split('?')[0].replace(/\/$/, '') || '/';
+  if (normalized === '/' || normalized === '/accueil') return null;
+  for (const entry of SORTED_ROUTES) {
+    if (normalized === entry.prefix || normalized.startsWith(`${entry.prefix}/`)) {
+      return entry.menuId;
+    }
+  }
+  return null;
+}
+
+/** Menu IDs whose view permission grants access to the route (any match). */
+export function routeViewMenuIds(pathname: string): string[] {
+  const normalized = pathname.split('?')[0].replace(/\/$/, '') || '/';
+  if (normalized === '/heures-supplementaires' || normalized.startsWith('/heures-supplementaires/')) {
+    return ['employes.heures', 'employes.heures.dept', 'employes.heures.all'];
+  }
+  if (normalized === '/employes/dependants' || normalized.startsWith('/employes/dependants/')) {
+    return ['employes.dependants', 'employes.liste'];
+  }
+  if (
+    normalized === '/documents-voyage/attestation-services' ||
+    normalized.startsWith('/documents-voyage/attestation-services/')
+  ) {
+    return ['travel.attestation', 'travel.historique', 'travel.etablir'];
+  }
+  if (
+    normalized === '/factures-fournisseurs/soa'
+    || normalized.startsWith('/factures-fournisseurs/soa/')
+  ) {
+    return ['factures.fournisseur.soa', 'factures.fournisseur.factures'];
+  }
+  const menuId = pathnameToMenuId(pathname);
+  return menuId ? [menuId] : [];
+}
+
+export function menuIdToDefaultPath(menuId: string): string | null {
+  const entry = ROUTE_MENU_MAP.find((item) => item.menuId === menuId);
+  return entry?.prefix ?? null;
+}

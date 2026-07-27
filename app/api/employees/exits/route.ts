@@ -1,0 +1,18 @@
+import { NextResponse } from 'next/server';
+import { excelErrorResponse } from '@/lib/excel-io';
+import { readExitedEmployees } from '@/lib/employees-store';
+import { checkAnyPermission } from '@/lib/require-permission';
+
+export async function GET() {
+  const denied = await checkAnyPermission([
+    { menuId: 'employes.liste', action: 'view' },
+  ]);
+  if (denied) return denied;
+  try {
+    const exits = await readExitedEmployees();
+    return NextResponse.json(exits);
+  } catch (err) {
+    const { status, message } = excelErrorResponse(err);
+    return NextResponse.json({ error: message }, { status });
+  }
+}

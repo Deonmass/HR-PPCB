@@ -1,0 +1,22 @@
+{
+  "departments": [
+    {
+      "id": "dept-hr",
+      "name": "HR",
+      "code": "HR",
+      "active": true
+    },
+    {
+      "id": "dept-it",
+      "name": "IT",
+      "code": "IT",
+      "active": true
+    },
+    {
+      "id": "dept-finance",
+      "name": "Finance",
+      "code": "FIN",
+      "active": true
+    }
+  ]
+}

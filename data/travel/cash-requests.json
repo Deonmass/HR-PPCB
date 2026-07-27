@@ -1,0 +1,2026 @@
+{
+  "cashRequests": [
+    {
+      "id": "cr-1782988859181",
+      "type": "cash-request",
+      "createdAt": "2026-07-02T10:40:59.312Z",
+      "employeeMatricule": "70000308",
+      "employeeName": "Massadi Gedeon Gedeon",
+      "employeeDepartment": "HR",
+      "costCenter": "123456",
+      "requestorLine": "Massadi Gedeon Gedeon | HR | 123456",
+      "objet": "mission de Kinshasa a Matadi",
+      "lines": [
+        {
+          "ref": "",
+          "date": "2026-07-02",
+          "description": "qsdqsd",
+          "currency": "USD",
+          "amount": 100
+        },
+        {
+          "ref": "",
+          "date": "2026-07-02",
+          "description": "1231",
+          "currency": "USD",
+          "amount": 100
+        },
+        {
+          "ref": "",
+          "date": "2026-07-02",
+          "description": "fdgdfgd",
+          "currency": "USD",
+          "amount": 100
+        }
+      ],
+      "total": 300,
+      "fileName": "cr-1782988859181.xlsx"
+    },
+    {
+      "id": "cr-1782989486512",
+      "type": "cash-request",
+      "createdAt": "2026-07-02T10:51:26.808Z",
+      "employeeMatricule": "70000252",
+      "employeeName": "Molonga Andrew",
+      "employeeDepartment": "Admin",
+      "costCenter": "123456",
+      "requestorLine": "Molonga Andrew | Admin | 123456",
+      "objet": "mmmmmmmmmmmmmmmmmmmmmm",
+      "lines": [
+        {
+          "ref": "",
+          "date": "2026-07-02",
+          "description": "sdqsdqsdqs",
+          "currency": "USD",
+          "amount": 200
+        }
+      ],
+      "total": 200,
+      "fileName": "Cash Request - Molonga Andrew.xlsx",
+      "filePath": "C:\\Users\\Gedeon.Massadi\\Documents\\voyages\\Cash Request - Molonga Andrew.xlsx",
+      "saveDirectory": "C:\\Users\\Gedeon.Massadi\\Documents\\voyages"
+    },
+    {
+      "id": "cr-1782989977605",
+      "type": "cash-request",
+      "createdAt": "2026-07-02T10:59:37.892Z",
+      "employeeMatricule": "70000256",
+      "employeeName": "Kahasha Patrick",
+      "employeeDepartment": "Admin",
+      "costCenter": "321654",
+      "requestorLine": "Kahasha Patrick | Admin | 321654",
+      "objet": "mission de Kinshasa a Matadi",
+      "lines": [
+        {
+          "ref": "11",
+          "date": "2026-07-02",
+          "description": "123",
+          "currency": "USD",
+          "amount": 200
+        }
+      ],
+      "total": 200,
+      "fileName": "Cash Request - Kahasha Patrick.xlsx",
+      "filePath": "C:\\Users\\Gedeon.Massadi\\Documents\\voyages\\Cash Request - Kahasha Patrick.xlsx",
+      "saveDirectory": "C:\\Users\\Gedeon.Massadi\\Documents\\voyages"
+    },
+    {
+      "id": "cr-1782990800064",
+      "type": "cash-request",
+      "createdAt": "2026-07-02T11:13:20.216Z",
+      "employeeMatricule": "70000008",
+      "employeeName": "Muakasa Serge",
+      "employeeDepartment": "HR",
+      "costCenter": "123",
+      "requestorLine": "name : Muakasa Serge        Department : HR        Coast center : 123",
+      "objet": "mission de Kinshasa a Matadi",
+      "lines": [
+        {
+          "ref": "",
+          "date": "2026-07-02",
+          "description": "mmmmmmmmm",
+          "currency": "USD",
+          "amount": 100
+        },
+        {
+          "ref": "",
+          "date": "2026-07-02",
+          "description": "mmmmmmmmm",
+          "currency": "USD",
+          "amount": 100
+        },
+        {
+          "ref": "",
+          "date": "2026-07-02",
+          "description": "mmmmmmmmmmmm",
+          "currency": "USD",
+          "amount": 100
+        }
+      ],
+      "total": 300,
+      "fileName": "Cash Request - Muakasa Serge.xlsx",
+      "filePath": "C:\\Users\\Gedeon.Massadi\\Documents\\voyages\\Cash Request - Muakasa Serge.xlsx",
+      "saveDirectory": "C:\\Users\\Gedeon.Massadi\\Documents\\voyages"
+    },
+    {
+      "id": "cr-1782991124605",
+      "type": "cash-request",
+      "createdAt": "2026-07-02T11:18:44.966Z",
+      "employeeMatricule": "70000295",
+      "employeeName": "Kinkinia Diavezuka Pélagie",
+      "employeeDepartment": "HR",
+      "costCenter": "123456",
+      "requestorLine": "Kinkinia Diavezuka Pélagie        Department : HR        Coast center : 123456",
+      "objet": "Mission de Kinshasa a Matadi",
+      "lines": [
+        {
+          "ref": "",
+          "date": "2026-07-02",
+          "description": "mmmmmmmmm",
+          "currency": "USD",
+          "amount": 100
+        },
+        {
+          "ref": "",
+          "date": "2026-07-02",
+          "description": "mmmmmmmmm",
+          "currency": "USD",
+          "amount": 100
+        },
+        {
+          "ref": "",
+          "date": "2026-07-02",
+          "description": "mmmmmmmmm",
+          "currency": "USD",
+          "amount": 100
+        },
+        {
+          "ref": "",
+          "date": "2026-07-02",
+          "description": "mmmmmmmmm",
+          "currency": "USD",
+          "amount": 100
+        }
+      ],
+      "total": 400,
+      "fileName": "Cash Request - Kinkinia Diavezuka Pélagie.xlsx",
+      "filePath": "C:\\Users\\Gedeon.Massadi\\Documents\\voyages\\Cash Request - Kinkinia Diavezuka Pélagie.xlsx",
+      "saveDirectory": "C:\\Users\\Gedeon.Massadi\\Documents\\voyages"
+    },
+    {
+      "id": "cr-1782993635249",
+      "type": "cash-request",
+      "createdAt": "2026-07-02T12:00:35.432Z",
+      "employeeMatricule": "70000259",
+      "employeeName": "N'sinabau  Nathan",
+      "employeeDepartment": "Finance",
+      "costCenter": "123321321",
+      "requestorLine": "N'sinabau  Nathan        Department : Finance        Coast center : 123321321",
+      "objet": "Mission de Kinshasa a Matadi",
+      "requestDate": "2026-07-02",
+      "lines": [
+        {
+          "ref": "",
+          "description": "jhsdgfjqshgdjfhqsgdjfhsdhf",
+          "currency": "USD",
+          "amount": 100
+        },
+        {
+          "ref": "",
+          "description": "jhsdgfjqshgdjfhqsgdjfhsdhf",
+          "currency": "USD",
+          "amount": 100
+        },
+        {
+          "ref": "",
+          "description": "jhsdgfjqshgdjfhqsgdjfhsdhf",
+          "currency": "USD",
+          "amount": 100
+        }
+      ],
+      "total": 300,
+      "fileName": "Cash Request - N'sinabau Nathan.xlsx",
+      "filePath": "C:\\Users\\Gedeon.Massadi\\Documents\\voyages\\Cash Request - N'sinabau Nathan.xlsx",
+      "saveDirectory": "C:\\Users\\Gedeon.Massadi\\Documents\\voyages"
+    },
+    {
+      "id": "cr-1783002649486",
+      "type": "cash-request",
+      "createdAt": "2026-07-02T14:30:49.695Z",
+      "employeeMatricule": "70000308",
+      "employeeName": "Massadi Gedeon Gedeon",
+      "employeeDepartment": "HR",
+      "costCenter": "123",
+      "requestorLine": "Massadi Gedeon Gedeon        Department : HR        Coast center : 123",
+      "objet": "Mission de Kimpese a Kinshasa",
+      "requestDate": "2026-07-02",
+      "travel": {
+        "position": "HR Administrator",
+        "department": "HR",
+        "tripPurpose": "Mission de Kimpese a Kinshasa",
+        "costCenter": "123",
+        "documentDate": "2026-07-02",
+        "departureDate": "2026-07-03",
+        "departurePlace": "Kimpese",
+        "destinationPlace": "Kinshasa",
+        "returnDate": "2026-07-10",
+        "peopleCount": 1,
+        "companyName": "PPC Barnet Manufacturing SA",
+        "departmentToWorkWith": "HR",
+        "contactPerson": "Maneka Tresor",
+        "transportMeans": "Voiture",
+        "paymentOrderSignatory": "Kinkinia Diavezuka Pélagie",
+        "budgetLines": [
+          {
+            "label": "Accommodation ( Required)",
+            "amount": 100
+          },
+          {
+            "label": "Food allowance",
+            "amount": 10
+          },
+          {
+            "label": "Trip allowance",
+            "amount": 10
+          },
+          {
+            "label": "Transport (if required)",
+            "amount": 10
+          },
+          {
+            "label": "Airport Tax ( If required)",
+            "amount": 10
+          },
+          {
+            "label": "Toll ( if required)",
+            "amount": 10
+          }
+        ]
+      },
+      "lines": [
+        {
+          "ref": "1",
+          "description": "Accommodation ( Required)",
+          "currency": "USD",
+          "amount": 800
+        },
+        {
+          "ref": "2",
+          "description": "Food allowance",
+          "currency": "USD",
+          "amount": 80
+        },
+        {
+          "ref": "3",
+          "description": "Trip allowance",
+          "currency": "USD",
+          "amount": 80
+        },
+        {
+          "ref": "4",
+          "description": "Transport (if required)",
+          "currency": "USD",
+          "amount": 80
+        },
+        {
+          "ref": "5",
+          "description": "Airport Tax ( If required)",
+          "currency": "USD",
+          "amount": 80
+        },
+        {
+          "ref": "6",
+          "description": "Toll ( if required)",
+          "currency": "USD",
+          "amount": 80
+        }
+      ],
+      "total": 1200,
+      "fileName": "Cash Request - Massadi Gedeon Gedeon.xlsx",
+      "filePath": "C:\\Users\\Gedeon.Massadi\\Documents\\voyages\\Cash Request - Massadi Gedeon Gedeon.xlsx",
+      "files": [
+        {
+          "type": "cash-request",
+          "fileName": "Cash Request - Massadi Gedeon Gedeon.xlsx",
+          "filePath": "C:\\Users\\Gedeon.Massadi\\Documents\\voyages\\Cash Request - Massadi Gedeon Gedeon.xlsx"
+        },
+        {
+          "type": "trip-budget",
+          "fileName": "TRIP BUDGET FORM - Massadi Gedeon Gedeon.xlsx",
+          "filePath": "C:\\Users\\Gedeon.Massadi\\Documents\\voyages\\TRIP BUDGET FORM - Massadi Gedeon Gedeon.xlsx"
+        }
+      ],
+      "saveDirectory": "C:\\Users\\Gedeon.Massadi\\Documents\\voyages"
+    },
+    {
+      "id": "cr-1783004615763",
+      "type": "cash-request",
+      "createdAt": "2026-07-02T15:03:36.144Z",
+      "employeeMatricule": "70000308",
+      "employeeName": "Massadi Gedeon Gedeon",
+      "employeeDepartment": "HR",
+      "costCenter": "123",
+      "requestorLine": "Massadi Gedeon Gedeon        Department : HR        Coast center : 123",
+      "objet": "Mission de Kimpese a Kinshasa",
+      "requestDate": "2026-07-02",
+      "travel": {
+        "position": "HR Administrator",
+        "department": "HR",
+        "tripPurpose": "Mission de Kimpese a Kinshasa",
+        "costCenter": "123",
+        "documentDate": "2026-07-02",
+        "departureDate": "2026-07-03",
+        "departurePlace": "Kimpese",
+        "destinationPlace": "Kinshasa",
+        "returnDate": "2026-07-05",
+        "peopleCount": 1,
+        "companyName": "PPC Barnet Manufacturing SA",
+        "departmentToWorkWith": "HR",
+        "contactPerson": "Maneka Tresor",
+        "transportMeans": "Voiture",
+        "paymentOrderSignatory": "Kinkinia Diavezuka Pélagie",
+        "budgetLines": [
+          {
+            "label": "Accommodation ( Required)",
+            "amount": 100
+          },
+          {
+            "label": "Food allowance",
+            "amount": 10
+          },
+          {
+            "label": "Trip allowance",
+            "amount": 10
+          },
+          {
+            "label": "Transport (if required)",
+            "amount": 10
+          },
+          {
+            "label": "Airport Tax ( If required)",
+            "amount": 10
+          },
+          {
+            "label": "Toll ( if required)",
+            "amount": 10
+          }
+        ]
+      },
+      "lines": [
+        {
+          "ref": "1",
+          "description": "Accommodation ( Required)",
+          "currency": "USD",
+          "amount": 300
+        },
+        {
+          "ref": "2",
+          "description": "Food allowance",
+          "currency": "USD",
+          "amount": 30
+        },
+        {
+          "ref": "3",
+          "description": "Trip allowance",
+          "currency": "USD",
+          "amount": 30
+        },
+        {
+          "ref": "4",
+          "description": "Transport (if required)",
+          "currency": "USD",
+          "amount": 30
+        },
+        {
+          "ref": "5",
+          "description": "Airport Tax ( If required)",
+          "currency": "USD",
+          "amount": 30
+        },
+        {
+          "ref": "6",
+          "description": "Toll ( if required)",
+          "currency": "USD",
+          "amount": 30
+        }
+      ],
+      "total": 450,
+      "fileName": "Cash Request - Massadi Gedeon Gedeon.xlsx",
+      "filePath": "C:\\Users\\Gedeon.Massadi\\Documents\\voyages\\Cash Request - Massadi Gedeon Gedeon.xlsx",
+      "files": [
+        {
+          "type": "cash-request",
+          "fileName": "Cash Request - Massadi Gedeon Gedeon.xlsx",
+          "filePath": "C:\\Users\\Gedeon.Massadi\\Documents\\voyages\\Cash Request - Massadi Gedeon Gedeon.xlsx"
+        },
+        {
+          "type": "trip-budget",
+          "fileName": "TRIP BUDGET FORM - Massadi Gedeon Gedeon.xlsx",
+          "filePath": "C:\\Users\\Gedeon.Massadi\\Documents\\voyages\\TRIP BUDGET FORM - Massadi Gedeon Gedeon.xlsx"
+        },
+        {
+          "type": "travel-authorization",
+          "fileName": "Formulaire d'autorisation de voyage - Massadi Gedeon Gedeon.docx",
+          "filePath": "C:\\Users\\Gedeon.Massadi\\Documents\\voyages\\Formulaire d'autorisation de voyage - Massadi Gedeon Gedeon.docx"
+        }
+      ],
+      "saveDirectory": "C:\\Users\\Gedeon.Massadi\\Documents\\voyages"
+    },
+    {
+      "id": "cr-1783006532703",
+      "type": "cash-request",
+      "createdAt": "2026-07-02T15:35:34.321Z",
+      "employeeMatricule": "70000308",
+      "employeeName": "Massadi Gedeon Gedeon",
+      "employeeDepartment": "HR",
+      "costCenter": "1231",
+      "requestorLine": "Massadi Gedeon Gedeon        Department : HR        Coast center : 1231",
+      "objet": "Mission de Kimpese a Kinshasa",
+      "requestDate": "2026-07-02",
+      "travel": {
+        "position": "HR Administrator",
+        "department": "HR",
+        "tripPurpose": "Mission de Kimpese a Kinshasa",
+        "costCenter": "1231",
+        "documentDate": "2026-07-02",
+        "departureDate": "2026-07-03",
+        "departurePlace": "Kimpese",
+        "destinationPlace": "Kinshasa",
+        "returnDate": "2026-07-05",
+        "peopleCount": 1,
+        "companyName": "PPC Barnet Manufacturing SA",
+        "departmentToWorkWith": "HR",
+        "contactPerson": "Maneka Tresor",
+        "transportMeans": "Voiture",
+        "paymentOrderSignatory": "Kinkinia Diavezuka Pélagie",
+        "budgetLines": [
+          {
+            "label": "Accommodation ( Required)",
+            "amount": 100
+          },
+          {
+            "label": "Food allowance",
+            "amount": 50
+          },
+          {
+            "label": "Trip allowance",
+            "amount": 10
+          },
+          {
+            "label": "Toll ( if required)",
+            "amount": 10
+          }
+        ]
+      },
+      "lines": [
+        {
+          "ref": "1",
+          "description": "Accommodation ( Required)",
+          "currency": "USD",
+          "amount": 300
+        },
+        {
+          "ref": "2",
+          "description": "Food allowance",
+          "currency": "USD",
+          "amount": 150
+        },
+        {
+          "ref": "3",
+          "description": "Trip allowance",
+          "currency": "USD",
+          "amount": 30
+        },
+        {
+          "ref": "4",
+          "description": "Toll ( if required)",
+          "currency": "USD",
+          "amount": 30
+        }
+      ],
+      "total": 510,
+      "fileName": "Cash Request - Massadi Gedeon Gedeon.xlsx",
+      "filePath": "C:\\Users\\Gedeon.Massadi\\Documents\\voyages\\Cash Request - Massadi Gedeon Gedeon.xlsx",
+      "files": [
+        {
+          "type": "cash-request",
+          "fileName": "Cash Request - Massadi Gedeon Gedeon.xlsx",
+          "filePath": "C:\\Users\\Gedeon.Massadi\\Documents\\voyages\\Cash Request - Massadi Gedeon Gedeon.xlsx"
+        },
+        {
+          "type": "trip-budget",
+          "fileName": "TRIP BUDGET FORM - Massadi Gedeon Gedeon.xlsx",
+          "filePath": "C:\\Users\\Gedeon.Massadi\\Documents\\voyages\\TRIP BUDGET FORM - Massadi Gedeon Gedeon.xlsx"
+        },
+        {
+          "type": "travel-authorization",
+          "fileName": "Formulaire d'autorisation de voyage - Massadi Gedeon Gedeon.docx",
+          "filePath": "C:\\Users\\Gedeon.Massadi\\Documents\\voyages\\Formulaire d'autorisation de voyage - Massadi Gedeon Gedeon.docx"
+        },
+        {
+          "type": "hotel-booking",
+          "fileName": "Hotel booking form - Massadi Gedeon Gedeon.docx",
+          "filePath": "C:\\Users\\Gedeon.Massadi\\Documents\\voyages\\Hotel booking form - Massadi Gedeon Gedeon.docx"
+        },
+        {
+          "type": "mission-order",
+          "fileName": "Ordre de mission - Massadi Gedeon Gedeon.docx",
+          "filePath": "C:\\Users\\Gedeon.Massadi\\Documents\\voyages\\Ordre de mission - Massadi Gedeon Gedeon.docx"
+        }
+      ],
+      "saveDirectory": "C:\\Users\\Gedeon.Massadi\\Documents\\voyages"
+    },
+    {
+      "id": "cr-1783008982974",
+      "type": "cash-request",
+      "createdAt": "2026-07-02T16:16:54.179Z",
+      "employeeMatricule": "70000308",
+      "employeeName": "Massadi Gedeon Gedeon",
+      "employeeDepartment": "HR",
+      "costCenter": "123",
+      "requestorLine": "Massadi Gedeon Gedeon        Department : HR        Coast center : 123",
+      "objet": "Mission de Kimpese a Kinshasa",
+      "requestDate": "2026-07-02",
+      "travel": {
+        "position": "HR Administrator",
+        "department": "HR",
+        "tripPurpose": "Mission de Kimpese a Kinshasa",
+        "costCenter": "123",
+        "documentDate": "2026-07-02",
+        "departureDate": "2026-07-03",
+        "departurePlace": "Kimpese",
+        "destinationPlace": "Kinshasa",
+        "returnDate": "2026-07-05",
+        "peopleCount": 1,
+        "companyName": "PPC Barnet Manufacturing SA",
+        "departmentToWorkWith": "",
+        "contactPerson": "",
+        "transportMeans": "",
+        "paymentOrderSignatory": "Kinkinia Diavezuka Pélagie",
+        "budgetLines": [
+          {
+            "label": "Accommodation ( Required)",
+            "amount": 50
+          },
+          {
+            "label": "Food allowance",
+            "amount": 10
+          },
+          {
+            "label": "Trip allowance",
+            "amount": 10
+          },
+          {
+            "label": "Transport (if required)",
+            "amount": 10
+          },
+          {
+            "label": "Airport Tax ( If required)",
+            "amount": 10
+          },
+          {
+            "label": "Toll ( if required)",
+            "amount": 10
+          }
+        ]
+      },
+      "lines": [
+        {
+          "ref": "1",
+          "description": "Accommodation ( Required)",
+          "currency": "USD",
+          "amount": 150
+        },
+        {
+          "ref": "2",
+          "description": "Food allowance",
+          "currency": "USD",
+          "amount": 30
+        },
+        {
+          "ref": "3",
+          "description": "Trip allowance",
+          "currency": "USD",
+          "amount": 30
+        },
+        {
+          "ref": "4",
+          "description": "Transport (if required)",
+          "currency": "USD",
+          "amount": 30
+        },
+        {
+          "ref": "5",
+          "description": "Airport Tax ( If required)",
+          "currency": "USD",
+          "amount": 30
+        },
+        {
+          "ref": "6",
+          "description": "Toll ( if required)",
+          "currency": "USD",
+          "amount": 30
+        }
+      ],
+      "total": 300,
+      "fileName": "Cash Request - Massadi Gedeon Gedeon.xlsx",
+      "filePath": "D:\\Apps\\hr-rh-app\\data\\travel\\output\\Cash Request - Massadi Gedeon Gedeon.xlsx",
+      "files": [
+        {
+          "type": "cash-request",
+          "fileName": "Cash Request - Massadi Gedeon Gedeon.xlsx",
+          "filePath": "D:\\Apps\\hr-rh-app\\data\\travel\\output\\Cash Request - Massadi Gedeon Gedeon.xlsx"
+        },
+        {
+          "type": "trip-budget",
+          "fileName": "TRIP BUDGET FORM - Massadi Gedeon Gedeon.xlsx",
+          "filePath": "D:\\Apps\\hr-rh-app\\data\\travel\\output\\TRIP BUDGET FORM - Massadi Gedeon Gedeon.xlsx"
+        },
+        {
+          "type": "travel-authorization",
+          "fileName": "Formulaire d'autorisation de voyage - Massadi Gedeon Gedeon.docx",
+          "filePath": "D:\\Apps\\hr-rh-app\\data\\travel\\output\\Formulaire d'autorisation de voyage - Massadi Gedeon Gedeon.docx"
+        },
+        {
+          "type": "hotel-booking",
+          "fileName": "Hotel booking form - Massadi Gedeon Gedeon.docx",
+          "filePath": "D:\\Apps\\hr-rh-app\\data\\travel\\output\\Hotel booking form - Massadi Gedeon Gedeon.docx"
+        },
+        {
+          "type": "mission-order",
+          "fileName": "Ordre de mission - Massadi Gedeon Gedeon.docx",
+          "filePath": "D:\\Apps\\hr-rh-app\\data\\travel\\output\\Ordre de mission - Massadi Gedeon Gedeon.docx"
+        },
+        {
+          "type": "travel-pdf",
+          "fileName": "Documents de voyage - Massadi Gedeon Gedeon.pdf",
+          "filePath": "D:\\Apps\\hr-rh-app\\data\\travel\\output\\Documents de voyage - Massadi Gedeon Gedeon.pdf"
+        }
+      ],
+      "saveDirectory": "D:\\Apps\\hr-rh-app\\data\\travel\\output"
+    },
+    {
+      "id": "cr-1783010418748",
+      "type": "cash-request",
+      "createdAt": "2026-07-02T16:40:46.015Z",
+      "employeeMatricule": "70000008",
+      "employeeName": "Muakasa Serge",
+      "employeeDepartment": "HR",
+      "costCenter": "123",
+      "requestorLine": "Muakasa Serge        Department : HR        Coast center : 123",
+      "objet": "Mission de Kimpese a Kinshasa",
+      "requestDate": "2026-07-02",
+      "travel": {
+        "position": "Estate Officer",
+        "department": "HR",
+        "tripPurpose": "Mission de Kimpese a Kinshasa",
+        "costCenter": "123",
+        "documentDate": "2026-07-02",
+        "departureDate": "2026-07-03",
+        "departurePlace": "Kimpese",
+        "destinationPlace": "Kinshasa",
+        "returnDate": "2026-07-08",
+        "peopleCount": 1,
+        "companyName": "PPC Barnet Manufacturing SA",
+        "departmentToWorkWith": "",
+        "contactPerson": "",
+        "transportMeans": "Voiture",
+        "paymentOrderSignatory": "Ewuli  Carine",
+        "budgetLines": [
+          {
+            "label": "Accommodation ( Required)",
+            "amount": 100
+          },
+          {
+            "label": "Food allowance",
+            "amount": 50
+          },
+          {
+            "label": "Trip allowance",
+            "amount": 50
+          },
+          {
+            "label": "Transport (if required)",
+            "amount": 10
+          },
+          {
+            "label": "Airport Tax ( If required)",
+            "amount": 10
+          },
+          {
+            "label": "Toll ( if required)",
+            "amount": 10
+          }
+        ]
+      },
+      "lines": [
+        {
+          "ref": "1",
+          "description": "Accommodation ( Required)",
+          "currency": "USD",
+          "amount": 600
+        },
+        {
+          "ref": "2",
+          "description": "Food allowance",
+          "currency": "USD",
+          "amount": 300
+        },
+        {
+          "ref": "3",
+          "description": "Trip allowance",
+          "currency": "USD",
+          "amount": 300
+        },
+        {
+          "ref": "4",
+          "description": "Transport (if required)",
+          "currency": "USD",
+          "amount": 60
+        },
+        {
+          "ref": "5",
+          "description": "Airport Tax ( If required)",
+          "currency": "USD",
+          "amount": 60
+        },
+        {
+          "ref": "6",
+          "description": "Toll ( if required)",
+          "currency": "USD",
+          "amount": 60
+        }
+      ],
+      "total": 1380,
+      "fileName": "Cash Request - Muakasa Serge.xlsx",
+      "filePath": "D:\\Apps\\hr-rh-app\\data\\travel\\output\\Cash Request - Muakasa Serge.xlsx",
+      "files": [
+        {
+          "type": "cash-request",
+          "fileName": "Cash Request - Muakasa Serge.xlsx",
+          "filePath": "D:\\Apps\\hr-rh-app\\data\\travel\\output\\Cash Request - Muakasa Serge.xlsx"
+        },
+        {
+          "type": "trip-budget",
+          "fileName": "TRIP BUDGET FORM - Muakasa Serge.xlsx",
+          "filePath": "D:\\Apps\\hr-rh-app\\data\\travel\\output\\TRIP BUDGET FORM - Muakasa Serge.xlsx"
+        },
+        {
+          "type": "travel-authorization",
+          "fileName": "Formulaire d'autorisation de voyage - Muakasa Serge.docx",
+          "filePath": "D:\\Apps\\hr-rh-app\\data\\travel\\output\\Formulaire d'autorisation de voyage - Muakasa Serge.docx"
+        },
+        {
+          "type": "hotel-booking",
+          "fileName": "Hotel booking form - Muakasa Serge.docx",
+          "filePath": "D:\\Apps\\hr-rh-app\\data\\travel\\output\\Hotel booking form - Muakasa Serge.docx"
+        },
+        {
+          "type": "mission-order",
+          "fileName": "Ordre de mission - Muakasa Serge.docx",
+          "filePath": "D:\\Apps\\hr-rh-app\\data\\travel\\output\\Ordre de mission - Muakasa Serge.docx"
+        },
+        {
+          "type": "travel-pdf",
+          "fileName": "Documents de voyage - Muakasa Serge.pdf",
+          "filePath": "D:\\Apps\\hr-rh-app\\data\\travel\\output\\Documents de voyage - Muakasa Serge.pdf"
+        }
+      ],
+      "saveDirectory": "D:\\Apps\\hr-rh-app\\data\\travel\\output"
+    },
+    {
+      "id": "cr-1783012830913",
+      "type": "cash-request",
+      "createdAt": "2026-07-02T17:21:00.704Z",
+      "missionRef": "PPCB-DOC-HR-ZA/001/07/2026",
+      "employeeMatricule": "70000308",
+      "employeeName": "Massadi Gedeon Gedeon",
+      "employeeDepartment": "HR",
+      "costCenter": "123321",
+      "requestorLine": "Massadi Gedeon Gedeon (70000308)        Department : HR        Coast center : 123321",
+      "objet": "Mission de Kimpese a Kinshasa",
+      "requestDate": "2026-07-02",
+      "travel": {
+        "position": "HR Administrator",
+        "department": "HR",
+        "tripPurpose": "Mission de Kimpese a Kinshasa",
+        "costCenter": "123321",
+        "documentDate": "2026-07-02",
+        "departureDate": "2026-07-03",
+        "departurePlace": "Kimpese",
+        "destinationPlace": "Kinshasa",
+        "returnDate": "2026-07-09",
+        "peopleCount": 1,
+        "companyName": "PPC Barnet Manufacturing SA",
+        "departmentToWorkWith": "HR",
+        "contactPerson": "Maneka Tresor",
+        "transportMeans": "Voiture",
+        "paymentOrderSignatory": "Kinkinia Diavezuka Pélagie",
+        "budgetLines": [
+          {
+            "label": "Accommodation ( Required)",
+            "amount": 100
+          },
+          {
+            "label": "Food allowance",
+            "amount": 50
+          },
+          {
+            "label": "Trip allowance",
+            "amount": 50
+          },
+          {
+            "label": "Transport (if required)",
+            "amount": 10
+          },
+          {
+            "label": "Airport Tax ( If required)",
+            "amount": 0
+          },
+          {
+            "label": "Toll ( if required)",
+            "amount": 0
+          }
+        ]
+      },
+      "lines": [
+        {
+          "ref": "1",
+          "description": "Accommodation ( Required)",
+          "currency": "USD",
+          "amount": 700
+        },
+        {
+          "ref": "2",
+          "description": "Food allowance",
+          "currency": "USD",
+          "amount": 350
+        },
+        {
+          "ref": "3",
+          "description": "Trip allowance",
+          "currency": "USD",
+          "amount": 350
+        },
+        {
+          "ref": "4",
+          "description": "Transport (if required)",
+          "currency": "USD",
+          "amount": 70
+        },
+        {
+          "ref": "5",
+          "description": "Airport Tax ( If required)",
+          "currency": "USD",
+          "amount": 0
+        },
+        {
+          "ref": "6",
+          "description": "Toll ( if required)",
+          "currency": "USD",
+          "amount": 0
+        }
+      ],
+      "total": 1470,
+      "fileName": "Cash Request - Massadi Gedeon Gedeon (1).xlsx",
+      "filePath": "D:\\Apps\\hr-rh-app\\data\\travel\\output\\Cash Request - Massadi Gedeon Gedeon (1).xlsx",
+      "files": [
+        {
+          "type": "cash-request",
+          "fileName": "Cash Request - Massadi Gedeon Gedeon (1).xlsx",
+          "filePath": "D:\\Apps\\hr-rh-app\\data\\travel\\output\\Cash Request - Massadi Gedeon Gedeon (1).xlsx"
+        },
+        {
+          "type": "trip-budget",
+          "fileName": "TRIP BUDGET FORM - Massadi Gedeon Gedeon (1).xlsx",
+          "filePath": "D:\\Apps\\hr-rh-app\\data\\travel\\output\\TRIP BUDGET FORM - Massadi Gedeon Gedeon (1).xlsx"
+        },
+        {
+          "type": "travel-authorization",
+          "fileName": "Formulaire d'autorisation de voyage - Massadi Gedeon Gedeon (1).docx",
+          "filePath": "D:\\Apps\\hr-rh-app\\data\\travel\\output\\Formulaire d'autorisation de voyage - Massadi Gedeon Gedeon (1).docx"
+        },
+        {
+          "type": "hotel-booking",
+          "fileName": "Hotel booking form - Massadi Gedeon Gedeon (1).docx",
+          "filePath": "D:\\Apps\\hr-rh-app\\data\\travel\\output\\Hotel booking form - Massadi Gedeon Gedeon (1).docx"
+        },
+        {
+          "type": "mission-order",
+          "fileName": "Ordre de mission - Massadi Gedeon Gedeon (1).docx",
+          "filePath": "D:\\Apps\\hr-rh-app\\data\\travel\\output\\Ordre de mission - Massadi Gedeon Gedeon (1).docx"
+        },
+        {
+          "type": "travel-pdf",
+          "fileName": "Documents de voyage - Massadi Gedeon Gedeon (1).pdf",
+          "filePath": "D:\\Apps\\hr-rh-app\\data\\travel\\output\\Documents de voyage - Massadi Gedeon Gedeon (1).pdf"
+        }
+      ],
+      "saveDirectory": "D:\\Apps\\hr-rh-app\\data\\travel\\output"
+    },
+    {
+      "id": "cr-1783014058210",
+      "type": "cash-request",
+      "createdAt": "2026-07-02T17:41:25.111Z",
+      "missionRef": "PPCB-DOC-HR-ZA/002/07/2026",
+      "employeeMatricule": "70000008",
+      "employeeName": "Muakasa Serge",
+      "employeeDepartment": "HR",
+      "costCenter": "1233213",
+      "requestorLine": "Muakasa Serge (70000008)        Department : HR        Coast center : 1233213",
+      "objet": "Mission de Kimpese a Matadi",
+      "requestDate": "2026-07-02",
+      "travel": {
+        "position": "Estate Officer",
+        "department": "HR",
+        "tripPurpose": "Mission de Kimpese a Matadi",
+        "costCenter": "1233213",
+        "documentDate": "2026-07-02",
+        "departureDate": "2026-07-03",
+        "departurePlace": "Kimpese",
+        "destinationPlace": "Matadi",
+        "returnDate": "2026-07-09",
+        "peopleCount": 1,
+        "companyName": "PPC Barnet Manufacturing SA",
+        "departmentToWorkWith": "SHE",
+        "contactPerson": "Mutombo Shambuyi Léonardo",
+        "transportMeans": "Voiture",
+        "paymentOrderSignatory": "Kinkinia Diavezuka Pélagie",
+        "budgetLines": [
+          {
+            "label": "Accommodation ( Required)",
+            "amount": 100
+          },
+          {
+            "label": "Food allowance",
+            "amount": 50
+          },
+          {
+            "label": "Trip allowance",
+            "amount": 50
+          },
+          {
+            "label": "Transport (if required)",
+            "amount": 10
+          }
+        ]
+      },
+      "lines": [
+        {
+          "ref": "1",
+          "description": "Accommodation ( Required)",
+          "currency": "USD",
+          "amount": 700
+        },
+        {
+          "ref": "2",
+          "description": "Food allowance",
+          "currency": "USD",
+          "amount": 350
+        },
+        {
+          "ref": "3",
+          "description": "Trip allowance",
+          "currency": "USD",
+          "amount": 350
+        },
+        {
+          "ref": "4",
+          "description": "Transport (if required)",
+          "currency": "USD",
+          "amount": 70
+        }
+      ],
+      "total": 1470,
+      "fileName": "Cash Request - Muakasa Serge (1).xlsx",
+      "filePath": "D:\\Apps\\hr-rh-app\\data\\travel\\output\\Cash Request - Muakasa Serge (1).xlsx",
+      "files": [
+        {
+          "type": "cash-request",
+          "fileName": "Cash Request - Muakasa Serge (1).xlsx",
+          "filePath": "D:\\Apps\\hr-rh-app\\data\\travel\\output\\Cash Request - Muakasa Serge (1).xlsx"
+        },
+        {
+          "type": "trip-budget",
+          "fileName": "TRIP BUDGET FORM - Muakasa Serge (1).xlsx",
+          "filePath": "D:\\Apps\\hr-rh-app\\data\\travel\\output\\TRIP BUDGET FORM - Muakasa Serge (1).xlsx"
+        },
+        {
+          "type": "travel-authorization",
+          "fileName": "Formulaire d'autorisation de voyage - Muakasa Serge (1).docx",
+          "filePath": "D:\\Apps\\hr-rh-app\\data\\travel\\output\\Formulaire d'autorisation de voyage - Muakasa Serge (1).docx"
+        },
+        {
+          "type": "hotel-booking",
+          "fileName": "Hotel booking form - Muakasa Serge (1).docx",
+          "filePath": "D:\\Apps\\hr-rh-app\\data\\travel\\output\\Hotel booking form - Muakasa Serge (1).docx"
+        },
+        {
+          "type": "mission-order",
+          "fileName": "Ordre de mission - Muakasa Serge (1).docx",
+          "filePath": "D:\\Apps\\hr-rh-app\\data\\travel\\output\\Ordre de mission - Muakasa Serge (1).docx"
+        },
+        {
+          "type": "travel-pdf",
+          "fileName": "Documents de voyage - Muakasa Serge (1).pdf",
+          "filePath": "D:\\Apps\\hr-rh-app\\data\\travel\\output\\Documents de voyage - Muakasa Serge (1).pdf"
+        }
+      ],
+      "saveDirectory": "D:\\Apps\\hr-rh-app\\data\\travel\\output"
+    },
+    {
+      "id": "cr-1783070022802",
+      "type": "cash-request",
+      "createdAt": "2026-07-03T09:14:33.526Z",
+      "missionRef": "PPCB-DOC-HR-ZA/003/07/2026",
+      "employeeMatricule": "70000295",
+      "employeeName": "Kinkinia Diavezuka Pélagie",
+      "employeeDepartment": "HR",
+      "costCenter": "1233213",
+      "requestorLine": "Kinkinia Diavezuka Pélagie (70000295)        Department : HR        Coast center : 1233213",
+      "objet": "Mission de Kinshasa à Dar Es Salaam",
+      "requestDate": "2026-07-03",
+      "travel": {
+        "position": "Plant HR Manager",
+        "department": "HR",
+        "tripPurpose": "Mission de Kinshasa à Dar Es Salaam",
+        "costCenter": "1233213",
+        "documentDate": "2026-07-03",
+        "departureDate": "2026-07-03",
+        "departurePlace": "Kinshasa",
+        "destinationPlace": "Dar Es Salaam",
+        "returnDate": "2026-07-09",
+        "peopleCount": 1,
+        "companyName": "PPC Barnet Manufacturing SA",
+        "departmentToWorkWith": "SHE",
+        "contactPerson": "Mutombo Shambuyi Léonardo",
+        "transportMeans": "Voiture",
+        "paymentOrderSignatory": "Kinkinia Diavezuka Pélagie",
+        "budgetLines": [
+          {
+            "label": "Accommodation ( Required)",
+            "amount": 100
+          },
+          {
+            "label": "Food allowance",
+            "amount": 50
+          },
+          {
+            "label": "Trip allowance",
+            "amount": 50
+          },
+          {
+            "label": "Transport (if required)",
+            "amount": 10
+          }
+        ],
+        "isInternationalTravel": true,
+        "flightBooking": {
+          "passportFullName": "Kinkinia Diavezuka Pélagie",
+          "nearestAirport": "FIH — Kinshasa N'djili",
+          "carrier": "Ethiopian Airlines",
+          "frequentFlyerNumber": "1",
+          "seatPreference": "No preference",
+          "estimatedCost": "100",
+          "flyDepartureDate": "2026-07-04",
+          "flyDepartureFrom": "FIH — Kinshasa N'djili",
+          "flyDepartureTo": "DAR — Dar es Salaam Julius Nyerere",
+          "flyReturnDate": "2026-07-07",
+          "flyReturnFrom": "DAR — Dar es Salaam Julius Nyerere",
+          "flyReturnTo": "FIH — Kinshasa N'djili"
+        }
+      },
+      "lines": [
+        {
+          "ref": "1",
+          "description": "Accommodation ( Required)",
+          "currency": "USD",
+          "amount": 700
+        },
+        {
+          "ref": "2",
+          "description": "Food allowance",
+          "currency": "USD",
+          "amount": 350
+        },
+        {
+          "ref": "3",
+          "description": "Trip allowance",
+          "currency": "USD",
+          "amount": 350
+        },
+        {
+          "ref": "4",
+          "description": "Transport (if required)",
+          "currency": "USD",
+          "amount": 70
+        }
+      ],
+      "total": 1470,
+      "fileName": "Cash Request - Kinkinia Diavezuka Pélagie.xlsx",
+      "filePath": "D:\\Templates docs voyage\\Kinkinia Diavezuka Pélagie 03 07 2026\\Cash Request - Kinkinia Diavezuka Pélagie.xlsx",
+      "files": [
+        {
+          "type": "cash-request",
+          "fileName": "Cash Request - Kinkinia Diavezuka Pélagie.xlsx",
+          "filePath": "D:\\Templates docs voyage\\Kinkinia Diavezuka Pélagie 03 07 2026\\Cash Request - Kinkinia Diavezuka Pélagie.xlsx"
+        },
+        {
+          "type": "trip-budget",
+          "fileName": "TRIP BUDGET FORM - Kinkinia Diavezuka Pélagie.xlsx",
+          "filePath": "D:\\Templates docs voyage\\Kinkinia Diavezuka Pélagie 03 07 2026\\TRIP BUDGET FORM - Kinkinia Diavezuka Pélagie.xlsx"
+        },
+        {
+          "type": "travel-authorization",
+          "fileName": "Formulaire d'autorisation de voyage - Kinkinia Diavezuka Pélagie.docx",
+          "filePath": "D:\\Templates docs voyage\\Kinkinia Diavezuka Pélagie 03 07 2026\\Formulaire d'autorisation de voyage - Kinkinia Diavezuka Pélagie.docx"
+        },
+        {
+          "type": "hotel-booking",
+          "fileName": "Hotel booking form - Kinkinia Diavezuka Pélagie.docx",
+          "filePath": "D:\\Templates docs voyage\\Kinkinia Diavezuka Pélagie 03 07 2026\\Hotel booking form - Kinkinia Diavezuka Pélagie.docx"
+        },
+        {
+          "type": "flight-booking",
+          "fileName": "FLIGHT BOOKING FORM - Kinkinia Diavezuka Pélagie.doc",
+          "filePath": "D:\\Templates docs voyage\\Kinkinia Diavezuka Pélagie 03 07 2026\\FLIGHT BOOKING FORM - Kinkinia Diavezuka Pélagie.doc"
+        },
+        {
+          "type": "mission-order",
+          "fileName": "Ordre de mission - Kinkinia Diavezuka Pélagie.docx",
+          "filePath": "D:\\Templates docs voyage\\Kinkinia Diavezuka Pélagie 03 07 2026\\Ordre de mission - Kinkinia Diavezuka Pélagie.docx"
+        },
+        {
+          "type": "travel-pdf",
+          "fileName": "Documents de voyage - Kinkinia Diavezuka Pélagie.pdf",
+          "filePath": "D:\\Templates docs voyage\\Kinkinia Diavezuka Pélagie 03 07 2026\\Documents de voyage - Kinkinia Diavezuka Pélagie.pdf"
+        }
+      ],
+      "saveDirectory": "D:\\Templates docs voyage\\Kinkinia Diavezuka Pélagie 03 07 2026"
+    },
+    {
+      "id": "cr-1783070124947",
+      "type": "cash-request",
+      "createdAt": "2026-07-03T09:16:18.224Z",
+      "missionRef": "PPCB-DOC-HR-ZA/004/07/2026",
+      "employeeMatricule": "70000295",
+      "employeeName": "Kinkinia Diavezuka Pélagie",
+      "employeeDepartment": "HR",
+      "costCenter": "1233213",
+      "requestorLine": "Kinkinia Diavezuka Pélagie (70000295)        Department : HR        Coast center : 1233213",
+      "objet": "Mission de Kinshasa à Dar Es Salaam",
+      "requestDate": "2026-07-03",
+      "travel": {
+        "position": "Plant HR Manager",
+        "department": "HR",
+        "tripPurpose": "Mission de Kinshasa à Dar Es Salaam",
+        "costCenter": "1233213",
+        "documentDate": "2026-07-03",
+        "departureDate": "2026-07-03",
+        "departurePlace": "Kinshasa",
+        "destinationPlace": "Dar Es Salaam",
+        "returnDate": "2026-07-09",
+        "peopleCount": 1,
+        "companyName": "PPC Barnet Manufacturing SA",
+        "departmentToWorkWith": "SHE",
+        "contactPerson": "Mutombo Shambuyi Léonardo",
+        "transportMeans": "Voiture",
+        "paymentOrderSignatory": "Kinkinia Diavezuka Pélagie",
+        "budgetLines": [
+          {
+            "label": "Accommodation ( Required)",
+            "amount": 100
+          },
+          {
+            "label": "Food allowance",
+            "amount": 50
+          },
+          {
+            "label": "Trip allowance",
+            "amount": 50
+          },
+          {
+            "label": "Transport (if required)",
+            "amount": 10
+          }
+        ],
+        "isInternationalTravel": true,
+        "flightBooking": {
+          "passportFullName": "Kinkinia Diavezuka Pélagie",
+          "nearestAirport": "FIH — Kinshasa N'djili",
+          "carrier": "Ethiopian Airlines",
+          "frequentFlyerNumber": "1",
+          "seatPreference": "No preference",
+          "estimatedCost": "100",
+          "flyDepartureDate": "2026-07-04",
+          "flyDepartureFrom": "FIH — Kinshasa N'djili",
+          "flyDepartureTo": "DAR — Dar es Salaam Julius Nyerere",
+          "flyReturnDate": "2026-07-07",
+          "flyReturnFrom": "DAR — Dar es Salaam Julius Nyerere",
+          "flyReturnTo": "FIH — Kinshasa N'djili"
+        }
+      },
+      "lines": [
+        {
+          "ref": "1",
+          "description": "Accommodation ( Required)",
+          "currency": "USD",
+          "amount": 700
+        },
+        {
+          "ref": "2",
+          "description": "Food allowance",
+          "currency": "USD",
+          "amount": 350
+        },
+        {
+          "ref": "3",
+          "description": "Trip allowance",
+          "currency": "USD",
+          "amount": 350
+        },
+        {
+          "ref": "4",
+          "description": "Transport (if required)",
+          "currency": "USD",
+          "amount": 70
+        }
+      ],
+      "total": 1470,
+      "fileName": "Cash Request - Kinkinia Diavezuka Pélagie.xlsx",
+      "filePath": "D:\\Templates docs voyage\\ppppppppppp\\Cash Request - Kinkinia Diavezuka Pélagie.xlsx",
+      "files": [
+        {
+          "type": "cash-request",
+          "fileName": "Cash Request - Kinkinia Diavezuka Pélagie.xlsx",
+          "filePath": "D:\\Templates docs voyage\\ppppppppppp\\Cash Request - Kinkinia Diavezuka Pélagie.xlsx"
+        },
+        {
+          "type": "trip-budget",
+          "fileName": "TRIP BUDGET FORM - Kinkinia Diavezuka Pélagie.xlsx",
+          "filePath": "D:\\Templates docs voyage\\ppppppppppp\\TRIP BUDGET FORM - Kinkinia Diavezuka Pélagie.xlsx"
+        },
+        {
+          "type": "travel-authorization",
+          "fileName": "Formulaire d'autorisation de voyage - Kinkinia Diavezuka Pélagie.docx",
+          "filePath": "D:\\Templates docs voyage\\ppppppppppp\\Formulaire d'autorisation de voyage - Kinkinia Diavezuka Pélagie.docx"
+        },
+        {
+          "type": "hotel-booking",
+          "fileName": "Hotel booking form - Kinkinia Diavezuka Pélagie.docx",
+          "filePath": "D:\\Templates docs voyage\\ppppppppppp\\Hotel booking form - Kinkinia Diavezuka Pélagie.docx"
+        },
+        {
+          "type": "flight-booking",
+          "fileName": "FLIGHT BOOKING FORM - Kinkinia Diavezuka Pélagie.doc",
+          "filePath": "D:\\Templates docs voyage\\ppppppppppp\\FLIGHT BOOKING FORM - Kinkinia Diavezuka Pélagie.doc"
+        },
+        {
+          "type": "mission-order",
+          "fileName": "Ordre de mission - Kinkinia Diavezuka Pélagie.docx",
+          "filePath": "D:\\Templates docs voyage\\ppppppppppp\\Ordre de mission - Kinkinia Diavezuka Pélagie.docx"
+        },
+        {
+          "type": "travel-pdf",
+          "fileName": "Documents de voyage - Kinkinia Diavezuka Pélagie.pdf",
+          "filePath": "D:\\Templates docs voyage\\ppppppppppp\\Documents de voyage - Kinkinia Diavezuka Pélagie.pdf"
+        }
+      ],
+      "saveDirectory": "D:\\Templates docs voyage\\ppppppppppp"
+    },
+    {
+      "id": "cr-1783074675719",
+      "type": "cash-request",
+      "createdAt": "2026-07-03T10:31:40.841Z",
+      "missionRef": "PPCB-DOC-HR-ZA/005/07/2026",
+      "employeeMatricule": "70000308",
+      "employeeName": "Massadi Gedeon Gedeon",
+      "employeeDepartment": "HR",
+      "costCenter": "1233213",
+      "requestorLine": "Massadi Gedeon Gedeon (70000308)        Department : HR        Coast center : 1233213",
+      "objet": "Mission de Kinshasa a goma",
+      "requestDate": "2026-07-03",
+      "travel": {
+        "position": "HR Administrator",
+        "department": "HR",
+        "tripPurpose": "Mission de Kinshasa a goma",
+        "costCenter": "1233213",
+        "documentDate": "2026-07-03",
+        "departureDate": "2026-07-03",
+        "departurePlace": "Kinshasa",
+        "destinationPlace": "Goma",
+        "returnDate": "2026-07-09",
+        "peopleCount": 1,
+        "companyName": "PPC Barnet Manufacturing SA",
+        "departmentToWorkWith": "HR",
+        "contactPerson": "Ewuli  Carine",
+        "transportMeans": "Voiture",
+        "paymentOrderSignatory": "Kinkinia Diavezuka Pélagie",
+        "budgetLines": [
+          {
+            "label": "Accommodation ( Required)",
+            "amount": 100
+          },
+          {
+            "label": "Food allowance",
+            "amount": 50
+          },
+          {
+            "label": "Trip allowance",
+            "amount": 50
+          },
+          {
+            "label": "Transport (if required)",
+            "amount": 10
+          }
+        ],
+        "isInternationalTravel": true,
+        "flightBooking": {
+          "passportFullName": "Massadi Gedeon Gedeon",
+          "nearestAirport": "FIH — Kinshasa N'djili",
+          "carrier": "Ethiopian Airlines",
+          "frequentFlyerNumber": "1",
+          "seatPreference": "Window",
+          "estimatedCost": "100",
+          "flyDepartureDate": "2026-07-03",
+          "flyDepartureFrom": "Kinshasa",
+          "flyDepartureTo": "Goma",
+          "flyReturnDate": "2026-07-09",
+          "flyReturnFrom": "Goma",
+          "flyReturnTo": "Kinshasa"
+        }
+      },
+      "lines": [
+        {
+          "ref": "1",
+          "description": "Accommodation ( Required)",
+          "currency": "USD",
+          "amount": 700
+        },
+        {
+          "ref": "2",
+          "description": "Food allowance",
+          "currency": "USD",
+          "amount": 350
+        },
+        {
+          "ref": "3",
+          "description": "Trip allowance",
+          "currency": "USD",
+          "amount": 350
+        },
+        {
+          "ref": "4",
+          "description": "Transport (if required)",
+          "currency": "USD",
+          "amount": 70
+        }
+      ],
+      "total": 1470,
+      "fileName": "Cash Request - Massadi Gedeon Gedeon.xlsx",
+      "filePath": "C:\\Users\\Gedeon.Massadi\\Documents\\voyages\\GEDEON MASS\\Cash Request - Massadi Gedeon Gedeon.xlsx",
+      "files": [
+        {
+          "type": "cash-request",
+          "fileName": "Cash Request - Massadi Gedeon Gedeon.xlsx",
+          "filePath": "C:\\Users\\Gedeon.Massadi\\Documents\\voyages\\GEDEON MASS\\Cash Request - Massadi Gedeon Gedeon.xlsx"
+        },
+        {
+          "type": "trip-budget",
+          "fileName": "TRIP BUDGET FORM - Massadi Gedeon Gedeon.xlsx",
+          "filePath": "C:\\Users\\Gedeon.Massadi\\Documents\\voyages\\GEDEON MASS\\TRIP BUDGET FORM - Massadi Gedeon Gedeon.xlsx"
+        },
+        {
+          "type": "travel-authorization",
+          "fileName": "Formulaire d'autorisation de voyage - Massadi Gedeon Gedeon.docx",
+          "filePath": "C:\\Users\\Gedeon.Massadi\\Documents\\voyages\\GEDEON MASS\\Formulaire d'autorisation de voyage - Massadi Gedeon Gedeon.docx"
+        },
+        {
+          "type": "hotel-booking",
+          "fileName": "Hotel booking form - Massadi Gedeon Gedeon.docx",
+          "filePath": "C:\\Users\\Gedeon.Massadi\\Documents\\voyages\\GEDEON MASS\\Hotel booking form - Massadi Gedeon Gedeon.docx"
+        },
+        {
+          "type": "flight-booking",
+          "fileName": "FLIGHT BOOKING FORM - Massadi Gedeon Gedeon.doc",
+          "filePath": "C:\\Users\\Gedeon.Massadi\\Documents\\voyages\\GEDEON MASS\\FLIGHT BOOKING FORM - Massadi Gedeon Gedeon.doc"
+        },
+        {
+          "type": "mission-order",
+          "fileName": "Ordre de mission - Massadi Gedeon Gedeon.docx",
+          "filePath": "C:\\Users\\Gedeon.Massadi\\Documents\\voyages\\GEDEON MASS\\Ordre de mission - Massadi Gedeon Gedeon.docx"
+        },
+        {
+          "type": "travel-pdf",
+          "fileName": "Documents de voyage - Massadi Gedeon Gedeon.pdf",
+          "filePath": "C:\\Users\\Gedeon.Massadi\\Documents\\voyages\\GEDEON MASS\\Documents de voyage - Massadi Gedeon Gedeon.pdf"
+        }
+      ],
+      "saveDirectory": "C:\\Users\\Gedeon.Massadi\\Documents\\voyages\\GEDEON MASS"
+    },
+    {
+      "id": "cr-1783074944682",
+      "type": "cash-request",
+      "createdAt": "2026-07-03T10:36:12.408Z",
+      "missionRef": "PPCB-DOC-HR-ZA/006/07/2026",
+      "employeeMatricule": "70000308",
+      "employeeName": "Massadi Gedeon Gedeon",
+      "employeeDepartment": "HR",
+      "costCenter": "1233213",
+      "requestorLine": "Massadi Gedeon Gedeon (70000308)        Department : HR        Coast center : 1233213",
+      "objet": "Mission de Kinshasa a goma",
+      "requestDate": "2026-07-03",
+      "travel": {
+        "position": "HR Administrator",
+        "department": "HR",
+        "tripPurpose": "Mission de Kinshasa a goma",
+        "costCenter": "1233213",
+        "documentDate": "2026-07-03",
+        "departureDate": "2026-07-03",
+        "departurePlace": "Kinshasa",
+        "destinationPlace": "Goma",
+        "returnDate": "2026-07-09",
+        "peopleCount": 1,
+        "companyName": "PPC Barnet Manufacturing SA",
+        "departmentToWorkWith": "HR",
+        "contactPerson": "Ewuli  Carine",
+        "transportMeans": "Voiture",
+        "paymentOrderSignatory": "Kinkinia Diavezuka Pélagie",
+        "budgetLines": [
+          {
+            "label": "Accommodation ( Required)",
+            "amount": 100
+          },
+          {
+            "label": "Food allowance",
+            "amount": 50
+          },
+          {
+            "label": "Trip allowance",
+            "amount": 50
+          },
+          {
+            "label": "Transport (if required)",
+            "amount": 10
+          }
+        ],
+        "isInternationalTravel": true,
+        "flightBooking": {
+          "passportFullName": "Massadi Gedeon Gedeon",
+          "nearestAirport": "FIH — Kinshasa N'djili",
+          "carrier": "Ethiopian Airlines",
+          "frequentFlyerNumber": "1",
+          "seatPreference": "Window",
+          "estimatedCost": "100",
+          "flyDepartureDate": "2026-07-03",
+          "flyDepartureFrom": "Kinshasa",
+          "flyDepartureTo": "Goma",
+          "flyReturnDate": "2026-07-09",
+          "flyReturnFrom": "Goma",
+          "flyReturnTo": "Kinshasa"
+        }
+      },
+      "lines": [
+        {
+          "ref": "1",
+          "description": "Accommodation ( Required)",
+          "currency": "USD",
+          "amount": 700
+        },
+        {
+          "ref": "2",
+          "description": "Food allowance",
+          "currency": "USD",
+          "amount": 350
+        },
+        {
+          "ref": "3",
+          "description": "Trip allowance",
+          "currency": "USD",
+          "amount": 350
+        },
+        {
+          "ref": "4",
+          "description": "Transport (if required)",
+          "currency": "USD",
+          "amount": 70
+        }
+      ],
+      "total": 1470,
+      "fileName": "Cash Request - Massadi Gedeon Gedeon.xlsx",
+      "filePath": "C:\\Users\\Gedeon.Massadi\\Documents\\voyages\\GEDEON MASS\\Cash Request - Massadi Gedeon Gedeon.xlsx",
+      "files": [
+        {
+          "type": "cash-request",
+          "fileName": "Cash Request - Massadi Gedeon Gedeon.xlsx",
+          "filePath": "C:\\Users\\Gedeon.Massadi\\Documents\\voyages\\GEDEON MASS\\Cash Request - Massadi Gedeon Gedeon.xlsx"
+        },
+        {
+          "type": "trip-budget",
+          "fileName": "TRIP BUDGET FORM - Massadi Gedeon Gedeon.xlsx",
+          "filePath": "C:\\Users\\Gedeon.Massadi\\Documents\\voyages\\GEDEON MASS\\TRIP BUDGET FORM - Massadi Gedeon Gedeon.xlsx"
+        },
+        {
+          "type": "travel-authorization",
+          "fileName": "Formulaire d'autorisation de voyage - Massadi Gedeon Gedeon.docx",
+          "filePath": "C:\\Users\\Gedeon.Massadi\\Documents\\voyages\\GEDEON MASS\\Formulaire d'autorisation de voyage - Massadi Gedeon Gedeon.docx"
+        },
+        {
+          "type": "hotel-booking",
+          "fileName": "Hotel booking form - Massadi Gedeon Gedeon.docx",
+          "filePath": "C:\\Users\\Gedeon.Massadi\\Documents\\voyages\\GEDEON MASS\\Hotel booking form - Massadi Gedeon Gedeon.docx"
+        },
+        {
+          "type": "flight-booking",
+          "fileName": "FLIGHT BOOKING FORM - Massadi Gedeon Gedeon.doc",
+          "filePath": "C:\\Users\\Gedeon.Massadi\\Documents\\voyages\\GEDEON MASS\\FLIGHT BOOKING FORM - Massadi Gedeon Gedeon.doc"
+        },
+        {
+          "type": "mission-order",
+          "fileName": "Ordre de mission - Massadi Gedeon Gedeon.docx",
+          "filePath": "C:\\Users\\Gedeon.Massadi\\Documents\\voyages\\GEDEON MASS\\Ordre de mission - Massadi Gedeon Gedeon.docx"
+        },
+        {
+          "type": "travel-pdf",
+          "fileName": "Documents de voyage - Massadi Gedeon Gedeon.pdf",
+          "filePath": "C:\\Users\\Gedeon.Massadi\\Documents\\voyages\\GEDEON MASS\\Documents de voyage - Massadi Gedeon Gedeon.pdf"
+        }
+      ],
+      "saveDirectory": "C:\\Users\\Gedeon.Massadi\\Documents\\voyages\\GEDEON MASS"
+    },
+    {
+      "id": "cr-1783512286109",
+      "type": "cash-request",
+      "createdAt": "2026-07-08T12:05:22.156Z",
+      "missionRef": "PPCB-DOC-HR-ZA/007/07/2026",
+      "employeeMatricule": "70000308",
+      "employeeName": "Massadi Gedeon Gedeon",
+      "employeeDepartment": "HR",
+      "costCenter": "KM5413",
+      "requestorLine": "Massadi Gedeon Gedeon (70000308)        Department : HR        Coast center : KM5413",
+      "objet": "Mission de Kimpese a Kinshasa",
+      "requestDate": "2026-07-08",
+      "travel": {
+        "position": "HR Administrator",
+        "department": "HR",
+        "tripPurpose": "Mission de Kimpese a Kinshasa",
+        "costCenter": "KM5413",
+        "documentDate": "2026-07-08",
+        "departureDate": "2026-07-09",
+        "departurePlace": "Kimpese",
+        "destinationPlace": "Kinshasa",
+        "returnDate": "2026-07-14",
+        "peopleCount": 1,
+        "companyName": "PPC Barnet Manufacturing SA",
+        "departmentToWorkWith": "Legal",
+        "contactPerson": "Molonga Andrew",
+        "transportMeans": "Voiture",
+        "paymentOrderSignatory": "Kinkinia Diavezuka Pélagie",
+        "budgetLines": [
+          {
+            "label": "Accommodation ( Required)",
+            "amount": 100
+          },
+          {
+            "label": "Food allowance",
+            "amount": 50
+          },
+          {
+            "label": "Trip allowance",
+            "amount": 50
+          },
+          {
+            "label": "Transport (if required)",
+            "amount": 10
+          },
+          {
+            "label": "Airport Tax ( If required)",
+            "amount": 0
+          },
+          {
+            "label": "Toll ( if required)",
+            "amount": 0
+          }
+        ],
+        "isInternationalTravel": false
+      },
+      "lines": [
+        {
+          "ref": "1",
+          "description": "Accommodation ( Required)",
+          "currency": "USD",
+          "amount": 600
+        },
+        {
+          "ref": "2",
+          "description": "Food allowance",
+          "currency": "USD",
+          "amount": 300
+        },
+        {
+          "ref": "3",
+          "description": "Trip allowance",
+          "currency": "USD",
+          "amount": 300
+        },
+        {
+          "ref": "4",
+          "description": "Transport (if required)",
+          "currency": "USD",
+          "amount": 60
+        },
+        {
+          "ref": "5",
+          "description": "Airport Tax ( If required)",
+          "currency": "USD",
+          "amount": 0
+        },
+        {
+          "ref": "6",
+          "description": "Toll ( if required)",
+          "currency": "USD",
+          "amount": 0
+        }
+      ],
+      "total": 1260,
+      "fileName": "Cash Request - Massadi Gedeon Gedeon.xlsx",
+      "filePath": "C:\\Users\\Gedeon.Massadi\\Desktop\\voyage\\Cash Request - Massadi Gedeon Gedeon.xlsx",
+      "files": [
+        {
+          "type": "cash-request",
+          "fileName": "Cash Request - Massadi Gedeon Gedeon.xlsx",
+          "filePath": "C:\\Users\\Gedeon.Massadi\\Desktop\\voyage\\Cash Request - Massadi Gedeon Gedeon.xlsx"
+        },
+        {
+          "type": "trip-budget",
+          "fileName": "TRIP BUDGET FORM - Massadi Gedeon Gedeon.xlsx",
+          "filePath": "C:\\Users\\Gedeon.Massadi\\Desktop\\voyage\\TRIP BUDGET FORM - Massadi Gedeon Gedeon.xlsx"
+        },
+        {
+          "type": "travel-authorization",
+          "fileName": "Formulaire d'autorisation de voyage - Massadi Gedeon Gedeon.docx",
+          "filePath": "C:\\Users\\Gedeon.Massadi\\Desktop\\voyage\\Formulaire d'autorisation de voyage - Massadi Gedeon Gedeon.docx"
+        },
+        {
+          "type": "hotel-booking",
+          "fileName": "Hotel booking form - Massadi Gedeon Gedeon.docx",
+          "filePath": "C:\\Users\\Gedeon.Massadi\\Desktop\\voyage\\Hotel booking form - Massadi Gedeon Gedeon.docx"
+        },
+        {
+          "type": "mission-order",
+          "fileName": "Ordre de mission - Massadi Gedeon Gedeon.docx",
+          "filePath": "C:\\Users\\Gedeon.Massadi\\Desktop\\voyage\\Ordre de mission - Massadi Gedeon Gedeon.docx"
+        },
+        {
+          "type": "travel-pdf",
+          "fileName": "Documents de voyage - Massadi Gedeon Gedeon.pdf",
+          "filePath": "C:\\Users\\Gedeon.Massadi\\Desktop\\voyage\\Documents de voyage - Massadi Gedeon Gedeon.pdf"
+        }
+      ],
+      "saveDirectory": "C:\\Users\\Gedeon.Massadi\\Desktop\\voyage"
+    },
+    {
+      "id": "cr-1784130411254",
+      "type": "cash-request",
+      "createdAt": "2026-07-15T15:48:04.177Z",
+      "missionRef": "PPCB-DOC-HR-ZA/008/07/2026",
+      "employeeMatricule": "60000001",
+      "employeeName": "Enoch MAKENGELE",
+      "employeeDepartment": "Human Resources",
+      "costCenter": "KM5413",
+      "requestorLine": "Enoch MAKENGELE (60000001)        Department : Human Resources        Coast center : KM5413",
+      "objet": "Mission de Kimpese a Kinshasa",
+      "requestDate": "2026-07-15",
+      "travel": {
+        "position": "Driver",
+        "department": "Human Resources",
+        "tripPurpose": "Mission de Kimpese a Kinshasa",
+        "costCenter": "KM5413",
+        "documentDate": "2026-07-15",
+        "departureDate": "2026-07-16",
+        "departurePlace": "Kimpese",
+        "destinationPlace": "Kinshasa",
+        "returnDate": "2026-07-17",
+        "peopleCount": 1,
+        "companyName": "PPC Barnet Manufacturing SA",
+        "departmentToWorkWith": "Human Resources",
+        "contactPerson": "MANEKA MPUDI TRESOR",
+        "transportMeans": "Voiture",
+        "paymentOrderSignatory": "KINKINIA DIAVEZUKA PELAGIE",
+        "budgetLines": [
+          {
+            "label": "Accommodation ( Required)",
+            "amount": 10
+          },
+          {
+            "label": "Food allowance",
+            "amount": 10
+          },
+          {
+            "label": "Trip allowance",
+            "amount": 0
+          },
+          {
+            "label": "Transport (if required)",
+            "amount": 0
+          },
+          {
+            "label": "Airport Tax ( If required)",
+            "amount": 0
+          },
+          {
+            "label": "Toll ( if required)",
+            "amount": 7.5
+          },
+          {
+            "label": "Purchase diesel",
+            "amount": 25
+          }
+        ],
+        "isInternationalTravel": false
+      },
+      "lines": [
+        {
+          "ref": "1",
+          "description": "Accommodation ( Required)",
+          "currency": "USD",
+          "amount": 20
+        },
+        {
+          "ref": "2",
+          "description": "Food allowance",
+          "currency": "USD",
+          "amount": 20
+        },
+        {
+          "ref": "3",
+          "description": "Trip allowance",
+          "currency": "USD",
+          "amount": 0
+        },
+        {
+          "ref": "4",
+          "description": "Transport (if required)",
+          "currency": "USD",
+          "amount": 0
+        },
+        {
+          "ref": "5",
+          "description": "Airport Tax ( If required)",
+          "currency": "USD",
+          "amount": 0
+        },
+        {
+          "ref": "6",
+          "description": "Toll ( if required)",
+          "currency": "USD",
+          "amount": 15
+        },
+        {
+          "ref": "7",
+          "description": "Purchase diesel",
+          "currency": "USD",
+          "amount": 50
+        }
+      ],
+      "total": 105,
+      "fileName": "Cash Request - Enoch MAKENGELE.xlsx",
+      "filePath": "C:\\Users\\Gedeon.Massadi\\Desktop\\New folder\\Cash Request - Enoch MAKENGELE.xlsx",
+      "files": [
+        {
+          "type": "cash-request",
+          "fileName": "Cash Request - Enoch MAKENGELE.xlsx",
+          "filePath": "C:\\Users\\Gedeon.Massadi\\Desktop\\New folder\\Cash Request - Enoch MAKENGELE.xlsx"
+        },
+        {
+          "type": "trip-budget",
+          "fileName": "TRIP BUDGET FORM - Enoch MAKENGELE.xlsx",
+          "filePath": "C:\\Users\\Gedeon.Massadi\\Desktop\\New folder\\TRIP BUDGET FORM - Enoch MAKENGELE.xlsx"
+        },
+        {
+          "type": "travel-authorization",
+          "fileName": "Formulaire d'autorisation de voyage - Enoch MAKENGELE.docx",
+          "filePath": "C:\\Users\\Gedeon.Massadi\\Desktop\\New folder\\Formulaire d'autorisation de voyage - Enoch MAKENGELE.docx"
+        },
+        {
+          "type": "hotel-booking",
+          "fileName": "Hotel booking form - Enoch MAKENGELE.docx",
+          "filePath": "C:\\Users\\Gedeon.Massadi\\Desktop\\New folder\\Hotel booking form - Enoch MAKENGELE.docx"
+        },
+        {
+          "type": "mission-order",
+          "fileName": "Ordre de mission - Enoch MAKENGELE.docx",
+          "filePath": "C:\\Users\\Gedeon.Massadi\\Desktop\\New folder\\Ordre de mission - Enoch MAKENGELE.docx"
+        },
+        {
+          "type": "travel-pdf",
+          "fileName": "Documents de voyage - Enoch MAKENGELE.pdf",
+          "filePath": "C:\\Users\\Gedeon.Massadi\\Desktop\\New folder\\Documents de voyage - Enoch MAKENGELE.pdf"
+        }
+      ],
+      "saveDirectory": "C:\\Users\\Gedeon.Massadi\\Desktop\\New folder"
+    },
+    {
+      "id": "cr-1784131509742",
+      "type": "cash-request",
+      "createdAt": "2026-07-15T16:05:22.796Z",
+      "missionRef": "PPCB-DOC-HR-ZA/009/07/2026",
+      "employeeMatricule": "70000024",
+      "employeeName": "KITAMBO SENEMONA MEDARD",
+      "employeeDepartment": "Human Resources",
+      "costCenter": "KM5413",
+      "requestorLine": "KITAMBO SENEMONA MEDARD (70000024)        Department : Human Resources        Coast center : KM5413",
+      "objet": "Mission de Kimpese a Kinshasa",
+      "requestDate": "2026-07-15",
+      "travel": {
+        "position": "Driver",
+        "department": "Human Resources",
+        "tripPurpose": "Mission de Kimpese a Kinshasa",
+        "costCenter": "KM5413",
+        "documentDate": "2026-07-15",
+        "departureDate": "2026-07-16",
+        "departurePlace": "Kimpese",
+        "destinationPlace": "Kinshasa",
+        "returnDate": "2026-07-20",
+        "peopleCount": 1,
+        "companyName": "PPC Barnet Manufacturing SA",
+        "departmentToWorkWith": "Human Resources",
+        "contactPerson": "MANEKA MPUDI TRESOR",
+        "transportMeans": "Voiture",
+        "paymentOrderSignatory": "KINKINIA DIAVEZUKA PELAGIE",
+        "budgetLines": [
+          {
+            "label": "Food allowance",
+            "amount": 50
+          },
+          {
+            "label": "Trip allowance",
+            "amount": 50
+          },
+          {
+            "label": "Toll ( if required)",
+            "amount": 2
+          }
+        ],
+        "isInternationalTravel": false
+      },
+      "lines": [
+        {
+          "ref": "1",
+          "description": "Food allowance",
+          "currency": "USD",
+          "amount": 250
+        },
+        {
+          "ref": "2",
+          "description": "Trip allowance",
+          "currency": "USD",
+          "amount": 250
+        },
+        {
+          "ref": "3",
+          "description": "Toll ( if required)",
+          "currency": "USD",
+          "amount": 10
+        }
+      ],
+      "total": 510,
+      "fileName": "Cash Request - KITAMBO SENEMONA MEDARD.xlsx",
+      "filePath": "C:\\Users\\Gedeon.Massadi\\Desktop\\New folder (2)\\Cash Request - KITAMBO SENEMONA MEDARD.xlsx",
+      "files": [
+        {
+          "type": "cash-request",
+          "fileName": "Cash Request - KITAMBO SENEMONA MEDARD.xlsx",
+          "filePath": "C:\\Users\\Gedeon.Massadi\\Desktop\\New folder (2)\\Cash Request - KITAMBO SENEMONA MEDARD.xlsx"
+        },
+        {
+          "type": "trip-budget",
+          "fileName": "TRIP BUDGET FORM - KITAMBO SENEMONA MEDARD.xlsx",
+          "filePath": "C:\\Users\\Gedeon.Massadi\\Desktop\\New folder (2)\\TRIP BUDGET FORM - KITAMBO SENEMONA MEDARD.xlsx"
+        },
+        {
+          "type": "travel-authorization",
+          "fileName": "Formulaire d'autorisation de voyage - KITAMBO SENEMONA MEDARD.docx",
+          "filePath": "C:\\Users\\Gedeon.Massadi\\Desktop\\New folder (2)\\Formulaire d'autorisation de voyage - KITAMBO SENEMONA MEDARD.docx"
+        },
+        {
+          "type": "hotel-booking",
+          "fileName": "Hotel booking form - KITAMBO SENEMONA MEDARD.docx",
+          "filePath": "C:\\Users\\Gedeon.Massadi\\Desktop\\New folder (2)\\Hotel booking form - KITAMBO SENEMONA MEDARD.docx"
+        },
+        {
+          "type": "mission-order",
+          "fileName": "Ordre de mission - KITAMBO SENEMONA MEDARD.docx",
+          "filePath": "C:\\Users\\Gedeon.Massadi\\Desktop\\New folder (2)\\Ordre de mission - KITAMBO SENEMONA MEDARD.docx"
+        },
+        {
+          "type": "travel-pdf",
+          "fileName": "Documents de voyage - KITAMBO SENEMONA MEDARD.pdf",
+          "filePath": "C:\\Users\\Gedeon.Massadi\\Desktop\\New folder (2)\\Documents de voyage - KITAMBO SENEMONA MEDARD.pdf"
+        }
+      ],
+      "saveDirectory": "C:\\Users\\Gedeon.Massadi\\Desktop\\New folder (2)"
+    },
+    {
+      "id": "cr-1784133988021",
+      "type": "cash-request",
+      "createdAt": "2026-07-15T16:46:46.988Z",
+      "missionRef": "PPCB-DOC-HR-ZA/010/07/2026",
+      "employeeMatricule": "70000024",
+      "employeeName": "KITAMBO SENEMONA MEDARD",
+      "employeeDepartment": "Human Resources",
+      "costCenter": "KM5413",
+      "requestorLine": "KITAMBO SENEMONA MEDARD (70000024)        Department : Human Resources        Coast center : KM5413",
+      "objet": "Mission de Kimpese a Kinshasa",
+      "requestDate": "2026-07-15",
+      "travel": {
+        "position": "Driver",
+        "department": "Human Resources",
+        "tripPurpose": "Mission de Kimpese a Kinshasa",
+        "costCenter": "KM5413",
+        "documentDate": "2026-07-15",
+        "departureDate": "2026-07-16",
+        "departurePlace": "Kimpese",
+        "destinationPlace": "Kinshasa",
+        "returnDate": "2026-07-17",
+        "peopleCount": 1,
+        "companyName": "PPC Barnet Manufacturing SA",
+        "departmentToWorkWith": "Human Resources",
+        "contactPerson": "MANEKA MPUDI TRESOR",
+        "transportMeans": "Voiture",
+        "paymentOrderSignatory": "KINKINIA DIAVEZUKA PELAGIE",
+        "budgetLines": [
+          {
+            "label": "Food allowance",
+            "amount": 50
+          },
+          {
+            "label": "Trip allowance",
+            "amount": 50
+          },
+          {
+            "label": "Toll ( if required)",
+            "amount": 2.5
+          }
+        ],
+        "isInternationalTravel": false
+      },
+      "lines": [
+        {
+          "ref": "1",
+          "description": "Food allowance",
+          "currency": "USD",
+          "amount": 100
+        },
+        {
+          "ref": "2",
+          "description": "Trip allowance",
+          "currency": "USD",
+          "amount": 100
+        },
+        {
+          "ref": "3",
+          "description": "Toll ( if required)",
+          "currency": "USD",
+          "amount": 5
+        }
+      ],
+      "total": 205,
+      "fileName": "Cash Request - KITAMBO SENEMONA MEDARD.xlsx",
+      "filePath": "C:\\Users\\Gedeon.Massadi\\Desktop\\New folder (2)\\med\\Cash Request - KITAMBO SENEMONA MEDARD.xlsx",
+      "files": [
+        {
+          "type": "cash-request",
+          "fileName": "Cash Request - KITAMBO SENEMONA MEDARD.xlsx",
+          "filePath": "C:\\Users\\Gedeon.Massadi\\Desktop\\New folder (2)\\med\\Cash Request - KITAMBO SENEMONA MEDARD.xlsx"
+        },
+        {
+          "type": "trip-budget",
+          "fileName": "TRIP BUDGET FORM - KITAMBO SENEMONA MEDARD.xlsx",
+          "filePath": "C:\\Users\\Gedeon.Massadi\\Desktop\\New folder (2)\\med\\TRIP BUDGET FORM - KITAMBO SENEMONA MEDARD.xlsx"
+        },
+        {
+          "type": "travel-authorization",
+          "fileName": "Formulaire d'autorisation de voyage - KITAMBO SENEMONA MEDARD.docx",
+          "filePath": "C:\\Users\\Gedeon.Massadi\\Desktop\\New folder (2)\\med\\Formulaire d'autorisation de voyage - KITAMBO SENEMONA MEDARD.docx"
+        },
+        {
+          "type": "hotel-booking",
+          "fileName": "Hotel booking form - KITAMBO SENEMONA MEDARD.docx",
+          "filePath": "C:\\Users\\Gedeon.Massadi\\Desktop\\New folder (2)\\med\\Hotel booking form - KITAMBO SENEMONA MEDARD.docx"
+        },
+        {
+          "type": "mission-order",
+          "fileName": "Ordre de mission - KITAMBO SENEMONA MEDARD.docx",
+          "filePath": "C:\\Users\\Gedeon.Massadi\\Desktop\\New folder (2)\\med\\Ordre de mission - KITAMBO SENEMONA MEDARD.docx"
+        },
+        {
+          "type": "travel-pdf",
+          "fileName": "Documents de voyage - KITAMBO SENEMONA MEDARD.pdf",
+          "filePath": "C:\\Users\\Gedeon.Massadi\\Desktop\\New folder (2)\\med\\Documents de voyage - KITAMBO SENEMONA MEDARD.pdf"
+        }
+      ],
+      "saveDirectory": "C:\\Users\\Gedeon.Massadi\\Desktop\\New folder (2)\\med"
+    }
+  ]
+}

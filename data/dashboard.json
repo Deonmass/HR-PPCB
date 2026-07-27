@@ -1,0 +1,298 @@
+{
+    "dashboard":  {
+                      "totalEmployee":  "176",
+                      "conformeRate":  "84%",
+                      "noConformeRate":  "16%",
+                      "departments":  [
+                                          {
+                                              "name":  "Admin",
+                                              "total":  "7",
+                                              "y":  "68%",
+                                              "na":  "14%",
+                                              "n":  "19%",
+                                              "rate":  "81%"
+                                          },
+                                          {
+                                              "name":  "Audit",
+                                              "total":  "2",
+                                              "y":  "66%",
+                                              "na":  "16%",
+                                              "n":  "18%",
+                                              "rate":  "82%"
+                                          },
+                                          {
+                                              "name":  "Transport\u0026Transit",
+                                              "total":  "5",
+                                              "y":  "58%",
+                                              "na":  "23%",
+                                              "n":  "19%",
+                                              "rate":  "81%"
+                                          },
+                                          {
+                                              "name":  "CEC",
+                                              "total":  "10",
+                                              "y":  "59%",
+                                              "na":  "23%",
+                                              "n":  "17%",
+                                              "rate":  "83%"
+                                          },
+                                          {
+                                              "name":  "Garage",
+                                              "total":  "1",
+                                              "y":  "58%",
+                                              "na":  "16%",
+                                              "n":  "26%",
+                                              "rate":  "74%"
+                                          },
+                                          {
+                                              "name":  "Engineering",
+                                              "total":  "27",
+                                              "y":  "67%",
+                                              "na":  "21%",
+                                              "n":  "12%",
+                                              "rate":  "88%"
+                                          },
+                                          {
+                                              "name":  "Albatros",
+                                              "total":  "8",
+                                              "y":  "48%",
+                                              "na":  "43%",
+                                              "n":  "9%",
+                                              "rate":  "91%"
+                                          },
+                                          {
+                                              "name":  "SHE",
+                                              "total":  "3",
+                                              "y":  "75%",
+                                              "na":  "11%",
+                                              "n":  "14%",
+                                              "rate":  "86%"
+                                          },
+                                          {
+                                              "name":  "Finance",
+                                              "total":  "17",
+                                              "y":  "57%",
+                                              "na":  "24%",
+                                              "n":  "19%",
+                                              "rate":  "81%"
+                                          },
+                                          {
+                                              "name":  "HR",
+                                              "total":  "15",
+                                              "y":  "53%",
+                                              "na":  "23%",
+                                              "n":  "24%",
+                                              "rate":  "76%"
+                                          },
+                                          {
+                                              "name":  "Legal",
+                                              "total":  "4",
+                                              "y":  "63%",
+                                              "na":  "20%",
+                                              "n":  "17%",
+                                              "rate":  "83%"
+                                          },
+                                          {
+                                              "name":  "Warehouse",
+                                              "total":  "3",
+                                              "y":  "63%",
+                                              "na":  "14%",
+                                              "n":  "23%",
+                                              "rate":  "77%"
+                                          },
+                                          {
+                                              "name":  "Logistics",
+                                              "total":  "3",
+                                              "y":  "58%",
+                                              "na":  "26%",
+                                              "n":  "16%",
+                                              "rate":  "84%"
+                                          },
+                                          {
+                                              "name":  "Mining",
+                                              "total":  "10",
+                                              "y":  "62%",
+                                              "na":  "18%",
+                                              "n":  "19%",
+                                              "rate":  "81%"
+                                          },
+                                          {
+                                              "name":  "Optimisation",
+                                              "total":  "3",
+                                              "y":  "65%",
+                                              "na":  "21%",
+                                              "n":  "14%",
+                                              "rate":  "86%"
+                                          },
+                                          {
+                                              "name":  "Packing Plant",
+                                              "total":  "5",
+                                              "y":  "67%",
+                                              "na":  "22%",
+                                              "n":  "11%",
+                                              "rate":  "89%"
+                                          },
+                                          {
+                                              "name":  "Procurement",
+                                              "total":  "4",
+                                              "y":  "62%",
+                                              "na":  "24%",
+                                              "n":  "14%",
+                                              "rate":  "86%"
+                                          },
+                                          {
+                                              "name":  "Production",
+                                              "total":  "21",
+                                              "y":  "66%",
+                                              "na":  "20%",
+                                              "n":  "13%",
+                                              "rate":  "87%"
+                                          },
+                                          {
+                                              "name":  "Lab",
+                                              "total":  "11",
+                                              "y":  "68%",
+                                              "na":  "20%",
+                                              "n":  "12%",
+                                              "rate":  "88%"
+                                          },
+                                          {
+                                              "name":  "Sales",
+                                              "total":  "16",
+                                              "y":  "62%",
+                                              "na":  "20%",
+                                              "n":  "18%",
+                                              "rate":  "82%"
+                                          },
+                                          {
+                                              "name":  "Supply Chain",
+                                              "total":  "1",
+                                              "y":  "63%",
+                                              "na":  "11%",
+                                              "n":  "26%",
+                                              "rate":  "74%"
+                                          }
+                                      ]
+                  },
+    "inspections":  [
+                        {
+                            "critere":  "Copie carte d’électeur, passeport etc…",
+                            "total":  "176",
+                            "n":  "1",
+                            "y":  "172",
+                            "na":  "3"
+                        },
+                        {
+                            "critere":  "2 Photos passeport",
+                            "total":  "176",
+                            "n":  "21",
+                            "y":  "149",
+                            "na":  "6"
+                        },
+                        {
+                            "critere":  "Acte de mariage",
+                            "total":  "176",
+                            "n":  "3",
+                            "y":  "128",
+                            "na":  "45"
+                        },
+                        {
+                            "critere":  "Acte/Certificat de naissance enfants",
+                            "total":  "176",
+                            "n":  "1",
+                            "y":  "132",
+                            "na":  "43"
+                        },
+                        {
+                            "critere":  "Extrait de casier Judiciaire ou déclaration sur l’honneur ou certificat de bonne vie et mœurs",
+                            "total":  "176",
+                            "n":  "27",
+                            "y":  "146",
+                            "na":  "3"
+                        },
+                        {
+                            "critere":  "Attestation de fin service antérieur rendu ",
+                            "total":  "176",
+                            "n":  "41",
+                            "y":  "105",
+                            "na":  "30"
+                        },
+                        {
+                            "critere":  "Diplôme ou relevé de notes ou certificats professionnels",
+                            "total":  "176",
+                            "n":  "6",
+                            "y":  "168",
+                            "na":  "2"
+                        },
+                        {
+                            "critere":  "Certificat de résidence (expat)",
+                            "total":  "176",
+                            "n":  "0",
+                            "y":  "5",
+                            "na":  "171"
+                        },
+                        {
+                            "critere":  "Aptitude physique",
+                            "total":  "176",
+                            "n":  "15",
+                            "y":  "159",
+                            "na":  "2"
+                        },
+                        {
+                            "critere":  "Curriculum vitae",
+                            "total":  "176",
+                            "n":  "17",
+                            "y":  "157",
+                            "na":  "2"
+                        },
+                        {
+                            "critere":  "N° CNSS ou copie carte cnss ",
+                            "total":  "176",
+                            "n":  "0",
+                            "y":  "167",
+                            "na":  "9"
+                        },
+                        {
+                            "critere":  "RRF",
+                            "total":  "176",
+                            "n":  "27",
+                            "y":  "14",
+                            "na":  "135"
+                        },
+                        {
+                            "critere":  "Références reçues",
+                            "total":  "176",
+                            "n":  "24",
+                            "y":  "13",
+                            "na":  "139"
+                        },
+                        {
+                            "critere":  "Fiche d’induction",
+                            "total":  "176",
+                            "n":  "122",
+                            "y":  "45",
+                            "na":  "9"
+                        },
+                        {
+                            "critere":  "Accusé de réception de/du code de conduite, ROI, Ethique, harcèlement, IT…",
+                            "total":  "176",
+                            "n":  "47",
+                            "y":  "120",
+                            "na":  "9"
+                        },
+                        {
+                            "critere":  "IT arrival form",
+                            "total":  "176",
+                            "n":  "111",
+                            "y":  "62",
+                            "na":  "3"
+                        },
+                        {
+                            "critere":  "SAP input form",
+                            "total":  "176",
+                            "n":  "59",
+                            "y":  "113",
+                            "na":  "4"
+                        }
+                    ]
+}

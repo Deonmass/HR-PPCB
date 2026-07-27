@@ -1,0 +1,38 @@
+{
+  "name": "hr-rh-app",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "clean": "node -e \"require('fs').rmSync('.next',{recursive:true,force:true})\"",
+    "dev": "next dev",
+    "dev:clean": "npm run clean && next dev",
+    "dev:turbo": "npm run clean && next dev --turbo",
+    "build": "next build",
+    "start": "next start",
+    "lint": "next lint",
+    "import:employees": "node scripts/import-employees.mjs",
+    "import:projects": "node scripts/import-projects.mjs",
+    "build:factures-template": "node scripts/patch-factures-suivi-template.mjs"
+  },
+  "dependencies": {
+    "@fontsource/exo-2": "^5.2.8",
+    "@fontsource/orbitron": "^5.2.8",
+    "exceljs": "^4.4.0",
+    "jszip": "^3.10.1",
+    "next": "^15.1.0",
+    "pdf-lib": "^1.17.1",
+    "react": "^19.0.0",
+    "react-dom": "^19.0.0",
+    "server-only": "^0.0.1",
+    "sweetalert2": "^11.26.25",
+    "xlsx": "^0.18.5",
+    "xlsx-js-style": "^1.2.0",
+    "xlsx-populate": "^1.21.0"
+  },
+  "devDependencies": {
+    "@types/node": "^22.10.0",
+    "@types/react": "^19.0.0",
+    "@types/react-dom": "^19.0.0",
+    "typescript": "^5.7.0"
+  }
+}

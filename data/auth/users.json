@@ -1,0 +1,24 @@
+{
+  "users": [
+    {
+      "id": "user-admin",
+      "username": "admin",
+      "password": "a665a45920422f9d417e4867efdc4fb8a04a1f3fff1fa07e998e86f7f7a27ae3",
+      "displayName": "Administrateur",
+      "initials": "AD",
+      "email": "admin@ppcbarnet.local",
+      "active": true,
+      "createdAt": "2026-07-03T08:11:50.607Z"
+    },
+    {
+      "id": "user-1783081211382",
+      "username": "berthe.lubenzo",
+      "password": "a665a45920422f9d417e4867efdc4fb8a04a1f3fff1fa07e998e86f7f7a27ae3",
+      "displayName": "Berthe lubenzo",
+      "initials": "BL",
+      "email": "Berth.Lubenzo@ppcdrc.cd",
+      "active": true,
+      "createdAt": "2026-07-03T12:20:11.391Z"
+    }
+  ]
+}

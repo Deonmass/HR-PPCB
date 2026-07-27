@@ -1,0 +1,18 @@
+{
+  "costCenters": [
+    {
+      "id": "cc-4501",
+      "code": "CC-4501",
+      "name": "Operations",
+      "departmentId": "dept-hr",
+      "active": true
+    },
+    {
+      "id": "cc-4502",
+      "code": "CC-4502",
+      "name": "Projects",
+      "departmentId": "dept-it",
+      "active": true
+    }
+  ]
+}
