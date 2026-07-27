@@ -120,34 +120,60 @@ export default function AttestationServicesPage() {
   }, [loadEmployees, loadHistory]);
 
   const handleLanguageChange = (language: 'fr' | 'en') => {
-    setForm((prev) => ({
-      ...prev,
-      language,
-      hodGenre: language === 'en' ? 'Mr.' : 'Monsieur',
-      employeeGenre: language === 'en' ? 'Mr.' : 'Monsieur',
-      employeeFunction: prev.employeeFunction
-        ? localizeJobTitle(prev.employeeFunction, language)
-        : '',
-      hodFunction: prev.hodFunction ? localizeJobTitle(prev.hodFunction, language) : '',
-    }));
+    setForm((prev) => {
+      const mapGenre = (genre: string): string => {
+        if (language === 'en') {
+          if (/madame|mme|mrs/i.test(genre)) return 'Mrs.';
+          if (/mademoiselle|mlle|ms/i.test(genre)) return 'Ms.';
+          return 'Mr.';
+        }
+        if (/mrs|madame|mme/i.test(genre)) return 'Madame';
+        if (/ms|miss|mademoiselle|mlle/i.test(genre)) return 'Mademoiselle';
+        return 'Monsieur';
+      };
+      const hodGenre = mapGenre(prev.hodGenre);
+      const employeeGenre = mapGenre(prev.employeeGenre);
+      return {
+        ...prev,
+        language,
+        hodGenre,
+        employeeGenre,
+        employeeFunction: prev.employeeFunction
+          ? localizeJobTitle(prev.employeeFunction, language, employeeGenre)
+          : '',
+        hodFunction: prev.hodFunction
+          ? localizeJobTitle(prev.hodFunction, language, hodGenre)
+          : '',
+      };
+    });
   };
 
   const handleEmployeeSelect = (employee: Employee) => {
+    const employeeGenre = genreFromEmployee(employee, form.language);
     patchForm({
       employeeName: employee.nom,
       employeeMatricule: employee.matricule,
       employeeDepartment: employee.departement,
-      employeeFunction: localizeJobTitle(employee.jobTitle || employee.grade, form.language),
+      employeeGenre,
       dateEmbauche: toDateInputValue(employee.appointmentDate || ''),
-      employeeGenre: genreFromEmployee(employee, form.language),
+      employeeFunction: localizeJobTitle(
+        employee.jobTitle || employee.grade,
+        form.language,
+        employeeGenre,
+      ),
     });
   };
 
   const handleHodSelect = (employee: Employee) => {
+    const hodGenre = genreFromEmployee(employee, form.language);
     patchForm({
       hodName: employee.nom,
-      hodFunction: localizeJobTitle(employee.jobTitle || employee.grade, form.language),
-      hodGenre: genreFromEmployee(employee, form.language),
+      hodGenre,
+      hodFunction: localizeJobTitle(
+        employee.jobTitle || employee.grade,
+        form.language,
+        hodGenre,
+      ),
     });
   };
 
