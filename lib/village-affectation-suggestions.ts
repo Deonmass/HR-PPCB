@@ -16,8 +16,9 @@ import {
   SUGGESTION_AFFECTATION_HEADERS,
   SUGGESTION_AFFECTATION_SHEET,
 } from './village-columns';
+import { getEmployeeWorkbookPath } from './excel-data-paths';
 
-const EXCEL_PATH = process.env.EMPLOYEE_XLSX || path.join(process.cwd(), 'Excel', 'EMPLOYEE.xlsx');
+const EXCEL_PATH = getEmployeeWorkbookPath();
 
 export interface VillageAffectationSuggestion {
   id: string;

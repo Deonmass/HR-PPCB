@@ -10,8 +10,9 @@ import {
   getExportTemplatesDirectory,
 } from './excel-export-template-paths';
 import { withExcelLock } from './excel-io';
+import { getEmployeeWorkbookPath } from './excel-data-paths';
 
-const EXCEL_PATH = process.env.EMPLOYEE_XLSX || path.join(process.cwd(), 'Excel', 'EMPLOYEE.xlsx');
+const EXCEL_PATH = getEmployeeWorkbookPath();
 const MASTER_SHEET = EMPLOYEE_MASTER_SHEET;
 const BASE_SHEET = 'Base';
 const EXIT_EXPORT_SHEET = 'EXIT';
@@ -470,8 +471,7 @@ export async function buildEmployeesHrExportBuffer(livePath = EXCEL_PATH): Promi
       fillExitDashboardSection(dashboardSheet, lastExitRow);
     }
 
-    await persistUpdatedTemplate(templatePath, templateWb);
-
+    // Ne jamais réécrire le template sur disque (Vercel read-only + local immutable).
     return templateWb.outputAsync() as Promise<Buffer>;
   });
 }

@@ -31,6 +31,8 @@ import { emptyEmployeeHrProfile } from './types';
 import * as XLSX from 'xlsx-js-style';
 import type { WorkBook, WorkSheet } from 'xlsx-js-style';
 
+import { getEmployeeWorkbookPath, getEmployeesSnapshotPath } from './excel-data-paths';
+
 /**
  * `Excel/EMPLOYEE.xlsx` is the live database for the Employés module.
  * Master data is read from sheet "EMPLOYEE"; documents from "CHECK DOCUMENTS BASE".
@@ -42,8 +44,8 @@ import type { WorkBook, WorkSheet } from 'xlsx-js-style';
  * La colonne Age (formule) n'est jamais écrasée.
  */
 
-const EXCEL_PATH = process.env.EMPLOYEE_XLSX || path.join(process.cwd(), 'Excel', 'EMPLOYEE.xlsx');
-const SNAPSHOT_PATH = path.join(process.cwd(), 'data', 'employees.json');
+const EXCEL_PATH = getEmployeeWorkbookPath();
+const SNAPSHOT_PATH = getEmployeesSnapshotPath();
 
 const MASTER_SHEET_NAME = 'EMPLOYEE';
 const MASTER_DATA_START = 2;

@@ -433,7 +433,7 @@ async function buildFromTemplate(templatePath: string, livePath: string): Promis
 
     const lastLiveRow = findLastDependantsDataRow(liveSheet);
     recalculateFamilyTotalsOnSheet(liveSheet, lastLiveRow);
-    await liveWb.toFileAsync(livePath);
+    // Recalcul en mémoire uniquement — pas d’écriture du workbook live pendant l’export.
 
     const activeMatricules = readMatriculesFromHrSheet(liveWb, 'EMPLOYEE');
     const exitMatricules = readMatriculesFromHrSheet(liveWb, EMPLOYEE_EXIT_SHEET);
@@ -471,8 +471,6 @@ async function buildFromTemplate(templatePath: string, livePath: string): Promis
     );
     finalizeDependantsSheet(exitSheet, lastExitRow, exitEndBefore);
 
-    await persistUpdatedTemplate(templatePath, templateWb);
-
     return templateWb.outputAsync();
   });
 }
@@ -488,7 +486,7 @@ async function buildFromLiveWorkbook(livePath: string): Promise<Buffer> {
     const lastLiveRow = findLastDependantsDataRow(liveSheet);
     recalculateFamilyTotalsOnSheet(liveSheet, lastLiveRow);
     updateHeaderTotalAndRowNumbers(liveSheet, lastLiveRow);
-    await liveWb.toFileAsync(livePath);
+    // Export en mémoire — ne pas écrire le workbook live.
 
     const exportWb = await XlsxPopulate.fromBlankAsync();
     const activeSheet = exportWb.sheet(0).name(DEPENDANTS_SHEET);

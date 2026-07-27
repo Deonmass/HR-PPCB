@@ -2,6 +2,7 @@ import 'server-only';
 
 import fs from 'fs';
 import path from 'path';
+import { getDataBackend, resolveWorkbookPath } from '../runtime-mode';
 
 const EXCEL_DIR = path.join(process.cwd(), 'Excel');
 const MODULE_DIR = path.join(EXCEL_DIR, 'factures-fournisseurs');
@@ -9,6 +10,11 @@ const MODULE_DIR = path.join(EXCEL_DIR, 'factures-fournisseurs');
 export function getFacturesFournisseursDirectory(): string {
   if (process.env.FACTURES_FOURNISSEURS_DIR?.trim()) {
     return path.resolve(process.env.FACTURES_FOURNISSEURS_DIR.trim());
+  }
+  if (getDataBackend() === 'tmp') {
+    return path.dirname(
+      resolveWorkbookPath('factures-fournisseurs/FACTURES_FOURNISSEURS.xlsx'),
+    );
   }
   return MODULE_DIR;
 }
@@ -20,6 +26,15 @@ export function getFacturesFournisseursDirectory(): string {
 export function resolveFacturesFournisseursWorkbookPath(): string {
   if (process.env.FACTURES_FOURNISSEURS_XLSX?.trim()) {
     return path.resolve(process.env.FACTURES_FOURNISSEURS_XLSX.trim());
+  }
+
+  if (getDataBackend() === 'tmp') {
+    const preferredRel = 'factures-fournisseurs/FACTURES_FOURNISSEURS.xlsx';
+    const preferredBundled = path.join(EXCEL_DIR, preferredRel);
+    if (fs.existsSync(preferredBundled)) {
+      return resolveWorkbookPath(preferredRel);
+    }
+    return resolveWorkbookPath('FACTURES_FOURNISSEURS.xlsx');
   }
 
   const preferred = path.join(getFacturesFournisseursDirectory(), 'FACTURES_FOURNISSEURS.xlsx');

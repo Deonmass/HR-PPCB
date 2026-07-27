@@ -5,6 +5,19 @@ const nextConfig: NextConfig = {
   generateBuildId: async () => {
     return process.env.BUILD_ID || `build-${Date.now()}`;
   },
+  // Inclure les classeurs Excel / templates / seeds dans le bundle serverless Vercel.
+  outputFileTracingIncludes: {
+    '/api/**/*': [
+      './Excel/**/*',
+      './data/auth/permissions.json',
+      './data/employees.json',
+      './data/projects.json',
+    ],
+    '/*': [
+      './Excel/**/*',
+      './data/auth/permissions.json',
+    ],
+  },
 };
 
 export default nextConfig;

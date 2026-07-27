@@ -45,9 +45,27 @@ import type {
   TravelGeneratedFile,
   TravelHistoryData,
 } from './travel-types';
+import { canPersistProjectFiles, getWritableDataRoot } from './runtime-mode';
+import fsSync from 'fs';
 
-const DATA_DIR = path.join(process.cwd(), 'data', 'travel');
+const DATA_DIR = canPersistProjectFiles()
+  ? path.join(process.cwd(), 'data', 'travel')
+  : path.join(getWritableDataRoot(), 'travel');
 const HISTORY_PATH = path.join(DATA_DIR, 'cash-requests.json');
+
+function seedTravelHistoryIfNeeded(): void {
+  if (canPersistProjectFiles()) return;
+  const bundled = path.join(process.cwd(), 'data', 'travel', 'cash-requests.json');
+  try {
+    if (!fsSync.existsSync(HISTORY_PATH) && fsSync.existsSync(bundled)) {
+      fsSync.mkdirSync(DATA_DIR, { recursive: true });
+      fsSync.copyFileSync(bundled, HISTORY_PATH);
+    }
+  } catch {
+    // ignore
+  }
+}
+seedTravelHistoryIfNeeded();
 
 let generationChain: Promise<unknown> = Promise.resolve();
 

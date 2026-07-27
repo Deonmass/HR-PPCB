@@ -1,6 +1,5 @@
 import 'server-only';
 
-import path from 'path';
 import * as XLSX from 'xlsx-js-style';
 import {
   getSheetBlock,
@@ -27,8 +26,9 @@ import type {
   VillageTailleFormData,
 } from './village-types';
 import { compareMaisonNumero } from './table-sort';
+import { getEmployeeWorkbookPath } from './excel-data-paths';
 
-const EXCEL_PATH = process.env.EMPLOYEE_XLSX || path.join(process.cwd(), 'Excel', 'EMPLOYEE.xlsx');
+const EXCEL_PATH = getEmployeeWorkbookPath();
 
 function str(value: unknown): string {
   return String(value ?? '').trim();

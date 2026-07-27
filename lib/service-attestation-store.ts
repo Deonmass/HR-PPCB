@@ -17,10 +17,28 @@ import type {
   ServiceAttestationHistoryData,
   ServiceAttestationRecord,
 } from './service-attestation-types';
+import { canPersistProjectFiles, getWritableDataRoot } from './runtime-mode';
+import fsSync from 'fs';
 
-const DATA_DIR = path.join(process.cwd(), 'data', 'service-attestation');
+const DATA_DIR = canPersistProjectFiles()
+  ? path.join(process.cwd(), 'data', 'service-attestation')
+  : path.join(getWritableDataRoot(), 'service-attestation');
 const HISTORY_PATH = path.join(DATA_DIR, 'history.json');
 const FILES_DIR = path.join(DATA_DIR, 'files');
+
+function seedServiceAttestationIfNeeded(): void {
+  if (canPersistProjectFiles()) return;
+  const bundled = path.join(process.cwd(), 'data', 'service-attestation', 'history.json');
+  try {
+    if (!fsSync.existsSync(HISTORY_PATH) && fsSync.existsSync(bundled)) {
+      fsSync.mkdirSync(DATA_DIR, { recursive: true });
+      fsSync.copyFileSync(bundled, HISTORY_PATH);
+    }
+  } catch {
+    // ignore
+  }
+}
+seedServiceAttestationIfNeeded();
 
 async function ensureDataDir(): Promise<void> {
   await fs.mkdir(FILES_DIR, { recursive: true });
