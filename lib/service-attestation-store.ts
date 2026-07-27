@@ -4,7 +4,7 @@ import fs from 'fs/promises';
 import path from 'path';
 import { randomUUID } from 'crypto';
 import { writeDocxFromTemplate } from './docx-template';
-import { convertDocxToPdf } from './travel-pdf';
+import { buildServiceAttestationPdfBuffer } from './service-attestation-pdf.server';
 import {
   buildServiceAttestationPreviewHtml,
   extractDocxPlainText,
@@ -113,7 +113,8 @@ export async function createServiceAttestation(
 
   let savedPdfPath: string | undefined;
   try {
-    await convertDocxToPdf(docxPath, pdfPath);
+    const pdfBuffer = await buildServiceAttestationPdfBuffer(form);
+    await fs.writeFile(pdfPath, pdfBuffer);
     savedPdfPath = pdfPath;
   } catch {
     savedPdfPath = undefined;

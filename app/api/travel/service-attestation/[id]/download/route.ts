@@ -1,7 +1,7 @@
 import fs from 'fs/promises';
 import { NextResponse } from 'next/server';
-import { excelErrorResponse } from '@/lib/excel-io';
 import { getServiceAttestation } from '@/lib/service-attestation-store';
+import { buildServiceAttestationPdfBuffer } from '@/lib/service-attestation-pdf.server';
 import { checkAnyPermission } from '@/lib/require-permission';
 
 type Params = { params: Promise<{ id: string }> };
@@ -32,15 +32,19 @@ export async function GET(request: Request, { params }: Params) {
 
     const type = new URL(request.url).searchParams.get('type');
     if (type === 'pdf') {
-      if (!record.pdfPath) {
-        return NextResponse.json(
-          { error: 'PDF non disponible (Microsoft Office requis sous Windows)' },
-          { status: 404 },
-        );
+      let buffer: Buffer | null = null;
+      if (record.pdfPath) {
+        try {
+          buffer = await fs.readFile(record.pdfPath);
+        } catch {
+          buffer = null;
+        }
       }
-      const buffer = await fs.readFile(record.pdfPath);
+      if (!buffer) {
+        buffer = await buildServiceAttestationPdfBuffer(record);
+      }
       const pdfName = record.fileName.replace(/\.docx$/i, '.pdf');
-      return new NextResponse(buffer, {
+      return new NextResponse(new Uint8Array(buffer), {
         headers: {
           'Content-Type': 'application/pdf',
           'Content-Disposition': `attachment; filename="${pdfName}"`,
@@ -56,7 +60,7 @@ export async function GET(request: Request, { params }: Params) {
       },
     });
   } catch (err) {
-    const { status, message } = excelErrorResponse(err);
-    return NextResponse.json({ error: message }, { status });
+    const message = err instanceof Error ? err.message : 'Téléchargement impossible';
+    return NextResponse.json({ error: message }, { status: 500 });
   }
 }
