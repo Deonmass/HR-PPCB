@@ -41,6 +41,22 @@ function formatDate(value: string): string {
   return date.toLocaleDateString('fr-FR');
 }
 
+/** Affichage jj/mm/aaaa (ou ISO) → valeur input[type=date] aaaa-mm-jj. */
+function toDateInputValue(display: string): string {
+  const raw = display.trim();
+  if (!raw) return '';
+  if (/^\d{4}-\d{2}-\d{2}$/.test(raw)) return raw;
+  const fr = raw.match(/^(\d{1,2})[\/\-.](\d{1,2})[\/\-.](\d{4})$/);
+  if (!fr) return '';
+  return `${fr[3]}-${fr[2].padStart(2, '0')}-${fr[1].padStart(2, '0')}`;
+}
+
+function genreFromEmployee(employee: Employee, language: 'fr' | 'en'): string {
+  if (/^f/i.test(employee.gender)) return language === 'en' ? 'Mrs.' : 'Madame';
+  if (/^m/i.test(employee.gender)) return language === 'en' ? 'Mr.' : 'Monsieur';
+  return language === 'en' ? 'Mr.' : 'Monsieur';
+}
+
 function downloadUrl(id: string, type: 'docx' | 'pdf'): string {
   const params = type === 'pdf' ? '?type=pdf' : '';
   return `/api/travel/service-attestation/${encodeURIComponent(id)}/download${params}`;
@@ -122,6 +138,8 @@ export default function AttestationServicesPage() {
       employeeMatricule: employee.matricule,
       employeeDepartment: employee.departement,
       employeeFunction: localizeJobTitle(employee.jobTitle || employee.grade, form.language),
+      dateEmbauche: toDateInputValue(employee.appointmentDate || ''),
+      employeeGenre: genreFromEmployee(employee, form.language),
     });
   };
 
@@ -129,6 +147,7 @@ export default function AttestationServicesPage() {
     patchForm({
       hodName: employee.nom,
       hodFunction: localizeJobTitle(employee.jobTitle || employee.grade, form.language),
+      hodGenre: genreFromEmployee(employee, form.language),
     });
   };
 
