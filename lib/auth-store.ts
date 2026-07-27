@@ -29,7 +29,14 @@ import type {
   UserPermissions,
 } from './auth-types';
 
-const AUTH_DIR = path.join(process.cwd(), 'data', 'auth');
+// Vercel mount `/var/task` is read-only. Use a writable dir for session persistence.
+// - Local/dev: keep existing `data/auth`.
+// - Vercel: default to `/tmp/hr-rh-auth` (override with `AUTH_DATA_DIR` if needed).
+const AUTH_DIR = process.env.AUTH_DATA_DIR
+  ? path.resolve(process.env.AUTH_DATA_DIR)
+  : process.env.VERCEL
+    ? path.join('/tmp', 'hr-rh-auth')
+    : path.join(process.cwd(), 'data', 'auth');
 const SESSIONS_PATH = path.join(AUTH_DIR, 'sessions.json');
 
 import { SESSION_COOKIE_NAME } from './auth-constants';
