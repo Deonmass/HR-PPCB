@@ -28,9 +28,10 @@
       "motif": "STAND BY",
       "startDate": "2026-07-28",
       "endDate": "2026-08-01",
-      "status": "pending",
+      "status": "confirmed",
       "notes": "GFHFDFGDFGDFGDFG",
-      "updatedAt": "2026-07-28T07:29:52.103Z"
+      "updatedAt": "2026-07-28T07:31:43.283Z",
+      "roomId": "89705039-192d-4d63-96a5-f879cc4f3ae4"
     },
     {
       "id": "7b93d73c-1cde-49f0-a66f-6fb2f225699d",
@@ -48,6 +49,18 @@
     }
   ],
   "passages": [
+    {
+      "id": "817d2b88-e036-4f49-b652-e1bae66a9642",
+      "roomId": "89705039-192d-4d63-96a5-f879cc4f3ae4",
+      "reservationId": "7d3f1220-376a-4782-a1b4-eee620b86a8c",
+      "numero": "GH-2026-0002",
+      "personName": "ADHULE NYADRIA JOEL",
+      "matricule": "70000112",
+      "motif": "STAND BY",
+      "startDate": "2026-07-28",
+      "endDate": "2026-08-01",
+      "checkedInAt": "2026-07-28T07:31:43.283Z"
+    },
     {
       "id": "passage-gh-2026-0001",
       "roomId": "9038385f-cfde-4963-8050-a15e72e62ea7",
