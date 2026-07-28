@@ -991,11 +991,11 @@
           "menuId": "employes.liste",
           "label": "Liste employés",
           "actions": {
-            "view": false,
-            "create": false,
-            "edit": false,
-            "delete": false,
-            "export": false
+            "view": true,
+            "create": true,
+            "edit": true,
+            "delete": true,
+            "export": true
           }
         },
         {
@@ -1013,44 +1013,44 @@
           "menuId": "employes.check-documents",
           "label": "Check documents",
           "actions": {
-            "view": false,
-            "create": false,
-            "edit": false,
-            "delete": false,
-            "export": false
+            "view": true,
+            "create": true,
+            "edit": true,
+            "delete": true,
+            "export": true
           }
         },
         {
           "menuId": "employes.heures",
           "label": "Heures sup. — Mon timesheet",
           "actions": {
-            "view": false,
-            "create": false,
-            "edit": false,
-            "delete": false,
-            "export": false
+            "view": true,
+            "create": true,
+            "edit": true,
+            "delete": true,
+            "export": true
           }
         },
         {
           "menuId": "employes.heures.dept",
           "label": "Heures sup. — Département (planning & OT de son département — Modifier = éditer le planning)",
           "actions": {
-            "view": false,
-            "create": false,
-            "edit": false,
-            "delete": false,
-            "export": false
+            "view": true,
+            "create": true,
+            "edit": true,
+            "delete": true,
+            "export": true
           }
         },
         {
           "menuId": "employes.heures.all",
           "label": "Heures sup. — Tous départements (planning & OT)",
           "actions": {
-            "view": false,
-            "create": false,
-            "edit": false,
-            "delete": false,
-            "export": false
+            "view": true,
+            "create": true,
+            "edit": true,
+            "delete": true,
+            "export": true
           }
         },
         {
@@ -1058,7 +1058,7 @@
           "label": "Heures sup. — Import OT (menu contextuel carte semaine)",
           "actions": {
             "view": false,
-            "create": false,
+            "create": true,
             "edit": false,
             "delete": false,
             "export": false
@@ -1079,55 +1079,55 @@
           "menuId": "project.dashboard",
           "label": "Dashboard",
           "actions": {
-            "view": false,
-            "create": false,
-            "edit": false,
-            "delete": false,
-            "export": false
+            "view": true,
+            "create": true,
+            "edit": true,
+            "delete": true,
+            "export": true
           }
         },
         {
           "menuId": "project.projects",
           "label": "Projects",
           "actions": {
-            "view": false,
-            "create": false,
-            "edit": false,
-            "delete": false,
-            "export": false
+            "view": true,
+            "create": true,
+            "edit": true,
+            "delete": true,
+            "export": true
           }
         },
         {
           "menuId": "project.expenses",
           "label": "Expenses details",
           "actions": {
-            "view": false,
-            "create": false,
-            "edit": false,
-            "delete": false,
-            "export": false
+            "view": true,
+            "create": true,
+            "edit": true,
+            "delete": true,
+            "export": true
           }
         },
         {
           "menuId": "travel.historique",
           "label": "Voyage — Historique",
           "actions": {
-            "view": false,
-            "create": false,
-            "edit": false,
-            "delete": false,
-            "export": false
+            "view": true,
+            "create": true,
+            "edit": true,
+            "delete": true,
+            "export": true
           }
         },
         {
           "menuId": "travel.etablir",
           "label": "Voyage — Établir",
           "actions": {
-            "view": false,
-            "create": false,
-            "edit": false,
-            "delete": false,
-            "export": false
+            "view": true,
+            "create": true,
+            "edit": true,
+            "delete": true,
+            "export": true
           }
         },
         {
@@ -1189,6 +1189,28 @@
           "menuId": "sante",
           "label": "Santé",
           "actions": {
+            "view": true,
+            "create": true,
+            "edit": true,
+            "delete": true,
+            "export": true
+          }
+        },
+        {
+          "menuId": "charroi",
+          "label": "Charroi (accès global)",
+          "actions": {
+            "view": true,
+            "create": true,
+            "edit": true,
+            "delete": true,
+            "export": true
+          }
+        },
+        {
+          "menuId": "charroi.vehicules",
+          "label": "Base véhicules",
+          "actions": {
             "view": false,
             "create": false,
             "edit": false,
@@ -1197,8 +1219,8 @@
           }
         },
         {
-          "menuId": "charroi",
-          "label": "Charroi automobile",
+          "menuId": "charroi.achats",
+          "label": "Nouveaux achats",
           "actions": {
             "view": false,
             "create": false,
@@ -1255,44 +1277,44 @@
           "menuId": "settings.departements",
           "label": "Départements",
           "actions": {
-            "view": false,
-            "create": false,
-            "edit": false,
-            "delete": false,
-            "export": false
+            "view": true,
+            "create": true,
+            "edit": true,
+            "delete": true,
+            "export": true
           }
         },
         {
           "menuId": "settings.centres",
           "label": "Centre de coût",
           "actions": {
-            "view": false,
-            "create": false,
-            "edit": false,
-            "delete": false,
-            "export": false
+            "view": true,
+            "create": true,
+            "edit": true,
+            "delete": true,
+            "export": true
           }
         },
         {
           "menuId": "settings.utilisateurs",
           "label": "Utilisateurs",
           "actions": {
-            "view": false,
-            "create": false,
-            "edit": false,
-            "delete": false,
-            "export": false
+            "view": true,
+            "create": true,
+            "edit": true,
+            "delete": true,
+            "export": true
           }
         },
         {
           "menuId": "settings.permissions",
           "label": "Permissions",
           "actions": {
-            "view": false,
-            "create": false,
-            "edit": false,
-            "delete": false,
-            "export": false
+            "view": true,
+            "create": true,
+            "edit": true,
+            "delete": true,
+            "export": true
           }
         }
       ]
