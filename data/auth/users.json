@@ -994,7 +994,7 @@
             "view": true,
             "create": true,
             "edit": true,
-            "delete": true,
+            "delete": false,
             "export": true
           }
         },
@@ -1002,11 +1002,11 @@
           "menuId": "employes.dependants",
           "label": "Dependants",
           "actions": {
-            "view": false,
-            "create": false,
-            "edit": false,
+            "view": true,
+            "create": true,
+            "edit": true,
             "delete": false,
-            "export": false
+            "export": true
           }
         },
         {
@@ -1016,7 +1016,7 @@
             "view": true,
             "create": true,
             "edit": true,
-            "delete": true,
+            "delete": false,
             "export": true
           }
         },
@@ -1027,7 +1027,7 @@
             "view": true,
             "create": true,
             "edit": true,
-            "delete": true,
+            "delete": false,
             "export": true
           }
         },
@@ -1038,7 +1038,7 @@
             "view": true,
             "create": true,
             "edit": true,
-            "delete": true,
+            "delete": false,
             "export": true
           }
         },
@@ -1049,7 +1049,7 @@
             "view": true,
             "create": true,
             "edit": true,
-            "delete": true,
+            "delete": false,
             "export": true
           }
         },
@@ -1057,22 +1057,22 @@
           "menuId": "employes.heures.import",
           "label": "Heures sup. — Import OT (menu contextuel carte semaine)",
           "actions": {
-            "view": false,
+            "view": true,
             "create": true,
-            "edit": false,
+            "edit": true,
             "delete": false,
-            "export": false
+            "export": true
           }
         },
         {
           "menuId": "employes.heures.compilation",
           "label": "Heures sup. — Compilation & politique",
           "actions": {
-            "view": false,
-            "create": false,
-            "edit": false,
+            "view": true,
+            "create": true,
+            "edit": true,
             "delete": false,
-            "export": false
+            "export": true
           }
         },
         {
