@@ -65,17 +65,6 @@
       "tripDays": 2,
       "totalBudget": 105,
       "recordId": ""
-    },
-    {
-      "rowIndex": 7,
-      "date": "2026-07-15",
-      "ref": "PPCB-DOC-HR-ZA/009/07/2026",
-      "employee": "KITAMBO SENEMONA MEDARD (70000024)",
-      "department": "Human Resources — Driver",
-      "travelDates": "2026-07-16 → 2026-07-20",
-      "tripDays": 5,
-      "totalBudget": 510,
-      "recordId": ""
     }
   ],
   "nextRowIndex": 9
