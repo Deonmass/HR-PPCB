@@ -54,17 +54,6 @@
       "tripDays": 6,
       "totalBudget": 1260,
       "recordId": ""
-    },
-    {
-      "rowIndex": 6,
-      "date": "2026-07-15",
-      "ref": "PPCB-DOC-HR-ZA/008/07/2026",
-      "employee": "Enoch MAKENGELE (60000001)",
-      "department": "Human Resources — Driver",
-      "travelDates": "2026-07-16 → 2026-07-17",
-      "tripDays": 2,
-      "totalBudget": 105,
-      "recordId": ""
     }
   ],
   "nextRowIndex": 9
