@@ -28,6 +28,8 @@ export const DURABLE_PROJECT_EXPENSES_KEY = 'data/projects/expenses.json';
 export const DURABLE_OVERTIMES_TIMESHEETS_KEY = 'data/overtimes/timesheets.json';
 export const DURABLE_OVERTIMES_WEEKLY_KEY = 'data/overtimes/weekly-overtime.json';
 export const DURABLE_TRAVEL_HISTORY_KEY = 'data/travel/history.json';
+export const DURABLE_CHARROI_VEHICLES_KEY = 'data/charroi/vehicles.json';
+export const DURABLE_CHARROI_ACHATS_KEY = 'data/charroi/achats.json';
 
 interface GithubRepoTarget {
   owner: string;

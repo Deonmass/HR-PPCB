@@ -12,6 +12,7 @@
     "lint": "next lint",
     "import:employees": "node scripts/import-employees.mjs",
     "import:projects": "node scripts/import-projects.mjs",
+    "seed:charroi": "node scripts/seed-charroi-from-excel.mjs",
     "build:factures-template": "node scripts/patch-factures-suivi-template.mjs"
   },
   "dependencies": {

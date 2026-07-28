@@ -18,6 +18,7 @@ const nextConfig: NextConfig = {
       './data/projects/**/*',
       './data/overtimes/**/*',
       './data/travel/**/*',
+      './data/charroi/**/*',
       './data/employees.json',
       './data/projects.json',
     ],
@@ -32,6 +33,7 @@ const nextConfig: NextConfig = {
       './data/projects/**/*',
       './data/overtimes/**/*',
       './data/travel/**/*',
+      './data/charroi/**/*',
     ],
   },
 };

@@ -268,11 +268,11 @@ export async function buildHomeDashboard(menus: MenuPermission[]): Promise<HomeD
     });
   }
 
-  if (can(menus, 'charroi')) {
+  if (can(menus, 'charroi') || can(menus, 'charroi.vehicules') || can(menus, 'charroi.achats')) {
     placeholders.push({
       label: 'Charroi automobile',
-      description: 'Gestion du parc automobile',
-      href: '/charroi-automobile',
+      description: 'Base véhicules et nouveaux achats',
+      href: '/charroi-automobile/vehicules',
     });
   }
 

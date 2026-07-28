@@ -63,7 +63,9 @@ export const PERMISSION_MENU_CATALOG: PermissionMenuGroup[] = [
     id: 'charroi',
     label: 'Charroi',
     items: [
-      { id: 'charroi', label: 'Charroi automobile' },
+      { id: 'charroi', label: 'Charroi (accès global)' },
+      { id: 'charroi.vehicules', label: 'Base véhicules' },
+      { id: 'charroi.achats', label: 'Nouveaux achats' },
     ],
   },
   {

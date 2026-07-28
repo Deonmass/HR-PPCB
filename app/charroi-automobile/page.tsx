@@ -1,12 +1,5 @@
-'use client';
-
-import PermissionGate from '@/components/PermissionGate';
-import PlaceholderPage from '@/components/PlaceholderPage';
+import { redirect } from 'next/navigation';
 
 export default function CharroiAutomobilePage() {
-  return (
-    <PermissionGate menuId="charroi" action="view">
-      <PlaceholderPage title="Charroi automobile" description="Gestion du parc automobile" />
-    </PermissionGate>
-  );
+  redirect('/charroi-automobile/vehicules');
 }

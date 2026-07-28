@@ -26,6 +26,8 @@ export const ROUTE_MENU_MAP: RouteMenuEntry[] = [
   { prefix: '/village/maisons', menuId: 'village.maisons' },
   { prefix: '/village/dashboard', menuId: 'village.maisons' },
   { prefix: '/village/liste', menuId: 'village.maisons' },
+  { prefix: '/charroi-automobile/vehicules', menuId: 'charroi.vehicules' },
+  { prefix: '/charroi-automobile/achats', menuId: 'charroi.achats' },
   { prefix: '/charroi-automobile', menuId: 'charroi' },
   { prefix: '/employes', menuId: 'employes.liste' },
   { prefix: '/sante', menuId: 'sante' },
@@ -59,6 +61,15 @@ export function routeViewMenuIds(pathname: string): string[] {
     || normalized.startsWith('/village/liste/')
   ) {
     return ['village.maisons', 'village.dependants-dashboard', 'village.dependants-liste'];
+  }
+  if (
+    normalized === '/charroi-automobile'
+    || normalized.startsWith('/charroi-automobile/vehicules')
+  ) {
+    return ['charroi.vehicules', 'charroi'];
+  }
+  if (normalized.startsWith('/charroi-automobile/achats')) {
+    return ['charroi.achats', 'charroi'];
   }
   const menuId = pathnameToMenuId(pathname);
   return menuId ? [menuId] : [];

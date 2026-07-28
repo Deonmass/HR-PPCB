@@ -132,12 +132,25 @@ const NAV: NavSection[] = [
     color: '#22c55e',
   },
   {
-    type: 'link',
+    type: 'group',
     id: 'charroi',
-    href: '/charroi-automobile',
-    label: 'Charroi automobile',
+    title: 'Charroi automobile',
     icon: 'car',
     color: '#f97316',
+    items: [
+      {
+        href: '/charroi-automobile/vehicules',
+        label: 'Base véhicules',
+        icon: 'car',
+        menuIds: ['charroi.vehicules', 'charroi'],
+      },
+      {
+        href: '/charroi-automobile/achats',
+        label: 'Nouveaux achats',
+        icon: 'car',
+        menuIds: ['charroi.achats', 'charroi'],
+      },
+    ],
   },
   {
     type: 'group',
