@@ -1,17 +1,6 @@
 {
   "rows": [
     {
-      "rowIndex": 1,
-      "date": "2026-07-02",
-      "ref": "PPCB-DOC-HR-ZA/002/07/2026",
-      "employee": "Muakasa Serge (70000008)",
-      "department": "HR — Estate Officer",
-      "travelDates": "2026-07-03 → 2026-07-09",
-      "tripDays": 7,
-      "totalBudget": 1470,
-      "recordId": ""
-    },
-    {
       "rowIndex": 2,
       "date": "2026-07-03",
       "ref": "PPCB-DOC-HR-ZA/003/07/2026",
