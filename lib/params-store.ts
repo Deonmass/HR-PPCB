@@ -1,32 +1,46 @@
 import 'server-only';
 
-import {
-  cloneRowStyle,
-  getSheet,
-  getSheetBlock,
-  readWorkbook,
-  saveWorkbook,
-  shiftRowsUp,
-  writeRowValues,
-  type AoaRow,
-} from './excel-io';
+import fs from 'fs';
+import fsPromises from 'fs/promises';
+import path from 'path';
 import type { CostCenterSetting, DepartmentSetting } from './auth-types';
-import { getParamsPath, withParamsLock } from './params-workbook';
+import {
+  DURABLE_COST_CENTERS_KEY,
+  DURABLE_DEPARTMENTS_KEY,
+  hydrateDurableFile,
+  persistDurableFile,
+} from './durable-fs';
+import { canPersistProjectFiles, getWritableDataRoot } from './runtime-mode';
 
-const SHEET_NAME = 'Sheet1';
-const DATA_START = 1;
-const COL_DEPARTMENT = 0;
-const COL_COST_CENTER = 1;
-
-interface ParamsWorkbookState {
-  filePath: string;
-  wb: Awaited<ReturnType<typeof readWorkbook>>;
-  ws: import('xlsx-js-style').WorkSheet;
-  dataRows: AoaRow[];
+interface DepartmentsStore {
+  departments: DepartmentSetting[];
 }
 
-function str(value: unknown): string {
-  return String(value ?? '').trim();
+interface CostCentersStore {
+  costCenters: CostCenterSetting[];
+}
+
+function resolveStorePath(relativePath: string): string {
+  if (canPersistProjectFiles()) return path.join(process.cwd(), relativePath);
+  const writable = path.join(getWritableDataRoot(), relativePath.replace(/^data[\\/]/, ''));
+  const bundled = path.join(process.cwd(), relativePath);
+  try {
+    if (!fs.existsSync(writable) && fs.existsSync(bundled)) {
+      fs.mkdirSync(path.dirname(writable), { recursive: true });
+      fs.copyFileSync(bundled, writable);
+    }
+  } catch {
+    // ignore seed errors
+  }
+  return writable;
+}
+
+function departmentsPath(): string {
+  return resolveStorePath(path.join('data', 'settings', 'departments.json'));
+}
+
+function costCentersPath(): string {
+  return resolveStorePath(path.join('data', 'settings', 'cost-centers.json'));
 }
 
 function slugify(value: string): string {
@@ -45,202 +59,166 @@ export function departmentIdFromName(name: string): string {
   return `dept-${slugify(name)}`;
 }
 
+export function costCenterIdFromCode(code: string): string {
+  return `cc-${slugify(code)}`;
+}
+
+/** @deprecated Prefer costCenterIdFromCode — kept for API compatibility. */
 export function costCenterIdFromRow(rowIndex: number): string {
   return `cc-${rowIndex}`;
 }
 
-function parseCostCenterRowId(id: string): number | null {
-  const match = id.trim().match(/^cc-(\d+)$/);
-  if (!match) return null;
-  const rowIndex = Number.parseInt(match[1], 10);
-  return Number.isInteger(rowIndex) && rowIndex >= DATA_START ? rowIndex : null;
-}
-
-async function loadState(): Promise<ParamsWorkbookState> {
-  const filePath = getParamsPath();
-  const wb = await readWorkbook(filePath);
-  const ws = getSheet(wb, SHEET_NAME);
-  const sheet = getSheetBlock(wb, SHEET_NAME, DATA_START);
-  return { filePath, wb, ws, dataRows: sheet.dataRows };
-}
-
-function findNextEmptyRow(dataRows: AoaRow[]): number {
-  const firstEmpty = dataRows.findIndex((row) => !str(row[COL_DEPARTMENT]) && !str(row[COL_COST_CENTER]));
-  if (firstEmpty >= 0) return firstEmpty;
-  return dataRows.length;
-}
-
-function ensureHeader(ws: ParamsWorkbookState['ws']): void {
-  writeRowValues(ws, 0, ['Departement', 'Centre de cout']);
-}
-
-function rowToDepartmentNames(dataRows: AoaRow[]): string[] {
-  const names = new Set<string>();
-  for (const row of dataRows) {
-    const department = str(row[COL_DEPARTMENT]);
-    if (department) names.add(department);
+async function readJsonFile<T>(repoKey: string, filePath: string, fallback: T): Promise<T> {
+  await hydrateDurableFile(repoKey, filePath);
+  try {
+    const raw = await fsPromises.readFile(filePath, 'utf8');
+    return JSON.parse(raw) as T;
+  } catch (err) {
+    const code = (err as NodeJS.ErrnoException)?.code;
+    if (code === 'ENOENT') return fallback;
+    throw err;
   }
-  return [...names].sort((a, b) => a.localeCompare(b, 'fr'));
 }
 
-function findDepartmentNameById(dataRows: AoaRow[], id: string): string | null {
-  for (const name of rowToDepartmentNames(dataRows)) {
-    if (departmentIdFromName(name) === id) return name;
-  }
-  return null;
+async function writeJsonFile(repoKey: string, filePath: string, value: unknown): Promise<void> {
+  await fsPromises.mkdir(path.dirname(filePath), { recursive: true });
+  await fsPromises.writeFile(filePath, JSON.stringify(value, null, 2), 'utf8');
+  await persistDurableFile(repoKey, filePath);
+}
+
+async function readDepartmentsStore(): Promise<DepartmentsStore> {
+  const store = await readJsonFile<DepartmentsStore>(DURABLE_DEPARTMENTS_KEY, departmentsPath(), {
+    departments: [],
+  });
+  return { departments: Array.isArray(store.departments) ? store.departments : [] };
+}
+
+async function readCostCentersStore(): Promise<CostCentersStore> {
+  const store = await readJsonFile<CostCentersStore>(DURABLE_COST_CENTERS_KEY, costCentersPath(), {
+    costCenters: [],
+  });
+  return { costCenters: Array.isArray(store.costCenters) ? store.costCenters : [] };
 }
 
 export async function listDepartmentsFromParams(): Promise<DepartmentSetting[]> {
-  return withParamsLock(async () => {
-    const state = await loadState();
-    return rowToDepartmentNames(state.dataRows).map((name) => ({
-      id: departmentIdFromName(name),
-      name,
-      code: name,
-      active: true,
-    }));
-  });
+  const store = await readDepartmentsStore();
+  return [...store.departments]
+    .filter((item) => item?.name?.trim())
+    .sort((a, b) => a.name.localeCompare(b.name, 'fr'));
 }
 
 export async function listCostCentersFromParams(): Promise<CostCenterSetting[]> {
-  return withParamsLock(async () => {
-    const state = await loadState();
-    const items: CostCenterSetting[] = [];
-
-    state.dataRows.forEach((row, index) => {
-      const costCenter = str(row[COL_COST_CENTER]);
-      if (!costCenter) return;
-
-      const department = str(row[COL_DEPARTMENT]);
-      const rowIndex = DATA_START + index;
-      items.push({
-        id: costCenterIdFromRow(rowIndex),
-        code: costCenter,
-        name: costCenter,
-        departmentId: department ? departmentIdFromName(department) : undefined,
-        active: true,
-      });
-    });
-
-    return items.sort((a, b) => a.code.localeCompare(b.code, 'fr'));
-  });
+  const store = await readCostCentersStore();
+  return [...store.costCenters]
+    .filter((item) => item?.code?.trim())
+    .sort((a, b) => a.code.localeCompare(b.code, 'fr'));
 }
 
 export async function upsertDepartmentInParams(item: DepartmentSetting): Promise<DepartmentSetting> {
-  return withParamsLock(async () => {
-    const state = await loadState();
-    ensureHeader(state.ws);
+  const store = await readDepartmentsStore();
+  const nextName = item.name.trim();
+  if (!nextName) throw new Error('Nom du département requis');
 
-    const nextName = item.name.trim();
-    if (!nextName) throw new Error('Nom du département requis');
+  const next: DepartmentSetting = {
+    id: departmentIdFromName(nextName),
+    name: nextName,
+    code: item.code?.trim() || nextName,
+    active: item.active ?? true,
+  };
 
-    const previousName = item.id ? findDepartmentNameById(state.dataRows, item.id) : null;
+  const existingIndex = item.id
+    ? store.departments.findIndex((dept) => dept.id === item.id)
+    : store.departments.findIndex((dept) => dept.id === next.id);
 
-    if (previousName && previousName !== nextName) {
-      state.dataRows.forEach((row, index) => {
-        if (str(row[COL_DEPARTMENT]) !== previousName) return;
-        writeRowValues(state.ws, DATA_START + index, [nextName, str(row[COL_COST_CENTER])]);
-      });
-    } else if (!previousName) {
-      const targetRowIndex = DATA_START + findNextEmptyRow(state.dataRows);
-      const styleSourceRow = targetRowIndex > DATA_START ? targetRowIndex - 1 : DATA_START;
-      cloneRowStyle(state.ws, styleSourceRow, targetRowIndex, COL_DEPARTMENT, COL_COST_CENTER);
-      writeRowValues(state.ws, targetRowIndex, [nextName, '']);
+  const previous = existingIndex >= 0 ? store.departments[existingIndex] : null;
+  if (existingIndex >= 0) store.departments[existingIndex] = next;
+  else store.departments.push(next);
+
+  // Keep cost-center department links in sync when renaming.
+  if (previous && previous.id !== next.id) {
+    const ccStore = await readCostCentersStore();
+    let changed = false;
+    for (const cc of ccStore.costCenters) {
+      if (cc.departmentId !== previous.id) continue;
+      cc.departmentId = next.id;
+      changed = true;
     }
+    if (changed) {
+      await writeJsonFile(DURABLE_COST_CENTERS_KEY, costCentersPath(), ccStore);
+    }
+  }
 
-    await saveWorkbook(state.wb, state.filePath);
-
-    return {
-      id: departmentIdFromName(nextName),
-      name: nextName,
-      code: item.code?.trim() || nextName,
-      active: item.active ?? true,
-    };
-  }, { persist: true });
+  await writeJsonFile(DURABLE_DEPARTMENTS_KEY, departmentsPath(), store);
+  return next;
 }
 
 export async function deleteDepartmentFromParams(id: string): Promise<boolean> {
-  return withParamsLock(async () => {
-    const state = await loadState();
-    const departmentName = findDepartmentNameById(state.dataRows, id);
-    if (!departmentName) return false;
+  const store = await readDepartmentsStore();
+  const next = store.departments.filter((item) => item.id !== id);
+  if (next.length === store.departments.length) return false;
+  await writeJsonFile(DURABLE_DEPARTMENTS_KEY, departmentsPath(), { departments: next });
 
-    const rowsToDelete = state.dataRows
-      .map((row, index) => ({ row, index }))
-      .filter(({ row }) => str(row[COL_DEPARTMENT]) === departmentName)
-      .map(({ index }) => DATA_START + index)
-      .sort((a, b) => b - a);
-
-    for (const rowIndex of rowsToDelete) {
-      shiftRowsUp(state.ws, rowIndex, 1);
-    }
-
-    await saveWorkbook(state.wb, state.filePath);
-    return true;
-  }, { persist: true });
+  const ccStore = await readCostCentersStore();
+  let changed = false;
+  for (const cc of ccStore.costCenters) {
+    if (cc.departmentId !== id) continue;
+    cc.departmentId = undefined;
+    changed = true;
+  }
+  if (changed) {
+    await writeJsonFile(DURABLE_COST_CENTERS_KEY, costCentersPath(), ccStore);
+  }
+  return true;
 }
 
 export async function upsertCostCenterInParams(item: CostCenterSetting): Promise<CostCenterSetting> {
-  return withParamsLock(async () => {
-    const state = await loadState();
-    ensureHeader(state.ws);
+  const store = await readCostCentersStore();
+  const code = item.code.trim();
+  const name = item.name.trim() || code;
+  if (!code) throw new Error('Code centre de coût requis');
 
-    const code = item.code.trim();
-    const name = item.name.trim() || code;
-    if (!code) throw new Error('Code centre de coût requis');
+  const next: CostCenterSetting = {
+    id: item.id?.trim() || costCenterIdFromCode(code),
+    code,
+    name,
+    departmentId: item.departmentId?.trim() || undefined,
+    active: item.active ?? true,
+  };
 
-    let departmentName = '';
-    if (item.departmentId) {
-      departmentName = findDepartmentNameById(state.dataRows, item.departmentId) ?? '';
+  const existingIndex = store.costCenters.findIndex((cc) => cc.id === next.id);
+  if (existingIndex >= 0) store.costCenters[existingIndex] = next;
+  else {
+    const byCode = store.costCenters.findIndex(
+      (cc) => cc.code.trim().toLowerCase() === code.toLowerCase(),
+    );
+    if (byCode >= 0) {
+      next.id = store.costCenters[byCode].id;
+      store.costCenters[byCode] = next;
+    } else {
+      store.costCenters.push(next);
     }
+  }
 
-    const existingRowIndex = item.id ? parseCostCenterRowId(item.id) : null;
-    if (existingRowIndex !== null) {
-      writeRowValues(state.ws, existingRowIndex, [departmentName, code]);
-      await saveWorkbook(state.wb, state.filePath);
-      return {
-        id: costCenterIdFromRow(existingRowIndex),
-        code,
-        name,
-        departmentId: departmentName ? departmentIdFromName(departmentName) : undefined,
-        active: item.active ?? true,
-      };
-    }
-
-    const targetRowIndex = DATA_START + findNextEmptyRow(state.dataRows);
-    const styleSourceRow = targetRowIndex > DATA_START ? targetRowIndex - 1 : DATA_START;
-    cloneRowStyle(state.ws, styleSourceRow, targetRowIndex, COL_DEPARTMENT, COL_COST_CENTER);
-    writeRowValues(state.ws, targetRowIndex, [departmentName, code]);
-    await saveWorkbook(state.wb, state.filePath);
-
-    return {
-      id: costCenterIdFromRow(targetRowIndex),
-      code,
-      name,
-      departmentId: departmentName ? departmentIdFromName(departmentName) : undefined,
-      active: item.active ?? true,
-    };
-  }, { persist: true });
+  await writeJsonFile(DURABLE_COST_CENTERS_KEY, costCentersPath(), store);
+  return next;
 }
 
 export async function deleteCostCenterFromParams(id: string): Promise<boolean> {
-  return withParamsLock(async () => {
-    const rowIndex = parseCostCenterRowId(id);
-    if (rowIndex === null) return false;
-
-    const state = await loadState();
-    if (rowIndex - DATA_START >= state.dataRows.length) return false;
-
-    shiftRowsUp(state.ws, rowIndex, 1);
-    await saveWorkbook(state.wb, state.filePath);
-    return true;
-  }, { persist: true });
+  const store = await readCostCentersStore();
+  const next = store.costCenters.filter((item) => item.id !== id);
+  if (next.length === store.costCenters.length) return false;
+  await writeJsonFile(DURABLE_COST_CENTERS_KEY, costCentersPath(), { costCenters: next });
+  return true;
 }
 
 export function createDepartmentId(name: string): string {
   return departmentIdFromName(name);
 }
 
-export function createCostCenterId(_rowIndex?: number): string {
+export function createCostCenterId(codeOrRow?: string | number): string {
+  if (typeof codeOrRow === 'string' && codeOrRow.trim()) {
+    return costCenterIdFromCode(codeOrRow);
+  }
+  if (typeof codeOrRow === 'number') return costCenterIdFromRow(codeOrRow);
   return '';
 }

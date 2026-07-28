@@ -2,7 +2,7 @@ import 'server-only';
 
 import path from 'path';
 
-const TRAVEL_TEMPLATE_DIR = path.join(process.cwd(), 'Excel', 'voyage template');
+const TRAVEL_TEMPLATE_DIR = path.join(process.cwd(), 'Excel', 'templates', 'travel');
 
 export function getTravelTemplateDirectory(): string {
   return process.env.TRAVEL_TEMPLATE_DIR?.trim()
@@ -55,9 +55,11 @@ export const FLIGHT_BOOKING_TEMPLATE_PATH = resolveTravelTemplate(
   process.env.FLIGHT_BOOKING_TEMPLATE_DOC,
 );
 
+export const TRAVEL_HISTORY_EXPORT_TEMPLATE_PATH = resolveTravelTemplate(
+  TRAVEL_TEMPLATE_FILES.travelHistory,
+  process.env.TRAVEL_HISTORY_XLSX,
+);
+
 export function resolveTravelHistoryPath(): string {
-  return resolveTravelTemplate(
-    TRAVEL_TEMPLATE_FILES.travelHistory,
-    process.env.TRAVEL_HISTORY_XLSX,
-  );
+  return TRAVEL_HISTORY_EXPORT_TEMPLATE_PATH;
 }

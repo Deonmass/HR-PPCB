@@ -10,8 +10,7 @@ const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const templatePath = path.join(
   root,
   'Excel',
-  'factures-fournisseurs',
-  'FACTURES_SUIVI_EXPORT_TEMPLATE.xlsx',
+  'templates', 'factures', 'FACTURES_SUIVI_EXPORT_TEMPLATE.xlsx',
 );
 
 const LABELS = {

@@ -1,5 +1,5 @@
 import { NextResponse } from 'next/server';
-import { updateFamilyLocalisation } from '@/lib/dependants-store';
+import { updateFamilyLocalisation } from '@/lib/dependants-json-store';
 import { excelErrorResponse } from '@/lib/excel-io';
 import { checkAnyPermission } from '@/lib/require-permission';
 

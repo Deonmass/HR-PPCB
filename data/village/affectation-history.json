@@ -1,0 +1,70 @@
+{
+  "entries": [
+    {
+      "date": "24/07/2026 13:31",
+      "action": "Affecter",
+      "matricule": "",
+      "nom": "Nursery School",
+      "numeroVilla": "13",
+      "typeMaison": "Free Style",
+      "ancienNumero": "",
+      "raison": "",
+      "commentaire": "Hors effectif"
+    },
+    {
+      "date": "24/07/2026 13:31",
+      "action": "Affecter",
+      "matricule": "",
+      "nom": "Espoir VUVU",
+      "numeroVilla": "29 B",
+      "typeMaison": "Studio",
+      "ancienNumero": "",
+      "raison": "",
+      "commentaire": "Hors effectif"
+    },
+    {
+      "date": "24/07/2026 13:32",
+      "action": "Affecter",
+      "matricule": "",
+      "nom": "EKMM",
+      "numeroVilla": "40",
+      "typeMaison": "Twins",
+      "ancienNumero": "",
+      "raison": "",
+      "commentaire": "Hors effectif"
+    },
+    {
+      "date": "24/07/2026 13:32",
+      "action": "Affecter",
+      "matricule": "",
+      "nom": "ORC",
+      "numeroVilla": "41",
+      "typeMaison": "Twins",
+      "ancienNumero": "",
+      "raison": "",
+      "commentaire": "Hors effectif"
+    },
+    {
+      "date": "24/07/2026 13:32",
+      "action": "Affecter",
+      "matricule": "",
+      "nom": "Soeurs Religieuses",
+      "numeroVilla": "66",
+      "typeMaison": "Twins",
+      "ancienNumero": "",
+      "raison": "",
+      "commentaire": "Hors effectif"
+    },
+    {
+      "date": "24/07/2026 13:33",
+      "action": "Affecter",
+      "matricule": "",
+      "nom": "Soeurs Religieuses",
+      "numeroVilla": "67",
+      "typeMaison": "Twins",
+      "ancienNumero": "",
+      "raison": "",
+      "commentaire": "Hors effectif"
+    }
+  ]
+}

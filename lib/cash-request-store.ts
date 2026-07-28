@@ -8,7 +8,7 @@ import {
   computeCashRequestTotal,
 } from './cash-request-utils';
 import { fillCashRequestTemplate } from './cash-request';
-import { readEmployees } from './employees-store';
+import { readEmployees } from './employees-json-store';
 import { fillFlightBookingTemplate } from './flight-booking';
 import { fillHotelBookingTemplate } from './hotel-booking';
 import { fillMissionOrderTemplate } from './mission-order';

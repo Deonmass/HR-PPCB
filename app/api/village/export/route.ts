@@ -1,7 +1,7 @@
 import { NextResponse } from 'next/server';
-import { readDependantsData } from '@/lib/dependants-store';
+import { readDependantsData } from '@/lib/dependants-json-store';
 import { excelErrorResponse } from '@/lib/excel-io';
-import { readEmployees } from '@/lib/employees-store';
+import { readEmployees } from '@/lib/employees-json-store';
 import { getGuestHouseBundle } from '@/lib/guest-house-store';
 import { checkAnyPermission } from '@/lib/require-permission';
 import { readAffectationHistory } from '@/lib/village-affectation-history';

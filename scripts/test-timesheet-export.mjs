@@ -11,7 +11,7 @@ function setValue(sheet, address, value) {
   sheet.cell(address).value(value);
 }
 
-const workbook = await XlsxPopulate.fromFileAsync('Excel/overtimes/Timesheet template.xlsx');
+const workbook = await XlsxPopulate.fromFileAsync('Excel/templates/overtimes/Timesheet template.xlsx');
 const sheet = workbook.sheet('TIMESHEET');
 
 setValue(sheet, 'B3', 'PPC Barnet');

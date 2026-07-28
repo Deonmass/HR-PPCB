@@ -2,72 +2,38 @@ import 'server-only';
 
 import fs from 'fs';
 import path from 'path';
-import { getDataBackend, resolveWorkbookPath } from '../runtime-mode';
 
 const EXCEL_DIR = path.join(process.cwd(), 'Excel');
-const MODULE_DIR = path.join(EXCEL_DIR, 'factures-fournisseurs');
+const FACTURES_TEMPLATES_DIR = path.join(EXCEL_DIR, 'templates', 'factures');
 
+/** Optional seed path only — live workbook deleted. */
 export function getFacturesFournisseursDirectory(): string {
   if (process.env.FACTURES_FOURNISSEURS_DIR?.trim()) {
     return path.resolve(process.env.FACTURES_FOURNISSEURS_DIR.trim());
   }
-  if (getDataBackend() === 'tmp') {
-    return path.dirname(
-      resolveWorkbookPath('factures-fournisseurs/FACTURES_FOURNISSEURS.xlsx'),
-    );
-  }
-  return MODULE_DIR;
+  return path.join(EXCEL_DIR, 'factures-fournisseurs');
 }
 
-/**
- * Live workbook (Factures + Fournisseurs sheets).
- * Prefers Excel/factures-fournisseurs/, falls back to Excel/ root (legacy).
- */
 export function resolveFacturesFournisseursWorkbookPath(): string {
   if (process.env.FACTURES_FOURNISSEURS_XLSX?.trim()) {
     return path.resolve(process.env.FACTURES_FOURNISSEURS_XLSX.trim());
   }
-
-  if (getDataBackend() === 'tmp') {
-    const preferredRel = 'factures-fournisseurs/FACTURES_FOURNISSEURS.xlsx';
-    const preferredBundled = path.join(EXCEL_DIR, preferredRel);
-    if (fs.existsSync(preferredBundled)) {
-      return resolveWorkbookPath(preferredRel);
-    }
-    return resolveWorkbookPath('FACTURES_FOURNISSEURS.xlsx');
-  }
-
-  const preferred = path.join(getFacturesFournisseursDirectory(), 'FACTURES_FOURNISSEURS.xlsx');
-  if (fs.existsSync(preferred)) return preferred;
-
-  const legacy = path.join(EXCEL_DIR, 'FACTURES_FOURNISSEURS.xlsx');
-  if (fs.existsSync(legacy)) return legacy;
-
-  return preferred;
+  return path.join(getFacturesFournisseursDirectory(), 'FACTURES_FOURNISSEURS.xlsx');
 }
 
 export const FACTURES_FOURNISSEURS_XLSX_PATH = resolveFacturesFournisseursWorkbookPath();
 
 export const FACTURES_SUIVI_EXPORT_TEMPLATE_FILE = 'FACTURES_SUIVI_EXPORT_TEMPLATE.xlsx';
 
-/**
- * Export template with Dashboard charts + Factures formulas.
- */
 export function resolveFacturesSuiviExportTemplatePath(): string {
   if (process.env.FACTURES_SUIVI_EXPORT_TEMPLATE_XLSX?.trim()) {
     return path.resolve(process.env.FACTURES_SUIVI_EXPORT_TEMPLATE_XLSX.trim());
   }
-
-  const preferred = path.join(
-    getFacturesFournisseursDirectory(),
-    FACTURES_SUIVI_EXPORT_TEMPLATE_FILE,
-  );
-  if (fs.existsSync(preferred)) return preferred;
-
-  const exportTemplates = path.join(EXCEL_DIR, 'export-templates', FACTURES_SUIVI_EXPORT_TEMPLATE_FILE);
-  if (fs.existsSync(exportTemplates)) return exportTemplates;
-
-  return preferred;
+  return path.join(FACTURES_TEMPLATES_DIR, FACTURES_SUIVI_EXPORT_TEMPLATE_FILE);
 }
 
 export const FACTURES_SUIVI_EXPORT_TEMPLATE_PATH = resolveFacturesSuiviExportTemplatePath();
+
+export function facturesFournisseursWorkbookExists(): boolean {
+  return fs.existsSync(FACTURES_FOURNISSEURS_XLSX_PATH);
+}

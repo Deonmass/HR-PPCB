@@ -1,7 +1,7 @@
 import fs from 'fs';
 import JSZip from 'jszip';
 
-const zip = await JSZip.loadAsync(fs.readFileSync('Excel/export-templates/VILLAGE_EXPORT_TEMPLATE.xlsx'));
+const zip = await JSZip.loadAsync(fs.readFileSync('Excel/templates/village/VILLAGE_EXPORT_TEMPLATE.xlsx'));
 const reF = /<c:f>([^<]+)<\/c:f>/g;
 const reT = /<a:t>([^<]*)<\/a:t>/g;
 

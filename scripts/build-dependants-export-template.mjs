@@ -1,5 +1,5 @@
 /**
- * Rebuilds Excel/export-templates/DEPENDANTS_EXPORT_TEMPLATE.xlsx from a formatted EMPLOYEE workbook.
+ * Rebuilds Excel/templates/dependants/DEPENDANTS_EXPORT_TEMPLATE.xlsx from a formatted EMPLOYEE workbook.
  *
  * Usage:
  *   node scripts/build-dependants-export-template.mjs
@@ -12,7 +12,7 @@ import XlsxPopulate from 'xlsx-populate';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const root = path.join(__dirname, '..');
-const OUTPUT = path.join(root, 'Excel', 'export-templates', 'DEPENDANTS_EXPORT_TEMPLATE.xlsx');
+const OUTPUT = path.join(root, 'Excel', 'templates', 'dependants', 'DEPENDANTS_EXPORT_TEMPLATE.xlsx');
 
 const candidates = [
   process.argv[2],

@@ -10,6 +10,7 @@ import TravelHistoryDashboardView from '@/components/travel/TravelHistoryDashboa
 import TravelHistoryDetailModal from '@/components/travel/TravelHistoryDetailModal';
 import { IconDashboard, IconDataTable, IconEtablir } from '@/components/travel/TravelVoyageIcons';
 import { usePermissions } from '@/contexts/PermissionContext';
+import { downloadTravelHistoryExport } from '@/lib/travel-history-export';
 import { extractTravelDepartmentName } from '@/lib/travel-history-utils';
 import type { TravelHistoryData, TravelHistoryRow } from '@/lib/travel-history-types';
 import { confirmDelete, showError } from '@/lib/swal';
@@ -51,6 +52,7 @@ export default function HistoriqueVoyagesPage() {
     row: TravelHistoryRow;
   } | null>(null);
   const [search, setSearch] = useState('');
+  const [exporting, setExporting] = useState(false);
 
   const load = useCallback(async (isRefresh = false) => {
     if (isRefresh) setRefreshing(true);
@@ -77,6 +79,17 @@ export default function HistoriqueVoyagesPage() {
   useEffect(() => {
     load();
   }, [load]);
+
+  const handleExport = async () => {
+    setExporting(true);
+    try {
+      await downloadTravelHistoryExport();
+    } catch (err) {
+      await showError(err instanceof Error ? err.message : 'Export impossible');
+    } finally {
+      setExporting(false);
+    }
+  };
 
   const handleView = (row: TravelHistoryRow) => {
     setSelectedRow(row);
@@ -183,6 +196,17 @@ export default function HistoriqueVoyagesPage() {
             <p>{rows.length} mission{rows.length > 1 ? 's' : ''} enregistrée{rows.length > 1 ? 's' : ''}</p>
           </div>
           <div className="travel-history-header-actions">
+            <PermissionGate menuId="travel.historique" action="export">
+              <button
+                type="button"
+                className="btn btn-outline btn-export btn-sm btn-with-icon"
+                onClick={() => void handleExport()}
+                disabled={exporting}
+              >
+                {exporting ? <span className="btn-spinner" aria-hidden="true" /> : null}
+                {exporting ? 'Export…' : 'Export'}
+              </button>
+            </PermissionGate>
             <div className="tabs header-tabs header-tabs-dashboard header-tabs-compact travel-history-tabs">
               <button
                 type="button"

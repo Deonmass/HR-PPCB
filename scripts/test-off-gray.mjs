@@ -1,7 +1,7 @@
 import XlsxPopulate from 'xlsx-populate';
 import fs from 'fs';
 
-const workbook = await XlsxPopulate.fromFileAsync('Excel/overtimes/Timesheet template.xlsx');
+const workbook = await XlsxPopulate.fromFileAsync('Excel/templates/overtimes/Timesheet template.xlsx');
 const sheet = workbook.sheet('TIMESHEET');
 
 sheet.cell('F6').value('MONTH : June 2026');

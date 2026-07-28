@@ -1,7 +1,7 @@
 import 'server-only';
 
 import { buildDashboardFromEmployees } from './documents';
-import { readEmployees } from './employees-store';
+import { readEmployees } from './employees-json-store';
 import type { DashboardData } from './types';
 
 /** Dashboard Check documents — recalculé à chaque lecture depuis EMPLOYEE.xlsx. */

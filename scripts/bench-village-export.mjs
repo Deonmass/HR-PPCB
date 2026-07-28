@@ -7,7 +7,7 @@ import path from 'path';
 import JSZip from 'jszip';
 import XlsxPopulate from 'xlsx-populate';
 
-const template = 'Excel/export-templates/VILLAGE_EXPORT_TEMPLATE.xlsx';
+const template = 'Excel/templates/village/VILLAGE_EXPORT_TEMPLATE.xlsx';
 
 async function main() {
   const t0 = Date.now();
@@ -119,7 +119,7 @@ async function main() {
     console.log(ref, hasF ? 'formula ok' : 'MISSING FORMULA', (m?.[0] || '').slice(0, 160));
   }
 
-  const out = path.join('Excel', 'export-templates', '_bench_village_out.xlsx');
+  const out = path.join('Excel', 'templates', 'village', '_bench_village_out.xlsx');
   fs.writeFileSync(out, buf);
   console.log('wrote', out);
 }

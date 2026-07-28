@@ -347,7 +347,7 @@ export interface CompilationExportOptions {
 }
 
 /**
- * Export compilation OT à partir du template Excel/overtimes/OVERTIMES.xlsx.
+ * Export compilation OT à partir du template Excel/templates/overtimes/OVERTIMES.xlsx.
  * Produit toujours 2 feuilles : « Données brutes » et « Politique ».
  */
 export async function buildCompilationWorkbookBuffer(

@@ -5,10 +5,29 @@ import fsPromises from 'fs/promises';
 import path from 'path';
 import { getDataBackend, isVercelRuntime } from './runtime-mode';
 
-/** Paths inside the git repository (source of truth for users / permissions). */
-export const DURABLE_PARAMS_KEY = 'Excel/Params.xlsx';
+/** Paths inside the git repository (source of truth for users / permissions / settings). */
+export const DURABLE_USERS_KEY = 'data/auth/users.json';
 export const DURABLE_PERMISSIONS_KEY = 'data/auth/permissions.json';
+export const DURABLE_DEPARTMENTS_KEY = 'data/settings/departments.json';
+export const DURABLE_COST_CENTERS_KEY = 'data/settings/cost-centers.json';
+/** @deprecated Params.xlsx deleted — settings live under data/settings/*.json. */
+export const DURABLE_PARAMS_KEY = 'data/settings/departments.json';
 export const DURABLE_GUEST_HOUSE_KEY = 'data/guest-house/store.json';
+export const DURABLE_EMPLOYEES_KEY = 'data/employees/employees.json';
+export const DURABLE_EMPLOYEE_EXITS_KEY = 'data/employees/exits.json';
+export const DURABLE_CHECK_DOCUMENTS_KEY = 'data/employees/check-documents.json';
+export const DURABLE_DEPENDANTS_KEY = 'data/dependants/dependants.json';
+export const DURABLE_VILLAGE_MAISONS_KEY = 'data/village/maisons.json';
+export const DURABLE_VILLAGE_TAILLES_KEY = 'data/village/tailles.json';
+export const DURABLE_VILLAGE_AFFECTATION_HISTORY_KEY = 'data/village/affectation-history.json';
+export const DURABLE_VILLAGE_AFFECTATION_SUGGESTIONS_KEY = 'data/village/affectation-suggestions.json';
+export const DURABLE_FACTURES_SUIVI_KEY = 'data/factures-fournisseurs/factures.json';
+export const DURABLE_FOURNISSEURS_KEY = 'data/factures-fournisseurs/fournisseurs.json';
+export const DURABLE_PROJECTS_KEY = 'data/projects/projects.json';
+export const DURABLE_PROJECT_EXPENSES_KEY = 'data/projects/expenses.json';
+export const DURABLE_OVERTIMES_TIMESHEETS_KEY = 'data/overtimes/timesheets.json';
+export const DURABLE_OVERTIMES_WEEKLY_KEY = 'data/overtimes/weekly-overtime.json';
+export const DURABLE_TRAVEL_HISTORY_KEY = 'data/travel/history.json';
 
 interface GithubRepoTarget {
   owner: string;

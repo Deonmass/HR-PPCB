@@ -11,6 +11,7 @@ import {
   getProjectStatuses,
   getProjectTypes,
 } from '@/lib/projects';
+import { downloadProjectsExport } from '@/lib/projects-export';
 import { PROJECTS_BUDGET_SYNC_EVENT } from '@/lib/projects-events';
 import { fetchProjectsData } from '@/lib/fetch-projects-api';
 import type { ProjectExpense, ProjectRecord } from '@/lib/project-types';
@@ -28,6 +29,7 @@ export default function ProjectsPage() {
   const [newProject, setNewProject] = useState<ProjectRecord | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [refreshing, setRefreshing] = useState(false);
+  const [exporting, setExporting] = useState(false);
 
   const load = useCallback(async (isRefresh = false) => {
     if (isRefresh) setRefreshing(true);
@@ -106,6 +108,17 @@ export default function ProjectsPage() {
     setNewProject(null);
   };
 
+  const handleExport = useCallback(async () => {
+    setExporting(true);
+    try {
+      await downloadProjectsExport();
+    } catch (err) {
+      await showError(err instanceof Error ? err.message : 'Export impossible');
+    } finally {
+      setExporting(false);
+    }
+  }, []);
+
   if (loading) {
     return <div className="loading">Chargement…</div>;
   }
@@ -166,6 +179,26 @@ export default function ProjectsPage() {
                 {filteredCount} projet{filteredCount !== 1 ? 's' : ''}
               </span>
             </div>
+            <PermissionGate menuId="project.projects" action="export">
+              <button
+                type="button"
+                className="btn btn-outline btn-export btn-sm btn-with-icon"
+                onClick={() => void handleExport()}
+                disabled={exporting}
+                title="Exporter via PROJECTS_TEMPLATE.xlsx"
+              >
+                {exporting ? (
+                  <span className="btn-spinner" aria-hidden="true" />
+                ) : (
+                  <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                    <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
+                    <polyline points="7 10 12 15 17 10" />
+                    <line x1="12" y1="15" x2="12" y2="3" />
+                  </svg>
+                )}
+                {exporting ? 'Export…' : 'Export'}
+              </button>
+            </PermissionGate>
             <PermissionGate menuId="project.projects" action="create">
               <button type="button" className="btn btn-primary btn-sm projects-new-btn" onClick={openCreate}>
                 <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round">

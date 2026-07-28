@@ -7,7 +7,12 @@ import {
   updateGuestReservationStatus,
   upsertGuestRoom,
 } from '@/lib/guest-house-store';
-import type { GuestReservationInput, GuestReservationStatus, GuestRoomInput } from '@/lib/guest-house-types';
+import type {
+  GuestReservationInput,
+  GuestReservationStatus,
+  GuestRoomCategory,
+  GuestRoomInput,
+} from '@/lib/guest-house-types';
 import { checkPermission } from '@/lib/require-permission';
 
 const MENU = 'village.guest-house';
@@ -32,6 +37,7 @@ export async function POST(request: Request) {
       id?: string;
       status?: GuestReservationStatus;
       roomId?: string;
+      category?: GuestRoomCategory;
     } & Partial<GuestRoomInput> & Partial<GuestReservationInput>;
 
     if (body.entity === 'room') {
@@ -47,9 +53,17 @@ export async function POST(request: Request) {
       if (denied) return denied;
       const room = await upsertGuestRoom({
         id: body.id,
-        roomNumber: body.roomNumber ?? '',
-        building: body.building ?? '',
-        characteristics: body.characteristics ?? '',
+        roomNumber: body.roomNumber,
+        roomName: body.roomName,
+        building: body.building,
+        category: body.category,
+        hotelName: body.hotelName,
+        characteristics: body.characteristics,
+        capacity: body.capacity,
+        floor: body.floor,
+        amenities: body.amenities,
+        notes: body.notes,
+        status: body.status,
       });
       return NextResponse.json(room, { status: body.id ? 200 : 201 });
     }
@@ -83,6 +97,13 @@ export async function POST(request: Request) {
         endDate: body.endDate ?? '',
         roomId: body.roomId,
         notes: body.notes,
+        company: body.company,
+        mission: body.mission,
+        phone: body.phone,
+        email: body.email,
+        nationality: body.nationality,
+        idDoc: body.idDoc,
+        billing: body.billing,
       });
       return NextResponse.json(created, { status: 201 });
     }

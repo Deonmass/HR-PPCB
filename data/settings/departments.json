@@ -1,21 +1,57 @@
 {
   "departments": [
     {
-      "id": "dept-hr",
-      "name": "HR",
-      "code": "HR",
+      "id": "dept-corporate-admin",
+      "name": "Corporate Admin",
+      "code": "Corporate Admin",
       "active": true
     },
     {
-      "id": "dept-it",
-      "name": "IT",
-      "code": "IT",
+      "id": "dept-engineering",
+      "name": "Engineering",
+      "code": "Engineering",
       "active": true
     },
     {
       "id": "dept-finance",
       "name": "Finance",
-      "code": "FIN",
+      "code": "Finance",
+      "active": true
+    },
+    {
+      "id": "dept-human-resources",
+      "name": "Human Resources",
+      "code": "Human Resources",
+      "active": true
+    },
+    {
+      "id": "dept-mining",
+      "name": "Mining",
+      "code": "Mining",
+      "active": true
+    },
+    {
+      "id": "dept-packaging-logistics",
+      "name": "Packaging & Logistics",
+      "code": "Packaging & Logistics",
+      "active": true
+    },
+    {
+      "id": "dept-production",
+      "name": "Production",
+      "code": "Production",
+      "active": true
+    },
+    {
+      "id": "dept-qa",
+      "name": "QA",
+      "code": "QA",
+      "active": true
+    },
+    {
+      "id": "dept-sales-logistics",
+      "name": "Sales & Logistics",
+      "code": "Sales & Logistics",
       "active": true
     }
   ]

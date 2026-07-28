@@ -10,7 +10,7 @@ import {
   type PactilisCompareResult,
   type PactilisPerson,
 } from '@/lib/dependants-pactilis-compare';
-import { createDependant, readDependantsData, updateDependant } from '@/lib/dependants-store';
+import { createDependant, readDependantsData, updateDependant } from '@/lib/dependants-json-store';
 import type { Dependant, DependantFormData } from '@/lib/dependants-types';
 import { isEmployeeStatut } from '@/lib/dependants-utils';
 

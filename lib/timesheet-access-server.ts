@@ -3,7 +3,7 @@ import 'server-only';
 import { cookies } from 'next/headers';
 import { NextResponse } from 'next/server';
 import { getSession, getSessionCookieName } from '@/lib/auth-store';
-import { readEmployees } from '@/lib/employees-store';
+import { readEmployees } from '@/lib/employees-json-store';
 import { canPerformAction } from '@/lib/permission-check';
 import { checkPermission } from '@/lib/require-permission';
 import {

@@ -1,19 +1,23 @@
 import { NextResponse } from 'next/server';
 import {
   buildGuestHouseExportFilename,
-  buildGuestHouseVillageExportBuffer,
+  buildGuestHouseTemplateExportBuffer,
+  resolveGuestHouseExportMonth,
 } from '@/lib/guest-house-export.server';
 import { getGuestHouseBundle } from '@/lib/guest-house-store';
 import { checkPermission } from '@/lib/require-permission';
 
-export async function GET() {
+export async function GET(request: Request) {
   const denied = await checkPermission('village.guest-house', 'export');
   if (denied) return denied;
 
   try {
+    const url = new URL(request.url);
+    const monthParam = url.searchParams.get('month');
+    const { key } = resolveGuestHouseExportMonth(monthParam);
     const data = await getGuestHouseBundle();
-    const buffer = await buildGuestHouseVillageExportBuffer(data);
-    const filename = buildGuestHouseExportFilename();
+    const { buffer, monthKey } = await buildGuestHouseTemplateExportBuffer(data, key);
+    const filename = buildGuestHouseExportFilename(monthKey);
     return new NextResponse(new Uint8Array(buffer), {
       headers: {
         'Content-Type':

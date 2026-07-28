@@ -1,24 +1,1959 @@
 {
   "users": [
     {
-      "id": "user-admin",
+      "id": "admin",
       "username": "admin",
-      "password": "a665a45920422f9d417e4867efdc4fb8a04a1f3fff1fa07e998e86f7f7a27ae3",
+      "password": "123",
       "displayName": "Administrateur",
       "initials": "AD",
-      "email": "admin@ppcbarnet.local",
       "active": true,
-      "createdAt": "2026-07-03T08:11:50.607Z"
+      "createdAt": "2026-07-28T12:02:15.277Z",
+      "menus": [
+        {
+          "menuId": "employes.liste",
+          "label": "Liste employés",
+          "actions": {
+            "view": true,
+            "create": true,
+            "edit": true,
+            "delete": true,
+            "export": true
+          }
+        },
+        {
+          "menuId": "employes.dependants",
+          "label": "Dependants",
+          "actions": {
+            "view": true,
+            "create": true,
+            "edit": true,
+            "delete": true,
+            "export": true
+          }
+        },
+        {
+          "menuId": "employes.check-documents",
+          "label": "Check documents",
+          "actions": {
+            "view": true,
+            "create": true,
+            "edit": true,
+            "delete": true,
+            "export": true
+          }
+        },
+        {
+          "menuId": "employes.heures",
+          "label": "Heures sup. — Mon timesheet",
+          "actions": {
+            "view": true,
+            "create": true,
+            "edit": true,
+            "delete": true,
+            "export": true
+          }
+        },
+        {
+          "menuId": "employes.heures.dept",
+          "label": "Heures sup. — Département (planning & OT de son département — Modifier = éditer le planning)",
+          "actions": {
+            "view": true,
+            "create": true,
+            "edit": true,
+            "delete": true,
+            "export": true
+          }
+        },
+        {
+          "menuId": "employes.heures.all",
+          "label": "Heures sup. — Tous départements (planning & OT)",
+          "actions": {
+            "view": true,
+            "create": true,
+            "edit": true,
+            "delete": true,
+            "export": true
+          }
+        },
+        {
+          "menuId": "employes.heures.import",
+          "label": "Heures sup. — Import OT (menu contextuel carte semaine)",
+          "actions": {
+            "view": true,
+            "create": true,
+            "edit": true,
+            "delete": true,
+            "export": true
+          }
+        },
+        {
+          "menuId": "employes.heures.compilation",
+          "label": "Heures sup. — Compilation & politique",
+          "actions": {
+            "view": true,
+            "create": true,
+            "edit": true,
+            "delete": true,
+            "export": true
+          }
+        },
+        {
+          "menuId": "project.dashboard",
+          "label": "Dashboard",
+          "actions": {
+            "view": true,
+            "create": true,
+            "edit": true,
+            "delete": true,
+            "export": true
+          }
+        },
+        {
+          "menuId": "project.projects",
+          "label": "Projects",
+          "actions": {
+            "view": true,
+            "create": true,
+            "edit": true,
+            "delete": true,
+            "export": true
+          }
+        },
+        {
+          "menuId": "project.expenses",
+          "label": "Expenses details",
+          "actions": {
+            "view": true,
+            "create": true,
+            "edit": true,
+            "delete": true,
+            "export": true
+          }
+        },
+        {
+          "menuId": "travel.historique",
+          "label": "Voyage — Historique",
+          "actions": {
+            "view": true,
+            "create": true,
+            "edit": true,
+            "delete": true,
+            "export": true
+          }
+        },
+        {
+          "menuId": "travel.etablir",
+          "label": "Voyage — Établir",
+          "actions": {
+            "view": true,
+            "create": true,
+            "edit": true,
+            "delete": true,
+            "export": true
+          }
+        },
+        {
+          "menuId": "travel.attestation",
+          "label": "Attestation de service",
+          "actions": {
+            "view": true,
+            "create": true,
+            "edit": true,
+            "delete": true,
+            "export": true
+          }
+        },
+        {
+          "menuId": "factures.fournisseur.liste",
+          "label": "Liste",
+          "actions": {
+            "view": true,
+            "create": true,
+            "edit": true,
+            "delete": true,
+            "export": true
+          }
+        },
+        {
+          "menuId": "factures.fournisseur.factures",
+          "label": "Factures",
+          "actions": {
+            "view": true,
+            "create": true,
+            "edit": true,
+            "delete": true,
+            "export": true
+          }
+        },
+        {
+          "menuId": "factures.fournisseur.soa",
+          "label": "SOA",
+          "actions": {
+            "view": true,
+            "create": true,
+            "edit": true,
+            "delete": true,
+            "export": true
+          }
+        },
+        {
+          "menuId": "factures.fournisseur.fournisseurs",
+          "label": "Fournisseurs",
+          "actions": {
+            "view": true,
+            "create": true,
+            "edit": true,
+            "delete": true,
+            "export": true
+          }
+        },
+        {
+          "menuId": "sante",
+          "label": "Santé",
+          "actions": {
+            "view": true,
+            "create": true,
+            "edit": true,
+            "delete": true,
+            "export": true
+          }
+        },
+        {
+          "menuId": "charroi",
+          "label": "Charroi automobile",
+          "actions": {
+            "view": true,
+            "create": true,
+            "edit": true,
+            "delete": true,
+            "export": true
+          }
+        },
+        {
+          "menuId": "village.dependants-dashboard",
+          "label": "Dashboard (Village/Kimpese)",
+          "actions": {
+            "view": true,
+            "create": true,
+            "edit": true,
+            "delete": true,
+            "export": true
+          }
+        },
+        {
+          "menuId": "village.dependants-liste",
+          "label": "Liste (Village/Kimpese)",
+          "actions": {
+            "view": true,
+            "create": true,
+            "edit": true,
+            "delete": true,
+            "export": true
+          }
+        },
+        {
+          "menuId": "village.maisons",
+          "label": "Maisons",
+          "actions": {
+            "view": true,
+            "create": true,
+            "edit": true,
+            "delete": true,
+            "export": true
+          }
+        },
+        {
+          "menuId": "village.guest-house",
+          "label": "Guest house — réservations & occupation",
+          "actions": {
+            "view": true,
+            "create": true,
+            "edit": true,
+            "delete": true,
+            "export": true
+          }
+        },
+        {
+          "menuId": "settings.departements",
+          "label": "Départements",
+          "actions": {
+            "view": true,
+            "create": true,
+            "edit": true,
+            "delete": true,
+            "export": true
+          }
+        },
+        {
+          "menuId": "settings.centres",
+          "label": "Centre de coût",
+          "actions": {
+            "view": true,
+            "create": true,
+            "edit": true,
+            "delete": true,
+            "export": true
+          }
+        },
+        {
+          "menuId": "settings.utilisateurs",
+          "label": "Utilisateurs",
+          "actions": {
+            "view": true,
+            "create": true,
+            "edit": true,
+            "delete": true,
+            "export": true
+          }
+        },
+        {
+          "menuId": "settings.permissions",
+          "label": "Permissions",
+          "actions": {
+            "view": true,
+            "create": true,
+            "edit": true,
+            "delete": true,
+            "export": true
+          }
+        }
+      ]
     },
     {
-      "id": "user-1783081211382",
-      "username": "berthe.lubenzo",
-      "password": "a665a45920422f9d417e4867efdc4fb8a04a1f3fff1fa07e998e86f7f7a27ae3",
-      "displayName": "Berthe lubenzo",
+      "id": "berth.lubenzo",
+      "username": "berth.lubenzo",
+      "password": "123",
+      "displayName": "Berth Lubenzo",
       "initials": "BL",
       "email": "Berth.Lubenzo@ppcdrc.cd",
       "active": true,
-      "createdAt": "2026-07-03T12:20:11.391Z"
+      "createdAt": "2026-07-28T12:02:15.277Z",
+      "menus": [
+        {
+          "menuId": "employes.liste",
+          "label": "Liste employés",
+          "actions": {
+            "view": false,
+            "create": false,
+            "edit": false,
+            "delete": false,
+            "export": false
+          }
+        },
+        {
+          "menuId": "employes.dependants",
+          "label": "Dependants",
+          "actions": {
+            "view": false,
+            "create": false,
+            "edit": false,
+            "delete": false,
+            "export": false
+          }
+        },
+        {
+          "menuId": "employes.check-documents",
+          "label": "Check documents",
+          "actions": {
+            "view": false,
+            "create": false,
+            "edit": false,
+            "delete": false,
+            "export": false
+          }
+        },
+        {
+          "menuId": "employes.heures",
+          "label": "Heures sup. — Mon timesheet",
+          "actions": {
+            "view": false,
+            "create": false,
+            "edit": false,
+            "delete": false,
+            "export": false
+          }
+        },
+        {
+          "menuId": "employes.heures.dept",
+          "label": "Heures sup. — Département (planning & OT de son département — Modifier = éditer le planning)",
+          "actions": {
+            "view": false,
+            "create": false,
+            "edit": false,
+            "delete": false,
+            "export": false
+          }
+        },
+        {
+          "menuId": "employes.heures.all",
+          "label": "Heures sup. — Tous départements (planning & OT)",
+          "actions": {
+            "view": false,
+            "create": false,
+            "edit": false,
+            "delete": false,
+            "export": false
+          }
+        },
+        {
+          "menuId": "employes.heures.import",
+          "label": "Heures sup. — Import OT (menu contextuel carte semaine)",
+          "actions": {
+            "view": false,
+            "create": false,
+            "edit": false,
+            "delete": false,
+            "export": false
+          }
+        },
+        {
+          "menuId": "employes.heures.compilation",
+          "label": "Heures sup. — Compilation & politique",
+          "actions": {
+            "view": false,
+            "create": false,
+            "edit": false,
+            "delete": false,
+            "export": false
+          }
+        },
+        {
+          "menuId": "project.dashboard",
+          "label": "Dashboard",
+          "actions": {
+            "view": false,
+            "create": false,
+            "edit": false,
+            "delete": false,
+            "export": false
+          }
+        },
+        {
+          "menuId": "project.projects",
+          "label": "Projects",
+          "actions": {
+            "view": false,
+            "create": false,
+            "edit": false,
+            "delete": false,
+            "export": false
+          }
+        },
+        {
+          "menuId": "project.expenses",
+          "label": "Expenses details",
+          "actions": {
+            "view": false,
+            "create": false,
+            "edit": false,
+            "delete": false,
+            "export": false
+          }
+        },
+        {
+          "menuId": "travel.historique",
+          "label": "Voyage — Historique",
+          "actions": {
+            "view": true,
+            "create": true,
+            "edit": true,
+            "delete": true,
+            "export": true
+          }
+        },
+        {
+          "menuId": "travel.etablir",
+          "label": "Voyage — Établir",
+          "actions": {
+            "view": true,
+            "create": true,
+            "edit": true,
+            "delete": true,
+            "export": true
+          }
+        },
+        {
+          "menuId": "travel.attestation",
+          "label": "Attestation de service",
+          "actions": {
+            "view": true,
+            "create": true,
+            "edit": true,
+            "delete": true,
+            "export": true
+          }
+        },
+        {
+          "menuId": "factures.fournisseur.liste",
+          "label": "Liste",
+          "actions": {
+            "view": false,
+            "create": false,
+            "edit": false,
+            "delete": false,
+            "export": false
+          }
+        },
+        {
+          "menuId": "factures.fournisseur.factures",
+          "label": "Factures",
+          "actions": {
+            "view": false,
+            "create": false,
+            "edit": false,
+            "delete": false,
+            "export": false
+          }
+        },
+        {
+          "menuId": "factures.fournisseur.soa",
+          "label": "SOA",
+          "actions": {
+            "view": false,
+            "create": false,
+            "edit": false,
+            "delete": false,
+            "export": false
+          }
+        },
+        {
+          "menuId": "factures.fournisseur.fournisseurs",
+          "label": "Fournisseurs",
+          "actions": {
+            "view": false,
+            "create": false,
+            "edit": false,
+            "delete": false,
+            "export": false
+          }
+        },
+        {
+          "menuId": "sante",
+          "label": "Santé",
+          "actions": {
+            "view": false,
+            "create": false,
+            "edit": false,
+            "delete": false,
+            "export": false
+          }
+        },
+        {
+          "menuId": "charroi",
+          "label": "Charroi automobile",
+          "actions": {
+            "view": false,
+            "create": false,
+            "edit": false,
+            "delete": false,
+            "export": false
+          }
+        },
+        {
+          "menuId": "village.dependants-dashboard",
+          "label": "Dashboard (Village/Kimpese)",
+          "actions": {
+            "view": false,
+            "create": false,
+            "edit": false,
+            "delete": false,
+            "export": false
+          }
+        },
+        {
+          "menuId": "village.dependants-liste",
+          "label": "Liste (Village/Kimpese)",
+          "actions": {
+            "view": false,
+            "create": false,
+            "edit": false,
+            "delete": false,
+            "export": false
+          }
+        },
+        {
+          "menuId": "village.maisons",
+          "label": "Maisons",
+          "actions": {
+            "view": false,
+            "create": false,
+            "edit": false,
+            "delete": false,
+            "export": false
+          }
+        },
+        {
+          "menuId": "village.guest-house",
+          "label": "Guest house — réservations & occupation",
+          "actions": {
+            "view": false,
+            "create": false,
+            "edit": false,
+            "delete": false,
+            "export": false
+          }
+        },
+        {
+          "menuId": "settings.departements",
+          "label": "Départements",
+          "actions": {
+            "view": false,
+            "create": false,
+            "edit": false,
+            "delete": false,
+            "export": false
+          }
+        },
+        {
+          "menuId": "settings.centres",
+          "label": "Centre de coût",
+          "actions": {
+            "view": false,
+            "create": false,
+            "edit": false,
+            "delete": false,
+            "export": false
+          }
+        },
+        {
+          "menuId": "settings.utilisateurs",
+          "label": "Utilisateurs",
+          "actions": {
+            "view": false,
+            "create": false,
+            "edit": false,
+            "delete": false,
+            "export": false
+          }
+        },
+        {
+          "menuId": "settings.permissions",
+          "label": "Permissions",
+          "actions": {
+            "view": false,
+            "create": false,
+            "edit": false,
+            "delete": false,
+            "export": false
+          }
+        }
+      ]
+    },
+    {
+      "id": "Serge.Muakasa",
+      "username": "Serge.Muakasa",
+      "password": "123",
+      "displayName": "Serge Muakasa",
+      "initials": "SM",
+      "email": "Serge.Muakasa@ppcdrc.cd",
+      "matricule": "70000008",
+      "linkedEmployee": {
+        "matricule": "70000008",
+        "nom": "MUAKASA NSONI SERGE",
+        "departement": "Human Resources",
+        "grade": "C4",
+        "jobTitle": "Estate Officer",
+        "localisation": "Zamba"
+      },
+      "active": true,
+      "createdAt": "2026-07-28T12:02:15.277Z",
+      "menus": [
+        {
+          "menuId": "employes.liste",
+          "label": "Liste employés",
+          "actions": {
+            "view": true,
+            "create": false,
+            "edit": false,
+            "delete": false,
+            "export": true
+          }
+        },
+        {
+          "menuId": "employes.dependants",
+          "label": "Dependants",
+          "actions": {
+            "view": true,
+            "create": false,
+            "edit": false,
+            "delete": false,
+            "export": false
+          }
+        },
+        {
+          "menuId": "employes.check-documents",
+          "label": "Check documents",
+          "actions": {
+            "view": true,
+            "create": false,
+            "edit": true,
+            "delete": false,
+            "export": false
+          }
+        },
+        {
+          "menuId": "employes.heures",
+          "label": "Heures sup. — Mon timesheet",
+          "actions": {
+            "view": true,
+            "create": true,
+            "edit": true,
+            "delete": true,
+            "export": true
+          }
+        },
+        {
+          "menuId": "employes.heures.dept",
+          "label": "Heures sup. — Département (planning & OT de son département — Modifier = éditer le planning)",
+          "actions": {
+            "view": false,
+            "create": false,
+            "edit": false,
+            "delete": false,
+            "export": false
+          }
+        },
+        {
+          "menuId": "employes.heures.all",
+          "label": "Heures sup. — Tous départements (planning & OT)",
+          "actions": {
+            "view": true,
+            "create": true,
+            "edit": true,
+            "delete": true,
+            "export": true
+          }
+        },
+        {
+          "menuId": "employes.heures.import",
+          "label": "Heures sup. — Import OT (menu contextuel carte semaine)",
+          "actions": {
+            "view": true,
+            "create": true,
+            "edit": true,
+            "delete": true,
+            "export": true
+          }
+        },
+        {
+          "menuId": "employes.heures.compilation",
+          "label": "Heures sup. — Compilation & politique",
+          "actions": {
+            "view": true,
+            "create": true,
+            "edit": true,
+            "delete": true,
+            "export": true
+          }
+        },
+        {
+          "menuId": "project.dashboard",
+          "label": "Dashboard",
+          "actions": {
+            "view": false,
+            "create": false,
+            "edit": false,
+            "delete": false,
+            "export": false
+          }
+        },
+        {
+          "menuId": "project.projects",
+          "label": "Projects",
+          "actions": {
+            "view": false,
+            "create": false,
+            "edit": false,
+            "delete": false,
+            "export": false
+          }
+        },
+        {
+          "menuId": "project.expenses",
+          "label": "Expenses details",
+          "actions": {
+            "view": false,
+            "create": false,
+            "edit": false,
+            "delete": false,
+            "export": false
+          }
+        },
+        {
+          "menuId": "travel.historique",
+          "label": "Voyage — Historique",
+          "actions": {
+            "view": false,
+            "create": false,
+            "edit": false,
+            "delete": false,
+            "export": false
+          }
+        },
+        {
+          "menuId": "travel.etablir",
+          "label": "Voyage — Établir",
+          "actions": {
+            "view": false,
+            "create": false,
+            "edit": false,
+            "delete": false,
+            "export": false
+          }
+        },
+        {
+          "menuId": "travel.attestation",
+          "label": "Attestation de service",
+          "actions": {
+            "view": false,
+            "create": false,
+            "edit": false,
+            "delete": false,
+            "export": false
+          }
+        },
+        {
+          "menuId": "factures.fournisseur.liste",
+          "label": "Liste",
+          "actions": {
+            "view": true,
+            "create": true,
+            "edit": true,
+            "delete": false,
+            "export": true
+          }
+        },
+        {
+          "menuId": "factures.fournisseur.factures",
+          "label": "Factures",
+          "actions": {
+            "view": true,
+            "create": true,
+            "edit": true,
+            "delete": false,
+            "export": true
+          }
+        },
+        {
+          "menuId": "factures.fournisseur.soa",
+          "label": "SOA",
+          "actions": {
+            "view": true,
+            "create": true,
+            "edit": true,
+            "delete": false,
+            "export": true
+          }
+        },
+        {
+          "menuId": "factures.fournisseur.fournisseurs",
+          "label": "Fournisseurs",
+          "actions": {
+            "view": true,
+            "create": true,
+            "edit": true,
+            "delete": false,
+            "export": true
+          }
+        },
+        {
+          "menuId": "sante",
+          "label": "Santé",
+          "actions": {
+            "view": false,
+            "create": false,
+            "edit": false,
+            "delete": false,
+            "export": false
+          }
+        },
+        {
+          "menuId": "charroi",
+          "label": "Charroi automobile",
+          "actions": {
+            "view": false,
+            "create": false,
+            "edit": false,
+            "delete": false,
+            "export": false
+          }
+        },
+        {
+          "menuId": "village.dependants-dashboard",
+          "label": "Dashboard (Village/Kimpese)",
+          "actions": {
+            "view": true,
+            "create": true,
+            "edit": true,
+            "delete": true,
+            "export": true
+          }
+        },
+        {
+          "menuId": "village.dependants-liste",
+          "label": "Liste (Village/Kimpese)",
+          "actions": {
+            "view": true,
+            "create": true,
+            "edit": true,
+            "delete": true,
+            "export": true
+          }
+        },
+        {
+          "menuId": "village.maisons",
+          "label": "Maisons",
+          "actions": {
+            "view": true,
+            "create": true,
+            "edit": true,
+            "delete": true,
+            "export": true
+          }
+        },
+        {
+          "menuId": "village.guest-house",
+          "label": "Guest house — réservations & occupation",
+          "actions": {
+            "view": true,
+            "create": true,
+            "edit": true,
+            "delete": true,
+            "export": true
+          }
+        },
+        {
+          "menuId": "settings.departements",
+          "label": "Départements",
+          "actions": {
+            "view": true,
+            "create": true,
+            "edit": true,
+            "delete": true,
+            "export": true
+          }
+        },
+        {
+          "menuId": "settings.centres",
+          "label": "Centre de coût",
+          "actions": {
+            "view": true,
+            "create": true,
+            "edit": true,
+            "delete": true,
+            "export": true
+          }
+        },
+        {
+          "menuId": "settings.utilisateurs",
+          "label": "Utilisateurs",
+          "actions": {
+            "view": false,
+            "create": false,
+            "edit": false,
+            "delete": false,
+            "export": false
+          }
+        },
+        {
+          "menuId": "settings.permissions",
+          "label": "Permissions",
+          "actions": {
+            "view": false,
+            "create": false,
+            "edit": false,
+            "delete": false,
+            "export": false
+          }
+        }
+      ]
+    },
+    {
+      "id": "Pelagie.Kinkinia",
+      "username": "Pelagie.Kinkinia",
+      "password": "123",
+      "displayName": "Pelagie Kinkinia",
+      "initials": "PK",
+      "email": "Pelagie.Kinkinia@ppcdrc.cd",
+      "matricule": "70000295",
+      "linkedEmployee": {
+        "matricule": "70000295",
+        "nom": "KINKINIA DIAVEZUKA PELAGIE",
+        "departement": "Administration",
+        "grade": "D2",
+        "jobTitle": "Plant HR Manager",
+        "localisation": "Zamba"
+      },
+      "active": true,
+      "createdAt": "2026-07-28T12:02:15.277Z",
+      "menus": [
+        {
+          "menuId": "employes.liste",
+          "label": "Liste employés",
+          "actions": {
+            "view": false,
+            "create": false,
+            "edit": false,
+            "delete": false,
+            "export": false
+          }
+        },
+        {
+          "menuId": "employes.dependants",
+          "label": "Dependants",
+          "actions": {
+            "view": false,
+            "create": false,
+            "edit": false,
+            "delete": false,
+            "export": false
+          }
+        },
+        {
+          "menuId": "employes.check-documents",
+          "label": "Check documents",
+          "actions": {
+            "view": false,
+            "create": false,
+            "edit": false,
+            "delete": false,
+            "export": false
+          }
+        },
+        {
+          "menuId": "employes.heures",
+          "label": "Heures sup. — Mon timesheet",
+          "actions": {
+            "view": false,
+            "create": false,
+            "edit": false,
+            "delete": false,
+            "export": false
+          }
+        },
+        {
+          "menuId": "employes.heures.dept",
+          "label": "Heures sup. — Département (planning & OT de son département — Modifier = éditer le planning)",
+          "actions": {
+            "view": false,
+            "create": false,
+            "edit": false,
+            "delete": false,
+            "export": false
+          }
+        },
+        {
+          "menuId": "employes.heures.all",
+          "label": "Heures sup. — Tous départements (planning & OT)",
+          "actions": {
+            "view": false,
+            "create": false,
+            "edit": false,
+            "delete": false,
+            "export": false
+          }
+        },
+        {
+          "menuId": "employes.heures.import",
+          "label": "Heures sup. — Import OT (menu contextuel carte semaine)",
+          "actions": {
+            "view": false,
+            "create": false,
+            "edit": false,
+            "delete": false,
+            "export": false
+          }
+        },
+        {
+          "menuId": "employes.heures.compilation",
+          "label": "Heures sup. — Compilation & politique",
+          "actions": {
+            "view": false,
+            "create": false,
+            "edit": false,
+            "delete": false,
+            "export": false
+          }
+        },
+        {
+          "menuId": "project.dashboard",
+          "label": "Dashboard",
+          "actions": {
+            "view": false,
+            "create": false,
+            "edit": false,
+            "delete": false,
+            "export": false
+          }
+        },
+        {
+          "menuId": "project.projects",
+          "label": "Projects",
+          "actions": {
+            "view": false,
+            "create": false,
+            "edit": false,
+            "delete": false,
+            "export": false
+          }
+        },
+        {
+          "menuId": "project.expenses",
+          "label": "Expenses details",
+          "actions": {
+            "view": false,
+            "create": false,
+            "edit": false,
+            "delete": false,
+            "export": false
+          }
+        },
+        {
+          "menuId": "travel.historique",
+          "label": "Voyage — Historique",
+          "actions": {
+            "view": false,
+            "create": false,
+            "edit": false,
+            "delete": false,
+            "export": false
+          }
+        },
+        {
+          "menuId": "travel.etablir",
+          "label": "Voyage — Établir",
+          "actions": {
+            "view": false,
+            "create": false,
+            "edit": false,
+            "delete": false,
+            "export": false
+          }
+        },
+        {
+          "menuId": "travel.attestation",
+          "label": "Attestation de service",
+          "actions": {
+            "view": false,
+            "create": false,
+            "edit": false,
+            "delete": false,
+            "export": false
+          }
+        },
+        {
+          "menuId": "factures.fournisseur.liste",
+          "label": "Liste",
+          "actions": {
+            "view": false,
+            "create": false,
+            "edit": false,
+            "delete": false,
+            "export": false
+          }
+        },
+        {
+          "menuId": "factures.fournisseur.factures",
+          "label": "Factures",
+          "actions": {
+            "view": false,
+            "create": false,
+            "edit": false,
+            "delete": false,
+            "export": false
+          }
+        },
+        {
+          "menuId": "factures.fournisseur.soa",
+          "label": "SOA",
+          "actions": {
+            "view": false,
+            "create": false,
+            "edit": false,
+            "delete": false,
+            "export": false
+          }
+        },
+        {
+          "menuId": "factures.fournisseur.fournisseurs",
+          "label": "Fournisseurs",
+          "actions": {
+            "view": false,
+            "create": false,
+            "edit": false,
+            "delete": false,
+            "export": false
+          }
+        },
+        {
+          "menuId": "sante",
+          "label": "Santé",
+          "actions": {
+            "view": false,
+            "create": false,
+            "edit": false,
+            "delete": false,
+            "export": false
+          }
+        },
+        {
+          "menuId": "charroi",
+          "label": "Charroi automobile",
+          "actions": {
+            "view": false,
+            "create": false,
+            "edit": false,
+            "delete": false,
+            "export": false
+          }
+        },
+        {
+          "menuId": "village.dependants-dashboard",
+          "label": "Dashboard (Village/Kimpese)",
+          "actions": {
+            "view": false,
+            "create": false,
+            "edit": false,
+            "delete": false,
+            "export": false
+          }
+        },
+        {
+          "menuId": "village.dependants-liste",
+          "label": "Liste (Village/Kimpese)",
+          "actions": {
+            "view": false,
+            "create": false,
+            "edit": false,
+            "delete": false,
+            "export": false
+          }
+        },
+        {
+          "menuId": "village.maisons",
+          "label": "Maisons",
+          "actions": {
+            "view": false,
+            "create": false,
+            "edit": false,
+            "delete": false,
+            "export": false
+          }
+        },
+        {
+          "menuId": "village.guest-house",
+          "label": "Guest house — réservations & occupation",
+          "actions": {
+            "view": false,
+            "create": false,
+            "edit": false,
+            "delete": false,
+            "export": false
+          }
+        },
+        {
+          "menuId": "settings.departements",
+          "label": "Départements",
+          "actions": {
+            "view": false,
+            "create": false,
+            "edit": false,
+            "delete": false,
+            "export": false
+          }
+        },
+        {
+          "menuId": "settings.centres",
+          "label": "Centre de coût",
+          "actions": {
+            "view": false,
+            "create": false,
+            "edit": false,
+            "delete": false,
+            "export": false
+          }
+        },
+        {
+          "menuId": "settings.utilisateurs",
+          "label": "Utilisateurs",
+          "actions": {
+            "view": false,
+            "create": false,
+            "edit": false,
+            "delete": false,
+            "export": false
+          }
+        },
+        {
+          "menuId": "settings.permissions",
+          "label": "Permissions",
+          "actions": {
+            "view": false,
+            "create": false,
+            "edit": false,
+            "delete": false,
+            "export": false
+          }
+        }
+      ]
+    },
+    {
+      "id": "Carine.Ewuli",
+      "username": "Carine.Ewuli",
+      "password": "123",
+      "displayName": "Carine Ewuli",
+      "initials": "CES",
+      "email": "Carine.Ewuli@ppcdrc.cd",
+      "matricule": "70000265",
+      "linkedEmployee": {
+        "matricule": "70000265",
+        "nom": "EWULI SUKA Carine",
+        "departement": "Corporate Admin",
+        "grade": "D5",
+        "jobTitle": "Head of Human Resources",
+        "localisation": "Kinshasa"
+      },
+      "active": true,
+      "createdAt": "2026-07-28T12:02:15.277Z",
+      "menus": [
+        {
+          "menuId": "employes.liste",
+          "label": "Liste employés",
+          "actions": {
+            "view": false,
+            "create": false,
+            "edit": false,
+            "delete": false,
+            "export": false
+          }
+        },
+        {
+          "menuId": "employes.dependants",
+          "label": "Dependants",
+          "actions": {
+            "view": false,
+            "create": false,
+            "edit": false,
+            "delete": false,
+            "export": false
+          }
+        },
+        {
+          "menuId": "employes.check-documents",
+          "label": "Check documents",
+          "actions": {
+            "view": false,
+            "create": false,
+            "edit": false,
+            "delete": false,
+            "export": false
+          }
+        },
+        {
+          "menuId": "employes.heures",
+          "label": "Heures sup. — Mon timesheet",
+          "actions": {
+            "view": false,
+            "create": false,
+            "edit": false,
+            "delete": false,
+            "export": false
+          }
+        },
+        {
+          "menuId": "employes.heures.dept",
+          "label": "Heures sup. — Département (planning & OT de son département — Modifier = éditer le planning)",
+          "actions": {
+            "view": false,
+            "create": false,
+            "edit": false,
+            "delete": false,
+            "export": false
+          }
+        },
+        {
+          "menuId": "employes.heures.all",
+          "label": "Heures sup. — Tous départements (planning & OT)",
+          "actions": {
+            "view": false,
+            "create": false,
+            "edit": false,
+            "delete": false,
+            "export": false
+          }
+        },
+        {
+          "menuId": "employes.heures.import",
+          "label": "Heures sup. — Import OT (menu contextuel carte semaine)",
+          "actions": {
+            "view": false,
+            "create": false,
+            "edit": false,
+            "delete": false,
+            "export": false
+          }
+        },
+        {
+          "menuId": "employes.heures.compilation",
+          "label": "Heures sup. — Compilation & politique",
+          "actions": {
+            "view": false,
+            "create": false,
+            "edit": false,
+            "delete": false,
+            "export": false
+          }
+        },
+        {
+          "menuId": "project.dashboard",
+          "label": "Dashboard",
+          "actions": {
+            "view": false,
+            "create": false,
+            "edit": false,
+            "delete": false,
+            "export": false
+          }
+        },
+        {
+          "menuId": "project.projects",
+          "label": "Projects",
+          "actions": {
+            "view": false,
+            "create": false,
+            "edit": false,
+            "delete": false,
+            "export": false
+          }
+        },
+        {
+          "menuId": "project.expenses",
+          "label": "Expenses details",
+          "actions": {
+            "view": false,
+            "create": false,
+            "edit": false,
+            "delete": false,
+            "export": false
+          }
+        },
+        {
+          "menuId": "travel.historique",
+          "label": "Voyage — Historique",
+          "actions": {
+            "view": false,
+            "create": false,
+            "edit": false,
+            "delete": false,
+            "export": false
+          }
+        },
+        {
+          "menuId": "travel.etablir",
+          "label": "Voyage — Établir",
+          "actions": {
+            "view": false,
+            "create": false,
+            "edit": false,
+            "delete": false,
+            "export": false
+          }
+        },
+        {
+          "menuId": "travel.attestation",
+          "label": "Attestation de service",
+          "actions": {
+            "view": false,
+            "create": false,
+            "edit": false,
+            "delete": false,
+            "export": false
+          }
+        },
+        {
+          "menuId": "factures.fournisseur.liste",
+          "label": "Liste",
+          "actions": {
+            "view": false,
+            "create": false,
+            "edit": false,
+            "delete": false,
+            "export": false
+          }
+        },
+        {
+          "menuId": "factures.fournisseur.factures",
+          "label": "Factures",
+          "actions": {
+            "view": false,
+            "create": false,
+            "edit": false,
+            "delete": false,
+            "export": false
+          }
+        },
+        {
+          "menuId": "factures.fournisseur.soa",
+          "label": "SOA",
+          "actions": {
+            "view": false,
+            "create": false,
+            "edit": false,
+            "delete": false,
+            "export": false
+          }
+        },
+        {
+          "menuId": "factures.fournisseur.fournisseurs",
+          "label": "Fournisseurs",
+          "actions": {
+            "view": false,
+            "create": false,
+            "edit": false,
+            "delete": false,
+            "export": false
+          }
+        },
+        {
+          "menuId": "sante",
+          "label": "Santé",
+          "actions": {
+            "view": false,
+            "create": false,
+            "edit": false,
+            "delete": false,
+            "export": false
+          }
+        },
+        {
+          "menuId": "charroi",
+          "label": "Charroi automobile",
+          "actions": {
+            "view": false,
+            "create": false,
+            "edit": false,
+            "delete": false,
+            "export": false
+          }
+        },
+        {
+          "menuId": "village.dependants-dashboard",
+          "label": "Dashboard (Village/Kimpese)",
+          "actions": {
+            "view": false,
+            "create": false,
+            "edit": false,
+            "delete": false,
+            "export": false
+          }
+        },
+        {
+          "menuId": "village.dependants-liste",
+          "label": "Liste (Village/Kimpese)",
+          "actions": {
+            "view": false,
+            "create": false,
+            "edit": false,
+            "delete": false,
+            "export": false
+          }
+        },
+        {
+          "menuId": "village.maisons",
+          "label": "Maisons",
+          "actions": {
+            "view": false,
+            "create": false,
+            "edit": false,
+            "delete": false,
+            "export": false
+          }
+        },
+        {
+          "menuId": "village.guest-house",
+          "label": "Guest house — réservations & occupation",
+          "actions": {
+            "view": false,
+            "create": false,
+            "edit": false,
+            "delete": false,
+            "export": false
+          }
+        },
+        {
+          "menuId": "settings.departements",
+          "label": "Départements",
+          "actions": {
+            "view": false,
+            "create": false,
+            "edit": false,
+            "delete": false,
+            "export": false
+          }
+        },
+        {
+          "menuId": "settings.centres",
+          "label": "Centre de coût",
+          "actions": {
+            "view": false,
+            "create": false,
+            "edit": false,
+            "delete": false,
+            "export": false
+          }
+        },
+        {
+          "menuId": "settings.utilisateurs",
+          "label": "Utilisateurs",
+          "actions": {
+            "view": false,
+            "create": false,
+            "edit": false,
+            "delete": false,
+            "export": false
+          }
+        },
+        {
+          "menuId": "settings.permissions",
+          "label": "Permissions",
+          "actions": {
+            "view": false,
+            "create": false,
+            "edit": false,
+            "delete": false,
+            "export": false
+          }
+        }
+      ]
+    },
+    {
+      "id": "Gedeon.Massadi",
+      "username": "Gedeon.Massadi",
+      "password": "1083",
+      "displayName": "Gedeon Massadi",
+      "initials": "GMS",
+      "email": "Gedeon.Massadi@ppcdrc.cd",
+      "matricule": "70000308",
+      "linkedEmployee": {
+        "matricule": "70000308",
+        "nom": "MASSADI GEDEON GEDEON",
+        "departement": "Human Resources",
+        "grade": "C1",
+        "jobTitle": "HR Administrator",
+        "localisation": "Kinshasa"
+      },
+      "active": true,
+      "createdAt": "2026-07-28T12:02:15.277Z",
+      "menus": [
+        {
+          "menuId": "employes.liste",
+          "label": "Liste employés",
+          "actions": {
+            "view": false,
+            "create": false,
+            "edit": false,
+            "delete": false,
+            "export": false
+          }
+        },
+        {
+          "menuId": "employes.dependants",
+          "label": "Dependants",
+          "actions": {
+            "view": false,
+            "create": false,
+            "edit": false,
+            "delete": false,
+            "export": false
+          }
+        },
+        {
+          "menuId": "employes.check-documents",
+          "label": "Check documents",
+          "actions": {
+            "view": false,
+            "create": false,
+            "edit": false,
+            "delete": false,
+            "export": false
+          }
+        },
+        {
+          "menuId": "employes.heures",
+          "label": "Heures sup. — Mon timesheet",
+          "actions": {
+            "view": false,
+            "create": false,
+            "edit": false,
+            "delete": false,
+            "export": false
+          }
+        },
+        {
+          "menuId": "employes.heures.dept",
+          "label": "Heures sup. — Département (planning & OT de son département — Modifier = éditer le planning)",
+          "actions": {
+            "view": false,
+            "create": false,
+            "edit": false,
+            "delete": false,
+            "export": false
+          }
+        },
+        {
+          "menuId": "employes.heures.all",
+          "label": "Heures sup. — Tous départements (planning & OT)",
+          "actions": {
+            "view": false,
+            "create": false,
+            "edit": false,
+            "delete": false,
+            "export": false
+          }
+        },
+        {
+          "menuId": "employes.heures.import",
+          "label": "Heures sup. — Import OT (menu contextuel carte semaine)",
+          "actions": {
+            "view": false,
+            "create": false,
+            "edit": false,
+            "delete": false,
+            "export": false
+          }
+        },
+        {
+          "menuId": "employes.heures.compilation",
+          "label": "Heures sup. — Compilation & politique",
+          "actions": {
+            "view": false,
+            "create": false,
+            "edit": false,
+            "delete": false,
+            "export": false
+          }
+        },
+        {
+          "menuId": "project.dashboard",
+          "label": "Dashboard",
+          "actions": {
+            "view": false,
+            "create": false,
+            "edit": false,
+            "delete": false,
+            "export": false
+          }
+        },
+        {
+          "menuId": "project.projects",
+          "label": "Projects",
+          "actions": {
+            "view": false,
+            "create": false,
+            "edit": false,
+            "delete": false,
+            "export": false
+          }
+        },
+        {
+          "menuId": "project.expenses",
+          "label": "Expenses details",
+          "actions": {
+            "view": false,
+            "create": false,
+            "edit": false,
+            "delete": false,
+            "export": false
+          }
+        },
+        {
+          "menuId": "travel.historique",
+          "label": "Voyage — Historique",
+          "actions": {
+            "view": false,
+            "create": false,
+            "edit": false,
+            "delete": false,
+            "export": false
+          }
+        },
+        {
+          "menuId": "travel.etablir",
+          "label": "Voyage — Établir",
+          "actions": {
+            "view": false,
+            "create": false,
+            "edit": false,
+            "delete": false,
+            "export": false
+          }
+        },
+        {
+          "menuId": "travel.attestation",
+          "label": "Attestation de service",
+          "actions": {
+            "view": false,
+            "create": false,
+            "edit": false,
+            "delete": false,
+            "export": false
+          }
+        },
+        {
+          "menuId": "factures.fournisseur.liste",
+          "label": "Liste",
+          "actions": {
+            "view": false,
+            "create": false,
+            "edit": false,
+            "delete": false,
+            "export": false
+          }
+        },
+        {
+          "menuId": "factures.fournisseur.factures",
+          "label": "Factures",
+          "actions": {
+            "view": false,
+            "create": false,
+            "edit": false,
+            "delete": false,
+            "export": false
+          }
+        },
+        {
+          "menuId": "factures.fournisseur.soa",
+          "label": "SOA",
+          "actions": {
+            "view": false,
+            "create": false,
+            "edit": false,
+            "delete": false,
+            "export": false
+          }
+        },
+        {
+          "menuId": "factures.fournisseur.fournisseurs",
+          "label": "Fournisseurs",
+          "actions": {
+            "view": false,
+            "create": false,
+            "edit": false,
+            "delete": false,
+            "export": false
+          }
+        },
+        {
+          "menuId": "sante",
+          "label": "Santé",
+          "actions": {
+            "view": false,
+            "create": false,
+            "edit": false,
+            "delete": false,
+            "export": false
+          }
+        },
+        {
+          "menuId": "charroi",
+          "label": "Charroi automobile",
+          "actions": {
+            "view": false,
+            "create": false,
+            "edit": false,
+            "delete": false,
+            "export": false
+          }
+        },
+        {
+          "menuId": "village.dependants-dashboard",
+          "label": "Dashboard (Village/Kimpese)",
+          "actions": {
+            "view": false,
+            "create": false,
+            "edit": false,
+            "delete": false,
+            "export": false
+          }
+        },
+        {
+          "menuId": "village.dependants-liste",
+          "label": "Liste (Village/Kimpese)",
+          "actions": {
+            "view": false,
+            "create": false,
+            "edit": false,
+            "delete": false,
+            "export": false
+          }
+        },
+        {
+          "menuId": "village.maisons",
+          "label": "Maisons",
+          "actions": {
+            "view": false,
+            "create": false,
+            "edit": false,
+            "delete": false,
+            "export": false
+          }
+        },
+        {
+          "menuId": "village.guest-house",
+          "label": "Guest house — réservations & occupation",
+          "actions": {
+            "view": false,
+            "create": false,
+            "edit": false,
+            "delete": false,
+            "export": false
+          }
+        },
+        {
+          "menuId": "settings.departements",
+          "label": "Départements",
+          "actions": {
+            "view": false,
+            "create": false,
+            "edit": false,
+            "delete": false,
+            "export": false
+          }
+        },
+        {
+          "menuId": "settings.centres",
+          "label": "Centre de coût",
+          "actions": {
+            "view": false,
+            "create": false,
+            "edit": false,
+            "delete": false,
+            "export": false
+          }
+        },
+        {
+          "menuId": "settings.utilisateurs",
+          "label": "Utilisateurs",
+          "actions": {
+            "view": false,
+            "create": false,
+            "edit": false,
+            "delete": false,
+            "export": false
+          }
+        },
+        {
+          "menuId": "settings.permissions",
+          "label": "Permissions",
+          "actions": {
+            "view": false,
+            "create": false,
+            "edit": false,
+            "delete": false,
+            "export": false
+          }
+        }
+      ]
     }
   ]
 }

@@ -1,5 +1,5 @@
 import { NextResponse } from 'next/server';
-import { assignEmployeeMaison } from '@/lib/dependants-store';
+import { assignEmployeeMaison } from '@/lib/dependants-json-store';
 import { excelErrorResponse } from '@/lib/excel-io';
 import { checkAnyPermission } from '@/lib/require-permission';
 import { appendAffectationHistory } from '@/lib/village-affectation-history';

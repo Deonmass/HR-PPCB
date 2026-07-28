@@ -1,0 +1,39 @@
+{
+  "exits": [
+    {
+      "id": "08f27ce7-0516-4cad-9939-9a06d0c6c6e6",
+      "matricule": "70000273",
+      "nom": "NDUSHA CLEMENT",
+      "departement": "Administration",
+      "grade": "C2",
+      "jobTitle": "Process Technician",
+      "localisation": "Zamba",
+      "company": "PPC Barnet DRC Manufacturing",
+      "centreCout": "KM5910",
+      "appointmentDate": "03/06/2024",
+      "gender": "Male",
+      "dateOfBirth": "18/12/1999",
+      "age": 26,
+      "nationality": "congolese",
+      "maritalStatus": "Single",
+      "numberOfChildren": 0,
+      "personnelArea": "DRC",
+      "personnelSubArea": "",
+      "employeeSubGroup": "Contract",
+      "payrollArea": "Monthly",
+      "position": "",
+      "departmentHr": "Optimization",
+      "lineManagerName": "Parician Ucchi",
+      "lineManagerPosition": "Optimization Process Engineer",
+      "patersonGrade": "",
+      "statut": "Inactive",
+      "typeContrat": "CDD",
+      "periodeEssaiMois": 26,
+      "dateFinPeriodeEssai": "03/08/2026",
+      "dateFinContrat": "14/07/2026",
+      "raisonExit": "Demission",
+      "createdAt": "2026-07-28T09:40:37.715Z",
+      "updatedAt": "2026-07-28T09:40:37.715Z"
+    }
+  ]
+}

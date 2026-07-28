@@ -10,7 +10,7 @@ import XLSX from 'xlsx-js-style';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const root = path.join(__dirname, '..');
-const TEMPLATE = path.join(root, 'Excel', 'export-templates', 'CHECK_DOCUMENTS_EXPORT_TEMPLATE.xlsx');
+const TEMPLATE = path.join(root, 'Excel', 'templates', 'check-documents', 'CHECK_DOCUMENTS_EXPORT_TEMPLATE.xlsx');
 const LIVE = path.join(root, 'Excel', 'EMPLOYEE.xlsx');
 const SHEET = 'CHECK DOCUMENTS BASE';
 const FIRST = 4;

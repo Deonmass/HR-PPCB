@@ -1,6 +1,6 @@
 import { NextResponse } from 'next/server';
 import { buildDashboardFromEmployees } from '@/lib/documents';
-import { readEmployees } from '@/lib/employees-store';
+import { readEmployees } from '@/lib/employees-json-store';
 import { excelErrorResponse } from '@/lib/excel-io';
 import { checkPermission } from '@/lib/require-permission';
 

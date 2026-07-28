@@ -10,7 +10,7 @@ import { fileURLToPath } from 'url';
 import JSZip from 'jszip';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
-const TEMPLATE = path.join(__dirname, '..', 'Excel', 'export-templates', 'CHECK_DOCUMENTS_EXPORT_TEMPLATE.xlsx');
+const TEMPLATE = path.join(__dirname, '..', 'Excel', 'templates', 'check-documents', 'CHECK_DOCUMENTS_EXPORT_TEMPLATE.xlsx');
 const KEEP_THROUGH_ROW = Number(process.env.CHECK_DOCS_TEMPLATE_MAX_ROW || 250);
 
 const buf = fs.readFileSync(TEMPLATE);

@@ -1,5 +1,5 @@
 /**
- * Génère Excel/factures-fournisseurs/FACTURES_SUIVI_EXPORT_TEMPLATE.xlsx
+ * Génère Excel/templates/factures/FACTURES_SUIVI_EXPORT_TEMPLATE.xlsx
  * (Dashboard + Factures avec formules + Guide), puis tente d'ajouter les graphiques via Excel COM.
  *
  * Usage: node scripts/build-factures-suivi-export-template.mjs

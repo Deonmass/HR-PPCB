@@ -1,0 +1,93 @@
+{
+  "rows": [
+    {
+      "rowIndex": 1,
+      "date": "2026-07-02",
+      "ref": "PPCB-DOC-HR-ZA/002/07/2026",
+      "employee": "Muakasa Serge (70000008)",
+      "department": "HR — Estate Officer",
+      "travelDates": "2026-07-03 → 2026-07-09",
+      "tripDays": 7,
+      "totalBudget": 1470,
+      "recordId": ""
+    },
+    {
+      "rowIndex": 2,
+      "date": "2026-07-03",
+      "ref": "PPCB-DOC-HR-ZA/003/07/2026",
+      "employee": "Kinkinia Diavezuka Pélagie (70000295)",
+      "department": "HR — Plant HR Manager",
+      "travelDates": "2026-07-03 → 2026-07-09",
+      "tripDays": 7,
+      "totalBudget": 1470,
+      "recordId": ""
+    },
+    {
+      "rowIndex": 3,
+      "date": "2026-07-03",
+      "ref": "PPCB-DOC-HR-ZA/004/07/2026",
+      "employee": "Kinkinia Diavezuka Pélagie (70000295)",
+      "department": "HR — Plant HR Manager",
+      "travelDates": "2026-07-03 → 2026-07-09",
+      "tripDays": 7,
+      "totalBudget": 1470,
+      "recordId": ""
+    },
+    {
+      "rowIndex": 4,
+      "date": "2026-07-03",
+      "ref": "PPCB-DOC-HR-ZA/006/07/2026",
+      "employee": "Massadi Gedeon Gedeon (70000308)",
+      "department": "HR — HR Administrator",
+      "travelDates": "2026-07-03 → 2026-07-09",
+      "tripDays": 7,
+      "totalBudget": 1470,
+      "recordId": ""
+    },
+    {
+      "rowIndex": 5,
+      "date": "2026-07-08",
+      "ref": "PPCB-DOC-HR-ZA/007/07/2026",
+      "employee": "Massadi Gedeon Gedeon (70000308)",
+      "department": "HR — HR Administrator",
+      "travelDates": "2026-07-09 → 2026-07-14",
+      "tripDays": 6,
+      "totalBudget": 1260,
+      "recordId": ""
+    },
+    {
+      "rowIndex": 6,
+      "date": "2026-07-15",
+      "ref": "PPCB-DOC-HR-ZA/008/07/2026",
+      "employee": "Enoch MAKENGELE (60000001)",
+      "department": "Human Resources — Driver",
+      "travelDates": "2026-07-16 → 2026-07-17",
+      "tripDays": 2,
+      "totalBudget": 105,
+      "recordId": ""
+    },
+    {
+      "rowIndex": 7,
+      "date": "2026-07-15",
+      "ref": "PPCB-DOC-HR-ZA/009/07/2026",
+      "employee": "KITAMBO SENEMONA MEDARD (70000024)",
+      "department": "Human Resources — Driver",
+      "travelDates": "2026-07-16 → 2026-07-20",
+      "tripDays": 5,
+      "totalBudget": 510,
+      "recordId": ""
+    },
+    {
+      "rowIndex": 8,
+      "date": "2026-07-15",
+      "ref": "PPCB-DOC-HR-ZA/010/07/2026",
+      "employee": "KITAMBO SENEMONA MEDARD (70000024)",
+      "department": "Human Resources — Driver",
+      "travelDates": "2026-07-16 → 2026-07-17",
+      "tripDays": 2,
+      "totalBudget": 205,
+      "recordId": ""
+    }
+  ],
+  "nextRowIndex": 9
+}

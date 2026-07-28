@@ -6,6 +6,10 @@ import type { GuestHouseMonthlyPoint } from '@/lib/guest-house-types';
 interface Props {
   years: number[];
   monthlyByYear: Record<number, GuestHouseMonthlyPoint[]>;
+  /** YYYY-MM — highlights that month’s bar in red; also syncs chart year. */
+  selectedMonthKey?: string;
+  /** Fired when a month bar is clicked (YYYY-MM for chart year + that month). */
+  onBarClick?: (monthKey: string) => void;
 }
 
 const MONTH_SHORT: Record<number, string> = {
@@ -23,17 +27,43 @@ const MONTH_SHORT: Record<number, string> = {
   12: 'Déc',
 };
 
+const MONTH_LABELS = [
+  'Janvier', 'Février', 'Mars', 'Avril', 'Mai', 'Juin',
+  'Juillet', 'Août', 'Septembre', 'Octobre', 'Novembre', 'Décembre',
+];
+
+const Y_TICKS = [100, 75, 50, 25, 0] as const;
+
 function safeNum(value: unknown, fallback = 0): number {
   const n = Number(value);
   return Number.isFinite(n) ? n : fallback;
 }
 
-function pct(part: number, total: number): number {
-  if (total <= 0) return 0;
-  return Math.round((part / total) * 100);
+function emptyYearPoints(year: number): GuestHouseMonthlyPoint[] {
+  return MONTH_LABELS.map((label, index) => {
+    const month = index + 1;
+    const daysInMonth = new Date(year, month, 0).getDate();
+    return {
+      key: `${year}-${String(month).padStart(2, '0')}`,
+      month,
+      label,
+      reservations: 0,
+      approved: 0,
+      nights: 0,
+      daysInMonth,
+      capacityNights: 0,
+      occupancyRate: 0,
+      kimpese: 0,
+    };
+  });
 }
 
-export default function GuestHouseMonthlyChart({ years, monthlyByYear }: Props) {
+export default function GuestHouseMonthlyChart({
+  years,
+  monthlyByYear,
+  selectedMonthKey,
+  onBarClick,
+}: Props) {
   const yearOptions = useMemo(() => {
     const list = (Array.isArray(years) ? years : [])
       .map((y) => safeNum(y, NaN))
@@ -44,82 +74,77 @@ export default function GuestHouseMonthlyChart({ years, monthlyByYear }: Props) 
   }, [years]);
 
   const [year, setYear] = useState(yearOptions[0]);
-  const [monthFilter, setMonthFilter] = useState<number | 'all'>('all');
   const [hover, setHover] = useState<number | null>(null);
 
   useEffect(() => {
     if (!yearOptions.includes(year)) {
       setYear(yearOptions[0]);
-      setMonthFilter('all');
     }
   }, [yearOptions, year]);
+
+  useEffect(() => {
+    if (!selectedMonthKey) return;
+    const match = /^(\d{4})-(\d{2})$/.exec(selectedMonthKey);
+    if (!match) return;
+    const y = Number(match[1]);
+    if (!Number.isFinite(y)) return;
+    if (yearOptions.includes(y)) setYear(y);
+  }, [selectedMonthKey, yearOptions]);
 
   const yearPoints = useMemo(() => {
     const byYear = monthlyByYear ?? {};
     const direct = byYear[year] ?? byYear[String(year) as unknown as number];
-    if (Array.isArray(direct) && direct.length > 0) return direct;
-    return [];
+    const source = Array.isArray(direct) ? direct : [];
+    const byMonth = new Map(source.map((item) => [item.month, item]));
+    return emptyYearPoints(year).map((fallback) => {
+      const item = byMonth.get(fallback.month);
+      if (!item) return fallback;
+      const nights = safeNum(item.nights, 0);
+      const daysInMonth = safeNum(item.daysInMonth, fallback.daysInMonth);
+      const capacityNights = safeNum(item.capacityNights, 0);
+      const rateFromCapacity = capacityNights > 0
+        ? Math.round((nights / capacityNights) * 1000) / 10
+        : 0;
+      return {
+        ...fallback,
+        ...item,
+        nights,
+        daysInMonth,
+        capacityNights,
+        occupancyRate: safeNum(item.occupancyRate, rateFromCapacity),
+        reservations: safeNum(item.reservations, 0),
+        approved: safeNum(item.approved, 0),
+        kimpese: safeNum(item.kimpese, 0),
+      };
+    });
   }, [monthlyByYear, year]);
 
-  const points = useMemo(() => {
-    if (monthFilter === 'all') return yearPoints;
-    return yearPoints.filter((item) => item.month === monthFilter);
-  }, [yearPoints, monthFilter]);
-
-  const maxReservations = useMemo(() => {
-    if (points.length === 0) return 1;
-    return Math.max(1, ...points.map((item) => safeNum(item.reservations)));
-  }, [points]);
-
-  const bars = useMemo(() => points.map((item) => {
-    const reservations = safeNum(item.reservations);
-    const approved = Math.min(safeNum(item.approved), reservations);
-    const heightPct = reservations > 0
-      ? Math.max((reservations / maxReservations) * 100, 12)
-      : 0;
-    const approvedPct = pct(approved, reservations);
-    return {
-      ...item,
-      reservations,
-      approved,
-      heightPct,
-      approvedPct,
-    };
-  }), [points, maxReservations]);
+  const bars = useMemo(() => yearPoints.map((item) => {
+    const rate = Math.max(0, Math.min(100, safeNum(item.occupancyRate)));
+    const heightPct = rate;
+    const selected = Boolean(selectedMonthKey && item.key === selectedMonthKey);
+    return { ...item, rate, heightPct, selected };
+  }), [yearPoints, selectedMonthKey]);
 
   return (
     <div className="panel panel-padded guest-house-chart-panel">
       <div className="guest-house-chart-head">
-        <h3>Évolution mensuelle</h3>
+        <div>
+          <h3>Évolution mensuelle</h3>
+          <p className="text-muted guest-house-chart-sub">
+            Taux d&apos;occupation · 12 mois · {year}
+          </p>
+        </div>
         <div className="guest-house-chart-filters">
           <label>
             Année
             <select
               className="filter-select"
               value={String(year)}
-              onChange={(e) => {
-                setYear(Number(e.target.value));
-                setMonthFilter('all');
-              }}
+              onChange={(e) => setYear(Number(e.target.value))}
             >
               {yearOptions.map((y) => (
                 <option key={y} value={String(y)}>{y}</option>
-              ))}
-            </select>
-          </label>
-          <label>
-            Mois
-            <select
-              className="filter-select"
-              value={monthFilter === 'all' ? 'all' : String(monthFilter)}
-              onChange={(e) => {
-                const value = e.target.value;
-                setMonthFilter(value === 'all' ? 'all' : Number(value));
-              }}
-            >
-              <option value="all">Tous (jan–déc)</option>
-              {yearPoints.map((item) => (
-                <option key={item.key} value={String(item.month)}>{item.label}</option>
               ))}
             </select>
           </label>
@@ -127,72 +152,83 @@ export default function GuestHouseMonthlyChart({ years, monthlyByYear }: Props) 
       </div>
 
       <div className="guest-house-chart-legend">
-        <span className="is-reservations">Réservations du mois</span>
-        <span className="is-occupied">Approuvées / occupées</span>
+        <span className="is-occupied">Taux d&apos;occupation (%)</span>
+        <span className="is-selected-month">Mois sélectionné</span>
       </div>
 
-      {bars.length === 0 ? (
-        <div className="guest-house-chart-empty">
-          Aucune donnée pour cette période.
+      <div className="guest-house-histo-wrap">
+        <div className="guest-house-histo-y" aria-hidden="true">
+          {Y_TICKS.map((tick) => (
+            <span key={tick}>{tick}%</span>
+          ))}
         </div>
-      ) : (
-        <div className="guest-house-histo-wrap">
-          <div
-            className="guest-house-histo"
-            style={{ gridTemplateColumns: `repeat(${bars.length}, minmax(0, 1fr))` }}
-          >
-            {bars.map((item, index) => (
+        <div
+          className="guest-house-histo"
+          style={{ gridTemplateColumns: 'repeat(12, minmax(0, 1fr))' }}
+        >
+          <div className="guest-house-histo-gridlines" aria-hidden="true">
+            {Y_TICKS.map((tick) => (
+              <span key={tick} style={{ bottom: `${tick}%` }} />
+            ))}
+          </div>
+          {bars.map((item, index) => {
+            const nights = safeNum(item.nights);
+            const capacity = safeNum(item.capacityNights);
+            const days = safeNum(item.daysInMonth);
+            const denom = capacity > 0 ? capacity : days;
+            return (
               <div
                 key={item.key}
-                className={`guest-house-histo-col${hover === index ? ' is-active' : ''}`}
+                role="button"
+                tabIndex={0}
+                className={[
+                  'guest-house-histo-col',
+                  hover === index ? 'is-active' : '',
+                  item.selected ? 'is-selected' : '',
+                ].filter(Boolean).join(' ')}
                 onMouseEnter={() => setHover(index)}
                 onMouseLeave={() => setHover(null)}
+                onClick={() => onBarClick?.(item.key)}
+                onKeyDown={(e) => {
+                  if (e.key === 'Enter' || e.key === ' ') {
+                    e.preventDefault();
+                    onBarClick?.(item.key);
+                  }
+                }}
               >
                 <div className="guest-house-histo-track">
-                  {item.reservations > 0 ? (
+                  {item.rate > 0 ? (
                     <div
-                      className="guest-house-histo-shell"
+                      className={`guest-house-histo-shell is-occupancy${item.selected ? ' is-selected' : ''}`}
                       style={{ height: `${item.heightPct}%` }}
-                      title={`${item.reservations} réservation(s)`}
+                      title={`${item.rate}%`}
                     >
+                      <span className="guest-house-histo-tip">
+                        {item.rate}%
+                      </span>
                       <div
-                        className="guest-house-histo-fill"
-                        style={{ height: `${item.approvedPct}%` }}
-                        title={`${item.approved} approuvée(s)`}
-                      >
-                        {item.approvedPct >= 18 && (
-                          <span>{item.approvedPct}%</span>
-                        )}
-                      </div>
-                      {item.approvedPct < 82 && (
-                        <span className="guest-house-histo-shell-label">
-                          {item.reservations}
-                        </span>
-                      )}
+                        className={`guest-house-histo-fill is-occupancy${item.selected ? ' is-selected' : ''}`}
+                        style={{ height: '100%' }}
+                      />
                     </div>
                   ) : (
-                    <div className="guest-house-histo-zero" />
+                    <div className={`guest-house-histo-zero${item.selected ? ' is-selected' : ''}`} />
                   )}
 
                   {hover === index && (
                     <div className="guest-house-histo-bubble" role="tooltip">
                       <strong>{item.label} {year}</strong>
-                      <div className="guest-house-histo-bubble-row is-reservations">
-                        <span>Réservations</span>
-                        <em>{item.reservations}</em>
-                      </div>
                       <div className="guest-house-histo-bubble-row is-occupied">
-                        <span>Approuvées / occupées</span>
-                        <em>{item.approved}</em>
+                        <span>Taux d&apos;occupation</span>
+                        <em>{item.rate}%</em>
                       </div>
                       <div className="guest-house-histo-bubble-row is-muted">
-                        <span>Taux d’approbation</span>
-                        <em>{item.approvedPct}%</em>
+                        <span>Occupation</span>
+                        <em>{nights} / {denom || '—'} j</em>
                       </div>
                       <p className="guest-house-histo-bubble-note">
-                        Sur {item.reservations} réservation{item.reservations > 1 ? 's' : ''},{' '}
-                        {item.approved} ont été approuvée{item.approved > 1 ? 's' : ''} et
-                        occupée{item.approved > 1 ? 's' : ''}.
+                        Nuits-chambre / (chambres × {days || '—'} j) × 100.
+                        {onBarClick ? ' Cliquez pour le détail par chambre.' : ''}
                       </p>
                     </div>
                   )}
@@ -201,10 +237,10 @@ export default function GuestHouseMonthlyChart({ years, monthlyByYear }: Props) 
                   {MONTH_SHORT[item.month] ?? item.label.slice(0, 3)}
                 </span>
               </div>
-            ))}
-          </div>
+            );
+          })}
         </div>
-      )}
+      </div>
     </div>
   );
 }

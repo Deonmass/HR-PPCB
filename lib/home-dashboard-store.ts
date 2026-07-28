@@ -4,8 +4,8 @@ import { listUsers } from './auth-store';
 import type { MenuPermission } from './auth-types';
 import { readDashboard } from './dashboard-store';
 import { calcDocumentCompletion, getDepartments } from './documents';
-import { readEmployees } from './employees-store';
-import { readDependantsData } from './dependants-store';
+import { readEmployees } from './employees-json-store';
+import { readDependantsData } from './dependants-json-store';
 import type { HomeDashboardData, HomeKpi, HomeProjectScopeSummary } from './home-dashboard-types';
 import { canPerformAction } from './permission-check';
 import { canViewTimesheetModule } from './timesheet-permissions';
@@ -291,7 +291,7 @@ export async function buildHomeDashboard(menus: MenuPermission[]): Promise<HomeD
   if (can(menus, 'village.guest-house')) {
     placeholders.push({
       label: 'Guest house',
-      description: 'Réservations et gestion des chambres',
+      description: 'Gestion Guest house (Batiment #1/#2 + Kimpese)',
       href: '/village/guest-house',
     });
   }

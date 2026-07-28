@@ -1,0 +1,557 @@
+{
+  "maisons": [
+    {
+      "numero": "1",
+      "taille": "High Standard",
+      "typeMaison": "High Standard",
+      "commentaires": "",
+      "occupantExterne": ""
+    },
+    {
+      "numero": "2",
+      "taille": "High Standard",
+      "typeMaison": "High Standard",
+      "commentaires": "",
+      "occupantExterne": ""
+    },
+    {
+      "numero": "3",
+      "taille": "High Standard",
+      "typeMaison": "High Standard",
+      "commentaires": "",
+      "occupantExterne": ""
+    },
+    {
+      "numero": "4",
+      "taille": "High Standard",
+      "typeMaison": "High Standard",
+      "commentaires": "",
+      "occupantExterne": ""
+    },
+    {
+      "numero": "5",
+      "taille": "Free Style",
+      "typeMaison": "Free Style",
+      "commentaires": "",
+      "occupantExterne": ""
+    },
+    {
+      "numero": "6",
+      "taille": "Free Style",
+      "typeMaison": "Free Style",
+      "commentaires": "",
+      "occupantExterne": ""
+    },
+    {
+      "numero": "7",
+      "taille": "Free Style",
+      "typeMaison": "Free Style",
+      "commentaires": "",
+      "occupantExterne": ""
+    },
+    {
+      "numero": "8",
+      "taille": "Free Style",
+      "typeMaison": "Free Style",
+      "commentaires": "",
+      "occupantExterne": ""
+    },
+    {
+      "numero": "9",
+      "taille": "Free Style",
+      "typeMaison": "Free Style",
+      "commentaires": "",
+      "occupantExterne": ""
+    },
+    {
+      "numero": "10",
+      "taille": "Free Style",
+      "typeMaison": "Free Style",
+      "commentaires": "",
+      "occupantExterne": ""
+    },
+    {
+      "numero": "11",
+      "taille": "Free Style",
+      "typeMaison": "Free Style",
+      "commentaires": "",
+      "occupantExterne": ""
+    },
+    {
+      "numero": "12",
+      "taille": "Free Style",
+      "typeMaison": "Free Style",
+      "commentaires": "",
+      "occupantExterne": ""
+    },
+    {
+      "numero": "13",
+      "taille": "Free Style",
+      "typeMaison": "Free Style",
+      "commentaires": "",
+      "occupantExterne": "Nursery School"
+    },
+    {
+      "numero": "14",
+      "taille": "Free Style",
+      "typeMaison": "Free Style",
+      "commentaires": "",
+      "occupantExterne": ""
+    },
+    {
+      "numero": "15",
+      "taille": "Free Style",
+      "typeMaison": "Free Style",
+      "commentaires": "",
+      "occupantExterne": ""
+    },
+    {
+      "numero": "16",
+      "taille": "Free Style",
+      "typeMaison": "Free Style",
+      "commentaires": "",
+      "occupantExterne": ""
+    },
+    {
+      "numero": "17",
+      "taille": "Free Style",
+      "typeMaison": "Free Style",
+      "commentaires": "",
+      "occupantExterne": ""
+    },
+    {
+      "numero": "18",
+      "taille": "Free Style",
+      "typeMaison": "Free Style",
+      "commentaires": "",
+      "occupantExterne": ""
+    },
+    {
+      "numero": "19",
+      "taille": "Free Style",
+      "typeMaison": "Free Style",
+      "commentaires": "",
+      "occupantExterne": ""
+    },
+    {
+      "numero": "20",
+      "taille": "Free Style",
+      "typeMaison": "Free Style",
+      "commentaires": "",
+      "occupantExterne": ""
+    },
+    {
+      "numero": "21",
+      "taille": "Free Style",
+      "typeMaison": "Free Style",
+      "commentaires": "",
+      "occupantExterne": ""
+    },
+    {
+      "numero": "22",
+      "taille": "Free Style",
+      "typeMaison": "Free Style",
+      "commentaires": "",
+      "occupantExterne": ""
+    },
+    {
+      "numero": "23",
+      "taille": "Free Style",
+      "typeMaison": "Free Style",
+      "commentaires": "",
+      "occupantExterne": ""
+    },
+    {
+      "numero": "24",
+      "taille": "Twins",
+      "typeMaison": "Twins",
+      "commentaires": "",
+      "occupantExterne": ""
+    },
+    {
+      "numero": "25",
+      "taille": "Twins",
+      "typeMaison": "Twins",
+      "commentaires": "",
+      "occupantExterne": ""
+    },
+    {
+      "numero": "26 A",
+      "taille": "Studio",
+      "typeMaison": "Studio",
+      "commentaires": "",
+      "occupantExterne": ""
+    },
+    {
+      "numero": "26 B",
+      "taille": "Studio",
+      "typeMaison": "Studio",
+      "commentaires": "",
+      "occupantExterne": ""
+    },
+    {
+      "numero": "27 A",
+      "taille": "Studio",
+      "typeMaison": "Studio",
+      "commentaires": "",
+      "occupantExterne": ""
+    },
+    {
+      "numero": "27 B",
+      "taille": "Studio",
+      "typeMaison": "Studio",
+      "commentaires": "",
+      "occupantExterne": ""
+    },
+    {
+      "numero": "28 A",
+      "taille": "Studio",
+      "typeMaison": "Studio",
+      "commentaires": "",
+      "occupantExterne": ""
+    },
+    {
+      "numero": "28 B",
+      "taille": "Studio",
+      "typeMaison": "Studio",
+      "commentaires": "",
+      "occupantExterne": ""
+    },
+    {
+      "numero": "29 A",
+      "taille": "Studio",
+      "typeMaison": "Studio",
+      "commentaires": "",
+      "occupantExterne": ""
+    },
+    {
+      "numero": "30",
+      "taille": "Twins",
+      "typeMaison": "Twins",
+      "commentaires": "",
+      "occupantExterne": ""
+    },
+    {
+      "numero": "31",
+      "taille": "Twins",
+      "typeMaison": "Twins",
+      "commentaires": "",
+      "occupantExterne": ""
+    },
+    {
+      "numero": "32",
+      "taille": "Twins",
+      "typeMaison": "Twins",
+      "commentaires": "",
+      "occupantExterne": ""
+    },
+    {
+      "numero": "33",
+      "taille": "Twins",
+      "typeMaison": "Twins",
+      "commentaires": "",
+      "occupantExterne": ""
+    },
+    {
+      "numero": "34",
+      "taille": "Twins",
+      "typeMaison": "Twins",
+      "commentaires": "",
+      "occupantExterne": ""
+    },
+    {
+      "numero": "35",
+      "taille": "Twins",
+      "typeMaison": "Twins",
+      "commentaires": "",
+      "occupantExterne": ""
+    },
+    {
+      "numero": "36",
+      "taille": "Twins",
+      "typeMaison": "Twins",
+      "commentaires": "",
+      "occupantExterne": ""
+    },
+    {
+      "numero": "37",
+      "taille": "Twins",
+      "typeMaison": "Twins",
+      "commentaires": "",
+      "occupantExterne": ""
+    },
+    {
+      "numero": "38",
+      "taille": "Twins",
+      "typeMaison": "Twins",
+      "commentaires": "",
+      "occupantExterne": ""
+    },
+    {
+      "numero": "39",
+      "taille": "Twins",
+      "typeMaison": "Twins",
+      "commentaires": "",
+      "occupantExterne": ""
+    },
+    {
+      "numero": "42",
+      "taille": "Twins",
+      "typeMaison": "Twins",
+      "commentaires": "",
+      "occupantExterne": ""
+    },
+    {
+      "numero": "43",
+      "taille": "Twins",
+      "typeMaison": "Twins",
+      "commentaires": "",
+      "occupantExterne": ""
+    },
+    {
+      "numero": "46",
+      "taille": "Twins",
+      "typeMaison": "Twins",
+      "commentaires": "",
+      "occupantExterne": ""
+    },
+    {
+      "numero": "44",
+      "taille": "Twins",
+      "typeMaison": "Twins",
+      "commentaires": "",
+      "occupantExterne": ""
+    },
+    {
+      "numero": "45",
+      "taille": "Twins",
+      "typeMaison": "Twins",
+      "commentaires": "",
+      "occupantExterne": ""
+    },
+    {
+      "numero": "47",
+      "taille": "Twins",
+      "typeMaison": "Twins",
+      "commentaires": "",
+      "occupantExterne": ""
+    },
+    {
+      "numero": "48",
+      "taille": "Twins",
+      "typeMaison": "Twins",
+      "commentaires": "",
+      "occupantExterne": ""
+    },
+    {
+      "numero": "49",
+      "taille": "Twins",
+      "typeMaison": "Twins",
+      "commentaires": "",
+      "occupantExterne": ""
+    },
+    {
+      "numero": "50",
+      "taille": "Twins",
+      "typeMaison": "Twins",
+      "commentaires": "",
+      "occupantExterne": ""
+    },
+    {
+      "numero": "51",
+      "taille": "Twins",
+      "typeMaison": "Twins",
+      "commentaires": "",
+      "occupantExterne": ""
+    },
+    {
+      "numero": "52",
+      "taille": "Twins",
+      "typeMaison": "Twins",
+      "commentaires": "",
+      "occupantExterne": ""
+    },
+    {
+      "numero": "53",
+      "taille": "Twins",
+      "typeMaison": "Twins",
+      "commentaires": "",
+      "occupantExterne": ""
+    },
+    {
+      "numero": "54",
+      "taille": "Twins",
+      "typeMaison": "Twins",
+      "commentaires": "",
+      "occupantExterne": ""
+    },
+    {
+      "numero": "55",
+      "taille": "Twins",
+      "typeMaison": "Twins",
+      "commentaires": "",
+      "occupantExterne": ""
+    },
+    {
+      "numero": "56",
+      "taille": "Twins",
+      "typeMaison": "Twins",
+      "commentaires": "",
+      "occupantExterne": ""
+    },
+    {
+      "numero": "57",
+      "taille": "Twins",
+      "typeMaison": "Twins",
+      "commentaires": "",
+      "occupantExterne": ""
+    },
+    {
+      "numero": "58",
+      "taille": "Twins",
+      "typeMaison": "Twins",
+      "commentaires": "",
+      "occupantExterne": ""
+    },
+    {
+      "numero": "59",
+      "taille": "Twins",
+      "typeMaison": "Twins",
+      "commentaires": "",
+      "occupantExterne": ""
+    },
+    {
+      "numero": "60",
+      "taille": "Twins",
+      "typeMaison": "Twins",
+      "commentaires": "",
+      "occupantExterne": ""
+    },
+    {
+      "numero": "61",
+      "taille": "Twins",
+      "typeMaison": "Twins",
+      "commentaires": "",
+      "occupantExterne": ""
+    },
+    {
+      "numero": "62",
+      "taille": "Twins",
+      "typeMaison": "Twins",
+      "commentaires": "",
+      "occupantExterne": ""
+    },
+    {
+      "numero": "63",
+      "taille": "Twins",
+      "typeMaison": "Twins",
+      "commentaires": "",
+      "occupantExterne": ""
+    },
+    {
+      "numero": "64",
+      "taille": "Twins",
+      "typeMaison": "Twins",
+      "commentaires": "",
+      "occupantExterne": ""
+    },
+    {
+      "numero": "65",
+      "taille": "Twins",
+      "typeMaison": "Twins",
+      "commentaires": "",
+      "occupantExterne": ""
+    },
+    {
+      "numero": "66",
+      "taille": "Twins",
+      "typeMaison": "Twins",
+      "commentaires": "",
+      "occupantExterne": "Soeurs Religieuses"
+    },
+    {
+      "numero": "67",
+      "taille": "Twins",
+      "typeMaison": "Twins",
+      "commentaires": "",
+      "occupantExterne": "Soeurs Religieuses"
+    },
+    {
+      "numero": "68",
+      "taille": "Twins",
+      "typeMaison": "Twins",
+      "commentaires": "",
+      "occupantExterne": ""
+    },
+    {
+      "numero": "69",
+      "taille": "Twins",
+      "typeMaison": "Twins",
+      "commentaires": "",
+      "occupantExterne": ""
+    },
+    {
+      "numero": "70",
+      "taille": "Twins",
+      "typeMaison": "Twins",
+      "commentaires": "",
+      "occupantExterne": ""
+    },
+    {
+      "numero": "71",
+      "taille": "Twins",
+      "typeMaison": "Twins",
+      "commentaires": "",
+      "occupantExterne": ""
+    },
+    {
+      "numero": "72",
+      "taille": "Twins",
+      "typeMaison": "Twins",
+      "commentaires": "",
+      "occupantExterne": ""
+    },
+    {
+      "numero": "73",
+      "taille": "Twins",
+      "typeMaison": "Twins",
+      "commentaires": "",
+      "occupantExterne": ""
+    },
+    {
+      "numero": "74",
+      "taille": "Twins",
+      "typeMaison": "Twins",
+      "commentaires": "",
+      "occupantExterne": ""
+    },
+    {
+      "numero": "75",
+      "taille": "Twins",
+      "typeMaison": "Twins",
+      "commentaires": "",
+      "occupantExterne": ""
+    },
+    {
+      "numero": "29 B",
+      "taille": "Studio",
+      "typeMaison": "Studio",
+      "commentaires": "",
+      "occupantExterne": "Espoir VUVU"
+    },
+    {
+      "numero": "40",
+      "taille": "Twins",
+      "typeMaison": "Twins",
+      "commentaires": "",
+      "occupantExterne": "EKMM"
+    },
+    {
+      "numero": "41",
+      "taille": "Twins",
+      "typeMaison": "Twins",
+      "commentaires": "",
+      "occupantExterne": "ORC"
+    }
+  ]
+}

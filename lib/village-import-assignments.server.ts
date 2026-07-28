@@ -1,8 +1,8 @@
 import 'server-only';
 
-import { assignManyEmployeeMaisons } from '@/lib/dependants-store';
+import { assignManyEmployeeMaisons } from '@/lib/dependants-json-store';
 import { normalizePersonName } from '@/lib/dependants-pactilis-compare';
-import { readEmployees } from '@/lib/employees-store';
+import { readEmployees } from '@/lib/employees-json-store';
 import { VILLAGE_HOUSING_ASSIGNMENTS } from '@/lib/village-housing-assignments';
 import {
   findBestNameMatch,

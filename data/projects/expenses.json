@@ -1,0 +1,268 @@
+{
+  "expenses": [
+    {
+      "id": "e-3",
+      "numero": 1,
+      "date": "25/06/2026",
+      "projet": "Assistance médicale",
+      "motif": "Initial",
+      "montant": 1523.64
+    },
+    {
+      "id": "e-4",
+      "numero": 2,
+      "date": "25/06/2026",
+      "projet": "Soutien financier Centre de coupe et couture",
+      "motif": "Initial",
+      "montant": 27677.49
+    },
+    {
+      "id": "e-5",
+      "numero": 3,
+      "date": "25/06/2026",
+      "projet": "Réunion avec le clan Nanga (boissons non alcoolisées)",
+      "motif": "Initial",
+      "montant": 3400
+    },
+    {
+      "id": "e-6",
+      "numero": 4,
+      "date": "25/06/2026",
+      "projet": "Dons de fin d’année aux autorités locales",
+      "motif": "Initial",
+      "montant": 2500
+    },
+    {
+      "id": "e-7",
+      "numero": 5,
+      "date": "25/06/2026",
+      "projet": "Trust Fund - Clan Nanga",
+      "motif": "Initial",
+      "montant": 25000
+    },
+    {
+      "id": "e-8",
+      "numero": 6,
+      "date": "25/06/2026",
+      "projet": "Contribution à l’association des personnes handicapées de Songololo",
+      "motif": "Initial",
+      "montant": 600
+    },
+    {
+      "id": "e-9",
+      "numero": 7,
+      "date": "25/06/2026",
+      "projet": "Puits de forage",
+      "motif": "Initial",
+      "montant": 37719
+    },
+    {
+      "id": "e-10",
+      "numero": 8,
+      "date": "25/06/2026",
+      "projet": "École PPC",
+      "motif": "Initial",
+      "montant": 317067.34
+    },
+    {
+      "id": "e-11",
+      "numero": 9,
+      "date": "25/06/2026",
+      "projet": "Poste de police",
+      "motif": "Initial",
+      "montant": 27766.2
+    },
+    {
+      "id": "e-12",
+      "numero": 10,
+      "date": "25/06/2026",
+      "projet": "Lutte anti-vectorielle",
+      "motif": "Initial",
+      "montant": 11400
+    },
+    {
+      "id": "e-13",
+      "numero": 11,
+      "date": "25/06/2026",
+      "projet": "Forage Ecole PPC",
+      "motif": "Initial",
+      "montant": 20535
+    },
+    {
+      "id": "e-14",
+      "numero": 12,
+      "date": "25/06/2026",
+      "projet": "Permaculture | Malanga Gare",
+      "motif": "Initial",
+      "montant": 14807.3
+    },
+    {
+      "id": "e-15",
+      "numero": 13,
+      "date": "25/06/2026",
+      "projet": "Apiculture | Malanga Gare",
+      "motif": "Initial",
+      "montant": 892.5
+    },
+    {
+      "id": "e-16",
+      "numero": 14,
+      "date": "25/06/2026",
+      "projet": "Adduction d’eau | Malanga Gare",
+      "motif": "Initial",
+      "montant": 25525
+    },
+    {
+      "id": "e-17",
+      "numero": 15,
+      "date": "25/06/2026",
+      "projet": "Bourse universitaire | Malanga Gare",
+      "motif": "Initial",
+      "montant": 2526.7
+    },
+    {
+      "id": "e-18",
+      "numero": 16,
+      "date": "25/06/2026",
+      "projet": "Aménagement route | Malanga Gare",
+      "motif": "Initial",
+      "montant": 11000
+    },
+    {
+      "id": "e-19",
+      "numero": 17,
+      "date": "25/06/2026",
+      "projet": "Football | Malanga Gare",
+      "motif": "Initial",
+      "montant": 3951.58
+    },
+    {
+      "id": "e-20",
+      "numero": 18,
+      "date": "25/06/2026",
+      "projet": "Permaculture | Nkumba",
+      "motif": "Initial",
+      "montant": 14807.3
+    },
+    {
+      "id": "e-21",
+      "numero": 19,
+      "date": "25/06/2026",
+      "projet": "Apiculture | Nkumba",
+      "motif": "Initial",
+      "montant": 892.5
+    },
+    {
+      "id": "e-22",
+      "numero": 20,
+      "date": "25/06/2026",
+      "projet": "Adduction d’eau | Nkumba",
+      "motif": "Initial",
+      "montant": 24000
+    },
+    {
+      "id": "e-23",
+      "numero": 21,
+      "date": "25/06/2026",
+      "projet": "Bourse universitaire | Nkumba",
+      "motif": "Initial",
+      "montant": 2526.7
+    },
+    {
+      "id": "e-24",
+      "numero": 22,
+      "date": "25/06/2026",
+      "projet": "Aménagement route | Nkumba",
+      "motif": "Initial",
+      "montant": 6000
+    },
+    {
+      "id": "e-25",
+      "numero": 23,
+      "date": "25/06/2026",
+      "projet": "Football | Nkumba",
+      "motif": "Initial",
+      "montant": 3951.58
+    },
+    {
+      "id": "e-26",
+      "numero": 24,
+      "date": "25/06/2026",
+      "projet": "Permaculture | Malanga Cité",
+      "motif": "Initial",
+      "montant": 14807.3
+    },
+    {
+      "id": "e-27",
+      "numero": 25,
+      "date": "25/06/2026",
+      "projet": "Apiculture | Malanga Cité",
+      "motif": "Initial",
+      "montant": 892.5
+    },
+    {
+      "id": "e-28",
+      "numero": 26,
+      "date": "25/06/2026",
+      "projet": "Electricité | Malanga Cité",
+      "motif": "Initial",
+      "montant": 700000
+    },
+    {
+      "id": "e-29",
+      "numero": 27,
+      "date": "25/06/2026",
+      "projet": "Bourse universitaire | Malanga Cité",
+      "motif": "Initial",
+      "montant": 5439.2
+    },
+    {
+      "id": "e-30",
+      "numero": 28,
+      "date": "25/06/2026",
+      "projet": "Football | Malanga Cité",
+      "motif": "Initial",
+      "montant": 3951.58
+    },
+    {
+      "id": "e-31",
+      "numero": 29,
+      "date": "25/06/2026",
+      "projet": "Apiculture | Zamba 1er",
+      "motif": "Initial",
+      "montant": 892.5
+    },
+    {
+      "id": "e-32",
+      "numero": 30,
+      "date": "25/06/2026",
+      "projet": "Electricité | Zamba 1er",
+      "motif": "Initial",
+      "montant": 605000
+    },
+    {
+      "id": "e-33",
+      "numero": 31,
+      "date": "25/06/2026",
+      "projet": "Bourse universitaire | Zamba 1er",
+      "motif": "Initial",
+      "montant": 5439.2
+    },
+    {
+      "id": "e-34",
+      "numero": 32,
+      "date": "25/06/2026",
+      "projet": "Football | Zamba 1er",
+      "motif": "Initial",
+      "montant": 13151.58
+    },
+    {
+      "id": "e-1782982624370",
+      "numero": 33,
+      "date": "02/07/2026",
+      "projet": "Construction Eglise",
+      "motif": "fondation",
+      "montant": 1000
+    }
+  ]
+}

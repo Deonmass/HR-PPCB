@@ -1,5 +1,5 @@
 import { NextResponse } from 'next/server';
-import { createDependant, readDependantsData } from '@/lib/dependants-store';
+import { createDependant, readDependantsData } from '@/lib/dependants-json-store';
 import type { DependantFormData } from '@/lib/dependants-types';
 import { excelErrorResponse } from '@/lib/excel-io';
 import { checkAnyPermission } from '@/lib/require-permission';

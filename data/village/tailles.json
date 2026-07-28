@@ -1,0 +1,28 @@
+{
+  "tailles": [
+    {
+      "code": "HS",
+      "label": "High Standard",
+      "capacite": null,
+      "commentaires": ""
+    },
+    {
+      "code": "FS",
+      "label": "Free Style",
+      "capacite": null,
+      "commentaires": ""
+    },
+    {
+      "code": "ST",
+      "label": "Studio",
+      "capacite": null,
+      "commentaires": ""
+    },
+    {
+      "code": "TW",
+      "label": "Twins",
+      "capacite": null,
+      "commentaires": ""
+    }
+  ]
+}

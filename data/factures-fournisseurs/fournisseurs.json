@@ -1,0 +1,160 @@
+{
+  "fournisseurs": [
+    {
+      "id": "frn-1",
+      "nom": "Gringo",
+      "natureService": "Service de Nettoyage"
+    },
+    {
+      "id": "frn-2",
+      "nom": "Fedyza",
+      "natureService": "Restauration"
+    },
+    {
+      "id": "frn-3",
+      "nom": "Vivi Palace",
+      "natureService": "Restauration"
+    },
+    {
+      "id": "frn-4",
+      "nom": "MD Service Journaliers",
+      "natureService": "Man power"
+    },
+    {
+      "id": "frn-5",
+      "nom": "MD Service Permenant",
+      "natureService": "Man power"
+    },
+    {
+      "id": "frn-6",
+      "nom": "MD Services Kinshasa",
+      "natureService": "Man power"
+    },
+    {
+      "id": "frn-7",
+      "nom": "MD Services Loaders",
+      "natureService": "Man power"
+    },
+    {
+      "id": "frn-8",
+      "nom": "Cler Kiasungwa - Village",
+      "natureService": "Entretien village"
+    },
+    {
+      "id": "frn-9",
+      "nom": "Crafod",
+      "natureService": "Surveillance charroi automobile"
+    },
+    {
+      "id": "frn-10",
+      "nom": "Aquafina",
+      "natureService": "Fourniture d'eau"
+    },
+    {
+      "id": "frn-11",
+      "nom": "Canal Plus",
+      "natureService": "Abonemment TV"
+    },
+    {
+      "id": "frn-12",
+      "nom": "Ets Favour",
+      "natureService": "Restauration"
+    },
+    {
+      "id": "frn-13",
+      "nom": "Kikotech - Transport",
+      "natureService": "Transport"
+    },
+    {
+      "id": "frn-14",
+      "nom": "ELAIS",
+      "natureService": "Logement"
+    },
+    {
+      "id": "frn-15",
+      "nom": "PULLMAN  Lubumbash",
+      "natureService": "Logement"
+    },
+    {
+      "id": "frn-16",
+      "nom": "Satguru",
+      "natureService": "Agence de voyage"
+    },
+    {
+      "id": "frn-17",
+      "nom": "Blue berry",
+      "natureService": "Agence de voyage"
+    },
+    {
+      "id": "frn-18",
+      "nom": "City bond",
+      "natureService": "Agence de voyage"
+    },
+    {
+      "id": "frn-19",
+      "nom": "CTC",
+      "natureService": "Agence de voyage"
+    },
+    {
+      "id": "frn-20",
+      "nom": "Panafrique Motor ( Mahindra)",
+      "natureService": "Garage"
+    },
+    {
+      "id": "frn-21",
+      "nom": "Japan Motor",
+      "natureService": "Garage"
+    },
+    {
+      "id": "frn-22",
+      "nom": "Orange",
+      "natureService": "Garage"
+    },
+    {
+      "id": "frn-23",
+      "nom": "CFAO",
+      "natureService": "Garage"
+    },
+    {
+      "id": "frn-24",
+      "nom": "LOXEA",
+      "natureService": "Location vehicules"
+    },
+    {
+      "id": "frn-25",
+      "nom": "AGS",
+      "natureService": "Archivage"
+    },
+    {
+      "id": "frn-26",
+      "nom": "MD Service",
+      "natureService": "Man power"
+    },
+    {
+      "id": "frn-27",
+      "nom": "Capital HR",
+      "natureService": "Man Power"
+    },
+    {
+      "id": "frn-28",
+      "nom": "Smart WAY",
+      "natureService": "Agence de consultance"
+    },
+    {
+      "id": "frn-29",
+      "nom": "BEKI",
+      "natureService": "Service de nettoyage"
+    },
+    {
+      "id": "frn-30",
+      "nom": "Job Horizon",
+      "natureService": "Location vehicule"
+    },
+    {
+      "id": "frn-31",
+      "nom": "SAFRICODE",
+      "natureService": "Bailleur"
+    }
+  ],
+  "nextFournisseurSeq": 32
+}

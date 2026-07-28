@@ -5,7 +5,7 @@ import {
 } from '@/lib/check-documents-dashboard-export.server';
 import { filterEmployees, type EmployeeFilters } from '@/lib/employee-filters';
 import { excelErrorResponse } from '@/lib/excel-io';
-import { readEmployees } from '@/lib/employees-store';
+import { readEmployees } from '@/lib/employees-json-store';
 import { checkPermission } from '@/lib/require-permission';
 
 function parseFilters(request: NextRequest): EmployeeFilters {

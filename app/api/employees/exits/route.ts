@@ -1,6 +1,6 @@
 import { NextResponse } from 'next/server';
 import { excelErrorResponse } from '@/lib/excel-io';
-import { readExitedEmployees } from '@/lib/employees-store';
+import { readExitedEmployees } from '@/lib/employees-json-store';
 import { checkAnyPermission } from '@/lib/require-permission';
 
 export async function GET() {

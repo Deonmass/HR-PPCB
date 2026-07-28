@@ -1,6 +1,6 @@
 import { NextResponse } from 'next/server';
 import { excelErrorResponse } from '@/lib/excel-io';
-import { deleteEmployee, getEmployee, upsertEmployee, updateEmployeeDocument } from '@/lib/employees-store';
+import { deleteEmployee, getEmployee, upsertEmployee, updateEmployeeDocument } from '@/lib/employees-json-store';
 import { checkAnyPermission, checkPermission } from '@/lib/require-permission';
 import type { Employee } from '@/lib/types';
 import { emptyEmployeeHrProfile } from '@/lib/types';

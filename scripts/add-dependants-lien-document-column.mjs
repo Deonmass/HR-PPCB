@@ -18,7 +18,7 @@ const HEADER_ROW = 2;
 
 const targets = [
   path.join(root, 'Excel', 'EMPLOYEE.xlsx'),
-  path.join(root, 'Excel', 'export-templates', 'DEPENDANTS_EXPORT_TEMPLATE.xlsx'),
+  path.join(root, 'Excel', 'templates', 'dependants', 'DEPENDANTS_EXPORT_TEMPLATE.xlsx'),
   path.join(root, 'Excel', 'DEPENDANTS_EXPORT_TEMPLATE.xlsx'),
 ].filter((filePath) => fs.existsSync(filePath));
 

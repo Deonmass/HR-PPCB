@@ -4,7 +4,7 @@ import {
   parsePactilisExtractBuffer,
 } from '@/lib/dependants-pactilis-compare';
 import { consolidatePactilisIntoLocal } from '@/lib/dependants-pactilis-consolidate.server';
-import { readDependantsData } from '@/lib/dependants-store';
+import { readDependantsData } from '@/lib/dependants-json-store';
 import { excelErrorResponse } from '@/lib/excel-io';
 import { checkAnyPermission } from '@/lib/require-permission';
 
