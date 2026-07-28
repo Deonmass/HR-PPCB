@@ -10,17 +10,6 @@
       "tripDays": 7,
       "totalBudget": 1470,
       "recordId": ""
-    },
-    {
-      "rowIndex": 4,
-      "date": "2026-07-03",
-      "ref": "PPCB-DOC-HR-ZA/006/07/2026",
-      "employee": "Massadi Gedeon Gedeon (70000308)",
-      "department": "HR — HR Administrator",
-      "travelDates": "2026-07-03 → 2026-07-09",
-      "tripDays": 7,
-      "totalBudget": 1470,
-      "recordId": ""
     }
   ],
   "nextRowIndex": 9
