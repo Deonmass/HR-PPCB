@@ -33,13 +33,15 @@
       "dateFinContrat": "",
       "raisonExit": "NA",
       "createdAt": "2026-07-28T09:40:37.715Z",
-      "updatedAt": "2026-07-28T09:40:37.715Z"
+      "updatedAt": "2026-07-29T14:11:17.443Z",
+      "cnss": "11983346052R",
+      "nif": "B2222624S"
     },
     {
       "id": "539303ee-01db-4b61-be62-609fdda1a827",
       "matricule": "70000278",
       "nom": "ASIKANDAMBU SIMBA GRÂCE",
-      "departement": "Corporate Admin",
+      "departement": "Audit",
       "grade": "C5",
       "jobTitle": "Internal Auditor",
       "localisation": "Kinshasa",
@@ -68,7 +70,9 @@
       "dateFinContrat": "",
       "raisonExit": "NA",
       "createdAt": "2026-07-28T09:40:37.715Z",
-      "updatedAt": "2026-07-28T09:40:37.715Z"
+      "updatedAt": "2026-07-29T14:11:17.443Z",
+      "cnss": "11995647220D",
+      "nif": "F2595527S"
     },
     {
       "id": "1187e444-9d69-4a03-bdd7-990b59c13e48",
@@ -103,13 +107,15 @@
       "dateFinContrat": "",
       "raisonExit": "NA",
       "createdAt": "2026-07-28T09:40:37.715Z",
-      "updatedAt": "2026-07-28T09:40:37.715Z"
+      "updatedAt": "2026-07-29T14:11:17.443Z",
+      "cnss": "11998688188D",
+      "nif": ""
     },
     {
       "id": "c6a96230-f0f8-4271-95ab-5f5ae441616b",
       "matricule": "70000291",
       "nom": "BABALA MATWAN ANTOINE",
-      "departement": "Corporate Admin",
+      "departement": "Administration",
       "grade": "D4",
       "jobTitle": "Executive Assistant",
       "localisation": "Kinshasa",
@@ -138,7 +144,9 @@
       "dateFinContrat": "",
       "raisonExit": "NA",
       "createdAt": "2026-07-28T09:40:37.715Z",
-      "updatedAt": "2026-07-28T09:40:37.715Z"
+      "updatedAt": "2026-07-29T14:11:17.443Z",
+      "cnss": "11983744806U",
+      "nif": "F2581650J"
     },
     {
       "id": "b519ef18-c86c-4aab-a612-8fd5c7a24776",
@@ -173,13 +181,15 @@
       "dateFinContrat": "",
       "raisonExit": "NA",
       "createdAt": "2026-07-28T09:40:37.715Z",
-      "updatedAt": "2026-07-28T09:40:37.715Z"
+      "updatedAt": "2026-07-29T14:11:17.443Z",
+      "cnss": "11993606813S",
+      "nif": "B2222642M"
     },
     {
       "id": "feb421e3-61bb-4769-a87b-0372faea5f05",
       "matricule": "70000268",
       "nom": "BAHATI BUHENDWA ANGELE",
-      "departement": "Corporate Admin",
+      "departement": "Finance",
       "grade": "C2",
       "jobTitle": "Account Receivable Administrator",
       "localisation": "Kinshasa",
@@ -208,13 +218,15 @@
       "dateFinContrat": "",
       "raisonExit": "NA",
       "createdAt": "2026-07-28T09:40:37.715Z",
-      "updatedAt": "2026-07-28T09:40:37.715Z"
+      "updatedAt": "2026-07-29T14:11:17.443Z",
+      "cnss": "22000434825N",
+      "nif": "A2508805Z"
     },
     {
       "id": "4c91278f-6764-46e6-b7a9-df4195ffb55a",
       "matricule": "70000023",
       "nom": "BANGA BANGA APEA ONESIME",
-      "departement": "Corporate Admin",
+      "departement": "Human Resources",
       "grade": "B2",
       "jobTitle": "Driver",
       "localisation": "Kinshasa",
@@ -243,13 +255,15 @@
       "dateFinContrat": "",
       "raisonExit": "NA",
       "createdAt": "2026-07-28T09:40:37.715Z",
-      "updatedAt": "2026-07-28T09:40:37.715Z"
+      "updatedAt": "2026-07-29T14:11:17.443Z",
+      "cnss": "11969215997M",
+      "nif": "B2222553Q"
     },
     {
       "id": "70cf86d4-e496-4b4b-b103-ccc4b5b7bacc",
       "matricule": "70000019",
       "nom": "BANGULI KIESSE SANDRINE",
-      "departement": "Corporate Admin",
+      "departement": "Human Resources",
       "grade": "D1",
       "jobTitle": "Payroll and Admin Manager",
       "localisation": "Kinshasa",
@@ -278,7 +292,9 @@
       "dateFinContrat": "",
       "raisonExit": "NA",
       "createdAt": "2026-07-28T09:40:37.715Z",
-      "updatedAt": "2026-07-28T09:40:37.715Z"
+      "updatedAt": "2026-07-29T14:11:17.443Z",
+      "cnss": "21978052784I",
+      "nif": "B2222640K"
     },
     {
       "id": "e65b9fc1-631d-4e22-85b9-936e3b149927",
@@ -313,7 +329,9 @@
       "dateFinContrat": "",
       "raisonExit": "NA",
       "createdAt": "2026-07-28T09:40:37.715Z",
-      "updatedAt": "2026-07-28T09:40:37.715Z"
+      "updatedAt": "2026-07-29T14:11:17.443Z",
+      "cnss": "11978617369T",
+      "nif": "B2222622Q"
     },
     {
       "id": "759e2a79-13c5-48fc-a89d-f49cc4f18b18",
@@ -348,7 +366,9 @@
       "dateFinContrat": "",
       "raisonExit": "NA",
       "createdAt": "2026-07-28T09:40:37.715Z",
-      "updatedAt": "2026-07-28T09:40:37.715Z"
+      "updatedAt": "2026-07-29T14:11:17.443Z",
+      "cnss": "21996080412G",
+      "nif": "B2222665M"
     },
     {
       "id": "117dbc89-78ab-43f2-a41c-556d2e369282",
@@ -383,7 +403,9 @@
       "dateFinContrat": "",
       "raisonExit": "NA",
       "createdAt": "2026-07-28T09:40:37.715Z",
-      "updatedAt": "2026-07-28T09:40:37.715Z"
+      "updatedAt": "2026-07-29T14:11:17.443Z",
+      "cnss": "11976569944I",
+      "nif": "B2222603U"
     },
     {
       "id": "db3c22c0-9266-48fb-9876-6a838e2077ab",
@@ -418,13 +440,15 @@
       "dateFinContrat": "",
       "raisonExit": "NA",
       "createdAt": "2026-07-28T09:40:37.715Z",
-      "updatedAt": "2026-07-28T09:40:37.715Z"
+      "updatedAt": "2026-07-29T14:11:17.443Z",
+      "cnss": "11981346035L",
+      "nif": "B2222693S"
     },
     {
       "id": "abef2200-3770-420e-a50c-a24e0250efff",
       "matricule": "70000241",
       "nom": "BIAWILA JEAN ROSTAND",
-      "departement": "Administration",
+      "departement": "Supply chain",
       "grade": "B3",
       "jobTitle": "Receiver",
       "localisation": "Zamba",
@@ -453,13 +477,15 @@
       "dateFinContrat": "",
       "raisonExit": "NA",
       "createdAt": "2026-07-28T09:40:37.715Z",
-      "updatedAt": "2026-07-28T09:40:37.715Z"
+      "updatedAt": "2026-07-29T14:11:17.443Z",
+      "cnss": "11981606819V",
+      "nif": "B2222617K"
     },
     {
       "id": "24e30710-1a15-4045-ad33-748703138cbd",
       "matricule": "70000179",
       "nom": "BIGANIRO NDAMUSO NELLY",
-      "departement": "Sales & Logistics",
+      "departement": "Supply chain",
       "grade": "D2",
       "jobTitle": "Purchasing Manager",
       "localisation": "Kinshasa",
@@ -488,13 +514,15 @@
       "dateFinContrat": "",
       "raisonExit": "NA",
       "createdAt": "2026-07-28T09:40:37.715Z",
-      "updatedAt": "2026-07-28T09:40:37.715Z"
+      "updatedAt": "2026-07-29T14:11:17.443Z",
+      "cnss": "106341019861H",
+      "nif": "B2222663K"
     },
     {
       "id": "c52f9a10-081d-4c41-a649-e3b9f56a24b3",
       "matricule": "70000255",
       "nom": "BILANGA LINGOMA Jonas",
-      "departement": "Administration",
+      "departement": "Supply chain",
       "grade": "C3",
       "jobTitle": "Inventory Controller",
       "localisation": "Zamba",
@@ -523,7 +551,9 @@
       "dateFinContrat": "",
       "raisonExit": "NA",
       "createdAt": "2026-07-28T09:40:37.715Z",
-      "updatedAt": "2026-07-28T09:40:37.715Z"
+      "updatedAt": "2026-07-29T14:11:17.443Z",
+      "cnss": "11994688010I",
+      "nif": "C2231572U"
     },
     {
       "id": "53966606-61f7-44a0-b448-333d7a0475e7",
@@ -558,7 +588,9 @@
       "dateFinContrat": "",
       "raisonExit": "NA",
       "createdAt": "2026-07-28T09:40:37.715Z",
-      "updatedAt": "2026-07-28T09:40:37.715Z"
+      "updatedAt": "2026-07-29T14:11:17.443Z",
+      "cnss": "21988080401Q",
+      "nif": "B2222581W"
     },
     {
       "id": "586e1de3-9a8d-4084-bd0e-7fff170fe2ed",
@@ -593,13 +625,15 @@
       "dateFinContrat": "",
       "raisonExit": "NA",
       "createdAt": "2026-07-28T09:40:37.715Z",
-      "updatedAt": "2026-07-28T09:40:37.715Z"
+      "updatedAt": "2026-07-29T14:11:17.443Z",
+      "cnss": "11969342751N",
+      "nif": "B2222550M"
     },
     {
       "id": "8e178659-6a66-4727-84d7-381063772024",
       "matricule": "70000186",
       "nom": "BINTU SAFI BARBARA",
-      "departement": "Sales & Logistics",
+      "departement": "Supply chain",
       "grade": "B4",
       "jobTitle": "TMS Clerk",
       "localisation": "Kinshasa",
@@ -628,7 +662,9 @@
       "dateFinContrat": "",
       "raisonExit": "NA",
       "createdAt": "2026-07-28T09:40:37.715Z",
-      "updatedAt": "2026-07-28T09:40:37.715Z"
+      "updatedAt": "2026-07-29T14:11:17.443Z",
+      "cnss": "21988080402R",
+      "nif": "B2222554R"
     },
     {
       "id": "07d7c8ac-37fd-4e9a-9a61-3ff1988962e0",
@@ -663,13 +699,15 @@
       "dateFinContrat": "",
       "raisonExit": "NA",
       "createdAt": "2026-07-28T09:40:37.715Z",
-      "updatedAt": "2026-07-28T09:40:37.715Z"
+      "updatedAt": "2026-07-29T14:11:17.443Z",
+      "cnss": "11985569994U",
+      "nif": "B2222588D"
     },
     {
       "id": "84363240-10f6-43d0-b24a-3e950a8bc660",
       "matricule": "70000205",
       "nom": "BOMPETA MPINGO ERICK",
-      "departement": "Human Resources",
+      "departement": "Sales & Logistics",
       "grade": "C1",
       "jobTitle": "CEC Officer",
       "localisation": "Zamba",
@@ -698,13 +736,15 @@
       "dateFinContrat": "",
       "raisonExit": "NA",
       "createdAt": "2026-07-28T09:40:37.715Z",
-      "updatedAt": "2026-07-28T09:40:37.715Z"
+      "updatedAt": "2026-07-29T14:11:17.443Z",
+      "cnss": "11991550905L",
+      "nif": "B2222595L"
     },
     {
       "id": "4fde4528-dabf-4def-81b4-335d9047f6ab",
       "matricule": "70000296",
       "nom": "BOOKE BASA MICHAEL",
-      "departement": "Sales & Logistics",
+      "departement": "Supply chain",
       "grade": "D5",
       "jobTitle": "Head of Supply Chain",
       "localisation": "Kinshasa",
@@ -733,7 +773,9 @@
       "dateFinContrat": "",
       "raisonExit": "NA",
       "createdAt": "2026-07-28T09:40:37.715Z",
-      "updatedAt": "2026-07-28T09:40:37.715Z"
+      "updatedAt": "2026-07-29T14:11:17.443Z",
+      "cnss": "11994604952D",
+      "nif": "B2244848Z"
     },
     {
       "id": "340c7295-6431-489e-af2c-8a64fd38546f",
@@ -768,7 +810,9 @@
       "dateFinContrat": "",
       "raisonExit": "NA",
       "createdAt": "2026-07-28T09:40:37.715Z",
-      "updatedAt": "2026-07-28T09:40:37.715Z"
+      "updatedAt": "2026-07-29T14:11:17.443Z",
+      "cnss": "1199046614B",
+      "nif": "F2593526S"
     },
     {
       "id": "550069ce-b57e-439b-8f29-023fc20b696e",
@@ -803,7 +847,9 @@
       "dateFinContrat": "",
       "raisonExit": "NA",
       "createdAt": "2026-07-28T09:40:37.715Z",
-      "updatedAt": "2026-07-28T09:40:37.715Z"
+      "updatedAt": "2026-07-29T14:11:17.443Z",
+      "cnss": "21994080403I",
+      "nif": "B2222606Y"
     },
     {
       "id": "46e30adb-7aac-404e-89d2-2790d6f15e6a",
@@ -838,7 +884,9 @@
       "dateFinContrat": "",
       "raisonExit": "NA",
       "createdAt": "2026-07-28T09:40:37.715Z",
-      "updatedAt": "2026-07-28T09:40:37.715Z"
+      "updatedAt": "2026-07-29T14:11:17.443Z",
+      "cnss": "11972570113P",
+      "nif": "B2222672U"
     },
     {
       "id": "0c9e3f50-bde4-4247-b800-4528049b1764",
@@ -873,7 +921,9 @@
       "dateFinContrat": "",
       "raisonExit": "NA",
       "createdAt": "2026-07-28T09:40:37.715Z",
-      "updatedAt": "2026-07-28T09:40:37.715Z"
+      "updatedAt": "2026-07-29T14:11:17.443Z",
+      "cnss": "11977510097N",
+      "nif": "B2222585A"
     },
     {
       "id": "c7df6b0b-3d78-42cd-996c-1edb4c5673f3",
@@ -908,13 +958,15 @@
       "dateFinContrat": "",
       "raisonExit": "NA",
       "createdAt": "2026-07-28T09:40:37.715Z",
-      "updatedAt": "2026-07-28T09:40:37.715Z"
+      "updatedAt": "2026-07-29T14:11:17.443Z",
+      "cnss": "11989569946T",
+      "nif": "B2222680D"
     },
     {
       "id": "a8789242-9c30-4baa-a1b2-91afa725aaf7",
       "matricule": "70000085",
       "nom": "EKWALANGA MONGALIKITA BONIFACE",
-      "departement": "Corporate Admin",
+      "departement": "Finance",
       "grade": "D4",
       "jobTitle": "Financial Controller",
       "localisation": "Kinshasa",
@@ -943,7 +995,9 @@
       "dateFinContrat": "",
       "raisonExit": "NA",
       "createdAt": "2026-07-28T09:40:37.715Z",
-      "updatedAt": "2026-07-28T09:40:37.715Z"
+      "updatedAt": "2026-07-29T14:11:17.443Z",
+      "cnss": "11989504073S",
+      "nif": "B2222559X"
     },
     {
       "id": "3450e6e5-45ae-4156-b290-1fef30c9372c",
@@ -978,13 +1032,15 @@
       "dateFinContrat": "",
       "raisonExit": "NA",
       "createdAt": "2026-07-28T09:40:37.715Z",
-      "updatedAt": "2026-07-28T09:40:37.715Z"
+      "updatedAt": "2026-07-29T14:11:17.443Z",
+      "cnss": "11983717253V",
+      "nif": "F2596291Y"
     },
     {
       "id": "00a8e377-d908-493d-8d30-2a243218e332",
       "matricule": "70000265",
       "nom": "EWULI SUKA Carine",
-      "departement": "Corporate Admin",
+      "departement": "Human Resources",
       "grade": "D5",
       "jobTitle": "Head of Human Resources",
       "localisation": "Kinshasa",
@@ -1013,7 +1069,9 @@
       "dateFinContrat": "",
       "raisonExit": "NA",
       "createdAt": "2026-07-28T09:40:37.715Z",
-      "updatedAt": "2026-07-28T09:40:37.715Z"
+      "updatedAt": "2026-07-29T14:11:17.443Z",
+      "cnss": "202478203120P",
+      "nif": "B2211142M"
     },
     {
       "id": "18a9f301-3e9e-4176-b2b9-9e82585e472a",
@@ -1048,7 +1106,9 @@
       "dateFinContrat": "",
       "raisonExit": "NA",
       "createdAt": "2026-07-28T09:40:37.715Z",
-      "updatedAt": "2026-07-28T09:40:37.715Z"
+      "updatedAt": "2026-07-29T14:11:17.443Z",
+      "cnss": "11984570088Q",
+      "nif": "B2222590F"
     },
     {
       "id": "366da121-4839-40b0-a73d-31c55e0bc8ae",
@@ -1083,7 +1143,9 @@
       "dateFinContrat": "",
       "raisonExit": "NA",
       "createdAt": "2026-07-28T09:40:37.715Z",
-      "updatedAt": "2026-07-28T09:40:37.715Z"
+      "updatedAt": "2026-07-29T14:11:17.443Z",
+      "cnss": "11987504176R",
+      "nif": "B2222616J"
     },
     {
       "id": "78e45cf6-4609-44f4-83bd-1b6f2e7c6bd3",
@@ -1118,7 +1180,9 @@
       "dateFinContrat": "",
       "raisonExit": "NA",
       "createdAt": "2026-07-28T09:40:37.715Z",
-      "updatedAt": "2026-07-28T09:40:37.715Z"
+      "updatedAt": "2026-07-29T14:11:17.443Z",
+      "cnss": "11986196973T",
+      "nif": "B2222604W"
     },
     {
       "id": "25a86dbf-d36d-4d02-842b-324d098036ea",
@@ -1153,7 +1217,9 @@
       "dateFinContrat": "",
       "raisonExit": "NA",
       "createdAt": "2026-07-28T09:40:37.715Z",
-      "updatedAt": "2026-07-28T09:40:37.715Z"
+      "updatedAt": "2026-07-29T14:11:17.443Z",
+      "cnss": "11988346041N",
+      "nif": "B2222635E"
     },
     {
       "id": "73f552c0-c3ab-413f-b720-e4578d16a248",
@@ -1188,13 +1254,15 @@
       "dateFinContrat": "",
       "raisonExit": "NA",
       "createdAt": "2026-07-28T09:40:37.715Z",
-      "updatedAt": "2026-07-28T09:40:37.715Z"
+      "updatedAt": "2026-07-29T14:11:17.443Z",
+      "cnss": "11985346049D",
+      "nif": "B2222636F"
     },
     {
       "id": "0a0f5e82-e530-489c-a82a-0a31f07e8ced",
       "matricule": "70000118",
       "nom": "KABOTO META CLEMENTINE",
-      "departement": "Corporate Admin",
+      "departement": "Finance",
       "grade": "C3",
       "jobTitle": "Creditor Controler",
       "localisation": "Kinshasa",
@@ -1223,7 +1291,9 @@
       "dateFinContrat": "",
       "raisonExit": "NA",
       "createdAt": "2026-07-28T09:40:37.715Z",
-      "updatedAt": "2026-07-28T09:40:37.715Z"
+      "updatedAt": "2026-07-29T14:11:17.443Z",
+      "cnss": "21982046185L",
+      "nif": "B2222572L"
     },
     {
       "id": "e6165a86-ad33-4d9a-bd07-8d6da2544022",
@@ -1258,7 +1328,9 @@
       "dateFinContrat": "",
       "raisonExit": "NA",
       "createdAt": "2026-07-28T09:40:37.715Z",
-      "updatedAt": "2026-07-28T09:40:37.715Z"
+      "updatedAt": "2026-07-29T14:11:17.443Z",
+      "cnss": "11986277591W",
+      "nif": "B2222555S"
     },
     {
       "id": "7eaa4f5a-a0c2-4aa0-94a4-e3ddb151895d",
@@ -1293,7 +1365,9 @@
       "dateFinContrat": "",
       "raisonExit": "NA",
       "createdAt": "2026-07-28T09:40:37.715Z",
-      "updatedAt": "2026-07-28T09:40:37.715Z"
+      "updatedAt": "2026-07-29T14:11:17.443Z",
+      "cnss": "11991346030U",
+      "nif": "B2222637G"
     },
     {
       "id": "7790fd91-58c4-4bc9-bd2b-8a8f56f0ebfc",
@@ -1328,13 +1402,15 @@
       "dateFinContrat": "",
       "raisonExit": "NA",
       "createdAt": "2026-07-28T09:40:37.715Z",
-      "updatedAt": "2026-07-28T09:40:37.715Z"
+      "updatedAt": "2026-07-29T14:11:17.443Z",
+      "cnss": "11988206054E",
+      "nif": "B2222662J"
     },
     {
       "id": "484a4f15-1b67-4f97-afed-64e87084195d",
       "matricule": "70000256",
       "nom": "KAHASHA MBASHA PATRICK",
-      "departement": "Corporate Admin",
+      "departement": "Administration",
       "grade": "E4",
       "jobTitle": "Managing Director",
       "localisation": "Kinshasa",
@@ -1363,7 +1439,9 @@
       "dateFinContrat": "",
       "raisonExit": "NA",
       "createdAt": "2026-07-28T09:40:37.715Z",
-      "updatedAt": "2026-07-28T09:40:37.715Z"
+      "updatedAt": "2026-07-29T14:11:17.443Z",
+      "cnss": "11983630745Q",
+      "nif": "C2225164E"
     },
     {
       "id": "e9d959c9-d332-47ab-866e-77c60892bc57",
@@ -1398,7 +1476,9 @@
       "dateFinContrat": "",
       "raisonExit": "NA",
       "createdAt": "2026-07-28T09:40:37.715Z",
-      "updatedAt": "2026-07-28T09:40:37.715Z"
+      "updatedAt": "2026-07-29T14:11:17.443Z",
+      "cnss": "1199044725M",
+      "nif": "G2500222B"
     },
     {
       "id": "c7706310-e97d-495b-8a01-c7b75279c15e",
@@ -1433,7 +1513,9 @@
       "dateFinContrat": "",
       "raisonExit": "NA",
       "createdAt": "2026-07-28T09:40:37.715Z",
-      "updatedAt": "2026-07-28T09:40:37.715Z"
+      "updatedAt": "2026-07-29T14:11:17.443Z",
+      "cnss": "11987497745D",
+      "nif": "C2231571T"
     },
     {
       "id": "7ad8fcbc-6043-4b0d-8a16-da751b50c0b8",
@@ -1468,7 +1550,9 @@
       "dateFinContrat": "",
       "raisonExit": "NA",
       "createdAt": "2026-07-28T09:40:37.715Z",
-      "updatedAt": "2026-07-28T09:40:37.715Z"
+      "updatedAt": "2026-07-29T14:11:17.443Z",
+      "cnss": "11987346097R",
+      "nif": "B2222681E"
     },
     {
       "id": "7a5356e5-4c43-4bac-9a01-02ced61488ef",
@@ -1503,7 +1587,9 @@
       "dateFinContrat": "",
       "raisonExit": "NA",
       "createdAt": "2026-07-28T09:40:37.715Z",
-      "updatedAt": "2026-07-28T09:40:37.715Z"
+      "updatedAt": "2026-07-29T14:11:17.443Z",
+      "cnss": "11991548558K",
+      "nif": "B2222696W"
     },
     {
       "id": "7fa7b6ee-e0ef-4f4a-b44e-f6d16d496bd8",
@@ -1538,7 +1624,9 @@
       "dateFinContrat": "",
       "raisonExit": "NA",
       "createdAt": "2026-07-28T09:40:37.715Z",
-      "updatedAt": "2026-07-28T09:40:37.715Z"
+      "updatedAt": "2026-07-29T14:11:17.443Z",
+      "cnss": "11996688725W",
+      "nif": "C2392128S"
     },
     {
       "id": "d41a12d4-171b-4055-b41c-afca62f82953",
@@ -1573,13 +1661,15 @@
       "dateFinContrat": "",
       "raisonExit": "NA",
       "createdAt": "2026-07-28T09:40:37.715Z",
-      "updatedAt": "2026-07-28T09:40:37.715Z"
+      "updatedAt": "2026-07-29T14:11:17.443Z",
+      "cnss": "11990483249P",
+      "nif": "B2222592H"
     },
     {
       "id": "6005dcaf-ae46-494c-8e55-5f4857b80d37",
       "matricule": "70000101",
       "nom": "KANAHUNA LUZAYADIO MIRTHA",
-      "departement": "Corporate Admin",
+      "departement": "Finance",
       "grade": "B4",
       "jobTitle": "Invoice Verification Clerk",
       "localisation": "Zamba",
@@ -1608,7 +1698,9 @@
       "dateFinContrat": "",
       "raisonExit": "NA",
       "createdAt": "2026-07-28T09:40:37.715Z",
-      "updatedAt": "2026-07-28T09:40:37.715Z"
+      "updatedAt": "2026-07-29T14:11:17.443Z",
+      "cnss": "21982399851G",
+      "nif": "B2222655B"
     },
     {
       "id": "6d5ee1f9-ec23-496d-a306-a204da8a7421",
@@ -1643,7 +1735,9 @@
       "dateFinContrat": "",
       "raisonExit": "NA",
       "createdAt": "2026-07-28T09:40:37.715Z",
-      "updatedAt": "2026-07-28T09:40:37.715Z"
+      "updatedAt": "2026-07-29T14:11:17.443Z",
+      "cnss": "11994717248N",
+      "nif": "B2222711M"
     },
     {
       "id": "61f6110e-5991-479d-9429-83af0aa26308",
@@ -1678,7 +1772,9 @@
       "dateFinContrat": "",
       "raisonExit": "NA",
       "createdAt": "2026-07-28T09:40:37.715Z",
-      "updatedAt": "2026-07-28T09:40:37.715Z"
+      "updatedAt": "2026-07-29T14:11:17.443Z",
+      "cnss": "11984450158I",
+      "nif": "D2315421R"
     },
     {
       "id": "fea89304-d738-4222-8108-5bc6dc9c77dd",
@@ -1713,13 +1809,15 @@
       "dateFinContrat": "",
       "raisonExit": "NA",
       "createdAt": "2026-07-28T09:40:37.715Z",
-      "updatedAt": "2026-07-28T09:40:37.715Z"
+      "updatedAt": "2026-07-29T14:11:17.443Z",
+      "cnss": "11993582364S",
+      "nif": "B2222549L"
     },
     {
       "id": "7f9c678e-a13a-4d89-84c1-c9d8f8134305",
       "matricule": "70000293",
       "nom": "KASEREKA KALENDE GUYLAIN",
-      "departement": "Corporate Admin",
+      "departement": "Supply chain",
       "grade": "D2",
       "jobTitle": "Alternative Fuels & Raw Materials Manager",
       "localisation": "Zamba",
@@ -1748,13 +1846,15 @@
       "dateFinContrat": "",
       "raisonExit": "NA",
       "createdAt": "2026-07-28T09:40:37.715Z",
-      "updatedAt": "2026-07-28T09:40:37.715Z"
+      "updatedAt": "2026-07-29T14:11:17.443Z",
+      "cnss": "11984541514I",
+      "nif": "F2599670W"
     },
     {
       "id": "61ad1c54-f592-470a-a8b3-a60c46678146",
       "matricule": "70000250",
       "nom": "KEMO BALOMBA DEBORAH",
-      "departement": "Corporate Admin",
+      "departement": "Finance",
       "grade": "C2",
       "jobTitle": "Administrator Account Payable",
       "localisation": "Kinshasa",
@@ -1783,13 +1883,15 @@
       "dateFinContrat": "",
       "raisonExit": "NA",
       "createdAt": "2026-07-28T09:40:37.715Z",
-      "updatedAt": "2026-07-28T09:40:37.715Z"
+      "updatedAt": "2026-07-29T14:11:17.443Z",
+      "cnss": "21998405899J",
+      "nif": "C2235171G"
     },
     {
       "id": "5221b9ee-aab8-42be-b2e8-5ae8a86c184d",
       "matricule": "70000155",
       "nom": "KIAMUENEDIOKO KINSOMONA HORNEL",
-      "departement": "Human Resources",
+      "departement": "Sales & Logistics",
       "grade": "C2",
       "jobTitle": "Customer Relationship Clerk",
       "localisation": "Zamba",
@@ -1818,13 +1920,15 @@
       "dateFinContrat": "",
       "raisonExit": "NA",
       "createdAt": "2026-07-28T09:40:37.715Z",
-      "updatedAt": "2026-07-28T09:40:37.715Z"
+      "updatedAt": "2026-07-29T14:11:17.443Z",
+      "cnss": "21993390332G",
+      "nif": "B2222613F"
     },
     {
       "id": "2edbd6f8-bab8-4ed5-a08c-91244e2e9fe7",
       "matricule": "70000176",
       "nom": "KILENDA BANGI ALI",
-      "departement": "Corporate Admin",
+      "departement": "Human Resources",
       "grade": "B2",
       "jobTitle": "Driver",
       "localisation": "Kinshasa",
@@ -1853,13 +1957,15 @@
       "dateFinContrat": "",
       "raisonExit": "NA",
       "createdAt": "2026-07-28T09:40:37.715Z",
-      "updatedAt": "2026-07-28T09:40:37.715Z"
+      "updatedAt": "2026-07-29T14:11:17.443Z",
+      "cnss": "11976555357D",
+      "nif": "B2222548K"
     },
     {
       "id": "29a9ca15-3ec8-4e87-857d-cac746201ef4",
       "matricule": "70000275",
       "nom": "KILONDO WOLENG STEPHANE",
-      "departement": "Corporate Admin",
+      "departement": "Legal",
       "grade": "C3",
       "jobTitle": "Compliance Agent",
       "localisation": "Zamba",
@@ -1888,7 +1994,9 @@
       "dateFinContrat": "",
       "raisonExit": "NA",
       "createdAt": "2026-07-28T09:40:37.715Z",
-      "updatedAt": "2026-07-28T09:40:37.715Z"
+      "updatedAt": "2026-07-29T14:11:17.443Z",
+      "cnss": "11993549948J",
+      "nif": "B2224340H"
     },
     {
       "id": "8f339e66-be7a-4185-9e3d-4fcff4837f96",
@@ -1923,7 +2031,9 @@
       "dateFinContrat": "",
       "raisonExit": "NA",
       "createdAt": "2026-07-28T09:40:37.715Z",
-      "updatedAt": "2026-07-28T09:40:37.715Z"
+      "updatedAt": "2026-07-29T14:11:17.443Z",
+      "cnss": "21989080405D",
+      "nif": "B2222610C"
     },
     {
       "id": "d3bad033-dd59-454b-a3ad-6c0303a0c32c",
@@ -1958,7 +2068,9 @@
       "dateFinContrat": "",
       "raisonExit": "NA",
       "createdAt": "2026-07-28T09:40:37.715Z",
-      "updatedAt": "2026-07-28T09:40:37.715Z"
+      "updatedAt": "2026-07-29T14:11:17.443Z",
+      "cnss": "11983485835G",
+      "nif": "B2222720X"
     },
     {
       "id": "8c5d60d4-5052-419d-b4c9-3c39e06cf301",
@@ -1993,13 +2105,15 @@
       "dateFinContrat": "",
       "raisonExit": "NA",
       "createdAt": "2026-07-28T09:40:37.715Z",
-      "updatedAt": "2026-07-28T09:40:37.715Z"
+      "updatedAt": "2026-07-29T14:11:17.443Z",
+      "cnss": "11969346119A",
+      "nif": "B2222641L"
     },
     {
       "id": "667340cf-4063-42a7-b30e-5c2639562cfa",
       "matricule": "70000295",
       "nom": "KINKINIA DIAVEZUKA PELAGIE",
-      "departement": "Administration",
+      "departement": "Human Resources",
       "grade": "D2",
       "jobTitle": "Plant HR Manager",
       "localisation": "Zamba",
@@ -2028,7 +2142,9 @@
       "dateFinContrat": "",
       "raisonExit": "NA",
       "createdAt": "2026-07-28T09:40:37.715Z",
-      "updatedAt": "2026-07-28T09:40:37.715Z"
+      "updatedAt": "2026-07-29T14:11:17.443Z",
+      "cnss": "21976049364D",
+      "nif": "B2233767E"
     },
     {
       "id": "d897ec00-d06e-468c-ba9f-a489412dadf6",
@@ -2063,13 +2179,15 @@
       "dateFinContrat": "",
       "raisonExit": "NA",
       "createdAt": "2026-07-28T09:40:37.715Z",
-      "updatedAt": "2026-07-28T09:40:37.715Z"
+      "updatedAt": "2026-07-29T14:11:17.443Z",
+      "cnss": "11965346108L",
+      "nif": "B2222652Y"
     },
     {
       "id": "e1d80237-af5b-45be-8b2a-2f240a0c23dc",
       "matricule": "70000285",
       "nom": "KITUMAINI NASHI ELODIE",
-      "departement": "Sales & Logistics",
+      "departement": "Supply chain",
       "grade": "B4",
       "jobTitle": "TMS Officer",
       "localisation": "Kinshasa",
@@ -2098,13 +2216,15 @@
       "dateFinContrat": "",
       "raisonExit": "NA",
       "createdAt": "2026-07-28T09:40:37.715Z",
-      "updatedAt": "2026-07-28T09:40:37.715Z"
+      "updatedAt": "2026-07-29T14:11:17.443Z",
+      "cnss": "21999440118K",
+      "nif": "A2168483M"
     },
     {
       "id": "0beb9fcf-9116-4bbf-b93d-1aa2f13d16a5",
       "matricule": "70000187",
       "nom": "KODJAWA MAGA PATRICK",
-      "departement": "Sales & Logistics",
+      "departement": "Supply chain",
       "grade": "C4",
       "jobTitle": "Ports Coordinator",
       "localisation": "Kinshasa",
@@ -2133,7 +2253,9 @@
       "dateFinContrat": "",
       "raisonExit": "NA",
       "createdAt": "2026-07-28T09:40:37.715Z",
-      "updatedAt": "2026-07-28T09:40:37.715Z"
+      "updatedAt": "2026-07-29T14:11:17.443Z",
+      "cnss": "11987744801Q",
+      "nif": "B2222676Z"
     },
     {
       "id": "941e0adf-760b-4f27-91f6-eb36102484b4",
@@ -2168,7 +2290,9 @@
       "dateFinContrat": "",
       "raisonExit": "NA",
       "createdAt": "2026-07-28T09:40:37.715Z",
-      "updatedAt": "2026-07-28T09:40:37.715Z"
+      "updatedAt": "2026-07-29T14:11:17.443Z",
+      "cnss": "192259009230T",
+      "nif": "B2222709K"
     },
     {
       "id": "c1691789-c5a7-4d7f-93d4-b7a22ba0c28c",
@@ -2203,7 +2327,9 @@
       "dateFinContrat": "",
       "raisonExit": "NA",
       "createdAt": "2026-07-28T09:40:37.715Z",
-      "updatedAt": "2026-07-28T09:40:37.715Z"
+      "updatedAt": "2026-07-29T14:11:17.443Z",
+      "cnss": "11987510747K",
+      "nif": "B2222568G"
     },
     {
       "id": "d38339d0-5397-4e72-a3e2-b19d0be6e7b9",
@@ -2238,7 +2364,9 @@
       "dateFinContrat": "",
       "raisonExit": "NA",
       "createdAt": "2026-07-28T09:40:37.715Z",
-      "updatedAt": "2026-07-28T09:40:37.715Z"
+      "updatedAt": "2026-07-29T14:11:17.443Z",
+      "cnss": "11982346118I",
+      "nif": "B2222713P"
     },
     {
       "id": "838c2b06-8f10-4385-a928-85d95c32ab42",
@@ -2273,13 +2401,15 @@
       "dateFinContrat": "",
       "raisonExit": "NA",
       "createdAt": "2026-07-28T09:40:37.715Z",
-      "updatedAt": "2026-07-28T09:40:37.715Z"
+      "updatedAt": "2026-07-29T14:11:17.443Z",
+      "cnss": "11993717251K",
+      "nif": "G2505100D"
     },
     {
       "id": "e6d936f2-8638-4628-b371-8c2f31dac509",
       "matricule": "70000137",
       "nom": "LISANGOLA ITOFELE L EMMANUEL",
-      "departement": "Administration",
+      "departement": "Supply chain",
       "grade": "C5",
       "jobTitle": "Warehouse  Administrator",
       "localisation": "Zamba",
@@ -2308,13 +2438,15 @@
       "dateFinContrat": "",
       "raisonExit": "NA",
       "createdAt": "2026-07-28T09:40:37.715Z",
-      "updatedAt": "2026-07-28T09:40:37.715Z"
+      "updatedAt": "2026-07-29T14:11:17.443Z",
+      "cnss": "11985742096N",
+      "nif": "B2222593J"
     },
     {
       "id": "c96bdc8e-e3a5-46aa-82b2-6cc80bbebd0e",
       "matricule": "70000021",
       "nom": "LISANGOLA YOWALI Marie-Josee",
-      "departement": "Corporate Admin",
+      "departement": "Human Resources",
       "grade": "C4",
       "jobTitle": "Facilities Officer",
       "localisation": "Kinshasa",
@@ -2343,7 +2475,9 @@
       "dateFinContrat": "",
       "raisonExit": "NA",
       "createdAt": "2026-07-28T09:40:37.715Z",
-      "updatedAt": "2026-07-28T09:40:37.715Z"
+      "updatedAt": "2026-07-29T14:11:17.443Z",
+      "cnss": "21981398116N",
+      "nif": "B2222650W"
     },
     {
       "id": "83508b1d-81bc-4731-9acc-8c58457a9b58",
@@ -2378,7 +2512,9 @@
       "dateFinContrat": "",
       "raisonExit": "NA",
       "createdAt": "2026-07-28T09:40:37.715Z",
-      "updatedAt": "2026-07-28T09:40:37.715Z"
+      "updatedAt": "2026-07-29T14:11:17.443Z",
+      "cnss": "11976346113N",
+      "nif": "B2222714Q"
     },
     {
       "id": "2a4e9a70-e9d6-4364-a699-db441c1f783c",
@@ -2413,7 +2549,9 @@
       "dateFinContrat": "",
       "raisonExit": "NA",
       "createdAt": "2026-07-28T09:40:37.715Z",
-      "updatedAt": "2026-07-28T09:40:37.715Z"
+      "updatedAt": "2026-07-29T14:11:17.443Z",
+      "cnss": "1199671727O",
+      "nif": "B2222644P"
     },
     {
       "id": "e1f3808a-b1cb-487d-9f7e-e44c53bfa5d0",
@@ -2448,7 +2586,9 @@
       "dateFinContrat": "",
       "raisonExit": "NA",
       "createdAt": "2026-07-28T09:40:37.715Z",
-      "updatedAt": "2026-07-28T09:40:37.715Z"
+      "updatedAt": "2026-07-29T14:11:17.443Z",
+      "cnss": "11976346067N",
+      "nif": "B2222631A"
     },
     {
       "id": "de81cd26-2048-42b5-9aeb-b2b0c7cbb754",
@@ -2483,7 +2623,9 @@
       "dateFinContrat": "",
       "raisonExit": "NA",
       "createdAt": "2026-07-28T09:40:37.715Z",
-      "updatedAt": "2026-07-28T09:40:37.715Z"
+      "updatedAt": "2026-07-29T14:11:17.443Z",
+      "cnss": "11978570144N",
+      "nif": "B2222670S"
     },
     {
       "id": "7f92590c-fff1-4b96-9790-6a8b812e604b",
@@ -2518,7 +2660,9 @@
       "dateFinContrat": "",
       "raisonExit": "NA",
       "createdAt": "2026-07-28T09:40:37.715Z",
-      "updatedAt": "2026-07-28T09:40:37.715Z"
+      "updatedAt": "2026-07-29T14:11:17.443Z",
+      "cnss": "11983346107D",
+      "nif": "B2222715R"
     },
     {
       "id": "6fb0e7cb-8c3b-4668-b02b-00d34a4fae2c",
@@ -2553,7 +2697,9 @@
       "dateFinContrat": "",
       "raisonExit": "NA",
       "createdAt": "2026-07-28T09:40:37.715Z",
-      "updatedAt": "2026-07-28T09:40:37.715Z"
+      "updatedAt": "2026-07-29T14:11:17.443Z",
+      "cnss": "11989346090W",
+      "nif": "B2222668Q"
     },
     {
       "id": "d1a24c6a-56f0-4576-9735-34f6871e8c84",
@@ -2588,7 +2734,9 @@
       "dateFinContrat": "",
       "raisonExit": "NA",
       "createdAt": "2026-07-28T09:40:37.715Z",
-      "updatedAt": "2026-07-28T09:40:37.715Z"
+      "updatedAt": "2026-07-29T14:11:17.443Z",
+      "cnss": "11987346077U",
+      "nif": "B2222687L"
     },
     {
       "id": "9778cae9-95a3-454c-a545-830c91f37259",
@@ -2623,7 +2771,9 @@
       "dateFinContrat": "",
       "raisonExit": "NA",
       "createdAt": "2026-07-28T09:40:37.715Z",
-      "updatedAt": "2026-07-28T09:40:37.715Z"
+      "updatedAt": "2026-07-29T14:11:17.443Z",
+      "cnss": "11968628029Q",
+      "nif": "B2222646R"
     },
     {
       "id": "6a8edf91-9d69-4337-9d13-410f5d9c03d4",
@@ -2658,13 +2808,15 @@
       "dateFinContrat": "",
       "raisonExit": "NA",
       "createdAt": "2026-07-28T09:40:37.715Z",
-      "updatedAt": "2026-07-28T09:40:37.715Z"
+      "updatedAt": "2026-07-29T14:11:17.443Z",
+      "cnss": "11979485691W",
+      "nif": "B2222694T"
     },
     {
       "id": "4c7972e1-a8b2-4755-b326-1a79a3458d66",
       "matricule": "70000159",
       "nom": "MAKAYA DIAMATONDO DENIS",
-      "departement": "Sales & Logistics",
+      "departement": "Supply chain",
       "grade": "C3",
       "jobTitle": "Shipping Coordinator",
       "localisation": "Kinshasa",
@@ -2693,7 +2845,9 @@
       "dateFinContrat": "",
       "raisonExit": "NA",
       "createdAt": "2026-07-28T09:40:37.715Z",
-      "updatedAt": "2026-07-28T09:40:37.715Z"
+      "updatedAt": "2026-07-29T14:11:17.443Z",
+      "cnss": "108437405150D",
+      "nif": "B2222578S"
     },
     {
       "id": "433a8cf6-ab62-474f-872b-03582eb66437",
@@ -2728,13 +2882,15 @@
       "dateFinContrat": "",
       "raisonExit": "NA",
       "createdAt": "2026-07-28T09:40:37.715Z",
-      "updatedAt": "2026-07-28T09:40:37.715Z"
+      "updatedAt": "2026-07-29T14:11:17.443Z",
+      "cnss": "11971346115I",
+      "nif": "B2222587C"
     },
     {
       "id": "1af3499c-c0a4-40e6-94f3-d74aeeadb603",
       "matricule": "70000152",
       "nom": "MALONDA PHUATI FRANCIS",
-      "departement": "Corporate Admin",
+      "departement": "Finance",
       "grade": "C4",
       "jobTitle": "Financial Accountant",
       "localisation": "Kinshasa",
@@ -2763,13 +2919,15 @@
       "dateFinContrat": "",
       "raisonExit": "NA",
       "createdAt": "2026-07-28T09:40:37.715Z",
-      "updatedAt": "2026-07-28T09:40:37.715Z"
+      "updatedAt": "2026-07-29T14:11:17.443Z",
+      "cnss": "11991485697I",
+      "nif": "B2222598P"
     },
     {
       "id": "493d9aa8-fee0-4a15-9373-a58f915e39b2",
       "matricule": "70000164",
       "nom": "MALU MALUNGA SEBASTIEN",
-      "departement": "Human Resources",
+      "departement": "Sales & Logistics",
       "grade": "C2",
       "jobTitle": "Customer Service Clerk",
       "localisation": "Zamba",
@@ -2798,13 +2956,15 @@
       "dateFinContrat": "",
       "raisonExit": "NA",
       "createdAt": "2026-07-28T09:40:37.715Z",
-      "updatedAt": "2026-07-28T09:40:37.715Z"
+      "updatedAt": "2026-07-29T14:11:17.443Z",
+      "cnss": "11965510738H",
+      "nif": "B2222691Q"
     },
     {
       "id": "fd9f808b-b364-4ff9-aaa5-336c9154b2ef",
       "matricule": "70000111",
       "nom": "MANANGA MAMBULU JOSEPH",
-      "departement": "Human Resources",
+      "departement": "Sales & Logistics",
       "grade": "C1",
       "jobTitle": "CEC Officer",
       "localisation": "Zamba",
@@ -2833,13 +2993,15 @@
       "dateFinContrat": "",
       "raisonExit": "NA",
       "createdAt": "2026-07-28T09:40:37.715Z",
-      "updatedAt": "2026-07-28T09:40:37.715Z"
+      "updatedAt": "2026-07-29T14:11:17.443Z",
+      "cnss": "11979504087S",
+      "nif": "B2222632B"
     },
     {
       "id": "401cde65-41e9-4a47-bf1d-cd340def5ff2",
       "matricule": "70000175",
       "nom": "MANEKA MPUDI TRESOR",
-      "departement": "Corporate Admin",
+      "departement": "Human Resources",
       "grade": "C2",
       "jobTitle": "Immigration Officer",
       "localisation": "Kinshasa",
@@ -2868,7 +3030,9 @@
       "dateFinContrat": "",
       "raisonExit": "NA",
       "createdAt": "2026-07-28T09:40:37.715Z",
-      "updatedAt": "2026-07-28T09:40:37.715Z"
+      "updatedAt": "2026-07-29T14:11:17.443Z",
+      "cnss": "11979555559Q",
+      "nif": "B2222700A"
     },
     {
       "id": "3cbb8834-8a96-42b9-b16a-e8d9538bda16",
@@ -2903,7 +3067,9 @@
       "dateFinContrat": "",
       "raisonExit": "NA",
       "createdAt": "2026-07-28T09:40:37.715Z",
-      "updatedAt": "2026-07-28T09:40:37.715Z"
+      "updatedAt": "2026-07-29T14:11:17.443Z",
+      "cnss": "11985628969A",
+      "nif": "B2222675Y"
     },
     {
       "id": "1f4d9253-d665-4071-8fed-4f74f763ce2c",
@@ -2938,13 +3104,15 @@
       "dateFinContrat": "",
       "raisonExit": "NA",
       "createdAt": "2026-07-28T09:40:37.715Z",
-      "updatedAt": "2026-07-28T09:40:37.715Z"
+      "updatedAt": "2026-07-29T14:11:17.443Z",
+      "cnss": "11983529006G",
+      "nif": "B2222647S"
     },
     {
       "id": "cd613015-416e-4a77-a6d4-88f2b4db2c2c",
       "matricule": "70000206",
       "nom": "MARHEGERO TATU JOSEPH",
-      "departement": "Sales & Logistics",
+      "departement": "Supply chain",
       "grade": "D2",
       "jobTitle": "Transports & Transit Manager",
       "localisation": "Kinshasa",
@@ -2973,7 +3141,9 @@
       "dateFinContrat": "",
       "raisonExit": "NA",
       "createdAt": "2026-07-28T09:40:37.715Z",
-      "updatedAt": "2026-07-28T09:40:37.715Z"
+      "updatedAt": "2026-07-29T14:11:17.443Z",
+      "cnss": "106341019810524001",
+      "nif": "G2668360Q"
     },
     {
       "id": "895a2310-aed5-427b-8593-b1730b238f52",
@@ -3008,7 +3178,9 @@
       "dateFinContrat": "",
       "raisonExit": "NA",
       "createdAt": "2026-07-28T09:40:37.715Z",
-      "updatedAt": "2026-07-28T09:40:37.715Z"
+      "updatedAt": "2026-07-29T14:11:17.443Z",
+      "cnss": "21997414803G",
+      "nif": "B2222609B"
     },
     {
       "id": "f2538a09-a13a-4ec3-9954-0a5cdc60ec33",
@@ -3078,7 +3250,9 @@
       "dateFinContrat": "",
       "raisonExit": "NA",
       "createdAt": "2026-07-28T09:40:37.715Z",
-      "updatedAt": "2026-07-28T09:40:37.715Z"
+      "updatedAt": "2026-07-29T14:11:17.443Z",
+      "cnss": "11981742094K",
+      "nif": "F2599838D"
     },
     {
       "id": "9c2a32fe-6769-404d-bf78-c28bfcb4529d",
@@ -3113,13 +3287,15 @@
       "dateFinContrat": "",
       "raisonExit": "NA",
       "createdAt": "2026-07-28T09:40:37.715Z",
-      "updatedAt": "2026-07-28T09:40:37.715Z"
+      "updatedAt": "2026-07-29T14:11:17.443Z",
+      "cnss": "11989346193K",
+      "nif": "B2222625T"
     },
     {
       "id": "8b9edf2d-5747-4715-a9f7-101abd353049",
       "matricule": "70000185",
       "nom": "MAVUANGALA MVIOKI JEAN-PIERRE",
-      "departement": "Sales & Logistics",
+      "departement": "Supply chain",
       "grade": "D4",
       "jobTitle": "Logistic Manager",
       "localisation": "Kinshasa",
@@ -3148,7 +3324,9 @@
       "dateFinContrat": "",
       "raisonExit": "NA",
       "createdAt": "2026-07-28T09:40:37.715Z",
-      "updatedAt": "2026-07-28T09:40:37.715Z"
+      "updatedAt": "2026-07-29T14:11:17.443Z",
+      "cnss": "108437604170E",
+      "nif": "B2222620N"
     },
     {
       "id": "0bf775e8-9110-46ae-9af3-11b1f3113a8d",
@@ -3183,7 +3361,9 @@
       "dateFinContrat": "",
       "raisonExit": "NA",
       "createdAt": "2026-07-28T09:40:37.715Z",
-      "updatedAt": "2026-07-28T09:40:37.715Z"
+      "updatedAt": "2026-07-29T14:11:17.443Z",
+      "cnss": "11995638239P",
+      "nif": "F2595828U"
     },
     {
       "id": "5327fd5a-fee5-49bd-ba69-a8d7fbbfb3eb",
@@ -3218,13 +3398,15 @@
       "dateFinContrat": "",
       "raisonExit": "NA",
       "createdAt": "2026-07-28T09:40:37.715Z",
-      "updatedAt": "2026-07-28T09:40:37.715Z"
+      "updatedAt": "2026-07-29T14:11:17.443Z",
+      "cnss": "11994517578G",
+      "nif": "B2222664L"
     },
     {
       "id": "30c01d7e-7e2a-4c1b-880c-c694a55883be",
       "matricule": "70000184",
       "nom": "MBALE KABANGU HUGO",
-      "departement": "Corporate Admin",
+      "departement": "Finance",
       "grade": "D2",
       "jobTitle": "Tax Manager",
       "localisation": "Kinshasa",
@@ -3253,7 +3435,9 @@
       "dateFinContrat": "",
       "raisonExit": "NA",
       "createdAt": "2026-07-28T09:40:37.715Z",
-      "updatedAt": "2026-07-28T09:40:37.715Z"
+      "updatedAt": "2026-07-29T14:11:17.443Z",
+      "cnss": "107328606270E",
+      "nif": "B2222614G"
     },
     {
       "id": "24593b30-8851-47d0-a028-b13286e434ba",
@@ -3288,7 +3472,9 @@
       "dateFinContrat": "",
       "raisonExit": "NA",
       "createdAt": "2026-07-28T09:40:37.715Z",
-      "updatedAt": "2026-07-28T09:40:37.715Z"
+      "updatedAt": "2026-07-29T14:11:17.443Z",
+      "cnss": "11969346098C",
+      "nif": "B2222551N"
     },
     {
       "id": "13962c42-5eea-454d-a721-c0cd169173ed",
@@ -3323,7 +3509,9 @@
       "dateFinContrat": "",
       "raisonExit": "NA",
       "createdAt": "2026-07-28T09:40:37.715Z",
-      "updatedAt": "2026-07-28T09:40:37.715Z"
+      "updatedAt": "2026-07-29T14:11:17.443Z",
+      "cnss": "11986569939R",
+      "nif": "B2222600R"
     },
     {
       "id": "03284cea-0c9c-45bf-89a2-f0ce6d245236",
@@ -3358,7 +3546,9 @@
       "dateFinContrat": "",
       "raisonExit": "NA",
       "createdAt": "2026-07-28T09:40:37.715Z",
-      "updatedAt": "2026-07-28T09:40:37.715Z"
+      "updatedAt": "2026-07-29T14:11:17.443Z",
+      "cnss": "11991514033I",
+      "nif": "F2593808Z"
     },
     {
       "id": "f9a82929-1f6e-4651-8fdf-c7b03bb88927",
@@ -3393,7 +3583,9 @@
       "dateFinContrat": "",
       "raisonExit": "NA",
       "createdAt": "2026-07-28T09:40:37.715Z",
-      "updatedAt": "2026-07-28T09:40:37.715Z"
+      "updatedAt": "2026-07-29T14:11:17.443Z",
+      "cnss": "11987629043R",
+      "nif": "C2231573W"
     },
     {
       "id": "55d0f50b-1470-4498-8b72-560df9aca74d",
@@ -3428,7 +3620,9 @@
       "dateFinContrat": "",
       "raisonExit": "NA",
       "createdAt": "2026-07-28T09:40:37.715Z",
-      "updatedAt": "2026-07-28T09:40:37.715Z"
+      "updatedAt": "2026-07-29T14:11:17.443Z",
+      "cnss": "21983391368Q",
+      "nif": "G2500283S"
     },
     {
       "id": "6cc8efdd-4006-4997-985f-cc3d63ca5477",
@@ -3463,13 +3657,15 @@
       "dateFinContrat": "",
       "raisonExit": "NA",
       "createdAt": "2026-07-28T09:40:37.715Z",
-      "updatedAt": "2026-07-28T09:40:37.715Z"
+      "updatedAt": "2026-07-29T14:11:17.443Z",
+      "cnss": "102478707050Q",
+      "nif": "B2222653Z"
     },
     {
       "id": "08ee1f6a-ad99-4278-aeaf-92a564e062c8",
       "matricule": "70000253",
       "nom": "MOLA BOIKA OLIVIER",
-      "departement": "Corporate Admin",
+      "departement": "Audit",
       "grade": "D2",
       "jobTitle": "Manager Internal Audit",
       "localisation": "Kinshasa",
@@ -3498,7 +3694,9 @@
       "dateFinContrat": "",
       "raisonExit": "NA",
       "createdAt": "2026-07-28T09:40:37.715Z",
-      "updatedAt": "2026-07-28T09:40:37.715Z"
+      "updatedAt": "2026-07-29T14:11:17.443Z",
+      "cnss": "11992282702R",
+      "nif": "C2224136M"
     },
     {
       "id": "6293e23d-d6b6-4558-b64b-ab00f81f066e",
@@ -3533,7 +3731,9 @@
       "dateFinContrat": "",
       "raisonExit": "NA",
       "createdAt": "2026-07-28T09:40:37.715Z",
-      "updatedAt": "2026-07-28T09:40:37.715Z"
+      "updatedAt": "2026-07-29T14:11:17.443Z",
+      "cnss": "11990346088D",
+      "nif": "B2222599Q"
     },
     {
       "id": "564edd85-72a9-471e-b831-9d0ff2ed8195",
@@ -3568,13 +3768,15 @@
       "dateFinContrat": "",
       "raisonExit": "NA",
       "createdAt": "2026-07-28T09:40:37.715Z",
-      "updatedAt": "2026-07-28T09:40:37.715Z"
+      "updatedAt": "2026-07-29T14:11:17.443Z",
+      "cnss": "11986698977C",
+      "nif": "C2235836E"
     },
     {
       "id": "f12a9afe-0f5a-4286-9ea3-a7bb0e5a11a1",
       "matricule": "70000236",
       "nom": "MOLOPAKWA MAGBALU AIME",
-      "departement": "Sales & Logistics",
+      "departement": "Supply chain",
       "grade": "C2",
       "jobTitle": "Warehouse Operator",
       "localisation": "Kinshasa",
@@ -3603,7 +3805,9 @@
       "dateFinContrat": "",
       "raisonExit": "NA",
       "createdAt": "2026-07-28T09:40:37.715Z",
-      "updatedAt": "2026-07-28T09:40:37.715Z"
+      "updatedAt": "2026-07-29T14:11:17.443Z",
+      "cnss": "11978551031N",
+      "nif": "B2222546H"
     },
     {
       "id": "749a3fcf-498c-4449-8183-3037991bd491",
@@ -3638,13 +3842,15 @@
       "dateFinContrat": "",
       "raisonExit": "NA",
       "createdAt": "2026-07-28T09:40:37.715Z",
-      "updatedAt": "2026-07-28T09:40:37.715Z"
+      "updatedAt": "2026-07-29T14:11:17.443Z",
+      "cnss": "11986282243F",
+      "nif": "B2222688M"
     },
     {
       "id": "244d6c31-bf63-40b2-b09b-62d564df7ebc",
       "matricule": "70000067",
       "nom": "MPONGO KOLONGO LEON",
-      "departement": "Sales & Logistics",
+      "departement": "Supply chain",
       "grade": "C3",
       "jobTitle": "Buyer",
       "localisation": "Zamba",
@@ -3673,7 +3879,9 @@
       "dateFinContrat": "",
       "raisonExit": "NA",
       "createdAt": "2026-07-28T09:40:37.715Z",
-      "updatedAt": "2026-07-28T09:40:37.715Z"
+      "updatedAt": "2026-07-29T14:11:17.443Z",
+      "cnss": "11991346040H",
+      "nif": "B2222643N"
     },
     {
       "id": "f4aca174-5e88-4aeb-9ef3-2ea52728dbcb",
@@ -3708,7 +3916,9 @@
       "dateFinContrat": "",
       "raisonExit": "NA",
       "createdAt": "2026-07-28T09:40:37.715Z",
-      "updatedAt": "2026-07-28T09:40:37.715Z"
+      "updatedAt": "2026-07-29T14:11:17.443Z",
+      "cnss": "10573770640H",
+      "nif": "B2222716S"
     },
     {
       "id": "037ab0c5-3f59-40a2-aa4f-af5cfae2ace0",
@@ -3743,7 +3953,9 @@
       "dateFinContrat": "",
       "raisonExit": "NA",
       "createdAt": "2026-07-28T09:40:37.715Z",
-      "updatedAt": "2026-07-28T09:40:37.715Z"
+      "updatedAt": "2026-07-29T14:11:17.443Z",
+      "cnss": "11978569883F",
+      "nif": "B2222692R"
     },
     {
       "id": "ecb9d38b-e269-4f5e-9376-76bc159fc7cc",
@@ -3778,7 +3990,9 @@
       "dateFinContrat": "",
       "raisonExit": "NA",
       "createdAt": "2026-07-28T09:40:37.715Z",
-      "updatedAt": "2026-07-28T09:40:37.715Z"
+      "updatedAt": "2026-07-29T14:11:17.443Z",
+      "cnss": "11982346036S",
+      "nif": "B2222623R"
     },
     {
       "id": "94306390-27e9-47cd-a221-355492a90099",
@@ -3813,7 +4027,9 @@
       "dateFinContrat": "",
       "raisonExit": "NA",
       "createdAt": "2026-07-28T09:40:37.715Z",
-      "updatedAt": "2026-07-28T09:40:37.715Z"
+      "updatedAt": "2026-07-29T14:11:17.443Z",
+      "cnss": "11989346028G",
+      "nif": "B2222657D"
     },
     {
       "id": "def1af46-caa8-4836-bd38-fd9cccb12862",
@@ -3848,7 +4064,9 @@
       "dateFinContrat": "",
       "raisonExit": "NA",
       "createdAt": "2026-07-28T09:40:37.715Z",
-      "updatedAt": "2026-07-28T09:40:37.715Z"
+      "updatedAt": "2026-07-29T14:11:17.443Z",
+      "cnss": "11980507903W",
+      "nif": "B2222677A"
     },
     {
       "id": "44d9c0f8-7090-4a8d-9514-82f80084468f",
@@ -3883,7 +4101,9 @@
       "dateFinContrat": "",
       "raisonExit": "NA",
       "createdAt": "2026-07-28T09:40:37.715Z",
-      "updatedAt": "2026-07-28T09:40:37.715Z"
+      "updatedAt": "2026-07-29T14:11:17.443Z",
+      "cnss": "11986606822I",
+      "nif": "B2222569H"
     },
     {
       "id": "ca1d25de-031d-4483-93e1-26a4b2622f34",
@@ -3918,13 +4138,15 @@
       "dateFinContrat": "",
       "raisonExit": "NA",
       "createdAt": "2026-07-28T09:40:37.715Z",
-      "updatedAt": "2026-07-28T09:40:37.715Z"
+      "updatedAt": "2026-07-29T14:11:17.443Z",
+      "cnss": "11984485831I",
+      "nif": "B2222634D"
     },
     {
       "id": "a7c5776f-ef59-46a0-ac43-3cd0703f56de",
       "matricule": "70000270",
       "nom": "MULENDA ARCHIPP",
-      "departement": "Corporate Admin",
+      "departement": "Finance",
       "grade": "C2",
       "jobTitle": "Junior Digitalization",
       "localisation": "Zamba",
@@ -3953,13 +4175,15 @@
       "dateFinContrat": "",
       "raisonExit": "NA",
       "createdAt": "2026-07-28T09:40:37.715Z",
-      "updatedAt": "2026-07-28T09:40:37.715Z"
+      "updatedAt": "2026-07-29T14:11:17.443Z",
+      "cnss": "11999717232E",
+      "nif": "F2595520K"
     },
     {
       "id": "91b17468-c2fc-41bd-83cb-cac066325cb2",
       "matricule": "70000034",
       "nom": "MULOLO KANKOLONGO MANIX",
-      "departement": "Corporate Admin",
+      "departement": "Finance",
       "grade": "D2",
       "jobTitle": "IT Manager",
       "localisation": "Kinshasa",
@@ -3988,7 +4212,9 @@
       "dateFinContrat": "",
       "raisonExit": "NA",
       "createdAt": "2026-07-28T09:40:37.715Z",
-      "updatedAt": "2026-07-28T09:40:37.715Z"
+      "updatedAt": "2026-07-29T14:11:17.443Z",
+      "cnss": "11986346071I",
+      "nif": "B2222659f"
     },
     {
       "id": "4c0a8538-18c8-4398-9fd5-2180f2de0b64",
@@ -4023,7 +4249,9 @@
       "dateFinContrat": "",
       "raisonExit": "NA",
       "createdAt": "2026-07-28T09:40:37.715Z",
-      "updatedAt": "2026-07-28T09:40:37.715Z"
+      "updatedAt": "2026-07-29T14:11:17.443Z",
+      "cnss": "209427911220J",
+      "nif": "B2222584Z"
     },
     {
       "id": "b3f54596-e7b9-4ba2-b16a-7353100338d5",
@@ -4058,7 +4286,9 @@
       "dateFinContrat": "",
       "raisonExit": "NA",
       "createdAt": "2026-07-28T09:40:37.715Z",
-      "updatedAt": "2026-07-28T09:40:37.715Z"
+      "updatedAt": "2026-07-29T14:11:17.443Z",
+      "cnss": "12002717258C",
+      "nif": "G2502205G"
     },
     {
       "id": "52d4fc38-8261-45f4-894a-c0aa8d6a67cd",
@@ -4093,13 +4323,15 @@
       "dateFinContrat": "",
       "raisonExit": "NA",
       "createdAt": "2026-07-28T09:40:37.715Z",
-      "updatedAt": "2026-07-28T09:40:37.715Z"
+      "updatedAt": "2026-07-29T14:11:17.443Z",
+      "cnss": "11987485686T",
+      "nif": "B2222656C"
     },
     {
       "id": "2dd6f4ab-54b0-4a6b-9bb1-ffd596aa10eb",
       "matricule": "70000180",
       "nom": "MUTOMBO NTALAJA ACHILLE",
-      "departement": "Corporate Admin",
+      "departement": "Legal",
       "grade": "D5",
       "jobTitle": "Head of legal",
       "localisation": "Kinshasa",
@@ -4128,7 +4360,9 @@
       "dateFinContrat": "",
       "raisonExit": "NA",
       "createdAt": "2026-07-28T09:40:37.715Z",
-      "updatedAt": "2026-07-28T09:40:37.715Z"
+      "updatedAt": "2026-07-29T14:11:17.443Z",
+      "cnss": "107548010070I",
+      "nif": "B2222545G"
     },
     {
       "id": "9a9c8920-e3f6-480b-9aef-73d731e0fa4e",
@@ -4163,13 +4397,15 @@
       "dateFinContrat": "",
       "raisonExit": "NA",
       "createdAt": "2026-07-28T09:40:37.715Z",
-      "updatedAt": "2026-07-28T09:40:37.715Z"
+      "updatedAt": "2026-07-29T14:11:17.443Z",
+      "cnss": "050105244U1",
+      "nif": "B2210530X"
     },
     {
       "id": "3e9d5101-b08e-4bf0-9d14-d2a7ba30b7f5",
       "matricule": "70000135",
       "nom": "MUZADI LUKOKESHA CEDRIC",
-      "departement": "Corporate Admin",
+      "departement": "Finance",
       "grade": "E2",
       "jobTitle": "Head of Finance and IT",
       "localisation": "Kinshasa",
@@ -4198,7 +4434,9 @@
       "dateFinContrat": "",
       "raisonExit": "NA",
       "createdAt": "2026-07-28T09:40:37.715Z",
-      "updatedAt": "2026-07-28T09:40:37.715Z"
+      "updatedAt": "2026-07-29T14:11:17.443Z",
+      "cnss": "10495JC00",
+      "nif": "B2222563B"
     },
     {
       "id": "475f77aa-cd58-4564-abaa-8ce774aabff1",
@@ -4233,7 +4471,9 @@
       "dateFinContrat": "",
       "raisonExit": "NA",
       "createdAt": "2026-07-28T09:40:37.715Z",
-      "updatedAt": "2026-07-28T09:40:37.715Z"
+      "updatedAt": "2026-07-29T14:11:17.443Z",
+      "cnss": "103232019781215002",
+      "nif": "G2642550L"
     },
     {
       "id": "3a904ff9-5a67-48ac-bea4-8909eec656f5",
@@ -4268,7 +4508,9 @@
       "dateFinContrat": "",
       "raisonExit": "NA",
       "createdAt": "2026-07-28T09:40:37.715Z",
-      "updatedAt": "2026-07-28T09:40:37.715Z"
+      "updatedAt": "2026-07-29T14:11:17.443Z",
+      "cnss": "1198828280H",
+      "nif": "A2210510Z"
     },
     {
       "id": "3314c7ba-d079-4d16-a1d7-83815ec65ffd",
@@ -4303,7 +4545,9 @@
       "dateFinContrat": "",
       "raisonExit": "NA",
       "createdAt": "2026-07-28T09:40:37.715Z",
-      "updatedAt": "2026-07-28T09:40:37.715Z"
+      "updatedAt": "2026-07-29T14:11:17.443Z",
+      "cnss": "11993346026F",
+      "nif": "B2222577R"
     },
     {
       "id": "e196aa45-1038-4b39-bec4-40357e24af82",
@@ -4338,13 +4582,15 @@
       "dateFinContrat": "",
       "raisonExit": "NA",
       "createdAt": "2026-07-28T09:40:37.715Z",
-      "updatedAt": "2026-07-28T09:40:37.715Z"
+      "updatedAt": "2026-07-29T14:11:17.443Z",
+      "cnss": "21985406131C",
+      "nif": "B2222639J"
     },
     {
       "id": "fa31078f-1fd3-4e20-a052-4b83f66d34f5",
       "matricule": "70000220",
       "nom": "NDALA TSHIUNZA FABRICE",
-      "departement": "Sales & Logistics",
+      "departement": "Supply chain",
       "grade": "C3",
       "jobTitle": "Buyer",
       "localisation": "Kinshasa",
@@ -4373,13 +4619,15 @@
       "dateFinContrat": "",
       "raisonExit": "NA",
       "createdAt": "2026-07-28T09:40:37.715Z",
-      "updatedAt": "2026-07-28T09:40:37.715Z"
+      "updatedAt": "2026-07-29T14:11:17.443Z",
+      "cnss": "11982363900L",
+      "nif": "B2222597N"
     },
     {
       "id": "96afa984-f715-47e9-bfd8-9889efdfe978",
       "matricule": "70000200",
       "nom": "NDAYA ABELI CARDOSO TANYA",
-      "departement": "Corporate Admin",
+      "departement": "Legal",
       "grade": "C4",
       "jobTitle": "Compliance Officer",
       "localisation": "Kinshasa",
@@ -4408,7 +4656,9 @@
       "dateFinContrat": "",
       "raisonExit": "NA",
       "createdAt": "2026-07-28T09:40:37.715Z",
-      "updatedAt": "2026-07-28T09:40:37.715Z"
+      "updatedAt": "2026-07-29T14:11:17.443Z",
+      "cnss": "208348809200G",
+      "nif": "B2222699Z"
     },
     {
       "id": "06179469-586a-461c-98b2-64f94688f2b0",
@@ -4478,13 +4728,15 @@
       "dateFinContrat": "",
       "raisonExit": "NA",
       "createdAt": "2026-07-28T09:40:37.715Z",
-      "updatedAt": "2026-07-28T09:40:37.715Z"
+      "updatedAt": "2026-07-29T14:11:17.443Z",
+      "cnss": "11990346096L",
+      "nif": "B2222667P"
     },
     {
       "id": "0e82ea93-58c8-495f-8bbf-5bafd5fdb2be",
       "matricule": "70000292",
       "nom": "NDONGALA STEPHANIE",
-      "departement": "Corporate Admin",
+      "departement": "Administration",
       "grade": "C2",
       "jobTitle": "MD-Personal Assistant",
       "localisation": "Kinshasa",
@@ -4513,13 +4765,15 @@
       "dateFinContrat": "",
       "raisonExit": "NA",
       "createdAt": "2026-07-28T09:40:37.715Z",
-      "updatedAt": "2026-07-28T09:40:37.715Z"
+      "updatedAt": "2026-07-29T14:11:17.443Z",
+      "cnss": "21998442371D",
+      "nif": "G2504830K"
     },
     {
       "id": "349a4b33-af48-4ea7-b336-c39d4c13d99e",
       "matricule": "70000032",
       "nom": "NEMWANDJARE PERO PHILEMON",
-      "departement": "Administration",
+      "departement": "Production",
       "grade": "C5",
       "jobTitle": "Junior Process Engineer",
       "localisation": "Zamba",
@@ -4548,13 +4802,15 @@
       "dateFinContrat": "",
       "raisonExit": "NA",
       "createdAt": "2026-07-28T09:40:37.715Z",
-      "updatedAt": "2026-07-28T09:40:37.715Z"
+      "updatedAt": "2026-07-29T14:11:17.443Z",
+      "cnss": "11989504086I",
+      "nif": "B2222679C"
     },
     {
       "id": "37e241ab-c583-4ab6-91cb-0a9dc293921c",
       "matricule": "70000262",
       "nom": "NGABA TANKUEY ARNOLD",
-      "departement": "Corporate Admin",
+      "departement": "Finance",
       "grade": "C3",
       "jobTitle": "Revenue & Inventory Controller",
       "localisation": "Kinshasa",
@@ -4583,7 +4839,9 @@
       "dateFinContrat": "",
       "raisonExit": "NA",
       "createdAt": "2026-07-28T09:40:37.715Z",
-      "updatedAt": "2026-07-28T09:40:37.715Z"
+      "updatedAt": "2026-07-29T14:11:17.443Z",
+      "cnss": "11989395865C",
+      "nif": "F2595826S"
     },
     {
       "id": "8ce5cddf-4681-449f-b780-20d84288768d",
@@ -4618,7 +4876,9 @@
       "dateFinContrat": "",
       "raisonExit": "NA",
       "createdAt": "2026-07-28T09:40:37.715Z",
-      "updatedAt": "2026-07-28T09:40:37.715Z"
+      "updatedAt": "2026-07-29T14:11:17.443Z",
+      "cnss": "108339401050H",
+      "nif": "G2504802E"
     },
     {
       "id": "f37a3d01-efa4-4afe-b62a-6fc2c3171d8a",
@@ -4653,13 +4913,15 @@
       "dateFinContrat": "",
       "raisonExit": "NA",
       "createdAt": "2026-07-28T09:40:37.715Z",
-      "updatedAt": "2026-07-28T09:40:37.715Z"
+      "updatedAt": "2026-07-29T14:11:17.443Z",
+      "cnss": "11989506044L",
+      "nif": "B2222605X"
     },
     {
       "id": "a035180a-4afb-472e-ae2d-8745bee93954",
       "matricule": "70000110",
       "nom": "NGOMA NIMI GLODY",
-      "departement": "Sales & Logistics",
+      "departement": "Supply chain",
       "grade": "D2",
       "jobTitle": "Transport Optimisation Manager",
       "localisation": "Kinshasa",
@@ -4688,7 +4950,9 @@
       "dateFinContrat": "",
       "raisonExit": "NA",
       "createdAt": "2026-07-28T09:40:37.715Z",
-      "updatedAt": "2026-07-28T09:40:37.715Z"
+      "updatedAt": "2026-07-29T14:11:17.443Z",
+      "cnss": "11988483038W",
+      "nif": "B2222605X"
     },
     {
       "id": "85525948-4fa0-4002-83d0-9bd5da1c4d11",
@@ -4723,13 +4987,15 @@
       "dateFinContrat": "",
       "raisonExit": "NA",
       "createdAt": "2026-07-28T09:40:37.715Z",
-      "updatedAt": "2026-07-28T09:40:37.715Z"
+      "updatedAt": "2026-07-29T14:11:17.443Z",
+      "cnss": "11974346050H",
+      "nif": "B2222649U"
     },
     {
       "id": "a11b95d0-fb73-476c-8efb-f782d1efb1ee",
       "matricule": "70000254",
       "nom": "NGUDI NGILA CHRISTIAN",
-      "departement": "Sales & Logistics",
+      "departement": "Supply chain",
       "grade": "C3",
       "jobTitle": "Buyer",
       "localisation": "Kinshasa",
@@ -4758,13 +5024,15 @@
       "dateFinContrat": "",
       "raisonExit": "NA",
       "createdAt": "2026-07-28T09:40:37.715Z",
-      "updatedAt": "2026-07-28T09:40:37.715Z"
+      "updatedAt": "2026-07-29T14:11:17.443Z",
+      "cnss": "11982485341M",
+      "nif": "C2224139Q"
     },
     {
       "id": "a8300f2e-a510-46c3-a8c3-5511ddc52dc5",
       "matricule": "70000279",
       "nom": "NKEMBI MABELUANGA GRASSINDA",
-      "departement": "Corporate Admin",
+      "departement": "Legal",
       "grade": "C4",
       "jobTitle": "Legal Counsel",
       "localisation": "Kinshasa",
@@ -4793,7 +5061,9 @@
       "dateFinContrat": "",
       "raisonExit": "NA",
       "createdAt": "2026-07-28T09:40:37.715Z",
-      "updatedAt": "2026-07-28T09:40:37.715Z"
+      "updatedAt": "2026-07-29T14:11:17.443Z",
+      "cnss": "21994435051T",
+      "nif": "C2377640U"
     },
     {
       "id": "c00b29ef-4d52-425a-9c94-c62defa01bc4",
@@ -4828,7 +5098,9 @@
       "dateFinContrat": "",
       "raisonExit": "NA",
       "createdAt": "2026-07-28T09:40:37.715Z",
-      "updatedAt": "2026-07-28T09:40:37.715Z"
+      "updatedAt": "2026-07-29T14:11:17.443Z",
+      "cnss": "11987628363E",
+      "nif": "B2222717T"
     },
     {
       "id": "12c57c66-e14b-4bb7-b710-882ac43a2ad2",
@@ -4863,7 +5135,9 @@
       "dateFinContrat": "",
       "raisonExit": "NA",
       "createdAt": "2026-07-28T09:40:37.715Z",
-      "updatedAt": "2026-07-28T09:40:37.715Z"
+      "updatedAt": "2026-07-29T14:11:17.443Z",
+      "cnss": "11981346100H",
+      "nif": "B2222596M"
     },
     {
       "id": "d582dccc-cab2-45d1-a1ae-1ee352f3d6f3",
@@ -4933,7 +5207,9 @@
       "dateFinContrat": "",
       "raisonExit": "NA",
       "createdAt": "2026-07-28T09:40:37.715Z",
-      "updatedAt": "2026-07-28T09:40:37.715Z"
+      "updatedAt": "2026-07-29T14:11:17.443Z",
+      "cnss": "11982569872S",
+      "nif": "B2222601S"
     },
     {
       "id": "e7fe3161-a7b4-403f-bbd0-ad340c420d64",
@@ -4968,7 +5244,9 @@
       "dateFinContrat": "",
       "raisonExit": "NA",
       "createdAt": "2026-07-28T09:40:37.715Z",
-      "updatedAt": "2026-07-28T09:40:37.715Z"
+      "updatedAt": "2026-07-29T14:11:17.443Z",
+      "cnss": "108438506070F",
+      "nif": "D2314083M"
     },
     {
       "id": "975ef541-d1fc-45ec-9619-ec22e9187ef3",
@@ -5003,7 +5281,9 @@
       "dateFinContrat": "",
       "raisonExit": "NA",
       "createdAt": "2026-07-28T09:40:37.715Z",
-      "updatedAt": "2026-07-28T09:40:37.715Z"
+      "updatedAt": "2026-07-29T14:11:17.443Z",
+      "cnss": "11978485694T",
+      "nif": "B2222580U"
     },
     {
       "id": "43606a74-7c73-418e-b704-0f11f0afc32a",
@@ -5038,13 +5318,15 @@
       "dateFinContrat": "",
       "raisonExit": "NA",
       "createdAt": "2026-07-28T09:40:37.715Z",
-      "updatedAt": "2026-07-28T09:40:37.715Z"
+      "updatedAt": "2026-07-29T14:11:17.443Z",
+      "cnss": "21988406108U",
+      "nif": "B2222661H"
     },
     {
       "id": "59660f83-5f40-4ca6-828e-edf5bcd86dfb",
       "matricule": "70000259",
       "nom": "NSINABAU TAMFUM NATHAN",
-      "departement": "Corporate Admin",
+      "departement": "Finance",
       "grade": "C3",
       "jobTitle": "LAN Administrator",
       "localisation": "Zamba",
@@ -5073,13 +5355,15 @@
       "dateFinContrat": "",
       "raisonExit": "NA",
       "createdAt": "2026-07-28T09:40:37.715Z",
-      "updatedAt": "2026-07-28T09:40:37.715Z"
+      "updatedAt": "2026-07-29T14:11:17.443Z",
+      "cnss": "11996573937E",
+      "nif": "C2201770B"
     },
     {
       "id": "5981553f-f3e9-48c2-aac6-46a889050184",
       "matricule": "70000245",
       "nom": "NTONDO RIMELS",
-      "departement": "Corporate Admin",
+      "departement": "Finance",
       "grade": "C5",
       "jobTitle": "Financial Accountant",
       "localisation": "Kinshasa",
@@ -5108,7 +5392,9 @@
       "dateFinContrat": "",
       "raisonExit": "NA",
       "createdAt": "2026-07-28T09:40:37.715Z",
-      "updatedAt": "2026-07-28T09:40:37.715Z"
+      "updatedAt": "2026-07-29T14:11:17.443Z",
+      "cnss": "21997396579V",
+      "nif": "B2222685J"
     },
     {
       "id": "f77a6427-a6e6-4725-aad0-56cce8ee7c29",
@@ -5143,7 +5429,9 @@
       "dateFinContrat": "",
       "raisonExit": "NA",
       "createdAt": "2026-07-28T09:40:37.715Z",
-      "updatedAt": "2026-07-28T09:40:37.715Z"
+      "updatedAt": "2026-07-29T14:11:17.443Z",
+      "cnss": "11990582354N",
+      "nif": "B2222583Y"
     },
     {
       "id": "479e30f3-b169-44e4-8924-366608c61ef5",
@@ -5178,7 +5466,9 @@
       "dateFinContrat": "",
       "raisonExit": "NA",
       "createdAt": "2026-07-28T09:40:37.715Z",
-      "updatedAt": "2026-07-28T09:40:37.715Z"
+      "updatedAt": "2026-07-29T14:11:17.443Z",
+      "cnss": "11970346122J",
+      "nif": "B2222722Z"
     },
     {
       "id": "a9036160-178a-41a1-9f68-55816bed3aa2",
@@ -5213,7 +5503,9 @@
       "dateFinContrat": "",
       "raisonExit": "NA",
       "createdAt": "2026-07-28T09:40:37.715Z",
-      "updatedAt": "2026-07-28T09:40:37.715Z"
+      "updatedAt": "2026-07-29T14:11:17.443Z",
+      "cnss": "11983510718D",
+      "nif": "B2222552P"
     },
     {
       "id": "896d0554-fd9f-47c9-b28d-613a1c97703c",
@@ -5248,7 +5540,9 @@
       "dateFinContrat": "",
       "raisonExit": "NA",
       "createdAt": "2026-07-28T09:40:37.715Z",
-      "updatedAt": "2026-07-28T09:40:37.715Z"
+      "updatedAt": "2026-07-29T14:11:17.443Z",
+      "cnss": "11970342515N",
+      "nif": "B2222627W"
     },
     {
       "id": "ab11eeec-f68c-4498-92b3-b9411bfb4038",
@@ -5283,7 +5577,9 @@
       "dateFinContrat": "",
       "raisonExit": "NA",
       "createdAt": "2026-07-28T09:40:37.715Z",
-      "updatedAt": "2026-07-28T09:40:37.715Z"
+      "updatedAt": "2026-07-29T14:11:17.443Z",
+      "cnss": "11981665415N",
+      "nif": "B2222589E"
     },
     {
       "id": "6b723c56-b246-41f2-b388-8aaa3c30a076",
@@ -5318,7 +5614,9 @@
       "dateFinContrat": "",
       "raisonExit": "NA",
       "createdAt": "2026-07-28T09:40:37.715Z",
-      "updatedAt": "2026-07-28T09:40:37.715Z"
+      "updatedAt": "2026-07-29T14:11:17.443Z",
+      "cnss": "11977485655U",
+      "nif": "B2222645Q"
     },
     {
       "id": "8044a682-7e2e-4d48-bc73-90ea492fd31b",
@@ -5353,7 +5651,9 @@
       "dateFinContrat": "",
       "raisonExit": "NA",
       "createdAt": "2026-07-28T09:40:37.715Z",
-      "updatedAt": "2026-07-28T09:40:37.715Z"
+      "updatedAt": "2026-07-29T14:11:17.443Z",
+      "cnss": "11989469009G",
+      "nif": "F2554060U"
     },
     {
       "id": "7e49ef87-7563-46f1-9173-4ffddda25a98",
@@ -5388,7 +5688,9 @@
       "dateFinContrat": "",
       "raisonExit": "NA",
       "createdAt": "2026-07-28T09:40:37.715Z",
-      "updatedAt": "2026-07-28T09:40:37.715Z"
+      "updatedAt": "2026-07-29T14:11:17.443Z",
+      "cnss": "11963485688P",
+      "nif": "B2222566E"
     },
     {
       "id": "6e98a414-2635-4977-8090-d50c10457112",
@@ -5423,7 +5725,9 @@
       "dateFinContrat": "",
       "raisonExit": "NA",
       "createdAt": "2026-07-28T09:40:37.715Z",
-      "updatedAt": "2026-07-28T09:40:37.715Z"
+      "updatedAt": "2026-07-29T14:11:17.443Z",
+      "cnss": "104088606150R",
+      "nif": "C2220686M"
     },
     {
       "id": "869f7e86-56a6-497f-b6c5-49cb4056803f",
@@ -5434,7 +5738,7 @@
       "jobTitle": "Information Management System Coordinator",
       "localisation": "Zamba",
       "company": "PPC Barnet DRC Manufacturing",
-      "centreCout": "KM8920",
+      "centreCout": "KM8920 IM  Systems",
       "appointmentDate": "05/09/2022",
       "gender": "Male",
       "dateOfBirth": "06/04/1980",
@@ -5458,7 +5762,9 @@
       "dateFinContrat": "",
       "raisonExit": "NA",
       "createdAt": "2026-07-28T09:40:37.715Z",
-      "updatedAt": "2026-07-28T09:40:37.715Z"
+      "updatedAt": "2026-07-29T14:11:17.443Z",
+      "cnss": "11980596875H",
+      "nif": "B2222611D"
     },
     {
       "id": "48394f6b-b0df-4bf2-9062-91b43f79bf77",
@@ -5493,13 +5799,15 @@
       "dateFinContrat": "",
       "raisonExit": "NA",
       "createdAt": "2026-07-28T09:40:37.715Z",
-      "updatedAt": "2026-07-28T09:40:37.715Z"
+      "updatedAt": "2026-07-29T14:11:17.443Z",
+      "cnss": "111018808180L",
+      "nif": "B2222701B"
     },
     {
       "id": "b0775312-327c-47ed-82e9-5f9b88eda5dd",
       "matricule": "70000130",
       "nom": "SAMBA LUINDA HONORE",
-      "departement": "Corporate Admin",
+      "departement": "Human Resources",
       "grade": "B2",
       "jobTitle": "Driver",
       "localisation": "Kinshasa",
@@ -5528,7 +5836,9 @@
       "dateFinContrat": "",
       "raisonExit": "NA",
       "createdAt": "2026-07-28T09:40:37.715Z",
-      "updatedAt": "2026-07-28T09:40:37.715Z"
+      "updatedAt": "2026-07-29T14:11:17.443Z",
+      "cnss": "11973197340J",
+      "nif": "B2222612E"
     },
     {
       "id": "d8cf2f75-aa75-492b-80ca-bda629f511d2",
@@ -5563,7 +5873,9 @@
       "dateFinContrat": "",
       "raisonExit": "NA",
       "createdAt": "2026-07-28T09:40:37.715Z",
-      "updatedAt": "2026-07-28T09:40:37.715Z"
+      "updatedAt": "2026-07-29T14:11:17.443Z",
+      "cnss": "11991346024O",
+      "nif": "B2222560Y"
     },
     {
       "id": "bbe91ef9-a2c0-45a3-877f-f92fd6b8993b",
@@ -5598,7 +5910,9 @@
       "dateFinContrat": "",
       "raisonExit": "NA",
       "createdAt": "2026-07-28T09:40:37.715Z",
-      "updatedAt": "2026-07-28T09:40:37.715Z"
+      "updatedAt": "2026-07-29T14:11:17.443Z",
+      "cnss": "11978344995L",
+      "nif": "B2222557U"
     },
     {
       "id": "b539888a-3bf1-4a40-a6e7-5d24c39c0b27",
@@ -5609,7 +5923,7 @@
       "jobTitle": "Project Manager",
       "localisation": "Zamba",
       "company": "PPC Barnet DRC Manufacturing",
-      "centreCout": "KM8910",
+      "centreCout": "KM8910 Project Management",
       "appointmentDate": "11/07/2016",
       "gender": "Male",
       "dateOfBirth": "04/07/1974",
@@ -5633,7 +5947,9 @@
       "dateFinContrat": "",
       "raisonExit": "NA",
       "createdAt": "2026-07-28T09:40:37.715Z",
-      "updatedAt": "2026-07-28T09:40:37.715Z"
+      "updatedAt": "2026-07-29T14:11:17.443Z",
+      "cnss": "11974513329H",
+      "nif": "B2222591G"
     },
     {
       "id": "c3245083-a9b8-422e-aa28-9a1f78fb5605",
@@ -5668,7 +5984,9 @@
       "dateFinContrat": "",
       "raisonExit": "NA",
       "createdAt": "2026-07-28T09:40:37.715Z",
-      "updatedAt": "2026-07-28T09:40:37.715Z"
+      "updatedAt": "2026-07-29T14:11:17.443Z",
+      "cnss": "11982493074R",
+      "nif": "B2222628X"
     },
     {
       "id": "ec246004-927c-477c-b132-a82c6bbf622f",
@@ -5703,7 +6021,9 @@
       "dateFinContrat": "",
       "raisonExit": "NA",
       "createdAt": "2026-07-28T09:40:37.715Z",
-      "updatedAt": "2026-07-28T09:40:37.715Z"
+      "updatedAt": "2026-07-29T14:11:17.443Z",
+      "cnss": "11988485789N",
+      "nif": "B2222678B"
     },
     {
       "id": "742d1168-6a7e-4801-a6e3-6696ddd3c9dc",
@@ -5738,13 +6058,15 @@
       "dateFinContrat": "",
       "raisonExit": "NA",
       "createdAt": "2026-07-28T09:40:37.715Z",
-      "updatedAt": "2026-07-28T09:40:37.715Z"
+      "updatedAt": "2026-07-29T14:11:17.443Z",
+      "cnss": "11989606809N",
+      "nif": "B2236448T"
     },
     {
       "id": "60e6c14b-9e4c-4518-863d-3b3524d93e1a",
       "matricule": "70000269",
       "nom": "TSHIMANGA KALOMBO CHARITE",
-      "departement": "Corporate Admin",
+      "departement": "Human Resources",
       "grade": "C2",
       "jobTitle": "Junior Talent Management",
       "localisation": "Kinshasa",
@@ -5773,13 +6095,15 @@
       "dateFinContrat": "",
       "raisonExit": "NA",
       "createdAt": "2026-07-28T09:40:37.715Z",
-      "updatedAt": "2026-07-28T09:40:37.715Z"
+      "updatedAt": "2026-07-29T14:11:17.443Z",
+      "cnss": "21998435052V",
+      "nif": "C2377641W"
     },
     {
       "id": "b05c78c2-aa5c-4458-8ffb-985934488d9c",
       "matricule": "70000274",
       "nom": "TSHIOMBE BADIBANGA CALEB",
-      "departement": "Corporate Admin",
+      "departement": "Finance",
       "grade": "C2",
       "jobTitle": "Junior Tax",
       "localisation": "Kinshasa",
@@ -5808,7 +6132,9 @@
       "dateFinContrat": "",
       "raisonExit": "NA",
       "createdAt": "2026-07-28T09:40:37.715Z",
-      "updatedAt": "2026-07-28T09:40:37.715Z"
+      "updatedAt": "2026-07-29T14:11:17.443Z",
+      "cnss": "11999709859O",
+      "nif": "C2377639T"
     },
     {
       "id": "cfef7190-cfcf-495e-ac22-8571eaea032d",
@@ -5843,7 +6169,9 @@
       "dateFinContrat": "",
       "raisonExit": "NA",
       "createdAt": "2026-07-28T09:40:37.715Z",
-      "updatedAt": "2026-07-28T09:40:37.715Z"
+      "updatedAt": "2026-07-29T14:11:17.443Z",
+      "cnss": "11986346092G",
+      "nif": "B2222683G"
     },
     {
       "id": "673de6d9-d088-4e91-88db-c432502896da",
@@ -5878,13 +6206,15 @@
       "dateFinContrat": "",
       "raisonExit": "NA",
       "createdAt": "2026-07-28T09:40:37.715Z",
-      "updatedAt": "2026-07-28T09:40:37.715Z"
+      "updatedAt": "2026-07-29T14:11:17.443Z",
+      "cnss": "11991346063H",
+      "nif": "B2222671T"
     },
     {
       "id": "706dd34b-4174-4bfc-a25e-7580b9e908da",
       "matricule": "70000033",
       "nom": "UUCHI UMIRAMBE PARICIAN",
-      "departement": "Administration",
+      "departement": "Production",
       "grade": "D1",
       "jobTitle": "Optimisation Process Engineer",
       "localisation": "Zamba",
@@ -5913,7 +6243,9 @@
       "dateFinContrat": "",
       "raisonExit": "NA",
       "createdAt": "2026-07-28T09:40:37.715Z",
-      "updatedAt": "2026-07-28T09:40:37.715Z"
+      "updatedAt": "2026-07-29T14:11:17.443Z",
+      "cnss": "11988346051A",
+      "nif": "B2222702C"
     },
     {
       "id": "32b01de4-0e04-47bc-b678-8874133c7d20",
@@ -5948,7 +6280,9 @@
       "dateFinContrat": "",
       "raisonExit": "NA",
       "createdAt": "2026-07-28T09:40:37.715Z",
-      "updatedAt": "2026-07-28T09:40:37.715Z"
+      "updatedAt": "2026-07-29T14:11:17.443Z",
+      "cnss": "11973535561P",
+      "nif": "B2222547J"
     },
     {
       "id": "054282da-5a0e-4890-9a01-aa098d1ef256",
@@ -5983,7 +6317,9 @@
       "dateFinContrat": "",
       "raisonExit": "NA",
       "createdAt": "2026-07-28T09:40:37.715Z",
-      "updatedAt": "2026-07-28T09:40:37.715Z"
+      "updatedAt": "2026-07-29T14:11:17.443Z",
+      "cnss": "11983590004I",
+      "nif": "B2222608A"
     },
     {
       "id": "8cdbc1db-4726-41a0-ad47-ad0f696d63a0",
@@ -6018,13 +6354,15 @@
       "dateFinContrat": "",
       "raisonExit": "NA",
       "createdAt": "2026-07-28T09:40:37.715Z",
-      "updatedAt": "2026-07-28T09:40:37.715Z"
+      "updatedAt": "2026-07-29T14:11:17.443Z",
+      "cnss": "11985415358N",
+      "nif": "F2593682M"
     },
     {
       "id": "3dc3dbe5-01c9-4e0f-9fb9-254091e173c8",
       "matricule": "70000177",
       "nom": "ZAKUANI BAHATI BENNY",
-      "departement": "Corporate Admin",
+      "departement": "Human Resources",
       "grade": "D2",
       "jobTitle": "Talent & Development Manager",
       "localisation": "Kinshasa",
@@ -6053,7 +6391,9 @@
       "dateFinContrat": "",
       "raisonExit": "NA",
       "createdAt": "2026-07-28T09:40:37.715Z",
-      "updatedAt": "2026-07-28T09:40:37.715Z"
+      "updatedAt": "2026-07-29T14:11:17.443Z",
+      "cnss": "11982195029G",
+      "nif": "B2222556T"
     },
     {
       "id": "55ebefec-6d60-415f-8456-dbe214d95385",
@@ -6088,13 +6428,15 @@
       "dateFinContrat": "",
       "raisonExit": "NA",
       "createdAt": "2026-07-28T09:40:37.715Z",
-      "updatedAt": "2026-07-28T09:40:37.715Z"
+      "updatedAt": "2026-07-29T14:11:17.443Z",
+      "cnss": "21984080411C",
+      "nif": "B2222707H"
     },
     {
       "id": "52b243c3-253d-41a9-ab0e-f3025d4a6495",
       "matricule": "70000009",
       "nom": "ZODULUA GADUA Jean Jacques",
-      "departement": "Corporate Admin",
+      "departement": "Human Resources",
       "grade": "B2",
       "jobTitle": "Driver",
       "localisation": "Kinshasa",
@@ -6123,7 +6465,9 @@
       "dateFinContrat": "",
       "raisonExit": "NA",
       "createdAt": "2026-07-28T09:40:37.715Z",
-      "updatedAt": "2026-07-28T09:40:37.715Z"
+      "updatedAt": "2026-07-29T14:11:17.443Z",
+      "cnss": "11969215996L",
+      "nif": "B2222618L"
     }
   ]
 }

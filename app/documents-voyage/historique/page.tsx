@@ -230,7 +230,7 @@ export default function HistoriqueVoyagesPage() {
                   className="tab-btn tab-btn-sm tab-btn-icon tab-btn-dashboard"
                 >
                   <IconEtablir size={16} />
-                  Établir
+                  Cash request
                 </Link>
               </PermissionGate>
             </div>

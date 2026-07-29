@@ -19,7 +19,21 @@ interface Props {
   onSave: (employee: Employee) => void | Promise<void>;
 }
 
-const DEPTS = ['Admin', 'Audit', 'CEC', 'Engineering', 'Finance', 'Garage', 'HR', 'Mining', 'Production', 'Sales and Marketing', 'Transport&Transit'];
+const DEPTS = [
+  'Administration',
+  'Audit',
+  'Engineering',
+  'Finance',
+  'Human Resources',
+  'Legal',
+  'Mining',
+  'Packaging & Logistics',
+  'Production',
+  'Quality Assurance',
+  'Risk & Environment',
+  'Sales & Logistics',
+  'Supply chain',
+];
 const LOCALISATIONS = ['Zamba', 'Lubumbashi', 'Kinshasa', 'Lubudi'];
 const GENDERS = ['Male', 'Female'];
 const MARITAL = ['Single', 'Married', 'Divorced', 'Widowed'];
@@ -205,6 +219,14 @@ export default function EmployeeModal({ employee, onClose, onSave }: Props) {
               <div className="form-group">
                 <label>Centre de coût</label>
                 <input value={form.centreCout} onChange={(e) => patch('centreCout', e.target.value)} />
+              </div>
+              <div className="form-group">
+                <label>CNSS</label>
+                <input value={form.cnss} onChange={(e) => patch('cnss', e.target.value)} placeholder="N° CNSS" />
+              </div>
+              <div className="form-group">
+                <label>NIF</label>
+                <input value={form.nif} onChange={(e) => patch('nif', e.target.value)} placeholder="N° NIF" />
               </div>
               <div className="form-group">
                 <label>Sous-groupe</label>

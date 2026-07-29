@@ -300,6 +300,30 @@ body::before {
   color: var(--text);
 }
 
+.nav-menu-link.featured {
+  background: color-mix(in srgb, var(--nav-color, var(--ppc-red)) 14%, transparent);
+  box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--nav-color, var(--ppc-red)) 35%, transparent);
+}
+
+.nav-menu-link.featured .nav-menu-sublabel {
+  color: var(--text);
+  font-weight: 650;
+}
+
+.nav-menu-link.featured .nav-menu-icon {
+  color: var(--nav-color, var(--ppc-red));
+}
+
+.nav-menu-featured-mark {
+  margin-left: auto;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--nav-color, var(--ppc-red));
+  box-shadow: 0 0 6px color-mix(in srgb, var(--nav-color, var(--ppc-red)) 55%, transparent);
+  flex-shrink: 0;
+}
+
 .nav-menu-icon {
   flex-shrink: 0;
   width: 18px;
@@ -3105,35 +3129,68 @@ tfoot .grid-summary-pct .sticky-rate {
 }
 
 .travel-history-dept-chart-layout {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+  height: 100%;
+  min-height: 0;
+}
+
+.travel-history-dept-plot-row {
+  display: grid;
+  grid-template-columns: 2rem minmax(0, 1fr);
+  gap: 0.5rem;
   align-items: stretch;
+  flex: 1;
+  min-height: 0;
+}
+
+.travel-history-dept-label-row {
+  display: grid;
+  grid-template-columns: 2rem minmax(0, 1fr);
+  gap: 0.5rem;
+  align-items: start;
+  flex-shrink: 0;
+}
+
+.travel-history-dept-y-spacer {
+  width: 100%;
 }
 
 .travel-history-dept-y-axis {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
   min-height: 132px;
-  padding-bottom: 0;
+  height: 100%;
+  padding: 0;
+  align-self: stretch;
 }
 
 .travel-history-dept-plot-body {
   padding-left: 0;
   min-height: 132px;
-}
-
-.travel-history-dept-chart-layout .chart-y-axis {
-  min-height: 132px;
-  padding-bottom: 0;
+  height: 100%;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  overflow: visible;
 }
 
 .travel-history-dept-chart-layout .travel-history-bar-wrap {
   height: 100%;
   max-height: none;
-}
-
-.travel-history-dept-chart-layout .travel-history-plot-wrap {
-  gap: 0.2rem;
+  padding-top: 0;
+  box-sizing: border-box;
+  overflow: visible;
 }
 
 .travel-history-dept-chart-layout .travel-history-chart-cols-bars {
   align-items: stretch;
+  flex: 1;
+  height: 100%;
+  min-height: 0;
 }
 
 .travel-history-plot-body .chart-grid-lines {
@@ -3152,8 +3209,9 @@ tfoot .grid-summary-pct .sticky-rate {
 .travel-history-chart-cols-bars {
   position: relative;
   z-index: 1;
-  align-items: end;
+  align-items: stretch;
   min-height: 132px;
+  height: 100%;
 }
 
 .travel-history-chart-cols-labels .travel-history-chart-label {
@@ -3163,8 +3221,9 @@ tfoot .grid-summary-pct .sticky-rate {
 .travel-history-chart-col {
   display: flex;
   justify-content: center;
-  align-items: flex-end;
+  align-items: stretch;
   height: 100%;
+  min-height: 0;
 }
 
 .travel-history-bar-wrap {
@@ -3172,18 +3231,35 @@ tfoot .grid-summary-pct .sticky-rate {
   display: flex;
   flex-direction: column;
   justify-content: flex-end;
+  align-items: stretch;
   width: 100%;
   max-width: 52px;
-  height: 112px;
+  height: 100%;
+  min-height: 0;
   cursor: default;
 }
 
 .travel-history-bar {
   width: 100%;
-  border-radius: 4px 4px 0 0;
-  min-height: 4px;
+  border-radius: 1px 1px 0 0;
+  min-height: 3px;
+  margin-top: auto;
   transform-origin: bottom center;
   transition: transform 0.22s cubic-bezier(0.34, 1.4, 0.64, 1), filter 0.2s ease, box-shadow 0.2s ease, opacity 0.2s ease;
+}
+
+/* Value glued to bar top (outside scaleY-animated bar). */
+.travel-history-bar-wrap > .travel-history-bar-value {
+  position: absolute;
+  left: 50%;
+  bottom: calc(var(--bar-h, 0%) + 2px);
+  transform: translateX(-50%);
+  font-size: 0.6rem;
+  font-weight: 600;
+  line-height: 1;
+  white-space: nowrap;
+  pointer-events: none;
+  z-index: 2;
 }
 
 /* ?? Dashboard chart interactions (tous dashboards) ?? */
@@ -5402,7 +5478,7 @@ html[data-theme="light"] .btn-export.btn-with-icon .btn-spinner {
   background: #f3f4f6;
 }
 
-/* Frozen columns: Matricule + Nom — fond solide opaque */
+/* Frozen columns: Matricule + Nom ? fond solide opaque */
 .compilation-freeze {
   position: sticky;
   z-index: 2;
@@ -7320,6 +7396,13 @@ html[data-theme="light"] .btn-export.btn-with-icon .btn-spinner {
   padding-bottom: 72px;
   width: 36px;
   flex-shrink: 0;
+}
+
+/* Axe Y des graphiques RH / travel : 0 aligne sur la baseline des barres. */
+.chart-y-axis.travel-history-dept-y-axis {
+  padding: 0;
+  width: auto;
+  min-width: 2rem;
 }
 .chart-y-label {
   font-size: 0.65rem;
@@ -10565,8 +10648,8 @@ html[data-theme="light"] .dependants-file-btn.is-open {
 }
 
 .chart-enlarge-modal {
-  width: min(1200px, 96vw);
-  max-height: 94vh;
+  width: min(1480px, 98vw);
+  max-height: 96vh;
   display: flex;
   flex-direction: column;
   background: var(--panel, #111827);
@@ -10589,6 +10672,193 @@ html[data-theme="light"] .chart-enlarge-modal {
   min-height: 0;
   overflow: auto;
   padding: 0.75rem 1rem 1.25rem;
+  display: flex;
+  flex-direction: column;
+}
+
+.chart-enlarge-with-sidebar {
+  display: grid;
+  grid-template-columns: 1fr;
+  grid-template-rows: minmax(0, 1fr) auto;
+  gap: 0.85rem;
+  flex: 1;
+  min-height: min(78vh, 760px);
+}
+
+.chart-enlarge-filters {
+  display: flex;
+  flex-direction: column;
+  gap: 0.65rem;
+  min-width: 0;
+}
+
+.chart-gender-legend-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.45rem 0.85rem;
+}
+
+.chart-gender-legend-item {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  font-size: 0.78rem;
+  color: var(--text);
+}
+
+.chart-gender-legend-item.is-total {
+  margin-left: 0.25rem;
+  padding-left: 0.75rem;
+  border-left: 1px solid var(--border);
+  font-weight: 700;
+}
+
+.chart-gender-swatch {
+  width: 0.7rem;
+  height: 0.7rem;
+  border-radius: 999px;
+  flex-shrink: 0;
+}
+
+.chart-gender-swatch.is-male {
+  background: #06b6d4;
+}
+
+.chart-gender-swatch.is-female {
+  background: #f472b6;
+}
+
+.chart-gender-swatch.is-other {
+  background: #94a3b8;
+}
+
+.chart-gender-label {
+  color: var(--muted);
+}
+
+.chart-gender-count {
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+}
+
+.chart-enlarge-main {
+  min-width: 0;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+}
+
+.chart-enlarge-main.is-enlarged .travel-history-chart-area {
+  flex: 1;
+  min-height: 420px;
+  display: flex;
+  flex-direction: column;
+}
+
+.chart-enlarge-main.is-enlarged .travel-history-dept-chart-layout,
+.chart-enlarge-main.is-enlarged .travel-monthly-chart-layout {
+  flex: 1;
+  min-height: 360px;
+}
+
+.chart-enlarge-main.is-enlarged .travel-history-dept-plot-body,
+.chart-enlarge-main.is-enlarged .employees-line-plot-body,
+.chart-enlarge-main.is-enlarged .employees-exit-plot-body,
+.chart-enlarge-main.is-enlarged .travel-history-dept-y-axis,
+.chart-enlarge-main.is-enlarged .travel-history-chart-cols-bars {
+  min-height: 360px;
+  height: 100%;
+}
+
+.chart-dept-filter {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+  min-height: 0;
+  max-height: none;
+  padding: 0.65rem 0.75rem 0.75rem;
+  border-radius: 10px;
+  border: 1px solid var(--border);
+  background: color-mix(in srgb, var(--panel) 92%, var(--bg));
+}
+
+.chart-dept-filter-head {
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--muted);
+  padding: 0.1rem 0.15rem 0.25rem;
+}
+
+.chart-dept-filter-list {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  gap: 0.35rem;
+  overflow: visible;
+  min-height: 0;
+  flex: initial;
+  padding-right: 0;
+}
+
+.chart-dept-filter-item {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  width: auto;
+  max-width: 100%;
+  border: 1px solid color-mix(in srgb, var(--border) 80%, transparent);
+  background: transparent;
+  color: var(--text);
+  text-align: left;
+  border-radius: 999px;
+  padding: 0.38rem 0.7rem;
+  cursor: pointer;
+  font-family: inherit;
+  font-size: 0.78rem;
+  transition: background 0.15s, color 0.15s, border-color 0.15s;
+}
+
+.chart-dept-filter-item:hover {
+  background: color-mix(in srgb, #6366f1 10%, transparent);
+  border-color: color-mix(in srgb, #6366f1 28%, var(--border));
+}
+
+.chart-dept-filter-item.is-active {
+  background: color-mix(in srgb, #6366f1 16%, transparent);
+  border-color: color-mix(in srgb, #6366f1 40%, var(--border));
+  font-weight: 650;
+}
+
+.chart-dept-filter-name {
+  flex: 0 1 auto;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  max-width: 14rem;
+}
+
+.chart-dept-filter-count {
+  flex-shrink: 0;
+  font-size: 0.72rem;
+  color: var(--muted);
+  font-variant-numeric: tabular-nums;
+}
+
+.chart-dept-filter-item.is-active .chart-dept-filter-count {
+  color: var(--text);
+}
+
+@media (max-width: 860px) {
+  .chart-enlarge-with-sidebar {
+    min-height: min(72vh, 640px);
+  }
 }
 
 .chart-enlarge-body .panel {
@@ -10598,14 +10868,56 @@ html[data-theme="light"] .chart-enlarge-modal {
 }
 
 .chart-enlarge-body .travel-history-chart-panel.is-enlarged .travel-history-chart-area,
-.chart-enlarge-body .travel-history-dept-plot-body,
-.chart-enlarge-body .employees-pie-layout {
+.chart-enlarge-body .travel-history-dept-plot-body {
   min-height: 420px;
 }
 
-.chart-enlarge-body .employees-pie-svg-wrap {
-  transform: scale(1.25);
-  transform-origin: center center;
+.chart-enlarge-body .employees-pie-layout,
+.chart-enlarge-main.is-enlarged .employees-pie-layout {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 1.1rem;
+  min-height: 480px;
+  padding: 0.75rem 1rem 1rem;
+}
+
+.chart-enlarge-body .employees-pie-svg-wrap,
+.chart-enlarge-main.is-enlarged .employees-pie-svg-wrap {
+  width: min(420px, 70%);
+  max-width: 420px;
+  margin: 0 auto;
+  transform: none;
+}
+
+.chart-enlarge-body .employees-pie-legend,
+.chart-enlarge-main.is-enlarged .employees-pie-legend {
+  width: min(520px, 100%);
+  max-height: none;
+  overflow: visible;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+  gap: 0.35rem 0.75rem;
+}
+
+.chart-enlarge-body .employees-pie-center-value,
+.chart-enlarge-main.is-enlarged .employees-pie-center-value {
+  font-size: 30px;
+}
+
+.chart-enlarge-body .employees-pie-center-label,
+.chart-enlarge-main.is-enlarged .employees-pie-center-label {
+  font-size: 12px;
+}
+
+.chart-enlarge-main.is-enlarged {
+  justify-content: stretch;
+}
+
+.chart-enlarge-main.is-enlarged > .travel-history-chart-area,
+.chart-enlarge-main.is-enlarged > .employees-pie-layout {
+  flex: 1;
 }
 
 .chart-panel-head-actions {
@@ -11460,7 +11772,103 @@ html[data-theme="light"] .dependant-family-tree-svg-line {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: 0.75rem;
-  align-items: start;
+  align-items: stretch;
+}
+
+.employees-latest-hires-panel {
+  margin-top: 0.75rem;
+}
+
+.employees-latest-hires-panel .panel-head {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 0.75rem;
+  flex-wrap: wrap;
+}
+
+.employees-latest-hires-head-actions {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.65rem;
+  flex-wrap: wrap;
+}
+
+.employees-latest-hires-open {
+  font-size: 0.72rem;
+  padding: 0.25rem 0.55rem;
+}
+
+.employees-latest-hires-hint {
+  font-size: 0.72rem;
+  color: var(--muted);
+}
+
+.employees-latest-hires-table-wrap {
+  overflow: auto;
+  max-height: min(42vh, 420px);
+  padding: 0 0.15rem 0.35rem;
+}
+
+.employees-latest-hires-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.78rem;
+}
+
+.employees-latest-hires-table th,
+.employees-latest-hires-table td {
+  padding: 0.45rem 0.55rem;
+  border-bottom: 1px solid color-mix(in srgb, var(--border) 85%, transparent);
+  text-align: left;
+  white-space: nowrap;
+}
+
+.employees-latest-hires-table th {
+  position: sticky;
+  top: 0;
+  z-index: 1;
+  background: var(--panel, var(--surface, #121218));
+  color: var(--muted);
+  font-size: 0.68rem;
+  font-weight: 700;
+  letter-spacing: 0.03em;
+  text-transform: uppercase;
+}
+
+.employees-latest-hires-table td:last-child {
+  max-width: 14rem;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.employees-latest-hires-row {
+  cursor: pointer;
+}
+
+.employees-latest-hires-table tbody tr:hover td,
+.employees-latest-hires-row:hover td {
+  background: color-mix(in srgb, var(--accent, #e30613) 6%, transparent);
+}
+
+.employees-charts-grid > .panel,
+.employees-charts-grid > .travel-history-chart-panel {
+  height: 100%;
+  min-height: 300px;
+  display: flex;
+  flex-direction: column;
+}
+
+.employees-charts-grid .panel-head,
+.employees-charts-grid .travel-history-chart-head {
+  flex-shrink: 0;
+}
+
+.employees-bar-panel .travel-history-chart-area {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
 }
 
 .employees-chart-span {
@@ -11521,6 +11929,22 @@ html[data-theme="light"] .dependant-family-tree-svg-line {
   width: 100%;
   height: 100%;
   max-width: 36px;
+  padding-top: 0;
+  box-sizing: border-box;
+  overflow: visible;
+}
+
+.employees-exit-stack-wrap > .travel-history-bar-value {
+  position: absolute;
+  left: 50%;
+  bottom: calc(var(--bar-h, 0%) + 2px);
+  transform: translateX(-50%);
+  font-size: 0.6rem;
+  font-weight: 600;
+  line-height: 1;
+  white-space: nowrap;
+  pointer-events: none;
+  z-index: 2;
 }
 
 .employees-exit-stack {
@@ -11528,8 +11952,8 @@ html[data-theme="light"] .dependant-family-tree-svg-line {
   flex-direction: column-reverse;
   width: 70%;
   min-height: 4px;
-  height: 100%;
-  border-radius: 4px 4px 0 0;
+  margin-top: auto;
+  border-radius: 1px 1px 0 0;
   overflow: hidden;
 }
 
@@ -11540,6 +11964,7 @@ html[data-theme="light"] .dependant-family-tree-svg-line {
 
 .employees-hr-dashboard .travel-history-chart-panel {
   margin: 0;
+  overflow: visible;
 }
 
 .employees-hr-dashboard .travel-history-chart-panel .panel-head h3,
@@ -11548,27 +11973,62 @@ html[data-theme="light"] .dependant-family-tree-svg-line {
 }
 
 .employees-hr-dashboard .travel-history-chart-area {
-  padding: 0.4rem 0.7rem 0.35rem;
+  padding: 0.55rem 0.7rem 0.55rem;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  min-height: 210px;
+  overflow: visible;
+}
+
+.employees-hr-dashboard .travel-history-chart-area > .travel-monthly-chart-layout,
+.employees-hr-dashboard .travel-history-chart-area > .travel-history-dept-chart-layout {
+  flex: 1;
+  min-height: 180px;
 }
 
 .employees-hr-dashboard .travel-history-chart-cols-bars,
-.employees-hr-dashboard .travel-history-dept-plot-body {
-  min-height: 96px;
+.employees-hr-dashboard .travel-history-dept-plot-body,
+.employees-hr-dashboard .travel-history-dept-y-axis {
+  min-height: 160px;
 }
 
 .employees-hr-dashboard .travel-history-bar-wrap {
   max-width: 28px;
-  height: 88px;
+  height: 100%;
 }
 
 .employees-hr-dashboard .travel-history-chart-panel.is-compact .travel-history-bar-wrap {
   max-width: 22px;
-  height: 88px;
+  height: 100%;
 }
 
 .employees-hr-dashboard .travel-history-chart-panel.is-compact .travel-history-dept-plot-body {
   padding-top: 0.15rem;
   overflow: visible;
+}
+
+.employees-hr-dashboard .employees-pie-layout {
+  flex: 1;
+  min-height: 210px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.55rem;
+  padding: 0.35rem 0.55rem 0.65rem;
+}
+
+.employees-hr-dashboard .employees-line-chart-area {
+  flex: 1;
+  min-height: 210px;
+  display: flex;
+  flex-direction: column;
+}
+
+.employees-hr-dashboard .employees-line-plot-body {
+  min-height: 160px;
+  flex: 1;
 }
 
 .employees-hr-dashboard .travel-history-chart-cols-bars {
@@ -11602,31 +12062,23 @@ html[data-theme="light"] .dependant-family-tree-svg-line {
   gap: 0.15rem;
 }
 
-.employees-hr-dashboard .employees-pie-layout {
-  grid-template-columns: minmax(140px, 168px) minmax(0, 1fr);
-  gap: 0.55rem;
-  padding: 0.25rem 0.55rem 0.55rem;
-}
-
 .employees-hr-dashboard .employees-pie-svg-wrap {
-  max-width: 168px;
+  max-width: 176px;
+  width: 100%;
+  margin: 0 auto;
 }
 
 .employees-hr-dashboard .employees-pie-legend {
-  max-height: 168px;
-}
-
-.employees-hr-dashboard .employees-line-chart-area {
-  min-height: 180px;
-}
-
-.employees-hr-dashboard .employees-line-plot-body {
-  min-height: 132px;
+  width: 100%;
+  max-height: none;
+  overflow: visible;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(110px, 1fr));
+  gap: 0.2rem 0.55rem;
 }
 
 .employees-hr-dashboard .chart-y-axis,
 .employees-hr-dashboard .travel-history-dept-y-axis {
-  min-height: 96px;
   font-size: 0.62rem;
 }
 
@@ -11636,6 +12088,10 @@ html[data-theme="light"] .dependant-family-tree-svg-line {
 
 .employees-bar-fill-grade {
   background: linear-gradient(180deg, #a78bfa 0%, #7c3aed 100%);
+}
+
+.employees-bar-fill-age {
+  background: linear-gradient(180deg, #c4b5fd 0%, #7c3aed 100%);
 }
 
 .employees-bar-fill-dept {
@@ -16746,3 +17202,163 @@ html[data-theme='dark'] .charroi-kpi-card.is-warn .card-value {
 .audit-ctx-item-danger { color: #e30613; }
 .audit-ctx-item-disabled { opacity: 0.4; cursor: not-allowed; }
 .audit-ctx-item-icon { font-size: 0.88em; min-width: 1rem; text-align: center; }
+
+/* ?? Protocol / Visas de travail ?? */
+.work-visa-page {
+  display: flex;
+  flex-direction: column;
+  gap: 0.85rem;
+}
+
+.work-visa-header-actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.45rem;
+  justify-content: flex-end;
+}
+
+.work-visa-kpi-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+  gap: 0.75rem;
+}
+
+.work-visa-kpi-card {
+  text-align: left;
+  cursor: pointer;
+  border: none;
+  width: 100%;
+}
+
+.work-visa-filters {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.45rem;
+  align-items: center;
+  margin-bottom: 0.75rem;
+}
+
+.work-visa-check-inline {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+  font-size: 0.78rem;
+  color: var(--muted);
+  white-space: nowrap;
+}
+
+.work-visa-table td {
+  vertical-align: top;
+  font-size: 0.8rem;
+}
+
+.work-visa-badge {
+  display: inline-flex;
+  flex-direction: column;
+  gap: 0.1rem;
+  padding: 0.28rem 0.45rem;
+  border-radius: 6px;
+  line-height: 1.2;
+  min-width: 4.5rem;
+  background: color-mix(in srgb, var(--border) 55%, transparent);
+}
+
+.work-visa-badge strong {
+  font-size: 0.75rem;
+}
+
+.work-visa-badge span {
+  font-size: 0.72rem;
+}
+
+.work-visa-badge small {
+  font-size: 0.68rem;
+  color: var(--muted);
+}
+
+.work-visa-badge.is-ok {
+  background: color-mix(in srgb, #22c55e 16%, transparent);
+}
+
+.work-visa-badge.is-alert {
+  background: color-mix(in srgb, #f59e0b 18%, transparent);
+}
+
+.work-visa-badge.is-expired {
+  background: color-mix(in srgb, #e30613 16%, transparent);
+}
+
+.work-visa-badge.is-absent {
+  opacity: 0.65;
+}
+
+.work-visa-status {
+  font-size: 0.75rem;
+  font-weight: 600;
+}
+
+.work-visa-status.is-actif { color: #16a34a; }
+.work-visa-status.is-inactif { color: var(--muted); }
+
+.work-visa-expat-tag {
+  display: inline-block;
+  margin-left: 0.35rem;
+  padding: 0.08rem 0.35rem;
+  border-radius: 4px;
+  font-size: 0.65rem;
+  font-weight: 700;
+  letter-spacing: 0.03em;
+  background: color-mix(in srgb, #6366f1 22%, transparent);
+  color: #6366f1;
+}
+
+.work-visa-row-alert {
+  background: color-mix(in srgb, #f59e0b 6%, transparent);
+}
+
+.work-visa-form-grid {
+  grid-template-columns: 1fr 1fr;
+  gap: 0.55rem;
+}
+
+.work-visa-doc-section {
+  margin-top: 0.85rem;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 0.65rem 0.75rem 0.85rem;
+}
+
+.work-visa-doc-section legend {
+  padding: 0 0.35rem;
+  font-size: 0.8rem;
+  font-weight: 650;
+}
+
+.work-visa-check {
+  display: flex;
+  align-items: end;
+}
+
+.work-visa-history-block {
+  margin-bottom: 1rem;
+  padding-bottom: 0.75rem;
+  border-bottom: 1px solid var(--border);
+}
+
+.work-visa-history-block:last-child {
+  border-bottom: none;
+}
+
+.work-visa-history-list {
+  margin: 0.35rem 0 0;
+  padding-left: 1.1rem;
+  font-size: 0.82rem;
+}
+
+@media (max-width: 720px) {
+  .work-visa-form-grid {
+    grid-template-columns: 1fr;
+  }
+}
+

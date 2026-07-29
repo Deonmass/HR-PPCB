@@ -38,9 +38,20 @@ export const PERMISSION_MENU_CATALOG: PermissionMenuGroup[] = [
     id: 'documents',
     label: 'Documents',
     items: [
-      { id: 'travel.historique', label: 'Voyage — Historique' },
-      { id: 'travel.etablir', label: 'Voyage — Établir' },
+      { id: 'travel.historique', label: 'Voyage' },
+      { id: 'travel.etablir', label: 'Cash request' },
       { id: 'travel.attestation', label: 'Attestation de service' },
+      { id: 'travel.payment-voucher', label: 'Payment voucher' },
+    ],
+  },
+  {
+    id: 'protocol',
+    label: 'Protocol',
+    items: [
+      { id: 'protocol.visa-travail', label: 'Visa de travail' },
+      { id: 'protocol.visa-volant', label: 'Visa volant' },
+      { id: 'protocol.visa-voyage', label: 'Visa de voyage' },
+      { id: 'protocol.billets', label: 'Gestion des Billets' },
     ],
   },
   {
@@ -124,9 +135,14 @@ export function buildDefaultPermissions(): MenuPermission[] {
 
 export function mergePermissionsWithCatalog(menus: MenuPermission[]): MenuPermission[] {
   const defaults = buildDefaultPermissions();
+  const grantNewFully =
+    menus.length > 0 && menus.every((menu) => isMenuFullyChecked(menu));
+
   const merged = defaults.map((defaultMenu) => {
     const existing = menus.find((menu) => menu.menuId === defaultMenu.menuId);
-    if (!existing) return defaultMenu;
+    if (!existing) {
+      return grantNewFully ? setAllMenuActions(defaultMenu, true) : defaultMenu;
+    }
     return {
       menuId: defaultMenu.menuId,
       label: defaultMenu.label,

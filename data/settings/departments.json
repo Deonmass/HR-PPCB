@@ -1,9 +1,15 @@
 {
   "departments": [
     {
-      "id": "dept-corporate-admin",
-      "name": "Corporate Admin",
-      "code": "Corporate Admin",
+      "id": "dept-administration",
+      "name": "Administration",
+      "code": "Administration",
+      "active": true
+    },
+    {
+      "id": "dept-audit",
+      "name": "Audit",
+      "code": "Audit",
       "active": true
     },
     {
@@ -25,6 +31,12 @@
       "active": true
     },
     {
+      "id": "dept-legal",
+      "name": "Legal",
+      "code": "Legal",
+      "active": true
+    },
+    {
       "id": "dept-mining",
       "name": "Mining",
       "code": "Mining",
@@ -43,15 +55,27 @@
       "active": true
     },
     {
-      "id": "dept-qa",
-      "name": "QA",
-      "code": "QA",
+      "id": "dept-quality-assurance",
+      "name": "Quality Assurance",
+      "code": "Quality Assurance",
+      "active": true
+    },
+    {
+      "id": "dept-risk-environment",
+      "name": "Risk & Environment",
+      "code": "Risk & Environment",
       "active": true
     },
     {
       "id": "dept-sales-logistics",
       "name": "Sales & Logistics",
       "code": "Sales & Logistics",
+      "active": true
+    },
+    {
+      "id": "dept-supply-chain",
+      "name": "Supply chain",
+      "code": "Supply chain",
       "active": true
     }
   ]

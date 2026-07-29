@@ -26,6 +26,8 @@ type NavItem = {
   menuIds?: string[];
   activePrefixes?: string[];
   excludePrefixes?: string[];
+  /** Visually emphasize the item (e.g. Cash request inside Documents). */
+  featured?: boolean;
 };
 
 type NavGroup = {
@@ -93,21 +95,61 @@ const NAV: NavSection[] = [
     items: [
       {
         href: '/documents-voyage/historique',
-        label: 'Historique voyage',
+        label: 'Voyage',
         icon: 'travel',
         menuId: 'travel.historique',
       },
       {
         href: '/documents-voyage/etablir',
-        label: 'Établir voyage',
+        label: 'Cash request',
         icon: 'edit',
         menuId: 'travel.etablir',
+        featured: true,
       },
       {
         href: '/documents-voyage/attestation-services',
         label: 'Attestation de service',
         icon: 'docs',
         menuId: 'travel.attestation',
+      },
+      {
+        href: '/documents-voyage/payment-voucher',
+        label: 'Payment voucher',
+        icon: 'docs',
+        menuId: 'travel.payment-voucher',
+      },
+    ],
+  },
+  {
+    type: 'group',
+    id: 'protocol',
+    title: 'Protocol',
+    icon: 'travel',
+    color: '#6366f1',
+    items: [
+      {
+        href: '/protocol/visa-travail',
+        label: 'Visa de travail',
+        icon: 'docs',
+        menuId: 'protocol.visa-travail',
+      },
+      {
+        href: '/protocol/visa-volant',
+        label: 'Visa volant',
+        icon: 'docs',
+        menuId: 'protocol.visa-volant',
+      },
+      {
+        href: '/protocol/visa-voyage',
+        label: 'Visa de voyage',
+        icon: 'travel',
+        menuId: 'protocol.visa-voyage',
+      },
+      {
+        href: '/protocol/billets',
+        label: 'Gestion des Billets',
+        icon: 'edit',
+        menuId: 'protocol.billets',
       },
     ],
   },
@@ -190,15 +232,15 @@ function isActive(pathname: string, href: string) {
 }
 
 function isNavItemActive(pathname: string, item: NavItem) {
-  if (item.activePrefixes?.length) {
-    return item.activePrefixes.some(
-      (prefix) => pathname === prefix || pathname.startsWith(`${prefix}/`),
-    );
-  }
   if (item.excludePrefixes?.some(
     (prefix) => pathname === prefix || pathname.startsWith(`${prefix}/`),
   )) {
     return false;
+  }
+  if (item.activePrefixes?.length) {
+    return item.activePrefixes.some(
+      (prefix) => pathname === prefix || pathname.startsWith(`${prefix}/`),
+    );
   }
   return isActive(pathname, item.href);
 }
@@ -454,13 +496,14 @@ function NavSubLink({
         <Link
           href={item.href}
           prefetch={false}
-          className={`nav-menu-link nav-menu-sublink${active ? ' active' : ''}`}
+          className={`nav-menu-link nav-menu-sublink${active ? ' active' : ''}${item.featured ? ' featured' : ''}`}
           aria-label={collapsed ? item.label : undefined}
         >
           <span className="nav-menu-icon">
             <NavIcon name={item.icon} size={14} />
           </span>
           <span className="nav-menu-sublabel">{item.label}</span>
+          {item.featured ? <span className="nav-menu-featured-mark" aria-hidden /> : null}
         </Link>
       </SidebarTip>
     </div>

@@ -110,6 +110,8 @@ function toEmployeeRecord(employee: Employee, now: string, id: string = randomUU
     dateFinPeriodeEssai: employee.dateFinPeriodeEssai || '',
     dateFinContrat: employee.dateFinContrat || '',
     raisonExit: employee.raisonExit || 'NA',
+    cnss: employee.cnss || '',
+    nif: employee.nif || '',
     createdAt: now,
     updatedAt: now,
   };
@@ -310,6 +312,8 @@ function composeEmployee(
     dateFinPeriodeEssai: record.dateFinPeriodeEssai,
     dateFinContrat: record.dateFinContrat,
     raisonExit: record.raisonExit,
+    cnss: record.cnss || '',
+    nif: record.nif || '',
   };
 }
 

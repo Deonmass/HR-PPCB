@@ -4,7 +4,7 @@
       "id": "08f27ce7-0516-4cad-9939-9a06d0c6c6e6",
       "matricule": "70000273",
       "nom": "NDUSHA CLEMENT",
-      "departement": "Administration",
+      "departement": "Production",
       "grade": "C2",
       "jobTitle": "Process Technician",
       "localisation": "Zamba",
@@ -33,7 +33,9 @@
       "dateFinContrat": "14/07/2026",
       "raisonExit": "Demission",
       "createdAt": "2026-07-28T09:40:37.715Z",
-      "updatedAt": "2026-07-28T09:40:37.715Z"
+      "updatedAt": "2026-07-29T14:11:17.443Z",
+      "cnss": "11999717235H",
+      "nif": "D2313591C"
     }
   ]
 }

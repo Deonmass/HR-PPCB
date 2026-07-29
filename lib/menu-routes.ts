@@ -6,8 +6,13 @@ export interface RouteMenuEntry {
 /** Longest-prefix wins — order by descending prefix length when matching. */
 export const ROUTE_MENU_MAP: RouteMenuEntry[] = [
   { prefix: '/documents-voyage/attestation-services', menuId: 'travel.attestation' },
+  { prefix: '/documents-voyage/payment-voucher', menuId: 'travel.payment-voucher' },
   { prefix: '/documents-voyage/historique', menuId: 'travel.historique' },
   { prefix: '/documents-voyage/etablir', menuId: 'travel.etablir' },
+  { prefix: '/protocol/visa-travail', menuId: 'protocol.visa-travail' },
+  { prefix: '/protocol/visa-volant', menuId: 'protocol.visa-volant' },
+  { prefix: '/protocol/visa-voyage', menuId: 'protocol.visa-voyage' },
+  { prefix: '/protocol/billets', menuId: 'protocol.billets' },
   { prefix: '/factures-fournisseurs/fournisseurs', menuId: 'factures.fournisseur.fournisseurs' },
   { prefix: '/factures-fournisseurs/liste', menuId: 'factures.fournisseur.liste' },
   { prefix: '/factures-fournisseurs/factures', menuId: 'factures.fournisseur.factures' },

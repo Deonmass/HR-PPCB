@@ -603,7 +603,7 @@ export default function EtablirTravelForm() {
       <div className="cash-request-sticky">
         <div className="page-header">
           <div>
-            <h2>{missionRef || 'Établir — Documents de voyage'}</h2>
+            <h2>{missionRef || 'Cash request — Documents de voyage'}</h2>
             <p>
               {missionRef
                 ? 'Ordre de mission · Informations voyage et génération des fichiers'

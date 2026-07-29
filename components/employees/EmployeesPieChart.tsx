@@ -1,7 +1,7 @@
 'use client';
 
-import { useMemo, useState } from 'react';
-import EnlargeableChartPanel from '@/components/EnlargeableChartPanel';
+import { useMemo, useState, type ReactNode } from 'react';
+import EnlargeableChartPanel, { type ChartDeptFilterSource } from '@/components/EnlargeableChartPanel';
 import type { HrDashCountRow } from '@/lib/employees-hr-dashboard';
 
 export type PieChartItem = HrDashCountRow & {
@@ -17,6 +17,8 @@ interface Props {
   formatValue?: (value: number) => string;
   /** Formate le compteur secondaire (ex. "(6)"). Défaut : "(n)". */
   formatCount?: (count: number) => string;
+  /** Active le filtre départements dans la vue agrandie. */
+  deptFilter?: ChartDeptFilterSource;
 }
 
 const DEFAULT_COLORS = [
@@ -69,13 +71,17 @@ function describeDonutSlice(
   ].join(' ');
 }
 
-export default function EmployeesPieChart({
-  title,
+function PieBody({
   items,
-  colors = DEFAULT_COLORS,
-  formatValue = (v) => String(v),
-  formatCount = (n) => `(${n})`,
-}: Props) {
+  colors,
+  formatValue,
+  formatCount,
+}: {
+  items: PieChartItem[];
+  colors: string[];
+  formatValue: (value: number) => string;
+  formatCount: (count: number) => string;
+}): ReactNode {
   const [hover, setHover] = useState<string | null>(null);
   const total = useMemo(() => items.reduce((s, i) => s + i.count, 0), [items]);
   const totalItems = useMemo(
@@ -111,9 +117,103 @@ export default function EmployeesPieChart({
       });
   }, [items, total, colors]);
 
-  const active = slices.find((s) => s.label === hover) ?? null;
-
   if (!items.length || total === 0) {
+    return <p className="empty-state">Aucune donnée disponible.</p>;
+  }
+
+  const active = slices.find((s) => s.label === hover) ?? null;
+  const cx = 110;
+  const cy = 110;
+  const rOut = 92;
+  const rIn = 52;
+
+  return (
+    <div className="employees-pie-layout">
+      <div className="employees-pie-svg-wrap">
+        <svg viewBox="0 0 220 220" className="employees-pie-svg">
+          {slices.map((slice) => {
+            const isActive = hover === slice.label;
+            const isDimmed = Boolean(hover && !isActive);
+            return (
+              <g
+                key={slice.label}
+                className={`employees-pie-slice-g${isActive ? ' is-active' : ''}${isDimmed ? ' is-dimmed' : ''}`}
+                style={{ transformOrigin: `${cx}px ${cy}px` }}
+                onMouseEnter={() => setHover(slice.label)}
+                onMouseLeave={() => setHover(null)}
+              >
+                <path
+                  d={describeDonutSlice(cx, cy, rOut, rIn, slice.start, slice.end)}
+                  fill={slice.color}
+                  className="employees-pie-slice"
+                >
+                  <title>
+                    {`${slice.label}: ${formatWithCount(slice.count, slice.itemsCount)} (${slice.pct}%)`}
+                  </title>
+                </path>
+              </g>
+            );
+          })}
+          <text x={cx} y={cy - 6} textAnchor="middle" className="employees-pie-center-value">
+            {active
+              ? formatWithCount(active.count, active.itemsCount)
+              : formatWithCount(total, hasItemsCount ? totalItems : undefined)}
+          </text>
+          <text x={cx} y={cy + 14} textAnchor="middle" className="employees-pie-center-label">
+            {active ? `${active.pct}%` : 'Total'}
+          </text>
+        </svg>
+      </div>
+      <ul className="employees-pie-legend">
+        {slices.map((slice) => (
+          <li
+            key={slice.label}
+            className={`employees-pie-legend-item${hover === slice.label ? ' is-active' : ''}`}
+            onMouseEnter={() => setHover(slice.label)}
+            onMouseLeave={() => setHover(null)}
+          >
+            <span className="employees-pie-swatch" style={{ background: slice.color }} />
+            <span className="employees-pie-legend-label" title={slice.label}>{slice.label}</span>
+            <span className="employees-pie-legend-value">
+              {formatWithCount(slice.count, slice.itemsCount)}
+            </span>
+          </li>
+        ))}
+      </ul>
+    </div>
+  );
+}
+
+export function EmployeesPieChartBody({
+  items,
+  colors = DEFAULT_COLORS,
+  formatValue = (v) => String(v),
+  formatCount = (n) => `(${n})`,
+}: {
+  items: PieChartItem[];
+  colors?: string[];
+  formatValue?: (value: number) => string;
+  formatCount?: (count: number) => string;
+}): ReactNode {
+  return (
+    <PieBody
+      items={items}
+      colors={colors}
+      formatValue={formatValue}
+      formatCount={formatCount}
+    />
+  );
+}
+
+export default function EmployeesPieChart({
+  title,
+  items,
+  colors = DEFAULT_COLORS,
+  formatValue = (v) => String(v),
+  formatCount = (n) => `(${n})`,
+  deptFilter,
+}: Props) {
+  if (!items.length || items.every((i) => i.count === 0)) {
     return (
       <div className="panel travel-history-chart-panel">
         <div className="panel-head"><h3>{title}</h3></div>
@@ -122,66 +222,19 @@ export default function EmployeesPieChart({
     );
   }
 
-  const cx = 110;
-  const cy = 110;
-  const rOut = 92;
-  const rIn = 52;
-
   return (
-    <EnlargeableChartPanel title={title} className="travel-history-chart-panel employees-pie-panel" clickToEnlarge>
-      <div className="employees-pie-layout">
-        <div className="employees-pie-svg-wrap">
-          <svg viewBox="0 0 220 220" className="employees-pie-svg">
-            {slices.map((slice) => {
-              const isActive = hover === slice.label;
-              const isDimmed = Boolean(hover && !isActive);
-              return (
-                <g
-                  key={slice.label}
-                  className={`employees-pie-slice-g${isActive ? ' is-active' : ''}${isDimmed ? ' is-dimmed' : ''}`}
-                  style={{ transformOrigin: `${cx}px ${cy}px` }}
-                  onMouseEnter={() => setHover(slice.label)}
-                  onMouseLeave={() => setHover(null)}
-                >
-                  <path
-                    d={describeDonutSlice(cx, cy, rOut, rIn, slice.start, slice.end)}
-                    fill={slice.color}
-                    className="employees-pie-slice"
-                  >
-                    <title>
-                      {`${slice.label}: ${formatWithCount(slice.count, slice.itemsCount)} (${slice.pct}%)`}
-                    </title>
-                  </path>
-                </g>
-              );
-            })}
-            <text x={cx} y={cy - 6} textAnchor="middle" className="employees-pie-center-value">
-              {active
-                ? formatWithCount(active.count, active.itemsCount)
-                : formatWithCount(total, hasItemsCount ? totalItems : undefined)}
-            </text>
-            <text x={cx} y={cy + 14} textAnchor="middle" className="employees-pie-center-label">
-              {active ? `${active.pct}%` : 'Total'}
-            </text>
-          </svg>
-        </div>
-        <ul className="employees-pie-legend">
-          {slices.map((slice) => (
-            <li
-              key={slice.label}
-              className={`employees-pie-legend-item${hover === slice.label ? ' is-active' : ''}`}
-              onMouseEnter={() => setHover(slice.label)}
-              onMouseLeave={() => setHover(null)}
-            >
-              <span className="employees-pie-swatch" style={{ background: slice.color }} />
-              <span className="employees-pie-legend-label" title={slice.label}>{slice.label}</span>
-              <span className="employees-pie-legend-value">
-                {formatWithCount(slice.count, slice.itemsCount)}
-              </span>
-            </li>
-          ))}
-        </ul>
-      </div>
+    <EnlargeableChartPanel
+      title={title}
+      className="travel-history-chart-panel employees-pie-panel"
+      clickToEnlarge
+      deptFilter={deptFilter}
+    >
+      <PieBody
+        items={items}
+        colors={colors}
+        formatValue={formatValue}
+        formatCount={formatCount}
+      />
     </EnlargeableChartPanel>
   );
 }

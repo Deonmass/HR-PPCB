@@ -3,311 +3,358 @@
     {
       "id": "cc-dl5110",
       "code": "DL5110",
-      "name": "DL5110",
-      "departmentId": "dept-human-resources",
+      "name": "Lubudi team",
+      "departmentId": "dept-administration",
       "active": true
     },
     {
-      "id": "cc-km5631",
-      "code": "KM5631",
-      "name": "KM5631",
-      "departmentId": "dept-corporate-admin",
+      "id": "cc-dl9411",
+      "code": "DL9411",
+      "name": "Lubudi Regional Manager",
+      "departmentId": "dept-administration",
       "active": true
     },
     {
-      "id": "cc-kc8710",
-      "code": "KC8710",
-      "name": "KC8710",
+      "id": "cc-kc6110",
+      "code": "KC6110",
+      "name": "Sales General",
       "departmentId": "dept-sales-logistics",
       "active": true
     },
     {
       "id": "cc-kc6111",
       "code": "KC6111",
-      "name": "KC6111",
-      "departmentId": "dept-mining",
+      "name": "Central Region",
+      "departmentId": "dept-sales-logistics",
       "active": true
     },
     {
-      "id": "cc-kq1010",
-      "code": "KQ1010",
-      "name": "KQ1010",
+      "id": "cc-kc6112",
+      "code": "KC6112",
+      "name": "Northern Region",
+      "departmentId": "dept-sales-logistics",
+      "active": true
+    },
+    {
+      "id": "cc-kc6113",
+      "code": "KC6113",
+      "name": "Southern Region",
+      "departmentId": "dept-sales-logistics",
+      "active": true
+    },
+    {
+      "id": "cc-kc6210",
+      "code": "KC6210",
+      "name": "Marketing General",
+      "departmentId": "dept-sales-logistics",
+      "active": true
+    },
+    {
+      "id": "cc-kc6310",
+      "code": "KC6310",
+      "name": "Customer Excellence Center General",
+      "departmentId": "dept-sales-logistics",
+      "active": true
+    },
+    {
+      "id": "cc-kc6312",
+      "code": "KC6312",
+      "name": "Customer Demand- Supply Management",
+      "departmentId": "dept-sales-logistics",
+      "active": true
+    },
+    {
+      "id": "cc-kc8410",
+      "code": "KC8410",
+      "name": "Finance & IT General",
+      "departmentId": "dept-finance",
+      "active": true
+    },
+    {
+      "id": "cc-kc8411",
+      "code": "KC8411",
+      "name": "Finance",
+      "departmentId": "dept-finance",
+      "active": true
+    },
+    {
+      "id": "cc-kc8412",
+      "code": "KC8412",
+      "name": "HQ Finance Controler",
+      "departmentId": "dept-finance",
+      "active": true
+    },
+    {
+      "id": "cc-kc8413",
+      "code": "KC8413",
+      "name": "Tax",
+      "departmentId": "dept-finance",
+      "active": true
+    },
+    {
+      "id": "cc-kc8414",
+      "code": "KC8414",
+      "name": "IT",
+      "departmentId": "dept-finance",
+      "active": true
+    },
+    {
+      "id": "cc-kc8710",
+      "code": "KC8710",
+      "name": "HR Admin General",
+      "departmentId": "dept-human-resources",
+      "active": true
+    },
+    {
+      "id": "cc-kc8711",
+      "code": "KC8711",
+      "name": "HR Administration",
+      "departmentId": "dept-human-resources",
+      "active": true
+    },
+    {
+      "id": "cc-kc8712",
+      "code": "KC8712",
+      "name": "Corporate HR",
+      "departmentId": "dept-human-resources",
+      "active": true
+    },
+    {
+      "id": "cc-kc8810",
+      "code": "KC8810",
+      "name": "Supply Chain General",
+      "departmentId": "dept-supply-chain",
+      "active": true
+    },
+    {
+      "id": "cc-kc8811",
+      "code": "KC8811",
+      "name": "Logistics - Inbound & Depot",
+      "departmentId": "dept-supply-chain",
+      "active": true
+    },
+    {
+      "id": "cc-kc8812",
+      "code": "KC8812",
+      "name": "Logistics-Outbound",
+      "departmentId": "dept-supply-chain",
+      "active": true
+    },
+    {
+      "id": "cc-kc8813",
+      "code": "KC8813",
+      "name": "Procurement",
+      "departmentId": "dept-supply-chain",
+      "active": true
+    },
+    {
+      "id": "cc-kc9111",
+      "code": "KC9111",
+      "name": "Compliance Office",
+      "departmentId": "dept-legal",
+      "active": true
+    },
+    {
+      "id": "cc-kc9114",
+      "code": "KC9114",
+      "name": "Internal Audit",
+      "departmentId": "dept-audit",
+      "active": true
+    },
+    {
+      "id": "cc-kc9211",
+      "code": "KC9211",
+      "name": "Managing Director",
+      "departmentId": "dept-administration",
+      "active": true
+    },
+    {
+      "id": "cc-kc9212",
+      "code": "KC9212",
+      "name": "Assistant to MD",
+      "departmentId": "dept-administration",
+      "active": true
+    },
+    {
+      "id": "cc-kc9214",
+      "code": "KC9214",
+      "name": "Performance Manager",
+      "departmentId": "dept-administration",
+      "active": true
+    },
+    {
+      "id": "cc-kc9215",
+      "code": "KC9215",
+      "name": "Legal",
+      "departmentId": "dept-legal",
+      "active": true
+    },
+    {
+      "id": "cc-km4321",
+      "code": "KM4321",
+      "name": "Raw Milling",
+      "departmentId": "dept-production",
+      "active": true
+    },
+    {
+      "id": "cc-km4421",
+      "code": "KM4421",
+      "name": "Burning",
+      "departmentId": "dept-production",
+      "active": true
+    },
+    {
+      "id": "cc-km4510",
+      "code": "KM4510",
+      "name": "F M General",
+      "departmentId": "dept-production",
+      "active": true
+    },
+    {
+      "id": "cc-km4610",
+      "code": "KM4610",
+      "name": "Bagging General",
+      "departmentId": "dept-packaging-logistics",
+      "active": true
+    },
+    {
+      "id": "cc-km5110",
+      "code": "KM5110",
+      "name": "Production General",
+      "departmentId": "dept-production",
+      "active": true
+    },
+    {
+      "id": "cc-km5310",
+      "code": "KM5310",
+      "name": "Engineering General",
+      "departmentId": "dept-engineering",
+      "active": true
+    },
+    {
+      "id": "cc-km5311",
+      "code": "KM5311",
+      "name": "Mechanical W/S",
+      "departmentId": "dept-engineering",
+      "active": true
+    },
+    {
+      "id": "cc-km5314",
+      "code": "KM5314",
+      "name": "Estates & Civil W/S",
       "departmentId": "dept-engineering",
       "active": true
     },
     {
       "id": "cc-km5317",
       "code": "KM5317",
-      "name": "KM5317",
-      "departmentId": "dept-production",
-      "active": true
-    },
-    {
-      "id": "cc-kc6312",
-      "code": "KC6312",
-      "name": "KC6312",
-      "departmentId": "dept-packaging-logistics",
-      "active": true
-    },
-    {
-      "id": "cc-km5413",
-      "code": "KM5413",
-      "name": "KM5413",
-      "departmentId": "dept-human-resources",
-      "active": true
-    },
-    {
-      "id": "cc-km4421",
-      "code": "KM4421",
-      "name": "KM4421",
-      "departmentId": "dept-qa",
-      "active": true
-    },
-    {
-      "id": "cc-km5110",
-      "code": "KM5110",
-      "name": "KM5110",
-      "departmentId": "dept-finance",
-      "active": true
-    },
-    {
-      "id": "cc-km4510",
-      "code": "KM4510",
-      "name": "KM4510",
-      "active": true
-    },
-    {
-      "id": "cc-km4610",
-      "code": "KM4610",
-      "name": "KM4610",
-      "active": true
-    },
-    {
-      "id": "cc-km5910",
-      "code": "KM5910",
-      "name": "KM5910",
-      "active": true
-    },
-    {
-      "id": "cc-kc8414",
-      "code": "KC8414",
-      "name": "KC8414",
-      "active": true
-    },
-    {
-      "id": "cc-km5310",
-      "code": "KM5310",
-      "name": "KM5310",
-      "active": true
-    },
-    {
-      "id": "cc-km5811",
-      "code": "KM5811",
-      "name": "KM5811",
-      "active": true
-    },
-    {
-      "id": "cc-km5311",
-      "code": "KM5311",
-      "name": "KM5311",
-      "active": true
-    },
-    {
-      "id": "cc-km5510",
-      "code": "KM5510",
-      "name": "KM5510",
-      "active": true
-    },
-    {
-      "id": "cc-km8910",
-      "code": "KM8910",
-      "name": "KM8910",
-      "active": true
-    },
-    {
-      "id": "cc-kc8813",
-      "code": "KC8813",
-      "name": "KC8813",
-      "active": true
-    },
-    {
-      "id": "cc-km4321",
-      "code": "KM4321",
-      "name": "KM4321",
-      "active": true
-    },
-    {
-      "id": "cc-kc6310",
-      "code": "KC6310",
-      "name": "KC6310",
-      "active": true
-    },
-    {
-      "id": "cc-kc8412",
-      "code": "KC8412",
-      "name": "KC8412",
-      "active": true
-    },
-    {
-      "id": "cc-kc6113",
-      "code": "KC6113",
-      "name": "KC6113",
-      "active": true
-    },
-    {
-      "id": "cc-kq1910",
-      "code": "KQ1910",
-      "name": "KQ1910",
-      "active": true
-    },
-    {
-      "id": "cc-kc8411",
-      "code": "KC8411",
-      "name": "KC8411",
-      "active": true
-    },
-    {
-      "id": "cc-km5721",
-      "code": "KM5721",
-      "name": "KM5721",
-      "active": true
-    },
-    {
-      "id": "cc-kc8812",
-      "code": "KC8812",
-      "name": "KC8812",
-      "active": true
-    },
-    {
-      "id": "cc-km5416",
-      "code": "KM5416",
-      "name": "KM5416",
-      "active": true
-    },
-    {
-      "id": "cc-km5711",
-      "code": "KM5711",
-      "name": "KM5711",
-      "active": true
-    },
-    {
-      "id": "cc-kq1023",
-      "code": "KQ1023",
-      "name": "KQ1023",
-      "active": true
-    },
-    {
-      "id": "cc-kc8410",
-      "code": "KC8410",
-      "name": "KC8410",
-      "active": true
-    },
-    {
-      "id": "cc-km5412",
-      "code": "KM5412",
-      "name": "KM5412",
-      "active": true
-    },
-    {
-      "id": "cc-kc8711",
-      "code": "KC8711",
-      "name": "KC8711",
-      "active": true
-    },
-    {
-      "id": "cc-kc6210",
-      "code": "KC6210",
-      "name": "KC6210",
-      "active": true
-    },
-    {
-      "id": "cc-kc9215",
-      "code": "KC9215",
-      "name": "KC9215",
-      "active": true
-    },
-    {
-      "id": "cc-kc8413",
-      "code": "KC8413",
-      "name": "KC8413",
-      "active": true
-    },
-    {
-      "id": "cc-kc8811",
-      "code": "KC8811",
-      "name": "KC8811",
-      "active": true
-    },
-    {
-      "id": "cc-kc9111",
-      "code": "KC9111",
-      "name": "KC9111",
-      "active": true
-    },
-    {
-      "id": "cc-dl9411",
-      "code": "DL9411",
-      "name": "DL9411",
-      "active": true
-    },
-    {
-      "id": "cc-km5314",
-      "code": "KM5314",
-      "name": "KM5314",
-      "active": true
-    },
-    {
-      "id": "cc-kc6112",
-      "code": "KC6112",
-      "name": "KC6112",
-      "active": true
-    },
-    {
-      "id": "cc-km8920",
-      "code": "KM8920",
-      "name": "KM8920",
+      "name": "Garage",
+      "departmentId": "dept-engineering",
       "active": true
     },
     {
       "id": "cc-km5410",
       "code": "KM5410",
-      "name": "KM5410",
+      "name": "Admin General",
+      "departmentId": "dept-administration",
       "active": true
     },
     {
-      "id": "cc-kc9114",
-      "code": "KC9114",
-      "name": "KC9114",
+      "id": "cc-km5412",
+      "code": "KM5412",
+      "name": "Warehouses Plant",
+      "departmentId": "dept-supply-chain",
       "active": true
     },
     {
-      "id": "cc-kc9211",
-      "code": "KC9211",
-      "name": "KC9211",
+      "id": "cc-km5413",
+      "code": "KM5413",
+      "name": "HR Admin Plant",
+      "departmentId": "dept-human-resources",
       "active": true
     },
     {
-      "id": "cc-kc8712",
-      "code": "KC8712",
-      "name": "KC8712",
+      "id": "cc-km5416",
+      "code": "KM5416",
+      "name": "CEC Plant - Cost Centres",
+      "departmentId": "dept-sales-logistics",
       "active": true
     },
     {
-      "id": "cc-kc9214",
-      "code": "KC9214",
-      "name": "KC9214",
+      "id": "cc-km5510",
+      "code": "KM5510",
+      "name": "Laboratory",
+      "departmentId": "dept-quality-assurance",
       "active": true
     },
     {
-      "id": "cc-kc9212",
-      "code": "KC9212",
-      "name": "KC9212",
+      "id": "cc-km5631",
+      "code": "KM5631",
+      "name": "Village",
+      "departmentId": "dept-human-resources",
       "active": true
     },
     {
-      "id": "cc-kc8810",
-      "code": "KC8810",
-      "name": "KC8810",
+      "id": "cc-km5711",
+      "code": "KM5711",
+      "name": "Risk Management",
+      "departmentId": "dept-risk-environment",
+      "active": true
+    },
+    {
+      "id": "cc-km5721",
+      "code": "KM5721",
+      "name": "Occupational health",
+      "departmentId": "dept-risk-environment",
+      "active": true
+    },
+    {
+      "id": "cc-km5811",
+      "code": "KM5811",
+      "name": "Environmental Management",
+      "departmentId": "dept-risk-environment",
+      "active": true
+    },
+    {
+      "id": "cc-km5910",
+      "code": "KM5910",
+      "name": "Optimization",
+      "departmentId": "dept-production",
+      "active": true
+    },
+    {
+      "id": "cc-km8910-project-management",
+      "code": "KM8910 Project Management",
+      "name": "KM8910 Project Management",
+      "departmentId": "dept-administration",
+      "active": true
+    },
+    {
+      "id": "cc-km8920-im-systems",
+      "code": "KM8920 IM  Systems",
+      "name": "KM8920 IM  Systems",
+      "departmentId": "dept-administration",
+      "active": true
+    },
+    {
+      "id": "cc-kq1010",
+      "code": "KQ1010",
+      "name": "Drilling & Blasting",
+      "departmentId": "dept-mining",
+      "active": true
+    },
+    {
+      "id": "cc-kq1023",
+      "code": "KQ1023",
+      "name": "Hauling",
+      "departmentId": "dept-mining",
+      "active": true
+    },
+    {
+      "id": "cc-kq1910",
+      "code": "KQ1910",
+      "name": "Mining General",
+      "departmentId": "dept-mining",
       "active": true
     }
   ]

@@ -21,7 +21,6 @@ import {
   TYPE_CONTRATS,
   isRealExitRaison,
 } from '@/lib/employee-columns';
-import type { VillageMaison } from '@/lib/village-types';
 import { confirmAction, showError, showSuccess } from '@/lib/swal';
 import type { Employee } from '@/lib/types';
 
@@ -78,6 +77,8 @@ const ORG_FIELDS: FieldDef[] = [
   { key: 'localisation', label: 'Localisation' },
   { key: 'jobTitle', label: 'Intitulé du poste' },
   { key: 'centreCout', label: 'Centre de coût' },
+  { key: 'cnss', label: 'CNSS' },
+  { key: 'nif', label: 'NIF' },
   { key: 'employeeSubGroup', label: 'Sous-groupe' },
   { key: 'payrollArea', label: 'Payroll Area' },
   { key: 'personnelArea', label: 'Personnel Area' },
@@ -297,36 +298,11 @@ export default function EmployeeViewModal({ employee, canEdit = false, onClose, 
   const [saving, setSaving] = useState(false);
   const [familyGroup, setFamilyGroup] = useState<FamilyGroup | null>(null);
   const [familyLoading, setFamilyLoading] = useState(false);
-  const [maisons, setMaisons] = useState<VillageMaison[]>([]);
-  const [numeroVilla, setNumeroVilla] = useState('');
-  const [assigningMaison, setAssigningMaison] = useState(false);
 
   useEffect(() => {
     setDraft(employee);
     setEditingKey(null);
   }, [employee]);
-
-  useEffect(() => {
-    let cancelled = false;
-    (async () => {
-      try {
-        const res = await fetch('/api/village/maisons', { cache: 'no-store' });
-        if (!res.ok) return;
-        const json = await res.json() as { maisons?: VillageMaison[] };
-        if (!cancelled) setMaisons(json.maisons ?? []);
-      } catch {
-        if (!cancelled) setMaisons([]);
-      }
-    })();
-    return () => {
-      cancelled = true;
-    };
-  }, []);
-
-  useEffect(() => {
-    const villa = familyGroup?.employee.numeroVilla?.trim() || '';
-    setNumeroVilla(villa);
-  }, [familyGroup, employee.matricule]);
 
   const resolvedAge = useMemo(() => {
     const fromDob = computeAgeFromDisplayDate(draft.dateOfBirth);
@@ -362,33 +338,12 @@ export default function EmployeeViewModal({ employee, canEdit = false, onClose, 
     void loadFamily();
   }, [loadFamily]);
 
-  const saveMaisonAssignment = async () => {
-    if (!canEdit) return;
-    setAssigningMaison(true);
-    try {
-      const res = await fetch('/api/village/assign', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          matricule: employee.matricule,
-          numeroVilla,
-          setLocalisationZamba: Boolean(numeroVilla),
-        }),
-      });
-      const json = await res.json();
-      if (!res.ok) throw new Error(json.error || 'Affectation impossible');
-      await showSuccess(numeroVilla ? `Maison ${numeroVilla} affectée` : 'Maison libérée');
-      await loadFamily();
-    } catch (err) {
-      await showError(err instanceof Error ? err.message : 'Affectation impossible');
-    } finally {
-      setAssigningMaison(false);
-    }
-  };
-
   useEffect(() => {
     if (tab === 'famille') void loadFamily();
   }, [tab, loadFamily]);
+
+  const villaNumber = familyGroup?.employee.numeroVilla?.trim() || '';
+  const isVillageResident = Boolean(villaNumber);
 
   const completion = calcDocumentCompletion(draft);
   const cellStats = calcRowCellStats(draft);
@@ -645,37 +600,23 @@ export default function EmployeeViewModal({ employee, canEdit = false, onClose, 
             <>
               {renderSection('Identité', IDENTITY_FIELDS)}
               {renderSection('Poste & organisation', ORG_FIELDS)}
-              <section className="employee-view-section">
-                <div className="employee-view-section-label">Logement village</div>
-                <div className="village-assign-row">
-                  <select
-                    className="filter-select"
-                    value={numeroVilla}
-                    disabled={!canEdit || assigningMaison}
-                    onChange={(e) => setNumeroVilla(e.target.value)}
-                  >
-                    <option value="">Aucune maison (Kimpese)</option>
-                    {maisons.map((m) => (
-                      <option key={m.numero} value={m.numero}>
-                        {m.numero}{m.taille ? ` · ${m.taille}` : ''}{m.typeMaison ? ` · ${m.typeMaison}` : ''}
-                      </option>
-                    ))}
-                  </select>
-                  {canEdit && (
-                    <button
-                      type="button"
-                      className="btn btn-primary btn-sm"
-                      disabled={assigningMaison}
-                      onClick={() => void saveMaisonAssignment()}
-                    >
-                      {assigningMaison ? '…' : 'Affecter'}
-                    </button>
-                  )}
-                </div>
-                <p className="panel-meta" style={{ marginTop: 8 }}>
-                  Écrit Numero Villa / Type de maison sur DEPENDANTS (et localisation Zamba si une maison est choisie).
-                </p>
-              </section>
+              {isVillageResident ? (
+                <section className="employee-view-section">
+                  <div className="employee-view-section-label">Logement village</div>
+                  <table className="employee-view-table">
+                    <tbody>
+                      <tr>
+                        <th scope="row">N° villa</th>
+                        <td>
+                          <div className="employee-view-value-row">
+                            <span>{villaNumber}</span>
+                          </div>
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </section>
+              ) : null}
               {renderSection('Contrat & sortie', CONTRACT_FIELDS)}
               {renderSection('Manager', MANAGER_FIELDS)}
             </>

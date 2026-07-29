@@ -36,6 +36,10 @@ export interface EmployeeHrProfile {
   dateFinContrat: string;
   /** Demission / Licenciement / Retraite / Fin de contrat */
   raisonExit: string;
+  /** Numéro CNSS */
+  cnss: string;
+  /** Numéro NIF */
+  nif: string;
 }
 
 export interface Employee extends EmployeeHrProfile {
@@ -74,6 +78,8 @@ export function emptyEmployeeHrProfile(): EmployeeHrProfile {
     dateFinPeriodeEssai: '',
     dateFinContrat: '',
     raisonExit: 'NA',
+    cnss: '',
+    nif: '',
   };
 }
 

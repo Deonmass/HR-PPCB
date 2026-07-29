@@ -1,6 +1,1970 @@
 {
   "entries": [
     {
+      "id": "log-000014",
+      "at": "2026-07-29T13:22:27.451Z",
+      "userId": "Gedeon.Massadi",
+      "userName": "Gedeon Massadi",
+      "userEmail": "Gedeon.Massadi@ppcdrc.cd",
+      "module": "settings.permissions",
+      "moduleLabel": "Paramètres — Permissions",
+      "action": "update",
+      "actionLabel": "Modification",
+      "summary": "Modification permissions utilisateur admin",
+      "details": "Modification permissions utilisateur admin",
+      "before": [
+        {
+          "menuId": "employes.liste",
+          "label": "Liste employés",
+          "actions": {
+            "view": true,
+            "create": true,
+            "edit": true,
+            "delete": true,
+            "export": true,
+            "undo": true
+          }
+        },
+        {
+          "menuId": "employes.dependants",
+          "label": "Dependants",
+          "actions": {
+            "view": true,
+            "create": true,
+            "edit": true,
+            "delete": true,
+            "export": true,
+            "undo": true
+          }
+        },
+        {
+          "menuId": "employes.check-documents",
+          "label": "Check documents",
+          "actions": {
+            "view": true,
+            "create": true,
+            "edit": true,
+            "delete": true,
+            "export": true,
+            "undo": true
+          }
+        },
+        {
+          "menuId": "employes.heures",
+          "label": "HS — Mon timesheet",
+          "actions": {
+            "view": true,
+            "create": true,
+            "edit": true,
+            "delete": true,
+            "export": true,
+            "undo": true
+          }
+        },
+        {
+          "menuId": "employes.heures.dept",
+          "label": "HS — Voir mon département",
+          "actions": {
+            "view": true,
+            "create": true,
+            "edit": true,
+            "delete": true,
+            "export": true,
+            "undo": true
+          }
+        },
+        {
+          "menuId": "employes.heures.all",
+          "label": "HS — Voir tous les départements",
+          "actions": {
+            "view": true,
+            "create": true,
+            "edit": true,
+            "delete": true,
+            "export": true,
+            "undo": true
+          }
+        },
+        {
+          "menuId": "employes.heures.import",
+          "label": "HS — Importer OT",
+          "actions": {
+            "view": true,
+            "create": true,
+            "edit": true,
+            "delete": true,
+            "export": true,
+            "undo": true
+          }
+        },
+        {
+          "menuId": "employes.heures.validate",
+          "label": "HS — Valider OT",
+          "actions": {
+            "view": true,
+            "create": true,
+            "edit": true,
+            "delete": true,
+            "export": true,
+            "undo": true
+          }
+        },
+        {
+          "menuId": "employes.heures.edit-validated",
+          "label": "HS — Modifier OT après validation",
+          "actions": {
+            "view": true,
+            "create": true,
+            "edit": true,
+            "delete": true,
+            "export": true,
+            "undo": true
+          }
+        },
+        {
+          "menuId": "employes.heures.policy",
+          "label": "HS — Appliquer la politique",
+          "actions": {
+            "view": true,
+            "create": true,
+            "edit": true,
+            "delete": true,
+            "export": true,
+            "undo": true
+          }
+        },
+        {
+          "menuId": "employes.heures.export",
+          "label": "HS — Exporter",
+          "actions": {
+            "view": true,
+            "create": true,
+            "edit": true,
+            "delete": true,
+            "export": true,
+            "undo": true
+          }
+        },
+        {
+          "menuId": "employes.heures.simulation",
+          "label": "HS — Simulation",
+          "actions": {
+            "view": true,
+            "create": true,
+            "edit": true,
+            "delete": true,
+            "export": true,
+            "undo": true
+          }
+        },
+        {
+          "menuId": "project.dashboard",
+          "label": "Dashboard",
+          "actions": {
+            "view": true,
+            "create": true,
+            "edit": true,
+            "delete": true,
+            "export": true,
+            "undo": true
+          }
+        },
+        {
+          "menuId": "project.projects",
+          "label": "Projects",
+          "actions": {
+            "view": true,
+            "create": true,
+            "edit": true,
+            "delete": true,
+            "export": true,
+            "undo": true
+          }
+        },
+        {
+          "menuId": "project.expenses",
+          "label": "Expenses details",
+          "actions": {
+            "view": true,
+            "create": true,
+            "edit": true,
+            "delete": true,
+            "export": true,
+            "undo": true
+          }
+        },
+        {
+          "menuId": "travel.historique",
+          "label": "Voyage",
+          "actions": {
+            "view": true,
+            "create": true,
+            "edit": true,
+            "delete": true,
+            "export": true,
+            "undo": true
+          }
+        },
+        {
+          "menuId": "travel.etablir",
+          "label": "Cash request",
+          "actions": {
+            "view": true,
+            "create": true,
+            "edit": true,
+            "delete": true,
+            "export": true,
+            "undo": true
+          }
+        },
+        {
+          "menuId": "travel.attestation",
+          "label": "Attestation de service",
+          "actions": {
+            "view": true,
+            "create": true,
+            "edit": true,
+            "delete": true,
+            "export": true,
+            "undo": true
+          }
+        },
+        {
+          "menuId": "travel.payment-voucher",
+          "label": "Payment voucher",
+          "actions": {
+            "view": true,
+            "create": true,
+            "edit": true,
+            "delete": true,
+            "export": true,
+            "undo": true
+          }
+        },
+        {
+          "menuId": "protocol.visa-travail",
+          "label": "Visa de travail",
+          "actions": {
+            "view": true,
+            "create": true,
+            "edit": true,
+            "delete": true,
+            "export": true,
+            "undo": true
+          }
+        },
+        {
+          "menuId": "protocol.visa-volant",
+          "label": "Visa volant",
+          "actions": {
+            "view": true,
+            "create": true,
+            "edit": true,
+            "delete": true,
+            "export": true,
+            "undo": true
+          }
+        },
+        {
+          "menuId": "protocol.visa-voyage",
+          "label": "Visa de voyage",
+          "actions": {
+            "view": true,
+            "create": true,
+            "edit": true,
+            "delete": true,
+            "export": true,
+            "undo": true
+          }
+        },
+        {
+          "menuId": "protocol.billets",
+          "label": "Gestion des Billets",
+          "actions": {
+            "view": true,
+            "create": true,
+            "edit": true,
+            "delete": true,
+            "export": true,
+            "undo": true
+          }
+        },
+        {
+          "menuId": "factures.fournisseur.liste",
+          "label": "Liste",
+          "actions": {
+            "view": true,
+            "create": true,
+            "edit": true,
+            "delete": true,
+            "export": true,
+            "undo": true
+          }
+        },
+        {
+          "menuId": "factures.fournisseur.factures",
+          "label": "Factures",
+          "actions": {
+            "view": true,
+            "create": true,
+            "edit": true,
+            "delete": true,
+            "export": true,
+            "undo": true
+          }
+        },
+        {
+          "menuId": "factures.fournisseur.soa",
+          "label": "SOA",
+          "actions": {
+            "view": true,
+            "create": true,
+            "edit": true,
+            "delete": true,
+            "export": true,
+            "undo": true
+          }
+        },
+        {
+          "menuId": "factures.fournisseur.fournisseurs",
+          "label": "Fournisseurs",
+          "actions": {
+            "view": true,
+            "create": true,
+            "edit": true,
+            "delete": true,
+            "export": true,
+            "undo": true
+          }
+        },
+        {
+          "menuId": "sante",
+          "label": "Santé",
+          "actions": {
+            "view": true,
+            "create": true,
+            "edit": true,
+            "delete": true,
+            "export": true,
+            "undo": true
+          }
+        },
+        {
+          "menuId": "charroi",
+          "label": "Charroi (accès global)",
+          "actions": {
+            "view": true,
+            "create": true,
+            "edit": true,
+            "delete": true,
+            "export": true,
+            "undo": true
+          }
+        },
+        {
+          "menuId": "charroi.vehicules",
+          "label": "Base véhicules",
+          "actions": {
+            "view": true,
+            "create": true,
+            "edit": true,
+            "delete": true,
+            "export": true,
+            "undo": true
+          }
+        },
+        {
+          "menuId": "charroi.achats",
+          "label": "Nouveaux achats",
+          "actions": {
+            "view": true,
+            "create": true,
+            "edit": true,
+            "delete": true,
+            "export": true,
+            "undo": true
+          }
+        },
+        {
+          "menuId": "village.dependants-dashboard",
+          "label": "Dashboard (Village/Kimpese)",
+          "actions": {
+            "view": true,
+            "create": true,
+            "edit": true,
+            "delete": true,
+            "export": true,
+            "undo": true
+          }
+        },
+        {
+          "menuId": "village.dependants-liste",
+          "label": "Liste (Village/Kimpese)",
+          "actions": {
+            "view": true,
+            "create": true,
+            "edit": true,
+            "delete": true,
+            "export": true,
+            "undo": true
+          }
+        },
+        {
+          "menuId": "village.maisons",
+          "label": "Maisons",
+          "actions": {
+            "view": true,
+            "create": true,
+            "edit": true,
+            "delete": true,
+            "export": true,
+            "undo": true
+          }
+        },
+        {
+          "menuId": "village.guest-house",
+          "label": "Guest house — réservations & occupation",
+          "actions": {
+            "view": true,
+            "create": true,
+            "edit": true,
+            "delete": true,
+            "export": true,
+            "undo": true
+          }
+        },
+        {
+          "menuId": "settings.departements",
+          "label": "Départements",
+          "actions": {
+            "view": true,
+            "create": true,
+            "edit": true,
+            "delete": true,
+            "export": true,
+            "undo": true
+          }
+        },
+        {
+          "menuId": "settings.centres",
+          "label": "Centre de coût",
+          "actions": {
+            "view": true,
+            "create": true,
+            "edit": true,
+            "delete": true,
+            "export": true,
+            "undo": true
+          }
+        },
+        {
+          "menuId": "settings.utilisateurs",
+          "label": "Utilisateurs",
+          "actions": {
+            "view": true,
+            "create": true,
+            "edit": true,
+            "delete": true,
+            "export": true,
+            "undo": true
+          }
+        },
+        {
+          "menuId": "settings.permissions",
+          "label": "Permissions",
+          "actions": {
+            "view": true,
+            "create": true,
+            "edit": true,
+            "delete": true,
+            "export": true,
+            "undo": true
+          }
+        },
+        {
+          "menuId": "parametres.logs",
+          "label": "Logs",
+          "actions": {
+            "view": true,
+            "create": true,
+            "edit": true,
+            "delete": true,
+            "export": true,
+            "undo": true
+          }
+        }
+      ],
+      "after": {
+        "userId": "admin",
+        "menus": [
+          {
+            "menuId": "employes.liste",
+            "label": "Liste employés",
+            "actions": {
+              "view": true,
+              "create": true,
+              "edit": true,
+              "delete": true,
+              "export": true,
+              "undo": true
+            }
+          },
+          {
+            "menuId": "employes.dependants",
+            "label": "Dependants",
+            "actions": {
+              "view": true,
+              "create": true,
+              "edit": true,
+              "delete": true,
+              "export": true,
+              "undo": true
+            }
+          },
+          {
+            "menuId": "employes.check-documents",
+            "label": "Check documents",
+            "actions": {
+              "view": true,
+              "create": true,
+              "edit": true,
+              "delete": true,
+              "export": true,
+              "undo": true
+            }
+          },
+          {
+            "menuId": "employes.heures",
+            "label": "HS — Mon timesheet",
+            "actions": {
+              "view": true,
+              "create": true,
+              "edit": true,
+              "delete": true,
+              "export": true,
+              "undo": true
+            }
+          },
+          {
+            "menuId": "employes.heures.dept",
+            "label": "HS — Voir mon département",
+            "actions": {
+              "view": true,
+              "create": true,
+              "edit": true,
+              "delete": true,
+              "export": true,
+              "undo": true
+            }
+          },
+          {
+            "menuId": "employes.heures.all",
+            "label": "HS — Voir tous les départements",
+            "actions": {
+              "view": true,
+              "create": true,
+              "edit": true,
+              "delete": true,
+              "export": true,
+              "undo": true
+            }
+          },
+          {
+            "menuId": "employes.heures.import",
+            "label": "HS — Importer OT",
+            "actions": {
+              "view": true,
+              "create": true,
+              "edit": true,
+              "delete": true,
+              "export": true,
+              "undo": true
+            }
+          },
+          {
+            "menuId": "employes.heures.validate",
+            "label": "HS — Valider OT",
+            "actions": {
+              "view": true,
+              "create": true,
+              "edit": true,
+              "delete": true,
+              "export": true,
+              "undo": true
+            }
+          },
+          {
+            "menuId": "employes.heures.edit-validated",
+            "label": "HS — Modifier OT après validation",
+            "actions": {
+              "view": true,
+              "create": true,
+              "edit": true,
+              "delete": true,
+              "export": true,
+              "undo": true
+            }
+          },
+          {
+            "menuId": "employes.heures.policy",
+            "label": "HS — Appliquer la politique",
+            "actions": {
+              "view": true,
+              "create": true,
+              "edit": true,
+              "delete": true,
+              "export": true,
+              "undo": true
+            }
+          },
+          {
+            "menuId": "employes.heures.export",
+            "label": "HS — Exporter",
+            "actions": {
+              "view": true,
+              "create": true,
+              "edit": true,
+              "delete": true,
+              "export": true,
+              "undo": true
+            }
+          },
+          {
+            "menuId": "employes.heures.simulation",
+            "label": "HS — Simulation",
+            "actions": {
+              "view": true,
+              "create": true,
+              "edit": true,
+              "delete": true,
+              "export": true,
+              "undo": true
+            }
+          },
+          {
+            "menuId": "project.dashboard",
+            "label": "Dashboard",
+            "actions": {
+              "view": true,
+              "create": true,
+              "edit": true,
+              "delete": true,
+              "export": true,
+              "undo": true
+            }
+          },
+          {
+            "menuId": "project.projects",
+            "label": "Projects",
+            "actions": {
+              "view": true,
+              "create": true,
+              "edit": true,
+              "delete": true,
+              "export": true,
+              "undo": true
+            }
+          },
+          {
+            "menuId": "project.expenses",
+            "label": "Expenses details",
+            "actions": {
+              "view": true,
+              "create": true,
+              "edit": true,
+              "delete": true,
+              "export": true,
+              "undo": true
+            }
+          },
+          {
+            "menuId": "travel.historique",
+            "label": "Voyage",
+            "actions": {
+              "view": true,
+              "create": true,
+              "edit": true,
+              "delete": true,
+              "export": true,
+              "undo": true
+            }
+          },
+          {
+            "menuId": "travel.etablir",
+            "label": "Cash request",
+            "actions": {
+              "view": true,
+              "create": true,
+              "edit": true,
+              "delete": true,
+              "export": true,
+              "undo": true
+            }
+          },
+          {
+            "menuId": "travel.attestation",
+            "label": "Attestation de service",
+            "actions": {
+              "view": true,
+              "create": true,
+              "edit": true,
+              "delete": true,
+              "export": true,
+              "undo": true
+            }
+          },
+          {
+            "menuId": "travel.payment-voucher",
+            "label": "Payment voucher",
+            "actions": {
+              "view": true,
+              "create": true,
+              "edit": true,
+              "delete": true,
+              "export": true,
+              "undo": true
+            }
+          },
+          {
+            "menuId": "protocol.visa-travail",
+            "label": "Visa de travail",
+            "actions": {
+              "view": true,
+              "create": true,
+              "edit": true,
+              "delete": true,
+              "export": true,
+              "undo": true
+            }
+          },
+          {
+            "menuId": "protocol.visa-volant",
+            "label": "Visa volant",
+            "actions": {
+              "view": true,
+              "create": true,
+              "edit": true,
+              "delete": true,
+              "export": true,
+              "undo": true
+            }
+          },
+          {
+            "menuId": "protocol.visa-voyage",
+            "label": "Visa de voyage",
+            "actions": {
+              "view": true,
+              "create": true,
+              "edit": true,
+              "delete": true,
+              "export": true,
+              "undo": true
+            }
+          },
+          {
+            "menuId": "protocol.billets",
+            "label": "Gestion des Billets",
+            "actions": {
+              "view": true,
+              "create": true,
+              "edit": true,
+              "delete": true,
+              "export": true,
+              "undo": true
+            }
+          },
+          {
+            "menuId": "factures.fournisseur.liste",
+            "label": "Liste",
+            "actions": {
+              "view": true,
+              "create": true,
+              "edit": true,
+              "delete": true,
+              "export": true,
+              "undo": true
+            }
+          },
+          {
+            "menuId": "factures.fournisseur.factures",
+            "label": "Factures",
+            "actions": {
+              "view": true,
+              "create": true,
+              "edit": true,
+              "delete": true,
+              "export": true,
+              "undo": true
+            }
+          },
+          {
+            "menuId": "factures.fournisseur.soa",
+            "label": "SOA",
+            "actions": {
+              "view": true,
+              "create": true,
+              "edit": true,
+              "delete": true,
+              "export": true,
+              "undo": true
+            }
+          },
+          {
+            "menuId": "factures.fournisseur.fournisseurs",
+            "label": "Fournisseurs",
+            "actions": {
+              "view": true,
+              "create": true,
+              "edit": true,
+              "delete": true,
+              "export": true,
+              "undo": true
+            }
+          },
+          {
+            "menuId": "sante",
+            "label": "Santé",
+            "actions": {
+              "view": true,
+              "create": true,
+              "edit": true,
+              "delete": true,
+              "export": true,
+              "undo": true
+            }
+          },
+          {
+            "menuId": "charroi",
+            "label": "Charroi (accès global)",
+            "actions": {
+              "view": true,
+              "create": true,
+              "edit": true,
+              "delete": true,
+              "export": true,
+              "undo": true
+            }
+          },
+          {
+            "menuId": "charroi.vehicules",
+            "label": "Base véhicules",
+            "actions": {
+              "view": true,
+              "create": true,
+              "edit": true,
+              "delete": true,
+              "export": true,
+              "undo": true
+            }
+          },
+          {
+            "menuId": "charroi.achats",
+            "label": "Nouveaux achats",
+            "actions": {
+              "view": true,
+              "create": true,
+              "edit": true,
+              "delete": true,
+              "export": true,
+              "undo": true
+            }
+          },
+          {
+            "menuId": "village.dependants-dashboard",
+            "label": "Dashboard (Village/Kimpese)",
+            "actions": {
+              "view": true,
+              "create": true,
+              "edit": true,
+              "delete": true,
+              "export": true,
+              "undo": true
+            }
+          },
+          {
+            "menuId": "village.dependants-liste",
+            "label": "Liste (Village/Kimpese)",
+            "actions": {
+              "view": true,
+              "create": true,
+              "edit": true,
+              "delete": true,
+              "export": true,
+              "undo": true
+            }
+          },
+          {
+            "menuId": "village.maisons",
+            "label": "Maisons",
+            "actions": {
+              "view": true,
+              "create": true,
+              "edit": true,
+              "delete": true,
+              "export": true,
+              "undo": true
+            }
+          },
+          {
+            "menuId": "village.guest-house",
+            "label": "Guest house — réservations & occupation",
+            "actions": {
+              "view": true,
+              "create": true,
+              "edit": true,
+              "delete": true,
+              "export": true,
+              "undo": true
+            }
+          },
+          {
+            "menuId": "settings.departements",
+            "label": "Départements",
+            "actions": {
+              "view": true,
+              "create": true,
+              "edit": true,
+              "delete": true,
+              "export": true,
+              "undo": true
+            }
+          },
+          {
+            "menuId": "settings.centres",
+            "label": "Centre de coût",
+            "actions": {
+              "view": true,
+              "create": true,
+              "edit": true,
+              "delete": true,
+              "export": true,
+              "undo": true
+            }
+          },
+          {
+            "menuId": "settings.utilisateurs",
+            "label": "Utilisateurs",
+            "actions": {
+              "view": true,
+              "create": true,
+              "edit": true,
+              "delete": true,
+              "export": true,
+              "undo": true
+            }
+          },
+          {
+            "menuId": "settings.permissions",
+            "label": "Permissions",
+            "actions": {
+              "view": true,
+              "create": true,
+              "edit": true,
+              "delete": true,
+              "export": true,
+              "undo": true
+            }
+          },
+          {
+            "menuId": "parametres.logs",
+            "label": "Logs",
+            "actions": {
+              "view": true,
+              "create": true,
+              "edit": true,
+              "delete": true,
+              "export": true,
+              "undo": true
+            }
+          }
+        ]
+      },
+      "undoable": false,
+      "undone": false
+    },
+    {
+      "id": "log-000013",
+      "at": "2026-07-29T13:21:40.540Z",
+      "userId": "Gedeon.Massadi",
+      "userName": "Gedeon Massadi",
+      "userEmail": "Gedeon.Massadi@ppcdrc.cd",
+      "module": "settings.permissions",
+      "moduleLabel": "Paramètres — Permissions",
+      "action": "update",
+      "actionLabel": "Modification",
+      "summary": "Modification permissions utilisateur admin",
+      "details": "Modification permissions utilisateur admin",
+      "before": [
+        {
+          "menuId": "employes.liste",
+          "label": "Liste employés",
+          "actions": {
+            "view": true,
+            "create": true,
+            "edit": true,
+            "delete": true,
+            "export": true,
+            "undo": true
+          }
+        },
+        {
+          "menuId": "employes.dependants",
+          "label": "Dependants",
+          "actions": {
+            "view": true,
+            "create": true,
+            "edit": true,
+            "delete": true,
+            "export": true,
+            "undo": true
+          }
+        },
+        {
+          "menuId": "employes.check-documents",
+          "label": "Check documents",
+          "actions": {
+            "view": true,
+            "create": true,
+            "edit": true,
+            "delete": true,
+            "export": true,
+            "undo": true
+          }
+        },
+        {
+          "menuId": "employes.heures",
+          "label": "HS — Mon timesheet",
+          "actions": {
+            "view": true,
+            "create": true,
+            "edit": true,
+            "delete": true,
+            "export": true,
+            "undo": true
+          }
+        },
+        {
+          "menuId": "employes.heures.dept",
+          "label": "HS — Voir mon département",
+          "actions": {
+            "view": true,
+            "create": true,
+            "edit": true,
+            "delete": true,
+            "export": true,
+            "undo": true
+          }
+        },
+        {
+          "menuId": "employes.heures.all",
+          "label": "HS — Voir tous les départements",
+          "actions": {
+            "view": true,
+            "create": true,
+            "edit": true,
+            "delete": true,
+            "export": true,
+            "undo": true
+          }
+        },
+        {
+          "menuId": "employes.heures.import",
+          "label": "HS — Importer OT",
+          "actions": {
+            "view": true,
+            "create": true,
+            "edit": true,
+            "delete": true,
+            "export": true,
+            "undo": true
+          }
+        },
+        {
+          "menuId": "employes.heures.validate",
+          "label": "HS — Valider OT",
+          "actions": {
+            "view": true,
+            "create": true,
+            "edit": true,
+            "delete": true,
+            "export": true,
+            "undo": true
+          }
+        },
+        {
+          "menuId": "employes.heures.edit-validated",
+          "label": "HS — Modifier OT après validation",
+          "actions": {
+            "view": true,
+            "create": true,
+            "edit": true,
+            "delete": true,
+            "export": true,
+            "undo": true
+          }
+        },
+        {
+          "menuId": "employes.heures.policy",
+          "label": "HS — Appliquer la politique",
+          "actions": {
+            "view": true,
+            "create": true,
+            "edit": true,
+            "delete": true,
+            "export": true,
+            "undo": true
+          }
+        },
+        {
+          "menuId": "employes.heures.export",
+          "label": "HS — Exporter",
+          "actions": {
+            "view": true,
+            "create": true,
+            "edit": true,
+            "delete": true,
+            "export": true,
+            "undo": true
+          }
+        },
+        {
+          "menuId": "employes.heures.simulation",
+          "label": "HS — Simulation",
+          "actions": {
+            "view": true,
+            "create": true,
+            "edit": true,
+            "delete": true,
+            "export": true,
+            "undo": true
+          }
+        },
+        {
+          "menuId": "project.dashboard",
+          "label": "Dashboard",
+          "actions": {
+            "view": true,
+            "create": true,
+            "edit": true,
+            "delete": true,
+            "export": true,
+            "undo": true
+          }
+        },
+        {
+          "menuId": "project.projects",
+          "label": "Projects",
+          "actions": {
+            "view": true,
+            "create": true,
+            "edit": true,
+            "delete": true,
+            "export": true,
+            "undo": true
+          }
+        },
+        {
+          "menuId": "project.expenses",
+          "label": "Expenses details",
+          "actions": {
+            "view": true,
+            "create": true,
+            "edit": true,
+            "delete": true,
+            "export": true,
+            "undo": true
+          }
+        },
+        {
+          "menuId": "travel.historique",
+          "label": "Voyage",
+          "actions": {
+            "view": true,
+            "create": true,
+            "edit": true,
+            "delete": true,
+            "export": true,
+            "undo": true
+          }
+        },
+        {
+          "menuId": "travel.etablir",
+          "label": "Cash request",
+          "actions": {
+            "view": true,
+            "create": true,
+            "edit": true,
+            "delete": true,
+            "export": true,
+            "undo": true
+          }
+        },
+        {
+          "menuId": "travel.attestation",
+          "label": "Attestation de service",
+          "actions": {
+            "view": true,
+            "create": true,
+            "edit": true,
+            "delete": true,
+            "export": true,
+            "undo": true
+          }
+        },
+        {
+          "menuId": "travel.payment-voucher",
+          "label": "Payment voucher",
+          "actions": {
+            "view": true,
+            "create": true,
+            "edit": true,
+            "delete": true,
+            "export": true,
+            "undo": true
+          }
+        },
+        {
+          "menuId": "protocol.visa-travail",
+          "label": "Visa de travail",
+          "actions": {
+            "view": true,
+            "create": true,
+            "edit": true,
+            "delete": true,
+            "export": true,
+            "undo": true
+          }
+        },
+        {
+          "menuId": "protocol.visa-volant",
+          "label": "Visa volant",
+          "actions": {
+            "view": true,
+            "create": true,
+            "edit": true,
+            "delete": true,
+            "export": true,
+            "undo": true
+          }
+        },
+        {
+          "menuId": "protocol.visa-voyage",
+          "label": "Visa de voyage",
+          "actions": {
+            "view": true,
+            "create": true,
+            "edit": true,
+            "delete": true,
+            "export": true,
+            "undo": true
+          }
+        },
+        {
+          "menuId": "protocol.billets",
+          "label": "Gestion des Billets",
+          "actions": {
+            "view": true,
+            "create": true,
+            "edit": true,
+            "delete": true,
+            "export": true,
+            "undo": true
+          }
+        },
+        {
+          "menuId": "factures.fournisseur.liste",
+          "label": "Liste",
+          "actions": {
+            "view": true,
+            "create": true,
+            "edit": true,
+            "delete": true,
+            "export": true,
+            "undo": true
+          }
+        },
+        {
+          "menuId": "factures.fournisseur.factures",
+          "label": "Factures",
+          "actions": {
+            "view": true,
+            "create": true,
+            "edit": true,
+            "delete": true,
+            "export": true,
+            "undo": true
+          }
+        },
+        {
+          "menuId": "factures.fournisseur.soa",
+          "label": "SOA",
+          "actions": {
+            "view": true,
+            "create": true,
+            "edit": true,
+            "delete": true,
+            "export": true,
+            "undo": true
+          }
+        },
+        {
+          "menuId": "factures.fournisseur.fournisseurs",
+          "label": "Fournisseurs",
+          "actions": {
+            "view": true,
+            "create": true,
+            "edit": true,
+            "delete": true,
+            "export": true,
+            "undo": true
+          }
+        },
+        {
+          "menuId": "sante",
+          "label": "Santé",
+          "actions": {
+            "view": true,
+            "create": true,
+            "edit": true,
+            "delete": true,
+            "export": true,
+            "undo": true
+          }
+        },
+        {
+          "menuId": "charroi",
+          "label": "Charroi (accès global)",
+          "actions": {
+            "view": true,
+            "create": true,
+            "edit": true,
+            "delete": true,
+            "export": true,
+            "undo": true
+          }
+        },
+        {
+          "menuId": "charroi.vehicules",
+          "label": "Base véhicules",
+          "actions": {
+            "view": true,
+            "create": true,
+            "edit": true,
+            "delete": true,
+            "export": true,
+            "undo": true
+          }
+        },
+        {
+          "menuId": "charroi.achats",
+          "label": "Nouveaux achats",
+          "actions": {
+            "view": true,
+            "create": true,
+            "edit": true,
+            "delete": true,
+            "export": true,
+            "undo": true
+          }
+        },
+        {
+          "menuId": "village.dependants-dashboard",
+          "label": "Dashboard (Village/Kimpese)",
+          "actions": {
+            "view": true,
+            "create": true,
+            "edit": true,
+            "delete": true,
+            "export": true,
+            "undo": true
+          }
+        },
+        {
+          "menuId": "village.dependants-liste",
+          "label": "Liste (Village/Kimpese)",
+          "actions": {
+            "view": true,
+            "create": true,
+            "edit": true,
+            "delete": true,
+            "export": true,
+            "undo": true
+          }
+        },
+        {
+          "menuId": "village.maisons",
+          "label": "Maisons",
+          "actions": {
+            "view": true,
+            "create": true,
+            "edit": true,
+            "delete": true,
+            "export": true,
+            "undo": true
+          }
+        },
+        {
+          "menuId": "village.guest-house",
+          "label": "Guest house — réservations & occupation",
+          "actions": {
+            "view": true,
+            "create": true,
+            "edit": true,
+            "delete": true,
+            "export": true,
+            "undo": true
+          }
+        },
+        {
+          "menuId": "settings.departements",
+          "label": "Départements",
+          "actions": {
+            "view": true,
+            "create": true,
+            "edit": true,
+            "delete": true,
+            "export": true,
+            "undo": true
+          }
+        },
+        {
+          "menuId": "settings.centres",
+          "label": "Centre de coût",
+          "actions": {
+            "view": true,
+            "create": true,
+            "edit": true,
+            "delete": true,
+            "export": true,
+            "undo": true
+          }
+        },
+        {
+          "menuId": "settings.utilisateurs",
+          "label": "Utilisateurs",
+          "actions": {
+            "view": true,
+            "create": true,
+            "edit": true,
+            "delete": true,
+            "export": true,
+            "undo": true
+          }
+        },
+        {
+          "menuId": "settings.permissions",
+          "label": "Permissions",
+          "actions": {
+            "view": true,
+            "create": true,
+            "edit": true,
+            "delete": true,
+            "export": true,
+            "undo": true
+          }
+        },
+        {
+          "menuId": "parametres.logs",
+          "label": "Logs",
+          "actions": {
+            "view": true,
+            "create": true,
+            "edit": true,
+            "delete": true,
+            "export": true,
+            "undo": true
+          }
+        }
+      ],
+      "after": {
+        "userId": "admin",
+        "menus": [
+          {
+            "menuId": "employes.liste",
+            "label": "Liste employés",
+            "actions": {
+              "view": true,
+              "create": true,
+              "edit": true,
+              "delete": true,
+              "export": true,
+              "undo": true
+            }
+          },
+          {
+            "menuId": "employes.dependants",
+            "label": "Dependants",
+            "actions": {
+              "view": true,
+              "create": true,
+              "edit": true,
+              "delete": true,
+              "export": true,
+              "undo": true
+            }
+          },
+          {
+            "menuId": "employes.check-documents",
+            "label": "Check documents",
+            "actions": {
+              "view": true,
+              "create": true,
+              "edit": true,
+              "delete": true,
+              "export": true,
+              "undo": true
+            }
+          },
+          {
+            "menuId": "employes.heures",
+            "label": "HS — Mon timesheet",
+            "actions": {
+              "view": true,
+              "create": true,
+              "edit": true,
+              "delete": true,
+              "export": true,
+              "undo": true
+            }
+          },
+          {
+            "menuId": "employes.heures.dept",
+            "label": "HS — Voir mon département",
+            "actions": {
+              "view": true,
+              "create": true,
+              "edit": true,
+              "delete": true,
+              "export": true,
+              "undo": true
+            }
+          },
+          {
+            "menuId": "employes.heures.all",
+            "label": "HS — Voir tous les départements",
+            "actions": {
+              "view": true,
+              "create": true,
+              "edit": true,
+              "delete": true,
+              "export": true,
+              "undo": true
+            }
+          },
+          {
+            "menuId": "employes.heures.import",
+            "label": "HS — Importer OT",
+            "actions": {
+              "view": true,
+              "create": true,
+              "edit": true,
+              "delete": true,
+              "export": true,
+              "undo": true
+            }
+          },
+          {
+            "menuId": "employes.heures.validate",
+            "label": "HS — Valider OT",
+            "actions": {
+              "view": true,
+              "create": true,
+              "edit": true,
+              "delete": true,
+              "export": true,
+              "undo": true
+            }
+          },
+          {
+            "menuId": "employes.heures.edit-validated",
+            "label": "HS — Modifier OT après validation",
+            "actions": {
+              "view": true,
+              "create": true,
+              "edit": true,
+              "delete": true,
+              "export": true,
+              "undo": true
+            }
+          },
+          {
+            "menuId": "employes.heures.policy",
+            "label": "HS — Appliquer la politique",
+            "actions": {
+              "view": true,
+              "create": true,
+              "edit": true,
+              "delete": true,
+              "export": true,
+              "undo": true
+            }
+          },
+          {
+            "menuId": "employes.heures.export",
+            "label": "HS — Exporter",
+            "actions": {
+              "view": true,
+              "create": true,
+              "edit": true,
+              "delete": true,
+              "export": true,
+              "undo": true
+            }
+          },
+          {
+            "menuId": "employes.heures.simulation",
+            "label": "HS — Simulation",
+            "actions": {
+              "view": true,
+              "create": true,
+              "edit": true,
+              "delete": true,
+              "export": true,
+              "undo": true
+            }
+          },
+          {
+            "menuId": "project.dashboard",
+            "label": "Dashboard",
+            "actions": {
+              "view": true,
+              "create": true,
+              "edit": true,
+              "delete": true,
+              "export": true,
+              "undo": true
+            }
+          },
+          {
+            "menuId": "project.projects",
+            "label": "Projects",
+            "actions": {
+              "view": true,
+              "create": true,
+              "edit": true,
+              "delete": true,
+              "export": true,
+              "undo": true
+            }
+          },
+          {
+            "menuId": "project.expenses",
+            "label": "Expenses details",
+            "actions": {
+              "view": true,
+              "create": true,
+              "edit": true,
+              "delete": true,
+              "export": true,
+              "undo": true
+            }
+          },
+          {
+            "menuId": "travel.historique",
+            "label": "Voyage",
+            "actions": {
+              "view": true,
+              "create": true,
+              "edit": true,
+              "delete": true,
+              "export": true,
+              "undo": true
+            }
+          },
+          {
+            "menuId": "travel.etablir",
+            "label": "Cash request",
+            "actions": {
+              "view": true,
+              "create": true,
+              "edit": true,
+              "delete": true,
+              "export": true,
+              "undo": true
+            }
+          },
+          {
+            "menuId": "travel.attestation",
+            "label": "Attestation de service",
+            "actions": {
+              "view": true,
+              "create": true,
+              "edit": true,
+              "delete": true,
+              "export": true,
+              "undo": true
+            }
+          },
+          {
+            "menuId": "travel.payment-voucher",
+            "label": "Payment voucher",
+            "actions": {
+              "view": true,
+              "create": true,
+              "edit": true,
+              "delete": true,
+              "export": true,
+              "undo": true
+            }
+          },
+          {
+            "menuId": "protocol.visa-travail",
+            "label": "Visa de travail",
+            "actions": {
+              "view": true,
+              "create": true,
+              "edit": true,
+              "delete": true,
+              "export": true,
+              "undo": true
+            }
+          },
+          {
+            "menuId": "protocol.visa-volant",
+            "label": "Visa volant",
+            "actions": {
+              "view": true,
+              "create": true,
+              "edit": true,
+              "delete": true,
+              "export": true,
+              "undo": true
+            }
+          },
+          {
+            "menuId": "protocol.visa-voyage",
+            "label": "Visa de voyage",
+            "actions": {
+              "view": true,
+              "create": true,
+              "edit": true,
+              "delete": true,
+              "export": true,
+              "undo": true
+            }
+          },
+          {
+            "menuId": "protocol.billets",
+            "label": "Gestion des Billets",
+            "actions": {
+              "view": true,
+              "create": true,
+              "edit": true,
+              "delete": true,
+              "export": true,
+              "undo": true
+            }
+          },
+          {
+            "menuId": "factures.fournisseur.liste",
+            "label": "Liste",
+            "actions": {
+              "view": true,
+              "create": true,
+              "edit": true,
+              "delete": true,
+              "export": true,
+              "undo": true
+            }
+          },
+          {
+            "menuId": "factures.fournisseur.factures",
+            "label": "Factures",
+            "actions": {
+              "view": true,
+              "create": true,
+              "edit": true,
+              "delete": true,
+              "export": true,
+              "undo": true
+            }
+          },
+          {
+            "menuId": "factures.fournisseur.soa",
+            "label": "SOA",
+            "actions": {
+              "view": true,
+              "create": true,
+              "edit": true,
+              "delete": true,
+              "export": true,
+              "undo": true
+            }
+          },
+          {
+            "menuId": "factures.fournisseur.fournisseurs",
+            "label": "Fournisseurs",
+            "actions": {
+              "view": true,
+              "create": true,
+              "edit": true,
+              "delete": true,
+              "export": true,
+              "undo": true
+            }
+          },
+          {
+            "menuId": "sante",
+            "label": "Santé",
+            "actions": {
+              "view": true,
+              "create": true,
+              "edit": true,
+              "delete": true,
+              "export": true,
+              "undo": true
+            }
+          },
+          {
+            "menuId": "charroi",
+            "label": "Charroi (accès global)",
+            "actions": {
+              "view": true,
+              "create": true,
+              "edit": true,
+              "delete": true,
+              "export": true,
+              "undo": true
+            }
+          },
+          {
+            "menuId": "charroi.vehicules",
+            "label": "Base véhicules",
+            "actions": {
+              "view": true,
+              "create": true,
+              "edit": true,
+              "delete": true,
+              "export": true,
+              "undo": true
+            }
+          },
+          {
+            "menuId": "charroi.achats",
+            "label": "Nouveaux achats",
+            "actions": {
+              "view": true,
+              "create": true,
+              "edit": true,
+              "delete": true,
+              "export": true,
+              "undo": true
+            }
+          },
+          {
+            "menuId": "village.dependants-dashboard",
+            "label": "Dashboard (Village/Kimpese)",
+            "actions": {
+              "view": true,
+              "create": true,
+              "edit": true,
+              "delete": true,
+              "export": true,
+              "undo": true
+            }
+          },
+          {
+            "menuId": "village.dependants-liste",
+            "label": "Liste (Village/Kimpese)",
+            "actions": {
+              "view": true,
+              "create": true,
+              "edit": true,
+              "delete": true,
+              "export": true,
+              "undo": true
+            }
+          },
+          {
+            "menuId": "village.maisons",
+            "label": "Maisons",
+            "actions": {
+              "view": true,
+              "create": true,
+              "edit": true,
+              "delete": true,
+              "export": true,
+              "undo": true
+            }
+          },
+          {
+            "menuId": "village.guest-house",
+            "label": "Guest house — réservations & occupation",
+            "actions": {
+              "view": true,
+              "create": true,
+              "edit": true,
+              "delete": true,
+              "export": true,
+              "undo": true
+            }
+          },
+          {
+            "menuId": "settings.departements",
+            "label": "Départements",
+            "actions": {
+              "view": true,
+              "create": true,
+              "edit": true,
+              "delete": true,
+              "export": true,
+              "undo": true
+            }
+          },
+          {
+            "menuId": "settings.centres",
+            "label": "Centre de coût",
+            "actions": {
+              "view": true,
+              "create": true,
+              "edit": true,
+              "delete": true,
+              "export": true,
+              "undo": true
+            }
+          },
+          {
+            "menuId": "settings.utilisateurs",
+            "label": "Utilisateurs",
+            "actions": {
+              "view": true,
+              "create": true,
+              "edit": true,
+              "delete": true,
+              "export": true,
+              "undo": true
+            }
+          },
+          {
+            "menuId": "settings.permissions",
+            "label": "Permissions",
+            "actions": {
+              "view": true,
+              "create": true,
+              "edit": true,
+              "delete": true,
+              "export": true,
+              "undo": true
+            }
+          },
+          {
+            "menuId": "parametres.logs",
+            "label": "Logs",
+            "actions": {
+              "view": true,
+              "create": true,
+              "edit": true,
+              "delete": true,
+              "export": true,
+              "undo": true
+            }
+          }
+        ]
+      },
+      "undoable": false,
+      "undone": false
+    },
+    {
       "id": "log-000012",
       "at": "2026-07-29T11:54:30.962Z",
       "userId": "Gedeon.Massadi",
@@ -3397,5 +5361,5 @@
       }
     }
   ],
-  "nextSeq": 13
+  "nextSeq": 15
 }

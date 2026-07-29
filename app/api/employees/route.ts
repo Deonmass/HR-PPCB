@@ -21,6 +21,7 @@ export async function GET() {
     { menuId: 'village.dependants-liste', action: 'view' },
     { menuId: 'village.maisons', action: 'view' },
     { menuId: 'village.guest-house', action: 'view' },
+    { menuId: 'protocol.visa-travail', action: 'view' },
   ]);
   if (denied) return denied;
   try {

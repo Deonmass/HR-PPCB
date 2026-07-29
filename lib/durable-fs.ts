@@ -31,6 +31,7 @@ export const DURABLE_TRAVEL_HISTORY_KEY = 'data/travel/history.json';
 export const DURABLE_CHARROI_VEHICLES_KEY = 'data/charroi/vehicles.json';
 export const DURABLE_CHARROI_ACHATS_KEY = 'data/charroi/achats.json';
 export const DURABLE_AUDIT_LOGS_KEY = 'data/logs/audit.json';
+export const DURABLE_WORK_VISAS_KEY = 'data/protocol/work-visas/store.json';
 
 interface GithubRepoTarget {
   owner: string;

@@ -184,8 +184,8 @@ export async function buildHomeDashboard(menus: MenuPermission[]): Promise<HomeD
     });
   } else if (can(menus, 'travel.etablir')) {
     placeholders.push({
-      label: 'Établir un voyage',
-      description: 'Créer un dossier de mission',
+      label: 'Cash request',
+      description: 'Établir une cash request / dossier de mission',
       href: '/documents-voyage/etablir',
     });
   }
@@ -195,6 +195,22 @@ export async function buildHomeDashboard(menus: MenuPermission[]): Promise<HomeD
       label: 'Attestation de service',
       description: 'Générer et consulter les attestations',
       href: '/documents-voyage/attestation-services',
+    });
+  }
+
+  if (can(menus, 'travel.payment-voucher')) {
+    placeholders.push({
+      label: 'Payment voucher',
+      description: 'Module à venir',
+      href: '/documents-voyage/payment-voucher',
+    });
+  }
+
+  if (can(menus, 'protocol.visa-travail')) {
+    placeholders.push({
+      label: 'Visa de travail',
+      description: 'Protocol',
+      href: '/protocol/visa-travail',
     });
   }
 

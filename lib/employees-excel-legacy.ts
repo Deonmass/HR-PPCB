@@ -195,6 +195,8 @@ function hrFromMasterRow(row: AoaRow) {
     dateFinPeriodeEssai,
     dateFinContrat: formatExcelDateValue(row[EMP_COL.dateFinContrat]),
     raisonExit: str(row[EMP_COL.raisonExit]) || 'NA',
+    cnss: '',
+    nif: '',
   };
 }
 

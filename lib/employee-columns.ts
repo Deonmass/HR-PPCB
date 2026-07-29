@@ -207,6 +207,13 @@ function parseDisplayDateParts(value: string): { y: number; m: number; d: number
   return null;
 }
 
+/** Clé numérique YYYYMMDD pour trier une date affichée (0 si invalide). */
+export function displayDateSortKey(value: string): number {
+  const parts = parseDisplayDateParts(value);
+  if (!parts) return 0;
+  return parts.y * 10000 + parts.m * 100 + parts.d;
+}
+
 /** Date fin période d'essai = date d'embauche + N mois (supporte décimales, ex. 3.5). */
 export function computeFinPeriodeEssai(
   appointmentDate: string,

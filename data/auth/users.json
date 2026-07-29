@@ -191,7 +191,7 @@
         },
         {
           "menuId": "travel.historique",
-          "label": "Voyage — Historique",
+          "label": "Voyage",
           "actions": {
             "view": true,
             "create": true,
@@ -203,7 +203,7 @@
         },
         {
           "menuId": "travel.etablir",
-          "label": "Voyage — Établir",
+          "label": "Cash request",
           "actions": {
             "view": true,
             "create": true,
@@ -216,6 +216,66 @@
         {
           "menuId": "travel.attestation",
           "label": "Attestation de service",
+          "actions": {
+            "view": true,
+            "create": true,
+            "edit": true,
+            "delete": true,
+            "export": true,
+            "undo": true
+          }
+        },
+        {
+          "menuId": "travel.payment-voucher",
+          "label": "Payment voucher",
+          "actions": {
+            "view": true,
+            "create": true,
+            "edit": true,
+            "delete": true,
+            "export": true,
+            "undo": true
+          }
+        },
+        {
+          "menuId": "protocol.visa-travail",
+          "label": "Visa de travail",
+          "actions": {
+            "view": true,
+            "create": true,
+            "edit": true,
+            "delete": true,
+            "export": true,
+            "undo": true
+          }
+        },
+        {
+          "menuId": "protocol.visa-volant",
+          "label": "Visa volant",
+          "actions": {
+            "view": true,
+            "create": true,
+            "edit": true,
+            "delete": true,
+            "export": true,
+            "undo": true
+          }
+        },
+        {
+          "menuId": "protocol.visa-voyage",
+          "label": "Visa de voyage",
+          "actions": {
+            "view": true,
+            "create": true,
+            "edit": true,
+            "delete": true,
+            "export": true,
+            "undo": true
+          }
+        },
+        {
+          "menuId": "protocol.billets",
+          "label": "Gestion des Billets",
           "actions": {
             "view": true,
             "create": true,
@@ -420,78 +480,6 @@
         {
           "menuId": "parametres.logs",
           "label": "Logs",
-          "actions": {
-            "view": true,
-            "create": true,
-            "edit": true,
-            "delete": true,
-            "export": true,
-            "undo": true
-          }
-        },
-        {
-          "menuId": "view",
-          "label": "Voir",
-          "actions": {
-            "view": true,
-            "create": true,
-            "edit": true,
-            "delete": true,
-            "export": true,
-            "undo": true
-          }
-        },
-        {
-          "menuId": "create",
-          "label": "Créer",
-          "actions": {
-            "view": true,
-            "create": true,
-            "edit": true,
-            "delete": true,
-            "export": true,
-            "undo": true
-          }
-        },
-        {
-          "menuId": "edit",
-          "label": "Modifier",
-          "actions": {
-            "view": true,
-            "create": true,
-            "edit": true,
-            "delete": true,
-            "export": true,
-            "undo": true
-          }
-        },
-        {
-          "menuId": "delete",
-          "label": "Supprimer",
-          "actions": {
-            "view": true,
-            "create": true,
-            "edit": true,
-            "delete": true,
-            "export": true,
-            "undo": true
-          }
-        },
-        {
-          "menuId": "export",
-          "label": "Exporter",
-          "actions": {
-            "view": true,
-            "create": true,
-            "edit": true,
-            "delete": true,
-            "export": true,
-            "undo": true
-          }
-        },
-        {
-          "menuId": "undo",
-          "label": "Annuler action",
           "actions": {
             "view": true,
             "create": true,

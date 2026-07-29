@@ -1,4 +1,8 @@
-import { computeAgeFromDisplayDate, RAISON_EXITS } from '@/lib/employee-columns';
+import {
+  computeAgeFromDisplayDate,
+  displayDateSortKey,
+  RAISON_EXITS,
+} from '@/lib/employee-columns';
 import type { Employee } from '@/lib/types';
 
 export interface HrDashCountRow {
@@ -17,6 +21,16 @@ export interface EmployeesExitMonthRow {
   total: number;
 }
 
+export interface EmployeesLatestHireRow {
+  matricule: string;
+  nom: string;
+  appointmentDate: string;
+  departement: string;
+  localisation: string;
+  grade: string;
+  company: string;
+}
+
 export interface EmployeesHrDashboardStats {
   total: number;
   hommes: number;
@@ -25,11 +39,14 @@ export interface EmployeesHrDashboardStats {
   moyEnfants: number | null;
   maries: number;
   parLocalisation: HrDashCountRow[];
+  parCompany: HrDashCountRow[];
   parGenre: HrDashCountRow[];
+  parMaritalStatus: HrDashCountRow[];
   parGrade: HrDashCountRow[];
   parDepartement: HrDashCountRow[];
   parTrancheAge: HrDashCountRow[];
   parNationalite: HrDashCountRow[];
+  derniersArrives: EmployeesLatestHireRow[];
   totalExits: number;
   exitsParRaison: HrDashCountRow[];
   exitsParMois: EmployeesExitMonthRow[];
@@ -92,6 +109,38 @@ function normalizeLabelCase(raw: string): string {
   const n = raw.trim();
   if (!n) return '';
   return n.charAt(0).toUpperCase() + n.slice(1).toLowerCase();
+}
+
+function normalizeMaritalStatus(raw: string): string {
+  const n = raw.trim().toLowerCase().normalize('NFD').replace(/\p{Diacritic}/gu, '');
+  if (!n) return '';
+  if (n.startsWith('marri') || n.startsWith('marie')) return 'Marié(e)';
+  if (n.startsWith('sing') || n.startsWith('celib')) return 'Célibataire';
+  if (n.startsWith('divor')) return 'Divorcé(e)';
+  if (n.startsWith('widow') || n.startsWith('veuf') || n.startsWith('veuv')) return 'Veuf / Veuve';
+  return normalizeLabelCase(raw);
+}
+
+const LATEST_HIRES_LIMIT = 12;
+
+function buildDerniersArrives(employees: Employee[]): EmployeesLatestHireRow[] {
+  return [...employees]
+    .filter((e) => displayDateSortKey(e.appointmentDate) > 0)
+    .sort((a, b) => {
+      const diff = displayDateSortKey(b.appointmentDate) - displayDateSortKey(a.appointmentDate);
+      if (diff !== 0) return diff;
+      return (a.nom || '').localeCompare(b.nom || '', 'fr');
+    })
+    .slice(0, LATEST_HIRES_LIMIT)
+    .map((e) => ({
+      matricule: e.matricule || '—',
+      nom: e.nom || '—',
+      appointmentDate: e.appointmentDate || '—',
+      departement: e.departement || '—',
+      localisation: e.localisation || '—',
+      grade: e.grade || '—',
+      company: e.company || '—',
+    }));
 }
 
 function parseExitMonthKey(dateDisplay: string): string | null {
@@ -204,14 +253,19 @@ export function buildEmployeesHrDashboard(
     moyEnfants: enfantsN ? Math.round((enfantsSum / enfantsN) * 100) / 100 : null,
     maries,
     parLocalisation: countBy(list, (e) => e.localisation || '', { emptyLabel: 'Non renseigné' }),
+    parCompany: countBy(list, (e) => e.company || '', { emptyLabel: '—' }),
     parGenre: [
       { label: 'Hommes', count: hommes },
       { label: 'Femmes', count: femmes },
     ],
+    parMaritalStatus: countBy(list, (e) => normalizeMaritalStatus(e.maritalStatus || ''), {
+      emptyLabel: 'Non renseigné',
+    }),
     parGrade: countBy(list, (e) => e.grade || '', { emptyLabel: '—' }),
     parDepartement: countBy(list, (e) => e.departement || '', { emptyLabel: '—' }),
     parTrancheAge,
     parNationalite: countBy(list, (e) => normalizeLabelCase(e.nationality || ''), { emptyLabel: '—' }),
+    derniersArrives: buildDerniersArrives(list),
     totalExits: exitList.length,
     exitsParRaison,
     exitsParMois: buildExitsParMois(exitList),
@@ -252,6 +306,8 @@ export function employeeToDashboardListRow(employee: Employee) {
       departement: employee.departement || '—',
       grade: employee.grade || '—',
       genre: employee.gender || '—',
+      company: employee.company || '—',
+      embauche: employee.appointmentDate || '—',
       nationalite: employee.nationality || '—',
       raison: employee.raisonExit || '—',
     },

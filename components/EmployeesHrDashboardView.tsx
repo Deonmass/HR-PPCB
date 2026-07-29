@@ -1,14 +1,14 @@
 'use client';
 
-import { useMemo, useState } from 'react';
+import DependantsBarChart, { DependantsBarChartBody } from '@/components/dependants/DependantsBarChart';
+import EmployeesExitMonthlyChart, {
+  EmployeesExitMonthlyChartBody,
+} from '@/components/employees/EmployeesExitMonthlyChart';
+import EmployeesPieChart, { EmployeesPieChartBody } from '@/components/employees/EmployeesPieChart';
 import DashboardListModal, {
   type DashboardListColumn,
   type DashboardListRow,
 } from '@/components/DashboardListModal';
-import DependantsBarChart from '@/components/dependants/DependantsBarChart';
-import EmployeesExitMonthlyChart from '@/components/employees/EmployeesExitMonthlyChart';
-import EmployeesLineChart from '@/components/employees/EmployeesLineChart';
-import EmployeesPieChart from '@/components/employees/EmployeesPieChart';
 import {
   buildEmployeesHrDashboard,
   employeeToDashboardListRow,
@@ -16,6 +16,7 @@ import {
   type EmployeesHrKpiKey,
 } from '@/lib/employees-hr-dashboard';
 import type { Employee } from '@/lib/types';
+import { useMemo, useState, type ReactNode } from 'react';
 
 interface Props {
   employees: Employee[];
@@ -38,14 +39,22 @@ const ACTIVE_COLUMNS: DashboardListColumn[] = [
   { key: 'departement', label: 'Département' },
   { key: 'grade', label: 'Grade' },
   { key: 'genre', label: 'Genre' },
+  { key: 'company', label: 'Company' },
+  { key: 'embauche', label: 'Date d\'embauche' },
 ];
 
 const EXIT_COLUMNS: DashboardListColumn[] = [
   { key: 'matricule', label: 'Matricule' },
   { key: 'nom', label: 'Nom' },
   { key: 'departement', label: 'Département' },
+  { key: 'company', label: 'Company' },
   { key: 'raison', label: 'Motif' },
 ];
+
+const COMPANY_COLORS = ['#2563eb', '#f59e0b'];
+const LOC_COLORS = ['#22d3ee', '#0891b2', '#67e8f9', '#0e7490'];
+const MARITAL_COLORS = ['#8b5cf6', '#06b6d4', '#f472b6', '#94a3b8', '#f59e0b'];
+const AGE_BAR_CLASS = 'employees-bar-fill-age';
 
 function GenderWatermark({ variant }: { variant: 'male' | 'female' }) {
   const female = variant === 'female';
@@ -71,6 +80,10 @@ function GenderWatermark({ variant }: { variant: 'male' | 'female' }) {
   );
 }
 
+function toChartItems(rows: { label: string; count: number }[]) {
+  return rows.map((r) => ({ label: r.label, value: r.count }));
+}
+
 /** Dashboard RH global — KPIs actifs + sorties. */
 export default function EmployeesHrDashboardView({ employees, exits = [] }: Props) {
   const stats = useMemo(
@@ -94,14 +107,39 @@ export default function EmployeesHrDashboardView({ employees, exits = [] }: Prop
     });
   };
 
-  const toChartItems = (rows: { label: string; count: number }[]) =>
-    rows.map((r) => ({ label: r.label, value: r.count }));
-
   const openKpi = (key: EmployeesHrKpiKey, label: string) => {
     const list = employeesForHrKpi(employees, exits, key);
     setDrilldown({
       title: label,
       columns: key === 'totalExits' ? EXIT_COLUMNS : ACTIVE_COLUMNS,
+      rows: list.map(employeeToDashboardListRow),
+    });
+  };
+
+  const activeDeptFilter = (
+    build: (emps: Employee[]) => ReactNode,
+    opts?: { showGenderLegend?: boolean },
+  ) => ({
+    employees,
+    renderFiltered: build,
+    showGenderLegend: opts?.showGenderLegend,
+  });
+
+  const exitDeptFilter = (build: (emps: Employee[]) => ReactNode) => ({
+    employees: exits,
+    renderFiltered: build,
+  });
+
+  const openLatestHires = () => {
+    const order = new Map(
+      stats.derniersArrives.map((row, index) => [row.matricule, index]),
+    );
+    const list = employees
+      .filter((employee) => order.has(employee.matricule))
+      .sort((a, b) => (order.get(a.matricule) ?? 0) - (order.get(b.matricule) ?? 0));
+    setDrilldown({
+      title: 'Derniers arrivés',
+      columns: ACTIVE_COLUMNS,
       rows: list.map(employeeToDashboardListRow),
     });
   };
@@ -142,17 +180,52 @@ export default function EmployeesHrDashboardView({ employees, exits = [] }: Prop
       </div>
 
       <div className="employees-charts-grid">
-        <DependantsBarChart
+        <EmployeesPieChart
+          title="Par company"
+          items={stats.parCompany}
+          colors={COMPANY_COLORS}
+          deptFilter={activeDeptFilter(
+            (emps) => (
+              <EmployeesPieChartBody
+                items={buildEmployeesHrDashboard(emps).parCompany}
+                colors={COMPANY_COLORS}
+              />
+            ),
+            { showGenderLegend: true },
+          )}
+        />
+        <EmployeesPieChart
           title="Par localisation"
-          items={toChartItems(stats.parLocalisation)}
-          barClassName="employees-bar-fill-loc"
-          fitAll
-          compact
+          items={stats.parLocalisation}
+          colors={LOC_COLORS}
+          deptFilter={activeDeptFilter((emps) => (
+            <EmployeesPieChartBody
+              items={buildEmployeesHrDashboard(emps).parLocalisation}
+              colors={LOC_COLORS}
+            />
+          ))}
+        />
+        <EmployeesPieChart
+          title="Par statut marital"
+          items={stats.parMaritalStatus}
+          colors={MARITAL_COLORS}
+          deptFilter={activeDeptFilter((emps) => (
+            <EmployeesPieChartBody
+              items={buildEmployeesHrDashboard(emps).parMaritalStatus}
+              colors={MARITAL_COLORS}
+            />
+          ))}
         />
         <EmployeesPieChart
           title="Par genre"
           items={stats.parGenre}
           colors={['#06b6d4', '#f472b6']}
+          deptFilter={activeDeptFilter((emps) => (
+            <EmployeesPieChartBody
+              items={buildEmployeesHrDashboard(emps).parGenre}
+              colors={['#06b6d4', '#f472b6']}
+            />
+          ))}
         />
         <DependantsBarChart
           title="Par grade"
@@ -160,11 +233,27 @@ export default function EmployeesHrDashboardView({ employees, exits = [] }: Prop
           barClassName="employees-bar-fill-grade"
           fitAll
           compact
+          deptFilter={activeDeptFilter((emps) => (
+            <DependantsBarChartBody
+              items={toChartItems(buildEmployeesHrDashboard(emps).parGrade)}
+              barClassName="employees-bar-fill-grade"
+              fitAll
+            />
+          ))}
         />
-        <EmployeesLineChart
+        <DependantsBarChart
           title="Par tranche d'âge"
-          items={stats.parTrancheAge}
-          color="#a78bfa"
+          items={toChartItems(stats.parTrancheAge)}
+          barClassName={AGE_BAR_CLASS}
+          fitAll
+          compact
+          deptFilter={activeDeptFilter((emps) => (
+            <DependantsBarChartBody
+              items={toChartItems(buildEmployeesHrDashboard(emps).parTrancheAge)}
+              barClassName={AGE_BAR_CLASS}
+              fitAll
+            />
+          ))}
         />
         <DependantsBarChart
           title="Par département"
@@ -172,22 +261,96 @@ export default function EmployeesHrDashboardView({ employees, exits = [] }: Prop
           barClassName="employees-bar-fill-dept"
           fitAll
           compact
+          deptFilter={activeDeptFilter((emps) => (
+            <DependantsBarChartBody
+              items={toChartItems(buildEmployeesHrDashboard(emps).parDepartement)}
+              barClassName="employees-bar-fill-dept"
+              fitAll
+            />
+          ))}
         />
         <EmployeesPieChart
           title="Par nationalité"
           items={stats.parNationalite}
+          deptFilter={activeDeptFilter((emps) => (
+            <EmployeesPieChartBody items={buildEmployeesHrDashboard(emps).parNationalite} />
+          ))}
         />
-        <div className="employees-chart-span">
-          <EmployeesExitMonthlyChart
-            title="Sorties par mois et motif"
-            rows={stats.exitsParMois}
-          />
-        </div>
+        <EmployeesExitMonthlyChart
+          title="Sorties par mois et motif"
+          rows={stats.exitsParMois}
+          deptFilter={exitDeptFilter((emps) => (
+            <EmployeesExitMonthlyChartBody
+              rows={buildEmployeesHrDashboard([], emps).exitsParMois}
+            />
+          ))}
+        />
         <EmployeesPieChart
           title="Motifs de sortie"
           items={stats.exitsParRaison}
           colors={['#f59e0b', '#ef4444', '#8b5cf6', '#06b6d4']}
+          deptFilter={exitDeptFilter((emps) => (
+            <EmployeesPieChartBody
+              items={buildEmployeesHrDashboard([], emps).exitsParRaison}
+              colors={['#f59e0b', '#ef4444', '#8b5cf6', '#06b6d4']}
+            />
+          ))}
         />
+      </div>
+
+      <div className="panel employees-latest-hires-panel">
+        <div className="panel-head">
+          <h3>Derniers arrivés</h3>
+          <div className="employees-latest-hires-head-actions">
+            <span className="employees-latest-hires-hint">Selon la date d&apos;embauche</span>
+            {stats.derniersArrives.length > 0 ? (
+              <button
+                type="button"
+                className="btn btn-ghost employees-latest-hires-open"
+                onClick={openLatestHires}
+              >
+                Voir la liste
+              </button>
+            ) : null}
+          </div>
+        </div>
+        {stats.derniersArrives.length === 0 ? (
+          <p className="empty-state">Aucune date d&apos;embauche disponible.</p>
+        ) : (
+          <div className="employees-latest-hires-table-wrap">
+            <table className="employees-latest-hires-table">
+              <thead>
+                <tr>
+                  <th>Date d&apos;embauche</th>
+                  <th>Matricule</th>
+                  <th>Nom</th>
+                  <th>Département</th>
+                  <th>Localisation</th>
+                  <th>Grade</th>
+                  <th>Company</th>
+                </tr>
+              </thead>
+              <tbody>
+                {stats.derniersArrives.map((row) => (
+                  <tr
+                    key={`${row.matricule}-${row.appointmentDate}`}
+                    className="employees-latest-hires-row"
+                    onClick={openLatestHires}
+                    title="Voir la liste des derniers arrivés"
+                  >
+                    <td>{row.appointmentDate}</td>
+                    <td>{row.matricule}</td>
+                    <td>{row.nom}</td>
+                    <td>{row.departement}</td>
+                    <td>{row.localisation}</td>
+                    <td>{row.grade}</td>
+                    <td title={row.company}>{row.company}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        )}
       </div>
 
       {drilldown && (
