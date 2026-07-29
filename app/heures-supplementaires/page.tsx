@@ -5,7 +5,6 @@ import TimesheetCompilationView from '@/components/overtime/TimesheetCompilation
 import TimesheetDepartmentExportModal from '@/components/overtime/TimesheetDepartmentExportModal';
 import TimesheetManagerView from '@/components/overtime/TimesheetManagerView';
 import TimesheetOvertimeImportModal from '@/components/overtime/TimesheetOvertimeImportModal';
-import TimesheetPlanningView from '@/components/overtime/TimesheetPlanningView';
 import TimesheetPolicyModal from '@/components/overtime/TimesheetPolicyModal';
 import { IconManager } from '@/components/overtime/TimesheetIcons';
 import PermissionGate from '@/components/PermissionGate';
@@ -15,31 +14,19 @@ import { listTimesheetMonthOptions } from '@/lib/timesheet-period';
 import { TIMESHEET_MENU } from '@/lib/timesheet-permissions';
 import type { Employee } from '@/lib/types';
 
-type PageTab = 'planning' | 'overtime' | 'compilation';
+type PageTab = 'overtime' | 'compilation';
 
 const TIMESHEET_DEPT_EXPORT_ANY = [
   { menuId: TIMESHEET_MENU.department, action: 'export' as const },
   { menuId: TIMESHEET_MENU.all, action: 'export' as const },
+  { menuId: TIMESHEET_MENU.export, action: 'export' as const },
+  { menuId: TIMESHEET_MENU.export, action: 'view' as const },
 ];
 
 const TIMESHEET_DEPT_VIEW_ANY = [
   { menuId: TIMESHEET_MENU.department, action: 'view' as const },
   { menuId: TIMESHEET_MENU.all, action: 'view' as const },
 ];
-
-function IconPlanning({ size = 14 }: { size?: number }) {
-  return (
-    <svg viewBox="0 0 24 24" width={size} height={size} fill="none" stroke="currentColor" strokeWidth="2" aria-hidden="true">
-      <rect x="3" y="4" width="18" height="18" rx="2" />
-      <line x1="16" y1="2" x2="16" y2="6" />
-      <line x1="8" y1="2" x2="8" y2="6" />
-      <line x1="3" y1="10" x2="21" y2="10" />
-      <line x1="8" y1="14" x2="8" y2="14.01" />
-      <line x1="12" y1="14" x2="12" y2="14.01" />
-      <line x1="16" y1="14" x2="16" y2="14.01" />
-    </svg>
-  );
-}
 
 function IconCompilation({ size = 14 }: { size?: number }) {
   return (
@@ -57,17 +44,38 @@ export default function HeuresSupplementairesPage() {
   const canViewDept = can(TIMESHEET_MENU.department, 'view') || can(TIMESHEET_MENU.all, 'view');
   const canImportOt =
     can(TIMESHEET_MENU.importOvertime, 'create') ||
+    can(TIMESHEET_MENU.importOvertime, 'view') ||
+    can(TIMESHEET_MENU.importOvertime, 'edit') ||
     Boolean(timesheetAccess.permissions?.importOvertime);
   const canExportDept =
+    can(TIMESHEET_MENU.export, 'export') ||
+    can(TIMESHEET_MENU.export, 'view') ||
     can(TIMESHEET_MENU.department, 'export') ||
     can(TIMESHEET_MENU.all, 'export') ||
     Boolean(timesheetAccess.permissions?.exportDepartment);
+  const canValidateOt =
+    can(TIMESHEET_MENU.validateOvertime, 'edit') ||
+    can(TIMESHEET_MENU.validateOvertime, 'view') ||
+    Boolean(timesheetAccess.permissions?.validateOvertime);
+  const canEditValidated =
+    can(TIMESHEET_MENU.editValidated, 'edit') ||
+    can(TIMESHEET_MENU.editValidated, 'view') ||
+    Boolean(timesheetAccess.permissions?.editValidatedOvertime);
   const canCloseMonth =
-    can(TIMESHEET_MENU.compilation, 'edit') || can(TIMESHEET_MENU.all, 'edit');
+    can(TIMESHEET_MENU.compilation, 'edit') ||
+    can(TIMESHEET_MENU.all, 'edit') ||
+    canValidateOt;
   const canApplyPolicy =
-    can(TIMESHEET_MENU.compilation, 'create') || can(TIMESHEET_MENU.all, 'edit');
+    can(TIMESHEET_MENU.policy, 'edit') ||
+    can(TIMESHEET_MENU.policy, 'view') ||
+    can(TIMESHEET_MENU.compilation, 'create') ||
+    Boolean(timesheetAccess.permissions?.applyPolicy);
+  const canSimulate =
+    can(TIMESHEET_MENU.simulation, 'view') ||
+    can(TIMESHEET_MENU.simulation, 'edit') ||
+    Boolean(timesheetAccess.permissions?.simulation);
 
-  const [pageTab, setPageTab] = useState<PageTab>('planning');
+  const [pageTab, setPageTab] = useState<PageTab>('overtime');
   const [policyOpen, setPolicyOpen] = useState(false);
   const [deptExportOpen, setDeptExportOpen] = useState(false);
   const [otImportOpen, setOtImportOpen] = useState(false);
@@ -96,7 +104,7 @@ export default function HeuresSupplementairesPage() {
   }, []);
 
   useEffect(() => {
-    if (canViewDept) setPageTab('planning');
+    if (canViewDept) setPageTab('overtime');
   }, [canViewDept]);
 
   useEffect(() => {
@@ -136,16 +144,6 @@ export default function HeuresSupplementairesPage() {
                   <PermissionGate anyOf={TIMESHEET_DEPT_VIEW_ANY}>
                     <button
                       type="button"
-                      className={`tab-btn tab-btn-sm tab-btn-icon${pageTab === 'planning' ? ' active' : ''}`}
-                      onClick={() => setPageTab('planning')}
-                    >
-                      <IconPlanning />
-                      Planning Timesheet
-                    </button>
-                  </PermissionGate>
-                  <PermissionGate anyOf={TIMESHEET_DEPT_VIEW_ANY}>
-                    <button
-                      type="button"
                       className={`tab-btn tab-btn-sm tab-btn-icon${pageTab === 'overtime' ? ' active' : ''}`}
                       onClick={() => setPageTab('overtime')}
                     >
@@ -170,15 +168,7 @@ export default function HeuresSupplementairesPage() {
         </div>
 
         <div className="overtime-body overtime-body-scroll">
-          {pageTab === 'planning' ? (
-            <PermissionGate anyOf={TIMESHEET_DEPT_VIEW_ANY}>
-              <TimesheetPlanningView
-                onDepartmentChange={setManagerDepartment}
-                toolbarSlotId="overtime-toolbar-slot"
-                access={timesheetAccess}
-              />
-            </PermissionGate>
-          ) : pageTab === 'overtime' ? (
+          {pageTab === 'overtime' ? (
             <PermissionGate anyOf={TIMESHEET_DEPT_VIEW_ANY}>
               <TimesheetManagerView
                 refreshKey={otRefreshKey}
@@ -189,6 +179,8 @@ export default function HeuresSupplementairesPage() {
                 canExport={canExportDept}
                 onExport={() => setDeptExportOpen(true)}
                 canImportOt={canImportOt}
+                canValidateOt={canValidateOt}
+                canEditValidated={canEditValidated}
                 onImportWeek={(weekIndex) => {
                   setImportWeekIndex(weekIndex);
                   setOtImportOpen(true);
@@ -206,6 +198,7 @@ export default function HeuresSupplementairesPage() {
                 canExport={canExportDept}
                 canClose={canCloseMonth}
                 canApplyPolicy={canApplyPolicy}
+                canSimulate={canSimulate}
                 access={timesheetAccess}
               />
             </PermissionGate>

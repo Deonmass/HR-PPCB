@@ -1,7 +1,9 @@
 import { NextResponse } from 'next/server';
 import {
+  checkTimesheetEditValidatedOvertime,
   checkTimesheetImportOvertime,
   checkTimesheetManagerEdit,
+  checkTimesheetValidateOvertime,
   filterTimesheetEmployees,
   getTimesheetAccessFromSession,
   requireTimesheetDepartmentAccess,
@@ -21,6 +23,8 @@ import {
   lockWeeklyOvertimeWeek,
   saveWeeklyOvertimeWeek,
 } from '@/lib/timesheet-weekly-ot-store';
+import { getAuditActor, withAudit } from '@/lib/with-audit';
+import { logAuditError } from '@/lib/audit-log-store';
 
 function parsePeriod(searchParams: URLSearchParams) {
   const year = Number.parseInt(searchParams.get('year') ?? '', 10);
@@ -103,14 +107,34 @@ export async function PUT(request: Request) {
     const accessResult = await requireTimesheetDepartmentAccess(body.department);
     if ('error' in accessResult && accessResult.error) return accessResult.error;
 
-    const week = await saveWeeklyOvertimeWeek({
-      year: body.year,
-      month: body.month,
-      department: body.department,
-      weekIndex: body.weekIndex,
-      entries: body.entries,
-      userId: userResult.session.user.id,
-    });
+    const canEditLocked = accessResult.access.permissions.editValidatedOvertime;
+
+    const week = await withAudit(
+      {
+        module: 'timesheet.overtimes',
+        action: 'update',
+        summary: `Enregistrement HS semaine ${body.weekIndex} — ${body.department} (${body.month}/${body.year})`,
+        undoable: false,
+        meta: {
+          year: body.year,
+          month: body.month,
+          department: body.department,
+          weekIndex: body.weekIndex,
+        },
+        path: '/api/timesheet/weekly-ot',
+        method: 'PUT',
+      },
+      () =>
+        saveWeeklyOvertimeWeek({
+          year: body.year,
+          month: body.month,
+          department: body.department,
+          weekIndex: body.weekIndex,
+          entries: body.entries,
+          userId: userResult.session.user.id,
+          allowWhenLocked: canEditLocked,
+        }),
+    );
 
     return NextResponse.json({ week });
   } catch (err) {
@@ -153,15 +177,26 @@ export async function POST(request: Request) {
 
         const scopedEmployees = filterTimesheetEmployees(accessResult, department);
         const allowedMatricules = new Set(scopedEmployees.map((employee) => employee.matricule));
-        const { week, imported, skipped } = await importWeeklyOvertimeRows({
-          year,
-          month,
-          department,
-          weekIndex,
-          rows: parsed.rows,
-          allowedMatricules,
-          userId: userResult.session.user.id,
-        });
+        const { week, imported, skipped } = await withAudit(
+          {
+            module: 'timesheet.overtimes',
+            action: 'import',
+            summary: `Import HS semaine ${weekIndex} — ${department}`,
+            undoable: false,
+            path: '/api/timesheet/weekly-ot',
+            method: 'POST',
+          },
+          () =>
+            importWeeklyOvertimeRows({
+              year,
+              month,
+              department,
+              weekIndex,
+              rows: parsed.rows,
+              allowedMatricules,
+              userId: userResult.session.user.id,
+            }),
+        );
         return NextResponse.json({ week, imported, skipped, sheetName: parsed.sheetName });
       }
 
@@ -237,14 +272,26 @@ export async function POST(request: Request) {
       }
 
       const { results: hrResults, importedMatriculeKeys, totalImported, totalSkipped } =
-        await importWeeklyOvertimeBulk({
-          year,
-          month,
-          weekIndex,
-          rowsByDepartment,
-          allowedByDepartment,
-          userId: userResult.session.user.id,
-        });
+        await withAudit(
+          {
+            module: 'timesheet.overtimes',
+            action: 'import',
+            summary: `Import HS bulk semaine ${weekIndex}`,
+            undoable: false,
+            path: '/api/timesheet/weekly-ot',
+            method: 'POST',
+          },
+          () =>
+            importWeeklyOvertimeBulk({
+              year,
+              month,
+              weekIndex,
+              rowsByDepartment,
+              allowedByDepartment,
+              userId: userResult.session.user.id,
+              allowWhenLocked: context.access.permissions.editValidatedOvertime,
+            }),
+        );
 
       const lockedHr = new Set(
         hrResults.filter((item) => item.status === 'locked').map((item) => item.department),
@@ -301,6 +348,15 @@ export async function POST(request: Request) {
         sheetName: parsed.sheetName,
       });
     } catch (err) {
+      await logAuditError({
+        message: err instanceof Error ? err.message : 'Import impossible',
+        details: `Échec import HS: ${err instanceof Error ? err.message : 'Import impossible'}`,
+        module: 'timesheet.overtimes',
+        path: '/api/timesheet/weekly-ot',
+        method: 'POST',
+        stack: err instanceof Error ? err.stack : undefined,
+        user: await getAuditActor(),
+      });
       return NextResponse.json(
         { error: err instanceof Error ? err.message : 'Import impossible' },
         { status: 400 },
@@ -308,7 +364,7 @@ export async function POST(request: Request) {
     }
   }
 
-  const denied = await checkTimesheetManagerEdit();
+  const denied = await checkTimesheetValidateOvertime();
   if (denied) return denied;
 
   try {
@@ -327,13 +383,26 @@ export async function POST(request: Request) {
     const accessResult = await requireTimesheetDepartmentAccess(body.department);
     if ('error' in accessResult && accessResult.error) return accessResult.error;
 
-    const week = await lockWeeklyOvertimeWeek({
-      year: body.year,
-      month: body.month,
-      department: body.department,
-      weekIndex: body.weekIndex,
-      userId: userResult.session.user.id,
-    });
+    const week = await withAudit(
+      {
+        module: 'timesheet.overtimes',
+        action: 'other',
+        actionLabel: 'Confirmation',
+        summary: `Confirmation HS semaine ${body.weekIndex} — ${body.department}`,
+        undoable: false,
+        meta: body,
+        path: '/api/timesheet/weekly-ot',
+        method: 'POST',
+      },
+      () =>
+        lockWeeklyOvertimeWeek({
+          year: body.year,
+          month: body.month,
+          department: body.department,
+          weekIndex: body.weekIndex,
+          userId: userResult.session.user.id,
+        }),
+    );
 
     return NextResponse.json({ week });
   } catch (err) {

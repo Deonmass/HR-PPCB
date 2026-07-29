@@ -330,6 +330,24 @@ export async function deleteVehicule(id: string): Promise<boolean> {
   return true;
 }
 
+/** Restore / upsert a vehicle snapshot (audit undo). */
+export async function restoreVehicule(vehicule: CharroiVehicule): Promise<CharroiVehicule> {
+  const store = await readVehiclesStore();
+  const seq = parseSeq(vehicule.id, 'veh') ?? store.nextSeq;
+  const restored = normalizeVehicule(vehicule, seq, {
+    createdAt: vehicule.createdAt || nowIso(),
+    updatedAt: nowIso(),
+  });
+  const index = store.vehicles.findIndex((item) => item.id === restored.id);
+  if (index >= 0) store.vehicles[index] = restored;
+  else {
+    store.vehicles.push(restored);
+    store.nextSeq = Math.max(store.nextSeq, seq + 1);
+  }
+  await writeVehiclesStore(store);
+  return restored;
+}
+
 export async function listAchats(): Promise<CharroiAchat[]> {
   const store = await readAchatsStore();
   return store.achats;
@@ -377,6 +395,24 @@ export async function deleteAchat(id: string): Promise<boolean> {
   store.achats = next;
   await writeAchatsStore(store);
   return true;
+}
+
+/** Restore / upsert an achat snapshot (audit undo). */
+export async function restoreAchat(achat: CharroiAchat): Promise<CharroiAchat> {
+  const store = await readAchatsStore();
+  const seq = parseSeq(achat.id, 'ach') ?? store.nextSeq;
+  const restored = normalizeAchat(achat, seq, {
+    createdAt: achat.createdAt || nowIso(),
+    updatedAt: nowIso(),
+  });
+  const index = store.achats.findIndex((item) => item.id === restored.id);
+  if (index >= 0) store.achats[index] = restored;
+  else {
+    store.achats.push(restored);
+    store.nextSeq = Math.max(store.nextSeq, seq + 1);
+  }
+  await writeAchatsStore(store);
+  return restored;
 }
 
 /** Replace store contents (seed / import). */

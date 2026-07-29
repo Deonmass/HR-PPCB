@@ -11,10 +11,19 @@ import { clearCellValue, setCellValue } from './xlsx-populate-utils';
 type PopulateWorkbook = Awaited<ReturnType<typeof XlsxPopulate.fromFileAsync>>;
 type PopulateSheet = ReturnType<PopulateWorkbook['sheet']>;
 
+/** Day calendar columns B..AF (31 slots). */
 const DAY_START_COL = 2; // B
-const DAY_END_COL = 32; // AF (31 day slots)
-const KIMPESE_HEADER_ROW = 26;
-const KIMPESE_DATA_START = 27;
+const DAY_END_COL = 32; // AF
+const TOTAL_COL = 33; // AG
+const RATE_COL = 34; // AH
+
+/** Updated Guesthouse_template.xlsx layout (Gestion). */
+const BAT1_ROOM_ROWS = { start: 4, end: 10 } as const;
+const BAT2_ROOM_ROWS = { start: 14, end: 21 } as const;
+const DATE_HEADER_ROW = 2; // serial dates (B2 seed, C2… = B2+1)
+const KIMPESE_HEADER_ROW = 30;
+const KIMPESE_DATA_START = 32;
+const KIMPESE_DATA_END = 38;
 
 function colLetter(col1Based: number): string {
   let n = col1Based;
@@ -69,41 +78,83 @@ function guestNameOnDay(
   return hit?.personName ?? '';
 }
 
-function clearDayCells(sheet: PopulateSheet, row: number): void {
-  for (let col = DAY_START_COL; col <= DAY_END_COL; col += 1) {
-    const address = cellAddress(row, col);
-    const cell = sheet.cell(address);
-    let formula: string | undefined;
-    try {
-      formula = (cell as unknown as { formula(): string | undefined }).formula() || undefined;
-    } catch {
-      formula = undefined;
-    }
-    if (formula) continue;
-    clearCellValue(sheet, address);
+function getCellFormula(sheet: PopulateSheet, row: number, col: number): string | undefined {
+  try {
+    return (sheet.cell(row, col) as unknown as { formula(): string | undefined }).formula() || undefined;
+  } catch {
+    return undefined;
   }
 }
 
+/** Clear a cell without leaving "" (COUNTA counts empty strings). */
+function clearDayCell(sheet: PopulateSheet, row: number, col: number): void {
+  if (getCellFormula(sheet, row, col)) return;
+  try {
+    sheet.cell(row, col).value(null);
+  } catch {
+    clearCellValue(sheet, cellAddress(row, col));
+  }
+}
+
+function clearDayCells(sheet: PopulateSheet, row: number): void {
+  for (let col = DAY_START_COL; col <= DAY_END_COL; col += 1) {
+    clearDayCell(sheet, row, col);
+  }
+}
+
+/**
+ * Seed month on row 2 only (B2 = 1st day). Keep C2… formulas (B2+1) when present.
+ * Clear day columns beyond the month length so they stay truly empty.
+ */
 function writeDayHeaders(sheet: PopulateSheet, days: string[]): void {
+  const first = days[0];
+  if (!first) return;
+  const serial = isoToExcelSerial(first);
+  sheet.cell(DATE_HEADER_ROW, DAY_START_COL).value(serial);
+  try {
+    sheet.cell(DATE_HEADER_ROW, DAY_START_COL).style('numberFormat', '[$-409]d\\-mmm;@');
+  } catch {
+    // ignore
+  }
+
   for (let i = 0; i < 31; i += 1) {
     const col = DAY_START_COL + i;
     const iso = days[i];
-    const addr1 = cellAddress(1, col);
-    const addr2 = cellAddress(2, col);
     if (iso) {
-      const serial = isoToExcelSerial(iso);
-      sheet.cell(addr1).value(serial);
-      sheet.cell(addr2).value(serial);
-      try {
-        sheet.cell(addr1).style('numberFormat', '[$-409]d\\-mmm;@');
-        sheet.cell(addr2).style('numberFormat', '[$-409]d\\-mmm;@');
-      } catch {
-        // ignore
+      // Prefer keeping chain formulas after B2; force-write value if no formula.
+      const formula = getCellFormula(sheet, DATE_HEADER_ROW, col);
+      if (!formula || col === DAY_START_COL) {
+        sheet.cell(DATE_HEADER_ROW, col).value(isoToExcelSerial(iso));
+        try {
+          sheet.cell(DATE_HEADER_ROW, col).style('numberFormat', '[$-409]d\\-mmm;@');
+        } catch {
+          // ignore
+        }
       }
     } else {
-      clearCellValue(sheet, addr1);
-      clearCellValue(sheet, addr2);
+      // Beyond month length — clear header so unused day slots stay blank
+      try {
+        sheet.cell(DATE_HEADER_ROW, col).value(null);
+      } catch {
+        clearCellValue(sheet, cellAddress(DATE_HEADER_ROW, col));
+      }
     }
+  }
+}
+
+/** AG = count of occupied days; AH = occupation / daysInMonth as %. */
+function writeRoomTotalFormulas(sheet: PopulateSheet, row: number, daysCount: number): void {
+  const dayRange = `B${row}:AF${row}`;
+  // COUNTIF ignores truly blank cells (null). Avoids "" leftovers if any remain.
+  sheet.cell(row, TOTAL_COL).formula(`COUNTIF(${dayRange},"<>")`);
+  // Prefer calendar days from B2; fall back to explicit month length.
+  sheet.cell(row, RATE_COL).formula(
+    `IFERROR(AG${row}/IFERROR(DAY(EOMONTH($B$2,0)),${daysCount}),0)`,
+  );
+  try {
+    sheet.cell(row, RATE_COL).style('numberFormat', '0%');
+  } catch {
+    // ignore
   }
 }
 
@@ -113,28 +164,74 @@ function fillRoomRow(
   roomId: string,
   reservations: GuestReservation[],
   days: string[],
+  daysCount: number,
 ): void {
   clearDayCells(sheet, row);
   for (let i = 0; i < days.length && i < 31; i += 1) {
     const name = guestNameOnDay(reservations, roomId, days[i]!);
     if (name) setCellValue(sheet, cellAddress(row, DAY_START_COL + i), name);
   }
+  writeRoomTotalFormulas(sheet, row, daysCount);
+}
+
+function normalizeRoomLabel(value: string): string {
+  return value.trim().toLowerCase().replace(/\s+/g, ' ');
+}
+
+function buildLabelToRowMap(sheet: PopulateSheet): Map<string, number> {
+  const labelToRow = new Map<string, number>();
+  const ranges = [
+    [BAT1_ROOM_ROWS.start, BAT1_ROOM_ROWS.end],
+    [BAT2_ROOM_ROWS.start, BAT2_ROOM_ROWS.end],
+  ] as const;
+  for (const [start, end] of ranges) {
+    for (let row = start; row <= end; row += 1) {
+      const label = String(sheet.cell(row, 1).value() ?? '').trim();
+      if (!label.toLowerCase().startsWith('room #')) continue;
+      labelToRow.set(normalizeRoomLabel(label), row);
+    }
+  }
+  return labelToRow;
+}
+
+function resolveOnsiteRow(
+  room: GuestRoom,
+  labelToRow: Map<string, number>,
+): number | undefined {
+  const fromLabel = labelToRow.get(normalizeRoomLabel(room.templateLabel || roomDisplayName(room)));
+  if (fromLabel) return fromLabel;
+
+  // Stale templateRow from previous template layout (rooms were 1 row higher)
+  const stale = room.templateRow;
+  if (typeof stale === 'number') {
+    if (stale >= 3 && stale <= 9) return stale + 1; // Batiment #1: 3→4 … 9→10
+    if (stale >= 13 && stale <= 20) return stale + 1; // Batiment #2: 13→14 … 20→21
+    if (
+      (stale >= BAT1_ROOM_ROWS.start && stale <= BAT1_ROOM_ROWS.end)
+      || (stale >= BAT2_ROOM_ROWS.start && stale <= BAT2_ROOM_ROWS.end)
+    ) {
+      return stale;
+    }
+  }
+  return undefined;
 }
 
 function clearKimpeseBlock(sheet: PopulateSheet): void {
-  for (let row = KIMPESE_DATA_START; row <= KIMPESE_DATA_START + 40; row += 1) {
-    clearCellValue(sheet, cellAddress(row, 1));
+  for (let row = KIMPESE_DATA_START; row <= KIMPESE_DATA_END + 5; row += 1) {
+    try {
+      sheet.cell(row, 1).value(null);
+    } catch {
+      clearCellValue(sheet, cellAddress(row, 1));
+    }
     clearDayCells(sheet, row);
-    for (const col of [33, 34]) {
-      const address = cellAddress(row, col);
-      const cell = sheet.cell(address);
-      let formula: string | undefined;
-      try {
-        formula = (cell as unknown as { formula(): string | undefined }).formula() || undefined;
-      } catch {
-        formula = undefined;
+    for (const col of [TOTAL_COL, RATE_COL]) {
+      if (!getCellFormula(sheet, row, col)) {
+        try {
+          sheet.cell(row, col).value(null);
+        } catch {
+          clearCellValue(sheet, cellAddress(row, col));
+        }
       }
-      if (!formula) clearCellValue(sheet, address);
     }
   }
 }
@@ -144,9 +241,9 @@ function writeKimpeseSection(
   hotels: GuestRoom[],
   reservations: GuestReservation[],
   days: string[],
+  daysCount: number,
 ): void {
-  // Ensure header
-  sheet.cell(KIMPESE_HEADER_ROW, 1).value(KIMPESE_BUILDING);
+  sheet.cell(KIMPESE_HEADER_ROW, 1).value('HORS GUEST HOUSE');
   try {
     sheet.cell(KIMPESE_HEADER_ROW, 1).style({
       bold: true,
@@ -160,16 +257,10 @@ function writeKimpeseSection(
 
   hotels.forEach((hotel, index) => {
     const row = KIMPESE_DATA_START + index;
+    if (row > KIMPESE_DATA_END) return;
     const label = hotel.hotelName || hotel.roomName || roomDisplayName(hotel);
     sheet.cell(row, 1).value(label);
-    fillRoomRow(sheet, row, hotel.id, reservations, days);
-    // Totals like on-site rooms
-    try {
-      sheet.cell(row, 33).formula(`COUNTA(B${row}:AF${row})`);
-      sheet.cell(row, 34).formula(`AG${row}*100/28`);
-    } catch {
-      // ignore
-    }
+    fillRoomRow(sheet, row, hotel.id, reservations, days, daysCount);
   });
 }
 
@@ -208,6 +299,7 @@ export async function buildGuestHouseTemplateExportBuffer(
 
   const { year, month, key } = resolveGuestHouseExportMonth(monthParam);
   const days = monthDayIsos(year, month);
+  const daysCount = days.length;
   const workbook = await XlsxPopulate.fromFileAsync(templatePath);
   const sheet = workbook.sheet(0);
   try {
@@ -218,46 +310,34 @@ export async function buildGuestHouseTemplateExportBuffer(
 
   writeDayHeaders(sheet, days);
 
-  // Map existing template labels → row for rooms without templateRow
-  const labelToRow = new Map<string, number>();
-  for (let row = 3; row <= 20; row += 1) {
-    const label = String(sheet.cell(row, 1).value() ?? '').trim().toLowerCase();
-    if (label.startsWith('room #')) labelToRow.set(label, row);
-  }
-
+  const labelToRow = buildLabelToRowMap(sheet);
   const onsite = data.rooms.filter(isOnsite);
+  const usedRows = new Set<number>();
+
   for (const room of onsite) {
-    let row = room.templateRow;
-    if (!row || row < 3) {
-      const key = (room.templateLabel || '').trim().toLowerCase();
-      row = key ? labelToRow.get(key) : undefined;
-    }
-    if (!row || row < 3) continue;
+    const row = resolveOnsiteRow(room, labelToRow);
+    if (!row) continue;
+    usedRows.add(row);
     setCellValue(sheet, cellAddress(row, 1), room.templateLabel || roomDisplayName(room));
-    fillRoomRow(sheet, row, room.id, data.reservations, days);
+    fillRoomRow(sheet, row, room.id, data.reservations, days, daysCount);
   }
 
-  // Clear leftover guest names on onsite room rows not covered (keep structure)
-  for (let row = 3; row <= 9; row += 1) {
-    const label = String(sheet.cell(row, 1).value() ?? '').trim();
-    if (!label.toLowerCase().startsWith('room #')) continue;
-    const matched = onsite.some((room) => room.templateRow === row
-      || (room.templateLabel || '').trim().toLowerCase() === label.toLowerCase());
-    if (!matched) clearDayCells(sheet, row);
-  }
-  for (let row = 13; row <= 20; row += 1) {
-    const label = String(sheet.cell(row, 1).value() ?? '').trim();
-    if (!label.toLowerCase().startsWith('room #')) continue;
-    const matched = onsite.some((room) => room.templateRow === row
-      || (room.templateLabel || '').trim().toLowerCase() === label.toLowerCase());
-    if (!matched) clearDayCells(sheet, row);
+  // Clear leftover guest names on unused onsite room rows; refresh AG/AH formulas
+  for (const { start, end } of [BAT1_ROOM_ROWS, BAT2_ROOM_ROWS]) {
+    for (let row = start; row <= end; row += 1) {
+      const label = String(sheet.cell(row, 1).value() ?? '').trim();
+      if (!label.toLowerCase().startsWith('room #')) continue;
+      if (!usedRows.has(row)) {
+        clearDayCells(sheet, row);
+      }
+      writeRoomTotalFormulas(sheet, row, daysCount);
+    }
   }
 
-  clearCellValue(sheet, cellAddress(KIMPESE_HEADER_ROW, 2));
   const kimpeseHotels = data.rooms
     .filter((room) => !isOnsite(room))
     .sort((a, b) => (a.sortOrder || 0) - (b.sortOrder || 0));
-  writeKimpeseSection(sheet, kimpeseHotels, data.reservations, days);
+  writeKimpeseSection(sheet, kimpeseHotels, data.reservations, days, daysCount);
 
   const output = await workbook.outputAsync();
   return { buffer: Buffer.from(output), monthKey: key };

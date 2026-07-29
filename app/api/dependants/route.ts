@@ -3,6 +3,7 @@ import { createDependant, readDependantsData } from '@/lib/dependants-json-store
 import type { DependantFormData } from '@/lib/dependants-types';
 import { excelErrorResponse } from '@/lib/excel-io';
 import { checkAnyPermission } from '@/lib/require-permission';
+import { withAudit } from '@/lib/with-audit';
 
 export async function GET() {
   const denied = await checkAnyPermission([
@@ -33,7 +34,21 @@ export async function POST(request: Request) {
     if (!body.matricule || !body.nom || !body.statut) {
       return NextResponse.json({ error: 'Matricule, nom et statut requis' }, { status: 400 });
     }
-    const created = await createDependant(body);
+    const created = await withAudit(
+      {
+        module: 'dependants',
+        action: 'create',
+        entityType: 'dependant',
+        entityId: (result) => String((result as { id?: number })?.id ?? ''),
+        summary: (result) => {
+          const d = result as { nom?: string; matricule?: string; id?: number };
+          return `Création dépendant ${d.nom || d.id} (${d.matricule})`;
+        },
+        path: '/api/dependants',
+        method: 'POST',
+      },
+      () => createDependant(body),
+    );
     return NextResponse.json(created, { status: 201 });
   } catch (err) {
     const { status, message } = excelErrorResponse(err);

@@ -180,6 +180,7 @@ const NAV: NavSection[] = [
       { href: '/parametres/centres-de-cout', label: 'Centre de coût', icon: 'settings', menuId: 'settings.centres' },
       { href: '/parametres/utilisateurs', label: 'Utilisateurs', icon: 'users', menuId: 'settings.utilisateurs' },
       { href: '/parametres/permissions', label: 'Permissions', icon: 'docs', menuId: 'settings.permissions' },
+      { href: '/parametres/logs', label: 'Logs', icon: 'history', menuId: 'parametres.logs' },
     ],
   },
 ];

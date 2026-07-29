@@ -12,6 +12,7 @@ import {
 } from '@/lib/auth-store';
 import { checkAnyPermission, checkPermission } from '@/lib/require-permission';
 import type { MenuPermission, PermissionsData } from '@/lib/auth-types';
+import { withAudit } from '@/lib/with-audit';
 
 export async function GET(request: Request) {
   const { searchParams } = new URL(request.url);
@@ -55,7 +56,18 @@ export async function POST(request: Request) {
       if (!body.roleName?.trim()) {
         return NextResponse.json({ error: 'Nom du rôle requis' }, { status: 400 });
       }
-      const role = await createPermissionRole(body.roleName);
+      const role = await withAudit(
+        {
+          module: 'settings.permissions',
+          action: 'create',
+          summary: `Création rôle ${body.roleName.trim()}`,
+          entityId: (result) => (result as { id?: string })?.id,
+          undoable: false,
+          path: '/api/auth/permissions',
+          method: 'POST',
+        },
+        () => createPermissionRole(body.roleName),
+      );
       return NextResponse.json(role);
     }
 
@@ -63,7 +75,18 @@ export async function POST(request: Request) {
       if (!body.roleId || !body.userId) {
         return NextResponse.json({ error: 'Rôle et utilisateur requis' }, { status: 400 });
       }
-      const saved = await applyRoleToUser(body.roleId, body.userId);
+      const saved = await withAudit(
+        {
+          module: 'settings.permissions',
+          action: 'update',
+          summary: `Application rôle ${body.roleId} → utilisateur ${body.userId}`,
+          undoable: false,
+          meta: { roleId: body.roleId, userId: body.userId },
+          path: '/api/auth/permissions',
+          method: 'POST',
+        },
+        () => applyRoleToUser(body.roleId, body.userId),
+      );
       return NextResponse.json(saved);
     }
 
@@ -84,16 +107,52 @@ export async function PUT(request: Request) {
       | { roleId: string; menus: MenuPermission[] };
 
     if ('roleId' in body && body.roleId && body.menus) {
-      const saved = await saveRolePermissionsData(body.roleId, body.menus);
+      const before = await getRolePermissionsById(body.roleId);
+      const saved = await withAudit(
+        {
+          module: 'settings.permissions',
+          action: 'update',
+          summary: `Modification permissions rôle ${body.roleId}`,
+          getBefore: async () => before,
+          undoable: false,
+          path: '/api/auth/permissions',
+          method: 'PUT',
+        },
+        () => saveRolePermissionsData(body.roleId, body.menus),
+      );
       return NextResponse.json(saved);
     }
 
     if ('userId' in body && body.userId && body.menus) {
-      const saved = await saveUserPermissions(body.userId, body.menus);
+      const before = await getUserPermissions(body.userId);
+      const saved = await withAudit(
+        {
+          module: 'settings.permissions',
+          action: 'update',
+          summary: `Modification permissions utilisateur ${body.userId}`,
+          getBefore: async () => before,
+          undoable: false,
+          path: '/api/auth/permissions',
+          method: 'PUT',
+        },
+        () => saveUserPermissions(body.userId, body.menus),
+      );
       return NextResponse.json(saved);
     }
 
-    const saved = await savePermissions(body as PermissionsData);
+    const before = await getPermissions();
+    const saved = await withAudit(
+      {
+        module: 'settings.permissions',
+        action: 'update',
+        summary: 'Modification matrice de permissions',
+        getBefore: async () => before,
+        undoable: false,
+        path: '/api/auth/permissions',
+        method: 'PUT',
+      },
+      () => savePermissions(body as PermissionsData),
+    );
     return NextResponse.json(saved);
   } catch (err) {
     const message = err instanceof Error ? err.message : 'Erreur';

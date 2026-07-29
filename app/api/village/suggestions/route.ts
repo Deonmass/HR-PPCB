@@ -6,6 +6,7 @@ import {
   readAffectationSuggestions,
   upsertAffectationSuggestion,
 } from '@/lib/village-affectation-suggestions';
+import { withAudit } from '@/lib/with-audit';
 
 const VIEW = [
   { menuId: 'village.maisons', action: 'view' as const },
@@ -42,13 +43,32 @@ export async function POST(request: Request) {
       nom?: string;
       commentaire?: string;
     };
-    const saved = await upsertAffectationSuggestion({
-      id: body.id,
-      numeroVilla: body.numeroVilla ?? '',
-      matricule: body.matricule ?? '',
-      nom: body.nom,
-      commentaire: body.commentaire,
-    });
+    const existing = body.id
+      ? (await readAffectationSuggestions()).find((s) => s.id === body.id)
+      : undefined;
+    const saved = await withAudit(
+      {
+        module: 'village.assign',
+        action: existing ? 'update' : 'create',
+        entityType: 'village.suggestion',
+        entityId: (result) => (result as { id?: string })?.id,
+        summary: (result) => {
+          const s = result as { numeroVilla?: string; matricule?: string; id?: string };
+          return `${existing ? 'Modification' : 'Création'} suggestion ${s.numeroVilla || s.id}`;
+        },
+        getBefore: async () => existing ?? null,
+        path: '/api/village/suggestions',
+        method: 'POST',
+      },
+      () =>
+        upsertAffectationSuggestion({
+          id: body.id,
+          numeroVilla: body.numeroVilla ?? '',
+          matricule: body.matricule ?? '',
+          nom: body.nom,
+          commentaire: body.commentaire,
+        }),
+    );
     return NextResponse.json(saved);
   } catch (err) {
     const { status, message } = excelErrorResponse(err);
@@ -62,7 +82,21 @@ export async function DELETE(request: Request) {
   try {
     const { searchParams } = new URL(request.url);
     const id = searchParams.get('id') ?? '';
-    const ok = await deleteAffectationSuggestion(id);
+    const before = (await readAffectationSuggestions()).find((s) => s.id === id);
+    const ok = await withAudit(
+      {
+        module: 'village.assign',
+        action: 'delete',
+        entityType: 'village.suggestion',
+        entityId: id,
+        summary: `Suppression suggestion ${id}`,
+        getBefore: async () => before ?? null,
+        getAfter: () => null,
+        path: '/api/village/suggestions',
+        method: 'DELETE',
+      },
+      () => deleteAffectationSuggestion(id),
+    );
     if (!ok) return NextResponse.json({ error: 'Suggestion introuvable' }, { status: 404 });
     return NextResponse.json({ ok: true });
   } catch (err) {

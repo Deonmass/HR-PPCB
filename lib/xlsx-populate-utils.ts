@@ -11,7 +11,8 @@ export function clearCellValue(
   sheet: { cell(address: string): { value(value?: unknown): unknown } },
   address: string,
 ): void {
-  sheet.cell(address).value('');
+  // Use null (not "") — Excel COUNTA counts empty strings as non-blank.
+  sheet.cell(address).value(null);
 }
 
 export function parseExcelDate(value: string): Date | string {

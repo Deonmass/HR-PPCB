@@ -5,6 +5,8 @@ import {
 import { checkAnyPermission } from '@/lib/require-permission';
 import type { TravelFormFields } from '@/lib/travel-form';
 import type { CashRequestLine, CashRequestRecord } from '@/lib/travel-types';
+import { withAudit, getAuditActor } from '@/lib/with-audit';
+import { logAuditError } from '@/lib/audit-log-store';
 
 type StreamEvent =
   | TravelGenerationProgressEvent
@@ -54,21 +56,51 @@ export async function POST(request: Request) {
       };
 
       try {
-        const record = await createTravelDocuments(
+        const record = await withAudit(
           {
-            employeeMatricule: body.employeeMatricule ?? '',
-            employeeName: body.employeeName ?? '',
-            employeeDepartment: body.employeeDepartment ?? '',
-            travel: body.travel!,
-            lines: body.lines ?? [],
-            saveDirectory: body.saveDirectory,
-            selectedDocuments: body.selectedDocuments,
+            module: 'travel.etablir',
+            action: 'create',
+            entityType: 'travel.cash-request',
+            entityId: (result) => (result as CashRequestRecord)?.id,
+            summary: (result) => {
+              const r = result as CashRequestRecord;
+              return `Génération documents voyage ${r.missionRef || r.id}`;
+            },
+            details: (_r, _b, after) => {
+              const r = after as CashRequestRecord | undefined;
+              return `Documents générés (SSE) pour ${r?.employeeName || body.employeeName || '—'} (${r?.missionRef || '—'})`;
+            },
+            undoable: false,
+            path: '/api/travel/cash-requests/generate',
+            method: 'POST',
+            logErrors: false,
           },
-          (event) => emit(event),
+          () =>
+            createTravelDocuments(
+              {
+                employeeMatricule: body.employeeMatricule ?? '',
+                employeeName: body.employeeName ?? '',
+                employeeDepartment: body.employeeDepartment ?? '',
+                travel: body.travel!,
+                lines: body.lines ?? [],
+                saveDirectory: body.saveDirectory,
+                selectedDocuments: body.selectedDocuments,
+              },
+              (event) => emit(event),
+            ),
         );
         emit({ type: 'done', record });
       } catch (err) {
         const message = err instanceof Error ? err.message : 'Erreur';
+        await logAuditError({
+          message,
+          details: `Échec génération documents voyage: ${message}`,
+          module: 'travel.etablir',
+          path: '/api/travel/cash-requests/generate',
+          method: 'POST',
+          stack: err instanceof Error ? err.stack : undefined,
+          user: await getAuditActor(),
+        });
         emit({ type: 'error', message });
       } finally {
         controller.close();

@@ -7,6 +7,7 @@ import {
   openFileLocation,
   openFolder,
 } from '@/lib/windows-shell';
+import { auditSimpleAction } from '@/lib/with-audit';
 
 export async function POST(request: Request) {
   const denied = await checkAnyPermission([
@@ -14,7 +15,8 @@ export async function POST(request: Request) {
     { menuId: 'travel.historique', action: 'view' },
   ]);
   if (denied) return denied;
-  try {    const body = (await request.json()) as { filePath?: string; directoryPath?: string };
+  try {
+    const body = (await request.json()) as { filePath?: string; directoryPath?: string };
     const directoryPath = body.directoryPath?.trim();
     const filePath = body.filePath?.trim();
 
@@ -29,6 +31,12 @@ export async function POST(request: Request) {
       }
 
       await openFolder(resolved);
+      await auditSimpleAction({
+        module: 'travel.etablir',
+        action: 'other',
+        summary: 'Ouverture dossier voyage',
+        details: `Dossier ouvert : ${resolved}`,
+      });
       return NextResponse.json({ opened: true, directoryPath: resolved });
     }
 
@@ -46,6 +54,12 @@ export async function POST(request: Request) {
     }
 
     await openFileLocation(resolved);
+    await auditSimpleAction({
+      module: 'travel.historique',
+      action: 'other',
+      summary: 'Ouverture emplacement fichier voyage',
+      details: `Emplacement ouvert : ${resolved}`,
+    });
     return NextResponse.json({ opened: true, filePath: resolved });
   } catch (err) {
     const message = err instanceof Error ? err.message : 'Impossible d\'ouvrir l\'emplacement';

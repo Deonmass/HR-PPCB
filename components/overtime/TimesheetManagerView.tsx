@@ -33,7 +33,7 @@ function matchesDepartment(employeeDepartment: string, selectedDepartment: strin
   return employeeDepartment.trim().toLowerCase() === selectedDepartment.trim().toLowerCase();
 }
 
-const WEEK_LABELS = ['Semaine 1', 'Semaine 2', 'Semaine 3', 'Semaine 4', 'Semaine 5'];
+const WEEK_LABELS = ['Semaine 1', 'Semaine 2', 'Semaine 3', 'Semaine 4'];
 
 interface Props {
   onDepartmentChange?: (department: string) => void;
@@ -44,6 +44,8 @@ interface Props {
   canExport?: boolean;
   onExport?: () => void;
   canImportOt?: boolean;
+  canValidateOt?: boolean;
+  canEditValidated?: boolean;
   onImportWeek?: (weekIndex: number) => void;
   access?: {
     loading: boolean;
@@ -62,6 +64,8 @@ export default function TimesheetManagerView({
   canExport = false,
   onExport,
   canImportOt = false,
+  canValidateOt = false,
+  canEditValidated = false,
   onImportWeek,
   access,
 }: Props) {
@@ -332,7 +336,7 @@ export default function TimesheetManagerView({
                 style={{ top: cardMenu.top, left: cardMenu.left }}
                 role="menu"
               >
-                {(isLocked || !canEdit) ? (
+                {(isLocked || !canEdit) && !canEditValidated ? (
                   <button
                     type="button"
                     role="menuitem"
@@ -346,7 +350,7 @@ export default function TimesheetManagerView({
                     Voir
                   </button>
                 ) : null}
-                {canEdit && !isLocked ? (
+                {(canEdit && !isLocked) || (isLocked && canEditValidated) ? (
                   <button
                     type="button"
                     role="menuitem"
@@ -357,10 +361,10 @@ export default function TimesheetManagerView({
                     }}
                   >
                     <IconEye size={15} />
-                    {isImported ? 'Modifier les OT' : 'Saisir les OT'}
+                    {isLocked ? 'Modifier OT (après validation)' : isImported ? 'Modifier les OT' : 'Saisir les OT'}
                   </button>
                 ) : null}
-                {canEdit && !isLocked && isImported ? (
+                {canValidateOt && !isLocked && isImported ? (
                   <button
                     type="button"
                     role="menuitem"
@@ -371,7 +375,7 @@ export default function TimesheetManagerView({
                     }}
                   >
                     <IconWeekDone size={15} />
-                    Confirmer les OT
+                    Confirmer / Valider les OT
                   </button>
                 ) : null}
                 {isLocked ? (
@@ -385,7 +389,7 @@ export default function TimesheetManagerView({
                     OT confirmés — verrouillé
                   </button>
                 ) : null}
-                {canImportOt && !isLocked ? (
+                {canImportOt && (!isLocked || canEditValidated) ? (
                   <button
                     type="button"
                     role="menuitem"

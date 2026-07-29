@@ -11,6 +11,8 @@ import {
   buildDepartmentTimesheetWorkbookBuffer,
   buildTimesheetWorkbookBuffer,
 } from '@/lib/timesheet-export.server';
+import { auditSimpleAction, getAuditActor } from '@/lib/with-audit';
+import { logAuditError } from '@/lib/audit-log-store';
 
 type ExportRequestBody =
   | ({ mode: 'employee' } & TimesheetExportPayload)
@@ -43,6 +45,12 @@ export async function POST(request: Request) {
         ...body,
         employees: filteredEmployees,
       });
+      await auditSimpleAction({
+        module: 'timesheet',
+        action: 'export',
+        summary: `Export timesheet département ${body.department}`,
+        details: `Export département ${body.department} — ${body.period.month}/${body.period.year}`,
+      });
       return new NextResponse(new Uint8Array(buffer), {
         headers: {
           'Content-Type': 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
@@ -60,6 +68,12 @@ export async function POST(request: Request) {
       const localisation =
         accessResult.employees.find((employee) => employee.matricule === body.matricule)?.localisation ?? '';
       const buffer = await buildTimesheetWorkbookBuffer({ ...body, localisation });
+      await auditSimpleAction({
+        module: 'timesheet',
+        action: 'export',
+        summary: `Export timesheet employé ${body.matricule}`,
+        details: `Export individuel ${body.matricule} — ${body.period.month}/${body.period.year}`,
+      });
       return new NextResponse(new Uint8Array(buffer), {
         headers: {
           'Content-Type': 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
@@ -70,6 +84,15 @@ export async function POST(request: Request) {
     return NextResponse.json({ error: 'Mode export invalide' }, { status: 400 });
   } catch (error) {
     const message = error instanceof Error ? error.message : 'Export impossible';
+    await logAuditError({
+      message,
+      details: `Échec export timesheet: ${message}`,
+      module: 'timesheet',
+      path: '/api/timesheet/export',
+      method: 'POST',
+      stack: error instanceof Error ? error.stack : undefined,
+      user: await getAuditActor(),
+    });
     return NextResponse.json({ error: message }, { status: 500 });
   }
 }

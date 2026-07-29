@@ -19,6 +19,7 @@ import {
 } from '@/lib/timesheet-store';
 import { buildTimesheetPeriod } from '@/lib/timesheet-period';
 import type { TimesheetShiftType } from '@/lib/timesheet-types';
+import { withAudit } from '@/lib/with-audit';
 
 function parsePeriod(searchParams: URLSearchParams): { year: number; month: number } | null {
   const year = Number.parseInt(searchParams.get('year') ?? '', 10);
@@ -165,12 +166,30 @@ export async function PUT(request: Request) {
           })),
         );
 
-      await savePlanningWeekEntries({
-        year: body.year,
-        month: body.month,
-        entries: flatEntries,
-        updatedBy: session.user.id,
-      });
+      await withAudit(
+        {
+          module: 'timesheet',
+          action: 'update',
+          summary: `Enregistrement planning semaine ${body.weekIndex} — ${body.department} (${body.month}/${body.year})`,
+          undoable: false,
+          meta: {
+            year: body.year,
+            month: body.month,
+            department: body.department,
+            weekIndex: body.weekIndex,
+            saved: flatEntries.length,
+          },
+          path: '/api/timesheet/entries',
+          method: 'PUT',
+        },
+        () =>
+          savePlanningWeekEntries({
+            year: body.year,
+            month: body.month,
+            entries: flatEntries,
+            updatedBy: session.user.id,
+          }),
+      );
 
       return NextResponse.json({ ok: true, saved: flatEntries.length });
     }
@@ -181,13 +200,32 @@ export async function PUT(request: Request) {
 
     const entries = body.entries.filter((entry) => allowedMatricules.has(entry.matricule));
     const saveFn = body.mode === 'planning' ? savePlanningDayEntries : saveDayEntries;
-    const saved = await saveFn({
-      year: body.year,
-      month: body.month,
-      dateKey: body.dateKey,
-      entries,
-      updatedBy: session.user.id,
-    });
+    const saved = await withAudit(
+      {
+        module: 'timesheet',
+        action: 'update',
+        summary: `Enregistrement timesheet ${body.dateKey} — ${body.department}`,
+        undoable: false,
+        meta: {
+          year: body.year,
+          month: body.month,
+          dateKey: body.dateKey,
+          department: body.department,
+          mode: body.mode ?? 'day',
+          count: entries.length,
+        },
+        path: '/api/timesheet/entries',
+        method: 'PUT',
+      },
+      () =>
+        saveFn({
+          year: body.year,
+          month: body.month,
+          dateKey: body.dateKey!,
+          entries,
+          updatedBy: session.user.id,
+        }),
+    );
 
     return NextResponse.json({ entries: saved });
   } catch (err) {

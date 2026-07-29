@@ -5,6 +5,7 @@ import {
 } from '@/lib/factures-fournisseurs/export.server';
 import { excelErrorResponse } from '@/lib/excel-io';
 import { checkPermission } from '@/lib/require-permission';
+import { auditSimpleAction } from '@/lib/with-audit';
 
 export async function GET() {
   const denied = await checkPermission('factures.fournisseur.factures', 'export');
@@ -13,6 +14,11 @@ export async function GET() {
   try {
     const buffer = await buildFacturesSuiviExportBuffer();
     const filename = buildFacturesSuiviExportFilename();
+    await auditSimpleAction({
+      module: 'factures-suivi',
+      action: 'export',
+      summary: `Export factures (${filename})`,
+    });
 
     return new NextResponse(new Uint8Array(buffer), {
       headers: {

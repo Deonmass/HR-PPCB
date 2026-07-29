@@ -253,6 +253,31 @@ export async function deleteDependant(id: number): Promise<boolean> {
   return true;
 }
 
+export async function getDependantRecord(id: number): Promise<DependantRecord | null> {
+  await ensureMigrated();
+  const store = await readStore();
+  return store.dependants.find((item) => item.id === id) ?? null;
+}
+
+/** Restore / upsert a dependant record snapshot (audit undo). */
+export async function restoreDependant(snapshot: DependantRecord): Promise<Dependant> {
+  await ensureMigrated();
+  const [store, people] = await Promise.all([readStore(), readPeopleIndex()]);
+  const record: DependantRecord = {
+    ...snapshot,
+    id: Number(snapshot.id),
+    updatedAt: new Date().toISOString(),
+    createdAt: snapshot.createdAt || new Date().toISOString(),
+  };
+  if (!Number.isFinite(record.id)) throw new Error('Identifiant dépendant invalide');
+  const index = store.dependants.findIndex((item) => item.id === record.id);
+  if (index >= 0) store.dependants[index] = { ...store.dependants[index], ...record };
+  else store.dependants.push(record);
+  syncFamilyCounts(store.dependants, record.matricule);
+  await writeStore(store);
+  return enrichRecord(record, people);
+}
+
 export async function removeDependantsByMatricule(matricule: string): Promise<number> {
   await ensureMigrated();
   const store = await readStore();

@@ -17,7 +17,8 @@
             "create": true,
             "edit": true,
             "delete": true,
-            "export": true
+            "export": true,
+            "undo": true
           }
         },
         {
@@ -28,7 +29,8 @@
             "create": true,
             "edit": true,
             "delete": true,
-            "export": true
+            "export": true,
+            "undo": true
           }
         },
         {
@@ -39,62 +41,116 @@
             "create": true,
             "edit": true,
             "delete": true,
-            "export": true
+            "export": true,
+            "undo": true
           }
         },
         {
           "menuId": "employes.heures",
-          "label": "Heures sup. — Mon timesheet",
+          "label": "HS — Mon timesheet",
           "actions": {
             "view": true,
             "create": true,
             "edit": true,
             "delete": true,
-            "export": true
+            "export": true,
+            "undo": true
           }
         },
         {
           "menuId": "employes.heures.dept",
-          "label": "Heures sup. — Département (planning & OT de son département — Modifier = éditer le planning)",
+          "label": "HS — Voir mon département",
           "actions": {
             "view": true,
             "create": true,
             "edit": true,
             "delete": true,
-            "export": true
+            "export": true,
+            "undo": true
           }
         },
         {
           "menuId": "employes.heures.all",
-          "label": "Heures sup. — Tous départements (planning & OT)",
+          "label": "HS — Voir tous les départements",
           "actions": {
             "view": true,
             "create": true,
             "edit": true,
             "delete": true,
-            "export": true
+            "export": true,
+            "undo": true
           }
         },
         {
           "menuId": "employes.heures.import",
-          "label": "Heures sup. — Import OT (menu contextuel carte semaine)",
+          "label": "HS — Importer OT",
           "actions": {
             "view": true,
             "create": true,
             "edit": true,
             "delete": true,
-            "export": true
+            "export": true,
+            "undo": true
           }
         },
         {
-          "menuId": "employes.heures.compilation",
-          "label": "Heures sup. — Compilation & politique",
+          "menuId": "employes.heures.validate",
+          "label": "HS — Valider OT",
           "actions": {
             "view": true,
             "create": true,
             "edit": true,
             "delete": true,
-            "export": true
+            "export": true,
+            "undo": true
+          }
+        },
+        {
+          "menuId": "employes.heures.edit-validated",
+          "label": "HS — Modifier OT après validation",
+          "actions": {
+            "view": true,
+            "create": true,
+            "edit": true,
+            "delete": true,
+            "export": true,
+            "undo": true
+          }
+        },
+        {
+          "menuId": "employes.heures.policy",
+          "label": "HS — Appliquer la politique",
+          "actions": {
+            "view": true,
+            "create": true,
+            "edit": true,
+            "delete": true,
+            "export": true,
+            "undo": true
+          }
+        },
+        {
+          "menuId": "employes.heures.export",
+          "label": "HS — Exporter",
+          "actions": {
+            "view": true,
+            "create": true,
+            "edit": true,
+            "delete": true,
+            "export": true,
+            "undo": true
+          }
+        },
+        {
+          "menuId": "employes.heures.simulation",
+          "label": "HS — Simulation",
+          "actions": {
+            "view": true,
+            "create": true,
+            "edit": true,
+            "delete": true,
+            "export": true,
+            "undo": true
           }
         },
         {
@@ -105,7 +161,8 @@
             "create": true,
             "edit": true,
             "delete": true,
-            "export": true
+            "export": true,
+            "undo": true
           }
         },
         {
@@ -116,7 +173,8 @@
             "create": true,
             "edit": true,
             "delete": true,
-            "export": true
+            "export": true,
+            "undo": true
           }
         },
         {
@@ -127,7 +185,8 @@
             "create": true,
             "edit": true,
             "delete": true,
-            "export": true
+            "export": true,
+            "undo": true
           }
         },
         {
@@ -138,7 +197,8 @@
             "create": true,
             "edit": true,
             "delete": true,
-            "export": true
+            "export": true,
+            "undo": true
           }
         },
         {
@@ -149,7 +209,8 @@
             "create": true,
             "edit": true,
             "delete": true,
-            "export": true
+            "export": true,
+            "undo": true
           }
         },
         {
@@ -160,7 +221,8 @@
             "create": true,
             "edit": true,
             "delete": true,
-            "export": true
+            "export": true,
+            "undo": true
           }
         },
         {
@@ -171,7 +233,8 @@
             "create": true,
             "edit": true,
             "delete": true,
-            "export": true
+            "export": true,
+            "undo": true
           }
         },
         {
@@ -182,7 +245,8 @@
             "create": true,
             "edit": true,
             "delete": true,
-            "export": true
+            "export": true,
+            "undo": true
           }
         },
         {
@@ -193,7 +257,8 @@
             "create": true,
             "edit": true,
             "delete": true,
-            "export": true
+            "export": true,
+            "undo": true
           }
         },
         {
@@ -204,7 +269,8 @@
             "create": true,
             "edit": true,
             "delete": true,
-            "export": true
+            "export": true,
+            "undo": true
           }
         },
         {
@@ -215,7 +281,8 @@
             "create": true,
             "edit": true,
             "delete": true,
-            "export": true
+            "export": true,
+            "undo": true
           }
         },
         {
@@ -226,7 +293,8 @@
             "create": true,
             "edit": true,
             "delete": true,
-            "export": true
+            "export": true,
+            "undo": true
           }
         },
         {
@@ -237,7 +305,8 @@
             "create": true,
             "edit": true,
             "delete": true,
-            "export": true
+            "export": true,
+            "undo": true
           }
         },
         {
@@ -248,7 +317,8 @@
             "create": true,
             "edit": true,
             "delete": true,
-            "export": true
+            "export": true,
+            "undo": true
           }
         },
         {
@@ -259,7 +329,8 @@
             "create": true,
             "edit": true,
             "delete": true,
-            "export": true
+            "export": true,
+            "undo": true
           }
         },
         {
@@ -270,7 +341,8 @@
             "create": true,
             "edit": true,
             "delete": true,
-            "export": true
+            "export": true,
+            "undo": true
           }
         },
         {
@@ -281,7 +353,8 @@
             "create": true,
             "edit": true,
             "delete": true,
-            "export": true
+            "export": true,
+            "undo": true
           }
         },
         {
@@ -292,7 +365,8 @@
             "create": true,
             "edit": true,
             "delete": true,
-            "export": true
+            "export": true,
+            "undo": true
           }
         },
         {
@@ -303,7 +377,8 @@
             "create": true,
             "edit": true,
             "delete": true,
-            "export": true
+            "export": true,
+            "undo": true
           }
         },
         {
@@ -314,7 +389,8 @@
             "create": true,
             "edit": true,
             "delete": true,
-            "export": true
+            "export": true,
+            "undo": true
           }
         },
         {
@@ -325,7 +401,8 @@
             "create": true,
             "edit": true,
             "delete": true,
-            "export": true
+            "export": true,
+            "undo": true
           }
         },
         {
@@ -336,7 +413,92 @@
             "create": true,
             "edit": true,
             "delete": true,
-            "export": true
+            "export": true,
+            "undo": true
+          }
+        },
+        {
+          "menuId": "parametres.logs",
+          "label": "Logs",
+          "actions": {
+            "view": true,
+            "create": true,
+            "edit": true,
+            "delete": true,
+            "export": true,
+            "undo": true
+          }
+        },
+        {
+          "menuId": "view",
+          "label": "Voir",
+          "actions": {
+            "view": true,
+            "create": true,
+            "edit": true,
+            "delete": true,
+            "export": true,
+            "undo": true
+          }
+        },
+        {
+          "menuId": "create",
+          "label": "Créer",
+          "actions": {
+            "view": true,
+            "create": true,
+            "edit": true,
+            "delete": true,
+            "export": true,
+            "undo": true
+          }
+        },
+        {
+          "menuId": "edit",
+          "label": "Modifier",
+          "actions": {
+            "view": true,
+            "create": true,
+            "edit": true,
+            "delete": true,
+            "export": true,
+            "undo": true
+          }
+        },
+        {
+          "menuId": "delete",
+          "label": "Supprimer",
+          "actions": {
+            "view": true,
+            "create": true,
+            "edit": true,
+            "delete": true,
+            "export": true,
+            "undo": true
+          }
+        },
+        {
+          "menuId": "export",
+          "label": "Exporter",
+          "actions": {
+            "view": true,
+            "create": true,
+            "edit": true,
+            "delete": true,
+            "export": true,
+            "undo": true
+          }
+        },
+        {
+          "menuId": "undo",
+          "label": "Annuler action",
+          "actions": {
+            "view": true,
+            "create": true,
+            "edit": true,
+            "delete": true,
+            "export": true,
+            "undo": true
           }
         }
       ]
@@ -355,121 +517,180 @@
           "menuId": "employes.liste",
           "label": "Liste employés",
           "actions": {
-            "view": false,
-            "create": false,
-            "edit": false,
-            "delete": false,
-            "export": false
+            "view": true,
+            "create": true,
+            "edit": true,
+            "delete": true,
+            "export": true,
+            "undo": true
           }
         },
         {
           "menuId": "employes.dependants",
           "label": "Dependants",
           "actions": {
-            "view": false,
-            "create": false,
-            "edit": false,
-            "delete": false,
-            "export": false
+            "view": true,
+            "create": true,
+            "edit": true,
+            "delete": true,
+            "export": true,
+            "undo": true
           }
         },
         {
           "menuId": "employes.check-documents",
           "label": "Check documents",
           "actions": {
-            "view": false,
-            "create": false,
-            "edit": false,
-            "delete": false,
-            "export": false
+            "view": true,
+            "create": true,
+            "edit": true,
+            "delete": true,
+            "export": true,
+            "undo": true
           }
         },
         {
           "menuId": "employes.heures",
-          "label": "Heures sup. — Mon timesheet",
+          "label": "HS — Mon timesheet",
           "actions": {
-            "view": false,
-            "create": false,
-            "edit": false,
-            "delete": false,
-            "export": false
+            "view": true,
+            "create": true,
+            "edit": true,
+            "delete": true,
+            "export": true,
+            "undo": true
           }
         },
         {
           "menuId": "employes.heures.dept",
-          "label": "Heures sup. — Département (planning & OT de son département — Modifier = éditer le planning)",
+          "label": "HS — Voir mon département",
           "actions": {
-            "view": false,
-            "create": false,
-            "edit": false,
-            "delete": false,
-            "export": false
+            "view": true,
+            "create": true,
+            "edit": true,
+            "delete": true,
+            "export": true,
+            "undo": true
           }
         },
         {
           "menuId": "employes.heures.all",
-          "label": "Heures sup. — Tous départements (planning & OT)",
+          "label": "HS — Voir tous les départements",
           "actions": {
-            "view": false,
-            "create": false,
-            "edit": false,
-            "delete": false,
-            "export": false
+            "view": true,
+            "create": true,
+            "edit": true,
+            "delete": true,
+            "export": true,
+            "undo": true
           }
         },
         {
           "menuId": "employes.heures.import",
-          "label": "Heures sup. — Import OT (menu contextuel carte semaine)",
+          "label": "HS — Importer OT",
           "actions": {
-            "view": false,
-            "create": false,
-            "edit": false,
-            "delete": false,
-            "export": false
+            "view": true,
+            "create": true,
+            "edit": true,
+            "delete": true,
+            "export": true,
+            "undo": true
           }
         },
         {
-          "menuId": "employes.heures.compilation",
-          "label": "Heures sup. — Compilation & politique",
+          "menuId": "employes.heures.validate",
+          "label": "HS — Valider OT",
           "actions": {
-            "view": false,
-            "create": false,
-            "edit": false,
-            "delete": false,
-            "export": false
+            "view": true,
+            "create": true,
+            "edit": true,
+            "delete": true,
+            "export": true,
+            "undo": true
+          }
+        },
+        {
+          "menuId": "employes.heures.edit-validated",
+          "label": "HS — Modifier OT après validation",
+          "actions": {
+            "view": true,
+            "create": true,
+            "edit": true,
+            "delete": true,
+            "export": true,
+            "undo": true
+          }
+        },
+        {
+          "menuId": "employes.heures.policy",
+          "label": "HS — Appliquer la politique",
+          "actions": {
+            "view": true,
+            "create": true,
+            "edit": true,
+            "delete": true,
+            "export": true,
+            "undo": true
+          }
+        },
+        {
+          "menuId": "employes.heures.export",
+          "label": "HS — Exporter",
+          "actions": {
+            "view": true,
+            "create": true,
+            "edit": true,
+            "delete": true,
+            "export": true,
+            "undo": true
+          }
+        },
+        {
+          "menuId": "employes.heures.simulation",
+          "label": "HS — Simulation",
+          "actions": {
+            "view": true,
+            "create": true,
+            "edit": true,
+            "delete": true,
+            "export": true,
+            "undo": true
           }
         },
         {
           "menuId": "project.dashboard",
           "label": "Dashboard",
           "actions": {
-            "view": false,
-            "create": false,
-            "edit": false,
-            "delete": false,
-            "export": false
+            "view": true,
+            "create": true,
+            "edit": true,
+            "delete": true,
+            "export": true,
+            "undo": true
           }
         },
         {
           "menuId": "project.projects",
           "label": "Projects",
           "actions": {
-            "view": false,
-            "create": false,
-            "edit": false,
-            "delete": false,
-            "export": false
+            "view": true,
+            "create": true,
+            "edit": true,
+            "delete": true,
+            "export": true,
+            "undo": true
           }
         },
         {
           "menuId": "project.expenses",
           "label": "Expenses details",
           "actions": {
-            "view": false,
-            "create": false,
-            "edit": false,
-            "delete": false,
-            "export": false
+            "view": true,
+            "create": true,
+            "edit": true,
+            "delete": true,
+            "export": true,
+            "undo": true
           }
         },
         {
@@ -480,7 +701,8 @@
             "create": true,
             "edit": true,
             "delete": true,
-            "export": true
+            "export": true,
+            "undo": true
           }
         },
         {
@@ -491,7 +713,8 @@
             "create": true,
             "edit": true,
             "delete": true,
-            "export": true
+            "export": true,
+            "undo": true
           }
         },
         {
@@ -502,161 +725,284 @@
             "create": true,
             "edit": true,
             "delete": true,
-            "export": true
+            "export": true,
+            "undo": true
           }
         },
         {
           "menuId": "factures.fournisseur.liste",
           "label": "Liste",
           "actions": {
-            "view": false,
-            "create": false,
-            "edit": false,
-            "delete": false,
-            "export": false
+            "view": true,
+            "create": true,
+            "edit": true,
+            "delete": true,
+            "export": true,
+            "undo": true
           }
         },
         {
           "menuId": "factures.fournisseur.factures",
           "label": "Factures",
           "actions": {
-            "view": false,
-            "create": false,
-            "edit": false,
-            "delete": false,
-            "export": false
+            "view": true,
+            "create": true,
+            "edit": true,
+            "delete": true,
+            "export": true,
+            "undo": true
           }
         },
         {
           "menuId": "factures.fournisseur.soa",
           "label": "SOA",
           "actions": {
-            "view": false,
-            "create": false,
-            "edit": false,
-            "delete": false,
-            "export": false
+            "view": true,
+            "create": true,
+            "edit": true,
+            "delete": true,
+            "export": true,
+            "undo": true
           }
         },
         {
           "menuId": "factures.fournisseur.fournisseurs",
           "label": "Fournisseurs",
           "actions": {
-            "view": false,
-            "create": false,
-            "edit": false,
-            "delete": false,
-            "export": false
+            "view": true,
+            "create": true,
+            "edit": true,
+            "delete": true,
+            "export": true,
+            "undo": true
           }
         },
         {
           "menuId": "sante",
           "label": "Santé",
           "actions": {
-            "view": false,
-            "create": false,
-            "edit": false,
-            "delete": false,
-            "export": false
+            "view": true,
+            "create": true,
+            "edit": true,
+            "delete": true,
+            "export": true,
+            "undo": true
           }
         },
         {
           "menuId": "charroi",
-          "label": "Charroi automobile",
+          "label": "Charroi (accès global)",
           "actions": {
-            "view": false,
-            "create": false,
-            "edit": false,
-            "delete": false,
-            "export": false
+            "view": true,
+            "create": true,
+            "edit": true,
+            "delete": true,
+            "export": true,
+            "undo": true
+          }
+        },
+        {
+          "menuId": "charroi.vehicules",
+          "label": "Base véhicules",
+          "actions": {
+            "view": true,
+            "create": true,
+            "edit": true,
+            "delete": true,
+            "export": true,
+            "undo": true
+          }
+        },
+        {
+          "menuId": "charroi.achats",
+          "label": "Nouveaux achats",
+          "actions": {
+            "view": true,
+            "create": true,
+            "edit": true,
+            "delete": true,
+            "export": true,
+            "undo": true
           }
         },
         {
           "menuId": "village.dependants-dashboard",
           "label": "Dashboard (Village/Kimpese)",
           "actions": {
-            "view": false,
-            "create": false,
-            "edit": false,
-            "delete": false,
-            "export": false
+            "view": true,
+            "create": true,
+            "edit": true,
+            "delete": true,
+            "export": true,
+            "undo": true
           }
         },
         {
           "menuId": "village.dependants-liste",
           "label": "Liste (Village/Kimpese)",
           "actions": {
-            "view": false,
-            "create": false,
-            "edit": false,
-            "delete": false,
-            "export": false
+            "view": true,
+            "create": true,
+            "edit": true,
+            "delete": true,
+            "export": true,
+            "undo": true
           }
         },
         {
           "menuId": "village.maisons",
           "label": "Maisons",
           "actions": {
-            "view": false,
-            "create": false,
-            "edit": false,
-            "delete": false,
-            "export": false
+            "view": true,
+            "create": true,
+            "edit": true,
+            "delete": true,
+            "export": true,
+            "undo": true
           }
         },
         {
           "menuId": "village.guest-house",
           "label": "Guest house — réservations & occupation",
           "actions": {
-            "view": false,
-            "create": false,
-            "edit": false,
-            "delete": false,
-            "export": false
+            "view": true,
+            "create": true,
+            "edit": true,
+            "delete": true,
+            "export": true,
+            "undo": true
           }
         },
         {
           "menuId": "settings.departements",
           "label": "Départements",
           "actions": {
-            "view": false,
-            "create": false,
-            "edit": false,
-            "delete": false,
-            "export": false
+            "view": true,
+            "create": true,
+            "edit": true,
+            "delete": true,
+            "export": true,
+            "undo": true
           }
         },
         {
           "menuId": "settings.centres",
           "label": "Centre de coût",
           "actions": {
-            "view": false,
-            "create": false,
-            "edit": false,
-            "delete": false,
-            "export": false
+            "view": true,
+            "create": true,
+            "edit": true,
+            "delete": true,
+            "export": true,
+            "undo": true
           }
         },
         {
           "menuId": "settings.utilisateurs",
           "label": "Utilisateurs",
           "actions": {
-            "view": false,
-            "create": false,
-            "edit": false,
-            "delete": false,
-            "export": false
+            "view": true,
+            "create": true,
+            "edit": true,
+            "delete": true,
+            "export": true,
+            "undo": true
           }
         },
         {
           "menuId": "settings.permissions",
           "label": "Permissions",
           "actions": {
-            "view": false,
-            "create": false,
-            "edit": false,
-            "delete": false,
-            "export": false
+            "view": true,
+            "create": true,
+            "edit": true,
+            "delete": true,
+            "export": true,
+            "undo": true
+          }
+        },
+        {
+          "menuId": "parametres.logs",
+          "label": "Logs",
+          "actions": {
+            "view": true,
+            "create": true,
+            "edit": true,
+            "delete": true,
+            "export": true,
+            "undo": true
+          }
+        },
+        {
+          "menuId": "view",
+          "label": "Voir",
+          "actions": {
+            "view": true,
+            "create": true,
+            "edit": true,
+            "delete": true,
+            "export": true,
+            "undo": true
+          }
+        },
+        {
+          "menuId": "create",
+          "label": "Créer",
+          "actions": {
+            "view": true,
+            "create": true,
+            "edit": true,
+            "delete": true,
+            "export": true,
+            "undo": true
+          }
+        },
+        {
+          "menuId": "edit",
+          "label": "Modifier",
+          "actions": {
+            "view": true,
+            "create": true,
+            "edit": true,
+            "delete": true,
+            "export": true,
+            "undo": true
+          }
+        },
+        {
+          "menuId": "delete",
+          "label": "Supprimer",
+          "actions": {
+            "view": true,
+            "create": true,
+            "edit": true,
+            "delete": true,
+            "export": true,
+            "undo": true
+          }
+        },
+        {
+          "menuId": "export",
+          "label": "Exporter",
+          "actions": {
+            "view": true,
+            "create": true,
+            "edit": true,
+            "delete": true,
+            "export": true,
+            "undo": true
+          }
+        },
+        {
+          "menuId": "undo",
+          "label": "Annuler action",
+          "actions": {
+            "view": true,
+            "create": true,
+            "edit": true,
+            "delete": true,
+            "export": true,
+            "undo": true
           }
         }
       ]
@@ -685,10 +1031,11 @@
           "label": "Liste employés",
           "actions": {
             "view": true,
-            "create": false,
-            "edit": false,
-            "delete": false,
-            "export": true
+            "create": true,
+            "edit": true,
+            "delete": true,
+            "export": true,
+            "undo": true
           }
         },
         {
@@ -696,10 +1043,11 @@
           "label": "Dependants",
           "actions": {
             "view": true,
-            "create": false,
-            "edit": false,
-            "delete": false,
-            "export": false
+            "create": true,
+            "edit": true,
+            "delete": true,
+            "export": true,
+            "undo": true
           }
         },
         {
@@ -707,131 +1055,191 @@
           "label": "Check documents",
           "actions": {
             "view": true,
-            "create": false,
+            "create": true,
             "edit": true,
-            "delete": false,
-            "export": false
+            "delete": true,
+            "export": true,
+            "undo": true
           }
         },
         {
           "menuId": "employes.heures",
-          "label": "Heures sup. — Mon timesheet",
+          "label": "HS — Mon timesheet",
           "actions": {
             "view": true,
             "create": true,
             "edit": true,
             "delete": true,
-            "export": true
+            "export": true,
+            "undo": true
           }
         },
         {
           "menuId": "employes.heures.dept",
-          "label": "Heures sup. — Département (planning & OT de son département — Modifier = éditer le planning)",
+          "label": "HS — Voir mon département",
           "actions": {
-            "view": false,
-            "create": false,
-            "edit": false,
-            "delete": false,
-            "export": false
+            "view": true,
+            "create": true,
+            "edit": true,
+            "delete": true,
+            "export": true,
+            "undo": true
           }
         },
         {
           "menuId": "employes.heures.all",
-          "label": "Heures sup. — Tous départements (planning & OT)",
+          "label": "HS — Voir tous les départements",
           "actions": {
             "view": true,
             "create": true,
             "edit": true,
             "delete": true,
-            "export": true
+            "export": true,
+            "undo": true
           }
         },
         {
           "menuId": "employes.heures.import",
-          "label": "Heures sup. — Import OT (menu contextuel carte semaine)",
+          "label": "HS — Importer OT",
           "actions": {
             "view": true,
             "create": true,
             "edit": true,
             "delete": true,
-            "export": true
+            "export": true,
+            "undo": true
           }
         },
         {
-          "menuId": "employes.heures.compilation",
-          "label": "Heures sup. — Compilation & politique",
+          "menuId": "employes.heures.validate",
+          "label": "HS — Valider OT",
           "actions": {
             "view": true,
             "create": true,
             "edit": true,
             "delete": true,
-            "export": true
+            "export": true,
+            "undo": true
+          }
+        },
+        {
+          "menuId": "employes.heures.edit-validated",
+          "label": "HS — Modifier OT après validation",
+          "actions": {
+            "view": true,
+            "create": true,
+            "edit": true,
+            "delete": true,
+            "export": true,
+            "undo": true
+          }
+        },
+        {
+          "menuId": "employes.heures.policy",
+          "label": "HS — Appliquer la politique",
+          "actions": {
+            "view": true,
+            "create": true,
+            "edit": true,
+            "delete": true,
+            "export": true,
+            "undo": true
+          }
+        },
+        {
+          "menuId": "employes.heures.export",
+          "label": "HS — Exporter",
+          "actions": {
+            "view": true,
+            "create": true,
+            "edit": true,
+            "delete": true,
+            "export": true,
+            "undo": true
+          }
+        },
+        {
+          "menuId": "employes.heures.simulation",
+          "label": "HS — Simulation",
+          "actions": {
+            "view": true,
+            "create": true,
+            "edit": true,
+            "delete": true,
+            "export": true,
+            "undo": true
           }
         },
         {
           "menuId": "project.dashboard",
           "label": "Dashboard",
           "actions": {
-            "view": false,
-            "create": false,
-            "edit": false,
-            "delete": false,
-            "export": false
+            "view": true,
+            "create": true,
+            "edit": true,
+            "delete": true,
+            "export": true,
+            "undo": true
           }
         },
         {
           "menuId": "project.projects",
           "label": "Projects",
           "actions": {
-            "view": false,
-            "create": false,
-            "edit": false,
-            "delete": false,
-            "export": false
+            "view": true,
+            "create": true,
+            "edit": true,
+            "delete": true,
+            "export": true,
+            "undo": true
           }
         },
         {
           "menuId": "project.expenses",
           "label": "Expenses details",
           "actions": {
-            "view": false,
-            "create": false,
-            "edit": false,
-            "delete": false,
-            "export": false
+            "view": true,
+            "create": true,
+            "edit": true,
+            "delete": true,
+            "export": true,
+            "undo": true
           }
         },
         {
           "menuId": "travel.historique",
           "label": "Voyage — Historique",
           "actions": {
-            "view": false,
-            "create": false,
-            "edit": false,
-            "delete": false,
-            "export": false
+            "view": true,
+            "create": true,
+            "edit": true,
+            "delete": true,
+            "export": true,
+            "undo": true
           }
         },
         {
           "menuId": "travel.etablir",
           "label": "Voyage — Établir",
           "actions": {
-            "view": false,
-            "create": false,
-            "edit": false,
-            "delete": false,
-            "export": false
+            "view": true,
+            "create": true,
+            "edit": true,
+            "delete": true,
+            "export": true,
+            "undo": true
           }
         },
         {
           "menuId": "travel.attestation",
           "label": "Attestation de service",
           "actions": {
-            "view": false,
-            "create": false,
-            "edit": false,
-            "delete": false,
-            "export": false
+            "view": true,
+            "create": true,
+            "edit": true,
+            "delete": true,
+            "export": true,
+            "undo": true
           }
         },
         {
@@ -841,8 +1249,9 @@
             "view": true,
             "create": true,
             "edit": true,
-            "delete": false,
-            "export": true
+            "delete": true,
+            "export": true,
+            "undo": true
           }
         },
         {
@@ -852,8 +1261,9 @@
             "view": true,
             "create": true,
             "edit": true,
-            "delete": false,
-            "export": true
+            "delete": true,
+            "export": true,
+            "undo": true
           }
         },
         {
@@ -863,8 +1273,9 @@
             "view": true,
             "create": true,
             "edit": true,
-            "delete": false,
-            "export": true
+            "delete": true,
+            "export": true,
+            "undo": true
           }
         },
         {
@@ -874,30 +1285,57 @@
             "view": true,
             "create": true,
             "edit": true,
-            "delete": false,
-            "export": true
+            "delete": true,
+            "export": true,
+            "undo": true
           }
         },
         {
           "menuId": "sante",
           "label": "Santé",
           "actions": {
-            "view": false,
-            "create": false,
-            "edit": false,
-            "delete": false,
-            "export": false
+            "view": true,
+            "create": true,
+            "edit": true,
+            "delete": true,
+            "export": true,
+            "undo": true
           }
         },
         {
           "menuId": "charroi",
-          "label": "Charroi automobile",
+          "label": "Charroi (accès global)",
           "actions": {
-            "view": false,
-            "create": false,
-            "edit": false,
-            "delete": false,
-            "export": false
+            "view": true,
+            "create": true,
+            "edit": true,
+            "delete": true,
+            "export": true,
+            "undo": true
+          }
+        },
+        {
+          "menuId": "charroi.vehicules",
+          "label": "Base véhicules",
+          "actions": {
+            "view": true,
+            "create": true,
+            "edit": true,
+            "delete": true,
+            "export": true,
+            "undo": true
+          }
+        },
+        {
+          "menuId": "charroi.achats",
+          "label": "Nouveaux achats",
+          "actions": {
+            "view": true,
+            "create": true,
+            "edit": true,
+            "delete": true,
+            "export": true,
+            "undo": true
           }
         },
         {
@@ -908,7 +1346,8 @@
             "create": true,
             "edit": true,
             "delete": true,
-            "export": true
+            "export": true,
+            "undo": true
           }
         },
         {
@@ -919,7 +1358,8 @@
             "create": true,
             "edit": true,
             "delete": true,
-            "export": true
+            "export": true,
+            "undo": true
           }
         },
         {
@@ -930,7 +1370,8 @@
             "create": true,
             "edit": true,
             "delete": true,
-            "export": true
+            "export": true,
+            "undo": true
           }
         },
         {
@@ -941,7 +1382,8 @@
             "create": true,
             "edit": true,
             "delete": true,
-            "export": true
+            "export": true,
+            "undo": true
           }
         },
         {
@@ -952,7 +1394,8 @@
             "create": true,
             "edit": true,
             "delete": true,
-            "export": true
+            "export": true,
+            "undo": true
           }
         },
         {
@@ -963,29 +1406,116 @@
             "create": true,
             "edit": true,
             "delete": true,
-            "export": true
+            "export": true,
+            "undo": true
           }
         },
         {
           "menuId": "settings.utilisateurs",
           "label": "Utilisateurs",
           "actions": {
-            "view": false,
-            "create": false,
-            "edit": false,
-            "delete": false,
-            "export": false
+            "view": true,
+            "create": true,
+            "edit": true,
+            "delete": true,
+            "export": true,
+            "undo": true
           }
         },
         {
           "menuId": "settings.permissions",
           "label": "Permissions",
           "actions": {
-            "view": false,
-            "create": false,
-            "edit": false,
-            "delete": false,
-            "export": false
+            "view": true,
+            "create": true,
+            "edit": true,
+            "delete": true,
+            "export": true,
+            "undo": true
+          }
+        },
+        {
+          "menuId": "parametres.logs",
+          "label": "Logs",
+          "actions": {
+            "view": true,
+            "create": true,
+            "edit": true,
+            "delete": true,
+            "export": true,
+            "undo": true
+          }
+        },
+        {
+          "menuId": "view",
+          "label": "Voir",
+          "actions": {
+            "view": true,
+            "create": true,
+            "edit": true,
+            "delete": true,
+            "export": true,
+            "undo": true
+          }
+        },
+        {
+          "menuId": "create",
+          "label": "Créer",
+          "actions": {
+            "view": true,
+            "create": true,
+            "edit": true,
+            "delete": true,
+            "export": true,
+            "undo": true
+          }
+        },
+        {
+          "menuId": "edit",
+          "label": "Modifier",
+          "actions": {
+            "view": true,
+            "create": true,
+            "edit": true,
+            "delete": true,
+            "export": true,
+            "undo": true
+          }
+        },
+        {
+          "menuId": "delete",
+          "label": "Supprimer",
+          "actions": {
+            "view": true,
+            "create": true,
+            "edit": true,
+            "delete": true,
+            "export": true,
+            "undo": true
+          }
+        },
+        {
+          "menuId": "export",
+          "label": "Exporter",
+          "actions": {
+            "view": true,
+            "create": true,
+            "edit": true,
+            "delete": true,
+            "export": true,
+            "undo": true
+          }
+        },
+        {
+          "menuId": "undo",
+          "label": "Annuler action",
+          "actions": {
+            "view": true,
+            "create": true,
+            "edit": true,
+            "delete": true,
+            "export": true,
+            "undo": true
           }
         }
       ]
@@ -1016,8 +1546,9 @@
             "view": true,
             "create": true,
             "edit": true,
-            "delete": false,
-            "export": true
+            "delete": true,
+            "export": true,
+            "undo": true
           }
         },
         {
@@ -1027,8 +1558,9 @@
             "view": true,
             "create": true,
             "edit": true,
-            "delete": false,
-            "export": true
+            "delete": true,
+            "export": true,
+            "undo": true
           }
         },
         {
@@ -1038,63 +1570,117 @@
             "view": true,
             "create": true,
             "edit": true,
-            "delete": false,
-            "export": true
+            "delete": true,
+            "export": true,
+            "undo": true
           }
         },
         {
           "menuId": "employes.heures",
-          "label": "Heures sup. — Mon timesheet",
+          "label": "HS — Mon timesheet",
           "actions": {
             "view": true,
             "create": true,
             "edit": true,
-            "delete": false,
-            "export": true
+            "delete": true,
+            "export": true,
+            "undo": true
           }
         },
         {
           "menuId": "employes.heures.dept",
-          "label": "Heures sup. — Département (planning & OT de son département — Modifier = éditer le planning)",
+          "label": "HS — Voir mon département",
           "actions": {
             "view": true,
             "create": true,
             "edit": true,
-            "delete": false,
-            "export": true
+            "delete": true,
+            "export": true,
+            "undo": true
           }
         },
         {
           "menuId": "employes.heures.all",
-          "label": "Heures sup. — Tous départements (planning & OT)",
+          "label": "HS — Voir tous les départements",
           "actions": {
             "view": true,
             "create": true,
             "edit": true,
-            "delete": false,
-            "export": true
+            "delete": true,
+            "export": true,
+            "undo": true
           }
         },
         {
           "menuId": "employes.heures.import",
-          "label": "Heures sup. — Import OT (menu contextuel carte semaine)",
+          "label": "HS — Importer OT",
           "actions": {
             "view": true,
             "create": true,
             "edit": true,
-            "delete": false,
-            "export": true
+            "delete": true,
+            "export": true,
+            "undo": true
           }
         },
         {
-          "menuId": "employes.heures.compilation",
-          "label": "Heures sup. — Compilation & politique",
+          "menuId": "employes.heures.validate",
+          "label": "HS — Valider OT",
           "actions": {
             "view": true,
             "create": true,
             "edit": true,
-            "delete": false,
-            "export": true
+            "delete": true,
+            "export": true,
+            "undo": true
+          }
+        },
+        {
+          "menuId": "employes.heures.edit-validated",
+          "label": "HS — Modifier OT après validation",
+          "actions": {
+            "view": true,
+            "create": true,
+            "edit": true,
+            "delete": true,
+            "export": true,
+            "undo": true
+          }
+        },
+        {
+          "menuId": "employes.heures.policy",
+          "label": "HS — Appliquer la politique",
+          "actions": {
+            "view": true,
+            "create": true,
+            "edit": true,
+            "delete": true,
+            "export": true,
+            "undo": true
+          }
+        },
+        {
+          "menuId": "employes.heures.export",
+          "label": "HS — Exporter",
+          "actions": {
+            "view": true,
+            "create": true,
+            "edit": true,
+            "delete": true,
+            "export": true,
+            "undo": true
+          }
+        },
+        {
+          "menuId": "employes.heures.simulation",
+          "label": "HS — Simulation",
+          "actions": {
+            "view": true,
+            "create": true,
+            "edit": true,
+            "delete": true,
+            "export": true,
+            "undo": true
           }
         },
         {
@@ -1105,7 +1691,8 @@
             "create": true,
             "edit": true,
             "delete": true,
-            "export": true
+            "export": true,
+            "undo": true
           }
         },
         {
@@ -1116,7 +1703,8 @@
             "create": true,
             "edit": true,
             "delete": true,
-            "export": true
+            "export": true,
+            "undo": true
           }
         },
         {
@@ -1127,7 +1715,8 @@
             "create": true,
             "edit": true,
             "delete": true,
-            "export": true
+            "export": true,
+            "undo": true
           }
         },
         {
@@ -1138,7 +1727,8 @@
             "create": true,
             "edit": true,
             "delete": true,
-            "export": true
+            "export": true,
+            "undo": true
           }
         },
         {
@@ -1149,62 +1739,68 @@
             "create": true,
             "edit": true,
             "delete": true,
-            "export": true
+            "export": true,
+            "undo": true
           }
         },
         {
           "menuId": "travel.attestation",
           "label": "Attestation de service",
           "actions": {
-            "view": false,
-            "create": false,
-            "edit": false,
-            "delete": false,
-            "export": false
+            "view": true,
+            "create": true,
+            "edit": true,
+            "delete": true,
+            "export": true,
+            "undo": true
           }
         },
         {
           "menuId": "factures.fournisseur.liste",
           "label": "Liste",
           "actions": {
-            "view": false,
-            "create": false,
-            "edit": false,
-            "delete": false,
-            "export": false
+            "view": true,
+            "create": true,
+            "edit": true,
+            "delete": true,
+            "export": true,
+            "undo": true
           }
         },
         {
           "menuId": "factures.fournisseur.factures",
           "label": "Factures",
           "actions": {
-            "view": false,
-            "create": false,
-            "edit": false,
-            "delete": false,
-            "export": false
+            "view": true,
+            "create": true,
+            "edit": true,
+            "delete": true,
+            "export": true,
+            "undo": true
           }
         },
         {
           "menuId": "factures.fournisseur.soa",
           "label": "SOA",
           "actions": {
-            "view": false,
-            "create": false,
-            "edit": false,
-            "delete": false,
-            "export": false
+            "view": true,
+            "create": true,
+            "edit": true,
+            "delete": true,
+            "export": true,
+            "undo": true
           }
         },
         {
           "menuId": "factures.fournisseur.fournisseurs",
           "label": "Fournisseurs",
           "actions": {
-            "view": false,
-            "create": false,
-            "edit": false,
-            "delete": false,
-            "export": false
+            "view": true,
+            "create": true,
+            "edit": true,
+            "delete": true,
+            "export": true,
+            "undo": true
           }
         },
         {
@@ -1215,7 +1811,8 @@
             "create": true,
             "edit": true,
             "delete": true,
-            "export": true
+            "export": true,
+            "undo": true
           }
         },
         {
@@ -1226,73 +1823,80 @@
             "create": true,
             "edit": true,
             "delete": true,
-            "export": true
+            "export": true,
+            "undo": true
           }
         },
         {
           "menuId": "charroi.vehicules",
           "label": "Base véhicules",
           "actions": {
-            "view": false,
-            "create": false,
-            "edit": false,
-            "delete": false,
-            "export": false
+            "view": true,
+            "create": true,
+            "edit": true,
+            "delete": true,
+            "export": true,
+            "undo": true
           }
         },
         {
           "menuId": "charroi.achats",
           "label": "Nouveaux achats",
           "actions": {
-            "view": false,
-            "create": false,
-            "edit": false,
-            "delete": false,
-            "export": false
+            "view": true,
+            "create": true,
+            "edit": true,
+            "delete": true,
+            "export": true,
+            "undo": true
           }
         },
         {
           "menuId": "village.dependants-dashboard",
           "label": "Dashboard (Village/Kimpese)",
           "actions": {
-            "view": false,
-            "create": false,
-            "edit": false,
-            "delete": false,
-            "export": false
+            "view": true,
+            "create": true,
+            "edit": true,
+            "delete": true,
+            "export": true,
+            "undo": true
           }
         },
         {
           "menuId": "village.dependants-liste",
           "label": "Liste (Village/Kimpese)",
           "actions": {
-            "view": false,
-            "create": false,
-            "edit": false,
-            "delete": false,
-            "export": false
+            "view": true,
+            "create": true,
+            "edit": true,
+            "delete": true,
+            "export": true,
+            "undo": true
           }
         },
         {
           "menuId": "village.maisons",
           "label": "Maisons",
           "actions": {
-            "view": false,
-            "create": false,
-            "edit": false,
-            "delete": false,
-            "export": false
+            "view": true,
+            "create": true,
+            "edit": true,
+            "delete": true,
+            "export": true,
+            "undo": true
           }
         },
         {
           "menuId": "village.guest-house",
           "label": "Guest house — réservations & occupation",
           "actions": {
-            "view": false,
-            "create": false,
-            "edit": false,
-            "delete": false,
-            "export": false
+            "view": true,
+            "create": true,
+            "edit": true,
+            "delete": true,
+            "export": true,
+            "undo": true
           }
         },
         {
@@ -1303,7 +1907,8 @@
             "create": true,
             "edit": true,
             "delete": true,
-            "export": true
+            "export": true,
+            "undo": true
           }
         },
         {
@@ -1314,7 +1919,8 @@
             "create": true,
             "edit": true,
             "delete": true,
-            "export": true
+            "export": true,
+            "undo": true
           }
         },
         {
@@ -1325,7 +1931,8 @@
             "create": true,
             "edit": true,
             "delete": true,
-            "export": true
+            "export": true,
+            "undo": true
           }
         },
         {
@@ -1336,7 +1943,92 @@
             "create": true,
             "edit": true,
             "delete": true,
-            "export": true
+            "export": true,
+            "undo": true
+          }
+        },
+        {
+          "menuId": "parametres.logs",
+          "label": "Logs",
+          "actions": {
+            "view": true,
+            "create": true,
+            "edit": true,
+            "delete": true,
+            "export": true,
+            "undo": true
+          }
+        },
+        {
+          "menuId": "view",
+          "label": "Voir",
+          "actions": {
+            "view": true,
+            "create": true,
+            "edit": true,
+            "delete": true,
+            "export": true,
+            "undo": true
+          }
+        },
+        {
+          "menuId": "create",
+          "label": "Créer",
+          "actions": {
+            "view": true,
+            "create": true,
+            "edit": true,
+            "delete": true,
+            "export": true,
+            "undo": true
+          }
+        },
+        {
+          "menuId": "edit",
+          "label": "Modifier",
+          "actions": {
+            "view": true,
+            "create": true,
+            "edit": true,
+            "delete": true,
+            "export": true,
+            "undo": true
+          }
+        },
+        {
+          "menuId": "delete",
+          "label": "Supprimer",
+          "actions": {
+            "view": true,
+            "create": true,
+            "edit": true,
+            "delete": true,
+            "export": true,
+            "undo": true
+          }
+        },
+        {
+          "menuId": "export",
+          "label": "Exporter",
+          "actions": {
+            "view": true,
+            "create": true,
+            "edit": true,
+            "delete": true,
+            "export": true,
+            "undo": true
+          }
+        },
+        {
+          "menuId": "undo",
+          "label": "Annuler action",
+          "actions": {
+            "view": true,
+            "create": true,
+            "edit": true,
+            "delete": true,
+            "export": true,
+            "undo": true
           }
         }
       ]
@@ -1367,8 +2059,9 @@
             "view": true,
             "create": true,
             "edit": true,
-            "delete": false,
-            "export": true
+            "delete": true,
+            "export": true,
+            "undo": true
           }
         },
         {
@@ -1378,8 +2071,9 @@
             "view": true,
             "create": true,
             "edit": true,
-            "delete": false,
-            "export": true
+            "delete": true,
+            "export": true,
+            "undo": true
           }
         },
         {
@@ -1389,63 +2083,117 @@
             "view": true,
             "create": true,
             "edit": true,
-            "delete": false,
-            "export": true
+            "delete": true,
+            "export": true,
+            "undo": true
           }
         },
         {
           "menuId": "employes.heures",
-          "label": "Heures sup. — Mon timesheet",
+          "label": "HS — Mon timesheet",
           "actions": {
             "view": true,
             "create": true,
             "edit": true,
-            "delete": false,
-            "export": true
+            "delete": true,
+            "export": true,
+            "undo": true
           }
         },
         {
           "menuId": "employes.heures.dept",
-          "label": "Heures sup. — Département (planning & OT de son département — Modifier = éditer le planning)",
+          "label": "HS — Voir mon département",
           "actions": {
             "view": true,
             "create": true,
             "edit": true,
-            "delete": false,
-            "export": true
+            "delete": true,
+            "export": true,
+            "undo": true
           }
         },
         {
           "menuId": "employes.heures.all",
-          "label": "Heures sup. — Tous départements (planning & OT)",
+          "label": "HS — Voir tous les départements",
           "actions": {
             "view": true,
             "create": true,
             "edit": true,
-            "delete": false,
-            "export": true
+            "delete": true,
+            "export": true,
+            "undo": true
           }
         },
         {
           "menuId": "employes.heures.import",
-          "label": "Heures sup. — Import OT (menu contextuel carte semaine)",
+          "label": "HS — Importer OT",
           "actions": {
             "view": true,
             "create": true,
             "edit": true,
-            "delete": false,
-            "export": true
+            "delete": true,
+            "export": true,
+            "undo": true
           }
         },
         {
-          "menuId": "employes.heures.compilation",
-          "label": "Heures sup. — Compilation & politique",
+          "menuId": "employes.heures.validate",
+          "label": "HS — Valider OT",
           "actions": {
             "view": true,
             "create": true,
             "edit": true,
-            "delete": false,
-            "export": true
+            "delete": true,
+            "export": true,
+            "undo": true
+          }
+        },
+        {
+          "menuId": "employes.heures.edit-validated",
+          "label": "HS — Modifier OT après validation",
+          "actions": {
+            "view": true,
+            "create": true,
+            "edit": true,
+            "delete": true,
+            "export": true,
+            "undo": true
+          }
+        },
+        {
+          "menuId": "employes.heures.policy",
+          "label": "HS — Appliquer la politique",
+          "actions": {
+            "view": true,
+            "create": true,
+            "edit": true,
+            "delete": true,
+            "export": true,
+            "undo": true
+          }
+        },
+        {
+          "menuId": "employes.heures.export",
+          "label": "HS — Exporter",
+          "actions": {
+            "view": true,
+            "create": true,
+            "edit": true,
+            "delete": true,
+            "export": true,
+            "undo": true
+          }
+        },
+        {
+          "menuId": "employes.heures.simulation",
+          "label": "HS — Simulation",
+          "actions": {
+            "view": true,
+            "create": true,
+            "edit": true,
+            "delete": true,
+            "export": true,
+            "undo": true
           }
         },
         {
@@ -1456,7 +2204,8 @@
             "create": true,
             "edit": true,
             "delete": true,
-            "export": true
+            "export": true,
+            "undo": true
           }
         },
         {
@@ -1467,7 +2216,8 @@
             "create": true,
             "edit": true,
             "delete": true,
-            "export": true
+            "export": true,
+            "undo": true
           }
         },
         {
@@ -1478,7 +2228,8 @@
             "create": true,
             "edit": true,
             "delete": true,
-            "export": true
+            "export": true,
+            "undo": true
           }
         },
         {
@@ -1489,7 +2240,8 @@
             "create": true,
             "edit": true,
             "delete": true,
-            "export": true
+            "export": true,
+            "undo": true
           }
         },
         {
@@ -1500,7 +2252,8 @@
             "create": true,
             "edit": true,
             "delete": true,
-            "export": true
+            "export": true,
+            "undo": true
           }
         },
         {
@@ -1511,7 +2264,8 @@
             "create": true,
             "edit": true,
             "delete": true,
-            "export": true
+            "export": true,
+            "undo": true
           }
         },
         {
@@ -1522,7 +2276,8 @@
             "create": true,
             "edit": true,
             "delete": true,
-            "export": true
+            "export": true,
+            "undo": true
           }
         },
         {
@@ -1533,7 +2288,8 @@
             "create": true,
             "edit": true,
             "delete": true,
-            "export": true
+            "export": true,
+            "undo": true
           }
         },
         {
@@ -1544,7 +2300,8 @@
             "create": true,
             "edit": true,
             "delete": true,
-            "export": true
+            "export": true,
+            "undo": true
           }
         },
         {
@@ -1555,7 +2312,8 @@
             "create": true,
             "edit": true,
             "delete": true,
-            "export": true
+            "export": true,
+            "undo": true
           }
         },
         {
@@ -1566,7 +2324,8 @@
             "create": true,
             "edit": true,
             "delete": true,
-            "export": true
+            "export": true,
+            "undo": true
           }
         },
         {
@@ -1577,7 +2336,8 @@
             "create": true,
             "edit": true,
             "delete": true,
-            "export": true
+            "export": true,
+            "undo": true
           }
         },
         {
@@ -1588,7 +2348,8 @@
             "create": true,
             "edit": true,
             "delete": true,
-            "export": true
+            "export": true,
+            "undo": true
           }
         },
         {
@@ -1599,7 +2360,8 @@
             "create": true,
             "edit": true,
             "delete": true,
-            "export": true
+            "export": true,
+            "undo": true
           }
         },
         {
@@ -1610,7 +2372,8 @@
             "create": true,
             "edit": true,
             "delete": true,
-            "export": true
+            "export": true,
+            "undo": true
           }
         },
         {
@@ -1621,7 +2384,8 @@
             "create": true,
             "edit": true,
             "delete": true,
-            "export": true
+            "export": true,
+            "undo": true
           }
         },
         {
@@ -1632,7 +2396,8 @@
             "create": true,
             "edit": true,
             "delete": true,
-            "export": true
+            "export": true,
+            "undo": true
           }
         },
         {
@@ -1643,7 +2408,8 @@
             "create": true,
             "edit": true,
             "delete": true,
-            "export": true
+            "export": true,
+            "undo": true
           }
         },
         {
@@ -1654,7 +2420,8 @@
             "create": true,
             "edit": true,
             "delete": true,
-            "export": true
+            "export": true,
+            "undo": true
           }
         },
         {
@@ -1665,29 +2432,116 @@
             "create": true,
             "edit": true,
             "delete": true,
-            "export": true
+            "export": true,
+            "undo": true
           }
         },
         {
           "menuId": "settings.utilisateurs",
           "label": "Utilisateurs",
           "actions": {
-            "view": false,
-            "create": false,
-            "edit": false,
-            "delete": false,
-            "export": false
+            "view": true,
+            "create": true,
+            "edit": true,
+            "delete": true,
+            "export": true,
+            "undo": true
           }
         },
         {
           "menuId": "settings.permissions",
           "label": "Permissions",
           "actions": {
-            "view": false,
-            "create": false,
-            "edit": false,
-            "delete": false,
-            "export": false
+            "view": true,
+            "create": true,
+            "edit": true,
+            "delete": true,
+            "export": true,
+            "undo": true
+          }
+        },
+        {
+          "menuId": "parametres.logs",
+          "label": "Logs",
+          "actions": {
+            "view": true,
+            "create": true,
+            "edit": true,
+            "delete": true,
+            "export": true,
+            "undo": true
+          }
+        },
+        {
+          "menuId": "view",
+          "label": "Voir",
+          "actions": {
+            "view": true,
+            "create": true,
+            "edit": true,
+            "delete": true,
+            "export": true,
+            "undo": true
+          }
+        },
+        {
+          "menuId": "create",
+          "label": "Créer",
+          "actions": {
+            "view": true,
+            "create": true,
+            "edit": true,
+            "delete": true,
+            "export": true,
+            "undo": true
+          }
+        },
+        {
+          "menuId": "edit",
+          "label": "Modifier",
+          "actions": {
+            "view": true,
+            "create": true,
+            "edit": true,
+            "delete": true,
+            "export": true,
+            "undo": true
+          }
+        },
+        {
+          "menuId": "delete",
+          "label": "Supprimer",
+          "actions": {
+            "view": true,
+            "create": true,
+            "edit": true,
+            "delete": true,
+            "export": true,
+            "undo": true
+          }
+        },
+        {
+          "menuId": "export",
+          "label": "Exporter",
+          "actions": {
+            "view": true,
+            "create": true,
+            "edit": true,
+            "delete": true,
+            "export": true,
+            "undo": true
+          }
+        },
+        {
+          "menuId": "undo",
+          "label": "Annuler action",
+          "actions": {
+            "view": true,
+            "create": true,
+            "edit": true,
+            "delete": true,
+            "export": true,
+            "undo": true
           }
         }
       ]
@@ -1719,7 +2573,8 @@
             "create": true,
             "edit": true,
             "delete": true,
-            "export": true
+            "export": true,
+            "undo": true
           }
         },
         {
@@ -1730,7 +2585,8 @@
             "create": true,
             "edit": true,
             "delete": true,
-            "export": true
+            "export": true,
+            "undo": true
           }
         },
         {
@@ -1741,62 +2597,116 @@
             "create": true,
             "edit": true,
             "delete": true,
-            "export": true
+            "export": true,
+            "undo": true
           }
         },
         {
           "menuId": "employes.heures",
-          "label": "Heures sup. — Mon timesheet",
+          "label": "HS — Mon timesheet",
           "actions": {
             "view": true,
             "create": true,
             "edit": true,
             "delete": true,
-            "export": true
+            "export": true,
+            "undo": true
           }
         },
         {
           "menuId": "employes.heures.dept",
-          "label": "Heures sup. — Département (planning & OT de son département — Modifier = éditer le planning)",
+          "label": "HS — Voir mon département",
           "actions": {
             "view": true,
             "create": true,
             "edit": true,
             "delete": true,
-            "export": true
+            "export": true,
+            "undo": true
           }
         },
         {
           "menuId": "employes.heures.all",
-          "label": "Heures sup. — Tous départements (planning & OT)",
+          "label": "HS — Voir tous les départements",
           "actions": {
             "view": true,
             "create": true,
             "edit": true,
             "delete": true,
-            "export": true
+            "export": true,
+            "undo": true
           }
         },
         {
           "menuId": "employes.heures.import",
-          "label": "Heures sup. — Import OT (menu contextuel carte semaine)",
+          "label": "HS — Importer OT",
           "actions": {
             "view": true,
             "create": true,
             "edit": true,
             "delete": true,
-            "export": true
+            "export": true,
+            "undo": true
           }
         },
         {
-          "menuId": "employes.heures.compilation",
-          "label": "Heures sup. — Compilation & politique",
+          "menuId": "employes.heures.validate",
+          "label": "HS — Valider OT",
           "actions": {
             "view": true,
             "create": true,
             "edit": true,
             "delete": true,
-            "export": true
+            "export": true,
+            "undo": true
+          }
+        },
+        {
+          "menuId": "employes.heures.edit-validated",
+          "label": "HS — Modifier OT après validation",
+          "actions": {
+            "view": true,
+            "create": true,
+            "edit": true,
+            "delete": true,
+            "export": true,
+            "undo": true
+          }
+        },
+        {
+          "menuId": "employes.heures.policy",
+          "label": "HS — Appliquer la politique",
+          "actions": {
+            "view": true,
+            "create": true,
+            "edit": true,
+            "delete": true,
+            "export": true,
+            "undo": true
+          }
+        },
+        {
+          "menuId": "employes.heures.export",
+          "label": "HS — Exporter",
+          "actions": {
+            "view": true,
+            "create": true,
+            "edit": true,
+            "delete": true,
+            "export": true,
+            "undo": true
+          }
+        },
+        {
+          "menuId": "employes.heures.simulation",
+          "label": "HS — Simulation",
+          "actions": {
+            "view": true,
+            "create": true,
+            "edit": true,
+            "delete": true,
+            "export": true,
+            "undo": true
           }
         },
         {
@@ -1807,7 +2717,8 @@
             "create": true,
             "edit": true,
             "delete": true,
-            "export": true
+            "export": true,
+            "undo": true
           }
         },
         {
@@ -1818,7 +2729,8 @@
             "create": true,
             "edit": true,
             "delete": true,
-            "export": true
+            "export": true,
+            "undo": true
           }
         },
         {
@@ -1829,7 +2741,8 @@
             "create": true,
             "edit": true,
             "delete": true,
-            "export": true
+            "export": true,
+            "undo": true
           }
         },
         {
@@ -1840,7 +2753,8 @@
             "create": true,
             "edit": true,
             "delete": true,
-            "export": true
+            "export": true,
+            "undo": true
           }
         },
         {
@@ -1851,7 +2765,8 @@
             "create": true,
             "edit": true,
             "delete": true,
-            "export": true
+            "export": true,
+            "undo": true
           }
         },
         {
@@ -1862,7 +2777,8 @@
             "create": true,
             "edit": true,
             "delete": true,
-            "export": true
+            "export": true,
+            "undo": true
           }
         },
         {
@@ -1873,7 +2789,8 @@
             "create": true,
             "edit": true,
             "delete": true,
-            "export": true
+            "export": true,
+            "undo": true
           }
         },
         {
@@ -1884,7 +2801,8 @@
             "create": true,
             "edit": true,
             "delete": true,
-            "export": true
+            "export": true,
+            "undo": true
           }
         },
         {
@@ -1895,7 +2813,8 @@
             "create": true,
             "edit": true,
             "delete": true,
-            "export": true
+            "export": true,
+            "undo": true
           }
         },
         {
@@ -1906,7 +2825,8 @@
             "create": true,
             "edit": true,
             "delete": true,
-            "export": true
+            "export": true,
+            "undo": true
           }
         },
         {
@@ -1917,7 +2837,8 @@
             "create": true,
             "edit": true,
             "delete": true,
-            "export": true
+            "export": true,
+            "undo": true
           }
         },
         {
@@ -1928,7 +2849,8 @@
             "create": true,
             "edit": true,
             "delete": true,
-            "export": true
+            "export": true,
+            "undo": true
           }
         },
         {
@@ -1939,7 +2861,8 @@
             "create": true,
             "edit": true,
             "delete": true,
-            "export": true
+            "export": true,
+            "undo": true
           }
         },
         {
@@ -1950,7 +2873,8 @@
             "create": true,
             "edit": true,
             "delete": true,
-            "export": true
+            "export": true,
+            "undo": true
           }
         },
         {
@@ -1961,7 +2885,8 @@
             "create": true,
             "edit": true,
             "delete": true,
-            "export": true
+            "export": true,
+            "undo": true
           }
         },
         {
@@ -1972,7 +2897,8 @@
             "create": true,
             "edit": true,
             "delete": true,
-            "export": true
+            "export": true,
+            "undo": true
           }
         },
         {
@@ -1983,7 +2909,8 @@
             "create": true,
             "edit": true,
             "delete": true,
-            "export": true
+            "export": true,
+            "undo": true
           }
         },
         {
@@ -1994,7 +2921,8 @@
             "create": true,
             "edit": true,
             "delete": true,
-            "export": true
+            "export": true,
+            "undo": true
           }
         },
         {
@@ -2005,7 +2933,8 @@
             "create": true,
             "edit": true,
             "delete": true,
-            "export": true
+            "export": true,
+            "undo": true
           }
         },
         {
@@ -2016,7 +2945,8 @@
             "create": true,
             "edit": true,
             "delete": true,
-            "export": true
+            "export": true,
+            "undo": true
           }
         },
         {
@@ -2027,7 +2957,8 @@
             "create": true,
             "edit": true,
             "delete": true,
-            "export": true
+            "export": true,
+            "undo": true
           }
         },
         {
@@ -2038,7 +2969,92 @@
             "create": true,
             "edit": true,
             "delete": true,
-            "export": true
+            "export": true,
+            "undo": true
+          }
+        },
+        {
+          "menuId": "parametres.logs",
+          "label": "Logs",
+          "actions": {
+            "view": true,
+            "create": true,
+            "edit": true,
+            "delete": true,
+            "export": true,
+            "undo": true
+          }
+        },
+        {
+          "menuId": "view",
+          "label": "Voir",
+          "actions": {
+            "view": true,
+            "create": true,
+            "edit": true,
+            "delete": true,
+            "export": true,
+            "undo": true
+          }
+        },
+        {
+          "menuId": "create",
+          "label": "Créer",
+          "actions": {
+            "view": true,
+            "create": true,
+            "edit": true,
+            "delete": true,
+            "export": true,
+            "undo": true
+          }
+        },
+        {
+          "menuId": "edit",
+          "label": "Modifier",
+          "actions": {
+            "view": true,
+            "create": true,
+            "edit": true,
+            "delete": true,
+            "export": true,
+            "undo": true
+          }
+        },
+        {
+          "menuId": "delete",
+          "label": "Supprimer",
+          "actions": {
+            "view": true,
+            "create": true,
+            "edit": true,
+            "delete": true,
+            "export": true,
+            "undo": true
+          }
+        },
+        {
+          "menuId": "export",
+          "label": "Exporter",
+          "actions": {
+            "view": true,
+            "create": true,
+            "edit": true,
+            "delete": true,
+            "export": true,
+            "undo": true
+          }
+        },
+        {
+          "menuId": "undo",
+          "label": "Annuler action",
+          "actions": {
+            "view": true,
+            "create": true,
+            "edit": true,
+            "delete": true,
+            "export": true,
+            "undo": true
           }
         }
       ]

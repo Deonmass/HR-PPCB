@@ -51,6 +51,7 @@ interface Props {
   canExport?: boolean;
   canClose?: boolean;
   canApplyPolicy?: boolean;
+  canSimulate?: boolean;
   access?: {
     loading: boolean;
     scope: TimesheetViewScope | null;
@@ -83,6 +84,7 @@ export default function TimesheetCompilationView({
   canExport = false,
   canClose = false,
   canApplyPolicy = false,
+  canSimulate = false,
   access,
 }: Props) {
   const { can } = usePermissions();
@@ -97,7 +99,9 @@ export default function TimesheetCompilationView({
     return monthOptions[0];
   });
   const [employees, setEmployees] = useState<Employee[]>([]);
-  const [department, setDepartment] = useState(initialDepartment ?? '');
+  const [department, setDepartment] = useState(
+    initialDepartment?.trim() ? initialDepartment : ALL_DEPARTMENTS,
+  );
   const [data, setData] = useState<CompilationData | null>(null);
   const [loading, setLoading] = useState(false);
   const [exporting, setExporting] = useState(false);
@@ -148,12 +152,14 @@ export default function TimesheetCompilationView({
   }, []);
 
   useEffect(() => {
-    if (lockedDepartment) setDepartment(lockedDepartment);
-  }, [lockedDepartment]);
-
-  useEffect(() => {
-    if (!department && departments.length) setDepartment(departments[0].name);
-  }, [department, departments]);
+    if (lockedDepartment) {
+      setDepartment(lockedDepartment);
+      return;
+    }
+    if (!department) {
+      setDepartment(scope === 'all' ? ALL_DEPARTMENTS : departments[0]?.name ?? '');
+    }
+  }, [lockedDepartment, department, departments, scope]);
 
   useEffect(() => {
     if (!department) {
@@ -652,7 +658,7 @@ export default function TimesheetCompilationView({
             </div>
           )}
 
-          {hasData && (canApplyPolicy || canExport || (canClose && usePolicyView)) ? (
+          {hasData && (canApplyPolicy || canExport || canSimulate || (canClose && usePolicyView)) ? (
             <div className="timesheet-calendar-panel-footer compilation-footer">
               <div className="compilation-footer-left">
                 {canApplyPolicy && !policyApplied ? (
@@ -684,15 +690,17 @@ export default function TimesheetCompilationView({
                 ) : null}
               </div>
               <div className="compilation-footer-right">
-                <button
-                  type="button"
-                  className="btn btn-outline btn-sm btn-with-icon"
-                  onClick={() => setSimulationOpen(true)}
-                  title="Simuler la politique sur un fichier Excel exporté"
-                >
-                  <IconPolicy size={13} />
-                  Simulation
-                </button>
+                {canSimulate ? (
+                  <button
+                    type="button"
+                    className="btn btn-outline btn-sm btn-with-icon"
+                    onClick={() => setSimulationOpen(true)}
+                    title="Simuler la politique sur un fichier Excel exporté"
+                  >
+                    <IconPolicy size={13} />
+                    Simulation
+                  </button>
+                ) : null}
                 {canExport ? (
                   <button
                     type="button"
@@ -706,22 +714,7 @@ export default function TimesheetCompilationView({
                 ) : null}
               </div>
             </div>
-          ) : (
-            <div className="timesheet-calendar-panel-footer compilation-footer">
-              <div className="compilation-footer-left" />
-              <div className="compilation-footer-right">
-                <button
-                  type="button"
-                  className="btn btn-outline btn-sm btn-with-icon"
-                  onClick={() => setSimulationOpen(true)}
-                  title="Simuler la politique sur un fichier Excel exporté"
-                >
-                  <IconPolicy size={13} />
-                  Simulation
-                </button>
-              </div>
-            </div>
-          )}
+          ) : null}
         </div>
       </div>
 

@@ -42,7 +42,7 @@ export interface AuthSession {
   expiresAt: string;
 }
 
-export type PermissionAction = 'view' | 'create' | 'edit' | 'delete' | 'export';
+export type PermissionAction = 'view' | 'create' | 'edit' | 'delete' | 'export' | 'undo';
 
 export interface MenuPermission {
   menuId: string;

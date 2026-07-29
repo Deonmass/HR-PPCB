@@ -4,6 +4,7 @@ import { excelErrorResponse } from '@/lib/excel-io';
 import { getCashRequest } from '@/lib/cash-request-store';
 import { checkAnyPermission } from '@/lib/require-permission';
 import type { TravelFileType } from '@/lib/travel-types';
+import { auditSimpleAction } from '@/lib/with-audit';
 
 type Params = { params: Promise<{ id: string }> };
 
@@ -56,6 +57,13 @@ export async function GET(request: Request, { params }: Params) {
     }
 
     const buffer = await fs.readFile(file.filePath);
+
+    await auditSimpleAction({
+      module: 'travel.etablir',
+      action: 'export',
+      summary: `Téléchargement document voyage ${record.missionRef || id}`,
+      details: `Fichier ${file.fileName} (${file.type})`,
+    });
 
     return new NextResponse(buffer, {
       headers: {

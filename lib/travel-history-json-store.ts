@@ -396,6 +396,40 @@ export async function deleteTravelHistoryRow(rowIndex: number, missionRef?: stri
   await writeJsonFile(store);
 }
 
+/** Restore a full history row snapshot (audit undo / reparateur). */
+export async function restoreTravelHistoryRow(snapshot: TravelHistoryRow): Promise<TravelHistoryRow> {
+  await ensureMigrated();
+  const store = await readJsonFile({ rows: [], nextRowIndex: 1 });
+  const row: TravelHistoryRow = {
+    rowIndex: Number(snapshot.rowIndex),
+    date: str(snapshot.date),
+    ref: str(snapshot.ref),
+    employee: str(snapshot.employee),
+    department: str(snapshot.department),
+    travelDates: str(snapshot.travelDates),
+    tripDays: num(snapshot.tripDays),
+    totalBudget: num(snapshot.totalBudget),
+    recordId: str(snapshot.recordId),
+  };
+  if (!row.ref) throw new Error('Référence mission manquante');
+  if (!Number.isInteger(row.rowIndex) || row.rowIndex < 0) {
+    throw new Error('Index de ligne invalide pour restauration');
+  }
+
+  const byIndex = store.rows.findIndex((item) => item.rowIndex === row.rowIndex);
+  const byRef = store.rows.findIndex((item) => item.ref === row.ref);
+  if (byIndex >= 0) {
+    store.rows[byIndex] = row;
+  } else if (byRef >= 0) {
+    store.rows[byRef] = row;
+  } else {
+    store.rows.push(row);
+  }
+  store.nextRowIndex = Math.max(store.nextRowIndex, row.rowIndex + 1);
+  await writeJsonFile(store);
+  return row;
+}
+
 export async function appendTravelHistoryRow(record: CashRequestRecord): Promise<void> {
   if (!record.missionRef?.trim()) {
     throw new Error('Reference ordre de mission manquante pour historique');

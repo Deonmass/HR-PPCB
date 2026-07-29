@@ -9,6 +9,7 @@ import { buildCompilationData, compilationWeekIndexes } from '@/lib/timesheet-co
 import { buildTimesheetPeriod } from '@/lib/timesheet-period';
 import { setWeeklyOvertimeMonthClosed } from '@/lib/timesheet-weekly-ot-store';
 import type { Employee } from '@/lib/types';
+import { withAudit } from '@/lib/with-audit';
 
 const ALL_DEPARTMENTS = '__ALL__';
 
@@ -105,6 +106,24 @@ export async function POST(request: Request) {
         userId: userResult.session.user.id,
       });
     }
+
+    await withAudit(
+      {
+        module: 'timesheet.compilation',
+        action: 'other',
+        actionLabel: action === 'close' ? 'Clôture' : 'Réouverture',
+        summary:
+          action === 'close'
+            ? `Clôture compilation OT ${month}/${year}`
+            : `Réouverture compilation OT ${month}/${year}`,
+        details: `Départements: ${departments.join(', ') || '—'}`,
+        undoable: false,
+        meta: { action, year, month, departments },
+        path: '/api/timesheet/compilation',
+        method: 'POST',
+      },
+      async () => ({ closed: action === 'close' }),
+    );
 
     return NextResponse.json({ closed: action === 'close' });
   } catch (err) {

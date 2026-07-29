@@ -341,6 +341,16 @@ export async function getGuestHouseBundle(): Promise<GuestHouseStoreData & { das
   return { ...data, dashboard: buildDashboard(data) };
 }
 
+export async function getGuestRoom(id: string): Promise<GuestRoom | null> {
+  const data = await readStore();
+  return data.rooms.find((room) => room.id === id) ?? null;
+}
+
+export async function getGuestReservation(id: string): Promise<GuestReservation | null> {
+  const data = await readStore();
+  return data.reservations.find((item) => item.id === id) ?? null;
+}
+
 export function buildDashboard(data: GuestHouseStoreData): GuestHouseDashboard {
   const today = todayIso();
   const roomsById = new Map(data.rooms.map((room) => [room.id, room]));
@@ -654,6 +664,38 @@ export async function deleteGuestReservation(id: string): Promise<boolean> {
   data.reservations.splice(index, 1);
   await writeStore(data);
   return true;
+}
+
+/** Restore / upsert a room snapshot (audit undo). */
+export async function restoreGuestRoom(room: GuestRoom): Promise<GuestRoom> {
+  const data = await readStore();
+  const restored: GuestRoom = {
+    ...room,
+    id: str(room.id),
+    updatedAt: new Date().toISOString(),
+  };
+  if (!restored.id) throw new Error('ID chambre manquant');
+  const index = data.rooms.findIndex((item) => item.id === restored.id);
+  if (index >= 0) data.rooms[index] = { ...data.rooms[index], ...restored };
+  else data.rooms.push(restored);
+  await writeStore(data);
+  return restored;
+}
+
+/** Restore / upsert a reservation snapshot (audit undo). */
+export async function restoreGuestReservation(reservation: GuestReservation): Promise<GuestReservation> {
+  const data = await readStore();
+  const restored: GuestReservation = {
+    ...reservation,
+    id: str(reservation.id),
+    updatedAt: new Date().toISOString(),
+  };
+  if (!restored.id) throw new Error('ID réservation manquant');
+  const index = data.reservations.findIndex((item) => item.id === restored.id);
+  if (index >= 0) data.reservations[index] = { ...data.reservations[index], ...restored };
+  else data.reservations.unshift(restored);
+  await writeStore(data);
+  return restored;
 }
 
 export function remainingDays(endDate: string, from = todayIso()): number {

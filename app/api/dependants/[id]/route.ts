@@ -1,8 +1,9 @@
 import { NextResponse } from 'next/server';
-import { deleteDependant, updateDependant } from '@/lib/dependants-json-store';
+import { deleteDependant, getDependantRecord, updateDependant } from '@/lib/dependants-json-store';
 import type { DependantFormData } from '@/lib/dependants-types';
 import { excelErrorResponse } from '@/lib/excel-io';
 import { checkAnyPermission } from '@/lib/require-permission';
+import { withAudit } from '@/lib/with-audit';
 
 interface RouteParams {
   params: Promise<{ id: string }>;
@@ -25,7 +26,19 @@ export async function PUT(request: Request, { params }: RouteParams) {
     if (!body.matricule || !body.nom || !body.statut) {
       return NextResponse.json({ error: 'Matricule, nom et statut requis' }, { status: 400 });
     }
-    const updated = await updateDependant(id, body);
+    const updated = await withAudit(
+      {
+        module: 'dependants',
+        action: 'update',
+        entityType: 'dependant',
+        entityId: String(id),
+        summary: `Modification dépendant #${id} — ${body.nom}`,
+        getBefore: () => getDependantRecord(id),
+        path: `/api/dependants/${id}`,
+        method: 'PUT',
+      },
+      () => updateDependant(id, body),
+    );
     return NextResponse.json(updated);
   } catch (err) {
     const { status, message } = excelErrorResponse(err);
@@ -46,7 +59,20 @@ export async function DELETE(_request: Request, { params }: RouteParams) {
   }
 
   try {
-    const deleted = await deleteDependant(id);
+    const deleted = await withAudit(
+      {
+        module: 'dependants',
+        action: 'delete',
+        entityType: 'dependant',
+        entityId: String(id),
+        summary: `Suppression dépendant #${id}`,
+        getBefore: () => getDependantRecord(id),
+        getAfter: () => null,
+        path: `/api/dependants/${id}`,
+        method: 'DELETE',
+      },
+      () => deleteDependant(id),
+    );
     if (!deleted) {
       return NextResponse.json({ error: 'Bénéficiaire introuvable' }, { status: 404 });
     }

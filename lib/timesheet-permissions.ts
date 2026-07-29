@@ -7,6 +7,12 @@ export const TIMESHEET_MENU = {
   department: 'employes.heures.dept',
   all: 'employes.heures.all',
   importOvertime: 'employes.heures.import',
+  validateOvertime: 'employes.heures.validate',
+  editValidated: 'employes.heures.edit-validated',
+  policy: 'employes.heures.policy',
+  export: 'employes.heures.export',
+  simulation: 'employes.heures.simulation',
+  /** @deprecated kept for stored permissions compatibility */
   compilation: 'employes.heures.compilation',
 } as const;
 
@@ -24,14 +30,28 @@ export interface TimesheetAccessContext {
     editManager: boolean;
     exportDepartment: boolean;
     importOvertime: boolean;
+    validateOvertime: boolean;
+    editValidatedOvertime: boolean;
     viewAll: boolean;
     applyPolicy: boolean;
     closeMonth: boolean;
+    simulation: boolean;
   };
 }
 
 function normalize(value: string): string {
   return value.trim().toLowerCase();
+}
+
+/** True if any standard action is granted on the menu (for capability menus). */
+function hasAnyAction(menus: MenuPermission[] | null | undefined, menuId: string): boolean {
+  return (
+    canPerformAction(menus, menuId, 'view') ||
+    canPerformAction(menus, menuId, 'create') ||
+    canPerformAction(menus, menuId, 'edit') ||
+    canPerformAction(menus, menuId, 'delete') ||
+    canPerformAction(menus, menuId, 'export')
+  );
 }
 
 export function matchesDepartment(employeeDepartment: string, selectedDepartment: string): boolean {
@@ -73,6 +93,25 @@ export function buildTimesheetAccessContext(
   const scope = resolveTimesheetViewScope(menus);
   const linkedEmployee = resolveEmployeeForSession(user, employees);
 
+  const importOvertime = hasAnyAction(menus, TIMESHEET_MENU.importOvertime);
+  const validateOvertime =
+    hasAnyAction(menus, TIMESHEET_MENU.validateOvertime) ||
+    canPerformAction(menus, TIMESHEET_MENU.department, 'edit') ||
+    canPerformAction(menus, TIMESHEET_MENU.all, 'edit');
+  const editValidatedOvertime = hasAnyAction(menus, TIMESHEET_MENU.editValidated);
+  const applyPolicy =
+    hasAnyAction(menus, TIMESHEET_MENU.policy) ||
+    canPerformAction(menus, TIMESHEET_MENU.compilation, 'create') ||
+    canPerformAction(menus, TIMESHEET_MENU.compilation, 'edit');
+  const exportDepartment =
+    canPerformAction(menus, TIMESHEET_MENU.export, 'export') ||
+    canPerformAction(menus, TIMESHEET_MENU.export, 'view') ||
+    canPerformAction(menus, TIMESHEET_MENU.department, 'export') ||
+    canPerformAction(menus, TIMESHEET_MENU.all, 'export');
+  const simulation =
+    hasAnyAction(menus, TIMESHEET_MENU.simulation) ||
+    canPerformAction(menus, TIMESHEET_MENU.compilation, 'view');
+
   return {
     scope,
     linkedEmployee,
@@ -86,18 +125,20 @@ export function buildTimesheetAccessContext(
         canPerformAction(menus, TIMESHEET_MENU.all, 'view'),
       editManager:
         canPerformAction(menus, TIMESHEET_MENU.department, 'edit') ||
-        canPerformAction(menus, TIMESHEET_MENU.all, 'edit'),
-      exportDepartment:
-        canPerformAction(menus, TIMESHEET_MENU.department, 'export') ||
-        canPerformAction(menus, TIMESHEET_MENU.all, 'export'),
-      importOvertime: canPerformAction(menus, TIMESHEET_MENU.importOvertime, 'create'),
+        canPerformAction(menus, TIMESHEET_MENU.all, 'edit') ||
+        validateOvertime ||
+        editValidatedOvertime,
+      exportDepartment,
+      importOvertime,
+      validateOvertime,
+      editValidatedOvertime,
       viewAll: canPerformAction(menus, TIMESHEET_MENU.all, 'view'),
-      applyPolicy:
-        canPerformAction(menus, TIMESHEET_MENU.compilation, 'create') ||
-        canPerformAction(menus, TIMESHEET_MENU.all, 'edit'),
+      applyPolicy,
       closeMonth:
         canPerformAction(menus, TIMESHEET_MENU.compilation, 'edit') ||
-        canPerformAction(menus, TIMESHEET_MENU.all, 'edit'),
+        canPerformAction(menus, TIMESHEET_MENU.all, 'edit') ||
+        validateOvertime,
+      simulation,
     },
   };
 }
@@ -182,6 +223,8 @@ export function canExportTimesheetOwn(menus: MenuPermission[] | null | undefined
 
 export function canExportTimesheetDepartment(menus: MenuPermission[] | null | undefined): boolean {
   return (
+    canPerformAction(menus, TIMESHEET_MENU.export, 'export') ||
+    canPerformAction(menus, TIMESHEET_MENU.export, 'view') ||
     canPerformAction(menus, TIMESHEET_MENU.department, 'export') ||
     canPerformAction(menus, TIMESHEET_MENU.all, 'export')
   );

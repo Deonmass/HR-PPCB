@@ -4,6 +4,7 @@ import { deleteEmployee, getEmployee, upsertEmployee, updateEmployeeDocument } f
 import { checkAnyPermission, checkPermission } from '@/lib/require-permission';
 import type { Employee } from '@/lib/types';
 import { emptyEmployeeHrProfile } from '@/lib/types';
+import { withAudit } from '@/lib/with-audit';
 
 type Params = { params: Promise<{ matricule: string }> };
 
@@ -33,12 +34,26 @@ export async function PUT(request: Request, { params }: Params) {
     if (body.matricule !== matricule) {
       return NextResponse.json({ error: 'Matricule incohérent' }, { status: 400 });
     }
-    const current = await getEmployee(matricule);
-    const saved = await upsertEmployee({
-      ...emptyEmployeeHrProfile(),
-      ...(current ?? {}),
-      ...body,
-    });
+    const saved = await withAudit(
+      {
+        module: 'employees',
+        action: 'update',
+        entityType: 'employee',
+        entityId: matricule,
+        summary: `Modification employé ${matricule}`,
+        getBefore: () => getEmployee(matricule),
+        path: `/api/employees/${matricule}`,
+        method: 'PUT',
+      },
+      async () => {
+        const current = await getEmployee(matricule);
+        return upsertEmployee({
+          ...emptyEmployeeHrProfile(),
+          ...(current ?? {}),
+          ...body,
+        });
+      },
+    );
     return NextResponse.json(saved);
   } catch (err) {
     if (err instanceof Error && /raison exit/i.test(err.message)) {
@@ -57,7 +72,19 @@ export async function PATCH(request: Request, { params }: Params) {
     const body = await request.json();
 
     if (body.docKey && body.value) {
-      const updated = await updateEmployeeDocument(matricule, body.docKey, body.value);
+      const updated = await withAudit(
+        {
+          module: 'employees',
+          action: 'update',
+          entityType: 'employee',
+          entityId: matricule,
+          summary: `Document employé ${matricule} — ${body.docKey}`,
+          getBefore: () => getEmployee(matricule),
+          path: `/api/employees/${matricule}`,
+          method: 'PATCH',
+        },
+        () => updateEmployeeDocument(matricule, body.docKey, body.value),
+      );
       if (!updated) return NextResponse.json({ error: 'Non trouvé' }, { status: 404 });
       return NextResponse.json(updated);
     }
@@ -74,7 +101,20 @@ export async function DELETE(_: Request, { params }: Params) {
   if (denied) return denied;
   try {
     const { matricule } = await params;
-    const ok = await deleteEmployee(matricule);
+    const ok = await withAudit(
+      {
+        module: 'employees',
+        action: 'delete',
+        entityType: 'employee',
+        entityId: matricule,
+        summary: `Suppression employé ${matricule}`,
+        getBefore: () => getEmployee(matricule),
+        getAfter: () => null,
+        path: `/api/employees/${matricule}`,
+        method: 'DELETE',
+      },
+      () => deleteEmployee(matricule),
+    );
     if (!ok) return NextResponse.json({ error: 'Non trouvé' }, { status: 404 });
     return NextResponse.json({ success: true });
   } catch (err) {

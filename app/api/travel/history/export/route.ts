@@ -5,6 +5,7 @@ import {
   buildTravelHistoryExportBuffer,
   buildTravelHistoryExportFilename,
 } from '@/lib/travel-history-export.server';
+import { auditSimpleAction } from '@/lib/with-audit';
 
 export async function GET() {
   const denied = await checkPermission('travel.historique', 'export');
@@ -13,6 +14,12 @@ export async function GET() {
   try {
     const buffer = await buildTravelHistoryExportBuffer();
     const filename = buildTravelHistoryExportFilename();
+    await auditSimpleAction({
+      module: 'travel.historique',
+      action: 'export',
+      summary: `Export historique de voyage (${filename})`,
+      details: `Fichier Excel exporté : ${filename}`,
+    });
 
     return new NextResponse(new Uint8Array(buffer), {
       headers: {

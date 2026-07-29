@@ -3,7 +3,8 @@ import { excelErrorResponse } from '@/lib/excel-io';
 import { createTravelDocuments, listCashRequests } from '@/lib/cash-request-store';
 import { checkAnyPermission, checkPermission } from '@/lib/require-permission';
 import type { TravelFormFields } from '@/lib/travel-form';
-import type { CashRequestLine } from '@/lib/travel-types';
+import type { CashRequestLine, CashRequestRecord } from '@/lib/travel-types';
+import { withAudit } from '@/lib/with-audit';
 
 export async function GET() {
   const denied = await checkPermission('travel.historique', 'view');
@@ -37,14 +38,34 @@ export async function POST(request: Request) {
       return NextResponse.json({ error: 'Données voyage requises' }, { status: 400 });
     }
 
-    const record = await createTravelDocuments({
-      employeeMatricule: body.employeeMatricule ?? '',
-      employeeName: body.employeeName ?? '',
-      employeeDepartment: body.employeeDepartment ?? '',
-      travel: body.travel,
-      lines: body.lines ?? [],
-      saveDirectory: body.saveDirectory,
-    });
+    const record = await withAudit(
+      {
+        module: 'travel.etablir',
+        action: 'create',
+        entityType: 'travel.cash-request',
+        entityId: (result) => (result as CashRequestRecord)?.id,
+        summary: (result) => {
+          const r = result as CashRequestRecord;
+          return `Création documents voyage ${r.missionRef || r.id}`;
+        },
+        details: (_r, _b, after) => {
+          const r = after as CashRequestRecord | undefined;
+          return `Documents créés pour ${r?.employeeName || body.employeeName || '—'} (${r?.missionRef || '—'})`;
+        },
+        undoable: false,
+        path: '/api/travel/cash-requests',
+        method: 'POST',
+      },
+      () =>
+        createTravelDocuments({
+          employeeMatricule: body.employeeMatricule ?? '',
+          employeeName: body.employeeName ?? '',
+          employeeDepartment: body.employeeDepartment ?? '',
+          travel: body.travel!,
+          lines: body.lines ?? [],
+          saveDirectory: body.saveDirectory,
+        }),
+    );
 
     return NextResponse.json(record, { status: 201 });
   } catch (err) {

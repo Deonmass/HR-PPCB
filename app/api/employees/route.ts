@@ -4,6 +4,7 @@ import { readEmployeesBundle, upsertEmployee } from '@/lib/employees-json-store'
 import { checkAnyPermission, checkPermission } from '@/lib/require-permission';
 import type { Employee } from '@/lib/types';
 import { emptyEmployeeHrProfile } from '@/lib/types';
+import { withAudit } from '@/lib/with-audit';
 
 export async function GET() {
   const denied = await checkAnyPermission([
@@ -46,11 +47,23 @@ export async function POST(request: Request) {
     ) {
       return NextResponse.json({ error: 'Matricule déjà existant' }, { status: 409 });
     }
-    const saved = await upsertEmployee({
-      ...emptyEmployeeHrProfile(),
-      ...body,
-      statut: body.statut || 'Active',
-    });
+    const saved = await withAudit(
+      {
+        module: 'employees',
+        action: 'create',
+        entityType: 'employee',
+        entityId: body.matricule,
+        summary: `Création employé ${body.matricule} — ${body.nom}`,
+        path: '/api/employees',
+        method: 'POST',
+      },
+      () =>
+        upsertEmployee({
+          ...emptyEmployeeHrProfile(),
+          ...body,
+          statut: body.statut || 'Active',
+        }),
+    );
     return NextResponse.json(saved, { status: 201 });
   } catch (err) {
     if (err instanceof Error && /raison exit/i.test(err.message)) {

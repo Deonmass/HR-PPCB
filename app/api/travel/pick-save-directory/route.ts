@@ -2,6 +2,7 @@ import { NextResponse } from 'next/server';
 import { checkPermission } from '@/lib/require-permission';
 import { pickWindowsFolder } from '@/lib/windows-folder-picker';
 import { isWindows } from '@/lib/windows-shell';
+import { auditSimpleAction } from '@/lib/with-audit';
 
 export async function POST(request: Request) {
   const denied = await checkPermission('travel.etablir', 'view');
@@ -20,6 +21,13 @@ export async function POST(request: Request) {
     if (!selected) {
       return new NextResponse(null, { status: 204 });
     }
+
+    await auditSimpleAction({
+      module: 'travel.etablir',
+      action: 'other',
+      summary: 'Sélection dossier de sauvegarde voyage',
+      details: `Dossier choisi : ${selected}`,
+    });
 
     return NextResponse.json({ path: selected });
   } catch (err) {

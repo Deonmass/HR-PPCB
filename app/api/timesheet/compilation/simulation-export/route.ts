@@ -3,6 +3,8 @@ import type { CompilationData } from '@/lib/timesheet-compilation';
 import { buildCompilationWorkbookBuffer } from '@/lib/timesheet-compilation-export.server';
 import type { PolicyChange } from '@/lib/timesheet-compilation-policy';
 import { checkTimesheetDepartmentExport } from '@/lib/timesheet-access-server';
+import { auditSimpleAction, getAuditActor } from '@/lib/with-audit';
+import { logAuditError } from '@/lib/audit-log-store';
 
 export const runtime = 'nodejs';
 export const dynamic = 'force-dynamic';
@@ -33,6 +35,12 @@ export async function POST(request: Request) {
       policyRows,
       policyChanges: body.policyChanges,
     });
+    await auditSimpleAction({
+      module: 'timesheet.compilation',
+      action: 'export',
+      summary: `Export simulation compilation OT ${body.data.month}/${body.data.year}`,
+      details: 'Export Excel simulation compilation OT',
+    });
     return new NextResponse(new Uint8Array(buffer), {
       headers: {
         'Content-Type':
@@ -41,6 +49,15 @@ export async function POST(request: Request) {
       },
     });
   } catch (err) {
+    await logAuditError({
+      message: err instanceof Error ? err.message : 'Export impossible',
+      details: `Échec export simulation OT: ${err instanceof Error ? err.message : 'Export impossible'}`,
+      module: 'timesheet.compilation',
+      path: '/api/timesheet/compilation/simulation-export',
+      method: 'POST',
+      stack: err instanceof Error ? err.stack : undefined,
+      user: await getAuditActor(),
+    });
     return NextResponse.json(
       { error: err instanceof Error ? err.message : 'Export impossible' },
       { status: 500 },

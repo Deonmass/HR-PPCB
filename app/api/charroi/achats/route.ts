@@ -3,6 +3,7 @@ import { excelErrorResponse } from '@/lib/excel-io';
 import { createAchat, listAchats } from '@/lib/charroi-store';
 import type { CharroiAchatInput } from '@/lib/charroi-types';
 import { checkAnyPermission } from '@/lib/require-permission';
+import { withAudit } from '@/lib/with-audit';
 
 const VIEW = [
   { menuId: 'charroi.achats', action: 'view' as const },
@@ -33,7 +34,21 @@ export async function POST(request: Request) {
     if (!String(body.nature ?? '').trim() && !String(body.marque ?? '').trim()) {
       return NextResponse.json({ error: 'Nature ou marque requise' }, { status: 400 });
     }
-    const item = await createAchat(body);
+    const item = await withAudit(
+      {
+        module: 'charroi.achats',
+        action: 'create',
+        entityType: 'charroi.achat',
+        entityId: (result) => (result as { id?: string })?.id,
+        summary: (result) => {
+          const a = result as { nature?: string; marque?: string; id?: string };
+          return `Création achat ${a.nature || a.marque || a.id}`;
+        },
+        path: '/api/charroi/achats',
+        method: 'POST',
+      },
+      () => createAchat(body),
+    );
     return NextResponse.json(item, { status: 201 });
   } catch (err) {
     const { status, message } = excelErrorResponse(err);

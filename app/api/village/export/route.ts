@@ -11,6 +11,8 @@ import {
   buildVillageExportFilename,
 } from '@/lib/village-export.server';
 import { readVillageCatalog } from '@/lib/village-store';
+import { auditSimpleAction, getAuditActor } from '@/lib/with-audit';
+import { logAuditError } from '@/lib/audit-log-store';
 
 export async function GET() {
   const denied = await checkAnyPermission([
@@ -41,6 +43,12 @@ export async function GET() {
       guestHouse,
     );
     const filename = buildVillageExportFilename();
+    await auditSimpleAction({
+      module: 'village.maisons',
+      action: 'export',
+      summary: `Export village (${filename})`,
+      details: `Fichier Excel exporté : ${filename}`,
+    });
     return new NextResponse(new Uint8Array(buffer), {
       headers: {
         'Content-Type': 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
@@ -50,6 +58,15 @@ export async function GET() {
     });
   } catch (err) {
     const { status, message } = excelErrorResponse(err);
+    await logAuditError({
+      message,
+      details: `Échec export village: ${message}`,
+      module: 'village.maisons',
+      path: '/api/village/export',
+      method: 'GET',
+      stack: err instanceof Error ? err.stack : undefined,
+      user: await getAuditActor(),
+    });
     return NextResponse.json({ error: message }, { status });
   }
 }

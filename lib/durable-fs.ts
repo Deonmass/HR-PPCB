@@ -30,6 +30,7 @@ export const DURABLE_OVERTIMES_WEEKLY_KEY = 'data/overtimes/weekly-overtime.json
 export const DURABLE_TRAVEL_HISTORY_KEY = 'data/travel/history.json';
 export const DURABLE_CHARROI_VEHICLES_KEY = 'data/charroi/vehicles.json';
 export const DURABLE_CHARROI_ACHATS_KEY = 'data/charroi/achats.json';
+export const DURABLE_AUDIT_LOGS_KEY = 'data/logs/audit.json';
 
 interface GithubRepoTarget {
   owner: string;

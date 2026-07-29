@@ -5,6 +5,7 @@ import {
 } from '@/lib/projects-export.server';
 import { excelErrorResponse } from '@/lib/excel-io';
 import { checkPermission } from '@/lib/require-permission';
+import { auditSimpleAction } from '@/lib/with-audit';
 
 export async function GET() {
   const denied = await checkPermission('project.projects', 'export');
@@ -13,6 +14,11 @@ export async function GET() {
   try {
     const buffer = await buildProjectsExportBuffer();
     const filename = buildProjectsExportFilename();
+    await auditSimpleAction({
+      module: 'projects',
+      action: 'export',
+      summary: `Export projets (${filename})`,
+    });
 
     return new NextResponse(new Uint8Array(buffer), {
       headers: {

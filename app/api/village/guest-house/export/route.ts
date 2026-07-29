@@ -6,6 +6,7 @@ import {
 } from '@/lib/guest-house-export.server';
 import { getGuestHouseBundle } from '@/lib/guest-house-store';
 import { checkPermission } from '@/lib/require-permission';
+import { auditSimpleAction } from '@/lib/with-audit';
 
 export async function GET(request: Request) {
   const denied = await checkPermission('village.guest-house', 'export');
@@ -18,6 +19,11 @@ export async function GET(request: Request) {
     const data = await getGuestHouseBundle();
     const { buffer, monthKey } = await buildGuestHouseTemplateExportBuffer(data, key);
     const filename = buildGuestHouseExportFilename(monthKey);
+    await auditSimpleAction({
+      module: 'guest-house',
+      action: 'export',
+      summary: `Export guest house (${filename})`,
+    });
     return new NextResponse(new Uint8Array(buffer), {
       headers: {
         'Content-Type':

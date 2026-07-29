@@ -5,6 +5,7 @@ import {
 } from '@/lib/employees-export.server';
 import { excelErrorResponse } from '@/lib/excel-io';
 import { checkPermission } from '@/lib/require-permission';
+import { auditSimpleAction } from '@/lib/with-audit';
 
 export async function GET() {
   const denied = await checkPermission('employes.liste', 'export');
@@ -13,6 +14,12 @@ export async function GET() {
   try {
     const buffer = await buildEmployeesExportBuffer();
     const filename = buildEmployeesHrExportFilename();
+    await auditSimpleAction({
+      module: 'employees',
+      action: 'export',
+      summary: `Export employés (${filename})`,
+      details: `Fichier Excel exporté : ${filename}`,
+    });
 
     return new NextResponse(new Uint8Array(buffer), {
       headers: {

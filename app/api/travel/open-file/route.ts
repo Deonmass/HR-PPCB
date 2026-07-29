@@ -1,11 +1,13 @@
 import { NextResponse } from 'next/server';
 import { checkPermission } from '@/lib/require-permission';
 import { assertExistingFile, isWindows, openExcelFile } from '@/lib/windows-shell';
+import { auditSimpleAction } from '@/lib/with-audit';
 
 export async function POST(request: Request) {
   const denied = await checkPermission('travel.historique', 'view');
   if (denied) return denied;
-  try {    const body = (await request.json()) as { filePath?: string };
+  try {
+    const body = (await request.json()) as { filePath?: string };
     if (!body.filePath?.trim()) {
       return NextResponse.json({ error: 'Chemin du fichier requis' }, { status: 400 });
     }
@@ -20,6 +22,13 @@ export async function POST(request: Request) {
     }
 
     await openExcelFile(resolved);
+    await auditSimpleAction({
+      module: 'travel.historique',
+      action: 'other',
+      summary: `Ouverture fichier Excel`,
+      details: `Fichier ouvert : ${resolved}`,
+      meta: { filePath: resolved },
+    });
     return NextResponse.json({ opened: true, filePath: resolved });
   } catch (err) {
     const message = err instanceof Error ? err.message : 'Impossible d\'ouvrir le fichier Excel';

@@ -17,6 +17,7 @@ export const ROUTE_MENU_MAP: RouteMenuEntry[] = [
   { prefix: '/parametres/utilisateurs', menuId: 'settings.utilisateurs' },
   { prefix: '/parametres/centres-de-cout', menuId: 'settings.centres' },
   { prefix: '/parametres/departements', menuId: 'settings.departements' },
+  { prefix: '/parametres/logs', menuId: 'parametres.logs' },
   { prefix: '/project/expenses-details', menuId: 'project.expenses' },
   { prefix: '/project/projects', menuId: 'project.projects' },
   { prefix: '/project/dashboard', menuId: 'project.dashboard' },

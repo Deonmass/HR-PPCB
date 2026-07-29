@@ -4,6 +4,7 @@ import { excelErrorResponse } from '@/lib/excel-io';
 import { checkAnyPermission } from '@/lib/require-permission';
 import { appendAffectationHistory } from '@/lib/village-affectation-history';
 import { readVillageCatalog, setMaisonOccupantExterne } from '@/lib/village-store';
+import { withAudit } from '@/lib/with-audit';
 
 export async function POST(request: Request) {
   const denied = await checkAnyPermission([
@@ -61,27 +62,42 @@ export async function POST(request: Request) {
         );
       }
 
-      const updatedMaison = await setMaisonOccupantExterne(
-        numeroVilla || maisonCible,
-        numeroVilla ? nom : '',
+      const updatedMaison = await withAudit(
+        {
+          module: 'village.assign',
+          action: 'update',
+          summary: numeroVilla
+            ? `Affectation hors effectif « ${nom} » → maison ${numeroVilla}`
+            : `Libération maison ${maisonCible} (hors effectif)`,
+          undoable: false,
+          meta: { externe: true, numeroVilla, nom },
+          path: '/api/village/assign',
+          method: 'POST',
+        },
+        async () => {
+          const maison = await setMaisonOccupantExterne(
+            numeroVilla || maisonCible,
+            numeroVilla ? nom : '',
+          );
+          try {
+            await appendAffectationHistory([
+              {
+                action: body.action?.trim() || (numeroVilla ? 'Affecter' : 'Liberer'),
+                matricule: '',
+                nom: numeroVilla ? nom : body.nom?.trim() || maison.occupantExterne || '',
+                numeroVilla,
+                typeMaison,
+                ancienNumero: body.ancienNumero?.trim() || '',
+                raison: body.raison?.trim() || '',
+                commentaire: body.commentaire?.trim() || 'Hors effectif',
+              },
+            ]);
+          } catch (histoErr) {
+            console.warn('[village-assign] Historique non enregistré:', histoErr);
+          }
+          return maison;
+        },
       );
-
-      try {
-        await appendAffectationHistory([
-          {
-            action: body.action?.trim() || (numeroVilla ? 'Affecter' : 'Liberer'),
-            matricule: '',
-            nom: numeroVilla ? nom : body.nom?.trim() || updatedMaison.occupantExterne || '',
-            numeroVilla,
-            typeMaison,
-            ancienNumero: body.ancienNumero?.trim() || '',
-            raison: body.raison?.trim() || '',
-            commentaire: body.commentaire?.trim() || 'Hors effectif',
-          },
-        ]);
-      } catch (histoErr) {
-        console.warn('[village-assign] Historique non enregistré:', histoErr);
-      }
 
       return NextResponse.json({
         matricule: '',
@@ -114,29 +130,44 @@ export async function POST(request: Request) {
       }
     }
 
-    const updated = await assignEmployeeMaison({
-      matricule,
-      numeroVilla,
-      typeMaison,
-      setLocalisationZamba: body.setLocalisationZamba !== false && Boolean(numeroVilla),
-    });
-
-    try {
-      await appendAffectationHistory([
-        {
-          action: body.action?.trim() || (numeroVilla ? 'Affecter' : 'Liberer'),
+    const updated = await withAudit(
+      {
+        module: 'village.assign',
+        action: 'update',
+        summary: numeroVilla
+          ? `Affectation ${matricule} → maison ${numeroVilla}`
+          : `Libération logement ${matricule}`,
+        undoable: false,
+        meta: { matricule, numeroVilla, ancienNumero: body.ancienNumero },
+        path: '/api/village/assign',
+        method: 'POST',
+      },
+      async () => {
+        const result = await assignEmployeeMaison({
           matricule,
-          nom: body.nom?.trim() || updated.nom || '',
           numeroVilla,
           typeMaison,
-          ancienNumero: body.ancienNumero?.trim() || '',
-          raison: body.raison?.trim() || '',
-          commentaire: body.commentaire?.trim() || '',
-        },
-      ]);
-    } catch (histoErr) {
-      console.warn('[village-assign] Historique non enregistré:', histoErr);
-    }
+          setLocalisationZamba: body.setLocalisationZamba !== false && Boolean(numeroVilla),
+        });
+        try {
+          await appendAffectationHistory([
+            {
+              action: body.action?.trim() || (numeroVilla ? 'Affecter' : 'Liberer'),
+              matricule,
+              nom: body.nom?.trim() || result.nom || '',
+              numeroVilla,
+              typeMaison,
+              ancienNumero: body.ancienNumero?.trim() || '',
+              raison: body.raison?.trim() || '',
+              commentaire: body.commentaire?.trim() || '',
+            },
+          ]);
+        } catch (histoErr) {
+          console.warn('[village-assign] Historique non enregistré:', histoErr);
+        }
+        return result;
+      },
+    );
 
     return NextResponse.json(updated);
   } catch (err) {

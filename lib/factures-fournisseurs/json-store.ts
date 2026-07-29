@@ -343,6 +343,11 @@ export async function listFacturesSuivi(): Promise<FactureSuivi[]> {
   return sortFactures(store.factures);
 }
 
+export async function getFactureSuivi(id: string): Promise<FactureSuivi | null> {
+  const factures = await listFacturesSuivi();
+  return factures.find((item) => item.id === id) ?? null;
+}
+
 export async function getFacturesSuiviBundle(): Promise<{ factures: FactureSuivi[]; dashboard: FactureDashboard }> {
   const factures = await listFacturesSuivi();
   return { factures, dashboard: buildFactureDashboard(factures) };

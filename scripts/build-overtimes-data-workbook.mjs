@@ -43,13 +43,6 @@ function mondayOnOrBefore(date) {
   return cursor;
 }
 
-function lastMondayBefore(date) {
-  const cursor = startOfDay(date);
-  cursor.setDate(cursor.getDate() - 1);
-  while (cursor.getDay() !== 1) cursor.setDate(cursor.getDate() - 1);
-  return cursor;
-}
-
 function formatFr(date) {
   const d = String(date.getDate()).padStart(2, '0');
   const m = String(date.getMonth() + 1).padStart(2, '0');
@@ -57,18 +50,13 @@ function formatFr(date) {
 }
 
 function weekFromToLabel(year, month, weekIndex) {
-  const fifteenthCurrent = new Date(year, month - 1, 15);
-  const prevMonthDate = new Date(year, month - 2, 15);
-  const start = mondayOnOrBefore(prevMonthDate);
-  const end = lastMondayBefore(fifteenthCurrent);
-  const days = [];
-  for (let cursor = startOfDay(start); cursor <= end; cursor.setDate(cursor.getDate() + 1)) {
-    days.push(startOfDay(cursor));
-  }
-  const from = days[weekIndex * 7];
-  const to = days[Math.min(weekIndex * 7 + 6, days.length - 1)];
-  if (!from || !to) return '';
-  return `du ${formatFr(from)} au ${formatFr(to)}`;
+  const fifteenthPrevious = new Date(year, month - 2, 15);
+  const start = mondayOnOrBefore(fifteenthPrevious);
+  const from = startOfDay(start);
+  from.setDate(from.getDate() + weekIndex * 7);
+  const nextMonday = startOfDay(from);
+  nextMonday.setDate(nextMonday.getDate() + 7);
+  return `du ${formatFr(from)} au ${formatFr(nextMonday)}`;
 }
 
 function loadWeeklyOtJson() {

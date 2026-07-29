@@ -8,6 +8,8 @@ import {
 import { buildCompilationData } from '@/lib/timesheet-compilation.server';
 import { buildCompilationWorkbookBuffer } from '@/lib/timesheet-compilation-export.server';
 import type { Employee } from '@/lib/types';
+import { auditSimpleAction, getAuditActor } from '@/lib/with-audit';
+import { logAuditError } from '@/lib/audit-log-store';
 
 const ALL_DEPARTMENTS = '__ALL__';
 
@@ -47,12 +49,27 @@ export async function GET(request: Request) {
     // data.rows = brutes ; le builder produit aussi la feuille Politique
     const data = await buildCompilationData(year, month, label, employees);
     const buffer = await buildCompilationWorkbookBuffer(data);
+    await auditSimpleAction({
+      module: 'timesheet.compilation',
+      action: 'export',
+      summary: `Export compilation OT ${month}/${year} — ${label}`,
+      details: `Export Excel compilation OT ${month}/${year} (${label})`,
+    });
     return new NextResponse(new Uint8Array(buffer), {
       headers: {
         'Content-Type': 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
       },
     });
   } catch (err) {
+    await logAuditError({
+      message: err instanceof Error ? err.message : 'Export impossible',
+      details: `Échec export compilation OT: ${err instanceof Error ? err.message : 'Export impossible'}`,
+      module: 'timesheet.compilation',
+      path: '/api/timesheet/compilation/export',
+      method: 'GET',
+      stack: err instanceof Error ? err.stack : undefined,
+      user: await getAuditActor(),
+    });
     return NextResponse.json(
       { error: err instanceof Error ? err.message : 'Export impossible' },
       { status: 500 },

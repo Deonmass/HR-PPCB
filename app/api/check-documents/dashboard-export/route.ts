@@ -7,6 +7,8 @@ import { filterEmployees, type EmployeeFilters } from '@/lib/employee-filters';
 import { excelErrorResponse } from '@/lib/excel-io';
 import { readEmployees } from '@/lib/employees-json-store';
 import { checkPermission } from '@/lib/require-permission';
+import { auditSimpleAction, getAuditActor } from '@/lib/with-audit';
+import { logAuditError } from '@/lib/audit-log-store';
 
 function parseFilters(request: NextRequest): EmployeeFilters {
   const { searchParams } = request.nextUrl;
@@ -27,6 +29,12 @@ export async function GET(request: NextRequest) {
     const filtered = filterEmployees(employees, filters);
     const buffer = await buildDashboardExportBuffer(filtered, filters);
     const filename = buildDashboardExportFilename(filters);
+    await auditSimpleAction({
+      module: 'employees.check-documents',
+      action: 'export',
+      summary: `Export dashboard check documents (${filename})`,
+      details: `Fichier Excel exporté : ${filename}`,
+    });
 
     return new NextResponse(new Uint8Array(buffer), {
       headers: {
@@ -37,6 +45,15 @@ export async function GET(request: NextRequest) {
     });
   } catch (err) {
     const { status, message } = excelErrorResponse(err);
+    await logAuditError({
+      message,
+      details: `Échec export dashboard check documents: ${message}`,
+      module: 'employees.check-documents',
+      path: '/api/check-documents/dashboard-export',
+      method: 'GET',
+      stack: err instanceof Error ? err.stack : undefined,
+      user: await getAuditActor(),
+    });
     return NextResponse.json({ error: message }, { status });
   }
 }

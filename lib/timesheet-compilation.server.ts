@@ -1,7 +1,11 @@
 import 'server-only';
 
 import { normalHoursBreakdown, standardShiftBreakdown } from './timesheet-calc';
-import { buildTimesheetPeriod, type TimesheetPeriodDay } from './timesheet-period';
+import {
+  buildTimesheetPeriod,
+  TIMESHEET_WEEKS_PER_PERIOD,
+  type TimesheetPeriodDay,
+} from './timesheet-period';
 import {
   roundCompilationHours,
   type CompilationData,
@@ -14,19 +18,17 @@ import { getLockedWeekIndexes, getWeeklyOvertimeWeek } from './timesheet-weekly-
 import type { Employee } from './types';
 
 export function compilationWeekIndexes(daysCount: number): number[] {
-  const count = Math.min(MAX_WEEKS, Math.ceil(daysCount / 7));
+  const count = Math.min(TIMESHEET_WEEKS_PER_PERIOD, Math.ceil(daysCount / 7));
   return Array.from({ length: count }, (_, index) => index);
 }
-
-const MAX_WEEKS = 5;
 
 function formatWeekRange(days: TimesheetPeriodDay[]): string {
   if (!days.length) return '';
   const fmt = (date: Date) => date.toLocaleDateString('fr-FR', { day: '2-digit', month: 'short' });
   const first = days[0].date;
-  const last = days[days.length - 1].date;
-  const year = last.getFullYear();
-  return `${fmt(first)} - ${fmt(last)} ${year}`;
+  const nextMonday = new Date(first.getFullYear(), first.getMonth(), first.getDate() + 7);
+  const year = nextMonday.getFullYear();
+  return `du ${fmt(first)} au ${fmt(nextMonday)} ${year}`;
 }
 
 /** Night hours from normal (planning) hours for a single day entry. */
@@ -48,7 +50,7 @@ export async function buildCompilationData(
   employees: Employee[],
 ): Promise<CompilationData> {
   const period = buildTimesheetPeriod(year, month);
-  const weekCount = Math.min(MAX_WEEKS, Math.ceil(period.days.length / 7));
+  const weekCount = Math.min(TIMESHEET_WEEKS_PER_PERIOD, Math.ceil(period.days.length / 7));
 
   const weeks: CompilationWeek[] = [];
   for (let index = 0; index < weekCount; index += 1) {

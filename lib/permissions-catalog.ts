@@ -14,14 +14,15 @@ export const PERMISSION_MENU_CATALOG: PermissionMenuGroup[] = [
       { id: 'employes.liste', label: 'Liste employés' },
       { id: 'employes.dependants', label: 'Dependants' },
       { id: 'employes.check-documents', label: 'Check documents' },
-      { id: 'employes.heures', label: 'Heures sup. — Mon timesheet' },
-      {
-        id: 'employes.heures.dept',
-        label: 'Heures sup. — Département (planning & OT de son département — Modifier = éditer le planning)',
-      },
-      { id: 'employes.heures.all', label: 'Heures sup. — Tous départements (planning & OT)' },
-      { id: 'employes.heures.import', label: 'Heures sup. — Import OT (menu contextuel carte semaine)' },
-      { id: 'employes.heures.compilation', label: 'Heures sup. — Compilation & politique' },
+      { id: 'employes.heures', label: 'HS — Mon timesheet' },
+      { id: 'employes.heures.dept', label: 'HS — Voir mon département' },
+      { id: 'employes.heures.all', label: 'HS — Voir tous les départements' },
+      { id: 'employes.heures.import', label: 'HS — Importer OT' },
+      { id: 'employes.heures.validate', label: 'HS — Valider OT' },
+      { id: 'employes.heures.edit-validated', label: 'HS — Modifier OT après validation' },
+      { id: 'employes.heures.policy', label: 'HS — Appliquer la politique' },
+      { id: 'employes.heures.export', label: 'HS — Exporter' },
+      { id: 'employes.heures.simulation', label: 'HS — Simulation' },
     ],
   },
   {
@@ -86,6 +87,7 @@ export const PERMISSION_MENU_CATALOG: PermissionMenuGroup[] = [
       { id: 'settings.centres', label: 'Centre de coût' },
       { id: 'settings.utilisateurs', label: 'Utilisateurs' },
       { id: 'settings.permissions', label: 'Permissions' },
+      { id: 'parametres.logs', label: 'Logs' },
     ],
   },
 ];
@@ -96,6 +98,7 @@ export const PERMISSION_ACTIONS: { id: PermissionAction; label: string }[] = [
   { id: 'edit', label: 'Modifier' },
   { id: 'delete', label: 'Supprimer' },
   { id: 'export', label: 'Exporter' },
+  { id: 'undo', label: 'Annuler action' },
 ];
 
 export function buildDefaultPermissions(): MenuPermission[] {
@@ -111,6 +114,7 @@ export function buildDefaultPermissions(): MenuPermission[] {
           edit: false,
           delete: false,
           export: false,
+          undo: false,
         },
       });
     }
@@ -132,6 +136,7 @@ export function mergePermissionsWithCatalog(menus: MenuPermission[]): MenuPermis
         edit: Boolean(existing.actions.edit),
         delete: Boolean(existing.actions.delete),
         export: Boolean(existing.actions.export),
+        undo: Boolean(existing.actions.undo),
       },
     };
   });
@@ -151,6 +156,7 @@ export function setAllMenuActions(
       edit: value,
       delete: value,
       export: value,
+      undo: value,
     },
   };
 }

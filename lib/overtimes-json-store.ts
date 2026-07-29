@@ -529,11 +529,15 @@ export async function saveWeeklyOvertimeWeek(input: {
   weekIndex: number;
   entries: WeeklyOvertimeEntry[];
   userId: string;
+  /** Permission « Modifier OT après validation » */
+  allowWhenLocked?: boolean;
 }): Promise<WeeklyOvertimeWeek> {
   const data = await readWeeklyData();
   const week = ensureWeek(data, input.year, input.month, input.department, input.weekIndex);
   syncLockFlags(week);
-  if (week.locked) throw new Error('Heures sup. de la semaine verrouillées');
+  if (week.locked && !input.allowWhenLocked) {
+    throw new Error('Heures sup. de la semaine verrouillées — validation requise pour modifier');
+  }
   for (const entry of input.entries) {
     week.entries[entry.matricule] = {
       matricule: entry.matricule,
@@ -630,6 +634,7 @@ export async function importWeeklyOvertimeBulk(input: {
   rowsByDepartment: Map<string, WeeklyOvertimeEntry[]>;
   allowedByDepartment: Map<string, Set<string>>;
   userId: string;
+  allowWhenLocked?: boolean;
 }): Promise<{
   results: Array<{ department: string; status: 'imported' | 'locked'; imported: number; skipped: number }>;
   importedMatriculeKeys: Set<string>;
@@ -646,7 +651,7 @@ export async function importWeeklyOvertimeBulk(input: {
     if (!allowed?.size) continue;
     const week = ensureWeek(data, input.year, input.month, department, input.weekIndex);
     syncLockFlags(week);
-    if (week.locked) {
+    if (week.locked && !input.allowWhenLocked) {
       results.push({ department, status: 'locked', imported: 0, skipped: 0 });
       continue;
     }
@@ -691,11 +696,14 @@ export async function importWeeklyOvertimeRows(input: {
   rows: WeeklyOvertimeEntry[];
   allowedMatricules: Set<string>;
   userId: string;
+  allowWhenLocked?: boolean;
 }): Promise<{ week: WeeklyOvertimeWeek; imported: number; skipped: number }> {
   const data = await readWeeklyData();
   const week = ensureWeek(data, input.year, input.month, input.department, input.weekIndex);
   syncLockFlags(week);
-  if (week.locked) throw new Error('Heures sup. de la semaine verrouillées');
+  if (week.locked && !input.allowWhenLocked) {
+    throw new Error('Heures sup. de la semaine verrouillées');
+  }
   let imported = 0;
   let skipped = 0;
   for (const row of input.rows) {

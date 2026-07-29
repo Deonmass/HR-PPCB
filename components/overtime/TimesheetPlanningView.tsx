@@ -27,7 +27,7 @@ function matchesDepartment(employeeDepartment: string, selectedDepartment: strin
   return employeeDepartment.trim().toLowerCase() === selectedDepartment.trim().toLowerCase();
 }
 
-const WEEK_LABELS = ['Semaine 1', 'Semaine 2', 'Semaine 3', 'Semaine 4', 'Semaine 5'];
+const WEEK_LABELS = ['Semaine 1', 'Semaine 2', 'Semaine 3', 'Semaine 4'];
 
 interface Props {
   onDepartmentChange?: (department: string) => void;

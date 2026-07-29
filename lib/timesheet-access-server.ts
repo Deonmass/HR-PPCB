@@ -75,6 +75,10 @@ export async function checkTimesheetOwnEdit(): Promise<NextResponse | null> {
 }
 
 export async function checkTimesheetManagerEdit(): Promise<NextResponse | null> {
+  const deniedValidate = await checkPermission(TIMESHEET_MENU.validateOvertime, 'edit');
+  if (!deniedValidate) return null;
+  const deniedValidateView = await checkPermission(TIMESHEET_MENU.validateOvertime, 'view');
+  if (!deniedValidateView) return null;
   const deniedDept = await checkPermission(TIMESHEET_MENU.department, 'edit');
   if (!deniedDept) return null;
   return checkPermission(TIMESHEET_MENU.all, 'edit');
@@ -85,18 +89,52 @@ export async function checkTimesheetOwnExport(): Promise<NextResponse | null> {
 }
 
 export async function checkTimesheetImportOvertime(): Promise<NextResponse | null> {
-  return checkPermission(TIMESHEET_MENU.importOvertime, 'create');
+  const deniedCreate = await checkPermission(TIMESHEET_MENU.importOvertime, 'create');
+  if (!deniedCreate) return null;
+  const deniedView = await checkPermission(TIMESHEET_MENU.importOvertime, 'view');
+  if (!deniedView) return null;
+  return checkPermission(TIMESHEET_MENU.importOvertime, 'edit');
+}
+
+export async function checkTimesheetValidateOvertime(): Promise<NextResponse | null> {
+  const deniedEdit = await checkPermission(TIMESHEET_MENU.validateOvertime, 'edit');
+  if (!deniedEdit) return null;
+  const deniedView = await checkPermission(TIMESHEET_MENU.validateOvertime, 'view');
+  if (!deniedView) return null;
+  return checkTimesheetManagerEdit();
+}
+
+export async function checkTimesheetEditValidatedOvertime(): Promise<NextResponse | null> {
+  const deniedEdit = await checkPermission(TIMESHEET_MENU.editValidated, 'edit');
+  if (!deniedEdit) return null;
+  return checkPermission(TIMESHEET_MENU.editValidated, 'view');
 }
 
 export async function checkTimesheetDepartmentExport(): Promise<NextResponse | null> {
+  const deniedExportMenu = await checkPermission(TIMESHEET_MENU.export, 'export');
+  if (!deniedExportMenu) return null;
+  const deniedExportView = await checkPermission(TIMESHEET_MENU.export, 'view');
+  if (!deniedExportView) return null;
   const deniedDept = await checkPermission(TIMESHEET_MENU.department, 'export');
   if (!deniedDept) return null;
   return checkPermission(TIMESHEET_MENU.all, 'export');
 }
 
+export async function checkTimesheetApplyPolicy(): Promise<NextResponse | null> {
+  const deniedPolicy = await checkPermission(TIMESHEET_MENU.policy, 'edit');
+  if (!deniedPolicy) return null;
+  const deniedPolicyView = await checkPermission(TIMESHEET_MENU.policy, 'view');
+  if (!deniedPolicyView) return null;
+  const deniedCompilation = await checkPermission(TIMESHEET_MENU.compilation, 'create');
+  if (!deniedCompilation) return null;
+  return checkPermission(TIMESHEET_MENU.compilation, 'edit');
+}
+
 export async function checkTimesheetCloseMonth(): Promise<NextResponse | null> {
   const deniedCompilation = await checkPermission(TIMESHEET_MENU.compilation, 'edit');
   if (!deniedCompilation) return null;
+  const deniedValidate = await checkPermission(TIMESHEET_MENU.validateOvertime, 'edit');
+  if (!deniedValidate) return null;
   return checkPermission(TIMESHEET_MENU.all, 'edit');
 }
 

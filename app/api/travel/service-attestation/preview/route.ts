@@ -15,6 +15,7 @@ import {
 import { writeDocxFromTemplate } from '@/lib/docx-template';
 import { buildServiceAttestationPdfBuffer } from '@/lib/service-attestation-pdf.server';
 import type { ServiceAttestationLanguage } from '@/lib/service-attestation-types';
+import { auditSimpleAction } from '@/lib/with-audit';
 
 function toLanguage(value: unknown): ServiceAttestationLanguage {
   return value === 'en' ? 'en' : 'fr';
@@ -60,6 +61,11 @@ export async function POST(request: Request) {
         form.documentDate,
         form.language,
       ).replace(/\.docx$/i, '.pdf');
+      await auditSimpleAction({
+        module: 'travel.attestation',
+        action: 'export',
+        summary: `Aperçu PDF attestation ${form.employeeName || form.employeeMatricule}`,
+      });
       return new NextResponse(new Uint8Array(pdfBuffer), {
         headers: {
           'Content-Type': 'application/pdf',
@@ -108,6 +114,11 @@ export async function POST(request: Request) {
         form.language,
       );
       const buffer = await fs.readFile(docxPath);
+      await auditSimpleAction({
+        module: 'travel.attestation',
+        action: 'export',
+        summary: `Aperçu DOCX attestation ${form.employeeName || form.employeeMatricule}`,
+      });
       return new NextResponse(buffer, {
         headers: {
           'Content-Type':

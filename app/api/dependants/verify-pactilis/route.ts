@@ -7,6 +7,7 @@ import { consolidatePactilisIntoLocal } from '@/lib/dependants-pactilis-consolid
 import { readDependantsData } from '@/lib/dependants-json-store';
 import { excelErrorResponse } from '@/lib/excel-io';
 import { checkAnyPermission } from '@/lib/require-permission';
+import { auditSimpleAction, withAudit } from '@/lib/with-audit';
 
 export const runtime = 'nodejs';
 export const dynamic = 'force-dynamic';
@@ -36,7 +37,18 @@ export async function POST(request: Request) {
       ]);
       if (createDenied) return createDenied;
 
-      const result = await consolidatePactilisIntoLocal(buffer, file.name);
+      const result = await withAudit(
+        {
+          module: 'dependants',
+          action: 'import',
+          summary: `Consolidation Pactilis (${file.name})`,
+          details: `Import/consolidation Pactilis depuis ${file.name}`,
+          undoable: false,
+          path: '/api/dependants/verify-pactilis',
+          method: 'POST',
+        },
+        () => consolidatePactilisIntoLocal(buffer, file.name),
+      );
       return NextResponse.json(result);
     }
 
@@ -50,6 +62,13 @@ export async function POST(request: Request) {
 
     const { dependants } = await readDependantsData();
     const result = comparePactilisWithLocal(pactilisPeople, dependants, file.name);
+    await auditSimpleAction({
+      module: 'dependants',
+      action: 'other',
+      summary: `Comparaison Pactilis (${file.name})`,
+      details: `Vérification Pactilis vs local — ${pactilisPeople.length} lignes`,
+      meta: { fileName: file.name, mode: 'compare' },
+    });
     return NextResponse.json(result);
   } catch (err) {
     const { status, message } = excelErrorResponse(err);

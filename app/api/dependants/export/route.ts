@@ -5,6 +5,7 @@ import {
 } from '@/lib/dependants-export.server';
 import { excelErrorResponse } from '@/lib/excel-io';
 import { checkAnyPermission } from '@/lib/require-permission';
+import { auditSimpleAction } from '@/lib/with-audit';
 
 export async function GET() {
   const denied = await checkAnyPermission([
@@ -15,6 +16,11 @@ export async function GET() {
   try {
     const buffer = await buildDependantsExportBuffer();
     const filename = buildDependantsExportFilename();
+    await auditSimpleAction({
+      module: 'dependants',
+      action: 'export',
+      summary: `Export dépendants (${filename})`,
+    });
 
     return new NextResponse(new Uint8Array(buffer), {
       headers: {

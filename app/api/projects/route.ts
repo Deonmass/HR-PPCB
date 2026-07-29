@@ -4,6 +4,7 @@ import { assignProjectNumero, normalizeProject, validateBudgetPrevuVerification 
 import { readProjects, upsertProject } from '@/lib/projects-store';
 import { checkAnyPermission, checkPermission } from '@/lib/require-permission';
 import type { ProjectRecord } from '@/lib/project-types';
+import { withAudit } from '@/lib/with-audit';
 
 export async function GET() {
   const denied = await checkAnyPermission([
@@ -41,7 +42,18 @@ export async function POST(request: Request) {
     if (validationError) {
       return NextResponse.json({ error: validationError }, { status: 400 });
     }
-    const saved = await upsertProject(normalized);
+    const saved = await withAudit(
+      {
+        module: 'projects',
+        action: 'create',
+        entityType: 'project',
+        entityId: id,
+        summary: `Création projet ${normalized.name}`,
+        path: '/api/projects',
+        method: 'POST',
+      },
+      () => upsertProject(normalized),
+    );
     return NextResponse.json(saved, { status: 201 });
   } catch (err) {
     const { status, message } = excelErrorResponse(err);
