@@ -116,10 +116,11 @@ export function isEssaiCommentApproved(
 }
 
 export function isInActiveTrialPeriod(
-  employee: Pick<Employee, 'periodeEssaiMois' | 'dateFinPeriodeEssai' | 'essaiCommentaire' | 'statut'>,
+  employee: Pick<Employee, 'periodeEssaiMois' | 'dateFinPeriodeEssai' | 'essaiCommentaire' | 'essaiStatutEval' | 'statut'>,
 ): boolean {
   if (!hasTrialPeriod(employee)) return false;
   if (isEssaiCommentApproved(employee)) return false;
+  if (/^done$/i.test(String(employee.essaiStatutEval || '').trim())) return false;
   if (/^inact/i.test(String(employee.statut || '').trim())) return false;
   return true;
 }
@@ -163,14 +164,19 @@ export function resolveDateFinPeriodeEssai(
 
 /**
  * Statut évaluation auto selon la fin d'essai :
+ * - Done : commentaire Approved
  * - Overdue : fin déjà dépassée
  * - On time : fin dans ≤ 30 jours
  * - Ongoing : sinon (ou pas de date)
  */
 export function resolveEssaiStatutEval(
-  employee: Pick<Employee, 'appointmentDate' | 'periodeEssaiMois' | 'dateFinPeriodeEssai'>,
+  employee: Pick<
+    Employee,
+    'appointmentDate' | 'periodeEssaiMois' | 'dateFinPeriodeEssai' | 'essaiCommentaire'
+  >,
   asOf: Date = new Date(),
 ): EssaiStatutEval {
+  if (isEssaiCommentApproved(employee)) return 'Done';
   const fin = resolveDateFinPeriodeEssai(employee);
   const days = daysUntilDisplayDate(fin, asOf);
   if (days == null) return 'Ongoing';
