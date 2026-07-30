@@ -106,13 +106,20 @@ export function hasTrialPeriod(employee: Pick<Employee, 'periodeEssaiMois' | 'da
 
 /**
  * Suivi période d'essai (onglet / stats) :
- * période renseignée, évaluation pas encore Done, collaborateur actif.
+ * période renseignée, commentaire ≠ Approved, collaborateur actif.
  * Inclut les dossiers Overdue (fin d'essai dépassée).
  */
+export function isEssaiCommentApproved(
+  employee: Pick<Employee, 'essaiCommentaire'>,
+): boolean {
+  return /^approved$/i.test(String(employee.essaiCommentaire || '').trim());
+}
+
 export function isInActiveTrialPeriod(
-  employee: Pick<Employee, 'periodeEssaiMois' | 'dateFinPeriodeEssai' | 'statut'>,
+  employee: Pick<Employee, 'periodeEssaiMois' | 'dateFinPeriodeEssai' | 'essaiCommentaire' | 'statut'>,
 ): boolean {
   if (!hasTrialPeriod(employee)) return false;
+  if (isEssaiCommentApproved(employee)) return false;
   if (/^inact/i.test(String(employee.statut || '').trim())) return false;
   return true;
 }
@@ -127,18 +134,17 @@ export function resolveEssaiEcheanceEval(
 }
 
 /**
- * Alerte J-30 : fin de période d'essai dans ≤ 30 jours (et pas encore Done).
+ * Alerte J-30 : fin de période d'essai dans ≤ 30 jours (et pas Approved).
  */
 export function isTrialEvalAlert(
   employee: Pick<
     Employee,
-    'appointmentDate' | 'periodeEssaiMois' | 'dateFinPeriodeEssai' | 'statut'
+    'appointmentDate' | 'periodeEssaiMois' | 'dateFinPeriodeEssai' | 'essaiCommentaire' | 'statut'
   >,
   asOf: Date = new Date(),
   withinDays: number = TRIAL_EVAL_ALERT_DAYS,
 ): boolean {
-  if (!hasTrialPeriod(employee)) return false;
-  if (/^inact/i.test(String(employee.statut || '').trim())) return false;
+  if (!isInActiveTrialPeriod(employee)) return false;
   const days = daysUntilDisplayDate(resolveDateFinPeriodeEssai(employee), asOf);
   if (days == null) return false;
   return days >= 0 && days <= withinDays;
