@@ -32,15 +32,22 @@ export function EmployeesExitMonthlyChartBody({
   }
 
   const maxValue = Math.max(...rows.map((r) => r.total), 1);
-  const gridTicks = [0, 25, 50, 75, 100];
+  const HEADROOM_PCT = 14;
+  const plotScale = (100 - HEADROOM_PCT) / 100;
+  const dataTicks = [0, 25, 50, 75, 100];
+  const gridTicks = dataTicks.map((tick) => tick * plotScale);
 
   return (
     <div className="travel-history-chart-area">
       <div className="travel-history-dept-chart-layout">
         <div className="travel-history-dept-plot-row">
-          <div className="chart-y-axis travel-history-dept-y-axis">
-            {[...gridTicks].reverse().map((tick) => (
-              <span key={tick} className="chart-y-label">
+          <div className="chart-y-axis travel-history-dept-y-axis is-pinned">
+            {dataTicks.map((tick, index) => (
+              <span
+                key={tick}
+                className={`chart-y-label${tick === 0 ? ' is-zero' : ''}${tick === 100 ? ' is-max' : ''}`}
+                style={{ bottom: `${gridTicks[index]}%` }}
+              >
                 {tick === 0 ? '0' : Math.round((maxValue * tick) / 100)}
               </span>
             ))}
@@ -55,7 +62,7 @@ export function EmployeesExitMonthlyChartBody({
                 const isActive = hover === row.key;
                 const isDimmed = Boolean(hover && !isActive);
                 const barHeightPct = row.total > 0
-                  ? Math.max((row.total / maxValue) * 100, 3)
+                  ? Math.max((row.total / maxValue) * 100 * plotScale, 3)
                   : 0;
                 return (
                   <div

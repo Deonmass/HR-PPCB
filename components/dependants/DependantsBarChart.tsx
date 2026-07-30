@@ -53,16 +53,24 @@ export function DependantsBarChartBody({
   };
 
   const maxValue = Math.max(...items.map((item) => item.value), 1);
-  const gridTicks = [0, 25, 50, 75, 100];
+  /** Réserve le haut du plot pour coller les valeurs au sommet des barres (sans débordement). */
+  const HEADROOM_PCT = 14;
+  const plotScale = (100 - HEADROOM_PCT) / 100;
+  const dataTicks = [0, 25, 50, 75, 100];
+  const gridTicks = dataTicks.map((tick) => tick * plotScale);
   const colMin = fitAll ? '0' : '56px';
 
   return (
     <div className={`travel-history-chart-area${compact ? ' is-compact' : ''}${fitAll ? ' is-fit-all' : ''}`}>
       <div className="travel-history-dept-chart-layout">
         <div className="travel-history-dept-plot-row">
-          <div className="chart-y-axis travel-history-dept-y-axis">
-            {[...gridTicks].reverse().map((tick) => (
-              <span key={tick} className="chart-y-label">
+          <div className="chart-y-axis travel-history-dept-y-axis is-pinned">
+            {dataTicks.map((tick, index) => (
+              <span
+                key={tick}
+                className={`chart-y-label${tick === 0 ? ' is-zero' : ''}${tick === 100 ? ' is-max' : ''}`}
+                style={{ bottom: `${gridTicks[index]}%` }}
+              >
                 {tick === 0 ? fmt(0) : fmt(Math.round((maxValue * tick) / 100))}
               </span>
             ))}
@@ -75,7 +83,7 @@ export function DependantsBarChartBody({
             >
               {items.map((item, index) => {
                 const barHeightPct = item.value > 0
-                  ? Math.max((item.value / maxValue) * 100, 3)
+                  ? Math.max((item.value / maxValue) * 100 * plotScale, 3)
                   : 0;
                 const isActive = hover === item.label;
                 const label = barLabel(item);

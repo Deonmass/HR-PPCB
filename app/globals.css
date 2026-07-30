@@ -3167,6 +3167,30 @@ tfoot .grid-summary-pct .sticky-rate {
   align-self: stretch;
 }
 
+/* Axe Y : labels ?pingl?s sur les lignes de grille (0 = baseline des barres). */
+.travel-history-dept-y-axis.is-pinned {
+  position: relative;
+  display: block;
+  justify-content: unset;
+}
+
+.travel-history-dept-y-axis.is-pinned .chart-y-label {
+  position: absolute;
+  right: 0;
+  left: 0;
+  margin: 0;
+  line-height: 1;
+  transform: translateY(50%);
+}
+
+.travel-history-dept-y-axis.is-pinned .chart-y-label.is-zero {
+  transform: translateY(50%);
+}
+
+.travel-history-dept-y-axis.is-pinned .chart-y-label.is-max {
+  transform: translateY(50%);
+}
+
 .travel-history-dept-plot-body {
   padding-left: 0;
   min-height: 132px;
@@ -3241,18 +3265,18 @@ tfoot .grid-summary-pct .sticky-rate {
 
 .travel-history-bar {
   width: 100%;
-  border-radius: 1px 1px 0 0;
+  border-radius: 0;
   min-height: 3px;
   margin-top: auto;
   transform-origin: bottom center;
   transition: transform 0.22s cubic-bezier(0.34, 1.4, 0.64, 1), filter 0.2s ease, box-shadow 0.2s ease, opacity 0.2s ease;
 }
 
-/* Value glued to bar top (outside scaleY-animated bar). */
+/* Valeur coll?e juste au-dessus du sommet de la barre. */
 .travel-history-bar-wrap > .travel-history-bar-value {
   position: absolute;
   left: 50%;
-  bottom: calc(var(--bar-h, 0%) + 2px);
+  bottom: calc(var(--bar-h, 0%) + 3px);
   transform: translateX(-50%);
   font-size: 0.6rem;
   font-weight: 600;
@@ -11937,7 +11961,7 @@ html[data-theme="light"] .dependant-family-tree-svg-line {
 .employees-exit-stack-wrap > .travel-history-bar-value {
   position: absolute;
   left: 50%;
-  bottom: calc(var(--bar-h, 0%) + 2px);
+  bottom: calc(var(--bar-h, 0%) + 3px);
   transform: translateX(-50%);
   font-size: 0.6rem;
   font-weight: 600;
@@ -11953,7 +11977,7 @@ html[data-theme="light"] .dependant-family-tree-svg-line {
   width: 70%;
   min-height: 4px;
   margin-top: auto;
-  border-radius: 1px 1px 0 0;
+  border-radius: 0;
   overflow: hidden;
 }
 
@@ -12004,7 +12028,7 @@ html[data-theme="light"] .dependant-family-tree-svg-line {
 }
 
 .employees-hr-dashboard .travel-history-chart-panel.is-compact .travel-history-dept-plot-body {
-  padding-top: 0.15rem;
+  padding-top: 0;
   overflow: visible;
 }
 
