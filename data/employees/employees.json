@@ -35,7 +35,13 @@
       "createdAt": "2026-07-28T09:40:37.715Z",
       "updatedAt": "2026-07-29T14:11:17.443Z",
       "cnss": "11983346052R",
-      "nif": "B2222624S"
+      "nif": "B2222624S",
+      "dureeContratMois": null,
+      "essaiActions": "",
+      "essaiResponsable": "",
+      "essaiEcheanceEval": "",
+      "essaiStatutEval": "",
+      "essaiCommentaire": ""
     },
     {
       "id": "539303ee-01db-4b61-be62-609fdda1a827",
@@ -64,15 +70,21 @@
       "lineManagerPosition": "Manager Internal Auditor",
       "patersonGrade": "",
       "statut": "Active",
-      "typeContrat": "",
-      "periodeEssaiMois": null,
-      "dateFinPeriodeEssai": "",
+      "typeContrat": "CDI",
+      "periodeEssaiMois": 6,
+      "dateFinPeriodeEssai": "25/02/2025",
       "dateFinContrat": "",
       "raisonExit": "NA",
       "createdAt": "2026-07-28T09:40:37.715Z",
       "updatedAt": "2026-07-29T14:11:17.443Z",
       "cnss": "11995647220D",
-      "nif": "F2595527S"
+      "nif": "F2595527S",
+      "essaiActions": "Evaluation Done",
+      "essaiResponsable": "IA Manager",
+      "essaiEcheanceEval": "25/01/2025",
+      "essaiStatutEval": "Done",
+      "essaiCommentaire": "Doubtful-PIP",
+      "dureeContratMois": null
     },
     {
       "id": "1187e444-9d69-4a03-bdd7-990b59c13e48",
@@ -101,15 +113,21 @@
       "lineManagerPosition": "Site Manager",
       "patersonGrade": "",
       "statut": "Active",
-      "typeContrat": "",
-      "periodeEssaiMois": null,
-      "dateFinPeriodeEssai": "",
-      "dateFinContrat": "",
+      "typeContrat": "CDD",
+      "periodeEssaiMois": 5,
+      "dateFinPeriodeEssai": "30/04/2026",
+      "dateFinContrat": "30/11/2027",
       "raisonExit": "NA",
       "createdAt": "2026-07-28T09:40:37.715Z",
       "updatedAt": "2026-07-29T14:11:17.443Z",
       "cnss": "11998688188D",
-      "nif": ""
+      "nif": "",
+      "essaiActions": "The Interim approvisal evaluation to be sent",
+      "essaiResponsable": "Site Manager",
+      "essaiEcheanceEval": "30/03/2026",
+      "essaiStatutEval": "Overdue",
+      "essaiCommentaire": "",
+      "dureeContratMois": 24
     },
     {
       "id": "c6a96230-f0f8-4271-95ab-5f5ae441616b",
@@ -121,7 +139,7 @@
       "localisation": "Kinshasa",
       "company": "PPC Barnet DRC Manufacturing",
       "centreCout": "KC9214",
-      "appointmentDate": "01/07/2025",
+      "appointmentDate": "07/03/2025",
       "gender": "Female",
       "dateOfBirth": "22/12/1998",
       "age": 27,
@@ -138,15 +156,21 @@
       "lineManagerPosition": "Managing Director",
       "patersonGrade": "",
       "statut": "Active",
-      "typeContrat": "",
-      "periodeEssaiMois": null,
-      "dateFinPeriodeEssai": "",
+      "typeContrat": "CDI",
+      "periodeEssaiMois": 6,
+      "dateFinPeriodeEssai": "06/09/2025",
       "dateFinContrat": "",
       "raisonExit": "NA",
       "createdAt": "2026-07-28T09:40:37.715Z",
       "updatedAt": "2026-07-29T14:11:17.443Z",
       "cnss": "11983744806U",
-      "nif": "F2581650J"
+      "nif": "F2581650J",
+      "essaiActions": "The Interim approvisal evaluation sent",
+      "essaiResponsable": "MD",
+      "essaiEcheanceEval": "06/08/2025",
+      "essaiStatutEval": "Done",
+      "essaiCommentaire": "Confirmation letter done",
+      "dureeContratMois": null
     },
     {
       "id": "b519ef18-c86c-4aab-a612-8fd5c7a24776",
@@ -183,7 +207,13 @@
       "createdAt": "2026-07-28T09:40:37.715Z",
       "updatedAt": "2026-07-29T14:11:17.443Z",
       "cnss": "11993606813S",
-      "nif": "B2222642M"
+      "nif": "B2222642M",
+      "dureeContratMois": null,
+      "essaiActions": "",
+      "essaiResponsable": "",
+      "essaiEcheanceEval": "",
+      "essaiStatutEval": "",
+      "essaiCommentaire": ""
     },
     {
       "id": "feb421e3-61bb-4769-a87b-0372faea5f05",
@@ -212,15 +242,21 @@
       "lineManagerPosition": "Finance Controller",
       "patersonGrade": "",
       "statut": "Active",
-      "typeContrat": "",
-      "periodeEssaiMois": null,
-      "dateFinPeriodeEssai": "",
+      "typeContrat": "CDI",
+      "periodeEssaiMois": 5,
+      "dateFinPeriodeEssai": "21/09/2024",
       "dateFinContrat": "",
       "raisonExit": "NA",
       "createdAt": "2026-07-28T09:40:37.715Z",
       "updatedAt": "2026-07-29T14:11:17.443Z",
       "cnss": "22000434825N",
-      "nif": "A2508805Z"
+      "nif": "A2508805Z",
+      "essaiActions": "Evaluation Done",
+      "essaiResponsable": "Fin. Contr",
+      "essaiEcheanceEval": "20/09/2024",
+      "essaiStatutEval": "Done",
+      "essaiCommentaire": "Approved",
+      "dureeContratMois": null
     },
     {
       "id": "4c91278f-6764-46e6-b7a9-df4195ffb55a",
@@ -257,7 +293,13 @@
       "createdAt": "2026-07-28T09:40:37.715Z",
       "updatedAt": "2026-07-29T14:11:17.443Z",
       "cnss": "11969215997M",
-      "nif": "B2222553Q"
+      "nif": "B2222553Q",
+      "dureeContratMois": null,
+      "essaiActions": "",
+      "essaiResponsable": "",
+      "essaiEcheanceEval": "",
+      "essaiStatutEval": "",
+      "essaiCommentaire": ""
     },
     {
       "id": "70cf86d4-e496-4b4b-b103-ccc4b5b7bacc",
@@ -294,7 +336,13 @@
       "createdAt": "2026-07-28T09:40:37.715Z",
       "updatedAt": "2026-07-29T14:11:17.443Z",
       "cnss": "21978052784I",
-      "nif": "B2222640K"
+      "nif": "B2222640K",
+      "dureeContratMois": null,
+      "essaiActions": "",
+      "essaiResponsable": "",
+      "essaiEcheanceEval": "",
+      "essaiStatutEval": "",
+      "essaiCommentaire": ""
     },
     {
       "id": "e65b9fc1-631d-4e22-85b9-936e3b149927",
@@ -331,7 +379,13 @@
       "createdAt": "2026-07-28T09:40:37.715Z",
       "updatedAt": "2026-07-29T14:11:17.443Z",
       "cnss": "11978617369T",
-      "nif": "B2222622Q"
+      "nif": "B2222622Q",
+      "dureeContratMois": null,
+      "essaiActions": "",
+      "essaiResponsable": "",
+      "essaiEcheanceEval": "",
+      "essaiStatutEval": "",
+      "essaiCommentaire": ""
     },
     {
       "id": "759e2a79-13c5-48fc-a89d-f49cc4f18b18",
@@ -368,7 +422,13 @@
       "createdAt": "2026-07-28T09:40:37.715Z",
       "updatedAt": "2026-07-29T14:11:17.443Z",
       "cnss": "21996080412G",
-      "nif": "B2222665M"
+      "nif": "B2222665M",
+      "dureeContratMois": null,
+      "essaiActions": "",
+      "essaiResponsable": "",
+      "essaiEcheanceEval": "",
+      "essaiStatutEval": "",
+      "essaiCommentaire": ""
     },
     {
       "id": "117dbc89-78ab-43f2-a41c-556d2e369282",
@@ -405,7 +465,13 @@
       "createdAt": "2026-07-28T09:40:37.715Z",
       "updatedAt": "2026-07-29T14:11:17.443Z",
       "cnss": "11976569944I",
-      "nif": "B2222603U"
+      "nif": "B2222603U",
+      "dureeContratMois": null,
+      "essaiActions": "",
+      "essaiResponsable": "",
+      "essaiEcheanceEval": "",
+      "essaiStatutEval": "",
+      "essaiCommentaire": ""
     },
     {
       "id": "db3c22c0-9266-48fb-9876-6a838e2077ab",
@@ -442,7 +508,13 @@
       "createdAt": "2026-07-28T09:40:37.715Z",
       "updatedAt": "2026-07-29T14:11:17.443Z",
       "cnss": "11981346035L",
-      "nif": "B2222693S"
+      "nif": "B2222693S",
+      "dureeContratMois": null,
+      "essaiActions": "",
+      "essaiResponsable": "",
+      "essaiEcheanceEval": "",
+      "essaiStatutEval": "",
+      "essaiCommentaire": ""
     },
     {
       "id": "abef2200-3770-420e-a50c-a24e0250efff",
@@ -479,7 +551,13 @@
       "createdAt": "2026-07-28T09:40:37.715Z",
       "updatedAt": "2026-07-29T14:11:17.443Z",
       "cnss": "11981606819V",
-      "nif": "B2222617K"
+      "nif": "B2222617K",
+      "dureeContratMois": null,
+      "essaiActions": "",
+      "essaiResponsable": "",
+      "essaiEcheanceEval": "",
+      "essaiStatutEval": "",
+      "essaiCommentaire": ""
     },
     {
       "id": "24e30710-1a15-4045-ad33-748703138cbd",
@@ -516,7 +594,13 @@
       "createdAt": "2026-07-28T09:40:37.715Z",
       "updatedAt": "2026-07-29T14:11:17.443Z",
       "cnss": "106341019861H",
-      "nif": "B2222663K"
+      "nif": "B2222663K",
+      "dureeContratMois": null,
+      "essaiActions": "",
+      "essaiResponsable": "",
+      "essaiEcheanceEval": "",
+      "essaiStatutEval": "",
+      "essaiCommentaire": ""
     },
     {
       "id": "c52f9a10-081d-4c41-a649-e3b9f56a24b3",
@@ -553,7 +637,13 @@
       "createdAt": "2026-07-28T09:40:37.715Z",
       "updatedAt": "2026-07-29T14:11:17.443Z",
       "cnss": "11994688010I",
-      "nif": "C2231572U"
+      "nif": "C2231572U",
+      "dureeContratMois": null,
+      "essaiActions": "",
+      "essaiResponsable": "",
+      "essaiEcheanceEval": "",
+      "essaiStatutEval": "",
+      "essaiCommentaire": ""
     },
     {
       "id": "53966606-61f7-44a0-b448-333d7a0475e7",
@@ -590,7 +680,13 @@
       "createdAt": "2026-07-28T09:40:37.715Z",
       "updatedAt": "2026-07-29T14:11:17.443Z",
       "cnss": "21988080401Q",
-      "nif": "B2222581W"
+      "nif": "B2222581W",
+      "dureeContratMois": null,
+      "essaiActions": "",
+      "essaiResponsable": "",
+      "essaiEcheanceEval": "",
+      "essaiStatutEval": "",
+      "essaiCommentaire": ""
     },
     {
       "id": "586e1de3-9a8d-4084-bd0e-7fff170fe2ed",
@@ -627,7 +723,13 @@
       "createdAt": "2026-07-28T09:40:37.715Z",
       "updatedAt": "2026-07-29T14:11:17.443Z",
       "cnss": "11969342751N",
-      "nif": "B2222550M"
+      "nif": "B2222550M",
+      "dureeContratMois": null,
+      "essaiActions": "",
+      "essaiResponsable": "",
+      "essaiEcheanceEval": "",
+      "essaiStatutEval": "",
+      "essaiCommentaire": ""
     },
     {
       "id": "8e178659-6a66-4727-84d7-381063772024",
@@ -664,7 +766,13 @@
       "createdAt": "2026-07-28T09:40:37.715Z",
       "updatedAt": "2026-07-29T14:11:17.443Z",
       "cnss": "21988080402R",
-      "nif": "B2222554R"
+      "nif": "B2222554R",
+      "dureeContratMois": null,
+      "essaiActions": "",
+      "essaiResponsable": "",
+      "essaiEcheanceEval": "",
+      "essaiStatutEval": "",
+      "essaiCommentaire": ""
     },
     {
       "id": "07d7c8ac-37fd-4e9a-9a61-3ff1988962e0",
@@ -701,7 +809,13 @@
       "createdAt": "2026-07-28T09:40:37.715Z",
       "updatedAt": "2026-07-29T14:11:17.443Z",
       "cnss": "11985569994U",
-      "nif": "B2222588D"
+      "nif": "B2222588D",
+      "dureeContratMois": null,
+      "essaiActions": "",
+      "essaiResponsable": "",
+      "essaiEcheanceEval": "",
+      "essaiStatutEval": "",
+      "essaiCommentaire": ""
     },
     {
       "id": "84363240-10f6-43d0-b24a-3e950a8bc660",
@@ -738,7 +852,13 @@
       "createdAt": "2026-07-28T09:40:37.715Z",
       "updatedAt": "2026-07-29T14:11:17.443Z",
       "cnss": "11991550905L",
-      "nif": "B2222595L"
+      "nif": "B2222595L",
+      "dureeContratMois": null,
+      "essaiActions": "",
+      "essaiResponsable": "",
+      "essaiEcheanceEval": "",
+      "essaiStatutEval": "",
+      "essaiCommentaire": ""
     },
     {
       "id": "4fde4528-dabf-4def-81b4-335d9047f6ab",
@@ -767,15 +887,21 @@
       "lineManagerPosition": "Managing Director",
       "patersonGrade": "",
       "statut": "Active",
-      "typeContrat": "",
-      "periodeEssaiMois": null,
-      "dateFinPeriodeEssai": "",
+      "typeContrat": "CDI",
+      "periodeEssaiMois": 6,
+      "dateFinPeriodeEssai": "09/05/2026",
       "dateFinContrat": "",
       "raisonExit": "NA",
       "createdAt": "2026-07-28T09:40:37.715Z",
       "updatedAt": "2026-07-29T14:11:17.443Z",
       "cnss": "11994604952D",
-      "nif": "B2244848Z"
+      "nif": "B2244848Z",
+      "essaiActions": "The Interim approvisal evaluation to be sent",
+      "essaiResponsable": "Managing Director",
+      "essaiEcheanceEval": "09/04/2026",
+      "essaiStatutEval": "Overdue",
+      "essaiCommentaire": "",
+      "dureeContratMois": null
     },
     {
       "id": "340c7295-6431-489e-af2c-8a64fd38546f",
@@ -804,15 +930,21 @@
       "lineManagerPosition": "Site Manager",
       "patersonGrade": "",
       "statut": "Active",
-      "typeContrat": "",
-      "periodeEssaiMois": null,
-      "dateFinPeriodeEssai": "",
-      "dateFinContrat": "",
+      "typeContrat": "CDD",
+      "periodeEssaiMois": 5,
+      "dateFinPeriodeEssai": "30/04/2026",
+      "dateFinContrat": "30/11/2027",
       "raisonExit": "NA",
       "createdAt": "2026-07-28T09:40:37.715Z",
       "updatedAt": "2026-07-29T14:11:17.443Z",
       "cnss": "1199046614B",
-      "nif": "F2593526S"
+      "nif": "F2593526S",
+      "essaiActions": "The Interim approvisal evaluation to be sent",
+      "essaiResponsable": "Site Manager",
+      "essaiEcheanceEval": "30/03/2026",
+      "essaiStatutEval": "Overdue",
+      "essaiCommentaire": "",
+      "dureeContratMois": 24
     },
     {
       "id": "550069ce-b57e-439b-8f29-023fc20b696e",
@@ -849,7 +981,13 @@
       "createdAt": "2026-07-28T09:40:37.715Z",
       "updatedAt": "2026-07-29T14:11:17.443Z",
       "cnss": "21994080403I",
-      "nif": "B2222606Y"
+      "nif": "B2222606Y",
+      "dureeContratMois": null,
+      "essaiActions": "",
+      "essaiResponsable": "",
+      "essaiEcheanceEval": "",
+      "essaiStatutEval": "",
+      "essaiCommentaire": ""
     },
     {
       "id": "46e30adb-7aac-404e-89d2-2790d6f15e6a",
@@ -886,7 +1024,13 @@
       "createdAt": "2026-07-28T09:40:37.715Z",
       "updatedAt": "2026-07-29T14:11:17.443Z",
       "cnss": "11972570113P",
-      "nif": "B2222672U"
+      "nif": "B2222672U",
+      "dureeContratMois": null,
+      "essaiActions": "",
+      "essaiResponsable": "",
+      "essaiEcheanceEval": "",
+      "essaiStatutEval": "",
+      "essaiCommentaire": ""
     },
     {
       "id": "0c9e3f50-bde4-4247-b800-4528049b1764",
@@ -923,7 +1067,13 @@
       "createdAt": "2026-07-28T09:40:37.715Z",
       "updatedAt": "2026-07-29T14:11:17.443Z",
       "cnss": "11977510097N",
-      "nif": "B2222585A"
+      "nif": "B2222585A",
+      "dureeContratMois": null,
+      "essaiActions": "",
+      "essaiResponsable": "",
+      "essaiEcheanceEval": "",
+      "essaiStatutEval": "",
+      "essaiCommentaire": ""
     },
     {
       "id": "c7df6b0b-3d78-42cd-996c-1edb4c5673f3",
@@ -960,7 +1110,13 @@
       "createdAt": "2026-07-28T09:40:37.715Z",
       "updatedAt": "2026-07-29T14:11:17.443Z",
       "cnss": "11989569946T",
-      "nif": "B2222680D"
+      "nif": "B2222680D",
+      "dureeContratMois": null,
+      "essaiActions": "",
+      "essaiResponsable": "",
+      "essaiEcheanceEval": "",
+      "essaiStatutEval": "",
+      "essaiCommentaire": ""
     },
     {
       "id": "a8789242-9c30-4baa-a1b2-91afa725aaf7",
@@ -997,7 +1153,13 @@
       "createdAt": "2026-07-28T09:40:37.715Z",
       "updatedAt": "2026-07-29T14:11:17.443Z",
       "cnss": "11989504073S",
-      "nif": "B2222559X"
+      "nif": "B2222559X",
+      "dureeContratMois": null,
+      "essaiActions": "",
+      "essaiResponsable": "",
+      "essaiEcheanceEval": "",
+      "essaiStatutEval": "",
+      "essaiCommentaire": ""
     },
     {
       "id": "3450e6e5-45ae-4156-b290-1fef30c9372c",
@@ -1026,15 +1188,21 @@
       "lineManagerPosition": "Engineering Manager",
       "patersonGrade": "",
       "statut": "Active",
-      "typeContrat": "",
-      "periodeEssaiMois": null,
-      "dateFinPeriodeEssai": "",
-      "dateFinContrat": "",
+      "typeContrat": "CDD",
+      "periodeEssaiMois": 6,
+      "dateFinPeriodeEssai": "26/07/2025",
+      "dateFinContrat": "26/01/2027",
       "raisonExit": "NA",
       "createdAt": "2026-07-28T09:40:37.715Z",
       "updatedAt": "2026-07-29T14:11:17.443Z",
       "cnss": "11983717253V",
-      "nif": "F2596291Y"
+      "nif": "F2596291Y",
+      "essaiActions": "Evaluation Done",
+      "essaiResponsable": "Eng. Manager",
+      "essaiEcheanceEval": "26/06/2025",
+      "essaiStatutEval": "Done",
+      "essaiCommentaire": "Approved",
+      "dureeContratMois": 24
     },
     {
       "id": "00a8e377-d908-493d-8d30-2a243218e332",
@@ -1063,15 +1231,21 @@
       "lineManagerPosition": "Managing Director",
       "patersonGrade": "",
       "statut": "Active",
-      "typeContrat": "",
-      "periodeEssaiMois": null,
-      "dateFinPeriodeEssai": "",
+      "typeContrat": "CDI",
+      "periodeEssaiMois": 6,
+      "dateFinPeriodeEssai": "14/10/2024",
       "dateFinContrat": "",
       "raisonExit": "NA",
       "createdAt": "2026-07-28T09:40:37.715Z",
       "updatedAt": "2026-07-29T14:11:17.443Z",
       "cnss": "202478203120P",
-      "nif": "B2211142M"
+      "nif": "B2211142M",
+      "essaiActions": "The Interim approvisal evaluation didn't be sent",
+      "essaiResponsable": "MD",
+      "essaiEcheanceEval": "13/09/2024",
+      "essaiStatutEval": "Overdue",
+      "essaiCommentaire": "Approved",
+      "dureeContratMois": null
     },
     {
       "id": "18a9f301-3e9e-4176-b2b9-9e82585e472a",
@@ -1108,7 +1282,13 @@
       "createdAt": "2026-07-28T09:40:37.715Z",
       "updatedAt": "2026-07-29T14:11:17.443Z",
       "cnss": "11984570088Q",
-      "nif": "B2222590F"
+      "nif": "B2222590F",
+      "dureeContratMois": null,
+      "essaiActions": "",
+      "essaiResponsable": "",
+      "essaiEcheanceEval": "",
+      "essaiStatutEval": "",
+      "essaiCommentaire": ""
     },
     {
       "id": "366da121-4839-40b0-a73d-31c55e0bc8ae",
@@ -1145,7 +1325,13 @@
       "createdAt": "2026-07-28T09:40:37.715Z",
       "updatedAt": "2026-07-29T14:11:17.443Z",
       "cnss": "11987504176R",
-      "nif": "B2222616J"
+      "nif": "B2222616J",
+      "dureeContratMois": null,
+      "essaiActions": "",
+      "essaiResponsable": "",
+      "essaiEcheanceEval": "",
+      "essaiStatutEval": "",
+      "essaiCommentaire": ""
     },
     {
       "id": "78e45cf6-4609-44f4-83bd-1b6f2e7c6bd3",
@@ -1182,7 +1368,13 @@
       "createdAt": "2026-07-28T09:40:37.715Z",
       "updatedAt": "2026-07-29T14:11:17.443Z",
       "cnss": "11986196973T",
-      "nif": "B2222604W"
+      "nif": "B2222604W",
+      "dureeContratMois": null,
+      "essaiActions": "",
+      "essaiResponsable": "",
+      "essaiEcheanceEval": "",
+      "essaiStatutEval": "",
+      "essaiCommentaire": ""
     },
     {
       "id": "25a86dbf-d36d-4d02-842b-324d098036ea",
@@ -1219,7 +1411,13 @@
       "createdAt": "2026-07-28T09:40:37.715Z",
       "updatedAt": "2026-07-29T14:11:17.443Z",
       "cnss": "11988346041N",
-      "nif": "B2222635E"
+      "nif": "B2222635E",
+      "dureeContratMois": null,
+      "essaiActions": "",
+      "essaiResponsable": "",
+      "essaiEcheanceEval": "",
+      "essaiStatutEval": "",
+      "essaiCommentaire": ""
     },
     {
       "id": "73f552c0-c3ab-413f-b720-e4578d16a248",
@@ -1256,7 +1454,13 @@
       "createdAt": "2026-07-28T09:40:37.715Z",
       "updatedAt": "2026-07-29T14:11:17.443Z",
       "cnss": "11985346049D",
-      "nif": "B2222636F"
+      "nif": "B2222636F",
+      "dureeContratMois": null,
+      "essaiActions": "",
+      "essaiResponsable": "",
+      "essaiEcheanceEval": "",
+      "essaiStatutEval": "",
+      "essaiCommentaire": ""
     },
     {
       "id": "0a0f5e82-e530-489c-a82a-0a31f07e8ced",
@@ -1293,7 +1497,13 @@
       "createdAt": "2026-07-28T09:40:37.715Z",
       "updatedAt": "2026-07-29T14:11:17.443Z",
       "cnss": "21982046185L",
-      "nif": "B2222572L"
+      "nif": "B2222572L",
+      "dureeContratMois": null,
+      "essaiActions": "",
+      "essaiResponsable": "",
+      "essaiEcheanceEval": "",
+      "essaiStatutEval": "",
+      "essaiCommentaire": ""
     },
     {
       "id": "e6165a86-ad33-4d9a-bd07-8d6da2544022",
@@ -1330,7 +1540,13 @@
       "createdAt": "2026-07-28T09:40:37.715Z",
       "updatedAt": "2026-07-29T14:11:17.443Z",
       "cnss": "11986277591W",
-      "nif": "B2222555S"
+      "nif": "B2222555S",
+      "dureeContratMois": null,
+      "essaiActions": "",
+      "essaiResponsable": "",
+      "essaiEcheanceEval": "",
+      "essaiStatutEval": "",
+      "essaiCommentaire": ""
     },
     {
       "id": "7eaa4f5a-a0c2-4aa0-94a4-e3ddb151895d",
@@ -1367,7 +1583,13 @@
       "createdAt": "2026-07-28T09:40:37.715Z",
       "updatedAt": "2026-07-29T14:11:17.443Z",
       "cnss": "11991346030U",
-      "nif": "B2222637G"
+      "nif": "B2222637G",
+      "dureeContratMois": null,
+      "essaiActions": "",
+      "essaiResponsable": "",
+      "essaiEcheanceEval": "",
+      "essaiStatutEval": "",
+      "essaiCommentaire": ""
     },
     {
       "id": "7790fd91-58c4-4bc9-bd2b-8a8f56f0ebfc",
@@ -1404,7 +1626,13 @@
       "createdAt": "2026-07-28T09:40:37.715Z",
       "updatedAt": "2026-07-29T14:11:17.443Z",
       "cnss": "11988206054E",
-      "nif": "B2222662J"
+      "nif": "B2222662J",
+      "dureeContratMois": null,
+      "essaiActions": "",
+      "essaiResponsable": "",
+      "essaiEcheanceEval": "",
+      "essaiStatutEval": "",
+      "essaiCommentaire": ""
     },
     {
       "id": "484a4f15-1b67-4f97-afed-64e87084195d",
@@ -1441,7 +1669,13 @@
       "createdAt": "2026-07-28T09:40:37.715Z",
       "updatedAt": "2026-07-29T14:11:17.443Z",
       "cnss": "11983630745Q",
-      "nif": "C2225164E"
+      "nif": "C2225164E",
+      "dureeContratMois": null,
+      "essaiActions": "",
+      "essaiResponsable": "",
+      "essaiEcheanceEval": "",
+      "essaiStatutEval": "",
+      "essaiCommentaire": ""
     },
     {
       "id": "e9d959c9-d332-47ab-866e-77c60892bc57",
@@ -1470,15 +1704,21 @@
       "lineManagerPosition": "SRSMI",
       "patersonGrade": "",
       "statut": "Active",
-      "typeContrat": "",
-      "periodeEssaiMois": null,
-      "dateFinPeriodeEssai": "",
+      "typeContrat": "CDI",
+      "periodeEssaiMois": 5,
+      "dateFinPeriodeEssai": "16/08/2025",
       "dateFinContrat": "",
       "raisonExit": "NA",
       "createdAt": "2026-07-28T09:40:37.715Z",
       "updatedAt": "2026-07-29T14:11:17.443Z",
       "cnss": "1199044725M",
-      "nif": "G2500222B"
+      "nif": "G2500222B",
+      "essaiActions": "Evaluation Done",
+      "essaiResponsable": "SRSMI",
+      "essaiEcheanceEval": "06/07/2025",
+      "essaiStatutEval": "Done",
+      "essaiCommentaire": "Approved",
+      "dureeContratMois": null
     },
     {
       "id": "c7706310-e97d-495b-8a01-c7b75279c15e",
@@ -1507,15 +1747,21 @@
       "lineManagerPosition": "Electrical & instrumentation Engineer",
       "patersonGrade": "",
       "statut": "Active",
-      "typeContrat": "",
-      "periodeEssaiMois": null,
-      "dateFinPeriodeEssai": "",
+      "typeContrat": "CDI",
+      "periodeEssaiMois": 5,
+      "dateFinPeriodeEssai": "12/04/2024",
       "dateFinContrat": "",
       "raisonExit": "NA",
       "createdAt": "2026-07-28T09:40:37.715Z",
       "updatedAt": "2026-07-29T14:11:17.443Z",
       "cnss": "11987497745D",
-      "nif": "C2231571T"
+      "nif": "C2231571T",
+      "essaiActions": "Evaluation Done",
+      "essaiResponsable": "IC Foreman",
+      "essaiEcheanceEval": "22/03/2024",
+      "essaiStatutEval": "Done",
+      "essaiCommentaire": "Approved",
+      "dureeContratMois": null
     },
     {
       "id": "7ad8fcbc-6043-4b0d-8a16-da751b50c0b8",
@@ -1552,7 +1798,13 @@
       "createdAt": "2026-07-28T09:40:37.715Z",
       "updatedAt": "2026-07-29T14:11:17.443Z",
       "cnss": "11987346097R",
-      "nif": "B2222681E"
+      "nif": "B2222681E",
+      "dureeContratMois": null,
+      "essaiActions": "",
+      "essaiResponsable": "",
+      "essaiEcheanceEval": "",
+      "essaiStatutEval": "",
+      "essaiCommentaire": ""
     },
     {
       "id": "7a5356e5-4c43-4bac-9a01-02ced61488ef",
@@ -1589,7 +1841,13 @@
       "createdAt": "2026-07-28T09:40:37.715Z",
       "updatedAt": "2026-07-29T14:11:17.443Z",
       "cnss": "11991548558K",
-      "nif": "B2222696W"
+      "nif": "B2222696W",
+      "dureeContratMois": null,
+      "essaiActions": "",
+      "essaiResponsable": "",
+      "essaiEcheanceEval": "",
+      "essaiStatutEval": "",
+      "essaiCommentaire": ""
     },
     {
       "id": "7fa7b6ee-e0ef-4f4a-b44e-f6d16d496bd8",
@@ -1618,15 +1876,21 @@
       "lineManagerPosition": "Shift Supervisor",
       "patersonGrade": "",
       "statut": "Active",
-      "typeContrat": "",
-      "periodeEssaiMois": null,
-      "dateFinPeriodeEssai": "",
+      "typeContrat": "CDI",
+      "periodeEssaiMois": 5,
+      "dateFinPeriodeEssai": "25/07/2024",
       "dateFinContrat": "",
       "raisonExit": "NA",
       "createdAt": "2026-07-28T09:40:37.715Z",
       "updatedAt": "2026-07-29T14:11:17.443Z",
       "cnss": "11996688725W",
-      "nif": "C2392128S"
+      "nif": "C2392128S",
+      "essaiActions": "Evaluation Done",
+      "essaiResponsable": "Prod.Shift Sup.",
+      "essaiEcheanceEval": "01/07/2024",
+      "essaiStatutEval": "Done",
+      "essaiCommentaire": "Approved",
+      "dureeContratMois": null
     },
     {
       "id": "d41a12d4-171b-4055-b41c-afca62f82953",
@@ -1663,7 +1927,13 @@
       "createdAt": "2026-07-28T09:40:37.715Z",
       "updatedAt": "2026-07-29T14:11:17.443Z",
       "cnss": "11990483249P",
-      "nif": "B2222592H"
+      "nif": "B2222592H",
+      "dureeContratMois": null,
+      "essaiActions": "",
+      "essaiResponsable": "",
+      "essaiEcheanceEval": "",
+      "essaiStatutEval": "",
+      "essaiCommentaire": ""
     },
     {
       "id": "6005dcaf-ae46-494c-8e55-5f4857b80d37",
@@ -1700,7 +1970,13 @@
       "createdAt": "2026-07-28T09:40:37.715Z",
       "updatedAt": "2026-07-29T14:11:17.443Z",
       "cnss": "21982399851G",
-      "nif": "B2222655B"
+      "nif": "B2222655B",
+      "dureeContratMois": null,
+      "essaiActions": "",
+      "essaiResponsable": "",
+      "essaiEcheanceEval": "",
+      "essaiStatutEval": "",
+      "essaiCommentaire": ""
     },
     {
       "id": "6d5ee1f9-ec23-496d-a306-a204da8a7421",
@@ -1729,15 +2005,21 @@
       "lineManagerPosition": "Mining Superintendant",
       "patersonGrade": "",
       "statut": "Active",
-      "typeContrat": "",
-      "periodeEssaiMois": null,
-      "dateFinPeriodeEssai": "",
+      "typeContrat": "CDI",
+      "periodeEssaiMois": 5,
+      "dateFinPeriodeEssai": "02/11/2024",
       "dateFinContrat": "",
       "raisonExit": "NA",
       "createdAt": "2026-07-28T09:40:37.715Z",
       "updatedAt": "2026-07-29T14:11:17.443Z",
       "cnss": "11994717248N",
-      "nif": "B2222711M"
+      "nif": "B2222711M",
+      "essaiActions": "Evaluation Done",
+      "essaiResponsable": "Mining Sup",
+      "essaiEcheanceEval": "26/08/2024",
+      "essaiStatutEval": "Done",
+      "essaiCommentaire": "Approved",
+      "dureeContratMois": null
     },
     {
       "id": "61f6110e-5991-479d-9429-83af0aa26308",
@@ -1766,15 +2048,21 @@
       "lineManagerPosition": "SRSMI",
       "patersonGrade": "",
       "statut": "Active",
-      "typeContrat": "",
-      "periodeEssaiMois": null,
-      "dateFinPeriodeEssai": "",
+      "typeContrat": "CDI",
+      "periodeEssaiMois": 5,
+      "dateFinPeriodeEssai": "06/08/2025",
       "dateFinContrat": "",
       "raisonExit": "NA",
       "createdAt": "2026-07-28T09:40:37.715Z",
       "updatedAt": "2026-07-29T14:11:17.443Z",
       "cnss": "11984450158I",
-      "nif": "D2315421R"
+      "nif": "D2315421R",
+      "essaiActions": "Evaluation Done",
+      "essaiResponsable": "SRSMI",
+      "essaiEcheanceEval": "06/07/2025",
+      "essaiStatutEval": "Done",
+      "essaiCommentaire": "Approved",
+      "dureeContratMois": null
     },
     {
       "id": "fea89304-d738-4222-8108-5bc6dc9c77dd",
@@ -1811,7 +2099,13 @@
       "createdAt": "2026-07-28T09:40:37.715Z",
       "updatedAt": "2026-07-29T14:11:17.443Z",
       "cnss": "11993582364S",
-      "nif": "B2222549L"
+      "nif": "B2222549L",
+      "dureeContratMois": null,
+      "essaiActions": "",
+      "essaiResponsable": "",
+      "essaiEcheanceEval": "",
+      "essaiStatutEval": "",
+      "essaiCommentaire": ""
     },
     {
       "id": "7f9c678e-a13a-4d89-84c1-c9d8f8134305",
@@ -1840,15 +2134,21 @@
       "lineManagerPosition": "Managing Director",
       "patersonGrade": "",
       "statut": "Active",
-      "typeContrat": "",
-      "periodeEssaiMois": null,
-      "dateFinPeriodeEssai": "",
+      "typeContrat": "CDI",
+      "periodeEssaiMois": 6,
+      "dateFinPeriodeEssai": "08/01/2026",
       "dateFinContrat": "",
       "raisonExit": "NA",
       "createdAt": "2026-07-28T09:40:37.715Z",
       "updatedAt": "2026-07-29T14:11:17.443Z",
       "cnss": "11984541514I",
-      "nif": "F2599670W"
+      "nif": "F2599670W",
+      "essaiActions": "The Interim approvisal evaluation sent",
+      "essaiResponsable": "MD",
+      "essaiEcheanceEval": "08/12/2025",
+      "essaiStatutEval": "Overdue",
+      "essaiCommentaire": "",
+      "dureeContratMois": null
     },
     {
       "id": "61ad1c54-f592-470a-a8b3-a60c46678146",
@@ -1885,7 +2185,13 @@
       "createdAt": "2026-07-28T09:40:37.715Z",
       "updatedAt": "2026-07-29T14:11:17.443Z",
       "cnss": "21998405899J",
-      "nif": "C2235171G"
+      "nif": "C2235171G",
+      "dureeContratMois": null,
+      "essaiActions": "",
+      "essaiResponsable": "",
+      "essaiEcheanceEval": "",
+      "essaiStatutEval": "",
+      "essaiCommentaire": ""
     },
     {
       "id": "5221b9ee-aab8-42be-b2e8-5ae8a86c184d",
@@ -1922,7 +2228,13 @@
       "createdAt": "2026-07-28T09:40:37.715Z",
       "updatedAt": "2026-07-29T14:11:17.443Z",
       "cnss": "21993390332G",
-      "nif": "B2222613F"
+      "nif": "B2222613F",
+      "dureeContratMois": null,
+      "essaiActions": "",
+      "essaiResponsable": "",
+      "essaiEcheanceEval": "",
+      "essaiStatutEval": "",
+      "essaiCommentaire": ""
     },
     {
       "id": "2edbd6f8-bab8-4ed5-a08c-91244e2e9fe7",
@@ -1959,7 +2271,13 @@
       "createdAt": "2026-07-28T09:40:37.715Z",
       "updatedAt": "2026-07-29T14:11:17.443Z",
       "cnss": "11976555357D",
-      "nif": "B2222548K"
+      "nif": "B2222548K",
+      "dureeContratMois": null,
+      "essaiActions": "",
+      "essaiResponsable": "",
+      "essaiEcheanceEval": "",
+      "essaiStatutEval": "",
+      "essaiCommentaire": ""
     },
     {
       "id": "29a9ca15-3ec8-4e87-857d-cac746201ef4",
@@ -1988,15 +2306,21 @@
       "lineManagerPosition": "Compliance Officer",
       "patersonGrade": "",
       "statut": "Active",
-      "typeContrat": "",
-      "periodeEssaiMois": null,
-      "dateFinPeriodeEssai": "",
+      "typeContrat": "CDI",
+      "periodeEssaiMois": 5,
+      "dateFinPeriodeEssai": "11/11/2024",
       "dateFinContrat": "",
       "raisonExit": "NA",
       "createdAt": "2026-07-28T09:40:37.715Z",
       "updatedAt": "2026-07-29T14:11:17.443Z",
       "cnss": "11993549948J",
-      "nif": "B2224340H"
+      "nif": "B2224340H",
+      "essaiActions": "Evaluation Done",
+      "essaiResponsable": "Compliance Off",
+      "essaiEcheanceEval": "26/08/2024",
+      "essaiStatutEval": "Done",
+      "essaiCommentaire": "Approved",
+      "dureeContratMois": null
     },
     {
       "id": "8f339e66-be7a-4185-9e3d-4fcff4837f96",
@@ -2033,7 +2357,13 @@
       "createdAt": "2026-07-28T09:40:37.715Z",
       "updatedAt": "2026-07-29T14:11:17.443Z",
       "cnss": "21989080405D",
-      "nif": "B2222610C"
+      "nif": "B2222610C",
+      "dureeContratMois": null,
+      "essaiActions": "",
+      "essaiResponsable": "",
+      "essaiEcheanceEval": "",
+      "essaiStatutEval": "",
+      "essaiCommentaire": ""
     },
     {
       "id": "d3bad033-dd59-454b-a3ad-6c0303a0c32c",
@@ -2070,7 +2400,13 @@
       "createdAt": "2026-07-28T09:40:37.715Z",
       "updatedAt": "2026-07-29T14:11:17.443Z",
       "cnss": "11983485835G",
-      "nif": "B2222720X"
+      "nif": "B2222720X",
+      "dureeContratMois": null,
+      "essaiActions": "",
+      "essaiResponsable": "",
+      "essaiEcheanceEval": "",
+      "essaiStatutEval": "",
+      "essaiCommentaire": ""
     },
     {
       "id": "8c5d60d4-5052-419d-b4c9-3c39e06cf301",
@@ -2107,7 +2443,13 @@
       "createdAt": "2026-07-28T09:40:37.715Z",
       "updatedAt": "2026-07-29T14:11:17.443Z",
       "cnss": "11969346119A",
-      "nif": "B2222641L"
+      "nif": "B2222641L",
+      "dureeContratMois": null,
+      "essaiActions": "",
+      "essaiResponsable": "",
+      "essaiEcheanceEval": "",
+      "essaiStatutEval": "",
+      "essaiCommentaire": ""
     },
     {
       "id": "667340cf-4063-42a7-b30e-5c2639562cfa",
@@ -2136,15 +2478,21 @@
       "lineManagerPosition": "Head of HR",
       "patersonGrade": "",
       "statut": "Active",
-      "typeContrat": "",
-      "periodeEssaiMois": null,
-      "dateFinPeriodeEssai": "",
+      "typeContrat": "CDI",
+      "periodeEssaiMois": 6,
+      "dateFinPeriodeEssai": "31/03/2026",
       "dateFinContrat": "",
       "raisonExit": "NA",
       "createdAt": "2026-07-28T09:40:37.715Z",
       "updatedAt": "2026-07-29T14:11:17.443Z",
       "cnss": "21976049364D",
-      "nif": "B2233767E"
+      "nif": "B2233767E",
+      "essaiActions": "The Interim approvisal evaluation to be sent",
+      "essaiResponsable": "Head of HR",
+      "essaiEcheanceEval": "27/02/2026",
+      "essaiStatutEval": "Done",
+      "essaiCommentaire": "",
+      "dureeContratMois": null
     },
     {
       "id": "d897ec00-d06e-468c-ba9f-a489412dadf6",
@@ -2181,7 +2529,13 @@
       "createdAt": "2026-07-28T09:40:37.715Z",
       "updatedAt": "2026-07-29T14:11:17.443Z",
       "cnss": "11965346108L",
-      "nif": "B2222652Y"
+      "nif": "B2222652Y",
+      "dureeContratMois": null,
+      "essaiActions": "",
+      "essaiResponsable": "",
+      "essaiEcheanceEval": "",
+      "essaiStatutEval": "",
+      "essaiCommentaire": ""
     },
     {
       "id": "e1d80237-af5b-45be-8b2a-2f240a0c23dc",
@@ -2210,15 +2564,21 @@
       "lineManagerPosition": "Transport & Transit Manager",
       "patersonGrade": "",
       "statut": "Active",
-      "typeContrat": "",
-      "periodeEssaiMois": null,
-      "dateFinPeriodeEssai": "",
+      "typeContrat": "CDI",
+      "periodeEssaiMois": 3,
+      "dateFinPeriodeEssai": "09/06/2025",
       "dateFinContrat": "",
       "raisonExit": "NA",
       "createdAt": "2026-07-28T09:40:37.715Z",
       "updatedAt": "2026-07-29T14:11:17.443Z",
       "cnss": "21999440118K",
-      "nif": "A2168483M"
+      "nif": "A2168483M",
+      "essaiActions": "Evaluation Done",
+      "essaiResponsable": "Trans & Transit Manager",
+      "essaiEcheanceEval": "09/05/2025",
+      "essaiStatutEval": "Done",
+      "essaiCommentaire": "Approved",
+      "dureeContratMois": null
     },
     {
       "id": "0beb9fcf-9116-4bbf-b93d-1aa2f13d16a5",
@@ -2255,7 +2615,13 @@
       "createdAt": "2026-07-28T09:40:37.715Z",
       "updatedAt": "2026-07-29T14:11:17.443Z",
       "cnss": "11987744801Q",
-      "nif": "B2222676Z"
+      "nif": "B2222676Z",
+      "dureeContratMois": null,
+      "essaiActions": "",
+      "essaiResponsable": "",
+      "essaiEcheanceEval": "",
+      "essaiStatutEval": "",
+      "essaiCommentaire": ""
     },
     {
       "id": "941e0adf-760b-4f27-91f6-eb36102484b4",
@@ -2292,7 +2658,13 @@
       "createdAt": "2026-07-28T09:40:37.715Z",
       "updatedAt": "2026-07-29T14:11:17.443Z",
       "cnss": "192259009230T",
-      "nif": "B2222709K"
+      "nif": "B2222709K",
+      "dureeContratMois": null,
+      "essaiActions": "",
+      "essaiResponsable": "",
+      "essaiEcheanceEval": "",
+      "essaiStatutEval": "",
+      "essaiCommentaire": ""
     },
     {
       "id": "c1691789-c5a7-4d7f-93d4-b7a22ba0c28c",
@@ -2329,7 +2701,13 @@
       "createdAt": "2026-07-28T09:40:37.715Z",
       "updatedAt": "2026-07-29T14:11:17.443Z",
       "cnss": "11987510747K",
-      "nif": "B2222568G"
+      "nif": "B2222568G",
+      "dureeContratMois": null,
+      "essaiActions": "",
+      "essaiResponsable": "",
+      "essaiEcheanceEval": "",
+      "essaiStatutEval": "",
+      "essaiCommentaire": ""
     },
     {
       "id": "d38339d0-5397-4e72-a3e2-b19d0be6e7b9",
@@ -2366,7 +2744,13 @@
       "createdAt": "2026-07-28T09:40:37.715Z",
       "updatedAt": "2026-07-29T14:11:17.443Z",
       "cnss": "11982346118I",
-      "nif": "B2222713P"
+      "nif": "B2222713P",
+      "dureeContratMois": null,
+      "essaiActions": "",
+      "essaiResponsable": "",
+      "essaiEcheanceEval": "",
+      "essaiStatutEval": "",
+      "essaiCommentaire": ""
     },
     {
       "id": "838c2b06-8f10-4385-a928-85d95c32ab42",
@@ -2395,15 +2779,21 @@
       "lineManagerPosition": "Engineering Manager",
       "patersonGrade": "",
       "statut": "Active",
-      "typeContrat": "",
-      "periodeEssaiMois": null,
-      "dateFinPeriodeEssai": "",
+      "typeContrat": "CDI",
+      "periodeEssaiMois": 5,
+      "dateFinPeriodeEssai": "20/03/2025",
       "dateFinContrat": "",
       "raisonExit": "NA",
       "createdAt": "2026-07-28T09:40:37.715Z",
       "updatedAt": "2026-07-29T14:11:17.443Z",
       "cnss": "11993717251K",
-      "nif": "G2505100D"
+      "nif": "G2505100D",
+      "essaiActions": "Evaluation Done",
+      "essaiResponsable": "Eng. Manager",
+      "essaiEcheanceEval": "21/02/2025",
+      "essaiStatutEval": "Done",
+      "essaiCommentaire": "Approved",
+      "dureeContratMois": null
     },
     {
       "id": "e6d936f2-8638-4628-b371-8c2f31dac509",
@@ -2440,7 +2830,13 @@
       "createdAt": "2026-07-28T09:40:37.715Z",
       "updatedAt": "2026-07-29T14:11:17.443Z",
       "cnss": "11985742096N",
-      "nif": "B2222593J"
+      "nif": "B2222593J",
+      "dureeContratMois": null,
+      "essaiActions": "",
+      "essaiResponsable": "",
+      "essaiEcheanceEval": "",
+      "essaiStatutEval": "",
+      "essaiCommentaire": ""
     },
     {
       "id": "c96bdc8e-e3a5-46aa-82b2-6cc80bbebd0e",
@@ -2477,7 +2873,13 @@
       "createdAt": "2026-07-28T09:40:37.715Z",
       "updatedAt": "2026-07-29T14:11:17.443Z",
       "cnss": "21981398116N",
-      "nif": "B2222650W"
+      "nif": "B2222650W",
+      "dureeContratMois": null,
+      "essaiActions": "",
+      "essaiResponsable": "",
+      "essaiEcheanceEval": "",
+      "essaiStatutEval": "",
+      "essaiCommentaire": ""
     },
     {
       "id": "83508b1d-81bc-4731-9acc-8c58457a9b58",
@@ -2514,7 +2916,13 @@
       "createdAt": "2026-07-28T09:40:37.715Z",
       "updatedAt": "2026-07-29T14:11:17.443Z",
       "cnss": "11976346113N",
-      "nif": "B2222714Q"
+      "nif": "B2222714Q",
+      "dureeContratMois": null,
+      "essaiActions": "",
+      "essaiResponsable": "",
+      "essaiEcheanceEval": "",
+      "essaiStatutEval": "",
+      "essaiCommentaire": ""
     },
     {
       "id": "2a4e9a70-e9d6-4364-a699-db441c1f783c",
@@ -2543,15 +2951,21 @@
       "lineManagerPosition": "Electrical Foreman",
       "patersonGrade": "",
       "statut": "Active",
-      "typeContrat": "",
-      "periodeEssaiMois": null,
-      "dateFinPeriodeEssai": "",
+      "typeContrat": "CDI",
+      "periodeEssaiMois": 5,
+      "dateFinPeriodeEssai": "02/11/2024",
       "dateFinContrat": "",
       "raisonExit": "NA",
       "createdAt": "2026-07-28T09:40:37.715Z",
       "updatedAt": "2026-07-29T14:11:17.443Z",
       "cnss": "1199671727O",
-      "nif": "B2222644P"
+      "nif": "B2222644P",
+      "essaiActions": "Evaluation Done",
+      "essaiResponsable": "Elect Foreman",
+      "essaiEcheanceEval": "26/08/2024",
+      "essaiStatutEval": "Done",
+      "essaiCommentaire": "Approved",
+      "dureeContratMois": null
     },
     {
       "id": "e1f3808a-b1cb-487d-9f7e-e44c53bfa5d0",
@@ -2588,7 +3002,13 @@
       "createdAt": "2026-07-28T09:40:37.715Z",
       "updatedAt": "2026-07-29T14:11:17.443Z",
       "cnss": "11976346067N",
-      "nif": "B2222631A"
+      "nif": "B2222631A",
+      "dureeContratMois": null,
+      "essaiActions": "",
+      "essaiResponsable": "",
+      "essaiEcheanceEval": "",
+      "essaiStatutEval": "",
+      "essaiCommentaire": ""
     },
     {
       "id": "de81cd26-2048-42b5-9aeb-b2b0c7cbb754",
@@ -2625,7 +3045,13 @@
       "createdAt": "2026-07-28T09:40:37.715Z",
       "updatedAt": "2026-07-29T14:11:17.443Z",
       "cnss": "11978570144N",
-      "nif": "B2222670S"
+      "nif": "B2222670S",
+      "dureeContratMois": null,
+      "essaiActions": "",
+      "essaiResponsable": "",
+      "essaiEcheanceEval": "",
+      "essaiStatutEval": "",
+      "essaiCommentaire": ""
     },
     {
       "id": "7f92590c-fff1-4b96-9790-6a8b812e604b",
@@ -2662,7 +3088,13 @@
       "createdAt": "2026-07-28T09:40:37.715Z",
       "updatedAt": "2026-07-29T14:11:17.443Z",
       "cnss": "11983346107D",
-      "nif": "B2222715R"
+      "nif": "B2222715R",
+      "dureeContratMois": null,
+      "essaiActions": "",
+      "essaiResponsable": "",
+      "essaiEcheanceEval": "",
+      "essaiStatutEval": "",
+      "essaiCommentaire": ""
     },
     {
       "id": "6fb0e7cb-8c3b-4668-b02b-00d34a4fae2c",
@@ -2699,7 +3131,13 @@
       "createdAt": "2026-07-28T09:40:37.715Z",
       "updatedAt": "2026-07-29T14:11:17.443Z",
       "cnss": "11989346090W",
-      "nif": "B2222668Q"
+      "nif": "B2222668Q",
+      "dureeContratMois": null,
+      "essaiActions": "",
+      "essaiResponsable": "",
+      "essaiEcheanceEval": "",
+      "essaiStatutEval": "",
+      "essaiCommentaire": ""
     },
     {
       "id": "d1a24c6a-56f0-4576-9735-34f6871e8c84",
@@ -2736,7 +3174,13 @@
       "createdAt": "2026-07-28T09:40:37.715Z",
       "updatedAt": "2026-07-29T14:11:17.443Z",
       "cnss": "11987346077U",
-      "nif": "B2222687L"
+      "nif": "B2222687L",
+      "dureeContratMois": null,
+      "essaiActions": "",
+      "essaiResponsable": "",
+      "essaiEcheanceEval": "",
+      "essaiStatutEval": "",
+      "essaiCommentaire": ""
     },
     {
       "id": "9778cae9-95a3-454c-a545-830c91f37259",
@@ -2773,7 +3217,13 @@
       "createdAt": "2026-07-28T09:40:37.715Z",
       "updatedAt": "2026-07-29T14:11:17.443Z",
       "cnss": "11968628029Q",
-      "nif": "B2222646R"
+      "nif": "B2222646R",
+      "dureeContratMois": null,
+      "essaiActions": "",
+      "essaiResponsable": "",
+      "essaiEcheanceEval": "",
+      "essaiStatutEval": "",
+      "essaiCommentaire": ""
     },
     {
       "id": "6a8edf91-9d69-4337-9d13-410f5d9c03d4",
@@ -2810,7 +3260,13 @@
       "createdAt": "2026-07-28T09:40:37.715Z",
       "updatedAt": "2026-07-29T14:11:17.443Z",
       "cnss": "11979485691W",
-      "nif": "B2222694T"
+      "nif": "B2222694T",
+      "dureeContratMois": null,
+      "essaiActions": "",
+      "essaiResponsable": "",
+      "essaiEcheanceEval": "",
+      "essaiStatutEval": "",
+      "essaiCommentaire": ""
     },
     {
       "id": "4c7972e1-a8b2-4755-b326-1a79a3458d66",
@@ -2847,7 +3303,13 @@
       "createdAt": "2026-07-28T09:40:37.715Z",
       "updatedAt": "2026-07-29T14:11:17.443Z",
       "cnss": "108437405150D",
-      "nif": "B2222578S"
+      "nif": "B2222578S",
+      "dureeContratMois": null,
+      "essaiActions": "",
+      "essaiResponsable": "",
+      "essaiEcheanceEval": "",
+      "essaiStatutEval": "",
+      "essaiCommentaire": ""
     },
     {
       "id": "433a8cf6-ab62-474f-872b-03582eb66437",
@@ -2884,7 +3346,13 @@
       "createdAt": "2026-07-28T09:40:37.715Z",
       "updatedAt": "2026-07-29T14:11:17.443Z",
       "cnss": "11971346115I",
-      "nif": "B2222587C"
+      "nif": "B2222587C",
+      "dureeContratMois": null,
+      "essaiActions": "",
+      "essaiResponsable": "",
+      "essaiEcheanceEval": "",
+      "essaiStatutEval": "",
+      "essaiCommentaire": ""
     },
     {
       "id": "1af3499c-c0a4-40e6-94f3-d74aeeadb603",
@@ -2921,7 +3389,13 @@
       "createdAt": "2026-07-28T09:40:37.715Z",
       "updatedAt": "2026-07-29T14:11:17.443Z",
       "cnss": "11991485697I",
-      "nif": "B2222598P"
+      "nif": "B2222598P",
+      "dureeContratMois": null,
+      "essaiActions": "",
+      "essaiResponsable": "",
+      "essaiEcheanceEval": "",
+      "essaiStatutEval": "",
+      "essaiCommentaire": ""
     },
     {
       "id": "493d9aa8-fee0-4a15-9373-a58f915e39b2",
@@ -2958,7 +3432,13 @@
       "createdAt": "2026-07-28T09:40:37.715Z",
       "updatedAt": "2026-07-29T14:11:17.443Z",
       "cnss": "11965510738H",
-      "nif": "B2222691Q"
+      "nif": "B2222691Q",
+      "dureeContratMois": null,
+      "essaiActions": "",
+      "essaiResponsable": "",
+      "essaiEcheanceEval": "",
+      "essaiStatutEval": "",
+      "essaiCommentaire": ""
     },
     {
       "id": "fd9f808b-b364-4ff9-aaa5-336c9154b2ef",
@@ -2995,7 +3475,13 @@
       "createdAt": "2026-07-28T09:40:37.715Z",
       "updatedAt": "2026-07-29T14:11:17.443Z",
       "cnss": "11979504087S",
-      "nif": "B2222632B"
+      "nif": "B2222632B",
+      "dureeContratMois": null,
+      "essaiActions": "",
+      "essaiResponsable": "",
+      "essaiEcheanceEval": "",
+      "essaiStatutEval": "",
+      "essaiCommentaire": ""
     },
     {
       "id": "401cde65-41e9-4a47-bf1d-cd340def5ff2",
@@ -3032,7 +3518,13 @@
       "createdAt": "2026-07-28T09:40:37.715Z",
       "updatedAt": "2026-07-29T14:11:17.443Z",
       "cnss": "11979555559Q",
-      "nif": "B2222700A"
+      "nif": "B2222700A",
+      "dureeContratMois": null,
+      "essaiActions": "",
+      "essaiResponsable": "",
+      "essaiEcheanceEval": "",
+      "essaiStatutEval": "",
+      "essaiCommentaire": ""
     },
     {
       "id": "3cbb8834-8a96-42b9-b16a-e8d9538bda16",
@@ -3069,7 +3561,13 @@
       "createdAt": "2026-07-28T09:40:37.715Z",
       "updatedAt": "2026-07-29T14:11:17.443Z",
       "cnss": "11985628969A",
-      "nif": "B2222675Y"
+      "nif": "B2222675Y",
+      "dureeContratMois": null,
+      "essaiActions": "",
+      "essaiResponsable": "",
+      "essaiEcheanceEval": "",
+      "essaiStatutEval": "",
+      "essaiCommentaire": ""
     },
     {
       "id": "1f4d9253-d665-4071-8fed-4f74f763ce2c",
@@ -3106,7 +3604,13 @@
       "createdAt": "2026-07-28T09:40:37.715Z",
       "updatedAt": "2026-07-29T14:11:17.443Z",
       "cnss": "11983529006G",
-      "nif": "B2222647S"
+      "nif": "B2222647S",
+      "dureeContratMois": null,
+      "essaiActions": "",
+      "essaiResponsable": "",
+      "essaiEcheanceEval": "",
+      "essaiStatutEval": "",
+      "essaiCommentaire": ""
     },
     {
       "id": "cd613015-416e-4a77-a6d4-88f2b4db2c2c",
@@ -3143,7 +3647,13 @@
       "createdAt": "2026-07-28T09:40:37.715Z",
       "updatedAt": "2026-07-29T14:11:17.443Z",
       "cnss": "106341019810524001",
-      "nif": "G2668360Q"
+      "nif": "G2668360Q",
+      "dureeContratMois": null,
+      "essaiActions": "",
+      "essaiResponsable": "",
+      "essaiEcheanceEval": "",
+      "essaiStatutEval": "",
+      "essaiCommentaire": ""
     },
     {
       "id": "895a2310-aed5-427b-8593-b1730b238f52",
@@ -3180,7 +3690,13 @@
       "createdAt": "2026-07-28T09:40:37.715Z",
       "updatedAt": "2026-07-29T14:11:17.443Z",
       "cnss": "21997414803G",
-      "nif": "B2222609B"
+      "nif": "B2222609B",
+      "dureeContratMois": null,
+      "essaiActions": "",
+      "essaiResponsable": "",
+      "essaiEcheanceEval": "",
+      "essaiStatutEval": "",
+      "essaiCommentaire": ""
     },
     {
       "id": "f2538a09-a13a-4ec3-9954-0a5cdc60ec33",
@@ -3209,13 +3725,19 @@
       "lineManagerPosition": "HR Plant Manager",
       "patersonGrade": "",
       "statut": "Active",
-      "typeContrat": "",
-      "periodeEssaiMois": null,
-      "dateFinPeriodeEssai": "",
-      "dateFinContrat": "",
+      "typeContrat": "CDD",
+      "periodeEssaiMois": 5,
+      "dateFinPeriodeEssai": "16/11/2026",
+      "dateFinContrat": "16/06/2027",
       "raisonExit": "NA",
       "createdAt": "2026-07-28T09:40:37.715Z",
-      "updatedAt": "2026-07-28T09:40:37.715Z"
+      "updatedAt": "2026-07-28T09:40:37.715Z",
+      "essaiActions": "The Interim approvisal evaluation to be sent",
+      "essaiResponsable": "HR Plant Manager",
+      "essaiEcheanceEval": "15/10/2026",
+      "essaiStatutEval": "On time",
+      "essaiCommentaire": "",
+      "dureeContratMois": 12
     },
     {
       "id": "e85d47ca-8195-4b33-b71d-3398342198b8",
@@ -3244,15 +3766,21 @@
       "lineManagerPosition": "Senior Lab Analyst",
       "patersonGrade": "",
       "statut": "Active",
-      "typeContrat": "",
-      "periodeEssaiMois": null,
-      "dateFinPeriodeEssai": "",
-      "dateFinContrat": "",
+      "typeContrat": "CDD",
+      "periodeEssaiMois": 3,
+      "dateFinPeriodeEssai": "30/11/2025",
+      "dateFinContrat": "31/08/2026",
       "raisonExit": "NA",
       "createdAt": "2026-07-28T09:40:37.715Z",
       "updatedAt": "2026-07-29T14:11:17.443Z",
       "cnss": "11981742094K",
-      "nif": "F2599838D"
+      "nif": "F2599838D",
+      "essaiActions": "Evaluation Done",
+      "essaiResponsable": "QA Manager",
+      "essaiEcheanceEval": "30/10/2025",
+      "essaiStatutEval": "Done",
+      "essaiCommentaire": "Doubtful-PIP",
+      "dureeContratMois": 12
     },
     {
       "id": "9c2a32fe-6769-404d-bf78-c28bfcb4529d",
@@ -3289,7 +3817,13 @@
       "createdAt": "2026-07-28T09:40:37.715Z",
       "updatedAt": "2026-07-29T14:11:17.443Z",
       "cnss": "11989346193K",
-      "nif": "B2222625T"
+      "nif": "B2222625T",
+      "dureeContratMois": null,
+      "essaiActions": "",
+      "essaiResponsable": "",
+      "essaiEcheanceEval": "",
+      "essaiStatutEval": "",
+      "essaiCommentaire": ""
     },
     {
       "id": "8b9edf2d-5747-4715-a9f7-101abd353049",
@@ -3326,7 +3860,13 @@
       "createdAt": "2026-07-28T09:40:37.715Z",
       "updatedAt": "2026-07-29T14:11:17.443Z",
       "cnss": "108437604170E",
-      "nif": "B2222620N"
+      "nif": "B2222620N",
+      "dureeContratMois": null,
+      "essaiActions": "",
+      "essaiResponsable": "",
+      "essaiEcheanceEval": "",
+      "essaiStatutEval": "",
+      "essaiCommentaire": ""
     },
     {
       "id": "0bf775e8-9110-46ae-9af3-11b1f3113a8d",
@@ -3355,15 +3895,21 @@
       "lineManagerPosition": "Senior Lab Analyst",
       "patersonGrade": "",
       "statut": "Active",
-      "typeContrat": "",
-      "periodeEssaiMois": null,
-      "dateFinPeriodeEssai": "",
+      "typeContrat": "CDI",
+      "periodeEssaiMois": 3,
+      "dateFinPeriodeEssai": "02/09/2024",
       "dateFinContrat": "",
       "raisonExit": "NA",
       "createdAt": "2026-07-28T09:40:37.715Z",
       "updatedAt": "2026-07-29T14:11:17.443Z",
       "cnss": "11995638239P",
-      "nif": "F2595828U"
+      "nif": "F2595828U",
+      "essaiActions": "Evaluation Done",
+      "essaiResponsable": "Senior Lab An.",
+      "essaiEcheanceEval": "12/08/2024",
+      "essaiStatutEval": "Done",
+      "essaiCommentaire": "Approved",
+      "dureeContratMois": null
     },
     {
       "id": "5327fd5a-fee5-49bd-ba69-a8d7fbbfb3eb",
@@ -3400,7 +3946,13 @@
       "createdAt": "2026-07-28T09:40:37.715Z",
       "updatedAt": "2026-07-29T14:11:17.443Z",
       "cnss": "11994517578G",
-      "nif": "B2222664L"
+      "nif": "B2222664L",
+      "dureeContratMois": null,
+      "essaiActions": "",
+      "essaiResponsable": "",
+      "essaiEcheanceEval": "",
+      "essaiStatutEval": "",
+      "essaiCommentaire": ""
     },
     {
       "id": "30c01d7e-7e2a-4c1b-880c-c694a55883be",
@@ -3437,7 +3989,13 @@
       "createdAt": "2026-07-28T09:40:37.715Z",
       "updatedAt": "2026-07-29T14:11:17.443Z",
       "cnss": "107328606270E",
-      "nif": "B2222614G"
+      "nif": "B2222614G",
+      "dureeContratMois": null,
+      "essaiActions": "",
+      "essaiResponsable": "",
+      "essaiEcheanceEval": "",
+      "essaiStatutEval": "",
+      "essaiCommentaire": ""
     },
     {
       "id": "24593b30-8851-47d0-a028-b13286e434ba",
@@ -3474,7 +4032,13 @@
       "createdAt": "2026-07-28T09:40:37.715Z",
       "updatedAt": "2026-07-29T14:11:17.443Z",
       "cnss": "11969346098C",
-      "nif": "B2222551N"
+      "nif": "B2222551N",
+      "dureeContratMois": null,
+      "essaiActions": "",
+      "essaiResponsable": "",
+      "essaiEcheanceEval": "",
+      "essaiStatutEval": "",
+      "essaiCommentaire": ""
     },
     {
       "id": "13962c42-5eea-454d-a721-c0cd169173ed",
@@ -3511,7 +4075,13 @@
       "createdAt": "2026-07-28T09:40:37.715Z",
       "updatedAt": "2026-07-29T14:11:17.443Z",
       "cnss": "11986569939R",
-      "nif": "B2222600R"
+      "nif": "B2222600R",
+      "dureeContratMois": null,
+      "essaiActions": "",
+      "essaiResponsable": "",
+      "essaiEcheanceEval": "",
+      "essaiStatutEval": "",
+      "essaiCommentaire": ""
     },
     {
       "id": "03284cea-0c9c-45bf-89a2-f0ce6d245236",
@@ -3523,7 +4093,7 @@
       "localisation": "Lubudi",
       "company": "PPC Barnet DRC Manufacturing",
       "centreCout": "DL5110",
-      "appointmentDate": "01/12/2025",
+      "appointmentDate": "05/12/2025",
       "gender": "Male",
       "dateOfBirth": "22/01/1991",
       "age": 35,
@@ -3540,15 +4110,21 @@
       "lineManagerPosition": "Site Manager",
       "patersonGrade": "",
       "statut": "Active",
-      "typeContrat": "",
-      "periodeEssaiMois": null,
-      "dateFinPeriodeEssai": "",
-      "dateFinContrat": "",
+      "typeContrat": "CDD",
+      "periodeEssaiMois": 5,
+      "dateFinPeriodeEssai": "04/05/2026",
+      "dateFinContrat": "04/12/2027",
       "raisonExit": "NA",
       "createdAt": "2026-07-28T09:40:37.715Z",
       "updatedAt": "2026-07-29T14:11:17.443Z",
       "cnss": "11991514033I",
-      "nif": "F2593808Z"
+      "nif": "F2593808Z",
+      "essaiActions": "The Interim approvisal evaluation to be sent",
+      "essaiResponsable": "Site Manager",
+      "essaiEcheanceEval": "04/04/2026",
+      "essaiStatutEval": "Overdue",
+      "essaiCommentaire": "",
+      "dureeContratMois": 24
     },
     {
       "id": "f9a82929-1f6e-4651-8fdf-c7b03bb88927",
@@ -3585,7 +4161,13 @@
       "createdAt": "2026-07-28T09:40:37.715Z",
       "updatedAt": "2026-07-29T14:11:17.443Z",
       "cnss": "11987629043R",
-      "nif": "C2231573W"
+      "nif": "C2231573W",
+      "dureeContratMois": null,
+      "essaiActions": "",
+      "essaiResponsable": "",
+      "essaiEcheanceEval": "",
+      "essaiStatutEval": "",
+      "essaiCommentaire": ""
     },
     {
       "id": "55d0f50b-1470-4498-8b72-560df9aca74d",
@@ -3614,15 +4196,21 @@
       "lineManagerPosition": "Head of HR",
       "patersonGrade": "",
       "statut": "Active",
-      "typeContrat": "",
-      "periodeEssaiMois": null,
-      "dateFinPeriodeEssai": "",
-      "dateFinContrat": "",
+      "typeContrat": "CDD",
+      "periodeEssaiMois": 5,
+      "dateFinPeriodeEssai": "30/04/2026",
+      "dateFinContrat": "30/11/2027",
       "raisonExit": "NA",
       "createdAt": "2026-07-28T09:40:37.715Z",
       "updatedAt": "2026-07-29T14:11:17.443Z",
       "cnss": "21983391368Q",
-      "nif": "G2500283S"
+      "nif": "G2500283S",
+      "essaiActions": "The Interim approvisal evaluation to be sent",
+      "essaiResponsable": "Head of HR",
+      "essaiEcheanceEval": "30/03/2026",
+      "essaiStatutEval": "Overdue",
+      "essaiCommentaire": "",
+      "dureeContratMois": 24
     },
     {
       "id": "6cc8efdd-4006-4997-985f-cc3d63ca5477",
@@ -3659,7 +4247,13 @@
       "createdAt": "2026-07-28T09:40:37.715Z",
       "updatedAt": "2026-07-29T14:11:17.443Z",
       "cnss": "102478707050Q",
-      "nif": "B2222653Z"
+      "nif": "B2222653Z",
+      "dureeContratMois": null,
+      "essaiActions": "",
+      "essaiResponsable": "",
+      "essaiEcheanceEval": "",
+      "essaiStatutEval": "",
+      "essaiCommentaire": ""
     },
     {
       "id": "08ee1f6a-ad99-4278-aeaf-92a564e062c8",
@@ -3671,7 +4265,7 @@
       "localisation": "Kinshasa",
       "company": "PPC Barnet DRC Manufacturing",
       "centreCout": "KC9114",
-      "appointmentDate": "01/09/2023",
+      "appointmentDate": "01/08/2023",
       "gender": "Male",
       "dateOfBirth": "29/11/1992",
       "age": 33,
@@ -3688,15 +4282,21 @@
       "lineManagerPosition": "Managing Director",
       "patersonGrade": "",
       "statut": "Active",
-      "typeContrat": "",
-      "periodeEssaiMois": null,
-      "dateFinPeriodeEssai": "",
+      "typeContrat": "CDI",
+      "periodeEssaiMois": 6,
+      "dateFinPeriodeEssai": "31/01/2024",
       "dateFinContrat": "",
       "raisonExit": "NA",
       "createdAt": "2026-07-28T09:40:37.715Z",
       "updatedAt": "2026-07-29T14:11:17.443Z",
       "cnss": "11992282702R",
-      "nif": "C2224136M"
+      "nif": "C2224136M",
+      "essaiActions": "The Interim approvisal evaluation form sent",
+      "essaiResponsable": "Group Audit M.",
+      "essaiEcheanceEval": "11/01/2024",
+      "essaiStatutEval": "Overdue",
+      "essaiCommentaire": "No reply",
+      "dureeContratMois": null
     },
     {
       "id": "6293e23d-d6b6-4558-b64b-ab00f81f066e",
@@ -3733,7 +4333,13 @@
       "createdAt": "2026-07-28T09:40:37.715Z",
       "updatedAt": "2026-07-29T14:11:17.443Z",
       "cnss": "11990346088D",
-      "nif": "B2222599Q"
+      "nif": "B2222599Q",
+      "dureeContratMois": null,
+      "essaiActions": "",
+      "essaiResponsable": "",
+      "essaiEcheanceEval": "",
+      "essaiStatutEval": "",
+      "essaiCommentaire": ""
     },
     {
       "id": "564edd85-72a9-471e-b831-9d0ff2ed8195",
@@ -3762,15 +4368,21 @@
       "lineManagerPosition": "Managing Director",
       "patersonGrade": "",
       "statut": "Active",
-      "typeContrat": "",
-      "periodeEssaiMois": null,
-      "dateFinPeriodeEssai": "",
+      "typeContrat": "CDD",
+      "periodeEssaiMois": 6,
+      "dateFinPeriodeEssai": "02/01/2024",
       "dateFinContrat": "",
       "raisonExit": "NA",
       "createdAt": "2026-07-28T09:40:37.715Z",
       "updatedAt": "2026-07-29T14:11:17.443Z",
       "cnss": "11986698977C",
-      "nif": "C2235836E"
+      "nif": "C2235836E",
+      "essaiActions": "Evaluation Done",
+      "essaiResponsable": "Plant Manager",
+      "essaiEcheanceEval": "19/12/2023",
+      "essaiStatutEval": "Done",
+      "essaiCommentaire": "Approved",
+      "dureeContratMois": null
     },
     {
       "id": "f12a9afe-0f5a-4286-9ea3-a7bb0e5a11a1",
@@ -3807,7 +4419,13 @@
       "createdAt": "2026-07-28T09:40:37.715Z",
       "updatedAt": "2026-07-29T14:11:17.443Z",
       "cnss": "11978551031N",
-      "nif": "B2222546H"
+      "nif": "B2222546H",
+      "dureeContratMois": null,
+      "essaiActions": "",
+      "essaiResponsable": "",
+      "essaiEcheanceEval": "",
+      "essaiStatutEval": "",
+      "essaiCommentaire": ""
     },
     {
       "id": "749a3fcf-498c-4449-8183-3037991bd491",
@@ -3844,7 +4462,13 @@
       "createdAt": "2026-07-28T09:40:37.715Z",
       "updatedAt": "2026-07-29T14:11:17.443Z",
       "cnss": "11986282243F",
-      "nif": "B2222688M"
+      "nif": "B2222688M",
+      "dureeContratMois": null,
+      "essaiActions": "",
+      "essaiResponsable": "",
+      "essaiEcheanceEval": "",
+      "essaiStatutEval": "",
+      "essaiCommentaire": ""
     },
     {
       "id": "244d6c31-bf63-40b2-b09b-62d564df7ebc",
@@ -3881,7 +4505,13 @@
       "createdAt": "2026-07-28T09:40:37.715Z",
       "updatedAt": "2026-07-29T14:11:17.443Z",
       "cnss": "11991346040H",
-      "nif": "B2222643N"
+      "nif": "B2222643N",
+      "dureeContratMois": null,
+      "essaiActions": "",
+      "essaiResponsable": "",
+      "essaiEcheanceEval": "",
+      "essaiStatutEval": "",
+      "essaiCommentaire": ""
     },
     {
       "id": "f4aca174-5e88-4aeb-9ef3-2ea52728dbcb",
@@ -3918,7 +4548,13 @@
       "createdAt": "2026-07-28T09:40:37.715Z",
       "updatedAt": "2026-07-29T14:11:17.443Z",
       "cnss": "10573770640H",
-      "nif": "B2222716S"
+      "nif": "B2222716S",
+      "dureeContratMois": null,
+      "essaiActions": "",
+      "essaiResponsable": "",
+      "essaiEcheanceEval": "",
+      "essaiStatutEval": "",
+      "essaiCommentaire": ""
     },
     {
       "id": "037ab0c5-3f59-40a2-aa4f-af5cfae2ace0",
@@ -3955,7 +4591,13 @@
       "createdAt": "2026-07-28T09:40:37.715Z",
       "updatedAt": "2026-07-29T14:11:17.443Z",
       "cnss": "11978569883F",
-      "nif": "B2222692R"
+      "nif": "B2222692R",
+      "dureeContratMois": null,
+      "essaiActions": "",
+      "essaiResponsable": "",
+      "essaiEcheanceEval": "",
+      "essaiStatutEval": "",
+      "essaiCommentaire": ""
     },
     {
       "id": "ecb9d38b-e269-4f5e-9376-76bc159fc7cc",
@@ -3992,7 +4634,13 @@
       "createdAt": "2026-07-28T09:40:37.715Z",
       "updatedAt": "2026-07-29T14:11:17.443Z",
       "cnss": "11982346036S",
-      "nif": "B2222623R"
+      "nif": "B2222623R",
+      "dureeContratMois": null,
+      "essaiActions": "",
+      "essaiResponsable": "",
+      "essaiEcheanceEval": "",
+      "essaiStatutEval": "",
+      "essaiCommentaire": ""
     },
     {
       "id": "94306390-27e9-47cd-a221-355492a90099",
@@ -4029,7 +4677,13 @@
       "createdAt": "2026-07-28T09:40:37.715Z",
       "updatedAt": "2026-07-29T14:11:17.443Z",
       "cnss": "11989346028G",
-      "nif": "B2222657D"
+      "nif": "B2222657D",
+      "dureeContratMois": null,
+      "essaiActions": "",
+      "essaiResponsable": "",
+      "essaiEcheanceEval": "",
+      "essaiStatutEval": "",
+      "essaiCommentaire": ""
     },
     {
       "id": "def1af46-caa8-4836-bd38-fd9cccb12862",
@@ -4066,7 +4720,13 @@
       "createdAt": "2026-07-28T09:40:37.715Z",
       "updatedAt": "2026-07-29T14:11:17.443Z",
       "cnss": "11980507903W",
-      "nif": "B2222677A"
+      "nif": "B2222677A",
+      "dureeContratMois": null,
+      "essaiActions": "",
+      "essaiResponsable": "",
+      "essaiEcheanceEval": "",
+      "essaiStatutEval": "",
+      "essaiCommentaire": ""
     },
     {
       "id": "44d9c0f8-7090-4a8d-9514-82f80084468f",
@@ -4103,7 +4763,13 @@
       "createdAt": "2026-07-28T09:40:37.715Z",
       "updatedAt": "2026-07-29T14:11:17.443Z",
       "cnss": "11986606822I",
-      "nif": "B2222569H"
+      "nif": "B2222569H",
+      "dureeContratMois": null,
+      "essaiActions": "",
+      "essaiResponsable": "",
+      "essaiEcheanceEval": "",
+      "essaiStatutEval": "",
+      "essaiCommentaire": ""
     },
     {
       "id": "ca1d25de-031d-4483-93e1-26a4b2622f34",
@@ -4140,7 +4806,13 @@
       "createdAt": "2026-07-28T09:40:37.715Z",
       "updatedAt": "2026-07-29T14:11:17.443Z",
       "cnss": "11984485831I",
-      "nif": "B2222634D"
+      "nif": "B2222634D",
+      "dureeContratMois": null,
+      "essaiActions": "",
+      "essaiResponsable": "",
+      "essaiEcheanceEval": "",
+      "essaiStatutEval": "",
+      "essaiCommentaire": ""
     },
     {
       "id": "a7c5776f-ef59-46a0-ac43-3cd0703f56de",
@@ -4152,7 +4824,7 @@
       "localisation": "Zamba",
       "company": "PPC Barnet DRC Manufacturing",
       "centreCout": "KC8414",
-      "appointmentDate": "03/06/2024",
+      "appointmentDate": "03/03/2026",
       "gender": "Male",
       "dateOfBirth": "04/12/1999",
       "age": 26,
@@ -4169,15 +4841,21 @@
       "lineManagerPosition": "IT Manager",
       "patersonGrade": "",
       "statut": "Active",
-      "typeContrat": "",
-      "periodeEssaiMois": null,
-      "dateFinPeriodeEssai": "",
+      "typeContrat": "CDI",
+      "periodeEssaiMois": 5,
+      "dateFinPeriodeEssai": "02/08/2026",
       "dateFinContrat": "",
       "raisonExit": "NA",
       "createdAt": "2026-07-28T09:40:37.715Z",
       "updatedAt": "2026-07-29T14:11:17.443Z",
       "cnss": "11999717232E",
-      "nif": "F2595520K"
+      "nif": "F2595520K",
+      "essaiActions": "The Interim approvisal evaluation to be sent",
+      "essaiResponsable": "IT Manager",
+      "essaiEcheanceEval": "01/07/2026",
+      "essaiStatutEval": "On time",
+      "essaiCommentaire": "",
+      "dureeContratMois": null
     },
     {
       "id": "91b17468-c2fc-41bd-83cb-cac066325cb2",
@@ -4214,7 +4892,13 @@
       "createdAt": "2026-07-28T09:40:37.715Z",
       "updatedAt": "2026-07-29T14:11:17.443Z",
       "cnss": "11986346071I",
-      "nif": "B2222659f"
+      "nif": "B2222659f",
+      "dureeContratMois": null,
+      "essaiActions": "",
+      "essaiResponsable": "",
+      "essaiEcheanceEval": "",
+      "essaiStatutEval": "",
+      "essaiCommentaire": ""
     },
     {
       "id": "4c0a8538-18c8-4398-9fd5-2180f2de0b64",
@@ -4251,7 +4935,13 @@
       "createdAt": "2026-07-28T09:40:37.715Z",
       "updatedAt": "2026-07-29T14:11:17.443Z",
       "cnss": "209427911220J",
-      "nif": "B2222584Z"
+      "nif": "B2222584Z",
+      "dureeContratMois": null,
+      "essaiActions": "",
+      "essaiResponsable": "",
+      "essaiEcheanceEval": "",
+      "essaiStatutEval": "",
+      "essaiCommentaire": ""
     },
     {
       "id": "b3f54596-e7b9-4ba2-b16a-7353100338d5",
@@ -4263,7 +4953,7 @@
       "localisation": "Zamba",
       "company": "PPC Barnet DRC Manufacturing",
       "centreCout": "KM5310",
-      "appointmentDate": "15/02/2025",
+      "appointmentDate": "17/02/2025",
       "gender": "Male",
       "dateOfBirth": "08/08/2002",
       "age": 23,
@@ -4280,15 +4970,21 @@
       "lineManagerPosition": "Electrical and Instrumentation Engineer",
       "patersonGrade": "",
       "statut": "Active",
-      "typeContrat": "",
-      "periodeEssaiMois": null,
-      "dateFinPeriodeEssai": "",
+      "typeContrat": "CDI",
+      "periodeEssaiMois": 5,
+      "dateFinPeriodeEssai": "16/07/2025",
       "dateFinContrat": "",
       "raisonExit": "NA",
       "createdAt": "2026-07-28T09:40:37.715Z",
       "updatedAt": "2026-07-29T14:11:17.443Z",
       "cnss": "12002717258C",
-      "nif": "G2502205G"
+      "nif": "G2502205G",
+      "essaiActions": "Evaluation Done",
+      "essaiResponsable": "Elect and Inst Eng",
+      "essaiEcheanceEval": "16/06/2025",
+      "essaiStatutEval": "Done",
+      "essaiCommentaire": "Approved",
+      "dureeContratMois": null
     },
     {
       "id": "52d4fc38-8261-45f4-894a-c0aa8d6a67cd",
@@ -4325,7 +5021,13 @@
       "createdAt": "2026-07-28T09:40:37.715Z",
       "updatedAt": "2026-07-29T14:11:17.443Z",
       "cnss": "11987485686T",
-      "nif": "B2222656C"
+      "nif": "B2222656C",
+      "dureeContratMois": null,
+      "essaiActions": "",
+      "essaiResponsable": "",
+      "essaiEcheanceEval": "",
+      "essaiStatutEval": "",
+      "essaiCommentaire": ""
     },
     {
       "id": "2dd6f4ab-54b0-4a6b-9bb1-ffd596aa10eb",
@@ -4362,7 +5064,13 @@
       "createdAt": "2026-07-28T09:40:37.715Z",
       "updatedAt": "2026-07-29T14:11:17.443Z",
       "cnss": "107548010070I",
-      "nif": "B2222545G"
+      "nif": "B2222545G",
+      "dureeContratMois": null,
+      "essaiActions": "",
+      "essaiResponsable": "",
+      "essaiEcheanceEval": "",
+      "essaiStatutEval": "",
+      "essaiCommentaire": ""
     },
     {
       "id": "9a9c8920-e3f6-480b-9aef-73d731e0fa4e",
@@ -4391,15 +5099,21 @@
       "lineManagerPosition": "Plant Manager",
       "patersonGrade": "",
       "statut": "Active",
-      "typeContrat": "",
-      "periodeEssaiMois": null,
-      "dateFinPeriodeEssai": "",
+      "typeContrat": "CDI",
+      "periodeEssaiMois": 5,
+      "dateFinPeriodeEssai": "23/08/2025",
       "dateFinContrat": "",
       "raisonExit": "NA",
       "createdAt": "2026-07-28T09:40:37.715Z",
       "updatedAt": "2026-07-29T14:11:17.443Z",
       "cnss": "050105244U1",
-      "nif": "B2210530X"
+      "nif": "B2210530X",
+      "essaiActions": "Evaluation Done",
+      "essaiResponsable": "Plant Manager",
+      "essaiEcheanceEval": "23/07/2025",
+      "essaiStatutEval": "Done",
+      "essaiCommentaire": "Approved",
+      "dureeContratMois": null
     },
     {
       "id": "3e9d5101-b08e-4bf0-9d14-d2a7ba30b7f5",
@@ -4436,7 +5150,13 @@
       "createdAt": "2026-07-28T09:40:37.715Z",
       "updatedAt": "2026-07-29T14:11:17.443Z",
       "cnss": "10495JC00",
-      "nif": "B2222563B"
+      "nif": "B2222563B",
+      "dureeContratMois": null,
+      "essaiActions": "",
+      "essaiResponsable": "",
+      "essaiEcheanceEval": "",
+      "essaiStatutEval": "",
+      "essaiCommentaire": ""
     },
     {
       "id": "475f77aa-cd58-4564-abaa-8ce774aabff1",
@@ -4465,15 +5185,21 @@
       "lineManagerPosition": "Head of Business Development",
       "patersonGrade": "",
       "statut": "Active",
-      "typeContrat": "",
-      "periodeEssaiMois": null,
-      "dateFinPeriodeEssai": "",
+      "typeContrat": "CDI",
+      "periodeEssaiMois": 6,
+      "dateFinPeriodeEssai": "02/05/2026",
       "dateFinContrat": "",
       "raisonExit": "NA",
       "createdAt": "2026-07-28T09:40:37.715Z",
       "updatedAt": "2026-07-29T14:11:17.443Z",
       "cnss": "103232019781215002",
-      "nif": "G2642550L"
+      "nif": "G2642550L",
+      "essaiActions": "The Interim approvisal evaluation to be sent",
+      "essaiResponsable": "Head of Sales and Marketing",
+      "essaiEcheanceEval": "01/04/2026",
+      "essaiStatutEval": "Overdue",
+      "essaiCommentaire": "",
+      "dureeContratMois": null
     },
     {
       "id": "3a904ff9-5a67-48ac-bea4-8909eec656f5",
@@ -4502,15 +5228,21 @@
       "lineManagerPosition": "Electrical & Instrumentation Engineer",
       "patersonGrade": "",
       "statut": "Active",
-      "typeContrat": "",
-      "periodeEssaiMois": null,
-      "dateFinPeriodeEssai": "",
-      "dateFinContrat": "",
+      "typeContrat": "CDD",
+      "periodeEssaiMois": 5,
+      "dateFinPeriodeEssai": "03/10/2026",
+      "dateFinContrat": "03/05/2027",
       "raisonExit": "NA",
       "createdAt": "2026-07-28T09:40:37.715Z",
       "updatedAt": "2026-07-29T14:11:17.443Z",
       "cnss": "1198828280H",
-      "nif": "A2210510Z"
+      "nif": "A2210510Z",
+      "essaiActions": "The Interim approvisal evaluation to be sent",
+      "essaiResponsable": "IC Foreman",
+      "essaiEcheanceEval": "02/09/2026",
+      "essaiStatutEval": "On time",
+      "essaiCommentaire": "",
+      "dureeContratMois": 12
     },
     {
       "id": "3314c7ba-d079-4d16-a1d7-83815ec65ffd",
@@ -4547,7 +5279,13 @@
       "createdAt": "2026-07-28T09:40:37.715Z",
       "updatedAt": "2026-07-29T14:11:17.443Z",
       "cnss": "11993346026F",
-      "nif": "B2222577R"
+      "nif": "B2222577R",
+      "dureeContratMois": null,
+      "essaiActions": "",
+      "essaiResponsable": "",
+      "essaiEcheanceEval": "",
+      "essaiStatutEval": "",
+      "essaiCommentaire": ""
     },
     {
       "id": "e196aa45-1038-4b39-bec4-40357e24af82",
@@ -4584,7 +5322,13 @@
       "createdAt": "2026-07-28T09:40:37.715Z",
       "updatedAt": "2026-07-29T14:11:17.443Z",
       "cnss": "21985406131C",
-      "nif": "B2222639J"
+      "nif": "B2222639J",
+      "dureeContratMois": null,
+      "essaiActions": "",
+      "essaiResponsable": "",
+      "essaiEcheanceEval": "",
+      "essaiStatutEval": "",
+      "essaiCommentaire": ""
     },
     {
       "id": "fa31078f-1fd3-4e20-a052-4b83f66d34f5",
@@ -4621,7 +5365,13 @@
       "createdAt": "2026-07-28T09:40:37.715Z",
       "updatedAt": "2026-07-29T14:11:17.443Z",
       "cnss": "11982363900L",
-      "nif": "B2222597N"
+      "nif": "B2222597N",
+      "dureeContratMois": null,
+      "essaiActions": "",
+      "essaiResponsable": "",
+      "essaiEcheanceEval": "",
+      "essaiStatutEval": "",
+      "essaiCommentaire": ""
     },
     {
       "id": "96afa984-f715-47e9-bfd8-9889efdfe978",
@@ -4658,7 +5408,13 @@
       "createdAt": "2026-07-28T09:40:37.715Z",
       "updatedAt": "2026-07-29T14:11:17.443Z",
       "cnss": "208348809200G",
-      "nif": "B2222699Z"
+      "nif": "B2222699Z",
+      "dureeContratMois": null,
+      "essaiActions": "",
+      "essaiResponsable": "",
+      "essaiEcheanceEval": "",
+      "essaiStatutEval": "",
+      "essaiCommentaire": ""
     },
     {
       "id": "06179469-586a-461c-98b2-64f94688f2b0",
@@ -4687,13 +5443,19 @@
       "lineManagerPosition": "Finance Controller",
       "patersonGrade": "",
       "statut": "Active",
-      "typeContrat": "",
-      "periodeEssaiMois": null,
-      "dateFinPeriodeEssai": "",
+      "typeContrat": "CDI",
+      "periodeEssaiMois": 5,
+      "dateFinPeriodeEssai": "31/10/2026",
       "dateFinContrat": "",
       "raisonExit": "NA",
       "createdAt": "2026-07-28T09:40:37.715Z",
-      "updatedAt": "2026-07-28T09:40:37.715Z"
+      "updatedAt": "2026-07-28T09:40:37.715Z",
+      "essaiActions": "The Interim approvisal evaluation to be sent",
+      "essaiResponsable": "Financial Controller",
+      "essaiEcheanceEval": "01/09/2026",
+      "essaiStatutEval": "On time",
+      "essaiCommentaire": "",
+      "dureeContratMois": null
     },
     {
       "id": "8459093b-a4a0-4033-a253-61575c60433e",
@@ -4730,7 +5492,13 @@
       "createdAt": "2026-07-28T09:40:37.715Z",
       "updatedAt": "2026-07-29T14:11:17.443Z",
       "cnss": "11990346096L",
-      "nif": "B2222667P"
+      "nif": "B2222667P",
+      "dureeContratMois": null,
+      "essaiActions": "",
+      "essaiResponsable": "",
+      "essaiEcheanceEval": "",
+      "essaiStatutEval": "",
+      "essaiCommentaire": ""
     },
     {
       "id": "0e82ea93-58c8-495f-8bbf-5bafd5fdb2be",
@@ -4742,7 +5510,7 @@
       "localisation": "Kinshasa",
       "company": "PPC Barnet DRC Manufacturing",
       "centreCout": "KC9212",
-      "appointmentDate": "07/03/2025",
+      "appointmentDate": "01/07/2025",
       "gender": "Male",
       "dateOfBirth": "09/06/1983",
       "age": 43,
@@ -4759,15 +5527,21 @@
       "lineManagerPosition": "Managing Director",
       "patersonGrade": "",
       "statut": "Active",
-      "typeContrat": "",
-      "periodeEssaiMois": null,
-      "dateFinPeriodeEssai": "",
-      "dateFinContrat": "",
+      "typeContrat": "CDD",
+      "periodeEssaiMois": 5,
+      "dateFinPeriodeEssai": "30/11/2025",
+      "dateFinContrat": "30/06/2026",
       "raisonExit": "NA",
       "createdAt": "2026-07-28T09:40:37.715Z",
       "updatedAt": "2026-07-29T14:11:17.443Z",
       "cnss": "21998442371D",
-      "nif": "G2504830K"
+      "nif": "G2504830K",
+      "essaiActions": "The Interim approvisal evaluation sent",
+      "essaiResponsable": "MD",
+      "essaiEcheanceEval": "30/10/2025",
+      "essaiStatutEval": "Overdue",
+      "essaiCommentaire": "",
+      "dureeContratMois": 12
     },
     {
       "id": "349a4b33-af48-4ea7-b336-c39d4c13d99e",
@@ -4804,7 +5578,13 @@
       "createdAt": "2026-07-28T09:40:37.715Z",
       "updatedAt": "2026-07-29T14:11:17.443Z",
       "cnss": "11989504086I",
-      "nif": "B2222679C"
+      "nif": "B2222679C",
+      "dureeContratMois": null,
+      "essaiActions": "",
+      "essaiResponsable": "",
+      "essaiEcheanceEval": "",
+      "essaiStatutEval": "",
+      "essaiCommentaire": ""
     },
     {
       "id": "37e241ab-c583-4ab6-91cb-0a9dc293921c",
@@ -4833,15 +5613,21 @@
       "lineManagerPosition": "Finance Controler",
       "patersonGrade": "",
       "statut": "Active",
-      "typeContrat": "",
-      "periodeEssaiMois": null,
-      "dateFinPeriodeEssai": "",
+      "typeContrat": "CDI",
+      "periodeEssaiMois": 5,
+      "dateFinPeriodeEssai": "14/06/2024",
       "dateFinContrat": "",
       "raisonExit": "NA",
       "createdAt": "2026-07-28T09:40:37.715Z",
       "updatedAt": "2026-07-29T14:11:17.443Z",
       "cnss": "11989395865C",
-      "nif": "F2595826S"
+      "nif": "F2595826S",
+      "essaiActions": "Evaluation Done",
+      "essaiResponsable": "Fin. Contr",
+      "essaiEcheanceEval": "23/05/2024",
+      "essaiStatutEval": "Done",
+      "essaiCommentaire": "Approved",
+      "dureeContratMois": null
     },
     {
       "id": "8ce5cddf-4681-449f-b780-20d84288768d",
@@ -4853,7 +5639,7 @@
       "localisation": "Zamba",
       "company": "PPC Barnet DRC Manufacturing",
       "centreCout": "KM5310",
-      "appointmentDate": "15/02/2025",
+      "appointmentDate": "17/02/2025",
       "gender": "Male",
       "dateOfBirth": "05/01/1994",
       "age": 32,
@@ -4870,15 +5656,21 @@
       "lineManagerPosition": "Electrical Foreman",
       "patersonGrade": "",
       "statut": "Active",
-      "typeContrat": "",
-      "periodeEssaiMois": null,
-      "dateFinPeriodeEssai": "",
+      "typeContrat": "CDI",
+      "periodeEssaiMois": 3,
+      "dateFinPeriodeEssai": "16/05/2025",
       "dateFinContrat": "",
       "raisonExit": "NA",
       "createdAt": "2026-07-28T09:40:37.715Z",
       "updatedAt": "2026-07-29T14:11:17.443Z",
       "cnss": "108339401050H",
-      "nif": "G2504802E"
+      "nif": "G2504802E",
+      "essaiActions": "Evaluation Done",
+      "essaiResponsable": "Elect Foreman",
+      "essaiEcheanceEval": "16/04/2025",
+      "essaiStatutEval": "Done",
+      "essaiCommentaire": "Approved",
+      "dureeContratMois": null
     },
     {
       "id": "f37a3d01-efa4-4afe-b62a-6fc2c3171d8a",
@@ -4915,7 +5707,13 @@
       "createdAt": "2026-07-28T09:40:37.715Z",
       "updatedAt": "2026-07-29T14:11:17.443Z",
       "cnss": "11989506044L",
-      "nif": "B2222605X"
+      "nif": "B2222605X",
+      "dureeContratMois": null,
+      "essaiActions": "",
+      "essaiResponsable": "",
+      "essaiEcheanceEval": "",
+      "essaiStatutEval": "",
+      "essaiCommentaire": ""
     },
     {
       "id": "a035180a-4afb-472e-ae2d-8745bee93954",
@@ -4952,7 +5750,13 @@
       "createdAt": "2026-07-28T09:40:37.715Z",
       "updatedAt": "2026-07-29T14:11:17.443Z",
       "cnss": "11988483038W",
-      "nif": "B2222605X"
+      "nif": "B2222605X",
+      "dureeContratMois": null,
+      "essaiActions": "",
+      "essaiResponsable": "",
+      "essaiEcheanceEval": "",
+      "essaiStatutEval": "",
+      "essaiCommentaire": ""
     },
     {
       "id": "85525948-4fa0-4002-83d0-9bd5da1c4d11",
@@ -4989,7 +5793,13 @@
       "createdAt": "2026-07-28T09:40:37.715Z",
       "updatedAt": "2026-07-29T14:11:17.443Z",
       "cnss": "11974346050H",
-      "nif": "B2222649U"
+      "nif": "B2222649U",
+      "dureeContratMois": null,
+      "essaiActions": "",
+      "essaiResponsable": "",
+      "essaiEcheanceEval": "",
+      "essaiStatutEval": "",
+      "essaiCommentaire": ""
     },
     {
       "id": "a11b95d0-fb73-476c-8efb-f782d1efb1ee",
@@ -5026,7 +5836,13 @@
       "createdAt": "2026-07-28T09:40:37.715Z",
       "updatedAt": "2026-07-29T14:11:17.443Z",
       "cnss": "11982485341M",
-      "nif": "C2224139Q"
+      "nif": "C2224139Q",
+      "dureeContratMois": null,
+      "essaiActions": "",
+      "essaiResponsable": "",
+      "essaiEcheanceEval": "",
+      "essaiStatutEval": "",
+      "essaiCommentaire": ""
     },
     {
       "id": "a8300f2e-a510-46c3-a8c3-5511ddc52dc5",
@@ -5055,15 +5871,21 @@
       "lineManagerPosition": "Head of Legal",
       "patersonGrade": "",
       "statut": "Active",
-      "typeContrat": "",
-      "periodeEssaiMois": null,
-      "dateFinPeriodeEssai": "",
+      "typeContrat": "CDI",
+      "periodeEssaiMois": 5,
+      "dateFinPeriodeEssai": "08/02/2025",
       "dateFinContrat": "",
       "raisonExit": "NA",
       "createdAt": "2026-07-28T09:40:37.715Z",
       "updatedAt": "2026-07-29T14:11:17.443Z",
       "cnss": "21994435051T",
-      "nif": "C2377640U"
+      "nif": "C2377640U",
+      "essaiActions": "Evaluation Done",
+      "essaiResponsable": "Head of Legal",
+      "essaiEcheanceEval": "08/01/2025",
+      "essaiStatutEval": "Done",
+      "essaiCommentaire": "Approved",
+      "dureeContratMois": null
     },
     {
       "id": "c00b29ef-4d52-425a-9c94-c62defa01bc4",
@@ -5100,7 +5922,13 @@
       "createdAt": "2026-07-28T09:40:37.715Z",
       "updatedAt": "2026-07-29T14:11:17.443Z",
       "cnss": "11987628363E",
-      "nif": "B2222717T"
+      "nif": "B2222717T",
+      "dureeContratMois": null,
+      "essaiActions": "",
+      "essaiResponsable": "",
+      "essaiEcheanceEval": "",
+      "essaiStatutEval": "",
+      "essaiCommentaire": ""
     },
     {
       "id": "12c57c66-e14b-4bb7-b710-882ac43a2ad2",
@@ -5137,7 +5965,13 @@
       "createdAt": "2026-07-28T09:40:37.715Z",
       "updatedAt": "2026-07-29T14:11:17.443Z",
       "cnss": "11981346100H",
-      "nif": "B2222596M"
+      "nif": "B2222596M",
+      "dureeContratMois": null,
+      "essaiActions": "",
+      "essaiResponsable": "",
+      "essaiEcheanceEval": "",
+      "essaiStatutEval": "",
+      "essaiCommentaire": ""
     },
     {
       "id": "d582dccc-cab2-45d1-a1ae-1ee352f3d6f3",
@@ -5166,13 +6000,19 @@
       "lineManagerPosition": "Mechanical Foreman",
       "patersonGrade": "",
       "statut": "Active",
-      "typeContrat": "",
-      "periodeEssaiMois": null,
-      "dateFinPeriodeEssai": "",
-      "dateFinContrat": "",
+      "typeContrat": "CDD",
+      "periodeEssaiMois": 5,
+      "dateFinPeriodeEssai": "07/11/2026",
+      "dateFinContrat": "07/06/2027",
       "raisonExit": "NA",
       "createdAt": "2026-07-28T09:40:37.715Z",
-      "updatedAt": "2026-07-28T09:40:37.715Z"
+      "updatedAt": "2026-07-28T09:40:37.715Z",
+      "essaiActions": "The Interim approvisal evaluation to be sent",
+      "essaiResponsable": "Mechanical Foreman",
+      "essaiEcheanceEval": "06/10/2026",
+      "essaiStatutEval": "On time",
+      "essaiCommentaire": "",
+      "dureeContratMois": 12
     },
     {
       "id": "483222a9-34cc-44a5-a907-598d618e3275",
@@ -5209,7 +6049,13 @@
       "createdAt": "2026-07-28T09:40:37.715Z",
       "updatedAt": "2026-07-29T14:11:17.443Z",
       "cnss": "11982569872S",
-      "nif": "B2222601S"
+      "nif": "B2222601S",
+      "dureeContratMois": null,
+      "essaiActions": "",
+      "essaiResponsable": "",
+      "essaiEcheanceEval": "",
+      "essaiStatutEval": "",
+      "essaiCommentaire": ""
     },
     {
       "id": "e7fe3161-a7b4-403f-bbd0-ad340c420d64",
@@ -5238,15 +6084,21 @@
       "lineManagerPosition": "SRSMI",
       "patersonGrade": "",
       "statut": "Active",
-      "typeContrat": "",
-      "periodeEssaiMois": null,
-      "dateFinPeriodeEssai": "",
+      "typeContrat": "CDI",
+      "periodeEssaiMois": 5,
+      "dateFinPeriodeEssai": "16/08/2025",
       "dateFinContrat": "",
       "raisonExit": "NA",
       "createdAt": "2026-07-28T09:40:37.715Z",
       "updatedAt": "2026-07-29T14:11:17.443Z",
       "cnss": "108438506070F",
-      "nif": "D2314083M"
+      "nif": "D2314083M",
+      "essaiActions": "Evaluation Done",
+      "essaiResponsable": "SRSMI",
+      "essaiEcheanceEval": "06/07/2025",
+      "essaiStatutEval": "Done",
+      "essaiCommentaire": "Approved",
+      "dureeContratMois": null
     },
     {
       "id": "975ef541-d1fc-45ec-9619-ec22e9187ef3",
@@ -5283,7 +6135,13 @@
       "createdAt": "2026-07-28T09:40:37.715Z",
       "updatedAt": "2026-07-29T14:11:17.443Z",
       "cnss": "11978485694T",
-      "nif": "B2222580U"
+      "nif": "B2222580U",
+      "dureeContratMois": null,
+      "essaiActions": "",
+      "essaiResponsable": "",
+      "essaiEcheanceEval": "",
+      "essaiStatutEval": "",
+      "essaiCommentaire": ""
     },
     {
       "id": "43606a74-7c73-418e-b704-0f11f0afc32a",
@@ -5320,7 +6178,13 @@
       "createdAt": "2026-07-28T09:40:37.715Z",
       "updatedAt": "2026-07-29T14:11:17.443Z",
       "cnss": "21988406108U",
-      "nif": "B2222661H"
+      "nif": "B2222661H",
+      "dureeContratMois": null,
+      "essaiActions": "",
+      "essaiResponsable": "",
+      "essaiEcheanceEval": "",
+      "essaiStatutEval": "",
+      "essaiCommentaire": ""
     },
     {
       "id": "59660f83-5f40-4ca6-828e-edf5bcd86dfb",
@@ -5349,15 +6213,21 @@
       "lineManagerPosition": "IT Manager",
       "patersonGrade": "",
       "statut": "Active",
-      "typeContrat": "",
-      "periodeEssaiMois": null,
-      "dateFinPeriodeEssai": "",
+      "typeContrat": "CDI",
+      "periodeEssaiMois": 3,
+      "dateFinPeriodeEssai": "20/12/2023",
       "dateFinContrat": "",
       "raisonExit": "NA",
       "createdAt": "2026-07-28T09:40:37.715Z",
       "updatedAt": "2026-07-29T14:11:17.443Z",
       "cnss": "11996573937E",
-      "nif": "C2201770B"
+      "nif": "C2201770B",
+      "essaiActions": "Evaluation Done",
+      "essaiResponsable": "IT Man",
+      "essaiEcheanceEval": "11/12/2023",
+      "essaiStatutEval": "Done",
+      "essaiCommentaire": "Approved",
+      "dureeContratMois": null
     },
     {
       "id": "5981553f-f3e9-48c2-aac6-46a889050184",
@@ -5394,7 +6264,13 @@
       "createdAt": "2026-07-28T09:40:37.715Z",
       "updatedAt": "2026-07-29T14:11:17.443Z",
       "cnss": "21997396579V",
-      "nif": "B2222685J"
+      "nif": "B2222685J",
+      "dureeContratMois": null,
+      "essaiActions": "",
+      "essaiResponsable": "",
+      "essaiEcheanceEval": "",
+      "essaiStatutEval": "",
+      "essaiCommentaire": ""
     },
     {
       "id": "f77a6427-a6e6-4725-aad0-56cce8ee7c29",
@@ -5431,7 +6307,13 @@
       "createdAt": "2026-07-28T09:40:37.715Z",
       "updatedAt": "2026-07-29T14:11:17.443Z",
       "cnss": "11990582354N",
-      "nif": "B2222583Y"
+      "nif": "B2222583Y",
+      "dureeContratMois": null,
+      "essaiActions": "",
+      "essaiResponsable": "",
+      "essaiEcheanceEval": "",
+      "essaiStatutEval": "",
+      "essaiCommentaire": ""
     },
     {
       "id": "479e30f3-b169-44e4-8924-366608c61ef5",
@@ -5468,7 +6350,13 @@
       "createdAt": "2026-07-28T09:40:37.715Z",
       "updatedAt": "2026-07-29T14:11:17.443Z",
       "cnss": "11970346122J",
-      "nif": "B2222722Z"
+      "nif": "B2222722Z",
+      "dureeContratMois": null,
+      "essaiActions": "",
+      "essaiResponsable": "",
+      "essaiEcheanceEval": "",
+      "essaiStatutEval": "",
+      "essaiCommentaire": ""
     },
     {
       "id": "a9036160-178a-41a1-9f68-55816bed3aa2",
@@ -5505,7 +6393,13 @@
       "createdAt": "2026-07-28T09:40:37.715Z",
       "updatedAt": "2026-07-29T14:11:17.443Z",
       "cnss": "11983510718D",
-      "nif": "B2222552P"
+      "nif": "B2222552P",
+      "dureeContratMois": null,
+      "essaiActions": "",
+      "essaiResponsable": "",
+      "essaiEcheanceEval": "",
+      "essaiStatutEval": "",
+      "essaiCommentaire": ""
     },
     {
       "id": "896d0554-fd9f-47c9-b28d-613a1c97703c",
@@ -5542,7 +6436,13 @@
       "createdAt": "2026-07-28T09:40:37.715Z",
       "updatedAt": "2026-07-29T14:11:17.443Z",
       "cnss": "11970342515N",
-      "nif": "B2222627W"
+      "nif": "B2222627W",
+      "dureeContratMois": null,
+      "essaiActions": "",
+      "essaiResponsable": "",
+      "essaiEcheanceEval": "",
+      "essaiStatutEval": "",
+      "essaiCommentaire": ""
     },
     {
       "id": "ab11eeec-f68c-4498-92b3-b9411bfb4038",
@@ -5579,7 +6479,13 @@
       "createdAt": "2026-07-28T09:40:37.715Z",
       "updatedAt": "2026-07-29T14:11:17.443Z",
       "cnss": "11981665415N",
-      "nif": "B2222589E"
+      "nif": "B2222589E",
+      "dureeContratMois": null,
+      "essaiActions": "",
+      "essaiResponsable": "",
+      "essaiEcheanceEval": "",
+      "essaiStatutEval": "",
+      "essaiCommentaire": ""
     },
     {
       "id": "6b723c56-b246-41f2-b388-8aaa3c30a076",
@@ -5616,7 +6522,13 @@
       "createdAt": "2026-07-28T09:40:37.715Z",
       "updatedAt": "2026-07-29T14:11:17.443Z",
       "cnss": "11977485655U",
-      "nif": "B2222645Q"
+      "nif": "B2222645Q",
+      "dureeContratMois": null,
+      "essaiActions": "",
+      "essaiResponsable": "",
+      "essaiEcheanceEval": "",
+      "essaiStatutEval": "",
+      "essaiCommentaire": ""
     },
     {
       "id": "8044a682-7e2e-4d48-bc73-90ea492fd31b",
@@ -5645,15 +6557,21 @@
       "lineManagerPosition": "Site Manager",
       "patersonGrade": "",
       "statut": "Active",
-      "typeContrat": "",
-      "periodeEssaiMois": null,
-      "dateFinPeriodeEssai": "",
-      "dateFinContrat": "",
+      "typeContrat": "CDD",
+      "periodeEssaiMois": 5,
+      "dateFinPeriodeEssai": "30/04/2026",
+      "dateFinContrat": "30/11/2027",
       "raisonExit": "NA",
       "createdAt": "2026-07-28T09:40:37.715Z",
       "updatedAt": "2026-07-29T14:11:17.443Z",
       "cnss": "11989469009G",
-      "nif": "F2554060U"
+      "nif": "F2554060U",
+      "essaiActions": "The Interim approvisal evaluation to be sent",
+      "essaiResponsable": "Site Manager",
+      "essaiEcheanceEval": "30/03/2026",
+      "essaiStatutEval": "Overdue",
+      "essaiCommentaire": "",
+      "dureeContratMois": 24
     },
     {
       "id": "7e49ef87-7563-46f1-9173-4ffddda25a98",
@@ -5690,7 +6608,13 @@
       "createdAt": "2026-07-28T09:40:37.715Z",
       "updatedAt": "2026-07-29T14:11:17.443Z",
       "cnss": "11963485688P",
-      "nif": "B2222566E"
+      "nif": "B2222566E",
+      "dureeContratMois": null,
+      "essaiActions": "",
+      "essaiResponsable": "",
+      "essaiEcheanceEval": "",
+      "essaiStatutEval": "",
+      "essaiCommentaire": ""
     },
     {
       "id": "6e98a414-2635-4977-8090-d50c10457112",
@@ -5719,15 +6643,21 @@
       "lineManagerPosition": "Plant Manager",
       "patersonGrade": "",
       "statut": "Active",
-      "typeContrat": "",
-      "periodeEssaiMois": null,
-      "dateFinPeriodeEssai": "",
+      "typeContrat": "CDI",
+      "periodeEssaiMois": 6,
+      "dateFinPeriodeEssai": "01/11/2024",
       "dateFinContrat": "",
       "raisonExit": "NA",
       "createdAt": "2026-07-28T09:40:37.715Z",
       "updatedAt": "2026-07-29T14:11:17.443Z",
       "cnss": "104088606150R",
-      "nif": "C2220686M"
+      "nif": "C2220686M",
+      "essaiActions": "Evaluation Done",
+      "essaiResponsable": "PM",
+      "essaiEcheanceEval": "01/10/2024",
+      "essaiStatutEval": "Done",
+      "essaiCommentaire": "Approved",
+      "dureeContratMois": null
     },
     {
       "id": "869f7e86-56a6-497f-b6c5-49cb4056803f",
@@ -5739,7 +6669,7 @@
       "localisation": "Zamba",
       "company": "PPC Barnet DRC Manufacturing",
       "centreCout": "KM8920 IM  Systems",
-      "appointmentDate": "05/09/2022",
+      "appointmentDate": "05/09/2023",
       "gender": "Male",
       "dateOfBirth": "06/04/1980",
       "age": 46,
@@ -5756,15 +6686,21 @@
       "lineManagerPosition": "Plant Manager",
       "patersonGrade": "",
       "statut": "Active",
-      "typeContrat": "",
-      "periodeEssaiMois": null,
-      "dateFinPeriodeEssai": "",
+      "typeContrat": "CDI",
+      "periodeEssaiMois": 3,
+      "dateFinPeriodeEssai": "04/12/2023",
       "dateFinContrat": "",
       "raisonExit": "NA",
       "createdAt": "2026-07-28T09:40:37.715Z",
       "updatedAt": "2026-07-29T14:11:17.443Z",
       "cnss": "11980596875H",
-      "nif": "B2222611D"
+      "nif": "B2222611D",
+      "essaiActions": "The Interim approvisal evaluation form sent",
+      "essaiResponsable": "Lead of SHE",
+      "essaiEcheanceEval": "27/11/2023",
+      "essaiStatutEval": "Done",
+      "essaiCommentaire": "Approved",
+      "dureeContratMois": null
     },
     {
       "id": "48394f6b-b0df-4bf2-9062-91b43f79bf77",
@@ -5801,7 +6737,13 @@
       "createdAt": "2026-07-28T09:40:37.715Z",
       "updatedAt": "2026-07-29T14:11:17.443Z",
       "cnss": "111018808180L",
-      "nif": "B2222701B"
+      "nif": "B2222701B",
+      "dureeContratMois": null,
+      "essaiActions": "",
+      "essaiResponsable": "",
+      "essaiEcheanceEval": "",
+      "essaiStatutEval": "",
+      "essaiCommentaire": ""
     },
     {
       "id": "b0775312-327c-47ed-82e9-5f9b88eda5dd",
@@ -5838,7 +6780,13 @@
       "createdAt": "2026-07-28T09:40:37.715Z",
       "updatedAt": "2026-07-29T14:11:17.443Z",
       "cnss": "11973197340J",
-      "nif": "B2222612E"
+      "nif": "B2222612E",
+      "dureeContratMois": null,
+      "essaiActions": "",
+      "essaiResponsable": "",
+      "essaiEcheanceEval": "",
+      "essaiStatutEval": "",
+      "essaiCommentaire": ""
     },
     {
       "id": "d8cf2f75-aa75-492b-80ca-bda629f511d2",
@@ -5875,7 +6823,13 @@
       "createdAt": "2026-07-28T09:40:37.715Z",
       "updatedAt": "2026-07-29T14:11:17.443Z",
       "cnss": "11991346024O",
-      "nif": "B2222560Y"
+      "nif": "B2222560Y",
+      "dureeContratMois": null,
+      "essaiActions": "",
+      "essaiResponsable": "",
+      "essaiEcheanceEval": "",
+      "essaiStatutEval": "",
+      "essaiCommentaire": ""
     },
     {
       "id": "bbe91ef9-a2c0-45a3-877f-f92fd6b8993b",
@@ -5912,7 +6866,13 @@
       "createdAt": "2026-07-28T09:40:37.715Z",
       "updatedAt": "2026-07-29T14:11:17.443Z",
       "cnss": "11978344995L",
-      "nif": "B2222557U"
+      "nif": "B2222557U",
+      "dureeContratMois": null,
+      "essaiActions": "",
+      "essaiResponsable": "",
+      "essaiEcheanceEval": "",
+      "essaiStatutEval": "",
+      "essaiCommentaire": ""
     },
     {
       "id": "b539888a-3bf1-4a40-a6e7-5d24c39c0b27",
@@ -5949,7 +6909,13 @@
       "createdAt": "2026-07-28T09:40:37.715Z",
       "updatedAt": "2026-07-29T14:11:17.443Z",
       "cnss": "11974513329H",
-      "nif": "B2222591G"
+      "nif": "B2222591G",
+      "dureeContratMois": null,
+      "essaiActions": "",
+      "essaiResponsable": "",
+      "essaiEcheanceEval": "",
+      "essaiStatutEval": "",
+      "essaiCommentaire": ""
     },
     {
       "id": "c3245083-a9b8-422e-aa28-9a1f78fb5605",
@@ -5986,7 +6952,13 @@
       "createdAt": "2026-07-28T09:40:37.715Z",
       "updatedAt": "2026-07-29T14:11:17.443Z",
       "cnss": "11982493074R",
-      "nif": "B2222628X"
+      "nif": "B2222628X",
+      "dureeContratMois": null,
+      "essaiActions": "",
+      "essaiResponsable": "",
+      "essaiEcheanceEval": "",
+      "essaiStatutEval": "",
+      "essaiCommentaire": ""
     },
     {
       "id": "ec246004-927c-477c-b132-a82c6bbf622f",
@@ -6023,7 +6995,13 @@
       "createdAt": "2026-07-28T09:40:37.715Z",
       "updatedAt": "2026-07-29T14:11:17.443Z",
       "cnss": "11988485789N",
-      "nif": "B2222678B"
+      "nif": "B2222678B",
+      "dureeContratMois": null,
+      "essaiActions": "",
+      "essaiResponsable": "",
+      "essaiEcheanceEval": "",
+      "essaiStatutEval": "",
+      "essaiCommentaire": ""
     },
     {
       "id": "742d1168-6a7e-4801-a6e3-6696ddd3c9dc",
@@ -6060,7 +7038,13 @@
       "createdAt": "2026-07-28T09:40:37.715Z",
       "updatedAt": "2026-07-29T14:11:17.443Z",
       "cnss": "11989606809N",
-      "nif": "B2236448T"
+      "nif": "B2236448T",
+      "dureeContratMois": null,
+      "essaiActions": "",
+      "essaiResponsable": "",
+      "essaiEcheanceEval": "",
+      "essaiStatutEval": "",
+      "essaiCommentaire": ""
     },
     {
       "id": "60e6c14b-9e4c-4518-863d-3b3524d93e1a",
@@ -6072,7 +7056,7 @@
       "localisation": "Kinshasa",
       "company": "PPC Barnet DRC Manufacturing",
       "centreCout": "KC8710",
-      "appointmentDate": "03/06/2024",
+      "appointmentDate": "03/03/2026",
       "gender": "Female",
       "dateOfBirth": "21/12/1998",
       "age": 27,
@@ -6089,15 +7073,25 @@
       "lineManagerPosition": "Talent & Development Manager",
       "patersonGrade": "",
       "statut": "Active",
-      "typeContrat": "",
-      "periodeEssaiMois": null,
-      "dateFinPeriodeEssai": "",
+      "typeContrat": "CDI",
+      "dureeContratMois": null,
+      "periodeEssaiMois": 5,
+      "dateFinPeriodeEssai": "03/08/2026",
       "dateFinContrat": "",
       "raisonExit": "NA",
-      "createdAt": "2026-07-28T09:40:37.715Z",
-      "updatedAt": "2026-07-29T14:11:17.443Z",
+      "essaiActions": "The Interim approvisal evaluation form sent",
+      "essaiResponsable": "ZAKUANI BAHATI BENNY",
+      "essaiEcheanceEval": "03/10/2026",
+      "essaiStatutEval": "On time",
+      "essaiCommentaire": "",
+      "cddHistoriqueDebut": "",
+      "cddHistoriqueFin": "",
+      "cddHistoriqueDureeMois": null,
+      "datePassageCdi": "",
       "cnss": "21998435052V",
-      "nif": "C2377641W"
+      "nif": "C2377641W",
+      "createdAt": "2026-07-28T09:40:37.715Z",
+      "updatedAt": "2026-07-30T16:44:40.432Z"
     },
     {
       "id": "b05c78c2-aa5c-4458-8ffb-985934488d9c",
@@ -6109,7 +7103,7 @@
       "localisation": "Kinshasa",
       "company": "PPC Barnet DRC Manufacturing",
       "centreCout": "KC8411",
-      "appointmentDate": "03/06/2024",
+      "appointmentDate": "03/03/2026",
       "gender": "Male",
       "dateOfBirth": "12/03/1999",
       "age": 27,
@@ -6126,15 +7120,21 @@
       "lineManagerPosition": "Finance Manager",
       "patersonGrade": "",
       "statut": "Active",
-      "typeContrat": "",
-      "periodeEssaiMois": null,
-      "dateFinPeriodeEssai": "",
+      "typeContrat": "CDI",
+      "periodeEssaiMois": 5,
+      "dateFinPeriodeEssai": "02/08/2026",
       "dateFinContrat": "",
       "raisonExit": "NA",
       "createdAt": "2026-07-28T09:40:37.715Z",
       "updatedAt": "2026-07-29T14:11:17.443Z",
       "cnss": "11999709859O",
-      "nif": "C2377639T"
+      "nif": "C2377639T",
+      "essaiActions": "The Interim approvisal evaluation to be sent",
+      "essaiResponsable": "Tax Manager",
+      "essaiEcheanceEval": "01/07/2026",
+      "essaiStatutEval": "On time",
+      "essaiCommentaire": "",
+      "dureeContratMois": null
     },
     {
       "id": "cfef7190-cfcf-495e-ac22-8571eaea032d",
@@ -6171,7 +7171,13 @@
       "createdAt": "2026-07-28T09:40:37.715Z",
       "updatedAt": "2026-07-29T14:11:17.443Z",
       "cnss": "11986346092G",
-      "nif": "B2222683G"
+      "nif": "B2222683G",
+      "dureeContratMois": null,
+      "essaiActions": "",
+      "essaiResponsable": "",
+      "essaiEcheanceEval": "",
+      "essaiStatutEval": "",
+      "essaiCommentaire": ""
     },
     {
       "id": "673de6d9-d088-4e91-88db-c432502896da",
@@ -6208,7 +7214,13 @@
       "createdAt": "2026-07-28T09:40:37.715Z",
       "updatedAt": "2026-07-29T14:11:17.443Z",
       "cnss": "11991346063H",
-      "nif": "B2222671T"
+      "nif": "B2222671T",
+      "dureeContratMois": null,
+      "essaiActions": "",
+      "essaiResponsable": "",
+      "essaiEcheanceEval": "",
+      "essaiStatutEval": "",
+      "essaiCommentaire": ""
     },
     {
       "id": "706dd34b-4174-4bfc-a25e-7580b9e908da",
@@ -6245,7 +7257,13 @@
       "createdAt": "2026-07-28T09:40:37.715Z",
       "updatedAt": "2026-07-29T14:11:17.443Z",
       "cnss": "11988346051A",
-      "nif": "B2222702C"
+      "nif": "B2222702C",
+      "dureeContratMois": null,
+      "essaiActions": "",
+      "essaiResponsable": "",
+      "essaiEcheanceEval": "",
+      "essaiStatutEval": "",
+      "essaiCommentaire": ""
     },
     {
       "id": "32b01de4-0e04-47bc-b678-8874133c7d20",
@@ -6282,7 +7300,13 @@
       "createdAt": "2026-07-28T09:40:37.715Z",
       "updatedAt": "2026-07-29T14:11:17.443Z",
       "cnss": "11973535561P",
-      "nif": "B2222547J"
+      "nif": "B2222547J",
+      "dureeContratMois": null,
+      "essaiActions": "",
+      "essaiResponsable": "",
+      "essaiEcheanceEval": "",
+      "essaiStatutEval": "",
+      "essaiCommentaire": ""
     },
     {
       "id": "054282da-5a0e-4890-9a01-aa098d1ef256",
@@ -6319,7 +7343,13 @@
       "createdAt": "2026-07-28T09:40:37.715Z",
       "updatedAt": "2026-07-29T14:11:17.443Z",
       "cnss": "11983590004I",
-      "nif": "B2222608A"
+      "nif": "B2222608A",
+      "dureeContratMois": null,
+      "essaiActions": "",
+      "essaiResponsable": "",
+      "essaiEcheanceEval": "",
+      "essaiStatutEval": "",
+      "essaiCommentaire": ""
     },
     {
       "id": "8cdbc1db-4726-41a0-ad47-ad0f696d63a0",
@@ -6348,15 +7378,21 @@
       "lineManagerPosition": "Site Manager",
       "patersonGrade": "",
       "statut": "Active",
-      "typeContrat": "",
-      "periodeEssaiMois": null,
-      "dateFinPeriodeEssai": "",
-      "dateFinContrat": "",
+      "typeContrat": "CDD",
+      "periodeEssaiMois": 5,
+      "dateFinPeriodeEssai": "30/04/2026",
+      "dateFinContrat": "30/11/2027",
       "raisonExit": "NA",
       "createdAt": "2026-07-28T09:40:37.715Z",
       "updatedAt": "2026-07-29T14:11:17.443Z",
       "cnss": "11985415358N",
-      "nif": "F2593682M"
+      "nif": "F2593682M",
+      "essaiActions": "The Interim approvisal evaluation to be sent",
+      "essaiResponsable": "Site Manager",
+      "essaiEcheanceEval": "30/03/2026",
+      "essaiStatutEval": "Overdue",
+      "essaiCommentaire": "",
+      "dureeContratMois": 24
     },
     {
       "id": "3dc3dbe5-01c9-4e0f-9fb9-254091e173c8",
@@ -6393,7 +7429,13 @@
       "createdAt": "2026-07-28T09:40:37.715Z",
       "updatedAt": "2026-07-29T14:11:17.443Z",
       "cnss": "11982195029G",
-      "nif": "B2222556T"
+      "nif": "B2222556T",
+      "dureeContratMois": null,
+      "essaiActions": "",
+      "essaiResponsable": "",
+      "essaiEcheanceEval": "",
+      "essaiStatutEval": "",
+      "essaiCommentaire": ""
     },
     {
       "id": "55ebefec-6d60-415f-8456-dbe214d95385",
@@ -6430,7 +7472,13 @@
       "createdAt": "2026-07-28T09:40:37.715Z",
       "updatedAt": "2026-07-29T14:11:17.443Z",
       "cnss": "21984080411C",
-      "nif": "B2222707H"
+      "nif": "B2222707H",
+      "dureeContratMois": null,
+      "essaiActions": "",
+      "essaiResponsable": "",
+      "essaiEcheanceEval": "",
+      "essaiStatutEval": "",
+      "essaiCommentaire": ""
     },
     {
       "id": "52b243c3-253d-41a9-ab0e-f3025d4a6495",
@@ -6467,7 +7515,13 @@
       "createdAt": "2026-07-28T09:40:37.715Z",
       "updatedAt": "2026-07-29T14:11:17.443Z",
       "cnss": "11969215996L",
-      "nif": "B2222618L"
+      "nif": "B2222618L",
+      "dureeContratMois": null,
+      "essaiActions": "",
+      "essaiResponsable": "",
+      "essaiEcheanceEval": "",
+      "essaiStatutEval": "",
+      "essaiCommentaire": ""
     }
   ]
 }
