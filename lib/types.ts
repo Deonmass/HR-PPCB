@@ -29,6 +29,8 @@ export interface EmployeeHrProfile {
   statut: string;
   /** CDD / CDI / Consultant / Stagiaire */
   typeContrat: string;
+  /** Durée du contrat en mois (suivi CDD). */
+  dureeContratMois: number | null;
   /** Nombre de mois de période d'essai. */
   periodeEssaiMois: number | null;
   /** Calculé automatiquement (embauche + période d'essai). */
@@ -36,6 +38,22 @@ export interface EmployeeHrProfile {
   dateFinContrat: string;
   /** Demission / Licenciement / Retraite / Fin de contrat */
   raisonExit: string;
+  /** Actions d'évaluation période d'essai. */
+  essaiActions: string;
+  /** Responsable de l'évaluation (Account.). */
+  essaiResponsable: string;
+  /** Échéance d'évaluation (Deadlines) — défaut = 1 mois avant fin d'essai. */
+  essaiEcheanceEval: string;
+  /** Statut d'évaluation : Done / Overdue / On time / Ongoing. */
+  essaiStatutEval: string;
+  /** Commentaire d'évaluation (Approved, Not Approved, …). */
+  essaiCommentaire: string;
+  /** Historique CDD avant passage en CDI. */
+  cddHistoriqueDebut: string;
+  cddHistoriqueFin: string;
+  cddHistoriqueDureeMois: number | null;
+  /** Date du passage CDD → CDI. */
+  datePassageCdi: string;
   /** Numéro CNSS */
   cnss: string;
   /** Numéro NIF */
@@ -74,10 +92,20 @@ export function emptyEmployeeHrProfile(): EmployeeHrProfile {
     patersonGrade: '',
     statut: 'Active',
     typeContrat: '',
+    dureeContratMois: null,
     periodeEssaiMois: null,
     dateFinPeriodeEssai: '',
     dateFinContrat: '',
     raisonExit: 'NA',
+    essaiActions: '',
+    essaiResponsable: '',
+    essaiEcheanceEval: '',
+    essaiStatutEval: '',
+    essaiCommentaire: '',
+    cddHistoriqueDebut: '',
+    cddHistoriqueFin: '',
+    cddHistoriqueDureeMois: null,
+    datePassageCdi: '',
     cnss: '',
     nif: '',
   };

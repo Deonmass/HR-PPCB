@@ -40,6 +40,54 @@ function ExportIcon() {
   );
 }
 
+function isStudioTaille(label: string): boolean {
+  return /studio/i.test(String(label || '').trim());
+}
+
+function parseMaisonNumeroParts(numero: string): { n: number; suffix: string } {
+  const m = String(numero ?? '')
+    .trim()
+    .match(/^(\d+)\s*([A-Za-z]*)$/);
+  if (!m) {
+    return { n: Number.POSITIVE_INFINITY, suffix: String(numero ?? '').trim().toLowerCase() };
+  }
+  return { n: Number(m[1]), suffix: (m[2] || '').toLowerCase() };
+}
+
+/** Ordre d'affichage Studio : B au-dessus de A. */
+function studioSuffixRank(suffix: string): number {
+  if (suffix === 'b') return 0;
+  if (suffix === 'a') return 1;
+  if (!suffix) return 2;
+  return 10 + suffix.charCodeAt(0);
+}
+
+/** Colonnes Studio : un numéro = une colonne (B puis A). */
+function groupStudioColumns(list: VillageMaisonOccupancy[]): Array<{
+  base: number;
+  houses: VillageMaisonOccupancy[];
+}> {
+  const map = new Map<number, VillageMaisonOccupancy[]>();
+  for (const maison of list) {
+    const { n } = parseMaisonNumeroParts(maison.numero);
+    const bucket = map.get(n) ?? [];
+    bucket.push(maison);
+    map.set(n, bucket);
+  }
+  return [...map.entries()]
+    .sort((a, b) => a[0] - b[0])
+    .map(([base, houses]) => ({
+      base,
+      houses: [...houses].sort((a, b) => {
+        const sa = parseMaisonNumeroParts(a.numero).suffix;
+        const sb = parseMaisonNumeroParts(b.numero).suffix;
+        const rank = studioSuffixRank(sa) - studioSuffixRank(sb);
+        if (rank !== 0) return rank;
+        return compareMaisonNumero(a.numero, b.numero);
+      }),
+    }));
+}
+
 interface HistoRow {
   date: string;
   action: string;
@@ -1356,40 +1404,25 @@ function VillageMaisonsPageInner() {
                         {list.filter((x) => !x.occupied).length > 1 ? 's' : ''}
                       </span>
                     </header>
-                    <div className="village-house-grid">
-                      {list.map((m) => {
-                        const occupant = m.occupants[0];
-                        return (
-                          <div
-                            key={m.numero}
-                            className={`village-house-card${m.occupied ? ' is-occupied' : ' is-empty'}`}
-                            title={
-                              m.occupied
-                                ? `${m.numero} — ${formatDisplayName(occupant?.nom ?? '')}`
-                                : `${m.numero} — Vide`
-                            }
-                            onDoubleClick={() => {
-                              if (canEdit) openEditMaison(m);
-                            }}
-                            onContextMenu={(e) => {
-                              e.preventDefault();
-                              setContextMenu({
-                                x: e.clientX,
-                                y: e.clientY,
-                                kind: 'maison',
-                                maison: m,
-                              });
-                            }}
-                          >
-                            <div className="village-house-card-top">
-                              <HouseIcon />
-                              <strong className="village-house-numero">{m.numero}</strong>
-                              <button
-                                type="button"
-                                className="village-house-more"
-                                title="Actions"
-                                onClick={(e) => {
-                                  e.stopPropagation();
+                    <div className={`village-house-grid${isStudioTaille(tailleLabel) ? ' is-studio' : ''}`}>
+                      {(isStudioTaille(tailleLabel) ? groupStudioColumns(list) : [{ base: 0, houses: list }]).map(
+                        (column) => {
+                          const cards = column.houses.map((m) => {
+                            const occupant = m.occupants[0];
+                            return (
+                              <div
+                                key={m.numero}
+                                className={`village-house-card${m.occupied ? ' is-occupied' : ' is-empty'}`}
+                                title={
+                                  m.occupied
+                                    ? `${m.numero} — ${formatDisplayName(occupant?.nom ?? '')}`
+                                    : `${m.numero} — Vide`
+                                }
+                                onDoubleClick={() => {
+                                  if (canEdit) openEditMaison(m);
+                                }}
+                                onContextMenu={(e) => {
+                                  e.preventDefault();
                                   setContextMenu({
                                     x: e.clientX,
                                     y: e.clientY,
@@ -1398,25 +1431,52 @@ function VillageMaisonsPageInner() {
                                   });
                                 }}
                               >
-                                <MoreIcon />
-                              </button>
+                                <div className="village-house-card-top">
+                                  <HouseIcon />
+                                  <strong className="village-house-numero">{m.numero}</strong>
+                                  <button
+                                    type="button"
+                                    className="village-house-more"
+                                    title="Actions"
+                                    onClick={(e) => {
+                                      e.stopPropagation();
+                                      setContextMenu({
+                                        x: e.clientX,
+                                        y: e.clientY,
+                                        kind: 'maison',
+                                        maison: m,
+                                      });
+                                    }}
+                                  >
+                                    <MoreIcon />
+                                  </button>
+                                </div>
+                                <div className="village-house-status">
+                                  {m.occupied ? 'Occupée' : 'Vide'}
+                                </div>
+                                <div
+                                  className={`village-house-occupant${
+                                    occupant?.externe ? ' is-externe' : ''
+                                  }`}
+                                >
+                                  {occupant ? formatDisplayName(occupant.nom) : '—'}
+                                </div>
+                                {m.typeMaison && m.typeMaison !== tailleLabel ? (
+                                  <div className="village-house-type">{m.typeMaison}</div>
+                                ) : null}
+                              </div>
+                            );
+                          });
+
+                          if (!isStudioTaille(tailleLabel)) return cards;
+
+                          return (
+                            <div key={`studio-${column.base}`} className="village-house-studio-col">
+                              {cards}
                             </div>
-                            <div className="village-house-status">
-                              {m.occupied ? 'Occupée' : 'Vide'}
-                            </div>
-                            <div
-                              className={`village-house-occupant${
-                                occupant?.externe ? ' is-externe' : ''
-                              }`}
-                            >
-                              {occupant ? formatDisplayName(occupant.nom) : '—'}
-                            </div>
-                            {m.typeMaison && m.typeMaison !== tailleLabel ? (
-                              <div className="village-house-type">{m.typeMaison}</div>
-                            ) : null}
-                          </div>
-                        );
-                      })}
+                          );
+                        },
+                      )}
                     </div>
                   </section>
                 ))

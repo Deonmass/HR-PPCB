@@ -3,6 +3,12 @@ import {
   displayDateSortKey,
   RAISON_EXITS,
 } from '@/lib/employee-columns';
+import {
+  isCddEmployee,
+  isInActiveTrialPeriod,
+  isTrialEvalAlert,
+  resolveEssaiStatutEval,
+} from '@/lib/employees-trial';
 import type { Employee } from '@/lib/types';
 
 export interface HrDashCountRow {
@@ -38,6 +44,11 @@ export interface EmployeesHrDashboardStats {
   ageMoyen: number | null;
   moyEnfants: number | null;
   maries: number;
+  totalCdd: number;
+  totalEssai: number;
+  alertesEssai: number;
+  essaiParStatut: HrDashCountRow[];
+  cddParDepartement: HrDashCountRow[];
   parLocalisation: HrDashCountRow[];
   parCompany: HrDashCountRow[];
   parGenre: HrDashCountRow[];
@@ -245,6 +256,10 @@ export function buildEmployeesHrDashboard(
     ).length,
   }));
 
+  const cddList = list.filter((e) => isCddEmployee(e));
+  const essaiList = list.filter((e) => isInActiveTrialPeriod(e));
+  const alertesList = list.filter((e) => isTrialEvalAlert(e));
+
   return {
     total: list.length,
     hommes,
@@ -252,6 +267,13 @@ export function buildEmployeesHrDashboard(
     ageMoyen: ageN ? Math.round((ageSum / ageN) * 10) / 10 : null,
     moyEnfants: enfantsN ? Math.round((enfantsSum / enfantsN) * 100) / 100 : null,
     maries,
+    totalCdd: cddList.length,
+    totalEssai: essaiList.length,
+    alertesEssai: alertesList.length,
+    essaiParStatut: countBy(essaiList, (e) => resolveEssaiStatutEval(e), {
+      emptyLabel: 'Ongoing',
+    }),
+    cddParDepartement: countBy(cddList, (e) => e.departement || '', { emptyLabel: '—' }),
     parLocalisation: countBy(list, (e) => e.localisation || '', { emptyLabel: 'Non renseigné' }),
     parCompany: countBy(list, (e) => e.company || '', { emptyLabel: '—' }),
     parGenre: [
@@ -272,7 +294,14 @@ export function buildEmployeesHrDashboard(
   };
 }
 
-export type EmployeesHrKpiKey = 'total' | 'hommes' | 'femmes' | 'totalExits';
+export type EmployeesHrKpiKey =
+  | 'total'
+  | 'hommes'
+  | 'femmes'
+  | 'totalExits'
+  | 'totalCdd'
+  | 'totalEssai'
+  | 'alertesEssai';
 
 /** Liste derrière un KPI du dashboard RH (moyennes exclues). */
 export function employeesForHrKpi(
@@ -291,6 +320,12 @@ export function employeesForHrKpi(
       return list.filter((e) => isFemale(e.gender));
     case 'totalExits':
       return exitList;
+    case 'totalCdd':
+      return list.filter((e) => isCddEmployee(e));
+    case 'totalEssai':
+      return list.filter((e) => isInActiveTrialPeriod(e));
+    case 'alertesEssai':
+      return list.filter((e) => isTrialEvalAlert(e));
     default:
       return [];
   }
@@ -310,6 +345,91 @@ export function employeeToDashboardListRow(employee: Employee) {
       embauche: employee.appointmentDate || '—',
       nationalite: employee.nationality || '—',
       raison: employee.raisonExit || '—',
+      typeContrat: employee.typeContrat || '—',
+      finEssai: employee.dateFinPeriodeEssai || '—',
+      statutEval: resolveEssaiStatutEval(employee),
+      finContrat: employee.dateFinContrat || '—',
     },
   };
 }
+
+export type HrChartSegmentKind =
+  | 'company'
+  | 'localisation'
+  | 'maritalStatus'
+  | 'genre'
+  | 'grade'
+  | 'ageBand'
+  | 'departement'
+  | 'nationalite'
+  | 'essaiStatut'
+  | 'cddDepartement'
+  | 'exitRaison'
+  | 'exitMonth';
+
+/** Employés correspondant à un segment de graphique (barre / part). */
+export function employeesMatchingHrSegment(
+  employees: Employee[],
+  kind: HrChartSegmentKind,
+  label: string,
+): Employee[] {
+  const list = Array.isArray(employees) ? employees : [];
+  const target = label.trim();
+  if (!target) return list;
+
+  switch (kind) {
+    case 'company':
+      return list.filter((e) => (e.company?.trim() || '—') === target);
+    case 'localisation':
+      return list.filter((e) => (e.localisation?.trim() || 'Non renseigné') === target);
+    case 'maritalStatus':
+      return list.filter((e) => {
+        const status = normalizeMaritalStatus(e.maritalStatus || '') || 'Non renseigné';
+        return status === target;
+      });
+    case 'genre':
+      if (target === 'Hommes') return list.filter((e) => isMale(e.gender));
+      if (target === 'Femmes') return list.filter((e) => isFemale(e.gender));
+      return list;
+    case 'grade':
+      return list.filter((e) => (e.grade?.trim() || '—') === target);
+    case 'ageBand': {
+      const band = AGE_BANDS.find((b) => b.label === target);
+      if (!band) return [];
+      return list.filter((e) => {
+        const age = resolveAge(e);
+        return age != null && band.match(age);
+      });
+    }
+    case 'departement':
+      return list.filter((e) => (e.departement?.trim() || '—') === target);
+    case 'nationalite':
+      return list.filter((e) => {
+        const nat = normalizeLabelCase(e.nationality || '') || '—';
+        return nat === target;
+      });
+    case 'essaiStatut':
+      return list.filter((e) => {
+        if (!isInActiveTrialPeriod(e)) return false;
+        return resolveEssaiStatutEval(e) === target;
+      });
+    case 'cddDepartement':
+      return list.filter(
+        (e) => isCddEmployee(e) && (e.departement?.trim() || '—') === target,
+      );
+    case 'exitRaison':
+      return list.filter(
+        (e) => normalizeRaisonKey(e.raisonExit) === normalizeRaisonKey(target),
+      );
+    case 'exitMonth': {
+      return list.filter((e) => {
+        const key = parseExitMonthKey(e.dateFinContrat) ?? 'inconnu';
+        const rowLabel = key === 'inconnu' ? 'Non renseigné' : monthLabel(key);
+        return rowLabel === target || key === target;
+      });
+    }
+    default:
+      return [];
+  }
+}
+

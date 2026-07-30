@@ -1,5 +1,19 @@
 export async function downloadEmployeesHrExport(): Promise<void> {
-  const response = await fetch('/api/employees/export');
+  const controller = new AbortController();
+  const timeoutId = window.setTimeout(() => controller.abort(), 25_000);
+
+  let response: Response;
+  try {
+    response = await fetch('/api/employees/export', { signal: controller.signal });
+  } catch (err) {
+    if (err instanceof DOMException && err.name === 'AbortError') {
+      throw new Error('Export trop long (timeout). Réessayez.');
+    }
+    throw err;
+  } finally {
+    window.clearTimeout(timeoutId);
+  }
+
   if (!response.ok) {
     let message = 'Export impossible';
     try {

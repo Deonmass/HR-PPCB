@@ -29,6 +29,7 @@ import {
   normalizeEmployeeStatut,
   todayDisplayDate,
 } from './employee-columns';
+import { resolveEssaiEcheanceEval, applyCddVersCdiHistory, computeFinContratFromDuree, resolveEssaiStatutEval } from './employees-trial';
 import { canPersistProjectFiles, getWritableDataRoot } from './runtime-mode';
 import type { Employee, EmployeeDocuments } from './types';
 
@@ -106,10 +107,20 @@ function toEmployeeRecord(employee: Employee, now: string, id: string = randomUU
     patersonGrade: employee.patersonGrade || '',
     statut: normalizeEmployeeStatut(employee.statut),
     typeContrat: employee.typeContrat || '',
+    dureeContratMois: employee.dureeContratMois ?? null,
     periodeEssaiMois: employee.periodeEssaiMois ?? null,
     dateFinPeriodeEssai: employee.dateFinPeriodeEssai || '',
     dateFinContrat: employee.dateFinContrat || '',
     raisonExit: employee.raisonExit || 'NA',
+    essaiActions: employee.essaiActions || '',
+    essaiResponsable: employee.essaiResponsable || '',
+    essaiEcheanceEval: employee.essaiEcheanceEval || '',
+    essaiStatutEval: employee.essaiStatutEval || '',
+    essaiCommentaire: employee.essaiCommentaire || '',
+    cddHistoriqueDebut: employee.cddHistoriqueDebut || '',
+    cddHistoriqueFin: employee.cddHistoriqueFin || '',
+    cddHistoriqueDureeMois: employee.cddHistoriqueDureeMois ?? null,
+    datePassageCdi: employee.datePassageCdi || '',
     cnss: employee.cnss || '',
     nif: employee.nif || '',
     createdAt: now,
@@ -121,7 +132,15 @@ function applyContractDefaults(employee: Employee): Employee {
   let statut = normalizeEmployeeStatut(employee.statut);
   const periodeEssaiMois = employee.periodeEssaiMois ?? null;
   const dateFinPeriodeEssai = computeFinPeriodeEssai(employee.appointmentDate || '', periodeEssaiMois);
-  let dateFinContrat = employee.dateFinContrat || '';
+  const dureeContratMois = employee.dureeContratMois ?? null;
+  const finContratFromDuree = computeFinContratFromDuree(
+    employee.appointmentDate || '',
+    dureeContratMois,
+  );
+  let dateFinContrat =
+    (dureeContratMois != null && dureeContratMois > 0 && finContratFromDuree)
+      ? finContratFromDuree
+      : (employee.dateFinContrat || finContratFromDuree || '');
   let raisonExit = employee.raisonExit || '';
 
   if (isRealExitRaison(raisonExit)) {
@@ -135,13 +154,27 @@ function applyContractDefaults(employee: Employee): Employee {
     dateFinContrat = todayDisplayDate();
   }
 
-  return {
+  const withDates: Employee = {
     ...employee,
     statut,
+    dureeContratMois,
     periodeEssaiMois,
     dateFinPeriodeEssai,
     dateFinContrat,
     raisonExit,
+    essaiActions: employee.essaiActions || '',
+    essaiResponsable: employee.essaiResponsable || '',
+    essaiCommentaire: employee.essaiCommentaire || '',
+    cddHistoriqueDebut: employee.cddHistoriqueDebut || '',
+    cddHistoriqueFin: employee.cddHistoriqueFin || '',
+    cddHistoriqueDureeMois: employee.cddHistoriqueDureeMois ?? null,
+    datePassageCdi: employee.datePassageCdi || '',
+  };
+
+  return {
+    ...withDates,
+    essaiEcheanceEval: resolveEssaiEcheanceEval(withDates),
+    essaiStatutEval: resolveEssaiStatutEval(withDates),
   };
 }
 
@@ -308,10 +341,20 @@ function composeEmployee(
     patersonGrade: record.patersonGrade,
     statut: record.statut,
     typeContrat: record.typeContrat,
+    dureeContratMois: record.dureeContratMois ?? null,
     periodeEssaiMois: record.periodeEssaiMois,
     dateFinPeriodeEssai: record.dateFinPeriodeEssai,
     dateFinContrat: record.dateFinContrat,
     raisonExit: record.raisonExit,
+    essaiActions: record.essaiActions || '',
+    essaiResponsable: record.essaiResponsable || '',
+    essaiEcheanceEval: record.essaiEcheanceEval || '',
+    essaiStatutEval: record.essaiStatutEval || '',
+    essaiCommentaire: record.essaiCommentaire || '',
+    cddHistoriqueDebut: record.cddHistoriqueDebut || '',
+    cddHistoriqueFin: record.cddHistoriqueFin || '',
+    cddHistoriqueDureeMois: record.cddHistoriqueDureeMois ?? null,
+    datePassageCdi: record.datePassageCdi || '',
     cnss: record.cnss || '',
     nif: record.nif || '',
   };
@@ -370,11 +413,11 @@ export async function upsertEmployee(employee: Employee): Promise<Employee> {
     readExitsStore(),
     readCheckDocumentsStore(),
   ]);
-  const normalized = applyContractDefaults(employee);
-  const now = new Date().toISOString();
-  const activeIndex = employeesStore.employees.findIndex((item) => item.matricule === normalized.matricule);
-  const exitIndex = exitsStore.exits.findIndex((item) => item.matricule === normalized.matricule);
+  const activeIndex = employeesStore.employees.findIndex((item) => item.matricule === employee.matricule);
+  const exitIndex = exitsStore.exits.findIndex((item) => item.matricule === employee.matricule);
   const existing = activeIndex >= 0 ? employeesStore.employees[activeIndex] : exitIndex >= 0 ? exitsStore.exits[exitIndex] : null;
+  const normalized = applyCddVersCdiHistory(existing, applyContractDefaults(employee));
+  const now = new Date().toISOString();
   const nextRecord = {
     ...toEmployeeRecord(normalized, now, existing?.id ?? randomUUID()),
     createdAt: existing?.createdAt ?? now,

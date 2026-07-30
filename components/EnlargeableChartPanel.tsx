@@ -2,16 +2,39 @@
 
 import { useMemo, useState, type ReactNode } from 'react';
 import ChartChipFilter from '@/components/ChartChipFilter';
-import ChartGenderLegend from '@/components/ChartGenderLegend';
+import ChartGenderLegend, {
+  countByGender,
+  genderBucket,
+  type GenderFilterValue,
+} from '@/components/ChartGenderLegend';
 import ChartEnlargeModal, { ChartEnlargeButton } from '@/components/ChartEnlargeModal';
+import DashboardListModal, {
+  type DashboardListColumn,
+  type DashboardListRow,
+} from '@/components/DashboardListModal';
 import type { Employee } from '@/lib/types';
+
+export interface ChartFilterRenderContext {
+  onSegmentClick?: (label: string) => void;
+}
 
 export interface ChartDeptFilterSource {
   employees: Employee[];
   /** Reconstruit le contenu du graphique pour le sous-ensemble filtré. */
-  renderFiltered: (employees: Employee[]) => ReactNode;
-  /** Affiche la légende Hommes / Femmes dans le modal agrandi. */
+  renderFiltered: (employees: Employee[], ctx: ChartFilterRenderContext) => ReactNode;
+  /**
+   * Affiche le filtre Sexe (défaut : true).
+   * Passer false pour le masquer.
+   */
   showGenderLegend?: boolean;
+  /** Résout la liste derrière un segment cliqué (barre / part). */
+  resolveSegment?: (employees: Employee[], label: string) => Employee[];
+  /** Colonnes du modal de détail (défaut : colonnes actives standard). */
+  segmentColumns?: DashboardListColumn[];
+  /** Titre du modal de détail. */
+  segmentTitle?: (label: string) => string;
+  /** Mappe un employé vers une ligne de liste. */
+  toListRow?: (employee: Employee) => DashboardListRow;
 }
 
 interface Props {
@@ -23,10 +46,39 @@ interface Props {
   clickToEnlarge?: boolean;
   children: ReactNode;
   /**
-   * Si fourni, le modal agrandi affiche Company + Départements
+   * Si fourni, le modal agrandi affiche Sexe + Company + Départements
    * et reconstruit le graphique selon les filtres.
    */
   deptFilter?: ChartDeptFilterSource;
+}
+
+const DEFAULT_SEGMENT_COLUMNS: DashboardListColumn[] = [
+  { key: 'matricule', label: 'Matricule' },
+  { key: 'nom', label: 'Nom' },
+  { key: 'localisation', label: 'Localisation' },
+  { key: 'departement', label: 'Département' },
+  { key: 'grade', label: 'Grade' },
+  { key: 'genre', label: 'Genre' },
+  { key: 'company', label: 'Company' },
+  { key: 'embauche', label: 'Date d\'embauche' },
+];
+
+function defaultToListRow(employee: Employee): DashboardListRow {
+  return {
+    id: employee.matricule || employee.nom,
+    cells: {
+      matricule: employee.matricule || '—',
+      nom: employee.nom || '—',
+      localisation: employee.localisation || '—',
+      departement: employee.departement || '—',
+      grade: employee.grade || '—',
+      genre: employee.gender || '—',
+      company: employee.company || '—',
+      embauche: employee.appointmentDate || '—',
+      nationalite: employee.nationality || '—',
+      raison: employee.raisonExit || '—',
+    },
+  };
 }
 
 function countByField(
@@ -51,9 +103,31 @@ function departmentLabel(employee: Employee): string {
   return employee.departement?.trim() || '—';
 }
 
+function matchesGender(employee: Employee, selected: GenderFilterValue): boolean {
+  if (!selected) return true;
+  return genderBucket(employee.gender) === selected;
+}
+
+function buildFilterSubtitle(opts: {
+  gender: GenderFilterValue;
+  company: string;
+  dept: string;
+  count: number;
+  noun?: string;
+}): string {
+  const parts: string[] = [];
+  if (opts.gender) parts.push(opts.gender);
+  if (opts.company) parts.push(opts.company);
+  if (opts.dept) parts.push(opts.dept);
+  const noun = opts.noun ?? 'employé';
+  const countLabel = `${opts.count} ${noun}${opts.count !== 1 ? 's' : ''}`;
+  if (!parts.length) return `Tous · ${countLabel}`;
+  return `${parts.join(' · ')} — ${countLabel}`;
+}
+
 /**
  * Enveloppe un graphique dashboard : bouton + modal plein écran au clic.
- * Le même contenu est réaffiché en grand dans le modal (filtres Company / Département).
+ * Le même contenu est réaffiché en grand dans le modal (filtres Sexe / Company / Département).
  */
 export default function EnlargeableChartPanel({
   title,
@@ -65,49 +139,114 @@ export default function EnlargeableChartPanel({
 }: Props) {
   const [enlarged, setEnlarged] = useState(false);
   const [selectedCompany, setSelectedCompany] = useState('');
+  const [selectedGender, setSelectedGender] = useState<GenderFilterValue>('');
   const [selectedDept, setSelectedDept] = useState('');
+  const [segmentDrilldown, setSegmentDrilldown] = useState<{
+    title: string;
+    columns: DashboardListColumn[];
+    rows: DashboardListRow[];
+  } | null>(null);
+  const showGender = deptFilter?.showGenderLegend !== false;
+  const isExitSource = Boolean(deptFilter?.segmentColumns?.some((c) => c.key === 'raison'));
+
   const open = () => {
     setSelectedCompany('');
+    setSelectedGender('');
     setSelectedDept('');
+    setSegmentDrilldown(null);
     setEnlarged(true);
   };
   const close = () => {
     setEnlarged(false);
     setSelectedCompany('');
+    setSelectedGender('');
     setSelectedDept('');
+    setSegmentDrilldown(null);
   };
 
-  const companies = useMemo(
-    () => (deptFilter ? countByField(deptFilter.employees, companyLabel) : []),
-    [deptFilter],
-  );
+  const companies = useMemo(() => {
+    if (!deptFilter) return [];
+    const base = selectedGender
+      ? deptFilter.employees.filter((employee) => matchesGender(employee, selectedGender))
+      : deptFilter.employees;
+    return countByField(base, companyLabel);
+  }, [deptFilter, selectedGender]);
+
+  const genderPool = useMemo(() => {
+    if (!deptFilter) return [];
+    return selectedCompany
+      ? deptFilter.employees.filter((employee) => companyLabel(employee) === selectedCompany)
+      : deptFilter.employees;
+  }, [deptFilter, selectedCompany]);
+
+  const genderCounts = useMemo(() => countByGender(genderPool), [genderPool]);
 
   const departments = useMemo(() => {
     if (!deptFilter) return [];
-    const base = selectedCompany
-      ? deptFilter.employees.filter((employee) => companyLabel(employee) === selectedCompany)
-      : deptFilter.employees;
+    const base = deptFilter.employees.filter((employee) => {
+      if (selectedCompany && companyLabel(employee) !== selectedCompany) return false;
+      if (!matchesGender(employee, selectedGender)) return false;
+      return true;
+    });
     return countByField(base, departmentLabel);
-  }, [deptFilter, selectedCompany]);
+  }, [deptFilter, selectedCompany, selectedGender]);
 
   const filteredEmployees = useMemo(() => {
     if (!deptFilter) return [];
     return deptFilter.employees.filter((employee) => {
       if (selectedCompany && companyLabel(employee) !== selectedCompany) return false;
+      if (!matchesGender(employee, selectedGender)) return false;
       if (selectedDept && departmentLabel(employee) !== selectedDept) return false;
       return true;
     });
-  }, [deptFilter, selectedCompany, selectedDept]);
+  }, [deptFilter, selectedCompany, selectedGender, selectedDept]);
+
+  const filterSubtitle = useMemo(
+    () => buildFilterSubtitle({
+      gender: selectedGender,
+      company: selectedCompany,
+      dept: selectedDept,
+      count: filteredEmployees.length,
+      noun: isExitSource ? 'sortie' : 'employé',
+    }),
+    [selectedGender, selectedCompany, selectedDept, filteredEmployees.length, isExitSource],
+  );
+
+  const openSegment = (label: string) => {
+    if (!deptFilter?.resolveSegment) return;
+    const list = deptFilter.resolveSegment(filteredEmployees, label);
+    const toRow = deptFilter.toListRow ?? defaultToListRow;
+    const columns = deptFilter.segmentColumns ?? DEFAULT_SEGMENT_COLUMNS;
+    const segmentTitle = deptFilter.segmentTitle?.(label) ?? `${title} — ${label}`;
+    setSegmentDrilldown({
+      title: segmentTitle,
+      columns,
+      rows: list.map(toRow),
+    });
+  };
+
+  const renderCtx: ChartFilterRenderContext = {
+    onSegmentClick: deptFilter?.resolveSegment ? openSegment : undefined,
+  };
 
   const enlargedBody = deptFilter
-    ? deptFilter.renderFiltered(filteredEmployees)
+    ? deptFilter.renderFiltered(filteredEmployees, renderCtx)
     : children;
+
+  const companyTotalCount = useMemo(() => {
+    if (!deptFilter) return 0;
+    if (!selectedGender) return deptFilter.employees.length;
+    return deptFilter.employees.filter((employee) => matchesGender(employee, selectedGender)).length;
+  }, [deptFilter, selectedGender]);
 
   const filterPoolCount = useMemo(() => {
     if (!deptFilter) return 0;
-    if (!selectedCompany) return deptFilter.employees.length;
-    return deptFilter.employees.filter((employee) => companyLabel(employee) === selectedCompany).length;
-  }, [deptFilter, selectedCompany]);
+    return deptFilter.employees.filter((employee) => {
+      if (selectedCompany && companyLabel(employee) !== selectedCompany) return false;
+      if (!matchesGender(employee, selectedGender)) return false;
+      return true;
+    }).length;
+  }, [deptFilter, selectedCompany, selectedGender]);
 
   return (
     <>
@@ -135,15 +274,22 @@ export default function EnlargeableChartPanel({
       </div>
 
       {enlarged ? (
-        <ChartEnlargeModal title={title} onClose={close}>
+        <ChartEnlargeModal title={title} subtitle={filterSubtitle} onClose={close}>
           {deptFilter ? (
             <div className="chart-enlarge-with-sidebar">
-              <div className={`panel ${className} is-enlarged chart-enlarge-main`.trim()}>
-                {enlargedBody}
-              </div>
-              <div className="chart-enlarge-filters">
-                {deptFilter.showGenderLegend ? (
-                  <ChartGenderLegend employees={filteredEmployees} />
+              <aside className="chart-enlarge-filters chart-enlarge-filters-left">
+                {showGender ? (
+                  <ChartGenderLegend
+                    hommes={genderCounts.hommes}
+                    femmes={genderCounts.femmes}
+                    other={genderCounts.other}
+                    totalCount={genderCounts.total}
+                    value={selectedGender}
+                    onChange={(next) => {
+                      setSelectedGender(next);
+                      setSelectedDept('');
+                    }}
+                  />
                 ) : null}
                 <ChartChipFilter
                   title="Company"
@@ -153,9 +299,14 @@ export default function EnlargeableChartPanel({
                     setSelectedCompany(next);
                     setSelectedDept('');
                   }}
-                  totalCount={deptFilter.employees.length}
+                  totalCount={companyTotalCount}
                   ariaLabel="Filtrer par company"
                 />
+              </aside>
+              <div className={`panel ${className} is-enlarged chart-enlarge-main`.trim()}>
+                {enlargedBody}
+              </div>
+              <aside className="chart-enlarge-filters chart-enlarge-filters-right">
                 <ChartChipFilter
                   title="Départements"
                   options={departments}
@@ -164,7 +315,7 @@ export default function EnlargeableChartPanel({
                   totalCount={filterPoolCount}
                   ariaLabel="Filtrer par département"
                 />
-              </div>
+              </aside>
             </div>
           ) : (
             <div className={`panel ${className} is-enlarged`.trim()}>
@@ -172,6 +323,15 @@ export default function EnlargeableChartPanel({
             </div>
           )}
         </ChartEnlargeModal>
+      ) : null}
+
+      {segmentDrilldown ? (
+        <DashboardListModal
+          title={segmentDrilldown.title}
+          columns={segmentDrilldown.columns}
+          rows={segmentDrilldown.rows}
+          onClose={() => setSegmentDrilldown(null)}
+        />
       ) : null}
     </>
   );

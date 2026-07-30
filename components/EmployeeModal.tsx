@@ -10,6 +10,13 @@ import {
   computeFinPeriodeEssai,
   isRealExitRaison,
 } from '@/lib/employee-columns';
+import {
+  ESSAI_ACTIONS,
+  ESSAI_COMMENTAIRES,
+  computeFinContratFromDuree,
+  resolveEssaiEcheanceEval,
+  resolveEssaiStatutEval,
+} from '@/lib/employees-trial';
 import type { Employee } from '@/lib/types';
 import { emptyEmployeeHrProfile } from '@/lib/types';
 
@@ -97,6 +104,34 @@ export default function EmployeeModal({ employee, onClose, onSave }: Props) {
     [form.appointmentDate, form.periodeEssaiMois],
   );
 
+  const finContratAuto = useMemo(() => {
+    const fromDuree = computeFinContratFromDuree(form.appointmentDate, form.dureeContratMois);
+    const duree = form.dureeContratMois;
+    if (duree != null && Number.isFinite(duree) && duree > 0 && fromDuree) {
+      return fromDuree;
+    }
+    return form.dateFinContrat || fromDuree || '';
+  }, [form.appointmentDate, form.dureeContratMois, form.dateFinContrat]);
+
+  const echeanceEvalAuto = useMemo(
+    () => resolveEssaiEcheanceEval({
+      essaiEcheanceEval: form.essaiEcheanceEval,
+      appointmentDate: form.appointmentDate,
+      periodeEssaiMois: form.periodeEssaiMois,
+      dateFinPeriodeEssai: finEssaiAuto,
+    }),
+    [form.essaiEcheanceEval, form.appointmentDate, form.periodeEssaiMois, finEssaiAuto],
+  );
+
+  const statutEvalAuto = useMemo(
+    () => resolveEssaiStatutEval({
+      appointmentDate: form.appointmentDate,
+      periodeEssaiMois: form.periodeEssaiMois,
+      dateFinPeriodeEssai: finEssaiAuto,
+    }),
+    [form.appointmentDate, form.periodeEssaiMois, finEssaiAuto],
+  );
+
   const setDoc = (key: string, value: string) => {
     setForm((f) => ({ ...f, documents: { ...f.documents, [key]: value } }));
   };
@@ -114,6 +149,9 @@ export default function EmployeeModal({ employee, onClose, onSave }: Props) {
         ...form,
         age: displayAge,
         dateFinPeriodeEssai: finEssaiAuto,
+        dateFinContrat: finContratAuto,
+        essaiEcheanceEval: form.essaiEcheanceEval || echeanceEvalAuto,
+        essaiStatutEval: statutEvalAuto,
         raisonExit: form.raisonExit || '',
       }));
     } finally {
@@ -273,6 +311,19 @@ export default function EmployeeModal({ employee, onClose, onSave }: Props) {
                 </select>
               </div>
               <div className="form-group">
+                <label>Durée contrat (mois)</label>
+                <input
+                  type="number"
+                  min={0}
+                  step={1}
+                  value={form.dureeContratMois ?? ''}
+                  onChange={(e) => {
+                    const v = e.target.value;
+                    patch('dureeContratMois', v === '' ? null : Number(v));
+                  }}
+                />
+              </div>
+              <div className="form-group">
                 <label>Période d&apos;essai (mois)</label>
                 <input
                   type="number"
@@ -298,8 +349,14 @@ export default function EmployeeModal({ employee, onClose, onSave }: Props) {
                 <label>Date fin contrat</label>
                 <input
                   type="date"
-                  value={toDateInputValue(form.dateFinContrat)}
+                  value={toDateInputValue(finContratAuto)}
+                  readOnly={Boolean(form.dureeContratMois && form.dureeContratMois > 0)}
                   onChange={(e) => patch('dateFinContrat', fromDateInputValue(e.target.value))}
+                  title={
+                    form.dureeContratMois && form.dureeContratMois > 0
+                      ? 'Calculée automatiquement (embauche + durée CDD)'
+                      : undefined
+                  }
                 />
               </div>
               <div className="form-group">
@@ -338,6 +395,58 @@ export default function EmployeeModal({ employee, onClose, onSave }: Props) {
                 >
                   {EMPLOYEE_STATUTS.map((s) => (
                     <option key={s} value={s}>{s}</option>
+                  ))}
+                </select>
+              </div>
+            </div>
+
+            <h4 className="form-section-title">Évaluation période d&apos;essai</h4>
+            <div className="form-grid">
+              <div className="form-group">
+                <label>Actions</label>
+                <select
+                  value={form.essaiActions || ''}
+                  onChange={(e) => patch('essaiActions', e.target.value)}
+                >
+                  <option value="">—</option>
+                  {ESSAI_ACTIONS.map((a) => (
+                    <option key={a} value={a}>{a}</option>
+                  ))}
+                </select>
+              </div>
+              <div className="form-group">
+                <label>Responsable (Account.)</label>
+                <input
+                  value={form.essaiResponsable || ''}
+                  onChange={(e) => patch('essaiResponsable', e.target.value)}
+                />
+              </div>
+              <div className="form-group">
+                <label>Échéance évaluation</label>
+                <input
+                  type="date"
+                  value={toDateInputValue(form.essaiEcheanceEval || echeanceEvalAuto)}
+                  onChange={(e) => patch('essaiEcheanceEval', fromDateInputValue(e.target.value))}
+                  title="Par défaut : 1 mois avant la fin de période d'essai"
+                />
+              </div>
+              <div className="form-group">
+                <label>Statut évaluation</label>
+                <input
+                  value={statutEvalAuto}
+                  readOnly
+                  title="Calculé automatiquement selon la date de fin d'essai"
+                />
+              </div>
+              <div className="form-group">
+                <label>Commentaire</label>
+                <select
+                  value={form.essaiCommentaire || ''}
+                  onChange={(e) => patch('essaiCommentaire', e.target.value)}
+                >
+                  <option value="">—</option>
+                  {ESSAI_COMMENTAIRES.map((c) => (
+                    <option key={c} value={c}>{c}</option>
                   ))}
                 </select>
               </div>

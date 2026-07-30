@@ -16,10 +16,27 @@ import {
   yearFromDisplayDate,
 } from '@/lib/employee-columns';
 import { downloadEmployeesHrExport } from '@/lib/employees-export';
+import {
+  daysUntilDisplayDate,
+  ESSAI_STATUTS_EVAL,
+  isCddEmployee,
+  isCddEndAlert,
+  isCddOverdue,
+  isDisplayDatePast,
+  isInActiveTrialPeriod,
+  isTrialEvalAlert,
+  resolveCddAlerteDate,
+  resolveDateFinContrat,
+  resolveDateFinPeriodeEssai,
+  resolveDureeContratMois,
+  resolveEssaiEcheanceEval,
+  resolveEssaiStatutEval,
+  essaiStatutClass,
+} from '@/lib/employees-trial';
 import { confirmDelete, showError, showSuccess } from '@/lib/swal';
 import type { Employee } from '@/lib/types';
 
-type PageTab = 'dashboard' | 'liste' | 'exit';
+type PageTab = 'dashboard' | 'liste' | 'essai' | 'cdd' | 'exit';
 
 const CURRENT_YEAR = new Date().getFullYear();
 
@@ -30,6 +47,10 @@ function resolveEmployeeAge(employee: Employee): number | null {
 function formatYears(value: number | null): string {
   if (value == null) return '—';
   return `${value}`;
+}
+
+function dateCellClass(value: string): string {
+  return isDisplayDatePast(value) ? 'col-date employees-date-past' : 'col-date';
 }
 
 export default function EmployesPage() {
@@ -44,6 +65,8 @@ export default function EmployesPage() {
   const [loading, setLoading] = useState(true);
   const [search, setSearch] = useState('');
   const [dept, setDept] = useState('');
+  const [contractFilter, setContractFilter] = useState('');
+  const [statusFilter, setStatusFilter] = useState('');
   const [yearFilter, setYearFilter] = useState<number | ''>('');
   const [editOpen, setEditOpen] = useState(false);
   const [viewOpen, setViewOpen] = useState(false);
@@ -89,6 +112,8 @@ export default function EmployesPage() {
   useEffect(() => {
     setSearch('');
     setDept('');
+    setContractFilter('');
+    setStatusFilter('');
     setContextMenu(null);
   }, [tab]);
 
@@ -124,7 +149,34 @@ export default function EmployesPage() {
     return [...byMatricule.values()].sort((a, b) => a.nom.localeCompare(b.nom, 'fr'));
   }, [yearFilter, yearScopedActive, yearScopedExits]);
 
-  const sourceList = tab === 'exit' ? yearScopedExits : yearScopedListe;
+  const cddList = useMemo(
+    () => yearScopedActive.filter((e) => isCddEmployee(e)),
+    [yearScopedActive],
+  );
+
+  const essaiList = useMemo(
+    () => yearScopedActive.filter((e) => isInActiveTrialPeriod(e)),
+    [yearScopedActive],
+  );
+
+  const cddAlertCount = useMemo(
+    () => yearScopedActive.filter((e) => isCddEndAlert(e)).length,
+    [yearScopedActive],
+  );
+
+  const essaiAlertCount = useMemo(
+    () => yearScopedActive.filter((e) => isTrialEvalAlert(e)).length,
+    [yearScopedActive],
+  );
+
+  const sourceList =
+    tab === 'exit'
+      ? yearScopedExits
+      : tab === 'cdd'
+        ? cddList
+        : tab === 'essai'
+          ? essaiList
+          : yearScopedListe;
 
   const filtered = useMemo(() => {
     const list = Array.isArray(sourceList) ? sourceList : [];
@@ -135,14 +187,66 @@ export default function EmployesPage() {
         || e.matricule.includes(q)
         || e.departement.toLowerCase().includes(q)
         || (e.localisation ?? '').toLowerCase().includes(q)
-        || (e.raisonExit ?? '').toLowerCase().includes(q);
+        || (e.raisonExit ?? '').toLowerCase().includes(q)
+        || (e.typeContrat ?? '').toLowerCase().includes(q)
+        || resolveEssaiStatutEval(e).toLowerCase().includes(q);
       const matchDept = !dept || e.departement === dept;
-      return matchSearch && matchDept;
+      const matchContract =
+        !contractFilter
+        || String(e.typeContrat || '').trim().toUpperCase() === contractFilter;
+      const matchStatus =
+        !statusFilter
+        || String(resolveEssaiStatutEval(e) || 'Ongoing').trim().toLowerCase() === statusFilter.toLowerCase();
+      return matchSearch && matchDept && matchContract && matchStatus;
     });
-  }, [sourceList, search, dept]);
+  }, [sourceList, search, dept, contractFilter, statusFilter]);
 
   const dashboardEmployees = yearScopedActive;
   const dashboardExits = yearScopedExits;
+
+  const pageSubtitle = useMemo(() => {
+    const parts: string[] = [];
+    if (yearFilter !== '') parts.push(`Année ${yearFilter}`);
+    if (dept) parts.push(dept);
+    if (contractFilter) parts.push(contractFilter);
+    if (statusFilter) parts.push(statusFilter);
+    if (search.trim()) parts.push(`« ${search.trim()} »`);
+
+    const n = tab === 'dashboard' ? dashboardEmployees.length : filtered.length;
+    let countLabel = '';
+    switch (tab) {
+      case 'dashboard':
+        countLabel = `${dashboardEmployees.length} actif${dashboardEmployees.length > 1 ? 's' : ''}`;
+        if (dashboardExits.length > 0) {
+          countLabel += ` · ${dashboardExits.length} sortie${dashboardExits.length > 1 ? 's' : ''}`;
+        }
+        break;
+      case 'exit':
+        countLabel = `${n} sortie${n > 1 ? 's' : ''}`;
+        break;
+      case 'cdd':
+        countLabel = `${n} CDD`;
+        break;
+      case 'essai':
+        countLabel = `${n} en période d'essai`;
+        break;
+      default:
+        countLabel = `${n} employé${n > 1 ? 's' : ''}`;
+    }
+
+    if (parts.length === 0) return countLabel;
+    return `${parts.join(' · ')} · ${countLabel}`;
+  }, [
+    tab,
+    yearFilter,
+    dept,
+    contractFilter,
+    statusFilter,
+    search,
+    filtered.length,
+    dashboardEmployees.length,
+    dashboardExits.length,
+  ]);
 
   const openView = (employee: Employee) => {
     setViewing(employee);
@@ -236,13 +340,7 @@ export default function EmployesPage() {
               <h2>Liste des employés</h2>
               <RefreshButton onClick={() => void load(true)} loading={refreshing} />
             </div>
-            <p>
-              {yearFilter !== '' ? `Année ${yearFilter} · ` : ''}
-              {dashboardEmployees.length} actif{dashboardEmployees.length > 1 ? 's' : ''}
-              {dashboardExits.length > 0
-                ? ` · ${dashboardExits.length} sortie${dashboardExits.length > 1 ? 's' : ''}`
-                : ''}
-            </p>
+            <p>{pageSubtitle}</p>
           </div>
           <div className="employees-header-actions">
             <div className="tabs header-tabs header-tabs-compact">
@@ -263,6 +361,32 @@ export default function EmployesPage() {
               </button>
               <button
                 type="button"
+                className={`tab-btn tab-btn-sm${tab === 'essai' ? ' active' : ''}`}
+                onClick={() => setTab('essai')}
+              >
+                Période d&apos;essai
+                <span className="employees-tab-count">{essaiList.length}</span>
+                {essaiAlertCount > 0 && (
+                  <span className="employees-tab-alert" title="Évaluations à préparer (J-30)">
+                    {essaiAlertCount}
+                  </span>
+                )}
+              </button>
+              <button
+                type="button"
+                className={`tab-btn tab-btn-sm${tab === 'cdd' ? ' active' : ''}`}
+                onClick={() => setTab('cdd')}
+              >
+                CDD
+                <span className="employees-tab-count">{cddList.length}</span>
+                {cddAlertCount > 0 && (
+                  <span className="employees-tab-alert is-cdd" title="Fins de CDD ≤ 30 jours">
+                    {cddAlertCount}
+                  </span>
+                )}
+              </button>
+              <button
+                type="button"
                 className={`tab-btn tab-btn-sm${tab === 'exit' ? ' active' : ''}`}
                 onClick={() => setTab('exit')}
               >
@@ -276,7 +400,7 @@ export default function EmployesPage() {
                 className="btn btn-outline btn-export btn-with-icon"
                 disabled={exporting}
                 onClick={() => void handleExport()}
-                title="Export RH : Dashboard + Base (template)"
+                title="Export RH : Dashboard + Base + Periode d'essai + CDD + EXIT"
               >
                 {exporting ? (
                   <span className="btn-spinner" aria-hidden="true" />
@@ -290,24 +414,25 @@ export default function EmployesPage() {
                 {exporting ? 'Export…' : 'Export'}
               </button>
             )}
-            {tab === 'liste' && (
-              <PermissionGate menuId="employes.liste" action="create">
-                <button type="button" className="btn btn-accent" onClick={() => openEdit(null)}>
-                  + Ajouter un employé
-                </button>
-              </PermissionGate>
-            )}
           </div>
         </div>
 
-        {(tab === 'liste' || tab === 'exit' || tab === 'dashboard') && (
+        {(tab === 'liste' || tab === 'exit' || tab === 'dashboard' || tab === 'cdd' || tab === 'essai') && (
           <div className="panel-toolbar employees-toolbar">
-            {(tab === 'liste' || tab === 'exit') && (
+            {(tab === 'liste' || tab === 'exit' || tab === 'cdd' || tab === 'essai') && (
               <>
                 <input
                   type="search"
                   className="search-input"
-                  placeholder={tab === 'exit' ? 'Rechercher sortie…' : 'Rechercher...'}
+                  placeholder={
+                    tab === 'exit'
+                      ? 'Rechercher sortie…'
+                      : tab === 'cdd'
+                        ? 'Rechercher CDD…'
+                        : tab === 'essai'
+                          ? "Rechercher période d'essai…"
+                          : 'Rechercher...'
+                  }
                   value={search}
                   onChange={(e) => setSearch(e.target.value)}
                 />
@@ -315,6 +440,31 @@ export default function EmployesPage() {
                   <option value="">Tous les départements</option>
                   {getDepartments(sourceList).map((d) => <option key={d} value={d}>{d}</option>)}
                 </select>
+                {(tab === 'liste' || tab === 'essai') && (
+                  <select
+                    className="filter-select"
+                    value={contractFilter}
+                    onChange={(e) => setContractFilter(e.target.value)}
+                    title="Filtrer par type de contrat"
+                  >
+                    <option value="">CDD + CDI</option>
+                    <option value="CDD">CDD</option>
+                    <option value="CDI">CDI</option>
+                  </select>
+                )}
+                {tab === 'essai' && (
+                  <select
+                    className="filter-select"
+                    value={statusFilter}
+                    onChange={(e) => setStatusFilter(e.target.value)}
+                    title="Filtrer par statut d'évaluation"
+                  >
+                    <option value="">Tous les statuts</option>
+                    {ESSAI_STATUTS_EVAL.filter((s) => s !== 'Done').map((s) => (
+                      <option key={s} value={s}>{s}</option>
+                    ))}
+                  </select>
+                )}
               </>
             )}
             <select
@@ -331,6 +481,25 @@ export default function EmployesPage() {
                 <option key={y} value={y}>{y}</option>
               ))}
             </select>
+            {essaiAlertCount > 0 && (tab === 'dashboard' || tab === 'essai' || tab === 'liste') && (
+              <button
+                type="button"
+                className="employees-trial-alert-toolbar"
+                onClick={() => setTab('essai')}
+                title="Voir les collaborateurs à évaluer"
+              >
+                <strong>{essaiAlertCount}</strong>
+                {' '}
+                éval. essai ≤ 30 j
+              </button>
+            )}
+            {tab === 'liste' && (
+              <PermissionGate menuId="employes.liste" action="create">
+                <button type="button" className="btn btn-accent" onClick={() => openEdit(null)}>
+                  + Ajouter un employé
+                </button>
+              </PermissionGate>
+            )}
           </div>
         )}
       </div>
@@ -341,27 +510,100 @@ export default function EmployesPage() {
         </div>
       ) : (
         <div className="employees-list-body">
+          {tab === 'cdd' && cddAlertCount > 0 && (
+            <div className="employees-trial-alert-banner employees-trial-alert-banner-inline is-cdd">
+              <strong>{cddAlertCount}</strong>
+              {' '}
+              CDD se terminant dans les 30 jours.
+            </div>
+          )}
+          {(tab === 'cdd' || tab === 'essai') && (
+            <div className="employees-row-legend" aria-label="Légende des couleurs">
+              {tab === 'cdd' ? (
+                <>
+                  <span className="employees-row-legend-item">
+                    <i className="employees-row-legend-swatch is-essai" aria-hidden />
+                    Violet — encore en période d&apos;essai
+                  </span>
+                  <span className="employees-row-legend-item">
+                    <i className="employees-row-legend-swatch is-alert" aria-hidden />
+                    Rouge — fin de contrat ≤ 30 jours
+                  </span>
+                  <span className="employees-row-legend-item">
+                    <i className="employees-row-legend-swatch is-overdue" aria-hidden />
+                    Rouge fondu — fin de contrat déjà dépassée
+                  </span>
+                  <span className="employees-row-legend-item">
+                    <strong className="employees-date-past employees-row-legend-date">Fin</strong>
+                    Date en rouge gras — Fin ou Alerte déjà passée
+                  </span>
+                </>
+              ) : (
+                <>
+                  <span className="employees-row-legend-item">
+                    <i className="employees-row-legend-swatch is-alert" aria-hidden />
+                    Rouge — évaluation essai ≤ 30 jours
+                  </span>
+                  <span className="employees-row-legend-item">
+                    <strong className="employees-date-past employees-row-legend-date">Fin</strong>
+                    Date en rouge gras — Fin essai ou Échéance déjà passée
+                  </span>
+                </>
+              )}
+            </div>
+          )}
           <div className="panel employees-list-panel">
-            <div className="employees-table-wrap">
-              <table className="employees-table">
+            <div className="employees-table-wrap is-compact">
+              <table className="employees-table employees-table-compact">
                 <thead>
                   <tr>
                     <th>Matricule</th>
-                    <th>Nom & Prénom</th>
-                    <th>Département</th>
-                    <th>Grade</th>
-                    <th>Localisation</th>
-                    <th>Âge</th>
-                    <th>Ancienneté</th>
-                    {tab === 'exit' ? (
+                    <th>Nom</th>
+                    {tab === 'cdd' || tab === 'essai' ? (
+                      <>
+                        <th>Département</th>
+                        <th>Site</th>
+                        <th>Contrat</th>
+                      </>
+                    ) : (
+                      <>
+                        <th>Département</th>
+                        <th>Grade</th>
+                        <th>Localisation</th>
+                        <th>Âge</th>
+                        <th>Ancienneté</th>
+                      </>
+                    )}
+                    {tab === 'exit' && (
                       <>
                         <th>Date fin contrat</th>
                         <th>Raison exit</th>
                       </>
-                    ) : (
+                    )}
+                    {tab === 'liste' && (
                       <>
                         <th>Poste</th>
                         <th>Dossier</th>
+                      </>
+                    )}
+                    {tab === 'cdd' && (
+                      <>
+                        <th>Durée</th>
+                        <th>Début</th>
+                        <th>Fin</th>
+                        <th>Alerte</th>
+                      </>
+                    )}
+                    {tab === 'essai' && (
+                      <>
+                        <th>Mois</th>
+                        <th>Début</th>
+                        <th>Fin essai</th>
+                        <th>Actions</th>
+                        <th>Resp.</th>
+                        <th>Échéance</th>
+                        <th>Statut</th>
+                        <th>Comment.</th>
                       </>
                     )}
                   </tr>
@@ -369,49 +611,135 @@ export default function EmployesPage() {
                 <tbody>
                   {filtered.length === 0 ? (
                     <tr>
-                      <td colSpan={9} className="empty-state">
-                        {tab === 'exit' ? 'Aucune sortie enregistrée.' : 'Aucun employé trouvé.'}
+                      <td colSpan={14} className="empty-state">
+                        {tab === 'exit'
+                          ? 'Aucune sortie enregistrée.'
+                          : tab === 'cdd'
+                            ? 'Aucun CDD trouvé.'
+                            : tab === 'essai'
+                              ? "Aucune période d'essai en cours."
+                              : 'Aucun employé trouvé.'}
                       </td>
                     </tr>
                   ) : (
                     filtered.map((e) => {
                       const { pct } = calcDocumentCompletion(e);
-                      const cls = pct >= 80 ? 'high' : pct >= 50 ? 'mid' : 'low';
+                      const rateCls = pct >= 80 ? 'high' : pct >= 50 ? 'mid' : 'low';
                       const age = resolveEmployeeAge(e);
                       const seniority = computeSeniorityYears(
                         e.appointmentDate || '',
                         yearFilter !== '' ? new Date(yearFilter, 11, 31) : new Date(),
                       );
+                      const finEssai = resolveDateFinPeriodeEssai(e);
+                      const finContrat = resolveDateFinContrat(e);
+                      const evalAlert = isTrialEvalAlert(e);
+                      const cddAlert = isCddEndAlert(e);
+                      const inTrial = isInActiveTrialPeriod(e);
+                      const cddOverdue = isCddOverdue(e);
+                      const rowAlertClass =
+                        tab === 'cdd' && cddOverdue
+                          ? ' employees-row-overdue'
+                          : (tab === 'essai' || tab === 'liste') && evalAlert
+                              ? ' employees-row-alert-eval'
+                              : tab === 'cdd' && cddAlert
+                                ? ' employees-row-alert-cdd'
+                                : tab === 'cdd' && inTrial
+                                  ? ' employees-row-cdd-essai'
+                                  : tab === 'liste' && cddAlert
+                                    ? ' employees-row-alert-cdd'
+                                    : '';
+                      const daysLeft = daysUntilDisplayDate(finEssai);
+                      const daysCdd = daysUntilDisplayDate(finContrat);
+                      const echeance = resolveEssaiEcheanceEval({
+                        ...e,
+                        dateFinPeriodeEssai: finEssai,
+                      });
+                      const cddAlerteDate = resolveCddAlerteDate(e);
+                      const essaiStatut = resolveEssaiStatutEval(e);
                       return (
                         <tr
                           key={e.matricule}
-                          className="employees-row-context"
+                          className={`employees-row-context${rowAlertClass}`}
+                          onClick={() => openView(e)}
                           onDoubleClick={() => openView(e)}
                           onContextMenu={(event) => openContextMenu(event, e)}
                         >
                           <td><strong>{e.matricule}</strong></td>
-                          <td>{e.nom}</td>
-                          <td>{e.departement}</td>
-                          <td>{e.grade}</td>
-                          <td>{e.localisation}</td>
-                          <td>{formatYears(age)}</td>
-                          <td>{formatYears(seniority)}</td>
-                          {tab === 'exit' ? (
+                          <td className="col-name" title={e.nom}>{e.nom}</td>
+                          {tab === 'cdd' || tab === 'essai' ? (
                             <>
-                              <td>{e.dateFinContrat || '—'}</td>
-                              <td>{e.raisonExit || '—'}</td>
+                              <td className="col-clip" title={e.departement || undefined}>
+                                {e.departement || '—'}
+                              </td>
+                              <td>{e.localisation || '—'}</td>
+                              <td>{e.typeContrat || '—'}</td>
                             </>
                           ) : (
                             <>
-                              <td>{e.jobTitle}</td>
+                              <td className="col-clip">{e.departement}</td>
+                              <td>{e.grade}</td>
+                              <td>{e.localisation}</td>
+                              <td>{formatYears(age)}</td>
+                              <td>{formatYears(seniority)}</td>
+                            </>
+                          )}
+                          {tab === 'exit' && (
+                            <>
+                              <td className={dateCellClass(finContrat)}>{finContrat || '—'}</td>
+                              <td>{e.raisonExit || '—'}</td>
+                            </>
+                          )}
+                          {tab === 'liste' && (
+                            <>
+                              <td className="col-clip" title={e.jobTitle || undefined}>{e.jobTitle}</td>
                               <td>
                                 <div className="progress-wrap">
                                   <div className="progress-bar">
-                                    <div className={`progress-fill ${cls}`} style={{ width: `${pct}%` }} />
+                                    <div className={`progress-fill ${rateCls}`} style={{ width: `${pct}%` }} />
                                   </div>
                                   <span className="progress-pct">{pct}%</span>
                                 </div>
                               </td>
+                            </>
+                          )}
+                          {tab === 'cdd' && (
+                            <>
+                              <td>{resolveDureeContratMois(e) ?? '—'}</td>
+                              <td className="col-date">{e.appointmentDate || '—'}</td>
+                              <td className={dateCellClass(finContrat)}>{finContrat || '—'}</td>
+                              <td className={dateCellClass(cddAlerteDate)}>
+                                {cddAlerteDate || '—'}
+                                {cddAlert && daysCdd != null && daysCdd >= 0 && (
+                                  <span className="employees-essai-days is-cdd" title="Jours restants avant fin de contrat">
+                                    {' '}J-{daysCdd}
+                                  </span>
+                                )}
+                              </td>
+                            </>
+                          )}
+                          {tab === 'essai' && (
+                            <>
+                              <td>{e.periodeEssaiMois ?? '—'}</td>
+                              <td className="col-date">{e.appointmentDate || '—'}</td>
+                              <td className={dateCellClass(finEssai)}>
+                                {finEssai || '—'}
+                                {evalAlert && daysLeft != null && daysLeft >= 0 && (
+                                  <span className="employees-essai-days" title="Jours restants">
+                                    {' '}J-{daysLeft}
+                                  </span>
+                                )}
+                              </td>
+                              <td className="col-clip" title={e.essaiActions || undefined}>{e.essaiActions || '—'}</td>
+                              <td className="col-clip" title={e.essaiResponsable || undefined}>{e.essaiResponsable || '—'}</td>
+                              <td className={`${dateCellClass(echeance)} col-echeance`}>
+                                {echeance || '—'}
+                              </td>
+                              <td>
+                                <span className={`employees-essai-status ${essaiStatutClass(essaiStatut)}`}>
+                                  {essaiStatut}
+                                </span>
+                              </td>
+                              <td className="col-clip" title={e.essaiCommentaire || undefined}>{e.essaiCommentaire || '—'}</td>
                             </>
                           )}
                         </tr>

@@ -1,21 +1,52 @@
 'use client';
 
 import { useCallback, useEffect, useMemo, useState } from 'react';
-import DashboardListModal, {
-  type DashboardListColumn,
-  type DashboardListRow,
-} from '@/components/DashboardListModal';
+import VillageDrilldownModal from '@/components/village/VillageDrilldownModal';
+import VillageSkeleton from '@/components/village/VillageSkeleton';
 import type { Dependant } from '@/lib/dependants-types';
 import type { Employee } from '@/lib/types';
 import {
+  buildMaisonOccupancy,
   buildVillageDashboardStats,
+  buildVillageDrilldownFromAgents,
+  buildVillageDrilldownFromEmployees,
+  buildVillageDrilldownFromMaisons,
+  buildVillageDrilldownFromQuiOu,
   buildZambaAgentsFromEmployees,
+  filterOccupancyByType,
+  filterQuiOuByDeptType,
   HORS_EFFECTIF_DEPT,
   listOtherLocalisationEmployees,
   splitVillageKimpese,
+  type VillageDrilldownRow,
 } from '@/lib/village-agents';
 import type { VillageMaison, VillageTaille } from '@/lib/village-types';
-import VillageSkeleton from '@/components/village/VillageSkeleton';
+
+function ClickNum({
+  value,
+  onClick,
+  className = '',
+  title,
+}: {
+  value: number;
+  onClick: () => void;
+  className?: string;
+  title?: string;
+}) {
+  if (!value) {
+    return <span className={className}>—</span>;
+  }
+  return (
+    <button
+      type="button"
+      className={`village-dash-num${className ? ` ${className}` : ''}`}
+      onClick={onClick}
+      title={title ?? 'Voir le détail'}
+    >
+      {value}
+    </button>
+  );
+}
 
 export default function VillageDashboardTab() {
   const [employees, setEmployees] = useState<Employee[]>([]);
@@ -25,8 +56,8 @@ export default function VillageDashboardTab() {
   const [loading, setLoading] = useState(true);
   const [drilldown, setDrilldown] = useState<{
     title: string;
-    columns: DashboardListColumn[];
-    rows: DashboardListRow[];
+    rows: VillageDrilldownRow[];
+    showLocalisation?: boolean;
   } | null>(null);
 
   const load = useCallback(async () => {
@@ -73,6 +104,11 @@ export default function VillageDashboardTab() {
   );
   const { village, kimpese } = useMemo(() => splitVillageKimpese(zamba), [zamba]);
 
+  const occupancy = useMemo(
+    () => buildMaisonOccupancy(maisons, tailles, village, dependants),
+    [maisons, tailles, village, dependants],
+  );
+
   const deptTailleColTotals = useMemo(() => {
     const totals: Record<string, number> = {};
     for (const col of stats.tailleColumns) totals[col] = 0;
@@ -87,23 +123,36 @@ export default function VillageDashboardTab() {
   const openAgents = (title: string, list: typeof zamba) => {
     setDrilldown({
       title,
-      columns: [
-        { key: 'matricule', label: 'Matricule' },
-        { key: 'nom', label: 'Nom' },
-        { key: 'departement', label: 'Département' },
-        { key: 'numeroVilla', label: 'Maison' },
-        { key: 'typeMaison', label: 'Type' },
-      ],
-      rows: list.map((a) => ({
-        id: a.matricule,
-        cells: {
-          matricule: a.matricule,
-          nom: a.nom,
-          departement: a.departement || '—',
-          numeroVilla: a.numeroVilla || '—',
-          typeMaison: a.typeMaison || '—',
-        },
-      })),
+      rows: buildVillageDrilldownFromAgents(list, dependants),
+    });
+  };
+
+  const openMaisons = (
+    title: string,
+    typeLabel: string | null,
+    mode: 'all' | 'occupees' | 'vides',
+  ) => {
+    const list = filterOccupancyByType(occupancy, tailles, typeLabel, mode);
+    setDrilldown({
+      title,
+      rows: buildVillageDrilldownFromMaisons(list, dependants),
+    });
+  };
+
+  const openQuiOu = (
+    title: string,
+    departement: string | null,
+    typeLabel: string | null,
+  ) => {
+    const filtered = filterQuiOuByDeptType(
+      stats.quiOu,
+      tailles,
+      departement,
+      typeLabel,
+    );
+    setDrilldown({
+      title,
+      rows: buildVillageDrilldownFromQuiOu(filtered, dependants),
     });
   };
 
@@ -125,6 +174,7 @@ export default function VillageDashboardTab() {
             type="button"
             className="card card-glow card-glow-cyan travel-history-card dependants-kpi-clickable"
             onClick={() => openAgents('Zamba (agents)', zamba)}
+            title="Voir la liste des agents Zamba"
           >
             <div className="card-label">Zamba (agents)</div>
             <div className="card-value">{stats.zamba}</div>
@@ -136,6 +186,7 @@ export default function VillageDashboardTab() {
             type="button"
             className="card card-glow card-glow-green travel-history-card dependants-kpi-clickable"
             onClick={() => openAgents('Village (avec maison)', village)}
+            title="Voir les agents avec maison"
           >
             <div className="card-label">Village (avec maison)</div>
             <div className="card-value">{stats.village}</div>
@@ -147,6 +198,7 @@ export default function VillageDashboardTab() {
             type="button"
             className="card card-glow card-glow-red travel-history-card dependants-kpi-clickable"
             onClick={() => openAgents('Habitant à Kimpese', kimpese)}
+            title="Voir les agents à Kimpese"
           >
             <div className="card-label">Habitant à Kimpese</div>
             <div className="card-value">{stats.kimpese}</div>
@@ -161,23 +213,11 @@ export default function VillageDashboardTab() {
               const others = listOtherLocalisationEmployees(employees, zamba);
               setDrilldown({
                 title: 'Autres localisations',
-                columns: [
-                  { key: 'matricule', label: 'Matricule' },
-                  { key: 'nom', label: 'Nom' },
-                  { key: 'localisation', label: 'Localisation' },
-                  { key: 'departement', label: 'Département' },
-                ],
-                rows: others.map((e) => ({
-                  id: e.matricule,
-                  cells: {
-                    matricule: e.matricule,
-                    nom: e.nom,
-                    localisation: e.localisation || '—',
-                    departement: e.departement || '—',
-                  },
-                })),
+                rows: buildVillageDrilldownFromEmployees(others, dependants),
+                showLocalisation: true,
               });
             }}
+            title="Voir les autres localisations"
           >
             <div className="card-label">Autres localisations</div>
             <div className="card-value">{stats.autres}</div>
@@ -187,18 +227,33 @@ export default function VillageDashboardTab() {
         <div style={{ height: 14 }} />
 
         <div className="travel-history-cards village-dependants-kpis village-maisons-kpi-row">
-          <div className="card card-glow card-glow-cyan travel-history-card">
+          <button
+            type="button"
+            className="card card-glow card-glow-cyan travel-history-card dependants-kpi-clickable"
+            onClick={() => openMaisons('Maisons (total)', null, 'all')}
+            title="Voir toutes les maisons"
+          >
             <div className="card-label">Maisons (total)</div>
             <div className="card-value">{stats.maisonsTotal}</div>
-          </div>
-          <div className="card card-glow card-glow-green travel-history-card">
+          </button>
+          <button
+            type="button"
+            className="card card-glow card-glow-green travel-history-card dependants-kpi-clickable"
+            onClick={() => openMaisons('Maisons occupées', null, 'occupees')}
+            title="Voir les maisons occupées"
+          >
             <div className="card-label">Maisons occupées</div>
             <div className="card-value">{stats.maisonsOccupees}</div>
-          </div>
-          <div className="card card-glow card-glow-amber travel-history-card">
+          </button>
+          <button
+            type="button"
+            className="card card-glow card-glow-amber travel-history-card dependants-kpi-clickable"
+            onClick={() => openMaisons('Maisons vides', null, 'vides')}
+            title="Voir les maisons vides"
+          >
             <div className="card-label">Maisons vides</div>
             <div className="card-value">{stats.maisonsVides}</div>
-          </div>
+          </button>
         </div>
 
         <div className="village-tables-duo">
@@ -230,9 +285,44 @@ export default function VillageDashboardTab() {
                         return (
                           <tr key={row.label}>
                             <td className="village-par-taille-label">{row.label}</td>
-                            <td className="num">{row.total}</td>
-                            <td className="num village-par-taille-occ">{row.occupees}</td>
-                            <td className="num village-par-taille-vide">{row.vides}</td>
+                            <td className="num">
+                              <ClickNum
+                                value={row.total}
+                                className=""
+                                title={`Maisons ${row.label} — total`}
+                                onClick={() =>
+                                  openMaisons(`Maisons — ${row.label}`, row.label, 'all')
+                                }
+                              />
+                            </td>
+                            <td className="num village-par-taille-occ">
+                              <ClickNum
+                                value={row.occupees}
+                                className="village-par-taille-occ"
+                                title={`Maisons ${row.label} — occupées`}
+                                onClick={() =>
+                                  openMaisons(
+                                    `Maisons occupées — ${row.label}`,
+                                    row.label,
+                                    'occupees',
+                                  )
+                                }
+                              />
+                            </td>
+                            <td className="num village-par-taille-vide">
+                              <ClickNum
+                                value={row.vides}
+                                className="village-par-taille-vide"
+                                title={`Maisons ${row.label} — vides`}
+                                onClick={() =>
+                                  openMaisons(
+                                    `Maisons vides — ${row.label}`,
+                                    row.label,
+                                    'vides',
+                                  )
+                                }
+                              />
+                            </td>
                             <td>
                               <div
                                 className="village-par-taille-bar-cell"
@@ -261,9 +351,28 @@ export default function VillageDashboardTab() {
                         return (
                           <tr className="village-par-taille-total">
                             <td>Total</td>
-                            <td className="num">{stats.maisonsTotal}</td>
-                            <td className="num village-par-taille-occ">{stats.maisonsOccupees}</td>
-                            <td className="num village-par-taille-vide">{stats.maisonsVides}</td>
+                            <td className="num">
+                              <ClickNum
+                                value={stats.maisonsTotal}
+                                onClick={() => openMaisons('Maisons (total)', null, 'all')}
+                              />
+                            </td>
+                            <td className="num village-par-taille-occ">
+                              <ClickNum
+                                value={stats.maisonsOccupees}
+                                className="village-par-taille-occ"
+                                onClick={() =>
+                                  openMaisons('Maisons occupées', null, 'occupees')
+                                }
+                              />
+                            </td>
+                            <td className="num village-par-taille-vide">
+                              <ClickNum
+                                value={stats.maisonsVides}
+                                className="village-par-taille-vide"
+                                onClick={() => openMaisons('Maisons vides', null, 'vides')}
+                              />
+                            </td>
                             <td>
                               <div className="village-par-taille-bar-cell">
                                 <div className="village-par-taille-bar">
@@ -334,22 +443,57 @@ export default function VillageDashboardTab() {
                             const n = row.counts[col] ?? 0;
                             return (
                               <td key={col} className={`num${n ? '' : ' is-zero'}`}>
-                                {n || '—'}
+                                <ClickNum
+                                  value={n}
+                                  title={`${row.departement} · ${col}`}
+                                  onClick={() =>
+                                    openQuiOu(
+                                      `${row.departement} — ${col}`,
+                                      row.departement,
+                                      col,
+                                    )
+                                  }
+                                />
                               </td>
                             );
                           })}
-                          <td className="num"><strong>{row.total}</strong></td>
+                          <td className="num">
+                            <ClickNum
+                              value={row.total}
+                              title={`Total — ${row.departement}`}
+                              onClick={() =>
+                                openQuiOu(
+                                  `Département — ${row.departement}`,
+                                  row.departement,
+                                  null,
+                                )
+                              }
+                            />
+                          </td>
                         </tr>
                       ))}
                       <tr className="village-par-taille-total">
                         <td>Total</td>
-                        {stats.tailleColumns.map((col) => (
-                          <td key={col} className="num">
-                            {deptTailleColTotals[col] ?? 0}
-                          </td>
-                        ))}
+                        {stats.tailleColumns.map((col) => {
+                          const n = deptTailleColTotals[col] ?? 0;
+                          return (
+                            <td key={col} className="num">
+                              <ClickNum
+                                value={n}
+                                title={`Total — ${col}`}
+                                onClick={() =>
+                                  openQuiOu(`Type — ${col}`, null, col)
+                                }
+                              />
+                            </td>
+                          );
+                        })}
                         <td className="num">
-                          {stats.parDepartementTaille.reduce((s, r) => s + r.total, 0)}
+                          <ClickNum
+                            value={stats.parDepartementTaille.reduce((s, r) => s + r.total, 0)}
+                            title="Toutes les affectations"
+                            onClick={() => openQuiOu('Toutes les affectations', null, null)}
+                          />
                         </td>
                       </tr>
                     </>
@@ -371,10 +515,10 @@ export default function VillageDashboardTab() {
       </div>
 
       {drilldown && (
-        <DashboardListModal
+        <VillageDrilldownModal
           title={drilldown.title}
-          columns={drilldown.columns}
           rows={drilldown.rows}
+          showLocalisation={drilldown.showLocalisation}
           onClose={() => setDrilldown(null)}
         />
       )}

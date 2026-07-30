@@ -13,10 +13,13 @@ import {
   buildEmployeesHrDashboard,
   employeeToDashboardListRow,
   employeesForHrKpi,
+  employeesMatchingHrSegment,
   type EmployeesHrKpiKey,
+  type HrChartSegmentKind,
 } from '@/lib/employees-hr-dashboard';
 import type { Employee } from '@/lib/types';
 import { useMemo, useState, type ReactNode } from 'react';
+import type { ChartDeptFilterSource, ChartFilterRenderContext } from '@/components/EnlargeableChartPanel';
 
 interface Props {
   employees: Employee[];
@@ -28,7 +31,9 @@ const KPI_META = [
   { key: 'hommes', label: 'Hommes', glow: 'card-glow-cyan', format: 'int', watermark: 'male', drill: 'hommes' as const },
   { key: 'femmes', label: 'Femmes', glow: 'card-glow-pink', format: 'int', watermark: 'female', drill: 'femmes' as const },
   { key: 'ageMoyen', label: 'Âge moyen', glow: 'card-glow-violet', format: '1', watermark: null, drill: null },
-  { key: 'moyEnfants', label: 'Moy. enfants', glow: 'card-glow-amber', format: '2', watermark: null, drill: null },
+  { key: 'totalCdd', label: 'CDD', glow: 'card-glow-amber', format: 'int', watermark: null, drill: 'totalCdd' as const },
+  { key: 'totalEssai', label: "Période d'essai", glow: 'card-glow-violet', format: 'int', watermark: null, drill: 'totalEssai' as const },
+  { key: 'alertesEssai', label: 'Alertes essai (J-30)', glow: 'card-glow-red', format: 'int', watermark: null, drill: 'alertesEssai' as const },
   { key: 'totalExits', label: 'Sorties', glow: 'card-glow-green', format: 'int', watermark: null, drill: 'totalExits' as const },
 ] as const;
 
@@ -43,6 +48,24 @@ const ACTIVE_COLUMNS: DashboardListColumn[] = [
   { key: 'embauche', label: 'Date d\'embauche' },
 ];
 
+const TRIAL_COLUMNS: DashboardListColumn[] = [
+  { key: 'matricule', label: 'Matricule' },
+  { key: 'nom', label: 'Nom' },
+  { key: 'localisation', label: 'Site' },
+  { key: 'typeContrat', label: 'Contrat' },
+  { key: 'finEssai', label: "Fin d'essai" },
+  { key: 'statutEval', label: 'Statut éval.' },
+];
+
+const CDD_COLUMNS: DashboardListColumn[] = [
+  { key: 'matricule', label: 'Matricule' },
+  { key: 'nom', label: 'Nom' },
+  { key: 'localisation', label: 'Site' },
+  { key: 'typeContrat', label: 'Contrat' },
+  { key: 'embauche', label: 'Début' },
+  { key: 'finContrat', label: 'Fin contrat' },
+];
+
 const EXIT_COLUMNS: DashboardListColumn[] = [
   { key: 'matricule', label: 'Matricule' },
   { key: 'nom', label: 'Nom' },
@@ -54,6 +77,8 @@ const EXIT_COLUMNS: DashboardListColumn[] = [
 const COMPANY_COLORS = ['#2563eb', '#f59e0b'];
 const LOC_COLORS = ['#22d3ee', '#0891b2', '#67e8f9', '#0e7490'];
 const MARITAL_COLORS = ['#8b5cf6', '#06b6d4', '#f472b6', '#94a3b8', '#f59e0b'];
+const ESSAI_STATUS_COLORS = ['#f59e0b', '#2563eb', '#dc2626', '#16a34a'];
+const CDD_DEPT_BAR = 'employees-bar-fill-cdd';
 const AGE_BAR_CLASS = 'employees-bar-fill-age';
 
 function GenderWatermark({ variant }: { variant: 'male' | 'female' }) {
@@ -107,27 +132,60 @@ export default function EmployeesHrDashboardView({ employees, exits = [] }: Prop
     });
   };
 
+  const pctLabel = (key: (typeof KPI_META)[number]['key']): string | null => {
+    if (key === 'ageMoyen') return null;
+    const value = stats[key];
+    if (typeof value !== 'number' || !Number.isFinite(value)) return null;
+    if (key === 'total') return '100%';
+
+    const base = key === 'alertesEssai' ? stats.totalEssai : stats.total;
+    if (!base || base <= 0) return '0%';
+
+    const pct = Math.round((value / base) * 1000) / 10;
+    return Number.isInteger(pct)
+      ? `${pct}%`
+      : `${pct.toLocaleString('fr-FR', { maximumFractionDigits: 1, minimumFractionDigits: 1 })}%`;
+  };
+
   const openKpi = (key: EmployeesHrKpiKey, label: string) => {
     const list = employeesForHrKpi(employees, exits, key);
+    const columns =
+      key === 'totalExits'
+        ? EXIT_COLUMNS
+        : key === 'totalCdd'
+          ? CDD_COLUMNS
+          : key === 'totalEssai' || key === 'alertesEssai'
+            ? TRIAL_COLUMNS
+            : ACTIVE_COLUMNS;
     setDrilldown({
       title: label,
-      columns: key === 'totalExits' ? EXIT_COLUMNS : ACTIVE_COLUMNS,
+      columns,
       rows: list.map(employeeToDashboardListRow),
     });
   };
 
   const activeDeptFilter = (
-    build: (emps: Employee[]) => ReactNode,
-    opts?: { showGenderLegend?: boolean },
-  ) => ({
+    kind: HrChartSegmentKind,
+    build: (emps: Employee[], ctx: ChartFilterRenderContext) => ReactNode,
+  ): ChartDeptFilterSource => ({
     employees,
     renderFiltered: build,
-    showGenderLegend: opts?.showGenderLegend,
+    showGenderLegend: true,
+    resolveSegment: (emps, label) => employeesMatchingHrSegment(emps, kind, label),
+    toListRow: employeeToDashboardListRow,
+    segmentColumns: ACTIVE_COLUMNS,
   });
 
-  const exitDeptFilter = (build: (emps: Employee[]) => ReactNode) => ({
+  const exitDeptFilter = (
+    kind: HrChartSegmentKind,
+    build: (emps: Employee[], ctx: ChartFilterRenderContext) => ReactNode,
+  ): ChartDeptFilterSource => ({
     employees: exits,
     renderFiltered: build,
+    showGenderLegend: true,
+    resolveSegment: (emps, label) => employeesMatchingHrSegment(emps, kind, label),
+    toListRow: employeeToDashboardListRow,
+    segmentColumns: EXIT_COLUMNS,
   });
 
   const openLatestHires = () => {
@@ -148,13 +206,17 @@ export default function EmployeesHrDashboardView({ employees, exits = [] }: Prop
     <div className="travel-history-dashboard employees-hr-dashboard">
       <div className="travel-history-cards employees-hr-cards">
         {KPI_META.map((kpi) => {
-          const className = `card card-glow ${kpi.glow} travel-history-card employees-hr-card${kpi.watermark ? ' has-watermark' : ''}${kpi.drill ? ' dependants-kpi-clickable' : ''}`;
+          const className = `card card-glow ${kpi.glow} travel-history-card employees-hr-card${kpi.watermark ? ' has-watermark' : ''}${kpi.drill ? ' dependants-kpi-clickable' : ''}${kpi.key === 'alertesEssai' && stats.alertesEssai > 0 ? ' is-alert' : ''}`;
+          const pct = pctLabel(kpi.key);
           const body = (
             <>
               {kpi.watermark && <GenderWatermark variant={kpi.watermark} />}
               <div className="employees-hr-card-body">
                 <div className="card-label">{kpi.label}</div>
-                <div className="card-value">{fmt(kpi.key, kpi.format)}</div>
+                <div className="card-value">
+                  {fmt(kpi.key, kpi.format)}
+                  {pct ? <span className="employees-hr-card-pct">{pct}</span> : null}
+                </div>
               </div>
             </>
           );
@@ -184,24 +246,23 @@ export default function EmployeesHrDashboardView({ employees, exits = [] }: Prop
           title="Par company"
           items={stats.parCompany}
           colors={COMPANY_COLORS}
-          deptFilter={activeDeptFilter(
-            (emps) => (
-              <EmployeesPieChartBody
-                items={buildEmployeesHrDashboard(emps).parCompany}
-                colors={COMPANY_COLORS}
-              />
-            ),
-            { showGenderLegend: true },
-          )}
+          deptFilter={activeDeptFilter('company', (emps, ctx) => (
+            <EmployeesPieChartBody
+              items={buildEmployeesHrDashboard(emps).parCompany}
+              colors={COMPANY_COLORS}
+              onItemClick={ctx.onSegmentClick}
+            />
+          ))}
         />
         <EmployeesPieChart
           title="Par localisation"
           items={stats.parLocalisation}
           colors={LOC_COLORS}
-          deptFilter={activeDeptFilter((emps) => (
+          deptFilter={activeDeptFilter('localisation', (emps, ctx) => (
             <EmployeesPieChartBody
               items={buildEmployeesHrDashboard(emps).parLocalisation}
               colors={LOC_COLORS}
+              onItemClick={ctx.onSegmentClick}
             />
           ))}
         />
@@ -209,10 +270,11 @@ export default function EmployeesHrDashboardView({ employees, exits = [] }: Prop
           title="Par statut marital"
           items={stats.parMaritalStatus}
           colors={MARITAL_COLORS}
-          deptFilter={activeDeptFilter((emps) => (
+          deptFilter={activeDeptFilter('maritalStatus', (emps, ctx) => (
             <EmployeesPieChartBody
               items={buildEmployeesHrDashboard(emps).parMaritalStatus}
               colors={MARITAL_COLORS}
+              onItemClick={ctx.onSegmentClick}
             />
           ))}
         />
@@ -220,12 +282,54 @@ export default function EmployeesHrDashboardView({ employees, exits = [] }: Prop
           title="Par genre"
           items={stats.parGenre}
           colors={['#06b6d4', '#f472b6']}
-          deptFilter={activeDeptFilter((emps) => (
+          deptFilter={activeDeptFilter('genre', (emps, ctx) => (
             <EmployeesPieChartBody
               items={buildEmployeesHrDashboard(emps).parGenre}
               colors={['#06b6d4', '#f472b6']}
+              onItemClick={ctx.onSegmentClick}
             />
           ))}
+        />
+        <EmployeesPieChart
+          title="Statut période d'essai"
+          items={stats.essaiParStatut}
+          colors={ESSAI_STATUS_COLORS}
+          deptFilter={{
+            employees,
+            renderFiltered: (emps, ctx) => (
+              <EmployeesPieChartBody
+                items={buildEmployeesHrDashboard(emps).essaiParStatut}
+                colors={ESSAI_STATUS_COLORS}
+                onItemClick={ctx.onSegmentClick}
+              />
+            ),
+            showGenderLegend: true,
+            resolveSegment: (emps, label) => employeesMatchingHrSegment(emps, 'essaiStatut', label),
+            toListRow: employeeToDashboardListRow,
+            segmentColumns: TRIAL_COLUMNS,
+          }}
+        />
+        <DependantsBarChart
+          title="CDD par département"
+          items={toChartItems(stats.cddParDepartement)}
+          barClassName={CDD_DEPT_BAR}
+          fitAll
+          compact
+          deptFilter={{
+            employees,
+            renderFiltered: (emps, ctx) => (
+              <DependantsBarChartBody
+                items={toChartItems(buildEmployeesHrDashboard(emps).cddParDepartement)}
+                barClassName={CDD_DEPT_BAR}
+                fitAll
+                onItemClick={ctx.onSegmentClick}
+              />
+            ),
+            showGenderLegend: true,
+            resolveSegment: (emps, label) => employeesMatchingHrSegment(emps, 'cddDepartement', label),
+            toListRow: employeeToDashboardListRow,
+            segmentColumns: CDD_COLUMNS,
+          }}
         />
         <DependantsBarChart
           title="Par grade"
@@ -233,11 +337,12 @@ export default function EmployeesHrDashboardView({ employees, exits = [] }: Prop
           barClassName="employees-bar-fill-grade"
           fitAll
           compact
-          deptFilter={activeDeptFilter((emps) => (
+          deptFilter={activeDeptFilter('grade', (emps, ctx) => (
             <DependantsBarChartBody
               items={toChartItems(buildEmployeesHrDashboard(emps).parGrade)}
               barClassName="employees-bar-fill-grade"
               fitAll
+              onItemClick={ctx.onSegmentClick}
             />
           ))}
         />
@@ -247,11 +352,12 @@ export default function EmployeesHrDashboardView({ employees, exits = [] }: Prop
           barClassName={AGE_BAR_CLASS}
           fitAll
           compact
-          deptFilter={activeDeptFilter((emps) => (
+          deptFilter={activeDeptFilter('ageBand', (emps, ctx) => (
             <DependantsBarChartBody
               items={toChartItems(buildEmployeesHrDashboard(emps).parTrancheAge)}
               barClassName={AGE_BAR_CLASS}
               fitAll
+              onItemClick={ctx.onSegmentClick}
             />
           ))}
         />
@@ -261,27 +367,32 @@ export default function EmployeesHrDashboardView({ employees, exits = [] }: Prop
           barClassName="employees-bar-fill-dept"
           fitAll
           compact
-          deptFilter={activeDeptFilter((emps) => (
+          deptFilter={activeDeptFilter('departement', (emps, ctx) => (
             <DependantsBarChartBody
               items={toChartItems(buildEmployeesHrDashboard(emps).parDepartement)}
               barClassName="employees-bar-fill-dept"
               fitAll
+              onItemClick={ctx.onSegmentClick}
             />
           ))}
         />
         <EmployeesPieChart
           title="Par nationalité"
           items={stats.parNationalite}
-          deptFilter={activeDeptFilter((emps) => (
-            <EmployeesPieChartBody items={buildEmployeesHrDashboard(emps).parNationalite} />
+          deptFilter={activeDeptFilter('nationalite', (emps, ctx) => (
+            <EmployeesPieChartBody
+              items={buildEmployeesHrDashboard(emps).parNationalite}
+              onItemClick={ctx.onSegmentClick}
+            />
           ))}
         />
         <EmployeesExitMonthlyChart
           title="Sorties par mois et motif"
           rows={stats.exitsParMois}
-          deptFilter={exitDeptFilter((emps) => (
+          deptFilter={exitDeptFilter('exitMonth', (emps, ctx) => (
             <EmployeesExitMonthlyChartBody
               rows={buildEmployeesHrDashboard([], emps).exitsParMois}
+              onItemClick={ctx.onSegmentClick}
             />
           ))}
         />
@@ -289,10 +400,11 @@ export default function EmployeesHrDashboardView({ employees, exits = [] }: Prop
           title="Motifs de sortie"
           items={stats.exitsParRaison}
           colors={['#f59e0b', '#ef4444', '#8b5cf6', '#06b6d4']}
-          deptFilter={exitDeptFilter((emps) => (
+          deptFilter={exitDeptFilter('exitRaison', (emps, ctx) => (
             <EmployeesPieChartBody
               items={buildEmployeesHrDashboard([], emps).exitsParRaison}
               colors={['#f59e0b', '#ef4444', '#8b5cf6', '#06b6d4']}
+              onItemClick={ctx.onSegmentClick}
             />
           ))}
         />

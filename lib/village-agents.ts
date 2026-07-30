@@ -329,3 +329,222 @@ export function buildVillageDashboardStats(
     quiOu,
   };
 }
+
+/** Ligne du modal drilldown Village (agent / hors effectif / maison vide). */
+export interface VillageDrilldownRow {
+  id: string;
+  matricule: string;
+  nom: string;
+  numeroVilla: string;
+  typeMaison: string;
+  departement: string;
+  localisation?: string;
+  famille: Dependant[];
+  externe?: boolean;
+  /** Maison sans occupant. */
+  emptyMaison?: boolean;
+}
+
+function buildTailleLabelLookup(tailles: VillageTaille[]): Map<string, string> {
+  const tailleLabel = new Map(
+    tailles.map((t) => [t.code.toLowerCase(), t.label || t.code] as const),
+  );
+  for (const t of tailles) {
+    tailleLabel.set((t.label || t.code).toLowerCase(), t.label || t.code);
+  }
+  return tailleLabel;
+}
+
+export function resolveMaisonTypeLabel(
+  taille: string,
+  typeMaison: string,
+  tailles: VillageTaille[],
+): string {
+  const tailleLabel = buildTailleLabelLookup(tailles);
+  return (
+    tailleLabel.get(norm(taille).toLowerCase())
+    || tailleLabel.get(norm(typeMaison).toLowerCase())
+    || norm(taille)
+    || norm(typeMaison)
+    || 'Non renseigné'
+  );
+}
+
+export function buildVillageDrilldownFromAgents(
+  agents: VillageAgentRow[],
+  dependants: Dependant[],
+): VillageDrilldownRow[] {
+  const byMat = new Map(
+    buildFamilyGroups(dependants).map((g) => [norm(g.matricule), g] as const),
+  );
+  return agents
+    .map((a) => {
+      const group = byMat.get(norm(a.matricule));
+      return {
+        id: a.matricule,
+        matricule: a.matricule,
+        nom: a.nom,
+        numeroVilla: a.numeroVilla || '',
+        typeMaison: a.typeMaison || '',
+        departement: a.departement || '',
+        localisation: a.localisation || '',
+        famille: group?.famille ?? [],
+      };
+    })
+    .sort((a, b) => a.nom.localeCompare(b.nom, 'fr'));
+}
+
+export function buildVillageDrilldownFromEmployees(
+  employees: Employee[],
+  dependants: Dependant[],
+): VillageDrilldownRow[] {
+  const byMat = new Map(
+    buildFamilyGroups(dependants).map((g) => [norm(g.matricule), g] as const),
+  );
+  const villaByMat = buildVillaInfoByMatricule(dependants);
+  return employees
+    .map((e) => {
+      const mat = norm(e.matricule);
+      const villa = villaByMat.get(mat);
+      const group = byMat.get(mat);
+      return {
+        id: e.matricule,
+        matricule: e.matricule,
+        nom: e.nom,
+        numeroVilla: villa?.numeroVilla || '',
+        typeMaison: villa?.typeMaison || '',
+        departement: norm(e.departement),
+        localisation: norm(e.localisation),
+        famille: group?.famille ?? [],
+      };
+    })
+    .sort((a, b) => a.nom.localeCompare(b.nom, 'fr'));
+}
+
+export function buildVillageDrilldownFromQuiOu(
+  rows: VillageDashboardStats['quiOu'],
+  dependants: Dependant[],
+): VillageDrilldownRow[] {
+  const byMat = new Map(
+    buildFamilyGroups(dependants).map((g) => [norm(g.matricule), g] as const),
+  );
+  return rows
+    .map((row, index) => {
+      if (row.externe || !norm(row.matricule)) {
+        return {
+          id: `externe-${row.numeroVilla || index}`,
+          matricule: '',
+          nom: row.nom,
+          numeroVilla: row.numeroVilla,
+          typeMaison: row.typeMaison || row.taille || '',
+          departement: row.departement || HORS_EFFECTIF_DEPT,
+          famille: [] as Dependant[],
+          externe: true,
+        };
+      }
+      const group = byMat.get(norm(row.matricule));
+      return {
+        id: row.matricule,
+        matricule: row.matricule,
+        nom: row.nom,
+        numeroVilla: row.numeroVilla,
+        typeMaison: row.typeMaison || row.taille || '',
+        departement: row.departement || '',
+        famille: group?.famille ?? [],
+      };
+    })
+    .sort((a, b) => a.nom.localeCompare(b.nom, 'fr'));
+}
+
+export function buildVillageDrilldownFromMaisons(
+  list: VillageMaisonOccupancy[],
+  dependants: Dependant[],
+): VillageDrilldownRow[] {
+  const byMat = new Map(
+    buildFamilyGroups(dependants).map((g) => [norm(g.matricule), g] as const),
+  );
+  const rows: VillageDrilldownRow[] = [];
+  const sorted = [...list].sort((a, b) =>
+    a.numero.localeCompare(b.numero, 'fr', { numeric: true }),
+  );
+  for (const maison of sorted) {
+    const typeMaison = maison.typeMaison || maison.taille || '';
+    if (!maison.occupied || maison.occupants.length === 0) {
+      rows.push({
+        id: `vide-${maison.numero}`,
+        matricule: '',
+        nom: '—',
+        numeroVilla: maison.numero,
+        typeMaison,
+        departement: '—',
+        famille: [],
+        emptyMaison: true,
+      });
+      continue;
+    }
+    for (const occ of maison.occupants) {
+      if (occ.externe || !norm(occ.matricule)) {
+        rows.push({
+          id: `externe-${maison.numero}-${occ.nom}`,
+          matricule: '',
+          nom: occ.nom,
+          numeroVilla: maison.numero,
+          typeMaison,
+          departement: occ.departement || HORS_EFFECTIF_DEPT,
+          famille: [],
+          externe: true,
+        });
+        continue;
+      }
+      const group = byMat.get(norm(occ.matricule));
+      rows.push({
+        id: `${occ.matricule}-${maison.numero}`,
+        matricule: occ.matricule,
+        nom: occ.nom,
+        numeroVilla: maison.numero,
+        typeMaison,
+        departement: occ.departement || '',
+        famille: group?.famille ?? [],
+      });
+    }
+  }
+  return rows;
+}
+
+export function filterOccupancyByType(
+  occupancy: VillageMaisonOccupancy[],
+  tailles: VillageTaille[],
+  typeLabel: string | null,
+  mode: 'all' | 'occupees' | 'vides',
+): VillageMaisonOccupancy[] {
+  return occupancy.filter((m) => {
+    if (typeLabel) {
+      const label = resolveMaisonTypeLabel(m.taille, m.typeMaison, tailles);
+      if (label !== typeLabel) return false;
+    }
+    if (mode === 'occupees') return m.occupied;
+    if (mode === 'vides') return !m.occupied;
+    return true;
+  });
+}
+
+export function filterQuiOuByDeptType(
+  quiOu: VillageDashboardStats['quiOu'],
+  tailles: VillageTaille[],
+  departement: string | null,
+  typeLabel: string | null,
+): VillageDashboardStats['quiOu'] {
+  return quiOu.filter((row) => {
+    if (departement) {
+      const dept =
+        norm(row.departement)
+        || (row.externe ? HORS_EFFECTIF_DEPT : 'Non renseigné');
+      if (dept !== departement) return false;
+    }
+    if (typeLabel) {
+      const label = resolveMaisonTypeLabel(row.taille, row.typeMaison, tailles);
+      if (label !== typeLabel) return false;
+    }
+    return true;
+  });
+}

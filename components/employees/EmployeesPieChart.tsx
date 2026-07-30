@@ -76,11 +76,13 @@ function PieBody({
   colors,
   formatValue,
   formatCount,
+  onItemClick,
 }: {
   items: PieChartItem[];
   colors: string[];
   formatValue: (value: number) => string;
   formatCount: (count: number) => string;
+  onItemClick?: (label: string) => void;
 }): ReactNode {
   const [hover, setHover] = useState<string | null>(null);
   const total = useMemo(() => items.reduce((s, i) => s + i.count, 0), [items]);
@@ -126,6 +128,7 @@ function PieBody({
   const cy = 110;
   const rOut = 92;
   const rIn = 52;
+  const canDrill = Boolean(onItemClick);
 
   return (
     <div className="employees-pie-layout">
@@ -137,10 +140,14 @@ function PieBody({
             return (
               <g
                 key={slice.label}
-                className={`employees-pie-slice-g${isActive ? ' is-active' : ''}${isDimmed ? ' is-dimmed' : ''}`}
-                style={{ transformOrigin: `${cx}px ${cy}px` }}
+                className={`employees-pie-slice-g${isActive ? ' is-active' : ''}${isDimmed ? ' is-dimmed' : ''}${canDrill ? ' is-clickable' : ''}`}
+                style={{ transformOrigin: `${cx}px ${cy}px`, cursor: canDrill ? 'pointer' : undefined }}
                 onMouseEnter={() => setHover(slice.label)}
                 onMouseLeave={() => setHover(null)}
+                onClick={canDrill ? (event) => {
+                  event.stopPropagation();
+                  onItemClick?.(slice.label);
+                } : undefined}
               >
                 <path
                   d={describeDonutSlice(cx, cy, rOut, rIn, slice.start, slice.end)}
@@ -148,7 +155,7 @@ function PieBody({
                   className="employees-pie-slice"
                 >
                   <title>
-                    {`${slice.label}: ${formatWithCount(slice.count, slice.itemsCount)} (${slice.pct}%)`}
+                    {`${slice.label}: ${formatWithCount(slice.count, slice.itemsCount)} (${slice.pct}%)${canDrill ? ' — cliquer pour détails' : ''}`}
                   </title>
                 </path>
               </g>
@@ -168,9 +175,14 @@ function PieBody({
         {slices.map((slice) => (
           <li
             key={slice.label}
-            className={`employees-pie-legend-item${hover === slice.label ? ' is-active' : ''}`}
+            className={`employees-pie-legend-item${hover === slice.label ? ' is-active' : ''}${canDrill ? ' is-clickable' : ''}`}
             onMouseEnter={() => setHover(slice.label)}
             onMouseLeave={() => setHover(null)}
+            onClick={canDrill ? (event) => {
+              event.stopPropagation();
+              onItemClick?.(slice.label);
+            } : undefined}
+            title={canDrill ? `Voir la liste — ${slice.label}` : undefined}
           >
             <span className="employees-pie-swatch" style={{ background: slice.color }} />
             <span className="employees-pie-legend-label" title={slice.label}>{slice.label}</span>
@@ -189,11 +201,13 @@ export function EmployeesPieChartBody({
   colors = DEFAULT_COLORS,
   formatValue = (v) => String(v),
   formatCount = (n) => `(${n})`,
+  onItemClick,
 }: {
   items: PieChartItem[];
   colors?: string[];
   formatValue?: (value: number) => string;
   formatCount?: (count: number) => string;
+  onItemClick?: (label: string) => void;
 }): ReactNode {
   return (
     <PieBody
@@ -201,6 +215,7 @@ export function EmployeesPieChartBody({
       colors={colors}
       formatValue={formatValue}
       formatCount={formatCount}
+      onItemClick={onItemClick}
     />
   );
 }

@@ -1,51 +1,47 @@
 import 'server-only';
 
 import fs from 'fs';
-import path from 'path';
 import XlsxPopulate from 'xlsx-populate';
-import { EMP_COL, EMPLOYEE_EXIT_SHEET, EMPLOYEE_MASTER_SHEET } from './employee-columns';
+import {
+  normalizeEmployeeStatut,
+  parseDateToExcelSerial,
+} from './employee-columns';
+import {
+  EXPORT_EMP_COL,
+  EXPORT_EMP_HEADERS,
+  EXPORT_EMP_LAST_COL,
+  EXPORT_RAISON_EXIT_COL_LETTER,
+} from './employees-export-columns';
 import {
   EMPLOYEES_HR_EXPORT_TEMPLATE_PATH,
   EXPORT_TEMPLATE_FILES,
   getExportTemplatesDirectory,
 } from './excel-export-template-paths';
-import { withExcelLock } from './excel-io';
-import { getEmployeeWorkbookPath } from './excel-data-paths';
+import { readEmployeesBundle } from './employees-store';
+import { isCddEmployee, isInActiveTrialPeriod, resolveEssaiStatutEval } from './employees-trial';
+import type { Employee } from './types';
 
-const EXCEL_PATH = getEmployeeWorkbookPath();
-const MASTER_SHEET = EMPLOYEE_MASTER_SHEET;
+const MASTER_SHEET = 'EMPLOYEE';
 const BASE_SHEET = 'Base';
 const EXIT_EXPORT_SHEET = 'EXIT';
+const ESSAI_EXPORT_SHEET = "Periode d'essai";
+const CDD_EXPORT_SHEET = 'CDD';
 const DASHBOARD_SHEET = 'Dashboard';
 const FIRST_DATA_ROW = 3;
-const AGE_COL = EMP_COL.age + 1; // L = 12
-const DOB_COL_LETTER = 'K';
-const MATRICULE_COL = 1;
-const NOM_COL = EMP_COL.nom + 1; // C = 3
-const JOB_TITLE_COL = EMP_COL.jobTitle + 1; // F = 6
+const AGE_COL = EXPORT_EMP_COL.age + 1;
+const END_COL = EXPORT_EMP_LAST_COL + 1;
 
-/** Colonnes Excel 1-based à supprimer (vidées + masquées) à l’export. */
-const COL_T = 20;
-const COL_U = 21;
-const COL_V_LM_NAME = 22;
-const COL_W_LM_POS = 23;
-const COL_X = 24;
+const KEEP_SHEETS = new Set([
+  DASHBOARD_SHEET,
+  BASE_SHEET,
+  EXIT_EXPORT_SHEET,
+  ESSAI_EXPORT_SHEET,
+  CDD_EXPORT_SHEET,
+]);
 
-/** Après conservation de V/W : raison exit reste en AD (col 30). */
-const COL_RAISON_EXIT = EMP_COL.raisonExit + 1;
-
-const STYLE_PROPS = [
-  'bold',
-  'italic',
-  'fill',
-  'border',
-  'horizontalAlignment',
-  'verticalAlignment',
-  'fontColor',
-  'fontSize',
-  'wrapText',
-  'numberFormat',
-] as const;
+/** Plafond anti-explosion mémoire (xlsx-populate matérialise chaque cellule touchée). */
+const MAX_TEMPLATE_SCAN = 40;
+const MAX_DATA_ROWS = 2000;
 
 type PopulateWorkbook = Awaited<ReturnType<typeof XlsxPopulate.fromFileAsync>>;
 type PopulateSheet = ReturnType<PopulateWorkbook['sheet']>;
@@ -55,264 +51,183 @@ function resolveEmployeesHrExportTemplatePath(): string {
 }
 
 function ageFormula(row: number): string {
-  return `DATEDIF(${DOB_COL_LETTER}${row},TODAY(),"Y")`;
+  return `DATEDIF(K${row},TODAY(),"Y")`;
 }
 
-function findLastDataRow(sheet: PopulateSheet, startRow = FIRST_DATA_ROW): number {
-  let last = startRow - 1;
-  const used = sheet.usedRange();
-  const maxScan = used ? Math.min(used.endCell().rowNumber(), 8000) : 8000;
+function cellValue(value: unknown): string | number | boolean | null {
+  if (value === undefined || value === null || value === '') return null;
+  if (typeof value === 'number' || typeof value === 'boolean') return value;
+  return String(value);
+}
 
-  for (let row = startRow; row <= maxScan; row++) {
-    const matricule = sheet.cell(row, MATRICULE_COL).value();
+function employeeToExportValues(employee: Employee): (string | number | boolean | null)[] {
+  const values: (string | number | boolean | null)[] = new Array(EXPORT_EMP_LAST_COL + 1).fill(null);
+  values[EXPORT_EMP_COL.matricule] = cellValue(employee.matricule || '');
+  values[EXPORT_EMP_COL.company] = cellValue(employee.company || '');
+  values[EXPORT_EMP_COL.nom] = cellValue(employee.nom || '');
+  values[EXPORT_EMP_COL.departement] = cellValue(employee.departement || '');
+  values[EXPORT_EMP_COL.grade] = cellValue(employee.grade || '');
+  values[EXPORT_EMP_COL.jobTitle] = cellValue(employee.jobTitle || '');
+  values[EXPORT_EMP_COL.localisation] = cellValue(employee.localisation || '');
+  values[EXPORT_EMP_COL.centreCout] = cellValue(employee.centreCout || '');
+  values[EXPORT_EMP_COL.appointmentDate] = cellValue(parseDateToExcelSerial(employee.appointmentDate || ''));
+  values[EXPORT_EMP_COL.gender] = cellValue(employee.gender || '');
+  values[EXPORT_EMP_COL.dateOfBirth] = cellValue(parseDateToExcelSerial(employee.dateOfBirth || ''));
+  values[EXPORT_EMP_COL.nationality] = cellValue(employee.nationality || '');
+  values[EXPORT_EMP_COL.maritalStatus] = cellValue(employee.maritalStatus || '');
+  values[EXPORT_EMP_COL.numberOfChildren] = cellValue(employee.numberOfChildren ?? '');
+  values[EXPORT_EMP_COL.personnelArea] = cellValue(employee.personnelArea || '');
+  values[EXPORT_EMP_COL.employeeSubGroup] = cellValue(employee.employeeSubGroup || '');
+  values[EXPORT_EMP_COL.payrollArea] = cellValue(employee.payrollArea || '');
+  // Payroll periode : pas de champ dédié en JSON — laisser vide.
+  values[EXPORT_EMP_COL.payrollPeriode] = null;
+  values[EXPORT_EMP_COL.lineManagerName] = cellValue(employee.lineManagerName || '');
+  values[EXPORT_EMP_COL.lineManagerPosition] = cellValue(employee.lineManagerPosition || '');
+  values[EXPORT_EMP_COL.cnss] = cellValue(employee.cnss || '');
+  values[EXPORT_EMP_COL.nif] = cellValue(employee.nif || '');
+  values[EXPORT_EMP_COL.statut] = cellValue(normalizeEmployeeStatut(employee.statut));
+  values[EXPORT_EMP_COL.typeContrat] = cellValue(employee.typeContrat || '');
+  values[EXPORT_EMP_COL.dureeContratMois] = cellValue(employee.dureeContratMois ?? '');
+  values[EXPORT_EMP_COL.periodeEssaiMois] = cellValue(employee.periodeEssaiMois ?? '');
+  values[EXPORT_EMP_COL.dateFinPeriodeEssai] = cellValue(
+    parseDateToExcelSerial(employee.dateFinPeriodeEssai || ''),
+  );
+  values[EXPORT_EMP_COL.dateFinContrat] = cellValue(parseDateToExcelSerial(employee.dateFinContrat || ''));
+  values[EXPORT_EMP_COL.raisonExit] = cellValue(employee.raisonExit || '');
+  values[EXPORT_EMP_COL.essaiActions] = cellValue(employee.essaiActions || '');
+  values[EXPORT_EMP_COL.essaiResponsable] = cellValue(employee.essaiResponsable || '');
+  values[EXPORT_EMP_COL.essaiEcheanceEval] = cellValue(
+    parseDateToExcelSerial(employee.essaiEcheanceEval || ''),
+  );
+  values[EXPORT_EMP_COL.essaiStatutEval] = cellValue(resolveEssaiStatutEval(employee));
+  values[EXPORT_EMP_COL.essaiCommentaire] = cellValue(employee.essaiCommentaire || '');
+  return values;
+}
+
+/** Écrit / aligne les en-têtes du template (CNSS, NIF, contrat, exit). */
+function applyExportHeaders(sheet: PopulateSheet): void {
+  for (let col0 = 0; col0 <= EXPORT_EMP_LAST_COL; col0++) {
+    const header = EXPORT_EMP_HEADERS[col0];
+    if (header) sheet.cell(2, col0 + 1).value(header);
+  }
+}
+
+/** Dernière ligne modèle occupée (scan court, sans usedRange étendu). */
+function findSampleLastRow(sheet: PopulateSheet): number {
+  let last = FIRST_DATA_ROW - 1;
+  for (let row = FIRST_DATA_ROW; row <= FIRST_DATA_ROW + MAX_TEMPLATE_SCAN; row++) {
+    const matricule = sheet.cell(row, 1).value();
     if (matricule !== undefined && matricule !== null && String(matricule).trim() !== '') {
       last = row;
     }
   }
-
   return last;
 }
 
-function maxDataCol(sheet: PopulateSheet): number {
-  const used = sheet.usedRange();
-  const fromUsed = used ? used.endCell().columnNumber() : 0;
-  return Math.max(fromUsed, COL_RAISON_EXIT);
-}
-
-function readCellValue(sheet: PopulateSheet, row: number, col: number): unknown {
-  const cell = sheet.cell(row, col);
-  try {
-    const hyperlink = typeof cell.hyperlink === 'function' ? cell.hyperlink() : undefined;
-    if (typeof hyperlink === 'string' && hyperlink.trim()) return hyperlink.trim();
-  } catch {
-    // ignore
+function clearRow(sheet: PopulateSheet, row: number): void {
+  for (let col = 1; col <= END_COL; col++) {
+    sheet.cell(row, col).value(null);
   }
-  return cell.value();
 }
 
-function writeCellValue(sheet: PopulateSheet, row: number, col: number, value: unknown): void {
-  // Ne jamais écraser la formule d'âge
-  if (col === AGE_COL && row >= FIRST_DATA_ROW) return;
-  sheet.cell(row, col).value(value === undefined ? null : value);
-}
-
-function excelQuotedString(value: string): string {
-  return `"${value.replace(/"/g, '""')}"`;
+function writeEmployeeRow(sheet: PopulateSheet, row: number, employee: Employee): void {
+  const values = employeeToExportValues(employee);
+  for (let col0 = 0; col0 <= EXPORT_EMP_LAST_COL; col0++) {
+    if (col0 === EXPORT_EMP_COL.age) continue;
+    sheet.cell(row, col0 + 1).value(values[col0]);
+  }
+  sheet.cell(row, AGE_COL).formula(ageFormula(row));
 }
 
 /**
- * Rapproche le nom du line manager avec la colonne C (COMPLET NAME)
- * pour afficher l’orthographe officielle de la base.
+ * Remplit une feuille sans range massif ni clone :
+ * - efface seulement les lignes modèle existantes (≤ ~40)
+ * - écrit ligne par ligne (pic mémoire bas)
  */
-function resolveNameAgainstColumnC(
-  sheet: PopulateSheet,
-  rawName: unknown,
-  lastDataRow: number,
-): string {
-  const needle = String(rawName ?? '').trim();
-  if (!needle) return '';
-  const needleLc = needle.toLowerCase();
-
-  for (let row = FIRST_DATA_ROW; row <= lastDataRow; row++) {
-    const nom = String(sheet.cell(row, NOM_COL).value() ?? '').trim();
-    if (nom && nom.toLowerCase() === needleLc) return nom;
+function fillPeopleSheet(sheet: PopulateSheet, employees: Employee[]): number {
+  if (employees.length > MAX_DATA_ROWS) {
+    throw new Error(`Export limité à ${MAX_DATA_ROWS} lignes (reçu ${employees.length}).`);
   }
 
-  let best = '';
-  for (let row = FIRST_DATA_ROW; row <= lastDataRow; row++) {
-    const nom = String(sheet.cell(row, NOM_COL).value() ?? '').trim();
-    if (!nom) continue;
-    const nomLc = nom.toLowerCase();
-    if (nomLc.includes(needleLc) || needleLc.includes(nomLc)) {
-      if (!best || nom.length > best.length) best = nom;
-    }
+  applyExportHeaders(sheet);
+
+  const sampleLast = findSampleLastRow(sheet);
+  const lastDataRow = employees.length > 0
+    ? FIRST_DATA_ROW + employees.length - 1
+    : FIRST_DATA_ROW - 1;
+
+  // Effacer uniquement les anciennes lignes modèle (pas de range géant).
+  const clearUntil = Math.max(sampleLast, lastDataRow);
+  for (let row = FIRST_DATA_ROW; row <= clearUntil; row++) {
+    clearRow(sheet, row);
   }
-  return best || needle;
-}
 
-function clearColumnCells(sheet: PopulateSheet, col: number, lastRow: number): void {
-  for (let row = 1; row <= Math.max(lastRow, 2); row++) {
-    try {
-      sheet.cell(row, col).value(null);
-    } catch {
-      // ignore
-    }
-  }
-}
-
-function hideColumn(sheet: PopulateSheet, col: number): void {
-  try {
-    (sheet.column(col) as { hidden(v: boolean): unknown }).hidden(true);
-  } catch {
-    // ignore if column node unavailable
-  }
-}
-
-/**
- * - Supprime T, U, X (vidées + masquées)
- * - En-têtes Line Manager sur V / W
- * - V = nom officiel selon colonne C (de la feuille courante)
- * - W = VLOOKUP du JOB TITLE (F) selon le nom du line manager (V)
- *   — la plage de recherche peut pointer vers Base (actifs) pour les EXIT.
- */
-function applyLineManagerExportLayout(
-  sheet: PopulateSheet,
-  lastDataRow: number,
-  lookup?: { sheetName: string; lastRow: number; nameSource?: PopulateSheet },
-): void {
-  sheet.cell(2, COL_V_LM_NAME).value('Line Manager Name');
-  sheet.cell(2, COL_W_LM_POS).value('Line manager position');
-
-  clearColumnCells(sheet, COL_T, lastDataRow);
-  clearColumnCells(sheet, COL_U, lastDataRow);
-  clearColumnCells(sheet, COL_X, lastDataRow);
-  hideColumn(sheet, COL_T);
-  hideColumn(sheet, COL_U);
-  hideColumn(sheet, COL_X);
-
-  if (lastDataRow < FIRST_DATA_ROW) return;
-
-  const lookupSheet = lookup?.sheetName ?? sheet.name();
-  const lookupLast =
-    lookup && lookup.lastRow >= FIRST_DATA_ROW ? lookup.lastRow : lastDataRow;
-  const nameSource = lookup?.nameSource ?? sheet;
-  const nameLast =
-    lookup?.nameSource && lookup.lastRow >= FIRST_DATA_ROW ? lookup.lastRow : lastDataRow;
-  const vlookupRange = `${lookupSheet}!$C$${FIRST_DATA_ROW}:$F$${lookupLast}`;
-  const vlookupCol = JOB_TITLE_COL - NOM_COL + 1;
-
-  for (let row = FIRST_DATA_ROW; row <= lastDataRow; row++) {
-    const mat = sheet.cell(row, MATRICULE_COL).value();
-    if (mat === undefined || mat === null || String(mat).trim() === '') continue;
-
-    const rawManager = sheet.cell(row, COL_V_LM_NAME).value();
-    const resolved = resolveNameAgainstColumnC(nameSource, rawManager, nameLast);
-    sheet.cell(row, COL_V_LM_NAME).value(resolved || null);
-
-    const fallbackPos = String(sheet.cell(row, COL_W_LM_POS).value() ?? '').trim();
-    const fallbackArg = fallbackPos ? excelQuotedString(fallbackPos) : '""';
-    sheet
-      .cell(row, COL_W_LM_POS)
-      .formula(`IFERROR(VLOOKUP(V${row},${vlookupRange},${vlookupCol},FALSE),${fallbackArg})`);
-  }
-}
-
-function copySheetDataFromLive(
-  liveSheet: PopulateSheet,
-  targetSheet: PopulateSheet,
-): number {
-  const lastDataRow = findLastDataRow(liveSheet);
-  if (lastDataRow < FIRST_DATA_ROW) return FIRST_DATA_ROW - 1;
-
-  const endCol = maxDataCol(liveSheet);
-
-  for (let row = FIRST_DATA_ROW; row <= lastDataRow; row++) {
-    for (let col = 1; col <= endCol; col++) {
-      writeCellValue(targetSheet, row, col, readCellValue(liveSheet, row, col));
-    }
+  for (let i = 0; i < employees.length; i++) {
+    writeEmployeeRow(sheet, FIRST_DATA_ROW + i, employees[i]!);
   }
 
   return lastDataRow;
 }
 
-function clearExtraBaseRows(baseSheet: PopulateSheet, lastDataRow: number): void {
-  const used = baseSheet.usedRange();
-  if (!used) return;
-  const endRow = used.endCell().rowNumber();
-  const endCol = used.endCell().columnNumber();
-  if (endRow <= lastDataRow) return;
-
-  for (let row = lastDataRow + 1; row <= endRow; row++) {
-    for (let col = 1; col <= endCol; col++) {
-      baseSheet.cell(row, col).value(null);
-    }
-  }
-}
-
-function extendBaseRowsIfNeeded(
+function ensurePeopleSheet(
+  workbook: PopulateWorkbook,
   baseSheet: PopulateSheet,
-  liveSheet: PopulateSheet,
-  lastDataRow: number,
-  templateEndBeforeCopy: number,
-): void {
-  if (lastDataRow <= templateEndBeforeCopy) return;
+  sheetName: string,
+  title: string,
+): PopulateSheet {
+  const existing = workbook.sheet(sheetName);
+  if (existing) {
+    existing.cell(1, 1).value(title);
+    return existing;
+  }
 
-  const endCol = maxDataCol(liveSheet);
-  const rowStyle = baseSheet.row(FIRST_DATA_ROW).style([...STYLE_PROPS]);
-
-  for (let row = templateEndBeforeCopy + 1; row <= lastDataRow; row++) {
-    baseSheet.row(row).style(rowStyle);
-    for (let col = 1; col <= endCol; col++) {
-      writeCellValue(baseSheet, row, col, readCellValue(liveSheet, row, col));
+  // Pas de cloneSheet : nouvelle feuille + 2 lignes d'en-tête seulement.
+  const sheet = workbook.addSheet(sheetName);
+  for (let row = 1; row <= 2; row++) {
+    for (let col = 1; col <= END_COL; col++) {
+      const value = baseSheet.cell(row, col).value();
+      if (value !== undefined && value !== null && value !== '') {
+        sheet.cell(row, col).value(value);
+      }
     }
   }
+  sheet.cell(1, 1).value(title);
+  return sheet;
 }
 
-function ensureAgeFormulas(baseSheet: PopulateSheet, lastDataRow: number): void {
-  if (lastDataRow < FIRST_DATA_ROW) return;
-  for (let row = FIRST_DATA_ROW; row <= lastDataRow; row++) {
-    const mat = baseSheet.cell(row, MATRICULE_COL).value();
-    if (mat === undefined || mat === null || String(mat).trim() === '') continue;
-    baseSheet.cell(row, AGE_COL).formula(ageFormula(row));
-  }
-}
-
-function finalizePeopleSheet(
-  targetSheet: PopulateSheet,
-  liveSheet: PopulateSheet,
-  templateEndBeforeCopy: number,
-  lookup?: { sheetName: string; lastRow: number; nameSource?: PopulateSheet },
-): number {
-  const lastDataRow = copySheetDataFromLive(liveSheet, targetSheet);
-  extendBaseRowsIfNeeded(targetSheet, liveSheet, lastDataRow, templateEndBeforeCopy);
-  clearExtraBaseRows(targetSheet, lastDataRow);
-  ensureAgeFormulas(targetSheet, lastDataRow);
-  applyLineManagerExportLayout(targetSheet, lastDataRow, lookup);
-  return lastDataRow;
-}
-
-/**
- * Recalibre les plages Dashboard du type Base!$X$3:$X$178 → dernière ligne live.
- */
-function updateDashboardFormulaRanges(
+function updateDashboardFormulas(
   dashboardSheet: PopulateSheet,
   lastBaseRow: number,
   lastExitRow: number,
 ): void {
-  if (lastBaseRow < FIRST_DATA_ROW && lastExitRow < FIRST_DATA_ROW) return;
-
-  const used = dashboardSheet.usedRange();
-  if (!used) return;
-
-  const endRow = used.endCell().rowNumber();
-  const endCol = used.endCell().columnNumber();
-  const baseRe = /(Base!\$[A-Z]+\$3:\$[A-Z]+\$)\d+/gi;
-  const exitRe = /(EXIT!\$[A-Z]+\$3:\$[A-Z]+\$)\d+/gi;
-
-  for (let row = 1; row <= endRow; row++) {
-    for (let col = 1; col <= endCol; col++) {
+  // Zone KPI fixe uniquement — ne pas parcourir usedRange (charts → explosion RAM).
+  for (let row = 1; row <= 45; row++) {
+    for (let col = 1; col <= 8; col++) {
       const cell = dashboardSheet.cell(row, col);
-      const formula = (cell as unknown as { formula(): string | undefined }).formula();
-      if (!formula) continue;
+      let formula = '';
+      try {
+        formula = String(cell.formula() ?? '');
+      } catch {
+        continue;
+      }
+      if (!formula || (!formula.includes('Base!') && !formula.includes('EXIT!'))) continue;
       let updated = formula;
       if (lastBaseRow >= FIRST_DATA_ROW) {
-        updated = updated.replace(baseRe, `$1${lastBaseRow}`);
-        baseRe.lastIndex = 0;
+        updated = updated.replace(
+          /Base!\$([A-Z]+)\$3:\$\1\$\d+/gi,
+          (_m, colLetter: string) => `Base!$${colLetter}$3:$${colLetter}$${lastBaseRow}`,
+        );
       }
       if (lastExitRow >= FIRST_DATA_ROW) {
-        updated = updated.replace(exitRe, `$1${lastExitRow}`);
-        exitRe.lastIndex = 0;
+        updated = updated.replace(
+          /EXIT!\$([A-Z]+)\$3:\$\1\$\d+/gi,
+          (_m, colLetter: string) => `EXIT!$${colLetter}$3:$${colLetter}$${lastExitRow}`,
+        );
       }
       if (updated !== formula) cell.formula(updated);
     }
   }
-}
 
-/** Bloc SORTIES sur le Dashboard Excel (référence feuille EXIT). */
-function fillExitDashboardSection(
-  dashboardSheet: PopulateSheet,
-  lastExitRow: number,
-): void {
   const startRow = 34;
   const exitRange = (col: string) =>
     lastExitRow >= FIRST_DATA_ROW
@@ -322,23 +237,15 @@ function fillExitDashboardSection(
   dashboardSheet.cell(startRow, 2).value('SORTIES (EXIT)');
   dashboardSheet.cell(startRow + 1, 2).value('Total sorties');
   dashboardSheet.cell(startRow + 1, 3).formula(`COUNTA(${exitRange('A')})`);
-
   dashboardSheet.cell(startRow + 2, 2).value('Motif');
   dashboardSheet.cell(startRow + 2, 3).value('Effectif');
 
-  const reasons: { label: string; pattern: string }[] = [
-    { label: 'Demission', pattern: 'Demission' },
-    { label: 'Licenciement', pattern: 'Licenciement' },
-    { label: 'Retraite', pattern: 'Retraite' },
-    { label: 'Fin de contrat', pattern: 'Fin de contrat' },
-  ];
-
+  const reasons = ['Demission', 'Licenciement', 'Retraite', 'Fin de contrat'];
+  const raisonCol = EXPORT_RAISON_EXIT_COL_LETTER;
   reasons.forEach((reason, index) => {
     const row = startRow + 3 + index;
-    dashboardSheet.cell(row, 2).value(reason.label);
-    dashboardSheet
-      .cell(row, 3)
-      .formula(`COUNTIF(${exitRange('AD')},"${reason.pattern}")`);
+    dashboardSheet.cell(row, 2).value(reason);
+    dashboardSheet.cell(row, 3).formula(`COUNTIF(${exitRange(raisonCol)},"${reason}")`);
   });
 
   const totalRow = startRow + 3 + reasons.length;
@@ -348,53 +255,13 @@ function fillExitDashboardSection(
     .formula(`SUM(C${startRow + 3}:C${startRow + 2 + reasons.length})`);
 }
 
-function ensureExitSheetTitle(sheet: PopulateSheet): void {
-  try {
-    const title = String(sheet.cell(1, 1).value() ?? '').trim();
-    if (!title || /employee base|employee file/i.test(title)) {
-      sheet.cell(1, 1).value('EXIT — AGENTS SORTIS');
-    }
-  } catch {
-    // ignore
-  }
-}
-
-function isFileLockError(err: unknown): boolean {
-  const code = (err as NodeJS.ErrnoException)?.code;
-  return code === 'EBUSY' || code === 'EPERM' || code === 'EACCES';
-}
-
-async function persistUpdatedTemplate(
-  templatePath: string,
-  templateWb: PopulateWorkbook,
-): Promise<void> {
-  const attempts = 5;
-  for (let attempt = 1; attempt <= attempts; attempt++) {
-    try {
-      await templateWb.toFileAsync(templatePath);
-      return;
-    } catch (err) {
-      if (!isFileLockError(err) || attempt === attempts) {
-        if (isFileLockError(err)) {
-          console.warn(
-            `[employees-hr-export] Template non mis à jour (fichier verrouillé) : ${templatePath}`,
-          );
-          return;
-        }
-        throw err;
-      }
-      await new Promise((resolve) => setTimeout(resolve, 150 * attempt));
-    }
-  }
-}
-
 /**
- * Export RH via template :
- * - Dashboard : design / graphiques / formules (+ bloc SORTIES)
- * - Base : employés actifs (T/U/X masquées, LM sur V/W)
- * - EXIT : agents sortis (même mise en forme)
+ * Export RH (xlsx-populate) optimisé mémoire :
+ * - un seul workbook
+ * - pas de cloneSheet / pas de range massif
+ * - effacement limité aux lignes modèle
  */
-export async function buildEmployeesHrExportBuffer(livePath = EXCEL_PATH): Promise<Buffer> {
+export async function buildEmployeesHrExportBuffer(): Promise<Buffer> {
   const templatePath = resolveEmployeesHrExportTemplatePath();
   if (!fs.existsSync(templatePath)) {
     throw new Error(
@@ -402,78 +269,58 @@ export async function buildEmployeesHrExportBuffer(livePath = EXCEL_PATH): Promi
     );
   }
 
-  return withExcelLock(livePath, async () => {
-    const [templateWb, liveWb] = await Promise.all([
-      XlsxPopulate.fromFileAsync(templatePath),
-      XlsxPopulate.fromFileAsync(livePath),
-    ]);
+  const { employees, exits } = await readEmployeesBundle();
+  const workbook = await XlsxPopulate.fromFileAsync(templatePath);
 
-    const liveSheet = liveWb.sheet(MASTER_SHEET);
-    const liveExitSheet = liveWb.sheet(EMPLOYEE_EXIT_SHEET);
-    const baseSheet = templateWb.sheet(BASE_SHEET) ?? templateWb.sheet(MASTER_SHEET);
-    const dashboardSheet = templateWb.sheet(DASHBOARD_SHEET);
+  const baseSheet = workbook.sheet(BASE_SHEET) ?? workbook.sheet(MASTER_SHEET);
+  if (!baseSheet) {
+    throw new Error(`Feuille ${MASTER_SHEET} / ${BASE_SHEET} introuvable dans le template`);
+  }
+  if (baseSheet.name() !== BASE_SHEET) {
+    baseSheet.name(BASE_SHEET);
+  }
 
-    if (!liveSheet || !baseSheet) {
-      throw new Error(`Feuille ${MASTER_SHEET} / ${BASE_SHEET} introuvable`);
-    }
-
-    // Ne garder que Dashboard + Base (+ EXIT sera clonée ensuite)
-    for (const sheet of [...templateWb.sheets()]) {
-      const name = sheet.name();
-      if (
-        name !== DASHBOARD_SHEET &&
-        name !== BASE_SHEET &&
-        name !== EXIT_EXPORT_SHEET &&
-        name !== baseSheet.name()
-      ) {
+  // Garder Dashboard + Base + EXIT + Periode d'essai + CDD.
+  for (const sheet of [...workbook.sheets()]) {
+    const name = sheet.name();
+    if (!KEEP_SHEETS.has(name)) {
+      try {
         sheet.delete();
+      } catch {
+        // ignore
       }
     }
-    if (baseSheet.name() !== BASE_SHEET) {
-      baseSheet.name(BASE_SHEET);
-    }
+  }
 
-    const templateEndBeforeCopy = baseSheet.usedRange()
-      ? baseSheet.usedRange()!.endCell().rowNumber()
-      : FIRST_DATA_ROW;
+  const exitSheet = ensurePeopleSheet(workbook, baseSheet, EXIT_EXPORT_SHEET, 'EXIT — AGENTS SORTIS');
+  const essaiSheet = ensurePeopleSheet(
+    workbook,
+    baseSheet,
+    ESSAI_EXPORT_SHEET,
+    "PERIODE D'ESSAI — EN COURS",
+  );
+  const cddSheet = ensurePeopleSheet(workbook, baseSheet, CDD_EXPORT_SHEET, 'CDD — CONTRATS');
+  const dashboardSheet = workbook.sheet(DASHBOARD_SHEET);
 
-    const lastBaseRow = finalizePeopleSheet(baseSheet, liveSheet, templateEndBeforeCopy);
+  const sortedActive = [...employees].sort((a, b) =>
+    (a.nom || '').localeCompare(b.nom || '', 'fr'),
+  );
+  const sortedExits = [...exits].sort((a, b) =>
+    (a.nom || '').localeCompare(b.nom || '', 'fr'),
+  );
+  const sortedEssai = sortedActive.filter((e) => isInActiveTrialPeriod(e));
+  const sortedCdd = sortedActive.filter((e) => isCddEmployee(e));
 
-    // Feuille EXIT (même structure que Base)
-    const existingExit = templateWb.sheet(EXIT_EXPORT_SHEET);
-    if (existingExit) {
-      templateWb.deleteSheet(existingExit);
-    }
-    const exitSheet = templateWb.cloneSheet(baseSheet, EXIT_EXPORT_SHEET);
-    ensureExitSheetTitle(exitSheet);
+  const lastBaseRow = fillPeopleSheet(baseSheet, sortedActive);
+  const lastExitRow = fillPeopleSheet(exitSheet, sortedExits);
+  fillPeopleSheet(essaiSheet, sortedEssai);
+  fillPeopleSheet(cddSheet, sortedCdd);
 
-    let lastExitRow = FIRST_DATA_ROW - 1;
-    const lmLookup = {
-      sheetName: BASE_SHEET,
-      lastRow: lastBaseRow,
-      nameSource: baseSheet,
-    };
-    if (liveExitSheet) {
-      const exitTemplateEnd = findLastDataRow(exitSheet);
-      lastExitRow = finalizePeopleSheet(
-        exitSheet,
-        liveExitSheet,
-        exitTemplateEnd,
-        lmLookup,
-      );
-    } else {
-      clearExtraBaseRows(exitSheet, FIRST_DATA_ROW - 1);
-      applyLineManagerExportLayout(exitSheet, FIRST_DATA_ROW - 1, lmLookup);
-    }
+  if (dashboardSheet) {
+    updateDashboardFormulas(dashboardSheet, lastBaseRow, lastExitRow);
+  }
 
-    if (dashboardSheet) {
-      updateDashboardFormulaRanges(dashboardSheet, lastBaseRow, lastExitRow);
-      fillExitDashboardSection(dashboardSheet, lastExitRow);
-    }
-
-    // Ne jamais réécrire le template sur disque (Vercel read-only + local immutable).
-    return templateWb.outputAsync() as Promise<Buffer>;
-  });
+  return workbook.outputAsync() as Promise<Buffer>;
 }
 
 export function buildEmployeesHrExportFilename(): string {

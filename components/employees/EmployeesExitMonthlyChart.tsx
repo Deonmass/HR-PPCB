@@ -22,8 +22,10 @@ const SERIES = [
 
 export function EmployeesExitMonthlyChartBody({
   rows,
+  onItemClick,
 }: {
   rows: EmployeesExitMonthRow[];
+  onItemClick?: (label: string) => void;
 }): ReactNode {
   const [hover, setHover] = useState<string | null>(null);
 
@@ -36,6 +38,7 @@ export function EmployeesExitMonthlyChartBody({
   const plotScale = (100 - HEADROOM_PCT) / 100;
   const dataTicks = [0, 25, 50, 75, 100];
   const gridTicks = dataTicks.map((tick) => tick * plotScale);
+  const canDrill = Boolean(onItemClick);
 
   return (
     <div className="travel-history-chart-area">
@@ -67,11 +70,26 @@ export function EmployeesExitMonthlyChartBody({
                 return (
                   <div
                     key={row.key}
-                    className={`travel-history-chart-col dash-bar-col employees-exit-month-col${isActive ? ' is-active' : ''}${isDimmed ? ' is-dimmed' : ''}`}
+                    role={canDrill ? 'button' : undefined}
+                    tabIndex={canDrill ? 0 : undefined}
+                    className={`travel-history-chart-col dash-bar-col employees-exit-month-col${isActive ? ' is-active' : ''}${isDimmed ? ' is-dimmed' : ''}${canDrill ? ' is-clickable' : ''}`}
                     style={{ animationDelay: `${index * 40}ms` }}
                     onMouseEnter={() => setHover(row.key)}
                     onMouseLeave={() => setHover(null)}
-                    title={`${row.label}: ${row.total} sortie${row.total > 1 ? 's' : ''}`}
+                    onClick={canDrill ? (event) => {
+                      event.stopPropagation();
+                      onItemClick?.(row.label);
+                    } : undefined}
+                    onKeyDown={canDrill ? (event) => {
+                      if (event.key === 'Enter' || event.key === ' ') {
+                        event.preventDefault();
+                        event.stopPropagation();
+                        onItemClick?.(row.label);
+                      }
+                    } : undefined}
+                    title={canDrill
+                      ? `Voir la liste — ${row.label}`
+                      : `${row.label}: ${row.total} sortie${row.total > 1 ? 's' : ''}`}
                   >
                     <div
                       className="employees-exit-stack-wrap"

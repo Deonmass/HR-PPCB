@@ -21,10 +21,20 @@ import {
   TYPE_CONTRATS,
   isRealExitRaison,
 } from '@/lib/employee-columns';
+import {
+  ESSAI_ACTIONS,
+  ESSAI_COMMENTAIRES,
+  ESSAI_STATUTS_EVAL,
+  computeFinContratFromDuree,
+  essaiStatutClass,
+  hasCddVersCdiHistory,
+  resolveEssaiEcheanceEval,
+  resolveEssaiStatutEval,
+} from '@/lib/employees-trial';
 import { confirmAction, showError, showSuccess } from '@/lib/swal';
 import type { Employee } from '@/lib/types';
 
-type TabId = 'infos' | 'docs' | 'famille';
+type TabId = 'infos' | 'essai' | 'cddVersCdi' | 'docs' | 'famille';
 
 type EditableKey = Exclude<
   keyof Employee,
@@ -86,11 +96,31 @@ const ORG_FIELDS: FieldDef[] = [
 
 const CONTRACT_FIELDS: FieldDef[] = [
   { key: 'typeContrat', label: 'Type de contrat', type: 'select', options: TYPE_CONTRATS },
-  { key: 'periodeEssaiMois', label: "Période d'essai (mois)", type: 'number' },
-  { key: 'dateFinPeriodeEssai', label: "Date fin période d'essai", type: 'date', editable: false },
+  { key: 'dureeContratMois', label: 'Durée contrat (mois)', type: 'number' },
   { key: 'dateFinContrat', label: 'Date fin contrat', type: 'date' },
   { key: 'raisonExit', label: 'Raison exit', type: 'select', options: RAISON_EXITS },
   { key: 'statut', label: 'Statut', type: 'select', options: EMPLOYEE_STATUTS },
+];
+
+const ESSAI_PERIOD_FIELDS: FieldDef[] = [
+  { key: 'periodeEssaiMois', label: "Période d'essai (mois)", type: 'number' },
+  { key: 'dateFinPeriodeEssai', label: "Date fin période d'essai", type: 'date', editable: false },
+  { key: 'appointmentDate', label: "Début d'essai (embauche)", type: 'date', editable: false },
+];
+
+const TRIAL_EVAL_FIELDS: FieldDef[] = [
+  { key: 'essaiActions', label: 'Actions évaluation', type: 'select', options: ESSAI_ACTIONS },
+  { key: 'essaiResponsable', label: 'Responsable évaluation' },
+  { key: 'essaiEcheanceEval', label: 'Échéance évaluation', type: 'date' },
+  { key: 'essaiStatutEval', label: 'Statut évaluation', type: 'select', options: ESSAI_STATUTS_EVAL, editable: false },
+  { key: 'essaiCommentaire', label: 'Commentaire évaluation', type: 'select', options: ESSAI_COMMENTAIRES },
+];
+
+const CDD_VERSCDI_FIELDS: FieldDef[] = [
+  { key: 'cddHistoriqueDebut', label: 'Début CDD', type: 'date' },
+  { key: 'cddHistoriqueFin', label: 'Fin CDD', type: 'date' },
+  { key: 'cddHistoriqueDureeMois', label: 'Durée CDD (mois)', type: 'number' },
+  { key: 'datePassageCdi', label: 'Date passage CDI', type: 'date' },
 ];
 
 const MANAGER_FIELDS: FieldDef[] = [
@@ -302,7 +332,13 @@ export default function EmployeeViewModal({ employee, canEdit = false, onClose, 
   useEffect(() => {
     setDraft(employee);
     setEditingKey(null);
+    setTab((current) => {
+      if (current === 'cddVersCdi' && !hasCddVersCdiHistory(employee)) return 'infos';
+      return current;
+    });
   }, [employee]);
+
+  const showCddVersCdiTab = useMemo(() => hasCddVersCdiHistory(draft), [draft]);
 
   const resolvedAge = useMemo(() => {
     const fromDob = computeAgeFromDisplayDate(draft.dateOfBirth);
@@ -314,6 +350,15 @@ export default function EmployeeViewModal({ employee, canEdit = false, onClose, 
   const resolvedFinEssai = useMemo(
     () => computeFinPeriodeEssai(draft.appointmentDate, draft.periodeEssaiMois),
     [draft.appointmentDate, draft.periodeEssaiMois],
+  );
+
+  const resolvedEssaiStatut = useMemo(
+    () => resolveEssaiStatutEval({
+      appointmentDate: draft.appointmentDate,
+      periodeEssaiMois: draft.periodeEssaiMois,
+      dateFinPeriodeEssai: resolvedFinEssai || draft.dateFinPeriodeEssai,
+    }),
+    [draft.appointmentDate, draft.periodeEssaiMois, draft.dateFinPeriodeEssai, resolvedFinEssai],
   );
 
   const loadFamily = useCallback(async () => {
@@ -368,11 +413,16 @@ export default function EmployeeViewModal({ employee, canEdit = false, onClose, 
     if (!editingKey || saving) return;
     const valueToSave = overrideValue !== undefined ? overrideValue : editValue;
     const fieldDef =
-      [...IDENTITY_FIELDS, ...ORG_FIELDS, ...CONTRACT_FIELDS, ...MANAGER_FIELDS]
+      [...IDENTITY_FIELDS, ...ORG_FIELDS, ...CONTRACT_FIELDS, ...ESSAI_PERIOD_FIELDS, ...TRIAL_EVAL_FIELDS, ...CDD_VERSCDI_FIELDS, ...MANAGER_FIELDS]
         .find((f) => f.key === editingKey);
 
     const preview: Employee = { ...draft };
-    if (editingKey === 'numberOfChildren' || editingKey === 'periodeEssaiMois') {
+    if (
+      editingKey === 'numberOfChildren'
+      || editingKey === 'periodeEssaiMois'
+      || editingKey === 'dureeContratMois'
+      || editingKey === 'cddHistoriqueDureeMois'
+    ) {
       (preview as unknown as Record<string, unknown>)[editingKey] =
         valueToSave.trim() === '' ? null : Number(valueToSave);
     } else if (fieldDef?.type === 'date') {
@@ -422,6 +472,18 @@ export default function EmployeeViewModal({ employee, canEdit = false, onClose, 
           next.appointmentDate,
           next.periodeEssaiMois,
         );
+      }
+      if (
+        editingKey === 'appointmentDate'
+        || editingKey === 'dureeContratMois'
+      ) {
+        const duree = next.dureeContratMois;
+        if (duree != null && Number.isFinite(duree) && duree > 0) {
+          next.dateFinContrat = computeFinContratFromDuree(
+            next.appointmentDate,
+            duree,
+          ) || next.dateFinContrat;
+        }
       }
 
       const res = await fetch(`/api/employees/${encodeURIComponent(employee.matricule)}`, {
@@ -509,11 +571,14 @@ export default function EmployeeViewModal({ employee, canEdit = false, onClose, 
           {fields.map((field) => {
             const isAge = field.key === 'age';
             const isFinEssai = field.key === 'dateFinPeriodeEssai';
+            const isEssaiStatut = field.key === 'essaiStatutEval';
             const value = isAge
               ? resolvedAge
               : isFinEssai
                 ? resolvedFinEssai
-                : draft[field.key as keyof Employee];
+                : isEssaiStatut
+                  ? resolvedEssaiStatut
+                  : draft[field.key as keyof Employee];
             const isEditing = editingKey === field.key;
             const canFieldEdit = canEdit && field.editable !== false && !isAge && field.key !== 'matricule';
 
@@ -587,6 +652,14 @@ export default function EmployeeViewModal({ employee, canEdit = false, onClose, 
           <button type="button" className={`modal-tab-btn${tab === 'infos' ? ' active' : ''}`} onClick={() => setTab('infos')}>
             Informations générales
           </button>
+          <button type="button" className={`modal-tab-btn${tab === 'essai' ? ' active' : ''}`} onClick={() => setTab('essai')}>
+            Période d&apos;essai
+          </button>
+          {showCddVersCdiTab && (
+            <button type="button" className={`modal-tab-btn${tab === 'cddVersCdi' ? ' active' : ''}`} onClick={() => setTab('cddVersCdi')}>
+              CDD vers CDI
+            </button>
+          )}
           <button type="button" className={`modal-tab-btn${tab === 'docs' ? ' active' : ''}`} onClick={() => setTab('docs')}>
             Documents du dossier
           </button>
@@ -620,6 +693,64 @@ export default function EmployeeViewModal({ employee, canEdit = false, onClose, 
               {renderSection('Contrat & sortie', CONTRACT_FIELDS)}
               {renderSection('Manager', MANAGER_FIELDS)}
             </>
+          )}
+
+          {tab === 'essai' && (
+            <div className={`employee-essai-panel ${essaiStatutClass(resolvedEssaiStatut)}`}>
+              <div className="employee-essai-status-banner">
+                <span className="employee-essai-status-meta">
+                  Échéance&nbsp;: <strong>{resolveEssaiEcheanceEval(draft) || '—'}</strong>
+                  {' · '}
+                  Fin essai&nbsp;: <strong>{resolvedFinEssai || draft.dateFinPeriodeEssai || '—'}</strong>
+                </span>
+                <span
+                  className={`employee-essai-banner-icon ${essaiStatutClass(resolvedEssaiStatut)}`}
+                  title={resolvedEssaiStatut}
+                  aria-label={resolvedEssaiStatut}
+                >
+                  {/^overdue$/i.test(resolvedEssaiStatut) ? (
+                    <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" strokeWidth="2.2">
+                      <circle cx="12" cy="12" r="9" />
+                      <path d="M12 7v6" strokeLinecap="round" />
+                      <circle cx="12" cy="16.2" r="0.9" fill="currentColor" stroke="none" />
+                    </svg>
+                  ) : (
+                    <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" strokeWidth="2.2">
+                      <circle cx="12" cy="12" r="9" />
+                      <path d="M12 7v5l3 2" strokeLinecap="round" strokeLinejoin="round" />
+                    </svg>
+                  )}
+                </span>
+              </div>
+              {renderSection("Période d'essai", ESSAI_PERIOD_FIELDS)}
+              {renderSection('Évaluation', TRIAL_EVAL_FIELDS)}
+            </div>
+          )}
+
+          {tab === 'cddVersCdi' && showCddVersCdiTab && (
+            <div className="employee-cdd-vers-cdi-panel">
+              <div className="employee-essai-status-banner">
+                <span className="employee-essai-status-meta">
+                  Historique CDD conservé lors du passage en CDI
+                  {draft.datePassageCdi ? (
+                    <>
+                      {' · '}Passage&nbsp;: <strong>{draft.datePassageCdi}</strong>
+                    </>
+                  ) : null}
+                </span>
+                <span className="employee-essai-banner-icon is-on-time" title="CDD vers CDI" aria-hidden>
+                  <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" strokeWidth="2">
+                    <path d="M5 12h14" strokeLinecap="round" />
+                    <path d="M13 6l6 6-6 6" strokeLinecap="round" strokeLinejoin="round" />
+                  </svg>
+                </span>
+              </div>
+              {renderSection('Passage CDD → CDI', CDD_VERSCDI_FIELDS)}
+              <p className="employee-cdd-vers-cdi-hint">
+                L&apos;historique CDD est enregistré automatiquement quand le type de contrat passe de CDD à CDI.
+                Vous pouvez aussi le saisir ou le corriger ici.
+              </p>
+            </div>
           )}
 
           {tab === 'docs' && (

@@ -52,7 +52,7 @@ export default function DashboardListModal({
   }, [rows, columns, search]);
 
   return (
-    <div className="modal-overlay open" onClick={onClose} role="presentation">
+    <div className="modal-overlay open dashboard-list-overlay" onClick={onClose} role="presentation">
       <div
         className="modal dependants-drilldown-modal dashboard-list-modal"
         onClick={(event) => event.stopPropagation()}

@@ -4,12 +4,13 @@ import type { ReactNode } from 'react';
 
 interface Props {
   title: string;
+  subtitle?: string;
   onClose: () => void;
   children: ReactNode;
 }
 
 /** Modal plein écran pour afficher un graphique agrandi. */
-export default function ChartEnlargeModal({ title, onClose, children }: Props) {
+export default function ChartEnlargeModal({ title, subtitle, onClose, children }: Props) {
   return (
     <div
       className="modal-overlay open chart-enlarge-overlay"
@@ -24,7 +25,10 @@ export default function ChartEnlargeModal({ title, onClose, children }: Props) {
         aria-label={title}
       >
         <div className="modal-header chart-enlarge-header">
-          <h3>{title}</h3>
+          <div className="chart-enlarge-header-text">
+            <h3>{title}</h3>
+            {subtitle ? <p className="chart-enlarge-subtitle">{subtitle}</p> : null}
+          </div>
           <button type="button" className="btn-icon" onClick={onClose} aria-label="Fermer">
             ×
           </button>
