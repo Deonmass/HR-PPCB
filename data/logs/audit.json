@@ -1,6 +1,48 @@
 {
   "entries": [
     {
+      "id": "log-000042",
+      "at": "2026-07-31T12:22:18.712Z",
+      "userId": "Serge.Muakasa",
+      "userName": "Serge Muakasa",
+      "userEmail": "Serge.Muakasa@ppcdrc.cd",
+      "module": "guest-house",
+      "moduleLabel": "Guest house",
+      "action": "update",
+      "actionLabel": "Modification",
+      "entityType": "guest-house.reservation",
+      "entityId": "dc9baa00-63c2-4fb4-a196-d63b606fad34",
+      "summary": "Modification réservation dc9baa00-63c2-4fb4-a196-d63b606fad34",
+      "details": "Modification réservation dc9baa00-63c2-4fb4-a196-d63b606fad34",
+      "before": {
+        "id": "dc9baa00-63c2-4fb4-a196-d63b606fad34",
+        "numero": "GH-2026-4292",
+        "createdAt": "2026-07-31T12:20:03.734Z",
+        "personName": "DU BOIS",
+        "isAgent": true,
+        "motif": "Hebergement",
+        "startDate": "2026-07-01",
+        "endDate": "2026-07-08",
+        "status": "pending",
+        "updatedAt": "2026-07-31T12:20:03.734Z"
+      },
+      "after": {
+        "id": "dc9baa00-63c2-4fb4-a196-d63b606fad34",
+        "numero": "GH-2026-4292",
+        "createdAt": "2026-07-31T12:20:03.734Z",
+        "personName": "DU BOIS",
+        "isAgent": true,
+        "motif": "Hebergement",
+        "startDate": "2026-07-01",
+        "endDate": "2026-07-08",
+        "status": "pending",
+        "mission": "Mission de maintenance à l'usine",
+        "updatedAt": "2026-07-31T12:22:17.331Z"
+      },
+      "undoable": true,
+      "undone": false
+    },
+    {
       "id": "log-000041",
       "at": "2026-07-31T12:20:05.265Z",
       "userId": "admin",
@@ -8218,5 +8260,5 @@
       }
     }
   ],
-  "nextSeq": 42
+  "nextSeq": 43
 }
