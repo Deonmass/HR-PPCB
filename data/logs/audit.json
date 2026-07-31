@@ -1,6 +1,35 @@
 {
   "entries": [
     {
+      "id": "log-000029",
+      "at": "2026-07-31T12:07:35.119Z",
+      "userId": "admin",
+      "userName": "Administrateur",
+      "module": "guest-house",
+      "moduleLabel": "Guest house",
+      "action": "create",
+      "actionLabel": "Création",
+      "entityType": "guest-house.reservation",
+      "entityId": "f8372106-6cc1-49b6-aa89-56bcc4976772",
+      "summary": "Création réservation MASSADI GEDEON GEDEON",
+      "details": "Création réservation MASSADI GEDEON GEDEON",
+      "after": {
+        "id": "f8372106-6cc1-49b6-aa89-56bcc4976772",
+        "numero": "GH-2026-4292",
+        "createdAt": "2026-07-31T12:07:33.444Z",
+        "personName": "MASSADI GEDEON GEDEON",
+        "matricule": "70000308",
+        "isAgent": true,
+        "motif": "ssssssss",
+        "startDate": "2026-07-01",
+        "endDate": "2026-07-01",
+        "status": "pending",
+        "updatedAt": "2026-07-31T12:07:33.444Z"
+      },
+      "undoable": true,
+      "undone": false
+    },
+    {
       "id": "log-000028",
       "at": "2026-07-31T11:55:09.607Z",
       "userId": "admin",
@@ -7807,5 +7836,5 @@
       }
     }
   ],
-  "nextSeq": 29
+  "nextSeq": 30
 }
