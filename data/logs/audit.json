@@ -1,6 +1,36 @@
 {
   "entries": [
     {
+      "id": "log-000019",
+      "at": "2026-07-31T11:24:40.032Z",
+      "userId": "Serge.Muakasa",
+      "userName": "Serge Muakasa",
+      "userEmail": "Serge.Muakasa@ppcdrc.cd",
+      "module": "guest-house",
+      "moduleLabel": "Guest house",
+      "action": "create",
+      "actionLabel": "Création",
+      "entityType": "guest-house.reservation",
+      "entityId": "c8e1108f-b4b2-4e4d-9042-9a4c25161d7b",
+      "summary": "Création réservation Du Bois",
+      "details": "Création réservation Du Bois",
+      "after": {
+        "id": "c8e1108f-b4b2-4e4d-9042-9a4c25161d7b",
+        "numero": "GH-2026-4290",
+        "createdAt": "2026-07-31T11:24:38.609Z",
+        "personName": "Du Bois",
+        "isAgent": true,
+        "motif": "hébergement",
+        "startDate": "2026-07-01",
+        "endDate": "2026-07-08",
+        "status": "pending",
+        "mission": "Mission de maintenance à l'usine",
+        "updatedAt": "2026-07-31T11:24:38.609Z"
+      },
+      "undoable": true,
+      "undone": false
+    },
+    {
       "id": "log-000018",
       "at": "2026-07-31T11:21:18.512Z",
       "userId": "Serge.Muakasa",
@@ -7484,5 +7514,5 @@
       }
     }
   ],
-  "nextSeq": 19
+  "nextSeq": 20
 }
