@@ -716,6 +716,18 @@
   ],
   "reservations": [
     {
+      "id": "dc9baa00-63c2-4fb4-a196-d63b606fad34",
+      "numero": "GH-2026-4292",
+      "createdAt": "2026-07-31T12:20:03.734Z",
+      "personName": "DU BOIS",
+      "isAgent": true,
+      "motif": "Hebergement",
+      "startDate": "2026-07-01",
+      "endDate": "2026-07-08",
+      "status": "pending",
+      "updatedAt": "2026-07-31T12:20:03.734Z"
+    },
+    {
       "id": "9a49ea24-23d7-4edf-8c7f-8f42e70ab5f5",
       "numero": "GH-2022-2903",
       "createdAt": "2022-09-07T08:00:00.000Z",
@@ -40933,5 +40945,5 @@
       "checkedOutAt": "2025-09-24T12:00:00.000Z"
     }
   ],
-  "nextReservationSeq": 4292
+  "nextReservationSeq": 4293
 }
