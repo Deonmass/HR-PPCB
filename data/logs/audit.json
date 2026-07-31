@@ -1,6 +1,21 @@
 {
   "entries": [
     {
+      "id": "log-000018",
+      "at": "2026-07-31T11:21:18.512Z",
+      "userId": "Serge.Muakasa",
+      "userName": "Serge Muakasa",
+      "userEmail": "Serge.Muakasa@ppcdrc.cd",
+      "module": "guest-house",
+      "moduleLabel": "Guest house",
+      "action": "export",
+      "actionLabel": "Export",
+      "summary": "Export guest house (GUEST_HOUSE_202607_2026-07-31.xlsx)",
+      "details": "Export guest house (GUEST_HOUSE_202607_2026-07-31.xlsx)",
+      "undoable": false,
+      "undone": false
+    },
+    {
       "id": "log-000017",
       "at": "2026-07-31T08:05:03.320Z",
       "userId": "admin",
@@ -7469,5 +7484,5 @@
       }
     }
   ],
-  "nextSeq": 18
+  "nextSeq": 19
 }
