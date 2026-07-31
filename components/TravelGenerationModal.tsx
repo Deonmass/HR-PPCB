@@ -87,13 +87,14 @@ export default function TravelGenerationModal({
 
           {complete && (
             <p className="travel-generation-success">
-              Les fichiers et le PDF combiné ont été générés avec succès
-              {saveDirectory ? ` dans ${saveDirectory}` : ''}.
+              {saveDirectory
+                ? `Les fichiers ont été générés avec succès dans ${saveDirectory}.`
+                : 'Le document a été généré et téléchargé dans votre dossier Téléchargements.'}
             </p>
           )}
         </div>
 
-        {complete && (
+        {complete && saveDirectory && (
           <div className="modal-footer">
             <button type="button" className="btn btn-primary" onClick={onOpenLocation}>
               Ouvrir l&apos;emplacement

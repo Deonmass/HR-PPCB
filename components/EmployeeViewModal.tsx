@@ -33,6 +33,8 @@ import {
 } from '@/lib/employees-trial';
 import { confirmAction, showError, showSuccess } from '@/lib/swal';
 import type { Employee } from '@/lib/types';
+import ExitDocsModal from '@/components/documents/ExitDocsModal';
+import { usePermissions } from '@/contexts/PermissionContext';
 
 type TabId = 'infos' | 'essai' | 'cddVersCdi' | 'docs' | 'famille';
 
@@ -323,8 +325,10 @@ function FamilyOrgChart({ group, employee }: { group: FamilyGroup | null; employ
 }
 
 export default function EmployeeViewModal({ employee, canEdit = false, initialTab = 'infos', onClose, onUpdated }: Props) {
+  const { can } = usePermissions();
   const [tab, setTab] = useState<TabId>(initialTab);
   const [draft, setDraft] = useState<Employee>(employee);
+  const [exitDocsOpen, setExitDocsOpen] = useState(false);
   const [editingKey, setEditingKey] = useState<EditableKey | null>(null);
   const [editValue, setEditValue] = useState('');
   const [saving, setSaving] = useState(false);
@@ -693,7 +697,33 @@ export default function EmployeeViewModal({ employee, canEdit = false, initialTa
                   </table>
                 </section>
               ) : null}
-              {renderSection('Contrat & sortie', CONTRACT_FIELDS)}
+              <div className="employee-contract-exit-block">
+                {renderSection('Contrat & sortie', CONTRACT_FIELDS)}
+                {can('documents.exit', 'create') && (
+                  <button
+                    type="button"
+                    className="btn btn-secondary btn-sm employee-exit-docs-btn"
+                    onClick={() => setExitDocsOpen(true)}
+                  >
+                    <svg
+                      viewBox="0 0 24 24"
+                      width="14"
+                      height="14"
+                      fill="none"
+                      stroke="currentColor"
+                      strokeWidth="2"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      aria-hidden="true"
+                    >
+                      <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4" />
+                      <polyline points="16 17 21 12 16 7" />
+                      <line x1="21" y1="12" x2="9" y2="12" />
+                    </svg>
+                    Générer les documents d’exit
+                  </button>
+                )}
+              </div>
               {renderSection('Manager', MANAGER_FIELDS)}
             </>
           )}
@@ -806,6 +836,10 @@ export default function EmployeeViewModal({ employee, canEdit = false, initialTa
           <button type="button" className="btn btn-outline" onClick={onClose}>Fermer</button>
         </div>
       </div>
+
+      {exitDocsOpen && (
+        <ExitDocsModal employee={draft} onClose={() => setExitDocsOpen(false)} />
+      )}
     </div>
   );
 }

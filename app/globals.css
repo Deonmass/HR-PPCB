@@ -55,9 +55,9 @@ html[data-theme="light"] {
   --surface: rgba(0, 0, 0, 0.03);
   --surface-hover: rgba(0, 0, 0, 0.06);
   --text: #16161e;
-  --muted: #5c5c6e;
-  --border: rgba(0, 0, 0, 0.09);
-  --border-strong: rgba(0, 0, 0, 0.15);
+  --muted: #494955;
+  --border: rgba(0, 0, 0, 0.12);
+  --border-strong: rgba(0, 0, 0, 0.2);
   --shadow: 0 4px 24px rgba(0, 0, 0, 0.08);
   --glow-red: 0 0 16px rgba(227, 6, 19, 0.22);
   --ppc-red-soft: rgba(227, 6, 19, 0.1);
@@ -751,6 +751,39 @@ html[data-theme="light"] .sidebar-tip-hint {
   border-bottom: 1px solid var(--border);
 }
 
+/* En mode light, les en-t?tes sticky suivent le th?me clair. */
+html[data-theme="light"] .overtime-sticky,
+html[data-theme="light"] .check-docs-sticky,
+html[data-theme="light"] .dependants-sticky,
+html[data-theme="light"] .cash-request-sticky,
+html[data-theme="light"] .travel-history-sticky,
+html[data-theme="light"] .project-dashboard-sticky {
+  --text: #16161e;
+  --muted: #494955;
+  --border: rgba(0, 0, 0, 0.12);
+  --border-strong: rgba(0, 0, 0, 0.2);
+  --surface: rgba(0, 0, 0, 0.03);
+  --surface-hover: rgba(0, 0, 0, 0.06);
+  --panel: #ffffff;
+  --bg: #eef0f5;
+  --bg-elevated: #ffffff;
+  --ppc-red-soft: rgba(227, 6, 19, 0.1);
+  --suggestion-bg: #ffffff;
+  --suggestion-text: #1a1a22;
+  --suggestion-meta: #5c5c6e;
+  --suggestion-border: rgba(0, 0, 0, 0.12);
+  --suggestion-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
+  --suggestion-hover: rgba(227, 6, 19, 0.08);
+  background: linear-gradient(180deg, #ffffff 0%, #f2f3f7 100%);
+  color: var(--text);
+  border-bottom: 1px solid var(--border);
+}
+
+html[data-theme="light"] .cash-request-sticky,
+html[data-theme="light"] .check-docs-sticky {
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
+}
+
 .btn-icon-refresh {
   display: inline-flex;
   align-items: center;
@@ -1353,6 +1386,8 @@ html[data-theme="light"] .sidebar-tip-hint {
   transition: all 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
 }
 .action-btn svg { transition: transform 0.25s cubic-bezier(0.34, 1.56, 0.64, 1); }
+.action-btn:disabled { opacity: 0.65; cursor: wait; }
+.action-btn .btn-spinner { margin-right: 0; }
 .action-edit:hover {
   color: var(--ppc-red);
   border-color: rgba(227, 6, 19, 0.4);
@@ -8768,6 +8803,11 @@ html[data-theme="light"] .btn-export.btn-with-icon .btn-spinner {
 }
 
 /* ?? SweetAlert PPC theme ?? */
+/* Les alertes SweetAlert passent au-dessus des drawers et modales (z-index ? 2800). */
+.swal2-container {
+  z-index: 6000 !important;
+}
+
 .swal-ppc {
   border: 1px solid var(--border-strong) !important;
   border-radius: 14px !important;
@@ -9633,6 +9673,43 @@ html[data-theme="light"] .filter-select,
 html[data-theme="light"] textarea,
 html[data-theme="light"] select {
   background: #fff;
+}
+
+/* Inputs texte : fond blanc en mode light (les fonds sombres cod?s en dur rendent gris).
+   :where() garde une sp?cificit? minimale pour ne pas ?craser les inputs color?s volontairement. */
+html[data-theme="light"] :where(input:not([type='checkbox']):not([type='radio']):not([type='range']):not([type='color']):not([type='file']):not([type='submit']):not([type='button'])) {
+  background: #fff;
+  color: var(--text);
+}
+
+/* S?lecteurs avec fond sombre cod? en dur (d?clar?s plus loin dans le fichier). */
+html[data-theme="light"] .dependants-list-toolbar .filter-select,
+html[data-theme="light"] .dependants-dashboard-filter .filter-select,
+html[data-theme="light"] .factures-monthly-year-filter .filter-select,
+html[data-theme="light"] .guest-house-chart-filters .filter-select,
+html[data-theme="light"] .doc-toggle select {
+  background: #fff;
+  color: var(--text);
+  border-color: var(--border-strong);
+}
+
+/* Textes gris trop clairs sur fond blanc. */
+html[data-theme="light"] .swal-ppc-text {
+  color: #3f3f4b !important;
+}
+
+html[data-theme="light"] .settings-badge.inactive {
+  color: #565664;
+}
+
+html[data-theme="light"] .employee-docs-pill-na,
+html[data-theme="light"] .employee-docs-badge.status-na,
+html[data-theme="light"] .factures-monthly-legend-item.is-recu-count {
+  color: #565664;
+}
+
+html[data-theme="light"] .project-money-link {
+  text-decoration-color: rgba(0, 0, 0, 0.35);
 }
 
 html[data-theme="light"] .overtime-sticky .search-input,
@@ -17671,7 +17748,7 @@ html[data-theme='dark'] .charroi-status.is-demande {
 }
 .charroi-dash-bottom {
   display: grid;
-  grid-template-columns: 1fr 1.2fr;
+  grid-template-columns: 1fr 1.1fr 1.2fr;
   gap: 0.55rem;
 }
 .charroi-dash-side-panel {
@@ -17765,6 +17842,182 @@ html[data-theme='dark'] .charroi-kpi-card.is-warn .card-value {
 @media (max-width: 720px) {
   .charroi-kpi-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
 }
+
+/* ?? Charroi : ?tat D?class? + lignes alertes ??????????????????? */
+.charroi-obs.is-retired {
+  background: color-mix(in srgb, var(--muted) 18%, transparent);
+  color: var(--muted);
+  border-color: color-mix(in srgb, var(--muted) 40%, transparent);
+  text-decoration: line-through;
+  text-decoration-thickness: 1px;
+}
+
+/* Ligne enti?re en rouge fondu pour ? A d?classer ?. */
+.charroi-table tbody tr.charroi-row-bad td {
+  background: rgba(239, 68, 68, 0.10);
+}
+.charroi-table tbody tr.charroi-row-bad:hover td {
+  background: rgba(239, 68, 68, 0.16);
+}
+html[data-theme='light'] .charroi-table tbody tr.charroi-row-bad td {
+  background: rgba(239, 68, 68, 0.08);
+}
+html[data-theme='light'] .charroi-table tbody tr.charroi-row-bad:hover td {
+  background: rgba(239, 68, 68, 0.14);
+}
+
+/* Ligne des v?hicules d?class?s (onglet D?class?s). */
+.charroi-table tbody tr.charroi-row-retired td {
+  background: color-mix(in srgb, var(--muted) 8%, transparent);
+  color: var(--muted);
+}
+
+/* Marque + type empil?s dans une seule colonne. */
+.charroi-marque-cell {
+  display: flex;
+  flex-direction: column;
+  gap: 0.05rem;
+  line-height: 1.2;
+}
+.charroi-marque-cell span {
+  font-size: 0.68rem;
+  color: var(--muted);
+}
+
+/* Dates d'?ch?ance (assurance / vignette / contr?le technique). */
+.charroi-date {
+  display: inline-flex;
+  padding: 0.1rem 0.35rem;
+  border-radius: 6px;
+  font-size: 0.7rem;
+  white-space: nowrap;
+}
+.charroi-date.is-none { color: var(--muted); }
+.charroi-date.is-soon {
+  background: color-mix(in srgb, #f59e0b 16%, transparent);
+  color: #b45309;
+  font-weight: 600;
+}
+html:not([data-theme='light']) .charroi-date.is-soon { color: #fbbf24; }
+.charroi-date.is-expired {
+  background: var(--danger-soft);
+  color: var(--danger);
+  font-weight: 700;
+}
+
+/* Filtres d'en-t?te fa?on Excel. */
+.charroi-th-filter { padding: 0 !important; }
+.charroi-hf {
+  position: relative;
+  display: block;
+}
+.charroi-hf-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+  width: 100%;
+  padding: 0.35rem 0.45rem;
+  background: none;
+  border: none;
+  color: inherit;
+  font: inherit;
+  font-weight: inherit;
+  text-transform: inherit;
+  letter-spacing: inherit;
+  cursor: pointer;
+  white-space: nowrap;
+}
+.charroi-hf-btn svg { opacity: 0.45; flex-shrink: 0; }
+.charroi-hf-btn:hover svg,
+.charroi-hf-btn.open svg { opacity: 0.9; }
+.charroi-hf-btn.active svg {
+  opacity: 1;
+  color: var(--accent);
+}
+.charroi-hf-btn.active .charroi-hf-label { color: var(--accent); }
+.charroi-hf-panel {
+  position: absolute;
+  top: calc(100% + 4px);
+  left: 0;
+  z-index: 60;
+  min-width: 200px;
+  max-width: 260px;
+  padding: 0.45rem;
+  border: 1px solid var(--border-strong, var(--border));
+  border-radius: 10px;
+  background: var(--panel);
+  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.35);
+  text-transform: none;
+  letter-spacing: normal;
+  font-weight: 400;
+}
+html[data-theme='light'] .charroi-hf-panel {
+  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.14);
+}
+.charroi-hf-search {
+  width: 100%;
+  padding: 0.3rem 0.45rem;
+  font-size: 0.75rem;
+  border: 1px solid var(--border);
+  border-radius: 7px;
+  background: var(--surface);
+  color: var(--text);
+  margin-bottom: 0.35rem;
+}
+.charroi-hf-list {
+  max-height: 220px;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+}
+.charroi-hf-item {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.24rem 0.25rem;
+  border-radius: 6px;
+  font-size: 0.75rem;
+  color: var(--text);
+  cursor: pointer;
+}
+.charroi-hf-item:hover { background: color-mix(in srgb, var(--muted) 12%, transparent); }
+.charroi-hf-item input { accent-color: var(--accent); }
+.charroi-hf-item span {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.charroi-hf-empty {
+  padding: 0.4rem 0.25rem;
+  font-size: 0.72rem;
+  color: var(--muted);
+}
+.charroi-hf-footer {
+  display: flex;
+  justify-content: space-between;
+  gap: 0.4rem;
+  margin-top: 0.35rem;
+  padding-top: 0.35rem;
+  border-top: 1px solid var(--border);
+}
+
+/* Modale de modification directe. */
+.charroi-quick-edit-modal { max-width: 420px; }
+
+/* Dashboard : ?ch?ances documents. */
+.charroi-expiry-doc {
+  display: inline-block;
+  margin-left: 0.35rem;
+  padding: 0.02rem 0.3rem;
+  border-radius: 5px;
+  font-size: 0.62rem;
+  font-style: normal;
+  font-weight: 600;
+  background: color-mix(in srgb, var(--muted) 14%, transparent);
+  color: var(--muted);
+}
+.charroi-expiry-date.is-expired { color: var(--danger); }
+.charroi-expiry-date.is-soon { color: #f59e0b; }
 
 
 /* ?? Audit logs (Param?tres) ?? */
@@ -18212,4 +18465,212 @@ html[data-theme='dark'] .charroi-kpi-card.is-warn .card-value {
   font-size: 0.72rem;
   color: var(--muted);
   cursor: pointer;
+}
+
+/* -- Hub Documents ------------------------------------------------ */
+.docs-hub-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(310px, 1fr));
+  gap: 0.9rem;
+}
+
+.docs-hub-card {
+  display: flex;
+  align-items: center;
+  gap: 0.85rem;
+  padding: 1rem 1.05rem;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  background: var(--bg-elevated);
+  color: var(--text);
+  text-decoration: none;
+  transition: border-color 0.2s, box-shadow 0.2s, transform 0.2s;
+}
+
+.docs-hub-card:hover {
+  border-color: color-mix(in srgb, var(--docs-accent, #e30613) 55%, transparent);
+  box-shadow: 0 8px 24px color-mix(in srgb, var(--docs-accent, #e30613) 18%, transparent);
+  transform: translateY(-2px);
+}
+
+.docs-hub-icon {
+  flex-shrink: 0;
+  width: 2.6rem;
+  height: 2.6rem;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 12px;
+  color: var(--docs-accent, #e30613);
+  background: color-mix(in srgb, var(--docs-accent, #e30613) 12%, transparent);
+  border: 1px solid color-mix(in srgb, var(--docs-accent, #e30613) 30%, transparent);
+}
+
+.docs-hub-body {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  min-width: 0;
+  flex: 1;
+}
+
+.docs-hub-title-row {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+}
+
+.docs-hub-title-row strong {
+  font-size: 0.88rem;
+  line-height: 1.25;
+}
+
+.docs-hub-badge {
+  font-size: 0.6rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  padding: 0.14rem 0.45rem;
+  border-radius: 999px;
+  color: var(--docs-accent, #e30613);
+  background: color-mix(in srgb, var(--docs-accent, #e30613) 12%, transparent);
+  border: 1px solid color-mix(in srgb, var(--docs-accent, #e30613) 30%, transparent);
+  white-space: nowrap;
+}
+
+.docs-hub-desc {
+  font-size: 0.72rem;
+  color: var(--muted);
+  line-height: 1.4;
+}
+
+.docs-hub-arrow {
+  flex-shrink: 0;
+  color: var(--muted);
+  transition: color 0.2s, transform 0.2s;
+}
+
+.docs-hub-card:hover .docs-hub-arrow {
+  color: var(--docs-accent, #e30613);
+  transform: translateX(3px);
+}
+
+.docs-hub-empty {
+  color: var(--muted);
+  font-size: 0.85rem;
+  margin-top: 0.8rem;
+}
+
+/* -- G?n?rateurs de documents (appraisal / exit) ------------------ */
+.docs-generator-panel {
+  max-width: 40rem;
+  padding: 1.25rem 1.35rem;
+}
+
+.docs-generator-picker {
+  margin-bottom: 1rem;
+}
+
+.docs-generator-placeholder {
+  color: var(--muted);
+  font-size: 0.82rem;
+  margin: 0.4rem 0 0;
+}
+
+.exit-docs-employee {
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+  padding: 0.7rem 0.9rem;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  background: var(--surface);
+  margin-bottom: 0.9rem;
+}
+
+.exit-docs-employee strong {
+  font-size: 0.88rem;
+}
+
+.exit-docs-employee span {
+  font-size: 0.72rem;
+  color: var(--muted);
+}
+
+.exit-docs-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+  margin-bottom: 0.9rem;
+}
+
+.exit-docs-item {
+  display: flex;
+  align-items: center;
+  gap: 0.55rem;
+  padding: 0.5rem 0.65rem;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  font-size: 0.8rem;
+  cursor: pointer;
+  transition: border-color 0.15s, background 0.15s;
+}
+
+.exit-docs-item:hover {
+  background: var(--surface-hover);
+}
+
+.exit-docs-item.is-done {
+  border-color: rgba(34, 197, 94, 0.45);
+}
+
+.exit-docs-item.is-error {
+  border-color: rgba(239, 68, 68, 0.55);
+}
+
+.exit-docs-item-label {
+  flex: 1;
+  min-width: 0;
+}
+
+.exit-docs-item-state {
+  flex-shrink: 0;
+  font-weight: 700;
+}
+
+.exit-docs-item.is-done .exit-docs-item-state {
+  color: #16a34a;
+}
+
+.exit-docs-item.is-error .exit-docs-item-state {
+  color: #dc2626;
+}
+
+.exit-docs-dates {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  margin-bottom: 0.4rem;
+}
+
+.exit-docs-hint {
+  font-size: 0.7rem;
+  color: var(--muted);
+  line-height: 1.45;
+  margin: 0.4rem 0 0.9rem;
+}
+
+.exit-docs-actions {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.exit-docs-modal {
+  width: min(34rem, calc(100vw - 2rem));
+}
+
+.employee-contract-exit-block .employee-exit-docs-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  margin: 0.35rem 0 0.9rem;
 }

@@ -303,6 +303,37 @@ export default function EmployesPage() {
     setContextMenu({ x: event.clientX, y: event.clientY, employee });
   };
 
+  /** Interim appraisal : disponible à partir d'un mois avant la fin de la période d'essai. */
+  const isAppraisalAvailable = (employee: Employee): boolean => {
+    const finEssai = resolveDateFinPeriodeEssai(employee);
+    if (!finEssai) return false;
+    const days = daysUntilDisplayDate(finEssai);
+    return days != null && days <= 30;
+  };
+
+  const generateAppraisal = async (employee: Employee) => {
+    const res = await fetch('/api/documents/interim-appraisal', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ matricule: employee.matricule }),
+    });
+    if (!res.ok) {
+      const err = (await res.json().catch(() => ({}))) as { error?: string };
+      await showError(err.error || 'Erreur de génération');
+      return;
+    }
+    const blob = await res.blob();
+    const url = URL.createObjectURL(blob);
+    const anchor = document.createElement('a');
+    anchor.href = url;
+    anchor.download = `Interim appraisal evaluation - ${employee.nom}.docx`;
+    document.body.appendChild(anchor);
+    anchor.click();
+    anchor.remove();
+    URL.revokeObjectURL(url);
+    await showSuccess('Interim appraisal généré');
+  };
+
   /** Onglet essai : la modification contextuelle ne touche que le commentaire. */
   const editEssaiComment = async (employee: Employee) => {
     const value = await promptSelect('Commentaire évaluation', {
@@ -337,6 +368,16 @@ export default function EmployesPage() {
           icon: 'view',
           onClick: () => openView(contextMenu.employee),
         },
+        ...(tab === 'essai'
+        && can('documents.appraisal', 'create')
+        && isAppraisalAvailable(contextMenu.employee)
+          ? [{
+              id: 'appraisal',
+              label: 'Interim appraisal evaluation',
+              icon: 'doc' as const,
+              onClick: () => void generateAppraisal(contextMenu.employee),
+            }]
+          : []),
         ...(canEdit
           ? [{
               id: 'edit',

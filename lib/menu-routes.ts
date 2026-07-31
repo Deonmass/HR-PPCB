@@ -4,11 +4,25 @@ export interface RouteMenuEntry {
 }
 
 /** Longest-prefix wins — order by descending prefix length when matching. */
+/** Menus donnant accès au hub Documents (n'importe lequel suffit). */
+export const DOCUMENTS_HUB_MENU_IDS = [
+  'travel.historique',
+  'travel.etablir',
+  'travel.attestation',
+  'travel.payment-voucher',
+  'documents.appraisal',
+  'documents.exit',
+];
+
 export const ROUTE_MENU_MAP: RouteMenuEntry[] = [
+  { prefix: '/documents/exit', menuId: 'documents.exit' },
+  { prefix: '/documents/interim-appraisal', menuId: 'documents.appraisal' },
+  { prefix: '/documents', menuId: 'travel.historique' },
   { prefix: '/documents-voyage/attestation-services', menuId: 'travel.attestation' },
   { prefix: '/documents-voyage/payment-voucher', menuId: 'travel.payment-voucher' },
   { prefix: '/documents-voyage/historique', menuId: 'travel.historique' },
   { prefix: '/documents-voyage/etablir', menuId: 'travel.etablir' },
+  { prefix: '/documents-voyage/document', menuId: 'travel.etablir' },
   { prefix: '/protocol/visa-travail', menuId: 'protocol.visa-travail' },
   { prefix: '/protocol/visa-volant', menuId: 'protocol.visa-volant' },
   { prefix: '/protocol/visa-voyage', menuId: 'protocol.visa-voyage' },
@@ -76,6 +90,9 @@ export function routeViewMenuIds(pathname: string): string[] {
   }
   if (normalized.startsWith('/charroi-automobile/achats')) {
     return ['charroi.achats', 'charroi'];
+  }
+  if (normalized === '/documents') {
+    return [...DOCUMENTS_HUB_MENU_IDS];
   }
   const menuId = pathnameToMenuId(pathname);
   return menuId ? [menuId] : [];

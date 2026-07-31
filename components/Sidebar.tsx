@@ -48,6 +48,10 @@ type NavLinkSection = {
   icon: string;
   color: string;
   alwaysVisible?: boolean;
+  /** Visible si l'utilisateur a « view » sur au moins un de ces menus. */
+  menuIds?: string[];
+  /** Préfixes de routes supplémentaires considérés comme actifs. */
+  activePrefixes?: string[];
 };
 
 type NavSection = NavGroup | NavLinkSection;
@@ -88,37 +92,20 @@ const NAV: NavSection[] = [
     ],
   },
   {
-    type: 'group',
+    type: 'link',
     id: 'documents',
-    title: 'Documents',
+    href: '/documents',
+    label: 'Documents',
     icon: 'docs',
     color: '#a855f7',
-    items: [
-      {
-        href: '/documents-voyage/historique',
-        label: 'Voyage',
-        icon: 'travel',
-        menuId: 'travel.historique',
-      },
-      {
-        href: '/documents-voyage/etablir',
-        label: 'Cash request',
-        icon: 'edit',
-        menuId: 'travel.etablir',
-        featured: true,
-      },
-      {
-        href: '/documents-voyage/attestation-services',
-        label: 'Attestation de service',
-        icon: 'docs',
-        menuId: 'travel.attestation',
-      },
-      {
-        href: '/documents-voyage/payment-voucher',
-        label: 'Payment voucher',
-        icon: 'docs',
-        menuId: 'travel.payment-voucher',
-      },
+    activePrefixes: ['/documents-voyage'],
+    menuIds: [
+      'travel.historique',
+      'travel.etablir',
+      'travel.attestation',
+      'travel.payment-voucher',
+      'documents.appraisal',
+      'documents.exit',
     ],
   },
   {
@@ -567,7 +554,9 @@ function NavGroupSection({
 
 function NavStandaloneSection({ section, collapsed }: { section: NavLinkSection; collapsed: boolean }) {
   const pathname = usePathname();
-  const active = isActive(pathname, section.href);
+  const active =
+    isActive(pathname, section.href) ||
+    Boolean(section.activePrefixes?.some((prefix) => isActive(pathname, prefix)));
 
   return (
     <div className="nav-menu-section" style={{ '--nav-color': section.color } as CSSProperties}>
@@ -632,7 +621,11 @@ export default function Sidebar() {
 
   const visibleNav = NAV.map((section) => {
     if (section.type === 'link') {
-      if (section.alwaysVisible || can(section.id, 'view')) return section;
+      if (section.alwaysVisible) return section;
+      if (section.menuIds?.length) {
+        return section.menuIds.some((id) => can(id, 'view')) ? section : null;
+      }
+      if (can(section.id, 'view')) return section;
       return null;
     }
     const items = section.items.filter((item) => {

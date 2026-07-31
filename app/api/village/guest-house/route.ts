@@ -6,6 +6,7 @@ import {
   getGuestHouseBundle,
   getGuestReservation,
   getGuestRoom,
+  updateGuestReservation,
   updateGuestReservationStatus,
   upsertGuestRoom,
 } from '@/lib/guest-house-store';
@@ -19,6 +20,11 @@ import { checkPermission } from '@/lib/require-permission';
 import { withAudit } from '@/lib/with-audit';
 
 const MENU = 'village.guest-house';
+
+// La persistance en ligne (GitHub) d'un store volumineux peut dépasser les 10 s
+// par défaut sur Vercel — on étend la durée maximale de la fonction.
+export const maxDuration = 60;
+export const dynamic = 'force-dynamic';
 
 export async function GET() {
   const denied = await checkPermission(MENU, 'view');
@@ -118,6 +124,38 @@ export async function POST(request: Request) {
             method: 'POST',
           },
           () => updateGuestReservationStatus(body.id!, body.status!, body.roomId),
+        );
+        return NextResponse.json(updated);
+      }
+      if (body.action === 'update') {
+        const denied = await checkPermission(MENU, 'edit');
+        if (denied) return denied;
+        if (!body.id) return NextResponse.json({ error: 'ID requis' }, { status: 400 });
+        const updated = await withAudit(
+          {
+            module: 'guest-house',
+            action: 'update',
+            entityType: 'guest-house.reservation',
+            entityId: body.id,
+            summary: `Modification réservation ${body.id}`,
+            getBefore: () => getGuestReservation(body.id!),
+            path: '/api/village/guest-house',
+            method: 'POST',
+          },
+          () =>
+            updateGuestReservation(body.id!, {
+              personName: body.personName ?? '',
+              matricule: body.matricule,
+              isAgent: body.isAgent,
+              motif: body.motif ?? '',
+              startDate: body.startDate ?? '',
+              endDate: body.endDate ?? '',
+              notes: body.notes,
+              company: body.company,
+              mission: body.mission,
+              phone: body.phone,
+              email: body.email,
+            }),
         );
         return NextResponse.json(updated);
       }

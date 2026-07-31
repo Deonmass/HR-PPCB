@@ -6,16 +6,12 @@ import { useCallback, useEffect, useMemo, useState } from 'react';
 import PermissionGate from '@/components/PermissionGate';
 import RefreshButton from '@/components/RefreshButton';
 import RowContextMenu, { type ContextMenuItem } from '@/components/RowContextMenu';
-import TravelHistoryDashboardView from '@/components/travel/TravelHistoryDashboardView';
 import TravelHistoryDetailModal from '@/components/travel/TravelHistoryDetailModal';
-import { IconDashboard, IconDataTable, IconEtablir } from '@/components/travel/TravelVoyageIcons';
+import { IconDataTable, IconEtablir } from '@/components/travel/TravelVoyageIcons';
 import { usePermissions } from '@/contexts/PermissionContext';
-import { downloadTravelHistoryExport } from '@/lib/travel-history-export';
 import { extractTravelDepartmentName } from '@/lib/travel-history-utils';
 import type { TravelHistoryData, TravelHistoryRow } from '@/lib/travel-history-types';
 import { confirmDelete, showError } from '@/lib/swal';
-
-type Tab = 'dashboard' | 'data';
 
 function formatDate(value: string): string {
   if (!value) return '—';
@@ -40,7 +36,6 @@ function formatMoney(value: number): string {
 export default function HistoriqueVoyagesPage() {
   const router = useRouter();
   const { can } = usePermissions();
-  const [tab, setTab] = useState<Tab>('dashboard');
   const [data, setData] = useState<TravelHistoryData | null>(null);
   const [loading, setLoading] = useState(true);
   const [refreshing, setRefreshing] = useState(false);
@@ -52,7 +47,6 @@ export default function HistoriqueVoyagesPage() {
     row: TravelHistoryRow;
   } | null>(null);
   const [search, setSearch] = useState('');
-  const [exporting, setExporting] = useState(false);
 
   const load = useCallback(async (isRefresh = false) => {
     if (isRefresh) setRefreshing(true);
@@ -79,17 +73,6 @@ export default function HistoriqueVoyagesPage() {
   useEffect(() => {
     load();
   }, [load]);
-
-  const handleExport = async () => {
-    setExporting(true);
-    try {
-      await downloadTravelHistoryExport();
-    } catch (err) {
-      await showError(err instanceof Error ? err.message : 'Export impossible');
-    } finally {
-      setExporting(false);
-    }
-  };
 
   const handleView = (row: TravelHistoryRow) => {
     setSelectedRow(row);
@@ -196,33 +179,13 @@ export default function HistoriqueVoyagesPage() {
             <p>{rows.length} mission{rows.length > 1 ? 's' : ''} enregistrée{rows.length > 1 ? 's' : ''}</p>
           </div>
           <div className="travel-history-header-actions">
-            <PermissionGate menuId="travel.historique" action="export">
-              <button
-                type="button"
-                className="btn btn-outline btn-export btn-sm btn-with-icon"
-                onClick={() => void handleExport()}
-                disabled={exporting}
-              >
-                {exporting ? <span className="btn-spinner" aria-hidden="true" /> : null}
-                {exporting ? 'Export…' : 'Export'}
-              </button>
-            </PermissionGate>
+            <Link href="/documents" className="btn btn-secondary btn-sm" prefetch={false}>
+              ← Documents
+            </Link>
             <div className="tabs header-tabs header-tabs-dashboard header-tabs-compact travel-history-tabs">
-              <button
-                type="button"
-                className={`tab-btn tab-btn-sm tab-btn-icon tab-btn-dashboard${tab === 'dashboard' ? ' active' : ''}`}
-                onClick={() => setTab('dashboard')}
-              >
-                <IconDashboard size={16} />
-                Dashboard
-              </button>
-              <button
-                type="button"
-                className={`tab-btn tab-btn-sm tab-btn-icon tab-btn-dashboard${tab === 'data' ? ' active' : ''}`}
-                onClick={() => setTab('data')}
-              >
+              <button type="button" className="tab-btn tab-btn-sm tab-btn-icon tab-btn-dashboard active">
                 <IconDataTable size={16} />
-                Historique
+                Documents émis
               </button>
               <PermissionGate menuId="travel.etablir" action="create">
                 <Link
@@ -230,7 +193,7 @@ export default function HistoriqueVoyagesPage() {
                   className="tab-btn tab-btn-sm tab-btn-icon tab-btn-dashboard"
                 >
                   <IconEtablir size={16} />
-                  Cash request
+                  Formulaire
                 </Link>
               </PermissionGate>
             </div>
@@ -241,12 +204,7 @@ export default function HistoriqueVoyagesPage() {
       <div className="travel-history-body">
         {error && <div className="alert alert-danger">{error}</div>}
 
-        {tab === 'dashboard' && data && (
-          <TravelHistoryDashboardView dashboard={data.dashboard} rows={data.rows} />
-        )}
-
-        {tab === 'data' && (
-          <div className="panel">
+        <div className="panel">
             {rows.length === 0 ? (
               <p className="empty-state">
                 Aucune mission enregistrée. Commencez par établir un dossier de voyage.
@@ -320,8 +278,7 @@ export default function HistoriqueVoyagesPage() {
                 </div>
               </>
             )}
-          </div>
-        )}
+        </div>
       </div>
 
       {contextMenu && contextMenuItems.length > 0 && (

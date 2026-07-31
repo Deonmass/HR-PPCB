@@ -5,7 +5,10 @@ export type CharroiObservationCanon =
   | 'Avertissement'
   | 'A déclasser';
 
-export type CharroiObservationTech = CharroiObservationCanon | string;
+/** État saisi manuellement ('' = calcul automatique). */
+export type CharroiEtatManuel = '' | CharroiObservationCanon | 'Déclassé';
+
+export type CharroiObservationTech = CharroiObservationCanon | 'Déclassé' | string;
 
 /** Excel: km > 180 000 → A déclasser */
 export const CHARROI_KM_DECLASSE = 180_000;
@@ -29,6 +32,12 @@ export interface CharroiVehicule {
   miseCirculation: string;
   age: number | null;
   observationTech: CharroiObservationTech;
+  /** État saisi manuellement — prime sur le calcul auto ('' = auto). */
+  etatManuel: CharroiEtatManuel;
+  /** Dates de fin de validité (ISO yyyy-mm-dd). */
+  assuranceFin: string;
+  vignetteFin: string;
+  controleTechniqueFin: string;
   notes: string;
   createdAt: string;
   updatedAt: string;
@@ -91,6 +100,57 @@ export const CHARROI_OBSERVATIONS = [
   'Avertissement',
   'A déclasser',
 ] as const;
+
+/** États affichables (calculés + Déclassé manuel). */
+export const CHARROI_ETATS = [
+  'Bon état',
+  'Avertissement',
+  'A déclasser',
+  'Déclassé',
+] as const;
+
+export function normalizeEtatManuel(raw: unknown): CharroiEtatManuel {
+  const t = String(raw ?? '').trim().replace(/\s+/g, ' ').toLowerCase();
+  if (!t || t === 'auto') return '';
+  if (t.startsWith('bon')) return 'Bon état';
+  if (t.startsWith('avert')) return 'Avertissement';
+  if (t === 'a déclasser' || t === 'à déclasser' || t === 'a declasser' || t === 'à declasser') {
+    return 'A déclasser';
+  }
+  if (t === 'déclassé' || t === 'declassé' || t === 'déclasse' || t === 'declasse') {
+    return 'Déclassé';
+  }
+  return '';
+}
+
+/** Statut d'échéance d'un document (assurance / vignette / contrôle technique). */
+export type CharroiExpiryStatus = 'expired' | 'soon' | 'ok' | 'none';
+
+/** ≤ 30 jours avant expiration → 'soon' ; date passée → 'expired'. */
+export const CHARROI_EXPIRY_SOON_DAYS = 30;
+
+export function charroiExpiryStatus(
+  dateIso: string | null | undefined,
+  now = new Date(),
+): CharroiExpiryStatus {
+  const raw = String(dateIso ?? '').trim();
+  if (!/^\d{4}-\d{2}-\d{2}$/.test(raw)) return 'none';
+  const date = new Date(`${raw}T00:00:00`);
+  if (Number.isNaN(date.getTime())) return 'none';
+  const today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+  if (date.getTime() < today.getTime()) return 'expired';
+  const limit = new Date(today);
+  limit.setDate(limit.getDate() + CHARROI_EXPIRY_SOON_DAYS);
+  if (date.getTime() <= limit.getTime()) return 'soon';
+  return 'ok';
+}
+
+export function formatCharroiDate(dateIso: string | null | undefined): string {
+  const raw = String(dateIso ?? '').trim();
+  if (!/^\d{4}-\d{2}-\d{2}$/.test(raw)) return raw || '—';
+  const [y, m, d] = raw.split('-');
+  return `${d}/${m}/${y}`;
+}
 
 const OBS_RANK: Record<CharroiObservationCanon, number> = {
   'Bon état': 0,

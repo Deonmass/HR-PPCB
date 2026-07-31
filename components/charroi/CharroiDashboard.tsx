@@ -4,8 +4,10 @@ import { useMemo } from 'react';
 import EmployeesPieChart from '@/components/employees/EmployeesPieChart';
 import type { CharroiVehicule } from '@/lib/charroi-types';
 import {
+  CHARROI_ETATS,
   CHARROI_KM_DECLASSE,
-  CHARROI_OBSERVATIONS,
+  charroiExpiryStatus,
+  formatCharroiDate,
   normalizeMarqueLabel,
   normalizeProvinceLabel,
 } from '@/lib/charroi-types';
@@ -78,13 +80,20 @@ function IconAge() {
   );
 }
 
+/** Documents véhicule suivis pour les échéances. */
+const EXPIRY_DOCS = [
+  { field: 'assuranceFin' as const, label: 'Assurance' },
+  { field: 'vignetteFin' as const, label: 'Vignette' },
+  { field: 'controleTechniqueFin' as const, label: 'Contr. tech.' },
+];
+
 const MARQUE_COLORS = [
   '#e30613', '#06b6d4', '#22c55e', '#f59e0b', '#a78bfa', '#60a5fa', '#fb7185', '#34d399',
 ];
 const PROVINCE_COLORS = [
   '#0ea5e9', '#22c55e', '#f59e0b', '#a855f7', '#ef4444', '#14b8a6', '#f472b6', '#64748b',
 ];
-const ETAT_COLORS = ['#22c55e', '#f59e0b', '#ef4444'];
+const ETAT_COLORS = ['#22c55e', '#f59e0b', '#ef4444', '#64748b'];
 const OWNER_COLORS = ['#e30613', '#0ea5e9', '#94a3b8'];
 
 export default function CharroiDashboard({ items, onSelectVehicle }: Props) {
@@ -101,6 +110,20 @@ export default function CharroiDashboard({ items, onSelectVehicle }: Props) {
     const highKm = [...items]
       .filter((v) => (v.kilometrage ?? 0) > CHARROI_KM_DECLASSE)
       .sort((a, b) => (b.kilometrage ?? 0) - (a.kilometrage ?? 0));
+
+    // Échéances assurance / vignette / contrôle technique (expirées ou ≤ 30 jours).
+    const expiries = items
+      .flatMap((v) =>
+        EXPIRY_DOCS.map(({ field, label }) => ({
+          vehicle: v,
+          field,
+          label,
+          date: v[field],
+          status: charroiExpiryStatus(v[field]),
+        })),
+      )
+      .filter((x) => x.status === 'expired' || x.status === 'soon')
+      .sort((a, b) => a.date.localeCompare(b.date));
 
     const byNormalized = (
       getKey: (v: CharroiVehicule) => string,
@@ -126,9 +149,10 @@ export default function CharroiDashboard({ items, onSelectVehicle }: Props) {
       loxea,
       avgAge,
       highKm,
+      expiries,
       marques: byNormalized((v) => normalizeMarqueLabel(v.marque) || '—'),
       provinces: byNormalized((v) => normalizeProvinceLabel(v.province) || '—'),
-      etats: CHARROI_OBSERVATIONS.map((label) => ({
+      etats: CHARROI_ETATS.map((label) => ({
         label,
         count: countByObs(items, label),
       })).filter((x) => x.count > 0),
@@ -271,6 +295,34 @@ export default function CharroiDashboard({ items, onSelectVehicle }: Props) {
                   {v.plaque || v.marque || v.id}
                 </span>
                 <strong>{v.kilometrage?.toLocaleString('fr-FR')}</strong>
+              </button>
+            ))}
+          </div>
+        </div>
+        <div className="panel charroi-dash-side-panel charroi-dash-alert-panel">
+          <div className="panel-head">
+            <h3>Échéances ≤ 1 mois</h3>
+            <span className="panel-meta">{dash.expiries.length}</span>
+          </div>
+          <div className="charroi-mini-list">
+            {dash.expiries.length === 0 ? (
+              <div className="text-muted charroi-empty-mini">
+                Aucune échéance (assurance, vignette, contrôle technique)
+              </div>
+            ) : dash.expiries.slice(0, 12).map((x) => (
+              <button
+                key={`${x.vehicle.id}-${x.field}`}
+                type="button"
+                className="charroi-mini-row charroi-mini-btn"
+                onClick={() => onSelectVehicle?.(x.vehicle)}
+              >
+                <span title={`${x.vehicle.marque} ${x.vehicle.plaque}`.trim()}>
+                  {x.vehicle.plaque || x.vehicle.marque || x.vehicle.id}
+                  <em className="charroi-expiry-doc">{x.label}</em>
+                </span>
+                <strong className={`charroi-expiry-date is-${x.status}`}>
+                  {formatCharroiDate(x.date)}
+                </strong>
               </button>
             ))}
           </div>

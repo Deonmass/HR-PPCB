@@ -591,6 +591,69 @@ export async function createGuestReservation(input: GuestReservationInput): Prom
   return reservation;
 }
 
+/** Met à jour les informations d'une réservation (personne, motif, dates, contacts…). */
+export async function updateGuestReservation(
+  id: string,
+  input: GuestReservationInput,
+): Promise<GuestReservation> {
+  const personName = str(input.personName);
+  const motif = str(input.motif);
+  const startDate = str(input.startDate);
+  const endDate = str(input.endDate);
+  if (!personName) throw new Error('Personne requise');
+  if (!motif) throw new Error('Motif requis');
+  if (!parseIsoDate(startDate) || !parseIsoDate(endDate)) throw new Error('Dates invalides');
+  if (endDate < startDate) throw new Error('La date de fin doit être après la date de début');
+
+  const data = await readStore();
+  const index = data.reservations.findIndex((item) => item.id === id);
+  if (index < 0) throw new Error('Réservation introuvable');
+  const current = data.reservations[index];
+
+  // Réservation confirmée avec chambre : vérifier les conflits sur la nouvelle période.
+  if (current.status === 'confirmed' && current.roomId) {
+    const conflict = data.reservations.some(
+      (item) =>
+        item.id !== id
+        && item.status === 'confirmed'
+        && item.roomId === current.roomId
+        && datesOverlap(item.startDate, item.endDate, startDate, endDate),
+    );
+    if (conflict) throw new Error('Cette chambre / cet hôtel est déjà réservé(e) sur cette période');
+  }
+
+  const now = new Date().toISOString();
+  const updated: GuestReservation = {
+    ...current,
+    personName,
+    matricule: str(input.matricule) || undefined,
+    isAgent: Boolean(input.isAgent || str(input.matricule)),
+    motif,
+    startDate,
+    endDate,
+    notes: str(input.notes) || undefined,
+    company: str(input.company) || undefined,
+    mission: str(input.mission) || undefined,
+    phone: str(input.phone) || undefined,
+    email: str(input.email) || undefined,
+    updatedAt: now,
+  };
+  data.reservations[index] = updated;
+
+  // Synchronise le passage lié (identité / dates).
+  const passage = data.passages.find((p) => p.reservationId === id);
+  if (passage) {
+    passage.personName = updated.personName;
+    passage.matricule = updated.matricule;
+    passage.motif = updated.motif;
+    passage.startDate = updated.startDate;
+    passage.endDate = updated.endDate;
+  }
+
+  await writeStore(data);
+  return updated;
+}
+
 export async function updateGuestReservationStatus(
   id: string,
   status: GuestReservationStatus,

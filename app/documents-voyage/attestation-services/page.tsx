@@ -1,5 +1,6 @@
 'use client';
 
+import Link from 'next/link';
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import PermissionGate from '@/components/PermissionGate';
 import RefreshButton from '@/components/RefreshButton';
@@ -339,23 +340,28 @@ export default function AttestationServicesPage() {
               </div>
               <p>{historyCountLabel}</p>
             </div>
-            <div className="tabs header-tabs header-tabs-dashboard header-tabs-compact">
-              {canCreate && (
+            <div className="travel-history-header-actions">
+              <Link href="/documents" className="btn btn-secondary btn-sm" prefetch={false}>
+                ← Documents
+              </Link>
+              <div className="tabs header-tabs header-tabs-dashboard header-tabs-compact">
+                {canCreate && (
+                  <button
+                    type="button"
+                    className={`tab-btn tab-btn-sm tab-btn-dashboard${pageTab === 'form' ? ' active' : ''}`}
+                    onClick={() => setPageTab('form')}
+                  >
+                    Formulaire
+                  </button>
+                )}
                 <button
                   type="button"
-                  className={`tab-btn tab-btn-sm tab-btn-dashboard${pageTab === 'form' ? ' active' : ''}`}
-                  onClick={() => setPageTab('form')}
+                  className={`tab-btn tab-btn-sm tab-btn-dashboard${pageTab === 'history' ? ' active' : ''}`}
+                  onClick={() => setPageTab('history')}
                 >
-                  Formulaire
+                  Documents émis
                 </button>
-              )}
-              <button
-                type="button"
-                className={`tab-btn tab-btn-sm tab-btn-dashboard${pageTab === 'history' ? ' active' : ''}`}
-                onClick={() => setPageTab('history')}
-              >
-                Historique
-              </button>
+              </div>
             </div>
           </div>
         </div>

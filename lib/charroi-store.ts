@@ -25,6 +25,7 @@ import {
   computeAgeFromMiseCirculation,
   computeFuelCost,
   computeObservationTech,
+  normalizeEtatManuel,
   normalizeMarqueLabel,
   normalizeProvinceLabel,
   roundMoney,
@@ -141,7 +142,9 @@ function normalizeVehicule(
   const kilometrage = num(raw.kilometrage);
   const ageFromYear = computeAgeFromMiseCirculation(miseCirculation);
   const age = ageFromYear ?? num(raw.age);
-  const observationTech = computeObservationTech({ age, kilometrage });
+  const etatManuel = normalizeEtatManuel(raw.etatManuel);
+  // L'état manuel (ex. Déclassé) prime sur le calcul automatique âge/km.
+  const observationTech = etatManuel || computeObservationTech({ age, kilometrage });
   return {
     id,
     numero: num(raw.numero),
@@ -159,6 +162,10 @@ function normalizeVehicule(
     miseCirculation,
     age,
     observationTech,
+    etatManuel,
+    assuranceFin: str(raw.assuranceFin),
+    vignetteFin: str(raw.vignetteFin),
+    controleTechniqueFin: str(raw.controleTechniqueFin),
     notes: str(raw.notes),
     createdAt: str(raw.createdAt) || timestamps?.createdAt || stamp,
     updatedAt: timestamps?.updatedAt || stamp,

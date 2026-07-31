@@ -75,6 +75,34 @@ export function formatEmployeeWithMatricule(name: string, matricule: string): st
   return `${trimmedName} (${trimmedMatricule})`;
 }
 
+/** Variante en mémoire : renvoie le .docx rempli sous forme de Buffer. */
+export async function fillDocxTemplateToBuffer(
+  templatePath: string,
+  fillXml: (xml: string) => string,
+): Promise<Buffer> {
+  const templateBuffer = await fs.readFile(templatePath);
+  const zip = await JSZip.loadAsync(templateBuffer);
+  const documentFile = zip.file(DOCUMENT_XML_PATH);
+  if (!documentFile) {
+    throw new Error('Fichier word/document.xml introuvable dans le modèle');
+  }
+
+  const xml = await documentFile.async('string');
+  zip.file(DOCUMENT_XML_PATH, fillXml(xml), { createFolders: false });
+
+  for (const entryName of Object.keys(zip.files)) {
+    if (zip.files[entryName].dir) {
+      delete zip.files[entryName];
+    }
+  }
+
+  return zip.generateAsync({
+    type: 'nodebuffer',
+    compression: 'DEFLATE',
+    compressionOptions: { level: 6 },
+  });
+}
+
 export async function writeDocxFromTemplate(
   templatePath: string,
   outputPath: string,

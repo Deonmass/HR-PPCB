@@ -44,7 +44,10 @@ export default function SideDrawer({
   useEffect(() => {
     if (!open) return;
     const onKey = (e: KeyboardEvent) => {
-      if (e.key === 'Escape') onClose();
+      if (e.key !== 'Escape') return;
+      // Une alerte SweetAlert est ouverte : Échap ferme l'alerte, pas le drawer.
+      if (document.body.classList.contains('swal2-shown')) return;
+      onClose();
     };
     document.addEventListener('keydown', onKey);
     return () => document.removeEventListener('keydown', onKey);

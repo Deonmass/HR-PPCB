@@ -42,6 +42,8 @@ export const PERMISSION_MENU_CATALOG: PermissionMenuGroup[] = [
       { id: 'travel.etablir', label: 'Cash request' },
       { id: 'travel.attestation', label: 'Attestation de service' },
       { id: 'travel.payment-voucher', label: 'Payment voucher' },
+      { id: 'documents.appraisal', label: 'Interim appraisal evaluation' },
+      { id: 'documents.exit', label: 'Exit forms' },
     ],
   },
   {

@@ -1,5 +1,6 @@
 'use client';
 
+import Link from 'next/link';
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { useSearchParams } from 'next/navigation';
 import EmployeePicker, { EmployeeSuggestInput, type EmployeeSelection } from '@/components/EmployeePicker';
@@ -28,6 +29,11 @@ import {
   TRAVEL_AIRPORTS,
 } from '@/lib/travel-flight-data';
 import { showError } from '@/lib/swal';
+import {
+  SINGLE_TRAVEL_DOCS,
+  type SingleTravelDocField,
+  type SingleTravelDocId,
+} from '@/lib/travel-single-doc';
 import { readTravelGenerationStream } from '@/lib/travel-generation-stream';
 import type { CashRequestRecord, TravelFileType } from '@/lib/travel-types';
 import type { CostCenterSetting, DepartmentSetting } from '@/lib/auth-types';
@@ -79,9 +85,15 @@ function createInitialTravelForm(): TravelFormFields {
   };
 }
 
-export default function EtablirTravelForm() {
+interface EtablirTravelFormProps {
+  /** Mode « document unique » : le formulaire est réduit aux champs requis. */
+  singleDoc?: SingleTravelDocId;
+}
+
+export default function EtablirTravelForm({ singleDoc }: EtablirTravelFormProps = {}) {
   const searchParams = useSearchParams();
   const { can } = usePermissions();
+  const docConfig = singleDoc ? SINGLE_TRAVEL_DOCS[singleDoc] : null;
   const editRef = searchParams.get('ref')?.trim() ?? '';
   const canSubmit = editRef ? can('travel.etablir', 'edit') : can('travel.etablir', 'create');
   const editLoadedRef = useRef(false);
@@ -121,6 +133,13 @@ export default function EtablirTravelForm() {
   /** Employé issu de la base (suggestion) vs saisie libre. */
   const isKnownEmployee = Boolean(employee?.matricule);
 
+  /** Mode document unique : n'afficher que les champs requis par le document. */
+  const showField = (field: SingleTravelDocField) =>
+    !docConfig || docConfig.fields.includes(field);
+
+  /** Cash Request seul : lignes en montants directs (pas de × pers. × jours). */
+  const cashMode = docConfig?.id === 'cash-request';
+
   const paramDepartmentNames = useMemo(
     () => settingsDepartments.map((item) => item.name).filter(Boolean),
     [settingsDepartments],
@@ -145,6 +164,11 @@ export default function EtablirTravelForm() {
         return sum + (lineTotal || 0);
       }, 0),
     [travel.budgetLines, travel.peopleCount, tripDays],
+  );
+  /** Total en montants directs (mode Cash Request seul). */
+  const cashTotal = useMemo(
+    () => travel.budgetLines.reduce((sum, line) => sum + (Number(line.amount) || 0), 0),
+    [travel.budgetLines],
   );
 
   const patchTravel = (patch: Partial<TravelFormFields>) => {
@@ -424,7 +448,7 @@ export default function EtablirTravelForm() {
     }
 
     if (!isKnownEmployee) {
-      if (!travel.position.trim()) {
+      if (showField('position') && !travel.position.trim()) {
         await showError('Renseignez la position');
         return;
       }
@@ -434,24 +458,26 @@ export default function EtablirTravelForm() {
       }
     }
 
-    if (!travel.costCenter.trim()) {
+    if (showField('costCenter') && !travel.costCenter.trim()) {
       await showError('Renseignez le centre de coût');
       return;
     }
 
-    if (!travel.transportMeans.trim()) {
+    if (showField('transportMeans') && !travel.transportMeans.trim()) {
       await showError('Renseignez le moyen de transport');
       return;
     }
 
-    if (!isValidSaveDirectorySelection(saveDirectory)) {
+    // Dossier d'enregistrement : uniquement pour le pack Voyage complet.
+    // Les documents unitaires sont téléchargés directement.
+    if (!docConfig && !isValidSaveDirectorySelection(saveDirectory)) {
       await showError(
         folderSelectionErrorMessage(saveDirectory) ?? "Sélectionnez un dossier d'enregistrement",
       );
       return;
     }
 
-    if (travel.isInternationalTravel) {
+    if (!docConfig && travel.isInternationalTravel) {
       const flight = travel.flightBooking ?? emptyFlightBookingFields();
       if (!flight.passportFullName.trim()) {
         await showError('Renseignez le nom complet tel qu\'inscrit sur le passeport');
@@ -465,6 +491,11 @@ export default function EtablirTravelForm() {
         await showError('Renseignez la compagnie aérienne');
         return;
       }
+    }
+
+    if (docConfig) {
+      void runGeneration([docConfig.id]);
+      return;
     }
 
     setSelectDocsOpen(true);
@@ -495,6 +526,27 @@ export default function EtablirTravelForm() {
     setGenResult(null);
     startProgressAnimation(steps.length);
 
+    // Mode document unique : ne transmettre que les données utiles au document.
+    const travelPayload: TravelFormFields = docConfig
+      ? {
+          ...travel,
+          isInternationalTravel: false,
+          flightBooking: undefined,
+          budgetLines: docConfig.fields.includes('budget')
+            ? travel.budgetLines
+            : [{ label: 'N/A', amount: 0 }],
+          // Cash Request seul : montants directs (1 personne × 1 jour),
+          // les dates de voyage ne sont pas demandées par le document.
+          ...(cashMode
+            ? {
+                peopleCount: 1,
+                departureDate: travel.documentDate,
+                returnDate: travel.documentDate,
+              }
+            : {}),
+        }
+      : travel;
+
     try {
       const res = await fetch('/api/travel/cash-requests/generate', {
         method: 'POST',
@@ -503,8 +555,8 @@ export default function EtablirTravelForm() {
           employeeMatricule: employee.matricule,
           employeeName: employee.nom,
           employeeDepartment: travel.department || employee.departement,
-          travel,
-          saveDirectory: hasServerPath ? saveDirectory.trim() : undefined,
+          travel: travelPayload,
+          saveDirectory: hasServerPath && !docConfig ? saveDirectory.trim() : undefined,
           selectedDocuments: docIds as TravelFileType[],
         }),
       });
@@ -571,6 +623,17 @@ export default function EtablirTravelForm() {
         ...generatedRecord,
         saveDirectory: resolvedDirectory,
       });
+
+      // Document unitaire : téléchargement direct dans le navigateur.
+      if (docConfig) {
+        const link = document.createElement('a');
+        link.href = `/api/travel/cash-requests/${encodeURIComponent(generatedRecord.id)}/download?type=${encodeURIComponent(docConfig.id)}`;
+        link.download = '';
+        document.body.appendChild(link);
+        link.click();
+        link.remove();
+      }
+
       void loadMissionRef();
     } catch {
       stopProgressAnimation();
@@ -600,18 +663,37 @@ export default function EtablirTravelForm() {
 
   return (
     <div className="cash-request-page">
-      <div className="cash-request-sticky">
-        <div className="page-header">
-          <div>
-            <h2>{missionRef || 'Cash request — Documents de voyage'}</h2>
-            <p>
-              {missionRef
-                ? 'Ordre de mission · Informations voyage et génération des fichiers'
-                : 'Informations voyage et génération des fichiers'}
-            </p>
+      {!docConfig && (
+        <div className="cash-request-sticky">
+          <div className="page-header page-header-with-tabs">
+            <div>
+              <h2>{missionRef || 'Cash request — Documents de voyage'}</h2>
+              <p>
+                {missionRef
+                  ? 'Ordre de mission · Informations voyage et génération des fichiers'
+                  : 'Informations voyage et génération des fichiers'}
+              </p>
+            </div>
+            <div className="travel-history-header-actions">
+              <Link href="/documents" className="btn btn-secondary btn-sm" prefetch={false}>
+                ← Documents
+              </Link>
+              <div className="tabs header-tabs header-tabs-dashboard header-tabs-compact">
+                <button type="button" className="tab-btn tab-btn-sm tab-btn-dashboard active">
+                  Formulaire
+                </button>
+                <Link
+                  href="/documents-voyage/historique"
+                  className="tab-btn tab-btn-sm tab-btn-dashboard"
+                  prefetch={false}
+                >
+                  Documents émis
+                </Link>
+              </div>
+            </div>
           </div>
         </div>
-      </div>
+      )}
 
       <div className="panel cash-request-panel">
         <form onSubmit={handleSubmit}>
@@ -627,17 +709,19 @@ export default function EtablirTravelForm() {
                   required
                 />
               </div>
-              <div className="form-group">
-                <label htmlFor="position">Position</label>
-                <input
-                  id="position"
-                  disabled={isKnownEmployee}
-                  required={!isKnownEmployee}
-                  value={travel.position}
-                  onChange={(e) => patchTravel({ position: e.target.value })}
-                  placeholder={isKnownEmployee ? 'Rempli automatiquement' : 'Saisir la position'}
-                />
-              </div>
+              {showField('position') && (
+                <div className="form-group">
+                  <label htmlFor="position">Position</label>
+                  <input
+                    id="position"
+                    disabled={isKnownEmployee}
+                    required={!isKnownEmployee}
+                    value={travel.position}
+                    onChange={(e) => patchTravel({ position: e.target.value })}
+                    placeholder={isKnownEmployee ? 'Rempli automatiquement' : 'Saisir la position'}
+                  />
+                </div>
+              )}
               <div className="form-group">
                 <label htmlFor="department">Département</label>
                 {isKnownEmployee ? (
@@ -660,160 +744,191 @@ export default function EtablirTravelForm() {
                   />
                 )}
               </div>
-              <div className="form-group">
-                <label htmlFor="costCenter">Centre de coût</label>
-                <input
-                  id="costCenter"
-                  required
-                  list="travel-cost-center-suggestions"
-                  value={travel.costCenter}
-                  onChange={(e) => patchTravel({ costCenter: e.target.value })}
-                  placeholder="Saisir ou filtrer un centre de coût"
-                  autoComplete="off"
-                />
-              </div>
-              <div className="form-group">
-                <label htmlFor="companyName">Company name</label>
-                <select
-                  id="companyName"
-                  required
-                  value={travel.companyName}
-                  onChange={(e) => patchTravel({ companyName: e.target.value as TravelFormFields['companyName'] })}
-                >
-                  {TRAVEL_COMPANY_OPTIONS.map((company) => (
-                    <option key={company} value={company}>
-                      {company}
-                    </option>
-                  ))}
-                </select>
-              </div>
+              {showField('costCenter') && (
+                <div className="form-group">
+                  <label htmlFor="costCenter">Centre de coût</label>
+                  <input
+                    id="costCenter"
+                    required
+                    list="travel-cost-center-suggestions"
+                    value={travel.costCenter}
+                    onChange={(e) => patchTravel({ costCenter: e.target.value })}
+                    placeholder="Saisir ou filtrer un centre de coût"
+                    autoComplete="off"
+                  />
+                </div>
+              )}
+              {showField('companyName') && (
+                <div className="form-group">
+                  <label htmlFor="companyName">Company name</label>
+                  <select
+                    id="companyName"
+                    required
+                    value={travel.companyName}
+                    onChange={(e) => patchTravel({ companyName: e.target.value as TravelFormFields['companyName'] })}
+                  >
+                    {TRAVEL_COMPANY_OPTIONS.map((company) => (
+                      <option key={company} value={company}>
+                        {company}
+                      </option>
+                    ))}
+                  </select>
+                </div>
+              )}
             </div>
 
             <div className="travel-form-col">
               <h4 className="travel-form-col-title">Voyage</h4>
               <div className="form-group">
-                <label htmlFor="tripPurpose">Trip purpose</label>
+                <label htmlFor="tripPurpose">{cashMode ? 'Objet de la demande' : 'Trip purpose'}</label>
                 <input
                   id="tripPurpose"
                   required
                   value={travel.tripPurpose}
                   onChange={(e) => patchTravel({ tripPurpose: e.target.value })}
-                  placeholder="Objet du déplacement"
+                  placeholder={cashMode ? 'Ex. Mission de Kimpese à Kinshasa' : 'Objet du déplacement'}
                 />
               </div>
-              <div className="form-group">
-                <label htmlFor="documentDate">Date document</label>
-                <input
-                  id="documentDate"
-                  type="date"
-                  required
-                  value={travel.documentDate}
-                  onChange={(e) => patchTravel({ documentDate: e.target.value })}
-                />
-              </div>
-              <div className="form-group">
-                <label htmlFor="departureDate">Departure date</label>
-                <input
-                  id="departureDate"
-                  type="date"
-                  required
-                  value={travel.departureDate}
-                  onChange={(e) => patchTravel({ departureDate: e.target.value })}
-                />
-              </div>
-              <div className="form-group">
-                <label htmlFor="returnDate">Return date</label>
-                <input
-                  id="returnDate"
-                  type="date"
-                  required
-                  value={travel.returnDate}
-                  onChange={(e) => patchTravel({ returnDate: e.target.value })}
-                />
-              </div>
-              <div className="form-group">
-                <label htmlFor="peopleCount">Nombre de personnes</label>
-                <input
-                  id="peopleCount"
-                  type="number"
-                  min="1"
-                  step="1"
-                  value={travel.peopleCount}
-                  onChange={(e) => patchTravel({ peopleCount: Number(e.target.value) || 1 })}
-                />
-              </div>
+              {showField('documentDate') && (
+                <div className="form-group">
+                  <label htmlFor="documentDate">Date document</label>
+                  <input
+                    id="documentDate"
+                    type="date"
+                    required
+                    value={travel.documentDate}
+                    onChange={(e) => patchTravel({ documentDate: e.target.value })}
+                  />
+                </div>
+              )}
+              {showField('travelDates') && (
+                <>
+                  <div className="form-group">
+                    <label htmlFor="departureDate">Departure date</label>
+                    <input
+                      id="departureDate"
+                      type="date"
+                      required
+                      value={travel.departureDate}
+                      onChange={(e) => patchTravel({ departureDate: e.target.value })}
+                    />
+                  </div>
+                  <div className="form-group">
+                    <label htmlFor="returnDate">Return date</label>
+                    <input
+                      id="returnDate"
+                      type="date"
+                      required
+                      value={travel.returnDate}
+                      onChange={(e) => patchTravel({ returnDate: e.target.value })}
+                    />
+                  </div>
+                </>
+              )}
+              {showField('peopleCount') && (
+                <div className="form-group">
+                  <label htmlFor="peopleCount">Nombre de personnes</label>
+                  <input
+                    id="peopleCount"
+                    type="number"
+                    min="1"
+                    step="1"
+                    value={travel.peopleCount}
+                    onChange={(e) => patchTravel({ peopleCount: Number(e.target.value) || 1 })}
+                  />
+                </div>
+              )}
             </div>
 
+            {(!docConfig
+              || showField('destinationPlace')
+              || showField('departmentToWorkWith')
+              || showField('contactPerson')
+              || showField('transportMeans')) && (
             <div className="travel-form-col">
               <h4 className="travel-form-col-title">Destination & contacts</h4>
-              <div className="form-group">
-                <label htmlFor="departurePlace">Departure place</label>
-                <input
-                  id="departurePlace"
-                  value={travel.departurePlace}
-                  onChange={(e) => patchTravel({ departurePlace: e.target.value })}
-                  placeholder="Lieu de départ"
-                />
-              </div>
-              <div className="form-group">
-                <label htmlFor="destinationPlace">Destination place</label>
-                <input
-                  id="destinationPlace"
-                  value={travel.destinationPlace}
-                  onChange={(e) => patchTravel({ destinationPlace: e.target.value })}
-                  placeholder="Destination"
-                />
-              </div>
-              <div className="form-group">
-                <label htmlFor="departmentToWorkWith">Department to work with</label>
-                <select
-                  id="departmentToWorkWith"
-                  value={travel.departmentToWorkWith}
-                  onChange={(e) => patchTravel({ departmentToWorkWith: e.target.value })}
-                >
-                  <option value="">Sélectionner un département</option>
-                  {paramDepartmentNames.map((department) => (
-                    <option key={department} value={department}>
-                      {department}
-                    </option>
-                  ))}
-                </select>
-              </div>
-              <div className="form-group">
-                <label htmlFor="contactPerson">Contact person to work with</label>
-                <EmployeeSuggestInput
-                  employees={employees}
-                  value={travel.contactPerson}
-                  onChange={(value) => patchTravel({ contactPerson: value })}
-                  placeholder="Rechercher ou saisir un contact"
-                />
-              </div>
-              <div className="form-group">
-                <label htmlFor="transportMeans">Moyen de transport</label>
-                <input
-                  id="transportMeans"
-                  list="transport-options"
-                  required
-                  value={travel.transportMeans}
-                  onChange={(e) => patchTravel({ transportMeans: e.target.value })}
-                  placeholder="Avion, voiture…"
-                />
-              </div>
+              {!docConfig && (
+                <div className="form-group">
+                  <label htmlFor="departurePlace">Departure place</label>
+                  <input
+                    id="departurePlace"
+                    value={travel.departurePlace}
+                    onChange={(e) => patchTravel({ departurePlace: e.target.value })}
+                    placeholder="Lieu de départ"
+                  />
+                </div>
+              )}
+              {showField('destinationPlace') && (
+                <div className="form-group">
+                  <label htmlFor="destinationPlace">Destination place</label>
+                  <input
+                    id="destinationPlace"
+                    value={travel.destinationPlace}
+                    onChange={(e) => patchTravel({ destinationPlace: e.target.value })}
+                    placeholder="Destination"
+                  />
+                </div>
+              )}
+              {showField('departmentToWorkWith') && (
+                <div className="form-group">
+                  <label htmlFor="departmentToWorkWith">Department to work with</label>
+                  <select
+                    id="departmentToWorkWith"
+                    value={travel.departmentToWorkWith}
+                    onChange={(e) => patchTravel({ departmentToWorkWith: e.target.value })}
+                  >
+                    <option value="">Sélectionner un département</option>
+                    {paramDepartmentNames.map((department) => (
+                      <option key={department} value={department}>
+                        {department}
+                      </option>
+                    ))}
+                  </select>
+                </div>
+              )}
+              {showField('contactPerson') && (
+                <div className="form-group">
+                  <label htmlFor="contactPerson">Contact person to work with</label>
+                  <EmployeeSuggestInput
+                    employees={employees}
+                    value={travel.contactPerson}
+                    onChange={(value) => patchTravel({ contactPerson: value })}
+                    placeholder="Rechercher ou saisir un contact"
+                  />
+                </div>
+              )}
+              {showField('transportMeans') && (
+                <div className="form-group">
+                  <label htmlFor="transportMeans">Moyen de transport</label>
+                  <input
+                    id="transportMeans"
+                    list="transport-options"
+                    required
+                    value={travel.transportMeans}
+                    onChange={(e) => patchTravel({ transportMeans: e.target.value })}
+                    placeholder="Avion, voiture…"
+                  />
+                </div>
+              )}
             </div>
+            )}
           </div>
 
           <div className="travel-signatory-save-row">
-            <div className="form-group">
-              <label htmlFor="paymentOrderSignatory">Signataire de l&apos;ordre de paiement</label>
-              <EmployeeSuggestInput
-                id="paymentOrderSignatory"
-                employees={employees}
-                value={travel.paymentOrderSignatory}
-                onChange={(value) => patchTravel({ paymentOrderSignatory: value })}
-                placeholder="Rechercher un agent"
-                required
-              />
-            </div>
+            {showField('signatory') && (
+              <div className="form-group">
+                <label htmlFor="paymentOrderSignatory">Signataire de l&apos;ordre de paiement</label>
+                <EmployeeSuggestInput
+                  id="paymentOrderSignatory"
+                  employees={employees}
+                  value={travel.paymentOrderSignatory}
+                  onChange={(value) => patchTravel({ paymentOrderSignatory: value })}
+                  placeholder="Rechercher un agent"
+                  required
+                />
+              </div>
+            )}
+            {!docConfig && (
             <div className="form-group travel-save-directory">
               <span id="saveDirectoryLabel" className="folder-picker-label">
                 Dossier d&apos;enregistrement
@@ -845,8 +960,10 @@ export default function EtablirTravelForm() {
                 </span>
               </div>
             </div>
+            )}
           </div>
 
+          {!docConfig && (
           <div className="travel-international-row">
             <label className="travel-international-check">
               <input
@@ -876,8 +993,9 @@ export default function EtablirTravelForm() {
               <span>Déplacement international et national ?</span>
             </label>
           </div>
+          )}
 
-          {travel.isInternationalTravel && (
+          {!docConfig && travel.isInternationalTravel && (
             <div className="travel-flight-section panel">
               <h3 className="form-section-title">FLIGHT BOOKING FORM</h3>
               <p className="form-hint">
@@ -1019,27 +1137,35 @@ export default function EtablirTravelForm() {
             </div>
           )}
 
+          {showField('budget') && (
+          <>
           <div className="cash-request-section-head travel-budget-section">
             <div>
               <div className="travel-budget-title-row">
-                <h3 className="form-section-title">Budget voyage</h3>
-                <button
-                  type="button"
-                  className="travel-budget-info-btn"
-                  onClick={() => setAllowanceModalOpen(true)}
-                  title="Grille des indemnités de voyage domestique"
-                  aria-label="Afficher la grille des indemnités de voyage domestique"
-                >
-                  <svg viewBox="0 0 24 24" aria-hidden="true">
-                    <circle cx="12" cy="12" r="10" />
-                    <path d="M12 16v-4M12 8h.01" />
-                  </svg>
-                </button>
+                <h3 className="form-section-title">
+                  {cashMode ? 'Goods / Services' : 'Budget voyage'}
+                </h3>
+                {!cashMode && (
+                  <button
+                    type="button"
+                    className="travel-budget-info-btn"
+                    onClick={() => setAllowanceModalOpen(true)}
+                    title="Grille des indemnités de voyage domestique"
+                    aria-label="Afficher la grille des indemnités de voyage domestique"
+                  >
+                    <svg viewBox="0 0 24 24" aria-hidden="true">
+                      <circle cx="12" cy="12" r="10" />
+                      <path d="M12 16v-4M12 8h.01" />
+                    </svg>
+                  </button>
+                )}
               </div>
               <p className="form-hint travel-budget-meta">
-                {tripDays > 0
-                  ? `${tripDays} jour${tripDays > 1 ? 's' : ''} · ${travel.peopleCount} personne${travel.peopleCount > 1 ? 's' : ''}`
-                  : 'Renseignez les dates de départ et de retour pour calculer les jours'}
+                {cashMode
+                  ? 'Montants directs en USD — tels qu’ils apparaîtront sur le document'
+                  : tripDays > 0
+                    ? `${tripDays} jour${tripDays > 1 ? 's' : ''} · ${travel.peopleCount} personne${travel.peopleCount > 1 ? 's' : ''}`
+                    : 'Renseignez les dates de départ et de retour pour calculer les jours'}
               </p>
             </div>
             <button
@@ -1058,9 +1184,13 @@ export default function EtablirTravelForm() {
                 <tr>
                   <th>Description</th>
                   <th>Montant (USD)</th>
-                  <th># Pers.</th>
-                  <th># Jours</th>
-                  <th>Total</th>
+                  {!cashMode && (
+                    <>
+                      <th># Pers.</th>
+                      <th># Jours</th>
+                      <th>Total</th>
+                    </>
+                  )}
                   <th aria-label="Actions" />
                 </tr>
               </thead>
@@ -1088,16 +1218,20 @@ export default function EtablirTravelForm() {
                           placeholder="0.00"
                         />
                       </td>
-                      <td className="travel-budget-readonly">{travel.peopleCount}</td>
-                      <td className="travel-budget-readonly">{tripDays > 0 ? tripDays : '—'}</td>
-                      <td className="travel-budget-readonly">
-                        {lineTotal > 0
-                          ? lineTotal.toLocaleString('fr-FR', {
-                              minimumFractionDigits: 2,
-                              maximumFractionDigits: 2,
-                            })
-                          : '—'}
-                      </td>
+                      {!cashMode && (
+                        <>
+                          <td className="travel-budget-readonly">{travel.peopleCount}</td>
+                          <td className="travel-budget-readonly">{tripDays > 0 ? tripDays : '—'}</td>
+                          <td className="travel-budget-readonly">
+                            {lineTotal > 0
+                              ? lineTotal.toLocaleString('fr-FR', {
+                                  minimumFractionDigits: 2,
+                                  maximumFractionDigits: 2,
+                                })
+                              : '—'}
+                          </td>
+                        </>
+                      )}
                       <td>
                         <button
                           type="button"
@@ -1115,12 +1249,12 @@ export default function EtablirTravelForm() {
               </tbody>
               <tfoot>
                 <tr>
-                  <td colSpan={4} className="cash-request-total-label">
-                    Total budget
+                  <td colSpan={cashMode ? 1 : 4} className="cash-request-total-label">
+                    {cashMode ? 'Total' : 'Total budget'}
                   </td>
                   <td className="cash-request-total-value">
-                    {budgetTotal > 0
-                      ? budgetTotal.toLocaleString('fr-FR', {
+                    {(cashMode ? cashTotal : budgetTotal) > 0
+                      ? (cashMode ? cashTotal : budgetTotal).toLocaleString('fr-FR', {
                           minimumFractionDigits: 2,
                           maximumFractionDigits: 2,
                         })
@@ -1131,6 +1265,8 @@ export default function EtablirTravelForm() {
               </tfoot>
             </table>
           </div>
+          </>
+          )}
 
           <datalist id="travel-department-suggestions">
             {paramDepartmentNames.map((department) => (
@@ -1169,7 +1305,11 @@ export default function EtablirTravelForm() {
 
           <div className="cash-request-form-actions">
             {canSubmit && (
-              <SaveButton saving={saving} label="Générer les documents" savingLabel="Génération…" />
+              <SaveButton
+                saving={saving}
+                label={docConfig ? 'Générer le document' : 'Générer les documents'}
+                savingLabel="Génération…"
+              />
             )}
           </div>
         </form>
@@ -1191,7 +1331,7 @@ export default function EtablirTravelForm() {
         stepProgress={genProgress}
         complete={genComplete}
         error={genError}
-        saveDirectory={genResult?.saveDirectory}
+        saveDirectory={docConfig ? undefined : genResult?.saveDirectory}
         onOpenLocation={openSavedFileLocation}
         onClose={closeGenerationModal}
       />

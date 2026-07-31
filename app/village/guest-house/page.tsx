@@ -7,6 +7,7 @@ import DashboardListModal, {
 } from '@/components/DashboardListModal';
 import PermissionGate from '@/components/PermissionGate';
 import RefreshButton from '@/components/RefreshButton';
+import RowContextMenu, { type ContextMenuItem } from '@/components/RowContextMenu';
 import SideDrawer from '@/components/SideDrawer';
 import { EmployeeSuggestInput } from '@/components/EmployeePicker';
 import CardActionMenu from '@/components/CardActionMenu';
@@ -359,6 +360,12 @@ export default function VillageGuestHousePage() {
   const [exporting, setExporting] = useState(false);
   const [drawer, setDrawer] = useState<DrawerKind | null>(null);
   const [editingRoom, setEditingRoom] = useState<GuestRoom | null>(null);
+  const [editingReservation, setEditingReservation] = useState<GuestReservation | null>(null);
+  const [resContextMenu, setResContextMenu] = useState<{
+    x: number;
+    y: number;
+    item: GuestReservation;
+  } | null>(null);
   const [confirmTarget, setConfirmTarget] = useState<GuestReservation | null>(null);
   const [historyRoom, setHistoryRoom] = useState<GuestRoom | null>(null);
   /** Expanded month keys (YYYY-MM) in the Historique drawer. */
@@ -702,6 +709,7 @@ export default function VillageGuestHousePage() {
   };
 
   const openReservationCreate = () => {
+    setEditingReservation(null);
     setReservationForm({
       personName: '',
       matricule: '',
@@ -714,6 +722,25 @@ export default function VillageGuestHousePage() {
       mission: '',
       phone: '',
       email: '',
+    });
+    setDrawer('reservation');
+  };
+
+  const openReservationEdit = (item: GuestReservation) => {
+    setResContextMenu(null);
+    setEditingReservation(item);
+    setReservationForm({
+      personName: item.personName,
+      matricule: item.matricule || '',
+      isAgent: Boolean(item.isAgent || item.matricule),
+      motif: item.motif === '—' ? '' : item.motif,
+      startDate: item.startDate,
+      endDate: item.endDate,
+      notes: item.notes || '',
+      company: item.company || '',
+      mission: item.mission || '',
+      phone: item.phone || '',
+      email: item.email || '',
     });
     setDrawer('reservation');
   };
@@ -736,14 +763,16 @@ export default function VillageGuestHousePage() {
           ...roomForm,
         }),
       });
-      const json = await res.json();
+      const json = (await res.json().catch(() => ({}))) as { error?: string };
       if (!res.ok) {
-        await showError(json.error || 'Enregistrement impossible');
+        await showError(json.error || `Enregistrement impossible (HTTP ${res.status})`);
         return;
       }
       setDrawer(null);
       await showSuccess(editingRoom ? 'Chambre mise à jour' : 'Chambre créée');
       await load(true);
+    } catch (err) {
+      await showError(err instanceof Error ? err.message : 'Enregistrement impossible (réseau)');
     } finally {
       setSaving(false);
     }
@@ -757,18 +786,25 @@ export default function VillageGuestHousePage() {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           entity: 'reservation',
+          ...(editingReservation ? { action: 'update', id: editingReservation.id } : {}),
           ...reservationForm,
         }),
       });
-      const json = await res.json();
+      const json = (await res.json().catch(() => ({}))) as { error?: string };
       if (!res.ok) {
-        await showError(json.error || 'Création impossible');
+        await showError(
+          json.error
+            || `${editingReservation ? 'Modification' : 'Création'} impossible (HTTP ${res.status})`,
+        );
         return;
       }
       setDrawer(null);
-      await showSuccess('Réservation créée');
+      setEditingReservation(null);
+      await showSuccess(editingReservation ? 'Réservation mise à jour' : 'Réservation créée');
       setTab('reservations');
       await load(true);
+    } catch (err) {
+      await showError(err instanceof Error ? err.message : 'Enregistrement impossible (réseau)');
     } finally {
       setSaving(false);
     }
@@ -792,9 +828,9 @@ export default function VillageGuestHousePage() {
           roomId,
         }),
       });
-      const json = await res.json();
+      const json = (await res.json().catch(() => ({}))) as { error?: string };
       if (!res.ok) {
-        await showError(json.error || 'Action impossible');
+        await showError(json.error || `Action impossible (HTTP ${res.status})`);
         return;
       }
       setDrawer(null);
@@ -803,6 +839,8 @@ export default function VillageGuestHousePage() {
         status === 'confirmed' ? 'Réservation confirmée' : status === 'rejected' ? 'Réservation refusée' : 'Réservation annulée',
       );
       await load(true);
+    } catch (err) {
+      await showError(err instanceof Error ? err.message : 'Action impossible (réseau)');
     } finally {
       setSaving(false);
     }
@@ -816,9 +854,9 @@ export default function VillageGuestHousePage() {
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ entity: 'room', action: 'delete', id: room.id }),
     });
-    const json = await res.json();
+    const json = (await res.json().catch(() => ({}))) as { error?: string };
     if (!res.ok) {
-      await showError(json.error || 'Suppression impossible');
+      await showError(json.error || `Suppression impossible (HTTP ${res.status})`);
       return;
     }
     await showSuccess(isKimpeseRoom(room) ? 'Hôtel Kimpese supprimé' : 'Chambre supprimée');
@@ -1468,7 +1506,18 @@ export default function VillageGuestHousePage() {
                           const motifSub = personMotifSubtitle(item.motif);
                           const daysLeft = remainingDays(item.endDate);
                           return (
-                            <tr key={item.id}>
+                            <tr
+                              key={item.id}
+                              onContextMenu={(event) => {
+                                if (!canEdit) return;
+                                event.preventDefault();
+                                setResContextMenu({
+                                  x: event.clientX,
+                                  y: event.clientY,
+                                  item,
+                                });
+                              }}
+                            >
                               <td>{item.numero}</td>
                               <td>
                                 <div className="guest-house-person-cell">
@@ -1757,8 +1806,11 @@ export default function VillageGuestHousePage() {
 
         <SideDrawer
           open={drawer === 'reservation'}
-          title="Nouvelle réservation"
-          onClose={() => setDrawer(null)}
+          title={editingReservation ? `Modifier ${editingReservation.numero}` : 'Nouvelle réservation'}
+          onClose={() => {
+            setDrawer(null);
+            setEditingReservation(null);
+          }}
         >
           <div className="form-group">
             <label>
@@ -1878,9 +1930,27 @@ export default function VillageGuestHousePage() {
             />
           </div>
           <button type="button" className="btn btn-primary" disabled={saving} onClick={() => void saveReservation()}>
-            {saving ? 'Création…' : 'Créer'}
+            {saving
+              ? (editingReservation ? 'Enregistrement…' : 'Création…')
+              : (editingReservation ? 'Enregistrer' : 'Créer')}
           </button>
         </SideDrawer>
+
+        {resContextMenu && (
+          <RowContextMenu
+            x={resContextMenu.x}
+            y={resContextMenu.y}
+            onClose={() => setResContextMenu(null)}
+            items={([
+              {
+                id: 'edit',
+                label: 'Modifier',
+                icon: 'edit',
+                onClick: () => openReservationEdit(resContextMenu.item),
+              },
+            ] as ContextMenuItem[])}
+          />
+        )}
 
         <SideDrawer
           open={drawer === 'confirm' && Boolean(confirmTarget)}

@@ -120,6 +120,18 @@ export async function getCashRequestByMissionRef(
   return data.cashRequests.find((item) => item.missionRef?.trim() === normalized);
 }
 
+export async function deleteCashRequestById(id: string): Promise<CashRequestRecord | null> {
+  const normalized = id.trim();
+  if (!normalized) return null;
+
+  const data = await readHistory();
+  const index = data.cashRequests.findIndex((item) => item.id === normalized);
+  if (index < 0) return null;
+  const [removed] = data.cashRequests.splice(index, 1);
+  await writeHistory(data);
+  return removed;
+}
+
 export async function deleteCashRequestByMissionRef(missionRef: string): Promise<boolean> {
   const normalized = missionRef.trim();
   if (!normalized) return false;
@@ -277,14 +289,19 @@ async function createTravelDocumentsInternal(
   }
 
   if (!input.employeeName.trim()) throw new Error('Employé requis');
-  if (!travel.costCenter.trim()) throw new Error('Centre de coût requis');
+  // Champs requis uniquement par certains documents (génération unitaire possible).
+  if (wants('cash-request') && !travel.costCenter.trim()) {
+    throw new Error('Centre de coût requis');
+  }
   if (!travel.tripPurpose.trim()) throw new Error('Trip purpose requis');
   if (!travel.documentDate.trim()) throw new Error('Date document requise');
   if (!travel.departureDate.trim()) throw new Error('Departure date requise');
   if (!travel.returnDate.trim()) throw new Error('Return date requise');
   if (!travel.companyName) throw new Error('Company name requis');
-  if (!travel.transportMeans.trim()) throw new Error('Moyen de transport requis');
-  if (!travel.paymentOrderSignatory.trim()) {
+  if (wants('mission-order') && !travel.transportMeans.trim()) {
+    throw new Error('Moyen de transport requis');
+  }
+  if (wants('mission-order') && !travel.paymentOrderSignatory.trim()) {
     throw new Error('Signataire de l\'ordre de paiement requis');
   }
   if (!travel.budgetLines.length) {

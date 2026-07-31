@@ -3,21 +3,29 @@
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import CardActionMenu from '@/components/CardActionMenu';
 import CharroiDashboard from '@/components/charroi/CharroiDashboard';
+import CharroiHeaderFilter from '@/components/charroi/CharroiHeaderFilter';
+import { EmployeeSuggestInput } from '@/components/EmployeePicker';
 import PermissionGate from '@/components/PermissionGate';
 import RefreshButton from '@/components/RefreshButton';
-import type { ContextMenuItem } from '@/components/RowContextMenu';
+import RowContextMenu, { type ContextMenuItem } from '@/components/RowContextMenu';
 import { usePermissions } from '@/contexts/PermissionContext';
-import type { CharroiProprietaire, CharroiVehicule } from '@/lib/charroi-types';
+import type {
+  CharroiEtatManuel,
+  CharroiProprietaire,
+  CharroiVehicule,
+} from '@/lib/charroi-types';
 import {
-  CHARROI_OBSERVATIONS,
+  CHARROI_ETATS,
+  charroiExpiryStatus,
   computeAgeFromMiseCirculation,
-  computeObservationTech,
   explainObservationTech,
+  formatCharroiDate,
   normalizeMarqueLabel,
   normalizeProvinceLabel,
   toMiseCirculationDateInput,
 } from '@/lib/charroi-types';
 import { confirmDelete, showError, showSuccess } from '@/lib/swal';
+import type { Employee } from '@/lib/types';
 
 const MENU = 'charroi.vehicules';
 const VIEW_ANY = [
@@ -25,7 +33,66 @@ const VIEW_ANY = [
   { menuId: 'charroi', action: 'view' as const },
 ];
 
-type Tab = 'dashboard' | 'liste';
+type Tab = 'dashboard' | 'liste' | 'declasses';
+
+/* ── Modification directe (menu contextuel) ────────────────────── */
+
+type QuickField =
+  | 'user'
+  | 'province'
+  | 'proprietaire'
+  | 'kilometrage'
+  | 'cv'
+  | 'etat'
+  | 'assuranceFin'
+  | 'vignetteFin'
+  | 'controleTechniqueFin';
+
+const QUICK_FIELD_LABELS: Record<QuickField, string> = {
+  user: 'Responsable',
+  province: 'Province',
+  proprietaire: 'Propriétaire',
+  kilometrage: 'Kilométrage',
+  cv: 'CV',
+  etat: 'État tech.',
+  assuranceFin: 'Assurance (date de fin)',
+  vignetteFin: 'Vignette (date de fin)',
+  controleTechniqueFin: 'Contrôle technique (date de fin)',
+};
+
+/* ── Filtres d'en-tête (façon Excel) ───────────────────────────── */
+
+type FilterKey =
+  | 'marque'
+  | 'cv'
+  | 'departement'
+  | 'user'
+  | 'province'
+  | 'proprietaire'
+  | 'etat';
+
+const EMPTY_FILTERS: Record<FilterKey, string[]> = {
+  marque: [],
+  cv: [],
+  departement: [],
+  user: [],
+  province: [],
+  proprietaire: [],
+  etat: [],
+};
+
+function filterValueOf(item: CharroiVehicule, key: FilterKey): string {
+  switch (key) {
+    case 'marque': return item.marque || '—';
+    case 'cv': return item.cv || '—';
+    case 'departement': return item.departement || '—';
+    case 'user': return item.user || '—';
+    case 'province': return item.province || '—';
+    case 'proprietaire': return item.proprietaire || '—';
+    case 'etat': return item.observationTech || '—';
+    default: return '—';
+  }
+}
 
 type FormState = {
   id: string;
@@ -42,6 +109,10 @@ type FormState = {
   proprietaire: CharroiProprietaire;
   kilometrage: string;
   miseCirculation: string;
+  etatManuel: string;
+  assuranceFin: string;
+  vignetteFin: string;
+  controleTechniqueFin: string;
   notes: string;
 };
 
@@ -60,15 +131,31 @@ const emptyForm = (): FormState => ({
   proprietaire: 'PPC',
   kilometrage: '',
   miseCirculation: '',
+  etatManuel: '',
+  assuranceFin: '',
+  vignetteFin: '',
+  controleTechniqueFin: '',
   notes: '',
 });
 
 function observationClass(value: string): string {
   const v = value.trim().toLowerCase();
+  if (v === 'déclassé' || v === 'declassé' || v === 'déclasse' || v === 'declasse') {
+    return 'charroi-obs is-retired';
+  }
   if (v.includes('bon')) return 'charroi-obs is-ok';
   if (v.includes('avert')) return 'charroi-obs is-warn';
   if (v.includes('déclass') || v.includes('declas')) return 'charroi-obs is-bad';
   return 'charroi-obs';
+}
+
+function rowClass(item: CharroiVehicule): string {
+  const v = item.observationTech.trim().toLowerCase();
+  if (v === 'déclassé' || v === 'declassé' || v === 'déclasse' || v === 'declasse') {
+    return 'charroi-row-click charroi-row-retired';
+  }
+  if (v.includes('déclass') || v.includes('declas')) return 'charroi-row-click charroi-row-bad';
+  return 'charroi-row-click';
 }
 
 function toNum(raw: string): number | null {
@@ -78,28 +165,14 @@ function toNum(raw: string): number | null {
   return Number.isFinite(n) ? n : null;
 }
 
-function toPayload(form: FormState) {
-  const kilometrage = toNum(form.kilometrage);
-  const miseCirculation = form.miseCirculation.trim();
-  const age = computeAgeFromMiseCirculation(miseCirculation);
-  return {
-    numero: toNum(form.numero),
-    marque: normalizeMarqueLabel(form.marque),
-    type: form.type.trim(),
-    numeroChassis: form.numeroChassis.trim(),
-    plaque: form.plaque.trim(),
-    cv: form.cv.trim(),
-    assureur: form.assureur.trim(),
-    departement: form.departement.trim(),
-    user: form.user.trim(),
-    province: normalizeProvinceLabel(form.province),
-    proprietaire: form.proprietaire,
-    kilometrage,
-    miseCirculation,
-    age,
-    observationTech: computeObservationTech({ age, kilometrage }),
-    notes: form.notes.trim(),
-  };
+function DateCell({ value }: { value: string }) {
+  const status = charroiExpiryStatus(value);
+  if (status === 'none') return <span className="charroi-date is-none">—</span>;
+  return (
+    <span className={`charroi-date is-${status}`} title={status === 'expired' ? 'Expiré' : status === 'soon' ? 'Expire dans moins de 30 jours' : undefined}>
+      {formatCharroiDate(value)}
+    </span>
+  );
 }
 
 export default function CharroiVehiculesPage() {
@@ -110,16 +183,20 @@ export default function CharroiVehiculesPage() {
 
   const [tab, setTab] = useState<Tab>('dashboard');
   const [items, setItems] = useState<CharroiVehicule[]>([]);
+  const [employees, setEmployees] = useState<Employee[]>([]);
   const [loading, setLoading] = useState(true);
   const [refreshing, setRefreshing] = useState(false);
   const [search, setSearch] = useState('');
-  const [filterProp, setFilterProp] = useState('');
-  const [filterObs, setFilterObs] = useState('');
-  const [filterDept, setFilterDept] = useState('');
+  const [colFilters, setColFilters] = useState<Record<FilterKey, string[]>>(EMPTY_FILTERS);
   const [modalOpen, setModalOpen] = useState(false);
   const [detail, setDetail] = useState<CharroiVehicule | null>(null);
   const [form, setForm] = useState<FormState>(emptyForm);
   const [saving, setSaving] = useState(false);
+  const [contextMenu, setContextMenu] = useState<{ x: number; y: number; item: CharroiVehicule } | null>(null);
+  const [quickEdit, setQuickEdit] = useState<{ item: CharroiVehicule; field: QuickField } | null>(null);
+  const [qeValue, setQeValue] = useState('');
+  const [qeDept, setQeDept] = useState('');
+  const [qeSaving, setQeSaving] = useState(false);
 
   const load = useCallback(async (isRefresh = false) => {
     if (isRefresh) setRefreshing(true);
@@ -144,19 +221,47 @@ export default function CharroiVehiculesPage() {
 
   useEffect(() => {
     void load();
+    fetch('/api/employees')
+      .then((res) => (res.ok ? res.json() : []))
+      .then((json: Employee[]) => setEmployees(Array.isArray(json) ? json : []))
+      .catch(() => setEmployees([]));
   }, [load]);
 
-  const departments = useMemo(() => {
-    const set = new Set(items.map((i) => i.departement).filter(Boolean));
-    return [...set].sort((a, b) => a.localeCompare(b, 'fr'));
-  }, [items]);
+  const findEmployeeByName = useCallback(
+    (name: string): Employee | undefined => {
+      const t = name.trim().toLowerCase();
+      if (!t) return undefined;
+      return employees.find((e) => e.nom.trim().toLowerCase() === t);
+    },
+    [employees],
+  );
+
+  const declasses = useMemo(
+    () => items.filter((i) => observationClass(i.observationTech).includes('is-retired')),
+    [items],
+  );
+  const actifs = useMemo(
+    () => items.filter((i) => !observationClass(i.observationTech).includes('is-retired')),
+    [items],
+  );
+  const base = tab === 'declasses' ? declasses : actifs;
+
+  const filterValues = useMemo(() => {
+    const result = {} as Record<FilterKey, string[]>;
+    (Object.keys(EMPTY_FILTERS) as FilterKey[]).forEach((key) => {
+      const set = new Set(base.map((item) => filterValueOf(item, key)));
+      result[key] = [...set].sort((a, b) => a.localeCompare(b, 'fr'));
+    });
+    return result;
+  }, [base]);
 
   const filtered = useMemo(() => {
     const q = search.trim().toLowerCase();
-    return items.filter((item) => {
-      if (filterProp && item.proprietaire !== filterProp) return false;
-      if (filterObs && item.observationTech !== filterObs) return false;
-      if (filterDept && item.departement !== filterDept) return false;
+    return base.filter((item) => {
+      for (const key of Object.keys(colFilters) as FilterKey[]) {
+        const selected = colFilters[key];
+        if (selected.length > 0 && !selected.includes(filterValueOf(item, key))) return false;
+      }
       if (!q) return true;
       const hay = [
         item.numero, item.marque, item.type, item.numeroChassis, item.plaque,
@@ -164,13 +269,26 @@ export default function CharroiVehiculesPage() {
       ].join(' ').toLowerCase();
       return hay.includes(q);
     });
-  }, [items, search, filterProp, filterObs, filterDept]);
+  }, [base, search, colFilters]);
+
+  const activeFilterCount = useMemo(
+    () => (Object.values(colFilters) as string[][]).filter((v) => v.length > 0).length,
+    [colFilters],
+  );
+
+  const setColFilter = (key: FilterKey) => (next: string[]) =>
+    setColFilters((prev) => ({ ...prev, [key]: next }));
 
   const formPreview = useMemo(() => {
     const kilometrage = toNum(form.kilometrage);
     const age = computeAgeFromMiseCirculation(form.miseCirculation);
     return explainObservationTech({ age, kilometrage, miseCirculation: form.miseCirculation });
   }, [form.kilometrage, form.miseCirculation]);
+
+  const formEmployee = useMemo(
+    () => findEmployeeByName(form.user),
+    [findEmployeeByName, form.user],
+  );
 
   const openCreate = () => {
     setForm(emptyForm());
@@ -194,6 +312,10 @@ export default function CharroiVehiculesPage() {
       proprietaire: item.proprietaire || 'PPC',
       kilometrage: item.kilometrage == null ? '' : String(item.kilometrage),
       miseCirculation: toMiseCirculationDateInput(item.miseCirculation),
+      etatManuel: item.etatManuel || '',
+      assuranceFin: item.assuranceFin || '',
+      vignetteFin: item.vignetteFin || '',
+      controleTechniqueFin: item.controleTechniqueFin || '',
       notes: item.notes || '',
     });
     setModalOpen(true);
@@ -206,7 +328,28 @@ export default function CharroiVehiculesPage() {
     }
     setSaving(true);
     try {
-      const payload = toPayload(form);
+      const kilometrage = toNum(form.kilometrage);
+      const payload = {
+        numero: toNum(form.numero),
+        marque: normalizeMarqueLabel(form.marque),
+        type: form.type.trim(),
+        numeroChassis: form.numeroChassis.trim(),
+        plaque: form.plaque.trim(),
+        cv: form.cv.trim(),
+        assureur: form.assureur.trim(),
+        // Le département suit automatiquement le responsable employé.
+        departement: formEmployee ? formEmployee.departement : form.departement.trim(),
+        user: form.user.trim(),
+        province: normalizeProvinceLabel(form.province),
+        proprietaire: form.proprietaire,
+        kilometrage,
+        miseCirculation: form.miseCirculation.trim(),
+        etatManuel: form.etatManuel as CharroiEtatManuel,
+        assuranceFin: form.assuranceFin.trim(),
+        vignetteFin: form.vignetteFin.trim(),
+        controleTechniqueFin: form.controleTechniqueFin.trim(),
+        notes: form.notes.trim(),
+      };
       const res = await fetch(
         form.id ? `/api/charroi/vehicules/${encodeURIComponent(form.id)}` : '/api/charroi/vehicules',
         {
@@ -242,6 +385,97 @@ export default function CharroiVehiculesPage() {
     await load(true);
   };
 
+  /* ── Modification directe ────────────────────────────────────── */
+
+  const openQuickEdit = (item: CharroiVehicule, field: QuickField) => {
+    setContextMenu(null);
+    let value = '';
+    switch (field) {
+      case 'user': value = item.user; break;
+      case 'province': value = item.province; break;
+      case 'proprietaire': value = item.proprietaire; break;
+      case 'kilometrage': value = item.kilometrage == null ? '' : String(item.kilometrage); break;
+      case 'cv': value = item.cv; break;
+      case 'etat': value = item.etatManuel || ''; break;
+      case 'assuranceFin': value = item.assuranceFin; break;
+      case 'vignetteFin': value = item.vignetteFin; break;
+      case 'controleTechniqueFin': value = item.controleTechniqueFin; break;
+    }
+    setQeValue(value);
+    setQeDept(item.departement);
+    setQuickEdit({ item, field });
+  };
+
+  const qeEmployee = useMemo(
+    () => (quickEdit?.field === 'user' ? findEmployeeByName(qeValue) : undefined),
+    [quickEdit, findEmployeeByName, qeValue],
+  );
+
+  const handleQuickSave = async () => {
+    if (!quickEdit) return;
+    const { item, field } = quickEdit;
+    let patch: Record<string, unknown>;
+    switch (field) {
+      case 'user':
+        patch = {
+          user: qeValue.trim(),
+          departement: qeEmployee ? qeEmployee.departement : qeDept.trim(),
+        };
+        break;
+      case 'province':
+        patch = { province: normalizeProvinceLabel(qeValue) };
+        break;
+      case 'proprietaire':
+        patch = { proprietaire: qeValue };
+        break;
+      case 'kilometrage':
+        patch = { kilometrage: toNum(qeValue) };
+        break;
+      case 'cv':
+        patch = { cv: qeValue.trim() };
+        break;
+      case 'etat':
+        patch = { etatManuel: qeValue };
+        break;
+      default:
+        patch = { [field]: qeValue.trim() };
+        break;
+    }
+
+    setQeSaving(true);
+    try {
+      const res = await fetch(`/api/charroi/vehicules/${encodeURIComponent(item.id)}`, {
+        method: 'PATCH',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(patch),
+      });
+      const json = await res.json();
+      if (!res.ok) {
+        await showError(json.error || 'Modification impossible');
+        return;
+      }
+      setQuickEdit(null);
+      await load(true);
+    } finally {
+      setQeSaving(false);
+    }
+  };
+
+  const contextItems = useMemo<ContextMenuItem[]>(() => {
+    if (!contextMenu || !canEdit) return [];
+    const { item } = contextMenu;
+    const fields: QuickField[] = [
+      'user', 'province', 'proprietaire', 'kilometrage', 'cv', 'etat',
+      'assuranceFin', 'vignetteFin', 'controleTechniqueFin',
+    ];
+    return fields.map((field) => ({
+      id: field,
+      label: QUICK_FIELD_LABELS[field],
+      icon: 'edit' as const,
+      onClick: () => openQuickEdit(item, field),
+    }));
+  }, [contextMenu, canEdit]);
+
   const menuItems = (item: CharroiVehicule): ContextMenuItem[] => {
     const actions: ContextMenuItem[] = [
       { id: 'view', label: 'Voir', icon: 'view', onClick: () => setDetail(item) },
@@ -268,6 +502,163 @@ export default function CharroiVehiculesPage() {
     })
     : null;
 
+  const renderTable = () => (
+    <>
+      <div className="panel docs-filter-bar-compact charroi-filters">
+        <input
+          type="search"
+          className="search-input"
+          placeholder="Rechercher marque, plaque, châssis, responsable…"
+          value={search}
+          onChange={(e) => setSearch(e.target.value)}
+        />
+        {activeFilterCount > 0 && (
+          <button
+            type="button"
+            className="btn btn-ghost btn-sm"
+            onClick={() => setColFilters(EMPTY_FILTERS)}
+          >
+            Effacer les filtres ({activeFilterCount})
+          </button>
+        )}
+        <span className="toolbar-count">
+          {filtered.length} / {base.length} véhicule{base.length > 1 ? 's' : ''}
+        </span>
+      </div>
+
+      <div className="table-wrap charroi-table-wrap">
+        <table className="data-table charroi-table">
+          <thead>
+            <tr>
+              <th>N°</th>
+              <th className="charroi-th-filter">
+                <CharroiHeaderFilter
+                  label="Marque"
+                  values={filterValues.marque}
+                  selected={colFilters.marque}
+                  onChange={setColFilter('marque')}
+                />
+              </th>
+              <th>Plaque</th>
+              <th className="charroi-th-filter">
+                <CharroiHeaderFilter
+                  label="CV"
+                  values={filterValues.cv}
+                  selected={colFilters.cv}
+                  onChange={setColFilter('cv')}
+                />
+              </th>
+              <th className="charroi-th-filter">
+                <CharroiHeaderFilter
+                  label="Département"
+                  values={filterValues.departement}
+                  selected={colFilters.departement}
+                  onChange={setColFilter('departement')}
+                />
+              </th>
+              <th className="charroi-th-filter">
+                <CharroiHeaderFilter
+                  label="Responsable"
+                  values={filterValues.user}
+                  selected={colFilters.user}
+                  onChange={setColFilter('user')}
+                />
+              </th>
+              <th className="charroi-th-filter">
+                <CharroiHeaderFilter
+                  label="Province"
+                  values={filterValues.province}
+                  selected={colFilters.province}
+                  onChange={setColFilter('province')}
+                />
+              </th>
+              <th className="charroi-th-filter">
+                <CharroiHeaderFilter
+                  label="Proprio."
+                  values={filterValues.proprietaire}
+                  selected={colFilters.proprietaire}
+                  onChange={setColFilter('proprietaire')}
+                />
+              </th>
+              <th>Km</th>
+              <th>Mise circ.</th>
+              <th>Assurance</th>
+              <th>Vignette</th>
+              <th>Contr. tech.</th>
+              <th className="charroi-th-filter">
+                <CharroiHeaderFilter
+                  label="État tech."
+                  values={filterValues.etat}
+                  selected={colFilters.etat}
+                  onChange={setColFilter('etat')}
+                />
+              </th>
+              <th />
+            </tr>
+          </thead>
+          <tbody>
+            {filtered.length === 0 ? (
+              <tr><td colSpan={15} className="empty-state">Aucun véhicule trouvé.</td></tr>
+            ) : (
+              filtered.map((item) => (
+                <tr
+                  key={item.id}
+                  className={rowClass(item)}
+                  onClick={() => setDetail(item)}
+                  onContextMenu={(event) => {
+                    if (!canEdit) return;
+                    event.preventDefault();
+                    setContextMenu({ x: event.clientX, y: event.clientY, item });
+                  }}
+                >
+                  <td>{item.numero ?? '—'}</td>
+                  <td>
+                    <div className="charroi-marque-cell">
+                      <strong>{item.marque || '—'}</strong>
+                      {item.type && <span>{item.type}</span>}
+                    </div>
+                  </td>
+                  <td>{item.plaque || '—'}</td>
+                  <td>{item.cv || '—'}</td>
+                  <td>{item.departement || '—'}</td>
+                  <td>{item.user || '—'}</td>
+                  <td>{item.province || '—'}</td>
+                  <td>
+                    <span className={`charroi-owner is-${(item.proprietaire || 'na').toLowerCase()}`}>
+                      {item.proprietaire || '—'}
+                    </span>
+                  </td>
+                  <td>
+                    <strong>
+                      {item.kilometrage == null ? '—' : item.kilometrage.toLocaleString('fr-FR')}
+                    </strong>
+                  </td>
+                  <td>
+                    <div className="charroi-marque-cell">
+                      <span>{item.miseCirculation || '—'}</span>
+                      {item.age != null && <span>{item.age} an{item.age > 1 ? 's' : ''}</span>}
+                    </div>
+                  </td>
+                  <td><DateCell value={item.assuranceFin} /></td>
+                  <td><DateCell value={item.vignetteFin} /></td>
+                  <td><DateCell value={item.controleTechniqueFin} /></td>
+                  <td>
+                    <span className={observationClass(item.observationTech)}>
+                      {item.observationTech || '—'}
+                    </span>
+                  </td>
+                  <td className="charroi-actions-cell" onClick={(e) => e.stopPropagation()}>
+                    <CardActionMenu items={menuItems(item)} ariaLabel={`Actions — ${item.plaque || item.marque}`} />
+                  </td>
+                </tr>
+              ))
+            )}
+          </tbody>
+        </table>
+      </div>
+    </>
+  );
+
   return (
     <PermissionGate anyOf={VIEW_ANY}>
       <div className="charroi-page">
@@ -277,7 +668,10 @@ export default function CharroiVehiculesPage() {
               <h2>Base véhicules</h2>
               <RefreshButton onClick={() => void load(true)} loading={refreshing} />
             </div>
-            <p>{items.length} véhicule{items.length > 1 ? 's' : ''}</p>
+            <p>
+              {actifs.length} véhicule{actifs.length > 1 ? 's' : ''}
+              {declasses.length > 0 ? ` · ${declasses.length} déclassé${declasses.length > 1 ? 's' : ''}` : ''}
+            </p>
           </div>
           <div className="guest-house-header-actions">
             <div className="guest-house-toolbar-right">
@@ -296,6 +690,13 @@ export default function CharroiVehiculesPage() {
                 >
                   Liste
                 </button>
+                <button
+                  type="button"
+                  className={`tab-btn tab-btn-sm${tab === 'declasses' ? ' active' : ''}`}
+                  onClick={() => setTab('declasses')}
+                >
+                  Déclassés{declasses.length > 0 ? ` (${declasses.length})` : ''}
+                </button>
               </div>
               {canCreate && (
                 <button type="button" className="btn btn-accent btn-sm" onClick={openCreate}>
@@ -310,92 +711,141 @@ export default function CharroiVehiculesPage() {
           <CharroiDashboard items={items} onSelectVehicle={setDetail} />
         )}
 
-        {tab === 'liste' && (
-          <>
-            <div className="panel docs-filter-bar-compact charroi-filters">
-              <input
-                type="search"
-                className="search-input"
-                placeholder="Rechercher marque, plaque, châssis, user…"
-                value={search}
-                onChange={(e) => setSearch(e.target.value)}
-              />
-              <select className="filter-select filter-select-sm" value={filterProp} onChange={(e) => setFilterProp(e.target.value)}>
-                <option value="">Propriétaire (tous)</option>
-                <option value="PPC">PPC</option>
-                <option value="LOXEA">LOXEA</option>
-              </select>
-              <select className="filter-select filter-select-sm" value={filterObs} onChange={(e) => setFilterObs(e.target.value)}>
-                <option value="">État tech. (tous)</option>
-                {CHARROI_OBSERVATIONS.map((obs) => (
-                  <option key={obs} value={obs}>{obs}</option>
-                ))}
-              </select>
-              <select className="filter-select filter-select-sm" value={filterDept} onChange={(e) => setFilterDept(e.target.value)}>
-                <option value="">Département (tous)</option>
-                {departments.map((d) => (
-                  <option key={d} value={d}>{d}</option>
-                ))}
-              </select>
-            </div>
+        {(tab === 'liste' || tab === 'declasses') && renderTable()}
 
-            <div className="table-wrap charroi-table-wrap">
-              <table className="data-table charroi-table">
-                <thead>
-                  <tr>
-                    <th>N°</th>
-                    <th>Marque</th>
-                    <th>Type</th>
-                    <th>Plaque</th>
-                    <th>CV</th>
-                    <th>Département</th>
-                    <th>User</th>
-                    <th>Province</th>
-                    <th>Proprio.</th>
-                    <th>Km</th>
-                    <th>Mise circ.</th>
-                    <th>Âge</th>
-                    <th>État tech.</th>
-                    <th />
-                  </tr>
-                </thead>
-                <tbody>
-                  {filtered.length === 0 ? (
-                    <tr><td colSpan={14} className="empty-state">Aucun véhicule trouvé.</td></tr>
-                  ) : (
-                    filtered.map((item) => (
-                      <tr key={item.id} className="charroi-row-click" onClick={() => setDetail(item)}>
-                        <td>{item.numero ?? '—'}</td>
-                        <td><strong>{item.marque || '—'}</strong></td>
-                        <td>{item.type || '—'}</td>
-                        <td>{item.plaque || '—'}</td>
-                        <td>{item.cv || '—'}</td>
-                        <td>{item.departement || '—'}</td>
-                        <td>{item.user || '—'}</td>
-                        <td>{item.province || '—'}</td>
-                        <td>
-                          <span className={`charroi-owner is-${(item.proprietaire || 'na').toLowerCase()}`}>
-                            {item.proprietaire || '—'}
-                          </span>
-                        </td>
-                        <td>{item.kilometrage == null ? '—' : item.kilometrage.toLocaleString('fr-FR')}</td>
-                        <td>{item.miseCirculation || '—'}</td>
-                        <td>{item.age ?? '—'}</td>
-                        <td>
-                          <span className={observationClass(item.observationTech)}>
-                            {item.observationTech || '—'}
-                          </span>
-                        </td>
-                        <td className="charroi-actions-cell" onClick={(e) => e.stopPropagation()}>
-                          <CardActionMenu items={menuItems(item)} ariaLabel={`Actions — ${item.plaque || item.marque}`} />
-                        </td>
-                      </tr>
-                    ))
-                  )}
-                </tbody>
-              </table>
+        {contextMenu && contextItems.length > 0 && (
+          <RowContextMenu
+            x={contextMenu.x}
+            y={contextMenu.y}
+            onClose={() => setContextMenu(null)}
+            items={contextItems}
+          />
+        )}
+
+        {quickEdit && (
+          <div className="modal-overlay open" onClick={() => setQuickEdit(null)}>
+            <div className="modal charroi-quick-edit-modal" onClick={(e) => e.stopPropagation()}>
+              <div className="modal-header">
+                <h3>
+                  {QUICK_FIELD_LABELS[quickEdit.field]} —{' '}
+                  {quickEdit.item.plaque || quickEdit.item.marque || quickEdit.item.id}
+                </h3>
+                <button type="button" className="modal-close" onClick={() => setQuickEdit(null)}>×</button>
+              </div>
+              <div className="modal-body">
+                {quickEdit.field === 'user' && (
+                  <>
+                    <div className="form-group">
+                      <label>Responsable</label>
+                      <EmployeeSuggestInput
+                        employees={employees}
+                        value={qeValue}
+                        onChange={(value) => setQeValue(value)}
+                        onEmployeeSelect={(employee) => {
+                          setQeValue(employee.nom);
+                          setQeDept(employee.departement || '');
+                        }}
+                        placeholder="Rechercher un employé ou saisir un nom…"
+                      />
+                    </div>
+                    <div className="form-group">
+                      <label>Département {qeEmployee ? '(suivi automatique)' : ''}</label>
+                      <input
+                        value={qeEmployee ? (qeEmployee.departement || '') : qeDept}
+                        disabled={Boolean(qeEmployee)}
+                        onChange={(e) => setQeDept(e.target.value)}
+                        placeholder="Saisir le département"
+                      />
+                    </div>
+                  </>
+                )}
+                {quickEdit.field === 'province' && (
+                  <div className="form-group">
+                    <label>Province</label>
+                    <input
+                      list="charroi-provinces"
+                      value={qeValue}
+                      onChange={(e) => setQeValue(e.target.value)}
+                      autoFocus
+                    />
+                    <datalist id="charroi-provinces">
+                      {filterValues.province.filter((p) => p !== '—').map((p) => (
+                        <option key={p} value={p} />
+                      ))}
+                    </datalist>
+                  </div>
+                )}
+                {quickEdit.field === 'proprietaire' && (
+                  <div className="form-group">
+                    <label>Propriétaire</label>
+                    <select value={qeValue} onChange={(e) => setQeValue(e.target.value)} autoFocus>
+                      <option value="PPC">PPC</option>
+                      <option value="LOXEA">LOXEA</option>
+                      <option value="">—</option>
+                    </select>
+                  </div>
+                )}
+                {quickEdit.field === 'kilometrage' && (
+                  <div className="form-group">
+                    <label>Kilométrage</label>
+                    <input
+                      type="number"
+                      min="0"
+                      value={qeValue}
+                      onChange={(e) => setQeValue(e.target.value)}
+                      autoFocus
+                    />
+                  </div>
+                )}
+                {quickEdit.field === 'cv' && (
+                  <div className="form-group">
+                    <label>CV</label>
+                    <input value={qeValue} onChange={(e) => setQeValue(e.target.value)} autoFocus />
+                  </div>
+                )}
+                {quickEdit.field === 'etat' && (
+                  <div className="form-group">
+                    <label>État tech.</label>
+                    <select value={qeValue} onChange={(e) => setQeValue(e.target.value)} autoFocus>
+                      <option value="">Automatique (âge / km)</option>
+                      {CHARROI_ETATS.map((etat) => (
+                        <option key={etat} value={etat}>{etat}</option>
+                      ))}
+                    </select>
+                    <p className="form-hint">
+                      « Automatique » recalcule l&apos;état selon l&apos;âge et le kilométrage.
+                    </p>
+                  </div>
+                )}
+                {(quickEdit.field === 'assuranceFin'
+                  || quickEdit.field === 'vignetteFin'
+                  || quickEdit.field === 'controleTechniqueFin') && (
+                  <div className="form-group">
+                    <label>{QUICK_FIELD_LABELS[quickEdit.field]}</label>
+                    <input
+                      type="date"
+                      value={qeValue}
+                      onChange={(e) => setQeValue(e.target.value)}
+                      autoFocus
+                    />
+                  </div>
+                )}
+              </div>
+              <div className="modal-footer">
+                <button type="button" className="btn btn-secondary" onClick={() => setQuickEdit(null)}>
+                  Annuler
+                </button>
+                <button
+                  type="button"
+                  className="btn btn-primary"
+                  onClick={() => void handleQuickSave()}
+                  disabled={qeSaving}
+                >
+                  {qeSaving ? 'Enregistrement…' : 'Enregistrer'}
+                </button>
+              </div>
             </div>
-          </>
+          </div>
         )}
 
         {detail && detailExpl && (
@@ -410,8 +860,12 @@ export default function CharroiVehiculesPage() {
                   <div className="charroi-status-line">{detailExpl.ageLabel}</div>
                   <div className="charroi-status-line">{detailExpl.kmLabel}</div>
                   <div className="charroi-status-line">
-                    <strong>{detailExpl.finalLabel}</strong>{' '}
-                    <span className={observationClass(detailExpl.final)}>{detailExpl.final}</span>
+                    <strong>
+                      {detail.etatManuel ? 'Statut manuel' : detailExpl.finalLabel}
+                    </strong>{' '}
+                    <span className={observationClass(detail.observationTech)}>
+                      {detail.observationTech}
+                    </span>
                   </div>
                 </div>
                 <div className="form-grid charroi-detail-grid">
@@ -424,12 +878,15 @@ export default function CharroiVehiculesPage() {
                     ['CV', detail.cv],
                     ['Assureur', detail.assureur],
                     ['Département', detail.departement],
-                    ['User', detail.user],
+                    ['Responsable', detail.user],
                     ['Province', detail.province],
                     ['Propriétaire', detail.proprietaire],
                     ['Kilométrage', detail.kilometrage == null ? '—' : detail.kilometrage.toLocaleString('fr-FR')],
                     ['Mise en circulation', detail.miseCirculation],
                     ['Âge', detail.age],
+                    ['Assurance (fin)', formatCharroiDate(detail.assuranceFin)],
+                    ['Vignette (fin)', formatCharroiDate(detail.vignetteFin)],
+                    ['Contrôle technique (fin)', formatCharroiDate(detail.controleTechniqueFin)],
                     ['État tech.', detail.observationTech],
                     ['Notes', detail.notes],
                   ].map(([label, value]) => (
@@ -462,8 +919,10 @@ export default function CharroiVehiculesPage() {
                   <div className="charroi-status-line">{formPreview.ageLabel}</div>
                   <div className="charroi-status-line">{formPreview.kmLabel}</div>
                   <div className="charroi-status-line">
-                    <strong>Statut calculé</strong>{' '}
-                    <span className={observationClass(formPreview.final)}>{formPreview.final}</span>
+                    <strong>{form.etatManuel ? 'Statut manuel' : 'Statut calculé'}</strong>{' '}
+                    <span className={observationClass(form.etatManuel || formPreview.final)}>
+                      {form.etatManuel || formPreview.final}
+                    </span>
                   </div>
                 </div>
                 <div className="form-grid">
@@ -475,9 +934,6 @@ export default function CharroiVehiculesPage() {
                     ['plaque', 'Plaque'],
                     ['cv', 'CV'],
                     ['assureur', 'Assureur'],
-                    ['departement', 'Département'],
-                    ['user', 'User'],
-                    ['province', 'Province'],
                     ['kilometrage', 'Kilométrage'],
                   ].map(([key, label]) => (
                     <div className="form-group" key={key}>
@@ -488,6 +944,38 @@ export default function CharroiVehiculesPage() {
                       />
                     </div>
                   ))}
+                  <div className="form-group">
+                    <label>Responsable</label>
+                    <EmployeeSuggestInput
+                      employees={employees}
+                      value={form.user}
+                      onChange={(value) => setForm((prev) => ({ ...prev, user: value }))}
+                      onEmployeeSelect={(employee) =>
+                        setForm((prev) => ({
+                          ...prev,
+                          user: employee.nom,
+                          departement: employee.departement || prev.departement,
+                        }))
+                      }
+                      placeholder="Rechercher un employé ou saisir un nom…"
+                    />
+                  </div>
+                  <div className="form-group">
+                    <label>Département {formEmployee ? '(suivi automatique)' : ''}</label>
+                    <input
+                      value={formEmployee ? (formEmployee.departement || '') : form.departement}
+                      disabled={Boolean(formEmployee)}
+                      onChange={(e) => setForm({ ...form, departement: e.target.value })}
+                      placeholder="Saisir le département"
+                    />
+                  </div>
+                  <div className="form-group">
+                    <label>Province</label>
+                    <input
+                      value={form.province}
+                      onChange={(e) => setForm({ ...form, province: e.target.value })}
+                    />
+                  </div>
                   <div className="form-group">
                     <label>Mise en circulation</label>
                     <input
@@ -506,6 +994,42 @@ export default function CharroiVehiculesPage() {
                       <option value="LOXEA">LOXEA</option>
                       <option value="">—</option>
                     </select>
+                  </div>
+                  <div className="form-group">
+                    <label>État tech.</label>
+                    <select
+                      value={form.etatManuel}
+                      onChange={(e) => setForm({ ...form, etatManuel: e.target.value })}
+                    >
+                      <option value="">Automatique (âge / km)</option>
+                      {CHARROI_ETATS.map((etat) => (
+                        <option key={etat} value={etat}>{etat}</option>
+                      ))}
+                    </select>
+                  </div>
+                  <div className="form-group">
+                    <label>Assurance (date de fin)</label>
+                    <input
+                      type="date"
+                      value={form.assuranceFin}
+                      onChange={(e) => setForm({ ...form, assuranceFin: e.target.value })}
+                    />
+                  </div>
+                  <div className="form-group">
+                    <label>Vignette (date de fin)</label>
+                    <input
+                      type="date"
+                      value={form.vignetteFin}
+                      onChange={(e) => setForm({ ...form, vignetteFin: e.target.value })}
+                    />
+                  </div>
+                  <div className="form-group">
+                    <label>Contrôle technique (date de fin)</label>
+                    <input
+                      type="date"
+                      value={form.controleTechniqueFin}
+                      onChange={(e) => setForm({ ...form, controleTechniqueFin: e.target.value })}
+                    />
                   </div>
                   <div className="form-group" style={{ gridColumn: '1 / -1' }}>
                     <label>Notes</label>

@@ -1,6 +1,7 @@
 'use client';
 
-import { useMemo, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
+import { createPortal } from 'react-dom';
 import { checkPasswordCriteria } from '@/lib/password-policy';
 import { showError, showSuccess } from '@/lib/swal';
 
@@ -19,6 +20,9 @@ export default function ChangePasswordModal({ mode, targetUser, onClose }: Props
   const [confirmPassword, setConfirmPassword] = useState('');
   const [showPasswords, setShowPasswords] = useState(false);
   const [saving, setSaving] = useState(false);
+  // Portal vers <body> : évite d'hériter des variables CSS locales (ex. sidebar toujours sombre).
+  const [mounted, setMounted] = useState(false);
+  useEffect(() => setMounted(true), []);
 
   const criteria = useMemo(() => checkPasswordCriteria(newPassword), [newPassword]);
   const satisfied = criteria.filter((criterion) => criterion.ok).length;
@@ -65,7 +69,9 @@ export default function ChangePasswordModal({ mode, targetUser, onClose }: Props
 
   const inputType = showPasswords ? 'text' : 'password';
 
-  return (
+  if (!mounted) return null;
+
+  return createPortal(
     <div className="modal-overlay" onClick={onClose}>
       <div className="modal modal-form pwd-modal" onClick={(e) => e.stopPropagation()}>
         <div className="modal-header">
@@ -172,6 +178,7 @@ export default function ChangePasswordModal({ mode, targetUser, onClose }: Props
           </button>
         </div>
       </div>
-    </div>
+    </div>,
+    document.body,
   );
 }
