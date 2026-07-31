@@ -6062,8 +6062,8 @@
       "dateNaissance": "11/01/1989",
       "age": 37,
       "compositionFamille": 1,
-      "enfants": 3,
-      "total": 5,
+      "enfants": 4,
+      "total": 6,
       "commentaires": "",
       "lienDocument": "",
       "createdAt": "2026-07-28T09:40:39.809Z",
@@ -15203,6 +15203,27 @@
       "lienDocument": "",
       "createdAt": "2026-07-28T09:40:39.809Z",
       "updatedAt": "2026-07-28T09:40:39.809Z"
+    },
+    {
+      "id": 728,
+      "employeeId": "9c2a32fe-6769-404d-bf78-c28bfcb4529d",
+      "matricule": "70000214",
+      "pactilis": "178187",
+      "statut": "Enfant",
+      "sexe": "F",
+      "nom": "MPUTU PUATI ELIANA-CHLOE",
+      "localisation": "Zamba",
+      "numeroVilla": "",
+      "typeMaison": "",
+      "dateNaissance": "15/07/2026",
+      "age": null,
+      "compositionFamille": null,
+      "enfants": null,
+      "total": null,
+      "commentaires": "",
+      "lienDocument": "https://ppcafr.sharepoint.com/:b:/r/sites/knshr/HR%20ADMINISTRATION/ETAT%20DES%20INCORPORATIONS/2026/Etat_INCORPORATION_1_POLICE_1_3007%20MPUTU%20PUATI%20ELIANA-CHLOE.pdf?csf=1&web=1&e=fNhexR",
+      "createdAt": "2026-07-30T14:28:39.114Z",
+      "updatedAt": "2026-07-30T14:28:39.114Z"
     }
   ]
 }
