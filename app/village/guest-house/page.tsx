@@ -401,6 +401,8 @@ export default function VillageGuestHousePage() {
   });
   const [confirmRoomId, setConfirmRoomId] = useState('');
   const [saving, setSaving] = useState(false);
+  /** Réservation dont une action (rejet / suppression) est en cours — pour le spinner de ligne. */
+  const [rowBusyId, setRowBusyId] = useState<string | null>(null);
 
   const roomsById = useMemo(
     () => new Map(rooms.map((room) => [room.id, room])),
@@ -816,6 +818,7 @@ export default function VillageGuestHousePage() {
     roomId?: string,
   ) => {
     setSaving(true);
+    setRowBusyId(reservation.id);
     try {
       const res = await fetch('/api/village/guest-house', {
         method: 'POST',
@@ -843,7 +846,66 @@ export default function VillageGuestHousePage() {
       await showError(err instanceof Error ? err.message : 'Action impossible (réseau)');
     } finally {
       setSaving(false);
+      setRowBusyId(null);
     }
+  };
+
+  const removeReservation = async (item: GuestReservation) => {
+    if (rowBusyId) return;
+    if (!(await confirmDelete('Supprimer cette réservation ?', `${item.numero} — ${item.personName}`))) {
+      return;
+    }
+    setRowBusyId(item.id);
+    try {
+      const res = await fetch('/api/village/guest-house', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ entity: 'reservation', action: 'delete', id: item.id }),
+      });
+      const json = (await res.json().catch(() => ({}))) as { error?: string };
+      if (!res.ok) {
+        await showError(json.error || `Suppression impossible (HTTP ${res.status})`);
+        return;
+      }
+      await showSuccess('Réservation supprimée');
+      await load(true);
+    } catch (err) {
+      await showError(err instanceof Error ? err.message : 'Suppression impossible (réseau)');
+    } finally {
+      setRowBusyId(null);
+    }
+  };
+
+  /** Menu contextuel (clic droit) des réservations — modifier / supprimer. */
+  const reservationMenuItems = (item: GuestReservation): ContextMenuItem[] => {
+    const items: ContextMenuItem[] = [];
+    if (canEdit) {
+      items.push({
+        id: 'edit',
+        label: 'Modifier',
+        icon: 'edit',
+        onClick: () => openReservationEdit(item),
+      });
+    }
+    if (canDelete) {
+      items.push({
+        id: 'delete',
+        label: 'Supprimer',
+        icon: 'delete',
+        danger: true,
+        onClick: () => void removeReservation(item),
+      });
+    }
+    return items;
+  };
+
+  const openReservationContextMenu = (
+    event: React.MouseEvent,
+    item: GuestReservation,
+  ) => {
+    if (!canEdit && !canDelete) return;
+    event.preventDefault();
+    setResContextMenu({ x: event.clientX, y: event.clientY, item });
   };
 
   const removeRoom = async (room: GuestRoom) => {
@@ -1394,9 +1456,16 @@ export default function VillageGuestHousePage() {
                         {pending.map((item) => {
                           const days = remainingDays(item.endDate);
                           const motifCol = IMPORT_MOTIF_RE.test(item.motif.trim()) ? '—' : (item.motif || '—');
+                          const busy = rowBusyId === item.id;
                           return (
-                            <tr key={item.id}>
-                              <td>{item.numero}</td>
+                            <tr
+                              key={item.id}
+                              className={busy ? 'guest-house-row-busy' : undefined}
+                              onContextMenu={(event) => openReservationContextMenu(event, item)}
+                            >
+                              <td>
+                                {busy ? <span className="btn-spinner" aria-hidden="true" /> : item.numero}
+                              </td>
                               <td>
                                 <div className="guest-house-person-cell">
                                   <strong>{item.personName}</strong>
@@ -1422,6 +1491,7 @@ export default function VillageGuestHousePage() {
                                         <button
                                           type="button"
                                           className="btn btn-primary btn-sm btn-with-icon"
+                                          disabled={busy}
                                           onClick={() => openConfirm(item)}
                                         >
                                           <IconCheck size={13} />
@@ -1430,9 +1500,12 @@ export default function VillageGuestHousePage() {
                                         <button
                                           type="button"
                                           className="btn btn-ghost btn-sm btn-with-icon"
+                                          disabled={busy}
                                           onClick={() => void setStatus(item, 'rejected')}
                                         >
-                                          <IconX size={13} />
+                                          {busy && saving
+                                            ? <span className="btn-spinner" aria-hidden="true" />
+                                            : <IconX size={13} />}
                                           Non
                                         </button>
                                       </>
@@ -1505,20 +1578,16 @@ export default function VillageGuestHousePage() {
                         {validatedList.map((item) => {
                           const motifSub = personMotifSubtitle(item.motif);
                           const daysLeft = remainingDays(item.endDate);
+                          const busy = rowBusyId === item.id;
                           return (
                             <tr
                               key={item.id}
-                              onContextMenu={(event) => {
-                                if (!canEdit) return;
-                                event.preventDefault();
-                                setResContextMenu({
-                                  x: event.clientX,
-                                  y: event.clientY,
-                                  item,
-                                });
-                              }}
+                              className={busy ? 'guest-house-row-busy' : undefined}
+                              onContextMenu={(event) => openReservationContextMenu(event, item)}
                             >
-                              <td>{item.numero}</td>
+                              <td>
+                                {busy ? <span className="btn-spinner" aria-hidden="true" /> : item.numero}
+                              </td>
                               <td>
                                 <div className="guest-house-person-cell">
                                   <strong>{item.personName}</strong>
@@ -1941,14 +2010,7 @@ export default function VillageGuestHousePage() {
             x={resContextMenu.x}
             y={resContextMenu.y}
             onClose={() => setResContextMenu(null)}
-            items={([
-              {
-                id: 'edit',
-                label: 'Modifier',
-                icon: 'edit',
-                onClick: () => openReservationEdit(resContextMenu.item),
-              },
-            ] as ContextMenuItem[])}
+            items={reservationMenuItems(resContextMenu.item)}
           />
         )}
 

@@ -18019,6 +18019,11 @@ html[data-theme='light'] .charroi-hf-panel {
 .charroi-expiry-date.is-expired { color: var(--danger); }
 .charroi-expiry-date.is-soon { color: #f59e0b; }
 
+/* Guest house : ligne de réservation avec action en cours (rejet / suppression). */
+.guest-house-row-busy { cursor: wait; }
+.guest-house-row-busy td { opacity: 0.55; }
+.guest-house-compact-table td .btn-spinner { margin-right: 0; }
+
 
 /* ?? Audit logs (Param?tres) ?? */
 .audit-logs-page { max-width: 100%; }
