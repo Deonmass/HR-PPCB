@@ -121,6 +121,8 @@ async function githubRequest(
   init?: RequestInit,
 ): Promise<Response> {
   return fetch(`https://api.github.com${apiPath}`, {
+    // Jamais de cache (Next Data Cache / proxies) : on veut toujours l'état GitHub actuel.
+    cache: 'no-store',
     ...init,
     headers: {
       Accept: 'application/vnd.github+json',
@@ -131,6 +133,12 @@ async function githubRequest(
     },
   });
 }
+
+/**
+ * Dernière sha GitHub connue par fichier (hydratée ou persistée) dans cette instance.
+ * Évite de ré-écraser la copie locale (fraîchement écrite) avec une version distante identique.
+ */
+const knownRemoteSha = new Map<string, string>();
 
 /** Public diagnostic for admins (no secret leaked). */
 export async function probeDurableGithub(): Promise<{
@@ -217,10 +225,11 @@ export async function probeDurableGithub(): Promise<{
   };
 }
 
-async function readGithubFile(
+/** Métadonnées du fichier (sha + contenu inline si < 1 Mo) — sans téléchargement séparé. */
+async function readGithubFileMeta(
   target: GithubRepoTarget,
   repoPath: string,
-): Promise<{ buffer: Buffer; sha: string } | null> {
+): Promise<{ sha: string; inline?: Buffer } | null> {
   const encodedPath = repoPath.split('/').map(encodeURIComponent).join('/');
   const res = await githubRequest(
     target,
@@ -233,45 +242,55 @@ async function readGithubFile(
     throw formatGithubHttpError('lecture', repoPath, res.status, text);
   }
 
-  const json = (await res.json()) as { content?: string; encoding?: string; sha?: string; download_url?: string };
-  // Prefer inline base64 from Contents API (avoids a second authenticated download URL).
-  if (json.content && json.encoding === 'base64') {
-    return {
-      buffer: Buffer.from(json.content.replace(/\n/g, ''), 'base64'),
-      sha: json.sha || '',
-    };
-  }
-
-  if (json.download_url) {
-    const fileRes = await fetch(json.download_url, {
-      headers: {
-        Authorization: `Bearer ${target.token}`,
-        Accept: 'application/vnd.github.raw',
-        'User-Agent': 'hr-rh-app-durable',
-        'X-GitHub-Api-Version': '2022-11-28',
-      },
-    });
-    if (!fileRes.ok) {
-      const text = await fileRes.text();
-      throw formatGithubHttpError('download', repoPath, fileRes.status, text);
-    }
-    return {
-      buffer: Buffer.from(await fileRes.arrayBuffer()),
-      sha: json.sha || '',
-    };
-  }
-
-  throw new Error(`Contenu GitHub invalide pour ${repoPath}`);
+  const json = (await res.json()) as { content?: string; encoding?: string; sha?: string };
+  return {
+    sha: json.sha || '',
+    inline: json.content && json.encoding === 'base64'
+      ? Buffer.from(json.content.replace(/\n/g, ''), 'base64')
+      : undefined,
+  };
 }
 
+/**
+ * Lit un blob par sha via l'API GitHub (contenu immuable — toujours frais).
+ * Remplace l'ancien téléchargement via `download_url` (raw.githubusercontent.com),
+ * dont le cache CDN ~5 min renvoyait l'ancienne version juste après une écriture.
+ */
+async function readGithubBlob(
+  target: GithubRepoTarget,
+  repoPath: string,
+  sha: string,
+): Promise<Buffer> {
+  const blobRes = await githubRequest(
+    target,
+    `/repos/${target.owner}/${target.repo}/git/blobs/${sha}`,
+    { headers: { Accept: 'application/vnd.github.raw' } },
+  );
+  if (!blobRes.ok) {
+    const text = await blobRes.text();
+    throw formatGithubHttpError('download', repoPath, blobRes.status, text);
+  }
+  return Buffer.from(await blobRes.arrayBuffer());
+}
+
+async function extractContentSha(res: Response): Promise<string> {
+  try {
+    const json = (await res.json()) as { content?: { sha?: string } };
+    return json.content?.sha || '';
+  } catch {
+    return '';
+  }
+}
+
+/** Écrit le fichier sur GitHub et retourne la sha du nouveau contenu. */
 async function writeGithubFile(
   target: GithubRepoTarget,
   repoPath: string,
   buffer: Buffer,
   message: string,
-): Promise<void> {
+): Promise<string> {
   const encodedPath = repoPath.split('/').map(encodeURIComponent).join('/');
-  const existing = await readGithubFile(target, repoPath);
+  const existing = await readGithubFileMeta(target, repoPath);
 
   const body: Record<string, string> = {
     message,
@@ -291,7 +310,7 @@ async function writeGithubFile(
   );
 
   if (res.status === 409) {
-    const latest = await readGithubFile(target, repoPath);
+    const latest = await readGithubFileMeta(target, repoPath);
     if (latest?.sha) body.sha = latest.sha;
     const retry = await githubRequest(
       target,
@@ -306,13 +325,14 @@ async function writeGithubFile(
       const text = await retry.text();
       throw formatGithubHttpError('écriture', repoPath, retry.status, text);
     }
-    return;
+    return extractContentSha(retry);
   }
 
   if (!res.ok) {
     const text = await res.text();
     throw formatGithubHttpError('écriture', repoPath, res.status, text);
   }
+  return extractContentSha(res);
 }
 
 export async function hydrateDurableFile(repoPath: string, localPath: string): Promise<void> {
@@ -321,10 +341,17 @@ export async function hydrateDurableFile(repoPath: string, localPath: string): P
   if (!target) return;
 
   try {
-    const remote = await readGithubFile(target, repoPath);
-    if (!remote) return;
+    const meta = await readGithubFileMeta(target, repoPath);
+    if (!meta) return;
+    // La copie locale correspond déjà à cette sha (souvent : on vient de la
+    // persister depuis cette instance) — ne pas la ré-écraser inutilement.
+    if (meta.sha && knownRemoteSha.get(repoPath) === meta.sha && fs.existsSync(localPath)) {
+      return;
+    }
+    const buffer = meta.inline ?? (await readGithubBlob(target, repoPath, meta.sha));
     fs.mkdirSync(path.dirname(localPath), { recursive: true });
-    fs.writeFileSync(localPath, remote.buffer);
+    fs.writeFileSync(localPath, buffer);
+    if (meta.sha) knownRemoteSha.set(repoPath, meta.sha);
   } catch (err) {
     const message = err instanceof Error ? err.message : String(err);
     console.warn('[durable-fs] hydrate failed', repoPath, message);
@@ -347,10 +374,13 @@ export async function persistDurableFile(repoPath: string, localPath: string): P
 
   const body = await fsPromises.readFile(localPath);
   const label = path.basename(repoPath);
-  await writeGithubFile(
+  const newSha = await writeGithubFile(
     target,
     repoPath,
     body,
     `chore(data): update ${label} from RH app${isVercelRuntime() ? ' (Vercel)' : ''}`,
   );
+  // Mémorise la sha écrite : les prochaines hydratations de cette instance
+  // sauront que la copie locale est déjà à jour.
+  if (newSha) knownRemoteSha.set(repoPath, newSha);
 }
