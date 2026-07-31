@@ -1,6 +1,48 @@
 {
   "entries": [
     {
+      "id": "log-000025",
+      "at": "2026-07-31T11:45:04.945Z",
+      "userId": "admin",
+      "userName": "Administrateur",
+      "module": "guest-house",
+      "moduleLabel": "Guest house",
+      "action": "update",
+      "actionLabel": "Modification",
+      "entityType": "guest-house.reservation",
+      "entityId": "4e8fd2bc-f450-49a3-a553-ade6f8d70f54",
+      "summary": "Statut réservation 4e8fd2bc-f450-49a3-a553-ade6f8d70f54 → rejected",
+      "details": "Statut réservation 4e8fd2bc-f450-49a3-a553-ade6f8d70f54 → rejected",
+      "before": {
+        "id": "4e8fd2bc-f450-49a3-a553-ade6f8d70f54",
+        "numero": "GH-2026-4290",
+        "createdAt": "2026-07-31T11:27:47.749Z",
+        "personName": "ADHULE NYADRIA JOEL",
+        "matricule": "70000112",
+        "isAgent": true,
+        "motif": "qsdqsdqs",
+        "startDate": "2026-07-01",
+        "endDate": "2026-07-08",
+        "status": "pending",
+        "updatedAt": "2026-07-31T11:27:47.749Z"
+      },
+      "after": {
+        "id": "4e8fd2bc-f450-49a3-a553-ade6f8d70f54",
+        "numero": "GH-2026-4290",
+        "createdAt": "2026-07-31T11:27:47.749Z",
+        "personName": "ADHULE NYADRIA JOEL",
+        "matricule": "70000112",
+        "isAgent": true,
+        "motif": "qsdqsdqs",
+        "startDate": "2026-07-01",
+        "endDate": "2026-07-08",
+        "status": "rejected",
+        "updatedAt": "2026-07-31T11:45:03.509Z"
+      },
+      "undoable": true,
+      "undone": false
+    },
+    {
       "id": "log-000024",
       "at": "2026-07-31T11:45:02.607Z",
       "userId": "admin",
@@ -7665,5 +7707,5 @@
       }
     }
   ],
-  "nextSeq": 25
+  "nextSeq": 26
 }
