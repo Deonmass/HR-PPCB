@@ -1,6 +1,37 @@
 {
   "entries": [
     {
+      "id": "log-000021",
+      "at": "2026-07-31T11:26:07.347Z",
+      "userId": "Serge.Muakasa",
+      "userName": "Serge Muakasa",
+      "userEmail": "Serge.Muakasa@ppcdrc.cd",
+      "module": "guest-house",
+      "moduleLabel": "Guest house",
+      "action": "create",
+      "actionLabel": "Création",
+      "entityType": "guest-house.reservation",
+      "entityId": "37ef467f-3e12-4b95-a4fe-e8b66b178cd2",
+      "summary": "Création réservation ADHULE NYADRIA JOEL",
+      "details": "Création réservation ADHULE NYADRIA JOEL",
+      "after": {
+        "id": "37ef467f-3e12-4b95-a4fe-e8b66b178cd2",
+        "numero": "GH-2026-4290",
+        "createdAt": "2026-07-31T11:26:05.937Z",
+        "personName": "ADHULE NYADRIA JOEL",
+        "matricule": "70000112",
+        "isAgent": true,
+        "motif": "oooo",
+        "startDate": "2026-07-01",
+        "endDate": "2026-07-08",
+        "status": "pending",
+        "notes": "ii",
+        "updatedAt": "2026-07-31T11:26:05.937Z"
+      },
+      "undoable": true,
+      "undone": false
+    },
+    {
       "id": "log-000020",
       "at": "2026-07-31T11:25:40.918Z",
       "userId": "Serge.Muakasa",
@@ -7539,5 +7570,5 @@
       }
     }
   ],
-  "nextSeq": 21
+  "nextSeq": 22
 }
