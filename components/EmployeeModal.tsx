@@ -128,8 +128,9 @@ export default function EmployeeModal({ employee, onClose, onSave }: Props) {
       appointmentDate: form.appointmentDate,
       periodeEssaiMois: form.periodeEssaiMois,
       dateFinPeriodeEssai: finEssaiAuto,
+      essaiCommentaire: form.essaiCommentaire,
     }),
-    [form.appointmentDate, form.periodeEssaiMois, finEssaiAuto],
+    [form.appointmentDate, form.periodeEssaiMois, finEssaiAuto, form.essaiCommentaire],
   );
 
   const setDoc = (key: string, value: string) => {

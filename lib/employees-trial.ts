@@ -85,7 +85,7 @@ export function isCddOverdue(
 export function isTrialOverdue(
   employee: Pick<
     Employee,
-    'appointmentDate' | 'periodeEssaiMois' | 'dateFinPeriodeEssai' | 'essaiStatutEval' | 'statut'
+    'appointmentDate' | 'periodeEssaiMois' | 'dateFinPeriodeEssai' | 'essaiStatutEval' | 'essaiCommentaire' | 'statut'
   >,
   asOf: Date = new Date(),
 ): boolean {
@@ -140,7 +140,7 @@ export function resolveEssaiEcheanceEval(
 export function isTrialEvalAlert(
   employee: Pick<
     Employee,
-    'appointmentDate' | 'periodeEssaiMois' | 'dateFinPeriodeEssai' | 'essaiCommentaire' | 'statut'
+    'appointmentDate' | 'periodeEssaiMois' | 'dateFinPeriodeEssai' | 'essaiCommentaire' | 'essaiStatutEval' | 'statut'
   >,
   asOf: Date = new Date(),
   withinDays: number = TRIAL_EVAL_ALERT_DAYS,

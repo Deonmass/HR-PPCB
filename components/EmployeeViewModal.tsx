@@ -357,8 +357,9 @@ export default function EmployeeViewModal({ employee, canEdit = false, onClose, 
       appointmentDate: draft.appointmentDate,
       periodeEssaiMois: draft.periodeEssaiMois,
       dateFinPeriodeEssai: resolvedFinEssai || draft.dateFinPeriodeEssai,
+      essaiCommentaire: draft.essaiCommentaire,
     }),
-    [draft.appointmentDate, draft.periodeEssaiMois, draft.dateFinPeriodeEssai, resolvedFinEssai],
+    [draft.appointmentDate, draft.periodeEssaiMois, draft.dateFinPeriodeEssai, resolvedFinEssai, draft.essaiCommentaire],
   );
 
   const loadFamily = useCallback(async () => {
