@@ -1,6 +1,35 @@
 {
   "entries": [
     {
+      "id": "log-000026",
+      "at": "2026-07-31T11:47:14.693Z",
+      "userId": "admin",
+      "userName": "Administrateur",
+      "module": "guest-house",
+      "moduleLabel": "Guest house",
+      "action": "create",
+      "actionLabel": "Création",
+      "entityType": "guest-house.reservation",
+      "entityId": "5cb4a503-6ccb-4c5b-a766-09dcb2218bc9",
+      "summary": "Création réservation ADHULE NYADRIA JOEL",
+      "details": "Création réservation ADHULE NYADRIA JOEL",
+      "after": {
+        "id": "5cb4a503-6ccb-4c5b-a766-09dcb2218bc9",
+        "numero": "GH-2026-4291",
+        "createdAt": "2026-07-31T11:47:13.227Z",
+        "personName": "ADHULE NYADRIA JOEL",
+        "matricule": "70000112",
+        "isAgent": true,
+        "motif": "qsdqsdqs",
+        "startDate": "2026-07-01",
+        "endDate": "2026-07-01",
+        "status": "pending",
+        "updatedAt": "2026-07-31T11:47:13.227Z"
+      },
+      "undoable": true,
+      "undone": false
+    },
+    {
       "id": "log-000025",
       "at": "2026-07-31T11:45:04.945Z",
       "userId": "admin",
@@ -7707,5 +7736,5 @@
       }
     }
   ],
-  "nextSeq": 26
+  "nextSeq": 27
 }
