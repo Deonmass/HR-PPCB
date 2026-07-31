@@ -1,6 +1,73 @@
 {
   "entries": [
     {
+      "id": "log-000044",
+      "at": "2026-07-31T12:26:02.074Z",
+      "userId": "Serge.Muakasa",
+      "userName": "Serge Muakasa",
+      "userEmail": "Serge.Muakasa@ppcdrc.cd",
+      "module": "charroi.vehicules",
+      "moduleLabel": "Charroi — Véhicules",
+      "action": "update",
+      "actionLabel": "Modification",
+      "entityType": "charroi.vehicule",
+      "entityId": "veh-021",
+      "summary": "Modification véhicule 0784AQ01",
+      "details": "Véhicule modifié.\nAvant : {\"id\":\"veh-021\",\"numero\":21,\"marque\":\"Toyota\",\"type\":\"Pick up\",\"numeroChassis\":\"JTERB71J400074163\",\"plaque\":\"0784AQ01\",\"cv\":\"13 CV\",\"assureur\":\"Sfa\",\"departement\":\"Safety\",\"user\":\"Ambulance\",\"province\":\"Kongo Central\",\"proprietaire\":\"PPC\",\"kilometrage\":null,\"miseCirculation\":\"2014\",\"age\":12,\"observationTech\":\"A déclasser\",\"etatManuel\":\"\",\"assuranceFin\":\"\",\"vignetteFin\":\"\",\"controleTechniqueFin\":\"\",\"notes\":\"\",\"createdAt\":\"2026-07-28T16:00:46.888Z\",\"updatedAt\":\"2026-07-28T16:00:46.888Z\"}\nAprès : {\"id\":\"veh-021\",\"numero\":21,\"marque\":\"Toyota\",\"type\":\"Pick up\",\"numeroChassis\":\"JTERB71J400074163\",\"plaque\":\"0784AQ01\",\"cv\":\"13 CV\",\"assureur\":\"Sfa\",\"departement\":\"Safety\",\"user\":\"Ambulance\",\"province\":\"Kongo Central\",\"proprietaire\":\"PPC\",\"kilometrage\":null,\"miseCirculation\":\"2014\",\"age\":12,\"observationTech\":\"Déclassé\",\"etatManuel\":\"Déclassé\",\"assuranceFin\":\"\",\"vignetteFin\":\"\",\"controleTechniqueFin\":\"\",\"notes\":\"\",\"createdAt\":\"2026-07-28T16:00:46.888Z\",\"updatedAt\":\"2026-07-31T12:26:01.039Z\"}",
+      "before": {
+        "id": "veh-021",
+        "numero": 21,
+        "marque": "Toyota",
+        "type": "Pick up",
+        "numeroChassis": "JTERB71J400074163",
+        "plaque": "0784AQ01",
+        "cv": "13 CV",
+        "assureur": "Sfa",
+        "departement": "Safety",
+        "user": "Ambulance",
+        "province": "Kongo Central",
+        "proprietaire": "PPC",
+        "kilometrage": null,
+        "miseCirculation": "2014",
+        "age": 12,
+        "observationTech": "A déclasser",
+        "etatManuel": "",
+        "assuranceFin": "",
+        "vignetteFin": "",
+        "controleTechniqueFin": "",
+        "notes": "",
+        "createdAt": "2026-07-28T16:00:46.888Z",
+        "updatedAt": "2026-07-28T16:00:46.888Z"
+      },
+      "after": {
+        "id": "veh-021",
+        "numero": 21,
+        "marque": "Toyota",
+        "type": "Pick up",
+        "numeroChassis": "JTERB71J400074163",
+        "plaque": "0784AQ01",
+        "cv": "13 CV",
+        "assureur": "Sfa",
+        "departement": "Safety",
+        "user": "Ambulance",
+        "province": "Kongo Central",
+        "proprietaire": "PPC",
+        "kilometrage": null,
+        "miseCirculation": "2014",
+        "age": 12,
+        "observationTech": "Déclassé",
+        "etatManuel": "Déclassé",
+        "assuranceFin": "",
+        "vignetteFin": "",
+        "controleTechniqueFin": "",
+        "notes": "",
+        "createdAt": "2026-07-28T16:00:46.888Z",
+        "updatedAt": "2026-07-31T12:26:01.039Z"
+      },
+      "undoable": true,
+      "undone": false
+    },
+    {
       "id": "log-000043",
       "at": "2026-07-31T12:22:38.748Z",
       "userId": "Serge.Muakasa",
@@ -8304,5 +8371,5 @@
       }
     }
   ],
-  "nextSeq": 44
+  "nextSeq": 45
 }
