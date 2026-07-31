@@ -17,6 +17,7 @@ import {
   getUserPermissionsFromParams,
   listUsersFromParams,
   saveUserPermissionsInParams,
+  updateUserPasswordInParams,
   upsertUserInParams,
 } from './params-users-store';
 import type {
@@ -297,6 +298,26 @@ export async function upsertUser(
   }
 
   return saved;
+}
+
+/** Change le mot de passe de l'utilisateur connecté après vérification de l'ancien. */
+export async function changeUserPassword(
+  userId: string,
+  oldPassword: string,
+  newPassword: string,
+): Promise<Omit<AuthUser, 'password'>> {
+  const user = await findUserByIdFromParams(userId);
+  if (!user || !user.active) throw new Error('Utilisateur introuvable');
+  if (user.password !== oldPassword) throw new Error('Ancien mot de passe incorrect');
+  return updateUserPasswordInParams(userId, newPassword);
+}
+
+/** Réinitialise le mot de passe d'un utilisateur (action admin, permission requise). */
+export async function resetUserPassword(
+  userId: string,
+  newPassword: string,
+): Promise<Omit<AuthUser, 'password'>> {
+  return updateUserPasswordInParams(userId, newPassword);
 }
 
 export async function deleteUser(userId: string): Promise<boolean> {

@@ -97,6 +97,7 @@ export const PERMISSION_MENU_CATALOG: PermissionMenuGroup[] = [
       { id: 'settings.departements', label: 'Départements' },
       { id: 'settings.centres', label: 'Centre de coût' },
       { id: 'settings.utilisateurs', label: 'Utilisateurs' },
+      { id: 'settings.utilisateurs.reset', label: 'Reset mot de passe' },
       { id: 'settings.permissions', label: 'Permissions' },
       { id: 'parametres.logs', label: 'Logs' },
     ],

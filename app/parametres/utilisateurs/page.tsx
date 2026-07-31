@@ -3,6 +3,7 @@
 import { useCallback, useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import CardActionMenu from '@/components/CardActionMenu';
+import ChangePasswordModal from '@/components/ChangePasswordModal';
 import EmployeePicker, { type EmployeeSelection } from '@/components/EmployeePicker';
 import PermissionGate from '@/components/PermissionGate';
 import PermissionsProgress from '@/components/PermissionsProgress';
@@ -37,6 +38,7 @@ export default function UtilisateursPage() {
   const [modalOpen, setModalOpen] = useState(false);
   const [form, setForm] = useState(emptyForm);
   const [saving, setSaving] = useState(false);
+  const [resetUser, setResetUser] = useState<SafeUser | null>(null);
 
   const load = useCallback(async () => {
     setLoading(true);
@@ -172,6 +174,14 @@ export default function UtilisateursPage() {
         label: 'Modifier',
         icon: 'edit',
         onClick: () => openEdit(user),
+      });
+    }
+    if (can('settings.utilisateurs.reset', 'edit')) {
+      items.push({
+        id: 'reset-password',
+        label: 'Réinitialiser le mot de passe',
+        icon: 'edit',
+        onClick: () => setResetUser(user),
       });
     }
     if (can('settings.permissions', 'view')) {
@@ -312,6 +322,14 @@ export default function UtilisateursPage() {
             </div>
           </div>
         </div>
+      )}
+
+      {resetUser && (
+        <ChangePasswordModal
+          mode="reset"
+          targetUser={{ id: resetUser.id, displayName: resetUser.displayName }}
+          onClose={() => setResetUser(null)}
+        />
       )}
     </>
   );

@@ -549,6 +549,63 @@ html[data-theme="light"] .sidebar-tip-hint {
   min-width: 0;
 }
 
+.sidebar-profile-wrap {
+  position: relative;
+}
+
+.sidebar-profile-btn {
+  width: 100%;
+  border: 1px solid transparent;
+  background: transparent;
+  color: inherit;
+  border-radius: var(--radius-sm);
+  padding: 0.3rem 0.35rem;
+  cursor: pointer;
+  text-align: left;
+  transition: background 0.15s ease, border-color 0.15s ease;
+}
+
+.sidebar-profile-btn:hover,
+.sidebar-profile-btn[aria-expanded='true'] {
+  background: var(--surface);
+  border-color: var(--border);
+}
+
+.sidebar-profile-menu {
+  position: absolute;
+  bottom: calc(100% + 0.4rem);
+  left: 0;
+  right: 0;
+  min-width: 11rem;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  box-shadow: 0 10px 24px rgba(0, 0, 0, 0.25);
+  padding: 0.3rem;
+  z-index: 60;
+}
+
+.sidebar-profile-menu-item {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  width: 100%;
+  border: 0;
+  background: transparent;
+  color: inherit;
+  border-radius: calc(var(--radius-sm) - 2px);
+  padding: 0.45rem 0.55rem;
+  font-size: 0.74rem;
+  font-weight: 600;
+  cursor: pointer;
+  text-align: left;
+}
+
+.sidebar-profile-menu-item:hover {
+  background: rgba(227, 6, 19, 0.1);
+  color: #e30613;
+}
+
 .sidebar-profile-avatar {
   width: 2rem;
   height: 2rem;
@@ -18063,3 +18120,96 @@ html[data-theme='dark'] .charroi-kpi-card.is-warn .card-value {
   }
 }
 
+
+/* -- Modal mot de passe ------------------------------------------- */
+.pwd-modal {
+  max-width: 26rem;
+}
+
+.pwd-form-grid {
+  grid-template-columns: 1fr;
+}
+
+.pwd-confirm-error {
+  margin: 0.3rem 0 0;
+  font-size: 0.7rem;
+  color: #dc2626;
+  font-weight: 600;
+}
+
+.pwd-progress {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  margin-top: 0.9rem;
+}
+
+.pwd-progress-track {
+  flex: 1;
+  height: 6px;
+  border-radius: 999px;
+  background: var(--border);
+  overflow: hidden;
+}
+
+.pwd-progress-fill {
+  height: 100%;
+  border-radius: 999px;
+  transition: width 0.2s ease, background 0.2s ease;
+}
+
+.pwd-progress-fill.is-low {
+  background: #dc2626;
+}
+
+.pwd-progress-fill.is-mid {
+  background: #f59e0b;
+}
+
+.pwd-progress-fill.is-ok {
+  background: #16a34a;
+}
+
+.pwd-progress-label {
+  font-size: 0.68rem;
+  color: var(--muted);
+  white-space: nowrap;
+}
+
+.pwd-criteria {
+  list-style: none;
+  margin: 0.6rem 0 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.pwd-criteria li {
+  display: flex;
+  align-items: center;
+  gap: 0.45rem;
+  font-size: 0.72rem;
+  color: var(--muted);
+}
+
+.pwd-criteria li.ok {
+  color: #16a34a;
+}
+
+.pwd-criteria-mark {
+  display: inline-flex;
+  width: 1rem;
+  justify-content: center;
+  font-weight: 700;
+}
+
+.pwd-show-toggle {
+  display: flex;
+  align-items: center;
+  gap: 0.45rem;
+  margin-top: 0.8rem;
+  font-size: 0.72rem;
+  color: var(--muted);
+  cursor: pointer;
+}

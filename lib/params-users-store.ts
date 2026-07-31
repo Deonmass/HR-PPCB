@@ -189,6 +189,20 @@ export async function upsertUserInParams(
   return sanitizeUser(toPublicUser(user));
 }
 
+export async function updateUserPasswordInParams(
+  userId: string,
+  newPassword: string,
+): Promise<Omit<AuthUser, 'password'>> {
+  const password = newPassword.trim();
+  if (!password) throw new Error('Nouveau mot de passe requis');
+  const store = await readUsersStore();
+  const index = findUserIndex(store.users, userId);
+  if (index < 0) throw new Error('Utilisateur introuvable');
+  store.users[index] = { ...store.users[index], password };
+  await writeUsersStore(store);
+  return sanitizeUser(toPublicUser(store.users[index]));
+}
+
 export async function deleteUserFromParams(userId: string): Promise<boolean> {
   const store = await readUsersStore();
   const next = store.users.filter(

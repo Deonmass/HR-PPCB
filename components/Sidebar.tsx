@@ -13,6 +13,7 @@ import {
   type ReactNode,
 } from 'react';
 import { createPortal } from 'react-dom';
+import ChangePasswordModal from './ChangePasswordModal';
 import { useSidebar } from './SidebarContext';
 import { usePermissions } from '@/contexts/PermissionContext';
 import { useTheme } from '@/contexts/ThemeContext';
@@ -607,6 +608,27 @@ export default function Sidebar() {
   const { user, can, isLoading: permissionsLoading } = usePermissions();
   const [openGroups, setOpenGroups] = useState<Record<string, boolean>>(() => buildInitialOpenGroups(pathname));
   const [loggingOut, setLoggingOut] = useState(false);
+  const [profileMenuOpen, setProfileMenuOpen] = useState(false);
+  const [passwordModalOpen, setPasswordModalOpen] = useState(false);
+  const profileRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    if (!profileMenuOpen) return;
+    const handlePointerDown = (event: MouseEvent) => {
+      if (profileRef.current && !profileRef.current.contains(event.target as Node)) {
+        setProfileMenuOpen(false);
+      }
+    };
+    const handleKeyDown = (event: KeyboardEvent) => {
+      if (event.key === 'Escape') setProfileMenuOpen(false);
+    };
+    document.addEventListener('mousedown', handlePointerDown);
+    document.addEventListener('keydown', handleKeyDown);
+    return () => {
+      document.removeEventListener('mousedown', handlePointerDown);
+      document.removeEventListener('keydown', handleKeyDown);
+    };
+  }, [profileMenuOpen]);
 
   const visibleNav = NAV.map((section) => {
     if (section.type === 'link') {
@@ -752,21 +774,59 @@ export default function Sidebar() {
       </nav>
 
       <div className="sidebar-footer">
-        <div className="sidebar-profile">
-          <SidebarTip
-            label={user?.displayName || 'Utilisateur'}
-            enabled={collapsed}
-            color="#e30613"
-            hint={user?.username || undefined}
+        <div className="sidebar-profile-wrap" ref={profileRef}>
+          <button
+            type="button"
+            className="sidebar-profile sidebar-profile-btn"
+            onClick={() => setProfileMenuOpen((open) => !open)}
+            aria-haspopup="menu"
+            aria-expanded={profileMenuOpen}
+            title="Options du compte"
           >
-            <span className="sidebar-profile-avatar">
-              {user?.initials || 'RH'}
-            </span>
-          </SidebarTip>
-          {!collapsed && (
-            <div className="sidebar-profile-meta">
-              <strong>{user?.displayName || 'Utilisateur'}</strong>
-              <span>{user?.username || '—'}</span>
+            <SidebarTip
+              label={user?.displayName || 'Utilisateur'}
+              enabled={collapsed}
+              color="#e30613"
+              hint={user?.username || undefined}
+            >
+              <span className="sidebar-profile-avatar">
+                {user?.initials || 'RH'}
+              </span>
+            </SidebarTip>
+            {!collapsed && (
+              <div className="sidebar-profile-meta">
+                <strong>{user?.displayName || 'Utilisateur'}</strong>
+                <span>{user?.username || '—'}</span>
+              </div>
+            )}
+          </button>
+          {profileMenuOpen && (
+            <div className="sidebar-profile-menu" role="menu">
+              <button
+                type="button"
+                role="menuitem"
+                className="sidebar-profile-menu-item"
+                onClick={() => {
+                  setProfileMenuOpen(false);
+                  setPasswordModalOpen(true);
+                }}
+              >
+                <svg
+                  viewBox="0 0 24 24"
+                  width="15"
+                  height="15"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="2"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  aria-hidden="true"
+                >
+                  <rect x="3" y="11" width="18" height="10" rx="2" />
+                  <path d="M7 11V7a5 5 0 0 1 10 0v4" />
+                </svg>
+                Modifier le mot de passe
+              </button>
             </div>
           )}
         </div>
@@ -790,6 +850,10 @@ export default function Sidebar() {
           </button>
         </SidebarTip>
       </div>
+
+      {passwordModalOpen && (
+        <ChangePasswordModal mode="self" onClose={() => setPasswordModalOpen(false)} />
+      )}
     </aside>
   );
 }

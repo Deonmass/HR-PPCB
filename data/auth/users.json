@@ -466,6 +466,18 @@
           }
         },
         {
+          "menuId": "settings.utilisateurs.reset",
+          "label": "Reset mot de passe",
+          "actions": {
+            "view": true,
+            "create": true,
+            "edit": true,
+            "delete": true,
+            "export": true,
+            "undo": true
+          }
+        },
+        {
           "menuId": "settings.permissions",
           "label": "Permissions",
           "actions": {
