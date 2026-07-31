@@ -1,6 +1,36 @@
 {
   "entries": [
     {
+      "id": "log-000037",
+      "at": "2026-07-31T12:11:06.816Z",
+      "userId": "admin",
+      "userName": "Administrateur",
+      "module": "guest-house",
+      "moduleLabel": "Guest house",
+      "action": "delete",
+      "actionLabel": "Suppression",
+      "entityType": "guest-house.reservation",
+      "entityId": "4e8fd2bc-f450-49a3-a553-ade6f8d70f54",
+      "summary": "Suppression réservation 4e8fd2bc-f450-49a3-a553-ade6f8d70f54",
+      "details": "Suppression réservation 4e8fd2bc-f450-49a3-a553-ade6f8d70f54",
+      "before": {
+        "id": "4e8fd2bc-f450-49a3-a553-ade6f8d70f54",
+        "numero": "GH-2026-4290",
+        "createdAt": "2026-07-31T11:27:47.749Z",
+        "personName": "ADHULE NYADRIA JOEL",
+        "matricule": "70000112",
+        "isAgent": true,
+        "motif": "qsdqsdqs",
+        "startDate": "2026-07-01",
+        "endDate": "2026-07-08",
+        "status": "rejected",
+        "updatedAt": "2026-07-31T11:48:26.118Z"
+      },
+      "after": null,
+      "undoable": true,
+      "undone": false
+    },
+    {
       "id": "log-000036",
       "at": "2026-07-31T12:10:04.237Z",
       "userId": "admin",
@@ -8058,5 +8088,5 @@
       }
     }
   ],
-  "nextSeq": 37
+  "nextSeq": 38
 }
