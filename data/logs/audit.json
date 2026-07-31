@@ -1,6 +1,31 @@
 {
   "entries": [
     {
+      "id": "log-000020",
+      "at": "2026-07-31T11:25:40.918Z",
+      "userId": "Serge.Muakasa",
+      "userName": "Serge Muakasa",
+      "userEmail": "Serge.Muakasa@ppcdrc.cd",
+      "module": "guest-house",
+      "moduleLabel": "Guest house",
+      "action": "error",
+      "actionLabel": "Erreur",
+      "summary": "Motif requis",
+      "details": "Échec de l’action « create » sur guest-house: Motif requis",
+      "undoable": false,
+      "undone": false,
+      "error": {
+        "message": "Motif requis",
+        "stack": "Error: Motif requis\n    at A (/var/task/.next/server/chunks/300.js:1:10707)\n    at /var/task/.next/server/app/api/village/guest-house/route.js:1:4753\n    at j (/var/task/.next/server/app/api/village/guest-house/route.js:1:11617)\n    at async A (/var/task/.next/server/app/api/village/guest-house/route.js:1:4524)\n    at async rH.do (/var/task/node_modules/next/dist/compiled/next-server/app-route.runtime.prod.js:5:21048)\n    at async rH.handle (/var/task/node_modules/next/dist/compiled/next-server/app-route.runtime.prod.js:5:25866)\n    at async k (/var/task/.next/server/app/api/village/guest-house/route.js:1:7904)\n    at async rH.handleResponse (/var/task/node_modules/next/dist/compiled/next-server/app-route.runtime.prod.js:1:110770)\n    at async g (/var/task/.next/server/app/api/village/guest-house/route.js:1:8907)\n    at async G (/var/task/.next/server/app/api/village/guest-house/route.js:1:10029)",
+        "path": "/api/village/guest-house",
+        "method": "POST",
+        "context": {
+          "action": "create",
+          "entityType": "guest-house.reservation"
+        }
+      }
+    },
+    {
       "id": "log-000019",
       "at": "2026-07-31T11:24:40.032Z",
       "userId": "Serge.Muakasa",
@@ -7514,5 +7539,5 @@
       }
     }
   ],
-  "nextSeq": 20
+  "nextSeq": 21
 }
