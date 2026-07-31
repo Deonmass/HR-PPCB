@@ -516,14 +516,14 @@
       "kilometrage": null,
       "miseCirculation": "2014",
       "age": 12,
-      "observationTech": "Déclassé",
-      "etatManuel": "Déclassé",
+      "observationTech": "A déclasser",
+      "etatManuel": "A déclasser",
       "assuranceFin": "",
       "vignetteFin": "",
       "controleTechniqueFin": "",
       "notes": "",
       "createdAt": "2026-07-28T16:00:46.888Z",
-      "updatedAt": "2026-07-31T12:26:01.039Z"
+      "updatedAt": "2026-07-31T12:26:24.667Z"
     },
     {
       "id": "veh-022",
