@@ -724,9 +724,10 @@
       "motif": "Hebergement",
       "startDate": "2026-07-01",
       "endDate": "2026-07-08",
-      "status": "pending",
+      "roomId": "873277c8-cfe8-4e40-af16-61f1a3f4c273",
+      "status": "confirmed",
       "mission": "Mission de maintenance à l'usine",
-      "updatedAt": "2026-07-31T12:22:17.331Z"
+      "updatedAt": "2026-07-31T12:22:37.373Z"
     },
     {
       "id": "9a49ea24-23d7-4edf-8c7f-8f42e70ab5f5",
@@ -24309,6 +24310,17 @@
     }
   ],
   "passages": [
+    {
+      "id": "b2ab5216-ee43-457d-a445-6c24469b57e2",
+      "roomId": "873277c8-cfe8-4e40-af16-61f1a3f4c273",
+      "reservationId": "dc9baa00-63c2-4fb4-a196-d63b606fad34",
+      "numero": "GH-2026-4292",
+      "personName": "DU BOIS",
+      "motif": "Hebergement",
+      "startDate": "2026-07-01",
+      "endDate": "2026-07-08",
+      "checkedInAt": "2026-07-31T12:22:37.373Z"
+    },
     {
       "id": "454f61c2-8272-43d9-9e44-fc776ee3fe41",
       "roomId": "8b14162d-ae3b-49a5-bcb6-812c2d8d5b5b",
