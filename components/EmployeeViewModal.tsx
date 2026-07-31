@@ -60,6 +60,8 @@ interface FieldDef {
 interface Props {
   employee: Employee;
   canEdit?: boolean;
+  /** Onglet ouvert à l'affichage (ex. 'essai' depuis la liste période d'essai). */
+  initialTab?: TabId;
   onClose: () => void;
   onUpdated?: (employee: Employee) => void;
 }
@@ -320,8 +322,8 @@ function FamilyOrgChart({ group, employee }: { group: FamilyGroup | null; employ
   );
 }
 
-export default function EmployeeViewModal({ employee, canEdit = false, onClose, onUpdated }: Props) {
-  const [tab, setTab] = useState<TabId>('infos');
+export default function EmployeeViewModal({ employee, canEdit = false, initialTab = 'infos', onClose, onUpdated }: Props) {
+  const [tab, setTab] = useState<TabId>(initialTab);
   const [draft, setDraft] = useState<Employee>(employee);
   const [editingKey, setEditingKey] = useState<EditableKey | null>(null);
   const [editValue, setEditValue] = useState('');

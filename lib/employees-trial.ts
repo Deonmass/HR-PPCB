@@ -208,7 +208,7 @@ export function resolveCddAlerteDate(
 }
 
 /**
- * Alerte J-30 : fin de CDD dans ≤ 30 jours.
+ * Alerte J-30 : fin de CDD dans ≤ 30 jours, ou déjà dépassée (contrat échu).
  */
 export function isCddEndAlert(
   employee: Pick<Employee, 'typeContrat' | 'appointmentDate' | 'dureeContratMois' | 'dateFinContrat' | 'statut'>,
@@ -219,7 +219,7 @@ export function isCddEndAlert(
   if (/^inact/i.test(String(employee.statut || '').trim())) return false;
   const days = daysUntilDisplayDate(resolveDateFinContrat(employee), asOf);
   if (days == null) return false;
-  return days >= 0 && days <= withinDays;
+  return days <= withinDays;
 }
 
 /** Suivi période d'essai (inclut Done) — onglet liste. */

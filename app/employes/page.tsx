@@ -18,6 +18,7 @@ import {
 import { downloadEmployeesHrExport } from '@/lib/employees-export';
 import {
   daysUntilDisplayDate,
+  ESSAI_COMMENTAIRES,
   ESSAI_STATUTS_EVAL,
   isCddEmployee,
   isCddEndAlert,
@@ -33,7 +34,7 @@ import {
   resolveEssaiStatutEval,
   essaiStatutClass,
 } from '@/lib/employees-trial';
-import { confirmDelete, showError, showSuccess } from '@/lib/swal';
+import { confirmDelete, promptSelect, showError, showSuccess } from '@/lib/swal';
 import type { Employee } from '@/lib/types';
 
 type PageTab = 'dashboard' | 'liste' | 'essai' | 'cdd' | 'exit';
@@ -70,6 +71,7 @@ export default function EmployesPage() {
   const [yearFilter, setYearFilter] = useState<number | ''>('');
   const [editOpen, setEditOpen] = useState(false);
   const [viewOpen, setViewOpen] = useState(false);
+  const [viewTab, setViewTab] = useState<'infos' | 'essai'>('infos');
   const [editing, setEditing] = useState<Employee | null>(null);
   const [viewing, setViewing] = useState<Employee | null>(null);
   const [refreshing, setRefreshing] = useState(false);
@@ -249,6 +251,7 @@ export default function EmployesPage() {
   ]);
 
   const openView = (employee: Employee) => {
+    setViewTab(tab === 'essai' || tab === 'cdd' ? 'essai' : 'infos');
     setViewing(employee);
     setViewOpen(true);
   };
@@ -300,6 +303,32 @@ export default function EmployesPage() {
     setContextMenu({ x: event.clientX, y: event.clientY, employee });
   };
 
+  /** Onglet essai : la modification contextuelle ne touche que le commentaire. */
+  const editEssaiComment = async (employee: Employee) => {
+    const value = await promptSelect('Commentaire évaluation', {
+      text: employee.nom,
+      inputOptions: {
+        '': '—',
+        ...Object.fromEntries(ESSAI_COMMENTAIRES.map((c) => [c, c])),
+      },
+      inputValue: employee.essaiCommentaire || '',
+      confirmText: 'Enregistrer',
+    });
+    if (value == null) return;
+    const res = await fetch(`/api/employees/${encodeURIComponent(employee.matricule)}`, {
+      method: 'PUT',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ ...employee, essaiCommentaire: value }),
+    });
+    if (!res.ok) {
+      const err = await res.json().catch(() => ({}));
+      await showError((err as { error?: string }).error || 'Erreur');
+      return;
+    }
+    await showSuccess('Commentaire mis à jour');
+    await load(true);
+  };
+
   const contextItems: ContextMenuItem[] = contextMenu
     ? [
         {
@@ -311,9 +340,12 @@ export default function EmployesPage() {
         ...(canEdit
           ? [{
               id: 'edit',
-              label: 'Modifier',
+              label: tab === 'essai' ? 'Modifier le commentaire' : 'Modifier',
               icon: 'edit' as const,
-              onClick: () => openEdit(contextMenu.employee),
+              onClick: () => {
+                if (tab === 'essai') void editEssaiComment(contextMenu.employee);
+                else openEdit(contextMenu.employee);
+              },
             }]
           : []),
         ...(canDelete
@@ -380,7 +412,7 @@ export default function EmployesPage() {
                 CDD
                 <span className="employees-tab-count">{cddList.length}</span>
                 {cddAlertCount > 0 && (
-                  <span className="employees-tab-alert is-cdd" title="Fins de CDD ≤ 30 jours">
+                  <span className="employees-tab-alert is-cdd" title="CDD échus ou se terminant dans ≤ 30 jours">
                     {cddAlertCount}
                   </span>
                 )}
@@ -514,7 +546,7 @@ export default function EmployesPage() {
             <div className="employees-trial-alert-banner employees-trial-alert-banner-inline is-cdd">
               <strong>{cddAlertCount}</strong>
               {' '}
-              CDD se terminant dans les 30 jours.
+              CDD échu(s) ou se terminant dans les 30 jours.
             </div>
           )}
           {(tab === 'cdd' || tab === 'essai') && (
@@ -709,9 +741,12 @@ export default function EmployesPage() {
                               <td className={dateCellClass(finContrat)}>{finContrat || '—'}</td>
                               <td className={dateCellClass(cddAlerteDate)}>
                                 {cddAlerteDate || '—'}
-                                {cddAlert && daysCdd != null && daysCdd >= 0 && (
-                                  <span className="employees-essai-days is-cdd" title="Jours restants avant fin de contrat">
-                                    {' '}J-{daysCdd}
+                                {cddAlert && daysCdd != null && (
+                                  <span
+                                    className="employees-essai-days is-cdd"
+                                    title={daysCdd >= 0 ? 'Jours restants avant fin de contrat' : 'Contrat déjà échu'}
+                                  >
+                                    {' '}{daysCdd >= 0 ? `J-${daysCdd}` : 'échu'}
                                   </span>
                                 )}
                               </td>
@@ -766,6 +801,7 @@ export default function EmployesPage() {
         <EmployeeViewModal
           employee={viewing}
           canEdit={canEdit}
+          initialTab={viewTab}
           onClose={() => { setViewOpen(false); setViewing(null); }}
           onUpdated={() => {
             void load(true);
