@@ -111,6 +111,8 @@ export const AUDIT_MODULE_LABELS: Record<string, string> = {
   'travel.etablir': 'Cash request',
   'travel.attestation': 'Attestation de service',
   'travel.payment-voucher': 'Payment voucher',
+  'documents.entetes': 'Entête',
+  'documents.rrf': 'RRF',
   'protocol.visa-travail': 'Visa de travail',
   'protocol.visa-volant': 'Visa volant',
   'protocol.visa-voyage': 'Visa de voyage',

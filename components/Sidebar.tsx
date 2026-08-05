@@ -98,7 +98,7 @@ const NAV: NavSection[] = [
     label: 'Documents',
     icon: 'docs',
     color: '#a855f7',
-    activePrefixes: ['/documents-voyage'],
+    activePrefixes: ['/documents', '/documents-voyage'],
     menuIds: [
       'travel.historique',
       'travel.etablir',
@@ -106,6 +106,8 @@ const NAV: NavSection[] = [
       'travel.payment-voucher',
       'documents.appraisal',
       'documents.exit',
+      'documents.entetes',
+      'documents.rrf',
     ],
   },
   {

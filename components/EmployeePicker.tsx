@@ -227,7 +227,9 @@ export function EmployeeSuggestInput({
           >
             <span className="project-picker-name">{employee.nom}</span>
             <span className="project-picker-meta">
-              {[employee.matricule, employee.departement].filter(Boolean).join(' · ')}
+              {[employee.matricule, employee.jobTitle, employee.departement]
+                .filter(Boolean)
+                .join(' · ')}
             </span>
           </button>
         ))}

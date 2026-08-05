@@ -45,6 +45,34 @@ async function convertOfficeFilesBatch(jobs: ConversionJob[]): Promise<void> {
   await Promise.all(jobs.map((job) => fs.access(job.output)));
 }
 
+/**
+ * Convertit un buffer Office (.xlsx / .docx) en PDF via Microsoft Office (Windows).
+ */
+export async function convertOfficeBufferToPdf(
+  inputBuffer: Buffer,
+  ext: '.xlsx' | '.docx' | '.doc',
+): Promise<Buffer> {
+  if (!isWindows()) {
+    throw new Error('Conversion PDF Office disponible uniquement sous Windows');
+  }
+  const tempDir = await fs.mkdtemp(path.join(os.tmpdir(), 'office-pdf-'));
+  const inputPath = path.join(tempDir, `input${ext}`);
+  const outputPath = path.join(tempDir, 'output.pdf');
+  try {
+    await fs.writeFile(inputPath, inputBuffer);
+    await convertOfficeFilesBatch([
+      {
+        input: inputPath,
+        output: outputPath,
+        ext,
+      },
+    ]);
+    return await fs.readFile(outputPath);
+  } finally {
+    await fs.rm(tempDir, { recursive: true, force: true });
+  }
+}
+
 async function mergePdfFiles(inputPaths: string[], outputPath: string): Promise<void> {
   const merged = await PDFDocument.create();
 

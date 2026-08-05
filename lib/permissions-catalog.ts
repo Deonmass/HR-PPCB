@@ -44,6 +44,8 @@ export const PERMISSION_MENU_CATALOG: PermissionMenuGroup[] = [
       { id: 'travel.payment-voucher', label: 'Payment voucher' },
       { id: 'documents.appraisal', label: 'Interim appraisal evaluation' },
       { id: 'documents.exit', label: 'Exit forms' },
+      { id: 'documents.entetes', label: 'Entête' },
+      { id: 'documents.rrf', label: 'RRF' },
     ],
   },
   {

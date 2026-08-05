@@ -2,7 +2,9 @@
 
 import Link from 'next/link';
 import type { CSSProperties, ReactNode } from 'react';
+import { useEffect, useMemo } from 'react';
 import { usePermissions } from '@/contexts/PermissionContext';
+import { DOCUMENTS_HUB_MENU_IDS } from '@/lib/menu-routes';
 
 interface DocCard {
   id: string;
@@ -83,6 +85,27 @@ function IconExit() {
   );
 }
 
+function IconLetterhead() {
+  return (
+    <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+      <path d="M4 4h16v4H4z" />
+      <path d="M6 12h12M6 16h8M6 20h10" />
+    </svg>
+  );
+}
+
+function IconRrf() {
+  return (
+    <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+      <path d="M8 6h13M8 12h13M8 18h13" />
+      <path d="M3 6h.01M3 12h.01M3 18h.01" />
+      <rect x="2" y="4" width="4" height="4" rx="1" />
+      <rect x="2" y="10" width="4" height="4" rx="1" />
+      <rect x="2" y="16" width="4" height="4" rx="1" />
+    </svg>
+  );
+}
+
 function IconOrder() {
   return (
     <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
@@ -95,6 +118,16 @@ function IconOrder() {
 }
 
 const CARDS: DocCard[] = [
+  {
+    id: 'entetes',
+    title: 'Entête',
+    description: 'Papiers à en-tête Manuco et Quarryco — téléchargement et mise à jour des modèles.',
+    href: '/documents/entetes',
+    menuId: 'documents.entetes',
+    accent: '#0f766e',
+    badge: '2 modèles',
+    icon: <IconLetterhead />,
+  },
   {
     id: 'voyage',
     title: 'Voyage',
@@ -186,21 +219,63 @@ const CARDS: DocCard[] = [
     badge: '4 documents',
     icon: <IconExit />,
   },
+  {
+    id: 'rrf',
+    title: 'RRF',
+    description: 'Recruitment Requisition Form — fonction auto (cost center, reports to, location), benefits et export Excel/PDF.',
+    href: '/documents/rrf',
+    menuId: 'documents.rrf',
+    accent: '#2563eb',
+    badge: 'Excel + PDF',
+    icon: <IconRrf />,
+  },
 ];
 
+function canSeeMenu(
+  can: (menuId: string, action: 'view' | 'create' | 'edit' | 'export' | 'delete' | 'undo') => boolean,
+  menuId: string,
+): boolean {
+  return (
+    can(menuId, 'view')
+    || can(menuId, 'create')
+    || can(menuId, 'edit')
+    || can(menuId, 'export')
+  );
+}
+
 export default function DocumentsHubPage() {
-  const { can, isLoading } = usePermissions();
+  const { can, isLoading, refresh } = usePermissions();
+
+  useEffect(() => {
+    void refresh({ silent: true });
+  }, [refresh]);
+
+  const visible = useMemo(() => {
+    // Accès au hub Documents (au moins un menu du hub).
+    const hasHubAccess = DOCUMENTS_HUB_MENU_IDS.some((id) => canSeeMenu(can, id));
+
+    return CARDS.filter((card) => {
+      // Entête en premier : droit dédié OU n’importe quel accès Documents.
+      if (card.id === 'entetes') {
+        return canSeeMenu(can, 'documents.entetes') || hasHubAccess;
+      }
+      return canSeeMenu(can, card.menuId);
+    });
+  }, [can]);
 
   if (isLoading) return <div className="loading">Chargement...</div>;
-
-  const visible = CARDS.filter((card) => can(card.menuId, 'view'));
 
   return (
     <>
       <div className="page-header">
         <div>
           <h2>Documents</h2>
-          <p>Modèles et documents RH — sélectionnez un document pour l’établir ou le consulter.</p>
+          <p>
+            Modèles et documents RH — sélectionnez un document pour l’établir ou le consulter.
+            {visible.length > 0 ? (
+              <span className="text-muted"> · {visible.length} module{visible.length > 1 ? 's' : ''}</span>
+            ) : null}
+          </p>
         </div>
       </div>
 

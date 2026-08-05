@@ -12,9 +12,13 @@ export const DOCUMENTS_HUB_MENU_IDS = [
   'travel.payment-voucher',
   'documents.appraisal',
   'documents.exit',
+  'documents.entetes',
+  'documents.rrf',
 ];
 
 export const ROUTE_MENU_MAP: RouteMenuEntry[] = [
+  { prefix: '/documents/rrf', menuId: 'documents.rrf' },
+  { prefix: '/documents/entetes', menuId: 'documents.entetes' },
   { prefix: '/documents/exit', menuId: 'documents.exit' },
   { prefix: '/documents/interim-appraisal', menuId: 'documents.appraisal' },
   { prefix: '/documents', menuId: 'travel.historique' },
