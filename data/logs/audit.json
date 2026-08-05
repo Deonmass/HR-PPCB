@@ -2,15 +2,15 @@
   "entries": [
     {
       "id": "log-000054",
-      "at": "2026-08-05T07:21:50.359Z",
+      "at": "2026-08-05T07:21:51.579Z",
       "userId": "admin",
       "userName": "Administrateur",
       "module": "travel.attestation",
       "moduleLabel": "Attestation de service",
       "action": "export",
       "actionLabel": "Export",
-      "summary": "Aperçu PDF attestation masudi",
-      "details": "Aperçu PDF attestation masudi",
+      "summary": "Aperçu PDF attestation NKOSI LIMA MASUDI BIENVENU",
+      "details": "Aperçu PDF attestation NKOSI LIMA MASUDI BIENVENU",
       "undoable": false,
       "undone": false
     },
