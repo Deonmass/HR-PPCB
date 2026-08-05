@@ -28,6 +28,15 @@ export async function listExitIssued(): Promise<ExitIssuedRecord[]> {
   }
 }
 
+export async function deleteExitIssued(id: string): Promise<boolean> {
+  const items = await listExitIssued();
+  const next = items.filter((item) => item.id !== id);
+  if (next.length === items.length) return false;
+  await fs.mkdir(LOG_DIR, { recursive: true });
+  await fs.writeFile(LOG_FILE, JSON.stringify(next, null, 2), 'utf8');
+  return true;
+}
+
 export async function appendExitIssued(
   record: Omit<ExitIssuedRecord, 'id' | 'createdAt'>,
 ): Promise<ExitIssuedRecord> {

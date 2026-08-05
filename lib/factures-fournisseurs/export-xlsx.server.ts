@@ -67,37 +67,24 @@ function escapeFormulaText(value: string): string {
 }
 
 /**
- * STATUT :
- * Facture reçue → unpaid (PR/PO) → Posted and unpaid (GRN) → paid (payment)
+ * STATUT : unpaid (payment vide) | paid (payment renseigné)
  */
 export function factureRowFormulas(row: number): {
   statut: string;
   commentaire: string;
 } {
-  const facture = escapeFormulaText(FACTURE_STAGE_LABELS.facture);
-  const unpaid = escapeFormulaText(FACTURE_STAGE_LABELS.pr);
-  const posted = escapeFormulaText(FACTURE_STAGE_LABELS.posted);
+  const unpaid = escapeFormulaText(FACTURE_STAGE_LABELS.unpaid);
   const paid = escapeFormulaText(FACTURE_STAGE_LABELS.paid);
-
-  const cFacture = escapeFormulaText(FACTURE_STAGE_COMMENTS.facture);
-  const cPr = escapeFormulaText(FACTURE_STAGE_COMMENTS.pr);
-  const cPo = escapeFormulaText(FACTURE_STAGE_COMMENTS.po);
-  const cPosted = escapeFormulaText(FACTURE_STAGE_COMMENTS.posted);
+  const cUnpaid = escapeFormulaText(FACTURE_STAGE_COMMENTS.unpaid);
   const cPaid = escapeFormulaText(FACTURE_STAGE_COMMENTS.paid);
 
   return {
     statut:
       `IF(${COL.facture}${row}="","",` +
-      `IF(${COL.pr}${row}="","${facture}",` +
-      `IF(${COL.po}${row}="","${unpaid}",` +
-      `IF(${COL.grn}${row}="","${unpaid}",` +
-      `IF(${COL.payment}${row}="","${posted}","${paid}")))))`,
+      `IF(${COL.payment}${row}="","${unpaid}","${paid}"))`,
     commentaire:
       `IF(${COL.facture}${row}="","",` +
-      `IF(${COL.pr}${row}="","${cFacture}",` +
-      `IF(${COL.po}${row}="","${cPr}",` +
-      `IF(${COL.grn}${row}="","${cPo}",` +
-      `IF(${COL.payment}${row}="","${cPosted}","${cPaid}")))))`,
+      `IF(${COL.payment}${row}="","${cUnpaid}","${cPaid}"))`,
   };
 }
 
@@ -124,46 +111,31 @@ function overdueAmountFormula(): string {
 
 function repairDashboardFormulas(sheet: PopulateSheet): void {
   const paid = escapeFormulaText(FACTURE_STAGE_LABELS.paid);
-  const facture = escapeFormulaText(FACTURE_STAGE_LABELS.facture);
-  const unpaid = escapeFormulaText(FACTURE_STAGE_LABELS.pr);
-  const posted = escapeFormulaText(FACTURE_STAGE_LABELS.posted);
+  const unpaid = escapeFormulaText(FACTURE_STAGE_LABELS.unpaid);
   const statutRange = `${SHEET_DATA}!$${COL.statut}$${DATA_START_ROW}:$${COL.statut}$${LAST_DATA_ROW}`;
   const montantRange = `${SHEET_DATA}!$${COL.montant}$${DATA_START_ROW}:$${COL.montant}$${LAST_DATA_ROW}`;
   const factureRange = `${SHEET_DATA}!$${COL.facture}$${DATA_START_ROW}:$${COL.facture}$${LAST_DATA_ROW}`;
 
-  // KPI — ne pas reconstruire le layout, seulement les formules utiles
   sheet.cell('B6').formula(`COUNTA(${factureRange})`);
   sheet.cell('C6').formula(`SUM(${montantRange})`);
-  sheet.cell('B7').formula(`B6-COUNTIF(${statutRange},"${paid}")`);
-  sheet.cell('C7').formula(`C6-SUMIF(${statutRange},"${paid}",${montantRange})`);
+  sheet.cell('B7').formula(`COUNTIF(${statutRange},"${unpaid}")`);
+  sheet.cell('C7').formula(`SUMIF(${statutRange},"${unpaid}",${montantRange})`);
   sheet.cell('B8').formula(overdueCountFormula());
   sheet.cell('C8').formula(overdueAmountFormula());
-  sheet.cell('B9').formula(`COUNTIF(${statutRange},"${posted}")`);
-  sheet.cell('C9').formula(`SUMIF(${statutRange},"${posted}",${montantRange})`);
+  sheet.cell('B9').formula(`COUNTIF(${statutRange},"${paid}")`);
+  sheet.cell('C9').formula(`SUMIF(${statutRange},"${paid}",${montantRange})`);
 
-  // Pipeline (layout existant E–H) : Facture reçue | unpaid | Posted and unpaid | paid
-  sheet.cell('E6').value(facture);
-  sheet.cell('F6').formula(`COUNTIF(${statutRange},"${facture}")`);
+  sheet.cell('E6').value(unpaid);
+  sheet.cell('F6').formula(`COUNTIF(${statutRange},"${unpaid}")`);
   sheet.cell('G6').formula('IFERROR(F6/$B$6,0)');
-  sheet.cell('H6').formula(`SUMIF(${statutRange},"${facture}",${montantRange})`);
+  sheet.cell('H6').formula(`SUMIF(${statutRange},"${unpaid}",${montantRange})`);
 
-  sheet.cell('E7').value(unpaid);
-  sheet.cell('F7').formula(`COUNTIF(${statutRange},"${unpaid}")`);
+  sheet.cell('E7').value(paid);
+  sheet.cell('F7').formula(`COUNTIF(${statutRange},"${paid}")`);
   sheet.cell('G7').formula('IFERROR(F7/$B$6,0)');
-  sheet.cell('H7').formula(`SUMIF(${statutRange},"${unpaid}",${montantRange})`);
+  sheet.cell('H7').formula(`SUMIF(${statutRange},"${paid}",${montantRange})`);
 
-  sheet.cell('E8').value(posted);
-  sheet.cell('F8').formula(`COUNTIF(${statutRange},"${posted}")`);
-  sheet.cell('G8').formula('IFERROR(F8/$B$6,0)');
-  sheet.cell('H8').formula(`SUMIF(${statutRange},"${posted}",${montantRange})`);
-
-  sheet.cell('E9').value(paid);
-  sheet.cell('F9').formula(`COUNTIF(${statutRange},"${paid}")`);
-  sheet.cell('G9').formula('IFERROR(F9/$B$6,0)');
-  sheet.cell('H9').formula(`SUMIF(${statutRange},"${paid}",${montantRange})`);
-
-  // Ancienne ligne GRN / doublon Posted — vider pour éviter les #REF / doubles comptes
-  for (const addr of ['E10', 'F10', 'G10', 'H10']) {
+  for (const addr of ['E8', 'F8', 'G8', 'H8', 'E9', 'F9', 'G9', 'H9', 'E10', 'F10', 'G10', 'H10']) {
     sheet.cell(addr).value(null);
   }
 }

@@ -1,11 +1,59 @@
 import 'server-only';
 
+import fs from 'fs/promises';
+import JSZip from 'jszip';
 import { escapeXmlText } from './docx-template';
 import { formatDisplayDate } from './xlsx-populate-utils';
 import type { ServiceAttestationFormData } from './service-attestation-types';
 import { SERVICE_ATTESTATION_TEMPLATE_PATH } from './service-attestation-template-paths';
 
 export { SERVICE_ATTESTATION_TEMPLATE_PATH };
+
+export interface ServiceAttestationHeaderImage {
+  bytes: Uint8Array;
+  mime: 'image/png' | 'image/jpeg';
+}
+
+let cachedHeaderImage: ServiceAttestationHeaderImage | null | undefined;
+
+/** Première image du modèle Word (en-tête document). */
+export async function loadServiceAttestationHeaderImage(): Promise<ServiceAttestationHeaderImage | null> {
+  if (cachedHeaderImage !== undefined) {
+    return cachedHeaderImage;
+  }
+  try {
+    const templateBuffer = await fs.readFile(SERVICE_ATTESTATION_TEMPLATE_PATH);
+    const zip = await JSZip.loadAsync(templateBuffer);
+    const mediaPaths = Object.keys(zip.files)
+      .filter((key) => /^word\/media\/.+\.(png|jpe?g)$/i.test(key))
+      .sort((a, b) => a.localeCompare(b, 'en'));
+    if (!mediaPaths.length) {
+      cachedHeaderImage = null;
+      return null;
+    }
+    const file = zip.file(mediaPaths[0]);
+    if (!file) {
+      cachedHeaderImage = null;
+      return null;
+    }
+    const bytes = new Uint8Array(await file.async('arraybuffer'));
+    const lower = mediaPaths[0].toLowerCase();
+    const mime: 'image/png' | 'image/jpeg' =
+      lower.endsWith('.png') ? 'image/png' : 'image/jpeg';
+    cachedHeaderImage = { bytes, mime };
+    return cachedHeaderImage;
+  } catch {
+    cachedHeaderImage = null;
+    return null;
+  }
+}
+
+export async function getServiceAttestationHeaderDataUrl(): Promise<string | null> {
+  const image = await loadServiceAttestationHeaderImage();
+  if (!image) return null;
+  const base64 = Buffer.from(image.bytes).toString('base64');
+  return `data:${image.mime};base64,${base64}`;
+}
 
 function buildSplitBracketPattern(key: string): RegExp {
   const chars = key.split('').map((char) => char.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'));
@@ -154,11 +202,18 @@ export function extractDocxPlainText(xml: string): string {
     .trim();
 }
 
-export function buildServiceAttestationPreviewHtml(plainText: string): string {
+export function buildServiceAttestationPreviewHtml(
+  plainText: string,
+  options?: { headerDataUrl?: string | null },
+): string {
   const paragraphs = plainText
     .split(/\n+/)
     .map((line) => line.trim())
     .filter(Boolean);
+
+  const headerBlock = options?.headerDataUrl
+    ? `<div class="service-attestation-preview-header"><img src="${options.headerDataUrl}" alt="" /></div>`
+    : '';
 
   const body = paragraphs
     .map((line, index) => {
@@ -173,7 +228,7 @@ export function buildServiceAttestationPreviewHtml(plainText: string): string {
     })
     .join('');
 
-  return `<div class="service-attestation-preview-doc">${body}</div>`;
+  return `<div class="service-attestation-preview-doc">${headerBlock}${body}</div>`;
 }
 
 function escapeHtml(value: string): string {

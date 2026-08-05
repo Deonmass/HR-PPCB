@@ -2,12 +2,16 @@
 
 import { useMemo } from 'react';
 import EmployeesPieChart from '@/components/employees/EmployeesPieChart';
-import type { CharroiVehicule } from '@/lib/charroi-types';
+import type { CharroiDocKind, CharroiVehicule } from '@/lib/charroi-types';
 import {
+  CHARROI_DOC_LABELS,
   CHARROI_ETATS,
   CHARROI_KM_DECLASSE,
   charroiExpiryStatus,
   formatCharroiDate,
+  formatCharroiRemaining,
+  charroiDaysRemaining,
+  getVehiculeDocFin,
   normalizeMarqueLabel,
   normalizeProvinceLabel,
 } from '@/lib/charroi-types';
@@ -15,6 +19,7 @@ import {
 interface Props {
   items: CharroiVehicule[];
   onSelectVehicle?: (v: CharroiVehicule) => void;
+  onOpenDoc?: (v: CharroiVehicule, kind: CharroiDocKind) => void;
 }
 
 function countByObs(list: CharroiVehicule[], obs: string) {
@@ -80,11 +85,10 @@ function IconAge() {
   );
 }
 
-/** Documents véhicule suivis pour les échéances. */
-const EXPIRY_DOCS = [
-  { field: 'assuranceFin' as const, label: 'Assurance' },
-  { field: 'vignetteFin' as const, label: 'Vignette' },
-  { field: 'controleTechniqueFin' as const, label: 'Contr. tech.' },
+const DOC_ALERTS: { kind: CharroiDocKind; label: string }[] = [
+  { kind: 'assurance', label: CHARROI_DOC_LABELS.assurance },
+  { kind: 'vignette', label: CHARROI_DOC_LABELS.vignette },
+  { kind: 'controleTechnique', label: CHARROI_DOC_LABELS.controleTechnique },
 ];
 
 const MARQUE_COLORS = [
@@ -96,7 +100,7 @@ const PROVINCE_COLORS = [
 const ETAT_COLORS = ['#22c55e', '#f59e0b', '#ef4444', '#64748b'];
 const OWNER_COLORS = ['#e30613', '#0ea5e9', '#94a3b8'];
 
-export default function CharroiDashboard({ items, onSelectVehicle }: Props) {
+export default function CharroiDashboard({ items, onSelectVehicle, onOpenDoc }: Props) {
   const dash = useMemo(() => {
     const bon = countByObs(items, 'Bon état');
     const avert = countByObs(items, 'Avertissement');
@@ -111,19 +115,34 @@ export default function CharroiDashboard({ items, onSelectVehicle }: Props) {
       .filter((v) => (v.kilometrage ?? 0) > CHARROI_KM_DECLASSE)
       .sort((a, b) => (b.kilometrage ?? 0) - (a.kilometrage ?? 0));
 
-    // Échéances assurance / vignette / contrôle technique (expirées ou ≤ 30 jours).
-    const expiries = items
-      .flatMap((v) =>
-        EXPIRY_DOCS.map(({ field, label }) => ({
-          vehicle: v,
-          field,
-          label,
-          date: v[field],
-          status: charroiExpiryStatus(v[field]),
-        })),
-      )
-      .filter((x) => x.status === 'expired' || x.status === 'soon')
-      .sort((a, b) => a.date.localeCompare(b.date));
+    const docAlerts = Object.fromEntries(
+      DOC_ALERTS.map(({ kind }) => {
+        const list = items
+          .map((vehicle) => {
+            const date = getVehiculeDocFin(vehicle, kind);
+            const status = charroiExpiryStatus(date);
+            return {
+              vehicle,
+              kind,
+              date,
+              status,
+              days: charroiDaysRemaining(date),
+            };
+          })
+          .filter((x) => x.status === 'expired' || x.status === 'soon')
+          .sort((a, b) => a.date.localeCompare(b.date));
+        return [kind, list] as const;
+      }),
+    ) as Record<
+      CharroiDocKind,
+      Array<{
+        vehicle: CharroiVehicule;
+        kind: CharroiDocKind;
+        date: string;
+        status: ReturnType<typeof charroiExpiryStatus>;
+        days: number | null;
+      }>
+    >;
 
     const byNormalized = (
       getKey: (v: CharroiVehicule) => string,
@@ -149,7 +168,7 @@ export default function CharroiDashboard({ items, onSelectVehicle }: Props) {
       loxea,
       avgAge,
       highKm,
-      expiries,
+      docAlerts,
       marques: byNormalized((v) => normalizeMarqueLabel(v.marque) || '—'),
       provinces: byNormalized((v) => normalizeProvinceLabel(v.province) || '—'),
       etats: CHARROI_ETATS.map((label) => ({
@@ -234,6 +253,22 @@ export default function CharroiDashboard({ items, onSelectVehicle }: Props) {
           </div>
           <span className="guest-house-kpi-icon"><IconAge /></span>
         </div>
+        {DOC_ALERTS.map(({ kind, label }) => {
+          const count = dash.docAlerts[kind].length;
+          return (
+            <div
+              key={kind}
+              className={`card card-glow guest-house-kpi-card charroi-kpi-card${count > 0 ? ' card-glow-red is-bad' : ' card-glow-green is-ok'}`}
+            >
+              <div className="guest-house-kpi-text">
+                <div className="card-label">Alerte {label}</div>
+                <div className="card-value">{count}</div>
+                <div className="text-muted guest-house-kpi-sub">≤ 1 mois / expiré</div>
+              </div>
+              <span className="guest-house-kpi-icon"><IconWarn /></span>
+            </div>
+          );
+        })}
       </div>
 
       <div className="charroi-dash-charts">
@@ -259,7 +294,7 @@ export default function CharroiDashboard({ items, onSelectVehicle }: Props) {
         />
       </div>
 
-      <div className="charroi-dash-bottom">
+      <div className="charroi-dash-bottom charroi-dash-bottom-alerts">
         <div className="panel charroi-dash-side-panel">
           <div className="panel-head">
             <h3>Départements</h3>
@@ -299,34 +334,40 @@ export default function CharroiDashboard({ items, onSelectVehicle }: Props) {
             ))}
           </div>
         </div>
-        <div className="panel charroi-dash-side-panel charroi-dash-alert-panel">
-          <div className="panel-head">
-            <h3>Échéances ≤ 1 mois</h3>
-            <span className="panel-meta">{dash.expiries.length}</span>
-          </div>
-          <div className="charroi-mini-list">
-            {dash.expiries.length === 0 ? (
-              <div className="text-muted charroi-empty-mini">
-                Aucune échéance (assurance, vignette, contrôle technique)
+        {DOC_ALERTS.map(({ kind, label }) => {
+          const list = dash.docAlerts[kind];
+          return (
+            <div key={kind} className="panel charroi-dash-side-panel charroi-dash-alert-panel">
+              <div className="panel-head">
+                <h3>Alerte {label}</h3>
+                <span className="panel-meta">{list.length}</span>
               </div>
-            ) : dash.expiries.slice(0, 12).map((x) => (
-              <button
-                key={`${x.vehicle.id}-${x.field}`}
-                type="button"
-                className="charroi-mini-row charroi-mini-btn"
-                onClick={() => onSelectVehicle?.(x.vehicle)}
-              >
-                <span title={`${x.vehicle.marque} ${x.vehicle.plaque}`.trim()}>
-                  {x.vehicle.plaque || x.vehicle.marque || x.vehicle.id}
-                  <em className="charroi-expiry-doc">{x.label}</em>
-                </span>
-                <strong className={`charroi-expiry-date is-${x.status}`}>
-                  {formatCharroiDate(x.date)}
-                </strong>
-              </button>
-            ))}
-          </div>
-        </div>
+              <div className="charroi-mini-list">
+                {list.length === 0 ? (
+                  <div className="text-muted charroi-empty-mini">Aucune alerte</div>
+                ) : list.slice(0, 10).map((x) => (
+                  <button
+                    key={`${x.vehicle.id}-${kind}`}
+                    type="button"
+                    className="charroi-mini-row charroi-mini-btn"
+                    onClick={() => {
+                      if (onOpenDoc) onOpenDoc(x.vehicle, kind);
+                      else onSelectVehicle?.(x.vehicle);
+                    }}
+                  >
+                    <span title={`${x.vehicle.marque} ${x.vehicle.plaque}`.trim()}>
+                      {x.vehicle.plaque || x.vehicle.marque || x.vehicle.id}
+                      <em className="charroi-expiry-doc">{formatCharroiRemaining(x.days)}</em>
+                    </span>
+                    <strong className={`charroi-expiry-date is-${x.status}`}>
+                      {formatCharroiDate(x.date)}
+                    </strong>
+                  </button>
+                ))}
+              </div>
+            </div>
+          );
+        })}
       </div>
     </div>
   );

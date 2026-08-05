@@ -1,0 +1,82 @@
+[
+  {
+    "matricule": "70000049",
+    "employeeName": "PONGO PONGO LIWANDA LUTE CHARLES",
+    "doc": "clearance",
+    "docLabel": "Employee exit clearance form",
+    "fileName": "Employee exit clearance form - PONGO PONGO LIWANDA LUTE CHARLES.docx",
+    "issuedBy": "Gedeon Massadi",
+    "id": "exit-1785917627812-ew3pns",
+    "createdAt": "2026-08-05T08:13:47.812Z"
+  },
+  {
+    "matricule": "70000049",
+    "employeeName": "PONGO PONGO LIWANDA LUTE CHARLES",
+    "doc": "interview",
+    "docLabel": "Exit interview form",
+    "fileName": "Exit interview form - PONGO PONGO LIWANDA LUTE CHARLES.docx",
+    "issuedBy": "Gedeon Massadi",
+    "id": "exit-1785917628323-8icogv",
+    "createdAt": "2026-08-05T08:13:48.323Z"
+  },
+  {
+    "matricule": "70000049",
+    "employeeName": "PONGO PONGO LIWANDA LUTE CHARLES",
+    "doc": "attestation-fin-service",
+    "docLabel": "Attestation de fin de service",
+    "fileName": "Attestation de fin de service - PONGO PONGO LIWANDA LUTE CHARLES.docx",
+    "issuedBy": "Gedeon Massadi",
+    "id": "exit-1785917628804-nsw5cb",
+    "createdAt": "2026-08-05T08:13:48.804Z"
+  },
+  {
+    "matricule": "70000049",
+    "employeeName": "PONGO PONGO LIWANDA LUTE CHARLES",
+    "doc": "user-removal",
+    "docLabel": "User removal form",
+    "fileName": "User removal form - PONGO PONGO LIWANDA LUTE CHARLES.docx",
+    "issuedBy": "Gedeon Massadi",
+    "id": "exit-1785917629268-jl73fh",
+    "createdAt": "2026-08-05T08:13:49.268Z"
+  },
+  {
+    "matricule": "70000279",
+    "employeeName": "NKEMBI MABELUANGA GRASSINDA",
+    "doc": "clearance",
+    "docLabel": "Employee exit clearance form",
+    "fileName": "Employee exit clearance form - NKEMBI MABELUANGA GRASSINDA.docx",
+    "issuedBy": "Gedeon Massadi",
+    "id": "exit-1785927155766-q6fwkg",
+    "createdAt": "2026-08-05T10:52:35.766Z"
+  },
+  {
+    "matricule": "70000279",
+    "employeeName": "NKEMBI MABELUANGA GRASSINDA",
+    "doc": "interview",
+    "docLabel": "Exit interview form",
+    "fileName": "Exit interview form - NKEMBI MABELUANGA GRASSINDA.docx",
+    "issuedBy": "Gedeon Massadi",
+    "id": "exit-1785927156616-1w8owy",
+    "createdAt": "2026-08-05T10:52:36.616Z"
+  },
+  {
+    "matricule": "70000279",
+    "employeeName": "NKEMBI MABELUANGA GRASSINDA",
+    "doc": "attestation-fin-service",
+    "docLabel": "Attestation de fin de service",
+    "fileName": "Attestation de fin de service - NKEMBI MABELUANGA GRASSINDA.docx",
+    "issuedBy": "Gedeon Massadi",
+    "id": "exit-1785927157366-p5wy08",
+    "createdAt": "2026-08-05T10:52:37.366Z"
+  },
+  {
+    "matricule": "70000279",
+    "employeeName": "NKEMBI MABELUANGA GRASSINDA",
+    "doc": "user-removal",
+    "docLabel": "User removal form",
+    "fileName": "User removal form - NKEMBI MABELUANGA GRASSINDA.docx",
+    "issuedBy": "Gedeon Massadi",
+    "id": "exit-1785927158198-440ohn",
+    "createdAt": "2026-08-05T10:52:38.198Z"
+  }
+]

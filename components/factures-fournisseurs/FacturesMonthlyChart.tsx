@@ -6,11 +6,11 @@ import type { FactureSuivi } from '@/lib/factures-fournisseurs/types';
 import {
   buildFacturesMonthlyTracking,
   formatUsdLike,
-  listFactureYears,
 } from '@/lib/factures-fournisseurs/utils';
 
 interface Props {
   factures: FactureSuivi[];
+  year: number;
 }
 
 function formatUsdCompact(value: number): string {
@@ -24,82 +24,49 @@ function formatUsdCompact(value: number): string {
   return `${formatUsdLike(value)} $`;
 }
 
-export default function FacturesMonthlyChart({ factures }: Props) {
-  const years = useMemo(() => listFactureYears(factures), [factures]);
-  const [year, setYear] = useState(() => years[0] ?? new Date().getFullYear());
+export default function FacturesMonthlyChart({ factures, year }: Props) {
   const [hoverMonth, setHoverMonth] = useState<number | null>(null);
 
-  const selectedYear = years.includes(year) ? year : (years[0] ?? new Date().getFullYear());
-
   const monthly = useMemo(
-    () => buildFacturesMonthlyTracking(factures, selectedYear),
-    [factures, selectedYear],
+    () => buildFacturesMonthlyTracking(factures, year),
+    [factures, year],
   );
 
-  const maxMontant = useMemo(
+  const maxCount = useMemo(
     () => Math.max(
       1,
-      ...monthly.map((p) => Math.max(p.recuMontant, p.paidMontant, p.unpaidMontant)),
+      ...monthly.map((p) => Math.max(p.recuCount, p.paidCount, p.unpaidCount)),
     ),
     [monthly],
   );
 
-  const maxCount = useMemo(
-    () => Math.max(1, ...monthly.map((p) => p.recuCount)),
-    [monthly],
-  );
-
   const bars = useMemo(() => monthly.map((item) => {
-    const h = (value: number) => (value > 0 ? Math.max((value / maxMontant) * 100, 4) : 0);
-    const countH = item.recuCount > 0
-      ? Math.max((item.recuCount / maxCount) * 100, 4)
-      : 0;
+    const h = (value: number) => (value > 0 ? Math.max((value / maxCount) * 100, 8) : 0);
     return {
       ...item,
-      recuH: h(item.recuMontant),
-      paidH: h(item.paidMontant),
-      unpaidH: h(item.unpaidMontant),
-      countH,
+      recuH: h(item.recuCount),
+      paidH: h(item.paidCount),
+      unpaidH: h(item.unpaidCount),
     };
-  }), [monthly, maxMontant, maxCount]);
+  }), [monthly, maxCount]);
 
   const active = hoverMonth == null ? null : bars[hoverMonth] ?? null;
-
-  const yearFilter = (
-    <label className="factures-monthly-year-filter">
-      <span>Année</span>
-      <select
-        className="filter-select"
-        value={selectedYear}
-        onChange={(e) => setYear(Number(e.target.value))}
-        onClick={(e) => e.stopPropagation()}
-      >
-        {years.map((y) => (
-          <option key={y} value={y}>{y}</option>
-        ))}
-      </select>
-    </label>
-  );
 
   return (
     <EnlargeableChartPanel
       title="Suivi des factures par mois"
       className="travel-history-chart-panel factures-monthly-chart-panel"
-      headExtra={yearFilter}
       clickToEnlarge={false}
     >
       <div className="factures-monthly-legend" onClick={(e) => e.stopPropagation()}>
         <span className="factures-monthly-legend-item is-recu-count">
-          <i /> Reçu (nb)
-        </span>
-        <span className="factures-monthly-legend-item is-recu-montant">
-          <i /> Reçu ($)
+          <i /> Total reçu
         </span>
         <span className="factures-monthly-legend-item is-paid">
-          <i /> Paid ($)
+          <i /> Paid
         </span>
         <span className="factures-monthly-legend-item is-unpaid">
-          <i /> Unpaid ($)
+          <i /> Unpaid
         </span>
       </div>
 
@@ -109,10 +76,7 @@ export default function FacturesMonthlyChart({ factures }: Props) {
           style={{ gridTemplateColumns: `repeat(${bars.length}, minmax(0, 1fr))` }}
         >
           {bars.map((item, index) => {
-            const hasData = item.recuCount > 0
-              || item.recuMontant > 0
-              || item.paidMontant > 0
-              || item.unpaidMontant > 0;
+            const hasData = item.recuCount > 0 || item.paidCount > 0 || item.unpaidCount > 0;
             return (
               <div
                 key={item.label}
@@ -123,26 +87,48 @@ export default function FacturesMonthlyChart({ factures }: Props) {
                 <div className="factures-monthly-histo-track">
                   {hasData ? (
                     <div className="factures-monthly-histo-group">
-                      <span
-                        className="factures-monthly-histo-bar is-recu-count"
-                        style={{ height: `${item.countH}%` }}
-                        title={`Reçu ${item.recuCount}`}
-                      />
-                      <span
-                        className="factures-monthly-histo-bar is-recu-montant"
-                        style={{ height: `${item.recuH}%` }}
-                        title={`Reçu ${formatUsdCompact(item.recuMontant)}`}
-                      />
-                      <span
-                        className="factures-monthly-histo-bar is-paid"
-                        style={{ height: `${item.paidH}%` }}
-                        title={`Paid ${formatUsdCompact(item.paidMontant)}`}
-                      />
-                      <span
-                        className="factures-monthly-histo-bar is-unpaid"
-                        style={{ height: `${item.unpaidH}%` }}
-                        title={`Unpaid ${formatUsdCompact(item.unpaidMontant)}`}
-                      />
+                      <div className="factures-monthly-histo-bar-wrap">
+                        {item.recuCount > 0 ? (
+                          <span
+                            className="factures-monthly-histo-value is-recu-count"
+                            style={{ bottom: `calc(${item.recuH}% + 3px)` }}
+                          >
+                            {item.recuCount}
+                          </span>
+                        ) : null}
+                        <span
+                          className="factures-monthly-histo-bar is-recu-count"
+                          style={{ height: `${item.recuH}%` }}
+                        />
+                      </div>
+                      <div className="factures-monthly-histo-bar-wrap">
+                        {item.paidCount > 0 ? (
+                          <span
+                            className="factures-monthly-histo-value is-paid"
+                            style={{ bottom: `calc(${item.paidH}% + 3px)` }}
+                          >
+                            {item.paidCount}
+                          </span>
+                        ) : null}
+                        <span
+                          className="factures-monthly-histo-bar is-paid"
+                          style={{ height: `${item.paidH}%` }}
+                        />
+                      </div>
+                      <div className="factures-monthly-histo-bar-wrap">
+                        {item.unpaidCount > 0 ? (
+                          <span
+                            className="factures-monthly-histo-value is-unpaid"
+                            style={{ bottom: `calc(${item.unpaidH}% + 3px)` }}
+                          >
+                            {item.unpaidCount}
+                          </span>
+                        ) : null}
+                        <span
+                          className="factures-monthly-histo-bar is-unpaid"
+                          style={{ height: `${item.unpaidH}%` }}
+                        />
+                      </div>
                     </div>
                   ) : (
                     <span className="factures-monthly-histo-zero" />
@@ -150,22 +136,22 @@ export default function FacturesMonthlyChart({ factures }: Props) {
 
                   {hoverMonth === index && active && (
                     <div className="factures-monthly-histo-bubble" role="tooltip">
-                      <strong>{active.label} {selectedYear}</strong>
+                      <strong>{active.label} {year}</strong>
                       <div className="factures-monthly-histo-bubble-row is-recu-count">
-                        <span>Reçu (nb)</span>
-                        <em>{active.recuCount}</em>
-                      </div>
-                      <div className="factures-monthly-histo-bubble-row is-recu-montant">
-                        <span>Reçu ($)</span>
-                        <em>{formatUsdCompact(active.recuMontant)}</em>
+                        <span>Total reçu</span>
+                        <em>{active.recuCount} · {formatUsdCompact(active.recuMontant)}</em>
                       </div>
                       <div className="factures-monthly-histo-bubble-row is-paid">
-                        <span>Paid ($)</span>
-                        <em>{formatUsdCompact(active.paidMontant)}</em>
+                        <span>Payé</span>
+                        <em>{active.paidCount} · {formatUsdCompact(active.paidMontant)}</em>
                       </div>
                       <div className="factures-monthly-histo-bubble-row is-unpaid">
-                        <span>Unpaid ($)</span>
-                        <em>{formatUsdCompact(active.unpaidMontant)}</em>
+                        <span>Non payé</span>
+                        <em>{active.unpaidCount} · {formatUsdCompact(active.unpaidMontant)}</em>
+                      </div>
+                      <div className="factures-monthly-histo-bubble-row is-paid">
+                        <span>Taux paiement</span>
+                        <em>{active.paidPct.toLocaleString('fr-FR', { maximumFractionDigits: 1 })} %</em>
                       </div>
                     </div>
                   )}

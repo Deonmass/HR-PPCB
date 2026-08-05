@@ -20,7 +20,7 @@ interface PermissionContextValue {
   can: (menuId: string, action: PermissionAction) => boolean;
   canViewPath: (pathname: string) => boolean;
   firstAccessiblePath: string | null;
-  refresh: () => Promise<void>;
+  refresh: (options?: { silent?: boolean }) => Promise<void>;
 }
 
 const PermissionContext = createContext<PermissionContextValue | null>(null);
@@ -30,28 +30,42 @@ export function PermissionProvider({ children }: { children: ReactNode }) {
   const [menus, setMenus] = useState<MenuPermission[]>([]);
   const [isLoading, setIsLoading] = useState(true);
 
-  const refresh = useCallback(async () => {
-    setIsLoading(true);
+  const refresh = useCallback(async (options?: { silent?: boolean }) => {
+    if (!options?.silent) setIsLoading(true);
     try {
       const res = await fetch('/api/auth/session');
       if (!res.ok) {
-        setUser(null);
-        setMenus([]);
+        // Ne pas effacer les droits en refresh silencieux (erreur réseau / 401 transitoire).
+        if (!options?.silent) {
+          setUser(null);
+          setMenus([]);
+        }
         return;
       }
       const json = (await res.json()) as { user: SessionUser; menus?: MenuPermission[] };
       setUser(json.user ?? null);
-      setMenus(json.menus ?? []);
+      setMenus(Array.isArray(json.menus) ? json.menus : []);
     } catch {
-      setUser(null);
-      setMenus([]);
+      if (!options?.silent) {
+        setUser(null);
+        setMenus([]);
+      }
     } finally {
-      setIsLoading(false);
+      if (!options?.silent) setIsLoading(false);
     }
   }, []);
 
   useEffect(() => {
-    refresh();
+    void refresh();
+  }, [refresh]);
+
+  // Recharge les permissions au retour sur l’onglet (après modification des droits).
+  useEffect(() => {
+    const onFocus = () => {
+      void refresh({ silent: true });
+    };
+    window.addEventListener('focus', onFocus);
+    return () => window.removeEventListener('focus', onFocus);
   }, [refresh]);
 
   const can = useCallback(

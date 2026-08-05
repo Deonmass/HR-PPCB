@@ -2,40 +2,36 @@
 
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import FacturesSuiviDashboard from '@/components/factures-fournisseurs/FacturesSuiviDashboard';
-import FacturesSuiviGroupModal from '@/components/factures-fournisseurs/FacturesSuiviGroupModal';
+import FacturesSuiviFlatTable from '@/components/factures-fournisseurs/FacturesSuiviFlatTable';
 import FacturesSuiviImportModal from '@/components/factures-fournisseurs/FacturesSuiviImportModal';
-import FacturesSuiviStageList from '@/components/factures-fournisseurs/FacturesSuiviStageList';
 import PermissionGate from '@/components/PermissionGate';
 import RefreshButton from '@/components/RefreshButton';
 import RowContextMenu, { type ContextMenuItem } from '@/components/RowContextMenu';
 import { usePermissions } from '@/contexts/PermissionContext';
 import type { Fournisseur } from '@/lib/fournisseurs-types';
 import type {
-  AssignStep,
   FactureBatchLineInput,
   FactureDashboard,
-  FactureGroupNode,
   FactureStage,
   FactureSuivi,
   FactureSuiviInput,
   FactureSuiviTab,
 } from '@/lib/factures-fournisseurs/types';
-import {
-  FACTURE_TAB_LABELS,
-  nextMissingStage,
-} from '@/lib/factures-fournisseurs/types';
+import { FACTURE_TAB_LABELS } from '@/lib/factures-fournisseurs/types';
 import { downloadFacturesSuiviExport } from '@/lib/factures-fournisseurs/export';
 import {
-  buildStageGroups,
-  countStageGroups,
+  buildFactureDashboard,
   emptyFactureInput,
   filterByTab,
-  formatUsdLike,
+  filterFacturesByYear,
+  isFacturePaid,
+  listFactureYears,
+  paymentValueFromStatus,
 } from '@/lib/factures-fournisseurs/utils';
 import { confirmDelete, showError, showSuccess } from '@/lib/swal';
 
 const MENU = 'factures.fournisseur.factures';
-const TABS: FactureSuiviTab[] = ['dashboard', 'facture', 'pr', 'po', 'posted', 'paid'];
+const TABS: FactureSuiviTab[] = ['dashboard', 'unpaid', 'paid'];
 
 type BatchLine = FactureBatchLineInput & { key: string };
 
@@ -70,9 +66,9 @@ function emptyBatchLine(partial?: Partial<BatchLine>): BatchLine {
     societe: '',
     facture: '',
     montant: null,
-    echeance: '',
     pr: '',
-    datePr: '',
+    po: '',
+    payment: '',
     ...partial,
   };
 }
@@ -86,21 +82,17 @@ export default function FacturesSuiviPage() {
   const [tab, setTab] = useState<FactureSuiviTab>('dashboard');
   const [factures, setFactures] = useState<FactureSuivi[]>([]);
   const [dashboard, setDashboard] = useState<FactureDashboard | null>(null);
+  const [dashboardYear, setDashboardYear] = useState<number>(() => new Date().getFullYear());
   const [fournisseurs, setFournisseurs] = useState<Fournisseur[]>([]);
   const [loading, setLoading] = useState(true);
   const [refreshing, setRefreshing] = useState(false);
   const [exporting, setExporting] = useState(false);
   const [search, setSearch] = useState('');
-  const [selectedIds, setSelectedIds] = useState<Set<string>>(new Set());
   const [modalOpen, setModalOpen] = useState(false);
   const [importOpen, setImportOpen] = useState(false);
-  const [assignOpen, setAssignOpen] = useState(false);
   const [form, setForm] = useState<FactureSuiviInput>(emptyFactureInput());
   const [batchLines, setBatchLines] = useState<BatchLine[]>([emptyBatchLine()]);
-  const [assignNumero, setAssignNumero] = useState('');
-  const [assignDate, setAssignDate] = useState(todayDisplay());
   const [saving, setSaving] = useState(false);
-  const [openedGroup, setOpenedGroup] = useState<FactureGroupNode | null>(null);
   const [contextMenu, setContextMenu] = useState<{
     x: number;
     y: number;
@@ -118,9 +110,6 @@ export default function FacturesSuiviPage() {
         fetch('/api/fournisseurs'),
       ]);
 
-      // On affiche le dashboard dès que les factures sont prêtes.
-      // Les fournisseurs (datalist / modals) peuvent charger après pour
-      // réduire le temps d’écran sur l’état "Chargement".
       const data = await resFactures.json();
       if (!resFactures.ok) {
         await showError(data?.error || 'Chargement impossible');
@@ -131,7 +120,6 @@ export default function FacturesSuiviPage() {
         setDashboard(data.dashboard ?? null);
       }
 
-      // Fournisseurs en arrière-plan (ne bloque pas l'affichage principal).
       if (resFournisseurs.ok) {
         void resFournisseurs
           .json()
@@ -153,61 +141,52 @@ export default function FacturesSuiviPage() {
   }, [load]);
 
   useEffect(() => {
-    setSelectedIds(new Set());
-    setOpenedGroup(null);
     setContextMenu(null);
+    setSearch('');
   }, [tab]);
+
+  const years = useMemo(() => listFactureYears(factures), [factures]);
+  const selectedYear = years.includes(dashboardYear)
+    ? dashboardYear
+    : (years[0] ?? new Date().getFullYear());
+
+  useEffect(() => {
+    if (years.length && !years.includes(dashboardYear)) {
+      setDashboardYear(years[0]!);
+    }
+  }, [years, dashboardYear]);
+
+  const facturesForYear = useMemo(
+    () => filterFacturesByYear(factures, selectedYear),
+    [factures, selectedYear],
+  );
+
+  const dashboardForYear = useMemo(
+    () => buildFactureDashboard(facturesForYear),
+    [facturesForYear],
+  );
 
   const stageForTab = tab === 'dashboard' ? null : (tab as FactureStage);
 
-  const filtered = useMemo(() => {
+  const listForTab = useMemo(() => {
     if (!stageForTab) return [];
-    let list = stageForTab === 'facture' ? factures : filterByTab(factures, stageForTab);
+    let list = filterByTab(facturesForYear, stageForTab);
     const q = search.trim().toLowerCase();
     if (!q) return list;
     return list.filter((f) =>
-      `${f.facture} ${f.societe} ${f.pr} ${f.po} ${f.grn} ${f.payment} ${f.statutLabel} ${f.commentaire}`
+      `${f.facture} ${f.societe} ${f.pr} ${f.po} ${f.payment} ${f.commentaire} ${f.date}`
         .toLowerCase()
         .includes(q),
     );
-  }, [factures, stageForTab, search]);
+  }, [facturesForYear, stageForTab, search]);
 
-  const groups = useMemo(() => {
-    if (!stageForTab || stageForTab === 'facture') return [];
-    return buildStageGroups(filtered, stageForTab);
-  }, [filtered, stageForTab]);
-
-  const tabGroupCounts = useMemo(() => {
-    const stages: Exclude<FactureStage, 'facture'>[] = ['pr', 'po', 'posted', 'paid'];
-    return Object.fromEntries(
-      stages.map((stage) => [stage, countStageGroups(factures, stage)]),
-    ) as Record<Exclude<FactureStage, 'facture'>, number>;
-  }, [factures]);
-
-  const assignStep = useMemo((): AssignStep | null => {
-    if (!stageForTab || stageForTab === 'paid') return null;
-    return nextMissingStage(stageForTab);
-  }, [stageForTab]);
-
-  const toggleSelect = (id: string) => {
-    setSelectedIds((prev) => {
-      const next = new Set(prev);
-      if (next.has(id)) next.delete(id);
-      else next.add(id);
-      return next;
-    });
-  };
-
-  const toggleSelectMany = (ids: string[], selected: boolean) => {
-    setSelectedIds((prev) => {
-      const next = new Set(prev);
-      for (const id of ids) {
-        if (selected) next.add(id);
-        else next.delete(id);
-      }
-      return next;
-    });
-  };
+  const tabCounts = useMemo(
+    () => ({
+      unpaid: facturesForYear.filter((f) => f.statut === 'unpaid').length,
+      paid: facturesForYear.filter((f) => f.statut === 'paid').length,
+    }),
+    [facturesForYear],
+  );
 
   const openCreate = () => {
     setForm(emptyFactureInput());
@@ -255,9 +234,9 @@ export default function FacturesSuiviPage() {
             societe: line.societe?.trim() || '',
             facture: line.facture?.trim() || '',
             montant: line.montant ?? null,
-            echeance: line.echeance?.trim() || '',
             pr: line.pr?.trim() || '',
-            datePr: line.datePr?.trim() || '',
+            po: line.po?.trim() || '',
+            payment: line.payment?.trim() || '',
           }))
           .filter((line) => line.facture || line.societe);
 
@@ -291,7 +270,6 @@ export default function FacturesSuiviPage() {
 
       setModalOpen(false);
       setContextMenu(null);
-      setOpenedGroup(null);
       await load(true);
     } finally {
       setSaving(false);
@@ -308,8 +286,30 @@ export default function FacturesSuiviPage() {
       await showError(json.error || 'Suppression impossible');
       return;
     }
-    setOpenedGroup(null);
     await load(true);
+  };
+
+  const handleFieldUpdate = async (id: string, patch: FactureSuiviInput) => {
+    const current = factures.find((f) => f.id === id);
+    if (!current) return;
+    const payload: FactureSuiviInput = {
+      ...current,
+      ...patch,
+      id,
+    };
+    const res = await fetch('/api/factures-suivi', {
+      method: 'PUT',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(payload),
+    });
+    const json = await res.json().catch(() => ({}));
+    if (!res.ok) {
+      await showError((json as { error?: string }).error || 'Modification impossible');
+      throw new Error('update failed');
+    }
+    const updated = json as FactureSuivi;
+    setFactures((prev) => prev.map((f) => (f.id === id ? updated : f)));
+    void load(true);
   };
 
   const openContextMenu = (event: React.MouseEvent, facture: FactureSuivi) => {
@@ -342,55 +342,6 @@ export default function FacturesSuiviPage() {
     return actions;
   }, [contextMenu, canEdit, canDelete]);
 
-  const openAssign = () => {
-    if (!assignStep) return;
-    if (selectedIds.size === 0) {
-      void showError('Sélectionnez au moins une facture');
-      return;
-    }
-    setAssignNumero('');
-    setAssignDate(todayDisplay());
-    setAssignOpen(true);
-  };
-
-  const handleAssign = async () => {
-    if (!assignStep) return;
-    setSaving(true);
-    try {
-      const res = await fetch('/api/factures-suivi', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          action: 'assign',
-          step: assignStep,
-          numero: assignNumero,
-          date: assignDate,
-          ids: [...selectedIds],
-        }),
-      });
-      const json = await res.json();
-      if (!res.ok) {
-        await showError(json.error || 'Affectation impossible');
-        return;
-      }
-      await showSuccess(
-        assignStep === 'payment'
-          ? 'Paiement enregistré'
-          : assignStep === 'grn'
-            ? 'GRN affecté — Posted and unpaid'
-            : `${assignStep.toUpperCase()} affecté — unpaid`,
-      );
-      setAssignOpen(false);
-      setSelectedIds(new Set());
-      await load(true);
-      if (assignStep === 'grn') setTab('posted');
-      else if (assignStep === 'payment') setTab('paid');
-      else if (assignStep) setTab(assignStep);
-    } finally {
-      setSaving(false);
-    }
-  };
-
   const handleExport = useCallback(async () => {
     setExporting(true);
     try {
@@ -408,195 +359,189 @@ export default function FacturesSuiviPage() {
     <PermissionGate anyOf={[{ menuId: MENU, action: 'view' }]}>
       <div className="factures-suivi-page">
         <div className="factures-suivi-sticky">
-          <div className="page-header page-header-with-tabs">
-            <div>
+          <div className="page-header page-header-with-tabs factures-suivi-page-header">
+            <div className="factures-suivi-title-block">
               <div className="page-header-title-row">
                 <h2>Suivi des factures</h2>
                 <RefreshButton onClick={() => void load(true)} loading={refreshing} />
               </div>
               <p>
                 {dashboard
-                  ? `${dashboard.enCours} en cours · ${dashboard.enRetard} en retard · ${dashboard.posted} posted · ${dashboard.paid} paid`
-                  : 'Pipeline facture → PR → PO → GRN → Posted and unpaid'}
+                  ? `${dashboardForYear.enCours} unpaid · ${dashboardForYear.paid} paid · ${dashboardForYear.total} total · ${selectedYear}`
+                  : 'Unpaid / Paid — import DATE · SOCIETE · FACTURE · MONTANT · PR · P.O · PYTMT'}
               </p>
             </div>
-            <div className="factures-suivi-header-actions">
-              <PermissionGate menuId={MENU} action="export">
-                <button
-                  type="button"
-                  className="btn btn-outline btn-export btn-sm btn-with-icon"
-                  onClick={() => void handleExport()}
-                  disabled={exporting}
+
+            <div className="factures-suivi-header-right">
+              <div className="tabs header-tabs header-tabs-compact factures-suivi-tabs">
+                {TABS.map((id) => (
+                  <button
+                    key={id}
+                    type="button"
+                    className={`tab-btn tab-btn-sm${tab === id ? ' active' : ''}`}
+                    onClick={() => setTab(id)}
+                  >
+                    {FACTURE_TAB_LABELS[id]}
+                    {id === 'unpaid' || id === 'paid' ? (
+                      <span className="factures-suivi-tab-count">{tabCounts[id]}</span>
+                    ) : null}
+                  </button>
+                ))}
+              </div>
+              <label className="factures-suivi-year-filter" title="Année">
+                <select
+                  className="filter-select factures-suivi-year-select"
+                  value={selectedYear}
+                  onChange={(e) => setDashboardYear(Number(e.target.value))}
+                  aria-label="Année"
                 >
-                  {exporting ? <span className="btn-spinner" aria-hidden="true" /> : null}
-                  {exporting ? 'Export…' : 'Export'}
-                </button>
-              </PermissionGate>
-              {canCreate ? (
-                <button
-                  type="button"
-                  className="btn btn-outline btn-sm"
-                  onClick={() => setImportOpen(true)}
-                >
-                  Import Excel
-                </button>
-              ) : null}
-              {tab !== 'dashboard' && assignStep && canEdit && (
-                <button
-                  type="button"
-                  className="btn btn-outline btn-sm"
-                  onClick={openAssign}
-                  disabled={selectedIds.size === 0}
-                >
-                  Affecter{' '}
-                  {assignStep === 'payment' ? 'payment' : assignStep.toUpperCase()} (
-                  {selectedIds.size})
-                </button>
-              )}
-              {tab === 'facture' && canCreate && (
-                <button type="button" className="btn btn-accent btn-sm" onClick={openCreate}>
-                  + Nouvelles factures
-                </button>
-              )}
+                  {years.map((y) => (
+                    <option key={y} value={y}>{y}</option>
+                  ))}
+                </select>
+              </label>
+              <div className="factures-suivi-header-actions">
+                <PermissionGate menuId={MENU} action="export">
+                  <button
+                    type="button"
+                    className="btn btn-outline btn-sm factures-suivi-io-btn is-export"
+                    onClick={() => void handleExport()}
+                    disabled={exporting}
+                    title="Export"
+                  >
+                    {exporting ? (
+                      <span className="btn-spinner" aria-hidden="true" />
+                    ) : (
+                      <svg
+                        className="factures-io-icon"
+                        viewBox="0 0 24 24"
+                        width="15"
+                        height="15"
+                        fill="none"
+                        aria-hidden="true"
+                      >
+                        <defs>
+                          <linearGradient id="facturesExportGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+                            <stop offset="0%" stopColor="#38bdf8" />
+                            <stop offset="100%" stopColor="#2563eb" />
+                          </linearGradient>
+                        </defs>
+                        <path
+                          d="M12 3v10"
+                          stroke="url(#facturesExportGrad)"
+                          strokeWidth="2"
+                          strokeLinecap="round"
+                        />
+                        <path
+                          d="M8 7l4-4 4 4"
+                          stroke="url(#facturesExportGrad)"
+                          strokeWidth="2"
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                        />
+                        <path
+                          d="M5 14v4a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2v-4"
+                          stroke="url(#facturesExportGrad)"
+                          strokeWidth="2"
+                          strokeLinecap="round"
+                        />
+                      </svg>
+                    )}
+                    <span>{exporting ? 'Export…' : 'Export'}</span>
+                  </button>
+                </PermissionGate>
+                {canCreate ? (
+                  <button
+                    type="button"
+                    className="btn btn-outline btn-sm factures-suivi-io-btn is-import"
+                    onClick={() => setImportOpen(true)}
+                    title="Import"
+                  >
+                    <svg
+                      className="factures-io-icon"
+                      viewBox="0 0 24 24"
+                      width="15"
+                      height="15"
+                      fill="none"
+                      aria-hidden="true"
+                    >
+                      <defs>
+                        <linearGradient id="facturesImportGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+                          <stop offset="0%" stopColor="#4ade80" />
+                          <stop offset="100%" stopColor="#059669" />
+                        </linearGradient>
+                      </defs>
+                      <path
+                        d="M12 15V5"
+                        stroke="url(#facturesImportGrad)"
+                        strokeWidth="2"
+                        strokeLinecap="round"
+                      />
+                      <path
+                        d="M8 11l4 4 4-4"
+                        stroke="url(#facturesImportGrad)"
+                        strokeWidth="2"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                      />
+                      <path
+                        d="M5 18h14"
+                        stroke="url(#facturesImportGrad)"
+                        strokeWidth="2"
+                        strokeLinecap="round"
+                      />
+                    </svg>
+                    <span>Import</span>
+                  </button>
+                ) : null}
+                {tab !== 'dashboard' && canCreate ? (
+                  <button type="button" className="btn btn-accent btn-sm" onClick={openCreate}>
+                    + Nouvelles factures
+                  </button>
+                ) : null}
+              </div>
             </div>
           </div>
 
-          <div className="factures-suivi-tabs-row">
-            <div className="tabs header-tabs header-tabs-compact factures-suivi-tabs">
-              {TABS.map((id) => (
-                <button
-                  key={id}
-                  type="button"
-                  className={`tab-btn tab-btn-sm${tab === id ? ' active' : ''}`}
-                  onClick={() => setTab(id)}
-                >
-                  {FACTURE_TAB_LABELS[id]}
-                  {id !== 'dashboard' && id !== 'facture' ? (
-                    <span className="factures-suivi-tab-count">{tabGroupCounts[id]}</span>
-                  ) : null}
-                </button>
-              ))}
+          {tab !== 'dashboard' && (
+            <div className="factures-suivi-tabs-search factures-suivi-tabs-search-row">
+              <input
+                type="search"
+                className="search-input"
+                placeholder="Rechercher facture, société, PR, PO…"
+                value={search}
+                onChange={(e) => setSearch(e.target.value)}
+              />
+              <span className="factures-suivi-toolbar-meta">
+                {listForTab.length} facture{listForTab.length > 1 ? 's' : ''}
+              </span>
             </div>
-            {tab !== 'dashboard' && (
-              <div className="factures-suivi-tabs-search">
-                <input
-                  type="search"
-                  className="search-input"
-                  placeholder="Rechercher facture, société, PR, PO…"
-                  value={search}
-                  onChange={(e) => setSearch(e.target.value)}
-                />
-                <span className="factures-suivi-toolbar-meta">
-                  {tab === 'facture'
-                    ? `${filtered.length} facture${filtered.length > 1 ? 's' : ''}`
-                    : `${groups.length} groupe${groups.length > 1 ? 's' : ''} · ${filtered.length} facture${filtered.length > 1 ? 's' : ''}`}
-                </span>
-              </div>
-            )}
-          </div>
+          )}
         </div>
 
         <div className="factures-suivi-body">
           {tab === 'dashboard' && dashboard && (
             <FacturesSuiviDashboard
-              dashboard={dashboard}
-              factures={factures}
+              key={selectedYear}
+              dashboard={dashboardForYear}
+              factures={facturesForYear}
+              year={selectedYear}
               onOpenStage={(stage) => setTab(stage)}
             />
           )}
 
-          {tab === 'facture' && (
+          {tab !== 'dashboard' && (
             <div className="panel factures-suivi-list-panel">
-              {filtered.length === 0 ? (
-                <p className="empty-state">Aucune facture enregistrée.</p>
-              ) : (
-                <div className="factures-suivi-table-wrap">
-                  <table className="factures-suivi-table">
-                    <thead>
-                      <tr>
-                        <th className="col-check" />
-                        <th className="col-row-num">#</th>
-                        <th>Facture</th>
-                        <th>Société</th>
-                        <th>Montant</th>
-                        <th>Date</th>
-                        <th>Échéance</th>
-                        <th>PR</th>
-                        <th>PO</th>
-                        <th>GRN</th>
-                        <th>payment</th>
-                        <th>Statut</th>
-                        <th>Commentaire</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      {filtered.map((f, index) => (
-                        <tr
-                          key={f.id}
-                          className="factures-suivi-row-context"
-                          onContextMenu={(event) => openContextMenu(event, f)}
-                        >
-                          <td>
-                            {canEdit && f.statut === 'facture' ? (
-                              <input
-                                type="checkbox"
-                                checked={selectedIds.has(f.id)}
-                                onChange={() => toggleSelect(f.id)}
-                                onClick={(e) => e.stopPropagation()}
-                              />
-                            ) : null}
-                          </td>
-                          <td className="col-row-num is-num">{index + 1}</td>
-                          <td>
-                            <strong>{f.facture}</strong>
-                          </td>
-                          <td>{f.societe}</td>
-                          <td className="is-num">
-                            {f.montant != null ? formatUsdLike(f.montant) : '—'}
-                          </td>
-                          <td>{f.date || '—'}</td>
-                          <td>{f.echeance || '—'}</td>
-                          <td>{f.pr || '—'}</td>
-                          <td>{f.po || '—'}</td>
-                          <td>{f.grn || '—'}</td>
-                          <td>{f.payment || '—'}</td>
-                          <td>
-                            <span className={`factures-suivi-status status-${f.statut}`}>
-                              {f.statutLabel}
-                            </span>
-                          </td>
-                          <td className="factures-suivi-comment">{f.commentaire || '—'}</td>
-                        </tr>
-                      ))}
-                    </tbody>
-                  </table>
-                </div>
-              )}
-            </div>
-          )}
-
-          {tab !== 'dashboard' && tab !== 'facture' && (
-            <div className="panel factures-suivi-list-panel">
-              <FacturesSuiviStageList
-                stage={tab}
-                groups={groups}
-                selectedIds={selectedIds}
-                onToggleSelectMany={toggleSelectMany}
-                onOpenGroup={setOpenedGroup}
-                canEdit={canEdit && tab !== 'paid'}
+              <FacturesSuiviFlatTable
+                factures={listForTab}
+                canEdit={canEdit}
+                onFieldUpdate={handleFieldUpdate}
+                onContextMenu={openContextMenu}
               />
             </div>
           )}
         </div>
       </div>
-
-      {openedGroup && (
-        <FacturesSuiviGroupModal
-          group={openedGroup}
-          onClose={() => setOpenedGroup(null)}
-          onContextMenuFacture={openContextMenu}
-        />
-      )}
 
       {contextMenu && contextItems.length > 0 && (
         <RowContextMenu
@@ -669,28 +614,48 @@ export default function FacturesSuiviPage() {
                     />
                   </div>
                   <div className="form-group">
-                    <label>Échéance</label>
-                    <input
-                      type="date"
-                      value={toDateInputValue(form.echeance ?? '')}
-                      onChange={(e) =>
-                        setForm({ ...form, echeance: fromDateInputValue(e.target.value) })
-                      }
-                    />
-                  </div>
-                  <div className="form-group">
-                    <label>N° PR</label>
+                    <label>PR</label>
                     <input
                       value={form.pr ?? ''}
                       onChange={(e) => setForm({ ...form, pr: e.target.value })}
+                    />
+                  </div>
+                  <div className="form-group">
+                    <label>PO</label>
+                    <input
+                      value={form.po ?? ''}
+                      onChange={(e) => setForm({ ...form, po: e.target.value })}
+                    />
+                  </div>
+                  <div className="form-group">
+                    <label>Payment</label>
+                    <select
+                      value={isFacturePaid(form.payment ?? '') ? 'paid' : 'unpaid'}
+                      onChange={(e) =>
+                        setForm({
+                          ...form,
+                          payment: paymentValueFromStatus(
+                            e.target.value === 'paid' ? 'paid' : 'unpaid',
+                          ),
+                        })
+                      }
+                    >
+                      <option value="unpaid">Unpaid</option>
+                      <option value="paid">Paid</option>
+                    </select>
+                  </div>
+                  <div className="form-group">
+                    <label>Commentaire</label>
+                    <input
+                      value={form.commentaire ?? ''}
+                      onChange={(e) => setForm({ ...form, commentaire: e.target.value })}
                     />
                   </div>
                 </div>
               ) : (
                 <>
                   <p className="factures-suivi-assign-hint">
-                    Ajoutez plusieurs factures d’un coup. La colonne <strong>N° PR</strong> permet
-                    de lier plusieurs factures au même PR (1 PR → N factures).
+                    Colonnes alignées sur l’Excel : DATE, SOCIETE, FACTURE, MONTANT, PR, P.O, PYTMT.
                   </p>
                   <div className="factures-suivi-table-wrap factures-batch-table-wrap">
                     <table className="factures-suivi-table factures-batch-table">
@@ -701,9 +666,9 @@ export default function FacturesSuiviPage() {
                           <th>Société</th>
                           <th>Montant</th>
                           <th>Date</th>
-                          <th>Échéance</th>
-                          <th>N° PR</th>
-                          <th>Date PR</th>
+                          <th>PR</th>
+                          <th>PO</th>
+                          <th>Payment</th>
                           <th />
                         </tr>
                       </thead>
@@ -755,32 +720,32 @@ export default function FacturesSuiviPage() {
                             </td>
                             <td>
                               <input
-                                type="date"
-                                value={toDateInputValue(line.echeance ?? '')}
-                                onChange={(e) =>
-                                  updateBatchLine(line.key, {
-                                    echeance: fromDateInputValue(e.target.value),
-                                  })
-                                }
-                              />
-                            </td>
-                            <td>
-                              <input
                                 value={line.pr ?? ''}
                                 onChange={(e) => updateBatchLine(line.key, { pr: e.target.value })}
-                                placeholder="PR-…"
+                                placeholder="PR…"
                               />
                             </td>
                             <td>
                               <input
-                                type="date"
-                                value={toDateInputValue(line.datePr ?? '')}
+                                value={line.po ?? ''}
+                                onChange={(e) => updateBatchLine(line.key, { po: e.target.value })}
+                                placeholder="PO…"
+                              />
+                            </td>
+                            <td>
+                              <select
+                                value={isFacturePaid(line.payment ?? '') ? 'paid' : 'unpaid'}
                                 onChange={(e) =>
                                   updateBatchLine(line.key, {
-                                    datePr: fromDateInputValue(e.target.value),
+                                    payment: paymentValueFromStatus(
+                                      e.target.value === 'paid' ? 'paid' : 'unpaid',
+                                    ),
                                   })
                                 }
-                              />
+                              >
+                                <option value="unpaid">Unpaid</option>
+                                <option value="paid">Paid</option>
+                              </select>
                             </td>
                             <td>
                               <button
@@ -809,7 +774,6 @@ export default function FacturesSuiviPage() {
                         emptyBatchLine({
                           societe: prev[prev.length - 1]?.societe ?? '',
                           pr: prev[prev.length - 1]?.pr ?? '',
-                          datePr: prev[prev.length - 1]?.datePr ?? '',
                         }),
                       ])
                     }
@@ -836,72 +800,6 @@ export default function FacturesSuiviPage() {
               >
                 {saving ? <span className="btn-spinner" aria-hidden="true" /> : null}
                 {saving ? 'Enregistrement…' : 'Enregistrer'}
-              </button>
-            </div>
-          </div>
-        </div>
-      )}
-
-      {assignOpen && assignStep && (
-        <div className="modal-overlay open" onClick={() => setAssignOpen(false)}>
-          <div className="modal modal-form" onClick={(e) => e.stopPropagation()}>
-            <div className="modal-header">
-              <h3>
-                Affecter{' '}
-                {assignStep === 'payment' ? 'payment' : assignStep.toUpperCase()} ·{' '}
-                {selectedIds.size} facture
-                {selectedIds.size > 1 ? 's' : ''}
-              </h3>
-              <button type="button" className="modal-close" onClick={() => setAssignOpen(false)}>
-                ×
-              </button>
-            </div>
-            <div className="modal-body">
-              <p className="factures-suivi-assign-hint">
-                {assignStep === 'pr' && 'Un PR peut regrouper plusieurs factures. Statut → unpaid.'}
-                {assignStep === 'po' && 'Un PO peut regrouper plusieurs PR. Statut → unpaid.'}
-                {assignStep === 'grn' &&
-                  'Un GRN ne peut être lié qu’à un seul PO — statut → Posted and unpaid.'}
-                {assignStep === 'payment' &&
-                  'Saisissez la référence de paiement — statut → paid.'}
-              </p>
-              <div className="form-grid">
-                <div className="form-group">
-                  <label>
-                    {assignStep === 'payment'
-                      ? 'Référence payment'
-                      : `Numéro ${assignStep.toUpperCase()}`}
-                  </label>
-                  <input
-                    value={assignNumero}
-                    onChange={(e) => setAssignNumero(e.target.value)}
-                    autoFocus
-                  />
-                </div>
-                <div className="form-group">
-                  <label>
-                    {assignStep === 'payment' ? 'DATE PYM' : `Date ${assignStep.toUpperCase()}`}
-                  </label>
-                  <input
-                    type="date"
-                    value={toDateInputValue(assignDate)}
-                    onChange={(e) => setAssignDate(fromDateInputValue(e.target.value))}
-                  />
-                </div>
-              </div>
-            </div>
-            <div className="modal-footer">
-              <button type="button" className="btn btn-secondary" onClick={() => setAssignOpen(false)}>
-                Annuler
-              </button>
-              <button
-                type="button"
-                className="btn btn-primary"
-                disabled={saving || !assignNumero.trim() || !assignDate.trim()}
-                onClick={() => void handleAssign()}
-              >
-                {saving ? <span className="btn-spinner" aria-hidden="true" /> : null}
-                {saving ? 'Enregistrement…' : 'Valider'}
               </button>
             </div>
           </div>

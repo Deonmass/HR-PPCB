@@ -1,7 +1,18 @@
 import 'server-only';
 
+import fs from 'fs/promises';
+import os from 'os';
+import path from 'path';
 import { PDFDocument, StandardFonts, rgb } from 'pdf-lib';
+import { writeDocxFromTemplate } from './docx-template';
+import {
+  fillServiceAttestationXml,
+  loadServiceAttestationHeaderImage,
+  SERVICE_ATTESTATION_TEMPLATE_PATH,
+} from './service-attestation-template';
 import type { ServiceAttestationFormData } from './service-attestation-types';
+import { convertDocxToPdf } from './travel-pdf';
+import { isWindows } from './windows-shell';
 
 function formatDocumentDate(value: string, language: 'fr' | 'en'): string {
   const trimmed = value.trim();
@@ -51,10 +62,7 @@ export function buildServiceAttestationParagraphs(
   ];
 }
 
-/**
- * PDF multiplateforme (Vercel / Linux inclus) via pdf-lib — sans Microsoft Office.
- */
-export async function buildServiceAttestationPdfBuffer(
+async function buildServiceAttestationPdfWithPdfLib(
   data: ServiceAttestationFormData,
 ): Promise<Buffer> {
   const pdf = await PDFDocument.create();
@@ -65,6 +73,26 @@ export async function buildServiceAttestationPdfBuffer(
   const marginX = 64;
   const maxWidth = 595.28 - marginX * 2;
   let y = 760;
+
+  const headerImage = await loadServiceAttestationHeaderImage();
+  if (headerImage) {
+    const embedded =
+      headerImage.mime === 'image/png'
+        ? await pdf.embedPng(headerImage.bytes)
+        : await pdf.embedJpg(headerImage.bytes);
+    const imgW = embedded.width;
+    const imgH = embedded.height;
+    const targetW = maxWidth;
+    const scale = targetW / imgW;
+    const drawH = imgH * scale;
+    page.drawImage(embedded, {
+      x: marginX,
+      y: y - drawH,
+      width: targetW,
+      height: drawH,
+    });
+    y -= drawH + 28;
+  }
 
   const paragraphs = buildServiceAttestationParagraphs(data);
 
@@ -116,4 +144,28 @@ export async function buildServiceAttestationPdfBuffer(
   });
 
   return Buffer.from(await pdf.save());
+}
+
+/** PDF fidèle au modèle Word (Office sous Windows), sinon pdf-lib + en-tête image. */
+export async function buildServiceAttestationPdfBuffer(
+  data: ServiceAttestationFormData,
+): Promise<Buffer> {
+  if (isWindows()) {
+    const tempDir = await fs.mkdtemp(path.join(os.tmpdir(), 'service-attestation-pdf-'));
+    const docxPath = path.join(tempDir, 'attestation.docx');
+    const pdfPath = path.join(tempDir, 'out.pdf');
+    try {
+      await writeDocxFromTemplate(SERVICE_ATTESTATION_TEMPLATE_PATH, docxPath, (xml) =>
+        fillServiceAttestationXml(xml, data),
+      );
+      await convertDocxToPdf(docxPath, pdfPath);
+      return await fs.readFile(pdfPath);
+    } catch {
+      // Office indisponible → repli pdf-lib
+    } finally {
+      await fs.rm(tempDir, { recursive: true, force: true }).catch(() => undefined);
+    }
+  }
+
+  return buildServiceAttestationPdfWithPdfLib(data);
 }

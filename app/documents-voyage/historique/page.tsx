@@ -5,6 +5,7 @@ import { useRouter } from 'next/navigation';
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import PermissionGate from '@/components/PermissionGate';
 import RefreshButton from '@/components/RefreshButton';
+import ActionButtons from '@/components/ActionButtons';
 import RowContextMenu, { type ContextMenuItem } from '@/components/RowContextMenu';
 import TravelHistoryDetailModal from '@/components/travel/TravelHistoryDetailModal';
 import { IconDataTable, IconEtablir } from '@/components/travel/TravelVoyageIcons';
@@ -145,6 +146,10 @@ export default function HistoriqueVoyagesPage() {
     [contextMenu, can, selectedRow],
   );
 
+  const canEditHistory = can('travel.historique', 'edit');
+  const canDeleteHistory = can('travel.historique', 'delete');
+  const showHistoryActions = canEditHistory || canDeleteHistory;
+
   const rows = data?.rows ?? [];
 
   const filteredRows = useMemo(() => {
@@ -234,12 +239,13 @@ export default function HistoriqueVoyagesPage() {
                         <th>Dates voyage</th>
                         <th>Nombre de jours</th>
                         <th className="travel-history-budget-col">Total budget</th>
+                        {showHistoryActions && <th className="travel-history-actions-col">Actions</th>}
                       </tr>
                     </thead>
                     <tbody>
                       {filteredRows.length === 0 ? (
                         <tr>
-                          <td colSpan={7} className="travel-history-empty-filter">
+                          <td colSpan={showHistoryActions ? 8 : 7} className="travel-history-empty-filter">
                             Aucun résultat pour « {search} »
                           </td>
                         </tr>
@@ -270,6 +276,16 @@ export default function HistoriqueVoyagesPage() {
                             <td>{row.travelDates}</td>
                             <td>{row.tripDays}</td>
                             <td className="travel-history-budget-cell">{formatMoney(row.totalBudget)}</td>
+                            {showHistoryActions && (
+                              <td className="travel-history-actions-cell">
+                                <ActionButtons
+                                  canEdit={canEditHistory}
+                                  canDelete={canDeleteHistory}
+                                  onEdit={() => handleEdit(row)}
+                                  onDelete={() => void handleDelete(row)}
+                                />
+                              </td>
+                            )}
                           </tr>
                         ))
                       )}

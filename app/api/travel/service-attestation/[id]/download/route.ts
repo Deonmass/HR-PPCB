@@ -31,17 +31,7 @@ export async function GET(request: Request, { params }: Params) {
 
     const type = new URL(request.url).searchParams.get('type');
     if (type === 'pdf') {
-      let buffer: Buffer | null = null;
-      if (record.pdfPath) {
-        try {
-          buffer = await fs.readFile(record.pdfPath);
-        } catch {
-          buffer = null;
-        }
-      }
-      if (!buffer) {
-        buffer = await buildServiceAttestationPdfBuffer(record);
-      }
+      const buffer = await buildServiceAttestationPdfBuffer(record);
       const pdfName = record.fileName.replace(/\.docx$/i, '.pdf');
       await auditSimpleAction({
         module: 'travel.attestation',

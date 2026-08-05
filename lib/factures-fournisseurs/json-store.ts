@@ -340,7 +340,14 @@ function sortFactures(items: FactureSuivi[]): FactureSuivi[] {
 export async function listFacturesSuivi(): Promise<FactureSuivi[]> {
   await ensureMigrated();
   const store = await readFacturesStore();
-  return sortFactures(store.factures);
+  // Recompute unpaid/paid from payment (covers legacy pipeline statuses).
+  const normalized = store.factures.map((item) =>
+    withComputedStatut({
+      ...item,
+      commentaire: item.commentaire,
+    }),
+  );
+  return sortFactures(normalized);
 }
 
 export async function getFactureSuivi(id: string): Promise<FactureSuivi | null> {
@@ -387,6 +394,9 @@ export async function upsertFacturesBatch(lines: FactureBatchLineInput[]): Promi
       echeance: line.echeance,
       pr: line.pr,
       datePr: line.datePr,
+      po: line.po,
+      payment: line.payment,
+      commentaire: line.commentaire,
     });
     if (!next.facture.trim()) throw new Error('Numéro de facture requis sur chaque ligne');
     if (!next.societe.trim()) throw new Error('Société requise sur chaque ligne');
@@ -463,21 +473,29 @@ export async function importFacturesSuiviRows(rows: FactureSuiviInput[]): Promis
   );
   let imported = 0;
   let skipped = 0;
+  const batch: FactureSuivi[] = [];
   for (const input of rows) {
     const key = `${String(input.facture ?? '').trim().toLowerCase()}|${String(input.societe ?? '').trim().toLowerCase()}`;
     if (!input.facture?.trim() || !input.societe?.trim() || existingKeys.has(key)) {
       skipped += 1;
       continue;
     }
-    const next = mergeInput(null, { ...input, commentaire: '' });
+    const next = mergeInput(null, {
+      ...input,
+      commentaire: input.commentaire?.trim() || '',
+    });
     next.id = factureIdFromSeq(store.nextFactureSeq);
     store.nextFactureSeq += 1;
-    assertRefUniqueness(store.factures, [next]);
-    store.factures.push(next);
+    batch.push(next);
     existingKeys.add(key);
     imported += 1;
   }
-  await writeJsonFile(DURABLE_FACTURES_SUIVI_KEY, facturesPath(), store);
+  if (batch.length) {
+    // Single uniqueness pass (avoids O(n²) during large Excel imports).
+    assertRefUniqueness(store.factures, batch);
+    store.factures.push(...batch);
+    await writeJsonFile(DURABLE_FACTURES_SUIVI_KEY, facturesPath(), store);
+  }
   return { imported, skipped };
 }
 

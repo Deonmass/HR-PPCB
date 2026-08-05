@@ -6,10 +6,11 @@ import { randomUUID } from 'crypto';
 import { writeDocxFromTemplate } from './docx-template';
 import { buildServiceAttestationPdfBuffer } from './service-attestation-pdf.server';
 import {
-  buildServiceAttestationPreviewHtml,
-  extractDocxPlainText,
-  fillServiceAttestationXml,
+  buildServiceAttestationPreviewHtmlForForm,
+} from './service-attestation-preview.server';
+import {
   formatServiceAttestationFileName,
+  fillServiceAttestationXml,
   SERVICE_ATTESTATION_TEMPLATE_PATH,
 } from './service-attestation-template';
 import type {
@@ -105,11 +106,10 @@ export async function createServiceAttestation(
 
   let previewHtml = '';
 
-  await writeDocxFromTemplate(SERVICE_ATTESTATION_TEMPLATE_PATH, docxPath, (xml) => {
-    const filled = fillServiceAttestationXml(xml, form);
-    previewHtml = buildServiceAttestationPreviewHtml(extractDocxPlainText(filled));
-    return filled;
-  });
+  await writeDocxFromTemplate(SERVICE_ATTESTATION_TEMPLATE_PATH, docxPath, (xml) =>
+    fillServiceAttestationXml(xml, form),
+  );
+  previewHtml = await buildServiceAttestationPreviewHtmlForForm(form);
 
   let savedPdfPath: string | undefined;
   try {

@@ -8,25 +8,16 @@ import DashboardListModal, {
 import DependantsBarChart from '@/components/dependants/DependantsBarChart';
 import EmployeesPieChart from '@/components/employees/EmployeesPieChart';
 import FacturesMonthlyChart from '@/components/factures-fournisseurs/FacturesMonthlyChart';
+import FacturesPaymentRateChart from '@/components/factures-fournisseurs/FacturesPaymentRateChart';
 import type {
   FactureDashboard,
-  FactureStage,
   FactureSuivi,
 } from '@/lib/factures-fournisseurs/types';
-import { FACTURE_TAB_LABELS } from '@/lib/factures-fournisseurs/types';
 import {
   facturesForDashboardKpi,
   formatUsdLike,
   type FactureDashboardKpiKind,
 } from '@/lib/factures-fournisseurs/utils';
-
-const STAGE_GLOW: Record<FactureStage, string> = {
-  facture: 'card-glow-cyan',
-  pr: 'card-glow-violet',
-  po: 'card-glow-amber',
-  posted: 'card-glow-green',
-  paid: 'card-glow-green',
-};
 
 function formatUsdCompact(value: number): string {
   const abs = Math.abs(value);
@@ -44,24 +35,26 @@ function formatFactureCount(count: number): string {
 }
 
 const FACTURE_COLUMNS: DashboardListColumn[] = [
-  { key: 'facture', label: 'Facture' },
+  { key: 'date', label: 'Date facture' },
   { key: 'societe', label: 'Société' },
-  { key: 'montant', label: 'Montant', align: 'right' },
-  { key: 'date', label: 'Date' },
-  { key: 'echeance', label: 'Échéance' },
-  { key: 'statut', label: 'Statut' },
+  { key: 'facture', label: 'N°Facture' },
+  { key: 'pr', label: 'Pr' },
+  { key: 'po', label: 'Po' },
+  { key: 'payment', label: 'Payment' },
+  { key: 'commentaire', label: 'Commentaire' },
 ];
 
 function toRow(f: FactureSuivi): DashboardListRow {
   return {
     id: f.id,
     cells: {
-      facture: f.facture || '—',
-      societe: f.societe || '—',
-      montant: f.montant == null ? '—' : `${formatUsdLike(f.montant)} $`,
       date: f.date || '—',
-      echeance: f.echeance || '—',
-      statut: f.statutLabel || FACTURE_TAB_LABELS[f.statut] || f.statut,
+      societe: f.societe || '—',
+      facture: f.facture || '—',
+      pr: f.pr || '—',
+      po: f.po || '—',
+      payment: f.payment || '—',
+      commentaire: f.commentaire || '—',
     },
   };
 }
@@ -69,64 +62,52 @@ function toRow(f: FactureSuivi): DashboardListRow {
 interface Props {
   dashboard: FactureDashboard;
   factures: FactureSuivi[];
-  onOpenStage?: (stage: FactureStage) => void;
+  year: number;
+  onOpenStage?: (stage: 'unpaid' | 'paid') => void;
 }
 
 export default function FacturesSuiviDashboard({
   dashboard,
   factures,
-  onOpenStage,
+  year,
 }: Props) {
-  const duesHorsRetardCount = Math.max(0, dashboard.enCours - dashboard.enRetard);
-  const duesHorsRetardMontant = Math.max(0, dashboard.montantEnCours - dashboard.montantRetard);
   const [drilldown, setDrilldown] = useState<{ title: string; rows: DashboardListRow[] } | null>(null);
 
-  const pieMontants = useMemo(
-    () => [
-      { label: 'Montant dû', count: duesHorsRetardMontant, itemsCount: duesHorsRetardCount },
-      { label: 'En retard', count: dashboard.montantRetard, itemsCount: dashboard.enRetard },
-      { label: 'Posted unpaid', count: dashboard.montantPosted, itemsCount: dashboard.posted },
-      { label: 'Paid', count: dashboard.montantPaid, itemsCount: dashboard.paid },
-    ],
-    [
-      duesHorsRetardMontant,
-      duesHorsRetardCount,
-      dashboard.montantRetard,
-      dashboard.enRetard,
-      dashboard.montantPosted,
-      dashboard.posted,
-      dashboard.montantPaid,
-      dashboard.paid,
-    ],
-  );
-
-  const histoComparaison = useMemo(
-    () => [
-      { label: 'Montant dû', value: duesHorsRetardMontant, count: duesHorsRetardCount },
-      { label: 'En retard', value: dashboard.montantRetard, count: dashboard.enRetard },
-      { label: 'Posted unpaid', value: dashboard.montantPosted, count: dashboard.posted },
-      { label: 'Paid', value: dashboard.montantPaid, count: dashboard.paid },
-    ],
-    [
-      duesHorsRetardMontant,
-      duesHorsRetardCount,
-      dashboard.montantRetard,
-      dashboard.enRetard,
-      dashboard.montantPosted,
-      dashboard.posted,
-      dashboard.montantPaid,
-      dashboard.paid,
-    ],
-  );
-
-  const histoParEtape = useMemo(
+  const pipelineItems = useMemo(
     () =>
-      dashboard.parEtape.map((kpi) => ({
-        label: FACTURE_TAB_LABELS[kpi.stage],
+      (dashboard.parPipeline ?? []).map((kpi) => ({
+        label: kpi.label,
+        count: kpi.montant,
+        itemsCount: kpi.count,
         value: kpi.montant,
-        count: kpi.count,
       })),
-    [dashboard.parEtape],
+    [dashboard.parPipeline],
+  );
+
+  const pieMontants = useMemo(
+    () =>
+      pipelineItems.map((item) => ({
+        label: item.label,
+        count: item.count,
+        itemsCount: item.itemsCount,
+      })),
+    [pipelineItems],
+  );
+
+  const histoUnpaidPaid = useMemo(
+    () => [
+      {
+        label: 'Unpaid',
+        value: dashboard.montantEnCours,
+        count: dashboard.enCours,
+      },
+      {
+        label: 'Paid',
+        value: dashboard.montantPaid,
+        count: dashboard.paid,
+      },
+    ],
+    [dashboard.montantEnCours, dashboard.enCours, dashboard.montantPaid, dashboard.paid],
   );
 
   const openKpi = (kind: FactureDashboardKpiKind, title: string) => {
@@ -134,129 +115,117 @@ export default function FacturesSuiviDashboard({
     setDrilldown({ title, rows: list.map(toRow) });
   };
 
-  const stageFromLabel = (label: string): FactureStage | null => {
-    const entry = (Object.entries(FACTURE_TAB_LABELS) as [FactureStage, string][])
-      .find(([, value]) => value === label);
-    return entry?.[0] ?? null;
-  };
-
   return (
     <div className="factures-suivi-dashboard">
-      <div className="travel-history-cards factures-suivi-kpis">
+      <div className="travel-history-cards factures-suivi-kpis factures-year-anim">
         <button
           type="button"
-          className="card card-glow card-glow-cyan travel-history-card dependants-kpi-clickable"
+          className="card card-glow card-glow-cyan travel-history-card dependants-kpi-clickable factures-kpi-card"
+          style={{ animationDelay: '0ms' }}
           onClick={() => openKpi('total', 'Total factures')}
           title="Voir la liste — Total factures"
         >
           <div className="card-label">Total factures</div>
-          <div className="card-value">{dashboard.total}</div>
-          <div className="travel-history-card-meta">{formatUsdLike(dashboard.montantTotal)} $</div>
+          <div className="card-value" key={`total-${dashboard.total}-${year}`}>{dashboard.total}</div>
+          <div className="travel-history-card-meta" key={`total-m-${year}`}>
+            {formatUsdLike(dashboard.montantTotal)} $
+          </div>
         </button>
         <button
           type="button"
-          className="card card-glow card-glow-amber travel-history-card dependants-kpi-clickable"
-          onClick={() => openKpi('enCours', 'Montant dû')}
-          title="Voir la liste — Montant dû"
+          className="card card-glow card-glow-amber travel-history-card dependants-kpi-clickable factures-kpi-card"
+          style={{ animationDelay: '40ms' }}
+          onClick={() => openKpi('unpaid', 'Unpaid')}
+          title="Voir la liste — Unpaid"
         >
-          <div className="card-label">Montant dû</div>
-          <div className="card-value">{dashboard.enCours}</div>
-          <div className="travel-history-card-meta">{formatUsdLike(dashboard.montantEnCours)} $</div>
+          <div className="card-label">Unpaid</div>
+          <div className="card-value" key={`unpaid-${dashboard.enCours}-${year}`}>{dashboard.enCours}</div>
+          <div className="travel-history-card-meta" key={`unpaid-m-${year}`}>
+            {formatUsdLike(dashboard.montantEnCours)} $
+          </div>
         </button>
         <button
           type="button"
-          className="card card-glow card-glow-red travel-history-card dependants-kpi-clickable"
-          onClick={() => openKpi('enRetard', 'En retard (échéance)')}
-          title="Voir la liste — En retard"
-        >
-          <div className="card-label">En retard (échéance)</div>
-          <div className="card-value">{dashboard.enRetard}</div>
-          <div className="travel-history-card-meta">{formatUsdLike(dashboard.montantRetard)} $</div>
-        </button>
-        <button
-          type="button"
-          className="card card-glow card-glow-green travel-history-card dependants-kpi-clickable"
-          onClick={() => openKpi('posted', 'Posted and unpaid')}
-          title="Voir la liste — Posted"
-        >
-          <div className="card-label">Posted and unpaid</div>
-          <div className="card-value">{dashboard.posted}</div>
-          <div className="travel-history-card-meta">{formatUsdLike(dashboard.montantPosted)} $</div>
-        </button>
-        <button
-          type="button"
-          className="card card-glow card-glow-green travel-history-card dependants-kpi-clickable"
+          className="card card-glow card-glow-green travel-history-card dependants-kpi-clickable factures-kpi-card"
+          style={{ animationDelay: '80ms' }}
           onClick={() => openKpi('paid', 'Paid')}
           title="Voir la liste — Paid"
         >
           <div className="card-label">Paid</div>
-          <div className="card-value">{dashboard.paid}</div>
-          <div className="travel-history-card-meta">{formatUsdLike(dashboard.montantPaid)} $</div>
+          <div className="card-value" key={`paid-${dashboard.paid}-${year}`}>{dashboard.paid}</div>
+          <div className="travel-history-card-meta" key={`paid-m-${year}`}>
+            {formatUsdLike(dashboard.montantPaid)} $
+          </div>
+        </button>
+        <button
+          type="button"
+          className="card card-glow card-glow-cyan travel-history-card dependants-kpi-clickable factures-kpi-card"
+          style={{ animationDelay: '120ms' }}
+          onClick={() => openKpi('recu', 'Reçus (sans PR ni PO)')}
+          title="Factures unpaid reçues — sans PR ni PO"
+        >
+          <div className="card-label">Reçus</div>
+          <div className="card-value" key={`recu-${dashboard.recu}-${year}`}>{dashboard.recu}</div>
+          <div className="travel-history-card-meta" key={`recu-m-${year}`}>
+            {formatUsdLike(dashboard.montantRecu)} $
+          </div>
+        </button>
+        <button
+          type="button"
+          className="card card-glow card-glow-violet travel-history-card dependants-kpi-clickable factures-kpi-card"
+          style={{ animationDelay: '160ms' }}
+          onClick={() => openKpi('pr', 'PR (unpaid)')}
+          title="Factures unpaid au PR — sans PO"
+        >
+          <div className="card-label">PR</div>
+          <div className="card-value" key={`pr-${dashboard.pr}-${year}`}>{dashboard.pr}</div>
+          <div className="travel-history-card-meta" key={`pr-m-${year}`}>
+            {formatUsdLike(dashboard.montantPr)} $
+          </div>
+        </button>
+        <button
+          type="button"
+          className="card card-glow card-glow-pink travel-history-card dependants-kpi-clickable factures-kpi-card"
+          style={{ animationDelay: '200ms' }}
+          onClick={() => openKpi('po', 'PO (unpaid)')}
+          title="Factures unpaid au PO"
+        >
+          <div className="card-label">PO</div>
+          <div className="card-value" key={`po-${dashboard.po}-${year}`}>{dashboard.po}</div>
+          <div className="travel-history-card-meta" key={`po-m-${year}`}>
+            {formatUsdLike(dashboard.montantPo)} $
+          </div>
         </button>
       </div>
 
-      <div className="factures-suivi-pipeline-chart">
-        <DependantsBarChart
-          title="Montants par étape du pipeline"
-          items={histoParEtape}
-          barClassName="factures-bar-pipeline"
-          fitAll
-          formatValue={formatUsdCompact}
-          formatCount={formatFactureCount}
-          onItemClick={(label) => {
-            const stage = stageFromLabel(label);
-            if (stage) openKpi(stage, label);
-          }}
-        />
-      </div>
-
-      <div className="factures-suivi-monthly-chart">
-        <FacturesMonthlyChart factures={factures} />
-      </div>
-
-      <div className="factures-suivi-charts-grid">
+      <div className="factures-suivi-charts-grid factures-year-anim" key={`charts-${year}`}>
         <EmployeesPieChart
           title="Répartition des montants"
           items={pieMontants}
-          colors={['#f59e0b', '#ef4444', '#22c55e', '#38bdf8']}
+          colors={['#38bdf8', '#a855f7', '#f59e0b', '#22c55e']}
           formatValue={formatUsdCompact}
           formatCount={formatFactureCount}
         />
         <DependantsBarChart
-          title="Montant dû vs posted"
-          items={histoComparaison}
+          title="Unpaid vs Paid"
+          items={histoUnpaidPaid}
           barClassName="factures-bar-montants"
           fitAll
           formatValue={formatUsdCompact}
           formatCount={formatFactureCount}
           onItemClick={(label) => {
-            if (label === 'Montant dû') openKpi('enCours', label);
-            else if (label === 'En retard') openKpi('enRetard', label);
-            else if (label === 'Posted unpaid') openKpi('posted', label);
-            else if (label === 'Paid') openKpi('paid', label);
+            if (label === 'Unpaid') openKpi('unpaid', 'Unpaid');
+            else if (label === 'Paid') openKpi('paid', 'Paid');
           }}
         />
       </div>
 
-      <div className="panel factures-suivi-pipeline-panel">
-        <div className="panel-head">
-          <h3>Pipeline — où bloquent les factures</h3>
-          <span className="panel-meta">Cliquez une étape pour ouvrir l’onglet</span>
-        </div>
-        <div className="factures-suivi-pipeline">
-          {dashboard.parEtape.map((kpi) => (
-            <button
-              key={kpi.stage}
-              type="button"
-              className={`card card-glow ${STAGE_GLOW[kpi.stage]} factures-suivi-stage-card`}
-              onClick={() => onOpenStage?.(kpi.stage)}
-            >
-              <div className="card-label">{FACTURE_TAB_LABELS[kpi.stage]}</div>
-              <div className="card-value">{kpi.count}</div>
-              <div className="travel-history-card-meta">{formatUsdLike(kpi.montant)} $</div>
-            </button>
-          ))}
-        </div>
+      <div className="factures-suivi-monthly-chart factures-year-anim" key={`monthly-${year}`} style={{ animationDelay: '60ms' }}>
+        <FacturesMonthlyChart factures={factures} year={year} />
+      </div>
+
+      <div className="factures-suivi-monthly-chart factures-year-anim" key={`rate-${year}`} style={{ animationDelay: '100ms' }}>
+        <FacturesPaymentRateChart factures={factures} year={year} />
       </div>
 
       {drilldown && (

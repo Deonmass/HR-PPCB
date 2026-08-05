@@ -3,18 +3,22 @@
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import CardActionMenu from '@/components/CardActionMenu';
 import CharroiDashboard from '@/components/charroi/CharroiDashboard';
+import CharroiDocHistoryModal from '@/components/charroi/CharroiDocHistoryModal';
 import CharroiHeaderFilter from '@/components/charroi/CharroiHeaderFilter';
+import CharroiKmHeaderFilter from '@/components/charroi/CharroiKmHeaderFilter';
 import { EmployeeSuggestInput } from '@/components/EmployeePicker';
 import PermissionGate from '@/components/PermissionGate';
 import RefreshButton from '@/components/RefreshButton';
 import RowContextMenu, { type ContextMenuItem } from '@/components/RowContextMenu';
 import { usePermissions } from '@/contexts/PermissionContext';
 import type {
+  CharroiDocKind,
   CharroiEtatManuel,
   CharroiProprietaire,
   CharroiVehicule,
 } from '@/lib/charroi-types';
 import {
+  CHARROI_DOC_LABELS,
   CHARROI_ETATS,
   charroiExpiryStatus,
   computeAgeFromMiseCirculation,
@@ -24,6 +28,7 @@ import {
   normalizeProvinceLabel,
   toMiseCirculationDateInput,
 } from '@/lib/charroi-types';
+import { downloadVehiculesExport } from '@/lib/charroi-vehicules-export';
 import { confirmDelete, showError, showSuccess } from '@/lib/swal';
 import type { Employee } from '@/lib/types';
 
@@ -43,10 +48,7 @@ type QuickField =
   | 'proprietaire'
   | 'kilometrage'
   | 'cv'
-  | 'etat'
-  | 'assuranceFin'
-  | 'vignetteFin'
-  | 'controleTechniqueFin';
+  | 'etat';
 
 const QUICK_FIELD_LABELS: Record<QuickField, string> = {
   user: 'Responsable',
@@ -55,40 +57,70 @@ const QUICK_FIELD_LABELS: Record<QuickField, string> = {
   kilometrage: 'Kilométrage',
   cv: 'CV',
   etat: 'État tech.',
-  assuranceFin: 'Assurance (date de fin)',
-  vignetteFin: 'Vignette (date de fin)',
-  controleTechniqueFin: 'Contrôle technique (date de fin)',
 };
 
 /* ── Filtres d'en-tête (façon Excel) ───────────────────────────── */
 
 type FilterKey =
   | 'marque'
+  | 'plaque'
   | 'cv'
   | 'departement'
   | 'user'
   | 'province'
   | 'proprietaire'
+  | 'miseCirculation'
+  | 'assurance'
+  | 'vignette'
+  | 'controle'
   | 'etat';
 
 const EMPTY_FILTERS: Record<FilterKey, string[]> = {
   marque: [],
+  plaque: [],
   cv: [],
   departement: [],
   user: [],
   province: [],
   proprietaire: [],
+  miseCirculation: [],
+  assurance: [],
+  vignette: [],
+  controle: [],
   etat: [],
 };
+
+const EXPIRY_FILTER_LABELS: Record<string, string> = {
+  none: '—',
+  expired: 'Expiré',
+  soon: '≤ 1 mois',
+  ok: 'OK',
+};
+
+function expiryFilterLabel(dateIso: string): string {
+  return EXPIRY_FILTER_LABELS[charroiExpiryStatus(dateIso)] || '—';
+}
+
+function miseCircFilterValue(item: CharroiVehicule): string {
+  const raw = (item.miseCirculation || '').trim();
+  if (!raw) return '—';
+  const year = raw.match(/(?:19|20)\d{2}/)?.[0];
+  return year || raw;
+}
 
 function filterValueOf(item: CharroiVehicule, key: FilterKey): string {
   switch (key) {
     case 'marque': return item.marque || '—';
+    case 'plaque': return item.plaque || '—';
     case 'cv': return item.cv || '—';
     case 'departement': return item.departement || '—';
     case 'user': return item.user || '—';
     case 'province': return item.province || '—';
     case 'proprietaire': return item.proprietaire || '—';
+    case 'miseCirculation': return miseCircFilterValue(item);
+    case 'assurance': return expiryFilterLabel(item.assuranceFin);
+    case 'vignette': return expiryFilterLabel(item.vignetteFin);
+    case 'controle': return expiryFilterLabel(item.controleTechniqueFin);
     case 'etat': return item.observationTech || '—';
     default: return '—';
   }
@@ -165,13 +197,41 @@ function toNum(raw: string): number | null {
   return Number.isFinite(n) ? n : null;
 }
 
-function DateCell({ value }: { value: string }) {
+function DateCell({
+  value,
+  onManage,
+}: {
+  value: string;
+  onManage?: (e: React.MouseEvent) => void;
+}) {
   const status = charroiExpiryStatus(value);
-  if (status === 'none') return <span className="charroi-date is-none">—</span>;
+  if (status === 'none') {
+    return (
+      <button
+        type="button"
+        className="charroi-date-btn charroi-date is-none"
+        onClick={onManage}
+        title="Gérer l’historique"
+      >
+        —
+      </button>
+    );
+  }
   return (
-    <span className={`charroi-date is-${status}`} title={status === 'expired' ? 'Expiré' : status === 'soon' ? 'Expire dans moins de 30 jours' : undefined}>
+    <button
+      type="button"
+      className={`charroi-date-btn charroi-date is-${status}`}
+      onClick={onManage}
+      title={
+        status === 'expired'
+          ? 'Expiré — cliquer pour l’historique'
+          : status === 'soon'
+            ? 'Expire dans moins de 30 jours — cliquer pour l’historique'
+            : 'Cliquer pour l’historique'
+      }
+    >
       {formatCharroiDate(value)}
-    </span>
+    </button>
   );
 }
 
@@ -188,6 +248,8 @@ export default function CharroiVehiculesPage() {
   const [refreshing, setRefreshing] = useState(false);
   const [search, setSearch] = useState('');
   const [colFilters, setColFilters] = useState<Record<FilterKey, string[]>>(EMPTY_FILTERS);
+  const [kmMin, setKmMin] = useState('');
+  const [kmMax, setKmMax] = useState('');
   const [modalOpen, setModalOpen] = useState(false);
   const [detail, setDetail] = useState<CharroiVehicule | null>(null);
   const [form, setForm] = useState<FormState>(emptyForm);
@@ -197,6 +259,7 @@ export default function CharroiVehiculesPage() {
   const [qeValue, setQeValue] = useState('');
   const [qeDept, setQeDept] = useState('');
   const [qeSaving, setQeSaving] = useState(false);
+  const [docModal, setDocModal] = useState<{ item: CharroiVehicule; kind: CharroiDocKind } | null>(null);
 
   const load = useCallback(async (isRefresh = false) => {
     if (isRefresh) setRefreshing(true);
@@ -257,10 +320,18 @@ export default function CharroiVehiculesPage() {
 
   const filtered = useMemo(() => {
     const q = search.trim().toLowerCase();
+    const min = toNum(kmMin);
+    const max = toNum(kmMax);
     return base.filter((item) => {
       for (const key of Object.keys(colFilters) as FilterKey[]) {
         const selected = colFilters[key];
         if (selected.length > 0 && !selected.includes(filterValueOf(item, key))) return false;
+      }
+      if (min != null) {
+        if (item.kilometrage == null || item.kilometrage < min) return false;
+      }
+      if (max != null) {
+        if (item.kilometrage == null || item.kilometrage > max) return false;
       }
       if (!q) return true;
       const hay = [
@@ -269,15 +340,34 @@ export default function CharroiVehiculesPage() {
       ].join(' ').toLowerCase();
       return hay.includes(q);
     });
-  }, [base, search, colFilters]);
+  }, [base, search, colFilters, kmMin, kmMax]);
 
-  const activeFilterCount = useMemo(
-    () => (Object.values(colFilters) as string[][]).filter((v) => v.length > 0).length,
-    [colFilters],
-  );
+  const activeFilterCount = useMemo(() => {
+    let count = (Object.values(colFilters) as string[][]).filter((v) => v.length > 0).length;
+    if (kmMin.trim()) count += 1;
+    if (kmMax.trim()) count += 1;
+    return count;
+  }, [colFilters, kmMin, kmMax]);
+
+  const clearAllFilters = () => {
+    setColFilters(EMPTY_FILTERS);
+    setKmMin('');
+    setKmMax('');
+  };
 
   const setColFilter = (key: FilterKey) => (next: string[]) =>
     setColFilters((prev) => ({ ...prev, [key]: next }));
+
+  const openDocModal = (item: CharroiVehicule, kind: CharroiDocKind) => {
+    setContextMenu(null);
+    setDocModal({ item, kind });
+  };
+
+  const handleDocSaved = (updated: CharroiVehicule) => {
+    setItems((prev) => prev.map((v) => (v.id === updated.id ? updated : v)));
+    setDocModal((prev) => (prev ? { ...prev, item: updated } : null));
+    setDetail((prev) => (prev?.id === updated.id ? updated : prev));
+  };
 
   const formPreview = useMemo(() => {
     const kilometrage = toNum(form.kilometrage);
@@ -397,9 +487,6 @@ export default function CharroiVehiculesPage() {
       case 'kilometrage': value = item.kilometrage == null ? '' : String(item.kilometrage); break;
       case 'cv': value = item.cv; break;
       case 'etat': value = item.etatManuel || ''; break;
-      case 'assuranceFin': value = item.assuranceFin; break;
-      case 'vignetteFin': value = item.vignetteFin; break;
-      case 'controleTechniqueFin': value = item.controleTechniqueFin; break;
     }
     setQeValue(value);
     setQeDept(item.departement);
@@ -438,8 +525,7 @@ export default function CharroiVehiculesPage() {
         patch = { etatManuel: qeValue };
         break;
       default:
-        patch = { [field]: qeValue.trim() };
-        break;
+        return;
     }
 
     setQeSaving(true);
@@ -462,18 +548,31 @@ export default function CharroiVehiculesPage() {
   };
 
   const contextItems = useMemo<ContextMenuItem[]>(() => {
-    if (!contextMenu || !canEdit) return [];
+    if (!contextMenu) return [];
     const { item } = contextMenu;
-    const fields: QuickField[] = [
-      'user', 'province', 'proprietaire', 'kilometrage', 'cv', 'etat',
-      'assuranceFin', 'vignetteFin', 'controleTechniqueFin',
-    ];
-    return fields.map((field) => ({
-      id: field,
-      label: QUICK_FIELD_LABELS[field],
-      icon: 'edit' as const,
-      onClick: () => openQuickEdit(item, field),
-    }));
+    const items: ContextMenuItem[] = [];
+    if (canEdit) {
+      const fields: QuickField[] = [
+        'user', 'province', 'proprietaire', 'kilometrage', 'cv', 'etat',
+      ];
+      for (const field of fields) {
+        items.push({
+          id: field,
+          label: QUICK_FIELD_LABELS[field],
+          icon: 'edit',
+          onClick: () => openQuickEdit(item, field),
+        });
+      }
+    }
+    (['assurance', 'vignette', 'controleTechnique'] as CharroiDocKind[]).forEach((kind) => {
+      items.push({
+        id: `doc-${kind}`,
+        label: `${CHARROI_DOC_LABELS[kind]} (historique)`,
+        icon: 'edit',
+        onClick: () => openDocModal(item, kind),
+      });
+    });
+    return items;
   }, [contextMenu, canEdit]);
 
   const menuItems = (item: CharroiVehicule): ContextMenuItem[] => {
@@ -516,7 +615,7 @@ export default function CharroiVehiculesPage() {
           <button
             type="button"
             className="btn btn-ghost btn-sm"
-            onClick={() => setColFilters(EMPTY_FILTERS)}
+            onClick={clearAllFilters}
           >
             Effacer les filtres ({activeFilterCount})
           </button>
@@ -539,7 +638,14 @@ export default function CharroiVehiculesPage() {
                   onChange={setColFilter('marque')}
                 />
               </th>
-              <th>Plaque</th>
+              <th className="charroi-th-filter">
+                <CharroiHeaderFilter
+                  label="Plaque"
+                  values={filterValues.plaque}
+                  selected={colFilters.plaque}
+                  onChange={setColFilter('plaque')}
+                />
+              </th>
               <th className="charroi-th-filter">
                 <CharroiHeaderFilter
                   label="CV"
@@ -580,11 +686,49 @@ export default function CharroiVehiculesPage() {
                   onChange={setColFilter('proprietaire')}
                 />
               </th>
-              <th>Km</th>
-              <th>Mise circ.</th>
-              <th>Assurance</th>
-              <th>Vignette</th>
-              <th>Contr. tech.</th>
+              <th className="charroi-th-filter">
+                <CharroiKmHeaderFilter
+                  label="Km"
+                  min={kmMin}
+                  max={kmMax}
+                  onChange={({ min, max }) => {
+                    setKmMin(min);
+                    setKmMax(max);
+                  }}
+                />
+              </th>
+              <th className="charroi-th-filter">
+                <CharroiHeaderFilter
+                  label="Mise circ."
+                  values={filterValues.miseCirculation}
+                  selected={colFilters.miseCirculation}
+                  onChange={setColFilter('miseCirculation')}
+                />
+              </th>
+              <th className="charroi-th-filter">
+                <CharroiHeaderFilter
+                  label="Assurance"
+                  values={filterValues.assurance}
+                  selected={colFilters.assurance}
+                  onChange={setColFilter('assurance')}
+                />
+              </th>
+              <th className="charroi-th-filter">
+                <CharroiHeaderFilter
+                  label="Vignette"
+                  values={filterValues.vignette}
+                  selected={colFilters.vignette}
+                  onChange={setColFilter('vignette')}
+                />
+              </th>
+              <th className="charroi-th-filter">
+                <CharroiHeaderFilter
+                  label="Contr. tech."
+                  values={filterValues.controle}
+                  selected={colFilters.controle}
+                  onChange={setColFilter('controle')}
+                />
+              </th>
               <th className="charroi-th-filter">
                 <CharroiHeaderFilter
                   label="État tech."
@@ -606,7 +750,6 @@ export default function CharroiVehiculesPage() {
                   className={rowClass(item)}
                   onClick={() => setDetail(item)}
                   onContextMenu={(event) => {
-                    if (!canEdit) return;
                     event.preventDefault();
                     setContextMenu({ x: event.clientX, y: event.clientY, item });
                   }}
@@ -639,9 +782,33 @@ export default function CharroiVehiculesPage() {
                       {item.age != null && <span>{item.age} an{item.age > 1 ? 's' : ''}</span>}
                     </div>
                   </td>
-                  <td><DateCell value={item.assuranceFin} /></td>
-                  <td><DateCell value={item.vignetteFin} /></td>
-                  <td><DateCell value={item.controleTechniqueFin} /></td>
+                  <td onClick={(e) => e.stopPropagation()}>
+                    <DateCell
+                      value={item.assuranceFin}
+                      onManage={(e) => {
+                        e.stopPropagation();
+                        openDocModal(item, 'assurance');
+                      }}
+                    />
+                  </td>
+                  <td onClick={(e) => e.stopPropagation()}>
+                    <DateCell
+                      value={item.vignetteFin}
+                      onManage={(e) => {
+                        e.stopPropagation();
+                        openDocModal(item, 'vignette');
+                      }}
+                    />
+                  </td>
+                  <td onClick={(e) => e.stopPropagation()}>
+                    <DateCell
+                      value={item.controleTechniqueFin}
+                      onManage={(e) => {
+                        e.stopPropagation();
+                        openDocModal(item, 'controleTechnique');
+                      }}
+                    />
+                  </td>
                   <td>
                     <span className={observationClass(item.observationTech)}>
                       {item.observationTech || '—'}
@@ -703,12 +870,49 @@ export default function CharroiVehiculesPage() {
                   + Ajouter
                 </button>
               )}
+              <button
+                type="button"
+                className="btn btn-secondary btn-sm"
+                onClick={() => {
+                  try {
+                    const source =
+                      tab === 'dashboard'
+                        ? items
+                        : filtered;
+                    if (source.length === 0) {
+                      void showError('Aucun véhicule à exporter');
+                      return;
+                    }
+                    downloadVehiculesExport(source, {
+                      filename: `base-vehicules-${tab}-${new Date().toISOString().slice(0, 10)}.xlsx`,
+                    });
+                    void showSuccess(
+                      tab === 'dashboard'
+                        ? `${source.length} véhicule(s) exporté(s)`
+                        : `${source.length} véhicule(s) exporté(s) (filtres appliqués)`,
+                    );
+                  } catch (err) {
+                    void showError(err instanceof Error ? err.message : 'Export impossible');
+                  }
+                }}
+                title={
+                  tab === 'dashboard'
+                    ? 'Exporter tous les véhicules'
+                    : 'Exporter les véhicules visibles (filtres appliqués)'
+                }
+              >
+                Export
+              </button>
             </div>
           </div>
         </div>
 
         {tab === 'dashboard' && (
-          <CharroiDashboard items={items} onSelectVehicle={setDetail} />
+          <CharroiDashboard
+            items={items}
+            onSelectVehicle={setDetail}
+            onOpenDoc={(v, kind) => openDocModal(v, kind)}
+          />
         )}
 
         {(tab === 'liste' || tab === 'declasses') && renderTable()}
@@ -719,6 +923,16 @@ export default function CharroiVehiculesPage() {
             y={contextMenu.y}
             onClose={() => setContextMenu(null)}
             items={contextItems}
+          />
+        )}
+
+        {docModal && (
+          <CharroiDocHistoryModal
+            vehicle={docModal.item}
+            kind={docModal.kind}
+            canEdit={canEdit}
+            onClose={() => setDocModal(null)}
+            onSaved={handleDocSaved}
           />
         )}
 
@@ -817,19 +1031,6 @@ export default function CharroiVehiculesPage() {
                     </p>
                   </div>
                 )}
-                {(quickEdit.field === 'assuranceFin'
-                  || quickEdit.field === 'vignetteFin'
-                  || quickEdit.field === 'controleTechniqueFin') && (
-                  <div className="form-group">
-                    <label>{QUICK_FIELD_LABELS[quickEdit.field]}</label>
-                    <input
-                      type="date"
-                      value={qeValue}
-                      onChange={(e) => setQeValue(e.target.value)}
-                      autoFocus
-                    />
-                  </div>
-                )}
               </div>
               <div className="modal-footer">
                 <button type="button" className="btn btn-secondary" onClick={() => setQuickEdit(null)}>
@@ -896,6 +1097,23 @@ export default function CharroiVehiculesPage() {
                     </div>
                   ))}
                 </div>
+                {canEdit && (
+                  <div className="charroi-detail-doc-actions">
+                    {(['assurance', 'vignette', 'controleTechnique'] as CharroiDocKind[]).map((kind) => (
+                      <button
+                        key={kind}
+                        type="button"
+                        className="btn btn-secondary btn-sm"
+                        onClick={() => {
+                          setDetail(null);
+                          openDocModal(detail, kind);
+                        }}
+                      >
+                        Historique {CHARROI_DOC_LABELS[kind]}
+                      </button>
+                    ))}
+                  </div>
+                )}
               </div>
               <div className="modal-footer">
                 <button type="button" className="btn btn-secondary" onClick={() => setDetail(null)}>Fermer</button>
@@ -1008,28 +1226,11 @@ export default function CharroiVehiculesPage() {
                     </select>
                   </div>
                   <div className="form-group">
-                    <label>Assurance (date de fin)</label>
-                    <input
-                      type="date"
-                      value={form.assuranceFin}
-                      onChange={(e) => setForm({ ...form, assuranceFin: e.target.value })}
-                    />
-                  </div>
-                  <div className="form-group">
-                    <label>Vignette (date de fin)</label>
-                    <input
-                      type="date"
-                      value={form.vignetteFin}
-                      onChange={(e) => setForm({ ...form, vignetteFin: e.target.value })}
-                    />
-                  </div>
-                  <div className="form-group">
-                    <label>Contrôle technique (date de fin)</label>
-                    <input
-                      type="date"
-                      value={form.controleTechniqueFin}
-                      onChange={(e) => setForm({ ...form, controleTechniqueFin: e.target.value })}
-                    />
+                    <label>Assurance / Vignette / Contr. tech.</label>
+                    <p className="form-hint">
+                      Gérez les périodes et preuves via les cellules du tableau ou le menu
+                      « historique » (formulaire date début / fin + URL preuve).
+                    </p>
                   </div>
                   <div className="form-group" style={{ gridColumn: '1 / -1' }}>
                     <label>Notes</label>

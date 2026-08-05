@@ -26,21 +26,6 @@ interface Props {
   onSave: (employee: Employee) => void | Promise<void>;
 }
 
-const DEPTS = [
-  'Administration',
-  'Audit',
-  'Engineering',
-  'Finance',
-  'Human Resources',
-  'Legal',
-  'Mining',
-  'Packaging & Logistics',
-  'Production',
-  'Quality Assurance',
-  'Risk & Environment',
-  'Sales & Logistics',
-  'Supply chain',
-];
 const LOCALISATIONS = ['Zamba', 'Lubumbashi', 'Kinshasa', 'Lubudi'];
 const GENDERS = ['Male', 'Female'];
 const MARITAL = ['Single', 'Married', 'Divorced', 'Widowed'];
@@ -78,6 +63,7 @@ function blankEmployee(): Employee {
 export default function EmployeeModal({ employee, onClose, onSave }: Props) {
   const [form, setForm] = useState<Employee>(blankEmployee);
   const [saving, setSaving] = useState(false);
+  const [departmentNames, setDepartmentNames] = useState<string[]>([]);
 
   useEffect(() => {
     if (employee) {
@@ -93,6 +79,34 @@ export default function EmployeeModal({ employee, onClose, onSave }: Props) {
       setForm(blankEmployee());
     }
   }, [employee]);
+
+  useEffect(() => {
+    let cancelled = false;
+    fetch('/api/settings/departments')
+      .then((res) => (res.ok ? res.json() : []))
+      .then((json: unknown) => {
+        if (cancelled) return;
+        const names = Array.isArray(json)
+          ? json
+              .map((item) => String((item as { name?: string })?.name ?? '').trim())
+              .filter(Boolean)
+          : [];
+        setDepartmentNames([...new Set(names)].sort((a, b) => a.localeCompare(b, 'fr')));
+      })
+      .catch(() => {
+        if (!cancelled) setDepartmentNames([]);
+      });
+    return () => {
+      cancelled = true;
+    };
+  }, []);
+
+  const departmentOptions = useMemo(() => {
+    const current = (form.departement || '').trim();
+    const options = [...departmentNames];
+    if (current && !options.includes(current)) options.unshift(current);
+    return options;
+  }, [departmentNames, form.departement]);
 
   const displayAge = useMemo(() => {
     if (form.age != null) return form.age;
@@ -239,8 +253,15 @@ export default function EmployeeModal({ employee, onClose, onSave }: Props) {
             <div className="form-grid">
               <div className="form-group">
                 <label>Département</label>
-                <input list="dept-list" value={form.departement} onChange={(e) => patch('departement', e.target.value)} />
-                <datalist id="dept-list">{DEPTS.map((d) => <option key={d} value={d} />)}</datalist>
+                <select
+                  value={form.departement}
+                  onChange={(e) => patch('departement', e.target.value)}
+                >
+                  <option value="">—</option>
+                  {departmentOptions.map((d) => (
+                    <option key={d} value={d}>{d}</option>
+                  ))}
+                </select>
               </div>
               <div className="form-group">
                 <label>Grade</label>
@@ -278,10 +299,6 @@ export default function EmployeeModal({ employee, onClose, onSave }: Props) {
               <div className="form-group">
                 <label>Personnel Area</label>
                 <input value={form.personnelArea} onChange={(e) => patch('personnelArea', e.target.value)} />
-              </div>
-              <div className="form-group">
-                <label>Département HR</label>
-                <input value={form.departmentHr} onChange={(e) => patch('departmentHr', e.target.value)} />
               </div>
             </div>
 

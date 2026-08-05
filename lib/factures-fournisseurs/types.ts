@@ -1,49 +1,30 @@
-/** Étapes du pipeline facture fournisseur (ordre chronologique). */
-export const FACTURE_STAGES = ['facture', 'pr', 'po', 'posted', 'paid'] as const;
+/** Statuts simplifiés : unpaid / paid (selon la colonne Payment / PYTMT). */
+export const FACTURE_STAGES = ['unpaid', 'paid'] as const;
 
 export type FactureStage = (typeof FACTURE_STAGES)[number];
 
 export type FactureSuiviTab = 'dashboard' | FactureStage;
 
-/**
- * Libellés affichés dans la colonne STATUT.
- * PR et PO → « unpaid » ; GRN → « Posted and unpaid » ; paiement → « paid ».
- */
 export const FACTURE_STAGE_LABELS: Record<FactureStage, string> = {
-  facture: 'Facture reçue',
-  pr: 'unpaid',
-  po: 'unpaid',
-  posted: 'Posted and unpaid',
+  unpaid: 'unpaid',
   paid: 'paid',
 };
 
-/** Libellés des onglets / pipeline (plus parlants que le statut seul). */
 export const FACTURE_TAB_LABELS: Record<FactureSuiviTab, string> = {
   dashboard: 'Dashboard',
-  facture: 'Factures',
-  pr: 'PR',
-  po: 'PO',
-  posted: 'Posted & unpaid',
+  unpaid: 'Unpaid',
   paid: 'Paid',
 };
 
-/** Commentaires français selon l’étape. */
 export const FACTURE_STAGE_COMMENTS: Record<FactureStage, string> = {
-  facture: 'La facture a été reçue et est en attente de création du PR.',
-  pr: 'Le PR a été renseigné ; facture non payée, en attente du bon de commande (PO).',
-  po: 'Le PO a été renseigné ; facture non payée, en attente du bon de réception (GRN).',
-  posted: 'Le GRN a été renseigné ; facture comptabilisée et non payée.',
-  paid: 'Le paiement a été enregistré ; facture payée.',
+  unpaid: 'Facture non payée.',
+  paid: 'Facture payée.',
 };
 
 export type AssignStep = 'pr' | 'po' | 'grn' | 'payment';
 
-/** Prochaine étape à renseigner depuis l’onglet courant. */
-export function nextMissingStage(stage: FactureStage): AssignStep | null {
-  if (stage === 'facture') return 'pr';
-  if (stage === 'pr') return 'po';
-  if (stage === 'po') return 'grn';
-  if (stage === 'posted') return 'payment';
+/** @deprecated Pipeline multi-étapes retiré — conservé pour compat API. */
+export function nextMissingStage(_stage: FactureStage): AssignStep | null {
   return null;
 }
 
@@ -62,11 +43,9 @@ export interface FactureSuivi {
   dateGrn: string;
   payment: string;
   datePym: string;
-  /** Étape courante du pipeline. */
+  /** unpaid | paid */
   statut: FactureStage;
-  /** Libellé principal (ex. unpaid / Posted and unpaid / paid). */
   statutLabel: string;
-  /** Sous-titre selon la position. */
   commentaire: string;
 }
 
@@ -103,10 +82,40 @@ export interface FactureBatchLineInput {
   echeance?: string;
   pr?: string;
   datePr?: string;
+  po?: string;
+  payment?: string;
+  commentaire?: string;
 }
 
 export interface FactureStageKpi {
   stage: FactureStage;
+  label: string;
+  count: number;
+  montant: number;
+}
+
+/** Étapes analytiques dashboard (Reçus / PR / PO / Paid). */
+export type FacturePipelineStep = 'recu' | 'pr' | 'po' | 'paid';
+
+export const FACTURE_PIPELINE_STEPS = ['recu', 'pr', 'po', 'paid'] as const;
+
+export const FACTURE_PIPELINE_LABELS: Record<FacturePipelineStep, string> = {
+  recu: 'Reçus',
+  pr: 'PR',
+  po: 'PO',
+  paid: 'Paid',
+};
+
+/** Commentaires courts selon la position pipeline. */
+export const FACTURE_PIPELINE_COMMENTS: Record<FacturePipelineStep, string> = {
+  recu: 'Reçue — en attente du PR.',
+  pr: 'Au PR — en attente du PO.',
+  po: 'Au PO — en attente de paiement.',
+  paid: 'Facture payée.',
+};
+
+export interface FacturePipelineKpi {
+  step: FacturePipelineStep;
   label: string;
   count: number;
   montant: number;
@@ -123,7 +132,17 @@ export interface FactureDashboard {
   montantPaid: number;
   enRetard: number;
   montantRetard: number;
+  /** Factures unpaid au stade PR (PR sans PO). */
+  pr: number;
+  montantPr: number;
+  /** Factures unpaid au stade PO. */
+  po: number;
+  montantPo: number;
+  /** Factures unpaid reçues sans PR ni PO. */
+  recu: number;
+  montantRecu: number;
   parEtape: FactureStageKpi[];
+  parPipeline: FacturePipelineKpi[];
 }
 
 export interface FactureGroupNode {

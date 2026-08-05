@@ -84,9 +84,8 @@ const IDENTITY_FIELDS: FieldDef[] = [
   { key: 'appointmentDate', label: 'Date d\'embauche', type: 'date' },
 ];
 
-const ORG_FIELDS: FieldDef[] = [
-  { key: 'departement', label: 'Département' },
-  { key: 'departmentHr', label: 'Département HR' },
+const ORG_FIELDS_BASE: FieldDef[] = [
+  { key: 'departement', label: 'Département', type: 'select', options: [] },
   { key: 'grade', label: 'Grade' },
   { key: 'localisation', label: 'Localisation' },
   { key: 'jobTitle', label: 'Intitulé du poste' },
@@ -334,6 +333,7 @@ export default function EmployeeViewModal({ employee, canEdit = false, initialTa
   const [saving, setSaving] = useState(false);
   const [familyGroup, setFamilyGroup] = useState<FamilyGroup | null>(null);
   const [familyLoading, setFamilyLoading] = useState(false);
+  const [departmentNames, setDepartmentNames] = useState<string[]>([]);
 
   useEffect(() => {
     setDraft(employee);
@@ -343,6 +343,38 @@ export default function EmployeeViewModal({ employee, canEdit = false, initialTa
       return current;
     });
   }, [employee]);
+
+  useEffect(() => {
+    let cancelled = false;
+    fetch('/api/settings/departments')
+      .then((res) => (res.ok ? res.json() : []))
+      .then((json: unknown) => {
+        if (cancelled) return;
+        const names = Array.isArray(json)
+          ? json
+              .map((item) => String((item as { name?: string })?.name ?? '').trim())
+              .filter(Boolean)
+          : [];
+        setDepartmentNames([...new Set(names)].sort((a, b) => a.localeCompare(b, 'fr')));
+      })
+      .catch(() => {
+        if (!cancelled) setDepartmentNames([]);
+      });
+    return () => {
+      cancelled = true;
+    };
+  }, []);
+
+  const orgFields = useMemo((): FieldDef[] => {
+    const current = (draft.departement || '').trim();
+    const options = [...departmentNames];
+    if (current && !options.includes(current)) options.unshift(current);
+    return ORG_FIELDS_BASE.map((field) =>
+      field.key === 'departement'
+        ? { ...field, type: 'select' as const, options }
+        : field,
+    );
+  }, [departmentNames, draft.departement]);
 
   const showCddVersCdiTab = useMemo(() => hasCddVersCdiHistory(draft), [draft]);
 
@@ -420,7 +452,7 @@ export default function EmployeeViewModal({ employee, canEdit = false, initialTa
     if (!editingKey || saving) return;
     const valueToSave = overrideValue !== undefined ? overrideValue : editValue;
     const fieldDef =
-      [...IDENTITY_FIELDS, ...ORG_FIELDS, ...CONTRACT_FIELDS, ...ESSAI_PERIOD_FIELDS, ...TRIAL_EVAL_FIELDS, ...CDD_VERSCDI_FIELDS, ...MANAGER_FIELDS]
+      [...IDENTITY_FIELDS, ...orgFields, ...CONTRACT_FIELDS, ...ESSAI_PERIOD_FIELDS, ...TRIAL_EVAL_FIELDS, ...CDD_VERSCDI_FIELDS, ...MANAGER_FIELDS]
         .find((f) => f.key === editingKey);
 
     const preview: Employee = { ...draft };
@@ -679,7 +711,7 @@ export default function EmployeeViewModal({ employee, canEdit = false, initialTa
           {tab === 'infos' && (
             <>
               {renderSection('Identité', IDENTITY_FIELDS)}
-              {renderSection('Poste & organisation', ORG_FIELDS)}
+              {renderSection('Poste & organisation', orgFields)}
               {isVillageResident ? (
                 <section className="employee-view-section">
                   <div className="employee-view-section-label">Logement village</div>

@@ -4,7 +4,7 @@ import type { FactureGroupNode, FactureStage } from '@/lib/factures-fournisseurs
 import { formatUsdLike, stageColumnLabels } from '@/lib/factures-fournisseurs/utils';
 
 interface Props {
-  stage: Exclude<FactureStage, 'facture'>;
+  stage: FactureStage;
   groups: FactureGroupNode[];
   selectedIds: Set<string>;
   onToggleSelectMany: (ids: string[], selected: boolean) => void;
@@ -23,7 +23,7 @@ export default function FacturesSuiviStageList({
   const labels = stageColumnLabels(stage);
 
   if (!groups.length) {
-    return <p className="empty-state">Aucun {stage.toUpperCase()} à cette étape.</p>;
+    return <p className="empty-state">Aucune entrée {stage}.</p>;
   }
 
   return (

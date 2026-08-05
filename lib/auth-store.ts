@@ -236,11 +236,29 @@ async function findValidSession(token?: string | null): Promise<AuthSession | nu
     await destroySession(token);
     return null;
   }
-  if (!session.user || !session.menus) {
+  if (!session.user || !session.userId) {
     await destroySession(token);
     return null;
   }
-  return session;
+
+  // Toujours relire les permissions utilisateur (nouveaux menus actifs sans reconnexion).
+  let menus = session.menus ?? [];
+  try {
+    menus = await getUserPermissionsFromParams(session.userId);
+    // Met à jour la session en arrière-plan si l’écart est détecté.
+    if (JSON.stringify(menus) !== JSON.stringify(session.menus)) {
+      session.menus = menus;
+      void writeSessionsFile(sessionsData).catch(() => undefined);
+    }
+  } catch {
+    if (!session.menus?.length) {
+      await destroySession(token);
+      return null;
+    }
+    menus = session.menus;
+  }
+
+  return { ...session, menus };
 }
 
 export async function getSessionUser(token?: string | null): Promise<SessionUser | null> {

@@ -15,6 +15,26 @@ export const CHARROI_KM_DECLASSE = 180_000;
 
 export type CharroiAchatStatus = 'demande' | 'approuve' | 'livre' | 'annule';
 
+/** Documents avec historique de périodes / paiements. */
+export type CharroiDocKind = 'assurance' | 'vignette' | 'controleTechnique';
+
+export const CHARROI_DOC_KINDS: CharroiDocKind[] = ['assurance', 'vignette', 'controleTechnique'];
+
+export const CHARROI_DOC_LABELS: Record<CharroiDocKind, string> = {
+  assurance: 'Assurance',
+  vignette: 'Vignette',
+  controleTechnique: 'Contrôle technique',
+};
+
+/** Une période (paiement) d’assurance / vignette / contrôle technique. */
+export interface CharroiDocPaiement {
+  id: string;
+  dateDebut: string;
+  dateFin: string;
+  preuveUrl: string;
+  createdAt: string;
+}
+
 export interface CharroiVehicule {
   id: string;
   numero: number | null;
@@ -34,10 +54,14 @@ export interface CharroiVehicule {
   observationTech: CharroiObservationTech;
   /** État saisi manuellement — prime sur le calcul auto ('' = auto). */
   etatManuel: CharroiEtatManuel;
-  /** Dates de fin de validité (ISO yyyy-mm-dd). */
+  /** Dates de fin de validité actuelles (ISO yyyy-mm-dd) — dérivées de l'historique. */
   assuranceFin: string;
   vignetteFin: string;
   controleTechniqueFin: string;
+  /** Historiques de paiement / période. */
+  assuranceHistorique: CharroiDocPaiement[];
+  vignetteHistorique: CharroiDocPaiement[];
+  controleTechniqueHistorique: CharroiDocPaiement[];
   notes: string;
   createdAt: string;
   updatedAt: string;
@@ -143,6 +167,51 @@ export function charroiExpiryStatus(
   limit.setDate(limit.getDate() + CHARROI_EXPIRY_SOON_DAYS);
   if (date.getTime() <= limit.getTime()) return 'soon';
   return 'ok';
+}
+
+/** Nombre de jours restants jusqu'à la date de fin (négatif si expiré). */
+export function charroiDaysRemaining(
+  dateIso: string | null | undefined,
+  now = new Date(),
+): number | null {
+  const raw = String(dateIso ?? '').trim();
+  if (!/^\d{4}-\d{2}-\d{2}$/.test(raw)) return null;
+  const date = new Date(`${raw}T00:00:00`);
+  if (Number.isNaN(date.getTime())) return null;
+  const today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+  return Math.round((date.getTime() - today.getTime()) / 86_400_000);
+}
+
+export function formatCharroiRemaining(days: number | null): string {
+  if (days == null) return '—';
+  if (days < 0) {
+    const d = Math.abs(days);
+    return `Expiré depuis ${d} j`;
+  }
+  if (days === 0) return 'Expire aujourd’hui';
+  if (days === 1) return '1 jour restant';
+  return `${days} jours restants`;
+}
+
+export function getVehiculeDocHistorique(
+  vehicle: Pick<
+    CharroiVehicule,
+    'assuranceHistorique' | 'vignetteHistorique' | 'controleTechniqueHistorique'
+  >,
+  kind: CharroiDocKind,
+): CharroiDocPaiement[] {
+  if (kind === 'assurance') return vehicle.assuranceHistorique ?? [];
+  if (kind === 'vignette') return vehicle.vignetteHistorique ?? [];
+  return vehicle.controleTechniqueHistorique ?? [];
+}
+
+export function getVehiculeDocFin(
+  vehicle: Pick<CharroiVehicule, 'assuranceFin' | 'vignetteFin' | 'controleTechniqueFin'>,
+  kind: CharroiDocKind,
+): string {
+  if (kind === 'assurance') return vehicle.assuranceFin || '';
+  if (kind === 'vignette') return vehicle.vignetteFin || '';
+  return vehicle.controleTechniqueFin || '';
 }
 
 export function formatCharroiDate(dateIso: string | null | undefined): string {

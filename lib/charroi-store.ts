@@ -15,6 +15,8 @@ import type {
   CharroiAchatInput,
   CharroiAchatsStore,
   CharroiAchatStatus,
+  CharroiDocKind,
+  CharroiDocPaiement,
   CharroiProprietaire,
   CharroiVehicule,
   CharroiVehiculeInput,
@@ -131,6 +133,75 @@ async function writeJsonFile(repoKey: string, filePath: string, value: unknown):
   await persistDurableFile(repoKey, filePath);
 }
 
+function isIsoDate(value: string): boolean {
+  return /^\d{4}-\d{2}-\d{2}$/.test(value);
+}
+
+function normalizePaiement(raw: unknown): CharroiDocPaiement | null {
+  if (!raw || typeof raw !== 'object') return null;
+  const o = raw as Record<string, unknown>;
+  const dateFin = str(o.dateFin);
+  if (!isIsoDate(dateFin)) return null;
+  const dateDebut = str(o.dateDebut);
+  return {
+    id: str(o.id) || `doc-${Date.now().toString(36)}`,
+    dateDebut: isIsoDate(dateDebut) ? dateDebut : '',
+    dateFin,
+    preuveUrl: str(o.preuveUrl || o.urlPreuve),
+    createdAt: str(o.createdAt) || nowIso(),
+  };
+}
+
+function seedHistorique(seedFin: string): CharroiDocPaiement[] {
+  if (!isIsoDate(seedFin)) return [];
+  return [{
+    id: `seed-${seedFin}`,
+    dateDebut: '',
+    dateFin: seedFin,
+    preuveUrl: '',
+    createdAt: nowIso(),
+  }];
+}
+
+function sortHistorique(entries: CharroiDocPaiement[]): CharroiDocPaiement[] {
+  return [...entries].sort((a, b) => {
+    const byFin = b.dateFin.localeCompare(a.dateFin);
+    if (byFin !== 0) return byFin;
+    return b.createdAt.localeCompare(a.createdAt);
+  });
+}
+
+function normalizeHistorique(raw: unknown, seedFin: string): CharroiDocPaiement[] {
+  const list = Array.isArray(raw)
+    ? raw.map(normalizePaiement).filter((x): x is CharroiDocPaiement => Boolean(x))
+    : [];
+  if (list.length === 0) return seedHistorique(seedFin);
+  return sortHistorique(list);
+}
+
+function latestFin(entries: CharroiDocPaiement[], fallback = ''): string {
+  if (entries.length === 0) return fallback;
+  return sortHistorique(entries)[0]?.dateFin || fallback;
+}
+
+function histKeyOf(kind: CharroiDocKind): keyof Pick<
+  CharroiVehicule,
+  'assuranceHistorique' | 'vignetteHistorique' | 'controleTechniqueHistorique'
+> {
+  if (kind === 'assurance') return 'assuranceHistorique';
+  if (kind === 'vignette') return 'vignetteHistorique';
+  return 'controleTechniqueHistorique';
+}
+
+function finKeyOf(kind: CharroiDocKind): keyof Pick<
+  CharroiVehicule,
+  'assuranceFin' | 'vignetteFin' | 'controleTechniqueFin'
+> {
+  if (kind === 'assurance') return 'assuranceFin';
+  if (kind === 'vignette') return 'vignetteFin';
+  return 'controleTechniqueFin';
+}
+
 function normalizeVehicule(
   raw: CharroiVehiculeInput,
   fallbackSeq: number,
@@ -145,6 +216,14 @@ function normalizeVehicule(
   const etatManuel = normalizeEtatManuel(raw.etatManuel);
   // L'état manuel (ex. Déclassé) prime sur le calcul automatique âge/km.
   const observationTech = etatManuel || computeObservationTech({ age, kilometrage });
+
+  const assuranceHistorique = normalizeHistorique(raw.assuranceHistorique, str(raw.assuranceFin));
+  const vignetteHistorique = normalizeHistorique(raw.vignetteHistorique, str(raw.vignetteFin));
+  const controleTechniqueHistorique = normalizeHistorique(
+    raw.controleTechniqueHistorique,
+    str(raw.controleTechniqueFin),
+  );
+
   return {
     id,
     numero: num(raw.numero),
@@ -163,9 +242,12 @@ function normalizeVehicule(
     age,
     observationTech,
     etatManuel,
-    assuranceFin: str(raw.assuranceFin),
-    vignetteFin: str(raw.vignetteFin),
-    controleTechniqueFin: str(raw.controleTechniqueFin),
+    assuranceHistorique,
+    vignetteHistorique,
+    controleTechniqueHistorique,
+    assuranceFin: latestFin(assuranceHistorique, str(raw.assuranceFin)),
+    vignetteFin: latestFin(vignetteHistorique, str(raw.vignetteFin)),
+    controleTechniqueFin: latestFin(controleTechniqueHistorique, str(raw.controleTechniqueFin)),
     notes: str(raw.notes),
     createdAt: str(raw.createdAt) || timestamps?.createdAt || stamp,
     updatedAt: timestamps?.updatedAt || stamp,
@@ -241,7 +323,7 @@ async function readVehiclesStore(): Promise<CharroiVehiclesStore> {
     vehicles,
     nextSeq: Math.max(Number(store.nextSeq) || 1, maxSeq + 1),
   };
-  // Migration: âge / observationTech / labels marque-province → persiste si écart
+  // Migration: âge / observationTech / labels marque-province / historiques docs → persiste si écart
   const dirty = vehicles.some((item, index) => {
     const raw = rawList[index];
     if (!raw) return true;
@@ -250,6 +332,9 @@ async function readVehiclesStore(): Promise<CharroiVehiclesStore> {
       || str(raw.observationTech) !== item.observationTech
       || str(raw.marque) !== item.marque
       || str(raw.province) !== item.province
+      || !Array.isArray((raw as CharroiVehicule).assuranceHistorique)
+      || !Array.isArray((raw as CharroiVehicule).vignetteHistorique)
+      || !Array.isArray((raw as CharroiVehicule).controleTechniqueHistorique)
     );
   });
   if (dirty && vehicles.length > 0) {
@@ -318,8 +403,150 @@ export async function updateVehicule(
   const index = store.vehicles.findIndex((item) => item.id === id);
   if (index < 0) return null;
   const prev = store.vehicles[index];
+  // Conserver l'historique si non fourni ; aligner les dates de fin si mises à jour seules.
+  const merged: CharroiVehiculeInput = {
+    ...prev,
+    ...input,
+    id: prev.id,
+    assuranceHistorique: input.assuranceHistorique ?? prev.assuranceHistorique,
+    vignetteHistorique: input.vignetteHistorique ?? prev.vignetteHistorique,
+    controleTechniqueHistorique:
+      input.controleTechniqueHistorique ?? prev.controleTechniqueHistorique,
+  };
   const updated = normalizeVehicule(
-    { ...prev, ...input, id: prev.id },
+    merged,
+    parseSeq(prev.id, 'veh') ?? index + 1,
+    { createdAt: prev.createdAt, updatedAt: nowIso() },
+  );
+  store.vehicles[index] = updated;
+  await writeVehiclesStore(store);
+  return updated;
+}
+
+/** Ajoute une période (paiement) ass./vignette/contr. tech. et met à jour la date de fin courante. */
+export async function addVehiculeDocPaiement(
+  id: string,
+  kind: CharroiDocKind,
+  input: { dateDebut?: string; dateFin: string; preuveUrl?: string },
+): Promise<CharroiVehicule | null> {
+  const store = await readVehiclesStore();
+  const index = store.vehicles.findIndex((item) => item.id === id);
+  if (index < 0) return null;
+  const prev = store.vehicles[index];
+
+  const dateFin = str(input.dateFin);
+  if (!isIsoDate(dateFin)) {
+    throw new Error('Date de fin invalide (AAAA-MM-JJ)');
+  }
+  const dateDebut = str(input.dateDebut);
+  if (dateDebut && !isIsoDate(dateDebut)) {
+    throw new Error('Date de début invalide (AAAA-MM-JJ)');
+  }
+  if (dateDebut && dateFin < dateDebut) {
+    throw new Error('La date de fin doit être postérieure ou égale à la date de début');
+  }
+
+  const entry: CharroiDocPaiement = {
+    id: `doc-${Date.now().toString(36)}-${Math.random().toString(36).slice(2, 7)}`,
+    dateDebut: isIsoDate(dateDebut) ? dateDebut : '',
+    dateFin,
+    preuveUrl: str(input.preuveUrl),
+    createdAt: nowIso(),
+  };
+
+  const hKey = histKeyOf(kind);
+  const fKey = finKeyOf(kind);
+  const historique = sortHistorique([entry, ...(prev[hKey] || [])]);
+  const patch: CharroiVehiculeInput = {
+    ...prev,
+    [hKey]: historique,
+    [fKey]: latestFin(historique),
+  };
+
+  const updated = normalizeVehicule(
+    patch,
+    parseSeq(prev.id, 'veh') ?? index + 1,
+    { createdAt: prev.createdAt, updatedAt: nowIso() },
+  );
+  store.vehicles[index] = updated;
+  await writeVehiclesStore(store);
+  return updated;
+}
+
+function parseDocDates(input: { dateDebut?: string; dateFin: string; preuveUrl?: string }) {
+  const dateFin = str(input.dateFin);
+  if (!isIsoDate(dateFin)) {
+    throw new Error('Date de fin invalide (AAAA-MM-JJ)');
+  }
+  const dateDebut = str(input.dateDebut);
+  if (dateDebut && !isIsoDate(dateDebut)) {
+    throw new Error('Date de début invalide (AAAA-MM-JJ)');
+  }
+  if (dateDebut && dateFin < dateDebut) {
+    throw new Error('La date de fin doit être postérieure ou égale à la date de début');
+  }
+  return {
+    dateDebut: isIsoDate(dateDebut) ? dateDebut : '',
+    dateFin,
+    preuveUrl: str(input.preuveUrl),
+  };
+}
+
+/** Met à jour une période dans l'historique. */
+export async function updateVehiculeDocPaiement(
+  id: string,
+  kind: CharroiDocKind,
+  entryId: string,
+  input: { dateDebut?: string; dateFin: string; preuveUrl?: string },
+): Promise<CharroiVehicule | null> {
+  const store = await readVehiclesStore();
+  const index = store.vehicles.findIndex((item) => item.id === id);
+  if (index < 0) return null;
+  const prev = store.vehicles[index];
+  const hKey = histKeyOf(kind);
+  const fKey = finKeyOf(kind);
+  const list = [...(prev[hKey] || [])];
+  const entryIndex = list.findIndex((e) => e.id === entryId);
+  if (entryIndex < 0) throw new Error('Période introuvable');
+
+  const parsed = parseDocDates(input);
+  list[entryIndex] = {
+    ...list[entryIndex],
+    ...parsed,
+  };
+  const historique = sortHistorique(list);
+  const updated = normalizeVehicule(
+    { ...prev, [hKey]: historique, [fKey]: latestFin(historique) },
+    parseSeq(prev.id, 'veh') ?? index + 1,
+    { createdAt: prev.createdAt, updatedAt: nowIso() },
+  );
+  store.vehicles[index] = updated;
+  await writeVehiclesStore(store);
+  return updated;
+}
+
+/** Supprime une période de l'historique. */
+export async function deleteVehiculeDocPaiement(
+  id: string,
+  kind: CharroiDocKind,
+  entryId: string,
+): Promise<CharroiVehicule | null> {
+  const store = await readVehiclesStore();
+  const index = store.vehicles.findIndex((item) => item.id === id);
+  if (index < 0) return null;
+  const prev = store.vehicles[index];
+  const hKey = histKeyOf(kind);
+  const fKey = finKeyOf(kind);
+  const historique = sortHistorique((prev[hKey] || []).filter((e) => e.id !== entryId));
+  if (historique.length === (prev[hKey] || []).length) {
+    throw new Error('Période introuvable');
+  }
+  const updated = normalizeVehicule(
+    {
+      ...prev,
+      [hKey]: historique,
+      [fKey]: latestFin(historique, ''),
+    },
     parseSeq(prev.id, 'veh') ?? index + 1,
     { createdAt: prev.createdAt, updatedAt: nowIso() },
   );

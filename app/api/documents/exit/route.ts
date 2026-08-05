@@ -6,8 +6,8 @@ import {
   type ExitDocType,
 } from '@/lib/employee-docs.server';
 import { getEmployee } from '@/lib/employees-json-store';
-import { appendExitIssued, listExitIssued } from '@/lib/exit-docs-log';
-import { checkPermission } from '@/lib/require-permission';
+import { appendExitIssued, deleteExitIssued, listExitIssued } from '@/lib/exit-docs-log';
+import { checkAnyPermission, checkPermission } from '@/lib/require-permission';
 import { auditSimpleAction, getAuditActor } from '@/lib/with-audit';
 
 const DOCX_MIME = 'application/vnd.openxmlformats-officedocument.wordprocessingml.document';
@@ -31,6 +31,8 @@ export async function POST(request: Request) {
       doc?: string;
       exitDate?: string;
       documentDate?: string;
+      /** Régénération depuis l'historique (ouverture / téléchargement) sans nouvelle ligne au journal. */
+      skipIssuedLog?: boolean;
     };
     const matricule = body.matricule?.trim();
     if (!matricule) {
@@ -50,27 +52,33 @@ export async function POST(request: Request) {
       documentDate: body.documentDate,
     });
 
-    const actor = await getAuditActor();
-    await appendExitIssued({
-      matricule: employee.matricule,
-      employeeName: employee.nom,
-      doc: docType,
-      docLabel: EXIT_DOC_LABELS[docType],
-      fileName: doc.fileName,
-      issuedBy: actor?.userName,
-    });
+    const skipIssuedLog = body.skipIssuedLog === true;
 
-    await auditSimpleAction({
-      module: 'documents.exit',
-      moduleLabel: 'Documents',
-      action: 'export',
-      summary: `Document exit « ${EXIT_DOC_LABELS[docType]} » — ${employee.nom} (${employee.matricule})`,
-    });
+    if (!skipIssuedLog) {
+      const actor = await getAuditActor();
+      await appendExitIssued({
+        matricule: employee.matricule,
+        employeeName: employee.nom,
+        doc: docType,
+        docLabel: EXIT_DOC_LABELS[docType],
+        fileName: doc.fileName,
+        issuedBy: actor?.userName,
+      });
+
+      await auditSimpleAction({
+        module: 'documents.exit',
+        moduleLabel: 'Documents',
+        action: 'export',
+        summary: `Document exit « ${EXIT_DOC_LABELS[docType]} » — ${employee.nom} (${employee.matricule})`,
+      });
+    }
+
+    const disposition = skipIssuedLog ? 'inline' : 'attachment';
 
     return new NextResponse(new Uint8Array(doc.buffer), {
       headers: {
         'Content-Type': DOCX_MIME,
-        'Content-Disposition': `attachment; filename="${encodeURIComponent(doc.fileName)}"`,
+        'Content-Disposition': `${disposition}; filename="${encodeURIComponent(doc.fileName)}"`,
         'X-File-Name': encodeURIComponent(doc.fileName),
       },
     });
@@ -78,4 +86,33 @@ export async function POST(request: Request) {
     const message = err instanceof Error ? err.message : 'Erreur';
     return NextResponse.json({ error: message }, { status: 400 });
   }
+}
+
+export async function DELETE(request: Request) {
+  const denied = await checkAnyPermission([
+    { menuId: 'documents.exit', action: 'delete' },
+    { menuId: 'documents.exit', action: 'edit' },
+    { menuId: 'documents.exit', action: 'create' },
+  ]);
+  if (denied) return denied;
+
+  const { searchParams } = new URL(request.url);
+  const id = searchParams.get('id')?.trim();
+  if (!id) {
+    return NextResponse.json({ error: 'Identifiant requis' }, { status: 400 });
+  }
+
+  const removed = await deleteExitIssued(id);
+  if (!removed) {
+    return NextResponse.json({ error: 'Entrée introuvable' }, { status: 404 });
+  }
+
+  await auditSimpleAction({
+    module: 'documents.exit',
+    moduleLabel: 'Documents',
+    action: 'other',
+    summary: `Suppression entrée historique exit — ${id}`,
+  });
+
+  return NextResponse.json({ ok: true });
 }

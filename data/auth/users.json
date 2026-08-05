@@ -2794,6 +2794,54 @@
           }
         },
         {
+          "menuId": "documents.appraisal",
+          "label": "Interim appraisal evaluation",
+          "actions": {
+            "view": true,
+            "create": true,
+            "edit": true,
+            "delete": true,
+            "export": true,
+            "undo": true
+          }
+        },
+        {
+          "menuId": "documents.exit",
+          "label": "Exit forms",
+          "actions": {
+            "view": true,
+            "create": true,
+            "edit": true,
+            "delete": true,
+            "export": true,
+            "undo": true
+          }
+        },
+        {
+          "menuId": "documents.entetes",
+          "label": "Entête",
+          "actions": {
+            "view": true,
+            "create": true,
+            "edit": true,
+            "delete": true,
+            "export": true,
+            "undo": true
+          }
+        },
+        {
+          "menuId": "documents.rrf",
+          "label": "RRF",
+          "actions": {
+            "view": true,
+            "create": true,
+            "edit": true,
+            "delete": true,
+            "export": true,
+            "undo": true
+          }
+        },
+        {
           "menuId": "protocol.visa-travail",
           "label": "Visa de travail",
           "actions": {
@@ -3048,30 +3096,6 @@
         {
           "menuId": "parametres.logs",
           "label": "Logs",
-          "actions": {
-            "view": true,
-            "create": true,
-            "edit": true,
-            "delete": true,
-            "export": true,
-            "undo": true
-          }
-        },
-        {
-          "menuId": "documents.appraisal",
-          "label": "Interim appraisal evaluation",
-          "actions": {
-            "view": true,
-            "create": true,
-            "edit": true,
-            "delete": true,
-            "export": true,
-            "undo": true
-          }
-        },
-        {
-          "menuId": "documents.exit",
-          "label": "Exit forms",
           "actions": {
             "view": true,
             "create": true,

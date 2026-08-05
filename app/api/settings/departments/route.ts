@@ -14,7 +14,12 @@ const MENU = 'settings.departements';
 export async function GET() {
   const denied = await checkAnyPermission([
     { menuId: MENU, action: 'view' },
+    { menuId: 'employes.liste', action: 'view' },
+    { menuId: 'employes.check-documents', action: 'view' },
     { menuId: 'travel.etablir', action: 'view' },
+    { menuId: 'travel.historique', action: 'view' },
+    { menuId: 'charroi.vehicules', action: 'view' },
+    { menuId: 'charroi', action: 'view' },
   ]);
   if (denied) return denied;
   const departments = await listDepartments();

@@ -5,9 +5,8 @@ import { NextResponse } from 'next/server';
 
 import { checkAnyPermission } from '@/lib/require-permission';
 import type { ServiceAttestationFormData } from '@/lib/service-attestation-types';
+import { buildServiceAttestationPreviewHtmlForForm } from '@/lib/service-attestation-preview.server';
 import {
-  buildServiceAttestationPreviewHtml,
-  extractDocxPlainText,
   fillServiceAttestationXml,
   formatServiceAttestationFileName,
   SERVICE_ATTESTATION_TEMPLATE_PATH,
@@ -54,6 +53,11 @@ export async function POST(request: Request) {
     const body = (await request.json()) as Partial<ServiceAttestationFormData>;
     const form = normalizeForm(body);
 
+    if (type === 'html') {
+      const html = await buildServiceAttestationPreviewHtmlForForm(form);
+      return NextResponse.json({ html });
+    }
+
     if (type === 'pdf') {
       const pdfBuffer = await buildServiceAttestationPdfBuffer(form);
       const pdfName = formatServiceAttestationFileName(
@@ -69,39 +73,11 @@ export async function POST(request: Request) {
       return new NextResponse(new Uint8Array(pdfBuffer), {
         headers: {
           'Content-Type': 'application/pdf',
-          'Content-Disposition': `attachment; filename="${pdfName}"`,
+          'Content-Disposition': `inline; filename="${pdfName}"`,
         },
       });
     }
 
-    if (type === 'html') {
-      // HTML sans template Word si besoin, mais on préfère le texte du modèle rempli.
-      try {
-        const tempDir = await fs.mkdtemp(path.join(os.tmpdir(), 'service-attestation-'));
-        const docxPath = path.join(tempDir, 'attestation.docx');
-        let previewHtml = '';
-        try {
-          await writeDocxFromTemplate(SERVICE_ATTESTATION_TEMPLATE_PATH, docxPath, (xml) => {
-            const filled = fillServiceAttestationXml(xml, form);
-            previewHtml = buildServiceAttestationPreviewHtml(extractDocxPlainText(filled));
-            return filled;
-          });
-        } finally {
-          await fs.rm(tempDir, { recursive: true, force: true });
-        }
-        return NextResponse.json({ html: previewHtml });
-      } catch {
-        const { buildServiceAttestationParagraphs } = await import(
-          '@/lib/service-attestation-pdf.server'
-        );
-        const html = buildServiceAttestationPreviewHtml(
-          buildServiceAttestationParagraphs(form).join('\n'),
-        );
-        return NextResponse.json({ html });
-      }
-    }
-
-    // DOCX export
     const tempDir = await fs.mkdtemp(path.join(os.tmpdir(), 'service-attestation-'));
     const docxPath = path.join(tempDir, 'attestation.docx');
     try {

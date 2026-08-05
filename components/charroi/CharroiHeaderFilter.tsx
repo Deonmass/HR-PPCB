@@ -11,12 +11,19 @@ interface Props {
   onChange: (next: string[]) => void;
 }
 
-/** Filtre de colonne façon Excel : entonnoir dans l'en-tête + liste à cocher. */
+/** Filtre de colonne façon Excel : entonnoir + liste à cocher + Valider. */
 export default function CharroiHeaderFilter({ label, values, selected, onChange }: Props) {
   const [open, setOpen] = useState(false);
   const [query, setQuery] = useState('');
+  const [draft, setDraft] = useState<string[]>(selected);
   const wrapRef = useRef<HTMLDivElement | null>(null);
   const active = selected.length > 0;
+
+  useEffect(() => {
+    if (!open) return;
+    setDraft(selected);
+    setQuery('');
+  }, [open, selected]);
 
   useEffect(() => {
     if (!open) return;
@@ -43,8 +50,31 @@ export default function CharroiHeaderFilter({ label, values, selected, onChange 
   }, [values, query]);
 
   const toggleValue = (value: string) => {
-    if (selected.includes(value)) onChange(selected.filter((v) => v !== value));
-    else onChange([...selected, value]);
+    setDraft((prev) =>
+      prev.includes(value) ? prev.filter((v) => v !== value) : [...prev, value],
+    );
+  };
+
+  const selectAllVisible = () => {
+    setDraft((prev) => {
+      const next = new Set(prev);
+      for (const value of visibleValues) next.add(value);
+      return [...next];
+    });
+  };
+
+  const deselectAllVisible = () => {
+    if (!query.trim()) {
+      setDraft([]);
+      return;
+    }
+    const hide = new Set(visibleValues);
+    setDraft((prev) => prev.filter((v) => !hide.has(v)));
+  };
+
+  const apply = () => {
+    onChange(draft);
+    setOpen(false);
   };
 
   return (
@@ -52,10 +82,7 @@ export default function CharroiHeaderFilter({ label, values, selected, onChange 
       <button
         type="button"
         className={`charroi-hf-btn${active ? ' active' : ''}${open ? ' open' : ''}`}
-        onClick={() => {
-          setOpen((prev) => !prev);
-          setQuery('');
-        }}
+        onClick={() => setOpen((prev) => !prev)}
         title={active ? `${label} — ${selected.length} filtre(s)` : `Filtrer ${label}`}
         aria-label={`Filtrer ${label}`}
       >
@@ -75,6 +102,14 @@ export default function CharroiHeaderFilter({ label, values, selected, onChange 
             onChange={(e) => setQuery(e.target.value)}
             autoFocus
           />
+          <div className="charroi-hf-select-row">
+            <button type="button" className="btn btn-ghost btn-sm" onClick={selectAllVisible}>
+              Tout sélectionner
+            </button>
+            <button type="button" className="btn btn-ghost btn-sm" onClick={deselectAllVisible}>
+              Tout désélectionner
+            </button>
+          </div>
           <div className="charroi-hf-list">
             {visibleValues.length === 0 ? (
               <div className="charroi-hf-empty">Aucune valeur</div>
@@ -83,7 +118,7 @@ export default function CharroiHeaderFilter({ label, values, selected, onChange 
                 <label key={value || '—'} className="charroi-hf-item">
                   <input
                     type="checkbox"
-                    checked={selected.includes(value)}
+                    checked={draft.includes(value)}
                     onChange={() => toggleValue(value)}
                   />
                   <span>{value || '—'}</span>
@@ -95,13 +130,13 @@ export default function CharroiHeaderFilter({ label, values, selected, onChange 
             <button
               type="button"
               className="btn btn-ghost btn-sm"
-              onClick={() => onChange([])}
-              disabled={!active}
+              onClick={() => setDraft([])}
+              disabled={draft.length === 0}
             >
               Effacer
             </button>
-            <button type="button" className="btn btn-secondary btn-sm" onClick={() => setOpen(false)}>
-              Fermer
+            <button type="button" className="btn btn-primary btn-sm" onClick={apply}>
+              Valider
             </button>
           </div>
         </div>

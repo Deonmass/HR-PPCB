@@ -13,9 +13,6 @@ import { confirmDelete, showError } from '@/lib/swal';
 
 type PageTab = 'form' | 'history';
 
-const GENRE_OPTIONS_FR = ['Monsieur', 'Madame', 'Mademoiselle'];
-const GENRE_OPTIONS_EN = ['Mr.', 'Mrs.', 'Ms.'];
-
 function todayInputDate(): string {
   return new Date().toISOString().slice(0, 10);
 }
@@ -43,7 +40,6 @@ function formatDate(value: string): string {
   return date.toLocaleDateString('fr-FR');
 }
 
-/** Affichage jj/mm/aaaa (ou ISO) → valeur input[type=date] aaaa-mm-jj. */
 function toDateInputValue(display: string): string {
   const raw = display.trim();
   if (!raw) return '';
@@ -64,17 +60,32 @@ function downloadUrl(id: string, type: 'docx' | 'pdf'): string {
   return `/api/travel/service-attestation/${encodeURIComponent(id)}/download${params}`;
 }
 
+function validateFormForExport(form: ServiceAttestationFormData): string | null {
+  if (!form.documentDate?.trim()) return 'La date du document est requise';
+  if (!form.hodName?.trim()) return 'Le responsable (signataire) est requis';
+  if (!form.hodFunction?.trim()) return 'Sélectionnez le responsable dans la liste des employés';
+  if (!form.employeeName?.trim()) return "L'employé concerné est requis";
+  if (!form.employeeMatricule?.trim()) return "Sélectionnez l'employé dans la liste";
+  if (!form.employeeFunction?.trim() || !form.employeeDepartment?.trim()) {
+    return "Les informations employé sont incomplètes — choisissez une ligne dans la liste";
+  }
+  return null;
+}
+
 export default function AttestationServicesPage() {
   const { can } = usePermissions();
   const canCreate = can('travel.attestation', 'create');
   const canExport = can('travel.attestation', 'export');
+  const canDelete = can('travel.attestation', 'delete');
   const [pageTab, setPageTab] = useState<PageTab>(() =>
     can('travel.attestation', 'create') ? 'form' : 'history',
   );
   const [employees, setEmployees] = useState<Employee[]>([]);
   const [loading, setLoading] = useState(true);
-  const [submitting, setSubmitting] = useState(false);
+  const [exporting, setExporting] = useState<'docx' | 'pdf' | null>(null);
   const [form, setForm] = useState<ServiceAttestationFormData>(createInitialForm);
+  const [selectedEmployee, setSelectedEmployee] = useState<Employee | null>(null);
+  const [selectedHod, setSelectedHod] = useState<Employee | null>(null);
   const [history, setHistory] = useState<ServiceAttestationRecord[]>([]);
   const [historyLoading, setHistoryLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -83,8 +94,6 @@ export default function AttestationServicesPage() {
   const [previewPdfLoading, setPreviewPdfLoading] = useState(false);
   const [previewPdfError, setPreviewPdfError] = useState<string | null>(null);
   const previewRequestIdRef = useRef(0);
-
-  const genreOptions = form.language === 'en' ? GENRE_OPTIONS_EN : GENRE_OPTIONS_FR;
 
   const patchForm = (patch: Partial<ServiceAttestationFormData>) => {
     setForm((prev) => ({ ...prev, ...patch }));
@@ -138,24 +147,42 @@ export default function AttestationServicesPage() {
         if (/ms|miss|mademoiselle|mlle/i.test(genre)) return 'Mademoiselle';
         return 'Monsieur';
       };
-      const hodGenre = mapGenre(prev.hodGenre);
-      const employeeGenre = mapGenre(prev.employeeGenre);
+
+      let hodGenre = mapGenre(prev.hodGenre);
+      let employeeGenre = mapGenre(prev.employeeGenre);
+      let hodFunction = prev.hodFunction;
+      let employeeFunction = prev.employeeFunction;
+
+      if (selectedHod) {
+        hodGenre = genreFromEmployee(selectedHod, language);
+        hodFunction = localizeJobTitle(
+          selectedHod.jobTitle || selectedHod.grade,
+          language,
+          hodGenre,
+        );
+      }
+      if (selectedEmployee) {
+        employeeGenre = genreFromEmployee(selectedEmployee, language);
+        employeeFunction = localizeJobTitle(
+          selectedEmployee.jobTitle || selectedEmployee.grade,
+          language,
+          employeeGenre,
+        );
+      }
+
       return {
         ...prev,
         language,
         hodGenre,
         employeeGenre,
-        employeeFunction: prev.employeeFunction
-          ? localizeJobTitle(prev.employeeFunction, language, employeeGenre)
-          : '',
-        hodFunction: prev.hodFunction
-          ? localizeJobTitle(prev.hodFunction, language, hodGenre)
-          : '',
+        hodFunction,
+        employeeFunction,
       };
     });
   };
 
   const handleEmployeeSelect = (employee: Employee) => {
+    setSelectedEmployee(employee);
     const employeeGenre = genreFromEmployee(employee, form.language);
     patchForm({
       employeeName: employee.nom,
@@ -172,6 +199,7 @@ export default function AttestationServicesPage() {
   };
 
   const handleHodSelect = (employee: Employee) => {
+    setSelectedHod(employee);
     const hodGenre = genreFromEmployee(employee, form.language);
     patchForm({
       hodName: employee.nom,
@@ -184,26 +212,54 @@ export default function AttestationServicesPage() {
     });
   };
 
-  const handleSubmit = async (event: React.FormEvent) => {
-    event.preventDefault();
-    setSubmitting(true);
-    setError(null);
+  const exportAndSave = async (fileType: 'docx' | 'pdf') => {
+    const validationError = validateFormForExport(form);
+    if (validationError) {
+      await showError(validationError);
+      return;
+    }
+
+    setExporting(fileType);
     try {
       const res = await fetch('/api/travel/service-attestation', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(form),
       });
-      const json = (await res.json()) as ServiceAttestationRecord & { error?: string };
+      const record = (await res.json()) as ServiceAttestationRecord & { error?: string };
       if (!res.ok) {
-        await showError(json.error || 'Génération impossible');
+        await showError(record.error || 'Enregistrement impossible');
         return;
       }
+
+      const dlRes = await fetch(downloadUrl(record.id, fileType));
+      if (!dlRes.ok) {
+        const json = (await dlRes.json().catch(() => ({}))) as { error?: string };
+        await showError(json.error || 'Export impossible');
+        return;
+      }
+
+      const blob = await dlRes.blob();
+      const objectUrl = URL.createObjectURL(blob);
+      const contentDisposition = dlRes.headers.get('content-disposition') || '';
+      const match = contentDisposition.match(/filename="?([^"]+)"?/i);
+      const fileName =
+        match?.[1] ||
+        (fileType === 'pdf'
+          ? record.fileName.replace(/\.docx$/i, '.pdf')
+          : record.fileName);
+
+      const a = document.createElement('a');
+      a.href = objectUrl;
+      a.download = fileName;
+      a.click();
+      URL.revokeObjectURL(objectUrl);
+
       await loadHistory();
     } catch {
-      await showError('Génération impossible');
+      await showError('Export impossible');
     } finally {
-      setSubmitting(false);
+      setExporting(null);
     }
   };
 
@@ -228,39 +284,6 @@ export default function AttestationServicesPage() {
       await showError('Suppression impossible');
     }
   };
-
-  const downloadPreviewFile = useCallback(
-    async (fileType: 'docx' | 'pdf') => {
-      const res = await fetch(
-        `/api/travel/service-attestation/preview?type=${fileType}`,
-        {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify(form),
-        },
-      );
-
-      if (!res.ok) {
-        const json = (await res.json().catch(() => ({}))) as { error?: string };
-        await showError(json.error || 'Export impossible');
-        return;
-      }
-
-      const blob = await res.blob();
-      const objectUrl = URL.createObjectURL(blob);
-
-      const contentDisposition = res.headers.get('content-disposition') || '';
-      const match = contentDisposition.match(/filename="?([^"]+)"?/i);
-      const fileName = match?.[1] || `attestation.${fileType}`;
-
-      const a = document.createElement('a');
-      a.href = objectUrl;
-      a.download = fileName;
-      a.click();
-      URL.revokeObjectURL(objectUrl);
-    },
-    [form],
-  );
 
   useEffect(() => {
     if (pageTab !== 'form') return;
@@ -299,21 +322,27 @@ export default function AttestationServicesPage() {
         const blob = await res.blob();
         const objectUrl = URL.createObjectURL(blob);
 
-        setPreviewPdfUrl((prev) => {
-          if (prev) URL.revokeObjectURL(prev);
-          return objectUrl;
-        });
+        if (requestId === previewRequestIdRef.current) {
+          setPreviewPdfUrl((prev) => {
+            if (prev) URL.revokeObjectURL(prev);
+            return objectUrl;
+          });
+        } else {
+          URL.revokeObjectURL(objectUrl);
+        }
       } catch (err) {
         if (controller.signal.aborted) return;
-        setPreviewPdfError(err instanceof Error ? err.message : 'Prévisualisation impossible');
-        setPreviewPdfUrl((prev) => {
-          if (prev) URL.revokeObjectURL(prev);
-          return null;
-        });
+        if (requestId === previewRequestIdRef.current) {
+          setPreviewPdfError(err instanceof Error ? err.message : 'Prévisualisation impossible');
+          setPreviewPdfUrl((prev) => {
+            if (prev) URL.revokeObjectURL(prev);
+            return null;
+          });
+        }
       } finally {
         if (requestId === previewRequestIdRef.current) setPreviewPdfLoading(false);
       }
-    }, 700);
+    }, 400);
 
     return () => {
       controller.abort();
@@ -325,6 +354,23 @@ export default function AttestationServicesPage() {
     () => `${history.length} attestation${history.length > 1 ? 's' : ''}`,
     [history.length],
   );
+
+  const employeeMeta =
+    form.employeeMatricule.trim() || selectedEmployee
+      ? [
+          { label: form.language === 'en' ? 'Gender' : 'Genre', value: form.employeeGenre },
+          { label: form.language === 'en' ? 'Job title' : 'Fonction', value: form.employeeFunction },
+          { label: 'Matricule', value: form.employeeMatricule },
+          {
+            label: form.language === 'en' ? 'Start date' : "Date d'embauche",
+            value: form.dateEmbauche ? formatDate(form.dateEmbauche) : '—',
+          },
+          {
+            label: form.language === 'en' ? 'Department' : 'Département',
+            value: form.employeeDepartment,
+          },
+        ]
+      : [];
 
   if (loading) return <div className="loading">Chargement...</div>;
 
@@ -370,7 +416,7 @@ export default function AttestationServicesPage() {
 
         {pageTab === 'form' && canCreate && (
           <div className="service-attestation-layout has-preview">
-            <form className="panel panel-padded service-attestation-form" onSubmit={handleSubmit}>
+            <div className="panel panel-padded service-attestation-form">
               <div className="form-group">
                 <label htmlFor="attestation-language">Langue du document</label>
                 <select
@@ -395,148 +441,92 @@ export default function AttestationServicesPage() {
               </div>
 
               <h3 className="service-attestation-section-title">Responsable (signataire)</h3>
-
-              <div className="form-group">
-                <label htmlFor="hod-genre">Genre</label>
-                <select
-                  id="hod-genre"
-                  value={form.hodGenre}
-                  onChange={(e) => patchForm({ hodGenre: e.target.value })}
-                >
-                  {genreOptions.map((option) => (
-                    <option key={option} value={option}>{option}</option>
-                  ))}
-                </select>
-              </div>
-
               <div className="form-group">
                 <label htmlFor="hod-name">Nom complet</label>
                 <EmployeeSuggestInput
                   id="hod-name"
                   employees={employees}
                   value={form.hodName}
-                  onChange={(value) => patchForm({ hodName: value })}
+                  onChange={(value) => {
+                    patchForm({ hodName: value });
+                    setSelectedHod(null);
+                  }}
                   onEmployeeSelect={handleHodSelect}
                   placeholder="Rechercher ou saisir le nom du responsable…"
                   required
                 />
               </div>
 
-              <div className="form-group">
-                <label htmlFor="hod-function">Fonction</label>
-                <input
-                  id="hod-function"
-                  required
-                  value={form.hodFunction}
-                  onChange={(e) => patchForm({ hodFunction: e.target.value })}
-                />
-              </div>
-
               <h3 className="service-attestation-section-title">Employé concerné</h3>
-
-              <div className="form-group">
-                <label htmlFor="employee-genre">Genre</label>
-                <select
-                  id="employee-genre"
-                  value={form.employeeGenre}
-                  onChange={(e) => patchForm({ employeeGenre: e.target.value })}
-                >
-                  {genreOptions.map((option) => (
-                    <option key={option} value={option}>{option}</option>
-                  ))}
-                </select>
-              </div>
-
               <div className="form-group">
                 <label htmlFor="employee-name">Nom complet</label>
                 <EmployeeSuggestInput
                   id="employee-name"
                   employees={employees}
                   value={form.employeeName}
-                  onChange={(value) => patchForm({ employeeName: value })}
+                  onChange={(value) => {
+                    patchForm({ employeeName: value });
+                    setSelectedEmployee(null);
+                  }}
                   onEmployeeSelect={handleEmployeeSelect}
                   placeholder="Rechercher ou saisir le nom de l'employé…"
                   required
                 />
               </div>
 
-              <div className="form-group">
-                <label htmlFor="employee-matricule">Matricule</label>
-                <input
-                  id="employee-matricule"
-                  required
-                  value={form.employeeMatricule}
-                  onChange={(e) => patchForm({ employeeMatricule: e.target.value })}
-                />
-              </div>
-
-              <div className="form-group">
-                <label htmlFor="employee-embauche">
-                  {form.language === 'en' ? 'Employment start date' : "Date d'embauche"}
-                </label>
-                <input
-                  id="employee-embauche"
-                  type="date"
-                  value={form.dateEmbauche}
-                  onChange={(e) => patchForm({ dateEmbauche: e.target.value })}
-                />
-              </div>
-
-              <div className="form-group">
-                <label htmlFor="employee-function">Fonction</label>
-                <input
-                  id="employee-function"
-                  required
-                  value={form.employeeFunction}
-                  onChange={(e) => patchForm({ employeeFunction: e.target.value })}
-                />
-              </div>
-
-              <div className="form-group">
-                <label htmlFor="employee-department">Département</label>
-                <input
-                  id="employee-department"
-                  required
-                  value={form.employeeDepartment}
-                  onChange={(e) => patchForm({ employeeDepartment: e.target.value })}
-                />
-              </div>
-
-              <div className="service-attestation-form-actions">
-                <button type="submit" className="btn btn-accent" disabled={submitting}>
-                  {submitting ? 'Génération…' : 'Valider et prévisualiser'}
-                </button>
-              </div>
-            </form>
+              {employeeMeta.length > 0 ? (
+                <div className="service-attestation-employee-meta">
+                  {employeeMeta.map((item) => (
+                    <span key={item.label} className="service-attestation-meta-chip">
+                      <strong>{item.label}</strong> {item.value || '—'}
+                    </span>
+                  ))}
+                </div>
+              ) : (
+                <p className="service-attestation-meta-hint">
+                  Sélectionnez un employé dans la liste pour afficher genre, fonction, matricule, date
+                  d&apos;embauche et département.
+                </p>
+              )}
+            </div>
 
             <div className="panel panel-padded service-attestation-preview-panel">
               <div className="service-attestation-preview-toolbar">
                 <h3>Aperçu du document</h3>
-                <div className="service-attestation-export-actions">
-                  <button
-                    type="button"
-                    className="btn btn-secondary"
-                    onClick={() => void downloadPreviewFile('docx')}
-                  >
-                    Exporter Word
-                  </button>
-                  <button
-                    type="button"
-                    className="btn btn-secondary"
-                    onClick={() => void downloadPreviewFile('pdf')}
-                  >
-                    Exporter PDF
-                  </button>
-                </div>
+                {canExport && (
+                  <div className="service-attestation-export-actions">
+                    <button
+                      type="button"
+                      className="btn btn-secondary"
+                      disabled={!!exporting}
+                      onClick={() => void exportAndSave('docx')}
+                    >
+                      {exporting === 'docx' ? 'Enregistrement…' : 'Exporter Word'}
+                    </button>
+                    <button
+                      type="button"
+                      className="btn btn-secondary"
+                      disabled={!!exporting}
+                      onClick={() => void exportAndSave('pdf')}
+                    >
+                      {exporting === 'pdf' ? 'Enregistrement…' : 'Exporter PDF'}
+                    </button>
+                  </div>
+                )}
               </div>
 
               <div className="service-attestation-preview-body service-attestation-preview-body-pdf">
                 {previewPdfLoading && (
-                  <div className="empty-state">Génération de l'aperçu…</div>
+                  <div className="empty-state">Génération de l&apos;aperçu…</div>
                 )}
                 {!!previewPdfError && !previewPdfLoading && (
                   <div className="alert alert-danger" style={{ margin: 0 }}>
                     {previewPdfError}
+                  </div>
+                )}
+                {!previewPdfLoading && !previewPdfError && !previewPdfUrl && (
+                  <div className="empty-state">
+                    Renseignez le responsable et l&apos;employé pour afficher l&apos;aperçu.
                   </div>
                 )}
                 {!!previewPdfUrl && !previewPdfLoading && (
@@ -583,8 +573,8 @@ export default function AttestationServicesPage() {
                                 type="button"
                                 className="btn btn-ghost btn-sm"
                                 onClick={() => {
-                                  setForm((prev) => ({
-                                    ...prev,
+                                  setForm({
+                                    ...createInitialForm(),
                                     language: record.language,
                                     documentDate: record.documentDate,
                                     hodGenre: record.hodGenre,
@@ -596,7 +586,9 @@ export default function AttestationServicesPage() {
                                     dateEmbauche: record.dateEmbauche ?? '',
                                     employeeFunction: record.employeeFunction,
                                     employeeDepartment: record.employeeDepartment,
-                                  }));
+                                  });
+                                  setSelectedEmployee(null);
+                                  setSelectedHod(null);
                                   setPageTab('form');
                                 }}
                               >
@@ -612,7 +604,7 @@ export default function AttestationServicesPage() {
                                 Word
                               </a>
                             )}
-                            {canExport && record.pdfPath && (
+                            {canExport && (
                               <a
                                 href={downloadUrl(record.id, 'pdf')}
                                 className="btn btn-ghost btn-sm"
@@ -621,7 +613,7 @@ export default function AttestationServicesPage() {
                                 PDF
                               </a>
                             )}
-                            <PermissionGate menuId="travel.attestation" action="delete">
+                            {canDelete && (
                               <button
                                 type="button"
                                 className="btn btn-ghost btn-sm btn-danger-text"
@@ -629,7 +621,7 @@ export default function AttestationServicesPage() {
                               >
                                 Supprimer
                               </button>
-                            </PermissionGate>
+                            )}
                           </div>
                         </td>
                       </tr>

@@ -30,8 +30,9 @@ function cell(row: unknown[], col: number): unknown {
 }
 
 /**
- * Parse an Excel file matching:
- * DATE | SOCIETE | FACTURE | MONTANT | Echeance | PR | DATE PR | P.O | DATE PO | GRN | DATE GRN | payment | DATE PYM | Statut
+ * Parse Excel matching:
+ * DATE | SOCIETE | FACTURE | MONTANT | PR | P.O | PYTMT
+ * (legacy columns still accepted when present)
  */
 export function parseFacturesSuiviImportBuffer(buffer: ArrayBuffer): ParsedFacturesImport {
   const workbook = XLSX.read(buffer, { type: 'array', cellDates: true });
@@ -48,7 +49,7 @@ export function parseFacturesSuiviImportBuffer(buffer: ArrayBuffer): ParsedFactu
     return joined.includes('facture') && (joined.includes('societe') || joined.includes('montant'));
   });
   if (headerRowIndex < 0) {
-    throw new Error('En-têtes introuvables (DATE, SOCIETE, FACTURE, …)');
+    throw new Error('En-têtes introuvables (DATE, SOCIETE, FACTURE, MONTANT, PR, P.O, PYTMT)');
   }
 
   const headers = (rows[headerRowIndex] as unknown[]).map((h) => normalizeHeader(h));
@@ -56,16 +57,18 @@ export function parseFacturesSuiviImportBuffer(buffer: ArrayBuffer): ParsedFactu
   const societeCol = findColumn(headers, ['societe', 'fournisseur', 'supplier']);
   const factureCol = findColumn(headers, ['facture', 'invoice', 'nofacture']);
   const montantCol = findColumn(headers, ['montant', 'amount', 'total']);
-  const echeanceCol = findColumn(headers, ['echeance', 'duedate', 'echeance']);
   const prCol = findColumn(headers, ['pr', 'purchaserequest']);
+  const poCol = findColumn(headers, ['po', 'purchaseorder']);
+  const paymentCol = findColumn(headers, ['pytmt', 'payment', 'paiement', 'pymt']);
+  const commentaireCol = findColumn(headers, ['commentaire', 'comment', 'statut', 'status']);
+
+  // Avoid matching DATE as DATE PR when only DATE exists
   const datePrCol = findColumn(headers, ['datepr']);
-  const poCol = findColumn(headers, ['po', 'p.o', 'purchaseorder']);
   const datePoCol = findColumn(headers, ['datepo']);
+  const echeanceCol = findColumn(headers, ['echeance', 'duedate']);
   const grnCol = findColumn(headers, ['grn']);
   const dateGrnCol = findColumn(headers, ['dategrn']);
-  const paymentCol = findColumn(headers, ['payment', 'paiement']);
   const datePymCol = findColumn(headers, ['datepym', 'datepayment', 'datepaiement']);
-  const statutCol = findColumn(headers, ['statut', 'status']);
 
   if (factureCol < 0) throw new Error('Colonne FACTURE introuvable');
   if (societeCol < 0) throw new Error('Colonne SOCIETE introuvable');
@@ -76,8 +79,6 @@ export function parseFacturesSuiviImportBuffer(buffer: ArrayBuffer): ParsedFactu
     const facture = String(cell(row, factureCol) ?? '').trim();
     const societe = String(cell(row, societeCol) ?? '').trim();
     if (!facture && !societe) continue;
-
-    const statutRaw = String(cell(row, statutCol) ?? '').trim();
 
     parsed.push({
       date: formatDateCell(cell(row, dateCol)),
@@ -93,7 +94,7 @@ export function parseFacturesSuiviImportBuffer(buffer: ArrayBuffer): ParsedFactu
       dateGrn: formatDateCell(cell(row, dateGrnCol)),
       payment: String(cell(row, paymentCol) ?? '').trim(),
       datePym: formatDateCell(cell(row, datePymCol)),
-      commentaire: statutRaw,
+      commentaire: String(cell(row, commentaireCol) ?? '').trim(),
     });
   }
 
