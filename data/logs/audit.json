@@ -1,6 +1,41 @@
 {
   "entries": [
     {
+      "id": "log-000055",
+      "at": "2026-08-05T07:22:14.832Z",
+      "userId": "admin",
+      "userName": "Administrateur",
+      "module": "travel.attestation",
+      "moduleLabel": "Attestation de service",
+      "action": "create",
+      "actionLabel": "Création",
+      "entityType": "travel.attestation",
+      "entityId": "ddca310a-4bbb-487a-842e-b16af525a790",
+      "summary": "Création attestation de service — NKOSI LIMA MASUDI BIENVENU",
+      "details": "Attestation créée pour NKOSI LIMA MASUDI BIENVENU (70000097) — id ddca310a-4bbb-487a-842e-b16af525a790.",
+      "after": {
+        "language": "fr",
+        "documentDate": "2026-08-05",
+        "hodGenre": "Madame",
+        "hodName": "EWULI SUKA Carine",
+        "hodFunction": "Directrice des ressources humaines",
+        "employeeGenre": "Monsieur",
+        "employeeName": "NKOSI LIMA MASUDI BIENVENU",
+        "employeeMatricule": "70000097",
+        "dateEmbauche": "2016-11-05",
+        "employeeFunction": "Mining Mobile Equipment Operator",
+        "employeeDepartment": "Mining",
+        "id": "ddca310a-4bbb-487a-842e-b16af525a790",
+        "createdAt": "2026-08-05T07:22:14.685Z",
+        "fileName": "Attestation_service_NKOSI_LIMA_MASUDI_BIENVENU_2026-08-05.docx",
+        "docxPath": "/tmp/hr-rh-app/service-attestation/files/ddca310a-4bbb-487a-842e-b16af525a790.docx",
+        "pdfPath": "/tmp/hr-rh-app/service-attestation/files/ddca310a-4bbb-487a-842e-b16af525a790.pdf",
+        "previewHtml": "<div class=\"service-attestation-preview-doc\"><p class=\"service-attestation-preview-title\">ATTESTATION DE SERVICEJe soussignée, Madame EWULI SUKA Carine, Directrice des ressources humaines de PPC Barnet DRC Manufacturing SA, atteste par la présente que Monsieur NKOSI LIMA MASUDI BIENVENU Matricule 70000097 est employée dans notre entreprise depuis le 5 novembre 2016 et occupe actuellement le poste de Mining Mobile Equipment Operator au sein du département de Mining.La présente lui est délivrée pour faire valoir ce que de droit.Fait à Kinshasa, le 5 août 2026.EWULI SUKA CarineDirectrice des ressources humaines</p></div>"
+      },
+      "undoable": false,
+      "undone": false
+    },
+    {
       "id": "log-000054",
       "at": "2026-08-05T07:21:51.579Z",
       "userId": "admin",
@@ -8828,5 +8863,5 @@
       }
     }
   ],
-  "nextSeq": 55
+  "nextSeq": 56
 }
