@@ -1,6 +1,20 @@
 {
   "entries": [
     {
+      "id": "log-000054",
+      "at": "2026-08-05T07:21:50.359Z",
+      "userId": "admin",
+      "userName": "Administrateur",
+      "module": "travel.attestation",
+      "moduleLabel": "Attestation de service",
+      "action": "export",
+      "actionLabel": "Export",
+      "summary": "Aperçu PDF attestation masudi",
+      "details": "Aperçu PDF attestation masudi",
+      "undoable": false,
+      "undone": false
+    },
+    {
       "id": "log-000053",
       "at": "2026-08-05T07:20:26.728Z",
       "userId": "admin",
@@ -8814,5 +8828,5 @@
       }
     }
   ],
-  "nextSeq": 54
+  "nextSeq": 55
 }
