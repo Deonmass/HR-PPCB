@@ -1,6 +1,41 @@
 {
   "entries": [
     {
+      "id": "log-000062",
+      "at": "2026-08-05T08:03:22.844Z",
+      "userId": "admin",
+      "userName": "Administrateur",
+      "module": "travel.attestation",
+      "moduleLabel": "Attestation de service",
+      "action": "create",
+      "actionLabel": "Création",
+      "entityType": "travel.attestation",
+      "entityId": "26621454-98b7-4c4c-9692-7604a3138271",
+      "summary": "Création attestation de service — MATOKO PUATI JOEL",
+      "details": "Attestation créée pour MATOKO PUATI JOEL (70000214) — id 26621454-98b7-4c4c-9692-7604a3138271.",
+      "after": {
+        "language": "fr",
+        "documentDate": "2026-08-05",
+        "hodGenre": "Madame",
+        "hodName": "EWULI SUKA Carine",
+        "hodFunction": "Directrice des ressources humaines",
+        "employeeGenre": "Monsieur",
+        "employeeName": "MATOKO PUATI JOEL",
+        "employeeMatricule": "70000214",
+        "dateEmbauche": "2021-08-01",
+        "employeeFunction": "Packaging/Loading Shift Supervisor",
+        "employeeDepartment": "Packaging & Logistics",
+        "id": "26621454-98b7-4c4c-9692-7604a3138271",
+        "createdAt": "2026-08-05T08:03:22.701Z",
+        "fileName": "Attestation_service_MATOKO_PUATI_JOEL_2026-08-05.docx",
+        "docxPath": "/tmp/hr-rh-app/service-attestation/files/26621454-98b7-4c4c-9692-7604a3138271.docx",
+        "pdfPath": "/tmp/hr-rh-app/service-attestation/files/26621454-98b7-4c4c-9692-7604a3138271.pdf",
+        "previewHtml": "<div class=\"service-attestation-preview-doc\"><p class=\"service-attestation-preview-title\">ATTESTATION DE SERVICEJe soussignée, Madame EWULI SUKA Carine, Directrice des ressources humaines de PPC Barnet DRC Manufacturing SA, atteste par la présente que Monsieur MATOKO PUATI JOEL Matricule 70000214 est employée dans notre entreprise depuis le 1 août 2021 et occupe actuellement le poste de Packaging/Loading Shift Supervisor au sein du département de Packaging &amp; Logistics.La présente lui est délivrée pour faire valoir ce que de droit.Fait à Kinshasa, le 5 août 2026.EWULI SUKA CarineDirectrice des ressources humaines</p></div>"
+      },
+      "undoable": false,
+      "undone": false
+    },
+    {
       "id": "log-000061",
       "at": "2026-08-05T08:03:18.943Z",
       "userId": "admin",
@@ -8947,5 +8982,5 @@
       }
     }
   ],
-  "nextSeq": 62
+  "nextSeq": 63
 }
