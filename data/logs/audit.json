@@ -1,6 +1,20 @@
 {
   "entries": [
     {
+      "id": "log-000060",
+      "at": "2026-08-05T07:39:51.431Z",
+      "userId": "admin",
+      "userName": "Administrateur",
+      "module": "travel.attestation",
+      "moduleLabel": "Attestation de service",
+      "action": "export",
+      "actionLabel": "Export",
+      "summary": "Aperçu DOCX attestation MATOKO PUATI JOEL",
+      "details": "Aperçu DOCX attestation MATOKO PUATI JOEL",
+      "undoable": false,
+      "undone": false
+    },
+    {
       "id": "log-000059",
       "at": "2026-08-05T07:39:44.945Z",
       "userId": "admin",
@@ -8919,5 +8933,5 @@
       }
     }
   ],
-  "nextSeq": 60
+  "nextSeq": 61
 }
