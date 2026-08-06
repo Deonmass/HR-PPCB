@@ -1,6 +1,20 @@
 {
   "entries": [
     {
+      "id": "log-000073",
+      "at": "2026-08-06T07:23:08.202Z",
+      "userId": "admin",
+      "userName": "Administrateur",
+      "module": "travel.attestation",
+      "moduleLabel": "Attestation de service",
+      "action": "export",
+      "actionLabel": "Export",
+      "summary": "Téléchargement DOCX attestation NSILU MALUTA NADEGE",
+      "details": "Téléchargement DOCX attestation NSILU MALUTA NADEGE",
+      "undoable": false,
+      "undone": false
+    },
+    {
       "id": "log-000072",
       "at": "2026-08-06T07:23:05.013Z",
       "userId": "admin",
@@ -10362,5 +10376,5 @@
       }
     }
   ],
-  "nextSeq": 73
+  "nextSeq": 74
 }
