@@ -1,6 +1,23 @@
 {
   "entries": [
     {
+      "id": "log-000077",
+      "at": "2026-08-06T07:24:28.004Z",
+      "userId": "admin",
+      "userName": "Administrateur",
+      "module": "travel.attestation",
+      "moduleLabel": "Attestation de service",
+      "action": "delete",
+      "actionLabel": "Suppression",
+      "entityType": "travel.attestation",
+      "entityId": "f6976aa0-a6ad-4d59-80d2-446864e9cbc9",
+      "summary": "Suppression attestation de service f6976aa0-a6ad-4d59-80d2-446864e9cbc9",
+      "details": "Attestation de service « f6976aa0-a6ad-4d59-80d2-446864e9cbc9 » supprimée.",
+      "after": null,
+      "undoable": false,
+      "undone": false
+    },
+    {
       "id": "log-000076",
       "at": "2026-08-06T07:24:17.900Z",
       "userId": "admin",
@@ -10442,5 +10459,5 @@
       }
     }
   ],
-  "nextSeq": 77
+  "nextSeq": 78
 }
