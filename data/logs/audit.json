@@ -1,6 +1,103 @@
 {
   "entries": [
     {
+      "id": "log-000121",
+      "at": "2026-08-07T09:47:42.039Z",
+      "userId": "Serge.Muakasa",
+      "userName": "Serge Muakasa",
+      "userEmail": "Serge.Muakasa@ppcdrc.cd",
+      "module": "charroi.vehicules",
+      "moduleLabel": "Charroi — Véhicules",
+      "action": "update",
+      "actionLabel": "Modification",
+      "entityType": "charroi.vehicule.doc",
+      "entityId": "veh-020",
+      "summary": "Ajout Contrôle technique — 2852AT01",
+      "details": "Période Contrôle technique ajoutée.\nAvant : {\"id\":\"veh-020\",\"numero\":20,\"marque\":\"Toyota\",\"type\":\"Pick up\",\"numeroChassis\":\"AHTFK22G403097456\",\"plaque\":\"2852AT01\",\"cv\":\"13 CV\",\"assureur\":\"Sfa\",\"departement\":\"Safety\",\"user\":\"Joel\",\"province\":\"Kongo Central\",\"proprietaire\":\"PPC\",\"kilometrage\":null,\"miseCirculation\":\"2016\",\"age\":10,\"observationTech\":\"Avertissement\",\"etatManuel\":\"\",\"assuranceHistorique\":[{\"id\":\"doc-msipjt5b-coddo\",\"dateDebut\":\"2025-11-14\",\"dateFin\":\"2026-11-14\",\"preuveUrl\":\"\",\"createdAt\":\"2026-08-07T08:53:41.327Z\"}],\"vignetteHistorique\":[],\"controleTechniqueHistorique\":[],\"assuranceFin\":\"2026-11-14\",\"vignetteFin\":\"\",\"controleTechniqueFin\":\"\",\"notes\":\"\",\"createdAt\":\"2026-07-28T16:00:46.888Z\",\"updatedAt\":\"2026-08-07T09:33:25.727Z\"}\nAprès : {\"id\":\"veh-020\",\"numero\":20,\"marque\":\"Toyota\",\"type\":\"Pick up\",\"numeroChassis\":\"AHTFK22G403097456\",\"plaque\":\"2852AT01\",\"cv\":\"13 CV\",\"assureur\":\"Sfa\",\"departement\":\"Safety\",\"user\":\"Joel\",\"province\":\"Kongo Central\",\"proprietaire\":\"PPC\",\"kilometrage\":null,\"miseCirculation\":\"2016\",\"age\":10,\"observationTech\":\"Avertissement\",\"etatManuel\":\"\",\"assuranceHistorique\":[{\"id\":\"doc-msipjt5b-coddo\",\"dateDebut\":\"2025-11-14\",\"dateFin\":\"2026-11-14\",\"preuveUrl\":\"\",\"createdAt\":\"2026-08-07T08:53:41.327Z\"}],\"vignetteHistorique\":[],\"controleTechniqueHistorique\":[{\"id\":\"doc-msirh8q2-cvcvr\",\"dateDebut\":\"2026-04-17\",\"dateFin\":\"2026-10-17\",\"preuveUrl\":\"\",\"createdAt\":\"2026-08-07T09:47:40.778Z\"}],\"assuranceFin\":\"2026-11-14\",\"vignetteFin\":\"\",\"controleTechniqueFin\":\"2026-10-17\",\"notes\":\"\",\"createdAt\":\"2026-07-28T16:00:46.888Z\",\"updatedAt\":\"2026-08-07T09:47:40.778Z\"}",
+      "before": {
+        "id": "veh-020",
+        "numero": 20,
+        "marque": "Toyota",
+        "type": "Pick up",
+        "numeroChassis": "AHTFK22G403097456",
+        "plaque": "2852AT01",
+        "cv": "13 CV",
+        "assureur": "Sfa",
+        "departement": "Safety",
+        "user": "Joel",
+        "province": "Kongo Central",
+        "proprietaire": "PPC",
+        "kilometrage": null,
+        "miseCirculation": "2016",
+        "age": 10,
+        "observationTech": "Avertissement",
+        "etatManuel": "",
+        "assuranceHistorique": [
+          {
+            "id": "doc-msipjt5b-coddo",
+            "dateDebut": "2025-11-14",
+            "dateFin": "2026-11-14",
+            "preuveUrl": "",
+            "createdAt": "2026-08-07T08:53:41.327Z"
+          }
+        ],
+        "vignetteHistorique": [],
+        "controleTechniqueHistorique": [],
+        "assuranceFin": "2026-11-14",
+        "vignetteFin": "",
+        "controleTechniqueFin": "",
+        "notes": "",
+        "createdAt": "2026-07-28T16:00:46.888Z",
+        "updatedAt": "2026-08-07T09:33:25.727Z"
+      },
+      "after": {
+        "id": "veh-020",
+        "numero": 20,
+        "marque": "Toyota",
+        "type": "Pick up",
+        "numeroChassis": "AHTFK22G403097456",
+        "plaque": "2852AT01",
+        "cv": "13 CV",
+        "assureur": "Sfa",
+        "departement": "Safety",
+        "user": "Joel",
+        "province": "Kongo Central",
+        "proprietaire": "PPC",
+        "kilometrage": null,
+        "miseCirculation": "2016",
+        "age": 10,
+        "observationTech": "Avertissement",
+        "etatManuel": "",
+        "assuranceHistorique": [
+          {
+            "id": "doc-msipjt5b-coddo",
+            "dateDebut": "2025-11-14",
+            "dateFin": "2026-11-14",
+            "preuveUrl": "",
+            "createdAt": "2026-08-07T08:53:41.327Z"
+          }
+        ],
+        "vignetteHistorique": [],
+        "controleTechniqueHistorique": [
+          {
+            "id": "doc-msirh8q2-cvcvr",
+            "dateDebut": "2026-04-17",
+            "dateFin": "2026-10-17",
+            "preuveUrl": "",
+            "createdAt": "2026-08-07T09:47:40.778Z"
+          }
+        ],
+        "assuranceFin": "2026-11-14",
+        "vignetteFin": "",
+        "controleTechniqueFin": "2026-10-17",
+        "notes": "",
+        "createdAt": "2026-07-28T16:00:46.888Z",
+        "updatedAt": "2026-08-07T09:47:40.778Z"
+      },
+      "undoable": false,
+      "undone": false
+    },
+    {
       "id": "log-000120",
       "at": "2026-08-07T09:46:49.548Z",
       "userId": "Serge.Muakasa",
@@ -15384,5 +15481,5 @@
       }
     }
   ],
-  "nextSeq": 121
+  "nextSeq": 122
 }
