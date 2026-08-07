@@ -1,6 +1,103 @@
 {
   "entries": [
     {
+      "id": "log-000137",
+      "at": "2026-08-07T09:55:06.118Z",
+      "userId": "Serge.Muakasa",
+      "userName": "Serge Muakasa",
+      "userEmail": "Serge.Muakasa@ppcdrc.cd",
+      "module": "charroi.vehicules",
+      "moduleLabel": "Charroi — Véhicules",
+      "action": "update",
+      "actionLabel": "Modification",
+      "entityType": "charroi.vehicule.doc",
+      "entityId": "veh-032",
+      "summary": "Ajout Contrôle technique — 0983BM01",
+      "details": "Période Contrôle technique ajoutée.\nAvant : {\"id\":\"veh-032\",\"numero\":32,\"marque\":\"Toyota\",\"type\":\"Hiace\",\"numeroChassis\":\"JTFJK02P705016540\",\"plaque\":\"0983BM01\",\"cv\":\"13CV\",\"assureur\":\"Rawsur\",\"departement\":\"Plant HR\",\"user\":\"Serge M\",\"province\":\"Kongo Central\",\"proprietaire\":\"LOXEA\",\"kilometrage\":null,\"miseCirculation\":\"2023\",\"age\":3,\"observationTech\":\"Bon état\",\"etatManuel\":\"\",\"assuranceHistorique\":[{\"id\":\"doc-msir781b-1npyb\",\"dateDebut\":\"2026-01-31\",\"dateFin\":\"2027-01-31\",\"preuveUrl\":\"\",\"createdAt\":\"2026-08-07T09:39:53.327Z\"}],\"vignetteHistorique\":[],\"controleTechniqueHistorique\":[],\"assuranceFin\":\"2027-01-31\",\"vignetteFin\":\"\",\"controleTechniqueFin\":\"\",\"notes\":\"\",\"createdAt\":\"2026-07-28T16:00:46.888Z\",\"updatedAt\":\"2026-08-07T09:39:53.327Z\"}\nAprès : {\"id\":\"veh-032\",\"numero\":32,\"marque\":\"Toyota\",\"type\":\"Hiace\",\"numeroChassis\":\"JTFJK02P705016540\",\"plaque\":\"0983BM01\",\"cv\":\"13CV\",\"assureur\":\"Rawsur\",\"departement\":\"Plant HR\",\"user\":\"Serge M\",\"province\":\"Kongo Central\",\"proprietaire\":\"LOXEA\",\"kilometrage\":null,\"miseCirculation\":\"2023\",\"age\":3,\"observationTech\":\"Bon état\",\"etatManuel\":\"\",\"assuranceHistorique\":[{\"id\":\"doc-msir781b-1npyb\",\"dateDebut\":\"2026-01-31\",\"dateFin\":\"2027-01-31\",\"preuveUrl\":\"\",\"createdAt\":\"2026-08-07T09:39:53.327Z\"}],\"vignetteHistorique\":[],\"controleTechniqueHistorique\":[{\"id\":\"doc-msirqrhy-fy0m2\",\"dateDebut\":\"2026-02-01\",\"dateFin\":\"2026-08-01\",\"preuveUrl\":\"\",\"createdAt\":\"2026-08-07T09:55:05.014Z\"}],\"assuranceFin\":\"2027-01-31\",\"vignetteFin\":\"\",\"controleTechniqueFin\":\"2026-08-01\",\"notes\":\"\",\"createdAt\":\"2026-07-28T16:00:46.888Z\",\"updatedAt\":\"2026-08-07T09:55:05.014Z\"}",
+      "before": {
+        "id": "veh-032",
+        "numero": 32,
+        "marque": "Toyota",
+        "type": "Hiace",
+        "numeroChassis": "JTFJK02P705016540",
+        "plaque": "0983BM01",
+        "cv": "13CV",
+        "assureur": "Rawsur",
+        "departement": "Plant HR",
+        "user": "Serge M",
+        "province": "Kongo Central",
+        "proprietaire": "LOXEA",
+        "kilometrage": null,
+        "miseCirculation": "2023",
+        "age": 3,
+        "observationTech": "Bon état",
+        "etatManuel": "",
+        "assuranceHistorique": [
+          {
+            "id": "doc-msir781b-1npyb",
+            "dateDebut": "2026-01-31",
+            "dateFin": "2027-01-31",
+            "preuveUrl": "",
+            "createdAt": "2026-08-07T09:39:53.327Z"
+          }
+        ],
+        "vignetteHistorique": [],
+        "controleTechniqueHistorique": [],
+        "assuranceFin": "2027-01-31",
+        "vignetteFin": "",
+        "controleTechniqueFin": "",
+        "notes": "",
+        "createdAt": "2026-07-28T16:00:46.888Z",
+        "updatedAt": "2026-08-07T09:39:53.327Z"
+      },
+      "after": {
+        "id": "veh-032",
+        "numero": 32,
+        "marque": "Toyota",
+        "type": "Hiace",
+        "numeroChassis": "JTFJK02P705016540",
+        "plaque": "0983BM01",
+        "cv": "13CV",
+        "assureur": "Rawsur",
+        "departement": "Plant HR",
+        "user": "Serge M",
+        "province": "Kongo Central",
+        "proprietaire": "LOXEA",
+        "kilometrage": null,
+        "miseCirculation": "2023",
+        "age": 3,
+        "observationTech": "Bon état",
+        "etatManuel": "",
+        "assuranceHistorique": [
+          {
+            "id": "doc-msir781b-1npyb",
+            "dateDebut": "2026-01-31",
+            "dateFin": "2027-01-31",
+            "preuveUrl": "",
+            "createdAt": "2026-08-07T09:39:53.327Z"
+          }
+        ],
+        "vignetteHistorique": [],
+        "controleTechniqueHistorique": [
+          {
+            "id": "doc-msirqrhy-fy0m2",
+            "dateDebut": "2026-02-01",
+            "dateFin": "2026-08-01",
+            "preuveUrl": "",
+            "createdAt": "2026-08-07T09:55:05.014Z"
+          }
+        ],
+        "assuranceFin": "2027-01-31",
+        "vignetteFin": "",
+        "controleTechniqueFin": "2026-08-01",
+        "notes": "",
+        "createdAt": "2026-07-28T16:00:46.888Z",
+        "updatedAt": "2026-08-07T09:55:05.014Z"
+      },
+      "undoable": false,
+      "undone": false
+    },
+    {
       "id": "log-000136",
       "at": "2026-08-07T09:54:29.359Z",
       "userId": "Serge.Muakasa",
@@ -17116,5 +17213,5 @@
       }
     }
   ],
-  "nextSeq": 137
+  "nextSeq": 138
 }
