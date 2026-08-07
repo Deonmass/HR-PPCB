@@ -1252,13 +1252,21 @@
         }
       ],
       "vignetteHistorique": [],
-      "controleTechniqueHistorique": [],
+      "controleTechniqueHistorique": [
+        {
+          "id": "doc-msirpz5s-12coj",
+          "dateDebut": "2026-02-01",
+          "dateFin": "2026-08-01",
+          "preuveUrl": "",
+          "createdAt": "2026-08-07T09:54:28.288Z"
+        }
+      ],
       "assuranceFin": "2027-01-31",
       "vignetteFin": "",
-      "controleTechniqueFin": "",
+      "controleTechniqueFin": "2026-08-01",
       "notes": "",
       "createdAt": "2026-07-28T16:00:46.888Z",
-      "updatedAt": "2026-08-07T09:42:13.420Z"
+      "updatedAt": "2026-08-07T09:54:28.288Z"
     },
     {
       "id": "veh-036",
