@@ -48,13 +48,21 @@
       "etatManuel": "",
       "assuranceHistorique": [],
       "vignetteHistorique": [],
-      "controleTechniqueHistorique": [],
+      "controleTechniqueHistorique": [
+        {
+          "id": "doc-msiprdo7-sln6g",
+          "dateDebut": "2026-04-17",
+          "dateFin": "2026-10-17",
+          "preuveUrl": "",
+          "createdAt": "2026-08-07T08:59:34.519Z"
+        }
+      ],
       "assuranceFin": "",
       "vignetteFin": "",
-      "controleTechniqueFin": "",
+      "controleTechniqueFin": "2026-10-17",
       "notes": "",
       "createdAt": "2026-07-28T16:00:46.888Z",
-      "updatedAt": "2026-07-28T16:00:46.888Z"
+      "updatedAt": "2026-08-07T08:59:34.519Z"
     },
     {
       "id": "veh-003",
