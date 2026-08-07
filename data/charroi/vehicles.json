@@ -987,18 +987,18 @@
       "controleTechniqueHistorique": [
         {
           "id": "doc-msirnfyz-lw6x3",
-          "dateDebut": "2026-02-01",
-          "dateFin": "2026-08-01",
+          "dateDebut": "2026-08-02",
+          "dateFin": "2027-02-02",
           "preuveUrl": "",
           "createdAt": "2026-08-07T09:52:30.107Z"
         }
       ],
       "assuranceFin": "2027-01-31",
       "vignetteFin": "",
-      "controleTechniqueFin": "2026-08-01",
+      "controleTechniqueFin": "2027-02-02",
       "notes": "",
       "createdAt": "2026-07-28T16:00:46.888Z",
-      "updatedAt": "2026-08-07T09:52:30.107Z"
+      "updatedAt": "2026-08-07T12:04:48.195Z"
     },
     {
       "id": "veh-029",
