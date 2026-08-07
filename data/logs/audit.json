@@ -1,6 +1,95 @@
 {
   "entries": [
     {
+      "id": "log-000101",
+      "at": "2026-08-07T09:35:59.129Z",
+      "userId": "Serge.Muakasa",
+      "userName": "Serge Muakasa",
+      "userEmail": "Serge.Muakasa@ppcdrc.cd",
+      "module": "charroi.vehicules",
+      "moduleLabel": "Charroi — Véhicules",
+      "action": "update",
+      "actionLabel": "Modification",
+      "entityType": "charroi.vehicule.doc",
+      "entityId": "veh-024",
+      "summary": "Modification Assurance — 9090AW01",
+      "details": "Période Assurance modifiée (doc-msipnori-musxw).\nAvant : {\"id\":\"veh-024\",\"numero\":24,\"marque\":\"Toyota\",\"type\":\"Pick up\",\"numeroChassis\":\"AHTFK8CB900280200\",\"plaque\":\"9090AW01\",\"cv\":\"13 CV\",\"assureur\":\"Sfa\",\"departement\":\"Warehouse\",\"user\":\"Emmanul\",\"province\":\"Kongo Central\",\"proprietaire\":\"PPC\",\"kilometrage\":null,\"miseCirculation\":\"2016\",\"age\":10,\"observationTech\":\"Avertissement\",\"etatManuel\":\"\",\"assuranceHistorique\":[{\"id\":\"doc-msipnori-musxw\",\"dateDebut\":\"2025-11-03\",\"dateFin\":\"2026-11-03\",\"preuveUrl\":\"\",\"createdAt\":\"2026-08-07T08:56:42.270Z\"}],\"vignetteHistorique\":[],\"controleTechniqueHistorique\":[],\"assuranceFin\":\"2026-11-03\",\"vignetteFin\":\"\",\"controleTechniqueFin\":\"\",\"notes\":\"\",\"createdAt\":\"2026-07-28T16:00:46.888Z\",\"updatedAt\":\"2026-08-07T08:56:42.270Z\"}\nAprès : {\"id\":\"veh-024\",\"numero\":24,\"marque\":\"Toyota\",\"type\":\"Pick up\",\"numeroChassis\":\"AHTFK8CB900280200\",\"plaque\":\"9090AW01\",\"cv\":\"13 CV\",\"assureur\":\"Sfa\",\"departement\":\"Warehouse\",\"user\":\"Emmanul\",\"province\":\"Kongo Central\",\"proprietaire\":\"PPC\",\"kilometrage\":null,\"miseCirculation\":\"2016\",\"age\":10,\"observationTech\":\"Avertissement\",\"etatManuel\":\"\",\"assuranceHistorique\":[{\"id\":\"doc-msipnori-musxw\",\"dateDebut\":\"2025-11-14\",\"dateFin\":\"2026-11-14\",\"preuveUrl\":\"\",\"createdAt\":\"2026-08-07T08:56:42.270Z\"}],\"vignetteHistorique\":[],\"controleTechniqueHistorique\":[],\"assuranceFin\":\"2026-11-14\",\"vignetteFin\":\"\",\"controleTechniqueFin\":\"\",\"notes\":\"\",\"createdAt\":\"2026-07-28T16:00:46.888Z\",\"updatedAt\":\"2026-08-07T09:35:58.111Z\"}",
+      "before": {
+        "id": "veh-024",
+        "numero": 24,
+        "marque": "Toyota",
+        "type": "Pick up",
+        "numeroChassis": "AHTFK8CB900280200",
+        "plaque": "9090AW01",
+        "cv": "13 CV",
+        "assureur": "Sfa",
+        "departement": "Warehouse",
+        "user": "Emmanul",
+        "province": "Kongo Central",
+        "proprietaire": "PPC",
+        "kilometrage": null,
+        "miseCirculation": "2016",
+        "age": 10,
+        "observationTech": "Avertissement",
+        "etatManuel": "",
+        "assuranceHistorique": [
+          {
+            "id": "doc-msipnori-musxw",
+            "dateDebut": "2025-11-03",
+            "dateFin": "2026-11-03",
+            "preuveUrl": "",
+            "createdAt": "2026-08-07T08:56:42.270Z"
+          }
+        ],
+        "vignetteHistorique": [],
+        "controleTechniqueHistorique": [],
+        "assuranceFin": "2026-11-03",
+        "vignetteFin": "",
+        "controleTechniqueFin": "",
+        "notes": "",
+        "createdAt": "2026-07-28T16:00:46.888Z",
+        "updatedAt": "2026-08-07T08:56:42.270Z"
+      },
+      "after": {
+        "id": "veh-024",
+        "numero": 24,
+        "marque": "Toyota",
+        "type": "Pick up",
+        "numeroChassis": "AHTFK8CB900280200",
+        "plaque": "9090AW01",
+        "cv": "13 CV",
+        "assureur": "Sfa",
+        "departement": "Warehouse",
+        "user": "Emmanul",
+        "province": "Kongo Central",
+        "proprietaire": "PPC",
+        "kilometrage": null,
+        "miseCirculation": "2016",
+        "age": 10,
+        "observationTech": "Avertissement",
+        "etatManuel": "",
+        "assuranceHistorique": [
+          {
+            "id": "doc-msipnori-musxw",
+            "dateDebut": "2025-11-14",
+            "dateFin": "2026-11-14",
+            "preuveUrl": "",
+            "createdAt": "2026-08-07T08:56:42.270Z"
+          }
+        ],
+        "vignetteHistorique": [],
+        "controleTechniqueHistorique": [],
+        "assuranceFin": "2026-11-14",
+        "vignetteFin": "",
+        "controleTechniqueFin": "",
+        "notes": "",
+        "createdAt": "2026-07-28T16:00:46.888Z",
+        "updatedAt": "2026-08-07T09:35:58.111Z"
+      },
+      "undoable": false,
+      "undone": false
+    },
+    {
       "id": "log-000100",
       "at": "2026-08-07T09:34:04.775Z",
       "userId": "Serge.Muakasa",
@@ -13351,5 +13440,5 @@
       }
     }
   ],
-  "nextSeq": 101
+  "nextSeq": 102
 }
