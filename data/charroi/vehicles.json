@@ -720,13 +720,21 @@
       "etatManuel": "",
       "assuranceHistorique": [],
       "vignetteHistorique": [],
-      "controleTechniqueHistorique": [],
+      "controleTechniqueHistorique": [
+        {
+          "id": "doc-msiriw1e-ui3w4",
+          "dateDebut": "2026-04-17",
+          "dateFin": "2026-10-17",
+          "preuveUrl": "",
+          "createdAt": "2026-08-07T09:48:57.650Z"
+        }
+      ],
       "assuranceFin": "",
       "vignetteFin": "",
-      "controleTechniqueFin": "",
+      "controleTechniqueFin": "2026-10-17",
       "notes": "",
       "createdAt": "2026-07-28T16:00:46.888Z",
-      "updatedAt": "2026-07-28T16:00:46.888Z"
+      "updatedAt": "2026-08-07T09:48:57.650Z"
     },
     {
       "id": "veh-023",
