@@ -1,6 +1,103 @@
 {
   "entries": [
     {
+      "id": "log-000124",
+      "at": "2026-08-07T09:49:42.202Z",
+      "userId": "Serge.Muakasa",
+      "userName": "Serge Muakasa",
+      "userEmail": "Serge.Muakasa@ppcdrc.cd",
+      "module": "charroi.vehicules",
+      "moduleLabel": "Charroi — Véhicules",
+      "action": "update",
+      "actionLabel": "Modification",
+      "entityType": "charroi.vehicule.doc",
+      "entityId": "veh-023",
+      "summary": "Ajout Contrôle technique — 9088AW01",
+      "details": "Période Contrôle technique ajoutée.\nAvant : {\"id\":\"veh-023\",\"numero\":23,\"marque\":\"Toyota\",\"type\":\"Pick up\",\"numeroChassis\":\"JTELB71J404321213\",\"plaque\":\"9088AW01\",\"cv\":\"13 CV\",\"assureur\":\"Sfa\",\"departement\":\"Eng-Garage\",\"user\":\"Thomas\",\"province\":\"Kongo Central\",\"proprietaire\":\"PPC\",\"kilometrage\":null,\"miseCirculation\":\"2016\",\"age\":10,\"observationTech\":\"Avertissement\",\"etatManuel\":\"\",\"assuranceHistorique\":[{\"id\":\"doc-msipmk1u-p5mux\",\"dateDebut\":\"2025-11-14\",\"dateFin\":\"2026-11-14\",\"preuveUrl\":\"\",\"createdAt\":\"2026-08-07T08:55:49.507Z\"}],\"vignetteHistorique\":[],\"controleTechniqueHistorique\":[],\"assuranceFin\":\"2026-11-14\",\"vignetteFin\":\"\",\"controleTechniqueFin\":\"\",\"notes\":\"\",\"createdAt\":\"2026-07-28T16:00:46.888Z\",\"updatedAt\":\"2026-08-07T09:34:03.795Z\"}\nAprès : {\"id\":\"veh-023\",\"numero\":23,\"marque\":\"Toyota\",\"type\":\"Pick up\",\"numeroChassis\":\"JTELB71J404321213\",\"plaque\":\"9088AW01\",\"cv\":\"13 CV\",\"assureur\":\"Sfa\",\"departement\":\"Eng-Garage\",\"user\":\"Thomas\",\"province\":\"Kongo Central\",\"proprietaire\":\"PPC\",\"kilometrage\":null,\"miseCirculation\":\"2016\",\"age\":10,\"observationTech\":\"Avertissement\",\"etatManuel\":\"\",\"assuranceHistorique\":[{\"id\":\"doc-msipmk1u-p5mux\",\"dateDebut\":\"2025-11-14\",\"dateFin\":\"2026-11-14\",\"preuveUrl\":\"\",\"createdAt\":\"2026-08-07T08:55:49.507Z\"}],\"vignetteHistorique\":[],\"controleTechniqueHistorique\":[{\"id\":\"doc-msirjtpg-04ua7\",\"dateDebut\":\"2026-04-17\",\"dateFin\":\"2026-10-17\",\"preuveUrl\":\"\",\"createdAt\":\"2026-08-07T09:49:41.284Z\"}],\"assuranceFin\":\"2026-11-14\",\"vignetteFin\":\"\",\"controleTechniqueFin\":\"2026-10-17\",\"notes\":\"\",\"createdAt\":\"2026-07-28T16:00:46.888Z\",\"updatedAt\":\"2026-08-07T09:49:41.284Z\"}",
+      "before": {
+        "id": "veh-023",
+        "numero": 23,
+        "marque": "Toyota",
+        "type": "Pick up",
+        "numeroChassis": "JTELB71J404321213",
+        "plaque": "9088AW01",
+        "cv": "13 CV",
+        "assureur": "Sfa",
+        "departement": "Eng-Garage",
+        "user": "Thomas",
+        "province": "Kongo Central",
+        "proprietaire": "PPC",
+        "kilometrage": null,
+        "miseCirculation": "2016",
+        "age": 10,
+        "observationTech": "Avertissement",
+        "etatManuel": "",
+        "assuranceHistorique": [
+          {
+            "id": "doc-msipmk1u-p5mux",
+            "dateDebut": "2025-11-14",
+            "dateFin": "2026-11-14",
+            "preuveUrl": "",
+            "createdAt": "2026-08-07T08:55:49.507Z"
+          }
+        ],
+        "vignetteHistorique": [],
+        "controleTechniqueHistorique": [],
+        "assuranceFin": "2026-11-14",
+        "vignetteFin": "",
+        "controleTechniqueFin": "",
+        "notes": "",
+        "createdAt": "2026-07-28T16:00:46.888Z",
+        "updatedAt": "2026-08-07T09:34:03.795Z"
+      },
+      "after": {
+        "id": "veh-023",
+        "numero": 23,
+        "marque": "Toyota",
+        "type": "Pick up",
+        "numeroChassis": "JTELB71J404321213",
+        "plaque": "9088AW01",
+        "cv": "13 CV",
+        "assureur": "Sfa",
+        "departement": "Eng-Garage",
+        "user": "Thomas",
+        "province": "Kongo Central",
+        "proprietaire": "PPC",
+        "kilometrage": null,
+        "miseCirculation": "2016",
+        "age": 10,
+        "observationTech": "Avertissement",
+        "etatManuel": "",
+        "assuranceHistorique": [
+          {
+            "id": "doc-msipmk1u-p5mux",
+            "dateDebut": "2025-11-14",
+            "dateFin": "2026-11-14",
+            "preuveUrl": "",
+            "createdAt": "2026-08-07T08:55:49.507Z"
+          }
+        ],
+        "vignetteHistorique": [],
+        "controleTechniqueHistorique": [
+          {
+            "id": "doc-msirjtpg-04ua7",
+            "dateDebut": "2026-04-17",
+            "dateFin": "2026-10-17",
+            "preuveUrl": "",
+            "createdAt": "2026-08-07T09:49:41.284Z"
+          }
+        ],
+        "assuranceFin": "2026-11-14",
+        "vignetteFin": "",
+        "controleTechniqueFin": "2026-10-17",
+        "notes": "",
+        "createdAt": "2026-07-28T16:00:46.888Z",
+        "updatedAt": "2026-08-07T09:49:41.284Z"
+      },
+      "undoable": false,
+      "undone": false
+    },
+    {
       "id": "log-000123",
       "at": "2026-08-07T09:48:58.718Z",
       "userId": "Serge.Muakasa",
@@ -15659,5 +15756,5 @@
       }
     }
   ],
-  "nextSeq": 124
+  "nextSeq": 125
 }
