@@ -1122,15 +1122,23 @@
       "age": 9,
       "observationTech": "Avertissement",
       "etatManuel": "",
-      "assuranceHistorique": [],
+      "assuranceHistorique": [
+        {
+          "id": "doc-msira84s-b367l",
+          "dateDebut": "2026-01-31",
+          "dateFin": "2027-01-31",
+          "preuveUrl": "",
+          "createdAt": "2026-08-07T09:42:13.420Z"
+        }
+      ],
       "vignetteHistorique": [],
       "controleTechniqueHistorique": [],
-      "assuranceFin": "",
+      "assuranceFin": "2027-01-31",
       "vignetteFin": "",
       "controleTechniqueFin": "",
       "notes": "",
       "createdAt": "2026-07-28T16:00:46.888Z",
-      "updatedAt": "2026-07-28T16:00:46.888Z"
+      "updatedAt": "2026-08-07T09:42:13.420Z"
     },
     {
       "id": "veh-036",
