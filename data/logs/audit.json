@@ -1,6 +1,103 @@
 {
   "entries": [
     {
+      "id": "log-000138",
+      "at": "2026-08-07T09:55:31.088Z",
+      "userId": "Serge.Muakasa",
+      "userName": "Serge Muakasa",
+      "userEmail": "Serge.Muakasa@ppcdrc.cd",
+      "module": "charroi.vehicules",
+      "moduleLabel": "Charroi — Véhicules",
+      "action": "update",
+      "actionLabel": "Modification",
+      "entityType": "charroi.vehicule.doc",
+      "entityId": "veh-031",
+      "summary": "Ajout Contrôle technique — 9976BK01",
+      "details": "Période Contrôle technique ajoutée.\nAvant : {\"id\":\"veh-031\",\"numero\":31,\"marque\":\"Toyota\",\"type\":\"Pick up\",\"numeroChassis\":\"AHTDK8CD600937091\",\"plaque\":\"9976BK01\",\"cv\":\"13CV\",\"assureur\":\"Rawsur\",\"departement\":\"Project\",\"user\":\"Elias T\",\"province\":\"Kongo Central\",\"proprietaire\":\"LOXEA\",\"kilometrage\":null,\"miseCirculation\":\"2021\",\"age\":5,\"observationTech\":\"Bon état\",\"etatManuel\":\"\",\"assuranceHistorique\":[{\"id\":\"doc-msir6jvq-eun09\",\"dateDebut\":\"2026-01-31\",\"dateFin\":\"2027-01-31\",\"preuveUrl\":\"\",\"createdAt\":\"2026-08-07T09:39:22.022Z\"}],\"vignetteHistorique\":[],\"controleTechniqueHistorique\":[],\"assuranceFin\":\"2027-01-31\",\"vignetteFin\":\"\",\"controleTechniqueFin\":\"\",\"notes\":\"\",\"createdAt\":\"2026-07-28T16:00:46.888Z\",\"updatedAt\":\"2026-08-07T09:39:22.022Z\"}\nAprès : {\"id\":\"veh-031\",\"numero\":31,\"marque\":\"Toyota\",\"type\":\"Pick up\",\"numeroChassis\":\"AHTDK8CD600937091\",\"plaque\":\"9976BK01\",\"cv\":\"13CV\",\"assureur\":\"Rawsur\",\"departement\":\"Project\",\"user\":\"Elias T\",\"province\":\"Kongo Central\",\"proprietaire\":\"LOXEA\",\"kilometrage\":null,\"miseCirculation\":\"2021\",\"age\":5,\"observationTech\":\"Bon état\",\"etatManuel\":\"\",\"assuranceHistorique\":[{\"id\":\"doc-msir6jvq-eun09\",\"dateDebut\":\"2026-01-31\",\"dateFin\":\"2027-01-31\",\"preuveUrl\":\"\",\"createdAt\":\"2026-08-07T09:39:22.022Z\"}],\"vignetteHistorique\":[],\"controleTechniqueHistorique\":[{\"id\":\"doc-msirrasl-yt3ne\",\"dateDebut\":\"2026-02-01\",\"dateFin\":\"2026-08-01\",\"preuveUrl\":\"\",\"createdAt\":\"2026-08-07T09:55:30.021Z\"}],\"assuranceFin\":\"2027-01-31\",\"vignetteFin\":\"\",\"controleTechniqueFin\":\"2026-08-01\",\"notes\":\"\",\"createdAt\":\"2026-07-28T16:00:46.888Z\",\"updatedAt\":\"2026-08-07T09:55:30.021Z\"}",
+      "before": {
+        "id": "veh-031",
+        "numero": 31,
+        "marque": "Toyota",
+        "type": "Pick up",
+        "numeroChassis": "AHTDK8CD600937091",
+        "plaque": "9976BK01",
+        "cv": "13CV",
+        "assureur": "Rawsur",
+        "departement": "Project",
+        "user": "Elias T",
+        "province": "Kongo Central",
+        "proprietaire": "LOXEA",
+        "kilometrage": null,
+        "miseCirculation": "2021",
+        "age": 5,
+        "observationTech": "Bon état",
+        "etatManuel": "",
+        "assuranceHistorique": [
+          {
+            "id": "doc-msir6jvq-eun09",
+            "dateDebut": "2026-01-31",
+            "dateFin": "2027-01-31",
+            "preuveUrl": "",
+            "createdAt": "2026-08-07T09:39:22.022Z"
+          }
+        ],
+        "vignetteHistorique": [],
+        "controleTechniqueHistorique": [],
+        "assuranceFin": "2027-01-31",
+        "vignetteFin": "",
+        "controleTechniqueFin": "",
+        "notes": "",
+        "createdAt": "2026-07-28T16:00:46.888Z",
+        "updatedAt": "2026-08-07T09:39:22.022Z"
+      },
+      "after": {
+        "id": "veh-031",
+        "numero": 31,
+        "marque": "Toyota",
+        "type": "Pick up",
+        "numeroChassis": "AHTDK8CD600937091",
+        "plaque": "9976BK01",
+        "cv": "13CV",
+        "assureur": "Rawsur",
+        "departement": "Project",
+        "user": "Elias T",
+        "province": "Kongo Central",
+        "proprietaire": "LOXEA",
+        "kilometrage": null,
+        "miseCirculation": "2021",
+        "age": 5,
+        "observationTech": "Bon état",
+        "etatManuel": "",
+        "assuranceHistorique": [
+          {
+            "id": "doc-msir6jvq-eun09",
+            "dateDebut": "2026-01-31",
+            "dateFin": "2027-01-31",
+            "preuveUrl": "",
+            "createdAt": "2026-08-07T09:39:22.022Z"
+          }
+        ],
+        "vignetteHistorique": [],
+        "controleTechniqueHistorique": [
+          {
+            "id": "doc-msirrasl-yt3ne",
+            "dateDebut": "2026-02-01",
+            "dateFin": "2026-08-01",
+            "preuveUrl": "",
+            "createdAt": "2026-08-07T09:55:30.021Z"
+          }
+        ],
+        "assuranceFin": "2027-01-31",
+        "vignetteFin": "",
+        "controleTechniqueFin": "2026-08-01",
+        "notes": "",
+        "createdAt": "2026-07-28T16:00:46.888Z",
+        "updatedAt": "2026-08-07T09:55:30.021Z"
+      },
+      "undoable": false,
+      "undone": false
+    },
+    {
       "id": "log-000137",
       "at": "2026-08-07T09:55:06.118Z",
       "userId": "Serge.Muakasa",
@@ -17213,5 +17310,5 @@
       }
     }
   ],
-  "nextSeq": 138
+  "nextSeq": 139
 }
