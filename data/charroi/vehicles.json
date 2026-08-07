@@ -618,15 +618,23 @@
       "age": 12,
       "observationTech": "Avertissement",
       "etatManuel": "Avertissement",
-      "assuranceHistorique": [],
+      "assuranceHistorique": [
+        {
+          "id": "doc-msipl1c5-1brvt",
+          "dateDebut": "2025-11-03",
+          "dateFin": "2026-11-03",
+          "preuveUrl": "",
+          "createdAt": "2026-08-07T08:54:38.597Z"
+        }
+      ],
       "vignetteHistorique": [],
       "controleTechniqueHistorique": [],
-      "assuranceFin": "",
+      "assuranceFin": "2026-11-03",
       "vignetteFin": "",
       "controleTechniqueFin": "",
       "notes": "",
       "createdAt": "2026-07-28T16:00:46.888Z",
-      "updatedAt": "2026-08-07T08:52:12.494Z"
+      "updatedAt": "2026-08-07T08:54:38.597Z"
     },
     {
       "id": "veh-022",
