@@ -1,6 +1,103 @@
 {
   "entries": [
     {
+      "id": "log-000128",
+      "at": "2026-08-07T09:50:38.320Z",
+      "userId": "Serge.Muakasa",
+      "userName": "Serge Muakasa",
+      "userEmail": "Serge.Muakasa@ppcdrc.cd",
+      "module": "charroi.vehicules",
+      "moduleLabel": "Charroi — Véhicules",
+      "action": "update",
+      "actionLabel": "Modification",
+      "entityType": "charroi.vehicule.doc",
+      "entityId": "veh-024",
+      "summary": "Ajout Contrôle technique — 9090AW01",
+      "details": "Période Contrôle technique ajoutée.\nAvant : {\"id\":\"veh-024\",\"numero\":24,\"marque\":\"Toyota\",\"type\":\"Pick up\",\"numeroChassis\":\"AHTFK8CB900280200\",\"plaque\":\"9090AW01\",\"cv\":\"13 CV\",\"assureur\":\"Sfa\",\"departement\":\"Warehouse\",\"user\":\"Emmanul\",\"province\":\"Kongo Central\",\"proprietaire\":\"PPC\",\"kilometrage\":null,\"miseCirculation\":\"2016\",\"age\":10,\"observationTech\":\"Avertissement\",\"etatManuel\":\"\",\"assuranceHistorique\":[{\"id\":\"doc-msipnori-musxw\",\"dateDebut\":\"2025-11-14\",\"dateFin\":\"2026-11-14\",\"preuveUrl\":\"\",\"createdAt\":\"2026-08-07T08:56:42.270Z\"}],\"vignetteHistorique\":[],\"controleTechniqueHistorique\":[],\"assuranceFin\":\"2026-11-14\",\"vignetteFin\":\"\",\"controleTechniqueFin\":\"\",\"notes\":\"\",\"createdAt\":\"2026-07-28T16:00:46.888Z\",\"updatedAt\":\"2026-08-07T09:35:58.111Z\"}\nAprès : {\"id\":\"veh-024\",\"numero\":24,\"marque\":\"Toyota\",\"type\":\"Pick up\",\"numeroChassis\":\"AHTFK8CB900280200\",\"plaque\":\"9090AW01\",\"cv\":\"13 CV\",\"assureur\":\"Sfa\",\"departement\":\"Warehouse\",\"user\":\"Emmanul\",\"province\":\"Kongo Central\",\"proprietaire\":\"PPC\",\"kilometrage\":null,\"miseCirculation\":\"2016\",\"age\":10,\"observationTech\":\"Avertissement\",\"etatManuel\":\"\",\"assuranceHistorique\":[{\"id\":\"doc-msipnori-musxw\",\"dateDebut\":\"2025-11-14\",\"dateFin\":\"2026-11-14\",\"preuveUrl\":\"\",\"createdAt\":\"2026-08-07T08:56:42.270Z\"}],\"vignetteHistorique\":[],\"controleTechniqueHistorique\":[{\"id\":\"doc-msirl0ea-dlhbq\",\"dateDebut\":\"2026-04-17\",\"dateFin\":\"2026-10-17\",\"preuveUrl\":\"\",\"createdAt\":\"2026-08-07T09:50:36.610Z\"}],\"assuranceFin\":\"2026-11-14\",\"vignetteFin\":\"\",\"controleTechniqueFin\":\"2026-10-17\",\"notes\":\"\",\"createdAt\":\"2026-07-28T16:00:46.888Z\",\"updatedAt\":\"2026-08-07T09:50:36.610Z\"}",
+      "before": {
+        "id": "veh-024",
+        "numero": 24,
+        "marque": "Toyota",
+        "type": "Pick up",
+        "numeroChassis": "AHTFK8CB900280200",
+        "plaque": "9090AW01",
+        "cv": "13 CV",
+        "assureur": "Sfa",
+        "departement": "Warehouse",
+        "user": "Emmanul",
+        "province": "Kongo Central",
+        "proprietaire": "PPC",
+        "kilometrage": null,
+        "miseCirculation": "2016",
+        "age": 10,
+        "observationTech": "Avertissement",
+        "etatManuel": "",
+        "assuranceHistorique": [
+          {
+            "id": "doc-msipnori-musxw",
+            "dateDebut": "2025-11-14",
+            "dateFin": "2026-11-14",
+            "preuveUrl": "",
+            "createdAt": "2026-08-07T08:56:42.270Z"
+          }
+        ],
+        "vignetteHistorique": [],
+        "controleTechniqueHistorique": [],
+        "assuranceFin": "2026-11-14",
+        "vignetteFin": "",
+        "controleTechniqueFin": "",
+        "notes": "",
+        "createdAt": "2026-07-28T16:00:46.888Z",
+        "updatedAt": "2026-08-07T09:35:58.111Z"
+      },
+      "after": {
+        "id": "veh-024",
+        "numero": 24,
+        "marque": "Toyota",
+        "type": "Pick up",
+        "numeroChassis": "AHTFK8CB900280200",
+        "plaque": "9090AW01",
+        "cv": "13 CV",
+        "assureur": "Sfa",
+        "departement": "Warehouse",
+        "user": "Emmanul",
+        "province": "Kongo Central",
+        "proprietaire": "PPC",
+        "kilometrage": null,
+        "miseCirculation": "2016",
+        "age": 10,
+        "observationTech": "Avertissement",
+        "etatManuel": "",
+        "assuranceHistorique": [
+          {
+            "id": "doc-msipnori-musxw",
+            "dateDebut": "2025-11-14",
+            "dateFin": "2026-11-14",
+            "preuveUrl": "",
+            "createdAt": "2026-08-07T08:56:42.270Z"
+          }
+        ],
+        "vignetteHistorique": [],
+        "controleTechniqueHistorique": [
+          {
+            "id": "doc-msirl0ea-dlhbq",
+            "dateDebut": "2026-04-17",
+            "dateFin": "2026-10-17",
+            "preuveUrl": "",
+            "createdAt": "2026-08-07T09:50:36.610Z"
+          }
+        ],
+        "assuranceFin": "2026-11-14",
+        "vignetteFin": "",
+        "controleTechniqueFin": "2026-10-17",
+        "notes": "",
+        "createdAt": "2026-07-28T16:00:46.888Z",
+        "updatedAt": "2026-08-07T09:50:36.610Z"
+      },
+      "undoable": false,
+      "undone": false
+    },
+    {
       "id": "log-000127",
       "at": "2026-08-07T09:50:35.950Z",
       "userId": "admin",
@@ -16194,5 +16291,5 @@
       }
     }
   ],
-  "nextSeq": 128
+  "nextSeq": 129
 }
