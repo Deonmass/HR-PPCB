@@ -516,8 +516,8 @@
       "kilometrage": null,
       "miseCirculation": "2016",
       "age": 10,
-      "observationTech": "Avertissement",
-      "etatManuel": "",
+      "observationTech": "A déclasser",
+      "etatManuel": "A déclasser",
       "assuranceHistorique": [],
       "vignetteHistorique": [],
       "controleTechniqueHistorique": [],
@@ -526,7 +526,7 @@
       "controleTechniqueFin": "",
       "notes": "",
       "createdAt": "2026-07-28T16:00:46.888Z",
-      "updatedAt": "2026-07-28T16:00:46.888Z"
+      "updatedAt": "2026-08-07T08:52:37.503Z"
     },
     {
       "id": "veh-019",
