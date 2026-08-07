@@ -410,15 +410,23 @@
       "age": 9,
       "observationTech": "Avertissement",
       "etatManuel": "",
-      "assuranceHistorique": [],
+      "assuranceHistorique": [
+        {
+          "id": "doc-msipbw3i-gkmt6",
+          "dateDebut": "2025-11-03",
+          "dateFin": "2026-11-03",
+          "preuveUrl": "",
+          "createdAt": "2026-08-07T08:47:31.902Z"
+        }
+      ],
       "vignetteHistorique": [],
       "controleTechniqueHistorique": [],
-      "assuranceFin": "",
+      "assuranceFin": "2026-11-03",
       "vignetteFin": "",
       "controleTechniqueFin": "",
       "notes": "",
       "createdAt": "2026-07-28T16:00:46.888Z",
-      "updatedAt": "2026-07-28T16:00:46.888Z"
+      "updatedAt": "2026-08-07T08:47:31.902Z"
     },
     {
       "id": "veh-016",
