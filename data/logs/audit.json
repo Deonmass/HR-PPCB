@@ -1,6 +1,87 @@
 {
   "entries": [
     {
+      "id": "log-000083",
+      "at": "2026-08-07T08:50:34.685Z",
+      "userId": "Serge.Muakasa",
+      "userName": "Serge Muakasa",
+      "userEmail": "Serge.Muakasa@ppcdrc.cd",
+      "module": "charroi.vehicules",
+      "moduleLabel": "Charroi — Véhicules",
+      "action": "update",
+      "actionLabel": "Modification",
+      "entityType": "charroi.vehicule.doc",
+      "entityId": "veh-019",
+      "summary": "Ajout Assurance — 2185AV01",
+      "details": "Période Assurance ajoutée.\nAvant : {\"id\":\"veh-019\",\"numero\":19,\"marque\":\"Toyota\",\"type\":\"Pick up\",\"numeroChassis\":\"AHTFK22GT03095297\",\"plaque\":\"2185AV01\",\"cv\":\"13 CV\",\"assureur\":\"Sfa\",\"departement\":\"Environment\",\"user\":\"Véhicule de secours\",\"province\":\"Kongo Central\",\"proprietaire\":\"PPC\",\"kilometrage\":null,\"miseCirculation\":\"2016\",\"age\":10,\"observationTech\":\"Avertissement\",\"etatManuel\":\"\",\"assuranceHistorique\":[],\"vignetteHistorique\":[],\"controleTechniqueHistorique\":[],\"assuranceFin\":\"\",\"vignetteFin\":\"\",\"controleTechniqueFin\":\"\",\"notes\":\"\",\"createdAt\":\"2026-07-28T16:00:46.888Z\",\"updatedAt\":\"2026-07-28T16:00:46.888Z\"}\nAprès : {\"id\":\"veh-019\",\"numero\":19,\"marque\":\"Toyota\",\"type\":\"Pick up\",\"numeroChassis\":\"AHTFK22GT03095297\",\"plaque\":\"2185AV01\",\"cv\":\"13 CV\",\"assureur\":\"Sfa\",\"departement\":\"Environment\",\"user\":\"Véhicule de secours\",\"province\":\"Kongo Central\",\"proprietaire\":\"PPC\",\"kilometrage\":null,\"miseCirculation\":\"2016\",\"age\":10,\"observationTech\":\"Avertissement\",\"etatManuel\":\"\",\"assuranceHistorique\":[{\"id\":\"doc-msipfsdf-9df3d\",\"dateDebut\":\"2025-11-03\",\"dateFin\":\"2026-11-03\",\"preuveUrl\":\"\",\"createdAt\":\"2026-08-07T08:50:33.699Z\"}],\"vignetteHistorique\":[],\"controleTechniqueHistorique\":[],\"assuranceFin\":\"2026-11-03\",\"vignetteFin\":\"\",\"controleTechniqueFin\":\"\",\"notes\":\"\",\"createdAt\":\"2026-07-28T16:00:46.888Z\",\"updatedAt\":\"2026-08-07T08:50:33.699Z\"}",
+      "before": {
+        "id": "veh-019",
+        "numero": 19,
+        "marque": "Toyota",
+        "type": "Pick up",
+        "numeroChassis": "AHTFK22GT03095297",
+        "plaque": "2185AV01",
+        "cv": "13 CV",
+        "assureur": "Sfa",
+        "departement": "Environment",
+        "user": "Véhicule de secours",
+        "province": "Kongo Central",
+        "proprietaire": "PPC",
+        "kilometrage": null,
+        "miseCirculation": "2016",
+        "age": 10,
+        "observationTech": "Avertissement",
+        "etatManuel": "",
+        "assuranceHistorique": [],
+        "vignetteHistorique": [],
+        "controleTechniqueHistorique": [],
+        "assuranceFin": "",
+        "vignetteFin": "",
+        "controleTechniqueFin": "",
+        "notes": "",
+        "createdAt": "2026-07-28T16:00:46.888Z",
+        "updatedAt": "2026-07-28T16:00:46.888Z"
+      },
+      "after": {
+        "id": "veh-019",
+        "numero": 19,
+        "marque": "Toyota",
+        "type": "Pick up",
+        "numeroChassis": "AHTFK22GT03095297",
+        "plaque": "2185AV01",
+        "cv": "13 CV",
+        "assureur": "Sfa",
+        "departement": "Environment",
+        "user": "Véhicule de secours",
+        "province": "Kongo Central",
+        "proprietaire": "PPC",
+        "kilometrage": null,
+        "miseCirculation": "2016",
+        "age": 10,
+        "observationTech": "Avertissement",
+        "etatManuel": "",
+        "assuranceHistorique": [
+          {
+            "id": "doc-msipfsdf-9df3d",
+            "dateDebut": "2025-11-03",
+            "dateFin": "2026-11-03",
+            "preuveUrl": "",
+            "createdAt": "2026-08-07T08:50:33.699Z"
+          }
+        ],
+        "vignetteHistorique": [],
+        "controleTechniqueHistorique": [],
+        "assuranceFin": "2026-11-03",
+        "vignetteFin": "",
+        "controleTechniqueFin": "",
+        "notes": "",
+        "createdAt": "2026-07-28T16:00:46.888Z",
+        "updatedAt": "2026-08-07T08:50:33.699Z"
+      },
+      "undoable": false,
+      "undone": false
+    },
+    {
       "id": "log-000082",
       "at": "2026-08-07T08:49:50.539Z",
       "userId": "Serge.Muakasa",
@@ -11837,5 +11918,5 @@
       }
     }
   ],
-  "nextSeq": 83
+  "nextSeq": 84
 }
