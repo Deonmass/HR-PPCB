@@ -7,12 +7,37 @@ import PermissionGate from '@/components/PermissionGate';
 import RefreshButton from '@/components/RefreshButton';
 import ActionButtons from '@/components/ActionButtons';
 import RowContextMenu, { type ContextMenuItem } from '@/components/RowContextMenu';
+import TableHeaderFilter from '@/components/TableHeaderFilter';
 import TravelHistoryDetailModal from '@/components/travel/TravelHistoryDetailModal';
 import { IconDataTable, IconEtablir } from '@/components/travel/TravelVoyageIcons';
 import { usePermissions } from '@/contexts/PermissionContext';
 import { extractTravelDepartmentName } from '@/lib/travel-history-utils';
 import type { TravelHistoryData, TravelHistoryRow } from '@/lib/travel-history-types';
 import { confirmDelete, showError } from '@/lib/swal';
+import {
+  buildColumnFilterValues,
+  countActiveColumnFilters,
+  matchesColumnFilter,
+} from '@/lib/table-column-filters';
+
+type FilterKey =
+  | 'date'
+  | 'ref'
+  | 'employee'
+  | 'department'
+  | 'travelDates'
+  | 'tripDays'
+  | 'totalBudget';
+
+const EMPTY_FILTERS: Record<FilterKey, string[]> = {
+  date: [],
+  ref: [],
+  employee: [],
+  department: [],
+  travelDates: [],
+  tripDays: [],
+  totalBudget: [],
+};
 
 function formatDate(value: string): string {
   if (!value) return '—';
@@ -48,6 +73,7 @@ export default function HistoriqueVoyagesPage() {
     row: TravelHistoryRow;
   } | null>(null);
   const [search, setSearch] = useState('');
+  const [colFilters, setColFilters] = useState<Record<FilterKey, string[]>>(EMPTY_FILTERS);
 
   const load = useCallback(async (isRefresh = false) => {
     if (isRefresh) setRefreshing(true);
@@ -152,7 +178,7 @@ export default function HistoriqueVoyagesPage() {
 
   const rows = data?.rows ?? [];
 
-  const filteredRows = useMemo(() => {
+  const toolbarFiltered = useMemo(() => {
     const query = search.trim().toLowerCase();
     if (!query) return rows;
     return rows.filter((row) => {
@@ -168,6 +194,44 @@ export default function HistoriqueVoyagesPage() {
       );
     });
   }, [rows, search]);
+
+  const filterValues = useMemo(
+    () =>
+      buildColumnFilterValues(toolbarFiltered, {
+        date: (row) => formatDate(row.date),
+        ref: (row) => row.ref,
+        employee: (row) => row.employee,
+        department: (row) => extractTravelDepartmentName(row.department),
+        travelDates: (row) => row.travelDates,
+        tripDays: (row) => String(row.tripDays),
+        totalBudget: (row) => formatMoney(row.totalBudget),
+      }),
+    [toolbarFiltered],
+  );
+
+  const filteredRows = useMemo(
+    () =>
+      toolbarFiltered.filter(
+        (row) =>
+          matchesColumnFilter(colFilters.date, formatDate(row.date)) &&
+          matchesColumnFilter(colFilters.ref, row.ref) &&
+          matchesColumnFilter(colFilters.employee, row.employee) &&
+          matchesColumnFilter(
+            colFilters.department,
+            extractTravelDepartmentName(row.department),
+          ) &&
+          matchesColumnFilter(colFilters.travelDates, row.travelDates) &&
+          matchesColumnFilter(colFilters.tripDays, String(row.tripDays)) &&
+          matchesColumnFilter(colFilters.totalBudget, formatMoney(row.totalBudget)),
+      ),
+    [toolbarFiltered, colFilters],
+  );
+
+  const activeFilterCount = useMemo(() => countActiveColumnFilters(colFilters), [colFilters]);
+
+  const setColFilter = (key: FilterKey) => (next: string[]) => {
+    setColFilters((prev) => ({ ...prev, [key]: next }));
+  };
 
   if (loading) return <div className="loading">Chargement...</div>;
 
@@ -227,18 +291,76 @@ export default function HistoriqueVoyagesPage() {
                   <span className="toolbar-count">
                     {filteredRows.length} / {rows.length} mission{rows.length > 1 ? 's' : ''}
                   </span>
+                  {activeFilterCount > 0 ? (
+                    <button
+                      type="button"
+                      className="btn btn-ghost btn-sm"
+                      onClick={() => setColFilters(EMPTY_FILTERS)}
+                    >
+                      Effacer les filtres ({activeFilterCount})
+                    </button>
+                  ) : null}
                 </div>
                 <div className="table-wrap">
                   <table className="travel-history-table">
                     <thead>
                       <tr>
-                        <th>Date</th>
-                        <th>ref</th>
-                        <th>Employé</th>
-                        <th>Département</th>
-                        <th>Dates voyage</th>
-                        <th>Nombre de jours</th>
-                        <th className="travel-history-budget-col">Total budget</th>
+                        <th className="th-filter">
+                          <TableHeaderFilter
+                            label="Date"
+                            values={filterValues.date}
+                            selected={colFilters.date}
+                            onChange={setColFilter('date')}
+                          />
+                        </th>
+                        <th className="th-filter">
+                          <TableHeaderFilter
+                            label="ref"
+                            values={filterValues.ref}
+                            selected={colFilters.ref}
+                            onChange={setColFilter('ref')}
+                          />
+                        </th>
+                        <th className="th-filter">
+                          <TableHeaderFilter
+                            label="Employé"
+                            values={filterValues.employee}
+                            selected={colFilters.employee}
+                            onChange={setColFilter('employee')}
+                          />
+                        </th>
+                        <th className="th-filter">
+                          <TableHeaderFilter
+                            label="Département"
+                            values={filterValues.department}
+                            selected={colFilters.department}
+                            onChange={setColFilter('department')}
+                          />
+                        </th>
+                        <th className="th-filter">
+                          <TableHeaderFilter
+                            label="Dates voyage"
+                            values={filterValues.travelDates}
+                            selected={colFilters.travelDates}
+                            onChange={setColFilter('travelDates')}
+                          />
+                        </th>
+                        <th className="th-filter">
+                          <TableHeaderFilter
+                            label="Nombre de jours"
+                            values={filterValues.tripDays}
+                            selected={colFilters.tripDays}
+                            onChange={setColFilter('tripDays')}
+                          />
+                        </th>
+                        <th className="th-filter travel-history-budget-col">
+                          <TableHeaderFilter
+                            label="Total budget"
+                            values={filterValues.totalBudget}
+                            selected={colFilters.totalBudget}
+                            onChange={setColFilter('totalBudget')}
+                          />
+                        </th>
                         {showHistoryActions && <th className="travel-history-actions-col">Actions</th>}
                       </tr>
                     </thead>

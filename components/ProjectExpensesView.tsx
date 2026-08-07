@@ -4,6 +4,7 @@ import { useMemo, useState } from 'react';
 import ExpenseDetailModal from '@/components/ExpenseDetailModal';
 import ExpensesMonthlyChart from '@/components/ExpensesMonthlyChart';
 import RowContextMenu, { type ContextMenuItem } from '@/components/RowContextMenu';
+import TableHeaderFilter from '@/components/TableHeaderFilter';
 import { usePermissions } from '@/contexts/PermissionContext';
 import {
   aggregateExpensesByMonth,
@@ -11,6 +12,11 @@ import {
   formatUsd,
 } from '@/lib/projects';
 import type { ProjectExpense } from '@/lib/project-types';
+import {
+  buildColumnFilterValues,
+  countActiveColumnFilters,
+  matchesColumnFilter,
+} from '@/lib/table-column-filters';
 
 interface Props {
   expenses: ProjectExpense[];
@@ -20,6 +26,14 @@ interface Props {
   onEdit: (expense: ProjectExpense) => void;
   onDelete: (expense: ProjectExpense) => void;
 }
+
+type FilterKey = 'date' | 'projet' | 'motif';
+
+const EMPTY_FILTERS: Record<FilterKey, string[]> = {
+  date: [],
+  projet: [],
+  motif: [],
+};
 
 export default function ProjectExpensesView({
   expenses,
@@ -32,10 +46,11 @@ export default function ProjectExpensesView({
   const { can } = usePermissions();
   const [selected, setSelected] = useState<ProjectExpense | null>(null);
   const [contextMenu, setContextMenu] = useState<{ x: number; y: number; expense: ProjectExpense } | null>(null);
+  const [colFilters, setColFilters] = useState<Record<FilterKey, string[]>>(EMPTY_FILTERS);
 
   const validExpenses = useMemo(() => filterValidExpenses(expenses), [expenses]);
 
-  const filtered = useMemo(() => {
+  const toolbarFiltered = useMemo(() => {
     const q = search.toLowerCase().trim();
     return validExpenses.filter((e) => {
       const parsedYear = e.date.split('/')[2];
@@ -49,6 +64,33 @@ export default function ProjectExpensesView({
       return matchSearch && matchProjet && matchYear;
     });
   }, [validExpenses, search, projet, year]);
+
+  const filterValues = useMemo(
+    () =>
+      buildColumnFilterValues(toolbarFiltered, {
+        date: (e) => e.date,
+        projet: (e) => e.projet,
+        motif: (e) => e.motif,
+      }),
+    [toolbarFiltered],
+  );
+
+  const filtered = useMemo(
+    () =>
+      toolbarFiltered.filter(
+        (e) =>
+          matchesColumnFilter(colFilters.date, e.date) &&
+          matchesColumnFilter(colFilters.projet, e.projet) &&
+          matchesColumnFilter(colFilters.motif, e.motif),
+      ),
+    [toolbarFiltered, colFilters],
+  );
+
+  const activeFilterCount = useMemo(() => countActiveColumnFilters(colFilters), [colFilters]);
+
+  const setColFilter = (key: FilterKey) => (next: string[]) => {
+    setColFilters((prev) => ({ ...prev, [key]: next }));
+  };
 
   const chartMonths = useMemo(
     () => aggregateExpensesByMonth(validExpenses, year),
@@ -110,6 +152,18 @@ export default function ProjectExpensesView({
     <>
       <ExpensesMonthlyChart months={chartMonths} year={year} />
 
+      {activeFilterCount > 0 ? (
+        <div style={{ marginBottom: '0.5rem' }}>
+          <button
+            type="button"
+            className="btn btn-ghost btn-sm"
+            onClick={() => setColFilters(EMPTY_FILTERS)}
+          >
+            Effacer les filtres ({activeFilterCount})
+          </button>
+        </div>
+      ) : null}
+
       <div className="projects-table-shell expenses-table-shell">
         <div className="projects-table-scroll">
           <table className="project-table">
@@ -123,9 +177,30 @@ export default function ProjectExpensesView({
             <thead>
               <tr>
                 <th>N°</th>
-                <th>Date</th>
-                <th>Projet</th>
-                <th>Motif</th>
+                <th className="th-filter">
+                  <TableHeaderFilter
+                    label="Date"
+                    values={filterValues.date}
+                    selected={colFilters.date}
+                    onChange={setColFilter('date')}
+                  />
+                </th>
+                <th className="th-filter">
+                  <TableHeaderFilter
+                    label="Projet"
+                    values={filterValues.projet}
+                    selected={colFilters.projet}
+                    onChange={setColFilter('projet')}
+                  />
+                </th>
+                <th className="th-filter">
+                  <TableHeaderFilter
+                    label="Motif"
+                    values={filterValues.motif}
+                    selected={colFilters.motif}
+                    onChange={setColFilter('motif')}
+                  />
+                </th>
                 <th className="text-right">Budget dépensé</th>
               </tr>
             </thead>

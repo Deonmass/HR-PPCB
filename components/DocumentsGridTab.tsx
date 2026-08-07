@@ -1,6 +1,7 @@
 'use client';
 
 import { useCallback, useMemo, useRef, useState } from 'react';
+import TableHeaderFilter from '@/components/TableHeaderFilter';
 import {
   DOCUMENT_FIELDS,
   calcCellAggregateStats,
@@ -8,6 +9,11 @@ import {
   normalizeDocStatus,
 } from '@/lib/documents';
 import { buildInspectionAggregateLines } from '@/lib/audit-formulas';
+import {
+  buildColumnFilterValues,
+  countActiveColumnFilters,
+  matchesColumnFilter,
+} from '@/lib/table-column-filters';
 import type { DocStatus, Employee } from '@/lib/types';
 import AuditFormulaTooltip from './AuditFormulaTooltip';
 import CriterionTooltip from './CriterionTooltip';
@@ -18,6 +24,14 @@ interface Props {
   onUpdate: (employee: Employee) => void;
   readOnly?: boolean;
 }
+
+type FilterKey = 'matricule' | 'nom' | 'departement';
+
+const EMPTY_FILTERS: Record<FilterKey, string[]> = {
+  matricule: [],
+  nom: [],
+  departement: [],
+};
 
 const STATUS_OPTIONS: { value: DocStatus; label: string }[] = [
   { value: 'Y', label: 'Y' },
@@ -94,21 +108,45 @@ export default function DocumentsGridTab({
 }: Props) {
   const [saving, setSaving] = useState<string | null>(null);
   const [toast, setToast] = useState<string | null>(null);
+  const [colFilters, setColFilters] = useState<Record<FilterKey, string[]>>(EMPTY_FILTERS);
   const scrollRef = useRef<HTMLDivElement>(null);
 
+  const filterValues = useMemo(
+    () =>
+      buildColumnFilterValues(filteredEmployees, {
+        matricule: (e) => e.matricule,
+        nom: (e) => e.nom,
+        departement: (e) => e.departement,
+      }),
+    [filteredEmployees],
+  );
+
+  const columnFiltered = useMemo(
+    () =>
+      filteredEmployees.filter(
+        (e) =>
+          matchesColumnFilter(colFilters.matricule, e.matricule) &&
+          matchesColumnFilter(colFilters.nom, e.nom) &&
+          matchesColumnFilter(colFilters.departement, e.departement),
+      ),
+    [filteredEmployees, colFilters],
+  );
+
+  const activeFilterCount = useMemo(() => countActiveColumnFilters(colFilters), [colFilters]);
+
   const sorted = useMemo(() => {
-    let list = filteredEmployees.map((e) => ({ emp: e, row: calcRowCellStats(e) }));
+    let list = columnFiltered.map((e) => ({ emp: e, row: calcRowCellStats(e) }));
 
     if (sort === 'pct-asc') list.sort((a, b) => a.row.rate - b.row.rate);
     else if (sort === 'pct-desc') list.sort((a, b) => b.row.rate - a.row.rate);
     else list.sort((a, b) => a.emp.nom.localeCompare(b.emp.nom, 'fr'));
 
     return list;
-  }, [filteredEmployees, sort]);
+  }, [columnFiltered, sort]);
 
   const aggregate = useMemo(
-    () => calcCellAggregateStats(filteredEmployees),
-    [filteredEmployees],
+    () => calcCellAggregateStats(columnFiltered),
+    [columnFiltered],
   );
 
   const globalFormulaLines = useMemo(
@@ -152,13 +190,48 @@ export default function DocumentsGridTab({
       {toast && <div className="toast">{toast}</div>}
 
       <div className="panel grid-panel">
+        {activeFilterCount > 0 ? (
+          <div className="factures-suivi-filter-bar">
+            <button
+              type="button"
+              className="btn btn-ghost btn-sm"
+              onClick={() => setColFilters(EMPTY_FILTERS)}
+            >
+              Effacer les filtres ({activeFilterCount})
+            </button>
+            <span className="factures-suivi-toolbar-meta">
+              {columnFiltered.length} / {filteredEmployees.length}
+            </span>
+          </div>
+        ) : null}
         <div className="grid-scroll" ref={scrollRef}>
           <table className="docs-grid-table">
             <thead>
               <tr>
-                <th className="sticky-col col-matricule">Matricule</th>
-                <th className="sticky-col col-nom">Nom & Prénom</th>
-                <th className="sticky-col col-dept">Département</th>
+                <th className="sticky-col col-matricule th-filter">
+                  <TableHeaderFilter
+                    label="Matricule"
+                    values={filterValues.matricule}
+                    selected={colFilters.matricule}
+                    onChange={(next) => setColFilters((p) => ({ ...p, matricule: next }))}
+                  />
+                </th>
+                <th className="sticky-col col-nom th-filter">
+                  <TableHeaderFilter
+                    label="Nom & Prénom"
+                    values={filterValues.nom}
+                    selected={colFilters.nom}
+                    onChange={(next) => setColFilters((p) => ({ ...p, nom: next }))}
+                  />
+                </th>
+                <th className="sticky-col col-dept th-filter">
+                  <TableHeaderFilter
+                    label="Département"
+                    values={filterValues.departement}
+                    selected={colFilters.departement}
+                    onChange={(next) => setColFilters((p) => ({ ...p, departement: next }))}
+                  />
+                </th>
                 {DOCUMENT_FIELDS.map((f, i) => (
                   <DocColHeader key={f.key} index={i + 1} label={f.label} />
                 ))}

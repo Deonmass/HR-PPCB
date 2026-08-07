@@ -11,6 +11,7 @@ import {
   IconUndo,
   IconUnlock,
 } from '@/components/overtime/TimesheetIcons';
+import TableHeaderFilter from '@/components/TableHeaderFilter';
 import { listTimesheetMonthOptions } from '@/lib/timesheet-period';
 import {
   sumCompilationRow,
@@ -31,8 +32,23 @@ import type { TimesheetAccessContext, TimesheetViewScope } from '@/lib/timesheet
 import { TIMESHEET_MENU } from '@/lib/timesheet-permissions';
 import { showError } from '@/lib/swal';
 import type { Employee } from '@/lib/types';
+import {
+  buildColumnFilterValues,
+  countActiveColumnFilters,
+  matchesColumnFilter,
+} from '@/lib/table-column-filters';
 
 const ALL_DEPARTMENTS = '__ALL__';
+
+type ColFilterKey = 'matricule' | 'nom' | 'departement' | 'localisation' | 'grade';
+
+const EMPTY_COL_FILTERS: Record<ColFilterKey, string[]> = {
+  matricule: [],
+  nom: [],
+  departement: [],
+  localisation: [],
+  grade: [],
+};
 
 const OT_SUBCOLS: { key: 'ot13' | 'ot16' | 'ot2' | 'night'; label: string }[] = [
   { key: 'ot13', label: '1.3' },
@@ -122,6 +138,7 @@ export default function TimesheetCompilationView({
   } | null>(null);
   const [hoverPop, setHoverPop] = useState<HoverPop | null>(null);
   const [searchQuery, setSearchQuery] = useState('');
+  const [colFilters, setColFilters] = useState<Record<ColFilterKey, string[]>>(EMPTY_COL_FILTERS);
   const [simulationOpen, setSimulationOpen] = useState(false);
   const hideTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
 
@@ -207,6 +224,7 @@ export default function TimesheetCompilationView({
       setSubTab('sans');
     }
     setReverted(new Set());
+    setColFilters(EMPTY_COL_FILTERS);
   }, [closed, department, selectedMonth]);
 
   const rawRows = useMemo<CompilationRow[]>(() => data?.rows ?? [], [data]);
@@ -238,7 +256,7 @@ export default function TimesheetCompilationView({
     });
   }, [usePolicyView, rawRows, policy, weekChangeMap, reverted]);
 
-  const displayRows = useMemo<CompilationRow[]>(() => {
+  const searchedRows = useMemo<CompilationRow[]>(() => {
     const q = searchQuery.trim().toLowerCase();
     if (!q) return baseRows;
     return baseRows.filter((row) => {
@@ -246,6 +264,37 @@ export default function TimesheetCompilationView({
       return haystack.includes(q);
     });
   }, [baseRows, searchQuery]);
+
+  const filterValues = useMemo(
+    () =>
+      buildColumnFilterValues(searchedRows, {
+        matricule: (row) => row.matricule,
+        nom: (row) => row.nom,
+        departement: (row) => row.departement,
+        localisation: (row) => row.localisation,
+        grade: (row) => row.grade,
+      }),
+    [searchedRows],
+  );
+
+  const displayRows = useMemo<CompilationRow[]>(
+    () =>
+      searchedRows.filter(
+        (row) =>
+          matchesColumnFilter(colFilters.matricule, row.matricule) &&
+          matchesColumnFilter(colFilters.nom, row.nom) &&
+          matchesColumnFilter(colFilters.departement, row.departement) &&
+          matchesColumnFilter(colFilters.localisation, row.localisation) &&
+          matchesColumnFilter(colFilters.grade, row.grade),
+      ),
+    [searchedRows, colFilters],
+  );
+
+  const activeFilterCount = useMemo(() => countActiveColumnFilters(colFilters), [colFilters]);
+
+  const setColFilter = (key: ColFilterKey) => (next: string[]) => {
+    setColFilters((prev) => ({ ...prev, [key]: next }));
+  };
 
   const weeks = data?.weeks ?? [];
 
@@ -415,6 +464,15 @@ export default function TimesheetCompilationView({
           />
         </label>
         <span className="overtime-inline-count">{agentCount} agent(s)</span>
+        {activeFilterCount > 0 ? (
+          <button
+            type="button"
+            className="btn btn-ghost btn-sm"
+            onClick={() => setColFilters(EMPTY_COL_FILTERS)}
+          >
+            Effacer les filtres ({activeFilterCount})
+          </button>
+        ) : null}
       </div>
     ) : null;
 
@@ -492,11 +550,46 @@ export default function TimesheetCompilationView({
               <table className="compilation-table">
                 <thead>
                   <tr>
-                    <th rowSpan={3} className="compilation-fix compilation-fix-mat">Matricule</th>
-                    <th rowSpan={3} className="compilation-fix compilation-fix-name">Employee Name</th>
-                    <th rowSpan={3} className="compilation-left">Departement</th>
-                    <th rowSpan={3} className="compilation-left">Localisation</th>
-                    <th rowSpan={3}>Grade</th>
+                    <th rowSpan={3} className="th-filter compilation-freeze compilation-freeze-mat">
+                      <TableHeaderFilter
+                        label="Matricule"
+                        values={filterValues.matricule}
+                        selected={colFilters.matricule}
+                        onChange={setColFilter('matricule')}
+                      />
+                    </th>
+                    <th rowSpan={3} className="th-filter compilation-freeze compilation-freeze-name">
+                      <TableHeaderFilter
+                        label="Employee Name"
+                        values={filterValues.nom}
+                        selected={colFilters.nom}
+                        onChange={setColFilter('nom')}
+                      />
+                    </th>
+                    <th rowSpan={3} className="th-filter compilation-left">
+                      <TableHeaderFilter
+                        label="Departement"
+                        values={filterValues.departement}
+                        selected={colFilters.departement}
+                        onChange={setColFilter('departement')}
+                      />
+                    </th>
+                    <th rowSpan={3} className="th-filter compilation-left">
+                      <TableHeaderFilter
+                        label="Localisation"
+                        values={filterValues.localisation}
+                        selected={colFilters.localisation}
+                        onChange={setColFilter('localisation')}
+                      />
+                    </th>
+                    <th rowSpan={3} className="th-filter">
+                      <TableHeaderFilter
+                        label="Grade"
+                        values={filterValues.grade}
+                        selected={colFilters.grade}
+                        onChange={setColFilter('grade')}
+                      />
+                    </th>
                     {weeks.map((week) => (
                       <th key={`w-${week.index}`} colSpan={4} className="compilation-group">
                         {week.label}
@@ -508,7 +601,7 @@ export default function TimesheetCompilationView({
                     <th
                       colSpan={5}
                       rowSpan={2}
-                      className="compilation-group compilation-group-total compilation-fix-right-head"
+                      className="compilation-group compilation-group-total compilation-freeze-right-head"
                     >
                       Total Général
                     </th>
@@ -547,8 +640,8 @@ export default function TimesheetCompilationView({
                     const tgValues = [totals.ot13, totals.ot16, totals.ot2, totalNight, grandTotal];
                     return (
                       <tr key={row.matricule}>
-                        <td className="compilation-fix compilation-fix-mat">{row.matricule}</td>
-                        <td className="compilation-fix compilation-fix-name">{row.nom}</td>
+                        <td className="compilation-freeze compilation-freeze-mat">{row.matricule}</td>
+                        <td className="compilation-freeze compilation-freeze-name">{row.nom}</td>
                         <td className="compilation-left">{row.departement}</td>
                         <td className="compilation-left">{row.localisation}</td>
                         <td>{row.grade}</td>
@@ -616,9 +709,8 @@ export default function TimesheetCompilationView({
                 </tbody>
                 <tfoot>
                   <tr className="compilation-total-row">
-                    <td className="compilation-fix compilation-fix-mat" colSpan={2}>
-                      Total général
-                    </td>
+                    <td className="compilation-freeze compilation-freeze-mat">Total général</td>
+                    <td className="compilation-freeze compilation-freeze-name" />
                     <td className="compilation-left" />
                     <td className="compilation-left" />
                     <td />

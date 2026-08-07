@@ -5,6 +5,7 @@ import CardActionMenu from '@/components/CardActionMenu';
 import PermissionGate from '@/components/PermissionGate';
 import RefreshButton from '@/components/RefreshButton';
 import type { ContextMenuItem } from '@/components/RowContextMenu';
+import TableHeaderFilter from '@/components/TableHeaderFilter';
 import WorkVisaDashboard from '@/components/protocol/WorkVisaDashboard';
 import WorkVisaFormDrawer from '@/components/protocol/WorkVisaFormDrawer';
 import { WorkVisaHistoryModal, WorkVisaRenewModal } from '@/components/protocol/WorkVisaModals';
@@ -22,10 +23,40 @@ import type {
 import { WORK_VISA_DOC_LABELS } from '@/lib/work-visa-types';
 import { alertLevelLabel, formatDateFr } from '@/lib/work-visa-validity';
 import { showError, showSuccess } from '@/lib/swal';
+import {
+  buildColumnFilterValues,
+  countActiveColumnFilters,
+  matchesColumnFilter,
+} from '@/lib/table-column-filters';
 
 const MENU = 'protocol.visa-travail';
 
 type Tab = 'dashboard' | 'liste';
+
+type ColFilterKey =
+  | 'matricule'
+  | 'nom'
+  | 'centreCout'
+  | 'nationalite'
+  | 'passeport'
+  | 'visa'
+  | 'carteTravail'
+  | 'vsr'
+  | 'validite'
+  | 'statut';
+
+const EMPTY_COL_FILTERS: Record<ColFilterKey, string[]> = {
+  matricule: [],
+  nom: [],
+  centreCout: [],
+  nationalite: [],
+  passeport: [],
+  visa: [],
+  carteTravail: [],
+  vsr: [],
+  validite: [],
+  statut: [],
+};
 
 type Filters = {
   q: string;
@@ -109,6 +140,7 @@ export default function VisaTravailPage() {
   const [renewKind, setRenewKind] = useState<WorkVisaDocKind | null>(null);
   const [renewDossier, setRenewDossier] = useState<WorkVisaDossierView | null>(null);
   const [historyDossier, setHistoryDossier] = useState<WorkVisaDossierView | null>(null);
+  const [colFilters, setColFilters] = useState<Record<ColFilterKey, string[]>>(EMPTY_COL_FILTERS);
 
   const canCreate = can(MENU, 'create');
   const canEdit = can(MENU, 'edit');
@@ -168,6 +200,111 @@ export default function VisaTravailPage() {
   const dossiers = bundle?.dossiers ?? [];
   const kpis = bundle?.kpis ?? emptyKpis();
   const filterOptions = bundle?.filters ?? { centresCout: [], nationalites: [], sexes: [] };
+
+  const docFilterLabel = (
+    number: string | undefined,
+    expiry: string | undefined,
+    label: string,
+  ) => {
+    const num = (number || '').trim();
+    const exp = formatDateFr(expiry || '');
+    if (num && exp && exp !== '—') return `${num} · ${exp}`;
+    if (num) return num;
+    if (label) return label;
+    return '';
+  };
+
+  const filterValues = useMemo(
+    () =>
+      buildColumnFilterValues(dossiers, {
+        matricule: (row) => row.matricule,
+        nom: (row) => row.displayName,
+        centreCout: (row) => row.centreCout,
+        nationalite: (row) => row.nationalite,
+        passeport: (row) =>
+          docFilterLabel(
+            row.passport.current?.number,
+            row.passport.current?.expiryDate,
+            row.passportValidity.label,
+          ),
+        visa: (row) =>
+          docFilterLabel(
+            row.workVisa.current?.number,
+            row.workVisa.current?.expiryDate,
+            row.workVisaValidity.label,
+          ),
+        carteTravail: (row) =>
+          docFilterLabel(
+            row.workCard.current?.number,
+            row.workCard.current?.expiryDate,
+            row.workCardValidity.label,
+          ),
+        vsr: (row) =>
+          docFilterLabel(
+            row.vsr.current?.number,
+            row.vsr.current?.expiryDate,
+            row.vsrValidity.label,
+          ),
+        validite: (row) => row.workVisaValidity.label,
+        statut: (row) => (row.status === 'actif' ? 'Actif' : 'Inactif'),
+      }),
+    [dossiers],
+  );
+
+  const filteredDossiers = useMemo(
+    () =>
+      dossiers.filter(
+        (row) =>
+          matchesColumnFilter(colFilters.matricule, row.matricule) &&
+          matchesColumnFilter(colFilters.nom, row.displayName) &&
+          matchesColumnFilter(colFilters.centreCout, row.centreCout) &&
+          matchesColumnFilter(colFilters.nationalite, row.nationalite) &&
+          matchesColumnFilter(
+            colFilters.passeport,
+            docFilterLabel(
+              row.passport.current?.number,
+              row.passport.current?.expiryDate,
+              row.passportValidity.label,
+            ),
+          ) &&
+          matchesColumnFilter(
+            colFilters.visa,
+            docFilterLabel(
+              row.workVisa.current?.number,
+              row.workVisa.current?.expiryDate,
+              row.workVisaValidity.label,
+            ),
+          ) &&
+          matchesColumnFilter(
+            colFilters.carteTravail,
+            docFilterLabel(
+              row.workCard.current?.number,
+              row.workCard.current?.expiryDate,
+              row.workCardValidity.label,
+            ),
+          ) &&
+          matchesColumnFilter(
+            colFilters.vsr,
+            docFilterLabel(
+              row.vsr.current?.number,
+              row.vsr.current?.expiryDate,
+              row.vsrValidity.label,
+            ),
+          ) &&
+          matchesColumnFilter(colFilters.validite, row.workVisaValidity.label) &&
+          matchesColumnFilter(
+            colFilters.statut,
+            row.status === 'actif' ? 'Actif' : 'Inactif',
+          ),
+      ),
+    [dossiers, colFilters],
+  );
+
+  const activeFilterCount = useMemo(() => countActiveColumnFilters(colFilters), [colFilters]);
+
+  const setColFilter = (key: ColFilterKey) => (next: string[]) => {
+    setColFilters((prev) => ({ ...prev, [key]: next }));
+  };
 
   const openCreate = () => {
     setEditing(null);
@@ -468,11 +605,22 @@ export default function VisaTravailPage() {
                 Réinitialiser
               </button>
               <span className="toolbar-count">
+                {filteredDossiers.length}
+                {' / '}
                 {dossiers.length}
                 {' '}
                 résultat
                 {dossiers.length > 1 ? 's' : ''}
               </span>
+              {activeFilterCount > 0 ? (
+                <button
+                  type="button"
+                  className="btn btn-ghost btn-sm"
+                  onClick={() => setColFilters(EMPTY_COL_FILTERS)}
+                >
+                  Effacer les filtres ({activeFilterCount})
+                </button>
+              ) : null}
             </div>
 
             <div className="table-wrap">
@@ -482,21 +630,98 @@ export default function VisaTravailPage() {
                 <table className="data-table work-visa-table">
                   <thead>
                     <tr>
-                      <th>Matricule</th>
-                      <th>Nom</th>
-                      <th>Centre de coût</th>
-                      <th>Nationalité</th>
-                      <th>Passeport</th>
-                      <th>Visa</th>
-                      <th>Carte travail</th>
-                      <th>VSR</th>
-                      <th>Validité</th>
-                      <th>Statut</th>
+                      <th className="th-filter">
+                        <TableHeaderFilter
+                          label="Matricule"
+                          values={filterValues.matricule}
+                          selected={colFilters.matricule}
+                          onChange={setColFilter('matricule')}
+                        />
+                      </th>
+                      <th className="th-filter">
+                        <TableHeaderFilter
+                          label="Nom"
+                          values={filterValues.nom}
+                          selected={colFilters.nom}
+                          onChange={setColFilter('nom')}
+                        />
+                      </th>
+                      <th className="th-filter">
+                        <TableHeaderFilter
+                          label="Centre de coût"
+                          values={filterValues.centreCout}
+                          selected={colFilters.centreCout}
+                          onChange={setColFilter('centreCout')}
+                        />
+                      </th>
+                      <th className="th-filter">
+                        <TableHeaderFilter
+                          label="Nationalité"
+                          values={filterValues.nationalite}
+                          selected={colFilters.nationalite}
+                          onChange={setColFilter('nationalite')}
+                        />
+                      </th>
+                      <th className="th-filter">
+                        <TableHeaderFilter
+                          label="Passeport"
+                          values={filterValues.passeport}
+                          selected={colFilters.passeport}
+                          onChange={setColFilter('passeport')}
+                        />
+                      </th>
+                      <th className="th-filter">
+                        <TableHeaderFilter
+                          label="Visa"
+                          values={filterValues.visa}
+                          selected={colFilters.visa}
+                          onChange={setColFilter('visa')}
+                        />
+                      </th>
+                      <th className="th-filter">
+                        <TableHeaderFilter
+                          label="Carte travail"
+                          values={filterValues.carteTravail}
+                          selected={colFilters.carteTravail}
+                          onChange={setColFilter('carteTravail')}
+                        />
+                      </th>
+                      <th className="th-filter">
+                        <TableHeaderFilter
+                          label="VSR"
+                          values={filterValues.vsr}
+                          selected={colFilters.vsr}
+                          onChange={setColFilter('vsr')}
+                        />
+                      </th>
+                      <th className="th-filter">
+                        <TableHeaderFilter
+                          label="Validité"
+                          values={filterValues.validite}
+                          selected={colFilters.validite}
+                          onChange={setColFilter('validite')}
+                        />
+                      </th>
+                      <th className="th-filter">
+                        <TableHeaderFilter
+                          label="Statut"
+                          values={filterValues.statut}
+                          selected={colFilters.statut}
+                          onChange={setColFilter('statut')}
+                        />
+                      </th>
                       <th />
                     </tr>
                   </thead>
                   <tbody>
-                    {dossiers.map((row) => (
+                    {filteredDossiers.length === 0 ? (
+                      <tr>
+                        <td colSpan={11} className="empty-state">
+                          Aucun dossier pour ces filtres de colonne.
+                        </td>
+                      </tr>
+                    ) : (
+                      filteredDossiers.map((row) => (
                       <tr key={row.id} className={row.hasAnyAlert ? 'work-visa-row-alert' : undefined}>
                         <td>{row.matricule}</td>
                         <td>
@@ -559,7 +784,8 @@ export default function VisaTravailPage() {
                           <CardActionMenu items={rowActions(row)} />
                         </td>
                       </tr>
-                    ))}
+                      ))
+                    )}
                   </tbody>
                 </table>
               )}

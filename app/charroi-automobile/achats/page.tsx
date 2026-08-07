@@ -5,6 +5,7 @@ import CardActionMenu from '@/components/CardActionMenu';
 import PermissionGate from '@/components/PermissionGate';
 import RefreshButton from '@/components/RefreshButton';
 import type { ContextMenuItem } from '@/components/RowContextMenu';
+import TableHeaderFilter from '@/components/TableHeaderFilter';
 import { usePermissions } from '@/contexts/PermissionContext';
 import type { CharroiAchat, CharroiAchatStatus } from '@/lib/charroi-types';
 import {
@@ -15,12 +16,42 @@ import {
   toMiseCirculationDateInput,
 } from '@/lib/charroi-types';
 import { confirmDelete, showError, showSuccess } from '@/lib/swal';
+import {
+  buildColumnFilterValues,
+  countActiveColumnFilters,
+  matchesColumnFilter,
+} from '@/lib/table-column-filters';
 
 const MENU = 'charroi.achats';
 const VIEW_ANY = [
   { menuId: MENU, action: 'view' as const },
   { menuId: 'charroi', action: 'view' as const },
 ];
+
+type FilterKey =
+  | 'numero'
+  | 'nature'
+  | 'marque'
+  | 'type'
+  | 'depart'
+  | 'province'
+  | 'secteur'
+  | 'fuel'
+  | 'total'
+  | 'status';
+
+const EMPTY_FILTERS: Record<FilterKey, string[]> = {
+  numero: [],
+  nature: [],
+  marque: [],
+  type: [],
+  depart: [],
+  province: [],
+  secteur: [],
+  fuel: [],
+  total: [],
+  status: [],
+};
 
 type FormState = {
   id: string;
@@ -140,6 +171,7 @@ export default function CharroiAchatsPage() {
   const [refreshing, setRefreshing] = useState(false);
   const [search, setSearch] = useState('');
   const [filterStatus, setFilterStatus] = useState('');
+  const [colFilters, setColFilters] = useState<Record<FilterKey, string[]>>(EMPTY_FILTERS);
   const [modalOpen, setModalOpen] = useState(false);
   const [detail, setDetail] = useState<CharroiAchat | null>(null);
   const [form, setForm] = useState<FormState>(emptyForm);
@@ -190,7 +222,7 @@ export default function CharroiAchatsPage() {
     void load();
   }, [load]);
 
-  const filtered = useMemo(() => {
+  const toolbarFiltered = useMemo(() => {
     const q = search.trim().toLowerCase();
     return items.filter((item) => {
       if (filterStatus && item.status !== filterStatus) return false;
@@ -209,6 +241,47 @@ export default function CharroiAchatsPage() {
       return hay.includes(q);
     });
   }, [items, search, filterStatus]);
+
+  const filterValues = useMemo(
+    () =>
+      buildColumnFilterValues(toolbarFiltered, {
+        numero: (item) => (item.numero == null ? '' : String(item.numero)),
+        nature: (item) => item.nature,
+        marque: (item) => item.marque,
+        type: (item) => item.type,
+        depart: (item) => item.depart,
+        province: (item) => item.province,
+        secteur: (item) => item.secteur,
+        fuel: (item) => formatMoney(item.fuelCost),
+        total: (item) => formatMoney(item.total),
+        status: (item) => statusLabel(item.status),
+      }),
+    [toolbarFiltered],
+  );
+
+  const filtered = useMemo(
+    () =>
+      toolbarFiltered.filter(
+        (item) =>
+          matchesColumnFilter(colFilters.numero, item.numero == null ? '' : String(item.numero)) &&
+          matchesColumnFilter(colFilters.nature, item.nature) &&
+          matchesColumnFilter(colFilters.marque, item.marque) &&
+          matchesColumnFilter(colFilters.type, item.type) &&
+          matchesColumnFilter(colFilters.depart, item.depart) &&
+          matchesColumnFilter(colFilters.province, item.province) &&
+          matchesColumnFilter(colFilters.secteur, item.secteur) &&
+          matchesColumnFilter(colFilters.fuel, formatMoney(item.fuelCost)) &&
+          matchesColumnFilter(colFilters.total, formatMoney(item.total)) &&
+          matchesColumnFilter(colFilters.status, statusLabel(item.status)),
+      ),
+    [toolbarFiltered, colFilters],
+  );
+
+  const activeFilterCount = useMemo(() => countActiveColumnFilters(colFilters), [colFilters]);
+
+  const setColFilter = (key: FilterKey) => (next: string[]) => {
+    setColFilters((prev) => ({ ...prev, [key]: next }));
+  };
 
   const openCreate = () => {
     setForm(emptyForm());
@@ -350,22 +423,101 @@ export default function CharroiAchatsPage() {
               <option key={s.id} value={s.id}>{s.label}</option>
             ))}
           </select>
+          {activeFilterCount > 0 ? (
+            <button
+              type="button"
+              className="btn btn-ghost btn-sm"
+              onClick={() => setColFilters(EMPTY_FILTERS)}
+            >
+              Effacer les filtres ({activeFilterCount})
+            </button>
+          ) : null}
         </div>
 
         <div className="table-wrap charroi-table-wrap">
           <table className="data-table charroi-table">
             <thead>
               <tr>
-                <th>N°</th>
-                <th>Nature</th>
-                <th>Marque</th>
-                <th>Type</th>
-                <th>Départ</th>
-                <th>Province</th>
-                <th>Secteur</th>
-                <th>Fuel</th>
-                <th>Total</th>
-                <th>Statut</th>
+                <th className="th-filter">
+                  <TableHeaderFilter
+                    label="N°"
+                    values={filterValues.numero}
+                    selected={colFilters.numero}
+                    onChange={setColFilter('numero')}
+                  />
+                </th>
+                <th className="th-filter">
+                  <TableHeaderFilter
+                    label="Nature"
+                    values={filterValues.nature}
+                    selected={colFilters.nature}
+                    onChange={setColFilter('nature')}
+                  />
+                </th>
+                <th className="th-filter">
+                  <TableHeaderFilter
+                    label="Marque"
+                    values={filterValues.marque}
+                    selected={colFilters.marque}
+                    onChange={setColFilter('marque')}
+                  />
+                </th>
+                <th className="th-filter">
+                  <TableHeaderFilter
+                    label="Type"
+                    values={filterValues.type}
+                    selected={colFilters.type}
+                    onChange={setColFilter('type')}
+                  />
+                </th>
+                <th className="th-filter">
+                  <TableHeaderFilter
+                    label="Départ"
+                    values={filterValues.depart}
+                    selected={colFilters.depart}
+                    onChange={setColFilter('depart')}
+                  />
+                </th>
+                <th className="th-filter">
+                  <TableHeaderFilter
+                    label="Province"
+                    values={filterValues.province}
+                    selected={colFilters.province}
+                    onChange={setColFilter('province')}
+                  />
+                </th>
+                <th className="th-filter">
+                  <TableHeaderFilter
+                    label="Secteur"
+                    values={filterValues.secteur}
+                    selected={colFilters.secteur}
+                    onChange={setColFilter('secteur')}
+                  />
+                </th>
+                <th className="th-filter">
+                  <TableHeaderFilter
+                    label="Fuel"
+                    values={filterValues.fuel}
+                    selected={colFilters.fuel}
+                    onChange={setColFilter('fuel')}
+                  />
+                </th>
+                <th className="th-filter">
+                  <TableHeaderFilter
+                    label="Total"
+                    values={filterValues.total}
+                    selected={colFilters.total}
+                    onChange={setColFilter('total')}
+                  />
+                </th>
+                <th className="th-filter">
+                  <TableHeaderFilter
+                    label="Statut"
+                    values={filterValues.status}
+                    selected={colFilters.status}
+                    onChange={setColFilter('status')}
+                  />
+                </th>
                 <th />
               </tr>
             </thead>

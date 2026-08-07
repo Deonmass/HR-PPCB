@@ -2,11 +2,17 @@
 
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import RowContextMenu, { type ContextMenuItem } from '@/components/RowContextMenu';
-import SortableTh, { type SortDir } from '@/components/SortableTh';
+import TableHeaderFilter from '@/components/TableHeaderFilter';
+import type { SortDir } from '@/components/SortableTh';
 import { usePermissions } from '@/contexts/PermissionContext';
 import type { Dependant } from '@/lib/dependants-types';
 import { isChildStatut, isSpouseStatut, type FamilyGroup } from '@/lib/dependants-utils';
 import { promptSelect, showError, showSuccess } from '@/lib/swal';
+import {
+  buildColumnFilterValues,
+  countActiveColumnFilters,
+  matchesColumnFilter,
+} from '@/lib/table-column-filters';
 import {
   compareMaisonNumero,
   compareNumber,
@@ -27,6 +33,62 @@ import VillageSkeleton from '@/components/village/VillageSkeleton';
 
 type Tab = 'village' | 'kimpese';
 type SortKey = 'matricule' | 'nom' | 'statut' | 'maison' | 'type' | 'departement' | 'famille';
+type FilterKey = SortKey;
+
+const EMPTY_FILTERS: Record<FilterKey, string[]> = {
+  matricule: [],
+  nom: [],
+  statut: [],
+  maison: [],
+  type: [],
+  departement: [],
+  famille: [],
+};
+
+function FilterSortTh({
+  label,
+  column,
+  sortKey,
+  sortDir,
+  onSort,
+  values,
+  selected,
+  onChange,
+}: {
+  label: string;
+  column: SortKey;
+  sortKey: SortKey;
+  sortDir: SortDir;
+  onSort: (column: string) => void;
+  values: string[];
+  selected: string[];
+  onChange: (next: string[]) => void;
+}) {
+  const active = sortKey === column;
+  return (
+    <th className={`th-filter sortable-th${active ? ' is-sorted' : ''}`}>
+      <div style={{ display: 'flex', alignItems: 'center', gap: 2 }}>
+        <TableHeaderFilter
+          label={label}
+          values={values}
+          selected={selected}
+          onChange={onChange}
+        />
+        <button
+          type="button"
+          className="sortable-th-btn"
+          onClick={() => onSort(column)}
+          title={`Trier par ${label}`}
+          style={{ padding: '0 4px', flexShrink: 0 }}
+        >
+          <span className="sortable-th-icon" aria-hidden>
+            {active ? (sortDir === 'asc' ? '▲' : '▼') : '↕'}
+          </span>
+        </button>
+      </div>
+    </th>
+  );
+}
 
 function CollapseIcon({ open }: { open: boolean }) {
   return (
@@ -66,6 +128,7 @@ export default function VillageListeTab() {
   const [filterDept, setFilterDept] = useState('');
   const [sortKey, setSortKey] = useState<SortKey>('maison');
   const [sortDir, setSortDir] = useState<SortDir>('asc');
+  const [colFilters, setColFilters] = useState<Record<FilterKey, string[]>>(EMPTY_FILTERS);
   const [contextMenu, setContextMenu] = useState<{
     x: number;
     y: number;
@@ -105,6 +168,10 @@ export default function VillageListeTab() {
   useEffect(() => {
     void load();
   }, [load]);
+
+  useEffect(() => {
+    setColFilters(EMPTY_FILTERS);
+  }, [tab]);
 
   const zamba = useMemo(
     () => buildZambaAgentsFromEmployees(employees, dependants),
@@ -153,9 +220,9 @@ export default function VillageListeTab() {
     });
   }, [agents, maisons, villageList]);
 
-  const filteredSortedGroups = useMemo(() => {
+  const toolbarFilteredGroups = useMemo(() => {
     const q = search.trim().toLowerCase();
-    let list = groups.filter((group) => {
+    return groups.filter((group) => {
       const agent = agents.find((a) => a.matricule === group.matricule);
       const maison = agent?.numeroVilla || group.employee.numeroVilla || '';
       const type = agent?.typeMaison || group.employee.typeMaison || '';
@@ -186,6 +253,53 @@ export default function VillageListeTab() {
         .toLowerCase();
       return hay.includes(q);
     });
+  }, [groups, agents, search, filterMaison, maisonQuery, filterType, filterDept]);
+
+  const groupCell = useCallback(
+    (group: FamilyGroup, key: FilterKey): string => {
+      const agent = agents.find((a) => a.matricule === group.matricule);
+      switch (key) {
+        case 'matricule':
+          return group.matricule;
+        case 'nom':
+          return group.employee.nom;
+        case 'statut':
+          return group.employee.statut;
+        case 'maison':
+          return agent?.numeroVilla || group.employee.numeroVilla || '';
+        case 'type':
+          return agent?.typeMaison || group.employee.typeMaison || '';
+        case 'departement':
+          return agent?.departement || group.employee.departement || '';
+        case 'famille':
+          return `${group.famille.length} dépendant${group.famille.length !== 1 ? 's' : ''}`;
+        default:
+          return '';
+      }
+    },
+    [agents],
+  );
+
+  const filterValues = useMemo(
+    () =>
+      buildColumnFilterValues(toolbarFilteredGroups, {
+        matricule: (g) => groupCell(g, 'matricule'),
+        nom: (g) => groupCell(g, 'nom'),
+        statut: (g) => groupCell(g, 'statut'),
+        maison: (g) => groupCell(g, 'maison'),
+        type: (g) => groupCell(g, 'type'),
+        departement: (g) => groupCell(g, 'departement'),
+        famille: (g) => groupCell(g, 'famille'),
+      }),
+    [toolbarFilteredGroups, groupCell],
+  );
+
+  const filteredSortedGroups = useMemo(() => {
+    let list = toolbarFilteredGroups.filter((group) =>
+      (Object.keys(colFilters) as FilterKey[]).every((key) =>
+        matchesColumnFilter(colFilters[key], groupCell(group, key)),
+      ),
+    );
 
     const dir = sortDir === 'asc' ? 1 : -1;
     list = [...list].sort((ga, gb) => {
@@ -229,16 +343,19 @@ export default function VillageListeTab() {
     });
     return list;
   }, [
-    groups,
+    toolbarFilteredGroups,
+    colFilters,
+    groupCell,
     agents,
-    search,
-    filterMaison,
-    maisonQuery,
-    filterType,
-    filterDept,
     sortKey,
     sortDir,
   ]);
+
+  const activeFilterCount = useMemo(() => countActiveColumnFilters(colFilters), [colFilters]);
+
+  const setColFilter = (key: FilterKey) => (next: string[]) => {
+    setColFilters((prev) => ({ ...prev, [key]: next }));
+  };
 
   const employeeVillaKeys = useMemo(() => {
     const set = new Set<string>();
@@ -281,6 +398,18 @@ export default function VillageListeTab() {
         const hay = `${m.occupantExterne} ${m.numero} ${type}`.toLowerCase();
         return hay.includes(q);
       })
+      .filter((m) => {
+        const type = (m.typeMaison || m.taille || '').trim();
+        return (
+          matchesColumnFilter(colFilters.matricule, '') &&
+          matchesColumnFilter(colFilters.nom, formatDisplayName(m.occupantExterne)) &&
+          matchesColumnFilter(colFilters.statut, 'Hors effectif') &&
+          matchesColumnFilter(colFilters.maison, m.numero) &&
+          matchesColumnFilter(colFilters.type, type) &&
+          matchesColumnFilter(colFilters.departement, HORS_EFFECTIF_DEPT) &&
+          matchesColumnFilter(colFilters.famille, '')
+        );
+      })
       .sort((a, b) => {
         if (sortKey === 'maison') {
           return compareMaisonNumero(a.numero, b.numero) * (sortDir === 'asc' ? 1 : -1);
@@ -306,6 +435,7 @@ export default function VillageListeTab() {
     maisonQuery,
     filterType,
     filterDept,
+    colFilters,
     sortKey,
     sortDir,
   ]);
@@ -533,6 +663,15 @@ export default function VillageListeTab() {
               <option key={d} value={d}>{d}</option>
             ))}
           </select>
+          {activeFilterCount > 0 ? (
+            <button
+              type="button"
+              className="btn btn-ghost btn-sm"
+              onClick={() => setColFilters(EMPTY_FILTERS)}
+            >
+              Effacer les filtres ({activeFilterCount})
+            </button>
+          ) : null}
         </div>
 
         <div className="dependants-table-wrap village-liste-table-scroll">
@@ -540,13 +679,76 @@ export default function VillageListeTab() {
             <thead>
               <tr>
                 <th style={{ width: 40 }} />
-                <SortableTh label="Matricule" column="matricule" sortKey={sortKey} sortDir={sortDir} onSort={onSort} />
-                <SortableTh label="Nom" column="nom" sortKey={sortKey} sortDir={sortDir} onSort={onSort} />
-                <SortableTh label="Statut" column="statut" sortKey={sortKey} sortDir={sortDir} onSort={onSort} />
-                <SortableTh label="Maison" column="maison" sortKey={sortKey} sortDir={sortDir} onSort={onSort} />
-                <SortableTh label="Type" column="type" sortKey={sortKey} sortDir={sortDir} onSort={onSort} />
-                <SortableTh label="Département" column="departement" sortKey={sortKey} sortDir={sortDir} onSort={onSort} />
-                <SortableTh label="Famille" column="famille" sortKey={sortKey} sortDir={sortDir} onSort={onSort} />
+                <FilterSortTh
+                  label="Matricule"
+                  column="matricule"
+                  sortKey={sortKey}
+                  sortDir={sortDir}
+                  onSort={onSort}
+                  values={filterValues.matricule}
+                  selected={colFilters.matricule}
+                  onChange={setColFilter('matricule')}
+                />
+                <FilterSortTh
+                  label="Nom"
+                  column="nom"
+                  sortKey={sortKey}
+                  sortDir={sortDir}
+                  onSort={onSort}
+                  values={filterValues.nom}
+                  selected={colFilters.nom}
+                  onChange={setColFilter('nom')}
+                />
+                <FilterSortTh
+                  label="Statut"
+                  column="statut"
+                  sortKey={sortKey}
+                  sortDir={sortDir}
+                  onSort={onSort}
+                  values={filterValues.statut}
+                  selected={colFilters.statut}
+                  onChange={setColFilter('statut')}
+                />
+                <FilterSortTh
+                  label="Maison"
+                  column="maison"
+                  sortKey={sortKey}
+                  sortDir={sortDir}
+                  onSort={onSort}
+                  values={filterValues.maison}
+                  selected={colFilters.maison}
+                  onChange={setColFilter('maison')}
+                />
+                <FilterSortTh
+                  label="Type"
+                  column="type"
+                  sortKey={sortKey}
+                  sortDir={sortDir}
+                  onSort={onSort}
+                  values={filterValues.type}
+                  selected={colFilters.type}
+                  onChange={setColFilter('type')}
+                />
+                <FilterSortTh
+                  label="Département"
+                  column="departement"
+                  sortKey={sortKey}
+                  sortDir={sortDir}
+                  onSort={onSort}
+                  values={filterValues.departement}
+                  selected={colFilters.departement}
+                  onChange={setColFilter('departement')}
+                />
+                <FilterSortTh
+                  label="Famille"
+                  column="famille"
+                  sortKey={sortKey}
+                  sortDir={sortDir}
+                  onSort={onSort}
+                  values={filterValues.famille}
+                  selected={colFilters.famille}
+                  onChange={setColFilter('famille')}
+                />
               </tr>
             </thead>
             <tbody>

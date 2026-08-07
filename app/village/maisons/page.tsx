@@ -6,6 +6,7 @@ import PermissionGate from '@/components/PermissionGate';
 import RefreshButton from '@/components/RefreshButton';
 import RowContextMenu, { type ContextMenuItem } from '@/components/RowContextMenu';
 import SideDrawer from '@/components/SideDrawer';
+import TableHeaderFilter from '@/components/TableHeaderFilter';
 import EmployeePicker, { type EmployeeSelection } from '@/components/EmployeePicker';
 import VillageDashboardTab from '@/components/village/VillageDashboardTab';
 import VillageListeTab from '@/components/village/VillageListeTab';
@@ -16,6 +17,11 @@ import type { Dependant } from '@/lib/dependants-types';
 import type { Employee } from '@/lib/types';
 import { formatDisplayName } from '@/lib/format-display-name';
 import { confirmDelete, showError, showSuccess } from '@/lib/swal';
+import {
+  buildColumnFilterValues,
+  countActiveColumnFilters,
+  matchesColumnFilter,
+} from '@/lib/table-column-filters';
 import { compareMaisonNumero } from '@/lib/table-sort';
 import {
   buildMaisonOccupancy,
@@ -27,6 +33,21 @@ import type { VillageMaison, VillageMaisonOccupancy, VillageTaille } from '@/lib
 
 type Tab = 'dashboard' | 'liste' | 'maisons' | 'vides' | 'tailles' | 'photo';
 type DrawerKind = 'maison' | 'taille';
+type TailleFilterKey = 'code' | 'label' | 'capacite' | 'commentaires';
+type VideFilterKey = 'numero' | 'type' | 'suggestions';
+
+const EMPTY_TAILLE_FILTERS: Record<TailleFilterKey, string[]> = {
+  code: [],
+  label: [],
+  capacite: [],
+  commentaires: [],
+};
+
+const EMPTY_VIDE_FILTERS: Record<VideFilterKey, string[]> = {
+  numero: [],
+  type: [],
+  suggestions: [],
+};
 
 const VILLAGE_PHOTO_SRC = '/img/village.jpg';
 
@@ -305,6 +326,10 @@ function VillageMaisonsPageInner() {
   const [search, setSearch] = useState('');
   const [filterTaille, setFilterTaille] = useState('');
   const [filterStatut, setFilterStatut] = useState('');
+  const [tailleColFilters, setTailleColFilters] =
+    useState<Record<TailleFilterKey, string[]>>(EMPTY_TAILLE_FILTERS);
+  const [videColFilters, setVideColFilters] =
+    useState<Record<VideFilterKey, string[]>>(EMPTY_VIDE_FILTERS);
   const [expandedVides, setExpandedVides] = useState<Record<string, boolean>>({});
   const [contextMenu, setContextMenu] = useState<{
     x: number;
@@ -400,6 +425,8 @@ function VillageMaisonsPageInner() {
     setSearch('');
     setFilterTaille('');
     setFilterStatut('');
+    setTailleColFilters(EMPTY_TAILLE_FILTERS);
+    setVideColFilters(EMPTY_VIDE_FILTERS);
     setDrawerOpen(false);
     setSuggestionOpen(false);
     setHistoryOpen(false);
@@ -645,7 +672,7 @@ function VillageMaisonsPageInner() {
     return [...map.entries()].sort((a, b) => a[0].localeCompare(b[0], 'fr'));
   }, [filteredMaisons, tailles]);
 
-  const filteredTailles = useMemo(() => {
+  const filteredTaillesBase = useMemo(() => {
     const q = search.trim().toLowerCase();
     if (!q) return tailles;
     return tailles.filter((t) =>
@@ -653,7 +680,42 @@ function VillageMaisonsPageInner() {
     );
   }, [tailles, search]);
 
-  const filteredEmptyMaisons = useMemo(() => {
+  const tailleFilterValues = useMemo(
+    () =>
+      buildColumnFilterValues(filteredTaillesBase, {
+        code: (t) => t.code,
+        label: (t) => t.label || t.code,
+        capacite: (t) => (t.capacite == null ? '' : String(t.capacite)),
+        commentaires: (t) => t.commentaires,
+      }),
+    [filteredTaillesBase],
+  );
+
+  const filteredTailles = useMemo(
+    () =>
+      filteredTaillesBase.filter(
+        (t) =>
+          matchesColumnFilter(tailleColFilters.code, t.code) &&
+          matchesColumnFilter(tailleColFilters.label, t.label || t.code) &&
+          matchesColumnFilter(
+            tailleColFilters.capacite,
+            t.capacite == null ? '' : String(t.capacite),
+          ) &&
+          matchesColumnFilter(tailleColFilters.commentaires, t.commentaires),
+      ),
+    [filteredTaillesBase, tailleColFilters],
+  );
+
+  const tailleActiveFilterCount = useMemo(
+    () => countActiveColumnFilters(tailleColFilters),
+    [tailleColFilters],
+  );
+
+  const setTailleColFilter = (key: TailleFilterKey) => (next: string[]) => {
+    setTailleColFilters((prev) => ({ ...prev, [key]: next }));
+  };
+
+  const filteredEmptyMaisonsBase = useMemo(() => {
     const q = search.trim().toLowerCase();
     return emptyMaisons.filter((m) => {
       const tailleLabel = resolveTailleLabel(m.taille, tailles);
@@ -672,6 +734,42 @@ function VillageMaisonsPageInner() {
       return hay.includes(q);
     });
   }, [emptyMaisons, search, filterTaille, tailles, suggestionsByMaison]);
+
+  const videFilterValues = useMemo(
+    () =>
+      buildColumnFilterValues(filteredEmptyMaisonsBase, {
+        numero: (m) => m.numero,
+        type: (m) => m.typeMaison || resolveTailleLabel(m.taille, tailles),
+        suggestions: (m) =>
+          String((suggestionsByMaison.get(m.numero.trim().toLowerCase()) ?? []).length),
+      }),
+    [filteredEmptyMaisonsBase, tailles, suggestionsByMaison],
+  );
+
+  const filteredEmptyMaisons = useMemo(
+    () =>
+      filteredEmptyMaisonsBase.filter((m) => {
+        const type = m.typeMaison || resolveTailleLabel(m.taille, tailles);
+        const sugCount = String(
+          (suggestionsByMaison.get(m.numero.trim().toLowerCase()) ?? []).length,
+        );
+        return (
+          matchesColumnFilter(videColFilters.numero, m.numero) &&
+          matchesColumnFilter(videColFilters.type, type) &&
+          matchesColumnFilter(videColFilters.suggestions, sugCount)
+        );
+      }),
+    [filteredEmptyMaisonsBase, videColFilters, tailles, suggestionsByMaison],
+  );
+
+  const videActiveFilterCount = useMemo(
+    () => countActiveColumnFilters(videColFilters),
+    [videColFilters],
+  );
+
+  const setVideColFilter = (key: VideFilterKey) => (next: string[]) => {
+    setVideColFilters((prev) => ({ ...prev, [key]: next }));
+  };
 
   const openCreateMaison = () => {
     setDrawerKind('maison');
@@ -1156,6 +1254,15 @@ function VillageMaisonsPageInner() {
                 value={search}
                 onChange={(e) => setSearch(e.target.value)}
               />
+              {tailleActiveFilterCount > 0 ? (
+                <button
+                  type="button"
+                  className="btn btn-ghost btn-sm"
+                  onClick={() => setTailleColFilters(EMPTY_TAILLE_FILTERS)}
+                >
+                  Effacer les filtres ({tailleActiveFilterCount})
+                </button>
+              ) : null}
               {canEdit && (
                 <button type="button" className="btn btn-primary" onClick={openCreateTaille}>
                   Nouveau type
@@ -1166,10 +1273,38 @@ function VillageMaisonsPageInner() {
               <table className="dependants-table">
                 <thead>
                   <tr>
-                    <th>Code</th>
-                    <th>Libellé (type de maison)</th>
-                    <th>Capacité</th>
-                    <th>Commentaires</th>
+                    <th className="th-filter">
+                      <TableHeaderFilter
+                        label="Code"
+                        values={tailleFilterValues.code}
+                        selected={tailleColFilters.code}
+                        onChange={setTailleColFilter('code')}
+                      />
+                    </th>
+                    <th className="th-filter">
+                      <TableHeaderFilter
+                        label="Libellé (type de maison)"
+                        values={tailleFilterValues.label}
+                        selected={tailleColFilters.label}
+                        onChange={setTailleColFilter('label')}
+                      />
+                    </th>
+                    <th className="th-filter">
+                      <TableHeaderFilter
+                        label="Capacité"
+                        values={tailleFilterValues.capacite}
+                        selected={tailleColFilters.capacite}
+                        onChange={setTailleColFilter('capacite')}
+                      />
+                    </th>
+                    <th className="th-filter">
+                      <TableHeaderFilter
+                        label="Commentaires"
+                        values={tailleFilterValues.commentaires}
+                        selected={tailleColFilters.commentaires}
+                        onChange={setTailleColFilter('commentaires')}
+                      />
+                    </th>
                   </tr>
                 </thead>
                 <tbody>
@@ -1233,15 +1368,45 @@ function VillageMaisonsPageInner() {
                   Ajouter une suggestion
                 </button>
               )}
+              {videActiveFilterCount > 0 ? (
+                <button
+                  type="button"
+                  className="btn btn-ghost btn-sm"
+                  onClick={() => setVideColFilters(EMPTY_VIDE_FILTERS)}
+                >
+                  Effacer les filtres ({videActiveFilterCount})
+                </button>
+              ) : null}
             </div>
             <div className="village-table-scroll">
               <table className="dependants-table">
                 <thead>
                   <tr>
                     <th style={{ width: 40 }} />
-                    <th>Numéro</th>
-                    <th>Type de maison</th>
-                    <th>Suggestions</th>
+                    <th className="th-filter">
+                      <TableHeaderFilter
+                        label="Numéro"
+                        values={videFilterValues.numero}
+                        selected={videColFilters.numero}
+                        onChange={setVideColFilter('numero')}
+                      />
+                    </th>
+                    <th className="th-filter">
+                      <TableHeaderFilter
+                        label="Type de maison"
+                        values={videFilterValues.type}
+                        selected={videColFilters.type}
+                        onChange={setVideColFilter('type')}
+                      />
+                    </th>
+                    <th className="th-filter">
+                      <TableHeaderFilter
+                        label="Suggestions"
+                        values={videFilterValues.suggestions}
+                        selected={videColFilters.suggestions}
+                        onChange={setVideColFilter('suggestions')}
+                      />
+                    </th>
                     {canEdit ? <th style={{ width: 120 }} /> : null}
                   </tr>
                 </thead>

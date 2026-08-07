@@ -7,6 +7,7 @@ import { SidebarProvider } from '@/components/SidebarContext';
 import { PermissionProvider } from '@/contexts/PermissionContext';
 import { ThemeProvider } from '@/contexts/ThemeContext';
 import ThemeSwitchOverlay from '@/components/ThemeSwitchOverlay';
+import TopProgressBarHost from '@/components/TopProgressBarHost';
 
 export default function AppShell({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
@@ -15,6 +16,7 @@ export default function AppShell({ children }: { children: React.ReactNode }) {
   return (
     <ThemeProvider>
       <ThemeSwitchOverlay />
+      <TopProgressBarHost />
       {isLogin ? (
         children
       ) : (

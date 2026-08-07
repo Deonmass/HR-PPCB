@@ -109,6 +109,117 @@ function toChartItems(rows: { label: string; count: number }[]) {
   return rows.map((r) => ({ label: r.label, value: r.count }));
 }
 
+function topRow(rows: { label: string; count: number }[] | undefined) {
+  return rows?.find((r) => r.count > 0) ?? rows?.[0] ?? null;
+}
+
+function formatKpiMeta(
+  key: (typeof KPI_META)[number]['key'],
+  stats: ReturnType<typeof buildEmployeesHrDashboard>,
+): { lines: string[]; barPct?: number; barClass?: string } {
+  const topSite = topRow(stats.parLocalisation);
+  const topCompany = topRow(stats.parCompany);
+  const topDept = topRow(stats.parDepartement);
+  const topGrade = topRow(stats.parGrade);
+  const topAgeBand = topRow(stats.parTrancheAge);
+  const topCddDept = topRow(stats.cddParDepartement);
+  const topExitReason = topRow(stats.exitsParRaison);
+  const topEssaiStatut = topRow(stats.essaiParStatut);
+
+  switch (key) {
+    case 'total':
+      return {
+        lines: [
+          topCompany ? `${topCompany.label} · ${topCompany.count}` : 'Aucune company',
+          topSite ? `${topSite.label} en tête (${topSite.count})` : 'Aucun site',
+          stats.moyEnfants != null ? `Moy. enfants ${stats.moyEnfants}` : 'Moy. enfants —',
+        ],
+        barPct: 100,
+        barClass: 'is-red',
+      };
+    case 'hommes':
+      return {
+        lines: [
+          `Ratio H/F ${stats.hommes} / ${stats.femmes}`,
+          `${stats.maries} marié(s) au total`,
+          topGrade ? `Grade dominant ${topGrade.label}` : 'Grade —',
+        ],
+        barPct: stats.total ? (stats.hommes / stats.total) * 100 : 0,
+        barClass: 'is-cyan',
+      };
+    case 'femmes':
+      return {
+        lines: [
+          `Part des effectifs ${stats.total ? ((stats.femmes / stats.total) * 100).toFixed(1).replace(/\.0$/, '') : 0}%`,
+          topDept ? `Dept. dominant ${topDept.label}` : 'Département —',
+          topSite ? `Site dominant ${topSite.label}` : 'Site —',
+        ],
+        barPct: stats.total ? (stats.femmes / stats.total) * 100 : 0,
+        barClass: 'is-pink',
+      };
+    case 'ageMoyen':
+      return {
+        lines: [
+          topAgeBand ? `Tranche dominante ${topAgeBand.label} (${topAgeBand.count})` : 'Tranche —',
+          stats.moyEnfants != null ? `Moy. enfants ${stats.moyEnfants}` : 'Moy. enfants —',
+          `${stats.maries} marié(s)`,
+        ],
+        barPct: stats.ageMoyen != null ? Math.min(100, (stats.ageMoyen / 60) * 100) : 0,
+        barClass: 'is-violet',
+      };
+    case 'totalCdd':
+      return {
+        lines: [
+          topCddDept ? `${topCddDept.label} · ${topCddDept.count}` : 'Aucun département CDD',
+          `Sur ${stats.total} actifs`,
+          stats.totalEssai > 0 ? `${stats.totalEssai} aussi en essai` : 'Aucun essai croisé',
+        ],
+        barPct: stats.total ? (stats.totalCdd / stats.total) * 100 : 0,
+        barClass: 'is-amber',
+      };
+    case 'totalEssai':
+      return {
+        lines: [
+          topEssaiStatut ? `${topEssaiStatut.label} · ${topEssaiStatut.count}` : 'Statut —',
+          stats.alertesEssai > 0
+            ? `${stats.alertesEssai} alerte${stats.alertesEssai > 1 ? 's' : ''} J-30`
+            : 'Aucune alerte J-30',
+          `Sur ${stats.total} actifs`,
+        ],
+        barPct: stats.total ? (stats.totalEssai / stats.total) * 100 : 0,
+        barClass: 'is-violet',
+      };
+    case 'alertesEssai':
+      return {
+        lines: [
+          stats.totalEssai > 0
+            ? `${stats.alertesEssai} / ${stats.totalEssai} essais`
+            : 'Aucune période d’essai',
+          topEssaiStatut ? `Statut courant ${topEssaiStatut.label}` : 'Statut —',
+          stats.alertesEssai > 0 ? 'Action RH recommandée' : 'Situation nominale',
+        ],
+        barPct: stats.totalEssai ? (stats.alertesEssai / stats.totalEssai) * 100 : 0,
+        barClass: 'is-red',
+      };
+    case 'totalExits':
+      return {
+        lines: [
+          topExitReason ? `${topExitReason.label} · ${topExitReason.count}` : 'Aucun motif',
+          stats.exitsParMois.length
+            ? `${stats.exitsParMois[stats.exitsParMois.length - 1]?.label ?? '—'} (dernier mois)`
+            : 'Pas d’historique mensuel',
+          `${stats.total} actifs restants`,
+        ],
+        barPct: stats.total + stats.totalExits
+          ? (stats.totalExits / (stats.total + stats.totalExits)) * 100
+          : 0,
+        barClass: 'is-green',
+      };
+    default:
+      return { lines: [] };
+  }
+}
+
 /** Dashboard RH global — KPIs actifs + sorties. */
 export default function EmployeesHrDashboardView({ employees, exits = [] }: Props) {
   const stats = useMemo(
@@ -208,6 +319,7 @@ export default function EmployeesHrDashboardView({ employees, exits = [] }: Prop
         {KPI_META.map((kpi) => {
           const className = `card card-glow ${kpi.glow} travel-history-card employees-hr-card${kpi.watermark ? ' has-watermark' : ''}${kpi.drill ? ' dependants-kpi-clickable' : ''}${kpi.key === 'alertesEssai' && stats.alertesEssai > 0 ? ' is-alert' : ''}`;
           const pct = pctLabel(kpi.key);
+          const meta = formatKpiMeta(kpi.key, stats);
           const body = (
             <>
               {kpi.watermark && <GenderWatermark variant={kpi.watermark} />}
@@ -217,6 +329,23 @@ export default function EmployeesHrDashboardView({ employees, exits = [] }: Prop
                   {fmt(kpi.key, kpi.format)}
                   {pct ? <span className="employees-hr-card-pct">{pct}</span> : null}
                 </div>
+                {meta.lines.length > 0 ? (
+                  <div className="employees-hr-card-meta">
+                    {meta.lines.map((line) => (
+                      <div key={line} className="employees-hr-card-meta-line" title={line}>
+                        {line}
+                      </div>
+                    ))}
+                  </div>
+                ) : null}
+                {meta.barPct != null ? (
+                  <div className="employees-hr-card-bar" aria-hidden>
+                    <div
+                      className={`employees-hr-card-bar-fill ${meta.barClass ?? ''}`}
+                      style={{ width: `${Math.max(0, Math.min(100, meta.barPct))}%` }}
+                    />
+                  </div>
+                ) : null}
               </div>
             </>
           );

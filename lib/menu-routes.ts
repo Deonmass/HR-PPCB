@@ -14,6 +14,7 @@ export const DOCUMENTS_HUB_MENU_IDS = [
   'documents.exit',
   'documents.entetes',
   'documents.rrf',
+  'documents.newcomer',
 ];
 
 export const ROUTE_MENU_MAP: RouteMenuEntry[] = [
@@ -21,6 +22,7 @@ export const ROUTE_MENU_MAP: RouteMenuEntry[] = [
   { prefix: '/documents/entetes', menuId: 'documents.entetes' },
   { prefix: '/documents/exit', menuId: 'documents.exit' },
   { prefix: '/documents/interim-appraisal', menuId: 'documents.appraisal' },
+  { prefix: '/documents/newcomer', menuId: 'documents.newcomer' },
   { prefix: '/documents', menuId: 'travel.historique' },
   { prefix: '/documents-voyage/attestation-services', menuId: 'travel.attestation' },
   { prefix: '/documents-voyage/payment-voucher', menuId: 'travel.payment-voucher' },
@@ -36,6 +38,9 @@ export const ROUTE_MENU_MAP: RouteMenuEntry[] = [
   { prefix: '/factures-fournisseurs/factures', menuId: 'factures.fournisseur.factures' },
   { prefix: '/factures-fournisseurs/soa', menuId: 'factures.fournisseur.soa' },
   { prefix: '/employes/dependants', menuId: 'employes.dependants' },
+  { prefix: '/employes/offres', menuId: 'employes.offres' },
+  { prefix: '/employes/mouvements', menuId: 'employes.mouvements' },
+  { prefix: '/employes/postes', menuId: 'employes.postes' },
   { prefix: '/parametres/permissions', menuId: 'settings.permissions' },
   { prefix: '/parametres/utilisateurs', menuId: 'settings.utilisateurs' },
   { prefix: '/parametres/centres-de-cout', menuId: 'settings.centres' },
@@ -94,6 +99,24 @@ export function routeViewMenuIds(pathname: string): string[] {
   }
   if (normalized.startsWith('/charroi-automobile/achats')) {
     return ['charroi.achats', 'charroi'];
+  }
+  if (
+    normalized === '/employes/offres'
+    || normalized.startsWith('/employes/offres/')
+  ) {
+    return ['employes.offres', 'employes.liste'];
+  }
+  if (
+    normalized === '/employes/mouvements'
+    || normalized.startsWith('/employes/mouvements/')
+  ) {
+    return ['employes.mouvements', 'employes.liste'];
+  }
+  if (
+    normalized === '/employes/postes'
+    || normalized.startsWith('/employes/postes/')
+  ) {
+    return ['employes.postes', 'employes.liste'];
   }
   if (normalized === '/documents') {
     return [...DOCUMENTS_HUB_MENU_IDS];

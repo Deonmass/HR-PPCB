@@ -6,6 +6,7 @@ import ProjectExpensesModal from '@/components/ProjectExpensesModal';
 import ProjectModal, { type ProjectModalMode } from '@/components/ProjectModal';
 import ProjectStatusBadge from '@/components/ProjectStatusBadge';
 import RowContextMenu, { type ContextMenuItem } from '@/components/RowContextMenu';
+import TableHeaderFilter from '@/components/TableHeaderFilter';
 import { usePermissions } from '@/contexts/PermissionContext';
 import {
   createEmptyExpense,
@@ -16,6 +17,11 @@ import {
 import { emitProjectsBudgetSync } from '@/lib/projects-events';
 import type { ProjectExpense, ProjectRecord } from '@/lib/project-types';
 import { confirmDelete, showError } from '@/lib/swal';
+import {
+  buildColumnFilterValues,
+  countActiveColumnFilters,
+  matchesColumnFilter,
+} from '@/lib/table-column-filters';
 
 interface Props {
   projects: ProjectRecord[];
@@ -27,6 +33,19 @@ interface Props {
   secteur: string;
   statut: string;
 }
+
+type FilterKey = 'projet' | 'lieu' | 'secteur' | 'type' | 'prevu' | 'depense' | 'ecart' | 'statut';
+
+const EMPTY_FILTERS: Record<FilterKey, string[]> = {
+  projet: [],
+  lieu: [],
+  secteur: [],
+  type: [],
+  prevu: [],
+  depense: [],
+  ecart: [],
+  statut: [],
+};
 
 function applyUpdatedProjects(
   projects: ProjectRecord[],
@@ -54,10 +73,11 @@ export default function ProjectsTableView({
   const [expensesModalProject, setExpensesModalProject] = useState<ProjectRecord | null>(null);
   const [expenseFormOpen, setExpenseFormOpen] = useState(false);
   const [expenseFormData, setExpenseFormData] = useState<ProjectExpense | null>(null);
+  const [colFilters, setColFilters] = useState<Record<FilterKey, string[]>>(EMPTY_FILTERS);
 
   const sectors = useMemo(() => getProjectSectors(projects), [projects]);
 
-  const filtered = useMemo(() => {
+  const toolbarFiltered = useMemo(() => {
     const q = search.toLowerCase().trim();
     return projects.filter((p) => {
       const matchSearch =
@@ -71,6 +91,43 @@ export default function ProjectsTableView({
       return matchSearch && matchType && matchSecteur && matchStatut;
     });
   }, [projects, search, type, secteur, statut]);
+
+  const filterValues = useMemo(
+    () =>
+      buildColumnFilterValues(toolbarFiltered, {
+        projet: (p) => p.name,
+        lieu: (p) => p.lieu,
+        secteur: (p) => p.secteur,
+        type: (p) => p.typeProjet,
+        prevu: (p) => formatUsd(p.budgetPrevu),
+        depense: (p) => formatUsd(p.budgetDepense),
+        ecart: (p) => formatUsd(p.ecart),
+        statut: (p) => p.statut,
+      }),
+    [toolbarFiltered],
+  );
+
+  const filtered = useMemo(
+    () =>
+      toolbarFiltered.filter(
+        (p) =>
+          matchesColumnFilter(colFilters.projet, p.name) &&
+          matchesColumnFilter(colFilters.lieu, p.lieu) &&
+          matchesColumnFilter(colFilters.secteur, p.secteur) &&
+          matchesColumnFilter(colFilters.type, p.typeProjet) &&
+          matchesColumnFilter(colFilters.prevu, formatUsd(p.budgetPrevu)) &&
+          matchesColumnFilter(colFilters.depense, formatUsd(p.budgetDepense)) &&
+          matchesColumnFilter(colFilters.ecart, formatUsd(p.ecart)) &&
+          matchesColumnFilter(colFilters.statut, p.statut),
+      ),
+    [toolbarFiltered, colFilters],
+  );
+
+  const activeFilterCount = useMemo(() => countActiveColumnFilters(colFilters), [colFilters]);
+
+  const setColFilter = (key: FilterKey) => (next: string[]) => {
+    setColFilters((prev) => ({ ...prev, [key]: next }));
+  };
 
   const totals = useMemo(
     () =>
@@ -258,6 +315,17 @@ export default function ProjectsTableView({
 
   return (
     <>
+      {activeFilterCount > 0 ? (
+        <div style={{ marginBottom: '0.5rem' }}>
+          <button
+            type="button"
+            className="btn btn-ghost btn-sm"
+            onClick={() => setColFilters(EMPTY_FILTERS)}
+          >
+            Effacer les filtres ({activeFilterCount})
+          </button>
+        </div>
+      ) : null}
       <div className="projects-table-shell">
         <div className="projects-table-scroll">
           <table className="project-table">
@@ -275,14 +343,70 @@ export default function ProjectsTableView({
             <thead>
               <tr>
                 <th>N°</th>
-                <th>Projet</th>
-                <th>Lieu</th>
-                <th>Secteur</th>
-                <th>Type</th>
-                <th className="text-right">Prévu</th>
-                <th className="text-right">Dépensé</th>
-                <th className="text-right">Écart</th>
-                <th className="text-center">Statut</th>
+                <th className="th-filter">
+                  <TableHeaderFilter
+                    label="Projet"
+                    values={filterValues.projet}
+                    selected={colFilters.projet}
+                    onChange={setColFilter('projet')}
+                  />
+                </th>
+                <th className="th-filter">
+                  <TableHeaderFilter
+                    label="Lieu"
+                    values={filterValues.lieu}
+                    selected={colFilters.lieu}
+                    onChange={setColFilter('lieu')}
+                  />
+                </th>
+                <th className="th-filter">
+                  <TableHeaderFilter
+                    label="Secteur"
+                    values={filterValues.secteur}
+                    selected={colFilters.secteur}
+                    onChange={setColFilter('secteur')}
+                  />
+                </th>
+                <th className="th-filter">
+                  <TableHeaderFilter
+                    label="Type"
+                    values={filterValues.type}
+                    selected={colFilters.type}
+                    onChange={setColFilter('type')}
+                  />
+                </th>
+                <th className="th-filter text-right">
+                  <TableHeaderFilter
+                    label="Prévu"
+                    values={filterValues.prevu}
+                    selected={colFilters.prevu}
+                    onChange={setColFilter('prevu')}
+                  />
+                </th>
+                <th className="th-filter text-right">
+                  <TableHeaderFilter
+                    label="Dépensé"
+                    values={filterValues.depense}
+                    selected={colFilters.depense}
+                    onChange={setColFilter('depense')}
+                  />
+                </th>
+                <th className="th-filter text-right">
+                  <TableHeaderFilter
+                    label="Écart"
+                    values={filterValues.ecart}
+                    selected={colFilters.ecart}
+                    onChange={setColFilter('ecart')}
+                  />
+                </th>
+                <th className="th-filter text-center">
+                  <TableHeaderFilter
+                    label="Statut"
+                    values={filterValues.statut}
+                    selected={colFilters.statut}
+                    onChange={setColFilter('statut')}
+                  />
+                </th>
               </tr>
             </thead>
             <tbody>

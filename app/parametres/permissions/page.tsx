@@ -106,22 +106,70 @@ function PermissionsContent() {
 
   const updatePermission = (menuId: string, action: PermissionAction, value: boolean) => {
     if (!menus || !canEdit) return;
-    setMenus(
-      menus.map((menu) =>
+    setMenus((prev) => {
+      if (!prev) return prev;
+      const has = prev.some((menu) => menu.menuId === menuId);
+      if (!has) {
+        const label =
+          PERMISSION_MENU_CATALOG.flatMap((g) => g.items).find((i) => i.id === menuId)?.label
+          ?? menuId;
+        return [
+          ...prev,
+          {
+            menuId,
+            label,
+            actions: {
+              view: false,
+              create: false,
+              edit: false,
+              delete: false,
+              export: false,
+              undo: false,
+              [action]: value,
+            },
+          },
+        ];
+      }
+      return prev.map((menu) =>
         menu.menuId === menuId
           ? { ...menu, actions: { ...menu.actions, [action]: value } }
           : menu,
-      ),
-    );
+      );
+    });
   };
 
   const setAllMenuPermissions = (menuId: string, value: boolean) => {
     if (!menus || !canEdit) return;
-    setMenus(
-      menus.map((menu) =>
+    setMenus((prev) => {
+      if (!prev) return prev;
+      const has = prev.some((menu) => menu.menuId === menuId);
+      if (!has) {
+        const label =
+          PERMISSION_MENU_CATALOG.flatMap((g) => g.items).find((i) => i.id === menuId)?.label
+          ?? menuId;
+        return [
+          ...prev,
+          setAllMenuActions(
+            {
+              menuId,
+              label,
+              actions: {
+                view: false,
+                create: false,
+                edit: false,
+                delete: false,
+                export: false,
+                undo: false,
+              },
+            },
+            value,
+          ),
+        ];
+      }
+      return prev.map((menu) =>
         menu.menuId === menuId ? setAllMenuActions(menu, value) : menu,
-      ),
-    );
+      );
+    });
   };
 
   const handleSave = async () => {

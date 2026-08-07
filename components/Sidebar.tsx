@@ -73,8 +73,11 @@ const NAV: NavSection[] = [
     icon: 'users',
     color: '#e30613',
     items: [
-      { href: '/employes', label: 'Liste', icon: 'users', menuId: 'employes.liste', excludePrefixes: ['/employes/dependants'] },
+      { href: '/employes', label: 'Liste', icon: 'users', menuId: 'employes.liste', excludePrefixes: ['/employes/dependants', '/employes/offres', '/employes/mouvements', '/employes/postes'] },
       { href: '/employes/dependants', label: 'Dependants', icon: 'users', menuId: 'employes.dependants' },
+      { href: '/employes/offres', label: 'Offres', icon: 'docs', menuIds: ['employes.offres', 'employes.liste'] },
+      { href: '/employes/mouvements', label: 'Mouvements', icon: 'users', menuIds: ['employes.mouvements', 'employes.liste'] },
+      { href: '/employes/postes', label: 'Postes', icon: 'docs', menuIds: ['employes.postes', 'employes.liste'] },
       { href: '/check-documents', label: 'Check documents', icon: 'docs', menuId: 'employes.check-documents' },
       { href: '/heures-supplementaires', label: 'Heures supplémentaires', icon: 'clock', menuIds: ['employes.heures', 'employes.heures.dept', 'employes.heures.all'] },
     ],
@@ -108,6 +111,7 @@ const NAV: NavSection[] = [
       'documents.exit',
       'documents.entetes',
       'documents.rrf',
+      'documents.newcomer',
     ],
   },
   {

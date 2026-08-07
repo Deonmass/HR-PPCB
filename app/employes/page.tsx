@@ -7,6 +7,7 @@ import EmployeesHrDashboardView from '@/components/EmployeesHrDashboardView';
 import PermissionGate from '@/components/PermissionGate';
 import RefreshButton from '@/components/RefreshButton';
 import RowContextMenu, { type ContextMenuItem } from '@/components/RowContextMenu';
+import TableHeaderFilter from '@/components/TableHeaderFilter';
 import { usePermissions } from '@/contexts/PermissionContext';
 import { calcDocumentCompletion, getDepartments } from '@/lib/documents';
 import {
@@ -34,10 +35,64 @@ import {
   resolveEssaiStatutEval,
   essaiStatutClass,
 } from '@/lib/employees-trial';
+import {
+  buildColumnFilterValues,
+  countActiveColumnFilters,
+  matchesColumnFilter,
+} from '@/lib/table-column-filters';
 import { confirmDelete, promptSelect, showError, showSuccess } from '@/lib/swal';
 import type { Employee } from '@/lib/types';
 
 type PageTab = 'dashboard' | 'liste' | 'essai' | 'cdd' | 'exit';
+
+type FilterKey =
+  | 'matricule'
+  | 'nom'
+  | 'departement'
+  | 'grade'
+  | 'localisation'
+  | 'age'
+  | 'anciennete'
+  | 'poste'
+  | 'finContrat'
+  | 'raisonExit'
+  | 'contrat'
+  | 'duree'
+  | 'debut'
+  | 'fin'
+  | 'alerte'
+  | 'mois'
+  | 'finEssai'
+  | 'actions'
+  | 'resp'
+  | 'echeance'
+  | 'statut'
+  | 'comment';
+
+const EMPTY_FILTERS: Record<FilterKey, string[]> = {
+  matricule: [],
+  nom: [],
+  departement: [],
+  grade: [],
+  localisation: [],
+  age: [],
+  anciennete: [],
+  poste: [],
+  finContrat: [],
+  raisonExit: [],
+  contrat: [],
+  duree: [],
+  debut: [],
+  fin: [],
+  alerte: [],
+  mois: [],
+  finEssai: [],
+  actions: [],
+  resp: [],
+  echeance: [],
+  statut: [],
+  comment: [],
+};
 
 const CURRENT_YEAR = new Date().getFullYear();
 
@@ -52,6 +107,24 @@ function formatYears(value: number | null): string {
 
 function dateCellClass(value: string): string {
   return isDisplayDatePast(value) ? 'col-date employees-date-past' : 'col-date';
+}
+
+function seniorityValue(employee: Employee, yearFilter: number | ''): string {
+  return formatYears(
+    computeSeniorityYears(
+      employee.appointmentDate || '',
+      yearFilter !== '' ? new Date(yearFilter, 11, 31) : new Date(),
+    ),
+  );
+}
+
+function dureeValue(employee: Employee): string {
+  const value = resolveDureeContratMois(employee);
+  return value == null ? '' : String(value);
+}
+
+function moisValue(employee: Employee): string {
+  return employee.periodeEssaiMois == null ? '' : String(employee.periodeEssaiMois);
 }
 
 export default function EmployesPage() {
@@ -69,6 +142,7 @@ export default function EmployesPage() {
   const [contractFilter, setContractFilter] = useState('');
   const [statusFilter, setStatusFilter] = useState('');
   const [yearFilter, setYearFilter] = useState<number | ''>('');
+  const [colFilters, setColFilters] = useState<Record<FilterKey, string[]>>(EMPTY_FILTERS);
   const [editOpen, setEditOpen] = useState(false);
   const [viewOpen, setViewOpen] = useState(false);
   const [viewTab, setViewTab] = useState<'infos' | 'essai'>('infos');
@@ -116,6 +190,7 @@ export default function EmployesPage() {
     setDept('');
     setContractFilter('');
     setStatusFilter('');
+    setColFilters(EMPTY_FILTERS);
     setContextMenu(null);
   }, [tab]);
 
@@ -180,7 +255,7 @@ export default function EmployesPage() {
           ? essaiList
           : yearScopedListe;
 
-  const filtered = useMemo(() => {
+  const toolbarFiltered = useMemo(() => {
     const list = Array.isArray(sourceList) ? sourceList : [];
     return list.filter((e) => {
       const q = search.toLowerCase();
@@ -202,6 +277,78 @@ export default function EmployesPage() {
       return matchSearch && matchDept && matchContract && matchStatus;
     });
   }, [sourceList, search, dept, contractFilter, statusFilter]);
+
+  const filterValues = useMemo(
+    () =>
+      buildColumnFilterValues(toolbarFiltered, {
+        matricule: (e) => e.matricule,
+        nom: (e) => e.nom,
+        departement: (e) => e.departement,
+        grade: (e) => e.grade,
+        localisation: (e) => e.localisation,
+        age: (e) => formatYears(resolveEmployeeAge(e)),
+        anciennete: (e) => seniorityValue(e, yearFilter),
+        poste: (e) => e.jobTitle,
+        finContrat: (e) => resolveDateFinContrat(e),
+        raisonExit: (e) => e.raisonExit,
+        contrat: (e) => e.typeContrat,
+        duree: (e) => dureeValue(e),
+        debut: (e) => e.appointmentDate,
+        fin: (e) => resolveDateFinContrat(e),
+        alerte: (e) => resolveCddAlerteDate(e),
+        mois: (e) => moisValue(e),
+        finEssai: (e) => resolveDateFinPeriodeEssai(e),
+        actions: (e) => e.essaiActions,
+        resp: (e) => e.essaiResponsable,
+        echeance: (e) =>
+          resolveEssaiEcheanceEval({
+            ...e,
+            dateFinPeriodeEssai: resolveDateFinPeriodeEssai(e),
+          }),
+        statut: (e) => resolveEssaiStatutEval(e),
+        comment: (e) => e.essaiCommentaire,
+      }),
+    [toolbarFiltered, yearFilter],
+  );
+
+  const filtered = useMemo(
+    () =>
+      toolbarFiltered.filter((e) => {
+        const finEssai = resolveDateFinPeriodeEssai(e);
+        const finContrat = resolveDateFinContrat(e);
+        const echeance = resolveEssaiEcheanceEval({
+          ...e,
+          dateFinPeriodeEssai: finEssai,
+        });
+        return (
+          matchesColumnFilter(colFilters.matricule, e.matricule) &&
+          matchesColumnFilter(colFilters.nom, e.nom) &&
+          matchesColumnFilter(colFilters.departement, e.departement) &&
+          matchesColumnFilter(colFilters.grade, e.grade) &&
+          matchesColumnFilter(colFilters.localisation, e.localisation) &&
+          matchesColumnFilter(colFilters.age, formatYears(resolveEmployeeAge(e))) &&
+          matchesColumnFilter(colFilters.anciennete, seniorityValue(e, yearFilter)) &&
+          matchesColumnFilter(colFilters.poste, e.jobTitle) &&
+          matchesColumnFilter(colFilters.finContrat, finContrat) &&
+          matchesColumnFilter(colFilters.raisonExit, e.raisonExit) &&
+          matchesColumnFilter(colFilters.contrat, e.typeContrat) &&
+          matchesColumnFilter(colFilters.duree, dureeValue(e)) &&
+          matchesColumnFilter(colFilters.debut, e.appointmentDate) &&
+          matchesColumnFilter(colFilters.fin, finContrat) &&
+          matchesColumnFilter(colFilters.alerte, resolveCddAlerteDate(e)) &&
+          matchesColumnFilter(colFilters.mois, moisValue(e)) &&
+          matchesColumnFilter(colFilters.finEssai, finEssai) &&
+          matchesColumnFilter(colFilters.actions, e.essaiActions) &&
+          matchesColumnFilter(colFilters.resp, e.essaiResponsable) &&
+          matchesColumnFilter(colFilters.echeance, echeance) &&
+          matchesColumnFilter(colFilters.statut, resolveEssaiStatutEval(e)) &&
+          matchesColumnFilter(colFilters.comment, e.essaiCommentaire)
+        );
+      }),
+    [toolbarFiltered, colFilters, yearFilter],
+  );
+
+  const activeFilterCount = useMemo(() => countActiveColumnFilters(colFilters), [colFilters]);
 
   const dashboardEmployees = yearScopedActive;
   const dashboardExits = yearScopedExits;
@@ -566,6 +713,15 @@ export default function EmployesPage() {
                 éval. essai ≤ 30 j
               </button>
             )}
+            {activeFilterCount > 0 && (tab === 'liste' || tab === 'exit' || tab === 'cdd' || tab === 'essai') && (
+              <button
+                type="button"
+                className="btn btn-ghost btn-sm"
+                onClick={() => setColFilters(EMPTY_FILTERS)}
+              >
+                Effacer les filtres ({activeFilterCount})
+              </button>
+            )}
             {tab === 'liste' && (
               <PermissionGate menuId="employes.liste" action="create">
                 <button type="button" className="btn btn-accent" onClick={() => openEdit(null)}>
@@ -627,56 +783,233 @@ export default function EmployesPage() {
           )}
           <div className="panel employees-list-panel">
             <div className="employees-table-wrap is-compact">
-              <table className="employees-table employees-table-compact">
+              <table
+                className={`employees-table employees-table-compact${tab === 'essai' || tab === 'cdd' ? ' is-wide' : ''}`}
+              >
                 <thead>
                   <tr>
-                    <th>Matricule</th>
-                    <th>Nom</th>
+                    <th className="th-filter emp-col-matricule">
+                      <TableHeaderFilter
+                        label="Matricule"
+                        values={filterValues.matricule}
+                        selected={colFilters.matricule}
+                        onChange={(next) => setColFilters((p) => ({ ...p, matricule: next }))}
+                      />
+                    </th>
+                    <th className="th-filter emp-col-nom">
+                      <TableHeaderFilter
+                        label="Nom"
+                        values={filterValues.nom}
+                        selected={colFilters.nom}
+                        onChange={(next) => setColFilters((p) => ({ ...p, nom: next }))}
+                      />
+                    </th>
                     {tab === 'cdd' || tab === 'essai' ? (
                       <>
-                        <th>Département</th>
-                        <th>Site</th>
-                        <th>Contrat</th>
+                        <th className="th-filter emp-col-dept">
+                          <TableHeaderFilter
+                            label="Département"
+                            values={filterValues.departement}
+                            selected={colFilters.departement}
+                            onChange={(next) => setColFilters((p) => ({ ...p, departement: next }))}
+                          />
+                        </th>
+                        <th className="th-filter emp-col-loc">
+                          <TableHeaderFilter
+                            label="Site"
+                            values={filterValues.localisation}
+                            selected={colFilters.localisation}
+                            onChange={(next) => setColFilters((p) => ({ ...p, localisation: next }))}
+                          />
+                        </th>
+                        <th className="th-filter emp-col-contrat">
+                          <TableHeaderFilter
+                            label="Contrat"
+                            values={filterValues.contrat}
+                            selected={colFilters.contrat}
+                            onChange={(next) => setColFilters((p) => ({ ...p, contrat: next }))}
+                          />
+                        </th>
                       </>
                     ) : (
                       <>
-                        <th>Département</th>
-                        <th>Grade</th>
-                        <th>Localisation</th>
-                        <th>Âge</th>
-                        <th>Ancienneté</th>
+                        <th className="th-filter emp-col-dept">
+                          <TableHeaderFilter
+                            label="Département"
+                            values={filterValues.departement}
+                            selected={colFilters.departement}
+                            onChange={(next) => setColFilters((p) => ({ ...p, departement: next }))}
+                          />
+                        </th>
+                        <th className="th-filter emp-col-grade">
+                          <TableHeaderFilter
+                            label="Grade"
+                            values={filterValues.grade}
+                            selected={colFilters.grade}
+                            onChange={(next) => setColFilters((p) => ({ ...p, grade: next }))}
+                          />
+                        </th>
+                        <th className="th-filter emp-col-loc">
+                          <TableHeaderFilter
+                            label="Localisation"
+                            values={filterValues.localisation}
+                            selected={colFilters.localisation}
+                            onChange={(next) => setColFilters((p) => ({ ...p, localisation: next }))}
+                          />
+                        </th>
+                        <th className="th-filter emp-col-age">
+                          <TableHeaderFilter
+                            label="Âge"
+                            values={filterValues.age}
+                            selected={colFilters.age}
+                            onChange={(next) => setColFilters((p) => ({ ...p, age: next }))}
+                          />
+                        </th>
+                        <th className="th-filter emp-col-anciennete">
+                          <TableHeaderFilter
+                            label="Ancienneté"
+                            values={filterValues.anciennete}
+                            selected={colFilters.anciennete}
+                            onChange={(next) => setColFilters((p) => ({ ...p, anciennete: next }))}
+                          />
+                        </th>
                       </>
                     )}
                     {tab === 'exit' && (
                       <>
-                        <th>Date fin contrat</th>
-                        <th>Raison exit</th>
+                        <th className="th-filter emp-col-date">
+                          <TableHeaderFilter
+                            label="Date fin contrat"
+                            values={filterValues.finContrat}
+                            selected={colFilters.finContrat}
+                            onChange={(next) => setColFilters((p) => ({ ...p, finContrat: next }))}
+                          />
+                        </th>
+                        <th className="th-filter emp-col-raison">
+                          <TableHeaderFilter
+                            label="Raison exit"
+                            values={filterValues.raisonExit}
+                            selected={colFilters.raisonExit}
+                            onChange={(next) => setColFilters((p) => ({ ...p, raisonExit: next }))}
+                          />
+                        </th>
                       </>
                     )}
                     {tab === 'liste' && (
                       <>
-                        <th>Poste</th>
-                        <th>Dossier</th>
+                        <th className="th-filter emp-col-poste">
+                          <TableHeaderFilter
+                            label="Poste"
+                            values={filterValues.poste}
+                            selected={colFilters.poste}
+                            onChange={(next) => setColFilters((p) => ({ ...p, poste: next }))}
+                          />
+                        </th>
+                        <th className="emp-col-dossier">Dossier</th>
                       </>
                     )}
                     {tab === 'cdd' && (
                       <>
-                        <th>Durée</th>
-                        <th>Début</th>
-                        <th>Fin</th>
-                        <th>Alerte</th>
+                        <th className="th-filter emp-col-duree">
+                          <TableHeaderFilter
+                            label="Durée"
+                            values={filterValues.duree}
+                            selected={colFilters.duree}
+                            onChange={(next) => setColFilters((p) => ({ ...p, duree: next }))}
+                          />
+                        </th>
+                        <th className="th-filter emp-col-debut">
+                          <TableHeaderFilter
+                            label="Début"
+                            values={filterValues.debut}
+                            selected={colFilters.debut}
+                            onChange={(next) => setColFilters((p) => ({ ...p, debut: next }))}
+                          />
+                        </th>
+                        <th className="th-filter emp-col-fin">
+                          <TableHeaderFilter
+                            label="Fin"
+                            values={filterValues.fin}
+                            selected={colFilters.fin}
+                            onChange={(next) => setColFilters((p) => ({ ...p, fin: next }))}
+                          />
+                        </th>
+                        <th className="th-filter emp-col-alerte">
+                          <TableHeaderFilter
+                            label="Alerte"
+                            values={filterValues.alerte}
+                            selected={colFilters.alerte}
+                            onChange={(next) => setColFilters((p) => ({ ...p, alerte: next }))}
+                          />
+                        </th>
                       </>
                     )}
                     {tab === 'essai' && (
                       <>
-                        <th>Mois</th>
-                        <th>Début</th>
-                        <th>Fin essai</th>
-                        <th>Actions</th>
-                        <th>Resp.</th>
-                        <th>Échéance</th>
-                        <th>Statut</th>
-                        <th>Comment.</th>
+                        <th className="th-filter emp-col-mois">
+                          <TableHeaderFilter
+                            label="Mois"
+                            values={filterValues.mois}
+                            selected={colFilters.mois}
+                            onChange={(next) => setColFilters((p) => ({ ...p, mois: next }))}
+                          />
+                        </th>
+                        <th className="th-filter emp-col-debut">
+                          <TableHeaderFilter
+                            label="Début"
+                            values={filterValues.debut}
+                            selected={colFilters.debut}
+                            onChange={(next) => setColFilters((p) => ({ ...p, debut: next }))}
+                          />
+                        </th>
+                        <th className="th-filter emp-col-fin">
+                          <TableHeaderFilter
+                            label="Fin essai"
+                            values={filterValues.finEssai}
+                            selected={colFilters.finEssai}
+                            onChange={(next) => setColFilters((p) => ({ ...p, finEssai: next }))}
+                          />
+                        </th>
+                        <th className="th-filter emp-col-actions">
+                          <TableHeaderFilter
+                            label="Actions"
+                            values={filterValues.actions}
+                            selected={colFilters.actions}
+                            onChange={(next) => setColFilters((p) => ({ ...p, actions: next }))}
+                          />
+                        </th>
+                        <th className="th-filter emp-col-resp">
+                          <TableHeaderFilter
+                            label="Resp."
+                            values={filterValues.resp}
+                            selected={colFilters.resp}
+                            onChange={(next) => setColFilters((p) => ({ ...p, resp: next }))}
+                          />
+                        </th>
+                        <th className="th-filter emp-col-echeance">
+                          <TableHeaderFilter
+                            label="Échéance"
+                            values={filterValues.echeance}
+                            selected={colFilters.echeance}
+                            onChange={(next) => setColFilters((p) => ({ ...p, echeance: next }))}
+                          />
+                        </th>
+                        <th className="th-filter emp-col-statut">
+                          <TableHeaderFilter
+                            label="Statut"
+                            values={filterValues.statut}
+                            selected={colFilters.statut}
+                            onChange={(next) => setColFilters((p) => ({ ...p, statut: next }))}
+                          />
+                        </th>
+                        <th className="th-filter emp-col-comment">
+                          <TableHeaderFilter
+                            label="Comment."
+                            values={filterValues.comment}
+                            selected={colFilters.comment}
+                            onChange={(next) => setColFilters((p) => ({ ...p, comment: next }))}
+                          />
+                        </th>
                       </>
                     )}
                   </tr>
@@ -737,35 +1070,41 @@ export default function EmployesPage() {
                           onDoubleClick={() => openView(e)}
                           onContextMenu={(event) => openContextMenu(event, e)}
                         >
-                          <td><strong>{e.matricule}</strong></td>
-                          <td className="col-name" title={e.nom}>{e.nom}</td>
+                          <td className="emp-col-matricule"><strong>{e.matricule}</strong></td>
+                          <td className="col-name emp-col-nom" title={e.nom}>{e.nom}</td>
                           {tab === 'cdd' || tab === 'essai' ? (
                             <>
-                              <td className="col-clip" title={e.departement || undefined}>
+                              <td className="col-clip emp-col-dept" title={e.departement || undefined}>
                                 {e.departement || '—'}
                               </td>
-                              <td>{e.localisation || '—'}</td>
-                              <td>{e.typeContrat || '—'}</td>
+                              <td className="emp-col-loc">{e.localisation || '—'}</td>
+                              <td className="emp-col-contrat">{e.typeContrat || '—'}</td>
                             </>
                           ) : (
                             <>
-                              <td className="col-clip">{e.departement}</td>
-                              <td>{e.grade}</td>
-                              <td>{e.localisation}</td>
-                              <td>{formatYears(age)}</td>
-                              <td>{formatYears(seniority)}</td>
+                              <td className="col-clip emp-col-dept" title={e.departement || undefined}>
+                                {e.departement}
+                              </td>
+                              <td className="emp-col-grade">{e.grade}</td>
+                              <td className="emp-col-loc">{e.localisation}</td>
+                              <td className="emp-col-age">{formatYears(age)}</td>
+                              <td className="emp-col-anciennete">{formatYears(seniority)}</td>
                             </>
                           )}
                           {tab === 'exit' && (
                             <>
-                              <td className={dateCellClass(finContrat)}>{finContrat || '—'}</td>
-                              <td>{e.raisonExit || '—'}</td>
+                              <td className={`emp-col-date ${dateCellClass(finContrat)}`.trim()}>
+                                {finContrat || '—'}
+                              </td>
+                              <td className="emp-col-raison">{e.raisonExit || '—'}</td>
                             </>
                           )}
                           {tab === 'liste' && (
                             <>
-                              <td className="col-clip" title={e.jobTitle || undefined}>{e.jobTitle}</td>
-                              <td>
+                              <td className="col-clip emp-col-poste" title={e.jobTitle || undefined}>
+                                {e.jobTitle}
+                              </td>
+                              <td className="emp-col-dossier">
                                 <div className="progress-wrap">
                                   <div className="progress-bar">
                                     <div className={`progress-fill ${rateCls}`} style={{ width: `${pct}%` }} />
@@ -777,10 +1116,12 @@ export default function EmployesPage() {
                           )}
                           {tab === 'cdd' && (
                             <>
-                              <td>{resolveDureeContratMois(e) ?? '—'}</td>
-                              <td className="col-date">{e.appointmentDate || '—'}</td>
-                              <td className={dateCellClass(finContrat)}>{finContrat || '—'}</td>
-                              <td className={dateCellClass(cddAlerteDate)}>
+                              <td className="emp-col-duree">{resolveDureeContratMois(e) ?? '—'}</td>
+                              <td className="col-date emp-col-debut">{e.appointmentDate || '—'}</td>
+                              <td className={`emp-col-fin ${dateCellClass(finContrat)}`.trim()}>
+                                {finContrat || '—'}
+                              </td>
+                              <td className={`emp-col-alerte ${dateCellClass(cddAlerteDate)}`.trim()}>
                                 {cddAlerteDate || '—'}
                                 {cddAlert && daysCdd != null && (
                                   <span
@@ -795,9 +1136,9 @@ export default function EmployesPage() {
                           )}
                           {tab === 'essai' && (
                             <>
-                              <td>{e.periodeEssaiMois ?? '—'}</td>
-                              <td className="col-date">{e.appointmentDate || '—'}</td>
-                              <td className={dateCellClass(finEssai)}>
+                              <td className="emp-col-mois">{e.periodeEssaiMois ?? '—'}</td>
+                              <td className="col-date emp-col-debut">{e.appointmentDate || '—'}</td>
+                              <td className={`emp-col-fin ${dateCellClass(finEssai)}`.trim()}>
                                 {finEssai || '—'}
                                 {evalAlert && daysLeft != null && daysLeft >= 0 && (
                                   <span className="employees-essai-days" title="Jours restants">
@@ -805,17 +1146,23 @@ export default function EmployesPage() {
                                   </span>
                                 )}
                               </td>
-                              <td className="col-clip" title={e.essaiActions || undefined}>{e.essaiActions || '—'}</td>
-                              <td className="col-clip" title={e.essaiResponsable || undefined}>{e.essaiResponsable || '—'}</td>
-                              <td className={`${dateCellClass(echeance)} col-echeance`}>
+                              <td className="col-clip emp-col-actions" title={e.essaiActions || undefined}>
+                                {e.essaiActions || '—'}
+                              </td>
+                              <td className="col-clip emp-col-resp" title={e.essaiResponsable || undefined}>
+                                {e.essaiResponsable || '—'}
+                              </td>
+                              <td className={`emp-col-echeance ${dateCellClass(echeance)} col-echeance`.trim()}>
                                 {echeance || '—'}
                               </td>
-                              <td>
+                              <td className="emp-col-statut">
                                 <span className={`employees-essai-status ${essaiStatutClass(essaiStatut)}`}>
                                   {essaiStatut}
                                 </span>
                               </td>
-                              <td className="col-clip" title={e.essaiCommentaire || undefined}>{e.essaiCommentaire || '—'}</td>
+                              <td className="col-clip emp-col-comment" title={e.essaiCommentaire || undefined}>
+                                {e.essaiCommentaire || '—'}
+                              </td>
                             </>
                           )}
                         </tr>

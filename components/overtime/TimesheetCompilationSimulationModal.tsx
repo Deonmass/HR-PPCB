@@ -369,10 +369,10 @@ export default function TimesheetCompilationSimulationModal({
                   <table className="compilation-table">
                     <thead>
                       <tr>
-                        <th rowSpan={3} className="compilation-fix compilation-fix-mat">
+                        <th rowSpan={3} className="compilation-freeze compilation-freeze-mat">
                           Matricule
                         </th>
-                        <th rowSpan={3} className="compilation-fix compilation-fix-name">
+                        <th rowSpan={3} className="compilation-freeze compilation-freeze-name">
                           Employee Name
                         </th>
                         <th rowSpan={3} className="compilation-left">
@@ -441,10 +441,10 @@ export default function TimesheetCompilationSimulationModal({
                         ];
                         return (
                           <tr key={row.matricule}>
-                            <td className="compilation-sticky compilation-sticky-mat">
+                            <td className="compilation-freeze compilation-freeze-mat">
                               {row.matricule}
                             </td>
-                            <td className="compilation-sticky compilation-sticky-name">
+                            <td className="compilation-freeze compilation-freeze-name">
                               {row.nom}
                             </td>
                             <td className="compilation-left">{row.departement}</td>
@@ -491,7 +491,7 @@ export default function TimesheetCompilationSimulationModal({
                     </tbody>
                     <tfoot>
                       <tr className="compilation-total-row">
-                        <td className="compilation-sticky compilation-sticky-mat" colSpan={2}>
+                        <td className="compilation-freeze compilation-freeze-mat" colSpan={2}>
                           Total général
                         </td>
                         <td className="compilation-left" />

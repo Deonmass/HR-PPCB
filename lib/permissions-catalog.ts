@@ -13,6 +13,9 @@ export const PERMISSION_MENU_CATALOG: PermissionMenuGroup[] = [
     items: [
       { id: 'employes.liste', label: 'Liste employés' },
       { id: 'employes.dependants', label: 'Dependants' },
+      { id: 'employes.offres', label: 'Offres' },
+      { id: 'employes.mouvements', label: 'Mouvements' },
+      { id: 'employes.postes', label: 'Postes' },
       { id: 'employes.check-documents', label: 'Check documents' },
       { id: 'employes.heures', label: 'HS — Mon timesheet' },
       { id: 'employes.heures.dept', label: 'HS — Voir mon département' },
@@ -46,6 +49,7 @@ export const PERMISSION_MENU_CATALOG: PermissionMenuGroup[] = [
       { id: 'documents.exit', label: 'Exit forms' },
       { id: 'documents.entetes', label: 'Entête' },
       { id: 'documents.rrf', label: 'RRF' },
+      { id: 'documents.newcomer', label: 'Newcomer' },
     ],
   },
   {
@@ -143,10 +147,27 @@ export function mergePermissionsWithCatalog(menus: MenuPermission[]): MenuPermis
   const grantNewFully =
     menus.length > 0 && menus.every((menu) => isMenuFullyChecked(menu));
 
+  // Si tous les menus Documents / Voyage déjà en stock sont complets, les nouveaux menus du hub suivent.
+  const hubMenus = menus.filter(
+    (menu) =>
+      menu.menuId.startsWith('documents.')
+      || menu.menuId.startsWith('travel.'),
+  );
+  const grantNewDocMenus =
+    hubMenus.length > 0 && hubMenus.every((menu) => isMenuFullyChecked(menu));
+
   const merged = defaults.map((defaultMenu) => {
     const existing = menus.find((menu) => menu.menuId === defaultMenu.menuId);
     if (!existing) {
-      return grantNewFully ? setAllMenuActions(defaultMenu, true) : defaultMenu;
+      if (grantNewFully) return setAllMenuActions(defaultMenu, true);
+      if (
+        grantNewDocMenus
+        && (defaultMenu.menuId.startsWith('documents.')
+          || defaultMenu.menuId.startsWith('travel.'))
+      ) {
+        return setAllMenuActions(defaultMenu, true);
+      }
+      return defaultMenu;
     }
     return {
       menuId: defaultMenu.menuId,

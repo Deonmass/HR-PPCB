@@ -9,6 +9,7 @@ import PermissionGate from '@/components/PermissionGate';
 import RefreshButton from '@/components/RefreshButton';
 import RowContextMenu, { type ContextMenuItem } from '@/components/RowContextMenu';
 import SideDrawer from '@/components/SideDrawer';
+import TableHeaderFilter from '@/components/TableHeaderFilter';
 import { EmployeeSuggestInput } from '@/components/EmployeePicker';
 import CardActionMenu from '@/components/CardActionMenu';
 import GuestHouseMonthlyChart from '@/components/village/GuestHouseMonthlyChart';
@@ -28,11 +29,38 @@ import {
 } from '@/lib/guest-house-types';
 import type { Employee } from '@/lib/types';
 import { confirmDelete, showError, showSuccess } from '@/lib/swal';
+import {
+  buildColumnFilterValues,
+  countActiveColumnFilters,
+  matchesColumnFilter,
+} from '@/lib/table-column-filters';
 
 type Tab = 'dashboard' | 'reservations' | 'rooms';
 type DrawerKind = 'room' | 'reservation' | 'confirm' | 'history';
 type KpiModal = 'rooms' | 'occupied' | 'empty' | 'pending' | 'kimpese' | 'occupancy' | null;
 type ValidatedSubTab = 'approved' | 'rejected';
+
+type PendingFilterKey = 'numero' | 'personne' | 'motif' | 'periode' | 'jours';
+type ValidatedFilterKey = 'numero' | 'personne' | 'chambre' | 'periode' | 'nbrJours' | 'restant';
+type KimpeseFilterKey = 'numero' | 'personne' | 'hotel' | 'periode' | 'restant';
+type EndingFilterKey = 'numero' | 'personne' | 'chambre' | 'lieu' | 'fin' | 'jours';
+type FutureFilterKey = 'numero' | 'personne' | 'chambre' | 'debut' | 'fin' | 'statut';
+
+const EMPTY_PENDING: Record<PendingFilterKey, string[]> = {
+  numero: [], personne: [], motif: [], periode: [], jours: [],
+};
+const EMPTY_VALIDATED: Record<ValidatedFilterKey, string[]> = {
+  numero: [], personne: [], chambre: [], periode: [], nbrJours: [], restant: [],
+};
+const EMPTY_KIMPESE: Record<KimpeseFilterKey, string[]> = {
+  numero: [], personne: [], hotel: [], periode: [], restant: [],
+};
+const EMPTY_ENDING: Record<EndingFilterKey, string[]> = {
+  numero: [], personne: [], chambre: [], lieu: [], fin: [], jours: [],
+};
+const EMPTY_FUTURE: Record<FutureFilterKey, string[]> = {
+  numero: [], personne: [], chambre: [], debut: [], fin: [], statut: [],
+};
 
 function isKimpeseRoom(room: GuestRoom): boolean {
   return room.category === 'kimpese' || room.building === KIMPESE_BUILDING;
@@ -376,6 +404,16 @@ export default function VillageGuestHousePage() {
   const [validatedSubTab, setValidatedSubTab] = useState<ValidatedSubTab>('approved');
   /** Shared month filter for lists, dashboard KPIs, occupancy, and export. */
   const [viewMonth, setViewMonth] = useState(currentMonthKey);
+  const [pendingColFilters, setPendingColFilters] =
+    useState<Record<PendingFilterKey, string[]>>(EMPTY_PENDING);
+  const [validatedColFilters, setValidatedColFilters] =
+    useState<Record<ValidatedFilterKey, string[]>>(EMPTY_VALIDATED);
+  const [kimpeseColFilters, setKimpeseColFilters] =
+    useState<Record<KimpeseFilterKey, string[]>>(EMPTY_KIMPESE);
+  const [endingColFilters, setEndingColFilters] =
+    useState<Record<EndingFilterKey, string[]>>(EMPTY_ENDING);
+  const [futureColFilters, setFutureColFilters] =
+    useState<Record<FutureFilterKey, string[]>>(EMPTY_FUTURE);
 
   const [roomForm, setRoomForm] = useState({
     category: 'standard' as GuestRoomCategory,
@@ -461,6 +499,94 @@ export default function VillageGuestHousePage() {
     [monthReservations],
   );
   const validatedList = validatedSubTab === 'approved' ? approved : rejected;
+
+  const pendingPeriod = (item: GuestReservation) =>
+    `${formatDate(item.startDate)} → ${formatDate(item.endDate)}`;
+
+  const pendingMotif = (item: GuestReservation) =>
+    IMPORT_MOTIF_RE.test(item.motif.trim()) ? '—' : (item.motif || '—');
+
+  const pendingFilterValues = useMemo(
+    () =>
+      buildColumnFilterValues(pending, {
+        numero: (item) => item.numero,
+        personne: (item) => item.personName,
+        motif: (item) => pendingMotif(item),
+        periode: (item) => pendingPeriod(item),
+        jours: (item) => `${remainingDays(item.endDate)} j`,
+      }),
+    [pending],
+  );
+
+  const filteredPending = useMemo(
+    () =>
+      pending.filter(
+        (item) =>
+          matchesColumnFilter(pendingColFilters.numero, item.numero) &&
+          matchesColumnFilter(pendingColFilters.personne, item.personName) &&
+          matchesColumnFilter(pendingColFilters.motif, pendingMotif(item)) &&
+          matchesColumnFilter(pendingColFilters.periode, pendingPeriod(item)) &&
+          matchesColumnFilter(pendingColFilters.jours, `${remainingDays(item.endDate)} j`),
+      ),
+    [pending, pendingColFilters],
+  );
+
+  const pendingActiveCount = useMemo(
+    () => countActiveColumnFilters(pendingColFilters),
+    [pendingColFilters],
+  );
+
+  const setPendingColFilter = (key: PendingFilterKey) => (next: string[]) => {
+    setPendingColFilters((prev) => ({ ...prev, [key]: next }));
+  };
+
+  const validatedChambre = (item: GuestReservation) => {
+    if (!item.roomId) return '—';
+    const room = roomsById.get(item.roomId);
+    return room ? roomDisplayName(room) : '—';
+  };
+
+  const validatedFilterValues = useMemo(
+    () =>
+      buildColumnFilterValues(validatedList, {
+        numero: (item) => item.numero,
+        personne: (item) => item.personName,
+        chambre: (item) => validatedChambre(item),
+        periode: (item) => pendingPeriod(item),
+        nbrJours: (item) => formatTempsEcoule(item.startDate, item.endDate),
+        restant: (item) => formatTempsRestant(item.startDate, item.endDate),
+      }),
+    [validatedList, roomsById],
+  );
+
+  const filteredValidated = useMemo(
+    () =>
+      validatedList.filter(
+        (item) =>
+          matchesColumnFilter(validatedColFilters.numero, item.numero) &&
+          matchesColumnFilter(validatedColFilters.personne, item.personName) &&
+          matchesColumnFilter(validatedColFilters.chambre, validatedChambre(item)) &&
+          matchesColumnFilter(validatedColFilters.periode, pendingPeriod(item)) &&
+          matchesColumnFilter(
+            validatedColFilters.nbrJours,
+            formatTempsEcoule(item.startDate, item.endDate),
+          ) &&
+          matchesColumnFilter(
+            validatedColFilters.restant,
+            formatTempsRestant(item.startDate, item.endDate),
+          ),
+      ),
+    [validatedList, validatedColFilters, roomsById],
+  );
+
+  const validatedActiveCount = useMemo(
+    () => countActiveColumnFilters(validatedColFilters),
+    [validatedColFilters],
+  );
+
+  const setValidatedColFilter = (key: ValidatedFilterKey) => (next: string[]) => {
+    setValidatedColFilters((prev) => ({ ...prev, [key]: next }));
+  };
 
   const roomOccupancy = useMemo(() => {
     const bounds = monthBounds(viewMonth);
@@ -667,6 +793,121 @@ export default function VillageGuestHousePage() {
       emptyRooms: emptyOnsite,
     };
   }, [rooms, reservations, roomsById, viewMonth, roomOccupancy, monthReservations, pending]);
+
+  const kimpeseFilterValues = useMemo(
+    () =>
+      buildColumnFilterValues(kimpeseLodgers, {
+        numero: (item) => item.numero,
+        personne: (item) => item.personName,
+        hotel: (item) => item.hotel,
+        periode: (item) => `${formatDate(item.startDate)} → ${formatDate(item.endDate)}`,
+        restant: (item) => formatDaysLeftDisplay(item.endDate),
+      }),
+    [kimpeseLodgers],
+  );
+
+  const filteredKimpese = useMemo(
+    () =>
+      kimpeseLodgers.filter(
+        (item) =>
+          matchesColumnFilter(kimpeseColFilters.numero, item.numero) &&
+          matchesColumnFilter(kimpeseColFilters.personne, item.personName) &&
+          matchesColumnFilter(kimpeseColFilters.hotel, item.hotel) &&
+          matchesColumnFilter(
+            kimpeseColFilters.periode,
+            `${formatDate(item.startDate)} → ${formatDate(item.endDate)}`,
+          ) &&
+          matchesColumnFilter(kimpeseColFilters.restant, formatDaysLeftDisplay(item.endDate)),
+      ),
+    [kimpeseLodgers, kimpeseColFilters],
+  );
+
+  const kimpeseActiveCount = useMemo(
+    () => countActiveColumnFilters(kimpeseColFilters),
+    [kimpeseColFilters],
+  );
+
+  const setKimpeseColFilter = (key: KimpeseFilterKey) => (next: string[]) => {
+    setKimpeseColFilters((prev) => ({ ...prev, [key]: next }));
+  };
+
+  const endingFilterValues = useMemo(
+    () =>
+      buildColumnFilterValues(monthDashboard.endingSoon, {
+        numero: (item) => item.numero,
+        personne: (item) => item.personName,
+        chambre: (item) => item.roomNumber,
+        lieu: (item) => `${item.building}${item.isKimpese ? ' · overflow' : ''}`,
+        fin: (item) => formatDate(item.endDate),
+        jours: (item) => formatDaysLeftDisplay(item.endDate),
+      }),
+    [monthDashboard.endingSoon],
+  );
+
+  const filteredEnding = useMemo(
+    () =>
+      monthDashboard.endingSoon.filter(
+        (item) =>
+          matchesColumnFilter(endingColFilters.numero, item.numero) &&
+          matchesColumnFilter(endingColFilters.personne, item.personName) &&
+          matchesColumnFilter(endingColFilters.chambre, item.roomNumber) &&
+          matchesColumnFilter(
+            endingColFilters.lieu,
+            `${item.building}${item.isKimpese ? ' · overflow' : ''}`,
+          ) &&
+          matchesColumnFilter(endingColFilters.fin, formatDate(item.endDate)) &&
+          matchesColumnFilter(endingColFilters.jours, formatDaysLeftDisplay(item.endDate)),
+      ),
+    [monthDashboard.endingSoon, endingColFilters],
+  );
+
+  const endingActiveCount = useMemo(
+    () => countActiveColumnFilters(endingColFilters),
+    [endingColFilters],
+  );
+
+  const setEndingColFilter = (key: EndingFilterKey) => (next: string[]) => {
+    setEndingColFilters((prev) => ({ ...prev, [key]: next }));
+  };
+
+  const futureFilterValues = useMemo(
+    () =>
+      buildColumnFilterValues(monthDashboard.futureReservations, {
+        numero: (item) => item.numero,
+        personne: (item) => item.personName,
+        chambre: (item) => `${item.roomNumber}${item.isKimpese ? ' · K' : ''}`,
+        debut: (item) => formatDate(item.startDate),
+        fin: (item) => formatDate(item.endDate),
+        statut: (item) => statusLabel(item.status),
+      }),
+    [monthDashboard.futureReservations],
+  );
+
+  const filteredFuture = useMemo(
+    () =>
+      monthDashboard.futureReservations.filter(
+        (item) =>
+          matchesColumnFilter(futureColFilters.numero, item.numero) &&
+          matchesColumnFilter(futureColFilters.personne, item.personName) &&
+          matchesColumnFilter(
+            futureColFilters.chambre,
+            `${item.roomNumber}${item.isKimpese ? ' · K' : ''}`,
+          ) &&
+          matchesColumnFilter(futureColFilters.debut, formatDate(item.startDate)) &&
+          matchesColumnFilter(futureColFilters.fin, formatDate(item.endDate)) &&
+          matchesColumnFilter(futureColFilters.statut, statusLabel(item.status)),
+      ),
+    [monthDashboard.futureReservations, futureColFilters],
+  );
+
+  const futureActiveCount = useMemo(
+    () => countActiveColumnFilters(futureColFilters),
+    [futureColFilters],
+  );
+
+  const setFutureColFilter = (key: FutureFilterKey) => (next: string[]) => {
+    setFutureColFilters((prev) => ({ ...prev, [key]: next }));
+  };
 
   const openRoomCreate = (category: GuestRoomCategory = 'standard') => {
     setEditingRoom(null);
@@ -1288,19 +1529,65 @@ export default function VillageGuestHousePage() {
                     <p className="text-muted">Aucun séjour logé ailleurs sur cette période.</p>
                   </div>
                 ) : (
+                  <>
+                    {kimpeseActiveCount > 0 ? (
+                      <button
+                        type="button"
+                        className="btn btn-ghost btn-sm"
+                        style={{ marginBottom: '0.5rem' }}
+                        onClick={() => setKimpeseColFilters(EMPTY_KIMPESE)}
+                      >
+                        Effacer les filtres ({kimpeseActiveCount})
+                      </button>
+                    ) : null}
                   <div className="table-wrap guest-house-panel-scroll guest-house-kimpese-scroll">
                     <table className="data-table guest-house-compact-table">
                       <thead>
                         <tr>
-                          <th>N°</th>
-                          <th>Personne</th>
-                          <th>Hôtel</th>
-                          <th>Période</th>
-                          <th>Restant</th>
+                          <th className="th-filter">
+                            <TableHeaderFilter
+                              label="N°"
+                              values={kimpeseFilterValues.numero}
+                              selected={kimpeseColFilters.numero}
+                              onChange={setKimpeseColFilter('numero')}
+                            />
+                          </th>
+                          <th className="th-filter">
+                            <TableHeaderFilter
+                              label="Personne"
+                              values={kimpeseFilterValues.personne}
+                              selected={kimpeseColFilters.personne}
+                              onChange={setKimpeseColFilter('personne')}
+                            />
+                          </th>
+                          <th className="th-filter">
+                            <TableHeaderFilter
+                              label="Hôtel"
+                              values={kimpeseFilterValues.hotel}
+                              selected={kimpeseColFilters.hotel}
+                              onChange={setKimpeseColFilter('hotel')}
+                            />
+                          </th>
+                          <th className="th-filter">
+                            <TableHeaderFilter
+                              label="Période"
+                              values={kimpeseFilterValues.periode}
+                              selected={kimpeseColFilters.periode}
+                              onChange={setKimpeseColFilter('periode')}
+                            />
+                          </th>
+                          <th className="th-filter">
+                            <TableHeaderFilter
+                              label="Restant"
+                              values={kimpeseFilterValues.restant}
+                              selected={kimpeseColFilters.restant}
+                              onChange={setKimpeseColFilter('restant')}
+                            />
+                          </th>
                         </tr>
                       </thead>
                       <tbody>
-                        {kimpeseLodgers.map((item) => (
+                        {filteredKimpese.map((item) => (
                           <tr key={item.id} className={item.active ? 'is-active-row' : undefined}>
                             <td>{item.numero}</td>
                             <td>{item.personName}</td>
@@ -1318,6 +1605,7 @@ export default function VillageGuestHousePage() {
                       </tbody>
                     </table>
                   </div>
+                  </>
                 )}
               </div>
 
@@ -1333,20 +1621,73 @@ export default function VillageGuestHousePage() {
                       <p className="text-muted">Aucune fin de séjour imminente.</p>
                     </div>
                   ) : (
+                    <>
+                      {endingActiveCount > 0 ? (
+                        <button
+                          type="button"
+                          className="btn btn-ghost btn-sm"
+                          style={{ marginBottom: '0.5rem' }}
+                          onClick={() => setEndingColFilters(EMPTY_ENDING)}
+                        >
+                          Effacer les filtres ({endingActiveCount})
+                        </button>
+                      ) : null}
                     <div className="table-wrap guest-house-panel-scroll">
                       <table className="data-table">
                         <thead>
                           <tr>
-                            <th>N°</th>
-                            <th>Personne</th>
-                            <th>Chambre / Hôtel</th>
-                            <th>Lieu</th>
-                            <th>Fin</th>
-                            <th>Jours restants</th>
+                            <th className="th-filter">
+                              <TableHeaderFilter
+                                label="N°"
+                                values={endingFilterValues.numero}
+                                selected={endingColFilters.numero}
+                                onChange={setEndingColFilter('numero')}
+                              />
+                            </th>
+                            <th className="th-filter">
+                              <TableHeaderFilter
+                                label="Personne"
+                                values={endingFilterValues.personne}
+                                selected={endingColFilters.personne}
+                                onChange={setEndingColFilter('personne')}
+                              />
+                            </th>
+                            <th className="th-filter">
+                              <TableHeaderFilter
+                                label="Chambre / Hôtel"
+                                values={endingFilterValues.chambre}
+                                selected={endingColFilters.chambre}
+                                onChange={setEndingColFilter('chambre')}
+                              />
+                            </th>
+                            <th className="th-filter">
+                              <TableHeaderFilter
+                                label="Lieu"
+                                values={endingFilterValues.lieu}
+                                selected={endingColFilters.lieu}
+                                onChange={setEndingColFilter('lieu')}
+                              />
+                            </th>
+                            <th className="th-filter">
+                              <TableHeaderFilter
+                                label="Fin"
+                                values={endingFilterValues.fin}
+                                selected={endingColFilters.fin}
+                                onChange={setEndingColFilter('fin')}
+                              />
+                            </th>
+                            <th className="th-filter">
+                              <TableHeaderFilter
+                                label="Jours restants"
+                                values={endingFilterValues.jours}
+                                selected={endingColFilters.jours}
+                                onChange={setEndingColFilter('jours')}
+                              />
+                            </th>
                           </tr>
                         </thead>
                         <tbody>
-                          {monthDashboard.endingSoon.map((item) => (
+                          {filteredEnding.map((item) => (
                             <tr key={item.id}>
                               <td>{item.numero}</td>
                               <td>{item.personName}</td>
@@ -1366,6 +1707,7 @@ export default function VillageGuestHousePage() {
                         </tbody>
                       </table>
                     </div>
+                    </>
                   )}
                 </div>
 
@@ -1376,20 +1718,73 @@ export default function VillageGuestHousePage() {
                       <p className="text-muted">Aucune réservation après {monthLabelFr(viewMonth)}.</p>
                     </div>
                   ) : (
+                    <>
+                      {futureActiveCount > 0 ? (
+                        <button
+                          type="button"
+                          className="btn btn-ghost btn-sm"
+                          style={{ marginBottom: '0.5rem' }}
+                          onClick={() => setFutureColFilters(EMPTY_FUTURE)}
+                        >
+                          Effacer les filtres ({futureActiveCount})
+                        </button>
+                      ) : null}
                     <div className="table-wrap guest-house-panel-scroll">
                       <table className="data-table guest-house-compact-table">
                         <thead>
                           <tr>
-                            <th>N°</th>
-                            <th>Personne</th>
-                            <th>Chambre</th>
-                            <th>Début</th>
-                            <th>Fin</th>
-                            <th>Statut</th>
+                            <th className="th-filter">
+                              <TableHeaderFilter
+                                label="N°"
+                                values={futureFilterValues.numero}
+                                selected={futureColFilters.numero}
+                                onChange={setFutureColFilter('numero')}
+                              />
+                            </th>
+                            <th className="th-filter">
+                              <TableHeaderFilter
+                                label="Personne"
+                                values={futureFilterValues.personne}
+                                selected={futureColFilters.personne}
+                                onChange={setFutureColFilter('personne')}
+                              />
+                            </th>
+                            <th className="th-filter">
+                              <TableHeaderFilter
+                                label="Chambre"
+                                values={futureFilterValues.chambre}
+                                selected={futureColFilters.chambre}
+                                onChange={setFutureColFilter('chambre')}
+                              />
+                            </th>
+                            <th className="th-filter">
+                              <TableHeaderFilter
+                                label="Début"
+                                values={futureFilterValues.debut}
+                                selected={futureColFilters.debut}
+                                onChange={setFutureColFilter('debut')}
+                              />
+                            </th>
+                            <th className="th-filter">
+                              <TableHeaderFilter
+                                label="Fin"
+                                values={futureFilterValues.fin}
+                                selected={futureColFilters.fin}
+                                onChange={setFutureColFilter('fin')}
+                              />
+                            </th>
+                            <th className="th-filter">
+                              <TableHeaderFilter
+                                label="Statut"
+                                values={futureFilterValues.statut}
+                                selected={futureColFilters.statut}
+                                onChange={setFutureColFilter('statut')}
+                              />
+                            </th>
                           </tr>
                         </thead>
                         <tbody>
-                          {monthDashboard.futureReservations.map((item) => (
+                          {filteredFuture.map((item) => (
                             <tr key={item.id}>
                               <td>{item.numero}</td>
                               <td>{item.personName}</td>
@@ -1409,6 +1804,7 @@ export default function VillageGuestHousePage() {
                         </tbody>
                       </table>
                     </div>
+                    </>
                   )}
                 </div>
               </div>
@@ -1440,20 +1836,66 @@ export default function VillageGuestHousePage() {
                     <p className="text-muted">Aucune réservation en attente.</p>
                   </div>
                 ) : (
+                  <>
+                    {pendingActiveCount > 0 ? (
+                      <button
+                        type="button"
+                        className="btn btn-ghost btn-sm"
+                        style={{ marginBottom: '0.5rem' }}
+                        onClick={() => setPendingColFilters(EMPTY_PENDING)}
+                      >
+                        Effacer les filtres ({pendingActiveCount})
+                      </button>
+                    ) : null}
                   <div className="table-wrap guest-house-panel-scroll">
                     <table className="data-table guest-house-compact-table">
                       <thead>
                         <tr>
-                          <th>N°</th>
-                          <th>Personne</th>
-                          <th>Motif</th>
-                          <th>Période</th>
-                          <th>Jours</th>
+                          <th className="th-filter">
+                            <TableHeaderFilter
+                              label="N°"
+                              values={pendingFilterValues.numero}
+                              selected={pendingColFilters.numero}
+                              onChange={setPendingColFilter('numero')}
+                            />
+                          </th>
+                          <th className="th-filter">
+                            <TableHeaderFilter
+                              label="Personne"
+                              values={pendingFilterValues.personne}
+                              selected={pendingColFilters.personne}
+                              onChange={setPendingColFilter('personne')}
+                            />
+                          </th>
+                          <th className="th-filter">
+                            <TableHeaderFilter
+                              label="Motif"
+                              values={pendingFilterValues.motif}
+                              selected={pendingColFilters.motif}
+                              onChange={setPendingColFilter('motif')}
+                            />
+                          </th>
+                          <th className="th-filter">
+                            <TableHeaderFilter
+                              label="Période"
+                              values={pendingFilterValues.periode}
+                              selected={pendingColFilters.periode}
+                              onChange={setPendingColFilter('periode')}
+                            />
+                          </th>
+                          <th className="th-filter">
+                            <TableHeaderFilter
+                              label="Jours"
+                              values={pendingFilterValues.jours}
+                              selected={pendingColFilters.jours}
+                              onChange={setPendingColFilter('jours')}
+                            />
+                          </th>
                           {(canEdit || canDelete) && <th>Actions</th>}
                         </tr>
                       </thead>
                       <tbody>
-                        {pending.map((item) => {
+                        {filteredPending.map((item) => {
                           const days = remainingDays(item.endDate);
                           const motifCol = IMPORT_MOTIF_RE.test(item.motif.trim()) ? '—' : (item.motif || '—');
                           const busy = rowBusyId === item.id;
@@ -1519,6 +1961,7 @@ export default function VillageGuestHousePage() {
                       </tbody>
                     </table>
                   </div>
+                  </>
                 )}
               </div>
 
@@ -1562,20 +2005,73 @@ export default function VillageGuestHousePage() {
                     </p>
                   </div>
                 ) : (
+                  <>
+                    {validatedActiveCount > 0 ? (
+                      <button
+                        type="button"
+                        className="btn btn-ghost btn-sm"
+                        style={{ marginBottom: '0.5rem' }}
+                        onClick={() => setValidatedColFilters(EMPTY_VALIDATED)}
+                      >
+                        Effacer les filtres ({validatedActiveCount})
+                      </button>
+                    ) : null}
                   <div className="table-wrap guest-house-panel-scroll">
                     <table className="data-table guest-house-compact-table">
                       <thead>
                         <tr>
-                          <th>N°</th>
-                          <th>Personne</th>
-                          <th>Chambre</th>
-                          <th>Période</th>
-                          <th>Nbr Jours</th>
-                          <th>Restant</th>
+                          <th className="th-filter">
+                            <TableHeaderFilter
+                              label="N°"
+                              values={validatedFilterValues.numero}
+                              selected={validatedColFilters.numero}
+                              onChange={setValidatedColFilter('numero')}
+                            />
+                          </th>
+                          <th className="th-filter">
+                            <TableHeaderFilter
+                              label="Personne"
+                              values={validatedFilterValues.personne}
+                              selected={validatedColFilters.personne}
+                              onChange={setValidatedColFilter('personne')}
+                            />
+                          </th>
+                          <th className="th-filter">
+                            <TableHeaderFilter
+                              label="Chambre"
+                              values={validatedFilterValues.chambre}
+                              selected={validatedColFilters.chambre}
+                              onChange={setValidatedColFilter('chambre')}
+                            />
+                          </th>
+                          <th className="th-filter">
+                            <TableHeaderFilter
+                              label="Période"
+                              values={validatedFilterValues.periode}
+                              selected={validatedColFilters.periode}
+                              onChange={setValidatedColFilter('periode')}
+                            />
+                          </th>
+                          <th className="th-filter">
+                            <TableHeaderFilter
+                              label="Nbr Jours"
+                              values={validatedFilterValues.nbrJours}
+                              selected={validatedColFilters.nbrJours}
+                              onChange={setValidatedColFilter('nbrJours')}
+                            />
+                          </th>
+                          <th className="th-filter">
+                            <TableHeaderFilter
+                              label="Restant"
+                              values={validatedFilterValues.restant}
+                              selected={validatedColFilters.restant}
+                              onChange={setValidatedColFilter('restant')}
+                            />
+                          </th>
                         </tr>
                       </thead>
                       <tbody>
-                        {validatedList.map((item) => {
+                        {filteredValidated.map((item) => {
                           const motifSub = personMotifSubtitle(item.motif);
                           const daysLeft = remainingDays(item.endDate);
                           const busy = rowBusyId === item.id;
@@ -1617,6 +2113,7 @@ export default function VillageGuestHousePage() {
                       </tbody>
                     </table>
                   </div>
+                  </>
                 )}
               </div>
             </div>

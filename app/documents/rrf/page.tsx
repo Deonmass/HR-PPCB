@@ -1,9 +1,11 @@
 'use client';
 
-import { useEffect, useMemo, useRef, useState } from 'react';
+import { Suspense, useEffect, useMemo, useRef, useState } from 'react';
 import Link from 'next/link';
+import { useSearchParams } from 'next/navigation';
 import { EmployeeSuggestInput } from '@/components/EmployeePicker';
 import PermissionGate from '@/components/PermissionGate';
+import TableHeaderFilter from '@/components/TableHeaderFilter';
 import { usePermissions } from '@/contexts/PermissionContext';
 import {
   RRF_APPROVER_FIELDS,
@@ -23,10 +25,33 @@ import {
   type RrfWorkSchedule,
   type RrfYesNo,
 } from '@/lib/rrf-types';
+import {
+  buildInitialRrfForm,
+  clearRrfPrefill,
+  hasRrfPrefill,
+  mergeRrfPrefill,
+  rrfPrefillFromSearchParams,
+} from '@/lib/rrf-prefill';
+import { completeTopProgress } from '@/components/TopProgressBar';
 import { confirmDelete, showError, showSuccess } from '@/lib/swal';
 import type { Employee } from '@/lib/types';
+import {
+  buildColumnFilterValues,
+  countActiveColumnFilters,
+  matchesColumnFilter,
+} from '@/lib/table-column-filters';
 
 type Tab = 'form' | 'history';
+type HistoryFilterKey = 'date' | 'position' | 'costCenter' | 'location' | 'type' | 'emisPar';
+
+const EMPTY_HISTORY_FILTERS: Record<HistoryFilterKey, string[]> = {
+  date: [],
+  position: [],
+  costCenter: [],
+  location: [],
+  type: [],
+  emisPar: [],
+};
 
 interface RrfHistoryRecord {
   id: string;
@@ -215,6 +240,7 @@ function YesNo({
             type="radio"
             checked={value === opt}
             onChange={() => onChange(opt)}
+            aria-label={opt}
           />
           <span>{opt}</span>
         </label>
@@ -321,7 +347,7 @@ function RrfPreviewBody({ form }: { form: RrfFormData }) {
   );
 }
 
-export default function RrfPage() {
+function RrfPageContent() {
   const { can } = usePermissions();
   const canExport = can('documents.rrf', 'view')
     || can('documents.rrf', 'export')
@@ -334,21 +360,69 @@ export default function RrfPage() {
     || can('documents.rrf', 'edit')
     || can('documents.rrf', 'create');
 
+  const searchParams = useSearchParams();
   const [tab, setTab] = useState<Tab>('form');
   const [employees, setEmployees] = useState<Employee[]>([]);
   const [loading, setLoading] = useState(true);
-  const [form, setForm] = useState<RrfFormData>(RRF_EMPTY_FORM);
+  const [form, setForm] = useState<RrfFormData>(() => buildInitialRrfForm());
   const [exporting, setExporting] = useState<'xlsx' | 'pdf' | null>(null);
   const [saving, setSaving] = useState(false);
   const [history, setHistory] = useState<RrfHistoryRecord[]>([]);
   const [historyLoading, setHistoryLoading] = useState(true);
   const [historyBusyId, setHistoryBusyId] = useState<string | null>(null);
   const [historyId, setHistoryId] = useState<string | null>(null);
+  const [historyColFilters, setHistoryColFilters] =
+    useState<Record<HistoryFilterKey, string[]>>(EMPTY_HISTORY_FILTERS);
   const [previewOpen, setPreviewOpen] = useState(false);
   const [previewForm, setPreviewForm] = useState<RrfFormData | null>(null);
   const autoFilledRef = useRef(false);
+  const appliedQueryKeyRef = useRef<string>('');
 
   const agents = useMemo(() => activeEmployees(employees), [employees]);
+
+  const historyPositionLabel = (record: RrfHistoryRecord) => {
+    const base = record.positionTitle || record.jobTitle || '';
+    if (record.headcount && record.headcount !== '1') {
+      return `${base || '—'} (×${record.headcount})`;
+    }
+    return base;
+  };
+
+  const historyFilterValues = useMemo(
+    () =>
+      buildColumnFilterValues(history, {
+        date: (r) => formatDateTime(r.createdAt),
+        position: (r) => historyPositionLabel(r),
+        costCenter: (r) => r.costCenter,
+        location: (r) => r.location,
+        type: (r) => formatLabel(r.format),
+        emisPar: (r) => r.issuedBy,
+      }),
+    [history],
+  );
+
+  const filteredHistory = useMemo(
+    () =>
+      history.filter(
+        (r) =>
+          matchesColumnFilter(historyColFilters.date, formatDateTime(r.createdAt)) &&
+          matchesColumnFilter(historyColFilters.position, historyPositionLabel(r)) &&
+          matchesColumnFilter(historyColFilters.costCenter, r.costCenter) &&
+          matchesColumnFilter(historyColFilters.location, r.location) &&
+          matchesColumnFilter(historyColFilters.type, formatLabel(r.format)) &&
+          matchesColumnFilter(historyColFilters.emisPar, r.issuedBy),
+      ),
+    [history, historyColFilters],
+  );
+
+  const historyActiveFilterCount = useMemo(
+    () => countActiveColumnFilters(historyColFilters),
+    [historyColFilters],
+  );
+
+  const setHistoryColFilter = (key: HistoryFilterKey) => (next: string[]) => {
+    setHistoryColFilters((prev) => ({ ...prev, [key]: next }));
+  };
 
   const loadHistory = async () => {
     setHistoryLoading(true);
@@ -368,6 +442,11 @@ export default function RrfPage() {
   };
 
   useEffect(() => {
+    completeTopProgress();
+    clearRrfPrefill();
+  }, []);
+
+  useEffect(() => {
     fetch('/api/employees')
       .then((res) => (res.ok ? res.json() : []))
       .then((json: Employee[]) => setEmployees(Array.isArray(json) ? json : []))
@@ -375,6 +454,18 @@ export default function RrfPage() {
       .finally(() => setLoading(false));
     void loadHistory();
   }, []);
+
+  /** Prefill depuis query string (et re-navigation avec nouveaux params). */
+  useEffect(() => {
+    const key = searchParams.toString();
+    if (!key || key === appliedQueryKeyRef.current) return;
+    const payload = rrfPrefillFromSearchParams(searchParams);
+    if (!hasRrfPrefill(payload)) return;
+    appliedQueryKeyRef.current = key;
+    setForm((prev) => mergeRrfPrefill(prev, payload));
+    setTab('form');
+    completeTopProgress();
+  }, [searchParams]);
 
   useEffect(() => {
     if (loading || agents.length === 0 || autoFilledRef.current) return;
@@ -545,7 +636,9 @@ export default function RrfPage() {
     }
   };
 
-  if (loading) return <div className="loading">Chargement...</div>;
+  if (loading && !form.positionTitle && !form.jobTitle) {
+    return <div className="loading">Chargement...</div>;
+  }
 
   return (
     <PermissionGate anyOf={[
@@ -553,273 +646,286 @@ export default function RrfPage() {
       { menuId: 'documents.rrf', action: 'create' },
       { menuId: 'documents.rrf', action: 'export' },
     ]}>
-      <div className="page-header page-header-with-tabs">
-        <div>
-          <h2>RRF — Recruitment Requisition</h2>
-          <p>
-            Formulaire d&apos;approbation de recrutement permanent (PPCB-HR-DOC-26).
-            Suggestions fonction / localisation / approbateurs, puis visualisation et export.
-          </p>
-        </div>
-        <div className="travel-history-header-actions">
-          <Link href="/documents" className="btn btn-secondary btn-sm" prefetch={false}>
-            ← Documents
-          </Link>
-          <div className="tabs header-tabs header-tabs-dashboard header-tabs-compact">
-            <button
-              type="button"
-              className={`tab-btn tab-btn-sm tab-btn-dashboard${tab === 'form' ? ' active' : ''}`}
-              onClick={() => setTab('form')}
-            >
-              Formulaire
-            </button>
-            <button
-              type="button"
-              className={`tab-btn tab-btn-sm tab-btn-dashboard${tab === 'history' ? ' active' : ''}`}
-              onClick={() => {
-                setTab('history');
-                void loadHistory();
-              }}
-            >
-              Historique{history.length > 0 ? ` (${history.length})` : ''}
-            </button>
+      <div className="rrf-page">
+        <header className="rrf-sticky">
+          <div className="rrf-page-header">
+            <h2 className="rrf-page-title">
+              RRF <span className="rrf-title-sub">— Recruitment Requisition</span>
+            </h2>
+            <div className="rrf-header-actions">
+              <Link href="/documents" className="btn btn-secondary btn-sm rrf-back-btn" prefetch={false}>
+                ← Documents
+              </Link>
+              <div className="tabs header-tabs header-tabs-compact rrf-tabs" role="tablist">
+                <button
+                  type="button"
+                  role="tab"
+                  aria-selected={tab === 'form'}
+                  className={`tab-btn tab-btn-sm${tab === 'form' ? ' active' : ''}`}
+                  onClick={() => setTab('form')}
+                >
+                  Formulaire
+                </button>
+                <button
+                  type="button"
+                  role="tab"
+                  aria-selected={tab === 'history'}
+                  className={`tab-btn tab-btn-sm${tab === 'history' ? ' active' : ''}`}
+                  onClick={() => {
+                    setTab('history');
+                    void loadHistory();
+                  }}
+                >
+                  Historique{history.length > 0 ? ` (${history.length})` : ''}
+                </button>
+              </div>
+            </div>
           </div>
-        </div>
-      </div>
+        </header>
 
+        <div className={`rrf-body${tab === 'form' ? ' is-form' : ' is-history'}`}>
       {tab === 'form' && (
         <div className="panel rrf-form-panel">
-          <section className="rrf-section">
-            <h3 className="rrf-section-title">Admin</h3>
-            <div className="rrf-dense-grid">
-              <div className="form-group rrf-span-2">
-                <label>Position to be recruited</label>
-                <JobTitleSuggest
-                  suggestions={jobSuggestions}
-                  value={form.positionTitle}
-                  onChange={(v) => {
-                    setForm((prev) => ({
-                      ...prev,
-                      positionTitle: v,
-                      jobTitle:
-                        !prev.jobTitle || prev.jobTitle === prev.positionTitle
-                          ? v
-                          : prev.jobTitle,
-                    }));
-                  }}
-                  onSelect={applyJobSuggestion}
-                />
-              </div>
-              <div className="form-group">
-                <label>Nb. positions</label>
-                <input
-                  type="number"
-                  min={1}
-                  value={form.headcount}
-                  onChange={(e) => patch('headcount', e.target.value)}
-                />
-              </div>
-              <div className="form-group">
-                <label>Cost center</label>
-                <input
-                  value={form.costCenter}
-                  onChange={(e) => patch('costCenter', e.target.value)}
-                  placeholder="Prérempli"
-                />
-              </div>
-              <div className="form-group">
-                <label>New / Replacement</label>
-                <select
-                  value={form.newOrReplacement}
-                  onChange={(e) => patch('newOrReplacement', e.target.value as RrfNewOrReplacement)}
-                >
-                  <option value="">—</option>
-                  <option value="New position">New position</option>
-                  <option value="Replacement">Replacement</option>
-                </select>
-              </div>
-              <div className="form-group">
-                <label>Work schedule</label>
-                <select
-                  value={form.workSchedule}
-                  onChange={(e) => patch('workSchedule', e.target.value as RrfWorkSchedule)}
-                >
-                  <option value="">—</option>
-                  <option value="Full time">Full time</option>
-                  <option value="Part time">Part time</option>
-                </select>
-              </div>
-              <div className="form-group rrf-span-all rrf-yn-row">
-                <div className="rrf-yn-pair">
-                  <span className="rrf-yn-label">Head account in blueprint</span>
-                  <YesNo
-                    value={form.headAccountBlueprint}
-                    onChange={(v) => patch('headAccountBlueprint', v)}
-                  />
-                </div>
-                <div className="rrf-yn-pair">
-                  <span className="rrf-yn-label">Position budgeted?</span>
-                  <YesNo
-                    value={form.positionBudgeted}
-                    onChange={(v) => patch('positionBudgeted', v)}
-                  />
-                </div>
-              </div>
-              {form.headAccountBlueprint === 'No' && (
-                <div className="form-group rrf-span-all">
-                  <label>Justification (blueprint)</label>
-                  <input
-                    type="text"
-                    value={form.headAccountJustification}
-                    onChange={(e) => patch('headAccountJustification', e.target.value)}
-                    placeholder="If no, provide justification…"
-                  />
-                </div>
-              )}
-              {form.positionBudgeted === 'No' && (
-                <div className="form-group rrf-span-all">
-                  <label>Justification (budget)</label>
-                  <input
-                    type="text"
-                    value={form.budgetJustification}
-                    onChange={(e) => patch('budgetJustification', e.target.value)}
-                    placeholder="If no, provide justification…"
-                  />
-                </div>
-              )}
-            </div>
-          </section>
-
-          <section className="rrf-section">
-            <h3 className="rrf-section-title">Job detail</h3>
-            <div className="rrf-dense-grid">
-              <div className="form-group rrf-span-2">
-                <label>Job title</label>
-                <input
-                  value={form.jobTitle}
-                  onChange={(e) => patch('jobTitle', e.target.value)}
-                />
-              </div>
-              <div className="form-group">
-                <label>Job level</label>
-                <input
-                  value={form.jobLevel}
-                  onChange={(e) => patch('jobLevel', e.target.value)}
-                />
-              </div>
-              <div className="form-group rrf-span-all">
-                <label>Description</label>
-                <textarea
-                  rows={2}
-                  value={form.jobDescription}
-                  onChange={(e) => patch('jobDescription', e.target.value)}
-                />
-              </div>
-              <div className="form-group">
-                <label>Reports to</label>
-                <input
-                  value={form.reportsTo}
-                  onChange={(e) => patch('reportsTo', e.target.value)}
-                  placeholder="Prérempli"
-                />
-              </div>
-              <div className="form-group">
-                <label>Location</label>
-                <StringSuggest
-                  items={locationSuggestions}
-                  value={form.location}
-                  onChange={(v) => patch('location', v)}
-                  placeholder="Localisation…"
-                />
-              </div>
-              <div className="form-group">
-                <label>Start date</label>
-                <input
-                  type="date"
-                  value={form.preferredStartDate}
-                  onChange={(e) => patch('preferredStartDate', e.target.value)}
-                />
-              </div>
-              <div className="form-group">
-                <label>Posting</label>
-                <select
-                  value={form.posting}
-                  onChange={(e) => patch('posting', e.target.value as RrfPosting)}
-                >
-                  <option value="">—</option>
-                  <option value="Internal">Internal</option>
-                  <option value="External">External</option>
-                  <option value="Internal & External">Internal &amp; External</option>
-                </select>
-              </div>
-            </div>
-          </section>
-
-          <section className="rrf-section">
-            <h3 className="rrf-section-title">Benefits</h3>
-            <div className="rrf-benefits">
-              {RRF_BENEFIT_LABELS.map(({ key, label }) => (
-                <label key={key} className={`rrf-check${form.benefits[key] ? ' is-on' : ''}`}>
-                  <input
-                    type="checkbox"
-                    checked={form.benefits[key]}
-                    onChange={(e) =>
-                      patch('benefits', { ...form.benefits, [key]: e.target.checked })
-                    }
-                  />
-                  {label}
-                </label>
-              ))}
-            </div>
-          </section>
-
-          <section className="rrf-section rrf-section-approvers">
-            <h3 className="rrf-section-title">Approver&apos;s signature</h3>
-            <div className="table-wrap rrf-approvers-wrap">
-              <table className="rrf-approvers-table">
-                <thead>
-                  <tr>
-                    <th className="rrf-approvers-role-col">Role / step</th>
-                    <th className="rrf-approvers-name-col">Name (Approved by)</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr>
-                    <td className="rrf-approvers-role">Recruitment requested by</td>
-                    <td>
-                      <EmployeeSuggestInput
-                        employees={agents}
-                        value={form.recruitmentRequestedBy}
-                        onChange={(v) => patch('recruitmentRequestedBy', v)}
-                        placeholder="Nom de l’agent…"
+          <div className="rrf-form-scroll">
+            <div className="rrf-columns">
+              <section className="rrf-col rrf-col-admin">
+                <h3 className="rrf-section-title">Admin</h3>
+                <div className="rrf-col-fields">
+                  <div className="form-group">
+                    <label>Position to be recruited</label>
+                    <JobTitleSuggest
+                      suggestions={jobSuggestions}
+                      value={form.positionTitle}
+                      onChange={(v) => {
+                        setForm((prev) => ({
+                          ...prev,
+                          positionTitle: v,
+                          jobTitle:
+                            !prev.jobTitle || prev.jobTitle === prev.positionTitle
+                              ? v
+                              : prev.jobTitle,
+                        }));
+                      }}
+                      onSelect={applyJobSuggestion}
+                    />
+                  </div>
+                  <div className="rrf-field-row">
+                    <div className="form-group">
+                      <label>Nb. positions</label>
+                      <input
+                        type="number"
+                        min={1}
+                        value={form.headcount}
+                        onChange={(e) => patch('headcount', e.target.value)}
                       />
-                    </td>
-                  </tr>
-                  {RRF_APPROVER_FIELDS.map(({ roleKey, nameKey, fallback, keywords }) => {
-                    const roleLabel = form[roleKey] || fallback;
-                    const roleEmployees = employeesForRrfRole(
-                      agents,
-                      roleLabel,
-                      [...keywords],
-                    ) as Employee[];
-                    return (
-                      <tr key={roleKey}>
-                        <td className="rrf-approvers-role">{roleLabel}</td>
+                    </div>
+                    <div className="form-group">
+                      <label>Cost center</label>
+                      <input
+                        value={form.costCenter}
+                        onChange={(e) => patch('costCenter', e.target.value)}
+                        placeholder="Prérempli"
+                      />
+                    </div>
+                  </div>
+                  <div className="rrf-field-row">
+                    <div className="form-group">
+                      <label>New / Replacement</label>
+                      <select
+                        value={form.newOrReplacement}
+                        onChange={(e) => patch('newOrReplacement', e.target.value as RrfNewOrReplacement)}
+                      >
+                        <option value="">—</option>
+                        <option value="New position">New position</option>
+                        <option value="Replacement">Replacement</option>
+                      </select>
+                    </div>
+                    <div className="form-group">
+                      <label>Work schedule</label>
+                      <select
+                        value={form.workSchedule}
+                        onChange={(e) => patch('workSchedule', e.target.value as RrfWorkSchedule)}
+                      >
+                        <option value="">—</option>
+                        <option value="Full time">Full time</option>
+                        <option value="Part time">Part time</option>
+                      </select>
+                    </div>
+                  </div>
+                  <div className="form-group rrf-yn-block">
+                    <div className="rrf-yn-pair">
+                      <span className="rrf-yn-label">Head account in blueprint</span>
+                      <YesNo
+                        value={form.headAccountBlueprint}
+                        onChange={(v) => patch('headAccountBlueprint', v)}
+                      />
+                    </div>
+                    <div className="rrf-yn-pair">
+                      <span className="rrf-yn-label">Position budgeted?</span>
+                      <YesNo
+                        value={form.positionBudgeted}
+                        onChange={(v) => patch('positionBudgeted', v)}
+                      />
+                    </div>
+                  </div>
+                  {form.headAccountBlueprint === 'No' && (
+                    <div className="form-group">
+                      <label>Justification (blueprint)</label>
+                      <input
+                        type="text"
+                        value={form.headAccountJustification}
+                        onChange={(e) => patch('headAccountJustification', e.target.value)}
+                        placeholder="If no, provide justification…"
+                      />
+                    </div>
+                  )}
+                  {form.positionBudgeted === 'No' && (
+                    <div className="form-group">
+                      <label>Justification (budget)</label>
+                      <input
+                        type="text"
+                        value={form.budgetJustification}
+                        onChange={(e) => patch('budgetJustification', e.target.value)}
+                        placeholder="If no, provide justification…"
+                      />
+                    </div>
+                  )}
+                  <div className="form-group">
+                    <label>Posting</label>
+                    <select
+                      value={form.posting}
+                      onChange={(e) => patch('posting', e.target.value as RrfPosting)}
+                    >
+                      <option value="">—</option>
+                      <option value="Internal">Internal</option>
+                      <option value="External">External</option>
+                      <option value="Internal & External">Internal &amp; External</option>
+                    </select>
+                  </div>
+                  <div className="form-group rrf-benefits-block">
+                    <label>Benefits</label>
+                    <div className="rrf-benefits">
+                      {RRF_BENEFIT_LABELS.map(({ key, label }) => (
+                        <label key={key} className={`rrf-check${form.benefits[key] ? ' is-on' : ''}`}>
+                          <input
+                            type="checkbox"
+                            checked={form.benefits[key]}
+                            onChange={(e) =>
+                              patch('benefits', { ...form.benefits, [key]: e.target.checked })
+                            }
+                          />
+                          {label}
+                        </label>
+                      ))}
+                    </div>
+                  </div>
+                </div>
+              </section>
+
+              <section className="rrf-col rrf-col-job">
+                <h3 className="rrf-section-title">Job detail</h3>
+                <div className="rrf-col-fields">
+                  <div className="form-group">
+                    <label>Job title</label>
+                    <input
+                      value={form.jobTitle}
+                      onChange={(e) => patch('jobTitle', e.target.value)}
+                    />
+                  </div>
+                  <div className="form-group">
+                    <label>Job level</label>
+                    <input
+                      value={form.jobLevel}
+                      onChange={(e) => patch('jobLevel', e.target.value)}
+                    />
+                  </div>
+                  <div className="form-group">
+                    <label>Description</label>
+                    <textarea
+                      rows={3}
+                      value={form.jobDescription}
+                      onChange={(e) => patch('jobDescription', e.target.value)}
+                    />
+                  </div>
+                  <div className="form-group">
+                    <label>Reports to</label>
+                    <input
+                      value={form.reportsTo}
+                      onChange={(e) => patch('reportsTo', e.target.value)}
+                      placeholder="Prérempli"
+                    />
+                  </div>
+                  <div className="rrf-field-row">
+                    <div className="form-group">
+                      <label>Location</label>
+                      <StringSuggest
+                        items={locationSuggestions}
+                        value={form.location}
+                        onChange={(v) => patch('location', v)}
+                        placeholder="Localisation…"
+                      />
+                    </div>
+                    <div className="form-group">
+                      <label>Start date</label>
+                      <input
+                        type="date"
+                        value={form.preferredStartDate}
+                        onChange={(e) => patch('preferredStartDate', e.target.value)}
+                      />
+                    </div>
+                  </div>
+                </div>
+              </section>
+
+              <section className="rrf-col rrf-col-approvers">
+                <h3 className="rrf-section-title">Approver&apos;s signature</h3>
+                <div className="table-wrap rrf-approvers-wrap">
+                  <table className="rrf-approvers-table">
+                    <thead>
+                      <tr>
+                        <th className="rrf-approvers-role-col">Role / step</th>
+                        <th className="rrf-approvers-name-col">Name (Approved by)</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr>
+                        <td className="rrf-approvers-role">Recruitment requested by</td>
                         <td>
                           <EmployeeSuggestInput
-                            employees={roleEmployees}
-                            value={form[nameKey]}
-                            onChange={(v) => patch(nameKey, v)}
-                            placeholder="Nom approbateur…"
+                            employees={agents}
+                            value={form.recruitmentRequestedBy}
+                            onChange={(v) => patch('recruitmentRequestedBy', v)}
+                            placeholder="Nom de l’agent…"
                           />
                         </td>
                       </tr>
-                    );
-                  })}
-                </tbody>
-              </table>
+                      {RRF_APPROVER_FIELDS.map(({ roleKey, nameKey, fallback, keywords }) => {
+                        const roleLabel = form[roleKey] || fallback;
+                        const roleEmployees = employeesForRrfRole(
+                          agents,
+                          roleLabel,
+                          [...keywords],
+                        ) as Employee[];
+                        return (
+                          <tr key={roleKey}>
+                            <td className="rrf-approvers-role">{roleLabel}</td>
+                            <td>
+                              <EmployeeSuggestInput
+                                employees={roleEmployees}
+                                value={form[nameKey]}
+                                onChange={(v) => patch(nameKey, v)}
+                                placeholder="Nom approbateur…"
+                              />
+                            </td>
+                          </tr>
+                        );
+                      })}
+                    </tbody>
+                  </table>
+                </div>
+              </section>
             </div>
-          </section>
+          </div>
 
           <div className="rrf-footer-actions">
             <button
@@ -843,40 +949,87 @@ export default function RrfPage() {
 
       {tab === 'history' && (
         <div className="panel rrf-history-panel">
-          <div className="rrf-history-head">
-            <h3 className="rrf-section-title" style={{ marginBottom: 0 }}>Historique des RRF</h3>
-            <button
-              type="button"
-              className="btn btn-secondary btn-sm"
-              disabled={historyLoading}
-              onClick={() => void loadHistory()}
-            >
-              {historyLoading ? 'Chargement…' : 'Actualiser'}
-            </button>
-          </div>
-          <p className="text-muted rrf-history-hint">
-            Une ligne par dossier RRF · <code>data/documents/rrf-history.json</code>
-          </p>
           {historyLoading ? (
             <div className="loading">Chargement de l&apos;historique…</div>
           ) : history.length === 0 ? (
             <p className="empty-state">Aucun RRF enregistré ou exporté pour le moment.</p>
           ) : (
-            <div className="table-wrap">
+            <>
+              {historyActiveFilterCount > 0 ? (
+                <div style={{ marginBottom: '0.5rem' }}>
+                  <button
+                    type="button"
+                    className="btn btn-ghost btn-sm"
+                    onClick={() => setHistoryColFilters(EMPTY_HISTORY_FILTERS)}
+                  >
+                    Effacer les filtres ({historyActiveFilterCount})
+                  </button>
+                </div>
+              ) : null}
+            <div className="table-wrap rrf-history-table-wrap">
               <table className="travel-history-table rrf-history-table">
                 <thead>
                   <tr>
-                    <th>Date</th>
-                    <th>Position</th>
-                    <th>Cost center</th>
-                    <th>Location</th>
-                    <th>Type</th>
-                    <th>Émis par</th>
+                    <th className="th-filter">
+                      <TableHeaderFilter
+                        label="Date"
+                        values={historyFilterValues.date}
+                        selected={historyColFilters.date}
+                        onChange={setHistoryColFilter('date')}
+                      />
+                    </th>
+                    <th className="th-filter">
+                      <TableHeaderFilter
+                        label="Position"
+                        values={historyFilterValues.position}
+                        selected={historyColFilters.position}
+                        onChange={setHistoryColFilter('position')}
+                      />
+                    </th>
+                    <th className="th-filter">
+                      <TableHeaderFilter
+                        label="Cost center"
+                        values={historyFilterValues.costCenter}
+                        selected={historyColFilters.costCenter}
+                        onChange={setHistoryColFilter('costCenter')}
+                      />
+                    </th>
+                    <th className="th-filter">
+                      <TableHeaderFilter
+                        label="Location"
+                        values={historyFilterValues.location}
+                        selected={historyColFilters.location}
+                        onChange={setHistoryColFilter('location')}
+                      />
+                    </th>
+                    <th className="th-filter">
+                      <TableHeaderFilter
+                        label="Type"
+                        values={historyFilterValues.type}
+                        selected={historyColFilters.type}
+                        onChange={setHistoryColFilter('type')}
+                      />
+                    </th>
+                    <th className="th-filter">
+                      <TableHeaderFilter
+                        label="Émis par"
+                        values={historyFilterValues.emisPar}
+                        selected={historyColFilters.emisPar}
+                        onChange={setHistoryColFilter('emisPar')}
+                      />
+                    </th>
                     <th>Actions</th>
                   </tr>
                 </thead>
                 <tbody>
-                  {history.map((record) => {
+                  {filteredHistory.length === 0 ? (
+                    <tr>
+                      <td colSpan={7} className="empty-state">
+                        Aucun RRF pour ces filtres.
+                      </td>
+                    </tr>
+                  ) : (
+                    filteredHistory.map((record) => {
                     const busy = historyBusyId === record.id || Boolean(exporting);
                     return (
                       <tr key={record.id} className={busy ? 'rrf-history-row-busy' : undefined}>
@@ -923,13 +1076,16 @@ export default function RrfPage() {
                         </td>
                       </tr>
                     );
-                  })}
+                  })
+                  )}
                 </tbody>
               </table>
             </div>
+            </>
           )}
         </div>
       )}
+        </div>
 
       {previewOpen && previewForm && (
         <div
@@ -1005,6 +1161,15 @@ export default function RrfPage() {
           </div>
         </div>
       )}
+      </div>
     </PermissionGate>
+  );
+}
+
+export default function RrfPage() {
+  return (
+    <Suspense fallback={<div className="loading">Chargement…</div>}>
+      <RrfPageContent />
+    </Suspense>
   );
 }

@@ -4,12 +4,27 @@ import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { createPortal } from 'react-dom';
 import PermissionGate from '@/components/PermissionGate';
 import RefreshButton from '@/components/RefreshButton';
+import TableHeaderFilter from '@/components/TableHeaderFilter';
 import { usePermissions } from '@/contexts/PermissionContext';
 import type { AuditAction, AuditLogEntry } from '@/lib/audit-log-types';
 import { AUDIT_ACTION_LABELS } from '@/lib/audit-log-types';
 import { confirmAction, confirmDelete, showError, showSuccess } from '@/lib/swal';
+import {
+  buildColumnFilterValues,
+  countActiveColumnFilters,
+  matchesColumnFilter,
+} from '@/lib/table-column-filters';
 
 const PAGE_SIZE = 200;
+
+type ColFilterKey = 'date' | 'module' | 'utilisateur' | 'action';
+
+const EMPTY_COL_FILTERS: Record<ColFilterKey, string[]> = {
+  date: [],
+  module: [],
+  utilisateur: [],
+  action: [],
+};
 
 function formatDate(iso: string): string {
   try {
@@ -240,6 +255,7 @@ export default function AuditLogsPage() {
   const [busyId, setBusyId] = useState<string | null>(null);
   const [showExport, setShowExport] = useState(false);
   const [ctxMenu, setCtxMenu] = useState<CtxState | null>(null);
+  const [colFilters, setColFilters] = useState<Record<ColFilterKey, string[]>>(EMPTY_COL_FILTERS);
 
   const load = useCallback(async (offset = 0, append = false) => {
     if (append) setLoadingMore(true);
@@ -278,6 +294,38 @@ export default function AuditLogsPage() {
     () => (Object.keys(AUDIT_ACTION_LABELS) as AuditAction[]).map((id) => ({ id, label: AUDIT_ACTION_LABELS[id] })),
     [],
   );
+
+  const actionDisplay = (entry: AuditLogEntry) =>
+    ACTION_BADGE_STYLES[entry.action]?.label ?? AUDIT_ACTION_LABELS[entry.action] ?? entry.action;
+
+  const filterValues = useMemo(
+    () =>
+      buildColumnFilterValues(entries, {
+        date: (e) => formatDate(e.at),
+        module: (e) => e.moduleLabel,
+        utilisateur: (e) => e.userName,
+        action: (e) => actionDisplay(e),
+      }),
+    [entries],
+  );
+
+  const filteredEntries = useMemo(
+    () =>
+      entries.filter(
+        (e) =>
+          matchesColumnFilter(colFilters.date, formatDate(e.at)) &&
+          matchesColumnFilter(colFilters.module, e.moduleLabel) &&
+          matchesColumnFilter(colFilters.utilisateur, e.userName) &&
+          matchesColumnFilter(colFilters.action, actionDisplay(e)),
+      ),
+    [entries, colFilters],
+  );
+
+  const activeFilterCount = useMemo(() => countActiveColumnFilters(colFilters), [colFilters]);
+
+  const setColFilter = (key: ColFilterKey) => (next: string[]) => {
+    setColFilters((prev) => ({ ...prev, [key]: next }));
+  };
 
   const buildExportUrl = useCallback((month?: string) => {
     const params = new URLSearchParams({ export: '1' });
@@ -387,26 +435,68 @@ export default function AuditLogsPage() {
       </div>
 
       <div className="panel panel-padded audit-logs-table-panel audit-logs-fill">
+        {activeFilterCount > 0 ? (
+          <div style={{ marginBottom: '0.5rem' }}>
+            <button
+              type="button"
+              className="btn btn-ghost btn-sm"
+              onClick={() => setColFilters(EMPTY_COL_FILTERS)}
+            >
+              Effacer les filtres ({activeFilterCount})
+            </button>
+            <span className="text-muted" style={{ marginLeft: '0.75rem' }}>
+              {filteredEntries.length} / {entries.length} affichée{filteredEntries.length > 1 ? 's' : ''}
+            </span>
+          </div>
+        ) : null}
         <div className="table-scroll audit-table-scroll-fill">
           <table className="data-table audit-logs-table">
             <thead>
               <tr>
-                <th>Date</th>
-                <th>Module</th>
-                <th>Utilisateur</th>
-                <th>Action</th>
+                <th className="th-filter">
+                  <TableHeaderFilter
+                    label="Date"
+                    values={filterValues.date}
+                    selected={colFilters.date}
+                    onChange={setColFilter('date')}
+                  />
+                </th>
+                <th className="th-filter">
+                  <TableHeaderFilter
+                    label="Module"
+                    values={filterValues.module}
+                    selected={colFilters.module}
+                    onChange={setColFilter('module')}
+                  />
+                </th>
+                <th className="th-filter">
+                  <TableHeaderFilter
+                    label="Utilisateur"
+                    values={filterValues.utilisateur}
+                    selected={colFilters.utilisateur}
+                    onChange={setColFilter('utilisateur')}
+                  />
+                </th>
+                <th className="th-filter">
+                  <TableHeaderFilter
+                    label="Action"
+                    values={filterValues.action}
+                    selected={colFilters.action}
+                    onChange={setColFilter('action')}
+                  />
+                </th>
                 <th>Détails</th>
               </tr>
             </thead>
             <tbody>
-              {entries.length === 0 ? (
+              {filteredEntries.length === 0 ? (
                 <tr>
                   <td colSpan={5} className="text-muted" style={{ textAlign: 'center' }}>
                     Aucun log pour ces filtres.
                   </td>
                 </tr>
               ) : (
-                entries.map((entry) => (
+                filteredEntries.map((entry) => (
                   <tr
                     key={entry.id}
                     className={`audit-row-clickable${entry.action === 'error' ? ' audit-row-error' : entry.undone ? ' audit-row-undone' : ''}`}

@@ -106,6 +106,16 @@ function IconRrf() {
   );
 }
 
+function IconNewcomer() {
+  return (
+    <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+      <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2" />
+      <circle cx="9" cy="7" r="4" />
+      <path d="M19 8v6M22 11h-6" />
+    </svg>
+  );
+}
+
 function IconOrder() {
   return (
     <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
@@ -220,6 +230,16 @@ const CARDS: DocCard[] = [
     icon: <IconExit />,
   },
   {
+    id: 'newcomer',
+    title: 'Newcomer',
+    description: 'Pack d’intégration — déclaration, New User Request et SAP Input form à partir du poste sélectionné.',
+    href: '/documents/newcomer',
+    menuId: 'documents.newcomer',
+    accent: '#0d9488',
+    badge: '3 documents',
+    icon: <IconNewcomer />,
+  },
+  {
     id: 'rrf',
     title: 'RRF',
     description: 'Recruitment Requisition Form — fonction auto (cost center, reports to, location), benefits et export Excel/PDF.',
@@ -240,6 +260,7 @@ function canSeeMenu(
     || can(menuId, 'create')
     || can(menuId, 'edit')
     || can(menuId, 'export')
+    || can(menuId, 'delete')
   );
 }
 

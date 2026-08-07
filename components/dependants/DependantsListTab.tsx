@@ -6,6 +6,7 @@ import DependantFamilyModal, { findFamilyGroup } from '@/components/dependants/D
 import DependantFormModal from '@/components/dependants/DependantFormModal';
 import FamilyLocalisationModal from '@/components/dependants/FamilyLocalisationModal';
 import RowContextMenu, { type ContextMenuItem } from '@/components/RowContextMenu';
+import TableHeaderFilter from '@/components/TableHeaderFilter';
 import { usePermissions } from '@/contexts/PermissionContext';
 import type { Dependant, DependantFormData } from '@/lib/dependants-types';
 import {
@@ -15,7 +16,53 @@ import {
   type FamilyGroup,
 } from '@/lib/dependants-utils';
 import { getDependantDocumentLinkLabel } from '@/lib/dependants-columns';
+import {
+  buildColumnFilterValues,
+  countActiveColumnFilters,
+  matchesColumnFilter,
+} from '@/lib/table-column-filters';
 import { confirmDelete, showError, showSuccess } from '@/lib/swal';
+
+type FilterKey =
+  | 'matricule'
+  | 'pactilis'
+  | 'statut'
+  | 'sexe'
+  | 'nom'
+  | 'departement'
+  | 'localisation'
+  | 'age';
+
+const EMPTY_FILTERS: Record<FilterKey, string[]> = {
+  matricule: [],
+  pactilis: [],
+  statut: [],
+  sexe: [],
+  nom: [],
+  departement: [],
+  localisation: [],
+  age: [],
+};
+
+function ageFilterValue(age: number | null | undefined): string {
+  return age == null ? '' : String(age);
+}
+
+function memberMatchesColFilters(
+  item: Dependant,
+  colFilters: Record<FilterKey, string[]>,
+): boolean {
+  return (
+    matchesColumnFilter(colFilters.matricule, item.matricule) &&
+    matchesColumnFilter(colFilters.pactilis, item.pactilis) &&
+    matchesColumnFilter(colFilters.statut, item.statut) &&
+    matchesColumnFilter(colFilters.sexe, item.sexe) &&
+    matchesColumnFilter(colFilters.nom, item.nom) &&
+    matchesColumnFilter(colFilters.departement, item.departement) &&
+    matchesColumnFilter(colFilters.localisation, item.localisation) &&
+    matchesColumnFilter(colFilters.age, ageFilterValue(item.age))
+  );
+}
 
 export interface DependantFilters {
   search: string;
@@ -380,6 +427,7 @@ export default function DependantsListTab({
     !readOnly && can('employes.dependants', 'delete');
 
   const [expanded, setExpanded] = useState<Record<string, boolean>>({});
+  const [colFilters, setColFilters] = useState<Record<FilterKey, string[]>>(EMPTY_FILTERS);
   const [contextMenu, setContextMenu] = useState<{ x: number; y: number; member: Dependant } | null>(null);
   const [viewGroup, setViewGroup] = useState<FamilyGroup | null>(null);
   const [formMember, setFormMember] = useState<Dependant | null>(null);
@@ -395,7 +443,7 @@ export default function DependantsListTab({
     [dependants],
   );
 
-  const groups = useMemo(() => {
+  const toolbarGroups = useMemo(() => {
     const allGroups = buildFamilyGroups(dependants);
     const hasActiveFilters = Boolean(
       filters.search.trim()
@@ -444,6 +492,51 @@ export default function DependantsListTab({
         );
       });
   }, [dependants, filters, onlyHighlightedFamilies, onlyHighlightedMembers, highlightRow]);
+
+  const filterMembers = useMemo(() => {
+    const rows: Dependant[] = [];
+    for (const group of toolbarGroups) {
+      rows.push(group.employee, ...group.famille);
+    }
+    return rows;
+  }, [toolbarGroups]);
+
+  const filterValues = useMemo(
+    () =>
+      buildColumnFilterValues(filterMembers, {
+        matricule: (r) => r.matricule,
+        pactilis: (r) => r.pactilis,
+        statut: (r) => r.statut,
+        sexe: (r) => r.sexe,
+        nom: (r) => r.nom,
+        departement: (r) => r.departement,
+        localisation: (r) => r.localisation,
+        age: (r) => ageFilterValue(r.age),
+      }),
+    [filterMembers],
+  );
+
+  const activeFilterCount = useMemo(() => countActiveColumnFilters(colFilters), [colFilters]);
+
+  const groups = useMemo(() => {
+    if (activeFilterCount === 0) return toolbarGroups;
+    return toolbarGroups
+      .map((group) => {
+        const employeeMatches = memberMatchesColFilters(group.employee, colFilters);
+        const matchingFamille = group.famille.filter((member) =>
+          memberMatchesColFilters(member, colFilters),
+        );
+        return {
+          ...group,
+          famille: matchingFamille.length > 0 || !employeeMatches
+            ? matchingFamille
+            : group.famille,
+        };
+      })
+      .filter((group) =>
+        memberMatchesColFilters(group.employee, colFilters) || group.famille.length > 0,
+      );
+  }, [toolbarGroups, colFilters, activeFilterCount]);
 
   useEffect(() => {
     if (!defaultExpandAll) return;
@@ -637,20 +730,90 @@ export default function DependantsListTab({
     <>
       <div className="dependants-list-body">
         <div className="panel dependants-list-panel">
+          {activeFilterCount > 0 ? (
+            <div className="factures-suivi-filter-bar">
+              <button
+                type="button"
+                className="btn btn-ghost btn-sm"
+                onClick={() => setColFilters(EMPTY_FILTERS)}
+              >
+                Effacer les filtres ({activeFilterCount})
+              </button>
+              <span className="factures-suivi-toolbar-meta">
+                {groups.length} / {toolbarGroups.length} famille{toolbarGroups.length > 1 ? 's' : ''}
+              </span>
+            </div>
+          ) : null}
           <div className="dependants-table-wrap">
             <table className="dependants-table">
               <thead>
                 <tr>
                   <th className="dependants-col-toggle" aria-label="Déplier" />
                   <th className="dependants-col-num">N°</th>
-                  <th className="dependants-col-matricule">Matricule</th>
-                  <th className="dependants-col-pactilis">N° Pactilis</th>
-                  <th className="dependants-col-statut">Statut</th>
-                  <th className="dependants-col-sexe">Sexe</th>
-                  <th className="dependants-col-nom">Nom et prénoms</th>
-                  <th className="dependants-col-dept">Département</th>
-                  <th className="dependants-col-loc">Localisation</th>
-                  <th className="dependants-col-age">Âge</th>
+                  <th className="dependants-col-matricule th-filter">
+                    <TableHeaderFilter
+                      label="Matricule"
+                      values={filterValues.matricule}
+                      selected={colFilters.matricule}
+                      onChange={(next) => setColFilters((p) => ({ ...p, matricule: next }))}
+                    />
+                  </th>
+                  <th className="dependants-col-pactilis th-filter">
+                    <TableHeaderFilter
+                      label="N° Pactilis"
+                      values={filterValues.pactilis}
+                      selected={colFilters.pactilis}
+                      onChange={(next) => setColFilters((p) => ({ ...p, pactilis: next }))}
+                    />
+                  </th>
+                  <th className="dependants-col-statut th-filter">
+                    <TableHeaderFilter
+                      label="Statut"
+                      values={filterValues.statut}
+                      selected={colFilters.statut}
+                      onChange={(next) => setColFilters((p) => ({ ...p, statut: next }))}
+                    />
+                  </th>
+                  <th className="dependants-col-sexe th-filter">
+                    <TableHeaderFilter
+                      label="Sexe"
+                      values={filterValues.sexe}
+                      selected={colFilters.sexe}
+                      onChange={(next) => setColFilters((p) => ({ ...p, sexe: next }))}
+                    />
+                  </th>
+                  <th className="dependants-col-nom th-filter">
+                    <TableHeaderFilter
+                      label="Nom et prénoms"
+                      values={filterValues.nom}
+                      selected={colFilters.nom}
+                      onChange={(next) => setColFilters((p) => ({ ...p, nom: next }))}
+                    />
+                  </th>
+                  <th className="dependants-col-dept th-filter">
+                    <TableHeaderFilter
+                      label="Département"
+                      values={filterValues.departement}
+                      selected={colFilters.departement}
+                      onChange={(next) => setColFilters((p) => ({ ...p, departement: next }))}
+                    />
+                  </th>
+                  <th className="dependants-col-loc th-filter">
+                    <TableHeaderFilter
+                      label="Localisation"
+                      values={filterValues.localisation}
+                      selected={colFilters.localisation}
+                      onChange={(next) => setColFilters((p) => ({ ...p, localisation: next }))}
+                    />
+                  </th>
+                  <th className="dependants-col-age th-filter">
+                    <TableHeaderFilter
+                      label="Âge"
+                      values={filterValues.age}
+                      selected={colFilters.age}
+                      onChange={(next) => setColFilters((p) => ({ ...p, age: next }))}
+                    />
+                  </th>
                   <th className="dependants-col-file">Fichier</th>
                 </tr>
               </thead>

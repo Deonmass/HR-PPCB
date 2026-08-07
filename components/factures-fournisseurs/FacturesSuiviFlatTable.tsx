@@ -1,13 +1,18 @@
 'use client';
 
 import { useMemo, useState } from 'react';
-import CharroiHeaderFilter from '@/components/charroi/CharroiHeaderFilter';
+import TableHeaderFilter from '@/components/TableHeaderFilter';
 import type { FactureSuivi, FactureSuiviInput } from '@/lib/factures-fournisseurs/types';
 import {
   isFacturePaid,
   paymentStatusLabel,
   paymentValueFromStatus,
 } from '@/lib/factures-fournisseurs/utils';
+import {
+  buildColumnFilterValues,
+  countActiveColumnFilters,
+  matchesColumnFilter,
+} from '@/lib/table-column-filters';
 
 export type EditableFactureField = 'pr' | 'po' | 'payment';
 
@@ -36,10 +41,6 @@ const FIELD_META: Record<
     dateKey: 'datePym',
   },
 };
-
-function uniqueSorted(values: string[]): string[] {
-  return [...new Set(values.map((v) => v || '—'))].sort((a, b) => a.localeCompare(b, 'fr'));
-}
 
 function displayCell(value: string): string {
   return value.trim() || '—';
@@ -92,40 +93,35 @@ export default function FacturesSuiviFlatTable({
   const [formError, setFormError] = useState<string | null>(null);
 
   const filterValues = useMemo(
-    () => ({
-      date: uniqueSorted(factures.map((f) => f.date || '—')),
-      societe: uniqueSorted(factures.map((f) => f.societe || '—')),
-      facture: uniqueSorted(factures.map((f) => f.facture || '—')),
-      pr: uniqueSorted(factures.map((f) => f.pr || '—')),
-      po: uniqueSorted(factures.map((f) => f.po || '—')),
-      payment: uniqueSorted(factures.map((f) => paymentStatusLabel(f.payment))),
-      commentaire: uniqueSorted(factures.map((f) => f.commentaire || '—')),
-    }),
+    () =>
+      buildColumnFilterValues(factures, {
+        date: (f) => f.date,
+        societe: (f) => f.societe,
+        facture: (f) => f.facture,
+        pr: (f) => f.pr,
+        po: (f) => f.po,
+        payment: (f) => paymentStatusLabel(f.payment),
+        commentaire: (f) => f.commentaire,
+      }),
     [factures],
   );
 
-  const filtered = useMemo(() => {
-    const match = (selected: string[], value: string) => {
-      if (!selected.length) return true;
-      const v = value.trim() || '—';
-      return selected.includes(v);
-    };
-    return factures.filter(
-      (f) =>
-        match(colFilters.date, f.date) &&
-        match(colFilters.societe, f.societe) &&
-        match(colFilters.facture, f.facture) &&
-        match(colFilters.pr, f.pr) &&
-        match(colFilters.po, f.po) &&
-        match(colFilters.payment, paymentStatusLabel(f.payment)) &&
-        match(colFilters.commentaire, f.commentaire),
-    );
-  }, [factures, colFilters]);
-
-  const activeFilterCount = useMemo(
-    () => Object.values(colFilters).filter((v) => v.length > 0).length,
-    [colFilters],
+  const filtered = useMemo(
+    () =>
+      factures.filter(
+        (f) =>
+          matchesColumnFilter(colFilters.date, f.date) &&
+          matchesColumnFilter(colFilters.societe, f.societe) &&
+          matchesColumnFilter(colFilters.facture, f.facture) &&
+          matchesColumnFilter(colFilters.pr, f.pr) &&
+          matchesColumnFilter(colFilters.po, f.po) &&
+          matchesColumnFilter(colFilters.payment, paymentStatusLabel(f.payment)) &&
+          matchesColumnFilter(colFilters.commentaire, f.commentaire),
+      ),
+    [factures, colFilters],
   );
+
+  const activeFilterCount = useMemo(() => countActiveColumnFilters(colFilters), [colFilters]);
 
   const setColFilter = (key: FilterKey) => (next: string[]) => {
     setColFilters((prev) => ({ ...prev, [key]: next }));
@@ -271,56 +267,56 @@ export default function FacturesSuiviFlatTable({
           <thead>
             <tr>
               <th className="col-row-num">#</th>
-              <th className="charroi-th-filter">
-                <CharroiHeaderFilter
+              <th className="th-filter">
+                <TableHeaderFilter
                   label="Date facture"
                   values={filterValues.date}
                   selected={colFilters.date}
                   onChange={setColFilter('date')}
                 />
               </th>
-              <th className="charroi-th-filter">
-                <CharroiHeaderFilter
+              <th className="th-filter">
+                <TableHeaderFilter
                   label="Société"
                   values={filterValues.societe}
                   selected={colFilters.societe}
                   onChange={setColFilter('societe')}
                 />
               </th>
-              <th className="charroi-th-filter">
-                <CharroiHeaderFilter
+              <th className="th-filter">
+                <TableHeaderFilter
                   label="N°Facture"
                   values={filterValues.facture}
                   selected={colFilters.facture}
                   onChange={setColFilter('facture')}
                 />
               </th>
-              <th className="charroi-th-filter">
-                <CharroiHeaderFilter
+              <th className="th-filter">
+                <TableHeaderFilter
                   label="Pr"
                   values={filterValues.pr}
                   selected={colFilters.pr}
                   onChange={setColFilter('pr')}
                 />
               </th>
-              <th className="charroi-th-filter">
-                <CharroiHeaderFilter
+              <th className="th-filter">
+                <TableHeaderFilter
                   label="Po"
                   values={filterValues.po}
                   selected={colFilters.po}
                   onChange={setColFilter('po')}
                 />
               </th>
-              <th className="charroi-th-filter">
-                <CharroiHeaderFilter
+              <th className="th-filter">
+                <TableHeaderFilter
                   label="Payment"
                   values={filterValues.payment}
                   selected={colFilters.payment}
                   onChange={setColFilter('payment')}
                 />
               </th>
-              <th className="charroi-th-filter">
-                <CharroiHeaderFilter
+              <th className="th-filter">
+                <TableHeaderFilter
                   label="Commentaire"
                   values={filterValues.commentaire}
                   selected={colFilters.commentaire}

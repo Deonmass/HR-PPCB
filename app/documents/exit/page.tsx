@@ -6,12 +6,27 @@ import ExitDocsGenerator from '@/components/documents/ExitDocsGenerator';
 import { EmployeeSuggestInput } from '@/components/EmployeePicker';
 import RefreshButton from '@/components/RefreshButton';
 import RowContextMenu, { type ContextMenuItem } from '@/components/RowContextMenu';
+import TableHeaderFilter from '@/components/TableHeaderFilter';
 import { usePermissions } from '@/contexts/PermissionContext';
 import type { ExitIssuedRecord } from '@/lib/exit-docs-log';
 import type { Employee } from '@/lib/types';
 import { confirmDelete, showError } from '@/lib/swal';
+import {
+  buildColumnFilterValues,
+  countActiveColumnFilters,
+  matchesColumnFilter,
+} from '@/lib/table-column-filters';
 
 type Tab = 'form' | 'issued';
+type FilterKey = 'date' | 'agent' | 'document' | 'fichier' | 'emisPar';
+
+const EMPTY_FILTERS: Record<FilterKey, string[]> = {
+  date: [],
+  agent: [],
+  document: [],
+  fichier: [],
+  emisPar: [],
+};
 
 function formatDateTime(value: string): string {
   const date = new Date(value);
@@ -55,6 +70,7 @@ export default function ExitDocsPage() {
     y: number;
     record: ExitIssuedRecord;
   } | null>(null);
+  const [colFilters, setColFilters] = useState<Record<FilterKey, string[]>>(EMPTY_FILTERS);
 
   useEffect(() => {
     fetch('/api/employees')
@@ -187,6 +203,40 @@ export default function ExitDocsPage() {
     [contextMenu, getContextMenuItems],
   );
 
+  const agentLabel = (record: ExitIssuedRecord) =>
+    `${record.employeeName}${record.matricule ? ` (${record.matricule})` : ''}`;
+
+  const filterValues = useMemo(
+    () =>
+      buildColumnFilterValues(issued, {
+        date: (r) => formatDateTime(r.createdAt),
+        agent: (r) => agentLabel(r),
+        document: (r) => r.docLabel,
+        fichier: (r) => r.fileName,
+        emisPar: (r) => r.issuedBy,
+      }),
+    [issued],
+  );
+
+  const filteredIssued = useMemo(
+    () =>
+      issued.filter(
+        (r) =>
+          matchesColumnFilter(colFilters.date, formatDateTime(r.createdAt)) &&
+          matchesColumnFilter(colFilters.agent, agentLabel(r)) &&
+          matchesColumnFilter(colFilters.document, r.docLabel) &&
+          matchesColumnFilter(colFilters.fichier, r.fileName) &&
+          matchesColumnFilter(colFilters.emisPar, r.issuedBy),
+      ),
+    [issued, colFilters],
+  );
+
+  const activeFilterCount = useMemo(() => countActiveColumnFilters(colFilters), [colFilters]);
+
+  const setColFilter = (key: FilterKey) => (next: string[]) => {
+    setColFilters((prev) => ({ ...prev, [key]: next }));
+  };
+
   if (isLoading || loading) return <div className="loading">Chargement...</div>;
 
   if (!can('documents.exit', 'view')) {
@@ -284,19 +334,72 @@ export default function ExitDocsPage() {
               <p className="exit-issued-hint muted">
                 Clic droit sur une ligne : voir le document ou supprimer l’entrée de l’historique.
               </p>
+              {activeFilterCount > 0 ? (
+                <div style={{ marginBottom: '0.5rem' }}>
+                  <button
+                    type="button"
+                    className="btn btn-ghost btn-sm"
+                    onClick={() => setColFilters(EMPTY_FILTERS)}
+                  >
+                    Effacer les filtres ({activeFilterCount})
+                  </button>
+                </div>
+              ) : null}
               <div className="table-wrap exit-issued-table-wrap">
                 <table className="travel-history-table exit-issued-table">
                   <thead>
                     <tr>
-                      <th>Date</th>
-                      <th>Agent</th>
-                      <th>Document</th>
-                      <th className="exit-issued-file-col">Fichier</th>
-                      <th>Émis par</th>
+                      <th className="th-filter">
+                        <TableHeaderFilter
+                          label="Date"
+                          values={filterValues.date}
+                          selected={colFilters.date}
+                          onChange={setColFilter('date')}
+                        />
+                      </th>
+                      <th className="th-filter">
+                        <TableHeaderFilter
+                          label="Agent"
+                          values={filterValues.agent}
+                          selected={colFilters.agent}
+                          onChange={setColFilter('agent')}
+                        />
+                      </th>
+                      <th className="th-filter">
+                        <TableHeaderFilter
+                          label="Document"
+                          values={filterValues.document}
+                          selected={colFilters.document}
+                          onChange={setColFilter('document')}
+                        />
+                      </th>
+                      <th className="th-filter exit-issued-file-col">
+                        <TableHeaderFilter
+                          label="Fichier"
+                          values={filterValues.fichier}
+                          selected={colFilters.fichier}
+                          onChange={setColFilter('fichier')}
+                        />
+                      </th>
+                      <th className="th-filter">
+                        <TableHeaderFilter
+                          label="Émis par"
+                          values={filterValues.emisPar}
+                          selected={colFilters.emisPar}
+                          onChange={setColFilter('emisPar')}
+                        />
+                      </th>
                     </tr>
                   </thead>
                   <tbody>
-                    {issued.map((record) => (
+                    {filteredIssued.length === 0 ? (
+                      <tr>
+                        <td colSpan={5} className="empty-state">
+                          Aucun document pour ces filtres.
+                        </td>
+                      </tr>
+                    ) : (
+                      filteredIssued.map((record) => (
                       <tr
                         key={record.id}
                         className={`travel-history-data-row exit-issued-data-row${rowBusy(record.id) ? ' exit-issued-row-busy' : ''}`}
@@ -322,7 +425,8 @@ export default function ExitDocsPage() {
                         </td>
                         <td>{record.issuedBy || '—'}</td>
                       </tr>
-                    ))}
+                      ))
+                    )}
                   </tbody>
                 </table>
               </div>

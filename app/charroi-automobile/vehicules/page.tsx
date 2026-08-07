@@ -4,7 +4,8 @@ import { useCallback, useEffect, useMemo, useState } from 'react';
 import CardActionMenu from '@/components/CardActionMenu';
 import CharroiDashboard from '@/components/charroi/CharroiDashboard';
 import CharroiDocHistoryModal from '@/components/charroi/CharroiDocHistoryModal';
-import CharroiHeaderFilter from '@/components/charroi/CharroiHeaderFilter';
+import TableHeaderFilter from '@/components/TableHeaderFilter';
+import { countActiveColumnFilters, matchesColumnFilter } from '@/lib/table-column-filters';
 import CharroiKmHeaderFilter from '@/components/charroi/CharroiKmHeaderFilter';
 import { EmployeeSuggestInput } from '@/components/EmployeePicker';
 import PermissionGate from '@/components/PermissionGate';
@@ -324,8 +325,7 @@ export default function CharroiVehiculesPage() {
     const max = toNum(kmMax);
     return base.filter((item) => {
       for (const key of Object.keys(colFilters) as FilterKey[]) {
-        const selected = colFilters[key];
-        if (selected.length > 0 && !selected.includes(filterValueOf(item, key))) return false;
+        if (!matchesColumnFilter(colFilters[key], filterValueOf(item, key))) return false;
       }
       if (min != null) {
         if (item.kilometrage == null || item.kilometrage < min) return false;
@@ -343,7 +343,7 @@ export default function CharroiVehiculesPage() {
   }, [base, search, colFilters, kmMin, kmMax]);
 
   const activeFilterCount = useMemo(() => {
-    let count = (Object.values(colFilters) as string[][]).filter((v) => v.length > 0).length;
+    let count = countActiveColumnFilters(colFilters);
     if (kmMin.trim()) count += 1;
     if (kmMax.trim()) count += 1;
     return count;
@@ -630,63 +630,63 @@ export default function CharroiVehiculesPage() {
           <thead>
             <tr>
               <th>N°</th>
-              <th className="charroi-th-filter">
-                <CharroiHeaderFilter
+              <th className="th-filter">
+                <TableHeaderFilter
                   label="Marque"
                   values={filterValues.marque}
                   selected={colFilters.marque}
                   onChange={setColFilter('marque')}
                 />
               </th>
-              <th className="charroi-th-filter">
-                <CharroiHeaderFilter
+              <th className="th-filter">
+                <TableHeaderFilter
                   label="Plaque"
                   values={filterValues.plaque}
                   selected={colFilters.plaque}
                   onChange={setColFilter('plaque')}
                 />
               </th>
-              <th className="charroi-th-filter">
-                <CharroiHeaderFilter
+              <th className="th-filter">
+                <TableHeaderFilter
                   label="CV"
                   values={filterValues.cv}
                   selected={colFilters.cv}
                   onChange={setColFilter('cv')}
                 />
               </th>
-              <th className="charroi-th-filter">
-                <CharroiHeaderFilter
+              <th className="th-filter">
+                <TableHeaderFilter
                   label="Département"
                   values={filterValues.departement}
                   selected={colFilters.departement}
                   onChange={setColFilter('departement')}
                 />
               </th>
-              <th className="charroi-th-filter">
-                <CharroiHeaderFilter
+              <th className="th-filter">
+                <TableHeaderFilter
                   label="Responsable"
                   values={filterValues.user}
                   selected={colFilters.user}
                   onChange={setColFilter('user')}
                 />
               </th>
-              <th className="charroi-th-filter">
-                <CharroiHeaderFilter
+              <th className="th-filter">
+                <TableHeaderFilter
                   label="Province"
                   values={filterValues.province}
                   selected={colFilters.province}
                   onChange={setColFilter('province')}
                 />
               </th>
-              <th className="charroi-th-filter">
-                <CharroiHeaderFilter
+              <th className="th-filter">
+                <TableHeaderFilter
                   label="Proprio."
                   values={filterValues.proprietaire}
                   selected={colFilters.proprietaire}
                   onChange={setColFilter('proprietaire')}
                 />
               </th>
-              <th className="charroi-th-filter">
+              <th className="th-filter">
                 <CharroiKmHeaderFilter
                   label="Km"
                   min={kmMin}
@@ -697,40 +697,40 @@ export default function CharroiVehiculesPage() {
                   }}
                 />
               </th>
-              <th className="charroi-th-filter">
-                <CharroiHeaderFilter
+              <th className="th-filter">
+                <TableHeaderFilter
                   label="Mise circ."
                   values={filterValues.miseCirculation}
                   selected={colFilters.miseCirculation}
                   onChange={setColFilter('miseCirculation')}
                 />
               </th>
-              <th className="charroi-th-filter">
-                <CharroiHeaderFilter
+              <th className="th-filter">
+                <TableHeaderFilter
                   label="Assurance"
                   values={filterValues.assurance}
                   selected={colFilters.assurance}
                   onChange={setColFilter('assurance')}
                 />
               </th>
-              <th className="charroi-th-filter">
-                <CharroiHeaderFilter
+              <th className="th-filter">
+                <TableHeaderFilter
                   label="Vignette"
                   values={filterValues.vignette}
                   selected={colFilters.vignette}
                   onChange={setColFilter('vignette')}
                 />
               </th>
-              <th className="charroi-th-filter">
-                <CharroiHeaderFilter
+              <th className="th-filter">
+                <TableHeaderFilter
                   label="Contr. tech."
                   values={filterValues.controle}
                   selected={colFilters.controle}
                   onChange={setColFilter('controle')}
                 />
               </th>
-              <th className="charroi-th-filter">
-                <CharroiHeaderFilter
+              <th className="th-filter">
+                <TableHeaderFilter
                   label="État tech."
                   values={filterValues.etat}
                   selected={colFilters.etat}

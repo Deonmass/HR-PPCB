@@ -22,6 +22,8 @@ export async function GET() {
     { menuId: 'village.maisons', action: 'view' },
     { menuId: 'village.guest-house', action: 'view' },
     { menuId: 'protocol.visa-travail', action: 'view' },
+    { menuId: 'employes.mouvements', action: 'view' },
+    { menuId: 'employes.postes', action: 'view' },
   ]);
   if (denied) return denied;
   try {
