@@ -1,6 +1,87 @@
 {
   "entries": [
     {
+      "id": "log-000110",
+      "at": "2026-08-07T09:41:20.994Z",
+      "userId": "Serge.Muakasa",
+      "userName": "Serge Muakasa",
+      "userEmail": "Serge.Muakasa@ppcdrc.cd",
+      "module": "charroi.vehicules",
+      "moduleLabel": "Charroi — Véhicules",
+      "action": "update",
+      "actionLabel": "Modification",
+      "entityType": "charroi.vehicule.doc",
+      "entityId": "veh-034",
+      "summary": "Ajout Assurance — 8149BP01",
+      "details": "Période Assurance ajoutée.\nAvant : {\"id\":\"veh-034\",\"numero\":34,\"marque\":\"Toyota\",\"type\":\"Coaster\",\"numeroChassis\":\"JTGABAB8906710179\",\"plaque\":\"8149BP01\",\"cv\":\"13CV\",\"assureur\":\"Rawsur\",\"departement\":\"Plant HR\",\"user\":\"Serge M\",\"province\":\"Kongo Central\",\"proprietaire\":\"LOXEA\",\"kilometrage\":null,\"miseCirculation\":\"2023\",\"age\":3,\"observationTech\":\"Bon état\",\"etatManuel\":\"\",\"assuranceHistorique\":[],\"vignetteHistorique\":[],\"controleTechniqueHistorique\":[],\"assuranceFin\":\"\",\"vignetteFin\":\"\",\"controleTechniqueFin\":\"\",\"notes\":\"\",\"createdAt\":\"2026-07-28T16:00:46.888Z\",\"updatedAt\":\"2026-07-28T16:00:46.888Z\"}\nAprès : {\"id\":\"veh-034\",\"numero\":34,\"marque\":\"Toyota\",\"type\":\"Coaster\",\"numeroChassis\":\"JTGABAB8906710179\",\"plaque\":\"8149BP01\",\"cv\":\"13CV\",\"assureur\":\"Rawsur\",\"departement\":\"Plant HR\",\"user\":\"Serge M\",\"province\":\"Kongo Central\",\"proprietaire\":\"LOXEA\",\"kilometrage\":null,\"miseCirculation\":\"2023\",\"age\":3,\"observationTech\":\"Bon état\",\"etatManuel\":\"\",\"assuranceHistorique\":[{\"id\":\"doc-msir92i1-57oyd\",\"dateDebut\":\"2026-01-31\",\"dateFin\":\"2027-01-31\",\"preuveUrl\":\"\",\"createdAt\":\"2026-08-07T09:41:19.465Z\"}],\"vignetteHistorique\":[],\"controleTechniqueHistorique\":[],\"assuranceFin\":\"2027-01-31\",\"vignetteFin\":\"\",\"controleTechniqueFin\":\"\",\"notes\":\"\",\"createdAt\":\"2026-07-28T16:00:46.888Z\",\"updatedAt\":\"2026-08-07T09:41:19.465Z\"}",
+      "before": {
+        "id": "veh-034",
+        "numero": 34,
+        "marque": "Toyota",
+        "type": "Coaster",
+        "numeroChassis": "JTGABAB8906710179",
+        "plaque": "8149BP01",
+        "cv": "13CV",
+        "assureur": "Rawsur",
+        "departement": "Plant HR",
+        "user": "Serge M",
+        "province": "Kongo Central",
+        "proprietaire": "LOXEA",
+        "kilometrage": null,
+        "miseCirculation": "2023",
+        "age": 3,
+        "observationTech": "Bon état",
+        "etatManuel": "",
+        "assuranceHistorique": [],
+        "vignetteHistorique": [],
+        "controleTechniqueHistorique": [],
+        "assuranceFin": "",
+        "vignetteFin": "",
+        "controleTechniqueFin": "",
+        "notes": "",
+        "createdAt": "2026-07-28T16:00:46.888Z",
+        "updatedAt": "2026-07-28T16:00:46.888Z"
+      },
+      "after": {
+        "id": "veh-034",
+        "numero": 34,
+        "marque": "Toyota",
+        "type": "Coaster",
+        "numeroChassis": "JTGABAB8906710179",
+        "plaque": "8149BP01",
+        "cv": "13CV",
+        "assureur": "Rawsur",
+        "departement": "Plant HR",
+        "user": "Serge M",
+        "province": "Kongo Central",
+        "proprietaire": "LOXEA",
+        "kilometrage": null,
+        "miseCirculation": "2023",
+        "age": 3,
+        "observationTech": "Bon état",
+        "etatManuel": "",
+        "assuranceHistorique": [
+          {
+            "id": "doc-msir92i1-57oyd",
+            "dateDebut": "2026-01-31",
+            "dateFin": "2027-01-31",
+            "preuveUrl": "",
+            "createdAt": "2026-08-07T09:41:19.465Z"
+          }
+        ],
+        "vignetteHistorique": [],
+        "controleTechniqueHistorique": [],
+        "assuranceFin": "2027-01-31",
+        "vignetteFin": "",
+        "controleTechniqueFin": "",
+        "notes": "",
+        "createdAt": "2026-07-28T16:00:46.888Z",
+        "updatedAt": "2026-08-07T09:41:19.465Z"
+      },
+      "undoable": false,
+      "undone": false
+    },
+    {
       "id": "log-000109",
       "at": "2026-08-07T09:40:38.757Z",
       "userId": "Serge.Muakasa",
@@ -14104,5 +14185,5 @@
       }
     }
   ],
-  "nextSeq": 110
+  "nextSeq": 111
 }
