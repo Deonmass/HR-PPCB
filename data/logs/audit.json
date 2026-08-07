@@ -1,6 +1,87 @@
 {
   "entries": [
     {
+      "id": "log-000089",
+      "at": "2026-08-07T08:56:43.290Z",
+      "userId": "Serge.Muakasa",
+      "userName": "Serge Muakasa",
+      "userEmail": "Serge.Muakasa@ppcdrc.cd",
+      "module": "charroi.vehicules",
+      "moduleLabel": "Charroi — Véhicules",
+      "action": "update",
+      "actionLabel": "Modification",
+      "entityType": "charroi.vehicule.doc",
+      "entityId": "veh-024",
+      "summary": "Ajout Assurance — 9090AW01",
+      "details": "Période Assurance ajoutée.\nAvant : {\"id\":\"veh-024\",\"numero\":24,\"marque\":\"Toyota\",\"type\":\"Pick up\",\"numeroChassis\":\"AHTFK8CB900280200\",\"plaque\":\"9090AW01\",\"cv\":\"13 CV\",\"assureur\":\"Sfa\",\"departement\":\"Warehouse\",\"user\":\"Emmanul\",\"province\":\"Kongo Central\",\"proprietaire\":\"PPC\",\"kilometrage\":null,\"miseCirculation\":\"2016\",\"age\":10,\"observationTech\":\"Avertissement\",\"etatManuel\":\"\",\"assuranceHistorique\":[],\"vignetteHistorique\":[],\"controleTechniqueHistorique\":[],\"assuranceFin\":\"\",\"vignetteFin\":\"\",\"controleTechniqueFin\":\"\",\"notes\":\"\",\"createdAt\":\"2026-07-28T16:00:46.888Z\",\"updatedAt\":\"2026-07-28T16:00:46.888Z\"}\nAprès : {\"id\":\"veh-024\",\"numero\":24,\"marque\":\"Toyota\",\"type\":\"Pick up\",\"numeroChassis\":\"AHTFK8CB900280200\",\"plaque\":\"9090AW01\",\"cv\":\"13 CV\",\"assureur\":\"Sfa\",\"departement\":\"Warehouse\",\"user\":\"Emmanul\",\"province\":\"Kongo Central\",\"proprietaire\":\"PPC\",\"kilometrage\":null,\"miseCirculation\":\"2016\",\"age\":10,\"observationTech\":\"Avertissement\",\"etatManuel\":\"\",\"assuranceHistorique\":[{\"id\":\"doc-msipnori-musxw\",\"dateDebut\":\"2025-11-03\",\"dateFin\":\"2026-11-03\",\"preuveUrl\":\"\",\"createdAt\":\"2026-08-07T08:56:42.270Z\"}],\"vignetteHistorique\":[],\"controleTechniqueHistorique\":[],\"assuranceFin\":\"2026-11-03\",\"vignetteFin\":\"\",\"controleTechniqueFin\":\"\",\"notes\":\"\",\"createdAt\":\"2026-07-28T16:00:46.888Z\",\"updatedAt\":\"2026-08-07T08:56:42.270Z\"}",
+      "before": {
+        "id": "veh-024",
+        "numero": 24,
+        "marque": "Toyota",
+        "type": "Pick up",
+        "numeroChassis": "AHTFK8CB900280200",
+        "plaque": "9090AW01",
+        "cv": "13 CV",
+        "assureur": "Sfa",
+        "departement": "Warehouse",
+        "user": "Emmanul",
+        "province": "Kongo Central",
+        "proprietaire": "PPC",
+        "kilometrage": null,
+        "miseCirculation": "2016",
+        "age": 10,
+        "observationTech": "Avertissement",
+        "etatManuel": "",
+        "assuranceHistorique": [],
+        "vignetteHistorique": [],
+        "controleTechniqueHistorique": [],
+        "assuranceFin": "",
+        "vignetteFin": "",
+        "controleTechniqueFin": "",
+        "notes": "",
+        "createdAt": "2026-07-28T16:00:46.888Z",
+        "updatedAt": "2026-07-28T16:00:46.888Z"
+      },
+      "after": {
+        "id": "veh-024",
+        "numero": 24,
+        "marque": "Toyota",
+        "type": "Pick up",
+        "numeroChassis": "AHTFK8CB900280200",
+        "plaque": "9090AW01",
+        "cv": "13 CV",
+        "assureur": "Sfa",
+        "departement": "Warehouse",
+        "user": "Emmanul",
+        "province": "Kongo Central",
+        "proprietaire": "PPC",
+        "kilometrage": null,
+        "miseCirculation": "2016",
+        "age": 10,
+        "observationTech": "Avertissement",
+        "etatManuel": "",
+        "assuranceHistorique": [
+          {
+            "id": "doc-msipnori-musxw",
+            "dateDebut": "2025-11-03",
+            "dateFin": "2026-11-03",
+            "preuveUrl": "",
+            "createdAt": "2026-08-07T08:56:42.270Z"
+          }
+        ],
+        "vignetteHistorique": [],
+        "controleTechniqueHistorique": [],
+        "assuranceFin": "2026-11-03",
+        "vignetteFin": "",
+        "controleTechniqueFin": "",
+        "notes": "",
+        "createdAt": "2026-07-28T16:00:46.888Z",
+        "updatedAt": "2026-08-07T08:56:42.270Z"
+      },
+      "undoable": false,
+      "undone": false
+    },
+    {
       "id": "log-000088",
       "at": "2026-08-07T08:55:50.710Z",
       "userId": "Serge.Muakasa",
@@ -12307,5 +12388,5 @@
       }
     }
   ],
-  "nextSeq": 89
+  "nextSeq": 90
 }
