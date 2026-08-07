@@ -1,6 +1,103 @@
 {
   "entries": [
     {
+      "id": "log-000129",
+      "at": "2026-08-07T09:51:21.519Z",
+      "userId": "Serge.Muakasa",
+      "userName": "Serge Muakasa",
+      "userEmail": "Serge.Muakasa@ppcdrc.cd",
+      "module": "charroi.vehicules",
+      "moduleLabel": "Charroi — Véhicules",
+      "action": "update",
+      "actionLabel": "Modification",
+      "entityType": "charroi.vehicule.doc",
+      "entityId": "veh-025",
+      "summary": "Ajout Contrôle technique — 5759AQ01",
+      "details": "Période Contrôle technique ajoutée.\nAvant : {\"id\":\"veh-025\",\"numero\":25,\"marque\":\"Volvo\",\"type\":\"FM64RB\",\"numeroChassis\":\"YV2SGOD5EA75873\",\"plaque\":\"5759AQ01\",\"cv\":\"30CV\",\"assureur\":\"Sfa\",\"departement\":\"Mining\",\"user\":\"Longo\",\"province\":\"Kongo Central\",\"proprietaire\":\"PPC\",\"kilometrage\":null,\"miseCirculation\":\"2017\",\"age\":9,\"observationTech\":\"Avertissement\",\"etatManuel\":\"\",\"assuranceHistorique\":[{\"id\":\"doc-msiporp5-g11zd\",\"dateDebut\":\"2025-11-14\",\"dateFin\":\"2026-11-14\",\"preuveUrl\":\"\",\"createdAt\":\"2026-08-07T08:57:32.729Z\"}],\"vignetteHistorique\":[],\"controleTechniqueHistorique\":[],\"assuranceFin\":\"2026-11-14\",\"vignetteFin\":\"\",\"controleTechniqueFin\":\"\",\"notes\":\"\",\"createdAt\":\"2026-07-28T16:00:46.888Z\",\"updatedAt\":\"2026-08-07T09:36:16.547Z\"}\nAprès : {\"id\":\"veh-025\",\"numero\":25,\"marque\":\"Volvo\",\"type\":\"FM64RB\",\"numeroChassis\":\"YV2SGOD5EA75873\",\"plaque\":\"5759AQ01\",\"cv\":\"30CV\",\"assureur\":\"Sfa\",\"departement\":\"Mining\",\"user\":\"Longo\",\"province\":\"Kongo Central\",\"proprietaire\":\"PPC\",\"kilometrage\":null,\"miseCirculation\":\"2017\",\"age\":9,\"observationTech\":\"Avertissement\",\"etatManuel\":\"\",\"assuranceHistorique\":[{\"id\":\"doc-msiporp5-g11zd\",\"dateDebut\":\"2025-11-14\",\"dateFin\":\"2026-11-14\",\"preuveUrl\":\"\",\"createdAt\":\"2026-08-07T08:57:32.729Z\"}],\"vignetteHistorique\":[],\"controleTechniqueHistorique\":[{\"id\":\"doc-msirly95-ipt37\",\"dateDebut\":\"2026-04-17\",\"dateFin\":\"2026-10-17\",\"preuveUrl\":\"\",\"createdAt\":\"2026-08-07T09:51:20.489Z\"}],\"assuranceFin\":\"2026-11-14\",\"vignetteFin\":\"\",\"controleTechniqueFin\":\"2026-10-17\",\"notes\":\"\",\"createdAt\":\"2026-07-28T16:00:46.888Z\",\"updatedAt\":\"2026-08-07T09:51:20.489Z\"}",
+      "before": {
+        "id": "veh-025",
+        "numero": 25,
+        "marque": "Volvo",
+        "type": "FM64RB",
+        "numeroChassis": "YV2SGOD5EA75873",
+        "plaque": "5759AQ01",
+        "cv": "30CV",
+        "assureur": "Sfa",
+        "departement": "Mining",
+        "user": "Longo",
+        "province": "Kongo Central",
+        "proprietaire": "PPC",
+        "kilometrage": null,
+        "miseCirculation": "2017",
+        "age": 9,
+        "observationTech": "Avertissement",
+        "etatManuel": "",
+        "assuranceHistorique": [
+          {
+            "id": "doc-msiporp5-g11zd",
+            "dateDebut": "2025-11-14",
+            "dateFin": "2026-11-14",
+            "preuveUrl": "",
+            "createdAt": "2026-08-07T08:57:32.729Z"
+          }
+        ],
+        "vignetteHistorique": [],
+        "controleTechniqueHistorique": [],
+        "assuranceFin": "2026-11-14",
+        "vignetteFin": "",
+        "controleTechniqueFin": "",
+        "notes": "",
+        "createdAt": "2026-07-28T16:00:46.888Z",
+        "updatedAt": "2026-08-07T09:36:16.547Z"
+      },
+      "after": {
+        "id": "veh-025",
+        "numero": 25,
+        "marque": "Volvo",
+        "type": "FM64RB",
+        "numeroChassis": "YV2SGOD5EA75873",
+        "plaque": "5759AQ01",
+        "cv": "30CV",
+        "assureur": "Sfa",
+        "departement": "Mining",
+        "user": "Longo",
+        "province": "Kongo Central",
+        "proprietaire": "PPC",
+        "kilometrage": null,
+        "miseCirculation": "2017",
+        "age": 9,
+        "observationTech": "Avertissement",
+        "etatManuel": "",
+        "assuranceHistorique": [
+          {
+            "id": "doc-msiporp5-g11zd",
+            "dateDebut": "2025-11-14",
+            "dateFin": "2026-11-14",
+            "preuveUrl": "",
+            "createdAt": "2026-08-07T08:57:32.729Z"
+          }
+        ],
+        "vignetteHistorique": [],
+        "controleTechniqueHistorique": [
+          {
+            "id": "doc-msirly95-ipt37",
+            "dateDebut": "2026-04-17",
+            "dateFin": "2026-10-17",
+            "preuveUrl": "",
+            "createdAt": "2026-08-07T09:51:20.489Z"
+          }
+        ],
+        "assuranceFin": "2026-11-14",
+        "vignetteFin": "",
+        "controleTechniqueFin": "2026-10-17",
+        "notes": "",
+        "createdAt": "2026-07-28T16:00:46.888Z",
+        "updatedAt": "2026-08-07T09:51:20.489Z"
+      },
+      "undoable": false,
+      "undone": false
+    },
+    {
       "id": "log-000128",
       "at": "2026-08-07T09:50:38.320Z",
       "userId": "Serge.Muakasa",
@@ -16291,5 +16388,5 @@
       }
     }
   ],
-  "nextSeq": 129
+  "nextSeq": 130
 }
