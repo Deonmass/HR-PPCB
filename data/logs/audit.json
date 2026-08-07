@@ -1,6 +1,87 @@
 {
   "entries": [
     {
+      "id": "log-000143",
+      "at": "2026-08-07T11:44:50.311Z",
+      "userId": "Serge.Muakasa",
+      "userName": "Serge Muakasa",
+      "userEmail": "Serge.Muakasa@ppcdrc.cd",
+      "module": "charroi.vehicules",
+      "moduleLabel": "Charroi — Véhicules",
+      "action": "update",
+      "actionLabel": "Modification",
+      "entityType": "charroi.vehicule.doc",
+      "entityId": "veh-038",
+      "summary": "Ajout Contrôle technique — 6836BL01",
+      "details": "Période Contrôle technique ajoutée.\nAvant : {\"id\":\"veh-038\",\"numero\":38,\"marque\":\"Toyota\",\"type\":\"Cross\",\"numeroChassis\":\"RKLKUBAG400500556\",\"plaque\":\"6836BL01\",\"cv\":\"13CV\",\"assureur\":\"Rawsur\",\"departement\":\"Plant HR\",\"user\":\"Serge M\",\"province\":\"Kongo Central\",\"proprietaire\":\"LOXEA\",\"kilometrage\":null,\"miseCirculation\":\"2022\",\"age\":4,\"observationTech\":\"Bon état\",\"etatManuel\":\"\",\"assuranceHistorique\":[],\"vignetteHistorique\":[],\"controleTechniqueHistorique\":[],\"assuranceFin\":\"\",\"vignetteFin\":\"\",\"controleTechniqueFin\":\"\",\"notes\":\"\",\"createdAt\":\"2026-07-28T16:00:46.888Z\",\"updatedAt\":\"2026-07-28T16:00:46.888Z\"}\nAprès : {\"id\":\"veh-038\",\"numero\":38,\"marque\":\"Toyota\",\"type\":\"Cross\",\"numeroChassis\":\"RKLKUBAG400500556\",\"plaque\":\"6836BL01\",\"cv\":\"13CV\",\"assureur\":\"Rawsur\",\"departement\":\"Plant HR\",\"user\":\"Serge M\",\"province\":\"Kongo Central\",\"proprietaire\":\"LOXEA\",\"kilometrage\":null,\"miseCirculation\":\"2022\",\"age\":4,\"observationTech\":\"Bon état\",\"etatManuel\":\"\",\"assuranceHistorique\":[],\"vignetteHistorique\":[],\"controleTechniqueHistorique\":[{\"id\":\"doc-msivnvwe-4mkpg\",\"dateDebut\":\"2026-08-02\",\"dateFin\":\"2027-02-02\",\"preuveUrl\":\"\",\"createdAt\":\"2026-08-07T11:44:49.214Z\"}],\"assuranceFin\":\"\",\"vignetteFin\":\"\",\"controleTechniqueFin\":\"2027-02-02\",\"notes\":\"\",\"createdAt\":\"2026-07-28T16:00:46.888Z\",\"updatedAt\":\"2026-08-07T11:44:49.214Z\"}",
+      "before": {
+        "id": "veh-038",
+        "numero": 38,
+        "marque": "Toyota",
+        "type": "Cross",
+        "numeroChassis": "RKLKUBAG400500556",
+        "plaque": "6836BL01",
+        "cv": "13CV",
+        "assureur": "Rawsur",
+        "departement": "Plant HR",
+        "user": "Serge M",
+        "province": "Kongo Central",
+        "proprietaire": "LOXEA",
+        "kilometrage": null,
+        "miseCirculation": "2022",
+        "age": 4,
+        "observationTech": "Bon état",
+        "etatManuel": "",
+        "assuranceHistorique": [],
+        "vignetteHistorique": [],
+        "controleTechniqueHistorique": [],
+        "assuranceFin": "",
+        "vignetteFin": "",
+        "controleTechniqueFin": "",
+        "notes": "",
+        "createdAt": "2026-07-28T16:00:46.888Z",
+        "updatedAt": "2026-07-28T16:00:46.888Z"
+      },
+      "after": {
+        "id": "veh-038",
+        "numero": 38,
+        "marque": "Toyota",
+        "type": "Cross",
+        "numeroChassis": "RKLKUBAG400500556",
+        "plaque": "6836BL01",
+        "cv": "13CV",
+        "assureur": "Rawsur",
+        "departement": "Plant HR",
+        "user": "Serge M",
+        "province": "Kongo Central",
+        "proprietaire": "LOXEA",
+        "kilometrage": null,
+        "miseCirculation": "2022",
+        "age": 4,
+        "observationTech": "Bon état",
+        "etatManuel": "",
+        "assuranceHistorique": [],
+        "vignetteHistorique": [],
+        "controleTechniqueHistorique": [
+          {
+            "id": "doc-msivnvwe-4mkpg",
+            "dateDebut": "2026-08-02",
+            "dateFin": "2027-02-02",
+            "preuveUrl": "",
+            "createdAt": "2026-08-07T11:44:49.214Z"
+          }
+        ],
+        "assuranceFin": "",
+        "vignetteFin": "",
+        "controleTechniqueFin": "2027-02-02",
+        "notes": "",
+        "createdAt": "2026-07-28T16:00:46.888Z",
+        "updatedAt": "2026-08-07T11:44:49.214Z"
+      },
+      "undoable": false,
+      "undone": false
+    },
+    {
       "id": "log-000142",
       "at": "2026-08-07T11:00:29.884Z",
       "userId": "Serge.Muakasa",
@@ -17754,5 +17835,5 @@
       }
     }
   ],
-  "nextSeq": 143
+  "nextSeq": 144
 }
