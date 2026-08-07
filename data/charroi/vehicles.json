@@ -1384,13 +1384,21 @@
       "etatManuel": "",
       "assuranceHistorique": [],
       "vignetteHistorique": [],
-      "controleTechniqueHistorique": [],
+      "controleTechniqueHistorique": [
+        {
+          "id": "doc-msivnvwe-4mkpg",
+          "dateDebut": "2026-08-02",
+          "dateFin": "2027-02-02",
+          "preuveUrl": "",
+          "createdAt": "2026-08-07T11:44:49.214Z"
+        }
+      ],
       "assuranceFin": "",
       "vignetteFin": "",
-      "controleTechniqueFin": "",
+      "controleTechniqueFin": "2027-02-02",
       "notes": "",
       "createdAt": "2026-07-28T16:00:46.888Z",
-      "updatedAt": "2026-07-28T16:00:46.888Z"
+      "updatedAt": "2026-08-07T11:44:49.214Z"
     },
     {
       "id": "veh-039",
