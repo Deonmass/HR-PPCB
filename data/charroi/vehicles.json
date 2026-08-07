@@ -1207,18 +1207,18 @@
       "controleTechniqueHistorique": [
         {
           "id": "doc-msirosub-2t8ve",
-          "dateDebut": "2026-02-01",
-          "dateFin": "2026-08-01",
+          "dateDebut": "2026-08-02",
+          "dateFin": "2027-02-02",
           "preuveUrl": "",
           "createdAt": "2026-08-07T09:53:33.443Z"
         }
       ],
       "assuranceFin": "2027-01-31",
       "vignetteFin": "",
-      "controleTechniqueFin": "2026-08-01",
+      "controleTechniqueFin": "2027-02-02",
       "notes": "",
       "createdAt": "2026-07-28T16:00:46.888Z",
-      "updatedAt": "2026-08-07T09:53:33.443Z"
+      "updatedAt": "2026-08-07T12:06:07.454Z"
     },
     {
       "id": "veh-034",
