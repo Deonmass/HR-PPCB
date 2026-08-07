@@ -1,6 +1,87 @@
 {
   "entries": [
     {
+      "id": "log-000087",
+      "at": "2026-08-07T08:54:39.584Z",
+      "userId": "Serge.Muakasa",
+      "userName": "Serge Muakasa",
+      "userEmail": "Serge.Muakasa@ppcdrc.cd",
+      "module": "charroi.vehicules",
+      "moduleLabel": "Charroi — Véhicules",
+      "action": "update",
+      "actionLabel": "Modification",
+      "entityType": "charroi.vehicule.doc",
+      "entityId": "veh-021",
+      "summary": "Ajout Assurance — 0784AQ01",
+      "details": "Période Assurance ajoutée.\nAvant : {\"id\":\"veh-021\",\"numero\":21,\"marque\":\"Toyota\",\"type\":\"Pick up\",\"numeroChassis\":\"JTERB71J400074163\",\"plaque\":\"0784AQ01\",\"cv\":\"13 CV\",\"assureur\":\"Sfa\",\"departement\":\"Safety\",\"user\":\"Ambulance\",\"province\":\"Kongo Central\",\"proprietaire\":\"PPC\",\"kilometrage\":null,\"miseCirculation\":\"2014\",\"age\":12,\"observationTech\":\"Avertissement\",\"etatManuel\":\"Avertissement\",\"assuranceHistorique\":[],\"vignetteHistorique\":[],\"controleTechniqueHistorique\":[],\"assuranceFin\":\"\",\"vignetteFin\":\"\",\"controleTechniqueFin\":\"\",\"notes\":\"\",\"createdAt\":\"2026-07-28T16:00:46.888Z\",\"updatedAt\":\"2026-08-07T08:52:12.494Z\"}\nAprès : {\"id\":\"veh-021\",\"numero\":21,\"marque\":\"Toyota\",\"type\":\"Pick up\",\"numeroChassis\":\"JTERB71J400074163\",\"plaque\":\"0784AQ01\",\"cv\":\"13 CV\",\"assureur\":\"Sfa\",\"departement\":\"Safety\",\"user\":\"Ambulance\",\"province\":\"Kongo Central\",\"proprietaire\":\"PPC\",\"kilometrage\":null,\"miseCirculation\":\"2014\",\"age\":12,\"observationTech\":\"Avertissement\",\"etatManuel\":\"Avertissement\",\"assuranceHistorique\":[{\"id\":\"doc-msipl1c5-1brvt\",\"dateDebut\":\"2025-11-03\",\"dateFin\":\"2026-11-03\",\"preuveUrl\":\"\",\"createdAt\":\"2026-08-07T08:54:38.597Z\"}],\"vignetteHistorique\":[],\"controleTechniqueHistorique\":[],\"assuranceFin\":\"2026-11-03\",\"vignetteFin\":\"\",\"controleTechniqueFin\":\"\",\"notes\":\"\",\"createdAt\":\"2026-07-28T16:00:46.888Z\",\"updatedAt\":\"2026-08-07T08:54:38.597Z\"}",
+      "before": {
+        "id": "veh-021",
+        "numero": 21,
+        "marque": "Toyota",
+        "type": "Pick up",
+        "numeroChassis": "JTERB71J400074163",
+        "plaque": "0784AQ01",
+        "cv": "13 CV",
+        "assureur": "Sfa",
+        "departement": "Safety",
+        "user": "Ambulance",
+        "province": "Kongo Central",
+        "proprietaire": "PPC",
+        "kilometrage": null,
+        "miseCirculation": "2014",
+        "age": 12,
+        "observationTech": "Avertissement",
+        "etatManuel": "Avertissement",
+        "assuranceHistorique": [],
+        "vignetteHistorique": [],
+        "controleTechniqueHistorique": [],
+        "assuranceFin": "",
+        "vignetteFin": "",
+        "controleTechniqueFin": "",
+        "notes": "",
+        "createdAt": "2026-07-28T16:00:46.888Z",
+        "updatedAt": "2026-08-07T08:52:12.494Z"
+      },
+      "after": {
+        "id": "veh-021",
+        "numero": 21,
+        "marque": "Toyota",
+        "type": "Pick up",
+        "numeroChassis": "JTERB71J400074163",
+        "plaque": "0784AQ01",
+        "cv": "13 CV",
+        "assureur": "Sfa",
+        "departement": "Safety",
+        "user": "Ambulance",
+        "province": "Kongo Central",
+        "proprietaire": "PPC",
+        "kilometrage": null,
+        "miseCirculation": "2014",
+        "age": 12,
+        "observationTech": "Avertissement",
+        "etatManuel": "Avertissement",
+        "assuranceHistorique": [
+          {
+            "id": "doc-msipl1c5-1brvt",
+            "dateDebut": "2025-11-03",
+            "dateFin": "2026-11-03",
+            "preuveUrl": "",
+            "createdAt": "2026-08-07T08:54:38.597Z"
+          }
+        ],
+        "vignetteHistorique": [],
+        "controleTechniqueHistorique": [],
+        "assuranceFin": "2026-11-03",
+        "vignetteFin": "",
+        "controleTechniqueFin": "",
+        "notes": "",
+        "createdAt": "2026-07-28T16:00:46.888Z",
+        "updatedAt": "2026-08-07T08:54:38.597Z"
+      },
+      "undoable": false,
+      "undone": false
+    },
+    {
       "id": "log-000086",
       "at": "2026-08-07T08:53:42.249Z",
       "userId": "Serge.Muakasa",
@@ -12145,5 +12226,5 @@
       }
     }
   ],
-  "nextSeq": 87
+  "nextSeq": 88
 }
