@@ -1,6 +1,119 @@
 {
   "entries": [
     {
+      "id": "log-000141",
+      "at": "2026-08-07T09:58:05.429Z",
+      "userId": "Serge.Muakasa",
+      "userName": "Serge Muakasa",
+      "userEmail": "Serge.Muakasa@ppcdrc.cd",
+      "module": "charroi.vehicules",
+      "moduleLabel": "Charroi — Véhicules",
+      "action": "update",
+      "actionLabel": "Modification",
+      "entityType": "charroi.vehicule.doc",
+      "entityId": "veh-016",
+      "summary": "Ajout Vignette — 9242AX01",
+      "details": "Période Vignette ajoutée.\nAvant : {\"id\":\"veh-016\",\"numero\":16,\"marque\":\"Tata Xenon\",\"type\":\"Pick up\",\"numeroChassis\":\"MAT464008ESL00267\",\"plaque\":\"9242AX01\",\"cv\":\"11 CV\",\"assureur\":\"Sfa\",\"departement\":\"Engineering\",\"user\":\"Simon Macharia\",\"province\":\"Kongo Central\",\"proprietaire\":\"PPC\",\"kilometrage\":null,\"miseCirculation\":\"2017\",\"age\":9,\"observationTech\":\"Avertissement\",\"etatManuel\":\"\",\"assuranceHistorique\":[{\"id\":\"doc-msipd9b4-z8550\",\"dateDebut\":\"2025-11-14\",\"dateFin\":\"2026-11-14\",\"preuveUrl\":\"\",\"createdAt\":\"2026-08-07T08:48:35.680Z\"}],\"vignetteHistorique\":[],\"controleTechniqueHistorique\":[{\"id\":\"doc-msirekln-a0j2q\",\"dateDebut\":\"2026-04-17\",\"dateFin\":\"2026-10-17\",\"preuveUrl\":\"\",\"createdAt\":\"2026-08-07T09:45:36.203Z\"}],\"assuranceFin\":\"2026-11-14\",\"vignetteFin\":\"\",\"controleTechniqueFin\":\"2026-10-17\",\"notes\":\"\",\"createdAt\":\"2026-07-28T16:00:46.888Z\",\"updatedAt\":\"2026-08-07T09:45:36.203Z\"}\nAprès : {\"id\":\"veh-016\",\"numero\":16,\"marque\":\"Tata Xenon\",\"type\":\"Pick up\",\"numeroChassis\":\"MAT464008ESL00267\",\"plaque\":\"9242AX01\",\"cv\":\"11 CV\",\"assureur\":\"Sfa\",\"departement\":\"Engineering\",\"user\":\"Simon Macharia\",\"province\":\"Kongo Central\",\"proprietaire\":\"PPC\",\"kilometrage\":null,\"miseCirculation\":\"2017\",\"age\":9,\"observationTech\":\"Avertissement\",\"etatManuel\":\"\",\"assuranceHistorique\":[{\"id\":\"doc-msipd9b4-z8550\",\"dateDebut\":\"2025-11-14\",\"dateFin\":\"2026-11-14\",\"preuveUrl\":\"\",\"createdAt\":\"2026-08-07T08:48:35.680Z\"}],\"vignetteHistorique\":[{\"id\":\"doc-msirulx9-9j1sv\",\"dateDebut\":\"2025-01-07\",\"dateFin\":\"2026-01-07\",\"preuveUrl\":\"\",\"createdAt\":\"2026-08-07T09:58:04.413Z\"}],\"controleTechniqueHistorique\":[{\"id\":\"doc-msirekln-a0j2q\",\"dateDebut\":\"2026-04-17\",\"dateFin\":\"2026-10-17\",\"preuveUrl\":\"\",\"createdAt\":\"2026-08-07T09:45:36.203Z\"}],\"assuranceFin\":\"2026-11-14\",\"vignetteFin\":\"2026-01-07\",\"controleTechniqueFin\":\"2026-10-17\",\"notes\":\"\",\"createdAt\":\"2026-07-28T16:00:46.888Z\",\"updatedAt\":\"2026-08-07T09:58:04.413Z\"}",
+      "before": {
+        "id": "veh-016",
+        "numero": 16,
+        "marque": "Tata Xenon",
+        "type": "Pick up",
+        "numeroChassis": "MAT464008ESL00267",
+        "plaque": "9242AX01",
+        "cv": "11 CV",
+        "assureur": "Sfa",
+        "departement": "Engineering",
+        "user": "Simon Macharia",
+        "province": "Kongo Central",
+        "proprietaire": "PPC",
+        "kilometrage": null,
+        "miseCirculation": "2017",
+        "age": 9,
+        "observationTech": "Avertissement",
+        "etatManuel": "",
+        "assuranceHistorique": [
+          {
+            "id": "doc-msipd9b4-z8550",
+            "dateDebut": "2025-11-14",
+            "dateFin": "2026-11-14",
+            "preuveUrl": "",
+            "createdAt": "2026-08-07T08:48:35.680Z"
+          }
+        ],
+        "vignetteHistorique": [],
+        "controleTechniqueHistorique": [
+          {
+            "id": "doc-msirekln-a0j2q",
+            "dateDebut": "2026-04-17",
+            "dateFin": "2026-10-17",
+            "preuveUrl": "",
+            "createdAt": "2026-08-07T09:45:36.203Z"
+          }
+        ],
+        "assuranceFin": "2026-11-14",
+        "vignetteFin": "",
+        "controleTechniqueFin": "2026-10-17",
+        "notes": "",
+        "createdAt": "2026-07-28T16:00:46.888Z",
+        "updatedAt": "2026-08-07T09:45:36.203Z"
+      },
+      "after": {
+        "id": "veh-016",
+        "numero": 16,
+        "marque": "Tata Xenon",
+        "type": "Pick up",
+        "numeroChassis": "MAT464008ESL00267",
+        "plaque": "9242AX01",
+        "cv": "11 CV",
+        "assureur": "Sfa",
+        "departement": "Engineering",
+        "user": "Simon Macharia",
+        "province": "Kongo Central",
+        "proprietaire": "PPC",
+        "kilometrage": null,
+        "miseCirculation": "2017",
+        "age": 9,
+        "observationTech": "Avertissement",
+        "etatManuel": "",
+        "assuranceHistorique": [
+          {
+            "id": "doc-msipd9b4-z8550",
+            "dateDebut": "2025-11-14",
+            "dateFin": "2026-11-14",
+            "preuveUrl": "",
+            "createdAt": "2026-08-07T08:48:35.680Z"
+          }
+        ],
+        "vignetteHistorique": [
+          {
+            "id": "doc-msirulx9-9j1sv",
+            "dateDebut": "2025-01-07",
+            "dateFin": "2026-01-07",
+            "preuveUrl": "",
+            "createdAt": "2026-08-07T09:58:04.413Z"
+          }
+        ],
+        "controleTechniqueHistorique": [
+          {
+            "id": "doc-msirekln-a0j2q",
+            "dateDebut": "2026-04-17",
+            "dateFin": "2026-10-17",
+            "preuveUrl": "",
+            "createdAt": "2026-08-07T09:45:36.203Z"
+          }
+        ],
+        "assuranceFin": "2026-11-14",
+        "vignetteFin": "2026-01-07",
+        "controleTechniqueFin": "2026-10-17",
+        "notes": "",
+        "createdAt": "2026-07-28T16:00:46.888Z",
+        "updatedAt": "2026-08-07T09:58:04.413Z"
+      },
+      "undoable": false,
+      "undone": false
+    },
+    {
       "id": "log-000140",
       "at": "2026-08-07T09:57:25.531Z",
       "userId": "Serge.Muakasa",
@@ -17520,5 +17633,5 @@
       }
     }
   ],
-  "nextSeq": 141
+  "nextSeq": 142
 }
