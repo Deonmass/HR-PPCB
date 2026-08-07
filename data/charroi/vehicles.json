@@ -46,7 +46,15 @@
       "age": 9,
       "observationTech": "Avertissement",
       "etatManuel": "",
-      "assuranceHistorique": [],
+      "assuranceHistorique": [
+        {
+          "id": "doc-msiq0mqr-454la",
+          "dateDebut": "2025-11-15",
+          "dateFin": "2026-11-14",
+          "preuveUrl": "",
+          "createdAt": "2026-08-07T09:06:46.179Z"
+        }
+      ],
       "vignetteHistorique": [],
       "controleTechniqueHistorique": [
         {
@@ -57,12 +65,12 @@
           "createdAt": "2026-08-07T08:59:34.519Z"
         }
       ],
-      "assuranceFin": "",
+      "assuranceFin": "2026-11-14",
       "vignetteFin": "",
       "controleTechniqueFin": "2026-10-17",
       "notes": "",
       "createdAt": "2026-07-28T16:00:46.888Z",
-      "updatedAt": "2026-08-07T08:59:34.519Z"
+      "updatedAt": "2026-08-07T09:06:46.179Z"
     },
     {
       "id": "veh-003",
