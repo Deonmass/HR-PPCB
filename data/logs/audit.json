@@ -1,6 +1,40 @@
 {
   "entries": [
     {
+      "id": "log-000078",
+      "at": "2026-08-07T08:33:35.602Z",
+      "userId": "admin",
+      "userName": "Administrateur",
+      "module": "settings.utilisateurs",
+      "moduleLabel": "Paramètres — Utilisateurs",
+      "action": "create",
+      "actionLabel": "Création",
+      "entityType": "auth.user",
+      "entityId": "Marie.Yowali",
+      "summary": "Création utilisateur Marie Yowali",
+      "details": "Création utilisateur Marie Yowali",
+      "after": {
+        "id": "Marie.Yowali",
+        "username": "Marie.Yowali",
+        "displayName": "Marie Yowali",
+        "initials": "MJY",
+        "email": "Marie.Yowali@ppcdrc.cd",
+        "matricule": "70000021",
+        "linkedEmployee": {
+          "matricule": "70000021",
+          "nom": "LISANGOLA YOWALI Marie-Josee",
+          "departement": "Human Resources",
+          "grade": "C4",
+          "jobTitle": "Facilities Officer",
+          "localisation": "Kinshasa"
+        },
+        "active": true,
+        "createdAt": "2026-08-07T08:33:34.447Z"
+      },
+      "undoable": true,
+      "undone": false
+    },
+    {
       "id": "log-000077",
       "at": "2026-08-06T07:24:28.004Z",
       "userId": "admin",
@@ -10459,5 +10493,5 @@
       }
     }
   ],
-  "nextSeq": 78
+  "nextSeq": 79
 }
