@@ -1,6 +1,87 @@
 {
   "entries": [
     {
+      "id": "log-000106",
+      "at": "2026-08-07T09:38:50.483Z",
+      "userId": "Serge.Muakasa",
+      "userName": "Serge Muakasa",
+      "userEmail": "Serge.Muakasa@ppcdrc.cd",
+      "module": "charroi.vehicules",
+      "moduleLabel": "Charroi — Véhicules",
+      "action": "update",
+      "actionLabel": "Modification",
+      "entityType": "charroi.vehicule.doc",
+      "entityId": "veh-030",
+      "summary": "Ajout Assurance — 9263BN01",
+      "details": "Période Assurance ajoutée.\nAvant : {\"id\":\"veh-030\",\"numero\":30,\"marque\":\"Peugeot\",\"type\":\"Pick up\",\"numeroChassis\":\"VR3FDAHDM3006435\",\"plaque\":\"9263BN01\",\"cv\":\"13CV\",\"assureur\":\"Rawsur\",\"departement\":\"Q A\",\"user\":\"Charles Pongo\",\"province\":\"Kongo Central\",\"proprietaire\":\"LOXEA\",\"kilometrage\":null,\"miseCirculation\":\"2022\",\"age\":4,\"observationTech\":\"Bon état\",\"etatManuel\":\"\",\"assuranceHistorique\":[],\"vignetteHistorique\":[],\"controleTechniqueHistorique\":[],\"assuranceFin\":\"\",\"vignetteFin\":\"\",\"controleTechniqueFin\":\"\",\"notes\":\"\",\"createdAt\":\"2026-07-28T16:00:46.888Z\",\"updatedAt\":\"2026-07-28T16:00:46.888Z\"}\nAprès : {\"id\":\"veh-030\",\"numero\":30,\"marque\":\"Peugeot\",\"type\":\"Pick up\",\"numeroChassis\":\"VR3FDAHDM3006435\",\"plaque\":\"9263BN01\",\"cv\":\"13CV\",\"assureur\":\"Rawsur\",\"departement\":\"Q A\",\"user\":\"Charles Pongo\",\"province\":\"Kongo Central\",\"proprietaire\":\"LOXEA\",\"kilometrage\":null,\"miseCirculation\":\"2022\",\"age\":4,\"observationTech\":\"Bon état\",\"etatManuel\":\"\",\"assuranceHistorique\":[{\"id\":\"doc-msir5usc-j7nx3\",\"dateDebut\":\"2026-01-31\",\"dateFin\":\"2027-01-31\",\"preuveUrl\":\"\",\"createdAt\":\"2026-08-07T09:38:49.500Z\"}],\"vignetteHistorique\":[],\"controleTechniqueHistorique\":[],\"assuranceFin\":\"2027-01-31\",\"vignetteFin\":\"\",\"controleTechniqueFin\":\"\",\"notes\":\"\",\"createdAt\":\"2026-07-28T16:00:46.888Z\",\"updatedAt\":\"2026-08-07T09:38:49.500Z\"}",
+      "before": {
+        "id": "veh-030",
+        "numero": 30,
+        "marque": "Peugeot",
+        "type": "Pick up",
+        "numeroChassis": "VR3FDAHDM3006435",
+        "plaque": "9263BN01",
+        "cv": "13CV",
+        "assureur": "Rawsur",
+        "departement": "Q A",
+        "user": "Charles Pongo",
+        "province": "Kongo Central",
+        "proprietaire": "LOXEA",
+        "kilometrage": null,
+        "miseCirculation": "2022",
+        "age": 4,
+        "observationTech": "Bon état",
+        "etatManuel": "",
+        "assuranceHistorique": [],
+        "vignetteHistorique": [],
+        "controleTechniqueHistorique": [],
+        "assuranceFin": "",
+        "vignetteFin": "",
+        "controleTechniqueFin": "",
+        "notes": "",
+        "createdAt": "2026-07-28T16:00:46.888Z",
+        "updatedAt": "2026-07-28T16:00:46.888Z"
+      },
+      "after": {
+        "id": "veh-030",
+        "numero": 30,
+        "marque": "Peugeot",
+        "type": "Pick up",
+        "numeroChassis": "VR3FDAHDM3006435",
+        "plaque": "9263BN01",
+        "cv": "13CV",
+        "assureur": "Rawsur",
+        "departement": "Q A",
+        "user": "Charles Pongo",
+        "province": "Kongo Central",
+        "proprietaire": "LOXEA",
+        "kilometrage": null,
+        "miseCirculation": "2022",
+        "age": 4,
+        "observationTech": "Bon état",
+        "etatManuel": "",
+        "assuranceHistorique": [
+          {
+            "id": "doc-msir5usc-j7nx3",
+            "dateDebut": "2026-01-31",
+            "dateFin": "2027-01-31",
+            "preuveUrl": "",
+            "createdAt": "2026-08-07T09:38:49.500Z"
+          }
+        ],
+        "vignetteHistorique": [],
+        "controleTechniqueHistorique": [],
+        "assuranceFin": "2027-01-31",
+        "vignetteFin": "",
+        "controleTechniqueFin": "",
+        "notes": "",
+        "createdAt": "2026-07-28T16:00:46.888Z",
+        "updatedAt": "2026-08-07T09:38:49.500Z"
+      },
+      "undoable": false,
+      "undone": false
+    },
+    {
       "id": "log-000105",
       "at": "2026-08-07T09:38:17.838Z",
       "userId": "Serge.Muakasa",
@@ -13780,5 +13861,5 @@
       }
     }
   ],
-  "nextSeq": 106
+  "nextSeq": 107
 }
