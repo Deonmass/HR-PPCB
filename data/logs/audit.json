@@ -1,6 +1,95 @@
 {
   "entries": [
     {
+      "id": "log-000097",
+      "at": "2026-08-07T09:33:08.299Z",
+      "userId": "Serge.Muakasa",
+      "userName": "Serge Muakasa",
+      "userEmail": "Serge.Muakasa@ppcdrc.cd",
+      "module": "charroi.vehicules",
+      "moduleLabel": "Charroi — Véhicules",
+      "action": "update",
+      "actionLabel": "Modification",
+      "entityType": "charroi.vehicule.doc",
+      "entityId": "veh-019",
+      "summary": "Modification Assurance — 2185AV01",
+      "details": "Période Assurance modifiée (doc-msipfsdf-9df3d).\nAvant : {\"id\":\"veh-019\",\"numero\":19,\"marque\":\"Toyota\",\"type\":\"Pick up\",\"numeroChassis\":\"AHTFK22GT03095297\",\"plaque\":\"2185AV01\",\"cv\":\"13 CV\",\"assureur\":\"Sfa\",\"departement\":\"Environment\",\"user\":\"Véhicule de secours\",\"province\":\"Kongo Central\",\"proprietaire\":\"PPC\",\"kilometrage\":null,\"miseCirculation\":\"2016\",\"age\":10,\"observationTech\":\"Avertissement\",\"etatManuel\":\"\",\"assuranceHistorique\":[{\"id\":\"doc-msipfsdf-9df3d\",\"dateDebut\":\"2025-11-03\",\"dateFin\":\"2026-11-03\",\"preuveUrl\":\"\",\"createdAt\":\"2026-08-07T08:50:33.699Z\"}],\"vignetteHistorique\":[],\"controleTechniqueHistorique\":[],\"assuranceFin\":\"2026-11-03\",\"vignetteFin\":\"\",\"controleTechniqueFin\":\"\",\"notes\":\"\",\"createdAt\":\"2026-07-28T16:00:46.888Z\",\"updatedAt\":\"2026-08-07T08:50:33.699Z\"}\nAprès : {\"id\":\"veh-019\",\"numero\":19,\"marque\":\"Toyota\",\"type\":\"Pick up\",\"numeroChassis\":\"AHTFK22GT03095297\",\"plaque\":\"2185AV01\",\"cv\":\"13 CV\",\"assureur\":\"Sfa\",\"departement\":\"Environment\",\"user\":\"Véhicule de secours\",\"province\":\"Kongo Central\",\"proprietaire\":\"PPC\",\"kilometrage\":null,\"miseCirculation\":\"2016\",\"age\":10,\"observationTech\":\"Avertissement\",\"etatManuel\":\"\",\"assuranceHistorique\":[{\"id\":\"doc-msipfsdf-9df3d\",\"dateDebut\":\"2025-11-14\",\"dateFin\":\"2026-11-14\",\"preuveUrl\":\"\",\"createdAt\":\"2026-08-07T08:50:33.699Z\"}],\"vignetteHistorique\":[],\"controleTechniqueHistorique\":[],\"assuranceFin\":\"2026-11-14\",\"vignetteFin\":\"\",\"controleTechniqueFin\":\"\",\"notes\":\"\",\"createdAt\":\"2026-07-28T16:00:46.888Z\",\"updatedAt\":\"2026-08-07T09:33:07.246Z\"}",
+      "before": {
+        "id": "veh-019",
+        "numero": 19,
+        "marque": "Toyota",
+        "type": "Pick up",
+        "numeroChassis": "AHTFK22GT03095297",
+        "plaque": "2185AV01",
+        "cv": "13 CV",
+        "assureur": "Sfa",
+        "departement": "Environment",
+        "user": "Véhicule de secours",
+        "province": "Kongo Central",
+        "proprietaire": "PPC",
+        "kilometrage": null,
+        "miseCirculation": "2016",
+        "age": 10,
+        "observationTech": "Avertissement",
+        "etatManuel": "",
+        "assuranceHistorique": [
+          {
+            "id": "doc-msipfsdf-9df3d",
+            "dateDebut": "2025-11-03",
+            "dateFin": "2026-11-03",
+            "preuveUrl": "",
+            "createdAt": "2026-08-07T08:50:33.699Z"
+          }
+        ],
+        "vignetteHistorique": [],
+        "controleTechniqueHistorique": [],
+        "assuranceFin": "2026-11-03",
+        "vignetteFin": "",
+        "controleTechniqueFin": "",
+        "notes": "",
+        "createdAt": "2026-07-28T16:00:46.888Z",
+        "updatedAt": "2026-08-07T08:50:33.699Z"
+      },
+      "after": {
+        "id": "veh-019",
+        "numero": 19,
+        "marque": "Toyota",
+        "type": "Pick up",
+        "numeroChassis": "AHTFK22GT03095297",
+        "plaque": "2185AV01",
+        "cv": "13 CV",
+        "assureur": "Sfa",
+        "departement": "Environment",
+        "user": "Véhicule de secours",
+        "province": "Kongo Central",
+        "proprietaire": "PPC",
+        "kilometrage": null,
+        "miseCirculation": "2016",
+        "age": 10,
+        "observationTech": "Avertissement",
+        "etatManuel": "",
+        "assuranceHistorique": [
+          {
+            "id": "doc-msipfsdf-9df3d",
+            "dateDebut": "2025-11-14",
+            "dateFin": "2026-11-14",
+            "preuveUrl": "",
+            "createdAt": "2026-08-07T08:50:33.699Z"
+          }
+        ],
+        "vignetteHistorique": [],
+        "controleTechniqueHistorique": [],
+        "assuranceFin": "2026-11-14",
+        "vignetteFin": "",
+        "controleTechniqueFin": "",
+        "notes": "",
+        "createdAt": "2026-07-28T16:00:46.888Z",
+        "updatedAt": "2026-08-07T09:33:07.246Z"
+      },
+      "undoable": false,
+      "undone": false
+    },
+    {
       "id": "log-000096",
       "at": "2026-08-07T09:32:45.689Z",
       "userId": "Serge.Muakasa",
@@ -12995,5 +13084,5 @@
       }
     }
   ],
-  "nextSeq": 97
+  "nextSeq": 98
 }
