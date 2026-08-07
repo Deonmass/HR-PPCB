@@ -1,6 +1,87 @@
 {
   "entries": [
     {
+      "id": "log-000111",
+      "at": "2026-08-07T09:42:14.652Z",
+      "userId": "Serge.Muakasa",
+      "userName": "Serge Muakasa",
+      "userEmail": "Serge.Muakasa@ppcdrc.cd",
+      "module": "charroi.vehicules",
+      "moduleLabel": "Charroi — Véhicules",
+      "action": "update",
+      "actionLabel": "Modification",
+      "entityType": "charroi.vehicule.doc",
+      "entityId": "veh-035",
+      "summary": "Ajout Assurance — 7982AY01",
+      "details": "Période Assurance ajoutée.\nAvant : {\"id\":\"veh-035\",\"numero\":35,\"marque\":\"Toyota\",\"type\":\"Pick up\",\"numeroChassis\":\"AHTFK6CD200043540\",\"plaque\":\"7982AY01\",\"cv\":\"13CV\",\"assureur\":\"Rawsur\",\"departement\":\"Mining\",\"user\":\"Marques\",\"province\":\"Kongo Central\",\"proprietaire\":\"LOXEA\",\"kilometrage\":null,\"miseCirculation\":\"2017\",\"age\":9,\"observationTech\":\"Avertissement\",\"etatManuel\":\"\",\"assuranceHistorique\":[],\"vignetteHistorique\":[],\"controleTechniqueHistorique\":[],\"assuranceFin\":\"\",\"vignetteFin\":\"\",\"controleTechniqueFin\":\"\",\"notes\":\"\",\"createdAt\":\"2026-07-28T16:00:46.888Z\",\"updatedAt\":\"2026-07-28T16:00:46.888Z\"}\nAprès : {\"id\":\"veh-035\",\"numero\":35,\"marque\":\"Toyota\",\"type\":\"Pick up\",\"numeroChassis\":\"AHTFK6CD200043540\",\"plaque\":\"7982AY01\",\"cv\":\"13CV\",\"assureur\":\"Rawsur\",\"departement\":\"Mining\",\"user\":\"Marques\",\"province\":\"Kongo Central\",\"proprietaire\":\"LOXEA\",\"kilometrage\":null,\"miseCirculation\":\"2017\",\"age\":9,\"observationTech\":\"Avertissement\",\"etatManuel\":\"\",\"assuranceHistorique\":[{\"id\":\"doc-msira84s-b367l\",\"dateDebut\":\"2026-01-31\",\"dateFin\":\"2027-01-31\",\"preuveUrl\":\"\",\"createdAt\":\"2026-08-07T09:42:13.420Z\"}],\"vignetteHistorique\":[],\"controleTechniqueHistorique\":[],\"assuranceFin\":\"2027-01-31\",\"vignetteFin\":\"\",\"controleTechniqueFin\":\"\",\"notes\":\"\",\"createdAt\":\"2026-07-28T16:00:46.888Z\",\"updatedAt\":\"2026-08-07T09:42:13.420Z\"}",
+      "before": {
+        "id": "veh-035",
+        "numero": 35,
+        "marque": "Toyota",
+        "type": "Pick up",
+        "numeroChassis": "AHTFK6CD200043540",
+        "plaque": "7982AY01",
+        "cv": "13CV",
+        "assureur": "Rawsur",
+        "departement": "Mining",
+        "user": "Marques",
+        "province": "Kongo Central",
+        "proprietaire": "LOXEA",
+        "kilometrage": null,
+        "miseCirculation": "2017",
+        "age": 9,
+        "observationTech": "Avertissement",
+        "etatManuel": "",
+        "assuranceHistorique": [],
+        "vignetteHistorique": [],
+        "controleTechniqueHistorique": [],
+        "assuranceFin": "",
+        "vignetteFin": "",
+        "controleTechniqueFin": "",
+        "notes": "",
+        "createdAt": "2026-07-28T16:00:46.888Z",
+        "updatedAt": "2026-07-28T16:00:46.888Z"
+      },
+      "after": {
+        "id": "veh-035",
+        "numero": 35,
+        "marque": "Toyota",
+        "type": "Pick up",
+        "numeroChassis": "AHTFK6CD200043540",
+        "plaque": "7982AY01",
+        "cv": "13CV",
+        "assureur": "Rawsur",
+        "departement": "Mining",
+        "user": "Marques",
+        "province": "Kongo Central",
+        "proprietaire": "LOXEA",
+        "kilometrage": null,
+        "miseCirculation": "2017",
+        "age": 9,
+        "observationTech": "Avertissement",
+        "etatManuel": "",
+        "assuranceHistorique": [
+          {
+            "id": "doc-msira84s-b367l",
+            "dateDebut": "2026-01-31",
+            "dateFin": "2027-01-31",
+            "preuveUrl": "",
+            "createdAt": "2026-08-07T09:42:13.420Z"
+          }
+        ],
+        "vignetteHistorique": [],
+        "controleTechniqueHistorique": [],
+        "assuranceFin": "2027-01-31",
+        "vignetteFin": "",
+        "controleTechniqueFin": "",
+        "notes": "",
+        "createdAt": "2026-07-28T16:00:46.888Z",
+        "updatedAt": "2026-08-07T09:42:13.420Z"
+      },
+      "undoable": false,
+      "undone": false
+    },
+    {
       "id": "log-000110",
       "at": "2026-08-07T09:41:20.994Z",
       "userId": "Serge.Muakasa",
@@ -14185,5 +14266,5 @@
       }
     }
   ],
-  "nextSeq": 111
+  "nextSeq": 112
 }
