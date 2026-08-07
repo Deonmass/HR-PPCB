@@ -1,6 +1,87 @@
 {
   "entries": [
     {
+      "id": "log-000091",
+      "at": "2026-08-07T08:58:02.518Z",
+      "userId": "Serge.Muakasa",
+      "userName": "Serge Muakasa",
+      "userEmail": "Serge.Muakasa@ppcdrc.cd",
+      "module": "charroi.vehicules",
+      "moduleLabel": "Charroi — Véhicules",
+      "action": "update",
+      "actionLabel": "Modification",
+      "entityType": "charroi.vehicule.doc",
+      "entityId": "veh-026",
+      "summary": "Ajout Assurance — 3489BS01",
+      "details": "Période Assurance ajoutée.\nAvant : {\"id\":\"veh-026\",\"numero\":26,\"marque\":\"Tata\",\"type\":\"Tata LPO\",\"numeroChassis\":\"MAT42271P5LO1960\",\"plaque\":\"3489BS01\",\"cv\":\"48 CV\",\"assureur\":\"Sfa\",\"departement\":\"Plant HR\",\"user\":\"Serge M\",\"province\":\"Kongo Central\",\"proprietaire\":\"PPC\",\"kilometrage\":null,\"miseCirculation\":\"2024\",\"age\":2,\"observationTech\":\"Bon état\",\"etatManuel\":\"\",\"assuranceHistorique\":[],\"vignetteHistorique\":[],\"controleTechniqueHistorique\":[],\"assuranceFin\":\"\",\"vignetteFin\":\"\",\"controleTechniqueFin\":\"\",\"notes\":\"\",\"createdAt\":\"2026-07-28T16:00:46.888Z\",\"updatedAt\":\"2026-07-28T16:00:46.888Z\"}\nAprès : {\"id\":\"veh-026\",\"numero\":26,\"marque\":\"Tata\",\"type\":\"Tata LPO\",\"numeroChassis\":\"MAT42271P5LO1960\",\"plaque\":\"3489BS01\",\"cv\":\"48 CV\",\"assureur\":\"Sfa\",\"departement\":\"Plant HR\",\"user\":\"Serge M\",\"province\":\"Kongo Central\",\"proprietaire\":\"PPC\",\"kilometrage\":null,\"miseCirculation\":\"2024\",\"age\":2,\"observationTech\":\"Bon état\",\"etatManuel\":\"\",\"assuranceHistorique\":[{\"id\":\"doc-msippdw8-8vahv\",\"dateDebut\":\"2025-11-03\",\"dateFin\":\"2026-11-03\",\"preuveUrl\":\"\",\"createdAt\":\"2026-08-07T08:58:01.496Z\"}],\"vignetteHistorique\":[],\"controleTechniqueHistorique\":[],\"assuranceFin\":\"2026-11-03\",\"vignetteFin\":\"\",\"controleTechniqueFin\":\"\",\"notes\":\"\",\"createdAt\":\"2026-07-28T16:00:46.888Z\",\"updatedAt\":\"2026-08-07T08:58:01.496Z\"}",
+      "before": {
+        "id": "veh-026",
+        "numero": 26,
+        "marque": "Tata",
+        "type": "Tata LPO",
+        "numeroChassis": "MAT42271P5LO1960",
+        "plaque": "3489BS01",
+        "cv": "48 CV",
+        "assureur": "Sfa",
+        "departement": "Plant HR",
+        "user": "Serge M",
+        "province": "Kongo Central",
+        "proprietaire": "PPC",
+        "kilometrage": null,
+        "miseCirculation": "2024",
+        "age": 2,
+        "observationTech": "Bon état",
+        "etatManuel": "",
+        "assuranceHistorique": [],
+        "vignetteHistorique": [],
+        "controleTechniqueHistorique": [],
+        "assuranceFin": "",
+        "vignetteFin": "",
+        "controleTechniqueFin": "",
+        "notes": "",
+        "createdAt": "2026-07-28T16:00:46.888Z",
+        "updatedAt": "2026-07-28T16:00:46.888Z"
+      },
+      "after": {
+        "id": "veh-026",
+        "numero": 26,
+        "marque": "Tata",
+        "type": "Tata LPO",
+        "numeroChassis": "MAT42271P5LO1960",
+        "plaque": "3489BS01",
+        "cv": "48 CV",
+        "assureur": "Sfa",
+        "departement": "Plant HR",
+        "user": "Serge M",
+        "province": "Kongo Central",
+        "proprietaire": "PPC",
+        "kilometrage": null,
+        "miseCirculation": "2024",
+        "age": 2,
+        "observationTech": "Bon état",
+        "etatManuel": "",
+        "assuranceHistorique": [
+          {
+            "id": "doc-msippdw8-8vahv",
+            "dateDebut": "2025-11-03",
+            "dateFin": "2026-11-03",
+            "preuveUrl": "",
+            "createdAt": "2026-08-07T08:58:01.496Z"
+          }
+        ],
+        "vignetteHistorique": [],
+        "controleTechniqueHistorique": [],
+        "assuranceFin": "2026-11-03",
+        "vignetteFin": "",
+        "controleTechniqueFin": "",
+        "notes": "",
+        "createdAt": "2026-07-28T16:00:46.888Z",
+        "updatedAt": "2026-08-07T08:58:01.496Z"
+      },
+      "undoable": false,
+      "undone": false
+    },
+    {
       "id": "log-000090",
       "at": "2026-08-07T08:57:33.756Z",
       "userId": "Serge.Muakasa",
@@ -12469,5 +12550,5 @@
       }
     }
   ],
-  "nextSeq": 91
+  "nextSeq": 92
 }
