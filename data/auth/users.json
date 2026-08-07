@@ -3190,11 +3190,11 @@
           "menuId": "employes.liste",
           "label": "Liste employés",
           "actions": {
-            "view": false,
+            "view": true,
             "create": false,
-            "edit": false,
+            "edit": true,
             "delete": false,
-            "export": false,
+            "export": true,
             "undo": false
           }
         },
@@ -3202,11 +3202,11 @@
           "menuId": "employes.dependants",
           "label": "Dependants",
           "actions": {
-            "view": false,
+            "view": true,
             "create": false,
-            "edit": false,
+            "edit": true,
             "delete": false,
-            "export": false,
+            "export": true,
             "undo": false
           }
         },
@@ -3514,48 +3514,48 @@
           "menuId": "factures.fournisseur.liste",
           "label": "Liste",
           "actions": {
-            "view": false,
-            "create": false,
-            "edit": false,
-            "delete": false,
-            "export": false,
-            "undo": false
+            "view": true,
+            "create": true,
+            "edit": true,
+            "delete": true,
+            "export": true,
+            "undo": true
           }
         },
         {
           "menuId": "factures.fournisseur.factures",
           "label": "Factures",
           "actions": {
-            "view": false,
-            "create": false,
-            "edit": false,
-            "delete": false,
-            "export": false,
-            "undo": false
+            "view": true,
+            "create": true,
+            "edit": true,
+            "delete": true,
+            "export": true,
+            "undo": true
           }
         },
         {
           "menuId": "factures.fournisseur.soa",
           "label": "SOA",
           "actions": {
-            "view": false,
-            "create": false,
-            "edit": false,
-            "delete": false,
-            "export": false,
-            "undo": false
+            "view": true,
+            "create": true,
+            "edit": true,
+            "delete": true,
+            "export": true,
+            "undo": true
           }
         },
         {
           "menuId": "factures.fournisseur.fournisseurs",
           "label": "Fournisseurs",
           "actions": {
-            "view": false,
-            "create": false,
-            "edit": false,
-            "delete": false,
-            "export": false,
-            "undo": false
+            "view": true,
+            "create": true,
+            "edit": true,
+            "delete": true,
+            "export": true,
+            "undo": true
           }
         },
         {
@@ -3658,24 +3658,24 @@
           "menuId": "settings.departements",
           "label": "Départements",
           "actions": {
-            "view": false,
-            "create": false,
-            "edit": false,
+            "view": true,
+            "create": true,
+            "edit": true,
             "delete": false,
-            "export": false,
-            "undo": false
+            "export": true,
+            "undo": true
           }
         },
         {
           "menuId": "settings.centres",
           "label": "Centre de coût",
           "actions": {
-            "view": false,
-            "create": false,
-            "edit": false,
-            "delete": false,
-            "export": false,
-            "undo": false
+            "view": true,
+            "create": true,
+            "edit": true,
+            "delete": true,
+            "export": true,
+            "undo": true
           }
         },
         {
