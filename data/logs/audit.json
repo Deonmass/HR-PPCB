@@ -1,6 +1,87 @@
 {
   "entries": [
     {
+      "id": "log-000081",
+      "at": "2026-08-07T08:48:36.727Z",
+      "userId": "Serge.Muakasa",
+      "userName": "Serge Muakasa",
+      "userEmail": "Serge.Muakasa@ppcdrc.cd",
+      "module": "charroi.vehicules",
+      "moduleLabel": "Charroi — Véhicules",
+      "action": "update",
+      "actionLabel": "Modification",
+      "entityType": "charroi.vehicule.doc",
+      "entityId": "veh-016",
+      "summary": "Ajout Assurance — 9242AX01",
+      "details": "Période Assurance ajoutée.\nAvant : {\"id\":\"veh-016\",\"numero\":16,\"marque\":\"Tata Xenon\",\"type\":\"Pick up\",\"numeroChassis\":\"MAT464008ESL00267\",\"plaque\":\"9242AX01\",\"cv\":\"11 CV\",\"assureur\":\"Sfa\",\"departement\":\"Engineering\",\"user\":\"Simon Macharia\",\"province\":\"Kongo Central\",\"proprietaire\":\"PPC\",\"kilometrage\":null,\"miseCirculation\":\"2017\",\"age\":9,\"observationTech\":\"Avertissement\",\"etatManuel\":\"\",\"assuranceHistorique\":[],\"vignetteHistorique\":[],\"controleTechniqueHistorique\":[],\"assuranceFin\":\"\",\"vignetteFin\":\"\",\"controleTechniqueFin\":\"\",\"notes\":\"\",\"createdAt\":\"2026-07-28T16:00:46.888Z\",\"updatedAt\":\"2026-07-28T16:00:46.888Z\"}\nAprès : {\"id\":\"veh-016\",\"numero\":16,\"marque\":\"Tata Xenon\",\"type\":\"Pick up\",\"numeroChassis\":\"MAT464008ESL00267\",\"plaque\":\"9242AX01\",\"cv\":\"11 CV\",\"assureur\":\"Sfa\",\"departement\":\"Engineering\",\"user\":\"Simon Macharia\",\"province\":\"Kongo Central\",\"proprietaire\":\"PPC\",\"kilometrage\":null,\"miseCirculation\":\"2017\",\"age\":9,\"observationTech\":\"Avertissement\",\"etatManuel\":\"\",\"assuranceHistorique\":[{\"id\":\"doc-msipd9b4-z8550\",\"dateDebut\":\"2025-11-03\",\"dateFin\":\"2026-11-03\",\"preuveUrl\":\"\",\"createdAt\":\"2026-08-07T08:48:35.680Z\"}],\"vignetteHistorique\":[],\"controleTechniqueHistorique\":[],\"assuranceFin\":\"2026-11-03\",\"vignetteFin\":\"\",\"controleTechniqueFin\":\"\",\"notes\":\"\",\"createdAt\":\"2026-07-28T16:00:46.888Z\",\"updatedAt\":\"2026-08-07T08:48:35.681Z\"}",
+      "before": {
+        "id": "veh-016",
+        "numero": 16,
+        "marque": "Tata Xenon",
+        "type": "Pick up",
+        "numeroChassis": "MAT464008ESL00267",
+        "plaque": "9242AX01",
+        "cv": "11 CV",
+        "assureur": "Sfa",
+        "departement": "Engineering",
+        "user": "Simon Macharia",
+        "province": "Kongo Central",
+        "proprietaire": "PPC",
+        "kilometrage": null,
+        "miseCirculation": "2017",
+        "age": 9,
+        "observationTech": "Avertissement",
+        "etatManuel": "",
+        "assuranceHistorique": [],
+        "vignetteHistorique": [],
+        "controleTechniqueHistorique": [],
+        "assuranceFin": "",
+        "vignetteFin": "",
+        "controleTechniqueFin": "",
+        "notes": "",
+        "createdAt": "2026-07-28T16:00:46.888Z",
+        "updatedAt": "2026-07-28T16:00:46.888Z"
+      },
+      "after": {
+        "id": "veh-016",
+        "numero": 16,
+        "marque": "Tata Xenon",
+        "type": "Pick up",
+        "numeroChassis": "MAT464008ESL00267",
+        "plaque": "9242AX01",
+        "cv": "11 CV",
+        "assureur": "Sfa",
+        "departement": "Engineering",
+        "user": "Simon Macharia",
+        "province": "Kongo Central",
+        "proprietaire": "PPC",
+        "kilometrage": null,
+        "miseCirculation": "2017",
+        "age": 9,
+        "observationTech": "Avertissement",
+        "etatManuel": "",
+        "assuranceHistorique": [
+          {
+            "id": "doc-msipd9b4-z8550",
+            "dateDebut": "2025-11-03",
+            "dateFin": "2026-11-03",
+            "preuveUrl": "",
+            "createdAt": "2026-08-07T08:48:35.680Z"
+          }
+        ],
+        "vignetteHistorique": [],
+        "controleTechniqueHistorique": [],
+        "assuranceFin": "2026-11-03",
+        "vignetteFin": "",
+        "controleTechniqueFin": "",
+        "notes": "",
+        "createdAt": "2026-07-28T16:00:46.888Z",
+        "updatedAt": "2026-08-07T08:48:35.681Z"
+      },
+      "undoable": false,
+      "undone": false
+    },
+    {
       "id": "log-000080",
       "at": "2026-08-07T08:47:32.962Z",
       "userId": "Serge.Muakasa",
@@ -11675,5 +11756,5 @@
       }
     }
   ],
-  "nextSeq": 81
+  "nextSeq": 82
 }
