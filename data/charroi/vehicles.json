@@ -808,13 +808,21 @@
         }
       ],
       "vignetteHistorique": [],
-      "controleTechniqueHistorique": [],
+      "controleTechniqueHistorique": [
+        {
+          "id": "doc-msirl0ea-dlhbq",
+          "dateDebut": "2026-04-17",
+          "dateFin": "2026-10-17",
+          "preuveUrl": "",
+          "createdAt": "2026-08-07T09:50:36.610Z"
+        }
+      ],
       "assuranceFin": "2026-11-14",
       "vignetteFin": "",
-      "controleTechniqueFin": "",
+      "controleTechniqueFin": "2026-10-17",
       "notes": "",
       "createdAt": "2026-07-28T16:00:46.888Z",
-      "updatedAt": "2026-08-07T09:35:58.111Z"
+      "updatedAt": "2026-08-07T09:50:36.610Z"
     },
     {
       "id": "veh-025",
