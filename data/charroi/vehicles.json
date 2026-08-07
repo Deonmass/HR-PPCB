@@ -1208,13 +1208,21 @@
         }
       ],
       "vignetteHistorique": [],
-      "controleTechniqueHistorique": [],
+      "controleTechniqueHistorique": [
+        {
+          "id": "doc-msirpgii-e482o",
+          "dateDebut": "2026-02-01",
+          "dateFin": "2026-08-01",
+          "preuveUrl": "",
+          "createdAt": "2026-08-07T09:54:04.122Z"
+        }
+      ],
       "assuranceFin": "2027-01-31",
       "vignetteFin": "",
-      "controleTechniqueFin": "",
+      "controleTechniqueFin": "2026-08-01",
       "notes": "",
       "createdAt": "2026-07-28T16:00:46.888Z",
-      "updatedAt": "2026-08-07T09:41:19.465Z"
+      "updatedAt": "2026-08-07T09:54:04.122Z"
     },
     {
       "id": "veh-035",
