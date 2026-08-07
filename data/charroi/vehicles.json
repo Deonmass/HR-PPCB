@@ -1086,15 +1086,23 @@
       "age": 3,
       "observationTech": "Bon état",
       "etatManuel": "",
-      "assuranceHistorique": [],
+      "assuranceHistorique": [
+        {
+          "id": "doc-msir92i1-57oyd",
+          "dateDebut": "2026-01-31",
+          "dateFin": "2027-01-31",
+          "preuveUrl": "",
+          "createdAt": "2026-08-07T09:41:19.465Z"
+        }
+      ],
       "vignetteHistorique": [],
       "controleTechniqueHistorique": [],
-      "assuranceFin": "",
+      "assuranceFin": "2027-01-31",
       "vignetteFin": "",
       "controleTechniqueFin": "",
       "notes": "",
       "createdAt": "2026-07-28T16:00:46.888Z",
-      "updatedAt": "2026-07-28T16:00:46.888Z"
+      "updatedAt": "2026-08-07T09:41:19.465Z"
     },
     {
       "id": "veh-035",
