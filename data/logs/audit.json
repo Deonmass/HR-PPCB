@@ -1,6 +1,95 @@
 {
   "entries": [
     {
+      "id": "log-000102",
+      "at": "2026-08-07T09:36:17.501Z",
+      "userId": "Serge.Muakasa",
+      "userName": "Serge Muakasa",
+      "userEmail": "Serge.Muakasa@ppcdrc.cd",
+      "module": "charroi.vehicules",
+      "moduleLabel": "Charroi — Véhicules",
+      "action": "update",
+      "actionLabel": "Modification",
+      "entityType": "charroi.vehicule.doc",
+      "entityId": "veh-025",
+      "summary": "Modification Assurance — 5759AQ01",
+      "details": "Période Assurance modifiée (doc-msiporp5-g11zd).\nAvant : {\"id\":\"veh-025\",\"numero\":25,\"marque\":\"Volvo\",\"type\":\"FM64RB\",\"numeroChassis\":\"YV2SGOD5EA75873\",\"plaque\":\"5759AQ01\",\"cv\":\"30CV\",\"assureur\":\"Sfa\",\"departement\":\"Mining\",\"user\":\"Longo\",\"province\":\"Kongo Central\",\"proprietaire\":\"PPC\",\"kilometrage\":null,\"miseCirculation\":\"2017\",\"age\":9,\"observationTech\":\"Avertissement\",\"etatManuel\":\"\",\"assuranceHistorique\":[{\"id\":\"doc-msiporp5-g11zd\",\"dateDebut\":\"2025-11-03\",\"dateFin\":\"2026-11-03\",\"preuveUrl\":\"\",\"createdAt\":\"2026-08-07T08:57:32.729Z\"}],\"vignetteHistorique\":[],\"controleTechniqueHistorique\":[],\"assuranceFin\":\"2026-11-03\",\"vignetteFin\":\"\",\"controleTechniqueFin\":\"\",\"notes\":\"\",\"createdAt\":\"2026-07-28T16:00:46.888Z\",\"updatedAt\":\"2026-08-07T08:57:32.729Z\"}\nAprès : {\"id\":\"veh-025\",\"numero\":25,\"marque\":\"Volvo\",\"type\":\"FM64RB\",\"numeroChassis\":\"YV2SGOD5EA75873\",\"plaque\":\"5759AQ01\",\"cv\":\"30CV\",\"assureur\":\"Sfa\",\"departement\":\"Mining\",\"user\":\"Longo\",\"province\":\"Kongo Central\",\"proprietaire\":\"PPC\",\"kilometrage\":null,\"miseCirculation\":\"2017\",\"age\":9,\"observationTech\":\"Avertissement\",\"etatManuel\":\"\",\"assuranceHistorique\":[{\"id\":\"doc-msiporp5-g11zd\",\"dateDebut\":\"2025-11-14\",\"dateFin\":\"2026-11-14\",\"preuveUrl\":\"\",\"createdAt\":\"2026-08-07T08:57:32.729Z\"}],\"vignetteHistorique\":[],\"controleTechniqueHistorique\":[],\"assuranceFin\":\"2026-11-14\",\"vignetteFin\":\"\",\"controleTechniqueFin\":\"\",\"notes\":\"\",\"createdAt\":\"2026-07-28T16:00:46.888Z\",\"updatedAt\":\"2026-08-07T09:36:16.547Z\"}",
+      "before": {
+        "id": "veh-025",
+        "numero": 25,
+        "marque": "Volvo",
+        "type": "FM64RB",
+        "numeroChassis": "YV2SGOD5EA75873",
+        "plaque": "5759AQ01",
+        "cv": "30CV",
+        "assureur": "Sfa",
+        "departement": "Mining",
+        "user": "Longo",
+        "province": "Kongo Central",
+        "proprietaire": "PPC",
+        "kilometrage": null,
+        "miseCirculation": "2017",
+        "age": 9,
+        "observationTech": "Avertissement",
+        "etatManuel": "",
+        "assuranceHistorique": [
+          {
+            "id": "doc-msiporp5-g11zd",
+            "dateDebut": "2025-11-03",
+            "dateFin": "2026-11-03",
+            "preuveUrl": "",
+            "createdAt": "2026-08-07T08:57:32.729Z"
+          }
+        ],
+        "vignetteHistorique": [],
+        "controleTechniqueHistorique": [],
+        "assuranceFin": "2026-11-03",
+        "vignetteFin": "",
+        "controleTechniqueFin": "",
+        "notes": "",
+        "createdAt": "2026-07-28T16:00:46.888Z",
+        "updatedAt": "2026-08-07T08:57:32.729Z"
+      },
+      "after": {
+        "id": "veh-025",
+        "numero": 25,
+        "marque": "Volvo",
+        "type": "FM64RB",
+        "numeroChassis": "YV2SGOD5EA75873",
+        "plaque": "5759AQ01",
+        "cv": "30CV",
+        "assureur": "Sfa",
+        "departement": "Mining",
+        "user": "Longo",
+        "province": "Kongo Central",
+        "proprietaire": "PPC",
+        "kilometrage": null,
+        "miseCirculation": "2017",
+        "age": 9,
+        "observationTech": "Avertissement",
+        "etatManuel": "",
+        "assuranceHistorique": [
+          {
+            "id": "doc-msiporp5-g11zd",
+            "dateDebut": "2025-11-14",
+            "dateFin": "2026-11-14",
+            "preuveUrl": "",
+            "createdAt": "2026-08-07T08:57:32.729Z"
+          }
+        ],
+        "vignetteHistorique": [],
+        "controleTechniqueHistorique": [],
+        "assuranceFin": "2026-11-14",
+        "vignetteFin": "",
+        "controleTechniqueFin": "",
+        "notes": "",
+        "createdAt": "2026-07-28T16:00:46.888Z",
+        "updatedAt": "2026-08-07T09:36:16.547Z"
+      },
+      "undoable": false,
+      "undone": false
+    },
+    {
       "id": "log-000101",
       "at": "2026-08-07T09:35:59.129Z",
       "userId": "Serge.Muakasa",
@@ -13440,5 +13529,5 @@
       }
     }
   ],
-  "nextSeq": 102
+  "nextSeq": 103
 }
