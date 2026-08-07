@@ -1,6 +1,103 @@
 {
   "entries": [
     {
+      "id": "log-000118",
+      "at": "2026-08-07T09:46:01.646Z",
+      "userId": "Serge.Muakasa",
+      "userName": "Serge Muakasa",
+      "userEmail": "Serge.Muakasa@ppcdrc.cd",
+      "module": "charroi.vehicules",
+      "moduleLabel": "Charroi — Véhicules",
+      "action": "update",
+      "actionLabel": "Modification",
+      "entityType": "charroi.vehicule.doc",
+      "entityId": "veh-017",
+      "summary": "Ajout Contrôle technique — 5992AX01",
+      "details": "Période Contrôle technique ajoutée.\nAvant : {\"id\":\"veh-017\",\"numero\":17,\"marque\":\"Tata\",\"type\":\"Tata LPO-1318\",\"numeroChassis\":\"MAT462271G0LO4093\",\"plaque\":\"5992AX01\",\"cv\":\"48 CV\",\"assureur\":\"Sfa\",\"departement\":\"Plant HR\",\"user\":\"Pool bus\",\"province\":\"Kongo Central\",\"proprietaire\":\"PPC\",\"kilometrage\":null,\"miseCirculation\":\"2017\",\"age\":9,\"observationTech\":\"Avertissement\",\"etatManuel\":\"\",\"assuranceHistorique\":[{\"id\":\"doc-msipeu6s-vzcj7\",\"dateDebut\":\"2025-11-14\",\"dateFin\":\"2026-11-14\",\"preuveUrl\":\"\",\"createdAt\":\"2026-08-07T08:49:49.396Z\"}],\"vignetteHistorique\":[],\"controleTechniqueHistorique\":[],\"assuranceFin\":\"2026-11-14\",\"vignetteFin\":\"\",\"controleTechniqueFin\":\"\",\"notes\":\"\",\"createdAt\":\"2026-07-28T16:00:46.888Z\",\"updatedAt\":\"2026-08-07T09:32:44.629Z\"}\nAprès : {\"id\":\"veh-017\",\"numero\":17,\"marque\":\"Tata\",\"type\":\"Tata LPO-1318\",\"numeroChassis\":\"MAT462271G0LO4093\",\"plaque\":\"5992AX01\",\"cv\":\"48 CV\",\"assureur\":\"Sfa\",\"departement\":\"Plant HR\",\"user\":\"Pool bus\",\"province\":\"Kongo Central\",\"proprietaire\":\"PPC\",\"kilometrage\":null,\"miseCirculation\":\"2017\",\"age\":9,\"observationTech\":\"Avertissement\",\"etatManuel\":\"\",\"assuranceHistorique\":[{\"id\":\"doc-msipeu6s-vzcj7\",\"dateDebut\":\"2025-11-14\",\"dateFin\":\"2026-11-14\",\"preuveUrl\":\"\",\"createdAt\":\"2026-08-07T08:49:49.396Z\"}],\"vignetteHistorique\":[],\"controleTechniqueHistorique\":[{\"id\":\"doc-msirf3em-v4u67\",\"dateDebut\":\"2026-04-17\",\"dateFin\":\"2026-10-17\",\"preuveUrl\":\"\",\"createdAt\":\"2026-08-07T09:46:00.574Z\"}],\"assuranceFin\":\"2026-11-14\",\"vignetteFin\":\"\",\"controleTechniqueFin\":\"2026-10-17\",\"notes\":\"\",\"createdAt\":\"2026-07-28T16:00:46.888Z\",\"updatedAt\":\"2026-08-07T09:46:00.574Z\"}",
+      "before": {
+        "id": "veh-017",
+        "numero": 17,
+        "marque": "Tata",
+        "type": "Tata LPO-1318",
+        "numeroChassis": "MAT462271G0LO4093",
+        "plaque": "5992AX01",
+        "cv": "48 CV",
+        "assureur": "Sfa",
+        "departement": "Plant HR",
+        "user": "Pool bus",
+        "province": "Kongo Central",
+        "proprietaire": "PPC",
+        "kilometrage": null,
+        "miseCirculation": "2017",
+        "age": 9,
+        "observationTech": "Avertissement",
+        "etatManuel": "",
+        "assuranceHistorique": [
+          {
+            "id": "doc-msipeu6s-vzcj7",
+            "dateDebut": "2025-11-14",
+            "dateFin": "2026-11-14",
+            "preuveUrl": "",
+            "createdAt": "2026-08-07T08:49:49.396Z"
+          }
+        ],
+        "vignetteHistorique": [],
+        "controleTechniqueHistorique": [],
+        "assuranceFin": "2026-11-14",
+        "vignetteFin": "",
+        "controleTechniqueFin": "",
+        "notes": "",
+        "createdAt": "2026-07-28T16:00:46.888Z",
+        "updatedAt": "2026-08-07T09:32:44.629Z"
+      },
+      "after": {
+        "id": "veh-017",
+        "numero": 17,
+        "marque": "Tata",
+        "type": "Tata LPO-1318",
+        "numeroChassis": "MAT462271G0LO4093",
+        "plaque": "5992AX01",
+        "cv": "48 CV",
+        "assureur": "Sfa",
+        "departement": "Plant HR",
+        "user": "Pool bus",
+        "province": "Kongo Central",
+        "proprietaire": "PPC",
+        "kilometrage": null,
+        "miseCirculation": "2017",
+        "age": 9,
+        "observationTech": "Avertissement",
+        "etatManuel": "",
+        "assuranceHistorique": [
+          {
+            "id": "doc-msipeu6s-vzcj7",
+            "dateDebut": "2025-11-14",
+            "dateFin": "2026-11-14",
+            "preuveUrl": "",
+            "createdAt": "2026-08-07T08:49:49.396Z"
+          }
+        ],
+        "vignetteHistorique": [],
+        "controleTechniqueHistorique": [
+          {
+            "id": "doc-msirf3em-v4u67",
+            "dateDebut": "2026-04-17",
+            "dateFin": "2026-10-17",
+            "preuveUrl": "",
+            "createdAt": "2026-08-07T09:46:00.574Z"
+          }
+        ],
+        "assuranceFin": "2026-11-14",
+        "vignetteFin": "",
+        "controleTechniqueFin": "2026-10-17",
+        "notes": "",
+        "createdAt": "2026-07-28T16:00:46.888Z",
+        "updatedAt": "2026-08-07T09:46:00.574Z"
+      },
+      "undoable": false,
+      "undone": false
+    },
+    {
       "id": "log-000117",
       "at": "2026-08-07T09:45:37.246Z",
       "userId": "Serge.Muakasa",
@@ -15044,5 +15141,5 @@
       }
     }
   ],
-  "nextSeq": 118
+  "nextSeq": 119
 }
