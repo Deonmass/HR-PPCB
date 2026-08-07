@@ -465,20 +465,20 @@
       "assuranceHistorique": [
         {
           "id": "doc-msipd9b4-z8550",
-          "dateDebut": "2025-11-03",
-          "dateFin": "2026-11-03",
+          "dateDebut": "2025-11-14",
+          "dateFin": "2026-11-14",
           "preuveUrl": "",
           "createdAt": "2026-08-07T08:48:35.680Z"
         }
       ],
       "vignetteHistorique": [],
       "controleTechniqueHistorique": [],
-      "assuranceFin": "2026-11-03",
+      "assuranceFin": "2026-11-14",
       "vignetteFin": "",
       "controleTechniqueFin": "",
       "notes": "",
       "createdAt": "2026-07-28T16:00:46.888Z",
-      "updatedAt": "2026-08-07T08:48:35.681Z"
+      "updatedAt": "2026-08-07T09:32:15.327Z"
     },
     {
       "id": "veh-017",
