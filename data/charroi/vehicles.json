@@ -435,7 +435,15 @@
           "createdAt": "2026-08-07T08:47:31.902Z"
         }
       ],
-      "vignetteHistorique": [],
+      "vignetteHistorique": [
+        {
+          "id": "doc-msirtr4p-oslxv",
+          "dateDebut": "2025-01-07",
+          "dateFin": "2026-01-05",
+          "preuveUrl": "",
+          "createdAt": "2026-08-07T09:57:24.505Z"
+        }
+      ],
       "controleTechniqueHistorique": [
         {
           "id": "doc-msirdue5-50vlx",
@@ -446,11 +454,11 @@
         }
       ],
       "assuranceFin": "2026-11-14",
-      "vignetteFin": "",
+      "vignetteFin": "2026-01-05",
       "controleTechniqueFin": "2026-10-17",
       "notes": "",
       "createdAt": "2026-07-28T16:00:46.888Z",
-      "updatedAt": "2026-08-07T09:45:02.238Z"
+      "updatedAt": "2026-08-07T09:57:24.505Z"
     },
     {
       "id": "veh-016",
