@@ -1,6 +1,103 @@
 {
   "entries": [
     {
+      "id": "log-000134",
+      "at": "2026-08-07T09:53:34.491Z",
+      "userId": "Serge.Muakasa",
+      "userName": "Serge Muakasa",
+      "userEmail": "Serge.Muakasa@ppcdrc.cd",
+      "module": "charroi.vehicules",
+      "moduleLabel": "Charroi — Véhicules",
+      "action": "update",
+      "actionLabel": "Modification",
+      "entityType": "charroi.vehicule.doc",
+      "entityId": "veh-033",
+      "summary": "Ajout Contrôle technique — 0774BP01",
+      "details": "Période Contrôle technique ajoutée.\nAvant : {\"id\":\"veh-033\",\"numero\":33,\"marque\":\"Toyota\",\"type\":\"Fortuner\",\"numeroChassis\":\"AHTKB8FS800250065\",\"plaque\":\"0774BP01\",\"cv\":\"13CV\",\"assureur\":\"Rawsur\",\"departement\":\"Administration\",\"user\":\"Andrew\",\"province\":\"Kongo Central\",\"proprietaire\":\"LOXEA\",\"kilometrage\":null,\"miseCirculation\":\"2022\",\"age\":4,\"observationTech\":\"Bon état\",\"etatManuel\":\"\",\"assuranceHistorique\":[{\"id\":\"doc-msir868r-xq9cc\",\"dateDebut\":\"2026-01-31\",\"dateFin\":\"2027-01-31\",\"preuveUrl\":\"\",\"createdAt\":\"2026-08-07T09:40:37.659Z\"}],\"vignetteHistorique\":[],\"controleTechniqueHistorique\":[],\"assuranceFin\":\"2027-01-31\",\"vignetteFin\":\"\",\"controleTechniqueFin\":\"\",\"notes\":\"\",\"createdAt\":\"2026-07-28T16:00:46.888Z\",\"updatedAt\":\"2026-08-07T09:40:37.660Z\"}\nAprès : {\"id\":\"veh-033\",\"numero\":33,\"marque\":\"Toyota\",\"type\":\"Fortuner\",\"numeroChassis\":\"AHTKB8FS800250065\",\"plaque\":\"0774BP01\",\"cv\":\"13CV\",\"assureur\":\"Rawsur\",\"departement\":\"Administration\",\"user\":\"Andrew\",\"province\":\"Kongo Central\",\"proprietaire\":\"LOXEA\",\"kilometrage\":null,\"miseCirculation\":\"2022\",\"age\":4,\"observationTech\":\"Bon état\",\"etatManuel\":\"\",\"assuranceHistorique\":[{\"id\":\"doc-msir868r-xq9cc\",\"dateDebut\":\"2026-01-31\",\"dateFin\":\"2027-01-31\",\"preuveUrl\":\"\",\"createdAt\":\"2026-08-07T09:40:37.659Z\"}],\"vignetteHistorique\":[],\"controleTechniqueHistorique\":[{\"id\":\"doc-msirosub-2t8ve\",\"dateDebut\":\"2026-02-01\",\"dateFin\":\"2026-08-01\",\"preuveUrl\":\"\",\"createdAt\":\"2026-08-07T09:53:33.443Z\"}],\"assuranceFin\":\"2027-01-31\",\"vignetteFin\":\"\",\"controleTechniqueFin\":\"2026-08-01\",\"notes\":\"\",\"createdAt\":\"2026-07-28T16:00:46.888Z\",\"updatedAt\":\"2026-08-07T09:53:33.443Z\"}",
+      "before": {
+        "id": "veh-033",
+        "numero": 33,
+        "marque": "Toyota",
+        "type": "Fortuner",
+        "numeroChassis": "AHTKB8FS800250065",
+        "plaque": "0774BP01",
+        "cv": "13CV",
+        "assureur": "Rawsur",
+        "departement": "Administration",
+        "user": "Andrew",
+        "province": "Kongo Central",
+        "proprietaire": "LOXEA",
+        "kilometrage": null,
+        "miseCirculation": "2022",
+        "age": 4,
+        "observationTech": "Bon état",
+        "etatManuel": "",
+        "assuranceHistorique": [
+          {
+            "id": "doc-msir868r-xq9cc",
+            "dateDebut": "2026-01-31",
+            "dateFin": "2027-01-31",
+            "preuveUrl": "",
+            "createdAt": "2026-08-07T09:40:37.659Z"
+          }
+        ],
+        "vignetteHistorique": [],
+        "controleTechniqueHistorique": [],
+        "assuranceFin": "2027-01-31",
+        "vignetteFin": "",
+        "controleTechniqueFin": "",
+        "notes": "",
+        "createdAt": "2026-07-28T16:00:46.888Z",
+        "updatedAt": "2026-08-07T09:40:37.660Z"
+      },
+      "after": {
+        "id": "veh-033",
+        "numero": 33,
+        "marque": "Toyota",
+        "type": "Fortuner",
+        "numeroChassis": "AHTKB8FS800250065",
+        "plaque": "0774BP01",
+        "cv": "13CV",
+        "assureur": "Rawsur",
+        "departement": "Administration",
+        "user": "Andrew",
+        "province": "Kongo Central",
+        "proprietaire": "LOXEA",
+        "kilometrage": null,
+        "miseCirculation": "2022",
+        "age": 4,
+        "observationTech": "Bon état",
+        "etatManuel": "",
+        "assuranceHistorique": [
+          {
+            "id": "doc-msir868r-xq9cc",
+            "dateDebut": "2026-01-31",
+            "dateFin": "2027-01-31",
+            "preuveUrl": "",
+            "createdAt": "2026-08-07T09:40:37.659Z"
+          }
+        ],
+        "vignetteHistorique": [],
+        "controleTechniqueHistorique": [
+          {
+            "id": "doc-msirosub-2t8ve",
+            "dateDebut": "2026-02-01",
+            "dateFin": "2026-08-01",
+            "preuveUrl": "",
+            "createdAt": "2026-08-07T09:53:33.443Z"
+          }
+        ],
+        "assuranceFin": "2027-01-31",
+        "vignetteFin": "",
+        "controleTechniqueFin": "2026-08-01",
+        "notes": "",
+        "createdAt": "2026-07-28T16:00:46.888Z",
+        "updatedAt": "2026-08-07T09:53:33.443Z"
+      },
+      "undoable": false,
+      "undone": false
+    },
+    {
       "id": "log-000133",
       "at": "2026-08-07T09:53:04.017Z",
       "userId": "Serge.Muakasa",
@@ -16825,5 +16922,5 @@
       }
     }
   ],
-  "nextSeq": 134
+  "nextSeq": 135
 }
