@@ -1092,13 +1092,21 @@
         }
       ],
       "vignetteHistorique": [],
-      "controleTechniqueHistorique": [],
+      "controleTechniqueHistorique": [
+        {
+          "id": "doc-msirrasl-yt3ne",
+          "dateDebut": "2026-02-01",
+          "dateFin": "2026-08-01",
+          "preuveUrl": "",
+          "createdAt": "2026-08-07T09:55:30.021Z"
+        }
+      ],
       "assuranceFin": "2027-01-31",
       "vignetteFin": "",
-      "controleTechniqueFin": "",
+      "controleTechniqueFin": "2026-08-01",
       "notes": "",
       "createdAt": "2026-07-28T16:00:46.888Z",
-      "updatedAt": "2026-08-07T09:39:22.022Z"
+      "updatedAt": "2026-08-07T09:55:30.021Z"
     },
     {
       "id": "veh-032",
