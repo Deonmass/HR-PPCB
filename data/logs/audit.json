@@ -1,6 +1,110 @@
 {
   "entries": [
     {
+      "id": "log-000155",
+      "at": "2026-08-10T12:00:40.304Z",
+      "userId": "admin",
+      "userName": "Administrateur",
+      "module": "charroi.vehicules",
+      "moduleLabel": "Charroi — Véhicules",
+      "action": "update",
+      "actionLabel": "Modification",
+      "entityType": "charroi.vehicule.doc",
+      "entityId": "veh-030",
+      "summary": "Modification Contrôle technique — 9263BN01",
+      "details": "Période Contrôle technique modifiée (doc-msirrqtt-uawra).\nAvant : {\"id\":\"veh-030\",\"numero\":30,\"marque\":\"Peugeot\",\"type\":\"Pick up\",\"numeroChassis\":\"VR3FDAHDM3006435\",\"plaque\":\"9263BN01\",\"cv\":\"13CV\",\"assureur\":\"Rawsur\",\"departement\":\"Q A\",\"user\":\"Charles Pongo\",\"province\":\"Kongo Central\",\"proprietaire\":\"LOXEA\",\"kilometrage\":null,\"miseCirculation\":\"2022\",\"age\":4,\"observationTech\":\"Bon état\",\"etatManuel\":\"\",\"assuranceHistorique\":[{\"id\":\"doc-msir5usc-j7nx3\",\"dateDebut\":\"2026-01-31\",\"dateFin\":\"2027-01-31\",\"preuveUrl\":\"\",\"createdAt\":\"2026-08-07T09:38:49.500Z\"}],\"vignetteHistorique\":[],\"controleTechniqueHistorique\":[{\"id\":\"doc-msirrqtt-uawra\",\"dateDebut\":\"2026-08-02\",\"dateFin\":\"2027-02-02\",\"preuveUrl\":\"\",\"createdAt\":\"2026-08-07T09:55:50.801Z\"}],\"assuranceFin\":\"2027-01-31\",\"vignetteFin\":\"\",\"controleTechniqueFin\":\"2027-02-02\",\"notes\":\"\",\"createdAt\":\"2026-07-28T16:00:46.888Z\",\"updatedAt\":\"2026-08-07T12:07:47.580Z\"}\nAprès : {\"id\":\"veh-030\",\"numero\":30,\"marque\":\"Peugeot\",\"type\":\"Pick up\",\"numeroChassis\":\"VR3FDAHDM3006435\",\"plaque\":\"9263BN01\",\"cv\":\"13CV\",\"assureur\":\"Rawsur\",\"departement\":\"Q A\",\"user\":\"Charles Pongo\",\"province\":\"Kongo Central\",\"proprietaire\":\"LOXEA\",\"kilometrage\":null,\"miseCirculation\":\"2022\",\"age\":4,\"observationTech\":\"Bon état\",\"etatManuel\":\"\",\"assuranceHistorique\":[{\"id\":\"doc-msir5usc-j7nx3\",\"dateDebut\":\"2026-01-31\",\"dateFin\":\"2027-01-31\",\"preuveUrl\":\"\",\"createdAt\":\"2026-08-07T09:38:49.500Z\"}],\"vignetteHistorique\":[],\"controleTechniqueHistorique\":[{\"id\":\"doc-msirrqtt-uawra\",\"dateDebut\":\"2026-08-02\",\"dateFin\":\"2027-02-02\",\"preuveUrl\":\"https://ppcafr.sharepoint.com/:b:/r/sites/knshr/HR%20ADMINISTRATION/Controle%20technique%20Aout%202026/9263BN01%20PEUGEOT.pdf?d=w965d8788f43040db9863751b02365f69&csf=1&web=1&e=KRJhKH\",\"createdAt\":\"2026-08-07T09:55:50.801Z\"}],\"assuranceFin\":\"2027-01-31\",\"vignetteFin\":\"\",\"controleTechniqueFin\":\"2027-02-02\",\"notes\":\"\",\"createdAt\":\"2026-07-28T16:00:46.888Z\",\"updatedAt\":\"2026-08-10T12:00:39.051Z\"}",
+      "before": {
+        "id": "veh-030",
+        "numero": 30,
+        "marque": "Peugeot",
+        "type": "Pick up",
+        "numeroChassis": "VR3FDAHDM3006435",
+        "plaque": "9263BN01",
+        "cv": "13CV",
+        "assureur": "Rawsur",
+        "departement": "Q A",
+        "user": "Charles Pongo",
+        "province": "Kongo Central",
+        "proprietaire": "LOXEA",
+        "kilometrage": null,
+        "miseCirculation": "2022",
+        "age": 4,
+        "observationTech": "Bon état",
+        "etatManuel": "",
+        "assuranceHistorique": [
+          {
+            "id": "doc-msir5usc-j7nx3",
+            "dateDebut": "2026-01-31",
+            "dateFin": "2027-01-31",
+            "preuveUrl": "",
+            "createdAt": "2026-08-07T09:38:49.500Z"
+          }
+        ],
+        "vignetteHistorique": [],
+        "controleTechniqueHistorique": [
+          {
+            "id": "doc-msirrqtt-uawra",
+            "dateDebut": "2026-08-02",
+            "dateFin": "2027-02-02",
+            "preuveUrl": "",
+            "createdAt": "2026-08-07T09:55:50.801Z"
+          }
+        ],
+        "assuranceFin": "2027-01-31",
+        "vignetteFin": "",
+        "controleTechniqueFin": "2027-02-02",
+        "notes": "",
+        "createdAt": "2026-07-28T16:00:46.888Z",
+        "updatedAt": "2026-08-07T12:07:47.580Z"
+      },
+      "after": {
+        "id": "veh-030",
+        "numero": 30,
+        "marque": "Peugeot",
+        "type": "Pick up",
+        "numeroChassis": "VR3FDAHDM3006435",
+        "plaque": "9263BN01",
+        "cv": "13CV",
+        "assureur": "Rawsur",
+        "departement": "Q A",
+        "user": "Charles Pongo",
+        "province": "Kongo Central",
+        "proprietaire": "LOXEA",
+        "kilometrage": null,
+        "miseCirculation": "2022",
+        "age": 4,
+        "observationTech": "Bon état",
+        "etatManuel": "",
+        "assuranceHistorique": [
+          {
+            "id": "doc-msir5usc-j7nx3",
+            "dateDebut": "2026-01-31",
+            "dateFin": "2027-01-31",
+            "preuveUrl": "",
+            "createdAt": "2026-08-07T09:38:49.500Z"
+          }
+        ],
+        "vignetteHistorique": [],
+        "controleTechniqueHistorique": [
+          {
+            "id": "doc-msirrqtt-uawra",
+            "dateDebut": "2026-08-02",
+            "dateFin": "2027-02-02",
+            "preuveUrl": "https://ppcafr.sharepoint.com/:b:/r/sites/knshr/HR%20ADMINISTRATION/Controle%20technique%20Aout%202026/9263BN01%20PEUGEOT.pdf?d=w965d8788f43040db9863751b02365f69&csf=1&web=1&e=KRJhKH",
+            "createdAt": "2026-08-07T09:55:50.801Z"
+          }
+        ],
+        "assuranceFin": "2027-01-31",
+        "vignetteFin": "",
+        "controleTechniqueFin": "2027-02-02",
+        "notes": "",
+        "createdAt": "2026-07-28T16:00:46.888Z",
+        "updatedAt": "2026-08-10T12:00:39.051Z"
+      },
+      "undoable": false,
+      "undone": false
+    },
+    {
       "id": "log-000154",
       "at": "2026-08-10T11:59:27.200Z",
       "userId": "admin",
@@ -18964,5 +19068,5 @@
       }
     }
   ],
-  "nextSeq": 155
+  "nextSeq": 156
 }
