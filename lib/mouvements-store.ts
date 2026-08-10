@@ -1,7 +1,13 @@
 import 'server-only';
 
-import fs from 'fs/promises';
+import fs from 'fs';
+import fsPromises from 'fs/promises';
 import path from 'path';
+import {
+  DURABLE_MOUVEMENTS_KEY,
+  hydrateDurableFile,
+  persistDurableFile,
+} from './durable-fs';
 import { upsertEmployee, readEmployeesBundle } from './employees-json-store';
 import type {
   Mouvement,
@@ -10,22 +16,35 @@ import type {
   MouvementTypeId,
 } from './mouvements-types';
 import { isMouvementTypeId, mouvementTypeLabel } from './mouvements-types';
-
-const DATA_DIR = path.join(process.cwd(), 'data', 'employees');
-const DATA_FILE = path.join(DATA_DIR, 'mouvements.json');
+import { canPersistProjectFiles, getWritableDataRoot } from './runtime-mode';
 
 interface StoreData {
   mouvements: Mouvement[];
   nextOrdre: number;
 }
 
-async function ensureDir(): Promise<void> {
-  await fs.mkdir(DATA_DIR, { recursive: true });
+function resolveMouvementsPath(): string {
+  if (canPersistProjectFiles()) {
+    return path.join(process.cwd(), 'data', 'employees', 'mouvements.json');
+  }
+  const writable = path.join(getWritableDataRoot(), 'employees', 'mouvements.json');
+  const bundled = path.join(process.cwd(), 'data', 'employees', 'mouvements.json');
+  try {
+    if (!fs.existsSync(writable) && fs.existsSync(bundled)) {
+      fs.mkdirSync(path.dirname(writable), { recursive: true });
+      fs.copyFileSync(bundled, writable);
+    }
+  } catch {
+    // ignore seed errors
+  }
+  return writable;
 }
 
 async function readStore(): Promise<StoreData> {
+  const filePath = resolveMouvementsPath();
+  await hydrateDurableFile(DURABLE_MOUVEMENTS_KEY, filePath);
   try {
-    const raw = await fs.readFile(DATA_FILE, 'utf8');
+    const raw = await fsPromises.readFile(filePath, 'utf8');
     const parsed = JSON.parse(raw) as Partial<StoreData>;
     const list = Array.isArray(parsed.mouvements)
       ? parsed.mouvements.map(normalize).filter((m): m is Mouvement => Boolean(m))
@@ -44,9 +63,10 @@ async function readStore(): Promise<StoreData> {
 }
 
 async function writeStore(store: StoreData): Promise<void> {
-  await ensureDir();
-  await fs.writeFile(
-    DATA_FILE,
+  const filePath = resolveMouvementsPath();
+  await fsPromises.mkdir(path.dirname(filePath), { recursive: true });
+  await fsPromises.writeFile(
+    filePath,
     JSON.stringify(
       {
         nextOrdre: store.nextOrdre,
@@ -57,6 +77,7 @@ async function writeStore(store: StoreData): Promise<void> {
     ),
     'utf8',
   );
+  await persistDurableFile(DURABLE_MOUVEMENTS_KEY, filePath);
 }
 
 function normalize(raw: unknown): Mouvement | null {

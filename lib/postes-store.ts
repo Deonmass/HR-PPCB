@@ -1,7 +1,13 @@
 import 'server-only';
 
-import fs from 'fs/promises';
+import fs from 'fs';
+import fsPromises from 'fs/promises';
 import path from 'path';
+import {
+  DURABLE_POSTES_VACANTS_KEY,
+  hydrateDurableFile,
+  persistDurableFile,
+} from './durable-fs';
 import { readEmployeesBundle, upsertEmployee } from './employees-json-store';
 import type {
   CatalogPosteUpdate,
@@ -15,10 +21,25 @@ import type {
   VacantPoste,
   VacantPosteInput,
 } from './postes-types';
+import { canPersistProjectFiles, getWritableDataRoot } from './runtime-mode';
 import type { Employee } from './types';
 
-const DATA_DIR = path.join(process.cwd(), 'data', 'employees');
-const DATA_FILE = path.join(DATA_DIR, 'postes-vacants.json');
+function resolveVacantsPath(): string {
+  if (canPersistProjectFiles()) {
+    return path.join(process.cwd(), 'data', 'employees', 'postes-vacants.json');
+  }
+  const writable = path.join(getWritableDataRoot(), 'employees', 'postes-vacants.json');
+  const bundled = path.join(process.cwd(), 'data', 'employees', 'postes-vacants.json');
+  try {
+    if (!fs.existsSync(writable) && fs.existsSync(bundled)) {
+      fs.mkdirSync(path.dirname(writable), { recursive: true });
+      fs.copyFileSync(bundled, writable);
+    }
+  } catch {
+    // ignore seed errors
+  }
+  return writable;
+}
 
 interface VacantsStore {
   vacants: VacantPoste[];
@@ -207,8 +228,10 @@ function buildSuggestions(
 }
 
 async function readVacantsStore(): Promise<VacantsStore> {
+  const filePath = resolveVacantsPath();
+  await hydrateDurableFile(DURABLE_POSTES_VACANTS_KEY, filePath);
   try {
-    const raw = await fs.readFile(DATA_FILE, 'utf8');
+    const raw = await fsPromises.readFile(filePath, 'utf8');
     const parsed = JSON.parse(raw) as Partial<VacantsStore>;
     const vacants = Array.isArray(parsed.vacants)
       ? parsed.vacants
@@ -224,8 +247,10 @@ async function readVacantsStore(): Promise<VacantsStore> {
 }
 
 async function writeVacantsStore(store: VacantsStore): Promise<void> {
-  await fs.mkdir(DATA_DIR, { recursive: true });
-  await fs.writeFile(DATA_FILE, JSON.stringify(store, null, 2), 'utf8');
+  const filePath = resolveVacantsPath();
+  await fsPromises.mkdir(path.dirname(filePath), { recursive: true });
+  await fsPromises.writeFile(filePath, JSON.stringify(store, null, 2), 'utf8');
+  await persistDurableFile(DURABLE_POSTES_VACANTS_KEY, filePath);
 }
 
 function normalizeVacant(raw: unknown): VacantPoste | null {

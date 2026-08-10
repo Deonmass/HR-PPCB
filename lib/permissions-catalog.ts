@@ -156,6 +156,11 @@ export function mergePermissionsWithCatalog(menus: MenuPermission[]): MenuPermis
   const grantNewDocMenus =
     hubMenus.length > 0 && hubMenus.every((menu) => isMenuFullyChecked(menu));
 
+  // Idem pour les menus Employés (Postes, Mouvements, Offres, etc.).
+  const employesMenus = menus.filter((menu) => menu.menuId.startsWith('employes.'));
+  const grantNewEmployesMenus =
+    employesMenus.length > 0 && employesMenus.every((menu) => isMenuFullyChecked(menu));
+
   const merged = defaults.map((defaultMenu) => {
     const existing = menus.find((menu) => menu.menuId === defaultMenu.menuId);
     if (!existing) {
@@ -165,6 +170,9 @@ export function mergePermissionsWithCatalog(menus: MenuPermission[]): MenuPermis
         && (defaultMenu.menuId.startsWith('documents.')
           || defaultMenu.menuId.startsWith('travel.'))
       ) {
+        return setAllMenuActions(defaultMenu, true);
+      }
+      if (grantNewEmployesMenus && defaultMenu.menuId.startsWith('employes.')) {
         return setAllMenuActions(defaultMenu, true);
       }
       return defaultMenu;
