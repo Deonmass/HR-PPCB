@@ -1,6 +1,926 @@
 {
   "entries": [
     {
+      "id": "log-000161",
+      "at": "2026-08-10T12:07:09.974Z",
+      "userId": "admin",
+      "userName": "Administrateur",
+      "module": "charroi.vehicules",
+      "moduleLabel": "Charroi — Véhicules",
+      "action": "update",
+      "actionLabel": "Modification",
+      "entityType": "charroi.vehicule.doc",
+      "entityId": "veh-033",
+      "summary": "Modification Contrôle technique — 0774BP01",
+      "details": "Période Contrôle technique modifiée (doc-msirosub-2t8ve).\nAvant : {\"id\":\"veh-033\",\"numero\":33,\"marque\":\"Toyota\",\"type\":\"Fortuner\",\"numeroChassis\":\"AHTKB8FS800250065\",\"plaque\":\"0774BP01\",\"cv\":\"13CV\",\"assureur\":\"Rawsur\",\"departement\":\"Administration\",\"user\":\"Andrew\",\"province\":\"Kongo Central\",\"proprietaire\":\"LOXEA\",\"kilometrage\":null,\"miseCirculation\":\"2022\",\"age\":4,\"observationTech\":\"Bon état\",\"etatManuel\":\"\",\"assuranceHistorique\":[{\"id\":\"doc-msir868r-xq9cc\",\"dateDebut\":\"2026-01-31\",\"dateFin\":\"2027-01-31\",\"preuveUrl\":\"\",\"createdAt\":\"2026-08-07T09:40:37.659Z\"}],\"vignetteHistorique\":[],\"controleTechniqueHistorique\":[{\"id\":\"doc-msirosub-2t8ve\",\"dateDebut\":\"2026-08-02\",\"dateFin\":\"2027-02-02\",\"preuveUrl\":\"\",\"createdAt\":\"2026-08-07T09:53:33.443Z\"}],\"assuranceFin\":\"2027-01-31\",\"vignetteFin\":\"\",\"controleTechniqueFin\":\"2027-02-02\",\"notes\":\"\",\"createdAt\":\"2026-07-28T16:00:46.888Z\",\"updatedAt\":\"2026-08-07T12:06:07.454Z\"}\nAprès : {\"id\":\"veh-033\",\"numero\":33,\"marque\":\"Toyota\",\"type\":\"Fortuner\",\"numeroChassis\":\"AHTKB8FS800250065\",\"plaque\":\"0774BP01\",\"cv\":\"13CV\",\"assureur\":\"Rawsur\",\"departement\":\"Administration\",\"user\":\"Andrew\",\"province\":\"Kongo Central\",\"proprietaire\":\"LOXEA\",\"kilometrage\":null,\"miseCirculation\":\"2022\",\"age\":4,\"observationTech\":\"Bon état\",\"etatManuel\":\"\",\"assuranceHistorique\":[{\"id\":\"doc-msir868r-xq9cc\",\"dateDebut\":\"2026-01-31\",\"dateFin\":\"2027-01-31\",\"preuveUrl\":\"\",\"createdAt\":\"2026-08-07T09:40:37.659Z\"}],\"vignetteHistorique\":[],\"controleTechniqueHistorique\":[{\"id\":\"doc-msirosub-2t8ve\",\"dateDebut\":\"2026-08-02\",\"dateFin\":\"2027-02-02\",\"preuveUrl\":\"https://ppcafr.sharepoint.com/:b:/r/sites/knshr/HR%20ADMINISTRATION/Controle%20technique%20Aout%202026/0774BP01%20TOYOTA%20FORTUNER.pdf?d=w6d74773f019743edad9539968daaa392&csf=1&web=1&e=3trpNd\",\"createdAt\":\"2026-08-07T09:53:33.443Z\"}],\"assuranceFin\":\"2027-01-31\",\"vignetteFin\":\"\",\"controleTechniqueFin\":\"2027-02-02\",\"notes\":\"\",\"createdAt\":\"2026-07-28T16:00:46.888Z\",\"updatedAt\":\"2026-08-10T12:07:08.799Z\"}",
+      "before": {
+        "id": "veh-033",
+        "numero": 33,
+        "marque": "Toyota",
+        "type": "Fortuner",
+        "numeroChassis": "AHTKB8FS800250065",
+        "plaque": "0774BP01",
+        "cv": "13CV",
+        "assureur": "Rawsur",
+        "departement": "Administration",
+        "user": "Andrew",
+        "province": "Kongo Central",
+        "proprietaire": "LOXEA",
+        "kilometrage": null,
+        "miseCirculation": "2022",
+        "age": 4,
+        "observationTech": "Bon état",
+        "etatManuel": "",
+        "assuranceHistorique": [
+          {
+            "id": "doc-msir868r-xq9cc",
+            "dateDebut": "2026-01-31",
+            "dateFin": "2027-01-31",
+            "preuveUrl": "",
+            "createdAt": "2026-08-07T09:40:37.659Z"
+          }
+        ],
+        "vignetteHistorique": [],
+        "controleTechniqueHistorique": [
+          {
+            "id": "doc-msirosub-2t8ve",
+            "dateDebut": "2026-08-02",
+            "dateFin": "2027-02-02",
+            "preuveUrl": "",
+            "createdAt": "2026-08-07T09:53:33.443Z"
+          }
+        ],
+        "assuranceFin": "2027-01-31",
+        "vignetteFin": "",
+        "controleTechniqueFin": "2027-02-02",
+        "notes": "",
+        "createdAt": "2026-07-28T16:00:46.888Z",
+        "updatedAt": "2026-08-07T12:06:07.454Z"
+      },
+      "after": {
+        "id": "veh-033",
+        "numero": 33,
+        "marque": "Toyota",
+        "type": "Fortuner",
+        "numeroChassis": "AHTKB8FS800250065",
+        "plaque": "0774BP01",
+        "cv": "13CV",
+        "assureur": "Rawsur",
+        "departement": "Administration",
+        "user": "Andrew",
+        "province": "Kongo Central",
+        "proprietaire": "LOXEA",
+        "kilometrage": null,
+        "miseCirculation": "2022",
+        "age": 4,
+        "observationTech": "Bon état",
+        "etatManuel": "",
+        "assuranceHistorique": [
+          {
+            "id": "doc-msir868r-xq9cc",
+            "dateDebut": "2026-01-31",
+            "dateFin": "2027-01-31",
+            "preuveUrl": "",
+            "createdAt": "2026-08-07T09:40:37.659Z"
+          }
+        ],
+        "vignetteHistorique": [],
+        "controleTechniqueHistorique": [
+          {
+            "id": "doc-msirosub-2t8ve",
+            "dateDebut": "2026-08-02",
+            "dateFin": "2027-02-02",
+            "preuveUrl": "https://ppcafr.sharepoint.com/:b:/r/sites/knshr/HR%20ADMINISTRATION/Controle%20technique%20Aout%202026/0774BP01%20TOYOTA%20FORTUNER.pdf?d=w6d74773f019743edad9539968daaa392&csf=1&web=1&e=3trpNd",
+            "createdAt": "2026-08-07T09:53:33.443Z"
+          }
+        ],
+        "assuranceFin": "2027-01-31",
+        "vignetteFin": "",
+        "controleTechniqueFin": "2027-02-02",
+        "notes": "",
+        "createdAt": "2026-07-28T16:00:46.888Z",
+        "updatedAt": "2026-08-10T12:07:08.799Z"
+      },
+      "undoable": false,
+      "undone": false
+    },
+    {
+      "id": "log-000160",
+      "at": "2026-08-10T12:06:26.851Z",
+      "userId": "admin",
+      "userName": "Administrateur",
+      "module": "charroi.vehicules",
+      "moduleLabel": "Charroi — Véhicules",
+      "action": "update",
+      "actionLabel": "Modification",
+      "entityType": "charroi.vehicule.doc",
+      "entityId": "veh-032",
+      "summary": "Modification Contrôle technique — 0983BM01",
+      "details": "Période Contrôle technique modifiée (doc-msirqrhy-fy0m2).\nAvant : {\"id\":\"veh-032\",\"numero\":32,\"marque\":\"Toyota\",\"type\":\"Hiace\",\"numeroChassis\":\"JTFJK02P705016540\",\"plaque\":\"0983BM01\",\"cv\":\"13CV\",\"assureur\":\"Rawsur\",\"departement\":\"Plant HR\",\"user\":\"Serge M\",\"province\":\"Kongo Central\",\"proprietaire\":\"LOXEA\",\"kilometrage\":null,\"miseCirculation\":\"2023\",\"age\":3,\"observationTech\":\"Bon état\",\"etatManuel\":\"\",\"assuranceHistorique\":[{\"id\":\"doc-msir781b-1npyb\",\"dateDebut\":\"2026-01-31\",\"dateFin\":\"2027-01-31\",\"preuveUrl\":\"\",\"createdAt\":\"2026-08-07T09:39:53.327Z\"}],\"vignetteHistorique\":[],\"controleTechniqueHistorique\":[{\"id\":\"doc-msirqrhy-fy0m2\",\"dateDebut\":\"2026-08-02\",\"dateFin\":\"2027-02-02\",\"preuveUrl\":\"\",\"createdAt\":\"2026-08-07T09:55:05.014Z\"}],\"assuranceFin\":\"2027-01-31\",\"vignetteFin\":\"\",\"controleTechniqueFin\":\"2027-02-02\",\"notes\":\"\",\"createdAt\":\"2026-07-28T16:00:46.888Z\",\"updatedAt\":\"2026-08-07T12:08:57.612Z\"}\nAprès : {\"id\":\"veh-032\",\"numero\":32,\"marque\":\"Toyota\",\"type\":\"Hiace\",\"numeroChassis\":\"JTFJK02P705016540\",\"plaque\":\"0983BM01\",\"cv\":\"13CV\",\"assureur\":\"Rawsur\",\"departement\":\"Plant HR\",\"user\":\"Serge M\",\"province\":\"Kongo Central\",\"proprietaire\":\"LOXEA\",\"kilometrage\":null,\"miseCirculation\":\"2023\",\"age\":3,\"observationTech\":\"Bon état\",\"etatManuel\":\"\",\"assuranceHistorique\":[{\"id\":\"doc-msir781b-1npyb\",\"dateDebut\":\"2026-01-31\",\"dateFin\":\"2027-01-31\",\"preuveUrl\":\"\",\"createdAt\":\"2026-08-07T09:39:53.327Z\"}],\"vignetteHistorique\":[],\"controleTechniqueHistorique\":[{\"id\":\"doc-msirqrhy-fy0m2\",\"dateDebut\":\"2026-08-02\",\"dateFin\":\"2027-02-02\",\"preuveUrl\":\"https://ppcafr.sharepoint.com/:b:/r/sites/knshr/HR%20ADMINISTRATION/Controle%20technique%20Aout%202026/0983BM01%20TOYOTA%20HIACE.pdf?d=w12cb0b7f9f67408b86b25320206a841e&csf=1&web=1&e=TjdHgT\",\"createdAt\":\"2026-08-07T09:55:05.014Z\"}],\"assuranceFin\":\"2027-01-31\",\"vignetteFin\":\"\",\"controleTechniqueFin\":\"2027-02-02\",\"notes\":\"\",\"createdAt\":\"2026-07-28T16:00:46.888Z\",\"updatedAt\":\"2026-08-10T12:06:25.586Z\"}",
+      "before": {
+        "id": "veh-032",
+        "numero": 32,
+        "marque": "Toyota",
+        "type": "Hiace",
+        "numeroChassis": "JTFJK02P705016540",
+        "plaque": "0983BM01",
+        "cv": "13CV",
+        "assureur": "Rawsur",
+        "departement": "Plant HR",
+        "user": "Serge M",
+        "province": "Kongo Central",
+        "proprietaire": "LOXEA",
+        "kilometrage": null,
+        "miseCirculation": "2023",
+        "age": 3,
+        "observationTech": "Bon état",
+        "etatManuel": "",
+        "assuranceHistorique": [
+          {
+            "id": "doc-msir781b-1npyb",
+            "dateDebut": "2026-01-31",
+            "dateFin": "2027-01-31",
+            "preuveUrl": "",
+            "createdAt": "2026-08-07T09:39:53.327Z"
+          }
+        ],
+        "vignetteHistorique": [],
+        "controleTechniqueHistorique": [
+          {
+            "id": "doc-msirqrhy-fy0m2",
+            "dateDebut": "2026-08-02",
+            "dateFin": "2027-02-02",
+            "preuveUrl": "",
+            "createdAt": "2026-08-07T09:55:05.014Z"
+          }
+        ],
+        "assuranceFin": "2027-01-31",
+        "vignetteFin": "",
+        "controleTechniqueFin": "2027-02-02",
+        "notes": "",
+        "createdAt": "2026-07-28T16:00:46.888Z",
+        "updatedAt": "2026-08-07T12:08:57.612Z"
+      },
+      "after": {
+        "id": "veh-032",
+        "numero": 32,
+        "marque": "Toyota",
+        "type": "Hiace",
+        "numeroChassis": "JTFJK02P705016540",
+        "plaque": "0983BM01",
+        "cv": "13CV",
+        "assureur": "Rawsur",
+        "departement": "Plant HR",
+        "user": "Serge M",
+        "province": "Kongo Central",
+        "proprietaire": "LOXEA",
+        "kilometrage": null,
+        "miseCirculation": "2023",
+        "age": 3,
+        "observationTech": "Bon état",
+        "etatManuel": "",
+        "assuranceHistorique": [
+          {
+            "id": "doc-msir781b-1npyb",
+            "dateDebut": "2026-01-31",
+            "dateFin": "2027-01-31",
+            "preuveUrl": "",
+            "createdAt": "2026-08-07T09:39:53.327Z"
+          }
+        ],
+        "vignetteHistorique": [],
+        "controleTechniqueHistorique": [
+          {
+            "id": "doc-msirqrhy-fy0m2",
+            "dateDebut": "2026-08-02",
+            "dateFin": "2027-02-02",
+            "preuveUrl": "https://ppcafr.sharepoint.com/:b:/r/sites/knshr/HR%20ADMINISTRATION/Controle%20technique%20Aout%202026/0983BM01%20TOYOTA%20HIACE.pdf?d=w12cb0b7f9f67408b86b25320206a841e&csf=1&web=1&e=TjdHgT",
+            "createdAt": "2026-08-07T09:55:05.014Z"
+          }
+        ],
+        "assuranceFin": "2027-01-31",
+        "vignetteFin": "",
+        "controleTechniqueFin": "2027-02-02",
+        "notes": "",
+        "createdAt": "2026-07-28T16:00:46.888Z",
+        "updatedAt": "2026-08-10T12:06:25.586Z"
+      },
+      "undoable": false,
+      "undone": false
+    },
+    {
+      "id": "log-000159",
+      "at": "2026-08-10T12:05:49.585Z",
+      "userId": "admin",
+      "userName": "Administrateur",
+      "module": "charroi.vehicules",
+      "moduleLabel": "Charroi — Véhicules",
+      "action": "update",
+      "actionLabel": "Modification",
+      "entityType": "charroi.vehicule.doc",
+      "entityId": "veh-043",
+      "summary": "Modification Contrôle technique — 7127BP01",
+      "details": "Période Contrôle technique modifiée (doc-msivp1q2-e1s3a).\nAvant : {\"id\":\"veh-043\",\"numero\":43,\"marque\":\"Peugeot\",\"type\":\"Pick up\",\"numeroChassis\":\"VR3FDAHDHM3006106\",\"plaque\":\"7127BP01\",\"cv\":\"13CV\",\"assureur\":\"Rawsur\",\"departement\":\"Sales\",\"user\":\"Paul Ts\",\"province\":\"Kongo Central\",\"proprietaire\":\"LOXEA\",\"kilometrage\":null,\"miseCirculation\":\"2022\",\"age\":4,\"observationTech\":\"Bon état\",\"etatManuel\":\"\",\"assuranceHistorique\":[],\"vignetteHistorique\":[],\"controleTechniqueHistorique\":[{\"id\":\"doc-msivp1q2-e1s3a\",\"dateDebut\":\"2026-08-02\",\"dateFin\":\"2027-02-02\",\"preuveUrl\":\"\",\"createdAt\":\"2026-08-07T11:45:43.418Z\"}],\"assuranceFin\":\"\",\"vignetteFin\":\"\",\"controleTechniqueFin\":\"2027-02-02\",\"notes\":\"\",\"createdAt\":\"2026-07-28T16:00:46.888Z\",\"updatedAt\":\"2026-08-07T11:45:43.418Z\"}\nAprès : {\"id\":\"veh-043\",\"numero\":43,\"marque\":\"Peugeot\",\"type\":\"Pick up\",\"numeroChassis\":\"VR3FDAHDHM3006106\",\"plaque\":\"7127BP01\",\"cv\":\"13CV\",\"assureur\":\"Rawsur\",\"departement\":\"Sales\",\"user\":\"Paul Ts\",\"province\":\"Kongo Central\",\"proprietaire\":\"LOXEA\",\"kilometrage\":null,\"miseCirculation\":\"2022\",\"age\":4,\"observationTech\":\"Bon état\",\"etatManuel\":\"\",\"assuranceHistorique\":[],\"vignetteHistorique\":[],\"controleTechniqueHistorique\":[{\"id\":\"doc-msivp1q2-e1s3a\",\"dateDebut\":\"2026-08-02\",\"dateFin\":\"2027-02-02\",\"preuveUrl\":\"https://ppcafr.sharepoint.com/:b:/r/sites/knshr/HR%20ADMINISTRATION/Controle%20technique%20Aout%202026/7127BP01%20PEUGEOT.pdf?d=wca9606f928be419c8dafd1e61d4e495c&csf=1&web=1&e=3OWw1s\",\"createdAt\":\"2026-08-07T11:45:43.418Z\"}],\"assuranceFin\":\"\",\"vignetteFin\":\"\",\"controleTechniqueFin\":\"2027-02-02\",\"notes\":\"\",\"createdAt\":\"2026-07-28T16:00:46.888Z\",\"updatedAt\":\"2026-08-10T12:05:48.388Z\"}",
+      "before": {
+        "id": "veh-043",
+        "numero": 43,
+        "marque": "Peugeot",
+        "type": "Pick up",
+        "numeroChassis": "VR3FDAHDHM3006106",
+        "plaque": "7127BP01",
+        "cv": "13CV",
+        "assureur": "Rawsur",
+        "departement": "Sales",
+        "user": "Paul Ts",
+        "province": "Kongo Central",
+        "proprietaire": "LOXEA",
+        "kilometrage": null,
+        "miseCirculation": "2022",
+        "age": 4,
+        "observationTech": "Bon état",
+        "etatManuel": "",
+        "assuranceHistorique": [],
+        "vignetteHistorique": [],
+        "controleTechniqueHistorique": [
+          {
+            "id": "doc-msivp1q2-e1s3a",
+            "dateDebut": "2026-08-02",
+            "dateFin": "2027-02-02",
+            "preuveUrl": "",
+            "createdAt": "2026-08-07T11:45:43.418Z"
+          }
+        ],
+        "assuranceFin": "",
+        "vignetteFin": "",
+        "controleTechniqueFin": "2027-02-02",
+        "notes": "",
+        "createdAt": "2026-07-28T16:00:46.888Z",
+        "updatedAt": "2026-08-07T11:45:43.418Z"
+      },
+      "after": {
+        "id": "veh-043",
+        "numero": 43,
+        "marque": "Peugeot",
+        "type": "Pick up",
+        "numeroChassis": "VR3FDAHDHM3006106",
+        "plaque": "7127BP01",
+        "cv": "13CV",
+        "assureur": "Rawsur",
+        "departement": "Sales",
+        "user": "Paul Ts",
+        "province": "Kongo Central",
+        "proprietaire": "LOXEA",
+        "kilometrage": null,
+        "miseCirculation": "2022",
+        "age": 4,
+        "observationTech": "Bon état",
+        "etatManuel": "",
+        "assuranceHistorique": [],
+        "vignetteHistorique": [],
+        "controleTechniqueHistorique": [
+          {
+            "id": "doc-msivp1q2-e1s3a",
+            "dateDebut": "2026-08-02",
+            "dateFin": "2027-02-02",
+            "preuveUrl": "https://ppcafr.sharepoint.com/:b:/r/sites/knshr/HR%20ADMINISTRATION/Controle%20technique%20Aout%202026/7127BP01%20PEUGEOT.pdf?d=wca9606f928be419c8dafd1e61d4e495c&csf=1&web=1&e=3OWw1s",
+            "createdAt": "2026-08-07T11:45:43.418Z"
+          }
+        ],
+        "assuranceFin": "",
+        "vignetteFin": "",
+        "controleTechniqueFin": "2027-02-02",
+        "notes": "",
+        "createdAt": "2026-07-28T16:00:46.888Z",
+        "updatedAt": "2026-08-10T12:05:48.388Z"
+      },
+      "undoable": false,
+      "undone": false
+    },
+    {
+      "id": "log-000158",
+      "at": "2026-08-10T12:03:17.601Z",
+      "userId": "admin",
+      "userName": "Administrateur",
+      "module": "charroi.vehicules",
+      "moduleLabel": "Charroi — Véhicules",
+      "action": "update",
+      "actionLabel": "Modification",
+      "entityType": "charroi.vehicule.doc",
+      "entityId": "veh-034",
+      "summary": "Modification Contrôle technique — 8149BP01",
+      "details": "Période Contrôle technique modifiée (doc-msirpgii-e482o).\nAvant : {\"id\":\"veh-034\",\"numero\":34,\"marque\":\"Toyota\",\"type\":\"Coaster\",\"numeroChassis\":\"JTGABAB8906710179\",\"plaque\":\"8149BP01\",\"cv\":\"13CV\",\"assureur\":\"Rawsur\",\"departement\":\"Plant HR\",\"user\":\"Serge M\",\"province\":\"Kongo Central\",\"proprietaire\":\"LOXEA\",\"kilometrage\":null,\"miseCirculation\":\"2023\",\"age\":3,\"observationTech\":\"Bon état\",\"etatManuel\":\"\",\"assuranceHistorique\":[{\"id\":\"doc-msir92i1-57oyd\",\"dateDebut\":\"2026-01-31\",\"dateFin\":\"2027-01-31\",\"preuveUrl\":\"\",\"createdAt\":\"2026-08-07T09:41:19.465Z\"}],\"vignetteHistorique\":[],\"controleTechniqueHistorique\":[{\"id\":\"doc-msirpgii-e482o\",\"dateDebut\":\"2026-08-02\",\"dateFin\":\"2027-02-02\",\"preuveUrl\":\"\",\"createdAt\":\"2026-08-07T09:54:04.122Z\"}],\"assuranceFin\":\"2027-01-31\",\"vignetteFin\":\"\",\"controleTechniqueFin\":\"2027-02-02\",\"notes\":\"\",\"createdAt\":\"2026-07-28T16:00:46.888Z\",\"updatedAt\":\"2026-08-07T11:46:53.936Z\"}\nAprès : {\"id\":\"veh-034\",\"numero\":34,\"marque\":\"Toyota\",\"type\":\"Coaster\",\"numeroChassis\":\"JTGABAB8906710179\",\"plaque\":\"8149BP01\",\"cv\":\"13CV\",\"assureur\":\"Rawsur\",\"departement\":\"Plant HR\",\"user\":\"Serge M\",\"province\":\"Kongo Central\",\"proprietaire\":\"LOXEA\",\"kilometrage\":null,\"miseCirculation\":\"2023\",\"age\":3,\"observationTech\":\"Bon état\",\"etatManuel\":\"\",\"assuranceHistorique\":[{\"id\":\"doc-msir92i1-57oyd\",\"dateDebut\":\"2026-01-31\",\"dateFin\":\"2027-01-31\",\"preuveUrl\":\"\",\"createdAt\":\"2026-08-07T09:41:19.465Z\"}],\"vignetteHistorique\":[],\"controleTechniqueHistorique\":[{\"id\":\"doc-msirpgii-e482o\",\"dateDebut\":\"2026-08-02\",\"dateFin\":\"2027-02-02\",\"preuveUrl\":\"https://ppcafr.sharepoint.com/:b:/r/sites/knshr/HR%20ADMINISTRATION/Controle%20technique%20Aout%202026/8149BP01%20TOYOTA%20COASTER.pdf?d=w3f85ff9846484c3ba71250ae0522fad3&csf=1&web=1&e=z22o7j\",\"createdAt\":\"2026-08-07T09:54:04.122Z\"}],\"assuranceFin\":\"2027-01-31\",\"vignetteFin\":\"\",\"controleTechniqueFin\":\"2027-02-02\",\"notes\":\"\",\"createdAt\":\"2026-07-28T16:00:46.888Z\",\"updatedAt\":\"2026-08-10T12:03:16.402Z\"}",
+      "before": {
+        "id": "veh-034",
+        "numero": 34,
+        "marque": "Toyota",
+        "type": "Coaster",
+        "numeroChassis": "JTGABAB8906710179",
+        "plaque": "8149BP01",
+        "cv": "13CV",
+        "assureur": "Rawsur",
+        "departement": "Plant HR",
+        "user": "Serge M",
+        "province": "Kongo Central",
+        "proprietaire": "LOXEA",
+        "kilometrage": null,
+        "miseCirculation": "2023",
+        "age": 3,
+        "observationTech": "Bon état",
+        "etatManuel": "",
+        "assuranceHistorique": [
+          {
+            "id": "doc-msir92i1-57oyd",
+            "dateDebut": "2026-01-31",
+            "dateFin": "2027-01-31",
+            "preuveUrl": "",
+            "createdAt": "2026-08-07T09:41:19.465Z"
+          }
+        ],
+        "vignetteHistorique": [],
+        "controleTechniqueHistorique": [
+          {
+            "id": "doc-msirpgii-e482o",
+            "dateDebut": "2026-08-02",
+            "dateFin": "2027-02-02",
+            "preuveUrl": "",
+            "createdAt": "2026-08-07T09:54:04.122Z"
+          }
+        ],
+        "assuranceFin": "2027-01-31",
+        "vignetteFin": "",
+        "controleTechniqueFin": "2027-02-02",
+        "notes": "",
+        "createdAt": "2026-07-28T16:00:46.888Z",
+        "updatedAt": "2026-08-07T11:46:53.936Z"
+      },
+      "after": {
+        "id": "veh-034",
+        "numero": 34,
+        "marque": "Toyota",
+        "type": "Coaster",
+        "numeroChassis": "JTGABAB8906710179",
+        "plaque": "8149BP01",
+        "cv": "13CV",
+        "assureur": "Rawsur",
+        "departement": "Plant HR",
+        "user": "Serge M",
+        "province": "Kongo Central",
+        "proprietaire": "LOXEA",
+        "kilometrage": null,
+        "miseCirculation": "2023",
+        "age": 3,
+        "observationTech": "Bon état",
+        "etatManuel": "",
+        "assuranceHistorique": [
+          {
+            "id": "doc-msir92i1-57oyd",
+            "dateDebut": "2026-01-31",
+            "dateFin": "2027-01-31",
+            "preuveUrl": "",
+            "createdAt": "2026-08-07T09:41:19.465Z"
+          }
+        ],
+        "vignetteHistorique": [],
+        "controleTechniqueHistorique": [
+          {
+            "id": "doc-msirpgii-e482o",
+            "dateDebut": "2026-08-02",
+            "dateFin": "2027-02-02",
+            "preuveUrl": "https://ppcafr.sharepoint.com/:b:/r/sites/knshr/HR%20ADMINISTRATION/Controle%20technique%20Aout%202026/8149BP01%20TOYOTA%20COASTER.pdf?d=w3f85ff9846484c3ba71250ae0522fad3&csf=1&web=1&e=z22o7j",
+            "createdAt": "2026-08-07T09:54:04.122Z"
+          }
+        ],
+        "assuranceFin": "2027-01-31",
+        "vignetteFin": "",
+        "controleTechniqueFin": "2027-02-02",
+        "notes": "",
+        "createdAt": "2026-07-28T16:00:46.888Z",
+        "updatedAt": "2026-08-10T12:03:16.402Z"
+      },
+      "undoable": false,
+      "undone": false
+    },
+    {
+      "id": "log-000157",
+      "at": "2026-08-10T12:02:21.738Z",
+      "userId": "admin",
+      "userName": "Administrateur",
+      "module": "charroi.vehicules",
+      "moduleLabel": "Charroi — Véhicules",
+      "action": "update",
+      "actionLabel": "Modification",
+      "entityType": "charroi.vehicule.doc",
+      "entityId": "veh-029",
+      "summary": "Modification Contrôle technique — 9261BN01",
+      "details": "Période Contrôle technique modifiée (doc-msiro5ct-ji785).\nAvant : {\"id\":\"veh-029\",\"numero\":29,\"marque\":\"Peugeot\",\"type\":\"Pick up\",\"numeroChassis\":\"VR3FDAHDHM3006436\",\"plaque\":\"9261BN01\",\"cv\":\"13CV\",\"assureur\":\"Rawsur\",\"departement\":\"Plant HR\",\"user\":\"Serge M\",\"province\":\"Kongo Central\",\"proprietaire\":\"LOXEA\",\"kilometrage\":null,\"miseCirculation\":\"2022\",\"age\":4,\"observationTech\":\"Bon état\",\"etatManuel\":\"\",\"assuranceHistorique\":[{\"id\":\"doc-msir55kk-g2cd8\",\"dateDebut\":\"2026-01-31\",\"dateFin\":\"2027-01-31\",\"preuveUrl\":\"\",\"createdAt\":\"2026-08-07T09:38:16.820Z\"}],\"vignetteHistorique\":[],\"controleTechniqueHistorique\":[{\"id\":\"doc-msiro5ct-ji785\",\"dateDebut\":\"2026-08-02\",\"dateFin\":\"2027-02-02\",\"preuveUrl\":\"\",\"createdAt\":\"2026-08-07T09:53:03.005Z\"}],\"assuranceFin\":\"2027-01-31\",\"vignetteFin\":\"\",\"controleTechniqueFin\":\"2027-02-02\",\"notes\":\"\",\"createdAt\":\"2026-07-28T16:00:46.888Z\",\"updatedAt\":\"2026-08-07T12:01:00.336Z\"}\nAprès : {\"id\":\"veh-029\",\"numero\":29,\"marque\":\"Peugeot\",\"type\":\"Pick up\",\"numeroChassis\":\"VR3FDAHDHM3006436\",\"plaque\":\"9261BN01\",\"cv\":\"13CV\",\"assureur\":\"Rawsur\",\"departement\":\"Plant HR\",\"user\":\"Serge M\",\"province\":\"Kongo Central\",\"proprietaire\":\"LOXEA\",\"kilometrage\":null,\"miseCirculation\":\"2022\",\"age\":4,\"observationTech\":\"Bon état\",\"etatManuel\":\"\",\"assuranceHistorique\":[{\"id\":\"doc-msir55kk-g2cd8\",\"dateDebut\":\"2026-01-31\",\"dateFin\":\"2027-01-31\",\"preuveUrl\":\"\",\"createdAt\":\"2026-08-07T09:38:16.820Z\"}],\"vignetteHistorique\":[],\"controleTechniqueHistorique\":[{\"id\":\"doc-msiro5ct-ji785\",\"dateDebut\":\"2026-08-02\",\"dateFin\":\"2027-02-02\",\"preuveUrl\":\"https://ppcafr.sharepoint.com/:b:/r/sites/knshr/HR%20ADMINISTRATION/Controle%20technique%20Aout%202026/9261BN01%20PEUGEOT.pdf?d=w363d97ab72bc48d9a62bf56ad371917f&csf=1&web=1&e=3ZPeI6\",\"createdAt\":\"2026-08-07T09:53:03.005Z\"}],\"assuranceFin\":\"2027-01-31\",\"vignetteFin\":\"\",\"controleTechniqueFin\":\"2027-02-02\",\"notes\":\"\",\"createdAt\":\"2026-07-28T16:00:46.888Z\",\"updatedAt\":\"2026-08-10T12:02:20.561Z\"}",
+      "before": {
+        "id": "veh-029",
+        "numero": 29,
+        "marque": "Peugeot",
+        "type": "Pick up",
+        "numeroChassis": "VR3FDAHDHM3006436",
+        "plaque": "9261BN01",
+        "cv": "13CV",
+        "assureur": "Rawsur",
+        "departement": "Plant HR",
+        "user": "Serge M",
+        "province": "Kongo Central",
+        "proprietaire": "LOXEA",
+        "kilometrage": null,
+        "miseCirculation": "2022",
+        "age": 4,
+        "observationTech": "Bon état",
+        "etatManuel": "",
+        "assuranceHistorique": [
+          {
+            "id": "doc-msir55kk-g2cd8",
+            "dateDebut": "2026-01-31",
+            "dateFin": "2027-01-31",
+            "preuveUrl": "",
+            "createdAt": "2026-08-07T09:38:16.820Z"
+          }
+        ],
+        "vignetteHistorique": [],
+        "controleTechniqueHistorique": [
+          {
+            "id": "doc-msiro5ct-ji785",
+            "dateDebut": "2026-08-02",
+            "dateFin": "2027-02-02",
+            "preuveUrl": "",
+            "createdAt": "2026-08-07T09:53:03.005Z"
+          }
+        ],
+        "assuranceFin": "2027-01-31",
+        "vignetteFin": "",
+        "controleTechniqueFin": "2027-02-02",
+        "notes": "",
+        "createdAt": "2026-07-28T16:00:46.888Z",
+        "updatedAt": "2026-08-07T12:01:00.336Z"
+      },
+      "after": {
+        "id": "veh-029",
+        "numero": 29,
+        "marque": "Peugeot",
+        "type": "Pick up",
+        "numeroChassis": "VR3FDAHDHM3006436",
+        "plaque": "9261BN01",
+        "cv": "13CV",
+        "assureur": "Rawsur",
+        "departement": "Plant HR",
+        "user": "Serge M",
+        "province": "Kongo Central",
+        "proprietaire": "LOXEA",
+        "kilometrage": null,
+        "miseCirculation": "2022",
+        "age": 4,
+        "observationTech": "Bon état",
+        "etatManuel": "",
+        "assuranceHistorique": [
+          {
+            "id": "doc-msir55kk-g2cd8",
+            "dateDebut": "2026-01-31",
+            "dateFin": "2027-01-31",
+            "preuveUrl": "",
+            "createdAt": "2026-08-07T09:38:16.820Z"
+          }
+        ],
+        "vignetteHistorique": [],
+        "controleTechniqueHistorique": [
+          {
+            "id": "doc-msiro5ct-ji785",
+            "dateDebut": "2026-08-02",
+            "dateFin": "2027-02-02",
+            "preuveUrl": "https://ppcafr.sharepoint.com/:b:/r/sites/knshr/HR%20ADMINISTRATION/Controle%20technique%20Aout%202026/9261BN01%20PEUGEOT.pdf?d=w363d97ab72bc48d9a62bf56ad371917f&csf=1&web=1&e=3ZPeI6",
+            "createdAt": "2026-08-07T09:53:03.005Z"
+          }
+        ],
+        "assuranceFin": "2027-01-31",
+        "vignetteFin": "",
+        "controleTechniqueFin": "2027-02-02",
+        "notes": "",
+        "createdAt": "2026-07-28T16:00:46.888Z",
+        "updatedAt": "2026-08-10T12:02:20.561Z"
+      },
+      "undoable": false,
+      "undone": false
+    },
+    {
+      "id": "log-000156",
+      "at": "2026-08-10T12:01:12.742Z",
+      "userId": "admin",
+      "userName": "Administrateur",
+      "module": "charroi.vehicules",
+      "moduleLabel": "Charroi — Véhicules",
+      "action": "update",
+      "actionLabel": "Modification",
+      "entityType": "charroi.vehicule.doc",
+      "entityId": "veh-028",
+      "summary": "Modification Contrôle technique — 9269BN01",
+      "details": "Période Contrôle technique modifiée (doc-msirnfyz-lw6x3).\nAvant : {\"id\":\"veh-028\",\"numero\":28,\"marque\":\"Peugeot\",\"type\":\"Pick up\",\"numeroChassis\":\"VR3FDAHDHM3004118\",\"plaque\":\"9269BN01\",\"cv\":\"13CV\",\"assureur\":\"Rawsur\",\"departement\":\"Engineering\",\"user\":\"Patrick Mukendi\",\"province\":\"Kongo Central\",\"proprietaire\":\"LOXEA\",\"kilometrage\":null,\"miseCirculation\":\"2022\",\"age\":4,\"observationTech\":\"Bon état\",\"etatManuel\":\"\",\"assuranceHistorique\":[{\"id\":\"doc-msir4ja3-r2f3r\",\"dateDebut\":\"2026-01-31\",\"dateFin\":\"2027-01-31\",\"preuveUrl\":\"\",\"createdAt\":\"2026-08-07T09:37:47.931Z\"}],\"vignetteHistorique\":[],\"controleTechniqueHistorique\":[{\"id\":\"doc-msirnfyz-lw6x3\",\"dateDebut\":\"2026-08-02\",\"dateFin\":\"2027-02-02\",\"preuveUrl\":\"https://ppcafr.sharepoint.com/:b:/r/sites/knshr/HR%20ADMINISTRATION/Controle%20technique%20Aout%202026/9263BN01%20PEUGEOT.pdf?d=w965d8788f43040db9863751b02365f69&csf=1&web=1&e=tODVfR\",\"createdAt\":\"2026-08-07T09:52:30.107Z\"}],\"assuranceFin\":\"2027-01-31\",\"vignetteFin\":\"\",\"controleTechniqueFin\":\"2027-02-02\",\"notes\":\"\",\"createdAt\":\"2026-07-28T16:00:46.888Z\",\"updatedAt\":\"2026-08-10T11:59:26.111Z\"}\nAprès : {\"id\":\"veh-028\",\"numero\":28,\"marque\":\"Peugeot\",\"type\":\"Pick up\",\"numeroChassis\":\"VR3FDAHDHM3004118\",\"plaque\":\"9269BN01\",\"cv\":\"13CV\",\"assureur\":\"Rawsur\",\"departement\":\"Engineering\",\"user\":\"Patrick Mukendi\",\"province\":\"Kongo Central\",\"proprietaire\":\"LOXEA\",\"kilometrage\":null,\"miseCirculation\":\"2022\",\"age\":4,\"observationTech\":\"Bon état\",\"etatManuel\":\"\",\"assuranceHistorique\":[{\"id\":\"doc-msir4ja3-r2f3r\",\"dateDebut\":\"2026-01-31\",\"dateFin\":\"2027-01-31\",\"preuveUrl\":\"\",\"createdAt\":\"2026-08-07T09:37:47.931Z\"}],\"vignetteHistorique\":[],\"controleTechniqueHistorique\":[{\"id\":\"doc-msirnfyz-lw6x3\",\"dateDebut\":\"2026-08-02\",\"dateFin\":\"2027-02-02\",\"preuveUrl\":\"https://ppcafr.sharepoint.com/:b:/r/sites/knshr/HR%20ADMINISTRATION/Controle%20technique%20Aout%202026/9269BN01%20PEUGEOT.pdf?d=wc626ff98734540159c7e015f45f05091&csf=1&web=1&e=jkZygB\",\"createdAt\":\"2026-08-07T09:52:30.107Z\"}],\"assuranceFin\":\"2027-01-31\",\"vignetteFin\":\"\",\"controleTechniqueFin\":\"2027-02-02\",\"notes\":\"\",\"createdAt\":\"2026-07-28T16:00:46.888Z\",\"updatedAt\":\"2026-08-10T12:01:11.560Z\"}",
+      "before": {
+        "id": "veh-028",
+        "numero": 28,
+        "marque": "Peugeot",
+        "type": "Pick up",
+        "numeroChassis": "VR3FDAHDHM3004118",
+        "plaque": "9269BN01",
+        "cv": "13CV",
+        "assureur": "Rawsur",
+        "departement": "Engineering",
+        "user": "Patrick Mukendi",
+        "province": "Kongo Central",
+        "proprietaire": "LOXEA",
+        "kilometrage": null,
+        "miseCirculation": "2022",
+        "age": 4,
+        "observationTech": "Bon état",
+        "etatManuel": "",
+        "assuranceHistorique": [
+          {
+            "id": "doc-msir4ja3-r2f3r",
+            "dateDebut": "2026-01-31",
+            "dateFin": "2027-01-31",
+            "preuveUrl": "",
+            "createdAt": "2026-08-07T09:37:47.931Z"
+          }
+        ],
+        "vignetteHistorique": [],
+        "controleTechniqueHistorique": [
+          {
+            "id": "doc-msirnfyz-lw6x3",
+            "dateDebut": "2026-08-02",
+            "dateFin": "2027-02-02",
+            "preuveUrl": "https://ppcafr.sharepoint.com/:b:/r/sites/knshr/HR%20ADMINISTRATION/Controle%20technique%20Aout%202026/9263BN01%20PEUGEOT.pdf?d=w965d8788f43040db9863751b02365f69&csf=1&web=1&e=tODVfR",
+            "createdAt": "2026-08-07T09:52:30.107Z"
+          }
+        ],
+        "assuranceFin": "2027-01-31",
+        "vignetteFin": "",
+        "controleTechniqueFin": "2027-02-02",
+        "notes": "",
+        "createdAt": "2026-07-28T16:00:46.888Z",
+        "updatedAt": "2026-08-10T11:59:26.111Z"
+      },
+      "after": {
+        "id": "veh-028",
+        "numero": 28,
+        "marque": "Peugeot",
+        "type": "Pick up",
+        "numeroChassis": "VR3FDAHDHM3004118",
+        "plaque": "9269BN01",
+        "cv": "13CV",
+        "assureur": "Rawsur",
+        "departement": "Engineering",
+        "user": "Patrick Mukendi",
+        "province": "Kongo Central",
+        "proprietaire": "LOXEA",
+        "kilometrage": null,
+        "miseCirculation": "2022",
+        "age": 4,
+        "observationTech": "Bon état",
+        "etatManuel": "",
+        "assuranceHistorique": [
+          {
+            "id": "doc-msir4ja3-r2f3r",
+            "dateDebut": "2026-01-31",
+            "dateFin": "2027-01-31",
+            "preuveUrl": "",
+            "createdAt": "2026-08-07T09:37:47.931Z"
+          }
+        ],
+        "vignetteHistorique": [],
+        "controleTechniqueHistorique": [
+          {
+            "id": "doc-msirnfyz-lw6x3",
+            "dateDebut": "2026-08-02",
+            "dateFin": "2027-02-02",
+            "preuveUrl": "https://ppcafr.sharepoint.com/:b:/r/sites/knshr/HR%20ADMINISTRATION/Controle%20technique%20Aout%202026/9269BN01%20PEUGEOT.pdf?d=wc626ff98734540159c7e015f45f05091&csf=1&web=1&e=jkZygB",
+            "createdAt": "2026-08-07T09:52:30.107Z"
+          }
+        ],
+        "assuranceFin": "2027-01-31",
+        "vignetteFin": "",
+        "controleTechniqueFin": "2027-02-02",
+        "notes": "",
+        "createdAt": "2026-07-28T16:00:46.888Z",
+        "updatedAt": "2026-08-10T12:01:11.560Z"
+      },
+      "undoable": false,
+      "undone": false
+    },
+    {
+      "id": "log-000155",
+      "at": "2026-08-10T12:00:40.304Z",
+      "userId": "admin",
+      "userName": "Administrateur",
+      "module": "charroi.vehicules",
+      "moduleLabel": "Charroi — Véhicules",
+      "action": "update",
+      "actionLabel": "Modification",
+      "entityType": "charroi.vehicule.doc",
+      "entityId": "veh-030",
+      "summary": "Modification Contrôle technique — 9263BN01",
+      "details": "Période Contrôle technique modifiée (doc-msirrqtt-uawra).\nAvant : {\"id\":\"veh-030\",\"numero\":30,\"marque\":\"Peugeot\",\"type\":\"Pick up\",\"numeroChassis\":\"VR3FDAHDM3006435\",\"plaque\":\"9263BN01\",\"cv\":\"13CV\",\"assureur\":\"Rawsur\",\"departement\":\"Q A\",\"user\":\"Charles Pongo\",\"province\":\"Kongo Central\",\"proprietaire\":\"LOXEA\",\"kilometrage\":null,\"miseCirculation\":\"2022\",\"age\":4,\"observationTech\":\"Bon état\",\"etatManuel\":\"\",\"assuranceHistorique\":[{\"id\":\"doc-msir5usc-j7nx3\",\"dateDebut\":\"2026-01-31\",\"dateFin\":\"2027-01-31\",\"preuveUrl\":\"\",\"createdAt\":\"2026-08-07T09:38:49.500Z\"}],\"vignetteHistorique\":[],\"controleTechniqueHistorique\":[{\"id\":\"doc-msirrqtt-uawra\",\"dateDebut\":\"2026-08-02\",\"dateFin\":\"2027-02-02\",\"preuveUrl\":\"\",\"createdAt\":\"2026-08-07T09:55:50.801Z\"}],\"assuranceFin\":\"2027-01-31\",\"vignetteFin\":\"\",\"controleTechniqueFin\":\"2027-02-02\",\"notes\":\"\",\"createdAt\":\"2026-07-28T16:00:46.888Z\",\"updatedAt\":\"2026-08-07T12:07:47.580Z\"}\nAprès : {\"id\":\"veh-030\",\"numero\":30,\"marque\":\"Peugeot\",\"type\":\"Pick up\",\"numeroChassis\":\"VR3FDAHDM3006435\",\"plaque\":\"9263BN01\",\"cv\":\"13CV\",\"assureur\":\"Rawsur\",\"departement\":\"Q A\",\"user\":\"Charles Pongo\",\"province\":\"Kongo Central\",\"proprietaire\":\"LOXEA\",\"kilometrage\":null,\"miseCirculation\":\"2022\",\"age\":4,\"observationTech\":\"Bon état\",\"etatManuel\":\"\",\"assuranceHistorique\":[{\"id\":\"doc-msir5usc-j7nx3\",\"dateDebut\":\"2026-01-31\",\"dateFin\":\"2027-01-31\",\"preuveUrl\":\"\",\"createdAt\":\"2026-08-07T09:38:49.500Z\"}],\"vignetteHistorique\":[],\"controleTechniqueHistorique\":[{\"id\":\"doc-msirrqtt-uawra\",\"dateDebut\":\"2026-08-02\",\"dateFin\":\"2027-02-02\",\"preuveUrl\":\"https://ppcafr.sharepoint.com/:b:/r/sites/knshr/HR%20ADMINISTRATION/Controle%20technique%20Aout%202026/9263BN01%20PEUGEOT.pdf?d=w965d8788f43040db9863751b02365f69&csf=1&web=1&e=KRJhKH\",\"createdAt\":\"2026-08-07T09:55:50.801Z\"}],\"assuranceFin\":\"2027-01-31\",\"vignetteFin\":\"\",\"controleTechniqueFin\":\"2027-02-02\",\"notes\":\"\",\"createdAt\":\"2026-07-28T16:00:46.888Z\",\"updatedAt\":\"2026-08-10T12:00:39.051Z\"}",
+      "before": {
+        "id": "veh-030",
+        "numero": 30,
+        "marque": "Peugeot",
+        "type": "Pick up",
+        "numeroChassis": "VR3FDAHDM3006435",
+        "plaque": "9263BN01",
+        "cv": "13CV",
+        "assureur": "Rawsur",
+        "departement": "Q A",
+        "user": "Charles Pongo",
+        "province": "Kongo Central",
+        "proprietaire": "LOXEA",
+        "kilometrage": null,
+        "miseCirculation": "2022",
+        "age": 4,
+        "observationTech": "Bon état",
+        "etatManuel": "",
+        "assuranceHistorique": [
+          {
+            "id": "doc-msir5usc-j7nx3",
+            "dateDebut": "2026-01-31",
+            "dateFin": "2027-01-31",
+            "preuveUrl": "",
+            "createdAt": "2026-08-07T09:38:49.500Z"
+          }
+        ],
+        "vignetteHistorique": [],
+        "controleTechniqueHistorique": [
+          {
+            "id": "doc-msirrqtt-uawra",
+            "dateDebut": "2026-08-02",
+            "dateFin": "2027-02-02",
+            "preuveUrl": "",
+            "createdAt": "2026-08-07T09:55:50.801Z"
+          }
+        ],
+        "assuranceFin": "2027-01-31",
+        "vignetteFin": "",
+        "controleTechniqueFin": "2027-02-02",
+        "notes": "",
+        "createdAt": "2026-07-28T16:00:46.888Z",
+        "updatedAt": "2026-08-07T12:07:47.580Z"
+      },
+      "after": {
+        "id": "veh-030",
+        "numero": 30,
+        "marque": "Peugeot",
+        "type": "Pick up",
+        "numeroChassis": "VR3FDAHDM3006435",
+        "plaque": "9263BN01",
+        "cv": "13CV",
+        "assureur": "Rawsur",
+        "departement": "Q A",
+        "user": "Charles Pongo",
+        "province": "Kongo Central",
+        "proprietaire": "LOXEA",
+        "kilometrage": null,
+        "miseCirculation": "2022",
+        "age": 4,
+        "observationTech": "Bon état",
+        "etatManuel": "",
+        "assuranceHistorique": [
+          {
+            "id": "doc-msir5usc-j7nx3",
+            "dateDebut": "2026-01-31",
+            "dateFin": "2027-01-31",
+            "preuveUrl": "",
+            "createdAt": "2026-08-07T09:38:49.500Z"
+          }
+        ],
+        "vignetteHistorique": [],
+        "controleTechniqueHistorique": [
+          {
+            "id": "doc-msirrqtt-uawra",
+            "dateDebut": "2026-08-02",
+            "dateFin": "2027-02-02",
+            "preuveUrl": "https://ppcafr.sharepoint.com/:b:/r/sites/knshr/HR%20ADMINISTRATION/Controle%20technique%20Aout%202026/9263BN01%20PEUGEOT.pdf?d=w965d8788f43040db9863751b02365f69&csf=1&web=1&e=KRJhKH",
+            "createdAt": "2026-08-07T09:55:50.801Z"
+          }
+        ],
+        "assuranceFin": "2027-01-31",
+        "vignetteFin": "",
+        "controleTechniqueFin": "2027-02-02",
+        "notes": "",
+        "createdAt": "2026-07-28T16:00:46.888Z",
+        "updatedAt": "2026-08-10T12:00:39.051Z"
+      },
+      "undoable": false,
+      "undone": false
+    },
+    {
+      "id": "log-000154",
+      "at": "2026-08-10T11:59:27.200Z",
+      "userId": "admin",
+      "userName": "Administrateur",
+      "module": "charroi.vehicules",
+      "moduleLabel": "Charroi — Véhicules",
+      "action": "update",
+      "actionLabel": "Modification",
+      "entityType": "charroi.vehicule.doc",
+      "entityId": "veh-028",
+      "summary": "Modification Contrôle technique — 9269BN01",
+      "details": "Période Contrôle technique modifiée (doc-msirnfyz-lw6x3).\nAvant : {\"id\":\"veh-028\",\"numero\":28,\"marque\":\"Peugeot\",\"type\":\"Pick up\",\"numeroChassis\":\"VR3FDAHDHM3004118\",\"plaque\":\"9269BN01\",\"cv\":\"13CV\",\"assureur\":\"Rawsur\",\"departement\":\"Engineering\",\"user\":\"Patrick Mukendi\",\"province\":\"Kongo Central\",\"proprietaire\":\"LOXEA\",\"kilometrage\":null,\"miseCirculation\":\"2022\",\"age\":4,\"observationTech\":\"Bon état\",\"etatManuel\":\"\",\"assuranceHistorique\":[{\"id\":\"doc-msir4ja3-r2f3r\",\"dateDebut\":\"2026-01-31\",\"dateFin\":\"2027-01-31\",\"preuveUrl\":\"\",\"createdAt\":\"2026-08-07T09:37:47.931Z\"}],\"vignetteHistorique\":[],\"controleTechniqueHistorique\":[{\"id\":\"doc-msirnfyz-lw6x3\",\"dateDebut\":\"2026-08-02\",\"dateFin\":\"2027-02-02\",\"preuveUrl\":\"\",\"createdAt\":\"2026-08-07T09:52:30.107Z\"}],\"assuranceFin\":\"2027-01-31\",\"vignetteFin\":\"\",\"controleTechniqueFin\":\"2027-02-02\",\"notes\":\"\",\"createdAt\":\"2026-07-28T16:00:46.888Z\",\"updatedAt\":\"2026-08-07T12:04:48.195Z\"}\nAprès : {\"id\":\"veh-028\",\"numero\":28,\"marque\":\"Peugeot\",\"type\":\"Pick up\",\"numeroChassis\":\"VR3FDAHDHM3004118\",\"plaque\":\"9269BN01\",\"cv\":\"13CV\",\"assureur\":\"Rawsur\",\"departement\":\"Engineering\",\"user\":\"Patrick Mukendi\",\"province\":\"Kongo Central\",\"proprietaire\":\"LOXEA\",\"kilometrage\":null,\"miseCirculation\":\"2022\",\"age\":4,\"observationTech\":\"Bon état\",\"etatManuel\":\"\",\"assuranceHistorique\":[{\"id\":\"doc-msir4ja3-r2f3r\",\"dateDebut\":\"2026-01-31\",\"dateFin\":\"2027-01-31\",\"preuveUrl\":\"\",\"createdAt\":\"2026-08-07T09:37:47.931Z\"}],\"vignetteHistorique\":[],\"controleTechniqueHistorique\":[{\"id\":\"doc-msirnfyz-lw6x3\",\"dateDebut\":\"2026-08-02\",\"dateFin\":\"2027-02-02\",\"preuveUrl\":\"https://ppcafr.sharepoint.com/:b:/r/sites/knshr/HR%20ADMINISTRATION/Controle%20technique%20Aout%202026/9263BN01%20PEUGEOT.pdf?d=w965d8788f43040db9863751b02365f69&csf=1&web=1&e=tODVfR\",\"createdAt\":\"2026-08-07T09:52:30.107Z\"}],\"assuranceFin\":\"2027-01-31\",\"vignetteFin\":\"\",\"controleTechniqueFin\":\"2027-02-02\",\"notes\":\"\",\"createdAt\":\"2026-07-28T16:00:46.888Z\",\"updatedAt\":\"2026-08-10T11:59:26.111Z\"}",
+      "before": {
+        "id": "veh-028",
+        "numero": 28,
+        "marque": "Peugeot",
+        "type": "Pick up",
+        "numeroChassis": "VR3FDAHDHM3004118",
+        "plaque": "9269BN01",
+        "cv": "13CV",
+        "assureur": "Rawsur",
+        "departement": "Engineering",
+        "user": "Patrick Mukendi",
+        "province": "Kongo Central",
+        "proprietaire": "LOXEA",
+        "kilometrage": null,
+        "miseCirculation": "2022",
+        "age": 4,
+        "observationTech": "Bon état",
+        "etatManuel": "",
+        "assuranceHistorique": [
+          {
+            "id": "doc-msir4ja3-r2f3r",
+            "dateDebut": "2026-01-31",
+            "dateFin": "2027-01-31",
+            "preuveUrl": "",
+            "createdAt": "2026-08-07T09:37:47.931Z"
+          }
+        ],
+        "vignetteHistorique": [],
+        "controleTechniqueHistorique": [
+          {
+            "id": "doc-msirnfyz-lw6x3",
+            "dateDebut": "2026-08-02",
+            "dateFin": "2027-02-02",
+            "preuveUrl": "",
+            "createdAt": "2026-08-07T09:52:30.107Z"
+          }
+        ],
+        "assuranceFin": "2027-01-31",
+        "vignetteFin": "",
+        "controleTechniqueFin": "2027-02-02",
+        "notes": "",
+        "createdAt": "2026-07-28T16:00:46.888Z",
+        "updatedAt": "2026-08-07T12:04:48.195Z"
+      },
+      "after": {
+        "id": "veh-028",
+        "numero": 28,
+        "marque": "Peugeot",
+        "type": "Pick up",
+        "numeroChassis": "VR3FDAHDHM3004118",
+        "plaque": "9269BN01",
+        "cv": "13CV",
+        "assureur": "Rawsur",
+        "departement": "Engineering",
+        "user": "Patrick Mukendi",
+        "province": "Kongo Central",
+        "proprietaire": "LOXEA",
+        "kilometrage": null,
+        "miseCirculation": "2022",
+        "age": 4,
+        "observationTech": "Bon état",
+        "etatManuel": "",
+        "assuranceHistorique": [
+          {
+            "id": "doc-msir4ja3-r2f3r",
+            "dateDebut": "2026-01-31",
+            "dateFin": "2027-01-31",
+            "preuveUrl": "",
+            "createdAt": "2026-08-07T09:37:47.931Z"
+          }
+        ],
+        "vignetteHistorique": [],
+        "controleTechniqueHistorique": [
+          {
+            "id": "doc-msirnfyz-lw6x3",
+            "dateDebut": "2026-08-02",
+            "dateFin": "2027-02-02",
+            "preuveUrl": "https://ppcafr.sharepoint.com/:b:/r/sites/knshr/HR%20ADMINISTRATION/Controle%20technique%20Aout%202026/9263BN01%20PEUGEOT.pdf?d=w965d8788f43040db9863751b02365f69&csf=1&web=1&e=tODVfR",
+            "createdAt": "2026-08-07T09:52:30.107Z"
+          }
+        ],
+        "assuranceFin": "2027-01-31",
+        "vignetteFin": "",
+        "controleTechniqueFin": "2027-02-02",
+        "notes": "",
+        "createdAt": "2026-07-28T16:00:46.888Z",
+        "updatedAt": "2026-08-10T11:59:26.111Z"
+      },
+      "undoable": false,
+      "undone": false
+    },
+    {
+      "id": "log-000153",
+      "at": "2026-08-10T11:55:28.882Z",
+      "userId": "admin",
+      "userName": "Administrateur",
+      "module": "charroi.vehicules",
+      "moduleLabel": "Charroi — Véhicules",
+      "action": "update",
+      "actionLabel": "Modification",
+      "entityType": "charroi.vehicule.doc",
+      "entityId": "veh-031",
+      "summary": "Modification Contrôle technique — 9976BK01",
+      "details": "Période Contrôle technique modifiée (doc-msirrasl-yt3ne).\nAvant : {\"id\":\"veh-031\",\"numero\":31,\"marque\":\"Toyota\",\"type\":\"Pick up\",\"numeroChassis\":\"AHTDK8CD600937091\",\"plaque\":\"9976BK01\",\"cv\":\"13CV\",\"assureur\":\"Rawsur\",\"departement\":\"Project\",\"user\":\"Elias T\",\"province\":\"Kongo Central\",\"proprietaire\":\"LOXEA\",\"kilometrage\":null,\"miseCirculation\":\"2021\",\"age\":5,\"observationTech\":\"Bon état\",\"etatManuel\":\"\",\"assuranceHistorique\":[{\"id\":\"doc-msir6jvq-eun09\",\"dateDebut\":\"2026-01-31\",\"dateFin\":\"2027-01-31\",\"preuveUrl\":\"\",\"createdAt\":\"2026-08-07T09:39:22.022Z\"}],\"vignetteHistorique\":[],\"controleTechniqueHistorique\":[{\"id\":\"doc-msirrasl-yt3ne\",\"dateDebut\":\"2026-08-02\",\"dateFin\":\"2027-02-02\",\"preuveUrl\":\"\",\"createdAt\":\"2026-08-07T09:55:30.021Z\"}],\"assuranceFin\":\"2027-01-31\",\"vignetteFin\":\"\",\"controleTechniqueFin\":\"2027-02-02\",\"notes\":\"\",\"createdAt\":\"2026-07-28T16:00:46.888Z\",\"updatedAt\":\"2026-08-07T11:54:23.440Z\"}\nAprès : {\"id\":\"veh-031\",\"numero\":31,\"marque\":\"Toyota\",\"type\":\"Pick up\",\"numeroChassis\":\"AHTDK8CD600937091\",\"plaque\":\"9976BK01\",\"cv\":\"13CV\",\"assureur\":\"Rawsur\",\"departement\":\"Project\",\"user\":\"Elias T\",\"province\":\"Kongo Central\",\"proprietaire\":\"LOXEA\",\"kilometrage\":null,\"miseCirculation\":\"2021\",\"age\":5,\"observationTech\":\"Bon état\",\"etatManuel\":\"\",\"assuranceHistorique\":[{\"id\":\"doc-msir6jvq-eun09\",\"dateDebut\":\"2026-01-31\",\"dateFin\":\"2027-01-31\",\"preuveUrl\":\"\",\"createdAt\":\"2026-08-07T09:39:22.022Z\"}],\"vignetteHistorique\":[],\"controleTechniqueHistorique\":[{\"id\":\"doc-msirrasl-yt3ne\",\"dateDebut\":\"2026-08-02\",\"dateFin\":\"2027-02-02\",\"preuveUrl\":\"https://ppcafr.sharepoint.com/:b:/r/sites/knshr/HR%20ADMINISTRATION/Controle%20technique%20Aout%202026/9976BK01%20TOYOTA%20HILUX.pdf?d=w8de36a092b5f4049af3f0f7a1a72d42b&csf=1&web=1&e=9JGT1H\",\"createdAt\":\"2026-08-07T09:55:30.021Z\"}],\"assuranceFin\":\"2027-01-31\",\"vignetteFin\":\"\",\"controleTechniqueFin\":\"2027-02-02\",\"notes\":\"\",\"createdAt\":\"2026-07-28T16:00:46.888Z\",\"updatedAt\":\"2026-08-10T11:55:27.382Z\"}",
+      "before": {
+        "id": "veh-031",
+        "numero": 31,
+        "marque": "Toyota",
+        "type": "Pick up",
+        "numeroChassis": "AHTDK8CD600937091",
+        "plaque": "9976BK01",
+        "cv": "13CV",
+        "assureur": "Rawsur",
+        "departement": "Project",
+        "user": "Elias T",
+        "province": "Kongo Central",
+        "proprietaire": "LOXEA",
+        "kilometrage": null,
+        "miseCirculation": "2021",
+        "age": 5,
+        "observationTech": "Bon état",
+        "etatManuel": "",
+        "assuranceHistorique": [
+          {
+            "id": "doc-msir6jvq-eun09",
+            "dateDebut": "2026-01-31",
+            "dateFin": "2027-01-31",
+            "preuveUrl": "",
+            "createdAt": "2026-08-07T09:39:22.022Z"
+          }
+        ],
+        "vignetteHistorique": [],
+        "controleTechniqueHistorique": [
+          {
+            "id": "doc-msirrasl-yt3ne",
+            "dateDebut": "2026-08-02",
+            "dateFin": "2027-02-02",
+            "preuveUrl": "",
+            "createdAt": "2026-08-07T09:55:30.021Z"
+          }
+        ],
+        "assuranceFin": "2027-01-31",
+        "vignetteFin": "",
+        "controleTechniqueFin": "2027-02-02",
+        "notes": "",
+        "createdAt": "2026-07-28T16:00:46.888Z",
+        "updatedAt": "2026-08-07T11:54:23.440Z"
+      },
+      "after": {
+        "id": "veh-031",
+        "numero": 31,
+        "marque": "Toyota",
+        "type": "Pick up",
+        "numeroChassis": "AHTDK8CD600937091",
+        "plaque": "9976BK01",
+        "cv": "13CV",
+        "assureur": "Rawsur",
+        "departement": "Project",
+        "user": "Elias T",
+        "province": "Kongo Central",
+        "proprietaire": "LOXEA",
+        "kilometrage": null,
+        "miseCirculation": "2021",
+        "age": 5,
+        "observationTech": "Bon état",
+        "etatManuel": "",
+        "assuranceHistorique": [
+          {
+            "id": "doc-msir6jvq-eun09",
+            "dateDebut": "2026-01-31",
+            "dateFin": "2027-01-31",
+            "preuveUrl": "",
+            "createdAt": "2026-08-07T09:39:22.022Z"
+          }
+        ],
+        "vignetteHistorique": [],
+        "controleTechniqueHistorique": [
+          {
+            "id": "doc-msirrasl-yt3ne",
+            "dateDebut": "2026-08-02",
+            "dateFin": "2027-02-02",
+            "preuveUrl": "https://ppcafr.sharepoint.com/:b:/r/sites/knshr/HR%20ADMINISTRATION/Controle%20technique%20Aout%202026/9976BK01%20TOYOTA%20HILUX.pdf?d=w8de36a092b5f4049af3f0f7a1a72d42b&csf=1&web=1&e=9JGT1H",
+            "createdAt": "2026-08-07T09:55:30.021Z"
+          }
+        ],
+        "assuranceFin": "2027-01-31",
+        "vignetteFin": "",
+        "controleTechniqueFin": "2027-02-02",
+        "notes": "",
+        "createdAt": "2026-07-28T16:00:46.888Z",
+        "updatedAt": "2026-08-10T11:55:27.382Z"
+      },
+      "undoable": false,
+      "undone": false
+    },
+    {
       "id": "log-000152",
       "at": "2026-08-07T12:10:22.927Z",
       "userId": "Serge.Muakasa",
@@ -18756,5 +19676,5 @@
       }
     }
   ],
-  "nextSeq": 153
+  "nextSeq": 162
 }
