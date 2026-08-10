@@ -9,12 +9,13 @@ import {
   DEP_COL,
   RESUME_SHEET,
 } from './dependants-columns';
+import type { Dependant } from './dependants-types';
 import {
   computeFamilyCompositionCounts,
   isDependantSummaryRow,
   isEmployeeStatut,
 } from './dependants-utils';
-import { EMPLOYEE_EXIT_SHEET } from './employee-columns';
+import { EMPLOYEE_EXIT_SHEET, parseDateToExcelSerial } from './employee-columns';
 import { DEPENDANTS_EXPORT_TEMPLATE_PATH } from './excel-export-template-paths';
 import { withExcelLock } from './excel-io';
 
@@ -538,4 +539,136 @@ export async function buildFormattedDependantsWorkbookBuffer(livePath: string): 
   }
 
   return buildFromLiveWorkbook(livePath);
+}
+
+const DEPENDANTS_HEADERS = [
+  'N°',
+  'Matricule',
+  'N° Pactilis',
+  'Statut',
+  'Sexe',
+  'Nom',
+  'Localisation',
+  'Date de naissance',
+  'Âge',
+  'Composition famille',
+  'Enfants',
+  'Total',
+  'Commentaires',
+  'Lien document',
+  'N° villa',
+  'Type maison',
+] as const;
+
+function dependantToExportRow(item: Dependant, index: number): unknown[] {
+  return [
+    index,
+    item.matricule,
+    item.pactilis,
+    item.statut,
+    item.sexe,
+    item.nom,
+    item.localisation,
+    parseDateToExcelSerial(item.dateNaissance || ''),
+    item.age ?? '',
+    item.compositionFamille ?? '',
+    item.enfants ?? '',
+    item.total ?? '',
+    item.commentaires || '',
+    item.lienDocument || '',
+    item.numeroVilla || '',
+    item.typeMaison || '',
+  ];
+}
+
+function writeDependantsSheetFromJson(
+  sheet: PopulateSheet,
+  rows: Dependant[],
+): number {
+  sheet.cell(1, HEADER_TOTAL_LABEL_COL).value('Total');
+  sheet.cell(1, HEADER_TOTAL_VALUE_COL).value(rows.length);
+
+  DEPENDANTS_HEADERS.forEach((header, index) => {
+    sheet.cell(2, index + 1).value(header);
+  });
+
+  if (rows.length === 0) return FIRST_DATA_ROW - 1;
+
+  rows.forEach((item, index) => {
+    const excelRow = FIRST_DATA_ROW + index;
+    const values = dependantToExportRow(item, index + 1);
+    values.forEach((value, colIndex) => {
+      writeCellExportValue(sheet, excelRow, colIndex + 1, value);
+    });
+    sheet.cell(excelRow, COL_AGE).formula(ageFormulaForRow(excelRow));
+  });
+
+  return FIRST_DATA_ROW + rows.length - 1;
+}
+
+/**
+ * Export dépendants depuis le store JSON (sans EMPLOYEE.xlsx).
+ * Utilise le template s’il est présent, sinon un classeur vide.
+ */
+export async function buildDependantsExportBufferFromJson(): Promise<Buffer> {
+  const [{ readDependantsData }, { readEmployeesBundle }] = await Promise.all([
+    import('./dependants-store'),
+    import('./employees-store'),
+  ]);
+
+  const [{ dependants, exitedDependants }, { employees, exits }] = await Promise.all([
+    readDependantsData(),
+    readEmployeesBundle(),
+  ]);
+
+  const activeMats = new Set(employees.map((item) => item.matricule.trim()).filter(Boolean));
+  const exitMats = new Set(exits.map((item) => item.matricule.trim()).filter(Boolean));
+
+  const activeRows = dependants.filter((item) => activeMats.has(item.matricule.trim()));
+  const exitRows = [
+    ...dependants.filter((item) => exitMats.has(item.matricule.trim())),
+    ...exitedDependants.filter(
+      (item) => exitMats.has(item.matricule.trim()) || !activeMats.has(item.matricule.trim()),
+    ),
+  ];
+  const exitById = new Map(exitRows.map((item) => [item.id, item]));
+  const uniqueExitRows = [...exitById.values()];
+
+  const templatePath = resolveDependantsExportTemplatePath();
+  const workbook = fs.existsSync(templatePath)
+    ? await XlsxPopulate.fromFileAsync(templatePath)
+    : await XlsxPopulate.fromBlankAsync();
+
+  let activeSheet = workbook.sheet(DEPENDANTS_SHEET);
+  if (!activeSheet) {
+    activeSheet = workbook.sheet(0).name(DEPENDANTS_SHEET);
+  }
+
+  const templateEndBefore = activeSheet.usedRange()
+    ? activeSheet.usedRange()!.endCell().rowNumber()
+    : FIRST_DATA_ROW;
+
+  if (fs.existsSync(templatePath)) {
+    clearExtraDependantsRows(activeSheet, FIRST_DATA_ROW - 1);
+  }
+
+  const lastActive = writeDependantsSheetFromJson(activeSheet, activeRows);
+  finalizeDependantsSheet(activeSheet, lastActive, templateEndBefore);
+
+  const resumeSheet = workbook.sheet(RESUME_SHEET);
+  if (resumeSheet) {
+    updateResumeFormulaRanges(resumeSheet, Math.max(lastActive, FIRST_DATA_ROW));
+    fillSiteSummaryTableFormulas(resumeSheet, Math.max(lastActive, FIRST_DATA_ROW));
+  }
+
+  const existingExit = workbook.sheet(DEPENDANTS_EXIT_SHEET);
+  if (existingExit) workbook.deleteSheet(existingExit);
+
+  const exitSheet = workbook.cloneSheet(activeSheet, DEPENDANTS_EXIT_SHEET);
+  ensureExitTitle(exitSheet);
+  clearExtraDependantsRows(exitSheet, FIRST_DATA_ROW - 1);
+  const lastExit = writeDependantsSheetFromJson(exitSheet, uniqueExitRows);
+  finalizeDependantsSheet(exitSheet, lastExit, FIRST_DATA_ROW);
+
+  return workbook.outputAsync();
 }

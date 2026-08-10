@@ -347,6 +347,7 @@ export default function DependantsPage() {
           <div className="dependants-dashboard-body">
             <DependantsDashboardView
               dashboard={liveDashboard}
+              dependants={dependants}
               localisationOptions={localisationOptions}
               hasEmptyLocalisation={hasEmptyLocalisation}
               localisationFilter={dashboardLocalisation}

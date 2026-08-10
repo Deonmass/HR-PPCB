@@ -2,9 +2,7 @@ import 'server-only';
 
 import { buildExportDateStamp, buildExportSuffix, type EmployeeFilters } from './employee-filters';
 import { buildFormattedCheckDocumentsWorkbookBuffer } from './check-documents-export-xlsx.server';
-import { getEmployeeWorkbookPath } from './excel-data-paths';
-
-const EXCEL_PATH = getEmployeeWorkbookPath();
+import { employeeWorkbookExists, ensureEmployeeWorkbookPath } from './excel-data-paths';
 
 export function buildCheckDocumentsExportFilename(filters: EmployeeFilters = { search: '', dept: '' }): string {
   const suffix = buildExportSuffix(filters);
@@ -14,5 +12,14 @@ export function buildCheckDocumentsExportFilename(filters: EmployeeFilters = { s
 export async function buildCheckDocumentsExportBuffer(
   filters: EmployeeFilters = { search: '', dept: '' },
 ): Promise<Buffer> {
-  return buildFormattedCheckDocumentsWorkbookBuffer(EXCEL_PATH, filters);
+  if (!employeeWorkbookExists()) {
+    return buildFormattedCheckDocumentsWorkbookBuffer(null, filters);
+  }
+
+  try {
+    const livePath = await ensureEmployeeWorkbookPath();
+    return buildFormattedCheckDocumentsWorkbookBuffer(livePath, filters);
+  } catch {
+    return buildFormattedCheckDocumentsWorkbookBuffer(null, filters);
+  }
 }

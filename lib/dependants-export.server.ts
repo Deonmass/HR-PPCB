@@ -1,9 +1,10 @@
 import 'server-only';
 
-import { buildFormattedDependantsWorkbookBuffer } from './dependants-export-xlsx.server';
-import { getEmployeeWorkbookPath } from './excel-data-paths';
-
-const EXCEL_PATH = getEmployeeWorkbookPath();
+import {
+  buildDependantsExportBufferFromJson,
+  buildFormattedDependantsWorkbookBuffer,
+} from './dependants-export-xlsx.server';
+import { employeeWorkbookExists, ensureEmployeeWorkbookPath } from './excel-data-paths';
 
 export function buildDependantsExportFilename(): string {
   const d = new Date();
@@ -13,5 +14,15 @@ export function buildDependantsExportFilename(): string {
 }
 
 export async function buildDependantsExportBuffer(): Promise<Buffer> {
-  return buildFormattedDependantsWorkbookBuffer(EXCEL_PATH);
+  // Source de vérité = JSON. Le workbook live n’est qu’un fallback legacy.
+  if (!employeeWorkbookExists()) {
+    return buildDependantsExportBufferFromJson();
+  }
+
+  try {
+    const livePath = await ensureEmployeeWorkbookPath();
+    return buildFormattedDependantsWorkbookBuffer(livePath);
+  } catch {
+    return buildDependantsExportBufferFromJson();
+  }
 }

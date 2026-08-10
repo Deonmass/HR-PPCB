@@ -546,5 +546,8 @@ export function excelErrorResponse(err: unknown): { status: number; message: str
     return { status: 503, message: err.message };
   }
   const message = err instanceof Error ? err.message : 'Erreur inattendue';
+  if (/EMPLOYEE\.xlsx introuvable|Template introuvable|ENOENT/i.test(message)) {
+    return { status: 500, message };
+  }
   return { status: 500, message: `Erreur lors de l'accès au fichier Excel : ${message}` };
 }

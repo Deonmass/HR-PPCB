@@ -11,8 +11,6 @@ import { DOCUMENT_FIELDS, normalizeDocStatus } from './documents';
 import { filterEmployees, type EmployeeFilters } from './employee-filters';
 import {
   CHECK_DOCUMENTS_EXPORT_TEMPLATE_PATH,
-  EXPORT_TEMPLATE_FILES,
-  getExportTemplatesDirectory,
 } from './excel-export-template-paths';
 import { readEmployeesBundle } from './employees-store';
 import type { Employee } from './types';
@@ -370,17 +368,97 @@ async function buildFromTemplate(
   return (await templateWb.outputAsync()) as Buffer;
 }
 
-export async function buildFormattedCheckDocumentsWorkbookBuffer(
-  livePath: string,
-  filters: EmployeeFilters = { search: '', dept: '' },
-): Promise<Buffer> {
-  const templatePath = CHECK_DOCUMENTS_EXPORT_TEMPLATE_PATH;
+async function buildCheckDocumentsRowsFromJson(
+  filters: EmployeeFilters,
+  population: 'active' | 'exit',
+): Promise<{ headerRows: AoaRow[]; dataRows: AoaRow[] }> {
+  const { employees, exits } = await readEmployeesBundle();
+  const pool = population === 'active' ? employees : exits;
+  const scopedList = hasActiveFilters(filters)
+    ? filterEmployees(pool, filters)
+    : pool;
 
-  if (!fs.existsSync(templatePath)) {
-    throw new Error(
-      `Template introuvable : ${templatePath}. Placez ${EXPORT_TEMPLATE_FILES.checkDocuments} dans ${getExportTemplatesDirectory()}.`,
-    );
+  const headerRows: AoaRow[] = [
+    [],
+    [],
+    [
+      'MATRICULE',
+      'NOM',
+      'DEPARTEMENT',
+      'GRADE',
+      'JOB TITLE',
+      HIRE_DATE_HEADER,
+      'LOCALISATION',
+      ...DOCUMENT_FIELDS.map((field) => field.label || field.key),
+    ],
+  ];
+
+  const dataRows = scopedList
+    .map((employee) => insertHireDateIntoRow(
+      exitEmployeeToLiveDocRow(employee),
+      employee.appointmentDate?.trim() || '',
+    ))
+    .sort((a, b) => String(a[1] ?? '').localeCompare(String(b[1] ?? ''), 'fr'));
+
+  return { headerRows, dataRows };
+}
+
+async function buildFromJsonTemplate(
+  templatePath: string | null,
+  filters: EmployeeFilters,
+): Promise<Buffer> {
+  const templateWb = templatePath && fs.existsSync(templatePath)
+    ? await XlsxPopulate.fromFileAsync(templatePath)
+    : await XlsxPopulate.fromBlankAsync();
+
+  let templateSheet = templateWb.sheet(CHECK_DOCUMENTS_SHEET);
+  if (!templateSheet) {
+    templateSheet = templateWb.sheet(0).name(CHECK_DOCUMENTS_SHEET);
   }
 
-  return buildFromTemplate(templatePath, livePath, filters);
+  const [{ headerRows, dataRows: activeRows }, { dataRows: exitRows }] = await Promise.all([
+    buildCheckDocumentsRowsFromJson(filters, 'active'),
+    buildCheckDocumentsRowsFromJson(filters, 'exit'),
+  ]);
+
+  const templateEndBeforeWrite = findLastDataRow(templateSheet);
+  finalizeSheet(templateSheet, headerRows, activeRows, templateEndBeforeWrite);
+
+  const existingExit = templateWb.sheet(CHECK_DOCUMENTS_EXIT_SHEET);
+  if (existingExit) {
+    templateWb.deleteSheet(existingExit);
+  }
+  const exitSheet = templateWb.cloneSheet(templateSheet, CHECK_DOCUMENTS_EXIT_SHEET);
+  ensureExitTitle(exitSheet);
+  const exitTemplateEnd = findLastDataRow(exitSheet);
+  finalizeSheet(exitSheet, headerRows, exitRows, exitTemplateEnd);
+
+  return (await templateWb.outputAsync()) as Buffer;
+}
+
+export async function buildFormattedCheckDocumentsWorkbookBuffer(
+  livePath: string | null,
+  filters: EmployeeFilters = { search: '', dept: '' },
+): Promise<Buffer> {
+  const templatePath = fs.existsSync(CHECK_DOCUMENTS_EXPORT_TEMPLATE_PATH)
+    ? CHECK_DOCUMENTS_EXPORT_TEMPLATE_PATH
+    : null;
+
+  if (!livePath || !fs.existsSync(livePath)) {
+    return buildFromJsonTemplate(templatePath, filters);
+  }
+
+  if (!templatePath) {
+    return buildFromJsonTemplate(null, filters);
+  }
+
+  try {
+    return await buildFromTemplate(templatePath, livePath, filters);
+  } catch (err) {
+    const message = err instanceof Error ? err.message : String(err);
+    if (/ENOENT|no such file/i.test(message)) {
+      return buildFromJsonTemplate(templatePath, filters);
+    }
+    throw err;
+  }
 }

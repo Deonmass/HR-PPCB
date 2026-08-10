@@ -1,6 +1,8 @@
 'use client';
 
 import { useMemo, useState, type FormEvent } from 'react';
+import ActionButtons from '@/components/ActionButtons';
+import SaveButton from '@/components/SaveButton';
 import type { CharroiDocKind, CharroiDocPaiement, CharroiVehicule } from '@/lib/charroi-types';
 import {
   CHARROI_DOC_LABELS,
@@ -23,6 +25,26 @@ interface Props {
 
 type TabId = 'historique' | 'paiement';
 
+function ProofIcon({ muted = false }: { muted?: boolean }) {
+  return (
+    <svg
+      viewBox="0 0 24 24"
+      width="16"
+      height="16"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      aria-hidden="true"
+      className={muted ? 'charroi-doc-proof-icon is-muted' : 'charroi-doc-proof-icon'}
+    >
+      <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z" />
+      <circle cx="12" cy="12" r="3" />
+    </svg>
+  );
+}
+
 export default function CharroiDocHistoryModal({
   vehicle,
   kind,
@@ -38,10 +60,13 @@ export default function CharroiDocHistoryModal({
 
   const [tab, setTab] = useState<TabId>('historique');
   const [editingId, setEditingId] = useState<string | null>(null);
+  const [deletingId, setDeletingId] = useState<string | null>(null);
   const [dateDebut, setDateDebut] = useState('');
   const [dateFin, setDateFin] = useState('');
   const [preuveUrl, setPreuveUrl] = useState('');
   const [saving, setSaving] = useState(false);
+
+  const busy = saving || Boolean(deletingId);
 
   const resetForm = () => {
     setEditingId(null);
@@ -109,7 +134,7 @@ export default function CharroiDocHistoryModal({
     if (!(await confirmDelete(`Supprimer cette période ${label.toLowerCase()} ?`, range))) {
       return;
     }
-    setSaving(true);
+    setDeletingId(entry.id);
     try {
       const res = await fetch(`/api/charroi/vehicules/${encodeURIComponent(vehicle.id)}/docs`, {
         method: 'DELETE',
@@ -125,7 +150,7 @@ export default function CharroiDocHistoryModal({
       if (editingId === entry.id) resetForm();
       onSaved(json as CharroiVehicule);
     } finally {
-      setSaving(false);
+      setDeletingId(null);
     }
   };
 
@@ -137,16 +162,10 @@ export default function CharroiDocHistoryModal({
         role="dialog"
         aria-labelledby="charroi-doc-modal-title"
       >
-        <div className="modal-header">
+        <div className="modal-header charroi-doc-modal-header">
           <h3 id="charroi-doc-modal-title">
             {label} — {vehicle.plaque || vehicle.marque || vehicle.id}
           </h3>
-          <button type="button" className="modal-close" onClick={onClose} aria-label="Fermer">
-            ×
-          </button>
-        </div>
-
-        <div className="modal-body charroi-doc-modal-body">
           <div className="charroi-doc-tabs" role="tablist">
             <button
               type="button"
@@ -171,7 +190,12 @@ export default function CharroiDocHistoryModal({
               {editingId ? 'Modifier' : 'Nouveau paiement'}
             </button>
           </div>
+          <button type="button" className="modal-close" onClick={onClose} aria-label="Fermer">
+            ×
+          </button>
+        </div>
 
+        <div className="modal-body charroi-doc-modal-body">
           {tab === 'historique' && (
             <section className="charroi-doc-hist-col" role="tabpanel">
               <div className="charroi-doc-hist-toolbar">
@@ -210,40 +234,39 @@ export default function CharroiDocHistoryModal({
                           <span className={`charroi-doc-card-remain is-${status}`}>
                             {formatCharroiRemaining(days)}
                           </span>
-                          {entry.preuveUrl ? (
+                        </div>
+                        <div className="charroi-doc-card-actions">
+                          {entry.preuveUrl?.trim() ? (
                             <a
-                              href={entry.preuveUrl}
+                              href={entry.preuveUrl.trim()}
                               target="_blank"
                               rel="noopener noreferrer"
-                              className="charroi-doc-card-proof"
+                              className="action-btn charroi-doc-proof-btn"
                               onClick={(e) => e.stopPropagation()}
+                              title="Voir le document"
+                              aria-label="Voir le document"
                             >
-                              Voir la preuve
+                              <ProofIcon />
                             </a>
                           ) : (
-                            <span className="charroi-doc-card-proof is-none">Sans preuve</span>
+                            <button
+                              type="button"
+                              className="action-btn charroi-doc-proof-btn is-none"
+                              disabled
+                              title="Document non disponible"
+                              aria-label="Document non disponible"
+                            >
+                              <ProofIcon muted />
+                            </button>
+                          )}
+                          {canEdit && (
+                            <ActionButtons
+                              onEdit={() => openEdit(entry)}
+                              onDelete={() => void handleDelete(entry)}
+                              deleting={deletingId === entry.id}
+                            />
                           )}
                         </div>
-                        {canEdit && (
-                          <div className="charroi-doc-card-actions">
-                            <button
-                              type="button"
-                              className="btn btn-ghost btn-sm"
-                              onClick={() => openEdit(entry)}
-                              disabled={saving}
-                            >
-                              Modifier
-                            </button>
-                            <button
-                              type="button"
-                              className="btn btn-ghost btn-sm charroi-doc-btn-danger"
-                              onClick={() => void handleDelete(entry)}
-                              disabled={saving}
-                            >
-                              Supprimer
-                            </button>
-                          </div>
-                        )}
                       </article>
                     );
                   })
@@ -299,18 +322,15 @@ export default function CharroiDocHistoryModal({
                           resetForm();
                           setTab('historique');
                         }}
-                        disabled={saving}
+                        disabled={busy}
                       >
                         Annuler
                       </button>
                     )}
-                    <button type="submit" className="btn btn-primary" disabled={saving}>
-                      {saving
-                        ? 'Enregistrement…'
-                        : editingId
-                          ? 'Enregistrer'
-                          : 'Ajouter la période'}
-                    </button>
+                    <SaveButton
+                      saving={saving}
+                      label={editingId ? 'Enregistrer' : 'Ajouter la période'}
+                    />
                   </div>
                 </form>
               ) : (

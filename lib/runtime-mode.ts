@@ -1,12 +1,13 @@
 import 'server-only';
 
 import fs from 'fs';
+import os from 'os';
 import path from 'path';
 
 /**
  * Dual-mode runtime:
  * - local/dev : fichiers Excel/data sous process.cwd() (tests)
- * - Vercel    : bundle en lecture seule ; copies mutables sous /tmp
+ * - Vercel    : bundle en lecture seule ; copies mutables sous os.tmpdir()
  *
  * Override:
  * - DATA_BACKEND=file|tmp  (force le mode)
@@ -37,7 +38,7 @@ export function getWritableDataRoot(): string {
     return path.resolve(process.env.DATA_DIR.trim());
   }
   if (getDataBackend() === 'tmp') {
-    return path.join('/tmp', 'hr-rh-app');
+    return path.join(os.tmpdir(), 'hr-rh-app');
   }
   return path.join(process.cwd(), 'data');
 }
@@ -83,7 +84,9 @@ function ensureSeededCopy(source: string, dest: string): void {
     fs.mkdirSync(path.dirname(dest), { recursive: true });
     if (fs.existsSync(source)) {
       fs.copyFileSync(source, dest);
+      return;
     }
+    console.warn('[runtime-mode] workbook source missing, cannot seed', source, '->', dest);
   } catch (err) {
     // Leave dest missing; callers will surface a clear Excel/path error.
     console.warn('[runtime-mode] seed copy failed', source, '->', dest, err);

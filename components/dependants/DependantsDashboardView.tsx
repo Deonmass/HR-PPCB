@@ -1,15 +1,18 @@
 'use client';
 
+import DependantsAgeTrancheChart from '@/components/dependants/DependantsAgeTrancheChart';
 import DependantsBarChart from '@/components/dependants/DependantsBarChart';
 import DependantsFamilleChart from '@/components/dependants/DependantsFamilleChart';
 import {
   EMPTY_LOCALISATION_VALUE,
 } from '@/components/dependants/DependantsListTab';
-import type { DependantsDashboard } from '@/lib/dependants-types';
+import type { Dependant, DependantsDashboard } from '@/lib/dependants-types';
 import type { DependantsDrillQuery } from '@/lib/dependants-utils';
 
 interface Props {
   dashboard: DependantsDashboard;
+  /** Bénéficiaires déjà filtrés (localisation dashboard). */
+  dependants: Dependant[];
   localisationOptions: string[];
   hasEmptyLocalisation?: boolean;
   localisationFilter: string;
@@ -30,6 +33,7 @@ function isKpiDrillable(label: string): boolean {
 
 export default function DependantsDashboardView({
   dashboard,
+  dependants,
   localisationOptions,
   hasEmptyLocalisation = false,
   localisationFilter,
@@ -130,9 +134,11 @@ export default function DependantsDashboardView({
           onItemClick={(label) => onOpenDrilldown({ kind: 'sexe', label })}
         />
         <div className="dependants-charts-row-pair">
-          <DependantsBarChart
-            title="Par tranche d'âge"
+          <DependantsAgeTrancheChart
             items={dashboard.parTrancheAge}
+            dependants={dependants}
+            localisationOptions={localisationOptions}
+            hasEmptyLocalisation={hasEmptyLocalisation}
             onItemClick={(label) => onOpenDrilldown({ kind: 'age-tranche', label })}
           />
           <DependantsFamilleChart data={dashboard.familleRepartition} />

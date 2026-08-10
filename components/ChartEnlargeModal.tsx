@@ -7,10 +7,21 @@ interface Props {
   subtitle?: string;
   onClose: () => void;
   children: ReactNode;
+  /** Actions à gauche du bouton fermer (export, onglets…). */
+  headerActions?: ReactNode;
+  /** Classe additionnelle sur le modal (ex. largeur spécifique). */
+  className?: string;
 }
 
 /** Modal plein écran pour afficher un graphique agrandi. */
-export default function ChartEnlargeModal({ title, subtitle, onClose, children }: Props) {
+export default function ChartEnlargeModal({
+  title,
+  subtitle,
+  onClose,
+  children,
+  headerActions,
+  className = '',
+}: Props) {
   return (
     <div
       className="modal-overlay open chart-enlarge-overlay"
@@ -18,7 +29,7 @@ export default function ChartEnlargeModal({ title, subtitle, onClose, children }
       role="presentation"
     >
       <div
-        className="modal chart-enlarge-modal"
+        className={`modal chart-enlarge-modal${className ? ` ${className}` : ''}`}
         onClick={(event) => event.stopPropagation()}
         role="dialog"
         aria-modal
@@ -29,9 +40,12 @@ export default function ChartEnlargeModal({ title, subtitle, onClose, children }
             <h3>{title}</h3>
             {subtitle ? <p className="chart-enlarge-subtitle">{subtitle}</p> : null}
           </div>
-          <button type="button" className="btn-icon" onClick={onClose} aria-label="Fermer">
-            ×
-          </button>
+          <div className="chart-enlarge-header-actions">
+            {headerActions}
+            <button type="button" className="btn-icon" onClick={onClose} aria-label="Fermer">
+              ×
+            </button>
+          </div>
         </div>
         <div className="chart-enlarge-body">{children}</div>
       </div>
