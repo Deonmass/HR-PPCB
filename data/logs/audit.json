@@ -1,6 +1,110 @@
 {
   "entries": [
     {
+      "id": "log-000160",
+      "at": "2026-08-10T12:06:26.851Z",
+      "userId": "admin",
+      "userName": "Administrateur",
+      "module": "charroi.vehicules",
+      "moduleLabel": "Charroi — Véhicules",
+      "action": "update",
+      "actionLabel": "Modification",
+      "entityType": "charroi.vehicule.doc",
+      "entityId": "veh-032",
+      "summary": "Modification Contrôle technique — 0983BM01",
+      "details": "Période Contrôle technique modifiée (doc-msirqrhy-fy0m2).\nAvant : {\"id\":\"veh-032\",\"numero\":32,\"marque\":\"Toyota\",\"type\":\"Hiace\",\"numeroChassis\":\"JTFJK02P705016540\",\"plaque\":\"0983BM01\",\"cv\":\"13CV\",\"assureur\":\"Rawsur\",\"departement\":\"Plant HR\",\"user\":\"Serge M\",\"province\":\"Kongo Central\",\"proprietaire\":\"LOXEA\",\"kilometrage\":null,\"miseCirculation\":\"2023\",\"age\":3,\"observationTech\":\"Bon état\",\"etatManuel\":\"\",\"assuranceHistorique\":[{\"id\":\"doc-msir781b-1npyb\",\"dateDebut\":\"2026-01-31\",\"dateFin\":\"2027-01-31\",\"preuveUrl\":\"\",\"createdAt\":\"2026-08-07T09:39:53.327Z\"}],\"vignetteHistorique\":[],\"controleTechniqueHistorique\":[{\"id\":\"doc-msirqrhy-fy0m2\",\"dateDebut\":\"2026-08-02\",\"dateFin\":\"2027-02-02\",\"preuveUrl\":\"\",\"createdAt\":\"2026-08-07T09:55:05.014Z\"}],\"assuranceFin\":\"2027-01-31\",\"vignetteFin\":\"\",\"controleTechniqueFin\":\"2027-02-02\",\"notes\":\"\",\"createdAt\":\"2026-07-28T16:00:46.888Z\",\"updatedAt\":\"2026-08-07T12:08:57.612Z\"}\nAprès : {\"id\":\"veh-032\",\"numero\":32,\"marque\":\"Toyota\",\"type\":\"Hiace\",\"numeroChassis\":\"JTFJK02P705016540\",\"plaque\":\"0983BM01\",\"cv\":\"13CV\",\"assureur\":\"Rawsur\",\"departement\":\"Plant HR\",\"user\":\"Serge M\",\"province\":\"Kongo Central\",\"proprietaire\":\"LOXEA\",\"kilometrage\":null,\"miseCirculation\":\"2023\",\"age\":3,\"observationTech\":\"Bon état\",\"etatManuel\":\"\",\"assuranceHistorique\":[{\"id\":\"doc-msir781b-1npyb\",\"dateDebut\":\"2026-01-31\",\"dateFin\":\"2027-01-31\",\"preuveUrl\":\"\",\"createdAt\":\"2026-08-07T09:39:53.327Z\"}],\"vignetteHistorique\":[],\"controleTechniqueHistorique\":[{\"id\":\"doc-msirqrhy-fy0m2\",\"dateDebut\":\"2026-08-02\",\"dateFin\":\"2027-02-02\",\"preuveUrl\":\"https://ppcafr.sharepoint.com/:b:/r/sites/knshr/HR%20ADMINISTRATION/Controle%20technique%20Aout%202026/0983BM01%20TOYOTA%20HIACE.pdf?d=w12cb0b7f9f67408b86b25320206a841e&csf=1&web=1&e=TjdHgT\",\"createdAt\":\"2026-08-07T09:55:05.014Z\"}],\"assuranceFin\":\"2027-01-31\",\"vignetteFin\":\"\",\"controleTechniqueFin\":\"2027-02-02\",\"notes\":\"\",\"createdAt\":\"2026-07-28T16:00:46.888Z\",\"updatedAt\":\"2026-08-10T12:06:25.586Z\"}",
+      "before": {
+        "id": "veh-032",
+        "numero": 32,
+        "marque": "Toyota",
+        "type": "Hiace",
+        "numeroChassis": "JTFJK02P705016540",
+        "plaque": "0983BM01",
+        "cv": "13CV",
+        "assureur": "Rawsur",
+        "departement": "Plant HR",
+        "user": "Serge M",
+        "province": "Kongo Central",
+        "proprietaire": "LOXEA",
+        "kilometrage": null,
+        "miseCirculation": "2023",
+        "age": 3,
+        "observationTech": "Bon état",
+        "etatManuel": "",
+        "assuranceHistorique": [
+          {
+            "id": "doc-msir781b-1npyb",
+            "dateDebut": "2026-01-31",
+            "dateFin": "2027-01-31",
+            "preuveUrl": "",
+            "createdAt": "2026-08-07T09:39:53.327Z"
+          }
+        ],
+        "vignetteHistorique": [],
+        "controleTechniqueHistorique": [
+          {
+            "id": "doc-msirqrhy-fy0m2",
+            "dateDebut": "2026-08-02",
+            "dateFin": "2027-02-02",
+            "preuveUrl": "",
+            "createdAt": "2026-08-07T09:55:05.014Z"
+          }
+        ],
+        "assuranceFin": "2027-01-31",
+        "vignetteFin": "",
+        "controleTechniqueFin": "2027-02-02",
+        "notes": "",
+        "createdAt": "2026-07-28T16:00:46.888Z",
+        "updatedAt": "2026-08-07T12:08:57.612Z"
+      },
+      "after": {
+        "id": "veh-032",
+        "numero": 32,
+        "marque": "Toyota",
+        "type": "Hiace",
+        "numeroChassis": "JTFJK02P705016540",
+        "plaque": "0983BM01",
+        "cv": "13CV",
+        "assureur": "Rawsur",
+        "departement": "Plant HR",
+        "user": "Serge M",
+        "province": "Kongo Central",
+        "proprietaire": "LOXEA",
+        "kilometrage": null,
+        "miseCirculation": "2023",
+        "age": 3,
+        "observationTech": "Bon état",
+        "etatManuel": "",
+        "assuranceHistorique": [
+          {
+            "id": "doc-msir781b-1npyb",
+            "dateDebut": "2026-01-31",
+            "dateFin": "2027-01-31",
+            "preuveUrl": "",
+            "createdAt": "2026-08-07T09:39:53.327Z"
+          }
+        ],
+        "vignetteHistorique": [],
+        "controleTechniqueHistorique": [
+          {
+            "id": "doc-msirqrhy-fy0m2",
+            "dateDebut": "2026-08-02",
+            "dateFin": "2027-02-02",
+            "preuveUrl": "https://ppcafr.sharepoint.com/:b:/r/sites/knshr/HR%20ADMINISTRATION/Controle%20technique%20Aout%202026/0983BM01%20TOYOTA%20HIACE.pdf?d=w12cb0b7f9f67408b86b25320206a841e&csf=1&web=1&e=TjdHgT",
+            "createdAt": "2026-08-07T09:55:05.014Z"
+          }
+        ],
+        "assuranceFin": "2027-01-31",
+        "vignetteFin": "",
+        "controleTechniqueFin": "2027-02-02",
+        "notes": "",
+        "createdAt": "2026-07-28T16:00:46.888Z",
+        "updatedAt": "2026-08-10T12:06:25.586Z"
+      },
+      "undoable": false,
+      "undone": false
+    },
+    {
       "id": "log-000159",
       "at": "2026-08-10T12:05:49.585Z",
       "userId": "admin",
@@ -19468,5 +19572,5 @@
       }
     }
   ],
-  "nextSeq": 160
+  "nextSeq": 161
 }
