@@ -1,6 +1,110 @@
 {
   "entries": [
     {
+      "id": "log-000158",
+      "at": "2026-08-10T12:03:17.601Z",
+      "userId": "admin",
+      "userName": "Administrateur",
+      "module": "charroi.vehicules",
+      "moduleLabel": "Charroi — Véhicules",
+      "action": "update",
+      "actionLabel": "Modification",
+      "entityType": "charroi.vehicule.doc",
+      "entityId": "veh-034",
+      "summary": "Modification Contrôle technique — 8149BP01",
+      "details": "Période Contrôle technique modifiée (doc-msirpgii-e482o).\nAvant : {\"id\":\"veh-034\",\"numero\":34,\"marque\":\"Toyota\",\"type\":\"Coaster\",\"numeroChassis\":\"JTGABAB8906710179\",\"plaque\":\"8149BP01\",\"cv\":\"13CV\",\"assureur\":\"Rawsur\",\"departement\":\"Plant HR\",\"user\":\"Serge M\",\"province\":\"Kongo Central\",\"proprietaire\":\"LOXEA\",\"kilometrage\":null,\"miseCirculation\":\"2023\",\"age\":3,\"observationTech\":\"Bon état\",\"etatManuel\":\"\",\"assuranceHistorique\":[{\"id\":\"doc-msir92i1-57oyd\",\"dateDebut\":\"2026-01-31\",\"dateFin\":\"2027-01-31\",\"preuveUrl\":\"\",\"createdAt\":\"2026-08-07T09:41:19.465Z\"}],\"vignetteHistorique\":[],\"controleTechniqueHistorique\":[{\"id\":\"doc-msirpgii-e482o\",\"dateDebut\":\"2026-08-02\",\"dateFin\":\"2027-02-02\",\"preuveUrl\":\"\",\"createdAt\":\"2026-08-07T09:54:04.122Z\"}],\"assuranceFin\":\"2027-01-31\",\"vignetteFin\":\"\",\"controleTechniqueFin\":\"2027-02-02\",\"notes\":\"\",\"createdAt\":\"2026-07-28T16:00:46.888Z\",\"updatedAt\":\"2026-08-07T11:46:53.936Z\"}\nAprès : {\"id\":\"veh-034\",\"numero\":34,\"marque\":\"Toyota\",\"type\":\"Coaster\",\"numeroChassis\":\"JTGABAB8906710179\",\"plaque\":\"8149BP01\",\"cv\":\"13CV\",\"assureur\":\"Rawsur\",\"departement\":\"Plant HR\",\"user\":\"Serge M\",\"province\":\"Kongo Central\",\"proprietaire\":\"LOXEA\",\"kilometrage\":null,\"miseCirculation\":\"2023\",\"age\":3,\"observationTech\":\"Bon état\",\"etatManuel\":\"\",\"assuranceHistorique\":[{\"id\":\"doc-msir92i1-57oyd\",\"dateDebut\":\"2026-01-31\",\"dateFin\":\"2027-01-31\",\"preuveUrl\":\"\",\"createdAt\":\"2026-08-07T09:41:19.465Z\"}],\"vignetteHistorique\":[],\"controleTechniqueHistorique\":[{\"id\":\"doc-msirpgii-e482o\",\"dateDebut\":\"2026-08-02\",\"dateFin\":\"2027-02-02\",\"preuveUrl\":\"https://ppcafr.sharepoint.com/:b:/r/sites/knshr/HR%20ADMINISTRATION/Controle%20technique%20Aout%202026/8149BP01%20TOYOTA%20COASTER.pdf?d=w3f85ff9846484c3ba71250ae0522fad3&csf=1&web=1&e=z22o7j\",\"createdAt\":\"2026-08-07T09:54:04.122Z\"}],\"assuranceFin\":\"2027-01-31\",\"vignetteFin\":\"\",\"controleTechniqueFin\":\"2027-02-02\",\"notes\":\"\",\"createdAt\":\"2026-07-28T16:00:46.888Z\",\"updatedAt\":\"2026-08-10T12:03:16.402Z\"}",
+      "before": {
+        "id": "veh-034",
+        "numero": 34,
+        "marque": "Toyota",
+        "type": "Coaster",
+        "numeroChassis": "JTGABAB8906710179",
+        "plaque": "8149BP01",
+        "cv": "13CV",
+        "assureur": "Rawsur",
+        "departement": "Plant HR",
+        "user": "Serge M",
+        "province": "Kongo Central",
+        "proprietaire": "LOXEA",
+        "kilometrage": null,
+        "miseCirculation": "2023",
+        "age": 3,
+        "observationTech": "Bon état",
+        "etatManuel": "",
+        "assuranceHistorique": [
+          {
+            "id": "doc-msir92i1-57oyd",
+            "dateDebut": "2026-01-31",
+            "dateFin": "2027-01-31",
+            "preuveUrl": "",
+            "createdAt": "2026-08-07T09:41:19.465Z"
+          }
+        ],
+        "vignetteHistorique": [],
+        "controleTechniqueHistorique": [
+          {
+            "id": "doc-msirpgii-e482o",
+            "dateDebut": "2026-08-02",
+            "dateFin": "2027-02-02",
+            "preuveUrl": "",
+            "createdAt": "2026-08-07T09:54:04.122Z"
+          }
+        ],
+        "assuranceFin": "2027-01-31",
+        "vignetteFin": "",
+        "controleTechniqueFin": "2027-02-02",
+        "notes": "",
+        "createdAt": "2026-07-28T16:00:46.888Z",
+        "updatedAt": "2026-08-07T11:46:53.936Z"
+      },
+      "after": {
+        "id": "veh-034",
+        "numero": 34,
+        "marque": "Toyota",
+        "type": "Coaster",
+        "numeroChassis": "JTGABAB8906710179",
+        "plaque": "8149BP01",
+        "cv": "13CV",
+        "assureur": "Rawsur",
+        "departement": "Plant HR",
+        "user": "Serge M",
+        "province": "Kongo Central",
+        "proprietaire": "LOXEA",
+        "kilometrage": null,
+        "miseCirculation": "2023",
+        "age": 3,
+        "observationTech": "Bon état",
+        "etatManuel": "",
+        "assuranceHistorique": [
+          {
+            "id": "doc-msir92i1-57oyd",
+            "dateDebut": "2026-01-31",
+            "dateFin": "2027-01-31",
+            "preuveUrl": "",
+            "createdAt": "2026-08-07T09:41:19.465Z"
+          }
+        ],
+        "vignetteHistorique": [],
+        "controleTechniqueHistorique": [
+          {
+            "id": "doc-msirpgii-e482o",
+            "dateDebut": "2026-08-02",
+            "dateFin": "2027-02-02",
+            "preuveUrl": "https://ppcafr.sharepoint.com/:b:/r/sites/knshr/HR%20ADMINISTRATION/Controle%20technique%20Aout%202026/8149BP01%20TOYOTA%20COASTER.pdf?d=w3f85ff9846484c3ba71250ae0522fad3&csf=1&web=1&e=z22o7j",
+            "createdAt": "2026-08-07T09:54:04.122Z"
+          }
+        ],
+        "assuranceFin": "2027-01-31",
+        "vignetteFin": "",
+        "controleTechniqueFin": "2027-02-02",
+        "notes": "",
+        "createdAt": "2026-07-28T16:00:46.888Z",
+        "updatedAt": "2026-08-10T12:03:16.402Z"
+      },
+      "undoable": false,
+      "undone": false
+    },
+    {
       "id": "log-000157",
       "at": "2026-08-10T12:02:21.738Z",
       "userId": "admin",
@@ -19276,5 +19380,5 @@
       }
     }
   ],
-  "nextSeq": 158
+  "nextSeq": 159
 }
