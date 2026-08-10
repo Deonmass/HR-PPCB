@@ -67,7 +67,9 @@ export function formatNewcomerDotDate(value: string): string {
 
 async function generateDeclaration(): Promise<GeneratedNewcomerDoc> {
   const templatePath = path.join(TEMPLATE_DIR, 'declaration-sur-l-honneur.docx');
-  const buffer = await fs.readFile(templatePath);
+  const raw = await fs.readFile(templatePath);
+  const buffer = Buffer.alloc(raw.length);
+  raw.copy(buffer);
   return {
     fileName: "Déclaration sur l'honneur.docx",
     buffer,
@@ -131,7 +133,10 @@ async function generateNewUserRequest(payload: NewcomerDocPayload): Promise<Gene
  * Structure : `Label:\x07VALUE\x07…padding…NextLabel:`
  * La taille du slot binaire est fixée par le modèle : valeurs trop longues sont tronquées.
  */
-function fillSapField(buf: Buffer, label: string, value: string): Buffer {
+function fillSapField(source: Uint8Array, label: string, value: string): Buffer {
+  const buf = Buffer.alloc(source.length);
+  Buffer.from(source).copy(buf);
+
   const marker = Buffer.from(`${label}\x07`, 'latin1');
   const idx = buf.indexOf(marker);
   if (idx < 0) {
@@ -149,27 +154,36 @@ function fillSapField(buf: Buffer, label: string, value: string): Buffer {
   const slotLen = Math.max(0, padEnd - valueStart);
   const maxValue = Math.max(0, slotLen - 1);
   const clean = safe(value).slice(0, maxValue);
-  const out = Buffer.from(buf);
 
   for (let i = 0; i < slotLen; i += 1) {
-    out[valueStart + i] = i < clean.length ? clean.charCodeAt(i) & 0xff : 0x07;
+    buf[valueStart + i] = i < clean.length ? clean.charCodeAt(i) & 0xff : 0x07;
   }
-  return out;
+  return buf;
 }
 
 async function generateSapInput(payload: NewcomerDocPayload): Promise<GeneratedNewcomerDoc> {
   const templatePath = path.join(TEMPLATE_DIR, 'SAP-Input-form-HR-DOC-14.doc');
-  let buf = await fs.readFile(templatePath);
+  let buffer: Buffer = Buffer.alloc(0);
+  {
+    const template = await fs.readFile(templatePath);
+    buffer = Buffer.alloc(template.length);
+    template.copy(buffer);
+  }
 
-  buf = fillSapField(buf, 'Position:', safe(payload.jobTitle));
-  buf = fillSapField(buf, 'Grade:', safe(payload.grade));
-  buf = fillSapField(buf, 'Cost Centre:', safe(payload.costCentre));
-  buf = fillSapField(buf, 'Department:', safe(payload.department));
+  const fields: Array<[string, string]> = [
+    ['Position:', safe(payload.jobTitle)],
+    ['Grade:', safe(payload.grade)],
+    ['Cost Centre:', safe(payload.costCentre)],
+    ['Department:', safe(payload.department)],
+  ];
+  for (const [label, value] of fields) {
+    buffer = fillSapField(buffer, label, value);
+  }
 
   const base = sanitizeFileName(`SAP Input form - ${payload.jobTitle || 'newcomer'}`);
   return {
     fileName: `${base}.doc`,
-    buffer: buf,
+    buffer,
     contentType: DOC_MIME,
   };
 }
