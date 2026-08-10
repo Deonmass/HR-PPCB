@@ -1,6 +1,110 @@
 {
   "entries": [
     {
+      "id": "log-000156",
+      "at": "2026-08-10T12:01:12.742Z",
+      "userId": "admin",
+      "userName": "Administrateur",
+      "module": "charroi.vehicules",
+      "moduleLabel": "Charroi — Véhicules",
+      "action": "update",
+      "actionLabel": "Modification",
+      "entityType": "charroi.vehicule.doc",
+      "entityId": "veh-028",
+      "summary": "Modification Contrôle technique — 9269BN01",
+      "details": "Période Contrôle technique modifiée (doc-msirnfyz-lw6x3).\nAvant : {\"id\":\"veh-028\",\"numero\":28,\"marque\":\"Peugeot\",\"type\":\"Pick up\",\"numeroChassis\":\"VR3FDAHDHM3004118\",\"plaque\":\"9269BN01\",\"cv\":\"13CV\",\"assureur\":\"Rawsur\",\"departement\":\"Engineering\",\"user\":\"Patrick Mukendi\",\"province\":\"Kongo Central\",\"proprietaire\":\"LOXEA\",\"kilometrage\":null,\"miseCirculation\":\"2022\",\"age\":4,\"observationTech\":\"Bon état\",\"etatManuel\":\"\",\"assuranceHistorique\":[{\"id\":\"doc-msir4ja3-r2f3r\",\"dateDebut\":\"2026-01-31\",\"dateFin\":\"2027-01-31\",\"preuveUrl\":\"\",\"createdAt\":\"2026-08-07T09:37:47.931Z\"}],\"vignetteHistorique\":[],\"controleTechniqueHistorique\":[{\"id\":\"doc-msirnfyz-lw6x3\",\"dateDebut\":\"2026-08-02\",\"dateFin\":\"2027-02-02\",\"preuveUrl\":\"https://ppcafr.sharepoint.com/:b:/r/sites/knshr/HR%20ADMINISTRATION/Controle%20technique%20Aout%202026/9263BN01%20PEUGEOT.pdf?d=w965d8788f43040db9863751b02365f69&csf=1&web=1&e=tODVfR\",\"createdAt\":\"2026-08-07T09:52:30.107Z\"}],\"assuranceFin\":\"2027-01-31\",\"vignetteFin\":\"\",\"controleTechniqueFin\":\"2027-02-02\",\"notes\":\"\",\"createdAt\":\"2026-07-28T16:00:46.888Z\",\"updatedAt\":\"2026-08-10T11:59:26.111Z\"}\nAprès : {\"id\":\"veh-028\",\"numero\":28,\"marque\":\"Peugeot\",\"type\":\"Pick up\",\"numeroChassis\":\"VR3FDAHDHM3004118\",\"plaque\":\"9269BN01\",\"cv\":\"13CV\",\"assureur\":\"Rawsur\",\"departement\":\"Engineering\",\"user\":\"Patrick Mukendi\",\"province\":\"Kongo Central\",\"proprietaire\":\"LOXEA\",\"kilometrage\":null,\"miseCirculation\":\"2022\",\"age\":4,\"observationTech\":\"Bon état\",\"etatManuel\":\"\",\"assuranceHistorique\":[{\"id\":\"doc-msir4ja3-r2f3r\",\"dateDebut\":\"2026-01-31\",\"dateFin\":\"2027-01-31\",\"preuveUrl\":\"\",\"createdAt\":\"2026-08-07T09:37:47.931Z\"}],\"vignetteHistorique\":[],\"controleTechniqueHistorique\":[{\"id\":\"doc-msirnfyz-lw6x3\",\"dateDebut\":\"2026-08-02\",\"dateFin\":\"2027-02-02\",\"preuveUrl\":\"https://ppcafr.sharepoint.com/:b:/r/sites/knshr/HR%20ADMINISTRATION/Controle%20technique%20Aout%202026/9269BN01%20PEUGEOT.pdf?d=wc626ff98734540159c7e015f45f05091&csf=1&web=1&e=jkZygB\",\"createdAt\":\"2026-08-07T09:52:30.107Z\"}],\"assuranceFin\":\"2027-01-31\",\"vignetteFin\":\"\",\"controleTechniqueFin\":\"2027-02-02\",\"notes\":\"\",\"createdAt\":\"2026-07-28T16:00:46.888Z\",\"updatedAt\":\"2026-08-10T12:01:11.560Z\"}",
+      "before": {
+        "id": "veh-028",
+        "numero": 28,
+        "marque": "Peugeot",
+        "type": "Pick up",
+        "numeroChassis": "VR3FDAHDHM3004118",
+        "plaque": "9269BN01",
+        "cv": "13CV",
+        "assureur": "Rawsur",
+        "departement": "Engineering",
+        "user": "Patrick Mukendi",
+        "province": "Kongo Central",
+        "proprietaire": "LOXEA",
+        "kilometrage": null,
+        "miseCirculation": "2022",
+        "age": 4,
+        "observationTech": "Bon état",
+        "etatManuel": "",
+        "assuranceHistorique": [
+          {
+            "id": "doc-msir4ja3-r2f3r",
+            "dateDebut": "2026-01-31",
+            "dateFin": "2027-01-31",
+            "preuveUrl": "",
+            "createdAt": "2026-08-07T09:37:47.931Z"
+          }
+        ],
+        "vignetteHistorique": [],
+        "controleTechniqueHistorique": [
+          {
+            "id": "doc-msirnfyz-lw6x3",
+            "dateDebut": "2026-08-02",
+            "dateFin": "2027-02-02",
+            "preuveUrl": "https://ppcafr.sharepoint.com/:b:/r/sites/knshr/HR%20ADMINISTRATION/Controle%20technique%20Aout%202026/9263BN01%20PEUGEOT.pdf?d=w965d8788f43040db9863751b02365f69&csf=1&web=1&e=tODVfR",
+            "createdAt": "2026-08-07T09:52:30.107Z"
+          }
+        ],
+        "assuranceFin": "2027-01-31",
+        "vignetteFin": "",
+        "controleTechniqueFin": "2027-02-02",
+        "notes": "",
+        "createdAt": "2026-07-28T16:00:46.888Z",
+        "updatedAt": "2026-08-10T11:59:26.111Z"
+      },
+      "after": {
+        "id": "veh-028",
+        "numero": 28,
+        "marque": "Peugeot",
+        "type": "Pick up",
+        "numeroChassis": "VR3FDAHDHM3004118",
+        "plaque": "9269BN01",
+        "cv": "13CV",
+        "assureur": "Rawsur",
+        "departement": "Engineering",
+        "user": "Patrick Mukendi",
+        "province": "Kongo Central",
+        "proprietaire": "LOXEA",
+        "kilometrage": null,
+        "miseCirculation": "2022",
+        "age": 4,
+        "observationTech": "Bon état",
+        "etatManuel": "",
+        "assuranceHistorique": [
+          {
+            "id": "doc-msir4ja3-r2f3r",
+            "dateDebut": "2026-01-31",
+            "dateFin": "2027-01-31",
+            "preuveUrl": "",
+            "createdAt": "2026-08-07T09:37:47.931Z"
+          }
+        ],
+        "vignetteHistorique": [],
+        "controleTechniqueHistorique": [
+          {
+            "id": "doc-msirnfyz-lw6x3",
+            "dateDebut": "2026-08-02",
+            "dateFin": "2027-02-02",
+            "preuveUrl": "https://ppcafr.sharepoint.com/:b:/r/sites/knshr/HR%20ADMINISTRATION/Controle%20technique%20Aout%202026/9269BN01%20PEUGEOT.pdf?d=wc626ff98734540159c7e015f45f05091&csf=1&web=1&e=jkZygB",
+            "createdAt": "2026-08-07T09:52:30.107Z"
+          }
+        ],
+        "assuranceFin": "2027-01-31",
+        "vignetteFin": "",
+        "controleTechniqueFin": "2027-02-02",
+        "notes": "",
+        "createdAt": "2026-07-28T16:00:46.888Z",
+        "updatedAt": "2026-08-10T12:01:11.560Z"
+      },
+      "undoable": false,
+      "undone": false
+    },
+    {
       "id": "log-000155",
       "at": "2026-08-10T12:00:40.304Z",
       "userId": "admin",
@@ -19068,5 +19172,5 @@
       }
     }
   ],
-  "nextSeq": 156
+  "nextSeq": 157
 }
