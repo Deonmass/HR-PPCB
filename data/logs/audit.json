@@ -1,6 +1,110 @@
 {
   "entries": [
     {
+      "id": "log-000153",
+      "at": "2026-08-10T11:55:28.882Z",
+      "userId": "admin",
+      "userName": "Administrateur",
+      "module": "charroi.vehicules",
+      "moduleLabel": "Charroi — Véhicules",
+      "action": "update",
+      "actionLabel": "Modification",
+      "entityType": "charroi.vehicule.doc",
+      "entityId": "veh-031",
+      "summary": "Modification Contrôle technique — 9976BK01",
+      "details": "Période Contrôle technique modifiée (doc-msirrasl-yt3ne).\nAvant : {\"id\":\"veh-031\",\"numero\":31,\"marque\":\"Toyota\",\"type\":\"Pick up\",\"numeroChassis\":\"AHTDK8CD600937091\",\"plaque\":\"9976BK01\",\"cv\":\"13CV\",\"assureur\":\"Rawsur\",\"departement\":\"Project\",\"user\":\"Elias T\",\"province\":\"Kongo Central\",\"proprietaire\":\"LOXEA\",\"kilometrage\":null,\"miseCirculation\":\"2021\",\"age\":5,\"observationTech\":\"Bon état\",\"etatManuel\":\"\",\"assuranceHistorique\":[{\"id\":\"doc-msir6jvq-eun09\",\"dateDebut\":\"2026-01-31\",\"dateFin\":\"2027-01-31\",\"preuveUrl\":\"\",\"createdAt\":\"2026-08-07T09:39:22.022Z\"}],\"vignetteHistorique\":[],\"controleTechniqueHistorique\":[{\"id\":\"doc-msirrasl-yt3ne\",\"dateDebut\":\"2026-08-02\",\"dateFin\":\"2027-02-02\",\"preuveUrl\":\"\",\"createdAt\":\"2026-08-07T09:55:30.021Z\"}],\"assuranceFin\":\"2027-01-31\",\"vignetteFin\":\"\",\"controleTechniqueFin\":\"2027-02-02\",\"notes\":\"\",\"createdAt\":\"2026-07-28T16:00:46.888Z\",\"updatedAt\":\"2026-08-07T11:54:23.440Z\"}\nAprès : {\"id\":\"veh-031\",\"numero\":31,\"marque\":\"Toyota\",\"type\":\"Pick up\",\"numeroChassis\":\"AHTDK8CD600937091\",\"plaque\":\"9976BK01\",\"cv\":\"13CV\",\"assureur\":\"Rawsur\",\"departement\":\"Project\",\"user\":\"Elias T\",\"province\":\"Kongo Central\",\"proprietaire\":\"LOXEA\",\"kilometrage\":null,\"miseCirculation\":\"2021\",\"age\":5,\"observationTech\":\"Bon état\",\"etatManuel\":\"\",\"assuranceHistorique\":[{\"id\":\"doc-msir6jvq-eun09\",\"dateDebut\":\"2026-01-31\",\"dateFin\":\"2027-01-31\",\"preuveUrl\":\"\",\"createdAt\":\"2026-08-07T09:39:22.022Z\"}],\"vignetteHistorique\":[],\"controleTechniqueHistorique\":[{\"id\":\"doc-msirrasl-yt3ne\",\"dateDebut\":\"2026-08-02\",\"dateFin\":\"2027-02-02\",\"preuveUrl\":\"https://ppcafr.sharepoint.com/:b:/r/sites/knshr/HR%20ADMINISTRATION/Controle%20technique%20Aout%202026/9976BK01%20TOYOTA%20HILUX.pdf?d=w8de36a092b5f4049af3f0f7a1a72d42b&csf=1&web=1&e=9JGT1H\",\"createdAt\":\"2026-08-07T09:55:30.021Z\"}],\"assuranceFin\":\"2027-01-31\",\"vignetteFin\":\"\",\"controleTechniqueFin\":\"2027-02-02\",\"notes\":\"\",\"createdAt\":\"2026-07-28T16:00:46.888Z\",\"updatedAt\":\"2026-08-10T11:55:27.382Z\"}",
+      "before": {
+        "id": "veh-031",
+        "numero": 31,
+        "marque": "Toyota",
+        "type": "Pick up",
+        "numeroChassis": "AHTDK8CD600937091",
+        "plaque": "9976BK01",
+        "cv": "13CV",
+        "assureur": "Rawsur",
+        "departement": "Project",
+        "user": "Elias T",
+        "province": "Kongo Central",
+        "proprietaire": "LOXEA",
+        "kilometrage": null,
+        "miseCirculation": "2021",
+        "age": 5,
+        "observationTech": "Bon état",
+        "etatManuel": "",
+        "assuranceHistorique": [
+          {
+            "id": "doc-msir6jvq-eun09",
+            "dateDebut": "2026-01-31",
+            "dateFin": "2027-01-31",
+            "preuveUrl": "",
+            "createdAt": "2026-08-07T09:39:22.022Z"
+          }
+        ],
+        "vignetteHistorique": [],
+        "controleTechniqueHistorique": [
+          {
+            "id": "doc-msirrasl-yt3ne",
+            "dateDebut": "2026-08-02",
+            "dateFin": "2027-02-02",
+            "preuveUrl": "",
+            "createdAt": "2026-08-07T09:55:30.021Z"
+          }
+        ],
+        "assuranceFin": "2027-01-31",
+        "vignetteFin": "",
+        "controleTechniqueFin": "2027-02-02",
+        "notes": "",
+        "createdAt": "2026-07-28T16:00:46.888Z",
+        "updatedAt": "2026-08-07T11:54:23.440Z"
+      },
+      "after": {
+        "id": "veh-031",
+        "numero": 31,
+        "marque": "Toyota",
+        "type": "Pick up",
+        "numeroChassis": "AHTDK8CD600937091",
+        "plaque": "9976BK01",
+        "cv": "13CV",
+        "assureur": "Rawsur",
+        "departement": "Project",
+        "user": "Elias T",
+        "province": "Kongo Central",
+        "proprietaire": "LOXEA",
+        "kilometrage": null,
+        "miseCirculation": "2021",
+        "age": 5,
+        "observationTech": "Bon état",
+        "etatManuel": "",
+        "assuranceHistorique": [
+          {
+            "id": "doc-msir6jvq-eun09",
+            "dateDebut": "2026-01-31",
+            "dateFin": "2027-01-31",
+            "preuveUrl": "",
+            "createdAt": "2026-08-07T09:39:22.022Z"
+          }
+        ],
+        "vignetteHistorique": [],
+        "controleTechniqueHistorique": [
+          {
+            "id": "doc-msirrasl-yt3ne",
+            "dateDebut": "2026-08-02",
+            "dateFin": "2027-02-02",
+            "preuveUrl": "https://ppcafr.sharepoint.com/:b:/r/sites/knshr/HR%20ADMINISTRATION/Controle%20technique%20Aout%202026/9976BK01%20TOYOTA%20HILUX.pdf?d=w8de36a092b5f4049af3f0f7a1a72d42b&csf=1&web=1&e=9JGT1H",
+            "createdAt": "2026-08-07T09:55:30.021Z"
+          }
+        ],
+        "assuranceFin": "2027-01-31",
+        "vignetteFin": "",
+        "controleTechniqueFin": "2027-02-02",
+        "notes": "",
+        "createdAt": "2026-07-28T16:00:46.888Z",
+        "updatedAt": "2026-08-10T11:55:27.382Z"
+      },
+      "undoable": false,
+      "undone": false
+    },
+    {
       "id": "log-000152",
       "at": "2026-08-07T12:10:22.927Z",
       "userId": "Serge.Muakasa",
@@ -18756,5 +18860,5 @@
       }
     }
   ],
-  "nextSeq": 153
+  "nextSeq": 154
 }
