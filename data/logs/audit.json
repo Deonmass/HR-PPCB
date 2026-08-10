@@ -1,6 +1,94 @@
 {
   "entries": [
     {
+      "id": "log-000159",
+      "at": "2026-08-10T12:05:49.585Z",
+      "userId": "admin",
+      "userName": "Administrateur",
+      "module": "charroi.vehicules",
+      "moduleLabel": "Charroi — Véhicules",
+      "action": "update",
+      "actionLabel": "Modification",
+      "entityType": "charroi.vehicule.doc",
+      "entityId": "veh-043",
+      "summary": "Modification Contrôle technique — 7127BP01",
+      "details": "Période Contrôle technique modifiée (doc-msivp1q2-e1s3a).\nAvant : {\"id\":\"veh-043\",\"numero\":43,\"marque\":\"Peugeot\",\"type\":\"Pick up\",\"numeroChassis\":\"VR3FDAHDHM3006106\",\"plaque\":\"7127BP01\",\"cv\":\"13CV\",\"assureur\":\"Rawsur\",\"departement\":\"Sales\",\"user\":\"Paul Ts\",\"province\":\"Kongo Central\",\"proprietaire\":\"LOXEA\",\"kilometrage\":null,\"miseCirculation\":\"2022\",\"age\":4,\"observationTech\":\"Bon état\",\"etatManuel\":\"\",\"assuranceHistorique\":[],\"vignetteHistorique\":[],\"controleTechniqueHistorique\":[{\"id\":\"doc-msivp1q2-e1s3a\",\"dateDebut\":\"2026-08-02\",\"dateFin\":\"2027-02-02\",\"preuveUrl\":\"\",\"createdAt\":\"2026-08-07T11:45:43.418Z\"}],\"assuranceFin\":\"\",\"vignetteFin\":\"\",\"controleTechniqueFin\":\"2027-02-02\",\"notes\":\"\",\"createdAt\":\"2026-07-28T16:00:46.888Z\",\"updatedAt\":\"2026-08-07T11:45:43.418Z\"}\nAprès : {\"id\":\"veh-043\",\"numero\":43,\"marque\":\"Peugeot\",\"type\":\"Pick up\",\"numeroChassis\":\"VR3FDAHDHM3006106\",\"plaque\":\"7127BP01\",\"cv\":\"13CV\",\"assureur\":\"Rawsur\",\"departement\":\"Sales\",\"user\":\"Paul Ts\",\"province\":\"Kongo Central\",\"proprietaire\":\"LOXEA\",\"kilometrage\":null,\"miseCirculation\":\"2022\",\"age\":4,\"observationTech\":\"Bon état\",\"etatManuel\":\"\",\"assuranceHistorique\":[],\"vignetteHistorique\":[],\"controleTechniqueHistorique\":[{\"id\":\"doc-msivp1q2-e1s3a\",\"dateDebut\":\"2026-08-02\",\"dateFin\":\"2027-02-02\",\"preuveUrl\":\"https://ppcafr.sharepoint.com/:b:/r/sites/knshr/HR%20ADMINISTRATION/Controle%20technique%20Aout%202026/7127BP01%20PEUGEOT.pdf?d=wca9606f928be419c8dafd1e61d4e495c&csf=1&web=1&e=3OWw1s\",\"createdAt\":\"2026-08-07T11:45:43.418Z\"}],\"assuranceFin\":\"\",\"vignetteFin\":\"\",\"controleTechniqueFin\":\"2027-02-02\",\"notes\":\"\",\"createdAt\":\"2026-07-28T16:00:46.888Z\",\"updatedAt\":\"2026-08-10T12:05:48.388Z\"}",
+      "before": {
+        "id": "veh-043",
+        "numero": 43,
+        "marque": "Peugeot",
+        "type": "Pick up",
+        "numeroChassis": "VR3FDAHDHM3006106",
+        "plaque": "7127BP01",
+        "cv": "13CV",
+        "assureur": "Rawsur",
+        "departement": "Sales",
+        "user": "Paul Ts",
+        "province": "Kongo Central",
+        "proprietaire": "LOXEA",
+        "kilometrage": null,
+        "miseCirculation": "2022",
+        "age": 4,
+        "observationTech": "Bon état",
+        "etatManuel": "",
+        "assuranceHistorique": [],
+        "vignetteHistorique": [],
+        "controleTechniqueHistorique": [
+          {
+            "id": "doc-msivp1q2-e1s3a",
+            "dateDebut": "2026-08-02",
+            "dateFin": "2027-02-02",
+            "preuveUrl": "",
+            "createdAt": "2026-08-07T11:45:43.418Z"
+          }
+        ],
+        "assuranceFin": "",
+        "vignetteFin": "",
+        "controleTechniqueFin": "2027-02-02",
+        "notes": "",
+        "createdAt": "2026-07-28T16:00:46.888Z",
+        "updatedAt": "2026-08-07T11:45:43.418Z"
+      },
+      "after": {
+        "id": "veh-043",
+        "numero": 43,
+        "marque": "Peugeot",
+        "type": "Pick up",
+        "numeroChassis": "VR3FDAHDHM3006106",
+        "plaque": "7127BP01",
+        "cv": "13CV",
+        "assureur": "Rawsur",
+        "departement": "Sales",
+        "user": "Paul Ts",
+        "province": "Kongo Central",
+        "proprietaire": "LOXEA",
+        "kilometrage": null,
+        "miseCirculation": "2022",
+        "age": 4,
+        "observationTech": "Bon état",
+        "etatManuel": "",
+        "assuranceHistorique": [],
+        "vignetteHistorique": [],
+        "controleTechniqueHistorique": [
+          {
+            "id": "doc-msivp1q2-e1s3a",
+            "dateDebut": "2026-08-02",
+            "dateFin": "2027-02-02",
+            "preuveUrl": "https://ppcafr.sharepoint.com/:b:/r/sites/knshr/HR%20ADMINISTRATION/Controle%20technique%20Aout%202026/7127BP01%20PEUGEOT.pdf?d=wca9606f928be419c8dafd1e61d4e495c&csf=1&web=1&e=3OWw1s",
+            "createdAt": "2026-08-07T11:45:43.418Z"
+          }
+        ],
+        "assuranceFin": "",
+        "vignetteFin": "",
+        "controleTechniqueFin": "2027-02-02",
+        "notes": "",
+        "createdAt": "2026-07-28T16:00:46.888Z",
+        "updatedAt": "2026-08-10T12:05:48.388Z"
+      },
+      "undoable": false,
+      "undone": false
+    },
+    {
       "id": "log-000158",
       "at": "2026-08-10T12:03:17.601Z",
       "userId": "admin",
@@ -19380,5 +19468,5 @@
       }
     }
   ],
-  "nextSeq": 159
+  "nextSeq": 160
 }
