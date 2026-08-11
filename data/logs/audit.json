@@ -1,6 +1,107 @@
 {
   "entries": [
     {
+      "id": "log-000172",
+      "at": "2026-08-11T09:45:31.422Z",
+      "userId": "Marie.Yowali",
+      "userName": "Marie Yowali",
+      "userEmail": "Marie.Yowali@ppcdrc.cd",
+      "module": "dependants",
+      "moduleLabel": "Dépendants",
+      "action": "update",
+      "actionLabel": "Modification",
+      "summary": "Localisation famille 70000144 → MOANDA",
+      "details": "Localisation famille 70000144 → MOANDA",
+      "after": [
+        {
+          "id": 473,
+          "matricule": "70000144",
+          "pactilis": "164467",
+          "statut": "Employé",
+          "sexe": "M",
+          "nom": "TSASA NKONGO PAUL",
+          "localisation": "MOANDA",
+          "numeroVilla": "",
+          "typeMaison": "",
+          "dateNaissance": "19/10/1988",
+          "age": null,
+          "compositionFamille": 1,
+          "enfants": 2,
+          "total": 4,
+          "commentaires": "",
+          "lienDocument": "",
+          "employeNom": "TSASA NKONGO PAUL",
+          "departement": "Sales & Logistics"
+        },
+        {
+          "id": 474,
+          "matricule": "70000144",
+          "pactilis": "164468",
+          "statut": "Conjoint",
+          "sexe": "F",
+          "nom": "ILUNGA TSHIBANDA MELISSA",
+          "localisation": "MOANDA",
+          "numeroVilla": "",
+          "typeMaison": "",
+          "dateNaissance": "12/04/1994",
+          "age": 32,
+          "compositionFamille": null,
+          "enfants": null,
+          "total": null,
+          "commentaires": "",
+          "lienDocument": "",
+          "employeNom": "TSASA NKONGO PAUL",
+          "departement": "Sales & Logistics"
+        },
+        {
+          "id": 475,
+          "matricule": "70000144",
+          "pactilis": "164817",
+          "statut": "Enfant",
+          "sexe": "F",
+          "nom": "TSASA MATONDO OURIELLA",
+          "localisation": "MOANDA",
+          "numeroVilla": "",
+          "typeMaison": "",
+          "dateNaissance": "13/11/2021",
+          "age": 4,
+          "compositionFamille": null,
+          "enfants": null,
+          "total": null,
+          "commentaires": "",
+          "lienDocument": "",
+          "employeNom": "TSASA NKONGO PAUL",
+          "departement": "Sales & Logistics"
+        },
+        {
+          "id": 476,
+          "matricule": "70000144",
+          "pactilis": "171282",
+          "statut": "Enfant",
+          "sexe": "F",
+          "nom": "TSASA ILUNGA OTALIA",
+          "localisation": "MOANDA",
+          "numeroVilla": "",
+          "typeMaison": "",
+          "dateNaissance": "05/12/2023",
+          "age": 2,
+          "compositionFamille": null,
+          "enfants": null,
+          "total": null,
+          "commentaires": "",
+          "lienDocument": "",
+          "employeNom": "TSASA NKONGO PAUL",
+          "departement": "Sales & Logistics"
+        }
+      ],
+      "undoable": false,
+      "undone": false,
+      "meta": {
+        "matricule": "70000144",
+        "localisation": "MOANDA"
+      }
+    },
+    {
       "id": "log-000171",
       "at": "2026-08-11T09:45:05.115Z",
       "userId": "Marie.Yowali",
@@ -20080,5 +20181,5 @@
       }
     }
   ],
-  "nextSeq": 172
+  "nextSeq": 173
 }
