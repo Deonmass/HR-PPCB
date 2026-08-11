@@ -11957,18 +11957,18 @@
       "statut": "Employé",
       "sexe": "M",
       "nom": "BASHIGE RUBABURA Jean Pierre",
-      "localisation": "Kinshasa",
+      "localisation": "Kisangani",
       "numeroVilla": "",
       "typeMaison": "",
       "dateNaissance": "09/08/1978",
-      "age": 47,
+      "age": null,
       "compositionFamille": 1,
       "enfants": 8,
       "total": 10,
       "commentaires": "",
       "lienDocument": "",
       "createdAt": "2026-07-28T09:40:39.809Z",
-      "updatedAt": "2026-07-28T09:40:39.809Z"
+      "updatedAt": "2026-08-11T09:54:35.101Z"
     },
     {
       "id": 562,
