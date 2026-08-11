@@ -210,11 +210,11 @@ async function syncConjointEmployeLinks(store: DependantsJsonStoreData): Promise
   const { employees } = await readEmployeesBundle();
   const recordIndex = await getEmployeesRecordIndex();
 
-  const byName = new Map<string, { matricule: string; id: string; nom: string }>();
+  const byName = new Map<string, { matricule: string; nom: string }>();
   for (const emp of employees) {
     const key = normalizePersonName(emp.nom);
     if (!key || byName.has(key)) continue;
-    byName.set(key, { matricule: emp.matricule, id: emp.id, nom: emp.nom });
+    byName.set(key, { matricule: emp.matricule, nom: emp.nom });
   }
 
   const employeeMats = new Set(employees.map((e) => e.matricule.trim()).filter(Boolean));
