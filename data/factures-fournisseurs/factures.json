@@ -2008,11 +2008,11 @@
       "datePo": "",
       "grn": "",
       "dateGrn": "",
-      "payment": "",
-      "datePym": "",
-      "commentaire": "Reçue — en attente du PR.",
-      "statut": "unpaid",
-      "statutLabel": "unpaid"
+      "payment": "PAID",
+      "datePym": "28/07/2026",
+      "commentaire": "Facture payée.",
+      "statut": "paid",
+      "statutLabel": "paid"
     },
     {
       "id": "fac-774",
