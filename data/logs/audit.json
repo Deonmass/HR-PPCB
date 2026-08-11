@@ -1,6 +1,20 @@
 {
   "entries": [
     {
+      "id": "log-000165",
+      "at": "2026-08-11T08:02:31.535Z",
+      "userId": "admin",
+      "userName": "Administrateur",
+      "module": "documents.exit",
+      "moduleLabel": "Documents",
+      "action": "export",
+      "actionLabel": "Export",
+      "summary": "Document exit « User removal form » — MASOKA HAPPY IYANYA (70000235)",
+      "details": "Document exit « User removal form » — MASOKA HAPPY IYANYA (70000235)",
+      "undoable": false,
+      "undone": false
+    },
+    {
       "id": "log-000164",
       "at": "2026-08-11T08:02:26.475Z",
       "userId": "admin",
@@ -19718,5 +19732,5 @@
       }
     }
   ],
-  "nextSeq": 165
+  "nextSeq": 166
 }
