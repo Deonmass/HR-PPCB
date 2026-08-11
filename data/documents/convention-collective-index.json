@@ -1,0 +1,176 @@
+{
+  "source": "Convention collective d'entreprise — PPC Barnet Manufacturing DRC SA",
+  "sourceFile": "Excel/templates/convention-collective/convention-collective.pdf",
+  "extractedAt": "2026-08-11",
+  "note": "PDF scanné (41 pages). Les champs pages correspondent aux numéros de page du fichier PDF (1-indexés).",
+  "totalPages": 41,
+  "keywords": [
+    { "id": "essai", "label": "Période d’essai", "aliases": ["probation", "essai", "période d'essai", "article 25"] },
+    { "id": "conge", "label": "Congé annuel", "aliases": ["congé", "congés", "vacances", "article 39", "pécule"] },
+    { "id": "preavis", "label": "Préavis", "aliases": ["préavis", "preavis", "résiliation", "licenciement", "article 69"] },
+    { "id": "classifie", "label": "Classifié / exécution", "aliases": ["classifié", "exécution", "personnel d'exécution", "classes"] },
+    { "id": "maitrise", "label": "Maîtrise", "aliases": ["maîtrise", "maitrise", "agent de maîtrise"] },
+    { "id": "cadre", "label": "Cadre", "aliases": ["cadre", "cadres", "agents de cadre"] },
+    { "id": "circonstance", "label": "Congés de circonstance", "aliases": ["mariage", "décès", "accouchement", "déménagement", "article 41"] },
+    { "id": "horaires", "label": "Horaires", "aliases": ["horaire", "45 heures", "40 heures", "pause", "semaine", "article 53"] },
+    { "id": "classification", "label": "Classification", "aliases": ["catégorie", "classification", "classes", "barème"] },
+    { "id": "remuneration", "label": "Rémunération", "aliases": ["salaire", "rémunération", "indemnités", "prime"] },
+    { "id": "discipline", "label": "Discipline", "aliases": ["faute", "discipline", "sanction", "mise à pied"] },
+    { "id": "securite", "label": "Santé / CNSS", "aliases": ["cnss", "pension", "soins", "santé", "sécurité"] }
+  ],
+  "articles": [
+    {
+      "id": "essai-classifie",
+      "title": "Période d’essai — personnel classifié",
+      "category": "Période d’essai",
+      "keywords": ["essai", "classifié", "classes", "article 25", "3 mois", "2 mois", "1 mois"],
+      "pages": [11, 12],
+      "summary": "Essai : 1 mois (classes 1–2), 2 mois (classes 3–6), 3 mois (classes 7–9).",
+      "body": "Article 25 — Tout contrat peut être assorti d’une clause d’essai, notifiée expressément : 1 mois pour les classes 1 à 2 (manœuvre ordinaire et lourd) ; 2 mois pour les classes 3 à 6 (manœuvre spécialisé à semi-qualifié) ; 3 mois pour les classes 7 à 9 (qualifiés à hautement qualifiés). Sauf classes 1–2, un bulletin de signalement mensuel est établi. La confirmation écrite de fin d’essai est obligatoire ; à défaut, l’essai est présumé réussi."
+    },
+    {
+      "id": "essai-maitrise",
+      "title": "Période d’essai — agents de maîtrise",
+      "category": "Période d’essai",
+      "keywords": ["essai", "maîtrise", "5 mois", "article 25"],
+      "pages": [11, 12],
+      "summary": "Les agents de maîtrise accomplissent une période d’essai de 5 mois.",
+      "body": "Article 25 — Pour le personnel de maîtrise, la période d’essai est de cinq (5) mois. Un bulletin de signalement mensuel est établi par le supérieur hiérarchique. L’employeur confirme par écrit la fin d’essai ; passé le délai sans notification, l’essai est présumé réussi."
+    },
+    {
+      "id": "essai-cadre",
+      "title": "Période d’essai — agents de cadre",
+      "category": "Période d’essai",
+      "keywords": ["essai", "cadre", "6 mois", "article 25"],
+      "pages": [11, 12],
+      "summary": "Les agents de cadre accomplissent une période d’essai de 6 mois.",
+      "body": "Article 25 — Pour les agents de cadre, la période d’essai est de six (6) mois, avec bulletin de signalement mensuel et confirmation écrite de fin d’essai par l’employeur."
+    },
+    {
+      "id": "conge-classifie",
+      "title": "Congé annuel — catégories I à V",
+      "category": "Congés",
+      "keywords": ["congé", "20 jours", "classifié", "article 39", "catégories"],
+      "pages": [19],
+      "summary": "20 jours ouvrables, +1 jour tous les 3 ans d’ancienneté.",
+      "body": "Article 39 — Personnel des catégories I à V : vingt (20) jours ouvrables de congé annuel, augmentés d’un (1) jour par période de trois (3) années d’ancienneté. Le droit naît après une année de service. Le pécule de congé équivaut aux frais de transport mensuels majorés de 30 % (si au moins la moitié des jours cumulés est prise)."
+    },
+    {
+      "id": "conge-maitrise",
+      "title": "Congé annuel — personnel de maîtrise",
+      "category": "Congés",
+      "keywords": ["congé", "maîtrise", "22 jours", "article 39"],
+      "pages": [19],
+      "summary": "22 jours ouvrables, +1 jour tous les 3 ans d’ancienneté.",
+      "body": "Article 39 — Personnel de maîtrise : vingt-deux (22) jours ouvrables de congé annuel, augmentés d’un (1) jour par période de trois (3) années d’ancienneté."
+    },
+    {
+      "id": "conge-cadre",
+      "title": "Congé annuel — cadres de collaboration",
+      "category": "Congés",
+      "keywords": ["congé", "cadre", "24 jours", "article 39"],
+      "pages": [19],
+      "summary": "24 jours ouvrables, +1 jour tous les 3 ans d’ancienneté.",
+      "body": "Article 39 — Cadres de collaboration : vingt-quatre (24) jours ouvrables de congé annuel, augmentés d’un (1) jour par période de trois (3) années d’ancienneté."
+    },
+    {
+      "id": "preavis-classifie",
+      "title": "Préavis — personnel d’exécution",
+      "category": "Préavis / résiliation",
+      "keywords": ["préavis", "exécution", "classifié", "14 jours", "7 jours", "article 69"],
+      "pages": [36],
+      "summary": "14 jours ouvrables + 7 jours ouvrables par année d’ancienneté.",
+      "body": "Article 69 — Personnel d’exécution : préavis de quatorze (14) jours ouvrables, augmenté de sept (7) jours ouvrables par année d’ancienneté. Réduit de moitié si le préavis est donné par le travailleur (sauf faute lourde de l’employeur)."
+    },
+    {
+      "id": "preavis-maitrise",
+      "title": "Préavis — agents de maîtrise",
+      "category": "Préavis / résiliation",
+      "keywords": ["préavis", "maîtrise", "1 mois", "9 jours", "article 69"],
+      "pages": [36],
+      "summary": "1 mois + 9 jours ouvrables par année d’ancienneté.",
+      "body": "Article 69 — Agents de maîtrise : préavis d’un (1) mois, augmenté de neuf (9) jours ouvrables par année d’ancienneté. Réduit de moitié si initié par le travailleur."
+    },
+    {
+      "id": "preavis-cadre",
+      "title": "Préavis — agents de cadre",
+      "category": "Préavis / résiliation",
+      "keywords": ["préavis", "cadre", "3 mois", "16 jours", "article 69"],
+      "pages": [36],
+      "summary": "3 mois + 16 jours ouvrables par année d’ancienneté.",
+      "body": "Article 69 — Agents de cadre : préavis de trois (3) mois, augmenté de seize (16) jours ouvrables par année d’ancienneté."
+    },
+    {
+      "id": "conges-circonstance",
+      "title": "Congés de circonstance",
+      "category": "Congés",
+      "keywords": ["circonstance", "mariage", "décès", "accouchement", "déménagement", "article 41"],
+      "pages": [21],
+      "summary": "Mariage 4 j, naissance 2 j, décès conjoint/enfant 7 j, parents 5 j, collatéraux 2 j, déménagement 1 j.",
+      "body": "Article 41 — Mariage du travailleur : 4 jours. Accouchement de l’épouse : 2 jours. Décès conjoint/enfant : 7 jours (+ aide 1000 USD). Décès père/mère : 5 jours (+ 500 USD). Décès beau-père/belle-mère : 5 jours. Parent/allié 2e degré : 2 jours. Mariage d’un enfant : 2 jours. Déménagement (max 1×/an) : 1 jour. Maximum 18 jours ouvrables de congés de circonstance par an."
+    },
+    {
+      "id": "horaires",
+      "title": "Horaires de travail",
+      "category": "Temps de travail",
+      "keywords": ["horaire", "40 heures", "45 heures", "article 53"],
+      "pages": [29],
+      "summary": "40 h/semaine (lun.–ven.) ; heures supp. à partir de la 43e heure ; repos 48 h.",
+      "body": "Article 53 — Maximum légal 45 h/semaine et 8 h/jour. Convention : 40 heures par semaine (8 h/jour, lundi au vendredi). Heures supplémentaires à partir de la 43e heure. Repos hebdomadaire d’au moins 48 heures (samedi–dimanche)."
+    },
+    {
+      "id": "classification",
+      "title": "Classification du personnel",
+      "category": "Classification",
+      "keywords": ["classification", "classes", "maîtrise", "cadre", "exécution"],
+      "pages": [11, 12, 19, 36],
+      "summary": "Trois grands groupes : exécution (classes), maîtrise et cadres — barèmes distincts.",
+      "body": "La convention distingue le personnel d’exécution (classes 1 à 9), le personnel de maîtrise et les agents de cadre. Chaque groupe a ses règles d’essai (art. 25), de congé annuel (art. 39) et de préavis (art. 69)."
+    },
+    {
+      "id": "remuneration",
+      "title": "Rémunération et avantages",
+      "category": "Rémunération",
+      "keywords": ["salaire", "rémunération", "pécule", "prime", "300 USD"],
+      "pages": [19, 33],
+      "summary": "Rémunération nette, pécule de congé, colis de fin d’année 300 USD brut.",
+      "body": "La rémunération est due pendant le congé (pécule). Article 62 : colis de fin d’année de 300 USD brut par travailleur. Autres avantages (logement, CNSS, soins) selon les titres dédiés de la convention."
+    },
+    {
+      "id": "discipline",
+      "title": "Discipline et sanctions",
+      "category": "Discipline",
+      "keywords": ["discipline", "sanction", "faute", "mise à pied", "article 47"],
+      "pages": [25],
+      "summary": "Procédure contradictoire, assistance syndicale, suspension conservatoire max 15 jours.",
+      "body": "Procédure disciplinaire avec explications écrites (3 jours), audition obligatoire en cas de suspension/licenciement, assistance d’un délégué syndical. Article 47 : suspension conservatoire pour enquête (max 15 jours, renouvelable une fois) avec maintien du salaire."
+    },
+    {
+      "id": "confidentialite",
+      "title": "Dossier du personnel",
+      "category": "Obligations",
+      "keywords": ["dossier", "confidentialité", "article 26"],
+      "pages": [12],
+      "summary": "Dossier personnel confidentiel ; consultation sur demande en présence de l’employeur.",
+      "body": "Article 26 — La société tient un dossier confidentiel par travailleur. Pas de communication hors obligation légale. Le travailleur peut consulter son dossier sur demande, sans déplacement, et obtenir copies avec autorisation."
+    },
+    {
+      "id": "transfert",
+      "title": "Transfert et mutation",
+      "category": "Affectation",
+      "keywords": ["transfert", "mutation", "article 37", "article 38"],
+      "pages": [18],
+      "summary": "Transfert et mutation encadrés (entretien, délais, prise en charge logement/voyage).",
+      "body": "Articles 37–38 — Transfert vers une autre société du Groupe : consultation syndicale et entretien avec le travailleur (préavis écrit 8 jours). Mutation : frais de voyage/subsistance à charge de l’employeur ; hôtel ou guest house 1 mois renouvelable une fois."
+    },
+    {
+      "id": "legislation",
+      "title": "Cadre légal de la convention",
+      "category": "Cadre légal",
+      "keywords": ["code du travail", "législation", "loi", "convention"],
+      "pages": [1],
+      "summary": "Convention conclue selon le Code du travail modifié (loi 16/010) et la CCNI 2005.",
+      "body": "Convention collective d’entreprise PPC Barnet Manufacturing DRC SA, conclue en application du chapitre IV, titre XII de la loi n°16/010 du 15 juillet 2016 modifiant la loi n°015-2002 (Code du travail), et des dispositions de la Convention collective nationale interprofessionnelle de 2005."
+    }
+  ]
+}

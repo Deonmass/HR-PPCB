@@ -15,6 +15,8 @@ export const DOCUMENTS_HUB_MENU_IDS = [
   'documents.entetes',
   'documents.rrf',
   'documents.newcomer',
+  'documents.contrat-standard',
+  'documents.convention-collective',
 ];
 
 export const ROUTE_MENU_MAP: RouteMenuEntry[] = [
@@ -23,6 +25,8 @@ export const ROUTE_MENU_MAP: RouteMenuEntry[] = [
   { prefix: '/documents/exit', menuId: 'documents.exit' },
   { prefix: '/documents/interim-appraisal', menuId: 'documents.appraisal' },
   { prefix: '/documents/newcomer', menuId: 'documents.newcomer' },
+  { prefix: '/documents/contrat-standard', menuId: 'documents.contrat-standard' },
+  { prefix: '/documents/convention-collective', menuId: 'documents.convention-collective' },
   { prefix: '/documents', menuId: 'travel.historique' },
   { prefix: '/documents-voyage/attestation-services', menuId: 'travel.attestation' },
   { prefix: '/documents-voyage/payment-voucher', menuId: 'travel.payment-voucher' },

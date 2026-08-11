@@ -29,6 +29,63 @@ function cell(row: unknown[], col: number): unknown {
   return row[col];
 }
 
+function importRowKey(row: FactureSuiviInput): string {
+  return `${String(row.facture ?? '').trim().toLowerCase()}|${String(row.societe ?? '').trim().toLowerCase()}`;
+}
+
+function preferText(current: string | undefined, next: string | undefined): string {
+  const a = String(current ?? '').trim();
+  if (a) return a;
+  return String(next ?? '').trim();
+}
+
+/**
+ * Une ligne unique par FACTURE + SOCIETE.
+ * Les doublons du fichier sont fusionnés : montants additionnés, autres champs = première valeur non vide.
+ */
+export function consolidateDuplicateImportRows(rows: FactureSuiviInput[]): FactureSuiviInput[] {
+  const byKey = new Map<string, FactureSuiviInput>();
+  const order: string[] = [];
+
+  for (const row of rows) {
+    const facture = String(row.facture ?? '').trim();
+    const societe = String(row.societe ?? '').trim();
+    if (!facture || !societe) continue;
+
+    const key = importRowKey(row);
+    const existing = byKey.get(key);
+    if (!existing) {
+      byKey.set(key, { ...row, montant: row.montant ?? null });
+      order.push(key);
+      continue;
+    }
+
+    const left = existing.montant;
+    const right = row.montant;
+    const montant =
+      left == null && right == null ? null : (left ?? 0) + (right ?? 0);
+
+    byKey.set(key, {
+      date: preferText(existing.date, row.date),
+      societe: preferText(existing.societe, row.societe),
+      facture: preferText(existing.facture, row.facture),
+      montant,
+      echeance: preferText(existing.echeance, row.echeance),
+      pr: preferText(existing.pr, row.pr),
+      datePr: preferText(existing.datePr, row.datePr),
+      po: preferText(existing.po, row.po),
+      datePo: preferText(existing.datePo, row.datePo),
+      grn: preferText(existing.grn, row.grn),
+      dateGrn: preferText(existing.dateGrn, row.dateGrn),
+      payment: preferText(existing.payment, row.payment),
+      datePym: preferText(existing.datePym, row.datePym),
+      commentaire: preferText(existing.commentaire, row.commentaire),
+    });
+  }
+
+  return order.map((key) => byKey.get(key)!);
+}
+
 /**
  * Parse Excel matching:
  * DATE | SOCIETE | FACTURE | MONTANT | PR | P.O | PYTMT
@@ -99,5 +156,5 @@ export function parseFacturesSuiviImportBuffer(buffer: ArrayBuffer): ParsedFactu
   }
 
   if (!parsed.length) throw new Error('Aucune ligne facture reconnue');
-  return { rows: parsed, sheetName };
+  return { rows: consolidateDuplicateImportRows(parsed), sheetName };
 }

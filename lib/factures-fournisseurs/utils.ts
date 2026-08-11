@@ -35,7 +35,11 @@ export function formatDateCell(value: unknown): string {
 export function parseMontant(value: unknown): number | null {
   if (value === null || value === undefined || value === '') return null;
   if (typeof value === 'number' && Number.isFinite(value)) return value;
-  const cleaned = String(value).replace(/\s/g, '').replace(',', '.');
+  const cleaned = String(value)
+    .replace(/\s/g, '')
+    .replace(/[$€£]/g, '')
+    .replace(/usd|cdf|eur/gi, '')
+    .replace(',', '.');
   const n = Number(cleaned);
   return Number.isFinite(n) ? n : null;
 }
@@ -396,6 +400,10 @@ export interface FactureMonthlyPoint {
 function yearFromDate(value: string): number | null {
   const d = parseDisplayDate(value);
   return d ? d.getFullYear() : null;
+}
+
+export function yearFromFactureDate(value: string): number | null {
+  return yearFromDate(value);
 }
 
 export function listFactureYears(factures: FactureSuivi[]): number[] {

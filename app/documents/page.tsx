@@ -116,6 +116,27 @@ function IconNewcomer() {
   );
 }
 
+function IconContract() {
+  return (
+    <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+      <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" />
+      <polyline points="14 2 14 8 20 8" />
+      <path d="M9 13h6M9 17h4" />
+      <path d="M9 9h1" />
+    </svg>
+  );
+}
+
+function IconConvention() {
+  return (
+    <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+      <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20" />
+      <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z" />
+      <path d="M8 7h8M8 11h6" />
+    </svg>
+  );
+}
+
 function IconOrder() {
   return (
     <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
@@ -248,6 +269,26 @@ const CARDS: DocCard[] = [
     accent: '#2563eb',
     badge: 'Excel + PDF',
     icon: <IconRrf />,
+  },
+  {
+    id: 'contrat-standard',
+    title: 'Contrat standard',
+    description: 'Contrat CDD/CDI — agent, famille, classification conventionnelle, salaire USD/CDF et signature RH.',
+    href: '/documents/contrat-standard',
+    menuId: 'documents.contrat-standard',
+    accent: '#b45309',
+    badge: 'CDD / CDI',
+    icon: <IconContract />,
+  },
+  {
+    id: 'convention-collective',
+    title: 'Convention collective',
+    description: 'PDF de référence — recherche des clauses (essai, congés, préavis) et résumés RH.',
+    href: '/documents/convention-collective',
+    menuId: 'documents.convention-collective',
+    accent: '#334155',
+    badge: 'Recherche',
+    icon: <IconConvention />,
   },
 ];
 

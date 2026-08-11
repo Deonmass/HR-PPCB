@@ -27,6 +27,7 @@ import {
   computeCommentaire,
   formatDateCell,
   parseMontant,
+  paymentValueFromStatus,
   stepFields,
   withComputedStatut,
 } from './utils';
@@ -344,6 +345,12 @@ export async function listFacturesSuivi(): Promise<FactureSuivi[]> {
   const normalized = store.factures.map((item) =>
     withComputedStatut({
       ...item,
+      date: formatDateCell(item.date) || item.date,
+      datePr: formatDateCell(item.datePr) || item.datePr,
+      datePo: formatDateCell(item.datePo) || item.datePo,
+      dateGrn: formatDateCell(item.dateGrn) || item.dateGrn,
+      datePym: formatDateCell(item.datePym) || item.datePym,
+      echeance: formatDateCell(item.echeance) || item.echeance,
       commentaire: item.commentaire,
     }),
   );
@@ -418,6 +425,53 @@ export async function deleteFactureSuivi(id: string): Promise<boolean> {
   store.factures = next;
   await writeJsonFile(DURABLE_FACTURES_SUIVI_KEY, facturesPath(), store);
   return true;
+}
+
+export async function deleteFacturesSuiviMany(ids: string[]): Promise<number> {
+  await ensureMigrated();
+  const idSet = new Set(ids.map((id) => id.trim()).filter(Boolean));
+  if (!idSet.size) throw new Error('Sélectionnez au moins une facture');
+  const store = await readFacturesStore();
+  const before = store.factures.length;
+  store.factures = store.factures.filter((item) => !idSet.has(item.id));
+  const deleted = before - store.factures.length;
+  if (!deleted) return 0;
+  await writeJsonFile(DURABLE_FACTURES_SUIVI_KEY, facturesPath(), store);
+  return deleted;
+}
+
+export async function bulkUpdateFacturePayment(payload: {
+  ids: string[];
+  status: 'paid' | 'unpaid';
+  datePym?: string;
+}): Promise<FactureSuivi[]> {
+  await ensureMigrated();
+  const ids = [...new Set(payload.ids.map((id) => id.trim()).filter(Boolean))];
+  if (!ids.length) throw new Error('Sélectionnez au moins une facture');
+  const status = payload.status === 'paid' ? 'paid' : 'unpaid';
+  const datePym = String(payload.datePym ?? '').trim();
+  if (status === 'paid' && !datePym) {
+    throw new Error('La date de paiement est requise pour un statut Paid');
+  }
+
+  const store = await readFacturesStore();
+  const payment = paymentValueFromStatus(status);
+  const updated: FactureSuivi[] = [];
+  for (const id of ids) {
+    const index = store.factures.findIndex((item) => item.id === id);
+    if (index < 0) continue;
+    const next = mergeInput(store.factures[index], {
+      id,
+      payment,
+      datePym: status === 'paid' ? datePym : '',
+      commentaire: '',
+    });
+    store.factures[index] = next;
+    updated.push(next);
+  }
+  if (!updated.length) throw new Error('Facture introuvable');
+  await writeJsonFile(DURABLE_FACTURES_SUIVI_KEY, facturesPath(), store);
+  return updated;
 }
 
 export async function assignFactureStep(payload: AssignStepPayload): Promise<FactureSuivi[]> {

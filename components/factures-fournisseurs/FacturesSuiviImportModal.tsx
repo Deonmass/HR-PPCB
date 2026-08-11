@@ -154,6 +154,9 @@ export default function FacturesSuiviImportModal({ open, onClose, onImported }: 
             <br />
             Une valeur dans <strong>PYTMT</strong> (ex. PAID) marque la facture comme payée ;
             vide = unpaid.
+            <br />
+            Les lignes avec le même n° de facture et la même société sont fusionnées : leurs
+            montants sont additionnés.
           </p>
           <div className="form-group">
             <label>Fichier Excel</label>

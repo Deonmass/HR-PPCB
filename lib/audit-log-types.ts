@@ -114,6 +114,8 @@ export const AUDIT_MODULE_LABELS: Record<string, string> = {
   'documents.entetes': 'Entête',
   'documents.rrf': 'RRF',
   'documents.newcomer': 'Newcomer',
+  'documents.contrat-standard': 'Contrat standard',
+  'documents.convention-collective': 'Convention collective',
   postes: 'Postes',
   mouvements: 'Mouvements',
   'protocol.visa-travail': 'Visa de travail',

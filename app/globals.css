@@ -6329,7 +6329,7 @@ html[data-theme="light"] .btn-export.btn-with-icon .btn-spinner {
   width: 100%;
 }
 
-/* Compilation : pleine largeur, sans marges latérales */
+/* Compilation : pleine largeur, sans marges latÃ©rales */
 .timesheet-compilation-view .panel.timesheet-calendar-panel {
   flex: 1 1 auto;
   min-height: 0;
@@ -6362,7 +6362,7 @@ html[data-theme="light"] .btn-export.btn-with-icon .btn-spinner {
   font-size: 0.85rem;
 }
 
-/* Compilation table — scroll ici pour que sticky mat/nom fonctionne */
+/* Compilation table â scroll ici pour que sticky mat/nom fonctionne */
 .compilation-table-wrap {
   overflow: auto !important;
   width: 100%;
@@ -6437,7 +6437,7 @@ html[data-theme="light"] .btn-export.btn-with-icon .btn-spinner {
   background: #f3f4f6;
 }
 
-/* Colonnes figées Matricule + Employee Name */
+/* Colonnes figÃ©es Matricule + Employee Name */
 .compilation-table th.compilation-freeze,
 .compilation-table td.compilation-freeze,
 .compilation-table th.compilation-sticky,
@@ -6506,7 +6506,7 @@ html[data-theme="light"] .compilation-table tbody tr:hover td.compilation-sticky
   background: #eceef2 !important;
 }
 
-/* Alias historique compilation-fix* (même sticky que freeze) */
+/* Alias historique compilation-fix* (mÃªme sticky que freeze) */
 .compilation-table th.compilation-fix,
 .compilation-table td.compilation-fix,
 .compilation-fix {
@@ -11818,7 +11818,7 @@ html[data-theme="light"] .dependants-file-btn.is-open {
   background: linear-gradient(180deg, #a855f7 0%, #7c3aed 100%);
 }
 
-/* Modal agrandi — Par tranche d'âge (graphique / simulation) */
+/* Modal agrandi â Par tranche d'Ã¢ge (graphique / simulation) */
 .dependants-age-enlarge-modal {
   width: min(860px, 92vw);
   max-width: 92vw;
@@ -14493,7 +14493,7 @@ html[data-theme="light"] .dependant-family-tree-svg-line {
   line-height: 1.25;
 }
 
-/* Largeurs — liste / exit : Nom et Poste absorbent l’espace. */
+/* Largeurs â liste / exit : Nom et Poste absorbent lâespace. */
 .employees-table-compact .emp-col-matricule { width: 4.4rem; }
 .employees-table-compact .emp-col-nom { width: 18%; min-width: 9rem; }
 .employees-table-compact .emp-col-dept { width: 10%; min-width: 6.5rem; }
@@ -14509,7 +14509,7 @@ html[data-theme="light"] .dependant-family-tree-svg-line {
 .employees-table-compact .emp-col-contrat { width: 3.6rem; min-width: 3.4rem; }
 .employees-table-compact .emp-col-raison { width: 9%; min-width: 5.5rem; }
 
-/* Colonnes dates / essai / CDD — largeurs fixes pour éviter le chevauchement. */
+/* Colonnes dates / essai / CDD â largeurs fixes pour Ã©viter le chevauchement. */
 .employees-table-compact .emp-col-mois { width: 3rem; text-align: center; }
 .employees-table-compact .emp-col-date,
 .employees-table-compact .emp-col-debut,
@@ -15927,12 +15927,19 @@ html[data-theme='light'] .factures-monthly-histo-bubble {
 }
 
 .factures-suivi-flat-table .col-facture {
-  width: 18%;
+  width: 15%;
+}
+
+.factures-suivi-flat-table .col-montant {
+  width: 10%;
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+  font-weight: 600;
 }
 
 .factures-suivi-flat-table .col-pr,
 .factures-suivi-flat-table .col-po {
-  width: 11%;
+  width: 10%;
 }
 
 .factures-suivi-flat-table .col-payment {
@@ -16132,6 +16139,56 @@ html[data-theme='light'] .factures-monthly-histo-bubble {
   gap: 0.75rem;
   padding: 0.5rem 0.75rem;
   border-bottom: 1px solid var(--border, rgba(148, 163, 184, 0.25));
+}
+
+.factures-suivi-bulk-bar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.65rem 1rem;
+  padding: 0.55rem 0.85rem;
+  border-bottom: 1px solid var(--border, rgba(148, 163, 184, 0.25));
+  background: color-mix(in srgb, var(--accent, #c62828) 8%, transparent);
+}
+
+.factures-suivi-bulk-count {
+  font-size: 0.82rem;
+  font-weight: 600;
+}
+
+.factures-suivi-bulk-actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.4rem;
+}
+
+.factures-suivi-year-hint {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem 1rem;
+  padding: 0.75rem 0.9rem;
+  border-bottom: 1px solid var(--border, rgba(148, 163, 184, 0.25));
+  background: #fff7ed;
+  color: #9a3412;
+}
+
+.factures-suivi-year-hint p {
+  margin: 0;
+  font-size: 0.85rem;
+}
+
+.factures-suivi-flat-table .col-check {
+  width: 2rem;
+  max-width: 2rem;
+  text-align: center;
+}
+
+.factures-suivi-flat-table tr.is-selected td {
+  background: color-mix(in srgb, var(--accent, #c62828) 10%, transparent);
 }
 
 .factures-suivi-editable {
@@ -20095,7 +20152,7 @@ html[data-theme='light'] .charroi-table tbody tr.charroi-row-bad:hover td {
   color: var(--muted);
 }
 
-/* Dates d'échéance (assurance / vignette / contrôle technique). */
+/* Dates d'Ã©chÃ©ance (assurance / vignette / contrÃ´le technique). */
 .charroi-date {
   display: inline-flex;
   padding: 0.1rem 0.35rem;
@@ -20116,7 +20173,7 @@ html[data-theme='light'] .charroi-table tbody tr.charroi-row-bad:hover td {
   outline-offset: 1px;
 }
 .charroi-date.is-none { color: var(--muted); }
-/* Rouge dès ≤ 1 mois avant fin (soon) et si expiré */
+/* Rouge dÃ¨s â¤ 1 mois avant fin (soon) et si expirÃ© */
 .charroi-date.is-soon,
 .charroi-date.is-expired {
   background: var(--danger-soft);
@@ -20128,7 +20185,7 @@ html:not([data-theme='light']) .charroi-date.is-expired {
   color: #fca5a5;
 }
 
-/* Filtres km (supérieur / inférieur) */
+/* Filtres km (supÃ©rieur / infÃ©rieur) */
 .charroi-km-filter {
   display: inline-flex;
   align-items: center;
@@ -20363,7 +20420,7 @@ html:not([data-theme='light']) .charroi-date.is-expired {
   grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
   gap: 0.85rem;
 }
-/* Filtres d'en-tête façon Excel (partagés). */
+/* Filtres d'en-tÃªte faÃ§on Excel (partagÃ©s). */
 .th-filter,
 .charroi-th-filter { padding: 0 !important; }
 .table-hf,
@@ -21203,7 +21260,7 @@ html[data-theme='light'] .charroi-hf-panel {
   font-family: inherit;
 }
 
-/* Inputs alignés comme du texte de cellule — minimal */
+/* Inputs alignÃ©s comme du texte de cellule â minimal */
 .newcomer-detail-table .newcomer-cell-input {
   width: 100%;
   max-width: 16rem;
@@ -21261,7 +21318,7 @@ html[data-theme='light'] .charroi-hf-panel {
   }
 }
 
-/* Top navigation progress — fine red bar */
+/* Top navigation progress â fine red bar */
 .top-progress-bar {
   position: fixed;
   top: 0;
@@ -21307,7 +21364,7 @@ html[data-theme='light'] .charroi-hf-panel {
 }
 
 
-/* ========== RRF page — 3 colonnes, header compact ========== */
+/* ========== RRF page â 3 colonnes, header compact ========== */
 .main:has(.rrf-page) {
   display: flex !important;
   flex-direction: column !important;
@@ -21329,7 +21386,7 @@ html[data-theme='light'] .charroi-hf-panel {
   background: #fff;
 }
 
-/* Header figé : titre gauche, onglets droite */
+/* Header figÃ© : titre gauche, onglets droite */
 .rrf-sticky {
   flex: 0 0 auto;
   position: sticky;
@@ -21438,7 +21495,7 @@ html[data-theme="dark"] .rrf-sticky {
   white-space: nowrap;
 }
 
-/* Corps + padding — espace sous le header */
+/* Corps + padding â espace sous le header */
 .rrf-body {
   flex: 1 1 auto;
   min-height: 0;
@@ -21744,7 +21801,7 @@ html[data-theme="dark"] .rrf-sticky {
   margin: 0;
 }
 
-/* Approvers : inputs clairs et simples (éviter le fond sombre global) */
+/* Approvers : inputs clairs et simples (Ã©viter le fond sombre global) */
 .rrf-approvers-table input:not([type='radio']):not([type='checkbox']),
 .rrf-approvers-table .project-picker input,
 .rrf-approvers-table .project-picker-input {
@@ -22098,7 +22155,7 @@ html[data-theme="dark"] .rrf-sticky {
   }
 }
 
-/* Entêtes — papiers à lettre */
+/* EntÃªtes â papiers Ã  lettre */
 .entetes-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
@@ -22272,7 +22329,7 @@ html[data-theme="dark"] .rrf-sticky {
   margin: 0.35rem 0 0.9rem;
 }
 
-/* ——— Mouvements personnel ——— */
+/* âââ Mouvements personnel âââ */
 .mvt-page {
   --mvt-ctrl-h: 40px;
   display: flex;
@@ -22839,7 +22896,7 @@ html[data-theme="dark"] .rrf-sticky {
   justify-content: center;
 }
 
-/* Layout pleine hauteur + header figé */
+/* Layout pleine hauteur + header figÃ© */
 .main:has(.postes-page) {
   display: flex;
   flex-direction: column;
@@ -22958,7 +23015,7 @@ html[data-theme="light"] .postes-sticky {
   background: color-mix(in srgb, #e30613 5%, #fff);
 }
 
-/* Dashboard — animations & hover */
+/* Dashboard â animations & hover */
 @keyframes postes-kpi-in {
   from {
     opacity: 0;
@@ -22997,7 +23054,7 @@ html[data-theme="light"] .postes-sticky {
   margin-top: 0.35rem;
 }
 
-/* Dashboard Postes — grille 3×2, espacement resserré */
+/* Dashboard Postes â grille 3Ã2, espacement resserrÃ© */
 .postes-dashboard .postes-kpi-strip.travel-history-cards {
   grid-template-columns: repeat(3, minmax(0, 1fr));
   gap: 0.55rem;
@@ -23164,5 +23221,258 @@ button.postes-kpi-card {
   .postes-dashboard .postes-kpi-card:hover,
   .postes-dashboard .postes-chart-host:hover .home-chart-panel {
     transform: none;
+  }
+}
+
+/*  Contrat standard / Convention collective  */
+.contrat-standard-panel .contrat-section-title {
+  margin: 1.35rem 0 0.65rem;
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: var(--text, #0f172a);
+}
+.contrat-address-input {
+  background: #fef9c3;
+  border-color: #eab308;
+}
+.contrat-field-hint {
+  color: #b45309;
+  font-weight: 600;
+  font-size: 0.75rem;
+}
+.contrat-salary-preview {
+  margin: 0.35rem 0 0.75rem;
+  padding: 0.65rem 0.8rem;
+  border-radius: 8px;
+  background: #f8fafc;
+  border: 1px solid #e2e8f0;
+}
+.contrat-rules-hint {
+  margin: 0.25rem 0 0.75rem;
+  font-size: 0.82rem;
+}
+.convention-layout {
+  display: grid;
+  grid-template-columns: minmax(240px, 30%) minmax(0, 70%);
+  gap: 1rem;
+  align-items: start;
+}
+.convention-col-search,
+.convention-col-detail {
+  min-width: 0;
+  padding: 1.25rem 1.35rem;
+}
+.convention-col-search {
+  position: sticky;
+  top: 4.5rem;
+  max-height: calc(100vh - 5.5rem);
+  overflow: auto;
+}
+.convention-sticky {
+  position: sticky;
+  top: 0;
+  z-index: 90;
+  margin-left: calc(-1 * var(--main-pad-x, 1.25rem));
+  margin-right: calc(-1 * var(--main-pad-x, 1.25rem));
+  margin-top: calc(-1 * var(--main-pad-y, 1rem));
+  margin-bottom: 1rem;
+  padding: 0.75rem var(--main-pad-x, 1.25rem) 0.7rem;
+  background: var(--panel, #fff);
+  border-bottom: 1px solid color-mix(in srgb, var(--border, #e2e8f0) 80%, transparent);
+}
+.convention-page-header {
+  margin-bottom: 0 !important;
+  align-items: center;
+}
+.convention-pdf-excerpt {
+  margin-top: 1.25rem;
+  padding-top: 1rem;
+  border-top: 1px solid #e2e8f0;
+  display: grid;
+  gap: 1rem;
+}
+.convention-pdf-excerpt-head {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 0.75rem;
+}
+.convention-pdf-excerpt-head h4 {
+  margin: 0;
+  font-size: 0.9rem;
+}
+.convention-pdf-frame-wrap {
+  display: grid;
+  gap: 0.5rem;
+}
+.convention-pdf-frame-label {
+  font-size: 0.78rem;
+  font-weight: 600;
+  color: #64748b;
+}
+.convention-pdf-frame {
+  width: 100%;
+  min-height: 32rem;
+  border: 1px solid #e2e8f0;
+  border-radius: 10px;
+  background: #f8fafc;
+}
+.convention-keyword-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+  margin: 0.35rem 0 0.85rem;
+}
+.convention-keyword-chip {
+  border: 1px solid #cbd5e1;
+  background: #f8fafc;
+  color: #0f172a;
+  border-radius: 999px;
+  padding: 0.28rem 0.7rem;
+  font-size: 0.78rem;
+  cursor: pointer;
+  line-height: 1.2;
+}
+.convention-keyword-chip:hover {
+  border-color: #94a3b8;
+  background: #f1f5f9;
+}
+.convention-keyword-chip.is-active {
+  background: #0f172a;
+  border-color: #0f172a;
+  color: #fff;
+}
+.convention-col-meta {
+  margin: 0 0 0.5rem;
+  font-size: 0.78rem;
+  color: var(--muted, #64748b);
+}
+.convention-hit-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+}
+.convention-hit-item {
+  text-align: left;
+  border: 1px solid #e2e8f0;
+  background: #fff;
+  border-radius: 8px;
+  padding: 0.55rem 0.7rem;
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  gap: 0.15rem;
+}
+.convention-hit-item strong {
+  font-size: 0.84rem;
+  color: #0f172a;
+}
+.convention-hit-item span {
+  font-size: 0.72rem;
+  color: #64748b;
+}
+.convention-hit-item:hover {
+  border-color: #94a3b8;
+}
+.convention-hit-item.is-active {
+  border-color: #0f172a;
+  background: #f8fafc;
+  box-shadow: inset 3px 0 0 #0f172a;
+}
+.convention-detail-header {
+  display: flex;
+  justify-content: space-between;
+  gap: 0.75rem;
+  align-items: flex-start;
+  margin-bottom: 0.65rem;
+}
+.convention-detail-header h3 {
+  margin: 0.15rem 0 0;
+  font-size: 1.15rem;
+}
+.convention-detail-category {
+  margin: 0;
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: #64748b;
+  font-weight: 600;
+}
+.convention-detail-summary {
+  margin: 0 0 0.85rem;
+  font-size: 0.95rem;
+  line-height: 1.5;
+  color: #334155;
+}
+.convention-detail-body {
+  padding: 0.85rem 1rem;
+  border-radius: 10px;
+  background: #f8fafc;
+  border: 1px solid #e2e8f0;
+}
+.convention-detail-body h4 {
+  margin: 0 0 0.45rem;
+  font-size: 0.82rem;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+  color: #475569;
+}
+.convention-detail-body p {
+  margin: 0;
+  line-height: 1.55;
+  font-size: 0.92rem;
+  color: #0f172a;
+}
+.convention-notes-block {
+  margin-top: 1.5rem;
+  padding-top: 1rem;
+  border-top: 1px solid #e2e8f0;
+}
+.convention-note-form {
+  margin: 0.75rem 0 1rem;
+}
+.convention-hits,
+.convention-notes {
+  display: grid;
+  gap: 0.75rem;
+  margin-top: 0.75rem;
+}
+.convention-hit-card {
+  border: 1px solid #e2e8f0;
+  border-radius: 10px;
+  padding: 0.85rem 1rem;
+  background: #fff;
+}
+.convention-hit-card header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+  margin-bottom: 0.35rem;
+}
+.convention-hit-card p {
+  margin: 0.25rem 0;
+  font-size: 0.9rem;
+  line-height: 1.45;
+}
+.convention-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.35rem;
+  margin-top: 0.45rem !important;
+}
+.page-header-actions {
+  display: flex;
+  gap: 0.5rem;
+  align-items: center;
+  flex-wrap: wrap;
+}
+@media (max-width: 960px) {
+  .convention-layout {
+    grid-template-columns: 1fr;
+  }
+  .convention-col-search {
+    position: static;
+    max-height: none;
   }
 }

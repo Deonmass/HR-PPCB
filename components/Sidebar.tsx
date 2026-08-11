@@ -112,6 +112,8 @@ const NAV: NavSection[] = [
       'documents.entetes',
       'documents.rrf',
       'documents.newcomer',
+      'documents.contrat-standard',
+      'documents.convention-collective',
     ],
   },
   {

@@ -4,6 +4,7 @@ import { useMemo, useState } from 'react';
 import TableHeaderFilter from '@/components/TableHeaderFilter';
 import type { FactureSuivi, FactureSuiviInput } from '@/lib/factures-fournisseurs/types';
 import {
+  formatUsdLike,
   isFacturePaid,
   paymentStatusLabel,
   paymentValueFromStatus,
@@ -16,17 +17,22 @@ import {
 
 export type EditableFactureField = 'pr' | 'po' | 'payment';
 
-type FilterKey = 'date' | 'societe' | 'facture' | 'pr' | 'po' | 'payment' | 'commentaire';
+type FilterKey = 'date' | 'societe' | 'facture' | 'montant' | 'pr' | 'po' | 'payment' | 'commentaire';
 
 const EMPTY_FILTERS: Record<FilterKey, string[]> = {
   date: [],
   societe: [],
   facture: [],
+  montant: [],
   pr: [],
   po: [],
   payment: [],
   commentaire: [],
 };
+
+function displayMontant(value: number | null | undefined): string {
+  return value != null ? `${formatUsdLike(value)} $` : '—';
+}
 
 const FIELD_META: Record<
   EditableFactureField,
@@ -72,6 +78,10 @@ function fromDateInputValue(iso: string): string {
 interface Props {
   factures: FactureSuivi[];
   canEdit: boolean;
+  canSelect?: boolean;
+  selectedIds?: Set<string>;
+  onToggleSelect?: (id: string, selected: boolean) => void;
+  onToggleSelectMany?: (ids: string[], selected: boolean) => void;
   onFieldUpdate: (id: string, patch: FactureSuiviInput) => Promise<void>;
   onContextMenu?: (event: React.MouseEvent, facture: FactureSuivi) => void;
 }
@@ -79,6 +89,10 @@ interface Props {
 export default function FacturesSuiviFlatTable({
   factures,
   canEdit,
+  canSelect = false,
+  selectedIds,
+  onToggleSelect,
+  onToggleSelectMany,
   onFieldUpdate,
   onContextMenu,
 }: Props) {
@@ -98,6 +112,7 @@ export default function FacturesSuiviFlatTable({
         date: (f) => f.date,
         societe: (f) => f.societe,
         facture: (f) => f.facture,
+        montant: (f) => displayMontant(f.montant),
         pr: (f) => f.pr,
         po: (f) => f.po,
         payment: (f) => paymentStatusLabel(f.payment),
@@ -113,6 +128,7 @@ export default function FacturesSuiviFlatTable({
           matchesColumnFilter(colFilters.date, f.date) &&
           matchesColumnFilter(colFilters.societe, f.societe) &&
           matchesColumnFilter(colFilters.facture, f.facture) &&
+          matchesColumnFilter(colFilters.montant, displayMontant(f.montant)) &&
           matchesColumnFilter(colFilters.pr, f.pr) &&
           matchesColumnFilter(colFilters.po, f.po) &&
           matchesColumnFilter(colFilters.payment, paymentStatusLabel(f.payment)) &&
@@ -239,11 +255,21 @@ export default function FacturesSuiviFlatTable({
     );
   };
 
+  const filteredIds = useMemo(() => filtered.map((f) => f.id), [filtered]);
+  const allFilteredSelected =
+    canSelect &&
+    filteredIds.length > 0 &&
+    !!selectedIds &&
+    filteredIds.every((id) => selectedIds.has(id));
+  const someFilteredSelected =
+    canSelect && !!selectedIds && filteredIds.some((id) => selectedIds.has(id));
+
   if (!factures.length) {
     return <p className="empty-state">Aucune facture.</p>;
   }
 
   const modalMeta = editModal ? FIELD_META[editModal.field] : null;
+  const colCount = canSelect ? 10 : 9;
 
   return (
     <div className="factures-suivi-flat">
@@ -266,6 +292,20 @@ export default function FacturesSuiviFlatTable({
         <table className="factures-suivi-table factures-suivi-flat-table">
           <thead>
             <tr>
+              {canSelect ? (
+                <th className="col-check">
+                  <input
+                    type="checkbox"
+                    checked={Boolean(allFilteredSelected)}
+                    ref={(el) => {
+                      if (el) el.indeterminate = Boolean(someFilteredSelected && !allFilteredSelected);
+                    }}
+                    onChange={(e) => onToggleSelectMany?.(filteredIds, e.target.checked)}
+                    aria-label="Sélectionner toutes les factures visibles"
+                    disabled={!filteredIds.length}
+                  />
+                </th>
+              ) : null}
               <th className="col-row-num">#</th>
               <th className="th-filter">
                 <TableHeaderFilter
@@ -289,6 +329,14 @@ export default function FacturesSuiviFlatTable({
                   values={filterValues.facture}
                   selected={colFilters.facture}
                   onChange={setColFilter('facture')}
+                />
+              </th>
+              <th className="th-filter">
+                <TableHeaderFilter
+                  label="Montant"
+                  values={filterValues.montant}
+                  selected={colFilters.montant}
+                  onChange={setColFilter('montant')}
                 />
               </th>
               <th className="th-filter">
@@ -328,17 +376,29 @@ export default function FacturesSuiviFlatTable({
           <tbody>
             {filtered.length === 0 ? (
               <tr>
-                <td colSpan={8} className="empty-state">
+                <td colSpan={colCount} className="empty-state">
                   Aucune facture pour ces filtres.
                 </td>
               </tr>
             ) : (
-              filtered.map((f, index) => (
+              filtered.map((f, index) => {
+                const isSelected = Boolean(selectedIds?.has(f.id));
+                return (
                 <tr
                   key={f.id}
-                  className="factures-suivi-row-context"
+                  className={`factures-suivi-row-context${isSelected ? ' is-selected' : ''}`}
                   onContextMenu={(event) => onContextMenu?.(event, f)}
                 >
+                  {canSelect ? (
+                    <td className="col-check" onClick={(e) => e.stopPropagation()}>
+                      <input
+                        type="checkbox"
+                        checked={isSelected}
+                        onChange={(e) => onToggleSelect?.(f.id, e.target.checked)}
+                        aria-label={`Sélectionner ${f.facture || f.id}`}
+                      />
+                    </td>
+                  ) : null}
                   <td className="col-row-num is-num">{index + 1}</td>
                   <td className="col-date" title={displayCell(f.date)}>
                     {displayCell(f.date)}
@@ -349,6 +409,9 @@ export default function FacturesSuiviFlatTable({
                   <td className="col-facture" title={displayCell(f.facture)}>
                     <strong>{displayCell(f.facture)}</strong>
                   </td>
+                  <td className="col-montant is-num" title={displayMontant(f.montant)}>
+                    {displayMontant(f.montant)}
+                  </td>
                   <td className="col-pr">{renderEditable(f, 'pr')}</td>
                   <td className="col-po">{renderEditable(f, 'po')}</td>
                   <td className="col-payment">{renderEditable(f, 'payment')}</td>
@@ -356,7 +419,8 @@ export default function FacturesSuiviFlatTable({
                     {displayCell(f.commentaire)}
                   </td>
                 </tr>
-              ))
+                );
+              })
             )}
           </tbody>
         </table>

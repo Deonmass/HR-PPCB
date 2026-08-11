@@ -97,7 +97,7 @@ export function formatExcelDateValue(value: unknown): string {
   }
   const trimmed = String(value).trim();
   if (!trimmed) return '';
-  const fr = trimmed.match(/^(\d{1,2})\/(\d{1,2})\/(\d{4})$/);
+  const fr = trimmed.match(/^(\d{1,2})[\/\-.](\d{1,2})[\/\-.](\d{4})$/);
   if (fr) {
     const dd = fr[1].padStart(2, '0');
     const mm = fr[2].padStart(2, '0');

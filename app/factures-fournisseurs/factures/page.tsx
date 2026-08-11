@@ -27,6 +27,7 @@ import {
   isFacturePaid,
   listFactureYears,
   paymentValueFromStatus,
+  yearFromFactureDate,
 } from '@/lib/factures-fournisseurs/utils';
 import { confirmDelete, showError, showSuccess } from '@/lib/swal';
 
@@ -98,8 +99,14 @@ export default function FacturesSuiviPage() {
     y: number;
     facture: FactureSuivi;
   } | null>(null);
+  const [selectedIds, setSelectedIds] = useState<Set<string>>(() => new Set());
+  const [bulkBusy, setBulkBusy] = useState(false);
+  const [bulkPaymentModal, setBulkPaymentModal] = useState<'paid' | 'unpaid' | null>(null);
+  const [bulkPaymentDate, setBulkPaymentDate] = useState('');
 
   const isEditMode = Boolean(form.id);
+  const canSelect = canEdit || canDelete;
+  const selectedCount = selectedIds.size;
 
   const load = useCallback(async (isRefresh = false) => {
     if (isRefresh) setRefreshing(true);
@@ -143,7 +150,23 @@ export default function FacturesSuiviPage() {
   useEffect(() => {
     setContextMenu(null);
     setSearch('');
+    setSelectedIds(new Set());
+    setBulkPaymentModal(null);
   }, [tab]);
+
+  useEffect(() => {
+    setSelectedIds((prev) => {
+      if (!prev.size) return prev;
+      const valid = new Set(factures.map((f) => f.id));
+      let changed = false;
+      const next = new Set<string>();
+      for (const id of prev) {
+        if (valid.has(id)) next.add(id);
+        else changed = true;
+      }
+      return changed ? next : prev;
+    });
+  }, [factures]);
 
   const years = useMemo(() => listFactureYears(factures), [factures]);
   const selectedYear = years.includes(dashboardYear)
@@ -179,6 +202,19 @@ export default function FacturesSuiviPage() {
         .includes(q),
     );
   }, [facturesForYear, stageForTab, search]);
+
+  const searchOtherYears = useMemo(() => {
+    const q = search.trim().toLowerCase();
+    if (!q || !stageForTab || listForTab.length > 0) return [] as number[];
+    const yearsFound = new Set<number>();
+    for (const f of filterByTab(factures, stageForTab)) {
+      const hay = `${f.facture} ${f.societe} ${f.pr} ${f.po} ${f.payment} ${f.commentaire} ${f.date}`.toLowerCase();
+      if (!hay.includes(q)) continue;
+      const y = yearFromFactureDate(f.date);
+      if (y != null && y !== selectedYear) yearsFound.add(y);
+    }
+    return [...yearsFound].sort((a, b) => b - a);
+  }, [factures, stageForTab, search, listForTab.length, selectedYear]);
 
   const tabCounts = useMemo(
     () => ({
@@ -286,7 +322,115 @@ export default function FacturesSuiviPage() {
       await showError(json.error || 'Suppression impossible');
       return;
     }
+    setSelectedIds((prev) => {
+      if (!prev.has(facture.id)) return prev;
+      const next = new Set(prev);
+      next.delete(facture.id);
+      return next;
+    });
     await load(true);
+  };
+
+  const toggleSelect = (id: string, selected: boolean) => {
+    setSelectedIds((prev) => {
+      const next = new Set(prev);
+      if (selected) next.add(id);
+      else next.delete(id);
+      return next;
+    });
+  };
+
+  const toggleSelectMany = (ids: string[], selected: boolean) => {
+    setSelectedIds((prev) => {
+      const next = new Set(prev);
+      for (const id of ids) {
+        if (selected) next.add(id);
+        else next.delete(id);
+      }
+      return next;
+    });
+  };
+
+  const clearSelection = () => {
+    setSelectedIds(new Set());
+    setBulkPaymentModal(null);
+  };
+
+  const openBulkPaymentModal = (status: 'paid' | 'unpaid') => {
+    if (!selectedCount || !canEdit) return;
+    setBulkPaymentDate(toDateInputValue(todayDisplay()));
+    setBulkPaymentModal(status);
+  };
+
+  const handleBulkPayment = async () => {
+    if (!bulkPaymentModal || !selectedCount || bulkBusy) return;
+    const dateDisplay = fromDateInputValue(bulkPaymentDate);
+    if (bulkPaymentModal === 'paid' && !dateDisplay) {
+      await showError('La date de paiement est requise pour un statut Paid.');
+      return;
+    }
+    setBulkBusy(true);
+    try {
+      const res = await fetch('/api/factures-suivi', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          action: 'bulk-payment',
+          ids: [...selectedIds],
+          status: bulkPaymentModal,
+          datePym: bulkPaymentModal === 'paid' ? dateDisplay : '',
+        }),
+      });
+      const json = await res.json().catch(() => ({}));
+      if (!res.ok) {
+        await showError((json as { error?: string }).error || 'Modification impossible');
+        return;
+      }
+      const updatedCount = Array.isArray((json as { updated?: unknown[] }).updated)
+        ? (json as { updated: unknown[] }).updated.length
+        : selectedCount;
+      await showSuccess(
+        `${updatedCount} facture(s) marquées ${bulkPaymentModal === 'paid' ? 'Paid' : 'Unpaid'}`,
+      );
+      clearSelection();
+      await load(true);
+    } finally {
+      setBulkBusy(false);
+    }
+  };
+
+  const handleBulkDelete = async () => {
+    if (!selectedCount || !canDelete || bulkBusy) return;
+    if (
+      !(await confirmDelete(
+        `Supprimer ${selectedCount} facture${selectedCount > 1 ? 's' : ''} ?`,
+        'Cette action est définitive.',
+      ))
+    ) {
+      return;
+    }
+    setBulkBusy(true);
+    try {
+      const res = await fetch('/api/factures-suivi', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          action: 'bulk-delete',
+          ids: [...selectedIds],
+        }),
+      });
+      const json = await res.json().catch(() => ({}));
+      if (!res.ok) {
+        await showError((json as { error?: string }).error || 'Suppression impossible');
+        return;
+      }
+      const deleted = Number((json as { deleted?: number }).deleted ?? selectedCount);
+      await showSuccess(`${deleted} facture(s) supprimée(s)`);
+      clearSelection();
+      await load(true);
+    } finally {
+      setBulkBusy(false);
+    }
   };
 
   const handleFieldUpdate = async (id: string, patch: FactureSuiviInput) => {
@@ -532,9 +676,80 @@ export default function FacturesSuiviPage() {
 
           {tab !== 'dashboard' && (
             <div className="panel factures-suivi-list-panel">
+              {selectedCount > 0 ? (
+                <div className="factures-suivi-bulk-bar">
+                  <span className="factures-suivi-bulk-count">
+                    {selectedCount} sélectionnée{selectedCount > 1 ? 's' : ''}
+                  </span>
+                  <div className="factures-suivi-bulk-actions">
+                    {canEdit ? (
+                      <>
+                        <button
+                          type="button"
+                          className="btn btn-secondary btn-sm"
+                          disabled={bulkBusy}
+                          onClick={() => openBulkPaymentModal('paid')}
+                        >
+                          Marquer Paid
+                        </button>
+                        <button
+                          type="button"
+                          className="btn btn-secondary btn-sm"
+                          disabled={bulkBusy}
+                          onClick={() => openBulkPaymentModal('unpaid')}
+                        >
+                          Marquer Unpaid
+                        </button>
+                      </>
+                    ) : null}
+                    {canDelete ? (
+                      <button
+                        type="button"
+                        className="btn btn-danger-outline btn-sm"
+                        disabled={bulkBusy}
+                        onClick={() => void handleBulkDelete()}
+                      >
+                        Supprimer
+                      </button>
+                    ) : null}
+                    <button
+                      type="button"
+                      className="btn btn-ghost btn-sm"
+                      disabled={bulkBusy}
+                      onClick={clearSelection}
+                    >
+                      Effacer la sélection
+                    </button>
+                  </div>
+                </div>
+              ) : null}
+              {listForTab.length === 0 && searchOtherYears.length > 0 ? (
+                <div className="factures-suivi-year-hint">
+                  <p>
+                    Aucun résultat en <strong>{selectedYear}</strong> pour « {search.trim()} ».
+                    Trouvé en {searchOtherYears.join(', ')}.
+                  </p>
+                  <div className="factures-suivi-bulk-actions">
+                    {searchOtherYears.map((year) => (
+                      <button
+                        key={year}
+                        type="button"
+                        className="btn btn-primary btn-sm"
+                        onClick={() => setDashboardYear(year)}
+                      >
+                        Voir {year}
+                      </button>
+                    ))}
+                  </div>
+                </div>
+              ) : null}
               <FacturesSuiviFlatTable
                 factures={listForTab}
                 canEdit={canEdit}
+                canSelect={canSelect}
+                selectedIds={selectedIds}
+                onToggleSelect={toggleSelect}
+                onToggleSelectMany={toggleSelectMany}
                 onFieldUpdate={handleFieldUpdate}
                 onContextMenu={openContextMenu}
               />
@@ -542,6 +757,63 @@ export default function FacturesSuiviPage() {
           )}
         </div>
       </div>
+
+      {bulkPaymentModal ? (
+        <div className="modal-overlay open" onClick={() => !bulkBusy && setBulkPaymentModal(null)}>
+          <div className="modal modal-form" onClick={(e) => e.stopPropagation()}>
+            <div className="modal-header">
+              <h3>
+                {bulkPaymentModal === 'paid' ? 'Marquer Paid' : 'Marquer Unpaid'} — {selectedCount}{' '}
+                facture{selectedCount > 1 ? 's' : ''}
+              </h3>
+              <button
+                type="button"
+                className="modal-close"
+                onClick={() => setBulkPaymentModal(null)}
+                disabled={bulkBusy}
+              >
+                ×
+              </button>
+            </div>
+            <div className="modal-body">
+              {bulkPaymentModal === 'paid' ? (
+                <div className="form-group">
+                  <label>Date de paiement *</label>
+                  <input
+                    type="date"
+                    value={bulkPaymentDate}
+                    disabled={bulkBusy}
+                    autoFocus
+                    onChange={(e) => setBulkPaymentDate(e.target.value)}
+                  />
+                </div>
+              ) : (
+                <p className="factures-suivi-assign-hint">
+                  Les factures sélectionnées repasseront en Unpaid (date de paiement effacée).
+                </p>
+              )}
+            </div>
+            <div className="modal-footer">
+              <button
+                type="button"
+                className="btn btn-secondary"
+                onClick={() => setBulkPaymentModal(null)}
+                disabled={bulkBusy}
+              >
+                Annuler
+              </button>
+              <button
+                type="button"
+                className="btn btn-primary"
+                onClick={() => void handleBulkPayment()}
+                disabled={bulkBusy}
+              >
+                {bulkBusy ? 'Enregistrement…' : 'Appliquer'}
+              </button>
+            </div>
+          </div>
+        </div>
+      ) : null}
 
       {contextMenu && contextItems.length > 0 && (
         <RowContextMenu

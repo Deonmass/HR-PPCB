@@ -2,7 +2,9 @@ import { NextResponse } from 'next/server';
 import { excelErrorResponse } from '@/lib/excel-io';
 import {
   assignFactureStep,
+  bulkUpdateFacturePayment,
   deleteFactureSuivi,
+  deleteFacturesSuiviMany,
   getFactureSuivi,
   getFacturesSuiviBundle,
   upsertFactureSuivi,
@@ -57,6 +59,51 @@ export async function POST(request: Request) {
         () => assignFactureStep(payload),
       );
       return NextResponse.json({ updated });
+    }
+    if (body.action === 'bulk-payment') {
+      const editDenied = await checkPermission(MENU, 'edit');
+      if (editDenied) return editDenied;
+      const ids = Array.isArray((body as { ids?: unknown }).ids)
+        ? ((body as { ids: unknown[] }).ids as unknown[]).map(String)
+        : [];
+      const statusRaw = String((body as { status?: unknown }).status ?? '').toLowerCase();
+      const status = statusRaw === 'paid' ? 'paid' : 'unpaid';
+      const datePym = String((body as { datePym?: unknown }).datePym ?? '');
+      const updated = await withAudit(
+        {
+          module: 'factures-suivi',
+          action: 'update',
+          entityType: 'facture.suivi',
+          undoable: false,
+          summary: `Statut ${status} — ${ids.length} facture(s)`,
+          details: `IDs: ${ids.join(', ')}`,
+          path: '/api/factures-suivi',
+          method: 'POST',
+        },
+        () => bulkUpdateFacturePayment({ ids, status, datePym }),
+      );
+      return NextResponse.json({ updated });
+    }
+    if (body.action === 'bulk-delete') {
+      const deleteDenied = await checkPermission(MENU, 'delete');
+      if (deleteDenied) return deleteDenied;
+      const ids = Array.isArray((body as { ids?: unknown }).ids)
+        ? ((body as { ids: unknown[] }).ids as unknown[]).map(String)
+        : [];
+      const deleted = await withAudit(
+        {
+          module: 'factures-suivi',
+          action: 'delete',
+          entityType: 'facture.suivi',
+          undoable: false,
+          summary: `Suppression groupée — ${ids.length} facture(s)`,
+          details: `IDs: ${ids.join(', ')}`,
+          path: '/api/factures-suivi',
+          method: 'POST',
+        },
+        () => deleteFacturesSuiviMany(ids),
+      );
+      return NextResponse.json({ deleted });
     }
     if (body.action === 'batch') {
       const denied = await checkPermission(MENU, 'create');

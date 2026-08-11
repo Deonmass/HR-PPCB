@@ -50,6 +50,8 @@ export const PERMISSION_MENU_CATALOG: PermissionMenuGroup[] = [
       { id: 'documents.entetes', label: 'Entête' },
       { id: 'documents.rrf', label: 'RRF' },
       { id: 'documents.newcomer', label: 'Newcomer' },
+      { id: 'documents.contrat-standard', label: 'Contrat standard' },
+      { id: 'documents.convention-collective', label: 'Convention collective' },
     ],
   },
   {
