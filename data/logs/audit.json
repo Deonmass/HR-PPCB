@@ -1,6 +1,20 @@
 {
   "entries": [
     {
+      "id": "log-000196",
+      "at": "2026-08-11T15:00:13.889Z",
+      "userId": "admin",
+      "userName": "Administrateur",
+      "module": "documents.contrat-standard",
+      "moduleLabel": "Contrat standard",
+      "action": "export",
+      "actionLabel": "Export",
+      "summary": "Contrat CDD — RACHIDI ZOBELA JUDITH",
+      "details": "Contrat CDD — RACHIDI ZOBELA JUDITH",
+      "undoable": false,
+      "undone": false
+    },
+    {
       "id": "log-000195",
       "at": "2026-08-11T14:44:17.909Z",
       "userId": "admin",
@@ -22448,5 +22462,5 @@
       }
     }
   ],
-  "nextSeq": 196
+  "nextSeq": 197
 }
