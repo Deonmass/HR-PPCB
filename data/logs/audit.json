@@ -1,6 +1,61 @@
 {
   "entries": [
     {
+      "id": "log-000188",
+      "at": "2026-08-11T12:16:09.681Z",
+      "userId": "Marie.Yowali",
+      "userName": "Marie Yowali",
+      "userEmail": "Marie.Yowali@ppcdrc.cd",
+      "module": "factures-suivi",
+      "moduleLabel": "Factures suivi",
+      "action": "update",
+      "actionLabel": "Modification",
+      "entityType": "facture.suivi",
+      "entityId": "fac-773",
+      "summary": "Modification facture DRC/25/INV/041569",
+      "details": "Modification facture DRC/25/INV/041569",
+      "before": {
+        "id": "fac-773",
+        "date": "30/12/2025",
+        "societe": "SATGURU",
+        "facture": "DRC/25/INV/041569",
+        "montant": 750,
+        "echeance": "",
+        "pr": "",
+        "datePr": "",
+        "po": "",
+        "datePo": "",
+        "grn": "",
+        "dateGrn": "",
+        "payment": "",
+        "datePym": "",
+        "commentaire": "Reçue — en attente du PR.",
+        "statut": "unpaid",
+        "statutLabel": "unpaid"
+      },
+      "after": {
+        "id": "fac-773",
+        "date": "30/12/2025",
+        "societe": "SATGURU",
+        "facture": "DRC/25/INV/041569",
+        "montant": 750,
+        "echeance": "",
+        "pr": "",
+        "datePr": "",
+        "po": "",
+        "datePo": "",
+        "grn": "",
+        "dateGrn": "",
+        "payment": "PAID",
+        "datePym": "28/07/2026",
+        "commentaire": "Facture payée.",
+        "statut": "paid",
+        "statutLabel": "paid"
+      },
+      "undoable": true,
+      "undone": false
+    },
+    {
       "id": "log-000187",
       "at": "2026-08-11T12:15:52.771Z",
       "userId": "Marie.Yowali",
@@ -22171,5 +22226,5 @@
       }
     }
   ],
-  "nextSeq": 188
+  "nextSeq": 189
 }
