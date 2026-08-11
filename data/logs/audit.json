@@ -1,6 +1,107 @@
 {
   "entries": [
     {
+      "id": "log-000174",
+      "at": "2026-08-11T09:46:51.435Z",
+      "userId": "Marie.Yowali",
+      "userName": "Marie Yowali",
+      "userEmail": "Marie.Yowali@ppcdrc.cd",
+      "module": "dependants",
+      "moduleLabel": "Dépendants",
+      "action": "update",
+      "actionLabel": "Modification",
+      "summary": "Localisation famille 70000262 → Lubudi",
+      "details": "Localisation famille 70000262 → Lubudi",
+      "after": [
+        {
+          "id": 607,
+          "matricule": "70000262",
+          "pactilis": "170608",
+          "statut": "Employé",
+          "sexe": "M",
+          "nom": "NGABA TANKUEY ARNOLD",
+          "localisation": "Lubudi",
+          "numeroVilla": "",
+          "typeMaison": "",
+          "dateNaissance": "25/05/1989",
+          "age": null,
+          "compositionFamille": 1,
+          "enfants": 2,
+          "total": 4,
+          "commentaires": "",
+          "lienDocument": "",
+          "employeNom": "NGABA TANKUEY ARNOLD",
+          "departement": "Finance"
+        },
+        {
+          "id": 608,
+          "matricule": "70000262",
+          "pactilis": "170609",
+          "statut": "Conjoint",
+          "sexe": "F",
+          "nom": "IYA MOKANGO JOCELYNE",
+          "localisation": "Lubudi",
+          "numeroVilla": "",
+          "typeMaison": "",
+          "dateNaissance": "16/06/1991",
+          "age": 35,
+          "compositionFamille": null,
+          "enfants": null,
+          "total": null,
+          "commentaires": "",
+          "lienDocument": "",
+          "employeNom": "NGABA TANKUEY ARNOLD",
+          "departement": "Finance"
+        },
+        {
+          "id": 609,
+          "matricule": "70000262",
+          "pactilis": "170610",
+          "statut": "Enfant",
+          "sexe": "F",
+          "nom": "NGABA IYA ARLYNE BLESSING",
+          "localisation": "Lubudi",
+          "numeroVilla": "",
+          "typeMaison": "",
+          "dateNaissance": "10/07/2021",
+          "age": 5,
+          "compositionFamille": null,
+          "enfants": null,
+          "total": null,
+          "commentaires": "",
+          "lienDocument": "",
+          "employeNom": "NGABA TANKUEY ARNOLD",
+          "departement": "Finance"
+        },
+        {
+          "id": 610,
+          "matricule": "70000262",
+          "pactilis": "171696",
+          "statut": "Enfant",
+          "sexe": "F",
+          "nom": "NGABA BIBI GRACE",
+          "localisation": "Lubudi",
+          "numeroVilla": "",
+          "typeMaison": "",
+          "dateNaissance": "16/10/2009",
+          "age": 16,
+          "compositionFamille": null,
+          "enfants": null,
+          "total": null,
+          "commentaires": "Jugement de tutelle",
+          "lienDocument": "",
+          "employeNom": "NGABA TANKUEY ARNOLD",
+          "departement": "Finance"
+        }
+      ],
+      "undoable": false,
+      "undone": false,
+      "meta": {
+        "matricule": "70000262",
+        "localisation": "Lubudi"
+      }
+    },
+    {
       "id": "log-000173",
       "at": "2026-08-11T09:46:34.219Z",
       "userId": "Marie.Yowali",
@@ -20239,5 +20340,5 @@
       }
     }
   ],
-  "nextSeq": 174
+  "nextSeq": 175
 }
