@@ -88,5 +88,15 @@
     "issuedBy": "Administrateur",
     "id": "exit-1786435335801-6b5dl4",
     "createdAt": "2026-08-11T08:02:15.801Z"
+  },
+  {
+    "matricule": "70000235",
+    "employeeName": "MASOKA HAPPY IYANYA",
+    "doc": "interview",
+    "docLabel": "Exit interview form",
+    "fileName": "Exit interview form - MASOKA HAPPY IYANYA.docx",
+    "issuedBy": "Administrateur",
+    "id": "exit-1786435340673-54ksef",
+    "createdAt": "2026-08-11T08:02:20.673Z"
   }
 ]
