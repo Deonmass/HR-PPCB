@@ -16,6 +16,9 @@ interface PickerProps {
   onChange: (employee: EmployeeSelection | null) => void;
   required?: boolean;
   department?: string;
+  /** Exclure un matricule (ex. l’employé en cours de création). */
+  excludeMatricule?: string;
+  placeholder?: string;
 }
 
 interface SuggestProps {
@@ -33,8 +36,18 @@ function matchesDepartment(employeeDepartment: string, selectedDepartment: strin
   return employeeDepartment.trim().toLowerCase() === selectedDepartment.trim().toLowerCase();
 }
 
-function filterEmployees(employees: Employee[], query: string, department?: string): Employee[] {
-  let list = employees.filter((employee) => employee.nom.trim());
+function filterEmployees(
+  employees: Employee[],
+  query: string,
+  department?: string,
+  excludeMatricule?: string,
+): Employee[] {
+  const excluded = (excludeMatricule || '').trim().toLowerCase();
+  let list = employees.filter((employee) => {
+    if (!employee.nom.trim()) return false;
+    if (excluded && employee.matricule.trim().toLowerCase() === excluded) return false;
+    return true;
+  });
   if (department?.trim()) {
     list = list.filter((employee) => matchesDepartment(employee.departement, department));
   }
@@ -42,7 +55,7 @@ function filterEmployees(employees: Employee[], query: string, department?: stri
   if (!q) return list.slice(0, 12);
   return list
     .filter((employee) => {
-      const haystack = `${employee.nom} ${employee.matricule} ${employee.departement}`.toLowerCase();
+      const haystack = `${employee.nom} ${employee.matricule} ${employee.departement} ${employee.jobTitle}`.toLowerCase();
       return haystack.includes(q);
     })
     .slice(0, 12);
@@ -73,25 +86,29 @@ export default function EmployeePicker({
   onChange,
   required = false,
   department,
+  excludeMatricule,
+  placeholder,
 }: PickerProps) {
   const wrapRef = useRef<HTMLDivElement>(null);
   const listRef = useRef<HTMLDivElement>(null);
   const [open, setOpen] = useState(false);
   const [query, setQuery] = useState(value?.nom ?? '');
+  const valueNom = value?.nom ?? '';
+  const valueMatricule = value?.matricule ?? '';
 
   useEffect(() => {
-    setQuery(value?.nom ?? '');
-  }, [value]);
+    setQuery(valueNom);
+  }, [valueNom, valueMatricule]);
 
   const suggestions = useMemo(
-    () => filterEmployees(employees, query, department),
-    [department, employees, query],
+    () => filterEmployees(employees, query, department, excludeMatricule),
+    [department, employees, excludeMatricule, query],
   );
 
   const dismiss = useCallback(() => {
     setOpen(false);
-    setQuery(value?.nom ?? '');
-  }, [value]);
+    setQuery(valueNom);
+  }, [valueNom]);
 
   useOutsideDismiss(open, wrapRef, listRef, dismiss);
 
@@ -112,9 +129,10 @@ export default function EmployeePicker({
         className="project-picker-input"
         value={query}
         placeholder={
-          department
-            ? 'Rechercher dans le département…'
-            : 'Rechercher ou saisir un nom…'
+          placeholder
+            || (department
+              ? 'Rechercher dans le département…'
+              : 'Rechercher un employé…')
         }
         onChange={(e) => {
           const next = e.target.value;
@@ -125,33 +143,39 @@ export default function EmployeePicker({
             return;
           }
           // Nom libre si hors suggestions (matricule vide) ; sélection liste = matricule renseigné.
-          if (value?.matricule && value.nom === next) {
+          if (valueMatricule && valueNom === next) {
             setOpen(true);
             return;
           }
           onChange({
             matricule: '',
             nom: next,
-            departement: value?.matricule ? '' : (value?.departement ?? ''),
+            departement: valueMatricule ? '' : (value?.departement ?? ''),
           });
           setOpen(true);
         }}
         onFocus={() => setOpen(true)}
         autoComplete="off"
       />
-      <ProjectPickerDropdown anchorRef={wrapRef} listRef={listRef} open={open && suggestions.length > 0}>
+      <ProjectPickerDropdown
+        anchorRef={wrapRef}
+        listRef={listRef}
+        open={open && suggestions.length > 0}
+      >
         {suggestions.map((employee) => (
           <button
             key={employee.matricule}
             type="button"
-            className={`project-picker-option${value?.matricule === employee.matricule ? ' active' : ''}`}
+            className={`project-picker-option${valueMatricule === employee.matricule ? ' active' : ''}`}
             role="option"
             onMouseDown={(e) => e.preventDefault()}
             onClick={() => selectEmployee(employee)}
           >
             <span className="project-picker-name">{employee.nom}</span>
             <span className="project-picker-meta">
-              {[employee.matricule, employee.departement].filter(Boolean).join(' · ')}
+              {[employee.matricule, employee.jobTitle, employee.departement]
+                .filter(Boolean)
+                .join(' · ')}
             </span>
           </button>
         ))}
@@ -215,7 +239,11 @@ export function EmployeeSuggestInput({
         onFocus={() => setOpen(true)}
         autoComplete="off"
       />
-      <ProjectPickerDropdown anchorRef={wrapRef} listRef={listRef} open={open && suggestions.length > 0}>
+      <ProjectPickerDropdown
+        anchorRef={wrapRef}
+        listRef={listRef}
+        open={open && suggestions.length > 0}
+      >
         {suggestions.map((employee) => (
           <button
             key={employee.matricule}

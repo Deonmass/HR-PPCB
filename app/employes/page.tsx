@@ -408,7 +408,7 @@ export default function EmployesPage() {
     setEditOpen(true);
   };
 
-  const handleSave = async (employee: Employee) => {
+  const handleSave = async (employee: Employee): Promise<boolean> => {
     const method = editing ? 'PUT' : 'POST';
     const url = editing ? `/api/employees/${employee.matricule}` : '/api/employees';
     const res = await fetch(url, {
@@ -419,12 +419,11 @@ export default function EmployesPage() {
     if (!res.ok) {
       const err = await res.json();
       await showError(err.error || 'Erreur');
-      return;
+      return false;
     }
     await showSuccess(editing ? 'Employé mis à jour' : 'Employé créé');
     await load(true);
-    setEditOpen(false);
-    setEditing(null);
+    return true;
   };
 
   const handleDelete = async (matricule: string) => {
@@ -1200,6 +1199,7 @@ export default function EmployesPage() {
       {editOpen && (canCreate || (editing && canEdit)) && (
         <EmployeeModal
           employee={editing}
+          employees={employees}
           onClose={() => { setEditOpen(false); setEditing(null); }}
           onSave={handleSave}
         />

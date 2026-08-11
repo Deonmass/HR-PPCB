@@ -284,9 +284,12 @@ export async function getPostesBundle(): Promise<PostesBundle> {
     a.title.localeCompare(b.title, 'fr'),
   );
   const totalVacantSlots = vacants.reduce((sum, v) => sum + v.headcount, 0);
-  const titles = groups.map((g) => g.title);
+  const titles = [
+    ...groups.map((g) => g.title),
+    ...vacants.map((v) => v.title),
+  ];
   return {
-    titles,
+    titles: uniqueSorted(titles),
     groups,
     vacants,
     totalOccupied: groups.reduce((sum, g) => sum + g.count, 0),

@@ -10,7 +10,7 @@ import { computeFamilyCompositionCounts, isEmployeeStatut } from '@/lib/dependan
 import { DEFAULT_LOCALISATIONS } from '@/lib/localisations';
 import { useEffect, useMemo, useState } from 'react';
 
-const STATUTS = ['Employé', 'Conjoint', 'Conjoint(e)', 'Enfant'];
+const STATUTS = ['Employé', 'Conjoint', 'Conjoint(e)', 'Conjoint employé', 'Enfant'];
 const SEXES = ['M', 'F'];
 const LOCALISATIONS = [...DEFAULT_LOCALISATIONS];
 
