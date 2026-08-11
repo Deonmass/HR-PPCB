@@ -1,14 +1,37 @@
-import fs from 'fs/promises';
+import 'server-only';
+
+import fs from 'fs';
+import fsPromises from 'fs/promises';
 import path from 'path';
+import {
+  DURABLE_RRF_HISTORY_KEY,
+  hydrateDurableFile,
+  persistDurableFile,
+} from './durable-fs';
+import { canPersistProjectFiles, getWritableDataRoot } from './runtime-mode';
 import type { RrfFormData } from './rrf-types';
 import { RRF_EMPTY_FORM } from './rrf-types';
 
 /** Historique des RRF — data/documents/rrf-history.json (1 ligne par dossier). */
 
-const LOG_DIR = path.join(process.cwd(), 'data', 'documents');
-const LOG_FILE = path.join(LOG_DIR, 'rrf-history.json');
-
 export type RrfExportFormat = 'saved' | 'xlsx' | 'pdf';
+
+function resolveLogPath(): string {
+  if (canPersistProjectFiles()) {
+    return path.join(process.cwd(), 'data', 'documents', 'rrf-history.json');
+  }
+  const writable = path.join(getWritableDataRoot(), 'documents', 'rrf-history.json');
+  const bundled = path.join(process.cwd(), 'data', 'documents', 'rrf-history.json');
+  try {
+    if (!fs.existsSync(writable) && fs.existsSync(bundled)) {
+      fs.mkdirSync(path.dirname(writable), { recursive: true });
+      fs.copyFileSync(bundled, writable);
+    }
+  } catch {
+    // ignore seed errors
+  }
+  return writable;
+}
 
 export interface RrfHistoryRecord {
   id: string;
@@ -136,13 +159,17 @@ function dedupeHistory(items: RrfHistoryRecord[]): RrfHistoryRecord[] {
 }
 
 async function writeAll(items: RrfHistoryRecord[]): Promise<void> {
-  await fs.mkdir(LOG_DIR, { recursive: true });
-  await fs.writeFile(LOG_FILE, JSON.stringify(items, null, 2), 'utf8');
+  const filePath = resolveLogPath();
+  await fsPromises.mkdir(path.dirname(filePath), { recursive: true });
+  await fsPromises.writeFile(filePath, JSON.stringify(items, null, 2), 'utf8');
+  await persistDurableFile(DURABLE_RRF_HISTORY_KEY, filePath);
 }
 
 export async function listRrfHistory(): Promise<RrfHistoryRecord[]> {
+  const filePath = resolveLogPath();
+  await hydrateDurableFile(DURABLE_RRF_HISTORY_KEY, filePath);
   try {
-    const raw = await fs.readFile(LOG_FILE, 'utf8');
+    const raw = await fsPromises.readFile(filePath, 'utf8');
     const parsed = JSON.parse(raw);
     if (!Array.isArray(parsed)) return [];
     const items = parsed
@@ -154,8 +181,10 @@ export async function listRrfHistory(): Promise<RrfHistoryRecord[]> {
       await writeAll(deduped);
     }
     return deduped;
-  } catch {
-    return [];
+  } catch (err) {
+    const code = (err as NodeJS.ErrnoException)?.code;
+    if (code === 'ENOENT') return [];
+    throw err;
   }
 }
 

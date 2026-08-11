@@ -55,22 +55,27 @@ export async function POST(request: Request) {
     const skipIssuedLog = body.skipIssuedLog === true;
 
     if (!skipIssuedLog) {
-      const actor = await getAuditActor();
-      await appendExitIssued({
-        matricule: employee.matricule,
-        employeeName: employee.nom,
-        doc: docType,
-        docLabel: EXIT_DOC_LABELS[docType],
-        fileName: doc.fileName,
-        issuedBy: actor?.userName,
-      });
+      try {
+        const actor = await getAuditActor();
+        await appendExitIssued({
+          matricule: employee.matricule,
+          employeeName: employee.nom,
+          doc: docType,
+          docLabel: EXIT_DOC_LABELS[docType],
+          fileName: doc.fileName,
+          issuedBy: actor?.userName,
+        });
 
-      await auditSimpleAction({
-        module: 'documents.exit',
-        moduleLabel: 'Documents',
-        action: 'export',
-        summary: `Document exit « ${EXIT_DOC_LABELS[docType]} » — ${employee.nom} (${employee.matricule})`,
-      });
+        await auditSimpleAction({
+          module: 'documents.exit',
+          moduleLabel: 'Documents',
+          action: 'export',
+          summary: `Document exit « ${EXIT_DOC_LABELS[docType]} » — ${employee.nom} (${employee.matricule})`,
+        });
+      } catch (logErr) {
+        // Ne bloque pas le téléchargement si le journal durable échoue.
+        console.error('[documents/exit] issued log failed', logErr);
+      }
     }
 
     const disposition = skipIssuedLog ? 'inline' : 'attachment';
