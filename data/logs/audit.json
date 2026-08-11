@@ -1,6 +1,22 @@
 {
   "entries": [
     {
+      "id": "log-000189",
+      "at": "2026-08-11T12:38:05.262Z",
+      "userId": "admin",
+      "userName": "Administrateur",
+      "module": "factures-suivi",
+      "moduleLabel": "Factures suivi",
+      "action": "delete",
+      "actionLabel": "Suppression",
+      "entityType": "facture.suivi",
+      "summary": "Suppression groupée — 493 facture(s)",
+      "details": "IDs: fac-1318, fac-1189, fac-931, fac-1302, fac-1301, fac-1185, fac-1188, fac-1184, fac-1187, fac-1183, fac-1186, fac-1207, fac-1066, fac-929, fac-930, fac-922, fac-923, fac-924, fac-925, fac-926, fac-927, fac-928, fac-966, fac-967, fac-968, fac-969, fac-970, fac-971, fac-972, fac-973, fac-974, fac-975, fac-976, fac-796, fac-797, fac-798, fac-800, fac-1295, fac-1300, fac-1296, fac-1298, fac-1294, fac-1293, fac-1297, fac-1299, fac-1178, fac-1181, fac-1177, fac-1180, fac-1182, fac-1179, fac-1065, fac-1098, fac-1099, fac-792, fac-793, fac-794, fac-1343, fac-676, fac-1172, fac-1161, fac-1150, fac-1158, fac-1176, fac-1165, fac-1152, fac-1169, fac-1157, fac-1175, fac-1164, fac-1151, fac-1168, fac-1156, fac-1159, fac-1170, fac-1153, fac-1166, fac-1149, fac-1160, fac-1171, fac-1162, fac-1173, fac-1154, fac-1167, fac-1163, fac-1174, fac-1155, fac-1050, fac-1052, fac-1054, fac-1055, fac-1056, fac-1057, fac-1061, fac-911, fac-915, fac-917, fac-920, fac-921, fac-782, fac-783, fac-787, fac-788, fac-790, fac-791, fac-1342, fac-675, fac-1292, fac-1291, fac-1351, fac-684, fac-1142, fac-1146, fac-1148, fac-1144, fac-1145, fac-1147, fac-1143, fac-1049, fac-823, fac-824, fac-781, fac-1349, fac-682, fac-1350, fac-683, fac-1141, fac-1140, fac-1028, fac-1029, fac-1030, fac-1031, fac-1032, fac-1033, fac-1034, fac-1035, fac-1036, fac-1037, fac-1038, fac-1044, fac-822, fac-1331, fac-1348, fac-681, fac-1138, fac-1139, fac-1018, fac-1019, fac-1020, fac-1021, fac-1022, fac-1023, fac-1024, fac-1025, fac-1026, fac-1027, fac-902, fac-904, fac-780, fac-1340, fac-673, fac-1341, fac-674, fac-1290, fac-1286, fac-1282, fac-1287, fac-1289, fac-1285, fac-1283, fac-1288, fac-1284, fac-1128, fac-1134, fac-1129, fac-1135, fac-1125, fac-1132, fac-1123, fac-1130, fac-1136, fac-1126, fac-1133, fac-1124, fac-1131, fac-1137, fac-1127, fac-1330, fac-1281, fac-1121, fac-1016, fac-1017, fac-820, fac-821, fac-1345, fac-678, fac-778, fac-779, fac-1264, fac-1272, fac-1278, fac-1263, fac-1269, fac-1276, fac-1265, fac-1273, fac-1279, fac-1268, fac-1266, fac-1280, fac-1270, fac-1277, fac-1267, fac-1274, fac-1275, fac-1271, fac-894, fac-895, fac-889, fac-891, fac-896, fac-1339, fac-672, fac-1255, fac-1259, fac-1262, fac-1257, fac-1261, fac-1256, fac-1260, fac-1254, fac-1258, fac-1115, fac-1118, fac-1113, fac-1117, fac-1116, fac-1119, fac-1114, fac-1015, fac-873, fac-874, fac-875, fac-876, fac-877, fac-878, fac-879, fac-880, fac-881, fac-882, fac-883, fac-884, fac-885, fac-886, fac-887, fac-888, fac-1329, fac-1101, fac-1010, fac-1011, fac-1012, fac-1013, fac-1014, fac-871, fac-872, fac-1245, fac-1251, fac-1242, fac-1248, fac-1240, fac-1239, fac-1246, fac-1252, fac-1243, fac-1249, fac-1241, fac-1247, fac-1253, fac-1244, fac-1250, fac-1008, fac-1009, fac-870, fac-1347, fac-680, fac-776, fac-777, fac-1334, fac-1236, fac-1237, fac-1233, fac-1235, fac-1238, fac-1234, fac-869, fac-819, fac-771, fac-1230, fac-1223, fac-1229, fac-1221, fac-1227, fac-1219, fac-1228, fac-1220, fac-1225, fac-1231, fac-1224, fac-1222, fac-1226, fac-1232, fac-1007, fac-864, fac-865, fac-866, fac-867, fac-868, fac-965, fac-1344, fac-677, fac-1327, fac-1328, fac-1309, fac-1004, fac-1005, fac-1006, fac-856, fac-857, fac-858, fac-860, fac-861, fac-862, fac-863, fac-817, fac-818, fac-1360, fac-693, fac-1325, fac-1308, fac-1095, fac-1096, fac-1097, fac-990, fac-991, fac-992, fac-993, fac-994, fac-995, fac-996, fac-997, fac-998, fac-999, fac-1000, fac-1001, fac-1002, fac-1003, fac-812, fac-813, fac-814, fac-815, fac-1359, fac-692, fac-1218, fac-1217, fac-989, fac-1338, fac-671, fac-1091, fac-1092, fac-1093, fac-1094, fac-980, fac-981, fac-982, fac-983, fac-984, fac-985, fac-986, fac-987, fac-988, fac-1214, fac-1216, fac-1213, fac-1215, fac-1212, fac-979, fac-1211, fac-848, fac-757, fac-758, fac-759, fac-760, fac-761, fac-762, fac-763, fac-764, fac-765, fac-766, fac-767, fac-768, fac-769, fac-770, fac-1332, fac-1333, fac-1210, fac-1090, fac-956, fac-957, fac-958, fac-963, fac-841, fac-839, fac-840, fac-1346, fac-679, fac-1357, fac-690, fac-1358, fac-691, fac-1206, fac-1205, fac-1089, fac-836, fac-808, fac-809, fac-756, fac-1356, fac-689, fac-1202, fac-1204, fac-1201, fac-1203, fac-1209, fac-1208, fac-1086, fac-1088, fac-830, fac-831, fac-806, fac-1200, fac-1079, fac-1080, fac-1081, fac-1082, fac-1083, fac-1084, fac-1085, fac-954, fac-955, fac-950, fac-951, fac-952, fac-1071, fac-1073, fac-1077, fac-829, fac-832, fac-833, fac-834, fac-801, fac-1192, fac-1198, fac-949, fac-828, fac-1352, fac-685, fac-1353, fac-686, fac-1354, fac-687, fac-1355, fac-688, fac-1069, fac-945, fac-946, fac-947, fac-948, fac-826, fac-827, fac-1191, fac-936, fac-937, fac-939, fac-942, fac-943, fac-944, fac-825, fac-1303, fac-1190, fac-932, fac-933, fac-934, fac-935",
+      "after": 516,
+      "undoable": false,
+      "undone": false
+    },
+    {
       "id": "log-000188",
       "at": "2026-08-11T12:16:09.681Z",
       "userId": "Marie.Yowali",
@@ -22226,5 +22242,5 @@
       }
     }
   ],
-  "nextSeq": 189
+  "nextSeq": 190
 }
