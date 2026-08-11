@@ -1,6 +1,20 @@
 {
   "entries": [
     {
+      "id": "log-000162",
+      "at": "2026-08-11T08:02:17.077Z",
+      "userId": "admin",
+      "userName": "Administrateur",
+      "module": "documents.exit",
+      "moduleLabel": "Documents",
+      "action": "export",
+      "actionLabel": "Export",
+      "summary": "Document exit « Employee exit clearance form » — MASOKA HAPPY IYANYA (70000235)",
+      "details": "Document exit « Employee exit clearance form » — MASOKA HAPPY IYANYA (70000235)",
+      "undoable": false,
+      "undone": false
+    },
+    {
       "id": "log-000161",
       "at": "2026-08-10T12:07:09.974Z",
       "userId": "admin",
@@ -19676,5 +19690,5 @@
       }
     }
   ],
-  "nextSeq": 162
+  "nextSeq": 163
 }
