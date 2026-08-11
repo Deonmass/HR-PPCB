@@ -6433,7 +6433,7 @@ html[data-theme="light"] .btn-export.btn-with-icon .btn-spinner {
   width: 100%;
 }
 
-/* Compilation : pleine largeur, sans marges latÃÂÃÂ©rales */
+/* Compilation : pleine largeur, sans marges latÃÂÃÂÃÂÃÂ©rales */
 .timesheet-compilation-view .panel.timesheet-calendar-panel {
   flex: 1 1 auto;
   min-height: 0;
@@ -6466,7 +6466,7 @@ html[data-theme="light"] .btn-export.btn-with-icon .btn-spinner {
   font-size: 0.85rem;
 }
 
-/* Compilation table ÃÂ¢ÃÂÃÂ scroll ici pour que sticky mat/nom fonctionne */
+/* Compilation table ÃÂÃÂ¢ÃÂÃÂÃÂÃÂ scroll ici pour que sticky mat/nom fonctionne */
 .compilation-table-wrap {
   overflow: auto !important;
   width: 100%;
@@ -6541,7 +6541,7 @@ html[data-theme="light"] .btn-export.btn-with-icon .btn-spinner {
   background: #f3f4f6;
 }
 
-/* Colonnes figÃÂÃÂ©es Matricule + Employee Name */
+/* Colonnes figÃÂÃÂÃÂÃÂ©es Matricule + Employee Name */
 .compilation-table th.compilation-freeze,
 .compilation-table td.compilation-freeze,
 .compilation-table th.compilation-sticky,
@@ -6610,7 +6610,7 @@ html[data-theme="light"] .compilation-table tbody tr:hover td.compilation-sticky
   background: #eceef2 !important;
 }
 
-/* Alias historique compilation-fix* (mÃÂÃÂªme sticky que freeze) */
+/* Alias historique compilation-fix* (mÃÂÃÂÃÂÃÂªme sticky que freeze) */
 .compilation-table th.compilation-fix,
 .compilation-table td.compilation-fix,
 .compilation-fix {
@@ -11922,7 +11922,7 @@ html[data-theme="light"] .dependants-file-btn.is-open {
   background: linear-gradient(180deg, #a855f7 0%, #7c3aed 100%);
 }
 
-/* Modal agrandi ÃÂ¢ÃÂÃÂ Par tranche d'ÃÂÃÂ¢ge (graphique / simulation) */
+/* Modal agrandi ÃÂÃÂ¢ÃÂÃÂÃÂÃÂ Par tranche d'ÃÂÃÂÃÂÃÂ¢ge (graphique / simulation) */
 .dependants-age-enlarge-modal {
   width: min(860px, 92vw);
   max-width: 92vw;
@@ -14597,7 +14597,7 @@ html[data-theme="light"] .dependant-family-tree-svg-line {
   line-height: 1.25;
 }
 
-/* Largeurs ÃÂ¢ÃÂÃÂ liste / exit : Nom et Poste absorbent lÃÂ¢ÃÂÃÂespace. */
+/* Largeurs ÃÂÃÂ¢ÃÂÃÂÃÂÃÂ liste / exit : Nom et Poste absorbent lÃÂÃÂ¢ÃÂÃÂÃÂÃÂespace. */
 .employees-table-compact .emp-col-matricule { width: 4.4rem; }
 .employees-table-compact .emp-col-nom { width: 18%; min-width: 9rem; }
 .employees-table-compact .emp-col-dept { width: 10%; min-width: 6.5rem; }
@@ -14613,7 +14613,7 @@ html[data-theme="light"] .dependant-family-tree-svg-line {
 .employees-table-compact .emp-col-contrat { width: 3.6rem; min-width: 3.4rem; }
 .employees-table-compact .emp-col-raison { width: 9%; min-width: 5.5rem; }
 
-/* Colonnes dates / essai / CDD ÃÂ¢ÃÂÃÂ largeurs fixes pour ÃÂÃÂ©viter le chevauchement. */
+/* Colonnes dates / essai / CDD ÃÂÃÂ¢ÃÂÃÂÃÂÃÂ largeurs fixes pour ÃÂÃÂÃÂÃÂ©viter le chevauchement. */
 .employees-table-compact .emp-col-mois { width: 3rem; text-align: center; }
 .employees-table-compact .emp-col-date,
 .employees-table-compact .emp-col-debut,
@@ -20459,7 +20459,7 @@ html[data-theme='light'] .charroi-table tbody tr.charroi-row-bad:hover td {
   color: var(--muted);
 }
 
-/* Dates d'ÃÂÃÂ©chÃÂÃÂ©ance (assurance / vignette / contrÃÂÃÂ´le technique). */
+/* Dates d'ÃÂÃÂÃÂÃÂ©chÃÂÃÂÃÂÃÂ©ance (assurance / vignette / contrÃÂÃÂÃÂÃÂ´le technique). */
 .charroi-date {
   display: inline-flex;
   padding: 0.1rem 0.35rem;
@@ -20480,7 +20480,7 @@ html[data-theme='light'] .charroi-table tbody tr.charroi-row-bad:hover td {
   outline-offset: 1px;
 }
 .charroi-date.is-none { color: var(--muted); }
-/* Rouge dÃÂÃÂ¨s ÃÂ¢ÃÂÃÂ¤ 1 mois avant fin (soon) et si expirÃÂÃÂ© */
+/* Rouge dÃÂÃÂÃÂÃÂ¨s ÃÂÃÂ¢ÃÂÃÂÃÂÃÂ¤ 1 mois avant fin (soon) et si expirÃÂÃÂÃÂÃÂ© */
 .charroi-date.is-soon,
 .charroi-date.is-expired {
   background: var(--danger-soft);
@@ -20492,7 +20492,7 @@ html:not([data-theme='light']) .charroi-date.is-expired {
   color: #fca5a5;
 }
 
-/* Filtres km (supÃÂÃÂ©rieur / infÃÂÃÂ©rieur) */
+/* Filtres km (supÃÂÃÂÃÂÃÂ©rieur / infÃÂÃÂÃÂÃÂ©rieur) */
 .charroi-km-filter {
   display: inline-flex;
   align-items: center;
@@ -20727,7 +20727,7 @@ html:not([data-theme='light']) .charroi-date.is-expired {
   grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
   gap: 0.85rem;
 }
-/* Filtres d'en-tÃÂÃÂªte faÃÂÃÂ§on Excel (partagÃÂÃÂ©s). */
+/* Filtres d'en-tÃÂÃÂÃÂÃÂªte faÃÂÃÂÃÂÃÂ§on Excel (partagÃÂÃÂÃÂÃÂ©s). */
 .th-filter,
 .charroi-th-filter { padding: 0 !important; }
 .table-hf,
@@ -21567,7 +21567,7 @@ html[data-theme='light'] .charroi-hf-panel {
   font-family: inherit;
 }
 
-/* Inputs alignÃÂÃÂ©s comme du texte de cellule ÃÂ¢ÃÂÃÂ minimal */
+/* Inputs alignÃÂÃÂÃÂÃÂ©s comme du texte de cellule ÃÂÃÂ¢ÃÂÃÂÃÂÃÂ minimal */
 .newcomer-detail-table .newcomer-cell-input {
   width: 100%;
   max-width: 16rem;
@@ -21625,7 +21625,7 @@ html[data-theme='light'] .charroi-hf-panel {
   }
 }
 
-/* Top navigation progress ÃÂ¢ÃÂÃÂ fine red bar */
+/* Top navigation progress ÃÂÃÂ¢ÃÂÃÂÃÂÃÂ fine red bar */
 .top-progress-bar {
   position: fixed;
   top: 0;
@@ -21671,7 +21671,7 @@ html[data-theme='light'] .charroi-hf-panel {
 }
 
 
-/* ========== RRF page ÃÂ¢ÃÂÃÂ 3 colonnes, header compact ========== */
+/* ========== RRF page ÃÂÃÂ¢ÃÂÃÂÃÂÃÂ 3 colonnes, header compact ========== */
 .main:has(.rrf-page) {
   display: flex !important;
   flex-direction: column !important;
@@ -21693,7 +21693,7 @@ html[data-theme='light'] .charroi-hf-panel {
   background: #fff;
 }
 
-/* Header figÃÂÃÂ© : titre gauche, onglets droite */
+/* Header figÃÂÃÂÃÂÃÂ© : titre gauche, onglets droite */
 .rrf-sticky {
   flex: 0 0 auto;
   position: sticky;
@@ -21802,7 +21802,7 @@ html[data-theme="dark"] .rrf-sticky {
   white-space: nowrap;
 }
 
-/* Corps + padding ÃÂ¢ÃÂÃÂ espace sous le header */
+/* Corps + padding ÃÂÃÂ¢ÃÂÃÂÃÂÃÂ espace sous le header */
 .rrf-body {
   flex: 1 1 auto;
   min-height: 0;
@@ -22108,7 +22108,7 @@ html[data-theme="dark"] .rrf-sticky {
   margin: 0;
 }
 
-/* Approvers : inputs clairs et simples (ÃÂÃÂ©viter le fond sombre global) */
+/* Approvers : inputs clairs et simples (ÃÂÃÂÃÂÃÂ©viter le fond sombre global) */
 .rrf-approvers-table input:not([type='radio']):not([type='checkbox']),
 .rrf-approvers-table .project-picker input,
 .rrf-approvers-table .project-picker-input {
@@ -22462,7 +22462,7 @@ html[data-theme="dark"] .rrf-sticky {
   }
 }
 
-/* EntÃÂÃÂªtes ÃÂ¢ÃÂÃÂ papiers ÃÂÃÂ  lettre */
+/* EntÃÂÃÂÃÂÃÂªtes ÃÂÃÂ¢ÃÂÃÂÃÂÃÂ papiers ÃÂÃÂÃÂÃÂ  lettre */
 .entetes-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
@@ -22636,7 +22636,7 @@ html[data-theme="dark"] .rrf-sticky {
   margin: 0.35rem 0 0.9rem;
 }
 
-/* ÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂ Mouvements personnel ÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂ */
+/* ÃÂÃÂ¢ÃÂÃÂÃÂÃÂÃÂÃÂ¢ÃÂÃÂÃÂÃÂÃÂÃÂ¢ÃÂÃÂÃÂÃÂ Mouvements personnel ÃÂÃÂ¢ÃÂÃÂÃÂÃÂÃÂÃÂ¢ÃÂÃÂÃÂÃÂÃÂÃÂ¢ÃÂÃÂÃÂÃÂ */
 .mvt-page {
   --mvt-ctrl-h: 40px;
   display: flex;
@@ -23203,7 +23203,7 @@ html[data-theme="dark"] .rrf-sticky {
   justify-content: center;
 }
 
-/* Layout pleine hauteur + header figÃÂÃÂ© */
+/* Layout pleine hauteur + header figÃÂÃÂÃÂÃÂ© */
 .main:has(.postes-page) {
   display: flex;
   flex-direction: column;
@@ -23322,7 +23322,7 @@ html[data-theme="light"] .postes-sticky {
   background: color-mix(in srgb, #e30613 5%, #fff);
 }
 
-/* Dashboard ÃÂ¢ÃÂÃÂ animations & hover */
+/* Dashboard ÃÂÃÂ¢ÃÂÃÂÃÂÃÂ animations & hover */
 @keyframes postes-kpi-in {
   from {
     opacity: 0;
@@ -23361,7 +23361,7 @@ html[data-theme="light"] .postes-sticky {
   margin-top: 0.35rem;
 }
 
-/* Dashboard Postes ÃÂ¢ÃÂÃÂ grille 3ÃÂÃÂ2, espacement resserrÃÂÃÂ© */
+/* Dashboard Postes ÃÂÃÂ¢ÃÂÃÂÃÂÃÂ grille 3ÃÂÃÂÃÂÃÂ2, espacement resserrÃÂÃÂÃÂÃÂ© */
 .postes-dashboard .postes-kpi-strip.travel-history-cards {
   grid-template-columns: repeat(3, minmax(0, 1fr));
   gap: 0.55rem;
@@ -23531,7 +23531,7 @@ button.postes-kpi-card {
   }
 }
 
-/* ÃÂÃÂÃÂ Contrat standard / Convention collective ÃÂÃÂÃÂ */
+/* ÃÂÃÂÃÂÃÂÃÂÃÂ Contrat standard / Convention collective ÃÂÃÂÃÂÃÂÃÂÃÂ */
 .contrat-standard-panel .contrat-section-title {
   margin: 1.35rem 0 0.65rem;
   font-size: 0.95rem;
@@ -23557,6 +23557,42 @@ button.postes-kpi-card {
 .contrat-rules-hint {
   margin: 0.25rem 0 0.75rem;
   font-size: 0.82rem;
+}
+.contrat-family-hint {
+  margin: -0.25rem 0 0.75rem;
+  font-size: 0.82rem;
+}
+.contrat-dependants-table {
+  width: 100%;
+  border-collapse: collapse;
+  background: #fff;
+}
+.contrat-dependants-table th,
+.contrat-dependants-table td {
+  border: 1px solid #e2e8f0;
+  padding: 0.45rem 0.55rem;
+  vertical-align: middle;
+  text-align: left;
+}
+.contrat-dependants-table th {
+  background: #f8fafc;
+  font-size: 0.78rem;
+  font-weight: 600;
+  color: #475569;
+}
+.contrat-dependants-table td:first-child,
+.contrat-dependants-table th:first-child {
+  text-align: center;
+  color: #64748b;
+  width: 2.5rem;
+}
+.contrat-dependants-table input {
+  width: 100%;
+  margin: 0;
+  border: 1px solid #cbd5e1;
+  border-radius: 6px;
+  padding: 0.4rem 0.55rem;
+  background: #fff;
 }
 .convention-page {
   display: flex;

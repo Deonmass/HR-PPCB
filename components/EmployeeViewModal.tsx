@@ -410,7 +410,11 @@ export default function EmployeeViewModal({ employee, canEdit = false, initialTa
       }
       const json = await res.json() as { dependants?: Dependant[] };
       const groups = buildFamilyGroups(json.dependants ?? []);
-      setFamilyGroup(groups.find((g) => g.matricule === employee.matricule) ?? null);
+      const asHead = groups.find((g) => g.matricule === employee.matricule);
+      const asMember = groups.find((g) =>
+        g.famille.some((m) => m.matricule === employee.matricule),
+      );
+      setFamilyGroup(asHead ?? asMember ?? null);
     } catch {
       setFamilyGroup(null);
     } finally {

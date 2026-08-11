@@ -1,6 +1,12 @@
 export interface Dependant {
   id: number;
   matricule: string;
+  /**
+   * Matricule du chef de famille (mari/femme) lorsque la personne a son propre
+   * matricule employé mais doit rester dans le groupe familial d’origine.
+   * Ex. statut « Conjoint employé » : matricule = soi, familyMatricule = conjoint.
+   */
+  familyMatricule?: string;
   pactilis: string;
   statut: string;
   sexe: string;

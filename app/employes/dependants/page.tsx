@@ -18,6 +18,7 @@ import type { Dependant } from '@/lib/dependants-types';
 import {
   buildDashboardFromDependants,
   applyFamilyCompositionToEmployee,
+  familyGroupKey,
   needsSchoolingProof,
   countNeedsSchoolingProof,
   resolveDependantsDrilldown,
@@ -126,7 +127,7 @@ export default function DependantsPage() {
       const next = action === 'create'
         ? [...prev, dependant]
         : prev.map((item) => (item.id === dependant.id ? dependant : item));
-      const withComposition = applyFamilyCompositionToEmployee(next, dependant.matricule);
+      const withComposition = applyFamilyCompositionToEmployee(next, familyGroupKey(dependant));
       return withComposition;
     });
   }, []);
@@ -136,7 +137,7 @@ export default function DependantsPage() {
       const removed = prev.find((item) => item.id === id);
       const next = prev.filter((item) => item.id !== id);
       const withComposition = removed
-        ? applyFamilyCompositionToEmployee(next, removed.matricule)
+        ? applyFamilyCompositionToEmployee(next, familyGroupKey(removed))
         : next;
       return withComposition;
     });
@@ -154,7 +155,7 @@ export default function DependantsPage() {
       const next = action === 'create'
         ? [...prev, dependant]
         : prev.map((item) => (item.id === dependant.id ? dependant : item));
-      return applyFamilyCompositionToEmployee(next, dependant.matricule);
+      return applyFamilyCompositionToEmployee(next, familyGroupKey(dependant));
     });
   }, []);
 
@@ -163,7 +164,7 @@ export default function DependantsPage() {
       const removed = prev.find((item) => item.id === id);
       const next = prev.filter((item) => item.id !== id);
       return removed
-        ? applyFamilyCompositionToEmployee(next, removed.matricule)
+        ? applyFamilyCompositionToEmployee(next, familyGroupKey(removed))
         : next;
     });
   }, []);

@@ -1,26 +1,14 @@
 import { NextResponse } from 'next/server';
 import { generateContratStandard } from '@/lib/contrat-standard-docs.server';
+import { resolveContratFamily } from '@/lib/contrat-standard-family';
 import { emptyContratForm, type ContratStandardFormData } from '@/lib/contrat-standard-types';
 import { CLASSIFICATION_RULES, type ContractClassification } from '@/lib/convention-collective-rules';
 import { readDependantsData } from '@/lib/dependants-json-store';
-import { isChildStatut, isSpouseStatut } from '@/lib/dependants-utils';
 import { getEmployee } from '@/lib/employees-json-store';
 import { checkPermission } from '@/lib/require-permission';
 import { auditSimpleAction } from '@/lib/with-audit';
 
 const DOCX_MIME = 'application/vnd.openxmlformats-officedocument.wordprocessingml.document';
-
-function splitPersonName(full: string): { prenom: string; nom: string; postNom: string } {
-  const parts = full.trim().split(/\s+/).filter(Boolean);
-  if (parts.length === 0) return { prenom: '', nom: '', postNom: '' };
-  if (parts.length === 1) return { prenom: parts[0], nom: '', postNom: '' };
-  if (parts.length === 2) return { prenom: parts[0], nom: parts[1], postNom: '' };
-  return {
-    prenom: parts[0],
-    nom: parts.slice(1, -1).join(' '),
-    postNom: parts[parts.length - 1],
-  };
-}
 
 /** GET — contexte agent + famille pour préremplir le formulaire. */
 export async function GET(request: Request) {
@@ -38,29 +26,23 @@ export async function GET(request: Request) {
     return NextResponse.json({ error: 'Employé introuvable' }, { status: 404 });
   }
 
-  let spouse: ReturnType<typeof splitPersonName> | null = null;
-  const children: Array<ReturnType<typeof splitPersonName> & { birthPlaceDate: string }> = [];
+  let spouse: ReturnType<typeof resolveContratFamily>['spouse'] = null;
+  let children: ReturnType<typeof resolveContratFamily>['children'] = [];
+  let matchedAs: ReturnType<typeof resolveContratFamily>['matchedAs'] = null;
   try {
     const data = await readDependantsData();
-    const family = data.dependants.filter(
-      (d) => String(d.matricule).trim() === matricule && !/employ/i.test(d.statut),
-    );
-    const spouseRow = family.find((d) => isSpouseStatut(d.statut));
-    if (spouseRow) spouse = splitPersonName(spouseRow.nom);
-    for (const child of family.filter((d) => isChildStatut(d.statut)).slice(0, 4)) {
-      const parts = splitPersonName(child.nom);
-      const loc = (child.localisation || '').trim();
-      const birth = (child.dateNaissance || '').trim();
-      children.push({
-        ...parts,
-        birthPlaceDate: loc && birth ? `${loc}-${birth}` : birth || loc,
-      });
-    }
+    const family = resolveContratFamily(data.dependants, {
+      matricule: employee.matricule,
+      nom: employee.nom,
+    });
+    spouse = family.spouse;
+    children = family.children;
+    matchedAs = family.matchedAs;
   } catch {
     // Famille optionnelle si le store dépendants est indisponible.
   }
 
-  return NextResponse.json({ employee, spouse, children });
+  return NextResponse.json({ employee, spouse, children, matchedAs });
 }
 
 function sanitizeForm(raw: unknown): ContratStandardFormData {
@@ -71,16 +53,40 @@ function sanitizeForm(raw: unknown): ContratStandardFormData {
     : 'maitrise') as ContractClassification;
   const rules = CLASSIFICATION_RULES[classification];
   const dependants = Array.isArray(body.dependants)
-    ? body.dependants.slice(0, 4).map((row) => ({
-      prenom: String(row?.prenom || '').trim(),
-      nom: String(row?.nom || '').trim(),
-      postNom: String(row?.postNom || '').trim(),
-      birthPlaceDate: String(row?.birthPlaceDate || '').trim(),
-    }))
+    ? body.dependants.slice(0, 4).map((row) => {
+      const legacy = row as {
+        fullName?: string;
+        prenom?: string;
+        nom?: string;
+        postNom?: string;
+        birthPlaceDate?: string;
+      };
+      const fullName = String(
+        legacy.fullName
+        || [legacy.nom, legacy.postNom, legacy.prenom].filter(Boolean).join(' '),
+      ).trim();
+      return {
+        fullName,
+        birthPlaceDate: String(legacy.birthPlaceDate || '').trim(),
+      };
+    })
     : base.dependants;
   while (dependants.length < 4) {
-    dependants.push({ prenom: '', nom: '', postNom: '', birthPlaceDate: '' });
+    dependants.push({ fullName: '', birthPlaceDate: '' });
   }
+
+  const legacySpouse = body as {
+    spouseFullName?: string;
+    spousePrenom?: string;
+    spouseNom?: string;
+    spousePostNom?: string;
+  };
+  const spouseFullName = String(
+    legacySpouse.spouseFullName
+    || [legacySpouse.spouseNom, legacySpouse.spousePostNom, legacySpouse.spousePrenom]
+      .filter(Boolean)
+      .join(' '),
+  ).trim();
 
   return {
     ...base,
@@ -96,9 +102,7 @@ function sanitizeForm(raw: unknown): ContratStandardFormData {
     email: String(body.email || '').trim(),
     cnss: String(body.cnss || '').trim(),
     identityNumber: String(body.identityNumber || '').trim(),
-    spousePrenom: String(body.spousePrenom || '').trim(),
-    spouseNom: String(body.spouseNom || '').trim(),
-    spousePostNom: String(body.spousePostNom || '').trim(),
+    spouseFullName,
     dependants,
     contractType: body.contractType === 'CDI' ? 'CDI' : 'CDD',
     contractDurationLabel: String(body.contractDurationLabel || base.contractDurationLabel).trim(),

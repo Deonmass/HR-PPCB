@@ -14,10 +14,16 @@ import {
   applyAllFamilyCompositions,
   buildDashboardFromDependants,
   computeFamilyCompositionCounts,
+  familyGroupKey,
+  isConjointEmployeStatut,
   isEmployeeStatut,
+  isSpouseStatut,
 } from './dependants-utils';
+import { normalizePersonName } from './dependants-pactilis-compare';
 import { canPersistProjectFiles, getWritableDataRoot } from './runtime-mode';
 import { getEmployeesRecordIndex, readEmployeesBundle } from './employees-json-store';
+
+const CONJOINT_EMPLOYE_STATUT = 'Conjoint employé';
 
 function resolveStorePath(): string {
   if (canPersistProjectFiles()) {
@@ -110,10 +116,13 @@ function enrichRecord(
   record: DependantRecord,
   employeesByMatricule: Map<string, { nom: string; departement: string }>,
 ): Dependant {
-  const employee = employeesByMatricule.get(record.matricule);
+  const familyKey = familyGroupKey(record);
+  const familyHead = employeesByMatricule.get(familyKey);
+  const self = employeesByMatricule.get(record.matricule);
   return {
     id: record.id,
     matricule: record.matricule,
+    familyMatricule: record.familyMatricule?.trim() || undefined,
     pactilis: record.pactilis,
     statut: record.statut,
     sexe: record.sexe,
@@ -128,8 +137,8 @@ function enrichRecord(
     total: record.total,
     commentaires: record.commentaires,
     lienDocument: record.lienDocument,
-    employeNom: employee?.nom ?? '',
-    departement: employee?.departement ?? '',
+    employeNom: familyHead?.nom ?? self?.nom ?? '',
+    departement: familyHead?.departement ?? self?.departement ?? '',
   };
 }
 
@@ -149,8 +158,10 @@ function nextDependantId(records: DependantRecord[]): number {
   return records.reduce((max, item) => Math.max(max, item.id), 0) + 1;
 }
 
-function syncFamilyCounts(records: DependantRecord[], matricule: string): void {
-  const family = records.filter((item) => item.matricule === matricule);
+function syncFamilyCounts(records: DependantRecord[], familyMatricule: string): void {
+  const key = familyMatricule.trim();
+  if (!key) return;
+  const family = records.filter((item) => familyGroupKey(item) === key);
   const counts = computeFamilyCompositionCounts(family.map((item) => ({ statut: item.statut })));
   for (const item of family) {
     if (!isEmployeeStatut(item.statut)) continue;
@@ -160,12 +171,90 @@ function syncFamilyCounts(records: DependantRecord[], matricule: string): void {
   }
 }
 
+function normalizeFamilyMatricule(
+  statut: string,
+  matricule: string,
+  familyMatricule?: string | null,
+): string | undefined {
+  const own = matricule.trim();
+  const linked = String(familyMatricule ?? '').trim();
+  if (!linked || linked === own) return undefined;
+  // Ancre familiale utile surtout pour Conjoint employé (propre matricule ≠ famille).
+  if (/conjoint\s*employ/i.test(statut) || linked) return linked;
+  return undefined;
+}
+
+/**
+ * Si un conjoint figure aussi dans l’effectif employés : garde la famille
+ * (familyMatricule) et pose son propre matricule + statut « Conjoint employé ».
+ */
+async function syncConjointEmployeLinks(store: DependantsJsonStoreData): Promise<number> {
+  const { employees } = await readEmployeesBundle();
+  if (!employees.length) return 0;
+
+  const byName = new Map<string, { matricule: string; id: string; nom: string }>();
+  for (const emp of employees) {
+    const key = normalizePersonName(emp.nom);
+    if (!key || byName.has(key)) continue;
+    byName.set(key, { matricule: emp.matricule, id: emp.id, nom: emp.nom });
+  }
+
+  const now = new Date().toISOString();
+  let changed = 0;
+  const touchedFamilies = new Set<string>();
+
+  for (const row of store.dependants) {
+    if (!isSpouseStatut(row.statut)) continue;
+    const nameKey = normalizePersonName(row.nom);
+    if (!nameKey) continue;
+    const match = byName.get(nameKey);
+    if (!match) continue;
+
+    const familyKey = familyGroupKey(row);
+    // Ne pas lier le chef de famille à lui-même.
+    if (match.matricule.trim() === familyKey) continue;
+
+    const nextFamily = normalizeFamilyMatricule(
+      CONJOINT_EMPLOYE_STATUT,
+      match.matricule,
+      row.familyMatricule || row.matricule,
+    );
+    const alreadyLinked =
+      isConjointEmployeStatut(row.statut)
+      && row.matricule.trim() === match.matricule.trim()
+      && (row.familyMatricule || '') === (nextFamily || '');
+
+    if (alreadyLinked) continue;
+
+    row.familyMatricule = nextFamily;
+    row.matricule = match.matricule;
+    row.employeeId = match.id;
+    row.statut = CONJOINT_EMPLOYE_STATUT;
+    row.nom = match.nom || row.nom;
+    row.updatedAt = now;
+    changed += 1;
+    if (familyKey) touchedFamilies.add(familyKey);
+    touchedFamilies.add(familyGroupKey(row));
+  }
+
+  for (const key of touchedFamilies) syncFamilyCounts(store.dependants, key);
+  return changed;
+}
+
 export async function readDependantsData(): Promise<DependantsData> {
   await ensureMigrated();
-  const [store, people] = await Promise.all([readStore(), readPeopleIndex()]);
+  const store = await readStore();
+  const linked = await syncConjointEmployeLinks(store);
+  if (linked > 0) await writeStore(store);
+
+  const people = await readPeopleIndex();
   const enriched = store.dependants.map((item) => enrichRecord(item, people));
-  const active = applyAllFamilyCompositions(enriched.filter((item) => !people.get(item.matricule)?.isExit));
-  const exited = applyAllFamilyCompositions(enriched.filter((item) => people.get(item.matricule)?.isExit));
+  const active = applyAllFamilyCompositions(
+    enriched.filter((item) => !people.get(item.matricule)?.isExit),
+  );
+  const exited = applyAllFamilyCompositions(
+    enriched.filter((item) => Boolean(people.get(item.matricule)?.isExit)),
+  );
   return {
     dependants: active,
     exitedDependants: exited,
@@ -183,6 +272,7 @@ export async function createDependant(data: DependantFormData): Promise<Dependan
     id: nextDependantId(store.dependants),
     employeeId: employee.id,
     matricule: data.matricule,
+    familyMatricule: normalizeFamilyMatricule(data.statut, data.matricule, data.familyMatricule),
     pactilis: data.pactilis,
     statut: data.statut,
     sexe: data.sexe,
@@ -201,7 +291,7 @@ export async function createDependant(data: DependantFormData): Promise<Dependan
     updatedAt: now,
   };
   store.dependants.push(record);
-  syncFamilyCounts(store.dependants, record.matricule);
+  syncFamilyCounts(store.dependants, familyGroupKey(record));
   await writeStore(store);
   return enrichRecord(record, people);
 }
@@ -214,12 +304,19 @@ export async function updateDependant(id: number, data: DependantFormData): Prom
   const employee = records.activeByMatricule.get(data.matricule) ?? records.exitByMatricule.get(data.matricule);
   if (!employee) throw new Error('Employé introuvable');
   const previousMatricule = store.dependants[index].matricule;
+  const previousFamilyKey = familyGroupKey(store.dependants[index]);
   const previousLocalisation = store.dependants[index].localisation;
   const now = new Date().toISOString();
+  const nextFamilyMatricule = normalizeFamilyMatricule(
+    data.statut,
+    data.matricule,
+    data.familyMatricule ?? store.dependants[index].familyMatricule,
+  );
   store.dependants[index] = {
     ...store.dependants[index],
     employeeId: employee.id,
     matricule: data.matricule,
+    familyMatricule: nextFamilyMatricule,
     pactilis: data.pactilis,
     statut: data.statut,
     sexe: data.sexe,
@@ -236,7 +333,10 @@ export async function updateDependant(id: number, data: DependantFormData): Prom
     lienDocument: data.lienDocument,
     updatedAt: now,
   };
+  const nextFamilyKey = familyGroupKey(store.dependants[index]);
+  syncFamilyCounts(store.dependants, previousFamilyKey);
   syncFamilyCounts(store.dependants, previousMatricule);
+  syncFamilyCounts(store.dependants, nextFamilyKey);
   syncFamilyCounts(store.dependants, data.matricule);
   await writeStore(store);
   const saved = enrichRecord(store.dependants[index], people);
@@ -258,8 +358,10 @@ export async function deleteDependant(id: number): Promise<boolean> {
   const store = await readStore();
   const index = store.dependants.findIndex((item) => item.id === id);
   if (index < 0) return false;
+  const familyKey = familyGroupKey(store.dependants[index]);
   const matricule = store.dependants[index].matricule;
   store.dependants.splice(index, 1);
+  syncFamilyCounts(store.dependants, familyKey);
   syncFamilyCounts(store.dependants, matricule);
   await writeStore(store);
   return true;
@@ -285,7 +387,7 @@ export async function restoreDependant(snapshot: DependantRecord): Promise<Depen
   const index = store.dependants.findIndex((item) => item.id === record.id);
   if (index >= 0) store.dependants[index] = { ...store.dependants[index], ...record };
   else store.dependants.push(record);
-  syncFamilyCounts(store.dependants, record.matricule);
+  syncFamilyCounts(store.dependants, familyGroupKey(record));
   await writeStore(store);
   return enrichRecord(record, people);
 }
@@ -293,8 +395,14 @@ export async function restoreDependant(snapshot: DependantRecord): Promise<Depen
 export async function removeDependantsByMatricule(matricule: string): Promise<number> {
   await ensureMigrated();
   const store = await readStore();
+  const mat = matricule.trim();
   const before = store.dependants.length;
-  store.dependants = store.dependants.filter((item) => item.matricule !== matricule);
+  // Supprime la ligne propre (matricule) et les membres ancrés à cette famille (familyMatricule).
+  store.dependants = store.dependants.filter((item) => {
+    if (item.matricule === mat) return false;
+    if (familyGroupKey(item) === mat) return false;
+    return true;
+  });
   const removed = before - store.dependants.length;
   if (removed > 0) {
     await writeStore(store);
@@ -307,8 +415,9 @@ export async function updateFamilyLocalisation(matricule: string, localisation: 
   const [store, people] = await Promise.all([readStore(), readPeopleIndex()]);
   const now = new Date().toISOString();
   const nextLoc = localisation.trim();
+  const key = matricule.trim();
   const updated = store.dependants
-    .filter((item) => item.matricule === matricule)
+    .filter((item) => familyGroupKey(item) === key)
     .map((item) => {
       item.localisation = nextLoc;
       item.updatedAt = now;
@@ -333,9 +442,10 @@ export async function syncFamilyLocalisationFromEmployee(
   if (!matricule.trim() || !nextLoc) return 0;
   const store = await readStore();
   const now = new Date().toISOString();
+  const key = matricule.trim();
   let changed = 0;
   for (const item of store.dependants) {
-    if (item.matricule !== matricule) continue;
+    if (familyGroupKey(item) !== key) continue;
     if ((item.localisation || '').trim() === nextLoc) continue;
     item.localisation = nextLoc;
     item.updatedAt = now;
@@ -371,7 +481,7 @@ export async function assignManyEmployeeMaisons(
   const now = new Date().toISOString();
 
   for (const item of items) {
-    const family = store.dependants.filter((row) => row.matricule === item.matricule);
+    const family = store.dependants.filter((row) => familyGroupKey(row) === item.matricule.trim());
     if (!family.length) continue;
     for (const row of family) {
       row.numeroVilla = item.numeroVilla;

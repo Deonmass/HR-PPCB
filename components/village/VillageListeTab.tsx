@@ -800,11 +800,13 @@ export default function VillageListeTab() {
                           <td>{member.matricule}</td>
                           <td>{member.nom}</td>
                           <td>
-                            {isSpouseStatut(member.statut)
-                              ? 'Conjoint(e)'
-                              : isChildStatut(member.statut)
-                                ? 'Enfant'
-                                : member.statut}
+                            {/conjoint\s*employ/i.test(member.statut)
+                              ? 'Conjoint employé'
+                              : isSpouseStatut(member.statut)
+                                ? 'Conjoint(e)'
+                                : isChildStatut(member.statut)
+                                  ? 'Enfant'
+                                  : member.statut}
                           </td>
                           <td>{currentVilla || '—'}</td>
                           <td>{agent?.typeMaison || '—'}</td>

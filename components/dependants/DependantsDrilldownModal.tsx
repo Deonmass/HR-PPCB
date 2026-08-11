@@ -8,7 +8,9 @@ import RowContextMenu, { type ContextMenuItem } from '@/components/RowContextMen
 import { usePermissions } from '@/contexts/PermissionContext';
 import type { Dependant, DependantFormData } from '@/lib/dependants-types';
 import {
+  belongsToFamily,
   buildFamilyGroups,
+  familyGroupKey,
   isEmployeeStatut,
   isSpouseStatut,
   type FamilyGroup,
@@ -129,9 +131,9 @@ export default function DependantsDrilldownModal({
 
   const openAddMember = (matricule: string) => {
     const loc = allDependants.find(
-      (item) => item.matricule === matricule && isEmployeeStatut(item.statut),
+      (item) => familyGroupKey(item) === matricule && isEmployeeStatut(item.statut),
     )?.localisation
-      ?? allDependants.find((item) => item.matricule === matricule)?.localisation
+      ?? allDependants.find((item) => familyGroupKey(item) === matricule)?.localisation
       ?? '';
     setAddMatricule(matricule);
     setAddLocalisation(loc);
@@ -438,13 +440,12 @@ export default function DependantsDrilldownModal({
         <DependantFormModal
           dependant={formMember}
           familyMembers={
-            (formMember?.matricule || addMatricule)
-              ? allDependants.filter(
-                (item) => item.matricule === (formMember?.matricule || addMatricule),
-              )
-              : []
+            (() => {
+              const key = formMember ? familyGroupKey(formMember) : addMatricule;
+              return key ? allDependants.filter((item) => belongsToFamily(item, key)) : [];
+            })()
           }
-          defaultMatricule={addMatricule}
+          defaultMatricule={addMatricule || (formMember ? familyGroupKey(formMember) : '')}
           defaultLocalisation={addLocalisation}
           onClose={() => {
             setFormMember(null);

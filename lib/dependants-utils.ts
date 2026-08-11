@@ -8,7 +8,13 @@ import type {
   DependantStackedBar,
 } from './dependants-types';
 
+export function isConjointEmployeStatut(statut: string): boolean {
+  return /conjoint\s*employ/i.test(statut);
+}
+
 export function isEmployeeStatut(statut: string): boolean {
+  // « Conjoint employé » reste un conjoint rattaché à la famille, pas un chef.
+  if (isConjointEmployeStatut(statut)) return false;
   return /employ/i.test(statut);
 }
 
@@ -18,6 +24,25 @@ export function isSpouseStatut(statut: string): boolean {
 
 export function isChildStatut(statut: string): boolean {
   return /enfant/i.test(statut);
+}
+
+/** Clé de regroupement familial (chef de famille). */
+export function familyGroupKey(item: {
+  matricule?: string | null;
+  familyMatricule?: string | null;
+}): string {
+  const linked = String(item.familyMatricule ?? '').trim();
+  if (linked) return linked;
+  return String(item.matricule ?? '').trim();
+}
+
+export function belongsToFamily(
+  item: { matricule?: string | null; familyMatricule?: string | null },
+  familyMatricule: string,
+): boolean {
+  const key = familyMatricule.trim();
+  if (!key) return false;
+  return familyGroupKey(item) === key;
 }
 
 /**
@@ -103,10 +128,10 @@ export function applyFamilyCompositionToEmployee(
 ): Dependant[] {
   const normalized = matricule.trim();
   if (!normalized) return dependants;
-  const family = dependants.filter((item) => item.matricule === normalized);
+  const family = dependants.filter((item) => belongsToFamily(item, normalized));
   const counts = computeFamilyCompositionCounts(family);
   return dependants.map((item) => {
-    if (item.matricule !== normalized || !isEmployeeStatut(item.statut)) return item;
+    if (!belongsToFamily(item, normalized) || !isEmployeeStatut(item.statut)) return item;
     return {
       ...item,
       compositionFamille: counts.compositionFamille,
@@ -121,7 +146,7 @@ export function applyAllFamilyCompositions(dependants: Dependant[]): Dependant[]
   const matricules = new Set(
     dependants
       .filter((item) => isEmployeeStatut(item.statut))
-      .map((item) => item.matricule.trim())
+      .map((item) => familyGroupKey(item))
       .filter(Boolean),
   );
 
@@ -146,18 +171,20 @@ function familyMemberSort(a: Dependant, b: Dependant): number {
 }
 
 export function buildFamilyGroups(dependants: Dependant[]): FamilyGroup[] {
-  const byMatricule = new Map<string, Dependant[]>();
+  const byFamily = new Map<string, Dependant[]>();
 
   for (const item of dependants) {
     if (isDependantSummaryRow(item)) continue;
-    const list = byMatricule.get(item.matricule) ?? [];
+    const key = familyGroupKey(item);
+    if (!key) continue;
+    const list = byFamily.get(key) ?? [];
     list.push(item);
-    byMatricule.set(item.matricule, list);
+    byFamily.set(key, list);
   }
 
   const groups: FamilyGroup[] = [];
 
-  for (const [matricule, members] of byMatricule) {
+  for (const [matricule, members] of byFamily) {
     const employee = members.find((item) => isEmployeeStatut(item.statut));
     if (!employee) continue;
 

@@ -400,8 +400,14 @@ export default function EmployeeModal({
   };
 
   const promoteMatchedDependant = async (saved: Employee, match: Dependant) => {
+    // Reste dans la famille du conjoint (familyMatricule) tout en portant son propre matricule.
+    const familyMatricule = (match.familyMatricule || match.matricule || '').trim();
     const payload = {
       matricule: saved.matricule,
+      familyMatricule:
+        familyMatricule && familyMatricule !== saved.matricule.trim()
+          ? familyMatricule
+          : undefined,
       pactilis: match.pactilis,
       statut: CONJOINT_EMPLOYE_STATUT,
       sexe: match.sexe,

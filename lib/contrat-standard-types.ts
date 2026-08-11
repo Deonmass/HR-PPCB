@@ -5,9 +5,8 @@ import type { ContractClassification } from './convention-collective-rules';
 export type ContractType = 'CDD' | 'CDI';
 
 export interface ContratDependantRow {
-  prenom: string;
-  nom: string;
-  postNom: string;
+  /** Nom complet (Nom Post-nom Prénom) — découpé à la génération Word. */
+  fullName: string;
   birthPlaceDate: string;
 }
 
@@ -23,9 +22,8 @@ export interface ContratStandardFormData {
   email: string;
   cnss: string;
   identityNumber: string;
-  spousePrenom: string;
-  spouseNom: string;
-  spousePostNom: string;
+  /** Nom complet du conjoint (découpé à la génération Word). */
+  spouseFullName: string;
   dependants: ContratDependantRow[];
   contractType: ContractType;
   /** Ex. « 1 an renouvelable » (CDD). */
@@ -50,9 +48,7 @@ export interface ContratStandardFormData {
 }
 
 export const EMPTY_DEPENDANT_ROW: ContratDependantRow = {
-  prenom: '',
-  nom: '',
-  postNom: '',
+  fullName: '',
   birthPlaceDate: '',
 };
 
@@ -69,9 +65,7 @@ export function emptyContratForm(): ContratStandardFormData {
     email: '',
     cnss: '',
     identityNumber: '',
-    spousePrenom: '',
-    spouseNom: '',
-    spousePostNom: '',
+    spouseFullName: '',
     dependants: [
       { ...EMPTY_DEPENDANT_ROW },
       { ...EMPTY_DEPENDANT_ROW },
@@ -88,7 +82,7 @@ export function emptyContratForm(): ContratStandardFormData {
     classification: 'maitrise',
     categoryCode: 'C1',
     salaryUsd: 0,
-    exchangeRate: 2297.5,
+    exchangeRate: 2308,
     leaveDays: 22,
     documentDate: new Date().toISOString().slice(0, 10),
     signerMatricule: '',

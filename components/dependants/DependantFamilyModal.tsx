@@ -8,6 +8,7 @@ import {
 } from '@/lib/dependants-columns';
 import {
   buildFamilyGroups,
+  familyGroupKey,
   isChildStatut,
   isEmployeeStatut,
   isSpouseStatut,
@@ -426,5 +427,11 @@ export default function DependantFamilyModal({
 
 export function findFamilyGroup(dependants: Dependant[], member: Dependant): FamilyGroup | null {
   const groups = buildFamilyGroups(dependants);
-  return groups.find((g) => g.matricule === member.matricule) ?? null;
+  const key = familyGroupKey(member);
+  return (
+    groups.find((g) => g.matricule === key)
+    ?? groups.find((g) => g.matricule === member.matricule)
+    ?? groups.find((g) => g.famille.some((m) => m.id === member.id))
+    ?? null
+  );
 }

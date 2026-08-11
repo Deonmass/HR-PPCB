@@ -6,7 +6,11 @@ import {
   getDependantDocumentLinkLabel,
 } from '@/lib/dependants-columns';
 import type { Dependant, DependantFormData } from '@/lib/dependants-types';
-import { computeFamilyCompositionCounts, isEmployeeStatut } from '@/lib/dependants-utils';
+import {
+  computeFamilyCompositionCounts,
+  isConjointEmployeStatut,
+  isEmployeeStatut,
+} from '@/lib/dependants-utils';
 import { DEFAULT_LOCALISATIONS } from '@/lib/localisations';
 import { useEffect, useMemo, useState } from 'react';
 
@@ -36,6 +40,7 @@ function toFormData(
   if (dependant) {
     return {
       matricule: dependant.matricule,
+      familyMatricule: dependant.familyMatricule,
       pactilis: dependant.pactilis,
       statut: dependant.statut,
       sexe: dependant.sexe,
@@ -53,6 +58,7 @@ function toFormData(
   }
   return {
     matricule: defaultMatricule,
+    familyMatricule: undefined,
     pactilis: '',
     statut: 'Enfant',
     sexe: 'M',
@@ -70,8 +76,8 @@ function toFormData(
 }
 
 function documentHint(statut: string): string {
-  if (/employ/i.test(statut)) return ' (document employé)';
   if (/conjoint/i.test(statut)) return ' (certificat de mariage)';
+  if (/employ/i.test(statut)) return ' (document employé)';
   if (/enfant/i.test(statut)) return ' (acte de naissance)';
   return '';
 }
@@ -94,6 +100,8 @@ export default function DependantFormModal({
   }, [dependant, defaultMatricule, defaultLocalisation]);
 
   const isEmployee = isEmployeeStatut(form.statut);
+  const isConjointEmploye = isConjointEmployeStatut(form.statut);
+  const familyAnchor = (form.familyMatricule || defaultMatricule || '').trim();
 
   const familyCounts = useMemo(() => {
     if (!isEmployee) return null;
@@ -107,15 +115,46 @@ export default function DependantFormModal({
     ]);
   }, [isEmployee, familyMembers, dependant, form.statut]);
 
+  const handleStatutChange = (statut: string) => {
+    if (isConjointEmployeStatut(statut)) {
+      const anchor = (form.familyMatricule || defaultMatricule || form.matricule || '').trim();
+      setForm({
+        ...form,
+        statut,
+        familyMatricule: anchor && anchor !== form.matricule.trim() ? anchor : form.familyMatricule,
+      });
+      return;
+    }
+    // Retour à un membre classique : rattacher au matricule famille si on vient d’un conjoint employé.
+    if (isConjointEmploye && familyAnchor) {
+      setForm({
+        ...form,
+        statut,
+        matricule: familyAnchor,
+        familyMatricule: undefined,
+      });
+      return;
+    }
+    setForm({ ...form, statut, familyMatricule: undefined });
+  };
+
   const handleSubmit = async (event: React.FormEvent) => {
     event.preventDefault();
     setSaving(true);
     try {
-      await onSave({
+      const anchor = (form.familyMatricule || defaultMatricule || '').trim();
+      const payload: DependantFormData = {
         ...form,
         ...(familyCounts ?? {}),
         lienDocument: form.lienDocument?.trim() ?? '',
-      });
+        familyMatricule:
+          isConjointEmployeStatut(form.statut)
+          && anchor
+          && anchor !== form.matricule.trim()
+            ? anchor
+            : undefined,
+      };
+      await onSave(payload);
       onClose();
     } finally {
       setSaving(false);
@@ -140,9 +179,15 @@ export default function DependantFormModal({
                 <input
                   required
                   value={form.matricule}
-                  readOnly={!!dependant}
+                  readOnly={!!dependant && !isConjointEmploye}
                   onChange={(event) => setForm({ ...form, matricule: event.target.value })}
+                  placeholder={isConjointEmploye ? 'Matricule employé du conjoint' : undefined}
                 />
+                {isConjointEmploye && familyAnchor ? (
+                  <p className="dependant-link-hint">
+                    Reste rattaché(e) à la famille du matricule {familyAnchor}.
+                  </p>
+                ) : null}
               </div>
               <div className="form-group">
                 <label>N° Pactilis</label>
@@ -156,7 +201,7 @@ export default function DependantFormModal({
                 <select
                   required
                   value={form.statut}
-                  onChange={(event) => setForm({ ...form, statut: event.target.value })}
+                  onChange={(event) => handleStatutChange(event.target.value)}
                 >
                   {STATUTS.map((value) => <option key={value} value={value}>{value}</option>)}
                 </select>

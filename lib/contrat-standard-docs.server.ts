@@ -5,13 +5,30 @@ import JSZip from 'jszip';
 import fs from 'fs/promises';
 import { CLASSIFICATION_RULES, formatCategoryLine } from './convention-collective-rules';
 import {
+  formatMaritalStatusFr,
+  formatPrestationLocation,
+  splitPersonName,
+} from './contrat-standard-family';
+import {
   formatCdfAmount,
   formatUsdAmount,
   usdToWordsPhrase,
 } from './contrat-standard-money';
-import type { ContratStandardFormData } from './contrat-standard-types';
+import type { ContratDependantRow, ContratStandardFormData } from './contrat-standard-types';
 import { replaceDocxText } from './docx-fill';
-import { fillDocxTemplateToBuffer } from './docx-template';
+import { fillDocxTemplateToBuffer, fillEmptyParagraph } from './docx-template';
+
+/** Cellules vides du tableau « Personnes à charge » (lignes 2–4 du modèle). */
+const DEPENDANT_EMPTY_CELLS: Array<{
+  prenom: string;
+  nom: string;
+  postNom: string;
+  birth: string;
+}> = [
+  { prenom: '697F9101', nom: '5DEAC986', postNom: '134204AE', birth: '66BA495F' },
+  { prenom: '7B2748C7', nom: '2D1FECB6', postNom: '3CC8C3AE', birth: '7D07C193' },
+  { prenom: '777A9F1E', nom: '36372D59', postNom: '7DD37516', birth: '343FD151' },
+];
 
 const TEMPLATE_PATH = path.join(
   process.cwd(),
@@ -96,12 +113,79 @@ function buildTitle(form: ContratStandardFormData): string {
     : 'CONTRAT DE TRAVAIL A DUREE DETERMINEE';
 }
 
+function depCell(value: string): string {
+  return safe(value, '—');
+}
+
+type SplitDepRow = {
+  prenom: string;
+  nom: string;
+  postNom: string;
+  birthPlaceDate: string;
+};
+
+function splitDependantRow(row: ContratDependantRow | undefined): SplitDepRow {
+  const parts = splitPersonName(row?.fullName || '');
+  return {
+    prenom: parts.prenom,
+    nom: parts.nom,
+    postNom: parts.postNom,
+    birthPlaceDate: (row?.birthPlaceDate || '').trim(),
+  };
+}
+
+function fillDependantRow0(xml: string, row: SplitDepRow): string {
+  let out = xml;
+  // Remplacer les 4 cellules de l’échantillon (y compris « Massadi », souvent oublié).
+  out = replaceDocxText(out, 'Bryanna', depCell(row.prenom), { optional: true });
+  out = replaceDocxText(out, 'Massadi', depCell(row.nom), { optional: true });
+  out = replaceDocxText(out, 'Jayne', depCell(row.postNom), { optional: true });
+  out = replaceDocxText(out, 'Kinshasa-04/08/2025', depCell(row.birthPlaceDate), {
+    optional: true,
+  });
+  return out;
+}
+
+function fillDependantExtraRows(xml: string, rows: SplitDepRow[]): string {
+  let out = xml;
+  for (let i = 0; i < DEPENDANT_EMPTY_CELLS.length; i += 1) {
+    const row = rows[i + 1];
+    const cells = DEPENDANT_EMPTY_CELLS[i];
+    if (!row || !cells) continue;
+    const hasAny = [row.prenom, row.nom, row.postNom, row.birthPlaceDate].some((v) => v.trim());
+    if (!hasAny) continue;
+    try {
+      out = fillEmptyParagraph(out, cells.prenom, depCell(row.prenom), {
+        font: 'Times New Roman',
+        size: '22',
+      });
+      out = fillEmptyParagraph(out, cells.nom, depCell(row.nom), {
+        font: 'Times New Roman',
+        size: '22',
+      });
+      out = fillEmptyParagraph(out, cells.postNom, depCell(row.postNom), {
+        font: 'Times New Roman',
+        size: '22',
+      });
+      out = fillEmptyParagraph(out, cells.birth, depCell(row.birthPlaceDate), {
+        font: 'Times New Roman',
+        size: '22',
+      });
+    } catch {
+      // Cellules déjà remplies ou modèle divergé — ignorer.
+    }
+  }
+  return out;
+}
+
 function fillBodyXml(xml: string, form: ContratStandardFormData): string {
   const rules = CLASSIFICATION_RULES[form.classification];
   const categoryLine = formatCategoryLine(form.classification, form.categoryCode);
   const jobTitle = safe(form.jobTitle, '—');
   const manager = safe(form.lineManagerTitle, '—');
-  const location = safe(form.workLocation, '—');
+  const location = formatPrestationLocation(form.workLocation);
+  const marital = formatMaritalStatusFr(form.maritalStatus, form.civility);
+  // Remplacer seulement la valeur modèle pour conserver tabulations / mise en forme.
   const nameLine = `${form.civility} : ${safe(form.employeeName)}`;
 
   let out = xml;
@@ -112,40 +196,18 @@ function fillBodyXml(xml: string, form: ContratStandardFormData): string {
   out = replaceDocxText(out, 'Monsieur/Madame\u00a0: MASSADI Gedeon', nameLine, { optional: true });
   out = replaceDocxText(out, 'MASSADI Gedeon', safe(form.employeeName), { optional: true });
 
-  out = replaceDocxText(out, 'De nationalité : Congolaise', `De nationalité : ${safe(form.nationality, 'Congolaise')}`, {
-    optional: true,
-  });
   out = replaceDocxText(out, 'Congolaise', safe(form.nationality, 'Congolaise'), { optional: true });
 
   const birth = formatLongFr(parseIsoDate(form.birthDate), '—');
-  out = replaceDocxText(out, 'Né(e) le : 04 février 1994', `Né(e) le : ${birth}`, { optional: true });
   out = replaceDocxText(out, '04 février 1994', birth, { optional: true });
 
-  out = replaceDocxText(
-    out,
-    'État civil :Marié',
-    `État civil : ${safe(form.maritalStatus)}`,
-    { optional: true },
-  );
-  out = replaceDocxText(out, 'Marié', safe(form.maritalStatus), { optional: true });
+  out = replaceDocxText(out, 'Marié', marital, { optional: true });
 
-  // Adresse identité (en-tête) + Article 12 (jaune) — mêmes / différentes valeurs possibles.
-  out = replaceDocxText(
-    out,
-    'Adresse : 67, av Matadi, Q/Kilimani, C/ Kintambo- Kinshasa',
-    `Adresse : ${safe(form.address)}`,
-    { optional: true },
-  );
+  // Adresse identité (en-tête) + Article 12 — remplacer la valeur modèle uniquement.
   out = replaceDocxText(
     out,
     '67, av Matadi, Q/Kilimani, C/ Kintambo- Kinshasa',
     safe(form.address),
-    { optional: true },
-  );
-  out = replaceDocxText(
-    out,
-    'L’employé: 126, Av Baraka, Q/Mongala, C/Kinshasa- Kinshasa',
-    `L’employé: ${safe(form.address)}`,
     { optional: true },
   );
   out = replaceDocxText(
@@ -155,63 +217,20 @@ function fillBodyXml(xml: string, form: ContratStandardFormData): string {
     { optional: true },
   );
 
-  out = replaceDocxText(
-    out,
-    'Téléphone : +243 81 451 10 83',
-    `Téléphone : ${safe(form.phone)}`,
-    { optional: true },
-  );
   out = replaceDocxText(out, '+243 81 451 10 83', safe(form.phone), { optional: true });
-
-  out = replaceDocxText(
-    out,
-    'Email : gedeonmass44@gmail.com',
-    `Email : ${safe(form.email)}`,
-    { optional: true },
-  );
   out = replaceDocxText(out, 'gedeonmass44@gmail.com', safe(form.email), { optional: true });
-
-  out = replaceDocxText(out, 'N°CNSS : 11994769200I', `N°CNSS : ${safe(form.cnss)}`, {
-    optional: true,
-  });
   out = replaceDocxText(out, '11994769200I', safe(form.cnss), { optional: true });
-
-  out = replaceDocxText(
-    out,
-    'Numéro d’identité : NN30020326449',
-    `Numéro d’identité : ${safe(form.identityNumber)}`,
-    { optional: true },
-  );
   out = replaceDocxText(out, 'NN30020326449', safe(form.identityNumber), { optional: true });
 
-  out = replaceDocxText(out, 'Prénom du Conjoint : Rebecca', `Prénom du Conjoint : ${safe(form.spousePrenom, '')}`, {
-    optional: true,
-  });
-  out = replaceDocxText(out, 'Rebecca', safe(form.spousePrenom, '—'), { optional: true });
-  out = replaceDocxText(out, 'Nom du Conjoint : Maboso', `Nom du Conjoint : ${safe(form.spouseNom, '')}`, {
-    optional: true,
-  });
-  out = replaceDocxText(out, 'Maboso', safe(form.spouseNom, '—'), { optional: true });
-  out = replaceDocxText(
-    out,
-    'Post-nom Conjoint :Mombando',
-    `Post-nom Conjoint : ${safe(form.spousePostNom, '')}`,
-    { optional: true },
-  );
-  out = replaceDocxText(out, 'Mombando', safe(form.spousePostNom, '—'), { optional: true });
+  const spouse = splitPersonName(form.spouseFullName);
+  out = replaceDocxText(out, 'Rebecca', safe(spouse.prenom, '—'), { optional: true });
+  out = replaceDocxText(out, 'Maboso', safe(spouse.nom, '—'), { optional: true });
+  out = replaceDocxText(out, 'Mombando', safe(spouse.postNom, '—'), { optional: true });
 
-  const dep0 = form.dependants[0] || { prenom: '', nom: '', postNom: '', birthPlaceDate: '' };
-  out = replaceDocxText(out, 'Bryanna', safe(dep0.prenom, '—'), { optional: true });
-  out = replaceDocxText(out, 'Jayne', safe(dep0.postNom, '—'), { optional: true });
-  out = replaceDocxText(out, 'Kinshasa-04/08/2025', safe(dep0.birthPlaceDate, '—'), {
-    optional: true,
-  });
-  if (dep0.nom.trim()) {
-    // Nom de l'enfant (échantillon du modèle) — éviter de toucher le nom de l'agent.
-    out = replaceDocxText(out, 'Bryanna Massadi Jayne', `${safe(dep0.prenom)} ${safe(dep0.nom)} ${safe(dep0.postNom)}`.trim(), {
-      optional: true,
-    });
-  }
+  const deps = (form.dependants.length ? form.dependants : [{ fullName: '', birthPlaceDate: '' }])
+    .map(splitDependantRow);
+  out = fillDependantRow0(out, deps[0] || { prenom: '', nom: '', postNom: '', birthPlaceDate: '' });
+  out = fillDependantExtraRows(out, deps);
 
   out = replaceDocxText(
     out,
@@ -229,13 +248,16 @@ function fillBodyXml(xml: string, form: ContratStandardFormData): string {
   out = replaceDocxText(out, 'HR Admin', jobTitle, { occurrence: 'all', optional: true });
   out = replaceDocxText(out, 'Plant HR Manager', manager, { optional: true });
 
-  out = replaceDocxText(
-    out,
-    'Le lieu des prestations est fixé à Kimpese (usine), RDC, ou tout autre lieu que l’employeur désignera.',
-    `Le lieu des prestations est fixé à ${location}, RDC, ou tout autre lieu que l’employeur désignera.`,
-    { optional: true },
-  );
-  out = replaceDocxText(out, 'Kimpese (usine)', location, { optional: true });
+  // Zamba → conserver / écrire « Kimpese (usine) » ; sinon remplacer le lieu modèle.
+  if (!/^kimpese\s*\(usine\)$/i.test(location)) {
+    out = replaceDocxText(
+      out,
+      'Le lieu des prestations est fixé à Kimpese (usine), RDC, ou tout autre lieu que l’employeur désignera.',
+      `Le lieu des prestations est fixé à ${location}, RDC, ou tout autre lieu que l’employeur désignera.`,
+      { optional: true },
+    );
+    out = replaceDocxText(out, 'Kimpese (usine)', location, { optional: true });
+  }
 
   out = replaceDocxText(out, 'Catégorie : C1 (Agent de Maîtrise)', `Catégorie : ${categoryLine}`, {
     optional: true,

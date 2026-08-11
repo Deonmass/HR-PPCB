@@ -20,6 +20,7 @@ import {
   type ContratDependantRow,
   type ContratStandardFormData,
 } from '@/lib/contrat-standard-types';
+import { formatMaritalStatusFr, formatPrestationLocation, joinPersonName } from '@/lib/contrat-standard-family';
 import { showError, showSuccess } from '@/lib/swal';
 import type { Employee } from '@/lib/types';
 
@@ -83,6 +84,7 @@ export default function ContratStandardPage() {
   const [selected, setSelected] = useState<Employee | null>(null);
   const [form, setForm] = useState<ContratStandardFormData>(emptyContratForm);
   const [generating, setGenerating] = useState(false);
+  const [familyHint, setFamilyHint] = useState<string | null>(null);
 
   useEffect(() => {
     fetch('/api/employees')
@@ -106,21 +108,23 @@ export default function ContratStandardPage() {
   const applyEmployee = async (employee: Employee) => {
     setSelected(employee);
     setQuery(employee.nom);
+    setFamilyHint(null);
     const classification = resolveClassification(
       `${employee.grade || ''} ${employee.patersonGrade || ''} ${employee.employeeSubGroup || ''}`,
     );
     const rules = CLASSIFICATION_RULES[classification];
     const categoryCode = (employee.grade || employee.patersonGrade || '').trim()
       || (classification === 'maitrise' ? 'C1' : '');
+    const civility: 'Monsieur' | 'Madame' = /^f/i.test(employee.gender || '') ? 'Madame' : 'Monsieur';
 
     setForm((prev) => ({
       ...prev,
       matricule: employee.matricule,
       employeeName: employee.nom,
-      civility: /^f/i.test(employee.gender || '') ? 'Madame' : 'Monsieur',
+      civility,
       nationality: employee.nationality || prev.nationality || 'Congolaise',
       birthDate: toInputDate(employee.dateOfBirth),
-      maritalStatus: employee.maritalStatus || prev.maritalStatus,
+      maritalStatus: formatMaritalStatusFr(employee.maritalStatus || prev.maritalStatus, civility),
       cnss: employee.cnss || '',
       identityNumber: employee.nif || prev.identityNumber,
       contractType: /cdi/i.test(employee.typeContrat || '') ? 'CDI' : 'CDD',
@@ -138,6 +142,13 @@ export default function ContratStandardPage() {
       classification,
       categoryCode,
       leaveDays: rules.annualLeaveDays,
+      spouseFullName: '',
+      dependants: [
+        { fullName: '', birthPlaceDate: '' },
+        { fullName: '', birthPlaceDate: '' },
+        { fullName: '', birthPlaceDate: '' },
+        { fullName: '', birthPlaceDate: '' },
+      ],
     }));
 
     try {
@@ -153,24 +164,35 @@ export default function ContratStandardPage() {
           postNom: string;
           birthPlaceDate: string;
         }>;
+        matchedAs?: 'head' | 'conjoint' | 'enfant' | null;
       };
       const depRows: ContratDependantRow[] = [0, 1, 2, 3].map((i) => {
         const child = json.children?.[i];
-        if (!child) return { prenom: '', nom: '', postNom: '', birthPlaceDate: '' };
+        if (!child) return { fullName: '', birthPlaceDate: '' };
         return {
-          prenom: child.prenom || '',
-          nom: child.nom || '',
-          postNom: child.postNom || '',
+          fullName: joinPersonName(child),
           birthPlaceDate: child.birthPlaceDate || '',
         };
       });
+      const spouseName = json.spouse ? joinPersonName(json.spouse) : '';
+      const hasFamily = Boolean(spouseName)
+        || depRows.some((r) => r.fullName || r.birthPlaceDate);
       setForm((prev) => ({
         ...prev,
-        spousePrenom: json.spouse?.prenom || '',
-        spouseNom: json.spouse?.nom || '',
-        spousePostNom: json.spouse?.postNom || '',
+        spouseFullName: spouseName,
         dependants: depRows,
       }));
+      if (hasFamily) {
+        if (json.matchedAs === 'conjoint') {
+          setFamilyHint('Situation familiale préremplie : agent trouvé comme conjoint dans la liste des dépendants.');
+        } else if (json.matchedAs === 'enfant') {
+          setFamilyHint('Situation familiale préremplie : agent trouvé comme enfant dans la liste des dépendants.');
+        } else if (json.matchedAs === 'head') {
+          setFamilyHint('Situation familiale préremplie depuis la liste des dépendants de cet agent.');
+        } else {
+          setFamilyHint('Situation familiale préremplie depuis la liste des dépendants.');
+        }
+      }
     } catch {
       // ignore family autofill errors
     }
@@ -369,74 +391,50 @@ export default function ContratStandardPage() {
         </div>
 
         <h3 className="contrat-section-title">Situation familiale</h3>
-        <div className="form-grid form-grid-2">
-          <div className="form-group">
-            <label>Prénom du conjoint</label>
-            <input
-              value={form.spousePrenom}
-              onChange={(e) => setForm((p) => ({ ...p, spousePrenom: e.target.value }))}
-            />
-          </div>
-          <div className="form-group">
-            <label>Nom du conjoint</label>
-            <input
-              value={form.spouseNom}
-              onChange={(e) => setForm((p) => ({ ...p, spouseNom: e.target.value }))}
-            />
-          </div>
-          <div className="form-group">
-            <label>Post-nom du conjoint</label>
-            <input
-              value={form.spousePostNom}
-              onChange={(e) => setForm((p) => ({ ...p, spousePostNom: e.target.value }))}
-            />
-          </div>
+        {familyHint ? <p className="text-muted contrat-family-hint">{familyHint}</p> : null}
+        <div className="form-group">
+          <label>Nom complet du conjoint</label>
+          <input
+            value={form.spouseFullName}
+            onChange={(e) => setForm((p) => ({ ...p, spouseFullName: e.target.value }))}
+            placeholder="Nom Post-nom Prénom"
+          />
         </div>
 
-        <div className="table-wrap" style={{ marginTop: '0.75rem' }}>
-          <table className="travel-history-table">
-            <thead>
-              <tr>
-                <th>#</th>
-                <th>Prénom</th>
-                <th>Nom</th>
-                <th>Post-nom</th>
-                <th>Date et lieu de naissance</th>
-              </tr>
-            </thead>
-            <tbody>
-              {form.dependants.map((row, index) => (
-                <tr key={`dep-${index}`}>
-                  <td>{index + 1}</td>
-                  <td>
-                    <input
-                      value={row.prenom}
-                      onChange={(e) => updateDep(index, { prenom: e.target.value })}
-                    />
-                  </td>
-                  <td>
-                    <input
-                      value={row.nom}
-                      onChange={(e) => updateDep(index, { nom: e.target.value })}
-                    />
-                  </td>
-                  <td>
-                    <input
-                      value={row.postNom}
-                      onChange={(e) => updateDep(index, { postNom: e.target.value })}
-                    />
-                  </td>
-                  <td>
-                    <input
-                      value={row.birthPlaceDate}
-                      onChange={(e) => updateDep(index, { birthPlaceDate: e.target.value })}
-                      placeholder="Kinshasa-04/08/2025"
-                    />
-                  </td>
+        <div className="form-group" style={{ marginTop: '0.75rem' }}>
+          <label>Personnes à charge</label>
+          <div className="table-wrap">
+            <table className="contrat-dependants-table">
+              <thead>
+                <tr>
+                  <th style={{ width: '2.5rem' }}>#</th>
+                  <th>Nom complet</th>
+                  <th>Date et lieu de naissance</th>
                 </tr>
-              ))}
-            </tbody>
-          </table>
+              </thead>
+              <tbody>
+                {form.dependants.map((row, index) => (
+                  <tr key={`dep-${index}`}>
+                    <td>{index + 1}</td>
+                    <td>
+                      <input
+                        value={row.fullName}
+                        onChange={(e) => updateDep(index, { fullName: e.target.value })}
+                        placeholder="Nom Post-nom Prénom"
+                      />
+                    </td>
+                    <td>
+                      <input
+                        value={row.birthPlaceDate}
+                        onChange={(e) => updateDep(index, { birthPlaceDate: e.target.value })}
+                        placeholder="Kinshasa — 04/08/2025"
+                      />
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
         </div>
 
         <h3 className="contrat-section-title">Article 1 — Durée & essai</h3>
@@ -513,7 +511,14 @@ export default function ContratStandardPage() {
             <input
               value={form.workLocation}
               onChange={(e) => setForm((p) => ({ ...p, workLocation: e.target.value }))}
+              placeholder="Zamba, Kinshasa…"
             />
+            {/^zamba$/i.test(form.workLocation.trim()) ? (
+              <p className="text-muted contrat-rules-hint" style={{ marginTop: '0.35rem' }}>
+                Dans le contrat : « Le lieu des prestations est fixé à{' '}
+                {formatPrestationLocation(form.workLocation)} ».
+              </p>
+            ) : null}
           </div>
           <div className="form-group">
             <label>Classification (convention)</label>

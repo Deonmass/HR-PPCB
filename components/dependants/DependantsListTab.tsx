@@ -10,7 +10,10 @@ import TableHeaderFilter from '@/components/TableHeaderFilter';
 import { usePermissions } from '@/contexts/PermissionContext';
 import type { Dependant, DependantFormData } from '@/lib/dependants-types';
 import {
+  belongsToFamily,
   buildFamilyGroups,
+  familyGroupKey,
+  isConjointEmployeStatut,
   isEmployeeStatut,
   isSpouseStatut,
   type FamilyGroup,
@@ -561,9 +564,9 @@ export default function DependantsListTab({
 
   const openAddMember = (matricule: string) => {
     const employeeLoc = dependants.find(
-      (item) => item.matricule === matricule && isEmployeeStatut(item.statut),
+      (item) => familyGroupKey(item) === matricule && isEmployeeStatut(item.statut),
     )?.localisation
-      ?? dependants.find((item) => item.matricule === matricule)?.localisation
+      ?? dependants.find((item) => familyGroupKey(item) === matricule)?.localisation
       ?? '';
     setAddMatricule(matricule);
     setAddLocalisation(employeeLoc);
@@ -643,7 +646,7 @@ export default function DependantsListTab({
         id: 'add',
         label: 'Ajouter un membre',
         icon: 'add',
-        onClick: () => openAddMember(member.matricule),
+        onClick: () => openAddMember(familyGroupKey(member)),
       });
     }
     if (canEdit) {
@@ -693,10 +696,23 @@ export default function DependantsListTab({
       indentName?: boolean;
       group?: FamilyGroup;
     },
-  ) => (
+  ) => {
+    // Conjoint employé : reste dans la famille, mais affiche son propre matricule.
+    const showOwnMatricule = Boolean(
+      options?.isEmployee
+      || isConjointEmployeStatut(item.statut)
+      || (item.familyMatricule && item.matricule.trim() && item.matricule.trim() !== item.familyMatricule.trim()),
+    );
+    return (
     <>
       <td>{item.id || '—'}</td>
-      <td>{options?.isEmployee ? <strong>{item.matricule}</strong> : ''}</td>
+      <td>
+        {showOwnMatricule ? (
+          options?.isEmployee ? <strong>{item.matricule}</strong> : item.matricule
+        ) : (
+          ''
+        )}
+      </td>
       <td>{item.pactilis || '—'}</td>
       <td>{item.statut}</td>
       <td>{item.sexe}</td>
@@ -724,7 +740,8 @@ export default function DependantsListTab({
         )}
       </td>
     </>
-  );
+    );
+  };
 
   return (
     <>
@@ -939,13 +956,12 @@ export default function DependantsListTab({
         <DependantFormModal
           dependant={formMember}
           familyMembers={
-            (formMember?.matricule || addMatricule)
-              ? dependants.filter(
-                (item) => item.matricule === (formMember?.matricule || addMatricule),
-              )
-              : []
+            (() => {
+              const key = formMember ? familyGroupKey(formMember) : addMatricule;
+              return key ? dependants.filter((item) => belongsToFamily(item, key)) : [];
+            })()
           }
-          defaultMatricule={addMatricule}
+          defaultMatricule={addMatricule || (formMember ? familyGroupKey(formMember) : '')}
           defaultLocalisation={addLocalisation}
           onClose={() => {
             setFormMember(null);

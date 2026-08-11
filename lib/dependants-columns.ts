@@ -30,8 +30,8 @@ export const DEPENDANTS_DATA_START = 2;
 export const DEP_LIEN_DOCUMENT_HEADER = 'Lien document';
 
 export function getDependantDocumentLinkLabel(statut: string): string {
-  if (/employ/i.test(statut)) return 'Lien document employé (SharePoint)';
   if (/conjoint/i.test(statut)) return 'Lien certificat de mariage (SharePoint)';
+  if (/employ/i.test(statut)) return 'Lien document employé (SharePoint)';
   if (/enfant/i.test(statut)) return 'Lien acte de naissance (SharePoint)';
   return 'Lien document (SharePoint)';
 }
