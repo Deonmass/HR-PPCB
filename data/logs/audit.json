@@ -1,6 +1,22 @@
 {
   "entries": [
     {
+      "id": "log-000192",
+      "at": "2026-08-11T12:41:13.426Z",
+      "userId": "admin",
+      "userName": "Administrateur",
+      "module": "factures-suivi",
+      "moduleLabel": "Factures suivi",
+      "action": "delete",
+      "actionLabel": "Suppression",
+      "entityType": "facture.suivi",
+      "summary": "Suppression groupée — 128 facture(s)",
+      "details": "IDs: fac-977, fac-978, fac-799, fac-1317, fac-1063, fac-1064, fac-795, fac-1314, fac-1315, fac-1316, fac-1051, fac-1053, fac-1058, fac-1059, fac-1060, fac-1062, fac-910, fac-912, fac-913, fac-914, fac-916, fac-918, fac-919, fac-784, fac-785, fac-786, fac-789, fac-1048, fac-908, fac-909, fac-1039, fac-1040, fac-1041, fac-1042, fac-1043, fac-1045, fac-1046, fac-1047, fac-905, fac-906, fac-907, fac-901, fac-903, fac-1313, fac-898, fac-899, fac-900, fac-1122, fac-897, fac-890, fac-892, fac-893, fac-1312, fac-1120, fac-1110, fac-1102, fac-1108, fac-1100, fac-1106, fac-1111, fac-1103, fac-1104, fac-1107, fac-1112, fac-1105, fac-1109, fac-1311, fac-1326, fac-1310, fac-855, fac-859, fac-816, fac-853, fac-854, fac-1307, fac-1306, fac-851, fac-852, fac-850, fac-810, fac-811, fac-846, fac-847, fac-849, fac-1305, fac-959, fac-960, fac-961, fac-962, fac-964, fac-842, fac-843, fac-844, fac-845, fac-1324, fac-837, fac-838, fac-1304, fac-1087, fac-835, fac-807, fac-1199, fac-803, fac-804, fac-805, fac-953, fac-802, fac-1323, fac-1070, fac-1072, fac-1074, fac-1075, fac-1076, fac-1078, fac-1322, fac-1321, fac-1197, fac-1196, fac-1319, fac-1320, fac-1194, fac-1195, fac-1193, fac-938, fac-940, fac-941, fac-1067, fac-1068",
+      "after": 128,
+      "undoable": false,
+      "undone": false
+    },
+    {
       "id": "log-000191",
       "at": "2026-08-11T12:40:58.376Z",
       "userId": "admin",
@@ -22274,5 +22290,5 @@
       }
     }
   ],
-  "nextSeq": 192
+  "nextSeq": 193
 }
