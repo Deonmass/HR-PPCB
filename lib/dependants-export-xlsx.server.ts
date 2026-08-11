@@ -18,6 +18,7 @@ import {
 import { EMPLOYEE_EXIT_SHEET, parseDateToExcelSerial } from './employee-columns';
 import { DEPENDANTS_EXPORT_TEMPLATE_PATH } from './excel-export-template-paths';
 import { withExcelLock } from './excel-io';
+import { mergeLocalisationOptions } from './localisations';
 
 const FIRST_DATA_ROW = DEPENDANTS_DATA_START + 1; // Excel row 3
 
@@ -333,47 +334,99 @@ function dependantsColRange(colLetter: string, lastDataRow: number): string {
 }
 
 /**
- * Tableaux RESUME ajoutés manuellement :
- * - Localisation × statut (A26:E31) → COUNTIFS Emp/Conj/Enf + totaux
- * - Mineurs et majeurs par site (A33:D38) → âge ≤17 / reste + totaux
+ * Tableaux RESUME :
+ * - Localisation × statut
+ * - Mineurs et majeurs par site
+ * Les sites du dashboard export sont dynamiques (Zamba, Kinshasa, Lubudi, Lubumbashi, MOANDA, Kisangani…).
  */
-function fillSiteSummaryTableFormulas(resumeSheet: PopulateSheet, lastDataRow: number): void {
+function fillSiteSummaryTableFormulas(
+  resumeSheet: PopulateSheet,
+  lastDataRow: number,
+  sites?: string[],
+): void {
   if (lastDataRow < FIRST_DATA_ROW) return;
+
+  const siteList = mergeLocalisationOptions(sites ?? []);
+  if (!siteList.length) return;
 
   const colG = dependantsColRange('G', lastDataRow);
   const colD = dependantsColRange('D', lastDataRow);
   const colI = dependantsColRange('I', lastDataRow);
 
-  const localisationRows = [28, 29, 30] as const;
-  const ageRows = [35, 36, 37] as const;
+  const locTitleRow = 26;
+  const locHeaderRow = 27;
+  const locStart = 28;
+  const locTotalRow = locStart + siteList.length;
+  const ageTitleRow = locTotalRow + 2;
+  const ageHeaderRow = ageTitleRow + 1;
+  const ageStart = ageHeaderRow + 1;
+  const ageTotalRow = ageStart + siteList.length;
 
-  for (const row of localisationRows) {
-    const site = String(resumeSheet.cell(row, 1).value() ?? '').trim();
-    if (!site || /^total$/i.test(site)) continue;
+  // Clear previous block (legacy 3-site layout + room for growth).
+  for (let row = locTitleRow; row <= Math.max(ageTotalRow + 2, 50); row += 1) {
+    for (let col = 1; col <= 5; col += 1) {
+      resumeSheet.cell(row, col).value(undefined);
+      try {
+        (resumeSheet.cell(row, col) as unknown as { formula(v: undefined): void }).formula(undefined);
+      } catch {
+        // ignore formula clear failures
+      }
+    }
+  }
 
+  resumeSheet.cell(locTitleRow, 1).value('Localisation × statut');
+  resumeSheet.cell(locHeaderRow, 1).value('Site');
+  resumeSheet.cell(locHeaderRow, 2).value('Emp.');
+  resumeSheet.cell(locHeaderRow, 3).value('Conj.');
+  resumeSheet.cell(locHeaderRow, 4).value('Enf.');
+  resumeSheet.cell(locHeaderRow, 5).value('Total');
+
+  siteList.forEach((site, index) => {
+    const row = locStart + index;
+    resumeSheet.cell(row, 1).value(site);
     resumeSheet.cell(row, 2).formula(`COUNTIFS(${colG},"${site}",${colD},"*Employ*")`);
     resumeSheet.cell(row, 3).formula(`COUNTIFS(${colG},"${site}",${colD},"*Conjoint*")`);
     resumeSheet.cell(row, 4).formula(`COUNTIFS(${colG},"${site}",${colD},"Enfant")`);
     resumeSheet.cell(row, 5).formula(`SUM(B${row}:D${row})`);
-  }
+  });
 
-  resumeSheet.cell(31, 2).formula('SUM(B28:B30)');
-  resumeSheet.cell(31, 3).formula('SUM(C28:C30)');
-  resumeSheet.cell(31, 4).formula('SUM(D28:D30)');
-  resumeSheet.cell(31, 5).formula('SUM(E28:E30)');
+  resumeSheet.cell(locTotalRow, 1).value('TOTAL');
+  resumeSheet.cell(locTotalRow, 2).formula(`SUM(B${locStart}:B${locTotalRow - 1})`);
+  resumeSheet.cell(locTotalRow, 3).formula(`SUM(C${locStart}:C${locTotalRow - 1})`);
+  resumeSheet.cell(locTotalRow, 4).formula(`SUM(D${locStart}:D${locTotalRow - 1})`);
+  resumeSheet.cell(locTotalRow, 5).formula(`SUM(E${locStart}:E${locTotalRow - 1})`);
 
-  for (const row of ageRows) {
-    const site = String(resumeSheet.cell(row, 1).value() ?? '').trim();
-    if (!site || /^total$/i.test(site)) continue;
+  resumeSheet.cell(ageTitleRow, 1).value('Mineurs et majeurs par site');
+  resumeSheet.cell(ageHeaderRow, 1).value('Site');
+  resumeSheet.cell(ageHeaderRow, 2).value('Min');
+  resumeSheet.cell(ageHeaderRow, 3).value('Maj');
+  resumeSheet.cell(ageHeaderRow, 4).value('Total');
 
+  siteList.forEach((site, index) => {
+    const row = ageStart + index;
+    resumeSheet.cell(row, 1).value(site);
     resumeSheet.cell(row, 2).formula(`COUNTIFS(${colG},"${site}",${colI},"<=17")`);
     resumeSheet.cell(row, 3).formula(`COUNTIF(${colG},"${site}")-B${row}`);
     resumeSheet.cell(row, 4).formula(`SUM(B${row}:C${row})`);
-  }
+  });
 
-  resumeSheet.cell(38, 2).formula('SUM(B35:B37)');
-  resumeSheet.cell(38, 3).formula('SUM(C35:C37)');
-  resumeSheet.cell(38, 4).formula('SUM(D35:D37)');
+  resumeSheet.cell(ageTotalRow, 1).value('TOTAL');
+  resumeSheet.cell(ageTotalRow, 2).formula(`SUM(B${ageStart}:B${ageTotalRow - 1})`);
+  resumeSheet.cell(ageTotalRow, 3).formula(`SUM(C${ageStart}:C${ageTotalRow - 1})`);
+  resumeSheet.cell(ageTotalRow, 4).formula(`SUM(D${ageStart}:D${ageTotalRow - 1})`);
+}
+
+function collectLocalisationSitesFromSheet(sheet: PopulateSheet, lastDataRow: number): string[] {
+  const sites: string[] = [];
+  for (let row = FIRST_DATA_ROW; row <= lastDataRow; row += 1) {
+    const site = String(sheet.cell(row, DEP_COL.localisation + 1).value() ?? '').trim();
+    if (site) sites.push(site);
+  }
+  return sites;
+}
+
+function collectLocalisationSitesFromDependants(rows: Dependant[]): string[] {
+  return rows.map((item) => item.localisation);
 }
 
 function ensureExitTitle(sheet: PopulateSheet): void {
@@ -453,7 +506,11 @@ async function buildFromTemplate(templatePath: string, livePath: string): Promis
 
     if (resumeSheet) {
       updateResumeFormulaRanges(resumeSheet, lastDataRow);
-      fillSiteSummaryTableFormulas(resumeSheet, lastDataRow);
+      fillSiteSummaryTableFormulas(
+        resumeSheet,
+        lastDataRow,
+        collectLocalisationSitesFromSheet(templateSheet, lastDataRow),
+      );
     }
 
     // Feuille familles EXIT
@@ -524,7 +581,11 @@ async function buildFromLiveWorkbook(livePath: string): Promise<Buffer> {
         }
       }
       updateResumeFormulaRanges(resumeSheet, lastActive);
-      fillSiteSummaryTableFormulas(resumeSheet, lastActive);
+      fillSiteSummaryTableFormulas(
+        resumeSheet,
+        lastActive,
+        collectLocalisationSitesFromSheet(activeSheet, lastActive),
+      );
     }
 
     return exportWb.outputAsync();
@@ -657,8 +718,13 @@ export async function buildDependantsExportBufferFromJson(): Promise<Buffer> {
 
   const resumeSheet = workbook.sheet(RESUME_SHEET);
   if (resumeSheet) {
-    updateResumeFormulaRanges(resumeSheet, Math.max(lastActive, FIRST_DATA_ROW));
-    fillSiteSummaryTableFormulas(resumeSheet, Math.max(lastActive, FIRST_DATA_ROW));
+    const lastRow = Math.max(lastActive, FIRST_DATA_ROW);
+    updateResumeFormulaRanges(resumeSheet, lastRow);
+    fillSiteSummaryTableFormulas(
+      resumeSheet,
+      lastRow,
+      collectLocalisationSitesFromDependants([...activeRows, ...uniqueExitRows]),
+    );
   }
 
   const existingExit = workbook.sheet(DEPENDANTS_EXIT_SHEET);

@@ -7,11 +7,12 @@ import {
 } from '@/lib/dependants-columns';
 import type { Dependant, DependantFormData } from '@/lib/dependants-types';
 import { computeFamilyCompositionCounts, isEmployeeStatut } from '@/lib/dependants-utils';
+import { DEFAULT_LOCALISATIONS } from '@/lib/localisations';
 import { useEffect, useMemo, useState } from 'react';
 
 const STATUTS = ['Employé', 'Conjoint', 'Conjoint(e)', 'Enfant'];
 const SEXES = ['M', 'F'];
-const LOCALISATIONS = ['Kinshasa', 'Zamba', 'Lubudi', 'Lubumbashi'];
+const LOCALISATIONS = [...DEFAULT_LOCALISATIONS];
 
 const SHAREPOINT_PLACEHOLDER =
   'https://ppcafr.sharepoint.com/:b:/r/sites/...';

@@ -214,6 +214,7 @@ export async function updateDependant(id: number, data: DependantFormData): Prom
   const employee = records.activeByMatricule.get(data.matricule) ?? records.exitByMatricule.get(data.matricule);
   if (!employee) throw new Error('Employé introuvable');
   const previousMatricule = store.dependants[index].matricule;
+  const previousLocalisation = store.dependants[index].localisation;
   const now = new Date().toISOString();
   store.dependants[index] = {
     ...store.dependants[index],
@@ -238,7 +239,18 @@ export async function updateDependant(id: number, data: DependantFormData): Prom
   syncFamilyCounts(store.dependants, previousMatricule);
   syncFamilyCounts(store.dependants, data.matricule);
   await writeStore(store);
-  return enrichRecord(store.dependants[index], people);
+  const saved = enrichRecord(store.dependants[index], people);
+
+  if (
+    isEmployeeStatut(saved.statut) &&
+    (previousLocalisation || '').trim() !== (saved.localisation || '').trim() &&
+    saved.localisation.trim()
+  ) {
+    const { setEmployeeLocalisationOnly } = await import('./employees-json-store');
+    await setEmployeeLocalisationOnly(saved.matricule, saved.localisation);
+  }
+
+  return saved;
 }
 
 export async function deleteDependant(id: number): Promise<boolean> {
@@ -294,16 +306,43 @@ export async function updateFamilyLocalisation(matricule: string, localisation: 
   await ensureMigrated();
   const [store, people] = await Promise.all([readStore(), readPeopleIndex()]);
   const now = new Date().toISOString();
+  const nextLoc = localisation.trim();
   const updated = store.dependants
     .filter((item) => item.matricule === matricule)
     .map((item) => {
-      item.localisation = localisation;
+      item.localisation = nextLoc;
       item.updatedAt = now;
       return enrichRecord(item, people);
     });
   if (!updated.length) throw new Error('Aucune famille trouvée pour ce matricule');
   await writeStore(store);
+  if (nextLoc) {
+    const { setEmployeeLocalisationOnly } = await import('./employees-json-store');
+    await setEmployeeLocalisationOnly(matricule, nextLoc);
+  }
   return updated;
+}
+
+/** Aligne toute la famille dépendants sur la localisation employé (sans reboucler). */
+export async function syncFamilyLocalisationFromEmployee(
+  matricule: string,
+  localisation: string,
+): Promise<number> {
+  await ensureMigrated();
+  const nextLoc = localisation.trim();
+  if (!matricule.trim() || !nextLoc) return 0;
+  const store = await readStore();
+  const now = new Date().toISOString();
+  let changed = 0;
+  for (const item of store.dependants) {
+    if (item.matricule !== matricule) continue;
+    if ((item.localisation || '').trim() === nextLoc) continue;
+    item.localisation = nextLoc;
+    item.updatedAt = now;
+    changed += 1;
+  }
+  if (changed > 0) await writeStore(store);
+  return changed;
 }
 
 export async function assignEmployeeMaison(params: {
@@ -348,6 +387,11 @@ export async function assignManyEmployeeMaisons(
 
   if (updated.length) {
     await writeStore(store);
+    const { setEmployeeLocalisationOnly } = await import('./employees-json-store');
+    for (const item of items) {
+      if (item.setLocalisationZamba === false || !item.numeroVilla) continue;
+      await setEmployeeLocalisationOnly(item.matricule, 'Zamba');
+    }
   }
   return updated;
 }

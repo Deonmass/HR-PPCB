@@ -455,7 +455,48 @@ export async function upsertEmployee(employee: Employee): Promise<Employee> {
   }
 
   await writeAllStores(employeesStore, exitsStore, docsStore);
-  return composeEmployee(nextRecord, docsStore.documents.find((item) => item.employeeId === nextRecord.id));
+  const saved = composeEmployee(nextRecord, docsStore.documents.find((item) => item.employeeId === nextRecord.id));
+
+  const previousLoc = (existing?.localisation || '').trim();
+  const nextLoc = (saved.localisation || '').trim();
+  if (nextLoc && nextLoc !== previousLoc) {
+    const { syncFamilyLocalisationFromEmployee } = await import('./dependants-json-store');
+    await syncFamilyLocalisationFromEmployee(saved.matricule, nextLoc);
+  }
+
+  return saved;
+}
+
+/** Met à jour uniquement la localisation employé (sans reboucler vers dépendants). */
+export async function setEmployeeLocalisationOnly(
+  matricule: string,
+  localisation: string,
+): Promise<boolean> {
+  await ensureMigrated();
+  const nextLoc = localisation.trim();
+  if (!matricule.trim() || !nextLoc) return false;
+
+  const [employeesStore, exitsStore, docsStore] = await Promise.all([
+    readEmployeesStore(),
+    readExitsStore(),
+    readCheckDocumentsStore(),
+  ]);
+  const activeIndex = employeesStore.employees.findIndex((item) => item.matricule === matricule);
+  const exitIndex = exitsStore.exits.findIndex((item) => item.matricule === matricule);
+  const target =
+    activeIndex >= 0
+      ? employeesStore.employees[activeIndex]
+      : exitIndex >= 0
+        ? exitsStore.exits[exitIndex]
+        : null;
+  if (!target) return false;
+  if ((target.localisation || '').trim() === nextLoc) return false;
+
+  const now = new Date().toISOString();
+  target.localisation = nextLoc;
+  target.updatedAt = now;
+  await writeAllStores(employeesStore, exitsStore, docsStore);
+  return true;
 }
 
 export async function deleteEmployee(matricule: string): Promise<boolean> {

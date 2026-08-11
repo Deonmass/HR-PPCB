@@ -5,6 +5,7 @@ export {
   deleteDependant,
   readDependantsData,
   removeDependantsByMatricule,
+  syncFamilyLocalisationFromEmployee,
   updateDependant,
   updateFamilyLocalisation,
 } from './dependants-json-store';

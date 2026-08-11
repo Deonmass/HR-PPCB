@@ -1,9 +1,8 @@
 'use client';
 
 import { BtnSpinner } from '@/components/overtime/TimesheetIcons';
+import { mergeLocalisationOptions } from '@/lib/localisations';
 import { useEffect, useMemo, useState } from 'react';
-
-const DEFAULT_LOCALISATIONS = ['Kinshasa', 'Zamba', 'Lubudi', 'Lubumbashi'];
 
 interface Props {
   matricule: string;
@@ -22,14 +21,10 @@ export default function FamilyLocalisationModal({
   onClose,
   onApply,
 }: Props) {
-  const options = useMemo(() => {
-    const set = new Set(
-      [...DEFAULT_LOCALISATIONS, ...knownLocalisations, currentLocalisation]
-        .map((value) => value.trim())
-        .filter(Boolean),
-    );
-    return [...set].sort((a, b) => a.localeCompare(b, 'fr'));
-  }, [knownLocalisations, currentLocalisation]);
+  const options = useMemo(
+    () => mergeLocalisationOptions(knownLocalisations, [currentLocalisation]),
+    [knownLocalisations, currentLocalisation],
+  );
 
   const [localisation, setLocalisation] = useState(currentLocalisation || options[0] || '');
   const [saving, setSaving] = useState(false);

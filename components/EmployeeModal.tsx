@@ -17,6 +17,7 @@ import {
   resolveEssaiEcheanceEval,
   resolveEssaiStatutEval,
 } from '@/lib/employees-trial';
+import { DEFAULT_LOCALISATIONS } from '@/lib/localisations';
 import type { Employee } from '@/lib/types';
 import { emptyEmployeeHrProfile } from '@/lib/types';
 
@@ -26,7 +27,7 @@ interface Props {
   onSave: (employee: Employee) => void | Promise<void>;
 }
 
-const LOCALISATIONS = ['Zamba', 'Lubumbashi', 'Kinshasa', 'Lubudi'];
+const LOCALISATIONS = [...DEFAULT_LOCALISATIONS];
 const GENDERS = ['Male', 'Female'];
 const MARITAL = ['Single', 'Married', 'Divorced', 'Widowed'];
 
