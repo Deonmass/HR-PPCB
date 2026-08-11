@@ -98,5 +98,15 @@
     "issuedBy": "Administrateur",
     "id": "exit-1786435340673-54ksef",
     "createdAt": "2026-08-11T08:02:20.673Z"
+  },
+  {
+    "matricule": "70000235",
+    "employeeName": "MASOKA HAPPY IYANYA",
+    "doc": "attestation-fin-service",
+    "docLabel": "Attestation de fin de service",
+    "fileName": "Attestation de fin de service - MASOKA HAPPY IYANYA.docx",
+    "issuedBy": "Administrateur",
+    "id": "exit-1786435345180-6r071v",
+    "createdAt": "2026-08-11T08:02:25.180Z"
   }
 ]
