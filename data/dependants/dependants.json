@@ -1793,18 +1793,18 @@
       "statut": "Employé",
       "sexe": "M",
       "nom": "ODIPO WERE Edgard",
-      "localisation": "Kinshasa",
+      "localisation": "Lubumbashi",
       "numeroVilla": "",
       "typeMaison": "",
       "dateNaissance": "01/11/1981",
-      "age": 44,
+      "age": null,
       "compositionFamille": 1,
       "enfants": 2,
       "total": 4,
       "commentaires": "",
       "lienDocument": "",
       "createdAt": "2026-07-28T09:40:39.809Z",
-      "updatedAt": "2026-07-28T09:40:39.809Z"
+      "updatedAt": "2026-08-11T09:43:25.721Z"
     },
     {
       "id": 86,
