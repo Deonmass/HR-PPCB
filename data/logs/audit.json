@@ -1,6 +1,22 @@
 {
   "entries": [
     {
+      "id": "log-000190",
+      "at": "2026-08-11T12:40:42.681Z",
+      "userId": "admin",
+      "userName": "Administrateur",
+      "module": "factures-suivi",
+      "moduleLabel": "Factures suivi",
+      "action": "delete",
+      "actionLabel": "Suppression",
+      "entityType": "facture.suivi",
+      "summary": "Suppression groupée — 6 facture(s)",
+      "details": "IDs: fac-1336, fac-669, fac-1337, fac-670, fac-1335, fac-668",
+      "after": 9,
+      "undoable": false,
+      "undone": false
+    },
+    {
       "id": "log-000189",
       "at": "2026-08-11T12:38:05.262Z",
       "userId": "admin",
@@ -22242,5 +22258,5 @@
       }
     }
   ],
-  "nextSeq": 190
+  "nextSeq": 191
 }
