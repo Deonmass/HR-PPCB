@@ -1,6 +1,63 @@
 {
   "entries": [
     {
+      "id": "log-000177",
+      "at": "2026-08-11T09:57:37.305Z",
+      "userId": "admin",
+      "userName": "Administrateur",
+      "module": "dependants",
+      "moduleLabel": "Dépendants",
+      "action": "update",
+      "actionLabel": "Modification",
+      "entityType": "dependant",
+      "entityId": "85",
+      "summary": "Modification dépendant #85 — ODIPO WERE Edgard",
+      "details": "Modification dépendant #85 — ODIPO WERE Edgard",
+      "before": {
+        "id": 85,
+        "employeeId": "ab11eeec-f68c-4498-92b3-b9411bfb4038",
+        "matricule": "70000203",
+        "pactilis": "164022",
+        "statut": "Employé",
+        "sexe": "M",
+        "nom": "ODIPO WERE Edgard",
+        "localisation": "Lubumbashi",
+        "numeroVilla": "",
+        "typeMaison": "",
+        "dateNaissance": "01/11/1981",
+        "age": null,
+        "compositionFamille": 1,
+        "enfants": 2,
+        "total": 4,
+        "commentaires": "",
+        "lienDocument": "",
+        "createdAt": "2026-07-28T09:40:39.809Z",
+        "updatedAt": "2026-08-11T09:44:14.400Z"
+      },
+      "after": {
+        "id": 85,
+        "matricule": "70000203",
+        "pactilis": "164022",
+        "statut": "Employé",
+        "sexe": "M",
+        "nom": "ODIPO WERE Edgard",
+        "localisation": "Lubumbashi",
+        "numeroVilla": "",
+        "typeMaison": "",
+        "dateNaissance": "1/11/1981",
+        "age": null,
+        "compositionFamille": 1,
+        "enfants": 2,
+        "total": 4,
+        "commentaires": "",
+        "lienDocument": "",
+        "employeNom": "ODIPO WERE Edgard",
+        "departement": "Administration"
+      },
+      "undoable": true,
+      "undone": false
+    },
+    {
       "id": "log-000176",
       "at": "2026-08-11T09:54:50.964Z",
       "userId": "Marie.Yowali",
@@ -20619,5 +20676,5 @@
       }
     }
   ],
-  "nextSeq": 177
+  "nextSeq": 178
 }
