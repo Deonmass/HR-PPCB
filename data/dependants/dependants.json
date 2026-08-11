@@ -12923,18 +12923,18 @@
       "statut": "Employé",
       "sexe": "M",
       "nom": "NGABA TANKUEY ARNOLD",
-      "localisation": "Kinshasa",
+      "localisation": "Lubudi",
       "numeroVilla": "",
       "typeMaison": "",
       "dateNaissance": "25/05/1989",
-      "age": 37,
+      "age": null,
       "compositionFamille": 1,
       "enfants": 2,
       "total": 4,
       "commentaires": "",
       "lienDocument": "",
       "createdAt": "2026-07-28T09:40:39.809Z",
-      "updatedAt": "2026-07-28T09:40:39.809Z"
+      "updatedAt": "2026-08-11T09:46:32.891Z"
     },
     {
       "id": 608,
