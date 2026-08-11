@@ -1,6 +1,6 @@
 'use client';
 
-import { useCallback, useEffect, useMemo, useState } from 'react';
+import { useCallback, useEffect, useMemo, useState, type ReactNode } from 'react';
 import FacturesSuiviDashboard from '@/components/factures-fournisseurs/FacturesSuiviDashboard';
 import FacturesSuiviFlatTable from '@/components/factures-fournisseurs/FacturesSuiviFlatTable';
 import FacturesSuiviImportModal from '@/components/factures-fournisseurs/FacturesSuiviImportModal';
@@ -33,8 +33,110 @@ import { confirmDelete, showError, showSuccess } from '@/lib/swal';
 
 const MENU = 'factures.fournisseur.factures';
 const TABS: FactureSuiviTab[] = ['dashboard', 'unpaid', 'paid'];
+const ROW_EXIT_MS = 480;
+const ROW_FLASH_MS = 560;
+const BTN_DONE_MS = 900;
 
+type BulkAction = 'paid' | 'unpaid' | 'delete';
+type BulkPhase = 'busy' | 'done';
 type BatchLine = FactureBatchLineInput & { key: string };
+
+function IconCheck({ size = 14 }: { size?: number }) {
+  return (
+    <svg viewBox="0 0 24 24" width={size} height={size} fill="none" aria-hidden="true">
+      <path
+        d="M20 6L9 17l-5-5"
+        stroke="currentColor"
+        strokeWidth="2.2"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+    </svg>
+  );
+}
+
+function IconDoneAnimated({ size = 15 }: { size?: number }) {
+  return (
+    <svg
+      className="factures-btn-done"
+      viewBox="0 0 24 24"
+      width={size}
+      height={size}
+      fill="none"
+      aria-hidden="true"
+    >
+      <circle className="factures-btn-done-circle" cx="12" cy="12" r="9" />
+      <path className="factures-btn-done-check" d="M7.2 12.3l3.1 3.1 6.5-6.5" />
+    </svg>
+  );
+}
+
+function IconUnpaid({ size = 14 }: { size?: number }) {
+  return (
+    <svg viewBox="0 0 24 24" width={size} height={size} fill="none" aria-hidden="true">
+      <circle cx="12" cy="12" r="8" stroke="currentColor" strokeWidth="2" />
+      <path d="M8 12h8" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
+    </svg>
+  );
+}
+
+function IconTrash({ size = 14 }: { size?: number }) {
+  return (
+    <svg viewBox="0 0 24 24" width={size} height={size} fill="none" aria-hidden="true">
+      <path d="M4 7h16" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
+      <path d="M9 7V5h6v2" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+      <path
+        d="M7 7l1 12a2 2 0 0 0 2 2h4a2 2 0 0 0 2-2l1-12"
+        stroke="currentColor"
+        strokeWidth="2"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+    </svg>
+  );
+}
+
+function IconClear({ size = 14 }: { size?: number }) {
+  return (
+    <svg viewBox="0 0 24 24" width={size} height={size} fill="none" aria-hidden="true">
+      <path d="M6 6l12 12M18 6L6 18" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
+    </svg>
+  );
+}
+
+function IconPlus({ size = 14 }: { size?: number }) {
+  return (
+    <svg viewBox="0 0 24 24" width={size} height={size} fill="none" aria-hidden="true">
+      <path d="M12 5v14M5 12h14" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" />
+    </svg>
+  );
+}
+
+function sleep(ms: number) {
+  return new Promise<void>((resolve) => {
+    window.setTimeout(resolve, ms);
+  });
+}
+
+function BulkActionIcon({
+  action,
+  current,
+  phase,
+  idle,
+}: {
+  action: BulkAction;
+  current: BulkAction | null;
+  phase: BulkPhase | null;
+  idle: ReactNode;
+}) {
+  if (current === action && phase === 'busy') {
+    return <span className="btn-spinner" aria-hidden="true" />;
+  }
+  if (current === action && phase === 'done') {
+    return <IconDoneAnimated />;
+  }
+  return <>{idle}</>;
+}
 
 function todayDisplay(): string {
   const d = new Date();
@@ -88,6 +190,7 @@ export default function FacturesSuiviPage() {
   const [loading, setLoading] = useState(true);
   const [refreshing, setRefreshing] = useState(false);
   const [exporting, setExporting] = useState(false);
+  const [exportDone, setExportDone] = useState(false);
   const [search, setSearch] = useState('');
   const [modalOpen, setModalOpen] = useState(false);
   const [importOpen, setImportOpen] = useState(false);
@@ -100,13 +203,18 @@ export default function FacturesSuiviPage() {
     facture: FactureSuivi;
   } | null>(null);
   const [selectedIds, setSelectedIds] = useState<Set<string>>(() => new Set());
-  const [bulkBusy, setBulkBusy] = useState(false);
+  const [bulkAction, setBulkAction] = useState<BulkAction | null>(null);
+  const [bulkPhase, setBulkPhase] = useState<BulkPhase | null>(null);
+  const [exitingIds, setExitingIds] = useState<Set<string>>(() => new Set());
+  const [flashingIds, setFlashingIds] = useState<Set<string>>(() => new Set());
   const [bulkPaymentModal, setBulkPaymentModal] = useState<'paid' | 'unpaid' | null>(null);
   const [bulkPaymentDate, setBulkPaymentDate] = useState('');
 
   const isEditMode = Boolean(form.id);
   const canSelect = canEdit || canDelete;
   const selectedCount = selectedIds.size;
+  const bulkBusy = bulkPhase === 'busy' || bulkPhase === 'done';
+  const showBulkActions = selectedCount > 0 || bulkPhase != null;
 
   const load = useCallback(async (isRefresh = false) => {
     if (isRefresh) setRefreshing(true);
@@ -322,13 +430,17 @@ export default function FacturesSuiviPage() {
       await showError(json.error || 'Suppression impossible');
       return;
     }
+    setExitingIds(new Set([facture.id]));
+    await sleep(ROW_EXIT_MS);
+    setFactures((prev) => prev.filter((f) => f.id !== facture.id));
+    setExitingIds(new Set());
     setSelectedIds((prev) => {
       if (!prev.has(facture.id)) return prev;
       const next = new Set(prev);
       next.delete(facture.id);
       return next;
     });
-    await load(true);
+    void load(true);
   };
 
   const toggleSelect = (id: string, selected: boolean) => {
@@ -369,33 +481,66 @@ export default function FacturesSuiviPage() {
       await showError('La date de paiement est requise pour un statut Paid.');
       return;
     }
-    setBulkBusy(true);
+    const ids = [...selectedIds];
+    const status = bulkPaymentModal;
+    setBulkPaymentModal(null);
+    setBulkAction(status);
+    setBulkPhase('busy');
     try {
       const res = await fetch('/api/factures-suivi', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           action: 'bulk-payment',
-          ids: [...selectedIds],
-          status: bulkPaymentModal,
-          datePym: bulkPaymentModal === 'paid' ? dateDisplay : '',
+          ids,
+          status,
+          datePym: status === 'paid' ? dateDisplay : '',
         }),
       });
       const json = await res.json().catch(() => ({}));
       if (!res.ok) {
         await showError((json as { error?: string }).error || 'Modification impossible');
+        setBulkAction(null);
+        setBulkPhase(null);
         return;
       }
-      const updatedCount = Array.isArray((json as { updated?: unknown[] }).updated)
-        ? (json as { updated: unknown[] }).updated.length
-        : selectedCount;
-      await showSuccess(
-        `${updatedCount} facture(s) marquées ${bulkPaymentModal === 'paid' ? 'Paid' : 'Unpaid'}`,
-      );
+      const payment = paymentValueFromStatus(status);
+      const leavesTab =
+        (tab === 'unpaid' && status === 'paid') || (tab === 'paid' && status === 'unpaid');
+
+      setBulkPhase('done');
+
+      if (leavesTab) {
+        setExitingIds(new Set(ids));
+        await sleep(ROW_EXIT_MS);
+        setFactures((prev) =>
+          prev.map((f) =>
+            ids.includes(f.id)
+              ? { ...f, payment, datePym: status === 'paid' ? dateDisplay : '' }
+              : f,
+          ),
+        );
+        setExitingIds(new Set());
+      } else {
+        setFactures((prev) =>
+          prev.map((f) =>
+            ids.includes(f.id)
+              ? { ...f, payment, datePym: status === 'paid' ? dateDisplay : '' }
+              : f,
+          ),
+        );
+        setFlashingIds(new Set(ids));
+        await sleep(ROW_FLASH_MS);
+        setFlashingIds(new Set());
+      }
       clearSelection();
-      await load(true);
-    } finally {
-      setBulkBusy(false);
+      await sleep(BTN_DONE_MS);
+      setBulkAction(null);
+      setBulkPhase(null);
+      void load(true);
+    } catch {
+      setBulkAction(null);
+      setBulkPhase(null);
     }
   };
 
@@ -409,27 +554,38 @@ export default function FacturesSuiviPage() {
     ) {
       return;
     }
-    setBulkBusy(true);
+    const ids = [...selectedIds];
+    setBulkAction('delete');
+    setBulkPhase('busy');
     try {
       const res = await fetch('/api/factures-suivi', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           action: 'bulk-delete',
-          ids: [...selectedIds],
+          ids,
         }),
       });
       const json = await res.json().catch(() => ({}));
       if (!res.ok) {
         await showError((json as { error?: string }).error || 'Suppression impossible');
+        setBulkAction(null);
+        setBulkPhase(null);
         return;
       }
-      const deleted = Number((json as { deleted?: number }).deleted ?? selectedCount);
-      await showSuccess(`${deleted} facture(s) supprimée(s)`);
+      setBulkPhase('done');
+      setExitingIds(new Set(ids));
+      await sleep(ROW_EXIT_MS);
+      setFactures((prev) => prev.filter((f) => !ids.includes(f.id)));
+      setExitingIds(new Set());
       clearSelection();
-      await load(true);
-    } finally {
-      setBulkBusy(false);
+      await sleep(BTN_DONE_MS);
+      setBulkAction(null);
+      setBulkPhase(null);
+      void load(true);
+    } catch {
+      setBulkAction(null);
+      setBulkPhase(null);
     }
   };
 
@@ -452,7 +608,22 @@ export default function FacturesSuiviPage() {
       throw new Error('update failed');
     }
     const updated = json as FactureSuivi;
-    setFactures((prev) => prev.map((f) => (f.id === id ? updated : f)));
+    const wasPaid = isFacturePaid(current.payment);
+    const nowPaid = isFacturePaid(updated.payment);
+    const leavesTab =
+      (tab === 'unpaid' && !wasPaid && nowPaid) || (tab === 'paid' && wasPaid && !nowPaid);
+
+    if (leavesTab) {
+      setExitingIds(new Set([id]));
+      await sleep(ROW_EXIT_MS);
+      setFactures((prev) => prev.map((f) => (f.id === id ? updated : f)));
+      setExitingIds(new Set());
+    } else {
+      setFactures((prev) => prev.map((f) => (f.id === id ? updated : f)));
+      setFlashingIds(new Set([id]));
+      await sleep(ROW_FLASH_MS);
+      setFlashingIds(new Set());
+    }
     void load(true);
   };
 
@@ -488,12 +659,17 @@ export default function FacturesSuiviPage() {
 
   const handleExport = useCallback(async () => {
     setExporting(true);
+    setExportDone(false);
     try {
       await downloadFacturesSuiviExport();
-    } catch (err) {
-      await showError(err instanceof Error ? err.message : 'Export impossible');
-    } finally {
       setExporting(false);
+      setExportDone(true);
+      await sleep(BTN_DONE_MS);
+      setExportDone(false);
+    } catch (err) {
+      setExporting(false);
+      setExportDone(false);
+      await showError(err instanceof Error ? err.message : 'Export impossible');
     }
   }, []);
 
@@ -548,13 +724,15 @@ export default function FacturesSuiviPage() {
                 <PermissionGate menuId={MENU} action="export">
                   <button
                     type="button"
-                    className="btn btn-outline btn-sm factures-suivi-io-btn is-export"
+                    className="btn btn-sm btn-with-icon factures-suivi-io-btn is-export"
                     onClick={() => void handleExport()}
-                    disabled={exporting}
+                    disabled={exporting || exportDone}
                     title="Export"
                   >
                     {exporting ? (
                       <span className="btn-spinner" aria-hidden="true" />
+                    ) : exportDone ? (
+                      <IconDoneAnimated />
                     ) : (
                       <svg
                         className="factures-io-icon"
@@ -564,40 +742,34 @@ export default function FacturesSuiviPage() {
                         fill="none"
                         aria-hidden="true"
                       >
-                        <defs>
-                          <linearGradient id="facturesExportGrad" x1="0%" y1="0%" x2="100%" y2="100%">
-                            <stop offset="0%" stopColor="#38bdf8" />
-                            <stop offset="100%" stopColor="#2563eb" />
-                          </linearGradient>
-                        </defs>
                         <path
                           d="M12 3v10"
-                          stroke="url(#facturesExportGrad)"
+                          stroke="currentColor"
                           strokeWidth="2"
                           strokeLinecap="round"
                         />
                         <path
                           d="M8 7l4-4 4 4"
-                          stroke="url(#facturesExportGrad)"
+                          stroke="currentColor"
                           strokeWidth="2"
                           strokeLinecap="round"
                           strokeLinejoin="round"
                         />
                         <path
                           d="M5 14v4a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2v-4"
-                          stroke="url(#facturesExportGrad)"
+                          stroke="currentColor"
                           strokeWidth="2"
                           strokeLinecap="round"
                         />
                       </svg>
                     )}
-                    <span>{exporting ? 'Export…' : 'Export'}</span>
+                    <span>{exporting ? 'Export…' : exportDone ? 'Fait' : 'Export'}</span>
                   </button>
                 </PermissionGate>
                 {canCreate ? (
                   <button
                     type="button"
-                    className="btn btn-outline btn-sm factures-suivi-io-btn is-import"
+                    className="btn btn-sm btn-with-icon factures-suivi-io-btn is-import"
                     onClick={() => setImportOpen(true)}
                     title="Import"
                   >
@@ -609,28 +781,22 @@ export default function FacturesSuiviPage() {
                       fill="none"
                       aria-hidden="true"
                     >
-                      <defs>
-                        <linearGradient id="facturesImportGrad" x1="0%" y1="0%" x2="100%" y2="100%">
-                          <stop offset="0%" stopColor="#4ade80" />
-                          <stop offset="100%" stopColor="#059669" />
-                        </linearGradient>
-                      </defs>
                       <path
                         d="M12 15V5"
-                        stroke="url(#facturesImportGrad)"
+                        stroke="currentColor"
                         strokeWidth="2"
                         strokeLinecap="round"
                       />
                       <path
                         d="M8 11l4 4 4-4"
-                        stroke="url(#facturesImportGrad)"
+                        stroke="currentColor"
                         strokeWidth="2"
                         strokeLinecap="round"
                         strokeLinejoin="round"
                       />
                       <path
                         d="M5 18h14"
-                        stroke="url(#facturesImportGrad)"
+                        stroke="currentColor"
                         strokeWidth="2"
                         strokeLinecap="round"
                       />
@@ -639,8 +805,14 @@ export default function FacturesSuiviPage() {
                   </button>
                 ) : null}
                 {tab !== 'dashboard' && canCreate ? (
-                  <button type="button" className="btn btn-accent btn-sm" onClick={openCreate}>
-                    + Nouvelles factures
+                  <button
+                    type="button"
+                    className="btn btn-accent btn-sm factures-suivi-btn-create btn-with-icon"
+                    onClick={openCreate}
+                    disabled={saving}
+                  >
+                    {saving ? <span className="btn-spinner" aria-hidden="true" /> : <IconPlus size={13} />}
+                    <span>Nouvelles factures</span>
                   </button>
                 ) : null}
               </div>
@@ -656,9 +828,76 @@ export default function FacturesSuiviPage() {
                 value={search}
                 onChange={(e) => setSearch(e.target.value)}
               />
-              <span className="factures-suivi-toolbar-meta">
-                {listForTab.length} facture{listForTab.length > 1 ? 's' : ''}
-              </span>
+              {showBulkActions ? (
+                <div className="factures-suivi-bulk-actions" aria-live="polite">
+                  {selectedCount > 0 ? (
+                    <span className="factures-suivi-bulk-count">
+                      {selectedCount} sél.
+                    </span>
+                  ) : null}
+                  {canEdit ? (
+                    <>
+                      <button
+                        type="button"
+                        className="btn btn-sm btn-with-icon factures-suivi-btn-paid"
+                        disabled={bulkBusy}
+                        onClick={() => openBulkPaymentModal('paid')}
+                      >
+                        <BulkActionIcon
+                          action="paid"
+                          current={bulkAction}
+                          phase={bulkPhase}
+                          idle={<IconCheck size={13} />}
+                        />
+                        <span>Payer</span>
+                      </button>
+                      <button
+                        type="button"
+                        className="btn btn-sm btn-with-icon factures-suivi-btn-unpaid"
+                        disabled={bulkBusy}
+                        onClick={() => openBulkPaymentModal('unpaid')}
+                      >
+                        <BulkActionIcon
+                          action="unpaid"
+                          current={bulkAction}
+                          phase={bulkPhase}
+                          idle={<IconUnpaid size={13} />}
+                        />
+                        <span>Unpaid</span>
+                      </button>
+                    </>
+                  ) : null}
+                  {canDelete ? (
+                    <button
+                      type="button"
+                      className="btn btn-sm btn-with-icon factures-suivi-btn-delete"
+                      disabled={bulkBusy}
+                      onClick={() => void handleBulkDelete()}
+                    >
+                      <BulkActionIcon
+                        action="delete"
+                        current={bulkAction}
+                        phase={bulkPhase}
+                        idle={<IconTrash size={13} />}
+                      />
+                      <span>Supprimer</span>
+                    </button>
+                  ) : null}
+                  <button
+                    type="button"
+                    className="btn btn-sm btn-with-icon factures-suivi-btn-clear"
+                    disabled={bulkBusy}
+                    onClick={clearSelection}
+                  >
+                    <IconClear size={13} />
+                    <span>Effacer</span>
+                  </button>
+                </div>
+              ) : (
+                <span className="factures-suivi-toolbar-meta">
+                  {listForTab.length} facture{listForTab.length > 1 ? 's' : ''}
+                </span>
+              )}
             </div>
           )}
         </div>
@@ -676,53 +915,6 @@ export default function FacturesSuiviPage() {
 
           {tab !== 'dashboard' && (
             <div className="panel factures-suivi-list-panel">
-              {selectedCount > 0 ? (
-                <div className="factures-suivi-bulk-bar">
-                  <span className="factures-suivi-bulk-count">
-                    {selectedCount} sélectionnée{selectedCount > 1 ? 's' : ''}
-                  </span>
-                  <div className="factures-suivi-bulk-actions">
-                    {canEdit ? (
-                      <>
-                        <button
-                          type="button"
-                          className="btn btn-secondary btn-sm"
-                          disabled={bulkBusy}
-                          onClick={() => openBulkPaymentModal('paid')}
-                        >
-                          Marquer Paid
-                        </button>
-                        <button
-                          type="button"
-                          className="btn btn-secondary btn-sm"
-                          disabled={bulkBusy}
-                          onClick={() => openBulkPaymentModal('unpaid')}
-                        >
-                          Marquer Unpaid
-                        </button>
-                      </>
-                    ) : null}
-                    {canDelete ? (
-                      <button
-                        type="button"
-                        className="btn btn-danger-outline btn-sm"
-                        disabled={bulkBusy}
-                        onClick={() => void handleBulkDelete()}
-                      >
-                        Supprimer
-                      </button>
-                    ) : null}
-                    <button
-                      type="button"
-                      className="btn btn-ghost btn-sm"
-                      disabled={bulkBusy}
-                      onClick={clearSelection}
-                    >
-                      Effacer la sélection
-                    </button>
-                  </div>
-                </div>
-              ) : null}
               {listForTab.length === 0 && searchOtherYears.length > 0 ? (
                 <div className="factures-suivi-year-hint">
                   <p>
@@ -748,6 +940,8 @@ export default function FacturesSuiviPage() {
                 canEdit={canEdit}
                 canSelect={canSelect}
                 selectedIds={selectedIds}
+                exitingIds={exitingIds}
+                flashingIds={flashingIds}
                 onToggleSelect={toggleSelect}
                 onToggleSelectMany={toggleSelectMany}
                 onFieldUpdate={handleFieldUpdate}
@@ -796,19 +990,36 @@ export default function FacturesSuiviPage() {
             <div className="modal-footer">
               <button
                 type="button"
-                className="btn btn-secondary"
+                className="btn btn-secondary btn-with-icon"
                 onClick={() => setBulkPaymentModal(null)}
                 disabled={bulkBusy}
               >
-                Annuler
+                <IconClear size={14} />
+                <span>Annuler</span>
               </button>
               <button
                 type="button"
-                className="btn btn-primary"
+                className={`btn btn-with-icon ${
+                  bulkPaymentModal === 'paid'
+                    ? 'factures-suivi-btn-paid'
+                    : 'factures-suivi-btn-unpaid'
+                }`}
                 onClick={() => void handleBulkPayment()}
                 disabled={bulkBusy}
               >
-                {bulkBusy ? 'Enregistrement…' : 'Appliquer'}
+                <BulkActionIcon
+                  action={bulkPaymentModal === 'paid' ? 'paid' : 'unpaid'}
+                  current={bulkAction}
+                  phase={bulkPhase}
+                  idle={bulkPaymentModal === 'paid' ? <IconCheck size={14} /> : <IconUnpaid size={14} />}
+                />
+                <span>
+                  {bulkPhase === 'busy'
+                    ? 'Enregistrement…'
+                    : bulkPhase === 'done'
+                      ? 'Fait'
+                      : 'Appliquer'}
+                </span>
               </button>
             </div>
           </div>
@@ -1061,17 +1272,23 @@ export default function FacturesSuiviPage() {
               </datalist>
             </div>
             <div className="modal-footer">
-              <button type="button" className="btn btn-secondary" onClick={() => setModalOpen(false)}>
-                Annuler
+              <button
+                type="button"
+                className="btn btn-secondary btn-with-icon"
+                onClick={() => setModalOpen(false)}
+                disabled={saving}
+              >
+                <IconClear size={14} />
+                <span>Annuler</span>
               </button>
               <button
                 type="button"
-                className="btn btn-primary"
+                className="btn btn-primary btn-with-icon"
                 disabled={saving}
                 onClick={() => void handleSaveFacture()}
               >
-                {saving ? <span className="btn-spinner" aria-hidden="true" /> : null}
-                {saving ? 'Enregistrement…' : 'Enregistrer'}
+                {saving ? <span className="btn-spinner" aria-hidden="true" /> : <IconCheck size={14} />}
+                <span>{saving ? 'Enregistrement…' : 'Enregistrer'}</span>
               </button>
             </div>
           </div>

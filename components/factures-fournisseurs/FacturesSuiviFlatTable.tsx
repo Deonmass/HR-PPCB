@@ -80,6 +80,8 @@ interface Props {
   canEdit: boolean;
   canSelect?: boolean;
   selectedIds?: Set<string>;
+  exitingIds?: Set<string>;
+  flashingIds?: Set<string>;
   onToggleSelect?: (id: string, selected: boolean) => void;
   onToggleSelectMany?: (ids: string[], selected: boolean) => void;
   onFieldUpdate: (id: string, patch: FactureSuiviInput) => Promise<void>;
@@ -91,6 +93,8 @@ export default function FacturesSuiviFlatTable({
   canEdit,
   canSelect = false,
   selectedIds,
+  exitingIds,
+  flashingIds,
   onToggleSelect,
   onToggleSelectMany,
   onFieldUpdate,
@@ -383,10 +387,19 @@ export default function FacturesSuiviFlatTable({
             ) : (
               filtered.map((f, index) => {
                 const isSelected = Boolean(selectedIds?.has(f.id));
+                const isExiting = Boolean(exitingIds?.has(f.id));
+                const isFlashing = Boolean(flashingIds?.has(f.id));
                 return (
                 <tr
                   key={f.id}
-                  className={`factures-suivi-row-context${isSelected ? ' is-selected' : ''}`}
+                  className={[
+                    'factures-suivi-row-context',
+                    isSelected ? 'is-selected' : '',
+                    isExiting ? 'factures-suivi-row-exit' : '',
+                    isFlashing ? 'factures-suivi-row-flash' : '',
+                  ]
+                    .filter(Boolean)
+                    .join(' ')}
                   onContextMenu={(event) => onContextMenu?.(event, f)}
                 >
                   {canSelect ? (

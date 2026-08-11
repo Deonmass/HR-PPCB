@@ -13,9 +13,11 @@
     { "id": "cadre", "label": "Cadre", "aliases": ["cadre", "cadres", "agents de cadre"] },
     { "id": "circonstance", "label": "Congés de circonstance", "aliases": ["mariage", "décès", "accouchement", "déménagement", "article 41"] },
     { "id": "horaires", "label": "Horaires", "aliases": ["horaire", "45 heures", "40 heures", "pause", "semaine", "article 53"] },
+    { "id": "heures-sup", "label": "Heures supplémentaires", "aliases": ["heures supplémentaires", "heures supplementaires", "HS", "overtime", "130%", "160%", "200%", "article 55"] },
     { "id": "classification", "label": "Classification", "aliases": ["catégorie", "classification", "classes", "barème"] },
     { "id": "remuneration", "label": "Rémunération", "aliases": ["salaire", "rémunération", "indemnités", "prime"] },
-    { "id": "discipline", "label": "Discipline", "aliases": ["faute", "discipline", "sanction", "mise à pied"] },
+    { "id": "anciennete", "label": "Ancienneté (5 et 10 ans)", "aliases": ["ancienneté", "anciennete", "5 ans", "10 ans", "augmentation ancienneté", "4%", "article 32", "distinctions"] },
+    { "id": "discipline", "label": "Sanctions", "aliases": ["faute", "discipline", "sanction", "mise à pied", "blâme", "réprimande", "faute lourde", "article 47", "article 48", "article 49"] },
     { "id": "securite", "label": "Santé / CNSS", "aliases": ["cnss", "pension", "soins", "santé", "sécurité"] }
   ],
   "articles": [
@@ -115,8 +117,44 @@
       "category": "Temps de travail",
       "keywords": ["horaire", "40 heures", "45 heures", "article 53"],
       "pages": [29],
-      "summary": "40 h/semaine (lun.–ven.) ; heures supp. à partir de la 43e heure ; repos 48 h.",
-      "body": "Article 53 — Maximum légal 45 h/semaine et 8 h/jour. Convention : 40 heures par semaine (8 h/jour, lundi au vendredi). Heures supplémentaires à partir de la 43e heure. Repos hebdomadaire d’au moins 48 heures (samedi–dimanche)."
+      "summary": "40 h/semaine (lun.–ven.) ; heures supp. comptabilisées à partir de la 43e heure ; repos 48 h.",
+      "body": "Article 53 — Maximum légal 45 h/semaine et 8 h/jour. Convention : 40 heures par semaine (8 h/jour, lundi au vendredi). Les heures supplémentaires sont comptabilisées à partir de la 43e heure. Repos hebdomadaire d’au moins 48 heures (samedi–dimanche)."
+    },
+    {
+      "id": "heures-supplementaires",
+      "title": "Heures supplémentaires — taux et cas",
+      "category": "Temps de travail",
+      "keywords": ["heures supplémentaires", "HS", "130%", "160%", "200%", "article 55", "43e heure"],
+      "pages": [30],
+      "summary": "HS à partir de la 43e h : 130 % (2 premières h), 160 % (suivantes), 200 % (repos/férié). Exécution et maîtrise ; cadres organisant leur temps exclus.",
+      "body": "Articles 53 et 55 — Cadre : semaine conventionnelle de 40 h ; HS comptabilisées dès la 43e heure.\n\nArticle 55 — Les heures supplémentaires sont en principe interdites, sauf travaux urgents ou nécessité de service.\n\nTaux de majoration (personnel d’exécution et agents de maîtrise) :\n• 130 % pour les 2 premières heures au-delà de la limite légale hebdomadaire ;\n• 160 % pour chaque heure suivante ;\n• 200 % pour chaque heure prestée un jour de repos hebdomadaire ou un jour férié.\n\nCes avantages ne s’appliquent pas aux agents de cadre qui organisent librement leur horaire sans contrôle journalier.\n\nTravail en équipes successives : durée réelle ≤ 10 h/jour, moyenne sur 21 jours ≤ 8 h/jour ou 45 h/semaine. Surveillance / gardiennage intermittent : jusqu’à 60 h/semaine (sécurité) ou 72 h/semaine (sentinelles / gardiens de nuit).\n\nArticle 57 — Les heures de travail urgent sont rémunérées au taux des heures supplémentaires (majoration complémentaire pour piquet selon l’article)."
+    },
+    {
+      "id": "sanctions-cas",
+      "title": "Sanctions — cas et mesures",
+      "category": "Discipline",
+      "keywords": ["sanction", "faute", "réprimande", "blâme", "mise à pied", "licenciement", "faute lourde", "article 48", "article 49"],
+      "pages": [25, 26, 27],
+      "summary": "Échelle : réprimande / blâme / mise à pied / licenciement. Faute lourde = rupture sans préavis (liste exemplative). Pas de double sanction ; prescription 1 an.",
+      "body": "Procédure (avant sanction) — Le travailleur dispose de 3 jours ouvrables pour fournir des explications écrites. Audition obligatoire si la mesure peut entraîner une mise à pied ou un licenciement, avec assistance d’un délégué syndical. Notification écrite de la sanction sous 15 jours ouvrables.\n\nArticle 49 — Décision de sanction : toute sanction est motivée et notifiée par écrit. Réprimande et blâme : notifiés par le directeur hiérarchique avec le Chef du Personnel. Mise à pied : notifiée par le DRH et le Directeur de département. Licenciement : notifié par le DRH et le Directeur Général.\n\nArticle 48 — Faute lourde (licenciement sans préavis) — liste exemplative :\n• improbité, harcèlement sexuel ou moral, intimidation, voies de fait ou injures envers l’employeur ou le personnel ;\n• dommages matériels volontaires ;\n• actes immoraux dans l’exécution du contrat ;\n• mise en danger de la sécurité de l’entreprise par imprudence ;\n• vol ou actes de violence ;\n• absence injustifiée de plus de 5 jours ouvrables ;\n• ivresse / intoxation au lieu de travail, surtout si répétée plus de 2 fois et constatée ;\n• divulgation d’informations confidentielles dans l’intention de nuire.\n\nRègles transversales — Pas de double sanction pour une même faute. Faute non sanctionnée : prescription d’une année révolue. Pendant une mise à pied disciplinaire : privation de salaire, maintien des soins médicaux.\n\nArticle 47 — Suspension conservatoire (enquête, faute grave art. 72 CT) : max 15 jours, renouvelable une fois ; ce n’est pas une sanction disciplinaire — rémunération et avantages maintenus.\n\nArticle 50 — Recours contre mise à pied / licenciement sous 15 jours ouvrables auprès du DG (copie délégation syndicale) ; examen sous 30 jours ; la sanction ne peut être alourdie en recours."
+    },
+    {
+      "id": "discipline",
+      "title": "Discipline — procédure et suspension",
+      "category": "Discipline",
+      "keywords": ["discipline", "sanction", "faute", "mise à pied", "article 47", "suspension conservatoire"],
+      "pages": [25],
+      "summary": "Procédure contradictoire, assistance syndicale, suspension conservatoire max 15 jours (renouvelable).",
+      "body": "Procédure disciplinaire avec explications écrites (3 jours), audition obligatoire en cas de suspension/licenciement, assistance d’un délégué syndical. Article 47 : suspension conservatoire pour enquête (max 15 jours, renouvelable une fois) avec maintien du salaire — distincte de la mise à pied disciplinaire."
+    },
+    {
+      "id": "anciennete-augmentation",
+      "title": "Avantages d’ancienneté — 5 ans et 10 ans",
+      "category": "Ancienneté",
+      "keywords": ["ancienneté", "5 ans", "10 ans", "4%", "article 32", "augmentation", "distinctions", "article 61"],
+      "pages": [15, 16, 33],
+      "summary": "Augmentation d’ancienneté 4 %/an (art. 32). À 5 ans ≈ 5 × 4 % ; à 10 ans ≈ 10 × 4 %. Congé +1 j / 3 ans. Distinctions honorifiques (art. 61).",
+      "body": "Article 32 — De l’augmentation pour ancienneté : chaque travailleur bénéficie d’une augmentation d’ancienneté après chaque année de service, applicable au 1er avril (prorata la première année). Taux : 4 % par an sur les barèmes de salaire de base (de manœuvre à cadre). L’ancienneté est le temps ininterrompu au service de l’employeur, d’une société du Groupe ou d’un employeur substitué. N’interrompent pas l’ancienneté : congés, absences autorisées, accidents, maladies, mandat de délégué syndical, congé d’études dans l’intérêt de l’entreprise, mandats publics.\n\nRepères 5 ans et 10 ans (application de l’art. 32) :\n• À 5 ans de service continu : 5 augmentations d’ancienneté de 4 % ont été appliquées (progression cumulée sur le barème) ; le congé annuel a déjà été majoré d’au moins +1 jour (+1 jour tous les 3 ans — art. 39).\n• À 10 ans : 10 augmentations de 4 % ; le congé annuel a été majoré de +3 jours (+1 tous les 3 ans).\n\nArticle 61 — Anniversaire de la société et distinctions honorifiques : l’employeur organise, avec la délégation syndicale, les événements et distinctions honorifiques (reconnaissance des services / ancienneté).\n\nAutres effets de l’ancienneté : préavis augmenté par année de service (art. 69) ; en cas de suppression d’emploi, l’ordre de licenciement tient compte de l’ancienneté (majoration fictive +1 an si marié, +1 an par enfant à charge — art. 74)."
     },
     {
       "id": "classification",
@@ -135,15 +173,6 @@
       "pages": [19, 33],
       "summary": "Rémunération nette, pécule de congé, colis de fin d’année 300 USD brut.",
       "body": "La rémunération est due pendant le congé (pécule). Article 62 : colis de fin d’année de 300 USD brut par travailleur. Autres avantages (logement, CNSS, soins) selon les titres dédiés de la convention."
-    },
-    {
-      "id": "discipline",
-      "title": "Discipline et sanctions",
-      "category": "Discipline",
-      "keywords": ["discipline", "sanction", "faute", "mise à pied", "article 47"],
-      "pages": [25],
-      "summary": "Procédure contradictoire, assistance syndicale, suspension conservatoire max 15 jours.",
-      "body": "Procédure disciplinaire avec explications écrites (3 jours), audition obligatoire en cas de suspension/licenciement, assistance d’un délégué syndical. Article 47 : suspension conservatoire pour enquête (max 15 jours, renouvelable une fois) avec maintien du salaire."
     },
     {
       "id": "confidentialite",

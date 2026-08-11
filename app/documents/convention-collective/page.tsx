@@ -4,10 +4,13 @@ import { useEffect, useMemo, useState } from 'react';
 import Link from 'next/link';
 import { usePermissions } from '@/contexts/PermissionContext';
 import {
+  CONVENTION_INDEX,
   CONVENTION_KEYWORDS,
   searchConventionArticles,
   type ConventionSearchHit,
 } from '@/lib/convention-collective-index';
+
+const TOTAL_PAGES = CONVENTION_INDEX.totalPages || 41;
 
 function normalize(value: string): string {
   return value
@@ -19,41 +22,62 @@ function normalize(value: string): string {
     .trim();
 }
 
-function pdfPageUrl(page: number): string {
-  return `/api/documents/convention-collective?mode=pdf#page=${page}`;
+function pdfSrc(page?: number): string {
+  const base = '/api/documents/convention-collective?mode=pdf';
+  const p = Math.max(1, page || 1);
+  // Chrome PDF viewer: keep hash simple to avoid page off-by-one with extra params
+  return `${base}#page=${p}`;
 }
 
 export default function ConventionCollectivePage() {
   const { can, isLoading } = usePermissions();
   const [query, setQuery] = useState('');
-  const [selectedId, setSelectedId] = useState<string | null>(null);
+  const [expandedId, setExpandedId] = useState<string | null>(null);
+  const [pdfPage, setPdfPage] = useState(1);
+  const [suggestOpen, setSuggestOpen] = useState(false);
 
   const hits = useMemo(() => searchConventionArticles(query), [query]);
 
   const selected: ConventionSearchHit | null = useMemo(() => {
-    if (!hits.length) return null;
-    const found = selectedId ? hits.find((h) => h.id === selectedId) : null;
-    return found || hits[0];
-  }, [hits, selectedId]);
+    if (!expandedId) return null;
+    return hits.find((h) => h.id === expandedId) ?? null;
+  }, [hits, expandedId]);
 
   const suggestions = useMemo(() => {
     const q = normalize(query);
-    if (!q) return [];
-    return CONVENTION_KEYWORDS.filter((kw) => {
+    const list = CONVENTION_KEYWORDS.filter((kw) => {
+      if (!q) return true;
       const hay = normalize([kw.label, ...kw.aliases].join(' '));
-      return hay.includes(q) || q.split(' ').some((t) => t && hay.includes(t));
+      if (hay.includes(q)) return true;
+      return q.split(' ').filter(Boolean).some((t) => hay.includes(t));
     });
+    return list.slice(0, 12);
   }, [query]);
 
   useEffect(() => {
-    if (!hits.length) {
-      setSelectedId(null);
+    if (expandedId && !hits.some((h) => h.id === expandedId)) {
+      setExpandedId(null);
+    }
+  }, [hits, expandedId]);
+
+  const applySuggestion = (label: string) => {
+    setQuery(label);
+    setSuggestOpen(false);
+    setExpandedId(null);
+  };
+
+  const toggleSubject = (hit: ConventionSearchHit) => {
+    if (expandedId === hit.id) {
+      setExpandedId(null);
       return;
     }
-    if (!selectedId || !hits.some((h) => h.id === selectedId)) {
-      setSelectedId(hits[0].id);
-    }
-  }, [hits, selectedId]);
+    setExpandedId(hit.id);
+    if (hit.pages[0]) setPdfPage(hit.pages[0]);
+  };
+
+  const goPdfPage = (next: number) => {
+    setPdfPage(Math.min(TOTAL_PAGES, Math.max(1, next)));
+  };
 
   if (isLoading) return <div className="loading">Chargement...</div>;
   if (!can('documents.convention-collective', 'view')) {
@@ -62,132 +86,170 @@ export default function ConventionCollectivePage() {
 
   return (
     <div className="convention-page">
-      <header className="convention-sticky">
-        <div className="page-header convention-page-header">
-          <div>
-            <h2>Convention collective</h2>
-          </div>
-          <div className="page-header-actions">
-            <a
-              className="btn btn-secondary btn-sm"
-              href="/api/documents/convention-collective?mode=pdf"
-              target="_blank"
-              rel="noreferrer"
-            >
-              Ouvrir le PDF
-            </a>
-            <Link href="/documents" className="btn btn-secondary btn-sm" prefetch={false}>
-              ← Documents
-            </Link>
-          </div>
+      <header className="convention-topbar">
+        <h2>Convention collective</h2>
+        <div className="page-header-actions">
+          <a
+            className="btn btn-secondary btn-sm"
+            href="/api/documents/convention-collective?mode=pdf"
+            target="_blank"
+            rel="noreferrer"
+          >
+            Ouvrir le PDF
+          </a>
+          <Link href="/documents" className="btn btn-secondary btn-sm" prefetch={false}>
+            ← Documents
+          </Link>
         </div>
       </header>
 
       <div className="convention-layout">
-        <aside className="convention-col-search panel">
-          <div className="form-group">
-            <label>Mots de recherche</label>
-            <input
-              value={query}
-              onChange={(e) => setQuery(e.target.value)}
-              placeholder="Ex. préavis, congé, maîtrise…"
-              autoComplete="off"
-            />
+        <aside className="convention-col-subjects panel">
+          <div className="form-group convention-search-field">
+            <label>Rechercher un sujet</label>
+            <div className="convention-suggest-wrap">
+              <input
+                value={query}
+                onChange={(e) => {
+                  setQuery(e.target.value);
+                  setSuggestOpen(true);
+                }}
+                onFocus={() => setSuggestOpen(true)}
+                onBlur={() => {
+                  window.setTimeout(() => setSuggestOpen(false), 150);
+                }}
+                placeholder="Ex. heures supplémentaires, sanction, 5 ans…"
+                autoComplete="off"
+                aria-autocomplete="list"
+                aria-expanded={suggestOpen && suggestions.length > 0}
+              />
+              {suggestOpen && suggestions.length > 0 ? (
+                <ul className="convention-suggest-list" role="listbox">
+                  {suggestions.map((kw) => (
+                    <li key={kw.id} role="option">
+                      <button
+                        type="button"
+                        className="convention-suggest-item"
+                        onMouseDown={(e) => e.preventDefault()}
+                        onClick={() => applySuggestion(kw.label)}
+                      >
+                        <strong>{kw.label}</strong>
+                        {kw.aliases[0] ? <span>{kw.aliases[0]}</span> : null}
+                      </button>
+                    </li>
+                  ))}
+                </ul>
+              ) : null}
+            </div>
           </div>
 
-          {suggestions.length > 0 ? (
-            <div className="convention-keyword-list">
-              {suggestions.map((kw) => (
-                <button
-                  key={kw.id}
-                  type="button"
-                  className="convention-keyword-chip"
-                  onClick={() => setQuery(kw.label)}
-                >
-                  {kw.label}
-                </button>
-              ))}
-            </div>
-          ) : null}
+          <p className="convention-col-meta">
+            {hits.length} sujet{hits.length > 1 ? 's' : ''}
+            {query.trim() ? ` pour « ${query.trim()} »` : ''}
+          </p>
 
-          <div className="convention-hit-list">
-            <p className="convention-col-meta">
-              {hits.length} résultat{hits.length > 1 ? 's' : ''}
-              {query.trim() ? ` pour « ${query.trim()} »` : ''}
-            </p>
-            {hits.map((hit) => (
-              <button
-                key={hit.id}
-                type="button"
-                className={`convention-hit-item${selected?.id === hit.id ? ' is-active' : ''}`}
-                onClick={() => setSelectedId(hit.id)}
-              >
-                <strong>{hit.title}</strong>
-                <span>{hit.category}</span>
-              </button>
-            ))}
+          <div className="convention-subject-list" role="list">
+            {hits.map((hit) => {
+              const open = expandedId === hit.id;
+              return (
+                <div
+                  key={hit.id}
+                  className={`convention-subject-item${open ? ' is-open' : ''}`}
+                  role="listitem"
+                >
+                  <button
+                    type="button"
+                    className="convention-subject-toggle"
+                    aria-expanded={open}
+                    onClick={() => toggleSubject(hit)}
+                  >
+                    <span className="convention-subject-toggle-text">
+                      <strong>{hit.title}</strong>
+                      <span>{hit.category}</span>
+                    </span>
+                    <span className="convention-subject-chevron" aria-hidden="true">
+                      {open ? '▾' : '▸'}
+                    </span>
+                  </button>
+
+                  {open ? (
+                    <div className="convention-subject-collapse">
+                      <p className="convention-subject-summary">{hit.summary}</p>
+                      <div className="convention-detail-body">
+                        <h4>Ce que dit la convention</h4>
+                        {hit.body.split('\n').filter(Boolean).map((paragraph, idx) => (
+                          <p key={`${hit.id}-p${idx}`}>{paragraph}</p>
+                        ))}
+                      </div>
+                      {hit.pages.length > 0 ? (
+                        <div className="convention-subject-pages">
+                          {hit.pages.map((page) => (
+                            <button
+                              key={`${hit.id}-goto-${page}`}
+                              type="button"
+                              className={`convention-page-chip${
+                                pdfPage === page ? ' is-active' : ''
+                              }`}
+                              onClick={() => goPdfPage(page)}
+                            >
+                              Page {page}
+                            </button>
+                          ))}
+                        </div>
+                      ) : null}
+                    </div>
+                  ) : null}
+                </div>
+              );
+            })}
             {!hits.length ? (
-              <p className="docs-hub-empty">Aucune clause ne correspond.</p>
+              <p className="docs-hub-empty">Aucun sujet ne correspond.</p>
             ) : null}
           </div>
         </aside>
 
-        <section className="convention-col-detail panel">
-          {selected ? (
-            <article className="convention-detail">
-              <header className="convention-detail-header">
-                <div>
-                  <p className="convention-detail-category">{selected.category}</p>
-                  <h3>{selected.title}</h3>
-                </div>
-                <span className="docs-hub-badge">Convention</span>
-              </header>
-              <p className="convention-detail-summary">{selected.summary}</p>
-              <div className="convention-detail-body">
-                <h4>Ce que dit la convention</h4>
-                <p>{selected.body}</p>
-              </div>
-              {selected.keywords?.length ? (
-                <p className="convention-tags">
-                  {selected.keywords.map((tag) => (
-                    <span key={tag} className="docs-hub-badge">{tag}</span>
-                  ))}
-                </p>
-              ) : null}
-
-              {selected.pages.length > 0 ? (
-                <div className="convention-pdf-excerpt">
-                  <div className="convention-pdf-excerpt-head">
-                    <h4>Extrait du PDF</h4>
-                    <span className="text-muted">
-                      page{selected.pages.length > 1 ? 's' : ''}{' '}
-                      {selected.pages.join(', ')}
-                    </span>
-                  </div>
-                  {selected.pages.map((page) => (
-                    <div key={`${selected.id}-p${page}`} className="convention-pdf-frame-wrap">
-                      <div className="convention-pdf-frame-label">Page {page}</div>
-                      <iframe
-                        className="convention-pdf-frame"
-                        title={`${selected.title} — page ${page}`}
-                        src={pdfPageUrl(page)}
-                      />
-                      <a
-                        className="btn btn-secondary btn-sm"
-                        href={pdfPageUrl(page)}
-                        target="_blank"
-                        rel="noreferrer"
-                      >
-                        Ouvrir la page {page}
-                      </a>
-                    </div>
-                  ))}
-                </div>
-              ) : null}
-            </article>
-          ) : (
-            <p className="docs-hub-empty">Saisissez un mot-clé pour afficher le résumé.</p>
-          )}
+        <section className="convention-col-pdf panel">
+          <div className="convention-pdf-toolbar">
+            <div className="convention-pdf-toolbar-text">
+              <h3>Aperçu PDF</h3>
+              <p className="convention-col-meta">
+                {selected
+                  ? `${selected.title} — page ${pdfPage}`
+                  : `Page ${pdfPage}`}
+              </p>
+            </div>
+            <div className="convention-pdf-nav">
+              <button
+                type="button"
+                className="btn btn-ghost btn-sm"
+                disabled={pdfPage <= 1}
+                onClick={() => goPdfPage(pdfPage - 1)}
+                aria-label="Page précédente"
+              >
+                ←
+              </button>
+              <span className="convention-pdf-page-label">
+                p. {pdfPage} / {TOTAL_PAGES}
+              </span>
+              <button
+                type="button"
+                className="btn btn-ghost btn-sm"
+                disabled={pdfPage >= TOTAL_PAGES}
+                onClick={() => goPdfPage(pdfPage + 1)}
+                aria-label="Page suivante"
+              >
+                →
+              </button>
+            </div>
+          </div>
+          <div className="convention-pdf-viewport">
+            <iframe
+              key={pdfPage}
+              className="convention-pdf-iframe"
+              title={selected ? `${selected.title} — page ${pdfPage}` : `Convention — page ${pdfPage}`}
+              src={pdfSrc(pdfPage)}
+            />
+          </div>
         </section>
       </div>
     </div>
