@@ -1,6 +1,20 @@
 {
   "entries": [
     {
+      "id": "log-000163",
+      "at": "2026-08-11T08:02:21.954Z",
+      "userId": "admin",
+      "userName": "Administrateur",
+      "module": "documents.exit",
+      "moduleLabel": "Documents",
+      "action": "export",
+      "actionLabel": "Export",
+      "summary": "Document exit « Exit interview form » — MASOKA HAPPY IYANYA (70000235)",
+      "details": "Document exit « Exit interview form » — MASOKA HAPPY IYANYA (70000235)",
+      "undoable": false,
+      "undone": false
+    },
+    {
       "id": "log-000162",
       "at": "2026-08-11T08:02:17.077Z",
       "userId": "admin",
@@ -19690,5 +19704,5 @@
       }
     }
   ],
-  "nextSeq": 163
+  "nextSeq": 164
 }
