@@ -1514,11 +1514,11 @@
       "datePo": "",
       "grn": "",
       "dateGrn": "",
-      "payment": "",
-      "datePym": "",
-      "commentaire": "Facture non payée.",
-      "statut": "unpaid",
-      "statutLabel": "unpaid"
+      "payment": "PAID",
+      "datePym": "11/08/2026",
+      "commentaire": "Facture payée.",
+      "statut": "paid",
+      "statutLabel": "paid"
     },
     {
       "id": "fac-81",
