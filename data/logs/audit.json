@@ -1,6 +1,20 @@
 {
   "entries": [
     {
+      "id": "log-000183",
+      "at": "2026-08-11T10:13:14.307Z",
+      "userId": "admin",
+      "userName": "Administrateur",
+      "module": "documents.newcomer",
+      "moduleLabel": "Documents",
+      "action": "export",
+      "actionLabel": "Export",
+      "summary": "Newcomer « SAP Input form (HR DOC 14) » — HR Administrator",
+      "details": "Newcomer « SAP Input form (HR DOC 14) » — HR Administrator",
+      "undoable": false,
+      "undone": false
+    },
+    {
       "id": "log-000182",
       "at": "2026-08-11T10:13:10.815Z",
       "userId": "admin",
@@ -20795,5 +20809,5 @@
       }
     }
   ],
-  "nextSeq": 183
+  "nextSeq": 184
 }
