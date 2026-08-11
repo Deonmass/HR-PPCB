@@ -1,6 +1,25 @@
 {
   "entries": [
     {
+      "id": "log-000180",
+      "at": "2026-08-11T10:05:49.663Z",
+      "userId": "admin",
+      "userName": "Administrateur",
+      "module": "postes",
+      "moduleLabel": "Postes",
+      "action": "update",
+      "actionLabel": "Modification",
+      "entityType": "poste",
+      "entityId": "HR Administrator",
+      "summary": "Màj poste catalogue « HR Administrator » → « HR Administrator »",
+      "details": "Màj poste catalogue « HR Administrator » → « HR Administrator »",
+      "after": {
+        "updated": 1
+      },
+      "undoable": false,
+      "undone": false
+    },
+    {
       "id": "log-000179",
       "at": "2026-08-11T09:59:27.986Z",
       "userId": "Marie.Yowali",
@@ -20748,5 +20767,5 @@
       }
     }
   ],
-  "nextSeq": 180
+  "nextSeq": 181
 }
