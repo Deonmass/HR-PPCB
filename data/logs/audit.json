@@ -1,6 +1,22 @@
 {
   "entries": [
     {
+      "id": "log-000191",
+      "at": "2026-08-11T12:40:58.376Z",
+      "userId": "admin",
+      "userName": "Administrateur",
+      "module": "factures-suivi",
+      "moduleLabel": "Factures suivi",
+      "action": "delete",
+      "actionLabel": "Suppression",
+      "entityType": "facture.suivi",
+      "summary": "Suppression groupée — 66 facture(s)",
+      "details": "IDs: fac-747, fac-748, fac-749, fac-750, fac-751, fac-752, fac-753, fac-754, fac-755, fac-774, fac-775, fac-772, fac-773, fac-746, fac-744, fac-745, fac-743, fac-733, fac-734, fac-735, fac-736, fac-737, fac-738, fac-739, fac-740, fac-741, fac-742, fac-718, fac-719, fac-720, fac-721, fac-722, fac-723, fac-724, fac-725, fac-726, fac-727, fac-728, fac-729, fac-730, fac-731, fac-732, fac-716, fac-717, fac-714, fac-715, fac-710, fac-711, fac-712, fac-713, fac-706, fac-707, fac-708, fac-709, fac-698, fac-699, fac-700, fac-701, fac-702, fac-703, fac-704, fac-705, fac-695, fac-696, fac-697, fac-694",
+      "after": 66,
+      "undoable": false,
+      "undone": false
+    },
+    {
       "id": "log-000190",
       "at": "2026-08-11T12:40:42.681Z",
       "userId": "admin",
@@ -22258,5 +22274,5 @@
       }
     }
   ],
-  "nextSeq": 191
+  "nextSeq": 192
 }
