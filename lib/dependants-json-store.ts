@@ -118,10 +118,10 @@ function enrichRecord(
 ): Dependant {
   const familyKey = familyGroupKey(record);
   const familyHead = employeesByMatricule.get(familyKey);
-  const self = employeesByMatricule.get(record.matricule);
   return {
     id: record.id,
     matricule: record.matricule,
+    ownMatricule: record.ownMatricule?.trim() || undefined,
     familyMatricule: record.familyMatricule?.trim() || undefined,
     pactilis: record.pactilis,
     statut: record.statut,
@@ -137,8 +137,8 @@ function enrichRecord(
     total: record.total,
     commentaires: record.commentaires,
     lienDocument: record.lienDocument,
-    employeNom: familyHead?.nom ?? self?.nom ?? '',
-    departement: familyHead?.departement ?? self?.departement ?? '',
+    employeNom: familyHead?.nom ?? '',
+    departement: familyHead?.departement ?? '',
   };
 }
 
@@ -171,26 +171,44 @@ function syncFamilyCounts(records: DependantRecord[], familyMatricule: string): 
   }
 }
 
-function normalizeFamilyMatricule(
-  statut: string,
-  matricule: string,
-  familyMatricule?: string | null,
-): string | undefined {
-  const own = matricule.trim();
-  const linked = String(familyMatricule ?? '').trim();
-  if (!linked || linked === own) return undefined;
-  // Ancre familiale utile surtout pour Conjoint employé (propre matricule ≠ famille).
-  if (/conjoint\s*employ/i.test(statut) || linked) return linked;
-  return undefined;
+/**
+ * Migre l’ancien modèle inversé (matricule=soi, familyMatricule=mari)
+ * → matricule=mari, ownMatricule=soi.
+ */
+function migrateInvertedConjointModel(store: DependantsJsonStoreData): number {
+  const now = new Date().toISOString();
+  let changed = 0;
+  for (const row of store.dependants) {
+    const legacyFamily = String(row.familyMatricule ?? '').trim();
+    if (!legacyFamily) continue;
+    if (!isSpouseStatut(row.statut) && !isConjointEmployeStatut(row.statut)) {
+      delete row.familyMatricule;
+      changed += 1;
+      continue;
+    }
+    const own = row.matricule.trim();
+    if (own && own !== legacyFamily) {
+      row.ownMatricule = row.ownMatricule?.trim() || own;
+    }
+    row.matricule = legacyFamily;
+    delete row.familyMatricule;
+    if (row.ownMatricule) row.statut = CONJOINT_EMPLOYE_STATUT;
+    row.updatedAt = now;
+    changed += 1;
+  }
+  return changed;
 }
 
 /**
- * Si un conjoint figure aussi dans l’effectif employés : garde la famille
- * (familyMatricule) et pose son propre matricule + statut « Conjoint employé ».
+ * Couple mari+femme tous deux employés :
+ * - reste sous le bloc du mari (matricule = mari)
+ * - ownMatricule = matricule de la femme
+ * - statut = Conjoint employé
+ * Si la femme n’est plus dans l’effectif : redescend en Conjoint sans ownMatricule.
  */
 async function syncConjointEmployeLinks(store: DependantsJsonStoreData): Promise<number> {
   const { employees } = await readEmployeesBundle();
-  if (!employees.length) return 0;
+  const recordIndex = await getEmployeesRecordIndex();
 
   const byName = new Map<string, { matricule: string; id: string; nom: string }>();
   for (const emp of employees) {
@@ -199,61 +217,168 @@ async function syncConjointEmployeLinks(store: DependantsJsonStoreData): Promise
     byName.set(key, { matricule: emp.matricule, id: emp.id, nom: emp.nom });
   }
 
+  const employeeMats = new Set(employees.map((e) => e.matricule.trim()).filter(Boolean));
   const now = new Date().toISOString();
   let changed = 0;
   const touchedFamilies = new Set<string>();
 
   for (const row of store.dependants) {
     if (!isSpouseStatut(row.statut)) continue;
-    const nameKey = normalizePersonName(row.nom);
-    if (!nameKey) continue;
-    const match = byName.get(nameKey);
-    if (!match) continue;
 
     const familyKey = familyGroupKey(row);
-    // Ne pas lier le chef de famille à lui-même.
-    if (match.matricule.trim() === familyKey) continue;
+    if (!familyKey) continue;
 
-    const nextFamily = normalizeFamilyMatricule(
-      CONJOINT_EMPLOYE_STATUT,
-      match.matricule,
-      row.familyMatricule || row.matricule,
-    );
-    const alreadyLinked =
-      isConjointEmployeStatut(row.statut)
-      && row.matricule.trim() === match.matricule.trim()
-      && (row.familyMatricule || '') === (nextFamily || '');
+    const nameKey = normalizePersonName(row.nom);
+    const match = nameKey ? byName.get(nameKey) : undefined;
 
-    if (alreadyLinked) continue;
+    // Femme aussi employée (matricule différent du mari) → Conjoint employé sous le mari.
+    if (match && match.matricule.trim() !== familyKey) {
+      const head = recordIndex.activeByMatricule.get(familyKey)
+        ?? recordIndex.exitByMatricule.get(familyKey);
+      const nextOwn = match.matricule.trim();
+      const already =
+        isConjointEmployeStatut(row.statut)
+        && (row.ownMatricule || '').trim() === nextOwn
+        && row.matricule.trim() === familyKey
+        && !row.familyMatricule;
 
-    row.familyMatricule = nextFamily;
-    row.matricule = match.matricule;
-    row.employeeId = match.id;
-    row.statut = CONJOINT_EMPLOYE_STATUT;
-    row.nom = match.nom || row.nom;
-    row.updatedAt = now;
-    changed += 1;
-    if (familyKey) touchedFamilies.add(familyKey);
-    touchedFamilies.add(familyGroupKey(row));
+      if (!already) {
+        row.matricule = familyKey;
+        row.ownMatricule = nextOwn;
+        row.statut = CONJOINT_EMPLOYE_STATUT;
+        if (head) row.employeeId = head.id;
+        delete row.familyMatricule;
+        row.nom = match.nom || row.nom;
+        row.updatedAt = now;
+        changed += 1;
+        touchedFamilies.add(familyKey);
+      }
+      continue;
+    }
+
+    // Plus d’employé correspondant : redescendre en conjoint simple.
+    const own = (row.ownMatricule || '').trim();
+    const shouldDemote =
+      (isConjointEmployeStatut(row.statut) || Boolean(own))
+      && (!match || (Boolean(own) && !employeeMats.has(own)));
+
+    if (shouldDemote) {
+      row.statut = 'Conjoint';
+      delete row.ownMatricule;
+      delete row.familyMatricule;
+      row.matricule = familyKey;
+      const head = recordIndex.activeByMatricule.get(familyKey)
+        ?? recordIndex.exitByMatricule.get(familyKey);
+      if (head) row.employeeId = head.id;
+      row.updatedAt = now;
+      changed += 1;
+      touchedFamilies.add(familyKey);
+    }
   }
 
   for (const key of touchedFamilies) syncFamilyCounts(store.dependants, key);
   return changed;
 }
 
+/**
+ * Ré-attache un conjoint orphelin (matricule = son propre mat employé, hors bloc mari)
+ * sous une famille Employé sans conjoint, de préférence avec enfants du même nom de famille.
+ */
+function reattachOrphanConjointEmployes(store: DependantsJsonStoreData): number {
+  const now = new Date().toISOString();
+  let changed = 0;
+
+  const byFamily = new Map<string, DependantRecord[]>();
+  for (const row of store.dependants) {
+    const key = String(row.matricule || '').trim();
+    if (!key) continue;
+    const list = byFamily.get(key) ?? [];
+    list.push(row);
+    byFamily.set(key, list);
+  }
+
+  for (const row of store.dependants) {
+    if (!isSpouseStatut(row.statut)) continue;
+
+    const own = (row.ownMatricule || '').trim();
+    const mat = row.matricule.trim();
+    const legacyFamily = String(row.familyMatricule ?? '').trim();
+
+    // Orphelin = matricule égal au propre (employé), pas encore sous un mari.
+    const isOrphan =
+      Boolean(own && mat === own)
+      || (isConjointEmployeStatut(row.statut) && !legacyFamily && !own && Boolean(mat));
+    if (!isOrphan && !(isConjointEmployeStatut(row.statut) && mat && !legacyFamily && !own)) {
+      continue;
+    }
+
+    const ownMat = own || mat;
+    if (!ownMat) continue;
+    // Déjà sous un autre chef
+    if (mat && mat !== ownMat) continue;
+
+    const orphanTokens = new Set(
+      normalizePersonName(row.nom).split(' ').filter((t) => t.length >= 3),
+    );
+
+    let bestFamily: string | null = null;
+    let bestScore = -1;
+
+    for (const [familyKey, members] of byFamily) {
+      if (familyKey === ownMat) continue;
+      const head = members.find((m) => isEmployeeStatut(m.statut));
+      if (!head) continue;
+      if (members.some((m) => m.id !== row.id && isSpouseStatut(m.statut))) continue;
+
+      const headTokens = normalizePersonName(head.nom).split(' ').filter((t) => t.length >= 3);
+      const children = members.filter((m) => /enfant/i.test(m.statut));
+      let score = 0;
+      if (children.length > 0) score += 2;
+      if (children.some((c) => {
+        const tokens = normalizePersonName(c.nom).split(' ');
+        return tokens.some((t) => headTokens.includes(t));
+      })) score += 3;
+      // Bonus faible si le sexe du chef est M (convention : bloc sous le mari)
+      if (/^m$/i.test(head.sexe || '')) score += 1;
+      void orphanTokens;
+
+      if (score > bestScore) {
+        bestScore = score;
+        bestFamily = familyKey;
+      }
+    }
+
+    if (!bestFamily || bestScore < 2) continue;
+
+    row.ownMatricule = ownMat;
+    row.matricule = bestFamily;
+    delete row.familyMatricule;
+    row.statut = CONJOINT_EMPLOYE_STATUT;
+    row.updatedAt = now;
+    changed += 1;
+    syncFamilyCounts(store.dependants, bestFamily);
+  }
+
+  return changed;
+}
+
 export async function readDependantsData(): Promise<DependantsData> {
   await ensureMigrated();
   const store = await readStore();
-  const linked = await syncConjointEmployeLinks(store);
-  if (linked > 0) await writeStore(store);
+  let dirty = 0;
+  dirty += migrateInvertedConjointModel(store);
+  dirty += reattachOrphanConjointEmployes(store);
+  dirty += await syncConjointEmployeLinks(store);
+  if (dirty > 0) await writeStore(store);
 
   const people = await readPeopleIndex();
   const enriched = store.dependants.map((item) => enrichRecord(item, people));
+  // Actif selon le chef de famille (matricule famille), pas le ownMatricule.
   const active = applyAllFamilyCompositions(
-    enriched.filter((item) => !people.get(item.matricule)?.isExit),
+    enriched.filter((item) => !people.get(familyGroupKey(item))?.isExit),
   );
   const exited = applyAllFamilyCompositions(
-    enriched.filter((item) => Boolean(people.get(item.matricule)?.isExit)),
+    enriched.filter((item) => Boolean(people.get(familyGroupKey(item))?.isExit)),
   );
   return {
     dependants: active,
@@ -272,7 +397,7 @@ export async function createDependant(data: DependantFormData): Promise<Dependan
     id: nextDependantId(store.dependants),
     employeeId: employee.id,
     matricule: data.matricule,
-    familyMatricule: normalizeFamilyMatricule(data.statut, data.matricule, data.familyMatricule),
+    ownMatricule: data.ownMatricule?.trim() || undefined,
     pactilis: data.pactilis,
     statut: data.statut,
     sexe: data.sexe,
@@ -307,16 +432,13 @@ export async function updateDependant(id: number, data: DependantFormData): Prom
   const previousFamilyKey = familyGroupKey(store.dependants[index]);
   const previousLocalisation = store.dependants[index].localisation;
   const now = new Date().toISOString();
-  const nextFamilyMatricule = normalizeFamilyMatricule(
-    data.statut,
-    data.matricule,
-    data.familyMatricule ?? store.dependants[index].familyMatricule,
-  );
+  const ownMatricule = data.ownMatricule?.trim() || undefined;
   store.dependants[index] = {
     ...store.dependants[index],
     employeeId: employee.id,
     matricule: data.matricule,
-    familyMatricule: nextFamilyMatricule,
+    ownMatricule,
+    familyMatricule: undefined,
     pactilis: data.pactilis,
     statut: data.statut,
     sexe: data.sexe,
@@ -333,6 +455,7 @@ export async function updateDependant(id: number, data: DependantFormData): Prom
     lienDocument: data.lienDocument,
     updatedAt: now,
   };
+  delete store.dependants[index].familyMatricule;
   const nextFamilyKey = familyGroupKey(store.dependants[index]);
   syncFamilyCounts(store.dependants, previousFamilyKey);
   syncFamilyCounts(store.dependants, previousMatricule);

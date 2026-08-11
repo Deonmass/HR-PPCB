@@ -26,14 +26,32 @@ export function isChildStatut(statut: string): boolean {
   return /enfant/i.test(statut);
 }
 
-/** Clé de regroupement familial (chef de famille). */
+/** Clé de regroupement familial (toujours le matricule du chef / mari). */
 export function familyGroupKey(item: {
   matricule?: string | null;
   familyMatricule?: string | null;
 }): string {
-  const linked = String(item.familyMatricule ?? '').trim();
-  if (linked) return linked;
+  // Legacy inversé : familyMatricule portait le chef pendant que matricule = soi.
+  const legacyFamily = String(item.familyMatricule ?? '').trim();
+  if (legacyFamily) return legacyFamily;
   return String(item.matricule ?? '').trim();
+}
+
+/** Matricule à afficher en liste (propre pour conjoint employé, sinon famille). */
+export function displayMatricule(item: {
+  matricule?: string | null;
+  ownMatricule?: string | null;
+  familyMatricule?: string | null;
+  statut?: string | null;
+}): string {
+  const own = String(item.ownMatricule ?? '').trim();
+  if (own) return own;
+  // Legacy inversé non migré : matricule était le propre.
+  const legacyFamily = String(item.familyMatricule ?? '').trim();
+  const mat = String(item.matricule ?? '').trim();
+  if (legacyFamily && mat && mat !== legacyFamily) return mat;
+  if (isConjointEmployeStatut(String(item.statut ?? '')) && mat) return mat;
+  return mat;
 }
 
 export function belongsToFamily(

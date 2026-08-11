@@ -11,7 +11,7 @@ import {
   CLASSIFICATION_RULES,
   resolveClassification,
 } from '@/lib/convention-collective-rules';
-import { isChildStatut, isSpouseStatut } from '@/lib/dependants-utils';
+import { familyGroupKey, isChildStatut, isSpouseStatut } from '@/lib/dependants-utils';
 import type { Dependant } from '@/lib/dependants-types';
 import { DEFAULT_LOCALISATIONS } from '@/lib/localisations';
 import type { PosteGroup, VacantPoste } from '@/lib/postes-types';
@@ -400,14 +400,11 @@ export default function EmployeeModal({
   };
 
   const promoteMatchedDependant = async (saved: Employee, match: Dependant) => {
-    // Reste dans la famille du conjoint (familyMatricule) tout en portant son propre matricule.
-    const familyMatricule = (match.familyMatricule || match.matricule || '').trim();
+    // Reste sous le bloc du mari (matricule famille) ; ownMatricule = matricule employé du conjoint.
+    const familyMat = familyGroupKey(match) || saved.matricule;
     const payload = {
-      matricule: saved.matricule,
-      familyMatricule:
-        familyMatricule && familyMatricule !== saved.matricule.trim()
-          ? familyMatricule
-          : undefined,
+      matricule: familyMat,
+      ownMatricule: saved.matricule,
       pactilis: match.pactilis,
       statut: CONJOINT_EMPLOYE_STATUT,
       sexe: match.sexe,

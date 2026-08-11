@@ -6,7 +6,7 @@ import TableHeaderFilter from '@/components/TableHeaderFilter';
 import type { SortDir } from '@/components/SortableTh';
 import { usePermissions } from '@/contexts/PermissionContext';
 import type { Dependant } from '@/lib/dependants-types';
-import { isChildStatut, isSpouseStatut, type FamilyGroup } from '@/lib/dependants-utils';
+import { displayMatricule, isChildStatut, isSpouseStatut, type FamilyGroup } from '@/lib/dependants-utils';
 import { promptSelect, showError, showSuccess } from '@/lib/swal';
 import {
   buildColumnFilterValues,
@@ -797,7 +797,7 @@ export default function VillageListeTab() {
                       ...members.map((member) => (
                         <tr key={`${group.matricule}-${member.id}`} className="dependants-member-row">
                           <td />
-                          <td>{member.matricule}</td>
+                          <td>{displayMatricule(member) || member.matricule}</td>
                           <td>{member.nom}</td>
                           <td>
                             {/conjoint\s*employ/i.test(member.statut)

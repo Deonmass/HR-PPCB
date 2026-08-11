@@ -40,7 +40,7 @@ function toFormData(
   if (dependant) {
     return {
       matricule: dependant.matricule,
-      familyMatricule: dependant.familyMatricule,
+      ownMatricule: dependant.ownMatricule,
       pactilis: dependant.pactilis,
       statut: dependant.statut,
       sexe: dependant.sexe,
@@ -58,7 +58,7 @@ function toFormData(
   }
   return {
     matricule: defaultMatricule,
-    familyMatricule: undefined,
+    ownMatricule: undefined,
     pactilis: '',
     statut: 'Enfant',
     sexe: 'M',
@@ -101,7 +101,6 @@ export default function DependantFormModal({
 
   const isEmployee = isEmployeeStatut(form.statut);
   const isConjointEmploye = isConjointEmployeStatut(form.statut);
-  const familyAnchor = (form.familyMatricule || defaultMatricule || '').trim();
 
   const familyCounts = useMemo(() => {
     if (!isEmployee) return null;
@@ -117,42 +116,28 @@ export default function DependantFormModal({
 
   const handleStatutChange = (statut: string) => {
     if (isConjointEmployeStatut(statut)) {
-      const anchor = (form.familyMatricule || defaultMatricule || form.matricule || '').trim();
       setForm({
         ...form,
         statut,
-        familyMatricule: anchor && anchor !== form.matricule.trim() ? anchor : form.familyMatricule,
+        matricule: defaultMatricule || form.matricule,
       });
       return;
     }
-    // Retour à un membre classique : rattacher au matricule famille si on vient d’un conjoint employé.
-    if (isConjointEmploye && familyAnchor) {
-      setForm({
-        ...form,
-        statut,
-        matricule: familyAnchor,
-        familyMatricule: undefined,
-      });
-      return;
-    }
-    setForm({ ...form, statut, familyMatricule: undefined });
+    setForm({ ...form, statut, ownMatricule: undefined });
   };
 
   const handleSubmit = async (event: React.FormEvent) => {
     event.preventDefault();
     setSaving(true);
     try {
-      const anchor = (form.familyMatricule || defaultMatricule || '').trim();
       const payload: DependantFormData = {
         ...form,
         ...(familyCounts ?? {}),
         lienDocument: form.lienDocument?.trim() ?? '',
-        familyMatricule:
-          isConjointEmployeStatut(form.statut)
-          && anchor
-          && anchor !== form.matricule.trim()
-            ? anchor
-            : undefined,
+        matricule: defaultMatricule || form.matricule,
+        ownMatricule: isConjointEmployeStatut(form.statut)
+          ? (form.ownMatricule || '').trim() || undefined
+          : undefined,
       };
       await onSave(payload);
       onClose();
@@ -175,27 +160,35 @@ export default function DependantFormModal({
           <div className="modal-body">
             <div className="form-grid">
               <div className="form-group">
-                <label>Matricule *</label>
+                <label>Matricule famille *</label>
                 <input
                   required
                   value={form.matricule}
-                  readOnly={!!dependant && !isConjointEmploye}
-                  onChange={(event) => setForm({ ...form, matricule: event.target.value })}
-                  placeholder={isConjointEmploye ? 'Matricule employé du conjoint' : undefined}
+                  readOnly
+                  title="Matricule du chef de famille (mari)"
                 />
-                {isConjointEmploye && familyAnchor ? (
+              </div>
+              {isConjointEmploye ? (
+                <div className="form-group">
+                  <label>Matricule employé (propre)</label>
+                  <input
+                    value={form.ownMatricule || ''}
+                    onChange={(event) => setForm({ ...form, ownMatricule: event.target.value })}
+                    placeholder="Matricule de la femme / du conjoint employé"
+                  />
                   <p className="dependant-link-hint">
-                    Reste rattaché(e) à la famille du matricule {familyAnchor}.
+                    Affiché en liste ; la personne reste dans le bloc du mari.
                   </p>
-                ) : null}
-              </div>
-              <div className="form-group">
-                <label>N° Pactilis</label>
-                <input
-                  value={form.pactilis}
-                  onChange={(event) => setForm({ ...form, pactilis: event.target.value })}
-                />
-              </div>
+                </div>
+              ) : (
+                <div className="form-group">
+                  <label>N° Pactilis</label>
+                  <input
+                    value={form.pactilis}
+                    onChange={(event) => setForm({ ...form, pactilis: event.target.value })}
+                  />
+                </div>
+              )}
               <div className="form-group">
                 <label>Statut *</label>
                 <select
@@ -206,6 +199,15 @@ export default function DependantFormModal({
                   {STATUTS.map((value) => <option key={value} value={value}>{value}</option>)}
                 </select>
               </div>
+              {isConjointEmploye ? (
+                <div className="form-group">
+                  <label>N° Pactilis</label>
+                  <input
+                    value={form.pactilis}
+                    onChange={(event) => setForm({ ...form, pactilis: event.target.value })}
+                  />
+                </div>
+              ) : null}
               <div className="form-group">
                 <label>Sexe *</label>
                 <select

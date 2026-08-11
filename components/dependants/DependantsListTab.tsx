@@ -12,6 +12,7 @@ import type { Dependant, DependantFormData } from '@/lib/dependants-types';
 import {
   belongsToFamily,
   buildFamilyGroups,
+  displayMatricule,
   familyGroupKey,
   isConjointEmployeStatut,
   isEmployeeStatut,
@@ -697,20 +698,20 @@ export default function DependantsListTab({
       group?: FamilyGroup;
     },
   ) => {
-    // Conjoint employé : reste dans la famille, mais affiche son propre matricule.
-    const showOwnMatricule = Boolean(
-      options?.isEmployee
-      || isConjointEmployeStatut(item.statut)
-      || (item.familyMatricule && item.matricule.trim() && item.matricule.trim() !== item.familyMatricule.trim()),
-    );
+    const familyKey = familyGroupKey(item);
+    const shownMat = displayMatricule(item);
     return (
     <>
       <td>{item.id || '—'}</td>
       <td>
-        {showOwnMatricule ? (
-          options?.isEmployee ? <strong>{item.matricule}</strong> : item.matricule
+        {options?.isEmployee ? (
+          <strong>{familyKey}</strong>
+        ) : isConjointEmployeStatut(item.statut) && shownMat && shownMat !== familyKey ? (
+          // Conjoint employé : matricule propre (visuel) ; reste dans le bloc du mari.
+          <span title={`Famille : ${familyKey}`}>{shownMat}</span>
         ) : (
-          ''
+          // Enfants / conjoint : matricule du père (chef de famille).
+          familyKey || ''
         )}
       </td>
       <td>{item.pactilis || '—'}</td>

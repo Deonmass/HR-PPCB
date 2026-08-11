@@ -1,10 +1,16 @@
 export interface Dependant {
   id: number;
+  /** Matricule du chef de famille (mari) — ancre du bloc familial. */
   matricule: string;
   /**
-   * Matricule du chef de famille (mari/femme) lorsque la personne a son propre
-   * matricule employé mais doit rester dans le groupe familial d’origine.
-   * Ex. statut « Conjoint employé » : matricule = soi, familyMatricule = conjoint.
+   * Matricule employé propre du conjoint lorsqu’il/elle est aussi agent.
+   * N’isole jamais la personne : le regroupement reste sur `matricule` (mari).
+   * Affiché uniquement en liste pour les « Conjoint employé ».
+   */
+  ownMatricule?: string;
+  /**
+   * @deprecated Ancien modèle inversé (matricule=soi, familyMatricule=mari).
+   * Migré automatiquement vers matricule=mari + ownMatricule=soi.
    */
   familyMatricule?: string;
   pactilis: string;
