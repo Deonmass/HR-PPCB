@@ -1,6 +1,20 @@
 {
   "entries": [
     {
+      "id": "log-000182",
+      "at": "2026-08-11T10:13:10.815Z",
+      "userId": "admin",
+      "userName": "Administrateur",
+      "module": "documents.newcomer",
+      "moduleLabel": "Documents",
+      "action": "export",
+      "actionLabel": "Export",
+      "summary": "Newcomer « New User Request Form » — HR Administrator",
+      "details": "Newcomer « New User Request Form » — HR Administrator",
+      "undoable": false,
+      "undone": false
+    },
+    {
       "id": "log-000181",
       "at": "2026-08-11T10:13:07.791Z",
       "userId": "admin",
@@ -20781,5 +20795,5 @@
       }
     }
   ],
-  "nextSeq": 182
+  "nextSeq": 183
 }
