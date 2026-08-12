@@ -429,13 +429,20 @@ export default function EmployeesHrDashboardView({ employees, exits = [] }: Prop
       <div className="travel-history-cards employees-hr-cards">
         {KPI_META.map((kpi) => {
           const isContractantsLoading = kpi.key === 'totalContractants' && contractantsLoading;
-          const className = `card card-glow ${kpi.glow} travel-history-card employees-hr-card${kpi.watermark ? ' has-watermark' : ''}${kpi.drill ? ' dependants-kpi-clickable' : ''}${kpi.key === 'alertesEssai' && stats.alertesEssai > 0 ? ' is-alert' : ''}${isContractantsLoading ? ' is-loading' : ''}`;
+          const className = `card card-glow ${kpi.glow} travel-history-card employees-hr-card${kpi.watermark ? ' has-watermark' : ''} dependants-kpi-clickable${kpi.key === 'alertesEssai' && stats.alertesEssai > 0 ? ' is-alert' : ''}${isContractantsLoading ? ' is-loading' : ''}`;
           const pct = isContractantsLoading ? null : pctLabel(kpi.key);
           const meta = isContractantsLoading
             ? { lines: [] as string[] }
             : formatKpiMeta(kpi.key, stats);
-          const body = (
-            <>
+          return (
+            <button
+              key={kpi.key}
+              type="button"
+              className={className}
+              onClick={() => openKpi(kpi.drill, kpi.label)}
+              title={`Voir la liste — ${kpi.label}`}
+              disabled={isContractantsLoading}
+            >
               {kpi.watermark && <GenderWatermark variant={kpi.watermark} />}
               <div className="employees-hr-card-body">
                 <div className="card-label">{kpi.label}</div>
@@ -467,25 +474,6 @@ export default function EmployeesHrDashboardView({ employees, exits = [] }: Prop
                   </div>
                 ) : null}
               </div>
-            </>
-          );
-          if (!kpi.drill) {
-            return (
-              <div key={kpi.key} className={className}>
-                {body}
-              </div>
-            );
-          }
-          return (
-            <button
-              key={kpi.key}
-              type="button"
-              className={className}
-              onClick={() => openKpi(kpi.drill, kpi.label)}
-              title={`Voir la liste — ${kpi.label}`}
-              disabled={isContractantsLoading}
-            >
-              {body}
             </button>
           );
         })}
