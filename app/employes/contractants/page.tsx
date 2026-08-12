@@ -1,6 +1,6 @@
 'use client';
 
-import { useCallback, useEffect, useMemo, useRef, useState, type ChangeEvent, type MouseEvent } from 'react';
+import { useCallback, useEffect, useMemo, useRef, useState, type ChangeEvent, type MouseEvent as ReactMouseEvent } from 'react';
 import PermissionGate from '@/components/PermissionGate';
 import RefreshButton from '@/components/RefreshButton';
 import RowContextMenu, { type ContextMenuItem } from '@/components/RowContextMenu';
@@ -297,7 +297,7 @@ export default function ContractantsPage() {
 
   useEffect(() => {
     if (!searchOpen) return;
-    const onPointerDown = (event: MouseEvent) => {
+    const onPointerDown = (event: globalThis.MouseEvent) => {
       const target = event.target as Node;
       if (searchWrapRef.current?.contains(target)) return;
       if (!search.trim()) setSearchOpen(false);
@@ -544,13 +544,13 @@ export default function ContractantsPage() {
     }
   };
 
-  const openCardMenu = (e: MouseEvent, c: Contractant) => {
+  const openCardMenu = (e: ReactMouseEvent, c: Contractant) => {
     e.preventDefault();
     e.stopPropagation();
     setContextMenu({ x: e.clientX, y: e.clientY, kind: 'contractant', contractant: c });
   };
 
-  const openEmployeeMenu = (e: MouseEvent, employee: FlatEmployee) => {
+  const openEmployeeMenu = (e: ReactMouseEvent, employee: FlatEmployee) => {
     e.preventDefault();
     e.stopPropagation();
     setContextMenu({ x: e.clientX, y: e.clientY, kind: 'employee', employee });
