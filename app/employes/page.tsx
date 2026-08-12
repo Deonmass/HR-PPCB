@@ -14,6 +14,7 @@ import {
   computeAgeFromDisplayDate,
   computeSeniorityYears,
   wasPresentInYear,
+  wasPresentInYearMonth,
   yearFromDisplayDate,
 } from '@/lib/employee-columns';
 import { downloadEmployeesHrExport } from '@/lib/employees-export';
@@ -109,13 +110,34 @@ function dateCellClass(value: string): string {
   return isDisplayDatePast(value) ? 'col-date employees-date-past' : 'col-date';
 }
 
-function seniorityValue(employee: Employee, yearFilter: number | ''): string {
+function seniorityValue(employee: Employee, yearFilter: number | '', monthFilter: number | ''): string {
   return formatYears(
     computeSeniorityYears(
       employee.appointmentDate || '',
-      yearFilter !== '' ? new Date(yearFilter, 11, 31) : new Date(),
+      yearFilter !== '' ? asOfFromYearMonth(yearFilter, monthFilter) : new Date(),
     ),
   );
+}
+
+const MONTH_OPTIONS: { value: number; label: string }[] = [
+  { value: 1, label: 'Janvier' },
+  { value: 2, label: 'Février' },
+  { value: 3, label: 'Mars' },
+  { value: 4, label: 'Avril' },
+  { value: 5, label: 'Mai' },
+  { value: 6, label: 'Juin' },
+  { value: 7, label: 'Juillet' },
+  { value: 8, label: 'Août' },
+  { value: 9, label: 'Septembre' },
+  { value: 10, label: 'Octobre' },
+  { value: 11, label: 'Novembre' },
+  { value: 12, label: 'Décembre' },
+];
+
+/** Dernier jour du mois (asOf pour ancienneté filtrée). */
+function asOfFromYearMonth(year: number, month: number | ''): Date {
+  if (month === '') return new Date(year, 11, 31);
+  return new Date(year, month, 0); // jour 0 du mois suivant = dernier jour du mois
 }
 
 function dureeValue(employee: Employee): string {
@@ -142,6 +164,7 @@ export default function EmployesPage() {
   const [contractFilter, setContractFilter] = useState('');
   const [statusFilter, setStatusFilter] = useState('');
   const [yearFilter, setYearFilter] = useState<number | ''>('');
+  const [monthFilter, setMonthFilter] = useState<number | ''>('');
   const [colFilters, setColFilters] = useState<Record<FilterKey, string[]>>(EMPTY_FILTERS);
   const [editOpen, setEditOpen] = useState(false);
   const [viewOpen, setViewOpen] = useState(false);
@@ -207,13 +230,23 @@ export default function EmployesPage() {
 
   const yearScopedActive = useMemo(() => {
     if (yearFilter === '') return employees;
+    if (monthFilter !== '') {
+      return employees.filter((e) =>
+        wasPresentInYearMonth(e, yearFilter, monthFilter, { isExit: false }),
+      );
+    }
     return employees.filter((e) => wasPresentInYear(e, yearFilter, { isExit: false }));
-  }, [employees, yearFilter]);
+  }, [employees, yearFilter, monthFilter]);
 
   const yearScopedExits = useMemo(() => {
     if (yearFilter === '') return exits;
+    if (monthFilter !== '') {
+      return exits.filter((e) =>
+        wasPresentInYearMonth(e, yearFilter, monthFilter, { isExit: true }),
+      );
+    }
     return exits.filter((e) => wasPresentInYear(e, yearFilter, { isExit: true }));
-  }, [exits, yearFilter]);
+  }, [exits, yearFilter, monthFilter]);
 
   /** Liste : avec année, inclut aussi les sorties présentes cette année-là. */
   const yearScopedListe = useMemo(() => {
@@ -287,7 +320,7 @@ export default function EmployesPage() {
         grade: (e) => e.grade,
         localisation: (e) => e.localisation,
         age: (e) => formatYears(resolveEmployeeAge(e)),
-        anciennete: (e) => seniorityValue(e, yearFilter),
+        anciennete: (e) => seniorityValue(e, yearFilter, monthFilter),
         poste: (e) => e.jobTitle,
         finContrat: (e) => resolveDateFinContrat(e),
         raisonExit: (e) => e.raisonExit,
@@ -308,7 +341,7 @@ export default function EmployesPage() {
         statut: (e) => resolveEssaiStatutEval(e),
         comment: (e) => e.essaiCommentaire,
       }),
-    [toolbarFiltered, yearFilter],
+    [toolbarFiltered, yearFilter, monthFilter],
   );
 
   const filtered = useMemo(
@@ -327,7 +360,7 @@ export default function EmployesPage() {
           matchesColumnFilter(colFilters.grade, e.grade) &&
           matchesColumnFilter(colFilters.localisation, e.localisation) &&
           matchesColumnFilter(colFilters.age, formatYears(resolveEmployeeAge(e))) &&
-          matchesColumnFilter(colFilters.anciennete, seniorityValue(e, yearFilter)) &&
+          matchesColumnFilter(colFilters.anciennete, seniorityValue(e, yearFilter, monthFilter)) &&
           matchesColumnFilter(colFilters.poste, e.jobTitle) &&
           matchesColumnFilter(colFilters.finContrat, finContrat) &&
           matchesColumnFilter(colFilters.raisonExit, e.raisonExit) &&
@@ -345,7 +378,7 @@ export default function EmployesPage() {
           matchesColumnFilter(colFilters.comment, e.essaiCommentaire)
         );
       }),
-    [toolbarFiltered, colFilters, yearFilter],
+    [toolbarFiltered, colFilters, yearFilter, monthFilter],
   );
 
   const activeFilterCount = useMemo(() => countActiveColumnFilters(colFilters), [colFilters]);
@@ -355,7 +388,13 @@ export default function EmployesPage() {
 
   const pageSubtitle = useMemo(() => {
     const parts: string[] = [];
-    if (yearFilter !== '') parts.push(`Année ${yearFilter}`);
+    if (yearFilter !== '') {
+      const monthLabel =
+        monthFilter !== ''
+          ? MONTH_OPTIONS.find((m) => m.value === monthFilter)?.label
+          : null;
+      parts.push(monthLabel ? `${monthLabel} ${yearFilter}` : `Année ${yearFilter}`);
+    }
     if (dept) parts.push(dept);
     if (contractFilter) parts.push(contractFilter);
     if (statusFilter) parts.push(statusFilter);
@@ -365,7 +404,8 @@ export default function EmployesPage() {
     let countLabel = '';
     switch (tab) {
       case 'dashboard':
-        countLabel = `${dashboardEmployees.length} actif${dashboardEmployees.length > 1 ? 's' : ''}`;
+        countLabel = `${dashboardEmployees.length + dashboardExits.length} personne${dashboardEmployees.length + dashboardExits.length > 1 ? 's' : ''}`;
+        countLabel += ` · ${dashboardEmployees.length} actif${dashboardEmployees.length > 1 ? 's' : ''}`;
         if (dashboardExits.length > 0) {
           countLabel += ` · ${dashboardExits.length} sortie${dashboardExits.length > 1 ? 's' : ''}`;
         }
@@ -388,6 +428,7 @@ export default function EmployesPage() {
   }, [
     tab,
     yearFilter,
+    monthFilter,
     dept,
     contractFilter,
     statusFilter,
@@ -633,6 +674,22 @@ export default function EmployesPage() {
                 {exporting ? 'Export…' : 'Export'}
               </button>
             )}
+            {canCreate && (
+              <PermissionGate menuId="employes.liste" action="create">
+                <button
+                  type="button"
+                  className="btn btn-accent btn-icon-only"
+                  onClick={() => openEdit(null)}
+                  title="Ajouter un employé"
+                  aria-label="Ajouter un employé"
+                >
+                  <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" strokeWidth="2.25" strokeLinecap="round" aria-hidden>
+                    <line x1="12" y1="5" x2="12" y2="19" />
+                    <line x1="5" y1="12" x2="19" y2="12" />
+                  </svg>
+                </button>
+              </PermissionGate>
+            )}
           </div>
         </div>
 
@@ -692,12 +749,32 @@ export default function EmployesPage() {
               onChange={(e) => {
                 const v = e.target.value;
                 setYearFilter(v ? Number(v) : '');
+                if (!v) setMonthFilter('');
               }}
               title="Filtrer par année de présence"
             >
               <option value="">Toutes les années</option>
               {yearOptions.map((y) => (
                 <option key={y} value={y}>{y}</option>
+              ))}
+            </select>
+            <select
+              className="filter-select"
+              value={monthFilter === '' ? '' : String(monthFilter)}
+              onChange={(e) => {
+                const v = e.target.value;
+                setMonthFilter(v ? Number(v) : '');
+              }}
+              disabled={yearFilter === ''}
+              title={
+                yearFilter === ''
+                  ? 'Choisissez d’abord une année'
+                  : 'Filtrer par mois de présence'
+              }
+            >
+              <option value="">Tous les mois</option>
+              {MONTH_OPTIONS.map((m) => (
+                <option key={m.value} value={m.value}>{m.label}</option>
               ))}
             </select>
             {essaiAlertCount > 0 && (tab === 'dashboard' || tab === 'essai' || tab === 'liste') && (
@@ -720,13 +797,6 @@ export default function EmployesPage() {
               >
                 Effacer les filtres ({activeFilterCount})
               </button>
-            )}
-            {tab === 'liste' && (
-              <PermissionGate menuId="employes.liste" action="create">
-                <button type="button" className="btn btn-accent" onClick={() => openEdit(null)}>
-                  + Ajouter un employé
-                </button>
-              </PermissionGate>
             )}
           </div>
         )}
@@ -1033,7 +1103,7 @@ export default function EmployesPage() {
                       const age = resolveEmployeeAge(e);
                       const seniority = computeSeniorityYears(
                         e.appointmentDate || '',
-                        yearFilter !== '' ? new Date(yearFilter, 11, 31) : new Date(),
+                        yearFilter !== '' ? asOfFromYearMonth(yearFilter, monthFilter) : new Date(),
                       );
                       const finEssai = resolveDateFinPeriodeEssai(e);
                       const finContrat = resolveDateFinContrat(e);

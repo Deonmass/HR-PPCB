@@ -76,6 +76,28 @@ export function showLogoutLoading(): void {
   });
 }
 
+/** Spinner bloquant pendant une action (suppression, enregistrement, import…). */
+export function showActionLoading(
+  title = 'Traitement…',
+  text = 'Veuillez patienter',
+): void {
+  void Swal.fire({
+    ...baseConfig(),
+    title,
+    text,
+    allowOutsideClick: false,
+    allowEscapeKey: false,
+    showConfirmButton: false,
+    didOpen: () => {
+      Swal.showLoading();
+    },
+  });
+}
+
+export function closeSwal(): void {
+  Swal.close();
+}
+
 export function showError(message: string, title = 'Erreur'): Promise<void> {
   return Swal.fire({
     ...baseConfig(),

@@ -316,13 +316,16 @@ export default function DocumentsHubPage() {
     // Accès au hub Documents (au moins un menu du hub).
     const hasHubAccess = DOCUMENTS_HUB_MENU_IDS.some((id) => canSeeMenu(can, id));
 
-    return CARDS.filter((card) => {
-      // Entête en premier : droit dédié OU n’importe quel accès Documents.
-      if (card.id === 'entetes') {
-        return canSeeMenu(can, 'documents.entetes') || hasHubAccess;
-      }
-      return canSeeMenu(can, card.menuId);
-    });
+    return CARDS
+      .filter((card) => {
+        // Entête : droit dédié OU n’importe quel accès Documents.
+        if (card.id === 'entetes') {
+          return canSeeMenu(can, 'documents.entetes') || hasHubAccess;
+        }
+        return canSeeMenu(can, card.menuId);
+      })
+      .slice()
+      .sort((a, b) => a.title.localeCompare(b.title, 'fr', { sensitivity: 'base' }));
   }, [can]);
 
   if (isLoading) return <div className="loading">Chargement...</div>;

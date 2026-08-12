@@ -16,6 +16,7 @@ export const PERMISSION_MENU_CATALOG: PermissionMenuGroup[] = [
       { id: 'employes.offres', label: 'Offres' },
       { id: 'employes.mouvements', label: 'Mouvements' },
       { id: 'employes.postes', label: 'Postes' },
+      { id: 'employes.contractants', label: 'Contractants' },
       { id: 'employes.check-documents', label: 'Check documents' },
       { id: 'employes.heures', label: 'HS — Mon timesheet' },
       { id: 'employes.heures.dept', label: 'HS — Voir mon département' },

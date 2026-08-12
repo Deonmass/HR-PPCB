@@ -43,6 +43,7 @@ function moduleShortcuts(menus: MenuPermission[]): Array<{
     { title: 'Offres', subtitle: 'Offres d’emploi', href: '/employes/offres', menuIds: ['employes.offres'] },
     { title: 'Mouvements', subtitle: 'Mutations et affectations', href: '/employes/mouvements', menuIds: ['employes.mouvements'] },
     { title: 'Postes', subtitle: 'Catalogue et postes vacants', href: '/employes/postes', menuIds: ['employes.postes'] },
+    { title: 'Contractants', subtitle: 'Entreprises et personnel contractant', href: '/employes/contractants', menuIds: ['employes.contractants'] },
     { title: 'Check documents', subtitle: 'Conformité documentaire', href: '/check-documents', menuIds: ['employes.check-documents'] },
     { title: 'Documents', subtitle: 'Hub documents RH', href: '/documents', menuIds: ['travel.historique', 'documents.rrf', 'documents.entetes', 'documents.exit', 'documents.newcomer', 'documents.contrat-standard', 'documents.convention-collective'] },
     { title: 'RRF', subtitle: 'Recruitment Requisition', href: '/documents/rrf', menuIds: ['documents.rrf'] },

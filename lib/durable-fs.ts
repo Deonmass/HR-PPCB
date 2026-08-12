@@ -18,6 +18,7 @@ export const DURABLE_EMPLOYEE_EXITS_KEY = 'data/employees/exits.json';
 export const DURABLE_CHECK_DOCUMENTS_KEY = 'data/employees/check-documents.json';
 export const DURABLE_POSTES_VACANTS_KEY = 'data/employees/postes-vacants.json';
 export const DURABLE_MOUVEMENTS_KEY = 'data/employees/mouvements.json';
+export const DURABLE_CONTRACTANTS_KEY = 'data/employees/contractants.json';
 export const DURABLE_DEPENDANTS_KEY = 'data/dependants/dependants.json';
 export const DURABLE_VILLAGE_MAISONS_KEY = 'data/village/maisons.json';
 export const DURABLE_VILLAGE_TAILLES_KEY = 'data/village/tailles.json';

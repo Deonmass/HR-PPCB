@@ -6,9 +6,9 @@ import { DependantsBarChartBody, type BarChartItem } from '@/components/dependan
 import { EMPTY_LOCALISATION_VALUE } from '@/components/dependants/DependantsListTab';
 import type { Dependant } from '@/lib/dependants-types';
 import {
+  countsAsEmployeeKpi,
+  countsAsSpouseKpi,
   isChildStatut,
-  isEmployeeStatut,
-  isSpouseStatut,
 } from '@/lib/dependants-utils';
 import { showError, showSuccess } from '@/lib/swal';
 import XLSX from 'xlsx-js-style';
@@ -64,8 +64,8 @@ function parseAgeBound(raw: string): number | null {
 
 function matchesStatutFilter(item: Dependant, filter: StatutFilter): boolean {
   if (filter === 'enfant') return isChildStatut(item.statut);
-  if (filter === 'conjoint') return isSpouseStatut(item.statut);
-  return isEmployeeStatut(item.statut);
+  if (filter === 'conjoint') return countsAsSpouseKpi(item.statut);
+  return countsAsEmployeeKpi(item.statut);
 }
 
 function matchesLocalisation(item: Dependant, localisation: string): boolean {

@@ -29,6 +29,18 @@
           }
         },
         {
+          "menuId": "employes.contractants",
+          "label": "Contractants",
+          "actions": {
+            "view": true,
+            "create": true,
+            "edit": true,
+            "delete": true,
+            "export": true,
+            "undo": true
+          }
+        },
+        {
           "menuId": "employes.check-documents",
           "label": "Check documents",
           "actions": {

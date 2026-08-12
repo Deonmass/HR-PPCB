@@ -13,6 +13,10 @@ interface Props {
   formatValue?: (n: number) => string;
   /** Affiche le % de chaque part dans la légende (défaut true). */
   showSharePercent?: boolean;
+  /** Clic sur une part / légende → détail. */
+  onItemClick?: (label: string) => void;
+  /** Clic sur le titre / le total central → liste complète. */
+  onTitleClick?: () => void;
 }
 
 const SIZE = 96;
@@ -32,6 +36,8 @@ export default function HomeDonutChart({
   centerLabel,
   formatValue = defaultFormat,
   showSharePercent = true,
+  onItemClick,
+  onTitleClick,
 }: Props) {
   const total = useMemo(
     () => slices.reduce((sum, s) => sum + Math.max(0, s.value), 0),
@@ -56,12 +62,25 @@ export default function HomeDonutChart({
   }, [slices, total]);
 
   const displayCenter = centerValue != null ? centerValue : total;
+  const canDrill = Boolean(onItemClick);
+  const canOpenAll = Boolean(onTitleClick);
 
   if (!arcs.length) {
     return (
       <article className="home-chart-panel panel">
         <header className="home-chart-head">
-          <h4>{title}</h4>
+          {canOpenAll ? (
+            <button
+              type="button"
+              className="home-chart-title-btn"
+              onClick={onTitleClick}
+              title={`Voir le détail — ${title}`}
+            >
+              <h4>{title}</h4>
+            </button>
+          ) : (
+            <h4>{title}</h4>
+          )}
         </header>
         <p className="empty-state home-chart-empty">{emptyLabel}</p>
       </article>
@@ -71,7 +90,18 @@ export default function HomeDonutChart({
   return (
     <article className="home-chart-panel panel">
       <header className="home-chart-head">
-        <h4>{title}</h4>
+        {canOpenAll ? (
+          <button
+            type="button"
+            className="home-chart-title-btn"
+            onClick={onTitleClick}
+            title={`Voir le détail — ${title}`}
+          >
+            <h4>{title}</h4>
+          </button>
+        ) : (
+          <h4>{title}</h4>
+        )}
       </header>
       <div className="home-donut-layout">
         <div className="home-donut-svg-wrap">
@@ -103,10 +133,28 @@ export default function HomeDonutChart({
                 strokeDashoffset={arc.offset}
                 strokeLinecap="butt"
                 transform={`rotate(-90 ${SIZE / 2} ${SIZE / 2})`}
+                style={canDrill ? { cursor: 'pointer' } : undefined}
+                onClick={canDrill ? () => onItemClick?.(arc.label) : undefined}
               />
             ))}
           </svg>
-          <div className="home-donut-center">
+          <div
+            className={`home-donut-center${canOpenAll ? ' is-clickable' : ''}`}
+            role={canOpenAll ? 'button' : undefined}
+            tabIndex={canOpenAll ? 0 : undefined}
+            onClick={canOpenAll ? onTitleClick : undefined}
+            onKeyDown={
+              canOpenAll
+                ? (e) => {
+                    if (e.key === 'Enter' || e.key === ' ') {
+                      e.preventDefault();
+                      onTitleClick?.();
+                    }
+                  }
+                : undefined
+            }
+            title={canOpenAll ? `Voir le détail — ${title}` : undefined}
+          >
             <strong>{formatValue(displayCenter)}</strong>
             {centerLabel && <span>{centerLabel}</span>}
           </div>
@@ -114,16 +162,42 @@ export default function HomeDonutChart({
         <ul className="home-donut-legend">
           {arcs.map((arc) => (
             <li key={arc.label}>
-              <i style={{ background: arc.color || '#e30613' }} aria-hidden />
-              <span className="home-donut-legend-label" title={arc.label}>
-                {arc.label}
-              </span>
-              <strong>
-                {formatValue(arc.value)}
-                {showSharePercent && total > 0
-                  ? ` · ${Math.round((arc.value / total) * 100)}%`
-                  : ''}
-              </strong>
+              {canDrill ? (
+                <button
+                  type="button"
+                  className="home-donut-legend-btn"
+                  onClick={() => onItemClick?.(arc.label)}
+                  title={`Voir le détail — ${arc.label}`}
+                >
+                  <i style={{ background: arc.color || '#e30613' }} aria-hidden />
+                  <span className="home-donut-legend-label" title={arc.label}>
+                    {arc.label}
+                  </span>
+                  <strong className="home-donut-legend-value">
+                    <span className="home-donut-legend-count">{formatValue(arc.value)}</span>
+                    {showSharePercent && total > 0 ? (
+                      <span className="home-donut-legend-pct">
+                        {Math.round((arc.value / total) * 100)}%
+                      </span>
+                    ) : null}
+                  </strong>
+                </button>
+              ) : (
+                <>
+                  <i style={{ background: arc.color || '#e30613' }} aria-hidden />
+                  <span className="home-donut-legend-label" title={arc.label}>
+                    {arc.label}
+                  </span>
+                  <strong className="home-donut-legend-value">
+                    <span className="home-donut-legend-count">{formatValue(arc.value)}</span>
+                    {showSharePercent && total > 0 ? (
+                      <span className="home-donut-legend-pct">
+                        {Math.round((arc.value / total) * 100)}%
+                      </span>
+                    ) : null}
+                  </strong>
+                </>
+              )}
             </li>
           ))}
         </ul>

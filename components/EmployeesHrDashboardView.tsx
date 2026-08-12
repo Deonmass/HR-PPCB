@@ -14,11 +14,12 @@ import {
   employeeToDashboardListRow,
   employeesForHrKpi,
   employeesMatchingHrSegment,
+  mergeEmployeesWithExits,
   type EmployeesHrKpiKey,
   type HrChartSegmentKind,
 } from '@/lib/employees-hr-dashboard';
 import type { Employee } from '@/lib/types';
-import { useMemo, useState, type ReactNode } from 'react';
+import { useEffect, useMemo, useState, type ReactNode } from 'react';
 import type { ChartDeptFilterSource, ChartFilterRenderContext } from '@/components/EnlargeableChartPanel';
 
 interface Props {
@@ -27,10 +28,10 @@ interface Props {
 }
 
 const KPI_META = [
-  { key: 'total', label: 'Total actifs', glow: 'card-glow-red', format: 'int', watermark: null, drill: 'total' as const },
+  { key: 'total', label: 'Total', glow: 'card-glow-red', format: 'int', watermark: null, drill: 'total' as const },
   { key: 'hommes', label: 'Hommes', glow: 'card-glow-cyan', format: 'int', watermark: 'male', drill: 'hommes' as const },
   { key: 'femmes', label: 'Femmes', glow: 'card-glow-pink', format: 'int', watermark: 'female', drill: 'femmes' as const },
-  { key: 'ageMoyen', label: 'Âge moyen', glow: 'card-glow-violet', format: '1', watermark: null, drill: null },
+  { key: 'totalContractants', label: 'Total contractant', glow: 'card-glow-violet', format: 'int', watermark: null, drill: 'totalContractants' as const },
   { key: 'totalCdd', label: 'CDD', glow: 'card-glow-amber', format: 'int', watermark: null, drill: 'totalCdd' as const },
   { key: 'totalEssai', label: "Période d'essai", glow: 'card-glow-violet', format: 'int', watermark: null, drill: 'totalEssai' as const },
   { key: 'alertesEssai', label: 'Alertes essai (J-30)', glow: 'card-glow-red', format: 'int', watermark: null, drill: 'alertesEssai' as const },
@@ -74,6 +75,31 @@ const EXIT_COLUMNS: DashboardListColumn[] = [
   { key: 'raison', label: 'Motif' },
 ];
 
+const CONTRACTANT_EMP_COLUMNS: DashboardListColumn[] = [
+  { key: 'nom', label: 'Noms' },
+  { key: 'contractant', label: 'Contractant' },
+  { key: 'sexe', label: 'Sexe' },
+  { key: 'lieu', label: 'Lieu' },
+  { key: 'fonction', label: 'Fonction' },
+  { key: 'statut', label: 'Statut' },
+];
+
+type ContractantDashStats = {
+  totalContractants: number;
+  contractantsFirms: number;
+  contractantsPermanents: number;
+  contractantsJournaliers: number;
+  contractantRows: DashboardListRow[];
+};
+
+const EMPTY_CONTRACTANT_STATS: ContractantDashStats = {
+  totalContractants: 0,
+  contractantsFirms: 0,
+  contractantsPermanents: 0,
+  contractantsJournaliers: 0,
+  contractantRows: [],
+};
+
 const COMPANY_COLORS = ['#2563eb', '#f59e0b'];
 const LOC_COLORS = ['#22d3ee', '#0891b2', '#67e8f9', '#0e7490'];
 const MARITAL_COLORS = ['#8b5cf6', '#06b6d4', '#f472b6', '#94a3b8', '#f59e0b'];
@@ -115,13 +141,12 @@ function topRow(rows: { label: string; count: number }[] | undefined) {
 
 function formatKpiMeta(
   key: (typeof KPI_META)[number]['key'],
-  stats: ReturnType<typeof buildEmployeesHrDashboard>,
+  stats: ReturnType<typeof buildEmployeesHrDashboard> & ContractantDashStats,
 ): { lines: string[]; barPct?: number; barClass?: string } {
   const topSite = topRow(stats.parLocalisation);
   const topCompany = topRow(stats.parCompany);
   const topDept = topRow(stats.parDepartement);
   const topGrade = topRow(stats.parGrade);
-  const topAgeBand = topRow(stats.parTrancheAge);
   const topCddDept = topRow(stats.cddParDepartement);
   const topExitReason = topRow(stats.exitsParRaison);
   const topEssaiStatut = topRow(stats.essaiParStatut);
@@ -157,14 +182,16 @@ function formatKpiMeta(
         barPct: stats.total ? (stats.femmes / stats.total) * 100 : 0,
         barClass: 'is-pink',
       };
-    case 'ageMoyen':
+    case 'totalContractants':
       return {
         lines: [
-          topAgeBand ? `Tranche dominante ${topAgeBand.label} (${topAgeBand.count})` : 'Tranche —',
-          stats.moyEnfants != null ? `Moy. enfants ${stats.moyEnfants}` : 'Moy. enfants —',
-          `${stats.maries} marié(s)`,
+          `${stats.contractantsPermanents} permanent${stats.contractantsPermanents !== 1 ? 's' : ''}`,
+          `${stats.contractantsJournaliers} journalier${stats.contractantsJournaliers !== 1 ? 's' : ''}`,
+          `${stats.contractantsFirms} contractant${stats.contractantsFirms !== 1 ? 's' : ''}`,
         ],
-        barPct: stats.ageMoyen != null ? Math.min(100, (stats.ageMoyen / 60) * 100) : 0,
+        barPct: stats.totalContractants
+          ? (stats.contractantsPermanents / stats.totalContractants) * 100
+          : 0,
         barClass: 'is-violet',
       };
     case 'totalCdd':
@@ -222,8 +249,77 @@ function formatKpiMeta(
 
 /** Dashboard RH global — KPIs actifs + sorties. */
 export default function EmployeesHrDashboardView({ employees, exits = [] }: Props) {
-  const stats = useMemo(
+  const baseStats = useMemo(
     () => buildEmployeesHrDashboard(employees, exits),
+    [employees, exits],
+  );
+  const [contractantStats, setContractantStats] = useState<ContractantDashStats>(EMPTY_CONTRACTANT_STATS);
+  const [contractantsLoading, setContractantsLoading] = useState(true);
+
+  useEffect(() => {
+    let cancelled = false;
+    setContractantsLoading(true);
+    void (async () => {
+      try {
+        const res = await fetch('/api/employes/contractants', { cache: 'no-store' });
+        const data = await res.json().catch(() => ({}));
+        if (cancelled) return;
+        if (!res.ok) {
+          setContractantStats(EMPTY_CONTRACTANT_STATS);
+          setContractantsLoading(false);
+          return;
+        }
+        const list = Array.isArray(data.contractants) ? data.contractants : [];
+        let permanents = 0;
+        let journaliers = 0;
+        const rows: DashboardListRow[] = [];
+        for (const c of list) {
+          const emps = Array.isArray(c.employees) ? c.employees : [];
+          for (const e of emps) {
+            const statut = String(e.statut || 'Permanent');
+            if (statut === 'Journalier') journaliers += 1;
+            else permanents += 1;
+            rows.push({
+              id: `${c.id}-${e.id}`,
+              cells: {
+                nom: e.nom || '—',
+                contractant: c.denomination || '—',
+                sexe: e.sexe || '—',
+                lieu: e.lieuAffectation || '—',
+                fonction: e.fonction || '—',
+                statut,
+              },
+            });
+          }
+        }
+        if (!cancelled) {
+          setContractantStats({
+            totalContractants: permanents + journaliers,
+            contractantsFirms: list.length,
+            contractantsPermanents: permanents,
+            contractantsJournaliers: journaliers,
+            contractantRows: rows,
+          });
+          setContractantsLoading(false);
+        }
+      } catch {
+        if (!cancelled) {
+          setContractantStats(EMPTY_CONTRACTANT_STATS);
+          setContractantsLoading(false);
+        }
+      }
+    })();
+    return () => {
+      cancelled = true;
+    };
+  }, []);
+
+  const stats = useMemo(
+    () => ({ ...baseStats, ...contractantStats }),
+    [baseStats, contractantStats],
+  );
+  const workforce = useMemo(
+    () => mergeEmployeesWithExits(employees, exits),
     [employees, exits],
   );
   const [drilldown, setDrilldown] = useState<{
@@ -233,8 +329,8 @@ export default function EmployeesHrDashboardView({ employees, exits = [] }: Prop
   } | null>(null);
 
   const fmt = (key: (typeof KPI_META)[number]['key'], format: string) => {
-    const raw = stats[key];
-    if (raw == null) return '—';
+    const raw = stats[key as keyof typeof stats];
+    if (raw == null || typeof raw === 'object') return '—';
     if (format === 'int') return String(raw);
     const digits = Number(format);
     return Number(raw).toLocaleString('fr-FR', {
@@ -244,8 +340,15 @@ export default function EmployeesHrDashboardView({ employees, exits = [] }: Prop
   };
 
   const pctLabel = (key: (typeof KPI_META)[number]['key']): string | null => {
-    if (key === 'ageMoyen') return null;
-    const value = stats[key];
+    if (key === 'totalContractants') {
+      const total = stats.totalContractants;
+      if (!total) return '0%';
+      const pct = Math.round((stats.contractantsPermanents / total) * 1000) / 10;
+      return Number.isInteger(pct)
+        ? `${pct}% perm.`
+        : `${pct.toLocaleString('fr-FR', { maximumFractionDigits: 1, minimumFractionDigits: 1 })}% perm.`;
+    }
+    const value = stats[key as keyof typeof stats];
     if (typeof value !== 'number' || !Number.isFinite(value)) return null;
     if (key === 'total') return '100%';
 
@@ -258,7 +361,15 @@ export default function EmployeesHrDashboardView({ employees, exits = [] }: Prop
       : `${pct.toLocaleString('fr-FR', { maximumFractionDigits: 1, minimumFractionDigits: 1 })}%`;
   };
 
-  const openKpi = (key: EmployeesHrKpiKey, label: string) => {
+  const openKpi = (key: EmployeesHrKpiKey | 'totalContractants', label: string) => {
+    if (key === 'totalContractants') {
+      setDrilldown({
+        title: label,
+        columns: CONTRACTANT_EMP_COLUMNS,
+        rows: contractantStats.contractantRows,
+      });
+      return;
+    }
     const list = employeesForHrKpi(employees, exits, key);
     const columns =
       key === 'totalExits'
@@ -275,11 +386,11 @@ export default function EmployeesHrDashboardView({ employees, exits = [] }: Prop
     });
   };
 
-  const activeDeptFilter = (
+  const workforceDeptFilter = (
     kind: HrChartSegmentKind,
     build: (emps: Employee[], ctx: ChartFilterRenderContext) => ReactNode,
   ): ChartDeptFilterSource => ({
-    employees,
+    employees: workforce,
     renderFiltered: build,
     showGenderLegend: true,
     resolveSegment: (emps, label) => employeesMatchingHrSegment(emps, kind, label),
@@ -317,17 +428,26 @@ export default function EmployeesHrDashboardView({ employees, exits = [] }: Prop
     <div className="travel-history-dashboard employees-hr-dashboard">
       <div className="travel-history-cards employees-hr-cards">
         {KPI_META.map((kpi) => {
-          const className = `card card-glow ${kpi.glow} travel-history-card employees-hr-card${kpi.watermark ? ' has-watermark' : ''}${kpi.drill ? ' dependants-kpi-clickable' : ''}${kpi.key === 'alertesEssai' && stats.alertesEssai > 0 ? ' is-alert' : ''}`;
-          const pct = pctLabel(kpi.key);
-          const meta = formatKpiMeta(kpi.key, stats);
+          const isContractantsLoading = kpi.key === 'totalContractants' && contractantsLoading;
+          const className = `card card-glow ${kpi.glow} travel-history-card employees-hr-card${kpi.watermark ? ' has-watermark' : ''}${kpi.drill ? ' dependants-kpi-clickable' : ''}${kpi.key === 'alertesEssai' && stats.alertesEssai > 0 ? ' is-alert' : ''}${isContractantsLoading ? ' is-loading' : ''}`;
+          const pct = isContractantsLoading ? null : pctLabel(kpi.key);
+          const meta = isContractantsLoading
+            ? { lines: [] as string[] }
+            : formatKpiMeta(kpi.key, stats);
           const body = (
             <>
               {kpi.watermark && <GenderWatermark variant={kpi.watermark} />}
               <div className="employees-hr-card-body">
                 <div className="card-label">{kpi.label}</div>
                 <div className="card-value">
-                  {fmt(kpi.key, kpi.format)}
-                  {pct ? <span className="employees-hr-card-pct">{pct}</span> : null}
+                  {isContractantsLoading ? (
+                    <span className="btn-spinner employees-hr-card-spinner" aria-label="Chargement" />
+                  ) : (
+                    <>
+                      {fmt(kpi.key, kpi.format)}
+                      {pct ? <span className="employees-hr-card-pct">{pct}</span> : null}
+                    </>
+                  )}
                 </div>
                 {meta.lines.length > 0 ? (
                   <div className="employees-hr-card-meta">
@@ -363,6 +483,7 @@ export default function EmployeesHrDashboardView({ employees, exits = [] }: Prop
               className={className}
               onClick={() => openKpi(kpi.drill, kpi.label)}
               title={`Voir la liste — ${kpi.label}`}
+              disabled={isContractantsLoading}
             >
               {body}
             </button>
@@ -375,7 +496,7 @@ export default function EmployeesHrDashboardView({ employees, exits = [] }: Prop
           title="Par company"
           items={stats.parCompany}
           colors={COMPANY_COLORS}
-          deptFilter={activeDeptFilter('company', (emps, ctx) => (
+          deptFilter={workforceDeptFilter('company', (emps, ctx) => (
             <EmployeesPieChartBody
               items={buildEmployeesHrDashboard(emps).parCompany}
               colors={COMPANY_COLORS}
@@ -387,7 +508,7 @@ export default function EmployeesHrDashboardView({ employees, exits = [] }: Prop
           title="Par localisation"
           items={stats.parLocalisation}
           colors={LOC_COLORS}
-          deptFilter={activeDeptFilter('localisation', (emps, ctx) => (
+          deptFilter={workforceDeptFilter('localisation', (emps, ctx) => (
             <EmployeesPieChartBody
               items={buildEmployeesHrDashboard(emps).parLocalisation}
               colors={LOC_COLORS}
@@ -399,7 +520,7 @@ export default function EmployeesHrDashboardView({ employees, exits = [] }: Prop
           title="Par statut marital"
           items={stats.parMaritalStatus}
           colors={MARITAL_COLORS}
-          deptFilter={activeDeptFilter('maritalStatus', (emps, ctx) => (
+          deptFilter={workforceDeptFilter('maritalStatus', (emps, ctx) => (
             <EmployeesPieChartBody
               items={buildEmployeesHrDashboard(emps).parMaritalStatus}
               colors={MARITAL_COLORS}
@@ -411,7 +532,7 @@ export default function EmployeesHrDashboardView({ employees, exits = [] }: Prop
           title="Par genre"
           items={stats.parGenre}
           colors={['#06b6d4', '#f472b6']}
-          deptFilter={activeDeptFilter('genre', (emps, ctx) => (
+          deptFilter={workforceDeptFilter('genre', (emps, ctx) => (
             <EmployeesPieChartBody
               items={buildEmployeesHrDashboard(emps).parGenre}
               colors={['#06b6d4', '#f472b6']}
@@ -466,7 +587,7 @@ export default function EmployeesHrDashboardView({ employees, exits = [] }: Prop
           barClassName="employees-bar-fill-grade"
           fitAll
           compact
-          deptFilter={activeDeptFilter('grade', (emps, ctx) => (
+          deptFilter={workforceDeptFilter('grade', (emps, ctx) => (
             <DependantsBarChartBody
               items={toChartItems(buildEmployeesHrDashboard(emps).parGrade)}
               barClassName="employees-bar-fill-grade"
@@ -481,7 +602,7 @@ export default function EmployeesHrDashboardView({ employees, exits = [] }: Prop
           barClassName={AGE_BAR_CLASS}
           fitAll
           compact
-          deptFilter={activeDeptFilter('ageBand', (emps, ctx) => (
+          deptFilter={workforceDeptFilter('ageBand', (emps, ctx) => (
             <DependantsBarChartBody
               items={toChartItems(buildEmployeesHrDashboard(emps).parTrancheAge)}
               barClassName={AGE_BAR_CLASS}
@@ -496,7 +617,7 @@ export default function EmployeesHrDashboardView({ employees, exits = [] }: Prop
           barClassName="employees-bar-fill-dept"
           fitAll
           compact
-          deptFilter={activeDeptFilter('departement', (emps, ctx) => (
+          deptFilter={workforceDeptFilter('departement', (emps, ctx) => (
             <DependantsBarChartBody
               items={toChartItems(buildEmployeesHrDashboard(emps).parDepartement)}
               barClassName="employees-bar-fill-dept"
@@ -508,7 +629,7 @@ export default function EmployeesHrDashboardView({ employees, exits = [] }: Prop
         <EmployeesPieChart
           title="Par nationalité"
           items={stats.parNationalite}
-          deptFilter={activeDeptFilter('nationalite', (emps, ctx) => (
+          deptFilter={workforceDeptFilter('nationalite', (emps, ctx) => (
             <EmployeesPieChartBody
               items={buildEmployeesHrDashboard(emps).parNationalite}
               onItemClick={ctx.onSegmentClick}

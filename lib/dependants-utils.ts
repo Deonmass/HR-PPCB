@@ -18,6 +18,19 @@ export function isEmployeeStatut(statut: string): boolean {
   return /employ/i.test(statut);
 }
 
+/**
+ * KPI / dashboard : un Conjoint employé compte comme employé
+ * (tout en restant rattaché au bloc familial du mari).
+ */
+export function countsAsEmployeeKpi(statut: string): boolean {
+  return isEmployeeStatut(statut) || isConjointEmployeStatut(statut);
+}
+
+/** KPI / dashboard : conjoints non employés uniquement. */
+export function countsAsSpouseKpi(statut: string): boolean {
+  return isSpouseStatut(statut) && !isConjointEmployeStatut(statut);
+}
+
 export function isSpouseStatut(statut: string): boolean {
   return /conjoint/i.test(statut);
 }
@@ -272,13 +285,13 @@ export function resolveDependantsDrilldown(
       if (label === 'employes' || label === 'employés') {
         return {
           title: 'Employés',
-          items: scoped.filter((item) => isEmployeeStatut(item.statut)),
+          items: scoped.filter((item) => countsAsEmployeeKpi(item.statut)),
         };
       }
       if (label === 'conjoints') {
         return {
           title: 'Conjoints',
-          items: scoped.filter((item) => isSpouseStatut(item.statut)),
+          items: scoped.filter((item) => countsAsSpouseKpi(item.statut)),
         };
       }
       if (label === 'enfants') {
@@ -302,7 +315,9 @@ export function resolveDependantsDrilldown(
       if (label.includes('employes avec matricule') || label.includes('employés avec matricule')) {
         return {
           title: 'Employés avec matricule',
-          items: scoped.filter((item) => isEmployeeStatut(item.statut) && Boolean(item.matricule.trim())),
+          items: scoped.filter(
+            (item) => countsAsEmployeeKpi(item.statut) && Boolean(displayMatricule(item).trim()),
+          ),
         };
       }
       if (label.includes('employes avec famille') || label.includes('employés avec famille')) {
@@ -336,13 +351,13 @@ export function resolveDependantsDrilldown(
       if (label.includes('employ')) {
         return {
           title: 'Par statut — Employé(e)',
-          items: scoped.filter((item) => isEmployeeStatut(item.statut)),
+          items: scoped.filter((item) => countsAsEmployeeKpi(item.statut)),
         };
       }
       if (label.includes('conjoint')) {
         return {
           title: 'Par statut — Conjoint(e)',
-          items: scoped.filter((item) => isSpouseStatut(item.statut)),
+          items: scoped.filter((item) => countsAsSpouseKpi(item.statut)),
         };
       }
       return null;
@@ -376,8 +391,8 @@ export function resolveDependantsDrilldown(
           : query.role === 'conjoint' ? 'Conjoints'
             : 'Enfants';
       const items = atSite.filter((item) => {
-        if (query.role === 'employe') return isEmployeeStatut(item.statut);
-        if (query.role === 'conjoint') return isSpouseStatut(item.statut);
+        if (query.role === 'employe') return countsAsEmployeeKpi(item.statut);
+        if (query.role === 'conjoint') return countsAsSpouseKpi(item.statut);
         return isChildStatut(item.statut);
       });
       return {
@@ -473,11 +488,11 @@ export function buildDashboardFromDependants(dependants: Dependant[]): Dependant
 
     bumpLocalisationAge(item.localisation, item.age);
 
-    if (isEmployeeStatut(item.statut)) {
+    if (countsAsEmployeeKpi(item.statut)) {
       employes += 1;
-      if (item.matricule.trim()) employesAvecMatricule += 1;
+      if (displayMatricule(item).trim()) employesAvecMatricule += 1;
       bumpLocalisation(item.localisation, 'employe');
-    } else if (isSpouseStatut(item.statut)) {
+    } else if (countsAsSpouseKpi(item.statut)) {
       conjoints += 1;
       bumpLocalisation(item.localisation, 'conjoint');
     } else if (isChildStatut(item.statut)) {

@@ -134,6 +134,25 @@ function normalizeMaritalStatus(raw: string): string {
 
 const LATEST_HIRES_LIMIT = 12;
 
+/** Effectif dashboard = actifs + sorties (dédupliqué par matricule). */
+export function mergeEmployeesWithExits(
+  employees: Employee[],
+  exits: Employee[] = [],
+): Employee[] {
+  const byMatricule = new Map<string, Employee>();
+  for (const e of Array.isArray(employees) ? employees : []) {
+    const key = (e.matricule || '').trim();
+    if (key) byMatricule.set(key, e);
+    else byMatricule.set(`nom:${e.nom}`, e);
+  }
+  for (const e of Array.isArray(exits) ? exits : []) {
+    const key = (e.matricule || '').trim();
+    const mapKey = key || `nom:${e.nom}`;
+    if (!byMatricule.has(mapKey)) byMatricule.set(mapKey, e);
+  }
+  return [...byMatricule.values()];
+}
+
 function buildDerniersArrives(employees: Employee[]): EmployeesLatestHireRow[] {
   return [...employees]
     .filter((e) => displayDateSortKey(e.appointmentDate) > 0)
@@ -217,8 +236,10 @@ export function buildEmployeesHrDashboard(
   employees: Employee[],
   exits: Employee[] = [],
 ): EmployeesHrDashboardStats {
-  const list = Array.isArray(employees) ? employees : [];
+  const active = Array.isArray(employees) ? employees : [];
   const exitList = Array.isArray(exits) ? exits : [];
+  // Genre / company / départements : actifs + Exit (présence filtrée année/mois).
+  const list = mergeEmployeesWithExits(active, exitList);
   let hommes = 0;
   let femmes = 0;
   let maries = 0;
@@ -256,9 +277,9 @@ export function buildEmployeesHrDashboard(
     ).length,
   }));
 
-  const cddList = list.filter((e) => isCddEmployee(e));
-  const essaiList = list.filter((e) => isInActiveTrialPeriod(e));
-  const alertesList = list.filter((e) => isTrialEvalAlert(e));
+  const cddList = active.filter((e) => isCddEmployee(e));
+  const essaiList = active.filter((e) => isInActiveTrialPeriod(e));
+  const alertesList = active.filter((e) => isTrialEvalAlert(e));
 
   return {
     total: list.length,
@@ -287,7 +308,7 @@ export function buildEmployeesHrDashboard(
     parDepartement: countBy(list, (e) => e.departement || '', { emptyLabel: '—' }),
     parTrancheAge,
     parNationalite: countBy(list, (e) => normalizeLabelCase(e.nationality || ''), { emptyLabel: '—' }),
-    derniersArrives: buildDerniersArrives(list),
+    derniersArrives: buildDerniersArrives(active),
     totalExits: exitList.length,
     exitsParRaison,
     exitsParMois: buildExitsParMois(exitList),
@@ -309,23 +330,24 @@ export function employeesForHrKpi(
   exits: Employee[],
   key: EmployeesHrKpiKey,
 ): Employee[] {
-  const list = Array.isArray(employees) ? employees : [];
+  const active = Array.isArray(employees) ? employees : [];
   const exitList = Array.isArray(exits) ? exits : [];
+  const workforce = mergeEmployeesWithExits(active, exitList);
   switch (key) {
     case 'total':
-      return list;
+      return workforce;
     case 'hommes':
-      return list.filter((e) => isMale(e.gender));
+      return workforce.filter((e) => isMale(e.gender));
     case 'femmes':
-      return list.filter((e) => isFemale(e.gender));
+      return workforce.filter((e) => isFemale(e.gender));
     case 'totalExits':
       return exitList;
     case 'totalCdd':
-      return list.filter((e) => isCddEmployee(e));
+      return active.filter((e) => isCddEmployee(e));
     case 'totalEssai':
-      return list.filter((e) => isInActiveTrialPeriod(e));
+      return active.filter((e) => isInActiveTrialPeriod(e));
     case 'alertesEssai':
-      return list.filter((e) => isTrialEvalAlert(e));
+      return active.filter((e) => isTrialEvalAlert(e));
     default:
       return [];
   }

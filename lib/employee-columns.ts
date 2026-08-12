@@ -186,6 +186,29 @@ export function wasPresentInYear(
   return exitYear >= year;
 }
 
+/**
+ * Présent durant le mois civil `month` (1–12) de l'année `year` :
+ * embauché au plus tard la fin du mois, et (actif OU sorti à partir du début du mois).
+ */
+export function wasPresentInYearMonth(
+  employee: { appointmentDate?: string; dateFinContrat?: string },
+  year: number,
+  month: number,
+  opts?: { isExit?: boolean },
+): boolean {
+  if (!Number.isInteger(month) || month < 1 || month > 12) return false;
+  const hire = parseDisplayDateParts(employee.appointmentDate ?? '');
+  if (!hire) return false;
+  const hireKey = hire.y * 100 + hire.m;
+  const monthKey = year * 100 + month;
+  if (hireKey > monthKey) return false;
+  if (!opts?.isExit) return true;
+  const exit = parseDisplayDateParts(employee.dateFinContrat ?? '');
+  if (!exit) return true;
+  const exitKey = exit.y * 100 + exit.m;
+  return exitKey >= monthKey;
+}
+
 export function parseOptionalNumber(value: unknown): number | null {
   if (value === '' || value === null || value === undefined) return null;
   if (typeof value === 'number' && Number.isFinite(value)) return value;

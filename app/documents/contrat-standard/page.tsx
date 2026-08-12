@@ -273,7 +273,7 @@ export default function ContratStandardPage() {
 
   return (
     <>
-      <div className="page-header">
+      <div className="page-header contrat-standard-header">
         <div>
           <h2>Contrat standard</h2>
           <p>

@@ -45,6 +45,7 @@ export const ROUTE_MENU_MAP: RouteMenuEntry[] = [
   { prefix: '/employes/offres', menuId: 'employes.offres' },
   { prefix: '/employes/mouvements', menuId: 'employes.mouvements' },
   { prefix: '/employes/postes', menuId: 'employes.postes' },
+  { prefix: '/employes/contractants', menuId: 'employes.contractants' },
   { prefix: '/parametres/permissions', menuId: 'settings.permissions' },
   { prefix: '/parametres/utilisateurs', menuId: 'settings.utilisateurs' },
   { prefix: '/parametres/centres-de-cout', menuId: 'settings.centres' },
@@ -121,6 +122,12 @@ export function routeViewMenuIds(pathname: string): string[] {
     || normalized.startsWith('/employes/postes/')
   ) {
     return ['employes.postes', 'employes.liste'];
+  }
+  if (
+    normalized === '/employes/contractants'
+    || normalized.startsWith('/employes/contractants/')
+  ) {
+    return ['employes.contractants', 'employes.liste'];
   }
   if (normalized === '/documents') {
     return [...DOCUMENTS_HUB_MENU_IDS];

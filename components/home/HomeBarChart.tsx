@@ -11,6 +11,8 @@ interface Props {
   secondaryLabel?: string;
   formatValue?: (n: number) => string;
   maxBars?: number;
+  /** Clic sur une barre → détail. */
+  onItemClick?: (label: string) => void;
 }
 
 function defaultFormat(n: number): string {
@@ -25,12 +27,14 @@ export default function HomeBarChart({
   secondaryLabel,
   formatValue = defaultFormat,
   maxBars = 6,
+  onItemClick,
 }: Props) {
   const [hover, setHover] = useState<string | null>(null);
   const rows = useMemo(() => items.slice(0, maxBars), [items, maxBars]);
   const max = Math.max(...rows.map((r) => Math.max(r.value, r.secondary ?? 0)), 1);
   const dual = Boolean(secondaryLabel && rows.some((r) => r.secondary != null));
   const overflow = items.length > maxBars ? items.length - maxBars : 0;
+  const canDrill = Boolean(onItemClick);
 
   if (!rows.length) {
     return (
@@ -65,7 +69,7 @@ export default function HomeBarChart({
           )}
         </div>
       </header>
-      <div className={`home-bar-chart${dual ? ' is-dual' : ''}`}>
+      <div className={`home-bar-chart${dual ? ' is-dual' : ''}${hover ? ' has-hover' : ''}`}>
         {rows.map((item) => {
           const pct = Math.max(3, (item.value / max) * 100);
           const pct2 =
@@ -77,9 +81,23 @@ export default function HomeBarChart({
           return (
             <div
               key={item.label}
-              className={`home-bar-row${active ? ' is-active' : ''}${dual ? ' is-dual' : ''}`}
+              role={canDrill ? 'button' : undefined}
+              tabIndex={canDrill ? 0 : undefined}
+              className={`home-bar-row${active ? ' is-active' : ''}${dual ? ' is-dual' : ''}${canDrill ? ' is-clickable' : ''}`}
               onMouseEnter={() => setHover(item.label)}
               onMouseLeave={() => setHover(null)}
+              onClick={canDrill ? () => onItemClick?.(item.label) : undefined}
+              onKeyDown={
+                canDrill
+                  ? (e) => {
+                      if (e.key === 'Enter' || e.key === ' ') {
+                        e.preventDefault();
+                        onItemClick?.(item.label);
+                      }
+                    }
+                  : undefined
+              }
+              title={canDrill ? `Voir le détail — ${item.label}` : undefined}
             >
               <span className="home-bar-label" title={item.label}>
                 {item.label}

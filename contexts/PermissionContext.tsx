@@ -78,6 +78,7 @@ export function PermissionProvider({ children }: { children: ReactNode }) {
       '/accueil',
       '/employes',
       '/employes/dependants',
+      '/employes/contractants',
       '/check-documents',
       '/heures-supplementaires',
       '/project/dashboard',
