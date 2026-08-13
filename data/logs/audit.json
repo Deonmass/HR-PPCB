@@ -1,6 +1,20 @@
 {
   "entries": [
     {
+      "id": "log-000213",
+      "at": "2026-08-13T17:56:09.521Z",
+      "userId": "admin",
+      "userName": "Administrateur",
+      "module": "employees",
+      "moduleLabel": "Employés",
+      "action": "export",
+      "actionLabel": "Export",
+      "summary": "Export employés (EMPLOYEES_HR_2026-08-13.xlsx)",
+      "details": "Fichier Excel exporté : EMPLOYEES_HR_2026-08-13.xlsx",
+      "undoable": false,
+      "undone": false
+    },
+    {
       "id": "log-000212",
       "at": "2026-08-13T15:39:56.606Z",
       "userId": "Serge.Muakasa",
@@ -23273,5 +23287,5 @@
       }
     }
   ],
-  "nextSeq": 213
+  "nextSeq": 214
 }
