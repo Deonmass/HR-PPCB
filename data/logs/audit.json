@@ -1,6 +1,23 @@
 {
   "entries": [
     {
+      "id": "log-000208",
+      "at": "2026-08-13T11:19:48.505Z",
+      "userId": "admin",
+      "userName": "Administrateur",
+      "module": "contractants",
+      "moduleLabel": "contractants",
+      "action": "delete",
+      "actionLabel": "Suppression",
+      "entityType": "contractant",
+      "entityId": "5",
+      "summary": "Suppression contractant 5",
+      "details": "Suppression contractant 5",
+      "after": true,
+      "undoable": false,
+      "undone": false
+    },
+    {
       "id": "log-000207",
       "at": "2026-08-13T11:07:29.542Z",
       "userId": "admin",
@@ -22918,5 +22935,5 @@
       }
     }
   ],
-  "nextSeq": 208
+  "nextSeq": 209
 }
