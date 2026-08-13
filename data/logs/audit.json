@@ -2,15 +2,15 @@
   "entries": [
     {
       "id": "log-000205",
-      "at": "2026-08-13T11:07:19.461Z",
+      "at": "2026-08-13T11:07:22.004Z",
       "userId": "admin",
       "userName": "Administrateur",
       "module": "travel.attestation",
       "moduleLabel": "Attestation de service",
       "action": "export",
       "actionLabel": "Export",
-      "summary": "Aperçu PDF attestation je",
-      "details": "Aperçu PDF attestation je",
+      "summary": "Aperçu PDF attestation ILONDO LIKOMBA Jack Lethycien",
+      "details": "Aperçu PDF attestation ILONDO LIKOMBA Jack Lethycien",
       "undoable": false,
       "undone": false
     },
