@@ -1,6 +1,27 @@
 {
   "entries": [
     {
+      "id": "log-000210",
+      "at": "2026-08-13T11:21:44.788Z",
+      "userId": "admin",
+      "userName": "Administrateur",
+      "module": "contractants",
+      "moduleLabel": "contractants",
+      "action": "import",
+      "actionLabel": "Import",
+      "summary": "Import employés « EKMM » — 114 ligne(s)",
+      "details": "Feuille « Feuil1 », 2 ignorée(s)",
+      "undoable": false,
+      "undone": false,
+      "meta": {
+        "contractantId": "6",
+        "imported": 114,
+        "skipped": 2,
+        "sheetName": "Feuil1",
+        "fileName": "LISTE DES AGENTS EKMM-PPCB.xlsx"
+      }
+    },
+    {
       "id": "log-000209",
       "at": "2026-08-13T11:21:25.081Z",
       "userId": "admin",
@@ -22959,5 +22980,5 @@
       }
     }
   ],
-  "nextSeq": 210
+  "nextSeq": 211
 }
