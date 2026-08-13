@@ -1,6 +1,30 @@
 {
   "entries": [
     {
+      "id": "log-000209",
+      "at": "2026-08-13T11:21:25.081Z",
+      "userId": "admin",
+      "userName": "Administrateur",
+      "module": "contractants",
+      "moduleLabel": "contractants",
+      "action": "create",
+      "actionLabel": "Création",
+      "entityType": "contractant",
+      "entityId": "EKMM",
+      "summary": "Contractant créé — EKMM",
+      "details": "Contractant créé — EKMM",
+      "after": {
+        "id": "6",
+        "denomination": "EKMM",
+        "typeService": "Garage",
+        "employees": [],
+        "createdAt": "2026-08-13T11:21:23.659Z",
+        "updatedAt": "2026-08-13T11:21:23.659Z"
+      },
+      "undoable": false,
+      "undone": false
+    },
+    {
       "id": "log-000208",
       "at": "2026-08-13T11:19:48.505Z",
       "userId": "admin",
@@ -22935,5 +22959,5 @@
       }
     }
   ],
-  "nextSeq": 209
+  "nextSeq": 210
 }
