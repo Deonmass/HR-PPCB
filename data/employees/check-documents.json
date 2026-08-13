@@ -4866,11 +4866,11 @@
         "Accuse reception code conduite": "NA",
         "IT arrival form": "Y",
         "SAP input form": "NA",
-        "Contrat travail Onem": "NA",
+        "Contrat travail Onem": "Y",
         "Contrat Bail village PPC": "NA"
       },
       "createdAt": "2026-07-28T09:40:37.715Z",
-      "updatedAt": "2026-08-13T08:11:20.332Z"
+      "updatedAt": "2026-08-13T08:26:48.703Z"
     },
     {
       "id": "306a4bec-1ab5-43df-b0cd-7d1644e0b2e4",
