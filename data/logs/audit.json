@@ -1,6 +1,27 @@
 {
   "entries": [
     {
+      "id": "log-000199",
+      "at": "2026-08-13T06:54:37.481Z",
+      "userId": "admin",
+      "userName": "Administrateur",
+      "module": "contractants",
+      "moduleLabel": "contractants",
+      "action": "import",
+      "actionLabel": "Import",
+      "summary": "Import employés « EKMM » — 113 ligne(s)",
+      "details": "Feuille « HR », 0 ignorée(s)",
+      "undoable": false,
+      "undone": false,
+      "meta": {
+        "contractantId": "5",
+        "imported": 113,
+        "skipped": 0,
+        "sheetName": "HR",
+        "fileName": "LISTE DES AGENTS EKMM (1).xlsx"
+      }
+    },
+    {
       "id": "log-000198",
       "at": "2026-08-13T06:54:17.641Z",
       "userId": "admin",
@@ -22500,5 +22521,5 @@
       }
     }
   ],
-  "nextSeq": 199
+  "nextSeq": 200
 }
