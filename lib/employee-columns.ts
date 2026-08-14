@@ -216,7 +216,7 @@ export function parseOptionalNumber(value: unknown): number | null {
   return Number.isFinite(n) ? n : null;
 }
 
-function parseDisplayDateParts(value: string): { y: number; m: number; d: number } | null {
+export function parseDisplayDateParts(value: string): { y: number; m: number; d: number } | null {
   const trimmed = value.trim();
   if (!trimmed) return null;
   const fr = trimmed.match(/^(\d{1,2})[\/\-.](\d{1,2})[\/\-.](\d{4})$/);

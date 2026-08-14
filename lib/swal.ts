@@ -118,6 +118,16 @@ export function showSuccess(message: string, title = 'Succès'): Promise<void> {
   }).then(() => undefined);
 }
 
+export function showSuccessHtml(html: string, title = 'Succès'): Promise<void> {
+  return Swal.fire({
+    ...baseConfig(),
+    icon: 'success',
+    title,
+    html,
+    confirmButtonText: 'OK',
+  }).then(() => undefined);
+}
+
 export function showWarning(message: string, title = 'Attention'): Promise<void> {
   return Swal.fire({
     ...baseConfig(),

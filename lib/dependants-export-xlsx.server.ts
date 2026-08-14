@@ -361,59 +361,162 @@ function fillSiteSummaryTableFormulas(
   const ageHeaderRow = ageTitleRow + 1;
   const ageStart = ageHeaderRow + 1;
   const ageTotalRow = ageStart + siteList.length;
+  const clearUntil = Math.max(ageTotalRow + 4, 80);
 
-  // Clear previous block (legacy 3-site layout + room for growth).
-  for (let row = locTitleRow; row <= Math.max(ageTotalRow + 2, 50); row += 1) {
-    for (let col = 1; col <= 5; col += 1) {
-      resumeSheet.cell(row, col).value(undefined);
-      try {
-        (resumeSheet.cell(row, col) as unknown as { formula(v: undefined): void }).formula(undefined);
-      } catch {
-        // ignore formula clear failures
-      }
-    }
+  clearResumeSummaryBlock(resumeSheet, locTitleRow, clearUntil);
+
+  // Largeurs pour éviter les « ###### » sur la colonne Total.
+  try {
+    resumeSheet.column('A').width(16);
+    resumeSheet.column('B').width(10);
+    resumeSheet.column('C').width(10);
+    resumeSheet.column('D').width(10);
+    resumeSheet.column('E').width(12);
+  } catch {
+    // ignore width errors
   }
 
-  resumeSheet.cell(locTitleRow, 1).value('Localisation × statut');
-  resumeSheet.cell(locHeaderRow, 1).value('Site');
-  resumeSheet.cell(locHeaderRow, 2).value('Emp.');
-  resumeSheet.cell(locHeaderRow, 3).value('Conj.');
-  resumeSheet.cell(locHeaderRow, 4).value('Enf.');
-  resumeSheet.cell(locHeaderRow, 5).value('Total');
+  const titleStyle = {
+    bold: true,
+    fontSize: 12,
+    fontColor: '1f2937',
+    fill: 'FFFFFF',
+    horizontalAlignment: 'left',
+  };
+  const headerStyle = {
+    bold: true,
+    fontSize: 10,
+    fontColor: 'FFFFFF',
+    fill: '1f2937',
+    horizontalAlignment: 'center',
+    verticalAlignment: 'center',
+  };
+  const siteStyle = {
+    bold: true,
+    fontSize: 10,
+    fontColor: '111827',
+    fill: 'FFFFFF',
+    horizontalAlignment: 'left',
+    verticalAlignment: 'center',
+  };
+  const valueStyle = {
+    bold: false,
+    fontSize: 10,
+    fontColor: '111827',
+    fill: 'FFFFFF',
+    horizontalAlignment: 'center',
+    verticalAlignment: 'center',
+    numberFormat: '0',
+  };
+  const totalStyle = {
+    bold: true,
+    fontSize: 10,
+    fontColor: 'FFFFFF',
+    fill: '374151',
+    horizontalAlignment: 'center',
+    verticalAlignment: 'center',
+    numberFormat: '0',
+  };
+  const totalLabelStyle = {
+    ...totalStyle,
+    horizontalAlignment: 'left',
+  };
+
+  resumeSheet.cell(locTitleRow, 1).value('Localisation × statut').style(titleStyle);
+  resumeSheet.cell(locHeaderRow, 1).value('Site').style(headerStyle);
+  resumeSheet.cell(locHeaderRow, 2).value('Emp.').style(headerStyle);
+  resumeSheet.cell(locHeaderRow, 3).value('Conj.').style(headerStyle);
+  resumeSheet.cell(locHeaderRow, 4).value('Enf.').style(headerStyle);
+  resumeSheet.cell(locHeaderRow, 5).value('Total').style(headerStyle);
 
   siteList.forEach((site, index) => {
     const row = locStart + index;
-    resumeSheet.cell(row, 1).value(site);
-    resumeSheet.cell(row, 2).formula(`COUNTIFS(${colG},"${site}",${colD},"*Employ*")`);
-    resumeSheet.cell(row, 3).formula(`COUNTIFS(${colG},"${site}",${colD},"*Conjoint*")`);
-    resumeSheet.cell(row, 4).formula(`COUNTIFS(${colG},"${site}",${colD},"Enfant")`);
-    resumeSheet.cell(row, 5).formula(`SUM(B${row}:D${row})`);
+    const fill = index % 2 === 1 ? 'F3F4F6' : 'FFFFFF';
+    resumeSheet.cell(row, 1).value(site).style({ ...siteStyle, fill });
+    resumeSheet.cell(row, 2).formula(`COUNTIFS(${colG},"${site}",${colD},"*Employ*")`).style({ ...valueStyle, fill });
+    resumeSheet.cell(row, 3).formula(`COUNTIFS(${colG},"${site}",${colD},"*Conjoint*")`).style({ ...valueStyle, fill });
+    resumeSheet.cell(row, 4).formula(`COUNTIFS(${colG},"${site}",${colD},"Enfant")`).style({ ...valueStyle, fill });
+    resumeSheet.cell(row, 5).formula(`SUM(B${row}:D${row})`).style({ ...valueStyle, fill });
   });
 
-  resumeSheet.cell(locTotalRow, 1).value('TOTAL');
-  resumeSheet.cell(locTotalRow, 2).formula(`SUM(B${locStart}:B${locTotalRow - 1})`);
-  resumeSheet.cell(locTotalRow, 3).formula(`SUM(C${locStart}:C${locTotalRow - 1})`);
-  resumeSheet.cell(locTotalRow, 4).formula(`SUM(D${locStart}:D${locTotalRow - 1})`);
-  resumeSheet.cell(locTotalRow, 5).formula(`SUM(E${locStart}:E${locTotalRow - 1})`);
+  resumeSheet.cell(locTotalRow, 1).value('TOTAL').style(totalLabelStyle);
+  resumeSheet.cell(locTotalRow, 2).formula(`SUM(B${locStart}:B${locTotalRow - 1})`).style(totalStyle);
+  resumeSheet.cell(locTotalRow, 3).formula(`SUM(C${locStart}:C${locTotalRow - 1})`).style(totalStyle);
+  resumeSheet.cell(locTotalRow, 4).formula(`SUM(D${locStart}:D${locTotalRow - 1})`).style(totalStyle);
+  resumeSheet.cell(locTotalRow, 5).formula(`SUM(E${locStart}:E${locTotalRow - 1})`).style(totalStyle);
 
-  resumeSheet.cell(ageTitleRow, 1).value('Mineurs et majeurs par site');
-  resumeSheet.cell(ageHeaderRow, 1).value('Site');
-  resumeSheet.cell(ageHeaderRow, 2).value('Min');
-  resumeSheet.cell(ageHeaderRow, 3).value('Maj');
-  resumeSheet.cell(ageHeaderRow, 4).value('Total');
+  resumeSheet.cell(ageTitleRow, 1).value('Mineurs et majeurs par site').style(titleStyle);
+  resumeSheet.cell(ageHeaderRow, 1).value('Site').style(headerStyle);
+  resumeSheet.cell(ageHeaderRow, 2).value('Min').style(headerStyle);
+  resumeSheet.cell(ageHeaderRow, 3).value('Maj').style(headerStyle);
+  resumeSheet.cell(ageHeaderRow, 4).value('Total').style(headerStyle);
 
   siteList.forEach((site, index) => {
     const row = ageStart + index;
-    resumeSheet.cell(row, 1).value(site);
-    resumeSheet.cell(row, 2).formula(`COUNTIFS(${colG},"${site}",${colI},"<=17")`);
-    resumeSheet.cell(row, 3).formula(`COUNTIF(${colG},"${site}")-B${row}`);
-    resumeSheet.cell(row, 4).formula(`SUM(B${row}:C${row})`);
+    const fill = index % 2 === 1 ? 'F3F4F6' : 'FFFFFF';
+    resumeSheet.cell(row, 1).value(site).style({ ...siteStyle, fill });
+    resumeSheet.cell(row, 2).formula(`COUNTIFS(${colG},"${site}",${colI},"<=17")`).style({ ...valueStyle, fill });
+    resumeSheet.cell(row, 3).formula(`COUNTIF(${colG},"${site}")-B${row}`).style({ ...valueStyle, fill });
+    resumeSheet.cell(row, 4).formula(`SUM(B${row}:C${row})`).style({ ...valueStyle, fill });
   });
 
-  resumeSheet.cell(ageTotalRow, 1).value('TOTAL');
-  resumeSheet.cell(ageTotalRow, 2).formula(`SUM(B${ageStart}:B${ageTotalRow - 1})`);
-  resumeSheet.cell(ageTotalRow, 3).formula(`SUM(C${ageStart}:C${ageTotalRow - 1})`);
-  resumeSheet.cell(ageTotalRow, 4).formula(`SUM(D${ageStart}:D${ageTotalRow - 1})`);
+  resumeSheet.cell(ageTotalRow, 1).value('TOTAL').style(totalLabelStyle);
+  resumeSheet.cell(ageTotalRow, 2).formula(`SUM(B${ageStart}:B${ageTotalRow - 1})`).style(totalStyle);
+  resumeSheet.cell(ageTotalRow, 3).formula(`SUM(C${ageStart}:C${ageTotalRow - 1})`).style(totalStyle);
+  resumeSheet.cell(ageTotalRow, 4).formula(`SUM(D${ageStart}:D${ageTotalRow - 1})`).style(totalStyle);
+}
+
+/** Efface valeurs, formules, fusions et styles résiduels du bloc tableaux sites. */
+function clearResumeSummaryBlock(resumeSheet: PopulateSheet, startRow: number, endRow: number): void {
+  // Défusionner toute zone qui chevauche le bloc (évite sites « décalés » / totaux manquants).
+  try {
+    const merges = (resumeSheet as unknown as { _mergeCells?: Record<string, unknown> })._mergeCells;
+    if (merges) {
+      for (const key of Object.keys(merges)) {
+        const match = /^([A-Z]+)(\d+):([A-Z]+)(\d+)$/i.exec(key);
+        if (!match) continue;
+        const r1 = Number(match[2]);
+        const r2 = Number(match[4]);
+        if (r2 < startRow || r1 > endRow) continue;
+        try {
+          resumeSheet.range(key).merged(false);
+        } catch {
+          // ignore
+        }
+      }
+    }
+  } catch {
+    // ignore merge introspection
+  }
+
+  const blankStyle = {
+    bold: false,
+    italic: false,
+    fontColor: '000000',
+    fontSize: 10,
+    fill: 'FFFFFF',
+    horizontalAlignment: 'general',
+    verticalAlignment: 'center',
+    wrapText: false,
+    numberFormat: 'General',
+  };
+
+  for (let row = startRow; row <= endRow; row += 1) {
+    for (let col = 1; col <= 5; col += 1) {
+      const cell = resumeSheet.cell(row, col);
+      cell.value(undefined);
+      try {
+        (cell as unknown as { formula(v: undefined): void }).formula(undefined);
+      } catch {
+        // ignore
+      }
+      try {
+        cell.style(blankStyle);
+      } catch {
+        // ignore style clear failures
+      }
+    }
+  }
 }
 
 function collectLocalisationSitesFromSheet(sheet: PopulateSheet, lastDataRow: number): string[] {

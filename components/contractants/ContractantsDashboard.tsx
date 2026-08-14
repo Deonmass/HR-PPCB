@@ -163,7 +163,7 @@ function toEmployeeRows(list: FlatEmployee[]): DashboardListRow[] {
     id: `${e.contractantId}-${e.id}`,
     cells: {
       nom: e.nom,
-      sexe: e.sexe,
+      sexe: e.sexe || '—',
       lieu: e.lieuAffectation || '—',
       fonction: e.fonction || '—',
       departement: e.departement || '—',
@@ -178,6 +178,7 @@ function toEmployeeRows(list: FlatEmployee[]): DashboardListRow[] {
 function sexeLabelToCode(label: string): string {
   if (label === 'Hommes' || label === 'M') return 'M';
   if (label === 'Femmes' || label === 'F') return 'F';
+  if (label === 'Non renseigné' || label === '—') return '';
   return label;
 }
 
@@ -319,9 +320,21 @@ export default function ContractantsDashboard({ contractants, employees }: Props
   const sexeSlices = useMemo(
     () =>
       stats.parSexe.map((r) => ({
-        label: r.label === 'M' ? 'Hommes' : r.label === 'F' ? 'Femmes' : r.label,
+        label:
+          r.label === 'M'
+            ? 'Hommes'
+            : r.label === 'F'
+              ? 'Femmes'
+              : r.label === 'Non renseigné'
+                ? 'Non renseigné'
+                : r.label,
         value: r.count,
-        color: r.label === 'M' ? SEX_COLORS.M : r.label === 'F' ? SEX_COLORS.F : '#94a3b8',
+        color:
+          r.label === 'M'
+            ? SEX_COLORS.M
+            : r.label === 'F'
+              ? SEX_COLORS.F
+              : '#94a3b8',
       })),
     [stats.parSexe],
   );
@@ -388,7 +401,7 @@ export default function ContractantsDashboard({ contractants, employees }: Props
         list = list.filter((e) => e.contractantNom === drill.value);
         break;
       case 'sexe':
-        list = list.filter((e) => e.sexe === sexeLabelToCode(drill.value || ''));
+        list = list.filter((e) => (e.sexe || '') === sexeLabelToCode(drill.value || ''));
         break;
       case 'statut':
         list = list.filter((e) => e.statut === drill.value);

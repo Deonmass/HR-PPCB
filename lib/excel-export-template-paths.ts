@@ -23,6 +23,7 @@ export const EXPORT_TEMPLATE_SUBDIRS = {
   overtimes: 'overtimes',
   travel: 'travel',
   attestations: 'attestations',
+  audit: 'audit',
 } as const;
 
 export const EXPORT_TEMPLATE_FILES = {
@@ -33,6 +34,7 @@ export const EXPORT_TEMPLATE_FILES = {
   projectsTemplate: 'PROJECTS_TEMPLATE.xlsx',
   guestHouse: 'Guesthouse_template.xlsx',
   serviceAttestation: 'Attestation de service .docx',
+  leaveAttestation: 'attestation-conge.docx',
   facturesSuivi: 'FACTURES_SUIVI_EXPORT_TEMPLATE.xlsx',
   overtimesTimesheet: 'Timesheet template.xlsx',
   overtimesCompilation: 'OVERTIMES.xlsx',
@@ -43,6 +45,7 @@ export const EXPORT_TEMPLATE_FILES = {
   travelHotelBooking: 'Hotel booking form HR DOC 07 version 02.docx',
   travelMissionOrder: 'Ordre de mission.docx',
   travelFlightBooking: 'FLIGHT BOOKING FORM DOC-PPCB-HR-06 version 03.doc',
+  auditHr: 'Audit_HR_template.xlsm',
 } as const;
 
 const FILE_TO_SUBDIR: Record<string, string> = {
@@ -53,6 +56,7 @@ const FILE_TO_SUBDIR: Record<string, string> = {
   [EXPORT_TEMPLATE_FILES.guestHouse]: EXPORT_TEMPLATE_SUBDIRS.guestHouse,
   [EXPORT_TEMPLATE_FILES.projectsTemplate]: EXPORT_TEMPLATE_SUBDIRS.projects,
   [EXPORT_TEMPLATE_FILES.serviceAttestation]: EXPORT_TEMPLATE_SUBDIRS.attestations,
+  [EXPORT_TEMPLATE_FILES.leaveAttestation]: EXPORT_TEMPLATE_SUBDIRS.attestations,
   [EXPORT_TEMPLATE_FILES.facturesSuivi]: EXPORT_TEMPLATE_SUBDIRS.factures,
   [EXPORT_TEMPLATE_FILES.overtimesTimesheet]: EXPORT_TEMPLATE_SUBDIRS.overtimes,
   [EXPORT_TEMPLATE_FILES.overtimesCompilation]: EXPORT_TEMPLATE_SUBDIRS.overtimes,
@@ -63,6 +67,7 @@ const FILE_TO_SUBDIR: Record<string, string> = {
   [EXPORT_TEMPLATE_FILES.travelHotelBooking]: EXPORT_TEMPLATE_SUBDIRS.travel,
   [EXPORT_TEMPLATE_FILES.travelMissionOrder]: EXPORT_TEMPLATE_SUBDIRS.travel,
   [EXPORT_TEMPLATE_FILES.travelFlightBooking]: EXPORT_TEMPLATE_SUBDIRS.travel,
+  [EXPORT_TEMPLATE_FILES.auditHr]: EXPORT_TEMPLATE_SUBDIRS.audit,
 };
 
 /** Resolve Excel/templates/<subdir>/<file> (env override first). */
@@ -116,6 +121,17 @@ export const GUEST_HOUSE_EXPORT_TEMPLATE_PATH = resolveExportTemplate(
 export const SERVICE_ATTESTATION_TEMPLATE_PATH = resolveExportTemplate(
   EXPORT_TEMPLATE_FILES.serviceAttestation,
   process.env.SERVICE_ATTESTATION_TEMPLATE_DOCX,
+);
+
+export const LEAVE_ATTESTATION_TEMPLATE_PATH = resolveExportTemplate(
+  EXPORT_TEMPLATE_FILES.leaveAttestation,
+  process.env.LEAVE_ATTESTATION_TEMPLATE_DOCX,
+);
+
+export const AUDIT_HR_EXPORT_TEMPLATE_PATH = resolveExportTemplate(
+  EXPORT_TEMPLATE_FILES.auditHr,
+  process.env.AUDIT_HR_EXPORT_TEMPLATE_XLSX,
+  EXPORT_TEMPLATE_SUBDIRS.audit,
 );
 
 export {

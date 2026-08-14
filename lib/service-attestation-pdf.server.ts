@@ -5,6 +5,7 @@ import os from 'os';
 import path from 'path';
 import { PDFDocument, StandardFonts, rgb } from 'pdf-lib';
 import { writeDocxFromTemplate } from './docx-template';
+import { PPC_LETTERHEAD_ADDRESS_LINES } from './ppc-letterhead-address';
 import {
   fillServiceAttestationXml,
   loadServiceAttestationHeaderImage,
@@ -72,9 +73,13 @@ async function buildServiceAttestationPdfWithPdfLib(
 
   const marginX = 64;
   const maxWidth = 595.28 - marginX * 2;
-  let y = 760;
+  let y = 800;
 
   const headerImage = await loadServiceAttestationHeaderImage();
+  const addressSize = 8;
+  const addressLineH = 10;
+  let logoBottomY = y;
+
   if (headerImage) {
     const embedded =
       headerImage.mime === 'image/png'
@@ -82,17 +87,33 @@ async function buildServiceAttestationPdfWithPdfLib(
         : await pdf.embedJpg(headerImage.bytes);
     const imgW = embedded.width;
     const imgH = embedded.height;
-    const targetW = maxWidth;
+    const targetW = Math.min(210, maxWidth * 0.42);
     const scale = targetW / imgW;
     const drawH = imgH * scale;
+    const logoY = y - drawH;
     page.drawImage(embedded, {
       x: marginX,
-      y: y - drawH,
+      y: logoY,
       width: targetW,
       height: drawH,
     });
-    y -= drawH + 28;
+    logoBottomY = logoY;
   }
+
+  let addressY = y - 2;
+  for (const line of PPC_LETTERHEAD_ADDRESS_LINES) {
+    const width = font.widthOfTextAtSize(line, addressSize);
+    page.drawText(line, {
+      x: 595.28 - marginX - width,
+      y: addressY - addressSize,
+      size: addressSize,
+      font,
+      color: rgb(0.12, 0.12, 0.12),
+    });
+    addressY -= addressLineH;
+  }
+
+  y = Math.min(logoBottomY, addressY) - 28;
 
   const paragraphs = buildServiceAttestationParagraphs(data);
 

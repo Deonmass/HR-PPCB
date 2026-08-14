@@ -39,15 +39,18 @@ function cell(row: unknown[], col: number): string {
 }
 
 function parseSexe(raw: string): ContractantEmployeeInput['sexe'] {
-  const v = raw.trim().toUpperCase();
+  const trimmed = raw.trim();
+  if (!trimmed) return '';
+  const v = trimmed.toUpperCase();
   if (isContractantSexe(v)) return v;
-  const n = raw
-    .trim()
+  const n = trimmed
     .toLowerCase()
     .normalize('NFD')
     .replace(/[\u0300-\u036f]/g, '');
-  if (/^f|feminin|female|woman/.test(n)) return 'F';
-  return 'M';
+  if (/^(f|feminin|female|woman|femme)\b/.test(n) || n === 'f') return 'F';
+  if (/^(m|masculin|male|homme|man)\b/.test(n) || n === 'm') return 'M';
+  // Valeur présente mais non reconnue → ne pas inventer
+  return '';
 }
 
 function parseEtatCivil(raw: string): ContractantEmployeeInput['etatCivil'] {

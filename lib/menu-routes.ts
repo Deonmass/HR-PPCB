@@ -16,16 +16,20 @@ export const DOCUMENTS_HUB_MENU_IDS = [
   'documents.rrf',
   'documents.newcomer',
   'documents.contrat-standard',
+  'documents.attestation-conge',
   'documents.convention-collective',
 ];
 
 export const ROUTE_MENU_MAP: RouteMenuEntry[] = [
+  { prefix: '/exco', menuId: 'exco.rapport' },
+  { prefix: '/audit', menuId: 'audit.points' },
   { prefix: '/documents/rrf', menuId: 'documents.rrf' },
   { prefix: '/documents/entetes', menuId: 'documents.entetes' },
   { prefix: '/documents/exit', menuId: 'documents.exit' },
   { prefix: '/documents/interim-appraisal', menuId: 'documents.appraisal' },
   { prefix: '/documents/newcomer', menuId: 'documents.newcomer' },
   { prefix: '/documents/contrat-standard', menuId: 'documents.contrat-standard' },
+  { prefix: '/documents/attestation-conge', menuId: 'documents.attestation-conge' },
   { prefix: '/documents/convention-collective', menuId: 'documents.convention-collective' },
   { prefix: '/documents', menuId: 'travel.historique' },
   { prefix: '/documents-voyage/attestation-services', menuId: 'travel.attestation' },
@@ -58,8 +62,8 @@ export const ROUTE_MENU_MAP: RouteMenuEntry[] = [
   { prefix: '/check-documents', menuId: 'employes.check-documents' },
   { prefix: '/village/guest-house', menuId: 'village.guest-house' },
   { prefix: '/village/maisons', menuId: 'village.maisons' },
-  { prefix: '/village/dashboard', menuId: 'village.maisons' },
-  { prefix: '/village/liste', menuId: 'village.maisons' },
+  { prefix: '/village/dashboard', menuId: 'village.dependants-dashboard' },
+  { prefix: '/village/liste', menuId: 'village.dependants-liste' },
   { prefix: '/charroi-automobile/vehicules', menuId: 'charroi.vehicules' },
   { prefix: '/charroi-automobile/achats', menuId: 'charroi.achats' },
   { prefix: '/charroi-automobile', menuId: 'charroi' },
@@ -89,12 +93,21 @@ export function routeViewMenuIds(pathname: string): string[] {
   if (
     normalized === '/village/maisons'
     || normalized.startsWith('/village/maisons/')
-    || normalized === '/village/dashboard'
+  ) {
+    // Maisons page hosts tabs; allow dashboard/liste grants to open the page.
+    return ['village.maisons', 'village.dependants-dashboard', 'village.dependants-liste'];
+  }
+  if (
+    normalized === '/village/dashboard'
     || normalized.startsWith('/village/dashboard/')
-    || normalized === '/village/liste'
+  ) {
+    return ['village.dependants-dashboard', 'village.maisons'];
+  }
+  if (
+    normalized === '/village/liste'
     || normalized.startsWith('/village/liste/')
   ) {
-    return ['village.maisons', 'village.dependants-dashboard', 'village.dependants-liste'];
+    return ['village.dependants-liste', 'village.maisons'];
   }
   if (
     normalized === '/charroi-automobile'
@@ -104,30 +117,6 @@ export function routeViewMenuIds(pathname: string): string[] {
   }
   if (normalized.startsWith('/charroi-automobile/achats')) {
     return ['charroi.achats', 'charroi'];
-  }
-  if (
-    normalized === '/employes/offres'
-    || normalized.startsWith('/employes/offres/')
-  ) {
-    return ['employes.offres', 'employes.liste'];
-  }
-  if (
-    normalized === '/employes/mouvements'
-    || normalized.startsWith('/employes/mouvements/')
-  ) {
-    return ['employes.mouvements', 'employes.liste'];
-  }
-  if (
-    normalized === '/employes/postes'
-    || normalized.startsWith('/employes/postes/')
-  ) {
-    return ['employes.postes', 'employes.liste'];
-  }
-  if (
-    normalized === '/employes/contractants'
-    || normalized.startsWith('/employes/contractants/')
-  ) {
-    return ['employes.contractants', 'employes.liste'];
   }
   if (normalized === '/documents') {
     return [...DOCUMENTS_HUB_MENU_IDS];

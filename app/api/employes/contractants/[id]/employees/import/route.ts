@@ -1,6 +1,6 @@
 import { NextResponse } from 'next/server';
 import { parseContractantEmployeesImportBuffer } from '@/lib/contractants-import';
-import { getContractant, replaceContractantEmployees } from '@/lib/contractants-store';
+import { getContractant, importContractantEmployees } from '@/lib/contractants-store';
 import { checkAnyPermission } from '@/lib/require-permission';
 import { logAuditError } from '@/lib/audit-log-store';
 import { auditSimpleAction, getAuditActor } from '@/lib/with-audit';
@@ -41,7 +41,7 @@ export async function POST(request: Request, context: Ctx) {
 
     const buffer = await file.arrayBuffer();
     const parsed = parseContractantEmployeesImportBuffer(buffer);
-    const result = await replaceContractantEmployees(id, parsed.rows);
+    const result = await importContractantEmployees(id, parsed.rows);
     if (!result) {
       return NextResponse.json({ error: 'Contractant introuvable' }, { status: 404 });
     }
@@ -49,12 +49,13 @@ export async function POST(request: Request, context: Ctx) {
     await auditSimpleAction({
       module: 'contractants',
       action: 'import',
-      summary: `Import employés « ${existing.denomination} » — ${result.imported} ligne(s)`,
-      details: `Feuille « ${parsed.sheetName} », ${parsed.skipped} ignorée(s)`,
+      summary: `Import employés « ${existing.denomination} » — ${result.imported} ajouté(s), ${result.alreadyPresent.length} déjà présent(s)`,
+      details: `Feuille « ${parsed.sheetName} », ${parsed.skipped} ligne(s) vides ignorée(s)`,
       meta: {
         contractantId: id,
         imported: result.imported,
-        skipped: parsed.skipped,
+        alreadyPresent: result.alreadyPresent.length,
+        skippedEmpty: result.skippedEmpty + parsed.skipped,
         sheetName: parsed.sheetName,
         fileName: file.name,
       },
@@ -62,7 +63,8 @@ export async function POST(request: Request, context: Ctx) {
 
     return NextResponse.json({
       imported: result.imported,
-      skipped: parsed.skipped,
+      alreadyPresent: result.alreadyPresent,
+      skipped: result.skippedEmpty + parsed.skipped,
       sheetName: parsed.sheetName,
       contractant: result.contractant,
     });

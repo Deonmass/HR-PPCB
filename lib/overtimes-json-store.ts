@@ -486,6 +486,20 @@ function stampUpdated(week: WeeklyOvertimeWeek, userId: string): void {
   week.updatedBy = userId;
 }
 
+/** Toutes les semaines OT d’un mois (tous départements). */
+export async function listWeeklyOvertimeWeeks(
+  year: number,
+  month: number,
+): Promise<WeeklyOvertimeWeek[]> {
+  const data = await readWeeklyData();
+  const weeks = data.periods[weeklyOtKey(year, month)]?.weeks ?? {};
+  return Object.values(weeks).map((week) => {
+    ensureWeekFromTo(year, month, week);
+    syncLockFlags(week);
+    return week;
+  });
+}
+
 export async function getWeeklyOvertimeWeek(
   year: number,
   month: number,

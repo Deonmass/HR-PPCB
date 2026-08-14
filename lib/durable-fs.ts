@@ -38,6 +38,8 @@ export const DURABLE_WORK_VISAS_KEY = 'data/protocol/work-visas/store.json';
 export const DURABLE_EXIT_ISSUED_KEY = 'data/documents/exit-issued.json';
 export const DURABLE_RRF_HISTORY_KEY = 'data/documents/rrf-history.json';
 export const DURABLE_CONVENTION_NOTES_KEY = 'data/documents/convention-collective-notes.json';
+export const DURABLE_EXCO_REPORTS_KEY = 'data/exco/reports.json';
+export const DURABLE_AUDIT_HR_KEY = 'data/audit/actions.json';
 
 interface GithubRepoTarget {
   owner: string;

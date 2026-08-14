@@ -8,6 +8,9 @@ import {
 import type { Dependant, DependantFormData } from '@/lib/dependants-types';
 import {
   computeFamilyCompositionCounts,
+  computeDependantAge,
+  formatDependantBirthDateDisplay,
+  formatDependantBirthDateIso,
   isConjointEmployeStatut,
   isEmployeeStatut,
 } from '@/lib/dependants-utils';
@@ -48,7 +51,7 @@ function toFormData(
       localisation: dependant.localisation,
       numeroVilla: dependant.numeroVilla ?? '',
       typeMaison: dependant.typeMaison ?? '',
-      dateNaissance: dependant.dateNaissance,
+      dateNaissance: formatDependantBirthDateDisplay(dependant.dateNaissance),
       compositionFamille: dependant.compositionFamille,
       enfants: dependant.enfants,
       total: dependant.total,
@@ -132,6 +135,8 @@ export default function DependantFormModal({
     try {
       const payload: DependantFormData = {
         ...form,
+        dateNaissance: formatDependantBirthDateDisplay(form.dateNaissance),
+        age: computeDependantAge(form.dateNaissance),
         ...(familyCounts ?? {}),
         lienDocument: form.lienDocument?.trim() ?? '',
         matricule: defaultMatricule || form.matricule,
@@ -249,11 +254,18 @@ export default function DependantFormModal({
                 ) : null}
               </div>
               <div className="form-group">
-                <label>Date de naissance</label>
+                <label htmlFor="dependant-date-naissance">Date de naissance</label>
                 <input
-                  placeholder="jj/mm/aaaa"
-                  value={form.dateNaissance}
-                  onChange={(event) => setForm({ ...form, dateNaissance: event.target.value })}
+                  id="dependant-date-naissance"
+                  type="date"
+                  max={new Date().toISOString().slice(0, 10)}
+                  value={formatDependantBirthDateIso(form.dateNaissance)}
+                  onChange={(event) =>
+                    setForm({
+                      ...form,
+                      dateNaissance: formatDependantBirthDateDisplay(event.target.value),
+                    })
+                  }
                 />
               </div>
               {isEmployee && familyCounts && (

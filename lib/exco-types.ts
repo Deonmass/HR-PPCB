@@ -1,0 +1,370 @@
+/** Rapport EXCO mensuel — KPIs calculés + champs manuels (overlays). */
+
+export type ExcoSource = 'computed' | 'manual' | 'empty';
+
+export interface ExcoMetricValue {
+  value: number | string | null;
+  source: ExcoSource;
+  /** Variation vs mois précédent (ratio, ex. -0.036 = -3.6 %). */
+  deltaPct?: number | null;
+  /** Valeur absolue du mois précédent (affichée coin bas droit). */
+  prevValue?: number | string | null;
+  unit?: string;
+  label: string;
+  key: string;
+  /** Explication au survol : origine / formule de la valeur. */
+  hint?: string;
+}
+
+export interface ExcoCountRow {
+  label: string;
+  value: number;
+}
+
+export interface ExcoSiteHeadcountRow {
+  site: string;
+  headcount: number;
+  /** Variation vs mois précédent si disponible. */
+  delta?: number | null;
+}
+
+export interface ExcoOtDeptRow {
+  department: string;
+  hours: number;
+  /** Coût USD — import ou manuel. */
+  cost: number | null;
+  costSource: ExcoSource;
+  /** Heures par mois (1..12) pour capt.1 — null = vide. */
+  hoursByMonth?: Array<number | null>;
+}
+
+export interface ExcoOtEmployeeRow {
+  matricule: string;
+  nom: string;
+  department: string;
+  hours: number;
+  /** Coût FC (import). */
+  costFc?: number | null;
+  /** Coût USD (import + taux). */
+  costUsd?: number | null;
+  /** Leave balance jours — manuel ou import. */
+  leaveBalance: number | null;
+}
+
+export interface ExcoRecruitmentRow {
+  id: string;
+  category: 'replacement' | 'new';
+  position: string;
+  grade: string;
+  status: string;
+  comments: string;
+  budgeted: string;
+  department: string;
+  location: string;
+  contractType: string;
+}
+
+export interface ExcoAuditFinding {
+  id: string;
+  number: string;
+  finding: string;
+  severity: 'Low' | 'Medium' | 'High' | '';
+  status: 'Open' | 'Closed' | '';
+  comments: string;
+  dueDate: string;
+}
+
+export interface ExcoIsoAction {
+  id: string;
+  nc: string;
+  correctiveAction: string;
+  responsible: string;
+  start: string;
+  deadline: string;
+  status: 'Open' | 'Closed' | '';
+}
+
+export interface ExcoCsrProject {
+  id: string;
+  name: string;
+  objective: string;
+  progress: string;
+  risks: string;
+  nextSteps: string;
+  /** Provenance : module Projet ou saisie EXCO. */
+  source?: 'project' | 'manual';
+  typeProjet?: string;
+  lieu?: string;
+  secteur?: string;
+  annee?: string;
+  statut?: string;
+  responsable?: string;
+  budgetPrevu?: number | null;
+  budgetDepense?: number | null;
+  pctBudget?: number | null;
+  dateDebut?: string;
+  dateFin?: string;
+}
+
+export interface ExcoCsrSecteurRow {
+  label: string;
+  csr: number;
+  cahier: number;
+  total: number;
+}
+
+export interface ExcoCsrSummary {
+  total: number;
+  enCours: number;
+  termines: number;
+  nonDebutes: number;
+  budgetPrevu: number;
+  budgetDepense: number;
+  byType: ExcoCountRow[];
+  bySecteur: ExcoCsrSecteurRow[];
+}
+
+export interface ExcoTrainingTopic {
+  id: string;
+  title: string;
+}
+
+export interface ExcoManualKpis {
+  staffCost?: number | null;
+  leaveCost?: number | null;
+  leaveBalanceAvgDays?: number | null;
+  absenteeismPct?: number | null;
+  volumePerEmp?: number | null;
+  revenuePerEmp?: number | null;
+  overtimeCost?: number | null;
+  trainingCost?: number | null;
+  trainingHours?: number | null;
+  trainingBudget?: number | null;
+  onboardingSurvey?: number | null;
+  climateSurvey?: number | null;
+  competencyGapCoverage?: number | null;
+  successionCoverage?: number | null;
+  staffCostBudgetYtd?: number | null;
+  volumeBudgetYtd?: number | null;
+  revenueBudgetYtd?: number | null;
+  softSkillsHoursPct?: number | null;
+  technicalSkillsHoursPct?: number | null;
+  safetyTopicsHoursPct?: number | null;
+  trainingPlantPct?: number | null;
+  trainingHqPct?: number | null;
+}
+
+/** Snapshot finance / leave saisi pour un mois (année civile). */
+export type ExcoFinanceByMonth = Record<string, ExcoManualKpis>;
+
+/** Point de tendance mensuel (année civile janvier → décembre). */
+export interface ExcoTrendMonth {
+  month: number;
+  label: string;
+  headcount: number;
+  plant: number;
+  hq: number;
+  lubudi: number;
+  graduates: number;
+  genderMalePct: number | null;
+  genderFemalePct: number | null;
+  averageAge: number | null;
+  averageAgeMale: number | null;
+  averageAgeFemale: number | null;
+  hires: number;
+  exits: number;
+  turnoverPct: number | null;
+  attritionPct: number | null;
+  promotions: number;
+  overtimeHours: number;
+  staffCost: number | null;
+  volumePerEmp: number | null;
+  revenuePerEmp: number | null;
+  leaveBalanceAvgDays: number | null;
+  leaveCost: number | null;
+  overtimeCost: number | null;
+  leavePlantAvgDays: number | null;
+  leaveHqAvgDays: number | null;
+  leaveLubudiAvgDays: number | null;
+  /** Provision (leave not taken) en 000 USD. */
+  leaveProvisionUsd000: number | null;
+}
+
+export interface ExcoNarrative {
+  meetingTitle?: string;
+  meetingDate?: string;
+  meetingPlace?: string;
+  highlights?: string;
+  lowlights?: string;
+  focus?: string;
+  approvalItems?: string;
+  medicalCases?: string;
+}
+
+export interface ExcoPolicyBuckets {
+  expiredPendingUpdate: string[];
+  submittedToExco: string[];
+  pendingPublication: string[];
+  underCommunication: string[];
+}
+
+export interface ExcoOverlays {
+  manualKpis: ExcoManualKpis;
+  /** Historique finance par mois (clé "1".."12") — année civile. */
+  financeByMonth: ExcoFinanceByMonth;
+  narrative: ExcoNarrative;
+  recruitment: ExcoRecruitmentRow[];
+  auditFindings: ExcoAuditFinding[];
+  isoActions: ExcoIsoAction[];
+  csrProjects: ExcoCsrProject[];
+  trainingTopics: ExcoTrainingTopic[];
+  upcomingTrainings: ExcoTrainingTopic[];
+  policies: ExcoPolicyBuckets;
+  /** Coûts OT manuels par département (clé = nom dept). */
+  overtimeCostByDept: Record<string, number | null>;
+  /** Soldes congés manuels par matricule. */
+  leaveBalanceByMatricule: Record<string, number | null>;
+  /**
+   * Imports OT Excel (Component Posted Units + Leave Balances) par mois (clé "1".."12").
+   * Alimente capt.1 (heures par dept / mois) et capt.2 (top agents).
+   */
+  overtimeImportsByMonth: Record<string, import('./exco-ot-import').ExcoOtMonthImport>;
+  /**
+   * Imports Leave Balances (Annual / Closing Balance) par mois — slide 6. Leaves.
+   */
+  leaveImportsByMonth: Record<string, import('./exco-ot-import').ExcoLeaveMonthImport>;
+  /** Métadonnées de la dernière génération (pour réouverture). */
+  generationMeta: {
+    fxRateFcPerUsd: number | null;
+    generatedAt: string;
+    sourceFiles: string[];
+  } | null;
+}
+
+export interface ExcoReportRecord {
+  year: number;
+  month: number;
+  overlays: ExcoOverlays;
+  updatedAt: string;
+  updatedBy?: string;
+}
+
+export interface ExcoComputedBlock {
+  headcount: number;
+  prevHeadcount: number | null;
+  hires: number;
+  prevHires: number | null;
+  exits: number;
+  prevExits: number | null;
+  turnoverPct: number | null;
+  prevTurnoverPct: number | null;
+  attritionPct: number | null;
+  prevAttritionPct: number | null;
+  genderMalePct: number | null;
+  genderFemalePct: number | null;
+  prevGenderMalePct: number | null;
+  prevGenderFemalePct: number | null;
+  genderMale: number;
+  genderFemale: number;
+  averageAge: number | null;
+  prevAverageAge: number | null;
+  averageAgeMale: number | null;
+  averageAgeFemale: number | null;
+  averageSeniorityYears: number | null;
+  prevAverageSeniorityYears: number | null;
+  ageBands: ExcoCountRow[];
+  seniorityBands: ExcoCountRow[];
+  headcountBySite: ExcoSiteHeadcountRow[];
+  exitsByReason: ExcoCountRow[];
+  prevExitsByReason: ExcoCountRow[];
+  promotionsYtd: number;
+  promotionsThisMonth: number;
+  overtimeHoursTotal: number;
+  overtimeByDept: ExcoOtDeptRow[];
+  overtimeTopEmployees: ExcoOtEmployeeRow[];
+  employeesWithOt: number;
+  vacantPostes: Array<{
+    id: string;
+    title: string;
+    department: string;
+    location: string;
+    grade: string;
+    headcount: number;
+    notes: string;
+  }>;
+  docsCompliancePct: number | null;
+  /** Projets CSR + Cahier des charges (module Projet), enrichis des overlays. */
+  csrProjects: ExcoCsrProject[];
+  csrSummary: ExcoCsrSummary;
+  /** Tendances année civile janvier → décembre. */
+  trends: ExcoTrendMonth[];
+  /** Progression Audit HR (cumul % Closed Jan→Déc, asOf = fin de mois rapport). */
+  auditProgression: Array<{
+    month: string;
+    closedCumul: number;
+    closedPct: number;
+  }>;
+  auditTotal: number;
+  auditClosed: number;
+  auditClosedPct: number;
+}
+
+export interface ExcoReportPayload {
+  year: number;
+  month: number;
+  periodLabel: string;
+  prevPeriodLabel: string;
+  computed: ExcoComputedBlock;
+  overlays: ExcoOverlays;
+  /** KPI summary fusionné (computed + manuel). */
+  kpiSummary: ExcoMetricValue[];
+  updatedAt: string | null;
+  updatedBy: string | null;
+  missingFields: string[];
+}
+
+export function emptyExcoOverlays(): ExcoOverlays {
+  return {
+    manualKpis: {},
+    financeByMonth: {},
+    narrative: {
+      meetingTitle: 'EXCO MEETING',
+      meetingDate: '',
+      meetingPlace: '',
+      highlights: '',
+      lowlights: '',
+      focus: '',
+      approvalItems: '',
+      medicalCases: '',
+    },
+    recruitment: [],
+    auditFindings: [],
+    isoActions: [],
+    csrProjects: [],
+    trainingTopics: [],
+    upcomingTrainings: [],
+    policies: {
+      expiredPendingUpdate: [],
+      submittedToExco: [],
+      pendingPublication: [],
+      underCommunication: [],
+    },
+    overtimeCostByDept: {},
+    leaveBalanceByMatricule: {},
+    overtimeImportsByMonth: {},
+    leaveImportsByMonth: {},
+    generationMeta: null,
+  };
+}
+
+export function periodKey(year: number, month: number): string {
+  return `${year}-${String(month).padStart(2, '0')}`;
+}
+
+export function formatExcoPeriodLabel(year: number, month: number): string {
+  const names = [
+    'Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun',
+    'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec',
+  ];
+  return `${names[month - 1] ?? month}-${String(year).slice(-2)}`;
+}
