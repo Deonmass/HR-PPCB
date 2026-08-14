@@ -1,6 +1,20 @@
 {
   "entries": [
     {
+      "id": "log-000232",
+      "at": "2026-08-14T09:50:37.723Z",
+      "userId": "admin",
+      "userName": "Administrateur",
+      "module": "travel.attestation",
+      "moduleLabel": "Attestation de service",
+      "action": "export",
+      "actionLabel": "Export",
+      "summary": "Aperçu PDF attestation",
+      "details": "Aperçu PDF attestation",
+      "undoable": false,
+      "undone": false
+    },
+    {
       "id": "log-000231",
       "at": "2026-08-14T09:28:02.349Z",
       "userId": "admin",
@@ -26167,5 +26181,5 @@
       }
     }
   ],
-  "nextSeq": 232
+  "nextSeq": 233
 }
