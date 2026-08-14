@@ -15230,7 +15230,7 @@
       "id": 729,
       "employeeId": "48394f6b-b0df-4bf2-9062-91b43f79bf77",
       "matricule": "70000238",
-      "pactilis": "178268 Enfant F SAIDI MWANAISHA Ezelya Sylva 28/04/2026 14/08/2026 9 1",
+      "pactilis": "178268",
       "statut": "Enfant",
       "sexe": "F",
       "nom": "SAIDI MWANAISHA Ezelya Sylva",
@@ -15245,7 +15245,7 @@
       "commentaires": "",
       "lienDocument": "https://ppcafr.sharepoint.com/:b:/r/sites/knshr/HR%20ADMINISTRATION/ETAT%20DES%20INCORPORATIONS/2026/Etat_INCORPORATION_SAIDI%20.pdf?d=w42edc4cb4b2a42d0b776a58161c9d1ec&csf=1&web=1&e=EVfgp9",
       "createdAt": "2026-08-14T09:25:44.992Z",
-      "updatedAt": "2026-08-14T09:25:44.992Z"
+      "updatedAt": "2026-08-14T09:28:00.388Z"
     }
   ]
 }
