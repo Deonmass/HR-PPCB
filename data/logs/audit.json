@@ -1,6 +1,20 @@
 {
   "entries": [
     {
+      "id": "log-000214",
+      "at": "2026-08-14T08:14:58.322Z",
+      "userId": "admin",
+      "userName": "Administrateur",
+      "module": "dependants",
+      "moduleLabel": "Dépendants",
+      "action": "export",
+      "actionLabel": "Export",
+      "summary": "Export dépendants (DEPENDANTS_RESUME_2026-08-14.xlsx)",
+      "details": "Export dépendants (DEPENDANTS_RESUME_2026-08-14.xlsx)",
+      "undoable": false,
+      "undone": false
+    },
+    {
       "id": "log-000213",
       "at": "2026-08-13T17:56:09.521Z",
       "userId": "admin",
@@ -23287,5 +23301,5 @@
       }
     }
   ],
-  "nextSeq": 214
+  "nextSeq": 215
 }
