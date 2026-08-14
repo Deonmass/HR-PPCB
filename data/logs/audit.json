@@ -1,6 +1,41 @@
 {
   "entries": [
     {
+      "id": "log-000239",
+      "at": "2026-08-14T09:51:05.550Z",
+      "userId": "admin",
+      "userName": "Administrateur",
+      "module": "travel.attestation",
+      "moduleLabel": "Attestation de service",
+      "action": "delete",
+      "actionLabel": "Suppression",
+      "entityType": "travel.attestation",
+      "entityId": "a8a2ce00-a949-4901-8277-2c1a041c5304",
+      "summary": "Suppression attestation de service a8a2ce00-a949-4901-8277-2c1a041c5304",
+      "details": "Attestation de service « Massadi Gedeon Gedeon (70000308) » supprimée.",
+      "before": {
+        "language": "fr",
+        "documentDate": "2026-07-08",
+        "hodGenre": "Madame",
+        "hodName": "Ewuli  Carine",
+        "hodFunction": "Head of Human Resources",
+        "employeeGenre": "Monsieur",
+        "employeeName": "Massadi Gedeon Gedeon",
+        "employeeMatricule": "70000308",
+        "employeeFunction": "HR Administrator",
+        "employeeDepartment": "HR",
+        "id": "a8a2ce00-a949-4901-8277-2c1a041c5304",
+        "createdAt": "2026-07-08T12:49:09.214Z",
+        "fileName": "Attestation_service_Massadi_Gedeon_Gedeon_2026-07-08.docx",
+        "docxPath": "D:\\Apps\\hr-rh-app\\data\\service-attestation\\files\\a8a2ce00-a949-4901-8277-2c1a041c5304.docx",
+        "pdfPath": "D:\\Apps\\hr-rh-app\\data\\service-attestation\\files\\a8a2ce00-a949-4901-8277-2c1a041c5304.pdf",
+        "previewHtml": "<div class=\"service-attestation-preview-doc\"><p class=\"service-attestation-preview-title\">ATTESTATION DE SERVICEJe soussignée, Madame Ewuli  Carine, Head of Human Resources de PPC Barnet DRC Manufacturing SA, atteste par la présente que Monsieur Massadi Gedeon Gedeon Matricule 70000308 est employée dans notre entreprise depuis le 10 octobre 2016 et occupe actuellement le poste de HR Administrator au sein du département de HR.La présente lui est délivrée pour faire valoir ce que de droit.Fait à Kinshasa, le 8 juillet 2026.Ewuli  CarineHead of Human Resources</p></div>"
+      },
+      "after": null,
+      "undoable": false,
+      "undone": false
+    },
+    {
       "id": "log-000238",
       "at": "2026-08-14T09:50:51.089Z",
       "userId": "admin",
@@ -26286,5 +26321,5 @@
       }
     }
   ],
-  "nextSeq": 239
+  "nextSeq": 240
 }
