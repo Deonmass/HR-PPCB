@@ -1,6 +1,21 @@
 {
   "entries": [
     {
+      "id": "log-000219",
+      "at": "2026-08-14T08:47:09.882Z",
+      "userId": "berth.lubenzo",
+      "userName": "Berth Lubenzo",
+      "userEmail": "Berth.Lubenzo@ppcdrc.cd",
+      "module": "travel.attestation",
+      "moduleLabel": "Attestation de service",
+      "action": "export",
+      "actionLabel": "Export",
+      "summary": "Aperçu PDF attestation",
+      "details": "Aperçu PDF attestation",
+      "undoable": false,
+      "undone": false
+    },
+    {
       "id": "log-000218",
       "at": "2026-08-14T08:47:08.120Z",
       "userId": "berth.lubenzo",
@@ -25888,5 +25903,5 @@
       }
     }
   ],
-  "nextSeq": 219
+  "nextSeq": 220
 }
