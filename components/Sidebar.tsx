@@ -1,7 +1,7 @@
 'use client';
 
 import Link from 'next/link';
-import { usePathname } from 'next/navigation';
+import { usePathname, useSearchParams } from 'next/navigation';
 import {
   useCallback,
   useEffect,
@@ -67,6 +67,24 @@ const NAV: NavSection[] = [
     alwaysVisible: true,
   },
   {
+    type: 'link',
+    id: 'exco',
+    href: '/exco',
+    label: 'EXCO',
+    icon: 'dashboard',
+    color: '#be123c',
+    menuIds: ['exco.rapport'],
+  },
+  {
+    type: 'link',
+    id: 'audit',
+    href: '/audit',
+    label: 'Audit points',
+    icon: 'docs',
+    color: '#9f1239',
+    menuIds: ['audit.points'],
+  },
+  {
     type: 'group',
     id: 'employes',
     title: 'Employés',
@@ -75,10 +93,10 @@ const NAV: NavSection[] = [
     items: [
       { href: '/employes', label: 'Liste', icon: 'users', menuId: 'employes.liste', excludePrefixes: ['/employes/dependants', '/employes/offres', '/employes/mouvements', '/employes/postes', '/employes/contractants'] },
       { href: '/employes/dependants', label: 'Dependants', icon: 'users', menuId: 'employes.dependants' },
-      { href: '/employes/offres', label: 'Offres', icon: 'docs', menuIds: ['employes.offres', 'employes.liste'] },
-      { href: '/employes/mouvements', label: 'Mouvements', icon: 'users', menuIds: ['employes.mouvements', 'employes.liste'] },
-      { href: '/employes/postes', label: 'Postes', icon: 'docs', menuIds: ['employes.postes', 'employes.liste'] },
-      { href: '/employes/contractants', label: 'Contractants', icon: 'users', menuIds: ['employes.contractants', 'employes.liste'] },
+      { href: '/employes/offres', label: 'Offres', icon: 'docs', menuId: 'employes.offres' },
+      { href: '/employes/mouvements', label: 'Mouvements', icon: 'users', menuId: 'employes.mouvements' },
+      { href: '/employes/postes', label: 'Postes', icon: 'docs', menuId: 'employes.postes' },
+      { href: '/employes/contractants', label: 'Contractants', icon: 'users', menuId: 'employes.contractants' },
       { href: '/check-documents', label: 'Check documents', icon: 'docs', menuId: 'employes.check-documents' },
       { href: '/heures-supplementaires', label: 'Heures supplémentaires', icon: 'clock', menuIds: ['employes.heures', 'employes.heures.dept', 'employes.heures.all'] },
     ],
@@ -114,6 +132,7 @@ const NAV: NavSection[] = [
       'documents.rrf',
       'documents.newcomer',
       'documents.contrat-standard',
+      'documents.attestation-conge',
       'documents.convention-collective',
     ],
   },
@@ -157,6 +176,7 @@ const NAV: NavSection[] = [
     icon: 'docs',
     color: '#f97316',
     items: [
+      { href: '/factures-fournisseurs/liste', label: 'Liste', icon: 'docs', menuId: 'factures.fournisseur.liste' },
       { href: '/factures-fournisseurs/factures', label: 'Factures', icon: 'docs', menuId: 'factures.fournisseur.factures' },
       { href: '/factures-fournisseurs/soa', label: 'SOA', icon: 'docs', menuId: 'factures.fournisseur.soa' },
       { href: '/factures-fournisseurs/fournisseurs', label: 'Fournisseurs', icon: 'docs', menuId: 'factures.fournisseur.fournisseurs' },
@@ -169,6 +189,7 @@ const NAV: NavSection[] = [
     label: 'Santé',
     icon: 'health',
     color: '#22c55e',
+    menuIds: ['sante'],
   },
   {
     type: 'group',
@@ -202,8 +223,22 @@ const NAV: NavSection[] = [
         href: '/village/maisons',
         label: 'Maisons',
         icon: 'home',
-        menuIds: ['village.maisons', 'village.dependants-dashboard', 'village.dependants-liste'],
-        activePrefixes: ['/village/maisons', '/village/dashboard', '/village/liste'],
+        menuId: 'village.maisons',
+        activePrefixes: ['/village/maisons'],
+      },
+      {
+        href: '/village/maisons?tab=dashboard',
+        label: 'Dashboard',
+        icon: 'dashboard',
+        menuId: 'village.dependants-dashboard',
+        activePrefixes: ['/village/dashboard'],
+      },
+      {
+        href: '/village/maisons?tab=liste',
+        label: 'Liste',
+        icon: 'users',
+        menuId: 'village.dependants-liste',
+        activePrefixes: ['/village/liste'],
       },
       { href: '/village/guest-house', label: 'Guest house', icon: 'village', menuId: 'village.guest-house' },
     ],
@@ -225,15 +260,40 @@ const NAV: NavSection[] = [
 ];
 
 function isActive(pathname: string, href: string) {
-  return pathname === href || pathname.startsWith(href + '/');
+  const pathOnly = href.split('?')[0];
+  return pathname === pathOnly || pathname.startsWith(`${pathOnly}/`);
 }
 
-function isNavItemActive(pathname: string, item: NavItem) {
+function hrefTab(href: string): string | null {
+  const q = href.indexOf('?');
+  if (q < 0) return null;
+  return new URLSearchParams(href.slice(q + 1)).get('tab');
+}
+
+function isNavItemActive(pathname: string, item: NavItem, search = '') {
   if (item.excludePrefixes?.some(
     (prefix) => pathname === prefix || pathname.startsWith(`${prefix}/`),
   )) {
     return false;
   }
+
+  const itemTab = hrefTab(item.href);
+  const currentTab = new URLSearchParams(search.startsWith('?') ? search.slice(1) : search).get('tab');
+  const pathOnly = item.href.split('?')[0];
+
+  // Liens avec ?tab=… (ex. Village) — match exact sur le tab courant.
+  if (itemTab) {
+    return pathname === pathOnly && currentTab === itemTab;
+  }
+
+  // Lien « Maisons » sans tab : actif seulement hors tabs dashboard/liste.
+  if (
+    pathOnly === '/village/maisons'
+    && (pathname === '/village/maisons' || pathname.startsWith('/village/maisons/'))
+  ) {
+    return currentTab !== 'dashboard' && currentTab !== 'liste';
+  }
+
   if (item.activePrefixes?.length) {
     return item.activePrefixes.some(
       (prefix) => pathname === prefix || pathname.startsWith(`${prefix}/`),
@@ -484,7 +544,8 @@ function NavSubLink({
   collapsed: boolean;
 }) {
   const pathname = usePathname();
-  const active = isNavItemActive(pathname, item);
+  const searchParams = useSearchParams();
+  const active = isNavItemActive(pathname, item, searchParams.toString());
 
   return (
     <div className="nav-menu-row nav-menu-sub-row" style={{ '--nav-color': color } as CSSProperties}>
@@ -519,7 +580,8 @@ function NavGroupSection({
   onToggle: () => void;
 }) {
   const pathname = usePathname();
-  const hasActive = section.items.some((item) => isNavItemActive(pathname, item));
+  const searchParams = useSearchParams();
+  const hasActive = section.items.some((item) => isNavItemActive(pathname, item, searchParams.toString()));
 
   return (
     <div className={`nav-menu-section${collapsed && open ? ' collapsed-open' : ''}`} style={{ '--nav-color': section.color } as CSSProperties}>
@@ -589,11 +651,11 @@ function NavStandaloneSection({ section, collapsed }: { section: NavLinkSection;
   );
 }
 
-function buildInitialOpenGroups(pathname: string) {
+function buildInitialOpenGroups(pathname: string, search = '') {
   const initial: Record<string, boolean> = {};
   for (const section of NAV) {
     if (section.type === 'group') {
-      initial[section.id] = section.items.some((item) => isNavItemActive(pathname, item));
+      initial[section.id] = section.items.some((item) => isNavItemActive(pathname, item, search));
     }
   }
   return initial;
@@ -601,10 +663,14 @@ function buildInitialOpenGroups(pathname: string) {
 
 export default function Sidebar() {
   const pathname = usePathname();
+  const searchParams = useSearchParams();
+  const search = searchParams.toString();
   const { collapsed, toggle } = useSidebar();
   const { theme, toggleTheme, isSwitching } = useTheme();
   const { user, can, isLoading: permissionsLoading } = usePermissions();
-  const [openGroups, setOpenGroups] = useState<Record<string, boolean>>(() => buildInitialOpenGroups(pathname));
+  const [openGroups, setOpenGroups] = useState<Record<string, boolean>>(() =>
+    buildInitialOpenGroups(pathname, typeof window !== 'undefined' ? window.location.search.slice(1) : ''),
+  );
   const [loggingOut, setLoggingOut] = useState(false);
   const [profileMenuOpen, setProfileMenuOpen] = useState(false);
   const [passwordModalOpen, setPasswordModalOpen] = useState(false);
@@ -674,13 +740,13 @@ export default function Sidebar() {
     setOpenGroups((prev) => {
       const next = { ...prev };
       for (const section of NAV) {
-        if (section.type === 'group' && section.items.some((item) => isNavItemActive(pathname, item))) {
+        if (section.type === 'group' && section.items.some((item) => isNavItemActive(pathname, item, search))) {
           next[section.id] = true;
         }
       }
       return next;
     });
-  }, [pathname]);
+  }, [pathname, search]);
 
   const toggleGroup = (id: string) => {
     setOpenGroups((prev) => ({ ...prev, [id]: !prev[id] }));

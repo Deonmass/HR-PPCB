@@ -19,7 +19,8 @@ export interface ContractantEmployee {
   id: string;
   /** Noms et post-noms */
   nom: string;
-  sexe: ContractantSexe;
+  /** Vide si non renseigné à l’import. */
+  sexe: ContractantSexe | '';
   lieuAffectation: string;
   fonction: string;
   departement: string;
@@ -47,7 +48,8 @@ export interface ContractantInput {
 
 export interface ContractantEmployeeInput {
   nom: string;
-  sexe: ContractantSexe;
+  /** Vide si absent dans le fichier Excel. */
+  sexe: ContractantSexe | '';
   lieuAffectation: string;
   fonction: string;
   departement: string;

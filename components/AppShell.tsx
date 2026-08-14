@@ -1,5 +1,6 @@
 'use client';
 
+import { Suspense } from 'react';
 import { usePathname } from 'next/navigation';
 import Sidebar from '@/components/Sidebar';
 import RouteGuard from '@/components/RouteGuard';
@@ -23,7 +24,9 @@ export default function AppShell({ children }: { children: React.ReactNode }) {
         <PermissionProvider>
           <SidebarProvider>
             <div className="app">
-              <Sidebar />
+              <Suspense fallback={<aside className="sidebar" aria-hidden />}>
+                <Sidebar />
+              </Suspense>
               <main className="main">
                 <RouteGuard>{children}</RouteGuard>
               </main>

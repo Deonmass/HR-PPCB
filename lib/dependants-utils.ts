@@ -39,6 +39,61 @@ export function isChildStatut(statut: string): boolean {
   return /enfant/i.test(statut);
 }
 
+/** Parse une date FR (jj/mm/aaaa) ou ISO (aaaa-mm-jj). */
+export function parseDependantBirthDate(raw: string): Date | null {
+  const trimmed = (raw || '').trim();
+  if (!trimmed) return null;
+  const fr = trimmed.match(/^(\d{1,2})\/(\d{1,2})\/(\d{4})$/);
+  if (fr) {
+    const date = new Date(Number(fr[3]), Number(fr[2]) - 1, Number(fr[1]));
+    return Number.isNaN(date.getTime()) ? null : date;
+  }
+  const iso = trimmed.match(/^(\d{4})-(\d{2})-(\d{2})/);
+  if (iso) {
+    const date = new Date(Number(iso[1]), Number(iso[2]) - 1, Number(iso[3]));
+    return Number.isNaN(date.getTime()) ? null : date;
+  }
+  const fallback = new Date(`${trimmed}T00:00:00`);
+  return Number.isNaN(fallback.getTime()) ? null : fallback;
+}
+
+/** Affichage stocké : jj/mm/aaaa */
+export function formatDependantBirthDateDisplay(raw: string): string {
+  const date = parseDependantBirthDate(raw);
+  if (!date) return (raw || '').trim();
+  const dd = String(date.getDate()).padStart(2, '0');
+  const mm = String(date.getMonth() + 1).padStart(2, '0');
+  return `${dd}/${mm}/${date.getFullYear()}`;
+}
+
+/** Valeur pour `<input type="date">` : aaaa-mm-jj */
+export function formatDependantBirthDateIso(raw: string): string {
+  const date = parseDependantBirthDate(raw);
+  if (!date) return '';
+  const dd = String(date.getDate()).padStart(2, '0');
+  const mm = String(date.getMonth() + 1).padStart(2, '0');
+  return `${date.getFullYear()}-${mm}-${dd}`;
+}
+
+export function computeDependantAge(dateNaissance: string, asOf = new Date()): number | null {
+  const date = parseDependantBirthDate(dateNaissance);
+  if (!date) return null;
+  let age = asOf.getFullYear() - date.getFullYear();
+  const monthDiff = asOf.getMonth() - date.getMonth();
+  if (monthDiff < 0 || (monthDiff === 0 && asOf.getDate() < date.getDate())) {
+    age -= 1;
+  }
+  return age >= 0 ? age : null;
+}
+
+export function resolveDependantAge(
+  age: number | null | undefined,
+  dateNaissance: string,
+): number | null {
+  if (age != null && Number.isFinite(age) && age >= 0) return age;
+  return computeDependantAge(dateNaissance);
+}
+
 /** Clé de regroupement familial (toujours le matricule du chef / mari). */
 export function familyGroupKey(item: {
   matricule?: string | null;

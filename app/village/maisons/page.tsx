@@ -1118,105 +1118,106 @@ function VillageMaisonsPageInner() {
     >
       <div className="dependants-page village-maisons-page">
         <div className="dependants-sticky check-docs-sticky">
-          <div className="page-header page-header-with-tabs check-docs-header dependants-header">
-            <div className="check-docs-header-left">
-              <div className="page-header-title-row">
-                <h2>Village / Kimpese</h2>
-                <RefreshButton
-                  onClick={() => void load()}
-                  loading={loading && (tab === 'maisons' || tab === 'vides' || tab === 'tailles')}
-                />
+          <div className="page-header page-header-with-tabs check-docs-header dependants-header village-maisons-header">
+            <div className="village-maisons-header-top">
+              <div className="check-docs-header-left">
+                <div className="page-header-title-row">
+                  <h2>Village / Kimpese</h2>
+                  <RefreshButton
+                    onClick={() => void load()}
+                    loading={loading && (tab === 'maisons' || tab === 'vides' || tab === 'tailles')}
+                  />
+                </div>
               </div>
-              <p className="dependants-header-sub">
-                {tab === 'dashboard'
-                  ? 'Indicateurs Zamba, logements et répartition'
-                  : tab === 'liste'
-                    ? 'Familles Village et Kimpese'
-                    : tab === 'photo'
-                      ? 'Photo du village'
-                      : (
-                      <>
-                        Feuilles Excel <strong>MAISON</strong> et <strong>TYPE</strong> · {maisons.length}{' '}
-                        maison(s) · {emptyCount} vide(s) · {suggestions.length} suggestion(s)
-                        {canEdit || canDelete ? ' · clic droit pour les actions' : ''}
-                      </>
-                    )}
-              </p>
-            </div>
-            <div className="check-docs-header-actions">
-              <div className="tabs header-tabs header-tabs-compact">
-                {canViewDashboard && (
+              <div className="check-docs-header-actions">
+                <div className="tabs header-tabs header-tabs-compact">
+                  {canViewDashboard && (
+                    <button
+                      type="button"
+                      className={`tab-btn tab-btn-sm${tab === 'dashboard' ? ' active' : ''}`}
+                      onClick={() => selectTab('dashboard')}
+                    >
+                      Dashboard
+                    </button>
+                  )}
+                  {canViewListe && (
+                    <button
+                      type="button"
+                      className={`tab-btn tab-btn-sm${tab === 'liste' ? ' active' : ''}`}
+                      onClick={() => selectTab('liste')}
+                    >
+                      Liste
+                    </button>
+                  )}
+                  {canViewMaisons && (
+                    <>
+                      <button
+                        type="button"
+                        className={`tab-btn tab-btn-sm${tab === 'maisons' ? ' active' : ''}`}
+                        onClick={() => selectTab('maisons')}
+                      >
+                        Maisons ({maisons.length})
+                      </button>
+                      <button
+                        type="button"
+                        className={`tab-btn tab-btn-sm${tab === 'vides' ? ' active' : ''}`}
+                        onClick={() => selectTab('vides')}
+                      >
+                        Vides ({emptyCount})
+                      </button>
+                      <button
+                        type="button"
+                        className={`tab-btn tab-btn-sm${tab === 'tailles' ? ' active' : ''}`}
+                        onClick={() => selectTab('tailles')}
+                      >
+                        Type de maison ({tailles.length})
+                      </button>
+                      <button
+                        type="button"
+                        className={`tab-btn tab-btn-sm${tab === 'photo' ? ' active' : ''}`}
+                        onClick={() => selectTab('photo')}
+                      >
+                        Photo
+                      </button>
+                    </>
+                  )}
+                </div>
+                {canExport && (
                   <button
                     type="button"
-                    className={`tab-btn tab-btn-sm${tab === 'dashboard' ? ' active' : ''}`}
-                    onClick={() => selectTab('dashboard')}
+                    className="btn btn-secondary btn-with-icon"
+                    disabled={exporting}
+                    onClick={async () => {
+                      setExporting(true);
+                      try {
+                        await downloadVillageExport();
+                      } catch (err) {
+                        showError(err instanceof Error ? err.message : 'Export impossible');
+                      } finally {
+                        setExporting(false);
+                      }
+                    }}
                   >
-                    Dashboard
+                    {exporting ? <span className="btn-spinner" aria-hidden="true" /> : <ExportIcon />}
+                    {exporting ? 'Export…' : 'Exporter'}
                   </button>
-                )}
-                {canViewListe && (
-                  <button
-                    type="button"
-                    className={`tab-btn tab-btn-sm${tab === 'liste' ? ' active' : ''}`}
-                    onClick={() => selectTab('liste')}
-                  >
-                    Liste
-                  </button>
-                )}
-                {canViewMaisons && (
-                  <>
-                    <button
-                      type="button"
-                      className={`tab-btn tab-btn-sm${tab === 'maisons' ? ' active' : ''}`}
-                      onClick={() => selectTab('maisons')}
-                    >
-                      Maisons ({maisons.length})
-                    </button>
-                    <button
-                      type="button"
-                      className={`tab-btn tab-btn-sm${tab === 'vides' ? ' active' : ''}`}
-                      onClick={() => selectTab('vides')}
-                    >
-                      Vides ({emptyCount})
-                    </button>
-                    <button
-                      type="button"
-                      className={`tab-btn tab-btn-sm${tab === 'tailles' ? ' active' : ''}`}
-                      onClick={() => selectTab('tailles')}
-                    >
-                      Type de maison ({tailles.length})
-                    </button>
-                    <button
-                      type="button"
-                      className={`tab-btn tab-btn-sm${tab === 'photo' ? ' active' : ''}`}
-                      onClick={() => selectTab('photo')}
-                    >
-                      Photo
-                    </button>
-                  </>
                 )}
               </div>
-              {canExport && (
-                <button
-                  type="button"
-                  className="btn btn-secondary btn-with-icon"
-                  disabled={exporting}
-                  onClick={async () => {
-                    setExporting(true);
-                    try {
-                      await downloadVillageExport();
-                    } catch (err) {
-                      showError(err instanceof Error ? err.message : 'Export impossible');
-                    } finally {
-                      setExporting(false);
-                    }
-                  }}
-                >
-                  {exporting ? <span className="btn-spinner" aria-hidden="true" /> : <ExportIcon />}
-                  {exporting ? 'Export…' : 'Exporter'}
-                </button>
-              )}
             </div>
+            <p className="dependants-header-sub village-maisons-header-sub">
+              {tab === 'dashboard'
+                ? 'Indicateurs Zamba, logements et répartition'
+                : tab === 'liste'
+                  ? 'Familles Village et Kimpese'
+                  : tab === 'photo'
+                    ? 'Photo du village'
+                    : (
+                    <>
+                      Feuilles Excel <strong>MAISON</strong> et <strong>TYPE</strong> · {maisons.length}{' '}
+                      maison(s)
+                    </>
+                  )}
+            </p>
           </div>
         </div>
 

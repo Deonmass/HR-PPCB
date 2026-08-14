@@ -8,6 +8,20 @@ export interface PermissionMenuGroup {
 
 export const PERMISSION_MENU_CATALOG: PermissionMenuGroup[] = [
   {
+    id: 'exco',
+    label: 'EXCO',
+    items: [
+      { id: 'exco.rapport', label: 'Rapport EXCO' },
+    ],
+  },
+  {
+    id: 'audit',
+    label: 'Audit',
+    items: [
+      { id: 'audit.points', label: 'Audit points' },
+    ],
+  },
+  {
     id: 'employes',
     label: 'Employés',
     items: [
@@ -52,6 +66,7 @@ export const PERMISSION_MENU_CATALOG: PermissionMenuGroup[] = [
       { id: 'documents.rrf', label: 'RRF' },
       { id: 'documents.newcomer', label: 'Newcomer' },
       { id: 'documents.contrat-standard', label: 'Contrat standard' },
+      { id: 'documents.attestation-conge', label: 'Attestation de congé' },
       { id: 'documents.convention-collective', label: 'Convention collective' },
     ],
   },

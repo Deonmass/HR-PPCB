@@ -38,6 +38,7 @@ function moduleShortcuts(menus: MenuPermission[]): Array<{
   menuIds: string[];
 }> {
   const all = [
+    { title: 'EXCO', subtitle: 'Rapport mensuel ExCo', href: '/exco', menuIds: ['exco.rapport'] },
     { title: 'Employés', subtitle: 'Liste des agents', href: '/employes', menuIds: ['employes.liste'] },
     { title: 'Dépendants', subtitle: 'Bénéficiaires médicaux', href: '/employes/dependants', menuIds: ['employes.dependants'] },
     { title: 'Offres', subtitle: 'Offres d’emploi', href: '/employes/offres', menuIds: ['employes.offres'] },
@@ -55,6 +56,7 @@ function moduleShortcuts(menus: MenuPermission[]): Array<{
     { title: 'Voyages', subtitle: 'Historique missions', href: '/documents-voyage/historique', menuIds: ['travel.historique'] },
     { title: 'Établir voyage', subtitle: 'Cash request / dossier', href: '/documents-voyage/etablir', menuIds: ['travel.etablir'] },
     { title: 'Attestation de service', subtitle: 'Génération attestations', href: '/documents-voyage/attestation-services', menuIds: ['travel.attestation'] },
+    { title: 'Attestation de congé', subtitle: 'Employé, signataire, période', href: '/documents/attestation-conge', menuIds: ['documents.attestation-conge'] },
     { title: 'Projets', subtitle: 'Dashboard projets', href: '/project/dashboard', menuIds: ['project.dashboard'] },
     { title: 'Liste projets', subtitle: 'Projets CSR / CC', href: '/project/projects', menuIds: ['project.projects'] },
     { title: 'Dépenses projets', subtitle: 'Expenses details', href: '/project/expenses-details', menuIds: ['project.expenses'] },

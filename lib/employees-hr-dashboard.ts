@@ -16,6 +16,14 @@ export interface HrDashCountRow {
   count: number;
 }
 
+/** Répartition PPC par localisation × genre (tableau dashboard). */
+export interface HrLocalisationGenderRow {
+  label: string;
+  hommes: number;
+  femmes: number;
+  total: number;
+}
+
 export interface EmployeesExitMonthRow {
   label: string;
   /** Clé YYYY-MM pour tri. */
@@ -70,14 +78,47 @@ function resolveAge(employee: Employee): number | null {
   return null;
 }
 
-function isMale(gender: string): boolean {
+export function isMaleGender(gender: string): boolean {
   const g = gender.trim().toLowerCase();
   return g === 'm' || g === 'male' || g.startsWith('homm');
 }
 
-function isFemale(gender: string): boolean {
+export function isFemaleGender(gender: string): boolean {
   const g = gender.trim().toLowerCase();
   return g === 'f' || g === 'female' || g.startsWith('femm');
+}
+
+function isMale(gender: string): boolean {
+  return isMaleGender(gender);
+}
+
+function isFemale(gender: string): boolean {
+  return isFemaleGender(gender);
+}
+
+function localisationLabel(employee: Employee): string {
+  return employee.localisation?.trim() || 'Non renseigné';
+}
+
+/** Tableau Localisation × Hommes / Femmes / Total pour l’effectif PPC. */
+export function buildPpcLocalisationGenderRows(
+  employees: Employee[],
+): HrLocalisationGenderRow[] {
+  const map = new Map<string, HrLocalisationGenderRow>();
+  for (const e of Array.isArray(employees) ? employees : []) {
+    const label = localisationLabel(e);
+    let row = map.get(label);
+    if (!row) {
+      row = { label, hommes: 0, femmes: 0, total: 0 };
+      map.set(label, row);
+    }
+    if (isMale(e.gender)) row.hommes += 1;
+    else if (isFemale(e.gender)) row.femmes += 1;
+    row.total += 1;
+  }
+  return [...map.values()].sort(
+    (a, b) => b.total - a.total || a.label.localeCompare(b.label, 'fr'),
+  );
 }
 
 function isMarried(status: string): boolean {

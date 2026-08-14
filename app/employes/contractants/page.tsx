@@ -25,7 +25,7 @@ import {
   countActiveColumnFilters,
   matchesColumnFilter,
 } from '@/lib/table-column-filters';
-import { confirmAction, confirmDelete, closeSwal, showActionLoading, showError, showSuccess } from '@/lib/swal';
+import { confirmAction, confirmDelete, closeSwal, showActionLoading, showError, showSuccess, showSuccessHtml } from '@/lib/swal';
 
 type PageTab = 'dashboard' | 'contractants' | 'employes';
 
@@ -48,7 +48,7 @@ type ContractorForm = {
 type EmployeeForm = {
   contractantId: string;
   nom: string;
-  sexe: ContractantSexe;
+  sexe: ContractantSexe | '';
   lieuAffectation: string;
   fonction: string;
   departement: string;
@@ -66,7 +66,7 @@ type FlatEmployee = ContractantEmployee & {
 const EMPTY_CONTRACTOR: ContractorForm = { denomination: '', typeService: '' };
 const EMPTY_EMPLOYEE: Omit<EmployeeForm, 'contractantId'> = {
   nom: '',
-  sexe: 'M',
+  sexe: '',
   lieuAffectation: 'Zamba',
   fonction: '',
   departement: '',
@@ -574,8 +574,8 @@ export default function ContractantsPage() {
 
     const target = contractants.find((c) => c.id === contractantId);
     const ok = await confirmAction(
-      `Mettre à jour « ${target?.denomination || 'contractant'} » ?`,
-      'La liste actuelle des employés sera remplacée par le contenu du fichier Excel.',
+      `Importer dans « ${target?.denomination || 'contractant'} » ?`,
+      'Les nouveaux employés seront ajoutés. Les noms déjà présents seront ignorés.',
       'Importer',
     );
     if (!ok) return;
@@ -595,12 +595,21 @@ export default function ContractantsPage() {
         return;
       }
       const imported = Number(data.imported) || 0;
-      const skipped = Number(data.skipped) || 0;
-      await showSuccess(
-        skipped > 0
-          ? `${imported} employé(s) importé(s), ${skipped} ligne(s) ignorée(s)`
-          : `${imported} employé(s) importé(s)`,
-      );
+      const alreadyPresent = Array.isArray(data.alreadyPresent)
+        ? data.alreadyPresent.map((n: unknown) => String(n || '').trim()).filter(Boolean)
+        : [];
+      const parts: string[] = [];
+      parts.push(`<p><strong>${imported}</strong> employé(s) ajouté(s).</p>`);
+      if (alreadyPresent.length > 0) {
+        const list = alreadyPresent
+          .map((n: string) => `<li>${n.replace(/</g, '&lt;')}</li>`)
+          .join('');
+        parts.push(
+          `<p><strong>${alreadyPresent.length}</strong> agent(s) déjà inclus (non importés) :</p>`
+          + `<ul style="text-align:left;max-height:220px;overflow:auto;margin:0.4rem 0 0;padding-left:1.2rem">${list}</ul>`,
+        );
+      }
+      await showSuccessHtml(parts.join(''), 'Import terminé');
       await load(true);
     } catch (err) {
       closeSwal();
@@ -970,7 +979,7 @@ export default function ContractantsPage() {
                         onContextMenu={(ev) => openEmployeeMenu(ev, e)}
                       >
                         <td className="contractants-col-nom" title={e.nom}>{e.nom}</td>
-                        <td className="contractants-col-sexe">{e.sexe}</td>
+                        <td className="contractants-col-sexe">{e.sexe || '—'}</td>
                         <td className="contractants-col-lieu" title={e.lieuAffectation}>{e.lieuAffectation || '—'}</td>
                         <td className="contractants-col-fonc" title={e.fonction || undefined}>{e.fonction || '—'}</td>
                         <td className="contractants-col-dept" title={e.departement || undefined}>{e.departement || '—'}</td>
@@ -1257,20 +1266,20 @@ export default function ContractantsPage() {
               </div>
               <div className="form-grid form-grid-2">
                 <div className="form-group">
-                  <label>Sexe *</label>
+                  <label>Sexe</label>
                   <select
-                    required
                     value={employeeModal.form.sexe}
                     onChange={(e) =>
                       setEmployeeModal({
                         ...employeeModal,
                         form: {
                           ...employeeModal.form,
-                          sexe: e.target.value as ContractantSexe,
+                          sexe: e.target.value as ContractantSexe | '',
                         },
                       })
                     }
                   >
+                    <option value="">— Non renseigné</option>
                     {CONTRACTANT_SEXES.map((s) => (
                       <option key={s} value={s}>{s === 'M' ? 'M — Masculin' : 'F — Féminin'}</option>
                     ))}
@@ -1417,7 +1426,7 @@ export default function ContractantsPage() {
               <dl className="contractants-view-grid">
                 <div><dt>Noms et post-noms</dt><dd>{viewEmployee.nom}</dd></div>
                 <div><dt>Contractant</dt><dd>{viewEmployee.contractantNom}</dd></div>
-                <div><dt>Sexe</dt><dd>{viewEmployee.sexe}</dd></div>
+                <div><dt>Sexe</dt><dd>{viewEmployee.sexe || '—'}</dd></div>
                 <div><dt>État civil</dt><dd>{etatCivilLabel(viewEmployee.etatCivil)}</dd></div>
                 <div><dt>Lieu d&apos;affectation</dt><dd>{viewEmployee.lieuAffectation || '—'}</dd></div>
                 <div><dt>Fonction</dt><dd>{viewEmployee.fonction || '—'}</dd></div>

@@ -17,6 +17,7 @@ import {
   isConjointEmployeStatut,
   isEmployeeStatut,
   isSpouseStatut,
+  resolveDependantAge,
   type FamilyGroup,
 } from '@/lib/dependants-utils';
 import { getDependantDocumentLinkLabel } from '@/lib/dependants-columns';
@@ -64,7 +65,7 @@ function memberMatchesColFilters(
     matchesColumnFilter(colFilters.nom, item.nom) &&
     matchesColumnFilter(colFilters.departement, item.departement) &&
     matchesColumnFilter(colFilters.localisation, item.localisation) &&
-    matchesColumnFilter(colFilters.age, ageFilterValue(item.age))
+    matchesColumnFilter(colFilters.age, ageFilterValue(resolveDependantAge(item.age, item.dateNaissance)))
   );
 }
 
@@ -260,11 +261,12 @@ function groupMatchesFilters(group: FamilyGroup, filters: DependantFilters): boo
   return members.some((item) => matchesDependantFilters(item, filters));
 }
 
-function AgeCell({ age }: { age: number | null }) {
-  if (age == null) return <>—</>;
+function AgeCell({ age, dateNaissance }: { age: number | null; dateNaissance?: string }) {
+  const resolved = resolveDependantAge(age, dateNaissance || '');
+  if (resolved == null) return <>—</>;
   return (
-    <span className={age > 17 ? 'dependants-age-over' : undefined}>
-      {age}
+    <span className={resolved > 17 ? 'dependants-age-over' : undefined} title={dateNaissance || undefined}>
+      {resolved}
     </span>
   );
 }
@@ -515,7 +517,7 @@ export default function DependantsListTab({
         nom: (r) => r.nom,
         departement: (r) => r.departement,
         localisation: (r) => r.localisation,
-        age: (r) => ageFilterValue(r.age),
+        age: (r) => ageFilterValue(resolveDependantAge(r.age, r.dateNaissance)),
       }),
     [filterMembers],
   );
@@ -722,7 +724,7 @@ export default function DependantsListTab({
       </td>
       <td>{item.departement || '—'}</td>
       <td>{item.localisation}</td>
-      <td><AgeCell age={item.age} /></td>
+      <td><AgeCell age={item.age} dateNaissance={item.dateNaissance} /></td>
       <td className="dependants-col-file">
         {options?.isEmployee && options.group ? (
           <FamilyDocumentsCell

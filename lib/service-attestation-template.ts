@@ -5,6 +5,7 @@ import JSZip from 'jszip';
 import { escapeXmlText } from './docx-template';
 import { formatDisplayDate } from './xlsx-populate-utils';
 import type { ServiceAttestationFormData } from './service-attestation-types';
+import { PPC_LETTERHEAD_ADDRESS_LINES } from './ppc-letterhead-address';
 import { SERVICE_ATTESTATION_TEMPLATE_PATH } from './service-attestation-template-paths';
 
 export { SERVICE_ATTESTATION_TEMPLATE_PATH };
@@ -211,9 +212,18 @@ export function buildServiceAttestationPreviewHtml(
     .map((line) => line.trim())
     .filter(Boolean);
 
+  const addressHtml = PPC_LETTERHEAD_ADDRESS_LINES.map(
+    (line) => `<span>${escapeHtml(line)}</span>`,
+  ).join('');
+
   const headerBlock = options?.headerDataUrl
-    ? `<div class="service-attestation-preview-header"><img src="${options.headerDataUrl}" alt="" /></div>`
-    : '';
+    ? `<div class="service-attestation-preview-header">
+  <img src="${options.headerDataUrl}" alt="" />
+  <div class="service-attestation-preview-address">${addressHtml}</div>
+</div>`
+    : `<div class="service-attestation-preview-header">
+  <div class="service-attestation-preview-address">${addressHtml}</div>
+</div>`;
 
   const body = paragraphs
     .map((line, index) => {

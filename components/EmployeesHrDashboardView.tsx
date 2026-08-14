@@ -5,15 +5,21 @@ import EmployeesExitMonthlyChart, {
   EmployeesExitMonthlyChartBody,
 } from '@/components/employees/EmployeesExitMonthlyChart';
 import EmployeesPieChart, { EmployeesPieChartBody } from '@/components/employees/EmployeesPieChart';
+import EmployeesPpcLocGenderTable, {
+  EmployeesPpcLocGenderTableBody,
+} from '@/components/employees/EmployeesPpcLocGenderTable';
 import DashboardListModal, {
   type DashboardListColumn,
   type DashboardListRow,
 } from '@/components/DashboardListModal';
 import {
   buildEmployeesHrDashboard,
+  buildPpcLocalisationGenderRows,
   employeeToDashboardListRow,
   employeesForHrKpi,
   employeesMatchingHrSegment,
+  isFemaleGender,
+  isMaleGender,
   mergeEmployeesWithExits,
   type EmployeesHrKpiKey,
   type HrChartSegmentKind,
@@ -84,12 +90,41 @@ const CONTRACTANT_EMP_COLUMNS: DashboardListColumn[] = [
   { key: 'statut', label: 'Statut' },
 ];
 
+const TOTAL_GENERAL_COLUMNS: DashboardListColumn[] = [
+  { key: 'origine', label: 'Origine' },
+  { key: 'matricule', label: 'Matricule' },
+  { key: 'nom', label: 'Nom' },
+  { key: 'localisation', label: 'Localisation' },
+  { key: 'departement', label: 'Département' },
+  { key: 'genre', label: 'Genre' },
+  { key: 'company', label: 'Company / Contractant' },
+];
+
+const PPC_SLICE_LABEL = 'PPC';
+const CONTRACTANT_DONUT_COLORS = [
+  '#2563eb',
+  '#0d9488',
+  '#f59e0b',
+  '#7c3aed',
+  '#db2777',
+  '#0891b2',
+  '#ea580c',
+  '#64748b',
+];
+
+type ContractantFirmSlice = {
+  label: string;
+  count: number;
+  rows: DashboardListRow[];
+};
+
 type ContractantDashStats = {
   totalContractants: number;
   contractantsFirms: number;
   contractantsPermanents: number;
   contractantsJournaliers: number;
   contractantRows: DashboardListRow[];
+  contractantFirms: ContractantFirmSlice[];
 };
 
 const EMPTY_CONTRACTANT_STATS: ContractantDashStats = {
@@ -98,6 +133,7 @@ const EMPTY_CONTRACTANT_STATS: ContractantDashStats = {
   contractantsPermanents: 0,
   contractantsJournaliers: 0,
   contractantRows: [],
+  contractantFirms: [],
 };
 
 const COMPANY_COLORS = ['#2563eb', '#f59e0b'];
@@ -273,25 +309,36 @@ export default function EmployeesHrDashboardView({ employees, exits = [] }: Prop
         let permanents = 0;
         let journaliers = 0;
         const rows: DashboardListRow[] = [];
+        const firms: ContractantFirmSlice[] = [];
         for (const c of list) {
           const emps = Array.isArray(c.employees) ? c.employees : [];
+          const firmLabel = String(c.denomination || '').trim() || '—';
+          const firmRows: DashboardListRow[] = [];
           for (const e of emps) {
             const statut = String(e.statut || 'Permanent');
             if (statut === 'Journalier') journaliers += 1;
             else permanents += 1;
-            rows.push({
+            const row: DashboardListRow = {
               id: `${c.id}-${e.id}`,
               cells: {
                 nom: e.nom || '—',
-                contractant: c.denomination || '—',
+                contractant: firmLabel,
                 sexe: e.sexe || '—',
                 lieu: e.lieuAffectation || '—',
                 fonction: e.fonction || '—',
                 statut,
               },
-            });
+            };
+            rows.push(row);
+            firmRows.push(row);
           }
+          firms.push({
+            label: firmLabel,
+            count: firmRows.length,
+            rows: firmRows,
+          });
         }
+        firms.sort((a, b) => b.count - a.count || a.label.localeCompare(b.label, 'fr'));
         if (!cancelled) {
           setContractantStats({
             totalContractants: permanents + journaliers,
@@ -299,6 +346,7 @@ export default function EmployeesHrDashboardView({ employees, exits = [] }: Prop
             contractantsPermanents: permanents,
             contractantsJournaliers: journaliers,
             contractantRows: rows,
+            contractantFirms: firms,
           });
           setContractantsLoading(false);
         }
@@ -424,6 +472,113 @@ export default function EmployeesHrDashboardView({ employees, exits = [] }: Prop
     });
   };
 
+  const ppcLocRows = useMemo(
+    () => buildPpcLocalisationGenderRows(employees),
+    [employees],
+  );
+
+  const ppcToGeneralRow = (employee: Employee): DashboardListRow => {
+    const base = employeeToDashboardListRow(employee);
+    return {
+      id: `ppc-${base.id}`,
+      cells: {
+        origine: PPC_SLICE_LABEL,
+        matricule: base.cells.matricule,
+        nom: base.cells.nom,
+        localisation: base.cells.localisation,
+        departement: base.cells.departement,
+        genre: base.cells.genre,
+        company: base.cells.company,
+      },
+    };
+  };
+
+  const contractantToGeneralRow = (row: DashboardListRow): DashboardListRow => ({
+    id: `c-${row.id}`,
+    cells: {
+      origine: String(row.cells.contractant ?? '—'),
+      matricule: '—',
+      nom: row.cells.nom,
+      localisation: row.cells.lieu,
+      departement: '—',
+      genre: row.cells.sexe,
+      company: row.cells.contractant,
+    },
+  });
+
+  const totalGeneralItems = useMemo(
+    () => [
+      { label: PPC_SLICE_LABEL, count: employees.length },
+      ...contractantStats.contractantFirms
+        .filter((firm) => firm.count > 0)
+        .map((firm) => ({ label: firm.label, count: firm.count })),
+    ].filter((row) => row.count > 0),
+    [employees.length, contractantStats.contractantFirms],
+  );
+
+  const totalGeneralColors = useMemo(
+    () => ['#e30613', ...CONTRACTANT_DONUT_COLORS],
+    [],
+  );
+
+  const openTotalGeneral = (label?: string, ppcPool?: Employee[]) => {
+    const ppcList = ppcPool ?? employees;
+    if (!label || label === 'Total général') {
+      setDrilldown({
+        title: 'Total général — PPC et contractants',
+        columns: TOTAL_GENERAL_COLUMNS,
+        rows: [
+          ...ppcList.map(ppcToGeneralRow),
+          ...contractantStats.contractantRows.map(contractantToGeneralRow),
+        ],
+      });
+      return;
+    }
+    if (label === PPC_SLICE_LABEL) {
+      setDrilldown({
+        title: `Total général — ${PPC_SLICE_LABEL}`,
+        columns: TOTAL_GENERAL_COLUMNS,
+        rows: ppcList.map(ppcToGeneralRow),
+      });
+      return;
+    }
+    const firm = contractantStats.contractantFirms.find((f) => f.label === label);
+    setDrilldown({
+      title: `Total général — ${label}`,
+      columns: TOTAL_GENERAL_COLUMNS,
+      rows: (firm?.rows ?? []).map(contractantToGeneralRow),
+    });
+  };
+
+  const openPpcLocCell = (
+    pool: Employee[],
+    localisation: string,
+    gender: 'hommes' | 'femmes' | 'total',
+  ) => {
+    let list = employeesMatchingHrSegment(pool, 'localisation', localisation);
+    if (gender === 'hommes') list = list.filter((e) => isMaleGender(e.gender));
+    if (gender === 'femmes') list = list.filter((e) => isFemaleGender(e.gender));
+    const genderLabel =
+      gender === 'hommes' ? 'Hommes' : gender === 'femmes' ? 'Femmes' : 'Total';
+    setDrilldown({
+      title: `PPC · ${localisation} · ${genderLabel}`,
+      columns: ACTIVE_COLUMNS,
+      rows: list.map(employeeToDashboardListRow),
+    });
+  };
+
+  const ppcLocDeptFilter = (
+    build: (emps: Employee[], ctx: ChartFilterRenderContext) => ReactNode,
+  ): ChartDeptFilterSource => ({
+    employees,
+    renderFiltered: build,
+    showGenderLegend: true,
+    resolveSegment: (emps, label) => employeesMatchingHrSegment(emps, 'localisation', label),
+    toListRow: employeeToDashboardListRow,
+    segmentColumns: ACTIVE_COLUMNS,
+    segmentTitle: (label) => `PPC · ${label}`,
+  });
+
   return (
     <div className="travel-history-dashboard employees-hr-dashboard">
       <div className="travel-history-cards employees-hr-cards">
@@ -480,6 +635,54 @@ export default function EmployeesHrDashboardView({ employees, exits = [] }: Prop
       </div>
 
       <div className="employees-charts-grid">
+        <EmployeesPpcLocGenderTable
+          title="Total employé PPC par localisation"
+          rows={ppcLocRows}
+          deptFilter={ppcLocDeptFilter((emps, ctx) => (
+            <EmployeesPpcLocGenderTableBody
+              rows={buildPpcLocalisationGenderRows(emps)}
+              onCellClick={(localisation, gender) => {
+                if (gender === 'total') {
+                  ctx.onSegmentClick?.(localisation);
+                  return;
+                }
+                openPpcLocCell(emps, localisation, gender);
+              }}
+            />
+          ))}
+        />
+        <EmployeesPieChart
+          title="Total général (PPC et contractants)"
+          items={totalGeneralItems}
+          colors={totalGeneralColors}
+          deptFilter={{
+            employees,
+            showGenderLegend: true,
+            resolveSegment: (emps, label) =>
+              label === PPC_SLICE_LABEL ? emps : [],
+            toListRow: (employee) => ppcToGeneralRow(employee),
+            segmentColumns: TOTAL_GENERAL_COLUMNS,
+            segmentTitle: (label) => `Total général — ${label}`,
+            renderFiltered: (emps, ctx) => (
+              <EmployeesPieChartBody
+                items={[
+                  { label: PPC_SLICE_LABEL, count: emps.length },
+                  ...contractantStats.contractantFirms
+                    .filter((firm) => firm.count > 0)
+                    .map((firm) => ({ label: firm.label, count: firm.count })),
+                ].filter((row) => row.count > 0)}
+                colors={totalGeneralColors}
+                onItemClick={(label) => {
+                  if (label === PPC_SLICE_LABEL) {
+                    ctx.onSegmentClick?.(label);
+                    return;
+                  }
+                  openTotalGeneral(label, emps);
+                }}
+              />
+            ),
+          }}
+        />
         <EmployeesPieChart
           title="Par company"
           items={stats.parCompany}

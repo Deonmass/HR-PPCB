@@ -4,7 +4,6 @@ import Link from 'next/link';
 import type { CSSProperties, ReactNode } from 'react';
 import { useEffect, useMemo } from 'react';
 import { usePermissions } from '@/contexts/PermissionContext';
-import { DOCUMENTS_HUB_MENU_IDS } from '@/lib/menu-routes';
 
 interface DocCard {
   id: string;
@@ -223,6 +222,15 @@ const CARDS: DocCard[] = [
     icon: <IconBadgeCheck />,
   },
   {
+    id: 'attestation-conge',
+    title: 'Attestation de congé',
+    description: 'Attestation de congé — employé, signataire et période (début / reprise).',
+    href: '/documents/attestation-conge',
+    menuId: 'documents.attestation-conge',
+    accent: '#0f766e',
+    icon: <IconBadgeCheck />,
+  },
+  {
     id: 'payment-voucher',
     title: 'Payment voucher',
     description: 'Bon de paiement.',
@@ -296,13 +304,8 @@ function canSeeMenu(
   can: (menuId: string, action: 'view' | 'create' | 'edit' | 'export' | 'delete' | 'undo') => boolean,
   menuId: string,
 ): boolean {
-  return (
-    can(menuId, 'view')
-    || can(menuId, 'create')
-    || can(menuId, 'edit')
-    || can(menuId, 'export')
-    || can(menuId, 'delete')
-  );
+  // Aligné sur la sidebar / RouteGuard : l’affichage exige « view ».
+  return can(menuId, 'view');
 }
 
 export default function DocumentsHubPage() {
@@ -313,17 +316,8 @@ export default function DocumentsHubPage() {
   }, [refresh]);
 
   const visible = useMemo(() => {
-    // Accès au hub Documents (au moins un menu du hub).
-    const hasHubAccess = DOCUMENTS_HUB_MENU_IDS.some((id) => canSeeMenu(can, id));
-
     return CARDS
-      .filter((card) => {
-        // Entête : droit dédié OU n’importe quel accès Documents.
-        if (card.id === 'entetes') {
-          return canSeeMenu(can, 'documents.entetes') || hasHubAccess;
-        }
-        return canSeeMenu(can, card.menuId);
-      })
+      .filter((card) => canSeeMenu(can, card.menuId))
       .slice()
       .sort((a, b) => a.title.localeCompare(b.title, 'fr', { sensitivity: 'base' }));
   }, [can]);

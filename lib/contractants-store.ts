@@ -55,7 +55,7 @@ function normalizeEmployee(raw: unknown): ContractantEmployee | null {
   const r = raw as Partial<ContractantEmployee> & { statut?: string };
   if (!r.id) return null;
   const sexeRaw = String(r.sexe || '').trim().toUpperCase();
-  const sexe = isContractantSexe(sexeRaw) ? sexeRaw : 'M';
+  const sexe = isContractantSexe(sexeRaw) ? sexeRaw : '';
   const etatRaw = String(r.etatCivil || '').trim().toUpperCase();
   const etatCivil = isContractantEtatCivil(etatRaw) ? etatRaw : 'C';
   const statutRaw = String(r.statut || '').trim();
@@ -166,7 +166,7 @@ function validateEmployeeInput(input: ContractantEmployeeInput): ContractantEmpl
   const etatRaw = String(input.etatCivil || '').trim().toUpperCase();
   const statutRaw = String(input.statut || '').trim();
   if (!nom) throw new Error('Nom requis');
-  if (!isContractantSexe(sexeRaw)) throw new Error('Sexe invalide');
+  if (sexeRaw && !isContractantSexe(sexeRaw)) throw new Error('Sexe invalide');
   if (!lieuAffectation) throw new Error('Lieu d’affectation requis');
   if (!departement) throw new Error('Département requis');
   if (!isContractantEtatCivil(etatRaw)) throw new Error('État civil invalide');
@@ -175,7 +175,7 @@ function validateEmployeeInput(input: ContractantEmployeeInput): ContractantEmpl
   }
   return {
     nom,
-    sexe: sexeRaw,
+    sexe: isContractantSexe(sexeRaw) ? sexeRaw : '',
     lieuAffectation,
     fonction,
     departement,
@@ -320,7 +320,100 @@ export async function deleteContractantEmployee(
   return true;
 }
 
-/** Remplace la liste des employés d’un contractant (import Excel = source de vérité). */
+function normalizeEmployeeNameKey(nom: string): string {
+  return nom
+    .trim()
+    .toLowerCase()
+    .normalize('NFD')
+    .replace(/[\u0300-\u036f]/g, '')
+    .replace(/\s+/g, ' ');
+}
+
+/**
+ * Import Excel : ajoute les nouveaux employés et ignore ceux déjà présents (même nom).
+ */
+export async function importContractantEmployees(
+  contractantId: string,
+  inputs: ContractantEmployeeInput[],
+): Promise<{
+  contractant: Contractant;
+  imported: number;
+  alreadyPresent: string[];
+  skippedEmpty: number;
+} | null> {
+  const store = await readStore();
+  const index = store.contractants.findIndex((c) => c.id === contractantId);
+  if (index < 0) return null;
+
+  const prev = store.contractants[index]!;
+  const now = new Date().toISOString();
+  const employees = [...prev.employees];
+  const knownNames = new Set(employees.map((e) => normalizeEmployeeNameKey(e.nom)).filter(Boolean));
+  const alreadyPresent: string[] = [];
+  const alreadyPresentKeys = new Set<string>();
+  let imported = 0;
+  let skippedEmpty = 0;
+
+  for (const input of inputs) {
+    const nom = String(input.nom || '').trim();
+    if (!nom) {
+      skippedEmpty += 1;
+      continue;
+    }
+    const key = normalizeEmployeeNameKey(nom);
+    if (!key) {
+      skippedEmpty += 1;
+      continue;
+    }
+    if (knownNames.has(key)) {
+      if (!alreadyPresentKeys.has(key)) {
+        alreadyPresentKeys.add(key);
+        alreadyPresent.push(nom);
+      }
+      continue;
+    }
+    knownNames.add(key);
+    const sexeRaw = String(input.sexe || '').trim().toUpperCase();
+    const etatRaw = String(input.etatCivil || '').trim().toUpperCase();
+    const statutRaw = String(input.statut || '').trim();
+    let id = String(store.nextEmployeeId++);
+    if (employees.some((e) => e.id === id)) id = randomUUID();
+    employees.push({
+      id,
+      nom,
+      sexe: isContractantSexe(sexeRaw) ? sexeRaw : '',
+      lieuAffectation: normalizeLocalisation(input.lieuAffectation),
+      fonction: isLocalisationLabel(input.fonction) ? '' : String(input.fonction || '').trim(),
+      departement: String(input.departement || '').trim(),
+      telephone: String(input.telephone || '').trim(),
+      etatCivil: isContractantEtatCivil(etatRaw) ? etatRaw : 'C',
+      statut: isContractantEmployeeStatut(statutRaw) ? statutRaw : 'Permanent',
+      createdAt: now,
+      updatedAt: now,
+    });
+    imported += 1;
+  }
+
+  if (imported === 0 && alreadyPresent.length === 0 && skippedEmpty === inputs.length) {
+    throw new Error('Aucune ligne employé valide dans le fichier');
+  }
+
+  const next: Contractant = {
+    ...prev,
+    employees,
+    updatedAt: now,
+  };
+  store.contractants[index] = next;
+  await writeStore(store);
+  return {
+    contractant: next,
+    imported,
+    alreadyPresent: alreadyPresent.sort((a, b) => a.localeCompare(b, 'fr', { sensitivity: 'base' })),
+    skippedEmpty,
+  };
+}
+
+/** @deprecated Prefer importContractantEmployees (merge). Kept for callers that need full replace. */
 export async function replaceContractantEmployees(
   contractantId: string,
   inputs: ContractantEmployeeInput[],
@@ -342,7 +435,7 @@ export async function replaceContractantEmployees(
     employees.push({
       id,
       nom,
-      sexe: isContractantSexe(sexeRaw) ? sexeRaw : 'M',
+      sexe: isContractantSexe(sexeRaw) ? sexeRaw : '',
       lieuAffectation: normalizeLocalisation(input.lieuAffectation),
       fonction: isLocalisationLabel(input.fonction) ? '' : String(input.fonction || '').trim(),
       departement: String(input.departement || '').trim(),
