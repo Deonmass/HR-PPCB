@@ -1,6 +1,21 @@
 {
   "entries": [
     {
+      "id": "log-000229",
+      "at": "2026-08-14T08:47:42.040Z",
+      "userId": "berth.lubenzo",
+      "userName": "Berth Lubenzo",
+      "userEmail": "Berth.Lubenzo@ppcdrc.cd",
+      "module": "travel.attestation",
+      "moduleLabel": "Attestation de service",
+      "action": "export",
+      "actionLabel": "Export",
+      "summary": "Téléchargement DOCX attestation MASSADI GEDEON GEDEON",
+      "details": "Téléchargement DOCX attestation MASSADI GEDEON GEDEON",
+      "undoable": false,
+      "undone": false
+    },
+    {
       "id": "log-000228",
       "at": "2026-08-14T08:47:38.406Z",
       "userId": "berth.lubenzo",
@@ -26059,5 +26074,5 @@
       }
     }
   ],
-  "nextSeq": 229
+  "nextSeq": 230
 }
