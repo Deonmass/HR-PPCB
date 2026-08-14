@@ -1,6 +1,40 @@
 {
   "entries": [
     {
+      "id": "log-000216",
+      "at": "2026-08-14T08:39:48.511Z",
+      "userId": "admin",
+      "userName": "Administrateur",
+      "module": "settings.utilisateurs",
+      "moduleLabel": "Paramètres — Utilisateurs",
+      "action": "update",
+      "actionLabel": "Modification",
+      "entityType": "auth.user",
+      "entityId": "berth.lubenzo",
+      "summary": "Modification utilisateur Berth Lubenzo",
+      "details": "Modification utilisateur Berth Lubenzo",
+      "before": {
+        "id": "berth.lubenzo",
+        "username": "berth.lubenzo",
+        "displayName": "Berth Lubenzo",
+        "initials": "BL",
+        "email": "Berth.Lubenzo@ppcdrc.cd",
+        "active": true,
+        "createdAt": "2026-07-28T12:02:15.277Z"
+      },
+      "after": {
+        "id": "berth.lubenzo",
+        "username": "berth.lubenzo",
+        "displayName": "Berth Lubenzo",
+        "initials": "BL",
+        "email": "Berth.Lubenzo@ppcdrc.cd",
+        "active": true,
+        "createdAt": "2026-07-28T12:02:15.277Z"
+      },
+      "undoable": true,
+      "undone": false
+    },
+    {
       "id": "log-000215",
       "at": "2026-08-14T08:39:11.278Z",
       "userId": "admin",
@@ -24570,5 +24604,5 @@
       }
     }
   ],
-  "nextSeq": 216
+  "nextSeq": 217
 }
