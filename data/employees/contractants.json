@@ -1,5 +1,5 @@
 {
-  "nextContractantId": 9,
+  "nextContractantId": 10,
   "nextEmployeeId": 641,
   "contractants": [
     {
@@ -4791,6 +4791,14 @@
       ],
       "createdAt": "2026-08-15T09:13:19.885Z",
       "updatedAt": "2026-08-15T09:13:36.476Z"
+    },
+    {
+      "id": "9",
+      "denomination": "EKMM",
+      "typeService": "Other",
+      "employees": [],
+      "createdAt": "2026-08-15T09:22:03.868Z",
+      "updatedAt": "2026-08-15T09:22:03.868Z"
     }
   ]
 }
