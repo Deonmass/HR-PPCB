@@ -1,5 +1,5 @@
 {
-  "nextContractantId": 8,
+  "nextContractantId": 9,
   "nextEmployeeId": 594,
   "contractants": [
     {
@@ -5662,6 +5662,14 @@
       ],
       "createdAt": "2026-08-13T11:21:23.659Z",
       "updatedAt": "2026-08-13T11:21:43.125Z"
+    },
+    {
+      "id": "8",
+      "denomination": "Cler Kiasungwa",
+      "typeService": "Nettoyage",
+      "employees": [],
+      "createdAt": "2026-08-15T09:13:19.885Z",
+      "updatedAt": "2026-08-15T09:13:19.885Z"
     }
   ]
 }
