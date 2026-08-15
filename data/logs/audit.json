@@ -1,6 +1,30 @@
 {
   "entries": [
     {
+      "id": "log-000247",
+      "at": "2026-08-15T09:22:04.990Z",
+      "userId": "admin",
+      "userName": "Administrateur",
+      "module": "contractants",
+      "moduleLabel": "contractants",
+      "action": "create",
+      "actionLabel": "Création",
+      "entityType": "contractant",
+      "entityId": "EKMM",
+      "summary": "Contractant créé — EKMM",
+      "details": "Contractant créé — EKMM",
+      "after": {
+        "id": "9",
+        "denomination": "EKMM",
+        "typeService": "Other",
+        "employees": [],
+        "createdAt": "2026-08-15T09:22:03.868Z",
+        "updatedAt": "2026-08-15T09:22:03.868Z"
+      },
+      "undoable": false,
+      "undone": false
+    },
+    {
       "id": "log-000246",
       "at": "2026-08-15T09:21:51.033Z",
       "userId": "admin",
@@ -26471,5 +26495,5 @@
       }
     }
   ],
-  "nextSeq": 247
+  "nextSeq": 248
 }
