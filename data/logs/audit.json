@@ -1,6 +1,30 @@
 {
   "entries": [
     {
+      "id": "log-000250",
+      "at": "2026-08-15T09:38:30.907Z",
+      "userId": "admin",
+      "userName": "Administrateur",
+      "module": "contractants",
+      "moduleLabel": "contractants",
+      "action": "create",
+      "actionLabel": "Création",
+      "entityType": "contractant",
+      "entityId": "MELEKI",
+      "summary": "Contractant créé — MELEKI",
+      "details": "Contractant créé — MELEKI",
+      "after": {
+        "id": "10",
+        "denomination": "MELEKI",
+        "typeService": "Other",
+        "employees": [],
+        "createdAt": "2026-08-15T09:38:29.883Z",
+        "updatedAt": "2026-08-15T09:38:29.883Z"
+      },
+      "undoable": false,
+      "undone": false
+    },
+    {
       "id": "log-000249",
       "at": "2026-08-15T09:38:22.565Z",
       "userId": "admin",
@@ -26543,5 +26567,5 @@
       }
     }
   ],
-  "nextSeq": 250
+  "nextSeq": 251
 }
