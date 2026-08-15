@@ -1,6 +1,32 @@
 {
   "entries": [
     {
+      "id": "log-000249",
+      "at": "2026-08-15T09:38:22.565Z",
+      "userId": "admin",
+      "userName": "Administrateur",
+      "module": "contractants",
+      "moduleLabel": "contractants",
+      "action": "error",
+      "actionLabel": "Erreur",
+      "summary": "Type de service requis",
+      "details": "Échec de l’action « create » sur contractants: Type de service requis",
+      "undoable": false,
+      "undone": false,
+      "error": {
+        "message": "Type de service requis",
+        "stack": "Error: Type de service requis\n    at t (/var/task/.next/server/chunks/1340.js:1:9497)\n    at x (/var/task/.next/server/chunks/1340.js:1:10556)\n    at /var/task/.next/server/app/api/employes/contractants/route.js:1:2211\n    at j (/var/task/.next/server/chunks/1340.js:1:3444)\n    at async z (/var/task/.next/server/app/api/employes/contractants/route.js:1:1984)\n    at async rH.do (/var/task/node_modules/next/dist/compiled/next-server/app-route.runtime.prod.js:5:21048)\n    at async rH.handle (/var/task/node_modules/next/dist/compiled/next-server/app-route.runtime.prod.js:5:25866)\n    at async k (/var/task/.next/server/app/api/employes/contractants/route.js:1:5067)\n    at async rH.handleResponse (/var/task/node_modules/next/dist/compiled/next-server/app-route.runtime.prod.js:1:110770)\n    at async g (/var/task/.next/server/app/api/employes/contractants/route.js:1:6070)",
+        "path": "/api/employes/contractants",
+        "method": "POST",
+        "context": {
+          "action": "create",
+          "entityType": "contractant",
+          "entityId": "MELEKI",
+          "summary": "Contractant créé — MELEKI"
+        }
+      }
+    },
+    {
       "id": "log-000248",
       "at": "2026-08-15T09:22:39.734Z",
       "userId": "admin",
@@ -26517,5 +26543,5 @@
       }
     }
   ],
-  "nextSeq": 249
+  "nextSeq": 250
 }
