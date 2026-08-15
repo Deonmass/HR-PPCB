@@ -1,5 +1,5 @@
 {
-  "nextContractantId": 7,
+  "nextContractantId": 8,
   "nextEmployeeId": 547,
   "contractants": [
     {
@@ -5662,6 +5662,14 @@
       ],
       "createdAt": "2026-08-13T11:21:23.659Z",
       "updatedAt": "2026-08-13T11:21:43.125Z"
+    },
+    {
+      "id": "7",
+      "denomination": "Cler Kiasungwa",
+      "typeService": "other",
+      "employees": [],
+      "createdAt": "2026-08-15T09:05:31.537Z",
+      "updatedAt": "2026-08-15T09:05:31.537Z"
     }
   ]
 }
