@@ -1,6 +1,30 @@
 {
   "entries": [
     {
+      "id": "log-000244",
+      "at": "2026-08-15T09:13:21.333Z",
+      "userId": "admin",
+      "userName": "Administrateur",
+      "module": "contractants",
+      "moduleLabel": "contractants",
+      "action": "create",
+      "actionLabel": "Création",
+      "entityType": "contractant",
+      "entityId": "Cler Kiasungwa",
+      "summary": "Contractant créé — Cler Kiasungwa",
+      "details": "Contractant créé — Cler Kiasungwa",
+      "after": {
+        "id": "8",
+        "denomination": "Cler Kiasungwa",
+        "typeService": "Nettoyage",
+        "employees": [],
+        "createdAt": "2026-08-15T09:13:19.885Z",
+        "updatedAt": "2026-08-15T09:13:19.885Z"
+      },
+      "undoable": false,
+      "undone": false
+    },
+    {
       "id": "log-000243",
       "at": "2026-08-15T09:12:54.700Z",
       "userId": "admin",
@@ -26408,5 +26432,5 @@
       }
     }
   ],
-  "nextSeq": 244
+  "nextSeq": 245
 }
