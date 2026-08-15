@@ -1,6 +1,28 @@
 {
   "entries": [
     {
+      "id": "log-000242",
+      "at": "2026-08-15T09:11:55.643Z",
+      "userId": "admin",
+      "userName": "Administrateur",
+      "module": "contractants",
+      "moduleLabel": "contractants",
+      "action": "import",
+      "actionLabel": "Import",
+      "summary": "Import employés « Cler Kiasungwa » — 47 ajouté(s), 0 déjà présent(s)",
+      "details": "Feuille « Feuil1 », 2 ligne(s) vides ignorée(s)",
+      "undoable": false,
+      "undone": false,
+      "meta": {
+        "contractantId": "7",
+        "imported": 47,
+        "alreadyPresent": 0,
+        "skippedEmpty": 2,
+        "sheetName": "Feuil1",
+        "fileName": "LISTE AGENTS CLER SA.xlsx"
+      }
+    },
+    {
       "id": "log-000241",
       "at": "2026-08-15T09:06:11.529Z",
       "userId": "admin",
@@ -26369,5 +26391,5 @@
       }
     }
   ],
-  "nextSeq": 242
+  "nextSeq": 243
 }
