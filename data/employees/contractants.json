@@ -1,5 +1,5 @@
 {
-  "nextContractantId": 10,
+  "nextContractantId": 11,
   "nextEmployeeId": 755,
   "contractants": [
     {
@@ -6282,6 +6282,14 @@
       ],
       "createdAt": "2026-08-15T09:22:03.868Z",
       "updatedAt": "2026-08-15T09:22:38.385Z"
+    },
+    {
+      "id": "10",
+      "denomination": "MELEKI",
+      "typeService": "Other",
+      "employees": [],
+      "createdAt": "2026-08-15T09:38:29.883Z",
+      "updatedAt": "2026-08-15T09:38:29.883Z"
     }
   ]
 }
