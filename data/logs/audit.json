@@ -1,6 +1,30 @@
 {
   "entries": [
     {
+      "id": "log-000240",
+      "at": "2026-08-15T09:05:32.956Z",
+      "userId": "admin",
+      "userName": "Administrateur",
+      "module": "contractants",
+      "moduleLabel": "contractants",
+      "action": "create",
+      "actionLabel": "Création",
+      "entityType": "contractant",
+      "entityId": "Cler Kiasungwa",
+      "summary": "Contractant créé — Cler Kiasungwa",
+      "details": "Contractant créé — Cler Kiasungwa",
+      "after": {
+        "id": "7",
+        "denomination": "Cler Kiasungwa",
+        "typeService": "other",
+        "employees": [],
+        "createdAt": "2026-08-15T09:05:31.537Z",
+        "updatedAt": "2026-08-15T09:05:31.537Z"
+      },
+      "undoable": false,
+      "undone": false
+    },
+    {
       "id": "log-000239",
       "at": "2026-08-14T09:51:05.550Z",
       "userId": "admin",
@@ -26321,5 +26345,5 @@
       }
     }
   ],
-  "nextSeq": 240
+  "nextSeq": 241
 }
