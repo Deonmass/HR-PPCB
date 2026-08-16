@@ -1,6 +1,35 @@
 {
   "entries": [
     {
+      "id": "log-000348",
+      "at": "2026-08-16T18:40:48.873Z",
+      "userId": "Serge.Muakasa",
+      "userName": "Serge Muakasa",
+      "userEmail": "Serge.Muakasa@ppcdrc.cd",
+      "module": "guest-house",
+      "moduleLabel": "Guest house",
+      "action": "create",
+      "actionLabel": "Création",
+      "entityType": "guest-house.reservation",
+      "entityId": "5545183e-7657-484f-b460-86e8a2417170",
+      "summary": "Création réservation Jonathan Ekwalanga - CPM",
+      "details": "Création réservation Jonathan Ekwalanga - CPM",
+      "after": {
+        "id": "5545183e-7657-484f-b460-86e8a2417170",
+        "numero": "GH-2026-4339",
+        "createdAt": "2026-08-16T18:40:47.586Z",
+        "personName": "Jonathan Ekwalanga - CPM",
+        "isAgent": false,
+        "motif": "Asset audit to the plant and village",
+        "startDate": "2026-07-21",
+        "endDate": "2026-07-22",
+        "status": "pending",
+        "updatedAt": "2026-08-16T18:40:47.586Z"
+      },
+      "undoable": true,
+      "undone": false
+    },
+    {
       "id": "log-000347",
       "at": "2026-08-16T18:36:56.090Z",
       "userId": "Serge.Muakasa",
@@ -30100,5 +30129,5 @@
       }
     }
   ],
-  "nextSeq": 348
+  "nextSeq": 349
 }
