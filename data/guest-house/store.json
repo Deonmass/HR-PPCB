@@ -725,9 +725,10 @@
       "motif": "New comer - HR Adm to the plant",
       "startDate": "2026-07-01",
       "endDate": "2026-07-18",
-      "status": "pending",
+      "roomId": "cfdfa27e-7353-401d-9090-1a3ca1c1fc80",
+      "status": "confirmed",
       "mission": "New comer - HR Adm to the plant",
-      "updatedAt": "2026-08-16T18:10:14.073Z"
+      "updatedAt": "2026-08-16T18:10:32.365Z"
     },
     {
       "id": "ef7a0972-330a-45a2-86c0-b38b25ba54e5",
@@ -24766,6 +24767,18 @@
     }
   ],
   "passages": [
+    {
+      "id": "5bb27d5f-1841-439e-9924-fc45dc3b759c",
+      "roomId": "cfdfa27e-7353-401d-9090-1a3ca1c1fc80",
+      "reservationId": "4a823311-05c8-4c49-8fba-9173cc47c52d",
+      "numero": "GH-2026-4324",
+      "personName": "MASSADI GEDEON GEDEON",
+      "matricule": "70000308",
+      "motif": "New comer - HR Adm to the plant",
+      "startDate": "2026-07-01",
+      "endDate": "2026-07-18",
+      "checkedInAt": "2026-08-16T18:10:32.365Z"
+    },
     {
       "id": "6d2c861c-b6e1-493e-b0d1-2d6e5827c9e4",
       "roomId": "3d273d81-0642-4fac-b424-a54146ad7acc",
