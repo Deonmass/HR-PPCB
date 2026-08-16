@@ -1,6 +1,50 @@
 {
   "entries": [
     {
+      "id": "log-000276",
+      "at": "2026-08-16T17:43:38.577Z",
+      "userId": "Serge.Muakasa",
+      "userName": "Serge Muakasa",
+      "userEmail": "Serge.Muakasa@ppcdrc.cd",
+      "module": "guest-house",
+      "moduleLabel": "Guest house",
+      "action": "update",
+      "actionLabel": "Modification",
+      "entityType": "guest-house.reservation",
+      "entityId": "02f4dfc2-3d22-482e-930d-1fcda9a08acb",
+      "summary": "Statut réservation 02f4dfc2-3d22-482e-930d-1fcda9a08acb → confirmed",
+      "details": "Statut réservation 02f4dfc2-3d22-482e-930d-1fcda9a08acb → confirmed",
+      "before": {
+        "id": "02f4dfc2-3d22-482e-930d-1fcda9a08acb",
+        "numero": "GH-2026-4305",
+        "createdAt": "2026-08-16T17:43:14.158Z",
+        "personName": "Ministre de l interieur",
+        "isAgent": false,
+        "motif": "Drop by to Luozi",
+        "startDate": "2026-08-07",
+        "endDate": "2026-08-09",
+        "status": "pending",
+        "mission": "Drop by to Luozi",
+        "updatedAt": "2026-08-16T17:43:14.158Z"
+      },
+      "after": {
+        "id": "02f4dfc2-3d22-482e-930d-1fcda9a08acb",
+        "numero": "GH-2026-4305",
+        "createdAt": "2026-08-16T17:43:14.158Z",
+        "personName": "Ministre de l interieur",
+        "isAgent": false,
+        "motif": "Drop by to Luozi",
+        "startDate": "2026-08-07",
+        "endDate": "2026-08-09",
+        "roomId": "0b0cdc0d-ba79-4f68-8533-c90cad3390cb",
+        "status": "confirmed",
+        "mission": "Drop by to Luozi",
+        "updatedAt": "2026-08-16T17:43:37.090Z"
+      },
+      "undoable": true,
+      "undone": false
+    },
+    {
       "id": "log-000275",
       "at": "2026-08-16T17:43:15.449Z",
       "userId": "Serge.Muakasa",
@@ -27506,5 +27550,5 @@
       }
     }
   ],
-  "nextSeq": 276
+  "nextSeq": 277
 }
