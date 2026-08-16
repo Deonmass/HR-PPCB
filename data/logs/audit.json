@@ -1,6 +1,36 @@
 {
   "entries": [
     {
+      "id": "log-000322",
+      "at": "2026-08-16T18:16:19.853Z",
+      "userId": "Serge.Muakasa",
+      "userName": "Serge Muakasa",
+      "userEmail": "Serge.Muakasa@ppcdrc.cd",
+      "module": "guest-house",
+      "moduleLabel": "Guest house",
+      "action": "create",
+      "actionLabel": "Création",
+      "entityType": "guest-house.reservation",
+      "entityId": "df887ad1-e107-46ee-891b-244065c7d192",
+      "summary": "Création réservation Tony - Camera surveillance",
+      "details": "Création réservation Tony - Camera surveillance",
+      "after": {
+        "id": "df887ad1-e107-46ee-891b-244065c7d192",
+        "numero": "GH-2026-4327",
+        "createdAt": "2026-08-16T18:16:17.957Z",
+        "personName": "Tony - Camera surveillance",
+        "isAgent": false,
+        "motif": "Mission au village pour camera surveillance",
+        "startDate": "2026-07-10",
+        "endDate": "2026-07-15",
+        "status": "pending",
+        "mission": "Mission au village pour camera surveillance",
+        "updatedAt": "2026-08-16T18:16:17.957Z"
+      },
+      "undoable": true,
+      "undone": false
+    },
+    {
       "id": "log-000321",
       "at": "2026-08-16T18:13:53.046Z",
       "userId": "Serge.Muakasa",
@@ -29187,5 +29217,5 @@
       }
     }
   ],
-  "nextSeq": 322
+  "nextSeq": 323
 }
