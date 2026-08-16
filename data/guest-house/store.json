@@ -724,8 +724,9 @@
       "motif": "Blasting mission to the plant",
       "startDate": "2026-07-30",
       "endDate": "2026-07-31",
-      "status": "pending",
-      "updatedAt": "2026-08-16T19:30:33.488Z"
+      "roomId": "2ef11cfa-1396-4c82-ac99-85b12d6093be",
+      "status": "confirmed",
+      "updatedAt": "2026-08-16T19:30:54.838Z"
     },
     {
       "id": "281d229e-2f68-41b2-980e-b9ba42e6f744",
@@ -25210,6 +25211,17 @@
     }
   ],
   "passages": [
+    {
+      "id": "52d3e113-9975-4d4e-bb4a-069ee3dea7f2",
+      "roomId": "2ef11cfa-1396-4c82-ac99-85b12d6093be",
+      "reservationId": "be284b03-3975-424d-b19c-10fd46ad696f",
+      "numero": "GH-2026-4357",
+      "personName": "Felly Mpongo",
+      "motif": "Blasting mission to the plant",
+      "startDate": "2026-07-30",
+      "endDate": "2026-07-31",
+      "checkedInAt": "2026-08-16T19:30:54.838Z"
+    },
     {
       "id": "56287c92-79e7-4452-9b24-25a7ec43b3a3",
       "roomId": "8b14162d-ae3b-49a5-bcb6-812c2d8d5b5b",
