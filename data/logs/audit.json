@@ -1,6 +1,50 @@
 {
   "entries": [
     {
+      "id": "log-000332",
+      "at": "2026-08-16T18:25:42.288Z",
+      "userId": "Serge.Muakasa",
+      "userName": "Serge Muakasa",
+      "userEmail": "Serge.Muakasa@ppcdrc.cd",
+      "module": "guest-house",
+      "moduleLabel": "Guest house",
+      "action": "update",
+      "actionLabel": "Modification",
+      "entityType": "guest-house.reservation",
+      "entityId": "fc56f543-ecfc-4c98-a15c-3729f5843aa3",
+      "summary": "Statut réservation fc56f543-ecfc-4c98-a15c-3729f5843aa3 → confirmed",
+      "details": "Statut réservation fc56f543-ecfc-4c98-a15c-3729f5843aa3 → confirmed",
+      "before": {
+        "id": "fc56f543-ecfc-4c98-a15c-3729f5843aa3",
+        "numero": "GH-2026-4331",
+        "createdAt": "2026-08-16T18:25:24.956Z",
+        "personName": "MALONDA PHUATI FRANCIS",
+        "matricule": "70000152",
+        "isAgent": true,
+        "motif": "Mission to the plant - asset audit",
+        "startDate": "2026-07-14",
+        "endDate": "2026-07-21",
+        "status": "pending",
+        "updatedAt": "2026-08-16T18:25:24.956Z"
+      },
+      "after": {
+        "id": "fc56f543-ecfc-4c98-a15c-3729f5843aa3",
+        "numero": "GH-2026-4331",
+        "createdAt": "2026-08-16T18:25:24.956Z",
+        "personName": "MALONDA PHUATI FRANCIS",
+        "matricule": "70000152",
+        "isAgent": true,
+        "motif": "Mission to the plant - asset audit",
+        "startDate": "2026-07-14",
+        "endDate": "2026-07-21",
+        "roomId": "873277c8-cfe8-4e40-af16-61f1a3f4c273",
+        "status": "confirmed",
+        "updatedAt": "2026-08-16T18:25:40.691Z"
+      },
+      "undoable": true,
+      "undone": false
+    },
+    {
       "id": "log-000331",
       "at": "2026-08-16T18:25:26.234Z",
       "userId": "Serge.Muakasa",
@@ -29532,5 +29576,5 @@
       }
     }
   ],
-  "nextSeq": 332
+  "nextSeq": 333
 }
