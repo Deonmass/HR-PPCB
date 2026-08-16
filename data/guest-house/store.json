@@ -716,6 +716,19 @@
   ],
   "reservations": [
     {
+      "id": "141d09fd-52eb-4e74-9922-c06b21b99fcd",
+      "numero": "GH-2026-4307",
+      "createdAt": "2026-08-16T17:47:08.562Z",
+      "personName": "Loxea Visiter",
+      "isAgent": false,
+      "motif": "Drop by to Muanda",
+      "startDate": "2026-08-10",
+      "endDate": "2026-08-10",
+      "status": "pending",
+      "mission": "Drop by to Muanda",
+      "updatedAt": "2026-08-16T17:47:08.562Z"
+    },
+    {
       "id": "54c45a78-bfa9-4c86-8172-fe6be74111c2",
       "numero": "GH-2026-4306",
       "createdAt": "2026-08-16T17:45:22.657Z",
@@ -41318,5 +41331,5 @@
       "checkedOutAt": "2025-09-24T12:00:00.000Z"
     }
   ],
-  "nextReservationSeq": 4307
+  "nextReservationSeq": 4308
 }
