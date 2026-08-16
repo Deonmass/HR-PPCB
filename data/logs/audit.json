@@ -1,6 +1,50 @@
 {
   "entries": [
     {
+      "id": "log-000359",
+      "at": "2026-08-16T18:51:26.527Z",
+      "userId": "Serge.Muakasa",
+      "userName": "Serge Muakasa",
+      "userEmail": "Serge.Muakasa@ppcdrc.cd",
+      "module": "guest-house",
+      "moduleLabel": "Guest house",
+      "action": "update",
+      "actionLabel": "Modification",
+      "entityType": "guest-house.reservation",
+      "entityId": "649d30ff-e690-49e3-9c2f-c9e37d472a8f",
+      "summary": "Statut réservation 649d30ff-e690-49e3-9c2f-c9e37d472a8f → confirmed",
+      "details": "Statut réservation 649d30ff-e690-49e3-9c2f-c9e37d472a8f → confirmed",
+      "before": {
+        "id": "649d30ff-e690-49e3-9c2f-c9e37d472a8f",
+        "numero": "GH-2026-4344",
+        "createdAt": "2026-08-16T18:50:59.955Z",
+        "personName": "BABALA MATWAN ANTOINE",
+        "matricule": "70000291",
+        "isAgent": true,
+        "motif": "Meeting to the plant",
+        "startDate": "2026-07-23",
+        "endDate": "2026-07-26",
+        "status": "pending",
+        "updatedAt": "2026-08-16T18:50:59.955Z"
+      },
+      "after": {
+        "id": "649d30ff-e690-49e3-9c2f-c9e37d472a8f",
+        "numero": "GH-2026-4344",
+        "createdAt": "2026-08-16T18:50:59.955Z",
+        "personName": "BABALA MATWAN ANTOINE",
+        "matricule": "70000291",
+        "isAgent": true,
+        "motif": "Meeting to the plant",
+        "startDate": "2026-07-23",
+        "endDate": "2026-07-26",
+        "roomId": "7dbc2817-6744-4ae5-8827-0961bd7aa54a",
+        "status": "confirmed",
+        "updatedAt": "2026-08-16T18:51:25.296Z"
+      },
+      "undoable": true,
+      "undone": false
+    },
+    {
       "id": "log-000358",
       "at": "2026-08-16T18:51:01.188Z",
       "userId": "Serge.Muakasa",
@@ -30488,5 +30532,5 @@
       }
     }
   ],
-  "nextSeq": 359
+  "nextSeq": 360
 }
