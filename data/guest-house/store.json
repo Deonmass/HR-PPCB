@@ -724,8 +724,9 @@
       "motif": "Blasting mission to the plant",
       "startDate": "2026-07-30",
       "endDate": "2026-07-31",
-      "status": "pending",
-      "updatedAt": "2026-08-16T19:33:51.659Z"
+      "roomId": "12ee1ff4-eb03-4592-b1da-589006209e77",
+      "status": "confirmed",
+      "updatedAt": "2026-08-16T19:34:13.284Z"
     },
     {
       "id": "b17f5d88-f39f-4be8-8617-f3538cf4bced",
@@ -25249,6 +25250,17 @@
     }
   ],
   "passages": [
+    {
+      "id": "fe05e2f3-1279-441c-99f7-5ccb5172daef",
+      "roomId": "12ee1ff4-eb03-4592-b1da-589006209e77",
+      "reservationId": "29153bf4-d6da-43bb-8b1c-0ce2440f6f2b",
+      "numero": "GH-2026-4360",
+      "personName": "Yannick - Afridex",
+      "motif": "Blasting mission to the plant",
+      "startDate": "2026-07-30",
+      "endDate": "2026-07-31",
+      "checkedInAt": "2026-08-16T19:34:13.284Z"
+    },
     {
       "id": "99edfb02-17c7-424f-98d7-49f02e12bcb8",
       "roomId": "d9ec3499-ad6d-4215-8ef9-c20a4f6b1714",
