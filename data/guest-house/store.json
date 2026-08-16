@@ -724,9 +724,10 @@
       "motif": "From Muanda to Kinshasa",
       "startDate": "2026-08-13",
       "endDate": "2026-08-13",
-      "status": "pending",
+      "roomId": "2ef11cfa-1396-4c82-ac99-85b12d6093be",
+      "status": "confirmed",
       "mission": "From Muanda to Kinshasa",
-      "updatedAt": "2026-08-16T17:55:10.479Z"
+      "updatedAt": "2026-08-16T17:55:26.390Z"
     },
     {
       "id": "5f4775cf-4b6f-4b2a-a7de-a082aac36de2",
@@ -24638,6 +24639,17 @@
     }
   ],
   "passages": [
+    {
+      "id": "59730452-1d76-49b4-ae51-245d5b813aad",
+      "roomId": "2ef11cfa-1396-4c82-ac99-85b12d6093be",
+      "reservationId": "239420c6-5f52-4886-b293-98be0cbe2afd",
+      "numero": "GH-2026-4315",
+      "personName": "Loxea Visiter",
+      "motif": "From Muanda to Kinshasa",
+      "startDate": "2026-08-13",
+      "endDate": "2026-08-13",
+      "checkedInAt": "2026-08-16T17:55:26.390Z"
+    },
     {
       "id": "607bceb4-9a76-46f3-9db6-677d8bb30fa5",
       "roomId": "8b14162d-ae3b-49a5-bcb6-812c2d8d5b5b",
