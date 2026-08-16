@@ -1,6 +1,36 @@
 {
   "entries": [
     {
+      "id": "log-000293",
+      "at": "2026-08-16T17:54:33.990Z",
+      "userId": "Serge.Muakasa",
+      "userName": "Serge Muakasa",
+      "userEmail": "Serge.Muakasa@ppcdrc.cd",
+      "module": "guest-house",
+      "moduleLabel": "Guest house",
+      "action": "create",
+      "actionLabel": "Création",
+      "entityType": "guest-house.reservation",
+      "entityId": "5f4775cf-4b6f-4b2a-a7de-a082aac36de2",
+      "summary": "Création réservation Loxea Visiter",
+      "details": "Création réservation Loxea Visiter",
+      "after": {
+        "id": "5f4775cf-4b6f-4b2a-a7de-a082aac36de2",
+        "numero": "GH-2026-4314",
+        "createdAt": "2026-08-16T17:54:32.375Z",
+        "personName": "Loxea Visiter",
+        "isAgent": false,
+        "motif": "From Muanda to Kinshasa",
+        "startDate": "2026-08-13",
+        "endDate": "2026-08-13",
+        "status": "pending",
+        "mission": "From Muanda to Kinshasa",
+        "updatedAt": "2026-08-16T17:54:32.375Z"
+      },
+      "undoable": true,
+      "undone": false
+    },
+    {
       "id": "log-000292",
       "at": "2026-08-16T17:53:35.952Z",
       "userId": "Serge.Muakasa",
@@ -28142,5 +28172,5 @@
       }
     }
   ],
-  "nextSeq": 293
+  "nextSeq": 294
 }
