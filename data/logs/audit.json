@@ -1,6 +1,50 @@
 {
   "entries": [
     {
+      "id": "log-000302",
+      "at": "2026-08-16T17:59:02.015Z",
+      "userId": "Serge.Muakasa",
+      "userName": "Serge Muakasa",
+      "userEmail": "Serge.Muakasa@ppcdrc.cd",
+      "module": "guest-house",
+      "moduleLabel": "Guest house",
+      "action": "update",
+      "actionLabel": "Modification",
+      "entityType": "guest-house.reservation",
+      "entityId": "90ceecb8-edfc-4131-a17c-f85fbd913d14",
+      "summary": "Statut réservation 90ceecb8-edfc-4131-a17c-f85fbd913d14 → confirmed",
+      "details": "Statut réservation 90ceecb8-edfc-4131-a17c-f85fbd913d14 → confirmed",
+      "before": {
+        "id": "90ceecb8-edfc-4131-a17c-f85fbd913d14",
+        "numero": "GH-2026-4318",
+        "createdAt": "2026-08-16T17:58:26.550Z",
+        "personName": "Driver Jean Pierre - KPMG",
+        "isAgent": false,
+        "motif": "Team work with Transformer to the plant",
+        "startDate": "2026-08-13",
+        "endDate": "2026-08-14",
+        "status": "pending",
+        "mission": "Team work with Transformer to the plant",
+        "updatedAt": "2026-08-16T17:58:26.550Z"
+      },
+      "after": {
+        "id": "90ceecb8-edfc-4131-a17c-f85fbd913d14",
+        "numero": "GH-2026-4318",
+        "createdAt": "2026-08-16T17:58:26.550Z",
+        "personName": "Driver Jean Pierre - KPMG",
+        "isAgent": false,
+        "motif": "Team work with Transformer to the plant",
+        "startDate": "2026-08-13",
+        "endDate": "2026-08-14",
+        "roomId": "85c3d598-623c-402f-9053-e43840e24325",
+        "status": "confirmed",
+        "mission": "Team work with Transformer to the plant",
+        "updatedAt": "2026-08-16T17:59:00.418Z"
+      },
+      "undoable": true,
+      "undone": false
+    },
+    {
       "id": "log-000301",
       "at": "2026-08-16T17:58:28.134Z",
       "userId": "Serge.Muakasa",
@@ -28468,5 +28512,5 @@
       }
     }
   ],
-  "nextSeq": 302
+  "nextSeq": 303
 }
