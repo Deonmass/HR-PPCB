@@ -1,6 +1,48 @@
 {
   "entries": [
     {
+      "id": "log-000399",
+      "at": "2026-08-16T19:23:55.678Z",
+      "userId": "Serge.Muakasa",
+      "userName": "Serge Muakasa",
+      "userEmail": "Serge.Muakasa@ppcdrc.cd",
+      "module": "guest-house",
+      "moduleLabel": "Guest house",
+      "action": "update",
+      "actionLabel": "Modification",
+      "entityType": "guest-house.reservation",
+      "entityId": "0b2095a6-1b4d-4882-bf56-7ec9975b6a74",
+      "summary": "Modification réservation 0b2095a6-1b4d-4882-bf56-7ec9975b6a74",
+      "details": "Modification réservation 0b2095a6-1b4d-4882-bf56-7ec9975b6a74",
+      "before": {
+        "id": "0b2095a6-1b4d-4882-bf56-7ec9975b6a74",
+        "numero": "GH-2026-4354",
+        "createdAt": "2026-08-16T19:16:14.529Z",
+        "personName": "Kalaa Mpinga Assistant 2",
+        "isAgent": false,
+        "motif": "Tour in Zamba for PPC Zamba Project",
+        "startDate": "2026-07-26",
+        "endDate": "2026-07-28",
+        "status": "pending",
+        "updatedAt": "2026-08-16T19:16:14.529Z"
+      },
+      "after": {
+        "id": "0b2095a6-1b4d-4882-bf56-7ec9975b6a74",
+        "numero": "GH-2026-4354",
+        "createdAt": "2026-08-16T19:16:14.529Z",
+        "personName": "TSASA NKONGO PAUL",
+        "matricule": "70000144",
+        "isAgent": true,
+        "motif": "Mission to the plant - reception Deep port visitors from muanda",
+        "startDate": "2026-07-29",
+        "endDate": "2026-07-30",
+        "status": "pending",
+        "updatedAt": "2026-08-16T19:23:54.026Z"
+      },
+      "undoable": true,
+      "undone": false
+    },
+    {
       "id": "log-000398",
       "at": "2026-08-16T19:22:57.079Z",
       "userId": "Serge.Muakasa",
@@ -31931,5 +31973,5 @@
       }
     }
   ],
-  "nextSeq": 399
+  "nextSeq": 400
 }
