@@ -724,9 +724,10 @@
       "motif": "Mission to the plant for Heavy mobile equipment with Mining Mgr",
       "startDate": "2026-08-15",
       "endDate": "2026-08-18",
-      "status": "pending",
+      "roomId": "d9ec3499-ad6d-4215-8ef9-c20a4f6b1714",
+      "status": "confirmed",
       "mission": "Mission to the plant for Heavy mobile equipment with Mining Mgr",
-      "updatedAt": "2026-08-16T18:02:27.290Z"
+      "updatedAt": "2026-08-16T18:02:46.687Z"
     },
     {
       "id": "2afc955d-4cd4-417a-8bb2-cec004cde832",
@@ -24722,6 +24723,17 @@
     }
   ],
   "passages": [
+    {
+      "id": "3dd6ea98-b98c-45b4-a6f9-9739996a42a4",
+      "roomId": "d9ec3499-ad6d-4215-8ef9-c20a4f6b1714",
+      "reservationId": "be99f1bd-7417-48c4-9c1c-0d5b80a2bafe",
+      "numero": "GH-2026-4321",
+      "personName": "Inspector Ministere Transport",
+      "motif": "Mission to the plant for Heavy mobile equipment with Mining Mgr",
+      "startDate": "2026-08-15",
+      "endDate": "2026-08-18",
+      "checkedInAt": "2026-08-16T18:02:46.687Z"
+    },
     {
       "id": "a619e082-aff1-46a7-9743-969e235c14a6",
       "roomId": "2ef11cfa-1396-4c82-ac99-85b12d6093be",
