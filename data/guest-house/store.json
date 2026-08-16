@@ -724,9 +724,10 @@
       "motif": "Team work with Transformer to the plant",
       "startDate": "2026-08-13",
       "endDate": "2026-08-14",
-      "status": "pending",
+      "roomId": "85c3d598-623c-402f-9053-e43840e24325",
+      "status": "confirmed",
       "mission": "Team work with Transformer to the plant",
-      "updatedAt": "2026-08-16T17:58:26.550Z"
+      "updatedAt": "2026-08-16T17:59:00.418Z"
     },
     {
       "id": "3a34da5c-3ad1-4f3d-8d7e-4c3ac121ccfb",
@@ -24680,6 +24681,17 @@
     }
   ],
   "passages": [
+    {
+      "id": "da303d28-a9c7-4614-8734-cdc16ff647c0",
+      "roomId": "85c3d598-623c-402f-9053-e43840e24325",
+      "reservationId": "90ceecb8-edfc-4131-a17c-f85fbd913d14",
+      "numero": "GH-2026-4318",
+      "personName": "Driver Jean Pierre - KPMG",
+      "motif": "Team work with Transformer to the plant",
+      "startDate": "2026-08-13",
+      "endDate": "2026-08-14",
+      "checkedInAt": "2026-08-16T17:59:00.418Z"
+    },
     {
       "id": "fcfa02da-33a4-49f4-9c36-eddf9884460b",
       "roomId": "0b0cdc0d-ba79-4f68-8533-c90cad3390cb",
