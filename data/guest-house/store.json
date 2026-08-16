@@ -724,9 +724,10 @@
       "motif": "Mission to the plant for Crystal Mount Challenge",
       "startDate": "2026-08-03",
       "endDate": "2026-08-05",
-      "status": "pending",
+      "roomId": "85c3d598-623c-402f-9053-e43840e24325",
+      "status": "confirmed",
       "mission": "Mission to the plant for Crystal Mount Challenge",
-      "updatedAt": "2026-08-16T17:33:29.808Z"
+      "updatedAt": "2026-08-16T17:33:48.677Z"
     },
     {
       "id": "b9feee3f-d785-4368-826f-083040c941d4",
@@ -24441,6 +24442,17 @@
     }
   ],
   "passages": [
+    {
+      "id": "e0b9c5a0-7a6e-4d35-be97-7e67ec4931be",
+      "roomId": "85c3d598-623c-402f-9053-e43840e24325",
+      "reservationId": "2bc6107c-78e4-4aed-bacf-a518aa45a829",
+      "numero": "GH-2026-4301",
+      "personName": "Lumbumba Vea",
+      "motif": "Mission to the plant for Crystal Mount Challenge",
+      "startDate": "2026-08-03",
+      "endDate": "2026-08-05",
+      "checkedInAt": "2026-08-16T17:33:48.677Z"
+    },
     {
       "id": "ef0ee1e2-fe42-4eba-b735-bde88d633304",
       "roomId": "12ee1ff4-eb03-4592-b1da-589006209e77",
