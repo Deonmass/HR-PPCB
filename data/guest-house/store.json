@@ -724,9 +724,10 @@
       "motif": "Mission to the Plant for the shade",
       "startDate": "2026-08-04",
       "endDate": "2026-08-04",
-      "status": "pending",
+      "roomId": "7dbc2817-6744-4ae5-8827-0961bd7aa54a",
+      "status": "confirmed",
       "mission": "Mission to the Plant for the shade",
-      "updatedAt": "2026-08-16T17:37:35.438Z"
+      "updatedAt": "2026-08-16T17:38:06.148Z"
     },
     {
       "id": "2bc6107c-78e4-4aed-bacf-a518aa45a829",
@@ -24455,6 +24456,17 @@
     }
   ],
   "passages": [
+    {
+      "id": "1d5ab0a6-4004-4be9-b4b5-bef78d560325",
+      "roomId": "7dbc2817-6744-4ae5-8827-0961bd7aa54a",
+      "reservationId": "3b6facee-d19c-4867-9fe8-dcd34df706fa",
+      "numero": "GH-2026-4302",
+      "personName": "Yves Sakiema",
+      "motif": "Mission to the Plant for the shade",
+      "startDate": "2026-08-04",
+      "endDate": "2026-08-04",
+      "checkedInAt": "2026-08-16T17:38:06.148Z"
+    },
     {
       "id": "e0b9c5a0-7a6e-4d35-be97-7e67ec4931be",
       "roomId": "85c3d598-623c-402f-9053-e43840e24325",
