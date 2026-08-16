@@ -725,8 +725,9 @@
       "motif": "Clan nanga meeting",
       "startDate": "2026-07-23",
       "endDate": "2026-07-28",
-      "status": "pending",
-      "updatedAt": "2026-08-16T18:48:44.830Z"
+      "roomId": "ed91c14e-915f-4d22-971c-fd4bb7feb33e",
+      "status": "confirmed",
+      "updatedAt": "2026-08-16T18:49:00.528Z"
     },
     {
       "id": "6f9a3102-4ca0-4fb5-ada3-8ff6193f929f",
@@ -25019,6 +25020,18 @@
     }
   ],
   "passages": [
+    {
+      "id": "ea08e0c5-31a2-4d5e-963d-2c446de7e012",
+      "roomId": "ed91c14e-915f-4d22-971c-fd4bb7feb33e",
+      "reservationId": "558538cd-8099-4f86-8293-ce3418031860",
+      "numero": "GH-2026-4343",
+      "personName": "MUTOMBO NTALAJA ACHILLE",
+      "matricule": "70000180",
+      "motif": "Clan nanga meeting",
+      "startDate": "2026-07-23",
+      "endDate": "2026-07-28",
+      "checkedInAt": "2026-08-16T18:49:00.528Z"
+    },
     {
       "id": "2c755939-d5f1-4477-b901-00d75c656584",
       "roomId": "cfdfa27e-7353-401d-9090-1a3ca1c1fc80",
