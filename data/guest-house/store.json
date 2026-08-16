@@ -716,6 +716,20 @@
   ],
   "reservations": [
     {
+      "id": "9655711d-149e-44c5-a012-e3ad7eb22d59",
+      "numero": "GH-2026-4295",
+      "createdAt": "2026-08-16T17:19:37.071Z",
+      "personName": "Jean Pierre",
+      "isAgent": false,
+      "motif": "Asset audit to the Plant",
+      "startDate": "2026-08-01",
+      "endDate": "2026-08-16",
+      "status": "pending",
+      "company": "CPM",
+      "mission": "Asset Audit to the Plant",
+      "updatedAt": "2026-08-16T17:19:37.071Z"
+    },
+    {
       "id": "f9f7a800-050f-462f-98db-a159f85f849c",
       "numero": "GH-2026-4294",
       "createdAt": "2026-08-16T17:18:35.838Z",
@@ -41009,5 +41023,5 @@
       "checkedOutAt": "2025-09-24T12:00:00.000Z"
     }
   ],
-  "nextReservationSeq": 4295
+  "nextReservationSeq": 4296
 }
