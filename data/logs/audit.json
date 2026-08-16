@@ -1,6 +1,48 @@
 {
   "entries": [
     {
+      "id": "log-000413",
+      "at": "2026-08-16T19:34:14.600Z",
+      "userId": "Serge.Muakasa",
+      "userName": "Serge Muakasa",
+      "userEmail": "Serge.Muakasa@ppcdrc.cd",
+      "module": "guest-house",
+      "moduleLabel": "Guest house",
+      "action": "update",
+      "actionLabel": "Modification",
+      "entityType": "guest-house.reservation",
+      "entityId": "29153bf4-d6da-43bb-8b1c-0ce2440f6f2b",
+      "summary": "Statut réservation 29153bf4-d6da-43bb-8b1c-0ce2440f6f2b → confirmed",
+      "details": "Statut réservation 29153bf4-d6da-43bb-8b1c-0ce2440f6f2b → confirmed",
+      "before": {
+        "id": "29153bf4-d6da-43bb-8b1c-0ce2440f6f2b",
+        "numero": "GH-2026-4360",
+        "createdAt": "2026-08-16T19:33:51.659Z",
+        "personName": "Yannick - Afridex",
+        "isAgent": false,
+        "motif": "Blasting mission to the plant",
+        "startDate": "2026-07-30",
+        "endDate": "2026-07-31",
+        "status": "pending",
+        "updatedAt": "2026-08-16T19:33:51.659Z"
+      },
+      "after": {
+        "id": "29153bf4-d6da-43bb-8b1c-0ce2440f6f2b",
+        "numero": "GH-2026-4360",
+        "createdAt": "2026-08-16T19:33:51.659Z",
+        "personName": "Yannick - Afridex",
+        "isAgent": false,
+        "motif": "Blasting mission to the plant",
+        "startDate": "2026-07-30",
+        "endDate": "2026-07-31",
+        "roomId": "12ee1ff4-eb03-4592-b1da-589006209e77",
+        "status": "confirmed",
+        "updatedAt": "2026-08-16T19:34:13.284Z"
+      },
+      "undoable": true,
+      "undone": false
+    },
+    {
       "id": "log-000412",
       "at": "2026-08-16T19:33:52.930Z",
       "userId": "Serge.Muakasa",
@@ -32442,5 +32484,5 @@
       }
     }
   ],
-  "nextSeq": 413
+  "nextSeq": 414
 }
