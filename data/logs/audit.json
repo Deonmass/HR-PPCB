@@ -1,6 +1,48 @@
 {
   "entries": [
     {
+      "id": "log-000384",
+      "at": "2026-08-16T19:11:28.360Z",
+      "userId": "Serge.Muakasa",
+      "userName": "Serge Muakasa",
+      "userEmail": "Serge.Muakasa@ppcdrc.cd",
+      "module": "guest-house",
+      "moduleLabel": "Guest house",
+      "action": "update",
+      "actionLabel": "Modification",
+      "entityType": "guest-house.reservation",
+      "entityId": "51971d69-f9cd-44cb-9285-76822b378772",
+      "summary": "Statut réservation 51971d69-f9cd-44cb-9285-76822b378772 → confirmed",
+      "details": "Statut réservation 51971d69-f9cd-44cb-9285-76822b378772 → confirmed",
+      "before": {
+        "id": "51971d69-f9cd-44cb-9285-76822b378772",
+        "numero": "GH-2026-4351",
+        "createdAt": "2026-08-16T19:06:26.964Z",
+        "personName": "Kalaa Mpinga",
+        "isAgent": false,
+        "motif": "Board Meeting",
+        "startDate": "2026-07-27",
+        "endDate": "2026-07-28",
+        "status": "pending",
+        "updatedAt": "2026-08-16T19:10:56.166Z"
+      },
+      "after": {
+        "id": "51971d69-f9cd-44cb-9285-76822b378772",
+        "numero": "GH-2026-4351",
+        "createdAt": "2026-08-16T19:06:26.964Z",
+        "personName": "Kalaa Mpinga",
+        "isAgent": false,
+        "motif": "Board Meeting",
+        "startDate": "2026-07-27",
+        "endDate": "2026-07-28",
+        "roomId": "2ffc7bc3-4bfc-4a10-94c6-aa7fe1f89aa0",
+        "status": "confirmed",
+        "updatedAt": "2026-08-16T19:11:27.070Z"
+      },
+      "undoable": true,
+      "undone": false
+    },
+    {
       "id": "log-000383",
       "at": "2026-08-16T19:10:57.376Z",
       "userId": "Serge.Muakasa",
@@ -31390,5 +31432,5 @@
       }
     }
   ],
-  "nextSeq": 384
+  "nextSeq": 385
 }
