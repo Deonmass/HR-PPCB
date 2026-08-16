@@ -724,9 +724,10 @@
       "motif": "Plant Mgr Mission to the Village",
       "startDate": "2026-08-09",
       "endDate": "2026-08-09",
-      "status": "pending",
+      "roomId": "85c3d598-623c-402f-9053-e43840e24325",
+      "status": "confirmed",
       "mission": "Plant Mgr Mission to the Village",
-      "updatedAt": "2026-08-16T17:45:22.657Z"
+      "updatedAt": "2026-08-16T17:45:42.522Z"
     },
     {
       "id": "02f4dfc2-3d22-482e-930d-1fcda9a08acb",
@@ -24512,6 +24513,17 @@
     }
   ],
   "passages": [
+    {
+      "id": "a4514506-62e1-4d25-b1ac-524de8daa8f4",
+      "roomId": "85c3d598-623c-402f-9053-e43840e24325",
+      "reservationId": "54c45a78-bfa9-4c86-8172-fe6be74111c2",
+      "numero": "GH-2026-4306",
+      "personName": "Driver Claude (andrew)",
+      "motif": "Plant Mgr Mission to the Village",
+      "startDate": "2026-08-09",
+      "endDate": "2026-08-09",
+      "checkedInAt": "2026-08-16T17:45:42.522Z"
+    },
     {
       "id": "6a6b515e-97f2-45da-b321-81e55ba54e74",
       "roomId": "0b0cdc0d-ba79-4f68-8533-c90cad3390cb",
