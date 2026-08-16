@@ -1,6 +1,50 @@
 {
   "entries": [
     {
+      "id": "log-000284",
+      "at": "2026-08-16T17:48:47.723Z",
+      "userId": "Serge.Muakasa",
+      "userName": "Serge Muakasa",
+      "userEmail": "Serge.Muakasa@ppcdrc.cd",
+      "module": "guest-house",
+      "moduleLabel": "Guest house",
+      "action": "update",
+      "actionLabel": "Modification",
+      "entityType": "guest-house.reservation",
+      "entityId": "fc4ff7be-818b-45aa-b772-618118b1c4a3",
+      "summary": "Statut réservation fc4ff7be-818b-45aa-b772-618118b1c4a3 → confirmed",
+      "details": "Statut réservation fc4ff7be-818b-45aa-b772-618118b1c4a3 → confirmed",
+      "before": {
+        "id": "fc4ff7be-818b-45aa-b772-618118b1c4a3",
+        "numero": "GH-2026-4309",
+        "createdAt": "2026-08-16T17:48:28.090Z",
+        "personName": "Loxea Visiter",
+        "isAgent": false,
+        "motif": "Drop by to Muanda",
+        "startDate": "2026-08-10",
+        "endDate": "2026-08-10",
+        "status": "pending",
+        "mission": "Drop by to Muanda",
+        "updatedAt": "2026-08-16T17:48:28.090Z"
+      },
+      "after": {
+        "id": "fc4ff7be-818b-45aa-b772-618118b1c4a3",
+        "numero": "GH-2026-4309",
+        "createdAt": "2026-08-16T17:48:28.090Z",
+        "personName": "Loxea Visiter",
+        "isAgent": false,
+        "motif": "Drop by to Muanda",
+        "startDate": "2026-08-10",
+        "endDate": "2026-08-10",
+        "roomId": "2ef11cfa-1396-4c82-ac99-85b12d6093be",
+        "status": "confirmed",
+        "mission": "Drop by to Muanda",
+        "updatedAt": "2026-08-16T17:48:46.145Z"
+      },
+      "undoable": true,
+      "undone": false
+    },
+    {
       "id": "log-000283",
       "at": "2026-08-16T17:48:29.423Z",
       "userId": "Serge.Muakasa",
@@ -27802,5 +27846,5 @@
       }
     }
   ],
-  "nextSeq": 284
+  "nextSeq": 285
 }
