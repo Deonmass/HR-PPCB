@@ -724,9 +724,10 @@
       "motif": "Team work with Transformer to the plant",
       "startDate": "2026-08-13",
       "endDate": "2026-08-14",
-      "status": "pending",
+      "roomId": "0b0cdc0d-ba79-4f68-8533-c90cad3390cb",
+      "status": "confirmed",
       "mission": "Team work with Transformer to the plant",
-      "updatedAt": "2026-08-16T17:57:25.113Z"
+      "updatedAt": "2026-08-16T17:57:45.035Z"
     },
     {
       "id": "7c65176d-20d2-4bad-a0e7-3818ea1de585",
@@ -24666,6 +24667,17 @@
     }
   ],
   "passages": [
+    {
+      "id": "fcfa02da-33a4-49f4-9c36-eddf9884460b",
+      "roomId": "0b0cdc0d-ba79-4f68-8533-c90cad3390cb",
+      "reservationId": "3a34da5c-3ad1-4f3d-8d7e-4c3ac121ccfb",
+      "numero": "GH-2026-4317",
+      "personName": "Nathacha - KMPG",
+      "motif": "Team work with Transformer to the plant",
+      "startDate": "2026-08-13",
+      "endDate": "2026-08-14",
+      "checkedInAt": "2026-08-16T17:57:45.035Z"
+    },
     {
       "id": "6801ab17-858e-43b6-9821-f3c4dee9d1ef",
       "roomId": "d9ec3499-ad6d-4215-8ef9-c20a4f6b1714",
