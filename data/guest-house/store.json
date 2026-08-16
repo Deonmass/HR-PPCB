@@ -716,6 +716,18 @@
   ],
   "reservations": [
     {
+      "id": "6d2493b0-ba33-4796-86dd-01c328c4f412",
+      "numero": "GH-2026-4330",
+      "createdAt": "2026-08-16T18:22:54.952Z",
+      "personName": "Thunga - FARDC",
+      "isAgent": false,
+      "motif": "Blasting assistance",
+      "startDate": "2026-07-13",
+      "endDate": "2026-07-13",
+      "status": "pending",
+      "updatedAt": "2026-08-16T18:22:54.952Z"
+    },
+    {
       "id": "acb86405-5eec-4bca-8192-8173f9cfd3f5",
       "numero": "GH-2026-4329",
       "createdAt": "2026-08-16T18:21:28.044Z",
@@ -41896,5 +41908,5 @@
       "checkedOutAt": "2025-09-24T12:00:00.000Z"
     }
   ],
-  "nextReservationSeq": 4330
+  "nextReservationSeq": 4331
 }
