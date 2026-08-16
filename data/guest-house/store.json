@@ -724,9 +724,10 @@
       "motif": "Mission to the plant with the project Mgr",
       "startDate": "2026-07-01",
       "endDate": "2026-07-02",
-      "status": "pending",
+      "roomId": "7dbc2817-6744-4ae5-8827-0961bd7aa54a",
+      "status": "confirmed",
       "mission": "Mission to the plant with the project Mgr",
-      "updatedAt": "2026-08-16T18:11:42.363Z"
+      "updatedAt": "2026-08-16T18:11:58.444Z"
     },
     {
       "id": "4a823311-05c8-4c49-8fba-9173cc47c52d",
@@ -24780,6 +24781,17 @@
     }
   ],
   "passages": [
+    {
+      "id": "225ffe05-6707-4e40-9126-d377f50a908e",
+      "roomId": "7dbc2817-6744-4ae5-8827-0961bd7aa54a",
+      "reservationId": "40180f50-27a2-4f53-8626-05e309bbc483",
+      "numero": "GH-2026-4325",
+      "personName": "Robert",
+      "motif": "Mission to the plant with the project Mgr",
+      "startDate": "2026-07-01",
+      "endDate": "2026-07-02",
+      "checkedInAt": "2026-08-16T18:11:58.444Z"
+    },
     {
       "id": "5bb27d5f-1841-439e-9924-fc45dc3b759c",
       "roomId": "cfdfa27e-7353-401d-9090-1a3ca1c1fc80",
