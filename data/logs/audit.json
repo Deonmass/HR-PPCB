@@ -1,6 +1,52 @@
 {
   "entries": [
     {
+      "id": "log-000260",
+      "at": "2026-08-16T17:25:08.138Z",
+      "userId": "Serge.Muakasa",
+      "userName": "Serge Muakasa",
+      "userEmail": "Serge.Muakasa@ppcdrc.cd",
+      "module": "guest-house",
+      "moduleLabel": "Guest house",
+      "action": "update",
+      "actionLabel": "Modification",
+      "entityType": "guest-house.reservation",
+      "entityId": "057c03a3-b094-4978-8f2d-b9636d970234",
+      "summary": "Statut réservation 057c03a3-b094-4978-8f2d-b9636d970234 → confirmed",
+      "details": "Statut réservation 057c03a3-b094-4978-8f2d-b9636d970234 → confirmed",
+      "before": {
+        "id": "057c03a3-b094-4978-8f2d-b9636d970234",
+        "numero": "GH-2026-4297",
+        "createdAt": "2026-08-16T17:24:44.908Z",
+        "personName": "MIKINDO KYANGWI PAUL SAMSON",
+        "matricule": "70000302",
+        "isAgent": true,
+        "motif": "Induction mission to the plant",
+        "startDate": "2026-08-01",
+        "endDate": "2026-08-06",
+        "status": "pending",
+        "mission": "From Lubudi to the plant",
+        "updatedAt": "2026-08-16T17:24:44.908Z"
+      },
+      "after": {
+        "id": "057c03a3-b094-4978-8f2d-b9636d970234",
+        "numero": "GH-2026-4297",
+        "createdAt": "2026-08-16T17:24:44.908Z",
+        "personName": "MIKINDO KYANGWI PAUL SAMSON",
+        "matricule": "70000302",
+        "isAgent": true,
+        "motif": "Induction mission to the plant",
+        "startDate": "2026-08-01",
+        "endDate": "2026-08-06",
+        "roomId": "d9ec3499-ad6d-4215-8ef9-c20a4f6b1714",
+        "status": "confirmed",
+        "mission": "From Lubudi to the plant",
+        "updatedAt": "2026-08-16T17:25:06.021Z"
+      },
+      "undoable": true,
+      "undone": false
+    },
+    {
       "id": "log-000259",
       "at": "2026-08-16T17:24:46.716Z",
       "userId": "Serge.Muakasa",
@@ -26903,5 +26949,5 @@
       }
     }
   ],
-  "nextSeq": 260
+  "nextSeq": 261
 }
