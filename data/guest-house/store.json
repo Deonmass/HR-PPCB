@@ -716,6 +716,18 @@
   ],
   "reservations": [
     {
+      "id": "982aef79-4a9e-40a5-8968-2b691012aa8b",
+      "numero": "GH-2026-4340",
+      "createdAt": "2026-08-16T18:42:36.636Z",
+      "personName": "Georgina - CPM",
+      "isAgent": false,
+      "motif": "Asset audit mission to the plant and village",
+      "startDate": "2026-07-21",
+      "endDate": "2026-07-22",
+      "status": "pending",
+      "updatedAt": "2026-08-16T18:42:36.636Z"
+    },
+    {
       "id": "5545183e-7657-484f-b460-86e8a2417170",
       "numero": "GH-2026-4339",
       "createdAt": "2026-08-16T18:40:47.586Z",
@@ -42138,5 +42150,5 @@
       "checkedOutAt": "2025-09-24T12:00:00.000Z"
     }
   ],
-  "nextReservationSeq": 4340
+  "nextReservationSeq": 4341
 }
