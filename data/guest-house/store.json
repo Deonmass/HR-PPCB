@@ -724,9 +724,10 @@
       "motif": "Drop by to Luozi",
       "startDate": "2026-08-07",
       "endDate": "2026-08-09",
-      "status": "pending",
+      "roomId": "3d273d81-0642-4fac-b424-a54146ad7acc",
+      "status": "confirmed",
       "mission": "Drop by to Luozi",
-      "updatedAt": "2026-08-16T17:42:24.542Z"
+      "updatedAt": "2026-08-16T17:42:42.458Z"
     },
     {
       "id": "1dd19d8e-2b11-4a4f-b307-cd8c671cfc9d",
@@ -24484,6 +24485,17 @@
     }
   ],
   "passages": [
+    {
+      "id": "008fbbdc-7cac-43a6-8c94-e8058e172861",
+      "roomId": "3d273d81-0642-4fac-b424-a54146ad7acc",
+      "reservationId": "796d5878-3c39-4e8e-9157-17fa4c75c78b",
+      "numero": "GH-2026-4304",
+      "personName": "Ministre de l interieur",
+      "motif": "Drop by to Luozi",
+      "startDate": "2026-08-07",
+      "endDate": "2026-08-09",
+      "checkedInAt": "2026-08-16T17:42:42.458Z"
+    },
     {
       "id": "75578dc6-6870-4338-89a6-970fcb20a4ac",
       "roomId": "ed91c14e-915f-4d22-971c-fd4bb7feb33e",
