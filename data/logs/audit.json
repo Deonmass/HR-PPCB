@@ -1,6 +1,36 @@
 {
   "entries": [
     {
+      "id": "log-000251",
+      "at": "2026-08-16T17:15:49.613Z",
+      "userId": "Serge.Muakasa",
+      "userName": "Serge Muakasa",
+      "userEmail": "Serge.Muakasa@ppcdrc.cd",
+      "module": "guest-house",
+      "moduleLabel": "Guest house",
+      "action": "create",
+      "actionLabel": "Création",
+      "entityType": "guest-house.reservation",
+      "entityId": "4351af3b-e5d6-45b7-b095-b19b98c2d67a",
+      "summary": "Création réservation Francois du bois",
+      "details": "Création réservation Francois du bois",
+      "after": {
+        "id": "4351af3b-e5d6-45b7-b095-b19b98c2d67a",
+        "numero": "GH-2026-4293",
+        "createdAt": "2026-08-16T17:15:47.911Z",
+        "personName": "Francois du bois",
+        "isAgent": false,
+        "motif": "hébergement",
+        "startDate": "2026-08-02",
+        "endDate": "2026-08-16",
+        "status": "pending",
+        "mission": "Mission de maintenance à l'usine",
+        "updatedAt": "2026-08-16T17:15:47.911Z"
+      },
+      "undoable": true,
+      "undone": false
+    },
+    {
       "id": "log-000250",
       "at": "2026-08-15T09:38:30.907Z",
       "userId": "admin",
@@ -26567,5 +26597,5 @@
       }
     }
   ],
-  "nextSeq": 251
+  "nextSeq": 252
 }
