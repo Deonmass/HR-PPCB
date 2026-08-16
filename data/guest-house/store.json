@@ -724,9 +724,10 @@
       "motif": "Mission au village pour camera surveillance",
       "startDate": "2026-07-10",
       "endDate": "2026-07-15",
-      "status": "pending",
+      "roomId": "8b14162d-ae3b-49a5-bcb6-812c2d8d5b5b",
+      "status": "confirmed",
       "mission": "Mission au village pour camera surveillance",
-      "updatedAt": "2026-08-16T18:16:17.957Z"
+      "updatedAt": "2026-08-16T18:16:41.935Z"
     },
     {
       "id": "6fc54286-d6cc-49e5-add8-86ec7ea55e06",
@@ -24808,6 +24809,17 @@
     }
   ],
   "passages": [
+    {
+      "id": "f682e9c1-904d-4d94-9f84-cf42b82fb528",
+      "roomId": "8b14162d-ae3b-49a5-bcb6-812c2d8d5b5b",
+      "reservationId": "df887ad1-e107-46ee-891b-244065c7d192",
+      "numero": "GH-2026-4327",
+      "personName": "Tony - Camera surveillance",
+      "motif": "Mission au village pour camera surveillance",
+      "startDate": "2026-07-10",
+      "endDate": "2026-07-15",
+      "checkedInAt": "2026-08-16T18:16:41.935Z"
+    },
     {
       "id": "93588a39-b60b-47bd-8f87-e89f0e9d29ae",
       "roomId": "d9ec3499-ad6d-4215-8ef9-c20a4f6b1714",
