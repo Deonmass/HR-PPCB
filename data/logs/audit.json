@@ -1,6 +1,48 @@
 {
   "entries": [
     {
+      "id": "log-000355",
+      "at": "2026-08-16T18:45:25.989Z",
+      "userId": "Serge.Muakasa",
+      "userName": "Serge Muakasa",
+      "userEmail": "Serge.Muakasa@ppcdrc.cd",
+      "module": "guest-house",
+      "moduleLabel": "Guest house",
+      "action": "update",
+      "actionLabel": "Modification",
+      "entityType": "guest-house.reservation",
+      "entityId": "6f9a3102-4ca0-4fb5-ada3-8ff6193f929f",
+      "summary": "Statut réservation 6f9a3102-4ca0-4fb5-ada3-8ff6193f929f → confirmed",
+      "details": "Statut réservation 6f9a3102-4ca0-4fb5-ada3-8ff6193f929f → confirmed",
+      "before": {
+        "id": "6f9a3102-4ca0-4fb5-ada3-8ff6193f929f",
+        "numero": "GH-2026-4342",
+        "createdAt": "2026-08-16T18:44:59.404Z",
+        "personName": "Yves Sakiema",
+        "isAgent": false,
+        "motif": "Mission to the plant - Shade",
+        "startDate": "2026-07-22",
+        "endDate": "2026-07-22",
+        "status": "pending",
+        "updatedAt": "2026-08-16T18:44:59.404Z"
+      },
+      "after": {
+        "id": "6f9a3102-4ca0-4fb5-ada3-8ff6193f929f",
+        "numero": "GH-2026-4342",
+        "createdAt": "2026-08-16T18:44:59.404Z",
+        "personName": "Yves Sakiema",
+        "isAgent": false,
+        "motif": "Mission to the plant - Shade",
+        "startDate": "2026-07-22",
+        "endDate": "2026-07-22",
+        "roomId": "cfdfa27e-7353-401d-9090-1a3ca1c1fc80",
+        "status": "confirmed",
+        "updatedAt": "2026-08-16T18:45:24.404Z"
+      },
+      "undoable": true,
+      "undone": false
+    },
+    {
       "id": "log-000354",
       "at": "2026-08-16T18:45:01.114Z",
       "userId": "Serge.Muakasa",
@@ -30342,5 +30384,5 @@
       }
     }
   ],
-  "nextSeq": 355
+  "nextSeq": 356
 }
