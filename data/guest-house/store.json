@@ -716,6 +716,20 @@
   ],
   "reservations": [
     {
+      "id": "f9f7a800-050f-462f-98db-a159f85f849c",
+      "numero": "GH-2026-4294",
+      "createdAt": "2026-08-16T17:18:35.838Z",
+      "personName": "Georgina CPM",
+      "isAgent": false,
+      "motif": "Asset audit to the Plant",
+      "startDate": "2026-08-01",
+      "endDate": "2026-08-16",
+      "status": "pending",
+      "company": "CPM",
+      "mission": "Asset Audit to the Plant",
+      "updatedAt": "2026-08-16T17:18:35.838Z"
+    },
+    {
       "id": "4351af3b-e5d6-45b7-b095-b19b98c2d67a",
       "numero": "GH-2026-4293",
       "createdAt": "2026-08-16T17:15:47.911Z",
@@ -40983,5 +40997,5 @@
       "checkedOutAt": "2025-09-24T12:00:00.000Z"
     }
   ],
-  "nextReservationSeq": 4294
+  "nextReservationSeq": 4295
 }
