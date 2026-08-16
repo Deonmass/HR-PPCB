@@ -725,8 +725,9 @@
       "motif": "Exco meeting to the plant",
       "startDate": "2026-07-25",
       "endDate": "2026-07-28",
-      "status": "pending",
-      "updatedAt": "2026-08-16T19:03:00.123Z"
+      "roomId": "3d273d81-0642-4fac-b424-a54146ad7acc",
+      "status": "confirmed",
+      "updatedAt": "2026-08-16T19:03:34.080Z"
     },
     {
       "id": "1c0612a9-59e7-4da7-a010-ce3c263e71eb",
@@ -25089,6 +25090,18 @@
     }
   ],
   "passages": [
+    {
+      "id": "b643ce04-19f7-4f4a-992c-6dbbab16f432",
+      "roomId": "3d273d81-0642-4fac-b424-a54146ad7acc",
+      "reservationId": "44c55fb4-2c4d-4a0a-bfc7-39e740007f8e",
+      "numero": "GH-2026-4348",
+      "personName": "MUZADI LUKOKESHA CEDRIC",
+      "matricule": "70000135",
+      "motif": "Exco meeting to the plant",
+      "startDate": "2026-07-25",
+      "endDate": "2026-07-28",
+      "checkedInAt": "2026-08-16T19:03:34.080Z"
+    },
     {
       "id": "90337c64-bf2b-4dfb-b2b1-e24a9d297b3a",
       "roomId": "85c3d598-623c-402f-9053-e43840e24325",
