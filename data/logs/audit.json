@@ -1,6 +1,37 @@
 {
   "entries": [
     {
+      "id": "log-000263",
+      "at": "2026-08-16T17:30:04.384Z",
+      "userId": "Serge.Muakasa",
+      "userName": "Serge Muakasa",
+      "userEmail": "Serge.Muakasa@ppcdrc.cd",
+      "module": "guest-house",
+      "moduleLabel": "Guest house",
+      "action": "create",
+      "actionLabel": "Création",
+      "entityType": "guest-house.reservation",
+      "entityId": "1a2c806f-9fb0-4938-8788-732566b94452",
+      "summary": "Création réservation MAWETE NSOTA EMMANUEL",
+      "details": "Création réservation MAWETE NSOTA EMMANUEL",
+      "after": {
+        "id": "1a2c806f-9fb0-4938-8788-732566b94452",
+        "numero": "GH-2026-4299",
+        "createdAt": "2026-08-16T17:30:02.785Z",
+        "personName": "MAWETE NSOTA EMMANUEL",
+        "matricule": "70000276",
+        "isAgent": true,
+        "motif": "Qty LAB Standby",
+        "startDate": "2026-08-03",
+        "endDate": "2026-08-06",
+        "status": "pending",
+        "mission": "Qty LAB Standby",
+        "updatedAt": "2026-08-16T17:30:02.785Z"
+      },
+      "undoable": true,
+      "undone": false
+    },
+    {
       "id": "log-000262",
       "at": "2026-08-16T17:27:46.242Z",
       "userId": "Serge.Muakasa",
@@ -27026,5 +27057,5 @@
       }
     }
   ],
-  "nextSeq": 263
+  "nextSeq": 264
 }
