@@ -716,6 +716,18 @@
   ],
   "reservations": [
     {
+      "id": "2379562b-ba96-4e74-bd47-7ac1519031bc",
+      "numero": "GH-2026-4335",
+      "createdAt": "2026-08-16T18:32:09.973Z",
+      "personName": "Art Parfait",
+      "isAgent": false,
+      "motif": "Amenagement Maison MD",
+      "startDate": "2026-07-15",
+      "endDate": "2026-07-17",
+      "status": "pending",
+      "updatedAt": "2026-08-16T18:32:09.973Z"
+    },
+    {
       "id": "cc493ff4-f1c9-468c-b769-8d0f412451eb",
       "numero": "GH-2026-4334",
       "createdAt": "2026-08-16T18:29:53.448Z",
@@ -42018,5 +42030,5 @@
       "checkedOutAt": "2025-09-24T12:00:00.000Z"
     }
   ],
-  "nextReservationSeq": 4335
+  "nextReservationSeq": 4336
 }
