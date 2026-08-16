@@ -1,6 +1,47 @@
 {
   "entries": [
     {
+      "id": "log-000407",
+      "at": "2026-08-16T19:30:34.750Z",
+      "userId": "Serge.Muakasa",
+      "userName": "Serge Muakasa",
+      "userEmail": "Serge.Muakasa@ppcdrc.cd",
+      "module": "guest-house",
+      "moduleLabel": "Guest house",
+      "action": "update",
+      "actionLabel": "Modification",
+      "entityType": "guest-house.reservation",
+      "entityId": "be284b03-3975-424d-b19c-10fd46ad696f",
+      "summary": "Modification réservation be284b03-3975-424d-b19c-10fd46ad696f",
+      "details": "Modification réservation be284b03-3975-424d-b19c-10fd46ad696f",
+      "before": {
+        "id": "be284b03-3975-424d-b19c-10fd46ad696f",
+        "numero": "GH-2026-4357",
+        "createdAt": "2026-08-16T19:29:29.400Z",
+        "personName": "Felly Mpongo",
+        "isAgent": false,
+        "motif": "Blasting mission to the plant",
+        "startDate": "2026-07-30",
+        "endDate": "2026-08-01",
+        "status": "pending",
+        "updatedAt": "2026-08-16T19:29:29.400Z"
+      },
+      "after": {
+        "id": "be284b03-3975-424d-b19c-10fd46ad696f",
+        "numero": "GH-2026-4357",
+        "createdAt": "2026-08-16T19:29:29.400Z",
+        "personName": "Felly Mpongo",
+        "isAgent": false,
+        "motif": "Blasting mission to the plant",
+        "startDate": "2026-07-30",
+        "endDate": "2026-07-31",
+        "status": "pending",
+        "updatedAt": "2026-08-16T19:30:33.488Z"
+      },
+      "undoable": true,
+      "undone": false
+    },
+    {
       "id": "log-000406",
       "at": "2026-08-16T19:30:06.783Z",
       "userId": "Serge.Muakasa",
@@ -32227,5 +32268,5 @@
       }
     }
   ],
-  "nextSeq": 407
+  "nextSeq": 408
 }
