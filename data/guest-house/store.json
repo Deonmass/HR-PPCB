@@ -716,6 +716,19 @@
   ],
   "reservations": [
     {
+      "id": "4351af3b-e5d6-45b7-b095-b19b98c2d67a",
+      "numero": "GH-2026-4293",
+      "createdAt": "2026-08-16T17:15:47.911Z",
+      "personName": "Francois du bois",
+      "isAgent": false,
+      "motif": "hébergement",
+      "startDate": "2026-08-02",
+      "endDate": "2026-08-16",
+      "status": "pending",
+      "mission": "Mission de maintenance à l'usine",
+      "updatedAt": "2026-08-16T17:15:47.911Z"
+    },
+    {
       "id": "dc9baa00-63c2-4fb4-a196-d63b606fad34",
       "numero": "GH-2026-4292",
       "createdAt": "2026-07-31T12:20:03.734Z",
@@ -40958,5 +40971,5 @@
       "checkedOutAt": "2025-09-24T12:00:00.000Z"
     }
   ],
-  "nextReservationSeq": 4293
+  "nextReservationSeq": 4294
 }
