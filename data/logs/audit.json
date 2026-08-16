@@ -1,6 +1,48 @@
 {
   "entries": [
     {
+      "id": "log-000414",
+      "at": "2026-08-16T19:34:38.174Z",
+      "userId": "Serge.Muakasa",
+      "userName": "Serge Muakasa",
+      "userEmail": "Serge.Muakasa@ppcdrc.cd",
+      "module": "guest-house",
+      "moduleLabel": "Guest house",
+      "action": "update",
+      "actionLabel": "Modification",
+      "entityType": "guest-house.reservation",
+      "entityId": "b17f5d88-f39f-4be8-8617-f3538cf4bced",
+      "summary": "Statut réservation b17f5d88-f39f-4be8-8617-f3538cf4bced → confirmed",
+      "details": "Statut réservation b17f5d88-f39f-4be8-8617-f3538cf4bced → confirmed",
+      "before": {
+        "id": "b17f5d88-f39f-4be8-8617-f3538cf4bced",
+        "numero": "GH-2026-4359",
+        "createdAt": "2026-08-16T19:33:15.559Z",
+        "personName": "Fardc",
+        "isAgent": false,
+        "motif": "Blasting mission to the plant",
+        "startDate": "2026-07-30",
+        "endDate": "2026-07-31",
+        "status": "pending",
+        "updatedAt": "2026-08-16T19:33:15.559Z"
+      },
+      "after": {
+        "id": "b17f5d88-f39f-4be8-8617-f3538cf4bced",
+        "numero": "GH-2026-4359",
+        "createdAt": "2026-08-16T19:33:15.559Z",
+        "personName": "Fardc",
+        "isAgent": false,
+        "motif": "Blasting mission to the plant",
+        "startDate": "2026-07-30",
+        "endDate": "2026-07-31",
+        "roomId": "0b0cdc0d-ba79-4f68-8533-c90cad3390cb",
+        "status": "confirmed",
+        "updatedAt": "2026-08-16T19:34:36.823Z"
+      },
+      "undoable": true,
+      "undone": false
+    },
+    {
       "id": "log-000413",
       "at": "2026-08-16T19:34:14.600Z",
       "userId": "Serge.Muakasa",
@@ -32484,5 +32526,5 @@
       }
     }
   ],
-  "nextSeq": 414
+  "nextSeq": 415
 }
