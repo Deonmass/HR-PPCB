@@ -1,6 +1,50 @@
 {
   "entries": [
     {
+      "id": "log-000321",
+      "at": "2026-08-16T18:13:53.046Z",
+      "userId": "Serge.Muakasa",
+      "userName": "Serge Muakasa",
+      "userEmail": "Serge.Muakasa@ppcdrc.cd",
+      "module": "guest-house",
+      "moduleLabel": "Guest house",
+      "action": "update",
+      "actionLabel": "Modification",
+      "entityType": "guest-house.reservation",
+      "entityId": "6fc54286-d6cc-49e5-add8-86ec7ea55e06",
+      "summary": "Statut réservation 6fc54286-d6cc-49e5-add8-86ec7ea55e06 → confirmed",
+      "details": "Statut réservation 6fc54286-d6cc-49e5-add8-86ec7ea55e06 → confirmed",
+      "before": {
+        "id": "6fc54286-d6cc-49e5-add8-86ec7ea55e06",
+        "numero": "GH-2026-4326",
+        "createdAt": "2026-08-16T18:13:39.175Z",
+        "personName": "Fabien cameroon",
+        "isAgent": false,
+        "motif": "Mission to the plant",
+        "startDate": "2026-07-01",
+        "endDate": "2026-07-01",
+        "status": "pending",
+        "mission": "Mission to the plant",
+        "updatedAt": "2026-08-16T18:13:39.175Z"
+      },
+      "after": {
+        "id": "6fc54286-d6cc-49e5-add8-86ec7ea55e06",
+        "numero": "GH-2026-4326",
+        "createdAt": "2026-08-16T18:13:39.175Z",
+        "personName": "Fabien cameroon",
+        "isAgent": false,
+        "motif": "Mission to the plant",
+        "startDate": "2026-07-01",
+        "endDate": "2026-07-01",
+        "roomId": "d9ec3499-ad6d-4215-8ef9-c20a4f6b1714",
+        "status": "confirmed",
+        "mission": "Mission to the plant",
+        "updatedAt": "2026-08-16T18:13:51.693Z"
+      },
+      "undoable": true,
+      "undone": false
+    },
+    {
       "id": "log-000320",
       "at": "2026-08-16T18:13:40.484Z",
       "userId": "Serge.Muakasa",
@@ -29143,5 +29187,5 @@
       }
     }
   ],
-  "nextSeq": 321
+  "nextSeq": 322
 }
