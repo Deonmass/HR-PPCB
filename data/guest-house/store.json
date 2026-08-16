@@ -716,6 +716,19 @@
   ],
   "reservations": [
     {
+      "id": "df887ad1-e107-46ee-891b-244065c7d192",
+      "numero": "GH-2026-4327",
+      "createdAt": "2026-08-16T18:16:17.957Z",
+      "personName": "Tony - Camera surveillance",
+      "isAgent": false,
+      "motif": "Mission au village pour camera surveillance",
+      "startDate": "2026-07-10",
+      "endDate": "2026-07-15",
+      "status": "pending",
+      "mission": "Mission au village pour camera surveillance",
+      "updatedAt": "2026-08-16T18:16:17.957Z"
+    },
+    {
       "id": "6fc54286-d6cc-49e5-add8-86ec7ea55e06",
       "numero": "GH-2026-4326",
       "createdAt": "2026-08-16T18:13:39.175Z",
@@ -41822,5 +41835,5 @@
       "checkedOutAt": "2025-09-24T12:00:00.000Z"
     }
   ],
-  "nextReservationSeq": 4327
+  "nextReservationSeq": 4328
 }
