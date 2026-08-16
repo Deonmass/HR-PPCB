@@ -1,6 +1,50 @@
 {
   "entries": [
     {
+      "id": "log-000363",
+      "at": "2026-08-16T18:54:06.242Z",
+      "userId": "Serge.Muakasa",
+      "userName": "Serge Muakasa",
+      "userEmail": "Serge.Muakasa@ppcdrc.cd",
+      "module": "guest-house",
+      "moduleLabel": "Guest house",
+      "action": "update",
+      "actionLabel": "Modification",
+      "entityType": "guest-house.reservation",
+      "entityId": "fd9288a3-4269-4004-9436-1200081127e2",
+      "summary": "Statut réservation fd9288a3-4269-4004-9436-1200081127e2 → confirmed",
+      "details": "Statut réservation fd9288a3-4269-4004-9436-1200081127e2 → confirmed",
+      "before": {
+        "id": "fd9288a3-4269-4004-9436-1200081127e2",
+        "numero": "GH-2026-4345",
+        "createdAt": "2026-08-16T18:52:07.630Z",
+        "personName": "BANGA BANGA APEA ONESIME",
+        "matricule": "70000023",
+        "isAgent": true,
+        "motif": "Mission to the plant",
+        "startDate": "2026-07-23",
+        "endDate": "2026-07-23",
+        "status": "pending",
+        "updatedAt": "2026-08-16T18:52:07.630Z"
+      },
+      "after": {
+        "id": "fd9288a3-4269-4004-9436-1200081127e2",
+        "numero": "GH-2026-4345",
+        "createdAt": "2026-08-16T18:52:07.630Z",
+        "personName": "BANGA BANGA APEA ONESIME",
+        "matricule": "70000023",
+        "isAgent": true,
+        "motif": "Mission to the plant",
+        "startDate": "2026-07-23",
+        "endDate": "2026-07-23",
+        "roomId": "85c3d598-623c-402f-9053-e43840e24325",
+        "status": "confirmed",
+        "updatedAt": "2026-08-16T18:54:05.017Z"
+      },
+      "undoable": true,
+      "undone": false
+    },
+    {
       "id": "log-000362",
       "at": "2026-08-16T18:53:54.232Z",
       "userId": "Serge.Muakasa",
@@ -30619,5 +30663,5 @@
       }
     }
   ],
-  "nextSeq": 363
+  "nextSeq": 364
 }
