@@ -1,6 +1,35 @@
 {
   "entries": [
     {
+      "id": "log-000412",
+      "at": "2026-08-16T19:33:52.930Z",
+      "userId": "Serge.Muakasa",
+      "userName": "Serge Muakasa",
+      "userEmail": "Serge.Muakasa@ppcdrc.cd",
+      "module": "guest-house",
+      "moduleLabel": "Guest house",
+      "action": "create",
+      "actionLabel": "Création",
+      "entityType": "guest-house.reservation",
+      "entityId": "29153bf4-d6da-43bb-8b1c-0ce2440f6f2b",
+      "summary": "Création réservation Yannick - Afridex",
+      "details": "Création réservation Yannick - Afridex",
+      "after": {
+        "id": "29153bf4-d6da-43bb-8b1c-0ce2440f6f2b",
+        "numero": "GH-2026-4360",
+        "createdAt": "2026-08-16T19:33:51.659Z",
+        "personName": "Yannick - Afridex",
+        "isAgent": false,
+        "motif": "Blasting mission to the plant",
+        "startDate": "2026-07-30",
+        "endDate": "2026-07-31",
+        "status": "pending",
+        "updatedAt": "2026-08-16T19:33:51.659Z"
+      },
+      "undoable": true,
+      "undone": false
+    },
+    {
       "id": "log-000411",
       "at": "2026-08-16T19:33:16.936Z",
       "userId": "Serge.Muakasa",
@@ -32413,5 +32442,5 @@
       }
     }
   ],
-  "nextSeq": 412
+  "nextSeq": 413
 }
