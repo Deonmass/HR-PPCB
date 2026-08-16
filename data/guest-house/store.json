@@ -716,6 +716,20 @@
   ],
   "reservations": [
     {
+      "id": "f999aece-ea7b-441e-9074-881699903688",
+      "numero": "GH-2026-4298",
+      "createdAt": "2026-08-16T17:27:23.329Z",
+      "personName": "Jonathan CPM",
+      "isAgent": false,
+      "motif": "Asset audit to the Plant",
+      "startDate": "2026-08-01",
+      "endDate": "2026-08-05",
+      "status": "pending",
+      "company": "CPM",
+      "mission": "Asset Audit to the Plant",
+      "updatedAt": "2026-08-16T17:27:23.329Z"
+    },
+    {
       "id": "057c03a3-b094-4978-8f2d-b9636d970234",
       "numero": "GH-2026-4297",
       "createdAt": "2026-08-16T17:24:44.908Z",
@@ -41088,5 +41102,5 @@
       "checkedOutAt": "2025-09-24T12:00:00.000Z"
     }
   ],
-  "nextReservationSeq": 4298
+  "nextReservationSeq": 4299
 }
