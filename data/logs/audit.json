@@ -1,6 +1,36 @@
 {
   "entries": [
     {
+      "id": "log-000269",
+      "at": "2026-08-16T17:37:37.204Z",
+      "userId": "Serge.Muakasa",
+      "userName": "Serge Muakasa",
+      "userEmail": "Serge.Muakasa@ppcdrc.cd",
+      "module": "guest-house",
+      "moduleLabel": "Guest house",
+      "action": "create",
+      "actionLabel": "Création",
+      "entityType": "guest-house.reservation",
+      "entityId": "3b6facee-d19c-4867-9fe8-dcd34df706fa",
+      "summary": "Création réservation Yves Sakiema",
+      "details": "Création réservation Yves Sakiema",
+      "after": {
+        "id": "3b6facee-d19c-4867-9fe8-dcd34df706fa",
+        "numero": "GH-2026-4302",
+        "createdAt": "2026-08-16T17:37:35.438Z",
+        "personName": "Yves Sakiema",
+        "isAgent": false,
+        "motif": "Mission to the Plant for the shade",
+        "startDate": "2026-08-04",
+        "endDate": "2026-08-04",
+        "status": "pending",
+        "mission": "Mission to the Plant for the shade",
+        "updatedAt": "2026-08-16T17:37:35.438Z"
+      },
+      "undoable": true,
+      "undone": false
+    },
+    {
       "id": "log-000268",
       "at": "2026-08-16T17:33:50.197Z",
       "userId": "Serge.Muakasa",
@@ -27251,5 +27281,5 @@
       }
     }
   ],
-  "nextSeq": 269
+  "nextSeq": 270
 }
