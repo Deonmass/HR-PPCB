@@ -1,6 +1,50 @@
 {
   "entries": [
     {
+      "id": "log-000373",
+      "at": "2026-08-16T19:03:35.285Z",
+      "userId": "Serge.Muakasa",
+      "userName": "Serge Muakasa",
+      "userEmail": "Serge.Muakasa@ppcdrc.cd",
+      "module": "guest-house",
+      "moduleLabel": "Guest house",
+      "action": "update",
+      "actionLabel": "Modification",
+      "entityType": "guest-house.reservation",
+      "entityId": "44c55fb4-2c4d-4a0a-bfc7-39e740007f8e",
+      "summary": "Statut réservation 44c55fb4-2c4d-4a0a-bfc7-39e740007f8e → confirmed",
+      "details": "Statut réservation 44c55fb4-2c4d-4a0a-bfc7-39e740007f8e → confirmed",
+      "before": {
+        "id": "44c55fb4-2c4d-4a0a-bfc7-39e740007f8e",
+        "numero": "GH-2026-4348",
+        "createdAt": "2026-08-16T19:03:00.123Z",
+        "personName": "MUZADI LUKOKESHA CEDRIC",
+        "matricule": "70000135",
+        "isAgent": true,
+        "motif": "Exco meeting to the plant",
+        "startDate": "2026-07-25",
+        "endDate": "2026-07-28",
+        "status": "pending",
+        "updatedAt": "2026-08-16T19:03:00.123Z"
+      },
+      "after": {
+        "id": "44c55fb4-2c4d-4a0a-bfc7-39e740007f8e",
+        "numero": "GH-2026-4348",
+        "createdAt": "2026-08-16T19:03:00.123Z",
+        "personName": "MUZADI LUKOKESHA CEDRIC",
+        "matricule": "70000135",
+        "isAgent": true,
+        "motif": "Exco meeting to the plant",
+        "startDate": "2026-07-25",
+        "endDate": "2026-07-28",
+        "roomId": "3d273d81-0642-4fac-b424-a54146ad7acc",
+        "status": "confirmed",
+        "updatedAt": "2026-08-16T19:03:34.080Z"
+      },
+      "undoable": true,
+      "undone": false
+    },
+    {
       "id": "log-000372",
       "at": "2026-08-16T19:03:01.451Z",
       "userId": "Serge.Muakasa",
@@ -30976,5 +31020,5 @@
       }
     }
   ],
-  "nextSeq": 373
+  "nextSeq": 374
 }
