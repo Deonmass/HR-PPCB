@@ -1,6 +1,36 @@
 {
   "entries": [
     {
+      "id": "log-000287",
+      "at": "2026-08-16T17:52:02.635Z",
+      "userId": "Serge.Muakasa",
+      "userName": "Serge Muakasa",
+      "userEmail": "Serge.Muakasa@ppcdrc.cd",
+      "module": "guest-house",
+      "moduleLabel": "Guest house",
+      "action": "create",
+      "actionLabel": "Création",
+      "entityType": "guest-house.reservation",
+      "entityId": "2447d433-67fe-4be6-b29d-aa21ce73f83b",
+      "summary": "Création réservation Transformer",
+      "details": "Création réservation Transformer",
+      "after": {
+        "id": "2447d433-67fe-4be6-b29d-aa21ce73f83b",
+        "numero": "GH-2026-4311",
+        "createdAt": "2026-08-16T17:52:01.114Z",
+        "personName": "Transformer",
+        "isAgent": false,
+        "motif": "Mission to the plant with Plant team",
+        "startDate": "2026-08-13",
+        "endDate": "2026-08-15",
+        "status": "pending",
+        "mission": "Mission to the plant with Plant team",
+        "updatedAt": "2026-08-16T17:52:01.114Z"
+      },
+      "undoable": true,
+      "undone": false
+    },
+    {
       "id": "log-000286",
       "at": "2026-08-16T17:50:20.717Z",
       "userId": "Serge.Muakasa",
@@ -27920,5 +27950,5 @@
       }
     }
   ],
-  "nextSeq": 287
+  "nextSeq": 288
 }
