@@ -1,6 +1,52 @@
 {
   "entries": [
     {
+      "id": "log-000317",
+      "at": "2026-08-16T18:10:33.675Z",
+      "userId": "Serge.Muakasa",
+      "userName": "Serge Muakasa",
+      "userEmail": "Serge.Muakasa@ppcdrc.cd",
+      "module": "guest-house",
+      "moduleLabel": "Guest house",
+      "action": "update",
+      "actionLabel": "Modification",
+      "entityType": "guest-house.reservation",
+      "entityId": "4a823311-05c8-4c49-8fba-9173cc47c52d",
+      "summary": "Statut réservation 4a823311-05c8-4c49-8fba-9173cc47c52d → confirmed",
+      "details": "Statut réservation 4a823311-05c8-4c49-8fba-9173cc47c52d → confirmed",
+      "before": {
+        "id": "4a823311-05c8-4c49-8fba-9173cc47c52d",
+        "numero": "GH-2026-4324",
+        "createdAt": "2026-08-16T18:10:14.073Z",
+        "personName": "MASSADI GEDEON GEDEON",
+        "matricule": "70000308",
+        "isAgent": true,
+        "motif": "New comer - HR Adm to the plant",
+        "startDate": "2026-07-01",
+        "endDate": "2026-07-18",
+        "status": "pending",
+        "mission": "New comer - HR Adm to the plant",
+        "updatedAt": "2026-08-16T18:10:14.073Z"
+      },
+      "after": {
+        "id": "4a823311-05c8-4c49-8fba-9173cc47c52d",
+        "numero": "GH-2026-4324",
+        "createdAt": "2026-08-16T18:10:14.073Z",
+        "personName": "MASSADI GEDEON GEDEON",
+        "matricule": "70000308",
+        "isAgent": true,
+        "motif": "New comer - HR Adm to the plant",
+        "startDate": "2026-07-01",
+        "endDate": "2026-07-18",
+        "roomId": "cfdfa27e-7353-401d-9090-1a3ca1c1fc80",
+        "status": "confirmed",
+        "mission": "New comer - HR Adm to the plant",
+        "updatedAt": "2026-08-16T18:10:32.365Z"
+      },
+      "undoable": true,
+      "undone": false
+    },
+    {
       "id": "log-000316",
       "at": "2026-08-16T18:10:15.557Z",
       "userId": "Serge.Muakasa",
@@ -28993,5 +29039,5 @@
       }
     }
   ],
-  "nextSeq": 317
+  "nextSeq": 318
 }
