@@ -724,8 +724,9 @@
       "motif": "Asset audit mission to the plant and village",
       "startDate": "2026-07-21",
       "endDate": "2026-07-22",
-      "status": "pending",
-      "updatedAt": "2026-08-16T18:42:36.636Z"
+      "roomId": "0b0cdc0d-ba79-4f68-8533-c90cad3390cb",
+      "status": "confirmed",
+      "updatedAt": "2026-08-16T18:42:58.153Z"
     },
     {
       "id": "5545183e-7657-484f-b460-86e8a2417170",
@@ -24979,6 +24980,17 @@
     }
   ],
   "passages": [
+    {
+      "id": "ad63f82b-50cd-4501-bf37-5e8448787ba8",
+      "roomId": "0b0cdc0d-ba79-4f68-8533-c90cad3390cb",
+      "reservationId": "982aef79-4a9e-40a5-8968-2b691012aa8b",
+      "numero": "GH-2026-4340",
+      "personName": "Georgina - CPM",
+      "motif": "Asset audit mission to the plant and village",
+      "startDate": "2026-07-21",
+      "endDate": "2026-07-22",
+      "checkedInAt": "2026-08-16T18:42:58.153Z"
+    },
     {
       "id": "5f22e8aa-234d-41c8-b760-f65d2371fde2",
       "roomId": "8b14162d-ae3b-49a5-bcb6-812c2d8d5b5b",
