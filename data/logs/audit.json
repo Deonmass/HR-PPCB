@@ -1,6 +1,50 @@
 {
   "entries": [
     {
+      "id": "log-000315",
+      "at": "2026-08-16T18:08:09.871Z",
+      "userId": "Serge.Muakasa",
+      "userName": "Serge Muakasa",
+      "userEmail": "Serge.Muakasa@ppcdrc.cd",
+      "module": "guest-house",
+      "moduleLabel": "Guest house",
+      "action": "update",
+      "actionLabel": "Modification",
+      "entityType": "guest-house.reservation",
+      "entityId": "ef7a0972-330a-45a2-86c0-b38b25ba54e5",
+      "summary": "Statut réservation ef7a0972-330a-45a2-86c0-b38b25ba54e5 → confirmed",
+      "details": "Statut réservation ef7a0972-330a-45a2-86c0-b38b25ba54e5 → confirmed",
+      "before": {
+        "id": "ef7a0972-330a-45a2-86c0-b38b25ba54e5",
+        "numero": "GH-2026-4323",
+        "createdAt": "2026-08-16T18:07:47.410Z",
+        "personName": "Melchoir",
+        "isAgent": false,
+        "motif": "Mission to the plant with the Project Mgr",
+        "startDate": "2026-07-01",
+        "endDate": "2026-07-02",
+        "status": "pending",
+        "mission": "Mission to the plant with the Project Mgr",
+        "updatedAt": "2026-08-16T18:07:47.410Z"
+      },
+      "after": {
+        "id": "ef7a0972-330a-45a2-86c0-b38b25ba54e5",
+        "numero": "GH-2026-4323",
+        "createdAt": "2026-08-16T18:07:47.410Z",
+        "personName": "Melchoir",
+        "isAgent": false,
+        "motif": "Mission to the plant with the Project Mgr",
+        "startDate": "2026-07-01",
+        "endDate": "2026-07-02",
+        "roomId": "3d273d81-0642-4fac-b424-a54146ad7acc",
+        "status": "confirmed",
+        "mission": "Mission to the plant with the Project Mgr",
+        "updatedAt": "2026-08-16T18:08:08.656Z"
+      },
+      "undoable": true,
+      "undone": false
+    },
+    {
       "id": "log-000314",
       "at": "2026-08-16T18:07:48.722Z",
       "userId": "Serge.Muakasa",
@@ -28918,5 +28962,5 @@
       }
     }
   ],
-  "nextSeq": 315
+  "nextSeq": 316
 }
