@@ -716,6 +716,19 @@
   ],
   "reservations": [
     {
+      "id": "ef7a0972-330a-45a2-86c0-b38b25ba54e5",
+      "numero": "GH-2026-4323",
+      "createdAt": "2026-08-16T18:07:47.410Z",
+      "personName": "Melchoir",
+      "isAgent": false,
+      "motif": "Mission to the plant with the Project Mgr",
+      "startDate": "2026-07-01",
+      "endDate": "2026-07-02",
+      "status": "pending",
+      "mission": "Mission to the plant with the Project Mgr",
+      "updatedAt": "2026-08-16T18:07:47.410Z"
+    },
+    {
       "id": "81913863-8409-4571-8ff5-12e98c80a5b2",
       "numero": "GH-2026-4322",
       "createdAt": "2026-08-16T18:04:00.781Z",
@@ -41720,5 +41733,5 @@
       "checkedOutAt": "2025-09-24T12:00:00.000Z"
     }
   ],
-  "nextReservationSeq": 4323
+  "nextReservationSeq": 4324
 }
