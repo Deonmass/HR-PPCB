@@ -1,6 +1,36 @@
 {
   "entries": [
     {
+      "id": "log-000372",
+      "at": "2026-08-16T19:03:01.451Z",
+      "userId": "Serge.Muakasa",
+      "userName": "Serge Muakasa",
+      "userEmail": "Serge.Muakasa@ppcdrc.cd",
+      "module": "guest-house",
+      "moduleLabel": "Guest house",
+      "action": "create",
+      "actionLabel": "Création",
+      "entityType": "guest-house.reservation",
+      "entityId": "44c55fb4-2c4d-4a0a-bfc7-39e740007f8e",
+      "summary": "Création réservation MUZADI LUKOKESHA CEDRIC",
+      "details": "Création réservation MUZADI LUKOKESHA CEDRIC",
+      "after": {
+        "id": "44c55fb4-2c4d-4a0a-bfc7-39e740007f8e",
+        "numero": "GH-2026-4348",
+        "createdAt": "2026-08-16T19:03:00.123Z",
+        "personName": "MUZADI LUKOKESHA CEDRIC",
+        "matricule": "70000135",
+        "isAgent": true,
+        "motif": "Exco meeting to the plant",
+        "startDate": "2026-07-25",
+        "endDate": "2026-07-28",
+        "status": "pending",
+        "updatedAt": "2026-08-16T19:03:00.123Z"
+      },
+      "undoable": true,
+      "undone": false
+    },
+    {
       "id": "log-000371",
       "at": "2026-08-16T19:00:35.872Z",
       "userId": "Serge.Muakasa",
@@ -30946,5 +30976,5 @@
       }
     }
   ],
-  "nextSeq": 372
+  "nextSeq": 373
 }
