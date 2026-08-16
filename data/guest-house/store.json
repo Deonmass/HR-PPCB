@@ -725,9 +725,10 @@
       "motif": "Qty LAB Standby",
       "startDate": "2026-08-03",
       "endDate": "2026-08-06",
-      "status": "pending",
+      "roomId": "0b0cdc0d-ba79-4f68-8533-c90cad3390cb",
+      "status": "confirmed",
       "mission": "Qty LAB Standby",
-      "updatedAt": "2026-08-16T17:30:02.785Z"
+      "updatedAt": "2026-08-16T17:30:34.185Z"
     },
     {
       "id": "f999aece-ea7b-441e-9074-881699903688",
@@ -24413,6 +24414,18 @@
     }
   ],
   "passages": [
+    {
+      "id": "c03547bb-3471-406c-8ac1-7eada3e4d46e",
+      "roomId": "0b0cdc0d-ba79-4f68-8533-c90cad3390cb",
+      "reservationId": "1a2c806f-9fb0-4938-8788-732566b94452",
+      "numero": "GH-2026-4299",
+      "personName": "MAWETE NSOTA EMMANUEL",
+      "matricule": "70000276",
+      "motif": "Qty LAB Standby",
+      "startDate": "2026-08-03",
+      "endDate": "2026-08-06",
+      "checkedInAt": "2026-08-16T17:30:34.185Z"
+    },
     {
       "id": "e737088d-1ed5-44f4-84e7-d49a87a44230",
       "roomId": "e49a08a4-e1db-4824-b8f6-48f1c30c0346",
