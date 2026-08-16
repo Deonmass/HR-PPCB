@@ -1,6 +1,50 @@
 {
   "entries": [
     {
+      "id": "log-000319",
+      "at": "2026-08-16T18:11:59.923Z",
+      "userId": "Serge.Muakasa",
+      "userName": "Serge Muakasa",
+      "userEmail": "Serge.Muakasa@ppcdrc.cd",
+      "module": "guest-house",
+      "moduleLabel": "Guest house",
+      "action": "update",
+      "actionLabel": "Modification",
+      "entityType": "guest-house.reservation",
+      "entityId": "40180f50-27a2-4f53-8626-05e309bbc483",
+      "summary": "Statut réservation 40180f50-27a2-4f53-8626-05e309bbc483 → confirmed",
+      "details": "Statut réservation 40180f50-27a2-4f53-8626-05e309bbc483 → confirmed",
+      "before": {
+        "id": "40180f50-27a2-4f53-8626-05e309bbc483",
+        "numero": "GH-2026-4325",
+        "createdAt": "2026-08-16T18:11:42.363Z",
+        "personName": "Robert",
+        "isAgent": false,
+        "motif": "Mission to the plant with the project Mgr",
+        "startDate": "2026-07-01",
+        "endDate": "2026-07-02",
+        "status": "pending",
+        "mission": "Mission to the plant with the project Mgr",
+        "updatedAt": "2026-08-16T18:11:42.363Z"
+      },
+      "after": {
+        "id": "40180f50-27a2-4f53-8626-05e309bbc483",
+        "numero": "GH-2026-4325",
+        "createdAt": "2026-08-16T18:11:42.363Z",
+        "personName": "Robert",
+        "isAgent": false,
+        "motif": "Mission to the plant with the project Mgr",
+        "startDate": "2026-07-01",
+        "endDate": "2026-07-02",
+        "roomId": "7dbc2817-6744-4ae5-8827-0961bd7aa54a",
+        "status": "confirmed",
+        "mission": "Mission to the plant with the project Mgr",
+        "updatedAt": "2026-08-16T18:11:58.444Z"
+      },
+      "undoable": true,
+      "undone": false
+    },
+    {
       "id": "log-000318",
       "at": "2026-08-16T18:11:44.254Z",
       "userId": "Serge.Muakasa",
@@ -29069,5 +29113,5 @@
       }
     }
   ],
-  "nextSeq": 319
+  "nextSeq": 320
 }
