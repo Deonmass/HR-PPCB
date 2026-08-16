@@ -725,8 +725,9 @@
       "motif": "Mission to the plant",
       "startDate": "2026-07-30",
       "endDate": "2026-07-31",
-      "status": "pending",
-      "updatedAt": "2026-08-16T19:32:01.742Z"
+      "roomId": "d9ec3499-ad6d-4215-8ef9-c20a4f6b1714",
+      "status": "confirmed",
+      "updatedAt": "2026-08-16T19:32:27.397Z"
     },
     {
       "id": "be284b03-3975-424d-b19c-10fd46ad696f",
@@ -25224,6 +25225,18 @@
     }
   ],
   "passages": [
+    {
+      "id": "99edfb02-17c7-424f-98d7-49f02e12bcb8",
+      "roomId": "d9ec3499-ad6d-4215-8ef9-c20a4f6b1714",
+      "reservationId": "d04b28e4-f7f4-486e-8458-e0cc101906a9",
+      "numero": "GH-2026-4358",
+      "personName": "MIKINDO KYANGWI PAUL SAMSON",
+      "matricule": "70000302",
+      "motif": "Mission to the plant",
+      "startDate": "2026-07-30",
+      "endDate": "2026-07-31",
+      "checkedInAt": "2026-08-16T19:32:27.397Z"
+    },
     {
       "id": "52d3e113-9975-4d4e-bb4a-069ee3dea7f2",
       "roomId": "2ef11cfa-1396-4c82-ac99-85b12d6093be",
