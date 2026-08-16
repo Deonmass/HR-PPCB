@@ -1,6 +1,37 @@
 {
   "entries": [
     {
+      "id": "log-000259",
+      "at": "2026-08-16T17:24:46.716Z",
+      "userId": "Serge.Muakasa",
+      "userName": "Serge Muakasa",
+      "userEmail": "Serge.Muakasa@ppcdrc.cd",
+      "module": "guest-house",
+      "moduleLabel": "Guest house",
+      "action": "create",
+      "actionLabel": "Création",
+      "entityType": "guest-house.reservation",
+      "entityId": "057c03a3-b094-4978-8f2d-b9636d970234",
+      "summary": "Création réservation MIKINDO KYANGWI PAUL SAMSON",
+      "details": "Création réservation MIKINDO KYANGWI PAUL SAMSON",
+      "after": {
+        "id": "057c03a3-b094-4978-8f2d-b9636d970234",
+        "numero": "GH-2026-4297",
+        "createdAt": "2026-08-16T17:24:44.908Z",
+        "personName": "MIKINDO KYANGWI PAUL SAMSON",
+        "matricule": "70000302",
+        "isAgent": true,
+        "motif": "Induction mission to the plant",
+        "startDate": "2026-08-01",
+        "endDate": "2026-08-06",
+        "status": "pending",
+        "mission": "From Lubudi to the plant",
+        "updatedAt": "2026-08-16T17:24:44.908Z"
+      },
+      "undoable": true,
+      "undone": false
+    },
+    {
       "id": "log-000258",
       "at": "2026-08-16T17:22:32.662Z",
       "userId": "Serge.Muakasa",
@@ -26872,5 +26903,5 @@
       }
     }
   ],
-  "nextSeq": 259
+  "nextSeq": 260
 }
