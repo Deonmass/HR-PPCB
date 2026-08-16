@@ -1,6 +1,57 @@
 {
   "entries": [
     {
+      "id": "log-000380",
+      "at": "2026-08-16T19:08:15.539Z",
+      "userId": "Serge.Muakasa",
+      "userName": "Serge Muakasa",
+      "userEmail": "Serge.Muakasa@ppcdrc.cd",
+      "module": "guest-house",
+      "moduleLabel": "Guest house",
+      "action": "update",
+      "actionLabel": "Modification",
+      "entityType": "guest-house.reservation",
+      "entityId": "2e36bcc2-ec57-452f-8f04-79f054616715",
+      "summary": "Modification réservation 2e36bcc2-ec57-452f-8f04-79f054616715",
+      "details": "Modification réservation 2e36bcc2-ec57-452f-8f04-79f054616715",
+      "before": {
+        "id": "2e36bcc2-ec57-452f-8f04-79f054616715",
+        "numero": "GH-2026-3658",
+        "createdAt": "2026-07-27T08:00:00.000Z",
+        "personName": "Sud africain",
+        "isAgent": false,
+        "motif": "Séjour (import historique)",
+        "startDate": "2026-07-27",
+        "endDate": "2026-07-28",
+        "roomId": "0b0cdc0d-ba79-4f68-8533-c90cad3390cb",
+        "status": "confirmed",
+        "notes": "Importé depuis All GH passage.xlsx",
+        "source": "history-import",
+        "sourceMonth": "2026-07",
+        "sheetName": "Planning Juillet 26",
+        "updatedAt": "2026-07-28T13:34:24.160Z"
+      },
+      "after": {
+        "id": "2e36bcc2-ec57-452f-8f04-79f054616715",
+        "numero": "GH-2026-3658",
+        "createdAt": "2026-07-27T08:00:00.000Z",
+        "personName": "Sud africain",
+        "isAgent": false,
+        "motif": "Séjour (import historique)",
+        "startDate": "2026-07-26",
+        "endDate": "2026-07-28",
+        "roomId": "0b0cdc0d-ba79-4f68-8533-c90cad3390cb",
+        "status": "confirmed",
+        "notes": "Importé depuis All GH passage.xlsx",
+        "source": "history-import",
+        "sourceMonth": "2026-07",
+        "sheetName": "Planning Juillet 26",
+        "updatedAt": "2026-08-16T19:08:14.145Z"
+      },
+      "undoable": true,
+      "undone": false
+    },
+    {
       "id": "log-000379",
       "at": "2026-08-16T19:06:58.180Z",
       "userId": "Serge.Muakasa",
@@ -31206,5 +31257,5 @@
       }
     }
   ],
-  "nextSeq": 380
+  "nextSeq": 381
 }
