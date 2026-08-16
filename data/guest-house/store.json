@@ -725,9 +725,10 @@
       "motif": "Drop by to Muanda",
       "startDate": "2026-08-06",
       "endDate": "2026-08-08",
-      "status": "pending",
+      "roomId": "ed91c14e-915f-4d22-971c-fd4bb7feb33e",
+      "status": "confirmed",
       "mission": "Drop by to Muanda",
-      "updatedAt": "2026-08-16T17:39:59.940Z"
+      "updatedAt": "2026-08-16T17:40:30.719Z"
     },
     {
       "id": "3b6facee-d19c-4867-9fe8-dcd34df706fa",
@@ -24470,6 +24471,18 @@
     }
   ],
   "passages": [
+    {
+      "id": "75578dc6-6870-4338-89a6-970fcb20a4ac",
+      "roomId": "ed91c14e-915f-4d22-971c-fd4bb7feb33e",
+      "reservationId": "1dd19d8e-2b11-4a4f-b307-cd8c671cfc9d",
+      "numero": "GH-2026-4303",
+      "personName": "EKWALANGA MONGALIKITA BONIFACE",
+      "matricule": "70000085",
+      "motif": "Drop by to Muanda",
+      "startDate": "2026-08-06",
+      "endDate": "2026-08-08",
+      "checkedInAt": "2026-08-16T17:40:30.719Z"
+    },
     {
       "id": "1d5ab0a6-4004-4be9-b4b5-bef78d560325",
       "roomId": "7dbc2817-6744-4ae5-8827-0961bd7aa54a",
