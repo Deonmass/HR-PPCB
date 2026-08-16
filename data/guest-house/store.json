@@ -724,9 +724,10 @@
       "motif": "Mission to the plant with Plant team",
       "startDate": "2026-08-13",
       "endDate": "2026-08-15",
-      "status": "pending",
+      "roomId": "3219d898-ff74-496c-a62e-2295012276ae",
+      "status": "confirmed",
       "mission": "Mission to the plant with Plant team",
-      "updatedAt": "2026-08-16T17:53:20.660Z"
+      "updatedAt": "2026-08-16T17:53:34.682Z"
     },
     {
       "id": "4437a77a-b74c-4eea-b1ec-f84eec637976",
@@ -24610,6 +24611,17 @@
     }
   ],
   "passages": [
+    {
+      "id": "1e0efc6f-9087-4aa2-9c4d-37450d9d5927",
+      "roomId": "3219d898-ff74-496c-a62e-2295012276ae",
+      "reservationId": "bfa0e39e-137b-459b-baba-1f3507686476",
+      "numero": "GH-2026-4313",
+      "personName": "Transformer",
+      "motif": "Mission to the plant with Plant team",
+      "startDate": "2026-08-13",
+      "endDate": "2026-08-15",
+      "checkedInAt": "2026-08-16T17:53:34.682Z"
+    },
     {
       "id": "a9cff2ad-ce86-45d8-9acf-083d734cb8ca",
       "roomId": "ed91c14e-915f-4d22-971c-fd4bb7feb33e",
