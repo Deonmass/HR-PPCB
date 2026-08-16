@@ -1,6 +1,36 @@
 {
   "entries": [
     {
+      "id": "log-000275",
+      "at": "2026-08-16T17:43:15.449Z",
+      "userId": "Serge.Muakasa",
+      "userName": "Serge Muakasa",
+      "userEmail": "Serge.Muakasa@ppcdrc.cd",
+      "module": "guest-house",
+      "moduleLabel": "Guest house",
+      "action": "create",
+      "actionLabel": "Création",
+      "entityType": "guest-house.reservation",
+      "entityId": "02f4dfc2-3d22-482e-930d-1fcda9a08acb",
+      "summary": "Création réservation Ministre de l interieur",
+      "details": "Création réservation Ministre de l interieur",
+      "after": {
+        "id": "02f4dfc2-3d22-482e-930d-1fcda9a08acb",
+        "numero": "GH-2026-4305",
+        "createdAt": "2026-08-16T17:43:14.158Z",
+        "personName": "Ministre de l interieur",
+        "isAgent": false,
+        "motif": "Drop by to Luozi",
+        "startDate": "2026-08-07",
+        "endDate": "2026-08-09",
+        "status": "pending",
+        "mission": "Drop by to Luozi",
+        "updatedAt": "2026-08-16T17:43:14.158Z"
+      },
+      "undoable": true,
+      "undone": false
+    },
+    {
       "id": "log-000274",
       "at": "2026-08-16T17:42:43.915Z",
       "userId": "Serge.Muakasa",
@@ -27476,5 +27506,5 @@
       }
     }
   ],
-  "nextSeq": 275
+  "nextSeq": 276
 }
