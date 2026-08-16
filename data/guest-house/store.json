@@ -724,8 +724,9 @@
       "motif": "Amenagement Maison MD",
       "startDate": "2026-07-15",
       "endDate": "2026-07-17",
-      "status": "pending",
-      "updatedAt": "2026-08-16T18:32:09.973Z"
+      "roomId": "3219d898-ff74-496c-a62e-2295012276ae",
+      "status": "confirmed",
+      "updatedAt": "2026-08-16T18:32:30.002Z"
     },
     {
       "id": "cc493ff4-f1c9-468c-b769-8d0f412451eb",
@@ -24914,6 +24915,17 @@
     }
   ],
   "passages": [
+    {
+      "id": "0e6a2e0e-3ee8-4f9e-8fd1-ab9cbc5b261f",
+      "roomId": "3219d898-ff74-496c-a62e-2295012276ae",
+      "reservationId": "2379562b-ba96-4e74-bd47-7ac1519031bc",
+      "numero": "GH-2026-4335",
+      "personName": "Art Parfait",
+      "motif": "Amenagement Maison MD",
+      "startDate": "2026-07-15",
+      "endDate": "2026-07-17",
+      "checkedInAt": "2026-08-16T18:32:30.002Z"
+    },
     {
       "id": "98b872ce-c2f5-400c-8a95-a986b54051dd",
       "roomId": "7dbc2817-6744-4ae5-8827-0961bd7aa54a",
