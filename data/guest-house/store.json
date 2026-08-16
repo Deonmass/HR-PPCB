@@ -716,6 +716,20 @@
   ],
   "reservations": [
     {
+      "id": "1a2c806f-9fb0-4938-8788-732566b94452",
+      "numero": "GH-2026-4299",
+      "createdAt": "2026-08-16T17:30:02.785Z",
+      "personName": "MAWETE NSOTA EMMANUEL",
+      "matricule": "70000276",
+      "isAgent": true,
+      "motif": "Qty LAB Standby",
+      "startDate": "2026-08-03",
+      "endDate": "2026-08-06",
+      "status": "pending",
+      "mission": "Qty LAB Standby",
+      "updatedAt": "2026-08-16T17:30:02.785Z"
+    },
+    {
       "id": "f999aece-ea7b-441e-9074-881699903688",
       "numero": "GH-2026-4298",
       "createdAt": "2026-08-16T17:27:23.329Z",
@@ -41114,5 +41128,5 @@
       "checkedOutAt": "2025-09-24T12:00:00.000Z"
     }
   ],
-  "nextReservationSeq": 4299
+  "nextReservationSeq": 4300
 }
