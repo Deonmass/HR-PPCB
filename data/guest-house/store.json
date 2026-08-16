@@ -725,8 +725,9 @@
       "motif": "Mission to the plant - reception Deep port visitors from muanda",
       "startDate": "2026-07-29",
       "endDate": "2026-07-30",
-      "status": "pending",
-      "updatedAt": "2026-08-16T19:22:34.262Z"
+      "roomId": "4e4bd694-e96e-4748-a98a-882d842f616e",
+      "status": "confirmed",
+      "updatedAt": "2026-08-16T19:22:55.658Z"
     },
     {
       "id": "0b2095a6-1b4d-4882-bf56-7ec9975b6a74",
@@ -25181,6 +25182,18 @@
     }
   ],
   "passages": [
+    {
+      "id": "3d9495b0-1131-4474-87cf-b88ee8657e43",
+      "roomId": "4e4bd694-e96e-4748-a98a-882d842f616e",
+      "reservationId": "9952283a-ccfe-4387-9480-859aebbb1da4",
+      "numero": "GH-2026-4355",
+      "personName": "BILONDA KAZADI DIANE",
+      "matricule": "70000045",
+      "motif": "Mission to the plant - reception Deep port visitors from muanda",
+      "startDate": "2026-07-29",
+      "endDate": "2026-07-30",
+      "checkedInAt": "2026-08-16T19:22:55.658Z"
+    },
     {
       "id": "715a9291-6166-46e0-b74c-f98576f3c3da",
       "roomId": "cfdfa27e-7353-401d-9090-1a3ca1c1fc80",
