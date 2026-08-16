@@ -1,6 +1,36 @@
 {
   "entries": [
     {
+      "id": "log-000358",
+      "at": "2026-08-16T18:51:01.188Z",
+      "userId": "Serge.Muakasa",
+      "userName": "Serge Muakasa",
+      "userEmail": "Serge.Muakasa@ppcdrc.cd",
+      "module": "guest-house",
+      "moduleLabel": "Guest house",
+      "action": "create",
+      "actionLabel": "Création",
+      "entityType": "guest-house.reservation",
+      "entityId": "649d30ff-e690-49e3-9c2f-c9e37d472a8f",
+      "summary": "Création réservation BABALA MATWAN ANTOINE",
+      "details": "Création réservation BABALA MATWAN ANTOINE",
+      "after": {
+        "id": "649d30ff-e690-49e3-9c2f-c9e37d472a8f",
+        "numero": "GH-2026-4344",
+        "createdAt": "2026-08-16T18:50:59.955Z",
+        "personName": "BABALA MATWAN ANTOINE",
+        "matricule": "70000291",
+        "isAgent": true,
+        "motif": "Meeting to the plant",
+        "startDate": "2026-07-23",
+        "endDate": "2026-07-26",
+        "status": "pending",
+        "updatedAt": "2026-08-16T18:50:59.955Z"
+      },
+      "undoable": true,
+      "undone": false
+    },
+    {
       "id": "log-000357",
       "at": "2026-08-16T18:49:02.329Z",
       "userId": "Serge.Muakasa",
@@ -30458,5 +30488,5 @@
       }
     }
   ],
-  "nextSeq": 358
+  "nextSeq": 359
 }
