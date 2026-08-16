@@ -1,6 +1,52 @@
 {
   "entries": [
     {
+      "id": "log-000262",
+      "at": "2026-08-16T17:27:46.242Z",
+      "userId": "Serge.Muakasa",
+      "userName": "Serge Muakasa",
+      "userEmail": "Serge.Muakasa@ppcdrc.cd",
+      "module": "guest-house",
+      "moduleLabel": "Guest house",
+      "action": "update",
+      "actionLabel": "Modification",
+      "entityType": "guest-house.reservation",
+      "entityId": "f999aece-ea7b-441e-9074-881699903688",
+      "summary": "Statut réservation f999aece-ea7b-441e-9074-881699903688 → confirmed",
+      "details": "Statut réservation f999aece-ea7b-441e-9074-881699903688 → confirmed",
+      "before": {
+        "id": "f999aece-ea7b-441e-9074-881699903688",
+        "numero": "GH-2026-4298",
+        "createdAt": "2026-08-16T17:27:23.329Z",
+        "personName": "Jonathan CPM",
+        "isAgent": false,
+        "motif": "Asset audit to the Plant",
+        "startDate": "2026-08-01",
+        "endDate": "2026-08-05",
+        "status": "pending",
+        "company": "CPM",
+        "mission": "Asset Audit to the Plant",
+        "updatedAt": "2026-08-16T17:27:23.329Z"
+      },
+      "after": {
+        "id": "f999aece-ea7b-441e-9074-881699903688",
+        "numero": "GH-2026-4298",
+        "createdAt": "2026-08-16T17:27:23.329Z",
+        "personName": "Jonathan CPM",
+        "isAgent": false,
+        "motif": "Asset audit to the Plant",
+        "startDate": "2026-08-01",
+        "endDate": "2026-08-05",
+        "roomId": "e49a08a4-e1db-4824-b8f6-48f1c30c0346",
+        "status": "confirmed",
+        "company": "CPM",
+        "mission": "Asset Audit to the Plant",
+        "updatedAt": "2026-08-16T17:27:44.638Z"
+      },
+      "undoable": true,
+      "undone": false
+    },
+    {
       "id": "log-000261",
       "at": "2026-08-16T17:27:24.856Z",
       "userId": "Serge.Muakasa",
@@ -26980,5 +27026,5 @@
       }
     }
   ],
-  "nextSeq": 262
+  "nextSeq": 263
 }
