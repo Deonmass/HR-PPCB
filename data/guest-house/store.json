@@ -725,8 +725,9 @@
       "motif": "Exco meeting to the plant",
       "startDate": "2026-07-25",
       "endDate": "2026-07-28",
-      "status": "pending",
-      "updatedAt": "2026-08-16T19:04:17.670Z"
+      "roomId": "4e4bd694-e96e-4748-a98a-882d842f616e",
+      "status": "confirmed",
+      "updatedAt": "2026-08-16T19:04:37.560Z"
     },
     {
       "id": "44c55fb4-2c4d-4a0a-bfc7-39e740007f8e",
@@ -25103,6 +25104,18 @@
     }
   ],
   "passages": [
+    {
+      "id": "d7b0db52-20b7-458b-880e-83fee4610e78",
+      "roomId": "4e4bd694-e96e-4748-a98a-882d842f616e",
+      "reservationId": "8d170844-2a51-4efb-a878-8bb8c87c8f08",
+      "numero": "GH-2026-4349",
+      "personName": "EWULI SUKA Carine",
+      "matricule": "70000265",
+      "motif": "Exco meeting to the plant",
+      "startDate": "2026-07-25",
+      "endDate": "2026-07-28",
+      "checkedInAt": "2026-08-16T19:04:37.560Z"
+    },
     {
       "id": "b643ce04-19f7-4f4a-992c-6dbbab16f432",
       "roomId": "3d273d81-0642-4fac-b424-a54146ad7acc",
