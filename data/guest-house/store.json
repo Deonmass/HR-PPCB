@@ -725,8 +725,9 @@
       "motif": "Mission to the plant",
       "startDate": "2026-07-24",
       "endDate": "2026-07-26",
-      "status": "pending",
-      "updatedAt": "2026-08-16T18:58:55.975Z"
+      "roomId": "85c3d598-623c-402f-9053-e43840e24325",
+      "status": "confirmed",
+      "updatedAt": "2026-08-16T18:59:10.066Z"
     },
     {
       "id": "6c3e19c5-f1b5-4ac9-8ebf-d9339ff30773",
@@ -25075,6 +25076,18 @@
     }
   ],
   "passages": [
+    {
+      "id": "90337c64-bf2b-4dfb-b2b1-e24a9d297b3a",
+      "roomId": "85c3d598-623c-402f-9053-e43840e24325",
+      "reservationId": "1c0612a9-59e7-4da7-a010-ce3c263e71eb",
+      "numero": "GH-2026-4347",
+      "personName": "KILENDA BANGI ALI",
+      "matricule": "70000176",
+      "motif": "Mission to the plant",
+      "startDate": "2026-07-24",
+      "endDate": "2026-07-26",
+      "checkedInAt": "2026-08-16T18:59:10.066Z"
+    },
     {
       "id": "029f6e12-a9d8-453f-82c1-3310c58354ae",
       "roomId": "d9ec3499-ad6d-4215-8ef9-c20a4f6b1714",
