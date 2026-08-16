@@ -1,6 +1,36 @@
 {
   "entries": [
     {
+      "id": "log-000301",
+      "at": "2026-08-16T17:58:28.134Z",
+      "userId": "Serge.Muakasa",
+      "userName": "Serge Muakasa",
+      "userEmail": "Serge.Muakasa@ppcdrc.cd",
+      "module": "guest-house",
+      "moduleLabel": "Guest house",
+      "action": "create",
+      "actionLabel": "Création",
+      "entityType": "guest-house.reservation",
+      "entityId": "90ceecb8-edfc-4131-a17c-f85fbd913d14",
+      "summary": "Création réservation Driver Jean Pierre - KPMG",
+      "details": "Création réservation Driver Jean Pierre - KPMG",
+      "after": {
+        "id": "90ceecb8-edfc-4131-a17c-f85fbd913d14",
+        "numero": "GH-2026-4318",
+        "createdAt": "2026-08-16T17:58:26.550Z",
+        "personName": "Driver Jean Pierre - KPMG",
+        "isAgent": false,
+        "motif": "Team work with Transformer to the plant",
+        "startDate": "2026-08-13",
+        "endDate": "2026-08-14",
+        "status": "pending",
+        "mission": "Team work with Transformer to the plant",
+        "updatedAt": "2026-08-16T17:58:26.550Z"
+      },
+      "undoable": true,
+      "undone": false
+    },
+    {
       "id": "log-000300",
       "at": "2026-08-16T17:57:46.655Z",
       "userId": "Serge.Muakasa",
@@ -28438,5 +28468,5 @@
       }
     }
   ],
-  "nextSeq": 301
+  "nextSeq": 302
 }
