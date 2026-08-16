@@ -724,8 +724,9 @@
       "motif": "Board Meeting",
       "startDate": "2026-07-27",
       "endDate": "2026-07-28",
-      "status": "pending",
-      "updatedAt": "2026-08-16T19:10:56.166Z"
+      "roomId": "2ffc7bc3-4bfc-4a10-94c6-aa7fe1f89aa0",
+      "status": "confirmed",
+      "updatedAt": "2026-08-16T19:11:27.070Z"
     },
     {
       "id": "f0c2a9a4-7a78-488d-8ad5-2514e76a9800",
@@ -25128,6 +25129,17 @@
     }
   ],
   "passages": [
+    {
+      "id": "e1f2fd09-9451-499c-92f8-4d4b6ebb6d2e",
+      "roomId": "2ffc7bc3-4bfc-4a10-94c6-aa7fe1f89aa0",
+      "reservationId": "51971d69-f9cd-44cb-9285-76822b378772",
+      "numero": "GH-2026-4351",
+      "personName": "Kalaa Mpinga",
+      "motif": "Board Meeting",
+      "startDate": "2026-07-27",
+      "endDate": "2026-07-28",
+      "checkedInAt": "2026-08-16T19:11:27.070Z"
+    },
     {
       "id": "d7b0db52-20b7-458b-880e-83fee4610e78",
       "roomId": "4e4bd694-e96e-4748-a98a-882d842f616e",
