@@ -724,8 +724,9 @@
       "motif": "Asset audit to the plant and village",
       "startDate": "2026-07-21",
       "endDate": "2026-07-22",
-      "status": "pending",
-      "updatedAt": "2026-08-16T18:40:47.586Z"
+      "roomId": "8b14162d-ae3b-49a5-bcb6-812c2d8d5b5b",
+      "status": "confirmed",
+      "updatedAt": "2026-08-16T18:41:20.075Z"
     },
     {
       "id": "19e213b4-1a8c-4b8d-8b51-ef3a5f73c677",
@@ -24966,6 +24967,17 @@
     }
   ],
   "passages": [
+    {
+      "id": "5f22e8aa-234d-41c8-b760-f65d2371fde2",
+      "roomId": "8b14162d-ae3b-49a5-bcb6-812c2d8d5b5b",
+      "reservationId": "5545183e-7657-484f-b460-86e8a2417170",
+      "numero": "GH-2026-4339",
+      "personName": "Jonathan Ekwalanga - CPM",
+      "motif": "Asset audit to the plant and village",
+      "startDate": "2026-07-21",
+      "endDate": "2026-07-22",
+      "checkedInAt": "2026-08-16T18:41:20.075Z"
+    },
     {
       "id": "e474968d-746a-4aa8-b52a-a413caa3dcc8",
       "roomId": "85c3d598-623c-402f-9053-e43840e24325",
