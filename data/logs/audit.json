@@ -1,6 +1,35 @@
 {
   "entries": [
     {
+      "id": "log-000389",
+      "at": "2026-08-16T19:15:48.351Z",
+      "userId": "Serge.Muakasa",
+      "userName": "Serge Muakasa",
+      "userEmail": "Serge.Muakasa@ppcdrc.cd",
+      "module": "guest-house",
+      "moduleLabel": "Guest house",
+      "action": "create",
+      "actionLabel": "Création",
+      "entityType": "guest-house.reservation",
+      "entityId": "4b4037d2-e514-47eb-bbc1-2dd4e662db8f",
+      "summary": "Création réservation Kalaa Mpinga Assistance",
+      "details": "Création réservation Kalaa Mpinga Assistance",
+      "after": {
+        "id": "4b4037d2-e514-47eb-bbc1-2dd4e662db8f",
+        "numero": "GH-2026-4353",
+        "createdAt": "2026-08-16T19:15:46.974Z",
+        "personName": "Kalaa Mpinga Assistance",
+        "isAgent": false,
+        "motif": "Tour in Zamba for PPC Zamba Project",
+        "startDate": "2026-07-26",
+        "endDate": "2026-07-28",
+        "status": "pending",
+        "updatedAt": "2026-08-16T19:15:46.974Z"
+      },
+      "undoable": true,
+      "undone": false
+    },
+    {
       "id": "log-000388",
       "at": "2026-08-16T19:14:52.335Z",
       "userId": "Serge.Muakasa",
@@ -31589,5 +31618,5 @@
       }
     }
   ],
-  "nextSeq": 389
+  "nextSeq": 390
 }
