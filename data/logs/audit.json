@@ -1,6 +1,35 @@
 {
   "entries": [
     {
+      "id": "log-000344",
+      "at": "2026-08-16T18:35:25.996Z",
+      "userId": "Serge.Muakasa",
+      "userName": "Serge Muakasa",
+      "userEmail": "Serge.Muakasa@ppcdrc.cd",
+      "module": "guest-house",
+      "moduleLabel": "Guest house",
+      "action": "create",
+      "actionLabel": "Création",
+      "entityType": "guest-house.reservation",
+      "entityId": "431274f7-7fc9-478a-a9a9-393efaef2a2a",
+      "summary": "Création réservation Art Parfait",
+      "details": "Création réservation Art Parfait",
+      "after": {
+        "id": "431274f7-7fc9-478a-a9a9-393efaef2a2a",
+        "numero": "GH-2026-4337",
+        "createdAt": "2026-08-16T18:35:24.436Z",
+        "personName": "Art Parfait",
+        "isAgent": false,
+        "motif": "Amenagement de la maison du MD",
+        "startDate": "2026-07-15",
+        "endDate": "2026-07-17",
+        "status": "pending",
+        "updatedAt": "2026-08-16T18:35:24.436Z"
+      },
+      "undoable": true,
+      "undone": false
+    },
+    {
       "id": "log-000343",
       "at": "2026-08-16T18:34:28.305Z",
       "userId": "Serge.Muakasa",
@@ -29958,5 +29987,5 @@
       }
     }
   ],
-  "nextSeq": 344
+  "nextSeq": 345
 }
