@@ -724,10 +724,11 @@
       "motif": "Asset audit to the Plant",
       "startDate": "2026-08-01",
       "endDate": "2026-08-16",
-      "status": "pending",
+      "roomId": "4e4bd694-e96e-4748-a98a-882d842f616e",
+      "status": "confirmed",
       "company": "CPM",
       "mission": "Asset Audit to the Plant",
-      "updatedAt": "2026-08-16T17:18:35.838Z"
+      "updatedAt": "2026-08-16T17:18:57.734Z"
     },
     {
       "id": "4351af3b-e5d6-45b7-b095-b19b98c2d67a",
@@ -24338,6 +24339,17 @@
     }
   ],
   "passages": [
+    {
+      "id": "3adb93c3-b530-46cb-b067-050270a83533",
+      "roomId": "4e4bd694-e96e-4748-a98a-882d842f616e",
+      "reservationId": "f9f7a800-050f-462f-98db-a159f85f849c",
+      "numero": "GH-2026-4294",
+      "personName": "Georgina CPM",
+      "motif": "Asset audit to the Plant",
+      "startDate": "2026-08-01",
+      "endDate": "2026-08-16",
+      "checkedInAt": "2026-08-16T17:18:57.734Z"
+    },
     {
       "id": "8ad9ee7a-8f3e-4833-b23d-3950e5900735",
       "roomId": "873277c8-cfe8-4e40-af16-61f1a3f4c273",
