@@ -1,6 +1,49 @@
 {
   "entries": [
     {
+      "id": "log-000393",
+      "at": "2026-08-16T19:20:20.572Z",
+      "userId": "Serge.Muakasa",
+      "userName": "Serge Muakasa",
+      "userEmail": "Serge.Muakasa@ppcdrc.cd",
+      "module": "guest-house",
+      "moduleLabel": "Guest house",
+      "action": "update",
+      "actionLabel": "Modification",
+      "entityType": "guest-house.reservation",
+      "entityId": "9952283a-ccfe-4387-9480-859aebbb1da4",
+      "summary": "Modification réservation 9952283a-ccfe-4387-9480-859aebbb1da4",
+      "details": "Modification réservation 9952283a-ccfe-4387-9480-859aebbb1da4",
+      "before": {
+        "id": "9952283a-ccfe-4387-9480-859aebbb1da4",
+        "numero": "GH-2026-4355",
+        "createdAt": "2026-08-16T19:17:14.497Z",
+        "personName": "MANEKA MPUDI TRESOR",
+        "matricule": "70000175",
+        "isAgent": true,
+        "motif": "Mission to the plant to accompany the CPA",
+        "startDate": "2026-07-27",
+        "endDate": "2026-07-28",
+        "status": "pending",
+        "updatedAt": "2026-08-16T19:17:14.497Z"
+      },
+      "after": {
+        "id": "9952283a-ccfe-4387-9480-859aebbb1da4",
+        "numero": "GH-2026-4355",
+        "createdAt": "2026-08-16T19:17:14.497Z",
+        "personName": "MUZILA EBALOSONG Papy",
+        "matricule": "70000297",
+        "isAgent": true,
+        "motif": "Mission to the plant - reception Deep port visitors from muanda",
+        "startDate": "2026-07-28",
+        "endDate": "2026-07-29",
+        "status": "pending",
+        "updatedAt": "2026-08-16T19:20:19.263Z"
+      },
+      "undoable": true,
+      "undone": false
+    },
+    {
       "id": "log-000392",
       "at": "2026-08-16T19:17:30.667Z",
       "userId": "Serge.Muakasa",
@@ -31704,5 +31747,5 @@
       }
     }
   ],
-  "nextSeq": 393
+  "nextSeq": 394
 }
