@@ -1,6 +1,48 @@
 {
   "entries": [
     {
+      "id": "log-000405",
+      "at": "2026-08-16T19:29:48.736Z",
+      "userId": "Serge.Muakasa",
+      "userName": "Serge Muakasa",
+      "userEmail": "Serge.Muakasa@ppcdrc.cd",
+      "module": "guest-house",
+      "moduleLabel": "Guest house",
+      "action": "update",
+      "actionLabel": "Modification",
+      "entityType": "guest-house.reservation",
+      "entityId": "281d229e-2f68-41b2-980e-b9ba42e6f744",
+      "summary": "Statut réservation 281d229e-2f68-41b2-980e-b9ba42e6f744 → confirmed",
+      "details": "Statut réservation 281d229e-2f68-41b2-980e-b9ba42e6f744 → confirmed",
+      "before": {
+        "id": "281d229e-2f68-41b2-980e-b9ba42e6f744",
+        "numero": "GH-2026-4356",
+        "createdAt": "2026-08-16T19:28:30.613Z",
+        "personName": "Jean Pierre - CPM",
+        "isAgent": false,
+        "motif": "Asset audit to the plant and village",
+        "startDate": "2026-07-30",
+        "endDate": "2026-08-01",
+        "status": "pending",
+        "updatedAt": "2026-08-16T19:28:30.613Z"
+      },
+      "after": {
+        "id": "281d229e-2f68-41b2-980e-b9ba42e6f744",
+        "numero": "GH-2026-4356",
+        "createdAt": "2026-08-16T19:28:30.613Z",
+        "personName": "Jean Pierre - CPM",
+        "isAgent": false,
+        "motif": "Asset audit to the plant and village",
+        "startDate": "2026-07-30",
+        "endDate": "2026-08-01",
+        "roomId": "8b14162d-ae3b-49a5-bcb6-812c2d8d5b5b",
+        "status": "confirmed",
+        "updatedAt": "2026-08-16T19:29:47.459Z"
+      },
+      "undoable": true,
+      "undone": false
+    },
+    {
       "id": "log-000404",
       "at": "2026-08-16T19:29:30.935Z",
       "userId": "Serge.Muakasa",
@@ -32158,5 +32200,5 @@
       }
     }
   ],
-  "nextSeq": 405
+  "nextSeq": 406
 }
