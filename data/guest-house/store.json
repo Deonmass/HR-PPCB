@@ -738,8 +738,9 @@
       "motif": "Mission to the plant",
       "startDate": "2026-07-23",
       "endDate": "2026-07-23",
-      "status": "pending",
-      "updatedAt": "2026-08-16T18:52:07.630Z"
+      "roomId": "85c3d598-623c-402f-9053-e43840e24325",
+      "status": "confirmed",
+      "updatedAt": "2026-08-16T18:54:05.017Z"
     },
     {
       "id": "649d30ff-e690-49e3-9c2f-c9e37d472a8f",
@@ -25060,6 +25061,18 @@
     }
   ],
   "passages": [
+    {
+      "id": "493a9840-de5b-4c0a-8603-8e8130295c62",
+      "roomId": "85c3d598-623c-402f-9053-e43840e24325",
+      "reservationId": "fd9288a3-4269-4004-9436-1200081127e2",
+      "numero": "GH-2026-4345",
+      "personName": "BANGA BANGA APEA ONESIME",
+      "matricule": "70000023",
+      "motif": "Mission to the plant",
+      "startDate": "2026-07-23",
+      "endDate": "2026-07-23",
+      "checkedInAt": "2026-08-16T18:54:05.017Z"
+    },
     {
       "id": "e3933ec7-6fbd-4dad-9dea-7b067d129c58",
       "roomId": "7dbc2817-6744-4ae5-8827-0961bd7aa54a",
