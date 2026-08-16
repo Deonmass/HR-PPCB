@@ -716,6 +716,18 @@
   ],
   "reservations": [
     {
+      "id": "29153bf4-d6da-43bb-8b1c-0ce2440f6f2b",
+      "numero": "GH-2026-4360",
+      "createdAt": "2026-08-16T19:33:51.659Z",
+      "personName": "Yannick - Afridex",
+      "isAgent": false,
+      "motif": "Blasting mission to the plant",
+      "startDate": "2026-07-30",
+      "endDate": "2026-07-31",
+      "status": "pending",
+      "updatedAt": "2026-08-16T19:33:51.659Z"
+    },
+    {
       "id": "b17f5d88-f39f-4be8-8617-f3538cf4bced",
       "numero": "GH-2026-4359",
       "createdAt": "2026-08-16T19:33:15.559Z",
@@ -42628,5 +42640,5 @@
       "checkedOutAt": "2025-09-24T12:00:00.000Z"
     }
   ],
-  "nextReservationSeq": 4360
+  "nextReservationSeq": 4361
 }
