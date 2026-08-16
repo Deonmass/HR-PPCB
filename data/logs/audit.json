@@ -1,6 +1,33 @@
 {
   "entries": [
     {
+      "id": "log-000304",
+      "at": "2026-08-16T18:01:02.388Z",
+      "userId": "Serge.Muakasa",
+      "userName": "Serge Muakasa",
+      "userEmail": "Serge.Muakasa@ppcdrc.cd",
+      "module": "guest-house",
+      "moduleLabel": "Guest house",
+      "action": "error",
+      "actionLabel": "Erreur",
+      "summary": "Cette chambre / cet hôtel est déjà réservé(e) sur cette période",
+      "details": "Échec de l’action « update » sur guest-house: Cette chambre / cet hôtel est déjà réservé(e) sur cette période",
+      "undoable": false,
+      "undone": false,
+      "error": {
+        "message": "Cette chambre / cet hôtel est déjà réservé(e) sur cette période",
+        "stack": "Error: Cette chambre / cet hôtel est déjà réservé(e) sur cette période\n    at C (/var/task/.next/server/chunks/300.js:1:13256)\n    at async j (/var/task/.next/server/app/api/village/guest-house/route.js:1:12335)\n    at async C (/var/task/.next/server/app/api/village/guest-house/route.js:1:3739)\n    at async rH.do (/var/task/node_modules/next/dist/compiled/next-server/app-route.runtime.prod.js:5:21048)\n    at async rH.handle (/var/task/node_modules/next/dist/compiled/next-server/app-route.runtime.prod.js:5:25866)\n    at async k (/var/task/.next/server/app/api/village/guest-house/route.js:1:8628)\n    at async rH.handleResponse (/var/task/node_modules/next/dist/compiled/next-server/app-route.runtime.prod.js:1:110770)\n    at async g (/var/task/.next/server/app/api/village/guest-house/route.js:1:9631)\n    at async I (/var/task/.next/server/app/api/village/guest-house/route.js:1:10753)\n    at async ib.renderToResponseWithComponentsImpl (/var/task/node_modules/next/dist/compiled/next-server/server.runtime.prod.js:13:28532)",
+        "path": "/api/village/guest-house",
+        "method": "POST",
+        "context": {
+          "action": "update",
+          "entityType": "guest-house.reservation",
+          "entityId": "623e966b-febd-493f-9f4c-4977dcb7d5e3",
+          "summary": "Statut réservation 623e966b-febd-493f-9f4c-4977dcb7d5e3 → confirmed"
+        }
+      }
+    },
+    {
       "id": "log-000303",
       "at": "2026-08-16T18:00:31.066Z",
       "userId": "Serge.Muakasa",
@@ -28542,5 +28569,5 @@
       }
     }
   ],
-  "nextSeq": 304
+  "nextSeq": 305
 }
