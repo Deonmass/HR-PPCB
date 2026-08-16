@@ -1,6 +1,50 @@
 {
   "entries": [
     {
+      "id": "log-000288",
+      "at": "2026-08-16T17:52:20.792Z",
+      "userId": "Serge.Muakasa",
+      "userName": "Serge Muakasa",
+      "userEmail": "Serge.Muakasa@ppcdrc.cd",
+      "module": "guest-house",
+      "moduleLabel": "Guest house",
+      "action": "update",
+      "actionLabel": "Modification",
+      "entityType": "guest-house.reservation",
+      "entityId": "2447d433-67fe-4be6-b29d-aa21ce73f83b",
+      "summary": "Statut réservation 2447d433-67fe-4be6-b29d-aa21ce73f83b → confirmed",
+      "details": "Statut réservation 2447d433-67fe-4be6-b29d-aa21ce73f83b → confirmed",
+      "before": {
+        "id": "2447d433-67fe-4be6-b29d-aa21ce73f83b",
+        "numero": "GH-2026-4311",
+        "createdAt": "2026-08-16T17:52:01.114Z",
+        "personName": "Transformer",
+        "isAgent": false,
+        "motif": "Mission to the plant with Plant team",
+        "startDate": "2026-08-13",
+        "endDate": "2026-08-15",
+        "status": "pending",
+        "mission": "Mission to the plant with Plant team",
+        "updatedAt": "2026-08-16T17:52:01.114Z"
+      },
+      "after": {
+        "id": "2447d433-67fe-4be6-b29d-aa21ce73f83b",
+        "numero": "GH-2026-4311",
+        "createdAt": "2026-08-16T17:52:01.114Z",
+        "personName": "Transformer",
+        "isAgent": false,
+        "motif": "Mission to the plant with Plant team",
+        "startDate": "2026-08-13",
+        "endDate": "2026-08-15",
+        "roomId": "3d273d81-0642-4fac-b424-a54146ad7acc",
+        "status": "confirmed",
+        "mission": "Mission to the plant with Plant team",
+        "updatedAt": "2026-08-16T17:52:19.255Z"
+      },
+      "undoable": true,
+      "undone": false
+    },
+    {
       "id": "log-000287",
       "at": "2026-08-16T17:52:02.635Z",
       "userId": "Serge.Muakasa",
@@ -27950,5 +27994,5 @@
       }
     }
   ],
-  "nextSeq": 288
+  "nextSeq": 289
 }
