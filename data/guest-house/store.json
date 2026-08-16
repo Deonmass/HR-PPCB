@@ -724,9 +724,10 @@
       "motif": "Mission to the plant with the Project Mgr",
       "startDate": "2026-07-01",
       "endDate": "2026-07-02",
-      "status": "pending",
+      "roomId": "3d273d81-0642-4fac-b424-a54146ad7acc",
+      "status": "confirmed",
       "mission": "Mission to the plant with the Project Mgr",
-      "updatedAt": "2026-08-16T18:07:47.410Z"
+      "updatedAt": "2026-08-16T18:08:08.656Z"
     },
     {
       "id": "81913863-8409-4571-8ff5-12e98c80a5b2",
@@ -24751,6 +24752,17 @@
     }
   ],
   "passages": [
+    {
+      "id": "6d2c861c-b6e1-493e-b0d1-2d6e5827c9e4",
+      "roomId": "3d273d81-0642-4fac-b424-a54146ad7acc",
+      "reservationId": "ef7a0972-330a-45a2-86c0-b38b25ba54e5",
+      "numero": "GH-2026-4323",
+      "personName": "Melchoir",
+      "motif": "Mission to the plant with the Project Mgr",
+      "startDate": "2026-07-01",
+      "endDate": "2026-07-02",
+      "checkedInAt": "2026-08-16T18:08:08.656Z"
+    },
     {
       "id": "79f02b88-2a74-478c-bea2-633af6d74c4d",
       "roomId": "85c3d598-623c-402f-9053-e43840e24325",
