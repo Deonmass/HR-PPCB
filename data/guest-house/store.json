@@ -725,9 +725,10 @@
       "motif": "Mission to drop inspector for control technique of heavy equipment",
       "startDate": "2026-08-15",
       "endDate": "2026-08-15",
-      "status": "pending",
+      "roomId": "85c3d598-623c-402f-9053-e43840e24325",
+      "status": "confirmed",
       "mission": "Mission to drop inspector for control technique of heavy equipment",
-      "updatedAt": "2026-08-16T18:04:00.781Z"
+      "updatedAt": "2026-08-16T18:04:18.657Z"
     },
     {
       "id": "be99f1bd-7417-48c4-9c1c-0d5b80a2bafe",
@@ -24737,6 +24738,18 @@
     }
   ],
   "passages": [
+    {
+      "id": "79f02b88-2a74-478c-bea2-633af6d74c4d",
+      "roomId": "85c3d598-623c-402f-9053-e43840e24325",
+      "reservationId": "81913863-8409-4571-8ff5-12e98c80a5b2",
+      "numero": "GH-2026-4322",
+      "personName": "ZODULUA GADUA Jean Jacques",
+      "matricule": "70000009",
+      "motif": "Mission to drop inspector for control technique of heavy equipment",
+      "startDate": "2026-08-15",
+      "endDate": "2026-08-15",
+      "checkedInAt": "2026-08-16T18:04:18.657Z"
+    },
     {
       "id": "3dd6ea98-b98c-45b4-a6f9-9739996a42a4",
       "roomId": "d9ec3499-ad6d-4215-8ef9-c20a4f6b1714",
