@@ -1,6 +1,37 @@
 {
   "entries": [
     {
+      "id": "log-000261",
+      "at": "2026-08-16T17:27:24.856Z",
+      "userId": "Serge.Muakasa",
+      "userName": "Serge Muakasa",
+      "userEmail": "Serge.Muakasa@ppcdrc.cd",
+      "module": "guest-house",
+      "moduleLabel": "Guest house",
+      "action": "create",
+      "actionLabel": "Création",
+      "entityType": "guest-house.reservation",
+      "entityId": "f999aece-ea7b-441e-9074-881699903688",
+      "summary": "Création réservation Jonathan CPM",
+      "details": "Création réservation Jonathan CPM",
+      "after": {
+        "id": "f999aece-ea7b-441e-9074-881699903688",
+        "numero": "GH-2026-4298",
+        "createdAt": "2026-08-16T17:27:23.329Z",
+        "personName": "Jonathan CPM",
+        "isAgent": false,
+        "motif": "Asset audit to the Plant",
+        "startDate": "2026-08-01",
+        "endDate": "2026-08-05",
+        "status": "pending",
+        "company": "CPM",
+        "mission": "Asset Audit to the Plant",
+        "updatedAt": "2026-08-16T17:27:23.329Z"
+      },
+      "undoable": true,
+      "undone": false
+    },
+    {
       "id": "log-000260",
       "at": "2026-08-16T17:25:08.138Z",
       "userId": "Serge.Muakasa",
@@ -26949,5 +26980,5 @@
       }
     }
   ],
-  "nextSeq": 261
+  "nextSeq": 262
 }
