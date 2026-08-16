@@ -716,6 +716,18 @@
   ],
   "reservations": [
     {
+      "id": "6f9a3102-4ca0-4fb5-ada3-8ff6193f929f",
+      "numero": "GH-2026-4342",
+      "createdAt": "2026-08-16T18:44:59.404Z",
+      "personName": "Yves Sakiema",
+      "isAgent": false,
+      "motif": "Mission to the plant - Shade",
+      "startDate": "2026-07-22",
+      "endDate": "2026-07-22",
+      "status": "pending",
+      "updatedAt": "2026-08-16T18:44:59.404Z"
+    },
+    {
       "id": "b4869fc6-fdc3-4116-9f74-ed62255df6e8",
       "numero": "GH-2026-4341",
       "createdAt": "2026-08-16T18:43:49.140Z",
@@ -42186,5 +42198,5 @@
       "checkedOutAt": "2025-09-24T12:00:00.000Z"
     }
   ],
-  "nextReservationSeq": 4342
+  "nextReservationSeq": 4343
 }
