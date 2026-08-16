@@ -1,6 +1,50 @@
 {
   "entries": [
     {
+      "id": "log-000296",
+      "at": "2026-08-16T17:55:27.668Z",
+      "userId": "Serge.Muakasa",
+      "userName": "Serge Muakasa",
+      "userEmail": "Serge.Muakasa@ppcdrc.cd",
+      "module": "guest-house",
+      "moduleLabel": "Guest house",
+      "action": "update",
+      "actionLabel": "Modification",
+      "entityType": "guest-house.reservation",
+      "entityId": "239420c6-5f52-4886-b293-98be0cbe2afd",
+      "summary": "Statut réservation 239420c6-5f52-4886-b293-98be0cbe2afd → confirmed",
+      "details": "Statut réservation 239420c6-5f52-4886-b293-98be0cbe2afd → confirmed",
+      "before": {
+        "id": "239420c6-5f52-4886-b293-98be0cbe2afd",
+        "numero": "GH-2026-4315",
+        "createdAt": "2026-08-16T17:55:10.479Z",
+        "personName": "Loxea Visiter",
+        "isAgent": false,
+        "motif": "From Muanda to Kinshasa",
+        "startDate": "2026-08-13",
+        "endDate": "2026-08-13",
+        "status": "pending",
+        "mission": "From Muanda to Kinshasa",
+        "updatedAt": "2026-08-16T17:55:10.479Z"
+      },
+      "after": {
+        "id": "239420c6-5f52-4886-b293-98be0cbe2afd",
+        "numero": "GH-2026-4315",
+        "createdAt": "2026-08-16T17:55:10.479Z",
+        "personName": "Loxea Visiter",
+        "isAgent": false,
+        "motif": "From Muanda to Kinshasa",
+        "startDate": "2026-08-13",
+        "endDate": "2026-08-13",
+        "roomId": "2ef11cfa-1396-4c82-ac99-85b12d6093be",
+        "status": "confirmed",
+        "mission": "From Muanda to Kinshasa",
+        "updatedAt": "2026-08-16T17:55:26.390Z"
+      },
+      "undoable": true,
+      "undone": false
+    },
+    {
       "id": "log-000295",
       "at": "2026-08-16T17:55:11.936Z",
       "userId": "Serge.Muakasa",
@@ -28246,5 +28290,5 @@
       }
     }
   ],
-  "nextSeq": 296
+  "nextSeq": 297
 }
