@@ -1,6 +1,50 @@
 {
   "entries": [
     {
+      "id": "log-000300",
+      "at": "2026-08-16T17:57:46.655Z",
+      "userId": "Serge.Muakasa",
+      "userName": "Serge Muakasa",
+      "userEmail": "Serge.Muakasa@ppcdrc.cd",
+      "module": "guest-house",
+      "moduleLabel": "Guest house",
+      "action": "update",
+      "actionLabel": "Modification",
+      "entityType": "guest-house.reservation",
+      "entityId": "3a34da5c-3ad1-4f3d-8d7e-4c3ac121ccfb",
+      "summary": "Statut réservation 3a34da5c-3ad1-4f3d-8d7e-4c3ac121ccfb → confirmed",
+      "details": "Statut réservation 3a34da5c-3ad1-4f3d-8d7e-4c3ac121ccfb → confirmed",
+      "before": {
+        "id": "3a34da5c-3ad1-4f3d-8d7e-4c3ac121ccfb",
+        "numero": "GH-2026-4317",
+        "createdAt": "2026-08-16T17:57:25.113Z",
+        "personName": "Nathacha - KMPG",
+        "isAgent": false,
+        "motif": "Team work with Transformer to the plant",
+        "startDate": "2026-08-13",
+        "endDate": "2026-08-14",
+        "status": "pending",
+        "mission": "Team work with Transformer to the plant",
+        "updatedAt": "2026-08-16T17:57:25.113Z"
+      },
+      "after": {
+        "id": "3a34da5c-3ad1-4f3d-8d7e-4c3ac121ccfb",
+        "numero": "GH-2026-4317",
+        "createdAt": "2026-08-16T17:57:25.113Z",
+        "personName": "Nathacha - KMPG",
+        "isAgent": false,
+        "motif": "Team work with Transformer to the plant",
+        "startDate": "2026-08-13",
+        "endDate": "2026-08-14",
+        "roomId": "0b0cdc0d-ba79-4f68-8533-c90cad3390cb",
+        "status": "confirmed",
+        "mission": "Team work with Transformer to the plant",
+        "updatedAt": "2026-08-16T17:57:45.035Z"
+      },
+      "undoable": true,
+      "undone": false
+    },
+    {
       "id": "log-000299",
       "at": "2026-08-16T17:57:26.691Z",
       "userId": "Serge.Muakasa",
@@ -28394,5 +28438,5 @@
       }
     }
   ],
-  "nextSeq": 300
+  "nextSeq": 301
 }
