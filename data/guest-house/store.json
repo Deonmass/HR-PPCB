@@ -724,8 +724,9 @@
       "motif": "Blasting assistance",
       "startDate": "2026-07-13",
       "endDate": "2026-07-13",
-      "status": "pending",
-      "updatedAt": "2026-08-16T18:22:54.952Z"
+      "roomId": "0b0cdc0d-ba79-4f68-8533-c90cad3390cb",
+      "status": "confirmed",
+      "updatedAt": "2026-08-16T18:23:52.197Z"
     },
     {
       "id": "acb86405-5eec-4bca-8192-8173f9cfd3f5",
@@ -24848,6 +24849,17 @@
     }
   ],
   "passages": [
+    {
+      "id": "a9f78c6c-b268-4123-a21d-0812bb9929b5",
+      "roomId": "0b0cdc0d-ba79-4f68-8533-c90cad3390cb",
+      "reservationId": "6d2493b0-ba33-4796-86dd-01c328c4f412",
+      "numero": "GH-2026-4330",
+      "personName": "Thunga - FARDC",
+      "motif": "Blasting assistance",
+      "startDate": "2026-07-13",
+      "endDate": "2026-07-13",
+      "checkedInAt": "2026-08-16T18:23:52.197Z"
+    },
     {
       "id": "253eb223-6e52-4efe-81b9-522b0f0d980b",
       "roomId": "3219d898-ff74-496c-a62e-2295012276ae",
