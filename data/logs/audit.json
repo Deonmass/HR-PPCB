@@ -1,6 +1,36 @@
 {
   "entries": [
     {
+      "id": "log-000306",
+      "at": "2026-08-16T18:01:49.414Z",
+      "userId": "Serge.Muakasa",
+      "userName": "Serge Muakasa",
+      "userEmail": "Serge.Muakasa@ppcdrc.cd",
+      "module": "guest-house",
+      "moduleLabel": "Guest house",
+      "action": "create",
+      "actionLabel": "Création",
+      "entityType": "guest-house.reservation",
+      "entityId": "2afc955d-4cd4-417a-8bb2-cec004cde832",
+      "summary": "Création réservation Inspector Ministere Transport",
+      "details": "Création réservation Inspector Ministere Transport",
+      "after": {
+        "id": "2afc955d-4cd4-417a-8bb2-cec004cde832",
+        "numero": "GH-2026-4320",
+        "createdAt": "2026-08-16T18:01:47.877Z",
+        "personName": "Inspector Ministere Transport",
+        "isAgent": false,
+        "motif": "Mission to the plant for Heavy mobile equipment with Mining Mgr",
+        "startDate": "2026-08-15",
+        "endDate": "2026-08-18",
+        "status": "pending",
+        "mission": "Mission to the plant for Heavy mobile equipment with Mining Mgr",
+        "updatedAt": "2026-08-16T18:01:47.877Z"
+      },
+      "undoable": true,
+      "undone": false
+    },
+    {
       "id": "log-000305",
       "at": "2026-08-16T18:01:28.320Z",
       "userId": "Serge.Muakasa",
@@ -28613,5 +28643,5 @@
       }
     }
   ],
-  "nextSeq": 306
+  "nextSeq": 307
 }
