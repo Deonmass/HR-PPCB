@@ -1,6 +1,48 @@
 {
   "entries": [
     {
+      "id": "log-000386",
+      "at": "2026-08-16T19:13:13.747Z",
+      "userId": "Serge.Muakasa",
+      "userName": "Serge Muakasa",
+      "userEmail": "Serge.Muakasa@ppcdrc.cd",
+      "module": "guest-house",
+      "moduleLabel": "Guest house",
+      "action": "update",
+      "actionLabel": "Modification",
+      "entityType": "guest-house.reservation",
+      "entityId": "f0c2a9a4-7a78-488d-8ad5-2514e76a9800",
+      "summary": "Statut réservation f0c2a9a4-7a78-488d-8ad5-2514e76a9800 → confirmed",
+      "details": "Statut réservation f0c2a9a4-7a78-488d-8ad5-2514e76a9800 → confirmed",
+      "before": {
+        "id": "f0c2a9a4-7a78-488d-8ad5-2514e76a9800",
+        "numero": "GH-2026-4350",
+        "createdAt": "2026-08-16T19:05:48.148Z",
+        "personName": "Kalaa Mpinga Fila",
+        "isAgent": false,
+        "motif": "Tour in Zamba for PPC Zamba Project",
+        "startDate": "2026-07-27",
+        "endDate": "2026-07-28",
+        "status": "pending",
+        "updatedAt": "2026-08-16T19:12:42.638Z"
+      },
+      "after": {
+        "id": "f0c2a9a4-7a78-488d-8ad5-2514e76a9800",
+        "numero": "GH-2026-4350",
+        "createdAt": "2026-08-16T19:05:48.148Z",
+        "personName": "Kalaa Mpinga Fila",
+        "isAgent": false,
+        "motif": "Tour in Zamba for PPC Zamba Project",
+        "startDate": "2026-07-27",
+        "endDate": "2026-07-28",
+        "roomId": "873277c8-cfe8-4e40-af16-61f1a3f4c273",
+        "status": "confirmed",
+        "updatedAt": "2026-08-16T19:13:12.237Z"
+      },
+      "undoable": true,
+      "undone": false
+    },
+    {
       "id": "log-000385",
       "at": "2026-08-16T19:12:43.895Z",
       "userId": "Serge.Muakasa",
@@ -31473,5 +31515,5 @@
       }
     }
   ],
-  "nextSeq": 386
+  "nextSeq": 387
 }
