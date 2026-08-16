@@ -1,6 +1,49 @@
 {
   "entries": [
     {
+      "id": "log-000365",
+      "at": "2026-08-16T18:55:43.084Z",
+      "userId": "Serge.Muakasa",
+      "userName": "Serge Muakasa",
+      "userEmail": "Serge.Muakasa@ppcdrc.cd",
+      "module": "guest-house",
+      "moduleLabel": "Guest house",
+      "action": "update",
+      "actionLabel": "Modification",
+      "entityType": "guest-house.reservation",
+      "entityId": "6c3e19c5-f1b5-4ac9-8ebf-d9339ff30773",
+      "summary": "Modification réservation 6c3e19c5-f1b5-4ac9-8ebf-d9339ff30773",
+      "details": "Modification réservation 6c3e19c5-f1b5-4ac9-8ebf-d9339ff30773",
+      "before": {
+        "id": "6c3e19c5-f1b5-4ac9-8ebf-d9339ff30773",
+        "numero": "GH-2026-4346",
+        "createdAt": "2026-08-16T18:53:20.157Z",
+        "personName": "NDONGALA STEPHANIE",
+        "matricule": "70000292",
+        "isAgent": true,
+        "motif": "Mission to the plant",
+        "startDate": "2026-07-24",
+        "endDate": "2026-07-29",
+        "status": "pending",
+        "updatedAt": "2026-08-16T18:53:20.157Z"
+      },
+      "after": {
+        "id": "6c3e19c5-f1b5-4ac9-8ebf-d9339ff30773",
+        "numero": "GH-2026-4346",
+        "createdAt": "2026-08-16T18:53:20.157Z",
+        "personName": "NDONGALA STEPHANIE",
+        "matricule": "70000292",
+        "isAgent": true,
+        "motif": "Mission to the plant",
+        "startDate": "2026-07-24",
+        "endDate": "2026-07-26",
+        "status": "pending",
+        "updatedAt": "2026-08-16T18:55:41.808Z"
+      },
+      "undoable": true,
+      "undone": false
+    },
+    {
       "id": "log-000364",
       "at": "2026-08-16T18:54:31.686Z",
       "userId": "Serge.Muakasa",
@@ -30690,5 +30733,5 @@
       }
     }
   ],
-  "nextSeq": 365
+  "nextSeq": 366
 }
