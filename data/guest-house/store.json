@@ -724,9 +724,10 @@
       "motif": "hébergement",
       "startDate": "2026-08-02",
       "endDate": "2026-08-16",
-      "status": "pending",
+      "roomId": "873277c8-cfe8-4e40-af16-61f1a3f4c273",
+      "status": "confirmed",
       "mission": "Mission de maintenance à l'usine",
-      "updatedAt": "2026-08-16T17:15:47.911Z"
+      "updatedAt": "2026-08-16T17:16:30.709Z"
     },
     {
       "id": "dc9baa00-63c2-4fb4-a196-d63b606fad34",
@@ -24323,6 +24324,17 @@
     }
   ],
   "passages": [
+    {
+      "id": "8ad9ee7a-8f3e-4833-b23d-3950e5900735",
+      "roomId": "873277c8-cfe8-4e40-af16-61f1a3f4c273",
+      "reservationId": "4351af3b-e5d6-45b7-b095-b19b98c2d67a",
+      "numero": "GH-2026-4293",
+      "personName": "Francois du bois",
+      "motif": "hébergement",
+      "startDate": "2026-08-02",
+      "endDate": "2026-08-16",
+      "checkedInAt": "2026-08-16T17:16:30.709Z"
+    },
     {
       "id": "b2ab5216-ee43-457d-a445-6c24469b57e2",
       "roomId": "873277c8-cfe8-4e40-af16-61f1a3f4c273",
