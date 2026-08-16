@@ -1,6 +1,35 @@
 {
   "entries": [
     {
+      "id": "log-000327",
+      "at": "2026-08-16T18:21:29.379Z",
+      "userId": "Serge.Muakasa",
+      "userName": "Serge Muakasa",
+      "userEmail": "Serge.Muakasa@ppcdrc.cd",
+      "module": "guest-house",
+      "moduleLabel": "Guest house",
+      "action": "create",
+      "actionLabel": "Création",
+      "entityType": "guest-house.reservation",
+      "entityId": "acb86405-5eec-4bca-8192-8173f9cfd3f5",
+      "summary": "Création réservation Patrick Afridex",
+      "details": "Création réservation Patrick Afridex",
+      "after": {
+        "id": "acb86405-5eec-4bca-8192-8173f9cfd3f5",
+        "numero": "GH-2026-4329",
+        "createdAt": "2026-08-16T18:21:28.044Z",
+        "personName": "Patrick Afridex",
+        "isAgent": false,
+        "motif": "Mission to the plant for blasting",
+        "startDate": "2026-07-13",
+        "endDate": "2026-07-13",
+        "status": "pending",
+        "updatedAt": "2026-08-16T18:21:28.044Z"
+      },
+      "undoable": true,
+      "undone": false
+    },
+    {
       "id": "log-000326",
       "at": "2026-08-16T18:18:47.189Z",
       "userId": "Serge.Muakasa",
@@ -29360,5 +29389,5 @@
       }
     }
   ],
-  "nextSeq": 327
+  "nextSeq": 328
 }
