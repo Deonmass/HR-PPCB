@@ -725,8 +725,9 @@
       "motif": "Meeting to the plant",
       "startDate": "2026-07-23",
       "endDate": "2026-07-26",
-      "status": "pending",
-      "updatedAt": "2026-08-16T18:50:59.955Z"
+      "roomId": "7dbc2817-6744-4ae5-8827-0961bd7aa54a",
+      "status": "confirmed",
+      "updatedAt": "2026-08-16T18:51:25.296Z"
     },
     {
       "id": "558538cd-8099-4f86-8293-ce3418031860",
@@ -25033,6 +25034,18 @@
     }
   ],
   "passages": [
+    {
+      "id": "e3933ec7-6fbd-4dad-9dea-7b067d129c58",
+      "roomId": "7dbc2817-6744-4ae5-8827-0961bd7aa54a",
+      "reservationId": "649d30ff-e690-49e3-9c2f-c9e37d472a8f",
+      "numero": "GH-2026-4344",
+      "personName": "BABALA MATWAN ANTOINE",
+      "matricule": "70000291",
+      "motif": "Meeting to the plant",
+      "startDate": "2026-07-23",
+      "endDate": "2026-07-26",
+      "checkedInAt": "2026-08-16T18:51:25.296Z"
+    },
     {
       "id": "ea08e0c5-31a2-4d5e-963d-2c446de7e012",
       "roomId": "ed91c14e-915f-4d22-971c-fd4bb7feb33e",
