@@ -1,6 +1,35 @@
 {
   "entries": [
     {
+      "id": "log-000404",
+      "at": "2026-08-16T19:29:30.935Z",
+      "userId": "Serge.Muakasa",
+      "userName": "Serge Muakasa",
+      "userEmail": "Serge.Muakasa@ppcdrc.cd",
+      "module": "guest-house",
+      "moduleLabel": "Guest house",
+      "action": "create",
+      "actionLabel": "Création",
+      "entityType": "guest-house.reservation",
+      "entityId": "be284b03-3975-424d-b19c-10fd46ad696f",
+      "summary": "Création réservation Felly Mpongo",
+      "details": "Création réservation Felly Mpongo",
+      "after": {
+        "id": "be284b03-3975-424d-b19c-10fd46ad696f",
+        "numero": "GH-2026-4357",
+        "createdAt": "2026-08-16T19:29:29.400Z",
+        "personName": "Felly Mpongo",
+        "isAgent": false,
+        "motif": "Blasting mission to the plant",
+        "startDate": "2026-07-30",
+        "endDate": "2026-08-01",
+        "status": "pending",
+        "updatedAt": "2026-08-16T19:29:29.400Z"
+      },
+      "undoable": true,
+      "undone": false
+    },
+    {
       "id": "log-000403",
       "at": "2026-08-16T19:28:31.951Z",
       "userId": "Serge.Muakasa",
@@ -32129,5 +32158,5 @@
       }
     }
   ],
-  "nextSeq": 404
+  "nextSeq": 405
 }
