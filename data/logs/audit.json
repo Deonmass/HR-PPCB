@@ -1,6 +1,48 @@
 {
   "entries": [
     {
+      "id": "log-000347",
+      "at": "2026-08-16T18:36:56.090Z",
+      "userId": "Serge.Muakasa",
+      "userName": "Serge Muakasa",
+      "userEmail": "Serge.Muakasa@ppcdrc.cd",
+      "module": "guest-house",
+      "moduleLabel": "Guest house",
+      "action": "update",
+      "actionLabel": "Modification",
+      "entityType": "guest-house.reservation",
+      "entityId": "19e213b4-1a8c-4b8d-8b51-ef3a5f73c677",
+      "summary": "Statut réservation 19e213b4-1a8c-4b8d-8b51-ef3a5f73c677 → confirmed",
+      "details": "Statut réservation 19e213b4-1a8c-4b8d-8b51-ef3a5f73c677 → confirmed",
+      "before": {
+        "id": "19e213b4-1a8c-4b8d-8b51-ef3a5f73c677",
+        "numero": "GH-2026-4338",
+        "createdAt": "2026-08-16T18:36:39.047Z",
+        "personName": "Art Parfait",
+        "isAgent": false,
+        "motif": "Amenagement de la maison du MD",
+        "startDate": "2026-07-15",
+        "endDate": "2026-07-17",
+        "status": "pending",
+        "updatedAt": "2026-08-16T18:36:39.047Z"
+      },
+      "after": {
+        "id": "19e213b4-1a8c-4b8d-8b51-ef3a5f73c677",
+        "numero": "GH-2026-4338",
+        "createdAt": "2026-08-16T18:36:39.047Z",
+        "personName": "Art Parfait",
+        "isAgent": false,
+        "motif": "Amenagement de la maison du MD",
+        "startDate": "2026-07-15",
+        "endDate": "2026-07-17",
+        "roomId": "85c3d598-623c-402f-9053-e43840e24325",
+        "status": "confirmed",
+        "updatedAt": "2026-08-16T18:36:54.591Z"
+      },
+      "undoable": true,
+      "undone": false
+    },
+    {
       "id": "log-000346",
       "at": "2026-08-16T18:36:40.444Z",
       "userId": "Serge.Muakasa",
@@ -30058,5 +30100,5 @@
       }
     }
   ],
-  "nextSeq": 347
+  "nextSeq": 348
 }
