@@ -1,6 +1,50 @@
 {
   "entries": [
     {
+      "id": "log-000307",
+      "at": "2026-08-16T18:02:09.917Z",
+      "userId": "Serge.Muakasa",
+      "userName": "Serge Muakasa",
+      "userEmail": "Serge.Muakasa@ppcdrc.cd",
+      "module": "guest-house",
+      "moduleLabel": "Guest house",
+      "action": "update",
+      "actionLabel": "Modification",
+      "entityType": "guest-house.reservation",
+      "entityId": "2afc955d-4cd4-417a-8bb2-cec004cde832",
+      "summary": "Statut réservation 2afc955d-4cd4-417a-8bb2-cec004cde832 → confirmed",
+      "details": "Statut réservation 2afc955d-4cd4-417a-8bb2-cec004cde832 → confirmed",
+      "before": {
+        "id": "2afc955d-4cd4-417a-8bb2-cec004cde832",
+        "numero": "GH-2026-4320",
+        "createdAt": "2026-08-16T18:01:47.877Z",
+        "personName": "Inspector Ministere Transport",
+        "isAgent": false,
+        "motif": "Mission to the plant for Heavy mobile equipment with Mining Mgr",
+        "startDate": "2026-08-15",
+        "endDate": "2026-08-18",
+        "status": "pending",
+        "mission": "Mission to the plant for Heavy mobile equipment with Mining Mgr",
+        "updatedAt": "2026-08-16T18:01:47.877Z"
+      },
+      "after": {
+        "id": "2afc955d-4cd4-417a-8bb2-cec004cde832",
+        "numero": "GH-2026-4320",
+        "createdAt": "2026-08-16T18:01:47.877Z",
+        "personName": "Inspector Ministere Transport",
+        "isAgent": false,
+        "motif": "Mission to the plant for Heavy mobile equipment with Mining Mgr",
+        "startDate": "2026-08-15",
+        "endDate": "2026-08-18",
+        "roomId": "2ef11cfa-1396-4c82-ac99-85b12d6093be",
+        "status": "confirmed",
+        "mission": "Mission to the plant for Heavy mobile equipment with Mining Mgr",
+        "updatedAt": "2026-08-16T18:02:08.530Z"
+      },
+      "undoable": true,
+      "undone": false
+    },
+    {
       "id": "log-000306",
       "at": "2026-08-16T18:01:49.414Z",
       "userId": "Serge.Muakasa",
@@ -28643,5 +28687,5 @@
       }
     }
   ],
-  "nextSeq": 307
+  "nextSeq": 308
 }
