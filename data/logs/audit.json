@@ -1,6 +1,50 @@
 {
   "entries": [
     {
+      "id": "log-000388",
+      "at": "2026-08-16T19:14:52.335Z",
+      "userId": "Serge.Muakasa",
+      "userName": "Serge Muakasa",
+      "userEmail": "Serge.Muakasa@ppcdrc.cd",
+      "module": "guest-house",
+      "moduleLabel": "Guest house",
+      "action": "update",
+      "actionLabel": "Modification",
+      "entityType": "guest-house.reservation",
+      "entityId": "0a04b604-b141-4fbb-85a6-e9321907bf1e",
+      "summary": "Statut réservation 0a04b604-b141-4fbb-85a6-e9321907bf1e → confirmed",
+      "details": "Statut réservation 0a04b604-b141-4fbb-85a6-e9321907bf1e → confirmed",
+      "before": {
+        "id": "0a04b604-b141-4fbb-85a6-e9321907bf1e",
+        "numero": "GH-2026-4352",
+        "createdAt": "2026-08-16T19:14:22.214Z",
+        "personName": "BOOKE BASA MICHAEL",
+        "matricule": "70000296",
+        "isAgent": true,
+        "motif": "Exco meeting to the plant",
+        "startDate": "2026-07-27",
+        "endDate": "2026-07-28",
+        "status": "pending",
+        "updatedAt": "2026-08-16T19:14:22.214Z"
+      },
+      "after": {
+        "id": "0a04b604-b141-4fbb-85a6-e9321907bf1e",
+        "numero": "GH-2026-4352",
+        "createdAt": "2026-08-16T19:14:22.214Z",
+        "personName": "BOOKE BASA MICHAEL",
+        "matricule": "70000296",
+        "isAgent": true,
+        "motif": "Exco meeting to the plant",
+        "startDate": "2026-07-27",
+        "endDate": "2026-07-28",
+        "roomId": "cfdfa27e-7353-401d-9090-1a3ca1c1fc80",
+        "status": "confirmed",
+        "updatedAt": "2026-08-16T19:14:50.829Z"
+      },
+      "undoable": true,
+      "undone": false
+    },
+    {
       "id": "log-000387",
       "at": "2026-08-16T19:14:23.773Z",
       "userId": "Serge.Muakasa",
@@ -31545,5 +31589,5 @@
       }
     }
   ],
-  "nextSeq": 388
+  "nextSeq": 389
 }
