@@ -1,6 +1,48 @@
 {
   "entries": [
     {
+      "id": "log-000339",
+      "at": "2026-08-16T18:30:16.860Z",
+      "userId": "Serge.Muakasa",
+      "userName": "Serge Muakasa",
+      "userEmail": "Serge.Muakasa@ppcdrc.cd",
+      "module": "guest-house",
+      "moduleLabel": "Guest house",
+      "action": "update",
+      "actionLabel": "Modification",
+      "entityType": "guest-house.reservation",
+      "entityId": "cc493ff4-f1c9-468c-b769-8d0f412451eb",
+      "summary": "Statut réservation cc493ff4-f1c9-468c-b769-8d0f412451eb → confirmed",
+      "details": "Statut réservation cc493ff4-f1c9-468c-b769-8d0f412451eb → confirmed",
+      "before": {
+        "id": "cc493ff4-f1c9-468c-b769-8d0f412451eb",
+        "numero": "GH-2026-4334",
+        "createdAt": "2026-08-16T18:29:53.448Z",
+        "personName": "Jonathan Ekwalanga",
+        "isAgent": false,
+        "motif": "Asset audit to the plant and village",
+        "startDate": "2026-07-14",
+        "endDate": "2026-07-21",
+        "status": "pending",
+        "updatedAt": "2026-08-16T18:29:53.448Z"
+      },
+      "after": {
+        "id": "cc493ff4-f1c9-468c-b769-8d0f412451eb",
+        "numero": "GH-2026-4334",
+        "createdAt": "2026-08-16T18:29:53.448Z",
+        "personName": "Jonathan Ekwalanga",
+        "isAgent": false,
+        "motif": "Asset audit to the plant and village",
+        "startDate": "2026-07-14",
+        "endDate": "2026-07-21",
+        "roomId": "7dbc2817-6744-4ae5-8827-0961bd7aa54a",
+        "status": "confirmed",
+        "updatedAt": "2026-08-16T18:30:14.694Z"
+      },
+      "undoable": true,
+      "undone": false
+    },
+    {
       "id": "log-000338",
       "at": "2026-08-16T18:29:54.781Z",
       "userId": "Serge.Muakasa",
@@ -29774,5 +29816,5 @@
       }
     }
   ],
-  "nextSeq": 339
+  "nextSeq": 340
 }
