@@ -1,6 +1,37 @@
 {
   "entries": [
     {
+      "id": "log-000271",
+      "at": "2026-08-16T17:40:01.468Z",
+      "userId": "Serge.Muakasa",
+      "userName": "Serge Muakasa",
+      "userEmail": "Serge.Muakasa@ppcdrc.cd",
+      "module": "guest-house",
+      "moduleLabel": "Guest house",
+      "action": "create",
+      "actionLabel": "Création",
+      "entityType": "guest-house.reservation",
+      "entityId": "1dd19d8e-2b11-4a4f-b307-cd8c671cfc9d",
+      "summary": "Création réservation EKWALANGA MONGALIKITA BONIFACE",
+      "details": "Création réservation EKWALANGA MONGALIKITA BONIFACE",
+      "after": {
+        "id": "1dd19d8e-2b11-4a4f-b307-cd8c671cfc9d",
+        "numero": "GH-2026-4303",
+        "createdAt": "2026-08-16T17:39:59.940Z",
+        "personName": "EKWALANGA MONGALIKITA BONIFACE",
+        "matricule": "70000085",
+        "isAgent": true,
+        "motif": "Drop by to Muanda",
+        "startDate": "2026-08-06",
+        "endDate": "2026-08-08",
+        "status": "pending",
+        "mission": "Drop by to Muanda",
+        "updatedAt": "2026-08-16T17:39:59.940Z"
+      },
+      "undoable": true,
+      "undone": false
+    },
+    {
       "id": "log-000270",
       "at": "2026-08-16T17:38:07.725Z",
       "userId": "Serge.Muakasa",
@@ -27325,5 +27356,5 @@
       }
     }
   ],
-  "nextSeq": 271
+  "nextSeq": 272
 }
