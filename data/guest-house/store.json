@@ -716,6 +716,19 @@
   ],
   "reservations": [
     {
+      "id": "40180f50-27a2-4f53-8626-05e309bbc483",
+      "numero": "GH-2026-4325",
+      "createdAt": "2026-08-16T18:11:42.363Z",
+      "personName": "Robert",
+      "isAgent": false,
+      "motif": "Mission to the plant with the project Mgr",
+      "startDate": "2026-07-01",
+      "endDate": "2026-07-02",
+      "status": "pending",
+      "mission": "Mission to the plant with the project Mgr",
+      "updatedAt": "2026-08-16T18:11:42.363Z"
+    },
+    {
       "id": "4a823311-05c8-4c49-8fba-9173cc47c52d",
       "numero": "GH-2026-4324",
       "createdAt": "2026-08-16T18:10:14.073Z",
@@ -41772,5 +41785,5 @@
       "checkedOutAt": "2025-09-24T12:00:00.000Z"
     }
   ],
-  "nextReservationSeq": 4325
+  "nextReservationSeq": 4326
 }
