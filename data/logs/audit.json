@@ -1,6 +1,50 @@
 {
   "entries": [
     {
+      "id": "log-000375",
+      "at": "2026-08-16T19:04:38.847Z",
+      "userId": "Serge.Muakasa",
+      "userName": "Serge Muakasa",
+      "userEmail": "Serge.Muakasa@ppcdrc.cd",
+      "module": "guest-house",
+      "moduleLabel": "Guest house",
+      "action": "update",
+      "actionLabel": "Modification",
+      "entityType": "guest-house.reservation",
+      "entityId": "8d170844-2a51-4efb-a878-8bb8c87c8f08",
+      "summary": "Statut réservation 8d170844-2a51-4efb-a878-8bb8c87c8f08 → confirmed",
+      "details": "Statut réservation 8d170844-2a51-4efb-a878-8bb8c87c8f08 → confirmed",
+      "before": {
+        "id": "8d170844-2a51-4efb-a878-8bb8c87c8f08",
+        "numero": "GH-2026-4349",
+        "createdAt": "2026-08-16T19:04:17.670Z",
+        "personName": "EWULI SUKA Carine",
+        "matricule": "70000265",
+        "isAgent": true,
+        "motif": "Exco meeting to the plant",
+        "startDate": "2026-07-25",
+        "endDate": "2026-07-28",
+        "status": "pending",
+        "updatedAt": "2026-08-16T19:04:17.670Z"
+      },
+      "after": {
+        "id": "8d170844-2a51-4efb-a878-8bb8c87c8f08",
+        "numero": "GH-2026-4349",
+        "createdAt": "2026-08-16T19:04:17.670Z",
+        "personName": "EWULI SUKA Carine",
+        "matricule": "70000265",
+        "isAgent": true,
+        "motif": "Exco meeting to the plant",
+        "startDate": "2026-07-25",
+        "endDate": "2026-07-28",
+        "roomId": "4e4bd694-e96e-4748-a98a-882d842f616e",
+        "status": "confirmed",
+        "updatedAt": "2026-08-16T19:04:37.560Z"
+      },
+      "undoable": true,
+      "undone": false
+    },
+    {
       "id": "log-000374",
       "at": "2026-08-16T19:04:18.908Z",
       "userId": "Serge.Muakasa",
@@ -31050,5 +31094,5 @@
       }
     }
   ],
-  "nextSeq": 375
+  "nextSeq": 376
 }
