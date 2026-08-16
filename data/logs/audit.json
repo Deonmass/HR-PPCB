@@ -1,6 +1,50 @@
 {
   "entries": [
     {
+      "id": "log-000326",
+      "at": "2026-08-16T18:18:47.189Z",
+      "userId": "Serge.Muakasa",
+      "userName": "Serge Muakasa",
+      "userEmail": "Serge.Muakasa@ppcdrc.cd",
+      "module": "guest-house",
+      "moduleLabel": "Guest house",
+      "action": "update",
+      "actionLabel": "Modification",
+      "entityType": "guest-house.reservation",
+      "entityId": "f41b3a3e-4941-4f7d-bc8f-a2f6cb85dbe5",
+      "summary": "Statut réservation f41b3a3e-4941-4f7d-bc8f-a2f6cb85dbe5 → confirmed",
+      "details": "Statut réservation f41b3a3e-4941-4f7d-bc8f-a2f6cb85dbe5 → confirmed",
+      "before": {
+        "id": "f41b3a3e-4941-4f7d-bc8f-a2f6cb85dbe5",
+        "numero": "GH-2026-4328",
+        "createdAt": "2026-08-16T18:18:24.653Z",
+        "personName": "Mbulu - camera surveillance",
+        "isAgent": false,
+        "motif": "Mission to the village for camera",
+        "startDate": "2026-07-10",
+        "endDate": "2026-07-15",
+        "status": "pending",
+        "mission": "Mission to the village for camera",
+        "updatedAt": "2026-08-16T18:18:24.653Z"
+      },
+      "after": {
+        "id": "f41b3a3e-4941-4f7d-bc8f-a2f6cb85dbe5",
+        "numero": "GH-2026-4328",
+        "createdAt": "2026-08-16T18:18:24.653Z",
+        "personName": "Mbulu - camera surveillance",
+        "isAgent": false,
+        "motif": "Mission to the village for camera",
+        "startDate": "2026-07-10",
+        "endDate": "2026-07-15",
+        "roomId": "d9ec3499-ad6d-4215-8ef9-c20a4f6b1714",
+        "status": "confirmed",
+        "mission": "Mission to the village for camera",
+        "updatedAt": "2026-08-16T18:18:45.814Z"
+      },
+      "undoable": true,
+      "undone": false
+    },
+    {
       "id": "log-000325",
       "at": "2026-08-16T18:18:25.989Z",
       "userId": "Serge.Muakasa",
@@ -29316,5 +29360,5 @@
       }
     }
   ],
-  "nextSeq": 326
+  "nextSeq": 327
 }
