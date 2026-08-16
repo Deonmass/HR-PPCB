@@ -1,6 +1,31 @@
 {
   "entries": [
     {
+      "id": "log-000324",
+      "at": "2026-08-16T18:18:06.210Z",
+      "userId": "Serge.Muakasa",
+      "userName": "Serge Muakasa",
+      "userEmail": "Serge.Muakasa@ppcdrc.cd",
+      "module": "guest-house",
+      "moduleLabel": "Guest house",
+      "action": "error",
+      "actionLabel": "Erreur",
+      "summary": "La date de fin doit être après la date de début",
+      "details": "Échec de l’action « create » sur guest-house: La date de fin doit être après la date de début",
+      "undoable": false,
+      "undone": false,
+      "error": {
+        "message": "La date de fin doit être après la date de début",
+        "stack": "Error: La date de fin doit être après la date de début\n    at A (/var/task/.next/server/chunks/300.js:1:10814)\n    at /var/task/.next/server/app/api/village/guest-house/route.js:1:5477\n    at j (/var/task/.next/server/app/api/village/guest-house/route.js:1:12341)\n    at async C (/var/task/.next/server/app/api/village/guest-house/route.js:1:5248)\n    at async rH.do (/var/task/node_modules/next/dist/compiled/next-server/app-route.runtime.prod.js:5:21048)\n    at async rH.handle (/var/task/node_modules/next/dist/compiled/next-server/app-route.runtime.prod.js:5:25866)\n    at async k (/var/task/.next/server/app/api/village/guest-house/route.js:1:8628)\n    at async rH.handleResponse (/var/task/node_modules/next/dist/compiled/next-server/app-route.runtime.prod.js:1:110770)\n    at async g (/var/task/.next/server/app/api/village/guest-house/route.js:1:9631)\n    at async I (/var/task/.next/server/app/api/village/guest-house/route.js:1:10753)",
+        "path": "/api/village/guest-house",
+        "method": "POST",
+        "context": {
+          "action": "create",
+          "entityType": "guest-house.reservation"
+        }
+      }
+    },
+    {
       "id": "log-000323",
       "at": "2026-08-16T18:16:43.486Z",
       "userId": "Serge.Muakasa",
@@ -29261,5 +29286,5 @@
       }
     }
   ],
-  "nextSeq": 324
+  "nextSeq": 325
 }
