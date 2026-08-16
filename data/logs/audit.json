@@ -1,6 +1,50 @@
 {
   "entries": [
     {
+      "id": "log-000370",
+      "at": "2026-08-16T18:59:11.697Z",
+      "userId": "Serge.Muakasa",
+      "userName": "Serge Muakasa",
+      "userEmail": "Serge.Muakasa@ppcdrc.cd",
+      "module": "guest-house",
+      "moduleLabel": "Guest house",
+      "action": "update",
+      "actionLabel": "Modification",
+      "entityType": "guest-house.reservation",
+      "entityId": "1c0612a9-59e7-4da7-a010-ce3c263e71eb",
+      "summary": "Statut réservation 1c0612a9-59e7-4da7-a010-ce3c263e71eb → confirmed",
+      "details": "Statut réservation 1c0612a9-59e7-4da7-a010-ce3c263e71eb → confirmed",
+      "before": {
+        "id": "1c0612a9-59e7-4da7-a010-ce3c263e71eb",
+        "numero": "GH-2026-4347",
+        "createdAt": "2026-08-16T18:57:08.382Z",
+        "personName": "KILENDA BANGI ALI",
+        "matricule": "70000176",
+        "isAgent": true,
+        "motif": "Mission to the plant",
+        "startDate": "2026-07-24",
+        "endDate": "2026-07-26",
+        "status": "pending",
+        "updatedAt": "2026-08-16T18:58:55.975Z"
+      },
+      "after": {
+        "id": "1c0612a9-59e7-4da7-a010-ce3c263e71eb",
+        "numero": "GH-2026-4347",
+        "createdAt": "2026-08-16T18:57:08.382Z",
+        "personName": "KILENDA BANGI ALI",
+        "matricule": "70000176",
+        "isAgent": true,
+        "motif": "Mission to the plant",
+        "startDate": "2026-07-24",
+        "endDate": "2026-07-26",
+        "roomId": "85c3d598-623c-402f-9053-e43840e24325",
+        "status": "confirmed",
+        "updatedAt": "2026-08-16T18:59:10.066Z"
+      },
+      "undoable": true,
+      "undone": false
+    },
+    {
       "id": "log-000369",
       "at": "2026-08-16T18:58:57.267Z",
       "userId": "Serge.Muakasa",
@@ -30877,5 +30921,5 @@
       }
     }
   ],
-  "nextSeq": 370
+  "nextSeq": 371
 }
