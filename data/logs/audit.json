@@ -1,6 +1,36 @@
 {
   "entries": [
     {
+      "id": "log-000267",
+      "at": "2026-08-16T17:33:31.448Z",
+      "userId": "Serge.Muakasa",
+      "userName": "Serge Muakasa",
+      "userEmail": "Serge.Muakasa@ppcdrc.cd",
+      "module": "guest-house",
+      "moduleLabel": "Guest house",
+      "action": "create",
+      "actionLabel": "Création",
+      "entityType": "guest-house.reservation",
+      "entityId": "2bc6107c-78e4-4aed-bacf-a518aa45a829",
+      "summary": "Création réservation Lumbumba Vea",
+      "details": "Création réservation Lumbumba Vea",
+      "after": {
+        "id": "2bc6107c-78e4-4aed-bacf-a518aa45a829",
+        "numero": "GH-2026-4301",
+        "createdAt": "2026-08-16T17:33:29.808Z",
+        "personName": "Lumbumba Vea",
+        "isAgent": false,
+        "motif": "Mission to the plant for Crystal Mount Challenge",
+        "startDate": "2026-08-03",
+        "endDate": "2026-08-05",
+        "status": "pending",
+        "mission": "Mission to the plant for Crystal Mount Challenge",
+        "updatedAt": "2026-08-16T17:33:29.808Z"
+      },
+      "undoable": true,
+      "undone": false
+    },
+    {
       "id": "log-000266",
       "at": "2026-08-16T17:32:46.571Z",
       "userId": "Serge.Muakasa",
@@ -27177,5 +27207,5 @@
       }
     }
   ],
-  "nextSeq": 267
+  "nextSeq": 268
 }
