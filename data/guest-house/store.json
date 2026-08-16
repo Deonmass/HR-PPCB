@@ -716,6 +716,19 @@
   ],
   "reservations": [
     {
+      "id": "b9feee3f-d785-4368-826f-083040c941d4",
+      "numero": "GH-2026-4300",
+      "createdAt": "2026-08-16T17:32:19.699Z",
+      "personName": "Lumumba Vea",
+      "isAgent": false,
+      "motif": "Mission to the plant for Crystal Mount Challenge",
+      "startDate": "2026-08-03",
+      "endDate": "2026-08-05",
+      "status": "pending",
+      "mission": "Mission to the plant for Crystal Mount Challenge",
+      "updatedAt": "2026-08-16T17:32:19.699Z"
+    },
+    {
       "id": "1a2c806f-9fb0-4938-8788-732566b94452",
       "numero": "GH-2026-4299",
       "createdAt": "2026-08-16T17:30:02.785Z",
@@ -41141,5 +41154,5 @@
       "checkedOutAt": "2025-09-24T12:00:00.000Z"
     }
   ],
-  "nextReservationSeq": 4300
+  "nextReservationSeq": 4301
 }
