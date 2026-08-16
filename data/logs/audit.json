@@ -1,6 +1,36 @@
 {
   "entries": [
     {
+      "id": "log-000409",
+      "at": "2026-08-16T19:32:03.070Z",
+      "userId": "Serge.Muakasa",
+      "userName": "Serge Muakasa",
+      "userEmail": "Serge.Muakasa@ppcdrc.cd",
+      "module": "guest-house",
+      "moduleLabel": "Guest house",
+      "action": "create",
+      "actionLabel": "Création",
+      "entityType": "guest-house.reservation",
+      "entityId": "d04b28e4-f7f4-486e-8458-e0cc101906a9",
+      "summary": "Création réservation MIKINDO KYANGWI PAUL SAMSON",
+      "details": "Création réservation MIKINDO KYANGWI PAUL SAMSON",
+      "after": {
+        "id": "d04b28e4-f7f4-486e-8458-e0cc101906a9",
+        "numero": "GH-2026-4358",
+        "createdAt": "2026-08-16T19:32:01.742Z",
+        "personName": "MIKINDO KYANGWI PAUL SAMSON",
+        "matricule": "70000302",
+        "isAgent": true,
+        "motif": "Mission to the plant",
+        "startDate": "2026-07-30",
+        "endDate": "2026-07-31",
+        "status": "pending",
+        "updatedAt": "2026-08-16T19:32:01.742Z"
+      },
+      "undoable": true,
+      "undone": false
+    },
+    {
       "id": "log-000408",
       "at": "2026-08-16T19:30:56.094Z",
       "userId": "Serge.Muakasa",
@@ -32310,5 +32340,5 @@
       }
     }
   ],
-  "nextSeq": 409
+  "nextSeq": 410
 }
