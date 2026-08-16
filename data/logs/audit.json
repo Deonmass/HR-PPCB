@@ -1,6 +1,36 @@
 {
   "entries": [
     {
+      "id": "log-000299",
+      "at": "2026-08-16T17:57:26.691Z",
+      "userId": "Serge.Muakasa",
+      "userName": "Serge Muakasa",
+      "userEmail": "Serge.Muakasa@ppcdrc.cd",
+      "module": "guest-house",
+      "moduleLabel": "Guest house",
+      "action": "create",
+      "actionLabel": "Création",
+      "entityType": "guest-house.reservation",
+      "entityId": "3a34da5c-3ad1-4f3d-8d7e-4c3ac121ccfb",
+      "summary": "Création réservation Nathacha - KMPG",
+      "details": "Création réservation Nathacha - KMPG",
+      "after": {
+        "id": "3a34da5c-3ad1-4f3d-8d7e-4c3ac121ccfb",
+        "numero": "GH-2026-4317",
+        "createdAt": "2026-08-16T17:57:25.113Z",
+        "personName": "Nathacha - KMPG",
+        "isAgent": false,
+        "motif": "Team work with Transformer to the plant",
+        "startDate": "2026-08-13",
+        "endDate": "2026-08-14",
+        "status": "pending",
+        "mission": "Team work with Transformer to the plant",
+        "updatedAt": "2026-08-16T17:57:25.113Z"
+      },
+      "undoable": true,
+      "undone": false
+    },
+    {
       "id": "log-000298",
       "at": "2026-08-16T17:56:03.050Z",
       "userId": "Serge.Muakasa",
@@ -28364,5 +28394,5 @@
       }
     }
   ],
-  "nextSeq": 299
+  "nextSeq": 300
 }
