@@ -16990,7 +16990,7 @@
       "personName": "Sud africain",
       "isAgent": false,
       "motif": "Séjour (import historique)",
-      "startDate": "2026-07-27",
+      "startDate": "2026-07-26",
       "endDate": "2026-07-28",
       "roomId": "12ee1ff4-eb03-4592-b1da-589006209e77",
       "status": "confirmed",
@@ -16998,7 +16998,7 @@
       "source": "history-import",
       "sourceMonth": "2026-07",
       "sheetName": "Planning Juillet 26",
-      "updatedAt": "2026-07-28T13:34:24.160Z"
+      "updatedAt": "2026-08-16T19:08:55.150Z"
     },
     {
       "id": "521279ff-cbc3-42aa-ac62-9bfdb8a1d58e",
@@ -36677,7 +36677,7 @@
       "numero": "GH-2026-3811",
       "personName": "Sud africain",
       "motif": "Séjour (import historique)",
-      "startDate": "2026-07-27",
+      "startDate": "2026-07-26",
       "endDate": "2026-07-28",
       "checkedInAt": "2026-07-27T08:00:00.000Z"
     },
