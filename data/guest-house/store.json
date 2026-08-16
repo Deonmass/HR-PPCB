@@ -716,6 +716,19 @@
   ],
   "reservations": [
     {
+      "id": "be99f1bd-7417-48c4-9c1c-0d5b80a2bafe",
+      "numero": "GH-2026-4321",
+      "createdAt": "2026-08-16T18:02:27.290Z",
+      "personName": "Inspector Ministere Transport",
+      "isAgent": false,
+      "motif": "Mission to the plant for Heavy mobile equipment with Mining Mgr",
+      "startDate": "2026-08-15",
+      "endDate": "2026-08-18",
+      "status": "pending",
+      "mission": "Mission to the plant for Heavy mobile equipment with Mining Mgr",
+      "updatedAt": "2026-08-16T18:02:27.290Z"
+    },
+    {
       "id": "2afc955d-4cd4-417a-8bb2-cec004cde832",
       "numero": "GH-2026-4320",
       "createdAt": "2026-08-16T18:01:47.877Z",
@@ -41668,5 +41681,5 @@
       "checkedOutAt": "2025-09-24T12:00:00.000Z"
     }
   ],
-  "nextReservationSeq": 4321
+  "nextReservationSeq": 4322
 }
