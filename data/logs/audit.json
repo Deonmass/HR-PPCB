@@ -1,6 +1,36 @@
 {
   "entries": [
     {
+      "id": "log-000277",
+      "at": "2026-08-16T17:45:24.272Z",
+      "userId": "Serge.Muakasa",
+      "userName": "Serge Muakasa",
+      "userEmail": "Serge.Muakasa@ppcdrc.cd",
+      "module": "guest-house",
+      "moduleLabel": "Guest house",
+      "action": "create",
+      "actionLabel": "Création",
+      "entityType": "guest-house.reservation",
+      "entityId": "54c45a78-bfa9-4c86-8172-fe6be74111c2",
+      "summary": "Création réservation Driver Claude (andrew)",
+      "details": "Création réservation Driver Claude (andrew)",
+      "after": {
+        "id": "54c45a78-bfa9-4c86-8172-fe6be74111c2",
+        "numero": "GH-2026-4306",
+        "createdAt": "2026-08-16T17:45:22.657Z",
+        "personName": "Driver Claude (andrew)",
+        "isAgent": false,
+        "motif": "Plant Mgr Mission to the Village",
+        "startDate": "2026-08-09",
+        "endDate": "2026-08-09",
+        "status": "pending",
+        "mission": "Plant Mgr Mission to the Village",
+        "updatedAt": "2026-08-16T17:45:22.657Z"
+      },
+      "undoable": true,
+      "undone": false
+    },
+    {
       "id": "log-000276",
       "at": "2026-08-16T17:43:38.577Z",
       "userId": "Serge.Muakasa",
@@ -27550,5 +27580,5 @@
       }
     }
   ],
-  "nextSeq": 277
+  "nextSeq": 278
 }
