@@ -725,8 +725,9 @@
       "motif": "Mission to the plant - asset audit",
       "startDate": "2026-07-14",
       "endDate": "2026-07-21",
-      "status": "pending",
-      "updatedAt": "2026-08-16T18:25:24.956Z"
+      "roomId": "873277c8-cfe8-4e40-af16-61f1a3f4c273",
+      "status": "confirmed",
+      "updatedAt": "2026-08-16T18:25:40.691Z"
     },
     {
       "id": "6d2493b0-ba33-4796-86dd-01c328c4f412",
@@ -24862,6 +24863,18 @@
     }
   ],
   "passages": [
+    {
+      "id": "313f1edc-70e1-417d-884a-438504925a72",
+      "roomId": "873277c8-cfe8-4e40-af16-61f1a3f4c273",
+      "reservationId": "fc56f543-ecfc-4c98-a15c-3729f5843aa3",
+      "numero": "GH-2026-4331",
+      "personName": "MALONDA PHUATI FRANCIS",
+      "matricule": "70000152",
+      "motif": "Mission to the plant - asset audit",
+      "startDate": "2026-07-14",
+      "endDate": "2026-07-21",
+      "checkedInAt": "2026-08-16T18:25:40.691Z"
+    },
     {
       "id": "a9f78c6c-b268-4123-a21d-0812bb9929b5",
       "roomId": "0b0cdc0d-ba79-4f68-8533-c90cad3390cb",
