@@ -1,6 +1,52 @@
 {
   "entries": [
     {
+      "id": "log-000264",
+      "at": "2026-08-16T17:30:35.796Z",
+      "userId": "Serge.Muakasa",
+      "userName": "Serge Muakasa",
+      "userEmail": "Serge.Muakasa@ppcdrc.cd",
+      "module": "guest-house",
+      "moduleLabel": "Guest house",
+      "action": "update",
+      "actionLabel": "Modification",
+      "entityType": "guest-house.reservation",
+      "entityId": "1a2c806f-9fb0-4938-8788-732566b94452",
+      "summary": "Statut réservation 1a2c806f-9fb0-4938-8788-732566b94452 → confirmed",
+      "details": "Statut réservation 1a2c806f-9fb0-4938-8788-732566b94452 → confirmed",
+      "before": {
+        "id": "1a2c806f-9fb0-4938-8788-732566b94452",
+        "numero": "GH-2026-4299",
+        "createdAt": "2026-08-16T17:30:02.785Z",
+        "personName": "MAWETE NSOTA EMMANUEL",
+        "matricule": "70000276",
+        "isAgent": true,
+        "motif": "Qty LAB Standby",
+        "startDate": "2026-08-03",
+        "endDate": "2026-08-06",
+        "status": "pending",
+        "mission": "Qty LAB Standby",
+        "updatedAt": "2026-08-16T17:30:02.785Z"
+      },
+      "after": {
+        "id": "1a2c806f-9fb0-4938-8788-732566b94452",
+        "numero": "GH-2026-4299",
+        "createdAt": "2026-08-16T17:30:02.785Z",
+        "personName": "MAWETE NSOTA EMMANUEL",
+        "matricule": "70000276",
+        "isAgent": true,
+        "motif": "Qty LAB Standby",
+        "startDate": "2026-08-03",
+        "endDate": "2026-08-06",
+        "roomId": "0b0cdc0d-ba79-4f68-8533-c90cad3390cb",
+        "status": "confirmed",
+        "mission": "Qty LAB Standby",
+        "updatedAt": "2026-08-16T17:30:34.185Z"
+      },
+      "undoable": true,
+      "undone": false
+    },
+    {
       "id": "log-000263",
       "at": "2026-08-16T17:30:04.384Z",
       "userId": "Serge.Muakasa",
@@ -27057,5 +27103,5 @@
       }
     }
   ],
-  "nextSeq": 264
+  "nextSeq": 265
 }
