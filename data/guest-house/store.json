@@ -716,6 +716,20 @@
   ],
   "reservations": [
     {
+      "id": "1dd19d8e-2b11-4a4f-b307-cd8c671cfc9d",
+      "numero": "GH-2026-4303",
+      "createdAt": "2026-08-16T17:39:59.940Z",
+      "personName": "EKWALANGA MONGALIKITA BONIFACE",
+      "matricule": "70000085",
+      "isAgent": true,
+      "motif": "Drop by to Muanda",
+      "startDate": "2026-08-06",
+      "endDate": "2026-08-08",
+      "status": "pending",
+      "mission": "Drop by to Muanda",
+      "updatedAt": "2026-08-16T17:39:59.940Z"
+    },
+    {
       "id": "3b6facee-d19c-4867-9fe8-dcd34df706fa",
       "numero": "GH-2026-4302",
       "createdAt": "2026-08-16T17:37:35.438Z",
@@ -41216,5 +41230,5 @@
       "checkedOutAt": "2025-09-24T12:00:00.000Z"
     }
   ],
-  "nextReservationSeq": 4303
+  "nextReservationSeq": 4304
 }
