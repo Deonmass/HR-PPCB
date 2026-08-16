@@ -724,9 +724,10 @@
       "motif": "Missed the bus",
       "startDate": "2026-08-12",
       "endDate": "2026-08-12",
-      "status": "pending",
+      "roomId": "85c3d598-623c-402f-9053-e43840e24325",
+      "status": "confirmed",
       "mission": "Missed the bus",
-      "updatedAt": "2026-08-16T17:50:02.081Z"
+      "updatedAt": "2026-08-16T17:50:18.820Z"
     },
     {
       "id": "fc4ff7be-818b-45aa-b772-618118b1c4a3",
@@ -24568,6 +24569,17 @@
     }
   ],
   "passages": [
+    {
+      "id": "5c47affb-e62d-4400-91a0-ff4ba248f83c",
+      "roomId": "85c3d598-623c-402f-9053-e43840e24325",
+      "reservationId": "30c0a001-c5f8-4356-b068-808759bf8da0",
+      "numero": "GH-2026-4310",
+      "personName": "MD Service - Packing Plant",
+      "motif": "Missed the bus",
+      "startDate": "2026-08-12",
+      "endDate": "2026-08-12",
+      "checkedInAt": "2026-08-16T17:50:18.820Z"
+    },
     {
       "id": "7c3c4803-c0cc-4bc6-a69d-40dd5bb1aa10",
       "roomId": "2ef11cfa-1396-4c82-ac99-85b12d6093be",
