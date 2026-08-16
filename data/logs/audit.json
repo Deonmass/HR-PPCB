@@ -1,6 +1,36 @@
 {
   "entries": [
     {
+      "id": "log-000356",
+      "at": "2026-08-16T18:48:46.083Z",
+      "userId": "Serge.Muakasa",
+      "userName": "Serge Muakasa",
+      "userEmail": "Serge.Muakasa@ppcdrc.cd",
+      "module": "guest-house",
+      "moduleLabel": "Guest house",
+      "action": "create",
+      "actionLabel": "Création",
+      "entityType": "guest-house.reservation",
+      "entityId": "558538cd-8099-4f86-8293-ce3418031860",
+      "summary": "Création réservation MUTOMBO NTALAJA ACHILLE",
+      "details": "Création réservation MUTOMBO NTALAJA ACHILLE",
+      "after": {
+        "id": "558538cd-8099-4f86-8293-ce3418031860",
+        "numero": "GH-2026-4343",
+        "createdAt": "2026-08-16T18:48:44.830Z",
+        "personName": "MUTOMBO NTALAJA ACHILLE",
+        "matricule": "70000180",
+        "isAgent": true,
+        "motif": "Clan nanga meeting",
+        "startDate": "2026-07-23",
+        "endDate": "2026-07-28",
+        "status": "pending",
+        "updatedAt": "2026-08-16T18:48:44.830Z"
+      },
+      "undoable": true,
+      "undone": false
+    },
+    {
       "id": "log-000355",
       "at": "2026-08-16T18:45:25.989Z",
       "userId": "Serge.Muakasa",
@@ -30384,5 +30414,5 @@
       }
     }
   ],
-  "nextSeq": 356
+  "nextSeq": 357
 }
