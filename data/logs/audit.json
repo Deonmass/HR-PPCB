@@ -1,6 +1,36 @@
 {
   "entries": [
     {
+      "id": "log-000320",
+      "at": "2026-08-16T18:13:40.484Z",
+      "userId": "Serge.Muakasa",
+      "userName": "Serge Muakasa",
+      "userEmail": "Serge.Muakasa@ppcdrc.cd",
+      "module": "guest-house",
+      "moduleLabel": "Guest house",
+      "action": "create",
+      "actionLabel": "Création",
+      "entityType": "guest-house.reservation",
+      "entityId": "6fc54286-d6cc-49e5-add8-86ec7ea55e06",
+      "summary": "Création réservation Fabien cameroon",
+      "details": "Création réservation Fabien cameroon",
+      "after": {
+        "id": "6fc54286-d6cc-49e5-add8-86ec7ea55e06",
+        "numero": "GH-2026-4326",
+        "createdAt": "2026-08-16T18:13:39.175Z",
+        "personName": "Fabien cameroon",
+        "isAgent": false,
+        "motif": "Mission to the plant",
+        "startDate": "2026-07-01",
+        "endDate": "2026-07-01",
+        "status": "pending",
+        "mission": "Mission to the plant",
+        "updatedAt": "2026-08-16T18:13:39.175Z"
+      },
+      "undoable": true,
+      "undone": false
+    },
+    {
       "id": "log-000319",
       "at": "2026-08-16T18:11:59.923Z",
       "userId": "Serge.Muakasa",
@@ -29113,5 +29143,5 @@
       }
     }
   ],
-  "nextSeq": 320
+  "nextSeq": 321
 }
