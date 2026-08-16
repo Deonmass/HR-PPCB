@@ -1,6 +1,50 @@
 {
   "entries": [
     {
+      "id": "log-000286",
+      "at": "2026-08-16T17:50:20.717Z",
+      "userId": "Serge.Muakasa",
+      "userName": "Serge Muakasa",
+      "userEmail": "Serge.Muakasa@ppcdrc.cd",
+      "module": "guest-house",
+      "moduleLabel": "Guest house",
+      "action": "update",
+      "actionLabel": "Modification",
+      "entityType": "guest-house.reservation",
+      "entityId": "30c0a001-c5f8-4356-b068-808759bf8da0",
+      "summary": "Statut réservation 30c0a001-c5f8-4356-b068-808759bf8da0 → confirmed",
+      "details": "Statut réservation 30c0a001-c5f8-4356-b068-808759bf8da0 → confirmed",
+      "before": {
+        "id": "30c0a001-c5f8-4356-b068-808759bf8da0",
+        "numero": "GH-2026-4310",
+        "createdAt": "2026-08-16T17:50:02.081Z",
+        "personName": "MD Service - Packing Plant",
+        "isAgent": false,
+        "motif": "Missed the bus",
+        "startDate": "2026-08-12",
+        "endDate": "2026-08-12",
+        "status": "pending",
+        "mission": "Missed the bus",
+        "updatedAt": "2026-08-16T17:50:02.081Z"
+      },
+      "after": {
+        "id": "30c0a001-c5f8-4356-b068-808759bf8da0",
+        "numero": "GH-2026-4310",
+        "createdAt": "2026-08-16T17:50:02.081Z",
+        "personName": "MD Service - Packing Plant",
+        "isAgent": false,
+        "motif": "Missed the bus",
+        "startDate": "2026-08-12",
+        "endDate": "2026-08-12",
+        "roomId": "85c3d598-623c-402f-9053-e43840e24325",
+        "status": "confirmed",
+        "mission": "Missed the bus",
+        "updatedAt": "2026-08-16T17:50:18.820Z"
+      },
+      "undoable": true,
+      "undone": false
+    },
+    {
       "id": "log-000285",
       "at": "2026-08-16T17:50:03.908Z",
       "userId": "Serge.Muakasa",
@@ -27876,5 +27920,5 @@
       }
     }
   ],
-  "nextSeq": 286
+  "nextSeq": 287
 }
