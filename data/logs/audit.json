@@ -1,6 +1,36 @@
 {
   "entries": [
     {
+      "id": "log-000391",
+      "at": "2026-08-16T19:17:15.789Z",
+      "userId": "Serge.Muakasa",
+      "userName": "Serge Muakasa",
+      "userEmail": "Serge.Muakasa@ppcdrc.cd",
+      "module": "guest-house",
+      "moduleLabel": "Guest house",
+      "action": "create",
+      "actionLabel": "Création",
+      "entityType": "guest-house.reservation",
+      "entityId": "9952283a-ccfe-4387-9480-859aebbb1da4",
+      "summary": "Création réservation MANEKA MPUDI TRESOR",
+      "details": "Création réservation MANEKA MPUDI TRESOR",
+      "after": {
+        "id": "9952283a-ccfe-4387-9480-859aebbb1da4",
+        "numero": "GH-2026-4355",
+        "createdAt": "2026-08-16T19:17:14.497Z",
+        "personName": "MANEKA MPUDI TRESOR",
+        "matricule": "70000175",
+        "isAgent": true,
+        "motif": "Mission to the plant to accompany the CPA",
+        "startDate": "2026-07-27",
+        "endDate": "2026-07-28",
+        "status": "pending",
+        "updatedAt": "2026-08-16T19:17:14.497Z"
+      },
+      "undoable": true,
+      "undone": false
+    },
+    {
       "id": "log-000390",
       "at": "2026-08-16T19:16:16.004Z",
       "userId": "Serge.Muakasa",
@@ -31647,5 +31677,5 @@
       }
     }
   ],
-  "nextSeq": 391
+  "nextSeq": 392
 }
