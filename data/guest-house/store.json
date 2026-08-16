@@ -716,6 +716,19 @@
   ],
   "reservations": [
     {
+      "id": "fc56f543-ecfc-4c98-a15c-3729f5843aa3",
+      "numero": "GH-2026-4331",
+      "createdAt": "2026-08-16T18:25:24.956Z",
+      "personName": "MALONDA PHUATI FRANCIS",
+      "matricule": "70000152",
+      "isAgent": true,
+      "motif": "Mission to the plant - asset audit",
+      "startDate": "2026-07-14",
+      "endDate": "2026-07-21",
+      "status": "pending",
+      "updatedAt": "2026-08-16T18:25:24.956Z"
+    },
+    {
       "id": "6d2493b0-ba33-4796-86dd-01c328c4f412",
       "numero": "GH-2026-4330",
       "createdAt": "2026-08-16T18:22:54.952Z",
@@ -41920,5 +41933,5 @@
       "checkedOutAt": "2025-09-24T12:00:00.000Z"
     }
   ],
-  "nextReservationSeq": 4331
+  "nextReservationSeq": 4332
 }
