@@ -1,6 +1,52 @@
 {
   "entries": [
     {
+      "id": "log-000272",
+      "at": "2026-08-16T17:40:32.526Z",
+      "userId": "Serge.Muakasa",
+      "userName": "Serge Muakasa",
+      "userEmail": "Serge.Muakasa@ppcdrc.cd",
+      "module": "guest-house",
+      "moduleLabel": "Guest house",
+      "action": "update",
+      "actionLabel": "Modification",
+      "entityType": "guest-house.reservation",
+      "entityId": "1dd19d8e-2b11-4a4f-b307-cd8c671cfc9d",
+      "summary": "Statut réservation 1dd19d8e-2b11-4a4f-b307-cd8c671cfc9d → confirmed",
+      "details": "Statut réservation 1dd19d8e-2b11-4a4f-b307-cd8c671cfc9d → confirmed",
+      "before": {
+        "id": "1dd19d8e-2b11-4a4f-b307-cd8c671cfc9d",
+        "numero": "GH-2026-4303",
+        "createdAt": "2026-08-16T17:39:59.940Z",
+        "personName": "EKWALANGA MONGALIKITA BONIFACE",
+        "matricule": "70000085",
+        "isAgent": true,
+        "motif": "Drop by to Muanda",
+        "startDate": "2026-08-06",
+        "endDate": "2026-08-08",
+        "status": "pending",
+        "mission": "Drop by to Muanda",
+        "updatedAt": "2026-08-16T17:39:59.940Z"
+      },
+      "after": {
+        "id": "1dd19d8e-2b11-4a4f-b307-cd8c671cfc9d",
+        "numero": "GH-2026-4303",
+        "createdAt": "2026-08-16T17:39:59.940Z",
+        "personName": "EKWALANGA MONGALIKITA BONIFACE",
+        "matricule": "70000085",
+        "isAgent": true,
+        "motif": "Drop by to Muanda",
+        "startDate": "2026-08-06",
+        "endDate": "2026-08-08",
+        "roomId": "ed91c14e-915f-4d22-971c-fd4bb7feb33e",
+        "status": "confirmed",
+        "mission": "Drop by to Muanda",
+        "updatedAt": "2026-08-16T17:40:30.719Z"
+      },
+      "undoable": true,
+      "undone": false
+    },
+    {
       "id": "log-000271",
       "at": "2026-08-16T17:40:01.468Z",
       "userId": "Serge.Muakasa",
@@ -27356,5 +27402,5 @@
       }
     }
   ],
-  "nextSeq": 272
+  "nextSeq": 273
 }
