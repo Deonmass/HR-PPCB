@@ -1,6 +1,37 @@
 {
   "entries": [
     {
+      "id": "log-000310",
+      "at": "2026-08-16T18:04:02.313Z",
+      "userId": "Serge.Muakasa",
+      "userName": "Serge Muakasa",
+      "userEmail": "Serge.Muakasa@ppcdrc.cd",
+      "module": "guest-house",
+      "moduleLabel": "Guest house",
+      "action": "create",
+      "actionLabel": "Création",
+      "entityType": "guest-house.reservation",
+      "entityId": "81913863-8409-4571-8ff5-12e98c80a5b2",
+      "summary": "Création réservation ZODULUA GADUA Jean Jacques",
+      "details": "Création réservation ZODULUA GADUA Jean Jacques",
+      "after": {
+        "id": "81913863-8409-4571-8ff5-12e98c80a5b2",
+        "numero": "GH-2026-4322",
+        "createdAt": "2026-08-16T18:04:00.781Z",
+        "personName": "ZODULUA GADUA Jean Jacques",
+        "matricule": "70000009",
+        "isAgent": true,
+        "motif": "Mission to drop inspector for control technique of heavy equipment",
+        "startDate": "2026-08-15",
+        "endDate": "2026-08-15",
+        "status": "pending",
+        "mission": "Mission to drop inspector for control technique of heavy equipment",
+        "updatedAt": "2026-08-16T18:04:00.781Z"
+      },
+      "undoable": true,
+      "undone": false
+    },
+    {
       "id": "log-000309",
       "at": "2026-08-16T18:02:48.542Z",
       "userId": "Serge.Muakasa",
@@ -28761,5 +28792,5 @@
       }
     }
   ],
-  "nextSeq": 310
+  "nextSeq": 311
 }
