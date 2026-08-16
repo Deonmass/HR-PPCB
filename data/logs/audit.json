@@ -1,6 +1,35 @@
 {
   "entries": [
     {
+      "id": "log-000336",
+      "at": "2026-08-16T18:28:36.575Z",
+      "userId": "Serge.Muakasa",
+      "userName": "Serge Muakasa",
+      "userEmail": "Serge.Muakasa@ppcdrc.cd",
+      "module": "guest-house",
+      "moduleLabel": "Guest house",
+      "action": "create",
+      "actionLabel": "Création",
+      "entityType": "guest-house.reservation",
+      "entityId": "1c39519b-3a2b-4052-bf35-4e2983beef17",
+      "summary": "Création réservation Jean Pierre CPM",
+      "details": "Création réservation Jean Pierre CPM",
+      "after": {
+        "id": "1c39519b-3a2b-4052-bf35-4e2983beef17",
+        "numero": "GH-2026-4333",
+        "createdAt": "2026-08-16T18:28:35.267Z",
+        "personName": "Jean Pierre CPM",
+        "isAgent": false,
+        "motif": "Asset audit to the plant and village",
+        "startDate": "2026-07-14",
+        "endDate": "2026-07-21",
+        "status": "pending",
+        "updatedAt": "2026-08-16T18:28:35.267Z"
+      },
+      "undoable": true,
+      "undone": false
+    },
+    {
       "id": "log-000335",
       "at": "2026-08-16T18:27:37.371Z",
       "userId": "Serge.Muakasa",
@@ -29674,5 +29703,5 @@
       }
     }
   ],
-  "nextSeq": 336
+  "nextSeq": 337
 }
