@@ -1,6 +1,35 @@
 {
   "entries": [
     {
+      "id": "log-000329",
+      "at": "2026-08-16T18:22:56.163Z",
+      "userId": "Serge.Muakasa",
+      "userName": "Serge Muakasa",
+      "userEmail": "Serge.Muakasa@ppcdrc.cd",
+      "module": "guest-house",
+      "moduleLabel": "Guest house",
+      "action": "create",
+      "actionLabel": "Création",
+      "entityType": "guest-house.reservation",
+      "entityId": "6d2493b0-ba33-4796-86dd-01c328c4f412",
+      "summary": "Création réservation Thunga - FARDC",
+      "details": "Création réservation Thunga - FARDC",
+      "after": {
+        "id": "6d2493b0-ba33-4796-86dd-01c328c4f412",
+        "numero": "GH-2026-4330",
+        "createdAt": "2026-08-16T18:22:54.952Z",
+        "personName": "Thunga - FARDC",
+        "isAgent": false,
+        "motif": "Blasting assistance",
+        "startDate": "2026-07-13",
+        "endDate": "2026-07-13",
+        "status": "pending",
+        "updatedAt": "2026-08-16T18:22:54.952Z"
+      },
+      "undoable": true,
+      "undone": false
+    },
+    {
       "id": "log-000328",
       "at": "2026-08-16T18:21:45.284Z",
       "userId": "Serge.Muakasa",
@@ -29431,5 +29460,5 @@
       }
     }
   ],
-  "nextSeq": 329
+  "nextSeq": 330
 }
