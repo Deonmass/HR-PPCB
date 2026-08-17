@@ -1,6 +1,21 @@
 {
   "entries": [
     {
+      "id": "log-000416",
+      "at": "2026-08-17T08:31:01.315Z",
+      "userId": "berth.lubenzo",
+      "userName": "Berth Lubenzo",
+      "userEmail": "Berth.Lubenzo@ppcdrc.cd",
+      "module": "travel.etablir",
+      "moduleLabel": "Cash request",
+      "action": "export",
+      "actionLabel": "Export",
+      "summary": "Téléchargement document voyage PPCB-DOC-HR-ZA/001/08/2026",
+      "details": "Fichier Cash Request - MUAKASA NSONI SERGE.xlsx (cash-request)",
+      "undoable": false,
+      "undone": false
+    },
+    {
       "id": "log-000415",
       "at": "2026-08-17T08:30:56.903Z",
       "userId": "berth.lubenzo",
@@ -32619,5 +32634,5 @@
       }
     }
   ],
-  "nextSeq": 416
+  "nextSeq": 417
 }
