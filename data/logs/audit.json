@@ -1,6 +1,99 @@
 {
   "entries": [
     {
+      "id": "log-000415",
+      "at": "2026-08-17T08:30:56.903Z",
+      "userId": "berth.lubenzo",
+      "userName": "Berth Lubenzo",
+      "userEmail": "Berth.Lubenzo@ppcdrc.cd",
+      "module": "travel.etablir",
+      "moduleLabel": "Cash request",
+      "action": "create",
+      "actionLabel": "Création",
+      "entityType": "travel.cash-request",
+      "entityId": "cr-1786955455990",
+      "summary": "Génération documents voyage PPCB-DOC-HR-ZA/001/08/2026",
+      "details": "Documents générés (SSE) pour MUAKASA NSONI SERGE (PPCB-DOC-HR-ZA/001/08/2026)",
+      "after": {
+        "id": "cr-1786955455990",
+        "type": "cash-request",
+        "createdAt": "2026-08-17T08:30:56.309Z",
+        "missionRef": "PPCB-DOC-HR-ZA/001/08/2026",
+        "employeeMatricule": "70000008",
+        "employeeName": "MUAKASA NSONI SERGE",
+        "employeeDepartment": "Human Resources",
+        "costCenter": "KC8711",
+        "requestorLine": "MUAKASA NSONI SERGE (70000008)        Department : Human Resources        Coast center : KC8711",
+        "objet": "Mission de service à Matadi - Depot des courriers de taxe",
+        "requestDate": "2026-08-17",
+        "travel": {
+          "position": "Estate Officer",
+          "department": "Human Resources",
+          "tripPurpose": "Mission de service à Matadi - Depot des courriers de taxe",
+          "costCenter": "KC8711",
+          "documentDate": "2026-08-17",
+          "departureDate": "2026-08-17",
+          "departurePlace": "",
+          "destinationPlace": "",
+          "returnDate": "2026-08-17",
+          "peopleCount": 1,
+          "companyName": "PPC Barnet Manufacturing SA",
+          "departmentToWorkWith": "",
+          "contactPerson": "",
+          "transportMeans": "",
+          "paymentOrderSignatory": "",
+          "budgetLines": [
+            {
+              "label": "Food allowance  for the 10th, August 2026",
+              "amount": 50
+            },
+            {
+              "label": "Trip allowance  for the 10th, August 2026",
+              "amount": 50
+            },
+            {
+              "label": "Toll ( if required)",
+              "amount": 10
+            }
+          ],
+          "isInternationalTravel": false
+        },
+        "lines": [
+          {
+            "ref": "1",
+            "description": "Food allowance  for the 10th, August 2026",
+            "currency": "USD",
+            "amount": 50
+          },
+          {
+            "ref": "2",
+            "description": "Trip allowance  for the 10th, August 2026",
+            "currency": "USD",
+            "amount": 50
+          },
+          {
+            "ref": "3",
+            "description": "Toll ( if required)",
+            "currency": "USD",
+            "amount": 10
+          }
+        ],
+        "total": 110,
+        "fileName": "Cash Request - MUAKASA NSONI SERGE.xlsx",
+        "filePath": "/tmp/hr-rh-app/travel/output/Cash Request - MUAKASA NSONI SERGE.xlsx",
+        "files": [
+          {
+            "type": "cash-request",
+            "fileName": "Cash Request - MUAKASA NSONI SERGE.xlsx",
+            "filePath": "/tmp/hr-rh-app/travel/output/Cash Request - MUAKASA NSONI SERGE.xlsx"
+          }
+        ],
+        "saveDirectory": "/tmp/hr-rh-app/travel/output"
+      },
+      "undoable": false,
+      "undone": false
+    },
+    {
       "id": "log-000414",
       "at": "2026-08-16T19:34:38.174Z",
       "userId": "Serge.Muakasa",
@@ -32526,5 +32619,5 @@
       }
     }
   ],
-  "nextSeq": 415
+  "nextSeq": 416
 }
