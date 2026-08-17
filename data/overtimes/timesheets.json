@@ -9490,18 +9490,6 @@
             "updatedAt": "2026-08-17T15:16:32.414Z",
             "updatedBy": "admin"
           }
-        },
-        "2026-07-25": {
-          "70000061": {
-            "matricule": "70000061",
-            "present": true,
-            "from": "14:00",
-            "to": "22:00",
-            "shiftType": null,
-            "holiday": false,
-            "updatedAt": "2026-08-17T15:27:16.835Z",
-            "updatedBy": "admin"
-          }
         }
       }
     }
