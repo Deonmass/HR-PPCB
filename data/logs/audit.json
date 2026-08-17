@@ -1,6 +1,64 @@
 {
   "entries": [
     {
+      "id": "log-000433",
+      "at": "2026-08-17T14:49:29.120Z",
+      "userId": "admin",
+      "userName": "Administrateur",
+      "module": "timesheet",
+      "moduleLabel": "Timesheet",
+      "action": "update",
+      "actionLabel": "Modification",
+      "summary": "Enregistrement timesheet 2026-08-12 — Production",
+      "details": "Enregistrement timesheet 2026-08-12 — Production",
+      "after": {
+        "70000070": {
+          "matricule": "70000070",
+          "present": true,
+          "from": "06:00",
+          "to": "14:00",
+          "shiftType": null,
+          "holiday": false,
+          "updatedAt": "2026-08-17T14:49:26.353Z",
+          "updatedBy": "admin"
+        }
+      },
+      "undoable": false,
+      "undone": false,
+      "meta": {
+        "year": 2026,
+        "month": 8,
+        "dateKey": "2026-08-12",
+        "department": "Production",
+        "mode": "day",
+        "count": 1
+      }
+    },
+    {
+      "id": "log-000432",
+      "at": "2026-08-17T14:49:28.589Z",
+      "userId": "admin",
+      "userName": "Administrateur",
+      "module": "timesheet",
+      "moduleLabel": "Timesheet",
+      "action": "error",
+      "actionLabel": "Erreur",
+      "summary": "Unexpected end of JSON input",
+      "details": "Échec de l’action « update » sur timesheet: Unexpected end of JSON input",
+      "undoable": false,
+      "undone": false,
+      "error": {
+        "message": "Unexpected end of JSON input",
+        "stack": "SyntaxError: Unexpected end of JSON input\n    at JSON.parse (<anonymous>)\n    at u (/var/task/.next/server/chunks/4586.js:1:3288)\n    at async J (/var/task/.next/server/chunks/4586.js:1:6462)\n    at async j (/var/task/.next/server/chunks/1179.js:1:2536)\n    at async B (/var/task/.next/server/app/api/timesheet/entries/route.js:1:6360)\n    at async rH.do (/var/task/node_modules/next/dist/compiled/next-server/app-route.runtime.prod.js:5:21048)\n    at async rH.handle (/var/task/node_modules/next/dist/compiled/next-server/app-route.runtime.prod.js:5:25866)\n    at async k (/var/task/.next/server/app/api/timesheet/entries/route.js:1:9513)\n    at async rH.handleResponse (/var/task/node_modules/next/dist/compiled/next-server/app-route.runtime.prod.js:1:110770)\n    at async g (/var/task/.next/server/app/api/timesheet/entries/route.js:1:10516)",
+        "path": "/api/timesheet/entries",
+        "method": "PUT",
+        "context": {
+          "action": "update",
+          "summary": "Enregistrement timesheet 2026-07-24 — Production"
+        }
+      }
+    },
+    {
       "id": "log-000431",
       "at": "2026-08-17T14:25:12.593Z",
       "userId": "admin",
@@ -33069,5 +33127,5 @@
       }
     }
   ],
-  "nextSeq": 432
+  "nextSeq": 434
 }
