@@ -216,7 +216,6 @@ export function buildTimesheetTemplateLines(
   const lines: TimesheetTemplateLine[] = [];
 
   rows.forEach((row, index) => {
-    lines.push(buildDayLine(row, localisation, explicitActual));
     const weekIndexes = inserts.get(index);
     if (weekIndexes?.length) {
       for (const weekIndex of weekIndexes) {
@@ -231,9 +230,7 @@ export function buildTimesheetTemplateLines(
           otNight: imported?.night ?? 0,
         });
       }
-      return;
-    }
-    if (inserts.size === 0 && (index + 1) % 7 === 0) {
+    } else if (inserts.size === 0 && index % 7 === 0) {
       const weekIndex = Math.floor(index / 7);
       const imported = weeklyOtByIndex[weekIndex];
       lines.push({
@@ -246,6 +243,7 @@ export function buildTimesheetTemplateLines(
         otNight: imported?.night ?? 0,
       });
     }
+    lines.push(buildDayLine(row, localisation, explicitActual));
   });
 
   return lines;

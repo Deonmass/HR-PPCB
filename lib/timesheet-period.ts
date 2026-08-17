@@ -29,9 +29,9 @@ function startOfDay(date: Date): Date {
   return new Date(date.getFullYear(), date.getMonth(), date.getDate());
 }
 
-/** Exactly 4 weeks (28 days) for a named timesheet month (mid-month cycle). */
-export const TIMESHEET_WEEKS_PER_PERIOD = 4;
-export const TIMESHEET_DAYS_PER_PERIOD = TIMESHEET_WEEKS_PER_PERIOD * 7;
+/** Mid-month cycle: Monday ≤ 15 of previous month → Sunday ≥ 15 of named month. */
+export const TIMESHEET_WEEKS_PER_PERIOD = 6;
+export const TIMESHEET_DAYS_PER_PERIOD = 28;
 
 export function formatTimesheetMonthLabel(year: number, month: number): string {
   const label = new Date(year, month - 1, 1).toLocaleDateString('en-US', {
@@ -82,19 +82,28 @@ export function listTimesheetWeekBounds(
   year: number,
   month: number,
 ): Array<{ weekIndex: number; fromKey: string; toKey: string; label: string }> {
+  const period = buildTimesheetPeriod(year, month);
+  const weekCount = Math.ceil(period.days.length / 7);
   const bounds: Array<{ weekIndex: number; fromKey: string; toKey: string; label: string }> = [];
-  for (let weekIndex = 0; weekIndex < TIMESHEET_WEEKS_PER_PERIOD; weekIndex += 1) {
-    const week = getTimesheetWeekFromTo(year, month, weekIndex);
-    if (!week.fromKey || !week.toKey) continue;
-    bounds.push({ weekIndex, fromKey: week.fromKey, toKey: week.toKey, label: week.label });
+  for (let weekIndex = 0; weekIndex < weekCount; weekIndex += 1) {
+    const fromDay = period.days[weekIndex * 7];
+    const toDay = period.days[Math.min(weekIndex * 7 + 6, period.days.length - 1)];
+    if (!fromDay || !toDay) continue;
+    const weekEndExclusive = startOfDay(fromDay.date);
+    weekEndExclusive.setDate(weekEndExclusive.getDate() + 7);
+    bounds.push({
+      weekIndex,
+      fromKey: fromDay.dateKey,
+      toKey: toDay.dateKey,
+      label: `du ${formatFrDisplayDate(fromDay.date)} au ${formatFrDisplayDate(weekEndExclusive)}`,
+    });
   }
   return bounds;
 }
 
 /**
- * After which timesheet row to insert each overtime week total.
- * Matching uses the official overtime week dates of the named month, not the
- * 7-row chunks of a shifted timesheet start date.
+ * Before which timesheet row to insert each overtime week total.
+ * Matching uses the official overtime week dates of the named month.
  */
 export function overtimeWeekInsertsAfterRow(
   rows: Array<{ dateKey: string }>,
@@ -103,14 +112,13 @@ export function overtimeWeekInsertsAfterRow(
 ): Map<number, number[]> {
   const inserts = new Map<number, number[]>();
   for (const week of listTimesheetWeekBounds(year, month)) {
-    let last = -1;
-    rows.forEach((row, index) => {
-      if (row.dateKey >= week.fromKey && row.dateKey <= week.toKey) last = index;
-    });
-    if (last < 0) continue;
-    const list = inserts.get(last) ?? [];
+    const first = rows.findIndex(
+      (row) => row.dateKey >= week.fromKey && row.dateKey <= week.toKey,
+    );
+    if (first < 0) continue;
+    const list = inserts.get(first) ?? [];
     list.push(week.weekIndex);
-    inserts.set(last, list);
+    inserts.set(first, list);
   }
   return inserts;
 }
@@ -135,6 +143,20 @@ export function snapToTimesheetWeekStart(date: Date): Date {
  */
 function timesheetPeriodStart(year: number, month: number): Date {
   return mondayOnOrBefore(startOfDay(new Date(year, month - 2, 15)));
+}
+
+function sundayOnOrAfter(date: Date): Date {
+  const cursor = startOfDay(date);
+  if (Number.isNaN(cursor.getTime())) return cursor;
+  for (let step = 0; step < 7 && cursor.getDay() !== 0; step += 1) {
+    cursor.setDate(cursor.getDate() + 1);
+  }
+  return cursor;
+}
+
+/** Fin de période : le dimanche ≥ 15 du mois nommé (ex. août 2026 → 16 août). */
+function timesheetPeriodEnd(year: number, month: number): Date {
+  return sundayOnOrAfter(startOfDay(new Date(year, month - 1, 15)));
 }
 
 export function parseLocalDateKey(value: string): Date | null {
@@ -171,15 +193,17 @@ export function parseTimesheetDateFr(value: string): Date | null {
   );
 }
 
-/** 28 consecutive days from `start`, grouped into 4 weeks of 7 days. */
-export function buildTimesheetDaysFromStart(start: Date): TimesheetPeriodDay[] {
+/** Consecutive days from `start`, grouped into weeks of 7 days (Monday → Sunday). */
+export function buildTimesheetDaysFromStart(start: Date, dayCount = TIMESHEET_DAYS_PER_PERIOD): TimesheetPeriodDay[] {
   const days: TimesheetPeriodDay[] = [];
   const origin = startOfDay(start);
-  for (let dayIndex = 0; dayIndex < TIMESHEET_DAYS_PER_PERIOD; dayIndex += 1) {
+  const count = Math.max(7, Math.round(dayCount / 7) * 7);
+  const weekCount = count / 7;
+  for (let dayIndex = 0; dayIndex < count; dayIndex += 1) {
     const day = startOfDay(origin);
     day.setDate(origin.getDate() + dayIndex);
     const isWeekend = day.getDay() === 0 || day.getDay() === 6;
-    const weekNumber = Math.min(TIMESHEET_WEEKS_PER_PERIOD, Math.floor(dayIndex / 7) + 1);
+    const weekNumber = Math.min(weekCount, Math.floor(dayIndex / 7) + 1);
     days.push({
       date: new Date(day),
       dateKey: localDateKey(day),
@@ -195,21 +219,23 @@ export function buildTimesheetDaysFromStart(start: Date): TimesheetPeriodDay[] {
 /**
  * Période timesheet d'un mois nommé (ex. août) :
  * - début = lundi ≤ 15 du mois précédent
- * - exactement 4 semaines (28 jours, lundi → dimanche)
- * Ex. août 2026 : 13→19 juil., 20→26 juil., 27 juil.→2 août, 3→9 août
- * (libellés du 13 au 20, du 20 au 27, du 27 au 3 août, du 3 au 10 août).
+ * - fin = dimanche ≥ 15 du mois nommé
+ * - semaines lundi → dimanche
+ * Ex. août 2026 : 13 juil. → 16 août (5 semaines).
  */
 export function buildTimesheetPeriod(year: number, month: number): TimesheetPeriod {
   const start = timesheetPeriodStart(year, month);
-  const days = buildTimesheetDaysFromStart(start);
-  const end = days[days.length - 1]?.date ?? start;
+  const end = timesheetPeriodEnd(year, month);
+  const dayCount = Math.round((end.getTime() - start.getTime()) / 86_400_000) + 1;
+  const days = buildTimesheetDaysFromStart(start, dayCount);
+  const last = days[days.length - 1]?.date ?? end;
 
   return {
     year,
     month,
     monthLabel: formatTimesheetMonthLabel(year, month),
     start,
-    end,
+    end: last,
     days,
   };
 }

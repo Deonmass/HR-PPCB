@@ -37,7 +37,7 @@ export function shiftTimesheetRowsToStart(
   rows: TimesheetRowData[],
   start: Date,
 ): TimesheetRowData[] {
-  const days = buildTimesheetDaysFromStart(start);
+  const days = buildTimesheetDaysFromStart(start, rows.length || undefined);
   return days.map((day, index) => {
     const previous = rows[index];
     if (!previous) return createTimesheetRowFromDay(day);

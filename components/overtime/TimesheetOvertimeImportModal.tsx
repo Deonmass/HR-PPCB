@@ -2,7 +2,7 @@
 
 import { useEffect, useMemo, useRef, useState } from 'react';
 import { BtnSpinner } from '@/components/overtime/TimesheetIcons';
-import { getTimesheetWeekFromTo, TIMESHEET_WEEKS_PER_PERIOD } from '@/lib/timesheet-period';
+import { listTimesheetWeekBounds } from '@/lib/timesheet-period';
 import { showError, showSuccess, showWarning } from '@/lib/swal';
 
 interface Props {
@@ -24,14 +24,11 @@ export default function TimesheetOvertimeImportModal({
 }: Props) {
   const weekOptions = useMemo(
     () =>
-      Array.from({ length: TIMESHEET_WEEKS_PER_PERIOD }, (_, weekIndex) => {
-        const week = getTimesheetWeekFromTo(periodYear, periodMonth, weekIndex);
-        return {
-          weekIndex,
-          label: `Semaine ${weekIndex + 1}`,
-          range: week.label,
-        };
-      }),
+      listTimesheetWeekBounds(periodYear, periodMonth).map((week) => ({
+        weekIndex: week.weekIndex,
+        label: `Semaine ${week.weekIndex + 1}`,
+        range: week.label,
+      })),
     [periodYear, periodMonth],
   );
 

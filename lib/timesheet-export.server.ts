@@ -109,7 +109,6 @@ function buildExportLines(rows: TimesheetRowData[], year: number, month: number)
   const lines: ExportLine[] = [];
 
   rows.forEach((row, index) => {
-    lines.push({ kind: 'day', row });
     const weekIndexes = inserts.get(index);
     if (weekIndexes?.length) {
       for (const weekIndex of weekIndexes) {
@@ -119,15 +118,14 @@ function buildExportLines(rows: TimesheetRowData[], year: number, month: number)
           ot: { ot13: 0, ot16: 0, ot2: 0, night: 0 },
         });
       }
-      return;
-    }
-    if (inserts.size === 0 && (index + 1) % 7 === 0) {
+    } else if (inserts.size === 0 && index % 7 === 0) {
       lines.push({
         kind: 'week',
         weekIndex: Math.floor(index / 7),
         ot: { ot13: 0, ot16: 0, ot2: 0, night: 0 },
       });
     }
+    lines.push({ kind: 'day', row });
   });
 
   return lines;
@@ -200,10 +198,7 @@ function clearRow(sheet: PopulateSheet, excelRow: number) {
 async function fillTimesheetSheet(sheet: PopulateSheet, payload: TimesheetExportPayload) {
   fillTimesheetHeader(sheet, payload);
   const localisation = payload.localisation ?? '';
-  // Le template Excel ne supporte que 4 semaines (28 jours).
-  // On tronque donc avant génération pour éviter d'ajouter des Semaine 5+.
-  const cappedRows = payload.rows.slice(0, 28);
-  const lines = buildExportLines(cappedRows, payload.period.year, payload.period.month);
+  const lines = buildExportLines(payload.rows, payload.period.year, payload.period.month);
   await attachWeeklyOt(
     lines,
     payload.period.year,
@@ -224,7 +219,7 @@ async function fillTimesheetSheet(sheet: PopulateSheet, payload: TimesheetExport
 
   const lastDataRow = excelRow - 1;
 
-  for (let row = excelRow; row < DATA_START_ROW + 40; row += 1) {
+  for (let row = excelRow; row < DATA_START_ROW + 56; row += 1) {
     clearRow(sheet, row);
   }
 
