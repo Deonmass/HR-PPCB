@@ -2,36 +2,26 @@
   "entries": [
     {
       "id": "log-000435",
-      "at": "2026-08-17T15:16:35.687Z",
+      "at": "2026-08-17T15:16:40.588Z",
       "userId": "admin",
       "userName": "Administrateur",
       "module": "timesheet",
       "moduleLabel": "Timesheet",
-      "action": "update",
-      "actionLabel": "Modification",
-      "summary": "Enregistrement timesheet 2026-08-03 — Packaging & Logistics",
-      "details": "Enregistrement timesheet 2026-08-03 — Packaging & Logistics",
-      "after": {
-        "70000061": {
-          "matricule": "70000061",
-          "present": true,
-          "from": "14:00",
-          "to": "22:00",
-          "shiftType": null,
-          "holiday": false,
-          "updatedAt": "2026-08-17T15:16:30.710Z",
-          "updatedBy": "admin"
-        }
-      },
+      "action": "error",
+      "actionLabel": "Erreur",
+      "summary": "GitHub écriture data/overtimes/timesheets.json échouée (409): {\"message\":\"data/overtimes/timesheets.json does not match 77b0218dcb1594e5118d87b025ad66b9b708b667\",\"documentation_url\":\"https://docs.github.com/rest/repos/contents#create-or-update-file-contents\",\"st",
+      "details": "Échec de l’action « update » sur timesheet: GitHub écriture data/overtimes/timesheets.json échouée (409): {\"message\":\"data/overtimes/timesheets.json does not match 77b0218dcb1594e5118d87b025ad66b9b708b667\",\"documentation_url\":\"https://docs.github.com/rest/repos/contents#create-or-update-file-contents\",\"st",
       "undoable": false,
       "undone": false,
-      "meta": {
-        "year": 2026,
-        "month": 8,
-        "dateKey": "2026-08-03",
-        "department": "Packaging & Logistics",
-        "mode": "day",
-        "count": 1
+      "error": {
+        "message": "GitHub écriture data/overtimes/timesheets.json échouée (409): {\"message\":\"data/overtimes/timesheets.json does not match 77b0218dcb1594e5118d87b025ad66b9b708b667\",\"documentation_url\":\"https://docs.github.com/rest/repos/contents#create-or-update-file-contents\",\"st",
+        "stack": "Error: GitHub écriture data/overtimes/timesheets.json échouée (409): {\"message\":\"data/overtimes/timesheets.json does not match 77b0218dcb1594e5118d87b025ad66b9b708b667\",\"documentation_url\":\"https://docs.github.com/rest/repos/contents#create-or-update-file-contents\",\"st\n    at T (/var/task/.next/server/chunks/2206.js:2:5728)\n    at $ (/var/task/.next/server/chunks/2206.js:2:8305)\n    at process.processTicksAndRejections (node:internal/process/task_queues:104:5)\n    at async aa (/var/task/.next/server/chunks/2206.js:2:9391)\n    at async v (/var/task/.next/server/chunks/4586.js:1:3472)\n    at async B (/var/task/.next/server/chunks/4586.js:1:5535)\n    at async J (/var/task/.next/server/chunks/4586.js:1:7178)\n    at async j (/var/task/.next/server/chunks/1179.js:1:2536)\n    at async B (/var/task/.next/server/app/api/timesheet/entries/route.js:1:6360)\n    at async rH.do (/var/task/node_modules/next/dist/compiled/next-server/app-route.runtime.prod.js:5:21048)",
+        "path": "/api/timesheet/entries",
+        "method": "PUT",
+        "context": {
+          "action": "update",
+          "summary": "Enregistrement timesheet 2026-07-27 — Packaging & Logistics"
+        }
       }
     },
     {
