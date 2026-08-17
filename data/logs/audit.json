@@ -1,8 +1,31 @@
 {
   "entries": [
     {
+      "id": "log-000438",
+      "at": "2026-08-17T15:16:55.207Z",
+      "userId": "admin",
+      "userName": "Administrateur",
+      "module": "timesheet",
+      "moduleLabel": "Timesheet",
+      "action": "update",
+      "actionLabel": "Modification",
+      "summary": "Enregistrement timesheet 2026-07-14 — Packaging & Logistics",
+      "details": "Enregistrement timesheet 2026-07-14 — Packaging & Logistics",
+      "after": {},
+      "undoable": false,
+      "undone": false,
+      "meta": {
+        "year": 2026,
+        "month": 8,
+        "dateKey": "2026-07-14",
+        "department": "Packaging & Logistics",
+        "mode": "day",
+        "count": 1
+      }
+    },
+    {
       "id": "log-000437",
-      "at": "2026-08-17T15:16:48.227Z",
+      "at": "2026-08-17T15:16:47.107Z",
       "userId": "admin",
       "userName": "Administrateur",
       "module": "timesheet",
@@ -20,7 +43,7 @@
         "method": "PUT",
         "context": {
           "action": "update",
-          "summary": "Enregistrement timesheet 2026-07-24 — Packaging & Logistics"
+          "summary": "Enregistrement timesheet 2026-08-11 — Packaging & Logistics"
         }
       }
     },
@@ -33223,5 +33246,5 @@
       }
     }
   ],
-  "nextSeq": 438
+  "nextSeq": 439
 }
