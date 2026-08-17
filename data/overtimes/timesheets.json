@@ -9331,7 +9331,7 @@
             "to": "22:00",
             "shiftType": null,
             "holiday": false,
-            "updatedAt": "2026-08-17T14:49:26.438Z",
+            "updatedAt": "2026-08-17T14:18:56.616Z",
             "updatedBy": "admin"
           }
         },
@@ -9379,7 +9379,7 @@
             "to": "22:00",
             "shiftType": null,
             "holiday": false,
-            "updatedAt": "2026-08-17T14:49:26.891Z",
+            "updatedAt": "2026-08-17T14:18:57.259Z",
             "updatedBy": "admin"
           }
         },
@@ -9391,7 +9391,7 @@
             "to": "14:00",
             "shiftType": null,
             "holiday": false,
-            "updatedAt": "2026-08-17T14:49:26.640Z",
+            "updatedAt": "2026-08-17T14:18:57.280Z",
             "updatedBy": "admin"
           }
         },
@@ -9427,7 +9427,7 @@
             "to": "14:00",
             "shiftType": null,
             "holiday": false,
-            "updatedAt": "2026-08-17T14:49:26.704Z",
+            "updatedAt": "2026-08-17T14:18:57.518Z",
             "updatedBy": "admin"
           }
         },
@@ -9455,31 +9455,7 @@
             "updatedBy": "admin"
           }
         },
-        "2026-08-03": {
-          "70000070": {
-            "matricule": "70000070",
-            "present": true,
-            "from": "06:00",
-            "to": "14:00",
-            "shiftType": null,
-            "holiday": false,
-            "updatedAt": "2026-08-17T14:49:26.512Z",
-            "updatedBy": "admin"
-          }
-        },
-        "2026-08-05": {
-          "70000070": {
-            "matricule": "70000070",
-            "present": true,
-            "from": "14:00",
-            "to": "22:00",
-            "shiftType": null,
-            "holiday": false,
-            "updatedAt": "2026-08-17T14:49:26.521Z",
-            "updatedBy": "admin"
-          }
-        },
-        "2026-07-30": {
+        "2026-08-07": {
           "70000070": {
             "matricule": "70000070",
             "present": true,
@@ -9487,7 +9463,7 @@
             "to": "06:00",
             "shiftType": null,
             "holiday": false,
-            "updatedAt": "2026-08-17T14:49:26.872Z",
+            "updatedAt": "2026-08-17T14:49:28.234Z",
             "updatedBy": "admin"
           }
         }
