@@ -1,6 +1,29 @@
 {
   "entries": [
     {
+      "id": "log-000430",
+      "at": "2026-08-17T14:25:08.787Z",
+      "userId": "admin",
+      "userName": "Administrateur",
+      "module": "timesheet",
+      "moduleLabel": "Timesheet",
+      "action": "update",
+      "actionLabel": "Modification",
+      "summary": "Enregistrement timesheet 2026-07-14 — Production",
+      "details": "Enregistrement timesheet 2026-07-14 — Production",
+      "after": {},
+      "undoable": false,
+      "undone": false,
+      "meta": {
+        "year": 2026,
+        "month": 8,
+        "dateKey": "2026-07-14",
+        "department": "Production",
+        "mode": "day",
+        "count": 1
+      }
+    },
+    {
       "id": "log-000429",
       "at": "2026-08-17T14:25:02.179Z",
       "userId": "admin",
@@ -33022,5 +33045,5 @@
       }
     }
   ],
-  "nextSeq": 430
+  "nextSeq": 431
 }
