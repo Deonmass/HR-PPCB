@@ -6,7 +6,7 @@ import { actualTimesForTemplateRow } from './timesheet-template-view';
 import { shouldGrayTimesheetTemplateRow } from './timesheet-off-day';
 import { normalHoursBreakdown } from './timesheet-calc';
 import type { DepartmentExportPayload, TimesheetExportPayload } from './timesheet-export';
-import { formatTimesheetMonthLabel } from './timesheet-period';
+import { formatTimesheetMonthLabel, overtimeWeekInsertsAfterRow } from './timesheet-period';
 import type { TimesheetRowData } from './timesheet-types';
 import { getTimesheetWsExportValue } from './timesheet-ws';
 import { getWeeklyOvertimeWeek } from './timesheet-weekly-ot-store';
@@ -104,12 +104,24 @@ function applyWeekSeparatorStyle(sheet: PopulateSheet, excelRow: number) {
   }
 }
 
-function buildExportLines(rows: TimesheetRowData[]): ExportLine[] {
+function buildExportLines(rows: TimesheetRowData[], year: number, month: number): ExportLine[] {
+  const inserts = overtimeWeekInsertsAfterRow(rows, year, month);
   const lines: ExportLine[] = [];
 
   rows.forEach((row, index) => {
     lines.push({ kind: 'day', row });
-    if ((index + 1) % 7 === 0) {
+    const weekIndexes = inserts.get(index);
+    if (weekIndexes?.length) {
+      for (const weekIndex of weekIndexes) {
+        lines.push({
+          kind: 'week',
+          weekIndex,
+          ot: { ot13: 0, ot16: 0, ot2: 0, night: 0 },
+        });
+      }
+      return;
+    }
+    if (inserts.size === 0 && (index + 1) % 7 === 0) {
       lines.push({
         kind: 'week',
         weekIndex: Math.floor(index / 7),
@@ -191,7 +203,7 @@ async function fillTimesheetSheet(sheet: PopulateSheet, payload: TimesheetExport
   // Le template Excel ne supporte que 4 semaines (28 jours).
   // On tronque donc avant génération pour éviter d'ajouter des Semaine 5+.
   const cappedRows = payload.rows.slice(0, 28);
-  const lines = buildExportLines(cappedRows);
+  const lines = buildExportLines(cappedRows, payload.period.year, payload.period.month);
   await attachWeeklyOt(
     lines,
     payload.period.year,

@@ -440,7 +440,6 @@ function syncLockFlags(week: WeeklyOvertimeWeek): void {
 }
 
 function ensureWeekFromTo(year: number, month: number, week: WeeklyOvertimeWeek): void {
-  if (week.weekFromTo) return;
   week.weekFromTo = getTimesheetWeekFromTo(year, month, week.weekIndex).label;
 }
 

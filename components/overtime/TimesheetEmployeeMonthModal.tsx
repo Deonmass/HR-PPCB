@@ -5,7 +5,7 @@ import { createPortal } from 'react-dom';
 import TimesheetTimeInput from '@/components/overtime/TimesheetTimeInput';
 import TimesheetDatePicker from '@/components/overtime/TimesheetDatePicker';
 import { BtnSpinner, CardSpinner } from '@/components/overtime/TimesheetIcons';
-import { buildTimesheetPeriod, isTimesheetWeekend, parseTimesheetDateFr } from '@/lib/timesheet-period';
+import { buildTimesheetPeriod, isTimesheetWeekend, parseTimesheetDateFr, snapToTimesheetWeekStart } from '@/lib/timesheet-period';
 import { refreshTimesheetRowsForPeriod, shiftTimesheetRowsToStart } from '@/lib/timesheet-rows';
 import type { TimesheetDayEntry, TimesheetRowData } from '@/lib/timesheet-types';
 import { finalizeTimesheetRow } from '@/lib/timesheet-ws';
@@ -263,8 +263,10 @@ export default function TimesheetEmployeeMonthModal({
     () =>
       buildTimesheetTemplateLines(rows, weeklyOtByIndex, localisation, {
         explicitActual: canEdit,
+        year,
+        month,
       }),
-    [rows, weeklyOtByIndex, localisation, canEdit],
+    [rows, weeklyOtByIndex, localisation, canEdit, year, month],
   );
   const totals = useMemo(() => sumTimesheetTemplateLines(lines), [lines]);
 
@@ -338,8 +340,9 @@ export default function TimesheetEmployeeMonthModal({
   const updateStartDate = useCallback(
     (value: string) => {
       if (!canEdit) return;
-      const start = parseTimesheetDateFr(value);
-      if (!start) return;
+      const parsed = parseTimesheetDateFr(value);
+      if (!parsed) return;
+      const start = snapToTimesheetWeekStart(parsed);
       setRows((prev) => {
         if (!prev[0]) return prev;
         const next = shiftTimesheetRowsToStart(prev, start);

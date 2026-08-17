@@ -78,18 +78,62 @@ export function getTimesheetWeekFromTo(
   };
 }
 
+export function listTimesheetWeekBounds(
+  year: number,
+  month: number,
+): Array<{ weekIndex: number; fromKey: string; toKey: string; label: string }> {
+  const bounds: Array<{ weekIndex: number; fromKey: string; toKey: string; label: string }> = [];
+  for (let weekIndex = 0; weekIndex < TIMESHEET_WEEKS_PER_PERIOD; weekIndex += 1) {
+    const week = getTimesheetWeekFromTo(year, month, weekIndex);
+    if (!week.fromKey || !week.toKey) continue;
+    bounds.push({ weekIndex, fromKey: week.fromKey, toKey: week.toKey, label: week.label });
+  }
+  return bounds;
+}
+
 /**
- * Début de période : le 15 du mois précédent.
- * Si le 15 est un dimanche, on part du 16 (lundi) pour garder 4 semaines pleines.
+ * After which timesheet row to insert each overtime week total.
+ * Matching uses the official overtime week dates of the named month, not the
+ * 7-row chunks of a shifted timesheet start date.
+ */
+export function overtimeWeekInsertsAfterRow(
+  rows: Array<{ dateKey: string }>,
+  year: number,
+  month: number,
+): Map<number, number[]> {
+  const inserts = new Map<number, number[]>();
+  for (const week of listTimesheetWeekBounds(year, month)) {
+    let last = -1;
+    rows.forEach((row, index) => {
+      if (row.dateKey >= week.fromKey && row.dateKey <= week.toKey) last = index;
+    });
+    if (last < 0) continue;
+    const list = inserts.get(last) ?? [];
+    list.push(week.weekIndex);
+    inserts.set(last, list);
+  }
+  return inserts;
+}
+
+function mondayOnOrBefore(date: Date): Date {
+  const cursor = startOfDay(date);
+  while (cursor.getDay() !== 1) {
+    cursor.setDate(cursor.getDate() - 1);
+  }
+  return cursor;
+}
+
+/** Snap a date to the Monday of its timesheet week (Mon–Sun). */
+export function snapToTimesheetWeekStart(date: Date): Date {
+  return mondayOnOrBefore(date);
+}
+
+/**
+ * Début de période : le lundi ≤ 15 du mois précédent.
+ * Ex. août 2026 : lundi 13 juillet (le 15 est un mercredi).
  */
 function timesheetPeriodStart(year: number, month: number): Date {
-  const fifteenth = startOfDay(new Date(year, month - 2, 15));
-  if (fifteenth.getDay() === 0) {
-    const sixteenth = startOfDay(fifteenth);
-    sixteenth.setDate(sixteenth.getDate() + 1);
-    return sixteenth;
-  }
-  return fifteenth;
+  return mondayOnOrBefore(startOfDay(new Date(year, month - 2, 15)));
 }
 
 export function parseLocalDateKey(value: string): Date | null {
@@ -149,9 +193,10 @@ export function buildTimesheetDaysFromStart(start: Date): TimesheetPeriodDay[] {
 
 /**
  * Période timesheet d'un mois nommé (ex. août) :
- * - début = 15 du mois précédent (16 si le 15 est un dimanche)
- * - exactement 4 semaines (28 jours)
- * Ex. août 2026 : 15→21 juil., 22→28 juil., 29 juil.→4 août, 5→11 août.
+ * - début = lundi ≤ 15 du mois précédent
+ * - exactement 4 semaines (28 jours, lundi → dimanche)
+ * Ex. août 2026 : 13→19 juil., 20→26 juil., 27 juil.→2 août, 3→9 août
+ * (libellés du 13 au 20, du 20 au 27, du 27 au 3 août, du 3 au 10 août).
  */
 export function buildTimesheetPeriod(year: number, month: number): TimesheetPeriod {
   const start = timesheetPeriodStart(year, month);

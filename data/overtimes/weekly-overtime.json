@@ -5,7 +5,7 @@
         "Supply chain::0": {
           "weekIndex": 0,
           "department": "Supply chain",
-          "weekFromTo": "du 15/07/2026 au 22/07/2026",
+          "weekFromTo": "du 13/07/2026 au 20/07/2026",
           "locked": false,
           "entries": {
             "70000241": {
@@ -22,7 +22,7 @@
         "Quality Assurance::0": {
           "weekIndex": 0,
           "department": "Quality Assurance",
-          "weekFromTo": "du 15/07/2026 au 22/07/2026",
+          "weekFromTo": "du 13/07/2026 au 20/07/2026",
           "locked": false,
           "entries": {
             "70000210": {
@@ -46,7 +46,7 @@
         "Supply chain::1": {
           "weekIndex": 1,
           "department": "Supply chain",
-          "weekFromTo": "du 22/07/2026 au 29/07/2026",
+          "weekFromTo": "du 20/07/2026 au 27/07/2026",
           "locked": false,
           "entries": {
             "70000255": {
@@ -63,7 +63,7 @@
         "Quality Assurance::1": {
           "weekIndex": 1,
           "department": "Quality Assurance",
-          "weekFromTo": "du 22/07/2026 au 29/07/2026",
+          "weekFromTo": "du 20/07/2026 au 27/07/2026",
           "locked": false,
           "entries": {
             "70000083": {
@@ -80,7 +80,7 @@
         "Packaging & Logistics::1": {
           "weekIndex": 1,
           "department": "Packaging & Logistics",
-          "weekFromTo": "du 22/07/2026 au 29/07/2026",
+          "weekFromTo": "du 20/07/2026 au 27/07/2026",
           "locked": false,
           "entries": {
             "70000059": {
@@ -104,7 +104,7 @@
         "Supply chain::2": {
           "weekIndex": 2,
           "department": "Supply chain",
-          "weekFromTo": "du 29/07/2026 au 05/08/2026",
+          "weekFromTo": "du 27/07/2026 au 03/08/2026",
           "locked": false,
           "entries": {
             "70000241": {
@@ -128,7 +128,7 @@
         "Quality Assurance::2": {
           "weekIndex": 2,
           "department": "Quality Assurance",
-          "weekFromTo": "du 29/07/2026 au 05/08/2026",
+          "weekFromTo": "du 27/07/2026 au 03/08/2026",
           "locked": false,
           "entries": {
             "70000077": {
@@ -180,7 +180,7 @@
         "Packaging & Logistics::2": {
           "weekIndex": 2,
           "department": "Packaging & Logistics",
-          "weekFromTo": "du 29/07/2026 au 05/08/2026",
+          "weekFromTo": "du 27/07/2026 au 03/08/2026",
           "locked": false,
           "entries": {
             "70000214": {
@@ -197,7 +197,7 @@
         "Mining::2": {
           "weekIndex": 2,
           "department": "Mining",
-          "weekFromTo": "du 29/07/2026 au 05/08/2026",
+          "weekFromTo": "du 27/07/2026 au 03/08/2026",
           "locked": false,
           "entries": {
             "70000043": {
@@ -214,7 +214,7 @@
         "Quality Assurance::3": {
           "weekIndex": 3,
           "department": "Quality Assurance",
-          "weekFromTo": "du 05/08/2026 au 12/08/2026",
+          "weekFromTo": "du 03/08/2026 au 10/08/2026",
           "locked": false,
           "entries": {
             "70000080": {
@@ -252,7 +252,7 @@
         "Packaging & Logistics::3": {
           "weekIndex": 3,
           "department": "Packaging & Logistics",
-          "weekFromTo": "du 05/08/2026 au 12/08/2026",
+          "weekFromTo": "du 03/08/2026 au 10/08/2026",
           "locked": false,
           "entries": {
             "70000057": {
@@ -276,7 +276,7 @@
         "Production::0": {
           "weekIndex": 0,
           "department": "Production",
-          "weekFromTo": "du 15/07/2026 au 22/07/2026",
+          "weekFromTo": "du 13/07/2026 au 20/07/2026",
           "locked": false,
           "entries": {
             "70000212": {
@@ -321,7 +321,7 @@
         "Production::1": {
           "weekIndex": 1,
           "department": "Production",
-          "weekFromTo": "du 22/07/2026 au 29/07/2026",
+          "weekFromTo": "du 20/07/2026 au 27/07/2026",
           "locked": false,
           "entries": {
             "70000029": {
@@ -366,7 +366,7 @@
         "Production::2": {
           "weekIndex": 2,
           "department": "Production",
-          "weekFromTo": "du 29/07/2026 au 05/08/2026",
+          "weekFromTo": "du 27/07/2026 au 03/08/2026",
           "locked": false,
           "entries": {
             "70000026": {
@@ -453,7 +453,7 @@
         "Production::3": {
           "weekIndex": 3,
           "department": "Production",
-          "weekFromTo": "du 05/08/2026 au 12/08/2026",
+          "weekFromTo": "du 03/08/2026 au 10/08/2026",
           "locked": false,
           "entries": {
             "70000026": {

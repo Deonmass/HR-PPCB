@@ -2,7 +2,7 @@
 
 import { useEffect, useMemo, useRef, useState } from 'react';
 import { BtnSpinner } from '@/components/overtime/TimesheetIcons';
-import { buildTimesheetPeriod } from '@/lib/timesheet-period';
+import { getTimesheetWeekFromTo, TIMESHEET_WEEKS_PER_PERIOD } from '@/lib/timesheet-period';
 import { showError, showSuccess, showWarning } from '@/lib/swal';
 
 interface Props {
@@ -14,12 +14,6 @@ interface Props {
   onImported: () => void;
 }
 
-function formatWeekRange(start: Date, end: Date): string {
-  const fmt = (date: Date) =>
-    date.toLocaleDateString('fr-FR', { day: '2-digit', month: 'short', year: 'numeric' });
-  return `du ${fmt(start)} au ${fmt(end)}`;
-}
-
 export default function TimesheetOvertimeImportModal({
   open,
   periodYear,
@@ -28,24 +22,18 @@ export default function TimesheetOvertimeImportModal({
   onClose,
   onImported,
 }: Props) {
-  const period = useMemo(
-    () => buildTimesheetPeriod(periodYear, periodMonth),
+  const weekOptions = useMemo(
+    () =>
+      Array.from({ length: TIMESHEET_WEEKS_PER_PERIOD }, (_, weekIndex) => {
+        const week = getTimesheetWeekFromTo(periodYear, periodMonth, weekIndex);
+        return {
+          weekIndex,
+          label: `Semaine ${weekIndex + 1}`,
+          range: week.label,
+        };
+      }),
     [periodYear, periodMonth],
   );
-
-  const weekOptions = useMemo(() => {
-    const weekCount = Math.ceil(period.days.length / 7);
-    return Array.from({ length: weekCount }, (_, weekIndex) => {
-      const days = period.days.slice(weekIndex * 7, weekIndex * 7 + 7);
-      const start = days[0]?.date;
-      const end = days[days.length - 1]?.date;
-      return {
-        weekIndex,
-        label: `Semaine ${weekIndex + 1}`,
-        range: start && end ? formatWeekRange(start, end) : '',
-      };
-    });
-  }, [period.days]);
 
   const [weekIndex, setWeekIndex] = useState(0);
   const [importing, setImporting] = useState(false);

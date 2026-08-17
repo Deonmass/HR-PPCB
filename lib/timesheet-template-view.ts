@@ -4,10 +4,10 @@ import {
   legalNightHours,
   normalHoursBreakdown,
   overlapHours,
-  splitDailyOvertime,
   workedHoursBetween,
 } from './timesheet-calc';
 import { hasTimesheetActualTimes, shouldGrayTimesheetTemplateRow } from './timesheet-off-day';
+import { overtimeWeekInsertsAfterRow } from './timesheet-period';
 import type { TimesheetHourBreakdown, TimesheetRowData, TimesheetShiftType } from './timesheet-types';
 import { getTimesheetWsExportValue } from './timesheet-ws';
 import type { WeeklyOvertimeEntry } from './timesheet-weekly-ot';
@@ -124,39 +124,26 @@ function asPerWsTimes(row: TimesheetRowData, localisation: string): { from: stri
 
 /**
  * Normal hours = overlap between Actual and the planned schedule.
- * Overtime = hours actually worked outside that schedule.
  * Night hours = legal night portion of Actual (19:00–05:00), for every shift.
+ * Overtime is not calculated here: template OT columns come from weekly imports.
  */
 export function computeTemplateDayHours(
   actualFrom: string,
   actualTo: string,
   row: TimesheetRowData,
   localisation: string,
-): {
-  normal: TimesheetHourBreakdown;
-  ot13: number;
-  ot16: number;
-  ot2: number;
-  otNight: number;
-} {
+): { normal: TimesheetHourBreakdown } {
   const worked = workedHoursBetween(actualFrom, actualTo);
   const night = legalNightHours(actualFrom, actualTo);
   if (!worked) {
-    return { normal: emptyNormal(), ot13: 0, ot16: 0, ot2: 0, otNight: 0 };
+    return { normal: emptyNormal() };
   }
 
   const holiday = Boolean(row.holiday);
   const isOff = row.shiftType === 'off';
 
   if (holiday || isOff) {
-    const ot = splitDailyOvertime(worked);
-    return {
-      normal: { ...emptyNormal(), night },
-      ot13: ot.ot13,
-      ot16: ot.ot16,
-      ot2: 0,
-      otNight: night,
-    };
+    return { normal: { ...emptyNormal(), night } };
   }
 
   const shiftType = row.shiftType && row.shiftType !== 'off' ? row.shiftType : 'general';
@@ -172,10 +159,7 @@ export function computeTemplateDayHours(
   } else {
     normal = normalHoursBreakdown(actualFrom, actualTo, shiftType);
   }
-  normal = { ...normal, night };
-
-  const ot = splitDailyOvertime(otHours);
-  return { normal, ot13: ot.ot13, ot16: ot.ot16, ot2: 0, otNight: night && otHours > 0 ? night : 0 };
+  return { normal: { ...normal, night } };
 }
 
 function buildDayLine(
@@ -203,57 +187,64 @@ function buildDayLine(
     shift2: hours.normal.shift2,
     shift3: hours.normal.shift3,
     night: hours.normal.night,
-    ot13: hours.ot13,
-    ot16: hours.ot16,
-    ot2: hours.ot2,
-    otNight: hours.otNight,
+    ot13: 0,
+    ot16: 0,
+    ot2: 0,
+    otNight: 0,
     gray: shouldGrayTimesheetTemplateRow(row),
   };
 }
 
 /**
  * Build the template-style month view: day rows + week separators with OT totals.
- * Mirrors Excel Timesheet template layout (export).
+ * Overtime columns come only from weekly imports, placed on the official overtime
+ * week dates of the named month (not calculated from Actual From/To).
  */
 export function buildTimesheetTemplateLines(
   rows: TimesheetRowData[],
   weeklyOtByIndex: Record<number, WeeklyOvertimeEntry | undefined>,
   localisation = '',
-  options?: { explicitActual?: boolean },
+  options?: { explicitActual?: boolean; year?: number; month?: number },
 ): TimesheetTemplateLine[] {
   const explicitActual = options?.explicitActual ?? false;
+  const year = options?.year;
+  const month = options?.month;
+  const inserts =
+    Number.isInteger(year) && Number.isInteger(month)
+      ? overtimeWeekInsertsAfterRow(rows, year as number, month as number)
+      : new Map<number, number[]>();
   const lines: TimesheetTemplateLine[] = [];
-  let weekOt13 = 0;
-  let weekOt16 = 0;
-  let weekOt2 = 0;
-  let weekOtNight = 0;
 
   rows.forEach((row, index) => {
-    const dayLine = buildDayLine(row, localisation, explicitActual);
-    lines.push(dayLine);
-    weekOt13 += dayLine.ot13;
-    weekOt16 += dayLine.ot16;
-    weekOt2 += dayLine.ot2;
-    weekOtNight += dayLine.otNight;
-
-    if ((index + 1) % 7 === 0) {
+    lines.push(buildDayLine(row, localisation, explicitActual));
+    const weekIndexes = inserts.get(index);
+    if (weekIndexes?.length) {
+      for (const weekIndex of weekIndexes) {
+        const imported = weeklyOtByIndex[weekIndex];
+        lines.push({
+          kind: 'week',
+          weekIndex,
+          label: `Semaine ${weekIndex + 1}`,
+          ot13: imported?.ot13 ?? 0,
+          ot16: imported?.ot16 ?? 0,
+          ot2: imported?.ot2 ?? 0,
+          otNight: imported?.night ?? 0,
+        });
+      }
+      return;
+    }
+    if (inserts.size === 0 && (index + 1) % 7 === 0) {
       const weekIndex = Math.floor(index / 7);
       const imported = weeklyOtByIndex[weekIndex];
-      // Prefer calculated day OT; fall back to imported weekly OT when no day OT yet.
-      const hasCalculated = weekOt13 + weekOt16 + weekOt2 + weekOtNight > 0;
       lines.push({
         kind: 'week',
         weekIndex,
         label: `Semaine ${weekIndex + 1}`,
-        ot13: hasCalculated ? Math.round(weekOt13 * 100) / 100 : (imported?.ot13 ?? 0),
-        ot16: hasCalculated ? Math.round(weekOt16 * 100) / 100 : (imported?.ot16 ?? 0),
-        ot2: hasCalculated ? Math.round(weekOt2 * 100) / 100 : (imported?.ot2 ?? 0),
-        otNight: hasCalculated ? Math.round(weekOtNight * 100) / 100 : (imported?.night ?? 0),
+        ot13: imported?.ot13 ?? 0,
+        ot16: imported?.ot16 ?? 0,
+        ot2: imported?.ot2 ?? 0,
+        otNight: imported?.night ?? 0,
       });
-      weekOt13 = 0;
-      weekOt16 = 0;
-      weekOt2 = 0;
-      weekOtNight = 0;
     }
   });
 
@@ -281,7 +272,7 @@ export function sumTimesheetTemplateLines(lines: TimesheetTemplateLine[]): Times
       totals.shift3 += line.shift3;
       totals.night += line.night;
     } else {
-      // Week rows hold calculated day OT (or imported OT fallback).
+      // Week rows hold imported weekly OT only.
       totals.ot13 += line.ot13;
       totals.ot16 += line.ot16;
       totals.ot2 += line.ot2;
