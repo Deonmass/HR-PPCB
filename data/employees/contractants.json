@@ -1,6 +1,6 @@
 {
-  "nextContractantId": 7,
-  "nextEmployeeId": 547,
+  "nextContractantId": 11,
+  "nextEmployeeId": 755,
   "contractants": [
     {
       "id": "1",
@@ -4173,12 +4173,632 @@
       "updatedAt": "2026-08-12T15:04:02.591Z"
     },
     {
-      "id": "6",
-      "denomination": "EKMM",
-      "typeService": "Garage",
+      "id": "8",
+      "denomination": "Cler Kiasungwa",
+      "typeService": "Nettoyage",
       "employees": [
         {
-          "id": "433",
+          "id": "594",
+          "nom": "KITOKO MAMPUYA",
+          "sexe": "",
+          "lieuAffectation": "Zamba",
+          "fonction": "CLEANER AGENT",
+          "departement": "",
+          "telephone": "",
+          "etatCivil": "C",
+          "statut": "Permanent",
+          "createdAt": "2026-08-15T09:13:36.476Z",
+          "updatedAt": "2026-08-15T09:13:36.476Z"
+        },
+        {
+          "id": "595",
+          "nom": "KATONDI KIALA",
+          "sexe": "",
+          "lieuAffectation": "Zamba",
+          "fonction": "CLEANER AGENT",
+          "departement": "",
+          "telephone": "",
+          "etatCivil": "C",
+          "statut": "Permanent",
+          "createdAt": "2026-08-15T09:13:36.476Z",
+          "updatedAt": "2026-08-15T09:13:36.476Z"
+        },
+        {
+          "id": "596",
+          "nom": "LUKAU TUSUNGAMA",
+          "sexe": "",
+          "lieuAffectation": "Zamba",
+          "fonction": "CLEANER AGENT",
+          "departement": "",
+          "telephone": "",
+          "etatCivil": "C",
+          "statut": "Permanent",
+          "createdAt": "2026-08-15T09:13:36.476Z",
+          "updatedAt": "2026-08-15T09:13:36.476Z"
+        },
+        {
+          "id": "597",
+          "nom": "N'LEMVO NZITA",
+          "sexe": "",
+          "lieuAffectation": "Zamba",
+          "fonction": "CLEANER AGENT",
+          "departement": "",
+          "telephone": "",
+          "etatCivil": "C",
+          "statut": "Permanent",
+          "createdAt": "2026-08-15T09:13:36.476Z",
+          "updatedAt": "2026-08-15T09:13:36.476Z"
+        },
+        {
+          "id": "598",
+          "nom": "MIYALU SAMUEL",
+          "sexe": "",
+          "lieuAffectation": "Zamba",
+          "fonction": "CLEANER AGENT",
+          "departement": "",
+          "telephone": "",
+          "etatCivil": "C",
+          "statut": "Permanent",
+          "createdAt": "2026-08-15T09:13:36.476Z",
+          "updatedAt": "2026-08-15T09:13:36.476Z"
+        },
+        {
+          "id": "599",
+          "nom": "DITUKAYAKU KALUNSEVIKO",
+          "sexe": "",
+          "lieuAffectation": "Zamba",
+          "fonction": "CLEANER AGENT",
+          "departement": "",
+          "telephone": "",
+          "etatCivil": "C",
+          "statut": "Permanent",
+          "createdAt": "2026-08-15T09:13:36.476Z",
+          "updatedAt": "2026-08-15T09:13:36.476Z"
+        },
+        {
+          "id": "600",
+          "nom": "MASUKIDI MBUMBA",
+          "sexe": "",
+          "lieuAffectation": "Zamba",
+          "fonction": "CLEANER AGENT",
+          "departement": "",
+          "telephone": "",
+          "etatCivil": "C",
+          "statut": "Permanent",
+          "createdAt": "2026-08-15T09:13:36.476Z",
+          "updatedAt": "2026-08-15T09:13:36.476Z"
+        },
+        {
+          "id": "601",
+          "nom": "NGOMA NGOMA",
+          "sexe": "",
+          "lieuAffectation": "Zamba",
+          "fonction": "CLEANER AGENT",
+          "departement": "",
+          "telephone": "",
+          "etatCivil": "C",
+          "statut": "Permanent",
+          "createdAt": "2026-08-15T09:13:36.476Z",
+          "updatedAt": "2026-08-15T09:13:36.476Z"
+        },
+        {
+          "id": "602",
+          "nom": "MASIDIVINGA JONATHAN",
+          "sexe": "",
+          "lieuAffectation": "Zamba",
+          "fonction": "CLEANER AGENT",
+          "departement": "",
+          "telephone": "",
+          "etatCivil": "C",
+          "statut": "Permanent",
+          "createdAt": "2026-08-15T09:13:36.476Z",
+          "updatedAt": "2026-08-15T09:13:36.476Z"
+        },
+        {
+          "id": "603",
+          "nom": "BAFUIDINSONI KALUNSEVIKO",
+          "sexe": "",
+          "lieuAffectation": "Zamba",
+          "fonction": "CLEANER AGENT",
+          "departement": "",
+          "telephone": "",
+          "etatCivil": "C",
+          "statut": "Permanent",
+          "createdAt": "2026-08-15T09:13:36.476Z",
+          "updatedAt": "2026-08-15T09:13:36.476Z"
+        },
+        {
+          "id": "604",
+          "nom": "MADIADIA NSONA",
+          "sexe": "",
+          "lieuAffectation": "Zamba",
+          "fonction": "CLEANER AGENT",
+          "departement": "",
+          "telephone": "",
+          "etatCivil": "C",
+          "statut": "Permanent",
+          "createdAt": "2026-08-15T09:13:36.476Z",
+          "updatedAt": "2026-08-15T09:13:36.476Z"
+        },
+        {
+          "id": "605",
+          "nom": "MALUANVANGILA PATRICK",
+          "sexe": "",
+          "lieuAffectation": "Zamba",
+          "fonction": "CLEANER AGENT",
+          "departement": "",
+          "telephone": "",
+          "etatCivil": "C",
+          "statut": "Permanent",
+          "createdAt": "2026-08-15T09:13:36.476Z",
+          "updatedAt": "2026-08-15T09:13:36.476Z"
+        },
+        {
+          "id": "606",
+          "nom": "MAKUKA JACQUES",
+          "sexe": "",
+          "lieuAffectation": "Zamba",
+          "fonction": "CLEANER AGENT",
+          "departement": "",
+          "telephone": "",
+          "etatCivil": "C",
+          "statut": "Permanent",
+          "createdAt": "2026-08-15T09:13:36.476Z",
+          "updatedAt": "2026-08-15T09:13:36.476Z"
+        },
+        {
+          "id": "607",
+          "nom": "MASALA GAYI",
+          "sexe": "",
+          "lieuAffectation": "Zamba",
+          "fonction": "CLEANER AGENT",
+          "departement": "",
+          "telephone": "",
+          "etatCivil": "C",
+          "statut": "Permanent",
+          "createdAt": "2026-08-15T09:13:36.476Z",
+          "updatedAt": "2026-08-15T09:13:36.476Z"
+        },
+        {
+          "id": "608",
+          "nom": "TUKALA NKAYILU",
+          "sexe": "",
+          "lieuAffectation": "Zamba",
+          "fonction": "CLEANER AGENT",
+          "departement": "",
+          "telephone": "",
+          "etatCivil": "C",
+          "statut": "Permanent",
+          "createdAt": "2026-08-15T09:13:36.476Z",
+          "updatedAt": "2026-08-15T09:13:36.476Z"
+        },
+        {
+          "id": "609",
+          "nom": "KIAKUMBUTA NZUZI",
+          "sexe": "",
+          "lieuAffectation": "Zamba",
+          "fonction": "CLEANER AGENT",
+          "departement": "",
+          "telephone": "",
+          "etatCivil": "C",
+          "statut": "Permanent",
+          "createdAt": "2026-08-15T09:13:36.476Z",
+          "updatedAt": "2026-08-15T09:13:36.476Z"
+        },
+        {
+          "id": "610",
+          "nom": "MASAMBA JONAS",
+          "sexe": "",
+          "lieuAffectation": "Zamba",
+          "fonction": "CLEANER AGENT",
+          "departement": "",
+          "telephone": "",
+          "etatCivil": "C",
+          "statut": "Permanent",
+          "createdAt": "2026-08-15T09:13:36.476Z",
+          "updatedAt": "2026-08-15T09:13:36.476Z"
+        },
+        {
+          "id": "611",
+          "nom": "TIAMUNA KALUNSEVI",
+          "sexe": "",
+          "lieuAffectation": "Zamba",
+          "fonction": "CLEANER AGENT",
+          "departement": "",
+          "telephone": "",
+          "etatCivil": "C",
+          "statut": "Permanent",
+          "createdAt": "2026-08-15T09:13:36.476Z",
+          "updatedAt": "2026-08-15T09:13:36.476Z"
+        },
+        {
+          "id": "612",
+          "nom": "MENA BUEFO",
+          "sexe": "",
+          "lieuAffectation": "Zamba",
+          "fonction": "CLEANER AGENT",
+          "departement": "",
+          "telephone": "",
+          "etatCivil": "C",
+          "statut": "Permanent",
+          "createdAt": "2026-08-15T09:13:36.476Z",
+          "updatedAt": "2026-08-15T09:13:36.476Z"
+        },
+        {
+          "id": "613",
+          "nom": "KIMUENA NGUTANI",
+          "sexe": "",
+          "lieuAffectation": "Zamba",
+          "fonction": "CLEANER AGENT",
+          "departement": "",
+          "telephone": "",
+          "etatCivil": "C",
+          "statut": "Permanent",
+          "createdAt": "2026-08-15T09:13:36.476Z",
+          "updatedAt": "2026-08-15T09:13:36.476Z"
+        },
+        {
+          "id": "614",
+          "nom": "LUKAU LUANZAMBI",
+          "sexe": "",
+          "lieuAffectation": "Zamba",
+          "fonction": "CLEANER AGENT",
+          "departement": "",
+          "telephone": "",
+          "etatCivil": "C",
+          "statut": "Permanent",
+          "createdAt": "2026-08-15T09:13:36.476Z",
+          "updatedAt": "2026-08-15T09:13:36.476Z"
+        },
+        {
+          "id": "615",
+          "nom": "BAYILONA GRACIA",
+          "sexe": "",
+          "lieuAffectation": "Zamba",
+          "fonction": "CLEANER AGENT",
+          "departement": "",
+          "telephone": "",
+          "etatCivil": "C",
+          "statut": "Permanent",
+          "createdAt": "2026-08-15T09:13:36.476Z",
+          "updatedAt": "2026-08-15T09:13:36.476Z"
+        },
+        {
+          "id": "616",
+          "nom": "LUKIESA NKAMBANI",
+          "sexe": "",
+          "lieuAffectation": "Zamba",
+          "fonction": "CLEANER AGENT",
+          "departement": "",
+          "telephone": "",
+          "etatCivil": "C",
+          "statut": "Permanent",
+          "createdAt": "2026-08-15T09:13:36.476Z",
+          "updatedAt": "2026-08-15T09:13:36.476Z"
+        },
+        {
+          "id": "617",
+          "nom": "MATONDO TUNUANA",
+          "sexe": "",
+          "lieuAffectation": "Zamba",
+          "fonction": "CLEANER AGENT",
+          "departement": "",
+          "telephone": "",
+          "etatCivil": "C",
+          "statut": "Permanent",
+          "createdAt": "2026-08-15T09:13:36.476Z",
+          "updatedAt": "2026-08-15T09:13:36.476Z"
+        },
+        {
+          "id": "618",
+          "nom": "MOYO LUNTADILA",
+          "sexe": "",
+          "lieuAffectation": "Zamba",
+          "fonction": "CLEANER AGENT",
+          "departement": "",
+          "telephone": "",
+          "etatCivil": "C",
+          "statut": "Permanent",
+          "createdAt": "2026-08-15T09:13:36.476Z",
+          "updatedAt": "2026-08-15T09:13:36.476Z"
+        },
+        {
+          "id": "619",
+          "nom": "MAMVIBIDILA MAYIKA",
+          "sexe": "",
+          "lieuAffectation": "Zamba",
+          "fonction": "CLEANER AGENT",
+          "departement": "",
+          "telephone": "",
+          "etatCivil": "C",
+          "statut": "Permanent",
+          "createdAt": "2026-08-15T09:13:36.476Z",
+          "updatedAt": "2026-08-15T09:13:36.476Z"
+        },
+        {
+          "id": "620",
+          "nom": "LUBOTA NZUZI",
+          "sexe": "",
+          "lieuAffectation": "Zamba",
+          "fonction": "CLEANER AGENT",
+          "departement": "",
+          "telephone": "",
+          "etatCivil": "C",
+          "statut": "Permanent",
+          "createdAt": "2026-08-15T09:13:36.476Z",
+          "updatedAt": "2026-08-15T09:13:36.476Z"
+        },
+        {
+          "id": "621",
+          "nom": "NKUNKU NSUNDA",
+          "sexe": "",
+          "lieuAffectation": "Zamba",
+          "fonction": "CLEANER AGENT",
+          "departement": "",
+          "telephone": "",
+          "etatCivil": "C",
+          "statut": "Permanent",
+          "createdAt": "2026-08-15T09:13:36.476Z",
+          "updatedAt": "2026-08-15T09:13:36.476Z"
+        },
+        {
+          "id": "622",
+          "nom": "MBOMBO KANDOLO",
+          "sexe": "",
+          "lieuAffectation": "Zamba",
+          "fonction": "CLEANER AGENT",
+          "departement": "",
+          "telephone": "",
+          "etatCivil": "C",
+          "statut": "Permanent",
+          "createdAt": "2026-08-15T09:13:36.476Z",
+          "updatedAt": "2026-08-15T09:13:36.476Z"
+        },
+        {
+          "id": "623",
+          "nom": "ZAYANA MANKENGELE",
+          "sexe": "",
+          "lieuAffectation": "Zamba",
+          "fonction": "CLEANER AGENT",
+          "departement": "",
+          "telephone": "",
+          "etatCivil": "C",
+          "statut": "Permanent",
+          "createdAt": "2026-08-15T09:13:36.476Z",
+          "updatedAt": "2026-08-15T09:13:36.476Z"
+        },
+        {
+          "id": "624",
+          "nom": "NKALA NGANGA",
+          "sexe": "",
+          "lieuAffectation": "Zamba",
+          "fonction": "CLEANER AGENT",
+          "departement": "",
+          "telephone": "",
+          "etatCivil": "C",
+          "statut": "Permanent",
+          "createdAt": "2026-08-15T09:13:36.476Z",
+          "updatedAt": "2026-08-15T09:13:36.476Z"
+        },
+        {
+          "id": "625",
+          "nom": "DIATEZUA VICTOR",
+          "sexe": "",
+          "lieuAffectation": "Zamba",
+          "fonction": "CLEANER AGENT",
+          "departement": "",
+          "telephone": "",
+          "etatCivil": "C",
+          "statut": "Permanent",
+          "createdAt": "2026-08-15T09:13:36.476Z",
+          "updatedAt": "2026-08-15T09:13:36.476Z"
+        },
+        {
+          "id": "626",
+          "nom": "KAMBALA KALUNSEVIKO",
+          "sexe": "",
+          "lieuAffectation": "Zamba",
+          "fonction": "CLEANER AGENT",
+          "departement": "",
+          "telephone": "",
+          "etatCivil": "C",
+          "statut": "Permanent",
+          "createdAt": "2026-08-15T09:13:36.476Z",
+          "updatedAt": "2026-08-15T09:13:36.476Z"
+        },
+        {
+          "id": "627",
+          "nom": "MASAMBA LUSEKUA",
+          "sexe": "",
+          "lieuAffectation": "Zamba",
+          "fonction": "CLEANER AGENT",
+          "departement": "",
+          "telephone": "",
+          "etatCivil": "C",
+          "statut": "Permanent",
+          "createdAt": "2026-08-15T09:13:36.476Z",
+          "updatedAt": "2026-08-15T09:13:36.476Z"
+        },
+        {
+          "id": "628",
+          "nom": "NSILULU MVULA",
+          "sexe": "",
+          "lieuAffectation": "Zamba",
+          "fonction": "CLEANER AGENT",
+          "departement": "",
+          "telephone": "",
+          "etatCivil": "C",
+          "statut": "Permanent",
+          "createdAt": "2026-08-15T09:13:36.476Z",
+          "updatedAt": "2026-08-15T09:13:36.476Z"
+        },
+        {
+          "id": "629",
+          "nom": "NSIMBA WASOLOKELE",
+          "sexe": "",
+          "lieuAffectation": "Zamba",
+          "fonction": "CLEANER AGENT",
+          "departement": "",
+          "telephone": "",
+          "etatCivil": "C",
+          "statut": "Permanent",
+          "createdAt": "2026-08-15T09:13:36.476Z",
+          "updatedAt": "2026-08-15T09:13:36.476Z"
+        },
+        {
+          "id": "630",
+          "nom": "MASOBELE GASPARD",
+          "sexe": "",
+          "lieuAffectation": "Zamba",
+          "fonction": "CLEANER AGENT",
+          "departement": "",
+          "telephone": "",
+          "etatCivil": "C",
+          "statut": "Permanent",
+          "createdAt": "2026-08-15T09:13:36.476Z",
+          "updatedAt": "2026-08-15T09:13:36.476Z"
+        },
+        {
+          "id": "631",
+          "nom": "MENAYAME KUANZAMBI",
+          "sexe": "",
+          "lieuAffectation": "Zamba",
+          "fonction": "CLEANER AGENT",
+          "departement": "",
+          "telephone": "",
+          "etatCivil": "C",
+          "statut": "Permanent",
+          "createdAt": "2026-08-15T09:13:36.476Z",
+          "updatedAt": "2026-08-15T09:13:36.476Z"
+        },
+        {
+          "id": "632",
+          "nom": "KOY NGAMAMBU",
+          "sexe": "",
+          "lieuAffectation": "Zamba",
+          "fonction": "CLEANER AGENT",
+          "departement": "",
+          "telephone": "",
+          "etatCivil": "C",
+          "statut": "Permanent",
+          "createdAt": "2026-08-15T09:13:36.476Z",
+          "updatedAt": "2026-08-15T09:13:36.476Z"
+        },
+        {
+          "id": "633",
+          "nom": "KIAKA NGENGI",
+          "sexe": "",
+          "lieuAffectation": "Zamba",
+          "fonction": "CLEANER AGENT",
+          "departement": "",
+          "telephone": "",
+          "etatCivil": "C",
+          "statut": "Permanent",
+          "createdAt": "2026-08-15T09:13:36.476Z",
+          "updatedAt": "2026-08-15T09:13:36.476Z"
+        },
+        {
+          "id": "634",
+          "nom": "FIMPADIO LUTALA GLODY",
+          "sexe": "",
+          "lieuAffectation": "Zamba",
+          "fonction": "CLEANER AGENT",
+          "departement": "",
+          "telephone": "",
+          "etatCivil": "C",
+          "statut": "Permanent",
+          "createdAt": "2026-08-15T09:13:36.476Z",
+          "updatedAt": "2026-08-15T09:13:36.476Z"
+        },
+        {
+          "id": "635",
+          "nom": "ZOLA KIMBELANGA",
+          "sexe": "",
+          "lieuAffectation": "Zamba",
+          "fonction": "CLEANER AGENT",
+          "departement": "",
+          "telephone": "",
+          "etatCivil": "C",
+          "statut": "Permanent",
+          "createdAt": "2026-08-15T09:13:36.476Z",
+          "updatedAt": "2026-08-15T09:13:36.476Z"
+        },
+        {
+          "id": "636",
+          "nom": "LUBIALU LUZITUSU",
+          "sexe": "",
+          "lieuAffectation": "Zamba",
+          "fonction": "CLEANER AGENT",
+          "departement": "",
+          "telephone": "",
+          "etatCivil": "C",
+          "statut": "Permanent",
+          "createdAt": "2026-08-15T09:13:36.476Z",
+          "updatedAt": "2026-08-15T09:13:36.476Z"
+        },
+        {
+          "id": "637",
+          "nom": "MBUKU MATONDO  Dieu",
+          "sexe": "",
+          "lieuAffectation": "Zamba",
+          "fonction": "SUPERVISOR",
+          "departement": "",
+          "telephone": "",
+          "etatCivil": "C",
+          "statut": "Permanent",
+          "createdAt": "2026-08-15T09:13:36.476Z",
+          "updatedAt": "2026-08-15T09:13:36.476Z"
+        },
+        {
+          "id": "638",
+          "nom": "LUMBUENADIO Etienne",
+          "sexe": "",
+          "lieuAffectation": "Zamba",
+          "fonction": "OPERATEUR",
+          "departement": "",
+          "telephone": "",
+          "etatCivil": "C",
+          "statut": "Permanent",
+          "createdAt": "2026-08-15T09:13:36.476Z",
+          "updatedAt": "2026-08-15T09:13:36.476Z"
+        },
+        {
+          "id": "639",
+          "nom": "TALA MATONDO Jeancy",
+          "sexe": "",
+          "lieuAffectation": "Zamba",
+          "fonction": "ASS. ADM",
+          "departement": "",
+          "telephone": "",
+          "etatCivil": "C",
+          "statut": "Permanent",
+          "createdAt": "2026-08-15T09:13:36.476Z",
+          "updatedAt": "2026-08-15T09:13:36.476Z"
+        },
+        {
+          "id": "640",
+          "nom": "MATUMONA NLANDU",
+          "sexe": "",
+          "lieuAffectation": "Zamba",
+          "fonction": "OPERATEUR",
+          "departement": "",
+          "telephone": "",
+          "etatCivil": "C",
+          "statut": "Permanent",
+          "createdAt": "2026-08-15T09:13:36.476Z",
+          "updatedAt": "2026-08-15T09:13:36.476Z"
+        }
+      ],
+      "createdAt": "2026-08-15T09:13:19.885Z",
+      "updatedAt": "2026-08-15T09:13:36.476Z"
+    },
+    {
+      "id": "9",
+      "denomination": "EKMM",
+      "typeService": "Other",
+      "employees": [
+        {
+          "id": "641",
           "nom": "KABONGO KABEYA ALAIN",
           "sexe": "M",
           "lieuAffectation": "Zamba",
@@ -4187,11 +4807,11 @@
           "telephone": "814092893",
           "etatCivil": "M",
           "statut": "Permanent",
-          "createdAt": "2026-08-13T11:21:43.125Z",
-          "updatedAt": "2026-08-13T11:21:43.125Z"
+          "createdAt": "2026-08-15T09:22:38.385Z",
+          "updatedAt": "2026-08-15T09:22:38.385Z"
         },
         {
-          "id": "434",
+          "id": "642",
           "nom": "KIBONGE ISAAC",
           "sexe": "M",
           "lieuAffectation": "Zamba",
@@ -4200,11 +4820,11 @@
           "telephone": "844415246",
           "etatCivil": "M",
           "statut": "Permanent",
-          "createdAt": "2026-08-13T11:21:43.125Z",
-          "updatedAt": "2026-08-13T11:21:43.125Z"
+          "createdAt": "2026-08-15T09:22:38.385Z",
+          "updatedAt": "2026-08-15T09:22:38.385Z"
         },
         {
-          "id": "435",
+          "id": "643",
           "nom": "BUHANGU TSHIMANGA NATHALIE",
           "sexe": "F",
           "lieuAffectation": "Zamba",
@@ -4213,11 +4833,11 @@
           "telephone": "813212079",
           "etatCivil": "M",
           "statut": "Permanent",
-          "createdAt": "2026-08-13T11:21:43.125Z",
-          "updatedAt": "2026-08-13T11:21:43.125Z"
+          "createdAt": "2026-08-15T09:22:38.385Z",
+          "updatedAt": "2026-08-15T09:22:38.385Z"
         },
         {
-          "id": "436",
+          "id": "644",
           "nom": "MUKULE BOLITO GRACIA",
           "sexe": "F",
           "lieuAffectation": "Zamba",
@@ -4226,11 +4846,11 @@
           "telephone": "854476439",
           "etatCivil": "C",
           "statut": "Permanent",
-          "createdAt": "2026-08-13T11:21:43.125Z",
-          "updatedAt": "2026-08-13T11:21:43.125Z"
+          "createdAt": "2026-08-15T09:22:38.385Z",
+          "updatedAt": "2026-08-15T09:22:38.385Z"
         },
         {
-          "id": "437",
+          "id": "645",
           "nom": "MUKWILU MANGWA NAOMIE",
           "sexe": "F",
           "lieuAffectation": "Zamba",
@@ -4239,11 +4859,11 @@
           "telephone": "815485229",
           "etatCivil": "C",
           "statut": "Permanent",
-          "createdAt": "2026-08-13T11:21:43.125Z",
-          "updatedAt": "2026-08-13T11:21:43.125Z"
+          "createdAt": "2026-08-15T09:22:38.385Z",
+          "updatedAt": "2026-08-15T09:22:38.385Z"
         },
         {
-          "id": "438",
+          "id": "646",
           "nom": "NYAMBOYO MAKENGO TABITHA-DORCAS",
           "sexe": "F",
           "lieuAffectation": "Zamba",
@@ -4252,11 +4872,11 @@
           "telephone": "812910330",
           "etatCivil": "C",
           "statut": "Permanent",
-          "createdAt": "2026-08-13T11:21:43.125Z",
-          "updatedAt": "2026-08-13T11:21:43.125Z"
+          "createdAt": "2026-08-15T09:22:38.385Z",
+          "updatedAt": "2026-08-15T09:22:38.385Z"
         },
         {
-          "id": "439",
+          "id": "647",
           "nom": "MAKULENDA MAKABI SAMY",
           "sexe": "M",
           "lieuAffectation": "Zamba",
@@ -4265,11 +4885,11 @@
           "telephone": "892055195",
           "etatCivil": "M",
           "statut": "Permanent",
-          "createdAt": "2026-08-13T11:21:43.125Z",
-          "updatedAt": "2026-08-13T11:21:43.125Z"
+          "createdAt": "2026-08-15T09:22:38.385Z",
+          "updatedAt": "2026-08-15T09:22:38.385Z"
         },
         {
-          "id": "440",
+          "id": "648",
           "nom": "MANZUNGU BEKI REAGAN",
           "sexe": "M",
           "lieuAffectation": "Zamba",
@@ -4278,11 +4898,11 @@
           "telephone": "898045633",
           "etatCivil": "C",
           "statut": "Permanent",
-          "createdAt": "2026-08-13T11:21:43.125Z",
-          "updatedAt": "2026-08-13T11:21:43.125Z"
+          "createdAt": "2026-08-15T09:22:38.385Z",
+          "updatedAt": "2026-08-15T09:22:38.385Z"
         },
         {
-          "id": "441",
+          "id": "649",
           "nom": "ZOLA NDUNGIDI MABUSE",
           "sexe": "M",
           "lieuAffectation": "Zamba",
@@ -4291,11 +4911,11 @@
           "telephone": "896102705",
           "etatCivil": "M",
           "statut": "Permanent",
-          "createdAt": "2026-08-13T11:21:43.125Z",
-          "updatedAt": "2026-08-13T11:21:43.125Z"
+          "createdAt": "2026-08-15T09:22:38.385Z",
+          "updatedAt": "2026-08-15T09:22:38.385Z"
         },
         {
-          "id": "442",
+          "id": "650",
           "nom": "BAFUENIBIO MUNZA OSCAR",
           "sexe": "M",
           "lieuAffectation": "Zamba",
@@ -4304,11 +4924,11 @@
           "telephone": "893262207",
           "etatCivil": "M",
           "statut": "Permanent",
-          "createdAt": "2026-08-13T11:21:43.125Z",
-          "updatedAt": "2026-08-13T11:21:43.125Z"
+          "createdAt": "2026-08-15T09:22:38.385Z",
+          "updatedAt": "2026-08-15T09:22:38.385Z"
         },
         {
-          "id": "443",
+          "id": "651",
           "nom": "LULUNDAMO SEVANA JIMMY",
           "sexe": "M",
           "lieuAffectation": "Zamba",
@@ -4317,11 +4937,11 @@
           "telephone": "898955401",
           "etatCivil": "M",
           "statut": "Permanent",
-          "createdAt": "2026-08-13T11:21:43.125Z",
-          "updatedAt": "2026-08-13T11:21:43.125Z"
+          "createdAt": "2026-08-15T09:22:38.385Z",
+          "updatedAt": "2026-08-15T09:22:38.385Z"
         },
         {
-          "id": "444",
+          "id": "652",
           "nom": "AHINIAKO TUNGIDI CHAMA",
           "sexe": "M",
           "lieuAffectation": "Zamba",
@@ -4330,11 +4950,11 @@
           "telephone": "852693399",
           "etatCivil": "M",
           "statut": "Permanent",
-          "createdAt": "2026-08-13T11:21:43.125Z",
-          "updatedAt": "2026-08-13T11:21:43.125Z"
+          "createdAt": "2026-08-15T09:22:38.385Z",
+          "updatedAt": "2026-08-15T09:22:38.385Z"
         },
         {
-          "id": "445",
+          "id": "653",
           "nom": "AHINIAKO MBIALA ATANDELE",
           "sexe": "M",
           "lieuAffectation": "Zamba",
@@ -4343,11 +4963,11 @@
           "telephone": "897965785",
           "etatCivil": "M",
           "statut": "Permanent",
-          "createdAt": "2026-08-13T11:21:43.125Z",
-          "updatedAt": "2026-08-13T11:21:43.125Z"
+          "createdAt": "2026-08-15T09:22:38.385Z",
+          "updatedAt": "2026-08-15T09:22:38.385Z"
         },
         {
-          "id": "446",
+          "id": "654",
           "nom": "MVUEZOLO VENADIAMBU SIMPLICE",
           "sexe": "M",
           "lieuAffectation": "Zamba",
@@ -4356,11 +4976,11 @@
           "telephone": "892897916",
           "etatCivil": "M",
           "statut": "Permanent",
-          "createdAt": "2026-08-13T11:21:43.125Z",
-          "updatedAt": "2026-08-13T11:21:43.125Z"
+          "createdAt": "2026-08-15T09:22:38.385Z",
+          "updatedAt": "2026-08-15T09:22:38.385Z"
         },
         {
-          "id": "447",
+          "id": "655",
           "nom": "NTUBUKULU NYATA GILBERT",
           "sexe": "M",
           "lieuAffectation": "Zamba",
@@ -4369,11 +4989,11 @@
           "telephone": "896002036",
           "etatCivil": "M",
           "statut": "Permanent",
-          "createdAt": "2026-08-13T11:21:43.125Z",
-          "updatedAt": "2026-08-13T11:21:43.125Z"
+          "createdAt": "2026-08-15T09:22:38.385Z",
+          "updatedAt": "2026-08-15T09:22:38.385Z"
         },
         {
-          "id": "448",
+          "id": "656",
           "nom": "LUTOMA WASOLOKELE JIRES",
           "sexe": "M",
           "lieuAffectation": "Zamba",
@@ -4382,11 +5002,11 @@
           "telephone": "850784121",
           "etatCivil": "M",
           "statut": "Permanent",
-          "createdAt": "2026-08-13T11:21:43.125Z",
-          "updatedAt": "2026-08-13T11:21:43.125Z"
+          "createdAt": "2026-08-15T09:22:38.385Z",
+          "updatedAt": "2026-08-15T09:22:38.385Z"
         },
         {
-          "id": "449",
+          "id": "657",
           "nom": "MFINDA NDOLUMINGU DODO",
           "sexe": "M",
           "lieuAffectation": "Zamba",
@@ -4395,11 +5015,11 @@
           "telephone": "846892618",
           "etatCivil": "C",
           "statut": "Permanent",
-          "createdAt": "2026-08-13T11:21:43.125Z",
-          "updatedAt": "2026-08-13T11:21:43.125Z"
+          "createdAt": "2026-08-15T09:22:38.385Z",
+          "updatedAt": "2026-08-15T09:22:38.385Z"
         },
         {
-          "id": "450",
+          "id": "658",
           "nom": "NLANDU NTEMO JOSEPH",
           "sexe": "M",
           "lieuAffectation": "Zamba",
@@ -4408,11 +5028,11 @@
           "telephone": "895389479",
           "etatCivil": "M",
           "statut": "Permanent",
-          "createdAt": "2026-08-13T11:21:43.125Z",
-          "updatedAt": "2026-08-13T11:21:43.125Z"
+          "createdAt": "2026-08-15T09:22:38.385Z",
+          "updatedAt": "2026-08-15T09:22:38.385Z"
         },
         {
-          "id": "451",
+          "id": "659",
           "nom": "TOKO MUMBELA DIEU",
           "sexe": "M",
           "lieuAffectation": "Zamba",
@@ -4421,11 +5041,11 @@
           "telephone": "842757586",
           "etatCivil": "M",
           "statut": "Permanent",
-          "createdAt": "2026-08-13T11:21:43.125Z",
-          "updatedAt": "2026-08-13T11:21:43.125Z"
+          "createdAt": "2026-08-15T09:22:38.385Z",
+          "updatedAt": "2026-08-15T09:22:38.385Z"
         },
         {
-          "id": "452",
+          "id": "660",
           "nom": "VATOMENE NDOLUKA MICHEE",
           "sexe": "M",
           "lieuAffectation": "Zamba",
@@ -4434,11 +5054,11 @@
           "telephone": "899402664",
           "etatCivil": "C",
           "statut": "Permanent",
-          "createdAt": "2026-08-13T11:21:43.125Z",
-          "updatedAt": "2026-08-13T11:21:43.125Z"
+          "createdAt": "2026-08-15T09:22:38.385Z",
+          "updatedAt": "2026-08-15T09:22:38.385Z"
         },
         {
-          "id": "453",
+          "id": "661",
           "nom": "NLEMVO MAMBANGISA DEGRACE",
           "sexe": "M",
           "lieuAffectation": "Zamba",
@@ -4447,11 +5067,11 @@
           "telephone": "896224100",
           "etatCivil": "M",
           "statut": "Permanent",
-          "createdAt": "2026-08-13T11:21:43.125Z",
-          "updatedAt": "2026-08-13T11:21:43.125Z"
+          "createdAt": "2026-08-15T09:22:38.385Z",
+          "updatedAt": "2026-08-15T09:22:38.385Z"
         },
         {
-          "id": "454",
+          "id": "662",
           "nom": "LUTONADIO GAY ADA",
           "sexe": "M",
           "lieuAffectation": "Zamba",
@@ -4460,11 +5080,11 @@
           "telephone": "853633148",
           "etatCivil": "C",
           "statut": "Permanent",
-          "createdAt": "2026-08-13T11:21:43.125Z",
-          "updatedAt": "2026-08-13T11:21:43.125Z"
+          "createdAt": "2026-08-15T09:22:38.385Z",
+          "updatedAt": "2026-08-15T09:22:38.385Z"
         },
         {
-          "id": "455",
+          "id": "663",
           "nom": "MBUESA TOTESA LEBEAU",
           "sexe": "M",
           "lieuAffectation": "Zamba",
@@ -4473,11 +5093,11 @@
           "telephone": "815145823",
           "etatCivil": "C",
           "statut": "Permanent",
-          "createdAt": "2026-08-13T11:21:43.125Z",
-          "updatedAt": "2026-08-13T11:21:43.125Z"
+          "createdAt": "2026-08-15T09:22:38.385Z",
+          "updatedAt": "2026-08-15T09:22:38.385Z"
         },
         {
-          "id": "456",
+          "id": "664",
           "nom": "SENDO MBAKULU FELIX",
           "sexe": "M",
           "lieuAffectation": "Zamba",
@@ -4486,11 +5106,11 @@
           "telephone": "844975948",
           "etatCivil": "M",
           "statut": "Permanent",
-          "createdAt": "2026-08-13T11:21:43.125Z",
-          "updatedAt": "2026-08-13T11:21:43.125Z"
+          "createdAt": "2026-08-15T09:22:38.385Z",
+          "updatedAt": "2026-08-15T09:22:38.385Z"
         },
         {
-          "id": "457",
+          "id": "665",
           "nom": "MAKABI MPOVELA BELEXE",
           "sexe": "M",
           "lieuAffectation": "Zamba",
@@ -4499,11 +5119,11 @@
           "telephone": "845584447",
           "etatCivil": "C",
           "statut": "Permanent",
-          "createdAt": "2026-08-13T11:21:43.125Z",
-          "updatedAt": "2026-08-13T11:21:43.125Z"
+          "createdAt": "2026-08-15T09:22:38.385Z",
+          "updatedAt": "2026-08-15T09:22:38.385Z"
         },
         {
-          "id": "458",
+          "id": "666",
           "nom": "BOMASILUA KUKENGO JEAN-CLAUDE",
           "sexe": "M",
           "lieuAffectation": "Zamba",
@@ -4512,11 +5132,11 @@
           "telephone": "894660384",
           "etatCivil": "M",
           "statut": "Permanent",
-          "createdAt": "2026-08-13T11:21:43.125Z",
-          "updatedAt": "2026-08-13T11:21:43.125Z"
+          "createdAt": "2026-08-15T09:22:38.385Z",
+          "updatedAt": "2026-08-15T09:22:38.385Z"
         },
         {
-          "id": "459",
+          "id": "667",
           "nom": "MBONA MAKIESE THOMAS",
           "sexe": "M",
           "lieuAffectation": "Zamba",
@@ -4525,11 +5145,11 @@
           "telephone": "898428361",
           "etatCivil": "C",
           "statut": "Permanent",
-          "createdAt": "2026-08-13T11:21:43.125Z",
-          "updatedAt": "2026-08-13T11:21:43.125Z"
+          "createdAt": "2026-08-15T09:22:38.385Z",
+          "updatedAt": "2026-08-15T09:22:38.385Z"
         },
         {
-          "id": "460",
+          "id": "668",
           "nom": "KUANSAMBU MIGAEL DAUDA",
           "sexe": "M",
           "lieuAffectation": "Zamba",
@@ -4538,11 +5158,11 @@
           "telephone": "898419428",
           "etatCivil": "M",
           "statut": "Permanent",
-          "createdAt": "2026-08-13T11:21:43.125Z",
-          "updatedAt": "2026-08-13T11:21:43.125Z"
+          "createdAt": "2026-08-15T09:22:38.385Z",
+          "updatedAt": "2026-08-15T09:22:38.385Z"
         },
         {
-          "id": "461",
+          "id": "669",
           "nom": "ZANKINZI MUHITIRA NORCEL",
           "sexe": "M",
           "lieuAffectation": "Zamba",
@@ -4551,11 +5171,11 @@
           "telephone": "898737238",
           "etatCivil": "M",
           "statut": "Permanent",
-          "createdAt": "2026-08-13T11:21:43.125Z",
-          "updatedAt": "2026-08-13T11:21:43.125Z"
+          "createdAt": "2026-08-15T09:22:38.385Z",
+          "updatedAt": "2026-08-15T09:22:38.385Z"
         },
         {
-          "id": "462",
+          "id": "670",
           "nom": "BAZITA NSALAMBI GUELORD",
           "sexe": "M",
           "lieuAffectation": "Zamba",
@@ -4564,11 +5184,11 @@
           "telephone": "896357883",
           "etatCivil": "M",
           "statut": "Permanent",
-          "createdAt": "2026-08-13T11:21:43.125Z",
-          "updatedAt": "2026-08-13T11:21:43.125Z"
+          "createdAt": "2026-08-15T09:22:38.385Z",
+          "updatedAt": "2026-08-15T09:22:38.385Z"
         },
         {
-          "id": "463",
+          "id": "671",
           "nom": "LUNEKO VAWAMBONA GLODY",
           "sexe": "M",
           "lieuAffectation": "Zamba",
@@ -4577,11 +5197,11 @@
           "telephone": "899512673",
           "etatCivil": "C",
           "statut": "Permanent",
-          "createdAt": "2026-08-13T11:21:43.125Z",
-          "updatedAt": "2026-08-13T11:21:43.125Z"
+          "createdAt": "2026-08-15T09:22:38.385Z",
+          "updatedAt": "2026-08-15T09:22:38.385Z"
         },
         {
-          "id": "464",
+          "id": "672",
           "nom": "NGANGU NTONZI STANISLAS",
           "sexe": "M",
           "lieuAffectation": "Zamba",
@@ -4590,11 +5210,11 @@
           "telephone": "899669713",
           "etatCivil": "C",
           "statut": "Permanent",
-          "createdAt": "2026-08-13T11:21:43.125Z",
-          "updatedAt": "2026-08-13T11:21:43.125Z"
+          "createdAt": "2026-08-15T09:22:38.385Z",
+          "updatedAt": "2026-08-15T09:22:38.385Z"
         },
         {
-          "id": "465",
+          "id": "673",
           "nom": "NSINGI LUYINDULA PIERRE",
           "sexe": "M",
           "lieuAffectation": "Zamba",
@@ -4603,11 +5223,11 @@
           "telephone": "892919965",
           "etatCivil": "M",
           "statut": "Permanent",
-          "createdAt": "2026-08-13T11:21:43.125Z",
-          "updatedAt": "2026-08-13T11:21:43.125Z"
+          "createdAt": "2026-08-15T09:22:38.385Z",
+          "updatedAt": "2026-08-15T09:22:38.385Z"
         },
         {
-          "id": "466",
+          "id": "674",
           "nom": "MUANDA MAYAMBI JONAS",
           "sexe": "M",
           "lieuAffectation": "Zamba",
@@ -4616,11 +5236,11 @@
           "telephone": "894067473",
           "etatCivil": "M",
           "statut": "Permanent",
-          "createdAt": "2026-08-13T11:21:43.125Z",
-          "updatedAt": "2026-08-13T11:21:43.125Z"
+          "createdAt": "2026-08-15T09:22:38.385Z",
+          "updatedAt": "2026-08-15T09:22:38.385Z"
         },
         {
-          "id": "467",
+          "id": "675",
           "nom": "MBEMBA BILONGO JAPHET",
           "sexe": "M",
           "lieuAffectation": "Zamba",
@@ -4629,11 +5249,11 @@
           "telephone": "858484876",
           "etatCivil": "C",
           "statut": "Permanent",
-          "createdAt": "2026-08-13T11:21:43.125Z",
-          "updatedAt": "2026-08-13T11:21:43.125Z"
+          "createdAt": "2026-08-15T09:22:38.385Z",
+          "updatedAt": "2026-08-15T09:22:38.385Z"
         },
         {
-          "id": "468",
+          "id": "676",
           "nom": "SHAKO TAMBWE PATRICK",
           "sexe": "M",
           "lieuAffectation": "Zamba",
@@ -4642,11 +5262,11 @@
           "telephone": "893086944",
           "etatCivil": "C",
           "statut": "Permanent",
-          "createdAt": "2026-08-13T11:21:43.125Z",
-          "updatedAt": "2026-08-13T11:21:43.125Z"
+          "createdAt": "2026-08-15T09:22:38.385Z",
+          "updatedAt": "2026-08-15T09:22:38.385Z"
         },
         {
-          "id": "469",
+          "id": "677",
           "nom": "MBUNGA NTOTO GUYLAIN",
           "sexe": "M",
           "lieuAffectation": "Zamba",
@@ -4655,11 +5275,11 @@
           "telephone": "892009637",
           "etatCivil": "M",
           "statut": "Permanent",
-          "createdAt": "2026-08-13T11:21:43.125Z",
-          "updatedAt": "2026-08-13T11:21:43.125Z"
+          "createdAt": "2026-08-15T09:22:38.385Z",
+          "updatedAt": "2026-08-15T09:22:38.385Z"
         },
         {
-          "id": "470",
+          "id": "678",
           "nom": "LUBAMBA NSIMBA ANDRE",
           "sexe": "M",
           "lieuAffectation": "Zamba",
@@ -4668,11 +5288,11 @@
           "telephone": "850068765",
           "etatCivil": "M",
           "statut": "Permanent",
-          "createdAt": "2026-08-13T11:21:43.125Z",
-          "updatedAt": "2026-08-13T11:21:43.125Z"
+          "createdAt": "2026-08-15T09:22:38.385Z",
+          "updatedAt": "2026-08-15T09:22:38.385Z"
         },
         {
-          "id": "471",
+          "id": "679",
           "nom": "KISILUMESO KIAMBI RACHIDI",
           "sexe": "M",
           "lieuAffectation": "Zamba",
@@ -4681,11 +5301,11 @@
           "telephone": "858293599",
           "etatCivil": "M",
           "statut": "Permanent",
-          "createdAt": "2026-08-13T11:21:43.125Z",
-          "updatedAt": "2026-08-13T11:21:43.125Z"
+          "createdAt": "2026-08-15T09:22:38.385Z",
+          "updatedAt": "2026-08-15T09:22:38.385Z"
         },
         {
-          "id": "472",
+          "id": "680",
           "nom": "KIADIMBUKA KIVUILA MICHEL",
           "sexe": "M",
           "lieuAffectation": "Zamba",
@@ -4694,11 +5314,11 @@
           "telephone": "841078590",
           "etatCivil": "M",
           "statut": "Permanent",
-          "createdAt": "2026-08-13T11:21:43.125Z",
-          "updatedAt": "2026-08-13T11:21:43.125Z"
+          "createdAt": "2026-08-15T09:22:38.385Z",
+          "updatedAt": "2026-08-15T09:22:38.385Z"
         },
         {
-          "id": "473",
+          "id": "681",
           "nom": "NSIMBA LUTONADIO BABOUIN",
           "sexe": "M",
           "lieuAffectation": "Zamba",
@@ -4707,11 +5327,11 @@
           "telephone": "89925123",
           "etatCivil": "C",
           "statut": "Permanent",
-          "createdAt": "2026-08-13T11:21:43.125Z",
-          "updatedAt": "2026-08-13T11:21:43.125Z"
+          "createdAt": "2026-08-15T09:22:38.385Z",
+          "updatedAt": "2026-08-15T09:22:38.385Z"
         },
         {
-          "id": "474",
+          "id": "682",
           "nom": "NSIAMAKANI KIOLO GIMMY",
           "sexe": "M",
           "lieuAffectation": "Zamba",
@@ -4720,11 +5340,11 @@
           "telephone": "895121903",
           "etatCivil": "M",
           "statut": "Permanent",
-          "createdAt": "2026-08-13T11:21:43.125Z",
-          "updatedAt": "2026-08-13T11:21:43.125Z"
+          "createdAt": "2026-08-15T09:22:38.385Z",
+          "updatedAt": "2026-08-15T09:22:38.385Z"
         },
         {
-          "id": "475",
+          "id": "683",
           "nom": "KIMUANGA KAKESA AARON",
           "sexe": "M",
           "lieuAffectation": "Zamba",
@@ -4732,12 +5352,12 @@
           "departement": "Mines",
           "telephone": "827255737",
           "etatCivil": "C",
-          "statut": "Permanent",
-          "createdAt": "2026-08-13T11:21:43.125Z",
-          "updatedAt": "2026-08-13T11:21:43.125Z"
+          "statut": "Journalier",
+          "createdAt": "2026-08-15T09:22:38.385Z",
+          "updatedAt": "2026-08-15T09:22:38.385Z"
         },
         {
-          "id": "476",
+          "id": "684",
           "nom": "VUVU SIMON SIMON",
           "sexe": "M",
           "lieuAffectation": "Zamba",
@@ -4745,12 +5365,12 @@
           "departement": "Mines",
           "telephone": "851490424",
           "etatCivil": "C",
-          "statut": "Permanent",
-          "createdAt": "2026-08-13T11:21:43.125Z",
-          "updatedAt": "2026-08-13T11:21:43.125Z"
+          "statut": "Journalier",
+          "createdAt": "2026-08-15T09:22:38.385Z",
+          "updatedAt": "2026-08-15T09:22:38.385Z"
         },
         {
-          "id": "477",
+          "id": "685",
           "nom": "KABUITA DIUR JEAN",
           "sexe": "M",
           "lieuAffectation": "Zamba",
@@ -4758,12 +5378,12 @@
           "departement": "Mines",
           "telephone": "825386904",
           "etatCivil": "M",
-          "statut": "Permanent",
-          "createdAt": "2026-08-13T11:21:43.125Z",
-          "updatedAt": "2026-08-13T11:21:43.125Z"
+          "statut": "Journalier",
+          "createdAt": "2026-08-15T09:22:38.385Z",
+          "updatedAt": "2026-08-15T09:22:38.385Z"
         },
         {
-          "id": "478",
+          "id": "686",
           "nom": "MBALU LUTUMA PHILIPPE",
           "sexe": "M",
           "lieuAffectation": "Zamba",
@@ -4771,12 +5391,12 @@
           "departement": "Mines",
           "telephone": "853753068",
           "etatCivil": "M",
-          "statut": "Permanent",
-          "createdAt": "2026-08-13T11:21:43.125Z",
-          "updatedAt": "2026-08-13T11:21:43.125Z"
+          "statut": "Journalier",
+          "createdAt": "2026-08-15T09:22:38.385Z",
+          "updatedAt": "2026-08-15T09:22:38.385Z"
         },
         {
-          "id": "479",
+          "id": "687",
           "nom": "TONSI DIMBIOMBI DON",
           "sexe": "M",
           "lieuAffectation": "Zamba",
@@ -4784,12 +5404,12 @@
           "departement": "Mines",
           "telephone": "899392908",
           "etatCivil": "M",
-          "statut": "Permanent",
-          "createdAt": "2026-08-13T11:21:43.125Z",
-          "updatedAt": "2026-08-13T11:21:43.125Z"
+          "statut": "Journalier",
+          "createdAt": "2026-08-15T09:22:38.385Z",
+          "updatedAt": "2026-08-15T09:22:38.385Z"
         },
         {
-          "id": "480",
+          "id": "688",
           "nom": "MPUTU KUBIKA GLOIRE",
           "sexe": "M",
           "lieuAffectation": "Zamba",
@@ -4797,12 +5417,12 @@
           "departement": "Mines",
           "telephone": "896798337",
           "etatCivil": "C",
-          "statut": "Permanent",
-          "createdAt": "2026-08-13T11:21:43.125Z",
-          "updatedAt": "2026-08-13T11:21:43.125Z"
+          "statut": "Journalier",
+          "createdAt": "2026-08-15T09:22:38.385Z",
+          "updatedAt": "2026-08-15T09:22:38.385Z"
         },
         {
-          "id": "481",
+          "id": "689",
           "nom": "NZUZI NDUNGI FLAVIEN",
           "sexe": "M",
           "lieuAffectation": "Zamba",
@@ -4810,12 +5430,12 @@
           "departement": "Mines",
           "telephone": "894778595",
           "etatCivil": "C",
-          "statut": "Permanent",
-          "createdAt": "2026-08-13T11:21:43.125Z",
-          "updatedAt": "2026-08-13T11:21:43.125Z"
+          "statut": "Journalier",
+          "createdAt": "2026-08-15T09:22:38.385Z",
+          "updatedAt": "2026-08-15T09:22:38.385Z"
         },
         {
-          "id": "482",
+          "id": "690",
           "nom": "MAMPUYA KINKELA CHRISTALAIN",
           "sexe": "M",
           "lieuAffectation": "Zamba",
@@ -4823,12 +5443,12 @@
           "departement": "Mines",
           "telephone": "855003395",
           "etatCivil": "M",
-          "statut": "Permanent",
-          "createdAt": "2026-08-13T11:21:43.125Z",
-          "updatedAt": "2026-08-13T11:21:43.125Z"
+          "statut": "Journalier",
+          "createdAt": "2026-08-15T09:22:38.385Z",
+          "updatedAt": "2026-08-15T09:22:38.385Z"
         },
         {
-          "id": "483",
+          "id": "691",
           "nom": "NZUZI LUBADIKA RODRICK",
           "sexe": "M",
           "lieuAffectation": "Zamba",
@@ -4836,12 +5456,12 @@
           "departement": "Mines",
           "telephone": "895196989",
           "etatCivil": "C",
-          "statut": "Permanent",
-          "createdAt": "2026-08-13T11:21:43.125Z",
-          "updatedAt": "2026-08-13T11:21:43.125Z"
+          "statut": "Journalier",
+          "createdAt": "2026-08-15T09:22:38.385Z",
+          "updatedAt": "2026-08-15T09:22:38.385Z"
         },
         {
-          "id": "484",
+          "id": "692",
           "nom": "SEKE MVUEZOLO HERVE",
           "sexe": "M",
           "lieuAffectation": "Zamba",
@@ -4849,12 +5469,12 @@
           "departement": "Mines",
           "telephone": "808000756",
           "etatCivil": "M",
-          "statut": "Permanent",
-          "createdAt": "2026-08-13T11:21:43.125Z",
-          "updatedAt": "2026-08-13T11:21:43.125Z"
+          "statut": "Journalier",
+          "createdAt": "2026-08-15T09:22:38.385Z",
+          "updatedAt": "2026-08-15T09:22:38.385Z"
         },
         {
-          "id": "485",
+          "id": "693",
           "nom": "BUKAKA MBAMBI DINI",
           "sexe": "M",
           "lieuAffectation": "Zamba",
@@ -4862,12 +5482,12 @@
           "departement": "Management",
           "telephone": "852466353",
           "etatCivil": "C",
-          "statut": "Permanent",
-          "createdAt": "2026-08-13T11:21:43.125Z",
-          "updatedAt": "2026-08-13T11:21:43.125Z"
+          "statut": "Journalier",
+          "createdAt": "2026-08-15T09:22:38.385Z",
+          "updatedAt": "2026-08-15T09:22:38.385Z"
         },
         {
-          "id": "486",
+          "id": "694",
           "nom": "KALUNSEVIKO NGINAMAU SAMY",
           "sexe": "M",
           "lieuAffectation": "Zamba",
@@ -4875,12 +5495,12 @@
           "departement": "Mines",
           "telephone": "850554120",
           "etatCivil": "M",
-          "statut": "Permanent",
-          "createdAt": "2026-08-13T11:21:43.125Z",
-          "updatedAt": "2026-08-13T11:21:43.125Z"
+          "statut": "Journalier",
+          "createdAt": "2026-08-15T09:22:38.385Z",
+          "updatedAt": "2026-08-15T09:22:38.385Z"
         },
         {
-          "id": "487",
+          "id": "695",
           "nom": "MAYUMA LUKALANSONI GUELORD",
           "sexe": "M",
           "lieuAffectation": "Zamba",
@@ -4888,12 +5508,12 @@
           "departement": "Mines",
           "telephone": "898920758",
           "etatCivil": "M",
-          "statut": "Permanent",
-          "createdAt": "2026-08-13T11:21:43.125Z",
-          "updatedAt": "2026-08-13T11:21:43.125Z"
+          "statut": "Journalier",
+          "createdAt": "2026-08-15T09:22:38.385Z",
+          "updatedAt": "2026-08-15T09:22:38.385Z"
         },
         {
-          "id": "488",
+          "id": "696",
           "nom": "BILONGO ZOLA GLODY",
           "sexe": "M",
           "lieuAffectation": "Zamba",
@@ -4901,12 +5521,12 @@
           "departement": "Mines",
           "telephone": "896840357",
           "etatCivil": "C",
-          "statut": "Permanent",
-          "createdAt": "2026-08-13T11:21:43.125Z",
-          "updatedAt": "2026-08-13T11:21:43.125Z"
+          "statut": "Journalier",
+          "createdAt": "2026-08-15T09:22:38.385Z",
+          "updatedAt": "2026-08-15T09:22:38.385Z"
         },
         {
-          "id": "489",
+          "id": "697",
           "nom": "MAKOLA NDIZI GUYLAIN",
           "sexe": "M",
           "lieuAffectation": "Zamba",
@@ -4914,12 +5534,12 @@
           "departement": "Opérations",
           "telephone": "817066861",
           "etatCivil": "C",
-          "statut": "Permanent",
-          "createdAt": "2026-08-13T11:21:43.125Z",
-          "updatedAt": "2026-08-13T11:21:43.125Z"
+          "statut": "Journalier",
+          "createdAt": "2026-08-15T09:22:38.385Z",
+          "updatedAt": "2026-08-15T09:22:38.385Z"
         },
         {
-          "id": "490",
+          "id": "698",
           "nom": "MASSAMBA MAKUMBU DONNAT",
           "sexe": "M",
           "lieuAffectation": "Zamba",
@@ -4927,12 +5547,12 @@
           "departement": "Mines",
           "telephone": "815209594",
           "etatCivil": "D",
-          "statut": "Permanent",
-          "createdAt": "2026-08-13T11:21:43.125Z",
-          "updatedAt": "2026-08-13T11:21:43.125Z"
+          "statut": "Journalier",
+          "createdAt": "2026-08-15T09:22:38.385Z",
+          "updatedAt": "2026-08-15T09:22:38.385Z"
         },
         {
-          "id": "491",
+          "id": "699",
           "nom": "MALANDA DIANZOETO FRANCOIS",
           "sexe": "M",
           "lieuAffectation": "Zamba",
@@ -4940,12 +5560,12 @@
           "departement": "Mines",
           "telephone": "859494038",
           "etatCivil": "C",
-          "statut": "Permanent",
-          "createdAt": "2026-08-13T11:21:43.125Z",
-          "updatedAt": "2026-08-13T11:21:43.125Z"
+          "statut": "Journalier",
+          "createdAt": "2026-08-15T09:22:38.385Z",
+          "updatedAt": "2026-08-15T09:22:38.385Z"
         },
         {
-          "id": "492",
+          "id": "700",
           "nom": "TSHIBUYI MINGENI FRANCOIS",
           "sexe": "M",
           "lieuAffectation": "Zamba",
@@ -4953,12 +5573,12 @@
           "departement": "Usine",
           "telephone": "821014612",
           "etatCivil": "C",
-          "statut": "Permanent",
-          "createdAt": "2026-08-13T11:21:43.125Z",
-          "updatedAt": "2026-08-13T11:21:43.125Z"
+          "statut": "Journalier",
+          "createdAt": "2026-08-15T09:22:38.385Z",
+          "updatedAt": "2026-08-15T09:22:38.385Z"
         },
         {
-          "id": "493",
+          "id": "701",
           "nom": "DIANGITUKULU KUBELO DANIEL",
           "sexe": "M",
           "lieuAffectation": "Zamba",
@@ -4966,12 +5586,12 @@
           "departement": "Maintenance",
           "telephone": "898451896",
           "etatCivil": "M",
-          "statut": "Permanent",
-          "createdAt": "2026-08-13T11:21:43.125Z",
-          "updatedAt": "2026-08-13T11:21:43.125Z"
+          "statut": "Journalier",
+          "createdAt": "2026-08-15T09:22:38.385Z",
+          "updatedAt": "2026-08-15T09:22:38.385Z"
         },
         {
-          "id": "494",
+          "id": "702",
           "nom": "ZAWIDI BAHETA ROLAND-GUESS",
           "sexe": "M",
           "lieuAffectation": "Zamba",
@@ -4979,12 +5599,12 @@
           "departement": "Mines",
           "telephone": "895919825",
           "etatCivil": "C",
-          "statut": "Permanent",
-          "createdAt": "2026-08-13T11:21:43.125Z",
-          "updatedAt": "2026-08-13T11:21:43.125Z"
+          "statut": "Journalier",
+          "createdAt": "2026-08-15T09:22:38.385Z",
+          "updatedAt": "2026-08-15T09:22:38.385Z"
         },
         {
-          "id": "495",
+          "id": "703",
           "nom": "ZASALA TOKO ZAS",
           "sexe": "M",
           "lieuAffectation": "Zamba",
@@ -4992,12 +5612,12 @@
           "departement": "Mines",
           "telephone": "856287249",
           "etatCivil": "C",
-          "statut": "Permanent",
-          "createdAt": "2026-08-13T11:21:43.125Z",
-          "updatedAt": "2026-08-13T11:21:43.125Z"
+          "statut": "Journalier",
+          "createdAt": "2026-08-15T09:22:38.385Z",
+          "updatedAt": "2026-08-15T09:22:38.385Z"
         },
         {
-          "id": "496",
+          "id": "704",
           "nom": "NKIZI VUVU DESTIN",
           "sexe": "M",
           "lieuAffectation": "Zamba",
@@ -5005,12 +5625,12 @@
           "departement": "Maintenance",
           "telephone": "852955959",
           "etatCivil": "C",
-          "statut": "Permanent",
-          "createdAt": "2026-08-13T11:21:43.125Z",
-          "updatedAt": "2026-08-13T11:21:43.125Z"
+          "statut": "Journalier",
+          "createdAt": "2026-08-15T09:22:38.385Z",
+          "updatedAt": "2026-08-15T09:22:38.385Z"
         },
         {
-          "id": "497",
+          "id": "705",
           "nom": "NTALANI NITUANTOTO PAPY",
           "sexe": "M",
           "lieuAffectation": "Zamba",
@@ -5018,12 +5638,12 @@
           "departement": "Opérations",
           "telephone": "",
           "etatCivil": "M",
-          "statut": "Permanent",
-          "createdAt": "2026-08-13T11:21:43.125Z",
-          "updatedAt": "2026-08-13T11:21:43.125Z"
+          "statut": "Journalier",
+          "createdAt": "2026-08-15T09:22:38.385Z",
+          "updatedAt": "2026-08-15T09:22:38.385Z"
         },
         {
-          "id": "498",
+          "id": "706",
           "nom": "MATONDO LENDA MIKE",
           "sexe": "M",
           "lieuAffectation": "Zamba",
@@ -5031,12 +5651,12 @@
           "departement": "Opérations",
           "telephone": "850442104",
           "etatCivil": "C",
-          "statut": "Permanent",
-          "createdAt": "2026-08-13T11:21:43.125Z",
-          "updatedAt": "2026-08-13T11:21:43.125Z"
+          "statut": "Journalier",
+          "createdAt": "2026-08-15T09:22:38.385Z",
+          "updatedAt": "2026-08-15T09:22:38.385Z"
         },
         {
-          "id": "499",
+          "id": "707",
           "nom": "MATONDO MUTUMBU GERCY",
           "sexe": "M",
           "lieuAffectation": "Zamba",
@@ -5044,12 +5664,12 @@
           "departement": "Mines",
           "telephone": "891255013",
           "etatCivil": "C",
-          "statut": "Permanent",
-          "createdAt": "2026-08-13T11:21:43.125Z",
-          "updatedAt": "2026-08-13T11:21:43.125Z"
+          "statut": "Journalier",
+          "createdAt": "2026-08-15T09:22:38.385Z",
+          "updatedAt": "2026-08-15T09:22:38.385Z"
         },
         {
-          "id": "500",
+          "id": "708",
           "nom": "MBENZA NSAKALA CHAADE",
           "sexe": "M",
           "lieuAffectation": "Zamba",
@@ -5057,12 +5677,12 @@
           "departement": "Opérations",
           "telephone": "811996676",
           "etatCivil": "M",
-          "statut": "Permanent",
-          "createdAt": "2026-08-13T11:21:43.125Z",
-          "updatedAt": "2026-08-13T11:21:43.125Z"
+          "statut": "Journalier",
+          "createdAt": "2026-08-15T09:22:38.385Z",
+          "updatedAt": "2026-08-15T09:22:38.385Z"
         },
         {
-          "id": "501",
+          "id": "709",
           "nom": "TSHIHEMO MBALANDA CHADRACK",
           "sexe": "M",
           "lieuAffectation": "Zamba",
@@ -5070,12 +5690,12 @@
           "departement": "Opérations",
           "telephone": "822030912",
           "etatCivil": "C",
-          "statut": "Permanent",
-          "createdAt": "2026-08-13T11:21:43.125Z",
-          "updatedAt": "2026-08-13T11:21:43.125Z"
+          "statut": "Journalier",
+          "createdAt": "2026-08-15T09:22:38.385Z",
+          "updatedAt": "2026-08-15T09:22:38.385Z"
         },
         {
-          "id": "502",
+          "id": "710",
           "nom": "DIAKENGA GHAY BERTIN",
           "sexe": "M",
           "lieuAffectation": "Zamba",
@@ -5083,12 +5703,12 @@
           "departement": "Mines",
           "telephone": "853751183",
           "etatCivil": "C",
-          "statut": "Permanent",
-          "createdAt": "2026-08-13T11:21:43.125Z",
-          "updatedAt": "2026-08-13T11:21:43.125Z"
+          "statut": "Journalier",
+          "createdAt": "2026-08-15T09:22:38.385Z",
+          "updatedAt": "2026-08-15T09:22:38.385Z"
         },
         {
-          "id": "503",
+          "id": "711",
           "nom": "NSIMBA MAKABI",
           "sexe": "M",
           "lieuAffectation": "Zamba",
@@ -5096,12 +5716,12 @@
           "departement": "Mines",
           "telephone": "814285618",
           "etatCivil": "C",
-          "statut": "Permanent",
-          "createdAt": "2026-08-13T11:21:43.125Z",
-          "updatedAt": "2026-08-13T11:21:43.125Z"
+          "statut": "Journalier",
+          "createdAt": "2026-08-15T09:22:38.385Z",
+          "updatedAt": "2026-08-15T09:22:38.385Z"
         },
         {
-          "id": "504",
+          "id": "712",
           "nom": "MAKIESE NKAZIANGANI CHRISPAIN",
           "sexe": "M",
           "lieuAffectation": "Zamba",
@@ -5109,12 +5729,12 @@
           "departement": "Mines",
           "telephone": "842901622",
           "etatCivil": "M",
-          "statut": "Permanent",
-          "createdAt": "2026-08-13T11:21:43.125Z",
-          "updatedAt": "2026-08-13T11:21:43.125Z"
+          "statut": "Journalier",
+          "createdAt": "2026-08-15T09:22:38.385Z",
+          "updatedAt": "2026-08-15T09:22:38.385Z"
         },
         {
-          "id": "505",
+          "id": "713",
           "nom": "LUSANU LUSADISU BLANCKY",
           "sexe": "M",
           "lieuAffectation": "Zamba",
@@ -5122,12 +5742,12 @@
           "departement": "Mines",
           "telephone": "898665945",
           "etatCivil": "C",
-          "statut": "Permanent",
-          "createdAt": "2026-08-13T11:21:43.125Z",
-          "updatedAt": "2026-08-13T11:21:43.125Z"
+          "statut": "Journalier",
+          "createdAt": "2026-08-15T09:22:38.385Z",
+          "updatedAt": "2026-08-15T09:22:38.385Z"
         },
         {
-          "id": "506",
+          "id": "714",
           "nom": "TUKALAKIESE KWANZAMBI MAO",
           "sexe": "M",
           "lieuAffectation": "Zamba",
@@ -5135,12 +5755,12 @@
           "departement": "Mines",
           "telephone": "851116505",
           "etatCivil": "C",
-          "statut": "Permanent",
-          "createdAt": "2026-08-13T11:21:43.125Z",
-          "updatedAt": "2026-08-13T11:21:43.125Z"
+          "statut": "Journalier",
+          "createdAt": "2026-08-15T09:22:38.385Z",
+          "updatedAt": "2026-08-15T09:22:38.385Z"
         },
         {
-          "id": "507",
+          "id": "715",
           "nom": "TUWIZANA YALALA HERICK",
           "sexe": "M",
           "lieuAffectation": "Zamba",
@@ -5148,12 +5768,12 @@
           "departement": "Mines",
           "telephone": "899612181",
           "etatCivil": "M",
-          "statut": "Permanent",
-          "createdAt": "2026-08-13T11:21:43.125Z",
-          "updatedAt": "2026-08-13T11:21:43.125Z"
+          "statut": "Journalier",
+          "createdAt": "2026-08-15T09:22:38.385Z",
+          "updatedAt": "2026-08-15T09:22:38.385Z"
         },
         {
-          "id": "508",
+          "id": "716",
           "nom": "NSALA MBOTE JEAN-PIERRE",
           "sexe": "M",
           "lieuAffectation": "Zamba",
@@ -5161,12 +5781,12 @@
           "departement": "Opérations",
           "telephone": "899341068",
           "etatCivil": "M",
-          "statut": "Permanent",
-          "createdAt": "2026-08-13T11:21:43.125Z",
-          "updatedAt": "2026-08-13T11:21:43.125Z"
+          "statut": "Journalier",
+          "createdAt": "2026-08-15T09:22:38.385Z",
+          "updatedAt": "2026-08-15T09:22:38.385Z"
         },
         {
-          "id": "509",
+          "id": "717",
           "nom": "ZOLA MBOKILA GUYLAIN",
           "sexe": "M",
           "lieuAffectation": "Zamba",
@@ -5174,12 +5794,12 @@
           "departement": "Mines",
           "telephone": "892649623",
           "etatCivil": "M",
-          "statut": "Permanent",
-          "createdAt": "2026-08-13T11:21:43.125Z",
-          "updatedAt": "2026-08-13T11:21:43.125Z"
+          "statut": "Journalier",
+          "createdAt": "2026-08-15T09:22:38.385Z",
+          "updatedAt": "2026-08-15T09:22:38.385Z"
         },
         {
-          "id": "510",
+          "id": "718",
           "nom": "MUNDUKU MIMBU RODRIGUE",
           "sexe": "M",
           "lieuAffectation": "Zamba",
@@ -5187,12 +5807,12 @@
           "departement": "Mines",
           "telephone": "810358110",
           "etatCivil": "C",
-          "statut": "Permanent",
-          "createdAt": "2026-08-13T11:21:43.125Z",
-          "updatedAt": "2026-08-13T11:21:43.125Z"
+          "statut": "Journalier",
+          "createdAt": "2026-08-15T09:22:38.385Z",
+          "updatedAt": "2026-08-15T09:22:38.385Z"
         },
         {
-          "id": "511",
+          "id": "719",
           "nom": "NSIMBA MAYINGI DIEU",
           "sexe": "M",
           "lieuAffectation": "Zamba",
@@ -5200,12 +5820,12 @@
           "departement": "Opérations",
           "telephone": "895450379",
           "etatCivil": "M",
-          "statut": "Permanent",
-          "createdAt": "2026-08-13T11:21:43.125Z",
-          "updatedAt": "2026-08-13T11:21:43.125Z"
+          "statut": "Journalier",
+          "createdAt": "2026-08-15T09:22:38.385Z",
+          "updatedAt": "2026-08-15T09:22:38.385Z"
         },
         {
-          "id": "512",
+          "id": "720",
           "nom": "NTONTOLO MUKEMBO BOSTON",
           "sexe": "M",
           "lieuAffectation": "Zamba",
@@ -5213,12 +5833,12 @@
           "departement": "Mines",
           "telephone": "895553613",
           "etatCivil": "C",
-          "statut": "Permanent",
-          "createdAt": "2026-08-13T11:21:43.125Z",
-          "updatedAt": "2026-08-13T11:21:43.125Z"
+          "statut": "Journalier",
+          "createdAt": "2026-08-15T09:22:38.385Z",
+          "updatedAt": "2026-08-15T09:22:38.385Z"
         },
         {
-          "id": "513",
+          "id": "721",
           "nom": "DAWILI VONGA FORTUNA",
           "sexe": "M",
           "lieuAffectation": "Zamba",
@@ -5226,12 +5846,12 @@
           "departement": "Maintenance",
           "telephone": "897233202",
           "etatCivil": "M",
-          "statut": "Permanent",
-          "createdAt": "2026-08-13T11:21:43.125Z",
-          "updatedAt": "2026-08-13T11:21:43.125Z"
+          "statut": "Journalier",
+          "createdAt": "2026-08-15T09:22:38.385Z",
+          "updatedAt": "2026-08-15T09:22:38.385Z"
         },
         {
-          "id": "514",
+          "id": "722",
           "nom": "MATONDO NAFUA L'or",
           "sexe": "M",
           "lieuAffectation": "Zamba",
@@ -5239,12 +5859,12 @@
           "departement": "Maintenance",
           "telephone": "899927975",
           "etatCivil": "M",
-          "statut": "Permanent",
-          "createdAt": "2026-08-13T11:21:43.125Z",
-          "updatedAt": "2026-08-13T11:21:43.125Z"
+          "statut": "Journalier",
+          "createdAt": "2026-08-15T09:22:38.385Z",
+          "updatedAt": "2026-08-15T09:22:38.385Z"
         },
         {
-          "id": "515",
+          "id": "723",
           "nom": "MPANZU MAYILENDA TIGANA",
           "sexe": "M",
           "lieuAffectation": "Zamba",
@@ -5252,12 +5872,12 @@
           "departement": "Mines",
           "telephone": "891293401",
           "etatCivil": "C",
-          "statut": "Permanent",
-          "createdAt": "2026-08-13T11:21:43.125Z",
-          "updatedAt": "2026-08-13T11:21:43.125Z"
+          "statut": "Journalier",
+          "createdAt": "2026-08-15T09:22:38.385Z",
+          "updatedAt": "2026-08-15T09:22:38.385Z"
         },
         {
-          "id": "516",
+          "id": "724",
           "nom": "SUNGA LUKOMBO EMILE",
           "sexe": "M",
           "lieuAffectation": "Zamba",
@@ -5265,12 +5885,12 @@
           "departement": "Usine",
           "telephone": "897560975",
           "etatCivil": "M",
-          "statut": "Permanent",
-          "createdAt": "2026-08-13T11:21:43.125Z",
-          "updatedAt": "2026-08-13T11:21:43.125Z"
+          "statut": "Journalier",
+          "createdAt": "2026-08-15T09:22:38.385Z",
+          "updatedAt": "2026-08-15T09:22:38.385Z"
         },
         {
-          "id": "517",
+          "id": "725",
           "nom": "NKEBI AKANDA MILVENU",
           "sexe": "M",
           "lieuAffectation": "Zamba",
@@ -5278,12 +5898,12 @@
           "departement": "Mines",
           "telephone": "844051242",
           "etatCivil": "M",
-          "statut": "Permanent",
-          "createdAt": "2026-08-13T11:21:43.125Z",
-          "updatedAt": "2026-08-13T11:21:43.125Z"
+          "statut": "Journalier",
+          "createdAt": "2026-08-15T09:22:38.385Z",
+          "updatedAt": "2026-08-15T09:22:38.385Z"
         },
         {
-          "id": "518",
+          "id": "726",
           "nom": "NKAU MBUTA EDOUARD",
           "sexe": "M",
           "lieuAffectation": "Zamba",
@@ -5291,12 +5911,12 @@
           "departement": "Maintenance",
           "telephone": "897198885",
           "etatCivil": "M",
-          "statut": "Permanent",
-          "createdAt": "2026-08-13T11:21:43.125Z",
-          "updatedAt": "2026-08-13T11:21:43.125Z"
+          "statut": "Journalier",
+          "createdAt": "2026-08-15T09:22:38.385Z",
+          "updatedAt": "2026-08-15T09:22:38.385Z"
         },
         {
-          "id": "519",
+          "id": "727",
           "nom": "NSWELA NTABARUSHA EVARISTE",
           "sexe": "M",
           "lieuAffectation": "Zamba",
@@ -5304,12 +5924,12 @@
           "departement": "Maintenance",
           "telephone": "895467046",
           "etatCivil": "M",
-          "statut": "Permanent",
-          "createdAt": "2026-08-13T11:21:43.125Z",
-          "updatedAt": "2026-08-13T11:21:43.125Z"
+          "statut": "Journalier",
+          "createdAt": "2026-08-15T09:22:38.385Z",
+          "updatedAt": "2026-08-15T09:22:38.385Z"
         },
         {
-          "id": "520",
+          "id": "728",
           "nom": "MAYANGA MAYANGA RODRICK",
           "sexe": "M",
           "lieuAffectation": "Zamba",
@@ -5317,12 +5937,12 @@
           "departement": "Maintenance",
           "telephone": "895848815",
           "etatCivil": "C",
-          "statut": "Permanent",
-          "createdAt": "2026-08-13T11:21:43.125Z",
-          "updatedAt": "2026-08-13T11:21:43.125Z"
+          "statut": "Journalier",
+          "createdAt": "2026-08-15T09:22:38.385Z",
+          "updatedAt": "2026-08-15T09:22:38.385Z"
         },
         {
-          "id": "521",
+          "id": "729",
           "nom": "MFINDA MALUNGI",
           "sexe": "M",
           "lieuAffectation": "Zamba",
@@ -5330,12 +5950,12 @@
           "departement": "Mines",
           "telephone": "",
           "etatCivil": "C",
-          "statut": "Permanent",
-          "createdAt": "2026-08-13T11:21:43.125Z",
-          "updatedAt": "2026-08-13T11:21:43.125Z"
+          "statut": "Journalier",
+          "createdAt": "2026-08-15T09:22:38.385Z",
+          "updatedAt": "2026-08-15T09:22:38.385Z"
         },
         {
-          "id": "522",
+          "id": "730",
           "nom": "MASANITU KIMBENI FRANCIS",
           "sexe": "M",
           "lieuAffectation": "Zamba",
@@ -5343,12 +5963,12 @@
           "departement": "Maintenance",
           "telephone": "892442055",
           "etatCivil": "C",
-          "statut": "Permanent",
-          "createdAt": "2026-08-13T11:21:43.125Z",
-          "updatedAt": "2026-08-13T11:21:43.125Z"
+          "statut": "Journalier",
+          "createdAt": "2026-08-15T09:22:38.385Z",
+          "updatedAt": "2026-08-15T09:22:38.385Z"
         },
         {
-          "id": "523",
+          "id": "731",
           "nom": "KEYA MVUEZOLO",
           "sexe": "M",
           "lieuAffectation": "Zamba",
@@ -5356,12 +5976,12 @@
           "departement": "Maintenance",
           "telephone": "",
           "etatCivil": "M",
-          "statut": "Permanent",
-          "createdAt": "2026-08-13T11:21:43.125Z",
-          "updatedAt": "2026-08-13T11:21:43.125Z"
+          "statut": "Journalier",
+          "createdAt": "2026-08-15T09:22:38.385Z",
+          "updatedAt": "2026-08-15T09:22:38.385Z"
         },
         {
-          "id": "524",
+          "id": "732",
           "nom": "MAYUMA NGENDOLO JOANTHAN",
           "sexe": "M",
           "lieuAffectation": "Zamba",
@@ -5369,12 +5989,12 @@
           "departement": "Mines",
           "telephone": "894905929",
           "etatCivil": "C",
-          "statut": "Permanent",
-          "createdAt": "2026-08-13T11:21:43.125Z",
-          "updatedAt": "2026-08-13T11:21:43.125Z"
+          "statut": "Journalier",
+          "createdAt": "2026-08-15T09:22:38.385Z",
+          "updatedAt": "2026-08-15T09:22:38.385Z"
         },
         {
-          "id": "525",
+          "id": "733",
           "nom": "LANDU KONDE",
           "sexe": "M",
           "lieuAffectation": "Zamba",
@@ -5382,12 +6002,12 @@
           "departement": "Mines",
           "telephone": "",
           "etatCivil": "M",
-          "statut": "Permanent",
-          "createdAt": "2026-08-13T11:21:43.125Z",
-          "updatedAt": "2026-08-13T11:21:43.125Z"
+          "statut": "Journalier",
+          "createdAt": "2026-08-15T09:22:38.385Z",
+          "updatedAt": "2026-08-15T09:22:38.385Z"
         },
         {
-          "id": "526",
+          "id": "734",
           "nom": "NSONGUSA ZASALA CLEMENT",
           "sexe": "M",
           "lieuAffectation": "Zamba",
@@ -5395,12 +6015,12 @@
           "departement": "Mines",
           "telephone": "852855683",
           "etatCivil": "C",
-          "statut": "Permanent",
-          "createdAt": "2026-08-13T11:21:43.125Z",
-          "updatedAt": "2026-08-13T11:21:43.125Z"
+          "statut": "Journalier",
+          "createdAt": "2026-08-15T09:22:38.385Z",
+          "updatedAt": "2026-08-15T09:22:38.385Z"
         },
         {
-          "id": "527",
+          "id": "735",
           "nom": "LEMA  MALUKA ANDRE",
           "sexe": "M",
           "lieuAffectation": "Zamba",
@@ -5408,12 +6028,12 @@
           "departement": "Mines",
           "telephone": "846604460",
           "etatCivil": "C",
-          "statut": "Permanent",
-          "createdAt": "2026-08-13T11:21:43.125Z",
-          "updatedAt": "2026-08-13T11:21:43.125Z"
+          "statut": "Journalier",
+          "createdAt": "2026-08-15T09:22:38.385Z",
+          "updatedAt": "2026-08-15T09:22:38.385Z"
         },
         {
-          "id": "528",
+          "id": "736",
           "nom": "MALONDA INES",
           "sexe": "F",
           "lieuAffectation": "Zamba",
@@ -5421,12 +6041,12 @@
           "departement": "Mines",
           "telephone": "",
           "etatCivil": "C",
-          "statut": "Permanent",
-          "createdAt": "2026-08-13T11:21:43.125Z",
-          "updatedAt": "2026-08-13T11:21:43.125Z"
+          "statut": "Journalier",
+          "createdAt": "2026-08-15T09:22:38.385Z",
+          "updatedAt": "2026-08-15T09:22:38.385Z"
         },
         {
-          "id": "529",
+          "id": "737",
           "nom": "LUKEBA VERRONIQUE",
           "sexe": "F",
           "lieuAffectation": "Zamba",
@@ -5434,12 +6054,12 @@
           "departement": "Usine",
           "telephone": "894580801",
           "etatCivil": "C",
-          "statut": "Permanent",
-          "createdAt": "2026-08-13T11:21:43.125Z",
-          "updatedAt": "2026-08-13T11:21:43.125Z"
+          "statut": "Journalier",
+          "createdAt": "2026-08-15T09:22:38.385Z",
+          "updatedAt": "2026-08-15T09:22:38.385Z"
         },
         {
-          "id": "530",
+          "id": "738",
           "nom": "KILULA MIANKODILA DJANI",
           "sexe": "M",
           "lieuAffectation": "Zamba",
@@ -5447,12 +6067,12 @@
           "departement": "Mines",
           "telephone": "893094794",
           "etatCivil": "C",
-          "statut": "Permanent",
-          "createdAt": "2026-08-13T11:21:43.125Z",
-          "updatedAt": "2026-08-13T11:21:43.125Z"
+          "statut": "Journalier",
+          "createdAt": "2026-08-15T09:22:38.385Z",
+          "updatedAt": "2026-08-15T09:22:38.385Z"
         },
         {
-          "id": "531",
+          "id": "739",
           "nom": "DILUMENGENE NKUANSAMBU ESAIE",
           "sexe": "M",
           "lieuAffectation": "Zamba",
@@ -5460,12 +6080,12 @@
           "departement": "Management",
           "telephone": "898061123",
           "etatCivil": "M",
-          "statut": "Permanent",
-          "createdAt": "2026-08-13T11:21:43.125Z",
-          "updatedAt": "2026-08-13T11:21:43.125Z"
+          "statut": "Journalier",
+          "createdAt": "2026-08-15T09:22:38.385Z",
+          "updatedAt": "2026-08-15T09:22:38.385Z"
         },
         {
-          "id": "532",
+          "id": "740",
           "nom": "NKOBE BOLOTIKE JEAN",
           "sexe": "M",
           "lieuAffectation": "Zamba",
@@ -5473,12 +6093,12 @@
           "departement": "Maintenance",
           "telephone": "",
           "etatCivil": "M",
-          "statut": "Permanent",
-          "createdAt": "2026-08-13T11:21:43.125Z",
-          "updatedAt": "2026-08-13T11:21:43.125Z"
+          "statut": "Journalier",
+          "createdAt": "2026-08-15T09:22:38.385Z",
+          "updatedAt": "2026-08-15T09:22:38.385Z"
         },
         {
-          "id": "533",
+          "id": "741",
           "nom": "MBUMBA MASEFI",
           "sexe": "M",
           "lieuAffectation": "Zamba",
@@ -5486,12 +6106,12 @@
           "departement": "Mines",
           "telephone": "",
           "etatCivil": "M",
-          "statut": "Permanent",
-          "createdAt": "2026-08-13T11:21:43.125Z",
-          "updatedAt": "2026-08-13T11:21:43.125Z"
+          "statut": "Journalier",
+          "createdAt": "2026-08-15T09:22:38.385Z",
+          "updatedAt": "2026-08-15T09:22:38.385Z"
         },
         {
-          "id": "534",
+          "id": "742",
           "nom": "LUKOMBO BAKANA JEAN",
           "sexe": "M",
           "lieuAffectation": "Zamba",
@@ -5499,12 +6119,12 @@
           "departement": "Mines",
           "telephone": "",
           "etatCivil": "M",
-          "statut": "Permanent",
-          "createdAt": "2026-08-13T11:21:43.125Z",
-          "updatedAt": "2026-08-13T11:21:43.125Z"
+          "statut": "Journalier",
+          "createdAt": "2026-08-15T09:22:38.385Z",
+          "updatedAt": "2026-08-15T09:22:38.385Z"
         },
         {
-          "id": "535",
+          "id": "743",
           "nom": "KABUIKU ZIDANE",
           "sexe": "M",
           "lieuAffectation": "Zamba",
@@ -5512,12 +6132,12 @@
           "departement": "Mines",
           "telephone": "",
           "etatCivil": "C",
-          "statut": "Permanent",
-          "createdAt": "2026-08-13T11:21:43.125Z",
-          "updatedAt": "2026-08-13T11:21:43.125Z"
+          "statut": "Journalier",
+          "createdAt": "2026-08-15T09:22:38.385Z",
+          "updatedAt": "2026-08-15T09:22:38.385Z"
         },
         {
-          "id": "536",
+          "id": "744",
           "nom": "NSAMBU BALA TOTO",
           "sexe": "M",
           "lieuAffectation": "Zamba",
@@ -5525,12 +6145,12 @@
           "departement": "Maintenance",
           "telephone": "",
           "etatCivil": "M",
-          "statut": "Permanent",
-          "createdAt": "2026-08-13T11:21:43.125Z",
-          "updatedAt": "2026-08-13T11:21:43.125Z"
+          "statut": "Journalier",
+          "createdAt": "2026-08-15T09:22:38.385Z",
+          "updatedAt": "2026-08-15T09:22:38.385Z"
         },
         {
-          "id": "537",
+          "id": "745",
           "nom": "KALUTEMBEDI LUTAKALA CHRIST",
           "sexe": "M",
           "lieuAffectation": "Zamba",
@@ -5538,12 +6158,12 @@
           "departement": "Usine",
           "telephone": "893676146",
           "etatCivil": "C",
-          "statut": "Permanent",
-          "createdAt": "2026-08-13T11:21:43.125Z",
-          "updatedAt": "2026-08-13T11:21:43.125Z"
+          "statut": "Journalier",
+          "createdAt": "2026-08-15T09:22:38.385Z",
+          "updatedAt": "2026-08-15T09:22:38.385Z"
         },
         {
-          "id": "538",
+          "id": "746",
           "nom": "NSEKA DISALANDUA RUDDY",
           "sexe": "M",
           "lieuAffectation": "Zamba",
@@ -5551,12 +6171,12 @@
           "departement": "Mines",
           "telephone": "891966743",
           "etatCivil": "M",
-          "statut": "Permanent",
-          "createdAt": "2026-08-13T11:21:43.125Z",
-          "updatedAt": "2026-08-13T11:21:43.125Z"
+          "statut": "Journalier",
+          "createdAt": "2026-08-15T09:22:38.385Z",
+          "updatedAt": "2026-08-15T09:22:38.385Z"
         },
         {
-          "id": "539",
+          "id": "747",
           "nom": "TUTONDA NTOTOLO NOEL",
           "sexe": "M",
           "lieuAffectation": "Zamba",
@@ -5564,12 +6184,12 @@
           "departement": "Mines",
           "telephone": "858922843",
           "etatCivil": "M",
-          "statut": "Permanent",
-          "createdAt": "2026-08-13T11:21:43.125Z",
-          "updatedAt": "2026-08-13T11:21:43.125Z"
+          "statut": "Journalier",
+          "createdAt": "2026-08-15T09:22:38.385Z",
+          "updatedAt": "2026-08-15T09:22:38.385Z"
         },
         {
-          "id": "540",
+          "id": "748",
           "nom": "BAMBA BISELELE MARC",
           "sexe": "M",
           "lieuAffectation": "Zamba",
@@ -5577,12 +6197,12 @@
           "departement": "Mines",
           "telephone": "907172460",
           "etatCivil": "M",
-          "statut": "Permanent",
-          "createdAt": "2026-08-13T11:21:43.125Z",
-          "updatedAt": "2026-08-13T11:21:43.125Z"
+          "statut": "Journalier",
+          "createdAt": "2026-08-15T09:22:38.385Z",
+          "updatedAt": "2026-08-15T09:22:38.385Z"
         },
         {
-          "id": "541",
+          "id": "749",
           "nom": "ILUNGA TWUITE",
           "sexe": "M",
           "lieuAffectation": "Zamba",
@@ -5590,12 +6210,12 @@
           "departement": "Mines",
           "telephone": "820557663",
           "etatCivil": "C",
-          "statut": "Permanent",
-          "createdAt": "2026-08-13T11:21:43.125Z",
-          "updatedAt": "2026-08-13T11:21:43.125Z"
+          "statut": "Journalier",
+          "createdAt": "2026-08-15T09:22:38.385Z",
+          "updatedAt": "2026-08-15T09:22:38.385Z"
         },
         {
-          "id": "542",
+          "id": "750",
           "nom": "NSIMBA KINANGI",
           "sexe": "M",
           "lieuAffectation": "Zamba",
@@ -5603,12 +6223,12 @@
           "departement": "Mine",
           "telephone": "",
           "etatCivil": "M",
-          "statut": "Permanent",
-          "createdAt": "2026-08-13T11:21:43.125Z",
-          "updatedAt": "2026-08-13T11:21:43.125Z"
+          "statut": "Journalier",
+          "createdAt": "2026-08-15T09:22:38.385Z",
+          "updatedAt": "2026-08-15T09:22:38.385Z"
         },
         {
-          "id": "543",
+          "id": "751",
           "nom": "MFIMPULU NZUZI ZICO",
           "sexe": "M",
           "lieuAffectation": "Zamba",
@@ -5616,12 +6236,12 @@
           "departement": "Management",
           "telephone": "",
           "etatCivil": "M",
-          "statut": "Permanent",
-          "createdAt": "2026-08-13T11:21:43.125Z",
-          "updatedAt": "2026-08-13T11:21:43.125Z"
+          "statut": "Journalier",
+          "createdAt": "2026-08-15T09:22:38.385Z",
+          "updatedAt": "2026-08-15T09:22:38.385Z"
         },
         {
-          "id": "544",
+          "id": "752",
           "nom": "MULENDA NGUNZA",
           "sexe": "M",
           "lieuAffectation": "Zamba",
@@ -5629,12 +6249,12 @@
           "departement": "Mines",
           "telephone": "",
           "etatCivil": "C",
-          "statut": "Permanent",
-          "createdAt": "2026-08-13T11:21:43.125Z",
-          "updatedAt": "2026-08-13T11:21:43.125Z"
+          "statut": "Journalier",
+          "createdAt": "2026-08-15T09:22:38.385Z",
+          "updatedAt": "2026-08-15T09:22:38.385Z"
         },
         {
-          "id": "545",
+          "id": "753",
           "nom": "MALANDA DIANZENZA SIMON",
           "sexe": "M",
           "lieuAffectation": "Zamba",
@@ -5642,12 +6262,12 @@
           "departement": "Mines",
           "telephone": "890203858",
           "etatCivil": "M",
-          "statut": "Permanent",
-          "createdAt": "2026-08-13T11:21:43.125Z",
-          "updatedAt": "2026-08-13T11:21:43.125Z"
+          "statut": "Journalier",
+          "createdAt": "2026-08-15T09:22:38.385Z",
+          "updatedAt": "2026-08-15T09:22:38.385Z"
         },
         {
-          "id": "546",
+          "id": "754",
           "nom": "MADIAMBA PHILBERT",
           "sexe": "M",
           "lieuAffectation": "Zamba",
@@ -5655,13 +6275,21 @@
           "departement": "Mines",
           "telephone": "840260370",
           "etatCivil": "C",
-          "statut": "Permanent",
-          "createdAt": "2026-08-13T11:21:43.125Z",
-          "updatedAt": "2026-08-13T11:21:43.125Z"
+          "statut": "Journalier",
+          "createdAt": "2026-08-15T09:22:38.385Z",
+          "updatedAt": "2026-08-15T09:22:38.385Z"
         }
       ],
-      "createdAt": "2026-08-13T11:21:23.659Z",
-      "updatedAt": "2026-08-13T11:21:43.125Z"
+      "createdAt": "2026-08-15T09:22:03.868Z",
+      "updatedAt": "2026-08-15T09:22:38.385Z"
+    },
+    {
+      "id": "10",
+      "denomination": "MELEKI",
+      "typeService": "Other",
+      "employees": [],
+      "createdAt": "2026-08-15T09:38:29.883Z",
+      "updatedAt": "2026-08-15T09:38:29.883Z"
     }
   ]
 }
