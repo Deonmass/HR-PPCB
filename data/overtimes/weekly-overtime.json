@@ -210,6 +210,68 @@
           },
           "updatedAt": "2026-08-17T08:53:56.053Z",
           "updatedBy": "admin"
+        },
+        "Quality Assurance::3": {
+          "weekIndex": 3,
+          "department": "Quality Assurance",
+          "weekFromTo": "du 03/08/2026 au 10/08/2026",
+          "locked": false,
+          "entries": {
+            "70000080": {
+              "matricule": "70000080",
+              "ot13": 2,
+              "ot16": 5.204,
+              "ot2": 0,
+              "night": 0
+            },
+            "70000081": {
+              "matricule": "70000081",
+              "ot13": 2,
+              "ot16": 7.106,
+              "ot2": 0,
+              "night": 0
+            },
+            "70000083": {
+              "matricule": "70000083",
+              "ot13": 0,
+              "ot16": 0,
+              "ot2": 7.775,
+              "night": 0
+            },
+            "70000276": {
+              "matricule": "70000276",
+              "ot13": 2,
+              "ot16": 6.854,
+              "ot2": 0,
+              "night": 0
+            }
+          },
+          "updatedAt": "2026-08-17T09:05:02.771Z",
+          "updatedBy": "admin"
+        },
+        "Packaging & Logistics::3": {
+          "weekIndex": 3,
+          "department": "Packaging & Logistics",
+          "weekFromTo": "du 03/08/2026 au 10/08/2026",
+          "locked": false,
+          "entries": {
+            "70000057": {
+              "matricule": "70000057",
+              "ot13": 2,
+              "ot16": 6,
+              "ot2": 0,
+              "night": 0
+            },
+            "70000061": {
+              "matricule": "70000061",
+              "ot13": 2,
+              "ot16": 6,
+              "ot2": 0,
+              "night": 0
+            }
+          },
+          "updatedAt": "2026-08-17T09:05:02.771Z",
+          "updatedBy": "admin"
         }
       }
     }
