@@ -117,7 +117,8 @@ export function overtimeWeekInsertsAfterRow(
 
 function mondayOnOrBefore(date: Date): Date {
   const cursor = startOfDay(date);
-  while (cursor.getDay() !== 1) {
+  if (Number.isNaN(cursor.getTime())) return startOfDay(new Date());
+  for (let step = 0; step < 7 && cursor.getDay() !== 1; step += 1) {
     cursor.setDate(cursor.getDate() - 1);
   }
   return cursor;

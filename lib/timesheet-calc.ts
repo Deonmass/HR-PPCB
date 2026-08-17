@@ -43,16 +43,27 @@ export function parseTimeToMinutes(value: string): number | null {
 
 function splitWorkIntervals(start: number, end: number): MinuteInterval[] {
   if (end > start) return [{ start, end }];
-  return [
-    { start, end: 24 * MIN },
-    { start: 0, end },
-  ];
+  const parts: MinuteInterval[] = [];
+  if (start < 24 * MIN) parts.push({ start, end: 24 * MIN });
+  if (end > 0) parts.push({ start: 0, end });
+  return parts;
+}
+
+/** Overnight windows as [start, 24h) ∪ [0, end). Empty / equal bounds yield no parts. */
+function overnightWindowParts(windowStart: number, windowEnd: number): MinuteInterval[] {
+  if (windowEnd > windowStart) return [{ start: windowStart, end: windowEnd }];
+  if (windowEnd === windowStart) return [];
+  const parts: MinuteInterval[] = [];
+  if (windowStart < 24 * MIN) parts.push({ start: windowStart, end: 24 * MIN });
+  if (windowEnd > 0) parts.push({ start: 0, end: windowEnd });
+  return parts;
 }
 
 function sumOverlap(intervals: MinuteInterval[], windowStart: number, windowEnd: number): number {
   if (windowEnd <= windowStart) {
-    return (
-      sumOverlap(intervals, windowStart, 24 * MIN) + sumOverlap(intervals, 0, windowEnd)
+    return overnightWindowParts(windowStart, windowEnd).reduce(
+      (total, part) => total + sumOverlap(intervals, part.start, part.end),
+      0,
     );
   }
 
@@ -74,8 +85,11 @@ function subtractWindow(intervals: MinuteInterval[], windowStart: number, window
 
   for (const interval of intervals) {
     if (windowEnd <= windowStart) {
-      result.push(...subtractWindow([interval], windowStart, 24 * MIN));
-      result.push(...subtractWindow([interval], 0, windowEnd));
+      let remaining = [interval];
+      for (const part of overnightWindowParts(windowStart, windowEnd)) {
+        remaining = subtractWindow(remaining, part.start, part.end);
+      }
+      result.push(...remaining);
       continue;
     }
 
@@ -131,6 +145,7 @@ export function overlapHours(
   const b = splitWorkIntervals(bStart, bEnd);
   let total = 0;
   for (const interval of a) {
+    if (interval.end <= interval.start) continue;
     total += sumOverlap(b, interval.start, interval.end);
   }
   return minutesToHours(total);
