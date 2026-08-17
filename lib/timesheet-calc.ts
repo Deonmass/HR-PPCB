@@ -106,6 +106,36 @@ function minutesToHours(minutes: number): number {
   return Math.round((minutes / MIN) * 100) / 100;
 }
 
+/** Legal night window: 19:00–05:00. */
+export function legalNightHours(from: string, to: string): number {
+  const start = parseTimeToMinutes(from);
+  const end = parseTimeToMinutes(to);
+  if (start === null || end === null || start === end) return 0;
+  return minutesToHours(nightOnIntervals(splitWorkIntervals(start, end)));
+}
+
+/** Overlap in hours between two time ranges (supports overnight). */
+export function overlapHours(
+  fromA: string,
+  toA: string,
+  fromB: string,
+  toB: string,
+): number {
+  const aStart = parseTimeToMinutes(fromA);
+  const aEnd = parseTimeToMinutes(toA);
+  const bStart = parseTimeToMinutes(fromB);
+  const bEnd = parseTimeToMinutes(toB);
+  if (aStart === null || aEnd === null || bStart === null || bEnd === null) return 0;
+  if (aStart === aEnd || bStart === bEnd) return 0;
+  const a = splitWorkIntervals(aStart, aEnd);
+  const b = splitWorkIntervals(bStart, bEnd);
+  let total = 0;
+  for (const interval of a) {
+    total += sumOverlap(b, interval.start, interval.end);
+  }
+  return minutesToHours(total);
+}
+
 function emptyBreakdown(): TimesheetHourBreakdown {
   return { ordinary: 0, shift1: 0, shift2: 0, shift3: 0, night: 0 };
 }

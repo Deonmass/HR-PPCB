@@ -1,7 +1,9 @@
 import {
   formatHoursValue,
   generalShiftTimes,
+  legalNightHours,
   normalHoursBreakdown,
+  overlapHours,
   splitDailyOvertime,
   workedHoursBetween,
 } from './timesheet-calc';
@@ -139,9 +141,9 @@ function asPerWsTimes(row: TimesheetRowData, localisation: string): { from: stri
 }
 
 /**
- * Normal hours = time within the planned schedule.
- * Overtime = hours beyond that schedule (or all hours on a holiday),
- * split as: first 2h → 1.3, remainder → 1.6.
+ * Normal hours = overlap between Actual and the planned schedule.
+ * Overtime = hours actually worked outside that schedule.
+ * Night hours = legal night portion of Actual (19:00–05:00), for every shift.
  */
 export function computeTemplateDayHours(
   actualFrom: string,
@@ -156,30 +158,43 @@ export function computeTemplateDayHours(
   otNight: number;
 } {
   const worked = workedHoursBetween(actualFrom, actualTo);
+  const night = legalNightHours(actualFrom, actualTo);
   if (!worked) {
     return { normal: emptyNormal(), ot13: 0, ot16: 0, ot2: 0, otNight: 0 };
   }
 
-  const shiftType = row.shiftType && row.shiftType !== 'off' ? row.shiftType : 'general';
   const holiday = Boolean(row.holiday);
+  const isOff =
+    row.shiftType === 'off' || getTimesheetWsExportValue(row) === TIMESHEET_WS_OFF;
 
-  if (holiday) {
+  if (holiday || isOff) {
     const ot = splitDailyOvertime(worked);
-    return { normal: emptyNormal(), ot13: ot.ot13, ot16: ot.ot16, ot2: 0, otNight: 0 };
+    return {
+      normal: { ...emptyNormal(), night },
+      ot13: ot.ot13,
+      ot16: ot.ot16,
+      ot2: 0,
+      otNight: night,
+    };
   }
 
+  const shiftType = row.shiftType && row.shiftType !== 'off' ? row.shiftType : 'general';
   const schedule = asPerWsTimes(row, localisation);
-  const scheduled = workedHoursBetween(schedule.from, schedule.to);
-  const normalHours = Math.min(worked, scheduled || worked);
-  const otHours = Math.max(0, Math.round((worked - normalHours) * 100) / 100);
+  const overlap = overlapHours(actualFrom, actualTo, schedule.from, schedule.to);
+  const otHours = Math.max(0, Math.round((worked - overlap) * 100) / 100);
 
-  const normal =
-    otHours > 0 && scheduled > 0
-      ? normalHoursBreakdown(schedule.from, schedule.to, shiftType)
-      : normalHoursBreakdown(actualFrom, actualTo, shiftType);
+  let normal: TimesheetHourBreakdown;
+  if (overlap <= 0) {
+    normal = emptyNormal();
+  } else if (otHours > 0) {
+    normal = normalHoursBreakdown(schedule.from, schedule.to, shiftType);
+  } else {
+    normal = normalHoursBreakdown(actualFrom, actualTo, shiftType);
+  }
+  normal = { ...normal, night };
 
   const ot = splitDailyOvertime(otHours);
-  return { normal, ot13: ot.ot13, ot16: ot.ot16, ot2: 0, otNight: 0 };
+  return { normal, ot13: ot.ot13, ot16: ot.ot16, ot2: 0, otNight: night && otHours > 0 ? night : 0 };
 }
 
 function buildDayLine(

@@ -8330,9 +8330,18 @@ html[data-theme="light"] .compilation-table tbody tr:hover td.compilation-sticky
   justify-content: center;
   gap: 0.25rem;
 }
+.timesheet-template-table thead th.timesheet-template-actual-head {
+  background: #0f3a4a;
+  color: #7dd3fc;
+}
 .timesheet-template-table .timesheet-template-actual-cell {
   padding: 0.15rem 0.2rem;
   min-width: 6.4rem;
+  background: rgba(14, 165, 233, 0.16);
+}
+.timesheet-template-table tbody tr.timesheet-template-off-row td.timesheet-template-actual-cell,
+.timesheet-template-table tbody tr.timesheet-template-holiday-row td.timesheet-template-actual-cell {
+  background: rgba(14, 165, 233, 0.22);
 }
 .timesheet-template-table .timesheet-time-field {
   width: 100%;

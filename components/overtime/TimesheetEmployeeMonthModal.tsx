@@ -15,7 +15,6 @@ import { showError, showSuccess } from '@/lib/swal';
 import {
   buildTimesheetTemplateLines,
   formatHoursValue,
-  isActualTimesEditable,
   sumTimesheetTemplateLines,
 } from '@/lib/timesheet-template-view';
 import { TIMESHEET_SHIFT_DEFAULT_HOURS } from '@/lib/timesheet-shift-hours';
@@ -317,7 +316,6 @@ export default function TimesheetEmployeeMonthModal({
         }
 
         return prev.map((row) => {
-          if (!isActualTimesEditable(row)) return row;
           const times = timesForGeneralPreset(presetId, row.date);
           return finalizeTimesheetRow({
             ...row,
@@ -490,8 +488,7 @@ export default function TimesheetEmployeeMonthModal({
                       </th>
                       <th rowSpan={2}>Jour</th>
                       <th rowSpan={2}>WS</th>
-                      <th colSpan={2}>As per WS</th>
-                      <th colSpan={2}>
+                      <th colSpan={2} className="timesheet-template-actual-head">
                         <span className="timesheet-template-actual-header">
                           Actual
                           {canEdit ? (
@@ -515,10 +512,8 @@ export default function TimesheetEmployeeMonthModal({
                       <th colSpan={4}>Overtime</th>
                     </tr>
                     <tr>
-                      <th>From</th>
-                      <th>To</th>
-                      <th>From</th>
-                      <th>To</th>
+                      <th className="timesheet-template-actual-head">From</th>
+                      <th className="timesheet-template-actual-head">To</th>
                       <th title="Ordinary">Ord.</th>
                       <th>S1</th>
                       <th>S2</th>
@@ -535,7 +530,7 @@ export default function TimesheetEmployeeMonthModal({
                       if (line.kind === 'week') {
                         return (
                           <tr key={`week-${line.weekIndex}`} className="timesheet-template-week-row">
-                            <td colSpan={8}>
+                            <td colSpan={6}>
                               <strong>{line.label}</strong>
                             </td>
                             <td className="timesheet-calc-cell" />
@@ -559,7 +554,7 @@ export default function TimesheetEmployeeMonthModal({
                         );
                       }
 
-                      const editable = canEdit && isActualTimesEditable(line.row);
+                      const editable = Boolean(canEdit);
 
                       return (
                         <tr
@@ -587,8 +582,6 @@ export default function TimesheetEmployeeMonthModal({
                           <td className="timesheet-template-date-col">{fmtDate(line.row.date)}</td>
                           <td>{line.row.dayLabel}</td>
                           <td>{line.ws || '—'}</td>
-                          <td>{line.asFrom}</td>
-                          <td>{line.asTo}</td>
                           <td className="timesheet-template-actual-cell">
                             {editable ? (
                               <TimesheetTimeInput
@@ -632,7 +625,7 @@ export default function TimesheetEmployeeMonthModal({
                   </tbody>
                   <tfoot>
                     <tr className="timesheet-subtotal-row">
-                      <td colSpan={8}>
+                      <td colSpan={6}>
                         <strong>Sub-Total</strong>
                       </td>
                       <td className="timesheet-calc-cell">{formatHoursValue(totals.ordinary)}</td>
@@ -654,7 +647,7 @@ export default function TimesheetEmployeeMonthModal({
                       </td>
                     </tr>
                     <tr className="timesheet-accumulative-row">
-                      <td colSpan={8}>
+                      <td colSpan={6}>
                         <strong>Accumulative Total</strong>
                       </td>
                       <td className="timesheet-calc-cell" />
