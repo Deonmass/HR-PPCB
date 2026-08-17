@@ -4,7 +4,7 @@ import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { createPortal } from 'react-dom';
 import TimesheetTimeInput from '@/components/overtime/TimesheetTimeInput';
 import { BtnSpinner, CardSpinner } from '@/components/overtime/TimesheetIcons';
-import { buildTimesheetPeriod } from '@/lib/timesheet-period';
+import { buildTimesheetPeriod, isTimesheetWeekend } from '@/lib/timesheet-period';
 import { refreshTimesheetRowsForPeriod } from '@/lib/timesheet-rows';
 import type { TimesheetDayEntry, TimesheetRowData, TimesheetShiftType } from '@/lib/timesheet-types';
 import { finalizeTimesheetRow } from '@/lib/timesheet-ws';
@@ -316,6 +316,14 @@ export default function TimesheetEmployeeMonthModal({
         }
 
         return prev.map((row) => {
+          if (isTimesheetWeekend(row.date)) {
+            return finalizeTimesheetRow({
+              ...row,
+              from: '',
+              to: '',
+              shiftType: 'off',
+            });
+          }
           const times = timesForGeneralPreset(presetId, row.date);
           return finalizeTimesheetRow({
             ...row,
@@ -586,6 +594,7 @@ export default function TimesheetEmployeeMonthModal({
                             {editable ? (
                               <TimesheetTimeInput
                                 value={line.row.from}
+                                placeholder="OFF"
                                 onChange={(value) => updateRow(line.row.dateKey, { from: value })}
                               />
                             ) : (
@@ -596,6 +605,7 @@ export default function TimesheetEmployeeMonthModal({
                             {editable ? (
                               <TimesheetTimeInput
                                 value={line.row.to}
+                                placeholder="OFF"
                                 onChange={(value) => updateRow(line.row.dateKey, { to: value })}
                               />
                             ) : (

@@ -24,7 +24,7 @@ export interface TimesheetRowData {
   dateKey: string;
   date: Date;
   dayLabel: string;
-  /** Planned work status from the period (HS Sem. X or OFF for week-ends) — export only. */
+  /** Week label from the period (HS Sem. X). OFF in the WS column comes from empty Actual. */
   scheduledWs: string;
   from: string;
   to: string;

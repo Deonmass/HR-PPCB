@@ -114,7 +114,7 @@ export function buildTimesheetPeriod(year: number, month: number): TimesheetPeri
       date: new Date(day),
       dateKey: localDateKey(day),
       dayLabel: DAY_LABELS[day.getDay()],
-      ws: isWeekend ? TIMESHEET_WS_OFF : `HS Sem. ${weekNumber}`,
+      ws: `HS Sem. ${weekNumber}`,
       weekNumber,
       isWeekend,
     });

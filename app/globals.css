@@ -8357,6 +8357,11 @@ html[data-theme="light"] .compilation-table tbody tr:hover td.compilation-sticky
   padding-bottom: 0.28rem;
   padding-right: 0.35rem;
 }
+.timesheet-template-table .timesheet-time-field .timesheet-time-input::placeholder {
+  color: #94a3b8;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+}
 .timesheet-template-table th,
 .timesheet-template-table td {
   padding: 0.28rem 0.4rem;

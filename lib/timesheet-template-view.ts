@@ -7,10 +7,9 @@ import {
   splitDailyOvertime,
   workedHoursBetween,
 } from './timesheet-calc';
-import { shouldShowOffDayHighlight } from './timesheet-off-day';
+import { hasTimesheetActualTimes, shouldGrayTimesheetTemplateRow } from './timesheet-off-day';
 import type { TimesheetHourBreakdown, TimesheetRowData, TimesheetShiftType } from './timesheet-types';
 import { getTimesheetWsExportValue } from './timesheet-ws';
-import { TIMESHEET_WS_OFF } from './timesheet-period';
 import type { WeeklyOvertimeEntry } from './timesheet-weekly-ot';
 
 const AS_PER_WS_FROM = '07:00';
@@ -95,7 +94,7 @@ export function scheduleTimesForRow(
     if (schedule) return schedule;
   }
 
-  if (getTimesheetWsExportValue(row) === TIMESHEET_WS_OFF) return null;
+  if (!hasTimesheetActualTimes(row)) return null;
   return { from: AS_PER_WS_FROM, to: AS_PER_WS_TO };
 }
 
@@ -103,32 +102,15 @@ export function isActualTimesEditable(row: TimesheetRowData): boolean {
   return scheduleTimesForRow(row) !== null || Boolean(row.holiday);
 }
 
-/** Actual From/To — same rules as Excel export. */
+/** Actual From/To — entered times, or OFF when the day was not worked. */
 export function actualTimesForTemplateRow(
   row: TimesheetRowData,
-  localisation = '',
+  _localisation = '',
 ): { from: string; to: string } {
   const from = row.from?.trim();
   const to = row.to?.trim();
   if (from && to) return { from, to };
-  if (row.shiftType && row.shiftType !== 'off') {
-    if (row.shiftType === 'general') {
-      return generalShiftTimes({ date: toDate(row.date), localisation });
-    }
-    const schedule = SHIFT_SCHEDULE_TIMES[row.shiftType];
-    if (schedule) return { from: schedule.from, to: schedule.to };
-  }
-  if (getTimesheetWsExportValue(row) === TIMESHEET_WS_OFF) {
-    return { from: 'OFF', to: 'OFF' };
-  }
-  return { from: '', to: '' };
-}
-
-function shouldGrayRow(row: TimesheetRowData): boolean {
-  if (row.holiday) return false;
-  const day = toDate(row.date).getDay();
-  if (day === 0 || day === 6) return true;
-  return shouldShowOffDayHighlight(row);
+  return { from: 'OFF', to: 'OFF' };
 }
 
 function asPerWsTimes(row: TimesheetRowData, localisation: string): { from: string; to: string } {
@@ -164,8 +146,7 @@ export function computeTemplateDayHours(
   }
 
   const holiday = Boolean(row.holiday);
-  const isOff =
-    row.shiftType === 'off' || getTimesheetWsExportValue(row) === TIMESHEET_WS_OFF;
+  const isOff = row.shiftType === 'off';
 
   if (holiday || isOff) {
     const ot = splitDailyOvertime(worked);
@@ -214,8 +195,8 @@ function buildDayLine(
     ws: getTimesheetWsExportValue(row),
     asFrom: asPer.from,
     asTo: asPer.to,
-    actualFrom: actual.from || '—',
-    actualTo: actual.to || '—',
+    actualFrom: actual.from || 'OFF',
+    actualTo: actual.to || 'OFF',
     holiday: Boolean(row.holiday),
     ordinary: hours.normal.ordinary,
     shift1: hours.normal.shift1,
@@ -226,7 +207,7 @@ function buildDayLine(
     ot16: hours.ot16,
     ot2: hours.ot2,
     otNight: hours.otNight,
-    gray: shouldGrayRow(row),
+    gray: shouldGrayTimesheetTemplateRow(row),
   };
 }
 

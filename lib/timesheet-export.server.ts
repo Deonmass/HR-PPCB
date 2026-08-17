@@ -2,11 +2,12 @@ import 'server-only';
 
 import XlsxPopulate from 'xlsx-populate';
 import { TIMESHEET_TEMPLATE_PATH as RESOLVED_TIMESHEET_TEMPLATE_PATH } from './excel-export-template-paths';
-import { generalShiftTimes, normalHoursBreakdown } from './timesheet-calc';
-import { shouldShowOffDayHighlight } from './timesheet-off-day';
+import { actualTimesForTemplateRow } from './timesheet-template-view';
+import { shouldGrayTimesheetTemplateRow } from './timesheet-off-day';
+import { normalHoursBreakdown } from './timesheet-calc';
 import type { DepartmentExportPayload, TimesheetExportPayload } from './timesheet-export';
-import { formatTimesheetMonthLabel, TIMESHEET_WS_OFF } from './timesheet-period';
-import type { TimesheetRowData, TimesheetShiftType } from './timesheet-types';
+import { formatTimesheetMonthLabel } from './timesheet-period';
+import type { TimesheetRowData } from './timesheet-types';
 import { getTimesheetWsExportValue } from './timesheet-ws';
 import { getWeeklyOvertimeWeek } from './timesheet-weekly-ot-store';
 import { clearCellValue, setCellValue } from './xlsx-populate-utils';
@@ -45,15 +46,6 @@ const OFF_ROW_FILL_REF = 'A6';
 const PRISTINE_SHEET = '__TIMESHEET_TEMPLATE__';
 const WEEK_SEPARATOR_FILL = 'F4CCCC';
 
-/** Standard schedule times per shift, used to fill Actual From/To from the planning. */
-const SHIFT_SCHEDULE_TIMES: Record<TimesheetShiftType, { from: string; to: string } | null> = {
-  general: { from: '07:00', to: '16:30' },
-  shift1: { from: '06:00', to: '14:00' },
-  shift2: { from: '14:00', to: '22:00' },
-  shift3: { from: '22:00', to: '06:00' },
-  off: null,
-};
-
 type PopulateSheet = ReturnType<
   Awaited<ReturnType<typeof XlsxPopulate.fromFileAsync>>['sheet']
 >;
@@ -80,7 +72,7 @@ function setFormula(sheet: PopulateSheet, address: string, formula: string): voi
  * displayed hours always match the times.
  */
 function computeNormalHours(row: TimesheetRowData, localisation: string) {
-  const actual = actualTimesForRow(row, localisation);
+  const actual = actualTimesForTemplateRow(row, localisation);
   return normalHoursBreakdown(actual.from, actual.to, row.shiftType);
 }
 
@@ -110,31 +102,6 @@ function applyWeekSeparatorStyle(sheet: PopulateSheet, excelRow: number) {
       bold: true,
     });
   }
-}
-
-/** Weekend rows (Sat/Sun) are always highlighted; other off days only when unworked. */
-function shouldGrayRow(row: TimesheetRowData): boolean {
-  const day = toExportDate(row.date).getDay();
-  if (day === 0 || day === 6) return true;
-  return shouldShowOffDayHighlight(row);
-}
-
-/** Actual From/To reflect the planned shift schedule, or "OFF" for rest days. */
-function actualTimesForRow(row: TimesheetRowData, localisation: string): { from: string; to: string } {
-  const from = row.from?.trim();
-  const to = row.to?.trim();
-  if (from && to) return { from, to };
-  if (row.shiftType && row.shiftType !== 'off') {
-    if (row.shiftType === 'general') {
-      return generalShiftTimes({ date: toExportDate(row.date), localisation });
-    }
-    const schedule = SHIFT_SCHEDULE_TIMES[row.shiftType];
-    if (schedule) return { from: schedule.from, to: schedule.to };
-  }
-  if (getTimesheetWsExportValue(row) === TIMESHEET_WS_OFF) {
-    return { from: 'OFF', to: 'OFF' };
-  }
-  return { from: '', to: '' };
 }
 
 function buildExportLines(rows: TimesheetRowData[]): ExportLine[] {
@@ -188,7 +155,7 @@ function fillDayRow(sheet: PopulateSheet, excelRow: number, row: TimesheetRowDat
   setCellValue(sheet, cellRef(excelRow, COL.ws), getTimesheetWsExportValue(row));
   setCellValue(sheet, cellRef(excelRow, COL.asFrom), AS_PER_WS_FROM);
   setCellValue(sheet, cellRef(excelRow, COL.asTo), AS_PER_WS_TO);
-  const actual = actualTimesForRow(row, localisation);
+  const actual = actualTimesForTemplateRow(row, localisation);
   setCellValue(sheet, cellRef(excelRow, COL.actualFrom), actual.from);
   setCellValue(sheet, cellRef(excelRow, COL.actualTo), actual.to);
   setCellValue(sheet, cellRef(excelRow, COL.ordinary), overtimeValue(normal.ordinary));
@@ -197,7 +164,7 @@ function fillDayRow(sheet: PopulateSheet, excelRow: number, row: TimesheetRowDat
   setCellValue(sheet, cellRef(excelRow, COL.shift3), overtimeValue(normal.shift3));
   setCellValue(sheet, cellRef(excelRow, COL.nightNormal), overtimeValue(normal.night));
 
-  if (shouldGrayRow(row)) {
+  if (shouldGrayTimesheetTemplateRow(row)) {
     applyOffRowGrayFill(sheet, excelRow);
   }
 }

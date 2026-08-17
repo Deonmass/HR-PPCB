@@ -1,11 +1,16 @@
 import { recalculateRow } from './timesheet-calc';
+import { hasTimesheetActualTimes } from './timesheet-off-day';
 import { TIMESHEET_WS_OFF, type TimesheetPeriodDay } from './timesheet-period';
 import type { TimesheetRowData } from './timesheet-types';
 
-/** WS value for Excel column C — Off → OFF, otherwise planned status from the period. */
+/**
+ * WS column: OFF when Actual has no From/To (rest day for any weekday),
+ * or when the planned shift is Off. Otherwise the week label (including Sat/Sun worked).
+ */
 export function getTimesheetWsExportValue(
-  row: Pick<TimesheetRowData, 'scheduledWs' | 'shiftType'>,
+  row: Pick<TimesheetRowData, 'scheduledWs' | 'shiftType' | 'from' | 'to'>,
 ): string {
+  if (!hasTimesheetActualTimes(row)) return TIMESHEET_WS_OFF;
   if (row.shiftType === 'off') return TIMESHEET_WS_OFF;
   return row.scheduledWs;
 }
