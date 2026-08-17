@@ -1,169 +1,27 @@
 {
   "entries": [
     {
-      "id": "log-000445",
-      "at": "2026-08-17T15:27:25.584Z",
-      "userId": "admin",
-      "userName": "Administrateur",
-      "module": "timesheet",
-      "moduleLabel": "Timesheet",
-      "action": "error",
-      "actionLabel": "Erreur",
-      "summary": "GitHub écriture data/overtimes/timesheets.json échouée (503): {\"message\": \"No server is currently available to service your request. Sorry about that. Please try resubmitting your request and contact us if the problem persists.\"}",
-      "details": "Échec de l’action « update » sur timesheet: GitHub écriture data/overtimes/timesheets.json échouée (503): {\"message\": \"No server is currently available to service your request. Sorry about that. Please try resubmitting your request and contact us if the problem persists.\"}",
-      "undoable": false,
-      "undone": false,
-      "error": {
-        "message": "GitHub écriture data/overtimes/timesheets.json échouée (503): {\"message\": \"No server is currently available to service your request. Sorry about that. Please try resubmitting your request and contact us if the problem persists.\"}\r\n",
-        "stack": "Error: GitHub écriture data/overtimes/timesheets.json échouée (503): {\"message\": \"No server is currently available to service your request. Sorry about that. Please try resubmitting your request and contact us if the problem persists.\"}\r\n\n    at T (/var/task/.next/server/chunks/2206.js:2:5728)\n    at $ (/var/task/.next/server/chunks/2206.js:2:8305)\n    at process.processTicksAndRejections (node:internal/process/task_queues:104:5)\n    at async aa (/var/task/.next/server/chunks/2206.js:2:9391)\n    at async v (/var/task/.next/server/chunks/4586.js:1:3472)\n    at async B (/var/task/.next/server/chunks/4586.js:1:5535)\n    at async J (/var/task/.next/server/chunks/4586.js:1:7178)\n    at async j (/var/task/.next/server/chunks/1179.js:1:2536)\n    at async B (/var/task/.next/server/app/api/timesheet/entries/route.js:1:6360)\n    at async rH.do (/var/task/node_modules/next/dist/compiled/next-server/app-route.runtime.prod.js:5:21048)",
-        "path": "/api/timesheet/entries",
-        "method": "PUT",
-        "context": {
-          "action": "update",
-          "summary": "Enregistrement timesheet 2026-07-31 — Packaging & Logistics"
-        }
-      }
-    },
-    {
-      "id": "log-000444",
-      "at": "2026-08-17T15:27:25.465Z",
-      "userId": "admin",
-      "userName": "Administrateur",
-      "module": "timesheet",
-      "moduleLabel": "Timesheet",
-      "action": "error",
-      "actionLabel": "Erreur",
-      "summary": "GitHub écriture data/overtimes/timesheets.json échouée (503): {\"message\": \"No server is currently available to service your request. Sorry about that. Please try resubmitting your request and contact us if the problem persists.\"}",
-      "details": "Échec de l’action « update » sur timesheet: GitHub écriture data/overtimes/timesheets.json échouée (503): {\"message\": \"No server is currently available to service your request. Sorry about that. Please try resubmitting your request and contact us if the problem persists.\"}",
-      "undoable": false,
-      "undone": false,
-      "error": {
-        "message": "GitHub écriture data/overtimes/timesheets.json échouée (503): {\"message\": \"No server is currently available to service your request. Sorry about that. Please try resubmitting your request and contact us if the problem persists.\"}\r\n",
-        "stack": "Error: GitHub écriture data/overtimes/timesheets.json échouée (503): {\"message\": \"No server is currently available to service your request. Sorry about that. Please try resubmitting your request and contact us if the problem persists.\"}\r\n\n    at T (/var/task/.next/server/chunks/2206.js:2:5728)\n    at $ (/var/task/.next/server/chunks/2206.js:2:8305)\n    at process.processTicksAndRejections (node:internal/process/task_queues:104:5)\n    at async aa (/var/task/.next/server/chunks/2206.js:2:9391)\n    at async v (/var/task/.next/server/chunks/4586.js:1:3472)\n    at async B (/var/task/.next/server/chunks/4586.js:1:5535)\n    at async J (/var/task/.next/server/chunks/4586.js:1:7178)\n    at async j (/var/task/.next/server/chunks/1179.js:1:2536)\n    at async B (/var/task/.next/server/app/api/timesheet/entries/route.js:1:6360)\n    at async rH.do (/var/task/node_modules/next/dist/compiled/next-server/app-route.runtime.prod.js:5:21048)",
-        "path": "/api/timesheet/entries",
-        "method": "PUT",
-        "context": {
-          "action": "update",
-          "summary": "Enregistrement timesheet 2026-07-13 — Packaging & Logistics"
-        }
-      }
-    },
-    {
-      "id": "log-000443",
-      "at": "2026-08-17T15:27:22.042Z",
-      "userId": "admin",
-      "userName": "Administrateur",
-      "module": "timesheet",
-      "moduleLabel": "Timesheet",
-      "action": "update",
-      "actionLabel": "Modification",
-      "summary": "Enregistrement timesheet 2026-08-09 — Packaging & Logistics",
-      "details": "Enregistrement timesheet 2026-08-09 — Packaging & Logistics",
-      "after": {},
-      "undoable": false,
-      "undone": false,
-      "meta": {
-        "year": 2026,
-        "month": 8,
-        "dateKey": "2026-08-09",
-        "department": "Packaging & Logistics",
-        "mode": "day",
-        "count": 1
-      }
-    },
-    {
-      "id": "log-000442",
-      "at": "2026-08-17T15:27:21.516Z",
-      "userId": "admin",
-      "userName": "Administrateur",
-      "module": "timesheet",
-      "moduleLabel": "Timesheet",
-      "action": "error",
-      "actionLabel": "Erreur",
-      "summary": "GitHub écriture data/overtimes/timesheets.json échouée (409): {\"message\":\"is at f1496533b3ae7f7ba486a26c20954849af4fcb93 but expected db0b34bc75a826cff97614a03b7d8e6f4af8e876\",\"documentation_url\":\"https://docs.github.com/rest/repos/contents#create-or-update-file",
-      "details": "Échec de l’action « update » sur timesheet: GitHub écriture data/overtimes/timesheets.json échouée (409): {\"message\":\"is at f1496533b3ae7f7ba486a26c20954849af4fcb93 but expected db0b34bc75a826cff97614a03b7d8e6f4af8e876\",\"documentation_url\":\"https://docs.github.com/rest/repos/contents#create-or-update-file",
-      "undoable": false,
-      "undone": false,
-      "error": {
-        "message": "GitHub écriture data/overtimes/timesheets.json échouée (409): {\"message\":\"is at f1496533b3ae7f7ba486a26c20954849af4fcb93 but expected db0b34bc75a826cff97614a03b7d8e6f4af8e876\",\"documentation_url\":\"https://docs.github.com/rest/repos/contents#create-or-update-file",
-        "stack": "Error: GitHub écriture data/overtimes/timesheets.json échouée (409): {\"message\":\"is at f1496533b3ae7f7ba486a26c20954849af4fcb93 but expected db0b34bc75a826cff97614a03b7d8e6f4af8e876\",\"documentation_url\":\"https://docs.github.com/rest/repos/contents#create-or-update-file\n    at T (/var/task/.next/server/chunks/2206.js:2:5728)\n    at $ (/var/task/.next/server/chunks/2206.js:2:8305)\n    at process.processTicksAndRejections (node:internal/process/task_queues:104:5)\n    at async aa (/var/task/.next/server/chunks/2206.js:2:9391)\n    at async v (/var/task/.next/server/chunks/4586.js:1:3472)\n    at async B (/var/task/.next/server/chunks/4586.js:1:5535)\n    at async J (/var/task/.next/server/chunks/4586.js:1:7178)\n    at async j (/var/task/.next/server/chunks/1179.js:1:2536)\n    at async B (/var/task/.next/server/app/api/timesheet/entries/route.js:1:6360)\n    at async rH.do (/var/task/node_modules/next/dist/compiled/next-server/app-route.runtime.prod.js:5:21048)",
-        "path": "/api/timesheet/entries",
-        "method": "PUT",
-        "context": {
-          "action": "update",
-          "summary": "Enregistrement timesheet 2026-07-28 — Packaging & Logistics"
-        }
-      }
-    },
-    {
-      "id": "log-000441",
-      "at": "2026-08-17T15:27:21.437Z",
-      "userId": "admin",
-      "userName": "Administrateur",
-      "module": "timesheet",
-      "moduleLabel": "Timesheet",
-      "action": "error",
-      "actionLabel": "Erreur",
-      "summary": "GitHub écriture data/overtimes/timesheets.json échouée (409): {\"message\":\"data/overtimes/timesheets.json does not match 332e0723f7f6441a30aa5c1a5e08bb56e4a2cda1\",\"documentation_url\":\"https://docs.github.com/rest/repos/contents#create-or-update-file-contents\",\"st",
-      "details": "Échec de l’action « update » sur timesheet: GitHub écriture data/overtimes/timesheets.json échouée (409): {\"message\":\"data/overtimes/timesheets.json does not match 332e0723f7f6441a30aa5c1a5e08bb56e4a2cda1\",\"documentation_url\":\"https://docs.github.com/rest/repos/contents#create-or-update-file-contents\",\"st",
-      "undoable": false,
-      "undone": false,
-      "error": {
-        "message": "GitHub écriture data/overtimes/timesheets.json échouée (409): {\"message\":\"data/overtimes/timesheets.json does not match 332e0723f7f6441a30aa5c1a5e08bb56e4a2cda1\",\"documentation_url\":\"https://docs.github.com/rest/repos/contents#create-or-update-file-contents\",\"st",
-        "stack": "Error: GitHub écriture data/overtimes/timesheets.json échouée (409): {\"message\":\"data/overtimes/timesheets.json does not match 332e0723f7f6441a30aa5c1a5e08bb56e4a2cda1\",\"documentation_url\":\"https://docs.github.com/rest/repos/contents#create-or-update-file-contents\",\"st\n    at T (/var/task/.next/server/chunks/2206.js:2:5728)\n    at $ (/var/task/.next/server/chunks/2206.js:2:8305)\n    at process.processTicksAndRejections (node:internal/process/task_queues:104:5)\n    at async aa (/var/task/.next/server/chunks/2206.js:2:9391)\n    at async v (/var/task/.next/server/chunks/4586.js:1:3472)\n    at async B (/var/task/.next/server/chunks/4586.js:1:5535)\n    at async J (/var/task/.next/server/chunks/4586.js:1:7178)\n    at async j (/var/task/.next/server/chunks/1179.js:1:2536)\n    at async B (/var/task/.next/server/app/api/timesheet/entries/route.js:1:6360)\n    at async rH.do (/var/task/node_modules/next/dist/compiled/next-server/app-route.runtime.prod.js:5:21048)",
-        "path": "/api/timesheet/entries",
-        "method": "PUT",
-        "context": {
-          "action": "update",
-          "summary": "Enregistrement timesheet 2026-08-13 — Packaging & Logistics"
-        }
-      }
-    },
-    {
-      "id": "log-000440",
-      "at": "2026-08-17T15:27:21.346Z",
-      "userId": "admin",
-      "userName": "Administrateur",
-      "module": "timesheet",
-      "moduleLabel": "Timesheet",
-      "action": "error",
-      "actionLabel": "Erreur",
-      "summary": "GitHub écriture data/overtimes/timesheets.json échouée (409): {\"message\":\"data/overtimes/timesheets.json does not match 332e0723f7f6441a30aa5c1a5e08bb56e4a2cda1\",\"documentation_url\":\"https://docs.github.com/rest/repos/contents#create-or-update-file-contents\",\"st",
-      "details": "Échec de l’action « update » sur timesheet: GitHub écriture data/overtimes/timesheets.json échouée (409): {\"message\":\"data/overtimes/timesheets.json does not match 332e0723f7f6441a30aa5c1a5e08bb56e4a2cda1\",\"documentation_url\":\"https://docs.github.com/rest/repos/contents#create-or-update-file-contents\",\"st",
-      "undoable": false,
-      "undone": false,
-      "error": {
-        "message": "GitHub écriture data/overtimes/timesheets.json échouée (409): {\"message\":\"data/overtimes/timesheets.json does not match 332e0723f7f6441a30aa5c1a5e08bb56e4a2cda1\",\"documentation_url\":\"https://docs.github.com/rest/repos/contents#create-or-update-file-contents\",\"st",
-        "stack": "Error: GitHub écriture data/overtimes/timesheets.json échouée (409): {\"message\":\"data/overtimes/timesheets.json does not match 332e0723f7f6441a30aa5c1a5e08bb56e4a2cda1\",\"documentation_url\":\"https://docs.github.com/rest/repos/contents#create-or-update-file-contents\",\"st\n    at T (/var/task/.next/server/chunks/2206.js:2:5728)\n    at $ (/var/task/.next/server/chunks/2206.js:2:8305)\n    at process.processTicksAndRejections (node:internal/process/task_queues:104:5)\n    at async aa (/var/task/.next/server/chunks/2206.js:2:9391)\n    at async v (/var/task/.next/server/chunks/4586.js:1:3472)\n    at async B (/var/task/.next/server/chunks/4586.js:1:5535)\n    at async J (/var/task/.next/server/chunks/4586.js:1:7178)\n    at async j (/var/task/.next/server/chunks/1179.js:1:2536)\n    at async B (/var/task/.next/server/app/api/timesheet/entries/route.js:1:6360)\n    at async rH.do (/var/task/node_modules/next/dist/compiled/next-server/app-route.runtime.prod.js:5:21048)",
-        "path": "/api/timesheet/entries",
-        "method": "PUT",
-        "context": {
-          "action": "update",
-          "summary": "Enregistrement timesheet 2026-08-04 — Packaging & Logistics"
-        }
-      }
-    },
-    {
       "id": "log-000439",
-      "at": "2026-08-17T15:27:21.251Z",
+      "at": "2026-08-17T15:27:25.045Z",
       "userId": "admin",
       "userName": "Administrateur",
       "module": "timesheet",
       "moduleLabel": "Timesheet",
-      "action": "update",
-      "actionLabel": "Modification",
-      "summary": "Enregistrement timesheet 2026-07-30 — Packaging & Logistics",
-      "details": "Enregistrement timesheet 2026-07-30 — Packaging & Logistics",
-      "after": {},
+      "action": "error",
+      "actionLabel": "Erreur",
+      "summary": "GitHub écriture data/overtimes/timesheets.json échouée (409): {\"message\":\"data/overtimes/timesheets.json does not match 332e0723f7f6441a30aa5c1a5e08bb56e4a2cda1\",\"documentation_url\":\"https://docs.github.com/rest/repos/contents#create-or-update-file-contents\",\"st",
+      "details": "Échec de l’action « update » sur timesheet: GitHub écriture data/overtimes/timesheets.json échouée (409): {\"message\":\"data/overtimes/timesheets.json does not match 332e0723f7f6441a30aa5c1a5e08bb56e4a2cda1\",\"documentation_url\":\"https://docs.github.com/rest/repos/contents#create-or-update-file-contents\",\"st",
       "undoable": false,
       "undone": false,
-      "meta": {
-        "year": 2026,
-        "month": 8,
-        "dateKey": "2026-07-30",
-        "department": "Packaging & Logistics",
-        "mode": "day",
-        "count": 1
+      "error": {
+        "message": "GitHub écriture data/overtimes/timesheets.json échouée (409): {\"message\":\"data/overtimes/timesheets.json does not match 332e0723f7f6441a30aa5c1a5e08bb56e4a2cda1\",\"documentation_url\":\"https://docs.github.com/rest/repos/contents#create-or-update-file-contents\",\"st",
+        "stack": "Error: GitHub écriture data/overtimes/timesheets.json échouée (409): {\"message\":\"data/overtimes/timesheets.json does not match 332e0723f7f6441a30aa5c1a5e08bb56e4a2cda1\",\"documentation_url\":\"https://docs.github.com/rest/repos/contents#create-or-update-file-contents\",\"st\n    at T (/var/task/.next/server/chunks/2206.js:2:5728)\n    at $ (/var/task/.next/server/chunks/2206.js:2:8305)\n    at process.processTicksAndRejections (node:internal/process/task_queues:104:5)\n    at async aa (/var/task/.next/server/chunks/2206.js:2:9391)\n    at async v (/var/task/.next/server/chunks/4586.js:1:3472)\n    at async B (/var/task/.next/server/chunks/4586.js:1:5535)\n    at async J (/var/task/.next/server/chunks/4586.js:1:7178)\n    at async j (/var/task/.next/server/chunks/1179.js:1:2536)\n    at async B (/var/task/.next/server/app/api/timesheet/entries/route.js:1:6360)\n    at async rH.do (/var/task/node_modules/next/dist/compiled/next-server/app-route.runtime.prod.js:5:21048)",
+        "path": "/api/timesheet/entries",
+        "method": "PUT",
+        "context": {
+          "action": "update",
+          "summary": "Enregistrement timesheet 2026-08-12 — Packaging & Logistics"
+        }
       }
     },
     {
@@ -33412,5 +33270,5 @@
       }
     }
   ],
-  "nextSeq": 446
+  "nextSeq": 440
 }
