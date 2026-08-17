@@ -2,7 +2,7 @@
   "entries": [
     {
       "id": "log-000434",
-      "at": "2026-08-17T14:49:34.897Z",
+      "at": "2026-08-17T14:49:36.988Z",
       "userId": "admin",
       "userName": "Administrateur",
       "module": "timesheet",
@@ -20,7 +20,7 @@
         "method": "PUT",
         "context": {
           "action": "update",
-          "summary": "Enregistrement timesheet 2026-07-23 — Production"
+          "summary": "Enregistrement timesheet 2026-07-16 — Production"
         }
       }
     },
