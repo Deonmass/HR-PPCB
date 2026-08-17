@@ -1,6 +1,51 @@
 {
   "entries": [
     {
+      "id": "log-000419",
+      "at": "2026-08-17T08:53:57.219Z",
+      "userId": "admin",
+      "userName": "Administrateur",
+      "module": "timesheet.overtimes",
+      "moduleLabel": "Timesheet — Heures sup.",
+      "action": "import",
+      "actionLabel": "Import",
+      "summary": "Import HS bulk semaine 2",
+      "details": "Import HS bulk semaine 2",
+      "after": {
+        "results": [
+          {
+            "department": "Supply chain",
+            "status": "imported",
+            "imported": 2,
+            "skipped": 0
+          },
+          {
+            "department": "Quality Assurance",
+            "status": "imported",
+            "imported": 6,
+            "skipped": 0
+          },
+          {
+            "department": "Packaging & Logistics",
+            "status": "imported",
+            "imported": 1,
+            "skipped": 0
+          },
+          {
+            "department": "Mining",
+            "status": "imported",
+            "imported": 1,
+            "skipped": 0
+          }
+        ],
+        "importedMatriculeKeys": {},
+        "totalImported": 10,
+        "totalSkipped": 0
+      },
+      "undoable": false,
+      "undone": false
+    },
+    {
       "id": "log-000418",
       "at": "2026-08-17T08:36:34.005Z",
       "userId": "admin",
@@ -32706,5 +32751,5 @@
       }
     }
   ],
-  "nextSeq": 419
+  "nextSeq": 420
 }
