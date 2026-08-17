@@ -100,6 +100,116 @@
           },
           "updatedAt": "2026-08-17T08:36:32.532Z",
           "updatedBy": "admin"
+        },
+        "Supply chain::2": {
+          "weekIndex": 2,
+          "department": "Supply chain",
+          "weekFromTo": "du 27/07/2026 au 03/08/2026",
+          "locked": false,
+          "entries": {
+            "70000241": {
+              "matricule": "70000241",
+              "ot13": 0,
+              "ot16": 0,
+              "ot2": 17.172,
+              "night": 0
+            },
+            "70000255": {
+              "matricule": "70000255",
+              "ot13": 0,
+              "ot16": 0,
+              "ot2": 0,
+              "night": 0.663
+            }
+          },
+          "updatedAt": "2026-08-17T08:53:56.053Z",
+          "updatedBy": "admin"
+        },
+        "Quality Assurance::2": {
+          "weekIndex": 2,
+          "department": "Quality Assurance",
+          "weekFromTo": "du 27/07/2026 au 03/08/2026",
+          "locked": false,
+          "entries": {
+            "70000077": {
+              "matricule": "70000077",
+              "ot13": 0,
+              "ot16": 0,
+              "ot2": 9.351,
+              "night": 8.054
+            },
+            "70000080": {
+              "matricule": "70000080",
+              "ot13": 0,
+              "ot16": 0,
+              "ot2": 4.498,
+              "night": 0
+            },
+            "70000082": {
+              "matricule": "70000082",
+              "ot13": 0,
+              "ot16": 0,
+              "ot2": 9.232,
+              "night": 0
+            },
+            "70000083": {
+              "matricule": "70000083",
+              "ot13": 0,
+              "ot16": 0,
+              "ot2": 2.275,
+              "night": 0
+            },
+            "70000084": {
+              "matricule": "70000084",
+              "ot13": 0,
+              "ot16": 0,
+              "ot2": 7.476,
+              "night": 0
+            },
+            "70000276": {
+              "matricule": "70000276",
+              "ot13": 0,
+              "ot16": 0,
+              "ot2": 16.779,
+              "night": 0
+            }
+          },
+          "updatedAt": "2026-08-17T08:53:56.053Z",
+          "updatedBy": "admin"
+        },
+        "Packaging & Logistics::2": {
+          "weekIndex": 2,
+          "department": "Packaging & Logistics",
+          "weekFromTo": "du 27/07/2026 au 03/08/2026",
+          "locked": false,
+          "entries": {
+            "70000214": {
+              "matricule": "70000214",
+              "ot13": 2,
+              "ot16": 6,
+              "ot2": 0,
+              "night": 6
+            }
+          },
+          "updatedAt": "2026-08-17T08:53:56.053Z",
+          "updatedBy": "admin"
+        },
+        "Mining::2": {
+          "weekIndex": 2,
+          "department": "Mining",
+          "weekFromTo": "du 27/07/2026 au 03/08/2026",
+          "locked": false,
+          "entries": {
+            "70000043": {
+              "matricule": "70000043",
+              "ot13": 0,
+              "ot16": 0,
+              "ot2": 2,
+              "night": 0
+            }
+          },
+          "updatedAt": "2026-08-17T08:53:56.053Z",
+          "updatedBy": "admin"
         }
       }
     }
