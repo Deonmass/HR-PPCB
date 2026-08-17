@@ -9367,7 +9367,7 @@
             "to": "22:00",
             "shiftType": null,
             "holiday": false,
-            "updatedAt": "2026-08-17T14:49:27.264Z",
+            "updatedAt": "2026-08-17T14:18:57.239Z",
             "updatedBy": "admin"
           }
         },
@@ -9488,18 +9488,6 @@
             "shiftType": null,
             "holiday": false,
             "updatedAt": "2026-08-17T14:49:26.872Z",
-            "updatedBy": "admin"
-          }
-        },
-        "2026-08-14": {
-          "70000070": {
-            "matricule": "70000070",
-            "present": true,
-            "from": "14:00",
-            "to": "22:00",
-            "shiftType": null,
-            "holiday": false,
-            "updatedAt": "2026-08-17T14:49:26.997Z",
             "updatedBy": "admin"
           }
         }
