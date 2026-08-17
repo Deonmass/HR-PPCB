@@ -1,6 +1,197 @@
 {
   "entries": [
     {
+      "id": "log-000441",
+      "at": "2026-08-17T14:25:01.177Z",
+      "userId": "admin",
+      "userName": "Administrateur",
+      "module": "timesheet",
+      "moduleLabel": "Timesheet",
+      "action": "error",
+      "actionLabel": "Erreur",
+      "summary": "GitHub écriture data/overtimes/timesheets.json échouée (409): {\"message\":\"is at d5e4ad4e96cb1ccd1a368962a8f2914c275bf85d but expected d3755010a1dd1180bc618b47f0310dc6f463c58b\",\"documentation_url\":\"https://docs.github.com/rest/repos/contents#create-or-update-file",
+      "details": "Échec de l’action « update » sur timesheet: GitHub écriture data/overtimes/timesheets.json échouée (409): {\"message\":\"is at d5e4ad4e96cb1ccd1a368962a8f2914c275bf85d but expected d3755010a1dd1180bc618b47f0310dc6f463c58b\",\"documentation_url\":\"https://docs.github.com/rest/repos/contents#create-or-update-file",
+      "undoable": false,
+      "undone": false,
+      "error": {
+        "message": "GitHub écriture data/overtimes/timesheets.json échouée (409): {\"message\":\"is at d5e4ad4e96cb1ccd1a368962a8f2914c275bf85d but expected d3755010a1dd1180bc618b47f0310dc6f463c58b\",\"documentation_url\":\"https://docs.github.com/rest/repos/contents#create-or-update-file",
+        "stack": "Error: GitHub écriture data/overtimes/timesheets.json échouée (409): {\"message\":\"is at d5e4ad4e96cb1ccd1a368962a8f2914c275bf85d but expected d3755010a1dd1180bc618b47f0310dc6f463c58b\",\"documentation_url\":\"https://docs.github.com/rest/repos/contents#create-or-update-file\n    at T (/var/task/.next/server/chunks/2206.js:2:5728)\n    at $ (/var/task/.next/server/chunks/2206.js:2:8305)\n    at process.processTicksAndRejections (node:internal/process/task_queues:104:5)\n    at async aa (/var/task/.next/server/chunks/2206.js:2:9391)\n    at async v (/var/task/.next/server/chunks/4586.js:1:3472)\n    at async B (/var/task/.next/server/chunks/4586.js:1:5535)\n    at async J (/var/task/.next/server/chunks/4586.js:1:7178)\n    at async j (/var/task/.next/server/chunks/1179.js:1:2536)\n    at async B (/var/task/.next/server/app/api/timesheet/entries/route.js:1:6360)\n    at async rH.do (/var/task/node_modules/next/dist/compiled/next-server/app-route.runtime.prod.js:5:21048)",
+        "path": "/api/timesheet/entries",
+        "method": "PUT",
+        "context": {
+          "action": "update",
+          "summary": "Enregistrement timesheet 2026-07-23 — Production"
+        }
+      }
+    },
+    {
+      "id": "log-000440",
+      "at": "2026-08-17T14:25:00.933Z",
+      "userId": "admin",
+      "userName": "Administrateur",
+      "module": "timesheet",
+      "moduleLabel": "Timesheet",
+      "action": "error",
+      "actionLabel": "Erreur",
+      "summary": "GitHub écriture data/overtimes/timesheets.json échouée (409): {\"message\":\"is at d5e4ad4e96cb1ccd1a368962a8f2914c275bf85d but expected d3755010a1dd1180bc618b47f0310dc6f463c58b\",\"documentation_url\":\"https://docs.github.com/rest/repos/contents#create-or-update-file",
+      "details": "Échec de l’action « update » sur timesheet: GitHub écriture data/overtimes/timesheets.json échouée (409): {\"message\":\"is at d5e4ad4e96cb1ccd1a368962a8f2914c275bf85d but expected d3755010a1dd1180bc618b47f0310dc6f463c58b\",\"documentation_url\":\"https://docs.github.com/rest/repos/contents#create-or-update-file",
+      "undoable": false,
+      "undone": false,
+      "error": {
+        "message": "GitHub écriture data/overtimes/timesheets.json échouée (409): {\"message\":\"is at d5e4ad4e96cb1ccd1a368962a8f2914c275bf85d but expected d3755010a1dd1180bc618b47f0310dc6f463c58b\",\"documentation_url\":\"https://docs.github.com/rest/repos/contents#create-or-update-file",
+        "stack": "Error: GitHub écriture data/overtimes/timesheets.json échouée (409): {\"message\":\"is at d5e4ad4e96cb1ccd1a368962a8f2914c275bf85d but expected d3755010a1dd1180bc618b47f0310dc6f463c58b\",\"documentation_url\":\"https://docs.github.com/rest/repos/contents#create-or-update-file\n    at T (/var/task/.next/server/chunks/2206.js:2:5728)\n    at $ (/var/task/.next/server/chunks/2206.js:2:8305)\n    at process.processTicksAndRejections (node:internal/process/task_queues:104:5)\n    at async aa (/var/task/.next/server/chunks/2206.js:2:9391)\n    at async v (/var/task/.next/server/chunks/4586.js:1:3472)\n    at async B (/var/task/.next/server/chunks/4586.js:1:5535)\n    at async J (/var/task/.next/server/chunks/4586.js:1:7178)\n    at async j (/var/task/.next/server/chunks/1179.js:1:2536)\n    at async B (/var/task/.next/server/app/api/timesheet/entries/route.js:1:6360)\n    at async rH.do (/var/task/node_modules/next/dist/compiled/next-server/app-route.runtime.prod.js:5:21048)",
+        "path": "/api/timesheet/entries",
+        "method": "PUT",
+        "context": {
+          "action": "update",
+          "summary": "Enregistrement timesheet 2026-08-07 — Production"
+        }
+      }
+    },
+    {
+      "id": "log-000439",
+      "at": "2026-08-17T14:25:00.806Z",
+      "userId": "admin",
+      "userName": "Administrateur",
+      "module": "timesheet",
+      "moduleLabel": "Timesheet",
+      "action": "update",
+      "actionLabel": "Modification",
+      "summary": "Enregistrement timesheet 2026-08-10 — Production",
+      "details": "Enregistrement timesheet 2026-08-10 — Production",
+      "after": {},
+      "undoable": false,
+      "undone": false,
+      "meta": {
+        "year": 2026,
+        "month": 8,
+        "dateKey": "2026-08-10",
+        "department": "Production",
+        "mode": "day",
+        "count": 1
+      }
+    },
+    {
+      "id": "log-000438",
+      "at": "2026-08-17T14:25:00.692Z",
+      "userId": "admin",
+      "userName": "Administrateur",
+      "module": "timesheet",
+      "moduleLabel": "Timesheet",
+      "action": "error",
+      "actionLabel": "Erreur",
+      "summary": "GitHub écriture data/overtimes/timesheets.json échouée (409): {\"message\":\"is at d3755010a1dd1180bc618b47f0310dc6f463c58b but expected 7ee38a14c60578a9a0620e2e8b9cfba1ac02d27a\",\"documentation_url\":\"https://docs.github.com/rest/repos/contents#create-or-update-file",
+      "details": "Échec de l’action « update » sur timesheet: GitHub écriture data/overtimes/timesheets.json échouée (409): {\"message\":\"is at d3755010a1dd1180bc618b47f0310dc6f463c58b but expected 7ee38a14c60578a9a0620e2e8b9cfba1ac02d27a\",\"documentation_url\":\"https://docs.github.com/rest/repos/contents#create-or-update-file",
+      "undoable": false,
+      "undone": false,
+      "error": {
+        "message": "GitHub écriture data/overtimes/timesheets.json échouée (409): {\"message\":\"is at d3755010a1dd1180bc618b47f0310dc6f463c58b but expected 7ee38a14c60578a9a0620e2e8b9cfba1ac02d27a\",\"documentation_url\":\"https://docs.github.com/rest/repos/contents#create-or-update-file",
+        "stack": "Error: GitHub écriture data/overtimes/timesheets.json échouée (409): {\"message\":\"is at d3755010a1dd1180bc618b47f0310dc6f463c58b but expected 7ee38a14c60578a9a0620e2e8b9cfba1ac02d27a\",\"documentation_url\":\"https://docs.github.com/rest/repos/contents#create-or-update-file\n    at T (/var/task/.next/server/chunks/2206.js:2:5728)\n    at $ (/var/task/.next/server/chunks/2206.js:2:8305)\n    at process.processTicksAndRejections (node:internal/process/task_queues:104:5)\n    at async aa (/var/task/.next/server/chunks/2206.js:2:9391)\n    at async v (/var/task/.next/server/chunks/4586.js:1:3472)\n    at async B (/var/task/.next/server/chunks/4586.js:1:5535)\n    at async J (/var/task/.next/server/chunks/4586.js:1:7178)\n    at async j (/var/task/.next/server/chunks/1179.js:1:2536)\n    at async B (/var/task/.next/server/app/api/timesheet/entries/route.js:1:6360)\n    at async rH.do (/var/task/node_modules/next/dist/compiled/next-server/app-route.runtime.prod.js:5:21048)",
+        "path": "/api/timesheet/entries",
+        "method": "PUT",
+        "context": {
+          "action": "update",
+          "summary": "Enregistrement timesheet 2026-07-21 — Production"
+        }
+      }
+    },
+    {
+      "id": "log-000437",
+      "at": "2026-08-17T14:25:00.548Z",
+      "userId": "admin",
+      "userName": "Administrateur",
+      "module": "timesheet",
+      "moduleLabel": "Timesheet",
+      "action": "error",
+      "actionLabel": "Erreur",
+      "summary": "GitHub écriture data/overtimes/timesheets.json échouée (409): {\"message\":\"is at d3755010a1dd1180bc618b47f0310dc6f463c58b but expected 7ee38a14c60578a9a0620e2e8b9cfba1ac02d27a\",\"documentation_url\":\"https://docs.github.com/rest/repos/contents#create-or-update-file",
+      "details": "Échec de l’action « update » sur timesheet: GitHub écriture data/overtimes/timesheets.json échouée (409): {\"message\":\"is at d3755010a1dd1180bc618b47f0310dc6f463c58b but expected 7ee38a14c60578a9a0620e2e8b9cfba1ac02d27a\",\"documentation_url\":\"https://docs.github.com/rest/repos/contents#create-or-update-file",
+      "undoable": false,
+      "undone": false,
+      "error": {
+        "message": "GitHub écriture data/overtimes/timesheets.json échouée (409): {\"message\":\"is at d3755010a1dd1180bc618b47f0310dc6f463c58b but expected 7ee38a14c60578a9a0620e2e8b9cfba1ac02d27a\",\"documentation_url\":\"https://docs.github.com/rest/repos/contents#create-or-update-file",
+        "stack": "Error: GitHub écriture data/overtimes/timesheets.json échouée (409): {\"message\":\"is at d3755010a1dd1180bc618b47f0310dc6f463c58b but expected 7ee38a14c60578a9a0620e2e8b9cfba1ac02d27a\",\"documentation_url\":\"https://docs.github.com/rest/repos/contents#create-or-update-file\n    at T (/var/task/.next/server/chunks/2206.js:2:5728)\n    at $ (/var/task/.next/server/chunks/2206.js:2:8305)\n    at process.processTicksAndRejections (node:internal/process/task_queues:104:5)\n    at async aa (/var/task/.next/server/chunks/2206.js:2:9391)\n    at async v (/var/task/.next/server/chunks/4586.js:1:3472)\n    at async B (/var/task/.next/server/chunks/4586.js:1:5535)\n    at async J (/var/task/.next/server/chunks/4586.js:1:7178)\n    at async j (/var/task/.next/server/chunks/1179.js:1:2536)\n    at async B (/var/task/.next/server/app/api/timesheet/entries/route.js:1:6360)\n    at async rH.do (/var/task/node_modules/next/dist/compiled/next-server/app-route.runtime.prod.js:5:21048)",
+        "path": "/api/timesheet/entries",
+        "method": "PUT",
+        "context": {
+          "action": "update",
+          "summary": "Enregistrement timesheet 2026-07-26 — Production"
+        }
+      }
+    },
+    {
+      "id": "log-000436",
+      "at": "2026-08-17T14:25:00.311Z",
+      "userId": "admin",
+      "userName": "Administrateur",
+      "module": "timesheet",
+      "moduleLabel": "Timesheet",
+      "action": "error",
+      "actionLabel": "Erreur",
+      "summary": "GitHub écriture data/overtimes/timesheets.json échouée (409): {\"message\":\"is at d3755010a1dd1180bc618b47f0310dc6f463c58b but expected 7ee38a14c60578a9a0620e2e8b9cfba1ac02d27a\",\"documentation_url\":\"https://docs.github.com/rest/repos/contents#create-or-update-file",
+      "details": "Échec de l’action « update » sur timesheet: GitHub écriture data/overtimes/timesheets.json échouée (409): {\"message\":\"is at d3755010a1dd1180bc618b47f0310dc6f463c58b but expected 7ee38a14c60578a9a0620e2e8b9cfba1ac02d27a\",\"documentation_url\":\"https://docs.github.com/rest/repos/contents#create-or-update-file",
+      "undoable": false,
+      "undone": false,
+      "error": {
+        "message": "GitHub écriture data/overtimes/timesheets.json échouée (409): {\"message\":\"is at d3755010a1dd1180bc618b47f0310dc6f463c58b but expected 7ee38a14c60578a9a0620e2e8b9cfba1ac02d27a\",\"documentation_url\":\"https://docs.github.com/rest/repos/contents#create-or-update-file",
+        "stack": "Error: GitHub écriture data/overtimes/timesheets.json échouée (409): {\"message\":\"is at d3755010a1dd1180bc618b47f0310dc6f463c58b but expected 7ee38a14c60578a9a0620e2e8b9cfba1ac02d27a\",\"documentation_url\":\"https://docs.github.com/rest/repos/contents#create-or-update-file\n    at T (/var/task/.next/server/chunks/2206.js:2:5728)\n    at $ (/var/task/.next/server/chunks/2206.js:2:8305)\n    at process.processTicksAndRejections (node:internal/process/task_queues:104:5)\n    at async aa (/var/task/.next/server/chunks/2206.js:2:9391)\n    at async v (/var/task/.next/server/chunks/4586.js:1:3472)\n    at async B (/var/task/.next/server/chunks/4586.js:1:5535)\n    at async J (/var/task/.next/server/chunks/4586.js:1:7178)\n    at async j (/var/task/.next/server/chunks/1179.js:1:2536)\n    at async B (/var/task/.next/server/app/api/timesheet/entries/route.js:1:6360)\n    at async rH.do (/var/task/node_modules/next/dist/compiled/next-server/app-route.runtime.prod.js:5:21048)",
+        "path": "/api/timesheet/entries",
+        "method": "PUT",
+        "context": {
+          "action": "update",
+          "summary": "Enregistrement timesheet 2026-07-24 — Production"
+        }
+      }
+    },
+    {
+      "id": "log-000435",
+      "at": "2026-08-17T14:25:00.094Z",
+      "userId": "admin",
+      "userName": "Administrateur",
+      "module": "timesheet",
+      "moduleLabel": "Timesheet",
+      "action": "error",
+      "actionLabel": "Erreur",
+      "summary": "GitHub écriture data/overtimes/timesheets.json échouée (409): {\"message\":\"is at d3755010a1dd1180bc618b47f0310dc6f463c58b but expected 7ee38a14c60578a9a0620e2e8b9cfba1ac02d27a\",\"documentation_url\":\"https://docs.github.com/rest/repos/contents#create-or-update-file",
+      "details": "Échec de l’action « update » sur timesheet: GitHub écriture data/overtimes/timesheets.json échouée (409): {\"message\":\"is at d3755010a1dd1180bc618b47f0310dc6f463c58b but expected 7ee38a14c60578a9a0620e2e8b9cfba1ac02d27a\",\"documentation_url\":\"https://docs.github.com/rest/repos/contents#create-or-update-file",
+      "undoable": false,
+      "undone": false,
+      "error": {
+        "message": "GitHub écriture data/overtimes/timesheets.json échouée (409): {\"message\":\"is at d3755010a1dd1180bc618b47f0310dc6f463c58b but expected 7ee38a14c60578a9a0620e2e8b9cfba1ac02d27a\",\"documentation_url\":\"https://docs.github.com/rest/repos/contents#create-or-update-file",
+        "stack": "Error: GitHub écriture data/overtimes/timesheets.json échouée (409): {\"message\":\"is at d3755010a1dd1180bc618b47f0310dc6f463c58b but expected 7ee38a14c60578a9a0620e2e8b9cfba1ac02d27a\",\"documentation_url\":\"https://docs.github.com/rest/repos/contents#create-or-update-file\n    at T (/var/task/.next/server/chunks/2206.js:2:5728)\n    at $ (/var/task/.next/server/chunks/2206.js:2:8305)\n    at process.processTicksAndRejections (node:internal/process/task_queues:104:5)\n    at async aa (/var/task/.next/server/chunks/2206.js:2:9391)\n    at async v (/var/task/.next/server/chunks/4586.js:1:3472)\n    at async B (/var/task/.next/server/chunks/4586.js:1:5535)\n    at async J (/var/task/.next/server/chunks/4586.js:1:7178)\n    at async j (/var/task/.next/server/chunks/1179.js:1:2536)\n    at async B (/var/task/.next/server/app/api/timesheet/entries/route.js:1:6360)\n    at async rH.do (/var/task/node_modules/next/dist/compiled/next-server/app-route.runtime.prod.js:5:21048)",
+        "path": "/api/timesheet/entries",
+        "method": "PUT",
+        "context": {
+          "action": "update",
+          "summary": "Enregistrement timesheet 2026-08-15 — Production"
+        }
+      }
+    },
+    {
+      "id": "log-000434",
+      "at": "2026-08-17T14:24:59.989Z",
+      "userId": "admin",
+      "userName": "Administrateur",
+      "module": "timesheet",
+      "moduleLabel": "Timesheet",
+      "action": "error",
+      "actionLabel": "Erreur",
+      "summary": "GitHub écriture data/overtimes/timesheets.json échouée (409): {\"message\":\"is at d3755010a1dd1180bc618b47f0310dc6f463c58b but expected 7ee38a14c60578a9a0620e2e8b9cfba1ac02d27a\",\"documentation_url\":\"https://docs.github.com/rest/repos/contents#create-or-update-file",
+      "details": "Échec de l’action « update » sur timesheet: GitHub écriture data/overtimes/timesheets.json échouée (409): {\"message\":\"is at d3755010a1dd1180bc618b47f0310dc6f463c58b but expected 7ee38a14c60578a9a0620e2e8b9cfba1ac02d27a\",\"documentation_url\":\"https://docs.github.com/rest/repos/contents#create-or-update-file",
+      "undoable": false,
+      "undone": false,
+      "error": {
+        "message": "GitHub écriture data/overtimes/timesheets.json échouée (409): {\"message\":\"is at d3755010a1dd1180bc618b47f0310dc6f463c58b but expected 7ee38a14c60578a9a0620e2e8b9cfba1ac02d27a\",\"documentation_url\":\"https://docs.github.com/rest/repos/contents#create-or-update-file",
+        "stack": "Error: GitHub écriture data/overtimes/timesheets.json échouée (409): {\"message\":\"is at d3755010a1dd1180bc618b47f0310dc6f463c58b but expected 7ee38a14c60578a9a0620e2e8b9cfba1ac02d27a\",\"documentation_url\":\"https://docs.github.com/rest/repos/contents#create-or-update-file\n    at T (/var/task/.next/server/chunks/2206.js:2:5728)\n    at $ (/var/task/.next/server/chunks/2206.js:2:8305)\n    at process.processTicksAndRejections (node:internal/process/task_queues:104:5)\n    at async aa (/var/task/.next/server/chunks/2206.js:2:9391)\n    at async v (/var/task/.next/server/chunks/4586.js:1:3472)\n    at async B (/var/task/.next/server/chunks/4586.js:1:5535)\n    at async J (/var/task/.next/server/chunks/4586.js:1:7178)\n    at async j (/var/task/.next/server/chunks/1179.js:1:2536)\n    at async B (/var/task/.next/server/app/api/timesheet/entries/route.js:1:6360)\n    at async rH.do (/var/task/node_modules/next/dist/compiled/next-server/app-route.runtime.prod.js:5:21048)",
+        "path": "/api/timesheet/entries",
+        "method": "PUT",
+        "context": {
+          "action": "update",
+          "summary": "Enregistrement timesheet 2026-08-13 — Production"
+        }
+      }
+    },
+    {
       "id": "log-000433",
       "at": "2026-08-17T14:24:59.891Z",
       "userId": "admin",
@@ -33127,5 +33318,5 @@
       }
     }
   ],
-  "nextSeq": 434
+  "nextSeq": 442
 }
