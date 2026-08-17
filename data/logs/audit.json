@@ -1,6 +1,40 @@
 {
   "entries": [
     {
+      "id": "log-000431",
+      "at": "2026-08-17T14:25:09.186Z",
+      "userId": "admin",
+      "userName": "Administrateur",
+      "module": "timesheet",
+      "moduleLabel": "Timesheet",
+      "action": "update",
+      "actionLabel": "Modification",
+      "summary": "Enregistrement timesheet 2026-07-19 — Production",
+      "details": "Enregistrement timesheet 2026-07-19 — Production",
+      "after": {
+        "70000070": {
+          "matricule": "70000070",
+          "present": true,
+          "from": "06:00",
+          "to": "14:00",
+          "shiftType": null,
+          "holiday": false,
+          "updatedAt": "2026-08-17T14:25:06.224Z",
+          "updatedBy": "admin"
+        }
+      },
+      "undoable": false,
+      "undone": false,
+      "meta": {
+        "year": 2026,
+        "month": 8,
+        "dateKey": "2026-07-19",
+        "department": "Production",
+        "mode": "day",
+        "count": 1
+      }
+    },
+    {
       "id": "log-000430",
       "at": "2026-08-17T14:25:08.787Z",
       "userId": "admin",
@@ -33045,5 +33079,5 @@
       }
     }
   ],
-  "nextSeq": 431
+  "nextSeq": 432
 }
