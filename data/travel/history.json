@@ -1,4 +1,16 @@
 {
-  "rows": [],
-  "nextRowIndex": 9
+  "rows": [
+    {
+      "rowIndex": 9,
+      "date": "2026-08-17",
+      "ref": "PPCB-DOC-HR-ZA/001/08/2026",
+      "employee": "MUAKASA NSONI SERGE (70000008)",
+      "department": "Human Resources — Estate Officer",
+      "travelDates": "17/08/2026 → 17/08/2026",
+      "tripDays": 1,
+      "totalBudget": 110,
+      "recordId": "cr-1786955455990"
+    }
+  ],
+  "nextRowIndex": 10
 }
