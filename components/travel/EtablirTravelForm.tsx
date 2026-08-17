@@ -37,14 +37,41 @@ import {
 import { readTravelGenerationStream } from '@/lib/travel-generation-stream';
 import type { CashRequestRecord, TravelFileType } from '@/lib/travel-types';
 import type { CostCenterSetting, DepartmentSetting } from '@/lib/auth-types';
-import {
-  folderSelectionErrorMessage,
-  isFullWindowsPath,
-  isValidSaveDirectorySelection,
-} from '@/lib/browser-folder-save';
 import type { Employee } from '@/lib/types';
 
-const FOLDER_PICKER_PLACEHOLDER = 'Cliquez pour parcourir et sélectionner un dossier';
+function triggerBrowserDownload(blob: Blob, fileName: string): void {
+  const url = URL.createObjectURL(blob);
+  const anchor = document.createElement('a');
+  anchor.href = url;
+  anchor.download = fileName;
+  document.body.appendChild(anchor);
+  anchor.click();
+  anchor.remove();
+  URL.revokeObjectURL(url);
+}
+
+async function downloadGeneratedTravelFiles(record: CashRequestRecord): Promise<void> {
+  const files = record.files?.length
+    ? record.files
+    : record.fileName
+      ? [{ type: 'cash-request' as const, fileName: record.fileName }]
+      : [];
+
+  for (const file of files) {
+    const res = await fetch(
+      `/api/travel/cash-requests/${encodeURIComponent(record.id)}/download?type=${encodeURIComponent(file.type)}`,
+    );
+    if (!res.ok) {
+      const json = (await res.json().catch(() => ({}))) as { error?: string };
+      throw new Error(json.error || `Impossible de télécharger ${file.fileName}`);
+    }
+    const blob = await res.blob();
+    const header = res.headers.get('Content-Disposition');
+    const match = header?.match(/filename="([^"]+)"/);
+    triggerBrowserDownload(blob, match?.[1] || file.fileName);
+    await new Promise((resolve) => setTimeout(resolve, 350));
+  }
+}
 
 const BASE_GENERATION_STEPS: GenerationStep[] = [
   { id: 'cash-request', label: 'Cash Request' },
@@ -104,14 +131,12 @@ export default function EtablirTravelForm({ singleDoc }: EtablirTravelFormProps 
 
   const [employee, setEmployee] = useState<EmployeeSelection | null>(null);
   const [travel, setTravel] = useState<TravelFormFields>(createInitialTravelForm);
-  const [saveDirectory, setSaveDirectory] = useState('');
 
   const [genOpen, setGenOpen] = useState(false);
   const [genComplete, setGenComplete] = useState(false);
   const [genError, setGenError] = useState<string | null>(null);
   const [genProgress, setGenProgress] = useState<number[]>([]);
   const [genActiveStep, setGenActiveStep] = useState(0);
-  const [genResult, setGenResult] = useState<CashRequestRecord | null>(null);
   const [selectDocsOpen, setSelectDocsOpen] = useState(false);
   const [selectedDocIds, setSelectedDocIds] = useState<string[]>([]);
   const [allowanceModalOpen, setAllowanceModalOpen] = useState(false);
@@ -119,7 +144,6 @@ export default function EtablirTravelForm({ singleDoc }: EtablirTravelFormProps 
   const [settingsDepartments, setSettingsDepartments] = useState<DepartmentSetting[]>([]);
   const [costCenters, setCostCenters] = useState<CostCenterSetting[]>([]);
   const stepTimersRef = useRef<Map<number, ReturnType<typeof setInterval>>>(new Map());
-  const folderPickerBusyRef = useRef(false);
 
   const generationSteps = useMemo(
     () => buildGenerationSteps(Boolean(travel.isInternationalTravel)),
@@ -294,7 +318,6 @@ export default function EtablirTravelForm({ singleDoc }: EtablirTravelFormProps 
           });
         }
 
-        if (json.saveDirectory) setSaveDirectory(json.saveDirectory);
         if (json.missionRef) setMissionRef(json.missionRef);
       } catch {
         await showError('Impossible de charger la mission');
@@ -388,57 +411,6 @@ export default function EtablirTravelForm({ singleDoc }: EtablirTravelFormProps 
     }));
   };
 
-  const applyFolderPath = (serverPath: string) => {
-    if (!isFullWindowsPath(serverPath)) return;
-    setSaveDirectory(serverPath);
-  };
-
-  const openFolderPicker = async () => {
-    if (saving || folderPickerBusyRef.current) return;
-    folderPickerBusyRef.current = true;
-
-    try {
-      const res = await fetch('/api/travel/pick-save-directory', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ initialPath: saveDirectory || undefined }),
-      });
-
-      if (res.status === 204) return;
-
-      if (!res.ok) {
-        const json = (await res.json().catch(() => ({}))) as { error?: string };
-        await showError(json.error || 'Impossible de sélectionner le dossier');
-        return;
-      }
-
-      const json = (await res.json()) as { path?: string };
-      if (json.path) {
-        applyFolderPath(json.path);
-      }
-    } catch {
-      await showError('Impossible de sélectionner le dossier');
-    } finally {
-      folderPickerBusyRef.current = false;
-    }
-  };
-
-  const openSavedFileLocation = async () => {
-    const directory = genResult?.saveDirectory?.trim();
-    if (!directory) return;
-
-    const res = await fetch('/api/travel/open-location', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ directoryPath: directory }),
-    });
-
-    if (!res.ok) {
-      const json = (await res.json().catch(() => ({}))) as { error?: string };
-      await showError(json.error || 'Impossible d\'ouvrir l\'emplacement');
-    }
-  };
-
   const handleSubmit = async (event: React.FormEvent) => {
     event.preventDefault();
 
@@ -465,15 +437,6 @@ export default function EtablirTravelForm({ singleDoc }: EtablirTravelFormProps 
 
     if (showField('transportMeans') && !travel.transportMeans.trim()) {
       await showError('Renseignez le moyen de transport');
-      return;
-    }
-
-    // Dossier d'enregistrement : uniquement pour le pack Voyage complet.
-    // Les documents unitaires sont téléchargés directement.
-    if (!docConfig && !isValidSaveDirectorySelection(saveDirectory)) {
-      await showError(
-        folderSelectionErrorMessage(saveDirectory) ?? "Sélectionnez un dossier d'enregistrement",
-      );
       return;
     }
 
@@ -504,7 +467,6 @@ export default function EtablirTravelForm({ singleDoc }: EtablirTravelFormProps 
   const runGeneration = async (docIds: string[]) => {
     if (!employee) return;
 
-    const hasServerPath = isFullWindowsPath(saveDirectory);
     const steps = generationSteps.filter((step) => docIds.includes(step.id));
     if (!steps.length) {
       await showError('Sélectionnez au moins un fichier à générer');
@@ -523,7 +485,6 @@ export default function EtablirTravelForm({ singleDoc }: EtablirTravelFormProps 
     setGenOpen(true);
     setGenComplete(false);
     setGenError(null);
-    setGenResult(null);
     startProgressAnimation(steps.length);
 
     // Mode document unique : ne transmettre que les données utiles au document.
@@ -556,7 +517,6 @@ export default function EtablirTravelForm({ singleDoc }: EtablirTravelFormProps 
           employeeName: employee.nom,
           employeeDepartment: travel.department || employee.departement,
           travel: travelPayload,
-          saveDirectory: hasServerPath && !docConfig ? saveDirectory.trim() : undefined,
           selectedDocuments: docIds as TravelFileType[],
         }),
       });
@@ -612,26 +572,15 @@ export default function EtablirTravelForm({ singleDoc }: EtablirTravelFormProps 
         return;
       }
 
-      const resolvedDirectory = hasServerPath
-        ? saveDirectory.trim()
-        : generatedRecord.saveDirectory ?? saveDirectory.trim();
-
       setGenProgress(Array.from({ length: steps.length }, () => 100));
       setGenActiveStep(steps.length - 1);
       setGenComplete(true);
-      setGenResult({
-        ...generatedRecord,
-        saveDirectory: resolvedDirectory,
-      });
 
-      // Document unitaire : téléchargement direct dans le navigateur.
-      if (docConfig) {
-        const link = document.createElement('a');
-        link.href = `/api/travel/cash-requests/${encodeURIComponent(generatedRecord.id)}/download?type=${encodeURIComponent(docConfig.id)}`;
-        link.download = '';
-        document.body.appendChild(link);
-        link.click();
-        link.remove();
+      try {
+        await downloadGeneratedTravelFiles(generatedRecord);
+      } catch (err) {
+        const message = err instanceof Error ? err.message : 'Téléchargement impossible';
+        await showError(message);
       }
 
       void loadMissionRef();
@@ -649,7 +598,6 @@ export default function EtablirTravelForm({ singleDoc }: EtablirTravelFormProps 
     setGenOpen(false);
     setGenComplete(false);
     setGenError(null);
-    setGenResult(null);
     setGenProgress([]);
   };
 
@@ -927,39 +875,6 @@ export default function EtablirTravelForm({ singleDoc }: EtablirTravelFormProps 
                   required
                 />
               </div>
-            )}
-            {!docConfig && (
-            <div className="form-group travel-save-directory">
-              <span id="saveDirectoryLabel" className="folder-picker-label">
-                Dossier d&apos;enregistrement
-              </span>
-              <div
-                className="folder-picker-single"
-                role="button"
-                tabIndex={0}
-                aria-labelledby="saveDirectoryLabel"
-                onClick={() => void openFolderPicker()}
-                onKeyDown={(event) => {
-                  if (event.key === 'Enter' || event.key === ' ') {
-                    event.preventDefault();
-                    void openFolderPicker();
-                  }
-                }}
-              >
-                <span
-                  className={`folder-picker-path-display${saveDirectory ? ' has-value' : ''}`}
-                  title={saveDirectory || FOLDER_PICKER_PLACEHOLDER}
-                  aria-live="polite"
-                >
-                  <svg className="folder-picker-icon" viewBox="0 0 24 24" aria-hidden="true">
-                    <path d="M10 4H4a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V8a2 2 0 0 0-2-2h-8l-2-2z" />
-                  </svg>
-                  <span className="folder-picker-path-text">
-                    {saveDirectory || FOLDER_PICKER_PLACEHOLDER}
-                  </span>
-                </span>
-              </div>
-            </div>
             )}
           </div>
 
@@ -1331,8 +1246,6 @@ export default function EtablirTravelForm({ singleDoc }: EtablirTravelFormProps 
         stepProgress={genProgress}
         complete={genComplete}
         error={genError}
-        saveDirectory={docConfig ? undefined : genResult?.saveDirectory}
-        onOpenLocation={openSavedFileLocation}
         onClose={closeGenerationModal}
       />
 
