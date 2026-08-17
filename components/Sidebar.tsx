@@ -226,20 +226,6 @@ const NAV: NavSection[] = [
         menuId: 'village.maisons',
         activePrefixes: ['/village/maisons'],
       },
-      {
-        href: '/village/maisons?tab=dashboard',
-        label: 'Dashboard',
-        icon: 'dashboard',
-        menuId: 'village.dependants-dashboard',
-        activePrefixes: ['/village/dashboard'],
-      },
-      {
-        href: '/village/maisons?tab=liste',
-        label: 'Liste',
-        icon: 'users',
-        menuId: 'village.dependants-liste',
-        activePrefixes: ['/village/liste'],
-      },
       { href: '/village/guest-house', label: 'Guest house', icon: 'village', menuId: 'village.guest-house' },
     ],
   },
@@ -286,12 +272,12 @@ function isNavItemActive(pathname: string, item: NavItem, search = '') {
     return pathname === pathOnly && currentTab === itemTab;
   }
 
-  // Lien « Maisons » sans tab : actif seulement hors tabs dashboard/liste.
+  // Lien « Maisons » : actif sur toute la page village/maisons (y compris les onglets).
   if (
     pathOnly === '/village/maisons'
     && (pathname === '/village/maisons' || pathname.startsWith('/village/maisons/'))
   ) {
-    return currentTab !== 'dashboard' && currentTab !== 'liste';
+    return true;
   }
 
   if (item.activePrefixes?.length) {
