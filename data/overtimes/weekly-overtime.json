@@ -321,6 +321,51 @@
           },
           "updatedAt": "2026-08-17T10:21:11.533Z",
           "updatedBy": "admin"
+        },
+        "Production::1": {
+          "weekIndex": 1,
+          "department": "Production",
+          "weekFromTo": "du 17/08/2026 au 24/08/2026",
+          "locked": false,
+          "entries": {
+            "70000029": {
+              "matricule": "70000029",
+              "ot13": 2,
+              "ot16": 3,
+              "ot2": 0,
+              "night": 0
+            },
+            "70000064": {
+              "matricule": "70000064",
+              "ot13": 2,
+              "ot16": 2,
+              "ot2": 0,
+              "night": 0
+            },
+            "70000211": {
+              "matricule": "70000211",
+              "ot13": 2,
+              "ot16": 6,
+              "ot2": 0,
+              "night": 0
+            },
+            "70000212": {
+              "matricule": "70000212",
+              "ot13": 0.118,
+              "ot16": 0,
+              "ot2": 8.073,
+              "night": 0
+            },
+            "70000244": {
+              "matricule": "70000244",
+              "ot13": 2,
+              "ot16": 10,
+              "ot2": 0,
+              "night": 4.32
+            }
+          },
+          "updatedAt": "2026-08-17T10:21:43.655Z",
+          "updatedBy": "admin"
         }
       }
     }
