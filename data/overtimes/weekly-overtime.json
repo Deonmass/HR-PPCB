@@ -1,3 +1,49 @@
 {
-  "periods": {}
+  "periods": {
+    "2026-8": {
+      "weeks": {
+        "Supply chain::0": {
+          "weekIndex": 0,
+          "department": "Supply chain",
+          "weekFromTo": "du 13/07/2026 au 20/07/2026",
+          "locked": false,
+          "entries": {
+            "70000241": {
+              "matricule": "70000241",
+              "ot13": 0,
+              "ot16": 0,
+              "ot2": 15.012,
+              "night": 0
+            }
+          },
+          "updatedAt": "2026-08-17T08:31:16.860Z",
+          "updatedBy": "admin"
+        },
+        "Quality Assurance::0": {
+          "weekIndex": 0,
+          "department": "Quality Assurance",
+          "weekFromTo": "du 13/07/2026 au 20/07/2026",
+          "locked": false,
+          "entries": {
+            "70000210": {
+              "matricule": "70000210",
+              "ot13": 0,
+              "ot16": 0,
+              "ot2": 2.192,
+              "night": 0
+            },
+            "70000276": {
+              "matricule": "70000276",
+              "ot13": 0,
+              "ot16": 0,
+              "ot2": 12.32,
+              "night": 0
+            }
+          },
+          "updatedAt": "2026-08-17T08:31:16.860Z",
+          "updatedBy": "admin"
+        }
+      }
+    }
+  }
 }
