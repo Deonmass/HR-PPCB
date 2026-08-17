@@ -14,12 +14,15 @@ import {
   getPlanningCompleteWeekIndexes,
   getWeekPlanningEntries,
   saveDayEntries,
+  saveEmployeePeriodEntries,
   savePlanningDayEntries,
   savePlanningWeekEntries,
 } from '@/lib/timesheet-store';
 import { buildTimesheetPeriod } from '@/lib/timesheet-period';
 import type { TimesheetShiftType } from '@/lib/timesheet-types';
 import { withAudit } from '@/lib/with-audit';
+
+export const maxDuration = 60;
 
 function parsePeriod(searchParams: URLSearchParams): { year: number; month: number } | null {
   const year = Number.parseInt(searchParams.get('year') ?? '', 10);
@@ -128,12 +131,14 @@ export async function PUT(request: Request) {
       department: string;
       mode?: string;
       weekIndex?: number;
+      matricule?: string;
       grid?: Array<{
         matricule: string;
         shifts: Array<{ dateKey: string; shiftType: TimesheetShiftType | null }>;
       }>;
       entries?: Array<{
-        matricule: string;
+        matricule?: string;
+        dateKey?: string;
         from: string;
         to: string;
         shiftType: TimesheetShiftType | null;
@@ -194,11 +199,65 @@ export async function PUT(request: Request) {
       return NextResponse.json({ ok: true, saved: flatEntries.length });
     }
 
+    if (body.mode === 'employee-month') {
+      const matricule = body.matricule?.trim();
+      if (!matricule || !allowedMatricules.has(matricule) || !Array.isArray(body.entries)) {
+        return NextResponse.json({ error: 'Payload invalide' }, { status: 400 });
+      }
+
+      const periodEntries = body.entries
+        .filter((entry) => Boolean(entry.dateKey?.trim()))
+        .map((entry) => ({
+          dateKey: entry.dateKey!.trim(),
+          from: entry.from,
+          to: entry.to,
+          shiftType: entry.shiftType,
+          holiday: Boolean(entry.holiday),
+        }));
+
+      await withAudit(
+        {
+          module: 'timesheet',
+          action: 'update',
+          summary: `Enregistrement timesheet ${matricule} — ${body.department} (${body.month}/${body.year})`,
+          undoable: false,
+          meta: {
+            year: body.year,
+            month: body.month,
+            department: body.department,
+            matricule,
+            mode: 'employee-month',
+            count: periodEntries.length,
+          },
+          path: '/api/timesheet/entries',
+          method: 'PUT',
+        },
+        () =>
+          saveEmployeePeriodEntries({
+            year: body.year,
+            month: body.month,
+            matricule,
+            entries: periodEntries,
+            updatedBy: session.user.id,
+          }),
+      );
+
+      return NextResponse.json({ ok: true, saved: periodEntries.length });
+    }
+
     if (!body.dateKey || !Array.isArray(body.entries)) {
       return NextResponse.json({ error: 'Payload invalide' }, { status: 400 });
     }
 
-    const entries = body.entries.filter((entry) => allowedMatricules.has(entry.matricule));
+    const entries = body.entries
+      .map((entry) => ({
+        matricule: String(entry.matricule ?? '').trim(),
+        from: entry.from,
+        to: entry.to,
+        shiftType: entry.shiftType,
+        holiday: Boolean(entry.holiday),
+      }))
+      .filter((entry) => allowedMatricules.has(entry.matricule));
     const saveFn = body.mode === 'planning' ? savePlanningDayEntries : saveDayEntries;
     const saved = await withAudit(
       {

@@ -129,15 +129,17 @@ async function githubRequest(
   init?: RequestInit,
 ): Promise<Response> {
   return fetch(`https://api.github.com${apiPath}`, {
-    // Jamais de cache (Next Data Cache / proxies) : on veut toujours l'état GitHub actuel.
-    cache: 'no-store',
     ...init,
+    // Force no-store after init so callers cannot re-enable caching.
+    cache: 'no-store',
     headers: {
       Accept: 'application/vnd.github+json',
-      Authorization: `Bearer ${target.token}`,
       'X-GitHub-Api-Version': '2022-11-28',
       'User-Agent': 'hr-rh-app-durable',
       ...(init?.headers ?? {}),
+      Authorization: `Bearer ${target.token}`,
+      'Cache-Control': 'no-cache, no-store',
+      Pragma: 'no-cache',
     },
   });
 }
@@ -147,6 +149,8 @@ async function githubRequest(
  * Évite de ré-écraser la copie locale (fraîchement écrite) avec une version distante identique.
  */
 const knownRemoteSha = new Map<string, string>();
+/** Contenu local correspondant à knownRemoteSha — base d'un merge 3-voies en cas de conflit. */
+const lastHydratedContent = new Map<string, Buffer>();
 
 /** Public diagnostic for admins (no secret leaked). */
 export async function probeDurableGithub(): Promise<{
@@ -233,15 +237,73 @@ export async function probeDurableGithub(): Promise<{
   };
 }
 
-/** Métadonnées du fichier (sha + contenu inline si < 1 Mo) — sans téléchargement séparé. */
+function encodedBranchRef(branch: string): string {
+  return branch.split('/').map(encodeURIComponent).join('/');
+}
+
+function encodedRepoPath(repoPath: string): string {
+  return repoPath.split('/').map(encodeURIComponent).join('/');
+}
+
+async function githubJson<T>(
+  target: GithubRepoTarget,
+  apiPath: string,
+  init?: RequestInit,
+): Promise<{ ok: true; data: T } | { ok: false; status: number; text: string }> {
+  const res = await githubRequest(target, apiPath, init);
+  if (!res.ok) {
+    return { ok: false, status: res.status, text: await res.text() };
+  }
+  return { ok: true, data: (await res.json()) as T };
+}
+
+/**
+ * SHA du commit HEAD via l'API Git refs — pas Contents `?ref=branch`,
+ * dont le cache renvoyait un SHA périmé et provoquait le 409.
+ */
+async function getHeadCommitSha(target: GithubRepoTarget): Promise<string> {
+  const ref = encodedBranchRef(target.branch);
+  const result = await githubJson<{ object?: { sha?: string } }>(
+    target,
+    `/repos/${target.owner}/${target.repo}/git/ref/heads/${ref}`,
+  );
+  if (result.ok && result.data.object?.sha) return result.data.object.sha;
+
+  const fallback = await githubJson<{ sha?: string }>(
+    target,
+    `/repos/${target.owner}/${target.repo}/commits/${encodeURIComponent(target.branch)}?per_page=1`,
+  );
+  if (fallback.ok && fallback.data.sha) return fallback.data.sha;
+
+  const failed = result.ok ? fallback : result;
+  if (!failed.ok) {
+    throw formatGithubHttpError('ref', `heads/${target.branch}`, failed.status, failed.text);
+  }
+  throw new Error(`GitHub ref heads/${target.branch} sans sha`);
+}
+
+async function getCommitTreeSha(target: GithubRepoTarget, commitSha: string): Promise<string> {
+  const result = await githubJson<{ tree?: { sha?: string } }>(
+    target,
+    `/repos/${target.owner}/${target.repo}/git/commits/${commitSha}`,
+  );
+  if (!result.ok) {
+    throw formatGithubHttpError('commit', commitSha, result.status, result.text);
+  }
+  const treeSha = result.data.tree?.sha;
+  if (!treeSha) throw new Error(`GitHub commit ${commitSha} sans tree`);
+  return treeSha;
+}
+
+/** Métadonnées du fichier à un commit précis (immuable — jamais de SHA périmé). */
 async function readGithubFileMeta(
   target: GithubRepoTarget,
   repoPath: string,
+  ref: string,
 ): Promise<{ sha: string; inline?: Buffer } | null> {
-  const encodedPath = repoPath.split('/').map(encodeURIComponent).join('/');
   const res = await githubRequest(
     target,
-    `/repos/${target.owner}/${target.repo}/contents/${encodedPath}?ref=${encodeURIComponent(target.branch)}`,
+    `/repos/${target.owner}/${target.repo}/contents/${encodedRepoPath(repoPath)}?ref=${encodeURIComponent(ref)}`,
   );
 
   if (res.status === 404) return null;
@@ -281,66 +343,252 @@ async function readGithubBlob(
   return Buffer.from(await blobRes.arrayBuffer());
 }
 
-async function extractContentSha(res: Response): Promise<string> {
+async function readGithubFileBuffer(
+  target: GithubRepoTarget,
+  repoPath: string,
+  meta: { sha: string; inline?: Buffer },
+): Promise<Buffer> {
+  return meta.inline ?? readGithubBlob(target, repoPath, meta.sha);
+}
+
+function isPlainObject(value: unknown): value is Record<string, unknown> {
+  return typeof value === 'object' && value !== null && !Array.isArray(value);
+}
+
+function jsonEqual(a: unknown, b: unknown): boolean {
+  if (a === b) return true;
+  if (typeof a !== typeof b) return false;
+  if (a == null || b == null || typeof a !== 'object') return a === b;
   try {
-    const json = (await res.json()) as { content?: { sha?: string } };
-    return json.content?.sha || '';
+    return JSON.stringify(a) === JSON.stringify(b);
   } catch {
-    return '';
+    return false;
   }
 }
 
-/** Écrit le fichier sur GitHub et retourne la sha du nouveau contenu. */
+/** Fusion 3-voies : conserve nos changements et ceux arrivés sur GitHub entre-temps. */
+function threeWayJsonMerge(base: unknown, local: unknown, remote: unknown): unknown {
+  if (jsonEqual(local, remote)) return local;
+  if (jsonEqual(local, base)) return remote;
+  if (jsonEqual(remote, base)) return local;
+
+  if (isPlainObject(local) && isPlainObject(remote)) {
+    const baseObj = isPlainObject(base) ? base : {};
+    const keys = new Set([
+      ...Object.keys(baseObj),
+      ...Object.keys(local),
+      ...Object.keys(remote),
+    ]);
+    const out: Record<string, unknown> = {};
+    for (const key of keys) {
+      const inBase = Object.prototype.hasOwnProperty.call(baseObj, key);
+      const inLocal = Object.prototype.hasOwnProperty.call(local, key);
+      const inRemote = Object.prototype.hasOwnProperty.call(remote, key);
+      const baseVal = inBase ? baseObj[key] : undefined;
+      const localVal = inLocal ? local[key] : undefined;
+      const remoteVal = inRemote ? remote[key] : undefined;
+
+      if (!inLocal && !inRemote) continue;
+      if (!inLocal) {
+        if (!inBase || !jsonEqual(remoteVal, baseVal)) out[key] = remoteVal;
+        continue;
+      }
+      if (!inRemote) {
+        if (!inBase || !jsonEqual(localVal, baseVal)) out[key] = localVal;
+        continue;
+      }
+      out[key] = threeWayJsonMerge(inBase ? baseVal : undefined, localVal, remoteVal);
+    }
+    return out;
+  }
+
+  return local;
+}
+
+function mergeJsonBuffers(base: Buffer, local: Buffer, remote: Buffer): Buffer {
+  try {
+    const merged = threeWayJsonMerge(
+      JSON.parse(base.toString('utf8')),
+      JSON.parse(local.toString('utf8')),
+      JSON.parse(remote.toString('utf8')),
+    );
+    return Buffer.from(JSON.stringify(merged, null, 2), 'utf8');
+  } catch {
+    return local;
+  }
+}
+
+const GITHUB_WRITE_ATTEMPTS = 8;
+
+function sleep(ms: number): Promise<void> {
+  return new Promise((resolve) => setTimeout(resolve, ms));
+}
+
+function conflictBackoffMs(attempt: number): number {
+  const exp = Math.min(1200, 120 * 2 ** (attempt - 1));
+  return exp + Math.floor(Math.random() * 80);
+}
+
+function isRetryableWriteStatus(status: number): boolean {
+  return status === 409 || status === 422 || status === 500 || status === 502 || status === 503 || status === 504;
+}
+
+/** Un seul verrou pour toute la branche : chaque fichier est un commit sur `main`. */
+let githubBranchLock: Promise<unknown> = Promise.resolve();
+
+function withGithubWriteLock<T>(fn: () => Promise<T>): Promise<T> {
+  const run = githubBranchLock.then(fn, fn);
+  githubBranchLock = run.catch(() => undefined);
+  return run;
+}
+
+async function createGithubBlob(target: GithubRepoTarget, buffer: Buffer): Promise<string> {
+  const result = await githubJson<{ sha?: string }>(
+    target,
+    `/repos/${target.owner}/${target.repo}/git/blobs`,
+    {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ content: buffer.toString('base64'), encoding: 'base64' }),
+    },
+  );
+  if (!result.ok) {
+    throw formatGithubHttpError('blob', 'git/blobs', result.status, result.text);
+  }
+  if (!result.data.sha) throw new Error('GitHub blob sans sha');
+  return result.data.sha;
+}
+
+async function createGithubTree(
+  target: GithubRepoTarget,
+  baseTreeSha: string,
+  repoPath: string,
+  blobSha: string,
+): Promise<string> {
+  const result = await githubJson<{ sha?: string }>(
+    target,
+    `/repos/${target.owner}/${target.repo}/git/trees`,
+    {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        base_tree: baseTreeSha,
+        tree: [{ path: repoPath, mode: '100644', type: 'blob', sha: blobSha }],
+      }),
+    },
+  );
+  if (!result.ok) {
+    throw formatGithubHttpError('tree', repoPath, result.status, result.text);
+  }
+  if (!result.data.sha) throw new Error('GitHub tree sans sha');
+  return result.data.sha;
+}
+
+async function createGithubCommit(
+  target: GithubRepoTarget,
+  message: string,
+  treeSha: string,
+  parentSha: string,
+): Promise<string> {
+  const result = await githubJson<{ sha?: string }>(
+    target,
+    `/repos/${target.owner}/${target.repo}/git/commits`,
+    {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ message, tree: treeSha, parents: [parentSha] }),
+    },
+  );
+  if (!result.ok) {
+    throw formatGithubHttpError('commit', message, result.status, result.text);
+  }
+  if (!result.data.sha) throw new Error('GitHub commit sans sha');
+  return result.data.sha;
+}
+
+async function updateGithubBranchRef(
+  target: GithubRepoTarget,
+  commitSha: string,
+): Promise<{ ok: true } | { ok: false; status: number; text: string }> {
+  const result = await githubJson<unknown>(
+    target,
+    `/repos/${target.owner}/${target.repo}/git/refs/heads/${encodedBranchRef(target.branch)}`,
+    {
+      method: 'PATCH',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ sha: commitSha, force: false }),
+    },
+  );
+  if (result.ok) return { ok: true };
+  return result;
+}
+
+/**
+ * Écrit via Git Data API (blob → tree → commit → fast-forward de la branche).
+ * En cas de conflit : rebase sur HEAD, fusion JSON si le fichier a bougé, puis retry.
+ */
 async function writeGithubFile(
   target: GithubRepoTarget,
   repoPath: string,
   buffer: Buffer,
   message: string,
-): Promise<string> {
-  const encodedPath = repoPath.split('/').map(encodeURIComponent).join('/');
-  const existing = await readGithubFileMeta(target, repoPath);
+  baseBuffer?: Buffer,
+): Promise<{ sha: string; buffer: Buffer }> {
+  let payload = buffer;
+  let mergeBase = baseBuffer;
+  const canMergeJson = repoPath.endsWith('.json');
+  let lastError = '';
 
-  const body: Record<string, string> = {
-    message,
-    content: buffer.toString('base64'),
-    branch: target.branch,
-  };
-  if (existing?.sha) body.sha = existing.sha;
+  for (let attempt = 1; attempt <= GITHUB_WRITE_ATTEMPTS; attempt += 1) {
+    try {
+      const headSha = await getHeadCommitSha(target);
+      const [treeSha, remote] = await Promise.all([
+        getCommitTreeSha(target, headSha),
+        readGithubFileMeta(target, repoPath, headSha),
+      ]);
 
-  const res = await githubRequest(
-    target,
-    `/repos/${target.owner}/${target.repo}/contents/${encodedPath}`,
-    {
-      method: 'PUT',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(body),
-    },
-  );
+      if (remote?.sha && canMergeJson && mergeBase && remote.sha !== knownRemoteSha.get(repoPath)) {
+        const remoteBuf = await readGithubFileBuffer(target, repoPath, remote);
+        if (!remoteBuf.equals(payload) && !remoteBuf.equals(mergeBase)) {
+          payload = mergeJsonBuffers(mergeBase, payload, remoteBuf);
+        }
+        mergeBase = remoteBuf;
+      }
 
-  if (res.status === 409) {
-    const latest = await readGithubFileMeta(target, repoPath);
-    if (latest?.sha) body.sha = latest.sha;
-    const retry = await githubRequest(
-      target,
-      `/repos/${target.owner}/${target.repo}/contents/${encodedPath}`,
-      {
-        method: 'PUT',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(body),
-      },
-    );
-    if (!retry.ok) {
-      const text = await retry.text();
-      throw formatGithubHttpError('écriture', repoPath, retry.status, text);
+      const blobSha = await createGithubBlob(target, payload);
+      if (remote?.sha === blobSha) {
+        return { sha: blobSha, buffer: payload };
+      }
+
+      const newTreeSha = await createGithubTree(target, treeSha, repoPath, blobSha);
+      const newCommitSha = await createGithubCommit(target, message, newTreeSha, headSha);
+      const updated = await updateGithubBranchRef(target, newCommitSha);
+      if (updated.ok) return { sha: blobSha, buffer: payload };
+
+      lastError = updated.text;
+      if (!isRetryableWriteStatus(updated.status) || attempt === GITHUB_WRITE_ATTEMPTS) {
+        throw formatGithubHttpError('écriture', repoPath, updated.status, updated.text);
+      }
+    } catch (err) {
+      if (attempt === GITHUB_WRITE_ATTEMPTS) throw err;
+      lastError = err instanceof Error ? err.message : String(err);
+      const statusMatch = /\((\d{3})\):/.exec(lastError);
+      const status = statusMatch ? Number(statusMatch[1]) : 0;
+      if (/ 401 | 403 /.test(lastError)) throw err;
+      if (status && !isRetryableWriteStatus(status)) throw err;
     }
-    return extractContentSha(retry);
+    await sleep(conflictBackoffMs(attempt));
   }
 
-  if (!res.ok) {
-    const text = await res.text();
-    throw formatGithubHttpError('écriture', repoPath, res.status, text);
-  }
-  return extractContentSha(res);
+  throw new Error(
+    `GitHub écriture ${repoPath} échouée après ${GITHUB_WRITE_ATTEMPTS} tentatives: ${lastError.slice(0, 180)}`,
+  );
+}
+
+function rememberLocalFile(repoPath: string, sha: string, buffer: Buffer): void {
+  if (!sha) return;
+  knownRemoteSha.set(repoPath, sha);
+  lastHydratedContent.set(repoPath, buffer);
 }
 
 export async function hydrateDurableFile(repoPath: string, localPath: string): Promise<void> {
@@ -349,17 +597,19 @@ export async function hydrateDurableFile(repoPath: string, localPath: string): P
   if (!target) return;
 
   try {
-    const meta = await readGithubFileMeta(target, repoPath);
+    const headSha = await getHeadCommitSha(target);
+    const meta = await readGithubFileMeta(target, repoPath, headSha);
     if (!meta) return;
-    // La copie locale correspond déjà à cette sha (souvent : on vient de la
-    // persister depuis cette instance) — ne pas la ré-écraser inutilement.
     if (meta.sha && knownRemoteSha.get(repoPath) === meta.sha && fs.existsSync(localPath)) {
+      if (!lastHydratedContent.has(repoPath)) {
+        lastHydratedContent.set(repoPath, fs.readFileSync(localPath));
+      }
       return;
     }
-    const buffer = meta.inline ?? (await readGithubBlob(target, repoPath, meta.sha));
+    const buffer = await readGithubFileBuffer(target, repoPath, meta);
     fs.mkdirSync(path.dirname(localPath), { recursive: true });
     fs.writeFileSync(localPath, buffer);
-    if (meta.sha) knownRemoteSha.set(repoPath, meta.sha);
+    if (meta.sha) rememberLocalFile(repoPath, meta.sha, buffer);
   } catch (err) {
     const message = err instanceof Error ? err.message : String(err);
     console.warn('[durable-fs] hydrate failed', repoPath, message);
@@ -380,15 +630,19 @@ export async function persistDurableFile(repoPath: string, localPath: string): P
     );
   }
 
-  const body = await fsPromises.readFile(localPath);
-  const label = path.basename(repoPath);
-  const newSha = await writeGithubFile(
-    target,
-    repoPath,
-    body,
-    `chore(data): update ${label} from RH app${isVercelRuntime() ? ' (Vercel)' : ''}`,
-  );
-  // Mémorise la sha écrite : les prochaines hydratations de cette instance
-  // sauront que la copie locale est déjà à jour.
-  if (newSha) knownRemoteSha.set(repoPath, newSha);
+  await withGithubWriteLock(async () => {
+    const body = await fsPromises.readFile(localPath);
+    const label = path.basename(repoPath);
+    const written = await writeGithubFile(
+      target,
+      repoPath,
+      body,
+      `chore(data): update ${label} from RH app${isVercelRuntime() ? ' (Vercel)' : ''}`,
+      lastHydratedContent.get(repoPath) ?? body,
+    );
+    if (!written.buffer.equals(body)) {
+      await fsPromises.writeFile(localPath, written.buffer);
+    }
+    rememberLocalFile(repoPath, written.sha, written.buffer);
+  });
 }

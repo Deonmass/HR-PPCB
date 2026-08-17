@@ -70,6 +70,17 @@ async function writeJsonFile(repoKey: string, filePath: string, value: unknown):
   await persistDurableFile(repoKey, filePath);
 }
 
+const jsonStoreLocks = new Map<string, Promise<unknown>>();
+
+function withJsonStoreLock<T>(lockKey: string, fn: () => Promise<T>): Promise<T> {
+  const previous = jsonStoreLocks.get(lockKey) ?? Promise.resolve();
+  const run = previous.then(fn, fn);
+  jsonStoreLocks.set(lockKey, run.catch(() => undefined));
+  return run;
+}
+
+const TIMESHEETS_LOCK = 'timesheets';
+
 async function loadLegacyTimesheets(): Promise<TimesheetEntriesData> {
   const candidates = [
     path.join(process.cwd(), 'data', 'timesheet', 'entries.json'),
@@ -291,48 +302,103 @@ export async function getDayEntriesMap(
   return { ...(data.periods[periodKey(year, month)]?.days[dateKey] ?? {}) };
 }
 
+export interface SaveDayEntryPayload {
+  matricule: string;
+  from: string;
+  to: string;
+  shiftType: TimesheetShiftType | null;
+  holiday?: boolean;
+}
+
 export interface SaveDayEntriesInput {
   year: number;
   month: number;
   dateKey: string;
+  entries: SaveDayEntryPayload[];
+  updatedBy: string;
+}
+
+function upsertDayEntry(
+  dayMap: Record<string, TimesheetDayEntry>,
+  entry: SaveDayEntryPayload,
+  updatedBy: string,
+  now: string,
+): void {
+  const normalized = normalizeEntry(entry);
+  if (!isActiveEntry(normalized)) {
+    if (shouldPersistEntry(normalized)) {
+      dayMap[entry.matricule] = {
+        ...normalized,
+        present: false,
+        from: '',
+        to: '',
+        updatedAt: now,
+        updatedBy,
+      };
+    } else {
+      delete dayMap[entry.matricule];
+    }
+    return;
+  }
+  dayMap[entry.matricule] = { ...normalized, updatedAt: now, updatedBy };
+}
+
+export async function saveDayEntries(input: SaveDayEntriesInput): Promise<Record<string, TimesheetDayEntry>> {
+  return withJsonStoreLock(TIMESHEETS_LOCK, async () => {
+    const data = await readTimesheetData();
+    const key = periodKey(input.year, input.month);
+    if (!data.periods[key]) data.periods[key] = { days: {} };
+    if (!data.periods[key].days[input.dateKey]) data.periods[key].days[input.dateKey] = {};
+    const now = new Date().toISOString();
+    const dayMap = data.periods[key].days[input.dateKey];
+    for (const entry of input.entries) {
+      upsertDayEntry(dayMap, entry, input.updatedBy, now);
+    }
+    if (!Object.keys(dayMap).length) delete data.periods[key].days[input.dateKey];
+    await writeTimesheetData(data);
+    return { ...dayMap };
+  });
+}
+
+export interface SaveEmployeePeriodInput {
+  year: number;
+  month: number;
+  matricule: string;
   entries: Array<{
-    matricule: string;
+    dateKey: string;
     from: string;
     to: string;
     shiftType: TimesheetShiftType | null;
+    holiday?: boolean;
   }>;
   updatedBy: string;
 }
 
-export async function saveDayEntries(input: SaveDayEntriesInput): Promise<Record<string, TimesheetDayEntry>> {
-  const data = await readTimesheetData();
-  const key = periodKey(input.year, input.month);
-  if (!data.periods[key]) data.periods[key] = { days: {} };
-  if (!data.periods[key].days[input.dateKey]) data.periods[key].days[input.dateKey] = {};
-  const now = new Date().toISOString();
-  const dayMap = data.periods[key].days[input.dateKey];
-  for (const entry of input.entries) {
-    const normalized = normalizeEntry(entry);
-    if (!isActiveEntry(normalized)) {
-      if (shouldPersistEntry(normalized)) {
-        dayMap[entry.matricule] = {
-          ...normalized,
-          present: false,
-          from: '',
-          to: '',
-          updatedAt: now,
-          updatedBy: input.updatedBy,
-        };
-      } else {
-        delete dayMap[entry.matricule];
-      }
-      continue;
+export async function saveEmployeePeriodEntries(input: SaveEmployeePeriodInput): Promise<void> {
+  return withJsonStoreLock(TIMESHEETS_LOCK, async () => {
+    const data = await readTimesheetData();
+    const key = periodKey(input.year, input.month);
+    if (!data.periods[key]) data.periods[key] = { days: {} };
+    const now = new Date().toISOString();
+    for (const entry of input.entries) {
+      if (!data.periods[key].days[entry.dateKey]) data.periods[key].days[entry.dateKey] = {};
+      const dayMap = data.periods[key].days[entry.dateKey];
+      upsertDayEntry(
+        dayMap,
+        {
+          matricule: input.matricule,
+          from: entry.from,
+          to: entry.to,
+          shiftType: entry.shiftType,
+          holiday: entry.holiday,
+        },
+        input.updatedBy,
+        now,
+      );
+      if (!Object.keys(dayMap).length) delete data.periods[key].days[entry.dateKey];
     }
-    dayMap[entry.matricule] = { ...normalized, updatedAt: now, updatedBy: input.updatedBy };
-  }
-  if (!Object.keys(dayMap).length) delete data.periods[key].days[input.dateKey];
-  await writeTimesheetData(data);
-  return { ...dayMap };
+    await writeTimesheetData(data);
+  });
 }
 
 export async function getPlanningCompleteWeekIndexes(
@@ -391,29 +457,31 @@ export interface SavePlanningWeekInput {
 }
 
 export async function savePlanningWeekEntries(input: SavePlanningWeekInput): Promise<void> {
-  const data = await readTimesheetData();
-  const key = periodKey(input.year, input.month);
-  if (!data.periods[key]) data.periods[key] = { days: {} };
-  const now = new Date().toISOString();
-  for (const entry of input.entries) {
-    if (!data.periods[key].days[entry.dateKey]) data.periods[key].days[entry.dateKey] = {};
-    const dayMap = data.periods[key].days[entry.dateKey];
-    if (entry.shiftType === null) {
-      delete dayMap[entry.matricule];
-      if (!Object.keys(dayMap).length) delete data.periods[key].days[entry.dateKey];
-      continue;
+  return withJsonStoreLock(TIMESHEETS_LOCK, async () => {
+    const data = await readTimesheetData();
+    const key = periodKey(input.year, input.month);
+    if (!data.periods[key]) data.periods[key] = { days: {} };
+    const now = new Date().toISOString();
+    for (const entry of input.entries) {
+      if (!data.periods[key].days[entry.dateKey]) data.periods[key].days[entry.dateKey] = {};
+      const dayMap = data.periods[key].days[entry.dateKey];
+      if (entry.shiftType === null) {
+        delete dayMap[entry.matricule];
+        if (!Object.keys(dayMap).length) delete data.periods[key].days[entry.dateKey];
+        continue;
+      }
+      dayMap[entry.matricule] = {
+        matricule: entry.matricule,
+        present: false,
+        from: '',
+        to: '',
+        shiftType: entry.shiftType,
+        updatedAt: now,
+        updatedBy: input.updatedBy,
+      };
     }
-    dayMap[entry.matricule] = {
-      matricule: entry.matricule,
-      present: false,
-      from: '',
-      to: '',
-      shiftType: entry.shiftType,
-      updatedAt: now,
-      updatedBy: input.updatedBy,
-    };
-  }
-  await writeTimesheetData(data);
+    await writeTimesheetData(data);
+  });
 }
 
 export async function savePlanningDayEntries(

@@ -364,33 +364,27 @@ export default function TimesheetEmployeeMonthModal({
     if (!canEdit || !department) return;
     setSaving(true);
     try {
-      const responses = await Promise.all(
-        rows.map((row) =>
-          fetch('/api/timesheet/entries', {
-            method: 'PUT',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({
-              year,
-              month,
-              dateKey: row.dateKey,
-              department,
-              entries: [
-                {
-                  matricule,
-                  from: row.from,
-                  to: row.to,
-                  shiftType: row.shiftType,
-                  holiday: Boolean(row.holiday),
-                },
-              ],
-            }),
-          }),
-        ),
-      );
+      const res = await fetch('/api/timesheet/entries', {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          year,
+          month,
+          department,
+          matricule,
+          mode: 'employee-month',
+          entries: rows.map((row) => ({
+            dateKey: row.dateKey,
+            from: row.from,
+            to: row.to,
+            shiftType: row.shiftType,
+            holiday: Boolean(row.holiday),
+          })),
+        }),
+      });
 
-      const failed = responses.find((res) => !res.ok);
-      if (failed) {
-        const json = (await failed.json()) as { error?: string };
+      if (!res.ok) {
+        const json = (await res.json()) as { error?: string };
         throw new Error(json.error ?? 'Enregistrement impossible');
       }
 

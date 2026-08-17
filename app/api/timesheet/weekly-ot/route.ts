@@ -26,6 +26,8 @@ import {
 import { getAuditActor, withAudit } from '@/lib/with-audit';
 import { logAuditError } from '@/lib/audit-log-store';
 
+export const maxDuration = 60;
+
 function parsePeriod(searchParams: URLSearchParams) {
   const year = Number.parseInt(searchParams.get('year') ?? '', 10);
   const month = Number.parseInt(searchParams.get('month') ?? '', 10);
