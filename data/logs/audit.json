@@ -2,36 +2,26 @@
   "entries": [
     {
       "id": "log-000431",
-      "at": "2026-08-17T14:25:09.186Z",
+      "at": "2026-08-17T14:25:12.593Z",
       "userId": "admin",
       "userName": "Administrateur",
       "module": "timesheet",
       "moduleLabel": "Timesheet",
-      "action": "update",
-      "actionLabel": "Modification",
-      "summary": "Enregistrement timesheet 2026-07-19 — Production",
-      "details": "Enregistrement timesheet 2026-07-19 — Production",
-      "after": {
-        "70000070": {
-          "matricule": "70000070",
-          "present": true,
-          "from": "06:00",
-          "to": "14:00",
-          "shiftType": null,
-          "holiday": false,
-          "updatedAt": "2026-08-17T14:25:06.224Z",
-          "updatedBy": "admin"
-        }
-      },
+      "action": "error",
+      "actionLabel": "Erreur",
+      "summary": "GitHub lecture data/overtimes/timesheets.json échouée (504): {\"message\": \"We couldn't respond to your request in time. Sorry about that. Please try resubmitting your request and contact us if the problem persists.\"}",
+      "details": "Échec de l’action « update » sur timesheet: GitHub lecture data/overtimes/timesheets.json échouée (504): {\"message\": \"We couldn't respond to your request in time. Sorry about that. Please try resubmitting your request and contact us if the problem persists.\"}",
       "undoable": false,
       "undone": false,
-      "meta": {
-        "year": 2026,
-        "month": 8,
-        "dateKey": "2026-07-19",
-        "department": "Production",
-        "mode": "day",
-        "count": 1
+      "error": {
+        "message": "GitHub lecture data/overtimes/timesheets.json échouée (504): {\"message\": \"We couldn't respond to your request in time. Sorry about that. Please try resubmitting your request and contact us if the problem persists.\"}\r\n",
+        "stack": "Error: GitHub lecture data/overtimes/timesheets.json échouée (504): {\"message\": \"We couldn't respond to your request in time. Sorry about that. Please try resubmitting your request and contact us if the problem persists.\"}\r\n\n    at T (/var/task/.next/server/chunks/2206.js:2:5728)\n    at X (/var/task/.next/server/chunks/2206.js:2:7254)\n    at process.processTicksAndRejections (node:internal/process/task_queues:104:5)\n    at async $ (/var/task/.next/server/chunks/2206.js:2:8090)\n    at async aa (/var/task/.next/server/chunks/2206.js:2:9391)\n    at async v (/var/task/.next/server/chunks/4586.js:1:3472)\n    at async B (/var/task/.next/server/chunks/4586.js:1:5535)\n    at async J (/var/task/.next/server/chunks/4586.js:1:7178)\n    at async j (/var/task/.next/server/chunks/1179.js:1:2536)\n    at async B (/var/task/.next/server/app/api/timesheet/entries/route.js:1:6360)",
+        "path": "/api/timesheet/entries",
+        "method": "PUT",
+        "context": {
+          "action": "update",
+          "summary": "Enregistrement timesheet 2026-08-14 — Production"
+        }
       }
     },
     {
