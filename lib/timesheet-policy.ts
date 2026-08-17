@@ -21,12 +21,11 @@ export const TIMESHEET_POLICY_SECTIONS = [
   {
     title: 'Période du timesheet (4 semaines)',
     items: [
-      'Chaque feuille couvre exactement 4 semaines (lundi → lundi).',
-      'Pour un mois donné (ex. juillet), la période commence le lundi précédant ou égal au 15 du mois précédent.',
+      'Chaque feuille couvre exactement 4 semaines (28 jours).',
+      'Pour un mois donné (ex. août), la période commence le 15 du mois précédent (le 16 si le 15 est un dimanche).',
       'Elle compte exactement 28 jours (4 semaines), sans 5e semaine partielle.',
-      'Exemple juillet : du 15 au 22 juin, du 22 au 29 juin, du 29 juin au 6 juillet, du 6 au 13 juillet.',
-      'Exemple août : du 13 au 20 juillet, du 20 au 27 juillet, et ainsi de suite.',
-      'Le sélecteur de période suit la date du jour : dès le début de la période suivante (ex. 13 juillet), le mois affiché passe à août.',
+      'Exemple août 2026 : du 15 au 21 juillet, du 22 au 28 juillet, du 29 juillet au 4 août, du 5 au 11 août.',
+      'Le sélecteur de période affiche par défaut le mois calendaire en cours.',
     ],
   },
   {

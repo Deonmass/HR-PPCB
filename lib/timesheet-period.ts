@@ -29,14 +29,6 @@ function startOfDay(date: Date): Date {
   return new Date(date.getFullYear(), date.getMonth(), date.getDate());
 }
 
-function mondayOnOrBefore(date: Date): Date {
-  const cursor = startOfDay(date);
-  while (cursor.getDay() !== 1) {
-    cursor.setDate(cursor.getDate() - 1);
-  }
-  return cursor;
-}
-
 /** Exactly 4 weeks (28 days) for a named timesheet month (mid-month cycle). */
 export const TIMESHEET_WEEKS_PER_PERIOD = 4;
 export const TIMESHEET_DAYS_PER_PERIOD = TIMESHEET_WEEKS_PER_PERIOD * 7;
@@ -63,9 +55,7 @@ function formatFrDisplayDate(date: Date): string {
   return `${d}/${m}/${y}`;
 }
 
-/** Plage calendaire d'une semaine timesheet (weekIndex 0-based).
- * Libellé « du lundi au lundi suivant » (ex. du 15 au 22 juin).
- */
+/** Plage calendaire d'une semaine timesheet (weekIndex 0-based, 7 jours). */
 export function getTimesheetWeekFromTo(
   year: number,
   month: number,
@@ -79,37 +69,72 @@ export function getTimesheetWeekFromTo(
   const endIdx = Math.min(startIdx + 6, period.days.length - 1);
   const fromDay = period.days[startIdx];
   const toDay = period.days[endIdx];
-  const nextMonday = startOfDay(fromDay.date);
-  nextMonday.setDate(nextMonday.getDate() + 7);
+  const weekEndExclusive = startOfDay(fromDay.date);
+  weekEndExclusive.setDate(weekEndExclusive.getDate() + 7);
   return {
     fromKey: fromDay.dateKey,
     toKey: toDay.dateKey,
-    label: `du ${formatFrDisplayDate(fromDay.date)} au ${formatFrDisplayDate(nextMonday)}`,
+    label: `du ${formatFrDisplayDate(fromDay.date)} au ${formatFrDisplayDate(weekEndExclusive)}`,
   };
 }
 
 /**
- * Période timesheet d'un mois nommé (ex. juillet) :
- * - début = lundi ≤ 15 du mois précédent
- * - exactement 4 semaines (28 jours, lundi→dimanche)
- * Ex. juillet : 15→22 juin, 22→29 juin, 29 juin→6 juil., 6→13 juil.
- * Ex. août : 13→20 juil., 20→27 juil., …
+ * Début de période : le 15 du mois précédent.
+ * Si le 15 est un dimanche, on part du 16 (lundi) pour garder 4 semaines pleines.
  */
-export function buildTimesheetPeriod(year: number, month: number): TimesheetPeriod {
-  const fifteenthPrevious = new Date(year, month - 2, 15);
-  const start = mondayOnOrBefore(fifteenthPrevious);
-  const end = startOfDay(start);
-  end.setDate(end.getDate() + TIMESHEET_DAYS_PER_PERIOD - 1);
+function timesheetPeriodStart(year: number, month: number): Date {
+  const fifteenth = startOfDay(new Date(year, month - 2, 15));
+  if (fifteenth.getDay() === 0) {
+    const sixteenth = startOfDay(fifteenth);
+    sixteenth.setDate(sixteenth.getDate() + 1);
+    return sixteenth;
+  }
+  return fifteenth;
+}
 
+export function parseLocalDateKey(value: string): Date | null {
+  const match = /^(\d{4})-(\d{2})-(\d{2})$/.exec(value.trim());
+  if (!match) return null;
+  const year = Number(match[1]);
+  const month = Number(match[2]);
+  const day = Number(match[3]);
+  const date = startOfDay(new Date(year, month - 1, day));
+  if (date.getFullYear() !== year || date.getMonth() !== month - 1 || date.getDate() !== day) {
+    return null;
+  }
+  return date;
+}
+
+export function formatTimesheetDateFr(date: Date): string {
+  const d = String(date.getDate()).padStart(2, '0');
+  const m = String(date.getMonth() + 1).padStart(2, '0');
+  const y = date.getFullYear();
+  return `${d}/${m}/${y}`;
+}
+
+export function parseTimesheetDateFr(value: string): Date | null {
+  const trimmed = value.trim();
+  const iso = parseLocalDateKey(trimmed);
+  if (iso) return iso;
+  const match = /^(\d{1,2})[/.\-](\d{1,2})[/.\-](\d{4})$/.exec(trimmed);
+  if (!match) return null;
+  const day = Number(match[1]);
+  const month = Number(match[2]);
+  const year = Number(match[3]);
+  return parseLocalDateKey(
+    `${year}-${String(month).padStart(2, '0')}-${String(day).padStart(2, '0')}`,
+  );
+}
+
+/** 28 consecutive days from `start`, grouped into 4 weeks of 7 days. */
+export function buildTimesheetDaysFromStart(start: Date): TimesheetPeriodDay[] {
   const days: TimesheetPeriodDay[] = [];
-  let dayIndex = 0;
-  for (let cursor = startOfDay(start); cursor <= end; cursor.setDate(cursor.getDate() + 1)) {
-    const day = startOfDay(cursor);
+  const origin = startOfDay(start);
+  for (let dayIndex = 0; dayIndex < TIMESHEET_DAYS_PER_PERIOD; dayIndex += 1) {
+    const day = startOfDay(origin);
+    day.setDate(origin.getDate() + dayIndex);
     const isWeekend = day.getDay() === 0 || day.getDay() === 6;
-    const weekNumber = Math.min(
-      TIMESHEET_WEEKS_PER_PERIOD,
-      Math.floor(dayIndex / 7) + 1,
-    );
+    const weekNumber = Math.min(TIMESHEET_WEEKS_PER_PERIOD, Math.floor(dayIndex / 7) + 1);
     days.push({
       date: new Date(day),
       dateKey: localDateKey(day),
@@ -118,8 +143,20 @@ export function buildTimesheetPeriod(year: number, month: number): TimesheetPeri
       weekNumber,
       isWeekend,
     });
-    dayIndex += 1;
   }
+  return days;
+}
+
+/**
+ * Période timesheet d'un mois nommé (ex. août) :
+ * - début = 15 du mois précédent (16 si le 15 est un dimanche)
+ * - exactement 4 semaines (28 jours)
+ * Ex. août 2026 : 15→21 juil., 22→28 juil., 29 juil.→4 août, 5→11 août.
+ */
+export function buildTimesheetPeriod(year: number, month: number): TimesheetPeriod {
+  const start = timesheetPeriodStart(year, month);
+  const days = buildTimesheetDaysFromStart(start);
+  const end = days[days.length - 1]?.date ?? start;
 
   return {
     year,
@@ -132,24 +169,13 @@ export function buildTimesheetPeriod(year: number, month: number): TimesheetPeri
 }
 
 /**
- * Mois timesheet « courant » selon la date du jour (pas le mois calendaire).
- * Dès le lundi ≤ 15 du mois calendaire C, on bascule sur le mois timesheet C+1.
- * Ex. le 29 juillet → période d’août (débutée le 13 juillet).
+ * Mois timesheet affiché par défaut : le mois calendaire en cours.
  */
 export function resolveCurrentTimesheetMonth(
   date: Date = new Date(),
 ): { year: number; month: number } {
   const today = startOfDay(date);
-  const calendarYear = today.getFullYear();
-  const calendarMonth = today.getMonth() + 1; // 1-12
-  const pivot = mondayOnOrBefore(new Date(calendarYear, calendarMonth - 1, 15));
-
-  if (today >= pivot) {
-    // On est déjà dans la période du mois suivant
-    if (calendarMonth === 12) return { year: calendarYear + 1, month: 1 };
-    return { year: calendarYear, month: calendarMonth + 1 };
-  }
-  return { year: calendarYear, month: calendarMonth };
+  return { year: today.getFullYear(), month: today.getMonth() + 1 };
 }
 
 export function listTimesheetMonthOptions(count = 12): { year: number; month: number; label: string }[] {

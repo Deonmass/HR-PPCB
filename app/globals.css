@@ -6244,7 +6244,7 @@ html[data-theme="light"] .btn-export.btn-with-icon .btn-spinner {
   left: 0.5rem;
   top: 50%;
   transform: translateY(-50%);
-  color: #a3a3a3;
+  color: var(--muted);
   pointer-events: none;
   display: inline-flex;
   z-index: 1;
@@ -6253,16 +6253,16 @@ html[data-theme="light"] .btn-export.btn-with-icon .btn-spinner {
 .timesheet-time-input {
   width: 100%;
   padding: 0.3rem 0.4rem 0.3rem 1.65rem;
-  border: 1px solid rgba(255, 255, 255, 0.12);
+  border: 1px solid var(--border);
   border-radius: 6px;
-  background: #0a0a0e;
-  color: #f5f5f5;
+  background: var(--bg-elevated);
+  color: var(--text);
   font-size: inherit;
   font-family: inherit;
 }
 
 .timesheet-time-picker {
-  color-scheme: dark;
+  color-scheme: inherit;
 }
 
 .timesheet-time-picker::-webkit-calendar-picker-indicator {
@@ -8049,14 +8049,16 @@ html[data-theme="light"] .compilation-table tbody tr:hover td.compilation-sticky
   padding: 0.35rem 0;
   border: 1px solid var(--border-strong);
   border-radius: 8px;
-  background: #0f0f14;
-  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.55), 0 0 0 1px rgba(255, 255, 255, 0.04);
+  background: var(--panel);
+  color: var(--text);
+  box-shadow: var(--shadow);
 }
 
 .timesheet-planning-week-col-dropdown-portal {
   position: fixed;
   z-index: 10050;
-  background: #0f0f14;
+  background: var(--panel);
+  color: var(--text);
 }
 
 .timesheet-planning-week-col-dropdown-title {
@@ -8067,7 +8069,7 @@ html[data-theme="light"] .compilation-table tbody tr:hover td.compilation-sticky
   letter-spacing: 0.04em;
   text-transform: uppercase;
   color: var(--muted);
-  background: #0f0f14;
+  background: transparent;
 }
 
 .timesheet-planning-week-col-dropdown-item {
@@ -8075,7 +8077,7 @@ html[data-theme="light"] .compilation-table tbody tr:hover td.compilation-sticky
   width: 100%;
   padding: 0.45rem 0.75rem;
   border: none;
-  background: #0f0f14;
+  background: transparent;
   color: var(--text);
   font-size: 0.82rem;
   text-align: left;
@@ -8083,7 +8085,7 @@ html[data-theme="light"] .compilation-table tbody tr:hover td.compilation-sticky
 }
 
 .timesheet-planning-week-col-dropdown-item:hover {
-  background: #1a1a22;
+  background: var(--surface-hover);
 }
 
 .timesheet-planning-week-agent-col {
@@ -8284,6 +8286,7 @@ html[data-theme="light"] .compilation-table tbody tr:hover td.compilation-sticky
 }
 .timesheet-month-actual-menu-label {
   font-weight: 600;
+  color: var(--text);
 }
 .timesheet-month-actual-menu-detail {
   color: var(--muted);
@@ -8300,9 +8303,128 @@ html[data-theme="light"] .compilation-table tbody tr:hover td.compilation-sticky
   width: 100%;
 }
 .timesheet-template-table .timesheet-template-date-col {
-  min-width: 5.6rem;
-  width: 5.6rem;
+  min-width: 7.6rem;
+  width: 7.6rem;
   white-space: nowrap;
+}
+.timesheet-datepicker {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.12rem;
+  width: 100%;
+}
+.timesheet-template-start-date {
+  width: 100%;
+  min-width: 0;
+  margin: 0;
+  padding: 0.12rem 0.15rem;
+  border: 1px solid transparent;
+  border-radius: 4px;
+  background: transparent;
+  color: inherit;
+  font-size: inherit;
+  font-family: inherit;
+  text-align: center;
+}
+.timesheet-template-start-date:hover,
+.timesheet-template-start-date:focus {
+  outline: none;
+  border-color: rgba(227, 6, 19, 0.45);
+  background: var(--bg-elevated);
+  color: var(--text);
+}
+.timesheet-datepicker-btn {
+  flex: 0 0 auto;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 1.45rem;
+  height: 1.45rem;
+  padding: 0;
+  border: 1px solid transparent;
+  border-radius: 4px;
+  background: transparent;
+  color: var(--muted);
+  cursor: pointer;
+}
+.timesheet-datepicker-btn:hover,
+.timesheet-datepicker-btn[aria-expanded="true"] {
+  color: var(--text);
+  border-color: var(--border);
+  background: var(--surface-hover);
+}
+.timesheet-datepicker-pop {
+  position: fixed;
+  z-index: 80;
+  width: 268px;
+  padding: 0.7rem 0.75rem 0.8rem;
+  border: 1px solid var(--border-strong);
+  border-radius: 10px;
+  background: var(--panel);
+  color: var(--text);
+  box-shadow: var(--shadow);
+}
+.timesheet-datepicker-nav {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.4rem;
+  margin-bottom: 0.55rem;
+}
+.timesheet-datepicker-nav strong {
+  font-size: 0.78rem;
+  text-transform: capitalize;
+}
+.timesheet-datepicker-nav-btn {
+  width: 1.7rem;
+  height: 1.7rem;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  background: var(--bg-elevated);
+  color: var(--text);
+  font-size: 1.05rem;
+  line-height: 1;
+  cursor: pointer;
+}
+.timesheet-datepicker-weekdays,
+.timesheet-datepicker-grid {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 0.12rem;
+}
+.timesheet-datepicker-weekdays {
+  margin-bottom: 0.25rem;
+}
+.timesheet-datepicker-weekdays span {
+  font-size: 0.62rem;
+  font-weight: 700;
+  color: var(--muted);
+  text-align: center;
+  text-transform: uppercase;
+}
+.timesheet-datepicker-day {
+  height: 1.85rem;
+  border: 0;
+  border-radius: 6px;
+  background: transparent;
+  color: var(--text);
+  font-size: 0.72rem;
+  cursor: pointer;
+}
+.timesheet-datepicker-day:hover {
+  background: var(--surface-hover);
+}
+.timesheet-datepicker-day.is-outside {
+  color: var(--muted);
+  opacity: 0.55;
+}
+.timesheet-datepicker-day.is-today {
+  box-shadow: inset 0 0 0 1px var(--border-strong);
+}
+.timesheet-datepicker-day.is-selected {
+  background: var(--ppc-red);
+  color: #fff;
+  font-weight: 700;
 }
 .timesheet-template-holiday-col {
   width: 2.2rem;
@@ -8370,7 +8492,7 @@ html[data-theme="light"] .compilation-table tbody tr:hover td.compilation-sticky
   text-align: center;
 }
 .timesheet-template-table thead th {
-  background: #16161d;
+  background: var(--panel);
   font-size: 0.62rem;
   font-weight: 700;
   color: var(--muted);
@@ -8383,7 +8505,7 @@ html[data-theme="light"] .compilation-table tbody tr:hover td.compilation-sticky
 }
 .timesheet-template-table .timesheet-ot-cell {
   background: rgba(227, 6, 19, 0.08);
-  color: #fff;
+  color: var(--text);
 }
 .timesheet-template-week-row td {
   background: #f4cccc;
@@ -8399,18 +8521,18 @@ html[data-theme="light"] .compilation-table tbody tr:hover td.compilation-sticky
   text-align: left;
 }
 .timesheet-template-off-row td {
-  background: rgba(255, 255, 255, 0.04);
+  background: var(--surface);
   color: var(--muted);
 }
 .timesheet-template-table tfoot .timesheet-subtotal-row td,
 .timesheet-template-table tfoot .timesheet-accumulative-row td {
-  background: #17171f;
+  background: var(--panel);
   font-weight: 700;
   border-top: 2px solid var(--border-strong);
-  color: #f1f5f9;
+  color: var(--text);
 }
 .timesheet-template-table tfoot .timesheet-ot-cell {
-  color: #fff;
+  color: var(--text);
 }
 .timesheet-template-table tfoot td:first-child {
   text-align: left;
@@ -11231,6 +11353,100 @@ html[data-theme="light"] .timesheet-calendar-week-chip.week-2 {
 
 html[data-theme="light"] .timesheet-calendar-week-chip.week-3 {
   color: #6d28d9;
+}
+
+html[data-theme="light"] .timesheet-time-input {
+  background: #fff;
+  color: var(--text);
+  border-color: var(--border);
+}
+html[data-theme="light"] .timesheet-calc-cell {
+  color: #1d4ed8;
+}
+html[data-theme="light"] .timesheet-template-table thead th {
+  background: #f3f4f6;
+  color: #4b5563;
+}
+html[data-theme="light"] .timesheet-template-table thead th.timesheet-template-actual-head {
+  background: #0e4a5c;
+  color: #e0f2fe;
+}
+html[data-theme="light"] .timesheet-template-table .timesheet-template-actual-cell {
+  background: #e0f2fe;
+}
+html[data-theme="light"] .timesheet-template-table tbody tr.timesheet-template-off-row td.timesheet-template-actual-cell,
+html[data-theme="light"] .timesheet-template-table tbody tr.timesheet-template-holiday-row td.timesheet-template-actual-cell {
+  background: #bae6fd;
+}
+html[data-theme="light"] .timesheet-template-table .timesheet-time-field .timesheet-time-input::placeholder {
+  color: #64748b;
+}
+html[data-theme="light"] .timesheet-template-table .timesheet-ot-cell {
+  background: #fee2e2;
+  color: #7f1d1d;
+}
+html[data-theme="light"] .timesheet-template-off-row td {
+  background: #f8fafc;
+}
+html[data-theme="light"] .timesheet-template-table tfoot .timesheet-subtotal-row td,
+html[data-theme="light"] .timesheet-template-table tfoot .timesheet-accumulative-row td {
+  background: #eef0f5;
+  color: var(--text);
+}
+html[data-theme="light"] .timesheet-template-start-date:hover,
+html[data-theme="light"] .timesheet-template-start-date:focus {
+  background: #fff;
+  color: var(--text);
+}
+html[data-theme="light"] .timesheet-datepicker-pop {
+  background: #fff;
+}
+
+html[data-theme="light"] .timesheet-planning-week-col-dropdown,
+html[data-theme="light"] .timesheet-planning-week-col-dropdown-portal {
+  background: #fff;
+  color: #16161e;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
+}
+html[data-theme="light"] .timesheet-planning-week-col-dropdown-title {
+  color: #6b7280;
+  background: transparent;
+}
+html[data-theme="light"] .timesheet-planning-week-col-dropdown-item {
+  background: transparent;
+  color: #16161e;
+}
+html[data-theme="light"] .timesheet-planning-week-col-dropdown-item:hover {
+  background: rgba(0, 0, 0, 0.05);
+}
+html[data-theme="light"] .timesheet-month-actual-menu-label {
+  color: #16161e;
+}
+html[data-theme="light"] .timesheet-month-actual-menu-detail {
+  color: #6b7280;
+}
+
+html:not([data-theme="light"]) .timesheet-planning-week-col-dropdown,
+html:not([data-theme="light"]) .timesheet-planning-week-col-dropdown-portal {
+  background: #121218;
+  color: #f0f0f5;
+}
+html:not([data-theme="light"]) .timesheet-planning-week-col-dropdown-title {
+  color: #a1a1aa;
+  background: transparent;
+}
+html:not([data-theme="light"]) .timesheet-planning-week-col-dropdown-item {
+  background: transparent;
+  color: #f0f0f5;
+}
+html:not([data-theme="light"]) .timesheet-planning-week-col-dropdown-item:hover {
+  background: #1a1a22;
+}
+html:not([data-theme="light"]) .timesheet-month-actual-menu-label {
+  color: #f0f0f5;
+}
+html:not([data-theme="light"]) .timesheet-month-actual-menu-detail {
+  color: #a1a1aa;
 }
 
 /* ?? Theme switch overlay ?? */

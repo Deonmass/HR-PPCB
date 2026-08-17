@@ -3,11 +3,17 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { createPortal } from 'react-dom';
 import TimesheetTimeInput from '@/components/overtime/TimesheetTimeInput';
+import TimesheetDatePicker from '@/components/overtime/TimesheetDatePicker';
 import { BtnSpinner, CardSpinner } from '@/components/overtime/TimesheetIcons';
-import { buildTimesheetPeriod, isTimesheetWeekend } from '@/lib/timesheet-period';
-import { refreshTimesheetRowsForPeriod } from '@/lib/timesheet-rows';
-import type { TimesheetDayEntry, TimesheetRowData, TimesheetShiftType } from '@/lib/timesheet-types';
+import { buildTimesheetPeriod, isTimesheetWeekend, parseTimesheetDateFr } from '@/lib/timesheet-period';
+import { refreshTimesheetRowsForPeriod, shiftTimesheetRowsToStart } from '@/lib/timesheet-rows';
+import type { TimesheetDayEntry, TimesheetRowData } from '@/lib/timesheet-types';
 import { finalizeTimesheetRow } from '@/lib/timesheet-ws';
+import {
+  applyShifterPatternToPeriod,
+  detectShifterCycleStart,
+  inferTimesheetShiftFromActual,
+} from '@/lib/timesheet-bulk-shifts';
 import type { WeeklyOvertimeEntry } from '@/lib/timesheet-weekly-ot';
 import { downloadTimesheetWorkbook, exportTimesheetWorkbook } from '@/lib/timesheet-export';
 import { TIMESHEET_COMPANY_DEFAULT } from '@/lib/timesheet-policy';
@@ -17,7 +23,6 @@ import {
   formatHoursValue,
   sumTimesheetTemplateLines,
 } from '@/lib/timesheet-template-view';
-import { TIMESHEET_SHIFT_DEFAULT_HOURS } from '@/lib/timesheet-shift-hours';
 
 interface Props {
   open: boolean;
@@ -62,18 +67,6 @@ const SCHEDULE_PRESETS: SchedulePreset[] = [
   },
 ];
 
-/** 8-day rotating roster: S1, S1, S2, S2, S3, S3, OFF, OFF */
-const SHIFTER_CYCLE: TimesheetShiftType[] = [
-  'shift1',
-  'shift1',
-  'shift2',
-  'shift2',
-  'shift3',
-  'shift3',
-  'off',
-  'off',
-];
-
 function isFridayDate(value: Date | string): boolean {
   const date = value instanceof Date ? value : new Date(value);
   return !Number.isNaN(date.getTime()) && date.getDay() === 5;
@@ -87,25 +80,6 @@ function timesForGeneralPreset(
     return isFridayDate(date) ? { from: '07:00', to: '13:30' } : { from: '07:00', to: '16:30' };
   }
   return { from: '08:30', to: '17:30' };
-}
-
-function applyShifterDay(row: TimesheetRowData, dayIndex: number): TimesheetRowData {
-  const shiftType = SHIFTER_CYCLE[dayIndex % SHIFTER_CYCLE.length];
-  if (shiftType === 'off') {
-    return finalizeTimesheetRow({
-      ...row,
-      shiftType: 'off',
-      from: '',
-      to: '',
-    });
-  }
-  const times = TIMESHEET_SHIFT_DEFAULT_HOURS[shiftType];
-  return finalizeTimesheetRow({
-    ...row,
-    shiftType,
-    from: times.from,
-    to: times.to,
-  });
 }
 
 function mergeEntries(
@@ -140,7 +114,10 @@ function rowsSignature(rows: TimesheetRowData[]): string {
 
 function fmtDate(value: Date | string): string {
   const date = value instanceof Date ? value : new Date(value);
-  return date.toLocaleDateString('fr-FR');
+  const d = String(date.getDate()).padStart(2, '0');
+  const m = String(date.getMonth() + 1).padStart(2, '0');
+  const y = date.getFullYear();
+  return `${d}/${m}/${y}`;
 }
 
 function IconMoreVertical({ size = 14 }: { size?: number }) {
@@ -191,6 +168,7 @@ export default function TimesheetEmployeeMonthModal({
   const [saving, setSaving] = useState(false);
   const [dirty, setDirty] = useState(false);
   const [actualMenu, setActualMenu] = useState<ActualMenuState | null>(null);
+  const [followShifterCycle, setFollowShifterCycle] = useState(false);
   const savedSignatureRef = useRef('');
   const menuRef = useRef<HTMLDivElement | null>(null);
   const menuButtonRef = useRef<HTMLButtonElement | null>(null);
@@ -203,6 +181,7 @@ export default function TimesheetEmployeeMonthModal({
     setWeeklyOtByIndex({});
     setDirty(false);
     setActualMenu(null);
+    setFollowShifterCycle(false);
     savedSignatureRef.current = '';
 
     const base = refreshTimesheetRowsForPeriod(period);
@@ -234,12 +213,14 @@ export default function TimesheetEmployeeMonthModal({
         if (cancelled) return;
         const merged = mergeEntries(base, entries);
         setRows(merged);
+        setFollowShifterCycle(detectShifterCycleStart(merged) !== null);
         savedSignatureRef.current = rowsSignature(merged);
         setWeeklyOtByIndex(byWeek);
       })
       .catch(() => {
         if (!cancelled) {
           setRows(base);
+          setFollowShifterCycle(false);
           savedSignatureRef.current = rowsSignature(base);
           setWeeklyOtByIndex({});
         }
@@ -293,15 +274,25 @@ export default function TimesheetEmployeeMonthModal({
       patch: Partial<Pick<TimesheetRowData, 'from' | 'to' | 'holiday'>>,
     ) => {
       if (!canEdit) return;
-      setRows((prev) =>
-        prev.map((row) => {
+      setRows((prev) => {
+        const next = prev.map((row) => {
           if (row.dateKey !== dateKey) return row;
           return finalizeTimesheetRow({ ...row, ...patch });
-        }),
-      );
+        });
+
+        const firstKey = prev[0]?.dateKey;
+        const timesChanged = patch.from !== undefined || patch.to !== undefined;
+        if (!followShifterCycle || !timesChanged || dateKey !== firstKey) {
+          return next;
+        }
+
+        const startShift = inferTimesheetShiftFromActual(next[0].from, next[0].to);
+        if (!startShift) return next;
+        return applyShifterPatternToPeriod(next, startShift);
+      });
       setDirty(true);
     },
-    [canEdit],
+    [canEdit, followShifterCycle],
   );
 
   const fillFromPreset = useCallback(
@@ -312,7 +303,11 @@ export default function TimesheetEmployeeMonthModal({
 
       setRows((prev) => {
         if (presetId === 'shifter') {
-          return prev.map((row, index) => applyShifterDay(row, index));
+          const inferred = prev[0]
+            ? inferTimesheetShiftFromActual(prev[0].from, prev[0].to)
+            : null;
+          const startShift = inferred && inferred !== 'off' ? inferred : 'shift1';
+          return applyShifterPatternToPeriod(prev, startShift);
         }
 
         return prev.map((row) => {
@@ -333,8 +328,25 @@ export default function TimesheetEmployeeMonthModal({
           });
         });
       });
+      setFollowShifterCycle(presetId === 'shifter');
       setDirty(true);
       setActualMenu(null);
+    },
+    [canEdit],
+  );
+
+  const updateStartDate = useCallback(
+    (value: string) => {
+      if (!canEdit) return;
+      const start = parseTimesheetDateFr(value);
+      if (!start) return;
+      setRows((prev) => {
+        if (!prev[0]) return prev;
+        const next = shiftTimesheetRowsToStart(prev, start);
+        if (next[0]?.dateKey === prev[0].dateKey) return prev;
+        return next;
+      });
+      setDirty(true);
     },
     [canEdit],
   );
@@ -563,6 +575,7 @@ export default function TimesheetEmployeeMonthModal({
                       }
 
                       const editable = Boolean(canEdit);
+                      const isStartDate = line.row.dateKey === rows[0]?.dateKey;
 
                       return (
                         <tr
@@ -587,7 +600,16 @@ export default function TimesheetEmployeeMonthModal({
                               }
                             />
                           </td>
-                          <td className="timesheet-template-date-col">{fmtDate(line.row.date)}</td>
+                          <td className="timesheet-template-date-col">
+                            {editable && isStartDate ? (
+                              <TimesheetDatePicker
+                                value={fmtDate(line.row.date)}
+                                onCommit={updateStartDate}
+                              />
+                            ) : (
+                              fmtDate(line.row.date)
+                            )}
+                          </td>
                           <td>{line.row.dayLabel}</td>
                           <td>{line.ws || '—'}</td>
                           <td className="timesheet-template-actual-cell">
