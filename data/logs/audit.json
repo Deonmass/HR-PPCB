@@ -1,6 +1,33 @@
 {
   "entries": [
     {
+      "id": "log-000421",
+      "at": "2026-08-17T10:21:12.829Z",
+      "userId": "admin",
+      "userName": "Administrateur",
+      "module": "timesheet.overtimes",
+      "moduleLabel": "Timesheet — Heures sup.",
+      "action": "import",
+      "actionLabel": "Import",
+      "summary": "Import HS bulk semaine 0",
+      "details": "Import HS bulk semaine 0",
+      "after": {
+        "results": [
+          {
+            "department": "Production",
+            "status": "imported",
+            "imported": 5,
+            "skipped": 0
+          }
+        ],
+        "importedMatriculeKeys": {},
+        "totalImported": 5,
+        "totalSkipped": 0
+      },
+      "undoable": false,
+      "undone": false
+    },
+    {
       "id": "log-000420",
       "at": "2026-08-17T09:05:04.286Z",
       "userId": "admin",
@@ -32784,5 +32811,5 @@
       }
     }
   ],
-  "nextSeq": 421
+  "nextSeq": 422
 }
