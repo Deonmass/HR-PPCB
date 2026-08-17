@@ -9430,6 +9430,30 @@
             "updatedAt": "2026-08-17T14:18:57.518Z",
             "updatedBy": "admin"
           }
+        },
+        "2026-07-29": {
+          "70000070": {
+            "matricule": "70000070",
+            "present": true,
+            "from": "14:00",
+            "to": "22:00",
+            "shiftType": null,
+            "holiday": false,
+            "updatedAt": "2026-08-17T14:25:05.003Z",
+            "updatedBy": "admin"
+          }
+        },
+        "2026-07-19": {
+          "70000070": {
+            "matricule": "70000070",
+            "present": true,
+            "from": "06:00",
+            "to": "14:00",
+            "shiftType": null,
+            "holiday": false,
+            "updatedAt": "2026-08-17T14:25:06.224Z",
+            "updatedBy": "admin"
+          }
         }
       }
     }
