@@ -1,6 +1,5 @@
 import { NextResponse } from 'next/server';
 import { readDependantsData } from '@/lib/dependants-json-store';
-import { excelErrorResponse } from '@/lib/excel-io';
 import { readEmployees } from '@/lib/employees-json-store';
 import { checkAnyPermission } from '@/lib/require-permission';
 import {
@@ -15,7 +14,11 @@ import {
   readVillagePresentation,
   saveVillagePresentation,
 } from '@/lib/village-presentation-store';
-import type { VillagePresentationLive } from '@/lib/village-presentation';
+import type {
+  VillagePresentationAgent,
+  VillagePresentationLive,
+} from '@/lib/village-presentation';
+import { formatDisplayName } from '@/lib/format-display-name';
 import { readVillageCatalog } from '@/lib/village-store';
 import { auditSimpleAction } from '@/lib/with-audit';
 
@@ -30,6 +33,7 @@ const VIEW = [
 async function liveSnapshot(): Promise<{
   employees: Awaited<ReturnType<typeof readEmployees>>;
   live: VillagePresentationLive;
+  agents: VillagePresentationAgent[];
 }> {
   const [employees, dependantsData, catalog] = await Promise.all([
     readEmployees(),
@@ -61,8 +65,18 @@ async function liveSnapshot(): Promise<{
   const occPct = stats.maisonsTotal
     ? Math.round((stats.maisonsOccupees / stats.maisonsTotal) * 100)
     : 0;
+  const agents = employees
+    .filter((e) => e.nom.trim() && String(e.statut || 'Active').toLowerCase() !== 'inactive')
+    .map((e) => ({
+      matricule: e.matricule,
+      nom: formatDisplayName(e.nom),
+      departement: e.departement,
+      jobTitle: e.jobTitle,
+    }))
+    .sort((a, b) => a.nom.localeCompare(b.nom, 'fr'));
   return {
     employees,
+    agents,
     live: {
       maisonsTotal: stats.maisonsTotal,
       maisonsOccupees: stats.maisonsOccupees,
@@ -81,16 +95,20 @@ async function liveSnapshot(): Promise<{
   };
 }
 
+function apiError(err: unknown) {
+  const message = err instanceof Error ? err.message : 'Erreur inattendue';
+  return NextResponse.json({ error: message }, { status: 500 });
+}
+
 export async function GET() {
   const denied = await checkAnyPermission(VIEW);
   if (denied) return denied;
   try {
-    const { employees, live } = await liveSnapshot();
+    const { employees, live, agents } = await liveSnapshot();
     const presentation = await readVillagePresentation(employees);
-    return NextResponse.json({ presentation, live });
+    return NextResponse.json({ presentation, live, agents });
   } catch (err) {
-    const { status, message } = excelErrorResponse(err);
-    return NextResponse.json({ error: message }, { status });
+    return apiError(err);
   }
 }
 
@@ -105,14 +123,17 @@ export async function PUT(request: Request) {
     const body = await request.json();
     const employees = await readEmployees();
     const presentation = await saveVillagePresentation(body, employees);
-    await auditSimpleAction({
-      module: 'village.maisons',
-      action: 'update',
-      summary: 'Enregistrement présentation village',
-    });
+    try {
+      await auditSimpleAction({
+        module: 'village.maisons',
+        action: 'other',
+        summary: 'Enregistrement présentation village',
+      });
+    } catch (auditErr) {
+      console.error('[village-presentation] audit skipped', auditErr);
+    }
     return NextResponse.json({ presentation });
   } catch (err) {
-    const { status, message } = excelErrorResponse(err);
-    return NextResponse.json({ error: message }, { status });
+    return apiError(err);
   }
 }

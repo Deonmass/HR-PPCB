@@ -53,7 +53,7 @@ function villaNorm(value: string | undefined | null): string {
 }
 
 function displayHouse(numero: string): string {
-  return String(numero ?? '').trim() || 'â€”';
+  return String(numero ?? '').trim() || '—';
 }
 
 function findMaison(
@@ -65,14 +65,14 @@ function findMaison(
 }
 
 function brandKicker(value: string | undefined): string {
-  const raw = String(value ?? '').trim() || 'PPC Â· VILLAGE';
+  const raw = String(value ?? '').trim() || 'PPC · VILLAGE';
   return raw.replace(/exco/gi, 'VILLAGE');
 }
 
 function enLabel(value: string): string {
   const key = String(value ?? '').trim();
   if (key === 'Hors effectif') return 'Non-staff';
-  if (key === 'Non renseignÃ©') return 'Not specified';
+  if (key === 'Non renseigné') return 'Not specified';
   return key;
 }
 
@@ -81,7 +81,7 @@ function addChrome(
   title: string,
   period: string,
   sectionNo?: string,
-  kicker = 'PPC Â· VILLAGE',
+  kicker = 'PPC · VILLAGE',
 ): void {
   slide.addShape('rect', {
     x: 0, y: 0, w: W, h: 0.07,
@@ -210,7 +210,7 @@ function bodyCell(
   opts?: { bold?: boolean; align?: 'left' | 'center'; color?: string },
 ) {
   return {
-    text: text || 'â€”',
+    text: text || '—',
     options: {
       bold: Boolean(opts?.bold),
       color: opts?.color || PPC.ink,
@@ -380,7 +380,7 @@ async function addDashboardSlide(
       bodyCell(enLabel(row.departement), fill, { bold: true, align: 'left' }),
       ...cols.map((col) => {
         const n = row.counts[col] ?? 0;
-        return bodyCell(n ? String(n) : 'â€”', fill, { color: n ? PPC.ink : PPC.muted });
+        return bodyCell(n ? String(n) : '—', fill, { color: n ? PPC.ink : PPC.muted });
       }),
       bodyCell(String(row.total), fill, { bold: true, color: PPC.red }),
     ];
@@ -395,7 +395,7 @@ async function addDashboardSlide(
   const firstColW = 2.15;
   const restCount = cols.length + 1;
   const restW = (6.5 - firstColW) / Math.max(1, restCount);
-  s.addText('By department Ã— type', {
+  s.addText('By department × type', {
     x: 6.5, y: 2.14, w: 6.5, h: 0.26,
     fontSize: 12, bold: true, color: PPC.ink, fontFace: FONT_TITLE,
   });
@@ -449,7 +449,7 @@ async function addEmptyHousesSlide(
           value: String(count),
         })),
       ];
-      while (summary.length < 4) summary.push({ label: 'â€”', value: 'â€”' });
+      while (summary.length < 4) summary.push({ label: '—', value: '—' });
       summary.slice(0, 4).forEach((card, i) => {
         kpiCard(s, 0.4 + i * (cardW + gap), 0.88, cardW, 0.95, card.label, card.value);
       });
@@ -473,7 +473,7 @@ async function addEmptyHousesSlide(
         return [
           bodyCell(displayHouse(m.numero), fill, { bold: true, align: 'left', color: PPC.red }),
           bodyCell(enLabel(type), fill, { align: 'left' }),
-          bodyCell(m.capacite != null ? String(m.capacite) : 'â€”', fill),
+          bodyCell(m.capacite != null ? String(m.capacite) : '—', fill),
           bodyCell('Vacant', fill, { color: PPC.warning, bold: true }),
         ];
       });
@@ -532,7 +532,7 @@ async function addProposalsSlide(
 
   const items = deck.proposals.items.length
     ? deck.proposals.items
-    : [{ id: 'empty', house: 'â€”', name: 'No proposal', matricule: '', purpose: '', badge: 'proposal' as const }];
+    : [{ id: 'empty', house: '—', name: 'No proposal', matricule: '', purpose: '', badge: 'proposal' as const }];
   const startY = deck.proposals.note ? 1.08 : 0.92;
   const available = 7.22 - startY;
   const rowH = Math.min(0.82, available / Math.max(items.length, 1));
@@ -543,14 +543,14 @@ async function addProposalsSlide(
     const maison = findMaison(occupancy, spec.house);
     const type = maison
       ? resolveMaisonTypeLabel(maison.taille, maison.typeMaison, tailles)
-      : 'â€”';
-    const houseLabel = maison ? displayHouse(maison.numero) : (spec.house || 'â€”');
+      : '—';
+    const houseLabel = maison ? displayHouse(maison.numero) : (spec.house || '—');
     const occupantNow = maison?.occupants[0];
     const status = occupantNow
       ? `Currently: ${formatDisplayName(occupantNow.nom)}`
       : 'Currently vacant';
     const roleOnly = spec.badge === 'role';
-    const name = spec.name || 'â€”';
+    const name = spec.name || '—';
     const matricule = roleOnly ? '' : spec.matricule;
     const job = spec.purpose;
 
@@ -580,7 +580,7 @@ async function addProposalsSlide(
     s.addText(
       [job, matricule ? `ID ${matricule}` : '']
         .filter(Boolean)
-        .join('  Â·  ') || ' ',
+        .join('  ·  ') || ' ',
       {
         x: 1.85, y: y + 0.34, w: 6.4, h: 0.22,
         fontSize: 11, color: PPC.muted, fontFace: FONT,
@@ -669,7 +669,7 @@ export async function buildVillagePptxBuffer(
   pptx.defineLayout({ name: 'WIDE', width: W, height: H });
   pptx.layout = 'WIDE';
   pptx.author = 'PPC HR';
-  pptx.title = `Village housing â€” ${deck.period}`;
+  pptx.title = `Village housing — ${deck.period}`;
 
   await addCoverSlide(pptx, deck);
   await addDashboardSlide(pptx, deck, stats);

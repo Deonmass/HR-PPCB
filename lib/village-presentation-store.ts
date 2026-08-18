@@ -7,6 +7,7 @@ import {
   DURABLE_VILLAGE_PRESENTATION_KEY,
   hydrateDurableFile,
   persistDurableFile,
+  rememberDurableMergeBase,
 } from './durable-fs';
 import { canPersistProjectFiles, getWritableDataRoot } from './runtime-mode';
 import type { Employee } from './types';
@@ -59,7 +60,19 @@ export async function saveVillagePresentation(
   saved.updatedAt = new Date().toISOString();
   const filePath = presentationPath();
   await fsPromises.mkdir(path.dirname(filePath), { recursive: true });
+  await hydrateDurableFile(DURABLE_VILLAGE_PRESENTATION_KEY, filePath);
+  try {
+    const previous = await fsPromises.readFile(filePath);
+    rememberDurableMergeBase(DURABLE_VILLAGE_PRESENTATION_KEY, previous);
+  } catch {
+    // nouveau fichier
+  }
   await fsPromises.writeFile(filePath, JSON.stringify(saved, null, 2), 'utf8');
-  await persistDurableFile(DURABLE_VILLAGE_PRESENTATION_KEY, filePath);
+  try {
+    await persistDurableFile(DURABLE_VILLAGE_PRESENTATION_KEY, filePath);
+  } catch (err) {
+    const message = err instanceof Error ? err.message : String(err);
+    throw new Error(`Impossible d’enregistrer la présentation en ligne : ${message}`);
+  }
   return saved;
 }

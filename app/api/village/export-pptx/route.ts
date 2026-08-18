@@ -1,6 +1,5 @@
 import { NextResponse } from 'next/server';
 import { readDependantsData } from '@/lib/dependants-json-store';
-import { excelErrorResponse } from '@/lib/excel-io';
 import { readEmployees } from '@/lib/employees-json-store';
 import { checkAnyPermission } from '@/lib/require-permission';
 import { normalizeVillagePresentation } from '@/lib/village-presentation';
@@ -38,12 +37,16 @@ async function exportPptx(rawPresentation?: unknown) {
     presentation,
   );
   const filename = buildVillagePptxFilename();
-  await auditSimpleAction({
-    module: 'village.maisons',
-    action: 'export',
-    summary: `Export présentation village (${filename})`,
-    details: `Fichier PowerPoint exporté : ${filename}`,
-  });
+  try {
+    await auditSimpleAction({
+      module: 'village.maisons',
+      action: 'export',
+      summary: `Export présentation village (${filename})`,
+      details: `Fichier PowerPoint exporté : ${filename}`,
+    });
+  } catch (auditErr) {
+    console.error('[village-pptx] audit skipped', auditErr);
+  }
   return new NextResponse(new Uint8Array(buffer), {
     headers: {
       'Content-Type':
@@ -60,17 +63,21 @@ export async function GET() {
   try {
     return await exportPptx();
   } catch (err) {
-    const { status, message } = excelErrorResponse(err);
-    await logAuditError({
-      message,
-      details: `Échec export PPTX village: ${message}`,
-      module: 'village.maisons',
-      path: '/api/village/export-pptx',
-      method: 'GET',
-      stack: err instanceof Error ? err.stack : undefined,
-      user: await getAuditActor(),
-    });
-    return NextResponse.json({ error: message }, { status });
+    const message = err instanceof Error ? err.message : 'Erreur d’export';
+    try {
+      await logAuditError({
+        message,
+        details: `Échec export PPTX village: ${message}`,
+        module: 'village.maisons',
+        path: '/api/village/export-pptx',
+        method: 'GET',
+        stack: err instanceof Error ? err.stack : undefined,
+        user: await getAuditActor(),
+      });
+    } catch {
+      // ignore
+    }
+    return NextResponse.json({ error: message }, { status: 500 });
   }
 }
 
@@ -81,16 +88,20 @@ export async function POST(request: Request) {
     const body = await request.json().catch(() => null);
     return await exportPptx(body);
   } catch (err) {
-    const { status, message } = excelErrorResponse(err);
-    await logAuditError({
-      message,
-      details: `Échec export PPTX village: ${message}`,
-      module: 'village.maisons',
-      path: '/api/village/export-pptx',
-      method: 'POST',
-      stack: err instanceof Error ? err.stack : undefined,
-      user: await getAuditActor(),
-    });
-    return NextResponse.json({ error: message }, { status });
+    const message = err instanceof Error ? err.message : 'Erreur d’export';
+    try {
+      await logAuditError({
+        message,
+        details: `Échec export PPTX village: ${message}`,
+        module: 'village.maisons',
+        path: '/api/village/export-pptx',
+        method: 'POST',
+        stack: err instanceof Error ? err.stack : undefined,
+        user: await getAuditActor(),
+      });
+    } catch {
+      // ignore
+    }
+    return NextResponse.json({ error: message }, { status: 500 });
   }
 }

@@ -55,6 +55,8 @@ function safeJsonStringify(value: unknown): string {
   }
 }
 
+let auditFileUnreadable = false;
+
 function emptyStore(): AuditLogsStore {
   return { entries: [], nextSeq: 1 };
 }
@@ -69,22 +71,35 @@ async function readJsonFile(): Promise<AuditLogsStore> {
   try {
     const raw = await fsPromises.readFile(filePath, 'utf8');
     const parsed = JSON.parse(raw) as AuditLogsStore;
+    auditFileUnreadable = false;
     return {
       entries: Array.isArray(parsed.entries) ? parsed.entries : [],
       nextSeq: Number.isFinite(parsed.nextSeq) && parsed.nextSeq > 0 ? parsed.nextSeq : 1,
     };
   } catch (err) {
     const code = (err as NodeJS.ErrnoException)?.code;
-    if (code === 'ENOENT') return emptyStore();
-    throw err;
+    if (code === 'ENOENT') {
+      auditFileUnreadable = false;
+      return emptyStore();
+    }
+    auditFileUnreadable = true;
+    console.error('[audit-log] JSON illisible, écriture ignorée:', err instanceof Error ? err.message : err);
+    return emptyStore();
   }
 }
 
 async function writeJsonFile(store: AuditLogsStore): Promise<void> {
+  if (auditFileUnreadable) {
+    throw new Error('Journal d’audit illisible — enregistrement du journal ignoré');
+  }
   const filePath = resolveStorePath();
   await fsPromises.mkdir(path.dirname(filePath), { recursive: true });
   await fsPromises.writeFile(filePath, safeJsonStringify(store), 'utf8');
-  await persistDurableFile(DURABLE_AUDIT_LOGS_KEY, filePath);
+  try {
+    await persistDurableFile(DURABLE_AUDIT_LOGS_KEY, filePath);
+  } catch (err) {
+    console.error('[audit-log] persist GitHub ignoré:', err instanceof Error ? err.message : err);
+  }
 }
 
 async function writeAppendFailureSidecar(

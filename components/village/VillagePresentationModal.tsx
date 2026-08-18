@@ -1,11 +1,14 @@
 'use client';
 
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
+import EmployeePicker, { type EmployeeSelection } from '@/components/EmployeePicker';
 import { downloadVillagePptx } from '@/lib/village-export';
+import { emptyEmployeeHrProfile, type Employee } from '@/lib/types';
 import { showError, showSuccess } from '@/lib/swal';
 import {
   emptyProposal,
   type VillagePresentation,
+  type VillagePresentationAgent,
   type VillagePresentationLive,
   type VillagePresentationProposal,
 } from '@/lib/village-presentation';
@@ -72,6 +75,19 @@ function Area({
   );
 }
 
+function agentToEmployee(agent: VillagePresentationAgent): Employee {
+  return {
+    ...emptyEmployeeHrProfile(),
+    matricule: agent.matricule,
+    nom: agent.nom,
+    departement: agent.departement,
+    grade: '',
+    jobTitle: agent.jobTitle,
+    localisation: '',
+    documents: {},
+  };
+}
+
 export default function VillagePresentationModal({
   open,
   canEdit,
@@ -90,6 +106,9 @@ export default function VillagePresentationModal({
   const [dirty, setDirty] = useState(false);
   const [deck, setDeck] = useState<VillagePresentation | null>(null);
   const [live, setLive] = useState<VillagePresentationLive | null>(null);
+  const [agents, setAgents] = useState<VillagePresentationAgent[]>([]);
+
+  const pickerEmployees = useMemo(() => agents.map(agentToEmployee), [agents]);
 
   const patch = useCallback((updater: (prev: VillagePresentation) => VillagePresentation) => {
     setDeck((prev) => (prev ? updater(prev) : prev));
@@ -103,19 +122,20 @@ export default function VillagePresentationModal({
       const json = (await res.json()) as {
         presentation?: VillagePresentation;
         live?: VillagePresentationLive;
+        agents?: VillagePresentationAgent[];
         error?: string;
       };
       if (!res.ok) throw new Error(json.error || 'Chargement impossible');
       setDeck(json.presentation ?? null);
       setLive(json.live ?? null);
+      setAgents(Array.isArray(json.agents) ? json.agents : []);
       setDirty(false);
     } catch (err) {
       await showError(err instanceof Error ? err.message : 'Chargement impossible');
-      onClose();
     } finally {
       setLoading(false);
     }
-  }, [onClose]);
+  }, []);
 
   useEffect(() => {
     if (open) {
@@ -169,6 +189,14 @@ export default function VillagePresentationModal({
     }));
   };
 
+  const assignAgent = (id: string, selection: EmployeeSelection | null) => {
+    updateProposal(id, {
+      name: selection?.nom ?? '',
+      matricule: selection?.matricule ?? '',
+      badge: selection?.matricule ? 'proposal' : undefined,
+    });
+  };
+
   if (!open) return null;
 
   return (
@@ -177,9 +205,6 @@ export default function VillagePresentationModal({
       role="dialog"
       aria-modal="true"
       aria-label="Préparer la présentation"
-      onClick={(e) => {
-        if (e.target === e.currentTarget && !saving && !exporting) onClose();
-      }}
     >
       <div className="village-pptx-modal">
         <div className="village-pptx-modal-head">
@@ -215,11 +240,12 @@ export default function VillagePresentationModal({
             )}
             <button
               type="button"
-              className="btn btn-ghost btn-sm"
+              className="modal-close"
+              aria-label="Fermer"
               disabled={saving || exporting}
               onClick={onClose}
             >
-              Fermer
+              ×
             </button>
           </div>
         </div>
@@ -275,9 +301,13 @@ export default function VillagePresentationModal({
                 disabled={!canEdit}
                 onChange={(v) => patch((p) => ({ ...p, cover: { ...p.cover, place: v } }))}
               />
-              <p className="village-pptx-preview-line">
-                {deck.cover.title} HELD ON {deck.cover.date}, IN {deck.cover.place}
-              </p>
+              <div className="village-pptx-cover-preview" aria-hidden>
+                <img src="/exco/cover-banner.png" alt="" />
+                <p className="village-pptx-cover-meet">
+                  <img src="/exco/cover-badge.png" alt="" />
+                  {deck.cover.title} HELD ON {deck.cover.date}, IN {deck.cover.place}
+                </p>
+              </div>
             </div>
           ) : tab === 'dashboard' ? (
             <div className="village-pptx-grid">
@@ -424,16 +454,37 @@ export default function VillagePresentationModal({
                       disabled={!canEdit}
                       onChange={(v) => updateProposal(item.id, { house: v })}
                     />
-                    <Field
-                      label="Name / role"
-                      value={item.name}
-                      disabled={!canEdit}
-                      onChange={(v) => updateProposal(item.id, { name: v })}
-                    />
+                    {item.badge === 'role' ? (
+                      <Field
+                        label="Name / role"
+                        value={item.name}
+                        disabled={!canEdit}
+                        placeholder="Poste ou usage"
+                        onChange={(v) => updateProposal(item.id, { name: v, matricule: '' })}
+                      />
+                    ) : (
+                      <label className="village-pptx-field">
+                        Agent
+                        <EmployeePicker
+                          employees={pickerEmployees}
+                          value={
+                            item.name
+                              ? {
+                                  nom: item.name,
+                                  matricule: item.matricule,
+                                  departement: '',
+                                }
+                              : null
+                          }
+                          onChange={(selection) => assignAgent(item.id, selection)}
+                          placeholder="Rechercher un agent…"
+                        />
+                      </label>
+                    )}
                     <Field
                       label="ID"
                       value={item.matricule}
-                      disabled={!canEdit}
+                      disabled={!canEdit || item.badge !== 'role'}
                       onChange={(v) => updateProposal(item.id, { matricule: v })}
                     />
                     <Field
@@ -451,10 +502,11 @@ export default function VillagePresentationModal({
                         onChange={(e) =>
                           updateProposal(item.id, {
                             badge: e.target.value === 'role' ? 'role' : 'proposal',
+                            matricule: e.target.value === 'role' ? '' : item.matricule,
                           })
                         }
                       >
-                        <option value="proposal">Proposal</option>
+                        <option value="proposal">Agent</option>
                         <option value="role">Role / use</option>
                       </select>
                     </label>
@@ -493,13 +545,11 @@ export default function VillagePresentationModal({
                 disabled={!canEdit}
                 onChange={(v) => patch((p) => ({ ...p, thankYou: { ...p.thankYou, message: v } }))}
               />
-              <p className="village-pptx-preview-line">
-                {deck.thankYou.kicker}
-                <br />
-                <strong>{deck.thankYou.message}</strong>
-                <br />
-                {deck.period}
-              </p>
+              <div className="village-pptx-cover-preview village-pptx-thanks-card" aria-hidden>
+                <p className="village-pptx-thanks-kicker">{deck.thankYou.kicker}</p>
+                <strong className="village-pptx-thanks-msg">{deck.thankYou.message}</strong>
+                <span className="village-pptx-thanks-period">{deck.period}</span>
+              </div>
             </div>
           )}
         </div>

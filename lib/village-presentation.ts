@@ -40,6 +40,13 @@ export interface VillagePresentation {
   updatedAt?: string;
 }
 
+export type VillagePresentationAgent = {
+  matricule: string;
+  nom: string;
+  departement: string;
+  jobTitle: string;
+};
+
 export type VillagePresentationLive = {
   maisonsTotal: number;
   maisonsOccupees: number;
