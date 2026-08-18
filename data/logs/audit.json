@@ -1,6 +1,106 @@
 {
   "entries": [
     {
+      "id": "log-000453",
+      "at": "2026-08-18T08:59:06.953Z",
+      "userId": "admin",
+      "userName": "Administrateur",
+      "module": "timesheet.overtimes",
+      "moduleLabel": "Timesheet — Heures sup.",
+      "action": "update",
+      "actionLabel": "Modification",
+      "summary": "Enregistrement HS semaine 4 — Mining (8/2026)",
+      "details": "Enregistrement HS semaine 4 — Mining (8/2026)",
+      "after": {
+        "weekIndex": 4,
+        "department": "Mining",
+        "weekFromTo": "du 10/08/2026 au 17/08/2026",
+        "locked": false,
+        "entries": {
+          "70000013": {
+            "matricule": "70000013",
+            "ot13": 0,
+            "ot16": 0,
+            "ot2": 0,
+            "night": 0
+          },
+          "70000042": {
+            "matricule": "70000042",
+            "ot13": 0,
+            "ot16": 0,
+            "ot2": 0,
+            "night": 0
+          },
+          "70000043": {
+            "matricule": "70000043",
+            "ot13": 0,
+            "ot16": 0,
+            "ot2": 0,
+            "night": 0
+          },
+          "70000097": {
+            "matricule": "70000097",
+            "ot13": 0,
+            "ot16": 0,
+            "ot2": 0,
+            "night": 0
+          },
+          "70000102": {
+            "matricule": "70000102",
+            "ot13": 0,
+            "ot16": 0,
+            "ot2": 0,
+            "night": 0
+          },
+          "70000124": {
+            "matricule": "70000124",
+            "ot13": 0,
+            "ot16": 0,
+            "ot2": 0,
+            "night": 0
+          },
+          "70000129": {
+            "matricule": "70000129",
+            "ot13": 0,
+            "ot16": 0,
+            "ot2": 0,
+            "night": 0
+          },
+          "70000204": {
+            "matricule": "70000204",
+            "ot13": 0,
+            "ot16": 0,
+            "ot2": 0,
+            "night": 0
+          },
+          "70000233": {
+            "matricule": "70000233",
+            "ot13": 0,
+            "ot16": 0,
+            "ot2": 0,
+            "night": 0
+          },
+          "70000266": {
+            "matricule": "70000266",
+            "ot13": 0,
+            "ot16": 0,
+            "ot2": 0,
+            "night": 0
+          }
+        },
+        "updatedAt": "2026-08-18T08:59:04.444Z",
+        "updatedBy": "admin"
+      },
+      "undoable": false,
+      "undone": false,
+      "meta": {
+        "year": 2026,
+        "month": 8,
+        "department": "Mining",
+        "weekIndex": 4
+      }
+    },
+    {
       "id": "log-000452",
       "at": "2026-08-18T08:56:18.162Z",
       "userId": "admin",
@@ -34261,5 +34361,5 @@
       }
     }
   ],
-  "nextSeq": 453
+  "nextSeq": 454
 }
