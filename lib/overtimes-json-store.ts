@@ -6,8 +6,12 @@ import path from 'path';
 import {
   DURABLE_OVERTIMES_TIMESHEETS_KEY,
   DURABLE_OVERTIMES_WEEKLY_KEY,
+  durableTimesheetsMonthKey,
+  hasHydratedRemoteSha,
   hydrateDurableFile,
+  isDurableRemoteEnabled,
   persistDurableFile,
+  rememberDurableMergeBase,
 } from './durable-fs';
 import { canPersistProjectFiles, getWritableDataRoot } from './runtime-mode';
 import type { TimesheetDayEntry, TimesheetShiftType } from './timesheet-types';
@@ -25,6 +29,21 @@ export interface TimesheetEntriesData {
   periods: Record<string, TimesheetPeriodStore>;
 }
 
+/** One month, keyed by agent — small GitHub writes, easy merge of concurrent saves. */
+export interface TimesheetAgentMonthStore {
+  matricule: string;
+  days: Record<string, TimesheetDayEntry>;
+}
+
+export interface TimesheetMonthFile {
+  year: number;
+  month: number;
+  updatedAt?: string;
+  /** True only after the app persisted this month (ignore git seeds online). */
+  persistedByApp?: boolean;
+  agents: Record<string, TimesheetAgentMonthStore>;
+}
+
 function resolveStorePath(relativePath: string): string {
   if (canPersistProjectFiles()) return path.join(process.cwd(), relativePath);
   const writable = path.join(getWritableDataRoot(), relativePath.replace(/^data[\\/]/, ''));
@@ -40,8 +59,12 @@ function resolveStorePath(relativePath: string): string {
   return writable;
 }
 
-function timesheetsPath(): string {
+function timesheetsLegacyPath(): string {
   return resolveStorePath(path.join('data', 'overtimes', 'timesheets.json'));
+}
+
+function timesheetsMonthPath(year: number, month: number): string {
+  return resolveStorePath(path.join('data', 'overtimes', 'timesheets', monthFileName(year, month)));
 }
 
 function weeklyPath(): string {
@@ -50,6 +73,87 @@ function weeklyPath(): string {
 
 function periodKey(year: number, month: number): string {
   return `${year}-${month}`;
+}
+
+function monthFileName(year: number, month: number): string {
+  return `${String(Math.trunc(year)).padStart(4, '0')}-${String(Math.trunc(month)).padStart(2, '0')}.json`;
+}
+
+function monthLockKey(year: number, month: number): string {
+  return `timesheets:${monthFileName(year, month)}`;
+}
+
+function legacyPeriodKeys(year: number, month: number): string[] {
+  const raw = periodKey(year, month);
+  const padded = `${year}-${String(month).padStart(2, '0')}`;
+  return raw === padded ? [raw] : [raw, padded];
+}
+
+function pickLegacyPeriod(data: TimesheetEntriesData, year: number, month: number): TimesheetPeriodStore {
+  for (const key of legacyPeriodKeys(year, month)) {
+    const period = data.periods[key];
+    if (period?.days) return period;
+  }
+  return { days: {} };
+}
+
+function emptyMonthFile(year: number, month: number): TimesheetMonthFile {
+  return { year, month, agents: {} };
+}
+
+function periodToMonthFile(
+  year: number,
+  month: number,
+  period: TimesheetPeriodStore,
+  persistedByApp = false,
+): TimesheetMonthFile {
+  const agents: Record<string, TimesheetAgentMonthStore> = {};
+  for (const [dateKey, dayMap] of Object.entries(period.days ?? {})) {
+    for (const [matricule, entry] of Object.entries(dayMap ?? {})) {
+      const id = String(matricule).trim();
+      if (!id) continue;
+      if (!agents[id]) agents[id] = { matricule: id, days: {} };
+      agents[id].days[dateKey] = entry;
+    }
+  }
+  const file: TimesheetMonthFile = {
+    year,
+    month,
+    updatedAt: new Date().toISOString(),
+    agents,
+  };
+  if (persistedByApp) file.persistedByApp = true;
+  return file;
+}
+
+function monthFileToPeriod(file: TimesheetMonthFile): TimesheetPeriodStore {
+  const days: Record<string, Record<string, TimesheetDayEntry>> = {};
+  for (const [matricule, agent] of Object.entries(file.agents ?? {})) {
+    for (const [dateKey, entry] of Object.entries(agent?.days ?? {})) {
+      if (!days[dateKey]) days[dateKey] = {};
+      days[dateKey][matricule] = entry;
+    }
+  }
+  return { days };
+}
+
+function parseMonthFile(raw: unknown, year: number, month: number): TimesheetMonthFile | null {
+  if (!raw || typeof raw !== 'object') return null;
+  const value = raw as Partial<TimesheetMonthFile> & { days?: TimesheetPeriodStore['days'] };
+  if (value.agents && typeof value.agents === 'object') {
+    return {
+      year: Number(value.year) || year,
+      month: Number(value.month) || month,
+      updatedAt: value.updatedAt,
+      persistedByApp: Boolean(value.persistedByApp),
+      agents: value.agents,
+    };
+  }
+  if (value.days && typeof value.days === 'object') {
+    const file = periodToMonthFile(year, month, { days: value.days }, Boolean(value.persistedByApp));
+    return file;
+  }
+  return null;
 }
 
 async function readJsonFile<T>(repoKey: string, filePath: string, fallback: T): Promise<T> {
@@ -78,8 +182,6 @@ function withJsonStoreLock<T>(lockKey: string, fn: () => Promise<T>): Promise<T>
   jsonStoreLocks.set(lockKey, run.catch(() => undefined));
   return run;
 }
-
-const TIMESHEETS_LOCK = 'timesheets';
 
 async function loadLegacyTimesheets(): Promise<TimesheetEntriesData> {
   const candidates = [
@@ -180,10 +282,79 @@ async function loadLegacyWeekly(): Promise<WeeklyOvertimeData> {
 }
 
 async function ensureTimesheetsMigrated(): Promise<void> {
-  const exists = await fsPromises.access(timesheetsPath()).then(() => true).catch(() => false);
+  const exists = await fsPromises.access(timesheetsLegacyPath()).then(() => true).catch(() => false);
   if (exists) return;
   const legacy = await loadLegacyTimesheets();
-  await writeJsonFile(DURABLE_OVERTIMES_TIMESHEETS_KEY, timesheetsPath(), legacy);
+  await writeJsonFile(DURABLE_OVERTIMES_TIMESHEETS_KEY, timesheetsLegacyPath(), legacy);
+}
+
+function monthFileBuffer(file: TimesheetMonthFile): Buffer {
+  return Buffer.from(JSON.stringify(file, null, 2), 'utf8');
+}
+
+async function readMonthFileFromDisk(year: number, month: number): Promise<TimesheetMonthFile | null> {
+  try {
+    const raw = await fsPromises.readFile(timesheetsMonthPath(year, month), 'utf8');
+    return parseMonthFile(JSON.parse(raw), year, month);
+  } catch (err) {
+    const code = (err as NodeJS.ErrnoException)?.code;
+    if (code === 'ENOENT') return null;
+    throw err;
+  }
+}
+
+async function rememberMonthMergeBase(year: number, month: number, file: TimesheetMonthFile): Promise<void> {
+  rememberDurableMergeBase(durableTimesheetsMonthKey(year, month), monthFileBuffer(file));
+}
+
+async function readLegacyTimesheetData(): Promise<TimesheetEntriesData> {
+  await ensureTimesheetsMigrated();
+  return readJsonFile(DURABLE_OVERTIMES_TIMESHEETS_KEY, timesheetsLegacyPath(), { periods: {} });
+}
+
+async function readMonthPeriod(year: number, month: number): Promise<TimesheetPeriodStore> {
+  const monthlyKey = durableTimesheetsMonthKey(year, month);
+  const monthlyPath = timesheetsMonthPath(year, month);
+  await hydrateDurableFile(monthlyKey, monthlyPath);
+  const monthly = await readMonthFileFromDisk(year, month);
+  const remoteMonthly = hasHydratedRemoteSha(monthlyKey);
+
+  if (isDurableRemoteEnabled()) {
+    if (remoteMonthly && monthly?.persistedByApp) {
+      await rememberMonthMergeBase(year, month, monthly);
+      return monthFileToPeriod(monthly);
+    }
+    const legacy = await readLegacyTimesheetData();
+    const period = pickLegacyPeriod(legacy, year, month);
+    if (Object.keys(period.days).length) {
+      await rememberMonthMergeBase(year, month, periodToMonthFile(year, month, period));
+      return period;
+    }
+    if (monthly) {
+      await rememberMonthMergeBase(year, month, monthly);
+      return monthFileToPeriod(monthly);
+    }
+    await rememberMonthMergeBase(year, month, emptyMonthFile(year, month));
+    return { days: {} };
+  }
+
+  if (monthly) {
+    await rememberMonthMergeBase(year, month, monthly);
+    return monthFileToPeriod(monthly);
+  }
+
+  const legacy = await readLegacyTimesheetData();
+  const period = pickLegacyPeriod(legacy, year, month);
+  const seed = periodToMonthFile(year, month, period);
+  await fsPromises.mkdir(path.dirname(monthlyPath), { recursive: true });
+  await fsPromises.writeFile(monthlyPath, monthFileBuffer(seed), 'utf8');
+  await rememberMonthMergeBase(year, month, seed);
+  return period;
+}
+
+async function writeMonthPeriod(year: number, month: number, period: TimesheetPeriodStore): Promise<void> {
+  const file = periodToMonthFile(year, month, period, true);
+  await writeJsonFile(durableTimesheetsMonthKey(year, month), timesheetsMonthPath(year, month), file);
 }
 
 async function ensureWeeklyMigrated(): Promise<void> {
@@ -191,15 +362,6 @@ async function ensureWeeklyMigrated(): Promise<void> {
   if (exists) return;
   const legacy = await loadLegacyWeekly();
   await writeJsonFile(DURABLE_OVERTIMES_WEEKLY_KEY, weeklyPath(), legacy);
-}
-
-async function readTimesheetData(): Promise<TimesheetEntriesData> {
-  await ensureTimesheetsMigrated();
-  return readJsonFile(DURABLE_OVERTIMES_TIMESHEETS_KEY, timesheetsPath(), { periods: {} });
-}
-
-async function writeTimesheetData(data: TimesheetEntriesData): Promise<void> {
-  await writeJsonFile(DURABLE_OVERTIMES_TIMESHEETS_KEY, timesheetsPath(), data);
 }
 
 async function readWeeklyData(): Promise<WeeklyOvertimeData> {
@@ -245,8 +407,7 @@ export async function getDepartmentCalendarStatus(
 ): Promise<{ savedDateKeys: string[]; completeDateKeys: string[]; planningCompleteDateKeys: string[] }> {
   const total = departmentMatricules.size;
   if (!total) return { savedDateKeys: [], completeDateKeys: [], planningCompleteDateKeys: [] };
-  const data = await readTimesheetData();
-  const days = data.periods[periodKey(year, month)]?.days ?? {};
+  const days = (await readMonthPeriod(year, month)).days;
   const savedDateKeys: string[] = [];
   const completeDateKeys: string[] = [];
   const planningCompleteDateKeys: string[] = [];
@@ -282,9 +443,7 @@ export async function getEmployeeTimesheetEntries(
   month: number,
   matricule: string,
 ): Promise<Record<string, TimesheetDayEntry>> {
-  const data = await readTimesheetData();
-  const period = data.periods[periodKey(year, month)];
-  if (!period) return {};
+  const period = await readMonthPeriod(year, month);
   const result: Record<string, TimesheetDayEntry> = {};
   for (const [dateKey, dayEntries] of Object.entries(period.days)) {
     const entry = dayEntries[matricule];
@@ -298,8 +457,8 @@ export async function getDayEntriesMap(
   month: number,
   dateKey: string,
 ): Promise<Record<string, TimesheetDayEntry>> {
-  const data = await readTimesheetData();
-  return { ...(data.periods[periodKey(year, month)]?.days[dateKey] ?? {}) };
+  const period = await readMonthPeriod(year, month);
+  return { ...(period.days[dateKey] ?? {}) };
 }
 
 export interface SaveDayEntryPayload {
@@ -344,18 +503,16 @@ function upsertDayEntry(
 }
 
 export async function saveDayEntries(input: SaveDayEntriesInput): Promise<Record<string, TimesheetDayEntry>> {
-  return withJsonStoreLock(TIMESHEETS_LOCK, async () => {
-    const data = await readTimesheetData();
-    const key = periodKey(input.year, input.month);
-    if (!data.periods[key]) data.periods[key] = { days: {} };
-    if (!data.periods[key].days[input.dateKey]) data.periods[key].days[input.dateKey] = {};
+  return withJsonStoreLock(monthLockKey(input.year, input.month), async () => {
+    const period = await readMonthPeriod(input.year, input.month);
+    if (!period.days[input.dateKey]) period.days[input.dateKey] = {};
     const now = new Date().toISOString();
-    const dayMap = data.periods[key].days[input.dateKey];
+    const dayMap = period.days[input.dateKey];
     for (const entry of input.entries) {
       upsertDayEntry(dayMap, entry, input.updatedBy, now);
     }
-    if (!Object.keys(dayMap).length) delete data.periods[key].days[input.dateKey];
-    await writeTimesheetData(data);
+    if (!Object.keys(dayMap).length) delete period.days[input.dateKey];
+    await writeMonthPeriod(input.year, input.month, period);
     return { ...dayMap };
   });
 }
@@ -375,14 +532,12 @@ export interface SaveEmployeePeriodInput {
 }
 
 export async function saveEmployeePeriodEntries(input: SaveEmployeePeriodInput): Promise<void> {
-  return withJsonStoreLock(TIMESHEETS_LOCK, async () => {
-    const data = await readTimesheetData();
-    const key = periodKey(input.year, input.month);
-    if (!data.periods[key]) data.periods[key] = { days: {} };
+  return withJsonStoreLock(monthLockKey(input.year, input.month), async () => {
+    const period = await readMonthPeriod(input.year, input.month);
     const now = new Date().toISOString();
     for (const entry of input.entries) {
-      if (!data.periods[key].days[entry.dateKey]) data.periods[key].days[entry.dateKey] = {};
-      const dayMap = data.periods[key].days[entry.dateKey];
+      if (!period.days[entry.dateKey]) period.days[entry.dateKey] = {};
+      const dayMap = period.days[entry.dateKey];
       upsertDayEntry(
         dayMap,
         {
@@ -395,9 +550,9 @@ export async function saveEmployeePeriodEntries(input: SaveEmployeePeriodInput):
         input.updatedBy,
         now,
       );
-      if (!Object.keys(dayMap).length) delete data.periods[key].days[entry.dateKey];
+      if (!Object.keys(dayMap).length) delete period.days[entry.dateKey];
     }
-    await writeTimesheetData(data);
+    await writeMonthPeriod(input.year, input.month, period);
   });
 }
 
@@ -409,8 +564,7 @@ export async function getPlanningCompleteWeekIndexes(
 ): Promise<number[]> {
   const total = departmentMatricules.size;
   if (!total || !periodDateKeys.length) return [];
-  const data = await readTimesheetData();
-  const days = data.periods[periodKey(year, month)]?.days ?? {};
+  const days = (await readMonthPeriod(year, month)).days;
   const weekCount = Math.ceil(periodDateKeys.length / 7);
   const complete: number[] = [];
   for (let weekIndex = 0; weekIndex < weekCount; weekIndex += 1) {
@@ -438,8 +592,7 @@ export async function getWeekPlanningEntries(
   month: number,
   dateKeys: string[],
 ): Promise<Record<string, Record<string, TimesheetDayEntry>>> {
-  const data = await readTimesheetData();
-  const days = data.periods[periodKey(year, month)]?.days ?? {};
+  const days = (await readMonthPeriod(year, month)).days;
   const result: Record<string, Record<string, TimesheetDayEntry>> = {};
   for (const dateKey of dateKeys) result[dateKey] = { ...(days[dateKey] ?? {}) };
   return result;
@@ -457,17 +610,15 @@ export interface SavePlanningWeekInput {
 }
 
 export async function savePlanningWeekEntries(input: SavePlanningWeekInput): Promise<void> {
-  return withJsonStoreLock(TIMESHEETS_LOCK, async () => {
-    const data = await readTimesheetData();
-    const key = periodKey(input.year, input.month);
-    if (!data.periods[key]) data.periods[key] = { days: {} };
+  return withJsonStoreLock(monthLockKey(input.year, input.month), async () => {
+    const period = await readMonthPeriod(input.year, input.month);
     const now = new Date().toISOString();
     for (const entry of input.entries) {
-      if (!data.periods[key].days[entry.dateKey]) data.periods[key].days[entry.dateKey] = {};
-      const dayMap = data.periods[key].days[entry.dateKey];
+      if (!period.days[entry.dateKey]) period.days[entry.dateKey] = {};
+      const dayMap = period.days[entry.dateKey];
       if (entry.shiftType === null) {
         delete dayMap[entry.matricule];
-        if (!Object.keys(dayMap).length) delete data.periods[key].days[entry.dateKey];
+        if (!Object.keys(dayMap).length) delete period.days[entry.dateKey];
         continue;
       }
       dayMap[entry.matricule] = {
@@ -480,7 +631,7 @@ export async function savePlanningWeekEntries(input: SavePlanningWeekInput): Pro
         updatedBy: input.updatedBy,
       };
     }
-    await writeTimesheetData(data);
+    await writeMonthPeriod(input.year, input.month, period);
   });
 }
 
@@ -820,5 +971,5 @@ export function buildWeeklyEntriesForAgents(
 }
 
 export function getOvertimesDataPath(): string {
-  return timesheetsPath();
+  return resolveStorePath(path.join('data', 'overtimes', 'timesheets'));
 }

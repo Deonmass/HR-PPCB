@@ -194,6 +194,25 @@ function readSheetRows(filePath, sheetName, dataStart) {
     ? JSON.parse(fs.readFileSync(weeklyPath, 'utf8'))
     : { periods: {} };
   writeJson('data/overtimes/timesheets.json', { periods: timesheets.periods ?? {} });
+  const monthDir = path.join(root, 'data', 'overtimes', 'timesheets');
+  fs.mkdirSync(monthDir, { recursive: true });
+  for (const [key, period] of Object.entries(timesheets.periods ?? {})) {
+    const [ys, ms] = String(key).split('-');
+    const year = Number(ys);
+    const month = Number(ms);
+    if (!year || !month) continue;
+    const agents = {};
+    for (const [dateKey, dayMap] of Object.entries(period.days ?? {})) {
+      for (const [mat, entry] of Object.entries(dayMap ?? {})) {
+        const id = String(mat).trim();
+        if (!id) continue;
+        if (!agents[id]) agents[id] = { matricule: id, days: {} };
+        agents[id].days[dateKey] = entry;
+      }
+    }
+    const name = `${String(year).padStart(4, '0')}-${String(month).padStart(2, '0')}.json`;
+    writeJson(`data/overtimes/timesheets/${name}`, { year, month, updatedAt: new Date().toISOString(), agents });
+  }
   writeJson('data/overtimes/weekly-overtime.json', { periods: weekly.periods ?? {} });
 }
 

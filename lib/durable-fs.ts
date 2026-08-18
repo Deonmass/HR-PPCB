@@ -28,8 +28,16 @@ export const DURABLE_FACTURES_SUIVI_KEY = 'data/factures-fournisseurs/factures.j
 export const DURABLE_FOURNISSEURS_KEY = 'data/factures-fournisseurs/fournisseurs.json';
 export const DURABLE_PROJECTS_KEY = 'data/projects/projects.json';
 export const DURABLE_PROJECT_EXPENSES_KEY = 'data/projects/expenses.json';
+/** @deprecated Giant file — timesheets are stored per month under DURABLE_OVERTIMES_TIMESHEETS_DIR. */
 export const DURABLE_OVERTIMES_TIMESHEETS_KEY = 'data/overtimes/timesheets.json';
+export const DURABLE_OVERTIMES_TIMESHEETS_DIR = 'data/overtimes/timesheets';
 export const DURABLE_OVERTIMES_WEEKLY_KEY = 'data/overtimes/weekly-overtime.json';
+
+export function durableTimesheetsMonthKey(year: number, month: number): string {
+  const y = String(Math.trunc(year)).padStart(4, '0');
+  const m = String(Math.trunc(month)).padStart(2, '0');
+  return `${DURABLE_OVERTIMES_TIMESHEETS_DIR}/${y}-${m}.json`;
+}
 export const DURABLE_TRAVEL_HISTORY_KEY = 'data/travel/history.json';
 export const DURABLE_CHARROI_VEHICLES_KEY = 'data/charroi/vehicles.json';
 export const DURABLE_CHARROI_ACHATS_KEY = 'data/charroi/achats.json';
@@ -547,10 +555,10 @@ async function writeGithubFile(
         readGithubFileMeta(target, repoPath, headSha),
       ]);
 
-      if (remote?.sha && canMergeJson && mergeBase && remote.sha !== knownRemoteSha.get(repoPath)) {
+      if (remote?.sha && canMergeJson && remote.sha !== knownRemoteSha.get(repoPath)) {
         const remoteBuf = await readGithubFileBuffer(target, repoPath, remote);
-        if (!remoteBuf.equals(payload) && !remoteBuf.equals(mergeBase)) {
-          payload = mergeJsonBuffers(mergeBase, payload, remoteBuf);
+        if (!remoteBuf.equals(payload) && (!mergeBase || !remoteBuf.equals(mergeBase))) {
+          payload = mergeJsonBuffers(mergeBase ?? Buffer.from('{}', 'utf8'), payload, remoteBuf);
         }
         mergeBase = remoteBuf;
       }
@@ -591,28 +599,40 @@ function rememberLocalFile(repoPath: string, sha: string, buffer: Buffer): void 
   lastHydratedContent.set(repoPath, buffer);
 }
 
-export async function hydrateDurableFile(repoPath: string, localPath: string): Promise<void> {
-  if (!isDurableRemoteEnabled()) return;
+export function hasHydratedRemoteSha(repoPath: string): boolean {
+  return knownRemoteSha.has(repoPath);
+}
+
+/** Base JSON used for 3-way merge when the file is not yet on GitHub. */
+export function rememberDurableMergeBase(repoPath: string, buffer: Buffer): void {
+  lastHydratedContent.set(repoPath, Buffer.from(buffer));
+}
+
+/** @returns true when the remote file exists and was applied (or already in cache). */
+export async function hydrateDurableFile(repoPath: string, localPath: string): Promise<boolean> {
+  if (!isDurableRemoteEnabled()) return false;
   const target = resolveGithubTarget();
-  if (!target) return;
+  if (!target) return false;
 
   try {
     const headSha = await getHeadCommitSha(target);
     const meta = await readGithubFileMeta(target, repoPath, headSha);
-    if (!meta) return;
+    if (!meta) return false;
     if (meta.sha && knownRemoteSha.get(repoPath) === meta.sha && fs.existsSync(localPath)) {
       if (!lastHydratedContent.has(repoPath)) {
         lastHydratedContent.set(repoPath, fs.readFileSync(localPath));
       }
-      return;
+      return true;
     }
     const buffer = await readGithubFileBuffer(target, repoPath, meta);
     fs.mkdirSync(path.dirname(localPath), { recursive: true });
     fs.writeFileSync(localPath, buffer);
     if (meta.sha) rememberLocalFile(repoPath, meta.sha, buffer);
+    return Boolean(meta.sha);
   } catch (err) {
     const message = err instanceof Error ? err.message : String(err);
     console.warn('[durable-fs] hydrate failed', repoPath, message);
+    return false;
   }
 }
 
@@ -638,7 +658,7 @@ export async function persistDurableFile(repoPath: string, localPath: string): P
       repoPath,
       body,
       `chore(data): update ${label} from RH app${isVercelRuntime() ? ' (Vercel)' : ''}`,
-      lastHydratedContent.get(repoPath) ?? body,
+      lastHydratedContent.get(repoPath),
     );
     if (!written.buffer.equals(body)) {
       await fsPromises.writeFile(localPath, written.buffer);
