@@ -1,6 +1,28 @@
 {
   "entries": [
     {
+      "id": "log-000479",
+      "at": "2026-08-18T14:30:59.339Z",
+      "userId": "admin",
+      "userName": "Administrateur",
+      "module": "timesheet",
+      "moduleLabel": "Timesheet",
+      "action": "update",
+      "actionLabel": "Modification",
+      "summary": "Enregistrement timesheet 70000243 — Production (8/2026)",
+      "details": "Enregistrement timesheet 70000243 — Production (8/2026)",
+      "undoable": false,
+      "undone": false,
+      "meta": {
+        "year": 2026,
+        "month": 8,
+        "department": "Production",
+        "matricule": "70000243",
+        "mode": "employee-month",
+        "count": 35
+      }
+    },
+    {
       "id": "log-000478",
       "at": "2026-08-18T14:24:40.694Z",
       "userId": "admin",
@@ -34989,5 +35011,5 @@
       }
     }
   ],
-  "nextSeq": 479
+  "nextSeq": 480
 }
