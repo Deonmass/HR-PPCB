@@ -1,6 +1,28 @@
 {
   "entries": [
     {
+      "id": "log-000460",
+      "at": "2026-08-18T11:05:22.979Z",
+      "userId": "admin",
+      "userName": "Administrateur",
+      "module": "timesheet",
+      "moduleLabel": "Timesheet",
+      "action": "update",
+      "actionLabel": "Modification",
+      "summary": "Enregistrement timesheet 70000061 — Packaging & Logistics (8/2026)",
+      "details": "Enregistrement timesheet 70000061 — Packaging & Logistics (8/2026)",
+      "undoable": false,
+      "undone": false,
+      "meta": {
+        "year": 2026,
+        "month": 8,
+        "department": "Packaging & Logistics",
+        "matricule": "70000061",
+        "mode": "employee-month",
+        "count": 35
+      }
+    },
+    {
       "id": "log-000459",
       "at": "2026-08-18T09:35:22.904Z",
       "userId": "admin",
@@ -34571,5 +34593,5 @@
       }
     }
   ],
-  "nextSeq": 460
+  "nextSeq": 461
 }
