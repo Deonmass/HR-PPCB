@@ -1,7 +1,7 @@
 {
   "year": 2026,
   "month": 8,
-  "updatedAt": "2026-08-18T11:18:57.537Z",
+  "updatedAt": "2026-08-18T11:20:57.404Z",
   "agents": {
     "70000013": {
       "matricule": "70000013",
@@ -714,6 +714,81 @@
           "shiftType": null,
           "holiday": false,
           "updatedAt": "2026-08-18T11:14:32.009Z",
+          "updatedBy": "admin"
+        }
+      }
+    },
+    "70000059": {
+      "matricule": "70000059",
+      "days": {
+        "2026-07-22": {
+          "matricule": "70000059",
+          "present": true,
+          "from": "14:00",
+          "to": "22:00",
+          "shiftType": null,
+          "holiday": false,
+          "updatedAt": "2026-08-18T11:20:57.402Z",
+          "updatedBy": "admin"
+        },
+        "2026-07-16": {
+          "matricule": "70000059",
+          "present": true,
+          "from": "22:00",
+          "to": "06:00",
+          "shiftType": null,
+          "holiday": false,
+          "updatedAt": "2026-08-18T11:20:57.402Z",
+          "updatedBy": "admin"
+        },
+        "2026-07-23": {
+          "matricule": "70000059",
+          "present": true,
+          "from": "22:00",
+          "to": "06:00",
+          "shiftType": null,
+          "holiday": false,
+          "updatedAt": "2026-08-18T11:20:57.402Z",
+          "updatedBy": "admin"
+        },
+        "2026-07-24": {
+          "matricule": "70000059",
+          "present": true,
+          "from": "22:00",
+          "to": "06:00",
+          "shiftType": null,
+          "holiday": false,
+          "updatedAt": "2026-08-18T11:20:57.402Z",
+          "updatedBy": "admin"
+        },
+        "2026-07-19": {
+          "matricule": "70000059",
+          "present": true,
+          "from": "06:00",
+          "to": "14:00",
+          "shiftType": null,
+          "holiday": false,
+          "updatedAt": "2026-08-18T11:20:57.402Z",
+          "updatedBy": "admin"
+        },
+        "2026-07-21": {
+          "matricule": "70000059",
+          "present": true,
+          "from": "14:00",
+          "to": "22:00",
+          "shiftType": null,
+          "holiday": false,
+          "updatedAt": "2026-08-18T11:20:57.402Z",
+          "updatedBy": "admin"
+        },
+        "2026-07-20": {
+          "matricule": "70000059",
+          "present": true,
+          "from": "06:00",
+          "to": "14:00",
+          "shiftType": null,
+          "holiday": false,
+          "updatedAt": "2026-08-18T11:20:57.402Z",
           "updatedBy": "admin"
         }
       }
