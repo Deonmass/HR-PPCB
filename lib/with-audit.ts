@@ -145,7 +145,7 @@ export async function withAudit<T>(
 export async function auditSimpleAction(input: {
   module: string;
   moduleLabel?: string;
-  action: 'export' | 'import' | 'other';
+  action: 'export' | 'import' | 'other' | 'update';
   summary: string;
   details?: string;
   meta?: Record<string, unknown>;

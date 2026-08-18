@@ -222,13 +222,22 @@ export function normalizeVillagePresentation(
   const base = defaultVillagePresentation(employees);
   if (!raw || typeof raw !== 'object') return base;
   const src = raw as Partial<VillagePresentation>;
-  const cover = src.cover && typeof src.cover === 'object' ? src.cover : {};
-  const dashboard = src.dashboard && typeof src.dashboard === 'object' ? src.dashboard : {};
-  const vacant = src.vacant && typeof src.vacant === 'object' ? src.vacant : {};
-  const proposals = src.proposals && typeof src.proposals === 'object' ? src.proposals : {};
-  const thankYou = src.thankYou && typeof src.thankYou === 'object' ? src.thankYou : {};
-  const items = Array.isArray(proposals.items) && proposals.items.length
-    ? proposals.items.map((item, i) => ({
+  const cover = (src.cover && typeof src.cover === 'object' ? src.cover : {}) as Partial<VillagePresentation['cover']>;
+  const dashboard = (src.dashboard && typeof src.dashboard === 'object'
+    ? src.dashboard
+    : {}) as Partial<VillagePresentation['dashboard']>;
+  const vacant = (src.vacant && typeof src.vacant === 'object'
+    ? src.vacant
+    : {}) as Partial<VillagePresentation['vacant']>;
+  const proposals = (src.proposals && typeof src.proposals === 'object'
+    ? src.proposals
+    : {}) as Partial<VillagePresentation['proposals']>;
+  const thankYou = (src.thankYou && typeof src.thankYou === 'object'
+    ? src.thankYou
+    : {}) as Partial<VillagePresentation['thankYou']>;
+  const rawItems = Array.isArray(proposals.items) ? proposals.items : [];
+  const items = rawItems.length
+    ? rawItems.map((item, i) => ({
         id: str(item?.id, `p-${i + 1}`),
         house: str(item?.house),
         name: str(item?.name),
