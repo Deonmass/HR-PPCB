@@ -218,13 +218,13 @@
               "matricule": "70000043",
               "ot13": 0,
               "ot16": 0,
-              "ot2": 2,
+              "ot2": 0,
               "night": 0
             },
             "70000097": {
               "matricule": "70000097",
-              "ot13": 2,
-              "ot16": 8,
+              "ot13": 0,
+              "ot16": 0,
               "ot2": 0,
               "night": 0
             },
@@ -271,7 +271,7 @@
               "night": 0
             }
           },
-          "updatedAt": "2026-08-18T09:00:52.794Z",
+          "updatedAt": "2026-08-18T15:22:04.103Z",
           "updatedBy": "admin"
         },
         "Quality Assurance::3": {
