@@ -26307,6 +26307,28 @@ html[data-theme="light"] .contractants-dash-filters {
   font-weight: 600;
 }
 
+.exco-trend-table td.exco-delta-cell {
+  cursor: pointer;
+  font-weight: 700;
+  color: var(--primary, #7a1f2b);
+}
+
+.exco-trend-table td.exco-delta-cell:hover,
+.exco-trend-table td.exco-delta-cell:focus-visible {
+  background: color-mix(in srgb, var(--primary, #7a1f2b) 14%, transparent);
+  outline: none;
+}
+
+.exco-kpi-card.exco-kpi-clickable {
+  cursor: pointer;
+}
+
+.exco-kpi-card.exco-kpi-clickable:hover,
+.exco-kpi-card.exco-kpi-clickable:focus-visible {
+  border-color: color-mix(in srgb, var(--primary, #7a1f2b) 45%, var(--border));
+  box-shadow: 0 0 0 2px color-mix(in srgb, var(--primary, #7a1f2b) 18%, transparent);
+}
+
 .exco-tip-cell {
   cursor: help;
 }
@@ -26524,6 +26546,152 @@ html[data-theme="light"] .contractants-dash-filters {
   font-size: 0.72rem;
 }
 
+.exco-fy27-table {
+  min-width: 72rem;
+  table-layout: fixed;
+}
+
+.exco-fy27-table th {
+  background: #9b1b24;
+  color: #fff;
+  text-transform: none;
+  letter-spacing: 0;
+  font-size: 0.72rem;
+}
+
+.exco-fy27-table td {
+  vertical-align: top;
+}
+
+.exco-fy27-table td:first-child {
+  width: 12rem;
+}
+
+.exco-fy27-table textarea.exco-inline-input {
+  min-height: 4.2rem;
+  resize: vertical;
+  line-height: 1.35;
+}
+
+.exco-csr-legend {
+  margin: 0 0 0.65rem;
+  font-size: 0.78rem;
+  color: var(--muted);
+}
+
+.exco-csr-upd {
+  color: #1d4ed8;
+  background: #eff6ff;
+  font-weight: 400;
+  padding: 0 0.15rem;
+  border-radius: 3px;
+}
+
+.exco-csr-preview {
+  margin: 0;
+  font-size: 0.72rem;
+  line-height: 1.4;
+  white-space: pre-wrap;
+  min-height: 4.2rem;
+}
+
+.exco-csr-preview.is-compact {
+  min-height: 0;
+  line-height: 1.3;
+}
+
+.exco-csr-preview.has-upd {
+  background: #eff6ff;
+  padding: 0.3rem 0.35rem;
+  border-radius: 5px;
+}
+
+.exco-inline-input.has-csr-upd {
+  border-color: #93c5fd;
+  background: #eff6ff;
+}
+
+.exco-cahier-card.has-upd {
+  border-color: #93c5fd;
+  background: #f8fbff;
+}
+
+.exco-audit-sum {
+  margin: 0 0 0.65rem;
+  font-size: 0.8rem;
+  color: var(--muted);
+}
+
+.exco-audit-progressed,
+.exco-audit-new {
+  color: #166534;
+  font-weight: 700;
+}
+
+.exco-audit-table td {
+  font-size: 0.72rem;
+}
+
+.exco-audit-table .is-closed td {
+  background: #dcfce7;
+}
+
+.exco-audit-table .is-progressed td {
+  background: #86efac;
+}
+
+.exco-audit-table .is-overdue td {
+  background: #fecaca;
+}
+
+.exco-audit-table .is-ongoing td {
+  background: #f3f4f6;
+}
+
+.exco-sev-high { color: #b91c1c; font-weight: 700; }
+.exco-sev-medium { color: #c2410c; font-weight: 700; }
+.exco-sev-low { color: #15803d; font-weight: 700; }
+
+.exco-cahier-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 0.85rem;
+  margin-bottom: 0.75rem;
+}
+
+.exco-cahier-card {
+  display: flex;
+  flex-direction: column;
+  gap: 0.45rem;
+  padding: 0.75rem;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  background: var(--surface);
+}
+
+.exco-cahier-card-head {
+  display: flex;
+  gap: 0.5rem;
+  align-items: center;
+}
+
+.exco-cahier-card-head select {
+  flex: 1;
+}
+
+.exco-cahier-pct {
+  display: flex;
+  align-items: center;
+  gap: 0.3rem;
+  font-size: 0.72rem;
+  color: var(--muted);
+}
+
+.exco-cahier-pct input {
+  width: 4.2rem;
+  min-width: 0;
+}
+
 .exco-page .panel.panel-padded {
   padding: 0.7rem 0.85rem;
 }
@@ -26718,6 +26886,186 @@ html[data-theme="light"] .contractants-dash-filters {
   width: 100%;
   border: 0;
   background: #d8d8de;
+}
+
+/* —— Village présentation PPTX —— */
+.village-pptx-overlay {
+  z-index: 12000;
+  padding: 0.6rem;
+  align-items: stretch;
+  justify-content: center;
+}
+
+.village-pptx-modal {
+  width: min(1280px, 100%);
+  height: min(94vh, 920px);
+  background: var(--surface, #121218);
+  border: 1px solid var(--border, rgba(255, 255, 255, 0.1));
+  border-radius: 12px;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.4);
+}
+
+.village-pptx-modal-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+  padding: 0.7rem 0.9rem;
+  border-bottom: 1px solid var(--border, rgba(255, 255, 255, 0.08));
+}
+
+.village-pptx-modal-head h3 {
+  margin: 0;
+  font-size: 1rem;
+}
+
+.village-pptx-modal-head p {
+  margin: 0.15rem 0 0;
+  font-size: 0.78rem;
+  color: var(--muted, #8b8b9a);
+}
+
+.village-pptx-modal-actions {
+  display: flex;
+  gap: 0.4rem;
+  flex-shrink: 0;
+}
+
+.village-pptx-tabs {
+  padding: 0.35rem 0.9rem 0;
+  flex-wrap: wrap !important;
+}
+
+.village-pptx-tab-n {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 1.15rem;
+  height: 1.15rem;
+  margin-right: 0.3rem;
+  border-radius: 4px;
+  background: var(--ppc-red, #e30613);
+  color: #fff;
+  font-size: 0.62rem;
+  font-weight: 700;
+}
+
+.village-pptx-body {
+  flex: 1;
+  overflow: auto;
+  padding: 0.85rem 1rem 1.1rem;
+}
+
+.village-pptx-grid {
+  display: grid;
+  gap: 0.7rem;
+}
+
+.village-pptx-field {
+  display: flex;
+  flex-direction: column;
+  gap: 0.28rem;
+  font-size: 0.78rem;
+  font-weight: 600;
+}
+
+.village-pptx-textarea {
+  min-height: 4.2rem;
+  resize: vertical;
+}
+
+.village-pptx-preview-line {
+  margin: 0;
+  padding: 0.7rem 0.85rem;
+  border-radius: 8px;
+  background: var(--panel, #1a1a22);
+  font-size: 0.88rem;
+  line-height: 1.45;
+}
+
+.village-pptx-live {
+  display: grid;
+  gap: 0.55rem;
+}
+
+.village-pptx-live-title {
+  margin: 0;
+  font-size: 0.78rem;
+  color: var(--muted, #8b8b9a);
+}
+
+.village-pptx-kpis {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+}
+
+.village-pptx-kpis span {
+  padding: 0.28rem 0.5rem;
+  border-radius: 999px;
+  background: var(--panel, #1a1a22);
+  font-size: 0.75rem;
+  font-weight: 650;
+}
+
+.village-pptx-live-tables {
+  display: grid;
+  grid-template-columns: 1fr 1.4fr;
+  gap: 0.7rem;
+  overflow: auto;
+}
+
+.village-pptx-vacant-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.35rem;
+}
+
+.village-pptx-chip {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 0.3rem;
+  padding: 0.22rem 0.5rem;
+  border-radius: 6px;
+  background: var(--panel, #1a1a22);
+  font-weight: 700;
+  font-size: 0.78rem;
+}
+
+.village-pptx-chip em {
+  font-style: normal;
+  font-weight: 500;
+  color: var(--muted, #8b8b9a);
+  font-size: 0.7rem;
+}
+
+.village-pptx-proposal {
+  padding: 0.65rem 0.7rem;
+  border: 1px solid var(--border, rgba(255, 255, 255, 0.08));
+  border-radius: 8px;
+}
+
+.village-pptx-proposal-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 0.45rem;
+}
+
+.village-pptx-proposal-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0.5rem 0.7rem;
+}
+
+@media (max-width: 900px) {
+  .village-pptx-live-tables,
+  .village-pptx-proposal-grid {
+    grid-template-columns: 1fr;
+  }
 }
 
 /* —— Audit HR points —— */

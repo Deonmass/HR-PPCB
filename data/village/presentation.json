@@ -1,0 +1,83 @@
+{
+  "chromeKicker": "PPC · VILLAGE",
+  "period": "Aug-26",
+  "cover": {
+    "title": "VILLAGE HOUSING BRIEFING",
+    "date": "18 AUGUST 2026",
+    "place": "ZAMBA"
+  },
+  "dashboard": {
+    "title": "Houses & dashboard by department",
+    "note": ""
+  },
+  "vacant": {
+    "title": "Vacant houses",
+    "note": ""
+  },
+  "proposals": {
+    "title": "Allocation proposals",
+    "note": "Presentation only — these allocations are not recorded in the system.",
+    "items": [
+      {
+        "id": "p-5",
+        "house": "5",
+        "name": "Fred Moleka Gbanga",
+        "matricule": "70000109",
+        "purpose": "Proposed assignment",
+        "badge": "proposal"
+      },
+      {
+        "id": "p-6",
+        "house": "6",
+        "name": "Erick Bompeta Mpingo",
+        "matricule": "70000205",
+        "purpose": "To be housed",
+        "badge": "proposal"
+      },
+      {
+        "id": "p-20",
+        "house": "20",
+        "name": "Mechanical Foreman",
+        "matricule": "",
+        "purpose": "Position to be filled",
+        "badge": "role"
+      },
+      {
+        "id": "p-26b",
+        "house": "26B",
+        "name": "Blanchard Muzo Nkiene",
+        "matricule": "70000306",
+        "purpose": "Proposed assignment",
+        "badge": "proposal"
+      },
+      {
+        "id": "p-28b",
+        "house": "28B",
+        "name": "Archipp Mulenda",
+        "matricule": "70000270",
+        "purpose": "Proposed assignment",
+        "badge": "proposal"
+      },
+      {
+        "id": "p-45",
+        "house": "45",
+        "name": "Guest house",
+        "matricule": "",
+        "purpose": "Overflow when the guest house is full",
+        "badge": "role"
+      },
+      {
+        "id": "p-61",
+        "house": "61",
+        "name": "Mechanical Vulcanizer",
+        "matricule": "",
+        "purpose": "Position to be filled",
+        "badge": "role"
+      }
+    ]
+  },
+  "thankYou": {
+    "kicker": "PPC · VILLAGE",
+    "message": "Thank You"
+  }
+}

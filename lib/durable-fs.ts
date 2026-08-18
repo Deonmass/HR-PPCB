@@ -24,6 +24,7 @@ export const DURABLE_VILLAGE_MAISONS_KEY = 'data/village/maisons.json';
 export const DURABLE_VILLAGE_TAILLES_KEY = 'data/village/tailles.json';
 export const DURABLE_VILLAGE_AFFECTATION_HISTORY_KEY = 'data/village/affectation-history.json';
 export const DURABLE_VILLAGE_AFFECTATION_SUGGESTIONS_KEY = 'data/village/affectation-suggestions.json';
+export const DURABLE_VILLAGE_PRESENTATION_KEY = 'data/village/presentation.json';
 export const DURABLE_FACTURES_SUIVI_KEY = 'data/factures-fournisseurs/factures.json';
 export const DURABLE_FOURNISSEURS_KEY = 'data/factures-fournisseurs/fournisseurs.json';
 export const DURABLE_PROJECTS_KEY = 'data/projects/projects.json';
