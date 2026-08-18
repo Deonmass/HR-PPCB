@@ -1,6 +1,6 @@
 import 'server-only';
 
-import { normalHoursBreakdown, standardShiftBreakdown } from './timesheet-calc';
+import { legalNightHours, standardShiftBreakdown } from './timesheet-calc';
 import {
   buildTimesheetPeriod,
   TIMESHEET_WEEKS_PER_PERIOD,
@@ -31,14 +31,19 @@ function formatWeekRange(days: TimesheetPeriodDay[]): string {
   return `du ${fmt(first)} au ${fmt(nextMonday)} ${year}`;
 }
 
-/** Night hours from normal (planning) hours for a single day entry. */
+/**
+ * Night hours shown in the timesheet "Night" column (19:00–05:00 of Actual).
+ * Actual From/To are enough: many saved days have hours but `shiftType: null`.
+ */
 function dayNormalNight(
   entry: TimesheetDayEntry | undefined,
   ctx: { date: Date; localisation: string },
 ): number {
-  if (!entry?.shiftType) return 0;
-  if (entry.from?.trim() && entry.to?.trim()) {
-    return normalHoursBreakdown(entry.from, entry.to, entry.shiftType).night;
+  if (!entry) return 0;
+  const from = entry.from?.trim() ?? '';
+  const to = entry.to?.trim() ?? '';
+  if (from && to) {
+    return legalNightHours(from, to);
   }
   return standardShiftBreakdown(entry.shiftType, ctx).night;
 }
