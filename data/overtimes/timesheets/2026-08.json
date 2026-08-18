@@ -1,7 +1,7 @@
 {
   "year": 2026,
   "month": 8,
-  "updatedAt": "2026-08-18T14:40:19.603Z",
+  "updatedAt": "2026-08-18T14:45:00.817Z",
   "agents": {
     "70000013": {
       "matricule": "70000013",
@@ -4849,6 +4849,231 @@
           "shiftType": null,
           "holiday": false,
           "updatedAt": "2026-08-18T11:55:40.834Z",
+          "updatedBy": "admin"
+        }
+      }
+    },
+    "70000211": {
+      "matricule": "70000211",
+      "days": {
+        "2026-07-22": {
+          "matricule": "70000211",
+          "present": true,
+          "from": "18:00",
+          "to": "06:00",
+          "shiftType": null,
+          "holiday": false,
+          "updatedAt": "2026-08-18T14:45:00.816Z",
+          "updatedBy": "admin"
+        },
+        "2026-07-16": {
+          "matricule": "70000211",
+          "present": true,
+          "from": "14:00",
+          "to": "22:00",
+          "shiftType": null,
+          "holiday": false,
+          "updatedAt": "2026-08-18T14:45:00.816Z",
+          "updatedBy": "admin"
+        },
+        "2026-07-17": {
+          "matricule": "70000211",
+          "present": true,
+          "from": "14:00",
+          "to": "22:00",
+          "shiftType": null,
+          "holiday": false,
+          "updatedAt": "2026-08-18T14:45:00.816Z",
+          "updatedBy": "admin"
+        },
+        "2026-07-25": {
+          "matricule": "70000211",
+          "present": true,
+          "from": "06:00",
+          "to": "14:00",
+          "shiftType": null,
+          "holiday": false,
+          "updatedAt": "2026-08-18T14:45:00.816Z",
+          "updatedBy": "admin"
+        },
+        "2026-07-30": {
+          "matricule": "70000211",
+          "present": true,
+          "from": "18:00",
+          "to": "06:00",
+          "shiftType": null,
+          "holiday": false,
+          "updatedAt": "2026-08-18T14:45:00.816Z",
+          "updatedBy": "admin"
+        },
+        "2026-08-02": {
+          "matricule": "70000211",
+          "present": true,
+          "from": "06:00",
+          "to": "18:00",
+          "shiftType": null,
+          "holiday": false,
+          "updatedAt": "2026-08-18T14:45:00.816Z",
+          "updatedBy": "admin"
+        },
+        "2026-08-08": {
+          "matricule": "70000211",
+          "present": true,
+          "from": "06:00",
+          "to": "18:00",
+          "shiftType": null,
+          "holiday": false,
+          "updatedAt": "2026-08-18T14:45:00.816Z",
+          "updatedBy": "admin"
+        },
+        "2026-08-09": {
+          "matricule": "70000211",
+          "present": true,
+          "from": "06:00",
+          "to": "18:00",
+          "shiftType": null,
+          "holiday": false,
+          "updatedAt": "2026-08-18T14:45:00.816Z",
+          "updatedBy": "admin"
+        },
+        "2026-08-10": {
+          "matricule": "70000211",
+          "present": true,
+          "from": "18:00",
+          "to": "06:00",
+          "shiftType": null,
+          "holiday": false,
+          "updatedAt": "2026-08-18T14:45:00.816Z",
+          "updatedBy": "admin"
+        },
+        "2026-08-15": {
+          "matricule": "70000211",
+          "present": true,
+          "from": "06:00",
+          "to": "18:00",
+          "shiftType": null,
+          "holiday": false,
+          "updatedAt": "2026-08-18T14:45:00.816Z",
+          "updatedBy": "admin"
+        },
+        "2026-07-26": {
+          "matricule": "70000211",
+          "present": true,
+          "from": "06:00",
+          "to": "14:00",
+          "shiftType": null,
+          "holiday": false,
+          "updatedAt": "2026-08-18T14:45:00.816Z",
+          "updatedBy": "admin"
+        },
+        "2026-07-18": {
+          "matricule": "70000211",
+          "present": true,
+          "from": "22:00",
+          "to": "06:00",
+          "shiftType": null,
+          "holiday": false,
+          "updatedAt": "2026-08-18T14:45:00.816Z",
+          "updatedBy": "admin"
+        },
+        "2026-08-11": {
+          "matricule": "70000211",
+          "present": true,
+          "from": "18:00",
+          "to": "06:00",
+          "shiftType": null,
+          "holiday": false,
+          "updatedAt": "2026-08-18T14:45:00.816Z",
+          "updatedBy": "admin"
+        },
+        "2026-07-27": {
+          "matricule": "70000211",
+          "present": true,
+          "from": "14:00",
+          "to": "22:00",
+          "shiftType": null,
+          "holiday": false,
+          "updatedAt": "2026-08-18T14:45:00.816Z",
+          "updatedBy": "admin"
+        },
+        "2026-07-19": {
+          "matricule": "70000211",
+          "present": true,
+          "from": "22:00",
+          "to": "06:00",
+          "shiftType": null,
+          "holiday": false,
+          "updatedAt": "2026-08-18T14:45:00.816Z",
+          "updatedBy": "admin"
+        },
+        "2026-08-03": {
+          "matricule": "70000211",
+          "present": true,
+          "from": "06:00",
+          "to": "18:00",
+          "shiftType": null,
+          "holiday": false,
+          "updatedAt": "2026-08-18T14:45:00.816Z",
+          "updatedBy": "admin"
+        },
+        "2026-08-04": {
+          "matricule": "70000211",
+          "present": true,
+          "from": "18:00",
+          "to": "06:00",
+          "shiftType": null,
+          "holiday": false,
+          "updatedAt": "2026-08-18T14:45:00.816Z",
+          "updatedBy": "admin"
+        },
+        "2026-07-21": {
+          "matricule": "70000211",
+          "present": true,
+          "from": "18:00",
+          "to": "06:00",
+          "shiftType": null,
+          "holiday": false,
+          "updatedAt": "2026-08-18T14:45:00.816Z",
+          "updatedBy": "admin"
+        },
+        "2026-07-28": {
+          "matricule": "70000211",
+          "present": true,
+          "from": "14:00",
+          "to": "22:00",
+          "shiftType": null,
+          "holiday": false,
+          "updatedAt": "2026-08-18T14:45:00.816Z",
+          "updatedBy": "admin"
+        },
+        "2026-07-29": {
+          "matricule": "70000211",
+          "present": true,
+          "from": "18:00",
+          "to": "06:00",
+          "shiftType": null,
+          "holiday": false,
+          "updatedAt": "2026-08-18T14:45:00.816Z",
+          "updatedBy": "admin"
+        },
+        "2026-08-05": {
+          "matricule": "70000211",
+          "present": true,
+          "from": "18:00",
+          "to": "06:00",
+          "shiftType": null,
+          "holiday": false,
+          "updatedAt": "2026-08-18T14:45:00.816Z",
+          "updatedBy": "admin"
+        },
+        "2026-08-14": {
+          "matricule": "70000211",
+          "present": true,
+          "from": "06:00",
+          "to": "18:00",
+          "shiftType": null,
+          "holiday": false,
+          "updatedAt": "2026-08-18T14:45:00.816Z",
           "updatedBy": "admin"
         }
       }
