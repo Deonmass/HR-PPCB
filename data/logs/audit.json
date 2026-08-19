@@ -1,6 +1,21 @@
 {
   "entries": [
     {
+      "id": "log-000488",
+      "at": "2026-08-19T08:30:30.883Z",
+      "userId": "berth.lubenzo",
+      "userName": "Berth Lubenzo",
+      "userEmail": "Berth.Lubenzo@ppcdrc.cd",
+      "module": "documents.attestation-conge",
+      "moduleLabel": "Attestation de congé",
+      "action": "export",
+      "actionLabel": "Export",
+      "summary": "Téléchargement DOCX attestation congé FINKIDI MAYETO EDGARD",
+      "details": "Téléchargement DOCX attestation congé FINKIDI MAYETO EDGARD",
+      "undoable": false,
+      "undone": false
+    },
+    {
       "id": "log-000487",
       "at": "2026-08-19T08:30:25.210Z",
       "userId": "berth.lubenzo",
@@ -36603,5 +36618,5 @@
       }
     }
   ],
-  "nextSeq": 488
+  "nextSeq": 489
 }
