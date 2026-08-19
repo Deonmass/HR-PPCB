@@ -98,6 +98,17 @@
       "ancienNumero": "",
       "raison": "Changement avec Eric Bompeta",
       "commentaire": ""
+    },
+    {
+      "date": "19/08/2026 13:52",
+      "action": "Liberer",
+      "matricule": "70000091",
+      "nom": "NGOYI MUIKULU MARCEL",
+      "numeroVilla": "",
+      "typeMaison": "Twins",
+      "ancienNumero": "72",
+      "raison": "",
+      "commentaire": ""
     }
   ]
 }
