@@ -1,6 +1,45 @@
 {
   "entries": [
     {
+      "id": "log-000512",
+      "at": "2026-08-19T13:53:49.527Z",
+      "userId": "admin",
+      "userName": "Administrateur",
+      "module": "village.assign",
+      "moduleLabel": "Village — Affectations",
+      "action": "update",
+      "actionLabel": "Modification",
+      "summary": "Libération logement 70000109",
+      "details": "Libération logement 70000109",
+      "after": {
+        "id": 309,
+        "matricule": "70000109",
+        "pactilis": "164261",
+        "statut": "Employé",
+        "sexe": "M",
+        "nom": "MOLEKA GBANGA FRED",
+        "localisation": "Zamba",
+        "numeroVilla": "",
+        "typeMaison": "Twins",
+        "dateNaissance": "18/07/1990",
+        "age": 36,
+        "compositionFamille": 1,
+        "enfants": 5,
+        "total": 7,
+        "commentaires": "",
+        "lienDocument": "",
+        "employeNom": "MOLEKA GBANGA FRED",
+        "departement": "Engineering"
+      },
+      "undoable": false,
+      "undone": false,
+      "meta": {
+        "matricule": "70000109",
+        "numeroVilla": "",
+        "ancienNumero": "31"
+      }
+    },
+    {
       "id": "log-000511",
       "at": "2026-08-19T13:53:15.416Z",
       "userId": "admin",
@@ -39037,5 +39076,5 @@
       }
     }
   ],
-  "nextSeq": 512
+  "nextSeq": 513
 }
