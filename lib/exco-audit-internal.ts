@@ -247,7 +247,7 @@ function lookup<T>(map: Map<string, T>, finding: string): T | undefined {
 
 export function buildInternalAuditRows(report: ExcoReportPayload): InternalAuditRow[] {
   const live = new Map<string, ExcoAuditFinding>();
-  for (const f of report.computed.auditFindings || []) {
+  for (const f of report.overlays.auditFindings || []) {
     live.set(norm(f.finding), f);
   }
   const tracker = new Map<string, AuditTrackerStatus>();
