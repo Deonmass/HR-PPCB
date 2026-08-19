@@ -76,6 +76,17 @@
       "ancienNumero": "25",
       "raison": "",
       "commentaire": ""
+    },
+    {
+      "date": "19/08/2026 13:49",
+      "action": "Remplacer",
+      "matricule": "70000205",
+      "nom": "BOMPETA MPINGO ERICK",
+      "numeroVilla": "25",
+      "typeMaison": "Twins",
+      "ancienNumero": "25",
+      "raison": "Prise de fonction officiel au CEC",
+      "commentaire": ""
     }
   ]
 }
