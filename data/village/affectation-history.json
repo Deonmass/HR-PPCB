@@ -65,6 +65,83 @@
       "ancienNumero": "",
       "raison": "",
       "commentaire": "Hors effectif"
+    },
+    {
+      "date": "19/08/2026 13:49",
+      "action": "Liberer",
+      "matricule": "70000030",
+      "nom": "MUBA KAYEMBE JEREMIE",
+      "numeroVilla": "",
+      "typeMaison": "Twins",
+      "ancienNumero": "25",
+      "raison": "",
+      "commentaire": ""
+    },
+    {
+      "date": "19/08/2026 13:49",
+      "action": "Remplacer",
+      "matricule": "70000205",
+      "nom": "BOMPETA MPINGO ERICK",
+      "numeroVilla": "25",
+      "typeMaison": "Twins",
+      "ancienNumero": "25",
+      "raison": "Prise de fonction officiel au CEC",
+      "commentaire": ""
+    },
+    {
+      "date": "19/08/2026 13:51",
+      "action": "Affecter",
+      "matricule": "70000030",
+      "nom": "MUBA KAYEMBE JEREMIE",
+      "numeroVilla": "20",
+      "typeMaison": "Free Style",
+      "ancienNumero": "",
+      "raison": "Changement avec Eric Bompeta",
+      "commentaire": ""
+    },
+    {
+      "date": "19/08/2026 13:52",
+      "action": "Liberer",
+      "matricule": "70000091",
+      "nom": "NGOYI MUIKULU MARCEL",
+      "numeroVilla": "",
+      "typeMaison": "Twins",
+      "ancienNumero": "72",
+      "raison": "",
+      "commentaire": ""
+    },
+    {
+      "date": "19/08/2026 13:53",
+      "action": "Affecter",
+      "matricule": "70000091",
+      "nom": "NGOYI MUIKULU MARCEL",
+      "numeroVilla": "6",
+      "typeMaison": "Free Style",
+      "ancienNumero": "",
+      "raison": "Changement",
+      "commentaire": ""
+    },
+    {
+      "date": "19/08/2026 13:53",
+      "action": "Liberer",
+      "matricule": "70000109",
+      "nom": "MOLEKA GBANGA FRED",
+      "numeroVilla": "",
+      "typeMaison": "Twins",
+      "ancienNumero": "31",
+      "raison": "",
+      "commentaire": ""
+    },
+    {
+      "date": "19/08/2026 13:56",
+      "action": "Affecter",
+      "matricule": "70000109",
+      "nom": "MOLEKA GBANGA FRED",
+      "numeroVilla": "5",
+      "typeMaison": "Free Style",
+      "ancienNumero": "",
+      "raison": "Changement",
+      "commentaire": ""
     }
   ]
 }
