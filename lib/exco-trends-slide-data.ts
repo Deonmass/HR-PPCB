@@ -1,4 +1,4 @@
-import type { ExcoReportPayload, ExcoTrendMonth } from '@/lib/exco-types';
+import { visibleManualKpis, type ExcoReportPayload, type ExcoTrendMonth } from '@/lib/exco-types';
 import {
   EXCO_FY_MONTH_LABELS,
   EXCO_FY_START_YEAR,
@@ -106,7 +106,7 @@ function financialYtds(report: ExcoReportPayload) {
 export function buildTrendsFinancialSection(report: ExcoReportPayload): ExcoTrendTableSection {
   const fyCols = excoFyColumns(report.year, report.month);
   const trends = report.computed.trends || [];
-  const mk = report.overlays.manualKpis;
+  const mk = visibleManualKpis(report.overlays.manualKpis);
   const { staffYtd, volumeYtd, revenueYtd } = financialYtds(report);
   const staffBudget = mk.staffCostBudgetYtd ?? null;
   const volumeBudget = mk.volumeBudgetYtd ?? null;

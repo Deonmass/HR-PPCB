@@ -3,12 +3,21 @@
 import { useCallback, useEffect, useMemo, useRef, useState, type CSSProperties, type ReactNode } from 'react';
 import { createPortal } from 'react-dom';
 import { AuditHrDashboardPanels } from '@/components/audit/AuditHrDashboardPanels';
+import DashboardListModal, {
+  type DashboardListColumn,
+  type DashboardListRow,
+} from '@/components/DashboardListModal';
 import PermissionGate from '@/components/PermissionGate';
 import RefreshButton from '@/components/RefreshButton';
 import { usePermissions } from '@/contexts/PermissionContext';
 import type { AuditHrDashboard } from '@/lib/audit-hr-types';
 import {
   emptyExcoOverlays,
+  visibleManualKpis,
+  EXCO_PUBLISH_FINANCE_KPIS,
+  type ExcoCahierHighlight,
+  type ExcoCsrFy27Row,
+  type ExcoHireListRow,
   type ExcoManualKpis,
   type ExcoMetricValue,
   type ExcoOverlays,
@@ -25,6 +34,17 @@ import {
 } from '@/lib/exco-template-baseline';
 import { showError, showSuccess } from '@/lib/swal';
 import { buildExcoPreviewHtml } from '@/lib/exco-preview-html';
+import {
+  CAHIER_ICON_OPTIONS,
+  csrTextHasUpdate,
+  emptyCahierHighlight,
+  emptyCsrFy27Row,
+  parseCsrUpdateMarkup,
+  resolveCahierHighlights,
+  resolveCsrFy27Rows,
+} from '@/lib/exco-csr-fy27';
+import { resolveRecruitment } from '@/lib/exco-recruitment-fy27';
+import { buildInternalAuditRows, summarizeInternalAudit } from '@/lib/exco-audit-internal';
 
 function ExcoBusyOverlay({ label }: { label: string }) {
   return (
@@ -68,6 +88,54 @@ const OT_MONTH_SEGMENT_COLORS = [
   '#0d9488',
   '#ca8a04',
 ] as const;
+
+const EXCO_HIRE_COLUMNS: DashboardListColumn[] = [
+  { key: 'matricule', label: 'Matricule' },
+  { key: 'nom', label: 'Nom' },
+  { key: 'localisation', label: 'Localisation' },
+  { key: 'departement', label: 'Département' },
+  { key: 'grade', label: 'Grade' },
+  { key: 'genre', label: 'Genre' },
+  { key: 'company', label: 'Company' },
+  { key: 'embauche', label: "Date d'embauche" },
+  { key: 'motif', label: 'Motif' },
+];
+
+const EXCO_SITE_BUCKET: Record<string, string | null> = {
+  plant: 'Plant',
+  hq: 'HQ and Regions',
+  lubudi: 'Lubudi',
+  graduates: 'Graduates',
+  headcount: null,
+};
+
+function filterExcoHires(list: ExcoHireListRow[], siteKey: string): ExcoHireListRow[] {
+  const bucket = EXCO_SITE_BUCKET[siteKey];
+  if (!bucket) return list;
+  return list.filter((row) => row.site === bucket);
+}
+
+function excoHiresToListRows(list: ExcoHireListRow[]): DashboardListRow[] {
+  return list.map((row, index) => ({
+    id: row.matricule || `${row.nom}-${index}`,
+    cells: {
+      matricule: row.matricule || '—',
+      nom: row.nom || '—',
+      localisation: row.localisation || '—',
+      departement: row.departement || '—',
+      grade: row.grade || '—',
+      genre: row.genre || '—',
+      company: row.company || '—',
+      embauche: row.appointmentDate || '—',
+      motif: row.reason || '—',
+    },
+  }));
+}
+
+function formatExcoDelta(delta: number | null): string {
+  if (delta == null) return '—';
+  return `${delta >= 0 ? '+' : ''}${delta}`;
+}
 
 function otMonthSegmentColor(calendarMonth: number): string {
   const idx = ((calendarMonth - 3) % OT_MONTH_SEGMENT_COLORS.length + OT_MONTH_SEGMENT_COLORS.length)
@@ -218,11 +286,12 @@ function applyManualKpisToSummary(
   summary: ExcoMetricValue[],
   mk: ExcoManualKpis,
 ): ExcoMetricValue[] {
+  const visible = visibleManualKpis(mk);
   return summary.map((kpi) => {
     if (IMPORT_KPI_KEYS.has(kpi.key) && kpi.source === 'computed') return kpi;
     const field = MANUAL_KPI_FIELD_BY_SUMMARY_KEY[kpi.key];
     if (!field) return kpi;
-    const value = mk[field];
+    const value = visible[field];
     if (value == null || (typeof value === 'number' && !Number.isFinite(value))) {
       return { ...kpi, value: null, source: 'empty' as const };
     }
@@ -931,7 +1000,14 @@ export default function ExcoPage() {
                 onChange={patchOverlays}
               />
             )}
-            {tab === 'csr' && <CsrTab report={report} />}
+            {tab === 'csr' && (
+              <CsrTab
+                report={report}
+                overlays={overlays}
+                canEdit={canEdit}
+                onChange={patchOverlays}
+              />
+            )}
             {tab === 'recrutement' && (
               <RecrutementTab
                 report={report}
@@ -942,6 +1018,7 @@ export default function ExcoPage() {
             )}
             {tab === 'gouvernance' && (
               <GouvernanceTab
+                report={report}
                 year={year}
                 month={month}
                 overlays={overlays}
@@ -1229,6 +1306,7 @@ function KpiTab({
   onChange: (u: (p: ExcoOverlays) => ExcoOverlays) => void;
 }) {
   const mk = overlays.manualKpis;
+  const visibleMk = visibleManualKpis(mk);
   const liveSummary = useMemo(
     () => applyManualKpisToSummary(report.kpiSummary, mk),
     [report.kpiSummary, mk],
@@ -1257,13 +1335,20 @@ function KpiTab({
         <div className="exco-kpi-grid">
           {liveSummary.map((kpi) => {
             const field = MANUAL_KPI_FIELD_BY_SUMMARY_KEY[kpi.key];
+            const financeDeferred =
+              !EXCO_PUBLISH_FINANCE_KPIS &&
+              (kpi.key === 'staffCost' ||
+                kpi.key === 'volumePerEmp' ||
+                kpi.key === 'revenuePerEmp');
             return (
               <ExcoKpiCard
                 key={kpi.key}
                 kpi={kpi}
-                canEdit={canEdit}
-                manualValue={field ? mk[field] : undefined}
-                onManualChange={field ? (v) => setMk(field, v) : undefined}
+                canEdit={canEdit && !financeDeferred}
+                manualValue={field ? visibleMk[field] : undefined}
+                onManualChange={
+                  financeDeferred ? undefined : field ? (v) => setMk(field, v) : undefined
+                }
               />
             );
           })}
@@ -1277,6 +1362,28 @@ function TendancesTab({ report }: { report: ExcoReportPayload }) {
   const trends = report.computed.trends || [];
   const fyCols = excoFyColumns(report.year, report.month);
   const current = trends.find((t) => t.month === report.month);
+  const [hiresModal, setHiresModal] = useState<{ title: string; rows: DashboardListRow[] } | null>(
+    null,
+  );
+
+  const openSiteHires = (label: string, siteKey: string, delta: number | null) => {
+    const period = filterExcoHires(
+      report.computed.periodHireList || report.computed.hiresList || [],
+      siteKey,
+    );
+    if (period.length > 0) {
+      setHiresModal({
+        title: `Ajouts — ${label} (${report.prevPeriodLabel} → ${report.periodLabel})`,
+        rows: excoHiresToListRows(period),
+      });
+      return;
+    }
+    const present = filterExcoHires(report.computed.presentList || [], siteKey);
+    setHiresModal({
+      title: `Effectif — ${label} (${report.periodLabel} · écart ${formatExcoDelta(delta)} vs ${report.prevPeriodLabel})`,
+      rows: excoHiresToListRows(present),
+    });
+  };
   const filled = trends.filter((t) => t.month >= 3 && t.month <= report.month);
   const staffYtd =
     report.month <= 6 && report.year === EXCO_FY_START_YEAR
@@ -1293,7 +1400,7 @@ function TendancesTab({ report }: { report: ExcoReportPayload }) {
       ? TEMPLATE_YTD_JUNE_2026.revenuePerEmp
       : TEMPLATE_YTD_JUNE_2026.revenuePerEmp
         + filled.filter((t) => t.month > 6).reduce((s, t) => s + (t.revenuePerEmp || 0), 0);
-  const mk = report.overlays.manualKpis;
+  const mk = visibleManualKpis(report.overlays.manualKpis);
   const staffBudget = mk.staffCostBudgetYtd ?? null;
   const volumeBudget = mk.volumeBudgetYtd ?? null;
   const revenueBudget = mk.revenueBudgetYtd ?? null;
@@ -1319,6 +1426,7 @@ function TendancesTab({ report }: { report: ExcoReportPayload }) {
   };
 
   return (
+    <>
     <div className="exco-grid">
       <div className="panel panel-padded">
         <SectionTitle hint={`FY Mar→Mar (template juin) — Mar–Jun figés · mois courant : ${report.periodLabel} · survol d’une cellule du mois pour l’origine`}>
@@ -1464,7 +1572,19 @@ function TendancesTab({ report }: { report: ExcoReportPayload }) {
                         </TipTd>
                       );
                     })}
-                    <td>
+                    <td
+                      className="exco-delta-cell"
+                      role="button"
+                      tabIndex={0}
+                      title={`Voir les ajouts — ${label} (${report.prevPeriodLabel} → ${report.periodLabel})`}
+                      onClick={() => openSiteHires(label, key, delta)}
+                      onKeyDown={(event) => {
+                        if (event.key === 'Enter' || event.key === ' ') {
+                          event.preventDefault();
+                          openSiteHires(label, key, delta);
+                        }
+                      }}
+                    >
                       {delta == null ? '—' : `${delta >= 0 ? '+' : ''}${delta}`}
                     </td>
                     <td>On track</td>
@@ -1589,11 +1709,22 @@ function TendancesTab({ report }: { report: ExcoReportPayload }) {
         </div>
       </div>
     </div>
+    {hiresModal ? (
+      <DashboardListModal
+        title={hiresModal.title}
+        columns={EXCO_HIRE_COLUMNS}
+        rows={hiresModal.rows}
+        onClose={() => setHiresModal(null)}
+        searchPlaceholder="Rechercher un ajout…"
+      />
+    ) : null}
+    </>
   );
 }
 
 function MouvementsTab({ report }: { report: ExcoReportPayload }) {
   const c = report.computed;
+  const [hiresModalOpen, setHiresModalOpen] = useState(false);
   const fyCols = useMemo(
     () => excoFyColumns(report.year, report.month),
     [report.year, report.month],
@@ -1630,11 +1761,24 @@ function MouvementsTab({ report }: { report: ExcoReportPayload }) {
   const hasLeave = leaveRows.some((r) => r.values.some((v) => v != null));
 
   return (
+    <>
     <div className="exco-grid">
       <div className="panel panel-padded">
         <SectionTitle>Staff movement — {report.periodLabel}</SectionTitle>
         <div className="exco-kpi-grid exco-kpi-grid-sm">
-          <div className="exco-kpi-card">
+          <div
+            className="exco-kpi-card exco-kpi-clickable"
+            role="button"
+            tabIndex={0}
+            title={`Voir les ajouts du mois — ${report.periodLabel}`}
+            onClick={() => setHiresModalOpen(true)}
+            onKeyDown={(event) => {
+              if (event.key === 'Enter' || event.key === ' ') {
+                event.preventDefault();
+                setHiresModalOpen(true);
+              }
+            }}
+          >
             <span className="exco-kpi-label">IN (Hires)</span>
             <strong className="exco-kpi-value">{c.hires}</strong>
           </div>
@@ -1842,6 +1986,16 @@ function MouvementsTab({ report }: { report: ExcoReportPayload }) {
         )}
       </div>
     </div>
+    {hiresModalOpen ? (
+      <DashboardListModal
+        title={`Ajouts — ${report.periodLabel}`}
+        columns={EXCO_HIRE_COLUMNS}
+        rows={excoHiresToListRows(c.hiresList || [])}
+        onClose={() => setHiresModalOpen(false)}
+        searchPlaceholder="Rechercher un ajout…"
+      />
+    ) : null}
+    </>
   );
 }
 
@@ -2393,8 +2547,83 @@ function FormationTab({
   );
 }
 
-function CsrTab({ report }: { report: ExcoReportPayload }) {
+function CsrUpdateField({
+  value,
+  disabled,
+  onChange,
+  rows = 3,
+  compact = false,
+}: {
+  value: string;
+  disabled: boolean;
+  onChange: (v: string) => void;
+  rows?: number;
+  compact?: boolean;
+}) {
+  const hasUpd = csrTextHasUpdate(value);
+  if (disabled) {
+    const runs = parseCsrUpdateMarkup(value);
+    return (
+      <p className={`exco-csr-preview${compact ? ' is-compact' : ''}${hasUpd ? ' has-upd' : ''}`}>
+        {runs.map((run, i) =>
+          run.update ? (
+            <mark key={i} className="exco-csr-upd">
+              {run.text}
+            </mark>
+          ) : (
+            <span key={i}>{run.text}</span>
+          ),
+        )}
+      </p>
+    );
+  }
+  return (
+    <textarea
+      className={`exco-inline-input${hasUpd ? ' has-csr-upd' : ''}`}
+      disabled={disabled}
+      rows={rows}
+      value={value}
+      onChange={(e) => onChange(e.target.value)}
+    />
+  );
+}
+
+function CsrTab({
+  report,
+  overlays,
+  canEdit,
+  onChange,
+}: {
+  report: ExcoReportPayload;
+  overlays: ExcoOverlays;
+  canEdit: boolean;
+  onChange: (u: (p: ExcoOverlays) => ExcoOverlays) => void;
+}) {
   const summary = report.computed.csrSummary;
+  const fy27Rows = resolveCsrFy27Rows(overlays);
+  const cahierRows = resolveCahierHighlights(overlays);
+
+  const patchFy27 = (updater: (rows: ExcoCsrFy27Row[]) => ExcoCsrFy27Row[]) => {
+    onChange((p) => ({
+      ...p,
+      csrFy27Rows: updater(resolveCsrFy27Rows(p).map((r) => ({ ...r }))),
+    }));
+  };
+
+  const patchCahier = (updater: (rows: ExcoCahierHighlight[]) => ExcoCahierHighlight[]) => {
+    onChange((p) => ({
+      ...p,
+      cahierHighlights: updater(resolveCahierHighlights(p).map((r) => ({ ...r }))),
+    }));
+  };
+
+  const updateFy27 = (id: string, patch: Partial<ExcoCsrFy27Row>) => {
+    patchFy27((rows) => rows.map((r) => (r.id === id ? { ...r, ...patch } : r)));
+  };
+
+  const updateCahier = (id: string, patch: Partial<ExcoCahierHighlight>) => {
+    patchCahier((rows) => rows.map((r) => (r.id === id ? { ...r, ...patch } : r)));
+  };
 
   return (
     <div className="exco-grid">
@@ -2440,6 +2669,169 @@ function CsrTab({ report }: { report: ExcoReportPayload }) {
             </strong>
           </div>
         </div>
+      </div>
+
+      <div className="panel panel-padded">
+        <SectionTitle hint="Texte bleu = dernière mise à jour. Pour marquer un passage, encadrez-le avec [[ ... ]].">
+          CSR – FY27
+        </SectionTitle>
+        <p className="exco-csr-legend">
+          <mark className="exco-csr-upd">Mise à jour</mark>
+          {' — '}texte bleu = libellé exact du CSR Update.
+        </p>
+        <div className="exco-table-scroll">
+          <table className="exco-table exco-fy27-table">
+            <thead>
+              <tr>
+                <th>Project / Initiative</th>
+                <th>Purpose / Objective</th>
+                <th>Current Status</th>
+                <th>Key Issues / Risks</th>
+                <th>Next Steps</th>
+                {canEdit && <th />}
+              </tr>
+            </thead>
+            <tbody>
+              {fy27Rows.map((row) => (
+                <tr key={row.id}>
+                  <td>
+                    <CsrUpdateField
+                      disabled={!canEdit}
+                      value={row.name}
+                      onChange={(v) => updateFy27(row.id, { name: v })}
+                    />
+                  </td>
+                  <td>
+                    <CsrUpdateField
+                      disabled={!canEdit}
+                      value={row.objective}
+                      onChange={(v) => updateFy27(row.id, { objective: v })}
+                    />
+                  </td>
+                  <td>
+                    <CsrUpdateField
+                      disabled={!canEdit}
+                      value={row.progress}
+                      onChange={(v) => updateFy27(row.id, { progress: v })}
+                    />
+                  </td>
+                  <td>
+                    <CsrUpdateField
+                      disabled={!canEdit}
+                      value={row.risks}
+                      onChange={(v) => updateFy27(row.id, { risks: v })}
+                    />
+                  </td>
+                  <td>
+                    <CsrUpdateField
+                      disabled={!canEdit}
+                      value={row.nextSteps}
+                      onChange={(v) => updateFy27(row.id, { nextSteps: v })}
+                    />
+                  </td>
+                  {canEdit && (
+                    <td>
+                      <button
+                        type="button"
+                        className="btn btn-ghost"
+                        onClick={() => patchFy27((rows) => rows.filter((r) => r.id !== row.id))}
+                      >
+                        ×
+                      </button>
+                    </td>
+                  )}
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+        {canEdit && (
+          <button
+            type="button"
+            className="btn btn-secondary"
+            onClick={() => patchFy27((rows) => [...rows, emptyCsrFy27Row(uid('csr-fy27'))])}
+          >
+            + Ajouter une initiative
+          </button>
+        )}
+      </div>
+
+      <div className="panel panel-padded">
+        <SectionTitle hint="Texte bleu = dernière mise à jour. Encadrez un passage avec [[ ... ]].">
+          Cahier des Charges
+        </SectionTitle>
+        <div className="exco-cahier-list">
+          {cahierRows.map((row) => (
+            <div key={row.id} className={`exco-cahier-card${csrTextHasUpdate(row.body) ? ' has-upd' : ''}`}>
+              <div className="exco-cahier-card-head">
+                <select
+                  className="exco-inline-input"
+                  disabled={!canEdit}
+                  value={row.icon}
+                  onChange={(e) =>
+                    updateCahier(row.id, {
+                      icon: e.target.value as ExcoCahierHighlight['icon'],
+                    })
+                  }
+                >
+                  {CAHIER_ICON_OPTIONS.map((opt) => (
+                    <option key={opt.id} value={opt.id}>
+                      {opt.label}
+                    </option>
+                  ))}
+                </select>
+                <label className="exco-cahier-pct">
+                  <span>Avancement</span>
+                  <input
+                    className="exco-inline-input"
+                    type="number"
+                    min={0}
+                    max={100}
+                    disabled={!canEdit}
+                    value={row.progressPct}
+                    onChange={(e) =>
+                      updateCahier(row.id, { progressPct: Number(e.target.value) || 0 })
+                    }
+                  />
+                  <span>%</span>
+                </label>
+                {canEdit && (
+                  <button
+                    type="button"
+                    className="btn btn-ghost"
+                    onClick={() => patchCahier((rows) => rows.filter((r) => r.id !== row.id))}
+                  >
+                    ×
+                  </button>
+                )}
+              </div>
+              <input
+                className="exco-inline-input"
+                disabled={!canEdit}
+                value={row.title}
+                placeholder="Titre"
+                onChange={(e) => updateCahier(row.id, { title: e.target.value })}
+              />
+              <CsrUpdateField
+                disabled={!canEdit}
+                rows={4}
+                value={row.body}
+                onChange={(v) => updateCahier(row.id, { body: v })}
+              />
+            </div>
+          ))}
+        </div>
+        {canEdit && (
+          <button
+            type="button"
+            className="btn btn-secondary"
+            onClick={() =>
+              patchCahier((rows) => [...rows, emptyCahierHighlight(uid('cahier'))])
+            }
+          >
+            + Ajouter un volet
+          </button>
+        )}
       </div>
 
       <div className="panel panel-padded">
@@ -2514,35 +2906,36 @@ function RecrutementTab({
   canEdit: boolean;
   onChange: (u: (p: ExcoOverlays) => ExcoOverlays) => void;
 }) {
-  const rows = overlays.recruitment;
+  const rows = resolveRecruitment(overlays);
   const vacants = report.computed.vacantPostes;
 
-  const update = (id: string, patch: Partial<ExcoRecruitmentRow>) => {
+  const patchRows = (updater: (current: ExcoRecruitmentRow[]) => ExcoRecruitmentRow[]) => {
     onChange((p) => ({
       ...p,
-      recruitment: p.recruitment.map((r) => (r.id === id ? { ...r, ...patch } : r)),
+      recruitment: updater(resolveRecruitment(p).map((r) => ({ ...r }))),
     }));
   };
 
+  const update = (id: string, patch: Partial<ExcoRecruitmentRow>) => {
+    patchRows((current) => current.map((r) => (r.id === id ? { ...r, ...patch } : r)));
+  };
+
   const addRow = (category: 'replacement' | 'new') => {
-    onChange((p) => ({
-      ...p,
-      recruitment: [
-        ...p.recruitment,
-        {
-          id: uid('rec'),
-          category,
-          position: '',
-          grade: '',
-          status: '',
-          comments: '',
-          budgeted: '',
-          department: '',
-          location: '',
-          contractType: '',
-        },
-      ],
-    }));
+    patchRows((current) => [
+      ...current,
+      {
+        id: uid('rec'),
+        category,
+        position: '',
+        grade: '',
+        status: '',
+        comments: '',
+        budgeted: '',
+        department: '',
+        location: '',
+        contractType: '',
+      },
+    ]);
   };
 
   const importVacants = () => {
@@ -2550,24 +2943,21 @@ function RecrutementTab({
       showError('Aucun poste vacant dans le module Postes');
       return;
     }
-    onChange((p) => ({
-      ...p,
-      recruitment: [
-        ...p.recruitment,
-        ...vacants.map((v) => ({
-          id: uid('rec'),
-          category: 'new' as const,
-          position: v.title,
-          grade: v.grade,
-          status: 'Ongoing',
-          comments: v.notes || '',
-          budgeted: '',
-          department: v.department,
-          location: v.location,
-          contractType: '',
-        })),
-      ],
-    }));
+    patchRows((current) => [
+      ...current,
+      ...vacants.map((v) => ({
+        id: uid('rec'),
+        category: 'new' as const,
+        position: v.title,
+        grade: v.grade,
+        status: 'Ongoing',
+        comments: v.notes || '',
+        budgeted: '',
+        department: v.department,
+        location: v.location,
+        contractType: '',
+      })),
+    ]);
   };
 
   const renderTable = (category: 'replacement' | 'new', title: string) => {
@@ -2609,11 +2999,12 @@ function RecrutementTab({
                       ] as const
                     ).map((field) => (
                       <td key={field}>
-                        <input
-                          className="exco-inline-input"
+                        <CsrUpdateField
+                          compact
+                          rows={field === 'comments' ? 2 : 1}
                           disabled={!canEdit}
                           value={r[field]}
-                          onChange={(e) => update(r.id, { [field]: e.target.value })}
+                          onChange={(v) => update(r.id, { [field]: v })}
                         />
                       </td>
                     ))}
@@ -2622,12 +3013,7 @@ function RecrutementTab({
                         <button
                           type="button"
                           className="btn btn-ghost"
-                          onClick={() =>
-                            onChange((p) => ({
-                              ...p,
-                              recruitment: p.recruitment.filter((x) => x.id !== r.id),
-                            }))
-                          }
+                          onClick={() => patchRows((current) => current.filter((x) => x.id !== r.id))}
                         >
                           ×
                         </button>
@@ -2650,6 +3036,10 @@ function RecrutementTab({
 
   return (
     <div className="exco-grid">
+      <p className="exco-csr-legend">
+        <mark className="exco-csr-upd">Mise à jour</mark>
+        {' — '}texte bleu = dernière actualisation (non gras). Encadrez avec [[ ... ]].
+      </p>
       {canEdit && (
         <div className="panel panel-padded exco-import-bar">
           <p>
@@ -2667,12 +3057,14 @@ function RecrutementTab({
 }
 
 function GouvernanceTab({
+  report,
   year,
   month,
   overlays,
   canEdit,
   onChange,
 }: {
+  report: ExcoReportPayload;
   year: number;
   month: number;
   overlays: ExcoOverlays;
@@ -2686,6 +3078,8 @@ function GouvernanceTab({
 
   const [dashboard, setDashboard] = useState<AuditHrDashboard | null>(null);
   const [loadingAudit, setLoadingAudit] = useState(true);
+  const auditRows = useMemo(() => buildInternalAuditRows(report), [report]);
+  const auditSum = useMemo(() => summarizeInternalAudit(auditRows), [auditRows]);
 
   useEffect(() => {
     let cancelled = false;
@@ -2713,6 +3107,61 @@ function GouvernanceTab({
 
   return (
     <div className="exco-grid">
+      <div className="panel panel-padded">
+        <SectionTitle hint="Capture Internal AUDIT — le vert indique les points Closed (progression depuis le tracker).">
+          Internal AUDIT
+        </SectionTitle>
+        <p className="exco-audit-sum">
+          Closed <strong>{auditSum.closed}/{auditSum.total}</strong> ({auditSum.closedPct}%)
+          {' · '}
+          <span className="exco-audit-progressed">+{auditSum.progressed} clôturés depuis la dernière page</span>
+          {' · '}Overdue {auditSum.overdue}
+          {' · '}On going {auditSum.ongoing}
+        </p>
+        <div className="exco-table-scroll">
+          <table className="exco-table exco-audit-table">
+            <thead>
+              <tr>
+                <th>ID</th>
+                <th>Findings</th>
+                <th>Severity</th>
+                <th>Status</th>
+                <th>Comments</th>
+                <th>Due Date</th>
+              </tr>
+            </thead>
+            <tbody>
+              {auditRows.map((row) => (
+                <tr
+                  key={row.number}
+                  className={
+                    row.status === 'Closed'
+                      ? row.progressed
+                        ? 'is-closed is-progressed'
+                        : 'is-closed'
+                      : row.status === 'Overdue'
+                        ? 'is-overdue'
+                        : row.status === 'On going'
+                          ? 'is-ongoing'
+                          : undefined
+                  }
+                >
+                  <td>{row.number}</td>
+                  <td>{row.finding}</td>
+                  <td className={`exco-sev-${row.severity.toLowerCase()}`}>{row.severity}</td>
+                  <td>
+                    <strong>{row.status}</strong>
+                    {row.progressed ? <span className="exco-audit-new"> MAJ</span> : null}
+                  </td>
+                  <td>{row.comments || '—'}</td>
+                  <td>{row.dueDateLabel}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      </div>
+
       <div className="panel panel-padded">
         <SectionTitle hint="Cap 4 — même dashboard que le menu Audit points">
           Internal Audit — Findings

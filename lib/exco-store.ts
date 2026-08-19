@@ -14,6 +14,7 @@ import {
   type ExcoOverlays,
   type ExcoReportRecord,
 } from './exco-types';
+import { normalizeCahierHighlights, normalizeCsrFy27Rows } from './exco-csr-fy27';
 import { canPersistProjectFiles, getWritableDataRoot } from './runtime-mode';
 
 interface StoreData {
@@ -48,6 +49,8 @@ function mergeOverlays(raw: Partial<ExcoOverlays> | undefined): ExcoOverlays {
     auditFindings: Array.isArray(raw.auditFindings) ? raw.auditFindings : [],
     isoActions: Array.isArray(raw.isoActions) ? raw.isoActions : [],
     csrProjects: Array.isArray(raw.csrProjects) ? raw.csrProjects : [],
+    csrFy27Rows: normalizeCsrFy27Rows(raw.csrFy27Rows),
+    cahierHighlights: normalizeCahierHighlights(raw.cahierHighlights),
     trainingTopics: Array.isArray(raw.trainingTopics) ? raw.trainingTopics : [],
     upcomingTrainings: Array.isArray(raw.upcomingTrainings) ? raw.upcomingTrainings : [],
     policies: {

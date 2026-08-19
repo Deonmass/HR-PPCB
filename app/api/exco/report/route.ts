@@ -2,6 +2,7 @@ import { NextResponse } from 'next/server';
 import { buildExcoReport } from '@/lib/exco-report';
 import { listExcoSavedPeriods, saveExcoOverlays } from '@/lib/exco-store';
 import { emptyExcoOverlays, type ExcoOverlays } from '@/lib/exco-types';
+import { normalizeCahierHighlights, normalizeCsrFy27Rows } from '@/lib/exco-csr-fy27';
 import { checkPermission } from '@/lib/require-permission';
 import { getAuditActor, withAudit } from '@/lib/with-audit';
 
@@ -87,6 +88,8 @@ export async function PUT(request: Request) {
       auditFindings: Array.isArray(incoming.auditFindings) ? incoming.auditFindings : [],
       isoActions: Array.isArray(incoming.isoActions) ? incoming.isoActions : [],
       csrProjects: Array.isArray(incoming.csrProjects) ? incoming.csrProjects : [],
+      csrFy27Rows: normalizeCsrFy27Rows(incoming.csrFy27Rows),
+      cahierHighlights: normalizeCahierHighlights(incoming.cahierHighlights),
       trainingTopics: Array.isArray(incoming.trainingTopics) ? incoming.trainingTopics : [],
       upcomingTrainings: Array.isArray(incoming.upcomingTrainings)
         ? incoming.upcomingTrainings

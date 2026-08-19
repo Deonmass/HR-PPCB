@@ -28,6 +28,22 @@ export interface ExcoSiteHeadcountRow {
   delta?: number | null;
 }
 
+/** Ligne d’ajout (embauche du mois) pour le modal Headcount / IN. */
+export interface ExcoHireListRow {
+  matricule: string;
+  nom: string;
+  localisation: string;
+  departement: string;
+  grade: string;
+  genre: string;
+  company: string;
+  appointmentDate: string;
+  /** Bucket site (Plant, HQ and Regions, Lubudi, Graduates). */
+  site: string;
+  /** Embauche / présent — libellé pour le modal. */
+  reason?: string;
+}
+
 export interface ExcoOtDeptRow {
   department: string;
   hours: number;
@@ -82,6 +98,31 @@ export interface ExcoIsoAction {
   start: string;
   deadline: string;
   status: 'Open' | 'Closed' | '';
+}
+
+export interface ExcoCsrFy27Row {
+  id: string;
+  name: string;
+  objective: string;
+  progress: string;
+  risks: string;
+  nextSteps: string;
+}
+
+export type ExcoCahierIcon =
+  | 'scholarship'
+  | 'infrastructure'
+  | 'agriculture'
+  | 'leisure'
+  | 'electricity';
+
+export interface ExcoCahierHighlight {
+  id: string;
+  icon: ExcoCahierIcon;
+  title: string;
+  body: string;
+  /** 0–100, used for the circular progress ring. */
+  progressPct: number;
 }
 
 export interface ExcoCsrProject {
@@ -154,6 +195,33 @@ export interface ExcoManualKpis {
   trainingHqPct?: number | null;
 }
 
+/**
+ * Staff cost / volume / revenue : conservés dans les overlays, pas encore
+ * publiés sur les cartes KPI, Tendances, aperçu et PPTX.
+ * Passer à `true` quand ExCo doit les afficher.
+ */
+export const EXCO_PUBLISH_FINANCE_KPIS = false;
+
+const UNPUBLISHED_FINANCE_KPI_KEYS = [
+  'staffCost',
+  'volumePerEmp',
+  'revenuePerEmp',
+  'staffCostBudgetYtd',
+  'volumeBudgetYtd',
+  'revenueBudgetYtd',
+] as const;
+
+/** KPI manuels visibles (les 3 financiers restent en base tant que non publiés). */
+export function visibleManualKpis(mk: ExcoManualKpis | undefined | null): ExcoManualKpis {
+  const src = mk || {};
+  if (EXCO_PUBLISH_FINANCE_KPIS) return src;
+  const next: ExcoManualKpis = { ...src };
+  for (const key of UNPUBLISHED_FINANCE_KPI_KEYS) {
+    delete next[key];
+  }
+  return next;
+}
+
 /** Snapshot finance / leave saisi pour un mois (année civile). */
 export type ExcoFinanceByMonth = Record<string, ExcoManualKpis>;
 
@@ -217,6 +285,10 @@ export interface ExcoOverlays {
   auditFindings: ExcoAuditFinding[];
   isoActions: ExcoIsoAction[];
   csrProjects: ExcoCsrProject[];
+  /** Slide CSR – FY27 (tableau initiatives). Vide = contenu par défaut. */
+  csrFy27Rows: ExcoCsrFy27Row[];
+  /** Slide Cahier des Charges (icônes + textes). Vide = contenu par défaut. */
+  cahierHighlights: ExcoCahierHighlight[];
   trainingTopics: ExcoTrainingTopic[];
   upcomingTrainings: ExcoTrainingTopic[];
   policies: ExcoPolicyBuckets;
@@ -254,6 +326,12 @@ export interface ExcoComputedBlock {
   prevHeadcount: number | null;
   hires: number;
   prevHires: number | null;
+  /** Embauches du mois du rapport (date d’engagement), pour le KPI IN. */
+  hiresList: ExcoHireListRow[];
+  /** Embauches du mois précédent + mois courant (colonne d’écart Headcount). */
+  periodHireList: ExcoHireListRow[];
+  /** Effectif présent fin de mois courant, pour repli si aucun ajout identifié. */
+  presentList: ExcoHireListRow[];
   exits: number;
   prevExits: number | null;
   turnoverPct: number | null;
@@ -341,6 +419,8 @@ export function emptyExcoOverlays(): ExcoOverlays {
     auditFindings: [],
     isoActions: [],
     csrProjects: [],
+    csrFy27Rows: [],
+    cahierHighlights: [],
     trainingTopics: [],
     upcomingTrainings: [],
     policies: {

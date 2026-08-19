@@ -3,7 +3,7 @@ import 'server-only';
 import fs from 'fs/promises';
 import path from 'path';
 import PptxGenJS from 'pptxgenjs';
-import type { ExcoMetricValue, ExcoReportPayload } from './exco-types';
+import type { ExcoCahierHighlight, ExcoCsrFy27Row, ExcoMetricValue, ExcoReportPayload } from './exco-types';
 import { groupExcoKpis, EXCO_PREVIEW_TOC } from './exco-preview-html';
 import { buildMouvementsSlideData } from './exco-mouvements-slide-data';
 import { buildOtSlideData, buildOtVsLeaveSlideData, formatOtHours, formatOtHoursShort, otChartDeptLabel } from './exco-ot-slide-data';
@@ -12,6 +12,15 @@ import {
   buildGouvernanceSlideData,
   buildTrainingSlideData,
 } from './exco-dashboard-slides-data';
+import { resolveCahierHighlights, resolveCsrFy27Rows, parseCsrUpdateMarkup, csrTextHasUpdate, csrSlideText, CSR_UPDATE_COLOR } from './exco-csr-fy27';
+import { resolveRecruitment } from './exco-recruitment-fy27';
+import {
+  auditSeverityColor,
+  auditStatusColor,
+  auditStatusFill,
+  buildInternalAuditRows,
+  summarizeInternalAudit,
+} from './exco-audit-internal';
 import {
   buildTrendsSlideSections,
   type ExcoTrendTableSection,
@@ -209,6 +218,218 @@ function whiteBlock(
   });
 }
 
+const CSR_FY27_HEADER = '9B1B24';
+const CSR_FY27_NAME = 'F4C4C8';
+const CSR_FY27_ALT = 'FCE8E9';
+const CSR_FY27_UPD = 'E8F0FE';
+const CAHIER_GREEN = '2F7D32';
+const CAHIER_PINK = 'F4C4C8';
+
+function recMarkupCell(text: string, fill: string, opts?: { bold?: boolean; align?: 'left' | 'center' }) {
+  const runs = parseCsrUpdateMarkup(text || '');
+  return {
+    text: runs.length
+      ? runs.map((run) => ({
+          text: run.text,
+          options: {
+            color: run.update ? CSR_UPDATE_COLOR : PPC.ink,
+            bold: run.update ? false : Boolean(opts?.bold),
+            fontSize: 7,
+            fontFace: FONT,
+          },
+        }))
+      : [{ text: '—', options: { color: PPC.ink, fontSize: 7, fontFace: FONT } }],
+    options: {
+      fill: { color: fill },
+      valign: 'middle' as const,
+      align: opts?.align || 'left',
+      wrap: true,
+      margin: [2, 3, 2, 3] as [number, number, number, number],
+    },
+  };
+}
+
+function recHeaderCell(text: string) {
+  return {
+    text,
+    options: {
+      fill: { color: CSR_FY27_HEADER },
+      color: PPC.white,
+      bold: true,
+      fontSize: 8,
+      align: 'center' as const,
+      valign: 'middle' as const,
+    },
+  };
+}
+
+function fy27Cell(
+  text: string,
+  opts: { fill: string; bold?: boolean; color?: string; align?: 'left' | 'center' },
+) {
+  const shown = opts.color === PPC.white ? text : csrSlideText(text || '—');
+  const runs = parseCsrUpdateMarkup(shown || '—');
+  const hasUpd = csrTextHasUpdate(shown);
+  const fill = hasUpd && !opts.color ? CSR_FY27_UPD : opts.fill;
+  return {
+    text: runs.map((run) => ({
+      text: run.text || '',
+      options: {
+        color: run.update ? CSR_UPDATE_COLOR : (opts.color || PPC.ink),
+        bold: run.update ? false : Boolean(opts.bold),
+        fontSize: opts.bold && opts.color === PPC.white ? 9 : 7,
+        fontFace: FONT,
+      },
+    })),
+    options: {
+      fill: { color: fill },
+      color: opts.color || PPC.ink,
+      bold: hasUpd ? false : Boolean(opts.bold),
+      fontFace: FONT,
+      align: opts.align || 'left',
+      valign: 'top' as const,
+      wrap: true,
+      margin: [3, 3, 3, 3] as [number, number, number, number],
+    },
+  };
+}
+
+function addCsrFy27Table(slide: Slide, rows: ExcoCsrFy27Row[]): void {
+  const header = [
+    fy27Cell('Project / Initiative', { fill: CSR_FY27_HEADER, bold: true, color: PPC.white, align: 'center' }),
+    fy27Cell('Purpose / Objective', { fill: CSR_FY27_HEADER, bold: true, color: PPC.white, align: 'center' }),
+    fy27Cell('Current Status', { fill: CSR_FY27_HEADER, bold: true, color: PPC.white, align: 'center' }),
+    fy27Cell('Key Issues / Risks', { fill: CSR_FY27_HEADER, bold: true, color: PPC.white, align: 'center' }),
+    fy27Cell('Next Steps', { fill: CSR_FY27_HEADER, bold: true, color: PPC.white, align: 'center' }),
+  ];
+  const body = (rows.length ? rows : [{ id: '', name: '—', objective: '', progress: '', risks: '', nextSteps: '' }]).map(
+    (row, i) => {
+      const alt = i % 2 === 1 ? CSR_FY27_ALT : PPC.white;
+      return [
+        fy27Cell(row.name, { fill: CSR_FY27_NAME, bold: true }),
+        fy27Cell(row.objective, { fill: alt }),
+        fy27Cell(row.progress, { fill: alt }),
+        fy27Cell(row.risks, { fill: alt }),
+        fy27Cell(row.nextSteps, { fill: alt }),
+      ];
+    },
+  );
+  slide.addTable([header, ...body], {
+    x: 0.36,
+    y: 1.02,
+    w: 12.58,
+    h: 6.0,
+    colW: [1.85, 2.3, 3.2, 2.5, 2.73],
+    border: { pt: 0.4, color: PPC.white },
+    fontFace: FONT,
+    valign: 'top',
+  });
+}
+
+function cahierIconPath(icon: ExcoCahierHighlight['icon']): string {
+  return path.join(process.cwd(), 'public', 'exco', 'cahier', `${icon}.svg`);
+}
+
+function addCahierHighlights(slide: Slide, items: ExcoCahierHighlight[]): void {
+  const list = items.slice(0, 5);
+  const n = Math.max(list.length, 1);
+  const startY = 1.04;
+  const bottom = 7.12;
+  const rowH = (bottom - startY) / n;
+  const ring = Math.min(1.18, rowH - 0.1);
+  list.forEach((item, i) => {
+    const y = startY + i * rowH;
+    const pct = Math.max(0, Math.min(100, Number(item.progressPct) || 0));
+    const done = pct <= 0 ? 0.01 : pct;
+    const rest = pct >= 100 ? 0.01 : Math.max(100 - pct, 0.01);
+    const ringX = 0.48;
+    const ringY = y + 0.04;
+    if (pct >= 99) {
+      slide.addShape('ellipse', {
+        x: ringX, y: ringY, w: ring, h: ring,
+        fill: { color: CAHIER_GREEN }, line: { color: CAHIER_GREEN },
+      });
+    } else {
+      slide.addChart(
+        'doughnut',
+        [
+          {
+            name: 'Progress',
+            labels: ['Done', 'Rest'],
+            values: [done, rest],
+          },
+        ],
+        {
+          x: ringX,
+          y: ringY,
+          w: ring,
+          h: ring,
+          showLegend: false,
+          showTitle: false,
+          showValue: false,
+          showPercent: false,
+          holeSize: 62,
+          chartColors: [CAHIER_GREEN, CAHIER_PINK],
+        },
+      );
+    }
+    const hole = ring * 0.58;
+    const holeOff = (ring - hole) / 2;
+    slide.addShape('ellipse', {
+      x: ringX + holeOff, y: ringY + holeOff, w: hole, h: hole,
+      fill: { color: PPC.white }, line: { color: PPC.white },
+    });
+    const iconS = hole * 0.78;
+    const iconOff = (ring - iconS) / 2;
+    slide.addImage({
+      path: cahierIconPath(item.icon),
+      x: ringX + iconOff,
+      y: ringY + iconOff,
+      w: iconS,
+      h: iconS,
+    });
+    const textX = ringX + ring + 0.22;
+    const textW = 12.55 - textX;
+    slide.addText(item.title || '—', {
+      x: textX, y: y + 0.04, w: textW, h: 0.28,
+      fontSize: 16, bold: true, color: PPC.red, fontFace: FONT_TITLE,
+    });
+    const bodySrc = item.body || '—';
+    const isShort = bodySrc.replace(/\[\[|\]\]/g, '').trim().length < 80;
+    const bodyRuns = parseCsrUpdateMarkup(bodySrc).flatMap((run, idx) => {
+      const raw = run.text;
+      const prefix = idx === 0 && isShort ? '• ' : '';
+      if (!run.update && raw.includes('100%')) {
+        const [before, after] = raw.split('100%');
+        return [
+          { text: `${prefix}${before}`, options: { color: PPC.ink, bold: false, fontSize: 13, fontFace: FONT } },
+          { text: '100%', options: { color: PPC.ink, bold: true, fontSize: 13, fontFace: FONT } },
+          { text: after, options: { color: PPC.ink, bold: false, fontSize: 13, fontFace: FONT } },
+        ];
+      }
+      return [{
+        text: `${prefix}${raw}`,
+        options: {
+          color: run.update ? CSR_UPDATE_COLOR : PPC.ink,
+          bold: false,
+          fontSize: 13,
+          fontFace: FONT,
+        },
+      }];
+    });
+    slide.addText(bodyRuns, {
+      x: textX, y: y + 0.34, w: textW, h: rowH - 0.48,
+      valign: 'top',
+    });
+    if (i < list.length - 1) {
+      slide.addShape('rect', {
+        x: 0.46, y: y + rowH - 0.03, w: 12.1, h: 0.012,
+        fill: { color: 'D8D8DE' }, line: { color: 'D8D8DE' },
+      });
+    }
+  });
+}
+
 function iconBadge(slide: Slide, x: number, y: number, glyph: string, bg = PPC.red): void {
   slide.addShape('ellipse', {
     x, y, w: 0.38, h: 0.38,
@@ -271,6 +492,62 @@ function kpiCard(
   }
 }
 
+function narrativeParts(body: string): string[] {
+  return (body || '')
+    .trim()
+    .split(/\n\n+/)
+    .map((s) => s.trim())
+    .filter(Boolean);
+}
+
+function estimateNarrativeInches(parts: string[], fontSize: number, widthIn: number): number {
+  const charW = (fontSize * 0.52) / 72;
+  const charsPerLine = Math.max(16, Math.floor(widthIn / charW));
+  const lineH = (fontSize * 1.16) / 72;
+  const paraGap = 0.035;
+  return parts.reduce((sum, p) => {
+    return sum + Math.max(1, Math.ceil(p.length / charsPerLine)) * lineH + paraGap;
+  }, 0);
+}
+
+function fitNarrativeFont(parts: string[], widthIn: number, maxH: number): number {
+  for (const size of [10, 9.5, 9, 8.5, 8, 7.5, 7, 6.5]) {
+    if (estimateNarrativeInches(parts, size, widthIn) <= maxH) return size;
+  }
+  return 6.5;
+}
+
+function narrativeTextRuns(
+  body: string,
+  fontSize: number,
+): Array<{ text: string; options: { bold?: boolean; fontSize: number; color: string; fontFace: string } }> {
+  const parts = narrativeParts(body);
+  if (!parts.length) {
+    return [{ text: '—', options: { fontSize, color: PPC.ink, fontFace: FONT } }];
+  }
+  const runs: Array<{ text: string; options: { bold?: boolean; fontSize: number; color: string; fontFace: string } }> = [];
+  parts.forEach((p, i) => {
+    const gap = i === 0 ? '' : '\n';
+    const idx = p.indexOf(':');
+    if (idx > 0 && idx < 90) {
+      runs.push({
+        text: `${gap}${p.slice(0, idx + 1)} `,
+        options: { bold: true, fontSize, color: PPC.ink, fontFace: FONT },
+      });
+      runs.push({
+        text: p.slice(idx + 1).trim(),
+        options: { bold: false, fontSize, color: PPC.ink, fontFace: FONT },
+      });
+    } else {
+      runs.push({
+        text: `${gap}${p}`,
+        options: { fontSize, color: PPC.ink, fontFace: FONT },
+      });
+    }
+  });
+  return runs;
+}
+
 function panel(slide: Slide, x: number, y: number, w: number, h: number, title: string, body: string, glyph?: string): void {
   slide.addShape('roundRect', {
     x, y, w, h,
@@ -282,9 +559,13 @@ function panel(slide: Slide, x: number, y: number, w: number, h: number, title: 
     x: x + (glyph ? 0.68 : 0.2), y: y + 0.18, w: w - 0.9, h: 0.28,
     fontSize: 13, bold: true, color: PPC.red, fontFace: FONT,
   });
-  slide.addText(body?.trim() || '—', {
-    x: x + 0.2, y: y + 0.55, w: w - 0.4, h: h - 0.75,
-    fontSize: 12, color: PPC.ink, fontFace: FONT, valign: 'top',
+  const textW = w - 0.4;
+  const textH = h - 0.78;
+  const fontSize = fitNarrativeFont(narrativeParts(body), textW, textH);
+  slide.addText(narrativeTextRuns(body, fontSize), {
+    x: x + 0.2, y: y + 0.52, w: textW, h: textH,
+    valign: 'top',
+    wrap: true,
   });
 }
 
@@ -506,9 +787,9 @@ export async function buildModernExcoContentPptx(report: ExcoReportPayload): Pro
     await paintSlideCanvas(s, assets);
     addChrome(s, 'Summary', `${prev} → ${period}`, period, '01');
     const n = o.narrative;
-    panel(s, 0.4, 1.3, 4.1, 5.4, 'Highlights', n.highlights || '', 'H');
-    panel(s, 4.65, 1.3, 4.1, 5.4, 'Lowlights', n.lowlights || '', 'L');
-    panel(s, 8.9, 1.3, 4.0, 5.4, 'Focus', n.focus || '', 'F');
+    panel(s, 0.4, 1.22, 4.1, 5.95, 'Highlights', n.highlights || '', 'H');
+    panel(s, 4.65, 1.22, 4.1, 5.95, 'Lowlights', n.lowlights || '', 'L');
+    panel(s, 8.9, 1.22, 4.0, 5.95, 'Focus', n.focus || '', 'F');
   }
 
   // —— KPI Summary (1 slide, 20 cartes, 2 blocs × 5 cols) ——
@@ -1305,58 +1586,149 @@ export async function buildModernExcoContentPptx(report: ExcoReportPayload): Pro
     }
   }
 
-  // —— Recruitment ——
+  // —— CSR – FY27 table ——
   {
     const s = pptx.addSlide();
     await paintSlideCanvas(s, assets);
-    addChrome(s, 'Recruitment', '', period, '08');
+    addChrome(s, 'CSR – FY27', '', period, '07');
     whiteBlock(s, 0.28, 0.92, 12.75, 6.3);
-    const repl = (o.recruitment || []).filter((r) => r.category === 'replacement').slice(0, 7);
-    const neu = (o.recruitment || []).filter((r) => r.category === 'new').slice(0, 8);
-    const mapRows = (rows: typeof repl) =>
-      rows.map((r) => [
-        { text: r.position || '' },
-        { text: r.grade || '' },
-        { text: r.status || '' },
-        { text: r.department || '' },
-        { text: r.location || '' },
-      ]);
-    const empty = [[{ text: '—' }, { text: '' }, { text: '' }, { text: '' }, { text: '' }]];
-    s.addText('1. Replacements', {
-      x: 0.4, y: 1.2, w: 6, h: 0.28, fontSize: 13, bold: true, color: PPC.red, fontFace: FONT,
+    addCsrFy27Table(s, resolveCsrFy27Rows(report.overlays));
+    s.addText('Blue text = latest update', {
+      x: 9.2, y: 0.48, w: 3.7, h: 0.18,
+      fontSize: 9, color: CSR_UPDATE_COLOR, fontFace: FONT, align: 'right', italic: true,
     });
-    s.addTable(
-      [
-        [
-          { text: 'Position', options: { bold: true, color: PPC.white, fill: { color: PPC.black } } },
-          { text: 'Grade', options: { bold: true, color: PPC.white, fill: { color: PPC.black } } },
-          { text: 'Status', options: { bold: true, color: PPC.white, fill: { color: PPC.black } } },
-          { text: 'Dept', options: { bold: true, color: PPC.white, fill: { color: PPC.black } } },
-          { text: 'Loc', options: { bold: true, color: PPC.white, fill: { color: PPC.black } } },
-        ],
-        ...(mapRows(repl).length ? mapRows(repl) : empty),
-      ],
-      { x: 0.4, y: 1.55, w: 12.5, colW: [3.6, 1.4, 2.2, 2.8, 2.5], border: TABLE_BORDER, fontFace: FONT, fontSize: 10 },
-    );
-    s.addText('2. New positions', {
-      x: 0.4, y: 4.15, w: 6, h: 0.28, fontSize: 13, bold: true, color: PPC.red, fontFace: FONT,
-    });
-    s.addTable(
-      [
-        [
-          { text: 'Position', options: { bold: true, color: PPC.white, fill: { color: PPC.black } } },
-          { text: 'Grade', options: { bold: true, color: PPC.white, fill: { color: PPC.black } } },
-          { text: 'Status', options: { bold: true, color: PPC.white, fill: { color: PPC.black } } },
-          { text: 'Dept', options: { bold: true, color: PPC.white, fill: { color: PPC.black } } },
-          { text: 'Loc', options: { bold: true, color: PPC.white, fill: { color: PPC.black } } },
-        ],
-        ...(mapRows(neu).length ? mapRows(neu) : empty),
-      ],
-      { x: 0.4, y: 4.5, w: 12.5, colW: [3.6, 1.4, 2.2, 2.8, 2.5], border: TABLE_BORDER, fontFace: FONT, fontSize: 10 },
-    );
   }
 
-  // —— Gouvernance — Audit (1 slide) ——
+  // —— Cahier des Charges ——
+  {
+    const s = pptx.addSlide();
+    await paintSlideCanvas(s, assets);
+    addChrome(s, 'Cahier des Charges', '', period, '07');
+    whiteBlock(s, 0.28, 0.92, 12.75, 6.3);
+    addCahierHighlights(s, resolveCahierHighlights(report.overlays));
+  }
+
+  // —— Recruitment ——
+  {
+    const all = resolveRecruitment(o);
+    const repl = all.filter((r) => r.category === 'replacement');
+    const neu = all.filter((r) => r.category === 'new');
+    const headers = ['Position', 'Grades', 'Status', 'Comments', 'Budgeted', 'Department', 'Location', 'Contract type'];
+    const colW = [1.85, 0.7, 0.95, 3.35, 0.85, 1.55, 1.55, 1.2];
+    const head = headers.map(recHeaderCell);
+    const mapRows = (rows: typeof repl) =>
+      rows.map((r, i) => {
+        const fill = i % 2 ? 'F4F6FA' : PPC.white;
+        return [
+          recMarkupCell(r.position, fill, { bold: true }),
+          recMarkupCell(r.grade, fill, { align: 'center' }),
+          recMarkupCell(r.status, fill, { align: 'center' }),
+          recMarkupCell(r.comments, fill),
+          recMarkupCell(r.budgeted, fill, { align: 'center' }),
+          recMarkupCell(r.department, fill),
+          recMarkupCell(r.location, fill),
+          recMarkupCell(r.contractType, fill, { align: 'center' }),
+        ];
+      });
+    const empty = [headers.map(() => recMarkupCell('—', PPC.white))];
+    const s = pptx.addSlide();
+    await paintSlideCanvas(s, assets);
+    addChrome(s, 'Recruitment – FY27', '', period, '08');
+    whiteBlock(s, 0.28, 0.92, 12.75, 6.3);
+    s.addText('Blue text = latest update', {
+      x: 8.6, y: 0.96, w: 4.2, h: 0.2,
+      fontSize: 9, italic: true, color: CSR_UPDATE_COLOR, fontFace: FONT, align: 'right',
+    });
+    s.addText('1. Replacements', {
+      x: 0.4, y: 0.96, w: 8, h: 0.2, fontSize: 12, bold: true, color: PPC.red, fontFace: FONT,
+    });
+    const rowH = 0.205;
+    s.addTable([head, ...(mapRows(repl).length ? mapRows(repl) : empty)], {
+      x: 0.36, y: 1.16, w: 12.6, colW, rowH,
+      border: { pt: 0.3, color: PPC.white },
+      fontFace: FONT,
+      valign: 'middle',
+    });
+    const newY = 1.16 + rowH * (1 + Math.max(repl.length, 1)) + 0.08;
+    s.addText('2. New positions', {
+      x: 0.4, y: newY, w: 8, h: 0.2, fontSize: 12, bold: true, color: PPC.red, fontFace: FONT,
+    });
+    s.addTable([head, ...(mapRows(neu).length ? mapRows(neu) : empty)], {
+      x: 0.36, y: newY + 0.2, w: 12.6, colW, rowH,
+      border: { pt: 0.3, color: PPC.white },
+      fontFace: FONT,
+      valign: 'middle',
+    });
+  }
+
+  // —— Gouvernance — Internal AUDIT table (before chart) ——
+  {
+    const rows = buildInternalAuditRows(report);
+    const sum = summarizeInternalAudit(rows);
+    const s = pptx.addSlide();
+    await paintSlideCanvas(s, assets);
+    addChrome(s, 'Internal AUDIT', '', period, '09');
+    whiteBlock(s, 0.28, 0.92, 12.75, 6.3);
+    s.addText(
+      `Closed ${sum.closed}/${sum.total} (${sum.closedPct}%)  ·  +${sum.progressed} since last EXCO  ·  Overdue ${sum.overdue}  ·  On going ${sum.ongoing}`,
+      {
+        x: 0.4, y: 0.98, w: 9.2, h: 0.22,
+        fontSize: 10, color: PPC.ink, fontFace: FONT,
+      },
+    );
+    s.addText('Green = Closed (progression)', {
+      x: 9.5, y: 0.98, w: 3.3, h: 0.22,
+      fontSize: 9, italic: true, color: '166534', fontFace: FONT, align: 'right',
+    });
+    const header = ['ID', 'Findings', 'Severity', 'Status', 'Comments', 'Due Date'].map((h) => ({
+      text: h,
+      options: {
+        fill: { color: CSR_FY27_HEADER },
+        color: PPC.white,
+        bold: true,
+        fontSize: 8,
+        align: 'center' as const,
+        valign: 'middle' as const,
+      },
+    }));
+    const body = rows.map((row, i) => {
+      const fill = auditStatusFill(row, i % 2 === 1);
+      const statusColor = auditStatusColor(row.status);
+      const cell = (text: string, opts?: { bold?: boolean; color?: string; align?: 'left' | 'center' }) => ({
+        text: text || '—',
+        options: {
+          fill: { color: fill },
+          color: opts?.color || PPC.ink,
+          bold: Boolean(opts?.bold),
+          fontSize: 7,
+          fontFace: FONT,
+          align: opts?.align || 'left',
+          valign: 'middle' as const,
+          wrap: true,
+          margin: [3, 3, 3, 3] as [number, number, number, number],
+        },
+      });
+      return [
+        cell(row.number, { bold: true, align: 'center' }),
+        cell(row.finding),
+        cell(row.severity, { bold: true, color: auditSeverityColor(row.severity), align: 'center' }),
+        cell(row.status, { bold: true, color: statusColor, align: 'center' }),
+        cell(row.comments),
+        cell(row.dueDateLabel, { align: 'center' }),
+      ];
+    });
+    s.addTable([header, ...body], {
+      x: 0.36,
+      y: 1.24,
+      w: 12.58,
+      colW: [0.5, 5.7, 1.15, 1.2, 2.55, 1.48],
+      border: { pt: 0.4, color: PPC.white },
+      fontFace: FONT,
+      valign: 'middle',
+    });
+  }
+
+  // —— Gouvernance — Audit chart ——
   {
     const gov = buildGouvernanceSlideData(report);
     const s = pptx.addSlide();

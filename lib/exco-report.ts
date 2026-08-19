@@ -5,6 +5,7 @@ import { buildAuditHrDashboard, computeStatus } from './audit-hr-compute';
 import {
   computeAgeFromDisplayDate,
   computeSeniorityYears,
+  displayDateSortKey,
   parseDisplayDateParts,
   wasPresentInYearMonth,
 } from './employee-columns';
@@ -30,11 +31,13 @@ import {
   type ExcoCountRow,
   type ExcoCsrProject,
   type ExcoCsrSummary,
+  type ExcoHireListRow,
   type ExcoMetricValue,
   type ExcoOtDeptRow,
   type ExcoOtEmployeeRow,
   type ExcoOverlays,
   type ExcoReportPayload,
+  visibleManualKpis,
   type ExcoSource,
   type ExcoTrendMonth,
 } from './exco-types';
@@ -97,6 +100,29 @@ function hiredInMonth(employee: Employee, year: number, month: number): boolean 
   const parts = parseDisplayDateParts(employee.appointmentDate || '');
   if (!parts) return false;
   return parts.y === year && parts.m === month;
+}
+
+function toHireListRow(employee: Employee, reason = 'Embauche'): ExcoHireListRow {
+  return {
+    matricule: employee.matricule || '',
+    nom: employee.nom || '',
+    localisation: employee.localisation || '',
+    departement: employee.departement || '',
+    grade: employee.grade || '',
+    genre: employee.gender || '',
+    company: employee.company || '',
+    appointmentDate: employee.appointmentDate || '',
+    site: siteBucket(employee.localisation || ''),
+    reason,
+  };
+}
+
+function sortByAppointmentThenName(employees: Employee[]): Employee[] {
+  return employees.slice().sort(
+    (a, b) =>
+      displayDateSortKey(b.appointmentDate || '') - displayDateSortKey(a.appointmentDate || '')
+      || (a.nom || '').localeCompare(b.nom || '', 'fr'),
+  );
 }
 
 function exitedInMonth(employee: Employee, year: number, month: number): boolean {
@@ -503,10 +529,10 @@ async function buildCalendarYearTrends(
     }
 
     const financeKey = String(month);
-    const finance = {
+    const finance = visibleManualKpis({
       ...(overlays.financeByMonth?.[financeKey] || {}),
       ...(month === throughMonth ? overlays.manualKpis : {}),
-    };
+    });
 
     const leaveSnap = overlays.leaveImportsByMonth?.[financeKey];
     const leaveAll =
@@ -568,8 +594,15 @@ async function computeBlock(
   const prev = prevPeriod(year, month);
   const presentPrev = presentEmployees(actives, exits, prev.year, prev.month);
 
-  const hires = [...actives, ...exits].filter((e) => hiredInMonth(e, year, month)).length;
-  const prevHires = [...actives, ...exits].filter((e) => hiredInMonth(e, prev.year, prev.month)).length;
+  const hiredThisMonth = [...actives, ...exits].filter((e) => hiredInMonth(e, year, month));
+  const hiredPrevMonth = [...actives, ...exits].filter((e) => hiredInMonth(e, prev.year, prev.month));
+  const hiresList = sortByAppointmentThenName(hiredThisMonth).map((e) => toHireListRow(e, 'Embauche'));
+  const periodHireList = sortByAppointmentThenName([...hiredPrevMonth, ...hiredThisMonth]).map((e) =>
+    toHireListRow(e, 'Embauche'),
+  );
+  const presentList = sortByAppointmentThenName(present).map((e) => toHireListRow(e, 'Présent'));
+  const hires = hiredThisMonth.length;
+  const prevHires = hiredPrevMonth.length;
   const exitsCount = exits.filter((e) => exitedInMonth(e, year, month)).length;
   const prevExits = exits.filter((e) => exitedInMonth(e, prev.year, prev.month)).length;
 
@@ -908,6 +941,9 @@ async function computeBlock(
     prevHeadcount,
     hires,
     prevHires,
+    hiresList,
+    periodHireList,
+    presentList,
     exits: exitsCount,
     prevExits,
     turnoverPct,
@@ -954,7 +990,7 @@ function buildKpiSummary(
   overlays: ExcoOverlays,
   month: number,
 ): ExcoMetricValue[] {
-  const mk = overlays.manualKpis;
+  const mk = visibleManualKpis(overlays.manualKpis);
   const leaveSnap = overlays.leaveImportsByMonth?.[String(month)];
   const otSnap = overlays.overtimeImportsByMonth?.[String(month)];
   const otImported = Boolean(otSnap && (otSnap.employees?.length || 0) > 0);

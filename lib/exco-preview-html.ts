@@ -20,6 +20,11 @@ import {
   type ExcoGouvernanceSlideData,
   type ExcoTrainingSlideData,
 } from '@/lib/exco-dashboard-slides-data';
+import { resolveCahierHighlights, resolveCsrFy27Rows, parseCsrUpdateMarkup, csrTextHasUpdate, csrSlideText } from '@/lib/exco-csr-fy27';
+import { resolveRecruitment } from '@/lib/exco-recruitment-fy27';
+import { buildInternalAuditRows, summarizeInternalAudit } from '@/lib/exco-audit-internal';
+import type { InternalAuditRow } from '@/lib/exco-audit-internal';
+import type { ExcoCahierHighlight, ExcoCsrFy27Row } from '@/lib/exco-types';
 import {
   buildTrendsSlideSections,
   type ExcoTrendTableSection,
@@ -31,6 +36,28 @@ function esc(s: string): string {
     .replace(/</g, '&lt;')
     .replace(/>/g, '&gt;')
     .replace(/"/g, '&quot;');
+}
+
+function renderSynthPanel(title: string, body: string): string {
+  const text = (body || '').trim();
+  const glyph = (title[0] || '').toUpperCase();
+  const heading = `<h2><span class="panel-glyph">${esc(glyph)}</span>${esc(title)}</h2>`;
+  if (!text) {
+    return `<article class="panel">${heading}<p>—</p></article>`;
+  }
+  const items = text
+    .split(/\n\n+/)
+    .map((s) => s.trim())
+    .filter(Boolean)
+    .map((p) => {
+      const idx = p.indexOf(':');
+      if (idx > 0 && idx < 90) {
+        return `<li><strong>${esc(p.slice(0, idx + 1))}</strong> ${esc(p.slice(idx + 1).trim())}</li>`;
+      }
+      return `<li>${esc(p)}</li>`;
+    })
+    .join('');
+  return `<article class="panel">${heading}<ul>${items}</ul></article>`;
 }
 
 function formatMetricValue(kpi: ExcoMetricValue): string {
@@ -156,9 +183,9 @@ export const EXCO_PREVIEW_TOC = [
   { n: '04', label: 'Movements', hint: 'Staff movement · Overtime' },
   { n: '05', label: 'Overtime', hint: 'Overview · Top 15 OT & Leave' },
   { n: '06', label: 'Training', hint: 'Topics · Sessions' },
-  { n: '07', label: 'CSR', hint: 'Summary · Breakdowns' },
+  { n: '07', label: 'CSR', hint: 'Summary · FY27 · Cahier' },
   { n: '08', label: 'Recruitment', hint: 'Replacements · New positions' },
-  { n: '09', label: 'Governance', hint: 'Audit progression' },
+  { n: '09', label: 'Governance', hint: 'Audit table · Progression' },
   { n: '—', label: 'Thank You', hint: 'Closing slide' },
 ] as const;
 
@@ -495,6 +522,123 @@ function renderCsrSummarySlide(csr: ExcoCsrSlideData): string {
 </div>`;
 }
 
+function renderCsrUpdateHtml(value: string, mode: 'slide' | 'full' = 'slide'): string {
+  const src = mode === 'slide' ? csrSlideText(value || '') : (value || '');
+  const runs = parseCsrUpdateMarkup(src);
+  const html = runs
+    .map((run) => {
+      const t = esc(run.text);
+      return run.update ? `<span class="csr-upd">${t}</span>` : t;
+    })
+    .join('');
+  return html || '—';
+}
+
+function cahierIconImg(icon: ExcoCahierHighlight['icon']): string {
+  return `<img src="/exco/cahier/${esc(icon)}.svg" alt="" />`;
+}
+
+function renderCsrFy27Slide(rows: ExcoCsrFy27Row[]): string {
+  const body = (rows.length ? rows : [{ id: '', name: '—', objective: '', progress: '', risks: '', nextSteps: '' }])
+    .map((r) => {
+      const cells = [
+        { text: r.name || '—', name: true },
+        { text: r.objective, name: false },
+        { text: r.progress, name: false },
+        { text: r.risks, name: false },
+        { text: r.nextSteps, name: false },
+      ];
+      return `<tr>${cells
+        .map(
+          (c) =>
+            `<td class="${c.name ? 'csr-name' : ''}${!c.name && csrTextHasUpdate(c.text) ? ' has-upd' : ''}">${renderCsrUpdateHtml(c.text)}</td>`,
+        )
+        .join('')}</tr>`;
+    })
+    .join('');
+  return `<div class="csr-fy27">
+  <p class="csr-upd-legend">Blue text = latest update</p>
+  <table>
+    <thead>
+      <tr>
+        <th>Project / Initiative</th>
+        <th>Purpose / Objective</th>
+        <th>Current Status</th>
+        <th>Key Issues / Risks</th>
+        <th>Next Steps</th>
+      </tr>
+    </thead>
+    <tbody>${body}</tbody>
+  </table>
+</div>`;
+}
+
+function renderCahierSlide(items: ExcoCahierHighlight[]): string {
+  const rows = items
+    .map((item) => {
+      const pct = Math.max(0, Math.min(100, Number(item.progressPct) || 0));
+      const plain = (item.body || '').replace(/\[\[|\]\]/g, '').trim();
+      const short = plain.length < 80;
+      let body = renderCsrUpdateHtml(item.body || '', 'full');
+      if (short && body.includes('100%')) {
+        body = body.replace('100%', '<strong>100%</strong>');
+      }
+      return `<article class="cahier-item" data-icon="${esc(item.icon)}">
+  <div class="cahier-ring" style="background:conic-gradient(#2f7d32 ${pct}%, #f4c4c8 0)">
+    <span>${cahierIconImg(item.icon)}</span>
+  </div>
+  <div class="cahier-copy">
+    <h3>${esc(item.title || '—')}</h3>
+    <p class="${short ? 'cahier-bullet' : ''}">${body}</p>
+  </div>
+</article>`;
+    })
+    .join('');
+  return `<div class="cahier-body">${rows}</div>`;
+}
+
+function renderInternalAuditSlide(rows: InternalAuditRow[]): string {
+  const sum = summarizeInternalAudit(rows);
+  const body = rows
+    .map((r) => {
+      const cls =
+        r.status === 'Closed'
+          ? r.progressed
+            ? 'ia-closed ia-progressed'
+            : 'ia-closed'
+          : r.status === 'Overdue'
+            ? 'ia-overdue'
+            : r.status === 'On going'
+              ? 'ia-ongoing'
+              : '';
+      return `<tr class="${cls}">
+  <td class="ia-id">${esc(r.number)}</td>
+  <td>${esc(r.finding)}</td>
+  <td class="ia-sev ia-${r.severity.toLowerCase()}">${esc(r.severity)}</td>
+  <td class="ia-st">${esc(r.status)}</td>
+  <td>${esc(r.comments)}</td>
+  <td>${esc(r.dueDateLabel)}</td>
+</tr>`;
+    })
+    .join('');
+  return `<div class="ia-body">
+  <p class="ia-legend">Closed ${sum.closed}/${sum.total} (${sum.closedPct}%) · +${sum.progressed} since last EXCO · Overdue ${sum.overdue} · On going ${sum.ongoing} <em>Green = Closed (progression)</em></p>
+  <table>
+    <thead>
+      <tr>
+        <th>ID</th>
+        <th>Findings</th>
+        <th>Severity</th>
+        <th>Status</th>
+        <th>Comments</th>
+        <th>Due Date</th>
+      </tr>
+    </thead>
+    <tbody>${body}</tbody>
+  </table>
+</div>`;
+}
+
 function renderGovAuditSlide(gov: ExcoGouvernanceSlideData): string {
   const ticks = [0, 25, 50, 75, 100];
   const bars = gov.progression
@@ -550,6 +694,7 @@ export function buildExcoPreviewHtml(report: ExcoReportPayload): string {
   const training = buildTrainingSlideData(report);
   const csr = buildCsrSlideData(report);
   const gov = buildGouvernanceSlideData(report);
+  const govTableHtml = renderInternalAuditSlide(buildInternalAuditRows(report));
 
   const tocHtml = EXCO_PREVIEW_TOC.map(
     (item, i) => `<button class="toc-card" type="button">
@@ -583,22 +728,27 @@ export function buildExcoPreviewHtml(report: ExcoReportPayload): string {
   const otVsTopsHtml = renderOtVsLeaveTopsSlide(otVs);
   const trainingHtml = renderTrainingSlide(training);
   const csrHtml = renderCsrSummarySlide(csr);
+  const csrFy27Html = renderCsrFy27Slide(resolveCsrFy27Rows(report.overlays));
+  const cahierHtml = renderCahierSlide(resolveCahierHighlights(report.overlays));
   const govAuditHtml = renderGovAuditSlide(gov);
 
-  const repl = (report.overlays.recruitment || []).filter((r) => r.category === 'replacement').slice(0, 7);
-  const neu = (report.overlays.recruitment || []).filter((r) => r.category === 'new').slice(0, 8);
-  const recruitRows = (rows: typeof repl) =>
+  const recAll = resolveRecruitment(report.overlays);
+  const recHead =
+    '<thead><tr><th>Position</th><th>Grades</th><th>Status</th><th>Comments</th><th>Budgeted</th><th>Department</th><th>Location</th><th>Contract type</th></tr></thead>';
+  const recruitRows = (rows: typeof recAll) =>
     rows
-      .map(
-        (r) =>
-          `<tr><td>${esc(r.position || '')}</td><td>${esc(r.grade || '')}</td><td>${esc(r.status || '')}</td><td>${esc(r.department || '')}</td><td>${esc(r.location || '')}</td></tr>`,
-      )
-      .join('') || '<tr><td colspan="5">—</td></tr>';
+      .map((r) => {
+        const cell = (v: string) =>
+          `<td${csrTextHasUpdate(v) ? ' class="has-upd"' : ''}>${renderCsrUpdateHtml(v)}</td>`;
+        return `<tr>${cell(r.position)}${cell(r.grade)}${cell(r.status)}${cell(r.comments)}${cell(r.budgeted)}${cell(r.department)}${cell(r.location)}${cell(r.contractType)}</tr>`;
+      })
+      .join('') || '<tr><td colspan="8">—</td></tr>';
   const recruitHtml = `<div class="dash-body recruit-body">
+  <p class="csr-upd-legend">Blue text = latest update</p>
   <h3 class="recruit-h">1. Replacements</h3>
-  <table class="trend-table ovl-red"><thead><tr><th>Position</th><th>Grade</th><th>Status</th><th>Dept</th><th>Loc</th></tr></thead><tbody>${recruitRows(repl)}</tbody></table>
+  <table class="trend-table ovl-red rec-table">${recHead}<tbody>${recruitRows(recAll.filter((r) => r.category === 'replacement'))}</tbody></table>
   <h3 class="recruit-h">2. New positions</h3>
-  <table class="trend-table ovl-red"><thead><tr><th>Position</th><th>Grade</th><th>Status</th><th>Dept</th><th>Loc</th></tr></thead><tbody>${recruitRows(neu)}</tbody></table>
+  <table class="trend-table ovl-red rec-table">${recHead}<tbody>${recruitRows(recAll.filter((r) => r.category === 'new'))}</tbody></table>
 </div>`;
 
   return `<!DOCTYPE html>
@@ -734,14 +884,37 @@ export function buildExcoPreviewHtml(report: ExcoReportPayload): string {
   /* Synthèse */
   .synth {
     height: 100%;
-    display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px;
+    min-height: 0;
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    grid-template-rows: minmax(0, 1fr);
+    gap: 8px;
+    overflow: hidden;
   }
   .panel {
     border: 1px solid var(--line); border-radius: 8px; background: var(--white);
-    padding: 8px 10px; min-height: 0; overflow: hidden;
+    padding: 7px 8px 6px; min-height: 0; height: 100%; overflow: hidden;
+    display: flex; flex-direction: column;
   }
-  .panel h2 { margin: 0 0 6px; color: var(--red); font-size: 12px; }
-  .panel p { margin: 0; font-size: 11px; line-height: 1.3; white-space: pre-wrap; overflow: hidden; }
+  .panel h2 {
+    margin: 0 0 5px; color: var(--red); font-size: 11px; flex: 0 0 auto;
+    display: flex; align-items: center; gap: 6px; line-height: 1.1;
+  }
+  .panel-glyph {
+    width: 16px; height: 16px; border-radius: 50%;
+    background: var(--red); color: #fff;
+    font-size: 9px; font-weight: 700; letter-spacing: 0;
+    display: grid; place-items: center; flex: 0 0 auto;
+  }
+  .panel p { margin: 0; font-size: 8px; line-height: 1.22; white-space: pre-wrap; overflow: hidden; }
+  .panel ul {
+    margin: 0; padding: 0; list-style: none;
+    overflow: hidden; flex: 1; min-height: 0;
+    font-size: 8px; line-height: 1.22;
+  }
+  .panel li { margin: 0 0 3px; }
+  .panel li:last-child { margin-bottom: 0; }
+  .panel li strong { font-weight: 700; }
 
   /* KPI Summary — 2 blocs × grille 5 colonnes (20 cartes) */
   .kpi-body {
@@ -1282,6 +1455,78 @@ export function buildExcoPreviewHtml(report: ExcoReportPayload): string {
   .pie-legend i { width: 10px; height: 10px; border-radius: 2px; display: block; }
   .pie-legend strong { font-size: 9px; color: var(--muted); font-weight: 700; }
 
+  .csr-fy27 { height: 100%; min-height: 0; display: flex; flex-direction: column; }
+  .csr-upd-legend { margin: 0 0 4px; font-size: 9px; color: #1d4ed8; font-style: italic; text-align: right; }
+  .csr-upd { color: #1d4ed8; font-weight: 400; }
+  .csr-fy27 table {
+    width: 100%; border-collapse: collapse; table-layout: fixed;
+    font-size: 7.2px; line-height: 1.25;
+  }
+  .csr-fy27 th {
+    background: #9b1b24; color: #fff; font-size: 8.5px; font-weight: 700;
+    padding: 5px 6px; text-align: center; border: 1px solid #fff;
+  }
+  .csr-fy27 td {
+    padding: 4px 5px; vertical-align: top; border: 1px solid #fff; color: var(--ink);
+  }
+  .csr-fy27 td.csr-name, .csr-fy27 td:first-child { background: #f4c4c8; font-weight: 700; width: 15%; }
+  .csr-fy27 th:nth-child(2), .csr-fy27 td:nth-child(2) { width: 18%; }
+  .csr-fy27 th:nth-child(3), .csr-fy27 td:nth-child(3) { width: 26%; }
+  .csr-fy27 th:nth-child(4), .csr-fy27 td:nth-child(4) { width: 20%; }
+  .csr-fy27 tbody tr:nth-child(odd) td:not(:first-child):not(.has-upd) { background: #fff; }
+  .csr-fy27 tbody tr:nth-child(even) td:not(:first-child):not(.has-upd) { background: #fce8e9; }
+  .csr-fy27 td.has-upd { background: #e8f0fe !important; }
+
+  .cahier-body {
+    height: 100%; display: flex; flex-direction: column; justify-content: stretch;
+    padding: 4px 10px 2px; min-height: 0; overflow: hidden;
+  }
+  .cahier-item {
+    display: grid; grid-template-columns: 92px 1fr; gap: 16px; align-items: start;
+    flex: 1 1 0; min-height: 0; padding: 8px 4px 10px;
+    border-bottom: 1px solid #d8d8de;
+  }
+  .cahier-item:last-child { border-bottom: 0; }
+  .cahier-ring {
+    width: 84px; height: 84px; border-radius: 50%;
+    display: grid; place-items: center; flex: 0 0 auto;
+  }
+  .cahier-ring span {
+    width: 54px; height: 54px; border-radius: 50%; background: #fff;
+    display: grid; place-items: center;
+  }
+  .cahier-ring img { width: 40px; height: 40px; object-fit: contain; }
+  .cahier-copy h3 { margin: 0 0 6px; font-size: 16px; color: #e30613; font-weight: 700; }
+  .cahier-copy p { margin: 0; font-size: 13px; line-height: 1.35; color: var(--ink); }
+  .cahier-copy p.cahier-bullet::before { content: "• "; font-weight: 700; }
+
+  .ia-body { height: 100%; display: flex; flex-direction: column; min-height: 0; }
+  .ia-legend { margin: 0 0 4px; font-size: 9px; color: var(--ink); }
+  .ia-legend em { color: #166534; font-style: italic; float: right; }
+  .ia-body table {
+    width: 100%; border-collapse: collapse; table-layout: fixed;
+    font-size: 7px; line-height: 1.25;
+  }
+  .ia-body th {
+    background: #9b1b24; color: #fff; font-size: 8px; font-weight: 700;
+    padding: 3px 4px; text-align: center; border: 1px solid #fff;
+  }
+  .ia-body td { padding: 3px 4px; vertical-align: middle; border: 1px solid #fff; }
+  .ia-id { width: 4%; text-align: center; font-weight: 700; }
+  .ia-body th:nth-child(3), .ia-body td:nth-child(3) { width: 9%; text-align: center; }
+  .ia-body th:nth-child(4), .ia-body td:nth-child(4) { width: 10%; text-align: center; font-weight: 700; }
+  .ia-body th:nth-child(5), .ia-body td:nth-child(5) { width: 18%; }
+  .ia-body th:nth-child(6), .ia-body td:nth-child(6) { width: 10%; text-align: center; }
+  .ia-sev.ia-high { color: #b91c1c; font-weight: 700; }
+  .ia-sev.ia-medium { color: #c2410c; font-weight: 700; }
+  .ia-sev.ia-low { color: #15803d; font-weight: 700; }
+  .ia-closed td { background: #dcfce7; }
+  .ia-closed .ia-st { color: #166534; }
+  .ia-progressed td { background: #86efac; }
+  .ia-overdue td { background: #fecaca; }
+  .ia-overdue .ia-st { color: #b91c1c; }
+  .ia-ongoing td { background: #f3f4f6; }
+
   .gov-audit-body { display: grid; grid-template-columns: 1.7fr 1fr; gap: 10px; height: 100%; min-height: 0; }
   .gov-prog-card {
     border: 1px solid var(--line); border-radius: 6px; padding: 8px 10px 6px;
@@ -1329,8 +1574,17 @@ export function buildExcoPreviewHtml(report: ExcoReportPayload): string {
   .gov-evo-kpi strong { font-size: 22px; color: var(--ink); margin-right: 4px; }
   .gov-evo-sub { margin: 0; font-size: 11px; color: var(--muted); }
   .gov-evo-txt { margin: 4px 0 0; font-size: 11px; line-height: 1.45; color: var(--ink); }
-  .recruit-body { gap: 6px; }
-  .recruit-h { margin: 4px 0 2px; font-size: 12px; color: var(--red); font-weight: 700; }
+  .recruit-body { gap: 3px; overflow: hidden; }
+  .recruit-h { margin: 2px 0 2px; font-size: 11px; color: var(--red); font-weight: 700; }
+  .rec-table { font-size: 7.2px; line-height: 1.2; table-layout: fixed; width: 100%; }
+  .rec-table th { font-size: 7.5px; padding: 3px 4px; }
+  .rec-table td { padding: 2px 4px; vertical-align: middle; font-weight: 400; height: 18px; }
+  .rec-table td.has-upd { background: #e8f0fe !important; }
+  .rec-table td:nth-child(1) { width: 14%; font-weight: 700; }
+  .rec-table td:nth-child(2) { width: 6%; text-align: center; }
+  .rec-table td:nth-child(3) { width: 8%; text-align: center; }
+  .rec-table td:nth-child(4) { width: 28%; }
+  .rec-table td:nth-child(5) { width: 7%; text-align: center; }
 </style>
 </head>
 <body>
@@ -1368,9 +1622,9 @@ export function buildExcoPreviewHtml(report: ExcoReportPayload): string {
     </header>
     <div class="body">
       <div class="synth">
-        <article class="panel"><h2>Highlights</h2><p>${esc(n.highlights?.trim() || '—')}</p></article>
-        <article class="panel"><h2>Lowlights</h2><p>${esc(n.lowlights?.trim() || '—')}</p></article>
-        <article class="panel"><h2>Focus</h2><p>${esc(n.focus?.trim() || '—')}</p></article>
+        ${renderSynthPanel('Highlights', n.highlights || '')}
+        ${renderSynthPanel('Lowlights', n.lowlights || '')}
+        ${renderSynthPanel('Focus', n.focus || '')}
       </div>
     </div>
     <footer class="bar-bot"></footer>
@@ -1492,11 +1746,44 @@ export function buildExcoPreviewHtml(report: ExcoReportPayload): string {
   <section class="slide slide-white">
     <div class="bar-top"></div>
     <header class="head">
+      <span class="badge">07</span>
+      <div class="head-txt"><p class="brand">PPC · HR EXCO</p><h1>CSR – FY27</h1></div>
+      <span class="period">${esc(report.periodLabel)}</span>
+    </header>
+    <div class="body">${csrFy27Html}</div>
+    <footer class="bar-bot"></footer>
+  </section>
+
+  <section class="slide slide-white">
+    <div class="bar-top"></div>
+    <header class="head">
+      <span class="badge">07</span>
+      <div class="head-txt"><p class="brand">PPC · HR EXCO</p><h1>Cahier des Charges</h1></div>
+      <span class="period">${esc(report.periodLabel)}</span>
+    </header>
+    <div class="body">${cahierHtml}</div>
+    <footer class="bar-bot"></footer>
+  </section>
+
+  <section class="slide slide-white">
+    <div class="bar-top"></div>
+    <header class="head">
       <span class="badge">08</span>
-      <div class="head-txt"><p class="brand">PPC · HR EXCO</p><h1>Recruitment</h1></div>
+      <div class="head-txt"><p class="brand">PPC · HR EXCO</p><h1>Recruitment – FY27</h1></div>
       <span class="period">${esc(report.periodLabel)}</span>
     </header>
     <div class="body">${recruitHtml}</div>
+    <footer class="bar-bot"></footer>
+  </section>
+
+  <section class="slide slide-white">
+    <div class="bar-top"></div>
+    <header class="head">
+      <span class="badge">09</span>
+      <div class="head-txt"><p class="brand">PPC · HR EXCO</p><h1>Internal AUDIT</h1></div>
+      <span class="period">${esc(report.periodLabel)}</span>
+    </header>
+    <div class="body">${govTableHtml}</div>
     <footer class="bar-bot"></footer>
   </section>
 
