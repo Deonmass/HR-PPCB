@@ -147,19 +147,47 @@ export function computeAgeFromDisplayDate(dateNaissance: string): number | null 
   return age >= 0 && age < 120 ? age : null;
 }
 
-/** Ancienneté en années complètes depuis la date d'embauche (à la date `asOf`, défaut = aujourd'hui). */
-export function computeSeniorityYears(
+export type SeniorityParts = { years: number; months: number };
+
+/** Ancienneté en années et mois complets depuis la date d'embauche (à la date `asOf`, défaut = aujourd'hui). */
+export function computeSeniority(
   appointmentDate: string,
   asOf: Date = new Date(),
-): number | null {
+): SeniorityParts | null {
   const parts = parseDisplayDateParts(appointmentDate);
   if (!parts) return null;
   const hire = new Date(parts.y, parts.m - 1, parts.d);
   if (Number.isNaN(hire.getTime()) || hire.getTime() > asOf.getTime()) return null;
   let years = asOf.getFullYear() - hire.getFullYear();
-  const m = asOf.getMonth() - hire.getMonth();
-  if (m < 0 || (m === 0 && asOf.getDate() < hire.getDate())) years -= 1;
-  return years >= 0 && years < 80 ? years : null;
+  let months = asOf.getMonth() - hire.getMonth();
+  if (asOf.getDate() < hire.getDate()) months -= 1;
+  if (months < 0) {
+    years -= 1;
+    months += 12;
+  }
+  if (years < 0 || years >= 80) return null;
+  return { years, months };
+}
+
+/** Ancienneté en années complètes depuis la date d'embauche (à la date `asOf`, défaut = aujourd'hui). */
+export function computeSeniorityYears(
+  appointmentDate: string,
+  asOf: Date = new Date(),
+): number | null {
+  return computeSeniority(appointmentDate, asOf)?.years ?? null;
+}
+
+/** Affichage compact : « 9 an(s) (3m) ». */
+export function formatSeniority(value: SeniorityParts | null): string {
+  if (!value) return '—';
+  return `${value.years} an(s) (${value.months}m)`;
+}
+
+/** Libellé long pour infobulle : « 9 ans 3 mois ». */
+export function formatSeniorityLabel(value: SeniorityParts | null): string {
+  if (!value) return '—';
+  const yLabel = value.years <= 1 ? 'an' : 'ans';
+  return `${value.years} ${yLabel} ${value.months} mois`;
 }
 
 /** Année extraite d'une date affichée JJ/MM/AAAA. */

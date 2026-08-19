@@ -12,7 +12,9 @@ import { usePermissions } from '@/contexts/PermissionContext';
 import { calcDocumentCompletion, getDepartments } from '@/lib/documents';
 import {
   computeAgeFromDisplayDate,
-  computeSeniorityYears,
+  computeSeniority,
+  formatSeniority,
+  formatSeniorityLabel,
   wasPresentInYear,
   wasPresentInYearMonth,
   yearFromDisplayDate,
@@ -110,13 +112,15 @@ function dateCellClass(value: string): string {
   return isDisplayDatePast(value) ? 'col-date employees-date-past' : 'col-date';
 }
 
-function seniorityValue(employee: Employee, yearFilter: number | '', monthFilter: number | ''): string {
-  return formatYears(
-    computeSeniorityYears(
-      employee.appointmentDate || '',
-      yearFilter !== '' ? asOfFromYearMonth(yearFilter, monthFilter) : new Date(),
-    ),
+function seniorityParts(employee: Employee, yearFilter: number | '', monthFilter: number | '') {
+  return computeSeniority(
+    employee.appointmentDate || '',
+    yearFilter !== '' ? asOfFromYearMonth(yearFilter, monthFilter) : new Date(),
   );
+}
+
+function seniorityValue(employee: Employee, yearFilter: number | '', monthFilter: number | ''): string {
+  return formatSeniority(seniorityParts(employee, yearFilter, monthFilter));
 }
 
 const MONTH_OPTIONS: { value: number; label: string }[] = [
@@ -1101,10 +1105,7 @@ export default function EmployesPage() {
                       const { pct } = calcDocumentCompletion(e);
                       const rateCls = pct >= 80 ? 'high' : pct >= 50 ? 'mid' : 'low';
                       const age = resolveEmployeeAge(e);
-                      const seniority = computeSeniorityYears(
-                        e.appointmentDate || '',
-                        yearFilter !== '' ? asOfFromYearMonth(yearFilter, monthFilter) : new Date(),
-                      );
+                      const seniority = seniorityParts(e, yearFilter, monthFilter);
                       const finEssai = resolveDateFinPeriodeEssai(e);
                       const finContrat = resolveDateFinContrat(e);
                       const evalAlert = isTrialEvalAlert(e);
@@ -1157,7 +1158,16 @@ export default function EmployesPage() {
                               <td className="emp-col-grade">{e.grade}</td>
                               <td className="emp-col-loc">{e.localisation}</td>
                               <td className="emp-col-age">{formatYears(age)}</td>
-                              <td className="emp-col-anciennete">{formatYears(seniority)}</td>
+                              <td className="emp-col-anciennete" title={formatSeniorityLabel(seniority)}>
+                                {seniority == null ? (
+                                  '—'
+                                ) : (
+                                  <>
+                                    {seniority.years} an(s){' '}
+                                    <span className="emp-anciennete-mois">({seniority.months}m)</span>
+                                  </>
+                                )}
+                              </td>
                             </>
                           )}
                           {tab === 'exit' && (
