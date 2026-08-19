@@ -1,6 +1,45 @@
 {
   "entries": [
     {
+      "id": "log-000507",
+      "at": "2026-08-19T13:49:23.069Z",
+      "userId": "admin",
+      "userName": "Administrateur",
+      "module": "village.assign",
+      "moduleLabel": "Village — Affectations",
+      "action": "update",
+      "actionLabel": "Modification",
+      "summary": "Libération logement 70000030",
+      "details": "Libération logement 70000030",
+      "after": {
+        "id": 335,
+        "matricule": "70000030",
+        "pactilis": "164290",
+        "statut": "Employé",
+        "sexe": "M",
+        "nom": "MUBA KAYEMBE JEREMIE",
+        "localisation": "Zamba",
+        "numeroVilla": "",
+        "typeMaison": "Twins",
+        "dateNaissance": "10/08/1989",
+        "age": 36,
+        "compositionFamille": 1,
+        "enfants": 2,
+        "total": 4,
+        "commentaires": "",
+        "lienDocument": "",
+        "employeNom": "MUBA KAYEMBE JEREMIE",
+        "departement": "Packaging & Logistics"
+      },
+      "undoable": false,
+      "undone": false,
+      "meta": {
+        "matricule": "70000030",
+        "numeroVilla": "",
+        "ancienNumero": "25"
+      }
+    },
+    {
       "id": "log-000506",
       "at": "2026-08-19T13:37:14.154Z",
       "userId": "admin",
@@ -38842,5 +38881,5 @@
       }
     }
   ],
-  "nextSeq": 507
+  "nextSeq": 508
 }
