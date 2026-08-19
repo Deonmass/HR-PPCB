@@ -1,6 +1,45 @@
 {
   "entries": [
     {
+      "id": "log-000513",
+      "at": "2026-08-19T13:56:03.500Z",
+      "userId": "admin",
+      "userName": "Administrateur",
+      "module": "village.assign",
+      "moduleLabel": "Village — Affectations",
+      "action": "update",
+      "actionLabel": "Modification",
+      "summary": "Affectation 70000109 → maison 5",
+      "details": "Affectation 70000109 → maison 5",
+      "after": {
+        "id": 309,
+        "matricule": "70000109",
+        "pactilis": "164261",
+        "statut": "Employé",
+        "sexe": "M",
+        "nom": "MOLEKA GBANGA FRED",
+        "localisation": "Zamba",
+        "numeroVilla": "5",
+        "typeMaison": "Free Style",
+        "dateNaissance": "18/07/1990",
+        "age": 36,
+        "compositionFamille": 1,
+        "enfants": 5,
+        "total": 7,
+        "commentaires": "",
+        "lienDocument": "",
+        "employeNom": "MOLEKA GBANGA FRED",
+        "departement": "Engineering"
+      },
+      "undoable": false,
+      "undone": false,
+      "meta": {
+        "matricule": "70000109",
+        "numeroVilla": "5",
+        "ancienNumero": ""
+      }
+    },
+    {
       "id": "log-000512",
       "at": "2026-08-19T13:53:49.527Z",
       "userId": "admin",
@@ -39076,5 +39115,5 @@
       }
     }
   ],
-  "nextSeq": 513
+  "nextSeq": 514
 }
