@@ -1,6 +1,45 @@
 {
   "entries": [
     {
+      "id": "log-000509",
+      "at": "2026-08-19T13:51:26.073Z",
+      "userId": "admin",
+      "userName": "Administrateur",
+      "module": "village.assign",
+      "moduleLabel": "Village — Affectations",
+      "action": "update",
+      "actionLabel": "Modification",
+      "summary": "Affectation 70000030 → maison 20",
+      "details": "Affectation 70000030 → maison 20",
+      "after": {
+        "id": 335,
+        "matricule": "70000030",
+        "pactilis": "164290",
+        "statut": "Employé",
+        "sexe": "M",
+        "nom": "MUBA KAYEMBE JEREMIE",
+        "localisation": "Zamba",
+        "numeroVilla": "20",
+        "typeMaison": "Free Style",
+        "dateNaissance": "10/08/1989",
+        "age": 36,
+        "compositionFamille": 1,
+        "enfants": 2,
+        "total": 4,
+        "commentaires": "",
+        "lienDocument": "",
+        "employeNom": "MUBA KAYEMBE JEREMIE",
+        "departement": "Packaging & Logistics"
+      },
+      "undoable": false,
+      "undone": false,
+      "meta": {
+        "matricule": "70000030",
+        "numeroVilla": "20",
+        "ancienNumero": ""
+      }
+    },
+    {
       "id": "log-000508",
       "at": "2026-08-19T13:49:33.754Z",
       "userId": "admin",
@@ -38920,5 +38959,5 @@
       }
     }
   ],
-  "nextSeq": 509
+  "nextSeq": 510
 }
