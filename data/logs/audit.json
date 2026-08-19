@@ -1,6 +1,21 @@
 {
   "entries": [
     {
+      "id": "log-000485",
+      "at": "2026-08-19T08:24:16.032Z",
+      "userId": "berth.lubenzo",
+      "userName": "Berth Lubenzo",
+      "userEmail": "Berth.Lubenzo@ppcdrc.cd",
+      "module": "travel.attestation",
+      "moduleLabel": "Attestation de service",
+      "action": "export",
+      "actionLabel": "Export",
+      "summary": "Téléchargement DOCX attestation FINKIDI MAYETO EDGARD",
+      "details": "Téléchargement DOCX attestation FINKIDI MAYETO EDGARD",
+      "undoable": false,
+      "undone": false
+    },
+    {
       "id": "log-000484",
       "at": "2026-08-19T08:24:10.117Z",
       "userId": "berth.lubenzo",
@@ -35212,5 +35227,5 @@
       }
     }
   ],
-  "nextSeq": 485
+  "nextSeq": 486
 }
