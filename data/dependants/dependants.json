@@ -1164,8 +1164,8 @@
       "sexe": "M",
       "nom": "BOMPETA MPINGO ERICK",
       "localisation": "Zamba",
-      "numeroVilla": "",
-      "typeMaison": "",
+      "numeroVilla": "25",
+      "typeMaison": "Twins",
       "dateNaissance": "01/06/1991",
       "age": 35,
       "compositionFamille": 1,
@@ -1174,7 +1174,7 @@
       "commentaires": "",
       "lienDocument": "",
       "createdAt": "2026-07-28T09:40:39.809Z",
-      "updatedAt": "2026-07-28T09:40:39.809Z"
+      "updatedAt": "2026-08-19T13:49:28.686Z"
     },
     {
       "id": 56,
@@ -1185,8 +1185,8 @@
       "sexe": "F",
       "nom": "MATSUELA TSAMBU Celeste",
       "localisation": "Zamba",
-      "numeroVilla": "",
-      "typeMaison": "",
+      "numeroVilla": "25",
+      "typeMaison": "Twins",
       "dateNaissance": "18/07/1993",
       "age": 33,
       "compositionFamille": null,
@@ -1195,7 +1195,7 @@
       "commentaires": "",
       "lienDocument": "",
       "createdAt": "2026-07-28T09:40:39.809Z",
-      "updatedAt": "2026-07-28T09:40:39.809Z"
+      "updatedAt": "2026-08-19T13:49:28.686Z"
     },
     {
       "id": 57,
