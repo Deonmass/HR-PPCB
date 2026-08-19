@@ -131,6 +131,17 @@
       "ancienNumero": "31",
       "raison": "",
       "commentaire": ""
+    },
+    {
+      "date": "19/08/2026 13:56",
+      "action": "Affecter",
+      "matricule": "70000109",
+      "nom": "MOLEKA GBANGA FRED",
+      "numeroVilla": "5",
+      "typeMaison": "Free Style",
+      "ancienNumero": "",
+      "raison": "Changement",
+      "commentaire": ""
     }
   ]
 }
