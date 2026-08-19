@@ -87,6 +87,17 @@
       "ancienNumero": "25",
       "raison": "Prise de fonction officiel au CEC",
       "commentaire": ""
+    },
+    {
+      "date": "19/08/2026 13:51",
+      "action": "Affecter",
+      "matricule": "70000030",
+      "nom": "MUBA KAYEMBE JEREMIE",
+      "numeroVilla": "20",
+      "typeMaison": "Free Style",
+      "ancienNumero": "",
+      "raison": "Changement avec Eric Bompeta",
+      "commentaire": ""
     }
   ]
 }
