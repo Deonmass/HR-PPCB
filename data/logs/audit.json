@@ -1,6 +1,232 @@
 {
   "entries": [
     {
+      "id": "log-000502",
+      "at": "2026-08-19T13:27:15.970Z",
+      "userId": "admin",
+      "userName": "Administrateur",
+      "module": "timesheet.overtimes",
+      "moduleLabel": "Timesheet — Heures sup.",
+      "action": "update",
+      "actionLabel": "Modification",
+      "summary": "Enregistrement HS semaine 2 — Engineering (8/2026)",
+      "details": "Enregistrement HS semaine 2 — Engineering (8/2026)",
+      "after": {
+        "weekIndex": 2,
+        "department": "Engineering",
+        "weekFromTo": "du 27/07/2026 au 03/08/2026",
+        "locked": false,
+        "entries": {
+          "70000015": {
+            "matricule": "70000015",
+            "ot13": 0,
+            "ot16": 0,
+            "ot2": 7.378,
+            "night": 0
+          },
+          "70000038": {
+            "matricule": "70000038",
+            "ot13": 0,
+            "ot16": 0,
+            "ot2": 0,
+            "night": 0
+          },
+          "70000040": {
+            "matricule": "70000040",
+            "ot13": 0,
+            "ot16": 0,
+            "ot2": 0,
+            "night": 0
+          },
+          "70000046": {
+            "matricule": "70000046",
+            "ot13": 0,
+            "ot16": 0,
+            "ot2": 0,
+            "night": 0
+          },
+          "70000052": {
+            "matricule": "70000052",
+            "ot13": 0,
+            "ot16": 0,
+            "ot2": 0,
+            "night": 0
+          },
+          "70000058": {
+            "matricule": "70000058",
+            "ot13": 2,
+            "ot16": 3.01,
+            "ot2": 7.21,
+            "night": 6.019
+          },
+          "70000079": {
+            "matricule": "70000079",
+            "ot13": 0,
+            "ot16": 0,
+            "ot2": 4.028,
+            "night": 0
+          },
+          "70000087": {
+            "matricule": "70000087",
+            "ot13": 0,
+            "ot16": 0,
+            "ot2": 0,
+            "night": 0
+          },
+          "70000088": {
+            "matricule": "70000088",
+            "ot13": 0,
+            "ot16": 0,
+            "ot2": 0,
+            "night": 0
+          },
+          "70000091": {
+            "matricule": "70000091",
+            "ot13": 0,
+            "ot16": 0,
+            "ot2": 0,
+            "night": 0
+          },
+          "70000093": {
+            "matricule": "70000093",
+            "ot13": 0,
+            "ot16": 0,
+            "ot2": 4.551,
+            "night": 0
+          },
+          "70000104": {
+            "matricule": "70000104",
+            "ot13": 2,
+            "ot16": 10,
+            "ot2": 7.194,
+            "night": 10
+          },
+          "70000109": {
+            "matricule": "70000109",
+            "ot13": 0,
+            "ot16": 0,
+            "ot2": 0,
+            "night": 0
+          },
+          "70000115": {
+            "matricule": "70000115",
+            "ot13": 2,
+            "ot16": 12,
+            "ot2": 0,
+            "night": 5
+          },
+          "70000116": {
+            "matricule": "70000116",
+            "ot13": 2,
+            "ot16": 12,
+            "ot2": 0,
+            "night": 10
+          },
+          "70000191": {
+            "matricule": "70000191",
+            "ot13": 0,
+            "ot16": 0,
+            "ot2": 0,
+            "night": 0
+          },
+          "70000215": {
+            "matricule": "70000215",
+            "ot13": 0,
+            "ot16": 0,
+            "ot2": 0,
+            "night": 0
+          },
+          "70000216": {
+            "matricule": "70000216",
+            "ot13": 2,
+            "ot16": 7.709,
+            "ot2": 4.63,
+            "night": 7.937
+          },
+          "70000227": {
+            "matricule": "70000227",
+            "ot13": 0,
+            "ot16": 0,
+            "ot2": 0,
+            "night": 0
+          },
+          "70000229": {
+            "matricule": "70000229",
+            "ot13": 0,
+            "ot16": 0,
+            "ot2": 0,
+            "night": 0
+          },
+          "70000232": {
+            "matricule": "70000232",
+            "ot13": 0,
+            "ot16": 0,
+            "ot2": 0,
+            "night": 0
+          },
+          "70000261": {
+            "matricule": "70000261",
+            "ot13": 0,
+            "ot16": 0,
+            "ot2": 4.621,
+            "night": 0
+          },
+          "70000280": {
+            "matricule": "70000280",
+            "ot13": 0,
+            "ot16": 0,
+            "ot2": 0,
+            "night": 0
+          },
+          "70000281": {
+            "matricule": "70000281",
+            "ot13": 0,
+            "ot16": 0,
+            "ot2": 0,
+            "night": 0
+          },
+          "70000283": {
+            "matricule": "70000283",
+            "ot13": 2,
+            "ot16": 2.099,
+            "ot2": 14.278,
+            "night": 4.33
+          },
+          "70000284": {
+            "matricule": "70000284",
+            "ot13": 0,
+            "ot16": 0,
+            "ot2": 0,
+            "night": 0
+          },
+          "70000306": {
+            "matricule": "70000306",
+            "ot13": 0,
+            "ot16": 0,
+            "ot2": 6.063,
+            "night": 4.952
+          },
+          "70000309": {
+            "matricule": "70000309",
+            "ot13": 0,
+            "ot16": 0,
+            "ot2": 0,
+            "night": 0
+          }
+        },
+        "updatedAt": "2026-08-19T13:27:13.311Z",
+        "updatedBy": "admin"
+      },
+      "undoable": false,
+      "undone": false,
+      "meta": {
+        "year": 2026,
+        "month": 8,
+        "department": "Engineering",
+        "weekIndex": 2
+      }
+    },
+    {
       "id": "log-000501",
       "at": "2026-08-19T13:24:57.120Z",
       "userId": "admin",
@@ -37712,5 +37938,5 @@
       }
     }
   ],
-  "nextSeq": 502
+  "nextSeq": 503
 }
