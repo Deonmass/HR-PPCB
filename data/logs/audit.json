@@ -1,6 +1,27 @@
 {
   "entries": [
     {
+      "id": "log-000493",
+      "at": "2026-08-19T10:19:43.788Z",
+      "userId": "berth.lubenzo",
+      "userName": "Berth Lubenzo",
+      "userEmail": "Berth.Lubenzo@ppcdrc.cd",
+      "module": "travel.etablir",
+      "moduleLabel": "Cash request",
+      "action": "error",
+      "actionLabel": "Erreur",
+      "summary": "La conversion PDF est disponible uniquement sous Windows avec Microsoft Office",
+      "details": "Échec génération documents voyage: La conversion PDF est disponible uniquement sous Windows avec Microsoft Office",
+      "undoable": false,
+      "undone": false,
+      "error": {
+        "message": "La conversion PDF est disponible uniquement sous Windows avec Microsoft Office",
+        "stack": "Error: La conversion PDF est disponible uniquement sous Windows avec Microsoft Office\n    at p (/var/task/.next/server/chunks/7980.js:1:23796)\n    at t (/var/task/.next/server/chunks/7980.js:1:25444)\n    at async R (/var/task/.next/server/chunks/7980.js:1:10107)\n    at async T (/var/task/.next/server/chunks/7980.js:1:17654)",
+        "path": "/api/travel/cash-requests/generate",
+        "method": "POST"
+      }
+    },
+    {
       "id": "log-000492",
       "at": "2026-08-19T10:11:58.923Z",
       "userId": "admin",
@@ -36679,5 +36700,5 @@
       }
     }
   ],
-  "nextSeq": 493
+  "nextSeq": 494
 }
