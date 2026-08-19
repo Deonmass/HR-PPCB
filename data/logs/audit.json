@@ -1,6 +1,25 @@
 {
   "entries": [
     {
+      "id": "log-000489",
+      "at": "2026-08-19T10:11:01.377Z",
+      "userId": "admin",
+      "userName": "Administrateur",
+      "module": "postes",
+      "moduleLabel": "Postes",
+      "action": "update",
+      "actionLabel": "Modification",
+      "entityType": "poste",
+      "entityId": "Customer Relationship Officer",
+      "summary": "Màj poste catalogue « Customer Relationship Officer » → « Customer Relationship Officer »",
+      "details": "Màj poste catalogue « Customer Relationship Officer » → « Customer Relationship Officer »",
+      "after": {
+        "updated": 2
+      },
+      "undoable": false,
+      "undone": false
+    },
+    {
       "id": "log-000488",
       "at": "2026-08-19T08:30:30.883Z",
       "userId": "berth.lubenzo",
@@ -36618,5 +36637,5 @@
       }
     }
   ],
-  "nextSeq": 489
+  "nextSeq": 490
 }
