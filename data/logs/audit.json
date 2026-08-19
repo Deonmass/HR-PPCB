@@ -1,6 +1,45 @@
 {
   "entries": [
     {
+      "id": "log-000511",
+      "at": "2026-08-19T13:53:15.416Z",
+      "userId": "admin",
+      "userName": "Administrateur",
+      "module": "village.assign",
+      "moduleLabel": "Village — Affectations",
+      "action": "update",
+      "actionLabel": "Modification",
+      "summary": "Affectation 70000091 → maison 6",
+      "details": "Affectation 70000091 → maison 6",
+      "after": {
+        "id": 390,
+        "matricule": "70000091",
+        "pactilis": "164341",
+        "statut": "Employé",
+        "sexe": "M",
+        "nom": "NGOYI MUIKULU MARCEL",
+        "localisation": "Zamba",
+        "numeroVilla": "6",
+        "typeMaison": "Free Style",
+        "dateNaissance": "05/10/1974",
+        "age": 51,
+        "compositionFamille": 1,
+        "enfants": 2,
+        "total": 4,
+        "commentaires": "",
+        "lienDocument": "",
+        "employeNom": "NGOYI MUIKULU MARCEL",
+        "departement": "Engineering"
+      },
+      "undoable": false,
+      "undone": false,
+      "meta": {
+        "matricule": "70000091",
+        "numeroVilla": "6",
+        "ancienNumero": ""
+      }
+    },
+    {
       "id": "log-000510",
       "at": "2026-08-19T13:52:35.328Z",
       "userId": "admin",
@@ -38998,5 +39037,5 @@
       }
     }
   ],
-  "nextSeq": 511
+  "nextSeq": 512
 }
