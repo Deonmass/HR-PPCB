@@ -8346,8 +8346,8 @@
       "sexe": "M",
       "nom": "NGOYI MUIKULU MARCEL",
       "localisation": "Zamba",
-      "numeroVilla": "",
-      "typeMaison": "Twins",
+      "numeroVilla": "6",
+      "typeMaison": "Free Style",
       "dateNaissance": "05/10/1974",
       "age": 51,
       "compositionFamille": 1,
@@ -8356,7 +8356,7 @@
       "commentaires": "",
       "lienDocument": "",
       "createdAt": "2026-07-28T09:40:39.809Z",
-      "updatedAt": "2026-08-19T13:52:30.051Z"
+      "updatedAt": "2026-08-19T13:53:10.237Z"
     },
     {
       "id": 391,
@@ -8367,8 +8367,8 @@
       "sexe": "F",
       "nom": "ODIA MBUYI ESTHER",
       "localisation": "Zamba",
-      "numeroVilla": "",
-      "typeMaison": "Twins",
+      "numeroVilla": "6",
+      "typeMaison": "Free Style",
       "dateNaissance": "05/02/1987",
       "age": 39,
       "compositionFamille": null,
@@ -8377,7 +8377,7 @@
       "commentaires": "",
       "lienDocument": "",
       "createdAt": "2026-07-28T09:40:39.809Z",
-      "updatedAt": "2026-08-19T13:52:30.051Z"
+      "updatedAt": "2026-08-19T13:53:10.237Z"
     },
     {
       "id": 392,
@@ -8388,8 +8388,8 @@
       "sexe": "F",
       "nom": "KATENDE KASENDUE ROBERT",
       "localisation": "Zamba",
-      "numeroVilla": "",
-      "typeMaison": "Twins",
+      "numeroVilla": "6",
+      "typeMaison": "Free Style",
       "dateNaissance": "07/12/2010",
       "age": 15,
       "compositionFamille": null,
@@ -8398,7 +8398,7 @@
       "commentaires": "",
       "lienDocument": "",
       "createdAt": "2026-07-28T09:40:39.809Z",
-      "updatedAt": "2026-08-19T13:52:30.051Z"
+      "updatedAt": "2026-08-19T13:53:10.237Z"
     },
     {
       "id": 393,
@@ -8409,8 +8409,8 @@
       "sexe": "F",
       "nom": "MUKILE NGOYI CHRISTELLE",
       "localisation": "Zamba",
-      "numeroVilla": "",
-      "typeMaison": "Twins",
+      "numeroVilla": "6",
+      "typeMaison": "Free Style",
       "dateNaissance": "11/04/2004",
       "age": 22,
       "compositionFamille": null,
@@ -8419,7 +8419,7 @@
       "commentaires": "",
       "lienDocument": "",
       "createdAt": "2026-07-28T09:40:39.809Z",
-      "updatedAt": "2026-08-19T13:52:30.051Z"
+      "updatedAt": "2026-08-19T13:53:10.237Z"
     },
     {
       "id": 394,
