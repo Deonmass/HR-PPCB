@@ -1,6 +1,20 @@
 {
   "entries": [
     {
+      "id": "log-000492",
+      "at": "2026-08-19T10:11:58.923Z",
+      "userId": "admin",
+      "userName": "Administrateur",
+      "module": "documents.newcomer",
+      "moduleLabel": "Documents",
+      "action": "export",
+      "actionLabel": "Export",
+      "summary": "Newcomer « SAP Input form (HR DOC 14) » — Customer Relationship Officer",
+      "details": "Newcomer « SAP Input form (HR DOC 14) » — Customer Relationship Officer",
+      "undoable": false,
+      "undone": false
+    },
+    {
       "id": "log-000491",
       "at": "2026-08-19T10:11:53.231Z",
       "userId": "admin",
@@ -36665,5 +36679,5 @@
       }
     }
   ],
-  "nextSeq": 492
+  "nextSeq": 493
 }
