@@ -65,6 +65,17 @@
       "ancienNumero": "",
       "raison": "",
       "commentaire": "Hors effectif"
+    },
+    {
+      "date": "19/08/2026 13:49",
+      "action": "Liberer",
+      "matricule": "70000030",
+      "nom": "MUBA KAYEMBE JEREMIE",
+      "numeroVilla": "",
+      "typeMaison": "Twins",
+      "ancienNumero": "25",
+      "raison": "",
+      "commentaire": ""
     }
   ]
 }
