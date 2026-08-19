@@ -120,6 +120,17 @@
       "ancienNumero": "",
       "raison": "Changement",
       "commentaire": ""
+    },
+    {
+      "date": "19/08/2026 13:53",
+      "action": "Liberer",
+      "matricule": "70000109",
+      "nom": "MOLEKA GBANGA FRED",
+      "numeroVilla": "",
+      "typeMaison": "Twins",
+      "ancienNumero": "31",
+      "raison": "",
+      "commentaire": ""
     }
   ]
 }
