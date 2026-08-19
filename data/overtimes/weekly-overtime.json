@@ -997,11 +997,11 @@
               "matricule": "70000309",
               "ot13": 0,
               "ot16": 0,
-              "ot2": 0,
+              "ot2": 7,
               "night": 0
             }
           },
-          "updatedAt": "2026-08-19T13:27:13.311Z",
+          "updatedAt": "2026-08-19T13:28:34.464Z",
           "updatedBy": "admin"
         },
         "Engineering::3": {
