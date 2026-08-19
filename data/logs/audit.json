@@ -1,6 +1,20 @@
 {
   "entries": [
     {
+      "id": "log-000491",
+      "at": "2026-08-19T10:11:53.231Z",
+      "userId": "admin",
+      "userName": "Administrateur",
+      "module": "documents.newcomer",
+      "moduleLabel": "Documents",
+      "action": "export",
+      "actionLabel": "Export",
+      "summary": "Newcomer « New User Request Form » — Customer Relationship Officer",
+      "details": "Newcomer « New User Request Form » — Customer Relationship Officer",
+      "undoable": false,
+      "undone": false
+    },
+    {
       "id": "log-000490",
       "at": "2026-08-19T10:11:46.819Z",
       "userId": "admin",
@@ -36651,5 +36665,5 @@
       }
     }
   ],
-  "nextSeq": 491
+  "nextSeq": 492
 }
