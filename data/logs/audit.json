@@ -1,6 +1,45 @@
 {
   "entries": [
     {
+      "id": "log-000508",
+      "at": "2026-08-19T13:49:33.754Z",
+      "userId": "admin",
+      "userName": "Administrateur",
+      "module": "village.assign",
+      "moduleLabel": "Village — Affectations",
+      "action": "update",
+      "actionLabel": "Modification",
+      "summary": "Affectation 70000205 → maison 25",
+      "details": "Affectation 70000205 → maison 25",
+      "after": {
+        "id": 55,
+        "matricule": "70000205",
+        "pactilis": "163983",
+        "statut": "Employé",
+        "sexe": "M",
+        "nom": "BOMPETA MPINGO ERICK",
+        "localisation": "Zamba",
+        "numeroVilla": "25",
+        "typeMaison": "Twins",
+        "dateNaissance": "01/06/1991",
+        "age": 35,
+        "compositionFamille": 1,
+        "enfants": 0,
+        "total": 2,
+        "commentaires": "",
+        "lienDocument": "",
+        "employeNom": "BOMPETA MPINGO ERICK",
+        "departement": "Sales & Logistics"
+      },
+      "undoable": false,
+      "undone": false,
+      "meta": {
+        "matricule": "70000205",
+        "numeroVilla": "25",
+        "ancienNumero": "25"
+      }
+    },
+    {
       "id": "log-000507",
       "at": "2026-08-19T13:49:23.069Z",
       "userId": "admin",
@@ -38881,5 +38920,5 @@
       }
     }
   ],
-  "nextSeq": 508
+  "nextSeq": 509
 }
