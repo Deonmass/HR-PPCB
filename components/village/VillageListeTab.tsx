@@ -7,7 +7,7 @@ import type { SortDir } from '@/components/SortableTh';
 import { usePermissions } from '@/contexts/PermissionContext';
 import type { Dependant } from '@/lib/dependants-types';
 import { displayMatricule, isChildStatut, isSpouseStatut, type FamilyGroup } from '@/lib/dependants-utils';
-import { promptSelect, showError, showSuccess } from '@/lib/swal';
+import { closeSwal, promptSelect, showActionLoading, showError, showSuccess } from '@/lib/swal';
 import {
   buildColumnFilterValues,
   countActiveColumnFilters,
@@ -461,6 +461,10 @@ export default function VillageListeTab() {
 
   const assignMaison = async (matricule: string, numeroVilla: string, nom = '', ancienNumero = '') => {
     setAssigning(true);
+    showActionLoading(
+      numeroVilla ? 'Affectation…' : 'Libération…',
+      'Veuillez patienter',
+    );
     try {
       const res = await fetch('/api/village/assign', {
         method: 'POST',
@@ -475,9 +479,11 @@ export default function VillageListeTab() {
       });
       const json = (await res.json()) as { error?: string };
       if (!res.ok) throw new Error(json.error || 'Affectation impossible');
-      await showSuccess(numeroVilla ? `Maison ${numeroVilla} affectée` : 'Maison libérée');
       await load();
+      closeSwal();
+      await showSuccess(numeroVilla ? `Maison ${numeroVilla} affectée` : 'Maison libérée');
     } catch (err) {
+      closeSwal();
       await showError(err instanceof Error ? err.message : 'Affectation impossible');
     } finally {
       setAssigning(false);

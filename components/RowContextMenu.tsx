@@ -6,7 +6,7 @@ import { createPortal } from 'react-dom';
 export interface ContextMenuItem {
   id: string;
   label: string;
-  icon: 'view' | 'edit' | 'delete' | 'add' | 'expenses' | 'toggle' | 'permissions' | 'home' | 'doc' | 'import';
+  icon: 'view' | 'edit' | 'delete' | 'add' | 'expenses' | 'toggle' | 'permissions' | 'home' | 'doc' | 'import' | 'move';
   danger?: boolean;
   onClick: () => void;
 }
@@ -113,6 +113,15 @@ function MenuIcon({ name }: { name: ContextMenuItem['icon'] }) {
         <polyline points="14 2 14 8 20 8" />
         <path d="M12 18V11" />
         <path d="m9 14 3 3 3-3" />
+      </svg>
+    );
+  }
+  if (name === 'move') {
+    return (
+      <svg viewBox="0 0 24 24" {...props}>
+        <path d="M5 12h14" />
+        <path d="m13 6 6 6-6 6" />
+        <path d="M3 5v14" />
       </svg>
     );
   }

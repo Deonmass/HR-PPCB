@@ -6789,6 +6789,57 @@ html[data-theme="light"] .compilation-table tbody tr:hover td.compilation-sticky
   font-weight: 700;
 }
 
+.compilation-table tbody td.compilation-over-100,
+.compilation-table tbody tr:hover td.compilation-over-100 {
+  background: #e30613 !important;
+  color: #fff !important;
+  font-weight: 700;
+}
+
+.compilation-th-head {
+  display: flex;
+  align-items: center;
+  min-width: 0;
+  gap: 0;
+}
+
+.compilation-th-head .table-hf {
+  flex: 1;
+  min-width: 0;
+}
+
+.compilation-sort-btn {
+  flex-shrink: 0;
+  border: none;
+  background: transparent;
+  color: inherit;
+  cursor: pointer;
+  padding: 0 0.15rem;
+  opacity: 0.5;
+  font-size: 0.62rem;
+  line-height: 1;
+}
+
+.compilation-sort-btn:hover,
+.compilation-sort-btn.is-sorted {
+  opacity: 1;
+  color: var(--ppc-red);
+}
+
+.compilation-table .sortable-th-btn {
+  padding: 0.15rem 0.2rem;
+  font-size: inherit;
+  font-weight: 700;
+  text-transform: none;
+  letter-spacing: 0;
+  justify-content: center;
+  gap: 0.12rem;
+}
+
+.compilation-table .sortable-th-icon {
+  font-size: 0.55rem;
+}
+
 .compilation-table thead .compilation-tg {
   z-index: 4;
   background: var(--compilation-tg-head-bg);

@@ -480,7 +480,9 @@ export default function TimesheetCompilationSimulationModal({
                             {tgValues.map((value, i) => (
                               <td
                                 key={`ct-${row.matricule}-${TG_POS[i]}`}
-                                className={`compilation-num-col compilation-total-col compilation-tg ${TG_POS[i]}`}
+                                className={`compilation-num-col compilation-total-col compilation-tg ${TG_POS[i]}${
+                                  i === 4 && value > 100 ? ' compilation-over-100' : ''
+                                }`}
                               >
                                 {fmtHours(value)}
                               </td>

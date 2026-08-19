@@ -12,6 +12,8 @@ import {
   IconUnlock,
 } from '@/components/overtime/TimesheetIcons';
 import TableHeaderFilter from '@/components/TableHeaderFilter';
+import type { SortDir } from '@/components/SortableTh';
+import SortableTh from '@/components/SortableTh';
 import { listTimesheetMonthOptions } from '@/lib/timesheet-period';
 import {
   sumCompilationRow,
@@ -31,6 +33,7 @@ import { downloadTimesheetWorkbook } from '@/lib/timesheet-export';
 import type { TimesheetAccessContext, TimesheetViewScope } from '@/lib/timesheet-permissions';
 import { TIMESHEET_MENU } from '@/lib/timesheet-permissions';
 import { showError } from '@/lib/swal';
+import { compareNumber, compareText, toggleSortDir } from '@/lib/table-sort';
 import type { Employee } from '@/lib/types';
 import {
   buildColumnFilterValues,
@@ -40,7 +43,7 @@ import {
 
 const ALL_DEPARTMENTS = '__ALL__';
 
-type ColFilterKey = 'matricule' | 'nom' | 'departement' | 'localisation' | 'grade';
+type ColFilterKey = 'matricule' | 'nom' | 'departement' | 'localisation' | 'grade' | 'total';
 
 const EMPTY_COL_FILTERS: Record<ColFilterKey, string[]> = {
   matricule: [],
@@ -48,7 +51,12 @@ const EMPTY_COL_FILTERS: Record<ColFilterKey, string[]> = {
   departement: [],
   localisation: [],
   grade: [],
+  total: [],
 };
+
+const TOTAL_OVER_HOURS = 100;
+const TOTAL_BUCKET_OVER = '> 100 h';
+const TOTAL_BUCKET_UNDER = '≤ 100 h';
 
 const OT_SUBCOLS: { key: 'ot13' | 'ot16' | 'ot2' | 'night'; label: string }[] = [
   { key: 'ot13', label: '1.3' },
@@ -83,6 +91,37 @@ function matchesDepartment(employeeDepartment: string, selectedDepartment: strin
 function fmtHours(value: number): string {
   if (!value) return '';
   return (Math.round(value * 100) / 100).toFixed(2);
+}
+
+function compilationGrandTotal(row: CompilationRow): number {
+  const t = sumCompilationRow(row);
+  return t.ot13 + t.ot16 + t.ot2 + t.night + row.nightNormal;
+}
+
+function totalBucket(hours: number): string {
+  return hours > TOTAL_OVER_HOURS ? TOTAL_BUCKET_OVER : TOTAL_BUCKET_UNDER;
+}
+
+function compilationSortValue(row: CompilationRow, key: string): string | number {
+  if (key === 'matricule') return row.matricule;
+  if (key === 'nom') return row.nom;
+  if (key === 'departement') return row.departement;
+  if (key === 'localisation') return row.localisation;
+  if (key === 'grade') return row.grade;
+  if (key === 'timesheetN') return row.nightNormal;
+  const totals = sumCompilationRow(row);
+  const totalNight = totals.night + row.nightNormal;
+  if (key === 'tg13') return totals.ot13;
+  if (key === 'tg16') return totals.ot16;
+  if (key === 'tg2') return totals.ot2;
+  if (key === 'tgN') return totalNight;
+  if (key === 'tgTotal' || key === 'total') return totals.ot13 + totals.ot16 + totals.ot2 + totalNight;
+  const weekMatch = key.match(/^w-(\d+)-(ot13|ot16|ot2|night)$/);
+  if (weekMatch) {
+    const week = row.weeks[Number(weekMatch[1])];
+    return week?.[weekMatch[2] as 'ot13' | 'ot16' | 'ot2' | 'night'] ?? 0;
+  }
+  return '';
 }
 
 interface HoverPop {
@@ -139,6 +178,8 @@ export default function TimesheetCompilationView({
   const [hoverPop, setHoverPop] = useState<HoverPop | null>(null);
   const [searchQuery, setSearchQuery] = useState('');
   const [colFilters, setColFilters] = useState<Record<ColFilterKey, string[]>>(EMPTY_COL_FILTERS);
+  const [sortKey, setSortKey] = useState<string | null>(null);
+  const [sortDir, setSortDir] = useState<SortDir>('asc');
   const [simulationOpen, setSimulationOpen] = useState(false);
   const hideTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
 
@@ -273,11 +314,12 @@ export default function TimesheetCompilationView({
         departement: (row) => row.departement,
         localisation: (row) => row.localisation,
         grade: (row) => row.grade,
+        total: (row) => totalBucket(compilationGrandTotal(row)),
       }),
     [searchedRows],
   );
 
-  const displayRows = useMemo<CompilationRow[]>(
+  const filteredRows = useMemo(
     () =>
       searchedRows.filter(
         (row) =>
@@ -285,10 +327,31 @@ export default function TimesheetCompilationView({
           matchesColumnFilter(colFilters.nom, row.nom) &&
           matchesColumnFilter(colFilters.departement, row.departement) &&
           matchesColumnFilter(colFilters.localisation, row.localisation) &&
-          matchesColumnFilter(colFilters.grade, row.grade),
+          matchesColumnFilter(colFilters.grade, row.grade) &&
+          matchesColumnFilter(colFilters.total, totalBucket(compilationGrandTotal(row))),
       ),
     [searchedRows, colFilters],
   );
+
+  const handleSort = (column: string) => {
+    const next = toggleSortDir(sortKey, sortDir, column);
+    setSortKey(next.key);
+    setSortDir(next.dir);
+  };
+
+  const displayRows = useMemo<CompilationRow[]>(() => {
+    if (!sortKey) return filteredRows;
+    const dir = sortDir === 'asc' ? 1 : -1;
+    return [...filteredRows].sort((a, b) => {
+      const va = compilationSortValue(a, sortKey);
+      const vb = compilationSortValue(b, sortKey);
+      const cmp =
+        typeof va === 'number' && typeof vb === 'number'
+          ? compareNumber(va, vb)
+          : compareText(String(va), String(vb));
+      return cmp * dir;
+    });
+  }, [filteredRows, sortKey, sortDir]);
 
   const activeFilterCount = useMemo(() => countActiveColumnFilters(colFilters), [colFilters]);
 
@@ -551,44 +614,94 @@ export default function TimesheetCompilationView({
                 <thead>
                   <tr>
                     <th rowSpan={3} className="th-filter compilation-freeze compilation-freeze-mat">
-                      <TableHeaderFilter
-                        label="Matricule"
-                        values={filterValues.matricule}
-                        selected={colFilters.matricule}
-                        onChange={setColFilter('matricule')}
-                      />
+                      <div className="compilation-th-head">
+                        <TableHeaderFilter
+                          label="Matricule"
+                          values={filterValues.matricule}
+                          selected={colFilters.matricule}
+                          onChange={setColFilter('matricule')}
+                        />
+                        <button
+                          type="button"
+                          className={`compilation-sort-btn${sortKey === 'matricule' ? ' is-sorted' : ''}`}
+                          title="Trier par matricule"
+                          onClick={() => handleSort('matricule')}
+                        >
+                          {sortKey === 'matricule' ? (sortDir === 'asc' ? '▲' : '▼') : '↕'}
+                        </button>
+                      </div>
                     </th>
                     <th rowSpan={3} className="th-filter compilation-freeze compilation-freeze-name">
-                      <TableHeaderFilter
-                        label="Employee Name"
-                        values={filterValues.nom}
-                        selected={colFilters.nom}
-                        onChange={setColFilter('nom')}
-                      />
+                      <div className="compilation-th-head">
+                        <TableHeaderFilter
+                          label="Employee Name"
+                          values={filterValues.nom}
+                          selected={colFilters.nom}
+                          onChange={setColFilter('nom')}
+                        />
+                        <button
+                          type="button"
+                          className={`compilation-sort-btn${sortKey === 'nom' ? ' is-sorted' : ''}`}
+                          title="Trier par nom"
+                          onClick={() => handleSort('nom')}
+                        >
+                          {sortKey === 'nom' ? (sortDir === 'asc' ? '▲' : '▼') : '↕'}
+                        </button>
+                      </div>
                     </th>
                     <th rowSpan={3} className="th-filter compilation-left">
-                      <TableHeaderFilter
-                        label="Departement"
-                        values={filterValues.departement}
-                        selected={colFilters.departement}
-                        onChange={setColFilter('departement')}
-                      />
+                      <div className="compilation-th-head">
+                        <TableHeaderFilter
+                          label="Departement"
+                          values={filterValues.departement}
+                          selected={colFilters.departement}
+                          onChange={setColFilter('departement')}
+                        />
+                        <button
+                          type="button"
+                          className={`compilation-sort-btn${sortKey === 'departement' ? ' is-sorted' : ''}`}
+                          title="Trier par département"
+                          onClick={() => handleSort('departement')}
+                        >
+                          {sortKey === 'departement' ? (sortDir === 'asc' ? '▲' : '▼') : '↕'}
+                        </button>
+                      </div>
                     </th>
                     <th rowSpan={3} className="th-filter compilation-left">
-                      <TableHeaderFilter
-                        label="Localisation"
-                        values={filterValues.localisation}
-                        selected={colFilters.localisation}
-                        onChange={setColFilter('localisation')}
-                      />
+                      <div className="compilation-th-head">
+                        <TableHeaderFilter
+                          label="Localisation"
+                          values={filterValues.localisation}
+                          selected={colFilters.localisation}
+                          onChange={setColFilter('localisation')}
+                        />
+                        <button
+                          type="button"
+                          className={`compilation-sort-btn${sortKey === 'localisation' ? ' is-sorted' : ''}`}
+                          title="Trier par localisation"
+                          onClick={() => handleSort('localisation')}
+                        >
+                          {sortKey === 'localisation' ? (sortDir === 'asc' ? '▲' : '▼') : '↕'}
+                        </button>
+                      </div>
                     </th>
                     <th rowSpan={3} className="th-filter">
-                      <TableHeaderFilter
-                        label="Grade"
-                        values={filterValues.grade}
-                        selected={colFilters.grade}
-                        onChange={setColFilter('grade')}
-                      />
+                      <div className="compilation-th-head">
+                        <TableHeaderFilter
+                          label="Grade"
+                          values={filterValues.grade}
+                          selected={colFilters.grade}
+                          onChange={setColFilter('grade')}
+                        />
+                        <button
+                          type="button"
+                          className={`compilation-sort-btn${sortKey === 'grade' ? ' is-sorted' : ''}`}
+                          title="Trier par grade"
+                          onClick={() => handleSort('grade')}
+                        >
+                          {sortKey === 'grade' ? (sortDir === 'asc' ? '▲' : '▼') : '↕'}
+                        </button>
+                      </div>
                     </th>
                     {weeks.map((week) => (
                       <th key={`w-${week.index}`} colSpan={4} className="compilation-group">
@@ -614,22 +727,56 @@ export default function TimesheetCompilationView({
                     ))}
                   </tr>
                   <tr>
-                    {weeks.map((week) =>
+                    {weeks.map((week, weekPos) =>
                       OT_SUBCOLS.map((col) => (
-                        <th key={`h-${week.index}-${col.key}`} className="compilation-num-col">
-                          {col.label}
-                        </th>
+                        <SortableTh
+                          key={`h-${week.index}-${col.key}`}
+                          label={col.label}
+                          column={`w-${weekPos}-${col.key}`}
+                          sortKey={sortKey}
+                          sortDir={sortDir}
+                          onSort={handleSort}
+                          className="compilation-num-col"
+                        />
                       )),
                     )}
-                    <th className="compilation-num-col compilation-night-col">N</th>
-                    {['1.3', '1.6', '2', 'N', 'Total'].map((label, i) => (
-                      <th
+                    <SortableTh
+                      label="N"
+                      column="timesheetN"
+                      sortKey={sortKey}
+                      sortDir={sortDir}
+                      onSort={handleSort}
+                      className="compilation-num-col compilation-night-col"
+                    />
+                    {(['1.3', '1.6', '2', 'N'] as const).map((label, i) => (
+                      <SortableTh
                         key={`ht-${TG_POS[i]}`}
+                        label={label}
+                        column={(['tg13', 'tg16', 'tg2', 'tgN'] as const)[i]}
+                        sortKey={sortKey}
+                        sortDir={sortDir}
+                        onSort={handleSort}
                         className={`compilation-num-col compilation-total-col compilation-tg ${TG_POS[i]}`}
-                      >
-                        {label}
-                      </th>
+                      />
                     ))}
+                    <th className="th-filter compilation-num-col compilation-total-col compilation-tg tg5">
+                      <div className="compilation-th-head">
+                        <TableHeaderFilter
+                          label="Total"
+                          values={filterValues.total}
+                          selected={colFilters.total}
+                          onChange={setColFilter('total')}
+                        />
+                        <button
+                          type="button"
+                          className={`compilation-sort-btn${sortKey === 'tgTotal' ? ' is-sorted' : ''}`}
+                          title="Trier par total"
+                          onClick={() => handleSort('tgTotal')}
+                        >
+                          {sortKey === 'tgTotal' ? (sortDir === 'asc' ? '▲' : '▼') : '↕'}
+                        </button>
+                      </div>
+                    </th>
                   </tr>
                 </thead>
                 <tbody>
@@ -698,7 +845,9 @@ export default function TimesheetCompilationView({
                         {tgValues.map((value, i) => (
                           <td
                             key={`ct-${row.matricule}-${TG_POS[i]}`}
-                            className={`compilation-num-col compilation-total-col compilation-tg ${TG_POS[i]}`}
+                            className={`compilation-num-col compilation-total-col compilation-tg ${TG_POS[i]}${
+                              i === 4 && value > TOTAL_OVER_HOURS ? ' compilation-over-100' : ''
+                            }`}
                           >
                             {fmtHours(value)}
                           </td>

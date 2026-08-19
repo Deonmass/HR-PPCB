@@ -17,7 +17,7 @@ import { usePermissions } from '@/contexts/PermissionContext';
 import type { Dependant } from '@/lib/dependants-types';
 import type { Employee } from '@/lib/types';
 import { formatDisplayName } from '@/lib/format-display-name';
-import { confirmDelete, showError, showSuccess } from '@/lib/swal';
+import { closeSwal, confirmDelete, showActionLoading, showError, showSuccess } from '@/lib/swal';
 import {
   buildColumnFilterValues,
   countActiveColumnFilters,
@@ -330,10 +330,11 @@ function VillageMaisonsPageInner() {
   const [suggestionForm, setSuggestionForm] = useState<SuggestionForm>(emptySuggestionForm);
 
   const [assignOpen, setAssignOpen] = useState(false);
-  const [assignMode, setAssignMode] = useState<'assign' | 'replace'>('assign');
+  const [assignMode, setAssignMode] = useState<'assign' | 'replace' | 'move'>('assign');
   const [assignMaison, setAssignMaison] = useState<VillageMaisonOccupancy | null>(null);
   const [assignSelection, setAssignSelection] = useState<EmployeeSelection | null>(null);
   const [assignRaison, setAssignRaison] = useState('');
+  const [moveTargetNumero, setMoveTargetNumero] = useState('');
 
   const [search, setSearch] = useState('');
   const [filterTaille, setFilterTaille] = useState('');
@@ -499,12 +500,23 @@ function VillageMaisonsPageInner() {
     setAssignMaison(maison);
     setAssignSelection(null);
     setAssignRaison('');
+    setMoveTargetNumero('');
+    setAssignOpen(true);
+  };
+
+  const openMoveDrawer = (maison: VillageMaisonOccupancy) => {
+    setAssignMode('move');
+    setAssignMaison(maison);
+    setAssignSelection(null);
+    setAssignRaison('');
+    setMoveTargetNumero('');
     setAssignOpen(true);
   };
 
   const releaseMaison = async (maison: VillageMaisonOccupancy) => {
     const occupant = maison.occupants[0];
     if (!occupant) return;
+    showActionLoading('Libération…', 'Veuillez patienter');
     try {
       const res = await fetch('/api/village/assign', {
         method: 'POST',
@@ -516,20 +528,24 @@ function VillageMaisonsPageInner() {
                 numeroVilla: '',
                 nom: occupant.nom,
                 ancienNumero: maison.numero,
+                action: 'Liberer',
               }
             : {
                 matricule: occupant.matricule,
                 numeroVilla: '',
                 nom: occupant.nom,
                 ancienNumero: maison.numero,
+                action: 'Liberer',
               },
         ),
       });
       const json = (await res.json()) as { error?: string };
       if (!res.ok) throw new Error(json.error || 'Libération impossible');
-      await showSuccess(`Maison ${maison.numero} libérée`);
       await load();
+      closeSwal();
+      await showSuccess(`Maison ${maison.numero} libérée`);
     } catch (err) {
+      closeSwal();
       await showError(err instanceof Error ? err.message : 'Libération impossible');
     }
   };
@@ -614,6 +630,99 @@ function VillageMaisonsPageInner() {
     } catch (err) {
       setSaving(false);
       await showError(err instanceof Error ? err.message : 'Affectation impossible');
+    }
+  };
+
+  const submitMoveDrawer = async () => {
+    const maison = assignMaison;
+    const occupant = maison?.occupants[0];
+    if (!maison || !occupant) return;
+    const cible = moveTargetNumero.trim();
+    const raison = assignRaison.trim();
+    if (!cible) {
+      await showError('Choisissez la maison de destination');
+      return;
+    }
+    if (cible.toLowerCase() === maison.numero.trim().toLowerCase()) {
+      await showError('Choisissez une maison différente');
+      return;
+    }
+    if (!raison) {
+      await showError('Indiquez la raison du déplacement');
+      return;
+    }
+    const dest = occupancy.find((m) => m.numero.trim().toLowerCase() === cible.toLowerCase());
+    if (!dest) {
+      await showError(`Maison « ${cible} » introuvable`);
+      return;
+    }
+    if (dest.occupied) {
+      await showError(`La maison ${dest.numero} est déjà occupée`);
+      return;
+    }
+
+    setSaving(true);
+    showActionLoading('Déplacement…', 'Veuillez patienter');
+    try {
+      const isExterne = occupant.externe || !occupant.matricule;
+      if (isExterne) {
+        const releaseRes = await fetch('/api/village/assign', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            externe: true,
+            numeroVilla: '',
+            nom: occupant.nom,
+            ancienNumero: maison.numero,
+            action: 'Deplacer',
+            raison,
+          }),
+        });
+        const releaseJson = (await releaseRes.json()) as { error?: string };
+        if (!releaseRes.ok) throw new Error(releaseJson.error || 'Libération impossible');
+      }
+
+      const moveRes = await fetch('/api/village/assign', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(
+          isExterne
+            ? {
+                externe: true,
+                numeroVilla: dest.numero,
+                nom: occupant.nom,
+                ancienNumero: maison.numero,
+                raison,
+                action: 'Deplacer',
+              }
+            : {
+                matricule: occupant.matricule,
+                numeroVilla: dest.numero,
+                setLocalisationZamba: true,
+                nom: occupant.nom,
+                ancienNumero: maison.numero,
+                raison,
+                action: 'Deplacer',
+              },
+        ),
+      });
+      const moveJson = (await moveRes.json()) as { error?: string };
+      if (!moveRes.ok) throw new Error(moveJson.error || 'Déplacement impossible');
+
+      setAssignOpen(false);
+      setAssignMaison(null);
+      setAssignRaison('');
+      setMoveTargetNumero('');
+      setSaving(false);
+      await load();
+      closeSwal();
+      await showSuccess(
+        `${formatDisplayName(occupant.nom)} déplacé vers la maison ${dest.numero}`,
+      );
+    } catch (err) {
+      setSaving(false);
+      closeSwal();
+      await showError(err instanceof Error ? err.message : 'Déplacement impossible');
     }
   };
 
@@ -1053,6 +1162,14 @@ function VillageMaisonsPageInner() {
             icon: 'toggle',
             onClick: () => {
               void releaseMaison(m);
+            },
+          });
+          items.push({
+            id: 'move',
+            label: 'Déplacer agent',
+            icon: 'move',
+            onClick: () => {
+              openMoveDrawer(m);
             },
           });
         }
@@ -1881,7 +1998,9 @@ function VillageMaisonsPageInner() {
           open={assignOpen}
           title={
             assignMaison
-              ? `${assignMode === 'replace' ? 'Remplacer' : 'Affecter'} — maison ${assignMaison.numero}`
+              ? assignMode === 'move'
+                ? `Déplacer agent — maison ${assignMaison.numero}`
+                : `${assignMode === 'replace' ? 'Remplacer' : 'Affecter'} — maison ${assignMaison.numero}`
               : 'Affectation'
           }
           onClose={() => {
@@ -1892,59 +2011,126 @@ function VillageMaisonsPageInner() {
             <button
               type="button"
               className="btn btn-primary"
-              disabled={saving || !assignSelection?.nom?.trim()}
-              onClick={() => void submitAssignDrawer()}
+              disabled={
+                saving ||
+                (assignMode === 'move'
+                  ? !moveTargetNumero.trim() || !assignRaison.trim()
+                  : !assignSelection?.nom?.trim())
+              }
+              onClick={() =>
+                void (assignMode === 'move' ? submitMoveDrawer() : submitAssignDrawer())
+              }
             >
               {saving ? <span className="btn-spinner" aria-hidden="true" /> : null}
               {saving
-                ? 'Enregistrement…'
-                : assignMode === 'replace'
-                  ? 'Remplacer'
-                  : 'Affecter'}
+                ? assignMode === 'move'
+                  ? 'Déplacement…'
+                  : 'Enregistrement…'
+                : assignMode === 'move'
+                  ? 'Déplacer'
+                  : assignMode === 'replace'
+                    ? 'Remplacer'
+                    : 'Affecter'}
             </button>
           }
         >
           <div className="side-drawer-form">
-            {assignMode === 'replace' && assignMaison?.occupants[0] ? (
-              <p className="village-assign-current">
-                Occupant actuel :{' '}
-                <span
-                  className={
-                    assignMaison.occupants[0].externe
-                      ? 'village-occupant-externe'
-                      : undefined
-                  }
-                >
-                  {formatDisplayName(assignMaison.occupants[0].nom)}
-                </span>
-                {assignMaison.occupants[0].externe ? ' (hors effectif)' : ''}
-              </p>
-            ) : null}
-            <label>
-              Occupant
-              <EmployeePicker
-                employees={kimpesePickerEmployees}
-                value={assignSelection}
-                onChange={setAssignSelection}
-              />
-              <span className="field-hint">
-                Choisissez un agent Kimpese ou saisissez un nom hors effectif.
-              </span>
-              {assignSelection?.nom && !assignSelection.matricule ? (
-                <span className="village-occupant-externe-hint">
-                  Nom hors effectif — affichage en couleur distincte.
-                </span>
-              ) : null}
-            </label>
-            <label>
-              Raison
-              <input
-                className="filter-select"
-                value={assignRaison}
-                onChange={(e) => setAssignRaison(e.target.value)}
-                placeholder="ex. Mutation, nouvel arrivant…"
-              />
-            </label>
+            {assignMode === 'move' ? (
+              <>
+                {assignMaison?.occupants[0] ? (
+                  <p className="village-assign-current">
+                    Agent :{' '}
+                    <span
+                      className={
+                        assignMaison.occupants[0].externe
+                          ? 'village-occupant-externe'
+                          : undefined
+                      }
+                    >
+                      {formatDisplayName(assignMaison.occupants[0].nom)}
+                    </span>
+                    {assignMaison.occupants[0].externe ? ' (hors effectif)' : ''}
+                    {' · maison '}
+                    {assignMaison.numero}
+                  </p>
+                ) : null}
+                <label>
+                  Maison
+                  <select
+                    className="filter-select"
+                    value={moveTargetNumero}
+                    onChange={(e) => setMoveTargetNumero(e.target.value)}
+                    disabled={saving}
+                  >
+                    <option value="">Choisir une maison vide…</option>
+                    {emptyMaisons.map((m) => (
+                      <option key={m.numero} value={m.numero}>
+                        {m.numero}
+                        {m.typeMaison || m.taille ? ` · ${m.typeMaison || m.taille}` : ''}
+                      </option>
+                    ))}
+                  </select>
+                  {emptyMaisons.length === 0 ? (
+                    <span className="field-hint">Aucune maison vide disponible.</span>
+                  ) : (
+                    <span className="field-hint">Seules les maisons vides sont proposées.</span>
+                  )}
+                </label>
+                <label>
+                  Raison
+                  <input
+                    className="filter-select"
+                    value={assignRaison}
+                    onChange={(e) => setAssignRaison(e.target.value)}
+                    placeholder="ex. Mutation, rapprochement…"
+                    disabled={saving}
+                  />
+                </label>
+              </>
+            ) : (
+              <>
+                {assignMode === 'replace' && assignMaison?.occupants[0] ? (
+                  <p className="village-assign-current">
+                    Occupant actuel :{' '}
+                    <span
+                      className={
+                        assignMaison.occupants[0].externe
+                          ? 'village-occupant-externe'
+                          : undefined
+                      }
+                    >
+                      {formatDisplayName(assignMaison.occupants[0].nom)}
+                    </span>
+                    {assignMaison.occupants[0].externe ? ' (hors effectif)' : ''}
+                  </p>
+                ) : null}
+                <label>
+                  Occupant
+                  <EmployeePicker
+                    employees={kimpesePickerEmployees}
+                    value={assignSelection}
+                    onChange={setAssignSelection}
+                  />
+                  <span className="field-hint">
+                    Choisissez un agent Kimpese ou saisissez un nom hors effectif.
+                  </span>
+                  {assignSelection?.nom && !assignSelection.matricule ? (
+                    <span className="village-occupant-externe-hint">
+                      Nom hors effectif — affichage en couleur distincte.
+                    </span>
+                  ) : null}
+                </label>
+                <label>
+                  Raison
+                  <input
+                    className="filter-select"
+                    value={assignRaison}
+                    onChange={(e) => setAssignRaison(e.target.value)}
+                    placeholder="ex. Mutation, nouvel arrivant…"
+                  />
+                </label>
+              </>
+            )}
           </div>
         </SideDrawer>
 
