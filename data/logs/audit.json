@@ -1,6 +1,20 @@
 {
   "entries": [
     {
+      "id": "log-000490",
+      "at": "2026-08-19T10:11:46.819Z",
+      "userId": "admin",
+      "userName": "Administrateur",
+      "module": "documents.newcomer",
+      "moduleLabel": "Documents",
+      "action": "export",
+      "actionLabel": "Export",
+      "summary": "Newcomer « Déclaration sur l'honneur » — Customer Relationship Officer",
+      "details": "Newcomer « Déclaration sur l'honneur » — Customer Relationship Officer",
+      "undoable": false,
+      "undone": false
+    },
+    {
       "id": "log-000489",
       "at": "2026-08-19T10:11:01.377Z",
       "userId": "admin",
@@ -36637,5 +36651,5 @@
       }
     }
   ],
-  "nextSeq": 490
+  "nextSeq": 491
 }
