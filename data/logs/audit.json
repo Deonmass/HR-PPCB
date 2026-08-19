@@ -1,6 +1,20 @@
 {
   "entries": [
     {
+      "id": "log-000514",
+      "at": "2026-08-19T14:55:06.609Z",
+      "userId": "admin",
+      "userName": "Administrateur",
+      "module": "timesheet.compilation",
+      "moduleLabel": "Timesheet — Compilation",
+      "action": "export",
+      "actionLabel": "Export",
+      "summary": "Export simulation compilation OT 8/2026",
+      "details": "Export Excel simulation compilation OT",
+      "undoable": false,
+      "undone": false
+    },
+    {
       "id": "log-000513",
       "at": "2026-08-19T13:56:03.500Z",
       "userId": "admin",
@@ -39115,5 +39129,5 @@
       }
     }
   ],
-  "nextSeq": 514
+  "nextSeq": 515
 }
