@@ -622,6 +622,30 @@
       "createdAt": "2026-07-28T12:02:15.277Z",
       "menus": [
         {
+          "menuId": "exco.rapport",
+          "label": "Rapport EXCO",
+          "actions": {
+            "view": false,
+            "create": false,
+            "edit": false,
+            "delete": false,
+            "export": false,
+            "undo": false
+          }
+        },
+        {
+          "menuId": "audit.points",
+          "label": "Audit points",
+          "actions": {
+            "view": false,
+            "create": false,
+            "edit": false,
+            "delete": false,
+            "export": false,
+            "undo": false
+          }
+        },
+        {
           "menuId": "employes.liste",
           "label": "Liste employés",
           "actions": {
@@ -901,12 +925,12 @@
           "menuId": "documents.appraisal",
           "label": "Interim appraisal evaluation",
           "actions": {
-            "view": false,
-            "create": false,
-            "edit": false,
-            "delete": false,
-            "export": false,
-            "undo": false
+            "view": true,
+            "create": true,
+            "edit": true,
+            "delete": true,
+            "export": true,
+            "undo": true
           }
         },
         {
@@ -925,12 +949,12 @@
           "menuId": "documents.entetes",
           "label": "Entête",
           "actions": {
-            "view": false,
-            "create": false,
-            "edit": false,
-            "delete": false,
-            "export": false,
-            "undo": false
+            "view": true,
+            "create": true,
+            "edit": true,
+            "delete": true,
+            "export": true,
+            "undo": true
           }
         },
         {
@@ -967,6 +991,18 @@
             "delete": false,
             "export": false,
             "undo": false
+          }
+        },
+        {
+          "menuId": "documents.attestation-conge",
+          "label": "Attestation de congé",
+          "actions": {
+            "view": true,
+            "create": true,
+            "edit": true,
+            "delete": true,
+            "export": true,
+            "undo": true
           }
         },
         {
