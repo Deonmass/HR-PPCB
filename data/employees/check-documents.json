@@ -4935,7 +4935,7 @@
       "documents": {
         "Copie carte electeur passeport": "Y",
         "2 Photos passeport": "N",
-        "Acte de mariage": "N",
+        "Acte de mariage": "Y",
         "Acte certificat naissance enfants": "N",
         "Extrait casier judiciaire": "N",
         "Attestation fin service": "N",
@@ -4954,7 +4954,7 @@
         "Contrat Bail village PPC": "N"
       },
       "createdAt": "2026-08-11T14:44:00.747Z",
-      "updatedAt": "2026-08-20T10:42:52.229Z"
+      "updatedAt": "2026-08-20T10:43:45.388Z"
     }
   ]
 }
