@@ -1,6 +1,25 @@
 {
   "entries": [
     {
+      "id": "log-000528",
+      "at": "2026-08-20T15:27:36.764Z",
+      "userId": "admin",
+      "userName": "Administrateur",
+      "module": "postes",
+      "moduleLabel": "Postes",
+      "action": "update",
+      "actionLabel": "Modification",
+      "entityType": "poste",
+      "entityId": "Lab Tester",
+      "summary": "Màj poste catalogue « Lab Tester » → « Routine Tester »",
+      "details": "Màj poste catalogue « Lab Tester » → « Routine Tester »",
+      "after": {
+        "updated": 4
+      },
+      "undoable": false,
+      "undone": false
+    },
+    {
       "id": "log-000527",
       "at": "2026-08-20T15:15:05.580Z",
       "userId": "admin",
@@ -40773,5 +40792,5 @@
       }
     }
   ],
-  "nextSeq": 528
+  "nextSeq": 529
 }
