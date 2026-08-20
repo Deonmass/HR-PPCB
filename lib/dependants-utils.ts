@@ -281,7 +281,9 @@ export function buildFamilyGroups(dependants: Dependant[]): FamilyGroup[] {
     groups.push({ matricule, employee, famille });
   }
 
-  return groups.sort((a, b) => a.employee.nom.localeCompare(b.employee.nom, 'fr'));
+  return groups.sort((a, b) =>
+    a.employee.nom.localeCompare(b.employee.nom, 'fr', { sensitivity: 'base' }),
+  );
 }
 
 function chartItem(label: string, value: number): DependantChartItem {

@@ -1,3 +1,6 @@
+import { getBudgetAmountsForCategory, type EmployeeAllowanceCategory } from './travel-allowance-rates';
+import type { MissionSiteId } from './travel-mission-sites';
+
 export const TRAVEL_COMPANY_OPTIONS = [
   'PPC Barnet Manufacturing SA',
   'PPC Barnet Quarring SA',
@@ -70,13 +73,16 @@ export interface TravelFormFields {
   budgetLines: TripBudgetLine[];
   isInternationalTravel?: boolean;
   flightBooking?: FlightBookingFields;
+  /** Site d’émission de l’ordre de mission (KN / ZA / ZC / LU). */
+  missionSite?: MissionSiteId;
+  missionCategory?: string;
+  missionType?: string;
+  missionObservation?: string;
 }
 
 export function todayInputDate(): string {
   return new Date().toISOString().slice(0, 10);
 }
-
-import { getBudgetAmountsForCategory, type EmployeeAllowanceCategory } from './travel-allowance-rates';
 
 export function createDefaultBudgetLines(
   category: EmployeeAllowanceCategory = 'others',

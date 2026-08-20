@@ -12,10 +12,6 @@ import { canPersistProjectFiles, getWritableDataRoot } from './runtime-mode';
 import { formatDisplayDate } from './xlsx-populate-utils';
 import { computeBudgetTotal, computeTripDays } from './travel-form';
 import { resolveTravelHistoryPath } from './travel-template-paths';
-import {
-  formatMissionRef,
-  nextMissionSequence,
-} from './travel-mission-ref';
 import { extractTravelDepartmentName } from './travel-history-utils';
 import type {
   TravelHistoryDashboard,
@@ -285,33 +281,6 @@ function buildDashboard(rows: TravelHistoryRow[]): TravelHistoryDashboard {
     departments,
     monthlyTrips: buildMonthlyTripsChart(rows),
   };
-}
-
-async function collectAllExistingRefs(storeRows: TravelHistoryRow[]): Promise<string[]> {
-  const excelRefs = storeRows.map((row) => row.ref).filter(Boolean);
-  try {
-    const jsonPath = path.join(process.cwd(), 'data', 'travel', 'cash-requests.json');
-    const raw = await fsPromises.readFile(jsonPath, 'utf8');
-    const json = JSON.parse(raw) as { cashRequests?: Array<{ missionRef?: string }> };
-    const jsonRefs = (json.cashRequests ?? [])
-      .map((item) => str(item.missionRef))
-      .filter(Boolean);
-    return [...new Set([...excelRefs, ...jsonRefs])];
-  } catch {
-    return excelRefs;
-  }
-}
-
-export async function previewNextMissionRef(date: Date = new Date()): Promise<string> {
-  await ensureMigrated();
-  const store = await readJsonFile({ rows: [], nextRowIndex: 1 });
-  const refs = await collectAllExistingRefs(store.rows);
-  const sequence = nextMissionSequence(refs, date);
-  return formatMissionRef(sequence, date);
-}
-
-export async function allocateMissionRef(date: Date = new Date()): Promise<string> {
-  return previewNextMissionRef(date);
 }
 
 export async function readTravelHistory(): Promise<TravelHistoryData> {

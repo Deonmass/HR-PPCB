@@ -1,5 +1,9 @@
-export async function downloadDependantsExport(): Promise<void> {
-  const response = await fetch('/api/dependants/export');
+export async function downloadDependantsExport(options?: { localisation?: string }): Promise<void> {
+  const params = new URLSearchParams();
+  const localisation = options?.localisation?.trim();
+  if (localisation) params.set('localisation', localisation);
+  const query = params.toString();
+  const response = await fetch(`/api/dependants/export${query ? `?${query}` : ''}`);
 
   if (!response.ok) {
     let message = 'Export impossible';

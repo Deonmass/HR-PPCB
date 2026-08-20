@@ -1,11 +1,27 @@
 import * as XLSX from 'xlsx';
 import type { FactureSuiviInput } from '@/lib/factures-fournisseurs/types';
-import { formatDateCell, parseMontant } from '@/lib/factures-fournisseurs/utils';
+import {
+  FACTURE_IMPORT_SKIP_COMMENTS,
+  skippedRowFromInput,
+  type FactureImportSkippedRow,
+} from '@/lib/factures-fournisseurs/import-types';
+import {
+  factureImportIdentityKey,
+  formatDateCell,
+  normalizePaymentValue,
+  parseMontant,
+} from '@/lib/factures-fournisseurs/utils';
+
+export type { FactureImportSkippedRow, FactureImportSkipReason, FactureImportResult } from '@/lib/factures-fournisseurs/import-types';
+export { FACTURE_IMPORT_SKIP_COMMENTS, skippedRowFromInput } from '@/lib/factures-fournisseurs/import-types';
 
 export interface ParsedFacturesImport {
   rows: FactureSuiviInput[];
   sheetName: string;
+  sourceRowCount: number;
+  invalidRows: FactureImportSkippedRow[];
 }
+
 
 function normalizeHeader(value: unknown): string {
   return String(value ?? '')
@@ -20,7 +36,7 @@ function findColumn(headers: string[], candidates: string[]): number {
   const exact = headers.findIndex((header) => candidates.some((c) => header === c));
   if (exact >= 0) return exact;
   return headers.findIndex((header) =>
-    candidates.some((c) => c.length >= 2 && header.includes(c)),
+    candidates.some((c) => c.length >= 3 && header.includes(c)),
   );
 }
 
@@ -30,7 +46,7 @@ function cell(row: unknown[], col: number): unknown {
 }
 
 function importRowKey(row: FactureSuiviInput): string {
-  return `${String(row.facture ?? '').trim().toLowerCase()}|${String(row.societe ?? '').trim().toLowerCase()}`;
+  return factureImportIdentityKey(row);
 }
 
 function preferText(current: string | undefined, next: string | undefined): string {
@@ -40,8 +56,9 @@ function preferText(current: string | undefined, next: string | undefined): stri
 }
 
 /**
- * Une ligne unique par FACTURE + SOCIETE.
- * Les doublons du fichier sont fusionnés : montants additionnés, autres champs = première valeur non vide.
+ * Une ligne unique par SOCIETE + FACTURE + PR + P.O.
+ * Les vrais doublons du fichier (même n°, même PR, même PO) sont fusionnés : montants additionnés.
+ * Deux factures au même n° mais PR/PO différents restent deux lignes.
  */
 export function consolidateDuplicateImportRows(rows: FactureSuiviInput[]): FactureSuiviInput[] {
   const byKey = new Map<string, FactureSuiviInput>();
@@ -114,7 +131,7 @@ export function parseFacturesSuiviImportBuffer(buffer: ArrayBuffer): ParsedFactu
   const societeCol = findColumn(headers, ['societe', 'fournisseur', 'supplier']);
   const factureCol = findColumn(headers, ['facture', 'invoice', 'nofacture']);
   const montantCol = findColumn(headers, ['montant', 'amount', 'total']);
-  const prCol = findColumn(headers, ['pr', 'purchaserequest']);
+  const prCol = findColumn(headers, ['pr', 'pi', 'purchaserequest']);
   const poCol = findColumn(headers, ['po', 'purchaseorder']);
   const paymentCol = findColumn(headers, ['pytmt', 'payment', 'paiement', 'pymt']);
   const commentaireCol = findColumn(headers, ['commentaire', 'comment', 'statut', 'status']);
@@ -131,13 +148,14 @@ export function parseFacturesSuiviImportBuffer(buffer: ArrayBuffer): ParsedFactu
   if (societeCol < 0) throw new Error('Colonne SOCIETE introuvable');
 
   const parsed: FactureSuiviInput[] = [];
+  const invalidRows: FactureImportSkippedRow[] = [];
   for (let i = headerRowIndex + 1; i < rows.length; i += 1) {
     const row = rows[i] as unknown[];
     const facture = String(cell(row, factureCol) ?? '').trim();
     const societe = String(cell(row, societeCol) ?? '').trim();
     if (!facture && !societe) continue;
 
-    parsed.push({
+    const input: FactureSuiviInput = {
       date: formatDateCell(cell(row, dateCol)),
       societe,
       facture,
@@ -149,12 +167,28 @@ export function parseFacturesSuiviImportBuffer(buffer: ArrayBuffer): ParsedFactu
       datePo: formatDateCell(cell(row, datePoCol)),
       grn: String(cell(row, grnCol) ?? '').trim(),
       dateGrn: formatDateCell(cell(row, dateGrnCol)),
-      payment: String(cell(row, paymentCol) ?? '').trim(),
+      payment: normalizePaymentValue(String(cell(row, paymentCol) ?? '')),
       datePym: formatDateCell(cell(row, datePymCol)),
       commentaire: String(cell(row, commentaireCol) ?? '').trim(),
-    });
+    };
+
+    if (!facture || !societe) {
+      invalidRows.push(skippedRowFromInput(
+        input,
+        'invalid',
+        FACTURE_IMPORT_SKIP_COMMENTS.invalid,
+      ));
+      continue;
+    }
+
+    parsed.push(input);
   }
 
-  if (!parsed.length) throw new Error('Aucune ligne facture reconnue');
-  return { rows: consolidateDuplicateImportRows(parsed), sheetName };
+  if (!parsed.length && !invalidRows.length) throw new Error('Aucune ligne facture reconnue');
+  return {
+    rows: consolidateDuplicateImportRows(parsed),
+    sheetName,
+    sourceRowCount: parsed.length + invalidRows.length,
+    invalidRows,
+  };
 }

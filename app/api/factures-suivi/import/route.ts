@@ -21,20 +21,30 @@ export async function POST(request: Request) {
 
     const buffer = await file.arrayBuffer();
     const parsed = parseFacturesSuiviImportBuffer(buffer);
-    const result = await importFacturesSuiviRows(parsed.rows);
+    const result = await importFacturesSuiviRows(parsed.rows, {
+      sourceRowCount: parsed.sourceRowCount,
+      invalidRows: parsed.invalidRows,
+    });
 
     await auditSimpleAction({
       module: 'factures-suivi',
       action: 'import',
-      summary: `Import factures — ${result.imported} importée(s), ${result.skipped} ignorée(s)`,
-      details: `Feuille « ${parsed.sheetName} », ${parsed.rows.length} ligne(s)`,
-      meta: { ...result, sheetName: parsed.sheetName, fileName: file.name },
+      summary: `Import factures — ${result.imported} importée(s), ${result.skipped} ignorée(s) sur ${result.sourceRowCount}`,
+      details: `Feuille « ${parsed.sheetName} », ${result.sourceRowCount} ligne(s) source, ${result.uniqueRowCount} ligne(s) unique(s)`,
+      meta: {
+        imported: result.imported,
+        skipped: result.skipped,
+        sourceRowCount: result.sourceRowCount,
+        uniqueRowCount: result.uniqueRowCount,
+        sheetName: parsed.sheetName,
+        fileName: file.name,
+      },
     });
 
     return NextResponse.json({
       ...result,
       sheetName: parsed.sheetName,
-      totalRows: parsed.rows.length,
+      totalRows: result.sourceRowCount,
     });
   } catch (err) {
     const actor = await getAuditActor();

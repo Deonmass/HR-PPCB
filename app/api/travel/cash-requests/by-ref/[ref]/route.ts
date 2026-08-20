@@ -9,6 +9,10 @@ export async function GET(_request: Request, { params }: Params) {
   const denied = await checkAnyPermission([
     { menuId: 'travel.etablir', action: 'view' },
     { menuId: 'travel.etablir', action: 'edit' },
+    { menuId: 'travel.mission.kinshasa', action: 'view' },
+    { menuId: 'travel.mission.zamba', action: 'view' },
+    { menuId: 'travel.mission.zamba-consultant', action: 'view' },
+    { menuId: 'travel.mission.lubudi', action: 'view' },
   ]);
   if (denied) return denied;  try {
     const { ref } = await params;

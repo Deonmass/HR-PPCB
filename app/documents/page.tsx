@@ -11,6 +11,7 @@ interface DocCard {
   description: string;
   href: string;
   menuId: string;
+  menuIds?: string[];
   accent: string;
   badge?: string;
   icon: ReactNode;
@@ -197,9 +198,16 @@ const CARDS: DocCard[] = [
   {
     id: 'ordre-mission',
     title: 'Ordre de mission',
-    description: 'Formulaire adapté et liste des ordres de mission émis.',
+    description: 'Registre par site (Kinshasa, Zamba PPC Team, Zamba Consultant, Lubudi) et génération du document.',
     href: '/documents-voyage/document/mission-order',
-    menuId: 'travel.etablir',
+    menuId: 'travel.mission.zamba',
+    menuIds: [
+      'travel.etablir',
+      'travel.mission.kinshasa',
+      'travel.mission.zamba',
+      'travel.mission.zamba-consultant',
+      'travel.mission.lubudi',
+    ],
     accent: '#6366f1',
     icon: <IconOrder />,
   },
@@ -303,9 +311,11 @@ const CARDS: DocCard[] = [
 function canSeeMenu(
   can: (menuId: string, action: 'view' | 'create' | 'edit' | 'export' | 'delete' | 'undo') => boolean,
   menuId: string,
+  extraIds?: string[],
 ): boolean {
   // Aligné sur la sidebar / RouteGuard : l’affichage exige « view ».
-  return can(menuId, 'view');
+  if (can(menuId, 'view')) return true;
+  return Boolean(extraIds?.some((id) => can(id, 'view')));
 }
 
 export default function DocumentsHubPage() {
@@ -317,7 +327,7 @@ export default function DocumentsHubPage() {
 
   const visible = useMemo(() => {
     return CARDS
-      .filter((card) => canSeeMenu(can, card.menuId))
+      .filter((card) => canSeeMenu(can, card.menuId, card.menuIds))
       .slice()
       .sort((a, b) => a.title.localeCompare(b.title, 'fr', { sensitivity: 'base' }));
   }, [can]);

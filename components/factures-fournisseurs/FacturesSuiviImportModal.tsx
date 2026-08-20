@@ -1,6 +1,8 @@
 'use client';
 
 import { useEffect, useRef, useState } from 'react';
+import { downloadSkippedFacturesImport } from '@/lib/factures-fournisseurs/import-report';
+import type { FactureImportSkippedRow } from '@/lib/factures-fournisseurs/import-types';
 import { showError, showSuccess } from '@/lib/swal';
 
 interface Props {
@@ -11,6 +13,14 @@ interface Props {
 
 type Phase = 'idle' | 'uploading' | 'processing' | 'done' | 'error';
 
+interface ImportReport {
+  imported: number;
+  skipped: number;
+  sourceRowCount: number;
+  uniqueRowCount: number;
+  skippedRows: FactureImportSkippedRow[];
+}
+
 export default function FacturesSuiviImportModal({ open, onClose, onImported }: Props) {
   const inputRef = useRef<HTMLInputElement | null>(null);
   const xhrRef = useRef<XMLHttpRequest | null>(null);
@@ -18,6 +28,7 @@ export default function FacturesSuiviImportModal({ open, onClose, onImported }: 
   const [phase, setPhase] = useState<Phase>('idle');
   const [progress, setProgress] = useState(0);
   const [statusText, setStatusText] = useState('');
+  const [report, setReport] = useState<ImportReport | null>(null);
 
   useEffect(() => {
     if (!open) {
@@ -27,6 +38,7 @@ export default function FacturesSuiviImportModal({ open, onClose, onImported }: 
       setPhase('idle');
       setProgress(0);
       setStatusText('');
+      setReport(null);
       if (inputRef.current) inputRef.current.value = '';
     }
   }, [open]);
@@ -34,6 +46,7 @@ export default function FacturesSuiviImportModal({ open, onClose, onImported }: 
   if (!open) return null;
 
   const busy = phase === 'uploading' || phase === 'processing';
+  const skippedRows = report?.skippedRows ?? [];
 
   const handleUpload = () => {
     if (!file) {
@@ -47,6 +60,7 @@ export default function FacturesSuiviImportModal({ open, onClose, onImported }: 
     setPhase('uploading');
     setProgress(5);
     setStatusText('Envoi du fichier…');
+    setReport(null);
 
     const xhr = new XMLHttpRequest();
     xhrRef.current = xhr;
@@ -67,7 +81,6 @@ export default function FacturesSuiviImportModal({ open, onClose, onImported }: 
       setStatusText('Traitement des lignes…');
     };
 
-    // Soft progress while the server parses / writes JSON (target < 10s).
     const tick = window.setInterval(() => {
       setProgress((p) => {
         if (p >= 92) return p;
@@ -97,7 +110,10 @@ export default function FacturesSuiviImportModal({ open, onClose, onImported }: 
         error?: string;
         imported?: number;
         skipped?: number;
+        sourceRowCount?: number;
+        uniqueRowCount?: number;
         totalRows?: number;
+        skippedRows?: FactureImportSkippedRow[];
       } = {};
       try {
         json = JSON.parse(xhr.responseText || '{}') as typeof json;
@@ -112,20 +128,31 @@ export default function FacturesSuiviImportModal({ open, onClose, onImported }: 
         return;
       }
 
+      const nextReport: ImportReport = {
+        imported: json.imported ?? 0,
+        skipped: json.skipped ?? json.skippedRows?.length ?? 0,
+        sourceRowCount: json.sourceRowCount ?? json.totalRows ?? 0,
+        uniqueRowCount: json.uniqueRowCount ?? 0,
+        skippedRows: json.skippedRows ?? [],
+      };
+
       setPhase('done');
       setProgress(100);
       setStatusText(
-        `${json.imported ?? 0} facture(s) importée(s)` +
-          (json.skipped ? ` · ${json.skipped} ignorée(s)` : ''),
+        `${nextReport.imported} facture(s) importée(s) sur ${nextReport.sourceRowCount}` +
+          (nextReport.skipped ? ` · ${nextReport.skipped} non importée(s)` : ''),
       );
-      void showSuccess(
-        `${json.imported ?? 0} facture(s) importée(s)` +
-          (json.skipped ? ` · ${json.skipped} ignorée(s)` : ''),
-      );
+      setReport(nextReport);
       setFile(null);
       if (inputRef.current) inputRef.current.value = '';
       onImported();
-      window.setTimeout(() => onClose(), 450);
+      void showSuccess(
+        `${nextReport.imported} facture(s) importée(s) sur ${nextReport.sourceRowCount}` +
+          (nextReport.skipped ? ` · ${nextReport.skipped} non importée(s)` : ''),
+      );
+      if (!nextReport.skipped) {
+        window.setTimeout(() => onClose(), 450);
+      }
     };
 
     xhr.open('POST', '/api/factures-suivi/import');
@@ -134,7 +161,10 @@ export default function FacturesSuiviImportModal({ open, onClose, onImported }: 
 
   return (
     <div className="modal-overlay open" onClick={busy ? undefined : onClose}>
-      <div className="modal modal-form" onClick={(e) => e.stopPropagation()}>
+      <div
+        className={`modal modal-form${skippedRows.length ? ' factures-import-modal-wide' : ''}`}
+        onClick={(e) => e.stopPropagation()}
+      >
         <div className="modal-header">
           <h3>Importer des factures (Excel)</h3>
           <button
@@ -152,11 +182,10 @@ export default function FacturesSuiviImportModal({ open, onClose, onImported }: 
             <strong>FACTURE</strong>, <strong>MONTANT</strong>, <strong>PR</strong>,{' '}
             <strong>P.O</strong>, <strong>PYTMT</strong>.
             <br />
-            Une valeur dans <strong>PYTMT</strong> (ex. PAID) marque la facture comme payée ;
-            vide = unpaid.
+            <strong>PYTMT</strong> = Unpaid / vide → non payée ; PAID ou une référence de paiement → payée.
             <br />
-            Les lignes avec le même n° de facture et la même société sont fusionnées : leurs
-            montants sont additionnés.
+            Même n° de facture avec un PR ou un P.O différent = deux lignes distinctes.
+            Une seconde importation des mêmes données n’enregistre pas de doublon.
           </p>
           <div className="form-group">
             <label>Fichier Excel</label>
@@ -186,6 +215,58 @@ export default function FacturesSuiviImportModal({ open, onClose, onImported }: 
               </div>
             </div>
           )}
+
+          {report && phase === 'done' ? (
+            <div className="factures-import-report">
+              <p className="factures-suivi-toolbar-meta">
+                {report.imported} insérée(s) · {report.sourceRowCount} ligne(s) dans le fichier
+                {report.uniqueRowCount && report.uniqueRowCount !== report.sourceRowCount
+                  ? ` · ${report.uniqueRowCount} ligne(s) unique(s)`
+                  : ''}
+                {report.skipped ? ` · ${report.skipped} non importée(s)` : ''}
+              </p>
+              {skippedRows.length > 0 ? (
+                <>
+                  <div className="factures-import-skipped-head">
+                    <strong>Lignes non importées</strong>
+                    <button
+                      type="button"
+                      className="btn btn-sm btn-secondary"
+                      onClick={() => downloadSkippedFacturesImport(skippedRows)}
+                    >
+                      Exporter pour traitement
+                    </button>
+                  </div>
+                  <div className="factures-import-skipped-wrap">
+                    <table className="data-table factures-import-skipped-table">
+                      <thead>
+                        <tr>
+                          <th>DATE</th>
+                          <th>SOCIETE</th>
+                          <th>FACTURE</th>
+                          <th>PR</th>
+                          <th>P.O</th>
+                          <th>COMMENTAIRE</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        {skippedRows.map((row, index) => (
+                          <tr key={`${row.facture}-${row.pr}-${row.po}-${index}`}>
+                            <td>{row.date || '—'}</td>
+                            <td>{row.societe || '—'}</td>
+                            <td>{row.facture || '—'}</td>
+                            <td>{row.pr || '—'}</td>
+                            <td>{row.po || '—'}</td>
+                            <td>{row.comment}</td>
+                          </tr>
+                        ))}
+                      </tbody>
+                    </table>
+                  </div>
+                </>
+              ) : null}
+            </div>
+          ) : null}
         </div>
         <div className="modal-footer">
           <button
@@ -194,7 +275,7 @@ export default function FacturesSuiviImportModal({ open, onClose, onImported }: 
             onClick={onClose}
             disabled={busy}
           >
-            Annuler
+            {phase === 'done' ? 'Fermer' : 'Annuler'}
           </button>
           <button
             type="button"

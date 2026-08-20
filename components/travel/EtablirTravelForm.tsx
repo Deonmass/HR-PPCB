@@ -34,6 +34,13 @@ import {
   type SingleTravelDocField,
   type SingleTravelDocId,
 } from '@/lib/travel-single-doc';
+import {
+  MISSION_SITES,
+  MISSION_TARIFF_TYPES,
+  suggestMissionSite,
+  type MissionSiteId,
+} from '@/lib/travel-mission-sites';
+import { inferMissionSiteFromRef } from '@/lib/travel-mission-ref';
 import { readTravelGenerationStream } from '@/lib/travel-generation-stream';
 import type { CashRequestRecord, TravelFileType } from '@/lib/travel-types';
 import type { CostCenterSetting, DepartmentSetting } from '@/lib/auth-types';
@@ -109,6 +116,10 @@ function createInitialTravelForm(): TravelFormFields {
     budgetLines: createDefaultBudgetLines(),
     isInternationalTravel: false,
     flightBooking: emptyFlightBookingFields(),
+    missionSite: undefined,
+    missionCategory: '',
+    missionType: '',
+    missionObservation: '',
   };
 }
 
@@ -122,7 +133,16 @@ export default function EtablirTravelForm({ singleDoc }: EtablirTravelFormProps 
   const { can } = usePermissions();
   const docConfig = singleDoc ? SINGLE_TRAVEL_DOCS[singleDoc] : null;
   const editRef = searchParams.get('ref')?.trim() ?? '';
-  const canSubmit = editRef ? can('travel.etablir', 'edit') : can('travel.etablir', 'create');
+  const permittedSites = useMemo(() => {
+    const fromMenus = MISSION_SITES.filter(
+      (site) => can(site.menuId, 'view') || can(site.menuId, 'create'),
+    );
+    if (fromMenus.length) return fromMenus;
+    if (can('travel.etablir', 'view') || can('travel.etablir', 'create')) {
+      return [...MISSION_SITES];
+    }
+    return [];
+  }, [can]);
   const editLoadedRef = useRef(false);
 
   const [employees, setEmployees] = useState<Employee[]>([]);
@@ -131,6 +151,14 @@ export default function EtablirTravelForm({ singleDoc }: EtablirTravelFormProps 
 
   const [employee, setEmployee] = useState<EmployeeSelection | null>(null);
   const [travel, setTravel] = useState<TravelFormFields>(createInitialTravelForm);
+
+  const siteMenuId = MISSION_SITES.find((item) => item.id === travel.missionSite)?.menuId;
+  const canSubmit = Boolean(
+    travel.missionSite
+      && (editRef
+        ? can('travel.etablir', 'edit') || (siteMenuId ? can(siteMenuId, 'edit') : false)
+        : can('travel.etablir', 'create') || (siteMenuId ? can(siteMenuId, 'create') : false)),
+  );
 
   const [genOpen, setGenOpen] = useState(false);
   const [genComplete, setGenComplete] = useState(false);
@@ -227,10 +255,16 @@ export default function EtablirTravelForm({ singleDoc }: EtablirTravelFormProps 
       grade: full?.grade,
       position,
     });
+    const suggested = suggestMissionSite(full);
+    const nextSite =
+      permittedSites.some((site) => site.id === suggested)
+        ? suggested
+        : permittedSites[0]?.id;
     setTravel((prev) => ({
       ...prev,
       department: selection.departement,
       position: position || prev.position,
+      missionSite: prev.missionSite || nextSite,
       budgetLines: createDefaultBudgetLines(category),
       flightBooking: {
         ...(prev.flightBooking ?? emptyFlightBookingFields()),
@@ -239,11 +273,18 @@ export default function EtablirTravelForm({ singleDoc }: EtablirTravelFormProps 
     }));
   };
 
-  const loadMissionRef = useCallback(async () => {
+  const loadMissionRef = useCallback(async (site?: MissionSiteId, date?: string) => {
+    if (!site) {
+      setMissionRef('');
+      return;
+    }
     try {
-      const res = await fetch('/api/travel/mission-ref');
+      const params = new URLSearchParams({ site });
+      if (date) params.set('date', date);
+      const res = await fetch(`/api/travel/mission-ref?${params.toString()}`);
       const json = (await res.json()) as { ref?: string };
       if (res.ok && json.ref) setMissionRef(json.ref);
+      else setMissionRef('');
     } catch {
       setMissionRef('');
     }
@@ -283,8 +324,19 @@ export default function EtablirTravelForm({ singleDoc }: EtablirTravelFormProps 
     }));
     loadEmployees();
     loadSettingsParams();
-    if (!editRef) loadMissionRef();
-  }, [loadEmployees, loadMissionRef, loadSettingsParams, editRef]);
+  }, [loadEmployees, loadSettingsParams, editRef]);
+
+  useEffect(() => {
+    if (editRef) return;
+    if (!travel.missionSite && permittedSites.length === 1) {
+      const onlySite = permittedSites[0].id;
+      setTravel((prev) => (prev.missionSite ? prev : { ...prev, missionSite: onlySite }));
+      return;
+    }
+    if (travel.missionSite) {
+      void loadMissionRef(travel.missionSite, travel.documentDate);
+    }
+  }, [editRef, travel.missionSite, travel.documentDate, permittedSites, loadMissionRef]);
 
   useEffect(() => {
     if (!editRef || editLoadedRef.current || loading) return;
@@ -311,6 +363,10 @@ export default function EtablirTravelForm({ singleDoc }: EtablirTravelFormProps 
           setTravel({
             ...createInitialTravelForm(),
             ...json.travel,
+            missionSite:
+              json.travel.missionSite
+              || inferMissionSiteFromRef(json.missionRef || '')
+              || undefined,
             budgetLines: json.travel.budgetLines?.length
               ? json.travel.budgetLines
               : createDefaultBudgetLines(),
@@ -419,6 +475,11 @@ export default function EtablirTravelForm({ singleDoc }: EtablirTravelFormProps 
       return;
     }
 
+    if (!travel.missionSite) {
+      await showError('Sélectionnez le site d’émission de l’ordre de mission');
+      return;
+    }
+
     if (!isKnownEmployee) {
       if (showField('position') && !travel.position.trim()) {
         await showError('Renseignez la position');
@@ -432,6 +493,11 @@ export default function EtablirTravelForm({ singleDoc }: EtablirTravelFormProps 
 
     if (showField('costCenter') && !travel.costCenter.trim()) {
       await showError('Renseignez le centre de coût');
+      return;
+    }
+
+    if (docConfig?.id === 'mission-order' && !travel.destinationPlace.trim()) {
+      await showError('Renseignez la destination');
       return;
     }
 
@@ -583,7 +649,7 @@ export default function EtablirTravelForm({ singleDoc }: EtablirTravelFormProps 
         await showError(message);
       }
 
-      void loadMissionRef();
+      void loadMissionRef(travel.missionSite, travel.documentDate);
     } catch {
       stopProgressAnimation();
       setGenError('Erreur réseau');
@@ -648,6 +714,29 @@ export default function EtablirTravelForm({ singleDoc }: EtablirTravelFormProps 
           <div className="travel-form-grid-3">
             <div className="travel-form-col">
               <h4 className="travel-form-col-title">Identité</h4>
+              <div className="form-group">
+                <label htmlFor="missionSite">Site — ordre de mission</label>
+                <select
+                  id="missionSite"
+                  required
+                  value={travel.missionSite ?? ''}
+                  onChange={(e) =>
+                    patchTravel({
+                      missionSite: (e.target.value || undefined) as TravelFormFields['missionSite'],
+                    })
+                  }
+                >
+                  <option value="">Sélectionner le site</option>
+                  {permittedSites.map((site) => (
+                    <option key={site.id} value={site.id}>
+                      {site.label} ({site.code})
+                    </option>
+                  ))}
+                </select>
+                {missionRef ? (
+                  <p className="form-hint">Prochaine référence : <strong>{missionRef}</strong></p>
+                ) : null}
+              </div>
               <div className="form-group">
                 <label htmlFor="employee">Nom employé</label>
                 <EmployeePicker
@@ -811,6 +900,7 @@ export default function EtablirTravelForm({ singleDoc }: EtablirTravelFormProps 
                   <label htmlFor="destinationPlace">Destination place</label>
                   <input
                     id="destinationPlace"
+                    required={Boolean(docConfig?.id === 'mission-order')}
                     value={travel.destinationPlace}
                     onChange={(e) => patchTravel({ destinationPlace: e.target.value })}
                     placeholder="Destination"
@@ -855,6 +945,34 @@ export default function EtablirTravelForm({ singleDoc }: EtablirTravelFormProps 
                     value={travel.transportMeans}
                     onChange={(e) => patchTravel({ transportMeans: e.target.value })}
                     placeholder="Avion, voiture…"
+                  />
+                </div>
+              )}
+              {showField('missionType') && (
+                <div className="form-group">
+                  <label htmlFor="missionType">TYPE (tarif)</label>
+                  <select
+                    id="missionType"
+                    value={travel.missionType ?? ''}
+                    onChange={(e) => patchTravel({ missionType: e.target.value })}
+                  >
+                    <option value="">—</option>
+                    {MISSION_TARIFF_TYPES.map((type) => (
+                      <option key={type} value={type}>
+                        {type}
+                      </option>
+                    ))}
+                  </select>
+                </div>
+              )}
+              {showField('missionObservation') && (
+                <div className="form-group">
+                  <label htmlFor="missionObservation">Observation</label>
+                  <input
+                    id="missionObservation"
+                    value={travel.missionObservation ?? ''}
+                    onChange={(e) => patchTravel({ missionObservation: e.target.value })}
+                    placeholder="Observation (optionnel)"
                   />
                 </div>
               )}

@@ -25,12 +25,18 @@ import {
   canAssignStep,
   cellStr,
   computeCommentaire,
+  factureImportIdentityKey,
   formatDateCell,
   parseMontant,
   paymentValueFromStatus,
   stepFields,
   withComputedStatut,
 } from './utils';
+import {
+  FACTURE_IMPORT_SKIP_COMMENTS,
+  skippedRowFromInput,
+  type FactureImportResult,
+} from './import-types';
 import { FACTURES_FOURNISSEURS_XLSX_PATH } from './paths';
 import { getSheetBlock, readWorkbookForData, withExcelLock, type AoaRow } from '@/lib/excel-io';
 
@@ -341,9 +347,10 @@ function sortFactures(items: FactureSuivi[]): FactureSuivi[] {
 export async function listFacturesSuivi(): Promise<FactureSuivi[]> {
   await ensureMigrated();
   const store = await readFacturesStore();
-  // Recompute unpaid/paid from payment (covers legacy pipeline statuses).
-  const normalized = store.factures.map((item) =>
-    withComputedStatut({
+  // Recompute unpaid/paid from payment (covers legacy « Unpaid » stored as paid).
+  let paymentChanged = false;
+  const normalized = store.factures.map((item) => {
+    const next = withComputedStatut({
       ...item,
       date: formatDateCell(item.date) || item.date,
       datePr: formatDateCell(item.datePr) || item.datePr,
@@ -352,8 +359,16 @@ export async function listFacturesSuivi(): Promise<FactureSuivi[]> {
       datePym: formatDateCell(item.datePym) || item.datePym,
       echeance: formatDateCell(item.echeance) || item.echeance,
       commentaire: item.commentaire,
-    }),
-  );
+    });
+    if (next.payment !== item.payment || next.statut !== item.statut) {
+      paymentChanged = true;
+    }
+    return next;
+  });
+  if (paymentChanged) {
+    store.factures = normalized;
+    await writeJsonFile(DURABLE_FACTURES_SUIVI_KEY, facturesPath(), store);
+  }
   return sortFactures(normalized);
 }
 
@@ -518,20 +533,33 @@ export async function assignFactureStep(payload: AssignStepPayload): Promise<Fac
   return updated;
 }
 
-export async function importFacturesSuiviRows(rows: FactureSuiviInput[]): Promise<{ imported: number; skipped: number }> {
+export async function importFacturesSuiviRows(
+  rows: FactureSuiviInput[],
+  extras?: { sourceRowCount?: number; invalidRows?: FactureImportResult['skippedRows'] },
+): Promise<FactureImportResult> {
   await ensureMigrated();
-  if (!rows.length) throw new Error('Aucune ligne à importer');
+  if (!rows.length && !(extras?.invalidRows?.length)) throw new Error('Aucune ligne à importer');
   const store = await readFacturesStore();
-  const existingKeys = new Set(
-    store.factures.map((item) => `${item.facture.trim().toLowerCase()}|${item.societe.trim().toLowerCase()}`),
-  );
+  const existingKeys = new Set(store.factures.map((item) => factureImportIdentityKey(item)));
   let imported = 0;
-  let skipped = 0;
+  const skippedRows = [...(extras?.invalidRows ?? [])];
   const batch: FactureSuivi[] = [];
   for (const input of rows) {
-    const key = `${String(input.facture ?? '').trim().toLowerCase()}|${String(input.societe ?? '').trim().toLowerCase()}`;
-    if (!input.facture?.trim() || !input.societe?.trim() || existingKeys.has(key)) {
-      skipped += 1;
+    if (!input.facture?.trim() || !input.societe?.trim()) {
+      skippedRows.push(skippedRowFromInput(
+        input,
+        'invalid',
+        FACTURE_IMPORT_SKIP_COMMENTS.invalid,
+      ));
+      continue;
+    }
+    const key = factureImportIdentityKey(input);
+    if (existingKeys.has(key)) {
+      skippedRows.push(skippedRowFromInput(
+        input,
+        'already-exists',
+        FACTURE_IMPORT_SKIP_COMMENTS.alreadyExists,
+      ));
       continue;
     }
     const next = mergeInput(null, {
@@ -550,7 +578,13 @@ export async function importFacturesSuiviRows(rows: FactureSuiviInput[]): Promis
     store.factures.push(...batch);
     await writeJsonFile(DURABLE_FACTURES_SUIVI_KEY, facturesPath(), store);
   }
-  return { imported, skipped };
+  return {
+    imported,
+    skipped: skippedRows.length,
+    sourceRowCount: extras?.sourceRowCount ?? rows.length,
+    uniqueRowCount: rows.length,
+    skippedRows,
+  };
 }
 
 export async function listFournisseurs(): Promise<Fournisseur[]> {

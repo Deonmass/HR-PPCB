@@ -125,6 +125,10 @@ const NAV: NavSection[] = [
     menuIds: [
       'travel.historique',
       'travel.etablir',
+      'travel.mission.kinshasa',
+      'travel.mission.zamba',
+      'travel.mission.zamba-consultant',
+      'travel.mission.lubudi',
       'travel.attestation',
       'travel.payment-voucher',
       'documents.appraisal',

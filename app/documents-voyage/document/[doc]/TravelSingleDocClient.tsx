@@ -7,9 +7,12 @@ import { Suspense, useCallback, useEffect, useMemo, useState } from 'react';
 import ActionButtons from '@/components/ActionButtons';
 import PermissionGate from '@/components/PermissionGate';
 import RefreshButton from '@/components/RefreshButton';
+import MissionOrderHistoryTable from '@/components/travel/MissionOrderHistoryTable';
 import { usePermissions } from '@/contexts/PermissionContext';
+import type { MissionOrderHistoryRow } from '@/lib/mission-order-history-types';
 import { confirmDelete, showError } from '@/lib/swal';
 import { SINGLE_TRAVEL_DOCS, type SingleTravelDocId } from '@/lib/travel-single-doc';
+import { MISSION_SITES, type MissionSiteId } from '@/lib/travel-mission-sites';
 import type { CashRequestRecord, TravelGeneratedFile } from '@/lib/travel-types';
 
 const EtablirTravelForm = dynamic(() => import('@/components/travel/EtablirTravelForm'), {
@@ -17,7 +20,7 @@ const EtablirTravelForm = dynamic(() => import('@/components/travel/EtablirTrave
   loading: () => <div className="loading">Chargement...</div>,
 });
 
-type Tab = 'form' | 'issued';
+type Tab = 'form' | 'issued' | MissionSiteId;
 
 interface IssuedRow {
   id: string;
@@ -43,10 +46,26 @@ export default function TravelSingleDocClient({ doc }: { doc: SingleTravelDocId 
   const config = SINGLE_TRAVEL_DOCS[doc];
   const router = useRouter();
   const { can } = usePermissions();
-  const canCreate = can('travel.etablir', 'create');
-  const canEdit = can('travel.etablir', 'edit');
-  const canDelete = can('travel.etablir', 'delete') || can('travel.historique', 'delete');
-  const [tab, setTab] = useState<Tab>(canCreate ? 'form' : 'issued');
+  const isMissionOrder = doc === 'mission-order';
+  const visibleSites = useMemo(() => {
+    const fromMenus = MISSION_SITES.filter((site) => can(site.menuId, 'view'));
+    if (fromMenus.length) return fromMenus;
+    if (can('travel.etablir', 'view')) return [...MISSION_SITES];
+    return [];
+  }, [can]);
+  const canCreate =
+    can('travel.etablir', 'create')
+    || visibleSites.some((site) => can(site.menuId, 'create'));
+  const canEdit =
+    can('travel.etablir', 'edit')
+    || visibleSites.some((site) => can(site.menuId, 'edit'));
+  const canDelete =
+    can('travel.etablir', 'delete')
+    || can('travel.historique', 'delete')
+    || visibleSites.some((site) => can(site.menuId, 'delete'));
+  const [tab, setTab] = useState<Tab>(
+    canCreate ? 'form' : isMissionOrder ? (visibleSites[0]?.id ?? 'issued') : 'issued',
+  );
   const [records, setRecords] = useState<CashRequestRecord[]>([]);
   const [loading, setLoading] = useState(true);
   const [refreshing, setRefreshing] = useState(false);
@@ -76,8 +95,16 @@ export default function TravelSingleDocClient({ doc }: { doc: SingleTravelDocId 
   }, []);
 
   useEffect(() => {
-    void loadIssued();
-  }, [loadIssued]);
+    if (!isMissionOrder) void loadIssued();
+  }, [loadIssued, isMissionOrder]);
+
+  const handleMissionOrderEdit = (row: MissionOrderHistoryRow) => {
+    if (!row.missionRef || !row.recordId) return;
+    router.push(
+      `/documents-voyage/document/${doc}?ref=${encodeURIComponent(row.missionRef)}`,
+    );
+    setTab('form');
+  };
 
   const handleEdit = (row: IssuedRow) => {
     if (!row.missionRef) return;
@@ -132,15 +159,28 @@ export default function TravelSingleDocClient({ doc }: { doc: SingleTravelDocId 
     [records, doc],
   );
 
+  const siteTab = isMissionOrder && tab !== 'form' && tab !== 'issued' ? tab : null;
+
   return (
-    <PermissionGate menuId="travel.etablir" action="view">
+    <PermissionGate
+      anyOf={
+        isMissionOrder
+          ? [
+              { menuId: 'travel.etablir', action: 'view' },
+              ...MISSION_SITES.map((site) => ({ menuId: site.menuId, action: 'view' as const })),
+            ]
+          : [{ menuId: 'travel.etablir', action: 'view' }]
+      }
+    >
       <div className="travel-history-page">
         <div className="travel-history-sticky">
           <div className="page-header page-header-with-tabs travel-history-header">
             <div>
               <div className="page-header-title-row">
                 <h2>{config.label}</h2>
-                <RefreshButton onClick={() => void loadIssued(true)} loading={refreshing} />
+                {!isMissionOrder && (
+                  <RefreshButton onClick={() => void loadIssued(true)} loading={refreshing} />
+                )}
               </div>
               <p>{config.description}</p>
             </div>
@@ -158,14 +198,27 @@ export default function TravelSingleDocClient({ doc }: { doc: SingleTravelDocId 
                     Formulaire
                   </button>
                 )}
-                <button
-                  type="button"
-                  className={`tab-btn tab-btn-sm tab-btn-dashboard${tab === 'issued' ? ' active' : ''}`}
-                  onClick={() => setTab('issued')}
-                >
-                  Documents émis
-                  {!loading && !error && ` (${issuedRows.length})`}
-                </button>
+                {isMissionOrder
+                  ? visibleSites.map((site) => (
+                      <button
+                        key={site.id}
+                        type="button"
+                        className={`tab-btn tab-btn-sm tab-btn-dashboard${tab === site.id ? ' active' : ''}`}
+                        onClick={() => setTab(site.id)}
+                      >
+                        {site.label}
+                      </button>
+                    ))
+                  : (
+                    <button
+                      type="button"
+                      className={`tab-btn tab-btn-sm tab-btn-dashboard${tab === 'issued' ? ' active' : ''}`}
+                      onClick={() => setTab('issued')}
+                    >
+                      Documents émis
+                      {!loading && !error && ` (${issuedRows.length})`}
+                    </button>
+                  )}
               </div>
             </div>
           </div>
@@ -178,7 +231,18 @@ export default function TravelSingleDocClient({ doc }: { doc: SingleTravelDocId 
             </Suspense>
           )}
 
-          {tab === 'issued' && (
+          {siteTab && (
+            <div className="panel">
+              <MissionOrderHistoryTable
+                site={siteTab}
+                canEdit={canEdit}
+                canDelete={canDelete || can(MISSION_SITES.find((s) => s.id === siteTab)?.menuId ?? '', 'delete')}
+                onEdit={handleMissionOrderEdit}
+              />
+            </div>
+          )}
+
+          {tab === 'issued' && !isMissionOrder && (
             <div className="panel">
               {error && <div className="alert alert-danger">{error}</div>}
               {loading ? (

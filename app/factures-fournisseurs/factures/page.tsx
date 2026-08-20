@@ -22,6 +22,7 @@ import { downloadFacturesSuiviExport } from '@/lib/factures-fournisseurs/export'
 import {
   buildFactureDashboard,
   emptyFactureInput,
+  FACTURE_YEAR_ALL,
   filterByTab,
   filterFacturesByYear,
   isFacturePaid,
@@ -185,7 +186,7 @@ export default function FacturesSuiviPage() {
   const [tab, setTab] = useState<FactureSuiviTab>('dashboard');
   const [factures, setFactures] = useState<FactureSuivi[]>([]);
   const [dashboard, setDashboard] = useState<FactureDashboard | null>(null);
-  const [dashboardYear, setDashboardYear] = useState<number>(() => new Date().getFullYear());
+  const [dashboardYear, setDashboardYear] = useState<number>(FACTURE_YEAR_ALL);
   const [fournisseurs, setFournisseurs] = useState<Fournisseur[]>([]);
   const [loading, setLoading] = useState(true);
   const [refreshing, setRefreshing] = useState(false);
@@ -277,13 +278,15 @@ export default function FacturesSuiviPage() {
   }, [factures]);
 
   const years = useMemo(() => listFactureYears(factures), [factures]);
-  const selectedYear = years.includes(dashboardYear)
-    ? dashboardYear
-    : (years[0] ?? new Date().getFullYear());
+  const selectedYear = dashboardYear === FACTURE_YEAR_ALL
+    ? FACTURE_YEAR_ALL
+    : (years.includes(dashboardYear) ? dashboardYear : FACTURE_YEAR_ALL);
+  const yearLabel = selectedYear === FACTURE_YEAR_ALL ? 'toutes années' : String(selectedYear);
 
   useEffect(() => {
+    if (dashboardYear === FACTURE_YEAR_ALL) return;
     if (years.length && !years.includes(dashboardYear)) {
-      setDashboardYear(years[0]!);
+      setDashboardYear(FACTURE_YEAR_ALL);
     }
   }, [years, dashboardYear]);
 
@@ -313,7 +316,9 @@ export default function FacturesSuiviPage() {
 
   const searchOtherYears = useMemo(() => {
     const q = search.trim().toLowerCase();
-    if (!q || !stageForTab || listForTab.length > 0) return [] as number[];
+    if (!q || !stageForTab || listForTab.length > 0 || selectedYear === FACTURE_YEAR_ALL) {
+      return [] as number[];
+    }
     const yearsFound = new Set<number>();
     for (const f of filterByTab(factures, stageForTab)) {
       const hay = `${f.facture} ${f.societe} ${f.pr} ${f.po} ${f.payment} ${f.commentaire} ${f.date}`.toLowerCase();
@@ -687,7 +692,7 @@ export default function FacturesSuiviPage() {
               </div>
               <p>
                 {dashboard
-                  ? `${dashboardForYear.enCours} unpaid · ${dashboardForYear.paid} paid · ${dashboardForYear.total} total · ${selectedYear}`
+                  ? `${dashboardForYear.enCours} unpaid · ${dashboardForYear.paid} paid · ${dashboardForYear.total} total · ${yearLabel}`
                   : 'Unpaid / Paid — import DATE · SOCIETE · FACTURE · MONTANT · PR · P.O · PYTMT'}
               </p>
             </div>
@@ -715,6 +720,7 @@ export default function FacturesSuiviPage() {
                   onChange={(e) => setDashboardYear(Number(e.target.value))}
                   aria-label="Année"
                 >
+                  <option value={FACTURE_YEAR_ALL}>Toutes</option>
                   {years.map((y) => (
                     <option key={y} value={y}>{y}</option>
                   ))}
@@ -918,7 +924,7 @@ export default function FacturesSuiviPage() {
               {listForTab.length === 0 && searchOtherYears.length > 0 ? (
                 <div className="factures-suivi-year-hint">
                   <p>
-                    Aucun résultat en <strong>{selectedYear}</strong> pour « {search.trim()} ».
+                    Aucun résultat en <strong>{yearLabel}</strong> pour « {search.trim()} ».
                     Trouvé en {searchOtherYears.join(', ')}.
                   </p>
                   <div className="factures-suivi-bulk-actions">

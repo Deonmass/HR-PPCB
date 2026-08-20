@@ -3,6 +3,7 @@ import {
   type TravelGenerationProgressEvent,
 } from '@/lib/cash-request-store';
 import { checkAnyPermission } from '@/lib/require-permission';
+import { MISSION_SITES } from '@/lib/travel-mission-sites';
 import type { TravelFormFields } from '@/lib/travel-form';
 import type { CashRequestLine, CashRequestRecord } from '@/lib/travel-types';
 import { withAudit, getAuditActor } from '@/lib/with-audit';
@@ -21,6 +22,10 @@ export async function POST(request: Request) {
   const denied = await checkAnyPermission([
     { menuId: 'travel.etablir', action: 'create' },
     { menuId: 'travel.etablir', action: 'edit' },
+    ...MISSION_SITES.flatMap((site) => [
+      { menuId: site.menuId, action: 'create' as const },
+      { menuId: site.menuId, action: 'edit' as const },
+    ]),
   ]);
   if (denied) return denied;
 

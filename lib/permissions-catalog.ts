@@ -59,6 +59,10 @@ export const PERMISSION_MENU_CATALOG: PermissionMenuGroup[] = [
     items: [
       { id: 'travel.historique', label: 'Voyage' },
       { id: 'travel.etablir', label: 'Cash request' },
+      { id: 'travel.mission.kinshasa', label: 'Ordre de mission — Kinshasa' },
+      { id: 'travel.mission.zamba', label: 'Ordre de mission — Zamba PPC Team' },
+      { id: 'travel.mission.zamba-consultant', label: 'Ordre de mission — Zamba Consultant' },
+      { id: 'travel.mission.lubudi', label: 'Ordre de mission — Lubudi' },
       { id: 'travel.attestation', label: 'Attestation de service' },
       { id: 'travel.payment-voucher', label: 'Payment voucher' },
       { id: 'documents.appraisal', label: 'Interim appraisal evaluation' },
@@ -225,6 +229,16 @@ export function mergePermissionsWithCatalog(menus: MenuPermission[]): MenuPermis
             menuId: defaultMenu.menuId,
             label: defaultMenu.label,
             actions: { ...postes.actions },
+          };
+        }
+      }
+      if (defaultMenu.menuId.startsWith('travel.mission.')) {
+        const etablir = menus.find((menu) => menu.menuId === 'travel.etablir');
+        if (etablir) {
+          return {
+            menuId: defaultMenu.menuId,
+            label: defaultMenu.label,
+            actions: { ...etablir.actions },
           };
         }
       }

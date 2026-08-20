@@ -179,13 +179,20 @@ export default function DependantsPage() {
   const handleExport = useCallback(async () => {
     setExporting(true);
     try {
-      await downloadDependantsExport();
+      const localisation = tab === 'dashboard'
+        ? dashboardLocalisation
+        : tab === 'exit'
+          ? exitFilters.localisation
+          : tab === 'scolarise'
+            ? scolariseFilters.localisation
+            : filters.localisation;
+      await downloadDependantsExport({ localisation });
     } catch (err) {
       await showError(err instanceof Error ? err.message : 'Export impossible');
     } finally {
       setExporting(false);
     }
-  }, []);
+  }, [tab, dashboardLocalisation, exitFilters.localisation, scolariseFilters.localisation, filters.localisation]);
 
   if (loading) {
     return <div className="loading">Chargement...</div>;
@@ -277,7 +284,11 @@ export default function DependantsPage() {
                     className="btn btn-outline btn-export btn-sm check-docs-export-btn btn-with-icon"
                     onClick={() => void handleExport()}
                     disabled={exporting}
-                    title="Exporter les feuilles DEPENDANTS et RESUME"
+                    title={
+                      (tab === 'dashboard' ? dashboardLocalisation : listFilters.localisation)
+                        ? 'Exporter la localisation filtrée (DEPENDANTS, EXIT et RESUME)'
+                        : 'Exporter les feuilles DEPENDANTS, EXIT et RESUME'
+                    }
                   >
                     {exporting ? (
                       <span className="btn-spinner" aria-hidden="true" />

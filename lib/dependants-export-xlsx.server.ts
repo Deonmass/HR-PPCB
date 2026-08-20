@@ -12,8 +12,11 @@ import {
 import type { Dependant } from './dependants-types';
 import {
   computeFamilyCompositionCounts,
+  familyGroupKey,
+  isChildStatut,
   isDependantSummaryRow,
   isEmployeeStatut,
+  isSpouseStatut,
 } from './dependants-utils';
 import { EMPLOYEE_EXIT_SHEET, parseDateToExcelSerial } from './employee-columns';
 import { DEPENDANTS_EXPORT_TEMPLATE_PATH } from './excel-export-template-paths';
@@ -114,6 +117,157 @@ function recalculateFamilyTotalsOnSheet(sheet: PopulateSheet, lastDataRow: numbe
   }
 }
 
+function orderDependantsByFamily(rows: Dependant[]): Dependant[] {
+  const rank = (statut: string): number => {
+    if (isEmployeeStatut(statut)) return 0;
+    if (isSpouseStatut(statut)) return 1;
+    if (isChildStatut(statut)) return 2;
+    return 3;
+  };
+  const byKey = new Map<string, Dependant[]>();
+  for (const item of rows) {
+    if (isDependantSummaryRow(item)) continue;
+    const key = familyGroupKey(item) || item.matricule.trim();
+    if (!key) continue;
+    const list = byKey.get(key) ?? [];
+    list.push(item);
+    byKey.set(key, list);
+  }
+
+  const familyName = (members: Dependant[]): string => {
+    const employee = members.find((item) => isEmployeeStatut(item.statut));
+    return (employee ?? members[0])?.nom ?? '';
+  };
+
+  const sortMembers = (members: Dependant[]): Dependant[] =>
+    [...members].sort((a, b) => {
+      const byStatut = rank(a.statut) - rank(b.statut);
+      if (byStatut !== 0) return byStatut;
+      return a.nom.localeCompare(b.nom, 'fr', { sensitivity: 'base' });
+    });
+
+  return [...byKey.values()]
+    .sort((a, b) => familyName(a).localeCompare(familyName(b), 'fr', { sensitivity: 'base' }))
+    .flatMap(sortMembers);
+}
+
+function forEachFamilyBlock(
+  sheet: PopulateSheet,
+  lastDataRow: number,
+  visit: (start: number, end: number, employeeRow: number) => void,
+): void {
+  let start = FIRST_DATA_ROW;
+  while (start <= lastDataRow) {
+    if (isSummaryExportRow(sheet, start)) {
+      start += 1;
+      continue;
+    }
+    const matricule = String(sheet.cell(start, COL_MATRICULE).value() ?? '').trim();
+    if (!matricule) {
+      start += 1;
+      continue;
+    }
+    let end = start;
+    while (
+      end + 1 <= lastDataRow
+      && !isSummaryExportRow(sheet, end + 1)
+      && String(sheet.cell(end + 1, COL_MATRICULE).value() ?? '').trim() === matricule
+    ) {
+      end += 1;
+    }
+    let employeeRow = start;
+    for (let row = start; row <= end; row += 1) {
+      if (isEmployeeStatut(String(sheet.cell(row, COL_STATUT).value() ?? ''))) {
+        employeeRow = row;
+        break;
+      }
+    }
+    visit(start, end, employeeRow);
+    start = end + 1;
+  }
+}
+
+/** Composition / Enfants / Total en formules Excel, sur la ligne employé de chaque famille. */
+function applyFamilyTotalsFormulas(sheet: PopulateSheet, lastDataRow: number): void {
+  if (lastDataRow < FIRST_DATA_ROW) return;
+
+  forEachFamilyBlock(sheet, lastDataRow, (start, end, employeeRow) => {
+    const rangeB = `$B$${start}:$B$${end}`;
+    const rangeD = `$D$${start}:$D$${end}`;
+    sheet.cell(employeeRow, COL_COMPOSITION).formula(
+      `COUNTA(${rangeB})-1-K${employeeRow}`,
+    );
+    sheet.cell(employeeRow, COL_ENFANTS).formula(
+      `COUNTIFS(${rangeD},"*Enfant*")`,
+    );
+    sheet.cell(employeeRow, COL_TOTAL).formula(`1+J${employeeRow}+K${employeeRow}`);
+
+    for (let row = start; row <= end; row += 1) {
+      if (row === employeeRow) continue;
+      sheet.cell(row, COL_COMPOSITION).value(null);
+      sheet.cell(row, COL_ENFANTS).value(null);
+      sheet.cell(row, COL_TOTAL).value(null);
+    }
+  });
+}
+
+const FAMILY_FILL_EVEN = 'FFFFFF';
+const FAMILY_FILL_ODD = 'DEEAF6';
+const FAMILY_BORDER = { style: 'thin', color: '94A3B8' } as const;
+const FAMILY_EDGE = { style: 'medium', color: '334155' } as const;
+
+function isExitDependantsSheet(sheet: PopulateSheet): boolean {
+  try {
+    return sheet.name() === DEPENDANTS_EXIT_SHEET;
+  } catch {
+    return false;
+  }
+}
+
+/** Bandeau par famille (fond alterné, bordure, employé en gras). */
+function applyFamilyGroupFormatting(sheet: PopulateSheet, lastDataRow: number): void {
+  if (lastDataRow < FIRST_DATA_ROW) return;
+
+  let familyIndex = 0;
+  forEachFamilyBlock(sheet, lastDataRow, (start, end, employeeRow) => {
+    const fill = familyIndex % 2 === 0 ? FAMILY_FILL_EVEN : FAMILY_FILL_ODD;
+    familyIndex += 1;
+    for (let row = start; row <= end; row += 1) {
+      const isFirst = row === start;
+      const isLast = row === end;
+      const isEmployee = row === employeeRow;
+      for (let col = 1; col <= 16; col += 1) {
+        try {
+          sheet.cell(row, col).style({
+            fill,
+            border: {
+              left: FAMILY_BORDER,
+              right: FAMILY_BORDER,
+              top: isFirst ? FAMILY_EDGE : FAMILY_BORDER,
+              bottom: isLast ? FAMILY_EDGE : FAMILY_BORDER,
+            },
+          });
+        } catch {
+          // ignore style errors
+        }
+      }
+      try {
+        sheet.cell(row, COL_NOM).style({
+          bold: isEmployee,
+          fontColor: isEmployee ? '0F172A' : '334155',
+        });
+      } catch {
+        // ignore
+      }
+      try {
+        sheet.cell(row, DEP_COL.dateNaissance + 1).style('numberFormat', 'dd-mmm-yyyy');
+      } catch {
+        // ignore
+      }
+    }
+  });
+}
+
 /**
  * Total global (M1) = nombre de lignes bénéficiaires (hors récap).
  * Renumérote aussi la colonne N° (A) en 1…n.
@@ -137,7 +291,9 @@ function updateHeaderTotalAndRowNumbers(sheet: PopulateSheet, lastDataRow: numbe
     sheet.cell(row, COL_N).value(count);
   }
 
-  sheet.cell(1, HEADER_TOTAL_VALUE_COL).value(count);
+  sheet.cell(1, HEADER_TOTAL_VALUE_COL).formula(
+    `COUNTA(B${FIRST_DATA_ROW}:B${lastDataRow})`,
+  );
   return count;
 }
 
@@ -171,6 +327,13 @@ function writeCellExportValue(sheet: PopulateSheet, row: number, col: number, va
     return;
   }
   cell.value(value === undefined ? null : value);
+  if (col === DEP_COL.dateNaissance + 1 && row >= FIRST_DATA_ROW && value != null && value !== '') {
+    try {
+      cell.style('numberFormat', 'dd-mmm-yyyy');
+    } catch {
+      // ignore
+    }
+  }
 }
 
 /** Formule d'âge attendue : DATEDIF(H{row},TODAY(),"Y"). */
@@ -291,6 +454,11 @@ function copyDependantsValues(
     if (mode === 'active' && !inSet) continue;
     if (mode === 'exit' && !inSet) continue;
 
+    try {
+      targetSheet.row(outRow).hidden(false);
+    } catch {
+      // ignore
+    }
     for (let col = 1; col <= endCol; col++) {
       writeCellExportValue(targetSheet, outRow, col, readCellExportValue(liveSheet, row, col));
     }
@@ -298,6 +466,17 @@ function copyDependantsValues(
   }
 
   return outRow - 1;
+}
+
+function unhideDependantsRows(sheet: PopulateSheet, lastDataRow: number): void {
+  if (lastDataRow < FIRST_DATA_ROW) return;
+  for (let row = FIRST_DATA_ROW; row <= lastDataRow; row++) {
+    try {
+      sheet.row(row).hidden(false);
+    } catch {
+      // ignore
+    }
+  }
 }
 
 function clearExtraDependantsRows(templateSheet: PopulateSheet, lastDataRow: number): void {
@@ -340,10 +519,14 @@ function finalizeDependantsSheet(
   lastDataRow: number,
   templateEndBeforeCopy: number,
 ): number {
+  unhideDependantsRows(sheet, lastDataRow);
   extendRowStylesIfNeeded(sheet, templateEndBeforeCopy, lastDataRow);
   clearExtraDependantsRows(sheet, lastDataRow);
   ensureAgeFormulas(sheet, lastDataRow);
-  recalculateFamilyTotalsOnSheet(sheet, lastDataRow);
+  applyFamilyTotalsFormulas(sheet, lastDataRow);
+  if (isExitDependantsSheet(sheet)) {
+    applyFamilyGroupFormatting(sheet, lastDataRow);
+  }
   return updateHeaderTotalAndRowNumbers(sheet, lastDataRow);
 }
 
@@ -795,17 +978,22 @@ function writeDependantsSheetFromJson(
   sheet: PopulateSheet,
   rows: Dependant[],
 ): number {
+  const ordered = orderDependantsByFamily(rows);
   sheet.cell(1, HEADER_TOTAL_LABEL_COL).value('Total');
-  sheet.cell(1, HEADER_TOTAL_VALUE_COL).value(rows.length);
 
   DEPENDANTS_HEADERS.forEach((header, index) => {
     sheet.cell(2, index + 1).value(header);
   });
 
-  if (rows.length === 0) return FIRST_DATA_ROW - 1;
+  if (ordered.length === 0) return FIRST_DATA_ROW - 1;
 
-  rows.forEach((item, index) => {
+  ordered.forEach((item, index) => {
     const excelRow = FIRST_DATA_ROW + index;
+    try {
+      sheet.row(excelRow).hidden(false);
+    } catch {
+      // ignore
+    }
     const values = dependantToExportRow(item, index + 1);
     values.forEach((value, colIndex) => {
       writeCellExportValue(sheet, excelRow, colIndex + 1, value);
@@ -813,14 +1001,24 @@ function writeDependantsSheetFromJson(
     sheet.cell(excelRow, COL_AGE).formula(ageFormulaForRow(excelRow));
   });
 
-  return FIRST_DATA_ROW + rows.length - 1;
+  return FIRST_DATA_ROW + ordered.length - 1;
 }
 
 /**
  * Export dépendants depuis le store JSON (sans EMPLOYEE.xlsx).
  * Utilise le template s’il est présent, sinon un classeur vide.
  */
-export async function buildDependantsExportBufferFromJson(): Promise<Buffer> {
+export async function buildDependantsExportBufferFromJson(options?: {
+  localisation?: string;
+}): Promise<Buffer> {
+  const localisation = options?.localisation?.trim() ?? '';
+  const matchLocalisation = (item: Dependant): boolean => {
+    if (!localisation) return true;
+    const value = String(item.localisation ?? '').trim();
+    if (localisation === '__empty__') return !value;
+    return value === localisation;
+  };
+
   const [{ readDependantsData }, { readEmployeesBundle }] = await Promise.all([
     import('./dependants-store'),
     import('./employees-store'),
@@ -834,11 +1032,15 @@ export async function buildDependantsExportBufferFromJson(): Promise<Buffer> {
   const activeMats = new Set(employees.map((item) => item.matricule.trim()).filter(Boolean));
   const exitMats = new Set(exits.map((item) => item.matricule.trim()).filter(Boolean));
 
-  const activeRows = dependants.filter((item) => activeMats.has(item.matricule.trim()));
+  const activeRows = dependants.filter(
+    (item) => activeMats.has(item.matricule.trim()) && matchLocalisation(item),
+  );
   const exitRows = [
-    ...dependants.filter((item) => exitMats.has(item.matricule.trim())),
+    ...dependants.filter((item) => exitMats.has(item.matricule.trim()) && matchLocalisation(item)),
     ...exitedDependants.filter(
-      (item) => exitMats.has(item.matricule.trim()) || !activeMats.has(item.matricule.trim()),
+      (item) =>
+        matchLocalisation(item)
+        && (exitMats.has(item.matricule.trim()) || !activeMats.has(item.matricule.trim())),
     ),
   ];
   const exitById = new Map(exitRows.map((item) => [item.id, item]));
@@ -857,10 +1059,6 @@ export async function buildDependantsExportBufferFromJson(): Promise<Buffer> {
   const templateEndBefore = activeSheet.usedRange()
     ? activeSheet.usedRange()!.endCell().rowNumber()
     : FIRST_DATA_ROW;
-
-  if (fs.existsSync(templatePath)) {
-    clearExtraDependantsRows(activeSheet, FIRST_DATA_ROW - 1);
-  }
 
   const lastActive = writeDependantsSheetFromJson(activeSheet, activeRows);
   finalizeDependantsSheet(activeSheet, lastActive, templateEndBefore);

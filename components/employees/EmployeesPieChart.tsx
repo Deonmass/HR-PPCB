@@ -19,6 +19,10 @@ interface Props {
   formatCount?: (count: number) => string;
   /** Active le filtre départements dans la vue agrandie. */
   deptFilter?: ChartDeptFilterSource;
+  /** Clic sur une part / légende. */
+  onItemClick?: (label: string) => void;
+  /** Panneau agrandissable (icône + clic carte). Défaut true. */
+  enlargeable?: boolean;
 }
 
 const DEFAULT_COLORS = [
@@ -227,12 +231,35 @@ export default function EmployeesPieChart({
   formatValue = (v) => String(v),
   formatCount = (n) => `(${n})`,
   deptFilter,
+  onItemClick,
+  enlargeable = true,
 }: Props) {
   if (!items.length || items.every((i) => i.count === 0)) {
     return (
       <div className="panel travel-history-chart-panel">
         <div className="panel-head"><h3>{title}</h3></div>
         <p className="empty-state">Aucune donnée disponible.</p>
+      </div>
+    );
+  }
+
+  const body = (
+    <PieBody
+      items={items}
+      colors={colors}
+      formatValue={formatValue}
+      formatCount={formatCount}
+      onItemClick={onItemClick}
+    />
+  );
+
+  if (!enlargeable) {
+    return (
+      <div className="panel travel-history-chart-panel employees-pie-panel">
+        <div className="panel-head travel-history-chart-head">
+          <h3>{title}</h3>
+        </div>
+        {body}
       </div>
     );
   }
@@ -244,12 +271,7 @@ export default function EmployeesPieChart({
       clickToEnlarge
       deptFilter={deptFilter}
     >
-      <PieBody
-        items={items}
-        colors={colors}
-        formatValue={formatValue}
-        formatCount={formatCount}
-      />
+      {body}
     </EnlargeableChartPanel>
   );
 }

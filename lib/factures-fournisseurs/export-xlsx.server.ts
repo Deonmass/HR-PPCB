@@ -5,7 +5,7 @@ import XlsxPopulate from 'xlsx-populate';
 import type { FactureSuivi } from '@/lib/factures-fournisseurs/types';
 import { FACTURE_STAGE_COMMENTS, FACTURE_STAGE_LABELS } from '@/lib/factures-fournisseurs/types';
 import { FACTURES_SUIVI_EXPORT_TEMPLATE_PATH } from '@/lib/factures-fournisseurs/paths';
-import { parseDisplayDate } from '@/lib/factures-fournisseurs/utils';
+import { parseDisplayDate, normalizePaymentValue } from '@/lib/factures-fournisseurs/utils';
 
 type PopulateWorkbook = Awaited<ReturnType<typeof XlsxPopulate.fromBlankAsync>>;
 type PopulateSheet = ReturnType<PopulateWorkbook['sheet']>;
@@ -306,7 +306,7 @@ function fillFactureData(sheet: PopulateSheet, factures: FactureSuivi[]): void {
     writeDateCell(sheet, `${COL.datePo}${row}`, f.datePo);
     sheet.cell(`${COL.grn}${row}`).value(f.grn || null);
     writeDateCell(sheet, `${COL.dateGrn}${row}`, f.dateGrn);
-    sheet.cell(`${COL.payment}${row}`).value(f.payment || null);
+    sheet.cell(`${COL.payment}${row}`).value(normalizePaymentValue(f.payment) || null);
     writeDateCell(sheet, `${COL.datePym}${row}`, f.datePym);
   });
 

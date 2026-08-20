@@ -1,9 +1,7 @@
 export {
-  allocateMissionRef,
   appendTravelHistoryRow,
   buildHistoryRowValues,
   deleteTravelHistoryRow,
-  previewNextMissionRef,
   readTravelHistory,
   resolveTravelHistoryPath,
   restoreTravelHistoryRow,
@@ -12,3 +10,7 @@ export {
   TRAVEL_HISTORY_DATA_START_INDEX,
   TRAVEL_HISTORY_SHEET,
 } from './travel-history-json-store';
+export {
+  allocateMissionRef,
+  previewNextMissionRef,
+} from './mission-order-history-store';

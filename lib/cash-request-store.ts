@@ -14,10 +14,12 @@ import { fillHotelBookingTemplate } from './hotel-booking';
 import { fillMissionOrderTemplate } from './mission-order';
 import { fillTripBudgetTemplate } from './trip-budget';
 import { fillTravelAuthorizationTemplate } from './travel-authorization';
+import { appendMissionOrderHistoryRow } from './mission-order-history-store';
 import {
   allocateMissionRef,
   appendTravelHistoryRow,
 } from './travel-history-store';
+import { isMissionSiteId } from './travel-mission-sites';
 import {
   buildWorkDestination,
   computeTripDays,
@@ -210,6 +212,10 @@ function normalizeTravelForm(travel: TravelFormFields): TravelFormFields {
     paymentOrderSignatory: travel.paymentOrderSignatory.trim(),
     budgetLines: normalizeBudgetLines(travel.budgetLines),
     isInternationalTravel: Boolean(travel.isInternationalTravel),
+    missionSite: travel.missionSite,
+    missionCategory: travel.missionCategory?.trim() ?? '',
+    missionType: travel.missionType?.trim() ?? '',
+    missionObservation: travel.missionObservation?.trim() ?? '',
     flightBooking: travel.isInternationalTravel
       ? {
           passportFullName: travel.flightBooking?.passportFullName?.trim() ?? '',
@@ -304,6 +310,9 @@ async function createTravelDocumentsInternal(
   if (wants('mission-order') && !travel.paymentOrderSignatory.trim()) {
     throw new Error('Signataire de l\'ordre de paiement requis');
   }
+  if (wants('mission-order') && !travel.destinationPlace.trim()) {
+    throw new Error('Destination requise');
+  }
   if (!travel.budgetLines.length) {
     throw new Error('Renseignez au moins une description au budget voyage');
   }
@@ -328,7 +337,14 @@ async function createTravelDocumentsInternal(
 
   const tripDays = computeTripDays(travel.departureDate, travel.returnDate);
   const lines = budgetLinesToCashRequestLines(travel.budgetLines, travel.peopleCount, tripDays);
-  const missionRef = await allocateMissionRef(new Date());
+  if (!isMissionSiteId(travel.missionSite)) {
+    throw new Error('Site d’ordre de mission requis');
+  }
+  const refDate = travel.documentDate
+    ? new Date(`${travel.documentDate}T00:00:00`)
+    : new Date();
+  const missionDate = Number.isNaN(refDate.getTime()) ? new Date() : refDate;
+  const missionRef = await allocateMissionRef(travel.missionSite, missionDate);
 
   await ensureDataDir();
 
@@ -618,6 +634,7 @@ async function createTravelDocumentsInternal(
   data.cashRequests.push(record);
   await writeHistory(data);
   void appendTravelHistoryRow(record).catch(() => undefined);
+  void appendMissionOrderHistoryRow(record).catch(() => undefined);
   return record;
 }
 

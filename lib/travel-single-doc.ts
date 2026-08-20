@@ -27,7 +27,9 @@ export type SingleTravelDocField =
   | 'contactPerson'
   | 'transportMeans'
   | 'signatory'
-  | 'budget';
+  | 'budget'
+  | 'missionType'
+  | 'missionObservation';
 
 export interface SingleTravelDocConfig {
   id: SingleTravelDocId & TravelFileType;
@@ -70,8 +72,18 @@ export const SINGLE_TRAVEL_DOCS: Record<SingleTravelDocId, SingleTravelDocConfig
     id: 'mission-order',
     label: 'Ordre de mission',
     description:
-      'Ordre de mission avec référence, moyen de transport et signataire.',
-    fields: ['position', 'documentDate', 'travelDates', 'companyName', 'transportMeans', 'signatory'],
+      'Ordre de mission par site (Kinshasa, Zamba, Lubudi) — référence annuelle KN / ZA / ZC / LU.',
+    fields: [
+      'position',
+      'documentDate',
+      'travelDates',
+      'companyName',
+      'destinationPlace',
+      'transportMeans',
+      'signatory',
+      'missionType',
+      'missionObservation',
+    ],
   },
   'trip-budget': {
     id: 'trip-budget',

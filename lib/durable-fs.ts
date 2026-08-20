@@ -41,6 +41,7 @@ export function durableTimesheetsMonthKey(year: number, month: number): string {
   return `${DURABLE_OVERTIMES_TIMESHEETS_DIR}/${y}-${m}.json`;
 }
 export const DURABLE_TRAVEL_HISTORY_KEY = 'data/travel/history.json';
+export const DURABLE_MISSION_ORDERS_KEY = 'data/travel/mission-orders.json';
 export const DURABLE_CHARROI_VEHICLES_KEY = 'data/charroi/vehicles.json';
 export const DURABLE_CHARROI_ACHATS_KEY = 'data/charroi/achats.json';
 export const DURABLE_AUDIT_LOGS_KEY = 'data/logs/audit.json';

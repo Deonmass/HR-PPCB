@@ -5,8 +5,8 @@ import DashboardListModal, {
   type DashboardListColumn,
   type DashboardListRow,
 } from '@/components/DashboardListModal';
+import EmployeesPieChart from '@/components/employees/EmployeesPieChart';
 import HomeBarChart from '@/components/home/HomeBarChart';
-import HomeDonutChart from '@/components/home/HomeDonutChart';
 import PermissionGate from '@/components/PermissionGate';
 import RefreshButton from '@/components/RefreshButton';
 import RowContextMenu, { type ContextMenuItem } from '@/components/RowContextMenu';
@@ -213,26 +213,17 @@ function DashboardView({
   onOpenTable: () => void;
   onDrill: (title: string, predicate: (poste: ClassificationPoste) => boolean) => void;
 }) {
-  const familySlices = dashboard.byFamily.map((r) => ({
-    label: r.label,
-    value: r.value,
-    color: r.color,
-  }));
-  const classifSlices = dashboard.byClassification.slice(0, 8).map((r) => ({
-    label: r.label,
-    value: r.value,
-    color: r.color,
-  }));
-  const deptSlices = dashboard.byDepartment.slice(0, 8).map((r) => ({
-    label: r.label,
-    value: r.value,
-    color: r.color,
-  }));
-  const locSlices = dashboard.byLocation.map((r) => ({
-    label: r.label,
-    value: r.value,
-    color: r.color,
-  }));
+  const toPie = (rows: ClassificationStatRow[]) => {
+    const filled = rows.filter((r) => r.value > 0);
+    return {
+      items: filled.map((r) => ({ label: r.label, count: r.value })),
+      colors: filled.map((r) => r.color || '#94a3b8'),
+    };
+  };
+  const familyPie = toPie(dashboard.byFamily);
+  const classifPie = toPie(dashboard.byClassification);
+  const deptPie = toPie(dashboard.byDepartment);
+  const locPie = toPie(dashboard.byLocation);
 
   return (
     <div className="mvt-dashboard postes-dashboard cls-dashboard">
@@ -278,47 +269,48 @@ function DashboardView({
         ))}
       </div>
 
-      <div className="postes-charts-grid home-charts-grid">
+      <div className="postes-charts-grid cls-pies-grid">
         <div className="postes-chart-host">
-          <HomeDonutChart
+          <EmployeesPieChart
             title="Famille de classification"
-            slices={familySlices}
-            centerLabel="Postes"
-            centerValue={dashboard.totalPostes}
-            emptyLabel="Aucune donnée"
+            items={familyPie.items}
+            colors={familyPie.colors}
+            enlargeable={false}
             onItemClick={(label) => onDrill(label, (p) => p.family === label)}
           />
         </div>
         <div className="postes-chart-host">
-          <HomeDonutChart
+          <EmployeesPieChart
             title="Classification nationale"
-            slices={classifSlices}
-            centerLabel="Postes"
-            centerValue={dashboard.byClassification.reduce((s, r) => s + r.value, 0)}
-            emptyLabel="Aucune classification"
+            items={classifPie.items}
+            colors={classifPie.colors}
+            enlargeable={false}
             onItemClick={(label) => onDrill(label, (p) => (p.classification || 'Non renseigné') === label)}
           />
         </div>
         <div className="postes-chart-host">
-          <HomeDonutChart
+          <EmployeesPieChart
             title="Par département"
-            slices={deptSlices}
-            centerLabel="Postes"
-            emptyLabel="Aucun département"
+            items={deptPie.items}
+            colors={deptPie.colors}
+            enlargeable={false}
             onItemClick={(label) =>
               onDrill(label, (p) => (p.department || p.departmentShort || 'Non renseigné') === label)
             }
           />
         </div>
         <div className="postes-chart-host">
-          <HomeDonutChart
+          <EmployeesPieChart
             title="Par localisation"
-            slices={locSlices}
-            centerLabel="Postes"
-            emptyLabel="Aucune localisation"
+            items={locPie.items}
+            colors={locPie.colors}
+            enlargeable={false}
             onItemClick={(label) => onDrill(label, (p) => (p.location || 'Non renseigné') === label)}
           />
         </div>
+      </div>
+
+      <div className="postes-charts-grid cls-bars-grid">
         <div className="postes-chart-host">
           <HomeBarChart
             title="Postes par département"
@@ -840,7 +832,7 @@ export default function ClassificationPage() {
                 Grille Hay, grades Paterson et classification nationale harmonisée
               </p>
             </div>
-            <div className="page-header-actions mvt-header-actions">
+            <div className="page-header-actions mvt-header-actions employees-header-actions cls-header-actions">
               <div className="tabs header-tabs header-tabs-compact mvt-tabs" role="tablist">
                 {([
                   ['dashboard', 'Dashboard'],

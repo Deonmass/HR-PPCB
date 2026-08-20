@@ -8,6 +8,10 @@ export interface RouteMenuEntry {
 export const DOCUMENTS_HUB_MENU_IDS = [
   'travel.historique',
   'travel.etablir',
+  'travel.mission.kinshasa',
+  'travel.mission.zamba',
+  'travel.mission.zamba-consultant',
+  'travel.mission.lubudi',
   'travel.attestation',
   'travel.payment-voucher',
   'documents.appraisal',
@@ -41,6 +45,7 @@ export const ROUTE_MENU_MAP: RouteMenuEntry[] = [
   { prefix: '/documents-voyage/attestation-services', menuId: 'travel.attestation' },
   { prefix: '/documents-voyage/payment-voucher', menuId: 'travel.payment-voucher' },
   { prefix: '/documents-voyage/historique', menuId: 'travel.historique' },
+  { prefix: '/documents-voyage/document/mission-order', menuId: 'travel.mission.zamba' },
   { prefix: '/documents-voyage/etablir', menuId: 'travel.etablir' },
   { prefix: '/documents-voyage/document', menuId: 'travel.etablir' },
   { prefix: '/protocol/visa-travail', menuId: 'protocol.visa-travail' },
@@ -127,6 +132,18 @@ export function routeViewMenuIds(pathname: string): string[] {
   }
   if (normalized === '/documents') {
     return [...DOCUMENTS_HUB_MENU_IDS];
+  }
+  if (
+    normalized === '/documents-voyage/document/mission-order'
+    || normalized.startsWith('/documents-voyage/document/mission-order/')
+  ) {
+    return [
+      'travel.etablir',
+      'travel.mission.kinshasa',
+      'travel.mission.zamba',
+      'travel.mission.zamba-consultant',
+      'travel.mission.lubudi',
+    ];
   }
   if (normalized === '/politique') {
     return [...POLITIQUE_HUB_MENU_IDS];

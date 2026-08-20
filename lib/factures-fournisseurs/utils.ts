@@ -44,9 +44,61 @@ export function parseMontant(value: unknown): number | null {
   return Number.isFinite(n) ? n : null;
 }
 
-/** Payment non vide (ex. « PAID ») → paid, sinon unpaid. */
+function normalizePaymentToken(payment: string): string {
+  return payment
+    .trim()
+    .toLowerCase()
+    .normalize('NFD')
+    .replace(/[\u0300-\u036f]/g, '')
+    .replace(/[^a-z0-9]+/g, '');
+}
+
+function isUnpaidPaymentToken(payment: string): boolean {
+  const token = normalizePaymentToken(payment);
+  return (
+    token === ''
+    || token === 'unpaid'
+    || token === 'nonpaye'
+    || token === 'nonpayee'
+    || token === 'impaye'
+    || token === 'impayee'
+    || token === 'notpaid'
+    || token === 'open'
+    || token === 'no'
+    || token === 'non'
+  );
+}
+
+function isPaidPaymentToken(payment: string): boolean {
+  const token = normalizePaymentToken(payment);
+  return (
+    token === 'paid'
+    || token === 'paye'
+    || token === 'payee'
+    || token === 'regle'
+    || token === 'reglee'
+    || token === 'settled'
+    || token === 'yes'
+    || token === 'oui'
+  );
+}
+
+/**
+ * PYTMT « Unpaid » / vide → non payée.
+ * « PAID » ou toute autre référence de paiement → payée.
+ */
 export function isFacturePaid(payment: string): boolean {
-  return payment.trim().length > 0;
+  const value = payment.trim();
+  if (!value || isUnpaidPaymentToken(value)) return false;
+  return true;
+}
+
+/** Valeur stockée : vide si unpaid, « PAID » si libellé payé, sinon le texte d’origine. */
+export function normalizePaymentValue(payment: string): string {
+  const value = payment.trim();
+  if (!value || isUnpaidPaymentToken(value)) return '';
+  if (isPaidPaymentToken(value)) return 'PAID';
+  return value;
 }
 
 export function paymentStatusLabel(payment: string): 'Paid' | 'Unpaid' {
@@ -55,6 +107,21 @@ export function paymentStatusLabel(payment: string): 'Paid' | 'Unpaid' {
 
 export function paymentValueFromStatus(status: 'paid' | 'unpaid'): string {
   return status === 'paid' ? 'PAID' : '';
+}
+
+/** Clé d’identité import : société + facture + PR + P.O (deux lignes au même n° mais PR/PO différents restent distinctes). */
+export function factureImportIdentityKey(row: {
+  societe?: string;
+  facture?: string;
+  pr?: string;
+  po?: string;
+}): string {
+  return [
+    String(row.societe ?? '').trim().toLowerCase(),
+    String(row.facture ?? '').trim().toLowerCase(),
+    String(row.pr ?? '').trim().toLowerCase(),
+    String(row.po ?? '').trim().toLowerCase(),
+  ].join('|');
 }
 
 export function computeStatut(input: {
@@ -97,13 +164,15 @@ export function withComputedStatut<
     commentaire?: string;
   },
 >(row: T): FactureSuivi {
-  const statut = computeStatut(row);
+  const payment = normalizePaymentValue(row.payment);
+  const statut = computeStatut({ ...row, payment });
   return {
     ...row,
+    payment,
     statut,
     statutLabel: FACTURE_STAGE_LABELS[statut],
     // Toujours dérivé de la position (Reçu / PR / PO / Paid).
-    commentaire: computeCommentaireFromRow(row),
+    commentaire: computeCommentaireFromRow({ ...row, payment }),
   };
 }
 
@@ -406,6 +475,9 @@ export function yearFromFactureDate(value: string): number | null {
   return yearFromDate(value);
 }
 
+/** 0 = toutes les années (totaux d’import, hors filtre annuel). */
+export const FACTURE_YEAR_ALL = 0;
+
 export function listFactureYears(factures: FactureSuivi[]): number[] {
   const years = new Set<number>();
   for (const f of factures) {
@@ -418,8 +490,9 @@ export function listFactureYears(factures: FactureSuivi[]): number[] {
   return [...years].sort((a, b) => b - a);
 }
 
-/** Factures dont la date de facture tombe dans l'année (pour filtrer le dashboard). */
+/** Factures dont la date de facture tombe dans l'année (0 = toutes). */
 export function filterFacturesByYear(factures: FactureSuivi[], year: number): FactureSuivi[] {
+  if (year === FACTURE_YEAR_ALL) return factures;
   return factures.filter((f) => {
     const d = parseDisplayDate(f.date);
     return d != null && d.getFullYear() === year;
@@ -451,7 +524,7 @@ export function buildFacturesMonthlyTracking(
   for (const f of factures) {
     const montant = f.montant ?? 0;
     const received = parseDisplayDate(f.date);
-    if (received && received.getFullYear() === year) {
+    if (received && (year === FACTURE_YEAR_ALL || received.getFullYear() === year)) {
       const m = received.getMonth();
       const point = points[m]!;
       point.recuCount += 1;
