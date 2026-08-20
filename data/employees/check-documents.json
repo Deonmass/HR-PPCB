@@ -4941,7 +4941,7 @@
         "Attestation fin service": "N",
         "Diplome releve notes": "Y",
         "Certificat residence expat": "NA",
-        "Aptitude physique": "N",
+        "Aptitude physique": "Y",
         "Curriculum vitae": "Y",
         "No CNSS": "N",
         "RRF": "N",
@@ -4954,7 +4954,7 @@
         "Contrat Bail village PPC": "N"
       },
       "createdAt": "2026-08-11T14:44:00.747Z",
-      "updatedAt": "2026-08-20T10:47:05.887Z"
+      "updatedAt": "2026-08-20T10:48:16.846Z"
     }
   ]
 }
