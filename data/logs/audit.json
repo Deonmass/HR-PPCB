@@ -1,6 +1,25 @@
 {
   "entries": [
     {
+      "id": "log-000527",
+      "at": "2026-08-20T15:15:05.580Z",
+      "userId": "admin",
+      "userName": "Administrateur",
+      "module": "postes",
+      "moduleLabel": "Postes",
+      "action": "update",
+      "actionLabel": "Modification",
+      "entityType": "poste",
+      "entityId": "Chemical Lab Tester",
+      "summary": "Màj poste catalogue « Chemical Lab Tester » → « Lab Tester »",
+      "details": "Màj poste catalogue « Chemical Lab Tester » → « Lab Tester »",
+      "after": {
+        "updated": 4
+      },
+      "undoable": false,
+      "undone": false
+    },
+    {
       "id": "log-000526",
       "at": "2026-08-20T15:06:31.558Z",
       "userId": "admin",
@@ -40754,5 +40773,5 @@
       }
     }
   ],
-  "nextSeq": 527
+  "nextSeq": 528
 }
