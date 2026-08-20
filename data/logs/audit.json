@@ -1,6 +1,27 @@
 {
   "entries": [
     {
+      "id": "log-000535",
+      "at": "2026-08-20T15:46:02.264Z",
+      "userId": "Serge.Muakasa",
+      "userName": "Serge Muakasa",
+      "userEmail": "Serge.Muakasa@ppcdrc.cd",
+      "module": "factures-suivi",
+      "moduleLabel": "Factures suivi",
+      "action": "import",
+      "actionLabel": "Import",
+      "summary": "Import factures — 82 importée(s), 0 ignorée(s)",
+      "details": "Feuille « Factures », 82 ligne(s)",
+      "undoable": false,
+      "undone": false,
+      "meta": {
+        "imported": 82,
+        "skipped": 0,
+        "sheetName": "Factures",
+        "fileName": "FACTURES_SUIVI_EXPORT_TEMPLATE July 2026.xlsx"
+      }
+    },
+    {
       "id": "log-000534",
       "at": "2026-08-20T15:41:23.294Z",
       "userId": "berth.lubenzo",
@@ -40946,5 +40967,5 @@
       }
     }
   ],
-  "nextSeq": 535
+  "nextSeq": 536
 }
