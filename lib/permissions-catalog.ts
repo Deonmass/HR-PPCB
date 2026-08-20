@@ -72,6 +72,13 @@ export const PERMISSION_MENU_CATALOG: PermissionMenuGroup[] = [
     ],
   },
   {
+    id: 'politique',
+    label: 'Politique',
+    items: [
+      { id: 'politique.longs-etats', label: 'Longs états de service' },
+    ],
+  },
+  {
     id: 'protocol',
     label: 'Protocol',
     items: [
@@ -175,6 +182,10 @@ export function mergePermissionsWithCatalog(menus: MenuPermission[]): MenuPermis
   const grantNewDocMenus =
     hubMenus.length > 0 && hubMenus.every((menu) => isMenuFullyChecked(menu));
 
+  const politiqueMenus = menus.filter((menu) => menu.menuId.startsWith('politique.'));
+  const grantNewPolitiqueMenus =
+    politiqueMenus.length > 0 && politiqueMenus.every((menu) => isMenuFullyChecked(menu));
+
   // Idem pour les menus Employés (Postes, Mouvements, Offres, etc.).
   const employesMenus = menus.filter((menu) => menu.menuId.startsWith('employes.'));
   const grantNewEmployesMenus =
@@ -193,6 +204,19 @@ export function mergePermissionsWithCatalog(menus: MenuPermission[]): MenuPermis
       }
       if (grantNewEmployesMenus && defaultMenu.menuId.startsWith('employes.')) {
         return setAllMenuActions(defaultMenu, true);
+      }
+      if (grantNewPolitiqueMenus && defaultMenu.menuId.startsWith('politique.')) {
+        return setAllMenuActions(defaultMenu, true);
+      }
+      if (defaultMenu.menuId.startsWith('politique.')) {
+        const liste = menus.find((menu) => menu.menuId === 'employes.liste');
+        if (liste) {
+          return {
+            menuId: defaultMenu.menuId,
+            label: defaultMenu.label,
+            actions: { ...liste.actions },
+          };
+        }
       }
       if (defaultMenu.menuId === 'employes.classification') {
         const postes = menus.find((menu) => menu.menuId === 'employes.postes');

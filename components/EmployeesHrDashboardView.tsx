@@ -24,7 +24,17 @@ import {
   type EmployeesHrKpiKey,
   type HrChartSegmentKind,
 } from '@/lib/employees-hr-dashboard';
+import { computeSeniority } from '@/lib/employee-columns';
+import {
+  formatChequeValue,
+  formatIncentive,
+  highestLongServicePalier,
+  isLongServiceDue5Or10,
+  LONG_SERVICE_POLICY,
+  type LongServiceBeneficiary,
+} from '@/lib/politique-longs-etats';
 import type { Employee } from '@/lib/types';
+import Link from 'next/link';
 import { useEffect, useMemo, useState, type ReactNode } from 'react';
 import type { ChartDeptFilterSource, ChartFilterRenderContext } from '@/components/EnlargeableChartPanel';
 
@@ -477,6 +487,33 @@ export default function EmployeesHrDashboardView({ employees, exits = [] }: Prop
     [employees],
   );
 
+  const longServiceAlerts = useMemo(() => {
+    const asOf = new Date();
+    const list: LongServiceBeneficiary[] = [];
+    for (const employee of employees) {
+      if (/^inact/i.test(employee.statut || '')) continue;
+      const seniority = computeSeniority(employee.appointmentDate || '', asOf);
+      if (!seniority || !isLongServiceDue5Or10(seniority.years, seniority.months)) continue;
+      const palier = highestLongServicePalier(seniority.years);
+      if (!palier) continue;
+      list.push({
+        matricule: employee.matricule,
+        nom: employee.nom,
+        departement: employee.departement,
+        localisation: employee.localisation,
+        appointmentDate: employee.appointmentDate,
+        years: seniority.years,
+        months: seniority.months,
+        palier,
+      });
+    }
+    list.sort((a, b) => {
+      if (b.years !== a.years) return b.years - a.years;
+      return a.nom.localeCompare(b.nom, 'fr');
+    });
+    return list;
+  }, [employees]);
+
   const ppcToGeneralRow = (employee: Employee): DashboardListRow => {
     const base = employeeToDashboardListRow(employee);
     return {
@@ -851,59 +888,123 @@ export default function EmployeesHrDashboardView({ employees, exits = [] }: Prop
         />
       </div>
 
-      <div className="panel employees-latest-hires-panel">
-        <div className="panel-head">
-          <h3>Derniers arrivés</h3>
-          <div className="employees-latest-hires-head-actions">
-            <span className="employees-latest-hires-hint">Selon la date d&apos;embauche</span>
-            {stats.derniersArrives.length > 0 ? (
-              <button
-                type="button"
-                className="btn btn-ghost employees-latest-hires-open"
-                onClick={openLatestHires}
-              >
-                Voir la liste
-              </button>
-            ) : null}
+      <div className="employees-latest-and-alerts">
+        <div className="panel employees-latest-hires-panel">
+          <div className="panel-head">
+            <h3>Derniers arrivés</h3>
+            <div className="employees-latest-hires-head-actions">
+              <span className="employees-latest-hires-hint">Selon la date d&apos;embauche</span>
+              {stats.derniersArrives.length > 0 ? (
+                <button
+                  type="button"
+                  className="btn btn-ghost employees-latest-hires-open"
+                  onClick={openLatestHires}
+                >
+                  Voir la liste
+                </button>
+              ) : null}
+            </div>
           </div>
-        </div>
-        {stats.derniersArrives.length === 0 ? (
-          <p className="empty-state">Aucune date d&apos;embauche disponible.</p>
-        ) : (
-          <div className="employees-latest-hires-table-wrap">
-            <table className="employees-latest-hires-table">
-              <thead>
-                <tr>
-                  <th>Date d&apos;embauche</th>
-                  <th>Matricule</th>
-                  <th>Nom</th>
-                  <th>Département</th>
-                  <th>Localisation</th>
-                  <th>Grade</th>
-                  <th>Company</th>
-                </tr>
-              </thead>
-              <tbody>
-                {stats.derniersArrives.map((row) => (
-                  <tr
-                    key={`${row.matricule}-${row.appointmentDate}`}
-                    className="employees-latest-hires-row"
-                    onClick={openLatestHires}
-                    title="Voir la liste des derniers arrivés"
-                  >
-                    <td>{row.appointmentDate}</td>
-                    <td>{row.matricule}</td>
-                    <td>{row.nom}</td>
-                    <td>{row.departement}</td>
-                    <td>{row.localisation}</td>
-                    <td>{row.grade}</td>
-                    <td title={row.company}>{row.company}</td>
+          {stats.derniersArrives.length === 0 ? (
+            <p className="empty-state">Aucune date d&apos;embauche disponible.</p>
+          ) : (
+            <div className="employees-latest-hires-table-wrap">
+              <table className="employees-latest-hires-table">
+                <thead>
+                  <tr>
+                    <th>Date d&apos;embauche</th>
+                    <th>Matricule</th>
+                    <th>Nom</th>
+                    <th>Département</th>
+                    <th>Localisation</th>
+                    <th>Grade</th>
+                    <th>Company</th>
                   </tr>
-                ))}
-              </tbody>
-            </table>
+                </thead>
+                <tbody>
+                  {stats.derniersArrives.map((row) => (
+                    <tr
+                      key={`${row.matricule}-${row.appointmentDate}`}
+                      className="employees-latest-hires-row"
+                      onClick={openLatestHires}
+                      title="Voir la liste des derniers arrivés"
+                    >
+                      <td>{row.appointmentDate}</td>
+                      <td>{row.matricule}</td>
+                      <td>{row.nom}</td>
+                      <td>{row.departement}</td>
+                      <td>{row.localisation}</td>
+                      <td>{row.grade}</td>
+                      <td title={row.company}>{row.company}</td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          )}
+        </div>
+
+        <div className="panel employees-long-service-alerts-panel">
+          <div className="panel-head">
+            <div>
+              <h3>{LONG_SERVICE_POLICY.title}</h3>
+              <p className="employees-latest-hires-hint">
+                5 et 10 ans · 0 mois ce mois-ci · {longServiceAlerts.length} agent
+                {longServiceAlerts.length > 1 ? 's' : ''}
+              </p>
+            </div>
+            <Link
+              href="/politique/longs-etats-de-service"
+              className="btn btn-ghost employees-latest-hires-open"
+              prefetch={false}
+            >
+              Voir
+            </Link>
           </div>
-        )}
+          {longServiceAlerts.length === 0 ? (
+            <p className="empty-state">Aucun agent à 5 ou 10 ans pile ce mois-ci.</p>
+          ) : (
+            <div className="employees-latest-hires-table-wrap">
+              <table className="employees-latest-hires-table employees-long-service-alerts-table">
+                <thead>
+                  <tr>
+                    <th>Agent</th>
+                    <th>Palier</th>
+                    <th>Avantages</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {longServiceAlerts.map((row) => (
+                    <tr key={row.matricule} className="politique-row-zero-mois">
+                      <td>
+                        <strong>{row.nom}</strong>
+                        <span className="politique-row-meta">
+                          {row.matricule} · {row.departement || '—'}
+                        </span>
+                        <span className="politique-row-meta">
+                          {row.years} an(s) ({row.months} mois)
+                        </span>
+                      </td>
+                      <td>
+                        <span className="politique-palier">
+                          {row.palier.years} ans ({row.months} mois)
+                        </span>
+                      </td>
+                      <td>
+                        <span className="politique-row-meta">
+                          {row.palier.sacs} sacs · {formatChequeValue(row.palier.cheque)}
+                        </span>
+                        <span className="politique-row-meta">
+                          Incitatif {formatIncentive(row.palier.incentivePct)}
+                        </span>
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          )}
+        </div>
       </div>
 
       {drilldown && (

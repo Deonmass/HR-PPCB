@@ -53,6 +53,8 @@ function moduleShortcuts(menus: MenuPermission[]): Array<{
     { title: 'Exit forms', subtitle: 'Documents de sortie', href: '/documents/exit', menuIds: ['documents.exit'] },
     { title: 'Contrat standard', subtitle: 'Contrat CDD/CDI', href: '/documents/contrat-standard', menuIds: ['documents.contrat-standard'] },
     { title: 'Convention collective', subtitle: 'Clauses et résumés', href: '/documents/convention-collective', menuIds: ['documents.convention-collective'] },
+    { title: 'Politique', subtitle: 'Politiques RH de référence', href: '/politique', menuIds: ['politique.longs-etats'] },
+    { title: 'Longs états de service', subtitle: 'Récompense d’ancienneté', href: '/politique/longs-etats-de-service', menuIds: ['politique.longs-etats'] },
     { title: 'Newcomer', subtitle: 'Pack intégration newcomer', href: '/documents/newcomer', menuIds: ['documents.newcomer'] },
     { title: 'Voyages', subtitle: 'Historique missions', href: '/documents-voyage/historique', menuIds: ['travel.historique'] },
     { title: 'Établir voyage', subtitle: 'Cash request / dossier', href: '/documents-voyage/etablir', menuIds: ['travel.etablir'] },

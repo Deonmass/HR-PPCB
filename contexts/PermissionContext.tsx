@@ -103,6 +103,8 @@ export function PermissionProvider({ children }: { children: ReactNode }) {
       '/documents/exit',
       '/documents/newcomer',
       '/documents/interim-appraisal',
+      '/politique',
+      '/politique/longs-etats-de-service',
       '/protocol/visa-travail',
       '/protocol/visa-volant',
       '/protocol/visa-voyage',

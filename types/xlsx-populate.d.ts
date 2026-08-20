@@ -29,7 +29,8 @@ declare module 'xlsx-populate' {
   }
 
   interface Column {
-    width(width?: number): Column;
+    width(): number | undefined;
+    width(width: number): Column;
     hidden(): boolean;
     hidden(hidden: boolean): Column;
   }
@@ -38,7 +39,10 @@ declare module 'xlsx-populate' {
     style(name: StyleNames): Record<string, unknown>;
     style(name: StyleName, value?: unknown): Row;
     style(styles: Record<string, unknown>): Row;
-    height(height?: number): Row;
+    height(): number | undefined;
+    height(height: number): Row;
+    hidden(): boolean;
+    hidden(hidden: boolean): Row;
   }
 
   interface Sheet {

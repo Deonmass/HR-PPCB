@@ -117,6 +117,7 @@ export const AUDIT_MODULE_LABELS: Record<string, string> = {
   'documents.contrat-standard': 'Contrat standard',
   'documents.attestation-conge': 'Attestation de congé',
   'documents.convention-collective': 'Convention collective',
+  'politique.longs-etats': 'Politique — Longs états de service',
   postes: 'Postes',
   mouvements: 'Mouvements',
   'protocol.visa-travail': 'Visa de travail',

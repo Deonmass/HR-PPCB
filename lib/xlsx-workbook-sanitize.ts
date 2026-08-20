@@ -4,6 +4,7 @@ const WORKSHEET_CT = 'application/vnd.openxmlformats-officedocument.spreadsheetm
 
 function toBuffer(data: Buffer | Uint8Array | ArrayBuffer): Buffer {
   if (Buffer.isBuffer(data)) return data;
+  if (data instanceof ArrayBuffer) return Buffer.from(new Uint8Array(data));
   return Buffer.from(data);
 }
 

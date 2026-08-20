@@ -20,6 +20,10 @@ export const DOCUMENTS_HUB_MENU_IDS = [
   'documents.convention-collective',
 ];
 
+export const POLITIQUE_HUB_MENU_IDS = [
+  'politique.longs-etats',
+];
+
 export const ROUTE_MENU_MAP: RouteMenuEntry[] = [
   { prefix: '/exco', menuId: 'exco.rapport' },
   { prefix: '/audit', menuId: 'audit.points' },
@@ -32,6 +36,8 @@ export const ROUTE_MENU_MAP: RouteMenuEntry[] = [
   { prefix: '/documents/attestation-conge', menuId: 'documents.attestation-conge' },
   { prefix: '/documents/convention-collective', menuId: 'documents.convention-collective' },
   { prefix: '/documents', menuId: 'travel.historique' },
+  { prefix: '/politique/longs-etats-de-service', menuId: 'politique.longs-etats' },
+  { prefix: '/politique', menuId: 'politique.longs-etats' },
   { prefix: '/documents-voyage/attestation-services', menuId: 'travel.attestation' },
   { prefix: '/documents-voyage/payment-voucher', menuId: 'travel.payment-voucher' },
   { prefix: '/documents-voyage/historique', menuId: 'travel.historique' },
@@ -121,6 +127,9 @@ export function routeViewMenuIds(pathname: string): string[] {
   }
   if (normalized === '/documents') {
     return [...DOCUMENTS_HUB_MENU_IDS];
+  }
+  if (normalized === '/politique') {
+    return [...POLITIQUE_HUB_MENU_IDS];
   }
   const menuId = pathnameToMenuId(pathname);
   return menuId ? [menuId] : [];

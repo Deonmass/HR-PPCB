@@ -204,7 +204,9 @@ function copySheetHeader(source: PopulateSheet, target: PopulateSheet): void {
   for (let col = 1; col <= endCol; col += 1) {
     try {
       const width = source.column(col).width();
-      if (width) target.column(col).width(width);
+      if (typeof width === 'number' && width > 0) {
+        target.column(col).width(width);
+      }
     } catch {
       // ignore width copy errors
     }
