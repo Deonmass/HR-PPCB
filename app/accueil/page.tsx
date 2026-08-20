@@ -368,6 +368,7 @@ export default function AccueilPage() {
     || can('employes.offres', 'view')
     || can('employes.mouvements', 'view')
     || can('employes.postes', 'view')
+    || can('employes.classification', 'view')
     || can('employes.liste', 'view'),
   );
   const hasProjectsSector = Boolean(data?.projects);
@@ -632,6 +633,22 @@ export default function AccueilPage() {
                     Ouvrir →
                   </span>
                 </Link>
+                {can('employes.classification', 'view') && (
+                  <Link href="/employes/classification" className="panel home-module-panel home-coming-card">
+                    <div className="home-coming-card-head">
+                      <span className="home-coming-card-icon" aria-hidden>
+                        <DocIcon name="rrf" />
+                      </span>
+                      <div>
+                        <h3>Classification des postes</h3>
+                        <p>Grille Hay, Paterson et classification nationale harmonisée</p>
+                      </div>
+                    </div>
+                    <span className="home-coming-badge" style={{ color: '#047857', background: '#ecfdf5', borderColor: '#a7f3d0' }}>
+                      Ouvrir →
+                    </span>
+                  </Link>
+                )}
 
                 {employesSectorPlaceholders.length > 0 && (
                   <section className="panel home-module-panel home-module-placeholders">

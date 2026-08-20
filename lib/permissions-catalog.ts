@@ -30,6 +30,7 @@ export const PERMISSION_MENU_CATALOG: PermissionMenuGroup[] = [
       { id: 'employes.offres', label: 'Offres' },
       { id: 'employes.mouvements', label: 'Mouvements' },
       { id: 'employes.postes', label: 'Postes' },
+      { id: 'employes.classification', label: 'Classification des postes' },
       { id: 'employes.contractants', label: 'Contractants' },
       { id: 'employes.check-documents', label: 'Check documents' },
       { id: 'employes.heures', label: 'HS — Mon timesheet' },
@@ -192,6 +193,16 @@ export function mergePermissionsWithCatalog(menus: MenuPermission[]): MenuPermis
       }
       if (grantNewEmployesMenus && defaultMenu.menuId.startsWith('employes.')) {
         return setAllMenuActions(defaultMenu, true);
+      }
+      if (defaultMenu.menuId === 'employes.classification') {
+        const postes = menus.find((menu) => menu.menuId === 'employes.postes');
+        if (postes) {
+          return {
+            menuId: defaultMenu.menuId,
+            label: defaultMenu.label,
+            actions: { ...postes.actions },
+          };
+        }
       }
       return defaultMenu;
     }

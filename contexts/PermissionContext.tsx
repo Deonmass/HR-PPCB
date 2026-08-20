@@ -83,6 +83,7 @@ export function PermissionProvider({ children }: { children: ReactNode }) {
       '/employes/offres',
       '/employes/mouvements',
       '/employes/postes',
+      '/employes/classification',
       '/employes/contractants',
       '/check-documents',
       '/heures-supplementaires',

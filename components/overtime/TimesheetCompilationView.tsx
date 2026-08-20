@@ -16,6 +16,7 @@ import type { SortDir } from '@/components/SortableTh';
 import SortableTh from '@/components/SortableTh';
 import { listTimesheetMonthOptions } from '@/lib/timesheet-period';
 import {
+  compilationOtOnlyTotal,
   sumCompilationRow,
   type CompilationData,
   type CompilationRow,
@@ -94,8 +95,7 @@ function fmtHours(value: number): string {
 }
 
 function compilationGrandTotal(row: CompilationRow): number {
-  const t = sumCompilationRow(row);
-  return t.ot13 + t.ot16 + t.ot2 + t.night + row.nightNormal;
+  return compilationOtOnlyTotal(sumCompilationRow(row));
 }
 
 function totalBucket(hours: number): string {
@@ -115,7 +115,7 @@ function compilationSortValue(row: CompilationRow, key: string): string | number
   if (key === 'tg16') return totals.ot16;
   if (key === 'tg2') return totals.ot2;
   if (key === 'tgN') return totalNight;
-  if (key === 'tgTotal' || key === 'total') return totals.ot13 + totals.ot16 + totals.ot2 + totalNight;
+  if (key === 'tgTotal' || key === 'total') return compilationOtOnlyTotal(totals);
   const weekMatch = key.match(/^w-(\d+)-(ot13|ot16|ot2|night)$/);
   if (weekMatch) {
     const week = row.weeks[Number(weekMatch[1])];
@@ -783,7 +783,7 @@ export default function TimesheetCompilationView({
                   {displayRows.map((row) => {
                     const totals = sumCompilationRow(row);
                     const totalNight = totals.night + row.nightNormal;
-                    const grandTotal = totals.ot13 + totals.ot16 + totals.ot2 + totalNight;
+                    const grandTotal = compilationOtOnlyTotal(totals);
                     const tgValues = [totals.ot13, totals.ot16, totals.ot2, totalNight, grandTotal];
                     return (
                       <tr key={row.matricule}>
@@ -884,7 +884,7 @@ export default function TimesheetCompilationView({
                       grandTotals.ot16,
                       grandTotals.ot2,
                       grandTotals.night + nightNormalTotal,
-                      grandTotals.ot13 + grandTotals.ot16 + grandTotals.ot2 + grandTotals.night + nightNormalTotal,
+                      compilationOtOnlyTotal(grandTotals),
                     ].map((value, i) => (
                       <td
                         key={`ftg-${TG_POS[i]}`}

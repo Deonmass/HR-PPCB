@@ -19,6 +19,7 @@ import { EMPLOYEE_EXIT_SHEET, parseDateToExcelSerial } from './employee-columns'
 import { DEPENDANTS_EXPORT_TEMPLATE_PATH } from './excel-export-template-paths';
 import { withExcelLock } from './excel-io';
 import { mergeLocalisationOptions } from './localisations';
+import { sanitizeXlsxBuffer } from './xlsx-workbook-sanitize';
 
 const FIRST_DATA_ROW = DEPENDANTS_DATA_START + 1; // Excel row 3
 
@@ -181,16 +182,59 @@ function ensureAgeFormulas(sheet: PopulateSheet, lastDataRow: number): void {
   if (lastDataRow < FIRST_DATA_ROW) return;
 
   for (let row = FIRST_DATA_ROW; row <= lastDataRow; row++) {
-    const cell = sheet.cell(row, COL_AGE);
-    const existing = (cell as unknown as { formula(): string | undefined }).formula();
-    const expected = ageFormulaForRow(row);
-    if (existing && existing.trim()) {
-      const normalized = existing.replace(/\s+/g, '').toUpperCase();
-      const expectedNorm = expected.replace(/\s+/g, '').toUpperCase();
-      if (normalized === expectedNorm || normalized === 'SHARED') continue;
-    }
-    cell.formula(expected);
+    sheet.cell(row, COL_AGE).formula(ageFormulaForRow(row));
   }
+}
+
+function copySheetHeader(source: PopulateSheet, target: PopulateSheet): void {
+  const endCol = 16;
+  for (let row = 1; row <= 2; row += 1) {
+    for (let col = 1; col <= endCol; col += 1) {
+      const src = source.cell(row, col);
+      const dst = target.cell(row, col);
+      const value = src.value();
+      if (value !== undefined) dst.value(value);
+      try {
+        dst.style(src.style([...STYLE_PROPS]));
+      } catch {
+        // ignore style copy errors
+      }
+    }
+  }
+  for (let col = 1; col <= endCol; col += 1) {
+    try {
+      const width = source.column(col).width();
+      if (width) target.column(col).width(width);
+    } catch {
+      // ignore width copy errors
+    }
+  }
+  try {
+    const rowStyle = source.row(FIRST_DATA_ROW).style([...STYLE_PROPS]);
+    target.row(FIRST_DATA_ROW).style(rowStyle);
+  } catch {
+    // ignore
+  }
+}
+
+function createDependantsExitSheet(workbook: PopulateWorkbook, source: PopulateSheet): PopulateSheet {
+  const existing = workbook.sheet(DEPENDANTS_EXIT_SHEET);
+  if (existing) {
+    try {
+      workbook.deleteSheet(existing);
+    } catch {
+      // ignore
+    }
+  }
+  const sheet = workbook.addSheet(DEPENDANTS_EXIT_SHEET);
+  copySheetHeader(source, sheet);
+  ensureExitTitle(sheet);
+  return sheet;
+}
+
+async function outputSanitized(workbook: PopulateWorkbook): Promise<Buffer> {
+  const raw = await workbook.outputAsync();
+  return sanitizeXlsxBuffer(raw as Buffer | Uint8Array);
 }
 
 function readMatriculesFromHrSheet(wb: PopulateWorkbook, sheetName: string): Set<string> {
@@ -264,6 +308,11 @@ function clearExtraDependantsRows(templateSheet: PopulateSheet, lastDataRow: num
   for (let row = lastDataRow + 1; row <= endRow; row++) {
     for (let col = 1; col <= endCol; col++) {
       templateSheet.cell(row, col).value(null);
+    }
+    try {
+      templateSheet.row(row).hidden(true);
+    } catch {
+      // ignore
     }
   }
 }
@@ -364,6 +413,14 @@ function fillSiteSummaryTableFormulas(
   const clearUntil = Math.max(ageTotalRow + 4, 80);
 
   clearResumeSummaryBlock(resumeSheet, locTitleRow, clearUntil);
+
+  for (let row = locTitleRow; row <= clearUntil; row += 1) {
+    try {
+      resumeSheet.range(row, 5, row, 6).merged(false);
+    } catch {
+      // ignore
+    }
+  }
 
   // Largeurs pour éviter les « ###### » sur la colonne Total.
   try {
@@ -504,12 +561,7 @@ function clearResumeSummaryBlock(resumeSheet: PopulateSheet, startRow: number, e
   for (let row = startRow; row <= endRow; row += 1) {
     for (let col = 1; col <= 5; col += 1) {
       const cell = resumeSheet.cell(row, col);
-      cell.value(undefined);
-      try {
-        (cell as unknown as { formula(v: undefined): void }).formula(undefined);
-      } catch {
-        // ignore
-      }
+      cell.value(null);
       try {
         cell.style(blankStyle);
       } catch {
@@ -616,23 +668,16 @@ async function buildFromTemplate(templatePath: string, livePath: string): Promis
       );
     }
 
-    // Feuille familles EXIT
-    const existingExit = templateWb.sheet(DEPENDANTS_EXIT_SHEET);
-    if (existingExit) {
-      templateWb.deleteSheet(existingExit);
-    }
-    const exitSheet = templateWb.cloneSheet(templateSheet, DEPENDANTS_EXIT_SHEET);
-    ensureExitTitle(exitSheet);
-    const exitEndBefore = findLastDependantsDataRow(exitSheet);
+    const exitSheet = createDependantsExitSheet(templateWb, templateSheet);
     const lastExitRow = copyDependantsValues(
       liveSheet,
       exitSheet,
       exitMatricules,
       'exit',
     );
-    finalizeDependantsSheet(exitSheet, lastExitRow, exitEndBefore);
+    finalizeDependantsSheet(exitSheet, lastExitRow, FIRST_DATA_ROW);
 
-    return templateWb.outputAsync();
+    return outputSanitized(templateWb);
   });
 }
 
@@ -662,8 +707,7 @@ async function buildFromLiveWorkbook(livePath: string): Promise<Buffer> {
     );
     finalizeDependantsSheet(activeSheet, lastActive, FIRST_DATA_ROW);
 
-    const exitSheet = exportWb.addSheet(DEPENDANTS_EXIT_SHEET);
-    ensureExitTitle(exitSheet);
+    const exitSheet = createDependantsExitSheet(exportWb, activeSheet);
     const lastExit = copyDependantsValues(liveSheet, exitSheet, exitMatricules, 'exit');
     finalizeDependantsSheet(exitSheet, lastExit, FIRST_DATA_ROW);
 
@@ -691,7 +735,7 @@ async function buildFromLiveWorkbook(livePath: string): Promise<Buffer> {
       );
     }
 
-    return exportWb.outputAsync();
+    return outputSanitized(exportWb);
   });
 }
 
@@ -830,14 +874,9 @@ export async function buildDependantsExportBufferFromJson(): Promise<Buffer> {
     );
   }
 
-  const existingExit = workbook.sheet(DEPENDANTS_EXIT_SHEET);
-  if (existingExit) workbook.deleteSheet(existingExit);
-
-  const exitSheet = workbook.cloneSheet(activeSheet, DEPENDANTS_EXIT_SHEET);
-  ensureExitTitle(exitSheet);
-  clearExtraDependantsRows(exitSheet, FIRST_DATA_ROW - 1);
+  const exitSheet = createDependantsExitSheet(workbook, activeSheet);
   const lastExit = writeDependantsSheetFromJson(exitSheet, uniqueExitRows);
   finalizeDependantsSheet(exitSheet, lastExit, FIRST_DATA_ROW);
 
-  return workbook.outputAsync();
+  return outputSanitized(workbook);
 }

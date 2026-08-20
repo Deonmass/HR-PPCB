@@ -91,11 +91,12 @@ const NAV: NavSection[] = [
     icon: 'users',
     color: '#e30613',
     items: [
-      { href: '/employes', label: 'Liste', icon: 'users', menuId: 'employes.liste', excludePrefixes: ['/employes/dependants', '/employes/offres', '/employes/mouvements', '/employes/postes', '/employes/contractants'] },
+      { href: '/employes', label: 'Liste', icon: 'users', menuId: 'employes.liste', excludePrefixes: ['/employes/dependants', '/employes/offres', '/employes/mouvements', '/employes/postes', '/employes/classification', '/employes/contractants'] },
       { href: '/employes/dependants', label: 'Dependants', icon: 'users', menuId: 'employes.dependants' },
       { href: '/employes/offres', label: 'Offres', icon: 'docs', menuId: 'employes.offres' },
       { href: '/employes/mouvements', label: 'Mouvements', icon: 'users', menuId: 'employes.mouvements' },
       { href: '/employes/postes', label: 'Postes', icon: 'docs', menuId: 'employes.postes' },
+      { href: '/employes/classification', label: 'Classification des postes', icon: 'docs', menuId: 'employes.classification' },
       { href: '/employes/contractants', label: 'Contractants', icon: 'users', menuId: 'employes.contractants' },
       { href: '/check-documents', label: 'Check documents', icon: 'docs', menuId: 'employes.check-documents' },
       { href: '/heures-supplementaires', label: 'Heures supplémentaires', icon: 'clock', menuIds: ['employes.heures', 'employes.heures.dept', 'employes.heures.all'] },

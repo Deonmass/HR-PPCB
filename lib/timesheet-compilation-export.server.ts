@@ -256,7 +256,7 @@ function fillSheetRows(
       formula: `${sumOrZero(otNightRefs)}+${refNightNormal}`,
     });
     writeTotal(totalStart + 4, {
-      formula: `${refTotalOt13}+${refTotalOt16}+${refTotalOt2}+${refTotalOtNight}`,
+      formula: `${refTotalOt13}+${refTotalOt16}+${refTotalOt2}`,
     });
   });
 

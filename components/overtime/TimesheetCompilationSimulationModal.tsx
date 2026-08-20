@@ -10,6 +10,7 @@ import {
   IconUndo,
 } from '@/components/overtime/TimesheetIcons';
 import {
+  compilationOtOnlyTotal,
   sumCompilationRow,
   type CompilationData,
   type CompilationRow,
@@ -431,7 +432,7 @@ export default function TimesheetCompilationSimulationModal({
                       {displayRows.map((row) => {
                         const totals = sumCompilationRow(row);
                         const totalNight = totals.night + row.nightNormal;
-                        const grandTotal = totals.ot13 + totals.ot16 + totals.ot2 + totalNight;
+                        const grandTotal = compilationOtOnlyTotal(totals);
                         const tgValues = [
                           totals.ot13,
                           totals.ot16,
@@ -523,11 +524,7 @@ export default function TimesheetCompilationSimulationModal({
                           grandTotals.ot16,
                           grandTotals.ot2,
                           grandTotals.night + nightNormalTotal,
-                          grandTotals.ot13
-                            + grandTotals.ot16
-                            + grandTotals.ot2
-                            + grandTotals.night
-                            + nightNormalTotal,
+                          compilationOtOnlyTotal(grandTotals),
                         ].map((value, i) => (
                           <td
                             key={`ftg-${TG_POS[i]}`}

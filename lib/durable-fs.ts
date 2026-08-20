@@ -17,6 +17,7 @@ export const DURABLE_EMPLOYEES_KEY = 'data/employees/employees.json';
 export const DURABLE_EMPLOYEE_EXITS_KEY = 'data/employees/exits.json';
 export const DURABLE_CHECK_DOCUMENTS_KEY = 'data/employees/check-documents.json';
 export const DURABLE_POSTES_VACANTS_KEY = 'data/employees/postes-vacants.json';
+export const DURABLE_CLASSIFICATION_POSTES_KEY = 'data/employees/classification-postes.json';
 export const DURABLE_MOUVEMENTS_KEY = 'data/employees/mouvements.json';
 export const DURABLE_CONTRACTANTS_KEY = 'data/employees/contractants.json';
 export const DURABLE_DEPENDANTS_KEY = 'data/dependants/dependants.json';

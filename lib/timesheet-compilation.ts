@@ -51,6 +51,11 @@ export function sumCompilationRow(row: CompilationRow): CompilationTotals {
   );
 }
 
+/** Total OT hors N (1.3 + 1.6 + 2). */
+export function compilationOtOnlyTotal(totals: CompilationTotals): number {
+  return roundCompilationHours(totals.ot13 + totals.ot16 + totals.ot2);
+}
+
 export function roundCompilationHours(value: number): number {
   return Math.round(value * 100) / 100;
 }

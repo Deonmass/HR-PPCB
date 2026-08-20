@@ -49,6 +49,7 @@ export const ROUTE_MENU_MAP: RouteMenuEntry[] = [
   { prefix: '/employes/offres', menuId: 'employes.offres' },
   { prefix: '/employes/mouvements', menuId: 'employes.mouvements' },
   { prefix: '/employes/postes', menuId: 'employes.postes' },
+  { prefix: '/employes/classification', menuId: 'employes.classification' },
   { prefix: '/employes/contractants', menuId: 'employes.contractants' },
   { prefix: '/parametres/permissions', menuId: 'settings.permissions' },
   { prefix: '/parametres/utilisateurs', menuId: 'settings.utilisateurs' },
