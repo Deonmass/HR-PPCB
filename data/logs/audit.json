@@ -1,6 +1,26 @@
 {
   "entries": [
     {
+      "id": "log-000537",
+      "at": "2026-08-20T15:50:41.706Z",
+      "userId": "admin",
+      "userName": "Administrateur",
+      "module": "factures-suivi",
+      "moduleLabel": "Factures suivi",
+      "action": "import",
+      "actionLabel": "Import",
+      "summary": "Import factures — 0 importée(s), 81 ignorée(s)",
+      "details": "Feuille « Factures », 81 ligne(s)",
+      "undoable": false,
+      "undone": false,
+      "meta": {
+        "imported": 0,
+        "skipped": 81,
+        "sheetName": "Factures",
+        "fileName": "Copy of FACTURES_SUIVI_EXPORT_TEMPLATE July 2026.xlsx"
+      }
+    },
+    {
       "id": "log-000536",
       "at": "2026-08-20T15:49:07.888Z",
       "userId": "Serge.Muakasa",
@@ -40988,5 +41008,5 @@
       }
     }
   ],
-  "nextSeq": 537
+  "nextSeq": 538
 }
