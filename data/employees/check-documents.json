@@ -4940,7 +4940,7 @@
         "Extrait casier judiciaire": "Y",
         "Attestation fin service": "N",
         "Diplome releve notes": "Y",
-        "Certificat residence expat": "N",
+        "Certificat residence expat": "NA",
         "Aptitude physique": "N",
         "Curriculum vitae": "N",
         "No CNSS": "N",
@@ -4954,7 +4954,7 @@
         "Contrat Bail village PPC": "N"
       },
       "createdAt": "2026-08-11T14:44:00.747Z",
-      "updatedAt": "2026-08-20T10:45:59.015Z"
+      "updatedAt": "2026-08-20T10:46:14.540Z"
     }
   ]
 }
