@@ -15261,8 +15261,8 @@
       "dateNaissance": "10/10/1994",
       "age": 31,
       "compositionFamille": 1,
-      "enfants": 1,
-      "total": 3,
+      "enfants": 2,
+      "total": 4,
       "commentaires": "",
       "lienDocument": "https://ppcafr.sharepoint.com/:b:/r/sites/knshr/EMPLOYEE%20FILES/NON%20EXCO%20MEMBERS/SALES/70000311-KADIMA%20MPINGA%20MINOU%20Fleur/1%20Situation%20Personnelle/Etat_INCORPORATION_Fleur%20Kadima.pdf?d=w86a950161d5e441e9a6e281066599934&csf=1&web=1&e=F7zRID",
       "createdAt": "2026-08-24T14:59:00.000Z",
@@ -15330,6 +15330,27 @@
       "lienDocument": "https://ppcafr.sharepoint.com/:b:/r/sites/knshr/EMPLOYEE%20FILES/NON%20EXCO%20MEMBERS/SALES/70000311-KADIMA%20MPINGA%20MINOU%20Fleur/1%20Situation%20Personnelle/Etat_INCORPORATION_Fleur%20Kadima.pdf?d=w86a950161d5e441e9a6e281066599934&csf=1&web=1&e=wGmuRT",
       "createdAt": "2026-08-24T15:15:19.028Z",
       "updatedAt": "2026-08-24T15:15:19.028Z"
+    },
+    {
+      "id": 734,
+      "employeeId": "e73092bf-495b-45aa-93a9-4243da4e0599",
+      "matricule": "70000311",
+      "pactilis": "178301",
+      "statut": "Enfant",
+      "sexe": "F",
+      "nom": "OMALOKENGE Athalya-Deodate ",
+      "localisation": "Kinshasa",
+      "numeroVilla": "",
+      "typeMaison": "",
+      "dateNaissance": "20/08/2026",
+      "age": 0,
+      "compositionFamille": null,
+      "enfants": null,
+      "total": null,
+      "commentaires": "",
+      "lienDocument": "https://ppcafr.sharepoint.com/:b:/r/sites/knshr/EMPLOYEE%20FILES/NON%20EXCO%20MEMBERS/SALES/70000311-KADIMA%20MPINGA%20MINOU%20Fleur/1%20Situation%20Personnelle/Etat_INCORPORATION_Fleur%20Kadima.pdf?d=w86a950161d5e441e9a6e281066599934&csf=1&web=1&e=mLcNPL",
+      "createdAt": "2026-08-24T15:16:33.835Z",
+      "updatedAt": "2026-08-24T15:16:33.835Z"
     }
   ]
 }
