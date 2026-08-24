@@ -138,5 +138,15 @@
     "issuedBy": "Administrateur",
     "id": "exit-1787563965995-3z96lz",
     "createdAt": "2026-08-24T09:32:45.995Z"
+  },
+  {
+    "matricule": "70000278",
+    "employeeName": "ASIKANDAMBU SIMBA GRÂCE",
+    "doc": "attestation-fin-service",
+    "docLabel": "Attestation de fin de service",
+    "fileName": "Attestation de fin de service - ASIKANDAMBU SIMBA GRÂCE.docx",
+    "issuedBy": "Administrateur",
+    "id": "exit-1787563974453-uo9x2y",
+    "createdAt": "2026-08-24T09:32:54.453Z"
   }
 ]
