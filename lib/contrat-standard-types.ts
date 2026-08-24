@@ -26,7 +26,7 @@ export interface ContratStandardFormData {
   spouseFullName: string;
   dependants: ContratDependantRow[];
   contractType: ContractType;
-  /** Ex. « 1 an renouvelable » (CDD). */
+  /** Ex. « 1 an renouvelable » ou « 12 mois renouvelable » (CDD). */
   contractDurationLabel: string;
   startDate: string;
   trialMonths: number;
@@ -89,4 +89,13 @@ export function emptyContratForm(): ContratStandardFormData {
     signerName: '',
     signerTitle: '',
   };
+}
+
+/** CDD de 12 mois : ajoute « renouvelable » après la durée, sans le dupliquer. */
+export function annotateCddDurationLabel(label: string): string {
+  const raw = label.trim();
+  if (!raw) return raw;
+  if (/renouvelable/i.test(raw)) return raw;
+  if (!/(?:^|\b)12\s*mois\b/i.test(raw)) return raw;
+  return raw.replace(/12\s*mois\b/i, (match) => `${match} renouvelable`);
 }

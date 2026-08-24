@@ -13,7 +13,11 @@ import {
   formatUsdAmount,
   usdToWordsPhrase,
 } from './contrat-standard-money';
-import type { ContratDependantRow, ContratStandardFormData } from './contrat-standard-types';
+import {
+  annotateCddDurationLabel,
+  type ContratDependantRow,
+  type ContratStandardFormData,
+} from './contrat-standard-types';
 import { replaceDocxSpan, replaceDocxText } from './docx-fill';
 import { fillDocxTemplateToBuffer, fillEmptyParagraph } from './docx-template';
 import { CONTRAT_STANDARD_TEMPLATE_PATH } from './excel-export-template-paths';
@@ -91,7 +95,9 @@ function buildArticle1(form: ContratStandardFormData): string {
       + `et assortie d’une période d’essai de ${trial}.`
     );
   }
-  const duration = safe(form.contractDurationLabel, '1 an renouvelable');
+  const duration = annotateCddDurationLabel(
+    safe(form.contractDurationLabel, '1 an renouvelable'),
+  );
   return (
     `Ce contrat est conclu pour une durée déterminée (${duration}) à compter du ${start} `
     + `et assortie d’une période d’essai de ${trial}.`

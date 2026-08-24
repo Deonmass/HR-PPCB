@@ -1,7 +1,11 @@
 import { NextResponse } from 'next/server';
 import { generateContratStandard } from '@/lib/contrat-standard-docs.server';
 import { resolveContratFamily } from '@/lib/contrat-standard-family';
-import { emptyContratForm, type ContratStandardFormData } from '@/lib/contrat-standard-types';
+import {
+  annotateCddDurationLabel,
+  emptyContratForm,
+  type ContratStandardFormData,
+} from '@/lib/contrat-standard-types';
 import { CLASSIFICATION_RULES, type ContractClassification } from '@/lib/convention-collective-rules';
 import { readDependantsData } from '@/lib/dependants-json-store';
 import { getEmployee } from '@/lib/employees-json-store';
@@ -105,7 +109,9 @@ function sanitizeForm(raw: unknown): ContratStandardFormData {
     spouseFullName,
     dependants,
     contractType: body.contractType === 'CDI' ? 'CDI' : 'CDD',
-    contractDurationLabel: String(body.contractDurationLabel || base.contractDurationLabel).trim(),
+    contractDurationLabel: annotateCddDurationLabel(
+      String(body.contractDurationLabel || base.contractDurationLabel).trim(),
+    ),
     startDate: String(body.startDate || '').trim(),
     trialMonths: Number(body.trialMonths) > 0 ? Number(body.trialMonths) : rules.trialMonths,
     jobTitle: String(body.jobTitle || '').trim(),

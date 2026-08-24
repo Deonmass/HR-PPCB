@@ -16,6 +16,7 @@ import {
   usdToWordsPhrase,
 } from '@/lib/contrat-standard-money';
 import {
+  annotateCddDurationLabel,
   emptyContratForm,
   type ContratDependantRow,
   type ContratStandardFormData,
@@ -131,7 +132,7 @@ export default function ContratStandardPage() {
       contractType: /cdi/i.test(employee.typeContrat || '') ? 'CDI' : 'CDD',
       contractDurationLabel:
         employee.dureeContratMois && employee.dureeContratMois > 0
-          ? `${employee.dureeContratMois} mois`
+          ? annotateCddDurationLabel(`${employee.dureeContratMois} mois`)
           : prev.contractDurationLabel,
       startDate: toInputDate(employee.appointmentDate) || prev.startDate,
       trialMonths: employee.periodeEssaiMois && employee.periodeEssaiMois > 0
@@ -458,7 +459,11 @@ export default function ContratStandardPage() {
               <input
                 value={form.contractDurationLabel}
                 onChange={(e) => setForm((p) => ({ ...p, contractDurationLabel: e.target.value }))}
-                placeholder="1 an renouvelable"
+                onBlur={() => setForm((p) => ({
+                  ...p,
+                  contractDurationLabel: annotateCddDurationLabel(p.contractDurationLabel),
+                }))}
+                placeholder="12 mois renouvelable"
               />
             </div>
           ) : null}
