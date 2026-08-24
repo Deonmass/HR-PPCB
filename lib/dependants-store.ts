@@ -3,6 +3,7 @@ export {
   assignManyEmployeeMaisons,
   createDependant,
   deleteDependant,
+  ensureEmployeeInDependants,
   readDependantsData,
   removeDependantsByMatricule,
   syncFamilyLocalisationFromEmployee,

@@ -464,6 +464,13 @@ export async function upsertEmployee(employee: Employee): Promise<Employee> {
     await syncFamilyLocalisationFromEmployee(saved.matricule, nextLoc);
   }
 
+  try {
+    const { ensureEmployeeInDependants } = await import('./dependants-json-store');
+    await ensureEmployeeInDependants(saved, nextRecord.id);
+  } catch (err) {
+    console.error('[employees] sync dependants failed', saved.matricule, err);
+  }
+
   return saved;
 }
 

@@ -10,6 +10,7 @@ import {
 } from './durable-fs';
 import type { DependantsJsonStoreData, DependantRecord } from './dependants-json-types';
 import type { Dependant, DependantFormData, DependantsData } from './dependants-types';
+import type { Employee } from './types';
 import {
   applyAllFamilyCompositions,
   buildDashboardFromDependants,
@@ -159,6 +160,34 @@ async function readPeopleIndex(): Promise<Map<string, { nom: string; departement
 
 function nextDependantId(records: DependantRecord[]): number {
   return records.reduce((max, item) => Math.max(max, item.id), 0) + 1;
+}
+
+function employeeGenderToSexe(gender: string): string {
+  const g = gender.trim().toUpperCase();
+  if (g.startsWith('F')) return 'F';
+  if (g.startsWith('M') || g.startsWith('H')) return 'M';
+  return '';
+}
+
+function applyEmployeeIdentityToDependant(
+  row: DependantRecord,
+  employee: Employee,
+  employeeId: string,
+  now: string,
+): void {
+  row.employeeId = employeeId || row.employeeId;
+  row.nom = employee.nom.trim() || row.nom;
+  const sexe = employeeGenderToSexe(employee.gender || '');
+  if (sexe) row.sexe = sexe;
+  if ((employee.localisation || '').trim()) row.localisation = employee.localisation.trim();
+  const dob = formatDependantBirthDateDisplay(employee.dateOfBirth);
+  if (dob) {
+    row.dateNaissance = dob;
+    row.age = employee.age ?? computeDependantAge(dob);
+  } else if (employee.age != null) {
+    row.age = employee.age;
+  }
+  row.updatedAt = now;
 }
 
 function syncFamilyCounts(records: DependantRecord[], familyMatricule: string): void {
@@ -365,6 +394,78 @@ function reattachOrphanConjointEmployes(store: DependantsJsonStoreData): number 
   return changed;
 }
 
+/** Agents actifs sans ligne Dépendants : crée la ligne Employé (ou rattache un conjoint déjà listé). */
+async function seedMissingEmployeeDependants(store: DependantsJsonStoreData): Promise<number> {
+  const { employees } = await readEmployeesBundle();
+  const recordIndex = await getEmployeesRecordIndex();
+  const covered = new Set<string>();
+  for (const row of store.dependants) {
+    if (isEmployeeStatut(row.statut)) covered.add(row.matricule.trim());
+    const own = (row.ownMatricule || '').trim();
+    if (own) covered.add(own);
+  }
+
+  const now = new Date().toISOString();
+  let added = 0;
+  const touched = new Set<string>();
+
+  for (const emp of employees) {
+    const mat = emp.matricule.trim();
+    const nom = emp.nom.trim();
+    if (!mat || !nom || covered.has(mat)) continue;
+    const rec = recordIndex.activeByMatricule.get(mat);
+    if (!rec) continue;
+
+    const nameKey = normalizePersonName(nom);
+    const spouse = nameKey
+      ? store.dependants.find(
+          (row) =>
+            isSpouseStatut(row.statut)
+            && familyGroupKey(row) !== mat
+            && normalizePersonName(row.nom) === nameKey,
+        )
+      : undefined;
+
+    if (spouse) {
+      applyEmployeeIdentityToDependant(spouse, emp, rec.id, now);
+      spouse.ownMatricule = mat;
+      spouse.statut = CONJOINT_EMPLOYE_STATUT;
+      covered.add(mat);
+      touched.add(familyGroupKey(spouse));
+      added += 1;
+      continue;
+    }
+
+    store.dependants.push({
+      id: nextDependantId(store.dependants),
+      employeeId: rec.id,
+      matricule: mat,
+      pactilis: '',
+      statut: 'Employé',
+      sexe: employeeGenderToSexe(emp.gender || ''),
+      nom,
+      localisation: (emp.localisation || '').trim(),
+      numeroVilla: '',
+      typeMaison: '',
+      dateNaissance: formatDependantBirthDateDisplay(emp.dateOfBirth),
+      age: emp.age ?? computeDependantAge(emp.dateOfBirth),
+      compositionFamille: 0,
+      enfants: 0,
+      total: 1,
+      commentaires: '',
+      lienDocument: '',
+      createdAt: now,
+      updatedAt: now,
+    });
+    covered.add(mat);
+    touched.add(mat);
+    added += 1;
+  }
+
+  for (const key of touched) syncFamilyCounts(store.dependants, key);
+  return added;
+}
+
 export async function readDependantsData(): Promise<DependantsData> {
   await ensureMigrated();
   const store = await readStore();
@@ -372,6 +473,7 @@ export async function readDependantsData(): Promise<DependantsData> {
   dirty += migrateInvertedConjointModel(store);
   dirty += reattachOrphanConjointEmployes(store);
   dirty += await syncConjointEmployeLinks(store);
+  dirty += await seedMissingEmployeeDependants(store);
   if (dirty > 0) await writeStore(store);
 
   const people = await readPeopleIndex();
@@ -388,6 +490,84 @@ export async function readDependantsData(): Promise<DependantsData> {
     exitedDependants: exited,
     dashboard: buildDashboardFromDependants(active),
   };
+}
+
+/**
+ * À l’ajout / mise à jour d’un agent : crée ou actualise sa ligne dans Dépendants.
+ * Si la personne est déjà un conjoint d’un autre agent, elle reste sous cette famille
+ * (Conjoint employé) — on ne crée pas un second chef de famille.
+ */
+export async function ensureEmployeeInDependants(
+  employee: Employee,
+  employeeId: string,
+): Promise<void> {
+  await ensureMigrated();
+  const mat = employee.matricule.trim();
+  const nom = employee.nom.trim();
+  if (!mat || !nom) return;
+
+  const store = await readStore();
+  const now = new Date().toISOString();
+  const nameKey = normalizePersonName(nom);
+
+  const existingHead = store.dependants.find(
+    (row) => isEmployeeStatut(row.statut) && row.matricule.trim() === mat,
+  );
+  if (existingHead) {
+    applyEmployeeIdentityToDependant(existingHead, employee, employeeId, now);
+    if (!existingHead.matricule.trim()) existingHead.matricule = mat;
+    syncFamilyCounts(store.dependants, familyGroupKey(existingHead));
+    await writeStore(store);
+    return;
+  }
+
+  const existingAsOwn = store.dependants.find(
+    (row) => (row.ownMatricule || '').trim() === mat,
+  );
+  const existingSpouseByName = nameKey
+    ? store.dependants.find(
+        (row) =>
+          isSpouseStatut(row.statut)
+          && familyGroupKey(row) !== mat
+          && normalizePersonName(row.nom) === nameKey,
+      )
+    : undefined;
+  const linked = existingAsOwn || existingSpouseByName;
+  if (linked) {
+    applyEmployeeIdentityToDependant(linked, employee, employeeId, now);
+    if (isSpouseStatut(linked.statut) && familyGroupKey(linked) !== mat) {
+      linked.ownMatricule = mat;
+      linked.statut = CONJOINT_EMPLOYE_STATUT;
+    }
+    syncFamilyCounts(store.dependants, familyGroupKey(linked));
+    await writeStore(store);
+    return;
+  }
+
+  const record: DependantRecord = {
+    id: nextDependantId(store.dependants),
+    employeeId,
+    matricule: mat,
+    pactilis: '',
+    statut: 'Employé',
+    sexe: employeeGenderToSexe(employee.gender || ''),
+    nom,
+    localisation: (employee.localisation || '').trim(),
+    numeroVilla: '',
+    typeMaison: '',
+    dateNaissance: formatDependantBirthDateDisplay(employee.dateOfBirth),
+    age: employee.age ?? computeDependantAge(employee.dateOfBirth),
+    compositionFamille: 0,
+    enfants: 0,
+    total: 1,
+    commentaires: '',
+    lienDocument: '',
+    createdAt: now,
+    updatedAt: now,
+  };
+  store.dependants.push(record);
+  syncFamilyCounts(store.dependants, mat);
+  await writeStore(store);
 }
 
 export async function createDependant(data: DependantFormData): Promise<Dependant> {
