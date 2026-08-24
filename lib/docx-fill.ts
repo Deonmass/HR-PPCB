@@ -143,6 +143,40 @@ export function replaceDocxText(
 }
 
 /**
+ * Remplace tout le texte entre `start` (inclus) et `end` (inclus).
+ * Utile pour réécrire un paragraphe juridique sans toucher au reste du document.
+ */
+export function replaceDocxSpan(
+  xml: string,
+  start: string,
+  end: string,
+  replacement: string,
+  options?: { optional?: boolean },
+): string {
+  const startNeedle = escapeDocxText(start);
+  const endNeedle = escapeDocxText(end);
+  const nodes = collectTextNodes(xml);
+  const concat = nodes.map((node) => node.text).join('');
+  const startIndex = concat.indexOf(startNeedle);
+  if (startIndex < 0) {
+    if (options?.optional) return xml;
+    throw new Error(`Début de paragraphe introuvable : ${start.slice(0, 60)}`);
+  }
+  const endIndex = concat.indexOf(endNeedle, startIndex);
+  if (endIndex < 0) {
+    if (options?.optional) return xml;
+    throw new Error(`Fin de paragraphe introuvable : ${end.slice(0, 60)}`);
+  }
+  return spliceConcatRange(
+    xml,
+    nodes,
+    startIndex,
+    endIndex + endNeedle.length,
+    escapeDocxText(replacement),
+  );
+}
+
+/**
  * Remplit un « blanc » (pointillés `…`/`.` ou underscores `_`) qui suit un
  * libellé, p.ex. `Name: ………………` ou `Position: ________`.
  * Les espaces immédiatement après le libellé sont conservés.

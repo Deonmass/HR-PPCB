@@ -14,7 +14,7 @@ import {
   usdToWordsPhrase,
 } from './contrat-standard-money';
 import type { ContratDependantRow, ContratStandardFormData } from './contrat-standard-types';
-import { replaceDocxText } from './docx-fill';
+import { replaceDocxSpan, replaceDocxText } from './docx-fill';
 import { fillDocxTemplateToBuffer, fillEmptyParagraph } from './docx-template';
 import { CONTRAT_STANDARD_TEMPLATE_PATH } from './excel-export-template-paths';
 
@@ -29,6 +29,18 @@ const DEPENDANT_EMPTY_CELLS: Array<{
   { prenom: '7B2748C7', nom: '2D1FECB6', postNom: '3CC8C3AE', birth: '7D07C193' },
   { prenom: '777A9F1E', nom: '36372D59', postNom: '7DD37516', birth: '343FD151' },
 ];
+
+const APOS = '\u2019';
+
+/** Bloc employeur du modèle — à conserver intégralement, hors représentant. */
+const EMPLOYER_BLOCK_START = 'La soci\u00e9t\u00e9 PPC BARNET DRC MANUFACTURING S A';
+const EMPLOYER_BLOCK_END = `ayant pouvoir a l${APOS}effet des pr\u00e9sentes`;
+
+function buildEmployerPreamble(signerName: string, signerTitle: string): string {
+  return (
+    `La soci\u00e9t\u00e9 PPC BARNET DRC MANUFACTURING S A, avec Conseil d${APOS}Administration au capital social de CDF 20.052.125.000, ayant son si\u00e8ge social au 5eme \u00e9tage, Immeuble D, Concession la promenade II, croisement des avenues OUA et Massamba, Quartier Basoko dans la commune de Ngaliema, \u00e0 Kinshasa, R\u00e9publique D\u00e9mocratique du Congo,  Immatricul\u00e9e au Registre de Commerce et de Credit Mobilier (RCCM) sous le num\u00e9ro 14-B-01677, dont le num\u00e9ro d${APOS} Identification Nationale est 01-C2301-N79031 Q et le num\u00e9ro d${APOS}imp\u00f4t A1402387L, affili\u00e9e \u00e0 la CNSS sous le N\u00b0 1003780600, repr\u00e9sent\u00e9e par ${signerName}, en qualit\u00e9 de ${signerTitle}, ayant pouvoir a l${APOS}effet des pr\u00e9sentes`
+  );
+}
 
 const MONTHS_FR = [
   'janvier', 'février', 'mars', 'avril', 'mai', 'juin',
@@ -238,7 +250,12 @@ function fillBodyXml(xml: string, form: ContratStandardFormData): string {
     { optional: true },
   );
   out = replaceDocxText(out, 'HR Admin', jobTitle, { occurrence: 'all', optional: true });
-  out = replaceDocxText(out, 'Plant HR Manager', manager, { optional: true });
+  out = replaceDocxText(
+    out,
+    'supérieur hiérarchique le Plant HR Manager',
+    `supérieur hiérarchique le ${manager}`,
+    { optional: true },
+  );
 
   // Zamba → conserver / écrire « Kimpese (usine) » ; sinon remplacer le lieu modèle.
   if (!/^kimpese\s*\(usine\)$/i.test(location)) {
@@ -298,17 +315,18 @@ function fillBodyXml(xml: string, form: ContratStandardFormData): string {
   });
   out = replaceDocxText(out, '03 juin 2026', docDate, { optional: true });
 
-  // Signataire employeur (mention dans le préambule si on veut remplacer le DG — optionnel).
+  // Bloc société conservé intégralement — seul le représentant (RH) est mis à jour, en dernier.
   if (form.signerName.trim()) {
-    out = replaceDocxText(
+    out = replaceDocxSpan(
       out,
-      'représentée par Monsieur Patrick KAHASHA MBASHA, en qualité de Directeur Général',
-      `représentée par ${safe(form.signerName)}, en qualité de ${safe(form.signerTitle, 'Plant HR Manager')}`,
+      EMPLOYER_BLOCK_START,
+      EMPLOYER_BLOCK_END,
+      buildEmployerPreamble(
+        form.signerName.trim(),
+        form.signerTitle.trim() || 'Plant HR Manager',
+      ),
       { optional: true },
     );
-    out = replaceDocxText(out, 'Patrick KAHASHA MBASHA', safe(form.signerName), {
-      optional: true,
-    });
   }
 
   return out;
