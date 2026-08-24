@@ -159,7 +159,21 @@ export async function POST(request: Request) {
       },
     });
   } catch (err) {
-    const message = err instanceof Error ? err.message : 'Erreur';
+    const message = describeContratError(err);
     return NextResponse.json({ error: message }, { status: 400 });
   }
+}
+
+function describeContratError(err: unknown): string {
+  if (!(err instanceof Error) || !err.message.trim()) {
+    return 'Erreur inattendue lors de la génération du contrat.';
+  }
+  const code = (err as NodeJS.ErrnoException).code;
+  if (code === 'ENOENT' || /enoent|no such file/i.test(err.message)) {
+    return 'Modèle de contrat introuvable sur le serveur (Excel/templates/contrats/contrat-standard.docx).';
+  }
+  if (/timeout|timed out|aborted/i.test(err.message)) {
+    return 'La génération a dépassé le délai serveur. Réessayez.';
+  }
+  return err.message;
 }

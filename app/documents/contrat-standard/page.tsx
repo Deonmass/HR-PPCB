@@ -22,6 +22,7 @@ import {
 } from '@/lib/contrat-standard-types';
 import { formatMaritalStatusFr, formatPrestationLocation, joinPersonName } from '@/lib/contrat-standard-family';
 import { showError, showSuccess } from '@/lib/swal';
+import { formatFetchFailure, readResponseError } from '@/lib/http-error';
 import type { Employee } from '@/lib/types';
 
 function isHrDepartment(value: string): boolean {
@@ -242,8 +243,7 @@ export default function ContratStandardPage() {
         body: JSON.stringify(form),
       });
       if (!res.ok) {
-        const json = (await res.json().catch(() => null)) as { error?: string } | null;
-        throw new Error(json?.error || 'Génération impossible');
+        throw new Error(await readResponseError(res, 'Génération du contrat impossible'));
       }
       const blob = await res.blob();
       const header = res.headers.get('X-File-Name');
@@ -258,7 +258,7 @@ export default function ContratStandardPage() {
       triggerDownload(blob, fileName);
       await showSuccess('Contrat généré');
     } catch (err) {
-      await showError(err instanceof Error ? err.message : 'Génération impossible');
+      await showError(formatFetchFailure(err, 'Génération du contrat impossible'));
     } finally {
       setGenerating(false);
     }

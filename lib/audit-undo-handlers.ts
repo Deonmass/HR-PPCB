@@ -2,7 +2,7 @@ import 'server-only';
 
 import type { AuditLogEntry } from './audit-log-types';
 import { hasUndoHandler as registryHasUndoHandler } from './audit-undo-registry';
-import type { AuthUser, CostCenterSetting, DepartmentSetting } from './auth-types';
+import type { AuthUser, CostCenterSetting, DepartmentSetting, ServiceSetting } from './auth-types';
 import { deleteUser, upsertUser } from './auth-store';
 import type { CharroiAchat, CharroiVehicule } from './charroi-types';
 import {
@@ -30,8 +30,10 @@ import { deleteExpense, deleteProject, upsertExpense, upsertProject } from './pr
 import {
   deleteCostCenter,
   deleteDepartment,
+  deleteService,
   upsertCostCenter,
   upsertDepartment,
+  upsertService,
 } from './settings-store';
 import type { TravelHistoryRow } from './travel-history-types';
 import {
@@ -268,6 +270,13 @@ const handlers: Record<string, AuditUndoHandler> = {
       entry,
       deleteFn: deleteCostCenter,
       restoreFn: async (snapshot) => upsertCostCenter(snapshot as CostCenterSetting),
+    });
+  },
+  'settings.service': async (entry) => {
+    await undoCreateDeleteRestore({
+      entry,
+      deleteFn: deleteService,
+      restoreFn: async (snapshot) => upsertService(snapshot as ServiceSetting),
     });
   },
   'auth.user': async (entry) => {

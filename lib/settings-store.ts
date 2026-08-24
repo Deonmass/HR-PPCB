@@ -1,15 +1,19 @@
 import 'server-only';
 
-import type { CostCenterSetting, DepartmentSetting } from './auth-types';
+import type { CostCenterSetting, DepartmentSetting, ServiceSetting } from './auth-types';
 import {
   createCostCenterId,
   createDepartmentId,
+  createServiceId,
   deleteCostCenterFromParams,
   deleteDepartmentFromParams,
+  deleteServiceFromParams,
   listCostCentersFromParams,
   listDepartmentsFromParams,
+  listServicesFromParams,
   upsertCostCenterInParams,
   upsertDepartmentInParams,
+  upsertServiceInParams,
 } from './params-store';
 
 export async function listDepartments(): Promise<DepartmentSetting[]> {
@@ -36,4 +40,16 @@ export async function deleteCostCenter(id: string): Promise<boolean> {
   return deleteCostCenterFromParams(id);
 }
 
-export { createDepartmentId, createCostCenterId };
+export async function listServices(): Promise<ServiceSetting[]> {
+  return listServicesFromParams();
+}
+
+export async function upsertService(item: ServiceSetting): Promise<ServiceSetting> {
+  return upsertServiceInParams(item);
+}
+
+export async function deleteService(id: string): Promise<boolean> {
+  return deleteServiceFromParams(id);
+}
+
+export { createDepartmentId, createCostCenterId, createServiceId };

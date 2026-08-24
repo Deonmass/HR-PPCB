@@ -80,3 +80,11 @@ export interface CostCenterSetting {
   departmentId?: string;
   active: boolean;
 }
+
+export interface ServiceSetting {
+  id: string;
+  name: string;
+  code?: string;
+  departmentId: string;
+  active: boolean;
+}

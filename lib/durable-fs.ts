@@ -10,6 +10,7 @@ export const DURABLE_USERS_KEY = 'data/auth/users.json';
 export const DURABLE_PERMISSIONS_KEY = 'data/auth/permissions.json';
 export const DURABLE_DEPARTMENTS_KEY = 'data/settings/departments.json';
 export const DURABLE_COST_CENTERS_KEY = 'data/settings/cost-centers.json';
+export const DURABLE_SERVICES_KEY = 'data/settings/services.json';
 /** @deprecated Params.xlsx deleted — settings live under data/settings/*.json. */
 export const DURABLE_PARAMS_KEY = 'data/settings/departments.json';
 export const DURABLE_GUEST_HOUSE_KEY = 'data/guest-house/store.json';

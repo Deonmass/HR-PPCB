@@ -139,6 +139,7 @@ export const AUDIT_MODULE_LABELS: Record<string, string> = {
   'settings.utilisateurs': 'Paramètres — Utilisateurs',
   'settings.permissions': 'Paramètres — Permissions',
   'settings.departements': 'Paramètres — Départements',
+  'settings.services': 'Paramètres — Services',
   'settings.centres': 'Paramètres — Centres de coût',
   auth: 'Authentification',
   parametres: 'Paramètres',

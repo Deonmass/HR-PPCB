@@ -3,10 +3,11 @@ import 'server-only';
 import fs from 'fs';
 import fsPromises from 'fs/promises';
 import path from 'path';
-import type { CostCenterSetting, DepartmentSetting } from './auth-types';
+import type { CostCenterSetting, DepartmentSetting, ServiceSetting } from './auth-types';
 import {
   DURABLE_COST_CENTERS_KEY,
   DURABLE_DEPARTMENTS_KEY,
+  DURABLE_SERVICES_KEY,
   hydrateDurableFile,
   persistDurableFile,
 } from './durable-fs';
@@ -18,6 +19,10 @@ interface DepartmentsStore {
 
 interface CostCentersStore {
   costCenters: CostCenterSetting[];
+}
+
+interface ServicesStore {
+  services: ServiceSetting[];
 }
 
 function resolveStorePath(relativePath: string): string {
@@ -43,6 +48,10 @@ function costCentersPath(): string {
   return resolveStorePath(path.join('data', 'settings', 'cost-centers.json'));
 }
 
+function servicesPath(): string {
+  return resolveStorePath(path.join('data', 'settings', 'services.json'));
+}
+
 function slugify(value: string): string {
   return (
     value
@@ -61,6 +70,11 @@ export function departmentIdFromName(name: string): string {
 
 export function costCenterIdFromCode(code: string): string {
   return `cc-${slugify(code)}`;
+}
+
+export function serviceIdFromName(departmentId: string, name: string): string {
+  const dept = departmentId.replace(/^dept-/, '');
+  return `svc-${slugify(`${dept}-${name}`)}`;
 }
 
 /** @deprecated Prefer costCenterIdFromCode — kept for API compatibility. */
@@ -100,6 +114,13 @@ async function readCostCentersStore(): Promise<CostCentersStore> {
   return { costCenters: Array.isArray(store.costCenters) ? store.costCenters : [] };
 }
 
+async function readServicesStore(): Promise<ServicesStore> {
+  const store = await readJsonFile<ServicesStore>(DURABLE_SERVICES_KEY, servicesPath(), {
+    services: [],
+  });
+  return { services: Array.isArray(store.services) ? store.services : [] };
+}
+
 export async function listDepartmentsFromParams(): Promise<DepartmentSetting[]> {
   const store = await readDepartmentsStore();
   return [...store.departments]
@@ -112,6 +133,13 @@ export async function listCostCentersFromParams(): Promise<CostCenterSetting[]> 
   return [...store.costCenters]
     .filter((item) => item?.code?.trim())
     .sort((a, b) => a.code.localeCompare(b.code, 'fr'));
+}
+
+export async function listServicesFromParams(): Promise<ServiceSetting[]> {
+  const store = await readServicesStore();
+  return [...store.services]
+    .filter((item) => item?.name?.trim() && item?.departmentId?.trim())
+    .sort((a, b) => a.name.localeCompare(b.name, 'fr'));
 }
 
 export async function upsertDepartmentInParams(item: DepartmentSetting): Promise<DepartmentSetting> {
@@ -134,17 +162,28 @@ export async function upsertDepartmentInParams(item: DepartmentSetting): Promise
   if (existingIndex >= 0) store.departments[existingIndex] = next;
   else store.departments.push(next);
 
-  // Keep cost-center department links in sync when renaming.
+  // Keep cost-center and service department links in sync when renaming.
   if (previous && previous.id !== next.id) {
     const ccStore = await readCostCentersStore();
-    let changed = false;
+    let ccChanged = false;
     for (const cc of ccStore.costCenters) {
       if (cc.departmentId !== previous.id) continue;
       cc.departmentId = next.id;
-      changed = true;
+      ccChanged = true;
     }
-    if (changed) {
+    if (ccChanged) {
       await writeJsonFile(DURABLE_COST_CENTERS_KEY, costCentersPath(), ccStore);
+    }
+
+    const svcStore = await readServicesStore();
+    let svcChanged = false;
+    for (const service of svcStore.services) {
+      if (service.departmentId !== previous.id) continue;
+      service.departmentId = next.id;
+      svcChanged = true;
+    }
+    if (svcChanged) {
+      await writeJsonFile(DURABLE_SERVICES_KEY, servicesPath(), svcStore);
     }
   }
 
@@ -159,14 +198,20 @@ export async function deleteDepartmentFromParams(id: string): Promise<boolean> {
   await writeJsonFile(DURABLE_DEPARTMENTS_KEY, departmentsPath(), { departments: next });
 
   const ccStore = await readCostCentersStore();
-  let changed = false;
+  let ccChanged = false;
   for (const cc of ccStore.costCenters) {
     if (cc.departmentId !== id) continue;
     cc.departmentId = undefined;
-    changed = true;
+    ccChanged = true;
   }
-  if (changed) {
+  if (ccChanged) {
     await writeJsonFile(DURABLE_COST_CENTERS_KEY, costCentersPath(), ccStore);
+  }
+
+  const svcStore = await readServicesStore();
+  const remainingServices = svcStore.services.filter((item) => item.departmentId !== id);
+  if (remainingServices.length !== svcStore.services.length) {
+    await writeJsonFile(DURABLE_SERVICES_KEY, servicesPath(), { services: remainingServices });
   }
   return true;
 }
@@ -211,6 +256,55 @@ export async function deleteCostCenterFromParams(id: string): Promise<boolean> {
   return true;
 }
 
+export async function upsertServiceInParams(item: ServiceSetting): Promise<ServiceSetting> {
+  const store = await readServicesStore();
+  const name = item.name.trim();
+  const departmentId = item.departmentId?.trim() ?? '';
+  if (!name) throw new Error('Nom du service requis');
+  if (!departmentId) throw new Error('Département associé requis');
+
+  const departments = await readDepartmentsStore();
+  if (!departments.departments.some((dept) => dept.id === departmentId)) {
+    throw new Error('Département associé introuvable');
+  }
+
+  const next: ServiceSetting = {
+    id: item.id?.trim() || serviceIdFromName(departmentId, name),
+    name,
+    code: item.code?.trim() || name,
+    departmentId,
+    active: item.active ?? true,
+  };
+
+  const existingIndex = store.services.findIndex((service) => service.id === next.id);
+  if (existingIndex >= 0) {
+    store.services[existingIndex] = next;
+  } else {
+    const duplicate = store.services.findIndex(
+      (service) =>
+        service.departmentId === departmentId
+        && service.name.trim().toLowerCase() === name.toLowerCase(),
+    );
+    if (duplicate >= 0) {
+      next.id = store.services[duplicate].id;
+      store.services[duplicate] = next;
+    } else {
+      store.services.push(next);
+    }
+  }
+
+  await writeJsonFile(DURABLE_SERVICES_KEY, servicesPath(), store);
+  return next;
+}
+
+export async function deleteServiceFromParams(id: string): Promise<boolean> {
+  const store = await readServicesStore();
+  const next = store.services.filter((item) => item.id !== id);
+  if (next.length === store.services.length) return false;
+  await writeJsonFile(DURABLE_SERVICES_KEY, servicesPath(), { services: next });
+  return true;
+}
+
 export function createDepartmentId(name: string): string {
   return departmentIdFromName(name);
 }
@@ -221,4 +315,8 @@ export function createCostCenterId(codeOrRow?: string | number): string {
   }
   if (typeof codeOrRow === 'number') return costCenterIdFromRow(codeOrRow);
   return '';
+}
+
+export function createServiceId(departmentId: string, name: string): string {
+  return serviceIdFromName(departmentId, name);
 }

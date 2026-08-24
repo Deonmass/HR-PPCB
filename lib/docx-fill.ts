@@ -109,15 +109,22 @@ export function replaceDocxText(
   const occurrence = options?.occurrence ?? 1;
 
   if (occurrence === 'all') {
+    if (!needle || needle === replacement) return xml;
     let result = xml;
     let found = false;
+    let from = 0;
+    let guard = 0;
     for (;;) {
+      if (guard++ > 500) {
+        throw new Error(`Remplacement Word trop répétitif : ${search.slice(0, 60)}`);
+      }
       const nodes = collectTextNodes(result);
       const concat = nodes.map((node) => node.text).join('');
-      const index = concat.indexOf(needle);
+      const index = concat.indexOf(needle, from);
       if (index < 0) break;
       found = true;
       result = spliceConcatRange(result, nodes, index, index + needle.length, replacement);
+      from = index + replacement.length;
     }
     if (!found && !options?.optional) {
       throw new Error(`Texte introuvable dans le modèle Word : ${search.slice(0, 60)}`);

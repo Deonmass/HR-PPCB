@@ -15,6 +15,7 @@ export const UNDOABLE_ENTITY_TYPES = [
   'village.taille',
   'village.suggestion',
   'settings.department',
+  'settings.service',
   'settings.cost-center',
   'auth.user',
 ] as const;

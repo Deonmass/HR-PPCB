@@ -1,6 +1,5 @@
 import 'server-only';
 
-import path from 'path';
 import JSZip from 'jszip';
 import fs from 'fs/promises';
 import { CLASSIFICATION_RULES, formatCategoryLine } from './convention-collective-rules';
@@ -17,6 +16,7 @@ import {
 import type { ContratDependantRow, ContratStandardFormData } from './contrat-standard-types';
 import { replaceDocxText } from './docx-fill';
 import { fillDocxTemplateToBuffer, fillEmptyParagraph } from './docx-template';
+import { CONTRAT_STANDARD_TEMPLATE_PATH } from './excel-export-template-paths';
 
 /** Cellules vides du tableau « Personnes à charge » (lignes 2–4 du modèle). */
 const DEPENDANT_EMPTY_CELLS: Array<{
@@ -29,14 +29,6 @@ const DEPENDANT_EMPTY_CELLS: Array<{
   { prenom: '7B2748C7', nom: '2D1FECB6', postNom: '3CC8C3AE', birth: '7D07C193' },
   { prenom: '777A9F1E', nom: '36372D59', postNom: '7DD37516', birth: '343FD151' },
 ];
-
-const TEMPLATE_PATH = path.join(
-  process.cwd(),
-  'Excel',
-  'templates',
-  'contrats',
-  'contrat-standard.docx',
-);
 
 const MONTHS_FR = [
   'janvier', 'février', 'mars', 'avril', 'mai', 'juin',
@@ -351,8 +343,15 @@ export interface GeneratedContratDoc {
 export async function generateContratStandard(
   form: ContratStandardFormData,
 ): Promise<GeneratedContratDoc> {
-  await fs.access(TEMPLATE_PATH);
-  let buffer = await fillDocxTemplateToBuffer(TEMPLATE_PATH, (xml) => fillBodyXml(xml, form));
+  const templatePath = CONTRAT_STANDARD_TEMPLATE_PATH;
+  try {
+    await fs.access(templatePath);
+  } catch {
+    throw new Error(
+      'Modèle de contrat introuvable. Placez contrat-standard.docx dans Excel/templates/contrats/.',
+    );
+  }
+  let buffer = await fillDocxTemplateToBuffer(templatePath, (xml) => fillBodyXml(xml, form));
   buffer = await fillFooterJobTitle(buffer, safe(form.jobTitle, 'Poste'));
   const kind = form.contractType === 'CDI' ? 'CDI' : 'CDD';
   return {
