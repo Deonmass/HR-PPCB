@@ -1,6 +1,42 @@
 {
   "entries": [
     {
+      "id": "log-000556",
+      "at": "2026-08-24T15:16:36.627Z",
+      "userId": "admin",
+      "userName": "Administrateur",
+      "module": "dependants",
+      "moduleLabel": "Dépendants",
+      "action": "create",
+      "actionLabel": "Création",
+      "entityType": "dependant",
+      "entityId": "734",
+      "summary": "Création dépendant OMALOKENGE Athalya-Deodate  (70000311)",
+      "details": "Création dépendant OMALOKENGE Athalya-Deodate  (70000311)",
+      "after": {
+        "id": 734,
+        "matricule": "70000311",
+        "pactilis": "178301",
+        "statut": "Enfant",
+        "sexe": "F",
+        "nom": "OMALOKENGE Athalya-Deodate ",
+        "localisation": "Kinshasa",
+        "numeroVilla": "",
+        "typeMaison": "",
+        "dateNaissance": "20/08/2026",
+        "age": 0,
+        "compositionFamille": null,
+        "enfants": null,
+        "total": null,
+        "commentaires": "",
+        "lienDocument": "https://ppcafr.sharepoint.com/:b:/r/sites/knshr/EMPLOYEE%20FILES/NON%20EXCO%20MEMBERS/SALES/70000311-KADIMA%20MPINGA%20MINOU%20Fleur/1%20Situation%20Personnelle/Etat_INCORPORATION_Fleur%20Kadima.pdf?d=w86a950161d5e441e9a6e281066599934&csf=1&web=1&e=mLcNPL",
+        "employeNom": "KADIMA MPINGA MINOU Fleur ",
+        "departement": "Sales & Logistics"
+      },
+      "undoable": true,
+      "undone": false
+    },
+    {
       "id": "log-000555",
       "at": "2026-08-24T15:15:21.956Z",
       "userId": "admin",
@@ -43221,5 +43257,5 @@
       }
     }
   ],
-  "nextSeq": 556
+  "nextSeq": 557
 }
