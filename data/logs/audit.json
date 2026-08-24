@@ -1,6 +1,20 @@
 {
   "entries": [
     {
+      "id": "log-000542",
+      "at": "2026-08-24T09:32:48.748Z",
+      "userId": "admin",
+      "userName": "Administrateur",
+      "module": "documents.exit",
+      "moduleLabel": "Documents",
+      "action": "export",
+      "actionLabel": "Export",
+      "summary": "Document exit « Exit interview form » — ASIKANDAMBU SIMBA GRÂCE (70000278)",
+      "details": "Document exit « Exit interview form » — ASIKANDAMBU SIMBA GRÂCE (70000278)",
+      "undoable": false,
+      "undone": false
+    },
+    {
       "id": "log-000541",
       "at": "2026-08-24T09:32:38.889Z",
       "userId": "admin",
@@ -42453,5 +42467,5 @@
       }
     }
   ],
-  "nextSeq": 542
+  "nextSeq": 543
 }
