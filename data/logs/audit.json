@@ -1,6 +1,20 @@
 {
   "entries": [
     {
+      "id": "log-000544",
+      "at": "2026-08-24T09:33:05.396Z",
+      "userId": "admin",
+      "userName": "Administrateur",
+      "module": "documents.exit",
+      "moduleLabel": "Documents",
+      "action": "export",
+      "actionLabel": "Export",
+      "summary": "Document exit « User removal form » — ASIKANDAMBU SIMBA GRÂCE (70000278)",
+      "details": "Document exit « User removal form » — ASIKANDAMBU SIMBA GRÂCE (70000278)",
+      "undoable": false,
+      "undone": false
+    },
+    {
       "id": "log-000543",
       "at": "2026-08-24T09:32:57.159Z",
       "userId": "admin",
@@ -42481,5 +42495,5 @@
       }
     }
   ],
-  "nextSeq": 544
+  "nextSeq": 545
 }
