@@ -1,6 +1,63 @@
 {
   "entries": [
     {
+      "id": "log-000552",
+      "at": "2026-08-24T15:07:13.635Z",
+      "userId": "admin",
+      "userName": "Administrateur",
+      "module": "dependants",
+      "moduleLabel": "Dépendants",
+      "action": "update",
+      "actionLabel": "Modification",
+      "entityType": "dependant",
+      "entityId": "730",
+      "summary": "Modification dépendant #730 — KADIMA MPINGA MINOU Fleur",
+      "details": "Modification dépendant #730 — KADIMA MPINGA MINOU Fleur",
+      "before": {
+        "id": 730,
+        "employeeId": "e73092bf-495b-45aa-93a9-4243da4e0599",
+        "matricule": "70000311",
+        "pactilis": "",
+        "statut": "Employé",
+        "sexe": "F",
+        "nom": "KADIMA MINOU FLEUR",
+        "localisation": "Kinshasa",
+        "numeroVilla": "",
+        "typeMaison": "",
+        "dateNaissance": "10/10/1994",
+        "age": 31,
+        "compositionFamille": 0,
+        "enfants": 0,
+        "total": 1,
+        "commentaires": "",
+        "lienDocument": "",
+        "createdAt": "2026-08-24T14:59:00.000Z",
+        "updatedAt": "2026-08-24T14:59:00.000Z"
+      },
+      "after": {
+        "id": 730,
+        "matricule": "70000311",
+        "pactilis": "",
+        "statut": "Employé",
+        "sexe": "F",
+        "nom": "KADIMA MPINGA MINOU Fleur",
+        "localisation": "Kinshasa",
+        "numeroVilla": "",
+        "typeMaison": "",
+        "dateNaissance": "10/10/1994",
+        "age": 31,
+        "compositionFamille": 0,
+        "enfants": 0,
+        "total": 1,
+        "commentaires": "",
+        "lienDocument": "",
+        "employeNom": "KADIMA MPINGA MINOU Fleur ",
+        "departement": "Sales & Logistics"
+      },
+      "undoable": true,
+      "undone": false
+    },
+    {
       "id": "log-000551",
       "at": "2026-08-24T14:55:07.699Z",
       "userId": "Serge.Muakasa",
@@ -43035,5 +43092,5 @@
       }
     }
   ],
-  "nextSeq": 552
+  "nextSeq": 553
 }
