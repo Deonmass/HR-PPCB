@@ -1,6 +1,20 @@
 {
   "entries": [
     {
+      "id": "log-000557",
+      "at": "2026-08-24T15:25:50.323Z",
+      "userId": "admin",
+      "userName": "Administrateur",
+      "module": "documents.contrat-standard",
+      "moduleLabel": "Contrat standard",
+      "action": "export",
+      "actionLabel": "Export",
+      "summary": "Contrat CDD — KADIMA MPINGA MINOU Fleur",
+      "details": "Contrat CDD — KADIMA MPINGA MINOU Fleur",
+      "undoable": false,
+      "undone": false
+    },
+    {
       "id": "log-000556",
       "at": "2026-08-24T15:16:36.627Z",
       "userId": "admin",
@@ -43257,5 +43271,5 @@
       }
     }
   ],
-  "nextSeq": 557
+  "nextSeq": 558
 }
