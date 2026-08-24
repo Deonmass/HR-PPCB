@@ -21,6 +21,10 @@ export function escapeDocxText(value: string): string {
   return value.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
 }
 
+function unescapeDocxText(value: string): string {
+  return value.replace(/&lt;/g, '<').replace(/&gt;/g, '>').replace(/&amp;/g, '&');
+}
+
 function collectTextNodes(xml: string): DocxTextNode[] {
   const nodes: DocxTextNode[] = [];
   const re = /<w:t(?:\s[^>]*)?>([^<]*)<\/w:t>/g;
@@ -174,6 +178,117 @@ export function replaceDocxSpan(
     endIndex + endNeedle.length,
     escapeDocxText(replacement),
   );
+}
+
+export interface DocxRunPart {
+  text: string;
+  bold?: boolean;
+}
+
+const DEFAULT_RUN_PR =
+  '<w:rPr><w:rFonts w:ascii="Times New Roman" w:hAnsi="Times New Roman" w:cs="Times New Roman"/><w:color w:val="auto"/><w:lang w:val="fr-FR"/></w:rPr>';
+
+function findRunOpenBefore(xml: string, pos: number): number {
+  const re = /<w:r(?:\s[^>]*)?>/g;
+  let last = -1;
+  let match: RegExpExecArray | null;
+  while ((match = re.exec(xml))) {
+    if (match.index >= pos) break;
+    last = match.index;
+  }
+  return last;
+}
+
+function findRunCloseAfter(xml: string, pos: number): number {
+  const index = xml.indexOf('</w:r>', pos);
+  return index < 0 ? -1 : index + '</w:r>'.length;
+}
+
+function extractRunPr(runXml: string): string {
+  const match = runXml.match(/<w:rPr>[\s\S]*?<\/w:rPr>/);
+  return match ? match[0] : DEFAULT_RUN_PR;
+}
+
+function withRunBold(rPr: string, bold: boolean): string {
+  const stripped = rPr
+    .replace(/<w:b\b[^>]*\/>/g, '')
+    .replace(/<w:bCs\b[^>]*\/>/g, '')
+    .replace(/<w:b\b[^>]*>\s*<\/w:b>/g, '')
+    .replace(/<w:bCs\b[^>]*>\s*<\/w:bCs>/g, '');
+  const tags = bold ? '<w:b/><w:bCs/>' : '<w:b w:val="0"/><w:bCs w:val="0"/>';
+  return stripped.replace('</w:rPr>', `${tags}</w:rPr>`);
+}
+
+function renderStyledRun(rPr: string, text: string, bold: boolean): string {
+  return `<w:r>${withRunBold(rPr, bold)}<w:t xml:space="preserve">${escapeDocxText(text)}</w:t></w:r>`;
+}
+
+/**
+ * Remplace la plage [start, end] par plusieurs runs (gras / pas gras).
+ * Les runs d’origine de la plage sont réécrits pour ne pas hériter d’un gras global.
+ */
+export function replaceDocxSpanWithRuns(
+  xml: string,
+  start: string,
+  end: string,
+  parts: DocxRunPart[],
+  options?: { optional?: boolean },
+): string {
+  const startNeedle = escapeDocxText(start);
+  const endNeedle = escapeDocxText(end);
+  const nodes = collectTextNodes(xml);
+  const concat = nodes.map((node) => node.text).join('');
+  const startIndex = concat.indexOf(startNeedle);
+  if (startIndex < 0) {
+    if (options?.optional) return xml;
+    throw new Error(`Début de paragraphe introuvable : ${start.slice(0, 60)}`);
+  }
+  const endIndex = concat.indexOf(endNeedle, startIndex);
+  if (endIndex < 0) {
+    if (options?.optional) return xml;
+    throw new Error(`Fin de paragraphe introuvable : ${end.slice(0, 60)}`);
+  }
+  const rangeEnd = endIndex + endNeedle.length;
+
+  let offset = 0;
+  let firstNode: DocxTextNode | null = null;
+  let lastNode: DocxTextNode | null = null;
+  let prefix = '';
+  let suffix = '';
+  for (const node of nodes) {
+    const nodeStart = offset;
+    const nodeEnd = offset + node.text.length;
+    offset = nodeEnd;
+    if (nodeEnd <= startIndex || nodeStart >= rangeEnd) continue;
+    if (!firstNode) {
+      firstNode = node;
+      prefix = node.text.slice(0, Math.max(0, startIndex - nodeStart));
+    }
+    lastNode = node;
+    suffix = node.text.slice(Math.min(node.text.length, rangeEnd - nodeStart));
+  }
+  if (!firstNode || !lastNode) {
+    if (options?.optional) return xml;
+    throw new Error('Plage Word introuvable pour le remplacement formaté');
+  }
+
+  const runStart = findRunOpenBefore(xml, firstNode.matchStart);
+  const runEnd = findRunCloseAfter(xml, lastNode.matchEnd);
+  if (runStart < 0 || runEnd < 0) {
+    if (options?.optional) return xml;
+    throw new Error('Run Word introuvable pour le remplacement formaté');
+  }
+
+  const basePr = extractRunPr(xml.slice(runStart, runEnd));
+  const runs: string[] = [];
+  if (prefix) runs.push(renderStyledRun(basePr, unescapeDocxText(prefix), false));
+  for (const part of parts) {
+    if (!part.text) continue;
+    runs.push(renderStyledRun(basePr, part.text, Boolean(part.bold)));
+  }
+  if (suffix) runs.push(renderStyledRun(basePr, unescapeDocxText(suffix), false));
+
+  return xml.slice(0, runStart) + runs.join('') + xml.slice(runEnd);
 }
 
 /**
