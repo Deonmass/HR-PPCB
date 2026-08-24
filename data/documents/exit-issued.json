@@ -128,5 +128,15 @@
     "issuedBy": "Administrateur",
     "id": "exit-1787563955646-firyqe",
     "createdAt": "2026-08-24T09:32:35.646Z"
+  },
+  {
+    "matricule": "70000278",
+    "employeeName": "ASIKANDAMBU SIMBA GRÂCE",
+    "doc": "interview",
+    "docLabel": "Exit interview form",
+    "fileName": "Exit interview form - ASIKANDAMBU SIMBA GRÂCE.docx",
+    "issuedBy": "Administrateur",
+    "id": "exit-1787563965995-3z96lz",
+    "createdAt": "2026-08-24T09:32:45.995Z"
   }
 ]
