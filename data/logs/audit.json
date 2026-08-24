@@ -1,6 +1,20 @@
 {
   "entries": [
     {
+      "id": "log-000541",
+      "at": "2026-08-24T09:32:38.889Z",
+      "userId": "admin",
+      "userName": "Administrateur",
+      "module": "documents.exit",
+      "moduleLabel": "Documents",
+      "action": "export",
+      "actionLabel": "Export",
+      "summary": "Document exit « Employee exit clearance form » — ASIKANDAMBU SIMBA GRÂCE (70000278)",
+      "details": "Document exit « Employee exit clearance form » — ASIKANDAMBU SIMBA GRÂCE (70000278)",
+      "undoable": false,
+      "undone": false
+    },
+    {
       "id": "log-000540",
       "at": "2026-08-24T08:11:59.811Z",
       "userId": "admin",
@@ -42439,5 +42453,5 @@
       }
     }
   ],
-  "nextSeq": 541
+  "nextSeq": 542
 }
