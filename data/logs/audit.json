@@ -1,6 +1,20 @@
 {
   "entries": [
     {
+      "id": "log-000543",
+      "at": "2026-08-24T09:32:57.159Z",
+      "userId": "admin",
+      "userName": "Administrateur",
+      "module": "documents.exit",
+      "moduleLabel": "Documents",
+      "action": "export",
+      "actionLabel": "Export",
+      "summary": "Document exit « Attestation de fin de service » — ASIKANDAMBU SIMBA GRÂCE (70000278)",
+      "details": "Document exit « Attestation de fin de service » — ASIKANDAMBU SIMBA GRÂCE (70000278)",
+      "undoable": false,
+      "undone": false
+    },
+    {
       "id": "log-000542",
       "at": "2026-08-24T09:32:48.748Z",
       "userId": "admin",
@@ -42467,5 +42481,5 @@
       }
     }
   ],
-  "nextSeq": 543
+  "nextSeq": 544
 }
