@@ -118,5 +118,45 @@
     "issuedBy": "Administrateur",
     "id": "exit-1786435350283-ovzaep",
     "createdAt": "2026-08-11T08:02:30.283Z"
+  },
+  {
+    "matricule": "70000278",
+    "employeeName": "ASIKANDAMBU SIMBA GRÂCE",
+    "doc": "clearance",
+    "docLabel": "Employee exit clearance form",
+    "fileName": "Employee exit clearance form - ASIKANDAMBU SIMBA GRÂCE.docx",
+    "issuedBy": "Administrateur",
+    "id": "exit-1787563955646-firyqe",
+    "createdAt": "2026-08-24T09:32:35.646Z"
+  },
+  {
+    "matricule": "70000278",
+    "employeeName": "ASIKANDAMBU SIMBA GRÂCE",
+    "doc": "interview",
+    "docLabel": "Exit interview form",
+    "fileName": "Exit interview form - ASIKANDAMBU SIMBA GRÂCE.docx",
+    "issuedBy": "Administrateur",
+    "id": "exit-1787563965995-3z96lz",
+    "createdAt": "2026-08-24T09:32:45.995Z"
+  },
+  {
+    "matricule": "70000278",
+    "employeeName": "ASIKANDAMBU SIMBA GRÂCE",
+    "doc": "attestation-fin-service",
+    "docLabel": "Attestation de fin de service",
+    "fileName": "Attestation de fin de service - ASIKANDAMBU SIMBA GRÂCE.docx",
+    "issuedBy": "Administrateur",
+    "id": "exit-1787563974453-uo9x2y",
+    "createdAt": "2026-08-24T09:32:54.453Z"
+  },
+  {
+    "matricule": "70000278",
+    "employeeName": "ASIKANDAMBU SIMBA GRÂCE",
+    "doc": "user-removal",
+    "docLabel": "User removal form",
+    "fileName": "User removal form - ASIKANDAMBU SIMBA GRÂCE.docx",
+    "issuedBy": "Administrateur",
+    "id": "exit-1787563982608-yr8f7a",
+    "createdAt": "2026-08-24T09:33:02.608Z"
   }
 ]

@@ -13180,11 +13180,11 @@
       "datePo": "",
       "grn": "",
       "dateGrn": "",
-      "payment": "Unpaid",
+      "payment": "",
       "datePym": "",
-      "commentaire": "Facture payée.",
-      "statut": "paid",
-      "statutLabel": "paid"
+      "commentaire": "Au PO — en attente de paiement.",
+      "statut": "unpaid",
+      "statutLabel": "unpaid"
     },
     {
       "id": "fac-2055",
@@ -13199,11 +13199,11 @@
       "datePo": "",
       "grn": "",
       "dateGrn": "",
-      "payment": "Unpaid",
+      "payment": "",
       "datePym": "",
-      "commentaire": "Facture payée.",
-      "statut": "paid",
-      "statutLabel": "paid"
+      "commentaire": "Au PO — en attente de paiement.",
+      "statut": "unpaid",
+      "statutLabel": "unpaid"
     },
     {
       "id": "fac-2056",
@@ -13218,11 +13218,11 @@
       "datePo": "",
       "grn": "",
       "dateGrn": "",
-      "payment": "Unpaid",
+      "payment": "",
       "datePym": "",
-      "commentaire": "Facture payée.",
-      "statut": "paid",
-      "statutLabel": "paid"
+      "commentaire": "Au PO — en attente de paiement.",
+      "statut": "unpaid",
+      "statutLabel": "unpaid"
     },
     {
       "id": "fac-2057",
@@ -13237,11 +13237,11 @@
       "datePo": "",
       "grn": "",
       "dateGrn": "",
-      "payment": "Unpaid",
+      "payment": "",
       "datePym": "",
-      "commentaire": "Facture payée.",
-      "statut": "paid",
-      "statutLabel": "paid"
+      "commentaire": "Au PO — en attente de paiement.",
+      "statut": "unpaid",
+      "statutLabel": "unpaid"
     },
     {
       "id": "fac-2058",
@@ -13256,11 +13256,11 @@
       "datePo": "",
       "grn": "",
       "dateGrn": "",
-      "payment": "Unpaid",
+      "payment": "",
       "datePym": "",
-      "commentaire": "Facture payée.",
-      "statut": "paid",
-      "statutLabel": "paid"
+      "commentaire": "Au PO — en attente de paiement.",
+      "statut": "unpaid",
+      "statutLabel": "unpaid"
     },
     {
       "id": "fac-2059",
@@ -13275,11 +13275,11 @@
       "datePo": "",
       "grn": "",
       "dateGrn": "",
-      "payment": "Unpaid",
+      "payment": "",
       "datePym": "",
-      "commentaire": "Facture payée.",
-      "statut": "paid",
-      "statutLabel": "paid"
+      "commentaire": "Au PO — en attente de paiement.",
+      "statut": "unpaid",
+      "statutLabel": "unpaid"
     },
     {
       "id": "fac-2060",
@@ -13294,11 +13294,11 @@
       "datePo": "",
       "grn": "",
       "dateGrn": "",
-      "payment": "Unpaid",
+      "payment": "",
       "datePym": "",
-      "commentaire": "Facture payée.",
-      "statut": "paid",
-      "statutLabel": "paid"
+      "commentaire": "Au PO — en attente de paiement.",
+      "statut": "unpaid",
+      "statutLabel": "unpaid"
     },
     {
       "id": "fac-2061",
@@ -13313,11 +13313,11 @@
       "datePo": "",
       "grn": "",
       "dateGrn": "",
-      "payment": "Unpaid",
+      "payment": "",
       "datePym": "",
-      "commentaire": "Facture payée.",
-      "statut": "paid",
-      "statutLabel": "paid"
+      "commentaire": "Au PO — en attente de paiement.",
+      "statut": "unpaid",
+      "statutLabel": "unpaid"
     },
     {
       "id": "fac-2062",
@@ -13332,11 +13332,11 @@
       "datePo": "",
       "grn": "",
       "dateGrn": "",
-      "payment": "Unpaid",
+      "payment": "",
       "datePym": "",
-      "commentaire": "Facture payée.",
-      "statut": "paid",
-      "statutLabel": "paid"
+      "commentaire": "Au PO — en attente de paiement.",
+      "statut": "unpaid",
+      "statutLabel": "unpaid"
     },
     {
       "id": "fac-2063",
@@ -13351,11 +13351,11 @@
       "datePo": "",
       "grn": "",
       "dateGrn": "",
-      "payment": "Unpaid",
+      "payment": "",
       "datePym": "",
-      "commentaire": "Facture payée.",
-      "statut": "paid",
-      "statutLabel": "paid"
+      "commentaire": "Au PO — en attente de paiement.",
+      "statut": "unpaid",
+      "statutLabel": "unpaid"
     },
     {
       "id": "fac-2064",
@@ -13370,11 +13370,11 @@
       "datePo": "",
       "grn": "",
       "dateGrn": "",
-      "payment": "Unpaid",
+      "payment": "",
       "datePym": "",
-      "commentaire": "Facture payée.",
-      "statut": "paid",
-      "statutLabel": "paid"
+      "commentaire": "Au PO — en attente de paiement.",
+      "statut": "unpaid",
+      "statutLabel": "unpaid"
     },
     {
       "id": "fac-2065",
@@ -13389,11 +13389,11 @@
       "datePo": "",
       "grn": "",
       "dateGrn": "",
-      "payment": "Unpaid",
+      "payment": "",
       "datePym": "",
-      "commentaire": "Facture payée.",
-      "statut": "paid",
-      "statutLabel": "paid"
+      "commentaire": "Au PO — en attente de paiement.",
+      "statut": "unpaid",
+      "statutLabel": "unpaid"
     },
     {
       "id": "fac-2066",
@@ -13408,11 +13408,11 @@
       "datePo": "",
       "grn": "",
       "dateGrn": "",
-      "payment": "Unpaid",
+      "payment": "",
       "datePym": "",
-      "commentaire": "Facture payée.",
-      "statut": "paid",
-      "statutLabel": "paid"
+      "commentaire": "Au PO — en attente de paiement.",
+      "statut": "unpaid",
+      "statutLabel": "unpaid"
     },
     {
       "id": "fac-2067",
