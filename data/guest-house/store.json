@@ -716,6 +716,20 @@
   ],
   "reservations": [
     {
+      "id": "9ceb79d1-ec70-4117-8fa5-01fc516b467a",
+      "numero": "GH-2026-4376",
+      "createdAt": "2026-08-26T10:54:19.281Z",
+      "personName": "ZODULUA GADUA Jean Jacques",
+      "matricule": "70000009",
+      "isAgent": true,
+      "motif": "Mission to the plant",
+      "startDate": "2026-08-20",
+      "endDate": "2026-08-21",
+      "status": "pending",
+      "mission": "Mission to the plant",
+      "updatedAt": "2026-08-26T10:54:19.281Z"
+    },
+    {
       "id": "fef7338e-b8a9-4c80-ae8c-60db33a92055",
       "numero": "GH-2026-4375",
       "createdAt": "2026-08-26T10:52:52.580Z",
@@ -43049,5 +43063,5 @@
       "checkedOutAt": "2025-09-24T12:00:00.000Z"
     }
   ],
-  "nextReservationSeq": 4376
+  "nextReservationSeq": 4377
 }
