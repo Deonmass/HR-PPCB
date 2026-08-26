@@ -1,6 +1,50 @@
 {
   "entries": [
     {
+      "id": "log-000596",
+      "at": "2026-08-26T10:48:01.530Z",
+      "userId": "Serge.Muakasa",
+      "userName": "Serge Muakasa",
+      "userEmail": "Serge.Muakasa@ppcdrc.cd",
+      "module": "guest-house",
+      "moduleLabel": "Guest house",
+      "action": "update",
+      "actionLabel": "Modification",
+      "entityType": "guest-house.reservation",
+      "entityId": "edb592bd-93ff-4ded-b33e-0c3fc4eea02e",
+      "summary": "Statut réservation edb592bd-93ff-4ded-b33e-0c3fc4eea02e → confirmed",
+      "details": "Statut réservation edb592bd-93ff-4ded-b33e-0c3fc4eea02e → confirmed",
+      "before": {
+        "id": "edb592bd-93ff-4ded-b33e-0c3fc4eea02e",
+        "numero": "GH-2026-4372",
+        "createdAt": "2026-08-26T10:47:36.376Z",
+        "personName": "JP Mutshi",
+        "isAgent": false,
+        "motif": "Mission with Tresor Saidi to Muanda",
+        "startDate": "2026-08-18",
+        "endDate": "2026-08-18",
+        "status": "pending",
+        "mission": "Mission with Tresor Saidi to Muanda",
+        "updatedAt": "2026-08-26T10:47:36.376Z"
+      },
+      "after": {
+        "id": "edb592bd-93ff-4ded-b33e-0c3fc4eea02e",
+        "numero": "GH-2026-4372",
+        "createdAt": "2026-08-26T10:47:36.376Z",
+        "personName": "JP Mutshi",
+        "isAgent": false,
+        "motif": "Mission with Tresor Saidi to Muanda",
+        "startDate": "2026-08-18",
+        "endDate": "2026-08-18",
+        "roomId": "85c3d598-623c-402f-9053-e43840e24325",
+        "status": "confirmed",
+        "mission": "Mission with Tresor Saidi to Muanda",
+        "updatedAt": "2026-08-26T10:47:57.431Z"
+      },
+      "undoable": true,
+      "undone": false
+    },
+    {
       "id": "log-000595",
       "at": "2026-08-26T10:47:39.140Z",
       "userId": "Serge.Muakasa",
@@ -45050,5 +45094,5 @@
       }
     }
   ],
-  "nextSeq": 596
+  "nextSeq": 597
 }
