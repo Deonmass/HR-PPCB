@@ -1,6 +1,36 @@
 {
   "entries": [
     {
+      "id": "log-000581",
+      "at": "2026-08-26T10:37:36.780Z",
+      "userId": "Serge.Muakasa",
+      "userName": "Serge Muakasa",
+      "userEmail": "Serge.Muakasa@ppcdrc.cd",
+      "module": "guest-house",
+      "moduleLabel": "Guest house",
+      "action": "create",
+      "actionLabel": "Création",
+      "entityType": "guest-house.reservation",
+      "entityId": "b1a5e4df-a77d-4264-a64c-0e29466b08cf",
+      "summary": "Création réservation Ministere transport",
+      "details": "Création réservation Ministere transport",
+      "after": {
+        "id": "b1a5e4df-a77d-4264-a64c-0e29466b08cf",
+        "numero": "GH-2026-4369",
+        "createdAt": "2026-08-26T10:37:34.030Z",
+        "personName": "Ministere transport",
+        "isAgent": false,
+        "motif": "Mission to the plant for control technique mining equipment",
+        "startDate": "2026-08-15",
+        "endDate": "2026-08-20",
+        "status": "pending",
+        "mission": "Mission to the plant for control technique mining equipment",
+        "updatedAt": "2026-08-26T10:37:34.030Z"
+      },
+      "undoable": true,
+      "undone": false
+    },
+    {
       "id": "log-000580",
       "at": "2026-08-26T10:35:51.625Z",
       "userId": "Serge.Muakasa",
@@ -44491,5 +44521,5 @@
       }
     }
   ],
-  "nextSeq": 581
+  "nextSeq": 582
 }
