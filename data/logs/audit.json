@@ -1,6 +1,50 @@
 {
   "entries": [
     {
+      "id": "log-000608",
+      "at": "2026-08-26T10:57:25.122Z",
+      "userId": "Serge.Muakasa",
+      "userName": "Serge Muakasa",
+      "userEmail": "Serge.Muakasa@ppcdrc.cd",
+      "module": "guest-house",
+      "moduleLabel": "Guest house",
+      "action": "update",
+      "actionLabel": "Modification",
+      "entityType": "guest-house.reservation",
+      "entityId": "4cffa403-6ac2-4a42-98a3-d529b08e1200",
+      "summary": "Statut réservation 4cffa403-6ac2-4a42-98a3-d529b08e1200 → confirmed",
+      "details": "Statut réservation 4cffa403-6ac2-4a42-98a3-d529b08e1200 → confirmed",
+      "before": {
+        "id": "4cffa403-6ac2-4a42-98a3-d529b08e1200",
+        "numero": "GH-2026-4377",
+        "createdAt": "2026-08-26T10:57:02.493Z",
+        "personName": "Equipe Podium Mont Cristal",
+        "isAgent": false,
+        "motif": "Family day and Mont Cristal activities",
+        "startDate": "2026-08-21",
+        "endDate": "2026-08-30",
+        "status": "pending",
+        "mission": "Mont Cristal Activities",
+        "updatedAt": "2026-08-26T10:57:02.493Z"
+      },
+      "after": {
+        "id": "4cffa403-6ac2-4a42-98a3-d529b08e1200",
+        "numero": "GH-2026-4377",
+        "createdAt": "2026-08-26T10:57:02.493Z",
+        "personName": "Equipe Podium Mont Cristal",
+        "isAgent": false,
+        "motif": "Family day and Mont Cristal activities",
+        "startDate": "2026-08-21",
+        "endDate": "2026-08-30",
+        "roomId": "3219d898-ff74-496c-a62e-2295012276ae",
+        "status": "confirmed",
+        "mission": "Mont Cristal Activities",
+        "updatedAt": "2026-08-26T10:57:22.104Z"
+      },
+      "undoable": true,
+      "undone": false
+    },
+    {
       "id": "log-000607",
       "at": "2026-08-26T10:57:05.375Z",
       "userId": "Serge.Muakasa",
@@ -45494,5 +45538,5 @@
       }
     }
   ],
-  "nextSeq": 608
+  "nextSeq": 609
 }
