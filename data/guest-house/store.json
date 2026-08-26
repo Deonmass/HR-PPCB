@@ -724,9 +724,10 @@
       "motif": "Mission with Tresor Saidi to Muanda",
       "startDate": "2026-08-18",
       "endDate": "2026-08-18",
-      "status": "pending",
+      "roomId": "85c3d598-623c-402f-9053-e43840e24325",
+      "status": "confirmed",
       "mission": "Mission with Tresor Saidi to Muanda",
-      "updatedAt": "2026-08-26T10:47:36.376Z"
+      "updatedAt": "2026-08-26T10:47:57.431Z"
     },
     {
       "id": "1c609f99-bdfd-4a7c-b592-eed421bbacc0",
@@ -25424,6 +25425,17 @@
     }
   ],
   "passages": [
+    {
+      "id": "4f8b480c-36fc-47e7-83bb-c63a79f9bb3d",
+      "roomId": "85c3d598-623c-402f-9053-e43840e24325",
+      "reservationId": "edb592bd-93ff-4ded-b33e-0c3fc4eea02e",
+      "numero": "GH-2026-4372",
+      "personName": "JP Mutshi",
+      "motif": "Mission with Tresor Saidi to Muanda",
+      "startDate": "2026-08-18",
+      "endDate": "2026-08-18",
+      "checkedInAt": "2026-08-26T10:47:57.431Z"
+    },
     {
       "id": "48529211-b6cd-4320-b6fe-238d9d207a58",
       "roomId": "0b0cdc0d-ba79-4f68-8533-c90cad3390cb",
