@@ -716,6 +716,20 @@
   ],
   "reservations": [
     {
+      "id": "7b313b6e-e404-461f-b5f3-c40b61b9d624",
+      "numero": "GH-2026-4362",
+      "createdAt": "2026-08-26T10:20:16.392Z",
+      "personName": "Jonathan AEL",
+      "isAgent": false,
+      "motif": "Blasting mission to the plant",
+      "startDate": "2026-08-28",
+      "endDate": "2026-09-30",
+      "status": "pending",
+      "company": "AEL",
+      "mission": "Blasting mission to the plant",
+      "updatedAt": "2026-08-26T10:20:16.392Z"
+    },
+    {
       "id": "0ce87037-06f9-4059-b341-ea825f339550",
       "numero": "GH-2026-4361",
       "createdAt": "2026-08-26T10:19:06.397Z",
@@ -42690,5 +42704,5 @@
       "checkedOutAt": "2025-09-24T12:00:00.000Z"
     }
   ],
-  "nextReservationSeq": 4362
+  "nextReservationSeq": 4363
 }
