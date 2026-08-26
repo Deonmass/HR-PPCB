@@ -1,6 +1,50 @@
 {
   "entries": [
     {
+      "id": "log-000584",
+      "at": "2026-08-26T10:39:48.403Z",
+      "userId": "Serge.Muakasa",
+      "userName": "Serge Muakasa",
+      "userEmail": "Serge.Muakasa@ppcdrc.cd",
+      "module": "guest-house",
+      "moduleLabel": "Guest house",
+      "action": "update",
+      "actionLabel": "Modification",
+      "entityType": "guest-house.reservation",
+      "entityId": "b1a5e4df-a77d-4264-a64c-0e29466b08cf",
+      "summary": "Statut réservation b1a5e4df-a77d-4264-a64c-0e29466b08cf → confirmed",
+      "details": "Statut réservation b1a5e4df-a77d-4264-a64c-0e29466b08cf → confirmed",
+      "before": {
+        "id": "b1a5e4df-a77d-4264-a64c-0e29466b08cf",
+        "numero": "GH-2026-4369",
+        "createdAt": "2026-08-26T10:37:34.030Z",
+        "personName": "Ministere transport",
+        "isAgent": false,
+        "motif": "Mission to the plant for control technique mining equipment",
+        "startDate": "2026-08-15",
+        "endDate": "2026-08-20",
+        "status": "pending",
+        "mission": "Mission to the plant for control technique mining equipment",
+        "updatedAt": "2026-08-26T10:37:34.030Z"
+      },
+      "after": {
+        "id": "b1a5e4df-a77d-4264-a64c-0e29466b08cf",
+        "numero": "GH-2026-4369",
+        "createdAt": "2026-08-26T10:37:34.030Z",
+        "personName": "Ministere transport",
+        "isAgent": false,
+        "motif": "Mission to the plant for control technique mining equipment",
+        "startDate": "2026-08-15",
+        "endDate": "2026-08-20",
+        "roomId": "3219d898-ff74-496c-a62e-2295012276ae",
+        "status": "confirmed",
+        "mission": "Mission to the plant for control technique mining equipment",
+        "updatedAt": "2026-08-26T10:39:45.762Z"
+      },
+      "undoable": true,
+      "undone": false
+    },
+    {
       "id": "log-000583",
       "at": "2026-08-26T10:39:29.648Z",
       "userId": "Serge.Muakasa",
@@ -44593,5 +44637,5 @@
       }
     }
   ],
-  "nextSeq": 584
+  "nextSeq": 585
 }
