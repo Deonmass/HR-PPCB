@@ -1493,11 +1493,11 @@
       "isAgent": false,
       "motif": "Mission to the plant with Plant team",
       "startDate": "2026-08-13",
-      "endDate": "2026-08-15",
+      "endDate": "2026-08-14",
       "roomId": "3219d898-ff74-496c-a62e-2295012276ae",
       "status": "confirmed",
       "mission": "Mission to the plant with Plant team",
-      "updatedAt": "2026-08-16T17:53:34.682Z"
+      "updatedAt": "2026-08-26T10:39:26.458Z"
     },
     {
       "id": "4437a77a-b74c-4eea-b1ec-f84eec637976",
@@ -26009,7 +26009,7 @@
       "personName": "Transformer",
       "motif": "Mission to the plant with Plant team",
       "startDate": "2026-08-13",
-      "endDate": "2026-08-15",
+      "endDate": "2026-08-14",
       "checkedInAt": "2026-08-16T17:53:34.682Z"
     },
     {
