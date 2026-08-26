@@ -1,6 +1,37 @@
 {
   "entries": [
     {
+      "id": "log-000619",
+      "at": "2026-08-26T11:03:52.608Z",
+      "userId": "Serge.Muakasa",
+      "userName": "Serge Muakasa",
+      "userEmail": "Serge.Muakasa@ppcdrc.cd",
+      "module": "guest-house",
+      "moduleLabel": "Guest house",
+      "action": "create",
+      "actionLabel": "Création",
+      "entityType": "guest-house.reservation",
+      "entityId": "e1430b5f-5698-4287-bfae-77193c855017",
+      "summary": "Création réservation ZODULUA GADUA Jean Jacques",
+      "details": "Création réservation ZODULUA GADUA Jean Jacques",
+      "after": {
+        "id": "e1430b5f-5698-4287-bfae-77193c855017",
+        "numero": "GH-2026-4383",
+        "createdAt": "2026-08-26T11:03:50.015Z",
+        "personName": "ZODULUA GADUA Jean Jacques",
+        "matricule": "70000009",
+        "isAgent": true,
+        "motif": "Family day activities",
+        "startDate": "2026-08-21",
+        "endDate": "2026-08-22",
+        "status": "pending",
+        "mission": "Family day activities",
+        "updatedAt": "2026-08-26T11:03:50.015Z"
+      },
+      "undoable": true,
+      "undone": false
+    },
+    {
       "id": "log-000618",
       "at": "2026-08-26T11:03:09.852Z",
       "userId": "Serge.Muakasa",
@@ -45908,5 +45939,5 @@
       }
     }
   ],
-  "nextSeq": 619
+  "nextSeq": 620
 }
