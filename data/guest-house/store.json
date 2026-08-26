@@ -716,6 +716,19 @@
   ],
   "reservations": [
     {
+      "id": "b1a5e4df-a77d-4264-a64c-0e29466b08cf",
+      "numero": "GH-2026-4369",
+      "createdAt": "2026-08-26T10:37:34.030Z",
+      "personName": "Ministere transport",
+      "isAgent": false,
+      "motif": "Mission to the plant for control technique mining equipment",
+      "startDate": "2026-08-15",
+      "endDate": "2026-08-20",
+      "status": "pending",
+      "mission": "Mission to the plant for control technique mining equipment",
+      "updatedAt": "2026-08-26T10:37:34.030Z"
+    },
+    {
       "id": "291fd862-0fa0-4842-a978-6accce1caf69",
       "numero": "GH-2026-4368",
       "createdAt": "2026-08-26T10:30:09.143Z",
@@ -42870,5 +42883,5 @@
       "checkedOutAt": "2025-09-24T12:00:00.000Z"
     }
   ],
-  "nextReservationSeq": 4369
+  "nextReservationSeq": 4370
 }
