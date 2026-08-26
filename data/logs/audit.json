@@ -1,6 +1,51 @@
 {
   "entries": [
     {
+      "id": "log-000587",
+      "at": "2026-08-26T10:41:50.525Z",
+      "userId": "Serge.Muakasa",
+      "userName": "Serge Muakasa",
+      "userEmail": "Serge.Muakasa@ppcdrc.cd",
+      "module": "guest-house",
+      "moduleLabel": "Guest house",
+      "action": "update",
+      "actionLabel": "Modification",
+      "entityType": "guest-house.reservation",
+      "entityId": "623e966b-febd-493f-9f4c-4977dcb7d5e3",
+      "summary": "Modification réservation 623e966b-febd-493f-9f4c-4977dcb7d5e3",
+      "details": "Modification réservation 623e966b-febd-493f-9f4c-4977dcb7d5e3",
+      "before": {
+        "id": "623e966b-febd-493f-9f4c-4977dcb7d5e3",
+        "numero": "GH-2026-4319",
+        "createdAt": "2026-08-16T18:00:29.338Z",
+        "personName": "Inspector Ministere Transport",
+        "isAgent": false,
+        "motif": "Mission to the plant for Heavy mobile equipment with Mining Mgr",
+        "startDate": "2026-08-15",
+        "endDate": "2026-08-18",
+        "roomId": "8b14162d-ae3b-49a5-bcb6-812c2d8d5b5b",
+        "status": "confirmed",
+        "mission": "Mission to the plant for Heavy mobile equipment with Mining Mgr",
+        "updatedAt": "2026-08-16T18:01:26.538Z"
+      },
+      "after": {
+        "id": "623e966b-febd-493f-9f4c-4977dcb7d5e3",
+        "numero": "GH-2026-4319",
+        "createdAt": "2026-08-16T18:00:29.338Z",
+        "personName": "Inspector Ministere Transport",
+        "isAgent": false,
+        "motif": "Mission to the plant for Heavy mobile equipment with Mining Mgr",
+        "startDate": "2026-08-15",
+        "endDate": "2026-08-20",
+        "roomId": "8b14162d-ae3b-49a5-bcb6-812c2d8d5b5b",
+        "status": "confirmed",
+        "mission": "Mission to the plant for Heavy mobile equipment with Mining Mgr",
+        "updatedAt": "2026-08-26T10:41:47.444Z"
+      },
+      "undoable": true,
+      "undone": false
+    },
+    {
       "id": "log-000586",
       "at": "2026-08-26T10:41:00.762Z",
       "userId": "Serge.Muakasa",
@@ -44694,5 +44739,5 @@
       }
     }
   ],
-  "nextSeq": 587
+  "nextSeq": 588
 }
