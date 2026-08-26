@@ -1,6 +1,50 @@
 {
   "entries": [
     {
+      "id": "log-000567",
+      "at": "2026-08-26T10:24:21.549Z",
+      "userId": "Serge.Muakasa",
+      "userName": "Serge Muakasa",
+      "userEmail": "Serge.Muakasa@ppcdrc.cd",
+      "module": "guest-house",
+      "moduleLabel": "Guest house",
+      "action": "update",
+      "actionLabel": "Modification",
+      "entityType": "guest-house.reservation",
+      "entityId": "fb614cda-9e49-4847-a0c3-67c0d9175434",
+      "summary": "Statut réservation fb614cda-9e49-4847-a0c3-67c0d9175434 → confirmed",
+      "details": "Statut réservation fb614cda-9e49-4847-a0c3-67c0d9175434 → confirmed",
+      "before": {
+        "id": "fb614cda-9e49-4847-a0c3-67c0d9175434",
+        "numero": "GH-2026-4364",
+        "createdAt": "2026-08-26T10:23:57.152Z",
+        "personName": "Sud African",
+        "isAgent": false,
+        "motif": "Repair drilling machine",
+        "startDate": "2026-08-28",
+        "endDate": "2026-08-31",
+        "status": "pending",
+        "mission": "Repair drilling machine",
+        "updatedAt": "2026-08-26T10:23:57.152Z"
+      },
+      "after": {
+        "id": "fb614cda-9e49-4847-a0c3-67c0d9175434",
+        "numero": "GH-2026-4364",
+        "createdAt": "2026-08-26T10:23:57.152Z",
+        "personName": "Sud African",
+        "isAgent": false,
+        "motif": "Repair drilling machine",
+        "startDate": "2026-08-28",
+        "endDate": "2026-08-31",
+        "roomId": "4e4bd694-e96e-4748-a98a-882d842f616e",
+        "status": "confirmed",
+        "mission": "Repair drilling machine",
+        "updatedAt": "2026-08-26T10:24:18.584Z"
+      },
+      "undoable": true,
+      "undone": false
+    },
+    {
       "id": "log-000566",
       "at": "2026-08-26T10:24:00.530Z",
       "userId": "Serge.Muakasa",
@@ -43714,5 +43758,5 @@
       }
     }
   ],
-  "nextSeq": 567
+  "nextSeq": 568
 }
