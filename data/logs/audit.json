@@ -1,6 +1,36 @@
 {
   "entries": [
     {
+      "id": "log-000609",
+      "at": "2026-08-26T10:59:05.457Z",
+      "userId": "Serge.Muakasa",
+      "userName": "Serge Muakasa",
+      "userEmail": "Serge.Muakasa@ppcdrc.cd",
+      "module": "guest-house",
+      "moduleLabel": "Guest house",
+      "action": "create",
+      "actionLabel": "Création",
+      "entityType": "guest-house.reservation",
+      "entityId": "ca309579-9e93-41d9-92ce-eb0b07974aa9",
+      "summary": "Création réservation Bebe Jusca",
+      "details": "Création réservation Bebe Jusca",
+      "after": {
+        "id": "ca309579-9e93-41d9-92ce-eb0b07974aa9",
+        "numero": "GH-2026-4378",
+        "createdAt": "2026-08-26T10:59:02.389Z",
+        "personName": "Bebe Jusca",
+        "isAgent": false,
+        "motif": "Family day activities",
+        "startDate": "2026-08-21",
+        "endDate": "2026-08-22",
+        "status": "pending",
+        "mission": "Family day activities",
+        "updatedAt": "2026-08-26T10:59:02.389Z"
+      },
+      "undoable": true,
+      "undone": false
+    },
+    {
       "id": "log-000608",
       "at": "2026-08-26T10:57:25.122Z",
       "userId": "Serge.Muakasa",
@@ -45538,5 +45568,5 @@
       }
     }
   ],
-  "nextSeq": 609
+  "nextSeq": 610
 }
