@@ -1,6 +1,50 @@
 {
   "entries": [
     {
+      "id": "log-000612",
+      "at": "2026-08-26T11:00:30.190Z",
+      "userId": "Serge.Muakasa",
+      "userName": "Serge Muakasa",
+      "userEmail": "Serge.Muakasa@ppcdrc.cd",
+      "module": "guest-house",
+      "moduleLabel": "Guest house",
+      "action": "update",
+      "actionLabel": "Modification",
+      "entityType": "guest-house.reservation",
+      "entityId": "5716a693-56ad-47b1-8fe8-0c205238adce",
+      "summary": "Statut réservation 5716a693-56ad-47b1-8fe8-0c205238adce → confirmed",
+      "details": "Statut réservation 5716a693-56ad-47b1-8fe8-0c205238adce → confirmed",
+      "before": {
+        "id": "5716a693-56ad-47b1-8fe8-0c205238adce",
+        "numero": "GH-2026-4379",
+        "createdAt": "2026-08-26T11:00:04.309Z",
+        "personName": "Pachelie",
+        "isAgent": false,
+        "motif": "Family day activities",
+        "startDate": "2026-08-21",
+        "endDate": "2026-08-22",
+        "status": "pending",
+        "mission": "Family day activities",
+        "updatedAt": "2026-08-26T11:00:04.309Z"
+      },
+      "after": {
+        "id": "5716a693-56ad-47b1-8fe8-0c205238adce",
+        "numero": "GH-2026-4379",
+        "createdAt": "2026-08-26T11:00:04.309Z",
+        "personName": "Pachelie",
+        "isAgent": false,
+        "motif": "Family day activities",
+        "startDate": "2026-08-21",
+        "endDate": "2026-08-22",
+        "roomId": "2ef11cfa-1396-4c82-ac99-85b12d6093be",
+        "status": "confirmed",
+        "mission": "Family day activities",
+        "updatedAt": "2026-08-26T11:00:27.750Z"
+      },
+      "undoable": true,
+      "undone": false
+    },
+    {
       "id": "log-000611",
       "at": "2026-08-26T11:00:07.012Z",
       "userId": "Serge.Muakasa",
@@ -45642,5 +45686,5 @@
       }
     }
   ],
-  "nextSeq": 612
+  "nextSeq": 613
 }
