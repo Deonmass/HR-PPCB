@@ -1,6 +1,36 @@
 {
   "entries": [
     {
+      "id": "log-000566",
+      "at": "2026-08-26T10:24:00.530Z",
+      "userId": "Serge.Muakasa",
+      "userName": "Serge Muakasa",
+      "userEmail": "Serge.Muakasa@ppcdrc.cd",
+      "module": "guest-house",
+      "moduleLabel": "Guest house",
+      "action": "create",
+      "actionLabel": "Création",
+      "entityType": "guest-house.reservation",
+      "entityId": "fb614cda-9e49-4847-a0c3-67c0d9175434",
+      "summary": "Création réservation Sud African",
+      "details": "Création réservation Sud African",
+      "after": {
+        "id": "fb614cda-9e49-4847-a0c3-67c0d9175434",
+        "numero": "GH-2026-4364",
+        "createdAt": "2026-08-26T10:23:57.152Z",
+        "personName": "Sud African",
+        "isAgent": false,
+        "motif": "Repair drilling machine",
+        "startDate": "2026-08-28",
+        "endDate": "2026-08-31",
+        "status": "pending",
+        "mission": "Repair drilling machine",
+        "updatedAt": "2026-08-26T10:23:57.152Z"
+      },
+      "undoable": true,
+      "undone": false
+    },
+    {
       "id": "log-000565",
       "at": "2026-08-26T10:22:42.299Z",
       "userId": "Serge.Muakasa",
@@ -43684,5 +43714,5 @@
       }
     }
   ],
-  "nextSeq": 566
+  "nextSeq": 567
 }
