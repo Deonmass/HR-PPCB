@@ -1752,12 +1752,12 @@
       "isAgent": false,
       "motif": "Asset audit to the Plant",
       "startDate": "2026-08-01",
-      "endDate": "2026-08-16",
+      "endDate": "2026-08-20",
       "roomId": "4e4bd694-e96e-4748-a98a-882d842f616e",
       "status": "confirmed",
       "company": "CPM",
       "mission": "Asset Audit to the Plant",
-      "updatedAt": "2026-08-16T17:18:57.734Z"
+      "updatedAt": "2026-08-26T10:35:11.067Z"
     },
     {
       "id": "4351af3b-e5d6-45b7-b095-b19b98c2d67a",
@@ -26208,7 +26208,7 @@
       "personName": "Georgina CPM",
       "motif": "Asset audit to the Plant",
       "startDate": "2026-08-01",
-      "endDate": "2026-08-16",
+      "endDate": "2026-08-20",
       "checkedInAt": "2026-08-16T17:18:57.734Z"
     },
     {
