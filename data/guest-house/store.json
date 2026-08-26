@@ -716,6 +716,20 @@
   ],
   "reservations": [
     {
+      "id": "b6fade55-b8cf-4dd4-98ed-32b2ef1aeed7",
+      "numero": "GH-2026-4366",
+      "createdAt": "2026-08-26T10:27:27.623Z",
+      "personName": "Afridex",
+      "isAgent": false,
+      "motif": "Blasting mission to the plant",
+      "startDate": "2026-08-28",
+      "endDate": "2026-08-30",
+      "status": "pending",
+      "company": "AEL",
+      "mission": "Blasting mission to the plant",
+      "updatedAt": "2026-08-26T10:27:27.623Z"
+    },
+    {
       "id": "41fb32e5-6f77-463d-aa5f-6e2ca525cf6f",
       "numero": "GH-2026-4365",
       "createdAt": "2026-08-26T10:25:06.640Z",
@@ -42793,5 +42807,5 @@
       "checkedOutAt": "2025-09-24T12:00:00.000Z"
     }
   ],
-  "nextReservationSeq": 4366
+  "nextReservationSeq": 4367
 }
