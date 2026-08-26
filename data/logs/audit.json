@@ -1,6 +1,36 @@
 {
   "entries": [
     {
+      "id": "log-000597",
+      "at": "2026-08-26T10:49:41.326Z",
+      "userId": "Serge.Muakasa",
+      "userName": "Serge Muakasa",
+      "userEmail": "Serge.Muakasa@ppcdrc.cd",
+      "module": "guest-house",
+      "moduleLabel": "Guest house",
+      "action": "create",
+      "actionLabel": "Création",
+      "entityType": "guest-house.reservation",
+      "entityId": "e24e8d05-d3ac-439f-ab8e-05f35a60b9c6",
+      "summary": "Création réservation Georgine CPM",
+      "details": "Création réservation Georgine CPM",
+      "after": {
+        "id": "e24e8d05-d3ac-439f-ab8e-05f35a60b9c6",
+        "numero": "GH-2026-4373",
+        "createdAt": "2026-08-26T10:49:38.485Z",
+        "personName": "Georgine CPM",
+        "isAgent": false,
+        "motif": "Asset audit to the plant and village",
+        "startDate": "2026-08-19",
+        "endDate": "2026-09-30",
+        "status": "pending",
+        "mission": "Asset Audit to the Plant and village",
+        "updatedAt": "2026-08-26T10:49:38.485Z"
+      },
+      "undoable": true,
+      "undone": false
+    },
+    {
       "id": "log-000596",
       "at": "2026-08-26T10:48:01.530Z",
       "userId": "Serge.Muakasa",
@@ -45094,5 +45124,5 @@
       }
     }
   ],
-  "nextSeq": 597
+  "nextSeq": 598
 }
