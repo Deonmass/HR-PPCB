@@ -725,9 +725,10 @@
       "motif": "Mission to Muanda",
       "startDate": "2026-08-18",
       "endDate": "2026-08-18",
-      "status": "pending",
+      "roomId": "0b0cdc0d-ba79-4f68-8533-c90cad3390cb",
+      "status": "confirmed",
       "mission": "Mission to Muanda",
-      "updatedAt": "2026-08-26T10:46:13.356Z"
+      "updatedAt": "2026-08-26T10:46:39.010Z"
     },
     {
       "id": "3e49ff5c-0e0c-4337-b1d8-5124216eccaf",
@@ -25410,6 +25411,18 @@
     }
   ],
   "passages": [
+    {
+      "id": "48529211-b6cd-4320-b6fe-238d9d207a58",
+      "roomId": "0b0cdc0d-ba79-4f68-8533-c90cad3390cb",
+      "reservationId": "1c609f99-bdfd-4a7c-b592-eed421bbacc0",
+      "numero": "GH-2026-4371",
+      "personName": "SAIDI MOUSSA TRESOR",
+      "matricule": "70000238",
+      "motif": "Mission to Muanda",
+      "startDate": "2026-08-18",
+      "endDate": "2026-08-18",
+      "checkedInAt": "2026-08-26T10:46:39.010Z"
+    },
     {
       "id": "0ebbefab-819f-4041-bc07-3f94c4051025",
       "roomId": "ed91c14e-915f-4d22-971c-fd4bb7feb33e",
