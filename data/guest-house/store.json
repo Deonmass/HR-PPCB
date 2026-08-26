@@ -716,6 +716,19 @@
   ],
   "reservations": [
     {
+      "id": "b63e7629-0648-4f35-bab2-00f938d32305",
+      "numero": "GH-2026-4374",
+      "createdAt": "2026-08-26T10:51:20.534Z",
+      "personName": "Cyrille Mbuwa",
+      "isAgent": false,
+      "motif": "Mission to the plant",
+      "startDate": "2026-08-20",
+      "endDate": "2026-08-21",
+      "status": "pending",
+      "mission": "Mission to the plant",
+      "updatedAt": "2026-08-26T10:51:20.534Z"
+    },
+    {
       "id": "e24e8d05-d3ac-439f-ab8e-05f35a60b9c6",
       "numero": "GH-2026-4373",
       "createdAt": "2026-08-26T10:49:38.485Z",
@@ -42997,5 +43010,5 @@
       "checkedOutAt": "2025-09-24T12:00:00.000Z"
     }
   ],
-  "nextReservationSeq": 4374
+  "nextReservationSeq": 4375
 }
