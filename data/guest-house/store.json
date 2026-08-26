@@ -724,9 +724,10 @@
       "motif": "Mission to the plant",
       "startDate": "2026-08-18",
       "endDate": "2026-08-19",
-      "status": "pending",
+      "roomId": "ed91c14e-915f-4d22-971c-fd4bb7feb33e",
+      "status": "confirmed",
       "mission": "Mission to the plant",
-      "updatedAt": "2026-08-26T10:44:56.586Z"
+      "updatedAt": "2026-08-26T10:45:19.809Z"
     },
     {
       "id": "b1a5e4df-a77d-4264-a64c-0e29466b08cf",
@@ -25395,6 +25396,17 @@
     }
   ],
   "passages": [
+    {
+      "id": "0ebbefab-819f-4041-bc07-3f94c4051025",
+      "roomId": "ed91c14e-915f-4d22-971c-fd4bb7feb33e",
+      "reservationId": "3e49ff5c-0e0c-4337-b1d8-5124216eccaf",
+      "numero": "GH-2026-4370",
+      "personName": "Yves Sakiema",
+      "motif": "Mission to the plant",
+      "startDate": "2026-08-18",
+      "endDate": "2026-08-19",
+      "checkedInAt": "2026-08-26T10:45:19.809Z"
+    },
     {
       "id": "eaac4cd5-8a72-41fc-977c-47344c334af5",
       "roomId": "3219d898-ff74-496c-a62e-2295012276ae",
