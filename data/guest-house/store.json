@@ -724,10 +724,11 @@
       "motif": "Blasting mission to the plant",
       "startDate": "2026-08-28",
       "endDate": "2026-08-30",
-      "status": "pending",
+      "roomId": "85c3d598-623c-402f-9053-e43840e24325",
+      "status": "confirmed",
       "company": "AEL",
       "mission": "Blasting mission to the plant",
-      "updatedAt": "2026-08-26T10:28:33.241Z"
+      "updatedAt": "2026-08-26T10:29:09.479Z"
     },
     {
       "id": "b6fade55-b8cf-4dd4-98ed-32b2ef1aeed7",
@@ -25353,6 +25354,17 @@
     }
   ],
   "passages": [
+    {
+      "id": "bc454964-0d41-4aee-947b-d568ca137292",
+      "roomId": "85c3d598-623c-402f-9053-e43840e24325",
+      "reservationId": "982fe459-414b-4f49-9eff-0f93f34e9679",
+      "numero": "GH-2026-4367",
+      "personName": "FARDC",
+      "motif": "Blasting mission to the plant",
+      "startDate": "2026-08-28",
+      "endDate": "2026-08-30",
+      "checkedInAt": "2026-08-26T10:29:09.479Z"
+    },
     {
       "id": "8b596227-7db5-4f5e-b33b-c3f19f02f35b",
       "roomId": "8b14162d-ae3b-49a5-bcb6-812c2d8d5b5b",
