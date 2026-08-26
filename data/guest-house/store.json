@@ -1423,11 +1423,11 @@
       "isAgent": false,
       "motif": "Mission to the plant for Heavy mobile equipment with Mining Mgr",
       "startDate": "2026-08-15",
-      "endDate": "2026-08-18",
+      "endDate": "2026-08-20",
       "roomId": "8b14162d-ae3b-49a5-bcb6-812c2d8d5b5b",
       "status": "confirmed",
       "mission": "Mission to the plant for Heavy mobile equipment with Mining Mgr",
-      "updatedAt": "2026-08-16T18:01:26.538Z"
+      "updatedAt": "2026-08-26T10:41:47.444Z"
     },
     {
       "id": "90ceecb8-edfc-4131-a17c-f85fbd913d14",
@@ -25968,7 +25968,7 @@
       "personName": "Inspector Ministere Transport",
       "motif": "Mission to the plant for Heavy mobile equipment with Mining Mgr",
       "startDate": "2026-08-15",
-      "endDate": "2026-08-18",
+      "endDate": "2026-08-20",
       "checkedInAt": "2026-08-16T18:01:26.538Z"
     },
     {
