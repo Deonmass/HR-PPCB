@@ -724,10 +724,11 @@
       "motif": "Blasting mission to the plant",
       "startDate": "2026-08-28",
       "endDate": "2026-09-30",
-      "status": "pending",
+      "roomId": "2ef11cfa-1396-4c82-ac99-85b12d6093be",
+      "status": "confirmed",
       "company": "AEL",
       "mission": "Blasting mission to the plant",
-      "updatedAt": "2026-08-26T10:19:06.397Z"
+      "updatedAt": "2026-08-26T10:19:41.770Z"
     },
     {
       "id": "29153bf4-d6da-43bb-8b1c-0ce2440f6f2b",
@@ -25265,6 +25266,17 @@
     }
   ],
   "passages": [
+    {
+      "id": "b6583b2d-5329-4d87-937d-91ae5a380ff2",
+      "roomId": "2ef11cfa-1396-4c82-ac99-85b12d6093be",
+      "reservationId": "0ce87037-06f9-4059-b341-ea825f339550",
+      "numero": "GH-2026-4361",
+      "personName": "Felly Pongo",
+      "motif": "Blasting mission to the plant",
+      "startDate": "2026-08-28",
+      "endDate": "2026-09-30",
+      "checkedInAt": "2026-08-26T10:19:41.770Z"
+    },
     {
       "id": "d4096314-e50b-47a2-8309-6627a7e30948",
       "roomId": "0b0cdc0d-ba79-4f68-8533-c90cad3390cb",
