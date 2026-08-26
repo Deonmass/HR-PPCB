@@ -716,6 +716,19 @@
   ],
   "reservations": [
     {
+      "id": "ca309579-9e93-41d9-92ce-eb0b07974aa9",
+      "numero": "GH-2026-4378",
+      "createdAt": "2026-08-26T10:59:02.389Z",
+      "personName": "Bebe Jusca",
+      "isAgent": false,
+      "motif": "Family day activities",
+      "startDate": "2026-08-21",
+      "endDate": "2026-08-22",
+      "status": "pending",
+      "mission": "Family day activities",
+      "updatedAt": "2026-08-26T10:59:02.389Z"
+    },
+    {
       "id": "4cffa403-6ac2-4a42-98a3-d529b08e1200",
       "numero": "GH-2026-4377",
       "createdAt": "2026-08-26T10:57:02.493Z",
@@ -43101,5 +43114,5 @@
       "checkedOutAt": "2025-09-24T12:00:00.000Z"
     }
   ],
-  "nextReservationSeq": 4378
+  "nextReservationSeq": 4379
 }
