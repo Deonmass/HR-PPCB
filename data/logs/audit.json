@@ -1,6 +1,37 @@
 {
   "entries": [
     {
+      "id": "log-000562",
+      "at": "2026-08-26T10:20:18.663Z",
+      "userId": "Serge.Muakasa",
+      "userName": "Serge Muakasa",
+      "userEmail": "Serge.Muakasa@ppcdrc.cd",
+      "module": "guest-house",
+      "moduleLabel": "Guest house",
+      "action": "create",
+      "actionLabel": "Création",
+      "entityType": "guest-house.reservation",
+      "entityId": "7b313b6e-e404-461f-b5f3-c40b61b9d624",
+      "summary": "Création réservation Jonathan AEL",
+      "details": "Création réservation Jonathan AEL",
+      "after": {
+        "id": "7b313b6e-e404-461f-b5f3-c40b61b9d624",
+        "numero": "GH-2026-4362",
+        "createdAt": "2026-08-26T10:20:16.392Z",
+        "personName": "Jonathan AEL",
+        "isAgent": false,
+        "motif": "Blasting mission to the plant",
+        "startDate": "2026-08-28",
+        "endDate": "2026-09-30",
+        "status": "pending",
+        "company": "AEL",
+        "mission": "Blasting mission to the plant",
+        "updatedAt": "2026-08-26T10:20:16.392Z"
+      },
+      "undoable": true,
+      "undone": false
+    },
+    {
       "id": "log-000561",
       "at": "2026-08-26T10:19:44.057Z",
       "userId": "Serge.Muakasa",
@@ -43530,5 +43561,5 @@
       }
     }
   ],
-  "nextSeq": 562
+  "nextSeq": 563
 }
