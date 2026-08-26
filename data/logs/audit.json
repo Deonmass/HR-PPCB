@@ -1,6 +1,50 @@
 {
   "entries": [
     {
+      "id": "log-000601",
+      "at": "2026-08-26T10:51:43.223Z",
+      "userId": "Serge.Muakasa",
+      "userName": "Serge Muakasa",
+      "userEmail": "Serge.Muakasa@ppcdrc.cd",
+      "module": "guest-house",
+      "moduleLabel": "Guest house",
+      "action": "update",
+      "actionLabel": "Modification",
+      "entityType": "guest-house.reservation",
+      "entityId": "b63e7629-0648-4f35-bab2-00f938d32305",
+      "summary": "Statut réservation b63e7629-0648-4f35-bab2-00f938d32305 → confirmed",
+      "details": "Statut réservation b63e7629-0648-4f35-bab2-00f938d32305 → confirmed",
+      "before": {
+        "id": "b63e7629-0648-4f35-bab2-00f938d32305",
+        "numero": "GH-2026-4374",
+        "createdAt": "2026-08-26T10:51:20.534Z",
+        "personName": "Cyrille Mbuwa",
+        "isAgent": false,
+        "motif": "Mission to the plant",
+        "startDate": "2026-08-20",
+        "endDate": "2026-08-21",
+        "status": "pending",
+        "mission": "Mission to the plant",
+        "updatedAt": "2026-08-26T10:51:20.534Z"
+      },
+      "after": {
+        "id": "b63e7629-0648-4f35-bab2-00f938d32305",
+        "numero": "GH-2026-4374",
+        "createdAt": "2026-08-26T10:51:20.534Z",
+        "personName": "Cyrille Mbuwa",
+        "isAgent": false,
+        "motif": "Mission to the plant",
+        "startDate": "2026-08-20",
+        "endDate": "2026-08-21",
+        "roomId": "3d273d81-0642-4fac-b424-a54146ad7acc",
+        "status": "confirmed",
+        "mission": "Mission to the plant",
+        "updatedAt": "2026-08-26T10:51:40.754Z"
+      },
+      "undoable": true,
+      "undone": false
+    },
+    {
       "id": "log-000600",
       "at": "2026-08-26T10:51:23.297Z",
       "userId": "Serge.Muakasa",
@@ -45241,5 +45285,5 @@
       }
     }
   ],
-  "nextSeq": 601
+  "nextSeq": 602
 }
