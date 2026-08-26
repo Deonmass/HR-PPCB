@@ -1,6 +1,51 @@
 {
   "entries": [
     {
+      "id": "log-000578",
+      "at": "2026-08-26T10:34:24.888Z",
+      "userId": "Serge.Muakasa",
+      "userName": "Serge Muakasa",
+      "userEmail": "Serge.Muakasa@ppcdrc.cd",
+      "module": "guest-house",
+      "moduleLabel": "Guest house",
+      "action": "update",
+      "actionLabel": "Modification",
+      "entityType": "guest-house.reservation",
+      "entityId": "4351af3b-e5d6-45b7-b095-b19b98c2d67a",
+      "summary": "Modification réservation 4351af3b-e5d6-45b7-b095-b19b98c2d67a",
+      "details": "Modification réservation 4351af3b-e5d6-45b7-b095-b19b98c2d67a",
+      "before": {
+        "id": "4351af3b-e5d6-45b7-b095-b19b98c2d67a",
+        "numero": "GH-2026-4293",
+        "createdAt": "2026-08-16T17:15:47.911Z",
+        "personName": "Francois du bois",
+        "isAgent": false,
+        "motif": "hébergement",
+        "startDate": "2026-08-02",
+        "endDate": "2026-08-16",
+        "roomId": "873277c8-cfe8-4e40-af16-61f1a3f4c273",
+        "status": "confirmed",
+        "mission": "Mission de maintenance à l'usine",
+        "updatedAt": "2026-08-16T17:16:30.709Z"
+      },
+      "after": {
+        "id": "4351af3b-e5d6-45b7-b095-b19b98c2d67a",
+        "numero": "GH-2026-4293",
+        "createdAt": "2026-08-16T17:15:47.911Z",
+        "personName": "Francois du bois",
+        "isAgent": false,
+        "motif": "hébergement",
+        "startDate": "2026-08-02",
+        "endDate": "2026-08-31",
+        "roomId": "873277c8-cfe8-4e40-af16-61f1a3f4c273",
+        "status": "confirmed",
+        "mission": "Mission de maintenance à l'usine",
+        "updatedAt": "2026-08-26T10:34:22.241Z"
+      },
+      "undoable": true,
+      "undone": false
+    },
+    {
       "id": "log-000577",
       "at": "2026-08-26T10:30:40.050Z",
       "userId": "Serge.Muakasa",
@@ -44352,5 +44397,5 @@
       }
     }
   ],
-  "nextSeq": 578
+  "nextSeq": 579
 }
