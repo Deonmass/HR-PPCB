@@ -724,9 +724,10 @@
       "motif": "Family day activities",
       "startDate": "2026-08-21",
       "endDate": "2026-08-22",
-      "status": "pending",
+      "roomId": "2ef11cfa-1396-4c82-ac99-85b12d6093be",
+      "status": "confirmed",
       "mission": "Family day activities",
-      "updatedAt": "2026-08-26T11:00:04.309Z"
+      "updatedAt": "2026-08-26T11:00:27.750Z"
     },
     {
       "id": "ca309579-9e93-41d9-92ce-eb0b07974aa9",
@@ -25524,6 +25525,17 @@
     }
   ],
   "passages": [
+    {
+      "id": "17a33a3a-90b8-4d04-945a-c8e0b6342ae5",
+      "roomId": "2ef11cfa-1396-4c82-ac99-85b12d6093be",
+      "reservationId": "5716a693-56ad-47b1-8fe8-0c205238adce",
+      "numero": "GH-2026-4379",
+      "personName": "Pachelie",
+      "motif": "Family day activities",
+      "startDate": "2026-08-21",
+      "endDate": "2026-08-22",
+      "checkedInAt": "2026-08-26T11:00:27.750Z"
+    },
     {
       "id": "f3ed6c64-1105-4a2b-b8c4-b2e4e6e3d6ec",
       "roomId": "8b14162d-ae3b-49a5-bcb6-812c2d8d5b5b",
