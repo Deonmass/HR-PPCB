@@ -724,9 +724,10 @@
       "motif": "Family day and Mont Cristal activities",
       "startDate": "2026-08-21",
       "endDate": "2026-08-30",
-      "status": "pending",
+      "roomId": "3219d898-ff74-496c-a62e-2295012276ae",
+      "status": "confirmed",
       "mission": "Mont Cristal Activities",
-      "updatedAt": "2026-08-26T10:57:02.493Z"
+      "updatedAt": "2026-08-26T10:57:22.104Z"
     },
     {
       "id": "9ceb79d1-ec70-4117-8fa5-01fc516b467a",
@@ -25496,6 +25497,17 @@
     }
   ],
   "passages": [
+    {
+      "id": "09f37ea2-5d07-475d-918a-06cbecd57968",
+      "roomId": "3219d898-ff74-496c-a62e-2295012276ae",
+      "reservationId": "4cffa403-6ac2-4a42-98a3-d529b08e1200",
+      "numero": "GH-2026-4377",
+      "personName": "Equipe Podium Mont Cristal",
+      "motif": "Family day and Mont Cristal activities",
+      "startDate": "2026-08-21",
+      "endDate": "2026-08-30",
+      "checkedInAt": "2026-08-26T10:57:22.104Z"
+    },
     {
       "id": "868be6cf-4059-4c45-b46a-b71656410f80",
       "roomId": "85c3d598-623c-402f-9053-e43840e24325",
