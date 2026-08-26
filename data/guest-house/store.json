@@ -1767,11 +1767,11 @@
       "isAgent": false,
       "motif": "hébergement",
       "startDate": "2026-08-02",
-      "endDate": "2026-08-16",
+      "endDate": "2026-08-31",
       "roomId": "873277c8-cfe8-4e40-af16-61f1a3f4c273",
       "status": "confirmed",
       "mission": "Mission de maintenance à l'usine",
-      "updatedAt": "2026-08-16T17:16:30.709Z"
+      "updatedAt": "2026-08-26T10:34:22.241Z"
     },
     {
       "id": "dc9baa00-63c2-4fb4-a196-d63b606fad34",
@@ -26219,7 +26219,7 @@
       "personName": "Francois du bois",
       "motif": "hébergement",
       "startDate": "2026-08-02",
-      "endDate": "2026-08-16",
+      "endDate": "2026-08-31",
       "checkedInAt": "2026-08-16T17:16:30.709Z"
     },
     {
