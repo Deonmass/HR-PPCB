@@ -1,6 +1,37 @@
 {
   "entries": [
     {
+      "id": "log-000560",
+      "at": "2026-08-26T10:19:09.425Z",
+      "userId": "Serge.Muakasa",
+      "userName": "Serge Muakasa",
+      "userEmail": "Serge.Muakasa@ppcdrc.cd",
+      "module": "guest-house",
+      "moduleLabel": "Guest house",
+      "action": "create",
+      "actionLabel": "Création",
+      "entityType": "guest-house.reservation",
+      "entityId": "0ce87037-06f9-4059-b341-ea825f339550",
+      "summary": "Création réservation Felly Pongo",
+      "details": "Création réservation Felly Pongo",
+      "after": {
+        "id": "0ce87037-06f9-4059-b341-ea825f339550",
+        "numero": "GH-2026-4361",
+        "createdAt": "2026-08-26T10:19:06.397Z",
+        "personName": "Felly Pongo",
+        "isAgent": false,
+        "motif": "Blasting mission to the plant",
+        "startDate": "2026-08-28",
+        "endDate": "2026-09-30",
+        "status": "pending",
+        "company": "AEL",
+        "mission": "Blasting mission to the plant",
+        "updatedAt": "2026-08-26T10:19:06.397Z"
+      },
+      "undoable": true,
+      "undone": false
+    },
+    {
       "id": "log-000559",
       "at": "2026-08-26T08:47:03.221Z",
       "userId": "admin",
@@ -43453,5 +43484,5 @@
       }
     }
   ],
-  "nextSeq": 560
+  "nextSeq": 561
 }
