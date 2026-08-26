@@ -716,6 +716,19 @@
   ],
   "reservations": [
     {
+      "id": "5716a693-56ad-47b1-8fe8-0c205238adce",
+      "numero": "GH-2026-4379",
+      "createdAt": "2026-08-26T11:00:04.309Z",
+      "personName": "Pachelie",
+      "isAgent": false,
+      "motif": "Family day activities",
+      "startDate": "2026-08-21",
+      "endDate": "2026-08-22",
+      "status": "pending",
+      "mission": "Family day activities",
+      "updatedAt": "2026-08-26T11:00:04.309Z"
+    },
+    {
       "id": "ca309579-9e93-41d9-92ce-eb0b07974aa9",
       "numero": "GH-2026-4378",
       "createdAt": "2026-08-26T10:59:02.389Z",
@@ -43126,5 +43139,5 @@
       "checkedOutAt": "2025-09-24T12:00:00.000Z"
     }
   ],
-  "nextReservationSeq": 4379
+  "nextReservationSeq": 4380
 }
