@@ -716,6 +716,19 @@
   ],
   "reservations": [
     {
+      "id": "4cffa403-6ac2-4a42-98a3-d529b08e1200",
+      "numero": "GH-2026-4377",
+      "createdAt": "2026-08-26T10:57:02.493Z",
+      "personName": "Equipe Podium Mont Cristal",
+      "isAgent": false,
+      "motif": "Family day and Mont Cristal activities",
+      "startDate": "2026-08-21",
+      "endDate": "2026-08-30",
+      "status": "pending",
+      "mission": "Mont Cristal Activities",
+      "updatedAt": "2026-08-26T10:57:02.493Z"
+    },
+    {
       "id": "9ceb79d1-ec70-4117-8fa5-01fc516b467a",
       "numero": "GH-2026-4376",
       "createdAt": "2026-08-26T10:54:19.281Z",
@@ -43076,5 +43089,5 @@
       "checkedOutAt": "2025-09-24T12:00:00.000Z"
     }
   ],
-  "nextReservationSeq": 4377
+  "nextReservationSeq": 4378
 }
