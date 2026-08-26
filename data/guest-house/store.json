@@ -716,6 +716,19 @@
   ],
   "reservations": [
     {
+      "id": "41fb32e5-6f77-463d-aa5f-6e2ca525cf6f",
+      "numero": "GH-2026-4365",
+      "createdAt": "2026-08-26T10:25:06.640Z",
+      "personName": "Sud Africain",
+      "isAgent": false,
+      "motif": "Repair drilling machine",
+      "startDate": "2026-08-28",
+      "endDate": "2026-08-31",
+      "status": "pending",
+      "mission": "Repair drilling machine",
+      "updatedAt": "2026-08-26T10:25:06.640Z"
+    },
+    {
       "id": "fb614cda-9e49-4847-a0c3-67c0d9175434",
       "numero": "GH-2026-4364",
       "createdAt": "2026-08-26T10:23:57.152Z",
@@ -42768,5 +42781,5 @@
       "checkedOutAt": "2025-09-24T12:00:00.000Z"
     }
   ],
-  "nextReservationSeq": 4365
+  "nextReservationSeq": 4366
 }
