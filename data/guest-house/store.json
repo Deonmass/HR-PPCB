@@ -724,9 +724,10 @@
       "motif": "Family day activities",
       "startDate": "2026-08-21",
       "endDate": "2026-08-22",
-      "status": "pending",
+      "roomId": "8b14162d-ae3b-49a5-bcb6-812c2d8d5b5b",
+      "status": "confirmed",
       "mission": "Family day activities",
-      "updatedAt": "2026-08-26T10:59:02.389Z"
+      "updatedAt": "2026-08-26T10:59:23.974Z"
     },
     {
       "id": "4cffa403-6ac2-4a42-98a3-d529b08e1200",
@@ -25510,6 +25511,17 @@
     }
   ],
   "passages": [
+    {
+      "id": "f3ed6c64-1105-4a2b-b8c4-b2e4e6e3d6ec",
+      "roomId": "8b14162d-ae3b-49a5-bcb6-812c2d8d5b5b",
+      "reservationId": "ca309579-9e93-41d9-92ce-eb0b07974aa9",
+      "numero": "GH-2026-4378",
+      "personName": "Bebe Jusca",
+      "motif": "Family day activities",
+      "startDate": "2026-08-21",
+      "endDate": "2026-08-22",
+      "checkedInAt": "2026-08-26T10:59:23.974Z"
+    },
     {
       "id": "09f37ea2-5d07-475d-918a-06cbecd57968",
       "roomId": "3219d898-ff74-496c-a62e-2295012276ae",
