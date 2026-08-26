@@ -1,6 +1,53 @@
 {
   "entries": [
     {
+      "id": "log-000579",
+      "at": "2026-08-26T10:35:13.808Z",
+      "userId": "Serge.Muakasa",
+      "userName": "Serge Muakasa",
+      "userEmail": "Serge.Muakasa@ppcdrc.cd",
+      "module": "guest-house",
+      "moduleLabel": "Guest house",
+      "action": "update",
+      "actionLabel": "Modification",
+      "entityType": "guest-house.reservation",
+      "entityId": "f9f7a800-050f-462f-98db-a159f85f849c",
+      "summary": "Modification réservation f9f7a800-050f-462f-98db-a159f85f849c",
+      "details": "Modification réservation f9f7a800-050f-462f-98db-a159f85f849c",
+      "before": {
+        "id": "f9f7a800-050f-462f-98db-a159f85f849c",
+        "numero": "GH-2026-4294",
+        "createdAt": "2026-08-16T17:18:35.838Z",
+        "personName": "Georgina CPM",
+        "isAgent": false,
+        "motif": "Asset audit to the Plant",
+        "startDate": "2026-08-01",
+        "endDate": "2026-08-16",
+        "roomId": "4e4bd694-e96e-4748-a98a-882d842f616e",
+        "status": "confirmed",
+        "company": "CPM",
+        "mission": "Asset Audit to the Plant",
+        "updatedAt": "2026-08-16T17:18:57.734Z"
+      },
+      "after": {
+        "id": "f9f7a800-050f-462f-98db-a159f85f849c",
+        "numero": "GH-2026-4294",
+        "createdAt": "2026-08-16T17:18:35.838Z",
+        "personName": "Georgina CPM",
+        "isAgent": false,
+        "motif": "Asset audit to the Plant",
+        "startDate": "2026-08-01",
+        "endDate": "2026-08-20",
+        "roomId": "4e4bd694-e96e-4748-a98a-882d842f616e",
+        "status": "confirmed",
+        "company": "CPM",
+        "mission": "Asset Audit to the Plant",
+        "updatedAt": "2026-08-26T10:35:11.067Z"
+      },
+      "undoable": true,
+      "undone": false
+    },
+    {
       "id": "log-000578",
       "at": "2026-08-26T10:34:24.888Z",
       "userId": "Serge.Muakasa",
@@ -44397,5 +44444,5 @@
       }
     }
   ],
-  "nextSeq": 579
+  "nextSeq": 580
 }
