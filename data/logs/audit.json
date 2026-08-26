@@ -1,6 +1,37 @@
 {
   "entries": [
     {
+      "id": "log-000564",
+      "at": "2026-08-26T10:22:25.229Z",
+      "userId": "Serge.Muakasa",
+      "userName": "Serge Muakasa",
+      "userEmail": "Serge.Muakasa@ppcdrc.cd",
+      "module": "guest-house",
+      "moduleLabel": "Guest house",
+      "action": "create",
+      "actionLabel": "Création",
+      "entityType": "guest-house.reservation",
+      "entityId": "0b2764a5-abcc-4ecb-910f-6c693b8e1742",
+      "summary": "Création réservation KONE KATYNAN CYRILLE",
+      "details": "Création réservation KONE KATYNAN CYRILLE",
+      "after": {
+        "id": "0b2764a5-abcc-4ecb-910f-6c693b8e1742",
+        "numero": "GH-2026-4363",
+        "createdAt": "2026-08-26T10:22:22.296Z",
+        "personName": "KONE KATYNAN CYRILLE",
+        "matricule": "70000208",
+        "isAgent": true,
+        "motif": "Mission to the plant",
+        "startDate": "2026-08-26",
+        "endDate": "2026-09-07",
+        "status": "pending",
+        "mission": "Mission to the plant with Plant team",
+        "updatedAt": "2026-08-26T10:22:22.296Z"
+      },
+      "undoable": true,
+      "undone": false
+    },
+    {
       "id": "log-000563",
       "at": "2026-08-26T10:20:45.045Z",
       "userId": "Serge.Muakasa",
@@ -43607,5 +43638,5 @@
       }
     }
   ],
-  "nextSeq": 564
+  "nextSeq": 565
 }
