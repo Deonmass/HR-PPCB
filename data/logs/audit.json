@@ -1,6 +1,50 @@
 {
   "entries": [
     {
+      "id": "log-000610",
+      "at": "2026-08-26T10:59:27.093Z",
+      "userId": "Serge.Muakasa",
+      "userName": "Serge Muakasa",
+      "userEmail": "Serge.Muakasa@ppcdrc.cd",
+      "module": "guest-house",
+      "moduleLabel": "Guest house",
+      "action": "update",
+      "actionLabel": "Modification",
+      "entityType": "guest-house.reservation",
+      "entityId": "ca309579-9e93-41d9-92ce-eb0b07974aa9",
+      "summary": "Statut réservation ca309579-9e93-41d9-92ce-eb0b07974aa9 → confirmed",
+      "details": "Statut réservation ca309579-9e93-41d9-92ce-eb0b07974aa9 → confirmed",
+      "before": {
+        "id": "ca309579-9e93-41d9-92ce-eb0b07974aa9",
+        "numero": "GH-2026-4378",
+        "createdAt": "2026-08-26T10:59:02.389Z",
+        "personName": "Bebe Jusca",
+        "isAgent": false,
+        "motif": "Family day activities",
+        "startDate": "2026-08-21",
+        "endDate": "2026-08-22",
+        "status": "pending",
+        "mission": "Family day activities",
+        "updatedAt": "2026-08-26T10:59:02.389Z"
+      },
+      "after": {
+        "id": "ca309579-9e93-41d9-92ce-eb0b07974aa9",
+        "numero": "GH-2026-4378",
+        "createdAt": "2026-08-26T10:59:02.389Z",
+        "personName": "Bebe Jusca",
+        "isAgent": false,
+        "motif": "Family day activities",
+        "startDate": "2026-08-21",
+        "endDate": "2026-08-22",
+        "roomId": "8b14162d-ae3b-49a5-bcb6-812c2d8d5b5b",
+        "status": "confirmed",
+        "mission": "Family day activities",
+        "updatedAt": "2026-08-26T10:59:23.974Z"
+      },
+      "undoable": true,
+      "undone": false
+    },
+    {
       "id": "log-000609",
       "at": "2026-08-26T10:59:05.457Z",
       "userId": "Serge.Muakasa",
@@ -45568,5 +45612,5 @@
       }
     }
   ],
-  "nextSeq": 610
+  "nextSeq": 611
 }
