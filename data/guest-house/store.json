@@ -725,9 +725,10 @@
       "motif": "Mission to the plant",
       "startDate": "2026-08-26",
       "endDate": "2026-09-07",
-      "status": "pending",
+      "roomId": "3d273d81-0642-4fac-b424-a54146ad7acc",
+      "status": "confirmed",
       "mission": "Mission to the plant with Plant team",
-      "updatedAt": "2026-08-26T10:22:22.296Z"
+      "updatedAt": "2026-08-26T10:22:40.038Z"
     },
     {
       "id": "7b313b6e-e404-461f-b5f3-c40b61b9d624",
@@ -25295,6 +25296,18 @@
     }
   ],
   "passages": [
+    {
+      "id": "8cd64823-4b4a-43d5-9715-6df5052937a6",
+      "roomId": "3d273d81-0642-4fac-b424-a54146ad7acc",
+      "reservationId": "0b2764a5-abcc-4ecb-910f-6c693b8e1742",
+      "numero": "GH-2026-4363",
+      "personName": "KONE KATYNAN CYRILLE",
+      "matricule": "70000208",
+      "motif": "Mission to the plant",
+      "startDate": "2026-08-26",
+      "endDate": "2026-09-07",
+      "checkedInAt": "2026-08-26T10:22:40.038Z"
+    },
     {
       "id": "009fa572-15b4-48ef-a287-f21680a66fe6",
       "roomId": "12ee1ff4-eb03-4592-b1da-589006209e77",
