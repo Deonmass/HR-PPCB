@@ -1,6 +1,20 @@
 {
   "entries": [
     {
+      "id": "log-000623",
+      "at": "2026-08-26T13:03:36.849Z",
+      "userId": "admin",
+      "userName": "Administrateur",
+      "module": "travel.attestation",
+      "moduleLabel": "Attestation de service",
+      "action": "export",
+      "actionLabel": "Export",
+      "summary": "Téléchargement DOCX attestation NSEKA LUGUNGU DHEINS",
+      "details": "Téléchargement DOCX attestation NSEKA LUGUNGU DHEINS",
+      "undoable": false,
+      "undone": false
+    },
+    {
       "id": "log-000622",
       "at": "2026-08-26T13:03:31.370Z",
       "userId": "admin",
@@ -46045,5 +46059,5 @@
       }
     }
   ],
-  "nextSeq": 623
+  "nextSeq": 624
 }
