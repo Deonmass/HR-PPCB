@@ -724,10 +724,11 @@
       "motif": "Blasting mission to the plant",
       "startDate": "2026-08-28",
       "endDate": "2026-09-30",
-      "status": "pending",
+      "roomId": "12ee1ff4-eb03-4592-b1da-589006209e77",
+      "status": "confirmed",
       "company": "AEL",
       "mission": "Blasting mission to the plant",
-      "updatedAt": "2026-08-26T10:20:16.392Z"
+      "updatedAt": "2026-08-26T10:20:41.982Z"
     },
     {
       "id": "0ce87037-06f9-4059-b341-ea825f339550",
@@ -25280,6 +25281,17 @@
     }
   ],
   "passages": [
+    {
+      "id": "009fa572-15b4-48ef-a287-f21680a66fe6",
+      "roomId": "12ee1ff4-eb03-4592-b1da-589006209e77",
+      "reservationId": "7b313b6e-e404-461f-b5f3-c40b61b9d624",
+      "numero": "GH-2026-4362",
+      "personName": "Jonathan AEL",
+      "motif": "Blasting mission to the plant",
+      "startDate": "2026-08-28",
+      "endDate": "2026-09-30",
+      "checkedInAt": "2026-08-26T10:20:41.982Z"
+    },
     {
       "id": "b6583b2d-5329-4d87-937d-91ae5a380ff2",
       "roomId": "2ef11cfa-1396-4c82-ac99-85b12d6093be",
