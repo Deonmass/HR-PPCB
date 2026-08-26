@@ -724,9 +724,10 @@
       "motif": "Repair drilling machine",
       "startDate": "2026-08-28",
       "endDate": "2026-08-31",
-      "status": "pending",
+      "roomId": "7dbc2817-6744-4ae5-8827-0961bd7aa54a",
+      "status": "confirmed",
       "mission": "Repair drilling machine",
-      "updatedAt": "2026-08-26T10:25:06.640Z"
+      "updatedAt": "2026-08-26T10:25:30.147Z"
     },
     {
       "id": "fb614cda-9e49-4847-a0c3-67c0d9175434",
@@ -25323,6 +25324,17 @@
     }
   ],
   "passages": [
+    {
+      "id": "c9c410ce-3da6-4d1d-9a3c-036dd748ffc9",
+      "roomId": "7dbc2817-6744-4ae5-8827-0961bd7aa54a",
+      "reservationId": "41fb32e5-6f77-463d-aa5f-6e2ca525cf6f",
+      "numero": "GH-2026-4365",
+      "personName": "Sud Africain",
+      "motif": "Repair drilling machine",
+      "startDate": "2026-08-28",
+      "endDate": "2026-08-31",
+      "checkedInAt": "2026-08-26T10:25:30.147Z"
+    },
     {
       "id": "a9f3d39d-a747-477f-aac2-bd4984d21b66",
       "roomId": "4e4bd694-e96e-4748-a98a-882d842f616e",
