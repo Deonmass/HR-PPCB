@@ -724,9 +724,10 @@
       "motif": "Mission to the plant",
       "startDate": "2026-08-20",
       "endDate": "2026-08-21",
-      "status": "pending",
+      "roomId": "3d273d81-0642-4fac-b424-a54146ad7acc",
+      "status": "confirmed",
       "mission": "Mission to the plant",
-      "updatedAt": "2026-08-26T10:51:20.534Z"
+      "updatedAt": "2026-08-26T10:51:40.754Z"
     },
     {
       "id": "e24e8d05-d3ac-439f-ab8e-05f35a60b9c6",
@@ -25452,6 +25453,17 @@
     }
   ],
   "passages": [
+    {
+      "id": "e9cff5b5-8e03-4145-ac7c-c2b56dccc8be",
+      "roomId": "3d273d81-0642-4fac-b424-a54146ad7acc",
+      "reservationId": "b63e7629-0648-4f35-bab2-00f938d32305",
+      "numero": "GH-2026-4374",
+      "personName": "Cyrille Mbuwa",
+      "motif": "Mission to the plant",
+      "startDate": "2026-08-20",
+      "endDate": "2026-08-21",
+      "checkedInAt": "2026-08-26T10:51:40.754Z"
+    },
     {
       "id": "cfeee54d-4c9c-452a-99d6-310e011a2ae6",
       "roomId": "0b0cdc0d-ba79-4f68-8533-c90cad3390cb",
