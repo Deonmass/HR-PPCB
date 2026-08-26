@@ -1,6 +1,36 @@
 {
   "entries": [
     {
+      "id": "log-000613",
+      "at": "2026-08-26T11:01:05.319Z",
+      "userId": "Serge.Muakasa",
+      "userName": "Serge Muakasa",
+      "userEmail": "Serge.Muakasa@ppcdrc.cd",
+      "module": "guest-house",
+      "moduleLabel": "Guest house",
+      "action": "create",
+      "actionLabel": "Création",
+      "entityType": "guest-house.reservation",
+      "entityId": "3bf8b12c-8026-49cb-acca-b77c7e8df6d1",
+      "summary": "Création réservation Patchelie team",
+      "details": "Création réservation Patchelie team",
+      "after": {
+        "id": "3bf8b12c-8026-49cb-acca-b77c7e8df6d1",
+        "numero": "GH-2026-4380",
+        "createdAt": "2026-08-26T11:01:02.421Z",
+        "personName": "Patchelie team",
+        "isAgent": false,
+        "motif": "Family day activities",
+        "startDate": "2026-08-21",
+        "endDate": "2026-08-22",
+        "status": "pending",
+        "mission": "Family day activities",
+        "updatedAt": "2026-08-26T11:01:02.421Z"
+      },
+      "undoable": true,
+      "undone": false
+    },
+    {
       "id": "log-000612",
       "at": "2026-08-26T11:00:30.190Z",
       "userId": "Serge.Muakasa",
@@ -45686,5 +45716,5 @@
       }
     }
   ],
-  "nextSeq": 613
+  "nextSeq": 614
 }
