@@ -1,6 +1,36 @@
 {
   "entries": [
     {
+      "id": "log-000611",
+      "at": "2026-08-26T11:00:07.012Z",
+      "userId": "Serge.Muakasa",
+      "userName": "Serge Muakasa",
+      "userEmail": "Serge.Muakasa@ppcdrc.cd",
+      "module": "guest-house",
+      "moduleLabel": "Guest house",
+      "action": "create",
+      "actionLabel": "Création",
+      "entityType": "guest-house.reservation",
+      "entityId": "5716a693-56ad-47b1-8fe8-0c205238adce",
+      "summary": "Création réservation Pachelie",
+      "details": "Création réservation Pachelie",
+      "after": {
+        "id": "5716a693-56ad-47b1-8fe8-0c205238adce",
+        "numero": "GH-2026-4379",
+        "createdAt": "2026-08-26T11:00:04.309Z",
+        "personName": "Pachelie",
+        "isAgent": false,
+        "motif": "Family day activities",
+        "startDate": "2026-08-21",
+        "endDate": "2026-08-22",
+        "status": "pending",
+        "mission": "Family day activities",
+        "updatedAt": "2026-08-26T11:00:04.309Z"
+      },
+      "undoable": true,
+      "undone": false
+    },
+    {
       "id": "log-000610",
       "at": "2026-08-26T10:59:27.093Z",
       "userId": "Serge.Muakasa",
@@ -45612,5 +45642,5 @@
       }
     }
   ],
-  "nextSeq": 611
+  "nextSeq": 612
 }
