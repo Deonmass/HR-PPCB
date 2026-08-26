@@ -1,6 +1,37 @@
 {
   "entries": [
     {
+      "id": "log-000593",
+      "at": "2026-08-26T10:46:15.976Z",
+      "userId": "Serge.Muakasa",
+      "userName": "Serge Muakasa",
+      "userEmail": "Serge.Muakasa@ppcdrc.cd",
+      "module": "guest-house",
+      "moduleLabel": "Guest house",
+      "action": "create",
+      "actionLabel": "Création",
+      "entityType": "guest-house.reservation",
+      "entityId": "1c609f99-bdfd-4a7c-b592-eed421bbacc0",
+      "summary": "Création réservation SAIDI MOUSSA TRESOR",
+      "details": "Création réservation SAIDI MOUSSA TRESOR",
+      "after": {
+        "id": "1c609f99-bdfd-4a7c-b592-eed421bbacc0",
+        "numero": "GH-2026-4371",
+        "createdAt": "2026-08-26T10:46:13.356Z",
+        "personName": "SAIDI MOUSSA TRESOR",
+        "matricule": "70000238",
+        "isAgent": true,
+        "motif": "Mission to Muanda",
+        "startDate": "2026-08-18",
+        "endDate": "2026-08-18",
+        "status": "pending",
+        "mission": "Mission to Muanda",
+        "updatedAt": "2026-08-26T10:46:13.356Z"
+      },
+      "undoable": true,
+      "undone": false
+    },
+    {
       "id": "log-000592",
       "at": "2026-08-26T10:45:22.578Z",
       "userId": "Serge.Muakasa",
@@ -44943,5 +44974,5 @@
       }
     }
   ],
-  "nextSeq": 593
+  "nextSeq": 594
 }
