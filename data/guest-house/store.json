@@ -725,9 +725,10 @@
       "motif": "Mission to the plant",
       "startDate": "2026-08-20",
       "endDate": "2026-08-28",
-      "status": "pending",
+      "roomId": "ed91c14e-915f-4d22-971c-fd4bb7feb33e",
+      "status": "confirmed",
       "mission": "Mission to the plant with Plant team",
-      "updatedAt": "2026-08-26T10:52:52.580Z"
+      "updatedAt": "2026-08-26T10:53:12.030Z"
     },
     {
       "id": "b63e7629-0648-4f35-bab2-00f938d32305",
@@ -25467,6 +25468,18 @@
     }
   ],
   "passages": [
+    {
+      "id": "2795add9-b1e7-4d08-abb8-9aaa62e79327",
+      "roomId": "ed91c14e-915f-4d22-971c-fd4bb7feb33e",
+      "reservationId": "fef7338e-b8a9-4c80-ae8c-60db33a92055",
+      "numero": "GH-2026-4375",
+      "personName": "ZAKUANI BAHATI BENNY",
+      "matricule": "70000177",
+      "motif": "Mission to the plant",
+      "startDate": "2026-08-20",
+      "endDate": "2026-08-28",
+      "checkedInAt": "2026-08-26T10:53:12.030Z"
+    },
     {
       "id": "e9cff5b5-8e03-4145-ac7c-c2b56dccc8be",
       "roomId": "3d273d81-0642-4fac-b424-a54146ad7acc",
