@@ -1737,12 +1737,12 @@
       "isAgent": false,
       "motif": "Asset audit to the Plant",
       "startDate": "2026-08-01",
-      "endDate": "2026-08-16",
+      "endDate": "2026-08-31",
       "roomId": "cfdfa27e-7353-401d-9090-1a3ca1c1fc80",
       "status": "confirmed",
       "company": "CPM",
       "mission": "Asset Audit to the Plant",
-      "updatedAt": "2026-08-16T17:19:55.086Z"
+      "updatedAt": "2026-08-26T10:35:48.599Z"
     },
     {
       "id": "f9f7a800-050f-462f-98db-a159f85f849c",
@@ -26197,7 +26197,7 @@
       "personName": "Jean Pierre",
       "motif": "Asset audit to the Plant",
       "startDate": "2026-08-01",
-      "endDate": "2026-08-16",
+      "endDate": "2026-08-31",
       "checkedInAt": "2026-08-16T17:19:55.086Z"
     },
     {
