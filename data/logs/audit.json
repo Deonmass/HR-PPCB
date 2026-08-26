@@ -1,6 +1,37 @@
 {
   "entries": [
     {
+      "id": "log-000573",
+      "at": "2026-08-26T10:28:35.756Z",
+      "userId": "Serge.Muakasa",
+      "userName": "Serge Muakasa",
+      "userEmail": "Serge.Muakasa@ppcdrc.cd",
+      "module": "guest-house",
+      "moduleLabel": "Guest house",
+      "action": "create",
+      "actionLabel": "Création",
+      "entityType": "guest-house.reservation",
+      "entityId": "982fe459-414b-4f49-9eff-0f93f34e9679",
+      "summary": "Création réservation FARDC",
+      "details": "Création réservation FARDC",
+      "after": {
+        "id": "982fe459-414b-4f49-9eff-0f93f34e9679",
+        "numero": "GH-2026-4367",
+        "createdAt": "2026-08-26T10:28:33.241Z",
+        "personName": "FARDC",
+        "isAgent": false,
+        "motif": "Blasting mission to the plant",
+        "startDate": "2026-08-28",
+        "endDate": "2026-08-30",
+        "status": "pending",
+        "company": "AEL",
+        "mission": "Blasting mission to the plant",
+        "updatedAt": "2026-08-26T10:28:33.241Z"
+      },
+      "undoable": true,
+      "undone": false
+    },
+    {
       "id": "log-000572",
       "at": "2026-08-26T10:28:28.324Z",
       "userId": "admin",
@@ -44055,5 +44086,5 @@
       }
     }
   ],
-  "nextSeq": 573
+  "nextSeq": 574
 }
