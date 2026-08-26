@@ -724,9 +724,10 @@
       "motif": "Mission to the plant for control technique mining equipment",
       "startDate": "2026-08-15",
       "endDate": "2026-08-20",
-      "status": "pending",
+      "roomId": "3219d898-ff74-496c-a62e-2295012276ae",
+      "status": "confirmed",
       "mission": "Mission to the plant for control technique mining equipment",
-      "updatedAt": "2026-08-26T10:37:34.030Z"
+      "updatedAt": "2026-08-26T10:39:45.762Z"
     },
     {
       "id": "291fd862-0fa0-4842-a978-6accce1caf69",
@@ -25381,6 +25382,17 @@
     }
   ],
   "passages": [
+    {
+      "id": "eaac4cd5-8a72-41fc-977c-47344c334af5",
+      "roomId": "3219d898-ff74-496c-a62e-2295012276ae",
+      "reservationId": "b1a5e4df-a77d-4264-a64c-0e29466b08cf",
+      "numero": "GH-2026-4369",
+      "personName": "Ministere transport",
+      "motif": "Mission to the plant for control technique mining equipment",
+      "startDate": "2026-08-15",
+      "endDate": "2026-08-20",
+      "checkedInAt": "2026-08-26T10:39:45.762Z"
+    },
     {
       "id": "bda6e56b-1a5d-4e97-a869-ea7f2ebcb59a",
       "roomId": "d9ec3499-ad6d-4215-8ef9-c20a4f6b1714",
