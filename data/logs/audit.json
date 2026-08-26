@@ -1,6 +1,37 @@
 {
   "entries": [
     {
+      "id": "log-000603",
+      "at": "2026-08-26T10:52:55.660Z",
+      "userId": "Serge.Muakasa",
+      "userName": "Serge Muakasa",
+      "userEmail": "Serge.Muakasa@ppcdrc.cd",
+      "module": "guest-house",
+      "moduleLabel": "Guest house",
+      "action": "create",
+      "actionLabel": "Création",
+      "entityType": "guest-house.reservation",
+      "entityId": "fef7338e-b8a9-4c80-ae8c-60db33a92055",
+      "summary": "Création réservation ZAKUANI BAHATI BENNY",
+      "details": "Création réservation ZAKUANI BAHATI BENNY",
+      "after": {
+        "id": "fef7338e-b8a9-4c80-ae8c-60db33a92055",
+        "numero": "GH-2026-4375",
+        "createdAt": "2026-08-26T10:52:52.580Z",
+        "personName": "ZAKUANI BAHATI BENNY",
+        "matricule": "70000177",
+        "isAgent": true,
+        "motif": "Mission to the plant",
+        "startDate": "2026-08-20",
+        "endDate": "2026-08-28",
+        "status": "pending",
+        "mission": "Mission to the plant with Plant team",
+        "updatedAt": "2026-08-26T10:52:52.580Z"
+      },
+      "undoable": true,
+      "undone": false
+    },
+    {
       "id": "log-000602",
       "at": "2026-08-26T10:52:23.469Z",
       "userId": "Serge.Muakasa",
@@ -45310,5 +45341,5 @@
       }
     }
   ],
-  "nextSeq": 603
+  "nextSeq": 604
 }
