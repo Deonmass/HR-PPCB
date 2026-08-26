@@ -1,6 +1,50 @@
 {
   "entries": [
     {
+      "id": "log-000592",
+      "at": "2026-08-26T10:45:22.578Z",
+      "userId": "Serge.Muakasa",
+      "userName": "Serge Muakasa",
+      "userEmail": "Serge.Muakasa@ppcdrc.cd",
+      "module": "guest-house",
+      "moduleLabel": "Guest house",
+      "action": "update",
+      "actionLabel": "Modification",
+      "entityType": "guest-house.reservation",
+      "entityId": "3e49ff5c-0e0c-4337-b1d8-5124216eccaf",
+      "summary": "Statut réservation 3e49ff5c-0e0c-4337-b1d8-5124216eccaf → confirmed",
+      "details": "Statut réservation 3e49ff5c-0e0c-4337-b1d8-5124216eccaf → confirmed",
+      "before": {
+        "id": "3e49ff5c-0e0c-4337-b1d8-5124216eccaf",
+        "numero": "GH-2026-4370",
+        "createdAt": "2026-08-26T10:40:30.808Z",
+        "personName": "Yves Sakiema",
+        "isAgent": false,
+        "motif": "Mission to the plant",
+        "startDate": "2026-08-18",
+        "endDate": "2026-08-19",
+        "status": "pending",
+        "mission": "Mission to the plant",
+        "updatedAt": "2026-08-26T10:44:56.586Z"
+      },
+      "after": {
+        "id": "3e49ff5c-0e0c-4337-b1d8-5124216eccaf",
+        "numero": "GH-2026-4370",
+        "createdAt": "2026-08-26T10:40:30.808Z",
+        "personName": "Yves Sakiema",
+        "isAgent": false,
+        "motif": "Mission to the plant",
+        "startDate": "2026-08-18",
+        "endDate": "2026-08-19",
+        "roomId": "ed91c14e-915f-4d22-971c-fd4bb7feb33e",
+        "status": "confirmed",
+        "mission": "Mission to the plant",
+        "updatedAt": "2026-08-26T10:45:19.809Z"
+      },
+      "undoable": true,
+      "undone": false
+    },
+    {
       "id": "log-000591",
       "at": "2026-08-26T10:44:59.314Z",
       "userId": "Serge.Muakasa",
@@ -44899,5 +44943,5 @@
       }
     }
   ],
-  "nextSeq": 592
+  "nextSeq": 593
 }
