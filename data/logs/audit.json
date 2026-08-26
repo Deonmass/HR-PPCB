@@ -1,6 +1,52 @@
 {
   "entries": [
     {
+      "id": "log-000606",
+      "at": "2026-08-26T10:54:42.729Z",
+      "userId": "Serge.Muakasa",
+      "userName": "Serge Muakasa",
+      "userEmail": "Serge.Muakasa@ppcdrc.cd",
+      "module": "guest-house",
+      "moduleLabel": "Guest house",
+      "action": "update",
+      "actionLabel": "Modification",
+      "entityType": "guest-house.reservation",
+      "entityId": "9ceb79d1-ec70-4117-8fa5-01fc516b467a",
+      "summary": "Statut réservation 9ceb79d1-ec70-4117-8fa5-01fc516b467a → confirmed",
+      "details": "Statut réservation 9ceb79d1-ec70-4117-8fa5-01fc516b467a → confirmed",
+      "before": {
+        "id": "9ceb79d1-ec70-4117-8fa5-01fc516b467a",
+        "numero": "GH-2026-4376",
+        "createdAt": "2026-08-26T10:54:19.281Z",
+        "personName": "ZODULUA GADUA Jean Jacques",
+        "matricule": "70000009",
+        "isAgent": true,
+        "motif": "Mission to the plant",
+        "startDate": "2026-08-20",
+        "endDate": "2026-08-21",
+        "status": "pending",
+        "mission": "Mission to the plant",
+        "updatedAt": "2026-08-26T10:54:19.281Z"
+      },
+      "after": {
+        "id": "9ceb79d1-ec70-4117-8fa5-01fc516b467a",
+        "numero": "GH-2026-4376",
+        "createdAt": "2026-08-26T10:54:19.281Z",
+        "personName": "ZODULUA GADUA Jean Jacques",
+        "matricule": "70000009",
+        "isAgent": true,
+        "motif": "Mission to the plant",
+        "startDate": "2026-08-20",
+        "endDate": "2026-08-21",
+        "roomId": "85c3d598-623c-402f-9053-e43840e24325",
+        "status": "confirmed",
+        "mission": "Mission to the plant",
+        "updatedAt": "2026-08-26T10:54:40.238Z"
+      },
+      "undoable": true,
+      "undone": false
+    },
+    {
       "id": "log-000605",
       "at": "2026-08-26T10:54:22.069Z",
       "userId": "Serge.Muakasa",
@@ -45418,5 +45464,5 @@
       }
     }
   ],
-  "nextSeq": 606
+  "nextSeq": 607
 }
