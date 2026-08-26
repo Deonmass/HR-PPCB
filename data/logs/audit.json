@@ -1,6 +1,36 @@
 {
   "entries": [
     {
+      "id": "log-000600",
+      "at": "2026-08-26T10:51:23.297Z",
+      "userId": "Serge.Muakasa",
+      "userName": "Serge Muakasa",
+      "userEmail": "Serge.Muakasa@ppcdrc.cd",
+      "module": "guest-house",
+      "moduleLabel": "Guest house",
+      "action": "create",
+      "actionLabel": "Création",
+      "entityType": "guest-house.reservation",
+      "entityId": "b63e7629-0648-4f35-bab2-00f938d32305",
+      "summary": "Création réservation Cyrille Mbuwa",
+      "details": "Création réservation Cyrille Mbuwa",
+      "after": {
+        "id": "b63e7629-0648-4f35-bab2-00f938d32305",
+        "numero": "GH-2026-4374",
+        "createdAt": "2026-08-26T10:51:20.534Z",
+        "personName": "Cyrille Mbuwa",
+        "isAgent": false,
+        "motif": "Mission to the plant",
+        "startDate": "2026-08-20",
+        "endDate": "2026-08-21",
+        "status": "pending",
+        "mission": "Mission to the plant",
+        "updatedAt": "2026-08-26T10:51:20.534Z"
+      },
+      "undoable": true,
+      "undone": false
+    },
+    {
       "id": "log-000599",
       "at": "2026-08-26T10:50:23.137Z",
       "userId": "Serge.Muakasa",
@@ -45211,5 +45241,5 @@
       }
     }
   ],
-  "nextSeq": 600
+  "nextSeq": 601
 }
