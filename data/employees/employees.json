@@ -7635,7 +7635,7 @@
       "localisation": "Kinshasa",
       "company": "PPC Barnet DRC Manufacturing",
       "centreCout": "KC6310",
-      "appointmentDate": "14/08/2026",
+      "appointmentDate": "21/08/2026",
       "gender": "Female",
       "dateOfBirth": "23/07/1991",
       "age": 35,
@@ -7655,8 +7655,8 @@
       "typeContrat": "CDD",
       "dureeContratMois": 12,
       "periodeEssaiMois": 5,
-      "dateFinPeriodeEssai": "14/01/2027",
-      "dateFinContrat": "14/08/2027",
+      "dateFinPeriodeEssai": "21/01/2027",
+      "dateFinContrat": "21/08/2027",
       "raisonExit": "NA",
       "essaiActions": "",
       "essaiResponsable": "",
@@ -7670,7 +7670,7 @@
       "cnss": "",
       "nif": "",
       "createdAt": "2026-08-27T14:00:27.779Z",
-      "updatedAt": "2026-08-27T14:00:27.779Z"
+      "updatedAt": "2026-08-27T14:01:48.075Z"
     }
   ]
 }
