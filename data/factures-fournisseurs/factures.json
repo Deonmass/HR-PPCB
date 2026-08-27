@@ -14762,7 +14762,26 @@
       "commentaire": "Au PR — en attente du PO.",
       "statut": "unpaid",
       "statutLabel": "unpaid"
+    },
+    {
+      "id": "fac-2138",
+      "date": "20/08/2026",
+      "societe": "KIKOTECH",
+      "facture": "Proforma n 235/2026",
+      "montant": 22335.6,
+      "echeance": "",
+      "pr": "11192718",
+      "datePr": "",
+      "po": "",
+      "datePo": "",
+      "grn": "",
+      "dateGrn": "",
+      "payment": "",
+      "datePym": "",
+      "commentaire": "Au PR — en attente du PO.",
+      "statut": "unpaid",
+      "statutLabel": "unpaid"
     }
   ],
-  "nextFactureSeq": 2138
+  "nextFactureSeq": 2139
 }
