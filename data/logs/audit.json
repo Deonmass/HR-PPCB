@@ -1,6 +1,63 @@
 {
   "entries": [
     {
+      "id": "log-000625",
+      "at": "2026-08-27T08:28:46.420Z",
+      "userId": "admin",
+      "userName": "Administrateur",
+      "module": "dependants",
+      "moduleLabel": "Dépendants",
+      "action": "update",
+      "actionLabel": "Modification",
+      "entityType": "dependant",
+      "entityId": "731",
+      "summary": "Modification dépendant #731 — PHILIPPE MUSINGILWA KABONGELO",
+      "details": "Modification dépendant #731 — PHILIPPE MUSINGILWA KABONGELO",
+      "before": {
+        "id": 731,
+        "employeeId": "b02805ce-2aad-4790-8a44-3169ac871a1e",
+        "matricule": "70000312",
+        "pactilis": "178283",
+        "statut": "Employé",
+        "sexe": "M",
+        "nom": "PHILIPPE MUSINGILWA KABONGELO",
+        "localisation": "Kinshasa",
+        "numeroVilla": "",
+        "typeMaison": "",
+        "dateNaissance": "19/05/1998",
+        "age": 28,
+        "compositionFamille": 0,
+        "enfants": 0,
+        "total": 1,
+        "commentaires": "",
+        "lienDocument": "",
+        "createdAt": "2026-08-24T14:59:00.000Z",
+        "updatedAt": "2026-08-27T07:57:31.350Z"
+      },
+      "after": {
+        "id": 731,
+        "matricule": "70000312",
+        "pactilis": "178283",
+        "statut": "Employé",
+        "sexe": "M",
+        "nom": "PHILIPPE MUSINGILWA KABONGELO",
+        "localisation": "Kinshasa",
+        "numeroVilla": "",
+        "typeMaison": "",
+        "dateNaissance": "19/05/1998",
+        "age": 28,
+        "compositionFamille": 0,
+        "enfants": 0,
+        "total": 1,
+        "commentaires": "",
+        "lienDocument": "https://ppcafr.sharepoint.com/:b:/r/sites/knshr/EMPLOYEE%20FILES/NON%20EXCO%20MEMBERS/SALES/70000312-PHILIPPE%20MUSINGILWA%20KABONGELO/1%20Situation%20Personnelle/Etat_INCORPORATION%20PHILIPPE%20MUSINGILWA%20KABONGELO.pdf?d=w723a9baf93d046c686be6ee5c8d8bfee&csf=1&web=1&e=WKHZU9",
+        "employeNom": "PHILIPPE MUSINGILWA KABONGELO",
+        "departement": "Sales & Logistics"
+      },
+      "undoable": true,
+      "undone": false
+    },
+    {
       "id": "log-000624",
       "at": "2026-08-27T07:57:34.186Z",
       "userId": "admin",
@@ -46116,5 +46173,5 @@
       }
     }
   ],
-  "nextSeq": 625
+  "nextSeq": 626
 }
