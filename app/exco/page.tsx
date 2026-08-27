@@ -1,737 +1,2058 @@
 'use client';
 
-import { useCallback, useEffect, useMemo, useRef, useState, type CSSProperties, type ReactNode } from 'react';
-import { createPortal } from 'react-dom';
-import { AuditHrDashboardPanels } from '@/components/audit/AuditHrDashboardPanels';
+import { useCallback, useEffect, useMemo, useRef, useState, type MouseEvent as ReactMouseEvent, type PointerEvent as ReactPointerEvent } from 'react';
 import DashboardListModal, {
   type DashboardListColumn,
   type DashboardListRow,
 } from '@/components/DashboardListModal';
 import PermissionGate from '@/components/PermissionGate';
 import RefreshButton from '@/components/RefreshButton';
+import RowContextMenu, { type ContextMenuItem } from '@/components/RowContextMenu';
 import { usePermissions } from '@/contexts/PermissionContext';
-import type { AuditHrDashboard } from '@/lib/audit-hr-types';
-import {
-  emptyExcoOverlays,
-  visibleManualKpis,
-  EXCO_PUBLISH_FINANCE_KPIS,
-  type ExcoCahierHighlight,
-  type ExcoCsrFy27Row,
-  type ExcoHireListRow,
-  type ExcoManualKpis,
-  type ExcoMetricValue,
-  type ExcoOverlays,
-  type ExcoRecruitmentRow,
-  type ExcoReportPayload,
-  type ExcoTrainingTopic,
-} from '@/lib/exco-types';
 import { EXCO_SOURCE_FILES, type ExcoSourceFileId } from '@/lib/exco-source-files';
 import {
-  EXCO_FY_MONTH_LABELS,
-  EXCO_FY_START_YEAR,
-  TEMPLATE_YTD_JUNE_2026,
-  excoFyColToYearMonth,
-} from '@/lib/exco-template-baseline';
-import { showError, showSuccess } from '@/lib/swal';
-import { buildExcoPreviewHtml } from '@/lib/exco-preview-html';
+  buildStaffCostSheet,
+  staffCostInputFromPartial,
+  workbookMonthToYtdInput,
+  type ExcoStaffCostYtdInput,
+  type StaffCostSheetCell,
+  type StaffCostSheetMonth,
+} from '@/lib/exco-staff-cost-model';
+import type {
+  ExcoWorkbookStaffCostMonth,
+  ExcoWorkbookOtActualVsBudget,
+  ExcoWorkbookOtTrendRow,
+} from '@/lib/exco-new-report-parse';
 import {
-  CAHIER_ICON_OPTIONS,
-  csrTextHasUpdate,
-  emptyCahierHighlight,
-  emptyCsrFy27Row,
-  parseCsrUpdateMarkup,
-  resolveCahierHighlights,
-  resolveCsrFy27Rows,
-} from '@/lib/exco-csr-fy27';
-import { resolveRecruitment } from '@/lib/exco-recruitment-fy27';
-import { buildInternalAuditRows, summarizeInternalAudit } from '@/lib/exco-audit-internal';
+  OVT_TREND_MONTH_LABELS,
+  OVT_AVB_MONTH_LABELS,
+  OVT_TREND_MONTHS,
+} from '@/lib/exco-new-report-parse';
+import { otChartDeptLabel } from '@/lib/exco-ot-slide-data';
+import ExcoOtOverviewCharts from '@/components/exco/ExcoOtOverviewCharts';
+import ExcoNarrativePanel from '@/components/exco/ExcoNarrativePanel';
+import ExcoExportMenu from '@/components/exco/ExcoExportMenu';
+import type { ExcoSheetTable } from '@/lib/exco-workbook-types';
+import { formatNarrativeForEdit } from '@/lib/exco-narrative-format';
+import { showError, showSuccess } from '@/lib/swal';
+
+type TabId =
+  | 'params'
+  | 'headcount'
+  | 'inout'
+  | 'staffcost'
+  | 'overtime'
+  | 'kpi'
+  | 'summary'
+  | 'csr'
+  | 'recruitment'
+  | 'audit';
+
+const TABS: { id: TabId; label: string }[] = [
+  { id: 'params', label: 'Params' },
+  { id: 'kpi', label: 'KPI' },
+  { id: 'summary', label: 'Summary' },
+  { id: 'headcount', label: 'Headcount' },
+  { id: 'inout', label: 'In Out' },
+  { id: 'staffcost', label: 'Staff Cost KPI' },
+  { id: 'overtime', label: 'Overtime' },
+  { id: 'csr', label: 'CSR' },
+  { id: 'recruitment', label: 'Recruitment' },
+  { id: 'audit', label: 'Internal audit' },
+];
+
+const CAL_MONTH_KEYS = ['JAN', 'FEB', 'MAR', 'APR', 'MAY', 'JUN', 'JUL', 'AUG', 'SEP', 'OCT', 'NOV', 'DEC'] as const;
+
+/** Colonnes feuille BASE (New report.xlsx) — ordre d’affichage. */
+const BASE_COLUMNS = [
+  'Emp Number',
+  'Names',
+  'Gender',
+  'Nationality',
+  'Position',
+  'Grade',
+  'Birth',
+  'Age',
+  'AGE_CAT',
+  'Empl_Date',
+  'Length of Service',
+  'Length of Service_CAT',
+  'Departments',
+  'Location_Site',
+  'Leave_Balance',
+  'Allowance Amount',
+  'OVT_Hours',
+  'OVT_Cost',
+] as const;
+
+const BASE_HEADER_ALIASES: Record<string, string> = {
+  'leave allowance_amount': 'Allowance Amount',
+  'leave allowance amount': 'Allowance Amount',
+  'leave_allowance_amount': 'Allowance Amount',
+  'allowance amount': 'Allowance Amount',
+  'allowance_amount': 'Allowance Amount',
+  'length of service cat': 'Length of Service_CAT',
+  'length of service_cat': 'Length of Service_CAT',
+  nationality: 'Nationality',
+  nationalite: 'Nationality',
+  nationalité: 'Nationality',
+};
+
+type HeadcountView = {
+  headcount: number;
+  male: number;
+  female: number;
+  malePct: number;
+  femalePct: number;
+  genderByLocation: Array<{ location: string; male: number; female: number; total: number }>;
+  ageBands: Array<{ label: string; value: number }>;
+  seniorityBands: Array<{ label: string; value: number }>;
+  averageAge: number | null;
+  averageAgeMale: number | null;
+  averageAgeFemale: number | null;
+  averageLengthOfService: number | null;
+  retirement: number;
+  preRetirement: number;
+};
+
+type InOutPerson = {
+  matricule: string;
+  nom: string;
+  localisation: string;
+  departement: string;
+  grade: string;
+  genre: string;
+  company: string;
+  appointmentDate: string;
+  site: string;
+  reason?: string;
+};
+
+type InOutView = {
+  months: Array<{
+    monthKey: string;
+    calendarMonth: number | null;
+    in: number | null;
+    out: number | null;
+    attritionRate: number | null;
+    turnover: number | null;
+    headcount: number | null;
+  }>;
+  ytdIn: number | null;
+  ytdOut: number | null;
+  ytdAttrition: number | null;
+  ytdTurnover: number | null;
+  ytdHeadcount: number | null;
+  exitsByReason: Array<{ label: string; value: number }>;
+  inList: InOutPerson[];
+  outList: InOutPerson[];
+  hiresByMonth: Record<number, InOutPerson[]>;
+  exitsByMonth: Record<number, InOutPerson[]>;
+};
+
+type StaffCostView = {
+  /** Grille FY (Input + dérivés) avec formules documentées. */
+  sheet: StaffCostSheetMonth[];
+  /** Saisie YTD par mois calendaire. */
+  ytdByMonth: Record<number, ExcoStaffCostYtdInput>;
+};
+
+type StaffCostFormulaNote = {
+  explanation: string;
+  calc: string | null;
+  formula: string;
+};
+
+type FormulaModalState = {
+  mode: 'view' | 'edit';
+  cellKey: string;
+  cell: StaffCostSheetCell;
+};
+
+type FormulaMenuState = {
+  x: number;
+  y: number;
+  cellKey: string;
+  cell: StaffCostSheetCell;
+};
+
+function applyFormulaNote(cell: StaffCostSheetCell, note?: StaffCostFormulaNote | null): StaffCostSheetCell {
+  if (!note) return cell;
+  return {
+    ...cell,
+    explanation: note.explanation || cell.explanation,
+    calc: note.calc !== undefined ? note.calc : cell.calc,
+    formula: note.formula || cell.formula,
+  };
+}
+
+function PencilIcon() {
+  return (
+    <svg viewBox="0 0 24 24" width="12" height="12" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden>
+      <path d="M12 20h9" />
+      <path d="M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4Z" />
+    </svg>
+  );
+}
+
+/** Colonnes alignées Input / FY Actual / FY Budget (metric + 12 mois + Total). */
+function StaffCostColGroup() {
+  return (
+    <colgroup>
+      <col className="exco-sc-col-metric" />
+      {Array.from({ length: 12 }, (_, i) => (
+        <col key={i} className="exco-sc-col-month" />
+      ))}
+      <col className="exco-sc-col-total" />
+    </colgroup>
+  );
+}
+
+function FormulaCell({
+  cell,
+  cellKey,
+  digits = 0,
+  pct = false,
+  highlight = false,
+  editable = false,
+  disabled = false,
+  excelStyle = false,
+  onChange,
+  onFormulaMenu,
+}: {
+  cell: StaffCostSheetCell;
+  cellKey: string;
+  digits?: number;
+  pct?: boolean;
+  highlight?: boolean;
+  editable?: boolean;
+  disabled?: boolean;
+  /** Format Excel Staff_Cost_KPI (2 déc., négatifs entre parenthèses, 0 → -). */
+  excelStyle?: boolean;
+  onChange?: (value: number | null) => void;
+  onFormulaMenu?: (e: ReactMouseEvent, cellKey: string, cell: StaffCostSheetCell) => void;
+}) {
+  const [editing, setEditing] = useState(false);
+  const [draft, setDraft] = useState('');
+  const inputRef = useRef<HTMLInputElement>(null);
+
+  const display = pct
+    ? (cell.value != null ? formatRatePct(cell.value) : (excelStyle ? '-' : '—'))
+    : excelStyle
+      ? formatStaffCostExcel(cell.value, { digits: digits || 2 })
+      : (cell.value != null ? formatNum(cell.value, digits) : '—');
+
+  useEffect(() => {
+    if (editing) {
+      setDraft(cell.value != null ? String(cell.value) : '');
+      requestAnimationFrame(() => inputRef.current?.focus());
+    }
+  }, [editing, cell.value]);
+
+  const commitEdit = () => {
+    onChange?.(parseInputNum(draft));
+    setEditing(false);
+  };
+
+  const tdClass = [
+    highlight ? 'is-report-month' : '',
+    editable ? 'is-editable-cell' : '',
+    editing ? 'is-editing' : '',
+  ].filter(Boolean).join(' ') || undefined;
+
+  return (
+    <td
+      className={tdClass}
+      onContextMenu={(e) => {
+        e.preventDefault();
+        onFormulaMenu?.(e, cellKey, cell);
+      }}
+    >
+      {editing ? (
+        <div className="exco-staffcost-inline-edit">
+          <input
+            ref={inputRef}
+            type="number"
+            step="any"
+            className="exco-staffcost-cell-input"
+            disabled={disabled}
+            value={draft}
+            onChange={(e) => setDraft(e.target.value)}
+            onKeyDown={(e) => {
+              if (e.key === 'Enter') {
+                e.preventDefault();
+                commitEdit();
+              }
+              if (e.key === 'Escape') {
+                e.preventDefault();
+                setEditing(false);
+              }
+            }}
+          />
+          <button
+            type="button"
+            className="exco-staffcost-ok-btn"
+            disabled={disabled}
+            onClick={commitEdit}
+          >
+            OK
+          </button>
+        </div>
+      ) : (
+        <div className="exco-staffcost-cell-label">
+          {editable && !disabled && (
+            <button
+              type="button"
+              className="exco-staffcost-pencil"
+              title="Modifier"
+              aria-label="Modifier"
+              onClick={(e) => {
+                e.stopPropagation();
+                setEditing(true);
+              }}
+            >
+              <PencilIcon />
+            </button>
+          )}
+          <span className="exco-formula-cell-value">{display}</span>
+        </div>
+      )}
+    </td>
+  );
+}
+
+function StaffCostFormulaModal({
+  state,
+  canEdit,
+  onClose,
+  onSave,
+}: {
+  state: FormulaModalState;
+  canEdit: boolean;
+  onClose: () => void;
+  onSave: (cellKey: string, note: StaffCostFormulaNote) => void;
+}) {
+  const base = state.cell;
+  const [explanation, setExplanation] = useState(base.explanation);
+  const [calc, setCalc] = useState(base.calc || '');
+  const [formula, setFormula] = useState(base.formula);
+  const editing = state.mode === 'edit' && canEdit;
+  const modalRef = useRef<HTMLDivElement>(null);
+  const [offset, setOffset] = useState({ x: 0, y: 0 });
+  const dragRef = useRef<{
+    pointerId: number;
+    startX: number;
+    startY: number;
+    origX: number;
+    origY: number;
+  } | null>(null);
+
+  useEffect(() => {
+    setExplanation(base.explanation);
+    setCalc(base.calc || '');
+    setFormula(base.formula);
+    setOffset({ x: 0, y: 0 });
+  }, [base, state.cellKey, state.mode]);
+
+  useEffect(() => {
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') onClose();
+    };
+    document.addEventListener('keydown', onKey);
+    return () => document.removeEventListener('keydown', onKey);
+  }, [onClose]);
+
+  const onDragPointerDown = (e: ReactPointerEvent<HTMLDivElement>) => {
+    if ((e.target as HTMLElement).closest('button, a, input, textarea, select')) return;
+    e.preventDefault();
+    dragRef.current = {
+      pointerId: e.pointerId,
+      startX: e.clientX,
+      startY: e.clientY,
+      origX: offset.x,
+      origY: offset.y,
+    };
+    e.currentTarget.setPointerCapture(e.pointerId);
+  };
+
+  const onDragPointerMove = (e: ReactPointerEvent<HTMLDivElement>) => {
+    const drag = dragRef.current;
+    if (!drag || drag.pointerId !== e.pointerId) return;
+    setOffset({
+      x: drag.origX + (e.clientX - drag.startX),
+      y: drag.origY + (e.clientY - drag.startY),
+    });
+  };
+
+  const onDragPointerUp = (e: ReactPointerEvent<HTMLDivElement>) => {
+    if (!dragRef.current || dragRef.current.pointerId !== e.pointerId) return;
+    dragRef.current = null;
+    try {
+      e.currentTarget.releasePointerCapture(e.pointerId);
+    } catch {
+      /* already released */
+    }
+  };
+
+  return (
+    <div
+      className="modal-overlay open exco-formula-modal-overlay"
+      onClick={onClose}
+      role="presentation"
+    >
+      <div
+        ref={modalRef}
+        className="modal modal-form exco-formula-modal"
+        style={{ transform: `translate(${offset.x}px, ${offset.y}px)` }}
+        onClick={(e) => e.stopPropagation()}
+        role="dialog"
+        aria-labelledby="exco-formula-modal-title"
+      >
+        <div
+          className="modal-header exco-formula-modal-drag"
+          onPointerDown={onDragPointerDown}
+          onPointerMove={onDragPointerMove}
+          onPointerUp={onDragPointerUp}
+          onPointerCancel={onDragPointerUp}
+          title="Glisser pour déplacer"
+        >
+          <h3 id="exco-formula-modal-title">
+            {editing ? 'Modifier la formule' : 'Voir la formule'} — {base.title}
+          </h3>
+          <button type="button" className="modal-close" onClick={onClose} aria-label="Fermer">
+            ×
+          </button>
+        </div>
+        <div className="modal-body exco-formula-modal-body">
+          <div className="exco-formula-result">
+            <span>Résultat</span>
+            <strong>
+              {base.value != null ? formatNum(base.value, base.value % 1 === 0 ? 0 : 2) : '—'}
+            </strong>
+          </div>
+
+          {editing ? (
+            <>
+              <label className="exco-formula-field">
+                <span>Explication</span>
+                <textarea
+                  rows={4}
+                  value={explanation}
+                  onChange={(e) => setExplanation(e.target.value)}
+                />
+              </label>
+              <label className="exco-formula-field">
+                <span>Calcul (déroulement numérique)</span>
+                <input type="text" value={calc} onChange={(e) => setCalc(e.target.value)} />
+              </label>
+              <label className="exco-formula-field">
+                <span>Référence Excel</span>
+                <input type="text" value={formula} onChange={(e) => setFormula(e.target.value)} />
+              </label>
+              <p className="exco-muted exco-formula-hint">
+                La modification documente la formule affichée ; le calcul automatique des tableaux reste basé sur les règles Staff_Cost_KPI.
+              </p>
+            </>
+          ) : (
+            <>
+              <section className="exco-formula-block">
+                <h4>Comment ce chiffre est obtenu</h4>
+                <p>{base.explanation}</p>
+              </section>
+              {base.calc && (
+                <section className="exco-formula-block">
+                  <h4>Déroulement</h4>
+                  <code className="exco-formula-calc">{base.calc}</code>
+                </section>
+              )}
+              <section className="exco-formula-block">
+                <h4>Sources (références)</h4>
+                {base.sources.length === 0 ? (
+                  <p className="exco-muted">Aucune source listée — valeur saisie ou constante.</p>
+                ) : (
+                  <ul className="exco-formula-sources">
+                    {base.sources.map((s) => (
+                      <li key={`${s.label}-${s.origin}`}>
+                        <div className="exco-formula-source-main">
+                          <code className="exco-formula-source-ref" title="Référence Excel / origine">
+                            {s.origin}
+                          </code>
+                          <strong>{s.label}</strong>
+                        </div>
+                        <span className="exco-formula-source-value">
+                          {s.value != null ? formatNum(s.value, s.value % 1 === 0 ? 0 : 2) : '—'}
+                        </span>
+                      </li>
+                    ))}
+                  </ul>
+                )}
+              </section>
+              <section className="exco-formula-block">
+                <h4>Référence Excel</h4>
+                <code className="exco-formula-calc">{base.formula}</code>
+              </section>
+            </>
+          )}
+        </div>
+        <div className="modal-footer">
+          {editing ? (
+            <>
+              <button type="button" className="btn btn-secondary" onClick={onClose}>
+                Annuler
+              </button>
+              <button
+                type="button"
+                className="btn btn-primary"
+                onClick={() => {
+                  onSave(state.cellKey, {
+                    explanation: explanation.trim(),
+                    calc: calc.trim() || null,
+                    formula: formula.trim(),
+                  });
+                  onClose();
+                }}
+              >
+                Enregistrer la formule
+              </button>
+            </>
+          ) : (
+            <button type="button" className="btn btn-secondary" onClick={onClose}>
+              Fermer
+            </button>
+          )}
+        </div>
+      </div>
+    </div>
+  );
+}
+
+/** Total Excel = SUM(mois) — lignes mensuelles / ratios. */
+function sumSheetValues(
+  sheet: StaffCostSheetMonth[],
+  getter: (m: StaffCostSheetMonth) => number | null,
+): number | null {
+  let sum = 0;
+  let any = false;
+  for (const m of sheet) {
+    const v = getter(m);
+    if (v == null) continue;
+    sum += v;
+    any = true;
+  }
+  return any ? Math.round(sum * 100) / 100 : null;
+}
+
+/** Total Excel = MAX(mois) — lignes de cumul (Staff_Cumul, Volume_Cum, …). */
+function maxSheetValues(
+  sheet: StaffCostSheetMonth[],
+  getter: (m: StaffCostSheetMonth) => number | null,
+): number | null {
+  let max: number | null = null;
+  for (const m of sheet) {
+    const v = getter(m);
+    if (v == null) continue;
+    if (max == null || v > max) max = v;
+  }
+  return max;
+}
+
+const INOUT_LIST_COLUMNS: DashboardListColumn[] = [
+  { key: 'matricule', label: 'Matricule' },
+  { key: 'nom', label: 'Nom' },
+  { key: 'genre', label: 'Genre' },
+  { key: 'grade', label: 'Grade' },
+  { key: 'departement', label: 'Département' },
+  { key: 'date', label: 'Date' },
+  { key: 'motif', label: 'Motif' },
+];
+
+function inOutPersonToRow(r: InOutPerson, names: Record<string, string>): DashboardListRow {
+  const mat = normMatricule(r.matricule);
+  return {
+    id: `${r.matricule}-${r.appointmentDate}-${r.reason || ''}`,
+    cells: {
+      matricule: r.matricule,
+      nom: names[mat] || r.nom,
+      genre: r.genre || '—',
+      grade: r.grade || '—',
+      departement: r.departement || '—',
+      date: formatInOutDate(r.appointmentDate),
+      motif: r.reason || '—',
+    },
+  };
+}
+
+type ImportedFlags = {
+  componentPostedUnits: boolean;
+  leaveBalances: boolean;
+  engagementsTerminations: boolean;
+};
+
+const MONTHS_FR = [
+  'Janvier', 'Février', 'Mars', 'Avril', 'Mai', 'Juin',
+  'Juillet', 'Août', 'Septembre', 'Octobre', 'Novembre', 'Décembre',
+];
+
+const MONTHS_EN = [
+  'January', 'February', 'March', 'April', 'May', 'June',
+  'July', 'August', 'September', 'October', 'November', 'December',
+];
+
+/** Actual vs Budget OVT : APR→MAR. */
+const OVT_AVB_MONTHS = [4, 5, 6, 7, 8, 9, 10, 11, 12, 1, 2, 3] as const;
+
+type UploadMeta = {
+  file: string;
+  originalName: string;
+  uploadedAt: string;
+  exists: boolean;
+};
+
+type ParamsState = {
+  year: number;
+  month: number;
+  fxRateFcPerUsd: number | null;
+  uploads: Partial<Record<ExcoSourceFileId, UploadMeta>>;
+};
+
+type BaseReconcile = {
+  year: number;
+  month: number;
+  baseEmployees: number;
+  systemActive: number;
+  systemExits: number;
+  matched: number;
+  actionableCount: number;
+  namesByMatricule: Record<string, string>;
+  mismatches: Array<{
+    kind: string;
+    matricule: string;
+    fileName: string;
+    filePosition: string;
+    fileDepartment: string;
+    resolvedDepartment: string;
+    systemName: string;
+    systemPosition: string;
+    systemDepartment: string;
+    systemStatut: string;
+    policy: string;
+  }>;
+  baseDepartments: string[];
+  systemDepartments: string[];
+  departmentsToCreate: string[];
+  engagementsInMonth: Array<{
+    matricule: string;
+    displayName: string;
+    employmentDate: string;
+    company: string;
+    position: string;
+  }>;
+  terminationsInMonth: Array<{
+    matricule: string;
+    displayName: string;
+    terminationDate: string;
+    terminationReason: string;
+    company: string;
+  }>;
+  historicalMissingInSystem: Array<{
+    matricule: string;
+    displayName: string;
+    terminationDate: string;
+    terminationReason: string;
+    employmentDate: string;
+    company: string;
+  }>;
+};
+
+type OtView = {
+  year: number;
+  month: number;
+  fxRateFcPerUsd: number | null;
+  rows: Array<{
+    matricule: string;
+    name: string;
+    hours: number;
+    costFc: number;
+    costUsd: number | null;
+    leaveDays: number | null;
+    leaveValueUsd: number | null;
+    department: string;
+  }>;
+  totals: {
+    agents: number;
+    hours: number;
+    costUsd: number | null;
+    leaveValueUsd: number | null;
+  };
+  byDepartment: Array<{ department: string; hours: number; costUsd: number; agents: number }>;
+  sourceFiles: string[];
+  missing: { overtime: boolean; leave: boolean };
+  /** Données Evolution / Overview depuis New report.xlsx (OVT). */
+  workbook?: {
+    trendRows: ExcoWorkbookOtTrendRow[];
+    actualVsBudget: ExcoWorkbookOtActualVsBudget | null;
+    headcount: number | null;
+    employeesWithOtPct: number | null;
+    averageHours: number | null;
+    averageCostPerEmployee: number | null;
+    averageLeaveDays: number | null;
+    staffCostMonth: number | null;
+    staffCostYtd: number | null;
+  };
+};
+
+type OtSubTab = 'overview' | 'evolution' | 'top10';
+
+type PptxKpi = { label: string; value: string | null; delta: string | null; prev: string | null };
+
+function formatNum(n: number | null | undefined, digits = 0): string {
+  if (n == null || !Number.isFinite(n)) return '—';
+  return n.toLocaleString('en-US', {
+    minimumFractionDigits: digits,
+    maximumFractionDigits: digits,
+  });
+}
+
+/** Format Staff_Cost_KPI (Excel) : 1,234.56 · (1,234.56) · - */
+function formatStaffCostExcel(
+  n: number | null | undefined,
+  opts?: { digits?: number; zeroAsDash?: boolean },
+): string {
+  const digits = opts?.digits ?? 2;
+  const zeroAsDash = opts?.zeroAsDash ?? true;
+  if (n == null || !Number.isFinite(n)) return '-';
+  if (zeroAsDash && Math.abs(n) < 1e-9) return '-';
+  const abs = Math.abs(n).toLocaleString('en-US', {
+    minimumFractionDigits: digits,
+    maximumFractionDigits: digits,
+  });
+  return n < 0 ? `(${abs})` : abs;
+}
+
+function formatUsd(n: number | null | undefined): string {
+  if (n == null || !Number.isFinite(n)) return '—';
+  return n.toLocaleString('en-US', {
+    style: 'currency',
+    currency: 'USD',
+    maximumFractionDigits: 2,
+  });
+}
+
+function formatOtCell(n: number | null | undefined): string {
+  if (n == null || !Number.isFinite(n)) return '—';
+  if (Math.abs(n) < 1e-9) return '—';
+  return n.toLocaleString('en-US', {
+    minimumFractionDigits: 2,
+    maximumFractionDigits: 2,
+  });
+}
+
+function formatPct(n: number | null | undefined): string {
+  if (n == null || !Number.isFinite(n)) return '—';
+  const v = n <= 1 ? n * 100 : n;
+  return `${v.toLocaleString('en-US', { maximumFractionDigits: 1 })}%`;
+}
+
+/** Taux déjà en points de % (ex. 0.6 = 0.6 %), issus de buildExcoReport. */
+function formatRatePct(n: number | null | undefined): string {
+  if (n == null || !Number.isFinite(n)) return '—';
+  return `${n.toLocaleString('en-US', { maximumFractionDigits: 1 })}%`;
+}
+
+function normHeader(s: string): string {
+  return s
+    .normalize('NFD')
+    .replace(/\p{Diacritic}/gu, '')
+    .toLowerCase()
+    .replace(/[_]+/g, ' ')
+    .replace(/\s+/g, ' ')
+    .trim();
+}
+
+function normMatricule(value: unknown): string {
+  const s = String(value ?? '').trim();
+  if (!s) return '';
+  if (/^\d+\.0+$/.test(s)) return s.replace(/\.0+$/, '');
+  // Excel parfois en notation scientifique
+  const n = Number(s);
+  if (Number.isFinite(n) && /^\d+(\.0+)?(e\+\d+)?$/i.test(s)) {
+    return String(Math.round(n));
+  }
+  return s;
+}
+
+function displayBaseCell(value: string | number | null, header: string): string {
+  if (value == null || value === '') return '';
+  if (typeof value === 'string' && /^\d{4}-\d{2}-\d{2}/.test(value)) {
+    const d = new Date(value);
+    if (!Number.isNaN(d.getTime())) {
+      const shifted = new Date(d.getTime() + 12 * 60 * 60 * 1000);
+      const dd = String(shifted.getUTCDate()).padStart(2, '0');
+      const mm = String(shifted.getUTCMonth() + 1).padStart(2, '0');
+      const yy = shifted.getUTCFullYear();
+      return `${dd}/${mm}/${yy}`;
+    }
+  }
+  if (typeof value === 'number' && Number.isFinite(value)) {
+    if (header === 'Leave Allowance Amount' || header === 'OVT_Cost' || header === 'Leave_Balance') {
+      return value.toLocaleString('en-US', { maximumFractionDigits: 2 });
+    }
+    if (header === 'OVT_Hours' || header === 'Length of Service' || header === 'Age') {
+      return value.toLocaleString('en-US', { maximumFractionDigits: 2 });
+    }
+    return String(value);
+  }
+  return String(value);
+}
+
+/** Projette la feuille BASE sur les 18 colonnes attendues. */
+function projectBaseSheet(sheet: ExcoSheetTable | null): {
+  headers: string[];
+  rows: Array<Array<string | number | null>>;
+} {
+  const headers = [...BASE_COLUMNS];
+  if (!sheet?.rows?.length) return { headers, rows: [] };
+  const rawHeader = (sheet.rows[0] || []).map((c) => String(c ?? '').trim());
+  const indexByNorm = new Map<string, number>();
+  rawHeader.forEach((h, i) => {
+    if (!h) return;
+    const key = normHeader(h);
+    indexByNorm.set(key, i);
+    const alias = BASE_HEADER_ALIASES[key];
+    if (alias) indexByNorm.set(normHeader(alias), i);
+  });
+
+  const colIndexes = headers.map((wanted) => {
+    const key = normHeader(wanted);
+    if (indexByNorm.has(key)) return indexByNorm.get(key)!;
+    // fuzzy: leave allowance
+    for (const [k, idx] of indexByNorm) {
+      if (k.includes(key) || key.includes(k)) return idx;
+    }
+    return -1;
+  });
+
+  const rows = sheet.rows.slice(1).map((row) =>
+    colIndexes.map((idx) => (idx >= 0 ? (row[idx] ?? null) : null)),
+  );
+  return { headers, rows };
+}
 
 function ExcoBusyOverlay({ label }: { label: string }) {
   return (
     <div className="exco-busy-overlay" role="status" aria-live="polite" aria-busy="true">
-      <div className="exco-busy-card">
-        <span className="btn-spinner exco-busy-spinner" aria-hidden="true" />
+      <div className="exco-busy-progress" aria-hidden="true">
+        <span className="exco-busy-progress-bar" />
+      </div>
+      <div className="exco-busy-chip">
+        <span className="exco-busy-dots" aria-hidden="true">
+          <i /><i /><i />
+        </span>
         <p>{label}</p>
       </div>
     </div>
   );
 }
 
-/** Colonnes FY Mar→Mar (template juin) pour l’UI. */
-function excoFyColumns(reportYear: number, reportMonth: number) {
-  const fyStart = EXCO_FY_START_YEAR;
-  const yy = String(fyStart).slice(-2);
-  return EXCO_FY_MONTH_LABELS.map((label, i) => {
-    const { year, month } = excoFyColToYearMonth(i, fyStart);
-    const visible =
-      year < reportYear || (year === reportYear && month <= reportMonth);
-    return {
-      index: i,
-      label: i === 0 ? `${label} ${yy}` : label,
-      year,
-      month,
-      visible,
-      isCurrent: year === reportYear && month === reportMonth,
-    };
-  });
-}
-
-const OT_MONTH_SEGMENT_COLORS = [
-  '#9ca3af',
-  '#111827',
-  '#7a1f2b',
-  '#b45309',
-  '#1d4ed8',
-  '#047857',
-  '#7c3aed',
-  '#db2777',
-  '#0d9488',
-  '#ca8a04',
-] as const;
-
-const EXCO_HIRE_COLUMNS: DashboardListColumn[] = [
-  { key: 'matricule', label: 'Matricule' },
-  { key: 'nom', label: 'Nom' },
-  { key: 'localisation', label: 'Localisation' },
-  { key: 'departement', label: 'Département' },
-  { key: 'grade', label: 'Grade' },
-  { key: 'genre', label: 'Genre' },
-  { key: 'company', label: 'Company' },
-  { key: 'embauche', label: "Date d'embauche" },
-  { key: 'motif', label: 'Motif' },
-];
-
-const EXCO_SITE_BUCKET: Record<string, string | null> = {
-  plant: 'Plant',
-  hq: 'HQ and Regions',
-  lubudi: 'Lubudi',
-  graduates: 'Graduates',
-  headcount: null,
-};
-
-function filterExcoHires(list: ExcoHireListRow[], siteKey: string): ExcoHireListRow[] {
-  const bucket = EXCO_SITE_BUCKET[siteKey];
-  if (!bucket) return list;
-  return list.filter((row) => row.site === bucket);
-}
-
-function excoHiresToListRows(list: ExcoHireListRow[]): DashboardListRow[] {
-  return list.map((row, index) => ({
-    id: row.matricule || `${row.nom}-${index}`,
-    cells: {
-      matricule: row.matricule || '—',
-      nom: row.nom || '—',
-      localisation: row.localisation || '—',
-      departement: row.departement || '—',
-      grade: row.grade || '—',
-      genre: row.genre || '—',
-      company: row.company || '—',
-      embauche: row.appointmentDate || '—',
-      motif: row.reason || '—',
-    },
-  }));
-}
-
-function formatExcoDelta(delta: number | null): string {
-  if (delta == null) return '—';
-  return `${delta >= 0 ? '+' : ''}${delta}`;
-}
-
-function otMonthSegmentColor(calendarMonth: number): string {
-  const idx = ((calendarMonth - 3) % OT_MONTH_SEGMENT_COLORS.length + OT_MONTH_SEGMENT_COLORS.length)
-    % OT_MONTH_SEGMENT_COLORS.length;
-  return OT_MONTH_SEGMENT_COLORS[idx];
-}
-
-function trendMetricHint(
-  metric: string,
-  year: number,
-  month: number,
-  reportYear: number,
-  reportMonth: number,
-): string | undefined {
-  if (year !== reportYear || month !== reportMonth) return undefined;
-  if (year === EXCO_FY_START_YEAR && month <= 6) {
-    return 'Valeur figée du fichier EXCO de juin (template) — non recalculée.';
-  }
-  const hints: Record<string, string> = {
-    staffCost: 'Staff cost saisi pour le mois (KPI manuels / finance).',
-    volumePerEmp: 'Volume / emp saisi pour le mois (KPI manuels).',
-    revenuePerEmp: 'Revenue / emp saisi pour le mois (KPI manuels).',
-    plant: 'Effectif Plant (Zamba) — employés présents fin de mois.',
-    hq: 'Effectif HQ and Regions — employés présents fin de mois.',
-    lubudi: 'Effectif Lubudi — employés présents fin de mois.',
-    graduates: 'Effectif Graduates — employés présents fin de mois.',
-    headcount: 'Effectif total présent fin de mois — module Employés.',
-    genderMalePct: '% Hommes parmi les présents fin de mois (genre).',
-    genderFemalePct: '% Femmes parmi les présents fin de mois (genre).',
-    averageAge: 'Âge moyen des présents — date de naissance / âge (Employés).',
-    averageAgeMale: 'Âge moyen des hommes présents fin de mois.',
-    averageAgeFemale: 'Âge moyen des femmes présentes fin de mois.',
-    leavePlantAvgDays: 'Moyenne Closing Balance Annual (Leave Balances) — Plant.',
-    leaveHqAvgDays: 'Moyenne Closing Balance Annual (Leave Balances) — HQ/Regions.',
-    leaveLubudiAvgDays: 'Moyenne Closing Balance Annual (Leave Balances) — Lubudi.',
-    leaveBalanceAvgDays: 'Moyenne Closing Balance Annual — All Company.',
-    leaveProvisionUsd000: 'Provision leave (000 USD) — Leave Balances × taux FC/USD.',
-    hires: 'IN du mois — date d’engagement dans le mois du rapport.',
-    exits: 'OUT du mois — date de sortie dans le mois du rapport.',
-    overtimeHours: 'Heures OT du mois — import Component Posted Units (ou timesheet).',
-  };
-  return hints[metric];
-}
-
-function TipTd({
-  children,
-  tip,
-  className,
+function MetricCard({
+  label,
+  value,
+  hint,
+  tone,
+  onClick,
+  title,
+  highlight,
 }: {
-  children: ReactNode;
-  tip?: string;
-  className?: string;
+  label: string;
+  value: string;
+  hint?: string;
+  tone?: 'default' | 'navy' | 'rose' | 'teal' | 'amber' | 'wine' | 'ok' | 'warn' | 'bad';
+  onClick?: () => void;
+  title?: string;
+  /** Surligne le mois du rapport (rouge léger). */
+  highlight?: boolean;
 }) {
-  if (!tip) {
-    return <td className={className}>{children}</td>;
+  const className = `exco-metric-card exco-metric-${tone || 'default'}${onClick ? ' is-clickable' : ''}${highlight ? ' is-report-month' : ''}`;
+  if (onClick) {
+    return (
+      <button
+        type="button"
+        className={className}
+        onClick={onClick}
+        title={title || `Voir la liste — ${label}`}
+      >
+        <span className="exco-metric-label">{label}</span>
+        <strong className="exco-metric-value">{value}</strong>
+        {hint ? <span className="exco-metric-hint">{hint}</span> : null}
+      </button>
+    );
   }
   return (
-    <td className={`exco-tip-cell${className ? ` ${className}` : ''}`} title={tip}>
-      <span className="exco-tip-cell-val">{children}</span>
-    </td>
+    <article className={className}>
+      <span className="exco-metric-label">{label}</span>
+      <strong className="exco-metric-value">{value}</strong>
+      {hint ? <span className="exco-metric-hint">{hint}</span> : null}
+    </article>
   );
 }
 
-type TabId =
-  | 'synthese'
-  | 'kpi'
-  | 'tendances'
-  | 'mouvements'
-  | 'ot'
-  | 'formation'
-  | 'csr'
-  | 'recrutement'
-  | 'gouvernance';
-
-const TABS: { id: TabId; label: string }[] = [
-  { id: 'synthese', label: 'Synthèse' },
-  { id: 'kpi', label: 'KPI Summary' },
-  { id: 'tendances', label: 'Tendances' },
-  { id: 'mouvements', label: 'Mouvements' },
-  { id: 'ot', label: 'Heures supp.' },
-  { id: 'formation', label: 'Formation' },
-  { id: 'csr', label: 'CSR' },
-  { id: 'recrutement', label: 'Recrutement' },
-  { id: 'gouvernance', label: 'Gouvernance' },
-];
-
-const MONTHS = [
-  { value: 1, label: 'Janvier' },
-  { value: 2, label: 'Février' },
-  { value: 3, label: 'Mars' },
-  { value: 4, label: 'Avril' },
-  { value: 5, label: 'Mai' },
-  { value: 6, label: 'Juin' },
-  { value: 7, label: 'Juillet' },
-  { value: 8, label: 'Août' },
-  { value: 9, label: 'Septembre' },
-  { value: 10, label: 'Octobre' },
-  { value: 11, label: 'Novembre' },
-  { value: 12, label: 'Décembre' },
-];
-
-const MANUAL_KPI_FIELD_BY_SUMMARY_KEY: Record<string, keyof ExcoManualKpis> = {
-  absenteeism: 'absenteeismPct',
-  leaveCost: 'leaveCost',
-  leaveBalance: 'leaveBalanceAvgDays',
-  staffCost: 'staffCost',
-  volumePerEmp: 'volumePerEmp',
-  onboardingSurvey: 'onboardingSurvey',
-  competencyGap: 'competencyGapCoverage',
-  revenuePerEmp: 'revenuePerEmp',
-  overtimeCost: 'overtimeCost',
-  trainingCost: 'trainingCost',
-  climateSurvey: 'climateSurvey',
-  trainingHours: 'trainingHours',
-  succession: 'successionCoverage',
-};
-
-/** KPIs issus d’import : ne pas écraser le badge Auto côté UI. */
-const IMPORT_KPI_KEYS = new Set(['leaveCost', 'leaveBalance', 'overtimeCost', 'overtimeHours']);
-
-function uid(prefix: string): string {
-  return `${prefix}-${Date.now().toString(36)}-${Math.random().toString(36).slice(2, 7)}`;
-}
-
-function toDateInputValue(raw: string | undefined): string {
-  const value = (raw || '').trim();
-  if (/^\d{4}-\d{2}-\d{2}/.test(value)) return value.slice(0, 10);
-  const fr = value.match(/^(\d{1,2})[\/\-.](\d{1,2})[\/\-.](\d{4})$/);
-  if (fr) {
-    return `${fr[3]}-${fr[2].padStart(2, '0')}-${fr[1].padStart(2, '0')}`;
-  }
-  return '';
-}
-
-function formatMeetingDate(raw: string | undefined): string {
-  const iso = toDateInputValue(raw);
-  if (!iso) return raw?.trim() || '—';
-  const d = new Date(`${iso}T00:00:00`);
-  if (Number.isNaN(d.getTime())) return raw?.trim() || '—';
-  return d.toLocaleDateString('en-GB', {
-    day: 'numeric',
-    month: 'long',
-    year: 'numeric',
-  });
-}
-
-function applyManualKpisToSummary(
-  summary: ExcoMetricValue[],
-  mk: ExcoManualKpis,
-): ExcoMetricValue[] {
-  const visible = visibleManualKpis(mk);
-  return summary.map((kpi) => {
-    if (IMPORT_KPI_KEYS.has(kpi.key) && kpi.source === 'computed') return kpi;
-    const field = MANUAL_KPI_FIELD_BY_SUMMARY_KEY[kpi.key];
-    if (!field) return kpi;
-    const value = visible[field];
-    if (value == null || (typeof value === 'number' && !Number.isFinite(value))) {
-      return { ...kpi, value: null, source: 'empty' as const };
-    }
-    return { ...kpi, value, source: 'manual' as const };
-  });
-}
-
-function formatDelta(
-  delta: number | null | undefined,
-  trend?: 'up' | 'down' | '',
-): string | null {
-  if (delta == null || !Number.isFinite(delta)) return null;
-  const pct = Math.round(delta * 1000) / 10;
-  const arrow =
-    pct > 0 || trend === 'up' ? '▲' : pct < 0 || trend === 'down' ? '▼' : '•';
-  return `${arrow} ${Math.abs(pct)}% vs prev.`;
-}
-
-/** Tendance vs mois précédent (pour couleur rouge/vert). */
-function kpiTrend(kpi: ExcoMetricValue): 'up' | 'down' | '' {
-  const cur = typeof kpi.value === 'number' ? kpi.value : null;
-  const prev = typeof kpi.prevValue === 'number' ? kpi.prevValue : null;
-  if (cur != null && prev != null) {
-    if (cur > prev) return 'up';
-    if (cur < prev) return 'down';
-    return '';
-  }
-  if (kpi.deltaPct == null || !Number.isFinite(kpi.deltaPct) || kpi.deltaPct === 0) return '';
-  return kpi.deltaPct > 0 ? 'up' : 'down';
-}
-
-function formatMetricValue(kpi: ExcoMetricValue): string {
-  if (kpi.value == null || kpi.value === '') return '—';
-  if (typeof kpi.value === 'number') {
-    const n = kpi.value;
-    if (kpi.unit === 'USD') {
-      const digits = kpi.key === 'leaveCost' ? 2 : 0;
-      return n.toLocaleString('en-US', {
-        style: 'currency',
-        currency: 'USD',
-        minimumFractionDigits: digits,
-        maximumFractionDigits: digits,
-      });
-    }
-    if (kpi.unit === '%') return `${n}%`;
-    if (kpi.unit === 'hrs' || kpi.unit === 'jours' || kpi.unit === 'ans') {
-      return `${n.toLocaleString('fr-FR')} ${kpi.unit}`;
-    }
-    return n.toLocaleString('fr-FR');
-  }
-  return String(kpi.value);
-}
-
-function SourceBadge({ source }: { source: ExcoMetricValue['source'] }) {
-  const label =
-    source === 'computed' ? 'Auto' : source === 'manual' ? 'Saisi' : 'Manquant';
+function BarChart({
+  items,
+  color = '#7a1f2b',
+}: {
+  items: Array<{ label: string; value: number }>;
+  color?: string;
+}) {
+  const max = Math.max(...items.map((i) => i.value), 1);
   return (
-    <span className={`exco-source exco-source-${source}`} title={label}>
-      {label}
-    </span>
-  );
-}
-
-function SectionTitle({ children, hint }: { children: ReactNode; hint?: string }) {
-  return (
-    <div className="exco-section-head">
-      <h3>{children}</h3>
-      {hint && <p>{hint}</p>}
+    <div className="exco-bar-chart">
+      {items.map((item) => (
+        <div key={item.label} className="exco-bar-row">
+          <span className="exco-bar-label" title={item.label}>{item.label}</span>
+          <div className="exco-bar-track">
+            <div
+              className="exco-bar-fill"
+              style={{ width: `${Math.max(2, Math.round((item.value / max) * 100))}%`, background: color }}
+            />
+          </div>
+          <span className="exco-bar-value">{formatNum(item.value, 0)}</span>
+        </div>
+      ))}
     </div>
   );
 }
 
-function EmptyHint({ children }: { children: ReactNode }) {
-  return <p className="exco-empty-hint">{children}</p>;
-}
-
-function TextArea({
-  label,
-  value,
-  onChange,
-  rows = 5,
-  placeholder,
-  disabled,
+function PctBarChart({
+  items,
+  color = '#e30613',
+  total,
+  onItemClick,
 }: {
-  label: string;
-  value: string;
-  onChange: (v: string) => void;
-  rows?: number;
-  placeholder?: string;
-  disabled?: boolean;
+  items: Array<{ label: string; value: number }>;
+  color?: string;
+  /** Si défini, % = valeur / total (ex. vs effectif). Sinon % du total des barres. */
+  total?: number;
+  onItemClick?: (label: string) => void;
 }) {
+  const sum = items.reduce((s, i) => s + (i.value || 0), 0);
+  const denom = total && total > 0 ? total : sum || 1;
+  if (!items.length || (sum <= 0 && !(total && total > 0))) {
+    return <p className="exco-muted">Aucune donnée.</p>;
+  }
   return (
-    <label className="exco-field">
-      <span>{label}</span>
-      <textarea
-        rows={rows}
-        value={value}
-        disabled={disabled}
-        placeholder={placeholder || 'Saisir le contenu…'}
-        onChange={(e) => onChange(e.target.value)}
-      />
-    </label>
-  );
-}
-
-function NumberField({
-  label,
-  value,
-  onChange,
-  disabled,
-  unit,
-}: {
-  label: string;
-  value: number | null | undefined;
-  onChange: (v: number | null) => void;
-  disabled?: boolean;
-  unit?: string;
-}) {
-  return (
-    <label className="exco-field">
-      <span>
-        {label}
-        {unit ? ` (${unit})` : ''}
-      </span>
-      <input
-        type="number"
-        step="any"
-        disabled={disabled}
-        placeholder="À renseigner"
-        value={value ?? ''}
-        onChange={(e) => {
-          const raw = e.target.value.trim();
-          if (!raw) onChange(null);
-          else {
-            const n = Number(raw);
-            onChange(Number.isFinite(n) ? n : null);
-          }
-        }}
-      />
-    </label>
-  );
-}
-
-function LinesEditor({
-  label,
-  lines,
-  onChange,
-  disabled,
-  placeholder,
-}: {
-  label: string;
-  lines: string[];
-  onChange: (lines: string[]) => void;
-  disabled?: boolean;
-  placeholder?: string;
-}) {
-  return (
-    <label className="exco-field">
-      <span>{label}</span>
-      <textarea
-        rows={6}
-        disabled={disabled}
-        placeholder={placeholder || 'Une ligne = un élément'}
-        value={lines.join('\n')}
-        onChange={(e) =>
-          onChange(
-            e.target.value
-              .split('\n')
-              .map((l) => l.trimEnd())
-              .filter((l, i, arr) => l.length > 0 || i < arr.length - 1),
-          )
+    <div className="exco-pct-bars">
+      {items.map((item) => {
+        const pct = Math.round(((item.value || 0) / denom) * 1000) / 10;
+        const clickable = Boolean(onItemClick && item.value > 0);
+        const row = (
+          <>
+            <span className="exco-bar-label" title={item.label}>{item.label}</span>
+            <div className="exco-bar-track">
+              <div
+                className="exco-bar-fill"
+                style={{
+                  width: `${Math.max(item.value > 0 ? 2 : 0, Math.min(100, pct))}%`,
+                  background: color,
+                }}
+              />
+            </div>
+            <span className="exco-bar-value">{pct.toFixed(1)}%</span>
+          </>
+        );
+        if (clickable) {
+          return (
+            <button
+              key={item.label}
+              type="button"
+              className="exco-bar-row is-clickable"
+              title={`Voir la liste — ${item.label}`}
+              onClick={() => onItemClick?.(item.label)}
+            >
+              {row}
+            </button>
+          );
         }
-      />
-    </label>
+        return (
+          <div key={item.label} className="exco-bar-row">
+            {row}
+          </div>
+        );
+      })}
+    </div>
   );
+}
+
+function ExitReasonsPctChart({
+  items,
+  onItemClick,
+}: {
+  items: Array<{ label: string; value: number }>;
+  onItemClick?: (label: string) => void;
+}) {
+  const total = items.reduce((sum, i) => sum + (i.value || 0), 0);
+  const max = Math.max(...items.map((i) => i.value), 1);
+  if (!items.length || total <= 0) {
+    return <p className="exco-muted">Aucune sortie renseignée.</p>;
+  }
+  return (
+    <div className="exco-bar-chart exco-exit-reasons-chart">
+      {items.map((item) => {
+        const pct = total > 0 ? (item.value / total) * 100 : 0;
+        const clickable = Boolean(onItemClick && item.value > 0);
+        const row = (
+          <>
+            <span className="exco-bar-label" title={item.label}>{item.label}</span>
+            <div className="exco-bar-track">
+              <div
+                className="exco-bar-fill"
+                style={{
+                  width: `${Math.max(2, Math.round((item.value / max) * 100))}%`,
+                  background: '#7a1f2b',
+                }}
+              />
+            </div>
+            <span className="exco-bar-value" title={`${formatNum(item.value)} · ${formatPct(pct)}`}>
+              {formatPct(pct)}
+            </span>
+          </>
+        );
+        if (clickable) {
+          return (
+            <button
+              key={item.label}
+              type="button"
+              className="exco-bar-row is-clickable"
+              title={`Voir la liste — ${item.label}`}
+              onClick={() => onItemClick?.(item.label)}
+            >
+              {row}
+            </button>
+          );
+        }
+        return (
+          <div key={item.label} className="exco-bar-row">
+            {row}
+          </div>
+        );
+      })}
+    </div>
+  );
+}
+
+function ClickableNum({
+  value,
+  title,
+  onClick,
+}: {
+  value: string;
+  title: string;
+  onClick?: () => void;
+}) {
+  if (!onClick) return <>{value}</>;
+  return (
+    <button type="button" className="exco-num-clickable" title={title} onClick={onClick}>
+      {value}
+    </button>
+  );
+}
+
+function parseInputNum(raw: string): number | null {
+  const t = raw.trim().replace(/\s/g, '').replace(',', '.');
+  if (!t) return null;
+  const n = Number(t);
+  return Number.isFinite(n) ? n : null;
+}
+
+function formatInOutDate(value: string): string {
+  if (!value) return '—';
+  if (/^\d{4}-\d{2}-\d{2}/.test(value)) {
+    const d = new Date(value);
+    if (!Number.isNaN(d.getTime())) {
+      const shifted = new Date(d.getTime() + 12 * 60 * 60 * 1000);
+      const dd = String(shifted.getUTCDate()).padStart(2, '0');
+      const mm = String(shifted.getUTCMonth() + 1).padStart(2, '0');
+      const yy = shifted.getUTCFullYear();
+      return `${dd}/${mm}/${yy}`;
+    }
+  }
+  return value;
+}
+
+function GenderLocationChart({
+  items,
+}: {
+  items: Array<{ location: string; male: number; female: number; total: number }>;
+}) {
+  const max = Math.max(...items.map((i) => i.total), 1);
+  return (
+    <div className="exco-bar-chart">
+      {items.map((item) => {
+        const mPct = Math.round((item.male / max) * 100);
+        const fPct = Math.round((item.female / max) * 100);
+        return (
+          <div key={item.location} className="exco-bar-row">
+            <span className="exco-bar-label" title={item.location}>{item.location}</span>
+            <div className="exco-bar-track exco-bar-track-stack">
+              <div className="exco-bar-fill exco-bar-male" style={{ width: `${Math.max(0, mPct)}%` }} />
+              <div className="exco-bar-fill exco-bar-female" style={{ width: `${Math.max(0, fPct)}%` }} />
+            </div>
+            <span className="exco-bar-value">{formatNum(item.total, 0)}</span>
+          </div>
+        );
+      })}
+      <div className="exco-chart-legend">
+        <span className="exco-legend-male">Male</span>
+        <span className="exco-legend-female">Female</span>
+      </div>
+    </div>
+  );
+}
+
+function mismatchLabel(kind: string): string {
+  switch (kind) {
+    case 'missing_in_system': return 'Absent système';
+    case 'missing_in_base': return 'Absent BASE (nouveaux — laisser)';
+    case 'name_mismatch': return 'Nom différent (garder système)';
+    case 'position_mismatch': return 'Position différente (garder système)';
+    case 'department_mismatch': return 'Département différent (appliquer fichier)';
+    default: return kind;
+  }
+}
+
+function mismatchPolicyHint(policy: string): string {
+  switch (policy) {
+    case 'apply_file_department':
+      return 'Applique le département fichier (mappé) dans le système';
+    case 'keep_system':
+      return 'Aucune écriture — conserver la valeur système';
+    case 'leave_in_system':
+      return 'Nouveaux d’août — laisser dans le système';
+    case 'create_from_base':
+      return 'Créer l’employé depuis BASE';
+    default:
+      return '';
+  }
 }
 
 export default function ExcoPage() {
   const { can } = usePermissions();
   const canEdit = can('exco.rapport', 'edit');
-  const canExport = can('exco.rapport', 'export') || can('exco.rapport', 'view');
-  const now = useMemo(() => new Date(), []);
-  const [phase, setPhase] = useState<'setup' | 'report'>('setup');
-  const [year, setYear] = useState(now.getFullYear());
-  const [month, setMonth] = useState(now.getMonth() + 1);
-  const [reportDate, setReportDate] = useState(
-    `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, '0')}`,
-  );
+  const [tab, setTab] = useState<TabId>('params');
+  // Période de travail courante (juillet 2026 — fichiers sources préchargés)
+  const [year, setYear] = useState(2026);
+  const [month, setMonth] = useState(7);
   const [fxRate, setFxRate] = useState('');
-  const [sourceFiles, setSourceFiles] = useState<Partial<Record<ExcoSourceFileId, File | null>>>(
-    {},
-  );
-  const [tab, setTab] = useState<TabId>('synthese');
-  const [report, setReport] = useState<ExcoReportPayload | null>(null);
-  const [overlays, setOverlays] = useState<ExcoOverlays>(emptyExcoOverlays());
-  const [loading, setLoading] = useState(false);
-  const [saving, setSaving] = useState(false);
-  const [exporting, setExporting] = useState(false);
-  const [previewOpen, setPreviewOpen] = useState(false);
-  const [dirty, setDirty] = useState(false);
-  const [generating, setGenerating] = useState(false);
-  const [savedPeriods, setSavedPeriods] = useState<
-    Array<{
-      year: number;
-      month: number;
-      updatedAt: string;
-      fxRateFcPerUsd: number | null;
-      hasOtImport: boolean;
-      hasLeaveImport: boolean;
-    }>
-  >([]);
+  const [uploads, setUploads] = useState<Partial<Record<ExcoSourceFileId, UploadMeta>>>({});
+  const [loading, setLoading] = useState(true);
+  const [busy, setBusy] = useState('');
+  const [base, setBase] = useState<BaseReconcile | null>(null);
+  const [ot, setOt] = useState<OtView | null>(null);
+  const [otSubTab, setOtSubTab] = useState<OtSubTab>('overview');
+  const [kpiCards, setKpiCards] = useState<PptxKpi[]>([]);
+  const [narrative, setNarrative] = useState<{
+    highlights?: string;
+    lowlights?: string;
+    focus?: string;
+    thankYouTitle?: string;
+    thankYouMessage?: string;
+  }>({});
+  const [baseSheet, setBaseSheet] = useState<ExcoSheetTable | null>(null);
+  const [baseSheetSource, setBaseSheetSource] = useState('');
+  const [baseSearch, setBaseSearch] = useState('');
+  const [imported, setImported] = useState<ImportedFlags>({
+    componentPostedUnits: false,
+    leaveBalances: false,
+    engagementsTerminations: false,
+  });
+  const [monthHasData, setMonthHasData] = useState(false);
+  const [headcount, setHeadcount] = useState<HeadcountView | null>(null);
+  const [inOut, setInOut] = useState<InOutView | null>(null);
+  const [staffCost, setStaffCost] = useState<StaffCostView | null>(null);
+  const [staffCostFormulaNotes, setStaffCostFormulaNotes] = useState<Record<string, StaffCostFormulaNote>>({});
+  const [formulaModal, setFormulaModal] = useState<FormulaModalState | null>(null);
+  const [formulaMenu, setFormulaMenu] = useState<FormulaMenuState | null>(null);
+  const [inoutDrilldown, setInoutDrilldown] = useState<{
+    title: string;
+    columns: DashboardListColumn[];
+    rows: DashboardListRow[];
+  } | null>(null);
+  const [namesByMatricule, setNamesByMatricule] = useState<Record<string, string>>({});
 
-  const refreshSavedPeriods = useCallback(async () => {
+  const periodLabel = `${MONTHS_FR[month - 1] || month} ${year}`;
+
+  const resolveStaffCostCell = useCallback(
+    (cellKey: string, cell: StaffCostSheetCell) => applyFormulaNote(cell, staffCostFormulaNotes[cellKey]),
+    [staffCostFormulaNotes],
+  );
+
+  const openStaffCostFormulaMenu = useCallback(
+    (e: ReactMouseEvent, cellKey: string, cell: StaffCostSheetCell) => {
+      setFormulaMenu({
+        x: e.clientX,
+        y: e.clientY,
+        cellKey,
+        cell: resolveStaffCostCell(cellKey, cell),
+      });
+    },
+    [resolveStaffCostCell],
+  );
+
+  const formulaMenuItems = useMemo((): ContextMenuItem[] => {
+    if (!formulaMenu) return [];
+    const items: ContextMenuItem[] = [
+      {
+        id: 'view-formula',
+        label: 'Voir la formule',
+        icon: 'view',
+        onClick: () => {
+          setFormulaModal({ mode: 'view', cellKey: formulaMenu.cellKey, cell: formulaMenu.cell });
+        },
+      },
+    ];
+    if (canEdit) {
+      items.push({
+        id: 'edit-formula',
+        label: 'Modifier la formule',
+        icon: 'edit',
+        onClick: () => {
+          setFormulaModal({ mode: 'edit', cellKey: formulaMenu.cellKey, cell: formulaMenu.cell });
+        },
+      });
+    }
+    return items;
+  }, [formulaMenu, canEdit]);
+
+  const loadParams = useCallback(async (y: number, m: number) => {
+    const res = await fetch(`/api/exco/params?year=${y}&month=${m}`);
+    const data = await res.json();
+    if (!res.ok) throw new Error(data.error || 'Params');
+    const p = data as ParamsState;
+    setYear(p.year);
+    setMonth(p.month);
+    setFxRate(p.fxRateFcPerUsd != null ? String(p.fxRateFcPerUsd) : '');
+    setUploads(p.uploads || {});
+    if (data.imported) setImported(data.imported as ImportedFlags);
+    setMonthHasData(Boolean(data.hasData));
+    if (data.narrative && typeof data.narrative === 'object') {
+      const n = data.narrative as {
+        highlights?: string;
+        lowlights?: string;
+        focus?: string;
+        thankYouTitle?: string;
+        thankYouMessage?: string;
+      };
+      setNarrative({
+        highlights: formatNarrativeForEdit(n.highlights || ''),
+        lowlights: formatNarrativeForEdit(n.lowlights || ''),
+        focus: formatNarrativeForEdit(n.focus || ''),
+        thankYouTitle: n.thankYouTitle || 'Et merci',
+        thankYouMessage: n.thankYouMessage || 'Thank You',
+      });
+    } else {
+      setNarrative({
+        highlights: '',
+        lowlights: '',
+        focus: '',
+        thankYouTitle: 'Et merci',
+        thankYouMessage: 'Thank You',
+      });
+    }
+  }, []);
+
+  const loadBase = useCallback(async (y: number, m: number) => {
+    const res = await fetch(`/api/exco/base?year=${y}&month=${m}`);
+    const data = await res.json();
+    if (!res.ok) throw new Error(data.error || 'BASE');
+    setBase(data as BaseReconcile);
+    if (data.namesByMatricule && typeof data.namesByMatricule === 'object') {
+      const normalized: Record<string, string> = {};
+      for (const [k, v] of Object.entries(data.namesByMatricule as Record<string, string>)) {
+        const mat = normMatricule(k);
+        if (mat && v) normalized[mat] = v;
+      }
+      setNamesByMatricule((prev) => ({ ...prev, ...normalized }));
+    }
+  }, []);
+
+  const loadOt = useCallback(async (y: number, m: number, fx?: string) => {
+    const q = fx ? `&fxRate=${encodeURIComponent(fx)}` : '';
+    const [otRes, wbRes, reportRes] = await Promise.all([
+      fetch(`/api/exco/overtime?year=${y}&month=${m}${q}`),
+      fetch('/api/exco/workbook'),
+      fetch(`/api/exco/report?year=${y}&month=${m}`),
+    ]);
+    const data = await otRes.json();
+    if (!otRes.ok) throw new Error(data.error || 'Overtime');
+    const baseView = data as OtView;
+
+    let workbook: OtView['workbook'];
+    if (wbRes.ok) {
+      const wb = await wbRes.json();
+      const snapOt = wb?.snapshot?.ot;
+      const report = reportRes.ok ? await reportRes.json() : null;
+      const staffCostRow = Array.isArray(wb?.snapshot?.staffCost)
+        ? (wb.snapshot.staffCost as ExcoWorkbookStaffCostMonth[]).find((s) => s.calendarMonth === m)
+        : null;
+      const headcount =
+        wb?.snapshot?.headcount?.headcount
+        ?? report?.computed?.headcount
+        ?? null;
+      if (snapOt) {
+        const employees = (Array.isArray(snapOt.topEmployees) ? snapOt.topEmployees : []).map(
+          (e: {
+            matricule: string;
+            nom: string;
+            hours: number;
+            costUsd?: number | null;
+            costFc?: number | null;
+            leaveBalance?: number | null;
+            department: string;
+          }) => ({
+            matricule: e.matricule,
+            name: e.nom,
+            hours: e.hours,
+            costFc: e.costFc ?? 0,
+            costUsd: e.costUsd ?? null,
+            leaveDays: e.leaveBalance ?? null,
+            leaveValueUsd: null as number | null,
+            department: e.department,
+          }),
+        );
+        const byDeptMap = new Map<string, { hours: number; costUsd: number; agents: number }>();
+        for (const e of employees) {
+          const prev = byDeptMap.get(e.department) || { hours: 0, costUsd: 0, agents: 0 };
+          prev.hours += e.hours;
+          prev.costUsd += e.costUsd || 0;
+          prev.agents += 1;
+          byDeptMap.set(e.department, prev);
+        }
+        const leaveAllAvg =
+          wb?.snapshot?.leave?.allAvgDays
+          ?? snapOt.averageLeaveDays
+          ?? report?.computed?.leaveBalanceAvgDays
+          ?? null;
+        workbook = {
+          trendRows: Array.isArray(snapOt.trendRows) ? snapOt.trendRows : [],
+          actualVsBudget: snapOt.actualVsBudget || null,
+          headcount: headcount != null ? Number(headcount) : null,
+          employeesWithOtPct: snapOt.employeesWithOtPct ?? null,
+          averageHours: snapOt.averageHours ?? null,
+          averageCostPerEmployee: snapOt.averageCostPerEmployee ?? null,
+          averageLeaveDays: leaveAllAvg != null ? Number(leaveAllAvg) : null,
+          staffCostMonth: staffCostRow?.staffCostMonth ?? null,
+          staffCostYtd: staffCostRow?.salariesActualYtd ?? null,
+        };
+        setOt({
+          ...baseView,
+          rows: employees.length ? employees : baseView.rows,
+          totals: {
+            agents: snapOt.employeesWithOt ?? baseView.totals.agents,
+            hours: snapOt.totalHoursCurrent ?? baseView.totals.hours,
+            costUsd: snapOt.totalCostUsdCurrent ?? baseView.totals.costUsd,
+            leaveValueUsd: baseView.totals.leaveValueUsd,
+          },
+          byDepartment: byDeptMap.size
+            ? [...byDeptMap.entries()].map(([department, v]) => ({
+                department,
+                hours: Math.round(v.hours * 100) / 100,
+                costUsd: Math.round(v.costUsd * 100) / 100,
+                agents: v.agents,
+              }))
+            : baseView.byDepartment,
+          missing: {
+            overtime: false,
+            leave: baseView.missing.leave && employees.every((emp: { leaveDays: number | null }) => emp.leaveDays == null),
+          },
+          workbook,
+        });
+        return;
+      }
+    }
+    setOt(baseView);
+  }, []);
+
+  const loadSystemNames = useCallback(async () => {
     try {
-      const res = await fetch('/api/exco/report?list=1');
-      const data = await res.json();
-      if (res.ok && Array.isArray(data.periods)) setSavedPeriods(data.periods);
+      const res = await fetch('/api/employees');
+      if (!res.ok) return;
+      const employees = (await res.json()) as Array<{ matricule?: string; nom?: string }>;
+      const map: Record<string, string> = {};
+      for (const e of employees) {
+        const mat = normMatricule(e.matricule);
+        if (mat && e.nom) map[mat] = e.nom;
+      }
+      setNamesByMatricule((prev) => ({ ...prev, ...map }));
     } catch {
       // ignore
     }
   }, []);
 
-  useEffect(() => {
-    void refreshSavedPeriods();
-  }, [refreshSavedPeriods]);
+  const loadInOut = useCallback(async (y: number, m: number) => {
+    const res = await fetch(`/api/exco/report?year=${y}&month=${m}`);
+    const data = await res.json();
+    if (!res.ok) throw new Error(data.error || 'In Out');
+    const c = data.computed || {};
+    const through = Number(data.month) || m;
+    const trends = Array.isArray(c.trends) ? c.trends : [];
+    const byMonth = new Map<number, {
+      label?: string;
+      month?: number;
+      hires?: number;
+      exits?: number;
+      attritionPct?: number | null;
+      turnoverPct?: number | null;
+      headcount?: number;
+      staffCost?: number | null;
+      volumePerEmp?: number | null;
+      revenuePerEmp?: number | null;
+    }>();
+    for (const t of trends) {
+      if (t?.month) byMonth.set(Number(t.month), t);
+    }
+    const months = CAL_MONTH_KEYS.map((key, idx) => {
+      const cal = idx + 1;
+      const t = byMonth.get(cal);
+      const visible = cal <= through;
+      return {
+        monthKey: key,
+        calendarMonth: cal,
+        in: visible ? (t?.hires ?? 0) : null,
+        out: visible ? (t?.exits ?? 0) : null,
+        attritionRate: visible ? (t?.attritionPct ?? null) : null,
+        turnover: visible ? (t?.turnoverPct ?? null) : null,
+        headcount: visible ? (t?.headcount ?? null) : null,
+      };
+    });
+    const filled = months.filter((row) => row.calendarMonth != null && row.calendarMonth <= through);
+    const ytdIn = filled.reduce((s, row) => s + (row.in || 0), 0);
+    const ytdOut = filled.reduce((s, row) => s + (row.out || 0), 0);
+    const hiresByMonthRaw = (c.hiresByMonth || {}) as Record<string, InOutPerson[]>;
+    const exitsByMonthRaw = (c.exitsByMonth || {}) as Record<string, InOutPerson[]>;
+    const hiresByMonth: Record<number, InOutPerson[]> = {};
+    const exitsByMonth: Record<number, InOutPerson[]> = {};
+    for (const [k, list] of Object.entries(hiresByMonthRaw)) {
+      hiresByMonth[Number(k)] = Array.isArray(list) ? list : [];
+    }
+    for (const [k, list] of Object.entries(exitsByMonthRaw)) {
+      exitsByMonth[Number(k)] = Array.isArray(list) ? list : [];
+    }
+    setInOut({
+      months,
+      ytdIn,
+      ytdOut,
+      ytdAttrition: c.attritionPct ?? null,
+      ytdTurnover: c.turnoverPct ?? null,
+      ytdHeadcount: c.headcount ?? null,
+      exitsByReason: Array.isArray(c.exitsByReason) ? c.exitsByReason : [],
+      inList: Array.isArray(c.hiresList) ? c.hiresList : [],
+      outList: Array.isArray(c.exitsList)
+        ? c.exitsList
+        : Array.isArray(c.leaversList)
+          ? c.leaversList
+          : [],
+      hiresByMonth,
+      exitsByMonth,
+    });
+  }, []);
 
-  const load = useCallback(async (y: number, m: number) => {
+  const rebuildStaffCost = useCallback((
+    ytdByMonth: Record<number, ExcoStaffCostYtdInput>,
+  ): StaffCostView => ({
+    ytdByMonth,
+    sheet: buildStaffCostSheet({ ytdByCalendarMonth: ytdByMonth }),
+  }), []);
+
+  const loadStaffCost = useCallback(async (y: number, m: number) => {
+    const [reportRes, wbRes] = await Promise.all([
+      fetch(`/api/exco/report?year=${y}&month=${m}`),
+      fetch('/api/exco/workbook'),
+    ]);
+    const report = await reportRes.json();
+    if (!reportRes.ok) throw new Error(report.error || 'Staff Cost');
+    const wb = wbRes.ok ? await wbRes.json() : null;
+
+    const ytdByMonth: Record<number, ExcoStaffCostYtdInput> = {};
+    const snapRows = (wb?.snapshot?.staffCost || []) as ExcoWorkbookStaffCostMonth[];
+    for (const row of snapRows) {
+      ytdByMonth[row.calendarMonth] = workbookMonthToYtdInput(row);
+      // Budget headcount Excel = 192
+      if (ytdByMonth[row.calendarMonth].budgetHeadcount == null) {
+        ytdByMonth[row.calendarMonth] = {
+          ...ytdByMonth[row.calendarMonth],
+          budgetHeadcount: 192,
+        };
+      }
+    }
+    // Headcount actual from trends when missing
+    const trends = Array.isArray(report.computed?.trends) ? report.computed.trends : [];
+    for (const t of trends) {
+      const cal = Number(t.month);
+      if (!cal) continue;
+      const cur = ytdByMonth[cal] || staffCostInputFromPartial(null);
+      if (cur.actualHeadcount == null && t.headcount != null) {
+        ytdByMonth[cal] = { ...cur, actualHeadcount: t.headcount };
+      }
+    }
+    // Overlay saisie utilisateur (prioritaire)
+    const overlayMap = (report.overlays?.staffCostYtdByMonth || {}) as Record<string, ExcoStaffCostYtdInput>;
+    for (const [k, v] of Object.entries(overlayMap)) {
+      const cal = Number(k);
+      if (!cal) continue;
+      ytdByMonth[cal] = {
+        ...staffCostInputFromPartial(ytdByMonth[cal]),
+        ...staffCostInputFromPartial(v),
+      };
+    }
+    setStaffCost(rebuildStaffCost(ytdByMonth));
+    const notes = (report.overlays?.staffCostFormulaNotes || {}) as Record<string, StaffCostFormulaNote>;
+    setStaffCostFormulaNotes(notes && typeof notes === 'object' ? notes : {});
+  }, [rebuildStaffCost]);
+
+  const loadWorkbookExtras = useCallback(async () => {
+    try {
+      const res = await fetch('/api/exco/workbook');
+      if (!res.ok) return;
+      const data = await res.json();
+      setKpiCards(data.pptx?.kpiCards || []);
+      const pptxN = data.pptx?.narrative as
+        | { highlights?: string; lowlights?: string; focus?: string }
+        | undefined;
+      if (pptxN) {
+        setNarrative((prev) => {
+          const hasSaved = Boolean(
+            prev.highlights?.trim() || prev.lowlights?.trim() || prev.focus?.trim(),
+          );
+          if (hasSaved) return prev;
+          return {
+            highlights: formatNarrativeForEdit(pptxN.highlights || ''),
+            lowlights: formatNarrativeForEdit(pptxN.lowlights || ''),
+            focus: formatNarrativeForEdit(pptxN.focus || ''),
+          };
+        });
+      }
+      const sheets = (data.sheets || []) as ExcoSheetTable[];
+      const base =
+        sheets.find((s) => s.name.toLowerCase() === 'base')
+        || sheets.find((s) => s.id === 'base')
+        || null;
+      setBaseSheet(base);
+      setBaseSheetSource(String(data.sourceFile || 'New report.xlsx'));
+      const hc = data.snapshot?.headcount as HeadcountView | undefined;
+      setHeadcount(hc || null);
+      if (data.namesByMatricule && typeof data.namesByMatricule === 'object') {
+        const normalized: Record<string, string> = {};
+        for (const [k, v] of Object.entries(data.namesByMatricule as Record<string, string>)) {
+          const mat = normMatricule(k);
+          if (mat && v) normalized[mat] = v;
+        }
+        setNamesByMatricule((prev) => ({ ...prev, ...normalized }));
+      }
+    } catch {
+      // optional
+    }
+  }, []);
+
+  const openInOutList = useCallback(
+    (title: string, people: InOutPerson[]) => {
+      setInoutDrilldown({
+        title,
+        columns: INOUT_LIST_COLUMNS,
+        rows: people.map((p) => inOutPersonToRow(p, namesByMatricule)),
+      });
+    },
+    [namesByMatricule],
+  );
+
+  const openInOutMonth = useCallback(
+    (kind: 'in' | 'out', calendarMonth: number | null, monthKey: string) => {
+      if (calendarMonth == null) return;
+      const people =
+        kind === 'in'
+          ? (inOut?.hiresByMonth?.[calendarMonth] || [])
+          : (inOut?.exitsByMonth?.[calendarMonth] || []);
+      const label = kind === 'in' ? 'IN — Embauches' : 'OUT — Sorties';
+      openInOutList(`Voir la liste — ${label} · ${monthKey}`, people);
+    },
+    [inOut, openInOutList],
+  );
+
+  const openInOutYtd = useCallback(
+    (kind: 'in' | 'out') => {
+      const byMonth = kind === 'in' ? inOut?.hiresByMonth : inOut?.exitsByMonth;
+      const people = Object.values(byMonth || {}).flat();
+      const label = kind === 'in' ? 'IN YTD — Embauches' : 'OUT YTD — Sorties';
+      openInOutList(`Voir la liste — ${label}`, people);
+    },
+    [inOut, openInOutList],
+  );
+
+  const openExitReason = useCallback(
+    (reason: string) => {
+      const people = (inOut?.outList || []).filter(
+        (p) => (p.reason || 'Non renseigné') === reason,
+      );
+      openInOutList(`Voir la liste — Sorties · ${reason} · ${periodLabel}`, people);
+    },
+    [inOut, openInOutList, periodLabel],
+  );
+
+  const baseProjected = useMemo(() => {
+    const projected = projectBaseSheet(baseSheet);
+    const nameIdx = projected.headers.indexOf('Names');
+    const matIdx = projected.headers.indexOf('Emp Number');
+    const rows = projected.rows.map((row) => {
+      const next = row.slice();
+      if (nameIdx >= 0 && matIdx >= 0) {
+        const mat = normMatricule(next[matIdx]);
+        const sysName = namesByMatricule[mat];
+        if (sysName) next[nameIdx] = sysName;
+      }
+      return next;
+    });
+    const q = baseSearch.trim().toLowerCase();
+    const filtered = !q
+      ? rows
+      : rows.filter((row) =>
+          row.some((cell) => String(cell ?? '').toLowerCase().includes(q)),
+        );
+    return { headers: projected.headers, rows: filtered, total: rows.length };
+  }, [baseSheet, namesByMatricule, baseSearch]);
+
+  const refreshAll = useCallback(async () => {
     setLoading(true);
     try {
-      const res = await fetch(`/api/exco/report?year=${y}&month=${m}`);
-      const data = await res.json();
-      if (!res.ok) throw new Error(data.error || 'Erreur de chargement');
-      const payload = data as ExcoReportPayload;
-      setYear(y);
-      setMonth(m);
-      setReportDate(`${y}-${String(m).padStart(2, '0')}`);
-      setReport(payload);
-      setOverlays(payload.overlays || emptyExcoOverlays());
-      const fx = payload.overlays?.generationMeta?.fxRateFcPerUsd;
-      if (fx != null && fx > 0) setFxRate(String(fx));
-      setDirty(false);
-      setPhase('report');
+      await loadParams(year, month);
+      await Promise.all([
+        loadBase(year, month),
+        loadSystemNames(),
+        loadOt(year, month, fxRate),
+        loadWorkbookExtras(),
+        loadInOut(year, month),
+        loadStaffCost(year, month),
+      ]);
     } catch (err) {
-      showError(err instanceof Error ? err.message : 'Erreur de chargement');
+      showError(err instanceof Error ? err.message : 'Chargement impossible');
     } finally {
       setLoading(false);
     }
+  }, [year, month, fxRate, loadParams, loadBase, loadSystemNames, loadOt, loadWorkbookExtras, loadInOut, loadStaffCost]);
+
+  useEffect(() => {
+    void refreshAll();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  const patchOverlays = useCallback((updater: (prev: ExcoOverlays) => ExcoOverlays) => {
-    setOverlays((prev) => updater(prev));
-    setDirty(true);
-  }, []);
-
-  const save = useCallback(async () => {
+  const saveParams = useCallback(async () => {
     if (!canEdit) return;
-    setSaving(true);
+    setBusy('Enregistrement Params…');
     try {
+      const rate = fxRate.trim() === '' ? null : Number(String(fxRate).replace(',', '.'));
+      const res = await fetch('/api/exco/params', {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ year, month, fxRateFcPerUsd: rate }),
+      });
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.error || 'Erreur Params');
+      setUploads(data.uploads || {});
+      showSuccess(`Params enregistrés — ${MONTHS_FR[month - 1]} ${year}`);
+      await Promise.all([loadBase(year, month), loadOt(year, month, fxRate)]);
+    } catch (err) {
+      showError(err instanceof Error ? err.message : 'Erreur');
+    } finally {
+      setBusy('');
+    }
+  }, [canEdit, year, month, fxRate, loadBase, loadOt]);
+
+  const saveNarrative = useCallback(async () => {
+    if (!canEdit) return;
+    setBusy('Enregistrement…');
+    try {
+      const res = await fetch('/api/exco/params', {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          year,
+          month,
+          narrative: {
+            highlights: narrative.highlights || '',
+            lowlights: narrative.lowlights || '',
+            focus: narrative.focus || '',
+            thankYouTitle: narrative.thankYouTitle || 'Et merci',
+            thankYouMessage: narrative.thankYouMessage || 'Thank You',
+          },
+        }),
+      });
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.error || 'Erreur enregistrement');
+      if (data.narrative) {
+        setNarrative({
+          highlights: data.narrative.highlights || '',
+          lowlights: data.narrative.lowlights || '',
+          focus: data.narrative.focus || '',
+          thankYouTitle: data.narrative.thankYouTitle || 'Et merci',
+          thankYouMessage: data.narrative.thankYouMessage || 'Thank You',
+        });
+      }
+      showSuccess(`Enregistré — ${MONTHS_FR[month - 1]} ${year}`);
+    } catch (err) {
+      showError(err instanceof Error ? err.message : 'Erreur');
+    } finally {
+      setBusy('');
+    }
+  }, [canEdit, year, month, narrative]);
+
+  const uploadFile = useCallback(
+    async (sourceId: ExcoSourceFileId, file: File) => {
+      if (!canEdit) return;
+      setBusy(`Upload ${file.name}…`);
+      try {
+        const form = new FormData();
+        form.append('year', String(year));
+        form.append('month', String(month));
+        form.append('sourceId', sourceId);
+        form.append('file', file);
+        const res = await fetch('/api/exco/upload', { method: 'POST', body: form });
+        const data = await res.json();
+        if (!res.ok) throw new Error(data.error || 'Upload impossible');
+        setUploads(data.uploads || {});
+        if (data.importedSources) {
+          setImported({
+            componentPostedUnits: Boolean(data.importedSources.componentPostedUnits) || imported.componentPostedUnits || sourceId === 'componentPostedUnits',
+            leaveBalances: Boolean(data.importedSources.leaveBalances) || imported.leaveBalances || sourceId === 'leaveBalances',
+            engagementsTerminations:
+              Boolean(data.importedSources.engagementsTerminations)
+              || imported.engagementsTerminations
+              || sourceId === 'engagementsTerminations',
+          });
+          setMonthHasData(true);
+        } else {
+          setImported((prev) => ({ ...prev, [sourceId]: true }));
+          setMonthHasData(true);
+        }
+        showSuccess(`${file.name} importé en JSON (fichier source retiré)`);
+        await Promise.all([loadBase(year, month), loadOt(year, month, fxRate)]);
+      } catch (err) {
+        showError(err instanceof Error ? err.message : 'Upload impossible');
+      } finally {
+        setBusy('');
+      }
+    },
+    [canEdit, year, month, fxRate, loadBase, loadOt],
+  );
+
+  const runBaseAction = useCallback(
+    async (action: string, extra?: Record<string, unknown>) => {
+      if (!canEdit) return;
+      setBusy(action === 'applyAllCorrections' ? 'Application des corrections…' : 'Traitement…');
+      try {
+        const res = await fetch('/api/exco/base', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ year, month, action, ...extra }),
+        });
+        const data = await res.json();
+        if (!res.ok) throw new Error(data.error || 'Action impossible');
+        if (data.result) setBase(data.result as BaseReconcile);
+        const applied = typeof data.applied === 'number' ? data.applied : null;
+        showSuccess(
+          applied != null
+            ? `Corrections appliquées · ${applied} département(s) mis à jour`
+            : 'Action terminée',
+        );
+      } catch (err) {
+        showError(err instanceof Error ? err.message : 'Erreur');
+      } finally {
+        setBusy('');
+      }
+    },
+    [canEdit, year, month],
+  );
+
+  const mismatchGroups = useMemo(() => {
+    const groups: Record<string, BaseReconcile['mismatches']> = {};
+    for (const row of base?.mismatches || []) {
+      // Ne garder que les écarts actionnables (pas nom/position/absents BASE)
+      if (row.policy !== 'apply_file_department' && row.policy !== 'create_from_base') continue;
+      (groups[row.kind] ||= []).push(row);
+    }
+    return groups;
+  }, [base]);
+
+  const otEmployeesResolved = useMemo(() => {
+    return (ot?.rows || []).map((r) => ({
+      ...r,
+      name: namesByMatricule[normMatricule(r.matricule)] || r.name,
+    }));
+  }, [ot, namesByMatricule]);
+
+  const otTopByHours = useMemo(
+    () => [...otEmployeesResolved].sort((a, b) => b.hours - a.hours),
+    [otEmployeesResolved],
+  );
+
+  const otTopByLeave = useMemo(
+    () =>
+      [...otEmployeesResolved].sort(
+        (a, b) => (b.leaveDays ?? -Infinity) - (a.leaveDays ?? -Infinity),
+      ),
+    [otEmployeesResolved],
+  );
+
+  const otOverview = useMemo(() => {
+    const wb = ot?.workbook;
+    const agents = ot?.totals.agents ?? 0;
+    const hours = ot?.totals.hours ?? 0;
+    const cost = ot?.totals.costUsd ?? null;
+    const hc = wb?.headcount ?? null;
+    const pctAgents =
+      wb?.employeesWithOtPct
+      ?? (hc && hc > 0 ? Math.round((agents / hc) * 1000) / 10 : null);
+    const avgHours = wb?.averageHours ?? (agents ? hours / agents : null);
+    const avgCost = wb?.averageCostPerEmployee ?? (agents && cost != null ? cost / agents : null);
+    const withLeave = otEmployeesResolved.filter((e) => e.leaveDays != null);
+    const avgLeaveFromRows = withLeave.length
+      ? withLeave.reduce((s, e) => s + (e.leaveDays || 0), 0) / withLeave.length
+      : null;
+    const avgLeave = wb?.averageLeaveDays ?? avgLeaveFromRows;
+    const staffMonth = wb?.staffCostMonth ?? null;
+    const staffYtd = wb?.staffCostYtd ?? null;
+    const avbYtd = wb?.actualVsBudget?.actualYtd ?? null;
+    const otPctMonth =
+      cost != null && staffMonth && staffMonth > 0
+        ? Math.round((cost / staffMonth) * 10000) / 100
+        : null;
+    const otPctYtd =
+      avbYtd != null && staffYtd && staffYtd > 0
+        ? Math.round((avbYtd / staffYtd) * 10000) / 100
+        : null;
+    return {
+      headcount: hc,
+      agents,
+      pctAgents,
+      hours,
+      avgHours,
+      cost,
+      avgCost,
+      avgLeave,
+      otPctMonth,
+      otPctYtd,
+    };
+  }, [ot, otEmployeesResolved]);
+
+  const otHoursSlide = useMemo(() => {
+    const monthLabel = (MONTHS_EN[month - 1] || String(month)).slice(0, 3).toUpperCase();
+    const fyIdx = OVT_TREND_MONTHS.indexOf(month as (typeof OVT_TREND_MONTHS)[number]);
+    const fromTrend = (ot?.workbook?.trendRows || []).map((row) => {
+      const hours = fyIdx >= 0 ? row.hoursByMonth[fyIdx] ?? null : null;
+      return { department: row.department, hours };
+    });
+    const rows = fromTrend.length
+      ? fromTrend
+      : (ot?.byDepartment || []).map((d) => ({
+          department: d.department,
+          hours: d.hours || null,
+        }));
+    const max = Math.max(...rows.map((r) => r.hours || 0), 1);
+    const total = rows.reduce((s, r) => s + (r.hours || 0), 0);
+    return { monthLabel, rows, max, total };
+  }, [ot, month]);
+
+  const openOtEmployeeList = useCallback(
+    (title: string, rows: OtView['rows']) => {
+      setInoutDrilldown({
+        title,
+        columns: [
+          { key: 'matricule', label: 'Matricule' },
+          { key: 'nom', label: 'Nom' },
+          { key: 'hours', label: 'Hours' },
+          { key: 'cost', label: 'Cost USD' },
+          { key: 'leave', label: 'Leave' },
+          { key: 'departement', label: 'Department' },
+        ],
+        rows: rows.map((r) => ({
+          id: r.matricule,
+          cells: {
+            matricule: r.matricule,
+            nom: namesByMatricule[normMatricule(r.matricule)] || r.name,
+            hours: formatNum(r.hours, 2),
+            cost: formatUsd(r.costUsd),
+            leave: r.leaveDays != null ? formatNum(r.leaveDays, 2) : '—',
+            departement: r.department,
+          },
+        })),
+      });
+    },
+    [namesByMatricule],
+  );
+
+  const deptMismatchCount = mismatchGroups.department_mismatch?.length || 0;
+  const pendingSources = EXCO_SOURCE_FILES.filter((def) => !imported[def.id as keyof ImportedFlags]);
+  const hasActionable = Object.values(mismatchGroups).some((rows) => rows.length > 0);
+  const showSetupPanels = !monthHasData;
+
+  const changePeriod = useCallback(
+    async (y: number, m: number) => {
+      setYear(y);
+      setMonth(m);
+      setLoading(true);
+      try {
+        await loadParams(y, m);
+        await Promise.all([
+          loadBase(y, m),
+          loadSystemNames(),
+          loadOt(y, m, fxRate),
+          loadWorkbookExtras(),
+          loadInOut(y, m),
+          loadStaffCost(y, m),
+        ]);
+      } catch (err) {
+        showError(err instanceof Error ? err.message : 'Chargement impossible');
+      } finally {
+        setLoading(false);
+      }
+    },
+    [fxRate, loadParams, loadBase, loadSystemNames, loadOt, loadWorkbookExtras, loadInOut, loadStaffCost],
+  );
+
+  const updateStaffCostInput = useCallback(
+    (field: keyof ExcoStaffCostYtdInput, value: number | null) => {
+      const nextYtd = {
+        ...(staffCost?.ytdByMonth || {}),
+        [month]: {
+          ...staffCostInputFromPartial(staffCost?.ytdByMonth?.[month]),
+          [field]: value,
+        },
+      };
+      setStaffCost(rebuildStaffCost(nextYtd));
+    },
+    [staffCost, month, rebuildStaffCost],
+  );
+
+  const saveStaffCost = useCallback(async () => {
+    if (!canEdit || !staffCost) return;
+    setBusy('Enregistrement Staff Cost…');
+    try {
+      const staffCostYtdByMonth: Record<string, ExcoStaffCostYtdInput> = {};
+      for (const [k, v] of Object.entries(staffCost.ytdByMonth)) {
+        staffCostYtdByMonth[String(k)] = staffCostInputFromPartial(v);
+      }
+      const current = staffCost.sheet.find((s) => s.calendarMonth === month);
       const res = await fetch('/api/exco/report', {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ year, month, overlays }),
+        body: JSON.stringify({
+          year,
+          month,
+          overlays: {
+            staffCostYtdByMonth,
+            staffCostFormulaNotes,
+            manualKpis: {
+              staffCost: current?.staffCostMonth.value ?? null,
+              volumePerEmp: current?.tonPerEmp.value ?? null,
+              revenuePerEmp: current?.revenuePerEmp.value ?? null,
+              staffCostBudgetYtd: current?.salariesBudgetYtd.value ?? null,
+              volumeBudgetYtd: current?.volumesBudgetYtd.value ?? null,
+              revenueBudgetYtd: current?.revenueBudgetYtd.value ?? null,
+            },
+          },
+        }),
       });
       const data = await res.json();
-      if (!res.ok) throw new Error(data.error || 'Erreur d’enregistrement');
-      setReport(data.report as ExcoReportPayload);
-      setOverlays((data.report as ExcoReportPayload).overlays);
-      setDirty(false);
-      showSuccess('Rapport EXCO enregistré');
+      if (!res.ok) throw new Error(data.error || 'Erreur Staff Cost');
+      showSuccess(`Staff Cost enregistré — ${periodLabel}`);
+      await loadStaffCost(year, month);
     } catch (err) {
-      showError(err instanceof Error ? err.message : 'Erreur d’enregistrement');
+      showError(err instanceof Error ? err.message : 'Erreur');
     } finally {
-      setSaving(false);
+      setBusy('');
     }
-  }, [canEdit, year, month, overlays]);
+  }, [canEdit, staffCost, staffCostFormulaNotes, month, year, periodLabel, loadStaffCost]);
 
-  const previewHtml = useMemo(() => {
-    if (!report) return '';
-    const liveSummary = applyManualKpisToSummary(report.kpiSummary, overlays.manualKpis);
-    return buildExcoPreviewHtml({
-      ...report,
-      kpiSummary: liveSummary,
-      overlays,
-    });
-  }, [report, overlays]);
+  return (
+    <PermissionGate menuId="exco.rapport" action="view">
+      <div className="exco-page exco-page-relative exco-workbook-page">
+        {(loading || busy) && <ExcoBusyOverlay label={busy || 'Chargement…'} />}
 
-  const exportPptx = useCallback(async () => {
-    if (!canExport) return;
-    if (dirty) {
-      showError('Enregistrez d’abord les modifications avant d’exporter.');
-      return;
-    }
-    setExporting(true);
-    try {
-      const res = await fetch(`/api/exco/export?year=${year}&month=${month}&format=pptx`);
-      if (!res.ok) {
-        const data = await res.json().catch(() => ({}));
-        throw new Error(data.error || 'Erreur d’export PowerPoint');
-      }
-      const blob = await res.blob();
-      const cd = res.headers.get('Content-Disposition') || '';
-      const match = cd.match(/filename="([^"]+)"/);
-      const filename = match?.[1] || `EXCO_HR_REPORT_${year}-${month}.pptx`;
-      const url = URL.createObjectURL(blob);
-      const a = document.createElement('a');
-      a.href = url;
-      a.download = filename;
-      document.body.appendChild(a);
-      a.click();
-      a.remove();
-      URL.revokeObjectURL(url);
-      showSuccess('PowerPoint exporté');
-    } catch (err) {
-      showError(err instanceof Error ? err.message : 'Erreur d’export PowerPoint');
-    } finally {
-      setExporting(false);
-    }
-  }, [canExport, dirty, year, month]);
+        <div className="exco-sticky">
+          <div className="page-header page-header-with-tabs exco-page-header">
+            <div className="exco-header-left">
+              <h2>Rapport EXCO</h2>
+              <p>
+                {periodLabel}
+                {fxRate ? ` · taux ${fxRate} FC/USD` : ' · taux non défini'}
+              </p>
+            </div>
+            <div className="exco-header-actions">
+              <label className="exco-header-period">
+                <span className="sr-only">Mois du rapport</span>
+                <input
+                  type="month"
+                  aria-label="Mois du rapport"
+                  value={`${year}-${String(month).padStart(2, '0')}`}
+                  disabled={!canEdit || Boolean(busy) || loading}
+                  onChange={(e) => {
+                    const [ys, ms] = e.target.value.split('-');
+                    void changePeriod(Number(ys), Number(ms));
+                  }}
+                />
+              </label>
+              <ExcoExportMenu year={year} month={month} disabled={Boolean(busy) || loading} />
+              <RefreshButton loading={loading} onClick={() => void refreshAll()} />
+            </div>
+          </div>
+        </div>
 
-  const generateReport = useCallback(async () => {
-    if (!canEdit) return;
-    const [yStr, mStr] = reportDate.split('-');
-    const y = Number(yStr);
-    const m = Number(mStr);
-    if (!Number.isInteger(y) || !Number.isInteger(m) || m < 1 || m > 12) {
-      showError('Indiquez la date du rapport (mois)');
-      return;
-    }
-    const rate = Number(String(fxRate).replace(',', '.'));
-    if (!(rate > 0)) {
-      showError('Indiquez le taux de conversion FC → USD');
-      return;
-    }
-    for (const def of EXCO_SOURCE_FILES) {
-      if (def.required && !sourceFiles[def.id]) {
-        showError(`Fichier requis : ${def.exampleName}`);
-        return;
-      }
-    }
-    const componentFile = sourceFiles.componentPostedUnits;
-    const leaveFile = sourceFiles.leaveBalances || null;
-    if (!componentFile) {
-      showError(`Fichier requis : ${EXCO_SOURCE_FILES[0].exampleName}`);
-      return;
-    }
+        <div className="exco-main-tabs-shell">
+          <div className="exco-main-tabs" role="tablist" aria-label="Rapport EXCO">
+            {TABS.map((t) => (
+              <button
+                key={t.id}
+                type="button"
+                role="tab"
+                className={`exco-main-tab${tab === t.id ? ' is-active' : ''}`}
+                aria-selected={tab === t.id}
+                onClick={() => setTab(t.id)}
+              >
+                {t.label}
+              </button>
+            ))}
+          </div>
 
-    setGenerating(true);
-    try {
-      const form = new FormData();
-      form.append('year', String(y));
-      form.append('month', String(m));
-      form.append('fxRateFcPerUsd', String(rate));
-      form.append('componentFile', componentFile);
-      if (leaveFile) form.append('leaveFile', leaveFile);
-      const res = await fetch('/api/exco/import-overtime', { method: 'POST', body: form });
-      const data = await res.json();
-      if (!res.ok) throw new Error(data.error || 'Génération impossible');
-      setYear(y);
-      setMonth(m);
-      setReport(data.report as ExcoReportPayload);
-      setOverlays((data.report as ExcoReportPayload).overlays);
-      setDirty(false);
-      setTab('synthese');
-      setPhase('report');
-      await refreshSavedPeriods();
-      showSuccess(
-        `Rapport ${MONTHS.find((x) => x.value === m)?.label} ${y} enregistré — vous pourrez le rouvrir depuis Paramètres.`,
-      );
-    } catch (err) {
-      showError(err instanceof Error ? err.message : 'Erreur de génération');
-    } finally {
-      setGenerating(false);
-    }
-  }, [canEdit, reportDate, fxRate, sourceFiles, refreshSavedPeriods]);
+        <div className="exco-workbook-body">
+          {tab === 'params' && (
+            <div className="exco-panel-stack">
+              <section className="exco-panel">
+                <h3>Taux</h3>
+                <div className="exco-params-grid">
+                  <label className="exco-field">
+                    <span>Taux FC pour 1 USD</span>
+                    <input
+                      type="number"
+                      min="1"
+                      step="any"
+                      placeholder="ex. 2308"
+                      disabled={!canEdit || Boolean(busy)}
+                      value={fxRate}
+                      onChange={(e) => setFxRate(e.target.value)}
+                    />
+                  </label>
+                  {canEdit && (
+                    <button type="button" className="btn btn-primary btn-sm" disabled={Boolean(busy)} onClick={() => void saveParams()}>
+                      Enregistrer Params
+                    </button>
+                  )}
+                </div>
+              </section>
 
-  const openExisting = useCallback(() => {
-    const [yStr, mStr] = reportDate.split('-');
-    const y = Number(yStr);
-    const m = Number(mStr);
-    if (!Number.isInteger(y) || !Number.isInteger(m) || m < 1 || m > 12) {
-      showError('Indiquez la date du rapport (mois)');
-      return;
-    }
-    void load(y, m);
-  }, [reportDate, load]);
-
-  if (phase === 'setup') {
-    return (
-      <PermissionGate menuId="exco.rapport" action="view">
-        <div className="exco-page exco-page-relative">
-          {(loading || generating) && (
-            <ExcoBusyOverlay
-              label={
-                generating
-                  ? 'Génération du rapport en cours…'
-                  : 'Chargement du rapport…'
-              }
-            />
-          )}
-          <div className="exco-setup">
-            <div className="exco-setup-card panel panel-padded">
-              <div className="exco-header-left">
-                <h2>Rapport EXCO</h2>
-                <p>Paramètres et fichiers sources — générez le rapport avant l’export PPTX</p>
-              </div>
-
-              <div className="exco-setup-grid">
-                <label className="exco-field">
-                  <span>Date du rapport *</span>
-                  <input
-                    type="month"
-                    value={reportDate}
-                    disabled={generating || loading}
-                    onChange={(e) => setReportDate(e.target.value)}
-                  />
-                </label>
-
-                <label className="exco-field">
-                  <span>Taux de conversion (FC pour 1 USD) *</span>
-                  <input
-                    type="number"
-                    step="any"
-                    min="1"
-                    placeholder="ex. 2850"
-                    disabled={generating || loading || !canEdit}
-                    value={fxRate}
-                    onChange={(e) => setFxRate(e.target.value)}
-                  />
-                </label>
-              </div>
-
-              <div className="exco-setup-files">
-                <h3>Fichiers à importer</h3>
-                <p className="exco-muted">
-                  Ajoutez les fichiers listés. D’autres sources pourront être ajoutées ici plus tard.
-                </p>
-                <ul className="exco-source-list">
-                  {EXCO_SOURCE_FILES.map((def) => {
-                    const file = sourceFiles[def.id] || null;
-                    return (
+              {showSetupPanels && pendingSources.length > 0 && (
+                <section className="exco-panel">
+                  <h3>Fichiers sources à importer</h3>
+                  <p className="exco-muted">
+                    Import → JSON (OT, leave, engagements). Le fichier xlsx est retiré ensuite.
+                  </p>
+                  <ul className="exco-source-list">
+                    {pendingSources.map((def) => (
                       <li key={def.id} className="exco-source-item">
                         <div className="exco-source-meta">
                           <strong>
@@ -739,2494 +2060,1772 @@ export default function ExcoPage() {
                             {def.required ? ' *' : ''}
                           </strong>
                           <span className="exco-muted">{def.exampleName}</span>
-                          {def.description ? (
-                            <span className="exco-muted">{def.description}</span>
-                          ) : null}
-                          {file ? (
-                            <span className="exco-source-chosen">Sélectionné : {file.name}</span>
-                          ) : null}
+                          {def.description ? <span className="exco-muted">{def.description}</span> : null}
                         </div>
-                        <label className="btn btn-secondary btn-sm exco-source-pick">
-                          Choisir
-                          <input
-                            type="file"
-                            accept={def.accept}
-                            disabled={generating || loading || !canEdit}
-                            hidden
-                            onChange={(e) => {
-                              const f = e.target.files?.[0] || null;
-                              setSourceFiles((prev) => ({ ...prev, [def.id]: f }));
-                            }}
-                          />
-                        </label>
+                        {canEdit && (
+                          <label className="btn btn-secondary btn-sm exco-source-pick">
+                            Choisir
+                            <input
+                              type="file"
+                              accept={def.accept}
+                              hidden
+                              disabled={Boolean(busy)}
+                              onChange={(e) => {
+                                const f = e.target.files?.[0];
+                                e.target.value = '';
+                                if (f) void uploadFile(def.id, f);
+                              }}
+                            />
+                          </label>
+                        )}
                       </li>
-                    );
-                  })}
-                </ul>
-              </div>
+                    ))}
+                  </ul>
+                </section>
+              )}
 
-              <div className="exco-setup-actions">
-                {canEdit && (
-                  <button
-                    type="button"
-                    className="btn btn-primary"
-                    disabled={generating || loading}
-                    onClick={() => void generateReport()}
-                  >
-                    {generating ? <span className="btn-spinner" aria-hidden="true" /> : null}
-                    {generating ? 'Génération…' : 'Générer le rapport'}
-                  </button>
-                )}
-                <button
-                  type="button"
-                  className="btn btn-secondary"
-                  disabled={generating || loading}
-                  onClick={openExisting}
-                  title="Ouvrir un rapport déjà généré pour cette période"
-                >
-                  {loading ? <span className="btn-spinner" aria-hidden="true" /> : null}
-                  {loading ? 'Chargement…' : 'Ouvrir le rapport existant'}
-                </button>
-              </div>
+              {showSetupPanels && !hasActionable && (
+                <section className="exco-panel">
+                  <p className="exco-source-chosen" style={{ margin: 0 }}>
+                    Aucune correction en attente.
+                  </p>
+                </section>
+              )}
 
-              {savedPeriods.length > 0 && (
-                <div className="exco-saved-periods">
-                  <h3>Rapports enregistrés</h3>
-                  <p className="exco-muted">Cliquez pour rouvrir un mois déjà généré.</p>
-                  <ul>
-                    {savedPeriods.map((p) => {
-                      const label = `${MONTHS.find((x) => x.value === p.month)?.label || p.month} ${p.year}`;
-                      const active =
-                        reportDate === `${p.year}-${String(p.month).padStart(2, '0')}`;
-                      return (
-                        <li key={`${p.year}-${p.month}`}>
+              {showSetupPanels && hasActionable && (
+                <>
+                  <section className="exco-panel">
+                    <div className="exco-panel-head">
+                      <h3>Corrections à appliquer</h3>
+                      <div className="exco-inline-actions">
+                        {canEdit && (
+                          <>
+                            <button
+                              type="button"
+                              className="btn btn-secondary btn-sm"
+                              disabled={Boolean(busy)}
+                              onClick={() => void runBaseAction('syncDepartments')}
+                            >
+                              Sync départements & services
+                            </button>
+                            <button
+                              type="button"
+                              className="btn btn-primary btn-sm"
+                              disabled={Boolean(busy) || deptMismatchCount === 0}
+                              onClick={() => void runBaseAction('applyAllCorrections')}
+                            >
+                              Appliquer toutes les corrections ({deptMismatchCount})
+                            </button>
+                          </>
+                        )}
+                      </div>
+                    </div>
+                    <p className="exco-muted">
+                      Seuls les écarts département (fichier → système) restent affichés.
+                    </p>
+                    {(base?.departmentsToCreate.length || 0) > 0 && (
+                      <p className="exco-warn-banner">
+                        Départements encore absents : {base!.departmentsToCreate.join(', ')}
+                      </p>
+                    )}
+                  </section>
+
+                  {Object.entries(mismatchGroups).map(([kind, rows]) => (
+                    <section key={kind} className="exco-panel">
+                      <div className="exco-panel-head">
+                        <h3>
+                          {mismatchLabel(kind)} ({rows.length})
+                        </h3>
+                        {canEdit && kind === 'department_mismatch' && (
                           <button
                             type="button"
-                            className={`btn btn-sm${active ? ' btn-primary' : ' btn-secondary'}`}
-                            disabled={generating || loading}
-                            onClick={() => {
-                              setReportDate(
-                                `${p.year}-${String(p.month).padStart(2, '0')}`,
-                              );
-                              if (p.fxRateFcPerUsd != null) {
-                                setFxRate(String(p.fxRateFcPerUsd));
-                              }
-                              void load(p.year, p.month);
-                            }}
+                            className="btn btn-primary btn-sm"
+                            disabled={Boolean(busy)}
+                            onClick={() => void runBaseAction('applyAllCorrections')}
                           >
-                            {label}
-                            {p.hasOtImport || p.hasLeaveImport ? ' · import' : ''}
+                            Appliquer toute la plage
                           </button>
-                        </li>
-                      );
-                    })}
-                  </ul>
-                </div>
-              )}
-            </div>
-          </div>
-        </div>
-      </PermissionGate>
-    );
-  }
-
-  return (
-    <PermissionGate menuId="exco.rapport" action="view">
-      <div className="exco-page exco-page-relative">
-        {loading && (
-          <ExcoBusyOverlay label="Chargement du rapport…" />
-        )}
-        <div className="exco-sticky">
-          <div className="page-header page-header-with-tabs exco-page-header">
-            <div className="exco-header-left">
-              <h2>Rapport EXCO</h2>
-              <p>
-                {MONTHS.find((x) => x.value === month)?.label} {year} — données système
-                {overlays.generationMeta?.fxRateFcPerUsd
-                  ? ` · taux ${overlays.generationMeta.fxRateFcPerUsd} FC/USD`
-                  : fxRate
-                    ? ` · taux ${fxRate} FC/USD`
-                    : ''}
-                {report?.updatedAt
-                  ? ` · enregistré ${new Date(report.updatedAt).toLocaleString('fr-FR')}`
-                  : ''}
-              </p>
-            </div>
-            <div className="exco-header-actions">
-              <button
-                type="button"
-                className="btn btn-ghost"
-                disabled={loading || generating || dirty}
-                onClick={() => {
-                  setPhase('setup');
-                  setReport(null);
-                }}
-              >
-                ← Paramètres
-              </button>
-              <RefreshButton loading={loading} onClick={() => void load(year, month)} />
-              {canEdit && (
-                <button
-                  type="button"
-                  className="btn btn-primary"
-                  disabled={!dirty || saving || loading}
-                  onClick={() => void save()}
-                >
-                  {saving ? <span className="btn-spinner" aria-hidden="true" /> : null}
-                  {saving ? 'Enregistrement…' : dirty ? 'Enregistrer' : 'À jour'}
-                </button>
-              )}
-              {canExport && (
-                <>
-                  <button
-                    type="button"
-                    className="btn btn-secondary"
-                    disabled={loading || !report}
-                    onClick={() => setPreviewOpen(true)}
-                    title="Aperçu des slides avant export"
-                  >
-                    Aperçu PPTX
-                  </button>
-                  <button
-                    type="button"
-                    className="btn btn-secondary"
-                    disabled={loading || exporting || dirty || !report}
-                    onClick={() => void exportPptx()}
-                    title={dirty ? 'Enregistrez avant d’exporter' : 'Exporter le PowerPoint'}
-                  >
-                    {exporting ? <span className="btn-spinner" aria-hidden="true" /> : null}
-                    {exporting ? 'Export…' : 'Exporter PPTX'}
-                  </button>
+                        )}
+                      </div>
+                      <p className="exco-muted">{mismatchPolicyHint(rows[0]?.policy || '')}</p>
+                      <div className="exco-sheet-scroll">
+                        <table className="exco-mini-table">
+                          <thead>
+                            <tr>
+                              <th>Matricule</th>
+                              <th>Fichier</th>
+                              <th>Système</th>
+                              <th>Dept fichier</th>
+                              <th>Dept résolu</th>
+                              <th>Dept système</th>
+                              <th />
+                            </tr>
+                          </thead>
+                          <tbody>
+                            {rows.slice(0, 120).map((r) => (
+                              <tr key={`${kind}-${r.matricule}-${r.fileName}-${r.systemName}`}>
+                                <td>{r.matricule}</td>
+                                <td>{r.fileName || '—'}</td>
+                                <td>{r.systemName || '—'}</td>
+                                <td>{r.fileDepartment || '—'}</td>
+                                <td>{r.resolvedDepartment || '—'}</td>
+                                <td>{r.systemDepartment || '—'}</td>
+                                <td>
+                                  {canEdit && r.policy === 'apply_file_department' && (
+                                    <button
+                                      type="button"
+                                      className="btn btn-sm btn-secondary"
+                                      onClick={() =>
+                                        void runBaseAction('applyEmployeeFix', {
+                                          matricule: r.matricule,
+                                          fields: ['department'],
+                                        })
+                                      }
+                                    >
+                                      Corriger
+                                    </button>
+                                  )}
+                                </td>
+                              </tr>
+                            ))}
+                          </tbody>
+                        </table>
+                      </div>
+                    </section>
+                  ))}
                 </>
               )}
-            </div>
-          </div>
 
-          <div className="tabs header-tabs header-tabs-compact exco-tabs" role="tablist">
-            {TABS.map((t) => (
-              <button
-                key={t.id}
-                type="button"
-                role="tab"
-                aria-selected={tab === t.id}
-                className={`tab-btn tab-btn-sm${tab === t.id ? ' active' : ''}`}
-                onClick={() => setTab(t.id)}
-              >
-                {t.label}
-              </button>
-            ))}
-          </div>
-        </div>
-
-        {previewOpen && report && (
-          <div className="exco-preview-overlay" role="dialog" aria-modal="true" aria-label="Aperçu PowerPoint">
-            <div className="exco-preview-modal">
-              <div className="exco-preview-modal-head">
-                <div>
-                  <h3>Aperçu avant export</h3>
-                  <p>
-                    Synthèse + KPI Summary (cartes style capt.1) — {report.periodLabel}
-                  </p>
+              <section className="exco-panel exco-panel-accent-navy exco-base-in-params">
+                <div className="exco-panel-head">
+                  <h3>BASE — données</h3>
+                  <div className="exco-base-toolbar-inline">
+                    <strong className="exco-base-effectif">
+                      Effectif : {formatNum(baseProjected.total)}
+                      {baseSearch.trim() ? ` · ${baseProjected.rows.length}` : ''}
+                    </strong>
+                    <input
+                      type="search"
+                      className="exco-base-search"
+                      placeholder="Rechercher…"
+                      value={baseSearch}
+                      onChange={(e) => setBaseSearch(e.target.value)}
+                    />
+                  </div>
                 </div>
-                <div className="exco-preview-modal-actions">
+                <div className="exco-base-scroll-host">
+                  {baseProjected.rows.length > 0 || baseProjected.total > 0 ? (
+                    <div className="exco-base-scroll-x">
+                      <table className="exco-sheet-table exco-base-table">
+                        <thead>
+                          <tr>
+                            {baseProjected.headers.map((h) => (
+                              <th key={h}>{h}</th>
+                            ))}
+                          </tr>
+                        </thead>
+                        <tbody>
+                          {baseProjected.rows.map((row, ri) => (
+                            <tr key={`base-${ri}-${row[0] ?? ri}`}>
+                              {row.map((cell, ci) => (
+                                <td key={`c-${ri}-${ci}`}>
+                                  {displayBaseCell(cell, baseProjected.headers[ci])}
+                                </td>
+                              ))}
+                            </tr>
+                          ))}
+                        </tbody>
+                      </table>
+                    </div>
+                  ) : (
+                    <p className="exco-muted" style={{ padding: '0.75rem' }}>
+                      Feuille BASE introuvable dans New report.xlsx.
+                    </p>
+                  )}
+                </div>
+              </section>
+            </div>
+          )}
+
+          {tab === 'headcount' && (
+            <div className="exco-hc-dashboard">
+              <div className="exco-metric-strip">
+                <MetricCard
+                  label="Headcount"
+                  value={formatNum(headcount?.headcount)}
+                  hint="Effectif total"
+                  tone="navy"
+                />
+                <MetricCard
+                  label="Male"
+                  value={formatNum(headcount?.male)}
+                  hint={formatPct(headcount?.malePct)}
+                  tone="navy"
+                />
+                <MetricCard
+                  label="Female"
+                  value={formatNum(headcount?.female)}
+                  hint={formatPct(headcount?.femalePct)}
+                  tone="rose"
+                />
+                <MetricCard
+                  label="Avg Age"
+                  value={formatNum(headcount?.averageAge, 1)}
+                  hint="années"
+                  tone="teal"
+                />
+                <MetricCard
+                  label="Avg LoS"
+                  value={formatNum(headcount?.averageLengthOfService, 1)}
+                  hint="années"
+                  tone="wine"
+                />
+                <MetricCard
+                  label="Pre-retirement"
+                  value={formatNum(headcount?.preRetirement)}
+                  hint="≥ 55 ans"
+                  tone="amber"
+                />
+              </div>
+
+              <div className="exco-hc-grid">
+                <section className="exco-panel exco-panel-accent-navy">
+                  <h3>Effectifs</h3>
+                  <table className="exco-mini-table">
+                    <tbody>
+                      <tr>
+                        <td>Headcount</td>
+                        <td>{formatNum(headcount?.headcount)}</td>
+                        <td>100%</td>
+                      </tr>
+                      <tr>
+                        <td>Male</td>
+                        <td>{formatNum(headcount?.male)}</td>
+                        <td>{formatPct(headcount?.malePct)}</td>
+                      </tr>
+                      <tr>
+                        <td>Female</td>
+                        <td>{formatNum(headcount?.female)}</td>
+                        <td>{formatPct(headcount?.femalePct)}</td>
+                      </tr>
+                    </tbody>
+                  </table>
+                  <div className="exco-gender-donut">
+                    <div
+                      className="exco-donut"
+                      style={{
+                        background: `conic-gradient(#1e3a5f 0 ${(headcount?.malePct || 0) <= 1 ? (headcount?.malePct || 0) * 100 : (headcount?.malePct || 0)}%, #c45c7a 0)`,
+                      }}
+                    >
+                      <div className="exco-donut-hole">
+                        <strong>{formatNum(headcount?.headcount)}</strong>
+                        <span>Total</span>
+                      </div>
+                    </div>
+                    <div className="exco-chart-legend">
+                      <span className="exco-legend-male">Male {formatPct(headcount?.malePct)}</span>
+                      <span className="exco-legend-female">Female {formatPct(headcount?.femalePct)}</span>
+                    </div>
+                  </div>
+                </section>
+
+                <section className="exco-panel exco-panel-accent-rose">
+                  <h3>Gender per location</h3>
+                  <GenderLocationChart items={headcount?.genderByLocation || []} />
+                  <div className="exco-sheet-scroll" style={{ marginTop: '0.75rem', maxHeight: '14rem' }}>
+                    <table className="exco-mini-table">
+                      <thead>
+                        <tr>
+                          <th>Location</th>
+                          <th>Male</th>
+                          <th>Female</th>
+                          <th>Total</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        {(headcount?.genderByLocation || []).map((r) => (
+                          <tr key={r.location}>
+                            <td>{r.location}</td>
+                            <td>{formatNum(r.male)}</td>
+                            <td>{formatNum(r.female)}</td>
+                            <td>{formatNum(r.total)}</td>
+                          </tr>
+                        ))}
+                        <tr className="exco-row-total">
+                          <td>Total</td>
+                          <td>{formatNum(headcount?.male)}</td>
+                          <td>{formatNum(headcount?.female)}</td>
+                          <td>{formatNum(headcount?.headcount)}</td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
+                </section>
+              </div>
+
+              <div className="exco-diversity-slide">
+                <section className="exco-panel exco-panel-accent-navy">
+                  <h3>5. Staff Movement — IN / OUT YTD</h3>
+                  <div className="exco-sheet-scroll">
+                    <table className="exco-mini-table exco-inout-trend-table">
+                      <thead>
+                        <tr>
+                          <th>IN — OUT YTD</th>
+                          {(inOut?.months || []).map((m) => (
+                            <th
+                              key={m.monthKey}
+                              className={m.calendarMonth === month ? 'is-report-month' : undefined}
+                            >
+                              {m.monthKey}
+                            </th>
+                          ))}
+                          <th>YTD</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <tr>
+                          <td>IN</td>
+                          {(inOut?.months || []).map((m) => (
+                            <td
+                              key={`hc-in-${m.monthKey}`}
+                              className={m.calendarMonth === month ? 'is-report-month' : undefined}
+                            >
+                              <ClickableNum
+                                value={formatNum(m.in)}
+                                title={`Voir la liste — IN · ${m.monthKey}`}
+                                onClick={
+                                  (m.in || 0) > 0
+                                    ? () => openInOutMonth('in', m.calendarMonth, m.monthKey)
+                                    : undefined
+                                }
+                              />
+                            </td>
+                          ))}
+                          <td>
+                            <ClickableNum
+                              value={formatNum(inOut?.ytdIn)}
+                              title="Voir la liste — IN YTD"
+                              onClick={(inOut?.ytdIn || 0) > 0 ? () => openInOutYtd('in') : undefined}
+                            />
+                          </td>
+                        </tr>
+                        <tr>
+                          <td>Out</td>
+                          {(inOut?.months || []).map((m) => (
+                            <td
+                              key={`hc-out-${m.monthKey}`}
+                              className={m.calendarMonth === month ? 'is-report-month' : undefined}
+                            >
+                              <ClickableNum
+                                value={formatNum(m.out)}
+                                title={`Voir la liste — OUT · ${m.monthKey}`}
+                                onClick={
+                                  (m.out || 0) > 0
+                                    ? () => openInOutMonth('out', m.calendarMonth, m.monthKey)
+                                    : undefined
+                                }
+                              />
+                            </td>
+                          ))}
+                          <td>
+                            <ClickableNum
+                              value={formatNum(inOut?.ytdOut)}
+                              title="Voir la liste — OUT YTD"
+                              onClick={(inOut?.ytdOut || 0) > 0 ? () => openInOutYtd('out') : undefined}
+                            />
+                          </td>
+                        </tr>
+                        <tr>
+                          <td>Attrition Rate (%)</td>
+                          {(inOut?.months || []).map((m) => (
+                            <td
+                              key={`hc-att-${m.monthKey}`}
+                              className={m.calendarMonth === month ? 'is-report-month' : undefined}
+                            >
+                              {formatRatePct(m.attritionRate)}
+                            </td>
+                          ))}
+                          <td>{formatRatePct(inOut?.ytdAttrition)}</td>
+                        </tr>
+                        <tr>
+                          <td>Turnover (%)</td>
+                          {(inOut?.months || []).map((m) => (
+                            <td
+                              key={`hc-to-${m.monthKey}`}
+                              className={m.calendarMonth === month ? 'is-report-month' : undefined}
+                            >
+                              {formatRatePct(m.turnover)}
+                            </td>
+                          ))}
+                          <td>{formatRatePct(inOut?.ytdTurnover)}</td>
+                        </tr>
+                        <tr className="exco-row-total">
+                          <td>Total Headcount</td>
+                          {(inOut?.months || []).map((m) => (
+                            <td
+                              key={`hc-hc-${m.monthKey}`}
+                              className={m.calendarMonth === month ? 'is-report-month' : undefined}
+                            >
+                              {formatNum(m.headcount)}
+                            </td>
+                          ))}
+                          <td>{formatNum(inOut?.ytdHeadcount)}</td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
+                </section>
+
+                <div className="exco-diversity-cards">
+                  <article className="exco-slide-card tone-red">
+                    <header>
+                      <strong>Age Distribution</strong>
+                      <em>
+                        {headcount?.averageAge != null
+                          ? `${formatNum(headcount.averageAge, 1)} years old`
+                          : '—'}
+                      </em>
+                    </header>
+                    <PctBarChart
+                      items={headcount?.ageBands || []}
+                      color="#e30613"
+                    />
+                  </article>
+                  <article className="exco-slide-card tone-black">
+                    <header>
+                      <strong>Length of Service</strong>
+                      <em>
+                        {headcount?.averageLengthOfService != null
+                          ? `${formatNum(headcount.averageLengthOfService, 2)} years`
+                          : '—'}
+                      </em>
+                    </header>
+                    <PctBarChart
+                      items={headcount?.seniorityBands || []}
+                      color="#52525b"
+                    />
+                  </article>
+                  <article className="exco-slide-card tone-red">
+                    <header>
+                      <strong>Departure and Termination</strong>
+                      <em>
+                        {(inOut?.outList?.length || 0) > 0
+                          ? `${formatNum(inOut?.outList?.length)} Out this month`
+                          : 'No exits'}
+                      </em>
+                    </header>
+                    <PctBarChart
+                      items={inOut?.exitsByReason || []}
+                      color="#e30613"
+                      total={headcount?.headcount || inOut?.ytdHeadcount || undefined}
+                      onItemClick={openExitReason}
+                    />
+                  </article>
+                </div>
+              </div>
+            </div>
+          )}
+
+          {tab === 'inout' && (
+            <div className="exco-hc-dashboard">
+              <div className="exco-metric-strip">
+                <MetricCard
+                  label={`IN · ${MONTHS_FR[month - 1] || month}`}
+                  value={formatNum(inOut?.inList?.length)}
+                  hint="embauches du mois"
+                  tone="teal"
+                  highlight
+                  onClick={() => openInOutList(`Voir la liste — IN — ${periodLabel}`, inOut?.inList || [])}
+                />
+                <MetricCard
+                  label={`OUT · ${MONTHS_FR[month - 1] || month}`}
+                  value={formatNum(inOut?.outList?.length)}
+                  hint="sorties du mois"
+                  tone="wine"
+                  highlight
+                  onClick={() => openInOutList(`Voir la liste — OUT — ${periodLabel}`, inOut?.outList || [])}
+                />
+                <MetricCard
+                  label="Attrition"
+                  value={formatRatePct(inOut?.ytdAttrition)}
+                  hint="OUT ÷ HC (mois)"
+                  tone="amber"
+                  highlight
+                />
+                <MetricCard
+                  label="Turnover"
+                  value={formatRatePct(inOut?.ytdTurnover)}
+                  hint="(IN+OUT)/2 ÷ HC (mois)"
+                  tone="navy"
+                  highlight
+                />
+                <MetricCard
+                  label="Headcount"
+                  value={formatNum(inOut?.ytdHeadcount)}
+                  hint="fin de mois"
+                  tone="default"
+                  highlight
+                />
+                <MetricCard
+                  label="IN YTD"
+                  value={formatNum(inOut?.ytdIn)}
+                  hint="embauches cumulées"
+                  tone="teal"
+                  onClick={() => openInOutYtd('in')}
+                />
+                <MetricCard
+                  label="OUT YTD"
+                  value={formatNum(inOut?.ytdOut)}
+                  hint="sorties cumulées"
+                  tone="wine"
+                  onClick={() => openInOutYtd('out')}
+                />
+              </div>
+
+              <div className="exco-inout-lists">
+                <section className="exco-panel exco-panel-accent-teal is-report-month">
+                  <div className="exco-panel-head">
+                    <h3>IN — Embauches · {MONTHS_FR[month - 1] || month}</h3>
+                    <button
+                      type="button"
+                      className="exco-num-clickable"
+                      title={`Voir la liste — Embauches · ${periodLabel}`}
+                      onClick={() => openInOutList(`Voir la liste — IN — ${periodLabel}`, inOut?.inList || [])}
+                    >
+                      {formatNum(inOut?.inList?.length)} personnes
+                    </button>
+                  </div>
+                  <div className="exco-sheet-scroll" style={{ maxHeight: '22rem' }}>
+                    <table className="exco-mini-table">
+                      <thead>
+                        <tr>
+                          <th>Matricule</th>
+                          <th>Nom</th>
+                          <th>Genre</th>
+                          <th>Grade</th>
+                          <th>Département</th>
+                          <th>Date</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        {(inOut?.inList || []).length === 0 ? (
+                          <tr>
+                            <td colSpan={6} className="exco-muted">Aucune embauche ce mois.</td>
+                          </tr>
+                        ) : (
+                          (inOut?.inList || []).map((r) => (
+                            <tr key={`in-${r.matricule}-${r.appointmentDate}`}>
+                              <td>{r.matricule}</td>
+                              <td>{namesByMatricule[normMatricule(r.matricule)] || r.nom}</td>
+                              <td>{r.genre || '—'}</td>
+                              <td>{r.grade || '—'}</td>
+                              <td>{r.departement || '—'}</td>
+                              <td>{formatInOutDate(r.appointmentDate)}</td>
+                            </tr>
+                          ))
+                        )}
+                      </tbody>
+                    </table>
+                  </div>
+                </section>
+
+                <section className="exco-panel exco-panel-accent-wine is-report-month">
+                  <div className="exco-panel-head">
+                    <h3>OUT — Sorties · {MONTHS_FR[month - 1] || month}</h3>
+                    <button
+                      type="button"
+                      className="exco-num-clickable"
+                      title={`Voir la liste — Sorties · ${periodLabel}`}
+                      onClick={() => openInOutList(`Voir la liste — OUT — ${periodLabel}`, inOut?.outList || [])}
+                    >
+                      {formatNum(inOut?.outList?.length)} personnes
+                    </button>
+                  </div>
+                  <div className="exco-sheet-scroll" style={{ maxHeight: '22rem' }}>
+                    <table className="exco-mini-table">
+                      <thead>
+                        <tr>
+                          <th>Matricule</th>
+                          <th>Nom</th>
+                          <th>Genre</th>
+                          <th>Grade</th>
+                          <th>Département</th>
+                          <th>Date</th>
+                          <th>Motif</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        {(inOut?.outList || []).length === 0 ? (
+                          <tr>
+                            <td colSpan={7} className="exco-muted">Aucune sortie ce mois.</td>
+                          </tr>
+                        ) : (
+                          (inOut?.outList || []).map((r) => (
+                            <tr key={`out-${r.matricule}-${r.appointmentDate}`}>
+                              <td>{r.matricule}</td>
+                              <td>{namesByMatricule[normMatricule(r.matricule)] || r.nom}</td>
+                              <td>{r.genre || '—'}</td>
+                              <td>{r.grade || '—'}</td>
+                              <td>{r.departement || '—'}</td>
+                              <td>{formatInOutDate(r.appointmentDate)}</td>
+                              <td>{r.reason || '—'}</td>
+                            </tr>
+                          ))
+                        )}
+                      </tbody>
+                    </table>
+                  </div>
+                </section>
+              </div>
+
+              <div className="exco-inout-metrics">
+                <section className="exco-panel exco-panel-accent-navy">
+                  <h3>Turnover &amp; Attrition</h3>
+                  <div className="exco-sheet-scroll">
+                    <table className="exco-mini-table exco-inout-trend-table">
+                      <thead>
+                        <tr>
+                          <th>IN — OUT YTD</th>
+                          {(inOut?.months || []).map((m) => (
+                            <th
+                              key={m.monthKey}
+                              className={m.calendarMonth === month ? 'is-report-month' : undefined}
+                            >
+                              {m.monthKey}
+                            </th>
+                          ))}
+                          <th>YTD</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <tr>
+                          <td>IN</td>
+                          {(inOut?.months || []).map((m) => (
+                            <td
+                              key={`in-${m.monthKey}`}
+                              className={m.calendarMonth === month ? 'is-report-month' : undefined}
+                            >
+                              <ClickableNum
+                                value={formatNum(m.in)}
+                                title={`Voir la liste — IN · ${m.monthKey}`}
+                                onClick={
+                                  (m.in || 0) > 0
+                                    ? () => openInOutMonth('in', m.calendarMonth, m.monthKey)
+                                    : undefined
+                                }
+                              />
+                            </td>
+                          ))}
+                          <td>
+                            <ClickableNum
+                              value={formatNum(inOut?.ytdIn)}
+                              title="Voir la liste — IN YTD"
+                              onClick={(inOut?.ytdIn || 0) > 0 ? () => openInOutYtd('in') : undefined}
+                            />
+                          </td>
+                        </tr>
+                        <tr>
+                          <td>Out</td>
+                          {(inOut?.months || []).map((m) => (
+                            <td
+                              key={`out-${m.monthKey}`}
+                              className={m.calendarMonth === month ? 'is-report-month' : undefined}
+                            >
+                              <ClickableNum
+                                value={formatNum(m.out)}
+                                title={`Voir la liste — OUT · ${m.monthKey}`}
+                                onClick={
+                                  (m.out || 0) > 0
+                                    ? () => openInOutMonth('out', m.calendarMonth, m.monthKey)
+                                    : undefined
+                                }
+                              />
+                            </td>
+                          ))}
+                          <td>
+                            <ClickableNum
+                              value={formatNum(inOut?.ytdOut)}
+                              title="Voir la liste — OUT YTD"
+                              onClick={(inOut?.ytdOut || 0) > 0 ? () => openInOutYtd('out') : undefined}
+                            />
+                          </td>
+                        </tr>
+                        <tr>
+                          <td>Attrition Rate (%)</td>
+                          {(inOut?.months || []).map((m) => (
+                            <td
+                              key={`att-${m.monthKey}`}
+                              className={m.calendarMonth === month ? 'is-report-month' : undefined}
+                            >
+                              {formatRatePct(m.attritionRate)}
+                            </td>
+                          ))}
+                          <td>{formatRatePct(inOut?.ytdAttrition)}</td>
+                        </tr>
+                        <tr>
+                          <td>Turnover (%)</td>
+                          {(inOut?.months || []).map((m) => (
+                            <td
+                              key={`to-${m.monthKey}`}
+                              className={m.calendarMonth === month ? 'is-report-month' : undefined}
+                            >
+                              {formatRatePct(m.turnover)}
+                            </td>
+                          ))}
+                          <td>{formatRatePct(inOut?.ytdTurnover)}</td>
+                        </tr>
+                        <tr className="exco-row-total">
+                          <td>Total Headcount</td>
+                          {(inOut?.months || []).map((m) => (
+                            <td
+                              key={`hc-${m.monthKey}`}
+                              className={m.calendarMonth === month ? 'is-report-month' : undefined}
+                            >
+                              {formatNum(m.headcount)}
+                            </td>
+                          ))}
+                          <td>{formatNum(inOut?.ytdHeadcount)}</td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
+                </section>
+
+                <section className="exco-panel exco-panel-accent-rose is-report-month">
+                  <h3>Types de sortie · {MONTHS_FR[month - 1] || month}</h3>
+                  <ExitReasonsPctChart
+                    items={inOut?.exitsByReason || []}
+                    onItemClick={openExitReason}
+                  />
+                </section>
+              </div>
+            </div>
+          )}
+
+          {tab === 'staffcost' && (
+            <div className="exco-hc-dashboard exco-staffcost-page exco-staffcost-aligned">
+              <section className="exco-panel exco-panel-accent-navy exco-staffcost-sheet-panel">
+                <div className="exco-panel-head">
+                  <h3>Input</h3>
+                  <div className="exco-staffcost-actions">
+                    <span className="exco-muted">Stylo = éditer · clic droit = formule</span>
+                    {canEdit && (
+                      <button type="button" className="btn btn-sm btn-primary" disabled={Boolean(busy)} onClick={() => void saveStaffCost()}>
+                        Enregistrer
+                      </button>
+                    )}
+                  </div>
+                </div>
+                <div className="exco-sheet-scroll">
+                  <table className="exco-mini-table exco-inout-trend-table exco-staffcost-table exco-staffcost-input">
+                    <StaffCostColGroup />
+                    <thead>
+                      <tr>
+                        <th>Metric</th>
+                        {(staffCost?.sheet || []).map((m) => (
+                          <th key={m.label} className={m.calendarMonth === month ? 'is-report-month' : undefined}>{m.label}</th>
+                        ))}
+                        <th className="is-total-col is-total-spacer" aria-hidden="true" />
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr className="exco-staffcost-section"><td colSpan={14}>Actual YTD</td></tr>
+                      <tr>
+                        <td>Headcount</td>
+                        {(staffCost?.sheet || []).map((m) => (
+                          <FormulaCell
+                            key={`ah-${m.label}`}
+                            cellKey={`input:actualHeadcount:${m.label}`}
+                            cell={resolveStaffCostCell(`input:actualHeadcount:${m.label}`, m.actualHeadcount)}
+                            onFormulaMenu={openStaffCostFormulaMenu}
+                            highlight={m.calendarMonth === month}
+                            editable={canEdit && m.calendarMonth === month}
+                            disabled={Boolean(busy)}
+                            onChange={(v) => updateStaffCostInput('actualHeadcount', v)}
+                          />
+                        ))}
+                        <td className="is-total-col is-total-spacer" aria-hidden="true" />
+                      </tr>
+                      <tr>
+                        <td>Salaries</td>
+                        {(staffCost?.sheet || []).map((m) => (
+                          <FormulaCell
+                            key={`as-${m.label}`}
+                            cellKey={`input:salariesActualYtd:${m.label}`}
+                            cell={resolveStaffCostCell(`input:salariesActualYtd:${m.label}`, m.salariesActualYtd)}
+                            onFormulaMenu={openStaffCostFormulaMenu}
+                            digits={0}
+                            highlight={m.calendarMonth === month}
+                            editable={canEdit && m.calendarMonth === month}
+                            disabled={Boolean(busy)}
+                            onChange={(v) => updateStaffCostInput('salariesActualYtd', v)}
+                          />
+                        ))}
+                        <td className="is-total-col is-total-spacer" aria-hidden="true" />
+                      </tr>
+                      <tr>
+                        <td>Volumes</td>
+                        {(staffCost?.sheet || []).map((m) => (
+                          <FormulaCell
+                            key={`av-${m.label}`}
+                            cellKey={`input:volumesActualYtd:${m.label}`}
+                            cell={resolveStaffCostCell(`input:volumesActualYtd:${m.label}`, m.volumesActualYtd)}
+                            onFormulaMenu={openStaffCostFormulaMenu}
+                            digits={0}
+                            highlight={m.calendarMonth === month}
+                            editable={canEdit && m.calendarMonth === month}
+                            disabled={Boolean(busy)}
+                            onChange={(v) => updateStaffCostInput('volumesActualYtd', v)}
+                          />
+                        ))}
+                        <td className="is-total-col is-total-spacer" aria-hidden="true" />
+                      </tr>
+                      <tr>
+                        <td>Revenue</td>
+                        {(staffCost?.sheet || []).map((m) => (
+                          <FormulaCell
+                            key={`ar-${m.label}`}
+                            cellKey={`input:revenueActualYtd:${m.label}`}
+                            cell={resolveStaffCostCell(`input:revenueActualYtd:${m.label}`, m.revenueActualYtd)}
+                            onFormulaMenu={openStaffCostFormulaMenu}
+                            digits={0}
+                            highlight={m.calendarMonth === month}
+                            editable={canEdit && m.calendarMonth === month}
+                            disabled={Boolean(busy)}
+                            onChange={(v) => updateStaffCostInput('revenueActualYtd', v)}
+                          />
+                        ))}
+                        <td className="is-total-col is-total-spacer" aria-hidden="true" />
+                      </tr>
+                      <tr className="exco-staffcost-section"><td colSpan={14}>Plan Budget YTD</td></tr>
+                      <tr>
+                        <td>Headcount</td>
+                        {(staffCost?.sheet || []).map((m) => (
+                          <FormulaCell
+                            key={`bh-${m.label}`}
+                            cellKey={`input:budgetHeadcount:${m.label}`}
+                            cell={resolveStaffCostCell(`input:budgetHeadcount:${m.label}`, m.budgetHeadcount)}
+                            onFormulaMenu={openStaffCostFormulaMenu}
+                            highlight={m.calendarMonth === month}
+                            editable={canEdit && m.calendarMonth === month}
+                            disabled={Boolean(busy)}
+                            onChange={(v) => updateStaffCostInput('budgetHeadcount', v)}
+                          />
+                        ))}
+                        <td className="is-total-col is-total-spacer" aria-hidden="true" />
+                      </tr>
+                      <tr>
+                        <td>Salaries</td>
+                        {(staffCost?.sheet || []).map((m) => (
+                          <FormulaCell
+                            key={`bs-${m.label}`}
+                            cellKey={`input:salariesBudgetYtd:${m.label}`}
+                            cell={resolveStaffCostCell(`input:salariesBudgetYtd:${m.label}`, m.salariesBudgetYtd)}
+                            onFormulaMenu={openStaffCostFormulaMenu}
+                            digits={0}
+                            highlight={m.calendarMonth === month}
+                            editable={canEdit && m.calendarMonth === month}
+                            disabled={Boolean(busy)}
+                            onChange={(v) => updateStaffCostInput('salariesBudgetYtd', v)}
+                          />
+                        ))}
+                        <td className="is-total-col is-total-spacer" aria-hidden="true" />
+                      </tr>
+                      <tr>
+                        <td>Volumes</td>
+                        {(staffCost?.sheet || []).map((m) => (
+                          <FormulaCell
+                            key={`bv-${m.label}`}
+                            cellKey={`input:volumesBudgetYtd:${m.label}`}
+                            cell={resolveStaffCostCell(`input:volumesBudgetYtd:${m.label}`, m.volumesBudgetYtd)}
+                            onFormulaMenu={openStaffCostFormulaMenu}
+                            digits={0}
+                            highlight={m.calendarMonth === month}
+                            editable={canEdit && m.calendarMonth === month}
+                            disabled={Boolean(busy)}
+                            onChange={(v) => updateStaffCostInput('volumesBudgetYtd', v)}
+                          />
+                        ))}
+                        <td className="is-total-col is-total-spacer" aria-hidden="true" />
+                      </tr>
+                      <tr>
+                        <td>Revenue</td>
+                        {(staffCost?.sheet || []).map((m) => (
+                          <FormulaCell
+                            key={`br-${m.label}`}
+                            cellKey={`input:revenueBudgetYtd:${m.label}`}
+                            cell={resolveStaffCostCell(`input:revenueBudgetYtd:${m.label}`, m.revenueBudgetYtd)}
+                            onFormulaMenu={openStaffCostFormulaMenu}
+                            digits={0}
+                            highlight={m.calendarMonth === month}
+                            editable={canEdit && m.calendarMonth === month}
+                            disabled={Boolean(busy)}
+                            onChange={(v) => updateStaffCostInput('revenueBudgetYtd', v)}
+                          />
+                        ))}
+                        <td className="is-total-col is-total-spacer" aria-hidden="true" />
+                      </tr>
+                      <tr className="exco-staffcost-section"><td colSpan={14}>%</td></tr>
+                      <tr>
+                        <td>Salaries %</td>
+                        {(staffCost?.sheet || []).map((m) => (
+                          <FormulaCell key={`ps-${m.label}`} cellKey={`pct:salaries:${m.label}`}
+                            cell={resolveStaffCostCell(`pct:salaries:${m.label}`, m.pctSalaries)}
+                            onFormulaMenu={openStaffCostFormulaMenu} pct highlight={m.calendarMonth === month} />
+                        ))}
+                        <td className="is-total-col is-total-spacer" aria-hidden="true" />
+                      </tr>
+                      <tr>
+                        <td>Volumes %</td>
+                        {(staffCost?.sheet || []).map((m) => (
+                          <FormulaCell key={`pv-${m.label}`} cellKey={`pct:volumes:${m.label}`}
+                            cell={resolveStaffCostCell(`pct:volumes:${m.label}`, m.pctVolumes)}
+                            onFormulaMenu={openStaffCostFormulaMenu} pct highlight={m.calendarMonth === month} />
+                        ))}
+                        <td className="is-total-col is-total-spacer" aria-hidden="true" />
+                      </tr>
+                      <tr>
+                        <td>Revenue %</td>
+                        {(staffCost?.sheet || []).map((m) => (
+                          <FormulaCell key={`pr-${m.label}`} cellKey={`pct:revenue:${m.label}`}
+                            cell={resolveStaffCostCell(`pct:revenue:${m.label}`, m.pctRevenue)}
+                            onFormulaMenu={openStaffCostFormulaMenu} pct highlight={m.calendarMonth === month} />
+                        ))}
+                        <td className="is-total-col is-total-spacer" aria-hidden="true" />
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </section>
+
+              <section className="exco-panel exco-panel-accent-wine exco-staffcost-sheet-panel">
+                <div className="exco-panel-head">
+                  <h3>FY — Actual</h3>
+                  <span className="exco-muted">Formules Staff_Cost_KPI</span>
+                </div>
+                <div className="exco-sheet-scroll">
+                  <table className="exco-mini-table exco-inout-trend-table exco-staffcost-table exco-staffcost-fy is-actual">
+                    <StaffCostColGroup />
+                    <thead>
+                      <tr>
+                        <th>FY — Actual</th>
+                        {(staffCost?.sheet || []).map((m) => (
+                          <th key={`a-${m.label}`} className={m.calendarMonth === month ? 'is-report-month' : undefined}>{m.label}</th>
+                        ))}
+                        <th className="is-total-col">Total</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr>
+                        <td>Staff_Cost</td>
+                        {(staffCost?.sheet || []).map((m) => (
+                          <FormulaCell key={`sc-${m.label}`} cellKey={`actual:staffCostMonth:${m.label}`}
+                            cell={resolveStaffCostCell(`actual:staffCostMonth:${m.label}`, m.staffCostMonth)}
+                            onFormulaMenu={openStaffCostFormulaMenu} excelStyle digits={2} highlight={m.calendarMonth === month} />
+                        ))}
+                        <td className="is-total-col">{formatStaffCostExcel(sumSheetValues(staffCost?.sheet || [], (m) => m.staffCostMonth.value), { zeroAsDash: false })}</td>
+                      </tr>
+                      <tr>
+                        <td>Staff_Cumul</td>
+                        {(staffCost?.sheet || []).map((m) => (
+                          <FormulaCell key={`scc-${m.label}`} cellKey={`actual:staffCumul:${m.label}`}
+                            cell={resolveStaffCostCell(`actual:staffCumul:${m.label}`, m.staffCumul)}
+                            onFormulaMenu={openStaffCostFormulaMenu} excelStyle digits={2} highlight={m.calendarMonth === month} />
+                        ))}
+                        <td className="is-total-col">{formatStaffCostExcel(maxSheetValues(staffCost?.sheet || [], (m) => m.staffCumul.value), { zeroAsDash: false })}</td>
+                      </tr>
+                      <tr>
+                        <td>Volume</td>
+                        {(staffCost?.sheet || []).map((m) => (
+                          <FormulaCell key={`vm-${m.label}`} cellKey={`actual:volumeMonth:${m.label}`}
+                            cell={resolveStaffCostCell(`actual:volumeMonth:${m.label}`, m.volumeMonth)}
+                            onFormulaMenu={openStaffCostFormulaMenu} excelStyle digits={2} highlight={m.calendarMonth === month} />
+                        ))}
+                        <td className="is-total-col">{formatStaffCostExcel(sumSheetValues(staffCost?.sheet || [], (m) => m.volumeMonth.value), { zeroAsDash: false })}</td>
+                      </tr>
+                      <tr>
+                        <td>Volume_Cumul</td>
+                        {(staffCost?.sheet || []).map((m) => (
+                          <FormulaCell key={`vc-${m.label}`} cellKey={`actual:volumeCumul:${m.label}`}
+                            cell={resolveStaffCostCell(`actual:volumeCumul:${m.label}`, m.volumeCumul)}
+                            onFormulaMenu={openStaffCostFormulaMenu} excelStyle digits={2} highlight={m.calendarMonth === month} />
+                        ))}
+                        <td className="is-total-col">{formatStaffCostExcel(maxSheetValues(staffCost?.sheet || [], (m) => m.volumeCumul.value), { zeroAsDash: false })}</td>
+                      </tr>
+                      <tr>
+                        <td>Revenue</td>
+                        {(staffCost?.sheet || []).map((m) => (
+                          <FormulaCell key={`rm-${m.label}`} cellKey={`actual:revenueMonth:${m.label}`}
+                            cell={resolveStaffCostCell(`actual:revenueMonth:${m.label}`, m.revenueMonth)}
+                            onFormulaMenu={openStaffCostFormulaMenu} excelStyle digits={2} highlight={m.calendarMonth === month} />
+                        ))}
+                        <td className="is-total-col">{formatStaffCostExcel(sumSheetValues(staffCost?.sheet || [], (m) => m.revenueMonth.value), { zeroAsDash: false })}</td>
+                      </tr>
+                      <tr>
+                        <td>Revenue_Cumul</td>
+                        {(staffCost?.sheet || []).map((m) => (
+                          <FormulaCell key={`rc-${m.label}`} cellKey={`actual:revenueCumul:${m.label}`}
+                            cell={resolveStaffCostCell(`actual:revenueCumul:${m.label}`, m.revenueCumul)}
+                            onFormulaMenu={openStaffCostFormulaMenu} excelStyle digits={2} highlight={m.calendarMonth === month} />
+                        ))}
+                        <td className="is-total-col">{formatStaffCostExcel(maxSheetValues(staffCost?.sheet || [], (m) => m.revenueCumul.value), { zeroAsDash: false })}</td>
+                      </tr>
+                      <tr className="exco-staffcost-fy-sep">
+                        <td>T/employee YTD</td>
+                        {(staffCost?.sheet || []).map((m) => (
+                          <FormulaCell key={`ty-${m.label}`} cellKey={`actual:tonPerEmpYtd:${m.label}`}
+                            cell={resolveStaffCostCell(`actual:tonPerEmpYtd:${m.label}`, m.tonPerEmpYtd)}
+                            onFormulaMenu={openStaffCostFormulaMenu} excelStyle digits={2} highlight={m.calendarMonth === month} />
+                        ))}
+                        <td className="is-total-col">{formatStaffCostExcel(sumSheetValues(staffCost?.sheet || [], (m) => m.tonPerEmpYtd.value), { zeroAsDash: false })}</td>
+                      </tr>
+                      <tr>
+                        <td>T/employee</td>
+                        {(staffCost?.sheet || []).map((m) => (
+                          <FormulaCell key={`tm-${m.label}`} cellKey={`actual:tonPerEmp:${m.label}`}
+                            cell={resolveStaffCostCell(`actual:tonPerEmp:${m.label}`, m.tonPerEmp)}
+                            onFormulaMenu={openStaffCostFormulaMenu} excelStyle digits={2} highlight={m.calendarMonth === month} />
+                        ))}
+                        <td className="is-total-col">{formatStaffCostExcel(sumSheetValues(staffCost?.sheet || [], (m) => m.tonPerEmp.value), { zeroAsDash: false })}</td>
+                      </tr>
+                      <tr>
+                        <td>Revenue/Employee YTD</td>
+                        {(staffCost?.sheet || []).map((m) => (
+                          <FormulaCell key={`ry-${m.label}`} cellKey={`actual:revenuePerEmpYtd:${m.label}`}
+                            cell={resolveStaffCostCell(`actual:revenuePerEmpYtd:${m.label}`, m.revenuePerEmpYtd)}
+                            onFormulaMenu={openStaffCostFormulaMenu} excelStyle digits={2} highlight={m.calendarMonth === month} />
+                        ))}
+                        <td className="is-total-col">{formatStaffCostExcel(sumSheetValues(staffCost?.sheet || [], (m) => m.revenuePerEmpYtd.value), { zeroAsDash: false })}</td>
+                      </tr>
+                      <tr>
+                        <td>Revenue/Employee</td>
+                        {(staffCost?.sheet || []).map((m) => (
+                          <FormulaCell key={`re-${m.label}`} cellKey={`actual:revenuePerEmp:${m.label}`}
+                            cell={resolveStaffCostCell(`actual:revenuePerEmp:${m.label}`, m.revenuePerEmp)}
+                            onFormulaMenu={openStaffCostFormulaMenu} excelStyle digits={2} highlight={m.calendarMonth === month} />
+                        ))}
+                        <td className="is-total-col">{formatStaffCostExcel(sumSheetValues(staffCost?.sheet || [], (m) => m.revenuePerEmp.value), { zeroAsDash: false })}</td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </section>
+
+              <section className="exco-panel exco-panel-accent-teal exco-staffcost-sheet-panel">
+                <div className="exco-panel-head">
+                  <h3>FY — Budget</h3>
+                  <span className="exco-muted">Formules Staff_Cost_KPI</span>
+                </div>
+                <div className="exco-sheet-scroll">
+                  <table className="exco-mini-table exco-inout-trend-table exco-staffcost-table exco-staffcost-fy is-budget">
+                    <StaffCostColGroup />
+                    <thead>
+                      <tr>
+                        <th>FY — Budget</th>
+                        {(staffCost?.sheet || []).map((m) => (
+                          <th key={`b-${m.label}`} className={m.calendarMonth === month ? 'is-report-month' : undefined}>{m.label}</th>
+                        ))}
+                        <th className="is-total-col">Total</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr>
+                        <td>Staff_Cost</td>
+                        {(staffCost?.sheet || []).map((m) => (
+                          <FormulaCell key={`bsc-${m.label}`} cellKey={`budget:staffCostMonth:${m.label}`}
+                            cell={resolveStaffCostCell(`budget:staffCostMonth:${m.label}`, m.budgetStaffCostMonth)}
+                            onFormulaMenu={openStaffCostFormulaMenu} excelStyle digits={2} highlight={m.calendarMonth === month} />
+                        ))}
+                        <td className="is-total-col">{formatStaffCostExcel(sumSheetValues(staffCost?.sheet || [], (m) => m.budgetStaffCostMonth.value), { zeroAsDash: false })}</td>
+                      </tr>
+                      <tr>
+                        <td>Staff_Cumul</td>
+                        {(staffCost?.sheet || []).map((m) => (
+                          <FormulaCell key={`bscc-${m.label}`} cellKey={`budget:staffCumul:${m.label}`}
+                            cell={resolveStaffCostCell(`budget:staffCumul:${m.label}`, m.budgetStaffCumul)}
+                            onFormulaMenu={openStaffCostFormulaMenu} excelStyle digits={2} highlight={m.calendarMonth === month} />
+                        ))}
+                        <td className="is-total-col">{formatStaffCostExcel(maxSheetValues(staffCost?.sheet || [], (m) => m.budgetStaffCumul.value), { zeroAsDash: false })}</td>
+                      </tr>
+                      <tr>
+                        <td>Volume</td>
+                        {(staffCost?.sheet || []).map((m) => (
+                          <FormulaCell key={`bvm-${m.label}`} cellKey={`budget:volumeMonth:${m.label}`}
+                            cell={resolveStaffCostCell(`budget:volumeMonth:${m.label}`, m.budgetVolumeMonth)}
+                            onFormulaMenu={openStaffCostFormulaMenu} excelStyle digits={2} highlight={m.calendarMonth === month} />
+                        ))}
+                        <td className="is-total-col">{formatStaffCostExcel(sumSheetValues(staffCost?.sheet || [], (m) => m.budgetVolumeMonth.value), { zeroAsDash: false })}</td>
+                      </tr>
+                      <tr>
+                        <td>Volume_Cumul</td>
+                        {(staffCost?.sheet || []).map((m) => (
+                          <FormulaCell key={`bvc-${m.label}`} cellKey={`budget:volumeCumul:${m.label}`}
+                            cell={resolveStaffCostCell(`budget:volumeCumul:${m.label}`, m.budgetVolumeCumul)}
+                            onFormulaMenu={openStaffCostFormulaMenu} excelStyle digits={2} highlight={m.calendarMonth === month} />
+                        ))}
+                        <td className="is-total-col">{formatStaffCostExcel(maxSheetValues(staffCost?.sheet || [], (m) => m.budgetVolumeCumul.value), { zeroAsDash: false })}</td>
+                      </tr>
+                      <tr>
+                        <td>Revenue</td>
+                        {(staffCost?.sheet || []).map((m) => (
+                          <FormulaCell key={`brm-${m.label}`} cellKey={`budget:revenueMonth:${m.label}`}
+                            cell={resolveStaffCostCell(`budget:revenueMonth:${m.label}`, m.budgetRevenueMonth)}
+                            onFormulaMenu={openStaffCostFormulaMenu} excelStyle digits={2} highlight={m.calendarMonth === month} />
+                        ))}
+                        <td className="is-total-col">{formatStaffCostExcel(sumSheetValues(staffCost?.sheet || [], (m) => m.budgetRevenueMonth.value), { zeroAsDash: false })}</td>
+                      </tr>
+                      <tr>
+                        <td>Revenue_Cumul</td>
+                        {(staffCost?.sheet || []).map((m) => (
+                          <FormulaCell key={`brc-${m.label}`} cellKey={`budget:revenueCumul:${m.label}`}
+                            cell={resolveStaffCostCell(`budget:revenueCumul:${m.label}`, m.budgetRevenueCumul)}
+                            onFormulaMenu={openStaffCostFormulaMenu} excelStyle digits={2} highlight={m.calendarMonth === month} />
+                        ))}
+                        <td className="is-total-col">{formatStaffCostExcel(maxSheetValues(staffCost?.sheet || [], (m) => m.budgetRevenueCumul.value), { zeroAsDash: false })}</td>
+                      </tr>
+                      <tr className="exco-staffcost-fy-sep">
+                        <td>T/employee</td>
+                        {(staffCost?.sheet || []).map((m) => (
+                          <FormulaCell key={`bt-${m.label}`} cellKey={`budget:tonPerEmp:${m.label}`}
+                            cell={resolveStaffCostCell(`budget:tonPerEmp:${m.label}`, m.budgetTonPerEmp)}
+                            onFormulaMenu={openStaffCostFormulaMenu} excelStyle digits={2} highlight={m.calendarMonth === month} />
+                        ))}
+                        <td className="is-total-col">{formatStaffCostExcel(sumSheetValues(staffCost?.sheet || [], (m) => m.budgetTonPerEmp.value), { zeroAsDash: false })}</td>
+                      </tr>
+                      <tr>
+                        <td>Revenue/Employee</td>
+                        {(staffCost?.sheet || []).map((m) => (
+                          <FormulaCell key={`bre-${m.label}`} cellKey={`budget:revenuePerEmp:${m.label}`}
+                            cell={resolveStaffCostCell(`budget:revenuePerEmp:${m.label}`, m.budgetRevenuePerEmp)}
+                            onFormulaMenu={openStaffCostFormulaMenu} excelStyle digits={2} highlight={m.calendarMonth === month} />
+                        ))}
+                        <td className="is-total-col">{formatStaffCostExcel(sumSheetValues(staffCost?.sheet || [], (m) => m.budgetRevenuePerEmp.value), { zeroAsDash: false })}</td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </section>
+            </div>
+          )}
+
+          {tab === 'overtime' && (
+            <div className="exco-panel-stack exco-ot-page">
+              {ot?.missing.overtime || ot?.missing.leave ? (
+                <p className="exco-warn-banner">
+                  {ot.missing.overtime ? 'Uploadez Component Posted Units (ou importez New report.xlsx). ' : ''}
+                  {ot.missing.leave ? 'Uploadez Leave Balances (Annual).' : ''}
+                </p>
+              ) : null}
+
+              <div className="exco-ot-tabs-shell">
+              <div className="exco-ot-subtabs" role="tablist" aria-label="Overtime">
+                <button
+                  type="button"
+                  role="tab"
+                  aria-selected={otSubTab === 'overview'}
+                  className={`exco-ot-subtab${otSubTab === 'overview' ? ' is-active' : ''}`}
+                  onClick={() => setOtSubTab('overview')}
+                >
+                  General Overview — {MONTHS_EN[month - 1] || month}
+                </button>
+                <button
+                  type="button"
+                  role="tab"
+                  aria-selected={otSubTab === 'evolution'}
+                  className={`exco-ot-subtab${otSubTab === 'evolution' ? ' is-active' : ''}`}
+                  onClick={() => setOtSubTab('evolution')}
+                >
+                  Evolution
+                </button>
+                <button
+                  type="button"
+                  role="tab"
+                  aria-selected={otSubTab === 'top10'}
+                  className={`exco-ot-subtab${otSubTab === 'top10' ? ' is-active' : ''}`}
+                  onClick={() => setOtSubTab('top10')}
+                >
+                  Top 10
+                </button>
+              </div>
+
+              {otSubTab === 'overview' && (
+                <div className="exco-ot-tab-body exco-ot-overview-tab">
+                  <div className="exco-metric-strip exco-ot-overview-cards">
+                      <MetricCard
+                        label="Total workforce"
+                        value={formatNum(otOverview.headcount)}
+                        hint="effectif"
+                        tone="navy"
+                        highlight
+                      />
+                      <MetricCard
+                        label="Employees with hours"
+                        value={`${formatNum(otOverview.agents)}${otOverview.pctAgents != null ? ` (${formatNum(otOverview.pctAgents, 1)}%)` : ''}`}
+                        hint="avec OT enregistré"
+                        tone="teal"
+                        onClick={() => openOtEmployeeList(`Voir la liste — Agents OT · ${periodLabel}`, otEmployeesResolved)}
+                      />
+                      <MetricCard
+                        label="Total Overtime"
+                        value={formatNum(otOverview.hours, 2)}
+                        hint="heures"
+                        tone="wine"
+                        onClick={() => openOtEmployeeList(`Voir la liste — Heures OT · ${periodLabel}`, otEmployeesResolved)}
+                      />
+                      <MetricCard
+                        label="Average hours"
+                        value={formatNum(otOverview.avgHours, 2)}
+                        hint="par agent OT"
+                        tone="amber"
+                      />
+                      <MetricCard
+                        label="Total cost"
+                        value={formatUsd(otOverview.cost)}
+                        hint="USD"
+                        tone="wine"
+                        onClick={() => openOtEmployeeList(`Voir la liste — Coût OT · ${periodLabel}`, otEmployeesResolved)}
+                      />
+                      <MetricCard
+                        label="Average cost / emp."
+                        value={formatUsd(otOverview.avgCost)}
+                        hint="USD"
+                        tone="default"
+                      />
+                      <MetricCard
+                        label="OT % of staff cost"
+                        value={
+                          otOverview.otPctMonth != null || otOverview.otPctYtd != null
+                            ? `${otOverview.otPctYtd != null ? `${formatNum(otOverview.otPctYtd, 2)}% YTD` : '—'}${otOverview.otPctMonth != null ? ` · ${formatNum(otOverview.otPctMonth, 2)}% mois` : ''}`
+                            : '—'
+                        }
+                        hint="vs Staff Cost"
+                        tone="rose"
+                      />
+                      <MetricCard
+                        label="Avg leave days"
+                        value={formatNum(otOverview.avgLeave, 1)}
+                        hint="Annual Closing · Mco+Qco"
+                        tone="ok"
+                        onClick={() =>
+                          openOtEmployeeList(
+                            `Voir la liste — Leave Annual (Closing) · ${periodLabel}`,
+                            otEmployeesResolved.filter((e) => e.leaveDays != null),
+                          )
+                        }
+                      />
+                  </div>
+
+                  <div className="exco-ot-hours-slide">
+                    <section className="exco-panel exco-ot-hours-table-panel">
+                      <div className="exco-sheet-scroll">
+                        <table className="exco-mini-table exco-ot-month-hours">
+                          <thead>
+                            <tr>
+                              <th>Department</th>
+                              <th className="is-report-month">{otHoursSlide.monthLabel}</th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                            {otHoursSlide.rows.length === 0 ? (
+                              <tr>
+                                <td colSpan={2} className="exco-muted">Aucune donnée overtime.</td>
+                              </tr>
+                            ) : (
+                              otHoursSlide.rows.map((r) => (
+                                <tr key={r.department}>
+                                  <td>{r.department}</td>
+                                  <td className="is-report-month">
+                                    {r.hours != null && r.hours > 0 ? formatOtCell(r.hours) : '—'}
+                                  </td>
+                                </tr>
+                              ))
+                            )}
+                            {otHoursSlide.rows.length > 0 && (
+                              <tr className="exco-row-total">
+                                <td>Total</td>
+                                <td className="is-report-month">{formatOtCell(otHoursSlide.total || null)}</td>
+                              </tr>
+                            )}
+                          </tbody>
+                        </table>
+                      </div>
+                    </section>
+                    <section className="exco-panel exco-ot-hours-chart-panel">
+                      <h3>Overtime — {otHoursSlide.monthLabel} hours per Department</h3>
+                      <div className="exco-ot-vchart">
+                        {otHoursSlide.rows.map((r) => {
+                          const h = r.hours && r.hours > 0
+                            ? Math.max(4, (r.hours / otHoursSlide.max) * 100)
+                            : 1;
+                          return (
+                            <div key={r.department} className="exco-ot-vcol">
+                              <span className="exco-ot-vval">
+                                {r.hours && r.hours > 0 ? formatNum(r.hours, 0) : ''}
+                              </span>
+                              <div className="exco-ot-vtrack">
+                                <span style={{ height: `${h}%` }} />
+                              </div>
+                              <span className="exco-ot-vlab" title={r.department}>
+                                {otChartDeptLabel(r.department)}
+                              </span>
+                            </div>
+                          );
+                        })}
+                      </div>
+                    </section>
+                  </div>
+
+                  <ExcoOtOverviewCharts
+                    trendRows={ot?.workbook?.trendRows || []}
+                    actualVsBudget={ot?.workbook?.actualVsBudget || null}
+                  />
+                </div>
+              )}
+
+              {otSubTab === 'evolution' && (
+                <div className="exco-ot-tab-body exco-ot-evolution">
+                  <section className="exco-panel exco-panel-accent-navy exco-staffcost-sheet-panel">
+                    <div className="exco-panel-head">
+                      <h3>HOURS</h3>
+                      <span className="exco-muted">OVT · APR→MAR</span>
+                    </div>
+                    <div className="exco-sheet-scroll">
+                      <table className="exco-mini-table exco-inout-trend-table exco-ot-trend-table is-hours">
+                        <thead>
+                          <tr>
+                            <th>Dept</th>
+                            {OVT_TREND_MONTH_LABELS.map((lab, i) => (
+                              <th
+                                key={`h-${lab}-${i}`}
+                                className={OVT_TREND_MONTHS[i] === month ? 'is-report-month' : undefined}
+                              >
+                                {lab}
+                              </th>
+                            ))}
+                            <th>%</th>
+                            <th className="is-total-col">Total</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          {(ot?.workbook?.trendRows || []).map((row) => (
+                            <tr key={`h-${row.department}`}>
+                              <td>{row.department}</td>
+                              {row.hoursByMonth.map((v, i) => (
+                                <td
+                                  key={`${row.department}-h-${i}`}
+                                  className={OVT_TREND_MONTHS[i] === month ? 'is-report-month' : undefined}
+                                >
+                                  {formatOtCell(v)}
+                                </td>
+                              ))}
+                              <td>{row.hoursShare != null ? formatNum((row.hoursShare <= 1 ? row.hoursShare * 100 : row.hoursShare), 1) + '%' : '—'}</td>
+                              <td className="is-total-col">{formatOtCell(row.hoursYtd)}</td>
+                            </tr>
+                          ))}
+                          {(ot?.workbook?.trendRows || []).length > 0 && (
+                            <tr className="exco-row-total">
+                              <td>Total</td>
+                              {Array.from({ length: 12 }, (_, i) => {
+                                const sum = (ot?.workbook?.trendRows || []).reduce(
+                                  (s, r) => s + (r.hoursByMonth[i] || 0),
+                                  0,
+                                );
+                                return (
+                                  <td key={`ht-${i}`} className={OVT_TREND_MONTHS[i] === month ? 'is-report-month' : undefined}>
+                                    {formatOtCell(sum || null)}
+                                  </td>
+                                );
+                              })}
+                              <td />
+                              <td className="is-total-col">
+                                {formatOtCell(
+                                  (ot?.workbook?.trendRows || []).reduce((s, r) => s + (r.hoursYtd || 0), 0) || null,
+                                )}
+                              </td>
+                            </tr>
+                          )}
+                        </tbody>
+                      </table>
+                    </div>
+                  </section>
+
+                  <section className="exco-panel exco-panel-accent-wine exco-staffcost-sheet-panel">
+                    <div className="exco-panel-head">
+                      <h3>Value</h3>
+                      <span className="exco-muted">OVT · coût USD</span>
+                    </div>
+                    <div className="exco-sheet-scroll">
+                      <table className="exco-mini-table exco-inout-trend-table exco-ot-trend-table is-value">
+                        <thead>
+                          <tr>
+                            <th>Dept</th>
+                            {OVT_TREND_MONTH_LABELS.map((lab, i) => (
+                              <th
+                                key={`v-${lab}-${i}`}
+                                className={OVT_TREND_MONTHS[i] === month ? 'is-report-month' : undefined}
+                              >
+                                {lab}
+                              </th>
+                            ))}
+                            <th>%</th>
+                            <th className="is-total-col">Total</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          {(ot?.workbook?.trendRows || []).map((row) => (
+                            <tr key={`v-${row.department}`}>
+                              <td>{row.department}</td>
+                              {row.costByMonth.map((v, i) => (
+                                <td
+                                  key={`${row.department}-v-${i}`}
+                                  className={OVT_TREND_MONTHS[i] === month ? 'is-report-month' : undefined}
+                                >
+                                  {formatOtCell(v)}
+                                </td>
+                              ))}
+                              <td>{row.costShare != null ? formatNum((row.costShare <= 1 ? row.costShare * 100 : row.costShare), 1) + '%' : '—'}</td>
+                              <td className="is-total-col">{formatOtCell(row.costYtd)}</td>
+                            </tr>
+                          ))}
+                          {(ot?.workbook?.trendRows || []).length > 0 && (
+                            <tr className="exco-row-total">
+                              <td>Total</td>
+                              {Array.from({ length: 12 }, (_, i) => {
+                                const sum = (ot?.workbook?.trendRows || []).reduce(
+                                  (s, r) => s + (r.costByMonth[i] || 0),
+                                  0,
+                                );
+                                return (
+                                  <td key={`vt-${i}`} className={OVT_TREND_MONTHS[i] === month ? 'is-report-month' : undefined}>
+                                    {formatOtCell(sum || null)}
+                                  </td>
+                                );
+                              })}
+                              <td />
+                              <td className="is-total-col">
+                                {formatOtCell(
+                                  (ot?.workbook?.trendRows || []).reduce((s, r) => s + (r.costYtd || 0), 0) || null,
+                                )}
+                              </td>
+                            </tr>
+                          )}
+                        </tbody>
+                      </table>
+                    </div>
+                  </section>
+
+                  <section className="exco-panel exco-panel-accent-teal exco-staffcost-sheet-panel">
+                    <div className="exco-panel-head">
+                      <h3>Actual vs Budget</h3>
+                      <span className="exco-muted">OVT · APR→MAR</span>
+                    </div>
+                    <div className="exco-sheet-scroll">
+                      <table className="exco-mini-table exco-inout-trend-table exco-ot-trend-table is-avb">
+                        <thead>
+                          <tr>
+                            <th />
+                            {(ot?.workbook?.actualVsBudget?.monthLabels || OVT_AVB_MONTH_LABELS).map((lab, i) => (
+                              <th
+                                key={`avb-${lab}`}
+                                className={OVT_AVB_MONTHS[i] === month ? 'is-report-month' : undefined}
+                              >
+                                {lab}
+                              </th>
+                            ))}
+                            <th className="is-total-col">Total</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          <tr>
+                            <td>Actual</td>
+                            {(ot?.workbook?.actualVsBudget?.actualByMonth || []).map((v, i) => (
+                              <td key={`act-${i}`} className={OVT_AVB_MONTHS[i] === month ? 'is-report-month' : undefined}>
+                                {formatOtCell(v)}
+                              </td>
+                            ))}
+                            <td className="is-total-col">{formatOtCell(ot?.workbook?.actualVsBudget?.actualYtd ?? null)}</td>
+                          </tr>
+                          <tr>
+                            <td>Budget</td>
+                            {(ot?.workbook?.actualVsBudget?.budgetByMonth || []).map((v, i) => (
+                              <td key={`bud-${i}`} className={OVT_AVB_MONTHS[i] === month ? 'is-report-month' : undefined}>
+                                {formatOtCell(v)}
+                              </td>
+                            ))}
+                            <td className="is-total-col">{formatOtCell(ot?.workbook?.actualVsBudget?.budgetYtd ?? null)}</td>
+                          </tr>
+                        </tbody>
+                      </table>
+                    </div>
+                  </section>
+
+                  <div className="exco-hc-grid">
+                    <section className="exco-panel exco-panel-accent-navy">
+                      <h3>Hours by department</h3>
+                      <BarChart
+                        items={(ot?.byDepartment || []).map((d) => ({
+                          label: d.department,
+                          value: d.hours,
+                        }))}
+                        color="#1e3a5f"
+                      />
+                    </section>
+                    <section className="exco-panel exco-panel-accent-wine">
+                      <h3>Value by department</h3>
+                      <BarChart
+                        items={(ot?.byDepartment || []).map((d) => ({
+                          label: d.department,
+                          value: d.costUsd,
+                        }))}
+                        color="#7a1f2b"
+                      />
+                    </section>
+                  </div>
+                </div>
+              )}
+
+              {otSubTab === 'top10' && (
+                <div className="exco-ot-tab-body exco-ot-top10">
+                  <section className="exco-panel exco-panel-accent-wine">
+                    <div className="exco-panel-head">
+                      <h3>Overtime — Top Employees</h3>
+                      <span className="exco-muted">Top 10 surlignés</span>
+                    </div>
+                    <div className="exco-sheet-scroll">
+                      <table className="exco-mini-table exco-ot-emp-table">
+                        <thead>
+                          <tr>
+                            <th>#</th>
+                            <th>ID</th>
+                            <th>Names</th>
+                            <th>OVT_Hours</th>
+                            <th>OVT_Cost</th>
+                            <th>Leave_Balance</th>
+                            <th>Departments</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          {otTopByHours.map((r, idx) => (
+                            <tr key={`oh-${r.matricule}`} className={idx < 10 ? 'is-top10' : undefined}>
+                              <td>{idx + 1}</td>
+                              <td>{r.matricule}</td>
+                              <td>{r.name}</td>
+                              <td>{formatNum(r.hours, 2)}</td>
+                              <td>{formatUsd(r.costUsd)}</td>
+                              <td>{r.leaveDays != null ? formatNum(r.leaveDays, 2) : '—'}</td>
+                              <td>{r.department}</td>
+                            </tr>
+                          ))}
+                        </tbody>
+                      </table>
+                    </div>
+                  </section>
+
+                  <section className="exco-panel exco-panel-accent-navy">
+                    <div className="exco-panel-head">
+                      <h3>Leave Balance — Top Employees</h3>
+                      <span className="exco-muted">Top 10 surlignés</span>
+                    </div>
+                    <div className="exco-sheet-scroll">
+                      <table className="exco-mini-table exco-ot-emp-table">
+                        <thead>
+                          <tr>
+                            <th>#</th>
+                            <th>ID</th>
+                            <th>Names</th>
+                            <th>OVT_Hours</th>
+                            <th>OVT_Cost</th>
+                            <th>Leave_Balance</th>
+                            <th>Departments</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          {otTopByLeave.map((r, idx) => (
+                            <tr key={`ol-${r.matricule}`} className={idx < 10 ? 'is-top10' : undefined}>
+                              <td>{idx + 1}</td>
+                              <td>{r.matricule}</td>
+                              <td>{r.name}</td>
+                              <td>{formatNum(r.hours, 2)}</td>
+                              <td>{formatUsd(r.costUsd)}</td>
+                              <td>{r.leaveDays != null ? formatNum(r.leaveDays, 2) : '—'}</td>
+                              <td>{r.department}</td>
+                            </tr>
+                          ))}
+                        </tbody>
+                      </table>
+                    </div>
+                  </section>
+                </div>
+              )}
+              </div>
+            </div>
+          )}
+
+          {tab === 'kpi' && (
+            <div className="exco-kpi-summary">
+              <p className="exco-muted">
+                Valeurs et comparaison vs mois précédent selon le PPTX / New report
+                (pas de reconstitution de juin incomplet).
+              </p>
+              <div className="exco-kpi-cards">
+                {kpiCards.map((c) => {
+                  const delta = c.delta || '';
+                  const tone = delta.includes('▲')
+                    ? 'exco-kpi-delta-up'
+                    : delta.includes('▼')
+                      ? 'exco-kpi-delta-down'
+                      : 'exco-kpi-delta-flat';
+                  return (
+                    <article key={c.label} className="exco-kpi-card">
+                      <h4>{c.label}</h4>
+                      <p className="exco-kpi-card-value">{c.value || '—'}</p>
+                      <p className={`exco-kpi-card-delta ${tone}`}>{c.delta || 'vs prev. —'}</p>
+                      <p className="exco-kpi-card-prev">prev. {c.prev || '—'}</p>
+                    </article>
+                  );
+                })}
+              </div>
+              {!kpiCards.length && <p className="exco-muted">Cartes KPI PPTX non disponibles.</p>}
+            </div>
+          )}
+
+          {tab === 'summary' && (
+            <div className="exco-panel-stack">
+              <div className="exco-panel-head" style={{ marginBottom: 0 }}>
+                <p className="exco-muted" style={{ margin: 0 }}>
+                  Textes éditables pour la synthèse EXCO (Highlights / Lowlights / Focus).
+                </p>
+                {canEdit && (
                   <button
                     type="button"
                     className="btn btn-primary btn-sm"
-                    disabled={exporting || dirty}
-                    onClick={() => void exportPptx()}
+                    disabled={Boolean(busy)}
+                    onClick={() => void saveNarrative()}
                   >
-                    {exporting ? 'Export…' : 'Exporter PPTX'}
-                  </button>
-                  <button
-                    type="button"
-                    className="btn btn-ghost btn-sm"
-                    onClick={() => setPreviewOpen(false)}
-                  >
-                    Fermer
-                  </button>
-                </div>
-              </div>
-              <iframe
-                className="exco-preview-iframe"
-                title="Aperçu EXCO PowerPoint"
-                srcDoc={previewHtml}
-              />
-            </div>
-          </div>
-        )}
-
-        {dirty && (
-          <div className="exco-dirty-banner">
-            Modifications non enregistrées — changez de période uniquement après enregistrement.
-          </div>
-        )}
-
-        {loading && !report ? (
-          <div className="panel panel-padded">
-            <div className="loading">Chargement du rapport…</div>
-          </div>
-        ) : report ? (
-          <>
-            {tab === 'synthese' && (
-              <SyntheseTab
-                report={report}
-                overlays={overlays}
-                canEdit={canEdit}
-                onChange={patchOverlays}
-              />
-            )}
-            {tab === 'kpi' && (
-              <KpiTab
-                report={report}
-                overlays={overlays}
-                canEdit={canEdit}
-                onChange={patchOverlays}
-              />
-            )}
-            {tab === 'tendances' && <TendancesTab report={report} />}
-            {tab === 'mouvements' && <MouvementsTab report={report} />}
-            {tab === 'ot' && (
-              <OtTab
-                report={report}
-                overlays={overlays}
-                canEdit={canEdit}
-                onChange={patchOverlays}
-              />
-            )}
-            {tab === 'formation' && (
-              <FormationTab
-                overlays={overlays}
-                canEdit={canEdit}
-                onChange={patchOverlays}
-              />
-            )}
-            {tab === 'csr' && (
-              <CsrTab
-                report={report}
-                overlays={overlays}
-                canEdit={canEdit}
-                onChange={patchOverlays}
-              />
-            )}
-            {tab === 'recrutement' && (
-              <RecrutementTab
-                report={report}
-                overlays={overlays}
-                canEdit={canEdit}
-                onChange={patchOverlays}
-              />
-            )}
-            {tab === 'gouvernance' && (
-              <GouvernanceTab
-                report={report}
-                year={year}
-                month={month}
-                overlays={overlays}
-                canEdit={canEdit}
-                onChange={patchOverlays}
-              />
-            )}
-          </>
-        ) : (
-          <div className="panel panel-padded">Aucune donnée.</div>
-        )}
-      </div>
-    </PermissionGate>
-  );
-}
-
-function SyntheseTab({
-  report,
-  overlays,
-  canEdit,
-  onChange,
-}: {
-  report: ExcoReportPayload;
-  overlays: ExcoOverlays;
-  canEdit: boolean;
-  onChange: (u: (p: ExcoOverlays) => ExcoOverlays) => void;
-}) {
-  const n = overlays.narrative;
-  return (
-    <div className="exco-grid">
-      <div className="panel panel-padded exco-cover">
-        <SectionTitle hint="Équivalent slide couverture">Couverture réunion</SectionTitle>
-        <div className="exco-fields-row">
-          <label className="exco-field">
-            <span>Titre</span>
-            <input
-              disabled={!canEdit}
-              value={n.meetingTitle || ''}
-              onChange={(e) =>
-                onChange((p) => ({
-                  ...p,
-                  narrative: { ...p.narrative, meetingTitle: e.target.value },
-                }))
-              }
-            />
-          </label>
-          <label className="exco-field">
-            <span>Date</span>
-            <input
-              type="date"
-              disabled={!canEdit}
-              value={toDateInputValue(n.meetingDate)}
-              onChange={(e) =>
-                onChange((p) => ({
-                  ...p,
-                  narrative: { ...p.narrative, meetingDate: e.target.value },
-                }))
-              }
-            />
-          </label>
-          <label className="exco-field">
-            <span>Lieu</span>
-            <input
-              disabled={!canEdit}
-              placeholder="ex. KINSHASA"
-              value={n.meetingPlace || ''}
-              onChange={(e) =>
-                onChange((p) => ({
-                  ...p,
-                  narrative: { ...p.narrative, meetingPlace: e.target.value },
-                }))
-              }
-            />
-          </label>
-        </div>
-        <p className="exco-cover-preview">
-          <strong>{n.meetingTitle || 'EXCO MEETING'}</strong>
-          <br />
-          held On {formatMeetingDate(n.meetingDate)}, in {n.meetingPlace || '—'}
-          <br />
-          <span className="exco-muted">Période rapport : {report.periodLabel}</span>
-        </p>
-      </div>
-
-      <div className="panel panel-padded exco-hl-grid">
-        <TextArea
-          label="HIGHLIGHT"
-          value={n.highlights || ''}
-          disabled={!canEdit}
-          rows={8}
-          placeholder="Points positifs du mois…"
-          onChange={(v) =>
-            onChange((p) => ({ ...p, narrative: { ...p.narrative, highlights: v } }))
-          }
-        />
-        <TextArea
-          label="LOWLIGHT"
-          value={n.lowlights || ''}
-          disabled={!canEdit}
-          rows={8}
-          placeholder="Points d’attention / risques…"
-          onChange={(v) =>
-            onChange((p) => ({ ...p, narrative: { ...p.narrative, lowlights: v } }))
-          }
-        />
-        <TextArea
-          label="FOCUS"
-          value={n.focus || ''}
-          disabled={!canEdit}
-          rows={8}
-          placeholder="Priorités à suivre…"
-          onChange={(v) =>
-            onChange((p) => ({ ...p, narrative: { ...p.narrative, focus: v } }))
-          }
-        />
-      </div>
-
-      <div className="panel panel-padded exco-hl-grid">
-        <TextArea
-          label="Items requiring ExCo approval"
-          value={n.approvalItems || ''}
-          disabled={!canEdit}
-          rows={6}
-          onChange={(v) =>
-            onChange((p) => ({ ...p, narrative: { ...p.narrative, approvalItems: v } }))
-          }
-        />
-        <TextArea
-          label="Medical cases requiring management decision"
-          value={n.medicalCases || ''}
-          disabled={!canEdit}
-          rows={6}
-          onChange={(v) =>
-            onChange((p) => ({ ...p, narrative: { ...p.narrative, medicalCases: v } }))
-          }
-        />
-      </div>
-    </div>
-  );
-}
-
-function ExcoKpiCard({
-  kpi,
-  canEdit,
-  manualValue,
-  onManualChange,
-}: {
-  kpi: ExcoMetricValue;
-  canEdit?: boolean;
-  manualValue?: number | null;
-  onManualChange?: (v: number | null) => void;
-}) {
-  const cardRef = useRef<HTMLDivElement>(null);
-  const [open, setOpen] = useState(false);
-  const [tipSide, setTipSide] = useState<'above' | 'below'>('above');
-  const [tipStyle, setTipStyle] = useState<CSSProperties>({});
-  const trend = kpiTrend(kpi);
-  const delta = formatDelta(kpi.deltaPct, trend);
-  const field = MANUAL_KPI_FIELD_BY_SUMMARY_KEY[kpi.key];
-  const importLocked = IMPORT_KPI_KEYS.has(kpi.key) && kpi.source === 'computed';
-  const editable = Boolean(canEdit && field && onManualChange && !importLocked);
-
-  const placeTip = useCallback(() => {
-    const el = cardRef.current;
-    if (!el || !kpi.hint || editable) return;
-    const rect = el.getBoundingClientRect();
-    const tipW = Math.min(280, Math.max(220, window.innerWidth - 24));
-    const tipH = 110;
-    const gap = 8;
-    const pad = 8;
-
-    // Préférer au-dessus de la carte : le portal (z-index élevé) passe au-dessus du header sticky.
-    let side: 'above' | 'below' = 'above';
-    if (rect.top - tipH - gap < pad) {
-      side = 'below';
-    }
-
-    let left = rect.left + rect.width / 2 - tipW / 2;
-    if (left < pad) left = pad;
-    if (left + tipW > window.innerWidth - pad) left = window.innerWidth - pad - tipW;
-
-    const cardMid = rect.left + rect.width / 2;
-    const arrowLeft = Math.min(tipW - 14, Math.max(14, cardMid - left));
-
-    setTipSide(side);
-    setTipStyle({
-      left,
-      width: tipW,
-      top: side === 'below' ? rect.bottom + gap : rect.top - gap,
-      transform: side === 'above' ? 'translateY(-100%)' : undefined,
-      ['--exco-tip-arrow' as string]: `${arrowLeft}px`,
-    });
-    setOpen(true);
-  }, [kpi.hint, editable]);
-
-  const hideTip = useCallback(() => setOpen(false), []);
-
-  useEffect(() => {
-    if (!open) return;
-    const onScrollOrResize = () => placeTip();
-    window.addEventListener('scroll', onScrollOrResize, true);
-    window.addEventListener('resize', onScrollOrResize);
-    return () => {
-      window.removeEventListener('scroll', onScrollOrResize, true);
-      window.removeEventListener('resize', onScrollOrResize);
-    };
-  }, [open, placeTip]);
-
-  return (
-    <div
-      ref={cardRef}
-      className={`exco-kpi-card${kpi.source === 'empty' ? ' exco-kpi-empty' : ''}${
-        editable ? ' exco-kpi-editable' : ''
-      }`}
-      tabIndex={editable ? undefined : 0}
-      onMouseEnter={editable ? undefined : placeTip}
-      onMouseLeave={editable ? undefined : hideTip}
-      onFocus={editable ? undefined : placeTip}
-      onBlur={editable ? undefined : hideTip}
-    >
-      <div className="exco-kpi-top">
-        <span className="exco-kpi-label">{kpi.label}</span>
-        <SourceBadge source={kpi.source} />
-      </div>
-      {editable ? (
-        <input
-          className="exco-kpi-input"
-          type="number"
-          step="any"
-          inputMode="decimal"
-          placeholder="À renseigner"
-          aria-label={kpi.label}
-          value={manualValue ?? ''}
-          onChange={(e) => {
-            const raw = e.target.value.trim();
-            if (!raw) onManualChange?.(null);
-            else {
-              const n = Number(raw);
-              onManualChange?.(Number.isFinite(n) ? n : null);
-            }
-          }}
-        />
-      ) : (
-        <strong className="exco-kpi-value">{formatMetricValue(kpi)}</strong>
-      )}
-      <div className="exco-kpi-foot">
-        {delta ? (
-          <span className={`exco-kpi-delta${trend ? ` ${trend}` : ''}`}>
-            {delta}
-          </span>
-        ) : (
-          <span className="exco-kpi-delta" />
-        )}
-        <span className="exco-kpi-prev" title="Mois précédent">
-          {formatMetricValue({ ...kpi, value: kpi.prevValue ?? null })}
-        </span>
-      </div>
-      {open && kpi.hint
-        ? createPortal(
-            <div
-              className={`exco-kpi-tip exco-kpi-tip--portal${
-                tipSide === 'below' ? ' exco-kpi-tip--below' : ''
-              }`}
-              style={tipStyle}
-              role="tooltip"
-            >
-              {kpi.hint}
-            </div>,
-            document.body,
-          )
-        : null}
-    </div>
-  );
-}
-
-function KpiTab({
-  report,
-  overlays,
-  canEdit,
-  onChange,
-}: {
-  report: ExcoReportPayload;
-  overlays: ExcoOverlays;
-  canEdit: boolean;
-  onChange: (u: (p: ExcoOverlays) => ExcoOverlays) => void;
-}) {
-  const mk = overlays.manualKpis;
-  const visibleMk = visibleManualKpis(mk);
-  const liveSummary = useMemo(
-    () => applyManualKpisToSummary(report.kpiSummary, mk),
-    [report.kpiSummary, mk],
-  );
-  const setMk = (key: keyof typeof mk, value: number | null) => {
-    onChange((p) => ({
-      ...p,
-      manualKpis: { ...p.manualKpis, [key]: value },
-      financeByMonth: {
-        ...(p.financeByMonth || {}),
-        [String(report.month)]: {
-          ...(p.financeByMonth?.[String(report.month)] || {}),
-          ...p.manualKpis,
-          [key]: value,
-        },
-      },
-    }));
-  };
-
-  return (
-    <div className="exco-grid">
-      <div className="panel panel-padded exco-kpi-panel">
-        <SectionTitle hint={`${report.prevPeriodLabel} vs ${report.periodLabel} — saisie directe sur les cartes manquantes`}>
-          KPI Summary
-        </SectionTitle>
-        <div className="exco-kpi-grid">
-          {liveSummary.map((kpi) => {
-            const field = MANUAL_KPI_FIELD_BY_SUMMARY_KEY[kpi.key];
-            const financeDeferred =
-              !EXCO_PUBLISH_FINANCE_KPIS &&
-              (kpi.key === 'staffCost' ||
-                kpi.key === 'volumePerEmp' ||
-                kpi.key === 'revenuePerEmp');
-            return (
-              <ExcoKpiCard
-                key={kpi.key}
-                kpi={kpi}
-                canEdit={canEdit && !financeDeferred}
-                manualValue={field ? visibleMk[field] : undefined}
-                onManualChange={
-                  financeDeferred ? undefined : field ? (v) => setMk(field, v) : undefined
-                }
-              />
-            );
-          })}
-        </div>
-      </div>
-    </div>
-  );
-}
-
-function TendancesTab({ report }: { report: ExcoReportPayload }) {
-  const trends = report.computed.trends || [];
-  const fyCols = excoFyColumns(report.year, report.month);
-  const current = trends.find((t) => t.month === report.month);
-  const [hiresModal, setHiresModal] = useState<{ title: string; rows: DashboardListRow[] } | null>(
-    null,
-  );
-
-  const openSiteHires = (label: string, siteKey: string, delta: number | null) => {
-    const period = filterExcoHires(
-      report.computed.periodHireList || report.computed.hiresList || [],
-      siteKey,
-    );
-    if (period.length > 0) {
-      setHiresModal({
-        title: `Ajouts — ${label} (${report.prevPeriodLabel} → ${report.periodLabel})`,
-        rows: excoHiresToListRows(period),
-      });
-      return;
-    }
-    const present = filterExcoHires(report.computed.presentList || [], siteKey);
-    setHiresModal({
-      title: `Effectif — ${label} (${report.periodLabel} · écart ${formatExcoDelta(delta)} vs ${report.prevPeriodLabel})`,
-      rows: excoHiresToListRows(present),
-    });
-  };
-  const filled = trends.filter((t) => t.month >= 3 && t.month <= report.month);
-  const staffYtd =
-    report.month <= 6 && report.year === EXCO_FY_START_YEAR
-      ? TEMPLATE_YTD_JUNE_2026.staffCost000 * 1000
-      : TEMPLATE_YTD_JUNE_2026.staffCost000 * 1000
-        + filled.filter((t) => t.month > 6).reduce((s, t) => s + (t.staffCost || 0), 0);
-  const volumeYtd =
-    report.month <= 6 && report.year === EXCO_FY_START_YEAR
-      ? TEMPLATE_YTD_JUNE_2026.volumePerEmp
-      : TEMPLATE_YTD_JUNE_2026.volumePerEmp
-        + filled.filter((t) => t.month > 6).reduce((s, t) => s + (t.volumePerEmp || 0), 0);
-  const revenueYtd =
-    report.month <= 6 && report.year === EXCO_FY_START_YEAR
-      ? TEMPLATE_YTD_JUNE_2026.revenuePerEmp
-      : TEMPLATE_YTD_JUNE_2026.revenuePerEmp
-        + filled.filter((t) => t.month > 6).reduce((s, t) => s + (t.revenuePerEmp || 0), 0);
-  const mk = visibleManualKpis(report.overlays.manualKpis);
-  const staffBudget = mk.staffCostBudgetYtd ?? null;
-  const volumeBudget = mk.volumeBudgetYtd ?? null;
-  const revenueBudget = mk.revenueBudgetYtd ?? null;
-
-  const trendAt = (year: number, month: number) => {
-    if (year !== report.year) return undefined;
-    return trends.find((t) => t.month === month);
-  };
-
-  const cell = (value: number | null | undefined, digits = 0, visible = true) => {
-    if (!visible) return '';
-    if (value == null || !Number.isFinite(value)) return '';
-    return value.toLocaleString('en-US', {
-      minimumFractionDigits: digits,
-      maximumFractionDigits: digits,
-    });
-  };
-
-  const pctCell = (value: number | null | undefined, visible = true) => {
-    if (!visible) return '';
-    if (value == null || !Number.isFinite(value)) return '';
-    return `${Math.round(value)}%`;
-  };
-
-  return (
-    <>
-    <div className="exco-grid">
-      <div className="panel panel-padded">
-        <SectionTitle hint={`FY Mar→Mar (template juin) — Mar–Jun figés · mois courant : ${report.periodLabel} · survol d’une cellule du mois pour l’origine`}>
-          HR KPI — Trends
-        </SectionTitle>
-
-        <h4 className="exco-trend-subtitle">1. Financial KPIs</h4>
-        <div className="exco-table-scroll">
-          <table className="exco-table exco-trend-table">
-            <thead>
-              <tr>
-                <th>Metric</th>
-                {fyCols.map((c) => (
-                  <th key={`fin-h-${c.index}`} className={c.isCurrent ? 'exco-month-current' : undefined}>
-                    {c.label}
-                  </th>
-                ))}
-                <th>YTD</th>
-                <th>BUDGET</th>
-                <th>%</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <td>Staff Cost (000 USD)</td>
-                {fyCols.map((c) => {
-                  const t = trendAt(c.year, c.month);
-                  return (
-                    <TipTd
-                      key={`sc-${c.index}`}
-                      className={c.isCurrent ? 'exco-month-current' : undefined}
-                      tip={trendMetricHint('staffCost', c.year, c.month, report.year, report.month)}
-                    >
-                      {cell(t?.staffCost != null ? t.staffCost / 1000 : null, 2, c.visible)}
-                    </TipTd>
-                  );
-                })}
-                <td>{staffYtd ? cell(staffYtd / 1000, 2) : '—'}</td>
-                <td>{staffBudget != null ? cell(staffBudget / 1000, 2) : '—'}</td>
-                <td>
-                  {staffBudget && staffYtd
-                    ? `${Math.round((staffYtd / staffBudget) * 100)}%`
-                    : '—'}
-                </td>
-              </tr>
-              <tr>
-                <td>Ton per Employee</td>
-                {fyCols.map((c) => {
-                  const t = trendAt(c.year, c.month);
-                  return (
-                    <TipTd
-                      key={`vol-${c.index}`}
-                      className={c.isCurrent ? 'exco-month-current' : undefined}
-                      tip={trendMetricHint('volumePerEmp', c.year, c.month, report.year, report.month)}
-                    >
-                      {cell(t?.volumePerEmp, 2, c.visible)}
-                    </TipTd>
-                  );
-                })}
-                <td>{volumeYtd ? cell(volumeYtd, 2) : '—'}</td>
-                <td>{volumeBudget != null ? cell(volumeBudget, 2) : '—'}</td>
-                <td>
-                  {volumeBudget && volumeYtd
-                    ? `${Math.round((volumeYtd / volumeBudget) * 100)}%`
-                    : '—'}
-                </td>
-              </tr>
-              <tr>
-                <td>Revenue per Employee</td>
-                {fyCols.map((c) => {
-                  const t = trendAt(c.year, c.month);
-                  return (
-                    <TipTd
-                      key={`rev-${c.index}`}
-                      className={c.isCurrent ? 'exco-month-current' : undefined}
-                      tip={trendMetricHint('revenuePerEmp', c.year, c.month, report.year, report.month)}
-                    >
-                      {cell(t?.revenuePerEmp, 2, c.visible)}
-                    </TipTd>
-                  );
-                })}
-                <td>{revenueYtd ? cell(revenueYtd, 2) : '—'}</td>
-                <td>{revenueBudget != null ? cell(revenueBudget, 2) : '—'}</td>
-                <td>
-                  {revenueBudget && revenueYtd
-                    ? `${Math.round((revenueYtd / revenueBudget) * 100)}%`
-                    : '—'}
-                </td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
-        <EmptyHint>
-          Mar–Jun : valeurs du fichier EXCO de juin (figées). Mois sélectionné et suivants : saisie / calcul système.
-        </EmptyHint>
-
-        <h4 className="exco-trend-subtitle">2. Headcount</h4>
-        <div className="exco-table-scroll">
-          <table className="exco-table exco-trend-table">
-            <thead>
-              <tr>
-                <th>Sites</th>
-                {fyCols.map((c) => (
-                  <th key={`hc-h-${c.index}`} className={c.isCurrent ? 'exco-month-current' : undefined}>
-                    {c.label}
-                  </th>
-                ))}
-                <th>
-                  {report.prevPeriodLabel} → {report.periodLabel}
-                </th>
-                <th>YTD</th>
-              </tr>
-            </thead>
-            <tbody>
-              {(
-                [
-                  ['Plant', 'plant'],
-                  ['HQ and Regions', 'hq'],
-                  ['Lubudi', 'lubudi'],
-                  ['Graduates', 'graduates'],
-                  ['Total', 'headcount'],
-                ] as const
-              ).map(([label, key]) => {
-                const prev = trends.find((t) => t.month === report.month - 1);
-                const delta =
-                  current && prev
-                    ? current[key] - prev[key]
-                    : current
-                      ? current[key]
-                      : null;
-                return (
-                  <tr key={label}>
-                    <td>{label}</td>
-                    {fyCols.map((c) => {
-                      const t = trendAt(c.year, c.month);
-                      return (
-                        <TipTd
-                          key={`${key}-${c.index}`}
-                          className={c.isCurrent ? 'exco-month-current' : undefined}
-                          tip={trendMetricHint(key, c.year, c.month, report.year, report.month)}
-                        >
-                          {c.visible && t ? t[key] : ''}
-                        </TipTd>
-                      );
-                    })}
-                    <td
-                      className="exco-delta-cell"
-                      role="button"
-                      tabIndex={0}
-                      title={`Voir les ajouts — ${label} (${report.prevPeriodLabel} → ${report.periodLabel})`}
-                      onClick={() => openSiteHires(label, key, delta)}
-                      onKeyDown={(event) => {
-                        if (event.key === 'Enter' || event.key === ' ') {
-                          event.preventDefault();
-                          openSiteHires(label, key, delta);
-                        }
-                      }}
-                    >
-                      {delta == null ? '—' : `${delta >= 0 ? '+' : ''}${delta}`}
-                    </td>
-                    <td>On track</td>
-                  </tr>
-                );
-              })}
-            </tbody>
-          </table>
-        </div>
-
-        <h4 className="exco-trend-subtitle">3. Gender RATIO</h4>
-        <div className="exco-table-scroll">
-          <table className="exco-table exco-trend-table">
-            <thead>
-              <tr>
-                <th>Gender</th>
-                {fyCols.map((c) => (
-                  <th key={`g-h-${c.index}`}>{c.label}</th>
-                ))}
-                <th>{report.periodLabel} — Sites</th>
-                <th>{report.periodLabel} — HO</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <td>Male</td>
-                {fyCols.map((c) => {
-                  const t = trendAt(c.year, c.month);
-                  return (
-                    <TipTd
-                      key={`gm-${c.index}`}
-                      className={c.isCurrent ? 'exco-month-current' : undefined}
-                      tip={trendMetricHint('genderMalePct', c.year, c.month, report.year, report.month)}
-                    >
-                      {pctCell(t?.genderMalePct, c.visible)}
-                    </TipTd>
-                  );
-                })}
-                <td>{pctCell(current?.genderMalePct)}</td>
-                <td>—</td>
-              </tr>
-              <tr>
-                <td>Female</td>
-                {fyCols.map((c) => {
-                  const t = trendAt(c.year, c.month);
-                  return (
-                    <TipTd
-                      key={`gf-${c.index}`}
-                      className={c.isCurrent ? 'exco-month-current' : undefined}
-                      tip={trendMetricHint('genderFemalePct', c.year, c.month, report.year, report.month)}
-                    >
-                      {pctCell(t?.genderFemalePct, c.visible)}
-                    </TipTd>
-                  );
-                })}
-                <td>{pctCell(current?.genderFemalePct)}</td>
-                <td>—</td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
-
-        <h4 className="exco-trend-subtitle">4. AGE</h4>
-        <div className="exco-table-scroll">
-          <table className="exco-table exco-trend-table">
-            <thead>
-              <tr>
-                <th>Metric</th>
-                {fyCols.map((c) => (
-                  <th key={`a-h-${c.index}`}>{c.label}</th>
-                ))}
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <td>Average Age</td>
-                {fyCols.map((c) => {
-                  const t = trendAt(c.year, c.month);
-                  return (
-                    <TipTd
-                      key={`aa-${c.index}`}
-                      className={c.isCurrent ? 'exco-month-current' : undefined}
-                      tip={trendMetricHint('averageAge', c.year, c.month, report.year, report.month)}
-                    >
-                      {cell(t?.averageAge, 1, c.visible)}
-                    </TipTd>
-                  );
-                })}
-              </tr>
-              <tr>
-                <td>Male Average Age</td>
-                {fyCols.map((c) => {
-                  const t = trendAt(c.year, c.month);
-                  return (
-                    <TipTd
-                      key={`aam-${c.index}`}
-                      className={c.isCurrent ? 'exco-month-current' : undefined}
-                      tip={trendMetricHint('averageAgeMale', c.year, c.month, report.year, report.month)}
-                    >
-                      {cell(t?.averageAgeMale, 1, c.visible)}
-                    </TipTd>
-                  );
-                })}
-              </tr>
-              <tr>
-                <td>Female Average Age</td>
-                {fyCols.map((c) => {
-                  const t = trendAt(c.year, c.month);
-                  return (
-                    <TipTd
-                      key={`aaf-${c.index}`}
-                      className={c.isCurrent ? 'exco-month-current' : undefined}
-                      tip={trendMetricHint('averageAgeFemale', c.year, c.month, report.year, report.month)}
-                    >
-                      {cell(t?.averageAgeFemale, 1, c.visible)}
-                    </TipTd>
-                  );
-                })}
-              </tr>
-            </tbody>
-          </table>
-        </div>
-      </div>
-    </div>
-    {hiresModal ? (
-      <DashboardListModal
-        title={hiresModal.title}
-        columns={EXCO_HIRE_COLUMNS}
-        rows={hiresModal.rows}
-        onClose={() => setHiresModal(null)}
-        searchPlaceholder="Rechercher un ajout…"
-      />
-    ) : null}
-    </>
-  );
-}
-
-function MouvementsTab({ report }: { report: ExcoReportPayload }) {
-  const c = report.computed;
-  const [hiresModalOpen, setHiresModalOpen] = useState(false);
-  const fyCols = useMemo(
-    () => excoFyColumns(report.year, report.month),
-    [report.year, report.month],
-  );
-
-  const leaveRows = useMemo(() => {
-    const keys = [
-      { key: 'leavePlantAvgDays' as const, label: 'Plant (Average Days)' },
-      { key: 'leaveHqAvgDays' as const, label: 'HQ and Region (Average Days)' },
-      { key: 'leaveLubudiAvgDays' as const, label: 'Lubudi (Average Days)' },
-      { key: 'leaveBalanceAvgDays' as const, label: 'All Company (Average Days)' },
-    ];
-    return keys.map((row) => ({
-      label: row.label,
-      values: fyCols.map((col) => {
-        if (!col.visible || col.year !== report.year) return null;
-        const t = c.trends.find((x) => x.month === col.month);
-        const v = t?.[row.key];
-        return typeof v === 'number' ? v : null;
-      }),
-    }));
-  }, [c.trends, fyCols, report.year]);
-
-  const leaveCosts = useMemo(
-    () =>
-      fyCols.map((col) => {
-        if (!col.visible || col.year !== report.year) return null;
-        const t = c.trends.find((x) => x.month === col.month);
-        return t?.leaveProvisionUsd000 ?? null;
-      }),
-    [c.trends, fyCols, report.year],
-  );
-
-  const hasLeave = leaveRows.some((r) => r.values.some((v) => v != null));
-
-  return (
-    <>
-    <div className="exco-grid">
-      <div className="panel panel-padded">
-        <SectionTitle>Staff movement — {report.periodLabel}</SectionTitle>
-        <div className="exco-kpi-grid exco-kpi-grid-sm">
-          <div
-            className="exco-kpi-card exco-kpi-clickable"
-            role="button"
-            tabIndex={0}
-            title={`Voir les ajouts du mois — ${report.periodLabel}`}
-            onClick={() => setHiresModalOpen(true)}
-            onKeyDown={(event) => {
-              if (event.key === 'Enter' || event.key === ' ') {
-                event.preventDefault();
-                setHiresModalOpen(true);
-              }
-            }}
-          >
-            <span className="exco-kpi-label">IN (Hires)</span>
-            <strong className="exco-kpi-value">{c.hires}</strong>
-          </div>
-          <div className="exco-kpi-card">
-            <span className="exco-kpi-label">OUT (Exits)</span>
-            <strong className="exco-kpi-value">{c.exits}</strong>
-          </div>
-          <div className="exco-kpi-card">
-            <span className="exco-kpi-label">Turnover</span>
-            <strong className="exco-kpi-value">{c.turnoverPct ?? '—'}%</strong>
-          </div>
-          <div className="exco-kpi-card">
-            <span className="exco-kpi-label">Attrition</span>
-            <strong className="exco-kpi-value">{c.attritionPct ?? '—'}%</strong>
-          </div>
-          <div className="exco-kpi-card">
-            <span className="exco-kpi-label">Promotions mois</span>
-            <strong className="exco-kpi-value">{c.promotionsThisMonth}</strong>
-          </div>
-          <div className="exco-kpi-card">
-            <span className="exco-kpi-label">Promotions YTD (FY)</span>
-            <strong className="exco-kpi-value">{c.promotionsYtd}</strong>
-          </div>
-        </div>
-      </div>
-
-      <div className="panel panel-padded">
-        <SectionTitle>Départs par raison</SectionTitle>
-        {c.exitsByReason.length === 0 ? (
-          <EmptyHint>Aucun départ ce mois.</EmptyHint>
-        ) : (
-          <table className="exco-table">
-            <thead>
-              <tr>
-                <th>Raison</th>
-                <th>Nombre</th>
-                <th>Taux (÷ effectif)</th>
-                <th>Évolution</th>
-              </tr>
-            </thead>
-            <tbody>
-              {c.exitsByReason.map((row) => {
-                const hc = c.headcount > 0 ? c.headcount : 0;
-                const pct = hc > 0 ? Math.round((row.value / hc) * 1000) / 10 : 0;
-                const prev =
-                  (c.prevExitsByReason || []).find(
-                    (p) => p.label.toLowerCase() === row.label.toLowerCase(),
-                  )?.value ?? 0;
-                const prevHc = c.prevHeadcount != null && c.prevHeadcount > 0 ? c.prevHeadcount : 0;
-                const rate = hc > 0 ? row.value / hc : null;
-                const prevRate = prevHc > 0 ? prev / prevHc : null;
-                let evo = '—';
-                if (rate != null && prevRate != null && prevRate !== 0) {
-                  const d = Math.round(((rate - prevRate) / Math.abs(prevRate)) * 1000) / 10;
-                  evo = `${d > 0 ? '▲' : d < 0 ? '▼' : '•'} ${Math.abs(d)}%`;
-                }
-                return (
-                  <tr key={row.label}>
-                    <td>{row.label}</td>
-                    <td>
-                      {row.value}/{hc || '—'}
-                    </td>
-                    <td>{pct}%</td>
-                    <td>{evo}</td>
-                  </tr>
-                );
-              })}
-            </tbody>
-          </table>
-        )}
-      </div>
-
-      <div className="panel panel-padded">
-        <SectionTitle>
-          Length of service (avg {c.averageSeniorityYears ?? '—'} years)
-        </SectionTitle>
-        <table className="exco-table">
-          <thead>
-            <tr>
-              <th>Bande</th>
-              <th>Effectif</th>
-            </tr>
-          </thead>
-          <tbody>
-            {c.seniorityBands.map((row) => (
-              <tr key={row.label}>
-                <td>{row.label}</td>
-                <td>{row.value}</td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
-      </div>
-
-      <div className="panel panel-padded">
-        <SectionTitle hint="Leave Type = Annual · Closing Balance · survol du mois courant pour l’origine">
-          6. Leaves
-        </SectionTitle>
-        {!hasLeave ? (
-          <EmptyHint>
-            Importez Leave Balances via « Générer le rapport » (écran Paramètres).
-          </EmptyHint>
-        ) : (
-          <>
-            <div className="exco-table-scroll">
-              <table className="exco-table exco-trend-table">
-                <thead>
-                  <tr>
-                    <th>Balance</th>
-                    {fyCols.map((c) => (
-                      <th key={c.index} className={c.isCurrent ? 'exco-month-current' : undefined}>
-                        {c.label}
-                      </th>
-                    ))}
-                  </tr>
-                </thead>
-                <tbody>
-                  {leaveRows.map((row) => {
-                    const metricKey =
-                      row.label.startsWith('Plant')
-                        ? 'leavePlantAvgDays'
-                        : row.label.startsWith('HQ')
-                          ? 'leaveHqAvgDays'
-                          : row.label.startsWith('Lubudi')
-                            ? 'leaveLubudiAvgDays'
-                            : 'leaveBalanceAvgDays';
-                    return (
-                      <tr key={row.label}>
-                        <td>{row.label}</td>
-                        {row.values.map((v, i) => {
-                          const col = fyCols[i];
-                          return (
-                            <TipTd
-                              key={`${row.label}-${i}`}
-                              className={col?.isCurrent ? 'exco-month-current' : undefined}
-                              tip={
-                                col
-                                  ? trendMetricHint(
-                                      metricKey,
-                                      col.year,
-                                      col.month,
-                                      report.year,
-                                      report.month,
-                                    )
-                                  : undefined
-                              }
-                            >
-                              {v == null ? '' : Math.round(v)}
-                            </TipTd>
-                          );
-                        })}
-                      </tr>
-                    );
-                  })}
-                </tbody>
-              </table>
-            </div>
-
-            <h4 className="exco-trend-subtitle">COSTS (000 USD)</h4>
-            <div className="exco-table-scroll">
-              <table className="exco-table exco-trend-table">
-                <thead>
-                  <tr>
-                    <th>Provision</th>
-                    {fyCols.map((c) => (
-                      <th key={`c-${c.index}`}>{c.label}</th>
-                    ))}
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr>
-                    <td>Provision (Leave not taken)</td>
-                    {leaveCosts.map((v, i) => {
-                      const col = fyCols[i];
-                      return (
-                        <TipTd
-                          key={`prov-${i}`}
-                          className={col?.isCurrent ? 'exco-month-current' : undefined}
-                          tip={
-                            col
-                              ? trendMetricHint(
-                                  'leaveProvisionUsd000',
-                                  col.year,
-                                  col.month,
-                                  report.year,
-                                  report.month,
-                                )
-                              : undefined
-                          }
-                        >
-                          {v == null
-                            ? ''
-                            : v.toLocaleString('en-US', {
-                                minimumFractionDigits: 2,
-                                maximumFractionDigits: 2,
-                              })}
-                        </TipTd>
-                      );
-                    })}
-                  </tr>
-                </tbody>
-              </table>
-            </div>
-          </>
-        )}
-      </div>
-    </div>
-    {hiresModalOpen ? (
-      <DashboardListModal
-        title={`Ajouts — ${report.periodLabel}`}
-        columns={EXCO_HIRE_COLUMNS}
-        rows={excoHiresToListRows(c.hiresList || [])}
-        onClose={() => setHiresModalOpen(false)}
-        searchPlaceholder="Rechercher un ajout…"
-      />
-    ) : null}
-    </>
-  );
-}
-
-function OtTab({
-  report,
-  overlays,
-}: {
-  report: ExcoReportPayload;
-  overlays: ExcoOverlays;
-  canEdit: boolean;
-  onChange: (u: (p: ExcoOverlays) => ExcoOverlays) => void;
-}) {
-  const c = report.computed;
-  const fyCols = excoFyColumns(report.year, report.month);
-  const importSnap = overlays.overtimeImportsByMonth?.[String(report.month)];
-  const fx = importSnap?.fxRateFcPerUsd ?? null;
-
-  const deptRows = useMemo(() => {
-    return (c.overtimeByDept || []).map((row) => {
-      const hoursByMonth = row.hoursByMonth || Array(12).fill(null);
-      const ytd = hoursByMonth.reduce<number>((s, h, i) => {
-        const month = i + 1;
-        if (month < 3 || month > report.month) return s;
-        return s + (h || 0);
-      }, 0);
-      return {
-        department: row.department,
-        hoursByMonth,
-        ytd: Math.round(ytd * 100) / 100,
-      };
-    });
-  }, [c.overtimeByDept, report.month]);
-
-  const fyHours = (hoursByMonth: Array<number | null>, col: (typeof fyCols)[number]) => {
-    if (!col.visible || col.year !== report.year) return null;
-    return hoursByMonth[col.month - 1] ?? null;
-  };
-
-  const totalByFyCol = useMemo(() => {
-    return fyCols.map((col) => {
-      if (!col.visible || col.year !== report.year) return null;
-      const sum = deptRows.reduce((s, r) => s + (r.hoursByMonth[col.month - 1] || 0), 0);
-      return Math.round(sum * 100) / 100;
-    });
-  }, [deptRows, fyCols, report.year]);
-
-  const ytdTotal = deptRows.reduce((s, r) => s + r.ytd, 0);
-
-  const leaveTop = useMemo(() => {
-    return [...c.overtimeTopEmployees]
-      .filter((e) => e.leaveBalance != null)
-      .sort((a, b) => (b.leaveBalance || 0) - (a.leaveBalance || 0))
-      .slice(0, 25);
-  }, [c.overtimeTopEmployees]);
-
-  const deptCross = useMemo(() => {
-    const leaveMap = new Map<string, { leaveSum: number; leaveN: number }>();
-    for (const e of c.overtimeTopEmployees) {
-      const prev = leaveMap.get(e.department) || { leaveSum: 0, leaveN: 0 };
-      if (e.leaveBalance != null) {
-        prev.leaveSum += e.leaveBalance;
-        prev.leaveN += 1;
-      }
-      leaveMap.set(e.department, prev);
-    }
-    return (c.overtimeByDept || []).map((row) => {
-      const leave = leaveMap.get(row.department);
-      return {
-        department: row.department,
-        hours: row.hours,
-        costUsd: row.cost,
-        leaveAvg: leave?.leaveN
-          ? Math.round((leave.leaveSum / leave.leaveN) * 100) / 100
-          : null,
-      };
-    });
-  }, [c.overtimeByDept, c.overtimeTopEmployees]);
-
-  const maxBar = Math.max(...deptRows.map((d) => d.ytd), 1);
-
-  return (
-    <div className="exco-grid">
-      <div className="panel panel-padded">
-        <SectionTitle hint="Capt.1 — FY Mar→Mar · départements = paramètres système · Mar–Jun figés · mois sélectionné mis à jour">
-          OVERTIME — Hours
-        </SectionTitle>
-        {!deptRows.length ? (
-          <EmptyHint>
-            Aucune donnée OT — générez le rapport avec Component Posted Units.
-          </EmptyHint>
-        ) : (
-          <>
-            <div className="exco-table-scroll">
-              <table className="exco-table exco-trend-table">
-                <thead>
-                  <tr>
-                    <th>OVERTIME - HOURS</th>
-                    {fyCols.map((col) => (
-                      <th key={col.index} className={col.isCurrent ? 'exco-month-current' : undefined}>
-                        {col.label}
-                      </th>
-                    ))}
-                    <th>YTD</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {deptRows.map((row) => (
-                    <tr key={row.department}>
-                      <td>{row.department}</td>
-                      {fyCols.map((col) => {
-                        const h = fyHours(row.hoursByMonth, col);
-                        return (
-                          <td
-                            key={`${row.department}-${col.index}`}
-                            className={col.isCurrent ? 'exco-month-current' : undefined}
-                          >
-                            {h == null
-                              ? ''
-                              : h.toLocaleString('en-US', {
-                                  minimumFractionDigits: 2,
-                                  maximumFractionDigits: 2,
-                                })}
-                          </td>
-                        );
-                      })}
-                      <td>{row.ytd.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</td>
-                    </tr>
-                  ))}
-                  <tr className="exco-total-row">
-                    <td>Total</td>
-                    {totalByFyCol.map((h, i) => (
-                      <td key={`tot-${i}`}>
-                        {h == null
-                          ? ''
-                          : h.toLocaleString('en-US', {
-                              minimumFractionDigits: 2,
-                              maximumFractionDigits: 2,
-                            })}
-                      </td>
-                    ))}
-                    <td>{ytdTotal.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</td>
-                  </tr>
-                </tbody>
-              </table>
-            </div>
-
-            <h4 className="exco-trend-subtitle">Overtime — hours per Department YTD — %</h4>
-            <div className="exco-ot-chart">
-              {deptRows.map((row) => {
-                const pct = ytdTotal > 0 ? Math.round((row.ytd / ytdTotal) * 100) : 0;
-                const segments = row.hoursByMonth
-                  .map((h, i) => ({ h: h || 0, month: i + 1 }))
-                  .filter((s) => s.month >= 3 && s.month <= report.month && s.h > 0);
-                return (
-                  <div key={`bar-${row.department}`} className="exco-ot-chart-col">
-                    <span className="exco-ot-chart-pct">{pct}%</span>
-                    <div className="exco-ot-chart-bar-wrap">
-                      <div
-                        className="exco-ot-chart-stack"
-                        style={{ height: `${Math.max(2, (row.ytd / maxBar) * 100)}%` }}
-                        title={`${row.department}: ${row.ytd}h (${pct}%)`}
-                      >
-                        {segments.map((s) => (
-                          <div
-                            key={`${row.department}-seg-${s.month}`}
-                            className="exco-ot-chart-seg"
-                            style={{
-                              flex: s.h,
-                              background: otMonthSegmentColor(s.month),
-                            }}
-                            title={`${EXCO_FY_MONTH_LABELS[s.month - 3] || s.month}: ${s.h}h`}
-                          />
-                        ))}
-                      </div>
-                    </div>
-                    <span className="exco-ot-chart-label">{row.department}</span>
-                  </div>
-                );
-              })}
-            </div>
-            <div className="exco-ot-legend" aria-label="Légende des mois">
-              {fyCols
-                .filter((c) => c.visible && c.year === report.year && c.month >= 3)
-                .map((c) => (
-                  <span key={`leg-${c.index}`} className="exco-ot-legend-item">
-                    <i style={{ background: otMonthSegmentColor(c.month) }} />
-                    {c.label}
-                  </span>
-                ))}
-            </div>
-          </>
-        )}
-      </div>
-
-      <div className="exco-ot-capt2">
-        <div className="panel panel-padded exco-ot-capt2-side">
-          <SectionTitle hint="Tri Hours · top 10 en rouge">Overtime — Top Employees</SectionTitle>
-          {!c.overtimeTopEmployees.length ? (
-            <EmptyHint>Pas de détail OT.</EmptyHint>
-          ) : (
-            <div className="exco-table-scroll exco-ot-table-scroll">
-              <table className="exco-table exco-ot-compact-table">
-                <thead>
-                  <tr>
-                    <th>#</th>
-                    <th>Names</th>
-                    <th>Hrs</th>
-                    <th>Cost</th>
-                    <th>Leave</th>
-                    <th>DPT</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {c.overtimeTopEmployees.slice(0, 25).map((row, i) => (
-                    <tr key={row.matricule} className={i < 10 ? 'exco-ot-top10' : undefined}>
-                      <td>{i + 1}</td>
-                      <td title={row.nom}>{row.nom}</td>
-                      <td>
-                        {row.hours.toLocaleString('en-US', {
-                          minimumFractionDigits: 2,
-                          maximumFractionDigits: 2,
-                        })}
-                      </td>
-                      <td>
-                        {row.costUsd != null
-                          ? row.costUsd.toLocaleString('en-US', {
-                              style: 'currency',
-                              currency: 'USD',
-                              maximumFractionDigits: 0,
-                            })
-                          : row.costFc != null
-                            ? `${Math.round(row.costFc).toLocaleString('fr-FR')} FC`
-                            : '—'}
-                      </td>
-                      <td>
-                        {overlays.leaveBalanceByMatricule[row.matricule] ?? row.leaveBalance ?? '—'}
-                      </td>
-                      <td>{row.department}</td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
-            </div>
-          )}
-        </div>
-
-        <div className="panel panel-padded exco-ot-capt2-mid">
-          <SectionTitle hint="Synthèse mois + croisement dept">
-            Overview — {report.periodLabel}
-          </SectionTitle>
-          <ul className="exco-ot-overview">
-            <li>Total workforce : <strong>{c.headcount}</strong> employees</li>
-            <li>
-              Employees with recorded hours : <strong>{c.employeesWithOt}</strong>
-              {c.headcount ? ` (${Math.round((c.employeesWithOt / c.headcount) * 100)}%)` : ''}
-            </li>
-            <li>
-              Total Overtime :{' '}
-              <strong>{c.overtimeHoursTotal.toLocaleString('en-US', { minimumFractionDigits: 2 })}</strong> hours
-            </li>
-            <li>
-              Average hours :{' '}
-              <strong>
-                {c.employeesWithOt
-                  ? (c.overtimeHoursTotal / c.employeesWithOt).toLocaleString('en-US', {
-                      minimumFractionDigits: 2,
-                      maximumFractionDigits: 2,
-                    })
-                  : '—'}
-              </strong>
-            </li>
-            <li>
-              Total cost :{' '}
-              <strong>
-                {overlays.manualKpis.overtimeCost != null
-                  ? overlays.manualKpis.overtimeCost.toLocaleString('en-US', {
-                      style: 'currency',
-                      currency: 'USD',
-                    })
-                  : '—'}
-              </strong>
-              {fx != null ? ` (taux ${fx.toLocaleString('fr-FR')} FC/USD)` : ''}
-            </li>
-            <li>
-              Average remaining leave (OT) :{' '}
-              <strong>
-                {(() => {
-                  const withLeave = c.overtimeTopEmployees.filter((e) => e.leaveBalance != null);
-                  if (!withLeave.length) return '—';
-                  const avg =
-                    withLeave.reduce((s, e) => s + (e.leaveBalance || 0), 0) / withLeave.length;
-                  return avg.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
-                })()}
-              </strong>{' '}
-              days
-            </li>
-          </ul>
-
-          <h4 className="exco-trend-subtitle">Overtime vs Leave Balance per DEPT</h4>
-          <div className="exco-table-scroll exco-ot-table-scroll">
-            <table className="exco-table exco-ot-compact-table">
-              <thead>
-                <tr>
-                  <th>DPT</th>
-                  <th>Hrs</th>
-                  <th>Cost</th>
-                  <th>Leave</th>
-                </tr>
-              </thead>
-              <tbody>
-                {deptCross.map((row) => (
-                  <tr key={`x-${row.department}`}>
-                    <td>{row.department}</td>
-                    <td>{row.hours.toLocaleString('en-US', { minimumFractionDigits: 2 })}</td>
-                    <td>
-                      {row.costUsd != null
-                        ? row.costUsd.toLocaleString('en-US', {
-                            style: 'currency',
-                            currency: 'USD',
-                            maximumFractionDigits: 0,
-                          })
-                        : '—'}
-                    </td>
-                    <td>{row.leaveAvg ?? '—'}</td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
-        </div>
-
-        <div className="panel panel-padded exco-ot-capt2-side">
-          <SectionTitle hint="Tri Leave · top 10 en rouge · coût au taux du jour">
-            Leave Balance — Top Employees
-          </SectionTitle>
-          {!leaveTop.length ? (
-            <EmptyHint>Ajoutez Leave Balances dans les paramètres puis régénérez le rapport.</EmptyHint>
-          ) : (
-            <div className="exco-table-scroll exco-ot-table-scroll">
-              <table className="exco-table exco-ot-compact-table">
-                <thead>
-                  <tr>
-                    <th>#</th>
-                    <th>Names</th>
-                    <th>Hrs</th>
-                    <th>Cost</th>
-                    <th>Leave</th>
-                    <th>DPT</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {leaveTop.map((row, i) => (
-                    <tr key={`lv-${row.matricule}`} className={i < 10 ? 'exco-ot-top10' : undefined}>
-                      <td>{i + 1}</td>
-                      <td title={row.nom}>{row.nom}</td>
-                      <td>{row.hours.toLocaleString('en-US', { minimumFractionDigits: 2 })}</td>
-                      <td>
-                        {row.costUsd != null
-                          ? row.costUsd.toLocaleString('en-US', {
-                              style: 'currency',
-                              currency: 'USD',
-                              maximumFractionDigits: 0,
-                            })
-                          : '—'}
-                      </td>
-                      <td>{row.leaveBalance}</td>
-                      <td>{row.department}</td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
-            </div>
-          )}
-        </div>
-      </div>
-    </div>
-  );
-}
-
-function FormationTab({
-  overlays,
-  canEdit,
-  onChange,
-}: {
-  overlays: ExcoOverlays;
-  canEdit: boolean;
-  onChange: (u: (p: ExcoOverlays) => ExcoOverlays) => void;
-}) {
-  const mk = overlays.manualKpis;
-  const topics = overlays.trainingTopics;
-  const upcoming = overlays.upcomingTrainings;
-
-  const updateTopic = (listKey: 'trainingTopics' | 'upcomingTrainings', id: string, title: string) => {
-    onChange((p) => ({
-      ...p,
-      [listKey]: p[listKey].map((t) => (t.id === id ? { ...t, title } : t)),
-    }));
-  };
-
-  const addTopic = (listKey: 'trainingTopics' | 'upcomingTrainings') => {
-    const row: ExcoTrainingTopic = { id: uid('tr'), title: '' };
-    onChange((p) => ({ ...p, [listKey]: [...p[listKey], row] }));
-  };
-
-  const removeTopic = (listKey: 'trainingTopics' | 'upcomingTrainings', id: string) => {
-    onChange((p) => ({ ...p, [listKey]: p[listKey].filter((t) => t.id !== id) }));
-  };
-
-  return (
-    <div className="exco-grid">
-      <div className="panel panel-padded">
-        <SectionTitle>Training Dashboard</SectionTitle>
-        <div className="exco-manual-grid">
-          <NumberField
-            label="Training hours YTD"
-            unit="hrs"
-            value={mk.trainingHours}
-            disabled={!canEdit}
-            onChange={(v) =>
-              onChange((p) => ({ ...p, manualKpis: { ...p.manualKpis, trainingHours: v } }))
-            }
-          />
-          <NumberField
-            label="Training budget"
-            unit="USD"
-            value={mk.trainingBudget}
-            disabled={!canEdit}
-            onChange={(v) =>
-              onChange((p) => ({ ...p, manualKpis: { ...p.manualKpis, trainingBudget: v } }))
-            }
-          />
-          <NumberField
-            label="Actual training cost"
-            unit="USD"
-            value={mk.trainingCost}
-            disabled={!canEdit}
-            onChange={(v) =>
-              onChange((p) => ({ ...p, manualKpis: { ...p.manualKpis, trainingCost: v } }))
-            }
-          />
-          <NumberField
-            label="% Plant"
-            unit="%"
-            value={mk.trainingPlantPct}
-            disabled={!canEdit}
-            onChange={(v) =>
-              onChange((p) => ({ ...p, manualKpis: { ...p.manualKpis, trainingPlantPct: v } }))
-            }
-          />
-          <NumberField
-            label="% HQ"
-            unit="%"
-            value={mk.trainingHqPct}
-            disabled={!canEdit}
-            onChange={(v) =>
-              onChange((p) => ({ ...p, manualKpis: { ...p.manualKpis, trainingHqPct: v } }))
-            }
-          />
-          <NumberField
-            label="Soft skills %"
-            unit="%"
-            value={mk.softSkillsHoursPct}
-            disabled={!canEdit}
-            onChange={(v) =>
-              onChange((p) => ({ ...p, manualKpis: { ...p.manualKpis, softSkillsHoursPct: v } }))
-            }
-          />
-          <NumberField
-            label="Technical skills %"
-            unit="%"
-            value={mk.technicalSkillsHoursPct}
-            disabled={!canEdit}
-            onChange={(v) =>
-              onChange((p) => ({
-                ...p,
-                manualKpis: { ...p.manualKpis, technicalSkillsHoursPct: v },
-              }))
-            }
-          />
-          <NumberField
-            label="Safety topics %"
-            unit="%"
-            value={mk.safetyTopicsHoursPct}
-            disabled={!canEdit}
-            onChange={(v) =>
-              onChange((p) => ({
-                ...p,
-                manualKpis: { ...p.manualKpis, safetyTopicsHoursPct: v },
-              }))
-            }
-          />
-        </div>
-      </div>
-
-      <div className="panel panel-padded">
-        <SectionTitle>List of training covered</SectionTitle>
-        {topics.length === 0 && <EmptyHint>Aucune formation listée — ajoutez des lignes.</EmptyHint>}
-        <div className="exco-list-editor">
-          {topics.map((t, i) => (
-            <div key={t.id} className="exco-list-row">
-              <span>{i + 1}.</span>
-              <input
-                disabled={!canEdit}
-                value={t.title}
-                placeholder="Titre de la formation"
-                onChange={(e) => updateTopic('trainingTopics', t.id, e.target.value)}
-              />
-              {canEdit && (
-                <button type="button" className="btn btn-ghost" onClick={() => removeTopic('trainingTopics', t.id)}>
-                  ×
-                </button>
-              )}
-            </div>
-          ))}
-          {canEdit && (
-            <button type="button" className="btn btn-secondary" onClick={() => addTopic('trainingTopics')}>
-              + Ajouter une formation
-            </button>
-          )}
-        </div>
-      </div>
-
-      <div className="panel panel-padded">
-        <SectionTitle>Upcoming training sessions</SectionTitle>
-        <div className="exco-list-editor">
-          {upcoming.map((t) => (
-            <div key={t.id} className="exco-list-row">
-              <input
-                disabled={!canEdit}
-                value={t.title}
-                placeholder="Session à venir"
-                onChange={(e) => updateTopic('upcomingTrainings', t.id, e.target.value)}
-              />
-              {canEdit && (
-                <button type="button" className="btn btn-ghost" onClick={() => removeTopic('upcomingTrainings', t.id)}>
-                  ×
-                </button>
-              )}
-            </div>
-          ))}
-          {canEdit && (
-            <button type="button" className="btn btn-secondary" onClick={() => addTopic('upcomingTrainings')}>
-              + Ajouter
-            </button>
-          )}
-        </div>
-      </div>
-    </div>
-  );
-}
-
-function CsrUpdateField({
-  value,
-  disabled,
-  onChange,
-  rows = 3,
-  compact = false,
-}: {
-  value: string;
-  disabled: boolean;
-  onChange: (v: string) => void;
-  rows?: number;
-  compact?: boolean;
-}) {
-  const hasUpd = csrTextHasUpdate(value);
-  if (disabled) {
-    const runs = parseCsrUpdateMarkup(value);
-    return (
-      <p className={`exco-csr-preview${compact ? ' is-compact' : ''}${hasUpd ? ' has-upd' : ''}`}>
-        {runs.map((run, i) =>
-          run.update ? (
-            <mark key={i} className="exco-csr-upd">
-              {run.text}
-            </mark>
-          ) : (
-            <span key={i}>{run.text}</span>
-          ),
-        )}
-      </p>
-    );
-  }
-  return (
-    <textarea
-      className={`exco-inline-input${hasUpd ? ' has-csr-upd' : ''}`}
-      disabled={disabled}
-      rows={rows}
-      value={value}
-      onChange={(e) => onChange(e.target.value)}
-    />
-  );
-}
-
-function CsrTab({
-  report,
-  overlays,
-  canEdit,
-  onChange,
-}: {
-  report: ExcoReportPayload;
-  overlays: ExcoOverlays;
-  canEdit: boolean;
-  onChange: (u: (p: ExcoOverlays) => ExcoOverlays) => void;
-}) {
-  const summary = report.computed.csrSummary;
-  const fy27Rows = resolveCsrFy27Rows(overlays);
-  const cahierRows = resolveCahierHighlights(overlays);
-
-  const patchFy27 = (updater: (rows: ExcoCsrFy27Row[]) => ExcoCsrFy27Row[]) => {
-    onChange((p) => ({
-      ...p,
-      csrFy27Rows: updater(resolveCsrFy27Rows(p).map((r) => ({ ...r }))),
-    }));
-  };
-
-  const patchCahier = (updater: (rows: ExcoCahierHighlight[]) => ExcoCahierHighlight[]) => {
-    onChange((p) => ({
-      ...p,
-      cahierHighlights: updater(resolveCahierHighlights(p).map((r) => ({ ...r }))),
-    }));
-  };
-
-  const updateFy27 = (id: string, patch: Partial<ExcoCsrFy27Row>) => {
-    patchFy27((rows) => rows.map((r) => (r.id === id ? { ...r, ...patch } : r)));
-  };
-
-  const updateCahier = (id: string, patch: Partial<ExcoCahierHighlight>) => {
-    patchCahier((rows) => rows.map((r) => (r.id === id ? { ...r, ...patch } : r)));
-  };
-
-  return (
-    <div className="exco-grid">
-      <div className="panel panel-padded">
-        <SectionTitle hint="Synthèse depuis le menu Projet (CSR + Cahier des charges)">
-          CSR — FY
-        </SectionTitle>
-        <div className="exco-kpi-grid exco-kpi-grid-sm">
-          <div className="exco-kpi-card">
-            <span className="exco-kpi-label">Projets</span>
-            <strong className="exco-kpi-value">{summary.total}</strong>
-          </div>
-          <div className="exco-kpi-card">
-            <span className="exco-kpi-label">En cours</span>
-            <strong className="exco-kpi-value">{summary.enCours}</strong>
-          </div>
-          <div className="exco-kpi-card">
-            <span className="exco-kpi-label">Terminés</span>
-            <strong className="exco-kpi-value">{summary.termines}</strong>
-          </div>
-          <div className="exco-kpi-card">
-            <span className="exco-kpi-label">Non débutés</span>
-            <strong className="exco-kpi-value">{summary.nonDebutes}</strong>
-          </div>
-          <div className="exco-kpi-card">
-            <span className="exco-kpi-label">Budget prévu</span>
-            <strong className="exco-kpi-value">
-              {summary.budgetPrevu.toLocaleString('en-US', {
-                style: 'currency',
-                currency: 'USD',
-                maximumFractionDigits: 0,
-              })}
-            </strong>
-          </div>
-          <div className="exco-kpi-card">
-            <span className="exco-kpi-label">Budget dépensé</span>
-            <strong className="exco-kpi-value">
-              {summary.budgetDepense.toLocaleString('en-US', {
-                style: 'currency',
-                currency: 'USD',
-                maximumFractionDigits: 0,
-              })}
-            </strong>
-          </div>
-        </div>
-      </div>
-
-      <div className="panel panel-padded">
-        <SectionTitle hint="Texte bleu = dernière mise à jour. Pour marquer un passage, encadrez-le avec [[ ... ]].">
-          CSR – FY27
-        </SectionTitle>
-        <p className="exco-csr-legend">
-          <mark className="exco-csr-upd">Mise à jour</mark>
-          {' — '}texte bleu = libellé exact du CSR Update.
-        </p>
-        <div className="exco-table-scroll">
-          <table className="exco-table exco-fy27-table">
-            <thead>
-              <tr>
-                <th>Project / Initiative</th>
-                <th>Purpose / Objective</th>
-                <th>Current Status</th>
-                <th>Key Issues / Risks</th>
-                <th>Next Steps</th>
-                {canEdit && <th />}
-              </tr>
-            </thead>
-            <tbody>
-              {fy27Rows.map((row) => (
-                <tr key={row.id}>
-                  <td>
-                    <CsrUpdateField
-                      disabled={!canEdit}
-                      value={row.name}
-                      onChange={(v) => updateFy27(row.id, { name: v })}
-                    />
-                  </td>
-                  <td>
-                    <CsrUpdateField
-                      disabled={!canEdit}
-                      value={row.objective}
-                      onChange={(v) => updateFy27(row.id, { objective: v })}
-                    />
-                  </td>
-                  <td>
-                    <CsrUpdateField
-                      disabled={!canEdit}
-                      value={row.progress}
-                      onChange={(v) => updateFy27(row.id, { progress: v })}
-                    />
-                  </td>
-                  <td>
-                    <CsrUpdateField
-                      disabled={!canEdit}
-                      value={row.risks}
-                      onChange={(v) => updateFy27(row.id, { risks: v })}
-                    />
-                  </td>
-                  <td>
-                    <CsrUpdateField
-                      disabled={!canEdit}
-                      value={row.nextSteps}
-                      onChange={(v) => updateFy27(row.id, { nextSteps: v })}
-                    />
-                  </td>
-                  {canEdit && (
-                    <td>
-                      <button
-                        type="button"
-                        className="btn btn-ghost"
-                        onClick={() => patchFy27((rows) => rows.filter((r) => r.id !== row.id))}
-                      >
-                        ×
-                      </button>
-                    </td>
-                  )}
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
-        {canEdit && (
-          <button
-            type="button"
-            className="btn btn-secondary"
-            onClick={() => patchFy27((rows) => [...rows, emptyCsrFy27Row(uid('csr-fy27'))])}
-          >
-            + Ajouter une initiative
-          </button>
-        )}
-      </div>
-
-      <div className="panel panel-padded">
-        <SectionTitle hint="Texte bleu = dernière mise à jour. Encadrez un passage avec [[ ... ]].">
-          Cahier des Charges
-        </SectionTitle>
-        <div className="exco-cahier-list">
-          {cahierRows.map((row) => (
-            <div key={row.id} className={`exco-cahier-card${csrTextHasUpdate(row.body) ? ' has-upd' : ''}`}>
-              <div className="exco-cahier-card-head">
-                <select
-                  className="exco-inline-input"
-                  disabled={!canEdit}
-                  value={row.icon}
-                  onChange={(e) =>
-                    updateCahier(row.id, {
-                      icon: e.target.value as ExcoCahierHighlight['icon'],
-                    })
-                  }
-                >
-                  {CAHIER_ICON_OPTIONS.map((opt) => (
-                    <option key={opt.id} value={opt.id}>
-                      {opt.label}
-                    </option>
-                  ))}
-                </select>
-                <label className="exco-cahier-pct">
-                  <span>Avancement</span>
-                  <input
-                    className="exco-inline-input"
-                    type="number"
-                    min={0}
-                    max={100}
-                    disabled={!canEdit}
-                    value={row.progressPct}
-                    onChange={(e) =>
-                      updateCahier(row.id, { progressPct: Number(e.target.value) || 0 })
-                    }
-                  />
-                  <span>%</span>
-                </label>
-                {canEdit && (
-                  <button
-                    type="button"
-                    className="btn btn-ghost"
-                    onClick={() => patchCahier((rows) => rows.filter((r) => r.id !== row.id))}
-                  >
-                    ×
+                    Enregistrer Summary
                   </button>
                 )}
               </div>
-              <input
-                className="exco-inline-input"
-                disabled={!canEdit}
-                value={row.title}
-                placeholder="Titre"
-                onChange={(e) => updateCahier(row.id, { title: e.target.value })}
-              />
-              <CsrUpdateField
-                disabled={!canEdit}
-                rows={4}
-                value={row.body}
-                onChange={(v) => updateCahier(row.id, { body: v })}
-              />
+              <div className="exco-panel-grid">
+                <section className="exco-panel exco-panel-accent-teal">
+                  <h3>Highlights</h3>
+                  <textarea
+                    className="exco-narrative-input"
+                    rows={22}
+                    disabled={!canEdit || Boolean(busy)}
+                    value={narrative.highlights || ''}
+                    onChange={(e) =>
+                      setNarrative((prev) => ({ ...prev, highlights: e.target.value }))
+                    }
+                    onBlur={(e) =>
+                      setNarrative((prev) => ({
+                        ...prev,
+                        highlights: formatNarrativeForEdit(e.target.value),
+                      }))
+                    }
+                    placeholder={"Point 1\n\nPoint 2\n\nPoint 3…"}
+                  />
+                </section>
+                <section className="exco-panel exco-panel-accent-wine">
+                  <h3>Lowlights</h3>
+                  <textarea
+                    className="exco-narrative-input"
+                    rows={22}
+                    disabled={!canEdit || Boolean(busy)}
+                    value={narrative.lowlights || ''}
+                    onChange={(e) =>
+                      setNarrative((prev) => ({ ...prev, lowlights: e.target.value }))
+                    }
+                    onBlur={(e) =>
+                      setNarrative((prev) => ({
+                        ...prev,
+                        lowlights: formatNarrativeForEdit(e.target.value),
+                      }))
+                    }
+                    placeholder={"Point 1\n\nPoint 2\n\nPoint 3…"}
+                  />
+                </section>
+                <section className="exco-panel exco-panel-accent-navy">
+                  <h3>Focus</h3>
+                  <textarea
+                    className="exco-narrative-input"
+                    rows={22}
+                    disabled={!canEdit || Boolean(busy)}
+                    value={narrative.focus || ''}
+                    onChange={(e) =>
+                      setNarrative((prev) => ({ ...prev, focus: e.target.value }))
+                    }
+                    onBlur={(e) =>
+                      setNarrative((prev) => ({
+                        ...prev,
+                        focus: formatNarrativeForEdit(e.target.value),
+                      }))
+                    }
+                    placeholder={"Point 1\n\nPoint 2\n\nPoint 3…"}
+                  />
+                </section>
+              </div>
             </div>
-          ))}
+          )}
+
+          {(tab === 'csr' || tab === 'recruitment' || tab === 'audit') && (
+            <ExcoNarrativePanel tab={tab} year={year} month={month} canEdit={canEdit} />
+          )}
         </div>
-        {canEdit && (
-          <button
-            type="button"
-            className="btn btn-secondary"
-            onClick={() =>
-              patchCahier((rows) => [...rows, emptyCahierHighlight(uid('cahier'))])
-            }
-          >
-            + Ajouter un volet
-          </button>
-        )}
-      </div>
-
-      <div className="panel panel-padded">
-        <SectionTitle>Répartition par type</SectionTitle>
-        {summary.byType.length === 0 ? (
-          <EmptyHint>Aucun projet.</EmptyHint>
-        ) : (
-          <table className="exco-table">
-            <thead>
-              <tr>
-                <th>Type</th>
-                <th>Nombre</th>
-              </tr>
-            </thead>
-            <tbody>
-              {summary.byType.map((row) => (
-                <tr key={row.label}>
-                  <td>{row.label}</td>
-                  <td>{row.value}</td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        )}
-      </div>
-
-      <div className="panel panel-padded">
-        <SectionTitle>Répartition par secteur</SectionTitle>
-        {summary.bySecteur.length === 0 ? (
-          <EmptyHint>Aucun secteur.</EmptyHint>
-        ) : (
-          <table className="exco-table">
-            <thead>
-              <tr>
-                <th>Secteur</th>
-                <th>CSR</th>
-                <th>Cahier des charges</th>
-                <th>Total</th>
-              </tr>
-            </thead>
-            <tbody>
-              {summary.bySecteur.map((row) => (
-                <tr key={row.label}>
-                  <td>{row.label}</td>
-                  <td>{row.csr}</td>
-                  <td>{row.cahier}</td>
-                  <td>{row.total}</td>
-                </tr>
-              ))}
-              <tr className="exco-total-row">
-                <td>Total</td>
-                <td>{summary.bySecteur.reduce((s, r) => s + r.csr, 0)}</td>
-                <td>{summary.bySecteur.reduce((s, r) => s + r.cahier, 0)}</td>
-                <td>{summary.bySecteur.reduce((s, r) => s + r.total, 0)}</td>
-              </tr>
-            </tbody>
-          </table>
-        )}
-      </div>
-    </div>
-  );
-}
-
-function RecrutementTab({
-  report,
-  overlays,
-  canEdit,
-  onChange,
-}: {
-  report: ExcoReportPayload;
-  overlays: ExcoOverlays;
-  canEdit: boolean;
-  onChange: (u: (p: ExcoOverlays) => ExcoOverlays) => void;
-}) {
-  const rows = resolveRecruitment(overlays);
-  const vacants = report.computed.vacantPostes;
-
-  const patchRows = (updater: (current: ExcoRecruitmentRow[]) => ExcoRecruitmentRow[]) => {
-    onChange((p) => ({
-      ...p,
-      recruitment: updater(resolveRecruitment(p).map((r) => ({ ...r }))),
-    }));
-  };
-
-  const update = (id: string, patch: Partial<ExcoRecruitmentRow>) => {
-    patchRows((current) => current.map((r) => (r.id === id ? { ...r, ...patch } : r)));
-  };
-
-  const addRow = (category: 'replacement' | 'new') => {
-    patchRows((current) => [
-      ...current,
-      {
-        id: uid('rec'),
-        category,
-        position: '',
-        grade: '',
-        status: '',
-        comments: '',
-        budgeted: '',
-        department: '',
-        location: '',
-        contractType: '',
-      },
-    ]);
-  };
-
-  const importVacants = () => {
-    if (!vacants.length) {
-      showError('Aucun poste vacant dans le module Postes');
-      return;
-    }
-    patchRows((current) => [
-      ...current,
-      ...vacants.map((v) => ({
-        id: uid('rec'),
-        category: 'new' as const,
-        position: v.title,
-        grade: v.grade,
-        status: 'Ongoing',
-        comments: v.notes || '',
-        budgeted: '',
-        department: v.department,
-        location: v.location,
-        contractType: '',
-      })),
-    ]);
-  };
-
-  const renderTable = (category: 'replacement' | 'new', title: string) => {
-    const subset = rows.filter((r) => r.category === category);
-    return (
-      <div className="panel panel-padded">
-        <SectionTitle>{title}</SectionTitle>
-        {subset.length === 0 ? (
-          <EmptyHint>Aucune ligne — ajoutez ou importez depuis Postes vacants.</EmptyHint>
-        ) : (
-          <div className="exco-table-scroll">
-            <table className="exco-table">
-              <thead>
-                <tr>
-                  <th>Position</th>
-                  <th>Grade</th>
-                  <th>Status</th>
-                  <th>Comments</th>
-                  <th>Budgeted</th>
-                  <th>Department</th>
-                  <th>Location</th>
-                  <th>Contract</th>
-                  {canEdit && <th />}
-                </tr>
-              </thead>
-              <tbody>
-                {subset.map((r) => (
-                  <tr key={r.id}>
-                    {(
-                      [
-                        'position',
-                        'grade',
-                        'status',
-                        'comments',
-                        'budgeted',
-                        'department',
-                        'location',
-                        'contractType',
-                      ] as const
-                    ).map((field) => (
-                      <td key={field}>
-                        <CsrUpdateField
-                          compact
-                          rows={field === 'comments' ? 2 : 1}
-                          disabled={!canEdit}
-                          value={r[field]}
-                          onChange={(v) => update(r.id, { [field]: v })}
-                        />
-                      </td>
-                    ))}
-                    {canEdit && (
-                      <td>
-                        <button
-                          type="button"
-                          className="btn btn-ghost"
-                          onClick={() => patchRows((current) => current.filter((x) => x.id !== r.id))}
-                        >
-                          ×
-                        </button>
-                      </td>
-                    )}
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
-        )}
-        {canEdit && (
-          <button type="button" className="btn btn-secondary" onClick={() => addRow(category)}>
-            + Ajouter
-          </button>
-        )}
-      </div>
-    );
-  };
-
-  return (
-    <div className="exco-grid">
-      <p className="exco-csr-legend">
-        <mark className="exco-csr-upd">Mise à jour</mark>
-        {' — '}texte bleu = dernière actualisation (non gras). Encadrez avec [[ ... ]].
-      </p>
-      {canEdit && (
-        <div className="panel panel-padded exco-import-bar">
-          <p>
-            Postes vacants disponibles dans l’app : <strong>{vacants.length}</strong>
-          </p>
-          <button type="button" className="btn btn-secondary" onClick={importVacants}>
-            Importer les postes vacants
-          </button>
         </div>
-      )}
-      {renderTable('replacement', '1. Replacements')}
-      {renderTable('new', '2. New positions')}
-    </div>
-  );
-}
 
-function GouvernanceTab({
-  report,
-  year,
-  month,
-  overlays,
-  canEdit,
-  onChange,
-}: {
-  report: ExcoReportPayload;
-  year: number;
-  month: number;
-  overlays: ExcoOverlays;
-  canEdit: boolean;
-  onChange: (u: (p: ExcoOverlays) => ExcoOverlays) => void;
-}) {
-  const asOf = useMemo(() => {
-    const lastDay = new Date(year, month, 0).getDate();
-    return `${year}-${String(month).padStart(2, '0')}-${String(lastDay).padStart(2, '0')}`;
-  }, [year, month]);
+        {inoutDrilldown && (
+          <DashboardListModal
+            title={inoutDrilldown.title}
+            columns={inoutDrilldown.columns}
+            rows={inoutDrilldown.rows}
+            onClose={() => setInoutDrilldown(null)}
+          />
+        )}
 
-  const [dashboard, setDashboard] = useState<AuditHrDashboard | null>(null);
-  const [loadingAudit, setLoadingAudit] = useState(true);
-  const auditRows = useMemo(() => buildInternalAuditRows(report), [report]);
-  const auditSum = useMemo(() => summarizeInternalAudit(auditRows), [auditRows]);
+        {formulaMenu && (
+          <RowContextMenu
+            x={formulaMenu.x}
+            y={formulaMenu.y}
+            items={formulaMenuItems}
+            onClose={() => setFormulaMenu(null)}
+          />
+        )}
 
-  useEffect(() => {
-    let cancelled = false;
-    setDashboard(null);
-    setLoadingAudit(true);
-    (async () => {
-      try {
-        const res = await fetch(`/api/audit-hr?asOf=${encodeURIComponent(asOf)}`);
-        const json = await res.json();
-        if (!res.ok) throw new Error(json.error || 'Erreur');
-        if (!cancelled) setDashboard(json.dashboard || null);
-      } catch (err) {
-        if (!cancelled) {
-          setDashboard(null);
-          showError(err instanceof Error ? err.message : 'Erreur Audit points');
-        }
-      } finally {
-        if (!cancelled) setLoadingAudit(false);
-      }
-    })();
-    return () => {
-      cancelled = true;
-    };
-  }, [asOf]);
-
-  return (
-    <div className="exco-grid">
-      <div className="panel panel-padded">
-        <SectionTitle hint="Capture Internal AUDIT — le vert indique les points Closed (progression depuis le tracker).">
-          Internal AUDIT
-        </SectionTitle>
-        <p className="exco-audit-sum">
-          Closed <strong>{auditSum.closed}/{auditSum.total}</strong> ({auditSum.closedPct}%)
-          {' · '}
-          <span className="exco-audit-progressed">+{auditSum.progressed} clôturés depuis la dernière page</span>
-          {' · '}Overdue {auditSum.overdue}
-          {' · '}On going {auditSum.ongoing}
-        </p>
-        <div className="exco-table-scroll">
-          <table className="exco-table exco-audit-table">
-            <thead>
-              <tr>
-                <th>ID</th>
-                <th>Findings</th>
-                <th>Severity</th>
-                <th>Status</th>
-                <th>Comments</th>
-                <th>Due Date</th>
-              </tr>
-            </thead>
-            <tbody>
-              {auditRows.map((row) => (
-                <tr
-                  key={row.number}
-                  className={
-                    row.status === 'Closed'
-                      ? row.progressed
-                        ? 'is-closed is-progressed'
-                        : 'is-closed'
-                      : row.status === 'Overdue'
-                        ? 'is-overdue'
-                        : row.status === 'On going'
-                          ? 'is-ongoing'
-                          : undefined
-                  }
-                >
-                  <td>{row.number}</td>
-                  <td>{row.finding}</td>
-                  <td className={`exco-sev-${row.severity.toLowerCase()}`}>{row.severity}</td>
-                  <td>
-                    <strong>{row.status}</strong>
-                    {row.progressed ? <span className="exco-audit-new"> MAJ</span> : null}
-                  </td>
-                  <td>{row.comments || '—'}</td>
-                  <td>{row.dueDateLabel}</td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
-      </div>
-
-      <div className="panel panel-padded">
-        <SectionTitle hint="Cap 4 — même dashboard que le menu Audit points">
-          Internal Audit — Findings
-        </SectionTitle>
-        <p className="exco-audit-link">
-          <a href="/audit">Ouvrir Audit points →</a>
-        </p>
-        {loadingAudit ? (
-          <div className="loading exco-audit-loading">Chargement du dashboard Audit…</div>
-        ) : dashboard ? (
-          <AuditHrDashboardPanels dashboard={dashboard} compact />
-        ) : (
-          <EmptyHint>Aucun finding — ajoutez les actions dans Audit points.</EmptyHint>
+        {formulaModal && (
+          <StaffCostFormulaModal
+            state={formulaModal}
+            canEdit={canEdit}
+            onClose={() => setFormulaModal(null)}
+            onSave={(cellKey, note) => {
+              setStaffCostFormulaNotes((prev) => ({ ...prev, [cellKey]: note }));
+              void (async () => {
+                try {
+                  const res = await fetch('/api/exco/report', {
+                    method: 'PUT',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                      year,
+                      month,
+                      overlays: {
+                        staffCostFormulaNotes: {
+                          ...staffCostFormulaNotes,
+                          [cellKey]: note,
+                        },
+                      },
+                    }),
+                  });
+                  const data = await res.json();
+                  if (!res.ok) throw new Error(data.error || 'Erreur formule');
+                  showSuccess('Formule enregistrée');
+                } catch (err) {
+                  showError(err instanceof Error ? err.message : 'Erreur formule');
+                }
+              })();
+            }}
+          />
         )}
       </div>
-
-      <div className="panel panel-padded">
-        <SectionTitle>Policies</SectionTitle>
-        <div className="exco-policy-grid">
-          <LinesEditor
-            label={`Expired policies pending update (${overlays.policies.expiredPendingUpdate.filter(Boolean).length})`}
-            lines={overlays.policies.expiredPendingUpdate}
-            disabled={!canEdit}
-            onChange={(lines) =>
-              onChange((p) => ({
-                ...p,
-                policies: { ...p.policies, expiredPendingUpdate: lines },
-              }))
-            }
-          />
-          <LinesEditor
-            label={`Submitted to EXCO (${overlays.policies.submittedToExco.filter(Boolean).length})`}
-            lines={overlays.policies.submittedToExco}
-            disabled={!canEdit}
-            onChange={(lines) =>
-              onChange((p) => ({
-                ...p,
-                policies: { ...p.policies, submittedToExco: lines },
-              }))
-            }
-          />
-          <LinesEditor
-            label={`Pending publication (${overlays.policies.pendingPublication.filter(Boolean).length})`}
-            lines={overlays.policies.pendingPublication}
-            disabled={!canEdit}
-            onChange={(lines) =>
-              onChange((p) => ({
-                ...p,
-                policies: { ...p.policies, pendingPublication: lines },
-              }))
-            }
-          />
-          <LinesEditor
-            label={`Under communication (${overlays.policies.underCommunication.filter(Boolean).length})`}
-            lines={overlays.policies.underCommunication}
-            disabled={!canEdit}
-            onChange={(lines) =>
-              onChange((p) => ({
-                ...p,
-                policies: { ...p.policies, underCommunication: lines },
-              }))
-            }
-          />
-        </div>
-      </div>
-    </div>
+    </PermissionGate>
   );
 }

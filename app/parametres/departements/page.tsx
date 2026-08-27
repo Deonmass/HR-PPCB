@@ -9,6 +9,7 @@ import RefreshButton from '@/components/RefreshButton';
 import { usePermissions } from '@/contexts/PermissionContext';
 import { confirmDelete, showError, showSuccess } from '@/lib/swal';
 import type { DepartmentSetting, ServiceSetting } from '@/lib/auth-types';
+import { compareExcoDepartments } from '@/lib/exco-department-map';
 
 const emptyForm = { id: '', name: '', code: '', active: true };
 
@@ -22,31 +23,42 @@ export default function DepartementsPage() {
   const [modalOpen, setModalOpen] = useState(false);
   const [form, setForm] = useState(emptyForm);
   const [saving, setSaving] = useState(false);
+  const [syncing, setSyncing] = useState(false);
 
-  const load = useCallback(async () => {
+  const load = useCallback(async (opts?: { sync?: boolean }) => {
     setLoading(true);
-    const [deptRes, svcRes] = await Promise.all([
-      fetch('/api/settings/departments'),
-      fetch('/api/settings/services'),
-    ]);
-    const deptJson = await deptRes.json();
-    const svcJson = svcRes.ok ? await svcRes.json() : [];
-    setItems(Array.isArray(deptJson) ? deptJson : []);
-    setServices(Array.isArray(svcJson) ? svcJson : []);
-    setLoading(false);
+    try {
+      const deptUrl = opts?.sync
+        ? '/api/settings/departments?sync=1'
+        : '/api/settings/departments';
+      const [deptRes, svcRes] = await Promise.all([
+        fetch(deptUrl),
+        fetch('/api/settings/services'),
+      ]);
+      const deptJson = await deptRes.json();
+      const svcJson = svcRes.ok ? await svcRes.json() : [];
+      setItems(Array.isArray(deptJson) ? deptJson : []);
+      setServices(Array.isArray(svcJson) ? svcJson : []);
+    } finally {
+      setLoading(false);
+    }
   }, []);
 
   useEffect(() => {
-    load();
+    // Aligne les libellés canoniques au premier chargement
+    void load({ sync: true });
   }, [load]);
 
   const filtered = useMemo(() => {
     const query = search.trim().toLowerCase();
-    if (!query) return items;
-    return items.filter((item) => {
-      const haystack = `${item.name} ${item.code ?? ''}`.toLowerCase();
-      return haystack.includes(query);
-    });
+    return items
+      .filter((item) => {
+        if (!item.active) return false;
+        if (!query) return true;
+        const haystack = `${item.name} ${item.code ?? ''}`.toLowerCase();
+        return haystack.includes(query);
+      })
+      .sort((a, b) => compareExcoDepartments(a.name, b.name));
   }, [items, search]);
 
   const openCreate = () => {
@@ -57,6 +69,16 @@ export default function DepartementsPage() {
   const openEdit = (item: DepartmentSetting) => {
     setForm({ id: item.id, name: item.name, code: item.code || '', active: item.active });
     setModalOpen(true);
+  };
+
+  const handleSync = async () => {
+    setSyncing(true);
+    try {
+      await load({ sync: true });
+      await showSuccess('Départements uniformisés');
+    } finally {
+      setSyncing(false);
+    }
   };
 
   const handleSave = async () => {
@@ -79,7 +101,7 @@ export default function DepartementsPage() {
       }
       await showSuccess(form.id ? 'Département mis à jour' : 'Département ajouté');
       setModalOpen(false);
-      await load();
+      await load({ sync: true });
     } finally {
       setSaving(false);
     }
@@ -116,7 +138,7 @@ export default function DepartementsPage() {
   };
 
   const menuItems = (item: DepartmentSetting): ContextMenuItem[] => {
-    const items: ContextMenuItem[] = [
+    const entries: ContextMenuItem[] = [
       {
         id: 'services',
         label: 'Voir les services',
@@ -125,13 +147,13 @@ export default function DepartementsPage() {
       },
     ];
     if (can('settings.departements', 'edit')) {
-      items.push({
+      entries.push({
         id: 'toggle',
         label: item.active ? 'Désactiver' : 'Activer',
         icon: 'toggle',
         onClick: () => handleToggleActive(item),
       });
-      items.push({
+      entries.push({
         id: 'edit',
         label: 'Modifier',
         icon: 'edit',
@@ -139,7 +161,7 @@ export default function DepartementsPage() {
       });
     }
     if (can('settings.departements', 'delete')) {
-      items.push({
+      entries.push({
         id: 'delete',
         label: 'Supprimer',
         icon: 'delete',
@@ -147,7 +169,7 @@ export default function DepartementsPage() {
         onClick: () => handleDelete(item),
       });
     }
-    return items;
+    return entries;
   };
 
   if (loading) return <div className="loading">Chargement...</div>;
@@ -158,17 +180,29 @@ export default function DepartementsPage() {
         <div>
           <div className="page-header-title-row">
             <h2>Départements</h2>
-            <RefreshButton onClick={load} loading={false} />
+            <RefreshButton onClick={() => load({ sync: true })} loading={syncing} />
           </div>
           <p>
-            {filtered.length} / {items.length} département{items.length > 1 ? 's' : ''}
+            {filtered.length} département{filtered.length > 1 ? 's' : ''}
           </p>
         </div>
-        <PermissionGate menuId="settings.departements" action="create">
-          <button type="button" className="btn btn-accent" onClick={openCreate}>
-            + Ajouter
-          </button>
-        </PermissionGate>
+        <div className="page-header-actions">
+          <PermissionGate menuId="settings.departements" action="edit">
+            <button
+              type="button"
+              className="btn btn-secondary"
+              onClick={handleSync}
+              disabled={syncing}
+            >
+              {syncing ? 'Uniformisation…' : 'Uniformiser'}
+            </button>
+          </PermissionGate>
+          <PermissionGate menuId="settings.departements" action="create">
+            <button type="button" className="btn btn-accent" onClick={openCreate}>
+              + Ajouter
+            </button>
+          </PermissionGate>
+        </div>
       </div>
 
       <div className="panel settings-search-panel">
@@ -189,7 +223,7 @@ export default function DepartementsPage() {
           return (
             <article
               key={item.id}
-              className="settings-card settings-card-clickable"
+              className={`settings-card settings-card-clickable${item.active ? '' : ' is-inactive'}`}
               role="link"
               tabIndex={0}
               onClick={() => openServices(item)}
@@ -217,6 +251,10 @@ export default function DepartementsPage() {
           );
         })}
       </div>
+
+      {filtered.length === 0 && (
+        <p className="settings-empty-hint">Aucun département trouvé.</p>
+      )}
 
       {modalOpen && (
         <div className="modal-overlay" onClick={() => setModalOpen(false)}>

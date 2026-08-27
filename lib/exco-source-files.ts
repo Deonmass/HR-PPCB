@@ -1,13 +1,17 @@
 /**
- * Fichiers sources EXCO — ajouter ici les prochains fichiers à importer.
- * L’UI du formulaire de génération lit cette liste.
+ * Fichiers sources EXCO — uploadés depuis l’onglet Params.
+ * Manico (Mco) + Quarico (Qco) sont toujours lus ensemble dans chaque fichier.
+ * New report.xlsx est bundlé (feuille BASE affichée dans l’onglet BASE).
  */
-export type ExcoSourceFileId = 'componentPostedUnits' | 'leaveBalances';
+export type ExcoSourceFileId =
+  | 'componentPostedUnits'
+  | 'leaveBalances'
+  | 'engagementsTerminations'
+  | 'newReport'; // interne / legacy — non exposé dans Params
 
 export interface ExcoSourceFileDef {
   id: ExcoSourceFileId;
   label: string;
-  /** Nom d’exemple affiché à l’utilisateur. */
   exampleName: string;
   required: boolean;
   accept: string;
@@ -21,7 +25,7 @@ export const EXCO_SOURCE_FILES: ExcoSourceFileDef[] = [
     exampleName: 'Component Posted Units_July 2026.xlsx',
     required: true,
     accept: '.xlsx,.xlsm,.xls',
-    description: 'Overtime hours + FC amounts (2 company sheets)',
+    description: 'Overtime Manico + Quarico — heures et montants FC (toutes feuilles).',
   },
   {
     id: 'leaveBalances',
@@ -29,6 +33,14 @@ export const EXCO_SOURCE_FILES: ExcoSourceFileDef[] = [
     exampleName: 'Leave Balances_July 2026.xlsx',
     required: true,
     accept: '.xlsx,.xlsm,.xls',
-    description: 'Leave Type Annual · Closing Balance · provision',
+    description: 'Congés Annual — Closing Balance + Value (Manico + Quarico).',
+  },
+  {
+    id: 'engagementsTerminations',
+    label: 'New Engagements and Terminations',
+    exampleName: 'New Engagements and Terminations_July 2026.xlsx',
+    required: true,
+    accept: '.xlsx,.xlsm,.xls',
+    description: 'Entrées / sorties — Employment Date, Termination Date, Reason (Mco + Qco).',
   },
 ];

@@ -1,4 +1,8 @@
 import * as XLSX from 'xlsx';
+import {
+  EXCO_CANONICAL_DEPARTMENTS,
+  normalizeDepartmentName,
+} from './exco-department-map';
 
 export interface ExcoOtEmployeeImport {
   matricule: string;
@@ -28,86 +32,17 @@ export interface ExcoOtMonthImport {
   importedAt: string;
 }
 
-const LEGACY_EXCO_DEPT_TO_SYSTEM: Record<string, string> = {
-  CEC: 'Administration',
-  ENG: 'Engineering',
-  Mining: 'Mining',
-  Opt: 'Risk & Environment',
-  Prod: 'Production',
-  Log: 'Sales & Logistics',
-  QA: 'Quality Assurance',
-  Autre: 'Administration',
-};
-
-/** Ordre de secours = départements paramètres (si store indisponible). */
-export const EXCO_SYSTEM_DEPT_FALLBACK = [
-  'Administration',
-  'Audit',
-  'Engineering',
-  'Finance',
-  'Human Resources',
-  'Legal',
-  'Mining',
-  'Packaging & Logistics',
-  'Production',
-  'Quality Assurance',
-  'Risk & Environment',
-  'Sales & Logistics',
-  'Supply chain',
-] as const;
+/** Ordre de secours = départements canoniques (si store indisponible). */
+export const EXCO_SYSTEM_DEPT_FALLBACK = EXCO_CANONICAL_DEPARTMENTS;
 
 /**
- * Mappe Org. Unit / Departments Excel / anciens codes EXCO (CEC, ENG…)
- * vers le libellé département du système (paramètres).
+ * Mappe Org. Unit / Departments Excel / anciens codes EXCO
+ * vers le libellé département canonique (paramètres).
  */
 export function mapExcoOtDepartment(raw: string): string {
   const s = (raw || '').trim();
   if (!s) return 'Administration';
-
-  const legacy = LEGACY_EXCO_DEPT_TO_SYSTEM[s];
-  if (legacy) return legacy;
-
-  const lower = s.toLowerCase();
-  const code = s.match(/^([A-Z]{2}\d{2})/i)?.[1]?.toUpperCase() || '';
-
-  // Déjà un libellé système (ou proche)
-  for (const name of EXCO_SYSTEM_DEPT_FALLBACK) {
-    if (name.toLowerCase() === lower) return name;
-  }
-
-  if (/human resources|\bhr\b/i.test(lower)) return 'Human Resources';
-  if (/audit/i.test(lower)) return 'Audit';
-  if (/finance|compta|accounting/i.test(lower)) return 'Finance';
-  if (/legal|juridique/i.test(lower)) return 'Legal';
-  if (/supply/i.test(lower)) return 'Supply chain';
-  if (/packaging/i.test(lower)) return 'Packaging & Logistics';
-  if (/sales.*log|log.*sales|sales & logistics/i.test(lower)) return 'Sales & Logistics';
-  if (/risk|environ|optim|opt\b|km58/i.test(lower) || code === 'KM58') {
-    return 'Risk & Environment';
-  }
-  if (/eng|engineering|garage|estates|civil|km53/i.test(lower) || code === 'KM53') {
-    return 'Engineering';
-  }
-  if (/mining|mine|quarry|kq19|kq10|drilling|hauling|blast/i.test(lower) || code.startsWith('KQ')) {
-    return 'Mining';
-  }
-  if (
-    /prod|production|burning|milling|bagging|raw|f m |fm general|km51|km43|km44|km45|km46/i.test(lower)
-    || ['KM51', 'KM43', 'KM44', 'KM45', 'KM46'].includes(code)
-  ) {
-    return 'Production';
-  }
-  if (/log|logistic|warehouse|stores|km54/i.test(lower) || code === 'KM54' || code.startsWith('KC61')) {
-    return 'Sales & Logistics';
-  }
-  if (/qa|quality|laboratory|labo|km55/i.test(lower) || code === 'KM55') {
-    return 'Quality Assurance';
-  }
-  if (/cec|corporate|admin|kc87|kc86|kc85/i.test(lower) || code.startsWith('KC')) {
-    return 'Administration';
-  }
-
-  return s.slice(0, 48);
+  return normalizeDepartmentName(s) || 'Administration';
 }
 
 export function excoOtDeptOrder(): string[] {
@@ -371,6 +306,8 @@ export interface ExcoLeaveMonthImport {
   counts: { plant: number; hq: number; lubudi: number; all: number };
   /** Closing Balance Annual par matricule. */
   byMatricule: Record<string, number>;
+  /** Opening Balance Annual par matricule (optionnel — New report). */
+  openingByMatricule?: Record<string, number>;
   sourceFiles: string[];
   importedAt: string;
 }

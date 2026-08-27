@@ -42,7 +42,12 @@ export default function ChartGenderLegend({
           >
             {option.swatch ? <span className={`chart-gender-swatch ${option.swatch}`} /> : null}
             <span className="chart-gender-label">{option.label}</span>
-            <span className="chart-gender-count chart-dept-filter-count">{option.count}</span>
+            <span className="chart-gender-count chart-dept-filter-count">
+              {option.count}
+              {option.key && totalCount > 0
+                ? ` (${(Math.round((option.count / totalCount) * 1000) / 10).toLocaleString('fr-FR')}%)`
+                : ''}
+            </span>
           </button>
         ))}
       </div>

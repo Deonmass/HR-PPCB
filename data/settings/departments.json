@@ -1,12 +1,6 @@
 {
   "departments": [
     {
-      "id": "dept-administration",
-      "name": "Administration",
-      "code": "Administration",
-      "active": true
-    },
-    {
       "id": "dept-audit",
       "name": "Audit",
       "code": "Audit",
@@ -37,15 +31,33 @@
       "active": true
     },
     {
+      "id": "dept-logistic",
+      "name": "Logistic",
+      "code": "Logistic",
+      "active": true
+    },
+    {
+      "id": "dept-md-office",
+      "name": "MD Office",
+      "code": "MD Office",
+      "active": true
+    },
+    {
       "id": "dept-mining",
       "name": "Mining",
       "code": "Mining",
       "active": true
     },
     {
-      "id": "dept-packaging-logistics",
-      "name": "Packaging & Logistics",
-      "code": "Packaging & Logistics",
+      "id": "dept-optimization",
+      "name": "Optimization",
+      "code": "Optimization",
+      "active": true
+    },
+    {
+      "id": "dept-procurement",
+      "name": "Procurement",
+      "code": "Procurement",
       "active": true
     },
     {
@@ -61,22 +73,58 @@
       "active": true
     },
     {
+      "id": "dept-sales-and-marketing",
+      "name": "Sales and Marketing",
+      "code": "Sales and Marketing",
+      "active": true
+    },
+    {
+      "id": "dept-she",
+      "name": "SHE",
+      "code": "SHE",
+      "active": true
+    },
+    {
+      "id": "dept-supply-chain",
+      "name": "Supply Chain",
+      "code": "Supply Chain",
+      "active": false
+    },
+    {
+      "id": "dept-transport-and-transit",
+      "name": "Transport and Transit",
+      "code": "Transport and Transit",
+      "active": true
+    },
+    {
+      "id": "dept-administration",
+      "name": "Administration",
+      "code": "Administration",
+      "active": false
+    },
+    {
+      "id": "dept-packaging-and-logistics",
+      "name": "Packaging and Logistics",
+      "code": "Packaging and Logistics",
+      "active": false
+    },
+    {
+      "id": "dept-sales-cec",
+      "name": "Sales_CEC",
+      "code": "Sales_CEC",
+      "active": false
+    },
+    {
       "id": "dept-risk-environment",
       "name": "Risk & Environment",
       "code": "Risk & Environment",
-      "active": true
+      "active": false
     },
     {
       "id": "dept-sales-logistics",
       "name": "Sales & Logistics",
       "code": "Sales & Logistics",
-      "active": true
-    },
-    {
-      "id": "dept-supply-chain",
-      "name": "Supply chain",
-      "code": "Supply chain",
-      "active": true
+      "active": false
     }
   ]
 }

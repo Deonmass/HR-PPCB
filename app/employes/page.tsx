@@ -10,16 +10,19 @@ import RowContextMenu, { type ContextMenuItem } from '@/components/RowContextMen
 import TableHeaderFilter from '@/components/TableHeaderFilter';
 import { usePermissions } from '@/contexts/PermissionContext';
 import { calcDocumentCompletion, getDepartments } from '@/lib/documents';
+import { getLocalisations } from '@/lib/employee-utils';
 import {
   computeAgeFromDisplayDate,
   computeSeniority,
+  exitedInYear,
+  exitedInYearMonth,
   formatSeniority,
   formatSeniorityLabel,
-  wasPresentInYear,
-  wasPresentInYearMonth,
+  wasPresentOnAsOf,
   yearFromDisplayDate,
 } from '@/lib/employee-columns';
 import { downloadEmployeesHrExport } from '@/lib/employees-export';
+import { employeesPresentOnAsOf } from '@/lib/employees-hr-dashboard';
 import {
   daysUntilDisplayDate,
   ESSAI_COMMENTAIRES,
@@ -98,6 +101,7 @@ const EMPTY_FILTERS: Record<FilterKey, string[]> = {
 };
 
 const CURRENT_YEAR = new Date().getFullYear();
+const CURRENT_MONTH = new Date().getMonth() + 1;
 
 function resolveEmployeeAge(employee: Employee): number | null {
   return computeAgeFromDisplayDate(employee.dateOfBirth || '') ?? employee.age ?? null;
@@ -167,8 +171,9 @@ export default function EmployesPage() {
   const [dept, setDept] = useState('');
   const [contractFilter, setContractFilter] = useState('');
   const [statusFilter, setStatusFilter] = useState('');
-  const [yearFilter, setYearFilter] = useState<number | ''>('');
-  const [monthFilter, setMonthFilter] = useState<number | ''>('');
+  const [yearFilter, setYearFilter] = useState<number | ''>(CURRENT_YEAR);
+  const [monthFilter, setMonthFilter] = useState<number | ''>(CURRENT_MONTH);
+  const [locFilter, setLocFilter] = useState('');
   const [colFilters, setColFilters] = useState<Record<FilterKey, string[]>>(EMPTY_FILTERS);
   const [editOpen, setEditOpen] = useState(false);
   const [viewOpen, setViewOpen] = useState(false);
@@ -233,35 +238,35 @@ export default function EmployesPage() {
   }, [employees, exits]);
 
   const yearScopedActive = useMemo(() => {
-    if (yearFilter === '') return employees;
-    if (monthFilter !== '') {
-      return employees.filter((e) =>
-        wasPresentInYearMonth(e, yearFilter, monthFilter, { isExit: false }),
-      );
+    let list = employees;
+    if (yearFilter !== '') {
+      const asOf = asOfFromYearMonth(yearFilter, monthFilter);
+      list = employees.filter((e) => wasPresentOnAsOf(e, asOf));
     }
-    return employees.filter((e) => wasPresentInYear(e, yearFilter, { isExit: false }));
-  }, [employees, yearFilter, monthFilter]);
+    if (locFilter) list = list.filter((e) => (e.localisation || '').trim() === locFilter);
+    return list;
+  }, [employees, yearFilter, monthFilter, locFilter]);
 
+  /** Effectif encore en poste au dernier jour de la période (actifs + sorties postérieures). */
+  const yearScopedHeadcount = useMemo(() => {
+    let list = yearFilter === ''
+      ? employees
+      : employeesPresentOnAsOf(employees, exits, asOfFromYearMonth(yearFilter, monthFilter));
+    if (locFilter) list = list.filter((e) => (e.localisation || '').trim() === locFilter);
+    return [...list].sort((a, b) => a.nom.localeCompare(b.nom, 'fr'));
+  }, [employees, exits, yearFilter, monthFilter, locFilter]);
+
+  /** Sorties dont la date de fin tombe dans la période sélectionnée. */
   const yearScopedExits = useMemo(() => {
-    if (yearFilter === '') return exits;
-    if (monthFilter !== '') {
-      return exits.filter((e) =>
-        wasPresentInYearMonth(e, yearFilter, monthFilter, { isExit: true }),
-      );
+    let list = exits;
+    if (yearFilter !== '') {
+      list = monthFilter !== ''
+        ? exits.filter((e) => exitedInYearMonth(e, yearFilter, monthFilter))
+        : exits.filter((e) => exitedInYear(e, yearFilter));
     }
-    return exits.filter((e) => wasPresentInYear(e, yearFilter, { isExit: true }));
-  }, [exits, yearFilter, monthFilter]);
-
-  /** Liste : avec année, inclut aussi les sorties présentes cette année-là. */
-  const yearScopedListe = useMemo(() => {
-    if (yearFilter === '') return yearScopedActive;
-    const byMatricule = new Map<string, Employee>();
-    for (const e of yearScopedActive) byMatricule.set(e.matricule, e);
-    for (const e of yearScopedExits) {
-      if (!byMatricule.has(e.matricule)) byMatricule.set(e.matricule, e);
-    }
-    return [...byMatricule.values()].sort((a, b) => a.nom.localeCompare(b.nom, 'fr'));
-  }, [yearFilter, yearScopedActive, yearScopedExits]);
+    if (locFilter) list = list.filter((e) => (e.localisation || '').trim() === locFilter);
+    return list;
+  }, [exits, yearFilter, monthFilter, locFilter]);
 
   const cddList = useMemo(
     () => yearScopedActive.filter((e) => isCddEmployee(e)),
@@ -290,7 +295,7 @@ export default function EmployesPage() {
         ? cddList
         : tab === 'essai'
           ? essaiList
-          : yearScopedListe;
+          : yearScopedHeadcount;
 
   const toolbarFiltered = useMemo(() => {
     const list = Array.isArray(sourceList) ? sourceList : [];
@@ -390,57 +395,10 @@ export default function EmployesPage() {
   const dashboardEmployees = yearScopedActive;
   const dashboardExits = yearScopedExits;
 
-  const pageSubtitle = useMemo(() => {
-    const parts: string[] = [];
-    if (yearFilter !== '') {
-      const monthLabel =
-        monthFilter !== ''
-          ? MONTH_OPTIONS.find((m) => m.value === monthFilter)?.label
-          : null;
-      parts.push(monthLabel ? `${monthLabel} ${yearFilter}` : `Année ${yearFilter}`);
-    }
-    if (dept) parts.push(dept);
-    if (contractFilter) parts.push(contractFilter);
-    if (statusFilter) parts.push(statusFilter);
-    if (search.trim()) parts.push(`« ${search.trim()} »`);
-
-    const n = tab === 'dashboard' ? dashboardEmployees.length : filtered.length;
-    let countLabel = '';
-    switch (tab) {
-      case 'dashboard':
-        countLabel = `${dashboardEmployees.length + dashboardExits.length} personne${dashboardEmployees.length + dashboardExits.length > 1 ? 's' : ''}`;
-        countLabel += ` · ${dashboardEmployees.length} actif${dashboardEmployees.length > 1 ? 's' : ''}`;
-        if (dashboardExits.length > 0) {
-          countLabel += ` · ${dashboardExits.length} sortie${dashboardExits.length > 1 ? 's' : ''}`;
-        }
-        break;
-      case 'exit':
-        countLabel = `${n} sortie${n > 1 ? 's' : ''}`;
-        break;
-      case 'cdd':
-        countLabel = `${n} CDD`;
-        break;
-      case 'essai':
-        countLabel = `${n} en période d'essai`;
-        break;
-      default:
-        countLabel = `${n} employé${n > 1 ? 's' : ''}`;
-    }
-
-    if (parts.length === 0) return countLabel;
-    return `${parts.join(' · ')} · ${countLabel}`;
-  }, [
-    tab,
-    yearFilter,
-    monthFilter,
-    dept,
-    contractFilter,
-    statusFilter,
-    search,
-    filtered.length,
-    dashboardEmployees.length,
-    dashboardExits.length,
-  ]);
+  const locOptions = useMemo(
+    () => getLocalisations([...employees, ...exits]),
+    [employees, exits],
+  );
 
   const openView = (employee: Employee) => {
     setViewTab(tab === 'essai' || tab === 'cdd' ? 'essai' : 'infos');
@@ -604,59 +562,54 @@ export default function EmployesPage() {
               <h2>Liste des employés</h2>
               <RefreshButton onClick={() => void load(true)} loading={refreshing} />
             </div>
-            <p>{pageSubtitle}</p>
           </div>
           <div className="employees-header-actions">
-            <div className="tabs header-tabs header-tabs-compact">
-              <button
-                type="button"
-                className={`tab-btn tab-btn-sm${tab === 'dashboard' ? ' active' : ''}`}
-                onClick={() => setTab('dashboard')}
+            <div className="employees-header-period">
+              <select
+                className="filter-select employees-filter-year"
+                value={yearFilter === '' ? '' : String(yearFilter)}
+                onChange={(e) => {
+                  const v = e.target.value;
+                  setYearFilter(v ? Number(v) : '');
+                  if (!v) setMonthFilter('');
+                }}
+                title="Filtrer par année — effectif au 31 décembre, ou au dernier jour du mois"
               >
-                Dashboard
-              </button>
-              <button
-                type="button"
-                className={`tab-btn tab-btn-sm${tab === 'liste' ? ' active' : ''}`}
-                onClick={() => setTab('liste')}
+                <option value="">Toutes les années</option>
+                {yearOptions.map((y) => (
+                  <option key={y} value={y}>{y}</option>
+                ))}
+              </select>
+              <select
+                className="filter-select employees-filter-month"
+                value={monthFilter === '' ? '' : String(monthFilter)}
+                onChange={(e) => {
+                  const v = e.target.value;
+                  setMonthFilter(v ? Number(v) : '');
+                }}
+                disabled={yearFilter === ''}
+                title={
+                  yearFilter === ''
+                    ? 'Choisissez d’abord une année'
+                    : 'Effectif au dernier jour du mois sélectionné'
+                }
               >
-                Liste
-                <span className="employees-tab-count">{dashboardEmployees.length}</span>
-              </button>
-              <button
-                type="button"
-                className={`tab-btn tab-btn-sm${tab === 'essai' ? ' active' : ''}`}
-                onClick={() => setTab('essai')}
+                <option value="">Tous les mois</option>
+                {MONTH_OPTIONS.map((m) => (
+                  <option key={m.value} value={m.value}>{m.label}</option>
+                ))}
+              </select>
+              <select
+                className="filter-select employees-filter-loc"
+                value={locFilter}
+                onChange={(e) => setLocFilter(e.target.value)}
+                title="Filtrer par localisation"
               >
-                Période d&apos;essai
-                <span className="employees-tab-count">{essaiList.length}</span>
-                {essaiAlertCount > 0 && (
-                  <span className="employees-tab-alert" title="Évaluations à préparer (J-30)">
-                    {essaiAlertCount}
-                  </span>
-                )}
-              </button>
-              <button
-                type="button"
-                className={`tab-btn tab-btn-sm${tab === 'cdd' ? ' active' : ''}`}
-                onClick={() => setTab('cdd')}
-              >
-                CDD
-                <span className="employees-tab-count">{cddList.length}</span>
-                {cddAlertCount > 0 && (
-                  <span className="employees-tab-alert is-cdd" title="CDD échus ou se terminant dans ≤ 30 jours">
-                    {cddAlertCount}
-                  </span>
-                )}
-              </button>
-              <button
-                type="button"
-                className={`tab-btn tab-btn-sm${tab === 'exit' ? ' active' : ''}`}
-                onClick={() => setTab('exit')}
-              >
-                Exit
-                <span className="employees-tab-count">{dashboardExits.length}</span>
-              </button>
+                <option value="">Toutes les localisations</option>
+                {locOptions.map((loc) => (
+                  <option key={loc} value={loc}>{loc}</option>
+                ))}
+              </select>
             </div>
             {canExport && (
               <button
@@ -697,7 +650,70 @@ export default function EmployesPage() {
           </div>
         </div>
 
-        {(tab === 'liste' || tab === 'exit' || tab === 'dashboard' || tab === 'cdd' || tab === 'essai') && (
+        <div className="exco-main-tabs employees-main-tabs" role="tablist" aria-label="Liste des employés">
+          <button
+            type="button"
+            role="tab"
+            className={`exco-main-tab${tab === 'dashboard' ? ' is-active' : ''}`}
+            aria-selected={tab === 'dashboard'}
+            onClick={() => setTab('dashboard')}
+          >
+            Dashboard
+          </button>
+          <button
+            type="button"
+            role="tab"
+            className={`exco-main-tab${tab === 'liste' ? ' is-active' : ''}`}
+            aria-selected={tab === 'liste'}
+            onClick={() => setTab('liste')}
+          >
+            Liste
+            <span className="employees-tab-count">{dashboardEmployees.length}</span>
+          </button>
+          <button
+            type="button"
+            role="tab"
+            className={`exco-main-tab${tab === 'essai' ? ' is-active' : ''}`}
+            aria-selected={tab === 'essai'}
+            onClick={() => setTab('essai')}
+          >
+            Période d&apos;essai
+            <span className="employees-tab-count">{essaiList.length}</span>
+            {essaiAlertCount > 0 && (
+              <span className="employees-tab-alert" title="Évaluations à préparer (J-30)">
+                {essaiAlertCount}
+              </span>
+            )}
+          </button>
+          <button
+            type="button"
+            role="tab"
+            className={`exco-main-tab${tab === 'cdd' ? ' is-active' : ''}`}
+            aria-selected={tab === 'cdd'}
+            onClick={() => setTab('cdd')}
+          >
+            CDD
+            <span className="employees-tab-count">{cddList.length}</span>
+            {cddAlertCount > 0 && (
+              <span className="employees-tab-alert is-cdd" title="CDD échus ou se terminant dans ≤ 30 jours">
+                {cddAlertCount}
+              </span>
+            )}
+          </button>
+          <button
+            type="button"
+            role="tab"
+            className={`exco-main-tab${tab === 'exit' ? ' is-active' : ''}`}
+            aria-selected={tab === 'exit'}
+            onClick={() => setTab('exit')}
+          >
+            Exit
+            <span className="employees-tab-count">{dashboardExits.length}</span>
+          </button>
+        </div>
+
+        {((tab === 'liste' || tab === 'exit' || tab === 'cdd' || tab === 'essai')
+          || (essaiAlertCount > 0 && (tab === 'dashboard' || tab === 'essai' || tab === 'liste'))) && (
           <div className="panel-toolbar employees-toolbar">
             {(tab === 'liste' || tab === 'exit' || tab === 'cdd' || tab === 'essai') && (
               <>
@@ -747,40 +763,6 @@ export default function EmployesPage() {
                 )}
               </>
             )}
-            <select
-              className="filter-select"
-              value={yearFilter === '' ? '' : String(yearFilter)}
-              onChange={(e) => {
-                const v = e.target.value;
-                setYearFilter(v ? Number(v) : '');
-                if (!v) setMonthFilter('');
-              }}
-              title="Filtrer par année de présence"
-            >
-              <option value="">Toutes les années</option>
-              {yearOptions.map((y) => (
-                <option key={y} value={y}>{y}</option>
-              ))}
-            </select>
-            <select
-              className="filter-select"
-              value={monthFilter === '' ? '' : String(monthFilter)}
-              onChange={(e) => {
-                const v = e.target.value;
-                setMonthFilter(v ? Number(v) : '');
-              }}
-              disabled={yearFilter === ''}
-              title={
-                yearFilter === ''
-                  ? 'Choisissez d’abord une année'
-                  : 'Filtrer par mois de présence'
-              }
-            >
-              <option value="">Tous les mois</option>
-              {MONTH_OPTIONS.map((m) => (
-                <option key={m.value} value={m.value}>{m.label}</option>
-              ))}
-            </select>
             {essaiAlertCount > 0 && (tab === 'dashboard' || tab === 'essai' || tab === 'liste') && (
               <button
                 type="button"
@@ -808,7 +790,14 @@ export default function EmployesPage() {
 
       {tab === 'dashboard' ? (
         <div className="employees-dashboard-body">
-          <EmployeesHrDashboardView employees={dashboardEmployees} exits={dashboardExits} />
+          <EmployeesHrDashboardView
+            employees={dashboardEmployees}
+            exits={dashboardExits}
+            allEmployees={locFilter ? employees.filter((e) => (e.localisation || '').trim() === locFilter) : employees}
+            allExits={locFilter ? exits.filter((e) => (e.localisation || '').trim() === locFilter) : exits}
+            year={yearFilter}
+            month={monthFilter}
+          />
         </div>
       ) : (
         <div className="employees-list-body">

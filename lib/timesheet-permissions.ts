@@ -1,4 +1,5 @@
 import type { MenuPermission, SessionUser } from './auth-types';
+import { departmentsEqual } from './exco-department-map';
 import { canPerformAction } from './permission-check';
 import type { Employee } from './types';
 
@@ -55,7 +56,8 @@ function hasAnyAction(menus: MenuPermission[] | null | undefined, menuId: string
 }
 
 export function matchesDepartment(employeeDepartment: string, selectedDepartment: string): boolean {
-  return normalize(employeeDepartment) === normalize(selectedDepartment);
+  if (!selectedDepartment.trim()) return true;
+  return departmentsEqual(employeeDepartment, selectedDepartment);
 }
 
 export function resolveTimesheetViewScope(menus: MenuPermission[] | null | undefined): TimesheetViewScope {

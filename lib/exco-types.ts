@@ -85,7 +85,7 @@ export interface ExcoAuditFinding {
   number: string;
   finding: string;
   severity: 'Low' | 'Medium' | 'High' | '';
-  status: 'Open' | 'Closed' | '';
+  status: 'Open' | 'Closed' | 'Overdue' | 'On going' | '';
   comments: string;
   dueDate: string;
 }
@@ -195,12 +195,22 @@ export interface ExcoManualKpis {
   trainingHqPct?: number | null;
 }
 
+/** Saisie YTD Staff Cost (capture 3) — Actual + Plan Budget. */
+export interface ExcoStaffCostYtdInput {
+  actualHeadcount?: number | null;
+  salariesActualYtd?: number | null;
+  volumesActualYtd?: number | null;
+  revenueActualYtd?: number | null;
+  budgetHeadcount?: number | null;
+  salariesBudgetYtd?: number | null;
+  volumesBudgetYtd?: number | null;
+  revenueBudgetYtd?: number | null;
+}
+
 /**
- * Staff cost / volume / revenue : conservés dans les overlays, pas encore
- * publiés sur les cartes KPI, Tendances, aperçu et PPTX.
- * Passer à `true` quand ExCo doit les afficher.
+ * Staff cost / volume / revenue : publiés depuis New report.xlsx (Staff_Cost_KPI).
  */
-export const EXCO_PUBLISH_FINANCE_KPIS = false;
+export const EXCO_PUBLISH_FINANCE_KPIS = true;
 
 const UNPUBLISHED_FINANCE_KPI_KEYS = [
   'staffCost',
@@ -236,6 +246,11 @@ export interface ExcoTrendMonth {
   graduates: number;
   genderMalePct: number | null;
   genderFemalePct: number | null;
+  /** Ratio H/F hors HQ (Plant + Lubudi + Graduates). */
+  genderMalePctSites: number | null;
+  genderFemalePctSites: number | null;
+  genderMalePctHq: number | null;
+  genderFemalePctHq: number | null;
   averageAge: number | null;
   averageAgeMale: number | null;
   averageAgeFemale: number | null;
@@ -267,6 +282,10 @@ export interface ExcoNarrative {
   focus?: string;
   approvalItems?: string;
   medicalCases?: string;
+  /** Slide de clôture — titre principal (ex. « Et merci »). */
+  thankYouTitle?: string;
+  /** Slide de clôture — sous-titre / message (ex. « Thank You »). */
+  thankYouMessage?: string;
 }
 
 export interface ExcoPolicyBuckets {
@@ -280,6 +299,19 @@ export interface ExcoOverlays {
   manualKpis: ExcoManualKpis;
   /** Historique finance par mois (clé "1".."12") — année civile. */
   financeByMonth: ExcoFinanceByMonth;
+  /**
+   * Saisie YTD Staff Cost KPI (capture 3) par mois calendaire ("1".."12").
+   * Alimente le Tableau 1 (Actual / Budget / %) via les formules New report.
+   */
+  staffCostYtdByMonth: Record<string, ExcoStaffCostYtdInput>;
+  /**
+   * Notes / formules personnalisées Staff Cost (clé cellule → texte).
+   * N’altère pas le calcul ; sert à documenter / ajuster l’explication affichée.
+   */
+  staffCostFormulaNotes: Record<
+    string,
+    { explanation: string; calc: string | null; formula: string }
+  >;
   narrative: ExcoNarrative;
   recruitment: ExcoRecruitmentRow[];
   auditFindings: ExcoAuditFinding[];
@@ -305,6 +337,26 @@ export interface ExcoOverlays {
    * Imports Leave Balances (Annual / Closing Balance) par mois — slide 6. Leaves.
    */
   leaveImportsByMonth: Record<string, import('./exco-ot-import').ExcoLeaveMonthImport>;
+  /**
+   * Imports New Engagements / Terminations parsés (JSON) par mois — le xlsx n’est plus conservé.
+   */
+  engagementsImportsByMonth: Record<
+    string,
+    import('./exco-engagements-parse').ExcoEngagementRow[]
+  >;
+  /**
+   * Sources déjà importées en JSON (xlsx supprimé après traitement).
+   */
+  importedSources: Partial<
+    Record<
+      'componentPostedUnits' | 'leaveBalances' | 'engagementsTerminations',
+      { importedAt: string; originalName: string }
+    >
+  >;
+  /**
+   * Snapshot complet du classeur « New report.xlsx » (source unique des chiffres).
+   */
+  workbookSnapshot?: import('./exco-new-report-parse').ExcoWorkbookSnapshot | null;
   /** Métadonnées de la dernière génération (pour réouverture). */
   generationMeta: {
     fxRateFcPerUsd: number | null;
@@ -328,10 +380,14 @@ export interface ExcoComputedBlock {
   prevHires: number | null;
   /** Embauches du mois du rapport (date d’engagement), pour le KPI IN. */
   hiresList: ExcoHireListRow[];
-  /** Embauches du mois précédent + mois courant (colonne d’écart Headcount). */
+  /** Embauches du mois précédent + mois courant (historique, non utilisé pour l’écart Headcount). */
   periodHireList: ExcoHireListRow[];
-  /** Effectif présent fin de mois courant, pour repli si aucun ajout identifié. */
+  /** Effectif présent fin de mois courant (listes genre). */
   presentList: ExcoHireListRow[];
+  /** Présents ce mois, absents le mois précédent — vrais ajouts d’effectif. */
+  joinersList: ExcoHireListRow[];
+  /** Présents le mois précédent, absents ce mois — sorties nettes. */
+  leaversList: ExcoHireListRow[];
   exits: number;
   prevExits: number | null;
   turnoverPct: number | null;
@@ -355,6 +411,14 @@ export interface ExcoComputedBlock {
   headcountBySite: ExcoSiteHeadcountRow[];
   exitsByReason: ExcoCountRow[];
   prevExitsByReason: ExcoCountRow[];
+  /** Sorties du mois (date de fin de contrat), pour le tableau OUT. */
+  exitsList: ExcoHireListRow[];
+  /** Embauches par mois calendaire (1–12), pour drill-down. */
+  hiresByMonth: Record<number, ExcoHireListRow[]>;
+  /** Sorties par mois calendaire (1–12), pour drill-down. */
+  exitsByMonth: Record<number, ExcoHireListRow[]>;
+  /** Motifs de sortie cumulés YTD (jan → mois du rapport). */
+  exitsByReasonYtd: ExcoCountRow[];
   promotionsYtd: number;
   promotionsThisMonth: number;
   overtimeHoursTotal: number;
@@ -405,6 +469,8 @@ export function emptyExcoOverlays(): ExcoOverlays {
   return {
     manualKpis: {},
     financeByMonth: {},
+    staffCostYtdByMonth: {},
+    staffCostFormulaNotes: {},
     narrative: {
       meetingTitle: 'EXCO MEETING',
       meetingDate: '',
@@ -414,6 +480,8 @@ export function emptyExcoOverlays(): ExcoOverlays {
       focus: '',
       approvalItems: '',
       medicalCases: '',
+      thankYouTitle: 'Et merci',
+      thankYouMessage: 'Thank You',
     },
     recruitment: [],
     auditFindings: [],
@@ -433,6 +501,9 @@ export function emptyExcoOverlays(): ExcoOverlays {
     leaveBalanceByMatricule: {},
     overtimeImportsByMonth: {},
     leaveImportsByMonth: {},
+    engagementsImportsByMonth: {},
+    importedSources: {},
+    workbookSnapshot: null,
     generationMeta: null,
   };
 }

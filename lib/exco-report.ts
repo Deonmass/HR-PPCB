@@ -7,9 +7,8 @@ import {
   computeSeniorityYears,
   displayDateSortKey,
   parseDisplayDateParts,
-  wasPresentInYearMonth,
 } from './employee-columns';
-import { isFemaleGender, isMaleGender } from './employees-hr-dashboard';
+import { employeesPresentOnAsOf, isFemaleGender, isMaleGender } from './employees-hr-dashboard';
 import { readEmployeesBundle } from './employees-json-store';
 import { calcDocumentCompletion } from './documents';
 import { getExcoOverlays, getExcoYearLeaveImports, getExcoYearOvertimeImports } from './exco-store';
@@ -19,6 +18,7 @@ import {
   normalizeExcoOtDepartment,
   excoLeaveCostUsdFromSnap,
 } from './exco-ot-import';
+import { applyWorkbookSnapshotToComputed } from './exco-workbook-apply';
 import {
   EXCO_FY_START_YEAR,
   TEMPLATE_TREND_BASELINE_2026,
@@ -96,10 +96,46 @@ function siteBucket(localisation: string): string {
   return 'HQ and Regions';
 }
 
+function isHqSite(site: string): boolean {
+  return site === 'HQ and Regions';
+}
+
+function sharePct(part: number, total: number): number | null {
+  if (!total) return null;
+  return Math.round((part / total) * 1000) / 10;
+}
+
+/** Ratio H/F : Sites (hors HQ) vs Head Office. */
+function genderPctByScope(employees: Employee[]): {
+  genderMalePctSites: number | null;
+  genderFemalePctSites: number | null;
+  genderMalePctHq: number | null;
+  genderFemalePctHq: number | null;
+} {
+  const sites = employees.filter((e) => !isHqSite(siteBucket(e.localisation || '')));
+  const hq = employees.filter((e) => isHqSite(siteBucket(e.localisation || '')));
+  const sitesMale = sites.filter((e) => isMaleGender(e.gender)).length;
+  const sitesFemale = sites.filter((e) => isFemaleGender(e.gender)).length;
+  const hqMale = hq.filter((e) => isMaleGender(e.gender)).length;
+  const hqFemale = hq.filter((e) => isFemaleGender(e.gender)).length;
+  return {
+    genderMalePctSites: sharePct(sitesMale, sites.length),
+    genderFemalePctSites: sharePct(sitesFemale, sites.length),
+    genderMalePctHq: sharePct(hqMale, hq.length),
+    genderFemalePctHq: sharePct(hqFemale, hq.length),
+  };
+}
+
 function hiredInMonth(employee: Employee, year: number, month: number): boolean {
   const parts = parseDisplayDateParts(employee.appointmentDate || '');
   if (!parts) return false;
   return parts.y === year && parts.m === month;
+}
+
+function employeeKey(employee: Employee): string {
+  const matricule = (employee.matricule || '').trim().toLowerCase();
+  if (matricule) return `m:${matricule}`;
+  return `n:${(employee.nom || '').trim().toLowerCase()}`;
 }
 
 function toHireListRow(employee: Employee, reason = 'Embauche'): ExcoHireListRow {
@@ -137,14 +173,7 @@ function presentEmployees(
   year: number,
   month: number,
 ): Employee[] {
-  const present: Employee[] = [];
-  for (const e of actives) {
-    if (wasPresentInYearMonth(e, year, month)) present.push(e);
-  }
-  for (const e of exits) {
-    if (wasPresentInYearMonth(e, year, month, { isExit: true })) present.push(e);
-  }
-  return present;
+  return employeesPresentOnAsOf(actives, exits, asOfEndOfMonth(year, month));
 }
 
 function avg(nums: number[]): number | null {
@@ -379,7 +408,7 @@ function mergeAuditFindings(
       number: ov?.number || String(index + 1).padStart(2, '0'),
       finding: a.action,
       severity: mapAuditSeverity(a.severity),
-      status: status === 'Closed' ? 'Closed' : 'Open',
+      status,
       comments: (ov?.comments?.trim() ? ov.comments : a.commentaire) || '',
       dueDate: a.dueDate || '',
     };
@@ -426,6 +455,10 @@ async function buildCalendarYearTrends(
         graduates: 0,
         genderMalePct: null,
         genderFemalePct: null,
+        genderMalePctSites: null,
+        genderFemalePctSites: null,
+        genderMalePctHq: null,
+        genderFemalePctHq: null,
         averageAge: null,
         averageAgeMale: null,
         averageAgeFemale: null,
@@ -449,7 +482,7 @@ async function buildCalendarYearTrends(
       continue;
     }
 
-    // Mar–Jun 2026 : valeurs figées du fichier EXCO de juin (ne pas recalculer).
+    // Mar–Jun 2026 : démographie / coûts figés ; IN/OUT recalculés depuis le système.
     const locked = TEMPLATE_TREND_BASELINE_2026[month];
     if (year === EXCO_FY_START_YEAR && locked) {
       let overtimeHours = 0;
@@ -457,6 +490,11 @@ async function buildCalendarYearTrends(
       if (importedOt?.byDept?.length) {
         overtimeHours = importedOt.byDept.reduce((s, r) => s + (r.hours || 0), 0);
       }
+      const lockedPresent = presentEmployees(actives, exits, year, month);
+      const lockedGenderScope = genderPctByScope(lockedPresent);
+      const sysHires = allPeople.filter((e) => hiredInMonth(e, year, month)).length;
+      const sysExits = exits.filter((e) => exitedInMonth(e, year, month)).length;
+      const hcForRate = locked.headcount > 0 ? locked.headcount : lockedPresent.length;
       trends.push({
         month,
         label,
@@ -467,13 +505,18 @@ async function buildCalendarYearTrends(
         graduates: locked.graduates,
         genderMalePct: locked.genderMalePct,
         genderFemalePct: locked.genderFemalePct,
+        ...lockedGenderScope,
         averageAge: locked.averageAge,
         averageAgeMale: locked.averageAgeMale,
         averageAgeFemale: locked.averageAgeFemale,
-        hires: locked.hires,
-        exits: locked.exits,
-        turnoverPct: locked.turnoverPct,
-        attritionPct: locked.attritionPct,
+        hires: sysHires,
+        exits: sysExits,
+        turnoverPct:
+          hcForRate > 0
+            ? Math.round((((sysHires + sysExits) / 2) / hcForRate) * 1000) / 10
+            : null,
+        attritionPct:
+          hcForRate > 0 ? Math.round((sysExits / hcForRate) * 1000) / 10 : null,
         promotions: locked.promotions,
         overtimeHours: Math.round(overtimeHours * 100) / 100,
         staffCost: locked.staffCost,
@@ -552,6 +595,7 @@ async function buildCalendarYearTrends(
         headcount > 0 ? Math.round((males.length / headcount) * 1000) / 10 : null,
       genderFemalePct:
         headcount > 0 ? Math.round((females.length / headcount) * 1000) / 10 : null,
+      ...genderPctByScope(present),
       averageAge: avg(ages),
       averageAgeMale: avg(agesMale),
       averageAgeFemale: avg(agesFemale),
@@ -601,6 +645,15 @@ async function computeBlock(
     toHireListRow(e, 'Embauche'),
   );
   const presentList = sortByAppointmentThenName(present).map((e) => toHireListRow(e, 'Présent'));
+  const prevKeys = new Set(presentPrev.map(employeeKey));
+  const currKeys = new Set(present.map(employeeKey));
+  const hiredKeys = new Set(hiredThisMonth.map(employeeKey));
+  const joinersList = sortByAppointmentThenName(present.filter((e) => !prevKeys.has(employeeKey(e)))).map((e) =>
+    toHireListRow(e, hiredKeys.has(employeeKey(e)) ? 'Embauche' : 'Arrivée'),
+  );
+  const leaversList = sortByAppointmentThenName(presentPrev.filter((e) => !currKeys.has(employeeKey(e)))).map((e) =>
+    toHireListRow(e, 'Sortie'),
+  );
   const hires = hiredThisMonth.length;
   const prevHires = hiredPrevMonth.length;
   const exitsCount = exits.filter((e) => exitedInMonth(e, year, month)).length;
@@ -675,11 +728,11 @@ async function computeBlock(
   ]);
 
   const seniorityBands = bandCount(seniorities, [
-    { label: '<1 an', min: 0, max: 1 },
-    { label: '1-3', min: 1, max: 3 },
-    { label: '3-5', min: 3, max: 5 },
-    { label: '5-10', min: 5, max: 10 },
-    { label: '10+', min: 10, max: 80 },
+    { label: '<1 yr', min: 0, max: 1 },
+    { label: '1-2 yrs', min: 1, max: 2 },
+    { label: '2-5 yrs', min: 2, max: 5 },
+    { label: '5-10 yrs', min: 5, max: 10 },
+    { label: '10+ yrs', min: 10, max: 80 },
   ]);
 
   const siteMap = new Map<string, number>();
@@ -708,6 +761,30 @@ async function computeBlock(
     exitsByReasonMap.set(label, (exitsByReasonMap.get(label) ?? 0) + 1);
   }
   const exitsByReason = [...exitsByReasonMap.entries()]
+    .map(([label, value]) => ({ label, value }))
+    .sort((a, b) => b.value - a.value);
+  const exitsList = sortByAppointmentThenName(exitsThisMonth).map((e) => ({
+    ...toHireListRow(e, (e.raisonExit || '').trim() || 'Sortie'),
+    appointmentDate: e.dateFinContrat || e.appointmentDate || '',
+  }));
+
+  const hiresByMonth: Record<number, ExcoHireListRow[]> = {};
+  const exitsByMonth: Record<number, ExcoHireListRow[]> = {};
+  const exitsByReasonYtdMap = new Map<string, number>();
+  for (let m = 1; m <= month; m += 1) {
+    const monthHires = [...actives, ...exits].filter((e) => hiredInMonth(e, year, m));
+    const monthExits = exits.filter((e) => exitedInMonth(e, year, m));
+    hiresByMonth[m] = sortByAppointmentThenName(monthHires).map((e) => toHireListRow(e, 'Embauche'));
+    exitsByMonth[m] = sortByAppointmentThenName(monthExits).map((e) => ({
+      ...toHireListRow(e, (e.raisonExit || '').trim() || 'Sortie'),
+      appointmentDate: e.dateFinContrat || e.appointmentDate || '',
+    }));
+    for (const e of monthExits) {
+      const label = (e.raisonExit || '').trim() || 'Non renseigné';
+      exitsByReasonYtdMap.set(label, (exitsByReasonYtdMap.get(label) ?? 0) + 1);
+    }
+  }
+  const exitsByReasonYtd = [...exitsByReasonYtdMap.entries()]
     .map(([label, value]) => ({ label, value }))
     .sort((a, b) => b.value - a.value);
 
@@ -944,6 +1021,8 @@ async function computeBlock(
     hiresList,
     periodHireList,
     presentList,
+    joinersList,
+    leaversList,
     exits: exitsCount,
     prevExits,
     turnoverPct,
@@ -967,6 +1046,10 @@ async function computeBlock(
     headcountBySite,
     exitsByReason,
     prevExitsByReason,
+    exitsList,
+    hiresByMonth,
+    exitsByMonth,
+    exitsByReasonYtd,
     promotionsYtd,
     promotionsThisMonth,
     overtimeHoursTotal,
@@ -1103,7 +1186,7 @@ function buildKpiSummary(
     metric('headcount', 'Headcount', computed.headcount, 'computed', {
       deltaPct: deltaPct(computed.headcount, computed.prevHeadcount),
       prevValue: computed.prevHeadcount ?? tPrev?.headcount ?? null,
-      hint: 'Effectif présent fin de mois — module Employés (actifs + sorties encore présentes selon dates).',
+      hint: 'Effectif présent au dernier jour du mois — module Employés (sans les sorties du mois).',
     }),
     metric('hires', 'Hires', computed.hires, 'computed', {
       deltaPct: deltaPct(computed.hires, computed.prevHires),
@@ -1329,9 +1412,15 @@ export async function buildExcoReport(
       ...yearLeaveImports,
       ...(overlays.leaveImportsByMonth || {}),
     }),
-    auditFindings: mergeAuditFindings(auditActions, overlays, asOf),
+    auditFindings:
+      overlays.workbookSnapshot && (overlays.auditFindings || []).length > 0
+        ? overlays.auditFindings
+        : mergeAuditFindings(auditActions, overlays, asOf),
   };
-  const computed = await computeBlock(year, month, mergedOverlays);
+  const computedRaw = await computeBlock(year, month, mergedOverlays);
+  const computed = mergedOverlays.workbookSnapshot
+    ? applyWorkbookSnapshotToComputed(computedRaw, mergedOverlays.workbookSnapshot)
+    : computedRaw;
   const asOfIso = `${asOf.getFullYear()}-${String(asOf.getMonth() + 1).padStart(2, '0')}-${String(asOf.getDate()).padStart(2, '0')}`;
   const auditDash = buildAuditHrDashboard(auditActions, asOfIso);
   computed.auditProgression = auditDash.progression;

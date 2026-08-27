@@ -6599,7 +6599,7 @@ html[data-theme="light"] .btn-export.btn-with-icon .btn-spinner {
   width: 100%;
 }
 
-/* Compilation : pleine largeur, sans marges latÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂ©rales */
+/* Compilation : pleine largeur, sans marges latÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂ©rales */
 .timesheet-compilation-view .panel.timesheet-calendar-panel {
   flex: 1 1 auto;
   min-height: 0;
@@ -6632,7 +6632,7 @@ html[data-theme="light"] .btn-export.btn-with-icon .btn-spinner {
   font-size: 0.85rem;
 }
 
-/* Compilation table ÃÂÃÂÃÂÃÂ¢ÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂ scroll ici pour que sticky mat/nom fonctionne */
+/* Compilation table ÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂ¢ÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂ scroll ici pour que sticky mat/nom fonctionne */
 .compilation-table-wrap {
   overflow: auto !important;
   width: 100%;
@@ -6713,7 +6713,7 @@ html[data-theme="light"] .btn-export.btn-with-icon .btn-spinner {
   background: var(--compilation-head-bg);
 }
 
-/* Colonnes figÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂ©es Matricule + Employee Name */
+/* Colonnes figÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂ©es Matricule + Employee Name */
 .compilation-table th.compilation-freeze,
 .compilation-table td.compilation-freeze,
 .compilation-table th.compilation-sticky,
@@ -6782,7 +6782,7 @@ html[data-theme="light"] .compilation-table tbody tr:hover td.compilation-sticky
   background: var(--compilation-hover-bg) !important;
 }
 
-/* Alias historique compilation-fix* (mÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂªme sticky que freeze) */
+/* Alias historique compilation-fix* (mÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂªme sticky que freeze) */
 .compilation-table th.compilation-fix,
 .compilation-table td.compilation-fix,
 .compilation-fix {
@@ -10364,11 +10364,64 @@ html[data-theme="light"] .login-theme-toggle:hover {
   display: flex;
   align-items: center;
   gap: 0.75rem;
+  flex-wrap: wrap;
 }
 
 .settings-search-toolbar .search-input {
   width: 100%;
   max-width: 420px;
+  flex: 1 1 220px;
+}
+
+.settings-filter-tabs {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.2rem;
+  padding: 0.2rem;
+  border-radius: 10px;
+  background: rgba(148, 163, 184, 0.12);
+  border: 1px solid rgba(148, 163, 184, 0.18);
+}
+
+.settings-filter-tab {
+  appearance: none;
+  border: 0;
+  background: transparent;
+  color: #94a3b8;
+  font-size: 0.78rem;
+  font-weight: 600;
+  padding: 0.35rem 0.7rem;
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+.settings-filter-tab.is-active {
+  background: rgba(59, 130, 246, 0.18);
+  color: #e2e8f0;
+}
+
+.settings-card.is-inactive {
+  opacity: 0.72;
+}
+
+.settings-empty-hint {
+  margin: 1rem 0 0;
+  color: #94a3b8;
+  font-size: 0.9rem;
+}
+
+html[data-theme="light"] .settings-filter-tabs {
+  background: rgba(15, 23, 42, 0.04);
+  border-color: rgba(15, 23, 42, 0.08);
+}
+
+html[data-theme="light"] .settings-filter-tab {
+  color: #64748b;
+}
+
+html[data-theme="light"] .settings-filter-tab.is-active {
+  background: rgba(37, 99, 235, 0.1);
+  color: #1e3a8a;
 }
 
 .settings-panel {
@@ -12398,7 +12451,7 @@ html[data-theme="light"] .dependants-file-btn.is-open {
   background: linear-gradient(180deg, #a855f7 0%, #7c3aed 100%);
 }
 
-/* Modal agrandi ÃÂÃÂÃÂÃÂ¢ÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂ Par tranche d'ÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂ¢ge (graphique / simulation) */
+/* Modal agrandi ÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂ¢ÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂ Par tranche d'ÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂ¢ge (graphique / simulation) */
 .dependants-age-enlarge-modal {
   width: min(860px, 92vw);
   max-width: 92vw;
@@ -13553,6 +13606,56 @@ html[data-theme="light"] .dependants-drilldown-table tbody tr:hover td {
   max-width: none;
 }
 
+.dashboard-list-chips {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0 1.1rem 0.65rem;
+}
+
+.dashboard-list-chips-label {
+  font-size: 0.68rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--muted, #64748b);
+  margin-right: 0.15rem;
+}
+
+.dashboard-list-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  max-width: 14rem;
+  border: 1px solid color-mix(in srgb, var(--line, #d6d3d1) 80%, transparent);
+  background: color-mix(in srgb, var(--surface, #fff) 88%, transparent);
+  color: var(--text);
+  border-radius: 999px;
+  padding: 0.22rem 0.55rem;
+  font-size: 0.72rem;
+  font-weight: 600;
+  cursor: pointer;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.dashboard-list-chip:hover {
+  border-color: color-mix(in srgb, var(--accent, #e30613) 45%, var(--line, #d6d3d1));
+}
+
+.dashboard-list-chip.is-active {
+  background: color-mix(in srgb, var(--accent, #e30613) 12%, transparent);
+  border-color: color-mix(in srgb, var(--accent, #e30613) 55%, transparent);
+}
+
+.dashboard-list-chip-count {
+  font-size: 0.65rem;
+  font-weight: 700;
+  color: var(--muted, #64748b);
+}
+
 .dashboard-list-modal .dashboard-list-close {
   width: 2rem;
   height: 2rem;
@@ -14148,12 +14251,13 @@ html[data-theme="light"] .dependant-family-tree-svg-line {
 }
 
 .employees-sticky .page-header {
-  margin-bottom: 0.55rem;
+  margin-bottom: 0.2rem;
 }
 
 .employees-page .page-header h2 {
   font-size: 1.28rem;
   letter-spacing: -0.02em;
+  margin-bottom: 0;
 }
 
 .employees-page .page-header p {
@@ -14165,24 +14269,52 @@ html[data-theme="light"] .dependant-family-tree-svg-line {
   align-items: center;
   gap: 0.55rem;
   flex-wrap: wrap;
+  margin-left: auto;
   --header-ctrl-h: 36px;
 }
 
-.employees-header-actions .header-tabs,
-.employees-header-actions .header-tabs-compact {
-  flex-shrink: 0;
-  height: var(--header-ctrl-h);
-  padding: 3px;
+.employees-header-period {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+}
+
+.employees-header-period .filter-select {
+  height: 32px;
+  min-height: 32px;
+  min-width: 0;
+  padding: 0 0.45rem;
+  font-size: 0.68rem;
   box-sizing: border-box;
 }
 
-.employees-header-actions .tab-btn.tab-btn-sm {
-  height: calc(var(--header-ctrl-h) - 6px) !important;
-  min-height: calc(var(--header-ctrl-h) - 6px);
-  padding: 0 0.75rem !important;
-  font-size: 0.72rem !important;
-  line-height: 1 !important;
-  box-sizing: border-box;
+.employees-filter-year {
+  width: 6.1rem;
+}
+
+.employees-filter-month {
+  width: 7.2rem;
+}
+
+.employees-filter-loc {
+  width: 9.6rem;
+}
+
+.employees-main-tabs.exco-main-tabs {
+  margin-top: 0.15rem;
+}
+
+.employees-page .exco-main-tab {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.5rem 0.95rem;
+  font-size: 0.88rem;
+  border-radius: 9px 9px 0 0;
+}
+
+.employees-page .exco-main-tab.is-active .employees-tab-count {
+  background: color-mix(in srgb, var(--accent, #e30613) 14%, #fff);
+  color: var(--accent, #e30613);
 }
 
 .employees-header-actions .btn,
@@ -14207,6 +14339,7 @@ html[data-theme="light"] .dependant-family-tree-svg-line {
 }
 
 .employees-toolbar {
+  margin-top: 0.5rem;
   margin-bottom: 0.75rem;
   padding: 0;
   border: none;
@@ -14323,6 +14456,25 @@ html[data-theme="light"] .dependant-family-tree-svg-line {
   letter-spacing: 0;
 }
 
+.employees-hr-card-delta {
+  font-size: 0.68rem;
+  font-weight: 700;
+  letter-spacing: 0;
+  white-space: nowrap;
+}
+
+.employees-hr-card-delta.is-up {
+  color: #15803d;
+}
+
+.employees-hr-card-delta.is-down {
+  color: #b91c1c;
+}
+
+.employees-hr-card-delta.is-flat {
+  color: var(--muted, #64748b);
+}
+
 .employees-hr-card-meta {
   display: flex;
   flex-direction: column;
@@ -14384,6 +14536,14 @@ html[data-theme="light"] .dependant-family-tree-svg-line {
 
 .employees-hr-card-watermark.is-female {
   color: #f472b6;
+}
+
+.employees-hr-card-watermark.is-in {
+  color: #8b5cf6;
+}
+
+.employees-hr-card-watermark.is-out {
+  color: #22c55e;
 }
 
 .employees-hr-card:hover .employees-hr-card-watermark {
@@ -15230,6 +15390,12 @@ html[data-theme="light"] .employees-ppc-loc-table td.is-femmes .employees-ppc-lo
   font-size: 0.75rem;
   font-weight: 700;
   color: var(--text);
+  white-space: nowrap;
+}
+
+.employees-pie-legend-pct {
+  font-weight: 650;
+  color: var(--muted, #64748b);
 }
 
 .employees-line-chart-area {
@@ -15405,7 +15571,7 @@ html[data-theme="light"] .employees-ppc-loc-table td.is-femmes .employees-ppc-lo
   line-height: 1.25;
 }
 
-/* Largeurs ÃÂÃÂÃÂÃÂ¢ÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂ liste / exit : Nom et Poste absorbent lÃÂÃÂÃÂÃÂ¢ÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂespace. */
+/* Largeurs ÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂ¢ÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂ liste / exit : Nom et Poste absorbent lÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂ¢ÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂespace. */
 .employees-table-compact .emp-col-matricule { width: 4.4rem; }
 .employees-table-compact .emp-col-nom { width: 18%; min-width: 9rem; }
 .employees-table-compact .emp-col-dept { width: 10%; min-width: 6.5rem; }
@@ -15431,7 +15597,7 @@ html[data-theme="light"] .employees-ppc-loc-table td.is-femmes .employees-ppc-lo
 .employees-table-compact .emp-col-contrat { width: 3.6rem; min-width: 3.4rem; }
 .employees-table-compact .emp-col-raison { width: 9%; min-width: 5.5rem; }
 
-/* Colonnes dates / essai / CDD ÃÂÃÂÃÂÃÂ¢ÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂ largeurs fixes pour ÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂ©viter le chevauchement. */
+/* Colonnes dates / essai / CDD ÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂ¢ÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂ largeurs fixes pour ÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂ©viter le chevauchement. */
 .employees-table-compact .emp-col-mois { width: 3rem; text-align: center; }
 .employees-table-compact .emp-col-date,
 .employees-table-compact .emp-col-debut,
@@ -21348,7 +21514,7 @@ html[data-theme='light'] .charroi-table tbody tr.charroi-row-bad:hover td {
   color: var(--muted);
 }
 
-/* Dates d'ÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂ©chÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂ©ance (assurance / vignette / contrÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂ´le technique). */
+/* Dates d'ÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂ©chÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂ©ance (assurance / vignette / contrÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂ´le technique). */
 .charroi-date {
   display: inline-flex;
   padding: 0.1rem 0.35rem;
@@ -21369,7 +21535,7 @@ html[data-theme='light'] .charroi-table tbody tr.charroi-row-bad:hover td {
   outline-offset: 1px;
 }
 .charroi-date.is-none { color: var(--muted); }
-/* Rouge dÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂ¨s ÃÂÃÂÃÂÃÂ¢ÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂ¤ 1 mois avant fin (soon) et si expirÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂ© */
+/* Rouge dÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂ¨s ÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂ¢ÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂ¤ 1 mois avant fin (soon) et si expirÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂ© */
 .charroi-date.is-soon,
 .charroi-date.is-expired {
   background: var(--danger-soft);
@@ -21381,7 +21547,7 @@ html:not([data-theme='light']) .charroi-date.is-expired {
   color: #fca5a5;
 }
 
-/* Filtres km (supÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂ©rieur / infÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂ©rieur) */
+/* Filtres km (supÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂ©rieur / infÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂ©rieur) */
 .charroi-km-filter {
   display: inline-flex;
   align-items: center;
@@ -21616,7 +21782,7 @@ html:not([data-theme='light']) .charroi-date.is-expired {
   grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
   gap: 0.85rem;
 }
-/* Filtres d'en-tÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂªte faÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂ§on Excel (partagÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂ©s). */
+/* Filtres d'en-tÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂªte faÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂ§on Excel (partagÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂ©s). */
 .th-filter,
 .charroi-th-filter { padding: 0 !important; }
 .table-hf,
@@ -22456,7 +22622,7 @@ html[data-theme='light'] .charroi-hf-panel {
   font-family: inherit;
 }
 
-/* Inputs alignÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂ©s comme du texte de cellule ÃÂÃÂÃÂÃÂ¢ÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂ minimal */
+/* Inputs alignÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂ©s comme du texte de cellule ÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂ¢ÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂ minimal */
 .newcomer-detail-table .newcomer-cell-input {
   width: 100%;
   max-width: 16rem;
@@ -22514,7 +22680,7 @@ html[data-theme='light'] .charroi-hf-panel {
   }
 }
 
-/* Top navigation progress ÃÂÃÂÃÂÃÂ¢ÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂ fine red bar */
+/* Top navigation progress ÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂ¢ÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂ fine red bar */
 .top-progress-bar {
   position: fixed;
   top: 0;
@@ -22560,7 +22726,7 @@ html[data-theme='light'] .charroi-hf-panel {
 }
 
 
-/* ========== RRF page ÃÂÃÂÃÂÃÂ¢ÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂ 3 colonnes, header compact ========== */
+/* ========== RRF page ÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂ¢ÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂ 3 colonnes, header compact ========== */
 .main:has(.rrf-page) {
   display: flex !important;
   flex-direction: column !important;
@@ -22582,7 +22748,7 @@ html[data-theme='light'] .charroi-hf-panel {
   background: #fff;
 }
 
-/* Header figÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂ© : titre gauche, onglets droite */
+/* Header figÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂ© : titre gauche, onglets droite */
 .rrf-sticky {
   flex: 0 0 auto;
   position: sticky;
@@ -22691,7 +22857,7 @@ html[data-theme="dark"] .rrf-sticky {
   white-space: nowrap;
 }
 
-/* Corps + padding ÃÂÃÂÃÂÃÂ¢ÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂ espace sous le header */
+/* Corps + padding ÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂ¢ÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂ espace sous le header */
 .rrf-body {
   flex: 1 1 auto;
   min-height: 0;
@@ -22997,7 +23163,7 @@ html[data-theme="dark"] .rrf-sticky {
   margin: 0;
 }
 
-/* Approvers : inputs clairs et simples (ÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂ©viter le fond sombre global) */
+/* Approvers : inputs clairs et simples (ÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂ©viter le fond sombre global) */
 .rrf-approvers-table input:not([type='radio']):not([type='checkbox']),
 .rrf-approvers-table .project-picker input,
 .rrf-approvers-table .project-picker-input {
@@ -23351,7 +23517,7 @@ html[data-theme="dark"] .rrf-sticky {
   }
 }
 
-/* EntÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂªtes ÃÂÃÂÃÂÃÂ¢ÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂ papiers ÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂ  lettre */
+/* EntÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂªtes ÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂ¢ÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂ papiers ÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂ  lettre */
 .entetes-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
@@ -23525,7 +23691,7 @@ html[data-theme="dark"] .rrf-sticky {
   margin: 0.35rem 0 0.9rem;
 }
 
-/* ÃÂÃÂÃÂÃÂ¢ÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂ¢ÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂ¢ÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂ Mouvements personnel ÃÂÃÂÃÂÃÂ¢ÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂ¢ÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂ¢ÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂ */
+/* ÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂ¢ÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂ¢ÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂ¢ÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂ Mouvements personnel ÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂ¢ÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂ¢ÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂ¢ÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂ */
 .mvt-page {
   --mvt-ctrl-h: 40px;
   display: flex;
@@ -24092,7 +24258,7 @@ html[data-theme="dark"] .rrf-sticky {
   justify-content: center;
 }
 
-/* Layout pleine hauteur + header figÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂ© */
+/* Layout pleine hauteur + header figÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂ© */
 .main:has(.postes-page) {
   display: flex;
   flex-direction: column;
@@ -24214,7 +24380,7 @@ html[data-theme="light"] .postes-sticky {
   background: color-mix(in srgb, #e30613 5%, #fff);
 }
 
-/* Dashboard ÃÂÃÂÃÂÃÂ¢ÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂ animations & hover */
+/* Dashboard ÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂ¢ÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂ animations & hover */
 @keyframes postes-kpi-in {
   from {
     opacity: 0;
@@ -24253,7 +24419,7 @@ html[data-theme="light"] .postes-sticky {
   margin-top: 0.35rem;
 }
 
-/* Dashboard Postes ÃÂÃÂÃÂÃÂ¢ÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂ grille 3ÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂ2, espacement resserrÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂ© */
+/* Dashboard Postes ÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂ¢ÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂ grille 3ÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂ2, espacement resserrÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂ© */
 .postes-dashboard .postes-kpi-strip.travel-history-cards {
   grid-template-columns: repeat(3, minmax(0, 1fr));
   gap: 0.55rem;
@@ -24423,7 +24589,7 @@ button.postes-kpi-card {
   }
 }
 
-/* ÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂ Contrat standard / Convention collective ÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂ */
+/* ÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂ Contrat standard / Convention collective ÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂ */
 .contrat-standard-panel.docs-generator-panel {
   max-width: none;
   width: 100%;
@@ -25968,11 +26134,11 @@ html[data-theme="light"] .contractants-dash-filters {
   }
 }
 
-/* ——— EXCO report ——— */
+/* âââ EXCO report âââ */
 .exco-page {
   display: flex;
   flex-direction: column;
-  gap: 0.75rem;
+  gap: 0.35rem;
   --header-ctrl-h: 32px;
 }
 
@@ -25985,40 +26151,94 @@ html[data-theme="light"] .contractants-dash-filters {
   position: absolute;
   inset: 0;
   z-index: 40;
-  display: flex;
-  align-items: flex-start;
-  justify-content: center;
-  padding: 4.5rem 1rem 2rem;
-  background: color-mix(in srgb, var(--bg, #f4f4f5) 55%, transparent);
-  backdrop-filter: blur(2px);
+  pointer-events: all;
+  background: color-mix(in srgb, #fff 28%, transparent);
+}
+
+.exco-busy-progress {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 3px;
+  overflow: hidden;
+  background: color-mix(in srgb, #7a1f2b 12%, transparent);
+}
+
+.exco-busy-progress-bar {
+  display: block;
+  height: 100%;
+  width: 40%;
+  border-radius: 999px;
+  background: linear-gradient(90deg, #7a1f2b, #c45c7a, #7a1f2b);
+  background-size: 200% 100%;
+  animation: exco-busy-slide 1.1s ease-in-out infinite;
+}
+
+.exco-busy-chip {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  display: inline-flex;
+  align-items: center;
+  gap: 0.65rem;
+  padding: 0.45rem 0.9rem 0.45rem 0.75rem;
+  border-radius: 999px;
+  border: 1px solid color-mix(in srgb, #7a1f2b 18%, var(--border, #e4e4e7));
+  background: color-mix(in srgb, #fff 92%, #7a1f2b);
+  box-shadow: 0 6px 20px color-mix(in srgb, #7a1f2b 10%, transparent);
+  backdrop-filter: blur(8px);
+}
+
+.exco-busy-chip p {
+  margin: 0;
+  font-size: 0.8rem;
+  font-weight: 650;
+  letter-spacing: 0.01em;
+  color: #3f3f46;
+  white-space: nowrap;
+}
+
+.exco-busy-dots {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.28rem;
+}
+
+.exco-busy-dots i {
+  width: 0.38rem;
+  height: 0.38rem;
+  border-radius: 50%;
+  background: #7a1f2b;
+  opacity: 0.35;
+  animation: exco-busy-pulse 1s ease-in-out infinite;
+}
+
+.exco-busy-dots i:nth-child(2) {
+  animation-delay: 0.15s;
+}
+
+.exco-busy-dots i:nth-child(3) {
+  animation-delay: 0.3s;
+}
+
+@keyframes exco-busy-slide {
+  0% { transform: translateX(-120%); }
+  100% { transform: translateX(320%); }
+}
+
+@keyframes exco-busy-pulse {
+  0%, 100% { opacity: 0.3; transform: scale(0.85); }
+  50% { opacity: 1; transform: scale(1); }
 }
 
 .exco-busy-card {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 0.75rem;
-  min-width: 220px;
-  max-width: 360px;
-  padding: 1.25rem 1.5rem;
-  border-radius: 12px;
-  border: 1px solid var(--border);
-  background: var(--surface);
-  box-shadow: 0 8px 28px rgba(0, 0, 0, 0.12);
-  text-align: center;
-}
-
-.exco-busy-card p {
-  margin: 0;
-  font-size: 0.9rem;
-  font-weight: 600;
-  color: var(--ink, #111);
+  display: none;
 }
 
 .exco-busy-spinner {
-  width: 1.35rem;
-  height: 1.35rem;
-  border-width: 2.5px;
+  display: none;
 }
 
 .exco-audit-loading {
@@ -26131,13 +26351,14 @@ html[data-theme="light"] .contractants-dash-filters {
   position: sticky;
   top: 0;
   z-index: 60;
-  padding-bottom: 0.45rem;
-  margin-bottom: 0.1rem;
-  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.35);
+  padding: 0.35rem 0 0.55rem;
+  margin-bottom: 0;
+  box-shadow: none;
+  background: var(--bg, #f4f4f5);
 }
 
 .exco-sticky .page-header {
-  margin-bottom: 0.45rem;
+  margin-bottom: 0;
 }
 
 .exco-page-header {
@@ -26186,6 +26407,30 @@ html[data-theme="light"] .contractants-dash-filters {
   justify-content: flex-end;
   gap: 0.45rem;
   margin-left: auto;
+}
+
+.exco-header-period {
+  display: inline-flex;
+  align-items: center;
+  margin: 0;
+}
+
+.exco-header-period input[type="month"] {
+  height: 28px;
+  min-height: 28px;
+  padding: 0 0.45rem;
+  border: 1px solid var(--border, #d4d4d8);
+  border-radius: 6px;
+  background: #fff;
+  color: #18181b;
+  font-size: 0.72rem;
+  font-family: inherit;
+  box-sizing: border-box;
+}
+
+.exco-header-period input[type="month"]:disabled {
+  opacity: 0.65;
+  cursor: not-allowed;
 }
 
 .exco-header-actions .btn {
@@ -26480,6 +26725,13 @@ html[data-theme="light"] .contractants-dash-filters {
   text-overflow: ellipsis;
 }
 
+.exco-kpi-card > .exco-kpi-prev {
+  display: block;
+  max-width: 100%;
+  text-align: left;
+  margin-top: 0.12rem;
+}
+
 .exco-kpi-delta.up {
   color: #15803d;
 }
@@ -26732,7 +26984,7 @@ html[data-theme="light"] .contractants-dash-filters {
   flex-shrink: 0;
 }
 
-/* Colonne milieu = référence de hauteur (contenu visible, pas de scroll forcé). */
+/* Colonne milieu = rÃ©fÃ©rence de hauteur (contenu visible, pas de scroll forcÃ©). */
 .exco-ot-capt2-mid .exco-ot-table-scroll {
   flex: 0 0 auto;
   min-height: 0;
@@ -26741,7 +26993,7 @@ html[data-theme="light"] .contractants-dash-filters {
   overflow: visible;
 }
 
-/* Gauche / droite : s’étirent jusqu’au bas de la colonne milieu, scroll interne. */
+/* Gauche / droite : sâÃ©tirent jusquâau bas de la colonne milieu, scroll interne. */
 .exco-ot-capt2-side .exco-ot-table-scroll {
   flex: 1 1 0;
   min-height: 0;
@@ -26801,8 +27053,25 @@ html[data-theme="light"] .contractants-dash-filters {
 }
 
 .exco-ot-top10 td {
+  color: inherit;
+  font-weight: inherit;
+}
+
+.exco-ot-emp-table tbody tr:not(.is-top10) td {
+  background: #fff;
+  color: #3f3f46;
+  font-weight: 500;
+}
+
+.exco-ot-emp-table tr.is-top10 td {
+  background: color-mix(in srgb, #7a1f2b 10%, #fff);
   color: #9b1c1c;
   font-weight: 600;
+}
+
+.exco-ot-emp-table tr.is-top10 td:first-child {
+  font-weight: 800;
+  color: #7a1f2b;
 }
 
 .exco-ot-overview {
@@ -27104,7 +27373,7 @@ html[data-theme="light"] .contractants-dash-filters {
   }
 }
 
-/* —— Aperçu PPTX (iframe) —— */
+/* ââ AperÃ§u PPTX (iframe) ââ */
 .exco-preview-overlay {
   position: fixed;
   inset: 0;
@@ -27170,7 +27439,7 @@ html[data-theme="light"] .contractants-dash-filters {
   background: #d8d8de;
 }
 
-/* —— Village présentation PPTX —— */
+/* ââ Village prÃ©sentation PPTX ââ */
 .village-pptx-overlay {
   z-index: 12000;
   padding: 0.6rem;
@@ -27450,7 +27719,7 @@ html[data-theme="light"] .village-pptx-proposal {
   background-color: #f7f7fa;
 }
 
-/* —— Audit HR points —— */
+/* ââ Audit HR points ââ */
 .audit-hr-page {
   display: flex;
   flex-direction: column;
@@ -28619,3 +28888,2838 @@ html[data-theme="light"] .village-pptx-proposal {
   }
 }
 
+
+/*  EXCO workbook (New report.xlsx sheets as tabs)  */
+.exco-workbook-page {
+  gap: 0.65rem;
+}
+
+.exco-workbook-body {
+  display: flex;
+  flex-direction: column;
+  gap: 0.65rem;
+}
+
+.exco-tab-sep {
+  width: 1px;
+  align-self: stretch;
+  margin: 0.35rem 0.25rem;
+  background: var(--border, #d4d4d8);
+  flex: 0 0 1px;
+}
+
+.exco-kpi-strip {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.exco-kpi-chip {
+  display: flex;
+  flex-direction: column;
+  gap: 0.15rem;
+  min-width: 7.5rem;
+  padding: 0.55rem 0.75rem;
+  border: 1px solid var(--border, #e4e4e7);
+  border-radius: 10px;
+  background: var(--surface, #fff);
+}
+
+.exco-kpi-chip span {
+  font-size: 0.72rem;
+  color: var(--muted, #71717a);
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+}
+
+.exco-kpi-chip strong {
+  font-size: 0.98rem;
+  font-weight: 700;
+  color: var(--ink, #18181b);
+}
+
+.exco-sheet-wrap,
+.exco-panel {
+  border: 1px solid var(--border, #e4e4e7);
+  border-radius: 12px;
+  background: var(--surface, #fff);
+  overflow: hidden;
+}
+
+.exco-sheet-meta {
+  display: flex;
+  justify-content: space-between;
+  gap: 0.75rem;
+  align-items: baseline;
+  padding: 0.65rem 0.9rem;
+  border-bottom: 1px solid var(--border, #e4e4e7);
+  background: color-mix(in srgb, var(--surface, #fff) 88%, #7a1f2b 12%);
+}
+
+.exco-sheet-meta strong {
+  font-size: 0.92rem;
+}
+
+.exco-sheet-meta span {
+  font-size: 0.78rem;
+  color: var(--muted, #71717a);
+}
+
+.exco-sheet-scroll {
+  overflow: auto;
+  max-height: min(70vh, 52rem);
+}
+
+.exco-sheet-table {
+  width: max-content;
+  min-width: 100%;
+  border-collapse: collapse;
+  font-size: 0.8rem;
+}
+
+.exco-sheet-table th,
+.exco-sheet-table td {
+  padding: 0.4rem 0.55rem;
+  border-bottom: 1px solid var(--border, #ececef);
+  border-right: 1px solid color-mix(in srgb, var(--border, #ececef) 70%, transparent);
+  white-space: nowrap;
+  text-align: left;
+  vertical-align: top;
+  max-width: 22rem;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.exco-sheet-table th {
+  position: sticky;
+  top: 0;
+  z-index: 1;
+  background: #f4f4f5;
+  font-weight: 700;
+  font-size: 0.74rem;
+  text-transform: uppercase;
+  letter-spacing: 0.02em;
+  color: #3f3f46;
+}
+
+.exco-sheet-table tbody tr:nth-child(even) td {
+  background: color-mix(in srgb, #fafafa 85%, transparent);
+}
+
+.exco-sheet-table tbody tr:hover td {
+  background: color-mix(in srgb, #7a1f2b 8%, transparent);
+}
+
+.exco-panel-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 0.75rem;
+  align-items: stretch;
+}
+
+.exco-panel-grid > .exco-panel {
+  display: flex;
+  flex-direction: column;
+  min-height: min(62vh, 34rem);
+}
+
+.exco-panel-grid > .exco-panel .exco-narrative-input {
+  flex: 1 1 auto;
+}
+
+.exco-panel-wide {
+  grid-column: 1 / -1;
+}
+
+.exco-panel-stack {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.exco-panel {
+  padding: 0.85rem 1rem 1rem;
+}
+
+.exco-panel h3 {
+  margin: 0 0 0.65rem;
+  font-size: 0.95rem;
+}
+
+.exco-panel-text {
+  margin: 0;
+  white-space: pre-wrap;
+  font-family: inherit;
+  font-size: 0.86rem;
+  line-height: 1.45;
+  color: var(--ink, #18181b);
+}
+
+.exco-cover-title {
+  margin: 0 0 0.35rem;
+  font-size: 1.05rem;
+  font-weight: 700;
+}
+
+.exco-cahier-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 0.65rem;
+}
+
+.exco-cahier-card {
+  border: 1px solid var(--border, #e4e4e7);
+  border-radius: 10px;
+  padding: 0.7rem 0.8rem;
+  background: color-mix(in srgb, var(--surface, #fff) 92%, #f4f4f5);
+}
+
+.exco-cahier-card header {
+  display: flex;
+  justify-content: space-between;
+  gap: 0.5rem;
+  margin-bottom: 0.4rem;
+}
+
+.exco-cahier-card p {
+  margin: 0;
+  font-size: 0.82rem;
+  line-height: 1.4;
+  color: var(--muted, #52525b);
+}
+
+.exco-audit-summary {
+  margin: 0;
+  padding: 0.65rem 0.85rem;
+  border-radius: 10px;
+  background: color-mix(in srgb, #7a1f2b 10%, transparent);
+  font-weight: 600;
+  font-size: 0.9rem;
+}
+
+.exco-status {
+  display: inline-block;
+  padding: 0.12rem 0.45rem;
+  border-radius: 999px;
+  font-size: 0.72rem;
+  font-weight: 700;
+  background: #e4e4e7;
+}
+
+.exco-status-closed {
+  background: #dcfce7;
+  color: #166534;
+}
+
+.exco-status-open {
+  background: #e0e7ff;
+  color: #3730a3;
+}
+
+.exco-status-overdue {
+  background: #fee2e2;
+  color: #991b1b;
+}
+
+.exco-status-on-going {
+  background: #fef3c7;
+  color: #92400e;
+}
+
+.exco-empty {
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  align-items: center;
+}
+
+@media (max-width: 960px) {
+  .exco-panel-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+/*  EXCO KPI cards + Headcount dashboard  */
+.exco-kpi-summary {
+  display: flex;
+  flex-direction: column;
+  gap: 0.85rem;
+}
+
+.exco-kpi-cards {
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  gap: 0.65rem;
+}
+
+.exco-kpi-card {
+  border: 1px solid var(--border, #e4e4e7);
+  border-radius: 12px;
+  padding: 0.75rem 0.8rem 0.65rem;
+  background: linear-gradient(180deg, #fff 0%, #fafafa 100%);
+  min-height: 7.2rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+}
+
+.exco-kpi-card h4 {
+  margin: 0;
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+  color: #71717a;
+}
+
+.exco-kpi-card-value {
+  margin: 0.15rem 0 0;
+  font-size: 1.35rem;
+  font-weight: 800;
+  color: #18181b;
+  line-height: 1.15;
+}
+
+.exco-kpi-card-delta {
+  margin: 0;
+  font-size: 0.75rem;
+  font-weight: 600;
+}
+
+.exco-kpi-delta-up { color: #166534; }
+.exco-kpi-delta-down { color: #b91c1c; }
+.exco-kpi-delta-flat { color: #71717a; }
+
+.exco-kpi-card-prev {
+  margin: auto 0 0;
+  font-size: 0.78rem;
+  color: #a1a1aa;
+  text-align: right;
+}
+
+.exco-hc-dashboard {
+  display: flex;
+  flex-direction: column;
+  gap: 0.85rem;
+}
+
+.exco-hc-grid {
+  display: grid;
+  grid-template-columns: 1fr 1.4fr;
+  gap: 0.85rem;
+}
+
+.exco-inout-lists {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.85rem;
+  align-items: start;
+}
+
+.exco-inout-metrics {
+  display: grid;
+  grid-template-columns: minmax(0, 4fr) minmax(0, 1fr);
+  gap: 0.85rem;
+  align-items: start;
+}
+
+.exco-inout-trend-table th,
+.exco-inout-trend-table td {
+  text-align: right;
+  white-space: nowrap;
+}
+
+.exco-inout-trend-table th:first-child,
+.exco-inout-trend-table td:first-child {
+  text-align: left;
+}
+
+.exco-inout-trend-table th.is-report-month,
+.exco-inout-trend-table td.is-report-month {
+  background: color-mix(in srgb, #7a1f2b 12%, #fff);
+  box-shadow: inset 0 0 0 1px color-mix(in srgb, #7a1f2b 18%, transparent);
+}
+
+.exco-inout-trend-table th.is-report-month {
+  color: #7a1f2b;
+  font-weight: 800;
+}
+
+.exco-panel.is-report-month {
+  background: color-mix(in srgb, #7a1f2b 5%, #fff);
+  box-shadow: inset 0 0 0 1px color-mix(in srgb, #7a1f2b 14%, transparent);
+}
+
+.exco-staffcost-page {
+  gap: 0.55rem;
+}
+
+.exco-staffcost-top {
+  display: grid;
+  grid-template-columns: minmax(16rem, 22rem) minmax(0, 1fr);
+  gap: 0.55rem;
+  align-items: stretch;
+}
+
+.exco-staffcost-capture {
+  padding: 0.55rem 0.65rem 0.65rem !important;
+}
+
+.exco-staffcost-capture .exco-panel-head {
+  margin-bottom: 0.35rem;
+}
+
+.exco-staffcost-capture .exco-panel-head h3 {
+  font-size: 0.82rem;
+}
+
+.exco-staffcost-capture-table {
+  width: 100%;
+  font-size: 0.78rem;
+}
+
+.exco-staffcost-capture-table th,
+.exco-staffcost-capture-table td {
+  padding: 0.28rem 0.35rem !important;
+}
+
+.exco-staffcost-capture-table th {
+  background: #f4f4f5;
+  font-size: 0.68rem;
+}
+
+.exco-staffcost-capture-table td:first-child {
+  font-weight: 650;
+  white-space: nowrap;
+}
+
+.exco-staffcost-capture-table input {
+  width: 100%;
+  min-width: 0;
+  padding: 0.22rem 0.35rem;
+  border: 1px solid var(--border, #e4e4e7);
+  border-radius: 5px;
+  font: inherit;
+  font-size: 0.78rem;
+  text-align: right;
+  background: #fff;
+}
+
+.exco-staffcost-capture-table input:focus {
+  outline: 2px solid color-mix(in srgb, #7a1f2b 30%, transparent);
+  outline-offset: 0;
+}
+
+.exco-staffcost-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.35rem;
+}
+
+.exco-staffcost-actions .btn-sm {
+  padding: 0.28rem 0.55rem;
+  font-size: 0.72rem;
+}
+
+.exco-staffcost-table td.is-editable {
+  padding: 0.05rem 0.12rem !important;
+  background: color-mix(in srgb, #1e3a5f 5%, #fff);
+}
+
+.exco-staffcost-cell-input {
+  width: 100%;
+  min-width: 0;
+  border: 1px solid color-mix(in srgb, #1e3a5f 25%, #d4d4d8);
+  border-radius: 3px;
+  padding: 0.1rem 0.22rem;
+  font: inherit;
+  font-size: 0.7rem;
+  line-height: 1.15;
+  text-align: right;
+  background: #fff;
+}
+
+.exco-staffcost-cell-input:focus {
+  outline: 2px solid color-mix(in srgb, #1e3a5f 35%, transparent);
+  outline-offset: 0;
+}
+
+.exco-staffcost-table td.is-editable-cell {
+  position: relative;
+  cursor: context-menu;
+}
+
+.exco-staffcost-table td {
+  cursor: context-menu;
+}
+
+.exco-staffcost-cell-label {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 0.15rem;
+  min-height: 1rem;
+  line-height: 1.15;
+}
+
+.exco-staffcost-cell-label .exco-formula-cell-value {
+  flex: 1;
+  min-width: 0;
+  text-align: right;
+}
+
+.exco-staffcost-pencil {
+  flex-shrink: 0;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 0.95rem;
+  height: 0.95rem;
+  padding: 0;
+  border: none;
+  border-radius: 3px;
+  background: color-mix(in srgb, #1e3a5f 12%, #fff);
+  color: #1e3a5f;
+  cursor: pointer;
+  /* Toujours présent dans le flux → la valeur ne bouge pas au survol */
+  opacity: 0;
+  pointer-events: none;
+}
+
+.exco-staffcost-table td.is-editable-cell:hover .exco-staffcost-pencil,
+.exco-staffcost-pencil:focus-visible {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.exco-staffcost-pencil:hover {
+  background: color-mix(in srgb, #1e3a5f 22%, #fff);
+}
+
+.exco-staffcost-inline-edit {
+  display: flex;
+  align-items: center;
+  gap: 0.15rem;
+}
+
+.exco-staffcost-inline-edit .exco-staffcost-cell-input {
+  flex: 1;
+  min-width: 2.5rem;
+}
+
+.exco-staffcost-ok-btn {
+  flex-shrink: 0;
+  border: none;
+  border-radius: 3px;
+  padding: 0.1rem 0.28rem;
+  font-size: 0.6rem;
+  font-weight: 700;
+  line-height: 1.2;
+  background: #7a1f2b;
+  color: #fff;
+  cursor: pointer;
+}
+
+.exco-staffcost-ok-btn:hover {
+  filter: brightness(1.05);
+}
+
+/* Overlay transparent : la grille Staff Cost reste visible derrière */
+.modal-overlay.exco-formula-modal-overlay {
+  background: transparent;
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
+  align-items: flex-start;
+  justify-content: center;
+  padding-top: min(12vh, 5.5rem);
+}
+
+html[data-theme='light'] .modal-overlay.exco-formula-modal-overlay {
+  background: transparent;
+}
+
+.exco-formula-modal {
+  width: min(560px, 94vw);
+  max-height: 88vh;
+  overflow: auto;
+  /* Panneau semi-transparent pour laisser lire les chiffres derrière */
+  background: color-mix(in srgb, #fff 82%, transparent) !important;
+  backdrop-filter: blur(1.5px);
+  -webkit-backdrop-filter: blur(1.5px);
+  border: 1px solid color-mix(in srgb, #18181b 14%, transparent);
+  box-shadow:
+    0 12px 40px rgba(24, 24, 27, 0.18),
+    0 0 0 1px color-mix(in srgb, #fff 40%, transparent);
+  will-change: transform;
+  animation: none; /* le translate de drag ne doit pas concurrencer modalIn */
+}
+
+html[data-theme='light'] .exco-formula-modal,
+html[data-theme='light'] .exco-formula-modal .modal-header,
+html[data-theme='light'] .exco-formula-modal .modal-footer {
+  background: color-mix(in srgb, #fff 82%, transparent) !important;
+}
+
+.exco-formula-modal .modal-header,
+.exco-formula-modal .modal-footer {
+  background: color-mix(in srgb, #fff 70%, transparent);
+}
+
+.exco-formula-modal-drag {
+  cursor: grab;
+  user-select: none;
+  touch-action: none;
+}
+
+.exco-formula-modal-drag:active {
+  cursor: grabbing;
+}
+
+.exco-formula-modal-body {
+  display: flex;
+  flex-direction: column;
+  gap: 0.85rem;
+}
+
+.exco-formula-result {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 0.75rem;
+  padding: 0.65rem 0.75rem;
+  border-radius: 8px;
+  background: color-mix(in srgb, #7a1f2b 8%, #fff);
+  border: 1px solid color-mix(in srgb, #7a1f2b 18%, #e4e4e7);
+}
+
+.exco-formula-result span {
+  font-size: 0.75rem;
+  color: #71717a;
+}
+
+.exco-formula-result strong {
+  font-size: 1.15rem;
+  font-weight: 800;
+}
+
+.exco-formula-block h4 {
+  margin: 0 0 0.35rem;
+  font-size: 0.72rem;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: #71717a;
+}
+
+.exco-formula-block p {
+  margin: 0;
+  font-size: 0.88rem;
+  line-height: 1.45;
+}
+
+.exco-formula-calc {
+  display: block;
+  padding: 0.5rem 0.65rem;
+  border-radius: 6px;
+  background: #f4f4f5;
+  font-size: 0.82rem;
+  white-space: pre-wrap;
+}
+
+.exco-formula-sources {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+}
+
+.exco-formula-sources li {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+  padding: 0.45rem 0.55rem;
+  border: 1px solid #e4e4e7;
+  border-radius: 6px;
+  background: #fff;
+}
+
+.exco-formula-source-main {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 0.2rem;
+  min-width: 0;
+}
+
+.exco-formula-source-ref {
+  display: inline-block;
+  padding: 0.1rem 0.4rem;
+  border-radius: 4px;
+  background: color-mix(in srgb, #1e3a5f 12%, #fff);
+  color: #1e3a5f;
+  font-size: 0.68rem;
+  font-weight: 700;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+}
+
+.exco-formula-sources strong {
+  display: block;
+  font-size: 0.8rem;
+}
+
+.exco-formula-source-value {
+  font-weight: 700;
+  font-size: 0.85rem;
+  white-space: nowrap;
+}
+
+.exco-formula-field {
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+  font-size: 0.78rem;
+  font-weight: 600;
+}
+
+.exco-formula-field textarea,
+.exco-formula-field input {
+  font: inherit;
+  font-weight: 400;
+  padding: 0.45rem 0.55rem;
+  border: 1px solid #d4d4d8;
+  border-radius: 6px;
+}
+
+.exco-formula-hint {
+  font-size: 0.72rem;
+  margin: 0;
+}
+
+.exco-staffcost-kpis {
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  gap: 0.4rem;
+}
+
+.exco-staffcost-kpi {
+  display: flex;
+  flex-direction: column;
+  gap: 0.1rem;
+  padding: 0.45rem 0.55rem;
+  border: 1px solid var(--border, #e4e4e7);
+  border-radius: 8px;
+  background: #fff;
+  min-height: 0;
+}
+
+.exco-staffcost-kpi.is-report-month {
+  background: color-mix(in srgb, #7a1f2b 6%, #fff);
+  border-color: color-mix(in srgb, #7a1f2b 20%, var(--border, #e4e4e7));
+}
+
+.exco-staffcost-kpi span {
+  font-size: 0.62rem;
+  font-weight: 700;
+  letter-spacing: 0.03em;
+  text-transform: uppercase;
+  color: #71717a;
+}
+
+.exco-staffcost-kpi.is-report-month span {
+  color: #7a1f2b;
+}
+
+.exco-staffcost-kpi strong {
+  font-size: 0.98rem;
+  font-weight: 800;
+  line-height: 1.15;
+  color: #18181b;
+}
+
+.exco-staffcost-kpi em {
+  font-style: normal;
+  font-size: 0.65rem;
+  color: #71717a;
+}
+
+.exco-staffcost-sheet-panel {
+  padding: 0.55rem 0.65rem 0.65rem !important;
+}
+
+.exco-staffcost-sheet-panel .exco-panel-head h3 {
+  font-size: 0.82rem;
+}
+
+.exco-staffcost-table th,
+.exco-staffcost-table td {
+  padding: 0.12rem 0.28rem !important;
+  font-size: 0.7rem;
+  line-height: 1.2;
+}
+
+.exco-staffcost-section td {
+  font-weight: 700;
+  font-size: 0.62rem !important;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: #7a1f2b;
+  background: color-mix(in srgb, #7a1f2b 8%, #fff) !important;
+  text-align: left !important;
+  padding: 0.1rem 0.28rem !important;
+  line-height: 1.2;
+}
+
+/* Alignement uniforme des mois (Input + FY Actual + FY Budget) */
+.exco-staffcost-aligned .exco-staffcost-table {
+  table-layout: fixed;
+  width: 100%;
+  min-width: 68rem;
+  border-collapse: collapse;
+}
+
+.exco-staffcost-aligned .exco-sc-col-metric {
+  width: 8.75rem;
+}
+
+.exco-staffcost-aligned .exco-sc-col-month {
+  width: calc((100% - 8.75rem - 6.5rem) / 12);
+}
+
+.exco-staffcost-aligned .exco-sc-col-total {
+  width: 6.5rem;
+}
+
+.exco-staffcost-aligned .exco-staffcost-table th,
+.exco-staffcost-aligned .exco-staffcost-table td {
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.exco-staffcost-input th.is-total-spacer,
+.exco-staffcost-input td.is-total-spacer {
+  background: transparent !important;
+  border-color: transparent !important;
+  box-shadow: none !important;
+  padding: 0 !important;
+}
+
+.exco-formula-cell-value {
+  display: inline-block;
+  text-align: right;
+}
+
+/* FY Actual / Budget — style proche Excel Staff_Cost_KPI */
+.exco-staffcost-fy.is-actual thead th {
+  background: #7a1f2b !important;
+  color: #fff !important;
+  font-weight: 700;
+}
+
+.exco-staffcost-fy.is-budget thead th {
+  background: #18181b !important;
+  color: #fff !important;
+  font-weight: 700;
+}
+
+.exco-staffcost-fy thead th.is-report-month {
+  box-shadow: inset 0 -3px 0 #fbbf24;
+}
+
+.exco-staffcost-fy th.is-total-col,
+.exco-staffcost-fy td.is-total-col {
+  background: #e4e4e7 !important;
+  font-weight: 650;
+  text-align: right;
+  box-shadow: none;
+}
+
+.exco-staffcost-fy.is-actual thead th.is-total-col,
+.exco-staffcost-fy.is-budget thead th.is-total-col {
+  background: #a1a1aa !important;
+  color: #fff !important;
+}
+
+.exco-staffcost-fy-sep td {
+  border-top: 2px solid #a1a1aa !important;
+}
+
+.exco-staffcost-fy td {
+  font-variant-numeric: tabular-nums;
+  text-align: right;
+}
+
+.exco-staffcost-fy td:first-child {
+  text-align: left;
+  font-weight: 650;
+}
+
+/* —— Overtime tab (Overview / Evolution / Top 10) —— */
+.exco-ot-overview-tab {
+  display: flex;
+  flex-direction: column;
+  gap: 0.65rem;
+  min-height: 0;
+}
+
+.exco-ot-overview-tab .exco-ot-overview-cards,
+.exco-metric-strip.exco-ot-overview-cards {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 0.45rem;
+}
+
+.exco-ot-overview-tab .exco-metric-card {
+  min-height: 4.6rem;
+  padding: 0.55rem 0.7rem 0.5rem;
+  border-radius: 12px;
+}
+
+.exco-ot-overview-tab .exco-metric-value {
+  font-size: 1.15rem;
+  line-height: 1.15;
+}
+
+.exco-ot-overview-tab .exco-metric-label {
+  font-size: 0.68rem;
+}
+
+.exco-ot-overview-tab .exco-metric-hint {
+  font-size: 0.65rem;
+}
+
+.exco-ot-charts-layout {
+  display: flex;
+  flex-direction: column;
+  gap: 0.55rem;
+  min-width: 0;
+}
+
+.exco-ot-chart-panel.is-avb {
+  min-width: 0;
+}
+
+.exco-ot-charts-dept-block {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+  min-width: 0;
+}
+
+.exco-ot-charts-dept-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0.55rem;
+  align-items: stretch;
+}
+
+.exco-ot-chart-panel {
+  min-width: 0;
+}
+
+.exco-ot-chart-panel .exco-panel-head {
+  flex-wrap: wrap;
+  gap: 0.25rem 0.65rem;
+  margin-bottom: 0.25rem;
+}
+
+.exco-ot-chart-panel .exco-panel-head h3 {
+  font-size: 0.9rem;
+}
+
+.exco-ot-chart-body {
+  padding: 0.1rem 0.15rem 0.25rem;
+}
+
+.exco-ot-chart-svg {
+  width: 100%;
+  height: auto;
+  display: block;
+  max-height: 240px;
+}
+
+.exco-ot-chart-panel.is-avb .exco-ot-chart-svg {
+  max-height: 220px;
+}
+
+.exco-ot-chart-grid {
+  stroke: color-mix(in srgb, var(--border, #e4e4e7) 80%, transparent);
+  stroke-width: 1;
+}
+
+.exco-ot-chart-axis {
+  fill: #71717a;
+  font-size: 9px;
+}
+
+.exco-ot-chart-axis.is-pct {
+  fill: #0ea5e9;
+}
+
+.exco-ot-chart-xlabel {
+  fill: #52525b;
+  font-size: 9px;
+  font-weight: 600;
+}
+
+.exco-ot-chart-xlabel.is-dept {
+  font-size: 9px;
+}
+
+.exco-ot-chart-legend {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.3rem 0.55rem;
+  align-items: center;
+  font-size: 0.68rem;
+  color: #52525b;
+  font-weight: 600;
+}
+
+.exco-ot-chart-legend-shared {
+  padding: 0.2rem 0.15rem;
+}
+
+.exco-ot-chart-legend span {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.28rem;
+  white-space: nowrap;
+}
+
+.exco-ot-chart-legend i {
+  width: 0.55rem;
+  height: 0.55rem;
+  border-radius: 2px;
+  display: inline-block;
+}
+
+.exco-ot-chart-legend i.is-line {
+  width: 0.85rem;
+  height: 0.18rem;
+  border-radius: 999px;
+}
+
+.exco-ot-tabs-shell {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  min-width: 0;
+  flex: 1 1 auto;
+  min-height: 0;
+}
+
+.exco-ot-subtabs {
+  display: flex;
+  gap: 0.15rem;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  margin: 0;
+  padding: 0;
+  border-bottom: 1px solid var(--border, #d4d4d8);
+  background: transparent;
+}
+
+.exco-ot-subtab {
+  position: relative;
+  margin-bottom: -1px;
+  border: 1px solid transparent;
+  border-bottom: none;
+  background: transparent;
+  color: #71717a;
+  border-radius: 10px 10px 0 0;
+  padding: 0.45rem 0.95rem;
+  font-size: 0.78rem;
+  font-weight: 650;
+  cursor: pointer;
+  box-shadow: none;
+}
+
+.exco-ot-subtab:hover {
+  background: color-mix(in srgb, #fff 35%, transparent);
+  color: #3f3f46;
+}
+
+.exco-ot-subtab.is-active {
+  background: #fff;
+  border-color: var(--border, #d4d4d8);
+  color: #18181b;
+  z-index: 2;
+}
+
+/* Pont blanc : l’onglet actif couvre la bordure et fusionne avec le corps */
+.exco-ot-subtab.is-active::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: -2px;
+  height: 3px;
+  background: #fff;
+  pointer-events: none;
+}
+
+.exco-ot-tab-body {
+  background: #fff;
+  border: 1px solid var(--border, #d4d4d8);
+  border-top: none;
+  border-radius: 0 0 12px 12px;
+  padding: 0.75rem 0.7rem 0.7rem;
+  min-height: 0;
+  margin-top: 0;
+}
+
+.exco-ot-evolution {
+  display: flex;
+  flex-direction: column;
+  gap: 0.55rem;
+}
+
+.exco-ot-trend-table.is-hours thead th {
+  background: #18181b !important;
+  color: #fff !important;
+}
+
+.exco-ot-trend-table.is-value thead th {
+  background: #7a1f2b !important;
+  color: #fff !important;
+}
+
+.exco-ot-trend-table.is-avb thead th {
+  background: #1e3a5f !important;
+  color: #fff !important;
+}
+
+.exco-ot-trend-table th,
+.exco-ot-trend-table td {
+  padding: 0.14rem 0.28rem !important;
+  font-size: 0.7rem;
+}
+
+.exco-ot-trend-table th.is-total-col,
+.exco-ot-trend-table td.is-total-col {
+  background: #e4e4e7 !important;
+  font-weight: 650;
+}
+
+.exco-ot-trend-table.is-hours thead th.is-total-col,
+.exco-ot-trend-table.is-value thead th.is-total-col,
+.exco-ot-trend-table.is-avb thead th.is-total-col {
+  background: #a1a1aa !important;
+  color: #fff !important;
+}
+
+.exco-ot-top10 {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  gap: 0.55rem;
+  align-items: start;
+}
+
+.exco-ot-emp-table th,
+.exco-ot-emp-table td {
+  padding: 0.16rem 0.35rem !important;
+  font-size: 0.72rem;
+}
+
+.exco-ot-emp-table thead th {
+  background: #18181b !important;
+  color: #fff !important;
+}
+
+@media (max-width: 1100px) {
+  .exco-ot-overview-tab .exco-ot-overview-cards,
+  .exco-metric-strip.exco-ot-overview-cards {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+  .exco-ot-charts-dept-grid {
+    grid-template-columns: 1fr;
+  }
+  .exco-ot-top10 {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 1100px) {
+  .exco-staffcost-top {
+    grid-template-columns: 1fr;
+  }
+  .exco-staffcost-kpis {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 720px) {
+  .exco-staffcost-kpis {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+.exco-metric-card.is-report-month {
+  background:
+    linear-gradient(180deg, color-mix(in srgb, #7a1f2b 6%, #fff) 0%, color-mix(in srgb, #7a1f2b 10%, #f8fafc) 100%);
+  border-color: color-mix(in srgb, #7a1f2b 22%, var(--border, #e4e4e7));
+}
+
+.exco-metric-card.is-report-month .exco-metric-label {
+  color: #7a1f2b;
+}
+
+.exco-hc-split {
+  display: grid;
+  grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr);
+  gap: 0.85rem;
+  align-items: start;
+}
+
+.exco-mini-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.82rem;
+}
+
+.exco-mini-table th,
+.exco-mini-table td {
+  padding: 0.4rem 0.5rem;
+  border-bottom: 1px solid var(--border, #ececef);
+  text-align: left;
+}
+
+.exco-mini-table th {
+  font-size: 0.72rem;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+  color: #71717a;
+  background: #f4f4f5;
+}
+
+.exco-row-total td {
+  font-weight: 700;
+  background: color-mix(in srgb, #7a1f2b 6%, transparent);
+}
+
+.exco-avg-list {
+  margin: 0.75rem 0 0;
+  display: grid;
+  gap: 0.35rem;
+}
+
+.exco-avg-list > div {
+  display: flex;
+  justify-content: space-between;
+  gap: 0.75rem;
+  padding: 0.35rem 0.5rem;
+  border-radius: 8px;
+  background: #fafafa;
+  border: 1px solid var(--border, #ececef);
+}
+
+.exco-avg-list dt {
+  margin: 0;
+  font-size: 0.8rem;
+  color: #52525b;
+}
+
+.exco-avg-list dd {
+  margin: 0;
+  font-weight: 700;
+  font-size: 0.85rem;
+}
+
+.exco-bar-chart {
+  display: flex;
+  flex-direction: column;
+  gap: 0.45rem;
+  padding-top: 0.25rem;
+}
+
+.exco-bar-row {
+  display: grid;
+  grid-template-columns: 7.5rem 1fr 3.2rem;
+  gap: 0.45rem;
+  align-items: center;
+  text-align: left;
+}
+
+.exco-bar-label {
+  font-size: 0.72rem;
+  color: #52525b;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  text-align: left;
+  justify-self: start;
+  width: 100%;
+}
+
+.exco-exit-reasons-chart .exco-bar-row {
+  grid-template-columns: minmax(5.5rem, 1.15fr) minmax(2.5rem, 1fr) 2.6rem;
+}
+
+.exco-bar-track {
+  height: 0.7rem;
+  border-radius: 999px;
+  background: #f4f4f5;
+  overflow: hidden;
+  display: flex;
+}
+
+.exco-bar-track-stack {
+  gap: 0;
+}
+
+.exco-bar-fill {
+  height: 100%;
+  border-radius: 999px;
+  min-width: 2px;
+}
+
+.exco-bar-male { background: #1e3a5f; border-radius: 999px 0 0 999px; }
+.exco-bar-female { background: #c45c7a; border-radius: 0 999px 999px 0; }
+
+.exco-bar-value {
+  font-size: 0.72rem;
+  font-weight: 700;
+  text-align: right;
+  color: #3f3f46;
+}
+
+.exco-chart-legend {
+  display: flex;
+  gap: 0.85rem;
+  margin-top: 0.35rem;
+  font-size: 0.75rem;
+  color: #52525b;
+}
+
+.exco-legend-male::before,
+.exco-legend-female::before {
+  content: '';
+  display: inline-block;
+  width: 0.55rem;
+  height: 0.55rem;
+  border-radius: 2px;
+  margin-right: 0.3rem;
+  vertical-align: middle;
+}
+
+.exco-legend-male::before { background: #1e3a5f; }
+.exco-legend-female::before { background: #c45c7a; }
+
+.exco-gender-donut {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.55rem;
+  margin-top: 0.85rem;
+}
+
+.exco-donut {
+  width: 7.5rem;
+  height: 7.5rem;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+}
+
+.exco-donut-hole {
+  width: 4.6rem;
+  height: 4.6rem;
+  border-radius: 50%;
+  background: #fff;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.1rem;
+}
+
+.exco-donut-hole strong {
+  font-size: 1.15rem;
+}
+
+.exco-donut-hole span {
+  font-size: 0.7rem;
+  color: #71717a;
+}
+
+@media (max-width: 1200px) {
+  .exco-kpi-cards {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+  .exco-hc-grid,
+  .exco-hc-split,
+  .exco-inout-lists,
+  .exco-inout-metrics {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 720px) {
+  .exco-kpi-cards {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+  .exco-bar-row {
+    grid-template-columns: 5.5rem 1fr 2.8rem;
+  }
+}
+
+/* ——— EXCO Params / BASE / Overtime workflow ——— */
+.exco-params-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.85rem;
+  align-items: flex-end;
+}
+
+.exco-field {
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+  min-width: 11rem;
+}
+
+.exco-field span {
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: #71717a;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+}
+
+.exco-field input {
+  padding: 0.45rem 0.6rem;
+  border: 1px solid var(--border, #e4e4e7);
+  border-radius: 8px;
+  font-size: 0.9rem;
+  background: #fff;
+}
+
+.exco-stat-chip {
+  display: flex;
+  flex-direction: column;
+  gap: 0.15rem;
+  min-width: 7.2rem;
+  padding: 0.55rem 0.75rem;
+  border: 1px solid var(--border, #e4e4e7);
+  border-radius: 10px;
+  background: linear-gradient(180deg, #fff 0%, #fafafa 100%);
+}
+
+.exco-stat-chip span {
+  font-size: 0.7rem;
+  color: #71717a;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+}
+
+.exco-stat-chip strong {
+  font-size: 0.98rem;
+  font-weight: 700;
+  color: #18181b;
+}
+
+.exco-stat-ok {
+  border-color: color-mix(in srgb, #166534 35%, var(--border, #e4e4e7));
+  background: color-mix(in srgb, #dcfce7 45%, #fff);
+}
+
+.exco-stat-warn {
+  border-color: color-mix(in srgb, #a16207 35%, var(--border, #e4e4e7));
+  background: color-mix(in srgb, #fef3c7 50%, #fff);
+}
+
+.exco-stat-bad {
+  border-color: color-mix(in srgb, #991b1b 30%, var(--border, #e4e4e7));
+  background: color-mix(in srgb, #fee2e2 50%, #fff);
+}
+
+.exco-metric-strip {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(9.5rem, 1fr));
+  gap: 0.65rem;
+}
+
+.exco-metric-card.is-large .exco-metric-value {
+  font-size: 1.65rem;
+  line-height: 1.1;
+}
+
+.exco-metric-card {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+  min-height: 5.4rem;
+  padding: 0.75rem 0.85rem 0.7rem;
+  border: 1px solid var(--border, #e4e4e7);
+  border-radius: 14px;
+  background:
+    linear-gradient(180deg, #fff 0%, #f8fafc 100%);
+  box-shadow: 0 1px 0 color-mix(in srgb, #18181b 4%, transparent);
+  overflow: hidden;
+}
+
+button.exco-metric-card {
+  font: inherit;
+  text-align: left;
+  cursor: pointer;
+  width: 100%;
+}
+
+.exco-metric-card.is-clickable:hover,
+.exco-metric-card.is-clickable:focus-visible {
+  border-color: color-mix(in srgb, #7a1f2b 35%, var(--border, #e4e4e7));
+  box-shadow: 0 2px 10px color-mix(in srgb, #7a1f2b 12%, transparent);
+  outline: none;
+}
+
+.exco-num-clickable {
+  appearance: none;
+  border: 0;
+  background: transparent;
+  padding: 0;
+  margin: 0;
+  font: inherit;
+  font-weight: 700;
+  color: #1e3a5f;
+  text-decoration: underline;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 2px;
+  cursor: pointer;
+}
+
+.exco-num-clickable:hover,
+.exco-num-clickable:focus-visible {
+  color: #7a1f2b;
+  outline: none;
+}
+
+button.exco-bar-row {
+  appearance: none;
+  border: 0;
+  background: transparent;
+  padding: 0;
+  margin: 0;
+  width: 100%;
+  font: inherit;
+  cursor: pointer;
+  border-radius: 6px;
+  text-align: left;
+}
+
+button.exco-bar-row.is-clickable:hover,
+button.exco-bar-row.is-clickable:focus-visible {
+  background: color-mix(in srgb, #7a1f2b 6%, transparent);
+  outline: none;
+}
+
+.exco-metric-card::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: 4px;
+  background: #a1a1aa;
+}
+
+.exco-metric-label {
+  font-size: 0.68rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: #71717a;
+}
+
+.exco-metric-value {
+  font-size: 1.35rem;
+  font-weight: 800;
+  line-height: 1.15;
+  color: #18181b;
+  letter-spacing: -0.02em;
+}
+
+.exco-metric-hint {
+  margin-top: auto;
+  font-size: 0.74rem;
+  color: #a1a1aa;
+}
+
+.exco-metric-navy::before { background: #1e3a5f; }
+.exco-metric-navy {
+  background: linear-gradient(165deg, #fff 35%, color-mix(in srgb, #1e3a5f 8%, #fff) 100%);
+}
+
+.exco-metric-rose::before { background: #c45c7a; }
+.exco-metric-rose {
+  background: linear-gradient(165deg, #fff 35%, color-mix(in srgb, #c45c7a 9%, #fff) 100%);
+}
+
+.exco-metric-teal::before { background: #0f766e; }
+.exco-metric-teal {
+  background: linear-gradient(165deg, #fff 35%, color-mix(in srgb, #0f766e 9%, #fff) 100%);
+}
+
+.exco-metric-wine::before { background: #7a1f2b; }
+.exco-metric-wine {
+  background: linear-gradient(165deg, #fff 35%, color-mix(in srgb, #7a1f2b 9%, #fff) 100%);
+}
+
+.exco-metric-amber::before { background: #b45309; }
+.exco-metric-amber {
+  background: linear-gradient(165deg, #fff 35%, color-mix(in srgb, #b45309 10%, #fff) 100%);
+}
+
+.exco-metric-ok::before { background: #166534; }
+.exco-metric-warn::before { background: #a16207; }
+.exco-metric-bad::before { background: #991b1b; }
+
+.exco-panel-accent-navy,
+.exco-panel-accent-rose,
+.exco-panel-accent-teal,
+.exco-panel-accent-wine {
+  border-top: 3px solid transparent;
+}
+
+.exco-panel-accent-navy { border-top-color: #1e3a5f; }
+.exco-panel-accent-rose { border-top-color: #c45c7a; }
+.exco-panel-accent-teal { border-top-color: #0f766e; }
+.exco-panel-accent-wine { border-top-color: #7a1f2b; }
+
+.exco-narrative-input {
+  display: block;
+  width: 100%;
+  min-height: min(55vh, 28rem);
+  height: min(55vh, 28rem);
+  margin: 0;
+  padding: 0.7rem 0.8rem;
+  border: 1px solid var(--border, #e4e4e7);
+  border-radius: 10px;
+  background: #fafafa;
+  color: var(--ink, #18181b);
+  font: inherit;
+  font-size: 0.88rem;
+  line-height: 1.55;
+  white-space: pre-wrap;
+  resize: vertical;
+}
+
+.exco-narrative-input:focus {
+  outline: 2px solid color-mix(in srgb, #7a1f2b 35%, transparent);
+  outline-offset: 1px;
+  background: #fff;
+}
+
+.exco-narrative-input:disabled {
+  opacity: 0.75;
+  cursor: not-allowed;
+}
+
+.exco-warn-banner {
+  margin: 0;
+  padding: 0.65rem 0.85rem;
+  border-radius: 10px;
+  background: color-mix(in srgb, #fef3c7 80%, #fff);
+  border: 1px solid #f6d98a;
+  color: #92400e;
+  font-size: 0.88rem;
+}
+
+.exco-panel-head {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: 0.65rem;
+  align-items: center;
+  margin-bottom: 0.5rem;
+}
+
+.exco-panel-head h3 {
+  margin: 0;
+}
+
+.exco-inline-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+}
+
+.exco-muted {
+  margin: 0 0 0.65rem;
+  font-size: 0.82rem;
+  color: #71717a;
+  line-height: 1.4;
+}
+
+.exco-source-chosen {
+  color: #166534;
+  font-size: 0.8rem;
+  font-weight: 600;
+}
+
+.exco-workbook-page {
+  display: flex;
+  flex-direction: column;
+  gap: 0.65rem;
+  height: calc(100dvh - 2.75rem);
+  max-height: calc(100dvh - 2.75rem);
+  min-height: 0;
+  overflow: hidden;
+  margin: calc(var(--main-pad-y, 1.75rem) * -1) calc(var(--main-pad-x, 2rem) * -1);
+  padding: 0.55rem 0.75rem 0.55rem;
+  width: calc(100% + (var(--main-pad-x, 2rem) * 2));
+  max-width: none;
+  box-sizing: border-box;
+}
+
+.exco-workbook-page .exco-sticky {
+  /* Le sticky global tire vers le haut — ici la page gère déjà le bleed */
+  margin-top: 0 !important;
+  margin-left: 0 !important;
+  margin-right: 0 !important;
+  padding-left: 0 !important;
+  padding-right: 0 !important;
+  padding-top: 0.25rem !important;
+  padding-bottom: 0.35rem !important;
+  background: var(--bg, #eef0f5) !important;
+  border-bottom: none !important;
+  flex: 0 0 auto;
+  z-index: 60;
+}
+
+.exco-main-tabs-shell {
+  display: flex;
+  flex-direction: column;
+  flex: 1 1 auto;
+  min-height: 0;
+  gap: 0;
+}
+
+.exco-main-tabs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.12rem;
+  align-items: flex-end;
+  padding: 0;
+  margin: 0;
+  border-bottom: 1px solid var(--border, #d4d4d8);
+  background: transparent;
+}
+
+.exco-main-tab {
+  position: relative;
+  margin-bottom: -1px;
+  border: 1px solid transparent;
+  border-bottom: none;
+  background: transparent;
+  color: #71717a;
+  border-radius: 10px 10px 0 0;
+  padding: 0.42rem 0.7rem;
+  font-size: 0.72rem;
+  font-weight: 650;
+  cursor: pointer;
+  white-space: nowrap;
+}
+
+.exco-main-tab:hover {
+  background: color-mix(in srgb, #fff 40%, transparent);
+  color: #3f3f46;
+}
+
+.exco-main-tab.is-active {
+  background: #fff;
+  border-color: var(--border, #d4d4d8);
+  color: #18181b;
+  z-index: 2;
+}
+
+.exco-main-tab.is-active::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: -2px;
+  height: 3px;
+  background: #fff;
+  pointer-events: none;
+}
+
+.exco-workbook-body {
+  flex: 1 1 auto;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.65rem;
+  padding: 0.75rem 0.7rem 0.55rem;
+  overflow-x: hidden;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  -webkit-overflow-scrolling: touch;
+  background: #fff;
+  border: 1px solid var(--border, #d4d4d8);
+  border-top: none;
+  border-radius: 0 0 12px 12px;
+}
+
+/* Contenu long (audit table, cahier, summary) : laisser défiler le body */
+.exco-workbook-body > .exco-panel-stack,
+.exco-workbook-body > .exco-slide-panel {
+  flex: 1 1 auto;
+  min-height: 0;
+  overflow: visible;
+}
+
+.exco-workbook-body > .exco-panel-stack:has(.exco-base-in-params) {
+  display: flex;
+  flex-direction: column;
+  min-height: 100%;
+}
+
+.exco-workbook-body .exco-panel {
+  overflow: visible;
+}
+
+/* Tables audit / listes : pas de cadre scroll interne (le body défile) */
+.exco-workbook-body .exco-sheet-scroll:not(.exco-sheet-scroll-fill) {
+  max-height: none;
+  overflow: visible;
+}
+
+/* BASE et grilles larges : scroll H + V dans le cadre */
+.exco-workbook-body .exco-sheet-scroll-fill,
+.exco-base-sheet .exco-sheet-scroll {
+  min-height: 0;
+  min-width: 0;
+  overflow: auto !important;
+  overflow-x: auto !important;
+  overflow-y: auto !important;
+  -webkit-overflow-scrolling: touch;
+}
+
+.exco-workbook-body .exco-ot-tab-body {
+  overflow: visible;
+  min-height: auto;
+}
+
+.exco-base-sheet {
+  min-width: 0;
+  width: 100%;
+  max-width: 100%;
+}
+
+.exco-base-sheet .exco-sheet-table {
+  width: max-content;
+  min-width: 100%;
+}
+
+.exco-base-fill {
+  flex: 1 1 auto;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  overflow: hidden;
+}
+
+.exco-base-toolbar-inline {
+  display: flex;
+  align-items: center;
+  gap: 0.45rem;
+  min-width: 0;
+  max-width: min(28rem, 42vw);
+  margin-right: 0.35rem;
+}
+
+.exco-base-effectif {
+  font-size: 0.75rem;
+  white-space: nowrap;
+  flex: 0 0 auto;
+  font-weight: 700;
+}
+
+.exco-base-search {
+  flex: 1 1 auto;
+  min-width: 8rem;
+  width: 12rem;
+  padding: 0.28rem 0.5rem;
+  border: 1px solid var(--border, #e4e4e7);
+  border-radius: 6px;
+  font-size: 0.78rem;
+  background: #fff;
+  height: 1.7rem;
+}
+
+.exco-base-toolbar-inline .exco-base-search {
+  min-width: 8rem;
+  width: 12rem;
+}
+
+.exco-base-sheet {
+  flex: 1 1 auto;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  border-radius: 8px;
+}
+
+.exco-sheet-scroll-fill {
+  flex: 1 1 auto;
+  min-height: 0;
+  max-height: none !important;
+  height: auto !important;
+  overflow: auto;
+  overscroll-behavior: contain;
+}
+
+.exco-page-header {
+  align-items: center;
+  margin-bottom: 0 !important;
+  gap: 0.5rem !important;
+  min-height: 0;
+}
+
+.exco-sticky {
+  padding: 0.35rem 0 0.65rem;
+  margin-bottom: 0;
+  box-shadow: none;
+  flex: 0 0 auto;
+  background: var(--bg, #eef0f5);
+}
+
+.exco-header-left h2 {
+  font-size: 0.98rem !important;
+  line-height: 1.15;
+}
+
+.exco-header-left p {
+  margin-top: 0.05rem !important;
+  font-size: 0.7rem !important;
+}
+
+.exco-header-actions {
+  align-items: center;
+  flex-wrap: nowrap;
+  gap: 0.35rem;
+}
+
+.exco-header-actions .exco-tabs {
+  margin: 0;
+  flex-shrink: 0;
+}
+
+.exco-sticky .header-tabs .tab-btn {
+  padding: 0.22rem 0.55rem;
+  font-size: 0.66rem;
+}
+
+@media (max-width: 860px) {
+  .exco-header-actions {
+    flex-wrap: wrap;
+    width: 100%;
+    justify-content: flex-start;
+  }
+
+  .exco-base-toolbar {
+    flex-wrap: wrap;
+  }
+
+  .exco-workbook-page {
+    height: auto;
+    max-height: none;
+    overflow: visible;
+    margin: 0;
+    width: 100%;
+    padding: 0;
+  }
+
+  .exco-workbook-body,
+  .exco-base-fill,
+  .exco-base-sheet {
+    overflow: visible;
+  }
+
+  .exco-sheet-scroll-fill {
+    max-height: min(58dvh, 32rem) !important;
+  }
+}
+
+.exco-base-in-params {
+  min-width: 0 !important;
+  max-width: 100%;
+  overflow: hidden !important;
+  display: flex;
+  flex-direction: column;
+  flex: 1 1 auto;
+  min-height: min(70dvh, 42rem);
+}
+
+.exco-base-in-params .exco-base-toolbar-inline {
+  max-width: none;
+  margin-right: 0;
+}
+
+.exco-base-in-params .exco-panel-head {
+  flex: 0 0 auto;
+}
+
+/* Cadre scroll dédié BASE — toutes les colonnes accessibles en horizontal */
+.exco-base-scroll-host {
+  width: 100%;
+  max-width: 100%;
+  min-width: 0;
+  flex: 1 1 auto;
+  min-height: min(58dvh, 36rem);
+  border: 1px solid var(--border, #e4e4e7);
+  border-radius: 8px;
+  background: #fff;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+.exco-base-scroll-x {
+  width: 100%;
+  max-width: 100%;
+  min-width: 0;
+  flex: 1 1 auto;
+  min-height: min(58dvh, 36rem);
+  max-height: min(72dvh, 44rem);
+  overflow-x: scroll;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+  overscroll-behavior: contain;
+}
+
+.exco-base-table {
+  width: max-content !important;
+  min-width: max-content !important;
+  border-collapse: collapse;
+}
+
+.exco-base-table th,
+.exco-base-table td {
+  white-space: nowrap !important;
+  max-width: none !important;
+}
+
+.exco-slide-panel > .exco-ot-subtabs {
+  margin-bottom: 0;
+}
+
+.exco-slide-panel {
+  min-height: 0;
+  overflow: visible;
+}
+
+.exco-slide-panel > .exco-ot-tab-body {
+  display: flex;
+  flex-direction: column;
+  gap: 0.55rem;
+  overflow: visible;
+}
+
+.exco-slide-metrics {
+  margin-bottom: 0.55rem;
+}
+
+.exco-slide-table th,
+.exco-slide-table td {
+  font-size: 0.72rem;
+  vertical-align: top;
+}
+
+.exco-cahier-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(14rem, 1fr));
+  gap: 0.65rem;
+}
+
+.exco-cahier-card {
+  border: 1px solid var(--border, #e4e4e7);
+  border-radius: 12px;
+  padding: 0.75rem 0.85rem;
+  background: #fff;
+}
+
+.exco-cahier-card h4 {
+  margin: 0.35rem 0 0.4rem;
+  font-size: 0.92rem;
+}
+
+.exco-cahier-card p {
+  margin: 0 0 0.55rem;
+  font-size: 0.8rem;
+  color: #3f3f46;
+  line-height: 1.4;
+}
+
+.exco-cahier-icon {
+  display: inline-block;
+  font-size: 0.68rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  color: #0f766e;
+  letter-spacing: 0.04em;
+}
+
+.exco-cahier-progress {
+  height: 6px;
+  border-radius: 999px;
+  background: #e4e4e7;
+  overflow: hidden;
+}
+
+.exco-cahier-progress > span {
+  display: block;
+  height: 100%;
+  background: #0f766e;
+}
+
+.exco-cahier-card em {
+  display: block;
+  margin-top: 0.35rem;
+  font-style: normal;
+  font-size: 0.72rem;
+  font-weight: 700;
+  color: #0f766e;
+}
+
+.exco-cahier-field {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  margin-bottom: 0.5rem;
+}
+
+.exco-cahier-field > span {
+  font-size: 0.68rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: #71717a;
+}
+
+.exco-cahier-field input,
+.exco-cahier-field select,
+.exco-cahier-field textarea {
+  width: 100%;
+  border: 1px solid var(--border, #e4e4e7);
+  border-radius: 8px;
+  padding: 0.4rem 0.5rem;
+  font: inherit;
+  font-size: 0.82rem;
+  background: #fff;
+  color: inherit;
+  resize: vertical;
+}
+
+.exco-cahier-field textarea {
+  min-height: 14rem;
+  height: 14rem;
+  line-height: 1.45;
+}
+
+.exco-cahier-grid {
+  align-items: stretch;
+}
+
+.exco-cahier-card {
+  display: flex;
+  flex-direction: column;
+  min-height: 22rem;
+}
+
+.exco-audit-rate-row {
+  display: flex;
+  margin-bottom: 0.85rem;
+}
+
+.exco-audit-rate-card {
+  min-width: 11rem;
+  padding: 0.85rem 1.1rem !important;
+}
+
+.exco-audit-rate-card .exco-metric-value {
+  font-size: 2rem !important;
+  line-height: 1.1;
+}
+
+.exco-audit-rate-card em {
+  display: block;
+  margin-top: 0.35rem;
+  font-style: normal;
+  font-size: 0.72rem;
+}
+
+.exco-audit-progression-block {
+  margin-bottom: 1rem;
+}
+
+.exco-audit-progression-block h4 {
+  margin: 0 0 0.35rem;
+  font-size: 0.95rem;
+}
+
+.exco-export-menu {
+  position: relative;
+}
+
+.exco-export-trigger {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+}
+
+.exco-export-trigger-icon {
+  flex-shrink: 0;
+}
+
+.exco-export-dropdown {
+  position: absolute;
+  right: 0;
+  top: calc(100% + 0.35rem);
+  z-index: 40;
+  min-width: 12.5rem;
+  padding: 0.35rem;
+  border-radius: 10px;
+  border: 1px solid var(--border, #e4e4e7);
+  background: #fff;
+  box-shadow: 0 10px 28px rgba(15, 23, 42, 0.12);
+}
+
+.exco-export-dropdown-item {
+  display: flex;
+  width: 100%;
+  align-items: center;
+  gap: 0.55rem;
+  border: 0;
+  background: transparent;
+  padding: 0.55rem 0.65rem;
+  border-radius: 8px;
+  font: inherit;
+  font-size: 0.82rem;
+  color: inherit;
+  cursor: pointer;
+  text-align: left;
+}
+
+.exco-export-dropdown-item:hover:not(:disabled) {
+  background: #f4f4f5;
+}
+
+.exco-export-dropdown-item:disabled {
+  opacity: 0.55;
+  cursor: wait;
+}
+
+.exco-ok-banner {
+  margin: 0 0 0.65rem;
+  padding: 0.45rem 0.65rem;
+  border-radius: 8px;
+  background: #ecfdf5;
+  color: #166534;
+  font-size: 0.82rem;
+}
+
+.exco-gov-text {
+  margin: 0.35rem 0 0.75rem !important;
+}
+
+.exco-gov-bars {
+  display: grid;
+  grid-template-columns: repeat(12, minmax(0, 1fr));
+  gap: 0.35rem;
+  align-items: end;
+  min-height: 10rem;
+}
+
+.exco-gov-bar-col {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.2rem;
+  min-width: 0;
+}
+
+.exco-gov-bar-track {
+  width: 100%;
+  height: 8rem;
+  display: flex;
+  align-items: flex-end;
+  background: color-mix(in srgb, #e4e4e7 55%, transparent);
+  border-radius: 6px 6px 2px 2px;
+  overflow: hidden;
+}
+
+.exco-gov-bar-fill {
+  width: 100%;
+  background: #1e3a5f;
+  border-radius: 4px 4px 0 0;
+  min-height: 2px;
+}
+
+.exco-gov-bar-col.is-current .exco-gov-bar-fill {
+  background: #7a1f2b;
+}
+
+.exco-gov-bar-col.is-future {
+  opacity: 0.35;
+}
+
+.exco-gov-bar-col span,
+.exco-gov-bar-col em {
+  font-size: 0.62rem;
+  font-style: normal;
+  color: #52525b;
+  font-weight: 650;
+}
+
+.exco-slide-table tr.is-audit-closed td {
+  background: color-mix(in srgb, #86efac 22%, #fff);
+}
+
+.exco-slide-table tr.is-audit-overdue td {
+  background: color-mix(in srgb, #fecaca 35%, #fff);
+}
+
+.exco-thankyou-edit {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.exco-thankyou-form {
+  display: grid;
+  grid-template-columns: minmax(12rem, 18rem) minmax(0, 1fr);
+  gap: 0.75rem;
+  align-items: start;
+}
+
+.exco-thankyou-form .exco-narrative-input {
+  min-height: 5rem;
+}
+
+@media (max-width: 860px) {
+  .exco-thankyou-form {
+    grid-template-columns: 1fr;
+  }
+}
+
+.exco-thankyou-panel {
+  min-height: 18rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.45rem;
+  border-radius: 16px;
+  border: 1px solid var(--border, #e4e4e7);
+  background:
+    radial-gradient(circle at 30% 20%, color-mix(in srgb, #7a1f2b 12%, #fff), transparent 45%),
+    #fff;
+  text-align: center;
+  padding: 2rem 1rem;
+}
+
+.exco-thankyou-panel h3 {
+  margin: 0;
+  font-size: clamp(2rem, 4vw, 3rem);
+  color: #7a1f2b;
+  letter-spacing: -0.02em;
+}
+
+.exco-thankyou-kicker {
+  margin: 0;
+  font-size: 0.85rem;
+  font-weight: 650;
+  color: #71717a;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+
+.exco-thankyou-sub {
+  margin: 0;
+  font-size: 1.15rem;
+  color: #3f3f46;
+}
+
+@media (max-width: 1100px) {
+  .exco-gov-bars {
+    grid-template-columns: repeat(6, minmax(0, 1fr));
+  }
+}
+
+/* Densité compacte — plus d’info visible, moins de padding */
+.exco-workbook-page {
+  gap: 0.2rem;
+  padding: 0.28rem 0.5rem 0.28rem;
+}
+
+.exco-workbook-page .page-header h2,
+.exco-workbook-page .exco-header-left h2 {
+  font-size: 0.86rem !important;
+  line-height: 1.15;
+}
+
+.exco-workbook-page .exco-header-left p,
+.exco-workbook-page .page-header p {
+  font-size: 0.64rem !important;
+  margin-top: 0.02rem !important;
+}
+
+.exco-workbook-page .exco-header-actions .btn,
+.exco-workbook-page .exco-params-grid .btn,
+.exco-workbook-page .exco-panel-head .btn,
+.exco-workbook-page .exco-inline-actions .btn {
+  font-size: 0.66rem;
+  padding: 0.18rem 0.48rem;
+  min-height: 26px;
+  height: 26px;
+  gap: 0.22rem;
+  border-radius: 6px;
+}
+
+.exco-workbook-page .exco-export-trigger-icon {
+  width: 13px;
+  height: 13px;
+}
+
+.exco-workbook-page .exco-header-period input[type="month"] {
+  height: 26px;
+  min-height: 26px;
+  font-size: 0.66rem;
+  padding: 0 0.4rem;
+  border-radius: 6px;
+}
+
+.exco-workbook-page .exco-main-tab {
+  padding: 0.4rem 0.78rem;
+  font-size: 0.8rem;
+  border-radius: 9px 9px 0 0;
+}
+
+.exco-workbook-page .exco-workbook-body {
+  padding: 0.4rem 0.45rem 0.35rem;
+  gap: 0.4rem;
+  border-radius: 0 0 8px 8px;
+}
+
+.exco-workbook-page .exco-panel {
+  padding: 0.45rem 0.55rem 0.5rem;
+  border-radius: 8px;
+}
+
+.exco-workbook-page .exco-sheet-wrap {
+  border-radius: 8px;
+}
+
+.exco-workbook-page .exco-base-in-params {
+  padding: 0.4rem 0.45rem 0.4rem;
+}
+
+.exco-workbook-page .exco-panel h3,
+.exco-workbook-page .exco-panel-head h3 {
+  font-size: 0.76rem;
+  margin: 0 0 0.3rem;
+}
+
+.exco-workbook-page .exco-panel-head {
+  margin-bottom: 0.28rem;
+  gap: 0.35rem;
+}
+
+.exco-workbook-page .exco-panel-stack,
+.exco-workbook-page .exco-kpi-summary,
+.exco-workbook-page .exco-hc-dashboard {
+  gap: 0.4rem;
+}
+
+.exco-workbook-page .exco-params-grid {
+  gap: 0.4rem 0.55rem;
+}
+
+.exco-workbook-page .exco-field {
+  gap: 0.12rem;
+  min-width: 9.25rem;
+}
+
+.exco-workbook-page .exco-field span {
+  font-size: 0.6rem;
+  letter-spacing: 0.04em;
+}
+
+.exco-workbook-page .exco-field input,
+.exco-workbook-page .exco-field select,
+.exco-workbook-page .exco-field textarea {
+  padding: 0.18rem 0.4rem;
+  font-size: 0.74rem;
+  border-radius: 5px;
+  box-sizing: border-box;
+}
+
+.exco-workbook-page .exco-field input,
+.exco-workbook-page .exco-field select {
+  height: 1.7rem;
+}
+
+.exco-workbook-page .exco-muted {
+  font-size: 0.7rem;
+  margin-bottom: 0.35rem;
+}
+
+.exco-workbook-page .exco-sheet-table,
+.exco-workbook-page .exco-mini-table,
+.exco-workbook-page .exco-base-table,
+.exco-workbook-page .exco-slide-table {
+  font-size: 0.7rem;
+}
+
+.exco-workbook-page .exco-sheet-table th,
+.exco-workbook-page .exco-sheet-table td,
+.exco-workbook-page .exco-mini-table th,
+.exco-workbook-page .exco-mini-table td,
+.exco-workbook-page .exco-slide-table th,
+.exco-workbook-page .exco-slide-table td {
+  padding: 0.14rem 0.38rem;
+  line-height: 1.25;
+}
+
+.exco-workbook-page .exco-sheet-table th,
+.exco-workbook-page .exco-mini-table th {
+  font-size: 0.62rem;
+}
+
+.exco-workbook-page .exco-base-search {
+  height: 1.5rem;
+  font-size: 0.7rem;
+  padding: 0.12rem 0.38rem;
+}
+
+.exco-workbook-page .exco-base-effectif {
+  font-size: 0.68rem;
+}
+
+.exco-workbook-page .exco-kpi-cards {
+  gap: 0.4rem;
+}
+
+.exco-workbook-page .exco-kpi-card {
+  min-height: 4.4rem;
+  padding: 0.4rem 0.5rem 0.38rem;
+  border-radius: 8px;
+}
+
+.exco-workbook-page .exco-kpi-card h4 {
+  font-size: 0.62rem;
+}
+
+.exco-workbook-page .exco-kpi-card-value {
+  font-size: 1.05rem;
+  margin-top: 0.08rem;
+}
+
+.exco-workbook-page .exco-kpi-card-delta,
+.exco-workbook-page .exco-kpi-card-prev {
+  font-size: 0.68rem;
+}
+
+.exco-workbook-page .exco-metric-strip {
+  gap: 0.4rem;
+  grid-template-columns: repeat(auto-fit, minmax(8.2rem, 1fr));
+}
+
+.exco-workbook-page .exco-metric-card {
+  min-height: 3.6rem;
+  padding: 0.4rem 0.5rem 0.38rem;
+  border-radius: 8px;
+}
+
+.exco-workbook-page .exco-metric-label {
+  font-size: 0.6rem;
+}
+
+.exco-workbook-page .exco-metric-value {
+  font-size: 1.05rem;
+}
+
+.exco-workbook-page .exco-metric-card.is-large .exco-metric-value {
+  font-size: 1.18rem;
+}
+
+.exco-workbook-page .exco-metric-hint {
+  font-size: 0.64rem;
+}
+
+.exco-workbook-page .exco-audit-rate-card {
+  padding: 0.45rem 0.65rem !important;
+}
+
+.exco-workbook-page .exco-audit-rate-card .exco-metric-value {
+  font-size: 1.35rem !important;
+}
+
+.exco-workbook-page .exco-bar-row {
+  gap: 0.32rem;
+}
+
+.exco-workbook-page .exco-bar-label,
+.exco-workbook-page .exco-bar-value {
+  font-size: 0.66rem;
+}
+
+.exco-workbook-page .exco-bar-track {
+  height: 0.52rem;
+}
+
+.exco-workbook-page .exco-panel-grid {
+  gap: 0.45rem;
+}
+
+.exco-workbook-page .exco-panel-grid > .exco-panel {
+  min-height: min(46vh, 22rem);
+}
+
+.exco-workbook-page .exco-narrative-input {
+  min-height: min(38vh, 18rem);
+  height: min(38vh, 18rem);
+  padding: 0.45rem 0.55rem;
+  font-size: 0.78rem;
+  line-height: 1.4;
+  border-radius: 7px;
+}
+
+.exco-workbook-page .exco-cahier-card {
+  min-height: 14rem;
+  padding: 0.45rem 0.55rem;
+  border-radius: 8px;
+}
+
+.exco-workbook-page .exco-cahier-card h4 {
+  font-size: 0.8rem;
+}
+
+.exco-workbook-page .exco-cahier-card p {
+  font-size: 0.72rem;
+}
+
+.exco-workbook-page .exco-cahier-field input,
+.exco-workbook-page .exco-cahier-field select,
+.exco-workbook-page .exco-cahier-field textarea {
+  padding: 0.22rem 0.4rem;
+  font-size: 0.74rem;
+  border-radius: 5px;
+}
+
+.exco-workbook-page .exco-cahier-field textarea {
+  min-height: 9rem;
+  height: 9rem;
+}
+
+.exco-workbook-page .exco-gov-bars {
+  min-height: 7rem;
+}
+
+.exco-workbook-page .exco-gov-bar-track {
+  height: 5.5rem;
+}
+
+.exco-workbook-page .exco-export-dropdown {
+  min-width: 11rem;
+  padding: 0.22rem;
+  border-radius: 8px;
+}
+
+.exco-workbook-page .exco-export-dropdown-item {
+  padding: 0.32rem 0.45rem;
+  font-size: 0.72rem;
+  gap: 0.4rem;
+}
+
+.exco-workbook-page .exco-source-item {
+  padding: 0.4rem 0.5rem;
+}
+
+.exco-workbook-page .exco-stat-chip,
+.exco-workbook-page .exco-kpi-chip {
+  padding: 0.35rem 0.5rem;
+  min-width: 6.4rem;
+  border-radius: 8px;
+}
+
+.exco-workbook-page .exco-stat-chip strong,
+.exco-workbook-page .exco-kpi-chip strong {
+  font-size: 0.86rem;
+}
+
+.exco-workbook-page .exco-thankyou-panel {
+  min-height: 12rem;
+  padding: 1.1rem 0.75rem;
+  border-radius: 10px;
+}
+
+.exco-workbook-page .exco-thankyou-panel h3 {
+  font-size: clamp(1.35rem, 2.6vw, 2rem);
+}
+
+.exco-workbook-page .exco-thankyou-sub {
+  font-size: 0.92rem;
+}
+
+/* Slides Headcount / Overtime — alignées sur le deck PPTX */
+.exco-diversity-slide {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.exco-diversity-cards {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 0.5rem;
+}
+
+.exco-slide-card {
+  border: 1px solid var(--border, #e4e4e7);
+  border-radius: 8px;
+  background: #fff;
+  overflow: hidden;
+  min-height: 11rem;
+  display: flex;
+  flex-direction: column;
+}
+
+.exco-slide-card header {
+  padding: 0.35rem 0.5rem 0.3rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.05rem;
+}
+
+.exco-slide-card.tone-red header { background: #e30613; }
+.exco-slide-card.tone-black header { background: #0a0a0a; }
+
+.exco-slide-card header strong {
+  color: #fff;
+  font-size: 0.72rem;
+  font-weight: 700;
+}
+
+.exco-slide-card header em {
+  color: #f5e6a8;
+  font-style: normal;
+  font-size: 0.62rem;
+}
+
+.exco-slide-card .exco-pct-bars,
+.exco-slide-card .exco-muted {
+  padding: 0.4rem 0.5rem 0.45rem;
+  flex: 1;
+}
+
+.exco-pct-bars {
+  display: flex;
+  flex-direction: column;
+  gap: 0.32rem;
+}
+
+.exco-pct-bars .exco-bar-row {
+  grid-template-columns: 4.2rem 1fr 2.4rem;
+  gap: 0.3rem;
+}
+
+.exco-ot-hours-slide {
+  display: grid;
+  grid-template-columns: minmax(14rem, 0.42fr) minmax(0, 0.58fr);
+  gap: 0.5rem;
+  align-items: stretch;
+  min-height: 18rem;
+}
+
+.exco-ot-hours-table-panel,
+.exco-ot-hours-chart-panel {
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+.exco-ot-hours-table-panel .exco-sheet-scroll {
+  flex: 1;
+  max-height: 22rem;
+}
+
+.exco-ot-month-hours th:last-child,
+.exco-ot-month-hours td:last-child {
+  text-align: right;
+  width: 5.5rem;
+}
+
+.exco-ot-hours-chart-panel h3 {
+  margin: 0 0 0.4rem;
+  font-size: 0.78rem;
+}
+
+.exco-ot-vchart {
+  flex: 1;
+  min-height: 12rem;
+  display: flex;
+  align-items: stretch;
+  gap: 0.15rem;
+  padding: 0.2rem 0.15rem 0;
+}
+
+.exco-ot-vcol {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 0.15rem;
+}
+
+.exco-ot-vval {
+  font-size: 0.58rem;
+  font-weight: 700;
+  line-height: 1;
+  color: #3f3f46;
+  min-height: 0.7rem;
+}
+
+.exco-ot-vtrack {
+  flex: 1;
+  width: 70%;
+  min-height: 6rem;
+  display: flex;
+  align-items: flex-end;
+  background: #f4f4f5;
+  border-radius: 3px 3px 0 0;
+}
+
+.exco-ot-vtrack span {
+  display: block;
+  width: 100%;
+  background: #52525b;
+  border-radius: 3px 3px 0 0;
+  min-height: 2px;
+}
+
+.exco-ot-vlab {
+  font-size: 0.58rem;
+  font-weight: 700;
+  color: #3f3f46;
+  white-space: nowrap;
+  overflow: hidden;
+  max-width: 100%;
+  text-align: center;
+}
+
+@media (max-width: 900px) {
+  .exco-diversity-cards,
+  .exco-ot-hours-slide {
+    grid-template-columns: 1fr;
+  }
+}

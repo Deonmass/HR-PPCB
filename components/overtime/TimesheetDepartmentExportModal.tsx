@@ -11,6 +11,7 @@ import { TIMESHEET_COMPANY_DEFAULT } from '@/lib/timesheet-policy';
 import type { TimesheetDayEntry } from '@/lib/timesheet-types';
 import { showError, showSuccess } from '@/lib/swal';
 import type { Employee } from '@/lib/types';
+import { matchesDepartment } from '@/lib/timesheet-permissions';
 import { BtnSpinner, IconExport } from '@/components/overtime/TimesheetIcons';
 
 interface Props {
@@ -18,10 +19,6 @@ interface Props {
   onClose: () => void;
   employees: Employee[];
   defaultDepartment?: string;
-}
-
-function matchesDepartment(employeeDepartment: string, selectedDepartment: string): boolean {
-  return employeeDepartment.trim().toLowerCase() === selectedDepartment.trim().toLowerCase();
 }
 
 export default function TimesheetDepartmentExportModal({

@@ -30,6 +30,7 @@ import {
   todayDisplayDate,
 } from './employee-columns';
 import { resolveEssaiEcheanceEval, applyCddVersCdiHistory, computeFinContratFromDuree, resolveEssaiStatutEval } from './employees-trial';
+import { applyEmployeeServicePrefill } from './employee-utils';
 import { canPersistProjectFiles, getWritableDataRoot } from './runtime-mode';
 import type { Employee, EmployeeDocuments } from './types';
 
@@ -87,6 +88,7 @@ function toEmployeeRecord(employee: Employee, now: string, id: string = randomUU
     grade: employee.grade,
     jobTitle: employee.jobTitle,
     localisation: employee.localisation ?? '',
+    service: employee.service || '',
     company: employee.company || '',
     centreCout: employee.centreCout || '',
     appointmentDate: employee.appointmentDate || '',
@@ -313,13 +315,14 @@ function composeEmployee(
   record: EmployeeRecord | EmployeeExitRecord,
   docRecord?: EmployeeCheckDocumentRecord,
 ): Employee {
-  return {
+  return applyEmployeeServicePrefill({
     matricule: record.matricule,
     nom: record.nom,
     departement: record.departement,
     grade: record.grade,
     jobTitle: record.jobTitle,
     localisation: record.localisation,
+    service: record.service || '',
     documents: normalizeDocuments(docRecord?.documents),
     company: record.company,
     centreCout: record.centreCout,
@@ -357,7 +360,7 @@ function composeEmployee(
     datePassageCdi: record.datePassageCdi || '',
     cnss: record.cnss || '',
     nif: record.nif || '',
-  };
+  });
 }
 
 export async function readEmployeesBundle(): Promise<{ employees: Employee[]; exits: Employee[] }> {

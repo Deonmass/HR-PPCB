@@ -20,6 +20,7 @@ import {
   type ContractantSexe,
 } from '@/lib/contractants-types';
 import { DEFAULT_LOCALISATIONS } from '@/lib/localisations';
+import { compareExcoDepartments } from '@/lib/exco-department-map';
 import {
   buildColumnFilterValues,
   countActiveColumnFilters,
@@ -327,7 +328,7 @@ export default function ContractantsPage() {
     const set = new Set<string>();
     for (const d of departements) if (d.trim()) set.add(d.trim());
     for (const e of allEmployees) if (e.departement.trim()) set.add(e.departement.trim());
-    return [...set].sort((a, b) => a.localeCompare(b, 'fr', { sensitivity: 'base' }));
+    return [...set].sort(compareExcoDepartments);
   }, [departements, allEmployees]);
 
   const stats = useMemo(() => {

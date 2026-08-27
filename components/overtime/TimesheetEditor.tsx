@@ -32,14 +32,11 @@ import { usePermissions } from '@/contexts/PermissionContext';
 import { getDepartments } from '@/lib/employee-utils';
 import {
   canEditTimesheetForMatricule,
+  matchesDepartment,
   TIMESHEET_MENU,
 } from '@/lib/timesheet-permissions';
 import type { TimesheetAccessContext, TimesheetViewScope } from '@/lib/timesheet-permissions';
 import type { Employee } from '@/lib/types';
-
-function matchesDepartment(employeeDepartment: string, selectedDepartment: string): boolean {
-  return employeeDepartment.trim().toLowerCase() === selectedDepartment.trim().toLowerCase();
-}
 
 function mergeManagerEntries(rows: TimesheetRowData[], entries: Record<string, TimesheetDayEntry>): TimesheetRowData[] {
   return rows.map((row) => {

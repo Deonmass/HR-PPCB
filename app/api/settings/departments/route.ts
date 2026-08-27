@@ -5,13 +5,14 @@ import {
   listDepartments,
   upsertDepartment,
 } from '@/lib/settings-store';
+import { syncCanonicalDepartmentsSettings } from '@/lib/settings-departments-sync';
 import { checkAnyPermission, checkPermission } from '@/lib/require-permission';
 import type { DepartmentSetting } from '@/lib/auth-types';
 import { withAudit } from '@/lib/with-audit';
 
 const MENU = 'settings.departements';
 
-export async function GET() {
+export async function GET(request: Request) {
   const denied = await checkAnyPermission([
     { menuId: MENU, action: 'view' },
     { menuId: 'employes.liste', action: 'view' },
@@ -27,7 +28,18 @@ export async function GET() {
     { menuId: 'charroi', action: 'view' },
   ]);
   if (denied) return denied;
+
+  const url = new URL(request.url);
+  if (url.searchParams.get('sync') === '1') {
+    await syncCanonicalDepartmentsSettings();
+  }
+
   const departments = await listDepartments();
+  // Actifs d’abord, puis alpha
+  departments.sort((a, b) => {
+    if (a.active !== b.active) return a.active ? -1 : 1;
+    return a.name.localeCompare(b.name, 'fr', { sensitivity: 'base' });
+  });
   return NextResponse.json(departments);
 }
 

@@ -29,6 +29,12 @@ interface Props {
   searchPlaceholder?: string;
   /** Affiche les filtres d’entonnoir sur les colonnes (défaut true). */
   enableColumnFilters?: boolean;
+  /**
+   * Barre de chips pour filtrer une colonne (ex. localisation).
+   * Si omis et qu’une colonne `localisation` existe, elle est activée automatiquement.
+   */
+  chipFilterKey?: string;
+  chipFilterLabel?: string;
 }
 
 function cellToText(value: ReactNode): string {
@@ -48,13 +54,20 @@ export default function DashboardListModal({
   onClose,
   searchPlaceholder = 'Rechercher…',
   enableColumnFilters = true,
+  chipFilterKey,
+  chipFilterLabel,
 }: Props) {
   const [search, setSearch] = useState('');
   const [colFilters, setColFilters] = useState<Record<string, string[]>>({});
+  const [chipValue, setChipValue] = useState('');
+
+  const resolvedChipKey = chipFilterKey ?? (columns.some((col) => col.key === 'localisation') ? 'localisation' : undefined);
+  const resolvedChipLabel = chipFilterLabel ?? (resolvedChipKey === 'localisation' ? 'Localisation' : resolvedChipKey);
 
   useEffect(() => {
     setSearch('');
     setColFilters({});
+    setChipValue('');
   }, [title]);
 
   useEffect(() => {
@@ -81,11 +94,27 @@ export default function DashboardListModal({
     return buildColumnFilterValues(rows, getters);
   }, [enableColumnFilters, filterableColumns, rows]);
 
-  const activeFilterCount = countActiveColumnFilters(colFilters);
+  const activeFilterCount = countActiveColumnFilters(colFilters) + (chipValue ? 1 : 0);
+
+  const chipOptions = useMemo(() => {
+    if (!resolvedChipKey) return [];
+    const map = new Map<string, number>();
+    for (const row of rows) {
+      const label = cellToText(row.cells[resolvedChipKey]).trim() || '—';
+      map.set(label, (map.get(label) ?? 0) + 1);
+    }
+    return [...map.entries()]
+      .map(([name, count]) => ({ name, count }))
+      .sort((a, b) => b.count - a.count || a.name.localeCompare(b.name, 'fr'));
+  }, [rows, resolvedChipKey]);
 
   const filtered = useMemo(() => {
     const q = search.trim().toLowerCase();
     return rows.filter((row) => {
+      if (resolvedChipKey && chipValue) {
+        const label = cellToText(row.cells[resolvedChipKey]).trim() || '—';
+        if (label !== chipValue) return false;
+      }
       if (enableColumnFilters) {
         for (const col of filterableColumns) {
           const selected = colFilters[col.key] || [];
@@ -95,7 +124,7 @@ export default function DashboardListModal({
       if (!q) return true;
       return columns.some((col) => cellToText(row.cells[col.key]).toLowerCase().includes(q));
     });
-  }, [rows, columns, filterableColumns, colFilters, search, enableColumnFilters]);
+  }, [rows, columns, filterableColumns, colFilters, search, enableColumnFilters, resolvedChipKey, chipValue]);
 
   return (
     <div className="modal-overlay open dashboard-list-overlay" onClick={onClose} role="presentation">
@@ -134,12 +163,41 @@ export default function DashboardListModal({
             <button
               type="button"
               className="btn btn-ghost btn-sm"
-              onClick={() => setColFilters({})}
+              onClick={() => {
+                setColFilters({});
+                setChipValue('');
+              }}
             >
               Effacer les filtres ({activeFilterCount})
             </button>
           )}
         </div>
+
+        {resolvedChipKey && chipOptions.length > 0 ? (
+          <div className="dashboard-list-chips" role="group" aria-label={`Filtrer par ${resolvedChipLabel}`}>
+            <span className="dashboard-list-chips-label">{resolvedChipLabel}</span>
+            <button
+              type="button"
+              className={`dashboard-list-chip${chipValue === '' ? ' is-active' : ''}`}
+              onClick={() => setChipValue('')}
+            >
+              Toutes
+              <span className="dashboard-list-chip-count">{rows.length}</span>
+            </button>
+            {chipOptions.map((option) => (
+              <button
+                key={option.name}
+                type="button"
+                className={`dashboard-list-chip${chipValue === option.name ? ' is-active' : ''}`}
+                onClick={() => setChipValue(option.name)}
+                title={option.name}
+              >
+                {option.name}
+                <span className="dashboard-list-chip-count">{option.count}</span>
+              </button>
+            ))}
+          </div>
+        ) : null}
 
         <div className="dependants-drilldown-table-wrap">
           {rows.length === 0 ? (

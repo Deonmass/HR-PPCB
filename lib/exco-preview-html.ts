@@ -24,6 +24,7 @@ import { resolveCahierHighlights, resolveCsrFy27Rows, parseCsrUpdateMarkup, csrT
 import { resolveRecruitment } from '@/lib/exco-recruitment-fy27';
 import { buildInternalAuditRows, summarizeInternalAudit } from '@/lib/exco-audit-internal';
 import type { InternalAuditRow } from '@/lib/exco-audit-internal';
+import { splitNarrativePoints } from '@/lib/exco-narrative-format';
 import type { ExcoCahierHighlight, ExcoCsrFy27Row } from '@/lib/exco-types';
 import {
   buildTrendsSlideSections,
@@ -39,16 +40,13 @@ function esc(s: string): string {
 }
 
 function renderSynthPanel(title: string, body: string): string {
-  const text = (body || '').trim();
   const glyph = (title[0] || '').toUpperCase();
   const heading = `<h2><span class="panel-glyph">${esc(glyph)}</span>${esc(title)}</h2>`;
-  if (!text) {
+  const parts = splitNarrativePoints(body);
+  if (!parts.length) {
     return `<article class="panel">${heading}<p>—</p></article>`;
   }
-  const items = text
-    .split(/\n\n+/)
-    .map((s) => s.trim())
-    .filter(Boolean)
+  const items = parts
     .map((p) => {
       const idx = p.indexOf(':');
       if (idx > 0 && idx < 90) {
@@ -57,7 +55,7 @@ function renderSynthPanel(title: string, body: string): string {
       return `<li>${esc(p)}</li>`;
     })
     .join('');
-  return `<article class="panel">${heading}<ul>${items}</ul></article>`;
+  return `<article class="panel">${heading}<ul class="synth-list">${items}</ul></article>`;
 }
 
 function formatMetricValue(kpi: ExcoMetricValue): string {
@@ -776,14 +774,11 @@ export function buildExcoPreviewHtml(report: ExcoReportPayload): string {
     color: var(--ink);
   }
   .deck {
-    display: grid;
-    grid-template-columns: 1fr;
-    gap: 18px;
-    max-width: 1180px;
+    display: flex;
+    flex-direction: column;
+    gap: 22px;
+    max-width: 1280px;
     margin: 0 auto;
-  }
-  @media (min-width: 1100px) {
-    .deck { grid-template-columns: 1fr 1fr; max-width: 1480px; }
   }
 
   .slide {
@@ -912,8 +907,11 @@ export function buildExcoPreviewHtml(report: ExcoReportPayload): string {
     overflow: hidden; flex: 1; min-height: 0;
     font-size: 8px; line-height: 1.22;
   }
-  .panel li { margin: 0 0 3px; }
+  .panel li { margin: 0 0 8px; }
   .panel li:last-child { margin-bottom: 0; }
+  .panel ul.synth-list {
+    line-height: 1.35;
+  }
   .panel li strong { font-weight: 700; }
 
   /* KPI Summary — 2 blocs × grille 5 colonnes (20 cartes) */
@@ -1046,13 +1044,13 @@ export function buildExcoPreviewHtml(report: ExcoReportPayload): string {
     min-height: 0;
   }
   .mv-body .trend-block { flex: 0 0 auto; }
-  .mv-body .trend-scroll { max-height: 110px; }
+  .mv-body .trend-scroll { max-height: none; overflow: visible; }
   .mv-charts {
     flex: 1;
     min-height: 0;
     display: grid;
     grid-template-columns: 1fr 1fr 1fr;
-    gap: 6px;
+    gap: 8px;
   }
   .mv-chart {
     border: 1px solid var(--line);
@@ -1128,9 +1126,9 @@ export function buildExcoPreviewHtml(report: ExcoReportPayload): string {
   .ot-split {
     height: 100%;
     display: grid;
-    grid-template-columns: 0.9fr 1.6fr;
+    grid-template-columns: 0.42fr 0.58fr;
     grid-template-rows: 1fr;
-    gap: 8px;
+    gap: 10px;
     min-height: 0;
     align-items: stretch;
   }
@@ -1247,6 +1245,12 @@ export function buildExcoPreviewHtml(report: ExcoReportPayload): string {
     font-weight: 700;
     margin: 0 0 10px;
     letter-spacing: .04em;
+  }
+  .thanks-panel .thanks-title {
+    margin: 0 0 6px;
+    font-size: 18px;
+    font-weight: 700;
+    color: var(--red);
   }
   .thanks-panel h1 {
     margin: 0;
@@ -1802,7 +1806,7 @@ export function buildExcoPreviewHtml(report: ExcoReportPayload): string {
     <div class="bar-top"></div>
     <div class="thanks-panel">
       <p class="brand">PPC · HR EXCO</p>
-      <h1>Thank You</h1>
+      <h1>${esc((report.overlays.narrative?.thankYouMessage || 'Thank You').trim() || 'Thank You')}</h1>
       <div class="thanks-rule"></div>
       <p class="period">${esc(report.periodLabel)}</p>
     </div>

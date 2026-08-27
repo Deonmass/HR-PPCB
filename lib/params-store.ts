@@ -4,6 +4,7 @@ import fs from 'fs';
 import fsPromises from 'fs/promises';
 import path from 'path';
 import type { CostCenterSetting, DepartmentSetting, ServiceSetting } from './auth-types';
+import { compareExcoDepartments } from './exco-department-map';
 import {
   DURABLE_COST_CENTERS_KEY,
   DURABLE_DEPARTMENTS_KEY,
@@ -125,7 +126,10 @@ export async function listDepartmentsFromParams(): Promise<DepartmentSetting[]> 
   const store = await readDepartmentsStore();
   return [...store.departments]
     .filter((item) => item?.name?.trim())
-    .sort((a, b) => a.name.localeCompare(b.name, 'fr'));
+    .sort((a, b) => {
+      if (a.active !== b.active) return a.active ? -1 : 1;
+      return compareExcoDepartments(a.name, b.name);
+    });
 }
 
 export async function listCostCentersFromParams(): Promise<CostCenterSetting[]> {

@@ -1,8 +1,9 @@
 import { NextResponse } from 'next/server';
 import { buildExcoReport } from '@/lib/exco-report';
-import { listExcoSavedPeriods, saveExcoOverlays } from '@/lib/exco-store';
+import { listExcoSavedPeriods, getExcoOverlays, saveExcoOverlays } from '@/lib/exco-store';
 import { emptyExcoOverlays, type ExcoOverlays } from '@/lib/exco-types';
 import { normalizeCahierHighlights, normalizeCsrFy27Rows } from '@/lib/exco-csr-fy27';
+import { syncCahierHighlightsToProjects } from '@/lib/exco-cahier-project-sync';
 import { checkPermission } from '@/lib/require-permission';
 import { getAuditActor, withAudit } from '@/lib/with-audit';
 
@@ -56,8 +57,12 @@ export async function PUT(request: Request) {
       return NextResponse.json({ error: 'Mois invalide' }, { status: 400 });
     }
 
+    const existing = await getExcoOverlays(year, month);
     const incoming = body.overlays || emptyExcoOverlays();
-    const financeByMonth = { ...(incoming.financeByMonth || {}) };
+    const financeByMonth = {
+      ...(existing.overlays.financeByMonth || {}),
+      ...(incoming.financeByMonth || {}),
+    };
     financeByMonth[String(month)] = {
       ...(financeByMonth[String(month)] || {}),
       ...(incoming.manualKpis || {}),
@@ -65,35 +70,80 @@ export async function PUT(request: Request) {
 
     const overlays: ExcoOverlays = {
       ...emptyExcoOverlays(),
+      ...existing.overlays,
       ...incoming,
       manualKpis: {
         ...emptyExcoOverlays().manualKpis,
+        ...(existing.overlays.manualKpis || {}),
         ...(incoming.manualKpis || {}),
       },
       financeByMonth,
+      staffCostYtdByMonth: {
+        ...(existing.overlays.staffCostYtdByMonth || {}),
+        ...(incoming.staffCostYtdByMonth || {}),
+      },
+      staffCostFormulaNotes: {
+        ...(existing.overlays.staffCostFormulaNotes || {}),
+        ...(incoming.staffCostFormulaNotes || {}),
+      },
       narrative: {
         ...emptyExcoOverlays().narrative,
+        ...(existing.overlays.narrative || {}),
         ...(incoming.narrative || {}),
       },
       policies: {
         ...emptyExcoOverlays().policies,
+        ...(existing.overlays.policies || {}),
         ...(incoming.policies || {}),
       },
-      overtimeCostByDept: incoming.overtimeCostByDept || {},
-      leaveBalanceByMatricule: incoming.leaveBalanceByMatricule || {},
-      overtimeImportsByMonth: incoming.overtimeImportsByMonth || {},
-      leaveImportsByMonth: incoming.leaveImportsByMonth || {},
-      generationMeta: incoming.generationMeta ?? null,
-      recruitment: Array.isArray(incoming.recruitment) ? incoming.recruitment : [],
-      auditFindings: Array.isArray(incoming.auditFindings) ? incoming.auditFindings : [],
-      isoActions: Array.isArray(incoming.isoActions) ? incoming.isoActions : [],
-      csrProjects: Array.isArray(incoming.csrProjects) ? incoming.csrProjects : [],
-      csrFy27Rows: normalizeCsrFy27Rows(incoming.csrFy27Rows),
-      cahierHighlights: normalizeCahierHighlights(incoming.cahierHighlights),
-      trainingTopics: Array.isArray(incoming.trainingTopics) ? incoming.trainingTopics : [],
+      overtimeCostByDept: {
+        ...(existing.overlays.overtimeCostByDept || {}),
+        ...(incoming.overtimeCostByDept || {}),
+      },
+      leaveBalanceByMatricule: {
+        ...(existing.overlays.leaveBalanceByMatricule || {}),
+        ...(incoming.leaveBalanceByMatricule || {}),
+      },
+      overtimeImportsByMonth: {
+        ...(existing.overlays.overtimeImportsByMonth || {}),
+        ...(incoming.overtimeImportsByMonth || {}),
+      },
+      leaveImportsByMonth: {
+        ...(existing.overlays.leaveImportsByMonth || {}),
+        ...(incoming.leaveImportsByMonth || {}),
+      },
+      workbookSnapshot:
+        incoming.workbookSnapshot !== undefined
+          ? incoming.workbookSnapshot
+          : existing.overlays.workbookSnapshot ?? null,
+      generationMeta:
+        incoming.generationMeta !== undefined
+          ? incoming.generationMeta
+          : existing.overlays.generationMeta ?? null,
+      recruitment: Array.isArray(incoming.recruitment)
+        ? incoming.recruitment
+        : existing.overlays.recruitment || [],
+      auditFindings: Array.isArray(incoming.auditFindings)
+        ? incoming.auditFindings
+        : existing.overlays.auditFindings || [],
+      isoActions: Array.isArray(incoming.isoActions)
+        ? incoming.isoActions
+        : existing.overlays.isoActions || [],
+      csrProjects: Array.isArray(incoming.csrProjects)
+        ? incoming.csrProjects
+        : existing.overlays.csrProjects || [],
+      csrFy27Rows: normalizeCsrFy27Rows(
+        incoming.csrFy27Rows ?? existing.overlays.csrFy27Rows,
+      ),
+      cahierHighlights: normalizeCahierHighlights(
+        incoming.cahierHighlights ?? existing.overlays.cahierHighlights,
+      ),
+      trainingTopics: Array.isArray(incoming.trainingTopics)
+        ? incoming.trainingTopics
+        : existing.overlays.trainingTopics || [],
       upcomingTrainings: Array.isArray(incoming.upcomingTrainings)
         ? incoming.upcomingTrainings
-        : [],
+        : existing.overlays.upcomingTrainings || [],
     };
 
     const actor = await getAuditActor();
@@ -109,6 +159,14 @@ export async function PUT(request: Request) {
       },
       () => saveExcoOverlays(year, month, overlays, actor?.userName),
     );
+
+    if (Array.isArray(incoming.cahierHighlights)) {
+      try {
+        await syncCahierHighlightsToProjects(overlays.cahierHighlights || []);
+      } catch {
+        // overlays déjà sauvés — sync projets best-effort
+      }
+    }
 
     const report = await buildExcoReport(year, month);
     return NextResponse.json({ saved, report });

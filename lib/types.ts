@@ -67,6 +67,8 @@ export interface Employee extends EmployeeHrProfile {
   grade: string;
   jobTitle: string;
   localisation: string;
+  /** Service sous le département (ex. Sales_CEC, Packaging…). */
+  service?: string;
   documents: EmployeeDocuments;
 }
 

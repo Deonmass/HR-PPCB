@@ -214,8 +214,17 @@ function whiteBlock(
     fill: { color: PPC.white },
     line: { color: PPC.line, pt: 1 },
     rectRadius: 0.08,
-    shadow: { type: 'outer', color: '000000', blur: 8, opacity: 0.06, offset: 1 },
   });
+}
+
+type TextRun = { text: string; options?: Record<string, unknown> };
+
+/** Filtre les runs vides — cause fréquente de « Repair » PowerPoint. */
+function safeTextRuns(runs: TextRun[], fallback = '—'): TextRun[] {
+  const cleaned = runs
+    .map((r) => ({ ...r, text: String(r.text ?? '') }))
+    .filter((r) => r.text.length > 0);
+  return cleaned.length ? cleaned : [{ text: fallback }];
 }
 
 const CSR_FY27_HEADER = '9B1B24';
@@ -225,20 +234,28 @@ const CSR_FY27_UPD = 'E8F0FE';
 const CAHIER_GREEN = '2F7D32';
 const CAHIER_PINK = 'F4C4C8';
 
+const CAHIER_ICON_GLYPH: Record<ExcoCahierHighlight['icon'], string> = {
+  scholarship: 'S',
+  infrastructure: 'I',
+  agriculture: 'A',
+  leisure: 'L',
+  electricity: 'E',
+};
+
 function recMarkupCell(text: string, fill: string, opts?: { bold?: boolean; align?: 'left' | 'center' }) {
-  const runs = parseCsrUpdateMarkup(text || '');
+  const runs = safeTextRuns(
+    parseCsrUpdateMarkup(text || '').map((run) => ({
+      text: run.text,
+      options: {
+        color: run.update ? CSR_UPDATE_COLOR : PPC.ink,
+        bold: run.update ? false : Boolean(opts?.bold),
+        fontSize: 7,
+        fontFace: FONT,
+      },
+    })),
+  );
   return {
-    text: runs.length
-      ? runs.map((run) => ({
-          text: run.text,
-          options: {
-            color: run.update ? CSR_UPDATE_COLOR : PPC.ink,
-            bold: run.update ? false : Boolean(opts?.bold),
-            fontSize: 7,
-            fontFace: FONT,
-          },
-        }))
-      : [{ text: '—', options: { color: PPC.ink, fontSize: 7, fontFace: FONT } }],
+    text: runs,
     options: {
       fill: { color: fill },
       valign: 'middle' as const,
@@ -268,11 +285,8 @@ function fy27Cell(
   opts: { fill: string; bold?: boolean; color?: string; align?: 'left' | 'center' },
 ) {
   const shown = opts.color === PPC.white ? text : csrSlideText(text || '—');
-  const runs = parseCsrUpdateMarkup(shown || '—');
-  const hasUpd = csrTextHasUpdate(shown);
-  const fill = hasUpd && !opts.color ? CSR_FY27_UPD : opts.fill;
-  return {
-    text: runs.map((run) => ({
+  const runs = safeTextRuns(
+    parseCsrUpdateMarkup(shown || '—').map((run) => ({
       text: run.text || '',
       options: {
         color: run.update ? CSR_UPDATE_COLOR : (opts.color || PPC.ink),
@@ -281,6 +295,11 @@ function fy27Cell(
         fontFace: FONT,
       },
     })),
+  );
+  const hasUpd = csrTextHasUpdate(shown);
+  const fill = hasUpd && !opts.color ? CSR_FY27_UPD : opts.fill;
+  return {
+    text: runs,
     options: {
       fill: { color: fill },
       color: opts.color || PPC.ink,
@@ -326,10 +345,14 @@ function addCsrFy27Table(slide: Slide, rows: ExcoCsrFy27Row[]): void {
   });
 }
 
-function cahierIconPath(icon: ExcoCahierHighlight['icon']): string {
-  return path.join(process.cwd(), 'public', 'exco', 'cahier', `${icon}.svg`);
+function cahierIconGlyph(icon: ExcoCahierHighlight['icon']): string {
+  return CAHIER_ICON_GLYPH[icon] || '•';
 }
 
+/**
+ * Anneaux de progression sans SVG ni doughnut chart
+ * (sources fréquentes de corruption PPTX / Repair PowerPoint).
+ */
 function addCahierHighlights(slide: Slide, items: ExcoCahierHighlight[]): void {
   const list = items.slice(0, 5);
   const n = Math.max(list.length, 1);
@@ -340,38 +363,22 @@ function addCahierHighlights(slide: Slide, items: ExcoCahierHighlight[]): void {
   list.forEach((item, i) => {
     const y = startY + i * rowH;
     const pct = Math.max(0, Math.min(100, Number(item.progressPct) || 0));
-    const done = pct <= 0 ? 0.01 : pct;
-    const rest = pct >= 100 ? 0.01 : Math.max(100 - pct, 0.01);
     const ringX = 0.48;
     const ringY = y + 0.04;
-    if (pct >= 99) {
+
+    // Anneau extérieur (reste) + disque interne (progression) via ellipses
+    slide.addShape('ellipse', {
+      x: ringX, y: ringY, w: ring, h: ring,
+      fill: { color: CAHIER_PINK }, line: { color: CAHIER_PINK },
+    });
+    if (pct > 0) {
+      const innerScale = 0.55 + (pct / 100) * 0.45;
+      const done = ring * innerScale;
+      const off = (ring - done) / 2;
       slide.addShape('ellipse', {
-        x: ringX, y: ringY, w: ring, h: ring,
+        x: ringX + off, y: ringY + off, w: done, h: done,
         fill: { color: CAHIER_GREEN }, line: { color: CAHIER_GREEN },
       });
-    } else {
-      slide.addChart(
-        'doughnut',
-        [
-          {
-            name: 'Progress',
-            labels: ['Done', 'Rest'],
-            values: [done, rest],
-          },
-        ],
-        {
-          x: ringX,
-          y: ringY,
-          w: ring,
-          h: ring,
-          showLegend: false,
-          showTitle: false,
-          showValue: false,
-          showPercent: false,
-          holeSize: 62,
-          chartColors: [CAHIER_GREEN, CAHIER_PINK],
-        },
-      );
     }
     const hole = ring * 0.58;
     const holeOff = (ring - hole) / 2;
@@ -379,45 +386,48 @@ function addCahierHighlights(slide: Slide, items: ExcoCahierHighlight[]): void {
       x: ringX + holeOff, y: ringY + holeOff, w: hole, h: hole,
       fill: { color: PPC.white }, line: { color: PPC.white },
     });
-    const iconS = hole * 0.78;
-    const iconOff = (ring - iconS) / 2;
-    slide.addImage({
-      path: cahierIconPath(item.icon),
-      x: ringX + iconOff,
-      y: ringY + iconOff,
-      w: iconS,
-      h: iconS,
+    slide.addText(cahierIconGlyph(item.icon), {
+      x: ringX, y: ringY, w: ring, h: ring,
+      fontSize: Math.max(14, Math.round(ring * 18)),
+      bold: true,
+      color: CAHIER_GREEN,
+      fontFace: FONT_TITLE,
+      align: 'center',
+      valign: 'middle',
     });
+
     const textX = ringX + ring + 0.22;
     const textW = 12.55 - textX;
-    slide.addText(item.title || '—', {
+    slide.addText(item.title?.trim() || '—', {
       x: textX, y: y + 0.04, w: textW, h: 0.28,
       fontSize: 16, bold: true, color: PPC.red, fontFace: FONT_TITLE,
     });
     const bodySrc = item.body || '—';
     const isShort = bodySrc.replace(/\[\[|\]\]/g, '').trim().length < 80;
-    const bodyRuns = parseCsrUpdateMarkup(bodySrc).flatMap((run, idx) => {
-      const raw = run.text;
-      const prefix = idx === 0 && isShort ? '• ' : '';
-      if (!run.update && raw.includes('100%')) {
-        const [before, after] = raw.split('100%');
-        return [
-          { text: `${prefix}${before}`, options: { color: PPC.ink, bold: false, fontSize: 13, fontFace: FONT } },
-          { text: '100%', options: { color: PPC.ink, bold: true, fontSize: 13, fontFace: FONT } },
-          { text: after, options: { color: PPC.ink, bold: false, fontSize: 13, fontFace: FONT } },
-        ];
-      }
-      return [{
-        text: `${prefix}${raw}`,
-        options: {
-          color: run.update ? CSR_UPDATE_COLOR : PPC.ink,
-          bold: false,
-          fontSize: 13,
-          fontFace: FONT,
-        },
-      }];
-    });
-    slide.addText(bodyRuns, {
+    const bodyRuns = safeTextRuns(
+      parseCsrUpdateMarkup(bodySrc).flatMap((run, idx) => {
+        const raw = run.text;
+        const prefix = idx === 0 && isShort ? '• ' : '';
+        if (!run.update && raw.includes('100%')) {
+          const [before, after] = raw.split('100%');
+          return [
+            { text: `${prefix}${before}`, options: { color: PPC.ink, bold: false, fontSize: 13, fontFace: FONT } },
+            { text: '100%', options: { color: PPC.ink, bold: true, fontSize: 13, fontFace: FONT } },
+            { text: after || '', options: { color: PPC.ink, bold: false, fontSize: 13, fontFace: FONT } },
+          ];
+        }
+        return [{
+          text: `${prefix}${raw}`,
+          options: {
+            color: run.update ? CSR_UPDATE_COLOR : PPC.ink,
+            bold: false,
+            fontSize: 13,
+            fontFace: FONT,
+          },
+        }];
+      }),
+    );
+    slide.addText(bodyRuns as Parameters<Slide['addText']>[0], {
       x: textX, y: y + 0.34, w: textW, h: rowH - 0.48,
       valign: 'top',
     });
@@ -492,12 +502,10 @@ function kpiCard(
   }
 }
 
+import { splitNarrativePoints } from './exco-narrative-format';
+
 function narrativeParts(body: string): string[] {
-  return (body || '')
-    .trim()
-    .split(/\n\n+/)
-    .map((s) => s.trim())
-    .filter(Boolean);
+  return splitNarrativePoints(body);
 }
 
 function estimateNarrativeInches(parts: string[], fontSize: number, widthIn: number): number {
@@ -527,7 +535,7 @@ function narrativeTextRuns(
   }
   const runs: Array<{ text: string; options: { bold?: boolean; fontSize: number; color: string; fontFace: string } }> = [];
   parts.forEach((p, i) => {
-    const gap = i === 0 ? '' : '\n';
+    const gap = i === 0 ? '' : '\n\n';
     const idx = p.indexOf(':');
     if (idx > 0 && idx < 90) {
       runs.push({
@@ -1661,25 +1669,31 @@ export async function buildModernExcoContentPptx(report: ExcoReportPayload): Pro
     });
   }
 
-  // —— Gouvernance — Internal AUDIT table (before chart) ——
+  // —— Internal AUDIT (Audit points) ——
   {
     const rows = buildInternalAuditRows(report);
     const sum = summarizeInternalAudit(rows);
+    const gov = buildGouvernanceSlideData(report);
+    const closedPct = gov.auditClosedPct || sum.closedPct;
     const s = pptx.addSlide();
     await paintSlideCanvas(s, assets);
     addChrome(s, 'Internal AUDIT', '', period, '09');
     whiteBlock(s, 0.28, 0.92, 12.75, 6.3);
+    s.addText(`${closedPct}%`, {
+      x: 0.4, y: 0.98, w: 1.6, h: 0.36,
+      fontSize: 22, bold: true, color: PPC.red, fontFace: FONT_TITLE,
+    });
+    s.addText('Closed', {
+      x: 0.4, y: 1.32, w: 1.6, h: 0.18,
+      fontSize: 9, color: PPC.muted, fontFace: FONT,
+    });
     s.addText(
-      `Closed ${sum.closed}/${sum.total} (${sum.closedPct}%)  ·  +${sum.progressed} since last EXCO  ·  Overdue ${sum.overdue}  ·  On going ${sum.ongoing}`,
+      `${gov.auditClosed || sum.closed}/${gov.auditTotal || sum.total} points  ·  Overdue ${sum.overdue}  ·  On going ${sum.ongoing}`,
       {
-        x: 0.4, y: 0.98, w: 9.2, h: 0.22,
-        fontSize: 10, color: PPC.ink, fontFace: FONT,
+        x: 2.1, y: 1.08, w: 10.6, h: 0.28,
+        fontSize: 11, color: PPC.ink, fontFace: FONT, valign: 'middle',
       },
     );
-    s.addText('Green = Closed (progression)', {
-      x: 9.5, y: 0.98, w: 3.3, h: 0.22,
-      fontSize: 9, italic: true, color: '166534', fontFace: FONT, align: 'right',
-    });
     const header = ['ID', 'Findings', 'Severity', 'Status', 'Comments', 'Due Date'].map((h) => ({
       text: h,
       options: {
@@ -1717,9 +1731,16 @@ export async function buildModernExcoContentPptx(report: ExcoReportPayload): Pro
         cell(row.dueDateLabel, { align: 'center' }),
       ];
     });
-    s.addTable([header, ...body], {
+    s.addTable([header, ...(body.length ? body : [[
+      { text: 'No audit points', options: { fill: { color: PPC.white }, color: PPC.muted, fontSize: 9, align: 'center' as const } },
+      { text: '', options: { fill: { color: PPC.white } } },
+      { text: '', options: { fill: { color: PPC.white } } },
+      { text: '', options: { fill: { color: PPC.white } } },
+      { text: '', options: { fill: { color: PPC.white } } },
+      { text: '', options: { fill: { color: PPC.white } } },
+    ]])], {
       x: 0.36,
-      y: 1.24,
+      y: 1.55,
       w: 12.58,
       colW: [0.5, 5.7, 1.15, 1.2, 2.55, 1.48],
       border: { pt: 0.4, color: PPC.white },
@@ -1728,7 +1749,7 @@ export async function buildModernExcoContentPptx(report: ExcoReportPayload): Pro
     });
   }
 
-  // —— Gouvernance — Audit chart ——
+  // —— Governance — Audit progression chart ——
   {
     const gov = buildGouvernanceSlideData(report);
     const s = pptx.addSlide();
@@ -1738,9 +1759,8 @@ export async function buildModernExcoContentPptx(report: ExcoReportPayload): Pro
     s.addShape('roundRect', {
       x: 0.3, y: 0.95, w: 8.35, h: 5.95,
       fill: { color: PPC.white }, line: { color: PPC.line, pt: 1 }, rectRadius: 0.1,
-      shadow: { type: 'outer', color: '000000', blur: 8, opacity: 0.06, offset: 1 },
     });
-    s.addText('Cumulative progression % Closed', {
+    s.addText('Progression cumulative % Closed', {
       x: 0.5, y: 1.1, w: 7.9, h: 0.35,
       fontSize: 15, bold: true, color: PPC.ink, fontFace: FONT_TITLE,
     });
@@ -1816,7 +1836,6 @@ export async function buildModernExcoContentPptx(report: ExcoReportPayload): Pro
     s.addShape('roundRect', {
       x: 8.85, y: 0.95, w: 4.15, h: 5.95,
       fill: { color: PPC.white }, line: { color: PPC.line, pt: 1 }, rectRadius: 0.1,
-      shadow: { type: 'outer', color: '000000', blur: 8, opacity: 0.06, offset: 1 },
     });
     s.addText('Evolution', {
       x: 9.05, y: 1.15, w: 3.8, h: 0.35,
@@ -1856,7 +1875,8 @@ export async function buildModernExcoContentPptx(report: ExcoReportPayload): Pro
       fontSize: 14, bold: true, color: PPC.red, fontFace: FONT,
       align: 'center',
     });
-    s.addText('Thank You', {
+    const thankMsg = (o.narrative?.thankYouMessage || 'Thank You').trim() || 'Thank You';
+    s.addText(thankMsg, {
       x: 1.8, y: 2.7, w: 9.7, h: 0.85,
       fontSize: 54, bold: true, color: PPC.ink, fontFace: FONT_TITLE,
       align: 'center', valign: 'middle',

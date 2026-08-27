@@ -192,6 +192,7 @@ function PieBody({
             <span className="employees-pie-legend-label" title={slice.label}>{slice.label}</span>
             <span className="employees-pie-legend-value">
               {formatWithCount(slice.count, slice.itemsCount)}
+              <span className="employees-pie-legend-pct"> {slice.pct.toLocaleString('fr-FR')}%</span>
             </span>
           </li>
         ))}

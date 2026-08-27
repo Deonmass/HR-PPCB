@@ -18,6 +18,8 @@ import type { PosteGroup, VacantPoste } from '@/lib/postes-types';
 import { showError, showWarning } from '@/lib/swal';
 import type { Employee } from '@/lib/types';
 import { emptyEmployeeHrProfile } from '@/lib/types';
+import type { DepartmentSetting, ServiceSetting } from '@/lib/auth-types';
+import { applyEmployeeServicePrefill } from '@/lib/employee-utils';
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 
 interface Props {
@@ -79,6 +81,7 @@ function blankEmployee(): Employee {
     grade: '',
     jobTitle: '',
     localisation: '',
+    service: '',
     documents: {},
     ...emptyEmployeeHrProfile(),
     statut: 'Active',
@@ -136,6 +139,8 @@ export default function EmployeeModal({
   const [posteTitles, setPosteTitles] = useState<string[]>([]);
   const [companyOptions, setCompanyOptions] = useState<string[]>(DEFAULT_COMPANIES);
   const [postePickerOpen, setPostePickerOpen] = useState(false);
+  const [departments, setDepartments] = useState<DepartmentSetting[]>([]);
+  const [services, setServices] = useState<ServiceSetting[]>([]);
 
   const posteWrapRef = useRef<HTMLDivElement>(null);
   const posteListRef = useRef<HTMLDivElement>(null);
@@ -159,13 +164,13 @@ export default function EmployeeModal({
 
   useEffect(() => {
     if (employee) {
-      setForm({
+      setForm(applyEmployeeServicePrefill({
         ...blankEmployee(),
         ...employee,
         documents: { ...employee.documents },
         statut: employee.statut || 'Active',
         raisonExit: employee.raisonExit || 'NA',
-      });
+      }));
     } else {
       setForm(blankEmployee());
     }
@@ -180,8 +185,10 @@ export default function EmployeeModal({
         : fetch('/api/employees').then((res) => (res.ok ? res.json() : [])),
       fetch('/api/dependants').then((res) => (res.ok ? res.json() : null)),
       fetch('/api/employes/postes').then((res) => (res.ok ? res.json() : null)),
+      fetch('/api/settings/departments').then((res) => (res.ok ? res.json() : [])),
+      fetch('/api/settings/services').then((res) => (res.ok ? res.json() : [])),
     ])
-      .then(([empsRaw, depsRaw, postesRaw]) => {
+      .then(([empsRaw, depsRaw, postesRaw, deptRaw, svcRaw]) => {
         if (cancelled) return;
         if (Array.isArray(empsRaw)) {
           setFetchedEmployees(empsRaw as Employee[]);
@@ -221,6 +228,8 @@ export default function EmployeeModal({
             a.localeCompare(b, 'fr'),
           ),
         );
+        setDepartments(Array.isArray(deptRaw) ? (deptRaw as DepartmentSetting[]) : []);
+        setServices(Array.isArray(svcRaw) ? (svcRaw as ServiceSetting[]) : []);
       })
       .catch(() => {
         if (cancelled) return;
@@ -230,6 +239,8 @@ export default function EmployeeModal({
         setPosteGroups([]);
         setVacants([]);
         setPosteTitles([]);
+        setDepartments([]);
+        setServices([]);
       });
     return () => {
       cancelled = true;
@@ -334,6 +345,24 @@ export default function EmployeeModal({
     [employees],
   );
 
+  const departmentOptions = useMemo(() => {
+    const names = departments.map((d) => d.name.trim()).filter(Boolean);
+    const current = (form.departement || '').trim();
+    if (current && !names.includes(current)) names.unshift(current);
+    return [...new Set(names)];
+  }, [departments, form.departement]);
+
+  const serviceOptions = useMemo(() => {
+    const currentDept = (form.departement || '').trim().toLowerCase();
+    const deptId = departments.find((d) => d.name.trim().toLowerCase() === currentDept)?.id;
+    const names = (deptId ? services.filter((s) => s.departmentId === deptId) : [])
+      .map((s) => s.name.trim())
+      .filter(Boolean);
+    const current = (form.service || '').trim();
+    if (current && !names.includes(current)) names.unshift(current);
+    return [...new Set(names)];
+  }, [departments, services, form.departement, form.service]);
+
   const patch = <K extends keyof Employee>(key: K, value: Employee[K]) => {
     setForm((f) => ({ ...f, [key]: value }));
   };
@@ -343,17 +372,19 @@ export default function EmployeeModal({
     const vacant = vacants.find((v) => v.title === title);
     const grade = group?.grade || vacant?.grade || '';
     const trial = trialMonthsForGrade(grade);
-    setForm((f) => ({
-      ...f,
-      jobTitle: title,
-      position: title || f.position,
-      departement: group?.department || vacant?.department || f.departement,
-      localisation: group?.location || vacant?.location || f.localisation,
-      grade: grade || f.grade,
-      centreCout: group?.costCenter || vacant?.costCenter || f.centreCout,
-      company: f.company || group?.company || '',
-      periodeEssaiMois: trial ?? f.periodeEssaiMois,
-    }));
+    setForm((f) =>
+      applyEmployeeServicePrefill({
+        ...f,
+        jobTitle: title,
+        position: title || f.position,
+        departement: group?.department || vacant?.department || f.departement,
+        localisation: group?.location || vacant?.location || f.localisation,
+        grade: grade || f.grade,
+        centreCout: group?.costCenter || vacant?.costCenter || f.centreCout,
+        company: f.company || group?.company || '',
+        periodeEssaiMois: trial ?? f.periodeEssaiMois,
+      }),
+    );
     setPostePickerOpen(false);
   }, [posteGroups, vacants]);
 
@@ -457,6 +488,7 @@ export default function EmployeeModal({
         raisonExit: form.raisonExit || 'NA',
         position: form.position || form.jobTitle,
         departement: form.departement || selectedPosteMeta?.department || '',
+        service: form.service || '',
         centreCout: form.centreCout || selectedPosteMeta?.costCenter || '',
       };
 
@@ -720,6 +752,38 @@ export default function EmployeeModal({
                 <datalist id="localisation-list-emp-modal">
                   {LOCALISATIONS.map((l) => <option key={l} value={l} />)}
                 </datalist>
+              </div>
+              <div className="form-group">
+                <label htmlFor="emp-departement">Département</label>
+                <select
+                  id="emp-departement"
+                  value={form.departement || ''}
+                  onChange={(e) => {
+                    const nextDept = e.target.value;
+                    setForm((f) =>
+                      applyEmployeeServicePrefill({ ...f, departement: nextDept, service: '' }),
+                    );
+                  }}
+                >
+                  <option value="">Sélectionner…</option>
+                  {departmentOptions.map((d) => (
+                    <option key={d} value={d}>{d}</option>
+                  ))}
+                </select>
+              </div>
+              <div className="form-group">
+                <label htmlFor="emp-service">Service</label>
+                <select
+                  id="emp-service"
+                  value={form.service || ''}
+                  onChange={(e) => patch('service', e.target.value)}
+                  disabled={serviceOptions.length === 0}
+                >
+                  <option value="">{serviceOptions.length ? 'Sélectionner…' : 'Aucun service'}</option>
+                  {serviceOptions.map((s) => (
+                    <option key={s} value={s}>{s}</option>
+                  ))}
+                </select>
               </div>
               <div className="form-group">
                 <label>Centre de coût</label>

@@ -19,7 +19,7 @@ import {
   IconWeekDone,
 } from '@/components/overtime/TimesheetIcons';
 import type { TimesheetAccessContext, TimesheetViewScope } from '@/lib/timesheet-permissions';
-import { TIMESHEET_MENU } from '@/lib/timesheet-permissions';
+import { matchesDepartment, TIMESHEET_MENU } from '@/lib/timesheet-permissions';
 import { usePermissions } from '@/contexts/PermissionContext';
 import { confirmAction, showError, showSuccess } from '@/lib/swal';
 
@@ -27,10 +27,6 @@ function formatPeriodRange(period: TimesheetPeriod): string {
   const fmt = (date: Date) =>
     date.toLocaleDateString('fr-FR', { day: '2-digit', month: 'short', year: 'numeric' });
   return `${fmt(period.start)} → ${fmt(period.end)}`;
-}
-
-function matchesDepartment(employeeDepartment: string, selectedDepartment: string): boolean {
-  return employeeDepartment.trim().toLowerCase() === selectedDepartment.trim().toLowerCase();
 }
 
 const WEEK_LABELS = ['Semaine 1', 'Semaine 2', 'Semaine 3', 'Semaine 4'];

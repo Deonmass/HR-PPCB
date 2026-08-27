@@ -235,8 +235,8 @@ export function buildTrendsGenderSection(report: ExcoReportPayload): ExcoTrendTa
             const t = trendAt(trends, c.year, c.month, report.year);
             return pctCell(t?.genderMalePct, c.visible);
           }),
-          dashOr(pctCell(current?.genderMalePct)),
-          '—',
+          dashOr(pctCell(current?.genderMalePctSites)),
+          dashOr(pctCell(current?.genderMalePctHq)),
         ],
       },
       {
@@ -246,8 +246,8 @@ export function buildTrendsGenderSection(report: ExcoReportPayload): ExcoTrendTa
             const t = trendAt(trends, c.year, c.month, report.year);
             return pctCell(t?.genderFemalePct, c.visible);
           }),
-          dashOr(pctCell(current?.genderFemalePct)),
-          '—',
+          dashOr(pctCell(current?.genderFemalePctSites)),
+          dashOr(pctCell(current?.genderFemalePctHq)),
         ],
       },
     ],
@@ -259,20 +259,40 @@ export function buildTrendsAgeSection(report: ExcoReportPayload): ExcoTrendTable
   const fyCols = excoFyColumns(report.year, report.month);
   const trends = report.computed.trends || [];
 
+  const current = trends.find((t) => t.month === report.month);
+  const prev = trends.find((t) => t.month === report.month - 1);
+
   const row = (
     label: string,
     getter: (t: ExcoTrendMonth) => number | null | undefined,
-  ) => ({
-    label,
-    cells: fyCols.map((c) => {
-      const t = trendAt(trends, c.year, c.month, report.year);
-      return cell(t ? getter(t) : null, 1, c.visible);
-    }),
-  });
+  ) => {
+    const cur = current ? getter(current) : null;
+    const prv = prev ? getter(prev) : null;
+    let delta = '—';
+    if (cur != null && prv != null && Number.isFinite(cur) && Number.isFinite(prv)) {
+      const d = Math.round((cur - prv) * 10) / 10;
+      const pct = prv === 0 ? (cur === 0 ? 0 : 100) : Math.round(((cur - prv) / Math.abs(prv)) * 1000) / 10;
+      delta = `${d >= 0 ? '+' : ''}${d.toLocaleString('en-US', { minimumFractionDigits: 1, maximumFractionDigits: 1 })} (${pct >= 0 ? '+' : ''}${pct}%)`;
+    }
+    return {
+      label,
+      cells: [
+        ...fyCols.map((c) => {
+          const t = trendAt(trends, c.year, c.month, report.year);
+          return cell(t ? getter(t) : null, 1, c.visible);
+        }),
+        delta,
+      ],
+    };
+  };
 
   return sectionWithCurrent(fyCols, {
     title: '4. AGE',
-    headers: ['Metric', ...fyCols.map((c) => c.label)],
+    headers: [
+      'Metric',
+      ...fyCols.map((c) => c.label),
+      `${report.prevPeriodLabel} → ${report.periodLabel}`,
+    ],
     rows: [
       row('Average Age', (t) => t.averageAge),
       row('Male Average Age', (t) => t.averageAgeMale),

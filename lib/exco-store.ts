@@ -44,6 +44,8 @@ function mergeOverlays(raw: Partial<ExcoOverlays> | undefined): ExcoOverlays {
   return {
     manualKpis: { ...base.manualKpis, ...(raw.manualKpis || {}) },
     financeByMonth: { ...(raw.financeByMonth || {}) },
+    staffCostYtdByMonth: { ...(raw.staffCostYtdByMonth || {}) },
+    staffCostFormulaNotes: { ...(raw.staffCostFormulaNotes || {}) },
     narrative: { ...base.narrative, ...(raw.narrative || {}) },
     recruitment: Array.isArray(raw.recruitment) ? raw.recruitment : [],
     auditFindings: Array.isArray(raw.auditFindings) ? raw.auditFindings : [],
@@ -71,6 +73,9 @@ function mergeOverlays(raw: Partial<ExcoOverlays> | undefined): ExcoOverlays {
     leaveBalanceByMatricule: { ...(raw.leaveBalanceByMatricule || {}) },
     overtimeImportsByMonth: { ...(raw.overtimeImportsByMonth || {}) },
     leaveImportsByMonth: { ...(raw.leaveImportsByMonth || {}) },
+    engagementsImportsByMonth: { ...(raw.engagementsImportsByMonth || {}) },
+    importedSources: { ...(raw.importedSources || {}) },
+    workbookSnapshot: raw.workbookSnapshot ?? null,
     generationMeta:
       raw.generationMeta && typeof raw.generationMeta === 'object'
         ? {

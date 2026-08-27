@@ -103,6 +103,10 @@ function departmentLabel(employee: Employee): string {
   return employee.departement?.trim() || '—';
 }
 
+function localisationLabel(employee: Employee): string {
+  return employee.localisation?.trim() || 'Non renseigné';
+}
+
 function matchesGender(employee: Employee, selected: GenderFilterValue): boolean {
   if (!selected) return true;
   return genderBucket(employee.gender) === selected;
@@ -111,6 +115,7 @@ function matchesGender(employee: Employee, selected: GenderFilterValue): boolean
 function buildFilterSubtitle(opts: {
   gender: GenderFilterValue;
   company: string;
+  localisation: string;
   dept: string;
   count: number;
   noun?: string;
@@ -118,6 +123,7 @@ function buildFilterSubtitle(opts: {
   const parts: string[] = [];
   if (opts.gender) parts.push(opts.gender);
   if (opts.company) parts.push(opts.company);
+  if (opts.localisation) parts.push(opts.localisation);
   if (opts.dept) parts.push(opts.dept);
   const noun = opts.noun ?? 'employé';
   const countLabel = `${opts.count} ${noun}${opts.count !== 1 ? 's' : ''}`;
@@ -140,6 +146,7 @@ export default function EnlargeableChartPanel({
   const [enlarged, setEnlarged] = useState(false);
   const [selectedCompany, setSelectedCompany] = useState('');
   const [selectedGender, setSelectedGender] = useState<GenderFilterValue>('');
+  const [selectedLocalisation, setSelectedLocalisation] = useState('');
   const [selectedDept, setSelectedDept] = useState('');
   const [segmentDrilldown, setSegmentDrilldown] = useState<{
     title: string;
@@ -152,6 +159,7 @@ export default function EnlargeableChartPanel({
   const open = () => {
     setSelectedCompany('');
     setSelectedGender('');
+    setSelectedLocalisation('');
     setSelectedDept('');
     setSegmentDrilldown(null);
     setEnlarged(true);
@@ -160,6 +168,7 @@ export default function EnlargeableChartPanel({
     setEnlarged(false);
     setSelectedCompany('');
     setSelectedGender('');
+    setSelectedLocalisation('');
     setSelectedDept('');
     setSegmentDrilldown(null);
   };
@@ -174,42 +183,57 @@ export default function EnlargeableChartPanel({
 
   const genderPool = useMemo(() => {
     if (!deptFilter) return [];
-    return selectedCompany
-      ? deptFilter.employees.filter((employee) => companyLabel(employee) === selectedCompany)
-      : deptFilter.employees;
-  }, [deptFilter, selectedCompany]);
+    return deptFilter.employees.filter((employee) => {
+      if (selectedCompany && companyLabel(employee) !== selectedCompany) return false;
+      if (selectedLocalisation && localisationLabel(employee) !== selectedLocalisation) return false;
+      return true;
+    });
+  }, [deptFilter, selectedCompany, selectedLocalisation]);
 
   const genderCounts = useMemo(() => countByGender(genderPool), [genderPool]);
 
-  const departments = useMemo(() => {
+  const localisations = useMemo(() => {
     if (!deptFilter) return [];
     const base = deptFilter.employees.filter((employee) => {
       if (selectedCompany && companyLabel(employee) !== selectedCompany) return false;
       if (!matchesGender(employee, selectedGender)) return false;
       return true;
     });
-    return countByField(base, departmentLabel);
+    return countByField(base, localisationLabel);
   }, [deptFilter, selectedCompany, selectedGender]);
+
+  const departments = useMemo(() => {
+    if (!deptFilter) return [];
+    const base = deptFilter.employees.filter((employee) => {
+      if (selectedCompany && companyLabel(employee) !== selectedCompany) return false;
+      if (!matchesGender(employee, selectedGender)) return false;
+      if (selectedLocalisation && localisationLabel(employee) !== selectedLocalisation) return false;
+      return true;
+    });
+    return countByField(base, departmentLabel);
+  }, [deptFilter, selectedCompany, selectedGender, selectedLocalisation]);
 
   const filteredEmployees = useMemo(() => {
     if (!deptFilter) return [];
     return deptFilter.employees.filter((employee) => {
       if (selectedCompany && companyLabel(employee) !== selectedCompany) return false;
       if (!matchesGender(employee, selectedGender)) return false;
+      if (selectedLocalisation && localisationLabel(employee) !== selectedLocalisation) return false;
       if (selectedDept && departmentLabel(employee) !== selectedDept) return false;
       return true;
     });
-  }, [deptFilter, selectedCompany, selectedGender, selectedDept]);
+  }, [deptFilter, selectedCompany, selectedGender, selectedLocalisation, selectedDept]);
 
   const filterSubtitle = useMemo(
     () => buildFilterSubtitle({
       gender: selectedGender,
       company: selectedCompany,
+      localisation: selectedLocalisation,
       dept: selectedDept,
       count: filteredEmployees.length,
       noun: isExitSource ? 'sortie' : 'employé',
     }),
-    [selectedGender, selectedCompany, selectedDept, filteredEmployees.length, isExitSource],
+    [selectedGender, selectedCompany, selectedLocalisation, selectedDept, filteredEmployees.length, isExitSource],
   );
 
   const openSegment = (label: string) => {
@@ -239,7 +263,7 @@ export default function EnlargeableChartPanel({
     return deptFilter.employees.filter((employee) => matchesGender(employee, selectedGender)).length;
   }, [deptFilter, selectedGender]);
 
-  const filterPoolCount = useMemo(() => {
+  const localisationPoolCount = useMemo(() => {
     if (!deptFilter) return 0;
     return deptFilter.employees.filter((employee) => {
       if (selectedCompany && companyLabel(employee) !== selectedCompany) return false;
@@ -247,6 +271,16 @@ export default function EnlargeableChartPanel({
       return true;
     }).length;
   }, [deptFilter, selectedCompany, selectedGender]);
+
+  const filterPoolCount = useMemo(() => {
+    if (!deptFilter) return 0;
+    return deptFilter.employees.filter((employee) => {
+      if (selectedCompany && companyLabel(employee) !== selectedCompany) return false;
+      if (!matchesGender(employee, selectedGender)) return false;
+      if (selectedLocalisation && localisationLabel(employee) !== selectedLocalisation) return false;
+      return true;
+    }).length;
+  }, [deptFilter, selectedCompany, selectedGender, selectedLocalisation]);
 
   return (
     <>
@@ -287,6 +321,7 @@ export default function EnlargeableChartPanel({
                     value={selectedGender}
                     onChange={(next) => {
                       setSelectedGender(next);
+                      setSelectedLocalisation('');
                       setSelectedDept('');
                     }}
                   />
@@ -297,6 +332,7 @@ export default function EnlargeableChartPanel({
                   value={selectedCompany}
                   onChange={(next) => {
                     setSelectedCompany(next);
+                    setSelectedLocalisation('');
                     setSelectedDept('');
                   }}
                   totalCount={companyTotalCount}
@@ -307,6 +343,17 @@ export default function EnlargeableChartPanel({
                 {enlargedBody}
               </div>
               <aside className="chart-enlarge-filters chart-enlarge-filters-right">
+                <ChartChipFilter
+                  title="Localisation"
+                  options={localisations}
+                  value={selectedLocalisation}
+                  onChange={(next) => {
+                    setSelectedLocalisation(next);
+                    setSelectedDept('');
+                  }}
+                  totalCount={localisationPoolCount}
+                  ariaLabel="Filtrer par localisation"
+                />
                 <ChartChipFilter
                   title="Départements"
                   options={departments}

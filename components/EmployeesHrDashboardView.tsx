@@ -16,13 +16,14 @@ import {
   buildEmployeesHrDashboard,
   buildPpcLocalisationGenderRows,
   employeeToDashboardListRow,
+  buildHrPeriodMomStats,
   employeesForHrKpi,
   employeesMatchingHrSegment,
   isFemaleGender,
   isMaleGender,
-  mergeEmployeesWithExits,
   type EmployeesHrKpiKey,
   type HrChartSegmentKind,
+  type HrPeriodMomStats,
 } from '@/lib/employees-hr-dashboard';
 import { computeSeniority } from '@/lib/employee-columns';
 import {
@@ -41,17 +42,22 @@ import type { ChartDeptFilterSource, ChartFilterRenderContext } from '@/componen
 interface Props {
   employees: Employee[];
   exits?: Employee[];
+  /** Effectif complet (sans filtre période) pour le comparatif mois précédent. */
+  allEmployees?: Employee[];
+  allExits?: Employee[];
+  year?: number | '';
+  month?: number | '';
 }
 
 const KPI_META = [
   { key: 'total', label: 'Total', glow: 'card-glow-red', format: 'int', watermark: null, drill: 'total' as const },
-  { key: 'hommes', label: 'Hommes', glow: 'card-glow-cyan', format: 'int', watermark: 'male', drill: 'hommes' as const },
-  { key: 'femmes', label: 'Femmes', glow: 'card-glow-pink', format: 'int', watermark: 'female', drill: 'femmes' as const },
+  { key: 'hommes', label: 'Hommes', glow: 'card-glow-cyan', format: 'int', watermark: 'male' as const, drill: 'hommes' as const },
+  { key: 'femmes', label: 'Femmes', glow: 'card-glow-pink', format: 'int', watermark: 'female' as const, drill: 'femmes' as const },
   { key: 'totalContractants', label: 'Total contractant', glow: 'card-glow-violet', format: 'int', watermark: null, drill: 'totalContractants' as const },
-  { key: 'totalCdd', label: 'CDD', glow: 'card-glow-amber', format: 'int', watermark: null, drill: 'totalCdd' as const },
-  { key: 'totalEssai', label: "Période d'essai", glow: 'card-glow-violet', format: 'int', watermark: null, drill: 'totalEssai' as const },
+  { key: 'ageMoyen', label: 'Âge moyen des employés', glow: 'card-glow-amber', format: '1', watermark: null, drill: 'ageMoyen' as const },
   { key: 'alertesEssai', label: 'Alertes essai (J-30)', glow: 'card-glow-red', format: 'int', watermark: null, drill: 'alertesEssai' as const },
-  { key: 'totalExits', label: 'Sorties', glow: 'card-glow-green', format: 'int', watermark: null, drill: 'totalExits' as const },
+  { key: 'entrees', label: 'Entrées', glow: 'card-glow-violet', format: 'int', watermark: 'in' as const, drill: 'entrees' as const },
+  { key: 'totalExits', label: 'Sorties', glow: 'card-glow-green', format: 'int', watermark: 'out' as const, drill: 'totalExits' as const },
 ] as const;
 
 const ACTIVE_COLUMNS: DashboardListColumn[] = [
@@ -62,6 +68,16 @@ const ACTIVE_COLUMNS: DashboardListColumn[] = [
   { key: 'grade', label: 'Grade' },
   { key: 'genre', label: 'Genre' },
   { key: 'company', label: 'Company' },
+  { key: 'embauche', label: 'Date d\'embauche' },
+];
+
+const AGE_COLUMNS: DashboardListColumn[] = [
+  { key: 'matricule', label: 'Matricule' },
+  { key: 'nom', label: 'Nom' },
+  { key: 'localisation', label: 'Localisation' },
+  { key: 'age', label: 'Âge' },
+  { key: 'genre', label: 'Genre' },
+  { key: 'departement', label: 'Département' },
   { key: 'embauche', label: 'Date d\'embauche' },
 ];
 
@@ -153,8 +169,9 @@ const ESSAI_STATUS_COLORS = ['#f59e0b', '#2563eb', '#dc2626', '#16a34a'];
 const CDD_DEPT_BAR = 'employees-bar-fill-cdd';
 const AGE_BAR_CLASS = 'employees-bar-fill-age';
 
-function GenderWatermark({ variant }: { variant: 'male' | 'female' }) {
-  const female = variant === 'female';
+type KpiWatermarkVariant = 'male' | 'female' | 'in' | 'out';
+
+function KpiWatermark({ variant }: { variant: KpiWatermarkVariant }) {
   return (
     <svg
       className={`employees-hr-card-watermark is-${variant}`}
@@ -162,15 +179,27 @@ function GenderWatermark({ variant }: { variant: 'male' | 'female' }) {
       fill="currentColor"
       aria-hidden
     >
-      {female ? (
+      {variant === 'female' ? (
         <>
           <circle cx="12" cy="7.5" r="3.6" />
           <path d="M12 12.2c-4.2 0-6.8 2.3-6.8 5.6V21h13.6v-3.2c0-3.3-2.6-5.6-6.8-5.6z" />
         </>
-      ) : (
+      ) : variant === 'male' ? (
         <>
           <circle cx="12" cy="7" r="3.6" />
           <path d="M5.8 21v-2c0-3.4 2.8-5.7 6.2-5.7s6.2 2.3 6.2 5.7V21H5.8z" />
+        </>
+      ) : variant === 'in' ? (
+        <>
+          <circle cx="8.6" cy="7.1" r="3.15" />
+          <path d="M2.8 20.2v-1.85c0-2.85 2.4-4.85 5.8-4.85 3.4 0 5.8 2 5.8 4.85V20.2H2.8z" />
+          <path d="M18.15 6.05h-1.7v2.55h-2.55v1.7h2.55v2.55h1.7v-2.55h2.55v-1.7h-2.55V6.05z" />
+        </>
+      ) : (
+        <>
+          <circle cx="8.6" cy="7.1" r="3.15" />
+          <path d="M2.8 20.2v-1.85c0-2.85 2.4-4.85 5.8-4.85 3.4 0 5.8 2 5.8 4.85V20.2H2.8z" />
+          <path d="M14.35 9.15h6.6v1.85h-6.6z" />
         </>
       )}
     </svg>
@@ -185,15 +214,31 @@ function topRow(rows: { label: string; count: number }[] | undefined) {
   return rows?.find((r) => r.count > 0) ?? rows?.[0] ?? null;
 }
 
+function genderSharePct(count: number, total: number): string {
+  if (!total) return '0%';
+  const pct = Math.round((count / total) * 1000) / 10;
+  return Number.isInteger(pct)
+    ? `${pct}%`
+    : `${pct.toLocaleString('fr-FR', { maximumFractionDigits: 1, minimumFractionDigits: 1 })}%`;
+}
+
+function formatMomDelta(delta: number | null): { text: string; trend: 'up' | 'down' | 'flat' } | null {
+  if (delta == null || !Number.isFinite(delta)) return null;
+  const pct = Math.round(delta * 1000) / 10;
+  if (pct > 0) return { text: `▲ ${pct.toLocaleString('fr-FR', { maximumFractionDigits: 1 })}% vs préc.`, trend: 'up' };
+  if (pct < 0) return { text: `▼ ${Math.abs(pct).toLocaleString('fr-FR', { maximumFractionDigits: 1 })}% vs préc.`, trend: 'down' };
+  return { text: '• 0% vs préc.', trend: 'flat' };
+}
+
 function formatKpiMeta(
   key: (typeof KPI_META)[number]['key'],
   stats: ReturnType<typeof buildEmployeesHrDashboard> & ContractantDashStats,
+  mom?: HrPeriodMomStats | null,
 ): { lines: string[]; barPct?: number; barClass?: string } {
   const topSite = topRow(stats.parLocalisation);
   const topCompany = topRow(stats.parCompany);
   const topDept = topRow(stats.parDepartement);
   const topGrade = topRow(stats.parGrade);
-  const topCddDept = topRow(stats.cddParDepartement);
   const topExitReason = topRow(stats.exitsParRaison);
   const topEssaiStatut = topRow(stats.essaiParStatut);
 
@@ -211,8 +256,8 @@ function formatKpiMeta(
     case 'hommes':
       return {
         lines: [
+          `Part des effectifs ${genderSharePct(stats.hommes, stats.total)}`,
           `Ratio H/F ${stats.hommes} / ${stats.femmes}`,
-          `${stats.maries} marié(s) au total`,
           topGrade ? `Grade dominant ${topGrade.label}` : 'Grade —',
         ],
         barPct: stats.total ? (stats.hommes / stats.total) * 100 : 0,
@@ -221,7 +266,7 @@ function formatKpiMeta(
     case 'femmes':
       return {
         lines: [
-          `Part des effectifs ${stats.total ? ((stats.femmes / stats.total) * 100).toFixed(1).replace(/\.0$/, '') : 0}%`,
+          `Part des effectifs ${genderSharePct(stats.femmes, stats.total)}`,
           topDept ? `Dept. dominant ${topDept.label}` : 'Département —',
           topSite ? `Site dominant ${topSite.label}` : 'Site —',
         ],
@@ -240,28 +285,40 @@ function formatKpiMeta(
           : 0,
         barClass: 'is-violet',
       };
-    case 'totalCdd':
+    case 'ageMoyen': {
+      const prev =
+        mom?.prevAgeMoyen != null
+          ? `Mois préc. ${mom.prevAgeMoyen.toLocaleString('fr-FR', { maximumFractionDigits: 1 })} ans (${mom.prevPeriodLabel})`
+          : 'Mois préc. —';
+      const h = mom?.ageHomme != null ? mom.ageHomme.toLocaleString('fr-FR', { maximumFractionDigits: 1 }) : '—';
+      const f = mom?.ageFemme != null ? mom.ageFemme.toLocaleString('fr-FR', { maximumFractionDigits: 1 }) : '—';
       return {
         lines: [
-          topCddDept ? `${topCddDept.label} · ${topCddDept.count}` : 'Aucun département CDD',
-          `Sur ${stats.total} actifs`,
-          stats.totalEssai > 0 ? `${stats.totalEssai} aussi en essai` : 'Aucun essai croisé',
+          prev,
+          `H ${h} ans · F ${f} ans`,
+          mom ? mom.periodLabel : 'Période —',
         ],
-        barPct: stats.total ? (stats.totalCdd / stats.total) * 100 : 0,
+        barPct: 100,
         barClass: 'is-amber',
       };
-    case 'totalEssai':
+    }
+    case 'entrees': {
+      const prev =
+        mom != null
+          ? `Mois préc. ${mom.prevEntrees} (${mom.prevPeriodLabel})`
+          : 'Mois préc. —';
       return {
         lines: [
-          topEssaiStatut ? `${topEssaiStatut.label} · ${topEssaiStatut.count}` : 'Statut —',
-          stats.alertesEssai > 0
-            ? `${stats.alertesEssai} alerte${stats.alertesEssai > 1 ? 's' : ''} J-30`
-            : 'Aucune alerte J-30',
-          `Sur ${stats.total} actifs`,
+          prev,
+          mom ? mom.periodLabel : 'Période —',
+          mom ? `${mom.present.length} présent${mom.present.length !== 1 ? 's' : ''} fin de mois` : 'Présents —',
         ],
-        barPct: stats.total ? (stats.totalEssai / stats.total) * 100 : 0,
+        barPct: mom && (mom.entrees > 0 || mom.prevEntrees > 0)
+          ? Math.min(100, (mom.entrees / Math.max(mom.entrees, mom.prevEntrees, 1)) * 100)
+          : 0,
         barClass: 'is-violet',
       };
+    }
     case 'alertesEssai':
       return {
         lines: [
@@ -281,7 +338,7 @@ function formatKpiMeta(
           stats.exitsParMois.length
             ? `${stats.exitsParMois[stats.exitsParMois.length - 1]?.label ?? '—'} (dernier mois)`
             : 'Pas d’historique mensuel',
-          `${stats.total} actifs restants`,
+          `${stats.total} employés restants`,
         ],
         barPct: stats.total + stats.totalExits
           ? (stats.totalExits / (stats.total + stats.totalExits)) * 100
@@ -293,8 +350,15 @@ function formatKpiMeta(
   }
 }
 
-/** Dashboard RH global — KPIs actifs + sorties. */
-export default function EmployeesHrDashboardView({ employees, exits = [] }: Props) {
+/** Dashboard RH global — KPIs effectif fin de mois + sorties de la période. */
+export default function EmployeesHrDashboardView({
+  employees,
+  exits = [],
+  allEmployees,
+  allExits,
+  year,
+  month,
+}: Props) {
   const baseStats = useMemo(
     () => buildEmployeesHrDashboard(employees, exits),
     [employees, exits],
@@ -376,10 +440,18 @@ export default function EmployeesHrDashboardView({ employees, exits = [] }: Prop
     () => ({ ...baseStats, ...contractantStats }),
     [baseStats, contractantStats],
   );
-  const workforce = useMemo(
-    () => mergeEmployeesWithExits(employees, exits),
-    [employees, exits],
-  );
+  const momStats = useMemo(() => {
+    const now = new Date();
+    const y = typeof year === 'number' ? year : now.getFullYear();
+    const m =
+      typeof month === 'number'
+        ? month
+        : typeof year === 'number' && year < now.getFullYear()
+          ? 12
+          : now.getMonth() + 1;
+    return buildHrPeriodMomStats(allEmployees ?? employees, allExits ?? exits, y, m);
+  }, [allEmployees, allExits, employees, exits, year, month]);
+  const workforce = employees;
   const [drilldown, setDrilldown] = useState<{
     title: string;
     columns: DashboardListColumn[];
@@ -387,6 +459,14 @@ export default function EmployeesHrDashboardView({ employees, exits = [] }: Prop
   } | null>(null);
 
   const fmt = (key: (typeof KPI_META)[number]['key'], format: string) => {
+    if (key === 'ageMoyen') {
+      if (momStats.ageMoyen == null) return '—';
+      return `${momStats.ageMoyen.toLocaleString('fr-FR', {
+        maximumFractionDigits: 1,
+        minimumFractionDigits: 0,
+      })}`;
+    }
+    if (key === 'entrees') return String(momStats.entrees);
     const raw = stats[key as keyof typeof stats];
     if (raw == null || typeof raw === 'object') return '—';
     if (format === 'int') return String(raw);
@@ -398,6 +478,16 @@ export default function EmployeesHrDashboardView({ employees, exits = [] }: Prop
   };
 
   const pctLabel = (key: (typeof KPI_META)[number]['key']): string | null => {
+    if (key === 'ageMoyen') return momStats.ageMoyen != null ? 'ans' : null;
+    if (key === 'entrees') return null;
+    if (key === 'hommes') {
+      const pct = genderSharePct(stats.hommes, stats.total);
+      return pct ? `${pct} des emp.` : null;
+    }
+    if (key === 'femmes') {
+      const pct = genderSharePct(stats.femmes, stats.total);
+      return pct ? `${pct} des emp.` : null;
+    }
     if (key === 'totalContractants') {
       const total = stats.totalContractants;
       if (!total) return '0%';
@@ -419,6 +509,12 @@ export default function EmployeesHrDashboardView({ employees, exits = [] }: Prop
       : `${pct.toLocaleString('fr-FR', { maximumFractionDigits: 1, minimumFractionDigits: 1 })}%`;
   };
 
+  const momDelta = (key: (typeof KPI_META)[number]['key']) => {
+    if (key === 'ageMoyen') return formatMomDelta(momStats.ageDeltaPct);
+    if (key === 'entrees') return formatMomDelta(momStats.entreesDeltaPct);
+    return null;
+  };
+
   const openKpi = (key: EmployeesHrKpiKey | 'totalContractants', label: string) => {
     if (key === 'totalContractants') {
       setDrilldown({
@@ -428,15 +524,29 @@ export default function EmployeesHrDashboardView({ employees, exits = [] }: Prop
       });
       return;
     }
+    if (key === 'ageMoyen') {
+      setDrilldown({
+        title: `Âge moyen des employés — ${momStats.periodLabel}`,
+        columns: AGE_COLUMNS,
+        rows: momStats.present.map(employeeToDashboardListRow),
+      });
+      return;
+    }
+    if (key === 'entrees') {
+      setDrilldown({
+        title: `Entrées — ${momStats.periodLabel}`,
+        columns: ACTIVE_COLUMNS,
+        rows: momStats.hires.map(employeeToDashboardListRow),
+      });
+      return;
+    }
     const list = employeesForHrKpi(employees, exits, key);
     const columns =
       key === 'totalExits'
         ? EXIT_COLUMNS
-        : key === 'totalCdd'
-          ? CDD_COLUMNS
-          : key === 'totalEssai' || key === 'alertesEssai'
-            ? TRIAL_COLUMNS
-            : ACTIVE_COLUMNS;
+        : key === 'alertesEssai'
+          ? TRIAL_COLUMNS
+          : ACTIVE_COLUMNS;
     setDrilldown({
       title: label,
       columns,
@@ -623,9 +733,10 @@ export default function EmployeesHrDashboardView({ employees, exits = [] }: Prop
           const isContractantsLoading = kpi.key === 'totalContractants' && contractantsLoading;
           const className = `card card-glow ${kpi.glow} travel-history-card employees-hr-card${kpi.watermark ? ' has-watermark' : ''} dependants-kpi-clickable${kpi.key === 'alertesEssai' && stats.alertesEssai > 0 ? ' is-alert' : ''}${isContractantsLoading ? ' is-loading' : ''}`;
           const pct = isContractantsLoading ? null : pctLabel(kpi.key);
+          const delta = isContractantsLoading ? null : momDelta(kpi.key);
           const meta = isContractantsLoading
             ? { lines: [] as string[] }
-            : formatKpiMeta(kpi.key, stats);
+            : formatKpiMeta(kpi.key, stats, momStats);
           return (
             <button
               key={kpi.key}
@@ -635,7 +746,7 @@ export default function EmployeesHrDashboardView({ employees, exits = [] }: Prop
               title={`Voir la liste — ${kpi.label}`}
               disabled={isContractantsLoading}
             >
-              {kpi.watermark && <GenderWatermark variant={kpi.watermark} />}
+              {kpi.watermark && <KpiWatermark variant={kpi.watermark} />}
               <div className="employees-hr-card-body">
                 <div className="card-label">{kpi.label}</div>
                 <div className="card-value">
@@ -645,6 +756,9 @@ export default function EmployeesHrDashboardView({ employees, exits = [] }: Prop
                     <>
                       {fmt(kpi.key, kpi.format)}
                       {pct ? <span className="employees-hr-card-pct">{pct}</span> : null}
+                      {delta ? (
+                        <span className={`employees-hr-card-delta is-${delta.trend}`}>{delta.text}</span>
+                      ) : null}
                     </>
                   )}
                 </div>

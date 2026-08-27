@@ -1,7 +1,9 @@
 import {
   computeAgeFromDisplayDate,
   displayDateSortKey,
+  parseDisplayDateParts,
   RAISON_EXITS,
+  wasPresentOnAsOf,
 } from '@/lib/employee-columns';
 import {
   isCddEmployee,
@@ -175,23 +177,41 @@ function normalizeMaritalStatus(raw: string): string {
 
 const LATEST_HIRES_LIMIT = 12;
 
-/** Effectif dashboard = actifs + sorties (dédupliqué par matricule). */
+function employeePresenceKey(employee: Employee): string {
+  return (employee.matricule || '').trim() || `nom:${employee.nom}`;
+}
+
+/** Fusionne deux listes d'employés sans doublon de matricule. */
 export function mergeEmployeesWithExits(
   employees: Employee[],
   exits: Employee[] = [],
 ): Employee[] {
   const byMatricule = new Map<string, Employee>();
   for (const e of Array.isArray(employees) ? employees : []) {
-    const key = (e.matricule || '').trim();
-    if (key) byMatricule.set(key, e);
-    else byMatricule.set(`nom:${e.nom}`, e);
+    byMatricule.set(employeePresenceKey(e), e);
   }
   for (const e of Array.isArray(exits) ? exits : []) {
-    const key = (e.matricule || '').trim();
-    const mapKey = key || `nom:${e.nom}`;
+    const mapKey = employeePresenceKey(e);
     if (!byMatricule.has(mapKey)) byMatricule.set(mapKey, e);
   }
   return [...byMatricule.values()];
+}
+
+/** Effectif encore en poste à la date `asOf` (actifs + sorties postérieures). */
+export function employeesPresentOnAsOf(
+  actives: Employee[],
+  exits: Employee[] = [],
+  asOf: Date,
+): Employee[] {
+  const byKey = new Map<string, Employee>();
+  const add = (employee: Employee, isExit = false) => {
+    if (!wasPresentOnAsOf(employee, asOf, { isExit })) return;
+    const key = employeePresenceKey(employee);
+    if (!byKey.has(key)) byKey.set(key, employee);
+  };
+  for (const e of Array.isArray(actives) ? actives : []) add(e, false);
+  for (const e of Array.isArray(exits) ? exits : []) add(e, true);
+  return [...byKey.values()];
 }
 
 function buildDerniersArrives(employees: Employee[]): EmployeesLatestHireRow[] {
@@ -272,15 +292,14 @@ function buildExitsParMois(exits: Employee[]): EmployeesExitMonthRow[] {
   return [...map.values()].sort((a, b) => a.key.localeCompare(b.key));
 }
 
-/** KPIs alignés sur la feuille Dashboard du template EMPLOYEES_HR_EXPORT. */
+/** KPIs : `employees` = effectif au dernier jour, `exits` = sorties de la période. */
 export function buildEmployeesHrDashboard(
   employees: Employee[],
   exits: Employee[] = [],
 ): EmployeesHrDashboardStats {
   const active = Array.isArray(employees) ? employees : [];
   const exitList = Array.isArray(exits) ? exits : [];
-  // Genre / company / départements : actifs + Exit (présence filtrée année/mois).
-  const list = mergeEmployeesWithExits(active, exitList);
+  const list = active;
   let hommes = 0;
   let femmes = 0;
   let maries = 0;
@@ -363,7 +382,141 @@ export type EmployeesHrKpiKey =
   | 'totalExits'
   | 'totalCdd'
   | 'totalEssai'
-  | 'alertesEssai';
+  | 'alertesEssai'
+  | 'ageMoyen'
+  | 'entrees';
+
+const MONTH_LABELS_FR = [
+  'Janvier', 'Février', 'Mars', 'Avril', 'Mai', 'Juin',
+  'Juillet', 'Août', 'Septembre', 'Octobre', 'Novembre', 'Décembre',
+];
+
+export function prevYearMonth(year: number, month: number): { year: number; month: number } {
+  if (month <= 1) return { year: year - 1, month: 12 };
+  return { year, month: month - 1 };
+}
+
+export function formatHrMonthLabel(year: number, month: number): string {
+  return `${MONTH_LABELS_FR[month - 1] ?? month} ${year}`;
+}
+
+function asOfEndOfMonth(year: number, month: number): Date {
+  return new Date(year, month, 0, 23, 59, 59);
+}
+
+function ageAt(employee: Employee, asOf: Date): number | null {
+  const parts = parseDisplayDateParts(employee.dateOfBirth || '');
+  if (parts) {
+    let age = asOf.getFullYear() - parts.y;
+    const m = asOf.getMonth() + 1 - parts.m;
+    if (m < 0 || (m === 0 && asOf.getDate() < parts.d)) age -= 1;
+    return age >= 0 && age < 120 ? age : null;
+  }
+  const fromDob = computeAgeFromDisplayDate(employee.dateOfBirth);
+  if (fromDob != null) return fromDob;
+  if (employee.age != null && employee.age > 0) return employee.age;
+  return null;
+}
+
+export function hiredInYearMonth(employee: Employee, year: number, month: number): boolean {
+  const parts = parseDisplayDateParts(employee.appointmentDate || '');
+  if (!parts) return false;
+  return parts.y === year && parts.m === month;
+}
+
+function presentInYearMonth(
+  actives: Employee[],
+  exits: Employee[],
+  year: number,
+  month: number,
+): Employee[] {
+  return employeesPresentOnAsOf(actives, exits, asOfEndOfMonth(year, month));
+}
+
+function avgRounded(nums: number[], digits = 1): number | null {
+  if (!nums.length) return null;
+  const f = 10 ** digits;
+  return Math.round((nums.reduce((a, b) => a + b, 0) / nums.length) * f) / f;
+}
+
+/** Écart relatif vs mois précédent (ratio, ex. -0.036 = −3,6 %). */
+export function momDeltaRatio(current: number | null, previous: number | null): number | null {
+  if (current == null || previous == null) return null;
+  if (current === 0) return 0;
+  if (previous === 0) return 1;
+  return Math.round(((current - previous) / Math.abs(previous)) * 1000) / 1000;
+}
+
+export interface HrPeriodMomStats {
+  year: number;
+  month: number;
+  periodLabel: string;
+  prevPeriodLabel: string;
+  ageMoyen: number | null;
+  prevAgeMoyen: number | null;
+  ageDeltaPct: number | null;
+  ageHomme: number | null;
+  ageFemme: number | null;
+  entrees: number;
+  prevEntrees: number;
+  entreesDeltaPct: number | null;
+  present: Employee[];
+  hires: Employee[];
+}
+
+/** Âge moyen et embauches du mois, comparés au mois précédent (même logique que le rapport EXCO). */
+export function buildHrPeriodMomStats(
+  actives: Employee[],
+  exits: Employee[],
+  year: number,
+  month: number,
+): HrPeriodMomStats {
+  const prev = prevYearMonth(year, month);
+  const asOf = asOfEndOfMonth(year, month);
+  const asOfPrev = asOfEndOfMonth(prev.year, prev.month);
+  const present = presentInYearMonth(actives, exits, year, month);
+  const presentPrev = presentInYearMonth(actives, exits, prev.year, prev.month);
+  const pool = [...(Array.isArray(actives) ? actives : []), ...(Array.isArray(exits) ? exits : [])];
+  const hires = pool.filter((e) => hiredInYearMonth(e, year, month));
+  const prevHires = pool.filter((e) => hiredInYearMonth(e, prev.year, prev.month));
+
+  const ages = present.map((e) => ageAt(e, asOf)).filter((n): n is number => n != null);
+  const prevAges = presentPrev.map((e) => ageAt(e, asOfPrev)).filter((n): n is number => n != null);
+  const agesMale = present
+    .filter((e) => isMale(e.gender))
+    .map((e) => ageAt(e, asOf))
+    .filter((n): n is number => n != null);
+  const agesFemale = present
+    .filter((e) => isFemale(e.gender))
+    .map((e) => ageAt(e, asOf))
+    .filter((n): n is number => n != null);
+
+  const ageMoyen = avgRounded(ages, 1);
+  const prevAgeMoyen = avgRounded(prevAges, 1);
+  const entrees = hires.length;
+  const prevEntrees = prevHires.length;
+
+  return {
+    year,
+    month,
+    periodLabel: formatHrMonthLabel(year, month),
+    prevPeriodLabel: formatHrMonthLabel(prev.year, prev.month),
+    ageMoyen,
+    prevAgeMoyen,
+    ageDeltaPct: momDeltaRatio(ageMoyen, prevAgeMoyen),
+    ageHomme: avgRounded(agesMale, 1),
+    ageFemme: avgRounded(agesFemale, 1),
+    entrees,
+    prevEntrees,
+    entreesDeltaPct: momDeltaRatio(entrees, prevEntrees),
+    present,
+    hires: [...hires].sort(
+      (a, b) =>
+        displayDateSortKey(b.appointmentDate) - displayDateSortKey(a.appointmentDate)
+        || (a.nom || '').localeCompare(b.nom || '', 'fr'),
+    ),
+  };
+}
 
 /** Liste derrière un KPI du dashboard RH (moyennes exclues). */
 export function employeesForHrKpi(
@@ -373,14 +526,13 @@ export function employeesForHrKpi(
 ): Employee[] {
   const active = Array.isArray(employees) ? employees : [];
   const exitList = Array.isArray(exits) ? exits : [];
-  const workforce = mergeEmployeesWithExits(active, exitList);
   switch (key) {
     case 'total':
-      return workforce;
+      return active;
     case 'hommes':
-      return workforce.filter((e) => isMale(e.gender));
+      return active.filter((e) => isMale(e.gender));
     case 'femmes':
-      return workforce.filter((e) => isFemale(e.gender));
+      return active.filter((e) => isFemale(e.gender));
     case 'totalExits':
       return exitList;
     case 'totalCdd':
@@ -406,6 +558,10 @@ export function employeeToDashboardListRow(employee: Employee) {
       genre: employee.gender || '—',
       company: employee.company || '—',
       embauche: employee.appointmentDate || '—',
+      age: (() => {
+        const age = resolveAge(employee);
+        return age != null ? String(age) : '—';
+      })(),
       nationalite: employee.nationality || '—',
       raison: employee.raisonExit || '—',
       typeContrat: employee.typeContrat || '—',

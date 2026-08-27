@@ -32,7 +32,7 @@ import TimesheetCompilationSimulationModal from '@/components/overtime/Timesheet
 import { usePermissions } from '@/contexts/PermissionContext';
 import { downloadTimesheetWorkbook } from '@/lib/timesheet-export';
 import type { TimesheetAccessContext, TimesheetViewScope } from '@/lib/timesheet-permissions';
-import { TIMESHEET_MENU } from '@/lib/timesheet-permissions';
+import { matchesDepartment, TIMESHEET_MENU } from '@/lib/timesheet-permissions';
 import { showError } from '@/lib/swal';
 import { compareNumber, compareText, toggleSortDir } from '@/lib/table-sort';
 import type { Employee } from '@/lib/types';
@@ -83,10 +83,6 @@ interface Props {
     department: string | null;
     permissions: TimesheetAccessContext['permissions'] | null;
   };
-}
-
-function matchesDepartment(employeeDepartment: string, selectedDepartment: string): boolean {
-  return employeeDepartment.trim().toLowerCase() === selectedDepartment.trim().toLowerCase();
 }
 
 function fmtHours(value: number): string {

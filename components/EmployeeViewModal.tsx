@@ -33,6 +33,8 @@ import {
 } from '@/lib/employees-trial';
 import { confirmAction, showError, showSuccess } from '@/lib/swal';
 import type { Employee } from '@/lib/types';
+import type { DepartmentSetting, ServiceSetting } from '@/lib/auth-types';
+import { applyEmployeeServicePrefill } from '@/lib/employee-utils';
 import ExitDocsModal from '@/components/documents/ExitDocsModal';
 import { usePermissions } from '@/contexts/PermissionContext';
 
@@ -86,6 +88,7 @@ const IDENTITY_FIELDS: FieldDef[] = [
 
 const ORG_FIELDS_BASE: FieldDef[] = [
   { key: 'departement', label: 'Département', type: 'select', options: [] },
+  { key: 'service', label: 'Service', type: 'select', options: [] },
   { key: 'grade', label: 'Grade' },
   { key: 'localisation', label: 'Localisation' },
   { key: 'jobTitle', label: 'Intitulé du poste' },
@@ -334,9 +337,11 @@ export default function EmployeeViewModal({ employee, canEdit = false, initialTa
   const [familyGroup, setFamilyGroup] = useState<FamilyGroup | null>(null);
   const [familyLoading, setFamilyLoading] = useState(false);
   const [departmentNames, setDepartmentNames] = useState<string[]>([]);
+  const [departments, setDepartments] = useState<DepartmentSetting[]>([]);
+  const [services, setServices] = useState<ServiceSetting[]>([]);
 
   useEffect(() => {
-    setDraft(employee);
+    setDraft(applyEmployeeServicePrefill(employee));
     setEditingKey(null);
     setTab((current) => {
       if (current === 'cddVersCdi' && !hasCddVersCdiHistory(employee)) return 'infos';
@@ -346,19 +351,25 @@ export default function EmployeeViewModal({ employee, canEdit = false, initialTa
 
   useEffect(() => {
     let cancelled = false;
-    fetch('/api/settings/departments')
-      .then((res) => (res.ok ? res.json() : []))
-      .then((json: unknown) => {
+    Promise.all([
+      fetch('/api/settings/departments').then((res) => (res.ok ? res.json() : [])),
+      fetch('/api/settings/services').then((res) => (res.ok ? res.json() : [])),
+    ])
+      .then(([deptJson, svcJson]: [unknown, unknown]) => {
         if (cancelled) return;
-        const names = Array.isArray(json)
-          ? json
-              .map((item) => String((item as { name?: string })?.name ?? '').trim())
-              .filter(Boolean)
-          : [];
+        const deptList = Array.isArray(deptJson) ? (deptJson as DepartmentSetting[]) : [];
+        const svcList = Array.isArray(svcJson) ? (svcJson as ServiceSetting[]) : [];
+        setDepartments(deptList);
+        setServices(svcList);
+        const names = deptList.map((item) => String(item.name || '').trim()).filter(Boolean);
         setDepartmentNames([...new Set(names)].sort((a, b) => a.localeCompare(b, 'fr')));
       })
       .catch(() => {
-        if (!cancelled) setDepartmentNames([]);
+        if (!cancelled) {
+          setDepartments([]);
+          setServices([]);
+          setDepartmentNames([]);
+        }
       });
     return () => {
       cancelled = true;
@@ -366,15 +377,28 @@ export default function EmployeeViewModal({ employee, canEdit = false, initialTa
   }, []);
 
   const orgFields = useMemo((): FieldDef[] => {
-    const current = (draft.departement || '').trim();
-    const options = [...departmentNames];
-    if (current && !options.includes(current)) options.unshift(current);
-    return ORG_FIELDS_BASE.map((field) =>
-      field.key === 'departement'
-        ? { ...field, type: 'select' as const, options }
-        : field,
-    );
-  }, [departmentNames, draft.departement]);
+    const currentDept = (draft.departement || '').trim();
+    const deptOptions = [...departmentNames];
+    if (currentDept && !deptOptions.includes(currentDept)) deptOptions.unshift(currentDept);
+
+    const deptId = departments.find(
+      (d) => d.name.trim().toLowerCase() === currentDept.toLowerCase(),
+    )?.id;
+    const svcOptions = (deptId
+      ? services.filter((s) => s.departmentId === deptId)
+      : []
+    )
+      .map((s) => s.name.trim())
+      .filter(Boolean);
+    const currentSvc = (draft.service || '').trim();
+    if (currentSvc && !svcOptions.includes(currentSvc)) svcOptions.unshift(currentSvc);
+
+    return ORG_FIELDS_BASE.map((field) => {
+      if (field.key === 'departement') return { ...field, type: 'select' as const, options: deptOptions };
+      if (field.key === 'service') return { ...field, type: 'select' as const, options: svcOptions };
+      return field;
+    });
+  }, [departmentNames, departments, services, draft.departement, draft.service]);
 
   const showCddVersCdiTab = useMemo(() => hasCddVersCdiHistory(draft), [draft]);
 
@@ -480,6 +504,9 @@ export default function EmployeeViewModal({ employee, canEdit = false, initialTa
         preview.raisonExit = 'NA';
         preview.statut = 'Active';
       }
+    }
+    if (editingKey === 'departement') {
+      Object.assign(preview, applyEmployeeServicePrefill({ ...preview, service: '' }));
     }
     if (editingKey === 'statut' && preview.statut !== 'Inactive') {
       preview.raisonExit = 'NA';

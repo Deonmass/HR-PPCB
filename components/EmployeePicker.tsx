@@ -3,6 +3,7 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import ProjectPickerDropdown from '@/components/ProjectPickerDropdown';
 import type { Employee } from '@/lib/types';
+import { departmentsEqual } from '@/lib/exco-department-map';
 
 export interface EmployeeSelection {
   matricule: string;
@@ -33,7 +34,8 @@ interface SuggestProps {
 }
 
 function matchesDepartment(employeeDepartment: string, selectedDepartment: string): boolean {
-  return employeeDepartment.trim().toLowerCase() === selectedDepartment.trim().toLowerCase();
+  if (!selectedDepartment.trim()) return true;
+  return departmentsEqual(employeeDepartment, selectedDepartment);
 }
 
 function filterEmployees(

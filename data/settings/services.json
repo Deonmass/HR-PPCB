@@ -1,3 +1,25 @@
 {
-  "services": []
+  "services": [
+    {
+      "id": "svc-sales-and-marketing-sales-cec",
+      "name": "Sales_CEC",
+      "code": "Sales_CEC",
+      "departmentId": "dept-sales-and-marketing",
+      "active": true
+    },
+    {
+      "id": "svc-production-packaging-and-logistics-optimization",
+      "name": "Packaging and Logistics Optimization",
+      "code": "Packaging and Logistics Optimization",
+      "departmentId": "dept-production",
+      "active": true
+    },
+    {
+      "id": "svc-production-optimization",
+      "name": "Optimization",
+      "code": "Optimization",
+      "departmentId": "dept-production",
+      "active": false
+    }
+  ]
 }

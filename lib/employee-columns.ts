@@ -196,12 +196,92 @@ export function yearFromDisplayDate(value: string): number | null {
   return parts?.y ?? null;
 }
 
+function ymdKey(year: number, month: number, day: number): number {
+  return year * 10000 + month * 100 + day;
+}
+
+/** Dernier jour du mois civil (`month` = 1–12). */
+export function endOfYearMonth(year: number, month: number): Date {
+  return new Date(year, month, 0);
+}
+
+type PresenceEmployee = {
+  appointmentDate?: string;
+  dateFinContrat?: string;
+  statut?: string;
+  raisonExit?: string;
+};
+
+function isActualDeparture(
+  employee: PresenceEmployee,
+  opts?: { isExit?: boolean },
+): boolean {
+  if (opts?.isExit) return true;
+  if (/^inact/i.test(String(employee.statut || ''))) return true;
+  return isRealExitRaison(employee.raisonExit);
+}
+
+/**
+ * Encore en poste à la date `asOf` (dernier jour du mois pour l'effectif) :
+ * embauché au plus tard ce jour-là.
+ * `dateFinContrat` n'est une date de sortie que si la personne a vraiment quitté
+ * (Inactive / raison d'exit / liste Exit) — pas la fin prévue d'un CDD toujours actif.
+ */
+export function wasPresentOnAsOf(
+  employee: PresenceEmployee,
+  asOf: Date,
+  opts?: { isExit?: boolean },
+): boolean {
+  const hire = parseDisplayDateParts(employee.appointmentDate ?? '');
+  if (!hire) return false;
+  const asOfKey = ymdKey(asOf.getFullYear(), asOf.getMonth() + 1, asOf.getDate());
+  if (ymdKey(hire.y, hire.m, hire.d) > asOfKey) return false;
+  if (!isActualDeparture(employee, opts)) return true;
+  const exit = parseDisplayDateParts(employee.dateFinContrat ?? '');
+  if (!exit) return true;
+  return ymdKey(exit.y, exit.m, exit.d) > asOfKey;
+}
+
+export function wasPresentAtEndOfYearMonth(
+  employee: PresenceEmployee,
+  year: number,
+  month: number,
+  opts?: { isExit?: boolean },
+): boolean {
+  if (!Number.isInteger(month) || month < 1 || month > 12) return false;
+  return wasPresentOnAsOf(employee, endOfYearMonth(year, month), opts);
+}
+
+export function wasPresentAtEndOfYear(
+  employee: PresenceEmployee,
+  year: number,
+  opts?: { isExit?: boolean },
+): boolean {
+  return wasPresentOnAsOf(employee, new Date(year, 11, 31), opts);
+}
+
+export function exitedInYearMonth(
+  employee: PresenceEmployee,
+  year: number,
+  month: number,
+): boolean {
+  if (!Number.isInteger(month) || month < 1 || month > 12) return false;
+  const exit = parseDisplayDateParts(employee.dateFinContrat ?? '');
+  if (!exit) return false;
+  return exit.y === year && exit.m === month;
+}
+
+export function exitedInYear(employee: PresenceEmployee, year: number): boolean {
+  const exit = parseDisplayDateParts(employee.dateFinContrat ?? '');
+  return exit != null && exit.y === year;
+}
+
 /**
  * Présent durant l'année civile `year` :
  * embauché au plus tard cette année, et (toujours actif OU sorti pendant/après cette année).
  */
 export function wasPresentInYear(
-  employee: { appointmentDate?: string; dateFinContrat?: string },
+  employee: PresenceEmployee,
   year: number,
   opts?: { isExit?: boolean },
 ): boolean {
@@ -215,11 +295,12 @@ export function wasPresentInYear(
 }
 
 /**
- * Présent durant le mois civil `month` (1–12) de l'année `year` :
+ * Présent à un moment du mois civil `month` (1–12) de l'année `year` :
  * embauché au plus tard la fin du mois, et (actif OU sorti à partir du début du mois).
+ * Pour l'effectif au dernier jour du mois, utiliser `wasPresentAtEndOfYearMonth`.
  */
 export function wasPresentInYearMonth(
-  employee: { appointmentDate?: string; dateFinContrat?: string },
+  employee: PresenceEmployee,
   year: number,
   month: number,
   opts?: { isExit?: boolean },
