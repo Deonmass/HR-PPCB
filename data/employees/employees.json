@@ -7634,17 +7634,18 @@
       "id": "f904e459-468f-4268-8078-159664fd2961",
       "matricule": "70000313",
       "nom": "GLODY ELONGO",
-      "departement": "Sales & Logistics",
+      "departement": "Logistic",
       "grade": "C2",
       "jobTitle": "Customer Relationship Officer",
       "localisation": "Kinshasa",
+      "service": "",
       "company": "PPC Barnet DRC Manufacturing",
       "centreCout": "KC6310",
       "appointmentDate": "21/08/2026",
       "gender": "Female",
       "dateOfBirth": "23/07/1991",
       "age": 35,
-      "nationality": "Congolaise",
+      "nationality": "GLODY ELONGO",
       "maritalStatus": "Married",
       "numberOfChildren": 2,
       "personnelArea": "",
@@ -7675,7 +7676,7 @@
       "cnss": "",
       "nif": "",
       "createdAt": "2026-08-27T14:00:27.779Z",
-      "updatedAt": "2026-08-27T14:01:48.075Z"
+      "updatedAt": "2026-08-28T10:13:21.489Z"
     }
   ]
 }
