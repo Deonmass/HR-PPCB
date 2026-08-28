@@ -1,6 +1,25 @@
 {
   "entries": [
     {
+      "id": "log-000629",
+      "at": "2026-08-28T08:54:28.871Z",
+      "userId": "admin",
+      "userName": "Administrateur",
+      "module": "postes",
+      "moduleLabel": "Postes",
+      "action": "update",
+      "actionLabel": "Modification",
+      "entityType": "poste",
+      "entityId": "Physical Lab Tester",
+      "summary": "Màj poste catalogue « Physical Lab Tester » → « Physical Lab Technician »",
+      "details": "Màj poste catalogue « Physical Lab Tester » → « Physical Lab Technician »",
+      "after": {
+        "updated": 1
+      },
+      "undoable": false,
+      "undone": false
+    },
+    {
       "id": "log-000628",
       "at": "2026-08-27T15:52:24.675Z",
       "userId": "Serge.Muakasa",
@@ -46436,5 +46455,5 @@
       }
     }
   ],
-  "nextSeq": 629
+  "nextSeq": 630
 }
