@@ -7497,13 +7497,14 @@
       "grade": "B5",
       "jobTitle": "Lab Analyst",
       "localisation": "Zamba",
+      "service": "",
       "company": "PPC Barnet DRC Manufacturing",
       "centreCout": "KM5510",
       "appointmentDate": "12/08/2026",
       "gender": "Female",
       "dateOfBirth": "27/02/1997",
       "age": 29,
-      "nationality": "Congolaise",
+      "nationality": "Congolese",
       "maritalStatus": "Married",
       "numberOfChildren": 2,
       "personnelArea": "",
@@ -7534,7 +7535,7 @@
       "cnss": "",
       "nif": "",
       "createdAt": "2026-08-11T14:44:00.747Z",
-      "updatedAt": "2026-08-11T14:44:00.747Z"
+      "updatedAt": "2026-08-28T10:14:25.387Z"
     },
     {
       "id": "b02805ce-2aad-4790-8a44-3169ac871a1e",
