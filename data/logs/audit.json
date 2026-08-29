@@ -1,6 +1,29 @@
 {
   "entries": [
     {
+      "id": "log-000636",
+      "at": "2026-08-29T01:01:26.615Z",
+      "userId": "system",
+      "userName": "Système",
+      "module": "auth",
+      "moduleLabel": "Authentification",
+      "action": "error",
+      "actionLabel": "Erreur",
+      "summary": "Identifiants invalides",
+      "details": "Échec de connexion pour « admin »",
+      "undoable": false,
+      "undone": false,
+      "error": {
+        "message": "Identifiants invalides",
+        "path": "/api/auth/login",
+        "method": "POST",
+        "status": 401,
+        "context": {
+          "username": "admin"
+        }
+      }
+    },
+    {
       "id": "log-000635",
       "at": "2026-08-29T01:01:16.364Z",
       "userId": "system",
@@ -47218,5 +47241,5 @@
       }
     }
   ],
-  "nextSeq": 636
+  "nextSeq": 637
 }
