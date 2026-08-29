@@ -42,9 +42,9 @@ export async function GET(request: Request) {
 
 /**
  * Actions Params / BASE :
- * - syncDepartments : créer départements + services (mapping HR, Sales_CEC…)
- * - applyEmployeeFix : règles métier (dept fichier ; nom/position = système)
- * - applyAllCorrections : sync depts + appliquer tous les écarts département
+ * - syncDepartments : créer départements + services (catalogue) — pas les fiches employés
+ * - applyEmployeeFix : créer un absent système depuis BASE (jamais écraser nom/dept)
+ * - applyAllCorrections : sync catalogue uniquement
  * - importHistoricalExits / applyTerminationsInMonth / importMissingFromBase
  */
 export async function POST(request: Request) {
@@ -87,16 +87,14 @@ export async function POST(request: Request) {
 
     if (action === 'applyEmployeeFix') {
       const matricule = String(body.matricule || '').trim();
-      const fields = body.fields || ['department'];
       if (!matricule) return NextResponse.json({ error: 'Matricule requis' }, { status: 400 });
 
-      // Politique : ne jamais écraser nom / position système
-      const allowed = fields.filter((f) => f === 'department');
-      if (!allowed.length) {
+      const current = await getEmployee(matricule);
+      if (current) {
         return NextResponse.json(
           {
             error:
-              'Correction refusée : nom et position système sont conservés. Seul le département fichier s’applique.',
+              'Nom et département système font foi. Les écarts fichier ne sont pas appliqués.',
           },
           { status: 400 },
         );
@@ -110,45 +108,35 @@ export async function POST(request: Request) {
       const base = snap.employees.find((e) => e.matricule === matricule);
       if (!base) return NextResponse.json({ error: 'Matricule absent de BASE' }, { status: 404 });
       const resolved = resolveExcoDepartment(base.department);
-      const current = await getEmployee(matricule);
-      if (!current) {
-        await upsertEmployee({
-          ...emptyEmployeeHrProfile(),
-          matricule: base.matricule,
-          nom: base.nom,
-          departement: resolved.department || base.department,
-          departmentHr: resolved.department || base.department,
-          position: base.position,
-          jobTitle: base.position,
-          grade: base.grade,
-          gender: base.gender,
-          nationality: base.nationality,
-          appointmentDate: base.emplDate,
-          localisation: base.locationSite,
-          statut: 'Active',
-          documents: {},
-        });
-      } else {
-        await upsertEmployee({
-          ...current,
-          departement: resolved.department || base.department,
-          departmentHr: resolved.department || base.department,
-        });
-      }
+      await upsertEmployee({
+        ...emptyEmployeeHrProfile(),
+        matricule: base.matricule,
+        nom: base.nom,
+        departement: resolved.department || base.department,
+        departmentHr: resolved.department || base.department,
+        position: base.position,
+        jobTitle: base.position,
+        grade: base.grade,
+        gender: base.gender,
+        nationality: base.nationality,
+        appointmentDate: base.emplDate,
+        localisation: base.locationSite,
+        statut: 'Active',
+        documents: {},
+      });
       const result = await reconcileExcoBase({ year, month });
       return NextResponse.json({ ok: true, result });
     }
 
     if (action === 'applyAllCorrections') {
       const sync = await syncExcoDepartmentsAndServices({ year, month });
-      // syncExcoDepartmentsAndServices already aligns employee departments from BASE
       await withAudit(
         {
           module: 'exco',
           action: 'update',
           entityType: 'exco-base-apply-all',
           entityId: `${year}-${month}`,
-          summary: `Corrections EXCO (départements fichier) · ${sync.employeesUpdated} employés · +${sync.createdDepartments} dept · +${sync.createdServices} svc`,
+          summary: `Sync catalogue EXCO · +${sync.createdDepartments} dept · +${sync.createdServices} svc (fiches employés inchangées)`,
           path: '/api/exco/base',
           method: 'POST',
         },
@@ -157,11 +145,11 @@ export async function POST(request: Request) {
       const result = await reconcileExcoBase({ year, month });
       return NextResponse.json({
         ok: true,
-        applied: sync.employeesUpdated,
+        applied: 0,
         ...sync,
         result,
         note:
-          'Départements fichier appliqués. Noms / positions système conservés. Absents BASE (nouveaux) laissés dans le système.',
+          'Catalogue départements/services synchronisé. Nom et département employés : données système conservées.',
       });
     }
 
@@ -190,13 +178,13 @@ export async function POST(request: Request) {
 
         const existing = await getEmployee(row.matricule);
         const name = displayEngagementName(row);
-        const resolved = resolveExcoDepartment(row.orgUnit || existing?.departement || '');
+        const resolved = resolveExcoDepartment(existing?.departement || existing?.departmentHr || row.orgUnit || '');
         const payload = {
           ...(existing || emptyEmployeeHrProfile()),
           matricule: row.matricule,
-          nom: name || existing?.nom || row.lastName,
-          departement: resolved.department || existing?.departement || row.orgUnit || '',
-          departmentHr: resolved.department || existing?.departmentHr || row.orgUnit || '',
+          nom: existing?.nom || name || row.lastName,
+          departement: existing?.departement || resolved.department || row.orgUnit || '',
+          departmentHr: existing?.departmentHr || existing?.departement || resolved.department || row.orgUnit || '',
           position: existing?.position || row.position || '',
           jobTitle: existing?.jobTitle || row.position || '',
           grade: row.grade || existing?.grade || '',

@@ -35,6 +35,9 @@ import ExcoExportMenu from '@/components/exco/ExcoExportMenu';
 import type { ExcoSheetTable } from '@/lib/exco-workbook-types';
 import { formatNarrativeForEdit } from '@/lib/exco-narrative-format';
 import { showError, showSuccess } from '@/lib/swal';
+import { ratioToRate } from '@/lib/format-rate';
+import { useI18n } from '@/contexts/LocaleContext';
+import type { MessageKey } from '@/lib/i18n';
 
 type TabId =
   | 'params'
@@ -48,17 +51,17 @@ type TabId =
   | 'recruitment'
   | 'audit';
 
-const TABS: { id: TabId; label: string }[] = [
-  { id: 'params', label: 'Params' },
-  { id: 'kpi', label: 'KPI' },
-  { id: 'summary', label: 'Summary' },
-  { id: 'headcount', label: 'Headcount' },
-  { id: 'inout', label: 'In Out' },
-  { id: 'staffcost', label: 'Staff Cost KPI' },
-  { id: 'overtime', label: 'Overtime' },
-  { id: 'csr', label: 'CSR' },
-  { id: 'recruitment', label: 'Recruitment' },
-  { id: 'audit', label: 'Internal audit' },
+const TAB_DEFS: { id: TabId; labelKey: MessageKey }[] = [
+  { id: 'params', labelKey: 'exco.tab.params' },
+  { id: 'kpi', labelKey: 'exco.tab.kpi' },
+  { id: 'summary', labelKey: 'exco.tab.summary' },
+  { id: 'headcount', labelKey: 'exco.tab.headcount' },
+  { id: 'inout', labelKey: 'exco.tab.inout' },
+  { id: 'staffcost', labelKey: 'exco.tab.staffcost' },
+  { id: 'overtime', labelKey: 'exco.tab.overtime' },
+  { id: 'csr', labelKey: 'exco.tab.csr' },
+  { id: 'recruitment', labelKey: 'exco.tab.recruitment' },
+  { id: 'audit', labelKey: 'exco.tab.audit' },
 ];
 
 const CAL_MONTH_KEYS = ['JAN', 'FEB', 'MAR', 'APR', 'MAY', 'JUN', 'JUL', 'AUG', 'SEP', 'OCT', 'NOV', 'DEC'] as const;
@@ -84,6 +87,13 @@ const BASE_COLUMNS = [
   'OVT_Hours',
   'OVT_Cost',
 ] as const;
+
+const BASE_IMPORT_ONLY_COLUMNS = new Set<string>([
+  'Leave_Balance',
+  'Allowance Amount',
+  'OVT_Hours',
+  'OVT_Cost',
+]);
 
 const BASE_HEADER_ALIASES: Record<string, string> = {
   'leave allowance_amount': 'Allowance Amount',
@@ -566,7 +576,11 @@ const INOUT_LIST_COLUMNS: DashboardListColumn[] = [
   { key: 'motif', label: 'Motif' },
 ];
 
-function inOutPersonToRow(r: InOutPerson, names: Record<string, string>): DashboardListRow {
+function inOutPersonToRow(
+  r: InOutPerson,
+  names: Record<string, string>,
+  depts: Record<string, string>,
+): DashboardListRow {
   const mat = normMatricule(r.matricule);
   return {
     id: `${r.matricule}-${r.appointmentDate}-${r.reason || ''}`,
@@ -575,7 +589,7 @@ function inOutPersonToRow(r: InOutPerson, names: Record<string, string>): Dashbo
       nom: names[mat] || r.nom,
       genre: r.genre || '—',
       grade: r.grade || '—',
-      departement: r.departement || '—',
+      departement: depts[mat] || r.departement || '—',
       date: formatInOutDate(r.appointmentDate),
       motif: r.reason || '—',
     },
@@ -613,6 +627,24 @@ type ParamsState = {
   month: number;
   fxRateFcPerUsd: number | null;
   uploads: Partial<Record<ExcoSourceFileId, UploadMeta>>;
+  imported?: ImportedFlags;
+  importedSources?: Partial<Record<keyof ImportedFlags, { importedAt: string; originalName: string }>>;
+  hasData?: boolean;
+  baseImportColumns?: BaseImportColumns;
+};
+
+type BaseImportColumns = {
+  leaveDaysByMatricule: Record<string, number>;
+  leaveValueFcByMatricule: Record<string, number>;
+  ovtHoursByMatricule: Record<string, number>;
+  ovtCostFcByMatricule: Record<string, number>;
+};
+
+const EMPTY_BASE_IMPORT_COLUMNS: BaseImportColumns = {
+  leaveDaysByMatricule: {},
+  leaveValueFcByMatricule: {},
+  ovtHoursByMatricule: {},
+  ovtCostFcByMatricule: {},
 };
 
 type BaseReconcile = {
@@ -624,6 +656,7 @@ type BaseReconcile = {
   matched: number;
   actionableCount: number;
   namesByMatricule: Record<string, string>;
+  departmentsByMatricule: Record<string, string>;
   mismatches: Array<{
     kind: string;
     matricule: string;
@@ -687,6 +720,7 @@ type OtView = {
   byDepartment: Array<{ department: string; hours: number; costUsd: number; agents: number }>;
   sourceFiles: string[];
   missing: { overtime: boolean; leave: boolean };
+  leaveAvgDays?: number | null;
   /** Données Evolution / Overview depuis New report.xlsx (OVT). */
   workbook?: {
     trendRows: ExcoWorkbookOtTrendRow[];
@@ -750,13 +784,13 @@ function formatOtCell(n: number | null | undefined): string {
 function formatPct(n: number | null | undefined): string {
   if (n == null || !Number.isFinite(n)) return '—';
   const v = n <= 1 ? n * 100 : n;
-  return `${v.toLocaleString('en-US', { maximumFractionDigits: 1 })}%`;
+  return `${v.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}%`;
 }
 
 /** Taux déjà en points de % (ex. 0.6 = 0.6 %), issus de buildExcoReport. */
 function formatRatePct(n: number | null | undefined): string {
   if (n == null || !Number.isFinite(n)) return '—';
-  return `${n.toLocaleString('en-US', { maximumFractionDigits: 1 })}%`;
+  return `${n.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}%`;
 }
 
 function normHeader(s: string): string {
@@ -781,6 +815,22 @@ function normMatricule(value: unknown): string {
   return s;
 }
 
+function fcToUsd(fc: number | undefined, fx: number | null): number | null {
+  if (fc == null || !Number.isFinite(fc)) return null;
+  if (fx == null || !(fx > 0)) return null;
+  return Math.round((fc / fx) * 100) / 100;
+}
+
+function normalizeBaseImportMap(raw: Record<string, number> | undefined): Record<string, number> {
+  const out: Record<string, number> = {};
+  for (const [k, v] of Object.entries(raw || {})) {
+    const mat = normMatricule(k);
+    if (!mat || v == null || !Number.isFinite(Number(v))) continue;
+    out[mat] = Number(v);
+  }
+  return out;
+}
+
 function displayBaseCell(value: string | number | null, header: string): string {
   if (value == null || value === '') return '';
   if (typeof value === 'string' && /^\d{4}-\d{2}-\d{2}/.test(value)) {
@@ -794,10 +844,10 @@ function displayBaseCell(value: string | number | null, header: string): string 
     }
   }
   if (typeof value === 'number' && Number.isFinite(value)) {
-    if (header === 'Leave Allowance Amount' || header === 'OVT_Cost' || header === 'Leave_Balance') {
+    if (header === 'Leave Allowance Amount' || header === 'Allowance Amount' || header === 'OVT_Cost') {
       return value.toLocaleString('en-US', { maximumFractionDigits: 2 });
     }
-    if (header === 'OVT_Hours' || header === 'Length of Service' || header === 'Age') {
+    if (header === 'Leave_Balance' || header === 'OVT_Hours' || header === 'Length of Service' || header === 'Age') {
       return value.toLocaleString('en-US', { maximumFractionDigits: 2 });
     }
     return String(value);
@@ -832,10 +882,28 @@ function projectBaseSheet(sheet: ExcoSheetTable | null): {
     return -1;
   });
 
-  const rows = sheet.rows.slice(1).map((row) =>
-    colIndexes.map((idx) => (idx >= 0 ? (row[idx] ?? null) : null)),
-  );
+  const rows = sheet.rows.slice(1).map((row) => {
+    const projected = colIndexes.map((idx) => (idx >= 0 ? (row[idx] ?? null) : null));
+    headers.forEach((header, i) => {
+      if (BASE_IMPORT_ONLY_COLUMNS.has(header)) projected[i] = null;
+    });
+    return projected;
+  });
   return { headers, rows };
+}
+
+function ExcoSourceClearIcon() {
+  return (
+    <svg width="10" height="10" viewBox="0 0 10 10" aria-hidden="true" focusable="false">
+      <path
+        d="M2 2l6 6M8 2L2 8"
+        fill="none"
+        stroke="currentColor"
+        strokeWidth="1.6"
+        strokeLinecap="round"
+      />
+    </svg>
+  );
 }
 
 function ExcoBusyOverlay({ label }: { label: string }) {
@@ -926,12 +994,14 @@ function PctBarChart({
   items,
   color = '#e30613',
   total,
+  wideLabels,
   onItemClick,
 }: {
   items: Array<{ label: string; value: number }>;
   color?: string;
   /** Si défini, % = valeur / total (ex. vs effectif). Sinon % du total des barres. */
   total?: number;
+  wideLabels?: boolean;
   onItemClick?: (label: string) => void;
 }) {
   const sum = items.reduce((s, i) => s + (i.value || 0), 0);
@@ -940,10 +1010,11 @@ function PctBarChart({
     return <p className="exco-muted">Aucune donnée.</p>;
   }
   return (
-    <div className="exco-pct-bars">
+    <div className={`exco-pct-bars${wideLabels ? ' is-wide-labels' : ''}`}>
       {items.map((item) => {
-        const pct = Math.round(((item.value || 0) / denom) * 1000) / 10;
-        const clickable = Boolean(onItemClick && item.value > 0);
+        const count = item.value || 0;
+        const pct = ratioToRate(count, denom);
+        const clickable = Boolean(onItemClick && count > 0);
         const row = (
           <>
             <span className="exco-bar-label" title={item.label}>{item.label}</span>
@@ -951,12 +1022,15 @@ function PctBarChart({
               <div
                 className="exco-bar-fill"
                 style={{
-                  width: `${Math.max(item.value > 0 ? 2 : 0, Math.min(100, pct))}%`,
+                  width: `${Math.max(count > 0 ? 2 : 0, Math.min(100, pct))}%`,
                   background: color,
                 }}
               />
             </div>
-            <span className="exco-bar-value">{pct.toFixed(1)}%</span>
+            <span className="exco-bar-value" title={`${formatNum(count)} · ${pct.toFixed(2)}%`}>
+              {formatNum(count)}
+              <small>({pct.toFixed(2)}%)</small>
+            </span>
           </>
         );
         if (clickable) {
@@ -1012,7 +1086,8 @@ function ExitReasonsPctChart({
               />
             </div>
             <span className="exco-bar-value" title={`${formatNum(item.value)} · ${formatPct(pct)}`}>
-              {formatPct(pct)}
+              {formatNum(item.value)}
+              <small>({formatPct(pct)})</small>
             </span>
           </>
         );
@@ -1053,6 +1128,132 @@ function ClickableNum({
     <button type="button" className="exco-num-clickable" title={title} onClick={onClick}>
       {value}
     </button>
+  );
+}
+
+function StaffMovementYtdTable({
+  inOut,
+  month,
+  onMonth,
+  onYtd,
+}: {
+  inOut: InOutView | null;
+  month: number;
+  onMonth: (kind: 'in' | 'out', calendarMonth: number | null, monthKey: string) => void;
+  onYtd: (kind: 'in' | 'out') => void;
+}) {
+  return (
+    <section className="exco-panel exco-panel-accent-navy">
+      <h3>5. Staff Movement — IN / OUT YTD</h3>
+      <div className="exco-sheet-scroll">
+        <table className="exco-mini-table exco-inout-trend-table">
+          <thead>
+            <tr>
+              <th>IN — OUT YTD</th>
+              {(inOut?.months || []).map((m) => (
+                <th
+                  key={m.monthKey}
+                  className={m.calendarMonth === month ? 'is-report-month' : undefined}
+                >
+                  {m.monthKey}
+                </th>
+              ))}
+              <th>YTD</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>IN</td>
+              {(inOut?.months || []).map((m) => (
+                <td
+                  key={`in-${m.monthKey}`}
+                  className={m.calendarMonth === month ? 'is-report-month' : undefined}
+                >
+                  <ClickableNum
+                    value={formatNum(m.in)}
+                    title={`Voir la liste — IN · ${m.monthKey}`}
+                    onClick={
+                      (m.in || 0) > 0
+                        ? () => onMonth('in', m.calendarMonth, m.monthKey)
+                        : undefined
+                    }
+                  />
+                </td>
+              ))}
+              <td>
+                <ClickableNum
+                  value={formatNum(inOut?.ytdIn)}
+                  title="Voir la liste — IN YTD"
+                  onClick={(inOut?.ytdIn || 0) > 0 ? () => onYtd('in') : undefined}
+                />
+              </td>
+            </tr>
+            <tr>
+              <td>Out</td>
+              {(inOut?.months || []).map((m) => (
+                <td
+                  key={`out-${m.monthKey}`}
+                  className={m.calendarMonth === month ? 'is-report-month' : undefined}
+                >
+                  <ClickableNum
+                    value={formatNum(m.out)}
+                    title={`Voir la liste — OUT · ${m.monthKey}`}
+                    onClick={
+                      (m.out || 0) > 0
+                        ? () => onMonth('out', m.calendarMonth, m.monthKey)
+                        : undefined
+                    }
+                  />
+                </td>
+              ))}
+              <td>
+                <ClickableNum
+                  value={formatNum(inOut?.ytdOut)}
+                  title="Voir la liste — OUT YTD"
+                  onClick={(inOut?.ytdOut || 0) > 0 ? () => onYtd('out') : undefined}
+                />
+              </td>
+            </tr>
+            <tr>
+              <td>Attrition Rate (%)</td>
+              {(inOut?.months || []).map((m) => (
+                <td
+                  key={`att-${m.monthKey}`}
+                  className={m.calendarMonth === month ? 'is-report-month' : undefined}
+                >
+                  {formatRatePct(m.attritionRate)}
+                </td>
+              ))}
+              <td>{formatRatePct(inOut?.ytdAttrition)}</td>
+            </tr>
+            <tr>
+              <td>Turnover (%)</td>
+              {(inOut?.months || []).map((m) => (
+                <td
+                  key={`to-${m.monthKey}`}
+                  className={m.calendarMonth === month ? 'is-report-month' : undefined}
+                >
+                  {formatRatePct(m.turnover)}
+                </td>
+              ))}
+              <td>{formatRatePct(inOut?.ytdTurnover)}</td>
+            </tr>
+            <tr className="exco-row-total">
+              <td>Total Headcount</td>
+              {(inOut?.months || []).map((m) => (
+                <td
+                  key={`hc-${m.monthKey}`}
+                  className={m.calendarMonth === month ? 'is-report-month' : undefined}
+                >
+                  {formatNum(m.headcount)}
+                </td>
+              ))}
+              <td>{formatNum(inOut?.ytdHeadcount)}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
   );
 }
 
@@ -1114,7 +1315,7 @@ function mismatchLabel(kind: string): string {
     case 'missing_in_base': return 'Absent BASE (nouveaux — laisser)';
     case 'name_mismatch': return 'Nom différent (garder système)';
     case 'position_mismatch': return 'Position différente (garder système)';
-    case 'department_mismatch': return 'Département différent (appliquer fichier)';
+    case 'department_mismatch': return 'Département différent (garder système)';
     default: return kind;
   }
 }
@@ -1122,7 +1323,7 @@ function mismatchLabel(kind: string): string {
 function mismatchPolicyHint(policy: string): string {
   switch (policy) {
     case 'apply_file_department':
-      return 'Applique le département fichier (mappé) dans le système';
+      return 'Non appliqué — le département système fait foi';
     case 'keep_system':
       return 'Aucune écriture — conserver la valeur système';
     case 'leave_in_system':
@@ -1136,6 +1337,7 @@ function mismatchPolicyHint(policy: string): string {
 
 export default function ExcoPage() {
   const { can } = usePermissions();
+  const { t } = useI18n();
   const canEdit = can('exco.rapport', 'edit');
   const [tab, setTab] = useState<TabId>('params');
   // Période de travail courante (juillet 2026 — fichiers sources préchargés)
@@ -1145,6 +1347,7 @@ export default function ExcoPage() {
   const [uploads, setUploads] = useState<Partial<Record<ExcoSourceFileId, UploadMeta>>>({});
   const [loading, setLoading] = useState(true);
   const [busy, setBusy] = useState('');
+  const [clearingSourceId, setClearingSourceId] = useState<ExcoSourceFileId | null>(null);
   const [base, setBase] = useState<BaseReconcile | null>(null);
   const [ot, setOt] = useState<OtView | null>(null);
   const [otSubTab, setOtSubTab] = useState<OtSubTab>('overview');
@@ -1164,7 +1367,9 @@ export default function ExcoPage() {
     leaveBalances: false,
     engagementsTerminations: false,
   });
-  const [monthHasData, setMonthHasData] = useState(false);
+  const [importedSources, setImportedSources] = useState<
+    Partial<Record<keyof ImportedFlags, { importedAt: string; originalName: string }>>
+  >({});
   const [headcount, setHeadcount] = useState<HeadcountView | null>(null);
   const [inOut, setInOut] = useState<InOutView | null>(null);
   const [staffCost, setStaffCost] = useState<StaffCostView | null>(null);
@@ -1177,8 +1382,11 @@ export default function ExcoPage() {
     rows: DashboardListRow[];
   } | null>(null);
   const [namesByMatricule, setNamesByMatricule] = useState<Record<string, string>>({});
+  const [deptsByMatricule, setDeptsByMatricule] = useState<Record<string, string>>({});
+  const [baseImportColumns, setBaseImportColumns] = useState<BaseImportColumns>(EMPTY_BASE_IMPORT_COLUMNS);
 
-  const periodLabel = `${MONTHS_FR[month - 1] || month} ${year}`;
+  const monthLabel = t(`cal.month.${month}` as MessageKey);
+  const periodLabel = `${monthLabel} ${year}`;
 
   const resolveStaffCostCell = useCallback(
     (cellKey: string, cell: StaffCostSheetCell) => applyFormulaNote(cell, staffCostFormulaNotes[cellKey]),
@@ -1232,7 +1440,25 @@ export default function ExcoPage() {
     setFxRate(p.fxRateFcPerUsd != null ? String(p.fxRateFcPerUsd) : '');
     setUploads(p.uploads || {});
     if (data.imported) setImported(data.imported as ImportedFlags);
-    setMonthHasData(Boolean(data.hasData));
+    else {
+      setImported({
+        componentPostedUnits: false,
+        leaveBalances: false,
+        engagementsTerminations: false,
+      });
+    }
+    setImportedSources(
+      (data.importedSources || {}) as Partial<
+        Record<keyof ImportedFlags, { importedAt: string; originalName: string }>
+      >,
+    );
+    const cols = (data.baseImportColumns || {}) as Partial<BaseImportColumns>;
+    setBaseImportColumns({
+      leaveDaysByMatricule: normalizeBaseImportMap(cols.leaveDaysByMatricule),
+      leaveValueFcByMatricule: normalizeBaseImportMap(cols.leaveValueFcByMatricule),
+      ovtHoursByMatricule: normalizeBaseImportMap(cols.ovtHoursByMatricule),
+      ovtCostFcByMatricule: normalizeBaseImportMap(cols.ovtCostFcByMatricule),
+    });
     if (data.narrative && typeof data.narrative === 'object') {
       const n = data.narrative as {
         highlights?: string;
@@ -1272,6 +1498,14 @@ export default function ExcoPage() {
       }
       setNamesByMatricule((prev) => ({ ...prev, ...normalized }));
     }
+    if (data.departmentsByMatricule && typeof data.departmentsByMatricule === 'object') {
+      const normalized: Record<string, string> = {};
+      for (const [k, v] of Object.entries(data.departmentsByMatricule as Record<string, string>)) {
+        const mat = normMatricule(k);
+        if (mat && v) normalized[mat] = v;
+      }
+      setDeptsByMatricule((prev) => ({ ...prev, ...normalized }));
+    }
   }, []);
 
   const loadOt = useCallback(async (y: number, m: number, fx?: string) => {
@@ -1297,35 +1531,7 @@ export default function ExcoPage() {
         wb?.snapshot?.headcount?.headcount
         ?? report?.computed?.headcount
         ?? null;
-      if (snapOt) {
-        const employees = (Array.isArray(snapOt.topEmployees) ? snapOt.topEmployees : []).map(
-          (e: {
-            matricule: string;
-            nom: string;
-            hours: number;
-            costUsd?: number | null;
-            costFc?: number | null;
-            leaveBalance?: number | null;
-            department: string;
-          }) => ({
-            matricule: e.matricule,
-            name: e.nom,
-            hours: e.hours,
-            costFc: e.costFc ?? 0,
-            costUsd: e.costUsd ?? null,
-            leaveDays: e.leaveBalance ?? null,
-            leaveValueUsd: null as number | null,
-            department: e.department,
-          }),
-        );
-        const byDeptMap = new Map<string, { hours: number; costUsd: number; agents: number }>();
-        for (const e of employees) {
-          const prev = byDeptMap.get(e.department) || { hours: 0, costUsd: 0, agents: 0 };
-          prev.hours += e.hours;
-          prev.costUsd += e.costUsd || 0;
-          prev.agents += 1;
-          byDeptMap.set(e.department, prev);
-        }
+      if (snapOt && !baseView.missing.overtime) {
         const leaveAllAvg =
           wb?.snapshot?.leave?.allAvgDays
           ?? snapOt.averageLeaveDays
@@ -1344,25 +1550,6 @@ export default function ExcoPage() {
         };
         setOt({
           ...baseView,
-          rows: employees.length ? employees : baseView.rows,
-          totals: {
-            agents: snapOt.employeesWithOt ?? baseView.totals.agents,
-            hours: snapOt.totalHoursCurrent ?? baseView.totals.hours,
-            costUsd: snapOt.totalCostUsdCurrent ?? baseView.totals.costUsd,
-            leaveValueUsd: baseView.totals.leaveValueUsd,
-          },
-          byDepartment: byDeptMap.size
-            ? [...byDeptMap.entries()].map(([department, v]) => ({
-                department,
-                hours: Math.round(v.hours * 100) / 100,
-                costUsd: Math.round(v.costUsd * 100) / 100,
-                agents: v.agents,
-              }))
-            : baseView.byDepartment,
-          missing: {
-            overtime: false,
-            leave: baseView.missing.leave && employees.every((emp: { leaveDays: number | null }) => emp.leaveDays == null),
-          },
           workbook,
         });
         return;
@@ -1375,13 +1562,23 @@ export default function ExcoPage() {
     try {
       const res = await fetch('/api/employees');
       if (!res.ok) return;
-      const employees = (await res.json()) as Array<{ matricule?: string; nom?: string }>;
-      const map: Record<string, string> = {};
+      const employees = (await res.json()) as Array<{
+        matricule?: string;
+        nom?: string;
+        departement?: string;
+        departmentHr?: string;
+      }>;
+      const names: Record<string, string> = {};
+      const depts: Record<string, string> = {};
       for (const e of employees) {
         const mat = normMatricule(e.matricule);
-        if (mat && e.nom) map[mat] = e.nom;
+        if (!mat) continue;
+        if (e.nom) names[mat] = e.nom;
+        const dept = (e.departement || e.departmentHr || '').trim();
+        if (dept) depts[mat] = dept;
       }
-      setNamesByMatricule((prev) => ({ ...prev, ...map }));
+      setNamesByMatricule((prev) => ({ ...prev, ...names }));
+      setDeptsByMatricule((prev) => ({ ...prev, ...depts }));
     } catch {
       // ignore
     }
@@ -1557,10 +1754,10 @@ export default function ExcoPage() {
       setInoutDrilldown({
         title,
         columns: INOUT_LIST_COLUMNS,
-        rows: people.map((p) => inOutPersonToRow(p, namesByMatricule)),
+        rows: people.map((p) => inOutPersonToRow(p, namesByMatricule, deptsByMatricule)),
       });
     },
-    [namesByMatricule],
+    [namesByMatricule, deptsByMatricule],
   );
 
   const openInOutMonth = useCallback(
@@ -1599,13 +1796,36 @@ export default function ExcoPage() {
   const baseProjected = useMemo(() => {
     const projected = projectBaseSheet(baseSheet);
     const nameIdx = projected.headers.indexOf('Names');
+    const deptIdx = projected.headers.indexOf('Departments');
     const matIdx = projected.headers.indexOf('Emp Number');
+    const leaveIdx = projected.headers.indexOf('Leave_Balance');
+    const allowIdx = projected.headers.indexOf('Allowance Amount');
+    const hoursIdx = projected.headers.indexOf('OVT_Hours');
+    const costIdx = projected.headers.indexOf('OVT_Cost');
+    const fx = Number(fxRate);
+    const fxOk = Number.isFinite(fx) && fx > 0 ? fx : null;
     const rows = projected.rows.map((row) => {
       const next = row.slice();
-      if (nameIdx >= 0 && matIdx >= 0) {
+      if (matIdx >= 0) {
         const mat = normMatricule(next[matIdx]);
         const sysName = namesByMatricule[mat];
-        if (sysName) next[nameIdx] = sysName;
+        if (nameIdx >= 0 && sysName) next[nameIdx] = sysName;
+        const sysDept = deptsByMatricule[mat];
+        if (deptIdx >= 0 && sysDept) next[deptIdx] = sysDept;
+        if (mat) {
+          if (leaveIdx >= 0 && Object.prototype.hasOwnProperty.call(baseImportColumns.leaveDaysByMatricule, mat)) {
+            next[leaveIdx] = baseImportColumns.leaveDaysByMatricule[mat];
+          }
+          if (allowIdx >= 0 && Object.prototype.hasOwnProperty.call(baseImportColumns.leaveValueFcByMatricule, mat)) {
+            next[allowIdx] = fcToUsd(baseImportColumns.leaveValueFcByMatricule[mat], fxOk);
+          }
+          if (hoursIdx >= 0 && Object.prototype.hasOwnProperty.call(baseImportColumns.ovtHoursByMatricule, mat)) {
+            next[hoursIdx] = baseImportColumns.ovtHoursByMatricule[mat];
+          }
+          if (costIdx >= 0 && Object.prototype.hasOwnProperty.call(baseImportColumns.ovtCostFcByMatricule, mat)) {
+            next[costIdx] = fcToUsd(baseImportColumns.ovtCostFcByMatricule[mat], fxOk);
+          }
+        }
       }
       return next;
     });
@@ -1616,7 +1836,7 @@ export default function ExcoPage() {
           row.some((cell) => String(cell ?? '').toLowerCase().includes(q)),
         );
     return { headers: projected.headers, rows: filtered, total: rows.length };
-  }, [baseSheet, namesByMatricule, baseSearch]);
+  }, [baseSheet, namesByMatricule, deptsByMatricule, baseSearch, baseImportColumns, fxRate]);
 
   const refreshAll = useCallback(async () => {
     setLoading(true);
@@ -1715,30 +1935,47 @@ export default function ExcoPage() {
         const res = await fetch('/api/exco/upload', { method: 'POST', body: form });
         const data = await res.json();
         if (!res.ok) throw new Error(data.error || 'Upload impossible');
-        setUploads(data.uploads || {});
-        if (data.importedSources) {
-          setImported({
-            componentPostedUnits: Boolean(data.importedSources.componentPostedUnits) || imported.componentPostedUnits || sourceId === 'componentPostedUnits',
-            leaveBalances: Boolean(data.importedSources.leaveBalances) || imported.leaveBalances || sourceId === 'leaveBalances',
-            engagementsTerminations:
-              Boolean(data.importedSources.engagementsTerminations)
-              || imported.engagementsTerminations
-              || sourceId === 'engagementsTerminations',
-          });
-          setMonthHasData(true);
-        } else {
-          setImported((prev) => ({ ...prev, [sourceId]: true }));
-          setMonthHasData(true);
-        }
-        showSuccess(`${file.name} importé en JSON (fichier source retiré)`);
-        await Promise.all([loadBase(year, month), loadOt(year, month, fxRate)]);
+        showSuccess(`${file.name} importé — données enregistrées`);
+        await loadParams(year, month);
+        await Promise.all([
+          loadBase(year, month),
+          loadOt(year, month, fxRate),
+          loadInOut(year, month),
+        ]);
       } catch (err) {
         showError(err instanceof Error ? err.message : 'Upload impossible');
       } finally {
         setBusy('');
       }
     },
-    [canEdit, year, month, fxRate, loadBase, loadOt],
+    [canEdit, year, month, fxRate, loadParams, loadBase, loadOt, loadInOut],
+  );
+
+  const clearImport = useCallback(
+    async (sourceId: ExcoSourceFileId, label: string) => {
+      if (!canEdit || clearingSourceId) return;
+      setClearingSourceId(sourceId);
+      try {
+        const res = await fetch(
+          `/api/exco/upload?year=${year}&month=${month}&sourceId=${encodeURIComponent(sourceId)}`,
+          { method: 'DELETE' },
+        );
+        const data = await res.json();
+        if (!res.ok) throw new Error(data.error || 'Annulation impossible');
+        showSuccess(`Import retiré — ${label}`);
+        await loadParams(year, month);
+        await Promise.all([
+          loadBase(year, month),
+          loadOt(year, month, fxRate),
+          loadInOut(year, month),
+        ]);
+      } catch (err) {
+        showError(err instanceof Error ? err.message : 'Annulation impossible');
+      } finally {
+        setClearingSourceId(null);
+      }
+    },
+    [canEdit, clearingSourceId, year, month, fxRate, loadParams, loadBase, loadOt, loadInOut],
   );
 
   const runBaseAction = useCallback(
@@ -1756,8 +1993,8 @@ export default function ExcoPage() {
         if (data.result) setBase(data.result as BaseReconcile);
         const applied = typeof data.applied === 'number' ? data.applied : null;
         showSuccess(
-          applied != null
-            ? `Corrections appliquées · ${applied} département(s) mis à jour`
+          applied != null && applied > 0
+            ? `Corrections appliquées · ${applied} fiche(s)`
             : 'Action terminée',
         );
       } catch (err) {
@@ -1772,19 +2009,23 @@ export default function ExcoPage() {
   const mismatchGroups = useMemo(() => {
     const groups: Record<string, BaseReconcile['mismatches']> = {};
     for (const row of base?.mismatches || []) {
-      // Ne garder que les écarts actionnables (pas nom/position/absents BASE)
-      if (row.policy !== 'apply_file_department' && row.policy !== 'create_from_base') continue;
+      // Seuls les absents système restent actionnables (nom/dept fichier ignorés).
+      if (row.policy !== 'create_from_base') continue;
       (groups[row.kind] ||= []).push(row);
     }
     return groups;
   }, [base]);
 
   const otEmployeesResolved = useMemo(() => {
-    return (ot?.rows || []).map((r) => ({
-      ...r,
-      name: namesByMatricule[normMatricule(r.matricule)] || r.name,
-    }));
-  }, [ot, namesByMatricule]);
+    return (ot?.rows || []).map((r) => {
+      const mat = normMatricule(r.matricule);
+      return {
+        ...r,
+        name: namesByMatricule[mat] || r.name,
+        department: deptsByMatricule[mat] || r.department,
+      };
+    });
+  }, [ot, namesByMatricule, deptsByMatricule]);
 
   const otTopByHours = useMemo(
     () => [...otEmployeesResolved].sort((a, b) => b.hours - a.hours),
@@ -1807,14 +2048,14 @@ export default function ExcoPage() {
     const hc = wb?.headcount ?? null;
     const pctAgents =
       wb?.employeesWithOtPct
-      ?? (hc && hc > 0 ? Math.round((agents / hc) * 1000) / 10 : null);
+      ?? (hc && hc > 0 ? ratioToRate(agents, hc) : null);
     const avgHours = wb?.averageHours ?? (agents ? hours / agents : null);
     const avgCost = wb?.averageCostPerEmployee ?? (agents && cost != null ? cost / agents : null);
     const withLeave = otEmployeesResolved.filter((e) => e.leaveDays != null);
     const avgLeaveFromRows = withLeave.length
       ? withLeave.reduce((s, e) => s + (e.leaveDays || 0), 0) / withLeave.length
       : null;
-    const avgLeave = wb?.averageLeaveDays ?? avgLeaveFromRows;
+    const avgLeave = ot?.leaveAvgDays ?? avgLeaveFromRows ?? wb?.averageLeaveDays ?? null;
     const staffMonth = wb?.staffCostMonth ?? null;
     const staffYtd = wb?.staffCostYtd ?? null;
     const avbYtd = wb?.actualVsBudget?.actualYtd ?? null;
@@ -1842,17 +2083,11 @@ export default function ExcoPage() {
 
   const otHoursSlide = useMemo(() => {
     const monthLabel = (MONTHS_EN[month - 1] || String(month)).slice(0, 3).toUpperCase();
-    const fyIdx = OVT_TREND_MONTHS.indexOf(month as (typeof OVT_TREND_MONTHS)[number]);
-    const fromTrend = (ot?.workbook?.trendRows || []).map((row) => {
-      const hours = fyIdx >= 0 ? row.hoursByMonth[fyIdx] ?? null : null;
-      return { department: row.department, hours };
-    });
-    const rows = fromTrend.length
-      ? fromTrend
-      : (ot?.byDepartment || []).map((d) => ({
-          department: d.department,
-          hours: d.hours || null,
-        }));
+    const imported = (ot?.byDepartment || []).map((d) => ({
+      department: d.department,
+      hours: d.hours > 0 ? d.hours : null,
+    }));
+    const rows = imported.filter((r) => (r.hours || 0) > 0);
     const max = Math.max(...rows.map((r) => r.hours || 0), 1);
     const total = rows.reduce((s, r) => s + (r.hours || 0), 0);
     return { monthLabel, rows, max, total };
@@ -1878,18 +2113,33 @@ export default function ExcoPage() {
             hours: formatNum(r.hours, 2),
             cost: formatUsd(r.costUsd),
             leave: r.leaveDays != null ? formatNum(r.leaveDays, 2) : '—',
-            departement: r.department,
+            departement: deptsByMatricule[normMatricule(r.matricule)] || r.department,
           },
         })),
       });
     },
-    [namesByMatricule],
+    [namesByMatricule, deptsByMatricule],
   );
 
-  const deptMismatchCount = mismatchGroups.department_mismatch?.length || 0;
-  const pendingSources = EXCO_SOURCE_FILES.filter((def) => !imported[def.id as keyof ImportedFlags]);
+  const openOtDeptHours = useCallback(
+    (department: string | null) => {
+      const rows = department
+        ? otEmployeesResolved.filter(
+            (r) => r.department.trim().toLowerCase() === department.trim().toLowerCase(),
+          )
+        : otEmployeesResolved;
+      openOtEmployeeList(
+        department
+          ? `Voir la liste — Overtime · ${department} · ${periodLabel}`
+          : `Voir la liste — Overtime · ${periodLabel}`,
+        rows,
+      );
+    },
+    [otEmployeesResolved, openOtEmployeeList, periodLabel],
+  );
+
+  const missingInSystemCount = mismatchGroups.missing_in_system?.length || 0;
   const hasActionable = Object.values(mismatchGroups).some((rows) => rows.length > 0);
-  const showSetupPanels = !monthHasData;
 
   const changePeriod = useCallback(
     async (y: number, m: number) => {
@@ -1972,23 +2222,23 @@ export default function ExcoPage() {
   return (
     <PermissionGate menuId="exco.rapport" action="view">
       <div className="exco-page exco-page-relative exco-workbook-page">
-        {(loading || busy) && <ExcoBusyOverlay label={busy || 'Chargement…'} />}
+        {(loading || busy) && <ExcoBusyOverlay label={busy || t('common.loading')} />}
 
         <div className="exco-sticky">
           <div className="page-header page-header-with-tabs exco-page-header">
             <div className="exco-header-left">
-              <h2>Rapport EXCO</h2>
+              <h2>{t('exco.title')}</h2>
               <p>
                 {periodLabel}
-                {fxRate ? ` · taux ${fxRate} FC/USD` : ' · taux non défini'}
+                {fxRate ? ` · ${t('exco.rateLabel', { rate: fxRate })}` : ` · ${t('exco.rateUndefined')}`}
               </p>
             </div>
             <div className="exco-header-actions">
               <label className="exco-header-period">
-                <span className="sr-only">Mois du rapport</span>
+                <span className="sr-only">{t('exco.periodMonth')}</span>
                 <input
                   type="month"
-                  aria-label="Mois du rapport"
+                  aria-label={t('exco.periodMonth')}
                   value={`${year}-${String(month).padStart(2, '0')}`}
                   disabled={!canEdit || Boolean(busy) || loading}
                   onChange={(e) => {
@@ -2004,17 +2254,17 @@ export default function ExcoPage() {
         </div>
 
         <div className="exco-main-tabs-shell">
-          <div className="exco-main-tabs" role="tablist" aria-label="Rapport EXCO">
-            {TABS.map((t) => (
+          <div className="exco-main-tabs" role="tablist" aria-label={t('exco.title')}>
+            {TAB_DEFS.map((item) => (
               <button
-                key={t.id}
+                key={item.id}
                 type="button"
                 role="tab"
-                className={`exco-main-tab${tab === t.id ? ' is-active' : ''}`}
-                aria-selected={tab === t.id}
-                onClick={() => setTab(t.id)}
+                className={`exco-main-tab${tab === item.id ? ' is-active' : ''}`}
+                aria-selected={tab === item.id}
+                onClick={() => setTab(item.id)}
               >
-                {t.label}
+                {t(item.labelKey)}
               </button>
             ))}
           </div>
@@ -2022,77 +2272,100 @@ export default function ExcoPage() {
         <div className="exco-workbook-body">
           {tab === 'params' && (
             <div className="exco-panel-stack">
-              <section className="exco-panel">
-                <h3>Taux</h3>
-                <div className="exco-params-grid">
-                  <label className="exco-field">
-                    <span>Taux FC pour 1 USD</span>
-                    <input
-                      type="number"
-                      min="1"
-                      step="any"
-                      placeholder="ex. 2308"
-                      disabled={!canEdit || Boolean(busy)}
-                      value={fxRate}
-                      onChange={(e) => setFxRate(e.target.value)}
-                    />
-                  </label>
-                  {canEdit && (
-                    <button type="button" className="btn btn-primary btn-sm" disabled={Boolean(busy)} onClick={() => void saveParams()}>
-                      Enregistrer Params
-                    </button>
-                  )}
+              <section className="exco-panel exco-params-top">
+                <div className="exco-params-top-row">
+                  <div className="exco-params-taux">
+                    <h3>{t('exco.params.rate')}</h3>
+                    <div className="exco-params-grid">
+                      <label className="exco-field">
+                        <span>{t('exco.params.rateFc')}</span>
+                        <input
+                          type="number"
+                          min="1"
+                          step="any"
+                          placeholder="ex. 2308"
+                          disabled={!canEdit || Boolean(busy)}
+                          value={fxRate}
+                          onChange={(e) => setFxRate(e.target.value)}
+                        />
+                      </label>
+                      {canEdit && (
+                        <button type="button" className="btn btn-primary btn-sm" disabled={Boolean(busy)} onClick={() => void saveParams()}>
+                          {t('exco.params.save')}
+                        </button>
+                      )}
+                    </div>
+                  </div>
+                  <div className="exco-params-imports">
+                    {EXCO_SOURCE_FILES.map((def) => {
+                      const done = imported[def.id as keyof ImportedFlags];
+                      const fileMeta = importedSources[def.id as keyof ImportedFlags];
+                      const name = fileMeta?.originalName || uploads[def.id]?.originalName;
+                      const clearing = clearingSourceId === def.id;
+                      return (
+                        <div
+                          key={def.id}
+                          className={`exco-source-item exco-source-tile${done ? ' is-imported' : ''}${clearing ? ' is-clearing' : ''}`}
+                        >
+                          {clearing ? (
+                            <div className="exco-source-tile-spinner" role="status" aria-live="polite">
+                              <span className="btn-spinner" aria-hidden="true" />
+                              <span className="sr-only">{t('exco.params.clearing')}</span>
+                            </div>
+                          ) : null}
+                          {canEdit && done && !clearing ? (
+                            <button
+                              type="button"
+                              className="exco-source-clear"
+                              title={t('exco.params.clearImport')}
+                              aria-label={`${t('exco.params.clearImport')} ${def.label}`}
+                              disabled={Boolean(busy) || Boolean(clearingSourceId)}
+                              onClick={() => void clearImport(def.id, def.label)}
+                            >
+                              <ExcoSourceClearIcon />
+                            </button>
+                          ) : null}
+                          <div className="exco-source-meta">
+                            <strong title={def.description || def.label}>
+                              {def.label}
+                              {def.required ? ' *' : ''}
+                            </strong>
+                            {done ? (
+                              <span className="exco-source-chosen" title={name || ''}>
+                                {name
+                                  ? t('exco.params.importedAs', { name })
+                                  : t('exco.params.imported')}
+                              </span>
+                            ) : (
+                              <span className="exco-muted">
+                                {t('exco.params.notImported')}
+                              </span>
+                            )}
+                          </div>
+                          {canEdit && (
+                            <label className="btn btn-secondary btn-sm exco-source-pick">
+                              {done ? t('exco.params.reimport') : t('exco.params.import')}
+                              <input
+                                type="file"
+                                accept={def.accept}
+                                hidden
+                                disabled={Boolean(busy) || Boolean(clearingSourceId)}
+                                onChange={(e) => {
+                                  const f = e.target.files?.[0];
+                                  e.target.value = '';
+                                  if (f) void uploadFile(def.id, f);
+                                }}
+                              />
+                            </label>
+                          )}
+                        </div>
+                      );
+                    })}
+                  </div>
                 </div>
               </section>
 
-              {showSetupPanels && pendingSources.length > 0 && (
-                <section className="exco-panel">
-                  <h3>Fichiers sources à importer</h3>
-                  <p className="exco-muted">
-                    Import → JSON (OT, leave, engagements). Le fichier xlsx est retiré ensuite.
-                  </p>
-                  <ul className="exco-source-list">
-                    {pendingSources.map((def) => (
-                      <li key={def.id} className="exco-source-item">
-                        <div className="exco-source-meta">
-                          <strong>
-                            {def.label}
-                            {def.required ? ' *' : ''}
-                          </strong>
-                          <span className="exco-muted">{def.exampleName}</span>
-                          {def.description ? <span className="exco-muted">{def.description}</span> : null}
-                        </div>
-                        {canEdit && (
-                          <label className="btn btn-secondary btn-sm exco-source-pick">
-                            Choisir
-                            <input
-                              type="file"
-                              accept={def.accept}
-                              hidden
-                              disabled={Boolean(busy)}
-                              onChange={(e) => {
-                                const f = e.target.files?.[0];
-                                e.target.value = '';
-                                if (f) void uploadFile(def.id, f);
-                              }}
-                            />
-                          </label>
-                        )}
-                      </li>
-                    ))}
-                  </ul>
-                </section>
-              )}
-
-              {showSetupPanels && !hasActionable && (
-                <section className="exco-panel">
-                  <p className="exco-source-chosen" style={{ margin: 0 }}>
-                    Aucune correction en attente.
-                  </p>
-                </section>
-              )}
-
-              {showSetupPanels && hasActionable && (
+              {hasActionable && (
                 <>
                   <section className="exco-panel">
                     <div className="exco-panel-head">
@@ -2111,17 +2384,17 @@ export default function ExcoPage() {
                             <button
                               type="button"
                               className="btn btn-primary btn-sm"
-                              disabled={Boolean(busy) || deptMismatchCount === 0}
-                              onClick={() => void runBaseAction('applyAllCorrections')}
+                              disabled={Boolean(busy) || missingInSystemCount === 0}
+                              onClick={() => void runBaseAction('importMissingFromBase')}
                             >
-                              Appliquer toutes les corrections ({deptMismatchCount})
+                              Créer les absents depuis BASE ({missingInSystemCount})
                             </button>
                           </>
                         )}
                       </div>
                     </div>
                     <p className="exco-muted">
-                      Seuls les écarts département (fichier → système) restent affichés.
+                      Nom et département : données système (matricule). Seuls les absents du système peuvent être créés depuis BASE.
                     </p>
                     {(base?.departmentsToCreate.length || 0) > 0 && (
                       <p className="exco-warn-banner">
@@ -2136,14 +2409,14 @@ export default function ExcoPage() {
                         <h3>
                           {mismatchLabel(kind)} ({rows.length})
                         </h3>
-                        {canEdit && kind === 'department_mismatch' && (
+                        {canEdit && kind === 'missing_in_system' && (
                           <button
                             type="button"
                             className="btn btn-primary btn-sm"
                             disabled={Boolean(busy)}
-                            onClick={() => void runBaseAction('applyAllCorrections')}
+                            onClick={() => void runBaseAction('importMissingFromBase')}
                           >
-                            Appliquer toute la plage
+                            Créer tous les absents
                           </button>
                         )}
                       </div>
@@ -2171,18 +2444,17 @@ export default function ExcoPage() {
                                 <td>{r.resolvedDepartment || '—'}</td>
                                 <td>{r.systemDepartment || '—'}</td>
                                 <td>
-                                  {canEdit && r.policy === 'apply_file_department' && (
+                                  {canEdit && r.policy === 'create_from_base' && (
                                     <button
                                       type="button"
                                       className="btn btn-sm btn-secondary"
                                       onClick={() =>
                                         void runBaseAction('applyEmployeeFix', {
                                           matricule: r.matricule,
-                                          fields: ['department'],
                                         })
                                       }
                                     >
-                                      Corriger
+                                      Créer
                                     </button>
                                   )}
                                 </td>
@@ -2198,16 +2470,16 @@ export default function ExcoPage() {
 
               <section className="exco-panel exco-panel-accent-navy exco-base-in-params">
                 <div className="exco-panel-head">
-                  <h3>BASE — données</h3>
+                  <h3>{t('exco.base.title')}</h3>
                   <div className="exco-base-toolbar-inline">
                     <strong className="exco-base-effectif">
-                      Effectif : {formatNum(baseProjected.total)}
+                      {t('exco.base.headcount', { count: formatNum(baseProjected.total) })}
                       {baseSearch.trim() ? ` · ${baseProjected.rows.length}` : ''}
                     </strong>
                     <input
                       type="search"
                       className="exco-base-search"
-                      placeholder="Rechercher…"
+                      placeholder={t('common.search')}
                       value={baseSearch}
                       onChange={(e) => setBaseSearch(e.target.value)}
                     />
@@ -2253,7 +2525,7 @@ export default function ExcoPage() {
                 <MetricCard
                   label="Headcount"
                   value={formatNum(headcount?.headcount)}
-                  hint="Effectif total"
+                  hint={t('exco.headcount.totalHint')}
                   tone="navy"
                 />
                 <MetricCard
@@ -2290,7 +2562,7 @@ export default function ExcoPage() {
 
               <div className="exco-hc-grid">
                 <section className="exco-panel exco-panel-accent-navy">
-                  <h3>Effectifs</h3>
+                  <h3>{t('exco.headcount.title')}</h3>
                   <table className="exco-mini-table">
                     <tbody>
                       <tr>
@@ -2363,128 +2635,28 @@ export default function ExcoPage() {
                 </section>
               </div>
 
-              <div className="exco-diversity-slide">
-                <section className="exco-panel exco-panel-accent-navy">
-                  <h3>5. Staff Movement — IN / OUT YTD</h3>
-                  <div className="exco-sheet-scroll">
-                    <table className="exco-mini-table exco-inout-trend-table">
-                      <thead>
-                        <tr>
-                          <th>IN — OUT YTD</th>
-                          {(inOut?.months || []).map((m) => (
-                            <th
-                              key={m.monthKey}
-                              className={m.calendarMonth === month ? 'is-report-month' : undefined}
-                            >
-                              {m.monthKey}
-                            </th>
-                          ))}
-                          <th>YTD</th>
-                        </tr>
-                      </thead>
-                      <tbody>
-                        <tr>
-                          <td>IN</td>
-                          {(inOut?.months || []).map((m) => (
-                            <td
-                              key={`hc-in-${m.monthKey}`}
-                              className={m.calendarMonth === month ? 'is-report-month' : undefined}
-                            >
-                              <ClickableNum
-                                value={formatNum(m.in)}
-                                title={`Voir la liste — IN · ${m.monthKey}`}
-                                onClick={
-                                  (m.in || 0) > 0
-                                    ? () => openInOutMonth('in', m.calendarMonth, m.monthKey)
-                                    : undefined
-                                }
-                              />
-                            </td>
-                          ))}
-                          <td>
-                            <ClickableNum
-                              value={formatNum(inOut?.ytdIn)}
-                              title="Voir la liste — IN YTD"
-                              onClick={(inOut?.ytdIn || 0) > 0 ? () => openInOutYtd('in') : undefined}
-                            />
-                          </td>
-                        </tr>
-                        <tr>
-                          <td>Out</td>
-                          {(inOut?.months || []).map((m) => (
-                            <td
-                              key={`hc-out-${m.monthKey}`}
-                              className={m.calendarMonth === month ? 'is-report-month' : undefined}
-                            >
-                              <ClickableNum
-                                value={formatNum(m.out)}
-                                title={`Voir la liste — OUT · ${m.monthKey}`}
-                                onClick={
-                                  (m.out || 0) > 0
-                                    ? () => openInOutMonth('out', m.calendarMonth, m.monthKey)
-                                    : undefined
-                                }
-                              />
-                            </td>
-                          ))}
-                          <td>
-                            <ClickableNum
-                              value={formatNum(inOut?.ytdOut)}
-                              title="Voir la liste — OUT YTD"
-                              onClick={(inOut?.ytdOut || 0) > 0 ? () => openInOutYtd('out') : undefined}
-                            />
-                          </td>
-                        </tr>
-                        <tr>
-                          <td>Attrition Rate (%)</td>
-                          {(inOut?.months || []).map((m) => (
-                            <td
-                              key={`hc-att-${m.monthKey}`}
-                              className={m.calendarMonth === month ? 'is-report-month' : undefined}
-                            >
-                              {formatRatePct(m.attritionRate)}
-                            </td>
-                          ))}
-                          <td>{formatRatePct(inOut?.ytdAttrition)}</td>
-                        </tr>
-                        <tr>
-                          <td>Turnover (%)</td>
-                          {(inOut?.months || []).map((m) => (
-                            <td
-                              key={`hc-to-${m.monthKey}`}
-                              className={m.calendarMonth === month ? 'is-report-month' : undefined}
-                            >
-                              {formatRatePct(m.turnover)}
-                            </td>
-                          ))}
-                          <td>{formatRatePct(inOut?.ytdTurnover)}</td>
-                        </tr>
-                        <tr className="exco-row-total">
-                          <td>Total Headcount</td>
-                          {(inOut?.months || []).map((m) => (
-                            <td
-                              key={`hc-hc-${m.monthKey}`}
-                              className={m.calendarMonth === month ? 'is-report-month' : undefined}
-                            >
-                              {formatNum(m.headcount)}
-                            </td>
-                          ))}
-                          <td>{formatNum(inOut?.ytdHeadcount)}</td>
-                        </tr>
-                      </tbody>
-                    </table>
-                  </div>
-                </section>
+              <StaffMovementYtdTable
+                inOut={inOut}
+                month={month}
+                onMonth={openInOutMonth}
+                onYtd={openInOutYtd}
+              />
 
+              <div className="exco-diversity-slide">
                 <div className="exco-diversity-cards">
                   <article className="exco-slide-card tone-red">
                     <header>
-                      <strong>Age Distribution</strong>
-                      <em>
-                        {headcount?.averageAge != null
-                          ? `${formatNum(headcount.averageAge, 1)} years old`
-                          : '—'}
-                      </em>
+                      <div className="exco-slide-card-titles">
+                        <strong>Age Distribution</strong>
+                        <em>
+                          {headcount?.averageAge != null
+                            ? `${formatNum(headcount.averageAge, 1)} years old`
+                            : '—'}
+                        </em>
+                      </div>
+                      {headcount?.averageAge != null ? (
+                        <span className="exco-avg-badge">Avg {formatNum(headcount.averageAge, 1)} yrs</span>
+                      ) : null}
                     </header>
                     <PctBarChart
                       items={headcount?.ageBands || []}
@@ -2493,32 +2665,21 @@ export default function ExcoPage() {
                   </article>
                   <article className="exco-slide-card tone-black">
                     <header>
-                      <strong>Length of Service</strong>
-                      <em>
-                        {headcount?.averageLengthOfService != null
-                          ? `${formatNum(headcount.averageLengthOfService, 2)} years`
-                          : '—'}
-                      </em>
+                      <div className="exco-slide-card-titles">
+                        <strong>Length of Service</strong>
+                        <em>
+                          {headcount?.averageLengthOfService != null
+                            ? `${formatNum(headcount.averageLengthOfService, 2)} years`
+                            : '—'}
+                        </em>
+                      </div>
+                      {headcount?.averageLengthOfService != null ? (
+                        <span className="exco-avg-badge">Avg {formatNum(headcount.averageLengthOfService, 2)} yrs</span>
+                      ) : null}
                     </header>
                     <PctBarChart
                       items={headcount?.seniorityBands || []}
                       color="#52525b"
-                    />
-                  </article>
-                  <article className="exco-slide-card tone-red">
-                    <header>
-                      <strong>Departure and Termination</strong>
-                      <em>
-                        {(inOut?.outList?.length || 0) > 0
-                          ? `${formatNum(inOut?.outList?.length)} Out this month`
-                          : 'No exits'}
-                      </em>
-                    </header>
-                    <PctBarChart
-                      items={inOut?.exitsByReason || []}
-                      color="#e30613"
-                      total={headcount?.headcount || inOut?.ytdHeadcount || undefined}
-                      onItemClick={openExitReason}
                     />
                   </article>
                 </div>
@@ -2530,7 +2691,7 @@ export default function ExcoPage() {
             <div className="exco-hc-dashboard">
               <div className="exco-metric-strip">
                 <MetricCard
-                  label={`IN · ${MONTHS_FR[month - 1] || month}`}
+                  label={`IN · ${monthLabel}`}
                   value={formatNum(inOut?.inList?.length)}
                   hint="embauches du mois"
                   tone="teal"
@@ -2538,7 +2699,7 @@ export default function ExcoPage() {
                   onClick={() => openInOutList(`Voir la liste — IN — ${periodLabel}`, inOut?.inList || [])}
                 />
                 <MetricCard
-                  label={`OUT · ${MONTHS_FR[month - 1] || month}`}
+                  label={`OUT · ${monthLabel}`}
                   value={formatNum(inOut?.outList?.length)}
                   hint="sorties du mois"
                   tone="wine"
@@ -2582,10 +2743,17 @@ export default function ExcoPage() {
                 />
               </div>
 
+              <StaffMovementYtdTable
+                inOut={inOut}
+                month={month}
+                onMonth={openInOutMonth}
+                onYtd={openInOutYtd}
+              />
+
               <div className="exco-inout-lists">
                 <section className="exco-panel exco-panel-accent-teal is-report-month">
                   <div className="exco-panel-head">
-                    <h3>IN — Embauches · {MONTHS_FR[month - 1] || month}</h3>
+                    <h3>{t('exco.inout.hires', { month: monthLabel })}</h3>
                     <button
                       type="button"
                       className="exco-num-clickable"
@@ -2619,7 +2787,7 @@ export default function ExcoPage() {
                               <td>{namesByMatricule[normMatricule(r.matricule)] || r.nom}</td>
                               <td>{r.genre || '—'}</td>
                               <td>{r.grade || '—'}</td>
-                              <td>{r.departement || '—'}</td>
+                              <td>{deptsByMatricule[normMatricule(r.matricule)] || r.departement || '—'}</td>
                               <td>{formatInOutDate(r.appointmentDate)}</td>
                             </tr>
                           ))
@@ -2631,7 +2799,7 @@ export default function ExcoPage() {
 
                 <section className="exco-panel exco-panel-accent-wine is-report-month">
                   <div className="exco-panel-head">
-                    <h3>OUT — Sorties · {MONTHS_FR[month - 1] || month}</h3>
+                    <h3>{t('exco.inout.exits', { month: monthLabel })}</h3>
                     <button
                       type="button"
                       className="exco-num-clickable"
@@ -2666,7 +2834,7 @@ export default function ExcoPage() {
                               <td>{namesByMatricule[normMatricule(r.matricule)] || r.nom}</td>
                               <td>{r.genre || '—'}</td>
                               <td>{r.grade || '—'}</td>
-                              <td>{r.departement || '—'}</td>
+                              <td>{deptsByMatricule[normMatricule(r.matricule)] || r.departement || '—'}</td>
                               <td>{formatInOutDate(r.appointmentDate)}</td>
                               <td>{r.reason || '—'}</td>
                             </tr>
@@ -2678,127 +2846,13 @@ export default function ExcoPage() {
                 </section>
               </div>
 
-              <div className="exco-inout-metrics">
-                <section className="exco-panel exco-panel-accent-navy">
-                  <h3>Turnover &amp; Attrition</h3>
-                  <div className="exco-sheet-scroll">
-                    <table className="exco-mini-table exco-inout-trend-table">
-                      <thead>
-                        <tr>
-                          <th>IN — OUT YTD</th>
-                          {(inOut?.months || []).map((m) => (
-                            <th
-                              key={m.monthKey}
-                              className={m.calendarMonth === month ? 'is-report-month' : undefined}
-                            >
-                              {m.monthKey}
-                            </th>
-                          ))}
-                          <th>YTD</th>
-                        </tr>
-                      </thead>
-                      <tbody>
-                        <tr>
-                          <td>IN</td>
-                          {(inOut?.months || []).map((m) => (
-                            <td
-                              key={`in-${m.monthKey}`}
-                              className={m.calendarMonth === month ? 'is-report-month' : undefined}
-                            >
-                              <ClickableNum
-                                value={formatNum(m.in)}
-                                title={`Voir la liste — IN · ${m.monthKey}`}
-                                onClick={
-                                  (m.in || 0) > 0
-                                    ? () => openInOutMonth('in', m.calendarMonth, m.monthKey)
-                                    : undefined
-                                }
-                              />
-                            </td>
-                          ))}
-                          <td>
-                            <ClickableNum
-                              value={formatNum(inOut?.ytdIn)}
-                              title="Voir la liste — IN YTD"
-                              onClick={(inOut?.ytdIn || 0) > 0 ? () => openInOutYtd('in') : undefined}
-                            />
-                          </td>
-                        </tr>
-                        <tr>
-                          <td>Out</td>
-                          {(inOut?.months || []).map((m) => (
-                            <td
-                              key={`out-${m.monthKey}`}
-                              className={m.calendarMonth === month ? 'is-report-month' : undefined}
-                            >
-                              <ClickableNum
-                                value={formatNum(m.out)}
-                                title={`Voir la liste — OUT · ${m.monthKey}`}
-                                onClick={
-                                  (m.out || 0) > 0
-                                    ? () => openInOutMonth('out', m.calendarMonth, m.monthKey)
-                                    : undefined
-                                }
-                              />
-                            </td>
-                          ))}
-                          <td>
-                            <ClickableNum
-                              value={formatNum(inOut?.ytdOut)}
-                              title="Voir la liste — OUT YTD"
-                              onClick={(inOut?.ytdOut || 0) > 0 ? () => openInOutYtd('out') : undefined}
-                            />
-                          </td>
-                        </tr>
-                        <tr>
-                          <td>Attrition Rate (%)</td>
-                          {(inOut?.months || []).map((m) => (
-                            <td
-                              key={`att-${m.monthKey}`}
-                              className={m.calendarMonth === month ? 'is-report-month' : undefined}
-                            >
-                              {formatRatePct(m.attritionRate)}
-                            </td>
-                          ))}
-                          <td>{formatRatePct(inOut?.ytdAttrition)}</td>
-                        </tr>
-                        <tr>
-                          <td>Turnover (%)</td>
-                          {(inOut?.months || []).map((m) => (
-                            <td
-                              key={`to-${m.monthKey}`}
-                              className={m.calendarMonth === month ? 'is-report-month' : undefined}
-                            >
-                              {formatRatePct(m.turnover)}
-                            </td>
-                          ))}
-                          <td>{formatRatePct(inOut?.ytdTurnover)}</td>
-                        </tr>
-                        <tr className="exco-row-total">
-                          <td>Total Headcount</td>
-                          {(inOut?.months || []).map((m) => (
-                            <td
-                              key={`hc-${m.monthKey}`}
-                              className={m.calendarMonth === month ? 'is-report-month' : undefined}
-                            >
-                              {formatNum(m.headcount)}
-                            </td>
-                          ))}
-                          <td>{formatNum(inOut?.ytdHeadcount)}</td>
-                        </tr>
-                      </tbody>
-                    </table>
-                  </div>
-                </section>
-
-                <section className="exco-panel exco-panel-accent-rose is-report-month">
-                  <h3>Types de sortie · {MONTHS_FR[month - 1] || month}</h3>
-                  <ExitReasonsPctChart
-                    items={inOut?.exitsByReason || []}
-                    onItemClick={openExitReason}
-                  />
-                </section>
-              </div>
+              <section className="exco-panel exco-panel-accent-rose is-report-month">
+                <h3>{t('exco.inout.exitTypes', { month: monthLabel })}</h3>
+                <ExitReasonsPctChart
+                  items={inOut?.exitsByReason || []}
+                  onItemClick={openExitReason}
+                />
+              </section>
             </div>
           )}
 
@@ -2811,7 +2865,7 @@ export default function ExcoPage() {
                     <span className="exco-muted">Stylo = éditer · clic droit = formule</span>
                     {canEdit && (
                       <button type="button" className="btn btn-sm btn-primary" disabled={Boolean(busy)} onClick={() => void saveStaffCost()}>
-                        Enregistrer
+                        {t('common.save')}
                       </button>
                     )}
                   </div>
@@ -3212,8 +3266,8 @@ export default function ExcoPage() {
             <div className="exco-panel-stack exco-ot-page">
               {ot?.missing.overtime || ot?.missing.leave ? (
                 <p className="exco-warn-banner">
-                  {ot.missing.overtime ? 'Uploadez Component Posted Units (ou importez New report.xlsx). ' : ''}
-                  {ot.missing.leave ? 'Uploadez Leave Balances (Annual).' : ''}
+                  {ot.missing.overtime ? 'Importez Component Posted Units dans Params. ' : ''}
+                  {ot.missing.leave ? 'Importez Leave Balances (Annual) dans Params.' : ''}
                 </p>
               ) : null}
 
@@ -3332,7 +3386,18 @@ export default function ExcoPage() {
                               </tr>
                             ) : (
                               otHoursSlide.rows.map((r) => (
-                                <tr key={r.department}>
+                                <tr
+                                  key={r.department}
+                                  className={r.hours && r.hours > 0 ? 'is-clickable' : undefined}
+                                  title={
+                                    r.hours && r.hours > 0
+                                      ? `Voir la liste — Overtime · ${r.department}`
+                                      : undefined
+                                  }
+                                  onClick={() => {
+                                    if (r.hours && r.hours > 0) openOtDeptHours(r.department);
+                                  }}
+                                >
                                   <td>{r.department}</td>
                                   <td className="is-report-month">
                                     {r.hours != null && r.hours > 0 ? formatOtCell(r.hours) : '—'}
@@ -3341,7 +3406,11 @@ export default function ExcoPage() {
                               ))
                             )}
                             {otHoursSlide.rows.length > 0 && (
-                              <tr className="exco-row-total">
+                              <tr
+                                className="exco-row-total is-clickable"
+                                title={`Voir la liste — Overtime · ${periodLabel}`}
+                                onClick={() => openOtDeptHours(null)}
+                              >
                                 <td>Total</td>
                                 <td className="is-report-month">{formatOtCell(otHoursSlide.total || null)}</td>
                               </tr>
@@ -3358,7 +3427,18 @@ export default function ExcoPage() {
                             ? Math.max(4, (r.hours / otHoursSlide.max) * 100)
                             : 1;
                           return (
-                            <div key={r.department} className="exco-ot-vcol">
+                            <button
+                              type="button"
+                              key={r.department}
+                              className="exco-ot-vcol is-clickable"
+                              title={
+                                r.hours && r.hours > 0
+                                  ? `Voir la liste — Overtime · ${r.department}`
+                                  : r.department
+                              }
+                              disabled={!(r.hours && r.hours > 0)}
+                              onClick={() => openOtDeptHours(r.department)}
+                            >
                               <span className="exco-ot-vval">
                                 {r.hours && r.hours > 0 ? formatNum(r.hours, 0) : ''}
                               </span>
@@ -3368,7 +3448,7 @@ export default function ExcoPage() {
                               <span className="exco-ot-vlab" title={r.department}>
                                 {otChartDeptLabel(r.department)}
                               </span>
-                            </div>
+                            </button>
                           );
                         })}
                       </div>
@@ -3690,7 +3770,7 @@ export default function ExcoPage() {
           )}
 
           {tab === 'summary' && (
-            <div className="exco-panel-stack">
+            <div className="exco-panel-stack exco-summary-stack">
               <div className="exco-panel-head" style={{ marginBottom: 0 }}>
                 <p className="exco-muted" style={{ margin: 0 }}>
                   Textes éditables pour la synthèse EXCO (Highlights / Lowlights / Focus).
@@ -3702,7 +3782,7 @@ export default function ExcoPage() {
                     disabled={Boolean(busy)}
                     onClick={() => void saveNarrative()}
                   >
-                    Enregistrer Summary
+                    {t('common.save')} Summary
                   </button>
                 )}
               </div>

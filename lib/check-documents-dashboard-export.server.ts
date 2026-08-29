@@ -8,6 +8,7 @@ import {
   DOCUMENT_FIELDS,
   normalizeDocStatus,
 } from './documents';
+import { formatRate } from './format-rate';
 import { buildExportDateStamp, buildExportSuffix, type EmployeeFilters } from './employee-filters';
 import type { Employee } from './types';
 
@@ -176,9 +177,9 @@ export async function buildDashboardExportBuffer(
   // ── KPI cards ──
   const kpis: Array<{ label: string; value: string | number; color: string; fill: string }> = [
     { label: 'TOTAL EMPLOYÉS', value: stats.total, color: COLORS.cyan, fill: 'FFECFEFF' },
-    { label: 'TAUX CONFORME', value: `${aggregate.conformeRate}%`, color: COLORS.green, fill: COLORS.greenSoft },
-    { label: 'TAUX NON CONFORME', value: `${aggregate.nonConformeRate}%`, color: COLORS.red, fill: COLORS.redSoft },
-    { label: 'MOYENNE DOSSIERS', value: `${stats.conformeRate}%`, color: 'FF7C3AED', fill: 'FFF3E8FF' },
+    { label: 'TAUX CONFORME', value: formatRate(aggregate.conformeRate), color: COLORS.green, fill: COLORS.greenSoft },
+    { label: 'TAUX NON CONFORME', value: formatRate(aggregate.nonConformeRate), color: COLORS.red, fill: COLORS.redSoft },
+    { label: 'MOYENNE DOSSIERS', value: formatRate(stats.conformeRate), color: 'FF7C3AED', fill: 'FFF3E8FF' },
   ];
 
   const kpiCols = [2, 5, 8, 11] as const;
@@ -434,9 +435,9 @@ export async function buildDashboardExportBuffer(
     ['Cellules NA', aggregate.sumNa],
     ['Cellules N', aggregate.sumN],
     ['Total cellules', aggregate.totalCells],
-    ['Taux conforme (Y+NA)', `${aggregate.conformeRate}%`],
-    ['Taux non conforme (N)', `${aggregate.nonConformeRate}%`],
-    ['Moyenne dossiers live', `${stats.conformeRate}%`],
+    ['Taux conforme (Y+NA)', formatRate(aggregate.conformeRate)],
+    ['Taux non conforme (N)', formatRate(aggregate.nonConformeRate)],
+    ['Moyenne dossiers live', formatRate(stats.conformeRate)],
     ['Nombre de départements', deptRows.length],
   ];
 

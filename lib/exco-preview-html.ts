@@ -1,4 +1,5 @@
 import type { ExcoMetricValue, ExcoReportPayload } from '@/lib/exco-types';
+import { formatRate } from './format-rate';
 import {
   buildMouvementsSlideData,
   type ExcoBarSeries,
@@ -71,7 +72,7 @@ function formatMetricValue(kpi: ExcoMetricValue): string {
         maximumFractionDigits: digits,
       });
     }
-    if (kpi.unit === '%') return `${n}%`;
+    if (kpi.unit === '%') return `${n.toFixed(2)}%`;
     if (kpi.unit === 'hrs' || kpi.unit === 'jours' || kpi.unit === 'ans') {
       const unitLabel =
         kpi.unit === 'jours' ? 'days' : kpi.unit === 'ans' ? 'yrs' : 'hrs';
@@ -91,7 +92,7 @@ function formatDelta(
   trend?: 'up' | 'down' | '',
 ): string {
   if (deltaPct == null || !Number.isFinite(deltaPct)) return '• 0% vs prev.';
-  const pct = Math.round(deltaPct * 1000) / 10;
+  const pct = Math.round(deltaPct * 10000) / 100;
   const arrow =
     pct > 0 || trend === 'up' ? '▲' : pct < 0 || trend === 'down' ? '▼' : '•';
   return `${arrow} ${Math.abs(pct)}% vs prev.`;
@@ -620,7 +621,7 @@ function renderInternalAuditSlide(rows: InternalAuditRow[]): string {
     })
     .join('');
   return `<div class="ia-body">
-  <p class="ia-legend">Closed ${sum.closed}/${sum.total} (${sum.closedPct}%) · +${sum.progressed} since last EXCO · Overdue ${sum.overdue} · On going ${sum.ongoing} <em>Green = Closed (progression)</em></p>
+  <p class="ia-legend">Closed ${sum.closed}/${sum.total} (${formatRate(sum.closedPct)}) · +${sum.progressed} since last EXCO · Overdue ${sum.overdue} · On going ${sum.ongoing} <em>Green = Closed (progression)</em></p>
   <table>
     <thead>
       <tr>
@@ -643,8 +644,8 @@ function renderGovAuditSlide(gov: ExcoGouvernanceSlideData): string {
     .map((p) => {
       const h = Math.min(100, Math.max(0, p.closedPct));
       const cls = p.isCurrent ? 'gov-prog-col is-current' : 'gov-prog-col';
-      const val = p.isFuture ? '' : `${p.closedPct}%`;
-      return `<div class="${cls}" title="${esc(p.monthKey)}: ${p.closedPct}%">
+      const val = p.isFuture ? '' : formatRate(p.closedPct);
+      return `<div class="${cls}" title="${esc(p.monthKey)}: ${formatRate(p.closedPct)}">
   <span class="gov-prog-val">${val}</span>
   <div class="gov-prog-bar" style="height:${h}%"></div>
   <span class="gov-prog-lab">${esc(p.label)}</span>

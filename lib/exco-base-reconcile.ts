@@ -11,7 +11,7 @@ import {
   type ExcoEngagementRow,
 } from './exco-engagements-parse';
 import { resolveExcoBaseWorkbook } from './exco-base-source';
-import { departmentsEqual, resolveExcoDepartment } from './exco-department-map';
+import { resolveExcoDepartment } from './exco-department-map';
 import { readExcoUploadBuffer } from './exco-uploads';
 import { readEmployeesBundle } from './employees-json-store';
 import { getExcoOverlays } from './exco-store';
@@ -56,8 +56,9 @@ export interface ExcoBaseReconcileResult {
   matched: number;
   mismatches: ExcoEmployeeMismatch[];
   actionableCount: number;
-  /** Noms système par matricule (pour affichage BASE). */
+  /** Noms / départements système par matricule (affichage BASE et imports). */
   namesByMatricule: Record<string, string>;
+  departmentsByMatricule: Record<string, string>;
   baseDepartments: string[];
   systemDepartments: string[];
   departmentsToCreate: string[];
@@ -75,19 +76,6 @@ function norm(s: string): string {
     .replace(/[^a-z0-9]+/g, ' ')
     .replace(/\s+/g, ' ')
     .trim();
-}
-
-function namesClose(a: string, b: string): boolean {
-  const na = norm(a);
-  const nb = norm(b);
-  if (!na || !nb) return true;
-  if (na === nb) return true;
-  if (na.includes(nb) || nb.includes(na)) return true;
-  const ta = new Set(na.split(' '));
-  const tb = new Set(nb.split(' '));
-  let inter = 0;
-  for (const t of ta) if (tb.has(t)) inter += 1;
-  return inter >= Math.min(2, Math.min(ta.size, tb.size));
 }
 
 function employeeMap(employees: Employee[]): Map<string, Employee> {
@@ -141,53 +129,8 @@ export async function reconcileExcoBase(input: {
       continue;
     }
     matched += 1;
-    if (!namesClose(row.nom, sys.nom || '')) {
-      mismatches.push({
-        kind: 'name_mismatch',
-        matricule: row.matricule,
-        fileName: row.nom,
-        filePosition: row.position,
-        fileDepartment: row.department,
-        resolvedDepartment: resolvedDept,
-        systemName: sys.nom || '',
-        systemPosition: sys.position || sys.jobTitle || '',
-        systemDepartment: sys.departement || '',
-        systemStatut: sys.statut || '',
-        policy: 'keep_system',
-      });
-    }
-    const sysPos = (sys.position || sys.jobTitle || '').trim();
-    if (row.position && sysPos && norm(row.position) !== norm(sysPos)) {
-      mismatches.push({
-        kind: 'position_mismatch',
-        matricule: row.matricule,
-        fileName: row.nom,
-        filePosition: row.position,
-        fileDepartment: row.department,
-        resolvedDepartment: resolvedDept,
-        systemName: sys.nom || '',
-        systemPosition: sysPos,
-        systemDepartment: sys.departement || '',
-        systemStatut: sys.statut || '',
-        policy: 'keep_system',
-      });
-    }
-    const sysDept = (sys.departement || '').trim();
-    if (resolvedDept && sysDept && !departmentsEqual(resolvedDept, sysDept)) {
-      mismatches.push({
-        kind: 'department_mismatch',
-        matricule: row.matricule,
-        fileName: row.nom,
-        filePosition: row.position,
-        fileDepartment: row.department,
-        resolvedDepartment: resolvedDept,
-        systemName: sys.nom || '',
-        systemPosition: sysPos,
-        systemDepartment: sysDept,
-        systemStatut: sys.statut || '',
-        policy: 'apply_file_department',
-      });
-    }
+    // Nom, position et département : la fiche système fait foi.
+    // Les écarts fichier vs système ne sont pas des corrections à appliquer.
   }
 
   const baseMatricules = new Set(baseEmployees.map((e) => e.matricule));
@@ -247,13 +190,19 @@ export async function reconcileExcoBase(input: {
   );
 
   const withName = <T extends ExcoEngagementRow>(rows: T[]) =>
-    rows.map((r) => ({ ...r, displayName: displayEngagementName(r) }));
+    rows.map((r) => ({
+      ...r,
+      displayName: allSystem.get(r.matricule)?.nom || displayEngagementName(r),
+    }));
 
-  const actionable = mismatches.filter((m) => m.policy === 'apply_file_department' || m.policy === 'create_from_base');
+  const actionable = mismatches.filter((m) => m.policy === 'create_from_base');
 
   const namesByMatricule: Record<string, string> = {};
+  const departmentsByMatricule: Record<string, string> = {};
   for (const [mat, emp] of allSystem) {
     if (emp.nom) namesByMatricule[mat] = emp.nom;
+    const dept = (emp.departement || emp.departmentHr || '').trim();
+    if (dept) departmentsByMatricule[mat] = dept;
   }
 
   return {
@@ -266,6 +215,7 @@ export async function reconcileExcoBase(input: {
     mismatches,
     actionableCount: actionable.length,
     namesByMatricule,
+    departmentsByMatricule,
     baseDepartments: [...baseDepts].sort((a, b) => a.localeCompare(b, 'fr')),
     systemDepartments: systemDepartments.sort((a, b) => a.localeCompare(b, 'fr')),
     departmentsToCreate,

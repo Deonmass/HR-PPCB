@@ -3,11 +3,13 @@
 import { usePathname, useRouter } from 'next/navigation';
 import { useEffect, type ReactNode } from 'react';
 import { usePermissions } from '@/contexts/PermissionContext';
+import { useI18n } from '@/contexts/LocaleContext';
 import { routeViewMenuIds } from '@/lib/menu-routes';
 
 export default function RouteGuard({ children }: { children: ReactNode }) {
   const pathname = usePathname();
   const router = useRouter();
+  const { t } = useI18n();
   const { isLoading, can, firstAccessiblePath } = usePermissions();
 
   useEffect(() => {
@@ -26,12 +28,12 @@ export default function RouteGuard({ children }: { children: ReactNode }) {
   }, [isLoading, pathname, can, firstAccessiblePath, router]);
 
   if (isLoading) {
-    return <div className="loading">Chargement...</div>;
+    return <div className="loading">{t('common.loading')}</div>;
   }
 
   const menuIds = routeViewMenuIds(pathname);
   if (menuIds.length > 0 && !menuIds.some((menuId) => can(menuId, 'view'))) {
-    return <div className="loading">Redirection...</div>;
+    return <div className="loading">{t('common.redirecting')}</div>;
   }
 
   return <>{children}</>;

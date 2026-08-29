@@ -4,6 +4,8 @@ import Link from 'next/link';
 import type { CSSProperties, ReactNode } from 'react';
 import { useEffect, useMemo } from 'react';
 import { usePermissions } from '@/contexts/PermissionContext';
+import { useI18n } from '@/contexts/LocaleContext';
+import type { MessageKey } from '@/lib/i18n';
 
 interface DocCard {
   id: string;
@@ -308,6 +310,25 @@ const CARDS: DocCard[] = [
   },
 ];
 
+const DOC_I18N: Record<string, { title: MessageKey; desc: MessageKey; badge?: MessageKey }> = {
+  entetes: { title: 'docs.card.entetes.title', desc: 'docs.card.entetes.desc', badge: 'docs.card.entetes.badge' },
+  voyage: { title: 'docs.card.voyage.title', desc: 'docs.card.voyage.desc' },
+  'cash-request': { title: 'docs.card.cash.title', desc: 'docs.card.cash.desc' },
+  'autorisation-voyage': { title: 'docs.card.auth.title', desc: 'docs.card.auth.desc' },
+  'hotel-booking': { title: 'docs.card.hotel.title', desc: 'docs.card.hotel.desc' },
+  'ordre-mission': { title: 'docs.card.mission.title', desc: 'docs.card.mission.desc' },
+  'trip-budget': { title: 'docs.card.budget.title', desc: 'docs.card.budget.desc' },
+  'attestation-service': { title: 'docs.card.attestation.title', desc: 'docs.card.attestation.desc' },
+  'attestation-conge': { title: 'docs.card.leave.title', desc: 'docs.card.leave.desc' },
+  'payment-voucher': { title: 'docs.card.voucher.title', desc: 'docs.card.voucher.desc' },
+  'interim-appraisal': { title: 'docs.card.appraisal.title', desc: 'docs.card.appraisal.desc' },
+  'exit-forms': { title: 'docs.card.exit.title', desc: 'docs.card.exit.desc', badge: 'docs.card.exit.badge' },
+  newcomer: { title: 'docs.card.newcomer.title', desc: 'docs.card.newcomer.desc', badge: 'docs.card.newcomer.badge' },
+  rrf: { title: 'docs.card.rrf.title', desc: 'docs.card.rrf.desc', badge: 'docs.card.rrf.badge' },
+  'contrat-standard': { title: 'docs.card.contract.title', desc: 'docs.card.contract.desc' },
+  'convention-collective': { title: 'docs.card.convention.title', desc: 'docs.card.convention.desc', badge: 'docs.card.convention.badge' },
+};
+
 function canSeeMenu(
   can: (menuId: string, action: 'view' | 'create' | 'edit' | 'export' | 'delete' | 'undo') => boolean,
   menuId: string,
@@ -320,6 +341,7 @@ function canSeeMenu(
 
 export default function DocumentsHubPage() {
   const { can, isLoading, refresh } = usePermissions();
+  const { t, locale } = useI18n();
 
   useEffect(() => {
     void refresh({ silent: true });
@@ -328,21 +350,33 @@ export default function DocumentsHubPage() {
   const visible = useMemo(() => {
     return CARDS
       .filter((card) => canSeeMenu(can, card.menuId, card.menuIds))
+      .map((card) => {
+        const copy = DOC_I18N[card.id];
+        return {
+          ...card,
+          title: copy ? t(copy.title) : card.title,
+          description: copy ? t(copy.desc) : card.description,
+          badge: copy?.badge ? t(copy.badge) : card.badge,
+        };
+      })
       .slice()
-      .sort((a, b) => a.title.localeCompare(b.title, 'fr', { sensitivity: 'base' }));
-  }, [can]);
+      .sort((a, b) => a.title.localeCompare(b.title, locale, { sensitivity: 'base' }));
+  }, [can, t, locale]);
 
-  if (isLoading) return <div className="loading">Chargement...</div>;
+  if (isLoading) return <div className="loading">{t('common.loading')}</div>;
 
   return (
     <>
       <div className="page-header">
         <div>
-          <h2>Documents</h2>
+          <h2>{t('docs.title')}</h2>
           <p>
-            Modèles et documents RH — sélectionnez un document pour l’établir ou le consulter.
+            {t('docs.subtitle')}
             {visible.length > 0 ? (
-              <span className="text-muted"> · {visible.length} module{visible.length > 1 ? 's' : ''}</span>
+              <span className="text-muted">
+                {' '}
+                · {t(visible.length > 1 ? 'docs.countPlural' : 'docs.count', { count: visible.length })}
+              </span>
             ) : null}
           </p>
         </div>
@@ -375,7 +409,7 @@ export default function DocumentsHubPage() {
       </div>
 
       {!visible.length && (
-        <p className="docs-hub-empty">Aucun document accessible avec vos permissions.</p>
+        <p className="docs-hub-empty">{t('docs.empty')}</p>
       )}
     </>
   );

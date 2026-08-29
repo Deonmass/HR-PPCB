@@ -76,7 +76,7 @@ export function PermissionProvider({ children }: { children: ReactNode }) {
   const firstAccessiblePath = useMemo(() => {
     const candidates = [
       '/accueil',
-      '/exco',
+      '/rapport',
       '/audit',
       '/employes',
       '/employes/dependants',
@@ -105,6 +105,8 @@ export function PermissionProvider({ children }: { children: ReactNode }) {
       '/documents/interim-appraisal',
       '/politique',
       '/politique/longs-etats-de-service',
+      '/politique/convention-collective',
+      '/politique/heures-supplementaires',
       '/protocol/visa-travail',
       '/protocol/visa-volant',
       '/protocol/visa-voyage',

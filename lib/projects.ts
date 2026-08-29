@@ -21,7 +21,7 @@ export function formatUsd(value: number | null | undefined, digits = 2): string 
 
 export function formatPct(value: number | null | undefined): string {
   if (value === null || value === undefined || Number.isNaN(value)) return '—';
-  return `${(value * 100).toFixed(1)} %`;
+  return `${(value * 100).toFixed(2)} %`;
 }
 
 export function getProjectTypes(projects: { typeProjet: string }[]): string[] {

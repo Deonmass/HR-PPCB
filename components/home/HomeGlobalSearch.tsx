@@ -3,18 +3,21 @@
 import { useEffect, useId, useRef, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import type { HomeSearchResult } from '@/lib/home-dashboard-types';
+import { useI18n } from '@/contexts/LocaleContext';
+import type { MessageKey } from '@/lib/i18n';
 
-const TYPE_LABEL: Record<HomeSearchResult['type'], string> = {
-  module: 'Module',
-  employee: 'Employé',
-  vehicle: 'Véhicule',
-  project: 'Projet',
-  travel: 'Voyage',
-  page: 'Page',
+const TYPE_KEY: Record<HomeSearchResult['type'], MessageKey> = {
+  module: 'home.search.type.module',
+  employee: 'home.search.type.employee',
+  vehicle: 'home.search.type.vehicle',
+  project: 'home.search.type.project',
+  travel: 'home.search.type.travel',
+  page: 'home.search.type.page',
 };
 
 export default function HomeGlobalSearch() {
   const router = useRouter();
+  const { t } = useI18n();
   const listId = useId();
   const wrapRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
@@ -120,7 +123,7 @@ export default function HomeGlobalSearch() {
         <button
           type="button"
           className="home-global-search-toggle"
-          aria-label={expanded ? 'Recherche' : 'Ouvrir la recherche'}
+          aria-label={expanded ? t('home.search.label') : t('home.search.open')}
           aria-expanded={expanded}
           onClick={() => {
             if (expanded) inputRef.current?.focus();
@@ -136,7 +139,7 @@ export default function HomeGlobalSearch() {
           ref={inputRef}
           type="search"
           value={query}
-          placeholder="Employés, modules, véhicules…"
+          placeholder={t('home.search.placeholder')}
           autoComplete="off"
           aria-autocomplete="list"
           aria-controls={listId}
@@ -153,7 +156,7 @@ export default function HomeGlobalSearch() {
           <button
             type="button"
             className="home-global-search-clear"
-            aria-label="Effacer"
+            aria-label={t('common.clear')}
             onClick={() => {
               setQuery('');
               setResults([]);
@@ -168,7 +171,7 @@ export default function HomeGlobalSearch() {
       {showList && (
         <ul id={listId} className="home-global-search-list" role="listbox">
           {results.length === 0 && !loading ? (
-            <li className="home-global-search-empty">Aucune suggestion pour « {query.trim()} »</li>
+            <li className="home-global-search-empty">{t('home.search.empty', { query: query.trim() })}</li>
           ) : (
             results.map((item, index) => (
               <li key={item.id} role="option" aria-selected={index === activeIndex}>
@@ -179,7 +182,7 @@ export default function HomeGlobalSearch() {
                   onClick={() => go(item.href)}
                 >
                   <span className={`home-search-type home-search-type-${item.type}`}>
-                    {item.meta || TYPE_LABEL[item.type]}
+                    {item.meta || t(TYPE_KEY[item.type])}
                   </span>
                   <span className="home-search-text">
                     <strong>{item.title}</strong>

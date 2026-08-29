@@ -2,6 +2,7 @@
 
 import { useMemo, useState, type ReactNode } from 'react';
 import EnlargeableChartPanel, { type ChartDeptFilterSource } from '@/components/EnlargeableChartPanel';
+import { formatRate, ratioToRate } from '@/lib/format-rate';
 import type { HrDashCountRow } from '@/lib/employees-hr-dashboard';
 
 export type PieChartItem = HrDashCountRow & {
@@ -117,7 +118,7 @@ function PieBody({
           ...item,
           start,
           end,
-          pct: Math.round((item.count / total) * 1000) / 10,
+          pct: ratioToRate(item.count, total),
           color: colors[index % colors.length],
         };
       });
@@ -159,7 +160,7 @@ function PieBody({
                   className="employees-pie-slice"
                 >
                   <title>
-                    {`${slice.label}: ${formatWithCount(slice.count, slice.itemsCount)} (${slice.pct}%)${canDrill ? ' — cliquer pour détails' : ''}`}
+                    {`${slice.label}: ${formatWithCount(slice.count, slice.itemsCount)} (${formatRate(slice.pct)})${canDrill ? ' — cliquer pour détails' : ''}`}
                   </title>
                 </path>
               </g>
@@ -171,7 +172,7 @@ function PieBody({
               : formatWithCount(total, hasItemsCount ? totalItems : undefined)}
           </text>
           <text x={cx} y={cy + 14} textAnchor="middle" className="employees-pie-center-label">
-            {active ? `${active.pct}%` : 'Total'}
+            {active ? formatRate(active.pct) : 'Total'}
           </text>
         </svg>
       </div>
@@ -192,7 +193,7 @@ function PieBody({
             <span className="employees-pie-legend-label" title={slice.label}>{slice.label}</span>
             <span className="employees-pie-legend-value">
               {formatWithCount(slice.count, slice.itemsCount)}
-              <span className="employees-pie-legend-pct"> {slice.pct.toLocaleString('fr-FR')}%</span>
+              <span className="employees-pie-legend-pct"> {formatRate(slice.pct)}</span>
             </span>
           </li>
         ))}

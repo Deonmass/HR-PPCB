@@ -4,11 +4,14 @@ import { useRouter, useSearchParams } from 'next/navigation';
 import { FormEvent, useState } from 'react';
 import { showError } from '@/lib/swal';
 import { useTheme } from '@/contexts/ThemeContext';
+import { useI18n } from '@/contexts/LocaleContext';
+import LanguageToggle from '@/components/LanguageToggle';
 
 export default function LoginPageClient() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const { theme, toggleTheme, isSwitching } = useTheme();
+  const { t } = useI18n();
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
@@ -25,14 +28,14 @@ export default function LoginPageClient() {
       });
       const json = await res.json();
       if (!res.ok) {
-        await showError(json.error || 'Identifiants invalides');
+        await showError(json.error || t('login.invalid'));
         return;
       }
       const next = searchParams.get('next') || '/';
       router.replace(next);
       router.refresh();
     } catch {
-      await showError('Erreur réseau lors de la connexion');
+      await showError(t('login.networkError'));
     } finally {
       setLoading(false);
     }
@@ -47,13 +50,13 @@ export default function LoginPageClient() {
       <div className="login-card">
         <div className="login-brand">
           <span className="login-brand-badge">PPC Barnet</span>
-          <h1>RH Platform</h1>
-          <p>Portail de gestion des ressources humaines</p>
+          <h1>{t('login.title')}</h1>
+          <p>{t('login.subtitle')}</p>
         </div>
 
         <form className="login-form" onSubmit={handleSubmit}>
           <div className="form-group">
-            <label htmlFor="username">Identifiant</label>
+            <label htmlFor="username">{t('login.username')}</label>
             <input
               id="username"
               value={username}
@@ -63,7 +66,7 @@ export default function LoginPageClient() {
             />
           </div>
           <div className="form-group">
-            <label htmlFor="password">Mot de passe</label>
+            <label htmlFor="password">{t('login.password')}</label>
             <div className="login-password-field">
               <input
                 id="password"
@@ -77,8 +80,8 @@ export default function LoginPageClient() {
                 type="button"
                 className="login-password-toggle"
                 onClick={() => setShowPassword((v) => !v)}
-                aria-label={showPassword ? 'Masquer le mot de passe' : 'Afficher le mot de passe'}
-                title={showPassword ? 'Masquer le mot de passe' : 'Afficher le mot de passe'}
+                aria-label={showPassword ? t('login.hidePassword') : t('login.showPassword')}
+                title={showPassword ? t('login.hidePassword') : t('login.showPassword')}
               >
                 <svg
                   viewBox="0 0 24 24"
@@ -110,18 +113,19 @@ export default function LoginPageClient() {
           </div>
           <button type="submit" className="btn btn-primary login-submit" disabled={loading}>
             {loading ? <span className="btn-spinner" aria-hidden="true" /> : null}
-            {loading ? 'Connexion…' : 'Se connecter'}
+            {loading ? t('login.submitting') : t('login.submit')}
           </button>
         </form>
 
         <div className="login-theme-row">
+          <LanguageToggle className="login-lang-toggle" />
           <button
             type="button"
             className="login-theme-toggle"
             onClick={toggleTheme}
             disabled={isSwitching}
-            aria-label={theme === 'dark' ? 'Activer le mode clair' : 'Activer le mode sombre'}
-            title={theme === 'dark' ? 'Mode clair' : 'Mode sombre'}
+            aria-label={theme === 'dark' ? t('common.themeLight') : t('common.themeDark')}
+            title={theme === 'dark' ? t('common.themeLight') : t('common.themeDark')}
           >
             <svg
               viewBox="0 0 24 24"

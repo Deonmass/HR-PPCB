@@ -306,6 +306,8 @@ export interface ExcoLeaveMonthImport {
   counts: { plant: number; hq: number; lubudi: number; all: number };
   /** Closing Balance Annual par matricule. */
   byMatricule: Record<string, number>;
+  /** Value (col. AD) FC Annual par matricule — colonne BASE Allowance Amount. */
+  valueFcByMatricule?: Record<string, number>;
   /** Opening Balance Annual par matricule (optionnel — New report). */
   openingByMatricule?: Record<string, number>;
   sourceFiles: string[];
@@ -365,9 +367,11 @@ export function buildExcoLeaveMonthImport(input: {
   const lubudi: number[] = [];
   const all: number[] = [];
   const byMatricule: Record<string, number> = {};
+  const valueFcByMatricule: Record<string, number> = {};
 
   for (const [matricule, row] of leaveDetailed.entries()) {
     byMatricule[matricule] = row.leaveBalance;
+    valueFcByMatricule[matricule] = row.valueFc;
     all.push(row.leaveBalance);
     const site = mapExcoLeaveSite(
       input.localisationByMatricule[matricule] || '',
@@ -407,6 +411,7 @@ export function buildExcoLeaveMonthImport(input: {
       all: all.length,
     },
     byMatricule,
+    valueFcByMatricule,
     sourceFiles: input.sourceFiles,
     importedAt: new Date().toISOString(),
   };
@@ -489,34 +494,7 @@ export function mergeExcoLeaveImportsForYear(
   return out;
 }
 
-export function buildExcoOtMonthImport(input: {
-  year: number;
-  month: number;
-  componentBuffer: ArrayBuffer;
-  leaveBuffer?: ArrayBuffer | null;
-  fxRateFcPerUsd: number | null;
-  sourceFiles: string[];
-}): ExcoOtMonthImport {
-  const parsed = parseComponentPostedUnits(input.componentBuffer);
-  const leaveDetailed = input.leaveBuffer
-    ? parseLeaveBalancesDetailed(input.leaveBuffer).byMatricule
-    : new Map<string, ExcoLeaveBalanceRow>();
-
-  const employees: ExcoOtEmployeeImport[] = parsed
-    .map((e) => {
-      const leave = leaveDetailed.get(e.matricule);
-      return {
-        matricule: e.matricule,
-        nom: leave?.nom || e.nom,
-        departmentRaw: e.orgUnit || leave?.departmentRaw || '',
-        department: mapExcoOtDepartment(e.orgUnit || leave?.departmentRaw || ''),
-        hours: e.hours,
-        costFc: e.costFc,
-        leaveBalance: leave ? leave.leaveBalance : null,
-      };
-    })
-    .sort((a, b) => b.hours - a.hours);
-
+export function aggregateOtByDept(employees: ExcoOtEmployeeImport[]): ExcoOtDeptMonthRow[] {
   const deptMap = new Map<string, { hours: number; costFc: number }>();
   for (const e of employees) {
     const prev = deptMap.get(e.department) || { hours: 0, costFc: 0 };
@@ -524,9 +502,8 @@ export function buildExcoOtMonthImport(input: {
     prev.costFc += e.costFc;
     deptMap.set(e.department, prev);
   }
-
   const ordered = excoOtDeptOrder();
-  const byDept: ExcoOtDeptMonthRow[] = [
+  return [
     ...ordered
       .filter((d) => deptMap.has(d))
       .map((d) => {
@@ -545,6 +522,84 @@ export function buildExcoOtMonthImport(input: {
         costFc: Math.round(v.costFc * 100) / 100,
       })),
   ];
+}
+
+/** Identité système (matricule) — prioritaire sur le fichier à l’import. */
+export type ExcoSystemIdentity = {
+  nom?: string;
+  departement?: string;
+};
+
+export function identityByMatriculeFromEmployees(
+  employees: Array<{
+    matricule?: string;
+    nom?: string;
+    departement?: string;
+    departmentHr?: string;
+  }>,
+): Record<string, ExcoSystemIdentity> {
+  const map: Record<string, ExcoSystemIdentity> = {};
+  for (const e of employees) {
+    const mat = (e.matricule || '').trim();
+    if (!mat) continue;
+    map[mat] = {
+      nom: (e.nom || '').trim(),
+      departement: (e.departement || e.departmentHr || '').trim(),
+    };
+  }
+  return map;
+}
+
+export function overlayOtEmployeesFromSystem(
+  employees: ExcoOtEmployeeImport[],
+  identityByMatricule: Record<string, ExcoSystemIdentity>,
+): ExcoOtEmployeeImport[] {
+  return employees.map((e) => {
+    const sys = identityByMatricule[e.matricule];
+    if (!sys) return e;
+    const sysDept = (sys.departement || '').trim();
+    const sysNom = (sys.nom || '').trim();
+    return {
+      ...e,
+      nom: sysNom || e.nom,
+      departmentRaw: sysDept || e.departmentRaw,
+      department: sysDept ? mapExcoOtDepartment(sysDept) : e.department,
+    };
+  });
+}
+
+export function buildExcoOtMonthImport(input: {
+  year: number;
+  month: number;
+  componentBuffer: ArrayBuffer;
+  leaveBuffer?: ArrayBuffer | null;
+  fxRateFcPerUsd: number | null;
+  sourceFiles: string[];
+  identityByMatricule?: Record<string, ExcoSystemIdentity>;
+}): ExcoOtMonthImport {
+  const parsed = parseComponentPostedUnits(input.componentBuffer);
+  const leaveDetailed = input.leaveBuffer
+    ? parseLeaveBalancesDetailed(input.leaveBuffer).byMatricule
+    : new Map<string, ExcoLeaveBalanceRow>();
+
+  const fromFile: ExcoOtEmployeeImport[] = parsed
+    .map((e) => {
+      const leave = leaveDetailed.get(e.matricule);
+      return {
+        matricule: e.matricule,
+        nom: leave?.nom || e.nom,
+        departmentRaw: e.orgUnit || leave?.departmentRaw || '',
+        department: mapExcoOtDepartment(e.orgUnit || leave?.departmentRaw || ''),
+        hours: e.hours,
+        costFc: e.costFc,
+        leaveBalance: leave ? leave.leaveBalance : null,
+      };
+    })
+    .sort((a, b) => b.hours - a.hours);
+
+  const employees = input.identityByMatricule
+    ? overlayOtEmployeesFromSystem(fromFile, input.identityByMatricule)
+    : fromFile;
 
   return {
     year: input.year,
@@ -554,7 +609,7 @@ export function buildExcoOtMonthImport(input: {
         ? input.fxRateFcPerUsd
         : null,
     employees,
-    byDept,
+    byDept: aggregateOtByDept(employees),
     sourceFiles: input.sourceFiles,
     importedAt: new Date().toISOString(),
   };

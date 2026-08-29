@@ -9,14 +9,18 @@ import {
   useLayoutEffect,
   useRef,
   useState,
+  Fragment,
   type CSSProperties,
   type ReactNode,
 } from 'react';
 import { createPortal } from 'react-dom';
 import ChangePasswordModal from './ChangePasswordModal';
+import LanguageToggle from './LanguageToggle';
 import { useSidebar } from './SidebarContext';
 import { usePermissions } from '@/contexts/PermissionContext';
 import { useTheme } from '@/contexts/ThemeContext';
+import { useI18n } from '@/contexts/LocaleContext';
+import type { MessageKey } from '@/lib/i18n';
 import { confirmLogout, showLogoutLoading } from '@/lib/swal';
 
 type NavItem = {
@@ -68,12 +72,13 @@ const NAV: NavSection[] = [
   },
   {
     type: 'link',
-    id: 'exco',
-    href: '/exco',
-    label: 'EXCO',
+    id: 'rapport',
+    href: '/rapport',
+    label: 'Rapport',
     icon: 'dashboard',
     color: '#be123c',
     menuIds: ['exco.rapport'],
+    activePrefixes: ['/rapport', '/exco'],
   },
   {
     type: 'link',
@@ -91,15 +96,25 @@ const NAV: NavSection[] = [
     icon: 'users',
     color: '#e30613',
     items: [
-      { href: '/employes', label: 'Liste', icon: 'users', menuId: 'employes.liste', excludePrefixes: ['/employes/dependants', '/employes/offres', '/employes/mouvements', '/employes/postes', '/employes/classification', '/employes/contractants'] },
+      { href: '/employes', label: 'Liste', icon: 'users', menuId: 'employes.liste', excludePrefixes: ['/employes/dependants', '/employes/offres', '/employes/mouvements', '/employes/postes', '/employes/classification', '/employes/contractants', '/employes/recrutement'] },
       { href: '/employes/dependants', label: 'Dependants', icon: 'users', menuId: 'employes.dependants' },
-      { href: '/employes/offres', label: 'Offres', icon: 'docs', menuId: 'employes.offres' },
-      { href: '/employes/mouvements', label: 'Mouvements', icon: 'users', menuId: 'employes.mouvements' },
-      { href: '/employes/postes', label: 'Postes', icon: 'docs', menuId: 'employes.postes' },
-      { href: '/employes/classification', label: 'Classification des postes', icon: 'docs', menuId: 'employes.classification' },
       { href: '/employes/contractants', label: 'Contractants', icon: 'users', menuId: 'employes.contractants' },
       { href: '/check-documents', label: 'Check documents', icon: 'docs', menuId: 'employes.check-documents' },
       { href: '/heures-supplementaires', label: 'Heures supplémentaires', icon: 'clock', menuIds: ['employes.heures', 'employes.heures.dept', 'employes.heures.all'] },
+    ],
+  },
+  {
+    type: 'group',
+    id: 'poste',
+    title: 'Poste',
+    icon: 'docs',
+    color: '#4338ca',
+    items: [
+      { href: '/employes/postes', label: 'Postes', icon: 'docs', menuId: 'employes.postes' },
+      { href: '/employes/recrutement', label: 'Recrutement', icon: 'docs', menuId: 'employes.recrutement' },
+      { href: '/employes/classification', label: 'Classification des postes', icon: 'docs', menuId: 'employes.classification' },
+      { href: '/employes/offres', label: 'Offres', icon: 'docs', menuId: 'employes.offres' },
+      { href: '/employes/mouvements', label: 'Mouvements', icon: 'users', menuId: 'employes.mouvements' },
     ],
   },
   {
@@ -149,7 +164,11 @@ const NAV: NavSection[] = [
     icon: 'award',
     color: '#b45309',
     activePrefixes: ['/politique'],
-    menuIds: ['politique.longs-etats'],
+    menuIds: [
+      'politique.longs-etats',
+      'politique.convention-collective',
+      'politique.heures-sup',
+    ],
   },
   {
     type: 'group',
@@ -207,6 +226,15 @@ const NAV: NavSection[] = [
     menuIds: ['sante'],
   },
   {
+    type: 'link',
+    id: 'training',
+    href: '/training',
+    label: 'Training',
+    icon: 'training',
+    color: '#0ea5e9',
+    menuIds: ['training'],
+  },
+  {
     type: 'group',
     id: 'charroi',
     title: 'Charroi automobile',
@@ -259,6 +287,113 @@ const NAV: NavSection[] = [
     ],
   },
 ];
+
+const SECTION_LABEL_KEY: Record<string, MessageKey> = {
+  home: 'nav.home',
+  rapport: 'nav.rapport',
+  audit: 'nav.audit',
+  employes: 'nav.employees',
+  poste: 'nav.poste',
+  project: 'nav.project',
+  documents: 'nav.documents',
+  politique: 'nav.politique',
+  protocol: 'nav.protocol',
+  'fournisseurs-factures': 'nav.supplierInvoices',
+  sante: 'nav.health',
+  training: 'nav.training',
+  charroi: 'nav.fleet',
+  village: 'nav.village',
+  parametres: 'nav.settings',
+};
+
+const ITEM_LABEL_KEY: Record<string, MessageKey> = {
+  '/employes': 'nav.employees.list',
+  '/employes/dependants': 'nav.employees.dependants',
+  '/employes/contractants': 'nav.employees.contractants',
+  '/check-documents': 'nav.employees.checkDocs',
+  '/heures-supplementaires': 'nav.employees.overtime',
+  '/employes/postes': 'nav.poste.postes',
+  '/employes/recrutement': 'nav.poste.recruitment',
+  '/employes/classification': 'nav.poste.classification',
+  '/employes/offres': 'nav.poste.offers',
+  '/employes/mouvements': 'nav.poste.movements',
+  '/project/dashboard': 'nav.project.dashboard',
+  '/project/projects': 'nav.project.projects',
+  '/project/expenses-details': 'nav.project.expenses',
+  '/protocol/visa-travail': 'nav.protocol.workVisa',
+  '/protocol/visa-volant': 'nav.protocol.flyingVisa',
+  '/protocol/visa-voyage': 'nav.protocol.travelVisa',
+  '/protocol/billets': 'nav.protocol.tickets',
+  '/factures-fournisseurs/liste': 'nav.supplierInvoices.list',
+  '/factures-fournisseurs/factures': 'nav.supplierInvoices.invoices',
+  '/factures-fournisseurs/soa': 'nav.supplierInvoices.soa',
+  '/factures-fournisseurs/fournisseurs': 'nav.supplierInvoices.suppliers',
+  '/charroi-automobile/vehicules': 'nav.fleet.vehicles',
+  '/charroi-automobile/achats': 'nav.fleet.purchases',
+  '/village/maisons': 'nav.village.houses',
+  '/village/guest-house': 'nav.village.guestHouse',
+  '/parametres/departements': 'nav.settings.departments',
+  '/parametres/centres-de-cout': 'nav.settings.costCenters',
+  '/parametres/utilisateurs': 'nav.settings.users',
+  '/parametres/permissions': 'nav.settings.permissions',
+  '/parametres/logs': 'nav.settings.logs',
+};
+
+function translateNav(
+  sections: NavSection[],
+  t: (key: MessageKey) => string,
+): NavSection[] {
+  return sections.map((section) => {
+    const sectionKey = SECTION_LABEL_KEY[section.id];
+    if (section.type === 'group') {
+      return {
+        ...section,
+        title: sectionKey ? t(sectionKey) : section.title,
+        items: section.items.map((item) => {
+          const itemKey = ITEM_LABEL_KEY[item.href];
+          return { ...item, label: itemKey ? t(itemKey) : item.label };
+        }),
+      };
+    }
+    return {
+      ...section,
+      label: sectionKey ? t(sectionKey) : section.label,
+    };
+  });
+}
+
+function compareNavLabel(a: string, b: string, locale = 'fr') {
+  return a.localeCompare(b, locale, { sensitivity: 'base' });
+}
+
+function navSectionLabel(section: NavSection): string {
+  return section.type === 'group' ? section.title : section.label;
+}
+
+function sortNavSections(sections: NavSection[], locale = 'fr'): NavSection[] {
+  const home = sections.filter((section) => section.id === 'home');
+  const settings = sections.filter((section) => section.id === 'parametres');
+  const rest = sections
+    .filter((section) => section.id !== 'home' && section.id !== 'parametres')
+    .map((section) =>
+      section.type === 'group'
+        ? {
+            ...section,
+            items: [...section.items].sort((a, b) => compareNavLabel(a.label, b.label, locale)),
+          }
+        : section,
+    )
+    .sort((a, b) => compareNavLabel(navSectionLabel(a), navSectionLabel(b), locale));
+  const settingsSorted = settings.map((section) =>
+    section.type === 'group'
+      ? {
+          ...section,
+          items: [...section.items].sort((a, b) => compareNavLabel(a.label, b.label, locale)),
+        }
+      : section,
+  );
+  return [...home, ...rest, ...settingsSorted];
+}
 
 function isActive(pathname: string, href: string) {
   const pathOnly = href.split('?')[0];
@@ -469,6 +604,14 @@ function NavIcon({ name, size = 16 }: { name: string; size?: number }) {
           <path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z" />
         </svg>
       );
+    case 'training':
+      return (
+        <svg viewBox="0 0 24 24" {...props}>
+          <path d="M22 10 12 5 2 10l10 5 10-5z" />
+          <path d="M6 12v5c0 .6 2.7 2 6 2s6-1.4 6-2v-5" />
+          <path d="M22 10v6" />
+        </svg>
+      );
     case 'car':
       return (
         <svg viewBox="0 0 24 24" {...props}>
@@ -589,6 +732,7 @@ function NavGroupSection({
 }) {
   const pathname = usePathname();
   const searchParams = useSearchParams();
+  const { t } = useI18n();
   const hasActive = section.items.some((item) => isNavItemActive(pathname, item, searchParams.toString()));
 
   return (
@@ -599,7 +743,7 @@ function NavGroupSection({
           label={section.title}
           enabled={collapsed}
           color={section.color}
-          hint={open ? 'Cliquer pour replier' : 'Cliquer pour déplier'}
+          hint={open ? t('nav.foldHint') : t('nav.unfoldHint')}
         >
           <button
             type="button"
@@ -675,6 +819,7 @@ export default function Sidebar() {
   const search = searchParams.toString();
   const { collapsed, toggle } = useSidebar();
   const { theme, toggleTheme, isSwitching } = useTheme();
+  const { t, locale } = useI18n();
   const { user, can, isLoading: permissionsLoading } = usePermissions();
   const [openGroups, setOpenGroups] = useState<Record<string, boolean>>(() =>
     buildInitialOpenGroups(pathname, typeof window !== 'undefined' ? window.location.search.slice(1) : ''),
@@ -702,23 +847,29 @@ export default function Sidebar() {
     };
   }, [profileMenuOpen]);
 
-  const visibleNav = NAV.map((section) => {
-    if (section.type === 'link') {
-      if (section.alwaysVisible) return section;
-      if (section.menuIds?.length) {
-        return section.menuIds.some((id) => can(id, 'view')) ? section : null;
-      }
-      if (can(section.id, 'view')) return section;
-      return null;
-    }
-    const items = section.items.filter((item) => {
-      if (item.menuIds?.length) return item.menuIds.some((id) => can(id, 'view'));
-      if (item.menuId) return can(item.menuId, 'view');
-      return false;
-    });
-    if (!items.length) return null;
-    return { ...section, items };
-  }).filter((section): section is NavSection => section !== null);
+  const visibleNav = sortNavSections(
+    translateNav(
+      NAV.map((section) => {
+        if (section.type === 'link') {
+          if (section.alwaysVisible) return section;
+          if (section.menuIds?.length) {
+            return section.menuIds.some((id) => can(id, 'view')) ? section : null;
+          }
+          if (can(section.id, 'view')) return section;
+          return null;
+        }
+        const items = section.items.filter((item) => {
+          if (item.menuIds?.length) return item.menuIds.some((id) => can(id, 'view'));
+          if (item.menuId) return can(item.menuId, 'view');
+          return false;
+        });
+        if (!items.length) return null;
+        return { ...section, items };
+      }).filter((section): section is NavSection => section !== null),
+      t,
+    ),
+    locale,
+  );
 
   const handleLogout = async () => {
     if (loggingOut) return;
@@ -766,19 +917,19 @@ export default function Sidebar() {
         <div className="sidebar-brand">
           {!collapsed && (
             <div className="sidebar-brand-text">
-              <h1>PPC Barnet RH</h1>
-              <p>Gestion des données RH</p>
+              <h1>{t('brand.name')}</h1>
+              <p>{t('brand.tagline')}</p>
             </div>
           )}
           {collapsed && (
-            <SidebarTip label="PPC Barnet RH" enabled color="#e30613" hint="Gestion des données RH">
+            <SidebarTip label={t('brand.name')} enabled color="#e30613" hint={t('brand.tagline')}>
               <span className="sidebar-brand-mini">RH</span>
             </SidebarTip>
           )}
         </div>
         <div className="sidebar-top-actions">
           <SidebarTip
-            label={theme === 'dark' ? 'Mode clair' : 'Mode sombre'}
+            label={theme === 'dark' ? t('common.themeLight') : t('common.themeDark')}
             enabled={collapsed}
             color="#94a3b8"
           >
@@ -787,8 +938,8 @@ export default function Sidebar() {
               className="sidebar-theme-toggle"
               onClick={toggleTheme}
               disabled={isSwitching}
-              aria-label={theme === 'dark' ? 'Activer le mode clair' : 'Activer le mode sombre'}
-              title={!collapsed ? (theme === 'dark' ? 'Mode clair' : 'Mode sombre') : undefined}
+              aria-label={theme === 'dark' ? t('common.themeLight') : t('common.themeDark')}
+              title={!collapsed ? (theme === 'dark' ? t('common.themeLight') : t('common.themeDark')) : undefined}
             >
               <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                 {theme === 'dark' ? (
@@ -803,7 +954,15 @@ export default function Sidebar() {
             </button>
           </SidebarTip>
           <SidebarTip
-            label={collapsed ? 'Déplier le menu' : 'Réduire le menu'}
+            label={t('common.language')}
+            enabled={collapsed}
+            color="#94a3b8"
+            hint={locale === 'fr' ? t('common.languageFr') : t('common.languageEn')}
+          >
+            <LanguageToggle compact />
+          </SidebarTip>
+          <SidebarTip
+            label={collapsed ? t('nav.expand') : t('nav.collapse')}
             enabled={collapsed}
             color="#94a3b8"
           >
@@ -811,7 +970,7 @@ export default function Sidebar() {
               type="button"
               className="sidebar-toggle"
               onClick={toggle}
-              aria-label={collapsed ? 'Déplier le menu' : 'Réduire le menu'}
+              aria-label={collapsed ? t('nav.expand') : t('nav.collapse')}
             >
               <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round">
                 {collapsed ? (
@@ -834,19 +993,23 @@ export default function Sidebar() {
 
       <nav className="sidebar-nav">
         {!permissionsLoading &&
-          visibleNav.map((section) =>
-            section.type === 'group' ? (
-              <NavGroupSection
-                key={section.id}
-                section={section}
-                collapsed={collapsed}
-                open={Boolean(openGroups[section.id])}
-                onToggle={() => toggleGroup(section.id)}
-              />
-            ) : (
-              <NavStandaloneSection key={section.id} section={section} collapsed={collapsed} />
-            ),
-          )}
+          visibleNav.map((section) => (
+            <Fragment key={section.id}>
+              {section.id === 'parametres' ? (
+                <div className="nav-menu-settings-sep" role="separator" aria-hidden />
+              ) : null}
+              {section.type === 'group' ? (
+                <NavGroupSection
+                  section={section}
+                  collapsed={collapsed}
+                  open={Boolean(openGroups[section.id])}
+                  onToggle={() => toggleGroup(section.id)}
+                />
+              ) : (
+                <NavStandaloneSection section={section} collapsed={collapsed} />
+              )}
+            </Fragment>
+          ))}
       </nav>
 
       <div className="sidebar-footer">
@@ -857,10 +1020,10 @@ export default function Sidebar() {
             onClick={() => setProfileMenuOpen((open) => !open)}
             aria-haspopup="menu"
             aria-expanded={profileMenuOpen}
-            title="Options du compte"
+            title={t('common.accountOptions')}
           >
             <SidebarTip
-              label={user?.displayName || 'Utilisateur'}
+              label={user?.displayName || t('common.user')}
               enabled={collapsed}
               color="#e30613"
               hint={user?.username || undefined}
@@ -871,7 +1034,7 @@ export default function Sidebar() {
             </SidebarTip>
             {!collapsed && (
               <div className="sidebar-profile-meta">
-                <strong>{user?.displayName || 'Utilisateur'}</strong>
+                <strong>{user?.displayName || t('common.user')}</strong>
                 <span>{user?.username || '—'}</span>
               </div>
             )}
@@ -901,27 +1064,27 @@ export default function Sidebar() {
                   <rect x="3" y="11" width="18" height="10" rx="2" />
                   <path d="M7 11V7a5 5 0 0 1 10 0v4" />
                 </svg>
-                Modifier le mot de passe
+                {t('common.changePassword')}
               </button>
             </div>
           )}
         </div>
-        <SidebarTip label="Déconnexion" enabled={collapsed} color="#e30613">
+        <SidebarTip label={t('common.logout')} enabled={collapsed} color="#e30613">
           <button
             type="button"
             className="sidebar-logout-btn"
             onClick={() => void handleLogout()}
             disabled={loggingOut}
-            title={!collapsed ? 'Déconnexion' : undefined}
-            aria-label="Déconnexion"
+            title={!collapsed ? t('common.logout') : undefined}
+            aria-label={t('common.logout')}
           >
             {loggingOut ? (
               <>
                 <span className="btn-spinner" aria-hidden="true" />
-                {!collapsed ? 'Déconnexion…' : null}
+                {!collapsed ? t('common.loggingOut') : null}
               </>
             ) : (
-              !collapsed ? 'Déconnexion' : '⎋'
+              !collapsed ? t('common.logout') : '⎋'
             )}
           </button>
         </SidebarTip>

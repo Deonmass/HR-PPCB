@@ -3,6 +3,7 @@ import {
   buildExcoLeaveMonthImport,
   buildExcoOtMonthImport,
   excoLeaveCostUsdFromSnap,
+  identityByMatriculeFromEmployees,
 } from '@/lib/exco-ot-import';
 import { buildExcoReport } from '@/lib/exco-report';
 import {
@@ -47,6 +48,12 @@ export async function POST(request: Request) {
     const componentBuffer = await componentFile.arrayBuffer();
     const leaveBuffer = leave ? await leave.arrayBuffer() : null;
 
+    const bundle = await readEmployeesBundle();
+    const identityByMatricule = identityByMatriculeFromEmployees([
+      ...(bundle.employees || []),
+      ...(bundle.exits || []),
+    ]);
+
     const snapshot = buildExcoOtMonthImport({
       year,
       month,
@@ -55,6 +62,7 @@ export async function POST(request: Request) {
       fxRateFcPerUsd:
         fxRateFcPerUsd != null && Number.isFinite(fxRateFcPerUsd) ? fxRateFcPerUsd : null,
       sourceFiles: [componentFile.name, leave?.name].filter(Boolean) as string[],
+      identityByMatricule,
     });
 
     if (!snapshot.employees.length) {
@@ -75,7 +83,6 @@ export async function POST(request: Request) {
 
     let leaveSnapshot = overlays.leaveImportsByMonth?.[String(month)] || null;
     if (leaveBuffer) {
-      const bundle = await readEmployeesBundle();
       const localisationByMatricule: Record<string, string> = {};
       for (const e of [...(bundle.employees || []), ...(bundle.exits || [])]) {
         if (e.matricule) localisationByMatricule[e.matricule] = e.localisation || '';

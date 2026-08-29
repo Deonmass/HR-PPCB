@@ -437,6 +437,18 @@
           }
         },
         {
+          "menuId": "settings.json",
+          "label": "Fichiers JSON",
+          "actions": {
+            "view": true,
+            "create": true,
+            "edit": true,
+            "delete": true,
+            "export": true,
+            "undo": true
+          }
+        },
+        {
           "menuId": "view",
           "label": "Voir",
           "actions": {
@@ -511,6 +523,42 @@
         {
           "menuId": "travel.payment-voucher",
           "label": "Payment voucher",
+          "actions": {
+            "view": true,
+            "create": true,
+            "edit": true,
+            "delete": true,
+            "export": true,
+            "undo": true
+          }
+        },
+        {
+          "menuId": "politique.longs-etats",
+          "label": "Longs états de service",
+          "actions": {
+            "view": true,
+            "create": true,
+            "edit": true,
+            "delete": true,
+            "export": true,
+            "undo": true
+          }
+        },
+        {
+          "menuId": "politique.convention-collective",
+          "label": "Convention collective",
+          "actions": {
+            "view": true,
+            "create": true,
+            "edit": true,
+            "delete": true,
+            "export": true,
+            "undo": true
+          }
+        },
+        {
+          "menuId": "politique.heures-sup",
+          "label": "Heures supplémentaires (oct. 25)",
           "actions": {
             "view": true,
             "create": true,
@@ -996,6 +1044,18 @@
           }
         },
         {
+          "menuId": "settings.json",
+          "label": "Fichiers JSON",
+          "actions": {
+            "view": true,
+            "create": true,
+            "edit": true,
+            "delete": true,
+            "export": true,
+            "undo": true
+          }
+        },
+        {
           "menuId": "view",
           "label": "Voir",
           "actions": {
@@ -1058,6 +1118,42 @@
         {
           "menuId": "undo",
           "label": "Annuler action",
+          "actions": {
+            "view": true,
+            "create": true,
+            "edit": true,
+            "delete": true,
+            "export": true,
+            "undo": true
+          }
+        },
+        {
+          "menuId": "politique.longs-etats",
+          "label": "Longs états de service",
+          "actions": {
+            "view": true,
+            "create": true,
+            "edit": true,
+            "delete": true,
+            "export": true,
+            "undo": true
+          }
+        },
+        {
+          "menuId": "politique.convention-collective",
+          "label": "Convention collective",
+          "actions": {
+            "view": true,
+            "create": true,
+            "edit": true,
+            "delete": true,
+            "export": true,
+            "undo": true
+          }
+        },
+        {
+          "menuId": "politique.heures-sup",
+          "label": "Heures supplémentaires (oct. 25)",
           "actions": {
             "view": true,
             "create": true,

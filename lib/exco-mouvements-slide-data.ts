@@ -8,6 +8,7 @@ import {
   sectionWithCurrent,
   type ExcoTrendTableSection,
 } from '@/lib/exco-trends-slide-data';
+import { ratioToRate } from '@/lib/format-rate';
 
 export type { ExcoTrendTableSection };
 
@@ -79,7 +80,7 @@ function toPctBars(rows: ExcoCountRow[], title: string, subtitle: string): ExcoB
     items: rows.map((r) => ({
       label: r.label,
       value: r.value,
-      pct: Math.round(((r.value || 0) / total) * 1000) / 10,
+      pct: ratioToRate(r.value || 0, total),
     })),
   };
 }
@@ -180,7 +181,7 @@ export function buildMouvementsSlideData(report: ExcoReportPayload): ExcoMouveme
       items: (c.exitsByReason || []).map((r) => {
         const count = r.value || 0;
         const pct =
-          agentsMonth > 0 ? Math.round((count / agentsMonth) * 1000) / 10 : 0;
+          agentsMonth > 0 ? ratioToRate(count, agentsMonth) : 0;
         const rate = agentsMonth > 0 ? count / agentsMonth : null;
         const prevCount = prevByReason.get(r.label.toLowerCase()) ?? 0;
         const prevRate = prevAgents > 0 ? prevCount / prevAgents : null;

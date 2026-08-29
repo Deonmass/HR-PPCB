@@ -90,12 +90,10 @@ async function persistSnapshot(
   const yearOt = await getExcoYearOvertimeImports(year);
   const yearLeave = await getExcoYearLeaveImports(year);
 
-  const overtimeCostByDept: Record<string, number | null> = {
-    ...(overlays.overtimeCostByDept || {}),
-  };
-  for (const d of snap.ot.byDeptCurrent) {
-    overtimeCostByDept[d.department] = d.cost;
-  }
+  const snapKpisWithoutFileImports = { ...(snap.manualKpis || {}) };
+  delete snapKpisWithoutFileImports.overtimeCost;
+  delete snapKpisWithoutFileImports.leaveBalanceAvgDays;
+  delete snapKpisWithoutFileImports.leaveCost;
 
   let nextOverlays: ExcoOverlays = {
     ...overlays,
@@ -103,21 +101,20 @@ async function persistSnapshot(
     overtimeImportsByMonth: {
       ...yearOt,
       ...(overlays.overtimeImportsByMonth || {}),
-      [String(month)]: snap.overtimeImport,
     },
     leaveImportsByMonth: {
       ...yearLeave,
       ...(overlays.leaveImportsByMonth || {}),
-      [String(month)]: snap.leave,
     },
     leaveBalanceByMatricule: {
       ...(overlays.leaveBalanceByMatricule || {}),
-      ...snap.leave.byMatricule,
     },
-    overtimeCostByDept,
+    overtimeCostByDept: {
+      ...(overlays.overtimeCostByDept || {}),
+    },
     manualKpis: {
       ...overlays.manualKpis,
-      ...snap.manualKpis,
+      ...snapKpisWithoutFileImports,
     },
     financeByMonth: {
       ...(overlays.financeByMonth || {}),
@@ -262,15 +259,12 @@ export async function loadBundledExcoWorkbook(): Promise<ExcoBundledPayload> {
   }
 
   const { overlays } = await getExcoOverlays(snap.params.year, snap.params.month);
-  const leaveAvgChanged =
-    overlays.leaveImportsByMonth?.[String(month)]?.allAvgDays !== snap.leave.allAvgDays;
   const needsPersist =
     !overlays.workbookSnapshot
     || overlays.workbookSnapshot.params.year !== snap.params.year
     || overlays.workbookSnapshot.params.month !== snap.params.month
     || overlays.workbookSnapshot.headcount.headcount !== snap.headcount.headcount
-    || !(overlays.generationMeta?.sourceFiles || []).includes(sourceFile)
-    || leaveAvgChanged;
+    || !(overlays.generationMeta?.sourceFiles || []).includes(sourceFile);
 
   if (needsPersist) {
     await persistSnapshot(snap, sourceFile);

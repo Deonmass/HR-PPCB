@@ -2,6 +2,7 @@
 
 import { useEffect, useMemo, useState } from 'react';
 import Link from 'next/link';
+import { usePathname } from 'next/navigation';
 import { usePermissions } from '@/contexts/PermissionContext';
 import {
   CONVENTION_INDEX,
@@ -31,6 +32,11 @@ function pdfSrc(page?: number): string {
 
 export default function ConventionCollectivePage() {
   const { can, isLoading } = usePermissions();
+  const pathname = usePathname();
+  const fromPolitique = pathname?.startsWith('/politique');
+  const canView =
+    can('documents.convention-collective', 'view')
+    || can('politique.convention-collective', 'view');
   const [query, setQuery] = useState('');
   const [expandedId, setExpandedId] = useState<string | null>(null);
   const [pdfPage, setPdfPage] = useState(1);
@@ -80,7 +86,7 @@ export default function ConventionCollectivePage() {
   };
 
   if (isLoading) return <div className="loading">Chargement...</div>;
-  if (!can('documents.convention-collective', 'view')) {
+  if (!canView) {
     return <p className="docs-hub-empty">Vous n’avez pas accès à ce document.</p>;
   }
 
@@ -97,8 +103,12 @@ export default function ConventionCollectivePage() {
           >
             Ouvrir le PDF
           </a>
-          <Link href="/documents" className="btn btn-secondary btn-sm" prefetch={false}>
-            ← Documents
+          <Link
+            href={fromPolitique ? '/politique' : '/documents'}
+            className="btn btn-secondary btn-sm"
+            prefetch={false}
+          >
+            {fromPolitique ? '← Politique' : '← Documents'}
           </Link>
         </div>
       </header>

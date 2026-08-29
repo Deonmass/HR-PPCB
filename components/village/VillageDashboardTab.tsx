@@ -21,6 +21,7 @@ import {
   type VillageDrilldownRow,
 } from '@/lib/village-agents';
 import type { VillageMaison, VillageTaille } from '@/lib/village-types';
+import { formatRate, ratioToRate } from '@/lib/format-rate';
 
 function ClickNum({
   value,
@@ -280,7 +281,7 @@ export default function VillageDashboardTab() {
                     <>
                       {stats.parTaille.map((row) => {
                         const occPct = row.total
-                          ? Math.round((row.occupees / row.total) * 100)
+                          ? ratioToRate(row.occupees, row.total)
                           : 0;
                         return (
                           <tr key={row.label}>
@@ -326,7 +327,7 @@ export default function VillageDashboardTab() {
                             <td>
                               <div
                                 className="village-par-taille-bar-cell"
-                                title={`${occPct}% occupées · ${100 - occPct}% vides`}
+                                title={`${formatRate(occPct)} occupées · ${formatRate(100 - occPct)} vides`}
                               >
                                 <div className="village-par-taille-bar">
                                   <span
@@ -338,7 +339,7 @@ export default function VillageDashboardTab() {
                                     style={{ width: `${100 - occPct}%` }}
                                   />
                                 </div>
-                                <span className="village-par-taille-pct">{occPct}%</span>
+                                <span className="village-par-taille-pct">{formatRate(occPct)}</span>
                               </div>
                             </td>
                           </tr>
@@ -346,7 +347,7 @@ export default function VillageDashboardTab() {
                       })}
                       {(() => {
                         const totalPct = stats.maisonsTotal
-                          ? Math.round((stats.maisonsOccupees / stats.maisonsTotal) * 100)
+                          ? ratioToRate(stats.maisonsOccupees, stats.maisonsTotal)
                           : 0;
                         return (
                           <tr className="village-par-taille-total">
@@ -385,7 +386,7 @@ export default function VillageDashboardTab() {
                                     style={{ width: `${100 - totalPct}%` }}
                                   />
                                 </div>
-                                <span className="village-par-taille-pct">{totalPct}%</span>
+                                <span className="village-par-taille-pct">{formatRate(totalPct)}</span>
                               </div>
                             </td>
                           </tr>

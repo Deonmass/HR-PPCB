@@ -5,13 +5,13 @@ import type { ExcoWorkbookSnapshot } from './exco-new-report-parse';
 import { siteBucketFromLocation, workbookEmployeesToHireList } from './exco-new-report-parse';
 import type { ExcoComputedBlock, ExcoTrendMonth } from './exco-types';
 
-function round1(n: number): number {
-  return Math.round(n * 10) / 10;
+function roundRate(n: number): number {
+  return Math.round(n * 100) / 100;
 }
 
 function pctFromRate(rate: number | null | undefined): number | null {
   if (rate == null || !Number.isFinite(rate)) return null;
-  return round1(rate * (rate <= 1 ? 100 : 1));
+  return roundRate(rate * (rate <= 1 ? 100 : 1));
 }
 
 /** Feuille IN OUT renseignée (sinon on garde les mouvements calculés système). */
@@ -33,7 +33,7 @@ function movementRateFromCounts(
   headcount: number | null | undefined,
 ): number | null {
   if (headcount == null || headcount <= 0) return null;
-  return round1((moves / headcount) * 100);
+  return roundRate((moves / headcount) * 100);
 }
 
 export function applyWorkbookSnapshotToComputed(
@@ -66,32 +66,18 @@ export function applyWorkbookSnapshotToComputed(
     const lub = hc.genderByLocation.find((g) => /lubudi/i.test(g.location));
     const sitesMale = (plantLoc?.male ?? 0) + (lub?.male ?? 0);
     const sitesTotal = (plantLoc?.total ?? 0) + (lub?.total ?? 0);
-    return sitesTotal ? round1((sitesMale / sitesTotal) * 100) : null;
+    return sitesTotal ? roundRate((sitesMale / sitesTotal) * 100) : null;
   })();
   const genderFemalePctSites = (() => {
     const plantLoc = hc.genderByLocation.find((g) => /plant/i.test(g.location));
     const lub = hc.genderByLocation.find((g) => /lubudi/i.test(g.location));
     const sitesFemale = (plantLoc?.female ?? 0) + (lub?.female ?? 0);
     const sitesTotal = (plantLoc?.total ?? 0) + (lub?.total ?? 0);
-    return sitesTotal ? round1((sitesFemale / sitesTotal) * 100) : null;
+    return sitesTotal ? roundRate((sitesFemale / sitesTotal) * 100) : null;
   })();
   const hqLoc = hc.genderByLocation.find((g) => /kinshasa|hq|region/i.test(g.location));
-  const genderMalePctHq = hqLoc?.total ? round1((hqLoc.male / hqLoc.total) * 100) : null;
-  const genderFemalePctHq = hqLoc?.total ? round1((hqLoc.female / hqLoc.total) * 100) : null;
-
-  const overtimeByDept = snap.ot.byDeptCurrent.map((d) => {
-    const trend = snap.ot.trendRows.find((t) => t.department === d.department);
-    const hoursByMonth = Array.from({ length: 12 }, (_, i) => {
-      const calMonth = i + 1;
-      if (!trend) return null;
-      // trend hoursByMonth = FY APR→MAR
-      const map = [4, 5, 6, 7, 8, 9, 10, 11, 12, 1, 2, 3];
-      const idx = map.indexOf(calMonth);
-      if (idx < 0) return null;
-      return trend.hoursByMonth[idx] ?? null;
-    });
-    return { ...d, hoursByMonth };
-  });
+  const genderMalePctHq = hqLoc?.total ? roundRate((hqLoc.male / hqLoc.total) * 100) : null;
+  const genderFemalePctHq = hqLoc?.total ? roundRate((hqLoc.female / hqLoc.total) * 100) : null;
 
   const next: ExcoComputedBlock = {
     ...computed,
@@ -138,10 +124,10 @@ export function applyWorkbookSnapshotToComputed(
     ],
     exitsByReason: useWorkbookInOut ? snap.inOut.exitsByReason : computed.exitsByReason,
     exitsList: useWorkbookInOut ? snap.inOut.outList : computed.exitsList,
-    overtimeHoursTotal: snap.ot.totalHoursCurrent,
-    overtimeByDept,
-    overtimeTopEmployees: snap.ot.topEmployees,
-    employeesWithOt: snap.ot.employeesWithOt,
+    overtimeHoursTotal: computed.overtimeHoursTotal,
+    overtimeByDept: computed.overtimeByDept,
+    overtimeTopEmployees: computed.overtimeTopEmployees,
+    employeesWithOt: computed.employeesWithOt,
   };
 
   // Patch trends : démographie / coûts workbook ; mouvements seulement si IN OUT renseigné
@@ -205,17 +191,17 @@ export function applyWorkbookSnapshotToComputed(
       attritionPct: useWorkbookInOut
         ? (pctFromRate(currentInOut?.attritionRate ?? null) ?? computed.attritionPct)
         : computed.attritionPct,
-      overtimeHours: snap.ot.totalHoursCurrent,
+      overtimeHours: t.overtimeHours,
       staffCost: snap.manualKpis.staffCost ?? t.staffCost,
       volumePerEmp: snap.manualKpis.volumePerEmp ?? t.volumePerEmp,
       revenuePerEmp: snap.manualKpis.revenuePerEmp ?? t.revenuePerEmp,
-      leaveBalanceAvgDays: snap.leave.allAvgDays,
-      leaveCost: snap.leave.leaveCostUsd ?? null,
-      overtimeCost: snap.ot.totalCostUsdCurrent,
-      leavePlantAvgDays: snap.leave.plantAvgDays,
-      leaveHqAvgDays: snap.leave.hqAvgDays,
-      leaveLubudiAvgDays: snap.leave.lubudiAvgDays,
-      leaveProvisionUsd000: snap.leave.provisionUsd000,
+      leaveBalanceAvgDays: t.leaveBalanceAvgDays,
+      leaveCost: t.leaveCost,
+      overtimeCost: t.overtimeCost,
+      leavePlantAvgDays: t.leavePlantAvgDays,
+      leaveHqAvgDays: t.leaveHqAvgDays,
+      leaveLubudiAvgDays: t.leaveLubudiAvgDays,
+      leaveProvisionUsd000: t.leaveProvisionUsd000,
     };
   });
 

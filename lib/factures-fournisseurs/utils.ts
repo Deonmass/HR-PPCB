@@ -1,4 +1,5 @@
 import { formatExcelDateValue } from '@/lib/employee-columns';
+import { ratioToRate } from '@/lib/format-rate';
 import type {
   AssignStep,
   FactureDashboard,
@@ -542,11 +543,11 @@ export function buildFacturesMonthlyTracking(
   for (const point of points) {
     point.paidPct =
       point.recuCount > 0
-        ? Math.round((point.paidCount / point.recuCount) * 1000) / 10
+        ? ratioToRate(point.paidCount, point.recuCount)
         : 0;
     point.paidPctMontant =
       point.recuMontant > 0
-        ? Math.round((point.paidMontant / point.recuMontant) * 1000) / 10
+        ? ratioToRate(point.paidMontant, point.recuMontant)
         : 0;
   }
 

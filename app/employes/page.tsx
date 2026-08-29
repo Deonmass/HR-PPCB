@@ -9,6 +9,8 @@ import RefreshButton from '@/components/RefreshButton';
 import RowContextMenu, { type ContextMenuItem } from '@/components/RowContextMenu';
 import TableHeaderFilter from '@/components/TableHeaderFilter';
 import { usePermissions } from '@/contexts/PermissionContext';
+import { useI18n } from '@/contexts/LocaleContext';
+import type { MessageKey } from '@/lib/i18n';
 import { calcDocumentCompletion, getDepartments } from '@/lib/documents';
 import { getLocalisations } from '@/lib/employee-utils';
 import {
@@ -127,19 +129,10 @@ function seniorityValue(employee: Employee, yearFilter: number | '', monthFilter
   return formatSeniority(seniorityParts(employee, yearFilter, monthFilter));
 }
 
-const MONTH_OPTIONS: { value: number; label: string }[] = [
-  { value: 1, label: 'Janvier' },
-  { value: 2, label: 'Février' },
-  { value: 3, label: 'Mars' },
-  { value: 4, label: 'Avril' },
-  { value: 5, label: 'Mai' },
-  { value: 6, label: 'Juin' },
-  { value: 7, label: 'Juillet' },
-  { value: 8, label: 'Août' },
-  { value: 9, label: 'Septembre' },
-  { value: 10, label: 'Octobre' },
-  { value: 11, label: 'Novembre' },
-  { value: 12, label: 'Décembre' },
+const MONTH_KEYS: MessageKey[] = [
+  'cal.month.1', 'cal.month.2', 'cal.month.3', 'cal.month.4',
+  'cal.month.5', 'cal.month.6', 'cal.month.7', 'cal.month.8',
+  'cal.month.9', 'cal.month.10', 'cal.month.11', 'cal.month.12',
 ];
 
 /** Dernier jour du mois (asOf pour ancienneté filtrée). */
@@ -159,6 +152,7 @@ function moisValue(employee: Employee): string {
 
 export default function EmployesPage() {
   const { can } = usePermissions();
+  const { t } = useI18n();
   const canCreate = can('employes.liste', 'create');
   const canEdit = can('employes.liste', 'edit');
   const canDelete = can('employes.liste', 'delete');
@@ -550,7 +544,7 @@ export default function EmployesPage() {
       ]
     : [];
 
-  if (loading) return <div className="loading">Chargement...</div>;
+  if (loading) return <div className="loading">{t('common.loading')}</div>;
 
   return (
     <PermissionGate menuId="employes.liste" action="view">
@@ -559,7 +553,7 @@ export default function EmployesPage() {
         <div className="page-header page-header-with-tabs employees-header">
           <div>
             <div className="page-header-title-row">
-              <h2>Liste des employés</h2>
+              <h2>{t('emp.title')}</h2>
               <RefreshButton onClick={() => void load(true)} loading={refreshing} />
             </div>
           </div>
@@ -573,9 +567,9 @@ export default function EmployesPage() {
                   setYearFilter(v ? Number(v) : '');
                   if (!v) setMonthFilter('');
                 }}
-                title="Filtrer par année — effectif au 31 décembre, ou au dernier jour du mois"
+                title={t('emp.filter.yearTitle')}
               >
-                <option value="">Toutes les années</option>
+                <option value="">{t('emp.filter.allYears')}</option>
                 {yearOptions.map((y) => (
                   <option key={y} value={y}>{y}</option>
                 ))}
@@ -590,22 +584,22 @@ export default function EmployesPage() {
                 disabled={yearFilter === ''}
                 title={
                   yearFilter === ''
-                    ? 'Choisissez d’abord une année'
-                    : 'Effectif au dernier jour du mois sélectionné'
+                    ? t('emp.filter.monthDisabled')
+                    : t('emp.filter.monthTitle')
                 }
               >
-                <option value="">Tous les mois</option>
-                {MONTH_OPTIONS.map((m) => (
-                  <option key={m.value} value={m.value}>{m.label}</option>
+                <option value="">{t('emp.filter.allMonths')}</option>
+                {MONTH_KEYS.map((key, index) => (
+                  <option key={key} value={index + 1}>{t(key)}</option>
                 ))}
               </select>
               <select
                 className="filter-select employees-filter-loc"
                 value={locFilter}
                 onChange={(e) => setLocFilter(e.target.value)}
-                title="Filtrer par localisation"
+                title={t('emp.filter.locTitle')}
               >
-                <option value="">Toutes les localisations</option>
+                <option value="">{t('emp.filter.allLocations')}</option>
                 {locOptions.map((loc) => (
                   <option key={loc} value={loc}>{loc}</option>
                 ))}
@@ -617,7 +611,7 @@ export default function EmployesPage() {
                 className="btn btn-outline btn-export btn-with-icon"
                 disabled={exporting}
                 onClick={() => void handleExport()}
-                title="Export RH : Dashboard + Base + Periode d'essai + CDD + EXIT"
+                title={t('emp.exportTitle')}
               >
                 {exporting ? (
                   <span className="btn-spinner" aria-hidden="true" />
@@ -637,8 +631,8 @@ export default function EmployesPage() {
                   type="button"
                   className="btn btn-accent btn-icon-only"
                   onClick={() => openEdit(null)}
-                  title="Ajouter un employé"
-                  aria-label="Ajouter un employé"
+                  title={t('emp.addTitle')}
+                  aria-label={t('emp.addTitle')}
                 >
                   <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" strokeWidth="2.25" strokeLinecap="round" aria-hidden>
                     <line x1="12" y1="5" x2="12" y2="19" />
@@ -650,7 +644,7 @@ export default function EmployesPage() {
           </div>
         </div>
 
-        <div className="exco-main-tabs employees-main-tabs" role="tablist" aria-label="Liste des employés">
+        <div className="exco-main-tabs employees-main-tabs" role="tablist" aria-label={t('emp.title')}>
           <button
             type="button"
             role="tab"
@@ -658,7 +652,7 @@ export default function EmployesPage() {
             aria-selected={tab === 'dashboard'}
             onClick={() => setTab('dashboard')}
           >
-            Dashboard
+            {t('emp.tab.dashboard')}
           </button>
           <button
             type="button"
@@ -667,7 +661,7 @@ export default function EmployesPage() {
             aria-selected={tab === 'liste'}
             onClick={() => setTab('liste')}
           >
-            Liste
+            {t('emp.tab.list')}
             <span className="employees-tab-count">{dashboardEmployees.length}</span>
           </button>
           <button
@@ -677,10 +671,10 @@ export default function EmployesPage() {
             aria-selected={tab === 'essai'}
             onClick={() => setTab('essai')}
           >
-            Période d&apos;essai
+            {t('emp.tab.trial')}
             <span className="employees-tab-count">{essaiList.length}</span>
             {essaiAlertCount > 0 && (
-              <span className="employees-tab-alert" title="Évaluations à préparer (J-30)">
+              <span className="employees-tab-alert" title={t('emp.trialAlert')}>
                 {essaiAlertCount}
               </span>
             )}
@@ -692,10 +686,10 @@ export default function EmployesPage() {
             aria-selected={tab === 'cdd'}
             onClick={() => setTab('cdd')}
           >
-            CDD
+            {t('emp.tab.cdd')}
             <span className="employees-tab-count">{cddList.length}</span>
             {cddAlertCount > 0 && (
-              <span className="employees-tab-alert is-cdd" title="CDD échus ou se terminant dans ≤ 30 jours">
+              <span className="employees-tab-alert is-cdd" title={t('emp.cddAlert')}>
                 {cddAlertCount}
               </span>
             )}
@@ -707,7 +701,7 @@ export default function EmployesPage() {
             aria-selected={tab === 'exit'}
             onClick={() => setTab('exit')}
           >
-            Exit
+            {t('emp.tab.exit')}
             <span className="employees-tab-count">{dashboardExits.length}</span>
           </button>
         </div>

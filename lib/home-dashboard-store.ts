@@ -10,6 +10,7 @@ import {
 } from './charroi-types';
 import { readDashboard } from './dashboard-store';
 import { calcDocumentCompletion, getDepartments } from './documents';
+import { roundRate } from './format-rate';
 import { readEmployees } from './employees-json-store';
 import { readDependantsData } from './dependants-json-store';
 import type {
@@ -165,7 +166,7 @@ export async function buildHomeDashboard(menus: MenuPermission[]): Promise<HomeD
     }
 
     const avgCompletion =
-      employees.length > 0 ? Math.round(completionSum / employees.length) : 0;
+      employees.length > 0 ? roundRate(completionSum / employees.length) : 0;
     const topDepartments = topCountBars(byDept, 8);
 
     result.employes = {

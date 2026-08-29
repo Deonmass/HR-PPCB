@@ -35,6 +35,7 @@ import {
   type LongServiceBeneficiary,
 } from '@/lib/politique-longs-etats';
 import type { Employee } from '@/lib/types';
+import { formatRate, ratioToRate } from '@/lib/format-rate';
 import Link from 'next/link';
 import { useEffect, useMemo, useState, type ReactNode } from 'react';
 import type { ChartDeptFilterSource, ChartFilterRenderContext } from '@/components/EnlargeableChartPanel';
@@ -215,19 +216,16 @@ function topRow(rows: { label: string; count: number }[] | undefined) {
 }
 
 function genderSharePct(count: number, total: number): string {
-  if (!total) return '0%';
-  const pct = Math.round((count / total) * 1000) / 10;
-  return Number.isInteger(pct)
-    ? `${pct}%`
-    : `${pct.toLocaleString('fr-FR', { maximumFractionDigits: 1, minimumFractionDigits: 1 })}%`;
+  if (!total) return formatRate(0);
+  return formatRate(ratioToRate(count, total));
 }
 
 function formatMomDelta(delta: number | null): { text: string; trend: 'up' | 'down' | 'flat' } | null {
   if (delta == null || !Number.isFinite(delta)) return null;
-  const pct = Math.round(delta * 1000) / 10;
-  if (pct > 0) return { text: `▲ ${pct.toLocaleString('fr-FR', { maximumFractionDigits: 1 })}% vs préc.`, trend: 'up' };
-  if (pct < 0) return { text: `▼ ${Math.abs(pct).toLocaleString('fr-FR', { maximumFractionDigits: 1 })}% vs préc.`, trend: 'down' };
-  return { text: '• 0% vs préc.', trend: 'flat' };
+  const pct = Math.round(delta * 10000) / 100;
+  if (pct > 0) return { text: `▲ ${formatRate(pct)} vs préc.`, trend: 'up' };
+  if (pct < 0) return { text: `▼ ${formatRate(Math.abs(pct))} vs préc.`, trend: 'down' };
+  return { text: `• ${formatRate(0)} vs préc.`, trend: 'flat' };
 }
 
 function formatKpiMeta(
@@ -490,23 +488,17 @@ export default function EmployeesHrDashboardView({
     }
     if (key === 'totalContractants') {
       const total = stats.totalContractants;
-      if (!total) return '0%';
-      const pct = Math.round((stats.contractantsPermanents / total) * 1000) / 10;
-      return Number.isInteger(pct)
-        ? `${pct}% perm.`
-        : `${pct.toLocaleString('fr-FR', { maximumFractionDigits: 1, minimumFractionDigits: 1 })}% perm.`;
+      if (!total) return formatRate(0);
+      return `${formatRate(ratioToRate(stats.contractantsPermanents, total), { suffix: '' })}% perm.`;
     }
     const value = stats[key as keyof typeof stats];
     if (typeof value !== 'number' || !Number.isFinite(value)) return null;
     if (key === 'total') return '100%';
 
     const base = key === 'alertesEssai' ? stats.totalEssai : stats.total;
-    if (!base || base <= 0) return '0%';
+    if (!base || base <= 0) return formatRate(0);
 
-    const pct = Math.round((value / base) * 1000) / 10;
-    return Number.isInteger(pct)
-      ? `${pct}%`
-      : `${pct.toLocaleString('fr-FR', { maximumFractionDigits: 1, minimumFractionDigits: 1 })}%`;
+    return formatRate(ratioToRate(value, base));
   };
 
   const momDelta = (key: (typeof KPI_META)[number]['key']) => {

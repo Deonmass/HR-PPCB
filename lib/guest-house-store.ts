@@ -28,6 +28,7 @@ import {
   roomDisplayName,
 } from './guest-house-types';
 import { canPersistProjectFiles, getWritableDataRoot } from './runtime-mode';
+import { ratioToRate } from './format-rate';
 
 const MONTH_LABELS = [
   'Janvier', 'Février', 'Mars', 'Avril', 'Mai', 'Juin',
@@ -318,7 +319,7 @@ function buildYearMonthly(data: GuestHouseStoreData, year: number): GuestHouseMo
     }
     const capacityNights = onsiteRoomCount * daysInMonth;
     const occupancyRate = capacityNights > 0
-      ? Math.round((nights / capacityNights) * 1000) / 10
+      ? ratioToRate(nights, capacityNights)
       : 0;
     points.push({
       key,
@@ -377,7 +378,7 @@ export function buildDashboard(data: GuestHouseStoreData): GuestHouseDashboard {
   const kimpeseOccupied = kimpeseRooms.filter((room) => occupiedRoomIds.has(room.id)).length;
   const onsiteRooms = onsiteRoomsList.length;
   const occupancyRate = onsiteRooms > 0
-    ? Math.round((occupiedOnsite / onsiteRooms) * 1000) / 10
+    ? ratioToRate(occupiedOnsite, onsiteRooms)
     : 0;
 
   const endingSoon = data.reservations

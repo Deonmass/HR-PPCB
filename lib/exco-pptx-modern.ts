@@ -76,7 +76,7 @@ function num(n: number | null | undefined, digits = 0): string {
   });
 }
 
-function pct(n: number | null | undefined, digits = 1): string {
+function pct(n: number | null | undefined, digits = 2): string {
   if (n == null || !Number.isFinite(n)) return '—';
   return `${n.toFixed(digits)}%`;
 }
@@ -85,7 +85,7 @@ function fmtMetric(kpi: ExcoMetricValue): string {
   if (kpi.value == null || kpi.value === '') return '—';
   if (typeof kpi.value === 'number') {
     if (kpi.unit === 'USD') return money(kpi.value, kpi.key === 'leaveCost' ? 2 : 0);
-    if (kpi.unit === '%') return pct(kpi.value, 1);
+    if (kpi.unit === '%') return pct(kpi.value, 2);
     if (kpi.unit === 'hrs' || kpi.unit === 'jours' || kpi.unit === 'ans') {
       const unitLabel =
         kpi.unit === 'jours' ? 'days' : kpi.unit === 'ans' ? 'yrs' : 'hrs';
@@ -113,7 +113,7 @@ function deltaLabel(
   if (deltaPct == null || !Number.isFinite(deltaPct)) {
     return { text: 'vs prev. —', color: PPC.muted };
   }
-  const pctVal = Math.round(deltaPct * 1000) / 10;
+  const pctVal = Math.round(deltaPct * 10000) / 100;
   const arrow = trend === 'up' || pctVal > 0 ? '▲' : trend === 'down' || pctVal < 0 ? '▼' : '•';
   const color =
     trend === 'up' ? PPC.success : trend === 'down' ? PPC.danger : PPC.muted;
@@ -971,7 +971,7 @@ export async function buildModernExcoContentPptx(report: ExcoReportPayload): Pro
               x: trackX, y: y + 0.05, w: fillW, h: 0.12,
               fill: { color: PPC.red }, line: { color: PPC.red },
             });
-            s.addText(`${it.pct}%`, {
+            s.addText(pct(it.pct, 2), {
               x: ch.x + 3.2, y, w: 0.7, h: 0.22,
               fontSize: 10, bold: true, color: PPC.ink, fontFace: FONT,
               align: 'right', valign: 'middle',
@@ -1402,7 +1402,7 @@ export async function buildModernExcoContentPptx(report: ExcoReportPayload): Pro
         x: 8.9, y, w: 2.4, h: 0.2,
         fontSize: 9, color: PPC.ink, fontFace: FONT,
       });
-      s.addText(`${b.pct}%`, {
+      s.addText(pct(b.pct, 2), {
         x: 11.9, y, w: 0.85, h: 0.2,
         fontSize: 9, bold: true, color: PPC.ink, fontFace: FONT, align: 'right',
       });
@@ -1679,7 +1679,7 @@ export async function buildModernExcoContentPptx(report: ExcoReportPayload): Pro
     await paintSlideCanvas(s, assets);
     addChrome(s, 'Internal AUDIT', '', period, '09');
     whiteBlock(s, 0.28, 0.92, 12.75, 6.3);
-    s.addText(`${closedPct}%`, {
+    s.addText(pct(closedPct, 2), {
       x: 0.4, y: 0.98, w: 1.6, h: 0.36,
       fontSize: 22, bold: true, color: PPC.red, fontFace: FONT_TITLE,
     });
@@ -1787,8 +1787,8 @@ export async function buildModernExcoContentPptx(report: ExcoReportPayload): Pro
       const colW = plotW / nBars;
       const barW = Math.min(0.58, colW * 0.82);
       gov.progression.forEach((p, i) => {
-        const pct = Math.min(100, Math.max(0, p.closedPct));
-        const barH = Math.max(0, (pct / 100) * plotH);
+        const barPct = Math.min(100, Math.max(0, p.closedPct));
+        const barH = Math.max(0, (barPct / 100) * plotH);
         const cx = plotX + i * colW + colW / 2;
         const color = '0D9488';
         if (barH > 0.02) {
@@ -1803,7 +1803,7 @@ export async function buildModernExcoContentPptx(report: ExcoReportPayload): Pro
           });
         }
         if (!p.isFuture) {
-          s.addText(`${p.closedPct}%`, {
+          s.addText(pct(p.closedPct, 2), {
             x: cx - colW / 2,
             y: plotY + plotH - barH - 0.24,
             w: colW,
@@ -1841,7 +1841,7 @@ export async function buildModernExcoContentPptx(report: ExcoReportPayload): Pro
       x: 9.05, y: 1.15, w: 3.8, h: 0.35,
       fontSize: 14, bold: true, color: PPC.red, fontFace: FONT_TITLE,
     });
-    s.addText(`${gov.auditClosedPct}% Closed`, {
+    s.addText(`${pct(gov.auditClosedPct, 2)} Closed`, {
       x: 9.05, y: 1.55, w: 3.8, h: 0.4,
       fontSize: 26, bold: true, color: PPC.ink, fontFace: FONT_TITLE,
     });

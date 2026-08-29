@@ -151,7 +151,7 @@ export default function FacturesMonthlyChart({ factures, year }: Props) {
                       </div>
                       <div className="factures-monthly-histo-bubble-row is-paid">
                         <span>Taux paiement</span>
-                        <em>{active.paidPct.toLocaleString('fr-FR', { maximumFractionDigits: 1 })} %</em>
+                        <em>{active.paidPct.toLocaleString('fr-FR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })} %</em>
                       </div>
                     </div>
                   )}

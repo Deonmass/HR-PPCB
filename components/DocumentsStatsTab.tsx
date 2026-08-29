@@ -2,6 +2,7 @@
 
 import { useMemo, useState } from 'react';
 import { calcDocumentCompletion, calcGlobalStats, parseRate } from '@/lib/documents';
+import { formatRate } from '@/lib/format-rate';
 import { buildAuditRateInfo } from '@/lib/audit-formulas';
 import type { EmployeeFilters } from '@/lib/employee-filters';
 import type { DashboardData, Employee } from '@/lib/types';
@@ -34,7 +35,7 @@ function toRow(employee: Employee): DashboardListRow {
       matricule: employee.matricule || '—',
       nom: employee.nom || '—',
       departement: employee.departement || '—',
-      taux: `${completion.pct}%`,
+      taux: formatRate(completion.pct),
       manquants: completion.missing,
     },
   };
@@ -127,7 +128,7 @@ export default function DocumentsStatsTab({
         <div className="card card-audit card-glow card-glow-violet">
           <div className="card-label">Moyenne calculée live</div>
           <AuditFormulaTooltip
-            value={`${stats.conformeRate}%`}
+            value={formatRate(stats.conformeRate)}
             title="Moyenne dossiers — formule audit"
             lines={audit.liveAvgLines}
             className="card-value"

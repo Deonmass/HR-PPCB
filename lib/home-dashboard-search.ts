@@ -38,9 +38,13 @@ function moduleShortcuts(menus: MenuPermission[]): Array<{
   menuIds: string[];
 }> {
   const all = [
+    { title: 'Rapport', subtitle: 'Hub des rapports RH', href: '/rapport', menuIds: ['exco.rapport'] },
     { title: 'EXCO', subtitle: 'Rapport mensuel ExCo', href: '/exco', menuIds: ['exco.rapport'] },
     { title: 'Employés', subtitle: 'Liste des agents', href: '/employes', menuIds: ['employes.liste'] },
     { title: 'Dépendants', subtitle: 'Bénéficiaires médicaux', href: '/employes/dependants', menuIds: ['employes.dependants'] },
+    { title: 'Poste', subtitle: 'Postes, recrutement, classification, offres et mouvements', href: '/employes/postes', menuIds: ['employes.postes', 'employes.recrutement', 'employes.classification', 'employes.offres', 'employes.mouvements'] },
+    { title: 'Recrutement', subtitle: 'Replacements et nouveaux postes', href: '/employes/recrutement', menuIds: ['employes.recrutement'] },
+    { title: 'Training', subtitle: 'Formations et compétences', href: '/training', menuIds: ['training'] },
     { title: 'Offres', subtitle: 'Offres d’emploi', href: '/employes/offres', menuIds: ['employes.offres'] },
     { title: 'Mouvements', subtitle: 'Mutations et affectations', href: '/employes/mouvements', menuIds: ['employes.mouvements'] },
     { title: 'Postes', subtitle: 'Catalogue et postes vacants', href: '/employes/postes', menuIds: ['employes.postes'] },
@@ -52,9 +56,10 @@ function moduleShortcuts(menus: MenuPermission[]): Array<{
     { title: 'Entête', subtitle: 'Papiers à lettre', href: '/documents/entetes', menuIds: ['documents.entetes'] },
     { title: 'Exit forms', subtitle: 'Documents de sortie', href: '/documents/exit', menuIds: ['documents.exit'] },
     { title: 'Contrat standard', subtitle: 'Contrat CDD/CDI', href: '/documents/contrat-standard', menuIds: ['documents.contrat-standard'] },
-    { title: 'Convention collective', subtitle: 'Clauses et résumés', href: '/documents/convention-collective', menuIds: ['documents.convention-collective'] },
-    { title: 'Politique', subtitle: 'Politiques RH de référence', href: '/politique', menuIds: ['politique.longs-etats'] },
+    { title: 'Politique', subtitle: 'Politiques RH de référence', href: '/politique', menuIds: ['politique.longs-etats', 'politique.convention-collective', 'politique.heures-sup'] },
     { title: 'Longs états de service', subtitle: 'Récompense d’ancienneté', href: '/politique/longs-etats-de-service', menuIds: ['politique.longs-etats'] },
+    { title: 'Convention collective', subtitle: 'Clauses et résumés', href: '/politique/convention-collective', menuIds: ['politique.convention-collective', 'documents.convention-collective'] },
+    { title: 'Politique heures supplémentaires', subtitle: 'Finale oct. 25', href: '/politique/heures-supplementaires', menuIds: ['politique.heures-sup'] },
     { title: 'Newcomer', subtitle: 'Pack intégration newcomer', href: '/documents/newcomer', menuIds: ['documents.newcomer'] },
     { title: 'Voyages', subtitle: 'Historique missions', href: '/documents-voyage/historique', menuIds: ['travel.historique'] },
     { title: 'Établir voyage', subtitle: 'Cash request / dossier', href: '/documents-voyage/etablir', menuIds: ['travel.etablir'] },

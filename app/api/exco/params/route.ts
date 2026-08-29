@@ -5,6 +5,50 @@ import { emptyExcoOverlays } from '@/lib/exco-types';
 import { checkPermission } from '@/lib/require-permission';
 import { getAuditActor, withAudit } from '@/lib/with-audit';
 
+function hasNamedImport(
+  meta: { importedAt?: string; originalName?: string } | undefined,
+): boolean {
+  return Boolean(meta?.importedAt || meta?.originalName);
+}
+
+function monthHasOtImport(
+  overlays: {
+    importedSources?: Record<string, { importedAt?: string; originalName?: string }>;
+    overtimeImportsByMonth?: Record<string, { employees?: unknown[] }>;
+  },
+  month: number,
+): boolean {
+  if (hasNamedImport(overlays.importedSources?.componentPostedUnits)) return true;
+  const snap = overlays.overtimeImportsByMonth?.[String(month)];
+  return Boolean(snap && Array.isArray(snap.employees) && snap.employees.length > 0);
+}
+
+function monthHasLeaveImport(
+  overlays: {
+    importedSources?: Record<string, { importedAt?: string; originalName?: string }>;
+    leaveImportsByMonth?: Record<string, { counts?: { all?: number }; byMatricule?: Record<string, unknown> }>;
+  },
+  month: number,
+): boolean {
+  if (hasNamedImport(overlays.importedSources?.leaveBalances)) return true;
+  const snap = overlays.leaveImportsByMonth?.[String(month)];
+  if (!snap) return false;
+  if ((snap.counts?.all || 0) > 0) return true;
+  return Boolean(snap.byMatricule && Object.keys(snap.byMatricule).length > 0);
+}
+
+function monthHasEngagementsImport(
+  overlays: {
+    importedSources?: Record<string, { importedAt?: string; originalName?: string }>;
+    engagementsImportsByMonth?: Record<string, unknown[]>;
+  },
+  month: number,
+): boolean {
+  if (hasNamedImport(overlays.importedSources?.engagementsTerminations)) return true;
+  const rows = overlays.engagementsImportsByMonth?.[String(month)];
+  return Array.isArray(rows) && rows.length > 0;
+}
+
 function parsePeriod(url: URL): { year: number; month: number } | null {
   const year = Number(url.searchParams.get('year'));
   const month = Number(url.searchParams.get('month'));
@@ -29,30 +73,40 @@ export async function GET(request: Request) {
     const { overlays } = await getExcoOverlays(year, month);
     const uploads = await listExcoUploads(year, month);
     const importedSources = overlays.importedSources || {};
-    const monthKey = String(month);
     const imported = {
-      componentPostedUnits: Boolean(
-        importedSources.componentPostedUnits
-        || overlays.overtimeImportsByMonth?.[monthKey],
-      ),
-      leaveBalances: Boolean(
-        importedSources.leaveBalances
-        || overlays.leaveImportsByMonth?.[monthKey],
-      ),
-      engagementsTerminations: Boolean(
-        importedSources.engagementsTerminations
-        || overlays.engagementsImportsByMonth?.[monthKey]?.length,
-      ),
+      componentPostedUnits: monthHasOtImport(overlays, month),
+      leaveBalances: monthHasLeaveImport(overlays, month),
+      engagementsTerminations: monthHasEngagementsImport(overlays, month),
     };
-    const hasData = Boolean(
-      overlays.workbookSnapshot
-      || imported.componentPostedUnits
+    const hasData =
+      imported.componentPostedUnits
       || imported.leaveBalances
-      || imported.engagementsTerminations
-      || (Array.isArray(overlays.generationMeta?.sourceFiles)
-        && overlays.generationMeta!.sourceFiles.length > 0),
-    );
+      || imported.engagementsTerminations;
     const n = overlays.narrative || emptyExcoOverlays().narrative;
+    const leaveSnap = overlays.leaveImportsByMonth?.[String(month)];
+    const otSnap = overlays.overtimeImportsByMonth?.[String(month)];
+    const leaveDaysByMatricule: Record<string, number> = {};
+    const leaveValueFcByMatricule: Record<string, number> = {};
+    const ovtHoursByMatricule: Record<string, number> = {};
+    const ovtCostFcByMatricule: Record<string, number> = {};
+    if (monthHasLeaveImport(overlays, month) && leaveSnap?.byMatricule) {
+      for (const [mat, days] of Object.entries(leaveSnap.byMatricule)) {
+        if (days == null || !Number.isFinite(Number(days))) continue;
+        leaveDaysByMatricule[mat] = Number(days);
+      }
+      for (const [mat, fc] of Object.entries(leaveSnap.valueFcByMatricule || {})) {
+        if (fc == null || !Number.isFinite(Number(fc))) continue;
+        leaveValueFcByMatricule[mat] = Number(fc);
+      }
+    }
+    if (monthHasOtImport(overlays, month) && Array.isArray(otSnap?.employees)) {
+      for (const e of otSnap.employees) {
+        const mat = String(e.matricule || '').trim();
+        if (!mat) continue;
+        if (Number.isFinite(e.hours)) ovtHoursByMatricule[mat] = e.hours;
+        if (Number.isFinite(e.costFc)) ovtCostFcByMatricule[mat] = e.costFc;
+      }
+    }
     return NextResponse.json({
       year,
       month,
@@ -61,6 +115,12 @@ export async function GET(request: Request) {
       importedSources,
       imported,
       hasData,
+      baseImportColumns: {
+        leaveDaysByMatricule,
+        leaveValueFcByMatricule,
+        ovtHoursByMatricule,
+        ovtCostFcByMatricule,
+      },
       generationMeta: overlays.generationMeta,
       narrative: {
         highlights: n.highlights || '',

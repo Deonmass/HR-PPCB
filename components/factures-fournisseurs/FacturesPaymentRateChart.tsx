@@ -11,7 +11,7 @@ interface Props {
 }
 
 function formatPct(value: number): string {
-  return `${value.toLocaleString('fr-FR', { maximumFractionDigits: 1 })} %`;
+  return `${value.toLocaleString('fr-FR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })} %`;
 }
 
 function formatPctAnnotation(value: number): string {

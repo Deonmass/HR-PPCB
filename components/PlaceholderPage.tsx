@@ -1,9 +1,14 @@
+'use client';
+
+import { useI18n } from '@/contexts/LocaleContext';
+
 interface Props {
   title: string;
   description?: string;
 }
 
 export default function PlaceholderPage({ title, description }: Props) {
+  const { t } = useI18n();
   return (
     <>
       <div className="page-header">
@@ -13,7 +18,7 @@ export default function PlaceholderPage({ title, description }: Props) {
         </div>
       </div>
       <div className="panel panel-padded placeholder-panel">
-        <p>Cette section sera disponible prochainement.</p>
+        <p>{t('common.comingSoon')}</p>
       </div>
     </>
   );

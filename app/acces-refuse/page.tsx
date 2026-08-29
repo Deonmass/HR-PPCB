@@ -2,21 +2,23 @@
 
 import Link from 'next/link';
 import { usePermissions } from '@/contexts/PermissionContext';
+import { useI18n } from '@/contexts/LocaleContext';
 
 export default function AccesRefusePage() {
   const { firstAccessiblePath } = usePermissions();
+  const { t } = useI18n();
 
   return (
     <div className="permissions-empty" style={{ padding: '3rem 1rem' }}>
-      <h2>Accès refusé</h2>
-      <p>Vous n&apos;avez pas la permission d&apos;accéder à cette page.</p>
+      <h2>{t('common.accessDenied')}</h2>
+      <p>{t('common.accessDeniedText')}</p>
       {firstAccessiblePath ? (
         <Link href={firstAccessiblePath} className="btn btn-primary" style={{ marginTop: '1rem', display: 'inline-block' }}>
-          Retour à l&apos;accueil
+          {t('common.backHome')}
         </Link>
       ) : (
         <p style={{ marginTop: '1rem', color: 'var(--muted)' }}>
-          Aucune page n&apos;est accessible avec vos permissions actuelles. Contactez un administrateur.
+          {t('common.noAccess')}
         </p>
       )}
     </div>

@@ -10,11 +10,16 @@ import {
   resolveConventionPdfPath,
   upsertConventionNote,
 } from '@/lib/convention-collective-store';
-import { checkPermission } from '@/lib/require-permission';
+import { checkAnyPermission, checkPermission } from '@/lib/require-permission';
 import { auditSimpleAction, getAuditActor } from '@/lib/with-audit';
 
+const CONVENTION_VIEW = [
+  { menuId: 'documents.convention-collective', action: 'view' as const },
+  { menuId: 'politique.convention-collective', action: 'view' as const },
+];
+
 export async function GET(request: Request) {
-  const denied = await checkPermission('documents.convention-collective', 'view');
+  const denied = await checkAnyPermission(CONVENTION_VIEW);
   if (denied) return denied;
 
   const { searchParams } = new URL(request.url);

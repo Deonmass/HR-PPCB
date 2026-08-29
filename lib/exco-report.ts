@@ -9,6 +9,7 @@ import {
   parseDisplayDateParts,
 } from './employee-columns';
 import { employeesPresentOnAsOf, isFemaleGender, isMaleGender } from './employees-hr-dashboard';
+import { ratioToRate } from './format-rate';
 import { readEmployeesBundle } from './employees-json-store';
 import { calcDocumentCompletion } from './documents';
 import { getExcoOverlays, getExcoYearLeaveImports, getExcoYearOvertimeImports } from './exco-store';
@@ -102,7 +103,7 @@ function isHqSite(site: string): boolean {
 
 function sharePct(part: number, total: number): number | null {
   if (!total) return null;
-  return Math.round((part / total) * 1000) / 10;
+  return ratioToRate(part, total);
 }
 
 /** Ratio H/F : Sites (hors HQ) vs Head Office. */
@@ -513,10 +514,10 @@ async function buildCalendarYearTrends(
         exits: sysExits,
         turnoverPct:
           hcForRate > 0
-            ? Math.round((((sysHires + sysExits) / 2) / hcForRate) * 1000) / 10
+            ? ratioToRate((sysHires + sysExits) / 2, hcForRate)
             : null,
         attritionPct:
-          hcForRate > 0 ? Math.round((sysExits / hcForRate) * 1000) / 10 : null,
+          hcForRate > 0 ? ratioToRate(sysExits, hcForRate) : null,
         promotions: locked.promotions,
         overtimeHours: Math.round(overtimeHours * 100) / 100,
         staffCost: locked.staffCost,
@@ -592,9 +593,9 @@ async function buildCalendarYearTrends(
       lubudi: bySite.get('Lubudi') ?? 0,
       graduates: bySite.get('Graduates') ?? 0,
       genderMalePct:
-        headcount > 0 ? Math.round((males.length / headcount) * 1000) / 10 : null,
+        headcount > 0 ? ratioToRate(males.length, headcount) : null,
       genderFemalePct:
-        headcount > 0 ? Math.round((females.length / headcount) * 1000) / 10 : null,
+        headcount > 0 ? ratioToRate(females.length, headcount) : null,
       ...genderPctByScope(present),
       averageAge: avg(ages),
       averageAgeMale: avg(agesMale),
@@ -604,11 +605,11 @@ async function buildCalendarYearTrends(
       // Turnover = (IN + OUT) / 2 / effectif
       turnoverPct:
         headcount > 0
-          ? Math.round((((hires + exitsCount) / 2) / headcount) * 1000) / 10
+          ? ratioToRate((hires + exitsCount) / 2, headcount)
           : null,
       // Attrition = OUT / effectif
       attritionPct:
-        headcount > 0 ? Math.round((exitsCount / headcount) * 1000) / 10 : null,
+        headcount > 0 ? ratioToRate(exitsCount, headcount) : null,
       promotions,
       overtimeHours: Math.round(overtimeHours * 100) / 100,
       staffCost: finance.staffCost ?? null,
@@ -664,37 +665,37 @@ async function computeBlock(
   // Turnover = (IN + OUT) / 2 / effectif
   const turnoverPct =
     headcount > 0
-      ? Math.round((((hires + exitsCount) / 2) / headcount) * 1000) / 10
+      ? ratioToRate((hires + exitsCount) / 2, headcount)
       : null;
   const prevTurnoverPct =
     prevHeadcount > 0
-      ? Math.round((((prevHires + prevExits) / 2) / prevHeadcount) * 1000) / 10
+      ? ratioToRate((prevHires + prevExits) / 2, prevHeadcount)
       : null;
 
   // Attrition = OUT / effectif
   const attritionPct =
-    headcount > 0 ? Math.round((exitsCount / headcount) * 1000) / 10 : null;
+    headcount > 0 ? ratioToRate(exitsCount, headcount) : null;
   const prevAttritionPct =
-    prevHeadcount > 0 ? Math.round((prevExits / prevHeadcount) * 1000) / 10 : null;
+    prevHeadcount > 0 ? ratioToRate(prevExits, prevHeadcount) : null;
 
   const males = present.filter((e) => isMaleGender(e.gender));
   const females = present.filter((e) => isFemaleGender(e.gender));
   const genderMale = males.length;
   const genderFemale = females.length;
   const genderMalePct =
-    headcount > 0 ? Math.round((genderMale / headcount) * 1000) / 10 : null;
+    headcount > 0 ? ratioToRate(genderMale, headcount) : null;
   const genderFemalePct =
-    headcount > 0 ? Math.round((genderFemale / headcount) * 1000) / 10 : null;
+    headcount > 0 ? ratioToRate(genderFemale, headcount) : null;
 
   const prevMales = presentPrev.filter((e) => isMaleGender(e.gender));
   const prevFemales = presentPrev.filter((e) => isFemaleGender(e.gender));
   const prevGenderMalePct =
     prevHeadcount > 0
-      ? Math.round((prevMales.length / prevHeadcount) * 1000) / 10
+      ? ratioToRate(prevMales.length, prevHeadcount)
       : null;
   const prevGenderFemalePct =
     prevHeadcount > 0
-      ? Math.round((prevFemales.length / prevHeadcount) * 1000) / 10
+      ? ratioToRate(prevFemales.length, prevHeadcount)
       : null;
 
   const ages = present

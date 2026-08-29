@@ -28,6 +28,7 @@ import {
   roomDisplayName,
 } from '@/lib/guest-house-types';
 import type { Employee } from '@/lib/types';
+import { formatRate, ratioToRate } from '@/lib/format-rate';
 import { confirmDelete, showError, showSuccess } from '@/lib/swal';
 import {
   buildColumnFilterValues,
@@ -603,7 +604,7 @@ export default function VillageGuestHousePage() {
       .map((room) => {
         const nights = nightsByRoom.get(room.id) ?? 0;
         const rate = bounds.days > 0
-          ? Math.round((nights / bounds.days) * 1000) / 10
+          ? ratioToRate(nights, bounds.days)
           : 0;
         const kimpese = isKimpeseRoom(room);
         return {
@@ -636,7 +637,7 @@ export default function VillageGuestHousePage() {
       .map((room) => {
         const nights = nightsByRoom.get(room.id) ?? 0;
         const rate = bounds.days > 0
-          ? Math.round((nights / bounds.days) * 1000) / 10
+          ? ratioToRate(nights, bounds.days)
           : 0;
         return {
           roomId: room.id,
@@ -720,7 +721,7 @@ export default function VillageGuestHousePage() {
       .reduce((sum, item) => sum + item.nights, 0);
     const capacityNights = onsiteRooms * (bounds?.days ?? 0);
     const occupancyRate = capacityNights > 0
-      ? Math.round((totalNights / capacityNights) * 1000) / 10
+      ? ratioToRate(totalNights, capacityNights)
       : 0;
 
     const occupiedReservations = monthReservations.filter(
@@ -1450,7 +1451,7 @@ export default function VillageGuestHousePage() {
                   <div className="guest-house-kpi-text">
                     <div className="card-label">Occupées</div>
                     <div className="card-value">{monthDashboard.occupied}</div>
-                    <div className="text-muted guest-house-kpi-sub">{monthDashboard.occupancyRate}% taux</div>
+                    <div className="text-muted guest-house-kpi-sub">{formatRate(monthDashboard.occupancyRate)} taux</div>
                   </div>
                   <span className="guest-house-kpi-icon"><IconUsers /></span>
                 </button>
@@ -1978,7 +1979,7 @@ export default function VillageGuestHousePage() {
                       onClick={() => openOccupancyModal(viewMonth)}
                       title="Voir l’occupation par chambre"
                     >
-                      Occupation <strong>{monthDashboard.occupancyRate}%</strong>
+                      Occupation <strong>{formatRate(monthDashboard.occupancyRate)}</strong>
                     </button>
                     <div className="tabs guest-house-subtabs">
                       <button

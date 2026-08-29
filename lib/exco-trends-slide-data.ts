@@ -5,6 +5,7 @@ import {
   TEMPLATE_YTD_JUNE_2026,
   excoFyColToYearMonth,
 } from '@/lib/exco-template-baseline';
+import { formatRate, ratioToRate } from '@/lib/format-rate';
 
 export type ExcoFyCol = {
   index: number;
@@ -74,7 +75,7 @@ function cell(value: number | null | undefined, digits = 0, visible = true): str
 function pctCell(value: number | null | undefined, visible = true): string {
   if (!visible) return '';
   if (value == null || !Number.isFinite(value)) return '';
-  return `${Math.round(value)}%`;
+  return `${value.toFixed(2)}%`;
 }
 
 function dashOr(value: string): string {
@@ -124,7 +125,7 @@ export function buildTrendsFinancialSection(report: ExcoReportPayload): ExcoTren
     });
 
   const pctOfBudget = (ytd: number, budget: number | null) =>
-    budget && ytd ? `${Math.round((ytd / budget) * 100)}%` : '—';
+    budget && ytd ? formatRate(ratioToRate(ytd, budget)) : '—';
 
   return sectionWithCurrent(fyCols, {
     title: '1. Financial KPIs',
@@ -271,8 +272,8 @@ export function buildTrendsAgeSection(report: ExcoReportPayload): ExcoTrendTable
     let delta = '—';
     if (cur != null && prv != null && Number.isFinite(cur) && Number.isFinite(prv)) {
       const d = Math.round((cur - prv) * 10) / 10;
-      const pct = prv === 0 ? (cur === 0 ? 0 : 100) : Math.round(((cur - prv) / Math.abs(prv)) * 1000) / 10;
-      delta = `${d >= 0 ? '+' : ''}${d.toLocaleString('en-US', { minimumFractionDigits: 1, maximumFractionDigits: 1 })} (${pct >= 0 ? '+' : ''}${pct}%)`;
+      const pct = prv === 0 ? (cur === 0 ? 0 : 100) : Math.round(((cur - prv) / Math.abs(prv)) * 10000) / 100;
+      delta = `${d >= 0 ? '+' : ''}${d.toLocaleString('en-US', { minimumFractionDigits: 1, maximumFractionDigits: 1 })} (${pct >= 0 ? '+' : ''}${pct.toFixed(2)}%)`;
     }
     return {
       label,

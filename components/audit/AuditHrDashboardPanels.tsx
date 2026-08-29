@@ -7,6 +7,7 @@ import type {
   AuditHrOwnerStats,
   AuditHrStatus,
 } from '@/lib/audit-hr-types';
+import { formatRate } from '@/lib/format-rate';
 
 const STATUS_COLORS: Record<AuditHrStatus, string> = {
   Closed: '#0f766e',
@@ -212,7 +213,7 @@ function OwnerStackedChart({ owners }: { owners: AuditHrOwnerStats[] }): ReactNo
                             <div
                               className="audit-hr-stack-seg"
                               style={{ flex: o.closed, background: STATUS_COLORS.Closed }}
-                              title={`Closed: ${o.closed} (${o.closedPct}%)`}
+                              title={`Closed: ${o.closed} (${formatRate(o.closedPct)})`}
                             />
                           )}
                           {o.ongoing > 0 && (
@@ -306,9 +307,9 @@ function ProgressionHistogram({ rows }: { rows: AuditHrMonthProgress[] }): React
                     <div
                       key={p.month}
                       className="audit-hr-prog-col"
-                      title={`${p.month}: ${p.closedPct}% (${p.closedCumul} closed)`}
+                      title={`${p.month}: ${formatRate(p.closedPct)} (${p.closedCumul} closed)`}
                     >
-                      <span className="audit-hr-prog-value">{p.closedPct}%</span>
+                      <span className="audit-hr-prog-value">{formatRate(p.closedPct)}</span>
                       <div className="audit-hr-prog-bar" style={{ height: h }} />
                     </div>
                   );
@@ -362,7 +363,7 @@ export function AuditHrDashboardPanels({
         </div>
         <div className="audit-hr-kpi audit-hr-kpi-cumul">
           <span className="audit-hr-kpi-label">% Closed (cumul)</span>
-          <strong className="audit-hr-kpi-value">{dashboard.closedPct}%</strong>
+          <strong className="audit-hr-kpi-value">{formatRate(dashboard.closedPct)}</strong>
           <span className="audit-hr-kpi-detail">
             {dashboard.closed} / {dashboard.total} clôturés
           </span>
@@ -388,7 +389,7 @@ export function AuditHrDashboardPanels({
         <AuditDonut
           title="Taux par statut"
           items={statusItems}
-          centerValue={`${dashboard.closedPct}%`}
+          centerValue={formatRate(dashboard.closedPct)}
           centerHint="closed"
         />
         <AuditDonut

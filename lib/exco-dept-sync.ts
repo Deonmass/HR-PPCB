@@ -11,7 +11,6 @@ import {
 } from './exco-department-map';
 import { resolveExcoBaseWorkbook } from './exco-base-source';
 import { parseExcoNewReport } from './exco-new-report-parse';
-import { readEmployeesBundle, upsertEmployee } from './employees-json-store';
 import {
   listDepartments,
   listServices,
@@ -122,36 +121,12 @@ export async function syncExcoDepartmentsAndServices(input: {
     createdServices += 1;
   }
 
-  const bundle = await readEmployeesBundle();
-  let employeesUpdated = 0;
-  const baseByMat = new Map(snap.employees.map((e) => [e.matricule, e]));
-  for (const emp of [...bundle.employees, ...bundle.exits]) {
-    const base = baseByMat.get(emp.matricule);
-    const fromBase = base?.department
-      ? resolveExcoDepartment(base.department)
-      : null;
-    const fromEmp = resolveExcoDepartment(emp.departement || '');
-    const target = fromBase?.department || fromEmp.department;
-    if (!target) continue;
-    if (
-      norm(emp.departement || '') === norm(target)
-      && norm(emp.departmentHr || '') === norm(target)
-    ) {
-      continue;
-    }
-    await upsertEmployee({
-      ...emp,
-      departement: target,
-      departmentHr: target,
-    });
-    employeesUpdated += 1;
-  }
-
+  // Fiches employés : le département système fait foi (jamais écrasé par BASE).
   return {
     createdDepartments,
     renamedDepartments,
     deactivatedServiceDepts,
     createdServices,
-    employeesUpdated,
+    employeesUpdated: 0,
   };
 }

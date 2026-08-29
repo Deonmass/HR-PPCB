@@ -1,4 +1,5 @@
 import type { DocumentField, Employee, CompletionStats, DashboardData } from './types';
+import { formatRate, ratioToRate, roundRate } from './format-rate';
 
 /** 19 critères — libellés exacts feuille CHECK DOCUMENTS BASE */
 export const DOCUMENT_FIELDS: DocumentField[] = [
@@ -41,7 +42,7 @@ export function calcDocumentCompletion(employee: Employee): CompletionStats {
     if (val === 'Y') complete++;
   }
 
-  const pct = applicable === 0 ? 100 : Math.round((complete / applicable) * 100);
+  const pct = applicable === 0 ? 100 : ratioToRate(complete, applicable);
   return { applicable, complete, pct, missing: applicable - complete };
 }
 
@@ -58,7 +59,7 @@ export function calcRowCellStats(employee: Employee) {
   }
 
   const total = y + n + na;
-  const rate = total ? Math.round(((y + na) / total) * 100) : 100;
+  const rate = total ? ratioToRate(y + na, total) : 100;
 
   return { y, n, na, total, rate };
 }
@@ -89,10 +90,10 @@ export function calcCellAggregateStats(employees: Employee[]): CellAggregateStat
   }
 
   const totalCells = sumY + sumN + sumNa || 1;
-  const yPct = Math.round((sumY / totalCells) * 100);
-  const naPct = Math.round((sumNa / totalCells) * 100);
-  const nPct = Math.round((sumN / totalCells) * 100);
-  const conformeRate = Math.round(((sumY + sumNa) / totalCells) * 100);
+  const yPct = ratioToRate(sumY, totalCells);
+  const naPct = ratioToRate(sumNa, totalCells);
+  const nPct = ratioToRate(sumN, totalCells);
+  const conformeRate = ratioToRate(sumY + sumNa, totalCells);
 
   return {
     sumY,
@@ -121,12 +122,12 @@ export function calcGlobalStats(employees: Employee[]) {
     byDept[dept].sumPct += pct;
   }
 
-  const avgPct = total ? Math.round(sumPct / total) : 0;
+  const avgPct = total ? roundRate(sumPct / total) : 0;
   const departments = Object.entries(byDept)
     .map(([name, d]) => ({
       name,
       total: d.count,
-      rate: Math.round(d.sumPct / d.count),
+      rate: roundRate(d.sumPct / d.count),
     }))
     .sort((a, b) => b.rate - a.rate);
 
@@ -144,8 +145,8 @@ export function getConformiteRates(
   return {
     conformeRate: agg.conformeRate,
     nonConformeRate: agg.nonConformeRate,
-    conformeLabel: `${agg.conformeRate}%`,
-    nonConformeLabel: `${agg.nonConformeRate}%`,
+    conformeLabel: formatRate(agg.conformeRate),
+    nonConformeLabel: formatRate(agg.nonConformeRate),
     liveAvg: stats.conformeRate,
     aggregate: agg,
   };
@@ -192,14 +193,14 @@ export function calcDepartmentDashboardStats(employees: Employee[]) {
   return Object.entries(byDept)
     .map(([name, d]) => {
       const totalCells = d.y + d.n + d.na || 1;
-      const rate = Math.round(d.sumPct / d.count);
+      const rate = roundRate(d.sumPct / d.count);
       return {
         name,
         total: d.count,
-        y: `${Math.round((d.y / totalCells) * 100)}%`,
-        na: `${Math.round((d.na / totalCells) * 100)}%`,
-        n: `${Math.round((d.n / totalCells) * 100)}%`,
-        rate: `${rate}%`,
+        y: formatRate(ratioToRate(d.y, totalCells)),
+        na: formatRate(ratioToRate(d.na, totalCells)),
+        n: formatRate(ratioToRate(d.n, totalCells)),
+        rate: formatRate(rate),
       };
     })
     .sort((a, b) => parseRate(b.rate) - parseRate(a.rate));
@@ -211,8 +212,8 @@ export function buildDashboardFromEmployees(employees: Employee[]): DashboardDat
   return {
     dashboard: {
       totalEmployee: employees.length,
-      conformeRate: `${agg.conformeRate}%`,
-      noConformeRate: `${agg.nonConformeRate}%`,
+      conformeRate: formatRate(agg.conformeRate),
+      noConformeRate: formatRate(agg.nonConformeRate),
       departments: calcDepartmentDashboardStats(employees),
     },
     inspections: calcInspectionFromEmployees(employees),
@@ -221,7 +222,7 @@ export function buildDashboardFromEmployees(employees: Employee[]): DashboardDat
 
 export function parseRate(value: string | number): number {
   if (typeof value === 'number') return value;
-  return parseInt(String(value).replace('%', ''), 10) || 0;
+  return parseFloat(String(value).replace('%', '').replace(',', '.')) || 0;
 }
 
 export { getDepartments } from './employee-utils';

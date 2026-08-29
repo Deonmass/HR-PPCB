@@ -1,7 +1,7 @@
 'use client';
 
 import { useCallback, useEffect, useMemo, useState } from 'react';
-import { useRouter } from 'next/navigation';
+import { useRouter, useSearchParams } from 'next/navigation';
 import HomeBarChart from '@/components/home/HomeBarChart';
 import HomeDonutChart from '@/components/home/HomeDonutChart';
 import PermissionGate from '@/components/PermissionGate';
@@ -9,6 +9,7 @@ import RefreshButton from '@/components/RefreshButton';
 import RowContextMenu, { type ContextMenuItem } from '@/components/RowContextMenu';
 import TableHeaderFilter from '@/components/TableHeaderFilter';
 import { usePermissions } from '@/contexts/PermissionContext';
+import { formatRate, ratioToRate } from '@/lib/format-rate';
 import type {
   CatalogPosteUpdate,
   EmployeePosteUpdate,
@@ -323,7 +324,7 @@ function DashboardView({
           <div className="card-label">Taux de multi-poste</div>
           <div className="card-value">
             {dashboard.totalPostes
-              ? `${Math.round((dashboard.multiOccupant / dashboard.totalPostes) * 100)}%`
+              ? formatRate(ratioToRate(dashboard.multiOccupant, dashboard.totalPostes))
               : '—'}
           </div>
         </div>
@@ -1054,6 +1055,7 @@ function VacantModal({
 
 export default function PostesPage() {
   const router = useRouter();
+  const searchParams = useSearchParams();
   const { can } = usePermissions();
   const canEdit =
     can('employes.postes', 'edit')
@@ -1072,6 +1074,14 @@ export default function PostesPage() {
   const [catalogFilters, setCatalogFilters] = useState(EMPTY_CATALOG_FILTERS);
   const [vacantFilters, setVacantFilters] = useState(EMPTY_VACANT_FILTERS);
   const [saving, setSaving] = useState(false);
+
+  useEffect(() => {
+    const q = searchParams.get('q')?.trim();
+    if (q) {
+      setSearch(q);
+      setTab('catalogue');
+    }
+  }, [searchParams]);
 
   const [catalogOpen, setCatalogOpen] = useState(false);
   const [catalogMode, setCatalogMode] = useState<ModalMode>('view');

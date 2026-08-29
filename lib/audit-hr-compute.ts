@@ -5,6 +5,7 @@ import type {
   AuditHrSeverity,
   AuditHrStatus,
 } from './audit-hr-types';
+import { ratioToRate } from './format-rate';
 
 function parseIsoDate(value: string | undefined | null): Date | null {
   if (!value) return null;
@@ -87,7 +88,7 @@ export function buildAuditHrDashboard(
   const closed = views.filter((v) => v.status === 'Closed').length;
   const ongoing = views.filter((v) => v.status === 'On going').length;
   const overdue = views.filter((v) => v.status === 'Overdue').length;
-  const closedPct = total ? Math.round((closed / total) * 100) : 0;
+  const closedPct = total ? ratioToRate(closed, total) : 0;
 
   const byStatus: AuditHrDashboard['byStatus'] = (
     [

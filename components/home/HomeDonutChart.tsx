@@ -2,6 +2,7 @@
 
 import { useMemo } from 'react';
 import type { HomeChartSlice } from '@/lib/home-dashboard-types';
+import { formatRate, ratioToRate } from '@/lib/format-rate';
 
 interface Props {
   title: string;
@@ -177,7 +178,7 @@ export default function HomeDonutChart({
                     <span className="home-donut-legend-count">{formatValue(arc.value)}</span>
                     {showSharePercent && total > 0 ? (
                       <span className="home-donut-legend-pct">
-                        {Math.round((arc.value / total) * 100)}%
+                        {formatRate(ratioToRate(arc.value, total))}
                       </span>
                     ) : null}
                   </strong>
@@ -192,7 +193,7 @@ export default function HomeDonutChart({
                     <span className="home-donut-legend-count">{formatValue(arc.value)}</span>
                     {showSharePercent && total > 0 ? (
                       <span className="home-donut-legend-pct">
-                        {Math.round((arc.value / total) * 100)}%
+                        {formatRate(ratioToRate(arc.value, total))}
                       </span>
                     ) : null}
                   </strong>

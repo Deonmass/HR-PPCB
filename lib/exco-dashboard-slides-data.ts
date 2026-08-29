@@ -56,7 +56,7 @@ export function buildTrainingSlideData(report: ExcoReportPayload): ExcoTrainingS
     { label: 'Safety Topics (Hours)', pct: mk.safetyTopicsHoursPct ?? 0 },
   ].map((s) => ({
     ...s,
-    pct: s.pct != null && Number.isFinite(s.pct) ? Math.round(s.pct) : 0,
+    pct: s.pct != null && Number.isFinite(s.pct) ? Math.round(s.pct * 100) / 100 : 0,
   }));
 
   const fyCols = excoFyColumns(report.year, report.month);
@@ -87,8 +87,8 @@ export function buildTrainingSlideData(report: ExcoReportPayload): ExcoTrainingS
     periodLabel: report.periodLabel,
     budget: money(mk.trainingBudget, 0),
     actual: money(mk.trainingCost, 2),
-    plantPct: plantPct != null ? `${Math.round(plantPct)} %` : '—',
-    hqPct: hqPct != null ? `${Math.round(hqPct)} %` : '—',
+    plantPct: plantPct != null ? `${Number(plantPct).toFixed(2)} %` : '—',
+    hqPct: hqPct != null ? `${Number(hqPct).toFixed(2)} %` : '—',
     hoursYtd: hours != null ? `${num(hours, 0)} Hours YTD` : '—',
     avgHoursPerEmp: avg != null ? `${avg} Hours` : '—',
     topicsCount: covered.length,

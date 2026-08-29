@@ -17,6 +17,7 @@ import {
 } from './village-agents';
 import type { VillagePresentation } from './village-presentation';
 import { defaultVillagePresentation } from './village-presentation';
+import { formatRate, ratioToRate } from './format-rate';
 import type { VillageMaison, VillageMaisonOccupancy, VillageTaille } from './village-types';
 
 type Slide = ReturnType<PptxGenJS['addSlide']>;
@@ -306,12 +307,12 @@ async function addDashboardSlide(
   addChrome(s, deck.dashboard.title, deck.period, '01', deck.chromeKicker);
 
   const occPct = stats.maisonsTotal
-    ? Math.round((stats.maisonsOccupees / stats.maisonsTotal) * 100)
+    ? ratioToRate(stats.maisonsOccupees, stats.maisonsTotal)
     : 0;
 
   const kpis: Array<{ label: string; value: string; sub?: string }> = [
     { label: 'Houses', value: String(stats.maisonsTotal), sub: 'Village inventory' },
-    { label: 'Occupied', value: String(stats.maisonsOccupees), sub: `${occPct}% occupancy` },
+    { label: 'Occupied', value: String(stats.maisonsOccupees), sub: `${formatRate(occPct)} occupancy` },
     { label: 'Vacant', value: String(stats.maisonsVides), sub: 'Available' },
     { label: 'Village', value: String(stats.village), sub: `${stats.villagePersonnes} with family` },
     { label: 'Kimpese', value: String(stats.kimpese), sub: `${stats.kimpesePersonnes} with family` },
@@ -332,13 +333,13 @@ async function addDashboardSlide(
   ];
   const typeRows = stats.parTaille.map((row, i) => {
     const fill = i % 2 === 0 ? PPC.white : PPC.panel;
-    const pct = row.total ? Math.round((row.occupees / row.total) * 100) : 0;
+    const pct = row.total ? ratioToRate(row.occupees, row.total) : 0;
     return [
       bodyCell(enLabel(row.label), fill, { bold: true, align: 'left' }),
       bodyCell(String(row.total), fill),
       bodyCell(String(row.occupees), fill, { color: PPC.success }),
       bodyCell(String(row.vides), fill, { color: row.vides ? PPC.warning : PPC.ink }),
-      bodyCell(`${pct}%`, fill, { bold: true, color: PPC.red }),
+      bodyCell(formatRate(pct), fill, { bold: true, color: PPC.red }),
     ];
   });
   const typeTotalFill = PPC.redSoft;
@@ -347,7 +348,7 @@ async function addDashboardSlide(
     bodyCell(String(stats.maisonsTotal), typeTotalFill, { bold: true }),
     bodyCell(String(stats.maisonsOccupees), typeTotalFill, { bold: true }),
     bodyCell(String(stats.maisonsVides), typeTotalFill, { bold: true }),
-    bodyCell(`${occPct}%`, typeTotalFill, { bold: true, color: PPC.red }),
+    bodyCell(formatRate(occPct), typeTotalFill, { bold: true, color: PPC.red }),
   ]);
 
   s.addText('Houses by type', {

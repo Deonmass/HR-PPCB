@@ -6,12 +6,25 @@ export interface PermissionMenuGroup {
   items: { id: string; label: string }[];
 }
 
-export const PERMISSION_MENU_CATALOG: PermissionMenuGroup[] = [
+function compareFrLabel(a: string, b: string): number {
+  return a.localeCompare(b, 'fr', { sensitivity: 'base' });
+}
+
+function withSortedMenus(groups: PermissionMenuGroup[]): PermissionMenuGroup[] {
+  return [...groups]
+    .map((group) => ({
+      ...group,
+      items: [...group.items].sort((a, b) => compareFrLabel(a.label, b.label)),
+    }))
+    .sort((a, b) => compareFrLabel(a.label, b.label));
+}
+
+export const PERMISSION_MENU_CATALOG: PermissionMenuGroup[] = withSortedMenus([
   {
-    id: 'exco',
-    label: 'EXCO',
+    id: 'rapport',
+    label: 'Rapport',
     items: [
-      { id: 'exco.rapport', label: 'Rapport EXCO' },
+      { id: 'exco.rapport', label: 'EXCO' },
     ],
   },
   {
@@ -27,10 +40,6 @@ export const PERMISSION_MENU_CATALOG: PermissionMenuGroup[] = [
     items: [
       { id: 'employes.liste', label: 'Liste employés' },
       { id: 'employes.dependants', label: 'Dependants' },
-      { id: 'employes.offres', label: 'Offres' },
-      { id: 'employes.mouvements', label: 'Mouvements' },
-      { id: 'employes.postes', label: 'Postes' },
-      { id: 'employes.classification', label: 'Classification des postes' },
       { id: 'employes.contractants', label: 'Contractants' },
       { id: 'employes.check-documents', label: 'Check documents' },
       { id: 'employes.heures', label: 'HS — Mon timesheet' },
@@ -42,6 +51,17 @@ export const PERMISSION_MENU_CATALOG: PermissionMenuGroup[] = [
       { id: 'employes.heures.policy', label: 'HS — Appliquer la politique' },
       { id: 'employes.heures.export', label: 'HS — Exporter' },
       { id: 'employes.heures.simulation', label: 'HS — Simulation' },
+    ],
+  },
+  {
+    id: 'poste',
+    label: 'Poste',
+    items: [
+      { id: 'employes.postes', label: 'Postes' },
+      { id: 'employes.recrutement', label: 'Recrutement' },
+      { id: 'employes.classification', label: 'Classification des postes' },
+      { id: 'employes.offres', label: 'Offres' },
+      { id: 'employes.mouvements', label: 'Mouvements' },
     ],
   },
   {
@@ -80,6 +100,8 @@ export const PERMISSION_MENU_CATALOG: PermissionMenuGroup[] = [
     label: 'Politique',
     items: [
       { id: 'politique.longs-etats', label: 'Longs états de service' },
+      { id: 'politique.convention-collective', label: 'Convention collective' },
+      { id: 'politique.heures-sup', label: 'Heures supplémentaires (oct. 25)' },
     ],
   },
   {
@@ -107,6 +129,13 @@ export const PERMISSION_MENU_CATALOG: PermissionMenuGroup[] = [
     label: 'Santé',
     items: [
       { id: 'sante', label: 'Santé' },
+    ],
+  },
+  {
+    id: 'training',
+    label: 'Training',
+    items: [
+      { id: 'training', label: 'Training' },
     ],
   },
   {
@@ -140,7 +169,7 @@ export const PERMISSION_MENU_CATALOG: PermissionMenuGroup[] = [
       { id: 'parametres.logs', label: 'Logs' },
     ],
   },
-];
+]);
 
 export const PERMISSION_ACTIONS: { id: PermissionAction; label: string }[] = [
   { id: 'view', label: 'Voir' },
@@ -212,6 +241,26 @@ export function mergePermissionsWithCatalog(menus: MenuPermission[]): MenuPermis
       if (grantNewPolitiqueMenus && defaultMenu.menuId.startsWith('politique.')) {
         return setAllMenuActions(defaultMenu, true);
       }
+      if (defaultMenu.menuId === 'politique.convention-collective') {
+        const doc = menus.find((menu) => menu.menuId === 'documents.convention-collective');
+        if (doc) {
+          return {
+            menuId: defaultMenu.menuId,
+            label: defaultMenu.label,
+            actions: { ...doc.actions },
+          };
+        }
+      }
+      if (defaultMenu.menuId === 'politique.heures-sup') {
+        const policy = menus.find((menu) => menu.menuId === 'employes.heures.policy');
+        if (policy) {
+          return {
+            menuId: defaultMenu.menuId,
+            label: defaultMenu.label,
+            actions: { ...policy.actions },
+          };
+        }
+      }
       if (defaultMenu.menuId.startsWith('politique.')) {
         const liste = menus.find((menu) => menu.menuId === 'employes.liste');
         if (liste) {
@@ -222,7 +271,17 @@ export function mergePermissionsWithCatalog(menus: MenuPermission[]): MenuPermis
           };
         }
       }
-      if (defaultMenu.menuId === 'employes.classification') {
+      if (defaultMenu.menuId === 'training') {
+        const liste = menus.find((menu) => menu.menuId === 'employes.liste');
+        if (liste) {
+          return {
+            menuId: defaultMenu.menuId,
+            label: defaultMenu.label,
+            actions: { ...liste.actions },
+          };
+        }
+      }
+      if (defaultMenu.menuId === 'employes.classification' || defaultMenu.menuId === 'employes.recrutement') {
         const postes = menus.find((menu) => menu.menuId === 'employes.postes');
         if (postes) {
           return {

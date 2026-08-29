@@ -2,6 +2,7 @@
 
 import { useMemo, useState } from 'react';
 import { KIMPESE_BUILDING } from '@/lib/guest-house-types';
+import { formatRate } from '@/lib/format-rate';
 
 export interface RoomOccupancyBar {
   roomId: string;
@@ -98,10 +99,10 @@ export default function GuestHouseRoomOccupancyChart({ monthLabel, rooms }: Prop
                             <div
                               className={`guest-house-histo-shell is-occupancy${isElsewhere ? ' is-elsewhere' : ''}`}
                               style={{ height: `${heightPct}%` }}
-                              title={`${item.label} · ${rate}%`}
+                              title={`${item.label} · ${formatRate(rate)}`}
                             >
                               <span className="guest-house-histo-tip">
-                                {rate}%
+                                {formatRate(rate)}
                               </span>
                               <div
                                 className={`guest-house-histo-fill is-occupancy${isElsewhere ? ' is-elsewhere' : ''}`}
@@ -116,7 +117,7 @@ export default function GuestHouseRoomOccupancyChart({ monthLabel, rooms }: Prop
                               <strong>{item.label}</strong>
                               <div className="guest-house-histo-bubble-row is-occupied">
                                 <span>Occupation</span>
-                                <em>{rate}%</em>
+                                <em>{formatRate(rate)}</em>
                               </div>
                               <div className="guest-house-histo-bubble-row is-muted">
                                 <span>Jours</span>

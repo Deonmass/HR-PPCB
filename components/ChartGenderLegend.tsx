@@ -1,5 +1,7 @@
 'use client';
 
+import { formatRate, ratioToRate } from '@/lib/format-rate';
+
 export type GenderFilterValue = '' | 'Hommes' | 'Femmes' | 'Non renseigné';
 
 interface Props {
@@ -45,7 +47,7 @@ export default function ChartGenderLegend({
             <span className="chart-gender-count chart-dept-filter-count">
               {option.count}
               {option.key && totalCount > 0
-                ? ` (${(Math.round((option.count / totalCount) * 1000) / 10).toLocaleString('fr-FR')}%)`
+                ? ` (${formatRate(ratioToRate(option.count, totalCount))})`
                 : ''}
             </span>
           </button>

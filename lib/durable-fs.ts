@@ -20,6 +20,7 @@ export const DURABLE_CHECK_DOCUMENTS_KEY = 'data/employees/check-documents.json'
 export const DURABLE_POSTES_VACANTS_KEY = 'data/employees/postes-vacants.json';
 export const DURABLE_CLASSIFICATION_POSTES_KEY = 'data/employees/classification-postes.json';
 export const DURABLE_MOUVEMENTS_KEY = 'data/employees/mouvements.json';
+export const DURABLE_RECRUTEMENT_KEY = 'data/employees/recrutement.json';
 export const DURABLE_CONTRACTANTS_KEY = 'data/employees/contractants.json';
 export const DURABLE_DEPENDANTS_KEY = 'data/dependants/dependants.json';
 export const DURABLE_VILLAGE_MAISONS_KEY = 'data/village/maisons.json';

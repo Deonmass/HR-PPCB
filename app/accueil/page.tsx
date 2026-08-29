@@ -7,6 +7,8 @@ import HomeDonutChart from '@/components/home/HomeDonutChart';
 import HomeGlobalSearch from '@/components/home/HomeGlobalSearch';
 import RefreshButton from '@/components/RefreshButton';
 import { usePermissions } from '@/contexts/PermissionContext';
+import { useI18n } from '@/contexts/LocaleContext';
+import { translateKnownLabel } from '@/lib/i18n';
 import type {
   HomeDashboardData,
   HomeKpi,
@@ -14,6 +16,7 @@ import type {
   HomeModulePlaceholder,
 } from '@/lib/home-dashboard-types';
 import { formatUsd } from '@/lib/projects';
+import { formatRate } from '@/lib/format-rate';
 
 function formatUsdShort(value: number): string {
   return formatUsd(value, 0);
@@ -34,13 +37,15 @@ function formatUsdCompact(value: number): string {
 }
 
 function KpiStrip({ kpis }: { kpis: HomeKpi[] }) {
+  const { locale } = useI18n();
   if (!kpis.length) return null;
   return (
     <div className="home-kpi-strip">
       {kpis.map((kpi) => {
+        const label = translateKnownLabel(locale, kpi.label);
         const body = (
           <>
-            <span className="home-kpi-label">{kpi.label}</span>
+            <span className="home-kpi-label">{label}</span>
             <strong className="home-kpi-value">{kpi.value}</strong>
             {kpi.meta && <span className="home-kpi-meta">{kpi.meta}</span>}
           </>
@@ -77,6 +82,7 @@ function ModuleHead({
   href?: string;
   linkLabel?: string;
 }) {
+  const { t } = useI18n();
   return (
     <div className="home-module-head">
       <div>
@@ -85,7 +91,7 @@ function ModuleHead({
       </div>
       {href && (
         <Link href={href} className="home-module-link">
-          {linkLabel}
+          {linkLabel === 'Voir tout →' ? t('common.seeAll') : linkLabel}
         </Link>
       )}
     </div>
@@ -249,6 +255,7 @@ function ComingSoonCard({
   href: string;
   icon: string;
 }) {
+  const { t } = useI18n();
   return (
     <Link href={href} className="panel home-module-panel home-coming-card">
       <div className="home-coming-card-head">
@@ -260,20 +267,21 @@ function ComingSoonCard({
           <p>{description}</p>
         </div>
       </div>
-      <span className="home-coming-badge">Bientôt disponible</span>
+      <span className="home-coming-badge">{t('home.comingSoonBadge')}</span>
     </Link>
   );
 }
 
 function PlaceholderGrid({ items }: { items: HomeModulePlaceholder[] }) {
+  const { t, locale } = useI18n();
   if (!items.length) return null;
   return (
     <div className="home-placeholder-grid">
       {items.map((item) => (
         <Link key={item.href} href={item.href} className="home-placeholder-card">
-          <h4>{item.label}</h4>
+          <h4>{translateKnownLabel(locale, item.label)}</h4>
           <p>{item.description}</p>
-          <span>Ouvrir →</span>
+          <span>{t('common.open')}</span>
         </Link>
       ))}
     </div>
@@ -282,6 +290,7 @@ function PlaceholderGrid({ items }: { items: HomeModulePlaceholder[] }) {
 
 export default function AccueilPage() {
   const { user, can } = usePermissions();
+  const { t, locale } = useI18n();
   const [data, setData] = useState<HomeDashboardData | null>(null);
   const [loading, setLoading] = useState(true);
   const [refreshing, setRefreshing] = useState(false);
@@ -296,25 +305,26 @@ export default function AccueilPage() {
       const json = await res.json();
       if (!res.ok) {
         setData(null);
-        setError(json.error || 'Erreur de chargement');
+        setError(json.error || t('common.loadError'));
         return;
       }
       setData(json as HomeDashboardData);
     } catch {
       setData(null);
-      setError('Erreur de chargement');
+      setError(t('common.loadError'));
     } finally {
       setLoading(false);
       setRefreshing(false);
     }
-  }, []);
+  }, [t]);
 
   useEffect(() => {
     load();
   }, [load]);
 
   const hour = new Date().getHours();
-  const greeting = hour < 12 ? 'Bonjour' : hour < 18 ? 'Bon après-midi' : 'Bonsoir';
+  const greeting =
+    hour < 12 ? t('home.greeting.morning') : hour < 18 ? t('home.greeting.afternoon') : t('home.greeting.evening');
 
   const employesSectorPlaceholders = useMemo(
     () => (data?.placeholders ?? []).filter((item) => item.href === '/heures-supplementaires'),
@@ -365,11 +375,15 @@ export default function AccueilPage() {
     || data?.dependants
     || data?.documents
     || employesSectorPlaceholders.length
-    || can('employes.offres', 'view')
+    || can('employes.liste', 'view'),
+  );
+  const hasPosteSector = Boolean(
+    can('employes.offres', 'view')
     || can('employes.mouvements', 'view')
     || can('employes.postes', 'view')
+    || can('employes.recrutement', 'view')
     || can('employes.classification', 'view')
-    || can('employes.liste', 'view'),
+    || can('training', 'view'),
   );
   const hasProjectsSector = Boolean(data?.projects);
   const hasDocumentsSector = documentsLinks.length > 0;
@@ -385,24 +399,24 @@ export default function AccueilPage() {
         <div className="home-hero-glow" aria-hidden />
         <div className="home-hero-content">
           <div className="page-header-title-row">
-            <p className="home-hero-kicker">PPC Barnet RH</p>
+            <p className="home-hero-kicker">{t('brand.name')}</p>
             <RefreshButton onClick={() => load(true)} loading={refreshing} />
           </div>
           <div className="home-hero-title-row">
             <h2>
-              {greeting}, {user?.displayName || 'Utilisateur'}
+              {greeting}, {user?.displayName || t('common.user')}
             </h2>
             <HomeGlobalSearch />
           </div>
         </div>
       </section>
 
-      {loading && <div className="loading">Chargement du tableau de bord…</div>}
+      {loading && <div className="loading">{t('home.loading')}</div>}
       {error && !loading && (
         <div className="panel panel-padded">
           <p className="text-danger">{error}</p>
           <button type="button" className="btn btn-outline btn-sm" onClick={() => load()}>
-            Réessayer
+            {t('common.retry')}
           </button>
         </div>
       )}
@@ -415,65 +429,74 @@ export default function AccueilPage() {
             <section className="home-charts-section">
               <div className="home-sector-separator home-charts-title-row">
                 <span className="home-sector-line" aria-hidden />
-                <h3 className="home-sector-title">Synthèses graphiques</h3>
+                <h3 className="home-sector-title">{t('home.charts')}</h3>
                 <span className="home-sector-line" aria-hidden />
               </div>
               <div className="home-charts-grid">
                 {charts.employeesByDepartment.length > 0 && (
                   <HomeBarChart
-                    title="Effectifs par département"
+                    title={t('home.chart.headcount')}
                     items={charts.employeesByDepartment}
-                    valueLabel="Agents"
+                    valueLabel={t('home.chart.agents')}
                     maxBars={6}
                   />
                 )}
                 {charts.documentsCompliance.length > 0 && (
                   <HomeDonutChart
-                    title="Conformité documentaire"
-                    slices={charts.documentsCompliance}
+                    title={t('home.chart.compliance')}
+                    slices={charts.documentsCompliance.map((s) => ({
+                      ...s,
+                      label: translateKnownLabel(locale, s.label),
+                    }))}
                     centerValue={charts.documentsCompliance[0]?.value ?? 0}
-                    centerLabel="% conforme"
+                    centerLabel={t('home.chart.conforme')}
                     formatValue={(n) => `${Math.round(n)}`}
                     showSharePercent={false}
                   />
                 )}
                 {charts.dependantsBreakdown.length > 0 && (
                   <HomeDonutChart
-                    title="Bénéficiaires médicaux"
-                    slices={charts.dependantsBreakdown}
-                    centerLabel="bénéficiaires"
+                    title={t('home.chart.dependants')}
+                    slices={charts.dependantsBreakdown.map((s) => ({
+                      ...s,
+                      label: translateKnownLabel(locale, s.label),
+                    }))}
+                    centerLabel={t('home.chart.beneficiaires')}
                   />
                 )}
                 {charts.projectsBudget.length > 0 && (
                   <HomeBarChart
-                    title="Budget projets"
+                    title={t('home.chart.projects')}
                     items={charts.projectsBudget}
-                    valueLabel="Prévu"
-                    secondaryLabel="Dépensé"
+                    valueLabel={t('home.chart.planned')}
+                    secondaryLabel={t('home.chart.spent')}
                     formatValue={formatUsdCompact}
                     maxBars={4}
                   />
                 )}
                 {charts.travelByDepartment.length > 0 && (
                   <HomeBarChart
-                    title="Voyages par département"
+                    title={t('home.chart.travel')}
                     items={charts.travelByDepartment}
-                    valueLabel="Missions"
+                    valueLabel={t('home.chart.missions')}
                     maxBars={6}
                   />
                 )}
                 {charts.charroiStatus.length > 0 && (
                   <HomeDonutChart
-                    title="Charroi — documents"
-                    slices={charts.charroiStatus}
-                    centerLabel="véhicules"
+                    title={t('home.chart.fleet')}
+                    slices={charts.charroiStatus.map((s) => ({
+                      ...s,
+                      label: translateKnownLabel(locale, s.label),
+                    }))}
+                    centerLabel={t('home.chart.vehicles')}
                   />
                 )}
                 {charts.villageHouseTypes.length > 0 && (
                   <HomeDonutChart
-                    title="Village — types de maisons"
+                    title={t('home.chart.village')}
                     slices={charts.villageHouseTypes}
-                    centerLabel="maisons"
+                    centerLabel={t('home.chart.houses')}
                   />
                 )}
               </div>
@@ -481,38 +504,38 @@ export default function AccueilPage() {
           )}
 
           {hasEmployesSector && (
-            <SectorBlock title="Employés" accent="red">
+            <SectorBlock title={t('home.sector.employees')} accent="red">
               <div className="home-dashboard-grid">
                 {data.employes && (
                   <section className="panel home-module-panel home-module-employes">
                     <ModuleHead
-                      title="Liste employés"
-                      subtitle="Effectifs et complétude documentaire"
+                      title={t('home.employees.list')}
+                      subtitle={t('home.employees.listSub')}
                       href={data.employes.href}
                     />
                     <div className="home-stat-grid">
                       <div className="home-stat-box">
-                        <span>Total employés</span>
+                        <span>{t('home.stat.totalEmployees')}</span>
                         <strong>{data.employes.total}</strong>
                       </div>
                       <div className="home-stat-box">
-                        <span>Actifs</span>
+                        <span>{t('home.stat.active')}</span>
                         <strong>{data.employes.active}</strong>
                       </div>
                       <div className="home-stat-box">
-                        <span>Inactifs</span>
+                        <span>{t('home.stat.inactive')}</span>
                         <strong>{data.employes.inactive}</strong>
                       </div>
                       <div className="home-stat-box">
-                        <span>Départements</span>
+                        <span>{t('home.stat.departments')}</span>
                         <strong>{data.employes.departments}</strong>
                       </div>
                       <div className="home-stat-box">
-                        <span>Complétude moyenne</span>
-                        <strong>{data.employes.avgCompletion}%</strong>
+                        <span>{t('home.stat.avgCompletion')}</span>
+                        <strong>{formatRate(data.employes.avgCompletion)}</strong>
                       </div>
                       <div className="home-stat-box home-stat-alert">
-                        <span>Dossiers &lt; 50%</span>
+                        <span>{t('home.stat.riskFiles')}</span>
                         <strong>{data.employes.needsAttention}</strong>
                       </div>
                     </div>
@@ -522,33 +545,33 @@ export default function AccueilPage() {
                 {data.dependants && (
                   <section className="panel home-module-panel home-module-dependants">
                     <ModuleHead
-                      title="Dépendants"
-                      subtitle="Bénéficiaires prise en charge médicale"
+                      title={t('home.employees.dependants')}
+                      subtitle={t('home.employees.dependantsSub')}
                       href={data.dependants.href}
                     />
                     <div className="home-stat-grid">
                       <div className="home-stat-box">
-                        <span>Total bénéficiaires</span>
+                        <span>{t('home.stat.totalBeneficiaries')}</span>
                         <strong>{data.dependants.totalBeneficiaires}</strong>
                       </div>
                       <div className="home-stat-box">
-                        <span>Employés</span>
+                        <span>{t('home.stat.employees')}</span>
                         <strong>{data.dependants.employes}</strong>
                       </div>
                       <div className="home-stat-box">
-                        <span>Conjoints</span>
+                        <span>{t('home.stat.spouses')}</span>
                         <strong>{data.dependants.conjoints}</strong>
                       </div>
                       <div className="home-stat-box">
-                        <span>Enfants</span>
+                        <span>{t('home.stat.children')}</span>
                         <strong>{data.dependants.enfants}</strong>
                       </div>
                       <div className="home-stat-box">
-                        <span>Avec famille</span>
+                        <span>{t('home.stat.withFamily')}</span>
                         <strong>{data.dependants.employesAvecFamille}</strong>
                       </div>
                       <div className="home-stat-box">
-                        <span>Employés seuls</span>
+                        <span>{t('home.stat.employeesAlone')}</span>
                         <strong>{data.dependants.employesSeuls}</strong>
                       </div>
                     </div>
@@ -558,21 +581,21 @@ export default function AccueilPage() {
                 {data.documents && (
                   <section className="panel home-module-panel home-module-documents">
                     <ModuleHead
-                      title="Check documents"
-                      subtitle="Conformité documentaire globale"
+                      title={t('home.employees.checkDocs')}
+                      subtitle={t('home.employees.checkDocsSub')}
                       href={data.documents.href}
                     />
                     <div className="home-doc-summary">
                       <div className="home-doc-rate home-doc-rate-ok">
-                        <span>Conforme</span>
+                        <span>{t('home.stat.conforme')}</span>
                         <strong>{data.documents.conformeRate}</strong>
                       </div>
                       <div className="home-doc-rate home-doc-rate-ko">
-                        <span>Non conforme</span>
+                        <span>{t('home.stat.nonConforme')}</span>
                         <strong>{data.documents.noConformeRate}</strong>
                       </div>
                       <div className="home-doc-rate">
-                        <span>Employés suivis</span>
+                        <span>{t('home.stat.trackedEmployees')}</span>
                         <strong>{data.documents.totalEmployee}</strong>
                       </div>
                     </div>
@@ -599,60 +622,9 @@ export default function AccueilPage() {
                   </section>
                 )}
 
-                <ComingSoonCard
-                  title="Offres"
-                  description="Suivi des offres d’emploi et du recrutement"
-                  href="/employes/offres"
-                  icon="offers"
-                />
-                <Link href="/employes/mouvements" className="panel home-module-panel home-coming-card">
-                  <div className="home-coming-card-head">
-                    <span className="home-coming-card-icon" aria-hidden>
-                      <DocIcon name="moves" />
-                    </span>
-                    <div>
-                      <h3>Mouvements</h3>
-                      <p>Historique des affectations, promotions et changements de poste</p>
-                    </div>
-                  </div>
-                  <span className="home-coming-badge" style={{ color: '#047857', background: '#ecfdf5', borderColor: '#a7f3d0' }}>
-                    Ouvrir →
-                  </span>
-                </Link>
-                <Link href="/employes/postes" className="panel home-module-panel home-coming-card">
-                  <div className="home-coming-card-head">
-                    <span className="home-coming-card-icon" aria-hidden>
-                      <DocIcon name="rrf" />
-                    </span>
-                    <div>
-                      <h3>Postes</h3>
-                      <p>Catalogue, occupants et postes vacants — RRF</p>
-                    </div>
-                  </div>
-                  <span className="home-coming-badge" style={{ color: '#047857', background: '#ecfdf5', borderColor: '#a7f3d0' }}>
-                    Ouvrir →
-                  </span>
-                </Link>
-                {can('employes.classification', 'view') && (
-                  <Link href="/employes/classification" className="panel home-module-panel home-coming-card">
-                    <div className="home-coming-card-head">
-                      <span className="home-coming-card-icon" aria-hidden>
-                        <DocIcon name="rrf" />
-                      </span>
-                      <div>
-                        <h3>Classification des postes</h3>
-                        <p>Grille Hay, Paterson et classification nationale harmonisée</p>
-                      </div>
-                    </div>
-                    <span className="home-coming-badge" style={{ color: '#047857', background: '#ecfdf5', borderColor: '#a7f3d0' }}>
-                      Ouvrir →
-                    </span>
-                  </Link>
-                )}
-
                 {employesSectorPlaceholders.length > 0 && (
                   <section className="panel home-module-panel home-module-placeholders">
-                    <ModuleHead title="Heures supplémentaires" subtitle="Module opérationnel" />
+                    <ModuleHead title={t('home.employees.overtime')} subtitle={t('home.employees.overtimeSub')} />
                     <PlaceholderGrid items={employesSectorPlaceholders} />
                   </section>
                 )}
@@ -660,13 +632,100 @@ export default function AccueilPage() {
             </SectorBlock>
           )}
 
+          {hasPosteSector && (
+            <SectorBlock title={t('home.sector.poste')} accent="violet">
+              <div className="home-dashboard-grid">
+                {can('employes.offres', 'view') && (
+                  <ComingSoonCard
+                    title={t('home.poste.offers')}
+                    description={t('home.poste.offersSub')}
+                    href="/employes/offres"
+                    icon="offers"
+                  />
+                )}
+                {can('employes.mouvements', 'view') && (
+                  <Link href="/employes/mouvements" className="panel home-module-panel home-coming-card">
+                    <div className="home-coming-card-head">
+                      <span className="home-coming-card-icon" aria-hidden>
+                        <DocIcon name="moves" />
+                      </span>
+                      <div>
+                        <h3>{t('home.poste.movements')}</h3>
+                        <p>{t('home.poste.movementsSub')}</p>
+                      </div>
+                    </div>
+                    <span className="home-coming-badge" style={{ color: '#047857', background: '#ecfdf5', borderColor: '#a7f3d0' }}>
+                      {t('common.open')}
+                    </span>
+                  </Link>
+                )}
+                {can('employes.postes', 'view') && (
+                  <Link href="/employes/postes" className="panel home-module-panel home-coming-card">
+                    <div className="home-coming-card-head">
+                      <span className="home-coming-card-icon" aria-hidden>
+                        <DocIcon name="rrf" />
+                      </span>
+                      <div>
+                        <h3>{t('home.poste.postes')}</h3>
+                        <p>{t('home.poste.postesSub')}</p>
+                      </div>
+                    </div>
+                    <span className="home-coming-badge" style={{ color: '#047857', background: '#ecfdf5', borderColor: '#a7f3d0' }}>
+                      {t('common.open')}
+                    </span>
+                  </Link>
+                )}
+                {can('employes.recrutement', 'view') && (
+                  <Link href="/employes/recrutement" className="panel home-module-panel home-coming-card">
+                    <div className="home-coming-card-head">
+                      <span className="home-coming-card-icon" aria-hidden>
+                        <DocIcon name="rrf" />
+                      </span>
+                      <div>
+                        <h3>{t('home.poste.recruitment')}</h3>
+                        <p>{t('home.poste.recruitmentSub')}</p>
+                      </div>
+                    </div>
+                    <span className="home-coming-badge" style={{ color: '#047857', background: '#ecfdf5', borderColor: '#a7f3d0' }}>
+                      {t('common.open')}
+                    </span>
+                  </Link>
+                )}
+                {can('employes.classification', 'view') && (
+                  <Link href="/employes/classification" className="panel home-module-panel home-coming-card">
+                    <div className="home-coming-card-head">
+                      <span className="home-coming-card-icon" aria-hidden>
+                        <DocIcon name="rrf" />
+                      </span>
+                      <div>
+                        <h3>{t('home.poste.classification')}</h3>
+                        <p>{t('home.poste.classificationSub')}</p>
+                      </div>
+                    </div>
+                    <span className="home-coming-badge" style={{ color: '#047857', background: '#ecfdf5', borderColor: '#a7f3d0' }}>
+                      {t('common.open')}
+                    </span>
+                  </Link>
+                )}
+                {can('training', 'view') && (
+                  <ComingSoonCard
+                    title={t('training.title')}
+                    description={t('training.description')}
+                    href="/training"
+                    icon="rrf"
+                  />
+                )}
+              </div>
+            </SectorBlock>
+          )}
+
           {hasProjectsSector && data.projects && (
-            <SectorBlock title="Project" accent="cyan">
+            <SectorBlock title={t('home.sector.project')} accent="cyan">
               <div className="home-dashboard-grid">
                 <section className="panel home-module-panel home-module-projects home-module-wide">
                   <ModuleHead
-                    title="Projets & dépenses"
-                    subtitle="Effectifs, budgets et dépenses"
+                    title={t('home.project.title')}
+                    subtitle={t('home.project.sub')}
                     href={data.projects.hrefDashboard || data.projects.hrefProjects || undefined}
                   />
                   <div className="home-project-scopes">
@@ -675,23 +734,23 @@ export default function AccueilPage() {
                         <h4>{scope.label}</h4>
                         <div className="home-stat-grid home-stat-grid-compact">
                           <div className="home-stat-box">
-                            <span>Projets</span>
+                            <span>{t('home.stat.projects')}</span>
                             <strong>{scope.total}</strong>
                           </div>
                           <div className="home-stat-box">
-                            <span>En cours</span>
+                            <span>{t('home.stat.inProgress')}</span>
                             <strong>{scope.enCours}</strong>
                           </div>
                           <div className="home-stat-box">
-                            <span>Terminés</span>
+                            <span>{t('home.stat.completed')}</span>
                             <strong>{scope.termines}</strong>
                           </div>
                           <div className="home-stat-box home-stat-money">
-                            <span>Budget prévu</span>
+                            <span>{t('home.stat.plannedBudget')}</span>
                             <strong title={formatUsdShort(scope.prevu)}>{formatUsdCompact(scope.prevu)}</strong>
                           </div>
                           <div className="home-stat-box home-stat-money">
-                            <span>Dépensé</span>
+                            <span>{t('home.stat.spent')}</span>
                             <strong title={formatUsdShort(scope.depense)}>{formatUsdCompact(scope.depense)}</strong>
                           </div>
                         </div>
@@ -708,7 +767,7 @@ export default function AccueilPage() {
                       </Link>
                     ) : null}
                     <span className="home-module-links-meta">
-                      Total dépenses : {formatUsdShort(data.projects.expensesTotal)}
+                      {t('home.project.totalSpend', { amount: formatUsdShort(data.projects.expensesTotal) })}
                     </span>
                   </div>
                 </section>
@@ -717,7 +776,7 @@ export default function AccueilPage() {
           )}
 
           {hasDocumentsSector && (
-            <SectorBlock title="Documents" accent="violet">
+            <SectorBlock title={t('home.sector.documents')} accent="violet">
               <div className="home-sector-full">
                 <DocumentCards items={documentsLinks} />
               </div>
@@ -725,7 +784,7 @@ export default function AccueilPage() {
           )}
 
           {hasProtocolSector && data.protocol && (
-            <SectorBlock title="Protocol" accent="violet">
+            <SectorBlock title={t('home.sector.protocol')} accent="violet">
               <div className="home-sector-full">
                 <div className="home-link-cards">
                   {data.protocol.links.map((item) => (
@@ -740,34 +799,34 @@ export default function AccueilPage() {
           )}
 
           {hasFacturesSector && data.factures && (
-            <SectorBlock title="Factures fournisseur" accent="orange">
+            <SectorBlock title={t('home.sector.invoices')} accent="orange">
               <div className="home-sector-full">
                 <section className="panel home-module-panel home-module-wide">
                   <ModuleHead
-                    title="Suivi factures"
-                    subtitle="Pipeline fournisseurs et SOA"
+                    title={t('home.invoices.title')}
+                    subtitle={t('home.invoices.sub')}
                     href={data.factures.hrefFactures || data.factures.links[0]?.href}
                   />
                   <div className="home-stat-grid home-stat-grid-4">
                     <div className="home-stat-box">
-                      <span>Factures</span>
+                      <span>{t('home.stat.invoices')}</span>
                       <strong>{data.factures.total}</strong>
                     </div>
                     <div className="home-stat-box">
-                      <span>En cours</span>
+                      <span>{t('home.stat.inProgress')}</span>
                       <strong>{data.factures.enCours}</strong>
                     </div>
                     <div className="home-stat-box">
-                      <span>Payées</span>
+                      <span>{t('home.stat.paid')}</span>
                       <strong>{data.factures.paid}</strong>
                     </div>
                     <div className={`home-stat-box${data.factures.enRetard ? ' home-stat-alert' : ''}`}>
-                      <span>En retard</span>
+                      <span>{t('home.stat.overdue')}</span>
                       <strong>{data.factures.enRetard}</strong>
                     </div>
                     {data.factures.fournisseurs > 0 && (
                       <div className="home-stat-box">
-                        <span>Fournisseurs</span>
+                        <span>{t('home.stat.suppliers')}</span>
                         <strong>{data.factures.fournisseurs}</strong>
                       </div>
                     )}
@@ -786,38 +845,38 @@ export default function AccueilPage() {
           )}
 
           {hasCharroiSector && data.charroi && (
-            <SectorBlock title="Charroi" accent="orange">
+            <SectorBlock title={t('home.sector.fleet')} accent="orange">
               <div className="home-dashboard-grid">
                 <section className="panel home-module-panel home-module-wide">
                   <ModuleHead
-                    title="Parc véhicules"
-                    subtitle="Alertes assurance, vignette et contrôle technique (≤ 30 j)"
+                    title={t('home.fleet.title')}
+                    subtitle={t('home.fleet.sub')}
                     href={data.charroi.href}
                   />
                   <div className="home-stat-grid home-stat-grid-4">
                     <div className="home-stat-box">
-                      <span>Véhicules</span>
+                      <span>{t('home.stat.vehicles')}</span>
                       <strong>{data.charroi.total}</strong>
                     </div>
                     <div className={`home-stat-box${data.charroi.alertes ? ' home-stat-alert' : ''}`}>
-                      <span>Alertes docs</span>
+                      <span>{t('home.stat.docAlerts')}</span>
                       <strong>{data.charroi.alertes}</strong>
                     </div>
                     <div className="home-stat-box">
-                      <span>Assurance ≤30j</span>
+                      <span>{t('home.stat.insurance')}</span>
                       <strong>{data.charroi.assuranceSoon}</strong>
                     </div>
                     <div className="home-stat-box">
-                      <span>Vignette ≤30j</span>
+                      <span>{t('home.stat.vignette')}</span>
                       <strong>{data.charroi.vignetteSoon}</strong>
                     </div>
                     <div className="home-stat-box">
-                      <span>Contrôle tech. ≤30j</span>
+                      <span>{t('home.stat.techControl')}</span>
                       <strong>{data.charroi.controleSoon}</strong>
                     </div>
                   </div>
                   <div className="home-module-links">
-                    <Link href={data.charroi.href}>Ouvrir le parc →</Link>
+                    <Link href={data.charroi.href}>{t('common.open')}</Link>
                   </div>
                 </section>
               </div>
@@ -825,18 +884,22 @@ export default function AccueilPage() {
           )}
 
           {hasVillageSector && data.village && (
-            <SectorBlock title="Village" accent="green">
+            <SectorBlock title={t('home.sector.village')} accent="green">
               <div className={`home-dashboard-grid${data.village.guestHouse && data.village.hrefMaisons ? '' : ' home-dashboard-grid-single'}`}>
                 {data.village.hrefMaisons ? (
                   <section className={`panel home-module-panel${!data.village.guestHouse ? ' home-module-wide' : ''}`}>
                     <ModuleHead
-                      title="Maisons"
-                      subtitle={`${data.village.totalMaisons} maison${data.village.totalMaisons > 1 ? 's' : ''} par type`}
+                      title={t('home.village.houses')}
+                      subtitle={
+                        data.village.totalMaisons > 1
+                          ? t('home.village.housesSubPlural', { count: data.village.totalMaisons })
+                          : t('home.village.housesSub', { count: data.village.totalMaisons })
+                      }
                       href={data.village.hrefMaisons}
                     />
                     <div className="home-stat-grid home-stat-grid-4 home-type-stat-grid">
                       <div className="home-stat-box">
-                        <span>Total</span>
+                        <span>{t('home.stat.total')}</span>
                         <strong>{data.village.totalMaisons}</strong>
                       </div>
                       {data.village.byType.map((item) => (
@@ -847,7 +910,7 @@ export default function AccueilPage() {
                       ))}
                     </div>
                     <div className="home-module-links">
-                      <Link href={data.village.hrefMaisons}>Gérer les maisons →</Link>
+                      <Link href={data.village.hrefMaisons}>{t('common.open')}</Link>
                     </div>
                   </section>
                 ) : null}
@@ -855,33 +918,33 @@ export default function AccueilPage() {
                 {data.village.guestHouse && (
                   <section className={`panel home-module-panel${!data.village.hrefMaisons ? ' home-module-wide' : ''}`}>
                     <ModuleHead
-                      title="Guest house"
-                      subtitle="Occupation du jour (site + Kimpese)"
+                      title={t('home.village.guestHouse')}
+                      subtitle={t('home.village.guestHouseSub')}
                       href={data.village.guestHouse.href}
                     />
                     <div className="home-stat-grid home-stat-grid-4">
                       <div className="home-stat-box">
-                        <span>Chambres</span>
+                        <span>{t('home.stat.rooms')}</span>
                         <strong>{data.village.guestHouse.totalRooms}</strong>
                       </div>
                       <div className="home-stat-box">
-                        <span>Sur site</span>
+                        <span>{t('home.stat.onsite')}</span>
                         <strong>{data.village.guestHouse.onsiteRooms}</strong>
                       </div>
                       <div className="home-stat-box">
-                        <span>Occupées</span>
+                        <span>{t('home.stat.occupied')}</span>
                         <strong>{data.village.guestHouse.occupied}</strong>
                       </div>
                       <div className="home-stat-box">
-                        <span>Libres</span>
+                        <span>{t('home.stat.empty')}</span>
                         <strong>{data.village.guestHouse.empty}</strong>
                       </div>
                       <div className="home-stat-box">
-                        <span>Occupation</span>
-                        <strong>{data.village.guestHouse.occupancyRate}%</strong>
+                        <span>{t('home.stat.occupancy')}</span>
+                        <strong>{formatRate(data.village.guestHouse.occupancyRate)}</strong>
                       </div>
                       <div className="home-stat-box">
-                        <span>En attente</span>
+                        <span>{t('home.stat.pending')}</span>
                         <strong>{data.village.guestHouse.pendingReservations}</strong>
                       </div>
                       <div className="home-stat-box">
@@ -890,7 +953,7 @@ export default function AccueilPage() {
                       </div>
                     </div>
                     <div className="home-module-links">
-                      <Link href={data.village.guestHouse.href}>Ouvrir guest house →</Link>
+                      <Link href={data.village.guestHouse.href}>{t('home.village.openGuestHouse')}</Link>
                     </div>
                   </section>
                 )}
@@ -899,7 +962,7 @@ export default function AccueilPage() {
           )}
 
           {hasSettingsSector && data.settings && (
-            <SectorBlock title="Paramètres" accent="slate">
+            <SectorBlock title={t('home.sector.settings')} accent="slate">
               <div className="home-sector-full">
                 <section className="panel home-module-panel home-module-settings home-module-wide">
                   <ModuleHead
@@ -915,34 +978,34 @@ export default function AccueilPage() {
                   />
                   <div className="home-stat-grid home-stat-grid-4">
                     <div className="home-stat-box">
-                      <span>Départements</span>
+                      <span>{t('home.stat.departments')}</span>
                       <strong>{data.settings.departments}</strong>
                     </div>
                     <div className="home-stat-box">
-                      <span>Centres de coût</span>
+                      <span>{t('home.stat.costCenters')}</span>
                       <strong>{data.settings.costCenters}</strong>
                     </div>
                     <div className="home-stat-box">
-                      <span>Utilisateurs</span>
+                      <span>{t('home.stat.users')}</span>
                       <strong>{data.settings.users}</strong>
                     </div>
                     <div className="home-stat-box">
-                      <span>Actifs</span>
+                      <span>{t('home.stat.active')}</span>
                       <strong>{data.settings.activeUsers}</strong>
                     </div>
                   </div>
                   <div className="home-module-links">
                     {data.settings.hrefDepartements ? (
-                      <Link href={data.settings.hrefDepartements}>Départements →</Link>
+                      <Link href={data.settings.hrefDepartements}>{t('nav.settings.departments')} →</Link>
                     ) : null}
                     {data.settings.hrefCentres ? (
-                      <Link href={data.settings.hrefCentres}>Centres de coût →</Link>
+                      <Link href={data.settings.hrefCentres}>{t('nav.settings.costCenters')} →</Link>
                     ) : null}
                     {data.settings.hrefUtilisateurs ? (
-                      <Link href={data.settings.hrefUtilisateurs}>Utilisateurs →</Link>
+                      <Link href={data.settings.hrefUtilisateurs}>{t('nav.settings.users')} →</Link>
                     ) : null}
                     {data.settings.hrefPermissions ? (
-                      <Link href={data.settings.hrefPermissions}>Permissions →</Link>
+                      <Link href={data.settings.hrefPermissions}>{t('nav.settings.permissions')} →</Link>
                     ) : null}
                   </div>
                 </section>

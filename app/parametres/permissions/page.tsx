@@ -34,7 +34,6 @@ function PermissionsContent() {
   const [loadingUsers, setLoadingUsers] = useState(true);
   const [loadingPermissions, setLoadingPermissions] = useState(false);
   const [saving, setSaving] = useState(false);
-  const [activeTab, setActiveTab] = useState(PERMISSION_MENU_CATALOG[0]?.id ?? '');
   const [newRoleName, setNewRoleName] = useState('');
 
   const loadUsers = useCallback(async () => {
@@ -97,7 +96,6 @@ function PermissionsContent() {
     () => (menus ? groupPermissionsByCatalog(menus) : []),
     [menus],
   );
-  const activeGroup = grouped.find((group) => group.id === activeTab) ?? grouped[0];
 
   const permissionStats = useMemo(
     () => (menus ? computePermissionsStats(menus) : { checked: 0, total: 0, percent: 0 }),
@@ -421,63 +419,48 @@ function PermissionsContent() {
                 </div>
               </div>
 
-              <div className="tabs header-tabs permissions-tabs">
-                {grouped.map((group) => (
-                  <button
-                    key={group.id}
-                    type="button"
-                    className={`tab-btn permissions-main-tab${activeTab === group.id ? ' active' : ''}`}
-                    onClick={() => setActiveTab(group.id)}
-                  >
-                    {group.label}
-                  </button>
-                ))}
-              </div>
+              <div className="permissions-menu-list">
+                {(() => {
+                  const stdActions = PERMISSION_ACTIONS.filter((a) => a.id !== 'undo');
+                  const gridClass = `permissions-actions-grid permissions-actions-grid-aligned permissions-matrix-cols has-undo-col${canEdit ? ' has-select-all' : ''}`;
+                  const headerClass = `permissions-actions-header permissions-matrix-cols has-undo-col${canEdit ? ' has-select-all' : ''}`;
+                  return (
+                    <>
+                      <div className={headerClass}>
+                        <span className="permissions-actions-header-label">Menu</span>
+                        {stdActions.map((action) => (
+                          <span key={action.id} className="permissions-actions-header-cell">
+                            {action.label}
+                          </span>
+                        ))}
+                        <span className="permissions-actions-header-cell permissions-undo-col">Annuler action</span>
+                        {canEdit && <span className="permissions-actions-header-cell">Tout</span>}
+                      </div>
 
-              {activeGroup && (
-                <div className="permissions-menu-list">
-                  {(() => {
-                    const showUndoCol = activeGroup.id === 'parametres';
-                    const stdActions = PERMISSION_ACTIONS.filter((a) => a.id !== 'undo');
-                    const gridClass = `permissions-actions-grid permissions-actions-grid-aligned permissions-matrix-cols${showUndoCol ? ' has-undo-col' : ''}${canEdit ? ' has-select-all' : ''}`;
-                    const headerClass = `permissions-actions-header permissions-matrix-cols${showUndoCol ? ' has-undo-col' : ''}${canEdit ? ' has-select-all' : ''}`;
-                    return (
-                      <>
-                        <div className={headerClass}>
-                          <span className="permissions-actions-header-label">Menu</span>
-                          {stdActions.map((action) => (
-                            <span key={action.id} className="permissions-actions-header-cell">
-                              {action.label}
-                            </span>
-                          ))}
-                          {showUndoCol && (
-                            <span className="permissions-actions-header-cell permissions-undo-col">Annuler action</span>
-                          )}
-                          {canEdit && <span className="permissions-actions-header-cell">Tout</span>}
-                        </div>
-
-                        {activeGroup.items.map((menu) => {
-                          const allChecked = isMenuFullyChecked(menu);
-                          const partiallyChecked = isMenuPartiallyChecked(menu);
-                          const supportsUndo = menu.menuId === 'parametres.logs';
-                          return (
-                            <div key={menu.menuId} className={gridClass}>
-                              <span className="permissions-row-label" title={menu.label}>
-                                {shortMenuLabel(menu.label)}
-                              </span>
-                              {stdActions.map((action) => (
-                                <label key={`${menu.menuId}-${action.id}`} className="permissions-action-item">
-                                  <input
-                                    type="checkbox"
-                                    checked={menu.actions[action.id]}
-                                    disabled={!canEdit}
-                                    aria-label={`${menu.label} — ${action.label}`}
-                                    onChange={(e) => updatePermission(menu.menuId, action.id, e.target.checked)}
-                                  />
-                                  <span className="permissions-action-label-mobile">{action.label}</span>
-                                </label>
-                              ))}
-                              {showUndoCol && (
+                      {grouped.map((group) => (
+                        <div key={group.id} className="permissions-menu-group">
+                          <div className="permissions-group-sep">{group.label}</div>
+                          {group.items.map((menu) => {
+                            const allChecked = isMenuFullyChecked(menu);
+                            const partiallyChecked = isMenuPartiallyChecked(menu);
+                            const supportsUndo = menu.menuId === 'parametres.logs';
+                            return (
+                              <div key={menu.menuId} className={gridClass}>
+                                <span className="permissions-row-label" title={menu.label}>
+                                  {shortMenuLabel(menu.label)}
+                                </span>
+                                {stdActions.map((action) => (
+                                  <label key={`${menu.menuId}-${action.id}`} className="permissions-action-item">
+                                    <input
+                                      type="checkbox"
+                                      checked={menu.actions[action.id]}
+                                      disabled={!canEdit}
+                                      aria-label={`${menu.label} — ${action.label}`}
+                                      onChange={(e) => updatePermission(menu.menuId, action.id, e.target.checked)}
+                                    />
+                                    <span className="permissions-action-label-mobile">{action.label}</span>
+                                  </label>
+                                ))}
                                 <label
                                   className={`permissions-action-item permissions-undo-col${!supportsUndo ? ' permissions-undo-na' : ''}`}
                                   title={supportsUndo ? 'Annuler l\'action' : 'Non applicable pour ce menu'}
@@ -492,31 +475,31 @@ function PermissionsContent() {
                                     }
                                   />
                                 </label>
-                              )}
-                              {canEdit && (
-                                <label
-                                  className="permissions-action-item permissions-row-select-all"
-                                  title={`Tout cocher / décocher — ${menu.label}`}
-                                >
-                                  <input
-                                    type="checkbox"
-                                    checked={allChecked}
-                                    aria-label={`Tout cocher / décocher — ${menu.label}`}
-                                    ref={(input) => {
-                                      if (input) input.indeterminate = partiallyChecked && !allChecked;
-                                    }}
-                                    onChange={(e) => setAllMenuPermissions(menu.menuId, e.target.checked)}
-                                  />
-                                </label>
-                              )}
-                            </div>
-                          );
-                        })}
-                      </>
-                    );
-                  })()}
-                </div>
-              )}
+                                {canEdit && (
+                                  <label
+                                    className="permissions-action-item permissions-row-select-all"
+                                    title={`Tout cocher / décocher — ${menu.label}`}
+                                  >
+                                    <input
+                                      type="checkbox"
+                                      checked={allChecked}
+                                      aria-label={`Tout cocher / décocher — ${menu.label}`}
+                                      ref={(input) => {
+                                        if (input) input.indeterminate = partiallyChecked && !allChecked;
+                                      }}
+                                      onChange={(e) => setAllMenuPermissions(menu.menuId, e.target.checked)}
+                                    />
+                                  </label>
+                                )}
+                              </div>
+                            );
+                          })}
+                        </div>
+                      ))}
+                    </>
+                  );
+                })()}
+              </div>
             </>
           )}
         </section>

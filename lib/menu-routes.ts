@@ -26,9 +26,16 @@ export const DOCUMENTS_HUB_MENU_IDS = [
 
 export const POLITIQUE_HUB_MENU_IDS = [
   'politique.longs-etats',
+  'politique.convention-collective',
+  'politique.heures-sup',
+];
+
+export const RAPPORT_HUB_MENU_IDS = [
+  'exco.rapport',
 ];
 
 export const ROUTE_MENU_MAP: RouteMenuEntry[] = [
+  { prefix: '/rapport', menuId: 'exco.rapport' },
   { prefix: '/exco', menuId: 'exco.rapport' },
   { prefix: '/audit', menuId: 'audit.points' },
   { prefix: '/documents/rrf', menuId: 'documents.rrf' },
@@ -41,6 +48,8 @@ export const ROUTE_MENU_MAP: RouteMenuEntry[] = [
   { prefix: '/documents/convention-collective', menuId: 'documents.convention-collective' },
   { prefix: '/documents', menuId: 'travel.historique' },
   { prefix: '/politique/longs-etats-de-service', menuId: 'politique.longs-etats' },
+  { prefix: '/politique/convention-collective', menuId: 'politique.convention-collective' },
+  { prefix: '/politique/heures-supplementaires', menuId: 'politique.heures-sup' },
   { prefix: '/politique', menuId: 'politique.longs-etats' },
   { prefix: '/documents-voyage/attestation-services', menuId: 'travel.attestation' },
   { prefix: '/documents-voyage/payment-voucher', menuId: 'travel.payment-voucher' },
@@ -60,12 +69,14 @@ export const ROUTE_MENU_MAP: RouteMenuEntry[] = [
   { prefix: '/employes/offres', menuId: 'employes.offres' },
   { prefix: '/employes/mouvements', menuId: 'employes.mouvements' },
   { prefix: '/employes/postes', menuId: 'employes.postes' },
+  { prefix: '/employes/recrutement', menuId: 'employes.recrutement' },
   { prefix: '/employes/classification', menuId: 'employes.classification' },
   { prefix: '/employes/contractants', menuId: 'employes.contractants' },
   { prefix: '/parametres/permissions', menuId: 'settings.permissions' },
   { prefix: '/parametres/utilisateurs', menuId: 'settings.utilisateurs' },
   { prefix: '/parametres/centres-de-cout', menuId: 'settings.centres' },
   { prefix: '/parametres/departements', menuId: 'settings.departements' },
+  { prefix: '/parametres/json', menuId: 'settings.permissions' },
   { prefix: '/parametres/logs', menuId: 'parametres.logs' },
   { prefix: '/project/expenses-details', menuId: 'project.expenses' },
   { prefix: '/project/projects', menuId: 'project.projects' },
@@ -81,6 +92,7 @@ export const ROUTE_MENU_MAP: RouteMenuEntry[] = [
   { prefix: '/charroi-automobile', menuId: 'charroi' },
   { prefix: '/employes', menuId: 'employes.liste' },
   { prefix: '/sante', menuId: 'sante' },
+  { prefix: '/training', menuId: 'training' },
 ];
 
 const SORTED_ROUTES = [...ROUTE_MENU_MAP].sort((a, b) => b.prefix.length - a.prefix.length);
@@ -147,6 +159,9 @@ export function routeViewMenuIds(pathname: string): string[] {
   }
   if (normalized === '/politique') {
     return [...POLITIQUE_HUB_MENU_IDS];
+  }
+  if (normalized === '/rapport') {
+    return [...RAPPORT_HUB_MENU_IDS];
   }
   const menuId = pathnameToMenuId(pathname);
   return menuId ? [menuId] : [];

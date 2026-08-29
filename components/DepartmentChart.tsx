@@ -2,6 +2,7 @@
 
 import { useState } from 'react';
 import EnlargeableChartPanel from '@/components/EnlargeableChartPanel';
+import { formatRate } from '@/lib/format-rate';
 
 interface DeptItem {
   name: string;
@@ -54,12 +55,12 @@ export default function DepartmentChart({ departments }: Props) {
                   key={dept.name}
                   className={`chart-bar-col dash-bar-col${isActive ? ' is-active' : ''}${hover && !isActive ? ' is-dimmed' : ''}`}
                   style={{ animationDelay: `${index * 45}ms` }}
-                  title={`${dept.name}: ${dept.rate}% (${dept.total} employés)`}
+                  title={`${dept.name}: ${formatRate(dept.rate)} (${dept.total} employés)`}
                   onMouseEnter={() => setHover(dept.name)}
                   onMouseLeave={() => setHover(null)}
                 >
                   <span className={`chart-bar-pct dash-bar-value${isActive ? ' is-active' : ''}`}>
-                    {dept.rate}%
+                    {formatRate(dept.rate)}
                   </span>
                   <div className={`chart-bar-track dash-bar-wrap${isActive ? ' is-active' : ''}`}>
                     <div

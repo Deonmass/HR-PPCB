@@ -1,4 +1,5 @@
 import Swal from 'sweetalert2';
+import { tRuntime } from '@/lib/i18n';
 
 const ppcTheme = {
   background: '#141419',
@@ -28,8 +29,8 @@ export async function confirmDelete(title: string, text?: string): Promise<boole
     text,
     icon: 'warning',
     showCancelButton: true,
-    confirmButtonText: 'Supprimer',
-    cancelButtonText: 'Annuler',
+    confirmButtonText: tRuntime('common.delete'),
+    cancelButtonText: tRuntime('common.cancel'),
     reverseButtons: true,
     focusCancel: true,
   });
@@ -48,7 +49,7 @@ export async function confirmAction(
     icon: 'question',
     showCancelButton: true,
     confirmButtonText: confirmText,
-    cancelButtonText: 'Annuler',
+    cancelButtonText: tRuntime('common.cancel'),
     reverseButtons: true,
   });
   return result.isConfirmed;
@@ -56,17 +57,17 @@ export async function confirmAction(
 
 export async function confirmLogout(): Promise<boolean> {
   return confirmAction(
-    'Se déconnecter ?',
-    'Vous allez quitter votre session.',
-    'Déconnexion',
+    tRuntime('common.logoutConfirm'),
+    tRuntime('common.logoutConfirmText'),
+    tRuntime('common.logout'),
   );
 }
 
 export function showLogoutLoading(): void {
   void Swal.fire({
     ...baseConfig(),
-    title: 'Déconnexion…',
-    text: 'Veuillez patienter',
+    title: tRuntime('common.loggingOut'),
+    text: tRuntime('common.pleaseWait'),
     allowOutsideClick: false,
     allowEscapeKey: false,
     showConfirmButton: false,

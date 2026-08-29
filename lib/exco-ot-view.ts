@@ -6,6 +6,7 @@ import 'server-only';
 import {
   buildExcoLeaveMonthImport,
   buildExcoOtMonthImport,
+  identityByMatriculeFromEmployees,
   mapExcoOtDepartment,
   parseComponentPostedUnits,
   parseLeaveBalancesDetailed,
@@ -41,6 +42,8 @@ export interface ExcoOtViewResult {
   byDepartment: Array<{ department: string; hours: number; costUsd: number; agents: number }>;
   sourceFiles: string[];
   missing: { overtime: boolean; leave: boolean };
+  /** Moyenne Closing Annual depuis l’import Leave (JSON), si présent. */
+  leaveAvgDays: number | null;
 }
 
 export async function buildExcoOtView(input: {
@@ -57,9 +60,16 @@ export async function buildExcoOtView(input: {
 
   const otUpload = await readExcoUploadBuffer(year, month, 'componentPostedUnits');
   const leaveUpload = await readExcoUploadBuffer(year, month, 'leaveBalances');
+  const leaveSnap = overlays.leaveImportsByMonth?.[String(month)] || null;
+  const hasLeaveJson = Boolean(
+    overlays.importedSources?.leaveBalances
+    || leaveSnap
+    || Object.keys(overlays.leaveBalanceByMatricule || {}).length,
+  );
   const sourceFiles: string[] = [];
   if (otUpload) sourceFiles.push(otUpload.originalName);
   if (leaveUpload) sourceFiles.push(leaveUpload.originalName);
+  else if (leaveSnap?.sourceFiles?.length) sourceFiles.push(...leaveSnap.sourceFiles);
 
   const leaveDetailed = leaveUpload
     ? parseLeaveBalancesDetailed(leaveUpload.buffer)
@@ -71,6 +81,18 @@ export async function buildExcoOtView(input: {
       days: row.leaveBalance,
       valueFc: row.valueFc ?? 0,
     });
+  }
+  if (!leaveByMat.size) {
+    const fromSnap = leaveSnap?.byMatricule || overlays.leaveBalanceByMatricule || {};
+    const valueFcByMat = leaveSnap?.valueFcByMatricule || {};
+    for (const [mat, days] of Object.entries(fromSnap)) {
+      if (days == null || !Number.isFinite(days)) continue;
+      const valueFc = valueFcByMat[mat];
+      leaveByMat.set(mat, {
+        days,
+        valueFc: valueFc != null && Number.isFinite(valueFc) ? valueFc : 0,
+      });
+    }
   }
 
   let agents: Array<{
@@ -94,9 +116,18 @@ export async function buildExcoOtView(input: {
     }));
   }
 
+  const bundle = await readEmployeesBundle();
+  const identity = identityByMatriculeFromEmployees([
+    ...(bundle.employees || []),
+    ...(bundle.exits || []),
+  ]);
+
   const rows: ExcoOtAgentRow[] = agents
     .map((a) => {
       const leave = leaveByMat.get(a.matricule);
+      const sys = identity[a.matricule];
+      const sysDept = (sys?.departement || '').trim();
+      const sysNom = (sys?.nom || '').trim();
       const costUsd =
         fx != null && fx > 0 ? Math.round((a.costFc / fx) * 100) / 100 : null;
       const leaveValueUsd =
@@ -105,14 +136,14 @@ export async function buildExcoOtView(input: {
           : null;
       return {
         matricule: a.matricule,
-        name: a.nom,
+        name: sysNom || a.nom,
         hours: a.hours,
         costFc: a.costFc,
         costUsd,
         leaveDays: leave?.days ?? null,
         leaveValueFc: leave?.valueFc ?? null,
         leaveValueUsd,
-        department: mapExcoOtDepartment(a.orgUnit),
+        department: mapExcoOtDepartment(sysDept || a.orgUnit),
         companyHint: a.orgUnit,
       };
     })
@@ -146,11 +177,11 @@ export async function buildExcoOtView(input: {
       leaveBuffer: leaveUpload?.buffer ?? null,
       fxRateFcPerUsd: fx,
       sourceFiles,
+      identityByMatricule: identity,
     });
     void snap;
   }
   if (leaveUpload) {
-    const bundle = await readEmployeesBundle();
     const localisationByMatricule: Record<string, string> = {};
     for (const e of [...(bundle.employees || []), ...(bundle.exits || [])]) {
       if (e.matricule) localisationByMatricule[e.matricule] = e.localisation || '';
@@ -187,7 +218,8 @@ export async function buildExcoOtView(input: {
     sourceFiles,
     missing: {
       overtime: !otUpload && !overlays.overtimeImportsByMonth?.[String(month)],
-      leave: !leaveUpload,
+      leave: !leaveUpload && !hasLeaveJson,
     },
+    leaveAvgDays: leaveSnap?.allAvgDays ?? null,
   };
 }

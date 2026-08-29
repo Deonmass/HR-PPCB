@@ -1,6 +1,7 @@
 'use client';
 
 import { useEffect, useMemo, useState } from 'react';
+import { formatRate, ratioToRate } from '@/lib/format-rate';
 import type { GuestHouseMonthlyPoint } from '@/lib/guest-house-types';
 
 interface Props {
@@ -103,7 +104,7 @@ export default function GuestHouseMonthlyChart({
       const daysInMonth = safeNum(item.daysInMonth, fallback.daysInMonth);
       const capacityNights = safeNum(item.capacityNights, 0);
       const rateFromCapacity = capacityNights > 0
-        ? Math.round((nights / capacityNights) * 1000) / 10
+        ? ratioToRate(nights, capacityNights)
         : 0;
       return {
         ...fallback,
@@ -201,10 +202,10 @@ export default function GuestHouseMonthlyChart({
                     <div
                       className={`guest-house-histo-shell is-occupancy${item.selected ? ' is-selected' : ''}`}
                       style={{ height: `${item.heightPct}%` }}
-                      title={`${item.rate}%`}
+                      title={`${formatRate(item.rate)}`}
                     >
                       <span className="guest-house-histo-tip">
-                        {item.rate}%
+                        {formatRate(item.rate)}
                       </span>
                       <div
                         className={`guest-house-histo-fill is-occupancy${item.selected ? ' is-selected' : ''}`}
@@ -220,7 +221,7 @@ export default function GuestHouseMonthlyChart({
                       <strong>{item.label} {year}</strong>
                       <div className="guest-house-histo-bubble-row is-occupied">
                         <span>Taux d&apos;occupation</span>
-                        <em>{item.rate}%</em>
+                        <em>{formatRate(item.rate)}</em>
                       </div>
                       <div className="guest-house-histo-bubble-row is-muted">
                         <span>Occupation</span>

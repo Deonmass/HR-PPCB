@@ -8,6 +8,7 @@ import {
   calcRowCellStats,
   normalizeDocStatus,
 } from '@/lib/documents';
+import { formatRate } from '@/lib/format-rate';
 import { buildInspectionAggregateLines } from '@/lib/audit-formulas';
 import {
   buildColumnFilterValues,
@@ -273,7 +274,7 @@ export default function DocumentsGridTab({
                         <div className="progress-bar sm">
                           <div className={`progress-fill ${pctClass}`} style={{ width: `${row.rate}%` }} />
                         </div>
-                        <span>{row.rate}%</span>
+                        <span>{formatRate(row.rate)}</span>
                       </div>
                     </td>
                   </tr>
@@ -293,7 +294,7 @@ export default function DocumentsGridTab({
                 <td className="grid-sum-cell sum-n"><strong>{aggregate.sumN}</strong></td>
                 <td className="grid-rate-cell sticky-rate">
                   <AuditFormulaTooltip
-                    value={`${aggregate.conformeRate}%`}
+                    value={formatRate(aggregate.conformeRate)}
                     title="Taux conformité — INSPECTIONS l.25"
                     lines={globalFormulaLines}
                     className="pct-badge pct-conforme"

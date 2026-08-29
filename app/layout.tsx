@@ -8,7 +8,7 @@ export const metadata = {
   description: 'Gestion des données RH',
 };
 
-const themeInitScript = `(function(){try{var t=localStorage.getItem('app-theme');if(t==='light')document.documentElement.setAttribute('data-theme','light');}catch(e){}})();`;
+const themeInitScript = `(function(){try{var t=localStorage.getItem('app-theme');if(t==='light')document.documentElement.setAttribute('data-theme','light');var l=localStorage.getItem('app-locale');if(l==='en'||l==='fr')document.documentElement.lang=l;}catch(e){}})();`;
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
