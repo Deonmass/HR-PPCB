@@ -1,6 +1,35 @@
 {
   "entries": [
     {
+      "id": "log-000654",
+      "at": "2026-08-31T09:01:07.958Z",
+      "userId": "admin",
+      "userName": "Administrateur",
+      "module": "contractants",
+      "moduleLabel": "contractants",
+      "action": "update",
+      "actionLabel": "Modification",
+      "entityType": "contractant-employee",
+      "entityId": "57",
+      "summary": "Modification employé contractant — LUBENZO LUKAU BERTH",
+      "details": "Modification employé contractant — LUBENZO LUKAU BERTH",
+      "after": {
+        "id": "57",
+        "nom": "LUBENZO LUKAU BERTH",
+        "sexe": "F",
+        "lieuAffectation": "Zamba",
+        "fonction": "HR ASSITANT SUPPORT",
+        "departement": "Human Resources",
+        "telephone": "893771459",
+        "etatCivil": "C",
+        "statut": "Permanent",
+        "createdAt": "2026-08-12T12:57:02.481Z",
+        "updatedAt": "2026-08-31T09:01:05.145Z"
+      },
+      "undoable": false,
+      "undone": false
+    },
+    {
       "id": "log-000653",
       "at": "2026-08-31T08:57:56.790Z",
       "userId": "admin",
@@ -47618,5 +47647,5 @@
       }
     }
   ],
-  "nextSeq": 654
+  "nextSeq": 655
 }
