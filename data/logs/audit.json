@@ -1,6 +1,20 @@
 {
   "entries": [
     {
+      "id": "log-000637",
+      "at": "2026-08-31T07:20:44.579Z",
+      "userId": "admin",
+      "userName": "Administrateur",
+      "module": "documents.exit",
+      "moduleLabel": "Documents",
+      "action": "export",
+      "actionLabel": "Export",
+      "summary": "Document exit « Employee exit clearance form » — MATA MATOMBA ALEXANDRE (70000294)",
+      "details": "Document exit « Employee exit clearance form » — MATA MATOMBA ALEXANDRE (70000294)",
+      "undoable": false,
+      "undone": false
+    },
+    {
       "id": "log-000636",
       "at": "2026-08-29T01:01:26.615Z",
       "userId": "system",
@@ -47241,5 +47255,5 @@
       }
     }
   ],
-  "nextSeq": 637
+  "nextSeq": 638
 }
