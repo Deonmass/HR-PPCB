@@ -1,6 +1,32 @@
 {
   "entries": [
     {
+      "id": "log-000650",
+      "at": "2026-08-31T08:56:22.578Z",
+      "userId": "admin",
+      "userName": "Administrateur",
+      "module": "contractants",
+      "moduleLabel": "contractants",
+      "action": "error",
+      "actionLabel": "Erreur",
+      "summary": "Département requis",
+      "details": "Échec de l’action « update » sur contractants: Département requis",
+      "undoable": false,
+      "undone": false,
+      "error": {
+        "message": "Département requis",
+        "stack": "Error: Département requis\n    at u (/var/task/.next/server/chunks/1340.js:1:10415)\n    at B (/var/task/.next/server/chunks/1340.js:1:12055)\n    at /var/task/.next/server/app/api/employes/contractants/[id]/employees/[empId]/route.js:1:1994\n    at j (/var/task/.next/server/app/api/settings/departments/route.js:1:11880)\n    at async y (/var/task/.next/server/app/api/employes/contractants/[id]/employees/[empId]/route.js:1:1755)\n    at async rH.do (/var/task/node_modules/next/dist/compiled/next-server/app-route.runtime.prod.js:5:21048)\n    at async rH.handle (/var/task/node_modules/next/dist/compiled/next-server/app-route.runtime.prod.js:5:25866)\n    at async k (/var/task/.next/server/app/api/employes/contractants/[id]/employees/[empId]/route.js:1:5697)\n    at async rH.handleResponse (/var/task/node_modules/next/dist/compiled/next-server/app-route.runtime.prod.js:1:110770)\n    at async g (/var/task/.next/server/app/api/employes/contractants/[id]/employees/[empId]/route.js:1:6700)",
+        "path": "/api/employes/contractants/1/employees/153",
+        "method": "PUT",
+        "context": {
+          "action": "update",
+          "entityType": "contractant-employee",
+          "entityId": "153",
+          "summary": "Modification employé contractant — MBANZA HÉLÈNE"
+        }
+      }
+    },
+    {
       "id": "log-000649",
       "at": "2026-08-31T08:55:58.455Z",
       "userId": "Serge.Muakasa",
@@ -47505,5 +47531,5 @@
       }
     }
   ],
-  "nextSeq": 650
+  "nextSeq": 651
 }
