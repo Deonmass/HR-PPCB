@@ -178,5 +178,15 @@
     "issuedBy": "Administrateur",
     "id": "exit-1788160850254-o3kocm",
     "createdAt": "2026-08-31T07:20:50.254Z"
+  },
+  {
+    "matricule": "70000294",
+    "employeeName": "MATA MATOMBA ALEXANDRE",
+    "doc": "user-removal",
+    "docLabel": "User removal form",
+    "fileName": "User removal form - MATA MATOMBA ALEXANDRE.docx",
+    "issuedBy": "Administrateur",
+    "id": "exit-1788160858685-dbcgxy",
+    "createdAt": "2026-08-31T07:20:58.685Z"
   }
 ]
