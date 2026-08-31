@@ -114,15 +114,15 @@
         {
           "id": "150",
           "nom": "TULOMBA LUZAYADIO AIMÉE",
-          "sexe": "M",
+          "sexe": "F",
           "lieuAffectation": "Zamba",
           "fonction": "PKMP ET SAFETY SCHOOL",
-          "departement": "",
+          "departement": "Human Resources",
           "telephone": "",
           "etatCivil": "C",
           "statut": "Permanent",
           "createdAt": "2026-08-12T12:57:02.481Z",
-          "updatedAt": "2026-08-12T13:57:44.563Z"
+          "updatedAt": "2026-08-31T08:57:25.376Z"
         },
         {
           "id": "151",
@@ -295,7 +295,7 @@
         }
       ],
       "createdAt": "2026-08-12T11:54:22.178Z",
-      "updatedAt": "2026-08-31T08:56:45.996Z"
+      "updatedAt": "2026-08-31T08:57:25.376Z"
     },
     {
       "id": "2",
