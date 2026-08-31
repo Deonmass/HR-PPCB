@@ -168,5 +168,15 @@
     "issuedBy": "Administrateur",
     "id": "exit-1788160841029-oekij5",
     "createdAt": "2026-08-31T07:20:41.029Z"
+  },
+  {
+    "matricule": "70000294",
+    "employeeName": "MATA MATOMBA ALEXANDRE",
+    "doc": "attestation-fin-service",
+    "docLabel": "Attestation de fin de service",
+    "fileName": "Attestation de fin de service - MATA MATOMBA ALEXANDRE.docx",
+    "issuedBy": "Administrateur",
+    "id": "exit-1788160850254-o3kocm",
+    "createdAt": "2026-08-31T07:20:50.254Z"
   }
 ]
