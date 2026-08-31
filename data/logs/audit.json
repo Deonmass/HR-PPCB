@@ -1,6 +1,20 @@
 {
   "entries": [
     {
+      "id": "log-000639",
+      "at": "2026-08-31T07:21:01.689Z",
+      "userId": "admin",
+      "userName": "Administrateur",
+      "module": "documents.exit",
+      "moduleLabel": "Documents",
+      "action": "export",
+      "actionLabel": "Export",
+      "summary": "Document exit « User removal form » — MATA MATOMBA ALEXANDRE (70000294)",
+      "details": "Document exit « User removal form » — MATA MATOMBA ALEXANDRE (70000294)",
+      "undoable": false,
+      "undone": false
+    },
+    {
       "id": "log-000638",
       "at": "2026-08-31T07:20:53.259Z",
       "userId": "admin",
@@ -47269,5 +47283,5 @@
       }
     }
   ],
-  "nextSeq": 639
+  "nextSeq": 640
 }
