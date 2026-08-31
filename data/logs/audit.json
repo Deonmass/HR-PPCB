@@ -1,6 +1,20 @@
 {
   "entries": [
     {
+      "id": "log-000638",
+      "at": "2026-08-31T07:20:53.259Z",
+      "userId": "admin",
+      "userName": "Administrateur",
+      "module": "documents.exit",
+      "moduleLabel": "Documents",
+      "action": "export",
+      "actionLabel": "Export",
+      "summary": "Document exit « Attestation de fin de service » — MATA MATOMBA ALEXANDRE (70000294)",
+      "details": "Document exit « Attestation de fin de service » — MATA MATOMBA ALEXANDRE (70000294)",
+      "undoable": false,
+      "undone": false
+    },
+    {
       "id": "log-000637",
       "at": "2026-08-31T07:20:44.579Z",
       "userId": "admin",
@@ -47255,5 +47269,5 @@
       }
     }
   ],
-  "nextSeq": 638
+  "nextSeq": 639
 }
