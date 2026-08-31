@@ -1,6 +1,35 @@
 {
   "entries": [
     {
+      "id": "log-000652",
+      "at": "2026-08-31T08:57:27.967Z",
+      "userId": "admin",
+      "userName": "Administrateur",
+      "module": "contractants",
+      "moduleLabel": "contractants",
+      "action": "update",
+      "actionLabel": "Modification",
+      "entityType": "contractant-employee",
+      "entityId": "150",
+      "summary": "Modification employé contractant — TULOMBA LUZAYADIO AIMÉE",
+      "details": "Modification employé contractant — TULOMBA LUZAYADIO AIMÉE",
+      "after": {
+        "id": "150",
+        "nom": "TULOMBA LUZAYADIO AIMÉE",
+        "sexe": "F",
+        "lieuAffectation": "Zamba",
+        "fonction": "PKMP ET SAFETY SCHOOL",
+        "departement": "Human Resources",
+        "telephone": "",
+        "etatCivil": "C",
+        "statut": "Permanent",
+        "createdAt": "2026-08-12T12:57:02.481Z",
+        "updatedAt": "2026-08-31T08:57:25.376Z"
+      },
+      "undoable": false,
+      "undone": false
+    },
+    {
       "id": "log-000651",
       "at": "2026-08-31T08:56:48.488Z",
       "userId": "admin",
@@ -47560,5 +47589,5 @@
       }
     }
   ],
-  "nextSeq": 652
+  "nextSeq": 653
 }
