@@ -1,6 +1,29 @@
 {
   "entries": [
     {
+      "id": "log-000657",
+      "at": "2026-08-31T10:08:45.969Z",
+      "userId": "admin",
+      "userName": "Administrateur",
+      "module": "settings.services",
+      "moduleLabel": "Paramètres — Services",
+      "action": "create",
+      "actionLabel": "Création",
+      "entityType": "settings.service",
+      "entityId": "svc-sales-and-marketing-marketing",
+      "summary": "Création service Marketing",
+      "details": "Création service Marketing",
+      "after": {
+        "id": "svc-sales-and-marketing-marketing",
+        "name": "Marketing",
+        "code": "Mark",
+        "departmentId": "dept-sales-and-marketing",
+        "active": true
+      },
+      "undoable": true,
+      "undone": false
+    },
+    {
       "id": "log-000656",
       "at": "2026-08-31T10:06:49.204Z",
       "userId": "admin",
@@ -47943,5 +47966,5 @@
       }
     }
   ],
-  "nextSeq": 657
+  "nextSeq": 658
 }
