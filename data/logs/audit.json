@@ -1,6 +1,20 @@
 {
   "entries": [
     {
+      "id": "log-000641",
+      "at": "2026-08-31T08:17:08.246Z",
+      "userId": "admin",
+      "userName": "Administrateur",
+      "module": "documents.attestation-conge",
+      "moduleLabel": "Attestation de congé",
+      "action": "export",
+      "actionLabel": "Export",
+      "summary": "Téléchargement DOCX attestation congé BILANGA LINGOMA Jonas",
+      "details": "Téléchargement DOCX attestation congé BILANGA LINGOMA Jonas",
+      "undoable": false,
+      "undone": false
+    },
+    {
       "id": "log-000640",
       "at": "2026-08-31T08:17:02.750Z",
       "userId": "admin",
@@ -47317,5 +47331,5 @@
       }
     }
   ],
-  "nextSeq": 641
+  "nextSeq": 642
 }
