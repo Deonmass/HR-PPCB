@@ -6621,10 +6621,11 @@
       "id": "b02805ce-2aad-4790-8a44-3169ac871a1e",
       "matricule": "70000312",
       "nom": "PHILIPPE MUSINGILWA KABONGELO",
-      "departement": "Sales & Logistics",
+      "departement": "Sales and Marketing",
       "grade": "C2",
       "jobTitle": "Customer Relationship Officer",
       "localisation": "Kinshasa",
+      "service": "Sales_CEC",
       "company": "PPC Barnet DRC Manufacturing",
       "centreCout": "KC6310",
       "appointmentDate": "24/08/2026",
@@ -6662,7 +6663,7 @@
       "cnss": "",
       "nif": "",
       "createdAt": "2026-08-24T11:10:57.720Z",
-      "updatedAt": "2026-08-24T11:12:02.203Z"
+      "updatedAt": "2026-08-31T10:05:45.773Z"
     },
     {
       "id": "7e49ef87-7563-46f1-9173-4ffddda25a98",
