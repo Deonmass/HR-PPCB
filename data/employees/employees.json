@@ -5233,10 +5233,11 @@
       "id": "475f77aa-cd58-4564-abaa-8ce774aabff1",
       "matricule": "70000297",
       "nom": "MUZILA EBALOSONG Papy",
-      "departement": "Sales & Logistics",
+      "departement": "Sales and Marketing",
       "grade": "D2",
       "jobTitle": "Marketing Manager",
       "localisation": "Kinshasa",
+      "service": "",
       "company": "PPC Barnet DRC Manufacturing",
       "centreCout": "KC6310",
       "appointmentDate": "03/11/2025",
@@ -5274,7 +5275,7 @@
       "cnss": "103232019781215002",
       "nif": "G2642550L",
       "createdAt": "2026-07-28T09:40:37.715Z",
-      "updatedAt": "2026-08-26T08:46:54.817Z"
+      "updatedAt": "2026-08-31T10:09:41.461Z"
     },
     {
       "id": "3a904ff9-5a67-48ac-bea4-8909eec656f5",
