@@ -1,6 +1,35 @@
 {
   "entries": [
     {
+      "id": "log-000653",
+      "at": "2026-08-31T08:57:56.790Z",
+      "userId": "admin",
+      "userName": "Administrateur",
+      "module": "contractants",
+      "moduleLabel": "contractants",
+      "action": "update",
+      "actionLabel": "Modification",
+      "entityType": "contractant-employee",
+      "entityId": "149",
+      "summary": "Modification employé contractant — TUNGA ZOLA CAROLINE",
+      "details": "Modification employé contractant — TUNGA ZOLA CAROLINE",
+      "after": {
+        "id": "149",
+        "nom": "TUNGA ZOLA CAROLINE",
+        "sexe": "F",
+        "lieuAffectation": "Zamba",
+        "fonction": "PONT BASCULE, GUÉRITE GSA, TOILETTES MARK FILLES",
+        "departement": "Human Resources",
+        "telephone": "",
+        "etatCivil": "C",
+        "statut": "Permanent",
+        "createdAt": "2026-08-12T12:57:02.481Z",
+        "updatedAt": "2026-08-31T08:57:54.480Z"
+      },
+      "undoable": false,
+      "undone": false
+    },
+    {
       "id": "log-000652",
       "at": "2026-08-31T08:57:27.967Z",
       "userId": "admin",
@@ -47589,5 +47618,5 @@
       }
     }
   ],
-  "nextSeq": 653
+  "nextSeq": 654
 }
