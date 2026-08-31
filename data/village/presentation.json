@@ -29,18 +29,10 @@
       {
         "id": "p-6",
         "house": "6",
-        "name": "Erick Bompeta Mpingo",
-        "matricule": "70000205",
+        "name": "Ngoyi Muikulu Marcel",
+        "matricule": "70000091",
         "purpose": "To be housed",
         "badge": "proposal"
-      },
-      {
-        "id": "p-20",
-        "house": "20",
-        "name": "Mechanical Foreman",
-        "matricule": "",
-        "purpose": "Position to be filled",
-        "badge": "role"
       },
       {
         "id": "p-26b",
@@ -52,7 +44,7 @@
       },
       {
         "id": "p-28b",
-        "house": "28B",
+        "house": "Studio 28B",
         "name": "Archipp Mulenda",
         "matricule": "70000270",
         "purpose": "Proposed assignment",
@@ -73,11 +65,44 @@
         "matricule": "",
         "purpose": "Position to be filled",
         "badge": "role"
+      },
+      {
+        "id": "p-mtgzp6ic-h91c",
+        "house": "20",
+        "name": "Muba Kayembe Jeremie",
+        "matricule": "70000030",
+        "purpose": "",
+        "badge": "proposal"
+      },
+      {
+        "id": "p-mtgzt2e9-085x",
+        "house": "72",
+        "name": "Mechanical Foreman",
+        "matricule": "",
+        "purpose": "",
+        "badge": "proposal"
+      },
+      {
+        "id": "p-mtgzz4k7-bqxl",
+        "house": "25",
+        "name": "Bompeta Mpingo Erick",
+        "matricule": "70000205",
+        "purpose": "",
+        "badge": "proposal"
+      },
+      {
+        "id": "p-mth0034g-nwy3",
+        "house": "31",
+        "name": "Production Superintendent",
+        "matricule": "",
+        "purpose": "",
+        "badge": "proposal"
       }
     ]
   },
   "thankYou": {
     "kicker": "PPC · VILLAGE",
     "message": "Thank You"
-  }
+  },
+  "updatedAt": "2026-08-31T08:55:38.698Z"
 }
