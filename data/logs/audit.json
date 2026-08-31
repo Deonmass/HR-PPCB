@@ -1,6 +1,35 @@
 {
   "entries": [
     {
+      "id": "log-000651",
+      "at": "2026-08-31T08:56:48.488Z",
+      "userId": "admin",
+      "userName": "Administrateur",
+      "module": "contractants",
+      "moduleLabel": "contractants",
+      "action": "update",
+      "actionLabel": "Modification",
+      "entityType": "contractant-employee",
+      "entityId": "153",
+      "summary": "Modification employé contractant — MBANZA HÉLÈNE",
+      "details": "Modification employé contractant — MBANZA HÉLÈNE",
+      "after": {
+        "id": "153",
+        "nom": "MBANZA HÉLÈNE",
+        "sexe": "F",
+        "lieuAffectation": "Zamba",
+        "fonction": "CENTRE DE FORMATION",
+        "departement": "Human Resources",
+        "telephone": "",
+        "etatCivil": "C",
+        "statut": "Permanent",
+        "createdAt": "2026-08-12T12:57:02.481Z",
+        "updatedAt": "2026-08-31T08:56:45.996Z"
+      },
+      "undoable": false,
+      "undone": false
+    },
+    {
       "id": "log-000650",
       "at": "2026-08-31T08:56:22.578Z",
       "userId": "admin",
@@ -47531,5 +47560,5 @@
       }
     }
   ],
-  "nextSeq": 651
+  "nextSeq": 652
 }
