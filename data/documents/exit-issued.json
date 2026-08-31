@@ -158,5 +158,15 @@
     "issuedBy": "Administrateur",
     "id": "exit-1787563982608-yr8f7a",
     "createdAt": "2026-08-24T09:33:02.608Z"
+  },
+  {
+    "matricule": "70000294",
+    "employeeName": "MATA MATOMBA ALEXANDRE",
+    "doc": "clearance",
+    "docLabel": "Employee exit clearance form",
+    "fileName": "Employee exit clearance form - MATA MATOMBA ALEXANDRE.docx",
+    "issuedBy": "Administrateur",
+    "id": "exit-1788160841029-oekij5",
+    "createdAt": "2026-08-31T07:20:41.029Z"
   }
 ]
