@@ -153,15 +153,15 @@
         {
           "id": "153",
           "nom": "MBANZA HÉLÈNE",
-          "sexe": "M",
+          "sexe": "F",
           "lieuAffectation": "Zamba",
           "fonction": "CENTRE DE FORMATION",
-          "departement": "",
+          "departement": "Human Resources",
           "telephone": "",
           "etatCivil": "C",
           "statut": "Permanent",
           "createdAt": "2026-08-12T12:57:02.481Z",
-          "updatedAt": "2026-08-12T13:57:44.563Z"
+          "updatedAt": "2026-08-31T08:56:45.996Z"
         },
         {
           "id": "154",
@@ -295,7 +295,7 @@
         }
       ],
       "createdAt": "2026-08-12T11:54:22.178Z",
-      "updatedAt": "2026-08-12T12:57:02.481Z"
+      "updatedAt": "2026-08-31T08:56:45.996Z"
     },
     {
       "id": "2",
