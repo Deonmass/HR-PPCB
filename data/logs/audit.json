@@ -1,6 +1,21 @@
 {
   "entries": [
     {
+      "id": "log-000648",
+      "at": "2026-08-31T08:55:42.317Z",
+      "userId": "Serge.Muakasa",
+      "userName": "Serge Muakasa",
+      "userEmail": "Serge.Muakasa@ppcdrc.cd",
+      "module": "village.maisons",
+      "moduleLabel": "Village — Maisons",
+      "action": "other",
+      "actionLabel": "Autre",
+      "summary": "Enregistrement présentation village",
+      "details": "Enregistrement présentation village",
+      "undoable": false,
+      "undone": false
+    },
+    {
       "id": "log-000647",
       "at": "2026-08-31T08:35:42.093Z",
       "userId": "admin",
@@ -47475,5 +47490,5 @@
       }
     }
   ],
-  "nextSeq": 648
+  "nextSeq": 649
 }
