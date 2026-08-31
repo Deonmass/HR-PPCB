@@ -20,6 +20,13 @@
       "code": "Optimization",
       "departmentId": "dept-production",
       "active": false
+    },
+    {
+      "id": "svc-sales-and-marketing-marketing",
+      "name": "Marketing",
+      "code": "Mark",
+      "departmentId": "dept-sales-and-marketing",
+      "active": true
     }
   ]
 }
