@@ -12,6 +12,7 @@ import {
   SERVICE_ATTESTATION_TEMPLATE_PATH,
 } from './service-attestation-template';
 import type { ServiceAttestationFormData } from './service-attestation-types';
+import { toWinAnsi } from './pdf-winansi';
 import { convertDocxToPdf } from './travel-pdf';
 import { isWindows } from './windows-shell';
 
@@ -101,7 +102,8 @@ async function buildServiceAttestationPdfWithPdfLib(
   }
 
   let addressY = y - 2;
-  for (const line of PPC_LETTERHEAD_ADDRESS_LINES) {
+  for (const raw of PPC_LETTERHEAD_ADDRESS_LINES) {
+    const line = toWinAnsi(raw);
     const width = font.widthOfTextAtSize(line, addressSize);
     page.drawText(line, {
       x: 595.28 - marginX - width,
@@ -140,7 +142,7 @@ async function buildServiceAttestationPdfWithPdfLib(
     const isSignature = index >= paragraphs.length - 2;
     const size = isTitle ? 16 : 12;
     const useBold = isTitle || isSignature;
-    const lines = wrap(paragraph, size, useBold);
+    const lines = wrap(toWinAnsi(paragraph), size, useBold);
     const lineHeight = size + 6;
 
     if (isTitle) y -= 12;

@@ -363,6 +363,17 @@ function composeEmployee(
   });
 }
 
+function uniqueRecordsByMatricule<T extends { matricule: string; updatedAt?: string }>(items: T[]): T[] {
+  const latest = new Map<string, T>();
+  for (const item of items) {
+    const prev = latest.get(item.matricule);
+    if (!prev || String(item.updatedAt ?? '') >= String(prev.updatedAt ?? '')) {
+      latest.set(item.matricule, item);
+    }
+  }
+  return items.filter((item) => latest.get(item.matricule) === item);
+}
+
 export async function readEmployeesBundle(): Promise<{ employees: Employee[]; exits: Employee[] }> {
   await ensureMigrated();
   const [employeesStore, exitsStore, docsStore] = await Promise.all([
@@ -372,10 +383,10 @@ export async function readEmployeesBundle(): Promise<{ employees: Employee[]; ex
   ]);
   const docsByEmployeeId = new Map(docsStore.documents.map((item) => [item.employeeId, item]));
   return {
-    employees: employeesStore.employees
+    employees: uniqueRecordsByMatricule(employeesStore.employees)
       .map((employee) => composeEmployee(employee, docsByEmployeeId.get(employee.id)))
       .sort((a, b) => a.nom.localeCompare(b.nom, 'fr')),
-    exits: exitsStore.exits
+    exits: uniqueRecordsByMatricule(exitsStore.exits)
       .map((employee) => composeEmployee(employee, docsByEmployeeId.get(employee.id)))
       .sort((a, b) => a.nom.localeCompare(b.nom, 'fr')),
   };

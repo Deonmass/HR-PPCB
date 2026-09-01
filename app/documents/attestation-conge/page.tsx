@@ -440,7 +440,8 @@ export default function AttestationCongePage() {
                 <div className="service-attestation-employee-meta">
                   {employeeMeta.map((item) => (
                     <span key={item.label} className="service-attestation-meta-chip">
-                      <strong>{item.label}</strong> {item.value || '—'}
+                      <strong>{item.label}</strong>
+                      <span>{item.value || '—'}</span>
                     </span>
                   ))}
                 </div>

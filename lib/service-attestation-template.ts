@@ -87,12 +87,16 @@ function replaceLiteralInXmlOnce(
 ): string {
   const chars = literal.split('').map((char) => char.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'));
   const gap = '(?:<[^>]+>)*';
-  const pattern = new RegExp(`${gap}${chars.join(gap)}${gap}`);
-  pattern.lastIndex = fromIndex;
-  const match = pattern.exec(xml);
-  if (!match || match.index < fromIndex) return xml;
+  // Only allow XML tags *between* letters — not before/after, or Word closing
+  // tags get swallowed and the .docx becomes unreadable.
+  const pattern = new RegExp(chars.join(gap));
+  const searchFrom = Math.max(0, fromIndex);
+  const slice = xml.slice(searchFrom);
+  const match = pattern.exec(slice);
+  if (!match) return xml;
+  const at = searchFrom + match.index;
   const escaped = escapeXmlText(value);
-  return `${xml.slice(0, match.index)}${escaped}${xml.slice(match.index + match[0].length)}`;
+  return `${xml.slice(0, at)}${escaped}${xml.slice(at + match[0].length)}`;
 }
 
 function formatDocumentDate(value: string, language: 'fr' | 'en'): string {

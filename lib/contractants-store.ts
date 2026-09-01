@@ -19,6 +19,7 @@ import {
   isContractantEtatCivil,
   isContractantSexe,
 } from './contractants-types';
+import { inferFemaleSexeFromName } from './contractants-gender';
 import { isLocalisationLabel, normalizeLocalisation } from './localisations';
 import { canPersistProjectFiles, getWritableDataRoot } from './runtime-mode';
 import { randomUUID } from 'crypto';
@@ -175,7 +176,7 @@ function validateEmployeeInput(input: ContractantEmployeeInput): ContractantEmpl
   }
   return {
     nom,
-    sexe: isContractantSexe(sexeRaw) ? sexeRaw : '',
+    sexe: inferFemaleSexeFromName(nom, isContractantSexe(sexeRaw) ? sexeRaw : ''),
     lieuAffectation,
     fonction,
     departement,
@@ -381,7 +382,7 @@ export async function importContractantEmployees(
     employees.push({
       id,
       nom,
-      sexe: isContractantSexe(sexeRaw) ? sexeRaw : '',
+      sexe: inferFemaleSexeFromName(nom, isContractantSexe(sexeRaw) ? sexeRaw : ''),
       lieuAffectation: normalizeLocalisation(input.lieuAffectation),
       fonction: isLocalisationLabel(input.fonction) ? '' : String(input.fonction || '').trim(),
       departement: String(input.departement || '').trim(),
@@ -435,7 +436,7 @@ export async function replaceContractantEmployees(
     employees.push({
       id,
       nom,
-      sexe: isContractantSexe(sexeRaw) ? sexeRaw : '',
+      sexe: inferFemaleSexeFromName(nom, isContractantSexe(sexeRaw) ? sexeRaw : ''),
       lieuAffectation: normalizeLocalisation(input.lieuAffectation),
       fonction: isLocalisationLabel(input.fonction) ? '' : String(input.fonction || '').trim(),
       departement: String(input.departement || '').trim(),

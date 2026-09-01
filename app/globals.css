@@ -3313,26 +3313,41 @@ body:has(.village-pptx-overlay) .project-picker-list-portal {
 }
 
 .service-attestation-employee-meta {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.4rem 0.65rem;
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 0.4rem 0;
   margin-top: 0.35rem;
-  padding: 0.65rem 0.75rem;
+  padding: 0.75rem 0.85rem;
   border-radius: 8px;
   background: color-mix(in srgb, var(--border) 35%, transparent);
   border: 1px solid color-mix(in srgb, var(--border) 80%, transparent);
 }
 
 .service-attestation-meta-chip {
+  display: grid;
+  grid-template-columns: 7.4rem minmax(0, 1fr);
+  align-items: baseline;
+  column-gap: 0.5rem;
   font-size: 0.76rem;
-  color: var(--muted);
+  color: var(--text);
   line-height: 1.35;
+  min-width: 0;
 }
 
 .service-attestation-meta-chip strong {
-  color: var(--text);
-  font-weight: 600;
-  margin-right: 0.25rem;
+  color: var(--muted);
+  font-weight: 650;
+  font-size: 0.68rem;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+  margin-right: 0;
+}
+
+.service-attestation-meta-chip span {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 .service-attestation-meta-hint {
@@ -14426,6 +14441,7 @@ html[data-theme="light"] .dependant-family-tree-svg-line {
 
 .employees-main-tabs.exco-main-tabs {
   margin-top: 0.15rem;
+  justify-content: flex-start;
 }
 
 .employees-page .exco-main-tab {
@@ -15682,8 +15698,8 @@ html[data-theme="light"] .employees-ppc-loc-table td.is-femmes .employees-ppc-lo
 }
 
 .employees-table-compact th.th-filter {
-  overflow: visible;
-  padding: 0.15rem 0.2rem;
+  overflow: hidden;
+  padding: 0;
 }
 
 .employees-table-compact .col-name {
@@ -15699,15 +15715,15 @@ html[data-theme="light"] .employees-ppc-loc-table td.is-femmes .employees-ppc-lo
 .employees-table-compact .emp-col-matricule { width: 4.4rem; }
 .employees-table-compact .emp-col-nom { width: 18%; min-width: 9rem; }
 .employees-table-compact .emp-col-dept { width: 10%; min-width: 6.5rem; }
-.employees-table-compact .emp-col-grade { width: 3.1rem; }
-.employees-table-compact .emp-col-loc { width: 6.5%; min-width: 4.8rem; }
+.employees-table-compact .emp-col-grade { width: 3.4rem; }
+.employees-table-compact .emp-col-loc { width: 9%; min-width: 7.4rem; }
 .employees-table-compact .emp-col-age {
-  width: 3.6rem;
+  width: 3.8rem;
   font-variant-numeric: tabular-nums;
 }
 .employees-table-compact .emp-col-anciennete {
-  width: 7.2rem;
-  min-width: 6.8rem;
+  width: 7.6rem;
+  min-width: 7.2rem;
   font-variant-numeric: tabular-nums;
   white-space: nowrap;
 }
@@ -15743,7 +15759,10 @@ html[data-theme="light"] .employees-ppc-loc-table td.is-femmes .employees-ppc-lo
 .employees-table-compact td.emp-col-age,
 .employees-table-compact th.emp-col-age,
 .employees-table-compact td.emp-col-anciennete,
-.employees-table-compact th.emp-col-anciennete,
+.employees-table-compact th.emp-col-anciennete {
+  text-align: left;
+}
+
 .employees-table-compact td.emp-col-mois,
 .employees-table-compact th.emp-col-mois,
 .employees-table-compact td.emp-col-duree,
@@ -15781,13 +15800,16 @@ html[data-theme="light"] .employees-ppc-loc-table td.is-femmes .employees-ppc-lo
 
 .employees-table-compact .table-hf-btn {
   gap: 0.2rem;
-  padding: 0.28rem 0.3rem;
+  padding: 0.28rem 0.45rem;
   min-width: 0;
+  justify-content: flex-start;
+  overflow: hidden;
 }
 
 .employees-table-compact .table-hf-label {
   overflow: hidden;
   text-overflow: ellipsis;
+  min-width: 0;
   max-width: 100%;
 }
 
@@ -25454,6 +25476,26 @@ html[data-theme="light"] .contractants-sticky {
   overflow: hidden;
 }
 
+.contractants-emp-list-toolbar {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  padding: 0.4rem 0.65rem;
+  border-bottom: 1px solid var(--border);
+  flex-shrink: 0;
+}
+
+.contractants-emp-list-toolbar .search-input {
+  flex: 0 1 280px;
+  min-width: 200px;
+  max-width: 360px;
+  font-size: 0.74rem;
+  padding: 0.32rem 0.6rem;
+  min-height: 30px;
+  box-sizing: border-box;
+}
+
 .contractants-emp-table-wrap {
   flex: 1;
   min-height: 0;
@@ -25470,7 +25512,8 @@ html[data-theme="light"] .contractants-sticky {
 
 .contractants-table-compact th,
 .contractants-table-compact td {
-  padding: 0.32rem 0.4rem;
+  padding: 0.18rem 0.35rem;
+  line-height: 1.2;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -25487,7 +25530,7 @@ html[data-theme="light"] .contractants-sticky {
   overflow: visible;
   text-overflow: clip;
   font-weight: 600;
-  font-size: 0.73rem;
+  font-size: 0.7rem;
   letter-spacing: -0.01em;
 }
 
@@ -25524,8 +25567,8 @@ html[data-theme="light"] .contractants-sticky {
 }
 
 .contractants-row-menu-btn {
-  width: 1.75rem;
-  height: 1.75rem;
+  width: 1.5rem;
+  height: 1.5rem;
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -25932,10 +25975,11 @@ html[data-theme="light"] .contractants-header-actions .search-toggle-btn {
 
 .contractant-statut {
   display: inline-block;
-  font-size: 0.68rem;
+  font-size: 0.62rem;
   font-weight: 600;
-  padding: 0.12rem 0.45rem;
+  padding: 0.06rem 0.38rem;
   border-radius: 999px;
+  line-height: 1.25;
 }
 
 .contractant-statut.is-permanent {

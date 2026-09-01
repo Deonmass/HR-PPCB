@@ -6,6 +6,7 @@ import {
   isContractantEtatCivil,
   isContractantSexe,
 } from './contractants-types';
+import { inferFemaleSexeFromName } from './contractants-gender';
 import { isLocalisationLabel, normalizeLocalisation } from './localisations';
 
 export interface ParsedContractantEmployeesImport {
@@ -165,7 +166,7 @@ export function parseContractantEmployeesImportBuffer(
 
     parsed.push({
       nom,
-      sexe: parseSexe(cell(row, sexeCol)),
+      sexe: inferFemaleSexeFromName(nom, parseSexe(cell(row, sexeCol))),
       lieuAffectation,
       fonction,
       departement: cell(row, departementCol),

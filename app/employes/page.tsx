@@ -1084,7 +1084,7 @@ export default function EmployesPage() {
                       </td>
                     </tr>
                   ) : (
-                    filtered.map((e) => {
+                    filtered.map((e, rowIndex) => {
                       const { pct } = calcDocumentCompletion(e);
                       const rateCls = pct >= 80 ? 'high' : pct >= 50 ? 'mid' : 'low';
                       const age = resolveEmployeeAge(e);
@@ -1117,7 +1117,7 @@ export default function EmployesPage() {
                       const essaiStatut = resolveEssaiStatutEval(e);
                       return (
                         <tr
-                          key={e.matricule}
+                          key={`${e.matricule}-${rowIndex}`}
                           className={`employees-row-context${rowAlertClass}`}
                           onClick={() => openView(e)}
                           onDoubleClick={() => openView(e)}

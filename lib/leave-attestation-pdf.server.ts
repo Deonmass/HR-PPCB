@@ -14,6 +14,7 @@ import {
   LEAVE_ATTESTATION_TEMPLATE_PATH,
 } from './leave-attestation-template';
 import type { LeaveAttestationFormData } from './leave-attestation-types';
+import { toWinAnsi } from './pdf-winansi';
 import { convertDocxToPdf } from './travel-pdf';
 import { isWindows } from './windows-shell';
 
@@ -52,7 +53,8 @@ async function buildLeaveAttestationPdfWithPdfLib(
   }
 
   let addressY = y - 2;
-  for (const line of PPC_LETTERHEAD_ADDRESS_LINES) {
+  for (const raw of PPC_LETTERHEAD_ADDRESS_LINES) {
+    const line = toWinAnsi(raw);
     const width = font.widthOfTextAtSize(line, addressSize);
     page.drawText(line, {
       x: 595.28 - marginX - width,
@@ -91,7 +93,7 @@ async function buildLeaveAttestationPdfWithPdfLib(
     const isSignature = index >= paragraphs.length - 2;
     const size = isTitle ? 16 : 12;
     const useBold = isTitle || isSignature;
-    const lines = wrap(paragraph, size, useBold);
+    const lines = wrap(toWinAnsi(paragraph), size, useBold);
     for (const line of lines) {
       const active = useBold ? bold : font;
       const width = active.widthOfTextAtSize(line, size);

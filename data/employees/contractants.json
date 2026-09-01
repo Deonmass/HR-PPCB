@@ -1,6 +1,6 @@
 {
   "nextContractantId": 11,
-  "nextEmployeeId": 755,
+  "nextEmployeeId": 757,
   "contractants": [
     {
       "id": "1",
@@ -18,7 +18,7 @@
           "etatCivil": "C",
           "statut": "Permanent",
           "createdAt": "2026-08-12T12:57:02.481Z",
-          "updatedAt": "2026-08-12T13:57:44.560Z"
+          "updatedAt": "2026-08-31T09:19:40.548Z"
         },
         {
           "id": "143",
@@ -31,12 +31,12 @@
           "etatCivil": "C",
           "statut": "Permanent",
           "createdAt": "2026-08-12T12:57:02.481Z",
-          "updatedAt": "2026-08-12T13:57:44.563Z"
+          "updatedAt": "2026-08-31T09:19:40.548Z"
         },
         {
           "id": "144",
           "nom": "LUFUAMESO ANGE",
-          "sexe": "M",
+          "sexe": "F",
           "lieuAffectation": "Zamba",
           "fonction": "CCR REZ-DE-CHAUSSÉE",
           "departement": "",
@@ -44,12 +44,12 @@
           "etatCivil": "C",
           "statut": "Permanent",
           "createdAt": "2026-08-12T12:57:02.481Z",
-          "updatedAt": "2026-08-12T13:57:44.563Z"
+          "updatedAt": "2026-08-31T09:19:40.548Z"
         },
         {
           "id": "145",
           "nom": "KIANGEBENI LUZAYADIO ROSE",
-          "sexe": "M",
+          "sexe": "F",
           "lieuAffectation": "Zamba",
           "fonction": "CCR FLOOR",
           "departement": "",
@@ -57,7 +57,7 @@
           "etatCivil": "C",
           "statut": "Permanent",
           "createdAt": "2026-08-12T12:57:02.481Z",
-          "updatedAt": "2026-08-12T13:57:44.563Z"
+          "updatedAt": "2026-08-31T09:19:40.548Z"
         },
         {
           "id": "146",
@@ -70,12 +70,12 @@
           "etatCivil": "C",
           "statut": "Permanent",
           "createdAt": "2026-08-12T12:57:02.481Z",
-          "updatedAt": "2026-08-12T13:57:44.563Z"
+          "updatedAt": "2026-08-31T09:19:40.548Z"
         },
         {
           "id": "147",
           "nom": "KIAWUTUA NDOMBELE SANDRINE",
-          "sexe": "M",
+          "sexe": "F",
           "lieuAffectation": "Zamba",
           "fonction": "WAREHOUSE ET ATELIER",
           "departement": "",
@@ -83,11 +83,11 @@
           "etatCivil": "C",
           "statut": "Permanent",
           "createdAt": "2026-08-12T12:57:02.481Z",
-          "updatedAt": "2026-08-12T13:57:44.563Z"
+          "updatedAt": "2026-08-31T09:19:40.548Z"
         },
         {
           "id": "148",
-          "nom": "NTANTU LYRINS",
+          "nom": "NTANTU SALAZAKU LYRINS",
           "sexe": "M",
           "lieuAffectation": "Zamba",
           "fonction": "TOILETTES MARK GARÇONS, TOILETTES EXTÉRIEUR (CHAUFFEURS) ET BÂTIMENT COMPLIANCE",
@@ -96,12 +96,12 @@
           "etatCivil": "C",
           "statut": "Permanent",
           "createdAt": "2026-08-12T12:57:02.481Z",
-          "updatedAt": "2026-08-12T13:57:44.563Z"
+          "updatedAt": "2026-08-31T09:19:40.548Z"
         },
         {
           "id": "149",
           "nom": "TUNGA ZOLA CAROLINE",
-          "sexe": "M",
+          "sexe": "F",
           "lieuAffectation": "Zamba",
           "fonction": "PONT BASCULE, GUÉRITE GSA, TOILETTES MARK FILLES",
           "departement": "",
@@ -109,12 +109,12 @@
           "etatCivil": "C",
           "statut": "Permanent",
           "createdAt": "2026-08-12T12:57:02.481Z",
-          "updatedAt": "2026-08-12T13:57:44.563Z"
+          "updatedAt": "2026-08-31T09:19:40.548Z"
         },
         {
           "id": "150",
           "nom": "TULOMBA LUZAYADIO AIMÉE",
-          "sexe": "M",
+          "sexe": "F",
           "lieuAffectation": "Zamba",
           "fonction": "PKMP ET SAFETY SCHOOL",
           "departement": "",
@@ -122,12 +122,12 @@
           "etatCivil": "C",
           "statut": "Permanent",
           "createdAt": "2026-08-12T12:57:02.481Z",
-          "updatedAt": "2026-08-12T13:57:44.563Z"
+          "updatedAt": "2026-08-31T09:19:40.548Z"
         },
         {
           "id": "151",
           "nom": "LUZAYADIO DIEU-MERCI",
-          "sexe": "M",
+          "sexe": "F",
           "lieuAffectation": "Zamba",
           "fonction": "GARAGE",
           "departement": "",
@@ -135,12 +135,12 @@
           "etatCivil": "C",
           "statut": "Permanent",
           "createdAt": "2026-08-12T12:57:02.481Z",
-          "updatedAt": "2026-08-12T13:57:44.563Z"
+          "updatedAt": "2026-08-31T09:19:40.548Z"
         },
         {
           "id": "152",
-          "nom": "DIKE MADELENE",
-          "sexe": "M",
+          "nom": "DIKE MADELEINE",
+          "sexe": "F",
           "lieuAffectation": "Zamba",
           "fonction": "BUREAU CRASHA, CLINIC ET TOILETTES DERRIÈRE CCR",
           "departement": "",
@@ -148,12 +148,12 @@
           "etatCivil": "C",
           "statut": "Permanent",
           "createdAt": "2026-08-12T12:57:02.481Z",
-          "updatedAt": "2026-08-12T13:57:44.563Z"
+          "updatedAt": "2026-08-31T09:19:40.548Z"
         },
         {
           "id": "153",
           "nom": "MBANZA HÉLÈNE",
-          "sexe": "M",
+          "sexe": "F",
           "lieuAffectation": "Zamba",
           "fonction": "CENTRE DE FORMATION",
           "departement": "",
@@ -161,11 +161,11 @@
           "etatCivil": "C",
           "statut": "Permanent",
           "createdAt": "2026-08-12T12:57:02.481Z",
-          "updatedAt": "2026-08-12T13:57:44.563Z"
+          "updatedAt": "2026-08-31T09:19:40.548Z"
         },
         {
           "id": "154",
-          "nom": "MBOLE JOSEPH",
+          "nom": "MBOLE MANDIANGU JOSEPH",
           "sexe": "M",
           "lieuAffectation": "Zamba",
           "fonction": "HUDUMA ET GUÉRITE PARKING",
@@ -174,12 +174,12 @@
           "etatCivil": "C",
           "statut": "Permanent",
           "createdAt": "2026-08-12T12:57:02.481Z",
-          "updatedAt": "2026-08-12T13:57:44.563Z"
+          "updatedAt": "2026-08-31T09:19:40.548Z"
         },
         {
           "id": "155",
           "nom": "NKIAMBI YAVANGA MICHILINE",
-          "sexe": "M",
+          "sexe": "F",
           "lieuAffectation": "Zamba",
           "fonction": "HUDUMA ET GUÉRITE POLICIER",
           "departement": "",
@@ -187,11 +187,11 @@
           "etatCivil": "C",
           "statut": "Permanent",
           "createdAt": "2026-08-12T12:57:02.481Z",
-          "updatedAt": "2026-08-12T13:57:44.563Z"
+          "updatedAt": "2026-08-31T09:19:40.548Z"
         },
         {
           "id": "156",
-          "nom": "NDUKA PIERRE",
+          "nom": "NDUKA NDUKA PIERRE",
           "sexe": "M",
           "lieuAffectation": "Zamba",
           "fonction": "HUDUMA (SOIR)",
@@ -200,12 +200,12 @@
           "etatCivil": "C",
           "statut": "Permanent",
           "createdAt": "2026-08-12T12:57:02.481Z",
-          "updatedAt": "2026-08-12T13:57:44.563Z"
+          "updatedAt": "2026-08-31T09:19:40.548Z"
         },
         {
           "id": "157",
-          "nom": "NZALAMBI SUKAMI TENTINE",
-          "sexe": "M",
+          "nom": "NSALAMBI NSUKAMI TANTINE",
+          "sexe": "F",
           "lieuAffectation": "Zamba",
           "fonction": "HUDUMA",
           "departement": "",
@@ -213,11 +213,11 @@
           "etatCivil": "C",
           "statut": "Permanent",
           "createdAt": "2026-08-12T12:57:02.481Z",
-          "updatedAt": "2026-08-12T13:57:44.563Z"
+          "updatedAt": "2026-08-31T09:19:40.548Z"
         },
         {
           "id": "158",
-          "nom": "NGODI PAPY",
+          "nom": "NGODI LONGI PAPY",
           "sexe": "M",
           "lieuAffectation": "Zamba",
           "fonction": "SUPERVISEUR ET MAGASINIER",
@@ -226,7 +226,7 @@
           "etatCivil": "C",
           "statut": "Permanent",
           "createdAt": "2026-08-12T12:57:02.481Z",
-          "updatedAt": "2026-08-12T13:57:44.563Z"
+          "updatedAt": "2026-08-31T09:19:40.548Z"
         },
         {
           "id": "159",
@@ -239,11 +239,11 @@
           "etatCivil": "C",
           "statut": "Permanent",
           "createdAt": "2026-08-12T12:57:02.481Z",
-          "updatedAt": "2026-08-12T13:57:44.563Z"
+          "updatedAt": "2026-08-31T09:19:40.548Z"
         },
         {
           "id": "160",
-          "nom": "BAMBUTA LUZAYADIO MICHEL",
+          "nom": "BAMBUTA LUZAYADIO MICHELL-D",
           "sexe": "M",
           "lieuAffectation": "Zamba",
           "fonction": "CHARGÉ D’ADMINISTRATION",
@@ -252,20 +252,7 @@
           "etatCivil": "C",
           "statut": "Permanent",
           "createdAt": "2026-08-12T12:57:02.481Z",
-          "updatedAt": "2026-08-12T13:57:44.565Z"
-        },
-        {
-          "id": "161",
-          "nom": "MAKAMBU MARIELLE",
-          "sexe": "M",
-          "lieuAffectation": "Zamba",
-          "fonction": "CHARGÉE D’ACHAT PRODUITS",
-          "departement": "",
-          "telephone": "",
-          "etatCivil": "C",
-          "statut": "Permanent",
-          "createdAt": "2026-08-12T12:57:02.481Z",
-          "updatedAt": "2026-08-12T13:57:44.565Z"
+          "updatedAt": "2026-08-31T09:19:40.548Z"
         },
         {
           "id": "162",
@@ -278,7 +265,7 @@
           "etatCivil": "C",
           "statut": "Permanent",
           "createdAt": "2026-08-12T12:57:02.481Z",
-          "updatedAt": "2026-08-12T13:57:44.565Z"
+          "updatedAt": "2026-08-31T09:19:40.548Z"
         },
         {
           "id": "163",
@@ -291,11 +278,37 @@
           "etatCivil": "C",
           "statut": "Permanent",
           "createdAt": "2026-08-12T12:57:02.481Z",
-          "updatedAt": "2026-08-12T13:57:44.565Z"
+          "updatedAt": "2026-08-31T09:19:40.548Z"
+        },
+        {
+          "id": "755",
+          "nom": "NKIAMBI DIABANZA MICHELINE",
+          "sexe": "F",
+          "lieuAffectation": "Zamba",
+          "fonction": "CLEANER",
+          "departement": "",
+          "telephone": "",
+          "etatCivil": "C",
+          "statut": "Permanent",
+          "createdAt": "2026-08-31T09:19:40.548Z",
+          "updatedAt": "2026-08-31T09:19:40.548Z"
+        },
+        {
+          "id": "756",
+          "nom": "LUZAYADIO DIAVEWA AIMÉE",
+          "sexe": "F",
+          "lieuAffectation": "Zamba",
+          "fonction": "CLEANER",
+          "departement": "",
+          "telephone": "",
+          "etatCivil": "C",
+          "statut": "Permanent",
+          "createdAt": "2026-08-31T09:19:40.548Z",
+          "updatedAt": "2026-08-31T09:19:40.548Z"
         }
       ],
       "createdAt": "2026-08-12T11:54:22.178Z",
-      "updatedAt": "2026-08-12T12:57:02.481Z"
+      "updatedAt": "2026-08-31T10:31:02.756Z"
     },
     {
       "id": "2",
@@ -370,7 +383,7 @@
         {
           "id": "6",
           "nom": "LUBEKO MABIALA SHEKINAH",
-          "sexe": "M",
+          "sexe": "F",
           "lieuAffectation": "Zamba",
           "fonction": "WEIGH BRIDGE OPERATOR",
           "departement": "Supply chain",
@@ -378,7 +391,7 @@
           "etatCivil": "C",
           "statut": "Permanent",
           "createdAt": "2026-08-12T12:57:02.481Z",
-          "updatedAt": "2026-08-12T12:57:02.481Z"
+          "updatedAt": "2026-08-31T09:09:00.124Z"
         },
         {
           "id": "7",
@@ -825,7 +838,7 @@
         {
           "id": "41",
           "nom": "MUZIAMA KAHOTA MIRIAM",
-          "sexe": "M",
+          "sexe": "F",
           "lieuAffectation": "Zamba",
           "fonction": "ELECTRICIAN",
           "departement": "Engineering",
@@ -833,7 +846,7 @@
           "etatCivil": "C",
           "statut": "Permanent",
           "createdAt": "2026-08-12T12:57:02.481Z",
-          "updatedAt": "2026-08-12T12:57:02.481Z"
+          "updatedAt": "2026-08-31T09:09:00.124Z"
         },
         {
           "id": "42",
@@ -981,7 +994,7 @@
         {
           "id": "53",
           "nom": "BANZA MUSUAMBA Cyntiche",
-          "sexe": "M",
+          "sexe": "F",
           "lieuAffectation": "Zamba",
           "fonction": "CLEANER",
           "departement": "Human Resources",
@@ -989,7 +1002,7 @@
           "etatCivil": "C",
           "statut": "Permanent",
           "createdAt": "2026-08-12T12:57:02.481Z",
-          "updatedAt": "2026-08-12T12:57:02.481Z"
+          "updatedAt": "2026-08-31T09:09:00.124Z"
         },
         {
           "id": "54",
@@ -1150,7 +1163,7 @@
         {
           "id": "66",
           "nom": "KADIMA  MINOU Fleur",
-          "sexe": "M",
+          "sexe": "F",
           "lieuAffectation": "Kinshasa",
           "fonction": "RECEPTIONNISTE",
           "departement": "Human Resources",
@@ -1158,7 +1171,7 @@
           "etatCivil": "M",
           "statut": "Permanent",
           "createdAt": "2026-08-12T12:57:02.481Z",
-          "updatedAt": "2026-08-12T13:57:44.565Z"
+          "updatedAt": "2026-08-31T09:09:00.124Z"
         },
         {
           "id": "67",
@@ -1176,7 +1189,7 @@
         {
           "id": "68",
           "nom": "SENGA BANZA FOSTINE",
-          "sexe": "M",
+          "sexe": "F",
           "lieuAffectation": "Lubudi",
           "fonction": "AIDE MANAGER",
           "departement": "Human Resources",
@@ -1184,12 +1197,12 @@
           "etatCivil": "C",
           "statut": "Permanent",
           "createdAt": "2026-08-12T12:57:02.481Z",
-          "updatedAt": "2026-08-12T13:57:44.565Z"
+          "updatedAt": "2026-08-31T09:09:00.124Z"
         },
         {
           "id": "69",
           "nom": "BALOY KIMPINDE MARGUERITTE",
-          "sexe": "M",
+          "sexe": "F",
           "lieuAffectation": "Lubudi",
           "fonction": "CUISINIER",
           "departement": "Human Resources",
@@ -1197,7 +1210,7 @@
           "etatCivil": "C",
           "statut": "Permanent",
           "createdAt": "2026-08-12T12:57:02.481Z",
-          "updatedAt": "2026-08-12T13:57:44.565Z"
+          "updatedAt": "2026-08-31T09:09:00.124Z"
         },
         {
           "id": "70",
@@ -1605,7 +1618,7 @@
         {
           "id": "101",
           "nom": "BALOKI NYAMBU GLORIA",
-          "sexe": "M",
+          "sexe": "F",
           "lieuAffectation": "Zamba",
           "fonction": "CRUSHER OPERATOR",
           "departement": "Production",
@@ -1613,7 +1626,7 @@
           "etatCivil": "M",
           "statut": "Permanent",
           "createdAt": "2026-08-12T12:57:02.481Z",
-          "updatedAt": "2026-08-12T12:57:02.481Z"
+          "updatedAt": "2026-08-31T09:09:00.124Z"
         },
         {
           "id": "102",
@@ -1904,7 +1917,7 @@
         {
           "id": "125",
           "nom": "TULOMBA NSIMBA BIENVENUE",
-          "sexe": "M",
+          "sexe": "F",
           "lieuAffectation": "Zamba",
           "fonction": "BAG STORE KEEPER",
           "departement": "Supply chain",
@@ -1912,7 +1925,7 @@
           "etatCivil": "M",
           "statut": "Permanent",
           "createdAt": "2026-08-12T12:57:02.481Z",
-          "updatedAt": "2026-08-12T12:57:02.481Z"
+          "updatedAt": "2026-08-31T09:09:00.124Z"
         },
         {
           "id": "126",
@@ -1956,7 +1969,7 @@
         {
           "id": "129",
           "nom": "PONGO PONGO Consolate",
-          "sexe": "M",
+          "sexe": "F",
           "lieuAffectation": "Kinshasa",
           "fonction": "WAREHOUSE CLERCK",
           "departement": "Supply chain",
@@ -1964,7 +1977,7 @@
           "etatCivil": "C",
           "statut": "Permanent",
           "createdAt": "2026-08-12T12:57:02.481Z",
-          "updatedAt": "2026-08-12T13:57:44.566Z"
+          "updatedAt": "2026-08-31T09:09:00.124Z"
         },
         {
           "id": "130",
@@ -2611,7 +2624,7 @@
         {
           "id": "200",
           "nom": "HUMULISA DITA REGINA",
-          "sexe": "M",
+          "sexe": "F",
           "lieuAffectation": "Zamba",
           "fonction": "",
           "departement": "ENGINEERING",
@@ -2619,7 +2632,7 @@
           "etatCivil": "C",
           "statut": "Permanent",
           "createdAt": "2026-08-12T15:04:02.591Z",
-          "updatedAt": "2026-08-12T15:04:02.591Z"
+          "updatedAt": "2026-08-31T09:09:00.124Z"
         },
         {
           "id": "201",
@@ -3222,7 +3235,7 @@
         {
           "id": "247",
           "nom": "CARROLE MATA MAVAKALA",
-          "sexe": "M",
+          "sexe": "F",
           "lieuAffectation": "Zamba",
           "fonction": "",
           "departement": "PRODUCTION",
@@ -3230,7 +3243,7 @@
           "etatCivil": "C",
           "statut": "Permanent",
           "createdAt": "2026-08-12T15:04:02.591Z",
-          "updatedAt": "2026-08-12T15:04:02.591Z"
+          "updatedAt": "2026-08-31T09:09:00.124Z"
         },
         {
           "id": "248",
@@ -4453,7 +4466,7 @@
         {
           "id": "615",
           "nom": "BAYILONA GRACIA",
-          "sexe": "",
+          "sexe": "F",
           "lieuAffectation": "Zamba",
           "fonction": "CLEANER AGENT",
           "departement": "",
@@ -4461,7 +4474,7 @@
           "etatCivil": "C",
           "statut": "Permanent",
           "createdAt": "2026-08-15T09:13:36.476Z",
-          "updatedAt": "2026-08-15T09:13:36.476Z"
+          "updatedAt": "2026-08-31T09:09:00.124Z"
         },
         {
           "id": "616",
@@ -5073,7 +5086,7 @@
         {
           "id": "662",
           "nom": "LUTONADIO GAY ADA",
-          "sexe": "M",
+          "sexe": "F",
           "lieuAffectation": "Zamba",
           "fonction": "Opérateur Wheel Loader",
           "departement": "Mines",
@@ -5081,7 +5094,7 @@
           "etatCivil": "C",
           "statut": "Permanent",
           "createdAt": "2026-08-15T09:22:38.385Z",
-          "updatedAt": "2026-08-15T09:22:38.385Z"
+          "updatedAt": "2026-08-31T09:09:00.124Z"
         },
         {
           "id": "663",
@@ -5840,7 +5853,7 @@
         {
           "id": "721",
           "nom": "DAWILI VONGA FORTUNA",
-          "sexe": "M",
+          "sexe": "F",
           "lieuAffectation": "Zamba",
           "fonction": "Magasinier",
           "departement": "Maintenance",
@@ -5848,7 +5861,7 @@
           "etatCivil": "M",
           "statut": "Journalier",
           "createdAt": "2026-08-15T09:22:38.385Z",
-          "updatedAt": "2026-08-15T09:22:38.385Z"
+          "updatedAt": "2026-08-31T09:09:00.124Z"
         },
         {
           "id": "722",

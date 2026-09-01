@@ -795,7 +795,7 @@ export default function ContractantsPage() {
               <p>{subtitle}</p>
             </div>
             <div className="contractants-header-actions">
-              {(tab === 'contractants' || tab === 'employes') && !selected && (
+              {tab === 'contractants' && !selected && (
                 <div
                   ref={searchWrapRef}
                   className={`search-expand-wrap${searchOpen ? ' search-expand-open' : ''}${search.trim() ? ' search-expand-active' : ''}`}
@@ -818,11 +818,7 @@ export default function ContractantsPage() {
                       ref={searchInputRef}
                       type="search"
                       className="search-input search-input-expand"
-                      placeholder={
-                        tab === 'employes'
-                          ? 'Employé, fonction, contractant…'
-                          : 'Rechercher un contractant…'
-                      }
+                      placeholder="Rechercher un contractant…"
                       value={search}
                       onChange={(e) => setSearch(e.target.value)}
                       onKeyDown={(e) => {
@@ -879,8 +875,15 @@ export default function ContractantsPage() {
           <ContractantsDashboard contractants={contractants} employees={allEmployees} />
         ) : tab === 'employes' ? (
           <div className="panel contractants-emp-list-panel">
-            {activeEmpFilterCount > 0 && (
-              <div className="contractants-table-filter-bar">
+            <div className="contractants-emp-list-toolbar">
+              <input
+                type="search"
+                className="search-input"
+                placeholder="Employé, fonction, contractant…"
+                value={search}
+                onChange={(e) => setSearch(e.target.value)}
+              />
+              {activeEmpFilterCount > 0 && (
                 <button
                   type="button"
                   className="btn btn-ghost btn-sm"
@@ -888,8 +891,8 @@ export default function ContractantsPage() {
                 >
                   Effacer les filtres ({activeEmpFilterCount})
                 </button>
-              </div>
-            )}
+              )}
+            </div>
             <div className="table-wrap contractants-emp-table-wrap">
               <table className="contractants-table contractants-table-compact">
                 <thead>
