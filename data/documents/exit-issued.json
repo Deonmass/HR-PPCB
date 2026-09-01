@@ -158,5 +158,35 @@
     "issuedBy": "Administrateur",
     "id": "exit-1787563982608-yr8f7a",
     "createdAt": "2026-08-24T09:33:02.608Z"
+  },
+  {
+    "matricule": "70000294",
+    "employeeName": "MATA MATOMBA ALEXANDRE",
+    "doc": "clearance",
+    "docLabel": "Employee exit clearance form",
+    "fileName": "Employee exit clearance form - MATA MATOMBA ALEXANDRE.docx",
+    "issuedBy": "Administrateur",
+    "id": "exit-1788160841029-oekij5",
+    "createdAt": "2026-08-31T07:20:41.029Z"
+  },
+  {
+    "matricule": "70000294",
+    "employeeName": "MATA MATOMBA ALEXANDRE",
+    "doc": "attestation-fin-service",
+    "docLabel": "Attestation de fin de service",
+    "fileName": "Attestation de fin de service - MATA MATOMBA ALEXANDRE.docx",
+    "issuedBy": "Administrateur",
+    "id": "exit-1788160850254-o3kocm",
+    "createdAt": "2026-08-31T07:20:50.254Z"
+  },
+  {
+    "matricule": "70000294",
+    "employeeName": "MATA MATOMBA ALEXANDRE",
+    "doc": "user-removal",
+    "docLabel": "User removal form",
+    "fileName": "User removal form - MATA MATOMBA ALEXANDRE.docx",
+    "issuedBy": "Administrateur",
+    "id": "exit-1788160858685-dbcgxy",
+    "createdAt": "2026-08-31T07:20:58.685Z"
   }
 ]

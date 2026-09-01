@@ -104,7 +104,7 @@
           "sexe": "F",
           "lieuAffectation": "Zamba",
           "fonction": "PONT BASCULE, GUÉRITE GSA, TOILETTES MARK FILLES",
-          "departement": "",
+          "departement": "Human Resources",
           "telephone": "",
           "etatCivil": "C",
           "statut": "Permanent",
@@ -117,7 +117,7 @@
           "sexe": "F",
           "lieuAffectation": "Zamba",
           "fonction": "PKMP ET SAFETY SCHOOL",
-          "departement": "",
+          "departement": "Human Resources",
           "telephone": "",
           "etatCivil": "C",
           "statut": "Permanent",
@@ -156,7 +156,7 @@
           "sexe": "F",
           "lieuAffectation": "Zamba",
           "fonction": "CENTRE DE FORMATION",
-          "departement": "",
+          "departement": "Human Resources",
           "telephone": "",
           "etatCivil": "C",
           "statut": "Permanent",
@@ -1046,7 +1046,7 @@
         {
           "id": "57",
           "nom": "LUBENZO LUKAU BERTH",
-          "sexe": "M",
+          "sexe": "F",
           "lieuAffectation": "Zamba",
           "fonction": "HR ASSITANT SUPPORT",
           "departement": "Human Resources",
@@ -1054,7 +1054,7 @@
           "etatCivil": "C",
           "statut": "Permanent",
           "createdAt": "2026-08-12T12:57:02.481Z",
-          "updatedAt": "2026-08-12T12:57:02.481Z"
+          "updatedAt": "2026-08-31T09:01:05.145Z"
         },
         {
           "id": "58",
@@ -2137,7 +2137,7 @@
         }
       ],
       "createdAt": "2026-08-12T11:55:22.134Z",
-      "updatedAt": "2026-08-12T14:32:51.978Z"
+      "updatedAt": "2026-08-31T09:01:05.145Z"
     },
     {
       "id": "3",
