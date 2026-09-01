@@ -316,7 +316,7 @@ export default function AdminJsonPage() {
                     rowSearch={rowQuery}
                     onRowsChange={(rows) => applyData(replaceCollection(parsed.data, collection.wrapperKey, rows))}
                   />
-                ) : view !== 'json' && showObject ? (
+                ) : showObject ? (
                   <AdminJsonObjectView
                     data={parsed.data as Record<string, unknown>}
                     canEdit={canEdit}
