@@ -1,6 +1,20 @@
 {
   "entries": [
     {
+      "id": "log-000673",
+      "at": "2026-09-02T08:48:53.881Z",
+      "userId": "admin",
+      "userName": "Administrateur",
+      "module": "documents.contrat-standard",
+      "moduleLabel": "Contrat standard",
+      "action": "export",
+      "actionLabel": "Export",
+      "summary": "Contrat CDD — GLODY BENGESHA ELONGO",
+      "details": "Contrat CDD — GLODY BENGESHA ELONGO",
+      "undoable": false,
+      "undone": false
+    },
+    {
       "id": "log-000672",
       "at": "2026-09-02T08:40:16.213Z",
       "userId": "admin",
@@ -49357,5 +49371,5 @@
       }
     }
   ],
-  "nextSeq": 673
+  "nextSeq": 674
 }
