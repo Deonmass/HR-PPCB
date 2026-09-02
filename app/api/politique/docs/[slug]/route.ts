@@ -6,18 +6,10 @@ import { checkPermission } from '@/lib/require-permission';
 
 export const runtime = 'nodejs';
 
-type Ctx = { params: Promise<{ slug: string }> | { slug: string } };
-
-async function slugFrom(ctx: Ctx): Promise<string> {
-  const raw = ctx.params;
-  if (typeof (raw as Promise<{ slug: string }>).then === 'function') {
-    return (await (raw as Promise<{ slug: string }>)).slug;
-  }
-  return (raw as { slug: string }).slug;
-}
+type Ctx = { params: Promise<{ slug: string }> };
 
 export async function GET(request: Request, ctx: Ctx) {
-  const slug = await slugFrom(ctx);
+  const { slug } = await ctx.params;
   const doc = getPolitiqueDoc(slug);
   if (!doc) return NextResponse.json({ error: 'Document inconnu' }, { status: 404 });
 
