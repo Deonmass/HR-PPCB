@@ -3150,7 +3150,7 @@
       "service": "",
       "company": "PPC Barnet DRC Manufacturing",
       "centreCout": "KM5510",
-      "appointmentDate": "01/09/2025",
+      "appointmentDate": "31/08/2025",
       "gender": "Male",
       "dateOfBirth": "12/11/1987",
       "age": 38,
@@ -3170,8 +3170,8 @@
       "typeContrat": "CDD",
       "dureeContratMois": 12,
       "periodeEssaiMois": 3,
-      "dateFinPeriodeEssai": "01/12/2025",
-      "dateFinContrat": "01/09/2026",
+      "dateFinPeriodeEssai": "30/11/2025",
+      "dateFinContrat": "31/08/2026",
       "raisonExit": "Fin de contrat",
       "essaiActions": "Evaluation Done",
       "essaiResponsable": "QA Manager",
@@ -3185,7 +3185,7 @@
       "cnss": "11981742094K",
       "nif": "F2599838D",
       "createdAt": "2026-07-28T09:40:37.715Z",
-      "updatedAt": "2026-09-01T08:27:43.877Z"
+      "updatedAt": "2026-09-01T09:19:46.082Z"
     }
   ]
 }
