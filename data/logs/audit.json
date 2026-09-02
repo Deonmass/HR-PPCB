@@ -1,6 +1,42 @@
 {
   "entries": [
     {
+      "id": "log-000669",
+      "at": "2026-09-02T08:37:50.921Z",
+      "userId": "admin",
+      "userName": "Administrateur",
+      "module": "dependants",
+      "moduleLabel": "Dépendants",
+      "action": "create",
+      "actionLabel": "Création",
+      "entityType": "dependant",
+      "entityId": "736",
+      "summary": "Création dépendant MPEZO FUENDE ERICK (70000313)",
+      "details": "Création dépendant MPEZO FUENDE ERICK (70000313)",
+      "after": {
+        "id": 736,
+        "matricule": "70000313",
+        "pactilis": "",
+        "statut": "Conjoint",
+        "sexe": "M",
+        "nom": "MPEZO FUENDE ERICK",
+        "localisation": "Kinshasa",
+        "numeroVilla": "",
+        "typeMaison": "",
+        "dateNaissance": "23/09/1985",
+        "age": 40,
+        "compositionFamille": null,
+        "enfants": null,
+        "total": null,
+        "commentaires": "",
+        "lienDocument": "",
+        "employeNom": "GLODY BENGESHA ELONGO",
+        "departement": "Sales and Marketing"
+      },
+      "undoable": true,
+      "undone": false
+    },
+    {
       "id": "log-000668",
       "at": "2026-09-01T09:48:22.114Z",
       "userId": "admin",
@@ -49192,5 +49228,5 @@
       }
     }
   ],
-  "nextSeq": 669
+  "nextSeq": 670
 }
