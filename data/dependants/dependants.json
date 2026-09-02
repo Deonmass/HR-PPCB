@@ -15366,8 +15366,8 @@
       "dateNaissance": "23/07/1991",
       "age": 35,
       "compositionFamille": 1,
-      "enfants": 0,
-      "total": 2,
+      "enfants": 1,
+      "total": 3,
       "commentaires": "",
       "lienDocument": "",
       "createdAt": "2026-08-27T14:00:33.244Z",
@@ -15393,6 +15393,27 @@
       "lienDocument": "",
       "createdAt": "2026-09-02T08:37:47.819Z",
       "updatedAt": "2026-09-02T08:37:47.819Z"
+    },
+    {
+      "id": 737,
+      "employeeId": "f904e459-468f-4268-8078-159664fd2961",
+      "matricule": "70000313",
+      "pactilis": "",
+      "statut": "Enfant",
+      "sexe": "M",
+      "nom": "•\tMPEZO MATONDO NOAH-GLORIE ",
+      "localisation": "Kinshasa",
+      "numeroVilla": "",
+      "typeMaison": "",
+      "dateNaissance": "30/06/2019",
+      "age": 7,
+      "compositionFamille": null,
+      "enfants": null,
+      "total": null,
+      "commentaires": "",
+      "lienDocument": "",
+      "createdAt": "2026-09-02T08:38:39.822Z",
+      "updatedAt": "2026-09-02T08:38:39.822Z"
     }
   ]
 }
