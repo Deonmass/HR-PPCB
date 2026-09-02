@@ -1,6 +1,42 @@
 {
   "entries": [
     {
+      "id": "log-000670",
+      "at": "2026-09-02T08:38:42.378Z",
+      "userId": "admin",
+      "userName": "Administrateur",
+      "module": "dependants",
+      "moduleLabel": "Dépendants",
+      "action": "create",
+      "actionLabel": "Création",
+      "entityType": "dependant",
+      "entityId": "737",
+      "summary": "Création dépendant •\tMPEZO MATONDO NOAH-GLORIE  (70000313)",
+      "details": "Création dépendant •\tMPEZO MATONDO NOAH-GLORIE  (70000313)",
+      "after": {
+        "id": 737,
+        "matricule": "70000313",
+        "pactilis": "",
+        "statut": "Enfant",
+        "sexe": "M",
+        "nom": "•\tMPEZO MATONDO NOAH-GLORIE ",
+        "localisation": "Kinshasa",
+        "numeroVilla": "",
+        "typeMaison": "",
+        "dateNaissance": "30/06/2019",
+        "age": 7,
+        "compositionFamille": null,
+        "enfants": null,
+        "total": null,
+        "commentaires": "",
+        "lienDocument": "",
+        "employeNom": "GLODY BENGESHA ELONGO",
+        "departement": "Sales and Marketing"
+      },
+      "undoable": true,
+      "undone": false
+    },
+    {
       "id": "log-000669",
       "at": "2026-09-02T08:37:50.921Z",
       "userId": "admin",
@@ -49228,5 +49264,5 @@
       }
     }
   ],
-  "nextSeq": 670
+  "nextSeq": 671
 }
