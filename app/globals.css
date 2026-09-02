@@ -27634,6 +27634,10 @@ html[data-theme="light"] .contractants-dash-filters {
   background: #d8d8de;
 }
 
+.village-pptx-preview-overlay {
+  z-index: 13000;
+}
+
 /* ââ Village prÃ©sentation PPTX ââ */
 .village-pptx-overlay {
   z-index: 12000;
@@ -27762,6 +27766,67 @@ html[data-theme="light"] .contractants-dash-filters {
   gap: 0.7rem;
 }
 
+.village-pptx-dash-edit {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  grid-template-areas:
+    "title-l title-r"
+    "list preview";
+  grid-template-rows: auto minmax(13.5rem, 1fr);
+  gap: 0.65rem 1.1rem;
+  align-items: stretch;
+}
+
+.village-pptx-dash-title-l { grid-area: title-l; }
+.village-pptx-dash-title-r { grid-area: title-r; }
+.village-pptx-dash-list { grid-area: list; min-height: 0; }
+.village-pptx-dash-preview-col {
+  grid-area: preview;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.65rem;
+}
+
+.village-pptx-dash-list.village-pptx-field {
+  min-height: 0;
+  height: 100%;
+}
+
+.village-pptx-dash-list .village-pptx-textarea {
+  flex: 1;
+  min-height: 10.5rem;
+  resize: vertical;
+}
+
+.village-pptx-dash-preview-col .village-pptx-textarea {
+  min-height: 3.4rem;
+  resize: vertical;
+}
+
+.village-pptx-dash-preview-box {
+  flex: 1;
+  min-height: 0;
+}
+
+.village-pptx-dash-preview-box .village-pptx-criteria-preview {
+  flex: 1;
+  min-height: 7.5rem;
+  overflow: auto;
+}
+
+@media (max-width: 900px) {
+  .village-pptx-dash-edit {
+    grid-template-columns: 1fr;
+    grid-template-areas:
+      "title-l"
+      "title-r"
+      "list"
+      "preview";
+    grid-template-rows: none;
+  }
+}
+
 .village-pptx-field {
   display: flex;
   flex-direction: column;
@@ -27787,6 +27852,40 @@ html[data-theme="light"] .contractants-dash-filters {
   background: var(--surface-hover, #f4f4f7);
   font-size: 0.88rem;
   line-height: 1.45;
+}
+
+.village-pptx-criteria-preview {
+  margin: 0;
+  padding: 0.75rem 0.9rem;
+  border-radius: 8px;
+  border-left: 3px solid #e30613;
+  background: var(--surface-hover, #f4f4f7);
+}
+
+.village-pptx-criteria-preview strong {
+  display: block;
+  color: #e30613;
+  font-size: 0.85rem;
+  margin-bottom: 0.28rem;
+}
+
+.village-pptx-criteria-preview p {
+  margin: 0 0 0.4rem;
+  font-size: 0.82rem;
+  font-weight: 500;
+  line-height: 1.4;
+}
+
+.village-pptx-criteria-preview ul {
+  margin: 0;
+  padding-left: 1.15rem;
+  font-size: 0.82rem;
+  font-weight: 500;
+  line-height: 1.45;
+}
+
+.village-pptx-criteria-preview li + li {
+  margin-top: 0.12rem;
 }
 
 .village-pptx-live {
@@ -27843,6 +27942,62 @@ html[data-theme="light"] .contractants-dash-filters {
   font-weight: 500;
   color: var(--muted, #8b8b9a);
   font-size: 0.7rem;
+}
+
+.village-pptx-proposals-wrap {
+  overflow: auto;
+  border: 1px solid var(--border, rgba(255, 255, 255, 0.08));
+  border-radius: 8px;
+}
+
+.village-pptx-proposals-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.village-pptx-proposals-table th,
+.village-pptx-proposals-table td {
+  padding: 0.28rem 0.4rem;
+  vertical-align: middle;
+  border-bottom: 1px solid var(--border, rgba(255, 255, 255, 0.08));
+}
+
+.village-pptx-proposals-table th {
+  text-align: left;
+  font-size: 0.72rem;
+  font-weight: 700;
+  color: var(--muted, #8b8b9a);
+  background: rgba(255, 255, 255, 0.03);
+}
+
+.village-pptx-proposals-table tr:last-child td {
+  border-bottom: 0;
+}
+
+.village-pptx-proposals-table .house-col {
+  width: 7.2rem;
+}
+
+.village-pptx-proposals-table .badge-col {
+  width: 8.4rem;
+}
+
+.village-pptx-proposals-table .act-col {
+  width: 2.4rem;
+  text-align: center;
+}
+
+.village-pptx-proposals-table .filter-select,
+.village-pptx-proposals-table .project-picker,
+.village-pptx-proposals-table .project-picker-input {
+  width: 100%;
+  min-height: 32px;
+}
+
+.village-pptx-proposals-empty {
+  color: var(--muted, #8b8b9a);
+  font-size: 0.82rem;
+  padding: 0.7rem 0.5rem;
 }
 
 .village-pptx-proposal {
@@ -27912,6 +28067,25 @@ html[data-theme="light"] .village-pptx-tabs.tabs {
 
 html[data-theme="light"] .village-pptx-proposal {
   background-color: #f7f7fa;
+}
+
+html[data-theme="light"] .village-pptx-proposals-wrap {
+  border-color: rgba(0, 0, 0, 0.08);
+  background: #fff;
+}
+
+html[data-theme="light"] .village-pptx-proposals-table th {
+  background: #f7f7fa;
+  color: #6b6b7a;
+}
+
+html[data-theme="light"] .village-pptx-proposals-table th,
+html[data-theme="light"] .village-pptx-proposals-table td {
+  border-bottom-color: rgba(0, 0, 0, 0.08);
+}
+
+html[data-theme="light"] .village-pptx-criteria-preview {
+  background: #f4f4f7;
 }
 
 /* ââ Audit HR points ââ */

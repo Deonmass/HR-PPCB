@@ -35,3 +35,7 @@ export function hsPolicyPdfExists(): boolean {
 export function hsPolicyPdfFilename(): string {
   return path.basename(resolveHsPolicyPdfPath());
 }
+
+export function resolvePolitiqueDocPdfPath(filename: string): string {
+  return path.join(process.cwd(), 'Excel', 'templates', 'policies', filename);
+}

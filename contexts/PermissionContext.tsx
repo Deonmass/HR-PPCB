@@ -107,6 +107,7 @@ export function PermissionProvider({ children }: { children: ReactNode }) {
       '/politique/longs-etats-de-service',
       '/politique/convention-collective',
       '/politique/heures-supplementaires',
+      '/politique/doc/village',
       '/protocol/visa-travail',
       '/protocol/visa-volant',
       '/protocol/visa-voyage',

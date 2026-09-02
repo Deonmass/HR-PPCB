@@ -12,6 +12,12 @@ export interface VillagePresentationProposal {
   badge: VillageProposalBadge;
 }
 
+export interface VillageAllocationCriteria {
+  title: string;
+  intro: string;
+  items: string[];
+}
+
 export interface VillagePresentation {
   chromeKicker: string;
   period: string;
@@ -23,6 +29,7 @@ export interface VillagePresentation {
   dashboard: {
     title: string;
     note: string;
+    criteria: VillageAllocationCriteria;
   };
   vacant: {
     title: string;
@@ -157,6 +164,31 @@ export function villagePresentationPeriod(d = new Date()): string {
   return d.toLocaleDateString('en-GB', { month: 'short', year: '2-digit' }).replace(' ', '-');
 }
 
+export const DEFAULT_ALLOCATION_CRITERIA: VillageAllocationCriteria = {
+  title: 'PPC Barnet house allocation criteria',
+  intro: 'Criteria defined to grant a house at PPC Village as follow :',
+  items: [
+    'Critical position',
+    'Seniority in employment',
+    'Mobility requirement',
+    'Talent attraction',
+    'Family composition (living alone or with family)',
+  ],
+};
+
+function normalizeCriteria(raw: unknown, fallback: VillageAllocationCriteria): VillageAllocationCriteria {
+  if (!raw || typeof raw !== 'object') return fallback;
+  const src = raw as Partial<VillageAllocationCriteria>;
+  const items = Array.isArray(src.items)
+    ? src.items.map((item) => str(item)).filter(Boolean)
+    : fallback.items;
+  return {
+    title: str(src.title, fallback.title),
+    intro: str(src.intro, fallback.intro),
+    items,
+  };
+}
+
 export function emptyProposal(): VillagePresentationProposal {
   return {
     id: `p-${Date.now().toString(36)}-${Math.random().toString(36).slice(2, 6)}`,
@@ -180,6 +212,7 @@ export function defaultVillagePresentation(employees: Employee[] = []): VillageP
     dashboard: {
       title: 'Houses & dashboard by department',
       note: '',
+      criteria: { ...DEFAULT_ALLOCATION_CRITERIA, items: [...DEFAULT_ALLOCATION_CRITERIA.items] },
     },
     vacant: {
       title: 'Vacant houses',
@@ -257,6 +290,7 @@ export function normalizeVillagePresentation(
     dashboard: {
       title: str(dashboard.title, base.dashboard.title),
       note: str(dashboard.note),
+      criteria: normalizeCriteria(dashboard.criteria, base.dashboard.criteria),
     },
     vacant: {
       title: str(vacant.title, base.vacant.title),

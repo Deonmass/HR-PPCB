@@ -102,6 +102,14 @@ export const PERMISSION_MENU_CATALOG: PermissionMenuGroup[] = withSortedMenus([
       { id: 'politique.longs-etats', label: 'Longs états de service' },
       { id: 'politique.convention-collective', label: 'Convention collective' },
       { id: 'politique.heures-sup', label: 'Heures supplémentaires (oct. 25)' },
+      { id: 'politique.village', label: 'Politique Village (maisons)' },
+      { id: 'politique.code-conduite', label: 'Code de bonne conduite' },
+      { id: 'politique.code-ethique', label: 'Code de conduite et éthique' },
+      { id: 'politique.manuco', label: 'Règlement Manuco' },
+      { id: 'politique.aide-medicale', label: 'Aide médicale' },
+      { id: 'politique.voyages', label: 'Politique de voyage' },
+      { id: 'politique.alcool', label: 'Alcool et substances' },
+      { id: 'politique.harcelement', label: 'Harcèlement' },
     ],
   },
   {
@@ -258,6 +266,16 @@ export function mergePermissionsWithCatalog(menus: MenuPermission[]): MenuPermis
             menuId: defaultMenu.menuId,
             label: defaultMenu.label,
             actions: { ...policy.actions },
+          };
+        }
+      }
+      if (defaultMenu.menuId === 'politique.village') {
+        const maisons = menus.find((menu) => menu.menuId === 'village.maisons');
+        if (maisons) {
+          return {
+            menuId: defaultMenu.menuId,
+            label: defaultMenu.label,
+            actions: { ...maisons.actions },
           };
         }
       }

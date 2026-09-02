@@ -1,11 +1,13 @@
 'use client';
 
 import { useCallback, useEffect, useMemo, useState } from 'react';
+import { createPortal } from 'react-dom';
 import EmployeePicker, { type EmployeeSelection } from '@/components/EmployeePicker';
-import { downloadVillagePptx } from '@/lib/village-export';
+import { downloadVillagePptx, fetchVillagePreviewHtml } from '@/lib/village-export';
 import { emptyEmployeeHrProfile, type Employee } from '@/lib/types';
 import { showError, showSuccess } from '@/lib/swal';
 import {
+  DEFAULT_ALLOCATION_CRITERIA,
   emptyProposal,
   type VillagePresentation,
   type VillagePresentationAgent,
@@ -29,15 +31,17 @@ function Field({
   onChange,
   disabled,
   placeholder,
+  className,
 }: {
   label: string;
   value: string;
   onChange: (v: string) => void;
   disabled?: boolean;
   placeholder?: string;
+  className?: string;
 }) {
   return (
-    <label className="village-pptx-field">
+    <label className={`village-pptx-field${className ? ` ${className}` : ''}`}>
       {label}
       <input
         className="filter-select"
@@ -55,20 +59,24 @@ function Area({
   value,
   onChange,
   disabled,
+  rows = 3,
+  className,
 }: {
   label: string;
   value: string;
   onChange: (v: string) => void;
   disabled?: boolean;
+  rows?: number;
+  className?: string;
 }) {
   return (
-    <label className="village-pptx-field">
+    <label className={`village-pptx-field${className ? ` ${className}` : ''}`}>
       {label}
       <textarea
         className="filter-select village-pptx-textarea"
         value={value}
         disabled={disabled}
-        rows={3}
+        rows={rows}
         onChange={(e) => onChange(e.target.value)}
       />
     </label>
@@ -102,13 +110,16 @@ export default function VillagePresentationModal({
   const [tab, setTab] = useState<SlideTab>('cover');
   const [loading, setLoading] = useState(false);
   const [saving, setSaving] = useState(false);
+  const [previewing, setPreviewing] = useState(false);
   const [exporting, setExporting] = useState(false);
   const [dirty, setDirty] = useState(false);
+  const [previewHtml, setPreviewHtml] = useState<string | null>(null);
   const [deck, setDeck] = useState<VillagePresentation | null>(null);
   const [live, setLive] = useState<VillagePresentationLive | null>(null);
   const [agents, setAgents] = useState<VillagePresentationAgent[]>([]);
 
   const pickerEmployees = useMemo(() => agents.map(agentToEmployee), [agents]);
+  const criteria = deck?.dashboard.criteria ?? DEFAULT_ALLOCATION_CRITERIA;
 
   const patch = useCallback((updater: (prev: VillagePresentation) => VillagePresentation) => {
     setDeck((prev) => (prev ? updater(prev) : prev));
@@ -140,9 +151,21 @@ export default function VillagePresentationModal({
   useEffect(() => {
     if (open) {
       setTab('cover');
+      setPreviewHtml(null);
       void load();
+    } else {
+      setPreviewHtml(null);
     }
   }, [open, load]);
+
+  useEffect(() => {
+    if (!previewHtml) return;
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') setPreviewHtml(null);
+    };
+    document.addEventListener('keydown', onKey);
+    return () => document.removeEventListener('keydown', onKey);
+  }, [previewHtml]);
 
   const save = async () => {
     if (!deck) return;
@@ -162,6 +185,19 @@ export default function VillagePresentationModal({
       await showError(err instanceof Error ? err.message : 'Enregistrement impossible');
     } finally {
       setSaving(false);
+    }
+  };
+
+  const openPreview = async () => {
+    if (!deck) return;
+    setPreviewing(true);
+    try {
+      const html = await fetchVillagePreviewHtml(deck);
+      setPreviewHtml(html);
+    } catch (err) {
+      await showError(err instanceof Error ? err.message : 'Aperçu PPTX impossible');
+    } finally {
+      setPreviewing(false);
     }
   };
 
@@ -199,7 +235,62 @@ export default function VillagePresentationModal({
 
   if (!open) return null;
 
+  const previewModal =
+    previewHtml && typeof document !== 'undefined'
+      ? createPortal(
+          <div
+            className="exco-preview-overlay village-pptx-preview-overlay"
+            role="dialog"
+            aria-modal="true"
+            aria-labelledby="village-pptx-preview-title"
+            onMouseDown={(e) => {
+              if (e.target === e.currentTarget) setPreviewHtml(null);
+            }}
+          >
+            <div className="exco-preview-modal">
+              <div className="exco-preview-modal-head">
+                <div>
+                  <h3 id="village-pptx-preview-title">Aperçu PPTX</h3>
+                  <p>
+                    {deck?.period || 'Village housing'}
+                    {dirty ? ' · modifications non enregistrées' : ''}
+                  </p>
+                </div>
+                <div className="exco-preview-modal-actions">
+                  {canExport && (
+                    <button
+                      type="button"
+                      className="btn btn-accent btn-sm"
+                      disabled={!deck || exporting || previewing}
+                      onClick={() => void exportPptx()}
+                    >
+                      {exporting ? <span className="btn-spinner" aria-hidden="true" /> : null}
+                      {exporting ? 'Export…' : 'Exporter PPTX'}
+                    </button>
+                  )}
+                  <button
+                    type="button"
+                    className="btn btn-secondary btn-sm"
+                    disabled={exporting}
+                    onClick={() => setPreviewHtml(null)}
+                  >
+                    Fermer
+                  </button>
+                </div>
+              </div>
+              <iframe
+                className="exco-preview-iframe"
+                title="Aperçu présentation village"
+                srcDoc={previewHtml}
+              />
+            </div>
+          </div>,
+          document.body,
+        )
+      : null;
+
   return (
+    <>
     <div
       className="modal-overlay open village-pptx-overlay"
       role="dialog"
@@ -211,7 +302,8 @@ export default function VillagePresentationModal({
           <div>
             <h3>Préparer la présentation</h3>
             <p>
-              Slides préremplies, modifiables — le dashboard et les maisons vides restent calés sur les données du système.
+              Slides préremplies, modifiables — vérifiez l’aperçu PPTX avant d’exporter.
+              Le dashboard et les maisons vides restent calés sur les données du système.
               {dirty ? ' · Modifications non enregistrées' : ''}
             </p>
           </div>
@@ -231,18 +323,18 @@ export default function VillagePresentationModal({
               <button
                 type="button"
                 className="btn btn-secondary btn-sm"
-                disabled={!deck || exporting || loading}
-                onClick={() => void exportPptx()}
+                disabled={!deck || previewing || exporting || loading}
+                onClick={() => void openPreview()}
               >
-                {exporting ? <span className="btn-spinner" aria-hidden="true" /> : null}
-                {exporting ? 'Export…' : 'Exporter PPTX'}
+                {previewing ? <span className="btn-spinner" aria-hidden="true" /> : null}
+                {previewing ? 'Aperçu…' : 'Aperçu PPTX'}
               </button>
             )}
             <button
               type="button"
               className="modal-close"
               aria-label="Fermer"
-              disabled={saving || exporting}
+              disabled={saving || exporting || previewing}
               onClick={onClose}
             >
               ×
@@ -311,18 +403,83 @@ export default function VillagePresentationModal({
             </div>
           ) : tab === 'dashboard' ? (
             <div className="village-pptx-grid">
-              <Field
-                label="Titre de la slide"
-                value={deck.dashboard.title}
-                disabled={!canEdit}
-                onChange={(v) => patch((p) => ({ ...p, dashboard: { ...p.dashboard, title: v } }))}
-              />
-              <Area
-                label="Note (optionnelle)"
-                value={deck.dashboard.note}
-                disabled={!canEdit}
-                onChange={(v) => patch((p) => ({ ...p, dashboard: { ...p.dashboard, note: v } }))}
-              />
+              <div className="village-pptx-dash-edit">
+                <Field
+                  className="village-pptx-dash-title-l"
+                  label="Titre de la slide"
+                  value={deck.dashboard.title}
+                  disabled={!canEdit}
+                  onChange={(v) => patch((p) => ({ ...p, dashboard: { ...p.dashboard, title: v } }))}
+                />
+                <Field
+                  className="village-pptx-dash-title-r"
+                  label="Titre des critères d’attribution"
+                  value={criteria.title}
+                  disabled={!canEdit}
+                  onChange={(v) =>
+                    patch((p) => ({
+                      ...p,
+                      dashboard: {
+                        ...p.dashboard,
+                        criteria: { ...(p.dashboard.criteria ?? DEFAULT_ALLOCATION_CRITERIA), title: v },
+                      },
+                    }))
+                  }
+                />
+                <Area
+                  className="village-pptx-dash-list"
+                  label="Critères (un par ligne)"
+                  value={criteria.items.join('\n')}
+                  disabled={!canEdit}
+                  rows={7}
+                  onChange={(v) =>
+                    patch((p) => ({
+                      ...p,
+                      dashboard: {
+                        ...p.dashboard,
+                        criteria: {
+                          ...(p.dashboard.criteria ?? DEFAULT_ALLOCATION_CRITERIA),
+                          items: v.split('\n'),
+                        },
+                      },
+                    }))
+                  }
+                />
+                <div className="village-pptx-dash-preview-col">
+                  <Area
+                    label="Introduction"
+                    value={criteria.intro}
+                    disabled={!canEdit}
+                    rows={2}
+                    onChange={(v) =>
+                      patch((p) => ({
+                        ...p,
+                        dashboard: {
+                          ...p.dashboard,
+                          criteria: { ...(p.dashboard.criteria ?? DEFAULT_ALLOCATION_CRITERIA), intro: v },
+                        },
+                      }))
+                    }
+                  />
+                  <div className="village-pptx-field village-pptx-dash-preview-box">
+                    <span>Aperçu</span>
+                    <div className="village-pptx-criteria-preview">
+                      <strong>{criteria.title}</strong>
+                      {criteria.intro ? <p>{criteria.intro}</p> : null}
+                      {criteria.items.filter((item) => item.trim()).length ? (
+                        <ul>
+                          {criteria.items
+                            .map((item) => item.trim())
+                            .filter(Boolean)
+                            .map((item) => (
+                              <li key={item}>{item}</li>
+                            ))}
+                        </ul>
+                      ) : null}
+                    </div>
+                  </div>
+                </div>
+              </div>
               {live && (
                 <div className="village-pptx-live">
                   <p className="village-pptx-live-title">Données système (non modifiables ici)</p>
@@ -425,94 +582,107 @@ export default function VillagePresentationModal({
                 disabled={!canEdit}
                 onChange={(v) => patch((p) => ({ ...p, proposals: { ...p.proposals, note: v } }))}
               />
-              {deck.proposals.items.map((item, index) => (
-                <div key={item.id} className="village-pptx-proposal">
-                  <div className="village-pptx-proposal-head">
-                    <strong>#{index + 1}</strong>
-                    {canEdit && (
-                      <button
-                        type="button"
-                        className="btn btn-ghost btn-sm"
-                        onClick={() =>
-                          patch((p) => ({
-                            ...p,
-                            proposals: {
-                              ...p.proposals,
-                              items: p.proposals.items.filter((x) => x.id !== item.id),
-                            },
-                          }))
-                        }
-                      >
-                        Retirer
-                      </button>
-                    )}
-                  </div>
-                  <div className="village-pptx-proposal-grid">
-                    <Field
-                      label="House"
-                      value={item.house}
-                      disabled={!canEdit}
-                      onChange={(v) => updateProposal(item.id, { house: v })}
-                    />
-                    {item.badge === 'role' ? (
-                      <Field
-                        label="Name / role"
-                        value={item.name}
-                        disabled={!canEdit}
-                        placeholder="Poste ou usage"
-                        onChange={(v) => updateProposal(item.id, { name: v, matricule: '' })}
-                      />
-                    ) : (
-                      <label className="village-pptx-field">
-                        Agent
-                        <EmployeePicker
-                          employees={pickerEmployees}
-                          value={
-                            item.name
-                              ? {
-                                  nom: item.name,
-                                  matricule: item.matricule,
-                                  departement: '',
-                                }
-                              : null
-                          }
-                          onChange={(selection) => assignAgent(item.id, selection)}
-                          placeholder="Rechercher un agent…"
-                        />
-                      </label>
-                    )}
-                    <Field
-                      label="ID"
-                      value={item.matricule}
-                      disabled={!canEdit || item.badge !== 'role'}
-                      onChange={(v) => updateProposal(item.id, { matricule: v })}
-                    />
-                    <Field
-                      label="Purpose"
-                      value={item.purpose}
-                      disabled={!canEdit}
-                      onChange={(v) => updateProposal(item.id, { purpose: v })}
-                    />
-                    <label className="village-pptx-field">
-                      Badge
-                      <select
-                        className="filter-select"
-                        value={item.badge}
-                        disabled={!canEdit}
-                        onChange={(e) =>
-                          updateProposal(item.id, {
-                            badge: e.target.value === 'role' ? 'role' : 'proposal',
-                            matricule: e.target.value === 'role' ? '' : item.matricule,
-                          })
-                        }
-                      >
-                        <option value="proposal">Agent</option>
-                        <option value="role">Role / use</option>
-                      </select>
-                    </label>
-                  </div>
-                </div>
-              ))}
+              <div className="village-pptx-proposals-wrap">
+                <table className="village-pptx-proposals-table">
+                  <thead>
+                    <tr>
+                      <th className="house-col">House</th>
+                      <th className="badge-col">Badge</th>
+                      <th>Agent</th>
+                      {canEdit ? <th className="act-col" aria-label="Actions" /> : null}
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {deck.proposals.items.map((item) => (
+                      <tr key={item.id}>
+                        <td className="house-col">
+                          <input
+                            className="filter-select"
+                            value={item.house}
+                            disabled={!canEdit}
+                            aria-label="House"
+                            onChange={(e) => updateProposal(item.id, { house: e.target.value })}
+                          />
+                        </td>
+                        <td className="badge-col">
+                          <select
+                            className="filter-select"
+                            value={item.badge}
+                            disabled={!canEdit}
+                            aria-label="Badge"
+                            onChange={(e) =>
+                              updateProposal(item.id, {
+                                badge: e.target.value === 'role' ? 'role' : 'proposal',
+                                matricule: e.target.value === 'role' ? '' : item.matricule,
+                              })
+                            }
+                          >
+                            <option value="proposal">Agent</option>
+                            <option value="role">Role / use</option>
+                          </select>
+                        </td>
+                        <td>
+                          {item.badge === 'role' ? (
+                            <input
+                              className="filter-select"
+                              value={item.name}
+                              disabled={!canEdit}
+                              placeholder="Poste ou usage"
+                              aria-label="Agent"
+                              onChange={(e) =>
+                                updateProposal(item.id, { name: e.target.value, matricule: '' })
+                              }
+                            />
+                          ) : (
+                            <EmployeePicker
+                              employees={pickerEmployees}
+                              value={
+                                item.name
+                                  ? {
+                                      nom: item.name,
+                                      matricule: item.matricule,
+                                      departement: '',
+                                    }
+                                  : null
+                              }
+                              onChange={(selection) => assignAgent(item.id, selection)}
+                              placeholder="Rechercher un agent…"
+                            />
+                          )}
+                        </td>
+                        {canEdit ? (
+                          <td className="act-col">
+                            <button
+                              type="button"
+                              className="btn btn-ghost btn-sm"
+                              title="Retirer"
+                              aria-label="Retirer"
+                              onClick={() =>
+                                patch((p) => ({
+                                  ...p,
+                                  proposals: {
+                                    ...p.proposals,
+                                    items: p.proposals.items.filter((x) => x.id !== item.id),
+                                  },
+                                }))
+                              }
+                            >
+                              ×
+                            </button>
+                          </td>
+                        ) : null}
+                      </tr>
+                    ))}
+                    {!deck.proposals.items.length ? (
+                      <tr>
+                        <td colSpan={canEdit ? 4 : 3} className="village-pptx-proposals-empty">
+                          Aucune proposition
+                        </td>
+                      </tr>
+                    ) : null}
+                  </tbody>
+                </table>
+              </div>
               {canEdit && (
                 <button
                   type="button"
@@ -555,5 +725,7 @@ export default function VillagePresentationModal({
         </div>
       </div>
     </div>
+    {previewModal}
+    </>
   );
 }

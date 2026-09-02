@@ -8,7 +8,18 @@
   },
   "dashboard": {
     "title": "Houses & dashboard by department",
-    "note": ""
+    "note": "",
+    "criteria": {
+      "title": "PPC Barnet house allocation criteria",
+      "intro": "Criteria defined to grant a house at PPC Village as follow :",
+      "items": [
+        "Critical position",
+        "Seniority in employment",
+        "Mobility requirement",
+        "Talent attraction",
+        "Family composition (living alone or with family)"
+      ]
+    }
   },
   "vacant": {
     "title": "Vacant houses",

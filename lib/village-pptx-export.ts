@@ -1,4 +1,4 @@
-﻿import 'server-only';
+import 'server-only';
 
 import fs from 'fs/promises';
 import path from 'path';
@@ -16,7 +16,7 @@ import {
   splitVillageKimpese,
 } from './village-agents';
 import type { VillagePresentation } from './village-presentation';
-import { defaultVillagePresentation } from './village-presentation';
+import { defaultVillagePresentation, DEFAULT_ALLOCATION_CRITERIA } from './village-presentation';
 import { formatRate, ratioToRate } from './format-rate';
 import type { VillageMaison, VillageMaisonOccupancy, VillageTaille } from './village-types';
 
@@ -410,6 +410,86 @@ async function addDashboardSlide(
     valign: 'middle',
     fontSize: 8,
     rowH: Math.min(0.3, 4.7 / Math.max(2, deptRows.length + 1)),
+  });
+
+  const typeTableH = 0.32 * (typeRows.length + 1);
+  addAllocationCriteriaBox(
+    s,
+    deck.dashboard.criteria ?? DEFAULT_ALLOCATION_CRITERIA,
+    0.4,
+    2.44 + typeTableH + 0.16,
+    5.9,
+  );
+}
+
+function addAllocationCriteriaBox(
+  slide: Slide,
+  criteria: VillagePresentation['dashboard']['criteria'],
+  x: number,
+  y: number,
+  w: number,
+): void {
+  const title = String(criteria?.title ?? '').trim();
+  const intro = String(criteria?.intro ?? '').trim();
+  const items = Array.isArray(criteria?.items)
+    ? criteria.items.map((item) => String(item ?? '').trim()).filter(Boolean)
+    : [];
+  if (!title && !intro && !items.length) return;
+
+  const lines = (title ? 1 : 0) + (intro ? 1 : 0) + items.length;
+  const h = Math.min(7.28 - y, Math.max(1.7, 0.42 + lines * 0.28));
+  if (h < 1.1) return;
+
+  whiteBlock(slide, x, y, w, h);
+  slide.addShape('rect', {
+    x, y, w: 0.07, h,
+    fill: { color: PPC.red }, line: { color: PPC.red },
+  });
+
+  const runs: Array<{ text: string; options: Record<string, unknown> }> = [];
+  if (title) {
+    runs.push({
+      text: title,
+      options: {
+        bold: true,
+        fontSize: 13,
+        color: PPC.red,
+        fontFace: FONT_TITLE,
+        breakLine: true,
+      },
+    });
+  }
+  if (intro) {
+    runs.push({
+      text: intro,
+      options: {
+        fontSize: 11,
+        color: PPC.ink,
+        fontFace: FONT,
+        breakLine: true,
+      },
+    });
+  }
+  items.forEach((item) => {
+    runs.push({
+      text: item,
+      options: {
+        fontSize: 11,
+        color: PPC.ink,
+        fontFace: FONT,
+        bullet: true,
+        breakLine: true,
+      },
+    });
+  });
+
+  slide.addText(runs, {
+    x: x + 0.22,
+    y: y + 0.12,
+    w: w - 0.36,
+    h: h - 0.22,
+    valign: 'top',
+    paraSpaceAfter: 5,
   });
 }
 

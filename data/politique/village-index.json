@@ -1,0 +1,133 @@
+{
+  "source": "PPC Village Policy — PPCB",
+  "sourceFile": "Excel/templates/policies/ppc-village-policy.pdf",
+  "extractedAt": "2026-09-02",
+  "note": "Politique logements village PPC Barnet (3 pages). Pages 1-indexées.",
+  "totalPages": 3,
+  "keywords": [
+    { "id": "allocation", "label": "Critères d’attribution", "aliases": ["allocation", "criteria", "critères", "grant a house", "house allocation"] },
+    { "id": "seniority", "label": "Ancienneté", "aliases": ["seniority", "ancienneté", "seniority in employment"] },
+    { "id": "position", "label": "Poste critique", "aliases": ["critical position", "poste critique", "talent", "mobility"] },
+    { "id": "family", "label": "Composition familiale", "aliases": ["family composition", "family", "living alone", "with family"] },
+    { "id": "twins", "label": "Twins", "aliases": ["twins", "jumeaux", "3 bedrooms"] },
+    { "id": "freestyle", "label": "Free style", "aliases": ["free style", "freestyle", "garage"] },
+    { "id": "high-standard", "label": "High Standard", "aliases": ["high standard", "high-standard", "terrace", "office"] },
+    { "id": "procedure", "label": "Procédure d’attribution", "aliases": ["application", "letter", "rental contract", "7 working days"] },
+    { "id": "inspection", "label": "Inspection / inventaire", "aliases": ["inspection", "inventory", "estate officer", "moving-in"] },
+    { "id": "occupant", "label": "Obligations de l’occupant", "aliases": ["occupant", "light bulbs", "pets", "animals", "salary deduction"] },
+    { "id": "company", "label": "Obligations de la société", "aliases": ["PPC Barnet", "painting", "roofs", "safety", "act of God"] },
+    { "id": "notice", "label": "Préavis / résiliation", "aliases": ["terminate", "notice", "3 calendar month", "gross misconduct", "handover"] },
+    { "id": "expulsion", "label": "Expulsion", "aliases": ["expel", "discipline", "unauthorized guest", "smoking", "alcohol", "party"] },
+    { "id": "compliance", "label": "Conformité", "aliases": ["compliance", "disciplinary", "termination of employment"] }
+  ],
+  "articles": [
+    {
+      "id": "scope",
+      "title": "Objet et cadre légal",
+      "category": "Cadre",
+      "keywords": ["scope", "labour law", "accommodation", "DRC", "logement"],
+      "pages": [1],
+      "summary": "Le droit du travail congolais oblige l’employeur à loger ses employés. Cette politique encadre l’usage des maisons de la société.",
+      "body": "The DRC Labour Law obliges the employer to provide accommodation to his employees. This accommodation policy aims at conforming with that legal requirement and creating a strong, performance-orientated and conducive environment with the purpose to retain and motivate skilled employees. The following provisions aim to guide and regulate the use of the company owned accommodation facility while aligning it to market changes and to the company’s overall strategy."
+    },
+    {
+      "id": "statement",
+      "title": "Policy statement",
+      "category": "Cadre",
+      "keywords": ["policy statement", "strategy", "retain", "talented"],
+      "pages": [1],
+      "summary": "Aligner le logement sur la stratégie PPC Barnet pour attirer et retenir les talents sur site.",
+      "body": "This policy intends to support the achievement of PPC BARNET strategic intent and objectives through attracting, and retaining talented employees to site by ultimately aligning accommodation with the overall business strategy."
+    },
+    {
+      "id": "principles",
+      "title": "Key principles",
+      "category": "Principes",
+      "keywords": ["transparency", "competencies", "responsibility", "retain"],
+      "pages": [1],
+      "summary": "Attribution transparente, destinée à attirer et retenir les compétences, et à promouvoir la responsabilité.",
+      "body": "PPC BARNET recognises that one of the key sources of value is its employees, and believes that in order to meet business objectives, the house allocation is done with: transparency; designed to attract and retain high caliber individuals with the optimum mixture of competencies; promote a sense of responsibility."
+    },
+    {
+      "id": "criteria",
+      "title": "PPC Barnet house allocation criteria",
+      "category": "Attribution",
+      "keywords": ["criteria", "critical position", "seniority", "mobility", "talent attraction", "family composition"],
+      "pages": [1],
+      "summary": "Poste critique, ancienneté, mobilité, attraction des talents, composition familiale.",
+      "body": "Criteria defined to grant a house at PPC Village as follow: Critical position; Seniority in employment; Mobility requirement; Talent attraction; Family composition (living alone or with family)."
+    },
+    {
+      "id": "categories",
+      "title": "House category",
+      "category": "Types de maisons",
+      "keywords": ["twins", "free style", "high standard", "bedrooms", "garage"],
+      "pages": [1],
+      "summary": "Twins et Free style (3 chambres) ; High Standard (terrasses, bureau, plusieurs salles de bain, garage).",
+      "body": "Twins house: 3 bedrooms, 1 bathroom, 1 toilet & shower, 1 visitor toilet, 1 kitchen and 1 living room. Free style house: same as Twins plus 1 garage. High Standard house: 3 bedrooms with terraces, 1 living room + 1 dining kitchen, 1 office space, 1 visitor toilet with shower + 3 bathrooms with toilet, 1 laundry, 1 garage."
+    },
+    {
+      "id": "procedure",
+      "title": "House allocation procedures",
+      "category": "Procédure",
+      "keywords": ["application letter", "7 working days", "rental contract", "inventory"],
+      "pages": [1, 2],
+      "summary": "Lettre de demande, réponse sous 7 jours ouvrables, contrat de location et inventaire d’entrée.",
+      "body": "An employee wishing to stay in the company house will write an application letter. Within 7 working days a response will be given to the applicant. The occupant will sign a rental contract with the company specifying the house number. A moving-in inventory list is established and agreed upon between the occupant and the Estate Officer. This is a document specifying the status, quality and quantities of the house."
+    },
+    {
+      "id": "responsibilities",
+      "title": "Parties’ responsibilities",
+      "category": "Responsabilités",
+      "keywords": ["inspection", "inventory", "act of God", "2 days"],
+      "pages": [2],
+      "summary": "État des lieux contradictoire à l’entrée et 7 jours avant la sortie ; la société répare les dégâts imprévisibles.",
+      "body": "Before occupying the house, the inspection must be carried out jointly by the company’s representative and the employee, to prepare an inventory which must be co-signed. 7 days prior to either the end or termination of the contract, a similar inspection should be performed by both parties before the employee leaves PPC Barnet Village house. The company acts and repairs unforeseeable circumstances that have caused damage to the occupied house such as: the wind, the uncontrolled fire from the bush, the act of God, the damage caused by heavy rain. The occupant is informed 2 days prior to inspection."
+    },
+    {
+      "id": "company-duties",
+      "title": "Obligation of PPC Barnet",
+      "category": "Responsabilités",
+      "keywords": ["inspection", "painting", "roofs", "safety", "once a year"],
+      "pages": [2],
+      "summary": "Inspection annuelle, entretien structure/toiture/peinture, sécurité des occupants et ayants droit.",
+      "body": "While the contract is in progress, PPC Barnet Village house inspection will be conducted at least once a year. The occupant will be notified in advance prior to any inspection. PPC Barnet maintains the structure of the buildings on the property, interior and exterior painting and roofs. PPC Barnet ensures the safety of employees and dependent living in the village."
+    },
+    {
+      "id": "occupant-duties",
+      "title": "Obligation of the Occupant",
+      "category": "Responsabilités",
+      "keywords": ["maintenance", "light bulbs", "pets", "salary", "3 months"],
+      "pages": [2],
+      "summary": "Entretien courant, signalement des dégâts, réparations sous 3 mois, animaux interdits sauf autorisation.",
+      "body": "Be responsible for ensuring that the interior and exterior of the house are properly maintained. To maintain and replace all broken/defective light bulbs and fluorescent tubes (inside and outside), lampshades, broken windows, mirrors, door locks and handles, small holes in walls, and company supplied equipment. To report any damage to the Estate Officer. 3 months will be given to the occupant to repair the items found broken after the inspection. Otherwise, the company will carry out the repairs and the cost will be deducted from the occupant’s salary. The occupant is not allowed to keep animals at home, except pets that require prior written authorization after the risk assessment."
+    },
+    {
+      "id": "lease-terms",
+      "title": "Other terms applicable to the employee lease contract",
+      "category": "Contrat",
+      "keywords": ["change house", "terminate", "3 calendar month", "gross misconduct", "handover", "final dues"],
+      "pages": [2],
+      "summary": "La société peut changer de maison ; préavis de 3 mois ; faute lourde = préavis réduit ; dégâts déduits du solde.",
+      "body": "The company has the right to change the occupant house depending on the situation. Both the company and the occupant shall have the right to terminate this agreement by way of written notice. The occupant shall have the right to terminate this agreement with immediate effect, by giving written notice of termination to the company, given to the other party at least 3 calendar months in advance. In the case of occupant labor contract is terminated due to gross misconduct, the notice time will be significantly lower. Upon the occupant leaving the house, a handover document is signed between the occupant and company representative. Any damage on the house is deducted from his/her final dues."
+    },
+    {
+      "id": "expulsion",
+      "title": "The company can expel the occupant from the house",
+      "category": "Discipline",
+      "keywords": ["expel", "discipline", "unauthorized guest", "damages", "smoking", "alcohol", "party"],
+      "pages": [3],
+      "summary": "Comportements disciplinaires, invités non autorisés, dégâts volontaires, tabac/alcool gênants, fêtes bruyantes.",
+      "body": "The company can expel the occupant from the house in case of: reported cases of discipline behaviours affecting the neighbours; repeated case of unauthorised guest in the house; serious intentional damages on the houses; smoking and drinking alcohols create any complaint to the neighbours; enjoying and having party disturb the rest of neighbours."
+    },
+    {
+      "id": "compliance",
+      "title": "Compliance",
+      "category": "Discipline",
+      "keywords": ["compliance", "disciplinary", "termination"],
+      "pages": [3],
+      "summary": "Le non-respect peut entraîner des mesures disciplinaires jusqu’au licenciement pour juste motif.",
+      "body": "Failure to comply with this policy may result in disciplinary measures up to and including just cause for termination of employment."
+    }
+  ]
+}

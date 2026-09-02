@@ -36,3 +36,28 @@ export async function downloadVillagePptx(presentation?: unknown): Promise<void>
   });
   await downloadBlobFromResponse(response, 'VILLAGE_MAISONS.pptx');
 }
+
+export async function fetchVillagePreviewHtml(presentation?: unknown): Promise<string> {
+  const response = await fetch('/api/village/preview', {
+    method: presentation ? 'POST' : 'GET',
+    headers: presentation ? { 'Content-Type': 'application/json' } : undefined,
+    body: presentation ? JSON.stringify(presentation) : undefined,
+  });
+  const type = response.headers.get('content-type') || '';
+  if (!response.ok) {
+    let message = 'Aperçu impossible';
+    if (type.includes('json')) {
+      try {
+        const payload = (await response.json()) as { error?: string };
+        if (payload.error) message = payload.error;
+      } catch {
+        // ignore
+      }
+    }
+    throw new Error(message);
+  }
+  if (!type.includes('text/html')) {
+    throw new Error('Aperçu indisponible');
+  }
+  return response.text();
+}
