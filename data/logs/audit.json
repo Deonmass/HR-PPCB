@@ -1,6 +1,42 @@
 {
   "entries": [
     {
+      "id": "log-000672",
+      "at": "2026-09-02T08:40:16.213Z",
+      "userId": "admin",
+      "userName": "Administrateur",
+      "module": "dependants",
+      "moduleLabel": "Dépendants",
+      "action": "create",
+      "actionLabel": "Création",
+      "entityType": "dependant",
+      "entityId": "738",
+      "summary": "Création dépendant MPEZO ELONGO ANAIA DENISE  (70000313)",
+      "details": "Création dépendant MPEZO ELONGO ANAIA DENISE  (70000313)",
+      "after": {
+        "id": 738,
+        "matricule": "70000313",
+        "pactilis": "",
+        "statut": "Enfant",
+        "sexe": "F",
+        "nom": "MPEZO ELONGO ANAIA DENISE ",
+        "localisation": "Kinshasa",
+        "numeroVilla": "",
+        "typeMaison": "",
+        "dateNaissance": "25/09/2023",
+        "age": 2,
+        "compositionFamille": null,
+        "enfants": null,
+        "total": null,
+        "commentaires": "",
+        "lienDocument": "",
+        "employeNom": "GLODY BENGESHA ELONGO",
+        "departement": "Sales and Marketing"
+      },
+      "undoable": true,
+      "undone": false
+    },
+    {
       "id": "log-000671",
       "at": "2026-09-02T08:39:06.237Z",
       "userId": "admin",
@@ -49321,5 +49357,5 @@
       }
     }
   ],
-  "nextSeq": 672
+  "nextSeq": 673
 }
