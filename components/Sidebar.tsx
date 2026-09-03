@@ -96,11 +96,12 @@ const NAV: NavSection[] = [
     icon: 'users',
     color: '#e30613',
     items: [
-      { href: '/employes', label: 'Liste', icon: 'users', menuId: 'employes.liste', excludePrefixes: ['/employes/dependants', '/employes/offres', '/employes/mouvements', '/employes/postes', '/employes/classification', '/employes/contractants', '/employes/recrutement'] },
+      { href: '/employes', label: 'Liste', icon: 'users', menuId: 'employes.liste', excludePrefixes: ['/employes/dependants', '/employes/offres', '/employes/mouvements', '/employes/postes', '/employes/classification', '/employes/contractants', '/employes/recrutement', '/employes/conge'] },
       { href: '/employes/dependants', label: 'Dependants', icon: 'users', menuId: 'employes.dependants' },
       { href: '/employes/contractants', label: 'Contractants', icon: 'users', menuId: 'employes.contractants' },
       { href: '/check-documents', label: 'Check documents', icon: 'docs', menuId: 'employes.check-documents' },
       { href: '/heures-supplementaires', label: 'Heures supplémentaires', icon: 'clock', menuIds: ['employes.heures', 'employes.heures.dept', 'employes.heures.all'] },
+      { href: '/employes/conge', label: 'Congé', icon: 'clock', menuId: 'employes.conge' },
     ],
   },
   {
@@ -154,6 +155,8 @@ const NAV: NavSection[] = [
       'documents.contrat-standard',
       'documents.attestation-conge',
       'documents.convention-collective',
+      'documents.composition-familiale',
+      'documents.mouvement-travailleur',
     ],
   },
   {
@@ -320,6 +323,7 @@ const ITEM_LABEL_KEY: Record<string, MessageKey> = {
   '/employes/contractants': 'nav.employees.contractants',
   '/check-documents': 'nav.employees.checkDocs',
   '/heures-supplementaires': 'nav.employees.overtime',
+  '/employes/conge': 'nav.employees.leave',
   '/employes/postes': 'nav.poste.postes',
   '/employes/recrutement': 'nav.poste.recruitment',
   '/employes/classification': 'nav.poste.classification',

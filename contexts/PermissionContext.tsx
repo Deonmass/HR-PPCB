@@ -87,6 +87,7 @@ export function PermissionProvider({ children }: { children: ReactNode }) {
       '/employes/contractants',
       '/check-documents',
       '/heures-supplementaires',
+      '/employes/conge',
       '/project/dashboard',
       '/project/projects',
       '/project/expenses-details',

@@ -41,8 +41,8 @@ export const EXCO_SYSTEM_DEPT_FALLBACK = EXCO_CANONICAL_DEPARTMENTS;
  */
 export function mapExcoOtDepartment(raw: string): string {
   const s = (raw || '').trim();
-  if (!s) return 'Administration';
-  return normalizeDepartmentName(s) || 'Administration';
+  if (!s) return 'MD Office';
+  return normalizeDepartmentName(s) || 'MD Office';
 }
 
 export function excoOtDeptOrder(): string[] {
@@ -626,7 +626,7 @@ export function fcToUsd(costFc: number, fxRateFcPerUsd: number | null): number |
  */
 const TEMPLATE_OT_BASELINE_2026: Record<number, ExcoOtDeptMonthRow[]> = {
   3: [
-    { department: 'Administration', hours: 0, costFc: 0 },
+    { department: 'MD Office', hours: 0, costFc: 0 },
     { department: 'Engineering', hours: 356.34, costFc: 0 },
     { department: 'Mining', hours: 0, costFc: 0 },
     { department: 'Risk & Environment', hours: 0, costFc: 0 },
@@ -635,7 +635,7 @@ const TEMPLATE_OT_BASELINE_2026: Record<number, ExcoOtDeptMonthRow[]> = {
     { department: 'Quality Assurance', hours: 68.58, costFc: 0 },
   ],
   4: [
-    { department: 'Administration', hours: 0, costFc: 0 },
+    { department: 'MD Office', hours: 0, costFc: 0 },
     { department: 'Engineering', hours: 356.34, costFc: 0 },
     { department: 'Mining', hours: 64, costFc: 0 },
     { department: 'Risk & Environment', hours: 0, costFc: 0 },
@@ -644,7 +644,7 @@ const TEMPLATE_OT_BASELINE_2026: Record<number, ExcoOtDeptMonthRow[]> = {
     { department: 'Quality Assurance', hours: 68.58, costFc: 0 },
   ],
   5: [
-    { department: 'Administration', hours: 16, costFc: 0 },
+    { department: 'MD Office', hours: 16, costFc: 0 },
     { department: 'Engineering', hours: 538.73, costFc: 0 },
     { department: 'Mining', hours: 52.3, costFc: 0 },
     { department: 'Risk & Environment', hours: 6.3, costFc: 0 },
@@ -653,7 +653,7 @@ const TEMPLATE_OT_BASELINE_2026: Record<number, ExcoOtDeptMonthRow[]> = {
     { department: 'Quality Assurance', hours: 53.97, costFc: 0 },
   ],
   6: [
-    { department: 'Administration', hours: 0, costFc: 0 },
+    { department: 'MD Office', hours: 0, costFc: 0 },
     { department: 'Engineering', hours: 784.18, costFc: 0 },
     { department: 'Mining', hours: 60, costFc: 0 },
     { department: 'Risk & Environment', hours: 0, costFc: 0 },

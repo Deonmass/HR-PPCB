@@ -366,6 +366,22 @@ export async function buildHomeDashboard(menus: MenuPermission[]): Promise<HomeD
     });
   }
 
+  if (can(menus, 'documents.composition-familiale')) {
+    placeholders.push({
+      label: 'Composition familiale',
+      description: 'Déclaration CNSS F6',
+      href: '/documents/composition-familiale',
+    });
+  }
+
+  if (can(menus, 'documents.mouvement-travailleur')) {
+    placeholders.push({
+      label: 'Mouvement de travailleur',
+      description: 'Déclaration ONEM DMT',
+      href: '/documents/mouvement-travailleur',
+    });
+  }
+
   if (
     can(menus, 'settings.departements') ||
     can(menus, 'settings.centres') ||

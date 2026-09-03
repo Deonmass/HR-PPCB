@@ -139,6 +139,26 @@ function IconConvention() {
   );
 }
 
+function IconFamily() {
+  return (
+    <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+      <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2" />
+      <circle cx="9" cy="7" r="4" />
+      <path d="M22 21v-2a4 4 0 0 0-3-3.87" />
+      <path d="M16 3.13a4 4 0 0 1 0 7.75" />
+    </svg>
+  );
+}
+
+function IconMove() {
+  return (
+    <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+      <path d="M8 7h12M16 3l4 4-4 4" />
+      <path d="M16 17H4M8 21l-4-4 4-4" />
+    </svg>
+  );
+}
+
 function IconOrder() {
   return (
     <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
@@ -308,6 +328,26 @@ const CARDS: DocCard[] = [
     badge: 'Recherche',
     icon: <IconConvention />,
   },
+  {
+    id: 'composition-familiale',
+    title: 'Déclaration de composition familiale',
+    description: 'Formulaire CNSS F6 — identité et famille (conjoint, enfants) depuis la fiche agent.',
+    href: '/documents/composition-familiale',
+    menuId: 'documents.composition-familiale',
+    accent: '#be185d',
+    badge: 'CNSS F6',
+    icon: <IconFamily />,
+  },
+  {
+    id: 'mouvement-travailleur',
+    title: 'Déclaration de mouvement de travailleur',
+    description: 'Formulaire ONEM DMT — embauche, fin de contrat, licenciement ou démission.',
+    href: '/documents/mouvement-travailleur',
+    menuId: 'documents.mouvement-travailleur',
+    accent: '#1d4ed8',
+    badge: 'ONEM',
+    icon: <IconMove />,
+  },
 ];
 
 const DOC_I18N: Record<string, { title: MessageKey; desc: MessageKey; badge?: MessageKey }> = {
@@ -327,6 +367,8 @@ const DOC_I18N: Record<string, { title: MessageKey; desc: MessageKey; badge?: Me
   rrf: { title: 'docs.card.rrf.title', desc: 'docs.card.rrf.desc', badge: 'docs.card.rrf.badge' },
   'contrat-standard': { title: 'docs.card.contract.title', desc: 'docs.card.contract.desc' },
   'convention-collective': { title: 'docs.card.convention.title', desc: 'docs.card.convention.desc', badge: 'docs.card.convention.badge' },
+  'composition-familiale': { title: 'docs.card.family.title', desc: 'docs.card.family.desc', badge: 'docs.card.family.badge' },
+  'mouvement-travailleur': { title: 'docs.card.dmt.title', desc: 'docs.card.dmt.desc', badge: 'docs.card.dmt.badge' },
 };
 
 function canSeeMenu(
@@ -352,11 +394,14 @@ export default function DocumentsHubPage() {
       .filter((card) => canSeeMenu(can, card.menuId, card.menuIds))
       .map((card) => {
         const copy = DOC_I18N[card.id];
+        const title = copy ? t(copy.title) : card.title;
+        const description = copy ? t(copy.desc) : card.description;
+        const badge = copy?.badge ? t(copy.badge) : card.badge;
         return {
           ...card,
-          title: copy ? t(copy.title) : card.title,
-          description: copy ? t(copy.desc) : card.description,
-          badge: copy?.badge ? t(copy.badge) : card.badge,
+          title: !title || title === copy?.title ? card.title : title,
+          description: !description || description === copy?.desc ? card.description : description,
+          badge: copy?.badge && badge && badge !== copy.badge ? badge : card.badge,
         };
       })
       .slice()

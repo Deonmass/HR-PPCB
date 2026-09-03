@@ -131,6 +131,56 @@ export function belongsToFamily(
   return familyGroupKey(item) === key;
 }
 
+/** Conjoint + enfants rattachés à un agent (même logique que la F6). */
+export function listFamilyDependants(
+  dependants: Dependant[],
+  employee: { matricule: string; nom: string },
+): { spouse: Dependant | null; children: Dependant[] } {
+  const empty = { spouse: null as Dependant | null, children: [] as Dependant[] };
+  const mat = employee.matricule.trim();
+  if (!mat) return empty;
+
+  const asHead = dependants.filter((row) => familyGroupKey(row) === mat);
+  const headSpouse = asHead.find((row) => isSpouseStatut(row.statut)) ?? null;
+  const headChildren = asHead.filter((row) => isChildStatut(row.statut));
+  if (headSpouse || headChildren.length > 0) {
+    return { spouse: headSpouse, children: headChildren };
+  }
+
+  const needle = employee.nom.trim().toLowerCase();
+  if (needle.length < 3) return empty;
+  const selfRow = dependants.find((row) => {
+    if (isEmployeeStatut(row.statut)) return false;
+    return row.nom.trim().toLowerCase() === needle;
+  });
+  if (!selfRow) return empty;
+  const family = dependants.filter((row) => familyGroupKey(row) === familyGroupKey(selfRow));
+  if (isSpouseStatut(selfRow.statut)) {
+    const head = family.find((row) => isEmployeeStatut(row.statut)) ?? null;
+    return {
+      spouse: head,
+      children: family.filter((row) => isChildStatut(row.statut)),
+    };
+  }
+  return empty;
+}
+
+export function familyMemberIds(family: { spouse: Dependant | null; children: Dependant[] }): number[] {
+  return [
+    ...(family.spouse ? [family.spouse.id] : []),
+    ...family.children.map((child) => child.id),
+  ];
+}
+
+/** Né à partir du mois/année (inclus). */
+export function isBornFromMonth(dateNaissance: string, year: number, month: number): boolean {
+  const date = parseDependantBirthDate(dateNaissance);
+  if (!date) return false;
+  const y = date.getFullYear();
+  const m = date.getMonth() + 1;
+  return y > year || (y === year && m >= month);
+}
+
 /**
  * Lignes récapitulatives Excel (ex. « TOTAL DES BENEFICIAIRES ») —
  * ce ne sont pas des bénéficiaires / enfants.

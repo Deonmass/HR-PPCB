@@ -2,6 +2,7 @@ import type { NextConfig } from 'next';
 
 const nextConfig: NextConfig = {
   reactStrictMode: true,
+  serverExternalPackages: ['@pdf-lib/fontkit'],
   generateBuildId: async () => {
     return process.env.BUILD_ID || `build-${Date.now()}`;
   },

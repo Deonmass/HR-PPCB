@@ -86,12 +86,18 @@ const RULES: Rule[] = [
 
   // —— Admin / MD ——
   {
-    aliases: ['md office', 'mdoffice', 'md-office', 'managing director'],
+    aliases: [
+      'md office',
+      'mdoffice',
+      'md-office',
+      'managing director',
+      'administration',
+      'corporate admin',
+      'admin center',
+      'admin',
+      'autre',
+    ],
     department: 'MD Office',
-  },
-  {
-    aliases: ['administration', 'corporate admin', 'admin center', 'admin', 'autre'],
-    department: 'Administration',
   },
 
   // —— Ops plant ——

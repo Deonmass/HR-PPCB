@@ -408,6 +408,25 @@ export async function getEmployee(matricule: string): Promise<Employee | undefin
     ?? exits.find((item) => item.matricule === matricule);
 }
 
+export async function getEmployeesByMatricules(matricules: string[]): Promise<{
+  found: Employee[];
+  missing: string[];
+}> {
+  const { employees, exits } = await readEmployeesBundle();
+  const index = new Map<string, Employee>();
+  for (const row of [...employees, ...exits]) {
+    if (!index.has(row.matricule)) index.set(row.matricule, row);
+  }
+  const found: Employee[] = [];
+  const missing: string[] = [];
+  for (const matricule of matricules) {
+    const row = index.get(matricule);
+    if (row) found.push(row);
+    else missing.push(matricule);
+  }
+  return { found, missing };
+}
+
 export async function getEmployeesRecordIndex(): Promise<{
   activeByMatricule: Map<string, EmployeeRecord>;
   exitByMatricule: Map<string, EmployeeExitRecord>;

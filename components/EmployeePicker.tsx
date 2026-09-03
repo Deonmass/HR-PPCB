@@ -33,6 +33,16 @@ interface SuggestProps {
   department?: string;
 }
 
+function suggestionMeta(employee: Employee): string {
+  return [
+    employee.matricule,
+    employee.localisation,
+    employee.jobTitle,
+    employee.cnss,
+    employee.departement,
+  ].filter(Boolean).join(' · ');
+}
+
 function matchesDepartment(employeeDepartment: string, selectedDepartment: string): boolean {
   if (!selectedDepartment.trim()) return true;
   return departmentsEqual(employeeDepartment, selectedDepartment);
@@ -57,7 +67,7 @@ function filterEmployees(
   if (!q) return list.slice(0, 12);
   return list
     .filter((employee) => {
-      const haystack = `${employee.nom} ${employee.matricule} ${employee.departement} ${employee.jobTitle}`.toLowerCase();
+      const haystack = `${employee.nom} ${employee.matricule} ${employee.departement} ${employee.jobTitle} ${employee.localisation} ${employee.cnss}`.toLowerCase();
       return haystack.includes(q);
     })
     .slice(0, 12);
@@ -163,6 +173,7 @@ export default function EmployeePicker({
         anchorRef={wrapRef}
         listRef={listRef}
         open={open && suggestions.length > 0}
+        minWidth={400}
       >
         {suggestions.map((employee) => (
           <button
@@ -175,9 +186,7 @@ export default function EmployeePicker({
           >
             <span className="project-picker-name">{employee.nom}</span>
             <span className="project-picker-meta">
-              {[employee.matricule, employee.jobTitle, employee.departement]
-                .filter(Boolean)
-                .join(' · ')}
+              {suggestionMeta(employee)}
             </span>
           </button>
         ))}
@@ -245,6 +254,7 @@ export function EmployeeSuggestInput({
         anchorRef={wrapRef}
         listRef={listRef}
         open={open && suggestions.length > 0}
+        minWidth={400}
       >
         {suggestions.map((employee) => (
           <button
@@ -257,9 +267,7 @@ export function EmployeeSuggestInput({
           >
             <span className="project-picker-name">{employee.nom}</span>
             <span className="project-picker-meta">
-              {[employee.matricule, employee.jobTitle, employee.departement]
-                .filter(Boolean)
-                .join(' · ')}
+              {suggestionMeta(employee)}
             </span>
           </button>
         ))}

@@ -51,6 +51,7 @@ export const PERMISSION_MENU_CATALOG: PermissionMenuGroup[] = withSortedMenus([
       { id: 'employes.heures.policy', label: 'HS — Appliquer la politique' },
       { id: 'employes.heures.export', label: 'HS — Exporter' },
       { id: 'employes.heures.simulation', label: 'HS — Simulation' },
+      { id: 'employes.conge', label: 'Congé' },
     ],
   },
   {
@@ -93,6 +94,8 @@ export const PERMISSION_MENU_CATALOG: PermissionMenuGroup[] = withSortedMenus([
       { id: 'documents.contrat-standard', label: 'Contrat standard' },
       { id: 'documents.attestation-conge', label: 'Attestation de congé' },
       { id: 'documents.convention-collective', label: 'Convention collective' },
+      { id: 'documents.composition-familiale', label: 'Déclaration de composition familiale' },
+      { id: 'documents.mouvement-travailleur', label: 'Déclaration de mouvement de travailleur' },
     ],
   },
   {
@@ -256,6 +259,21 @@ export function mergePermissionsWithCatalog(menus: MenuPermission[]): MenuPermis
             menuId: defaultMenu.menuId,
             label: defaultMenu.label,
             actions: { ...doc.actions },
+          };
+        }
+      }
+      if (
+        defaultMenu.menuId === 'documents.composition-familiale'
+        || defaultMenu.menuId === 'documents.mouvement-travailleur'
+      ) {
+        const donor = menus.find((menu) => menu.menuId === 'documents.contrat-standard')
+          || menus.find((menu) => menu.menuId === 'documents.exit')
+          || menus.find((menu) => menu.menuId === 'documents.appraisal');
+        if (donor) {
+          return {
+            menuId: defaultMenu.menuId,
+            label: defaultMenu.label,
+            actions: { ...donor.actions },
           };
         }
       }

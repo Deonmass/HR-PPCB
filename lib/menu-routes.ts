@@ -22,6 +22,8 @@ export const DOCUMENTS_HUB_MENU_IDS = [
   'documents.contrat-standard',
   'documents.attestation-conge',
   'documents.convention-collective',
+  'documents.composition-familiale',
+  'documents.mouvement-travailleur',
 ];
 
 export const POLITIQUE_HUB_MENU_IDS = [
@@ -54,6 +56,8 @@ export const ROUTE_MENU_MAP: RouteMenuEntry[] = [
   { prefix: '/documents/contrat-standard', menuId: 'documents.contrat-standard' },
   { prefix: '/documents/attestation-conge', menuId: 'documents.attestation-conge' },
   { prefix: '/documents/convention-collective', menuId: 'documents.convention-collective' },
+  { prefix: '/documents/composition-familiale', menuId: 'documents.composition-familiale' },
+  { prefix: '/documents/mouvement-travailleur', menuId: 'documents.mouvement-travailleur' },
   { prefix: '/documents', menuId: 'travel.historique' },
   { prefix: '/politique/longs-etats-de-service', menuId: 'politique.longs-etats' },
   { prefix: '/politique/convention-collective', menuId: 'politique.convention-collective' },
@@ -81,6 +85,7 @@ export const ROUTE_MENU_MAP: RouteMenuEntry[] = [
   { prefix: '/factures-fournisseurs/liste', menuId: 'factures.fournisseur.liste' },
   { prefix: '/factures-fournisseurs/factures', menuId: 'factures.fournisseur.factures' },
   { prefix: '/factures-fournisseurs/soa', menuId: 'factures.fournisseur.soa' },
+  { prefix: '/employes/conge', menuId: 'employes.conge' },
   { prefix: '/employes/dependants', menuId: 'employes.dependants' },
   { prefix: '/employes/offres', menuId: 'employes.offres' },
   { prefix: '/employes/mouvements', menuId: 'employes.mouvements' },

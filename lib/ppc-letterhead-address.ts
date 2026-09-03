@@ -1,3 +1,6 @@
+/** N° d’affiliation CNSS / INSS de l’employeur (PPC). */
+export const PPC_EMPLOYER_INSS = '010105743D1';
+
 /** Adresse d’en-tête officielle PPC (papiers à lettre / attestations). */
 export const PPC_LETTERHEAD_ADDRESS_LINES = [
   'PPC Barnet DRC Manufacturing SA',

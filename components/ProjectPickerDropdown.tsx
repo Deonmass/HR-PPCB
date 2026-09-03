@@ -10,6 +10,8 @@ interface Props {
   children: React.ReactNode;
   /** Hauteur max approximative de la liste (pour flip haut/bas). */
   maxHeight?: number;
+  /** Largeur mini de la liste (ne pas la coller à un champ étroit). */
+  minWidth?: number;
 }
 
 export default function ProjectPickerDropdown({
@@ -18,6 +20,7 @@ export default function ProjectPickerDropdown({
   open,
   children,
   maxHeight = 240,
+  minWidth = 320,
 }: Props) {
   const [mounted, setMounted] = useState(false);
   const [style, setStyle] = useState<CSSProperties>({});
@@ -39,21 +42,26 @@ export default function ProjectPickerDropdown({
       const openUpward = spaceBelow < Math.min(maxHeight, 160) && spaceAbove > spaceBelow;
       const available = openUpward ? spaceAbove : spaceBelow;
       const height = Math.max(120, Math.min(maxHeight, available - 8));
+      const width = Math.min(
+        Math.max(rect.width, minWidth),
+        Math.max(160, window.innerWidth - 16),
+      );
+      const left = Math.min(rect.left, Math.max(8, window.innerWidth - 8 - width));
 
       if (openUpward) {
         setStyle({
           top: 'auto',
           bottom: window.innerHeight - rect.top + gap,
-          left: rect.left,
-          width: rect.width,
+          left,
+          width,
           maxHeight: height,
         });
       } else {
         setStyle({
           top: rect.bottom + gap,
           bottom: 'auto',
-          left: rect.left,
-          width: rect.width,
+          left,
+          width,
           maxHeight: height,
         });
       }
@@ -66,7 +74,7 @@ export default function ProjectPickerDropdown({
       window.removeEventListener('scroll', updatePosition, true);
       window.removeEventListener('resize', updatePosition);
     };
-  }, [open, anchorRef, maxHeight]);
+  }, [open, anchorRef, maxHeight, minWidth]);
 
   if (!mounted || !open) return null;
 
