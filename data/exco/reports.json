@@ -3153,8 +3153,8 @@
         },
         "workbookSnapshot": null,
         "generationMeta": {
-          "fxRateFcPerUsd": null,
-          "generatedAt": "2026-09-03T13:16:26.887Z",
+          "fxRateFcPerUsd": 2292.5,
+          "generatedAt": "2026-09-03T13:18:36.200Z",
           "sourceFiles": [
             "Component Posted Units_Aug 26.xlsx",
             "Leave Balances_Aug 26.xlsx",
@@ -3162,7 +3162,7 @@
           ]
         }
       },
-      "updatedAt": "2026-09-03T13:16:28.249Z",
+      "updatedAt": "2026-09-03T13:18:37.676Z",
       "updatedBy": "Administrateur"
     },
     {
