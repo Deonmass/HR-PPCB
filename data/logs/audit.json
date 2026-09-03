@@ -1,6 +1,63 @@
 {
   "entries": [
     {
+      "id": "log-000675",
+      "at": "2026-09-03T11:54:08.768Z",
+      "userId": "admin",
+      "userName": "Administrateur",
+      "module": "dependants",
+      "moduleLabel": "Dépendants",
+      "action": "update",
+      "actionLabel": "Modification",
+      "entityType": "dependant",
+      "entityId": "737",
+      "summary": "Modification dépendant #737 — MPEZO MATONDO NOAH-GLORIC",
+      "details": "Modification dépendant #737 — MPEZO MATONDO NOAH-GLORIC",
+      "before": {
+        "id": 737,
+        "employeeId": "f904e459-468f-4268-8078-159664fd2961",
+        "matricule": "70000313",
+        "pactilis": "",
+        "statut": "Enfant",
+        "sexe": "M",
+        "nom": "MPEZO MATONDO NOAH-GLORIE",
+        "localisation": "Kinshasa",
+        "numeroVilla": "",
+        "typeMaison": "",
+        "dateNaissance": "30/06/2019",
+        "age": 7,
+        "compositionFamille": null,
+        "enfants": null,
+        "total": null,
+        "commentaires": "",
+        "lienDocument": "",
+        "createdAt": "2026-09-02T08:38:39.822Z",
+        "updatedAt": "2026-09-02T08:39:03.562Z"
+      },
+      "after": {
+        "id": 737,
+        "matricule": "70000313",
+        "pactilis": "",
+        "statut": "Enfant",
+        "sexe": "M",
+        "nom": "MPEZO MATONDO NOAH-GLORIC",
+        "localisation": "Kinshasa",
+        "numeroVilla": "",
+        "typeMaison": "",
+        "dateNaissance": "30/06/2019",
+        "age": 7,
+        "compositionFamille": null,
+        "enfants": null,
+        "total": null,
+        "commentaires": "",
+        "lienDocument": "",
+        "employeNom": "GLODY BENGESHA ELONGO",
+        "departement": "Sales and Marketing"
+      },
+      "undoable": true,
+      "undone": false
+    },
+    {
       "id": "log-000674",
       "at": "2026-09-03T11:53:47.299Z",
       "userId": "admin",
@@ -49428,5 +49485,5 @@
       }
     }
   ],
-  "nextSeq": 675
+  "nextSeq": 676
 }
