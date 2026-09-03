@@ -2,6 +2,520 @@
   "reports": [
     {
       "year": 2026,
+      "month": 8,
+      "overlays": {
+        "manualKpis": {},
+        "financeByMonth": {},
+        "staffCostYtdByMonth": {},
+        "staffCostFormulaNotes": {},
+        "narrative": {
+          "meetingTitle": "EXCO MEETING",
+          "meetingDate": "",
+          "meetingPlace": "",
+          "highlights": "",
+          "lowlights": "",
+          "focus": "",
+          "approvalItems": "",
+          "medicalCases": "",
+          "thankYouTitle": "Et merci",
+          "thankYouMessage": "Thank You"
+        },
+        "recruitment": [],
+        "auditFindings": [],
+        "isoActions": [],
+        "csrProjects": [],
+        "csrFy27Rows": [],
+        "cahierHighlights": [],
+        "trainingTopics": [],
+        "upcomingTrainings": [],
+        "policies": {
+          "expiredPendingUpdate": [],
+          "submittedToExco": [],
+          "pendingPublication": [],
+          "underCommunication": []
+        },
+        "overtimeCostByDept": {},
+        "leaveBalanceByMatricule": {},
+        "overtimeImportsByMonth": {
+          "8": {
+            "year": 2026,
+            "month": 8,
+            "fxRateFcPerUsd": null,
+            "employees": [
+              {
+                "matricule": "70000015",
+                "nom": "LUZOLO NSEMBOLO THOMAS",
+                "departmentRaw": "Engineering",
+                "department": "Engineering",
+                "hours": 60.61,
+                "costFc": 1577103.5,
+                "leaveBalance": null
+              },
+              {
+                "matricule": "70000283",
+                "nom": "NGIMBI NSILULU DECLAIRK",
+                "departmentRaw": "Engineering",
+                "department": "Engineering",
+                "hours": 59.37,
+                "costFc": 480046.49,
+                "leaveBalance": null
+              },
+              {
+                "matricule": "70000309",
+                "nom": "NLANDU TSHIBAMBA JUNIOR",
+                "departmentRaw": "Engineering",
+                "department": "Engineering",
+                "hours": 52.9,
+                "costFc": 829496.87,
+                "leaveBalance": null
+              },
+              {
+                "matricule": "70000211",
+                "nom": "TOKO MATONDO JOEL",
+                "departmentRaw": "Production",
+                "department": "Production",
+                "hours": 51.51,
+                "costFc": 731923.96,
+                "leaveBalance": null
+              },
+              {
+                "matricule": "70000116",
+                "nom": "NZUNGU ANTOINE BONHEUR",
+                "departmentRaw": "Engineering",
+                "department": "Engineering",
+                "hours": 46.53,
+                "costFc": 1154935.55,
+                "leaveBalance": null
+              },
+              {
+                "matricule": "70000244",
+                "nom": "BADIBANGA MUTSHIPAYI Leon",
+                "departmentRaw": "Production",
+                "department": "Production",
+                "hours": 44.77,
+                "costFc": 643191.41,
+                "leaveBalance": null
+              },
+              {
+                "matricule": "70000216",
+                "nom": "MANSIAMINA DIANLEMVO PATIENCE",
+                "departmentRaw": "Engineering",
+                "department": "Engineering",
+                "hours": 41.54,
+                "costFc": 1074580.7,
+                "leaveBalance": null
+              },
+              {
+                "matricule": "70000104",
+                "nom": "NGOMA NALOLO DIEU",
+                "departmentRaw": "Engineering",
+                "department": "Engineering",
+                "hours": 40.89,
+                "costFc": 1071980.15,
+                "leaveBalance": null
+              },
+              {
+                "matricule": "70000072",
+                "nom": "NDONGA NGANGULA NOEL",
+                "departmentRaw": "Production",
+                "department": "Production",
+                "hours": 40.59,
+                "costFc": 1177935.7,
+                "leaveBalance": null
+              },
+              {
+                "matricule": "70000276",
+                "nom": "MAWETE NSOTA EMMANUEL",
+                "departmentRaw": "Quality Assurance",
+                "department": "Quality Assurance",
+                "hours": 37.95,
+                "costFc": 491528.39,
+                "leaveBalance": null
+              },
+              {
+                "matricule": "70000242",
+                "nom": "TSHILOLO MWABILA Willy",
+                "departmentRaw": "Production",
+                "department": "Production",
+                "hours": 36.12,
+                "costFc": 534869.39,
+                "leaveBalance": null
+              },
+              {
+                "matricule": "70000058",
+                "nom": "TULENGI KASIAMA REAGAN",
+                "departmentRaw": "Engineering",
+                "department": "Engineering",
+                "hours": 35.7,
+                "costFc": 889597.14,
+                "leaveBalance": null
+              },
+              {
+                "matricule": "70000212",
+                "nom": "VANGU VANGU ALBERT",
+                "departmentRaw": "Production",
+                "department": "Production",
+                "hours": 35.56,
+                "costFc": 318630.07,
+                "leaveBalance": null
+              },
+              {
+                "matricule": "70000243",
+                "nom": "MUKONKOLE KABELE Christian",
+                "departmentRaw": "Production",
+                "department": "Production",
+                "hours": 35.14,
+                "costFc": 532417,
+                "leaveBalance": null
+              },
+              {
+                "matricule": "70000115",
+                "nom": "ONOSAMBA LUNDI LUNDI",
+                "departmentRaw": "Engineering",
+                "department": "Engineering",
+                "hours": 34.69,
+                "costFc": 787757.44,
+                "leaveBalance": null
+              },
+              {
+                "matricule": "70000241",
+                "nom": "BIAWILA JEAN ROSTAND",
+                "departmentRaw": "Supply Chain",
+                "department": "Supply Chain",
+                "hours": 32.18,
+                "costFc": 663833.24,
+                "leaveBalance": null
+              },
+              {
+                "matricule": "70000029",
+                "nom": "MAPHASI VANGU PHILIPPE",
+                "departmentRaw": "Production",
+                "department": "Production",
+                "hours": 29.44,
+                "costFc": 1433515.86,
+                "leaveBalance": null
+              },
+              {
+                "matricule": "70000026",
+                "nom": "KABANGU MUTAMBAYI CHARLIE",
+                "departmentRaw": "Production",
+                "department": "Production",
+                "hours": 26.9,
+                "costFc": 1098802.93,
+                "leaveBalance": null
+              },
+              {
+                "matricule": "70000083",
+                "nom": "MUSAKO KINZONZOLI MOISE",
+                "departmentRaw": "Quality Assurance",
+                "department": "Quality Assurance",
+                "hours": 20.99,
+                "costFc": 827610.41,
+                "leaveBalance": null
+              },
+              {
+                "matricule": "70000068",
+                "nom": "DUNGA KUEKUBATU PLATINI",
+                "departmentRaw": "Production",
+                "department": "Production",
+                "hours": 20.87,
+                "costFc": 308496.56,
+                "leaveBalance": null
+              },
+              {
+                "matricule": "70000063",
+                "nom": "MUANDA BALOKI JISCA",
+                "departmentRaw": "Production",
+                "department": "Production",
+                "hours": 20.05,
+                "costFc": 663700.93,
+                "leaveBalance": null
+              },
+              {
+                "matricule": "70000061",
+                "nom": "NZUZI TABILA JOEL",
+                "departmentRaw": "Production",
+                "department": "Production",
+                "hours": 16,
+                "costFc": 364790.84,
+                "leaveBalance": null
+              },
+              {
+                "matricule": "70000226",
+                "nom": "KANKONDE ILUNGA ALIDOR",
+                "departmentRaw": "Production",
+                "department": "Production",
+                "hours": 14.55,
+                "costFc": 151095.7,
+                "leaveBalance": null
+              },
+              {
+                "matricule": "70000069",
+                "nom": "BAVIBIDILA MUNTANA GERVAIS",
+                "departmentRaw": "Production",
+                "department": "Production",
+                "hours": 14.16,
+                "costFc": 120335.43,
+                "leaveBalance": null
+              },
+              {
+                "matricule": "70000255",
+                "nom": "BILANGA LINGOMA Jonas",
+                "departmentRaw": "Supply Chain",
+                "department": "Supply Chain",
+                "hours": 12.45,
+                "costFc": 374378.3,
+                "leaveBalance": null
+              },
+              {
+                "matricule": "70000088",
+                "nom": "TULOMBA BALELE OVIE",
+                "departmentRaw": "Engineering",
+                "department": "Engineering",
+                "hours": 11.7,
+                "costFc": 342584.61,
+                "leaveBalance": null
+              },
+              {
+                "matricule": "70000080",
+                "nom": "NSILU MALUTA NADEGE",
+                "departmentRaw": "Quality Assurance",
+                "department": "Quality Assurance",
+                "hours": 11.7,
+                "costFc": 172744.89,
+                "leaveBalance": null
+              },
+              {
+                "matricule": "70000052",
+                "nom": "BAYISA SIMON DIDIER",
+                "departmentRaw": "Engineering",
+                "department": "Engineering",
+                "hours": 11.54,
+                "costFc": 285132.57,
+                "leaveBalance": null
+              },
+              {
+                "matricule": "70000264",
+                "nom": "KAMUNGA KAMUNGA YANNICK",
+                "departmentRaw": "Production",
+                "department": "Production",
+                "hours": 11.02,
+                "costFc": 138650.47,
+                "leaveBalance": null
+              },
+              {
+                "matricule": "70000284",
+                "nom": "MUNTANDA TUMBA OXANO",
+                "departmentRaw": "Engineering",
+                "department": "Engineering",
+                "hours": 10.85,
+                "costFc": 228244.95,
+                "leaveBalance": null
+              },
+              {
+                "matricule": "70000079",
+                "nom": "DINANDI MVUMBI PHILIPPE",
+                "departmentRaw": "Engineering",
+                "department": "Engineering",
+                "hours": 10.84,
+                "costFc": 268621.5,
+                "leaveBalance": null
+              },
+              {
+                "matricule": "70000077",
+                "nom": "SAMBA ZANKEMBO CADET",
+                "departmentRaw": "Quality Assurance",
+                "department": "Quality Assurance",
+                "hours": 9.35,
+                "costFc": 111059.45,
+                "leaveBalance": null
+              },
+              {
+                "matricule": "70000082",
+                "nom": "FINKIDI MAYETO EDGARD",
+                "departmentRaw": "Quality Assurance",
+                "department": "Quality Assurance",
+                "hours": 9.23,
+                "costFc": 103625.93,
+                "leaveBalance": null
+              },
+              {
+                "matricule": "70000081",
+                "nom": "TANDU NKWALA BERTIN",
+                "departmentRaw": "Quality Assurance",
+                "department": "Quality Assurance",
+                "hours": 9.11,
+                "costFc": 122472.82,
+                "leaveBalance": null
+              },
+              {
+                "matricule": "70000306",
+                "nom": "MUZO NKIENE BLANCHARD",
+                "departmentRaw": "Engineering",
+                "department": "Engineering",
+                "hours": 8.06,
+                "costFc": 131633,
+                "leaveBalance": null
+              },
+              {
+                "matricule": "70000070",
+                "nom": "BITUTU NDUNGU EDER",
+                "departmentRaw": "Production",
+                "department": "Production",
+                "hours": 8.04,
+                "costFc": 60538.28,
+                "leaveBalance": null
+              },
+              {
+                "matricule": "70000057",
+                "nom": "LUTONADIO NGUAWANI OLIVIER",
+                "departmentRaw": "Production",
+                "department": "Production",
+                "hours": 8,
+                "costFc": 176860.43,
+                "leaveBalance": null
+              },
+              {
+                "matricule": "70000059",
+                "nom": "LUZOLAWO MANKELA RODRIGUE",
+                "departmentRaw": "Production",
+                "department": "Production",
+                "hours": 8,
+                "costFc": 177457.44,
+                "leaveBalance": null
+              },
+              {
+                "matricule": "70000214",
+                "nom": "MATOKO PUATI JOEL",
+                "departmentRaw": "Production",
+                "department": "Production",
+                "hours": 8,
+                "costFc": 86638.29,
+                "leaveBalance": null
+              },
+              {
+                "matricule": "70000084",
+                "nom": "MVILAMBI BIMPALU DELVIS",
+                "departmentRaw": "Quality Assurance",
+                "department": "Quality Assurance",
+                "hours": 7.48,
+                "costFc": 81647.09,
+                "leaveBalance": null
+              },
+              {
+                "matricule": "70000096",
+                "nom": "LUKUAYI MANKUENIA OSEE",
+                "departmentRaw": "Production",
+                "department": "Production",
+                "hours": 7,
+                "costFc": 64674.51,
+                "leaveBalance": null
+              },
+              {
+                "matricule": "70000261",
+                "nom": "KALAMBAY TSHILOMBO YANNICK",
+                "departmentRaw": "Engineering",
+                "department": "Engineering",
+                "hours": 4.62,
+                "costFc": 145157.5,
+                "leaveBalance": null
+              },
+              {
+                "matricule": "70000093",
+                "nom": "MBANGI MAKULENDA ANDRE",
+                "departmentRaw": "Engineering",
+                "department": "Engineering",
+                "hours": 4.55,
+                "costFc": 45382.33,
+                "leaveBalance": null
+              },
+              {
+                "matricule": "70000064",
+                "nom": "KALUNGA MASELE RAMSES",
+                "departmentRaw": "Production",
+                "department": "Production",
+                "hours": 4,
+                "costFc": 91295.81,
+                "leaveBalance": null
+              },
+              {
+                "matricule": "70000232",
+                "nom": "LUCIO DA CONCEICAO",
+                "departmentRaw": "Engineering",
+                "department": "Engineering",
+                "hours": 3.79,
+                "costFc": 118308.32,
+                "leaveBalance": null
+              },
+              {
+                "matricule": "70000215",
+                "nom": "BINDAMA KAMOSIKO ALPHONSE",
+                "departmentRaw": "Engineering",
+                "department": "Engineering",
+                "hours": 3.49,
+                "costFc": 86608.27,
+                "leaveBalance": null
+              },
+              {
+                "matricule": "70000210",
+                "nom": "KAMANDA NYOMBA SOSTHENE",
+                "departmentRaw": "Quality Assurance",
+                "department": "Quality Assurance",
+                "hours": 2.19,
+                "costFc": 57527.58,
+                "leaveBalance": null
+              }
+            ],
+            "byDept": [
+              {
+                "department": "Engineering",
+                "hours": 441.67,
+                "costFc": 9517170.89
+              },
+              {
+                "department": "Production",
+                "hours": 439.72,
+                "costFc": 8875821.01
+              },
+              {
+                "department": "Quality Assurance",
+                "hours": 108,
+                "costFc": 1968216.56
+              },
+              {
+                "department": "Supply Chain",
+                "hours": 44.63,
+                "costFc": 1038211.54
+              }
+            ],
+            "sourceFiles": [
+              "Component Posted Units_Aug 26.xlsx"
+            ],
+            "importedAt": "2026-09-03T13:15:29.007Z"
+          }
+        },
+        "leaveImportsByMonth": {},
+        "engagementsImportsByMonth": {},
+        "importedSources": {
+          "componentPostedUnits": {
+            "importedAt": "2026-09-03T13:15:29.007Z",
+            "originalName": "Component Posted Units_Aug 26.xlsx"
+          }
+        },
+        "workbookSnapshot": null,
+        "generationMeta": {
+          "fxRateFcPerUsd": null,
+          "generatedAt": "2026-09-03T13:15:29.007Z",
+          "sourceFiles": [
+            "Component Posted Units_Aug 26.xlsx"
+          ]
+        }
+      },
+      "updatedAt": "2026-09-03T13:15:30.480Z",
+      "updatedBy": "Administrateur"
+    },
+    {
+      "year": 2026,
       "month": 7,
       "overlays": {
         "manualKpis": {
@@ -16,6 +530,8 @@
             "leaveCost": 419886.82
           }
         },
+        "staffCostYtdByMonth": {},
+        "staffCostFormulaNotes": {},
         "narrative": {
           "meetingTitle": "EXCO MEETING",
           "meetingDate": "2026-07-31",
@@ -24,7 +540,9 @@
           "lowlights": "Road Safety: LOXEA accident near Nsele (Honoré Samba / Patrick Kodjowa). Investigations ongoing; CNPR engagement given Plant–HO accidents this year.\n\nResignations: Clement Ndusha (Graduate) resigned in July (not yet in stats). Grassinda — classification done; decision to let her go and relaunch at the same grade. Happy Iyanya — requested the 15th; asked to remain until 30/31 for handover (delay to confirm with ExCo).\n\nRecruitment: Lab Analyst (Zamba) declined the offer (re-advertise). CRO offers sent, awaiting response. Lab Analyst Plant and Warehouse Officer accepted, starting soon.\n\nCommunity Relations: Nanga/Zamba CLC new committee (Mr. Aimé Luzayadio, CEO of Gringo). Kuzi Clan claims near Malanga Gare. Lubudi — chief of Mulumbu requesting preferential consideration.",
           "focus": "Family Day: Confirmed — 27 Aug at Zamba Plant; 5 Sep at Head Office (Kinshasa). Priority is organisation of both events.\n\nMD Services replacement: Procurement expected to close this month. Focus on transition and handover.\n\nOffice design payments: Confirm with Marie whether designer payments are closed and current stage.\n\nEarly retirement — Charles Pongo-Pongo (QA Manager): Request under review; currently on PIP.\n\nMedical cases: Yannick Kalambayi (Instrumentation); Toubi Nzazi (Drilling); Lab employee (mental health) — contract expires August.",
           "approvalItems": "Auction of four company vehicles: two Toyota Hilux, one Toyota Coaster bus, and one Toyota Land Cruiser.",
-          "medicalCases": "Yannick Kalambayi — Instrumentation Technician.\nToubi Nzazi — Drilling Operator.\nLab employee with severe mental health challenges — contract expires August; recommendation to let it run while providing support."
+          "medicalCases": "Yannick Kalambayi — Instrumentation Technician.\nToubi Nzazi — Drilling Operator.\nLab employee with severe mental health challenges — contract expires August; recommendation to let it run while providing support.",
+          "thankYouTitle": "Et merci",
+          "thankYouMessage": "Thank You"
         },
         "recruitment": [],
         "auditFindings": [
@@ -229,6 +747,8 @@
         ],
         "isoActions": [],
         "csrProjects": [],
+        "csrFy27Rows": [],
+        "cahierHighlights": [],
         "trainingTopics": [],
         "upcomingTrainings": [],
         "policies": {
@@ -1148,6 +1668,9 @@
             "importedAt": "2026-08-13T21:15:43.173Z"
           }
         },
+        "engagementsImportsByMonth": {},
+        "importedSources": {},
+        "workbookSnapshot": null,
         "generationMeta": {
           "fxRateFcPerUsd": 2308,
           "generatedAt": "2026-08-13T21:15:43.174Z",
