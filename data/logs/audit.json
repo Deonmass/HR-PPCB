@@ -1,6 +1,20 @@
 {
   "entries": [
     {
+      "id": "log-000680",
+      "at": "2026-09-04T06:57:09.179Z",
+      "userId": "admin",
+      "userName": "Administrateur",
+      "module": "documents.mouvement-travailleur",
+      "moduleLabel": "Documents",
+      "action": "export",
+      "actionLabel": "Export",
+      "summary": "Déclaration de mouvement de travailleur — 2 agents",
+      "details": "Déclaration de mouvement de travailleur — 2 agents",
+      "undoable": false,
+      "undone": false
+    },
+    {
       "id": "log-000679",
       "at": "2026-09-03T13:18:40.831Z",
       "userId": "admin",
@@ -57444,5 +57458,5 @@
       }
     }
   ],
-  "nextSeq": 680
+  "nextSeq": 681
 }
