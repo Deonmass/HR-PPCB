@@ -892,6 +892,25 @@
       "ecart": 14000,
       "pctBudget": 0.06666666666666667,
       "statut": "Non debuté"
+    },
+    {
+      "id": "p-1788641930735",
+      "numero": 22,
+      "name": "Puits de forage ",
+      "lieu": "Malanga Gare",
+      "secteur": "Infrastructures",
+      "typeProjet": "Cahier de charges",
+      "sousActivite": "",
+      "annee": "FY2026",
+      "dateDebut": "",
+      "dateFin": "11/16/2025",
+      "responsable": "Benny Zakuani",
+      "budgetPrevu": 37719,
+      "budgetDepense": 37719,
+      "budgetPrevuVerifie": true,
+      "ecart": 0,
+      "pctBudget": 1,
+      "statut": "Terminé"
     }
   ]
 }
