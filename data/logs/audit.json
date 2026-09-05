@@ -1,6 +1,61 @@
 {
   "entries": [
     {
+      "id": "log-000683",
+      "at": "2026-09-05T20:58:40.504Z",
+      "userId": "Gedeon.Massadi",
+      "userName": "Gedeon Massadi",
+      "userEmail": "Gedeon.Massadi@ppcdrc.cd",
+      "module": "projects",
+      "moduleLabel": "Projets",
+      "action": "update",
+      "actionLabel": "Modification",
+      "entityType": "project",
+      "entityId": "p-10",
+      "summary": "Modification projet Puits de forage",
+      "details": "Modification projet Puits de forage",
+      "before": {
+        "id": "p-10",
+        "numero": 7,
+        "name": "Puits de forage",
+        "lieu": "",
+        "secteur": "Infrastructures",
+        "typeProjet": "CSR",
+        "sousActivite": "",
+        "annee": "FY2026",
+        "dateDebut": "",
+        "dateFin": "",
+        "responsable": "",
+        "budgetPrevu": null,
+        "budgetDepense": 37719,
+        "budgetPrevuVerifie": false,
+        "ecart": -37719,
+        "pctBudget": null,
+        "statut": "Non debuté"
+      },
+      "after": {
+        "id": "p-10",
+        "numero": 7,
+        "name": "Puits de forage",
+        "lieu": "Nkumba",
+        "secteur": "Infrastructures",
+        "typeProjet": "Cahier de charges",
+        "sousActivite": "",
+        "annee": "FY2026",
+        "dateDebut": "",
+        "dateFin": "11/16/2025",
+        "responsable": "Benny Zakuani",
+        "budgetPrevu": 37719,
+        "budgetDepense": 37719,
+        "budgetPrevuVerifie": true,
+        "ecart": 0,
+        "pctBudget": 1,
+        "statut": "Terminé"
+      },
+      "undoable": true,
+      "undone": false
+    },
+    {
       "id": "log-000682",
       "at": "2026-09-05T20:34:29.042Z",
       "userId": "Gedeon.Massadi",
@@ -59357,5 +59412,5 @@
       }
     }
   ],
-  "nextSeq": 683
+  "nextSeq": 684
 }
