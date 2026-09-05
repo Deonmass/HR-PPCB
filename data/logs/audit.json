@@ -1,6 +1,42 @@
 {
   "entries": [
     {
+      "id": "log-000684",
+      "at": "2026-09-05T21:00:11.921Z",
+      "userId": "Gedeon.Massadi",
+      "userName": "Gedeon Massadi",
+      "userEmail": "Gedeon.Massadi@ppcdrc.cd",
+      "module": "projects",
+      "moduleLabel": "Projets",
+      "action": "create",
+      "actionLabel": "Création",
+      "entityType": "project",
+      "entityId": "p-1788641930735",
+      "summary": "Création projet Puits de forage",
+      "details": "Création projet Puits de forage",
+      "after": {
+        "id": "p-1788641930735",
+        "numero": 22,
+        "name": "Puits de forage ",
+        "lieu": "Malanga Gare",
+        "secteur": "Infrastructures",
+        "typeProjet": "Cahier de charges",
+        "sousActivite": "",
+        "annee": "FY2026",
+        "dateDebut": "",
+        "dateFin": "11/16/2025",
+        "responsable": "Benny Zakuani",
+        "budgetPrevu": 37719,
+        "budgetDepense": 37719,
+        "budgetPrevuVerifie": true,
+        "ecart": 0,
+        "pctBudget": 1,
+        "statut": "Terminé"
+      },
+      "undoable": true,
+      "undone": false
+    },
+    {
       "id": "log-000683",
       "at": "2026-09-05T20:58:40.504Z",
       "userId": "Gedeon.Massadi",
@@ -59412,5 +59448,5 @@
       }
     }
   ],
-  "nextSeq": 684
+  "nextSeq": 685
 }
