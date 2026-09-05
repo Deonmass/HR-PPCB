@@ -1,6 +1,59 @@
 {
   "entries": [
     {
+      "id": "log-000682",
+      "at": "2026-09-05T20:34:29.042Z",
+      "userId": "Gedeon.Massadi",
+      "userName": "Gedeon Massadi",
+      "userEmail": "Gedeon.Massadi@ppcdrc.cd",
+      "module": "settings.utilisateurs",
+      "moduleLabel": "Paramètres — Utilisateurs",
+      "action": "update",
+      "actionLabel": "Modification",
+      "entityType": "auth.user",
+      "entityId": "Pelagie.Kinkinia",
+      "summary": "Modification utilisateur Pelagie Kinkinia",
+      "details": "Modification utilisateur Pelagie Kinkinia",
+      "before": {
+        "id": "Pelagie.Kinkinia",
+        "username": "Pelagie.Kinkinia",
+        "displayName": "Pelagie Kinkinia",
+        "initials": "PK",
+        "email": "Pelagie.Kinkinia@ppcdrc.cd",
+        "matricule": "70000295",
+        "linkedEmployee": {
+          "matricule": "70000295",
+          "nom": "KINKINIA DIAVEZUKA PELAGIE",
+          "departement": "Administration",
+          "grade": "D2",
+          "jobTitle": "Plant HR Manager",
+          "localisation": "Zamba"
+        },
+        "active": true,
+        "createdAt": "2026-07-28T12:02:15.277Z"
+      },
+      "after": {
+        "id": "Pelagie.Kinkinia",
+        "username": "Pelagie.Kinkinia",
+        "displayName": "Pelagie Kinkinia",
+        "initials": "PK",
+        "email": "Pelagie.Kinkinia@ppcdrc.cd",
+        "matricule": "70000295",
+        "linkedEmployee": {
+          "matricule": "70000295",
+          "nom": "KINKINIA DIAVEZUKA PELAGIE",
+          "departement": "Human Resources",
+          "grade": "D2",
+          "jobTitle": "Plant HR Manager",
+          "localisation": "Zamba"
+        },
+        "active": true,
+        "createdAt": "2026-07-28T12:02:15.277Z"
+      },
+      "undoable": true,
+      "undone": false
+    },
+    {
       "id": "log-000681",
       "at": "2026-09-05T20:33:58.020Z",
       "userId": "Gedeon.Massadi",
@@ -59304,5 +59357,5 @@
       }
     }
   ],
-  "nextSeq": 682
+  "nextSeq": 683
 }
