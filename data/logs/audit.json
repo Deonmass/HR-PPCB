@@ -1,6 +1,31 @@
 {
   "entries": [
     {
+      "id": "log-000685",
+      "at": "2026-09-05T21:02:40.750Z",
+      "userId": "Gedeon.Massadi",
+      "userName": "Gedeon Massadi",
+      "userEmail": "Gedeon.Massadi@ppcdrc.cd",
+      "module": "projects.expenses",
+      "moduleLabel": "Projets — Dépenses",
+      "action": "create",
+      "actionLabel": "Création",
+      "entityType": "project.expense",
+      "entityId": "e-1788642127766",
+      "summary": "Création dépense Puits de forage  — 1000",
+      "details": "Création dépense Puits de forage  — 1000",
+      "after": {
+        "id": "e-1788642127766",
+        "numero": 34,
+        "date": "05/09/2026",
+        "projet": "Puits de forage ",
+        "motif": "Initial",
+        "montant": 1000
+      },
+      "undoable": true,
+      "undone": false
+    },
+    {
       "id": "log-000684",
       "at": "2026-09-05T21:00:11.921Z",
       "userId": "Gedeon.Massadi",
@@ -59448,5 +59473,5 @@
       }
     }
   ],
-  "nextSeq": 685
+  "nextSeq": 686
 }
