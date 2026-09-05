@@ -1,6 +1,1852 @@
 {
   "entries": [
     {
+      "id": "log-000681",
+      "at": "2026-09-05T20:33:58.020Z",
+      "userId": "Gedeon.Massadi",
+      "userName": "Gedeon Massadi",
+      "userEmail": "Gedeon.Massadi@ppcdrc.cd",
+      "module": "settings.permissions",
+      "moduleLabel": "Paramètres — Permissions",
+      "action": "update",
+      "actionLabel": "Modification",
+      "summary": "Modification permissions utilisateur Pelagie.Kinkinia",
+      "details": "Modification permissions utilisateur Pelagie.Kinkinia",
+      "before": [
+        {
+          "menuId": "audit.points",
+          "label": "Audit points",
+          "actions": {
+            "view": false,
+            "create": false,
+            "edit": false,
+            "delete": false,
+            "export": false,
+            "undo": false
+          }
+        },
+        {
+          "menuId": "charroi.vehicules",
+          "label": "Base véhicules",
+          "actions": {
+            "view": true,
+            "create": true,
+            "edit": true,
+            "delete": true,
+            "export": true,
+            "undo": true
+          }
+        },
+        {
+          "menuId": "charroi",
+          "label": "Charroi (accès global)",
+          "actions": {
+            "view": true,
+            "create": true,
+            "edit": true,
+            "delete": true,
+            "export": true,
+            "undo": true
+          }
+        },
+        {
+          "menuId": "charroi.achats",
+          "label": "Nouveaux achats",
+          "actions": {
+            "view": true,
+            "create": true,
+            "edit": true,
+            "delete": true,
+            "export": true,
+            "undo": true
+          }
+        },
+        {
+          "menuId": "documents.attestation-conge",
+          "label": "Attestation de congé",
+          "actions": {
+            "view": true,
+            "create": true,
+            "edit": true,
+            "delete": true,
+            "export": true,
+            "undo": true
+          }
+        },
+        {
+          "menuId": "travel.attestation",
+          "label": "Attestation de service",
+          "actions": {
+            "view": true,
+            "create": true,
+            "edit": true,
+            "delete": true,
+            "export": true,
+            "undo": true
+          }
+        },
+        {
+          "menuId": "travel.etablir",
+          "label": "Cash request",
+          "actions": {
+            "view": true,
+            "create": true,
+            "edit": true,
+            "delete": true,
+            "export": true,
+            "undo": true
+          }
+        },
+        {
+          "menuId": "documents.contrat-standard",
+          "label": "Contrat standard",
+          "actions": {
+            "view": true,
+            "create": true,
+            "edit": true,
+            "delete": true,
+            "export": true,
+            "undo": true
+          }
+        },
+        {
+          "menuId": "documents.convention-collective",
+          "label": "Convention collective",
+          "actions": {
+            "view": true,
+            "create": true,
+            "edit": true,
+            "delete": true,
+            "export": true,
+            "undo": true
+          }
+        },
+        {
+          "menuId": "documents.composition-familiale",
+          "label": "Déclaration de composition familiale",
+          "actions": {
+            "view": true,
+            "create": true,
+            "edit": true,
+            "delete": true,
+            "export": true,
+            "undo": true
+          }
+        },
+        {
+          "menuId": "documents.mouvement-travailleur",
+          "label": "Déclaration de mouvement de travailleur",
+          "actions": {
+            "view": true,
+            "create": true,
+            "edit": true,
+            "delete": true,
+            "export": true,
+            "undo": true
+          }
+        },
+        {
+          "menuId": "documents.entetes",
+          "label": "Entête",
+          "actions": {
+            "view": true,
+            "create": true,
+            "edit": true,
+            "delete": true,
+            "export": true,
+            "undo": true
+          }
+        },
+        {
+          "menuId": "documents.exit",
+          "label": "Exit forms",
+          "actions": {
+            "view": true,
+            "create": true,
+            "edit": true,
+            "delete": true,
+            "export": true,
+            "undo": true
+          }
+        },
+        {
+          "menuId": "documents.appraisal",
+          "label": "Interim appraisal evaluation",
+          "actions": {
+            "view": true,
+            "create": true,
+            "edit": true,
+            "delete": true,
+            "export": true,
+            "undo": true
+          }
+        },
+        {
+          "menuId": "documents.newcomer",
+          "label": "Newcomer",
+          "actions": {
+            "view": true,
+            "create": true,
+            "edit": true,
+            "delete": true,
+            "export": true,
+            "undo": true
+          }
+        },
+        {
+          "menuId": "travel.mission.kinshasa",
+          "label": "Ordre de mission — Kinshasa",
+          "actions": {
+            "view": true,
+            "create": true,
+            "edit": true,
+            "delete": true,
+            "export": true,
+            "undo": true
+          }
+        },
+        {
+          "menuId": "travel.mission.lubudi",
+          "label": "Ordre de mission — Lubudi",
+          "actions": {
+            "view": true,
+            "create": true,
+            "edit": true,
+            "delete": true,
+            "export": true,
+            "undo": true
+          }
+        },
+        {
+          "menuId": "travel.mission.zamba-consultant",
+          "label": "Ordre de mission — Zamba Consultant",
+          "actions": {
+            "view": true,
+            "create": true,
+            "edit": true,
+            "delete": true,
+            "export": true,
+            "undo": true
+          }
+        },
+        {
+          "menuId": "travel.mission.zamba",
+          "label": "Ordre de mission — Zamba PPC Team",
+          "actions": {
+            "view": true,
+            "create": true,
+            "edit": true,
+            "delete": true,
+            "export": true,
+            "undo": true
+          }
+        },
+        {
+          "menuId": "travel.payment-voucher",
+          "label": "Payment voucher",
+          "actions": {
+            "view": true,
+            "create": true,
+            "edit": true,
+            "delete": true,
+            "export": true,
+            "undo": true
+          }
+        },
+        {
+          "menuId": "documents.rrf",
+          "label": "RRF",
+          "actions": {
+            "view": true,
+            "create": true,
+            "edit": true,
+            "delete": true,
+            "export": true,
+            "undo": true
+          }
+        },
+        {
+          "menuId": "travel.historique",
+          "label": "Voyage",
+          "actions": {
+            "view": true,
+            "create": true,
+            "edit": true,
+            "delete": true,
+            "export": true,
+            "undo": true
+          }
+        },
+        {
+          "menuId": "employes.check-documents",
+          "label": "Check documents",
+          "actions": {
+            "view": true,
+            "create": true,
+            "edit": true,
+            "delete": true,
+            "export": true,
+            "undo": true
+          }
+        },
+        {
+          "menuId": "employes.conge",
+          "label": "Congé",
+          "actions": {
+            "view": true,
+            "create": true,
+            "edit": true,
+            "delete": true,
+            "export": true,
+            "undo": true
+          }
+        },
+        {
+          "menuId": "employes.contractants",
+          "label": "Contractants",
+          "actions": {
+            "view": true,
+            "create": true,
+            "edit": true,
+            "delete": true,
+            "export": true,
+            "undo": true
+          }
+        },
+        {
+          "menuId": "employes.dependants",
+          "label": "Dependants",
+          "actions": {
+            "view": true,
+            "create": true,
+            "edit": true,
+            "delete": true,
+            "export": true,
+            "undo": true
+          }
+        },
+        {
+          "menuId": "employes.heures.policy",
+          "label": "HS — Appliquer la politique",
+          "actions": {
+            "view": true,
+            "create": true,
+            "edit": true,
+            "delete": true,
+            "export": true,
+            "undo": true
+          }
+        },
+        {
+          "menuId": "employes.heures.export",
+          "label": "HS — Exporter",
+          "actions": {
+            "view": true,
+            "create": true,
+            "edit": true,
+            "delete": true,
+            "export": true,
+            "undo": true
+          }
+        },
+        {
+          "menuId": "employes.heures.import",
+          "label": "HS — Importer OT",
+          "actions": {
+            "view": true,
+            "create": true,
+            "edit": true,
+            "delete": true,
+            "export": true,
+            "undo": true
+          }
+        },
+        {
+          "menuId": "employes.heures.edit-validated",
+          "label": "HS — Modifier OT après validation",
+          "actions": {
+            "view": true,
+            "create": true,
+            "edit": true,
+            "delete": true,
+            "export": true,
+            "undo": true
+          }
+        },
+        {
+          "menuId": "employes.heures",
+          "label": "HS — Mon timesheet",
+          "actions": {
+            "view": true,
+            "create": true,
+            "edit": true,
+            "delete": true,
+            "export": true,
+            "undo": true
+          }
+        },
+        {
+          "menuId": "employes.heures.simulation",
+          "label": "HS — Simulation",
+          "actions": {
+            "view": true,
+            "create": true,
+            "edit": true,
+            "delete": true,
+            "export": true,
+            "undo": true
+          }
+        },
+        {
+          "menuId": "employes.heures.validate",
+          "label": "HS — Valider OT",
+          "actions": {
+            "view": true,
+            "create": true,
+            "edit": true,
+            "delete": true,
+            "export": true,
+            "undo": true
+          }
+        },
+        {
+          "menuId": "employes.heures.dept",
+          "label": "HS — Voir mon département",
+          "actions": {
+            "view": true,
+            "create": true,
+            "edit": true,
+            "delete": true,
+            "export": true,
+            "undo": true
+          }
+        },
+        {
+          "menuId": "employes.heures.all",
+          "label": "HS — Voir tous les départements",
+          "actions": {
+            "view": true,
+            "create": true,
+            "edit": true,
+            "delete": true,
+            "export": true,
+            "undo": true
+          }
+        },
+        {
+          "menuId": "employes.liste",
+          "label": "Liste employés",
+          "actions": {
+            "view": true,
+            "create": true,
+            "edit": true,
+            "delete": true,
+            "export": true,
+            "undo": true
+          }
+        },
+        {
+          "menuId": "factures.fournisseur.factures",
+          "label": "Factures",
+          "actions": {
+            "view": true,
+            "create": true,
+            "edit": true,
+            "delete": true,
+            "export": true,
+            "undo": true
+          }
+        },
+        {
+          "menuId": "factures.fournisseur.fournisseurs",
+          "label": "Fournisseurs",
+          "actions": {
+            "view": true,
+            "create": true,
+            "edit": true,
+            "delete": true,
+            "export": true,
+            "undo": true
+          }
+        },
+        {
+          "menuId": "factures.fournisseur.liste",
+          "label": "Liste",
+          "actions": {
+            "view": true,
+            "create": true,
+            "edit": true,
+            "delete": true,
+            "export": true,
+            "undo": true
+          }
+        },
+        {
+          "menuId": "factures.fournisseur.soa",
+          "label": "SOA",
+          "actions": {
+            "view": true,
+            "create": true,
+            "edit": true,
+            "delete": true,
+            "export": true,
+            "undo": true
+          }
+        },
+        {
+          "menuId": "settings.centres",
+          "label": "Centre de coût",
+          "actions": {
+            "view": true,
+            "create": true,
+            "edit": true,
+            "delete": true,
+            "export": true,
+            "undo": true
+          }
+        },
+        {
+          "menuId": "settings.departements",
+          "label": "Départements",
+          "actions": {
+            "view": true,
+            "create": true,
+            "edit": true,
+            "delete": true,
+            "export": true,
+            "undo": true
+          }
+        },
+        {
+          "menuId": "parametres.logs",
+          "label": "Logs",
+          "actions": {
+            "view": false,
+            "create": false,
+            "edit": false,
+            "delete": false,
+            "export": false,
+            "undo": false
+          }
+        },
+        {
+          "menuId": "settings.permissions",
+          "label": "Permissions",
+          "actions": {
+            "view": false,
+            "create": false,
+            "edit": false,
+            "delete": false,
+            "export": false,
+            "undo": false
+          }
+        },
+        {
+          "menuId": "settings.utilisateurs.reset",
+          "label": "Reset mot de passe",
+          "actions": {
+            "view": false,
+            "create": false,
+            "edit": false,
+            "delete": false,
+            "export": false,
+            "undo": false
+          }
+        },
+        {
+          "menuId": "settings.utilisateurs",
+          "label": "Utilisateurs",
+          "actions": {
+            "view": false,
+            "create": false,
+            "edit": false,
+            "delete": false,
+            "export": false,
+            "undo": false
+          }
+        },
+        {
+          "menuId": "politique.aide-medicale",
+          "label": "Aide médicale",
+          "actions": {
+            "view": true,
+            "create": true,
+            "edit": true,
+            "delete": true,
+            "export": true,
+            "undo": true
+          }
+        },
+        {
+          "menuId": "politique.alcool",
+          "label": "Alcool et substances",
+          "actions": {
+            "view": true,
+            "create": true,
+            "edit": true,
+            "delete": true,
+            "export": true,
+            "undo": true
+          }
+        },
+        {
+          "menuId": "politique.code-conduite",
+          "label": "Code de bonne conduite",
+          "actions": {
+            "view": true,
+            "create": true,
+            "edit": true,
+            "delete": true,
+            "export": true,
+            "undo": true
+          }
+        },
+        {
+          "menuId": "politique.code-ethique",
+          "label": "Code de conduite et éthique",
+          "actions": {
+            "view": true,
+            "create": true,
+            "edit": true,
+            "delete": true,
+            "export": true,
+            "undo": true
+          }
+        },
+        {
+          "menuId": "politique.convention-collective",
+          "label": "Convention collective",
+          "actions": {
+            "view": true,
+            "create": true,
+            "edit": true,
+            "delete": true,
+            "export": true,
+            "undo": true
+          }
+        },
+        {
+          "menuId": "politique.harcelement",
+          "label": "Harcèlement",
+          "actions": {
+            "view": true,
+            "create": true,
+            "edit": true,
+            "delete": true,
+            "export": true,
+            "undo": true
+          }
+        },
+        {
+          "menuId": "politique.heures-sup",
+          "label": "Heures supplémentaires (oct. 25)",
+          "actions": {
+            "view": true,
+            "create": true,
+            "edit": true,
+            "delete": true,
+            "export": true,
+            "undo": true
+          }
+        },
+        {
+          "menuId": "politique.longs-etats",
+          "label": "Longs états de service",
+          "actions": {
+            "view": true,
+            "create": true,
+            "edit": true,
+            "delete": true,
+            "export": true,
+            "undo": true
+          }
+        },
+        {
+          "menuId": "politique.voyages",
+          "label": "Politique de voyage",
+          "actions": {
+            "view": true,
+            "create": true,
+            "edit": true,
+            "delete": true,
+            "export": true,
+            "undo": true
+          }
+        },
+        {
+          "menuId": "politique.village",
+          "label": "Politique Village (maisons)",
+          "actions": {
+            "view": true,
+            "create": true,
+            "edit": true,
+            "delete": true,
+            "export": true,
+            "undo": true
+          }
+        },
+        {
+          "menuId": "politique.manuco",
+          "label": "Règlement Manuco",
+          "actions": {
+            "view": true,
+            "create": true,
+            "edit": true,
+            "delete": true,
+            "export": true,
+            "undo": true
+          }
+        },
+        {
+          "menuId": "employes.classification",
+          "label": "Classification des postes",
+          "actions": {
+            "view": true,
+            "create": true,
+            "edit": true,
+            "delete": true,
+            "export": true,
+            "undo": true
+          }
+        },
+        {
+          "menuId": "employes.mouvements",
+          "label": "Mouvements",
+          "actions": {
+            "view": true,
+            "create": true,
+            "edit": true,
+            "delete": true,
+            "export": true,
+            "undo": true
+          }
+        },
+        {
+          "menuId": "employes.offres",
+          "label": "Offres",
+          "actions": {
+            "view": true,
+            "create": true,
+            "edit": true,
+            "delete": true,
+            "export": true,
+            "undo": true
+          }
+        },
+        {
+          "menuId": "employes.postes",
+          "label": "Postes",
+          "actions": {
+            "view": true,
+            "create": true,
+            "edit": true,
+            "delete": true,
+            "export": true,
+            "undo": true
+          }
+        },
+        {
+          "menuId": "employes.recrutement",
+          "label": "Recrutement",
+          "actions": {
+            "view": true,
+            "create": true,
+            "edit": true,
+            "delete": true,
+            "export": true,
+            "undo": true
+          }
+        },
+        {
+          "menuId": "project.dashboard",
+          "label": "Dashboard",
+          "actions": {
+            "view": true,
+            "create": true,
+            "edit": true,
+            "delete": true,
+            "export": true,
+            "undo": true
+          }
+        },
+        {
+          "menuId": "project.expenses",
+          "label": "Expenses details",
+          "actions": {
+            "view": true,
+            "create": true,
+            "edit": true,
+            "delete": true,
+            "export": true,
+            "undo": true
+          }
+        },
+        {
+          "menuId": "project.projects",
+          "label": "Projects",
+          "actions": {
+            "view": true,
+            "create": true,
+            "edit": true,
+            "delete": true,
+            "export": true,
+            "undo": true
+          }
+        },
+        {
+          "menuId": "protocol.billets",
+          "label": "Gestion des Billets",
+          "actions": {
+            "view": true,
+            "create": true,
+            "edit": true,
+            "delete": true,
+            "export": true,
+            "undo": true
+          }
+        },
+        {
+          "menuId": "protocol.visa-travail",
+          "label": "Visa de travail",
+          "actions": {
+            "view": true,
+            "create": true,
+            "edit": true,
+            "delete": true,
+            "export": true,
+            "undo": true
+          }
+        },
+        {
+          "menuId": "protocol.visa-voyage",
+          "label": "Visa de voyage",
+          "actions": {
+            "view": true,
+            "create": true,
+            "edit": true,
+            "delete": true,
+            "export": true,
+            "undo": true
+          }
+        },
+        {
+          "menuId": "protocol.visa-volant",
+          "label": "Visa volant",
+          "actions": {
+            "view": true,
+            "create": true,
+            "edit": true,
+            "delete": true,
+            "export": true,
+            "undo": true
+          }
+        },
+        {
+          "menuId": "exco.rapport",
+          "label": "EXCO",
+          "actions": {
+            "view": false,
+            "create": false,
+            "edit": false,
+            "delete": false,
+            "export": false,
+            "undo": false
+          }
+        },
+        {
+          "menuId": "sante",
+          "label": "Santé",
+          "actions": {
+            "view": true,
+            "create": true,
+            "edit": true,
+            "delete": true,
+            "export": true,
+            "undo": true
+          }
+        },
+        {
+          "menuId": "training",
+          "label": "Training",
+          "actions": {
+            "view": true,
+            "create": true,
+            "edit": true,
+            "delete": true,
+            "export": true,
+            "undo": true
+          }
+        },
+        {
+          "menuId": "village.dependants-dashboard",
+          "label": "Dashboard (Village/Kimpese)",
+          "actions": {
+            "view": true,
+            "create": true,
+            "edit": true,
+            "delete": true,
+            "export": true,
+            "undo": true
+          }
+        },
+        {
+          "menuId": "village.guest-house",
+          "label": "Guest house — réservations & occupation",
+          "actions": {
+            "view": true,
+            "create": true,
+            "edit": true,
+            "delete": true,
+            "export": true,
+            "undo": true
+          }
+        },
+        {
+          "menuId": "village.dependants-liste",
+          "label": "Liste (Village/Kimpese)",
+          "actions": {
+            "view": true,
+            "create": true,
+            "edit": true,
+            "delete": true,
+            "export": true,
+            "undo": true
+          }
+        },
+        {
+          "menuId": "village.maisons",
+          "label": "Maisons",
+          "actions": {
+            "view": true,
+            "create": true,
+            "edit": true,
+            "delete": true,
+            "export": true,
+            "undo": true
+          }
+        }
+      ],
+      "after": {
+        "userId": "Pelagie.Kinkinia",
+        "menus": [
+          {
+            "menuId": "audit.points",
+            "label": "Audit points",
+            "actions": {
+              "view": true,
+              "create": true,
+              "edit": true,
+              "delete": true,
+              "export": true,
+              "undo": true
+            }
+          },
+          {
+            "menuId": "charroi.vehicules",
+            "label": "Base véhicules",
+            "actions": {
+              "view": true,
+              "create": true,
+              "edit": true,
+              "delete": true,
+              "export": true,
+              "undo": true
+            }
+          },
+          {
+            "menuId": "charroi",
+            "label": "Charroi (accès global)",
+            "actions": {
+              "view": true,
+              "create": true,
+              "edit": true,
+              "delete": true,
+              "export": true,
+              "undo": true
+            }
+          },
+          {
+            "menuId": "charroi.achats",
+            "label": "Nouveaux achats",
+            "actions": {
+              "view": true,
+              "create": true,
+              "edit": true,
+              "delete": true,
+              "export": true,
+              "undo": true
+            }
+          },
+          {
+            "menuId": "documents.attestation-conge",
+            "label": "Attestation de congé",
+            "actions": {
+              "view": true,
+              "create": true,
+              "edit": true,
+              "delete": true,
+              "export": true,
+              "undo": true
+            }
+          },
+          {
+            "menuId": "travel.attestation",
+            "label": "Attestation de service",
+            "actions": {
+              "view": true,
+              "create": true,
+              "edit": true,
+              "delete": true,
+              "export": true,
+              "undo": true
+            }
+          },
+          {
+            "menuId": "travel.etablir",
+            "label": "Cash request",
+            "actions": {
+              "view": true,
+              "create": true,
+              "edit": true,
+              "delete": true,
+              "export": true,
+              "undo": true
+            }
+          },
+          {
+            "menuId": "documents.contrat-standard",
+            "label": "Contrat standard",
+            "actions": {
+              "view": true,
+              "create": true,
+              "edit": true,
+              "delete": true,
+              "export": true,
+              "undo": true
+            }
+          },
+          {
+            "menuId": "documents.convention-collective",
+            "label": "Convention collective",
+            "actions": {
+              "view": true,
+              "create": true,
+              "edit": true,
+              "delete": true,
+              "export": true,
+              "undo": true
+            }
+          },
+          {
+            "menuId": "documents.composition-familiale",
+            "label": "Déclaration de composition familiale",
+            "actions": {
+              "view": true,
+              "create": true,
+              "edit": true,
+              "delete": true,
+              "export": true,
+              "undo": true
+            }
+          },
+          {
+            "menuId": "documents.mouvement-travailleur",
+            "label": "Déclaration de mouvement de travailleur",
+            "actions": {
+              "view": true,
+              "create": true,
+              "edit": true,
+              "delete": true,
+              "export": true,
+              "undo": true
+            }
+          },
+          {
+            "menuId": "documents.entetes",
+            "label": "Entête",
+            "actions": {
+              "view": true,
+              "create": true,
+              "edit": true,
+              "delete": true,
+              "export": true,
+              "undo": true
+            }
+          },
+          {
+            "menuId": "documents.exit",
+            "label": "Exit forms",
+            "actions": {
+              "view": true,
+              "create": true,
+              "edit": true,
+              "delete": true,
+              "export": true,
+              "undo": true
+            }
+          },
+          {
+            "menuId": "documents.appraisal",
+            "label": "Interim appraisal evaluation",
+            "actions": {
+              "view": true,
+              "create": true,
+              "edit": true,
+              "delete": true,
+              "export": true,
+              "undo": true
+            }
+          },
+          {
+            "menuId": "documents.newcomer",
+            "label": "Newcomer",
+            "actions": {
+              "view": true,
+              "create": true,
+              "edit": true,
+              "delete": true,
+              "export": true,
+              "undo": true
+            }
+          },
+          {
+            "menuId": "travel.mission.kinshasa",
+            "label": "Ordre de mission — Kinshasa",
+            "actions": {
+              "view": true,
+              "create": true,
+              "edit": true,
+              "delete": true,
+              "export": true,
+              "undo": true
+            }
+          },
+          {
+            "menuId": "travel.mission.lubudi",
+            "label": "Ordre de mission — Lubudi",
+            "actions": {
+              "view": true,
+              "create": true,
+              "edit": true,
+              "delete": true,
+              "export": true,
+              "undo": true
+            }
+          },
+          {
+            "menuId": "travel.mission.zamba-consultant",
+            "label": "Ordre de mission — Zamba Consultant",
+            "actions": {
+              "view": true,
+              "create": true,
+              "edit": true,
+              "delete": true,
+              "export": true,
+              "undo": true
+            }
+          },
+          {
+            "menuId": "travel.mission.zamba",
+            "label": "Ordre de mission — Zamba PPC Team",
+            "actions": {
+              "view": true,
+              "create": true,
+              "edit": true,
+              "delete": true,
+              "export": true,
+              "undo": true
+            }
+          },
+          {
+            "menuId": "travel.payment-voucher",
+            "label": "Payment voucher",
+            "actions": {
+              "view": true,
+              "create": true,
+              "edit": true,
+              "delete": true,
+              "export": true,
+              "undo": true
+            }
+          },
+          {
+            "menuId": "documents.rrf",
+            "label": "RRF",
+            "actions": {
+              "view": true,
+              "create": true,
+              "edit": true,
+              "delete": true,
+              "export": true,
+              "undo": true
+            }
+          },
+          {
+            "menuId": "travel.historique",
+            "label": "Voyage",
+            "actions": {
+              "view": true,
+              "create": true,
+              "edit": true,
+              "delete": true,
+              "export": true,
+              "undo": true
+            }
+          },
+          {
+            "menuId": "employes.check-documents",
+            "label": "Check documents",
+            "actions": {
+              "view": true,
+              "create": true,
+              "edit": true,
+              "delete": true,
+              "export": true,
+              "undo": true
+            }
+          },
+          {
+            "menuId": "employes.conge",
+            "label": "Congé",
+            "actions": {
+              "view": true,
+              "create": true,
+              "edit": true,
+              "delete": true,
+              "export": true,
+              "undo": true
+            }
+          },
+          {
+            "menuId": "employes.contractants",
+            "label": "Contractants",
+            "actions": {
+              "view": true,
+              "create": true,
+              "edit": true,
+              "delete": true,
+              "export": true,
+              "undo": true
+            }
+          },
+          {
+            "menuId": "employes.dependants",
+            "label": "Dependants",
+            "actions": {
+              "view": true,
+              "create": true,
+              "edit": true,
+              "delete": true,
+              "export": true,
+              "undo": true
+            }
+          },
+          {
+            "menuId": "employes.heures.policy",
+            "label": "HS — Appliquer la politique",
+            "actions": {
+              "view": true,
+              "create": true,
+              "edit": true,
+              "delete": true,
+              "export": true,
+              "undo": true
+            }
+          },
+          {
+            "menuId": "employes.heures.export",
+            "label": "HS — Exporter",
+            "actions": {
+              "view": true,
+              "create": true,
+              "edit": true,
+              "delete": true,
+              "export": true,
+              "undo": true
+            }
+          },
+          {
+            "menuId": "employes.heures.import",
+            "label": "HS — Importer OT",
+            "actions": {
+              "view": true,
+              "create": true,
+              "edit": true,
+              "delete": true,
+              "export": true,
+              "undo": true
+            }
+          },
+          {
+            "menuId": "employes.heures.edit-validated",
+            "label": "HS — Modifier OT après validation",
+            "actions": {
+              "view": true,
+              "create": true,
+              "edit": true,
+              "delete": true,
+              "export": true,
+              "undo": true
+            }
+          },
+          {
+            "menuId": "employes.heures",
+            "label": "HS — Mon timesheet",
+            "actions": {
+              "view": true,
+              "create": true,
+              "edit": true,
+              "delete": true,
+              "export": true,
+              "undo": true
+            }
+          },
+          {
+            "menuId": "employes.heures.simulation",
+            "label": "HS — Simulation",
+            "actions": {
+              "view": true,
+              "create": true,
+              "edit": true,
+              "delete": true,
+              "export": true,
+              "undo": true
+            }
+          },
+          {
+            "menuId": "employes.heures.validate",
+            "label": "HS — Valider OT",
+            "actions": {
+              "view": true,
+              "create": true,
+              "edit": true,
+              "delete": true,
+              "export": true,
+              "undo": true
+            }
+          },
+          {
+            "menuId": "employes.heures.dept",
+            "label": "HS — Voir mon département",
+            "actions": {
+              "view": true,
+              "create": true,
+              "edit": true,
+              "delete": true,
+              "export": true,
+              "undo": true
+            }
+          },
+          {
+            "menuId": "employes.heures.all",
+            "label": "HS — Voir tous les départements",
+            "actions": {
+              "view": true,
+              "create": true,
+              "edit": true,
+              "delete": true,
+              "export": true,
+              "undo": true
+            }
+          },
+          {
+            "menuId": "employes.liste",
+            "label": "Liste employés",
+            "actions": {
+              "view": true,
+              "create": true,
+              "edit": true,
+              "delete": true,
+              "export": true,
+              "undo": true
+            }
+          },
+          {
+            "menuId": "factures.fournisseur.factures",
+            "label": "Factures",
+            "actions": {
+              "view": true,
+              "create": true,
+              "edit": true,
+              "delete": true,
+              "export": true,
+              "undo": true
+            }
+          },
+          {
+            "menuId": "factures.fournisseur.fournisseurs",
+            "label": "Fournisseurs",
+            "actions": {
+              "view": true,
+              "create": true,
+              "edit": true,
+              "delete": true,
+              "export": true,
+              "undo": true
+            }
+          },
+          {
+            "menuId": "factures.fournisseur.liste",
+            "label": "Liste",
+            "actions": {
+              "view": true,
+              "create": true,
+              "edit": true,
+              "delete": true,
+              "export": true,
+              "undo": true
+            }
+          },
+          {
+            "menuId": "factures.fournisseur.soa",
+            "label": "SOA",
+            "actions": {
+              "view": true,
+              "create": true,
+              "edit": true,
+              "delete": true,
+              "export": true,
+              "undo": true
+            }
+          },
+          {
+            "menuId": "settings.centres",
+            "label": "Centre de coût",
+            "actions": {
+              "view": true,
+              "create": true,
+              "edit": true,
+              "delete": true,
+              "export": true,
+              "undo": true
+            }
+          },
+          {
+            "menuId": "settings.departements",
+            "label": "Départements",
+            "actions": {
+              "view": true,
+              "create": true,
+              "edit": true,
+              "delete": true,
+              "export": true,
+              "undo": true
+            }
+          },
+          {
+            "menuId": "parametres.logs",
+            "label": "Logs",
+            "actions": {
+              "view": false,
+              "create": false,
+              "edit": false,
+              "delete": false,
+              "export": false,
+              "undo": false
+            }
+          },
+          {
+            "menuId": "settings.permissions",
+            "label": "Permissions",
+            "actions": {
+              "view": false,
+              "create": false,
+              "edit": false,
+              "delete": false,
+              "export": false,
+              "undo": false
+            }
+          },
+          {
+            "menuId": "settings.utilisateurs.reset",
+            "label": "Reset mot de passe",
+            "actions": {
+              "view": false,
+              "create": false,
+              "edit": false,
+              "delete": false,
+              "export": false,
+              "undo": false
+            }
+          },
+          {
+            "menuId": "settings.utilisateurs",
+            "label": "Utilisateurs",
+            "actions": {
+              "view": false,
+              "create": false,
+              "edit": false,
+              "delete": false,
+              "export": false,
+              "undo": false
+            }
+          },
+          {
+            "menuId": "politique.aide-medicale",
+            "label": "Aide médicale",
+            "actions": {
+              "view": true,
+              "create": true,
+              "edit": true,
+              "delete": true,
+              "export": true,
+              "undo": true
+            }
+          },
+          {
+            "menuId": "politique.alcool",
+            "label": "Alcool et substances",
+            "actions": {
+              "view": true,
+              "create": true,
+              "edit": true,
+              "delete": true,
+              "export": true,
+              "undo": true
+            }
+          },
+          {
+            "menuId": "politique.code-conduite",
+            "label": "Code de bonne conduite",
+            "actions": {
+              "view": true,
+              "create": true,
+              "edit": true,
+              "delete": true,
+              "export": true,
+              "undo": true
+            }
+          },
+          {
+            "menuId": "politique.code-ethique",
+            "label": "Code de conduite et éthique",
+            "actions": {
+              "view": true,
+              "create": true,
+              "edit": true,
+              "delete": true,
+              "export": true,
+              "undo": true
+            }
+          },
+          {
+            "menuId": "politique.convention-collective",
+            "label": "Convention collective",
+            "actions": {
+              "view": true,
+              "create": true,
+              "edit": true,
+              "delete": true,
+              "export": true,
+              "undo": true
+            }
+          },
+          {
+            "menuId": "politique.harcelement",
+            "label": "Harcèlement",
+            "actions": {
+              "view": true,
+              "create": true,
+              "edit": true,
+              "delete": true,
+              "export": true,
+              "undo": true
+            }
+          },
+          {
+            "menuId": "politique.heures-sup",
+            "label": "Heures supplémentaires (oct. 25)",
+            "actions": {
+              "view": true,
+              "create": true,
+              "edit": true,
+              "delete": true,
+              "export": true,
+              "undo": true
+            }
+          },
+          {
+            "menuId": "politique.longs-etats",
+            "label": "Longs états de service",
+            "actions": {
+              "view": true,
+              "create": true,
+              "edit": true,
+              "delete": true,
+              "export": true,
+              "undo": true
+            }
+          },
+          {
+            "menuId": "politique.voyages",
+            "label": "Politique de voyage",
+            "actions": {
+              "view": true,
+              "create": true,
+              "edit": true,
+              "delete": true,
+              "export": true,
+              "undo": true
+            }
+          },
+          {
+            "menuId": "politique.village",
+            "label": "Politique Village (maisons)",
+            "actions": {
+              "view": true,
+              "create": true,
+              "edit": true,
+              "delete": true,
+              "export": true,
+              "undo": true
+            }
+          },
+          {
+            "menuId": "politique.manuco",
+            "label": "Règlement Manuco",
+            "actions": {
+              "view": true,
+              "create": true,
+              "edit": true,
+              "delete": true,
+              "export": true,
+              "undo": true
+            }
+          },
+          {
+            "menuId": "employes.classification",
+            "label": "Classification des postes",
+            "actions": {
+              "view": true,
+              "create": true,
+              "edit": true,
+              "delete": true,
+              "export": true,
+              "undo": true
+            }
+          },
+          {
+            "menuId": "employes.mouvements",
+            "label": "Mouvements",
+            "actions": {
+              "view": true,
+              "create": true,
+              "edit": true,
+              "delete": true,
+              "export": true,
+              "undo": true
+            }
+          },
+          {
+            "menuId": "employes.offres",
+            "label": "Offres",
+            "actions": {
+              "view": true,
+              "create": true,
+              "edit": true,
+              "delete": true,
+              "export": true,
+              "undo": true
+            }
+          },
+          {
+            "menuId": "employes.postes",
+            "label": "Postes",
+            "actions": {
+              "view": true,
+              "create": true,
+              "edit": true,
+              "delete": true,
+              "export": true,
+              "undo": true
+            }
+          },
+          {
+            "menuId": "employes.recrutement",
+            "label": "Recrutement",
+            "actions": {
+              "view": true,
+              "create": true,
+              "edit": true,
+              "delete": true,
+              "export": true,
+              "undo": true
+            }
+          },
+          {
+            "menuId": "project.dashboard",
+            "label": "Dashboard",
+            "actions": {
+              "view": true,
+              "create": true,
+              "edit": true,
+              "delete": true,
+              "export": true,
+              "undo": true
+            }
+          },
+          {
+            "menuId": "project.expenses",
+            "label": "Expenses details",
+            "actions": {
+              "view": true,
+              "create": true,
+              "edit": true,
+              "delete": true,
+              "export": true,
+              "undo": true
+            }
+          },
+          {
+            "menuId": "project.projects",
+            "label": "Projects",
+            "actions": {
+              "view": true,
+              "create": true,
+              "edit": true,
+              "delete": true,
+              "export": true,
+              "undo": true
+            }
+          },
+          {
+            "menuId": "protocol.billets",
+            "label": "Gestion des Billets",
+            "actions": {
+              "view": true,
+              "create": true,
+              "edit": true,
+              "delete": true,
+              "export": true,
+              "undo": true
+            }
+          },
+          {
+            "menuId": "protocol.visa-travail",
+            "label": "Visa de travail",
+            "actions": {
+              "view": true,
+              "create": true,
+              "edit": true,
+              "delete": true,
+              "export": true,
+              "undo": true
+            }
+          },
+          {
+            "menuId": "protocol.visa-voyage",
+            "label": "Visa de voyage",
+            "actions": {
+              "view": true,
+              "create": true,
+              "edit": true,
+              "delete": true,
+              "export": true,
+              "undo": true
+            }
+          },
+          {
+            "menuId": "protocol.visa-volant",
+            "label": "Visa volant",
+            "actions": {
+              "view": true,
+              "create": true,
+              "edit": true,
+              "delete": true,
+              "export": true,
+              "undo": true
+            }
+          },
+          {
+            "menuId": "exco.rapport",
+            "label": "EXCO",
+            "actions": {
+              "view": true,
+              "create": true,
+              "edit": true,
+              "delete": true,
+              "export": true,
+              "undo": true
+            }
+          },
+          {
+            "menuId": "sante",
+            "label": "Santé",
+            "actions": {
+              "view": true,
+              "create": true,
+              "edit": true,
+              "delete": true,
+              "export": true,
+              "undo": true
+            }
+          },
+          {
+            "menuId": "training",
+            "label": "Training",
+            "actions": {
+              "view": true,
+              "create": true,
+              "edit": true,
+              "delete": true,
+              "export": true,
+              "undo": true
+            }
+          },
+          {
+            "menuId": "village.dependants-dashboard",
+            "label": "Dashboard (Village/Kimpese)",
+            "actions": {
+              "view": true,
+              "create": true,
+              "edit": true,
+              "delete": true,
+              "export": true,
+              "undo": true
+            }
+          },
+          {
+            "menuId": "village.guest-house",
+            "label": "Guest house — réservations & occupation",
+            "actions": {
+              "view": true,
+              "create": true,
+              "edit": true,
+              "delete": true,
+              "export": true,
+              "undo": true
+            }
+          },
+          {
+            "menuId": "village.dependants-liste",
+            "label": "Liste (Village/Kimpese)",
+            "actions": {
+              "view": true,
+              "create": true,
+              "edit": true,
+              "delete": true,
+              "export": true,
+              "undo": true
+            }
+          },
+          {
+            "menuId": "village.maisons",
+            "label": "Maisons",
+            "actions": {
+              "view": true,
+              "create": true,
+              "edit": true,
+              "delete": true,
+              "export": true,
+              "undo": true
+            }
+          }
+        ]
+      },
+      "undoable": false,
+      "undone": false
+    },
+    {
       "id": "log-000680",
       "at": "2026-09-04T06:57:09.179Z",
       "userId": "admin",
@@ -57458,5 +59304,5 @@
       }
     }
   ],
-  "nextSeq": 681
+  "nextSeq": 682
 }
