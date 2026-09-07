@@ -1,6 +1,42 @@
 {
   "entries": [
     {
+      "id": "log-000686",
+      "at": "2026-09-07T11:37:41.034Z",
+      "userId": "Serge.Muakasa",
+      "userName": "Serge Muakasa",
+      "userEmail": "Serge.Muakasa@ppcdrc.cd",
+      "module": "factures-suivi",
+      "moduleLabel": "Factures suivi",
+      "action": "create",
+      "actionLabel": "Création",
+      "summary": "Création lot de 1 facture(s)",
+      "details": "Création lot de 1 facture(s)",
+      "after": [
+        {
+          "id": "fac-2140",
+          "date": "07/09/2026",
+          "societe": "Mwinda",
+          "facture": "Devis ; 010/IG/026",
+          "montant": 58873,
+          "echeance": "",
+          "pr": "11195358",
+          "datePr": "",
+          "po": "",
+          "datePo": "",
+          "grn": "",
+          "dateGrn": "",
+          "payment": "",
+          "datePym": "",
+          "commentaire": "Au PR — en attente du PO.",
+          "statut": "unpaid",
+          "statutLabel": "unpaid"
+        }
+      ],
+      "undoable": false,
+      "undone": false
+    },
+    {
       "id": "log-000685",
       "at": "2026-09-05T21:02:40.750Z",
       "userId": "Gedeon.Massadi",
@@ -59473,5 +59509,5 @@
       }
     }
   ],
-  "nextSeq": 686
+  "nextSeq": 687
 }
