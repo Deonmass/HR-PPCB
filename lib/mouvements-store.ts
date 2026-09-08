@@ -15,7 +15,7 @@ import type {
   MouvementsDashboard,
   MouvementTypeId,
 } from './mouvements-types';
-import { isMouvementTypeId, mouvementTypeLabel } from './mouvements-types';
+import { isMouvementTypeId, mouvementTypeLabel, compareMouvementsChrono, withNumeroOrdreRecentFirst } from './mouvements-types';
 import { canPersistProjectFiles, getWritableDataRoot } from './runtime-mode';
 
 interface StoreData {
@@ -97,6 +97,10 @@ function normalize(raw: unknown): Mouvement | null {
     posteActuel: String(r.posteActuel || '').trim(),
     departementActuel: String(r.departementActuel || '').trim(),
     date: String(r.date || '').trim(),
+    annee:
+      Number(r.annee)
+      || (String(r.date || '').match(/^(\d{4})/) ? Number(String(r.date).slice(0, 4)) : 0),
+    sourceSheet: r.sourceSheet ? String(r.sourceSheet) : undefined,
     type,
     notes: r.notes ? String(r.notes) : undefined,
     createdAt: String(r.createdAt || new Date().toISOString()),
@@ -107,10 +111,7 @@ function normalize(raw: unknown): Mouvement | null {
 
 export async function listMouvements(): Promise<Mouvement[]> {
   const store = await readStore();
-  return [...store.mouvements].sort((a, b) => {
-    if (b.numeroOrdre !== a.numeroOrdre) return b.numeroOrdre - a.numeroOrdre;
-    return b.createdAt.localeCompare(a.createdAt);
-  });
+  return [...store.mouvements].sort(compareMouvementsChrono);
 }
 
 function monthKey(isoOrDate: string): string {
@@ -126,6 +127,11 @@ function yearOf(isoOrDate: string): number {
   if (/^\d{4}/.test(s)) return Number(s.slice(0, 4));
   const d = new Date(s);
   return Number.isNaN(d.getTime()) ? 0 : d.getFullYear();
+}
+
+function mouvementAnnee(m: Mouvement): number {
+  if (m.annee && Number.isFinite(m.annee) && m.annee > 1900) return m.annee;
+  return yearOf(m.date);
 }
 
 export function buildMouvementsDashboard(items: Mouvement[]): MouvementsDashboard {
@@ -145,7 +151,7 @@ export function buildMouvementsDashboard(items: Mouvement[]): MouvementsDashboar
   return {
     total: items.length,
     thisMonth: items.filter((m) => monthKey(m.date) === currentMonth).length,
-    thisYear: items.filter((m) => yearOf(m.date) === currentYear).length,
+    thisYear: items.filter((m) => mouvementAnnee(m) === currentYear).length,
     nouvellesAffectations: items.filter((m) => m.type === 'nouvelle_affectation').length,
     promotions: items.filter((m) => m.type === 'promotion').length,
     transversaux: items.filter((m) => m.type === 'changement_transversal').length,
@@ -157,7 +163,7 @@ export function buildMouvementsDashboard(items: Mouvement[]): MouvementsDashboar
       .sort((a, b) => b.count - a.count)
       .slice(0, 10),
     recents: [...items]
-      .sort((a, b) => b.date.localeCompare(a.date) || b.numeroOrdre - a.numeroOrdre)
+      .sort(compareMouvementsChrono)
       .slice(0, 8),
   };
 }
@@ -206,7 +212,7 @@ export async function createMouvement(
   const now = new Date().toISOString();
   const mouvement: Mouvement = {
     id: `mvt-${Date.now().toString(36)}-${Math.random().toString(36).slice(2, 7)}`,
-    numeroOrdre: store.nextOrdre,
+    numeroOrdre: 1,
     agentMatricule: matricule,
     agentNom: nom,
     posteAvant,
@@ -214,6 +220,7 @@ export async function createMouvement(
     posteActuel,
     departementActuel,
     date: String(input.date).trim(),
+    annee: Number(String(input.date).slice(0, 4)) || new Date().getFullYear(),
     type: input.type,
     notes: input.notes?.trim() || undefined,
     createdAt: now,
@@ -222,9 +229,10 @@ export async function createMouvement(
   };
 
   store.mouvements.push(mouvement);
-  store.nextOrdre += 1;
+  store.mouvements = withNumeroOrdreRecentFirst(store.mouvements);
+  store.nextOrdre = store.mouvements.length + 1;
   await writeStore(store);
-  return mouvement;
+  return store.mouvements.find((m) => m.id === mouvement.id) ?? mouvement;
 }
 
 export async function updateMouvement(
@@ -276,21 +284,25 @@ export async function updateMouvement(
     posteActuel,
     departementActuel,
     date: String(input.date).trim(),
+    annee: Number(String(input.date).slice(0, 4)) || existing.annee || new Date().getFullYear(),
     type: input.type,
     notes: input.notes?.trim() || undefined,
     updatedAt: new Date().toISOString(),
   };
 
   store.mouvements[index] = updated;
+  store.mouvements = withNumeroOrdreRecentFirst(store.mouvements);
+  store.nextOrdre = store.mouvements.length + 1;
   await writeStore(store);
-  return updated;
+  return store.mouvements.find((m) => m.id === id) ?? updated;
 }
 
 export async function deleteMouvement(id: string): Promise<boolean> {
   const store = await readStore();
   const next = store.mouvements.filter((m) => m.id !== id);
   if (next.length === store.mouvements.length) return false;
-  store.mouvements = next;
+  store.mouvements = withNumeroOrdreRecentFirst(next);
+  store.nextOrdre = store.mouvements.length + 1;
   await writeStore(store);
   return true;
 }

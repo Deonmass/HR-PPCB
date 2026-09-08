@@ -21,7 +21,6 @@ export const DOCUMENTS_HUB_MENU_IDS = [
   'documents.newcomer',
   'documents.contrat-standard',
   'documents.attestation-conge',
-  'documents.convention-collective',
   'documents.composition-familiale',
   'documents.mouvement-travailleur',
 ];
@@ -55,7 +54,6 @@ export const ROUTE_MENU_MAP: RouteMenuEntry[] = [
   { prefix: '/documents/newcomer', menuId: 'documents.newcomer' },
   { prefix: '/documents/contrat-standard', menuId: 'documents.contrat-standard' },
   { prefix: '/documents/attestation-conge', menuId: 'documents.attestation-conge' },
-  { prefix: '/documents/convention-collective', menuId: 'documents.convention-collective' },
   { prefix: '/documents/composition-familiale', menuId: 'documents.composition-familiale' },
   { prefix: '/documents/mouvement-travailleur', menuId: 'documents.mouvement-travailleur' },
   { prefix: '/documents', menuId: 'travel.historique' },
@@ -123,6 +121,12 @@ const SORTED_ROUTES = [...ROUTE_MENU_MAP].sort((a, b) => b.prefix.length - a.pre
 export function pathnameToMenuId(pathname: string): string | null {
   const normalized = pathname.split('?')[0].replace(/\/$/, '') || '/';
   if (normalized === '/' || normalized === '/accueil') return null;
+  if (
+    normalized === '/documents/convention-collective'
+    || normalized.startsWith('/documents/convention-collective/')
+  ) {
+    return 'politique.convention-collective';
+  }
   for (const entry of SORTED_ROUTES) {
     if (normalized === entry.prefix || normalized.startsWith(`${entry.prefix}/`)) {
       return entry.menuId;
@@ -167,6 +171,14 @@ export function routeViewMenuIds(pathname: string): string[] {
   }
   if (normalized === '/documents') {
     return [...DOCUMENTS_HUB_MENU_IDS];
+  }
+  if (
+    normalized === '/documents/convention-collective'
+    || normalized.startsWith('/documents/convention-collective/')
+    || normalized === '/politique/convention-collective'
+    || normalized.startsWith('/politique/convention-collective/')
+  ) {
+    return ['politique.convention-collective', 'documents.convention-collective'];
   }
   if (
     normalized === '/documents-voyage/document/mission-order'

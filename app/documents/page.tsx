@@ -129,16 +129,6 @@ function IconContract() {
   );
 }
 
-function IconConvention() {
-  return (
-    <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
-      <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20" />
-      <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z" />
-      <path d="M8 7h8M8 11h6" />
-    </svg>
-  );
-}
-
 function IconFamily() {
   return (
     <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
@@ -319,16 +309,6 @@ const CARDS: DocCard[] = [
     icon: <IconContract />,
   },
   {
-    id: 'convention-collective',
-    title: 'Convention collective',
-    description: 'PDF de référence — recherche des clauses (essai, congés, préavis) et résumés RH.',
-    href: '/documents/convention-collective',
-    menuId: 'documents.convention-collective',
-    accent: '#334155',
-    badge: 'Recherche',
-    icon: <IconConvention />,
-  },
-  {
     id: 'composition-familiale',
     title: 'Déclaration de composition familiale',
     description: 'Formulaire CNSS F6 — identité et famille (conjoint, enfants) depuis la fiche agent.',
@@ -366,7 +346,6 @@ const DOC_I18N: Record<string, { title: MessageKey; desc: MessageKey; badge?: Me
   newcomer: { title: 'docs.card.newcomer.title', desc: 'docs.card.newcomer.desc', badge: 'docs.card.newcomer.badge' },
   rrf: { title: 'docs.card.rrf.title', desc: 'docs.card.rrf.desc', badge: 'docs.card.rrf.badge' },
   'contrat-standard': { title: 'docs.card.contract.title', desc: 'docs.card.contract.desc' },
-  'convention-collective': { title: 'docs.card.convention.title', desc: 'docs.card.convention.desc', badge: 'docs.card.convention.badge' },
   'composition-familiale': { title: 'docs.card.family.title', desc: 'docs.card.family.desc', badge: 'docs.card.family.badge' },
   'mouvement-travailleur': { title: 'docs.card.dmt.title', desc: 'docs.card.dmt.desc', badge: 'docs.card.dmt.badge' },
 };

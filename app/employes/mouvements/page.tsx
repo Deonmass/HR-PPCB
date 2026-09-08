@@ -1,6 +1,6 @@
 'use client';
 
-import { useCallback, useEffect, useMemo, useState } from 'react';
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import EmployeePicker, { type EmployeeSelection } from '@/components/EmployeePicker';
 import PermissionGate from '@/components/PermissionGate';
 import RefreshButton from '@/components/RefreshButton';
@@ -10,6 +10,7 @@ import { usePermissions } from '@/contexts/PermissionContext';
 import {
   MOUVEMENT_TYPES,
   mouvementTypeLabel,
+  compareMouvementsChrono,
   type Mouvement,
   type MouvementsDashboard,
   type MouvementTypeId,
@@ -42,6 +43,7 @@ function agentFilterValue(m: Mouvement): string {
 
 function formatDate(value: string): string {
   if (!value) return '—';
+  if (/^\d{4}$/.test(value.trim())) return value.trim();
   if (/^\d{4}-\d{2}-\d{2}/.test(value)) {
     const [y, m, d] = value.slice(0, 10).split('-');
     return `${d}/${m}/${y}`;
@@ -49,6 +51,21 @@ function formatDate(value: string): string {
   const d = new Date(value);
   if (Number.isNaN(d.getTime())) return value;
   return d.toLocaleDateString('fr-FR');
+}
+
+function mouvementAnnee(m: Mouvement): number {
+  if (m.annee && Number.isFinite(m.annee) && m.annee > 1900) return m.annee;
+  const s = String(m.date || '').trim();
+  if (/^\d{4}/.test(s)) return Number(s.slice(0, 4));
+  return 0;
+}
+
+function mouvementMonthKey(date: string): string {
+  const s = String(date || '').trim();
+  if (/^\d{4}-\d{2}/.test(s)) return s.slice(0, 7);
+  const d = new Date(s);
+  if (Number.isNaN(d.getTime())) return '';
+  return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}`;
 }
 
 function typeBadgeClass(type: string): string {
@@ -85,6 +102,22 @@ interface FormState {
   type: MouvementTypeId;
   notes: string;
   applyToEmployee: boolean;
+}
+
+interface PosteOption {
+  title: string;
+  department: string;
+}
+
+function normPosteKey(value: string): string {
+  return value.trim().toLowerCase().replace(/\s+/g, ' ');
+}
+
+function deptForPoste(title: string, options: PosteOption[]): string {
+  const key = normPosteKey(title);
+  if (!key) return '';
+  const exact = options.find((p) => normPosteKey(p.title) === key);
+  return exact?.department?.trim() || '';
 }
 
 const EMPTY_FORM: FormState = {
@@ -177,7 +210,7 @@ function MouvementFormModal({
   initial,
   employees,
   departments,
-  posteSuggestions,
+  posteOptions,
   saving,
   onClose,
   onSubmit,
@@ -188,7 +221,7 @@ function MouvementFormModal({
   initial: FormState | null;
   employees: Employee[];
   departments: string[];
-  posteSuggestions: string[];
+  posteOptions: PosteOption[];
   saving: boolean;
   onClose: () => void;
   onSubmit: (form: FormState) => Promise<void>;
@@ -217,10 +250,30 @@ function MouvementFormModal({
 
   const filteredPostes = (() => {
     const q = posteQuery.trim().toLowerCase();
-    const list = posteSuggestions.filter(Boolean);
-    if (!q) return list.slice(0, 12);
-    return list.filter((p) => p.toLowerCase().includes(q)).slice(0, 12);
+    const list = posteOptions.filter((p) => p.title.trim());
+    if (!q) return list;
+    return list.filter((p) => p.title.toLowerCase().includes(q));
   })();
+  const mappedDept = deptForPoste(posteQuery || form.posteActuel, posteOptions);
+  const deptChoices = (() => {
+    const set = new Set(departments.filter(Boolean));
+    if (form.departementActuel.trim()) set.add(form.departementActuel.trim());
+    for (const p of posteOptions) {
+      if (p.department.trim()) set.add(p.department.trim());
+    }
+    return [...set].sort((a, b) => a.localeCompare(b, 'fr'));
+  })();
+
+  const pickPoste = (posteTitle: string) => {
+    const dept = deptForPoste(posteTitle, posteOptions);
+    setPosteQuery(posteTitle);
+    setForm((f) => ({
+      ...f,
+      posteActuel: posteTitle,
+      departementActuel: dept,
+    }));
+    setPosteOpen(false);
+  };
 
   const setAgent = (agent: EmployeeSelection | null) => {
     if (readOnly) return;
@@ -362,34 +415,45 @@ function MouvementFormModal({
                     onChange={(e) => {
                       const v = e.target.value;
                       setPosteQuery(v);
-                      setForm((f) => ({ ...f, posteActuel: v }));
+                      const dept = deptForPoste(v, posteOptions);
+                      setForm((f) => ({
+                        ...f,
+                        posteActuel: v,
+                        departementActuel: dept || (normPosteKey(v) ? f.departementActuel : ''),
+                      }));
                       setPosteOpen(true);
                     }}
                     onFocus={() => setPosteOpen(true)}
-                    onBlur={() => window.setTimeout(() => setPosteOpen(false), 150)}
-                    placeholder="Rechercher un poste existant…"
+                    onBlur={() => window.setTimeout(() => setPosteOpen(false), 180)}
+                    placeholder="Saisir ou rechercher un poste…"
                     autoComplete="off"
                     required
                   />
                   {posteOpen && filteredPostes.length > 0 && (
                     <ul className="mvt-poste-suggest-list" role="listbox">
                       {filteredPostes.map((p) => (
-                        <li key={p}>
+                        <li key={p.title}>
                           <button
                             type="button"
                             onMouseDown={(e) => e.preventDefault()}
-                            onClick={() => {
-                              setPosteQuery(p);
-                              setForm((f) => ({ ...f, posteActuel: p }));
-                              setPosteOpen(false);
-                            }}
+                            onClick={() => pickPoste(p.title)}
                           >
-                            {p}
+                            <strong>{p.title}</strong>
+                            {p.department ? (
+                              <span className="mvt-poste-suggest-dept">{p.department}</span>
+                            ) : (
+                              <span className="mvt-poste-suggest-dept is-missing">Sans département</span>
+                            )}
                           </button>
                         </li>
                       ))}
                     </ul>
                   )}
+                  {mappedDept ? (
+                    <span className="mvt-poste-hint">Département lié : {mappedDept}</span>
+                  ) : posteQuery.trim() ? (
+                    <span className="mvt-poste-hint">Aucun département lié — sélectionnez-en un ci-dessous</span>
+                  ) : null}
                 </div>
               )}
             </label>
@@ -399,22 +463,20 @@ function MouvementFormModal({
               {readOnly ? (
                 <div className="mvt-readonly-value">{form.departementActuel || '—'}</div>
               ) : (
-                <input
-                  list="mvt-dept-list"
-                  type="text"
+                <select
                   value={form.departementActuel}
                   onChange={(e) => setForm((f) => ({ ...f, departementActuel: e.target.value }))}
-                  placeholder="Département"
                   required
-                />
+                >
+                  <option value="">Sélectionner un département</option>
+                  {deptChoices.map((d) => (
+                    <option key={d} value={d}>
+                      {d}
+                    </option>
+                  ))}
+                </select>
               )}
             </label>
-
-            <datalist id="mvt-dept-list">
-              {departments.map((d) => (
-                <option key={d} value={d} />
-              ))}
-            </datalist>
 
             <label className="form-field form-field-span-2">
               <span>Notes</span>
@@ -482,10 +544,18 @@ function MouvementFormModal({
 
 function DashboardView({
   dashboard,
+  currentYear,
   onOpenListe,
+  onKpiClick,
+  onTypeClick,
+  onDeptClick,
 }: {
   dashboard: MouvementsDashboard | null;
+  currentYear: number;
   onOpenListe: () => void;
+  onKpiClick: (kind: 'all' | 'year' | 'month' | 'nouvelle_affectation' | 'promotion' | 'changement_transversal') => void;
+  onTypeClick: (typeId: string) => void;
+  onDeptClick: (dept: string) => void;
 }) {
   if (!dashboard) {
     return <p className="empty-state">Aucune donnée de dashboard.</p>;
@@ -494,30 +564,61 @@ function DashboardView({
   return (
     <div className="mvt-dashboard">
       <div className="travel-history-cards mvt-kpi-strip">
-        <div className="card card-glow card-glow-red travel-history-card">
+        <button
+          type="button"
+          className="card card-glow card-glow-red travel-history-card is-clickable"
+          title="Voir la liste — Tous les mouvements"
+          onClick={() => onKpiClick('all')}
+        >
           <div className="card-label">Total mouvements</div>
           <div className="card-value">{dashboard.total}</div>
-        </div>
-        <div className="card card-glow card-glow-cyan travel-history-card">
-          <div className="card-label">Cette année</div>
+        </button>
+        <button
+          type="button"
+          className="card card-glow card-glow-cyan travel-history-card is-clickable"
+          title={`Voir la liste — ${currentYear} (FY${String(currentYear + 1).slice(-2)})`}
+          onClick={() => onKpiClick('year')}
+        >
+          <div className="card-label">Cette année · {currentYear}</div>
           <div className="card-value">{dashboard.thisYear}</div>
-        </div>
-        <div className="card card-glow card-glow-violet travel-history-card">
+          <div className="card-sub">FY{String(currentYear + 1).slice(-2)}</div>
+        </button>
+        <button
+          type="button"
+          className="card card-glow card-glow-violet travel-history-card is-clickable"
+          title="Voir la liste — Ce mois"
+          onClick={() => onKpiClick('month')}
+        >
           <div className="card-label">Ce mois</div>
           <div className="card-value">{dashboard.thisMonth}</div>
-        </div>
-        <div className="card card-glow card-glow-green travel-history-card">
+        </button>
+        <button
+          type="button"
+          className="card card-glow card-glow-green travel-history-card is-clickable"
+          title="Voir la liste — Nouvelles affectations"
+          onClick={() => onKpiClick('nouvelle_affectation')}
+        >
           <div className="card-label">Nouvelles affectations</div>
           <div className="card-value">{dashboard.nouvellesAffectations}</div>
-        </div>
-        <div className="card card-glow card-glow-amber travel-history-card">
+        </button>
+        <button
+          type="button"
+          className="card card-glow card-glow-amber travel-history-card is-clickable"
+          title="Voir la liste — Promotions"
+          onClick={() => onKpiClick('promotion')}
+        >
           <div className="card-label">Promotions</div>
           <div className="card-value">{dashboard.promotions}</div>
-        </div>
-        <div className="card card-glow card-glow-cyan travel-history-card">
+        </button>
+        <button
+          type="button"
+          className="card card-glow card-glow-cyan travel-history-card is-clickable"
+          title="Voir la liste — Transversaux"
+          onClick={() => onKpiClick('changement_transversal')}
+        >
           <div className="card-label">Transversaux</div>
           <div className="card-value">{dashboard.transversaux}</div>
-        </div>
+        </button>
       </div>
 
       <div className="mvt-dashboard-grid">
@@ -531,8 +632,15 @@ function DashboardView({
             <ul className="mvt-stat-list">
               {dashboard.parType.map((row) => (
                 <li key={row.id}>
-                  <span className={`mvt-type-badge ${typeBadgeClass(row.id)}`}>{row.label}</span>
-                  <strong>{row.count}</strong>
+                  <button
+                    type="button"
+                    className="mvt-stat-click"
+                    title={`Voir la liste — ${row.label}`}
+                    onClick={() => onTypeClick(row.id)}
+                  >
+                    <span className={`mvt-type-badge ${typeBadgeClass(row.id)}`}>{row.label}</span>
+                    <strong>{row.count}</strong>
+                  </button>
                 </li>
               ))}
             </ul>
@@ -549,8 +657,15 @@ function DashboardView({
             <ul className="mvt-stat-list">
               {dashboard.parDepartementActuel.map((row) => (
                 <li key={row.label}>
-                  <span>{row.label}</span>
-                  <strong>{row.count}</strong>
+                  <button
+                    type="button"
+                    className="mvt-stat-click"
+                    title={`Voir la liste — ${row.label}`}
+                    onClick={() => onDeptClick(row.label)}
+                  >
+                    <span>{row.label}</span>
+                    <strong>{row.count}</strong>
+                  </button>
                 </li>
               ))}
             </ul>
@@ -625,13 +740,18 @@ export default function MouvementsPage() {
   const canDelete = can('employes.mouvements', 'delete') || can('employes.liste', 'delete');
 
   const [tab, setTab] = useState<PageTab>('liste');
+  const listWrapRef = useRef<HTMLDivElement | null>(null);
   const [mouvements, setMouvements] = useState<Mouvement[]>([]);
   const [dashboard, setDashboard] = useState<MouvementsDashboard | null>(null);
   const [employees, setEmployees] = useState<Employee[]>([]);
+  const [posteOptions, setPosteOptions] = useState<PosteOption[]>([]);
+  const [settingsDepartments, setSettingsDepartments] = useState<string[]>([]);
   const [loading, setLoading] = useState(true);
   const [refreshing, setRefreshing] = useState(false);
   const [search, setSearch] = useState('');
   const [typeFilter, setTypeFilter] = useState('');
+  const [yearFilter, setYearFilter] = useState('');
+  const [monthFilter, setMonthFilter] = useState('');
   const [colFilters, setColFilters] = useState<Record<FilterKey, string[]>>(EMPTY_FILTERS);
   const [modalOpen, setModalOpen] = useState(false);
   const [modalMode, setModalMode] = useState<ModalMode>('create');
@@ -643,9 +763,11 @@ export default function MouvementsPage() {
     if (isRefresh) setRefreshing(true);
     else setLoading(true);
     try {
-      const [resMvt, resEmp] = await Promise.all([
+      const [resMvt, resEmp, resPostes, resDepts] = await Promise.all([
         fetch('/api/employes/mouvements'),
         fetch('/api/employees'),
+        fetch('/api/employes/postes'),
+        fetch('/api/settings/departments'),
       ]);
       const jsonMvt = await resMvt.json();
       const jsonEmp = await resEmp.json();
@@ -662,6 +784,47 @@ export default function MouvementsPage() {
       } else {
         setEmployees([]);
       }
+      const catalog: PosteOption[] = [];
+      const seen = new Set<string>();
+      const addPoste = (title: string, department: string) => {
+        const t = title.trim();
+        if (!t) return;
+        const key = normPosteKey(t);
+        if (seen.has(key)) {
+          const i = catalog.findIndex((p) => normPosteKey(p.title) === key);
+          if (i >= 0 && !catalog[i].department && department.trim()) {
+            catalog[i] = { ...catalog[i], department: department.trim() };
+          }
+          return;
+        }
+        seen.add(key);
+        catalog.push({ title: t, department: department.trim() });
+      };
+      if (resPostes.ok) {
+        const jsonPostes = await resPostes.json();
+        for (const g of jsonPostes?.groups || []) {
+          addPoste(String(g.title || ''), String(g.department || ''));
+        }
+        for (const v of jsonPostes?.vacants || []) {
+          addPoste(String(v.title || ''), String(v.department || ''));
+        }
+        for (const t of jsonPostes?.titles || []) {
+          addPoste(String(t || ''), '');
+        }
+      }
+      if (resDepts.ok) {
+        const jsonDepts = await resDepts.json();
+        const rows = Array.isArray(jsonDepts) ? jsonDepts : jsonDepts?.departments || [];
+        setSettingsDepartments(
+          (rows as Array<{ name?: string; active?: boolean }>)
+            .filter((d) => d?.name && d.active !== false)
+            .map((d) => String(d.name).trim())
+            .filter(Boolean),
+        );
+      } else {
+        setSettingsDepartments([]);
+      }
+      setPosteOptions(catalog);
     } catch {
       await showError('Erreur de chargement');
     } finally {
@@ -675,7 +838,7 @@ export default function MouvementsPage() {
   }, [load]);
 
   const departments = useMemo(() => {
-    const set = new Set<string>();
+    const set = new Set<string>(settingsDepartments);
     for (const e of employees) {
       if (e.departement?.trim()) set.add(e.departement.trim());
     }
@@ -684,25 +847,63 @@ export default function MouvementsPage() {
       if (m.departementAvant?.trim()) set.add(m.departementAvant.trim());
     }
     return [...set].sort((a, b) => a.localeCompare(b, 'fr'));
-  }, [employees, mouvements]);
+  }, [employees, mouvements, settingsDepartments]);
 
-  const posteSuggestions = useMemo(() => {
-    const set = new Set<string>();
+  const posteOptionsMerged = useMemo(() => {
+    const map = new Map<string, PosteOption>();
+    const add = (title: string, department: string) => {
+      const t = title.trim();
+      if (!t) return;
+      const key = normPosteKey(t);
+      const prev = map.get(key);
+      if (!prev) {
+        map.set(key, { title: t, department: department.trim() });
+        return;
+      }
+      if (!prev.department && department.trim()) {
+        map.set(key, { ...prev, department: department.trim() });
+      }
+    };
+    for (const p of posteOptions) add(p.title, p.department);
     for (const e of employees) {
-      const t = (e.jobTitle || e.position || '').trim();
-      if (t) set.add(t);
+      add(e.jobTitle || e.position || '', e.departement || e.departmentHr || '');
     }
     for (const m of mouvements) {
-      if (m.posteActuel?.trim()) set.add(m.posteActuel.trim());
-      if (m.posteAvant?.trim()) set.add(m.posteAvant.trim());
+      add(m.posteActuel, m.departementActuel);
+      add(m.posteAvant, m.departementAvant);
     }
-    return [...set].sort((a, b) => a.localeCompare(b, 'fr'));
-  }, [employees, mouvements]);
+    return [...map.values()].sort((a, b) => a.title.localeCompare(b.title, 'fr'));
+  }, [posteOptions, employees, mouvements]);
+
+  const yearOptions = useMemo(() => {
+    const set = new Set<number>();
+    for (const m of mouvements) {
+      const y = mouvementAnnee(m);
+      if (y) set.add(y);
+    }
+    return [...set].sort((a, b) => b - a);
+  }, [mouvements]);
+
+  const dashboardDisplay = useMemo(() => {
+    if (!dashboard) return null;
+    const now = new Date();
+    const y = now.getFullYear();
+    const month = `${y}-${String(now.getMonth() + 1).padStart(2, '0')}`;
+    return {
+      ...dashboard,
+      total: mouvements.length,
+      thisYear: mouvements.filter((m) => mouvementAnnee(m) === y).length,
+      thisMonth: mouvements.filter((m) => mouvementMonthKey(m.date) === month).length,
+    };
+  }, [dashboard, mouvements]);
 
   const toolbarFiltered = useMemo(() => {
     const q = search.trim().toLowerCase();
+    const year = yearFilter ? Number(yearFilter) : 0;
     return mouvements.filter((m) => {
       if (typeFilter && m.type !== typeFilter) return false;
+      if (year && mouvementAnnee(m) !== year) return false;
+      if (monthFilter && mouvementMonthKey(m.date) !== monthFilter) return false;
       if (!q) return true;
       const hay = [
         m.numeroOrdre,
@@ -713,12 +914,14 @@ export default function MouvementsPage() {
         m.departementAvant,
         m.departementActuel,
         mouvementTypeLabel(m.type),
+        String(mouvementAnnee(m)),
+        m.sourceSheet || '',
       ]
         .join(' ')
         .toLowerCase();
       return hay.includes(q);
     });
-  }, [mouvements, search, typeFilter]);
+  }, [mouvements, search, typeFilter, yearFilter, monthFilter]);
 
   const filterValues = useMemo(
     () =>
@@ -735,21 +938,27 @@ export default function MouvementsPage() {
 
   const filtered = useMemo(
     () =>
-      toolbarFiltered.filter(
-        (m) =>
-          matchesColumnFilter(colFilters.numeroOrdre, String(m.numeroOrdre)) &&
-          matchesColumnFilter(colFilters.agent, agentFilterValue(m)) &&
-          matchesColumnFilter(colFilters.posteAvant, m.posteAvant) &&
-          matchesColumnFilter(colFilters.posteActuel, m.posteActuel) &&
-          matchesColumnFilter(colFilters.date, formatDate(m.date)) &&
-          matchesColumnFilter(colFilters.type, mouvementTypeLabel(m.type)),
-      ),
+      toolbarFiltered
+        .filter(
+          (m) =>
+            matchesColumnFilter(colFilters.numeroOrdre, String(m.numeroOrdre)) &&
+            matchesColumnFilter(colFilters.agent, agentFilterValue(m)) &&
+            matchesColumnFilter(colFilters.posteAvant, m.posteAvant) &&
+            matchesColumnFilter(colFilters.posteActuel, m.posteActuel) &&
+            matchesColumnFilter(colFilters.date, formatDate(m.date)) &&
+            matchesColumnFilter(colFilters.type, mouvementTypeLabel(m.type)),
+        )
+        .sort(compareMouvementsChrono),
     [toolbarFiltered, colFilters],
   );
 
   const activeFilterCount = useMemo(() => countActiveColumnFilters(colFilters), [colFilters]);
 
-  const hasFilters = Boolean(search.trim() || typeFilter || activeFilterCount > 0);
+  const hasFilters = Boolean(search.trim() || typeFilter || yearFilter || monthFilter || activeFilterCount > 0);
+
+  useEffect(() => {
+    listWrapRef.current?.scrollTo(0, 0);
+  }, [tab, search, typeFilter, yearFilter, monthFilter, colFilters]);
 
   const openCreate = () => {
     setActiveRow(null);
@@ -890,7 +1099,7 @@ export default function MouvementsPage() {
         { menuId: 'employes.liste', action: 'view' },
       ]}
     >
-      <div className="mvt-page">
+      <div className="mvt-page mvt-page-fill">
         <div className="page-header page-header-with-tabs mvt-page-header">
           <div>
             <div className="page-header-title-row">
@@ -937,7 +1146,48 @@ export default function MouvementsPage() {
         </div>
 
         {tab === 'dashboard' && (
-          <DashboardView dashboard={dashboard} onOpenListe={() => setTab('liste')} />
+          <DashboardView
+            dashboard={dashboardDisplay}
+            currentYear={new Date().getFullYear()}
+            onOpenListe={() => setTab('liste')}
+            onKpiClick={(kind) => {
+              setSearch('');
+              setColFilters(EMPTY_FILTERS);
+              setMonthFilter('');
+              if (kind === 'all') {
+                setYearFilter('');
+                setTypeFilter('');
+              } else if (kind === 'year') {
+                setYearFilter(String(new Date().getFullYear()));
+                setTypeFilter('');
+              } else if (kind === 'month') {
+                const now = new Date();
+                setYearFilter('');
+                setTypeFilter('');
+                setMonthFilter(`${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, '0')}`);
+              } else {
+                setYearFilter('');
+                setTypeFilter(kind);
+              }
+              setTab('liste');
+            }}
+            onTypeClick={(typeId) => {
+              setSearch('');
+              setColFilters(EMPTY_FILTERS);
+              setMonthFilter('');
+              setYearFilter('');
+              setTypeFilter(typeId);
+              setTab('liste');
+            }}
+            onDeptClick={(dept) => {
+              setTypeFilter('');
+              setYearFilter('');
+              setMonthFilter('');
+              setColFilters(EMPTY_FILTERS);
+              setSearch(dept === '—' ? '' : dept);
+              setTab('liste');
+            }}
+          />
         )}
 
         {tab === 'liste' && (
@@ -965,6 +1215,23 @@ export default function MouvementsPage() {
                     ×
                   </button>
                 ) : null}
+              </div>
+              <div className="mvt-select-wrap">
+                <select
+                  value={yearFilter}
+                  onChange={(e) => {
+                    setYearFilter(e.target.value);
+                    setMonthFilter('');
+                  }}
+                  aria-label="Filtrer par année"
+                >
+                  <option value="">Toutes les années</option>
+                  {yearOptions.map((y) => (
+                    <option key={y} value={String(y)}>
+                      {y} · FY{String(y + 1).slice(-2)}
+                    </option>
+                  ))}
+                </select>
               </div>
               <div className="mvt-select-wrap">
                 <select
@@ -999,13 +1266,13 @@ export default function MouvementsPage() {
                   onCreate={openCreate}
                 />
               ) : (
-                <div className="table-wrap">
+                <div className="table-wrap" ref={listWrapRef}>
                   <table className="data-table mvt-table">
                     <thead>
                       <tr>
-                        <th className="th-filter">
+                        <th className="th-filter mvt-col-ordre">
                           <TableHeaderFilter
-                            label="N° ordre"
+                            label="N°"
                             values={filterValues.numeroOrdre}
                             selected={colFilters.numeroOrdre}
                             onChange={(next) => setColFilters((p) => ({ ...p, numeroOrdre: next }))}
@@ -1064,7 +1331,7 @@ export default function MouvementsPage() {
                           }}
                           onDoubleClick={() => openView(m)}
                         >
-                          <td className="col-num">{m.numeroOrdre}</td>
+                          <td className="col-num mvt-col-ordre">{m.numeroOrdre}</td>
                           <td>
                             <div className="mvt-agent-cell">
                               <strong>{m.agentNom}</strong>
@@ -1100,7 +1367,6 @@ export default function MouvementsPage() {
                 </div>
               )}
             </div>
-            <p className="mvt-hint">Clic droit sur une ligne · double-clic pour voir</p>
           </div>
         )}
 
@@ -1110,7 +1376,7 @@ export default function MouvementsPage() {
           initial={activeRow ? formFromMouvement(activeRow) : null}
           employees={employees}
           departments={departments}
-          posteSuggestions={posteSuggestions}
+          posteOptions={posteOptionsMerged}
           saving={saving}
           onClose={() => {
             setModalOpen(false);

@@ -96,6 +96,21 @@ function PermissionsContent() {
     () => (menus ? groupPermissionsByCatalog(menus) : []),
     [menus],
   );
+  const [openGroupIds, setOpenGroupIds] = useState<string[]>([]);
+
+  const toggleGroup = (groupId: string) => {
+    setOpenGroupIds((prev) =>
+      prev.includes(groupId) ? prev.filter((id) => id !== groupId) : [...prev, groupId],
+    );
+  };
+
+  const expandAllGroups = () => {
+    setOpenGroupIds(grouped.map((group) => group.id));
+  };
+
+  const collapseAllGroups = () => {
+    setOpenGroupIds([]);
+  };
 
   const permissionStats = useMemo(
     () => (menus ? computePermissionsStats(menus) : { checked: 0, total: 0, percent: 0 }),
@@ -395,6 +410,14 @@ function PermissionsContent() {
                     </span>
                   ) : null}
                   <PermissionsProgress percent={permissionStats.percent} />
+                  <div className="permissions-collapse-actions">
+                    <button type="button" className="btn btn-ghost btn-sm" onClick={expandAllGroups}>
+                      Tout déplier
+                    </button>
+                    <button type="button" className="btn btn-ghost btn-sm" onClick={collapseAllGroups}>
+                      Tout replier
+                    </button>
+                  </div>
                   {sideMode === 'users' && canEdit && roles.length > 0 ? (
                     <label className="permissions-apply-role">
                       <span>Appliquer rôle</span>
@@ -437,10 +460,29 @@ function PermissionsContent() {
                         {canEdit && <span className="permissions-actions-header-cell">Tout</span>}
                       </div>
 
-                      {grouped.map((group) => (
-                        <div key={group.id} className="permissions-menu-group">
-                          <div className="permissions-group-sep">{group.label}</div>
-                          {group.items.map((menu) => {
+                      {grouped.map((group) => {
+                        const open = openGroupIds.includes(group.id);
+                        const grantedCount = group.items.filter((menu) =>
+                          PERMISSION_ACTIONS.some((action) => menu.actions[action.id]),
+                        ).length;
+                        return (
+                        <div key={group.id} className={`permissions-menu-group${open ? ' is-open' : ''}`}>
+                          <button
+                            type="button"
+                            className="permissions-group-sep"
+                            aria-expanded={open}
+                            onClick={() => toggleGroup(group.id)}
+                          >
+                            <span className="permissions-group-chevron" aria-hidden="true">
+                              {open ? '▾' : '▸'}
+                            </span>
+                            <span className="permissions-group-sep-label">{group.label}</span>
+                            <span className="permissions-group-count">
+                              {grantedCount}/{group.items.length}
+                            </span>
+                          </button>
+                          {open
+                            ? group.items.map((menu) => {
                             const allChecked = isMenuFullyChecked(menu);
                             const partiallyChecked = isMenuPartiallyChecked(menu);
                             const supportsUndo = menu.menuId === 'parametres.logs';
@@ -493,9 +535,11 @@ function PermissionsContent() {
                                 )}
                               </div>
                             );
-                          })}
+                          })
+                            : null}
                         </div>
-                      ))}
+                        );
+                      })}
                     </>
                   );
                 })()}

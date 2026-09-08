@@ -10,12 +10,20 @@ import {
   resolveConventionPdfPath,
   upsertConventionNote,
 } from '@/lib/convention-collective-store';
-import { checkAnyPermission, checkPermission } from '@/lib/require-permission';
+import { checkAnyPermission } from '@/lib/require-permission';
 import { auditSimpleAction, getAuditActor } from '@/lib/with-audit';
 
 const CONVENTION_VIEW = [
-  { menuId: 'documents.convention-collective', action: 'view' as const },
   { menuId: 'politique.convention-collective', action: 'view' as const },
+  { menuId: 'documents.convention-collective', action: 'view' as const },
+];
+const CONVENTION_CREATE = [
+  { menuId: 'politique.convention-collective', action: 'create' as const },
+  { menuId: 'documents.convention-collective', action: 'create' as const },
+];
+const CONVENTION_DELETE = [
+  { menuId: 'politique.convention-collective', action: 'delete' as const },
+  { menuId: 'documents.convention-collective', action: 'delete' as const },
 ];
 
 export async function GET(request: Request) {
@@ -81,7 +89,7 @@ export async function GET(request: Request) {
 }
 
 export async function POST(request: Request) {
-  const denied = await checkPermission('documents.convention-collective', 'create');
+  const denied = await checkAnyPermission(CONVENTION_CREATE);
   if (denied) return denied;
 
   try {
@@ -102,7 +110,7 @@ export async function POST(request: Request) {
       createdBy: actor?.userName,
     });
     await auditSimpleAction({
-      module: 'documents.convention-collective',
+      module: 'politique.convention-collective',
       moduleLabel: 'Convention collective',
       action: 'other',
       summary: `Résumé convention — ${note.title}`,
@@ -115,7 +123,7 @@ export async function POST(request: Request) {
 }
 
 export async function DELETE(request: Request) {
-  const denied = await checkPermission('documents.convention-collective', 'delete');
+  const denied = await checkAnyPermission(CONVENTION_DELETE);
   if (denied) return denied;
 
   const { searchParams } = new URL(request.url);
@@ -124,7 +132,7 @@ export async function DELETE(request: Request) {
   const ok = await deleteConventionNote(id);
   if (!ok) return NextResponse.json({ error: 'Introuvable' }, { status: 404 });
   await auditSimpleAction({
-    module: 'documents.convention-collective',
+    module: 'politique.convention-collective',
     moduleLabel: 'Convention collective',
     action: 'other',
     summary: `Suppression résumé convention — ${id}`,

@@ -93,7 +93,6 @@ export const PERMISSION_MENU_CATALOG: PermissionMenuGroup[] = withSortedMenus([
       { id: 'documents.newcomer', label: 'Newcomer' },
       { id: 'documents.contrat-standard', label: 'Contrat standard' },
       { id: 'documents.attestation-conge', label: 'Attestation de congé' },
-      { id: 'documents.convention-collective', label: 'Convention collective' },
       { id: 'documents.composition-familiale', label: 'Déclaration de composition familiale' },
       { id: 'documents.mouvement-travailleur', label: 'Déclaration de mouvement de travailleur' },
     ],
