@@ -168,9 +168,9 @@ export function buildCsrSlideData(report: ExcoReportPayload): ExcoCsrSlideData {
   const sum = csrOnly.length
     ? {
         total: csrOnly.length,
-        enCours: csrOnly.filter((p) => projectStatusKind(p.statut) === 'progress').length,
-        termines: csrOnly.filter((p) => projectStatusKind(p.statut) === 'done').length,
-        nonDebutes: csrOnly.filter((p) => projectStatusKind(p.statut) === 'idle').length,
+        enCours: csrOnly.filter((p) => projectStatusKind(p.statut || '') === 'progress').length,
+        termines: csrOnly.filter((p) => projectStatusKind(p.statut || '') === 'done').length,
+        nonDebutes: csrOnly.filter((p) => projectStatusKind(p.statut || '') === 'idle').length,
         budgetPrevu: csrOnly.reduce((s, p) => s + (Number(p.budgetPrevu) || 0), 0),
         budgetDepense: csrOnly.reduce((s, p) => s + (Number(p.budgetDepense) || 0), 0),
       }

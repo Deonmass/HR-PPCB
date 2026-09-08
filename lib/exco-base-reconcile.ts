@@ -77,6 +77,10 @@ export interface ExcoBaseReconcileResult {
     exitsInMonth: number;
     fromWorkbook: boolean;
     leaveExitCount: number;
+    employeesWithOt: number;
+    leaveAvgDays: number | null;
+    otMatricules: string[];
+    presentMatricules: string[];
   };
 }
 
@@ -128,6 +132,8 @@ export async function reconcileExcoBase(input: {
       locationSite: e.locationSite,
       leaveBalance: e.leaveBalance,
       allowanceAmount: e.allowanceAmount,
+      ovtHours: e.ovtHours,
+      ovtCost: e.ovtCost,
     }));
   } else {
     const newReport = await resolveExcoBaseWorkbook(year, month);

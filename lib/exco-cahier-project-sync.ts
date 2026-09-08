@@ -53,7 +53,7 @@ function matchesHighlight(project: ProjectRecord, icon: ExcoCahierIcon, title: s
   if (icon === 'infrastructure') {
     return pn.includes('reservoir') || pn.includes('tank') || (pn.includes('eau') && pn.includes('zamba'));
   }
-  const keys = ICON_MATCHERS[icon] || [];
+  const keys: string[] = ICON_MATCHERS[icon] ?? [];
   const hay = norm(`${project.name} ${project.secteur} ${project.sousActivite} ${title}`);
   return keys.some((k) => hay.includes(norm(k)));
 }
