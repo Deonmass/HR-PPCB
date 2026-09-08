@@ -51,7 +51,7 @@ export function buildExcoSlidesPayload(report: ExcoReportPayload): ExcoSlidesPay
   const csrHighlights = resolveCsrHighlights(report.overlays).map((row) => ({
     ...row,
     title: stripCsrUpdateMarkup(row.title),
-    body: stripCsrUpdateMarkup(row.body),
+    body: row.body,
   }));
   const recruitment = resolveRecruitment(report.overlays).map((row) => ({
     ...row,

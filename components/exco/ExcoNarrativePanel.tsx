@@ -1,8 +1,14 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import { CAHIER_ICON_OPTIONS, emptyProjectBlock } from '@/lib/exco-csr-fy27';
+import { CAHIER_ICON_OPTIONS, emptyProjectBlock, DEFAULT_CAHIER_HIGHLIGHTS, DEFAULT_CSR_HIGHLIGHTS, parseCsrUpdateMarkup, parseProjectBodyLines, structureProjectBody } from '@/lib/exco-csr-fy27';
 import type { ExcoCahierHighlight, ExcoCahierIcon } from '@/lib/exco-types';
+import {
+  recruitmentBudgetTone,
+  recruitmentContractTone,
+  recruitmentStatusTone,
+  type RecBadgeTone,
+} from '@/lib/exco-recruitment-fy27';
 
 type SlideTab = 'csr' | 'recruitment' | 'audit';
 type CsrSubTab = 'csr' | 'cahier';
@@ -109,14 +115,50 @@ function MetricStrip({
   );
 }
 
+function ProjectBodyRich({ body }: { body: string }) {
+  const lines = parseProjectBodyLines(body);
+  if (!lines.length) return <p className="exco-muted">—</p>;
+  return (
+    <div className="exco-project-body">
+      {lines.map((line, i) => (
+        <p key={`${line.label || 'p'}-${i}`}>
+          {line.label ? <strong>{line.label} : </strong> : null}
+          {parseCsrUpdateMarkup(line.text).map((run, j) =>
+            run.update ? (
+              <mark key={j} className="exco-csr-upd">
+                {run.text}
+              </mark>
+            ) : (
+              <span key={j}>{run.text}</span>
+            ),
+          )}
+        </p>
+      ))}
+    </div>
+  );
+}
+
+function RecBadge({
+  value,
+  tone,
+}: {
+  value: string;
+  tone: RecBadgeTone;
+}) {
+  const label = value?.trim() || '—';
+  return <span className={`exco-rec-badge is-${tone}`}>{label}</span>;
+}
+
 function toDrafts(
   highlights: Array<{ id: string; icon: string; title: string; body: string; progressPct: number }>,
+  fallback: ExcoCahierHighlight[],
 ): ExcoCahierHighlight[] {
-  return highlights.map((h) => ({
+  const src = highlights.length ? highlights : fallback;
+  return src.map((h) => ({
     id: h.id,
     icon: (h.icon as ExcoCahierIcon) || 'infrastructure',
     title: h.title,
-    body: h.body,
+    body: structureProjectBody(h.body),
     progressPct: h.progressPct || 0,
   }));
 }
@@ -138,14 +180,18 @@ function ProjectBlocksEditor({
   overlayKey: 'csrHighlights' | 'cahierHighlights';
   onSaved: (highlights: ExcoCahierHighlight[]) => void;
 }) {
-  const [drafts, setDrafts] = useState<ExcoCahierHighlight[]>(() => toDrafts(highlights));
+  const [drafts, setDrafts] = useState<ExcoCahierHighlight[]>(() =>
+    toDrafts(highlights, overlayKey === 'csrHighlights' ? DEFAULT_CSR_HIGHLIGHTS : DEFAULT_CAHIER_HIGHLIGHTS),
+  );
   const [saving, setSaving] = useState(false);
   const [msg, setMsg] = useState('');
   const [err, setErr] = useState('');
+  const fallback = overlayKey === 'csrHighlights' ? DEFAULT_CSR_HIGHLIGHTS : DEFAULT_CAHIER_HIGHLIGHTS;
+  const highlightsKey = JSON.stringify(highlights);
 
   useEffect(() => {
-    setDrafts(toDrafts(highlights));
-  }, [highlights]);
+    setDrafts(toDrafts(highlights, fallback));
+  }, [highlightsKey, overlayKey]);
 
   const update = (id: string, patch: Partial<ExcoCahierHighlight>) => {
     setDrafts((prev) => prev.map((h) => (h.id === id ? { ...h, ...patch } : h)));
@@ -251,8 +297,10 @@ function ProjectBlocksEditor({
                     rows={8}
                     value={h.body}
                     onChange={(e) => update(h.id, { body: e.target.value })}
+                    onBlur={() => update(h.id, { body: structureProjectBody(h.body) })}
                   />
                 </label>
+                <ProjectBodyRich body={h.body} />
                 <label className="exco-cahier-field">
                   <span>Progression %</span>
                   <input
@@ -272,7 +320,7 @@ function ProjectBlocksEditor({
               <>
                 <span className="exco-cahier-icon">{h.icon}</span>
                 <h4>{h.title}</h4>
-                <p>{h.body}</p>
+                <ProjectBodyRich body={h.body} />
               </>
             )}
             <div className="exco-cahier-progress" aria-label={`${h.progressPct}%`}>
@@ -350,7 +398,26 @@ export default function ExcoNarrativePanel({
         if (!res.ok) throw new Error(json.error || 'Chargement impossible');
         if (!cancelled) setData(json as SlidesPayload);
       } catch (err) {
-        if (!cancelled) setError(err instanceof Error ? err.message : 'Erreur');
+        if (!cancelled) {
+          setError(err instanceof Error ? err.message : 'Erreur');
+          setData({
+            periodLabel: `${year}-${String(month).padStart(2, '0')}`,
+            csr: { summary: { kpis: [] }, highlights: DEFAULT_CSR_HIGHLIGHTS },
+            cahier: { highlights: DEFAULT_CAHIER_HIGHLIGHTS },
+            recruitment: { replacements: [], newPositions: [] },
+            audit: {
+              rows: [],
+              summary: { total: 0, closed: 0, open: 0, ongoing: 0, overdue: 0, closedPct: 0 },
+            },
+            gouvernance: {
+              auditTotal: 0,
+              auditClosed: 0,
+              auditClosedPct: 0,
+              evolutionText: '',
+              progression: [],
+            },
+          });
+        }
       } finally {
         if (!cancelled) setLoading(false);
       }
@@ -365,12 +432,13 @@ export default function ExcoNarrativePanel({
   }, [tab]);
 
   if (loading) return <div className="loading">Chargement…</div>;
-  if (error) return <p className="exco-warn-banner">{error}</p>;
   if (!data) return <p className="exco-muted">Aucune donnée.</p>;
+  if (error && tab !== 'csr') return <p className="exco-warn-banner">{error}</p>;
 
   if (tab === 'csr') {
     return (
       <div className="exco-panel-stack exco-slide-panel">
+        {error ? <p className="exco-warn-banner">{error}</p> : null}
         <div className="exco-ot-subtabs" role="tablist" aria-label="Project">
           <button
             type="button"
@@ -466,12 +534,21 @@ export default function ExcoNarrativePanel({
                     <tr key={r.id}>
                       <td>{r.position}</td>
                       <td>{r.grade || '—'}</td>
-                      <td>{r.status}</td>
+                      <td>
+                        <RecBadge value={r.status} tone={recruitmentStatusTone(r.status)} />
+                      </td>
                       <td>{r.comments}</td>
-                      <td>{r.budgeted}</td>
+                      <td>
+                        <RecBadge value={r.budgeted} tone={recruitmentBudgetTone(r.budgeted)} />
+                      </td>
                       <td>{r.department}</td>
                       <td>{r.location || '—'}</td>
-                      <td>{r.contractType}</td>
+                      <td>
+                        <RecBadge
+                          value={r.contractType}
+                          tone={recruitmentContractTone(r.contractType)}
+                        />
+                      </td>
                     </tr>
                   ))}
                 </tbody>

@@ -69,3 +69,60 @@ export const DEFAULT_RECRUITMENT_ROWS: ExcoRecruitmentRow[] = [
 export function resolveRecruitment(overlays: Pick<ExcoOverlays, 'recruitment'>): ExcoRecruitmentRow[] {
   return overlays.recruitment?.length ? overlays.recruitment : DEFAULT_RECRUITMENT_ROWS;
 }
+
+export type RecBadgeTone =
+  | 'done'
+  | 'ongoing'
+  | 'started'
+  | 'idle'
+  | 'cancelled'
+  | 'alert'
+  | 'yes'
+  | 'no'
+  | 'neutral';
+
+export function recruitmentStatusTone(status: string): RecBadgeTone {
+  const s = (status || '').trim().toLowerCase();
+  if (!s) return 'alert';
+  if (/cancel/.test(s)) return 'cancelled';
+  if (/not\s*started|a lancer|à lancer/.test(s)) return 'idle';
+  if (/^done$|closed|complete|filled/.test(s)) return 'done';
+  if (/ongoing|in progress|en cours/.test(s)) return 'ongoing';
+  if (/started|advertised|interview/.test(s)) return 'started';
+  return 'neutral';
+}
+
+export function recruitmentBudgetTone(budgeted: string): RecBadgeTone {
+  const s = (budgeted || '').trim().toLowerCase();
+  if (s === 'yes' || s === 'oui') return 'yes';
+  if (s === 'no' || s === 'non') return 'no';
+  return 'neutral';
+}
+
+export function recruitmentContractTone(contractType: string): RecBadgeTone {
+  const s = (contractType || '').trim().toLowerCase();
+  if (/outsourc/.test(s)) return 'alert';
+  if (/permanent/.test(s)) return 'yes';
+  return 'neutral';
+}
+
+/** Couleurs PPTX (hex sans #). */
+export function recruitmentToneFill(tone: RecBadgeTone): string {
+  switch (tone) {
+    case 'done':
+    case 'yes':
+      return 'DCFCE7';
+    case 'ongoing':
+      return 'FFEDD5';
+    case 'started':
+      return 'DBEAFE';
+    case 'idle':
+      return 'F4F4F5';
+    case 'cancelled':
+    case 'no':
+    case 'alert':
+      return 'FEE2E2';
+    default:
+      return 'FFFFFF';
+  }
+}

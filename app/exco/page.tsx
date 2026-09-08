@@ -1,6 +1,6 @@
 'use client';
 
-import { useCallback, useEffect, useMemo, useRef, useState, type MouseEvent as ReactMouseEvent, type PointerEvent as ReactPointerEvent } from 'react';
+import { useCallback, useEffect, useMemo, useRef, useState, type MouseEvent as ReactMouseEvent, type PointerEvent as ReactPointerEvent, type ReactNode } from 'react';
 import DashboardListModal, {
   type DashboardListColumn,
   type DashboardListRow,
@@ -27,6 +27,7 @@ import {
   OVT_TREND_MONTH_LABELS,
   OVT_AVB_MONTH_LABELS,
   OVT_TREND_MONTHS,
+  enrichOtEvolutionFromByDept,
 } from '@/lib/exco-new-report-parse';
 import { otChartDeptLabel } from '@/lib/exco-ot-slide-data';
 import ExcoOtOverviewCharts from '@/components/exco/ExcoOtOverviewCharts';
@@ -89,13 +90,6 @@ const BASE_COLUMNS = [
   'OVT_Hours',
   'OVT_Cost',
 ] as const;
-
-const BASE_IMPORT_ONLY_COLUMNS = new Set<string>([
-  'Leave_Balance',
-  'Allowance Amount',
-  'OVT_Hours',
-  'OVT_Cost',
-]);
 
 const BASE_HEADER_ALIASES: Record<string, string> = {
   'leave allowance_amount': 'Allowance Amount',
@@ -735,6 +729,9 @@ type OtView = {
     averageLeaveDays: number | null;
     staffCostMonth: number | null;
     staffCostYtd: number | null;
+    employeesWithOt?: number | null;
+    otShareOfStaffCost?: number | null;
+    otShareOfStaffCostYtd?: number | null;
   };
 };
 
@@ -803,10 +800,12 @@ function otViewFromComputed(base: OtView, computed: ExcoComputedBlock): OtView |
       headcount: hc || null,
       employeesWithOtPct: hc > 0 ? Math.round((agents / hc) * 1000) / 10 : null,
       averageHours: agents > 0 ? Math.round((hoursTotal / agents) * 100) / 100 : null,
-      averageCostPerEmployee: null,
+      averageCostPerEmployee:
+        agents > 0 && costUsd > 0 ? Math.round((costUsd / agents) * 100) / 100 : null,
       averageLeaveDays: base.leaveAvgDays ?? null,
       staffCostMonth: base.workbook?.staffCostMonth ?? null,
       staffCostYtd: base.workbook?.staffCostYtd ?? null,
+      employeesWithOt: agents || null,
     },
   };
 }
@@ -954,13 +953,9 @@ function projectBaseSheet(sheet: ExcoSheetTable | null): {
     return -1;
   });
 
-  const rows = sheet.rows.slice(1).map((row) => {
-    const projected = colIndexes.map((idx) => (idx >= 0 ? (row[idx] ?? null) : null));
-    headers.forEach((header, i) => {
-      if (BASE_IMPORT_ONLY_COLUMNS.has(header)) projected[i] = null;
-    });
-    return projected;
-  });
+  const rows = sheet.rows.slice(1).map((row) =>
+    colIndexes.map((idx) => (idx >= 0 ? (row[idx] ?? null) : null)),
+  );
   return { headers, rows };
 }
 
@@ -997,41 +992,65 @@ function ExcoBusyOverlay({ label }: { label: string }) {
 function MetricCard({
   label,
   value,
+  valueExtra,
   hint,
   tone,
   onClick,
   title,
   highlight,
+  formula,
+  explanation,
+  calc,
 }: {
   label: string;
-  value: string;
+  value: ReactNode;
+  valueExtra?: ReactNode;
   hint?: string;
   tone?: 'default' | 'navy' | 'rose' | 'teal' | 'amber' | 'wine' | 'ok' | 'warn' | 'bad';
   onClick?: () => void;
   title?: string;
   /** Surligne le mois du rapport (rouge léger). */
   highlight?: boolean;
+  formula?: string;
+  explanation?: string;
+  calc?: string | null;
 }) {
-  const className = `exco-metric-card exco-metric-${tone || 'default'}${onClick ? ' is-clickable' : ''}${highlight ? ' is-report-month' : ''}`;
+  const hasTip = Boolean(formula || explanation || calc);
+  const className = `exco-metric-card exco-metric-${tone || 'default'}${onClick ? ' is-clickable' : ''}${highlight ? ' is-report-month' : ''}${hasTip ? ' has-tip' : ''}`;
+  const tip = hasTip ? (
+    <span className="exco-metric-tip" role="tooltip">
+      {formula ? <code>{formula}</code> : null}
+      {explanation ? <span>{explanation}</span> : null}
+      {calc ? <span className="exco-metric-tip-calc">{calc}</span> : null}
+      {onClick ? <span className="exco-metric-tip-click">Cliquer pour voir la liste</span> : null}
+    </span>
+  ) : null;
+  const inner = (
+    <>
+      <span className="exco-metric-label">{label}</span>
+      <strong className="exco-metric-value">
+        {value}
+        {valueExtra ? <span className="exco-metric-value-extra">{valueExtra}</span> : null}
+      </strong>
+      {hint ? <span className="exco-metric-hint">{hint}</span> : null}
+      {tip}
+    </>
+  );
   if (onClick) {
     return (
       <button
         type="button"
         className={className}
         onClick={onClick}
-        title={title || `Voir la liste — ${label}`}
+        title={hasTip ? undefined : (title || `Voir la liste — ${label}`)}
       >
-        <span className="exco-metric-label">{label}</span>
-        <strong className="exco-metric-value">{value}</strong>
-        {hint ? <span className="exco-metric-hint">{hint}</span> : null}
+        {inner}
       </button>
     );
   }
   return (
-    <article className={className}>
-      <span className="exco-metric-label">{label}</span>
-      <strong className="exco-metric-value">{value}</strong>
-      {hint ? <span className="exco-metric-hint">{hint}</span> : null}
+    <article className={className} title={hasTip ? undefined : title}>
+      {inner}
     </article>
   );
 }
@@ -1435,6 +1454,12 @@ export default function ExcoPage() {
   }>({});
   const [baseSheet, setBaseSheet] = useState<ExcoSheetTable | null>(null);
   const [baseSheetSource, setBaseSheetSource] = useState('');
+  const [basePresentCount, setBasePresentCount] = useState<number | null>(null);
+  const [baseLeaveExitCount, setBaseLeaveExitCount] = useState(0);
+  const [uniqueBaseOtAgents, setUniqueBaseOtAgents] = useState<number | null>(null);
+  const [uniqueBaseLeaveAvg, setUniqueBaseLeaveAvg] = useState<number | null>(null);
+  const [uniqueBaseOtMats, setUniqueBaseOtMats] = useState<string[]>([]);
+  const [uniqueBasePresentMats, setUniqueBasePresentMats] = useState<string[]>([]);
   const [baseSearch, setBaseSearch] = useState('');
   const [imported, setImported] = useState<ImportedFlags>({
     componentPostedUnits: false,
@@ -1583,6 +1608,11 @@ export default function ExcoPage() {
         seedMonth?: number;
         fromWorkbook?: boolean;
         headcount?: number;
+        leaveExitCount?: number;
+        employeesWithOt?: number | null;
+        leaveAvgDays?: number | null;
+        otMatricules?: string[];
+        presentMatricules?: string[];
       };
       namesByMatricule?: Record<string, string>;
       departmentsByMatricule?: Record<string, string>;
@@ -1596,8 +1626,34 @@ export default function ExcoPage() {
           : ub?.seedYear && ub?.seedMonth
             ? `roll-forward depuis ${ub.seedMonth}/${ub.seedYear}`
             : 'seed New report';
+      const leaveExtra =
+        ub?.leaveExitCount && ub.leaveExitCount > 0
+          ? ` · +${ub.leaveExitCount} sorties (Leave Balances)`
+          : '';
+      setBasePresentCount(ub?.headcount ?? null);
+      setBaseLeaveExitCount(ub?.leaveExitCount ?? 0);
+      setUniqueBaseOtAgents(
+        ub?.employeesWithOt != null && Number.isFinite(ub.employeesWithOt)
+          ? Number(ub.employeesWithOt)
+          : null,
+      );
+      setUniqueBaseLeaveAvg(
+        ub?.leaveAvgDays != null && Number.isFinite(ub.leaveAvgDays)
+          ? Number(ub.leaveAvgDays)
+          : null,
+      );
+      setUniqueBaseOtMats(
+        Array.isArray(ub?.otMatricules)
+          ? ub.otMatricules.map((m) => normMatricule(m)).filter(Boolean)
+          : [],
+      );
+      setUniqueBasePresentMats(
+        Array.isArray(ub?.presentMatricules)
+          ? ub.presentMatricules.map((m) => normMatricule(m)).filter(Boolean)
+          : [],
+      );
       setBaseSheetSource(
-        `BASE unique · ${seedLabel} · ${ub?.headcount ?? basePayload.baseSheet.rowCount - 1} employés`,
+        `BASE unique · ${seedLabel} · ${ub?.headcount ?? basePayload.baseSheet.rowCount - 1} présents${leaveExtra}`,
       );
     }
     if (basePayload.namesByMatricule && typeof basePayload.namesByMatricule === 'object') {
@@ -1621,15 +1677,30 @@ export default function ExcoPage() {
   const applyOtFromPayloads = useCallback((
     baseView: OtView,
     m: number,
-    report: { computed?: ExcoComputedBlock } | null,
+    report: {
+      computed?: ExcoComputedBlock;
+      overlays?: {
+        overtimeImportsByMonth?: Record<string, {
+          fxRateFcPerUsd?: number | null;
+          byDept?: Array<{ department: string; hours: number; costFc?: number }>;
+          employees?: unknown[];
+        }>;
+        generationMeta?: { fxRateFcPerUsd?: number | null };
+      };
+    } | null,
     wb: {
       snapshot?: {
         ot?: OtView['workbook'] & {
-          trendRows?: unknown;
-          actualVsBudget?: unknown;
+          trendRows?: ExcoWorkbookOtTrendRow[];
+          actualVsBudget?: ExcoWorkbookOtActualVsBudget | null;
+          byDeptCurrent?: Array<{ department: string; hours: number; cost: number | null }>;
           employeesWithOtPct?: number | null;
           averageHours?: number | null;
           averageCostPerEmployee?: number | null;
+          employeesWithOt?: number | null;
+          otShareOfStaffCost?: number | null;
+          otShareOfStaffCostYtd?: number | null;
+          averageLeaveDays?: number | null;
           averageLeaveDays?: number | null;
         };
         leave?: { allAvgDays?: number | null };
@@ -1654,11 +1725,54 @@ export default function ExcoPage() {
           ?? snapOt.averageLeaveDays
           ?? computed?.trends?.find((t) => t.month === m)?.leaveBalanceAvgDays
           ?? null;
+        let trendRows: ExcoWorkbookOtTrendRow[] = Array.isArray(snapOt.trendRows)
+          ? snapOt.trendRows.map((r) => ({
+              ...r,
+              hoursByMonth: [...(r.hoursByMonth || [])],
+              costByMonth: [...(r.costByMonth || [])],
+            }))
+          : [];
+        let actualVsBudget = snapOt.actualVsBudget || null;
+        const periodFx = report?.overlays?.generationMeta?.fxRateFcPerUsd ?? null;
+        const imports = report?.overlays?.overtimeImportsByMonth || {};
+        for (const [k, snap] of Object.entries(imports)) {
+          const cal = Number(k);
+          if (!Number.isInteger(cal) || cal < 1 || cal > 12 || cal > m) continue;
+          const byDept = Array.isArray(snap.byDept) ? snap.byDept : [];
+          if (!byDept.length) continue;
+          const fx = snap.fxRateFcPerUsd ?? periodFx ?? null;
+          const enriched = enrichOtEvolutionFromByDept({
+            trendRows,
+            actualVsBudget,
+            calendarMonth: cal,
+            byDept: byDept.map((d) => ({
+              department: d.department,
+              hours: d.hours,
+              costFc: d.costFc,
+            })),
+            fxRateFcPerUsd: fx,
+            fillEmptyOnly: true,
+          });
+          trendRows = enriched.trendRows;
+          actualVsBudget = enriched.actualVsBudget;
+        }
+        if (Array.isArray(snapOt.byDeptCurrent) && snapOt.byDeptCurrent.length) {
+          const enriched = enrichOtEvolutionFromByDept({
+            trendRows,
+            actualVsBudget,
+            calendarMonth: m,
+            byDept: snapOt.byDeptCurrent,
+            fxRateFcPerUsd: periodFx,
+            fillEmptyOnly: true,
+          });
+          trendRows = enriched.trendRows;
+          actualVsBudget = enriched.actualVsBudget;
+        }
         setOt({
           ...baseView,
           workbook: {
-            trendRows: Array.isArray(snapOt.trendRows) ? snapOt.trendRows : [],
-            actualVsBudget: snapOt.actualVsBudget || null,
+            trendRows,
+            actualVsBudget,
             headcount: headcount != null ? Number(headcount) : null,
             employeesWithOtPct: snapOt.employeesWithOtPct ?? null,
             averageHours: snapOt.averageHours ?? null,
@@ -1666,6 +1780,9 @@ export default function ExcoPage() {
             averageLeaveDays: leaveAllAvg != null ? Number(leaveAllAvg) : null,
             staffCostMonth: staffCostRow?.staffCostMonth ?? null,
             staffCostYtd: staffCostRow?.salariesActualYtd ?? null,
+            employeesWithOt: snapOt.employeesWithOt ?? null,
+            otShareOfStaffCost: snapOt.otShareOfStaffCost ?? null,
+            otShareOfStaffCostYtd: snapOt.otShareOfStaffCostYtd ?? null,
           },
         });
         return;
@@ -2097,16 +2214,20 @@ export default function ExcoPage() {
         const sysDept = deptsByMatricule[mat];
         if (deptIdx >= 0 && sysDept) next[deptIdx] = sysDept;
         if (mat) {
-          if (leaveIdx >= 0 && Object.prototype.hasOwnProperty.call(baseImportColumns.leaveDaysByMatricule, mat)) {
+          if (leaveIdx >= 0 && (next[leaveIdx] == null || next[leaveIdx] === '')
+            && Object.prototype.hasOwnProperty.call(baseImportColumns.leaveDaysByMatricule, mat)) {
             next[leaveIdx] = baseImportColumns.leaveDaysByMatricule[mat];
           }
-          if (allowIdx >= 0 && Object.prototype.hasOwnProperty.call(baseImportColumns.leaveValueFcByMatricule, mat)) {
-            next[allowIdx] = fcToUsd(baseImportColumns.leaveValueFcByMatricule[mat], fxOk);
+          if (allowIdx >= 0 && (next[allowIdx] == null || next[allowIdx] === '')
+            && Object.prototype.hasOwnProperty.call(baseImportColumns.leaveValueFcByMatricule, mat)) {
+            next[allowIdx] = Math.round(baseImportColumns.leaveValueFcByMatricule[mat] * 100) / 100;
           }
-          if (hoursIdx >= 0 && Object.prototype.hasOwnProperty.call(baseImportColumns.ovtHoursByMatricule, mat)) {
+          if (hoursIdx >= 0 && (next[hoursIdx] == null || next[hoursIdx] === '')
+            && Object.prototype.hasOwnProperty.call(baseImportColumns.ovtHoursByMatricule, mat)) {
             next[hoursIdx] = baseImportColumns.ovtHoursByMatricule[mat];
           }
-          if (costIdx >= 0 && Object.prototype.hasOwnProperty.call(baseImportColumns.ovtCostFcByMatricule, mat)) {
+          if (costIdx >= 0 && (next[costIdx] == null || next[costIdx] === '')
+            && Object.prototype.hasOwnProperty.call(baseImportColumns.ovtCostFcByMatricule, mat)) {
             next[costIdx] = fcToUsd(baseImportColumns.ovtCostFcByMatricule[mat], fxOk);
           }
         }
@@ -2332,30 +2453,46 @@ export default function ExcoPage() {
 
   const otOverview = useMemo(() => {
     const wb = ot?.workbook;
-    const agents = ot?.totals.agents ?? 0;
     const hours = ot?.totals.hours ?? 0;
     const cost = ot?.totals.costUsd ?? null;
-    const hc = wb?.headcount ?? null;
+    const uniqueAgents = new Set(
+      otEmployeesResolved.filter((e) => e.hours > 0).map((e) => e.matricule),
+    ).size;
+    const agents =
+      uniqueBaseOtAgents != null && uniqueBaseOtAgents > 0
+        ? uniqueBaseOtAgents
+        : (uniqueAgents || ot?.totals.agents || 0);
+    const hc = wb?.headcount ?? basePresentCount ?? null;
     const pctAgents =
-      wb?.employeesWithOtPct
-      ?? (hc && hc > 0 ? ratioToRate(agents, hc) : null);
-    const avgHours = wb?.averageHours ?? (agents ? hours / agents : null);
-    const avgCost = wb?.averageCostPerEmployee ?? (agents && cost != null ? cost / agents : null);
-    const withLeave = otEmployeesResolved.filter((e) => e.leaveDays != null);
-    const avgLeaveFromRows = withLeave.length
-      ? withLeave.reduce((s, e) => s + (e.leaveDays || 0), 0) / withLeave.length
-      : null;
-    const avgLeave = ot?.leaveAvgDays ?? avgLeaveFromRows ?? wb?.averageLeaveDays ?? null;
-    const staffMonth = wb?.staffCostMonth ?? null;
-    const staffYtd = wb?.staffCostYtd ?? null;
-    const avbYtd = wb?.actualVsBudget?.actualYtd ?? null;
+      hc && hc > 0 && agents > 0
+        ? Math.round((agents / hc) * 1000) / 10
+        : null;
+    const avgHours = agents ? hours / agents : null;
+    const avgCost = agents && cost != null ? cost / agents : null;
+    const avgLeave = uniqueBaseLeaveAvg ?? wb?.averageLeaveDays ?? ot?.leaveAvgDays ?? null;
+    const staffMonth =
+      staffCost?.sheet.find((s) => s.calendarMonth === month)?.staffCostMonth.value
+      ?? wb?.staffCostMonth
+      ?? null;
+    const staffYtd =
+      staffCost?.sheet.find((s) => s.calendarMonth === month)?.staffCumul.value
+      ?? staffCost?.sheet.find((s) => s.calendarMonth === month)?.salariesActualYtd?.value
+      ?? wb?.staffCostYtd
+      ?? null;
+    const salariesYtd =
+      staffCost?.sheet.find((s) => s.calendarMonth === month)?.salariesActualYtd?.value
+      ?? wb?.staffCostYtd
+      ?? null;
+    const otYtd = wb?.actualVsBudget?.actualYtd ?? null;
+    const staffMonthOk = staffMonth != null && staffMonth > 0;
     const otPctMonth =
-      cost != null && staffMonth && staffMonth > 0
+      cost != null && staffMonthOk
         ? Math.round((cost / staffMonth) * 10000) / 100
         : null;
+    const ytdDenom = salariesYtd != null && salariesYtd > 0 ? salariesYtd : (staffYtd && staffYtd > 0 ? staffYtd : null);
     const otPctYtd =
-      avbYtd != null && staffYtd && staffYtd > 0
-        ? Math.round((avbYtd / staffYtd) * 10000) / 100
+      otYtd != null && ytdDenom
+        ? Math.round((otYtd / ytdDenom) * 10000) / 100
         : null;
     return {
       headcount: hc,
@@ -2368,8 +2505,11 @@ export default function ExcoPage() {
       avgLeave,
       otPctMonth,
       otPctYtd,
+      staffMonth: staffMonthOk ? staffMonth : null,
+      salariesYtd: ytdDenom,
+      otYtd,
     };
-  }, [ot, otEmployeesResolved]);
+  }, [ot, otEmployeesResolved, staffCost, month, uniqueBaseOtAgents, uniqueBaseLeaveAvg, basePresentCount]);
 
   const otHoursSlide = useMemo(() => {
     const monthLabel = (MONTHS_EN[month - 1] || String(month)).slice(0, 3).toUpperCase();
@@ -2410,6 +2550,54 @@ export default function ExcoPage() {
     },
     [namesByMatricule, deptsByMatricule],
   );
+
+  const uniqueBaseOtRows = useMemo(() => {
+    const mats = new Set(uniqueBaseOtMats);
+    if (!mats.size) {
+      return otEmployeesResolved.filter((e) => e.hours > 0);
+    }
+    return otEmployeesResolved.filter((e) => mats.has(normMatricule(e.matricule)));
+  }, [otEmployeesResolved, uniqueBaseOtMats]);
+
+  const openUniqueBaseLeaveList = useCallback(() => {
+    const projected = projectBaseSheet(baseSheet);
+    const matIdx = projected.headers.indexOf('Emp Number');
+    const nameIdx = projected.headers.indexOf('Names');
+    const leaveIdx = projected.headers.indexOf('Leave_Balance');
+    const deptIdx = projected.headers.indexOf('Departments');
+    const hoursIdx = projected.headers.indexOf('OVT_Hours');
+    const present = new Set(uniqueBasePresentMats);
+    setInoutDrilldown({
+      title: `Voir la liste — Leave_Balance Unique Base · ${periodLabel}`,
+      columns: [
+        { key: 'matricule', label: 'Matricule' },
+        { key: 'nom', label: 'Nom' },
+        { key: 'leave', label: 'Leave_Balance' },
+        { key: 'hours', label: 'OVT_Hours' },
+        { key: 'departement', label: 'Department' },
+      ],
+      rows: projected.rows
+        .filter((row) => {
+          const mat = normMatricule(String(row[matIdx] ?? ''));
+          if (!mat) return false;
+          if (present.size) return present.has(mat);
+          return true;
+        })
+        .map((row, i) => {
+          const mat = normMatricule(String(row[matIdx] ?? ''));
+          return {
+            id: mat || `ub-leave-${i}`,
+            cells: {
+              matricule: mat,
+              nom: namesByMatricule[mat] || String(row[nameIdx] ?? ''),
+              leave: displayBaseCell(row[leaveIdx] ?? null, 'Leave_Balance'),
+              hours: displayBaseCell(row[hoursIdx] ?? null, 'OVT_Hours'),
+              departement: deptsByMatricule[mat] || String(row[deptIdx] ?? ''),
+            },
+          };
+        }),
+    });
+  }, [baseSheet, uniqueBasePresentMats, namesByMatricule, deptsByMatricule, periodLabel]);
 
   const openOtDeptHours = useCallback(
     (department: string | null) => {
@@ -2493,13 +2681,13 @@ export default function ExcoPage() {
       const data = await res.json();
       if (!res.ok) throw new Error(data.error || 'Erreur Staff Cost');
       showSuccess(`Staff Cost enregistré — ${periodLabel}`);
-      await loadStaffCost(year, month);
+      await loadPeriodBundle(year, month, fxRate);
     } catch (err) {
       showError(err instanceof Error ? err.message : 'Erreur');
     } finally {
       setBusy('');
     }
-  }, [canEdit, staffCost, staffCostFormulaNotes, month, year, periodLabel, loadStaffCost]);
+  }, [canEdit, staffCost, staffCostFormulaNotes, month, year, periodLabel, fxRate, loadPeriodBundle]);
 
   return (
     <PermissionGate menuId="exco.rapport" action="view">
@@ -2755,7 +2943,12 @@ export default function ExcoPage() {
                   <h3>{t('exco.base.title')}</h3>
                   <div className="exco-base-toolbar-inline">
                     <strong className="exco-base-effectif">
-                      {t('exco.base.headcount', { count: formatNum(baseProjected.total) })}
+                      {t('exco.base.headcount', {
+                        count: formatNum(basePresentCount ?? baseProjected.total),
+                      })}
+                      {baseLeaveExitCount > 0
+                        ? ` ${t('exco.base.leaveExits', { count: formatNum(baseLeaveExitCount) })}`
+                        : ''}
                       {baseSearch.trim() ? ` · ${baseProjected.rows.length}` : ''}
                     </strong>
                     <input
@@ -3591,63 +3784,145 @@ export default function ExcoPage() {
                       <MetricCard
                         label="Total workforce"
                         value={formatNum(otOverview.headcount)}
-                        hint="effectif"
+                        hint="effectif Unique Base"
                         tone="navy"
                         highlight
+                        formula="O1 = Headacount!$C$2"
+                        explanation="Effectif du mois : Unique Base / Headcount (175 pour août)."
+                        calc={otOverview.headcount != null ? `${formatNum(otOverview.headcount)} employés présents` : null}
                       />
                       <MetricCard
                         label="Employees with hours"
-                        value={`${formatNum(otOverview.agents)}${otOverview.pctAgents != null ? ` (${formatNum(otOverview.pctAgents, 1)}%)` : ''}`}
-                        hint="avec OT enregistré"
+                        value={formatNum(otOverview.agents)}
+                        valueExtra={
+                          otOverview.pctAgents != null
+                            ? `(${formatNum(otOverview.pctAgents, 1)}%)`
+                            : undefined
+                        }
+                        hint="agents Unique Base avec OVT_Hours > 0"
                         tone="teal"
-                        onClick={() => openOtEmployeeList(`Voir la liste — Agents OT · ${periodLabel}`, otEmployeesResolved)}
+                        onClick={() =>
+                          openOtEmployeeList(
+                            `Voir la liste — Agents OT Unique Base · ${periodLabel}`,
+                            uniqueBaseOtRows,
+                          )
+                        }
+                        formula="O2 = COUNTA des Emp Number Unique Base où OVT_Hours > 0"
+                        explanation="Comptage Unique Base (pas overtime_base UNIQUE). Le % à côté = O3 = O2 / O1."
+                        calc={
+                          otOverview.headcount
+                            ? `${formatNum(otOverview.agents)} / ${formatNum(otOverview.headcount)} = ${
+                                otOverview.pctAgents != null ? `${formatNum(otOverview.pctAgents, 1)}%` : '—'
+                              }`
+                            : null
+                        }
                       />
                       <MetricCard
                         label="Total Overtime"
                         value={formatNum(otOverview.hours, 2)}
-                        hint="heures"
+                        hint="heures · SUM Units"
                         tone="wine"
-                        onClick={() => openOtEmployeeList(`Voir la liste — Heures OT · ${periodLabel}`, otEmployeesResolved)}
+                        onClick={() =>
+                          openOtEmployeeList(
+                            `Voir la liste — Heures OT · ${periodLabel}`,
+                            uniqueBaseOtRows,
+                          )
+                        }
+                        formula="O4 = GETPIVOTDATA(&quot;Sum of Units&quot;) ≡ SUM(Units)"
+                        explanation="Total des heures supplémentaires du mois (colonne Units / OVT_Hours)."
+                        calc={`${formatNum(otOverview.hours, 2)} h`}
                       />
                       <MetricCard
                         label="Average hours"
                         value={formatNum(otOverview.avgHours, 2)}
-                        hint="par agent OT"
+                        hint={`Total OT ÷ ${formatNum(otOverview.agents)} agents`}
                         tone="amber"
+                        formula="O5 = O4 / O2"
+                        explanation="Moyenne d’heures = total overtime du mois ÷ nombre d’agents Unique Base avec overtime."
+                        calc={
+                          otOverview.agents
+                            ? `${formatNum(otOverview.hours, 2)} ÷ ${formatNum(otOverview.agents)} = ${formatNum(otOverview.avgHours, 2)} h`
+                            : null
+                        }
                       />
                       <MetricCard
                         label="Total cost"
                         value={formatUsd(otOverview.cost)}
-                        hint="USD"
+                        hint="USD · SUM(Component Value) / FX"
                         tone="wine"
-                        onClick={() => openOtEmployeeList(`Voir la liste — Coût OT · ${periodLabel}`, otEmployeesResolved)}
+                        onClick={() =>
+                          openOtEmployeeList(
+                            `Voir la liste — Coût OT · ${periodLabel}`,
+                            uniqueBaseOtRows,
+                          )
+                        }
+                        formula="O6 = GETPIVOTDATA(&quot;Sum of Component Value&quot;) / Params!$B$2"
+                        explanation="Coût overtime USD du mois = somme Component Value (FC) ÷ taux de change."
+                        calc={formatUsd(otOverview.cost)}
                       />
                       <MetricCard
                         label="Average cost / emp."
                         value={formatUsd(otOverview.avgCost)}
-                        hint="USD"
+                        hint={`Total cost ÷ ${formatNum(otOverview.agents)} agents`}
                         tone="default"
+                        formula="O7 = O6 / O2"
+                        explanation="Coût moyen par agent = coût overtime USD du mois ÷ agents Unique Base avec overtime."
+                        calc={
+                          otOverview.agents && otOverview.cost != null
+                            ? `${formatUsd(otOverview.cost)} ÷ ${formatNum(otOverview.agents)} = ${formatUsd(otOverview.avgCost)}`
+                            : null
+                        }
                       />
                       <MetricCard
                         label="OT % of staff cost"
-                        value={
-                          otOverview.otPctMonth != null || otOverview.otPctYtd != null
-                            ? `${otOverview.otPctYtd != null ? `${formatNum(otOverview.otPctYtd, 2)}% YTD` : '—'}${otOverview.otPctMonth != null ? ` · ${formatNum(otOverview.otPctMonth, 2)}% mois` : ''}`
-                            : '—'
+                        value={otOverview.otPctMonth != null ? `${formatNum(otOverview.otPctMonth, 2)}%` : '—'}
+                        hint={
+                          otOverview.cost != null && otOverview.staffMonth != null
+                            ? `${formatUsd(otOverview.cost)} ÷ ${formatUsd(otOverview.staffMonth)} staff cost mois`
+                            : 'coût OT ÷ Staff_Cost du mois'
                         }
-                        hint="vs Staff Cost"
                         tone="rose"
+                        formula="O8 = O6 / Staff_Cost_KPI!$N$43"
+                        explanation="Part du overtime dans la masse salariale du mois : coût OT USD ÷ Staff_Cost (Coût du personnel) du mois en cours."
+                        calc={
+                          otOverview.cost != null && otOverview.staffMonth != null
+                            ? `${formatUsd(otOverview.cost)} ÷ ${formatUsd(otOverview.staffMonth)} = ${
+                                otOverview.otPctMonth != null ? `${formatNum(otOverview.otPctMonth, 2)}%` : '—'
+                              }`
+                            : null
+                        }
+                      />
+                      <MetricCard
+                        label="OT % YTD"
+                        value={otOverview.otPctYtd != null ? `${formatNum(otOverview.otPctYtd, 2)}%` : '—'}
+                        hint={
+                          otOverview.otYtd != null && otOverview.salariesYtd != null
+                            ? `${formatUsd(otOverview.otYtd)} OT YTD ÷ ${formatUsd(otOverview.salariesYtd)} salaires YTD`
+                            : 'OT YTD ÷ Salaries Actual YTD'
+                        }
+                        tone="rose"
+                        formula="O9 = OVT!P39 / Staff_Cost_KPI!F5"
+                        explanation="Part YTD : cumul overtime (OVT Actual YTD, P39) ÷ Salaries Actual YTD du mois en cours (Staff_Cost_KPI ligne 5)."
+                        calc={
+                          otOverview.otYtd != null && otOverview.salariesYtd != null
+                            ? `${formatUsd(otOverview.otYtd)} ÷ ${formatUsd(otOverview.salariesYtd)} = ${
+                                otOverview.otPctYtd != null ? `${formatNum(otOverview.otPctYtd, 2)}%` : '—'
+                              }`
+                            : null
+                        }
                       />
                       <MetricCard
                         label="Avg leave days"
-                        value={formatNum(otOverview.avgLeave, 1)}
-                        hint="Annual Closing · Mco+Qco"
+                        value={formatNum(otOverview.avgLeave, 2)}
+                        hint="AVERAGE(Leave_Balance) Unique Base"
                         tone="ok"
-                        onClick={() =>
-                          openOtEmployeeList(
-                            `Voir la liste — Leave Annual (Closing) · ${periodLabel}`,
-                            otEmployeesResolved.filter((e) => e.leaveDays != null),
-                          )
+                        onClick={openUniqueBaseLeaveList}
+                        formula="AVERAGE(Unique Base!Leave_Balance)"
+                        explanation="Moyenne des jours de congé restants (Leave_Balance) sur l’effectif Unique Base du mois — comme le pied de colonne du New report."
+                        calc={
+                          otOverview.avgLeave != null
+                            ? `${formatNum(otOverview.avgLeave, 2)} jours`
+                            : null
                         }
                       />
                   </div>

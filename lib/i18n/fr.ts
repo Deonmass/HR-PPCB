@@ -483,6 +483,7 @@ export const fr = {
   'exco.params.clearing': "Suppression de l’import…",
   'exco.base.title': 'BASE — données',
   'exco.base.headcount': 'Effectif : {count}',
+  'exco.base.leaveExits': '+ {count} sorties (Leave)',
   'exco.headcount.title': 'Effectifs',
   'exco.headcount.totalHint': 'Effectif total',
   'exco.inout.hires': 'IN — Embauches · {month}',

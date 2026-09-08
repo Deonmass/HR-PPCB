@@ -12,8 +12,8 @@ import {
   buildGouvernanceSlideData,
   buildTrainingSlideData,
 } from './exco-dashboard-slides-data';
-import { parseCsrUpdateMarkup, csrTextHasUpdate, csrSlideText, CSR_UPDATE_COLOR } from './exco-csr-fy27';
-import { resolveRecruitment } from './exco-recruitment-fy27';
+import { parseCsrUpdateMarkup, csrTextHasUpdate, csrSlideText, CSR_UPDATE_COLOR, parseProjectBodyLines } from './exco-csr-fy27';
+import { resolveRecruitment, recruitmentBudgetTone, recruitmentContractTone, recruitmentStatusTone, recruitmentToneFill } from './exco-recruitment-fy27';
 import { buildExcoSectorTables } from './exco-project-sector-table';
 import {
   auditSeverityColor,
@@ -447,28 +447,25 @@ function addCahierHighlights(slide: Slide, items: ExcoCahierHighlight[]): void {
       if (inUpd) out += ']]';
       return `${out.trimEnd()}…`;
     })();
-    const isShort = plainBody.length < 80;
     const bodyRuns = safeTextRuns(
-      parseCsrUpdateMarkup(bodySrc).flatMap((run, idx) => {
-        const raw = run.text;
-        const prefix = idx === 0 && isShort ? '• ' : '';
-        if (!run.update && raw.includes('100%')) {
-          const [before, after] = raw.split('100%');
-          return [
-            { text: `${prefix}${before}`, options: { color: PPC.ink, bold: false, fontSize: bodyFs, fontFace: FONT } },
-            { text: '100%', options: { color: PPC.ink, bold: true, fontSize: bodyFs, fontFace: FONT } },
-            { text: after || '', options: { color: PPC.ink, bold: false, fontSize: bodyFs, fontFace: FONT } },
-          ];
-        }
-        return [{
-          text: `${prefix}${raw}`,
+      parseProjectBodyLines(bodySrc).flatMap((line, li, arr) => {
+        const br = li < arr.length - 1 ? '\n' : '';
+        const labelPart = line.label
+          ? [{
+              text: `${line.label} : `,
+              options: { color: PPC.ink, bold: true, fontSize: bodyFs, fontFace: FONT },
+            }]
+          : [];
+        const textParts = parseCsrUpdateMarkup(line.text).map((run, ri, runs) => ({
+          text: `${run.text}${ri === runs.length - 1 ? br : ''}`,
           options: {
             color: run.update ? CSR_UPDATE_COLOR : PPC.ink,
             bold: false,
             fontSize: bodyFs,
             fontFace: FONT,
           },
-        }];
+        }));
+        return [...labelPart, ...textParts];
       }),
     );
     slide.addText(bodyRuns as Parameters<Slide['addText']>[0], {
@@ -1337,6 +1334,17 @@ export async function buildModernExcoContentPptx(report: ExcoReportPayload): Pro
         });
       }
 
+      if (vs.narrative) {
+        s.addText('Summary', {
+          x: 0.4, y: 4.05, w: 6.1, h: 0.22,
+          fontSize: 12, bold: true, color: PPC.red, fontFace: FONT,
+        });
+        s.addText(vs.narrative, {
+          x: 0.4, y: 4.28, w: 6.1, h: 2.7,
+          fontSize: 11, color: PPC.ink, fontFace: FONT, valign: 'top', wrap: true,
+        });
+      }
+
       s.addText('Overtime vs Leave Balance per DEPT', {
         x: 6.8, y: 1.3, w: 6.1, h: 0.28,
         fontSize: 13, bold: true, color: PPC.red, fontFace: FONT,
@@ -1405,6 +1413,22 @@ export async function buildModernExcoContentPptx(report: ExcoReportPayload): Pro
         },
       });
 
+      const nameCell = (
+        text: string,
+        opts: { fill: string; color: string; bold?: boolean },
+      ) => ({
+        text,
+        options: {
+          fill: { color: opts.fill },
+          color: opts.color,
+          bold: opts.bold,
+          align: 'left' as const,
+          fontSize: 6.5,
+          wrap: true,
+          valign: 'middle' as const,
+        },
+      });
+
       const empHeader = [
         redHeader('ID'),
         redHeader('Names'),
@@ -1420,7 +1444,7 @@ export async function buildModernExcoContentPptx(report: ExcoReportPayload): Pro
           const color = isTop10 ? PPC.redDark : PPC.ink;
           return [
             cell(r.id, { fill, color, bold: isTop10, fontSize: 7 }),
-            cell(r.name, { fill, color, bold: isTop10, fontSize: 7 }),
+            nameCell(r.name, { fill, color, bold: isTop10 }),
             cell(r.hours, { fill, color, bold: isTop10, align: 'right', fontSize: 7 }),
             cell(r.cost, { fill, color, bold: isTop10, align: 'right', fontSize: 7 }),
             cell(r.leave, { fill, color, bold: isTop10, align: 'right', fontSize: 7 }),
@@ -1432,7 +1456,7 @@ export async function buildModernExcoContentPptx(report: ExcoReportPayload): Pro
       const tableTop = 1.55;
       const tableH = 5.5;
       const tableRowH = tableH / (dataCount + 1);
-      const colW = [0.95, 1.85, 0.7, 0.9, 0.65, 1.1];
+      const colW = [0.82, 2.45, 0.62, 0.78, 0.55, 0.93];
 
       s.addText('Overtime – Top 15 (Top 10 in red)', {
         x: 0.45, y: 1.28, w: 6.2, h: 0.24,
@@ -1755,14 +1779,22 @@ export async function buildModernExcoContentPptx(report: ExcoReportPayload): Pro
       rows.map((r, i) => {
         const fill = i % 2 ? 'F4F6FA' : PPC.white;
         return [
-          recMarkupCell(r.position, fill, { bold: true }),
+            recMarkupCell(r.position, fill, { bold: true }),
           recMarkupCell(r.grade, fill, { align: 'center' }),
-          recMarkupCell(r.status, fill, { align: 'center' }),
+          recMarkupCell(r.status, recruitmentToneFill(recruitmentStatusTone(r.status)), {
+            align: 'center',
+            bold: true,
+          }),
           recMarkupCell(r.comments, fill),
-          recMarkupCell(r.budgeted, fill, { align: 'center' }),
+          recMarkupCell(r.budgeted, recruitmentToneFill(recruitmentBudgetTone(r.budgeted)), {
+            align: 'center',
+            bold: true,
+          }),
           recMarkupCell(r.department, fill),
           recMarkupCell(r.location, fill),
-          recMarkupCell(r.contractType, fill, { align: 'center' }),
+          recMarkupCell(r.contractType, recruitmentToneFill(recruitmentContractTone(r.contractType)), {
+            align: 'center',
+          }),
         ];
       });
     const empty = [headers.map(() => recMarkupCell('—', PPC.white))];

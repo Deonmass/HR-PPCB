@@ -48,6 +48,10 @@ import {
 } from './exco-types';
 import { listMouvements } from './mouvements-store';
 import { inheritNarrative } from './exco-narrative-format';
+import {
+  buildStaffCostSheet,
+  staffCostInputFromPartial,
+} from './exco-staff-cost-model';
 import { listWeeklyOvertimeWeeks } from './overtimes-json-store';
 import { getPostesBundle } from './postes-store';
 import {
@@ -238,8 +242,15 @@ function manualOrEmpty(
   hint?: string,
   prevValue?: number | string | null,
 ): ExcoMetricValue {
+  const prevNum =
+    typeof prevValue === 'number' && Number.isFinite(prevValue) ? prevValue : null;
   if (manual != null && Number.isFinite(manual)) {
-    return metric(key, label, manual, 'manual', { unit, hint, prevValue });
+    return metric(key, label, manual, 'manual', {
+      unit,
+      hint,
+      prevValue,
+      deltaPct: deltaPct(manual, prevNum),
+    });
   }
   return metric(key, label, null, 'empty', { unit, hint, prevValue });
 }
@@ -588,8 +599,14 @@ async function buildCalendarYearTrends(
     const leaveSnap = overlays.leaveImportsByMonth?.[financeKey];
     const leaveAll =
       leaveSnap?.allAvgDays ?? finance.leaveBalanceAvgDays ?? null;
+    const monthFx =
+      month === throughMonth
+        ? overlays.generationMeta?.fxRateFcPerUsd ?? leaveSnap?.fxRateFcPerUsd ?? null
+        : leaveSnap?.fxRateFcPerUsd
+          ?? overlays.generationMeta?.fxRateFcPerUsd
+          ?? null;
     const leaveCostUsd =
-      excoLeaveCostUsdFromSnap(leaveSnap) ?? finance.leaveCost ?? null;
+      excoLeaveCostUsdFromSnap(leaveSnap, monthFx) ?? finance.leaveCost ?? null;
 
     trends.push({
       month,
@@ -1010,7 +1027,7 @@ async function computeBlock(
           : null;
       return {
         matricule,
-        nom: imported?.nom || nameByMatricule.get(matricule) || matricule,
+        nom: nameByMatricule.get(matricule) || imported?.nom || matricule,
         department: row.department,
         hours: Math.round(row.hours * 100) / 100,
         costFc,
@@ -1151,6 +1168,34 @@ function buildKpiSummary(
   month: number,
 ): ExcoMetricValue[] {
   const mk = visibleManualKpis(overlays.manualKpis);
+  // Input Staff Cost YTD = source de vérité pour Staff / Volume / Revenue du mois.
+  const ytdMap = overlays.staffCostYtdByMonth || {};
+  const hasYtdInput = Object.keys(ytdMap).length > 0;
+  if (hasYtdInput) {
+    const ytdByCalendarMonth: Record<number, ReturnType<typeof staffCostInputFromPartial>> = {};
+    for (const [k, v] of Object.entries(ytdMap)) {
+      const cal = Number(k);
+      if (!Number.isInteger(cal) || cal < 1 || cal > 12) continue;
+      ytdByCalendarMonth[cal] = staffCostInputFromPartial(v);
+    }
+    const sheet = buildStaffCostSheet({ ytdByCalendarMonth });
+    const cur = sheet.find((s) => s.calendarMonth === month);
+    const sc = cur?.staffCostMonth.value ?? null;
+    if (sc != null && sc >= 0) {
+      mk.staffCost = sc;
+      mk.volumePerEmp = cur?.tonPerEmp.value ?? mk.volumePerEmp ?? null;
+      mk.revenuePerEmp = cur?.revenuePerEmp.value ?? mk.revenuePerEmp ?? null;
+    } else if (sc != null && sc < 0) {
+      // Mois cancel Excel — ne pas afficher le négatif en carte KPI.
+      mk.staffCost = null;
+      mk.volumePerEmp = null;
+      mk.revenuePerEmp = null;
+    }
+  } else if (mk.staffCost != null && mk.staffCost < 0) {
+    mk.staffCost = null;
+    mk.volumePerEmp = null;
+    mk.revenuePerEmp = null;
+  }
   const leaveSnap = overlays.leaveImportsByMonth?.[String(month)];
   const otSnap = overlays.overtimeImportsByMonth?.[String(month)];
   const otImported = Boolean(otSnap && (otSnap.employees?.length || 0) > 0);
@@ -1212,8 +1257,12 @@ function buildKpiSummary(
   const leaveFiles = (leaveSnap?.sourceFiles || [])
     .filter((f) => f && f !== 'template-baseline')
     .join(', ');
-  const leaveFx = leaveSnap?.fxRateFcPerUsd ?? overlays.generationMeta?.fxRateFcPerUsd ?? null;
-  const leaveCostAuto = excoLeaveCostUsdFromSnap(leaveSnap);
+  const periodFx = overlays.generationMeta?.fxRateFcPerUsd ?? null;
+  const leaveFx =
+    periodFx != null && periodFx > 0
+      ? periodFx
+      : leaveSnap?.fxRateFcPerUsd ?? null;
+  const leaveCostAuto = excoLeaveCostUsdFromSnap(leaveSnap, leaveFx);
   const leaveBalAuto = leaveSnap?.allAvgDays ?? null;
 
   const leaveCostHint = leaveImported && leaveCostAuto != null
@@ -1223,8 +1272,9 @@ function buildKpiSummary(
         'Feuilles : toutes (ex. leavebalances Mco + Qco).',
         'Filtre : Leave Type (colonne T) = « Annual ».',
         'Montant : somme de Value / Val (colonne AD) en FC, feuille par feuille.',
+        'Périmètre : tout le fichier Leave (présents BASE + sorties du mois encore dans Leave Balances).',
         `Conversion : pour chaque feuille (ex. Mco, Qco) : round(Σ AD ÷ taux, 2), puis somme des USD.`,
-        `Taux FC/USD : ${leaveFx != null ? leaveFx.toLocaleString('fr-FR') : '—'}.`,
+        `Taux FC/USD : ${leaveFx != null ? leaveFx.toLocaleString('fr-FR') : '—'} (taux du mois).`,
         `Résultat : ${leaveCostAuto.toLocaleString('en-US', { style: 'currency', currency: 'USD', minimumFractionDigits: 2, maximumFractionDigits: 2 })}.`,
       ].join(' ')
     : 'Pas d’import Leave Balances pour ce mois — saisie manuelle possible (section KPIs manuels).';
@@ -1236,10 +1286,14 @@ function buildKpiSummary(
         'Feuilles : toutes les feuilles.',
         'Filtre : Leave Type (colonne T) = « Annual ».',
         'Mesure : moyenne de Closing Balance (colonne AC) — All Company.',
+        'Périmètre : tout le fichier Leave, y compris les sorties du mois.',
       ].join(' ')
     : 'Pas d’import Leave Balances — saisie manuelle possible.';
 
-  const otFx = otSnap?.fxRateFcPerUsd ?? overlays.generationMeta?.fxRateFcPerUsd ?? null;
+  const otFx =
+    periodFx != null && periodFx > 0
+      ? periodFx
+      : otSnap?.fxRateFcPerUsd ?? null;
   const otFiles = (otSnap?.sourceFiles || [])
     .filter((f) => f && f !== 'template-baseline')
     .join(', ');
@@ -1315,7 +1369,9 @@ function buildKpiSummary(
       'Staff cost',
       mk.staffCost,
       'USD',
-      'Saisie manuelle (KPI Summary / finance du mois).',
+      hasYtdInput
+        ? 'AUTO — dérivé de Staff Cost Input (Salaries Actual YTD du mois − cumul précédent).'
+        : 'Saisie manuelle (KPI Summary / finance du mois).',
       tPrev?.staffCost ?? prevFinance.staffCost ?? null,
     ),
     manualOrEmpty(
@@ -1323,7 +1379,9 @@ function buildKpiSummary(
       'Volume / emp',
       mk.volumePerEmp,
       undefined,
-      'Saisie manuelle (KPI Summary / finance du mois).',
+      hasYtdInput
+        ? 'AUTO — dérivé de Staff Cost Input (Volumes Actual YTD ÷ headcount).'
+        : 'Saisie manuelle (KPI Summary / finance du mois).',
       tPrev?.volumePerEmp ?? prevFinance.volumePerEmp ?? null,
     ),
     leaveBalAuto != null
@@ -1367,7 +1425,9 @@ function buildKpiSummary(
       'Revenue / emp',
       mk.revenuePerEmp,
       'USD',
-      'Saisie manuelle (KPI Summary / finance du mois).',
+      hasYtdInput
+        ? 'AUTO — dérivé de Staff Cost Input (Revenue Actual YTD ÷ headcount).'
+        : 'Saisie manuelle (KPI Summary / finance du mois).',
       tPrev?.revenuePerEmp ?? prevFinance.revenuePerEmp ?? null,
     ),
     metric('overtimeHours', 'Overtime hours', computed.overtimeHoursTotal, 'computed', {

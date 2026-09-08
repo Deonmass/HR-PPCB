@@ -18,6 +18,7 @@ import { resolveExcoBaseWorkbook } from './exco-base-source';
 import { parseExcoNewReport, type ExcoWorkbookEmployee } from './exco-new-report-parse';
 import { resolveExcoDepartment } from './exco-department-map';
 import { getExcoOverlays } from './exco-store';
+import { fcToUsd, type ExcoLeaveMonthImport, type ExcoOtMonthImport } from './exco-ot-import';
 import type { ExcoSheetTable } from './exco-workbook-types';
 import type { Employee } from './types';
 import type { ExcoComputedBlock, ExcoHireListRow } from './exco-types';
@@ -25,7 +26,7 @@ import { ratioToRate } from './format-rate';
 import fs from 'fs/promises';
 import path from 'path';
 
-export type ExcoUniqueBaseSource = 'workbook' | 'seed' | 'engagement';
+export type ExcoUniqueBaseSource = 'workbook' | 'seed' | 'engagement' | 'leave-exit';
 
 export interface ExcoUniqueBaseRow {
   matricule: string;
@@ -43,6 +44,10 @@ export interface ExcoUniqueBaseRow {
   department: string;
   locationSite: string;
   leaveBalance: number | null;
+  /** Value Annual (fichier Leave, col. AD) en FC — colonne BASE Allowance Amount. */
+  allowanceAmount: number | null;
+  ovtHours: number | null;
+  ovtCost: number | null;
   source: ExcoUniqueBaseSource;
 }
 
@@ -53,11 +58,15 @@ export interface ExcoUniqueBaseResult {
   seedMonth: number;
   employees: ExcoUniqueBaseRow[];
   headcount: number;
+  /** Sorties du mois encore présentes dans Leave Balances (hors effectif). */
+  leaveExitCount: number;
   hiresInMonth: Array<ExcoEngagementRow & { displayName: string }>;
   exitsInMonth: Array<ExcoEngagementRow & { displayName: string }>;
   sheet: ExcoSheetTable;
   /** True si la BASE vient d’un New report officiel du mois. */
   fromWorkbook: boolean;
+  employeesWithOt: number;
+  leaveAvgDays: number | null;
 }
 
 const BASE_HEADERS = [
@@ -156,6 +165,15 @@ async function loadMonthWorkbookEmployees(
 ): Promise<{ employees: ExcoWorkbookEmployee[]; seedYear: number; seedMonth: number } | null> {
   const { overlays } = await getExcoOverlays(year, month);
   const snap = overlays.workbookSnapshot;
+  const file = await resolveExcoBaseWorkbook(year, month);
+  const parsed = file ? parseExcoNewReport(file.buffer, file.originalName) : null;
+  const parsedOk =
+    parsed
+    && (
+      (parsed.params.year === year && parsed.params.month === month)
+      || (await monthSourceExists(year, month))
+    );
+
   if (
     snap
     && snap.params.year === year
@@ -163,29 +181,29 @@ async function loadMonthWorkbookEmployees(
     && Array.isArray(snap.employees)
     && snap.employees.length > 0
   ) {
+    const fromFile = parsedOk ? parsed!.employees : [];
+    const byMat = new Map(fromFile.map((e) => [e.matricule, e]));
     return {
-      employees: snap.employees,
+      employees: snap.employees.map((e) => {
+        const p = byMat.get(e.matricule);
+        return {
+          ...e,
+          allowanceAmount: p?.allowanceAmount ?? e.allowanceAmount ?? null,
+          ovtHours: p?.ovtHours ?? e.ovtHours ?? null,
+          ovtCost: e.ovtCost ?? p?.ovtCost ?? null,
+          leaveBalance: p?.leaveBalance ?? e.leaveBalance ?? null,
+        };
+      }),
       seedYear: snap.params.year,
       seedMonth: snap.params.month,
     };
   }
 
-  const file = await resolveExcoBaseWorkbook(year, month);
-  if (!file) return null;
-  const parsed = parseExcoNewReport(file.buffer, file.originalName);
-  if (parsed.params.year === year && parsed.params.month === month) {
+  if (parsedOk && parsed) {
     return {
       employees: parsed.employees,
-      seedYear: parsed.params.year,
-      seedMonth: parsed.params.month,
-    };
-  }
-  // Dossier mois explicite : forcer la BASE même si Params interne diverge
-  if (await monthSourceExists(year, month)) {
-    return {
-      employees: parsed.employees,
-      seedYear: year,
-      seedMonth: month,
+      seedYear: parsed.params.year === year ? parsed.params.year : year,
+      seedMonth: parsed.params.month === month ? parsed.params.month : month,
     };
   }
   return null;
@@ -221,6 +239,9 @@ function rowFromWorkbook(
     department: dept,
     locationSite: e.locationSite || sys?.localisation || '',
     leaveBalance: e.leaveBalance,
+    allowanceAmount: e.allowanceAmount ?? null,
+    ovtHours: e.ovtHours ?? null,
+    ovtCost: e.ovtCost ?? null,
     source,
   };
 }
@@ -254,7 +275,182 @@ function rowFromEngagement(
     department: dept,
     locationSite: sys?.localisation || '',
     leaveBalance: null,
+    allowanceAmount: null,
+    ovtHours: null,
+    ovtCost: null,
     source: 'engagement',
+  };
+}
+
+function rowFromLeaveExit(
+  matricule: string,
+  sys: Employee | undefined,
+  exit: ExcoEngagementRow | undefined,
+  asOf: Date,
+): ExcoUniqueBaseRow {
+  if (exit) {
+    return { ...rowFromEngagement(exit, sys, asOf), source: 'leave-exit' };
+  }
+  const birth = sys?.dateOfBirth || '';
+  const age = ageFromBirth(birth, asOf);
+  const emplDate = sys?.appointmentDate || '';
+  const los = computeSeniorityYears(emplDate, asOf);
+  const dept = (sys?.departement || sys?.departmentHr || '').trim();
+  return {
+    matricule,
+    nom: (sys?.nom || '').trim(),
+    gender: sys?.gender || '',
+    nationality: sys?.nationality || '',
+    position: sys?.position || sys?.jobTitle || '',
+    grade: sys?.grade || '',
+    birth,
+    age,
+    ageCat: ageCatFromAge(age),
+    emplDate,
+    lengthOfService: los,
+    lengthOfServiceCat: seniorityCat(los),
+    department: dept,
+    locationSite: sys?.localisation || '',
+    leaveBalance: null,
+    allowanceAmount: null,
+    ovtHours: null,
+    ovtCost: null,
+    source: 'leave-exit',
+  };
+}
+
+/**
+ * Sorties (et toute personne du fichier Leave absente de la BASE) :
+ * l’effectif ne les compte pas, mais Leave_Balance / Value doivent entrer dans Leave COST.
+ */
+function leaveRowsAbsentFromBase(
+  present: ExcoUniqueBaseRow[],
+  leaveSnap: ExcoLeaveMonthImport | undefined,
+  exitsInMonth: ExcoEngagementRow[],
+  allSystem: Map<string, Employee>,
+  asOf: Date,
+): ExcoUniqueBaseRow[] {
+  if (!leaveSnap) return [];
+  const presentMats = new Set(present.map((e) => e.matricule));
+  const exitByMat = new Map(exitsInMonth.map((r) => [r.matricule, r]));
+  const leaveDays = leaveSnap.byMatricule || {};
+  const leaveValueFc = leaveSnap.valueFcByMatricule || {};
+  const mats = new Set([...Object.keys(leaveDays), ...Object.keys(leaveValueFc)]);
+
+  const extras: ExcoUniqueBaseRow[] = [];
+  for (const mat of mats) {
+    if (presentMats.has(mat)) continue;
+    const days = leaveDays[mat];
+    const valueFc = leaveValueFc[mat];
+    if (
+      (days == null || !Number.isFinite(days))
+      && (valueFc == null || !Number.isFinite(valueFc))
+    ) {
+      continue;
+    }
+    extras.push(
+      rowFromLeaveExit(mat, allSystem.get(mat), exitByMat.get(mat), asOf),
+    );
+  }
+  return extras;
+}
+
+function applyLeaveAndOtImports(
+  employees: ExcoUniqueBaseRow[],
+  leaveSnap: ExcoLeaveMonthImport | undefined,
+  otSnap: ExcoOtMonthImport | undefined,
+  fxRateFcPerUsd: number | null,
+): ExcoUniqueBaseRow[] {
+  const fx =
+    fxRateFcPerUsd != null && Number.isFinite(fxRateFcPerUsd) && fxRateFcPerUsd > 0
+      ? fxRateFcPerUsd
+      : leaveSnap?.fxRateFcPerUsd != null && leaveSnap.fxRateFcPerUsd > 0
+        ? leaveSnap.fxRateFcPerUsd
+        : otSnap?.fxRateFcPerUsd != null && otSnap.fxRateFcPerUsd > 0
+          ? otSnap.fxRateFcPerUsd
+          : null;
+
+  const leaveDays = leaveSnap?.byMatricule || {};
+  const leaveValueFc = leaveSnap?.valueFcByMatricule || {};
+  const hasLeave = Object.keys(leaveDays).length > 0 || Object.keys(leaveValueFc).length > 0;
+  const otByMat = new Map((otSnap?.employees || []).map((e) => [e.matricule, e]));
+
+  if (!hasLeave && otByMat.size === 0) return employees;
+
+  return employees.map((e) => {
+    const mat = e.matricule;
+    const next = { ...e };
+    if (hasLeave) {
+      // Unique Base Excel fait foi si déjà renseigné (moyenne Leave_Balance = 18.31).
+      if (
+        next.leaveBalance == null
+        && Object.prototype.hasOwnProperty.call(leaveDays, mat)
+        && Number.isFinite(leaveDays[mat])
+      ) {
+        next.leaveBalance = leaveDays[mat];
+      }
+      if (
+        next.allowanceAmount == null
+        && Object.prototype.hasOwnProperty.call(leaveValueFc, mat)
+        && Number.isFinite(leaveValueFc[mat])
+      ) {
+        next.allowanceAmount = Math.round(leaveValueFc[mat] * 100) / 100;
+      }
+    }
+    const ot = otByMat.get(mat);
+    if (ot && next.ovtHours == null) {
+      next.ovtHours = ot.hours;
+      next.ovtCost = fcToUsd(ot.costFc, fx) ?? ot.costFc;
+    }
+    return next;
+  });
+}
+
+function uniqueBaseOverviewKpis(present: ExcoUniqueBaseRow[]): {
+  employeesWithOt: number;
+  leaveAvgDays: number | null;
+} {
+  const employeesWithOt = present.filter((e) => (e.ovtHours || 0) > 0).length;
+  const leaves = present
+    .map((e) => e.leaveBalance)
+    .filter((n): n is number => n != null && Number.isFinite(n));
+  const leaveAvgDays = leaves.length
+    ? Math.round((leaves.reduce((s, n) => s + n, 0) / leaves.length) * 100) / 100
+    : null;
+  return { employeesWithOt, leaveAvgDays };
+}
+
+function finishBase(
+  present: ExcoUniqueBaseRow[],
+  leaveSnap: ExcoLeaveMonthImport | undefined,
+  otSnap: ExcoOtMonthImport | undefined,
+  monthFx: number | null,
+  exitsInMonth: ExcoEngagementRow[],
+  allSystem: Map<string, Employee>,
+  asOf: Date,
+): {
+  employees: ExcoUniqueBaseRow[];
+  headcount: number;
+  leaveExitCount: number;
+  sheet: ExcoSheetTable;
+  employeesWithOt: number;
+  leaveAvgDays: number | null;
+} {
+  const extras = applyLeaveAndOtImports(
+    leaveRowsAbsentFromBase(present, leaveSnap, exitsInMonth, allSystem, asOf),
+    leaveSnap,
+    otSnap,
+    monthFx,
+  );
+  const sheetRows = [...present, ...extras].sort((a, b) =>
+    a.matricule.localeCompare(b.matricule, 'fr', { numeric: true }),
+  );
+  return {
+    employees: present,
+    headcount: present.length,
+    leaveExitCount: extras.length,
+    sheet: toSheet(sheetRows),
+    ...uniqueBaseOverviewKpis(present),
   };
 }
 
@@ -276,9 +472,9 @@ function toSheet(employees: ExcoUniqueBaseRow[]): ExcoSheetTable {
     e.department || null,
     e.locationSite || null,
     e.leaveBalance,
-    null,
-    null,
-    null,
+    e.allowanceAmount,
+    e.ovtHours,
+    e.ovtCost,
   ]);
   return {
     id: 'base',
@@ -305,6 +501,9 @@ export async function buildExcoUniqueBase(
   const { overlays: monthOverlays } = await getExcoOverlays(year, month);
   const monthEngRows = monthOverlays.engagementsImportsByMonth?.[String(month)] || [];
   const split = splitEngagementsForPeriod(monthEngRows, year, month);
+  const leaveSnap = monthOverlays.leaveImportsByMonth?.[String(month)];
+  const otSnap = monthOverlays.overtimeImportsByMonth?.[String(month)];
+  const monthFx = monthOverlays.generationMeta?.fxRateFcPerUsd ?? null;
 
   const withName = (rows: ExcoEngagementRow[]) =>
     rows.map((r) => ({
@@ -314,19 +513,31 @@ export async function buildExcoUniqueBase(
 
   const workbook = await loadMonthWorkbookEmployees(year, month);
   if (workbook && workbook.employees.length > 0) {
-    const employees = workbook.employees
-      .map((e) => rowFromWorkbook(e, allSystem.get(e.matricule), asOf, 'workbook'))
-      .sort((a, b) => a.matricule.localeCompare(b.matricule, 'fr', { numeric: true }));
+    const present = applyLeaveAndOtImports(
+      workbook.employees
+        .map((e) => rowFromWorkbook(e, allSystem.get(e.matricule), asOf, 'workbook'))
+        .sort((a, b) => a.matricule.localeCompare(b.matricule, 'fr', { numeric: true })),
+      leaveSnap,
+      otSnap,
+      monthFx,
+    );
+    const finished = finishBase(
+      present,
+      leaveSnap,
+      otSnap,
+      monthFx,
+      split.terminationsInMonth,
+      allSystem,
+      asOf,
+    );
     return {
       year,
       month,
       seedYear: workbook.seedYear,
       seedMonth: workbook.seedMonth,
-      employees,
-      headcount: employees.length,
+      ...finished,
       hiresInMonth: withName(split.engagementsInMonth),
       exitsInMonth: withName(split.terminationsInMonth),
-      sheet: toSheet(employees),
       fromWorkbook: true,
     };
   }
@@ -354,8 +565,22 @@ export async function buildExcoUniqueBase(
     }
   }
 
-  const employees = [...roster.values()].sort((a, b) =>
-    a.matricule.localeCompare(b.matricule, 'fr', { numeric: true }),
+  const present = applyLeaveAndOtImports(
+    [...roster.values()].sort((a, b) =>
+      a.matricule.localeCompare(b.matricule, 'fr', { numeric: true }),
+    ),
+    leaveSnap,
+    otSnap,
+    monthFx,
+  );
+  const finished = finishBase(
+    present,
+    leaveSnap,
+    otSnap,
+    monthFx,
+    split.terminationsInMonth,
+    allSystem,
+    asOf,
   );
 
   return {
@@ -363,11 +588,9 @@ export async function buildExcoUniqueBase(
     month,
     seedYear: prevBase?.seedYear ?? prev.year,
     seedMonth: prevBase?.seedMonth ?? prev.month,
-    employees,
-    headcount: employees.length,
+    ...finished,
     hiresInMonth: withName(split.engagementsInMonth),
     exitsInMonth: withName(split.terminationsInMonth),
-    sheet: toSheet(employees),
     fromWorkbook: false,
   };
 }

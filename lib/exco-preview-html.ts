@@ -20,8 +20,13 @@ import {
   type ExcoGouvernanceSlideData,
   type ExcoTrainingSlideData,
 } from '@/lib/exco-dashboard-slides-data';
-import { resolveCahierHighlights, resolveCsrHighlights, parseCsrUpdateMarkup, csrTextHasUpdate, csrSlideText } from '@/lib/exco-csr-fy27';
-import { resolveRecruitment } from '@/lib/exco-recruitment-fy27';
+import { resolveCahierHighlights, resolveCsrHighlights, parseCsrUpdateMarkup, csrTextHasUpdate, csrSlideText, parseProjectBodyLines } from '@/lib/exco-csr-fy27';
+import {
+  resolveRecruitment,
+  recruitmentBudgetTone,
+  recruitmentContractTone,
+  recruitmentStatusTone,
+} from '@/lib/exco-recruitment-fy27';
 import { buildExcoSectorTables } from '@/lib/exco-project-sector-table';
 import { buildInternalAuditRows, summarizeInternalAudit } from '@/lib/exco-audit-internal';
 import type { InternalAuditRow } from '@/lib/exco-audit-internal';
@@ -265,14 +270,19 @@ function renderOtVsLeaveSlide(vs: ExcoOtVsLeaveSlideData): string {
   return `<div class="ovl-summary">
   <div class="ovl-banner trend-sep"><span>Overtime vs Leave Balance</span></div>
   <div class="ovl-two">
-    <div class="ovl-panel">
+    <div class="ovl-panel ovl-panel-overview">
       <h3>General Overview — ${esc(vs.periodLabel)}</h3>
-      <div class="ovl-table-wrap">
+      <div class="ovl-table-wrap ovl-overview-wrap">
         <table class="trend-table ovl-dept ovl-red ovl-overview-table">
           <thead><tr><th>Indicator</th><th>Value</th></tr></thead>
           <tbody>${overviewRows}</tbody>
         </table>
       </div>
+      ${
+        vs.narrative
+          ? `<div class="ovl-narrative"><h4>Summary</h4><p>${esc(vs.narrative)}</p></div>`
+          : ''
+      }
     </div>
     <div class="ovl-panel">
       <h3>Overtime vs Leave Balance per DEPT</h3>
@@ -583,19 +593,21 @@ function renderCahierSlide(items: ExcoCahierHighlight[]): string {
   const rows = items
     .map((item) => {
       const pct = Math.max(0, Math.min(100, Number(item.progressPct) || 0));
-      const plain = (item.body || '').replace(/\[\[|\]\]/g, '').trim();
-      const short = plain.length < 80;
-      let body = renderCsrUpdateHtml(item.body || '', 'full');
-      if (short && body.includes('100%')) {
-        body = body.replace('100%', '<strong>100%</strong>');
-      }
+      const body = parseProjectBodyLines(item.body || '')
+        .map((line) => {
+          const text = renderCsrUpdateHtml(line.text || '', 'full');
+          return line.label
+            ? `<p><strong>${esc(line.label)} :</strong> ${text}</p>`
+            : `<p>${text}</p>`;
+        })
+        .join('');
       return `<article class="cahier-item" data-icon="${esc(item.icon)}">
   <div class="cahier-ring" style="background:conic-gradient(#2f7d32 ${pct}%, #f4c4c8 0)">
     <span>${cahierIconImg(item.icon)}</span>
   </div>
   <div class="cahier-copy">
     <h3>${esc(item.title || '—')}</h3>
-    <p class="${short ? 'cahier-bullet' : ''}">${body}</p>
+    <div class="cahier-body-text">${body || '<p>—</p>'}</div>
   </div>
 </article>`;
     })
@@ -745,7 +757,9 @@ export function buildExcoPreviewHtml(report: ExcoReportPayload): string {
       .map((r) => {
         const cell = (v: string) =>
           `<td${csrTextHasUpdate(v) ? ' class="has-upd"' : ''}>${renderCsrUpdateHtml(v)}</td>`;
-        return `<tr>${cell(r.position)}${cell(r.grade)}${cell(r.status)}${cell(r.comments)}${cell(r.budgeted)}${cell(r.department)}${cell(r.location)}${cell(r.contractType)}</tr>`;
+        const badge = (v: string, tone: string) =>
+          `<td class="has-badge"><span class="exco-rec-badge is-${tone}">${esc((v || '—').trim() || '—')}</span></td>`;
+        return `<tr>${cell(r.position)}${cell(r.grade)}${badge(r.status, recruitmentStatusTone(r.status))}${cell(r.comments)}${badge(r.budgeted, recruitmentBudgetTone(r.budgeted))}${cell(r.department)}${cell(r.location)}${badge(r.contractType, recruitmentContractTone(r.contractType))}</tr>`;
       })
       .join('') || '<tr><td colspan="8">—</td></tr>';
   const recruitHtml = `<div class="dash-body recruit-body">
@@ -1341,8 +1355,28 @@ export function buildExcoPreviewHtml(report: ExcoReportPayload): string {
   .ovl-summary .trend-table {
     table-layout: auto;
     width: 100%;
-    height: 100%;
     font-size: 9px;
+  }
+  .ovl-overview-wrap { flex: 0 0 auto; }
+  .ovl-narrative {
+    flex: 1;
+    min-height: 0;
+    margin-top: 8px;
+    padding-top: 6px;
+    border-top: 1px solid var(--line);
+    overflow: hidden;
+  }
+  .ovl-narrative h4 {
+    margin: 0 0 4px;
+    font-size: 10px;
+    font-weight: 700;
+    color: var(--red);
+  }
+  .ovl-narrative p {
+    margin: 0;
+    font-size: 9.5px;
+    line-height: 1.35;
+    color: var(--ink);
   }
   .ovl-summary .trend-table th,
   .ovl-summary .trend-table td {
@@ -1384,7 +1418,16 @@ export function buildExcoPreviewHtml(report: ExcoReportPayload): string {
     padding-bottom: 3px !important;
   }
   .ovl-emp th:nth-child(1), .ovl-emp td:nth-child(1) { width: 14%; }
-  .ovl-emp th:nth-child(2), .ovl-emp td:nth-child(2) { width: 28%; text-align: left; padding-left: 4px; }
+  .ovl-emp th:nth-child(2), .ovl-emp td:nth-child(2) {
+    width: 34%;
+    text-align: left;
+    padding-left: 4px;
+    white-space: normal;
+    overflow: visible;
+    text-overflow: clip;
+    word-break: break-word;
+    font-weight: 600;
+  }
   .trend-table.ovl-red th { background: var(--red); }
 
   /* Training / CSR / Gouvernance */
@@ -1595,6 +1638,15 @@ export function buildExcoPreviewHtml(report: ExcoReportPayload): string {
   .rec-table th { font-size: 7.5px; padding: 3px 4px; }
   .rec-table td { padding: 2px 4px; vertical-align: middle; font-weight: 400; height: 18px; }
   .rec-table td.has-upd { background: #e8f0fe !important; }
+  .exco-rec-badge { display: inline-block; padding: 1px 6px; border-radius: 999px; font-size: 7px; font-weight: 700; letter-spacing: 0.02em; }
+  .exco-rec-badge.is-done, .exco-rec-badge.is-yes { background: #dcfce7; color: #166534; }
+  .exco-rec-badge.is-ongoing { background: #ffedd5; color: #9a3412; }
+  .exco-rec-badge.is-started { background: #dbeafe; color: #1d4ed8; }
+  .exco-rec-badge.is-idle { background: #f4f4f5; color: #52525b; }
+  .exco-rec-badge.is-cancelled, .exco-rec-badge.is-no, .exco-rec-badge.is-alert { background: #fee2e2; color: #b91c1c; }
+  .exco-rec-badge.is-neutral { background: #f4f4f5; color: #3f3f46; }
+  .cahier-body-text p { margin: 0 0 4px; }
+  .cahier-body-text strong { font-weight: 700; }
   .rec-table td:nth-child(1) { width: 14%; font-weight: 700; }
   .rec-table td:nth-child(2) { width: 6%; text-align: center; }
   .rec-table td:nth-child(3) { width: 8%; text-align: center; }

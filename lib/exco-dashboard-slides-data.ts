@@ -153,20 +153,49 @@ export type ExcoCsrSlideData = {
   bySecteurPie: ExcoPieSlice[];
 };
 
+function projectStatusKind(statut: string): 'progress' | 'done' | 'idle' {
+  const n = (statut || '').toLowerCase().normalize('NFD').replace(/\p{Diacritic}/gu, '');
+  if (n.includes('termin') || n.includes('closed')) return 'done';
+  if (n.includes('cours')) return 'progress';
+  return 'idle';
+}
+
 export function buildCsrSlideData(report: ExcoReportPayload): ExcoCsrSlideData {
-  const sum = report.computed.csrSummary;
-  const byTypePie = (sum.byType || [])
-    .filter((r) => Number(r.value) > 0)
-    .map((r, i) => ({
-      label: r.label || '—',
-      value: Number(r.value) || 0,
+  const csrOnly = (report.computed.csrProjects || []).filter((p) => {
+    const t = (p.typeProjet || '').trim().toLowerCase();
+    return t === 'csr' || (t.includes('csr') && !t.includes('cahier'));
+  });
+  const sum = csrOnly.length
+    ? {
+        total: csrOnly.length,
+        enCours: csrOnly.filter((p) => projectStatusKind(p.statut) === 'progress').length,
+        termines: csrOnly.filter((p) => projectStatusKind(p.statut) === 'done').length,
+        nonDebutes: csrOnly.filter((p) => projectStatusKind(p.statut) === 'idle').length,
+        budgetPrevu: csrOnly.reduce((s, p) => s + (Number(p.budgetPrevu) || 0), 0),
+        budgetDepense: csrOnly.reduce((s, p) => s + (Number(p.budgetDepense) || 0), 0),
+      }
+    : report.computed.csrSummary;
+  const pieSource = csrOnly.length ? csrOnly : report.computed.csrProjects || [];
+  const byTypeMap = new Map<string, number>();
+  const bySecteurMap = new Map<string, number>();
+  for (const p of pieSource) {
+    const type = p.typeProjet?.trim() || 'CSR';
+    byTypeMap.set(type, (byTypeMap.get(type) || 0) + 1);
+    const secteur = p.secteur?.trim() || 'Non renseigné';
+    bySecteurMap.set(secteur, (bySecteurMap.get(secteur) || 0) + 1);
+  }
+  const byTypePie = [...byTypeMap.entries()]
+    .filter(([, value]) => value > 0)
+    .map(([label, value], i) => ({
+      label,
+      value,
       color: PIE_COLORS[i % PIE_COLORS.length],
     }));
-  const bySecteurPie = (sum.bySecteur || [])
-    .filter((r) => Number(r.total) > 0)
-    .map((r, i) => ({
-      label: r.label || '—',
-      value: Number(r.total) || 0,
+  const bySecteurPie = [...bySecteurMap.entries()]
+    .filter(([, value]) => value > 0)
+    .map(([label, value], i) => ({
+      label,
+      value,
       color: PIE_COLORS[i % PIE_COLORS.length],
     }));
   return {

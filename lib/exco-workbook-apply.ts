@@ -195,9 +195,17 @@ export function applyWorkbookSnapshotToComputed(
         ? (pctFromRate(currentInOut?.attritionRate ?? null) ?? computed.attritionPct)
         : computed.attritionPct,
       overtimeHours: t.overtimeHours,
-      staffCost: snap.manualKpis.staffCost ?? t.staffCost,
-      volumePerEmp: snap.manualKpis.volumePerEmp ?? t.volumePerEmp,
-      revenuePerEmp: snap.manualKpis.revenuePerEmp ?? t.revenuePerEmp,
+      staffCost: snap.manualKpis.staffCost != null && snap.manualKpis.staffCost >= 0
+        ? snap.manualKpis.staffCost
+        : t.staffCost,
+      volumePerEmp:
+        snap.manualKpis.staffCost != null && snap.manualKpis.staffCost >= 0
+          ? (snap.manualKpis.volumePerEmp ?? t.volumePerEmp)
+          : t.volumePerEmp,
+      revenuePerEmp:
+        snap.manualKpis.staffCost != null && snap.manualKpis.staffCost >= 0
+          ? (snap.manualKpis.revenuePerEmp ?? t.revenuePerEmp)
+          : t.revenuePerEmp,
       leaveBalanceAvgDays: t.leaveBalanceAvgDays,
       leaveCost: t.leaveCost,
       overtimeCost: t.overtimeCost,

@@ -60,13 +60,27 @@ function isMatricule(value: unknown): string | null {
   return null;
 }
 
-function toNum(value: unknown): number {
+/** Parse un montant Excel/SAP : 8819763.53 · 8,819,763.53 · 8.819.763,53 */
+export function parseExcoAmount(value: unknown): number {
   if (typeof value === 'number' && Number.isFinite(value)) return value;
   if (typeof value === 'string') {
-    const n = Number(value.replace(/\s/g, '').replace(',', '.'));
+    const s = value.replace(/\s/g, '').replace(/\u00a0/g, '').trim();
+    if (!s || s === '#DIV/0!' || s === '#N/A' || s === '-') return 0;
+    let n: number;
+    if (/^-?\d{1,3}(,\d{3})+(\.\d+)?$/.test(s)) {
+      n = Number(s.replace(/,/g, ''));
+    } else if (/^-?\d{1,3}(\.\d{3})+(,\d+)?$/.test(s)) {
+      n = Number(s.replace(/\./g, '').replace(',', '.'));
+    } else {
+      n = Number(s.replace(',', '.'));
+    }
     return Number.isFinite(n) ? n : 0;
   }
   return 0;
+}
+
+function toNum(value: unknown): number {
+  return parseExcoAmount(value);
 }
 
 function isOtComponent(name: string): boolean {
@@ -74,7 +88,10 @@ function isOtComponent(name: string): boolean {
   return s.includes('heure') && (s.includes('suppl') || s.includes('x 1') || s.includes('x 2'));
 }
 
-/** Parse Component Posted Units (toutes les feuilles / compagnies). */
+/** Parse Component Posted Units (toutes les feuilles / compagnies).
+ *  Même logique que overtime_base N/O :
+ *  O2 UNIQUE(Employee Number), O4 SUM(Units), O6 SUM(Component Value)/FX.
+ */
 export function parseComponentPostedUnits(
   buffer: ArrayBuffer,
 ): Array<{
@@ -178,6 +195,36 @@ export type ExcoLeaveBalanceRow = {
   costCentre: string;
 };
 
+function findLeaveColumnMap(rows: unknown[][]): {
+  emp: number[];
+  type: number;
+  desc: number;
+  closing: number;
+  value: number;
+} {
+  const fallback = { emp: [3, 4], type: 19, desc: 20, closing: 28, value: 29 };
+  for (const row of rows.slice(0, 25)) {
+    const labels = (row || []).map((c) => String(c ?? '').trim().toLowerCase());
+    const value = labels.findIndex(
+      (h) => h === 'value' || h === 'val' || h === 'value / val' || h.replace(/\s/g, '') === 'value/val',
+    );
+    const closing = labels.findIndex((h) => h.includes('closing balance'));
+    if (value < 0 || closing < 0) continue;
+    const type = labels.findIndex((h) => h === 'leave type');
+    const desc = labels.findIndex((h) => h.includes('leave description'));
+    const empNo = labels.findIndex((h) => /^emp\.?\s*no/.test(h));
+    const empNumber = labels.findIndex((h) => h.startsWith('emp number'));
+    return {
+      emp: [empNo >= 0 ? empNo : 3, empNumber >= 0 ? empNumber : 4],
+      type: type >= 0 ? type : 19,
+      desc: desc >= 0 ? desc : 20,
+      closing,
+      value,
+    };
+  }
+  return fallback;
+}
+
 /**
  * Leave Balances — Leave Type Annual only.
  * - byMatricule : Closing Balance / Value par employé (dernier vu).
@@ -202,16 +249,17 @@ export function parseLeaveBalancesDetailed(buffer: ArrayBuffer): {
       defval: null,
       raw: true,
     }) as unknown[][];
+    const cols = findLeaveColumnMap(rows);
+    const minLen = Math.max(cols.value, cols.closing, ...cols.emp) + 1;
 
     let sheetFc = 0;
     let annualRows = 0;
     for (const row of rows) {
-      // Col. AD = index 29 → besoin d’au moins 30 cellules
-      if (!row || row.length < 30) continue;
-      const matricule = isMatricule(row[3]) || isMatricule(row[4]);
+      if (!row || row.length < minLen) continue;
+      const matricule = isMatricule(row[cols.emp[0]]) || isMatricule(row[cols.emp[1]]);
       if (!matricule) continue;
-      const leaveType = String(row[19] ?? '').trim().toLowerCase();
-      const leaveDesc = String(row[20] ?? '').trim().toLowerCase();
+      const leaveType = String(row[cols.type] ?? '').trim().toLowerCase();
+      const leaveDesc = String(row[cols.desc] ?? '').trim().toLowerCase();
       const isAnnual =
         leaveType === 'annual'
         || leaveDesc.includes('annuel')
@@ -221,7 +269,7 @@ export function parseLeaveBalancesDetailed(buffer: ArrayBuffer): {
       if (!isAnnual) continue;
 
       annualRows += 1;
-      const valueFc = toNum(row[29]);
+      const valueFc = toNum(row[cols.value]);
       sheetFc += valueFc;
 
       const first = String(row[5] ?? row[1] ?? '').trim();
@@ -230,7 +278,7 @@ export function parseLeaveBalancesDetailed(buffer: ArrayBuffer): {
       const departmentRaw = String(row[18] ?? '').trim();
       const costCentre = String(row[17] ?? '').trim();
       map.set(matricule, {
-        leaveBalance: Math.round(toNum(row[28]) * 100) / 100,
+        leaveBalance: Math.round(toNum(row[cols.closing]) * 100) / 100,
         valueFc: Math.round(valueFc * 100) / 100,
         nom,
         departmentRaw,
@@ -320,25 +368,29 @@ export function excoLeaveCostUsdFromSnap(
     ExcoLeaveMonthImport,
     'leaveCostUsd' | 'provisionUsd000' | 'valueFcTotal' | 'fxRateFcPerUsd' | 'valueFcBySheet'
   > | null | undefined,
+  /** Taux du mois (params) — prioritaire sur le taux figé à l’import. */
+  fxOverride?: number | null,
 ): number | null {
   if (!snap) return null;
-  if (snap.leaveCostUsd != null && Number.isFinite(snap.leaveCostUsd)) {
-    return Math.round(snap.leaveCostUsd * 100) / 100;
-  }
+  const fx =
+    fxOverride != null && Number.isFinite(fxOverride) && fxOverride > 0
+      ? fxOverride
+      : snap.fxRateFcPerUsd != null && snap.fxRateFcPerUsd > 0
+        ? snap.fxRateFcPerUsd
+        : null;
+  // Toujours recalculer depuis les FC quand possible (évite un leaveCostUsd figé avec un mauvais taux).
   if (
     Array.isArray(snap.valueFcBySheet)
     && snap.valueFcBySheet.length > 0
-    && snap.fxRateFcPerUsd != null
-    && snap.fxRateFcPerUsd > 0
+    && fx != null
   ) {
-    return leaveCostUsdFromSheets(snap.valueFcBySheet, snap.fxRateFcPerUsd);
+    return leaveCostUsdFromSheets(snap.valueFcBySheet, fx);
   }
-  if (
-    snap.valueFcTotal != null
-    && snap.fxRateFcPerUsd != null
-    && snap.fxRateFcPerUsd > 0
-  ) {
-    return Math.round((snap.valueFcTotal / snap.fxRateFcPerUsd) * 100) / 100;
+  if (snap.valueFcTotal != null && fx != null) {
+    return Math.round((snap.valueFcTotal / fx) * 100) / 100;
+  }
+  if (snap.leaveCostUsd != null && Number.isFinite(snap.leaveCostUsd)) {
+    return Math.round(snap.leaveCostUsd * 100) / 100;
   }
   // Dernier recours (baseline template) — imprécis (milliers USD)
   if (snap.provisionUsd000 != null && Number.isFinite(snap.provisionUsd000)) {

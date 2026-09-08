@@ -1,0 +1,26 @@
+---
+description: Tout chiffre cliquable (cartes, graphiques, tableaux) ouvre un modal de détails
+alwaysApply: true
+---
+
+# Drill-down chiffres → modal détails
+
+Quand un **chiffre** s’affiche dans une **carte KPI**, un **graphique** ou un **tableau**, le clic doit ouvrir un **modal de détails** (liste filtrée), pas seulement naviguer ou agrandir le chart.
+
+## Pattern obligatoire
+
+1. Rendre le chiffre / segment / cellule **cliquable** (`dependants-kpi-clickable`, `is-clickable`, bouton ou `onItemClick`).
+2. Ouvrir le modal adapté :
+   - générique : `DashboardListModal`
+   - domaine : `DependantsDrilldownModal`, `VillageDrilldownModal`, etc.
+3. Titre / tooltip : `Voir la liste — …` ou `Voir le détail — …`.
+4. Les lignes du modal doivent correspondre exactement au filtre du chiffre cliqué.
+
+## Exceptions
+
+- Moyennes / ratios purement calculés (ex. « moyenne », « Âge moyen » si déjà traité autrement) : ne pas forcer un faux drill si le produit l’exclut déjà.
+- Lien « Voir tout → » vers une page peut coexister, mais **ne remplace pas** le modal sur le chiffre.
+
+## Référence existante
+
+Suivre `EmployeesHrDashboardView`, `DependantsDashboardView`, `ProjectDashboardView`, `FacturesSuiviDashboard`, etc. — pas inventer un autre pattern.

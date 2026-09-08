@@ -3,6 +3,7 @@ import { listExcoUploads } from '@/lib/exco-uploads';
 import { getExcoOverlays, saveExcoOverlays } from '@/lib/exco-store';
 import { emptyExcoOverlays } from '@/lib/exco-types';
 import { inheritNarrative } from '@/lib/exco-narrative-format';
+import { excoLeaveCostUsdFromSnap } from '@/lib/exco-ot-import';
 import { checkPermission } from '@/lib/require-permission';
 import { getAuditActor, withAudit } from '@/lib/with-audit';
 
@@ -198,6 +199,48 @@ export async function PUT(request: Request) {
         generatedAt: new Date().toISOString(),
         sourceFiles: overlays.generationMeta?.sourceFiles || [],
       };
+      // Recalcul Leave COST (et sync taux sur l’import du mois) avec le taux params.
+      const leaveKey = String(month);
+      const leaveSnap = overlays.leaveImportsByMonth?.[leaveKey];
+      if (leaveSnap && fx != null && fx > 0) {
+        const leaveCostUsd = excoLeaveCostUsdFromSnap(leaveSnap, fx);
+        next.leaveImportsByMonth = {
+          ...(overlays.leaveImportsByMonth || {}),
+          [leaveKey]: {
+            ...leaveSnap,
+            fxRateFcPerUsd: fx,
+            leaveCostUsd,
+            provisionUsd000:
+              leaveCostUsd != null
+                ? Math.round((leaveCostUsd / 1000) * 100) / 100
+                : leaveSnap.provisionUsd000 ?? null,
+          },
+        };
+        if (next.manualKpis) {
+          next.manualKpis = {
+            ...next.manualKpis,
+            leaveCost: leaveCostUsd,
+          };
+        }
+        const fin = next.financeByMonth?.[leaveKey];
+        if (fin) {
+          next.financeByMonth = {
+            ...(next.financeByMonth || {}),
+            [leaveKey]: { ...fin, leaveCost: leaveCostUsd },
+          };
+        }
+      }
+      // Aligner aussi le taux OT du mois (le coût USD est déjà recalculé à la lecture).
+      const otSnap = overlays.overtimeImportsByMonth?.[leaveKey];
+      if (otSnap && fx != null && fx > 0) {
+        next.overtimeImportsByMonth = {
+          ...(overlays.overtimeImportsByMonth || {}),
+          [leaveKey]: {
+            ...otSnap,
+            fxRateFcPerUsd: fx,
+          },
+        };
+      }
     }
 
     if (hasNarrative) {

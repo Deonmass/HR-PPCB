@@ -7,11 +7,11 @@ import { readProjects, upsertProject } from './projects-store';
 
 /** Mots-clés pour relier un highlight à un projet. */
 const ICON_MATCHERS: Record<ExcoCahierIcon, string[]> = {
-  scholarship: ['scholarship', 'bourse', 'education', 'école', 'ecole', 'school', 'sewing'],
-  infrastructure: ['infrastructure', 'pont', 'bridge', 'malanga', 'tank', 'water'],
-  agriculture: ['agriculture', 'agri', 'nkumba', 'manalola', 'mwinda', 'ppe'],
+  scholarship: ['scholarship', 'bourse', 'education', 'école', 'ecole', 'school', 'sewing', 'mwinda', 'epi'],
+  infrastructure: ['infrastructure', 'pont', 'bridge', 'tank', 'water', 'reservoir', 'réservoir'],
+  agriculture: ['agriculture', 'agri', 'permacult', 'manalola'],
   leisure: ['leisure', 'sport', 'loisir', 'football', 'soccer'],
-  electricity: ['electric', 'électr', 'electr', 'zamba', 'snel'],
+  electricity: ['electric', 'électr', 'electr', 'snel'],
 };
 
 function norm(value: string): string {
@@ -27,11 +27,35 @@ function matchesType(typeProjet: string, expected: 'csr' | 'cahier'): boolean {
   return t === 'csr' || t.includes('csr') || (!t.includes('cahier') && t.length > 0 && expected === 'csr');
 }
 
+function inSite(project: ProjectRecord, ...needles: string[]): boolean {
+  const blob = `${project.name} ${project.lieu || ''}`;
+  return needles.some((n) => norm(blob).includes(norm(n)));
+}
+
 function matchesHighlight(project: ProjectRecord, icon: ExcoCahierIcon, title: string): boolean {
+  const pn = norm(project.name);
+  const titleN = norm(title);
+  if (title.trim() && (pn === titleN || (titleN.length >= 10 && pn.includes(titleN)) || (pn.length >= 8 && titleN.includes(pn)))) {
+    return true;
+  }
+  if (icon === 'agriculture') {
+    return pn.includes('permacult') && inSite(project, 'nkumba', 'malanga cité', 'malanga cite');
+  }
+  if (icon === 'leisure') {
+    return (pn.includes('football') || pn.includes('soccer')) && inSite(project, 'nkumba', 'malanga cité', 'malanga cite');
+  }
+  if (icon === 'electricity') {
+    return (pn.includes('electric') || pn.includes('electr')) && inSite(project, 'zamba', 'malanga cité', 'malanga cite');
+  }
+  if (icon === 'scholarship') {
+    return pn.includes('mwinda') || pn.includes('ecole ppc') || pn.includes('epi');
+  }
+  if (icon === 'infrastructure') {
+    return pn.includes('reservoir') || pn.includes('tank') || (pn.includes('eau') && pn.includes('zamba'));
+  }
   const keys = ICON_MATCHERS[icon] || [];
   const hay = norm(`${project.name} ${project.secteur} ${project.sousActivite} ${title}`);
-  const titleHit = title.trim() && norm(project.name).includes(norm(title).slice(0, 18));
-  return titleHit || keys.some((k) => hay.includes(norm(k)));
+  return keys.some((k) => hay.includes(norm(k)));
 }
 
 async function syncHighlightsToProjects(
@@ -57,7 +81,13 @@ async function syncHighlightsToProjects(
               ? 50
               : 0,
       );
-      if (currentEvo === evolution && p.statut === nextStatut) continue;
+      if (
+        currentEvo === evolution &&
+        p.statut === nextStatut &&
+        (p.commentaire || '') === (h.body || p.commentaire || '')
+      ) {
+        continue;
+      }
       await upsertProject(
         normalizeProject({
           ...p,

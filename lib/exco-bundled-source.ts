@@ -94,6 +94,28 @@ async function persistSnapshot(
   delete snapKpisWithoutFileImports.overtimeCost;
   delete snapKpisWithoutFileImports.leaveBalanceAvgDays;
   delete snapKpisWithoutFileImports.leaveCost;
+  // Ne pas écraser une saisie Staff Cost Input valide avec le mois « cancel » Excel (< 0).
+  const snapStaffPoison =
+    snapKpisWithoutFileImports.staffCost != null && snapKpisWithoutFileImports.staffCost < 0;
+  if (snapStaffPoison) {
+    delete snapKpisWithoutFileImports.staffCost;
+    delete snapKpisWithoutFileImports.volumePerEmp;
+    delete snapKpisWithoutFileImports.revenuePerEmp;
+  }
+  const overlayStaffOk =
+    overlays.manualKpis?.staffCost != null && overlays.manualKpis.staffCost >= 0;
+  const keepOverlayFinance = overlayStaffOk && (
+    snapStaffPoison
+    || snapKpisWithoutFileImports.staffCost == null
+    || Boolean(overlays.staffCostYtdByMonth?.[String(month)])
+  );
+  const snapFinanceByMonth = { ...(snap.financeByMonth || {}) };
+  for (const [k, fin] of Object.entries(snapFinanceByMonth)) {
+    if (fin?.staffCost != null && fin.staffCost < 0) {
+      const { staffCost: _sc, volumePerEmp: _v, revenuePerEmp: _r, ...rest } = fin;
+      snapFinanceByMonth[k] = rest;
+    }
+  }
 
   let nextOverlays: ExcoOverlays = {
     ...overlays,
@@ -115,10 +137,23 @@ async function persistSnapshot(
     manualKpis: {
       ...overlays.manualKpis,
       ...snapKpisWithoutFileImports,
+      ...(keepOverlayFinance
+        ? {
+            staffCost: overlays.manualKpis?.staffCost,
+            volumePerEmp: overlays.manualKpis?.volumePerEmp,
+            revenuePerEmp: overlays.manualKpis?.revenuePerEmp,
+            staffCostBudgetYtd: overlays.manualKpis?.staffCostBudgetYtd,
+            volumeBudgetYtd: overlays.manualKpis?.volumeBudgetYtd,
+            revenueBudgetYtd: overlays.manualKpis?.revenueBudgetYtd,
+          }
+        : {}),
     },
     financeByMonth: {
       ...(overlays.financeByMonth || {}),
-      ...snap.financeByMonth,
+      ...snapFinanceByMonth,
+      ...(keepOverlayFinance && overlays.financeByMonth?.[String(month)]
+        ? { [String(month)]: overlays.financeByMonth[String(month)] }
+        : {}),
     },
     generationMeta: {
       fxRateFcPerUsd,

@@ -1,6 +1,7 @@
 import type { ExcoReportPayload } from '@/lib/exco-types';
 import { EXCO_FY_MONTH_LABELS } from '@/lib/exco-template-baseline';
 import { excoFyColumns } from '@/lib/exco-trends-slide-data';
+import { buildOtVsLeaveNarrative } from '@/lib/exco-ot-base-kpis';
 
 /** Couleurs segments mois (alignées onglet Heures supp.). */
 export const OT_MONTH_SEGMENT_COLORS = [
@@ -202,6 +203,7 @@ export type ExcoOtDeptCrossRow = {
 export type ExcoOtVsLeaveSlideData = {
   periodLabel: string;
   overviewLines: Array<{ text: string; value: string }>;
+  narrative: string;
   otTop: ExcoOtEmpDisplayRow[];
   leaveTop: ExcoOtEmpDisplayRow[];
   deptCross: ExcoOtDeptCrossRow[];
@@ -335,9 +337,38 @@ export function buildOtVsLeaveSlideData(report: ExcoReportPayload): ExcoOtVsLeav
     },
   ];
 
+  const costUsd = o.manualKpis.overtimeCost ?? null;
+  const staffCost = o.manualKpis.staffCost ?? null;
+  const avgCost =
+    costUsd != null && c.employeesWithOt > 0
+      ? Math.round((costUsd / c.employeesWithOt) * 100) / 100
+      : null;
+  const otShare =
+    costUsd != null && staffCost != null && staffCost > 0 ? costUsd / staffCost : null;
+
+  const narrative = buildOtVsLeaveNarrative({
+    periodLabel: report.periodLabel,
+    panel: {
+      headcount: c.headcount,
+      employeesWithHours: c.employeesWithOt,
+      pctOfWorkforce: staffPct,
+      totalHours: c.overtimeHoursTotal,
+      averageHours: avgHours != null ? Math.round(avgHours * 100) / 100 : null,
+      totalCostUsd: costUsd,
+      averageCostUsd: avgCost,
+      otShareOfStaffCost: otShare,
+      otShareOfStaffCostYtd: null,
+    },
+    avgLeaveDays: avgLeave,
+    topDepts: (c.overtimeByDept || [])
+      .map((d) => ({ department: d.department, hours: d.hours || 0 }))
+      .sort((a, b) => b.hours - a.hours),
+  });
+
   return {
     periodLabel: report.periodLabel,
     overviewLines,
+    narrative,
     otTop,
     leaveTop,
     deptCross,

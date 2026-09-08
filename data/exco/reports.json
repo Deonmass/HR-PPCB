@@ -277,7 +277,7 @@
           "revenuePerEmp": 66220.49,
           "overtimeCost": 9334.53,
           "leaveBalanceAvgDays": 17.92,
-          "leaveCost": 395059.44,
+          "leaveCost": 375942.47,
           "staffCostBudgetYtd": 7453889,
           "volumeBudgetYtd": 547437,
           "revenueBudgetYtd": 90423897
@@ -345,7 +345,7 @@
             "revenuePerEmp": 66220.49,
             "overtimeCost": 9334.53,
             "leaveBalanceAvgDays": 17.92,
-            "leaveCost": 395059.44,
+            "leaveCost": 375942.47,
             "staffCostBudgetYtd": 7453889,
             "volumeBudgetYtd": 547437,
             "revenueBudgetYtd": 90423897
@@ -823,9 +823,78 @@
         "auditFindings": [],
         "isoActions": [],
         "csrProjects": [],
-        "csrFy27Rows": [],
-        "csrHighlights": [],
-        "cahierHighlights": [],
+        "csrFy27Rows": [
+          {
+            "id": "csr-fy27-zamba-tank",
+            "name": "Réservoir d’eau à Zamba",
+            "objective": "Planification du remplacement du réservoir défectueux et perforé par un nouveau déjà disponible.",
+            "progress": "Accord du village pour le nouvel emplacement du réservoir.",
+            "risks": "En attente du cahier des charges.",
+            "nextSteps": "[[en attente du cahier des charges]]"
+          },
+          {
+            "id": "csr-fy27-mwinda",
+            "name": "Partenariat Mwinda – EPI local",
+            "objective": "Former et intégrer professionnellement les jeunes femmes + produire des EPI localement pour réduire les importations et les retards.",
+            "progress": "Élaboration du PR sur les travaux d’aménagement.",
+            "risks": "PO procurement encore à émettre.",
+            "nextSteps": "PO par le procurement."
+          },
+          {
+            "id": "csr-fy27-ppc-school",
+            "name": "École PPC",
+            "objective": "Statut légal de l’école signé.",
+            "progress": "Le contrat est signé par MD.",
+            "risks": "En attente de la signature de la congrégation.",
+            "nextSteps": "En attente de la signature de la congrégation."
+          }
+        ],
+        "csrHighlights": [
+          {
+            "id": "csr-zamba-tank",
+            "icon": "infrastructure",
+            "title": "Réservoir d’eau à Zamba",
+            "body": "Objectif : remplacement du réservoir défectueux et perforé par un nouveau déjà disponible.\nSituation : accord du village pour le nouvel emplacement.\nProchaines étapes : [[en attente du cahier des charges]].",
+            "progressPct": 35
+          },
+          {
+            "id": "csr-mwinda",
+            "icon": "scholarship",
+            "title": "Partenariat Mwinda – EPI local",
+            "body": "Objectif : former et intégrer professionnellement les jeunes femmes et produire des EPI localement.\nSituation : élaboration du PR sur les travaux d’aménagement.\nProchaines étapes : PO par le procurement.",
+            "progressPct": 45
+          },
+          {
+            "id": "csr-ppc-school",
+            "icon": "scholarship",
+            "title": "École PPC",
+            "body": "Objectif : statut légal de l’école signé.\nSituation : le contrat est signé par MD.\nProchaines étapes : en attente de la signature de la congrégation.",
+            "progressPct": 85
+          }
+        ],
+        "cahierHighlights": [
+          {
+            "id": "cahier-agri",
+            "icon": "agriculture",
+            "title": "Agriculture",
+            "body": "Reprise des activités agricoles pour les communautés de Nkumba et de Malanga Cité prévue pour septembre 2026.",
+            "progressPct": 25
+          },
+          {
+            "id": "cahier-leisure",
+            "icon": "leisure",
+            "title": "Loisirs",
+            "body": "Malanga Cité et Nkumba : prise de mesures pour la réhabilitation du terrain de football.",
+            "progressPct": 40
+          },
+          {
+            "id": "cahier-electricity",
+            "icon": "electricity",
+            "title": "Électricité",
+            "body": "Réalisation : 80 % (matériels 100 %, finances 100 %).\nTravaux en cours : amélioration des réseaux de mise à la terre ; élargissement de la salle de contrôle pour accéder aux cellules acquises.\nZamba 1re : deux cabines installées.\nMalanga Cité : lettre à l’AT de Songololo pour les formalités du nouveau site du transformateur.",
+            "progressPct": 80
+          }
+        ],
         "trainingTopics": [],
         "upcomingTrainings": [],
         "policies": {
@@ -1526,7 +1595,7 @@
           "8": {
             "year": 2026,
             "month": 8,
-            "fxRateFcPerUsd": 2308,
+            "fxRateFcPerUsd": 2292.5,
             "plantAvgDays": 16,
             "hqAvgDays": 22.19,
             "lubudiAvgDays": 10.92,
@@ -1535,8 +1604,8 @@
             "valueFcBySheet": [
               861848119.72
             ],
-            "leaveCostUsd": 373417.73,
-            "provisionUsd000": 373.42,
+            "leaveCostUsd": 375942.47,
+            "provisionUsd000": 375.94,
             "counts": {
               "plant": 97,
               "hq": 61,
@@ -7217,19 +7286,19 @@
             },
             {
               "calendarMonth": 8,
-              "actualHeadcount": null,
-              "salariesActualYtd": null,
-              "volumesActualYtd": null,
-              "revenueActualYtd": null,
-              "salariesBudgetYtd": null,
-              "volumesBudgetYtd": null,
-              "revenueBudgetYtd": null,
-              "staffCostMonth": -5866469,
-              "volumeMonth": -376622,
-              "revenueMonth": -60292193,
-              "tonPerEmployee": 0,
+              "actualHeadcount": 175,
+              "salariesActualYtd": 6728397,
+              "volumesActualYtd": 450961,
+              "revenueActualYtd": 71880778,
+              "salariesBudgetYtd": 7453889,
+              "volumesBudgetYtd": 547437,
+              "revenueBudgetYtd": 90423897,
+              "staffCostMonth": 861928,
+              "volumeMonth": 74339,
+              "revenueMonth": 11588585,
+              "tonPerEmployee": 424.79,
               "tonPerEmployeeYtd": 0,
-              "revenuePerEmployee": 0,
+              "revenuePerEmployee": 66220.49,
               "revenuePerEmployeeYtd": 0
             },
             {
@@ -7884,7 +7953,7 @@
                   538.7300000000001,
                   784.1799999999998,
                   639.1899999999999,
-                  null,
+                  441.67,
                   null,
                   null,
                   null,
@@ -7893,13 +7962,13 @@
                   null,
                   null
                 ],
-                "hoursYtd": 2318.44,
+                "hoursYtd": 2760.11,
                 "costByMonth": [
                   3807.702140857204,
                   5326.219725788898,
                   8020.618731938754,
                   6262.871663778163,
-                  null,
+                  4151.44,
                   null,
                   null,
                   null,
@@ -7908,7 +7977,7 @@
                   null,
                   null
                 ],
-                "costYtd": 23417.412262363017,
+                "costYtd": 27568.85,
                 "hoursShare": 0.5681559755332498,
                 "costShare": 0.5871217127210921
               },
@@ -7919,7 +7988,7 @@
                   128.91,
                   82.24,
                   65.57,
-                  null,
+                  44.63,
                   null,
                   null,
                   null,
@@ -7928,13 +7997,13 @@
                   null,
                   null
                 ],
-                "hoursYtd": 334.71,
+                "hoursYtd": 379.34,
                 "costByMonth": [
                   637.9551195347835,
                   1084.9869597388465,
                   824.6197541513909,
                   716.5982538994801,
-                  null,
+                  452.87,
                   null,
                   null,
                   null,
@@ -7943,7 +8012,7 @@
                   null,
                   null
                 ],
-                "costYtd": 3264.1600873245015,
+                "costYtd": 3717.03,
                 "hoursShare": 0.08202389821204517,
                 "costShare": 0.08183907084157059
               },
@@ -7963,7 +8032,7 @@
                   null,
                   null
                 ],
-                "hoursYtd": 233.60000000000002,
+                "hoursYtd": 233.6,
                 "costByMonth": [
                   513.253017445617,
                   402.2201044613711,
@@ -7978,7 +8047,7 @@
                   null,
                   null
                 ],
-                "costYtd": 1931.9676012549648,
+                "costYtd": 1931.97,
                 "hoursShare": 0.05724592220828107,
                 "costShare": 0.04843832077866038
               },
@@ -8013,7 +8082,7 @@
                   null,
                   null
                 ],
-                "costYtd": 45.85425027203482,
+                "costYtd": 45.85,
                 "hoursShare": 0.0015438754705144294,
                 "costShare": 0.0011496584530190964
               },
@@ -8024,7 +8093,7 @@
                   241.41000000000003,
                   163.52,
                   378.92,
-                  null,
+                  439.72,
                   null,
                   null,
                   null,
@@ -8033,13 +8102,13 @@
                   null,
                   null
                 ],
-                "hoursYtd": 836.9100000000001,
+                "hoursYtd": 1276.63,
                 "costByMonth": [
                   620.02703855266,
                   2296.8059499455926,
                   1749.328380418374,
                   3481.9247876949744,
-                  null,
+                  3871.68,
                   null,
                   null,
                   null,
@@ -8048,7 +8117,7 @@
                   null,
                   null
                 ],
-                "costYtd": 8148.086156611602,
+                "costYtd": 12019.77,
                 "hoursShare": 0.2050928285759097,
                 "costShare": 0.20428893876364143
               },
@@ -8059,7 +8128,7 @@
                   53.97,
                   101.13,
                   111,
-                  null,
+                  108,
                   null,
                   null,
                   null,
@@ -8068,13 +8137,13 @@
                   null,
                   null
                 ],
-                "hoursYtd": 334.68,
+                "hoursYtd": 442.68,
                 "costByMonth": [
                   545.4386818867112,
                   575.1223025027203,
                   774.6258960534827,
                   942.051178509532,
-                  null,
+                  858.55,
                   null,
                   null,
                   null,
@@ -8083,7 +8152,7 @@
                   null,
                   null
                 ],
-                "costYtd": 2837.238058952446,
+                "costYtd": 3695.79,
                 "hoursShare": 0.08201654642409036,
                 "costShare": 0.07113527532019172
               },
@@ -8118,7 +8187,7 @@
                   null,
                   null
                 ],
-                "costYtd": 240.38846137105548,
+                "costYtd": 240.39,
                 "hoursShare": 0.0039209535759096616,
                 "costShare": 0.006027023121824658
               }
@@ -8143,7 +8212,7 @@
                 9971.59775408052,
                 11955.236730644814,
                 11833.896395147312,
-                0,
+                9334.54,
                 0,
                 0,
                 0,
@@ -8166,7 +8235,7 @@
                 19182.83,
                 19182.83
               ],
-              "actualYtd": 39885.10687814962,
+              "actualYtd": 49219.65,
               "budgetYtd": 230193.96
             },
             "totalHoursCurrent": 1034.0199999999998,
@@ -9077,9 +9146,9 @@
             "importedAt": "2026-09-07T21:16:44.974Z"
           },
           "manualKpis": {
-            "staffCost": -5866469,
-            "volumePerEmp": 0,
-            "revenuePerEmp": 0,
+            "staffCost": 861928,
+            "volumePerEmp": 424.79,
+            "revenuePerEmp": 66220.49,
             "overtimeCost": 9334.53,
             "leaveBalanceAvgDays": 17.92,
             "leaveCost": 395059.44
@@ -9142,12 +9211,15 @@
               "revenueBudgetYtd": 77519384
             },
             "8": {
-              "staffCost": -5866469,
-              "volumePerEmp": 0,
-              "revenuePerEmp": 0,
+              "staffCost": 861928,
+              "volumePerEmp": 424.79,
+              "revenuePerEmp": 66220.49,
               "overtimeCost": 9334.53,
               "leaveBalanceAvgDays": 17.92,
-              "leaveCost": 395059.44
+              "leaveCost": 395059.44,
+              "staffCostBudgetYtd": 7453889,
+              "volumeBudgetYtd": 547437,
+              "revenueBudgetYtd": 90423897
             },
             "9": {
               "staffCost": 0,
@@ -9194,7 +9266,7 @@
           ]
         }
       },
-      "updatedAt": "2026-09-08T09:12:51.915Z",
+      "updatedAt": "2026-09-08T09:13:23.874Z",
       "updatedBy": "Administrateur"
     },
     {

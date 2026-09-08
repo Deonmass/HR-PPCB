@@ -485,6 +485,7 @@ export const en: Record<MessageKey, string> = {
   'exco.params.clearing': 'Removing import…',
   'exco.base.title': 'BASE — data',
   'exco.base.headcount': 'Headcount: {count}',
+  'exco.base.leaveExits': '+ {count} exits (Leave)',
   'exco.headcount.title': 'Headcount',
   'exco.headcount.totalHint': 'Total headcount',
   'exco.inout.hires': 'IN — Hires · {month}',

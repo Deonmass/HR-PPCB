@@ -9,6 +9,7 @@ import * as XLSX from 'xlsx';
 import { compareExcoDepartments } from './exco-department-map';
 import type { ExcoLeaveMonthImport, ExcoOtMonthImport } from './exco-ot-import';
 import { mapExcoOtDepartment } from './exco-ot-import';
+import { readOtBasePanelFromSheet, computeOtBasePanelKpis } from './exco-ot-base-kpis';
 import type {
   ExcoCountRow,
   ExcoHireListRow,
@@ -32,6 +33,11 @@ export interface ExcoWorkbookEmployee {
   department: string;
   locationSite: string;
   leaveBalance: number | null;
+  /** Value (col. AD) FC Annual — colonne BASE Allowance Amount (montant brut, pas USD). */
+  allowanceAmount: number | null;
+  /** Unique Base OVT_Hours (source de vérité pour le nombre d’agents OT). */
+  ovtHours: number | null;
+  ovtCost: number | null;
 }
 
 export interface ExcoWorkbookParams {
@@ -140,6 +146,9 @@ export interface ExcoWorkbookSnapshot {
     employeesWithOtPct: number | null;
     averageHours: number | null;
     averageCostPerEmployee: number | null;
+    /** O8 / O9 overtime_base (part du staff cost). */
+    otShareOfStaffCost?: number | null;
+    otShareOfStaffCostYtd?: number | null;
     /** Moyenne Closing Balance Annual (Leave Balances, toutes feuilles). */
     averageLeaveDays: number | null;
   };
@@ -195,9 +204,16 @@ function asNumber(value: unknown): number | null {
   if (value == null || value === '') return null;
   if (typeof value === 'number' && Number.isFinite(value)) return value;
   if (typeof value === 'string') {
-    const cleaned = value.replace(/\s/g, '').replace(',', '.');
-    if (!cleaned || cleaned === '#DIV/0!' || cleaned === '#N/A') return null;
-    const n = Number(cleaned);
+    const s = value.replace(/\s/g, '').replace(/\u00a0/g, '').trim();
+    if (!s || s === '#DIV/0!' || s === '#N/A' || s === '-') return null;
+    let n: number;
+    if (/^-?\d{1,3}(,\d{3})+(\.\d+)?$/.test(s)) {
+      n = Number(s.replace(/,/g, ''));
+    } else if (/^-?\d{1,3}(\.\d{3})+(,\d+)?$/.test(s)) {
+      n = Number(s.replace(/\./g, '').replace(',', '.'));
+    } else {
+      n = Number(s.replace(',', '.'));
+    }
     return Number.isFinite(n) ? n : null;
   }
   if (value instanceof Date) return null;
@@ -339,7 +355,7 @@ function parseParams(wb: XLSX.WorkBook): ExcoWorkbookParams {
 }
 
 function parseBase(wb: XLSX.WorkBook): ExcoWorkbookEmployee[] {
-  const name = findSheetName(wb, ['BASE']) || 'BASE';
+  const name = findSheetName(wb, ['BASE', 'Unique Base', 'UNIQUE BASE']) || 'BASE';
   const rows = sheetToMatrix(wb, name);
   if (rows.length < 2) return [];
   const out: ExcoWorkbookEmployee[] = [];
@@ -362,6 +378,9 @@ function parseBase(wb: XLSX.WorkBook): ExcoWorkbookEmployee[] {
       department: asString(cell(row, 12)),
       locationSite: asString(cell(row, 13)),
       leaveBalance: asNumber(cell(row, 14)),
+      allowanceAmount: asNumber(cell(row, 15)),
+      ovtHours: asNumber(cell(row, 16)),
+      ovtCost: asNumber(cell(row, 17)),
     });
   }
   return out;
@@ -657,6 +676,114 @@ export const OVT_AVB_MONTH_LABELS = [
   'APR', 'MAY', 'JUN', 'JUL', 'AUG', 'SEP', 'OCT', 'NOV', 'DEC', 'JAN', 'FEB', 'MAR',
 ] as const;
 
+/**
+ * Complète la colonne FY (APR→MAR) d’un mois depuis byDept (import OT / byDeptCurrent).
+ * Utilisé quand la feuille HOURS/VALUE a une colonne vide (formules non calculées).
+ */
+export function enrichOtEvolutionFromByDept(args: {
+  trendRows: ExcoWorkbookOtTrendRow[];
+  actualVsBudget?: ExcoWorkbookOtActualVsBudget | null;
+  calendarMonth: number;
+  byDept: Array<{
+    department: string;
+    hours: number;
+    cost?: number | null;
+    costUsd?: number | null;
+    costFc?: number | null;
+  }>;
+  fxRateFcPerUsd?: number | null;
+  /** true = ne remplace pas une valeur déjà présente dans la feuille. */
+  fillEmptyOnly?: boolean;
+}): {
+  trendRows: ExcoWorkbookOtTrendRow[];
+  actualVsBudget: ExcoWorkbookOtActualVsBudget | null;
+} {
+  const fyIdx = (OVT_TREND_MONTHS as readonly number[]).indexOf(args.calendarMonth);
+  if (fyIdx < 0) {
+    return {
+      trendRows: args.trendRows,
+      actualVsBudget: args.actualVsBudget ?? null,
+    };
+  }
+  const fillEmptyOnly = args.fillEmptyOnly !== false;
+  const fx = args.fxRateFcPerUsd;
+  const byDept = new Map<string, ExcoWorkbookOtTrendRow>();
+  for (const r of args.trendRows) {
+    byDept.set(r.department, {
+      ...r,
+      hoursByMonth: [...(r.hoursByMonth || Array(12).fill(null))],
+      costByMonth: [...(r.costByMonth || Array(12).fill(null))],
+    });
+  }
+
+  for (const d of args.byDept) {
+    const dept = mapExcoOtDepartment(d.department);
+    const hours = Number(d.hours) || 0;
+    const costUsdRaw =
+      d.cost ?? d.costUsd
+      ?? (fx != null && fx > 0 && d.costFc != null ? d.costFc / fx : null);
+    const costUsd = costUsdRaw != null && Number.isFinite(costUsdRaw) ? costUsdRaw : null;
+    if (hours <= 0 && (costUsd == null || costUsd <= 0)) continue;
+
+    let row = byDept.get(dept);
+    if (!row) {
+      row = {
+        department: dept,
+        hoursByMonth: Array(12).fill(null),
+        costByMonth: Array(12).fill(null),
+        hoursYtd: null,
+        costYtd: null,
+        hoursShare: null,
+        costShare: null,
+      };
+      byDept.set(dept, row);
+    }
+    if (!fillEmptyOnly || row.hoursByMonth[fyIdx] == null) {
+      row.hoursByMonth[fyIdx] = round2(hours);
+    }
+    if (costUsd != null && (!fillEmptyOnly || row.costByMonth[fyIdx] == null)) {
+      row.costByMonth[fyIdx] = round2(costUsd);
+    }
+  }
+
+  const trendRows = [...byDept.values()].sort((a, b) =>
+    compareExcoDepartments(a.department, b.department),
+  );
+  let totalH = 0;
+  let totalC = 0;
+  for (const r of trendRows) {
+    const hSum = r.hoursByMonth.reduce<number>((s, v) => s + (v || 0), 0);
+    const cSum = r.costByMonth.reduce<number>((s, v) => s + (v || 0), 0);
+    r.hoursYtd = hSum > 0 ? round2(hSum) : null;
+    r.costYtd = cSum > 0 ? round2(cSum) : null;
+    totalH += r.hoursYtd || 0;
+    totalC += r.costYtd || 0;
+  }
+  for (const r of trendRows) {
+    r.hoursShare = totalH > 0 ? round2((r.hoursYtd || 0) / totalH) : null;
+    r.costShare = totalC > 0 ? round2((r.costYtd || 0) / totalC) : null;
+  }
+
+  let actualVsBudget = args.actualVsBudget ?? null;
+  if (actualVsBudget) {
+    const actualByMonth = [...(actualVsBudget.actualByMonth || Array(12).fill(null))];
+    const monthTotal = round2(
+      trendRows.reduce((s, r) => s + (r.costByMonth[fyIdx] || 0), 0),
+    );
+    if ((actualByMonth[fyIdx] == null || actualByMonth[fyIdx] === 0) && monthTotal > 0) {
+      actualByMonth[fyIdx] = monthTotal;
+    }
+    const actualYtd = round2(actualByMonth.reduce<number>((s, v) => s + (v || 0), 0));
+    actualVsBudget = {
+      ...actualVsBudget,
+      actualByMonth,
+      actualYtd: actualYtd > 0 ? actualYtd : actualVsBudget.actualYtd,
+    };
+  }
+
+  return { trendRows, actualVsBudget };
+}
+
 function parseOvt(
   wb: XLSX.WorkBook,
   fx: number,
@@ -745,7 +872,7 @@ function parseOvt(
   for (const e of topEmployees) {
     const a = agg.get(e.matricule);
     if (a) {
-      e.nom = a.nom || e.nom;
+      e.nom = e.nom || a.nom;
       e.department = a.department;
       e.hours = round2(a.hours);
       e.costFc = round2(a.costFc);
@@ -831,15 +958,26 @@ function parseOvt(
   const averageCostPerEmployee = employeesWithOt ? round2(totalCostUsdCurrent / employeesWithOt) : null;
   void leaveOpeningByMatricule;
 
-  // KPIs from overtime_base right panel if present
-  let employeesWithOtPct: number | null = null;
-  const metaN = asNumber(cell(otBase[1], 14));
-  const metaPct = asNumber(cell(otBase[2], 14));
-  const metaTotal = asNumber(cell(otBase[3], 14));
-  const metaAvgH = asNumber(cell(otBase[4], 14));
-  const metaCost = asNumber(cell(otBase[5], 14));
-  const metaAvgC = asNumber(cell(otBase[6], 14));
-  if (metaPct != null) employeesWithOtPct = round2(metaPct * (metaPct <= 1 ? 100 : 1));
+  // KPIs overtime_base N/O (formules UNIQUE / SUM Units / Component Value ÷ FX)
+  const panel = readOtBasePanelFromSheet(otBase);
+  const computedPanel = computeOtBasePanelKpis({
+    headcount: panel.headcount ?? null,
+    fxRateFcPerUsd: fx,
+    staffCostUsd: null,
+    staffCostYtdUsd: null,
+    otCostYtdUsd: null,
+    employees: [...agg.entries()].map(([matricule, a]) => ({
+      matricule,
+      hours: a.hours,
+      costFc: a.costFc,
+    })),
+  });
+  const employeesWithOtPct = panel.pctOfWorkforce ?? computedPanel.pctOfWorkforce;
+  const metaN = panel.employeesWithHours ?? computedPanel.employeesWithHours;
+  const metaTotal = panel.totalHours ?? computedPanel.totalHours;
+  const metaAvgH = panel.averageHours ?? computedPanel.averageHours;
+  const metaCost = panel.totalCostUsd ?? computedPanel.totalCostUsd;
+  const metaAvgC = panel.averageCostUsd ?? computedPanel.averageCostUsd;
 
   const overtimeImport: ExcoOtMonthImport = {
     year,
@@ -862,13 +1000,6 @@ function parseOvt(
     sourceFiles: [sourceFile],
     importedAt: new Date().toISOString(),
   };
-
-  // Prefer panel totals when available
-  void metaN;
-  void metaTotal;
-  void metaAvgH;
-  void metaCost;
-  void metaAvgC;
 
   // Actual vs Budget (APR→MAR) — lignes « Actual » / « Budget »
   let actualVsBudget: ExcoWorkbookOtActualVsBudget | null = null;
@@ -905,17 +1036,33 @@ function parseOvt(
     };
   }
 
+  // Colonne FY du mois courant souvent vide dans Excel → remplir depuis byDeptCurrent.
+  const enriched = enrichOtEvolutionFromByDept({
+    trendRows,
+    actualVsBudget,
+    calendarMonth: month,
+    byDept: byDeptCurrent.map((d) => ({
+      department: d.department,
+      hours: d.hours,
+      cost: d.cost,
+    })),
+    fxRateFcPerUsd: fx,
+    fillEmptyOnly: true,
+  });
+
   return {
     byDeptCurrent,
     topEmployees,
-    trendRows,
-    actualVsBudget,
+    trendRows: enriched.trendRows,
+    actualVsBudget: enriched.actualVsBudget,
     totalHoursCurrent: metaTotal ?? totalHoursCurrent,
     totalCostUsdCurrent: metaCost ?? totalCostUsdCurrent,
     employeesWithOt: metaN ?? employeesWithOt,
     employeesWithOtPct,
     averageHours: metaAvgH ?? averageHours,
     averageCostPerEmployee: metaAvgC ?? averageCostPerEmployee,
+    otShareOfStaffCost: panel.otShareOfStaffCost ?? computedPanel.otShareOfStaffCost,
+    otShareOfStaffCostYtd: panel.otShareOfStaffCostYtd ?? computedPanel.otShareOfStaffCostYtd,
     overtimeImport,
   };
 }
@@ -936,6 +1083,7 @@ function parseLeave(
   const name = findSheetName(wb, ['leavebalances_base', 'Leave']) || 'leavebalances_base';
   const rows = sheetToMatrix(wb, name);
   const byMatricule: Record<string, number> = {};
+  const valueFcByMatricule: Record<string, number> = {};
   const openingByMatricule: Record<string, number> = {};
   let valueFcTotal = 0;
   const plant: number[] = [];
@@ -954,6 +1102,7 @@ function parseLeave(
     const value = asNumber(cell(row, 29)) ?? 0;
     if (!matricule || closing == null) continue;
     byMatricule[matricule] = closing;
+    valueFcByMatricule[matricule] = round2(value);
     if (opening != null) openingByMatricule[matricule] = opening;
     valueFcTotal += value;
     all.push(closing);
@@ -963,10 +1112,12 @@ function parseLeave(
     else hq.push(closing);
   }
 
-  // Align BASE leave_balance with Annual Closing when present (affichage employés)
+  // Unique Base Leave_Balance (Excel) fait foi ; Leave file complète seulement les vides.
   for (const e of employees) {
     const annual = byMatricule[e.matricule];
-    if (annual != null) e.leaveBalance = annual;
+    if (annual != null && e.leaveBalance == null) e.leaveBalance = annual;
+    const valueFc = valueFcByMatricule[e.matricule];
+    if (valueFc != null && e.allowanceAmount == null) e.allowanceAmount = valueFc;
   }
 
   const leaveCostUsd = fx > 0 ? round2(valueFcTotal / fx) : null;
@@ -990,6 +1141,7 @@ function parseLeave(
       all: all.length,
     },
     byMatricule,
+    valueFcByMatricule,
     openingByMatricule,
     sourceFiles: [sourceFile],
     importedAt: new Date().toISOString(),
@@ -1020,11 +1172,23 @@ function buildManualAndFinance(
   }
 
   const current = staffCost.find((s) => s.calendarMonth === reportMonth);
+  // Mois « vide » Excel = Staff_Cost négatif (annulation du cumul) → ne pas publier en KPI.
+  const currentStaffOk =
+    current?.staffCostMonth != null && Number.isFinite(current.staffCostMonth) && current.staffCostMonth >= 0;
+  const currentHasYtd =
+    current?.salariesActualYtd != null
+    || current?.volumesActualYtd != null
+    || current?.revenueActualYtd != null;
+  const publishFinance = currentStaffOk && currentHasYtd;
   const manualKpis: ExcoManualKpis = {
     ...(financeByMonth[String(reportMonth)] || {}),
-    staffCost: current?.staffCostMonth != null ? round2(current.staffCostMonth) : null,
-    volumePerEmp: current?.tonPerEmployee != null ? round2(current.tonPerEmployee) : null,
-    revenuePerEmp: current?.revenuePerEmployee != null ? round2(current.revenuePerEmployee) : null,
+    staffCost: publishFinance && current?.staffCostMonth != null ? round2(current.staffCostMonth) : null,
+    volumePerEmp:
+      publishFinance && current?.tonPerEmployee != null ? round2(current.tonPerEmployee) : null,
+    revenuePerEmp:
+      publishFinance && current?.revenuePerEmployee != null
+        ? round2(current.revenuePerEmployee)
+        : null,
     overtimeCost: round2(otCostUsd),
     leaveBalanceAvgDays: leave.allAvgDays,
     leaveCost: leave.leaveCostUsd ?? null,
@@ -1084,6 +1248,8 @@ export function parseExcoNewReport(
       employeesWithOtPct: ot.employeesWithOtPct,
       averageHours: ot.averageHours,
       averageCostPerEmployee: ot.averageCostPerEmployee,
+      otShareOfStaffCost: ot.otShareOfStaffCost ?? null,
+      otShareOfStaffCostYtd: ot.otShareOfStaffCostYtd ?? null,
       // Moyenne Closing Balance Annual (toutes feuilles Leave) — pas OT-only
       averageLeaveDays: leave.allAvgDays,
     },

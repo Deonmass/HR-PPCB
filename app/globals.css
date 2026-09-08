@@ -30789,7 +30789,7 @@ html[data-theme='light'] .exco-formula-modal .modal-footer {
 .exco-ot-overview-tab .exco-ot-overview-cards,
 .exco-metric-strip.exco-ot-overview-cards {
   display: grid;
-  grid-template-columns: repeat(4, minmax(0, 1fr));
+  grid-template-columns: repeat(5, minmax(0, 1fr));
   gap: 0.45rem;
 }
 
@@ -30797,6 +30797,68 @@ html[data-theme='light'] .exco-formula-modal .modal-footer {
   min-height: 4.6rem;
   padding: 0.55rem 0.7rem 0.5rem;
   border-radius: 12px;
+  overflow: visible;
+}
+
+.exco-ot-overview-tab .exco-ot-overview-cards,
+.exco-metric-strip.exco-ot-overview-cards {
+  overflow: visible;
+}
+
+.exco-metric-value-extra {
+  margin-left: 0.3rem;
+  font-size: 0.68em;
+  font-weight: 650;
+  color: #71717a;
+  letter-spacing: 0;
+}
+
+.exco-metric-card.has-tip:hover,
+.exco-metric-card.has-tip:focus-visible {
+  z-index: 12;
+}
+
+.exco-metric-tip {
+  display: none;
+  position: absolute;
+  left: 0.4rem;
+  top: calc(100% + 6px);
+  z-index: 30;
+  width: 18rem;
+  max-width: min(22rem, 70vw);
+  padding: 0.55rem 0.65rem 0.6rem;
+  border-radius: 10px;
+  background: #18181b;
+  color: #f4f4f5;
+  box-shadow: 0 10px 28px rgba(0, 0, 0, 0.22);
+  font-size: 0.72rem;
+  line-height: 1.4;
+  font-weight: 500;
+  text-transform: none;
+  letter-spacing: 0;
+  pointer-events: none;
+}
+
+.exco-metric-card.has-tip:hover .exco-metric-tip,
+.exco-metric-card.has-tip:focus-visible .exco-metric-tip {
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+}
+
+.exco-metric-tip code {
+  font-size: 0.68rem;
+  color: #fde68a;
+  white-space: pre-wrap;
+}
+
+.exco-metric-tip-calc {
+  color: #d4d4d8;
+}
+
+.exco-metric-tip-click {
+  color: #a1a1aa;
+  font-size: 0.65rem;
 }
 
 .exco-ot-overview-tab .exco-metric-value {
@@ -31069,6 +31131,13 @@ html[data-theme='light'] .exco-formula-modal .modal-footer {
 .exco-ot-emp-table thead th {
   background: #18181b !important;
   color: #fff !important;
+}
+
+@media (max-width: 1280px) {
+  .exco-ot-overview-tab .exco-ot-overview-cards,
+  .exco-metric-strip.exco-ot-overview-cards {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
 }
 
 @media (max-width: 1100px) {
@@ -32242,6 +32311,80 @@ button.exco-bar-row.is-clickable:focus-visible {
   flex-shrink: 0;
   color: #b91c1c;
   margin-bottom: 0.5rem;
+}
+
+.exco-project-body {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+  margin: 0.15rem 0 0.5rem;
+}
+
+.exco-project-body p {
+  margin: 0;
+  font-size: 0.82rem;
+  line-height: 1.45;
+  color: #27272a;
+  white-space: pre-wrap;
+}
+
+.exco-project-body strong {
+  font-weight: 700;
+  color: #18181b;
+}
+
+.exco-csr-upd {
+  background: #e8f0fe;
+  color: #1d4ed8;
+  font-weight: 600;
+  padding: 0 0.15rem;
+  border-radius: 3px;
+}
+
+.exco-rec-badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 3.2rem;
+  padding: 0.18rem 0.5rem;
+  border-radius: 999px;
+  font-size: 0.72rem;
+  font-weight: 700;
+  line-height: 1.2;
+  white-space: nowrap;
+}
+
+.exco-rec-badge.is-done,
+.exco-rec-badge.is-yes {
+  background: #dcfce7;
+  color: #166534;
+}
+
+.exco-rec-badge.is-ongoing {
+  background: #ffedd5;
+  color: #9a3412;
+}
+
+.exco-rec-badge.is-started {
+  background: #dbeafe;
+  color: #1d4ed8;
+}
+
+.exco-rec-badge.is-idle {
+  background: #f4f4f5;
+  color: #52525b;
+}
+
+.exco-rec-badge.is-cancelled,
+.exco-rec-badge.is-no,
+.exco-rec-badge.is-alert {
+  background: #fee2e2;
+  color: #b91c1c;
+}
+
+.exco-rec-badge.is-neutral {
+  background: #f4f4f5;
+  color: #3f3f46;
 }
 
 .exco-cahier-grid {

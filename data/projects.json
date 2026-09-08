@@ -372,7 +372,9 @@
       "budgetPrevuVerifie": false,
       "ecart": -18235.340000000026,
       "pctBudget": 1.0610220458317718,
-      "statut": "Terminé"
+      "evolution": 85,
+      "commentaire": "Statut légal : contrat signé par MD. En attente de la signature de la congrégation.",
+      "statut": "En cours"
     },
     {
       "id": "p-12",
@@ -448,6 +450,30 @@
       "budgetPrevuVerifie": false,
       "ecart": 146580,
       "pctBudget": 0,
+      "evolution": 45,
+      "commentaire": "Former et intégrer professionnellement les jeunes femmes + produire des EPI localement. PR d’aménagement en élaboration. Prochaine étape : PO par le procurement.",
+      "statut": "En cours"
+    },
+    {
+      "id": "p-csr-zamba-tank",
+      "numero": 22,
+      "name": "Réservoir d’eau à Zamba",
+      "lieu": "Zamba 1er",
+      "secteur": "Infrastructures",
+      "typeProjet": "CSR",
+      "sousActivite": "Remplacement réservoir",
+      "annee": "FY2026",
+      "dateDebut": "",
+      "dateFin": "",
+      "responsable": "",
+      "budgetPrevu": null,
+      "budgetDepense": 0,
+      "budgetPrevuVerifie": false,
+      "ecart": null,
+      "pctBudget": null,
+      "evolution": 35,
+      "commentaire": "Remplacement du réservoir défectueux et perforé par un nouveau déjà disponible. Accord du village pour le nouvel emplacement. En attente du cahier des charges.",
+      "history": [],
       "statut": "En cours"
     },
     {
@@ -657,6 +683,8 @@
       "budgetPrevuVerifie": false,
       "ecart": 17287.45,
       "pctBudget": 0.46136206077317937,
+      "evolution": 25,
+      "commentaire": "Reprise des activités agricoles pour les communautés de Nkumba et de Malanga Cité prévue pour septembre 2026.",
       "statut": "En cours"
     },
     {
@@ -771,6 +799,8 @@
       "budgetPrevuVerifie": false,
       "ecart": 4048.42,
       "pctBudget": 0.4939475,
+      "evolution": 40,
+      "commentaire": "Malanga Cité et Nkumba : prise de mesures pour la réhabilitation du terrain de football.",
       "statut": "En cours"
     },
     {
@@ -790,6 +820,8 @@
       "budgetPrevuVerifie": false,
       "ecart": 17287.45,
       "pctBudget": 0.46136206077317937,
+      "evolution": 25,
+      "commentaire": "Reprise des activités agricoles pour les communautés de Nkumba et de Malanga Cité prévue pour septembre 2026.",
       "statut": "En cours"
     },
     {
@@ -828,6 +860,8 @@
       "budgetPrevuVerifie": false,
       "ecart": 0,
       "pctBudget": 1,
+      "evolution": 80,
+      "commentaire": "Réalisation 80 %. Lettre à l’AT de Songololo pour les formalités du nouveau site du transformateur. Travaux : mise à la terre et salle de contrôle.",
       "statut": "En cours"
     },
     {
@@ -942,6 +976,8 @@
       "budgetPrevuVerifie": false,
       "ecart": 4048.42,
       "pctBudget": 0.4939475,
+      "evolution": 40,
+      "commentaire": "Malanga Cité et Nkumba : prise de mesures pour la réhabilitation du terrain de football.",
       "statut": "En cours"
     },
     {
@@ -999,6 +1035,8 @@
       "budgetPrevuVerifie": false,
       "ecart": 0,
       "pctBudget": 1,
+      "evolution": 80,
+      "commentaire": "Réalisation 80 % (matériels 100 %, finances 100 %). Zamba 1re : deux cabines installées. Travaux : mise à la terre et élargissement de la salle de contrôle.",
       "statut": "En cours"
     },
     {

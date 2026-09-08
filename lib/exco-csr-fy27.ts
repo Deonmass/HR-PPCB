@@ -54,133 +54,109 @@ export const CAHIER_ICON_OPTIONS: Array<{ id: ExcoCahierIcon; label: string }> =
 
 export const DEFAULT_CSR_FY27_ROWS: ExcoCsrFy27Row[] = [
   {
-    id: 'csr-fy27-scholarship',
-    name: 'Scholarship Programme',
-    objective: 'Provide educational support to students from host communities.',
-    progress:
-      'The programme is fully operational and continues to support beneficiaries in accordance with the approved framework.',
-    risks: 'No significant issues reported.',
-    nextSteps: 'Continue monitoring academic performance and programme compliance.',
-  },
-  {
     id: 'csr-fy27-zamba-tank',
-    name: 'Zamba Water Tank Replacement',
+    name: 'Réservoir d’eau à Zamba',
     objective:
-      'Replace the damaged and perforated community water tank. [[Planning the replacement of the defective and perforated tank with a new one already available.]]',
-    progress:
-      "A replacement tank is already available. The community has agreed on the new installation site. [[The village's agreement for the new location of the tank]]",
-    risks: 'Implementation is awaiting the final Scope of Work (SOW).',
-    nextSteps: 'Finalise the Scope of Work and commence installation. [[waiting for the SOW]]',
+      'Planification du remplacement du réservoir défectueux et perforé par un nouveau déjà disponible.',
+    progress: 'Accord du village pour le nouvel emplacement du réservoir.',
+    risks: 'En attente du cahier des charges.',
+    nextSteps: '[[en attente du cahier des charges]]',
   },
   {
     id: 'csr-fy27-mwinda',
-    name: 'Mwinda Partnership – Local PPE Manufacturing',
+    name: 'Partenariat Mwinda – EPI local',
     objective:
-      'Empower local women through vocational training while developing local PPE production capacity. [[Train and professionally integrate young women + produce PPE locally to reduce imports and delays]]',
-    progress:
-      'Procurement review concluded that Mwinda is the only qualified supplier. A Sole Supplier Justification has been prepared and submitted for approval. [[After procurement realized that Mwinda is a sole supplier, a Justification Form for Purchasing from a Sole Supplier was created and placed in the circuit for approval.]]',
-    risks: 'Procurement approval pending.',
-    nextSteps:
-      'Complete the approval process and initiate implementation of the partnership. [[waiting for MD signature]]',
+      'Former et intégrer professionnellement les jeunes femmes + produire des EPI localement pour réduire les importations et les retards.',
+    progress: 'Élaboration du PR sur les travaux d’aménagement.',
+    risks: 'PO procurement encore à émettre.',
+    nextSteps: 'PO par le procurement.',
   },
   {
     id: 'csr-fy27-ppc-school',
-    name: 'PPC School',
-    objective:
-      "Improve community education infrastructure and strengthen the school's institutional framework. [[Legal status of the school signed]]",
-    progress:
-      "The potable water project has been completed successfully. The school's legal documentation has been prepared. [[The contract is signed by MD]]",
-    risks:
-      "Awaiting the Managing Director's signature to complete the legal formalisation process. [[Waiting for the congregation's signature]]",
-    nextSteps:
-      "Finalise legal registration and continue supporting the school. [[Waiting for the congregation's signature]]",
-  },
-  {
-    id: 'csr-fy27-sewing',
-    name: 'Sewing Workshop',
-    objective: 'Develop vocational skills and improve employability of local women.',
-    progress:
-      'The training programme has been successfully completed, and certificates were awarded on 27 June 2026.',
-    risks: 'None.',
-    nextSteps: 'Integrate graduates into the Mwinda PPE project to apply the skills acquired.',
-  },
-  {
-    id: 'csr-fy27-infra',
-    name: 'Infrastructure Programme',
-    objective: 'Deliver community infrastructure projects under the Cahier des Charges.',
-    progress:
-      'Construction of two bridges linking Malanga Cité and Malanga Gare is progressing, with approximately 25% of clearing and stump removal completed. A third bridge has been added to facilitate access and transportation through the Malanga Gare railway corridor.',
-    risks: 'Land-related disputes may delay implementation of some infrastructure works.',
-    nextSteps:
-      'Continue civil works while resolving outstanding community issues affecting project implementation.',
-  },
-  {
-    id: 'csr-fy27-agri',
-    name: 'Agriculture Programme',
-    objective: 'Promote sustainable livelihoods through community agriculture initiatives.',
-    progress:
-      'Progress has been slower than anticipated due to unresolved land disputes affecting the Malanga Gare project. Discussions with Manalola confirmed that alternative implementation approaches are being explored. A possible restart of agricultural activities at Nkumba is envisaged for September. [[Resumption of agricultural activities for the communities of Nkumba and Malanga city planned for September 2026.]]',
-    risks: 'Land ownership disputes remain the principal obstacle to implementation.',
-    nextSteps:
-      'Finalise stakeholder discussions and resume agricultural activities once community consensus has been reached.',
-  },
-  {
-    id: 'csr-fy27-leisure',
-    name: 'Sports & Leisure Facilities',
-    objective: 'Promote youth development and community wellbeing through sports infrastructure.',
-    progress:
-      'The location for the football field at Malanga Gare has been identified and preliminary administrative procedures are underway. [[inspection visit of the soccer field to be developed in Kumba for the start of work]]',
-    risks: 'No major risks identified at this stage.',
-    nextSteps: 'Complete administrative approvals and commence implementation.',
-  },
-  {
-    id: 'csr-fy27-electrification',
-    name: 'Zamba & Malanga Cité Electrification Project',
-    objective:
-      'Improve access to electricity for surrounding communities and strengthen local infrastructure.',
-    progress:
-      'Overall project completion is estimated at 68%. Progress has reached approximately 85% in Zamba Phase 1 and 60% in Malanga Cité. A total of 171 houses are technically ready for connection, exceeding the initial target of 120 households. Major construction activities, including conductor delivery, transformer foundations, electrical cabins and line staking, have been completed. [[Completion: 80%. Ongoing work: Improvement of the grounding networks. Widening the control room to have access to the acquired cells. Progress status: Zamba 1st: two cabins installed, only the connection remains; Malanga Cité: send a letter to the AT of Songololo for the formalities of the new transformer location.]]',
-    risks:
-      'Commissioning remains dependent on the submission and approval of detailed engineering studies, validation of the 5 MVA transformer installation, grounding compliance, control building modifications and final approval of the revised implementation schedule.',
-    nextSteps:
-      'Finalise engineering approvals with SNEL and PPC, complete corrective technical works, validate the revised project schedule and proceed towards commissioning.',
+    name: 'École PPC',
+    objective: 'Statut légal de l’école signé.',
+    progress: 'Le contrat est signé par MD.',
+    risks: 'En attente de la signature de la congrégation.',
+    nextSteps: 'En attente de la signature de la congrégation.',
   },
 ];
 
+export const PROJECT_BODY_LABELS = [
+  'Prochaines étapes',
+  'Prochaine étape',
+  'Travaux en cours',
+  'Malanga Cité',
+  'Statut légal',
+  'Réalisation',
+  'Objectif',
+  'Situation',
+  'Zamba 1re',
+  'Zamba 1er',
+];
+
+function escapeRegExp(value: string): string {
+  return value.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+}
+
+/** Place chaque libellé connu sur sa propre ligne (titre : texte). */
+export function structureProjectBody(body: string): string {
+  const src = (body || '').replace(/\r\n/g, '\n').trim();
+  if (!src) return '';
+  const labels = [...PROJECT_BODY_LABELS].sort((a, b) => b.length - a.length);
+  const re = new RegExp(`\\s*(${labels.map(escapeRegExp).join('|')})\\s*:\\s*`, 'gi');
+  const matches: Array<{ index: number; length: number; label: string }> = [];
+  let m: RegExpExecArray | null;
+  while ((m = re.exec(src))) {
+    matches.push({ index: m.index, length: m[0].length, label: m[1].replace(/\s+/g, ' ').trim() });
+  }
+  if (!matches.length) return src;
+  const chunks: string[] = [];
+  const prefix = src.slice(0, matches[0].index).trim();
+  if (prefix) chunks.push(prefix);
+  for (let i = 0; i < matches.length; i++) {
+    const cur = matches[i];
+    const next = matches[i + 1];
+    const content = src.slice(cur.index + cur.length, next ? next.index : src.length).trim();
+    chunks.push(`${cur.label} : ${content}`);
+  }
+  return chunks.join('\n');
+}
+
+export type ProjectBodyLine = { label: string | null; text: string };
+
+export function parseProjectBodyLines(body: string): ProjectBodyLine[] {
+  return structureProjectBody(body)
+    .split('\n')
+    .map((line) => line.trim())
+    .filter(Boolean)
+    .map((line) => {
+      const m = line.match(/^(.{2,40}?)\s*:\s*([\s\S]*)$/);
+      if (!m) return { label: null, text: line };
+      return { label: m[1].trim(), text: m[2].trim() };
+    });
+}
+
 export const DEFAULT_CAHIER_HIGHLIGHTS: ExcoCahierHighlight[] = [
-  {
-    id: 'cahier-scholarship',
-    icon: 'scholarship',
-    title: 'Scholarship - Project fully in place',
-    body: '100% in place',
-    progressPct: 100,
-  },
-  {
-    id: 'cahier-infra',
-    icon: 'infrastructure',
-    title: 'Infrastructure',
-    body: 'the construction of two bridges connecting Malanga Cité and Malanga Gare. 25% of the work, in terms of clearing and stump removal, is completed. A second project has been added to this. It involves the construction of a third bridge to facilitate both the evacuation and the transport of our products via the Malanga Gare railway. Negotiations with the residents of Kuzi were ongoing, but after a meeting held on this issue on Saturday, July 4th at Malanga Gare, we were informed that there is a land dispute between the lineages.',
-    progressPct: 100,
-  },
   {
     id: 'cahier-agri',
     icon: 'agriculture',
-    title: 'Agriculture -',
-    body: 'An online meeting was held with the Manalola organization, from which the lack of progress in the agricultural project was noted following land conflicts. A discussion about another methodology is underway to successfully carry the project through. However, we hope that a possible resumption of agricultural activities planned in Nkumba will take place in September as planned. [[Resumption of agricultural activities for the communities of Nkumba and Malanga city planned for September 2026.]]',
-    progressPct: 75,
+    title: 'Agriculture',
+    body: 'Reprise des activités agricoles pour les communautés de Nkumba et de Malanga Cité prévue pour septembre 2026.',
+    progressPct: 25,
   },
   {
     id: 'cahier-leisure',
     icon: 'leisure',
-    title: 'Leisure',
-    body: 'Malanga Gare, the place has been indicated to set up a football field. The procedures are underway. [[inspection visit of the soccer field to be developed in Kumba for the start of work]]',
-    progressPct: 50,
+    title: 'Loisirs',
+    body: 'Malanga Cité et Nkumba : prise de mesures pour la réhabilitation du terrain de football.',
+    progressPct: 40,
   },
   {
     id: 'cahier-electricity',
     icon: 'electricity',
-    title: 'Electricity',
-    body: '[[Completion: 80%. Ongoing work: Improvement of the grounding networks. Widening the control room to have access to the acquired cells. Progress status: Zamba 1st: two cabins installed, only the connection remains; Malanga Cité: send a letter to the AT of Songololo for the formalities of the new transformer location.]]',
+    title: 'Électricité',
+    body:
+      'Réalisation : 80 % (matériels 100 %, finances 100 %).\nTravaux en cours : amélioration des réseaux de mise à la terre ; élargissement de la salle de contrôle pour accéder aux cellules acquises.\nZamba 1re : deux cabines installées.\nMalanga Cité : lettre à l’AT de Songololo pour les formalités du nouveau site du transformateur.',
     progressPct: 80,
   },
 ];
@@ -188,46 +164,28 @@ export const DEFAULT_CAHIER_HIGHLIGHTS: ExcoCahierHighlight[] = [
 /** Blocs CSR (Tag / Titre / Texte / Progression) — format unifié avec Cahier. */
 export const DEFAULT_CSR_HIGHLIGHTS: ExcoCahierHighlight[] = [
   {
-    id: 'csr-scholarship',
-    icon: 'scholarship',
-    title: 'Scholarship Programme',
-    body: 'The programme is fully operational and continues to support beneficiaries in accordance with the approved framework.',
-    progressPct: 100,
-  },
-  {
     id: 'csr-zamba-tank',
     icon: 'infrastructure',
-    title: 'Zamba Water Tank Replacement',
-    body: "A replacement tank is already available. The community has agreed on the new installation site. [[The village's agreement for the new location of the tank]]",
-    progressPct: 40,
+    title: 'Réservoir d’eau à Zamba',
+    body:
+      'Objectif : remplacement du réservoir défectueux et perforé par un nouveau déjà disponible.\nSituation : accord du village pour le nouvel emplacement.\nProchaines étapes : [[en attente du cahier des charges]].',
+    progressPct: 35,
   },
   {
     id: 'csr-mwinda',
-    icon: 'agriculture',
-    title: 'Mwinda Partnership – Local PPE Manufacturing',
-    body: 'Procurement review concluded that Mwinda is the only qualified supplier. A Sole Supplier Justification has been prepared and submitted for approval. [[After procurement realized that Mwinda is a sole supplier, a Justification Form for Purchasing from a Sole Supplier was created and placed in the circuit for approval.]]',
-    progressPct: 55,
+    icon: 'scholarship',
+    title: 'Partenariat Mwinda – EPI local',
+    body:
+      'Objectif : former et intégrer professionnellement les jeunes femmes et produire des EPI localement.\nSituation : élaboration du PR sur les travaux d’aménagement.\nProchaines étapes : PO par le procurement.',
+    progressPct: 45,
   },
   {
     id: 'csr-ppc-school',
     icon: 'scholarship',
-    title: 'PPC School',
-    body: "The potable water project has been completed successfully. The school's legal documentation has been prepared. [[The contract is signed by MD]]",
+    title: 'École PPC',
+    body:
+      'Objectif : statut légal de l’école signé.\nSituation : le contrat est signé par MD.\nProchaines étapes : en attente de la signature de la congrégation.',
     progressPct: 85,
-  },
-  {
-    id: 'csr-sewing',
-    icon: 'leisure',
-    title: 'Sewing Workshop',
-    body: 'The training programme has been successfully completed, and certificates were awarded on 27 June 2026.',
-    progressPct: 100,
-  },
-  {
-    id: 'csr-electrification',
-    icon: 'electricity',
-    title: 'Zamba & Malanga Cité Electrification Project',
-    body: '[[Completion: 80%. Ongoing work: Improvement of the grounding networks. Widening the control room to have access to the acquired cells. Progress status: Zamba 1st: two cabins installed, only the connection remains; Malanga Cité: send a letter to the AT of Songololo for the formalities of the new transformer location.]]',
-    progressPct: 80,
   },
 ];
 
@@ -251,10 +209,10 @@ const CAHIER_ICONS = new Set<ExcoCahierIcon>([
 
 function guessIconFromTitle(title: string): ExcoCahierIcon {
   const t = title.toLowerCase();
-  if (/scholar|school|bourse|educ/.test(t)) return 'scholarship';
+  if (/scholar|school|bourse|educ|ecole|école|mwinda|epi/.test(t)) return 'scholarship';
   if (/electr|snel|power/.test(t)) return 'electricity';
-  if (/agri|mwinda|ppe|sewing|farm/.test(t)) return 'agriculture';
-  if (/sport|leisure|football|soccer/.test(t)) return 'leisure';
+  if (/agri|farm|permacult/.test(t)) return 'agriculture';
+  if (/sport|leisure|loisir|football|soccer/.test(t)) return 'leisure';
   return 'infrastructure';
 }
 
@@ -317,17 +275,21 @@ export function resolveCsrFy27Rows(overlays: Pick<ExcoOverlays, 'csrFy27Rows'>):
 export function resolveCsrHighlights(
   overlays: Pick<ExcoOverlays, 'csrHighlights' | 'csrFy27Rows'>,
 ): ExcoCahierHighlight[] {
-  if (overlays.csrHighlights?.length) return overlays.csrHighlights;
-  if (overlays.csrFy27Rows?.length) return csrFy27RowsToHighlights(overlays.csrFy27Rows);
-  return DEFAULT_CSR_HIGHLIGHTS;
+  const rows = overlays.csrHighlights?.length
+    ? overlays.csrHighlights
+    : overlays.csrFy27Rows?.length
+      ? csrFy27RowsToHighlights(overlays.csrFy27Rows)
+      : DEFAULT_CSR_HIGHLIGHTS;
+  return rows.map((row) => ({ ...row, body: structureProjectBody(row.body) }));
 }
 
 export function resolveCahierHighlights(
   overlays: Pick<ExcoOverlays, 'cahierHighlights'>,
 ): ExcoCahierHighlight[] {
-  return overlays.cahierHighlights?.length
+  const rows = overlays.cahierHighlights?.length
     ? overlays.cahierHighlights
     : DEFAULT_CAHIER_HIGHLIGHTS;
+  return rows.map((row) => ({ ...row, body: structureProjectBody(row.body) }));
 }
 
 export function emptyCsrFy27Row(id: string): ExcoCsrFy27Row {

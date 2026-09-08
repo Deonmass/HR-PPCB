@@ -61,6 +61,7 @@ const INVERSE_DELTA_KEYS = new Set([
   'turnover',
   'overtimeCost',
   'leaveCost',
+  'staffCost',
   'absenteeism',
   'genderRatio',
 ]);
