@@ -1701,7 +1701,6 @@ export default function ExcoPage() {
           otShareOfStaffCost?: number | null;
           otShareOfStaffCostYtd?: number | null;
           averageLeaveDays?: number | null;
-          averageLeaveDays?: number | null;
         };
         leave?: { allAvgDays?: number | null };
         staffCost?: ExcoWorkbookStaffCostMonth[];
