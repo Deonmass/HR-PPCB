@@ -38,6 +38,7 @@
         "isoActions": [],
         "csrProjects": [],
         "csrFy27Rows": [],
+        "csrHighlights": [],
         "cahierHighlights": [],
         "trainingTopics": [],
         "upcomingTrainings": [],
@@ -103,6 +104,7 @@
         "isoActions": [],
         "csrProjects": [],
         "csrFy27Rows": [],
+        "csrHighlights": [],
         "cahierHighlights": [],
         "trainingTopics": [],
         "upcomingTrainings": [],
@@ -168,6 +170,7 @@
         "isoActions": [],
         "csrProjects": [],
         "csrFy27Rows": [],
+        "csrHighlights": [],
         "cahierHighlights": [],
         "trainingTopics": [],
         "upcomingTrainings": [],
@@ -233,6 +236,7 @@
         "isoActions": [],
         "csrProjects": [],
         "csrFy27Rows": [],
+        "csrHighlights": [],
         "cahierHighlights": [],
         "trainingTopics": [],
         "upcomingTrainings": [],
@@ -268,12 +272,15 @@
           "headcount": 175,
           "turnoverPct": 0,
           "attritionPct": 0,
-          "staffCost": -5866469,
-          "volumePerEmp": 0,
-          "revenuePerEmp": 0,
+          "staffCost": 861928,
+          "volumePerEmp": 424.79,
+          "revenuePerEmp": 66220.49,
           "overtimeCost": 9334.53,
           "leaveBalanceAvgDays": 17.92,
-          "leaveCost": 395059.44
+          "leaveCost": 395059.44,
+          "staffCostBudgetYtd": 7453889,
+          "volumeBudgetYtd": 547437,
+          "revenueBudgetYtd": 90423897
         },
         "financeByMonth": {
           "1": {
@@ -333,12 +340,15 @@
             "revenueBudgetYtd": 77519384
           },
           "8": {
-            "staffCost": -5866469,
-            "volumePerEmp": 0,
-            "revenuePerEmp": 0,
+            "staffCost": 861928,
+            "volumePerEmp": 424.79,
+            "revenuePerEmp": 66220.49,
             "overtimeCost": 9334.53,
             "leaveBalanceAvgDays": 17.92,
-            "leaveCost": 395059.44
+            "leaveCost": 395059.44,
+            "staffCostBudgetYtd": 7453889,
+            "volumeBudgetYtd": 547437,
+            "revenueBudgetYtd": 90423897
           },
           "9": {
             "staffCost": 0,
@@ -373,7 +383,128 @@
             "revenueBudgetYtd": null
           }
         },
-        "staffCostYtdByMonth": {},
+        "staffCostYtdByMonth": {
+          "1": {
+            "actualHeadcount": 175,
+            "salariesActualYtd": null,
+            "volumesActualYtd": null,
+            "revenueActualYtd": null,
+            "budgetHeadcount": 192,
+            "salariesBudgetYtd": null,
+            "volumesBudgetYtd": null,
+            "revenueBudgetYtd": null
+          },
+          "2": {
+            "actualHeadcount": 175,
+            "salariesActualYtd": null,
+            "volumesActualYtd": null,
+            "revenueActualYtd": null,
+            "budgetHeadcount": 192,
+            "salariesBudgetYtd": null,
+            "volumesBudgetYtd": null,
+            "revenueBudgetYtd": null
+          },
+          "3": {
+            "actualHeadcount": 175,
+            "salariesActualYtd": null,
+            "volumesActualYtd": null,
+            "revenueActualYtd": null,
+            "budgetHeadcount": 192,
+            "salariesBudgetYtd": null,
+            "volumesBudgetYtd": null,
+            "revenueBudgetYtd": null
+          },
+          "4": {
+            "actualHeadcount": 173,
+            "salariesActualYtd": 898096,
+            "volumesActualYtd": 32403,
+            "revenueActualYtd": 5454809,
+            "budgetHeadcount": 192,
+            "salariesBudgetYtd": 1021708,
+            "volumesBudgetYtd": 55000,
+            "revenueBudgetYtd": 8971598
+          },
+          "5": {
+            "actualHeadcount": 173,
+            "salariesActualYtd": 1696233,
+            "volumesActualYtd": 95147,
+            "revenueActualYtd": 15754563,
+            "budgetHeadcount": 192,
+            "salariesBudgetYtd": 1803143,
+            "volumesBudgetYtd": 130697,
+            "revenueBudgetYtd": 21304079
+          },
+          "6": {
+            "actualHeadcount": 176,
+            "salariesActualYtd": 2637490,
+            "volumesActualYtd": 152792,
+            "revenueActualYtd": 24871414,
+            "budgetHeadcount": 192,
+            "salariesBudgetYtd": 3066435,
+            "volumesBudgetYtd": 199444,
+            "revenueBudgetYtd": 32630028
+          },
+          "7": {
+            "actualHeadcount": 175,
+            "salariesActualYtd": 5866469,
+            "volumesActualYtd": 376622,
+            "revenueActualYtd": 60292193,
+            "budgetHeadcount": 192,
+            "salariesBudgetYtd": 6525994,
+            "volumesBudgetYtd": 470634,
+            "revenueBudgetYtd": 77519384
+          },
+          "8": {
+            "actualHeadcount": 175,
+            "salariesActualYtd": 6728397,
+            "volumesActualYtd": 450961,
+            "revenueActualYtd": 71880778,
+            "budgetHeadcount": 192,
+            "salariesBudgetYtd": 7453889,
+            "volumesBudgetYtd": 547437,
+            "revenueBudgetYtd": 90423897
+          },
+          "9": {
+            "actualHeadcount": 175,
+            "salariesActualYtd": null,
+            "volumesActualYtd": null,
+            "revenueActualYtd": null,
+            "budgetHeadcount": 192,
+            "salariesBudgetYtd": null,
+            "volumesBudgetYtd": null,
+            "revenueBudgetYtd": null
+          },
+          "10": {
+            "actualHeadcount": 175,
+            "salariesActualYtd": null,
+            "volumesActualYtd": null,
+            "revenueActualYtd": null,
+            "budgetHeadcount": 192,
+            "salariesBudgetYtd": null,
+            "volumesBudgetYtd": null,
+            "revenueBudgetYtd": null
+          },
+          "11": {
+            "actualHeadcount": 175,
+            "salariesActualYtd": null,
+            "volumesActualYtd": null,
+            "revenueActualYtd": null,
+            "budgetHeadcount": 192,
+            "salariesBudgetYtd": null,
+            "volumesBudgetYtd": null,
+            "revenueBudgetYtd": null
+          },
+          "12": {
+            "actualHeadcount": 175,
+            "salariesActualYtd": null,
+            "volumesActualYtd": null,
+            "revenueActualYtd": null,
+            "budgetHeadcount": 192,
+            "salariesBudgetYtd": null,
+            "volumesBudgetYtd": null,
+            "revenueBudgetYtd": null
+          }
+        },
         "staffCostFormulaNotes": {},
         "narrative": {
           "meetingTitle": "EXCO MEETING HELD ON 31 AUGUST 2026",
@@ -693,6 +824,7 @@
         "isoActions": [],
         "csrProjects": [],
         "csrFy27Rows": [],
+        "csrHighlights": [],
         "cahierHighlights": [],
         "trainingTopics": [],
         "upcomingTrainings": [],
@@ -9062,8 +9194,8 @@
           ]
         }
       },
-      "updatedAt": "2026-09-08T07:35:00.000Z",
-      "updatedBy": "system"
+      "updatedAt": "2026-09-08T08:29:50.388Z",
+      "updatedBy": "Administrateur"
     },
     {
       "year": 2026,
@@ -9872,6 +10004,7 @@
             "nextSteps": "Completion: 80% \n\nOngoing work:- Improvement of the grounding networks- Widening the control room to have access to the acquired cells Progress status: \nZamba 1st: two cabins installed, only the connection remains;\nMalanga Cité: send a letter to the AT of Songololo for the formalities of the new transformer location."
           }
         ],
+        "csrHighlights": [],
         "cahierHighlights": [
           {
             "id": "cahier-01",
@@ -18288,6 +18421,7 @@
         "isoActions": [],
         "csrProjects": [],
         "csrFy27Rows": [],
+        "csrHighlights": [],
         "cahierHighlights": [],
         "trainingTopics": [],
         "upcomingTrainings": [],
@@ -18355,6 +18489,7 @@
         "isoActions": [],
         "csrProjects": [],
         "csrFy27Rows": [],
+        "csrHighlights": [],
         "cahierHighlights": [],
         "trainingTopics": [],
         "upcomingTrainings": [],
@@ -18422,6 +18557,7 @@
         "isoActions": [],
         "csrProjects": [],
         "csrFy27Rows": [],
+        "csrHighlights": [],
         "cahierHighlights": [],
         "trainingTopics": [],
         "upcomingTrainings": [],
@@ -18487,6 +18623,7 @@
         "isoActions": [],
         "csrProjects": [],
         "csrFy27Rows": [],
+        "csrHighlights": [],
         "cahierHighlights": [],
         "trainingTopics": [],
         "upcomingTrainings": [],
@@ -18552,6 +18689,7 @@
         "isoActions": [],
         "csrProjects": [],
         "csrFy27Rows": [],
+        "csrHighlights": [],
         "cahierHighlights": [],
         "trainingTopics": [],
         "upcomingTrainings": [],
@@ -18617,6 +18755,7 @@
         "isoActions": [],
         "csrProjects": [],
         "csrFy27Rows": [],
+        "csrHighlights": [],
         "cahierHighlights": [],
         "trainingTopics": [],
         "upcomingTrainings": [],
