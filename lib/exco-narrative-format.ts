@@ -1,3 +1,37 @@
+import { emptyExcoOverlays, type ExcoNarrative } from './exco-types';
+
+/** True si Highlights / Lowlights / Focus ont du contenu. */
+export function narrativeHasBody(narrative: ExcoNarrative | null | undefined): boolean {
+  if (!narrative) return false;
+  return Boolean(
+    narrative.highlights?.trim()
+    || narrative.lowlights?.trim()
+    || narrative.focus?.trim(),
+  );
+}
+
+/** Reprend la synthèse du mois précédent si le mois courant est encore vide. */
+export function inheritNarrative(
+  current: ExcoNarrative | null | undefined,
+  previous: ExcoNarrative | null | undefined,
+): ExcoNarrative {
+  const cur = current || emptyExcoOverlays().narrative;
+  if (narrativeHasBody(cur) || !previous) return cur;
+  return {
+    ...previous,
+    ...cur,
+    highlights: cur.highlights?.trim() ? cur.highlights : previous.highlights || '',
+    lowlights: cur.lowlights?.trim() ? cur.lowlights : previous.lowlights || '',
+    focus: cur.focus?.trim() ? cur.focus : previous.focus || '',
+    thankYouTitle: cur.thankYouTitle?.trim()
+      ? cur.thankYouTitle
+      : previous.thankYouTitle || cur.thankYouTitle,
+    thankYouMessage: cur.thankYouMessage?.trim()
+      ? cur.thankYouMessage
+      : previous.thankYouMessage || cur.thankYouMessage,
+  };
+}
+
 /**
  * Découpe Highlights / Lowlights / Focus en points lisibles
  * (lignes vides, retours, ou enchaînements « Titre : … »).

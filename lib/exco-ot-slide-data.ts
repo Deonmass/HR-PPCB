@@ -25,8 +25,10 @@ export function otMonthSegmentColor(calendarMonth: number): string {
 
 export type ExcoOtDeptMonthRow = {
   department: string;
-  /** Heures du mois courant (ex. juillet). */
+  /** Heures du mois courant (ex. août). */
   monthHours: number | null;
+  /** Heures du mois précédent (ex. juillet). */
+  prevMonthHours: number | null;
   ytd: number;
   pctOfYtd: number;
   /** Segments empilés Mar→mois courant (heures > 0). */
@@ -35,9 +37,11 @@ export type ExcoOtDeptMonthRow = {
 
 export type ExcoOtSlideData = {
   monthLabel: string;
+  prevMonthLabel: string;
   monthIndex: number;
   rows: ExcoOtDeptMonthRow[];
   totalMonthHours: number;
+  totalPrevMonthHours: number;
   ytdTotal: number;
   maxYtd: number;
   /** Max heures du mois courant (échelle graphique). */
@@ -105,6 +109,16 @@ export function buildOtSlideData(report: ExcoReportPayload): ExcoOtSlideData {
   const monthCol = fyCols.find((c) => c.isCurrent);
   const monthLabel = monthCol?.label || report.periodLabel;
   const monthIndex = report.month;
+  const prevMonthIndex = report.month > 1 ? report.month - 1 : null;
+  const prevCol =
+    prevMonthIndex != null
+      ? fyCols.find((c) => c.month === prevMonthIndex && c.year === report.year)
+      : undefined;
+  const prevMonthLabel =
+    prevCol?.label
+    || (prevMonthIndex != null
+      ? EXCO_FY_MONTH_LABELS[prevMonthIndex - 3] || String(prevMonthIndex)
+      : '—');
 
   const deptSource = report.computed.overtimeByDept || [];
   const rows: ExcoOtDeptMonthRow[] = deptSource.map((row) => {
@@ -113,6 +127,8 @@ export function buildOtSlideData(report: ExcoReportPayload): ExcoOtSlideData {
       monthCol && monthCol.visible && monthCol.year === report.year
         ? hoursByMonth[monthCol.month - 1]
         : null;
+    const prevMonthHours =
+      prevMonthIndex != null ? hoursByMonth[prevMonthIndex - 1] : null;
     const ytd = hoursByMonth.reduce<number>((s, h, i) => {
       const month = i + 1;
       if (month < 3 || month > report.month) return s;
@@ -131,6 +147,8 @@ export function buildOtSlideData(report: ExcoReportPayload): ExcoOtSlideData {
     return {
       department: row.department,
       monthHours: monthHours != null && Number.isFinite(monthHours) ? monthHours : null,
+      prevMonthHours:
+        prevMonthHours != null && Number.isFinite(prevMonthHours) ? prevMonthHours : null,
       ytd: roundedYtd,
       pctOfYtd: 0,
       segments,
@@ -139,6 +157,7 @@ export function buildOtSlideData(report: ExcoReportPayload): ExcoOtSlideData {
 
   const ytdTotal = rows.reduce((s, r) => s + r.ytd, 0);
   const totalMonthHours = rows.reduce((s, r) => s + (r.monthHours || 0), 0);
+  const totalPrevMonthHours = rows.reduce((s, r) => s + (r.prevMonthHours || 0), 0);
   for (const r of rows) {
     r.pctOfYtd = ytdTotal > 0 ? Math.round((r.ytd / ytdTotal) * 100) : 0;
   }
@@ -152,9 +171,11 @@ export function buildOtSlideData(report: ExcoReportPayload): ExcoOtSlideData {
 
   return {
     monthLabel,
+    prevMonthLabel,
     monthIndex,
     rows,
     totalMonthHours: Math.round(totalMonthHours * 100) / 100,
+    totalPrevMonthHours: Math.round(totalPrevMonthHours * 100) / 100,
     ytdTotal: Math.round(ytdTotal * 100) / 100,
     maxYtd: Math.max(...rows.map((r) => r.ytd), 1),
     maxMonthHours: Math.max(...rows.map((r) => r.monthHours || 0), 1),

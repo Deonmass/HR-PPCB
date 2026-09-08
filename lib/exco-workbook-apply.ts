@@ -116,6 +116,9 @@ export function applyWorkbookSnapshotToComputed(
     averageSeniorityYears: hc.averageLengthOfService,
     ageBands: hc.ageBands,
     seniorityBands: hc.seniorityBands,
+    genderByLocation: hc.genderByLocation || computed.genderByLocation,
+    preRetirement: hc.preRetirement ?? computed.preRetirement,
+    retirement: hc.retirement ?? computed.retirement,
     headcountBySite: [
       { site: 'Plant', headcount: plant, delta: null },
       { site: 'HQ and Regions', headcount: hq, delta: null },

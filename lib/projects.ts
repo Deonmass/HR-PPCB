@@ -3,12 +3,20 @@ export {
   type ProjectDashboard,
   type ProjectEffectifs,
   type ProjectExpense,
+  type ProjectHistoryEntry,
   type ProjectRecord,
   type ProjectsData,
   type ProjectStatus,
 } from './project-types';
 
-import type { BudgetRow, ProjectDashboard, ProjectExpense, ProjectRecord } from './project-types';
+import type {
+  BudgetRow,
+  ProjectDashboard,
+  ProjectExpense,
+  ProjectHistoryEntry,
+  ProjectRecord,
+  ProjectStatus,
+} from './project-types';
 
 export function formatUsd(value: number | null | undefined, digits = 2): string {
   if (value === null || value === undefined || Number.isNaN(value)) return '—';
@@ -22,6 +30,11 @@ export function formatUsd(value: number | null | undefined, digits = 2): string 
 export function formatPct(value: number | null | undefined): string {
   if (value === null || value === undefined || Number.isNaN(value)) return '—';
   return `${(value * 100).toFixed(2)} %`;
+}
+
+export function formatEvolutionPct(value: number | null | undefined): string {
+  if (value === null || value === undefined || Number.isNaN(value)) return '—';
+  return `${Math.round(value)} %`;
 }
 
 export function getProjectTypes(projects: { typeProjet: string }[]): string[] {
@@ -41,8 +54,8 @@ export function getExpenseProjects(expenses: { projet: string }[]): string[] {
 }
 
 export function statusBadgeClass(statut: string): string {
-  const s = statut.toLowerCase();
-  if (s.includes('termin')) return 'badge-y';
+  const s = statut.toLowerCase().normalize('NFD').replace(/\p{Diacritic}/gu, '');
+  if (s.includes('termin') || s.includes('closed')) return 'badge-y';
   if (s.includes('cours')) return 'badge-na';
   return 'badge-n';
 }
@@ -55,58 +68,63 @@ export function ecartClass(value: number | null | undefined): string {
 }
 
 export const PROJECT_TYPES = ['CSR', 'Cahier de charges'] as const;
-export const PROJECT_STATUTS = ['Terminé', 'En cours', 'Non debuté'] as const;
+export const PROJECT_STATUTS = ['Closed', 'En cours', 'Non debuté'] as const;
 
 export const PROJECT_STATUS_OPTIONS = [
   { value: 'Non debuté', label: 'Non débuté' },
   { value: 'En cours', label: 'En cours' },
-  { value: 'Terminé', label: 'Terminé' },
+  { value: 'Closed', label: 'Closed' },
 ] as const;
 
 export function formatProjectStatus(statut: string): string {
+  const s = statut.toLowerCase().normalize('NFD').replace(/\p{Diacritic}/gu, '');
+  if (s.includes('termin') || s.includes('closed')) return 'Closed';
+  if (s.includes('cours')) return 'En cours';
+  if (s.includes('debut') || s.includes('start')) return 'Non débuté';
   const match = PROJECT_STATUS_OPTIONS.find(
     (option) => option.value.toLowerCase() === statut.toLowerCase(),
   );
   return match?.label ?? statut;
 }
 
+export function clampEvolution(value: unknown): number {
+  const n = Number(value);
+  if (!Number.isFinite(n)) return 0;
+  return Math.max(0, Math.min(100, Math.round(n)));
+}
+
+export function statutFromEvolution(evolution: number): ProjectStatus {
+  const pct = clampEvolution(evolution);
+  if (pct <= 0) return 'Non debuté';
+  if (pct >= 100) return 'Closed';
+  return 'En cours';
+}
+
+export function evolutionFromLegacyStatut(statut: string): number {
+  const s = statut.toLowerCase().normalize('NFD').replace(/\p{Diacritic}/gu, '');
+  if (s.includes('termin') || s.includes('closed')) return 100;
+  if (s.includes('cours')) return 50;
+  return 0;
+}
+
 export function applyStatusAfterExpense(project: ProjectRecord): ProjectRecord {
-  if (project.budgetDepense <= 0) return project;
-  const normalized = project.statut.toLowerCase().normalize('NFD').replace(/\p{Diacritic}/gu, '');
-  if (normalized.includes('termin')) return project;
-  if (normalized.includes('cours')) return project;
-  return { ...project, statut: 'En cours' };
+  // Statut piloté par l’évolution (%) — les dépenses ne le modifient plus.
+  return project;
 }
 
 export function needsBudgetPrevuVerification(
-  project: Pick<ProjectRecord, 'budgetPrevu' | 'budgetDepense' | 'budgetPrevuVerifie'>,
+  _project: Pick<ProjectRecord, 'budgetPrevu' | 'budgetDepense' | 'budgetPrevuVerifie'>,
 ): boolean {
-  if (project.budgetPrevuVerifie) return false;
-  const depense = Number(project.budgetDepense) || 0;
-  if (depense <= 0) return false;
-  const prevu = project.budgetPrevu;
-  if (prevu === null || prevu === undefined) return true;
-  return prevu === depense;
+  return false;
 }
 
 export function getBudgetPrevuVerificationMessage(
-  project: Pick<ProjectRecord, 'budgetPrevu' | 'budgetDepense' | 'budgetPrevuVerifie'>,
+  _project: Pick<ProjectRecord, 'budgetPrevu' | 'budgetDepense' | 'budgetPrevuVerifie'>,
 ): string {
-  const depense = Number(project.budgetDepense) || 0;
-  if (!needsBudgetPrevuVerification(project)) return '';
-  if (project.budgetPrevu === null || project.budgetPrevu === undefined) {
-    return 'Ce projet présente des dépenses sans budget prévu renseigné.';
-  }
-  if (project.budgetPrevu === depense) {
-    return 'Le budget prévu est égal au budget dépensé — cochez « Projet non prévu » ou renseignez un montant distinct.';
-  }
   return '';
 }
 
-export function validateBudgetPrevuVerification(project: ProjectRecord): string | null {
-  if (needsBudgetPrevuVerification(project) && !project.budgetPrevuVerifie) {
-    return 'Veuillez cocher « Projet non prévu » ou renseigner un budget prévu.';
-  }
+export function validateBudgetPrevuVerification(_project: ProjectRecord): string | null {
   return null;
 }
 
@@ -154,7 +172,65 @@ export function createEmptyProject(projects: ProjectRecord[]): ProjectRecord {
     budgetPrevuVerifie: false,
     ecart: null,
     pctBudget: null,
+    evolution: 0,
+    commentaire: '',
+    history: [],
     statut: 'Non debuté',
+  };
+}
+
+export function appendProjectFieldHistory(
+  previous: ProjectRecord | null | undefined,
+  next: ProjectRecord,
+): ProjectRecord {
+  const history: ProjectHistoryEntry[] = [
+    ...(Array.isArray(previous?.history)
+      ? previous!.history
+      : Array.isArray(next.history)
+        ? next.history
+        : []),
+  ];
+  const now = new Date().toISOString();
+  const nextEvo = clampEvolution(
+    next.evolution !== undefined && next.evolution !== null
+      ? next.evolution
+      : evolutionFromLegacyStatut(next.statut),
+  );
+  const nextComment = String(next.commentaire ?? '');
+
+  if (previous) {
+    const prevEvo = clampEvolution(
+      previous.evolution !== undefined && previous.evolution !== null
+        ? previous.evolution
+        : evolutionFromLegacyStatut(previous.statut),
+    );
+    if (prevEvo !== nextEvo) {
+      history.unshift({
+        id: `h-${Date.now()}-evo`,
+        at: now,
+        field: 'evolution',
+        from: prevEvo,
+        to: nextEvo,
+      });
+    }
+    const prevComment = String(previous.commentaire ?? '');
+    if (prevComment !== nextComment) {
+      history.unshift({
+        id: `h-${Date.now()}-cmt`,
+        at: now,
+        field: 'commentaire',
+        from: prevComment || null,
+        to: nextComment || null,
+      });
+    }
+  }
+
+  return {
+    ...next,
+    evolution: nextEvo,
+    commentaire: nextComment,
+    history: history.slice(0, 120),
+    statut: statutFromEvolution(nextEvo),
   };
 }
 
@@ -169,6 +245,11 @@ export function normalizeProject(input: ProjectRecord): ProjectRecord {
     budgetPrevu = budgetDepense;
   }
   const { ecart, pctBudget } = recomputeProjectFields(budgetPrevu, budgetDepense);
+  const hasEvolution =
+    input.evolution !== undefined && input.evolution !== null && !Number.isNaN(Number(input.evolution));
+  const evolution = hasEvolution
+    ? clampEvolution(input.evolution)
+    : evolutionFromLegacyStatut(input.statut || 'Non debuté');
   return {
     ...input,
     budgetPrevu,
@@ -176,6 +257,10 @@ export function normalizeProject(input: ProjectRecord): ProjectRecord {
     budgetPrevuVerifie,
     ecart,
     pctBudget,
+    evolution,
+    commentaire: String(input.commentaire ?? ''),
+    history: Array.isArray(input.history) ? input.history : [],
+    statut: statutFromEvolution(evolution),
   };
 }
 
@@ -322,7 +407,7 @@ export function getBudgetRow(
 
 function normalizeStatusKey(statut: string): 'termine' | 'encours' | 'nonDebute' {
   const s = statut.toLowerCase().normalize('NFD').replace(/\p{Diacritic}/gu, '');
-  if (s.includes('termin')) return 'termine';
+  if (s.includes('termin') || s.includes('closed')) return 'termine';
   if (s.includes('cours')) return 'encours';
   return 'nonDebute';
 }

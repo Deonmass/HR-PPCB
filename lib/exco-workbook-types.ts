@@ -85,7 +85,8 @@ export interface ExcoBundledPayload {
   params: ExcoWorkbookSnapshot['params'];
   sheets: ExcoSheetTable[];
   snapshot: ExcoWorkbookSnapshot;
-  report: ExcoReportPayload;
+  /** null en mode light (changement de période — rapport chargé à part). */
+  report: ExcoReportPayload | null;
   pptx: ExcoPptxView | null;
   /** Noms système par matricule pour l’affichage BASE. */
   namesByMatricule?: Record<string, string>;

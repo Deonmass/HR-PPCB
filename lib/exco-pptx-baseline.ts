@@ -23,6 +23,12 @@ export interface ExcoPptxExtracted {
     lowlights?: string;
     focus?: string;
   };
+  kpiCards?: Array<{
+    label: string;
+    value: string | null;
+    delta: string | null;
+    prev: string | null;
+  }>;
   csrFy27Rows: Array<{
     name: string;
     objective: string;

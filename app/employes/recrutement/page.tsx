@@ -548,11 +548,12 @@ export default function RecrutementPage() {
   const canEdit = can('employes.recrutement', 'edit') || can('employes.postes', 'edit');
   const canDelete = can('employes.recrutement', 'delete') || can('employes.postes', 'delete');
 
+  type PageTab = 'dashboard' | RecrutementCategory;
   const [bundle, setBundle] = useState<RecrutementBundle | null>(null);
   const [loading, setLoading] = useState(true);
   const [refreshing, setRefreshing] = useState(false);
   const [search, setSearch] = useState('');
-  const [activeTab, setActiveTab] = useState<RecrutementCategory>('replacement');
+  const [activeTab, setActiveTab] = useState<PageTab>('dashboard');
   const [modalOpen, setModalOpen] = useState(false);
   const [modalMode, setModalMode] = useState<ModalMode>('create');
   const [form, setForm] = useState<RecrutementInput>(EMPTY_FORM);
@@ -604,7 +605,8 @@ export default function RecrutementPage() {
 
   const replacements = filtered.filter((r) => r.category === 'replacement');
   const newPositions = filtered.filter((r) => r.category === 'new');
-  const tabRows = activeTab === 'replacement' ? replacements : newPositions;
+  const tabRows = activeTab === 'replacement' ? replacements : activeTab === 'new' ? newPositions : [];
+  const listCount = activeTab === 'replacement' ? replacements.length : activeTab === 'new' ? newPositions.length : filtered.length;
 
   const activeRow = rows.find((r) => r.id === activeId) || null;
   const preview = useMemo(() => {
@@ -721,6 +723,8 @@ export default function RecrutementPage() {
     });
   };
 
+  const createCategory: RecrutementCategory = activeTab === 'replacement' ? 'replacement' : 'new';
+
   const contextItems: ContextMenuItem[] = contextMenu
     ? [
         { id: 'view', label: t('common.view'), icon: 'view', onClick: () => openRow(contextMenu.item, 'view') },
@@ -777,7 +781,7 @@ export default function RecrutementPage() {
       ]}
     >
       <div className="mvt-page rec-page">
-        <div className="page-header mvt-page-header">
+        <div className="page-header page-header-with-tabs mvt-page-header">
           <div>
             <div className="page-header-title-row">
               <h2>{t('rec.title')}</h2>
@@ -786,145 +790,151 @@ export default function RecrutementPage() {
             <p className="mvt-page-sub">
               {t('rec.subtitle')}
               <span className="mvt-count-pill">
-                {filtered.length}
-                {filtered.length !== rows.length ? ` / ${rows.length}` : ''}
+                {listCount}
+                {activeTab !== 'dashboard' && filtered.length !== rows.length ? ` / ${rows.length}` : ''}
               </span>
             </p>
           </div>
           <div className="page-header-actions mvt-header-actions">
+            <div className="tabs header-tabs header-tabs-compact mvt-tabs" role="tablist">
+              {(
+                [
+                  ['dashboard', t('rec.tab.dashboard')],
+                  ['replacement', t('rec.tab.replacements')],
+                  ['new', t('rec.tab.newPositions')],
+                ] as const
+              ).map(([id, label]) => (
+                <button
+                  key={id}
+                  type="button"
+                  role="tab"
+                  aria-selected={activeTab === id}
+                  className={`tab-btn tab-btn-sm mvt-tab-btn${activeTab === id ? ' active' : ''}`}
+                  onClick={() => setActiveTab(id)}
+                >
+                  {label}
+                  {id === 'replacement' ? <span className="rec-header-tab-count">{replacements.length}</span> : null}
+                  {id === 'new' ? <span className="rec-header-tab-count">{newPositions.length}</span> : null}
+                </button>
+              ))}
+            </div>
             {canCreate ? (
-              <button type="button" className="btn btn-primary btn-sm mvt-primary-btn" onClick={() => openCreate(activeTab)}>
+              <button
+                type="button"
+                className="btn btn-primary btn-sm mvt-primary-btn"
+                onClick={() => openCreate(createCategory)}
+              >
                 {t('common.add')}
               </button>
             ) : null}
           </div>
         </div>
 
-        {dashboard ? (
-          <div className="travel-history-cards mvt-kpi-strip postes-kpi-strip rec-kpi-strip">
-            <button
-              type="button"
-              className="card card-glow card-glow-red travel-history-card postes-kpi-card"
-              title={t('rec.drill.all')}
-              onClick={() => openDrill(t('rec.drill.all'), () => true)}
-            >
-              <div className="card-label">{t('rec.kpi.total')}</div>
-              <div className="card-value">{dashboard.total}</div>
-            </button>
-            <button
-              type="button"
-              className="card card-glow card-glow-cyan travel-history-card postes-kpi-card"
-              title={t('rec.drill.replacements')}
-              onClick={() => {
-                setActiveTab('replacement');
-                openDrill(t('rec.drill.replacements'), (r) => r.category === 'replacement');
-              }}
-            >
-              <div className="card-label">{t('rec.kpi.replacements')}</div>
-              <div className="card-value">{dashboard.replacements}</div>
-            </button>
-            <button
-              type="button"
-              className="card card-glow card-glow-violet travel-history-card postes-kpi-card"
-              title={t('rec.drill.newPositions')}
-              onClick={() => {
-                setActiveTab('new');
-                openDrill(t('rec.drill.newPositions'), (r) => r.category === 'new');
-              }}
-            >
-              <div className="card-label">{t('rec.kpi.newPositions')}</div>
-              <div className="card-value">{dashboard.newPositions}</div>
-            </button>
-            <button
-              type="button"
-              className="card card-glow card-glow-amber travel-history-card postes-kpi-card"
-              title={t('rec.drill.ongoing')}
-              onClick={() =>
-                openDrill(t('rec.drill.ongoing'), (r) => r.status.toLowerCase() === 'ongoing')
-              }
-            >
-              <div className="card-label">{t('rec.kpi.ongoing')}</div>
-              <div className="card-value">{dashboard.ongoing}</div>
-            </button>
-            <button
-              type="button"
-              className="card card-glow card-glow-green travel-history-card postes-kpi-card"
-              title={t('rec.drill.done')}
-              onClick={() => openDrill(t('rec.drill.done'), (r) => r.status.toLowerCase() === 'done')}
-            >
-              <div className="card-label">{t('rec.kpi.done')}</div>
-              <div className="card-value">{dashboard.done}</div>
-            </button>
-            <button
-              type="button"
-              className="card card-glow card-glow-red travel-history-card postes-kpi-card"
-              title={t('rec.drill.august')}
-              onClick={() =>
-                openDrill(t('rec.drill.august'), (r) => r.filledInAugust)
-              }
-            >
-              <div className="card-label">{t('rec.kpi.filledAugust')}</div>
-              <div className="card-value">{dashboard.filledAugust}</div>
-            </button>
-          </div>
+        {activeTab === 'dashboard' && dashboard ? (
+          <section className="rec-dashboard">
+            <p className="rec-dashboard-hint">{t('rec.dashboard.hint')}</p>
+            <div className="travel-history-cards mvt-kpi-strip postes-kpi-strip rec-kpi-strip">
+              <button
+                type="button"
+                className="card card-glow card-glow-red travel-history-card postes-kpi-card"
+                title={t('rec.drill.all')}
+                onClick={() => openDrill(t('rec.drill.all'), () => true)}
+              >
+                <div className="card-label">{t('rec.kpi.total')}</div>
+                <div className="card-value">{dashboard.total}</div>
+              </button>
+              <button
+                type="button"
+                className="card card-glow card-glow-cyan travel-history-card postes-kpi-card"
+                title={t('rec.drill.replacements')}
+                onClick={() => {
+                  setActiveTab('replacement');
+                }}
+              >
+                <div className="card-label">{t('rec.kpi.replacements')}</div>
+                <div className="card-value">{dashboard.replacements}</div>
+              </button>
+              <button
+                type="button"
+                className="card card-glow card-glow-violet travel-history-card postes-kpi-card"
+                title={t('rec.drill.newPositions')}
+                onClick={() => {
+                  setActiveTab('new');
+                }}
+              >
+                <div className="card-label">{t('rec.kpi.newPositions')}</div>
+                <div className="card-value">{dashboard.newPositions}</div>
+              </button>
+              <button
+                type="button"
+                className="card card-glow card-glow-amber travel-history-card postes-kpi-card"
+                title={t('rec.drill.ongoing')}
+                onClick={() =>
+                  openDrill(t('rec.drill.ongoing'), (r) => r.status.toLowerCase() === 'ongoing')
+                }
+              >
+                <div className="card-label">{t('rec.kpi.ongoing')}</div>
+                <div className="card-value">{dashboard.ongoing}</div>
+              </button>
+              <button
+                type="button"
+                className="card card-glow card-glow-green travel-history-card postes-kpi-card"
+                title={t('rec.drill.done')}
+                onClick={() => openDrill(t('rec.drill.done'), (r) => r.status.toLowerCase() === 'done')}
+              >
+                <div className="card-label">{t('rec.kpi.done')}</div>
+                <div className="card-value">{dashboard.done}</div>
+              </button>
+              <button
+                type="button"
+                className="card card-glow card-glow-red travel-history-card postes-kpi-card rec-kpi-month"
+                title={t('rec.drill.august')}
+                onClick={() =>
+                  openDrill(t('rec.drill.august'), (r) => r.filledInAugust)
+                }
+              >
+                <div className="card-label">{t('rec.kpi.filledAugust')}</div>
+                <div className="card-value">{dashboard.filledAugust}</div>
+              </button>
+            </div>
+          </section>
         ) : null}
 
-        <div className="mvt-toolbar">
-          <label className="mvt-search">
-            <svg viewBox="0 0 24 24" width="16" height="16" aria-hidden>
-              <circle cx="11" cy="11" r="7" fill="none" stroke="currentColor" strokeWidth="2" />
-              <path d="M20 20l-3.5-3.5" fill="none" stroke="currentColor" strokeWidth="2" />
-            </svg>
-            <input
-              type="search"
-              placeholder={t('rec.searchPlaceholder')}
-              value={search}
-              onChange={(e) => setSearch(e.target.value)}
+        {activeTab === 'replacement' || activeTab === 'new' ? (
+          <section className="exco-panel rec-table-card">
+            <div className="rec-toolbar-in-card">
+              <label className="mvt-search">
+                <svg viewBox="0 0 24 24" width="16" height="16" aria-hidden>
+                  <circle cx="11" cy="11" r="7" fill="none" stroke="currentColor" strokeWidth="2" />
+                  <path d="M20 20l-3.5-3.5" fill="none" stroke="currentColor" strokeWidth="2" />
+                </svg>
+                <input
+                  type="search"
+                  placeholder={t('rec.searchPlaceholder')}
+                  value={search}
+                  onChange={(e) => setSearch(e.target.value)}
+                />
+                {search ? (
+                  <button type="button" className="mvt-search-clear" onClick={() => setSearch('')}>
+                    ×
+                  </button>
+                ) : null}
+              </label>
+              <span className="rec-tab-meta">
+                {t(tabRows.length === 1 ? 'rec.rows' : 'rec.rowsPlural', { count: tabRows.length })}
+              </span>
+            </div>
+            <RecTable
+              rows={tabRows}
+              canEdit={canEdit || canCreate}
+              onOpen={openRow}
+              onContext={(e, row) => {
+                e.preventDefault();
+                setContextMenu({ x: e.clientX, y: e.clientY, item: row });
+              }}
             />
-            {search ? (
-              <button type="button" className="mvt-search-clear" onClick={() => setSearch('')}>
-                ×
-              </button>
-            ) : null}
-          </label>
-        </div>
-
-        <section className="exco-panel rec-table-card rec-tabs-card">
-          <div className="rec-tabs" role="tablist" aria-label={t('rec.title')}>
-            <button
-              type="button"
-              role="tab"
-              aria-selected={activeTab === 'replacement'}
-              className={`rec-tab${activeTab === 'replacement' ? ' active' : ''}`}
-              onClick={() => setActiveTab('replacement')}
-            >
-              {t('rec.tab.replacements')}
-              <span className="rec-tab-count">{replacements.length}</span>
-            </button>
-            <button
-              type="button"
-              role="tab"
-              aria-selected={activeTab === 'new'}
-              className={`rec-tab${activeTab === 'new' ? ' active' : ''}`}
-              onClick={() => setActiveTab('new')}
-            >
-              {t('rec.tab.newPositions')}
-              <span className="rec-tab-count">{newPositions.length}</span>
-            </button>
-            <span className="rec-tab-meta">
-              {t(tabRows.length === 1 ? 'rec.rows' : 'rec.rowsPlural', { count: tabRows.length })}
-            </span>
-          </div>
-          <RecTable
-            rows={tabRows}
-            canEdit={canEdit || canCreate}
-            onOpen={openRow}
-            onContext={(e, row) => {
-              e.preventDefault();
-              setContextMenu({ x: e.clientX, y: e.clientY, item: row });
-            }}
-          />
-        </section>
+          </section>
+        ) : null}
 
         {modalOpen ? (
           <RecrutementModal

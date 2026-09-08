@@ -32,6 +32,8 @@ import { otChartDeptLabel } from '@/lib/exco-ot-slide-data';
 import ExcoOtOverviewCharts from '@/components/exco/ExcoOtOverviewCharts';
 import ExcoNarrativePanel from '@/components/exco/ExcoNarrativePanel';
 import ExcoExportMenu from '@/components/exco/ExcoExportMenu';
+import { kpiSummaryToCardGroups, kpiSummaryToCards, type ExcoKpiCard, type ExcoKpiCardGroup } from '@/lib/exco-kpi-format';
+import type { ExcoComputedBlock, ExcoMetricValue } from '@/lib/exco-types';
 import type { ExcoSheetTable } from '@/lib/exco-workbook-types';
 import { formatNarrativeForEdit } from '@/lib/exco-narrative-format';
 import { showError, showSuccess } from '@/lib/swal';
@@ -153,6 +155,7 @@ type InOutView = {
   ytdAttrition: number | null;
   ytdTurnover: number | null;
   ytdHeadcount: number | null;
+  presentList: InOutPerson[];
   exitsByReason: Array<{ label: string; value: number }>;
   inList: InOutPerson[];
   outList: InOutPerson[];
@@ -737,7 +740,76 @@ type OtView = {
 
 type OtSubTab = 'overview' | 'evolution' | 'top10';
 
-type PptxKpi = { label: string; value: string | null; delta: string | null; prev: string | null };
+function headcountFromComputed(c: ExcoComputedBlock): HeadcountView {
+  const malePct = c.genderMalePct ?? 0;
+  const femalePct = c.genderFemalePct ?? 0;
+  return {
+    headcount: c.headcount,
+    male: c.genderMale,
+    female: c.genderFemale,
+    malePct,
+    femalePct,
+    genderByLocation: c.genderByLocation || [],
+    ageBands: c.ageBands || [],
+    seniorityBands: c.seniorityBands || [],
+    averageAge: c.averageAge,
+    averageAgeMale: c.averageAgeMale,
+    averageAgeFemale: c.averageAgeFemale,
+    averageLengthOfService: c.averageSeniorityYears,
+    retirement: c.retirement ?? 0,
+    preRetirement: c.preRetirement ?? 0,
+  };
+}
+
+function otViewFromComputed(base: OtView, computed: ExcoComputedBlock): OtView | null {
+  const top = Array.isArray(computed.overtimeTopEmployees) ? computed.overtimeTopEmployees : [];
+  const hoursTotal = computed.overtimeHoursTotal || 0;
+  if (!top.length && hoursTotal <= 0) return null;
+  const rows = top.map((e) => ({
+    matricule: e.matricule || '',
+    name: e.nom || '',
+    hours: e.hours || 0,
+    costFc: e.costFc ?? 0,
+    costUsd: e.costUsd ?? null,
+    leaveDays: e.leaveBalance ?? null,
+    leaveValueUsd: null as number | null,
+    department: e.department || '',
+  }));
+  const costUsd = rows.reduce((s, r) => s + (r.costUsd ?? 0), 0);
+  const byDepartment = (computed.overtimeByDept || []).map((d) => ({
+    department: d.department,
+    hours: d.hours || 0,
+    costUsd: d.cost ?? 0,
+    agents: 0,
+  }));
+  const hc = computed.headcount || 0;
+  const agents = rows.length || computed.employeesWithOt || 0;
+  return {
+    ...base,
+    rows,
+    totals: {
+      agents,
+      hours: hoursTotal,
+      costUsd: costUsd > 0 ? Math.round(costUsd * 100) / 100 : null,
+      leaveValueUsd: base.totals.leaveValueUsd,
+    },
+    byDepartment: byDepartment.length
+      ? byDepartment
+      : base.byDepartment,
+    missing: base.missing,
+    workbook: {
+      trendRows: base.workbook?.trendRows || [],
+      actualVsBudget: base.workbook?.actualVsBudget || null,
+      headcount: hc || null,
+      employeesWithOtPct: hc > 0 ? Math.round((agents / hc) * 1000) / 10 : null,
+      averageHours: agents > 0 ? Math.round((hoursTotal / agents) * 100) / 100 : null,
+      averageCostPerEmployee: null,
+      averageLeaveDays: base.leaveAvgDays ?? null,
+      staffCostMonth: base.workbook?.staffCostMonth ?? null,
+      staffCostYtd: base.workbook?.staffCostYtd ?? null,
+    },
+  };
+}
 
 function formatNum(n: number | null | undefined, digits = 0): string {
   if (n == null || !Number.isFinite(n)) return '—';
@@ -1340,9 +1412,10 @@ export default function ExcoPage() {
   const { t } = useI18n();
   const canEdit = can('exco.rapport', 'edit');
   const [tab, setTab] = useState<TabId>('params');
-  // Période de travail courante (juillet 2026 — fichiers sources préchargés)
+  // Période : bootstrap sur le dernier rapport enregistré (voir effet ci-dessous)
   const [year, setYear] = useState(2026);
   const [month, setMonth] = useState(7);
+  const [periodReady, setPeriodReady] = useState(false);
   const [fxRate, setFxRate] = useState('');
   const [uploads, setUploads] = useState<Partial<Record<ExcoSourceFileId, UploadMeta>>>({});
   const [loading, setLoading] = useState(true);
@@ -1351,7 +1424,8 @@ export default function ExcoPage() {
   const [base, setBase] = useState<BaseReconcile | null>(null);
   const [ot, setOt] = useState<OtView | null>(null);
   const [otSubTab, setOtSubTab] = useState<OtSubTab>('overview');
-  const [kpiCards, setKpiCards] = useState<PptxKpi[]>([]);
+  const [kpiCards, setKpiCards] = useState<ExcoKpiCard[]>([]);
+  const [kpiGroups, setKpiGroups] = useState<ExcoKpiCardGroup[]>([]);
   const [narrative, setNarrative] = useState<{
     highlights?: string;
     lowlights?: string;
@@ -1430,17 +1504,23 @@ export default function ExcoPage() {
     return items;
   }, [formulaMenu, canEdit]);
 
-  const loadParams = useCallback(async (y: number, m: number) => {
-    const res = await fetch(`/api/exco/params?year=${y}&month=${m}`);
-    const data = await res.json();
-    if (!res.ok) throw new Error(data.error || 'Params');
+  const loadParams = useCallback(async (y: number, m: number, prefetched?: unknown) => {
+    const data = prefetched
+      ? prefetched
+      : await (async () => {
+          const res = await fetch(`/api/exco/params?year=${y}&month=${m}`);
+          const json = await res.json();
+          if (!res.ok) throw new Error(json.error || 'Params');
+          return json;
+        })();
     const p = data as ParamsState;
     setYear(p.year);
     setMonth(p.month);
     setFxRate(p.fxRateFcPerUsd != null ? String(p.fxRateFcPerUsd) : '');
     setUploads(p.uploads || {});
-    if (data.imported) setImported(data.imported as ImportedFlags);
-    else {
+    if ((data as { imported?: ImportedFlags }).imported) {
+      setImported((data as { imported: ImportedFlags }).imported);
+    } else {
       setImported({
         componentPostedUnits: false,
         leaveBalances: false,
@@ -1448,25 +1528,26 @@ export default function ExcoPage() {
       });
     }
     setImportedSources(
-      (data.importedSources || {}) as Partial<
+      ((data as { importedSources?: Partial<Record<keyof ImportedFlags, { importedAt: string; originalName: string }>> }).importedSources || {}) as Partial<
         Record<keyof ImportedFlags, { importedAt: string; originalName: string }>
       >,
     );
-    const cols = (data.baseImportColumns || {}) as Partial<BaseImportColumns>;
+    const cols = ((data as { baseImportColumns?: Partial<BaseImportColumns> }).baseImportColumns || {}) as Partial<BaseImportColumns>;
     setBaseImportColumns({
       leaveDaysByMatricule: normalizeBaseImportMap(cols.leaveDaysByMatricule),
       leaveValueFcByMatricule: normalizeBaseImportMap(cols.leaveValueFcByMatricule),
       ovtHoursByMatricule: normalizeBaseImportMap(cols.ovtHoursByMatricule),
       ovtCostFcByMatricule: normalizeBaseImportMap(cols.ovtCostFcByMatricule),
     });
-    if (data.narrative && typeof data.narrative === 'object') {
-      const n = data.narrative as {
-        highlights?: string;
-        lowlights?: string;
-        focus?: string;
-        thankYouTitle?: string;
-        thankYouMessage?: string;
-      };
+    const narrativePayload = (data as { narrative?: {
+      highlights?: string;
+      lowlights?: string;
+      focus?: string;
+      thankYouTitle?: string;
+      thankYouMessage?: string;
+    } }).narrative;
+    if (narrativePayload && typeof narrativePayload === 'object') {
+      const n = narrativePayload;
       setNarrative({
         highlights: formatNarrativeForEdit(n.highlights || ''),
         lowlights: formatNarrativeForEdit(n.lowlights || ''),
@@ -1485,22 +1566,51 @@ export default function ExcoPage() {
     }
   }, []);
 
-  const loadBase = useCallback(async (y: number, m: number) => {
-    const res = await fetch(`/api/exco/base?year=${y}&month=${m}`);
-    const data = await res.json();
-    if (!res.ok) throw new Error(data.error || 'BASE');
+  const loadBase = useCallback(async (y: number, m: number, prefetched?: unknown) => {
+    const data = prefetched
+      ? prefetched
+      : await (async () => {
+          const res = await fetch(`/api/exco/base?year=${y}&month=${m}`);
+          const json = await res.json();
+          if (!res.ok) throw new Error(json.error || 'BASE');
+          return json;
+        })();
     setBase(data as BaseReconcile);
-    if (data.namesByMatricule && typeof data.namesByMatricule === 'object') {
+    const basePayload = data as {
+      baseSheet?: ExcoSheetTable;
+      uniqueBase?: {
+        seedYear?: number;
+        seedMonth?: number;
+        fromWorkbook?: boolean;
+        headcount?: number;
+      };
+      namesByMatricule?: Record<string, string>;
+      departmentsByMatricule?: Record<string, string>;
+    };
+    if (basePayload.baseSheet && typeof basePayload.baseSheet === 'object') {
+      setBaseSheet(basePayload.baseSheet);
+      const ub = basePayload.uniqueBase;
+      const seedLabel =
+        ub?.fromWorkbook
+          ? `New report ${m}/${y}`
+          : ub?.seedYear && ub?.seedMonth
+            ? `roll-forward depuis ${ub.seedMonth}/${ub.seedYear}`
+            : 'seed New report';
+      setBaseSheetSource(
+        `BASE unique · ${seedLabel} · ${ub?.headcount ?? basePayload.baseSheet.rowCount - 1} employés`,
+      );
+    }
+    if (basePayload.namesByMatricule && typeof basePayload.namesByMatricule === 'object') {
       const normalized: Record<string, string> = {};
-      for (const [k, v] of Object.entries(data.namesByMatricule as Record<string, string>)) {
+      for (const [k, v] of Object.entries(basePayload.namesByMatricule)) {
         const mat = normMatricule(k);
         if (mat && v) normalized[mat] = v;
       }
       setNamesByMatricule((prev) => ({ ...prev, ...normalized }));
     }
-    if (data.departmentsByMatricule && typeof data.departmentsByMatricule === 'object') {
+    if (basePayload.departmentsByMatricule && typeof basePayload.departmentsByMatricule === 'object') {
       const normalized: Record<string, string> = {};
-      for (const [k, v] of Object.entries(data.departmentsByMatricule as Record<string, string>)) {
+      for (const [k, v] of Object.entries(basePayload.departmentsByMatricule)) {
         const mat = normMatricule(k);
         if (mat && v) normalized[mat] = v;
       }
@@ -1508,55 +1618,112 @@ export default function ExcoPage() {
     }
   }, []);
 
-  const loadOt = useCallback(async (y: number, m: number, fx?: string) => {
-    const q = fx ? `&fxRate=${encodeURIComponent(fx)}` : '';
-    const [otRes, wbRes, reportRes] = await Promise.all([
-      fetch(`/api/exco/overtime?year=${y}&month=${m}${q}`),
-      fetch('/api/exco/workbook'),
-      fetch(`/api/exco/report?year=${y}&month=${m}`),
-    ]);
-    const data = await otRes.json();
-    if (!otRes.ok) throw new Error(data.error || 'Overtime');
-    const baseView = data as OtView;
-
-    let workbook: OtView['workbook'];
-    if (wbRes.ok) {
-      const wb = await wbRes.json();
+  const applyOtFromPayloads = useCallback((
+    baseView: OtView,
+    m: number,
+    report: { computed?: ExcoComputedBlock } | null,
+    wb: {
+      snapshot?: {
+        ot?: OtView['workbook'] & {
+          trendRows?: unknown;
+          actualVsBudget?: unknown;
+          employeesWithOtPct?: number | null;
+          averageHours?: number | null;
+          averageCostPerEmployee?: number | null;
+          averageLeaveDays?: number | null;
+        };
+        leave?: { allAvgDays?: number | null };
+        staffCost?: ExcoWorkbookStaffCostMonth[];
+        headcount?: { headcount?: number };
+      };
+    } | null,
+  ) => {
+    const computed = report?.computed;
+    if (wb) {
       const snapOt = wb?.snapshot?.ot;
-      const report = reportRes.ok ? await reportRes.json() : null;
       const staffCostRow = Array.isArray(wb?.snapshot?.staffCost)
         ? (wb.snapshot.staffCost as ExcoWorkbookStaffCostMonth[]).find((s) => s.calendarMonth === m)
         : null;
       const headcount =
-        wb?.snapshot?.headcount?.headcount
-        ?? report?.computed?.headcount
+        computed?.headcount
+        ?? wb?.snapshot?.headcount?.headcount
         ?? null;
       if (snapOt && !baseView.missing.overtime) {
         const leaveAllAvg =
           wb?.snapshot?.leave?.allAvgDays
           ?? snapOt.averageLeaveDays
-          ?? report?.computed?.leaveBalanceAvgDays
+          ?? computed?.trends?.find((t) => t.month === m)?.leaveBalanceAvgDays
           ?? null;
-        workbook = {
-          trendRows: Array.isArray(snapOt.trendRows) ? snapOt.trendRows : [],
-          actualVsBudget: snapOt.actualVsBudget || null,
-          headcount: headcount != null ? Number(headcount) : null,
-          employeesWithOtPct: snapOt.employeesWithOtPct ?? null,
-          averageHours: snapOt.averageHours ?? null,
-          averageCostPerEmployee: snapOt.averageCostPerEmployee ?? null,
-          averageLeaveDays: leaveAllAvg != null ? Number(leaveAllAvg) : null,
-          staffCostMonth: staffCostRow?.staffCostMonth ?? null,
-          staffCostYtd: staffCostRow?.salariesActualYtd ?? null,
-        };
         setOt({
           ...baseView,
-          workbook,
+          workbook: {
+            trendRows: Array.isArray(snapOt.trendRows) ? snapOt.trendRows : [],
+            actualVsBudget: snapOt.actualVsBudget || null,
+            headcount: headcount != null ? Number(headcount) : null,
+            employeesWithOtPct: snapOt.employeesWithOtPct ?? null,
+            averageHours: snapOt.averageHours ?? null,
+            averageCostPerEmployee: snapOt.averageCostPerEmployee ?? null,
+            averageLeaveDays: leaveAllAvg != null ? Number(leaveAllAvg) : null,
+            staffCostMonth: staffCostRow?.staffCostMonth ?? null,
+            staffCostYtd: staffCostRow?.salariesActualYtd ?? null,
+          },
         });
+        return;
+      }
+    }
+
+    if (baseView.missing.overtime && computed) {
+      const fromReport = otViewFromComputed(baseView, computed);
+      if (fromReport) {
+        setOt(fromReport);
         return;
       }
     }
     setOt(baseView);
   }, []);
+
+  const loadOt = useCallback(async (
+    y: number,
+    m: number,
+    fx?: string,
+    shared?: {
+      ot?: OtView;
+      report?: { computed?: ExcoComputedBlock } | null;
+      workbook?: Parameters<typeof applyOtFromPayloads>[3];
+    },
+  ) => {
+    let baseView = shared?.ot;
+    let report = shared?.report ?? null;
+    let wb = shared?.workbook ?? null;
+
+    if (!baseView || shared?.report === undefined || shared?.workbook === undefined) {
+      const q = fx ? `&fxRate=${encodeURIComponent(fx)}` : '';
+      const [otRes, wbRes, reportRes] = await Promise.all([
+        baseView
+          ? Promise.resolve(null)
+          : fetch(`/api/exco/overtime?year=${y}&month=${m}${q}`),
+        wb != null || shared?.workbook === null
+          ? Promise.resolve(null)
+          : fetch(`/api/exco/workbook?year=${y}&month=${m}&light=1`),
+        report != null || shared?.report === null
+          ? Promise.resolve(null)
+          : fetch(`/api/exco/report?year=${y}&month=${m}`),
+      ]);
+      if (otRes) {
+        const data = await otRes.json();
+        if (!otRes.ok) throw new Error(data.error || 'Overtime');
+        baseView = data as OtView;
+      }
+      if (reportRes) {
+        report = reportRes.ok ? await reportRes.json() : null;
+      }
+      if (wbRes) {
+        wb = wbRes.ok ? await wbRes.json() : null;
+      }
+    }
+    if (!baseView) throw new Error('Overtime');
+    applyOtFromPayloads(baseView, m, report, wb);
+  }, [applyOtFromPayloads]);
 
   const loadSystemNames = useCallback(async () => {
     try {
@@ -1584,11 +1751,21 @@ export default function ExcoPage() {
     }
   }, []);
 
-  const loadInOut = useCallback(async (y: number, m: number) => {
-    const res = await fetch(`/api/exco/report?year=${y}&month=${m}`);
-    const data = await res.json();
-    if (!res.ok) throw new Error(data.error || 'In Out');
-    const c = data.computed || {};
+  const applyInOutFromReport = useCallback((data: {
+    month?: number;
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    computed?: any;
+    kpiSummary?: ExcoMetricValue[];
+  }, m: number) => {
+    const c = (data.computed || {}) as ExcoComputedBlock & {
+      hiresByMonth?: Record<string, InOutPerson[]>;
+      exitsByMonth?: Record<string, InOutPerson[]>;
+      presentList?: InOutPerson[];
+      exitsByReason?: Array<{ label: string; value: number }>;
+      hiresList?: InOutPerson[];
+      exitsList?: InOutPerson[];
+      leaversList?: InOutPerson[];
+    };
     const through = Number(data.month) || m;
     const trends = Array.isArray(c.trends) ? c.trends : [];
     const byMonth = new Map<number, {
@@ -1640,6 +1817,7 @@ export default function ExcoPage() {
       ytdAttrition: c.attritionPct ?? null,
       ytdTurnover: c.turnoverPct ?? null,
       ytdHeadcount: c.headcount ?? null,
+      presentList: Array.isArray(c.presentList) ? c.presentList : [],
       exitsByReason: Array.isArray(c.exitsByReason) ? c.exitsByReason : [],
       inList: Array.isArray(c.hiresList) ? c.hiresList : [],
       outList: Array.isArray(c.exitsList)
@@ -1650,7 +1828,25 @@ export default function ExcoPage() {
       hiresByMonth,
       exitsByMonth,
     });
+    const summary = (data.kpiSummary || []) as ExcoMetricValue[];
+    setKpiCards(kpiSummaryToCards(summary));
+    setKpiGroups(kpiSummaryToCardGroups(summary));
+    if (c && typeof c.headcount === 'number') {
+      setHeadcount(headcountFromComputed(c as ExcoComputedBlock));
+    }
   }, []);
+
+  const loadInOut = useCallback(async (y: number, m: number, prefetched?: unknown) => {
+    const data = prefetched
+      ? prefetched
+      : await (async () => {
+          const res = await fetch(`/api/exco/report?year=${y}&month=${m}`);
+          const json = await res.json();
+          if (!res.ok) throw new Error(json.error || 'In Out');
+          return json;
+        })();
+    applyInOutFromReport(data as Parameters<typeof applyInOutFromReport>[0], m);
+  }, [applyInOutFromReport]);
 
   const rebuildStaffCost = useCallback((
     ytdByMonth: Record<number, ExcoStaffCostYtdInput>,
@@ -1659,20 +1855,20 @@ export default function ExcoPage() {
     sheet: buildStaffCostSheet({ ytdByCalendarMonth: ytdByMonth }),
   }), []);
 
-  const loadStaffCost = useCallback(async (y: number, m: number) => {
-    const [reportRes, wbRes] = await Promise.all([
-      fetch(`/api/exco/report?year=${y}&month=${m}`),
-      fetch('/api/exco/workbook'),
-    ]);
-    const report = await reportRes.json();
-    if (!reportRes.ok) throw new Error(report.error || 'Staff Cost');
-    const wb = wbRes.ok ? await wbRes.json() : null;
-
+  const applyStaffCostFromPayloads = useCallback((
+    report: {
+      computed?: { trends?: Array<{ month?: number; headcount?: number | null }> };
+      overlays?: {
+        staffCostYtdByMonth?: Record<string, ExcoStaffCostYtdInput>;
+        staffCostFormulaNotes?: Record<string, StaffCostFormulaNote>;
+      };
+    },
+    wb: { snapshot?: { staffCost?: ExcoWorkbookStaffCostMonth[] } } | null,
+  ) => {
     const ytdByMonth: Record<number, ExcoStaffCostYtdInput> = {};
     const snapRows = (wb?.snapshot?.staffCost || []) as ExcoWorkbookStaffCostMonth[];
     for (const row of snapRows) {
       ytdByMonth[row.calendarMonth] = workbookMonthToYtdInput(row);
-      // Budget headcount Excel = 192
       if (ytdByMonth[row.calendarMonth].budgetHeadcount == null) {
         ytdByMonth[row.calendarMonth] = {
           ...ytdByMonth[row.calendarMonth],
@@ -1680,7 +1876,6 @@ export default function ExcoPage() {
         };
       }
     }
-    // Headcount actual from trends when missing
     const trends = Array.isArray(report.computed?.trends) ? report.computed.trends : [];
     for (const t of trends) {
       const cal = Number(t.month);
@@ -1690,7 +1885,6 @@ export default function ExcoPage() {
         ytdByMonth[cal] = { ...cur, actualHeadcount: t.headcount };
       }
     }
-    // Overlay saisie utilisateur (prioritaire)
     const overlayMap = (report.overlays?.staffCostYtdByMonth || {}) as Record<string, ExcoStaffCostYtdInput>;
     for (const [k, v] of Object.entries(overlayMap)) {
       const cal = Number(k);
@@ -1705,49 +1899,139 @@ export default function ExcoPage() {
     setStaffCostFormulaNotes(notes && typeof notes === 'object' ? notes : {});
   }, [rebuildStaffCost]);
 
-  const loadWorkbookExtras = useCallback(async () => {
-    try {
-      const res = await fetch('/api/exco/workbook');
-      if (!res.ok) return;
-      const data = await res.json();
-      setKpiCards(data.pptx?.kpiCards || []);
-      const pptxN = data.pptx?.narrative as
-        | { highlights?: string; lowlights?: string; focus?: string }
-        | undefined;
-      if (pptxN) {
-        setNarrative((prev) => {
-          const hasSaved = Boolean(
-            prev.highlights?.trim() || prev.lowlights?.trim() || prev.focus?.trim(),
-          );
-          if (hasSaved) return prev;
-          return {
-            highlights: formatNarrativeForEdit(pptxN.highlights || ''),
-            lowlights: formatNarrativeForEdit(pptxN.lowlights || ''),
-            focus: formatNarrativeForEdit(pptxN.focus || ''),
-          };
-        });
+  const loadStaffCost = useCallback(async (
+    y: number,
+    m: number,
+    shared?: { report?: unknown; workbook?: unknown },
+  ) => {
+    let report = shared?.report as Parameters<typeof applyStaffCostFromPayloads>[0] | undefined;
+    let wb = (shared?.workbook ?? null) as Parameters<typeof applyStaffCostFromPayloads>[1];
+    if (!report || shared?.workbook === undefined) {
+      const [reportRes, wbRes] = await Promise.all([
+        report
+          ? Promise.resolve(null)
+          : fetch(`/api/exco/report?year=${y}&month=${m}`),
+        shared?.workbook !== undefined
+          ? Promise.resolve(null)
+          : fetch(`/api/exco/workbook?year=${y}&month=${m}&light=1`),
+      ]);
+      if (reportRes) {
+        const json = await reportRes.json();
+        if (!reportRes.ok) throw new Error(json.error || 'Staff Cost');
+        report = json;
       }
-      const sheets = (data.sheets || []) as ExcoSheetTable[];
-      const base =
+      if (wbRes) {
+        wb = wbRes.ok ? await wbRes.json() : null;
+      }
+    }
+    if (!report) throw new Error('Staff Cost');
+    applyStaffCostFromPayloads(report, wb);
+  }, [applyStaffCostFromPayloads]);
+
+  const applyWorkbookExtras = useCallback((data: {
+    snapshot?: { params?: { year?: number; month?: number }; headcount?: HeadcountView };
+    pptx?: { narrative?: { highlights?: string; lowlights?: string; focus?: string } };
+    sheets?: ExcoSheetTable[];
+    sourceFile?: string;
+    namesByMatricule?: Record<string, string>;
+  }, y: number, m: number) => {
+    const snapYear = Number(data.snapshot?.params?.year);
+    const snapMonth = Number(data.snapshot?.params?.month);
+    const samePeriod = snapYear === y && snapMonth === m;
+    const pptxN = data.pptx?.narrative;
+    if (samePeriod && pptxN) {
+      setNarrative((prev) => {
+        const hasSaved = Boolean(
+          prev.highlights?.trim() || prev.lowlights?.trim() || prev.focus?.trim(),
+        );
+        if (hasSaved) return prev;
+        return {
+          highlights: formatNarrativeForEdit(pptxN.highlights || ''),
+          lowlights: formatNarrativeForEdit(pptxN.lowlights || ''),
+          focus: formatNarrativeForEdit(pptxN.focus || ''),
+        };
+      });
+    }
+    const sheets = (data.sheets || []) as ExcoSheetTable[];
+    setBaseSheet((prev) => {
+      if (prev && prev.rows?.length > 1) return prev;
+      return (
         sheets.find((s) => s.name.toLowerCase() === 'base')
         || sheets.find((s) => s.id === 'base')
-        || null;
-      setBaseSheet(base);
-      setBaseSheetSource(String(data.sourceFile || 'New report.xlsx'));
+        || null
+      );
+    });
+    setBaseSheetSource((prev) =>
+      prev.includes('BASE unique') ? prev : String(data.sourceFile || 'New report.xlsx'),
+    );
+    if (samePeriod) {
       const hc = data.snapshot?.headcount as HeadcountView | undefined;
-      setHeadcount(hc || null);
-      if (data.namesByMatricule && typeof data.namesByMatricule === 'object') {
-        const normalized: Record<string, string> = {};
-        for (const [k, v] of Object.entries(data.namesByMatricule as Record<string, string>)) {
-          const mat = normMatricule(k);
-          if (mat && v) normalized[mat] = v;
-        }
-        setNamesByMatricule((prev) => ({ ...prev, ...normalized }));
+      if (hc) setHeadcount(hc);
+    }
+    if (data.namesByMatricule && typeof data.namesByMatricule === 'object') {
+      const normalized: Record<string, string> = {};
+      for (const [k, v] of Object.entries(data.namesByMatricule)) {
+        const mat = normMatricule(k);
+        if (mat && v) normalized[mat] = v;
       }
+      setNamesByMatricule((prev) => ({ ...prev, ...normalized }));
+    }
+  }, []);
+
+  const loadWorkbookExtras = useCallback(async (y: number, m: number, prefetched?: unknown) => {
+    try {
+      const data = prefetched
+        ? prefetched
+        : await (async () => {
+            const res = await fetch(`/api/exco/workbook?year=${y}&month=${m}&light=1`);
+            if (!res.ok) return null;
+            return res.json();
+          })();
+      if (!data) return;
+      applyWorkbookExtras(data as Parameters<typeof applyWorkbookExtras>[0], y, m);
     } catch {
       // optional
     }
-  }, []);
+  }, [applyWorkbookExtras]);
+
+  /** Un seul aller-retour parallèle par période (évite 3× report + 3× workbook). */
+  const loadPeriodBundle = useCallback(async (y: number, m: number, fx?: string) => {
+    const q = fx?.trim() ? `&fxRate=${encodeURIComponent(fx)}` : '';
+    const [paramsRes, baseRes, otRes, reportRes, wbRes] = await Promise.all([
+      fetch(`/api/exco/params?year=${y}&month=${m}`),
+      fetch(`/api/exco/base?year=${y}&month=${m}`),
+      fetch(`/api/exco/overtime?year=${y}&month=${m}${q}`),
+      fetch(`/api/exco/report?year=${y}&month=${m}`),
+      fetch(`/api/exco/workbook?year=${y}&month=${m}&light=1`),
+    ]);
+
+    const [paramsData, baseData, otData, reportData, wbData] = await Promise.all([
+      paramsRes.json(),
+      baseRes.json(),
+      otRes.json(),
+      reportRes.json(),
+      wbRes.ok ? wbRes.json() : Promise.resolve(null),
+    ]);
+
+    if (!paramsRes.ok) throw new Error(paramsData.error || 'Params');
+    if (!baseRes.ok) throw new Error(baseData.error || 'BASE');
+    if (!otRes.ok) throw new Error(otData.error || 'Overtime');
+    if (!reportRes.ok) throw new Error(reportData.error || 'Report');
+
+    await loadParams(y, m, paramsData);
+    await loadBase(y, m, baseData);
+    applyInOutFromReport(reportData, m);
+    applyStaffCostFromPayloads(reportData, wbData);
+    applyOtFromPayloads(otData as OtView, m, reportData, wbData);
+    if (wbData) applyWorkbookExtras(wbData, y, m);
+  }, [
+    loadParams,
+    loadBase,
+    applyInOutFromReport,
+    applyStaffCostFromPayloads,
+    applyOtFromPayloads,
+    applyWorkbookExtras,
+  ]);
 
   const openInOutList = useCallback(
     (title: string, people: InOutPerson[]) => {
@@ -1841,26 +2125,42 @@ export default function ExcoPage() {
   const refreshAll = useCallback(async () => {
     setLoading(true);
     try {
-      await loadParams(year, month);
-      await Promise.all([
-        loadBase(year, month),
-        loadSystemNames(),
-        loadOt(year, month, fxRate),
-        loadWorkbookExtras(),
-        loadInOut(year, month),
-        loadStaffCost(year, month),
-      ]);
+      await loadPeriodBundle(year, month, fxRate);
     } catch (err) {
       showError(err instanceof Error ? err.message : 'Chargement impossible');
     } finally {
       setLoading(false);
     }
-  }, [year, month, fxRate, loadParams, loadBase, loadSystemNames, loadOt, loadWorkbookExtras, loadInOut, loadStaffCost]);
+  }, [year, month, fxRate, loadPeriodBundle]);
 
   useEffect(() => {
+    void (async () => {
+      try {
+        const res = await fetch('/api/exco/report?list=1');
+        const data = await res.json();
+        const periods = Array.isArray(data?.periods) ? data.periods : [];
+        if (periods.length > 0) {
+          // Dernier rapport = période la plus récemment mise à jour (pas le max calendaire,
+          // qui peut être un placeholder futur type déc. 2026).
+          const latest = [...periods].sort((a, b) =>
+            String(b.updatedAt || '').localeCompare(String(a.updatedAt || '')),
+          )[0];
+          setYear(latest.year);
+          setMonth(latest.month);
+        }
+      } catch {
+        /* conserve le défaut local */
+      } finally {
+        setPeriodReady(true);
+      }
+    })();
+  }, []);
+
+  useEffect(() => {
+    if (!periodReady) return;
     void refreshAll();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [periodReady]);
 
   const saveParams = useCallback(async () => {
     if (!canEdit) return;
@@ -1936,19 +2236,14 @@ export default function ExcoPage() {
         const data = await res.json();
         if (!res.ok) throw new Error(data.error || 'Upload impossible');
         showSuccess(`${file.name} importé — données enregistrées`);
-        await loadParams(year, month);
-        await Promise.all([
-          loadBase(year, month),
-          loadOt(year, month, fxRate),
-          loadInOut(year, month),
-        ]);
+        await loadPeriodBundle(year, month, fxRate);
       } catch (err) {
         showError(err instanceof Error ? err.message : 'Upload impossible');
       } finally {
         setBusy('');
       }
     },
-    [canEdit, year, month, fxRate, loadParams, loadBase, loadOt, loadInOut],
+    [canEdit, year, month, fxRate, loadPeriodBundle],
   );
 
   const clearImport = useCallback(
@@ -1963,19 +2258,14 @@ export default function ExcoPage() {
         const data = await res.json();
         if (!res.ok) throw new Error(data.error || 'Annulation impossible');
         showSuccess(`Import retiré — ${label}`);
-        await loadParams(year, month);
-        await Promise.all([
-          loadBase(year, month),
-          loadOt(year, month, fxRate),
-          loadInOut(year, month),
-        ]);
+        await loadPeriodBundle(year, month, fxRate);
       } catch (err) {
         showError(err instanceof Error ? err.message : 'Annulation impossible');
       } finally {
         setClearingSourceId(null);
       }
     },
-    [canEdit, clearingSourceId, year, month, fxRate, loadParams, loadBase, loadOt, loadInOut],
+    [canEdit, clearingSourceId, year, month, fxRate, loadPeriodBundle],
   );
 
   const runBaseAction = useCallback(
@@ -2147,22 +2437,14 @@ export default function ExcoPage() {
       setMonth(m);
       setLoading(true);
       try {
-        await loadParams(y, m);
-        await Promise.all([
-          loadBase(y, m),
-          loadSystemNames(),
-          loadOt(y, m, fxRate),
-          loadWorkbookExtras(),
-          loadInOut(y, m),
-          loadStaffCost(y, m),
-        ]);
+        await loadPeriodBundle(y, m, fxRate);
       } catch (err) {
         showError(err instanceof Error ? err.message : 'Chargement impossible');
       } finally {
         setLoading(false);
       }
     },
-    [fxRate, loadParams, loadBase, loadSystemNames, loadOt, loadWorkbookExtras, loadInOut, loadStaffCost],
+    [fxRate, loadPeriodBundle],
   );
 
   const updateStaffCostInput = useCallback(
@@ -2511,7 +2793,8 @@ export default function ExcoPage() {
                     </div>
                   ) : (
                     <p className="exco-muted" style={{ padding: '0.75rem' }}>
-                      Feuille BASE introuvable dans New report.xlsx.
+                      BASE unique indisponible — importez New report (seed) ou les fichiers du mois.
+                      {baseSheetSource ? ` (${baseSheetSource})` : ''}
                     </p>
                   )}
                 </div>
@@ -2763,7 +3046,7 @@ export default function ExcoPage() {
                       {formatNum(inOut?.inList?.length)} personnes
                     </button>
                   </div>
-                  <div className="exco-sheet-scroll" style={{ maxHeight: '22rem' }}>
+                  <div className="exco-sheet-scroll">
                     <table className="exco-mini-table">
                       <thead>
                         <tr>
@@ -2797,7 +3080,7 @@ export default function ExcoPage() {
                   </div>
                 </section>
 
-                <section className="exco-panel exco-panel-accent-wine is-report-month">
+                <section className="exco-panel exco-panel-accent-wine is-report-month exco-inout-out-panel">
                   <div className="exco-panel-head">
                     <h3>{t('exco.inout.exits', { month: monthLabel })}</h3>
                     <button
@@ -2809,8 +3092,8 @@ export default function ExcoPage() {
                       {formatNum(inOut?.outList?.length)} personnes
                     </button>
                   </div>
-                  <div className="exco-sheet-scroll" style={{ maxHeight: '22rem' }}>
-                    <table className="exco-mini-table">
+                  <div className="exco-sheet-scroll">
+                    <table className="exco-mini-table exco-inout-out-table">
                       <thead>
                         <tr>
                           <th>Matricule</th>
@@ -3744,37 +4027,78 @@ export default function ExcoPage() {
           {tab === 'kpi' && (
             <div className="exco-kpi-summary">
               <p className="exco-muted">
-                Valeurs et comparaison vs mois précédent selon le PPTX / New report
-                (pas de reconstitution de juin incomplet).
+                Valeurs et comparaison vs mois précédent — BASE New report du mois (ex. Jul/Août = 175),
+                imports Params et saisie manuelle. Cliquez un chiffre pour la liste.
               </p>
-              <div className="exco-kpi-cards">
-                {kpiCards.map((c) => {
-                  const delta = c.delta || '';
-                  const tone = delta.includes('▲')
-                    ? 'exco-kpi-delta-up'
-                    : delta.includes('▼')
-                      ? 'exco-kpi-delta-down'
-                      : 'exco-kpi-delta-flat';
-                  return (
-                    <article key={c.label} className="exco-kpi-card">
-                      <h4>{c.label}</h4>
-                      <p className="exco-kpi-card-value">{c.value || '—'}</p>
-                      <p className={`exco-kpi-card-delta ${tone}`}>{c.delta || 'vs prev. —'}</p>
-                      <p className="exco-kpi-card-prev">prev. {c.prev || '—'}</p>
-                    </article>
-                  );
-                })}
-              </div>
-              {!kpiCards.length && <p className="exco-muted">Cartes KPI PPTX non disponibles.</p>}
+              {(kpiGroups.length ? kpiGroups : [{ title: '', cards: kpiCards }]).map((group) => (
+                <div key={group.title || 'kpi'} className="exco-kpi-group">
+                  {group.title ? (
+                    <div className="exco-kpi-group-head">
+                      <h3>{group.title}</h3>
+                    </div>
+                  ) : null}
+                  <div className="exco-kpi-cards">
+                    {group.cards.map((c) => {
+                      const delta = c.delta || '';
+                      const tone =
+                        c.deltaTone === 'up'
+                          ? 'exco-kpi-delta-up'
+                          : c.deltaTone === 'down'
+                            ? 'exco-kpi-delta-down'
+                            : 'exco-kpi-delta-flat';
+                      const list =
+                        c.key === 'headcount'
+                          ? inOut?.presentList || []
+                          : c.key === 'hires'
+                            ? inOut?.inList || []
+                            : c.key === 'exits'
+                              ? inOut?.outList || []
+                              : null;
+                      const clickable = list != null;
+                      const title = clickable
+                        ? `Voir la liste — ${c.label}`
+                        : (c.hint || undefined);
+                      const body = (
+                        <>
+                          <h4>{c.label}</h4>
+                          <p className="exco-kpi-card-value">{c.value || '—'}</p>
+                          <p className={`exco-kpi-card-delta ${tone}`}>{c.delta || 'vs prev. —'}</p>
+                          <p className="exco-kpi-card-prev">prev. {c.prev || '—'}</p>
+                        </>
+                      );
+                      if (clickable) {
+                        return (
+                          <button
+                            key={c.key || c.label}
+                            type="button"
+                            className="exco-kpi-card exco-kpi-clickable"
+                            title={title}
+                            onClick={() =>
+                              openInOutList(`Voir la liste — ${c.label} — ${periodLabel}`, list)
+                            }
+                          >
+                            {body}
+                          </button>
+                        );
+                      }
+                      return (
+                        <article key={c.key || c.label} className="exco-kpi-card" title={title}>
+                          {body}
+                        </article>
+                      );
+                    })}
+                  </div>
+                </div>
+              ))}
+              {!kpiCards.length && !kpiGroups.some((g) => g.cards.length) && (
+                <p className="exco-muted">Aucune carte KPI pour ce mois — actualisez le rapport.</p>
+              )}
             </div>
           )}
 
           {tab === 'summary' && (
             <div className="exco-panel-stack exco-summary-stack">
-              <div className="exco-panel-head" style={{ marginBottom: 0 }}>
-                <p className="exco-muted" style={{ margin: 0 }}>
-                  Textes éditables pour la synthèse EXCO (Highlights / Lowlights / Focus).
-                </p>
+              <div className="exco-panel-head" style={{ marginBottom: 0, justifyContent: 'flex-end' }}>
                 {canEdit && (
                   <button
                     type="button"

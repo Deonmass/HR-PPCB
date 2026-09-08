@@ -2,7 +2,7 @@ import 'server-only';
 
 import type { ExcoReportPayload } from './exco-types';
 import { formatExcoPeriodLabel } from './exco-types';
-import { buildExcoPptxFromTemplate } from './exco-pptx-template-fill';
+import { buildModernExcoContentPptx } from './exco-pptx-modern';
 
 export function buildExcoPptxFilename(year: number, month: number): string {
   const label = formatExcoPeriodLabel(year, month).replace(/\s+/g, '_');
@@ -10,9 +10,10 @@ export function buildExcoPptxFilename(year: number, month: number): string {
 }
 
 /**
- * Export PowerPoint — peuplement du template
- * `templates/exco/Updated EXCO_HR_REPORT_Jul-26.pptx`.
+ * Export PowerPoint — slides générés depuis le rapport du mois
+ * (`report.kpiSummary`, IN/OUT, trends, narrative, etc.).
+ * Ne réutilise pas le template Jul-26 figé (sinon Hires/Exits/KPI restaient sur juillet).
  */
 export async function buildExcoPptxBuffer(report: ExcoReportPayload): Promise<Buffer> {
-  return buildExcoPptxFromTemplate(report);
+  return buildModernExcoContentPptx(report);
 }

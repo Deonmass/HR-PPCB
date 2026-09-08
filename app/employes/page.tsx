@@ -386,7 +386,8 @@ export default function EmployesPage() {
 
   const activeFilterCount = useMemo(() => countActiveColumnFilters(colFilters), [colFilters]);
 
-  const dashboardEmployees = yearScopedActive;
+  /** Dashboard + badge Liste = effectif présent fin de période (pas seulement actifs courants). */
+  const dashboardEmployees = yearScopedHeadcount;
   const dashboardExits = yearScopedExits;
 
   const locOptions = useMemo(

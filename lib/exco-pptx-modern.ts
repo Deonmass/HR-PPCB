@@ -5,15 +5,16 @@ import path from 'path';
 import PptxGenJS from 'pptxgenjs';
 import type { ExcoCahierHighlight, ExcoCsrFy27Row, ExcoMetricValue, ExcoReportPayload } from './exco-types';
 import { groupExcoKpis, EXCO_PREVIEW_TOC } from './exco-preview-html';
+import { formatKpiDelta, kpiDeltaTone } from './exco-kpi-format';
 import { buildMouvementsSlideData } from './exco-mouvements-slide-data';
 import { buildOtSlideData, buildOtVsLeaveSlideData, formatOtHours, formatOtHoursShort, otChartDeptLabel } from './exco-ot-slide-data';
 import {
-  buildCsrSlideData,
   buildGouvernanceSlideData,
   buildTrainingSlideData,
 } from './exco-dashboard-slides-data';
-import { resolveCahierHighlights, resolveCsrFy27Rows, parseCsrUpdateMarkup, csrTextHasUpdate, csrSlideText, CSR_UPDATE_COLOR } from './exco-csr-fy27';
+import { parseCsrUpdateMarkup, csrTextHasUpdate, csrSlideText, CSR_UPDATE_COLOR } from './exco-csr-fy27';
 import { resolveRecruitment } from './exco-recruitment-fy27';
+import { buildExcoSectorTables } from './exco-project-sector-table';
 import {
   auditSeverityColor,
   auditStatusColor,
@@ -97,27 +98,23 @@ function fmtMetric(kpi: ExcoMetricValue): string {
 }
 
 function deltaLabel(
-  deltaPct: number | null | undefined,
-  opts?: { current?: number | null; previous?: number | null },
+  kpi: ExcoMetricValue,
 ): { text: string; color: string } {
-  const cur = opts?.current;
-  const prev = opts?.previous;
-  let trend: 'up' | 'down' | '' = '';
-  if (cur != null && prev != null && Number.isFinite(cur) && Number.isFinite(prev)) {
-    if (cur > prev) trend = 'up';
-    else if (cur < prev) trend = 'down';
-  } else if (deltaPct != null && Number.isFinite(deltaPct) && deltaPct !== 0) {
-    trend = deltaPct > 0 ? 'up' : 'down';
-  }
-
-  if (deltaPct == null || !Number.isFinite(deltaPct)) {
-    return { text: 'vs prev. —', color: PPC.muted };
-  }
-  const pctVal = Math.round(deltaPct * 10000) / 100;
-  const arrow = trend === 'up' || pctVal > 0 ? '▲' : trend === 'down' || pctVal < 0 ? '▼' : '•';
+  const text = formatKpiDelta(kpi);
+  if (!text) return { text: 'vs prev. —', color: PPC.muted };
+  const tone = kpiDeltaTone(kpi);
   const color =
-    trend === 'up' ? PPC.success : trend === 'down' ? PPC.danger : PPC.muted;
-  return { text: `${arrow} ${Math.abs(pctVal)}% vs prev.`, color };
+    tone === 'up' ? PPC.success : tone === 'down' ? PPC.danger : PPC.muted;
+  return { text, color };
+}
+
+/** Date de meeting par défaut = dernier jour du mois du rapport. */
+function defaultMeetingDateIso(year: number, month: number): string {
+  const d = new Date(year, month, 0);
+  const yyyy = d.getFullYear();
+  const mm = String(d.getMonth() + 1).padStart(2, '0');
+  const dd = String(d.getDate()).padStart(2, '0');
+  return `${yyyy}-${mm}-${dd}`;
 }
 
 export function meetingDateLabel(raw: string | undefined): string {
@@ -352,21 +349,24 @@ function cahierIconGlyph(icon: ExcoCahierHighlight['icon']): string {
 /**
  * Anneaux de progression sans SVG ni doughnut chart
  * (sources fréquentes de corruption PPTX / Repair PowerPoint).
+ * Layout compact : icône + titre + corps calés dans la hauteur de ligne (pas de chevauchement).
  */
 function addCahierHighlights(slide: Slide, items: ExcoCahierHighlight[]): void {
-  const list = items.slice(0, 5);
+  const list = items.slice(0, 8);
   const n = Math.max(list.length, 1);
-  const startY = 1.04;
-  const bottom = 7.12;
+  const startY = 1.0;
+  const bottom = 7.05;
   const rowH = (bottom - startY) / n;
-  const ring = Math.min(1.18, rowH - 0.1);
+  const ring = Math.min(0.44, Math.max(0.3, rowH * 0.55));
+  const titleFs = rowH < 0.7 ? 11 : rowH < 0.85 ? 12 : 14;
+  const titleH = rowH < 0.7 ? 0.2 : 0.24;
+
   list.forEach((item, i) => {
     const y = startY + i * rowH;
     const pct = Math.max(0, Math.min(100, Number(item.progressPct) || 0));
-    const ringX = 0.48;
-    const ringY = y + 0.04;
+    const ringX = 0.42;
+    const ringY = y + Math.max(0.02, (rowH - ring) / 2);
 
-    // Anneau extérieur (reste) + disque interne (progression) via ellipses
     slide.addShape('ellipse', {
       x: ringX, y: ringY, w: ring, h: ring,
       fill: { color: CAHIER_PINK }, line: { color: CAHIER_PINK },
@@ -388,7 +388,7 @@ function addCahierHighlights(slide: Slide, items: ExcoCahierHighlight[]): void {
     });
     slide.addText(cahierIconGlyph(item.icon), {
       x: ringX, y: ringY, w: ring, h: ring,
-      fontSize: Math.max(14, Math.round(ring * 18)),
+      fontSize: Math.max(11, Math.round(ring * 16)),
       bold: true,
       color: CAHIER_GREEN,
       fontFace: FONT_TITLE,
@@ -396,14 +396,58 @@ function addCahierHighlights(slide: Slide, items: ExcoCahierHighlight[]): void {
       valign: 'middle',
     });
 
-    const textX = ringX + ring + 0.22;
-    const textW = 12.55 - textX;
+    const textX = ringX + ring + 0.18;
+    const textW = 12.7 - textX;
+    const bodyTop = y + 0.02 + titleH;
+    const bodyH = Math.max(0.16, rowH - titleH - 0.08);
+    const plainBody = (item.body || '—').replace(/\[\[|\]\]/g, '').trim();
+    const bodyFs = (() => {
+      const chars = Math.max(plainBody.length, 1);
+      const approxLines = Math.ceil(chars / 95);
+      const lineBudget = Math.max(1, Math.floor(bodyH / 0.14));
+      if (approxLines <= lineBudget && rowH >= 0.85) return 11;
+      if (approxLines <= lineBudget + 1 && rowH >= 0.7) return 10;
+      if (rowH >= 0.65) return 9;
+      return 8;
+    })();
+    const charsPerLine = Math.max(40, Math.floor((textW * 72) / (bodyFs * 0.48)));
+    const maxLines = Math.max(1, Math.floor(bodyH / ((bodyFs * 1.15) / 72)));
+    const maxChars = charsPerLine * maxLines;
+
     slide.addText(item.title?.trim() || '—', {
-      x: textX, y: y + 0.04, w: textW, h: 0.28,
-      fontSize: 16, bold: true, color: PPC.red, fontFace: FONT_TITLE,
+      x: textX, y: y + 0.02, w: textW, h: titleH,
+      fontSize: titleFs, bold: true, color: PPC.red, fontFace: FONT_TITLE,
+      valign: 'middle',
     });
-    const bodySrc = item.body || '—';
-    const isShort = bodySrc.replace(/\[\[|\]\]/g, '').trim().length < 80;
+
+    const bodySrcRaw = item.body || '—';
+    const bodySrc = (() => {
+      const plain = bodySrcRaw.replace(/\[\[|\]\]/g, '');
+      if (plain.length <= maxChars) return bodySrcRaw;
+      let count = 0;
+      let out = '';
+      let inUpd = false;
+      for (let k = 0; k < bodySrcRaw.length; k += 1) {
+        if (bodySrcRaw.startsWith('[[', k)) {
+          out += '[[';
+          inUpd = true;
+          k += 1;
+          continue;
+        }
+        if (bodySrcRaw.startsWith(']]', k)) {
+          out += ']]';
+          inUpd = false;
+          k += 1;
+          continue;
+        }
+        if (count >= maxChars - 1) break;
+        out += bodySrcRaw[k];
+        count += 1;
+      }
+      if (inUpd) out += ']]';
+      return `${out.trimEnd()}…`;
+    })();
+    const isShort = plainBody.length < 80;
     const bodyRuns = safeTextRuns(
       parseCsrUpdateMarkup(bodySrc).flatMap((run, idx) => {
         const raw = run.text;
@@ -411,9 +455,9 @@ function addCahierHighlights(slide: Slide, items: ExcoCahierHighlight[]): void {
         if (!run.update && raw.includes('100%')) {
           const [before, after] = raw.split('100%');
           return [
-            { text: `${prefix}${before}`, options: { color: PPC.ink, bold: false, fontSize: 13, fontFace: FONT } },
-            { text: '100%', options: { color: PPC.ink, bold: true, fontSize: 13, fontFace: FONT } },
-            { text: after || '', options: { color: PPC.ink, bold: false, fontSize: 13, fontFace: FONT } },
+            { text: `${prefix}${before}`, options: { color: PPC.ink, bold: false, fontSize: bodyFs, fontFace: FONT } },
+            { text: '100%', options: { color: PPC.ink, bold: true, fontSize: bodyFs, fontFace: FONT } },
+            { text: after || '', options: { color: PPC.ink, bold: false, fontSize: bodyFs, fontFace: FONT } },
           ];
         }
         return [{
@@ -421,19 +465,20 @@ function addCahierHighlights(slide: Slide, items: ExcoCahierHighlight[]): void {
           options: {
             color: run.update ? CSR_UPDATE_COLOR : PPC.ink,
             bold: false,
-            fontSize: 13,
+            fontSize: bodyFs,
             fontFace: FONT,
           },
         }];
       }),
     );
     slide.addText(bodyRuns as Parameters<Slide['addText']>[0], {
-      x: textX, y: y + 0.34, w: textW, h: rowH - 0.48,
+      x: textX, y: bodyTop, w: textW, h: bodyH,
       valign: 'top',
+      wrap: true,
     });
     if (i < list.length - 1) {
       slide.addShape('rect', {
-        x: 0.46, y: y + rowH - 0.03, w: 12.1, h: 0.012,
+        x: 0.4, y: y + rowH - 0.02, w: 12.2, h: 0.01,
         fill: { color: 'D8D8DE' }, line: { color: 'D8D8DE' },
       });
     }
@@ -710,8 +755,9 @@ export async function buildModernExcoContentPptx(report: ExcoReportPayload): Pro
     // Pastille rouge + ligne meeting (centrée)
     const n = o.narrative;
     const title = (n.meetingTitle?.trim() || 'EXCO MEETING').toUpperCase();
-    const date = meetingDateLabel(n.meetingDate).toUpperCase();
-    const place = (n.meetingPlace?.trim() || '—').toUpperCase();
+    const rawDate = (n.meetingDate || '').trim() || defaultMeetingDateIso(report.year, report.month);
+    const date = meetingDateLabel(rawDate).toUpperCase();
+    const place = (n.meetingPlace?.trim() || 'Zamba').toUpperCase();
     const meet = `${title} HELD ON ${date}, IN ${place}`;
     const meetY = bannerY + bannerH + 1.15;
     const badgePath = path.join(assets, 'cover-badge.png');
@@ -854,10 +900,7 @@ export async function buildModernExcoContentPptx(report: ExcoReportPayload): Pro
           kpi.label,
           fmtMetric(kpi),
           {
-            delta: deltaLabel(kpi.deltaPct, {
-              current: typeof kpi.value === 'number' ? kpi.value : null,
-              previous: typeof kpi.prevValue === 'number' ? kpi.prevValue : null,
-            }),
+            delta: deltaLabel(kpi),
             prev: fmtMetric({ ...kpi, value: kpi.prevValue ?? null }),
           },
         );
@@ -954,6 +997,8 @@ export async function buildModernExcoContentPptx(report: ExcoReportPayload): Pro
         }
         if (ch.mode === 'exits') {
           const rowH = Math.min(0.72, 2.9 / Math.max(ch.series.items.length, 1));
+          // Échelle relative au max du mois (sinon 1.7% HC ≈ trait invisible sur 100%).
+          const maxPct = Math.max(...ch.series.items.map((it) => it.pct || 0), 0.01);
           ch.series.items.forEach((it, i) => {
             const y = chartY + 0.55 + i * rowH;
             s.addText(it.label, {
@@ -961,18 +1006,40 @@ export async function buildModernExcoContentPptx(report: ExcoReportPayload): Pro
               fontSize: 9, bold: true, color: PPC.ink, fontFace: FONT, valign: 'middle',
             });
             const trackX = ch.x + 1.3;
-            const trackW = 1.85;
+            const trackW = 1.55;
             s.addShape('rect', {
-              x: trackX, y: y + 0.05, w: trackW, h: 0.12,
+              x: trackX, y: y + 0.05, w: trackW, h: 0.14,
               fill: { color: PPC.panel }, line: { color: PPC.panel },
             });
-            const fillW = Math.max(0.04, (Math.min(100, it.pct) / 100) * trackW);
-            s.addShape('rect', {
-              x: trackX, y: y + 0.05, w: fillW, h: 0.12,
-              fill: { color: PPC.red }, line: { color: PPC.red },
+            const share =
+              (it.value || 0) > 0
+                ? Math.max(it.pct || 0, 0) / maxPct
+                : 0;
+            const fillW =
+              share > 0
+                ? Math.max(0.12, Math.min(1, share) * trackW)
+                : 0;
+            if (fillW > 0) {
+              s.addShape('rect', {
+                x: trackX, y: y + 0.05, w: fillW, h: 0.14,
+                fill: { color: PPC.red }, line: { color: PPC.red },
+              });
+            }
+            const d = it.deltaPct;
+            let prog = '•';
+            let progColor: string = PPC.muted;
+            if (d != null && Number.isFinite(d) && d !== 0) {
+              prog = d > 0 ? '▲' : '▼';
+              // hausse des sorties = rouge
+              progColor = d > 0 ? PPC.danger : PPC.success;
+            }
+            s.addText(prog, {
+              x: ch.x + 2.9, y, w: 0.28, h: 0.22,
+              fontSize: 11, bold: true, color: progColor, fontFace: FONT,
+              align: 'center', valign: 'middle',
             });
             s.addText(pct(it.pct, 2), {
-              x: ch.x + 3.2, y, w: 0.7, h: 0.22,
+              x: ch.x + 3.15, y, w: 0.7, h: 0.22,
               fontSize: 10, bold: true, color: PPC.ink, fontFace: FONT,
               align: 'right', valign: 'middle',
             });
@@ -983,13 +1050,14 @@ export async function buildModernExcoContentPptx(report: ExcoReportPayload): Pro
             });
           });
         } else {
+          const maxVal = Math.max(...ch.series.items.map((i) => i.value || 0), 1);
           s.addChart(
             'bar',
             [
               {
                 name: ch.series.title,
                 labels: ch.series.items.map((i) => i.label),
-                values: ch.series.items.map((i) => i.pct),
+                values: ch.series.items.map((i) => i.value),
               },
             ],
             {
@@ -1002,7 +1070,7 @@ export async function buildModernExcoContentPptx(report: ExcoReportPayload): Pro
               showLegend: false,
               showTitle: false,
               chartColors: [ch.color === PPC.black ? PPC.muted : PPC.red] as string[],
-              valAxisMaxVal: 100,
+              valAxisMaxVal: Math.ceil(maxVal * 1.15),
               valAxisMinVal: 0,
               catAxisLabelColor: PPC.ink,
               catAxisLabelFontSize: 7,
@@ -1020,14 +1088,24 @@ export async function buildModernExcoContentPptx(report: ExcoReportPayload): Pro
 
       const bodyY = 0.88;
       const leftX = 0.35;
-      const leftW = 4.6;
+      const leftW = 5.35;
       const blockH = 6.35;
       whiteBlock(s, leftX, bodyY, leftW, blockH);
 
       const headerRow = [
         {
           text: 'Department',
-          options: { bold: true, color: PPC.white, fill: { color: PPC.black }, align: 'left' as const, fontSize: 12 },
+          options: { bold: true, color: PPC.white, fill: { color: PPC.black }, align: 'left' as const, fontSize: 11 },
+        },
+        {
+          text: ot.prevMonthLabel,
+          options: {
+            bold: true,
+            color: PPC.white,
+            fill: { color: PPC.muted },
+            align: 'right' as const,
+            fontSize: 11,
+          },
         },
         {
           text: ot.monthLabel,
@@ -1036,56 +1114,127 @@ export async function buildModernExcoContentPptx(report: ExcoReportPayload): Pro
             color: PPC.white,
             fill: { color: PPC.red },
             align: 'right' as const,
-            fontSize: 12,
+            fontSize: 11,
+          },
+        },
+        {
+          text: 'Δ',
+          options: {
+            bold: true,
+            color: PPC.white,
+            fill: { color: PPC.black },
+            align: 'center' as const,
+            fontSize: 11,
           },
         },
       ];
       const dataRows = ot.rows.map((r, ri) => {
         const fill = ri % 2 === 0 ? PPC.white : PPC.panel;
+        const cur = r.monthHours || 0;
+        const prevH = r.prevMonthHours || 0;
+        const hasHours = cur > 0;
+        let arrow = '•';
+        let arrowColor: string = PPC.muted;
+        if (cur > prevH) {
+          arrow = '▲';
+          arrowColor = PPC.danger; // OT ↑ = rouge
+        } else if (cur < prevH) {
+          arrow = '▼';
+          arrowColor = PPC.success; // OT ↓ = vert
+        }
         return [
-          { text: r.department, options: { color: PPC.ink, fill: { color: fill }, align: 'left' as const, fontSize: 12, bold: true } },
+          {
+            text: r.department,
+            options: {
+              color: PPC.ink,
+              fill: { color: fill },
+              align: 'left' as const,
+              fontSize: 11,
+              bold: hasHours,
+            },
+          },
+          {
+            text: formatOtHours(r.prevMonthHours),
+            options: {
+              color: PPC.ink,
+              fill: { color: fill },
+              align: 'right' as const,
+              fontSize: 11,
+              bold: hasHours,
+            },
+          },
           {
             text: formatOtHours(r.monthHours),
-            options: { color: PPC.ink, fill: { color: fill }, align: 'right' as const, fontSize: 12, bold: true },
+            options: {
+              color: PPC.ink,
+              fill: { color: fill },
+              align: 'right' as const,
+              fontSize: 11,
+              bold: hasHours,
+            },
+          },
+          {
+            text: arrow,
+            options: {
+              color: arrowColor,
+              fill: { color: fill },
+              align: 'center' as const,
+              fontSize: 12,
+              bold: true,
+            },
           },
         ];
       });
+      const totalCur = ot.totalMonthHours || 0;
+      const totalPrev = ot.totalPrevMonthHours || 0;
+      let totalArrow = '•';
+      let totalArrowColor = PPC.white;
+      if (totalCur > totalPrev) totalArrow = '▲';
+      else if (totalCur < totalPrev) totalArrow = '▼';
       const totalRow = [
         {
           text: 'Total',
-          options: { bold: true, color: PPC.white, fill: { color: PPC.black }, align: 'left' as const, fontSize: 13 },
+          options: { bold: true, color: PPC.white, fill: { color: PPC.black }, align: 'left' as const, fontSize: 12 },
+        },
+        {
+          text: formatOtHours(ot.totalPrevMonthHours),
+          options: { bold: true, color: PPC.white, fill: { color: PPC.black }, align: 'right' as const, fontSize: 12 },
         },
         {
           text: formatOtHours(ot.totalMonthHours),
-          options: { bold: true, color: PPC.white, fill: { color: PPC.black }, align: 'right' as const, fontSize: 13 },
+          options: { bold: true, color: PPC.white, fill: { color: PPC.black }, align: 'right' as const, fontSize: 12 },
+        },
+        {
+          text: totalArrow,
+          options: { bold: true, color: totalArrowColor, fill: { color: PPC.black }, align: 'center' as const, fontSize: 12 },
         },
       ];
       const tableRows = 1 + ot.rows.length + 1;
       const tableH = blockH - 0.22;
       const rowH = tableH / tableRows;
       s.addTable([headerRow, ...dataRows, totalRow], {
-        x: leftX + 0.1,
+        x: leftX + 0.08,
         y: bodyY + 0.1,
-        w: leftW - 0.2,
-        colW: [2.9, 1.4],
+        w: leftW - 0.16,
+        colW: [2.2, 1.1, 1.15, 0.55],
         rowH,
         border: TABLE_BORDER,
         fontFace: FONT,
         valign: 'middle',
       });
 
-      whiteBlock(s, 5.15, bodyY, 7.7, blockH);
+      whiteBlock(s, 5.9, bodyY, 6.95, blockH);
       s.addShape('rect', {
-        x: 5.15, y: bodyY, w: 7.7, h: 0.42,
+        x: 5.9, y: bodyY, w: 6.95, h: 0.42,
         fill: { color: PPC.black }, line: { color: PPC.black },
       });
       s.addText(`Overtime — ${ot.monthLabel} hours per Department`, {
-        x: 5.25, y: bodyY + 0.05, w: 7.5, h: 0.32,
-        fontSize: 13, bold: true, color: PPC.white, fontFace: FONT, valign: 'middle',
+        x: 6.0, y: bodyY + 0.05, w: 6.75, h: 0.32,
+        fontSize: 12, bold: true, color: PPC.white, fontFace: FONT, valign: 'middle',
       });
 
-      const chartAreaX = 5.22;
-      const chartAreaW = 7.56;
+      const chartAreaX = 5.98;
+      const chartAreaW = 6.8;
       const chartTop = bodyY + 0.48;
       const chartH = blockH - 0.55;
       const n = Math.max(ot.rows.length, 1);
@@ -1122,7 +1271,7 @@ export async function buildModernExcoContentPptx(report: ExcoReportPayload): Pro
         // Libellés courts + une ligne → plus de chevauchement
         s.addText(otChartDeptLabel(row.department), {
           x, y: plotTop + barMaxH + 0.08, w: colW, h: 0.4,
-          align: 'center', fontSize: 8, bold: true, color: PPC.ink, fontFace: FONT,
+          align: 'center', fontSize: 8, bold: hours > 0, color: PPC.ink, fontFace: FONT,
           wrap: false, valign: 'top',
         });
       });
@@ -1516,104 +1665,82 @@ export async function buildModernExcoContentPptx(report: ExcoReportPayload): Pro
     });
   }
 
-  // —— CSR & Cahier (1 slide) ——
+  // —— CSR + Cahier : tableaux Secteur / Commentaire / Évolution ——
   {
-    const csr = buildCsrSlideData(report);
-    const s = pptx.addSlide();
-    await paintSlideCanvas(s, assets);
-    addChrome(s, 'CSR & Specifications', '', period, '07');
-    whiteBlock(s, 0.28, 0.92, 12.75, 6.3);
+    const { csr: csrRows, cahier: cahierRows } = buildExcoSectorTables(report);
 
-    csr.kpis.forEach((k, i) => {
-      const x = 0.35 + (i % 6) * 2.15;
-      kpiCard(s, x, 0.95, 2.05, 1.05, k.label, k.value);
-    });
-
-    s.addText('Breakdown by type', {
-      x: 0.4, y: 2.2, w: 6, h: 0.28,
-      fontSize: 13, bold: true, color: PPC.red, fontFace: FONT,
-    });
-    if (csr.byTypePie.length) {
-      s.addChart(
-        'doughnut',
-        [
-          {
-            name: 'Type',
-            labels: csr.byTypePie.map((p) => p.label),
-            values: csr.byTypePie.map((p) => p.value),
-          },
-        ],
+    const paintProjectTable = (
+      slide: Slide,
+      rows: Array<{ secteur: string; commentaire: string; evolution: string }>,
+    ) => {
+      const header = [
         {
-          x: 0.5,
-          y: 2.5,
-          w: 5.8,
-          h: 4.3,
-          showPercent: true,
-          showLegend: true,
-          legendPos: 'b',
-          showTitle: false,
-          chartColors: csr.byTypePie.map((p) => p.color.replace('#', '')),
+          text: 'Secteur',
+          options: { bold: true, color: PPC.white, fill: { color: PPC.red }, align: 'left' as const, fontSize: 11 },
+        },
+        {
+          text: 'Commentaire',
+          options: { bold: true, color: PPC.white, fill: { color: PPC.red }, align: 'left' as const, fontSize: 11 },
+        },
+        {
+          text: 'Évolution',
+          options: { bold: true, color: PPC.white, fill: { color: PPC.red }, align: 'center' as const, fontSize: 11 },
+        },
+      ];
+      const body = (rows.length ? rows : [{ secteur: '—', commentaire: 'Aucune donnée', evolution: '—' }]).map(
+        (r, i) => {
+          const fill = i % 2 === 0 ? PPC.white : PPC.panel;
+          return [
+            {
+              text: r.secteur,
+              options: { bold: true, color: PPC.ink, fill: { color: fill }, align: 'left' as const, fontSize: 10 },
+            },
+            {
+              text: r.commentaire.length > 220 ? `${r.commentaire.slice(0, 217)}…` : r.commentaire,
+              options: { color: PPC.ink, fill: { color: fill }, align: 'left' as const, fontSize: 9 },
+            },
+            {
+              text: r.evolution,
+              options: {
+                bold: true,
+                color: PPC.red,
+                fill: { color: fill },
+                align: 'center' as const,
+                fontSize: 11,
+              },
+            },
+          ];
         },
       );
-    } else {
-      s.addText('No type breakdown available.', {
-        x: 0.5, y: 3.5, w: 5.5, h: 0.4, fontSize: 12, color: PPC.muted, fontFace: FONT,
+      const n = 1 + body.length;
+      const rowH = Math.min(0.55, Math.max(0.32, 5.9 / n));
+      slide.addTable([header, ...body], {
+        x: 0.4,
+        y: 1.05,
+        w: 12.5,
+        colW: [2.6, 8.3, 1.6],
+        rowH,
+        border: TABLE_BORDER,
+        fontFace: FONT,
+        valign: 'middle',
       });
+    };
+
+    {
+      const s = pptx.addSlide();
+      await paintSlideCanvas(s, assets);
+      addChrome(s, 'CSR', 'Secteur · Commentaire · Évolution', period, '07');
+      whiteBlock(s, 0.28, 0.92, 12.75, 6.3);
+      paintProjectTable(s, csrRows);
     }
 
-    s.addText('Breakdown by sector', {
-      x: 6.8, y: 2.2, w: 6, h: 0.28,
-      fontSize: 13, bold: true, color: PPC.red, fontFace: FONT,
-    });
-    if (csr.bySecteurPie.length) {
-      s.addChart(
-        'doughnut',
-        [
-          {
-            name: 'Sector',
-            labels: csr.bySecteurPie.map((p) => p.label),
-            values: csr.bySecteurPie.map((p) => p.value),
-          },
-        ],
-        {
-          x: 6.9,
-          y: 2.5,
-          w: 5.8,
-          h: 4.3,
-          showPercent: true,
-          showLegend: true,
-          legendPos: 'b',
-          showTitle: false,
-          chartColors: csr.bySecteurPie.map((p) => p.color.replace('#', '')),
-        },
-      );
-    } else {
-      s.addText('No sector breakdown available.', {
-        x: 6.9, y: 3.5, w: 5.5, h: 0.4, fontSize: 12, color: PPC.muted, fontFace: FONT,
-      });
+    {
+      const s = pptx.addSlide();
+      await paintSlideCanvas(s, assets);
+      addChrome(s, 'Cahier des Charges', 'Secteur · Commentaire · Évolution', period, '07');
+      whiteBlock(s, 0.28, 0.92, 12.75, 6.3);
+      paintProjectTable(s, cahierRows);
     }
-  }
-
-  // —— CSR – FY27 table ——
-  {
-    const s = pptx.addSlide();
-    await paintSlideCanvas(s, assets);
-    addChrome(s, 'CSR – FY27', '', period, '07');
-    whiteBlock(s, 0.28, 0.92, 12.75, 6.3);
-    addCsrFy27Table(s, resolveCsrFy27Rows(report.overlays));
-    s.addText('Blue text = latest update', {
-      x: 9.2, y: 0.48, w: 3.7, h: 0.18,
-      fontSize: 9, color: CSR_UPDATE_COLOR, fontFace: FONT, align: 'right', italic: true,
-    });
-  }
-
-  // —— Cahier des Charges ——
-  {
-    const s = pptx.addSlide();
-    await paintSlideCanvas(s, assets);
-    addChrome(s, 'Cahier des Charges', '', period, '07');
-    whiteBlock(s, 0.28, 0.92, 12.75, 6.3);
-    addCahierHighlights(s, resolveCahierHighlights(report.overlays));
   }
 
   // —— Recruitment ——

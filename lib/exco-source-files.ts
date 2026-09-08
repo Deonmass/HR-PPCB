@@ -1,7 +1,9 @@
 /**
  * Fichiers sources EXCO — uploadés depuis l’onglet Params.
  * Manico (Mco) + Quarico (Qco) sont toujours lus ensemble dans chaque fichier.
- * New report.xlsx est bundlé (feuille BASE affichée dans l’onglet BASE).
+ * New report.xlsx est un seed historique (une fois) ; les mois suivants
+ * n’importent que Component / Leave / Engagements. La BASE affichée est unique
+ * (seed + système + entrées/sorties du mois).
  */
 export type ExcoSourceFileId =
   | 'componentPostedUnits'

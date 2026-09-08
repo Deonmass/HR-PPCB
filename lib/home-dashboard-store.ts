@@ -285,7 +285,7 @@ export async function buildHomeDashboard(menus: MenuPermission[]): Promise<HomeD
       expenseCount: expenses.length,
       expensesTotal: expenses.reduce((sum, item) => sum + item.montant, 0),
       hrefDashboard: can(menus, 'project.dashboard') ? '/project/dashboard' : '',
-      hrefProjects: can(menus, 'project.projects') ? '/project/projects' : '',
+      hrefProjects: can(menus, 'project.projects') ? '/project/csr' : '',
       hrefExpenses: can(menus, 'project.expenses') ? '/project/expenses-details' : '',
     };
     charts.projectsBudget = scopes.map((scope) => ({

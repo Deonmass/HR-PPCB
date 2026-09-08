@@ -1,0 +1,2208 @@
+{
+  "sourceFile": "Updated EXCO_HR_REPORT_Jul-26.pptx",
+  "periodLabel": "Jul-26",
+  "coverTitle": "EXCO MEETING HELD ON 31 JULY 2026",
+  "agenda": [
+    {
+      "num": "01",
+      "title": "Summary"
+    },
+    {
+      "num": "02",
+      "title": "KPI Summary"
+    },
+    {
+      "num": "03",
+      "title": "Trends"
+    },
+    {
+      "num": "04",
+      "title": "Movements"
+    },
+    {
+      "num": "05",
+      "title": "Overtime"
+    },
+    {
+      "num": "06",
+      "title": "Training"
+    },
+    {
+      "num": "07",
+      "title": "CSR and Cahier des Charges"
+    },
+    {
+      "num": "08",
+      "title": "Recruitment"
+    },
+    {
+      "num": "09",
+      "title": "Governance"
+    }
+  ],
+  "narrative": {
+    "highlights": "Staff Cost vs Budget:\nElectrification Project:\nCompletion: 80%\nOngoing work:- Improvement of the grounding networks- Widening the control room to have access to the acquired cells Progress status:\nZamba 1st: two cabins installed, only the connection remains;\nMalanga Cité: Snel have to send a letter to the AT of Songololo for the formalities of the new transformer location.\nStaff incentives paid:\nBonus paid at Lubudi (100%), Zamba and HQ Kinshasa. Very positive reception on all three sites; staff committed to extra effort so the bonus becomes regular.",
+    "lowlights": "Road Safety: LOXEA accident near Nsele (Honoré Samba / Patrick Kodjowa). Investigations ongoing; CNPR engagement given Plant–HO accidents this year.\nResignations:\nClement Ndusha (Graduate) resigned in July (not yet in stats). Grassinda. Happy Iyanya — requested the 15th; asked to remain until 08/31 for handover (delay to confirm with ExCo).\nRecruitment:\nOne of Lab Analyst (Zamba) declined the offer (re-advertise). CRO offers sent, awaiting response. Lab Analyst Plant and Warehouse Officer accepted\nCommunity Relations:\nThe Nanga clan is in the process of regaining management of ZTL.",
+    "focus": "Family Day: Confirmed — 22 Aug at Zamba Plant; 5 Sep at Head Office (Kinshasa). Priority is organisation of both events.\nMD Services replacement:\nProcurement expected to close this month. Focus on transition and handover.\nOffice design payments:\nRegarding the office design in Kinshasa, we are awaiting the additional PR approvals in order to proceed with the posting and payment of the remaining balance for the works\nEarly retirement — Charles Pongo-Pongo (QA Manager):  The recruitment of his replacement is underway\nMedical cases:\nYannick Kalambayi (Instrumentation); Toubi Nzazi (Drilling); Lab employee (mental health) — contract expires August."
+  },
+  "kpiCards": [
+    {
+      "label": "Headcount",
+      "value": "175",
+      "delta": "▼ 0.6% vs prev.",
+      "prev": "176"
+    },
+    {
+      "label": "Gender Ratio",
+      "value": "85% - 15%",
+      "delta": "vs prev. —",
+      "prev": "85% H / 15% F"
+    },
+    {
+      "label": "Average Age",
+      "value": "40.01 yrs",
+      "delta": "▲ 0.51% vs prev.",
+      "prev": "39.99 yrs"
+    },
+    {
+      "label": "Length of Service (years)",
+      "value": "5.78",
+      "delta": "▼ 1.2% vs prev.",
+      "prev": "6"
+    },
+    {
+      "label": "Onboarding Survey",
+      "value": "57.1%",
+      "delta": "vs prev. —",
+      "prev": "57.1%"
+    },
+    {
+      "label": "Hires",
+      "value": "0",
+      "delta": null,
+      "prev": "3"
+    },
+    {
+      "label": "Exits",
+      "value": "1",
+      "delta": null,
+      "prev": "0"
+    },
+    {
+      "label": "Turnover %",
+      "value": "0.3%",
+      "delta": "▼ 67.23% vs prev.",
+      "prev": "0.9%"
+    },
+    {
+      "label": "Attrition rate %",
+      "value": "0.6%",
+      "delta": "▲ 100% vs prev.",
+      "prev": "0.0%"
+    },
+    {
+      "label": "Succession Coverage",
+      "value": "0.0%",
+      "delta": "0.0% vs prev. —",
+      "prev": "0.0%"
+    },
+    {
+      "label": "Leave Balance (avg days)",
+      "value": "19 days",
+      "delta": null,
+      "prev": "19 days / june"
+    },
+    {
+      "label": "Leave COST",
+      "value": "$418,316.07",
+      "delta": "▼ 3.7% vs prev.",
+      "prev": "$435,850.00"
+    },
+    {
+      "label": "Staff cost",
+      "value": "3,228.98",
+      "delta": "▲ 71% vs prev.",
+      "prev": "$941,257"
+    },
+    {
+      "label": "Overtime cost",
+      "value": "$11,833",
+      "delta": "▲ -1.01% vs prev.",
+      "prev": "$11,955.24"
+    },
+    {
+      "label": "Revenue / emp",
+      "value": "202,404.45",
+      "delta": "vs prev. —",
+      "prev": "$51,800"
+    },
+    {
+      "label": "Volume / emp",
+      "value": "1,279.03",
+      "delta": "vs prev. —",
+      "prev": "327.53"
+    },
+    {
+      "label": "Training Cost",
+      "value": "0",
+      "delta": null,
+      "prev": "—"
+    },
+    {
+      "label": "Training Hours",
+      "value": "0",
+      "delta": null,
+      "prev": "—"
+    },
+    {
+      "label": "Employee Engagement",
+      "value": "89.8.0",
+      "delta": "0.0% vs prev. —",
+      "prev": "89.8.0"
+    },
+    {
+      "label": "Competencies Gap Coverage",
+      "value": "0.0%",
+      "delta": "0.0% vs prev. —",
+      "prev": "0.0%"
+    }
+  ],
+  "trendTables": {
+    "financial": [
+      {
+        "name": "Table 0",
+        "rows": [
+          [
+            "Metric",
+            "MAR 26",
+            "APR",
+            "MAY",
+            "JUN",
+            "JUL",
+            "AUG",
+            "SEP",
+            "OCT",
+            "NOV",
+            "DEC",
+            "JAN",
+            "FEB",
+            "MAR",
+            "YTD",
+            "BUDGET",
+            "%"
+          ],
+          [
+            "Staff Cost (000 USD)",
+            "804.78",
+            "898.10",
+            "798.14",
+            "941.26",
+            "3228.979",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "5,866.46",
+            "6,525.99",
+            "90%"
+          ],
+          [
+            "Ton per Employee",
+            "271.36",
+            "187.30",
+            "362.68",
+            "327.53",
+            "1,279.03",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "2,152.13",
+            "2,451.22",
+            "88%"
+          ],
+          [
+            "Revenue per Employee",
+            "47,011.60",
+            "31,530.70",
+            "59,536.15",
+            "51,800.29",
+            "202,404.45",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "344,526.82",
+            "403,746.79",
+            "85%"
+          ]
+        ]
+      },
+      {
+        "name": "Table 1",
+        "rows": [
+          [
+            "Sites",
+            "MAR 26",
+            "APR",
+            "MAY",
+            "JUN",
+            "JUL",
+            "AUG",
+            "SEP",
+            "OCT",
+            "NOV",
+            "DEC",
+            "JAN",
+            "FEB",
+            "MAR",
+            "Jun-26 → Jul-26",
+            "YTD"
+          ],
+          [
+            "Plant",
+            "100",
+            "100",
+            "101",
+            "103",
+            "102",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "-1",
+            "On track"
+          ],
+          [
+            "HQ and Regions",
+            "66",
+            "66",
+            "65",
+            "66",
+            "66",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "+0",
+            "On track"
+          ],
+          [
+            "Lubudi",
+            "8",
+            "7",
+            "7",
+            "7",
+            "7",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "+0",
+            "On track"
+          ],
+          [
+            "Graduates",
+            "0",
+            "0",
+            "0",
+            "0",
+            "0",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "+0",
+            "On track"
+          ],
+          [
+            "Total",
+            "174",
+            "173",
+            "173",
+            "176",
+            "175",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "-1",
+            "On track"
+          ]
+        ]
+      }
+    ],
+    "headcount": [
+      {
+        "name": "Table 0",
+        "rows": [
+          [
+            "Metric",
+            "MAR 26",
+            "APR",
+            "MAY",
+            "JUN",
+            "JUL",
+            "AUG",
+            "SEP",
+            "OCT",
+            "NOV",
+            "DEC",
+            "JAN",
+            "FEB",
+            "MAR",
+            "YTD",
+            "BUDGET",
+            "%"
+          ],
+          [
+            "Staff Cost (000 USD)",
+            "804.78",
+            "898.10",
+            "798.14",
+            "941.26",
+            "3228.979",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "5,866.46",
+            "6,525.99",
+            "90%"
+          ],
+          [
+            "Ton per Employee",
+            "271.36",
+            "187.30",
+            "362.68",
+            "327.53",
+            "1,279.03",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "2,152.13",
+            "2,451.22",
+            "88%"
+          ],
+          [
+            "Revenue per Employee",
+            "47,011.60",
+            "31,530.70",
+            "59,536.15",
+            "51,800.29",
+            "202,404.45",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "344,526.82",
+            "403,746.79",
+            "85%"
+          ]
+        ]
+      },
+      {
+        "name": "Table 1",
+        "rows": [
+          [
+            "Sites",
+            "MAR 26",
+            "APR",
+            "MAY",
+            "JUN",
+            "JUL",
+            "AUG",
+            "SEP",
+            "OCT",
+            "NOV",
+            "DEC",
+            "JAN",
+            "FEB",
+            "MAR",
+            "Jun-26 → Jul-26",
+            "YTD"
+          ],
+          [
+            "Plant",
+            "100",
+            "100",
+            "101",
+            "103",
+            "102",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "-1",
+            "On track"
+          ],
+          [
+            "HQ and Regions",
+            "66",
+            "66",
+            "65",
+            "66",
+            "66",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "+0",
+            "On track"
+          ],
+          [
+            "Lubudi",
+            "8",
+            "7",
+            "7",
+            "7",
+            "7",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "+0",
+            "On track"
+          ],
+          [
+            "Graduates",
+            "0",
+            "0",
+            "0",
+            "0",
+            "0",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "+0",
+            "On track"
+          ],
+          [
+            "Total",
+            "174",
+            "173",
+            "173",
+            "176",
+            "175",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "-1",
+            "On track"
+          ]
+        ]
+      }
+    ],
+    "genderAge": [
+      {
+        "name": "Table 0",
+        "rows": [
+          [
+            "Gender",
+            "MAR 26",
+            "APR",
+            "MAY",
+            "JUN",
+            "JUL",
+            "AUG",
+            "SEP",
+            "OCT",
+            "NOV",
+            "DEC",
+            "JAN",
+            "FEB",
+            "MAR",
+            "Jul-26 — Sites",
+            "Jul-26 — HQ"
+          ],
+          [
+            "Male",
+            "84%",
+            "84%",
+            "84%",
+            "85%",
+            "85%",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "93%",
+            "70%"
+          ],
+          [
+            "Female",
+            "16%",
+            "16%",
+            "16%",
+            "15%",
+            "15%",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "7%",
+            "30%"
+          ]
+        ]
+      },
+      {
+        "name": "Table 1",
+        "rows": [
+          [
+            "Metric",
+            "MAR 26",
+            "APR",
+            "MAY",
+            "JUN",
+            "JUL",
+            "AUG",
+            "SEP",
+            "OCT",
+            "NOV",
+            "DEC",
+            "JAN",
+            "FEB",
+            "MAR"
+          ],
+          [
+            "Average Age",
+            "39.8",
+            "39.9",
+            "40.0",
+            "39.9",
+            "40.1",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            ""
+          ],
+          [
+            "Male Average Age",
+            "40.4",
+            "40.5",
+            "40.6",
+            "40.5",
+            "40.7",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            ""
+          ],
+          [
+            "Female Average Age",
+            "36.3",
+            "36.4",
+            "36.5",
+            "36.7",
+            "36.7",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            ""
+          ]
+        ]
+      }
+    ],
+    "movements": [
+      {
+        "name": "Table 0",
+        "rows": [
+          [
+            "IN — OUT YTD",
+            "MAR 26",
+            "APR",
+            "MAY",
+            "JUN",
+            "JUL",
+            "AUG",
+            "SEP",
+            "OCT",
+            "NOV",
+            "DEC",
+            "JAN",
+            "FEB",
+            "MAR",
+            "FY26 YTD"
+          ],
+          [
+            "IN",
+            "0",
+            "0",
+            "1",
+            "3",
+            "0",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "4"
+          ],
+          [
+            "Out",
+            "1",
+            "1",
+            "1",
+            "0",
+            "1",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "3"
+          ],
+          [
+            "Attrition Rate (%)",
+            "0.6%",
+            "0.6%",
+            "0.6%",
+            "0.0%",
+            "0.6%",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "1.71%"
+          ],
+          [
+            "Turnover (%)",
+            "0.3%",
+            "0.3%",
+            "0.6%",
+            "0.9%",
+            "0.3%",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "2.02%"
+          ],
+          [
+            "Total Headcount",
+            "174",
+            "173",
+            "173",
+            "176",
+            "175",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "175"
+          ]
+        ]
+      }
+    ],
+    "leaves": [
+      {
+        "name": "Table 0",
+        "rows": [
+          [
+            "BALANCE",
+            "MAR 26",
+            "APR",
+            "MAY",
+            "JUN",
+            "JUL",
+            "AUG",
+            "SEP",
+            "OCT",
+            "NOV",
+            "DEC",
+            "JAN",
+            "FEB",
+            "MAR"
+          ],
+          [
+            "Plant (Average Days)",
+            "16",
+            "17",
+            "17",
+            "17",
+            "16",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            ""
+          ],
+          [
+            "HQ and Region (Average Days)",
+            "22",
+            "21",
+            "22",
+            "23",
+            "23",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            ""
+          ],
+          [
+            "Lubudi (Average Days)",
+            "6",
+            "7",
+            "9",
+            "7",
+            "8",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            ""
+          ],
+          [
+            "All Company (Average Days)",
+            "18",
+            "18",
+            "18",
+            "19",
+            "19",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            ""
+          ]
+        ]
+      },
+      {
+        "name": "Table 0",
+        "rows": [
+          [
+            "COSTS (000 USD)",
+            "MAR 26",
+            "APR",
+            "MAY",
+            "JUN",
+            "JUL",
+            "AUG",
+            "SEP",
+            "OCT",
+            "NOV",
+            "DEC",
+            "JAN",
+            "FEB",
+            "MAR"
+          ],
+          [
+            "Provision (Leave not taken)",
+            "377.88",
+            "391.7",
+            "390.47",
+            "435.85",
+            "418.32",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            ""
+          ]
+        ]
+      }
+    ],
+    "overtime": [
+      {
+        "name": "Table 5",
+        "rows": [
+          [
+            "7 .Overtime"
+          ]
+        ]
+      },
+      {
+        "name": "Table 6",
+        "rows": [
+          [
+            "Overtime -  Hours",
+            "Mar 26",
+            "APR",
+            "MAY",
+            "JUN",
+            "JUL",
+            "AUG",
+            "SEP",
+            "OCT",
+            "NOV",
+            "DEC",
+            "JAN",
+            "FEB",
+            "MAR",
+            "FY27 YTD"
+          ],
+          [
+            "CEC",
+            "0",
+            "-",
+            "16.00",
+            "0",
+            "0",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "16.00"
+          ],
+          [
+            "ENG",
+            "356.34",
+            "356.34",
+            "538.73",
+            "784.18",
+            "639.19",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "2,318.44"
+          ],
+          [
+            "Mining",
+            "0",
+            "64.00",
+            "52.30",
+            "60",
+            "57.30",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "233.60"
+          ],
+          [
+            "Opt",
+            "0",
+            "-",
+            "6.30",
+            "0",
+            "-",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "6.30"
+          ],
+          [
+            "Prod",
+            "53.06",
+            "53.06",
+            "241.41",
+            "163.52",
+            "378.92",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "836.91"
+          ],
+          [
+            "Log",
+            "57.99",
+            "57.99",
+            "128.91",
+            "82.24",
+            "65.57",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "334.71"
+          ],
+          [
+            "QA",
+            "68.58",
+            "68.58",
+            "53.97",
+            "101.13",
+            "111.00",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "334.68"
+          ],
+          [
+            "Total",
+            "535.97",
+            "599.97",
+            "1,037.62",
+            "1,191.07",
+            "1,251.98",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "4,080.64"
+          ]
+        ]
+      }
+    ]
+  },
+  "otVsLeave": {
+    "overview": "General Overview - July\nTotal workforce: 175 employees\nEmployees with recorded hours: 52 ⇒ 30 % of the total staff\nTotal Overtime: 1,251.98 hours\nAverage hours : 24.08 hours\nTotal cost : USD 11,833.90\nAverage cost per employee\nUSD 227.57\nOvertime represents 0.37 % of overall staff cost YTD, and 0.67 % in July 2026\nAverage remaining leave days (OVT recorded employees): 18.37 days",
+    "tables": [
+      {
+        "name": "Table 8",
+        "rows": [
+          [
+            "ID",
+            "Names",
+            "OVT_Hours",
+            "OVT_Cost",
+            "Leave_Balance",
+            "Departments"
+          ],
+          [
+            "1",
+            "Dieu Ngoma",
+            "78.89",
+            "938.93",
+            "26.17",
+            "Engineering"
+          ],
+          [
+            "2",
+            "Lundi Onosamba",
+            "69.95",
+            "743.90",
+            "22.92",
+            "Engineering"
+          ],
+          [
+            "3",
+            "Antoine Nzungu",
+            "69.79",
+            "787.64",
+            "20.92",
+            "Engineering"
+          ],
+          [
+            "4",
+            "Guylain Wampangulua",
+            "61.73",
+            "188.15",
+            "24.92",
+            "Engineering"
+          ],
+          [
+            "5",
+            "Patience Mansiamina",
+            "51.17",
+            "608.58",
+            "24.42",
+            "Engineering"
+          ],
+          [
+            "6",
+            "Willy Tshilolo",
+            "47.04",
+            "334.18",
+            "22.67",
+            "Production"
+          ],
+          [
+            "7",
+            "Junior Nlandu",
+            "45.60",
+            "332.37",
+            "3.24",
+            "Engineering"
+          ],
+          [
+            "8",
+            "Yannick Kamunga",
+            "42.51",
+            "287.87",
+            "18.17",
+            "Production"
+          ],
+          [
+            "9",
+            "LUZOLO NSEMBOLO",
+            "42.20",
+            "519.11",
+            "20.84",
+            "Engineering"
+          ],
+          [
+            "10",
+            "Jisca Muanda",
+            "41.34",
+            "617.00",
+            "17.00",
+            "Production"
+          ],
+          [
+            "11",
+            "Christian Mukonkole",
+            "40.75",
+            "292.84",
+            "7.67",
+            "Production"
+          ],
+          [
+            "12",
+            "Simon Bayisa",
+            "38.49",
+            "396.11",
+            "7.33",
+            "Engineering"
+          ],
+          [
+            "13",
+            "Declairck Nsilulu Ngimbi",
+            "38.28",
+            "133.69",
+            "7.05",
+            "Engineering"
+          ],
+          [
+            "14",
+            "Jonas LINGOMA",
+            "36.46",
+            "473.50",
+            "15.00",
+            "Logistic"
+          ],
+          [
+            "15",
+            "Alphonse Bindama",
+            "35.29",
+            "515.48",
+            "26.42",
+            "Engineering"
+          ],
+          [
+            "16",
+            "Alidor Kankonde",
+            "34.93",
+            "154.53",
+            "16.00",
+            "Production"
+          ],
+          [
+            "17",
+            "Ovie Tulomba",
+            "29.43",
+            "365.33",
+            "(1.67)",
+            "Engineering"
+          ],
+          [
+            "18",
+            "Jean Biawila",
+            "29.11",
+            "243.10",
+            "24.50",
+            "Logistic"
+          ],
+          [
+            "19",
+            "Albert Vangu",
+            "27.43",
+            "99.57",
+            "18.67",
+            "Production"
+          ],
+          [
+            "20",
+            "Dinandi Mvumbi",
+            "26.91",
+            "325.50",
+            "20.08",
+            "Engineering"
+          ],
+          [
+            "21",
+            "Emmanuel Mawete",
+            "24.16",
+            "144.37",
+            "15.22",
+            "Quality Assurance"
+          ],
+          [
+            "22",
+            "Blanchard Muzo",
+            "22.60",
+            "124.53",
+            "5.32",
+            "Engineering"
+          ],
+          [
+            "23",
+            "Rodrigue Luzolawo",
+            "22.00",
+            "240.20",
+            "3.00",
+            "Production"
+          ],
+          [
+            "24",
+            "Joel Nzuzi",
+            "22.00",
+            "253.09",
+            "23.00",
+            "Production"
+          ],
+          [
+            "25",
+            "Erick Nlandu",
+            "21.74",
+            "176.60",
+            "5.17",
+            "Quality Assurance"
+          ],
+          [
+            "26",
+            "Longo Zola",
+            "21.00",
+            "246.07",
+            "31.17",
+            "Mining"
+          ],
+          [
+            "27",
+            "Nadege Nsilu",
+            "18.81",
+            "142.31",
+            "16.17",
+            "Quality Assurance"
+          ],
+          [
+            "28",
+            "Olivier Lutonadio",
+            "18.00",
+            "188.73",
+            "8.92",
+            "Production"
+          ],
+          [
+            "29",
+            "Kabangu Mutambayi",
+            "15.71",
+            "309.13",
+            "28.67",
+            "Production"
+          ],
+          [
+            "30",
+            "Sosthene Nyomba Kamanda",
+            "15.43",
+            "177.09",
+            "12.17",
+            "Quality Assurance"
+          ]
+        ]
+      },
+      {
+        "name": "Table 11",
+        "rows": [
+          [
+            "ID",
+            "Names",
+            "OVT_Hours",
+            "OVT_Cost",
+            "Leave_Balance",
+            "Departments"
+          ],
+          [
+            "1",
+            "Longo Zola",
+            "21",
+            "246.0687782",
+            "31.17",
+            "Mining"
+          ],
+          [
+            "2",
+            "Eder Bitutu",
+            "6",
+            "25.83865251",
+            "28.75",
+            "Production"
+          ],
+          [
+            "3",
+            "Kabangu Mutambayi",
+            "15.71",
+            "309.1328726",
+            "28.67",
+            "Production"
+          ],
+          [
+            "4",
+            "Lucio Da Conceição",
+            "15.41",
+            "165.9745797",
+            "27.54444444",
+            "Engineering"
+          ],
+          [
+            "5",
+            "Alphonse Bindama",
+            "35.29",
+            "515.4823527",
+            "26.41666667",
+            "Engineering"
+          ],
+          [
+            "6",
+            "Dieu Ngoma",
+            "78.89",
+            "938.9251083",
+            "26.17",
+            "Engineering"
+          ],
+          [
+            "7",
+            "Joel Toko",
+            "7.09",
+            "52.9104896",
+            "25.49333333",
+            "Production"
+          ],
+          [
+            "8",
+            "Guylain Wampangulua",
+            "61.73",
+            "188.1464081",
+            "24.91666667",
+            "Engineering"
+          ],
+          [
+            "9",
+            "Jean Biawila",
+            "29.11",
+            "243.1008709",
+            "24.5",
+            "Logistic"
+          ],
+          [
+            "10",
+            "Patience Mansiamina",
+            "51.17",
+            "608.5835745",
+            "24.41666667",
+            "Engineering"
+          ],
+          [
+            "11",
+            "Joel Nzuzi",
+            "22",
+            "253.0891724",
+            "22.99666667",
+            "Production"
+          ],
+          [
+            "12",
+            "Lundi Onosamba",
+            "69.95",
+            "743.8993068",
+            "22.92",
+            "Engineering"
+          ],
+          [
+            "13",
+            "Willy Tshilolo",
+            "47.04",
+            "334.1788215",
+            "22.66666667",
+            "Production"
+          ],
+          [
+            "14",
+            "Leon Badibanga",
+            "3.07",
+            "24.51365685",
+            "22.66666667",
+            "Production"
+          ],
+          [
+            "15",
+            "Antoine Nzungu",
+            "69.79",
+            "787.6409965",
+            "20.92",
+            "Engineering"
+          ],
+          [
+            "16",
+            "LUZOLO NSEMBOLO",
+            "42.2",
+            "519.1127513",
+            "20.84333333",
+            "Engineering"
+          ],
+          [
+            "17",
+            "Maphasi Vangu",
+            "14.74",
+            "352.060156",
+            "20.67",
+            "Production"
+          ],
+          [
+            "18",
+            "Dinandi Mvumbi",
+            "26.91",
+            "325.5029376",
+            "20.08333333",
+            "Engineering"
+          ],
+          [
+            "19",
+            "EDDO MAKIVOVI",
+            "7",
+            "41.58206672",
+            "19.17",
+            "Mining"
+          ],
+          [
+            "20",
+            "Masudi Nkosi",
+            "13",
+            "42.60986568",
+            "19.08333333",
+            "Mining"
+          ],
+          [
+            "21",
+            "Albert Vangu",
+            "27.43",
+            "99.56660312",
+            "18.66666667",
+            "Production"
+          ],
+          [
+            "22",
+            "Gervais Bavibidila",
+            "3.17",
+            "13.60113085",
+            "18.33",
+            "Production"
+          ],
+          [
+            "23",
+            "Yannick Kamunga",
+            "42.51",
+            "287.8690425",
+            "18.16666667",
+            "Production"
+          ],
+          [
+            "24",
+            "Jisca Muanda",
+            "41.34",
+            "616.997747",
+            "16.99666667",
+            "Production"
+          ],
+          [
+            "25",
+            "Joel Matoko",
+            "8",
+            "49.56334922",
+            "16.34",
+            "Production"
+          ],
+          [
+            "26",
+            "Nadege Nsilu",
+            "18.81",
+            "142.3066941",
+            "16.16666667",
+            "Quality Assurance"
+          ],
+          [
+            "27",
+            "Alidor Kankonde",
+            "34.93",
+            "154.5298657",
+            "16",
+            "Production"
+          ],
+          [
+            "28",
+            "Emmanuel Mawete",
+            "24.16",
+            "144.3722617",
+            "15.22222223",
+            "Quality Assurance"
+          ],
+          [
+            "29",
+            "Jonas LINGOMA",
+            "36.46",
+            "473.497383",
+            "15",
+            "Logistic"
+          ],
+          [
+            "30",
+            "CHRISTIAN KUABI",
+            "2.58",
+            "21.26434142",
+            "14.83333333",
+            "Production"
+          ]
+        ]
+      },
+      {
+        "name": "Table 12",
+        "rows": [
+          [
+            "Dept",
+            "OVT_Hours",
+            "OVT_Cost",
+            "Leave"
+          ],
+          [
+            "Engineering",
+            "639.19",
+            "6,262.87",
+            "247.96"
+          ],
+          [
+            "Logistic",
+            "65.57",
+            "716.60",
+            "39.50"
+          ],
+          [
+            "Mining",
+            "57.30",
+            "430.45",
+            "100.47"
+          ],
+          [
+            "Production",
+            "378.92",
+            "3,481.92",
+            "325.16"
+          ],
+          [
+            "QA",
+            "111.00",
+            "942.05",
+            "99.56"
+          ],
+          [
+            "Grand Total",
+            "1251.98",
+            "11833.90",
+            "812.65"
+          ]
+        ]
+      }
+    ]
+  },
+  "csrFy27Rows": [
+    {
+      "name": "Scholarship Programme",
+      "objective": "Provide educational support to students from host communities.",
+      "progress": "The programme is fully operational and continues to support beneficiaries in accordance with the approved framework.",
+      "risks": "No significant issues reported.",
+      "nextSteps": "Continue monitoring academic performance and programme compliance."
+    },
+    {
+      "name": "Zamba Water Tank Replacement",
+      "objective": "Planning the replacement of the defective and perforated tank with a new one already available.",
+      "progress": "The village's agreement for the new location of the tank",
+      "risks": "waiting for the SOW",
+      "nextSteps": "The SOW has been prepared, and a tender process must be initiated by the Procurement department."
+    },
+    {
+      "name": "Mwinda Partnership – Local PPE Manufacturing",
+      "objective": "Train and professionally integrate young women + produce PPE locally to reduce imports and delays",
+      "progress": "After procurement realized that Mwinda is a sole supplier, a Justification Form for Purchasing from a Sole Supplier was created and placed in the circuit for approval.",
+      "risks": "waiting for MD signature",
+      "nextSteps": "Scheduling of Rehabilitation Works."
+    },
+    {
+      "name": "PPC School",
+      "objective": "Legal status of the school signed",
+      "progress": "The contract is signed by MD",
+      "risks": "Waiting for the congregation's signature",
+      "nextSteps": "Waiting for the congregation's signature"
+    },
+    {
+      "name": "Sewing Workshop",
+      "objective": "Develop vocational skills and improve employability of local women.",
+      "progress": "The training programme has been successfully completed, and certificates were awarded on 27 June 2026.",
+      "risks": "None.",
+      "nextSteps": "Integrate graduates into the Mwinda PPE project to apply the skills acquired."
+    },
+    {
+      "name": "Infrastructure Programme",
+      "objective": "Deliver community infrastructure projects under the Cahier des Charges.",
+      "progress": "Construction of two bridges linking Malanga Cité and Malanga Gare is progressing, with approximately 25% of clearing and stump removal completed. A third bridge has been added to facilitate access and transportation through the Malanga Gare railway corridor.",
+      "risks": "Land-related disputes may delay implementation of some infrastructure works.",
+      "nextSteps": "Continue civil works while resolving outstanding community issues affecting project implementation."
+    },
+    {
+      "name": "Agriculture Programme",
+      "objective": "Promote sustainable livelihoods through community agriculture initiatives.",
+      "progress": "Resumption of agricultural activities for the communities of Nkumba and Malanga city planned for September 2026.",
+      "risks": "Finalise stakeholder discussions and resume agricultural activities once community consensus has been reached.",
+      "nextSteps": "Scheduling of Ploughing and Harrowing Activities"
+    },
+    {
+      "name": "Sports & Leisure Facilities",
+      "objective": "Promote youth development and community wellbeing through sports infrastructure.",
+      "progress": "inspection visit of the soccer field to be developed in Kumba for the start of work",
+      "risks": "No major risks identified at this stage.",
+      "nextSteps": "Malanga Gare, the place has been indicated to set up a football field. The procedures are underway\ninspection visit of the soccer field to be developed in Kumba for the start of work"
+    },
+    {
+      "name": "Zamba & Malanga Cité Electrification Project",
+      "objective": "Improve access to electricity for surrounding communities and strengthen local infrastructure.",
+      "progress": "Completion: 80%. Ongoing work: Improvement of the grounding networks. Widening the control room to have access to the acquired cells. Progress status: Zamba 1st: two cabins installed, only the connection remains; Malanga Cité: send a letter to the AT of Songololo for the formalities of the new transformer location.",
+      "risks": "Finalise engineering approvals with SNEL and PPC, complete corrective technical works, validate the revised project schedule and proceed towards commissioning.",
+      "nextSteps": "Completion: 80% \n\nOngoing work:- Improvement of the grounding networks- Widening the control room to have access to the acquired cells Progress status: \nZamba 1st: two cabins installed, only the connection remains;\nMalanga Cité: send a letter to the AT of Songololo for the formalities of the new transformer location."
+    }
+  ],
+  "cahierHighlights": [
+    {
+      "icon": "scholarship",
+      "title": "Scholarship - Project fully in place",
+      "body": "the construction of two bridges connecting Malanga Cité and Malanga Gare. 25% of the work, in terms of clearing and stump removal, is completed. A second project has been added to this. It involves the construction of a third bridge to facilitate both the evacuation and the transport of our products via the Malanga Gare railway. Negotiations with the residents of Kuzi were ongoing, but after a meeting held on this issue on Saturday, July 4th at Malanga Gare, we were informed that there is a land dispute between the lineages.",
+      "progressPct": 100
+    },
+    {
+      "icon": "infrastructure",
+      "title": "Infrastructure",
+      "body": "the construction of two bridges connecting Malanga Cité and Malanga Gare. 25% of the work, in terms of clearing and stump removal, is completed. A second project has been added to this. It involves the construction of a third bridge to facilitate both the evacuation and the transport of our products via the Malanga Gare railway. Negotiations with the residents of Kuzi were ongoing, but after a meeting held on this issue on Saturday, July 4th at Malanga Gare, we were informed that there is a land dispute between the lineages.",
+      "progressPct": 75
+    },
+    {
+      "icon": "agriculture",
+      "title": "Agriculture",
+      "body": "An online meeting was held with the Manalola organization, from which the lack of progress in the agricultural project was noted following land conflicts. A discussion about another methodology is underway to successfully carry the project through. However, we hope that a possible resumption of agricultural activities planned in Nkumba will take place in September as planned. Resumption of agricultural activities for the communities of Nkumba and Malanga city planned for September 2026.",
+      "progressPct": 50
+    },
+    {
+      "icon": "leisure",
+      "title": "Leisure",
+      "body": "Malanga Gare, the place has been indicated to set up a football field. The procedures are underway. inspection visit of the soccer field to be developed in Kumba for the start of work",
+      "progressPct": 80
+    },
+    {
+      "icon": "electricity",
+      "title": "Electricity",
+      "body": "Completion: 80%. Ongoing work: Improvement of the grounding networks. Widening the control room to have access to the acquired cells. Progress status: Zamba 1st: two cabins installed, only the connection remains; Malanga Cité: send a letter to the AT of Songololo for the formalities of the new transformer location.",
+      "progressPct": 80
+    }
+  ],
+  "recruitment": {
+    "replacements": [
+      {
+        "position": "Fitter (Plumber)",
+        "grade": "C2",
+        "status": "Ongoing",
+        "comments": "Shortlisting done, interview to be planned",
+        "budgeted": "Yes",
+        "department": "Engineering",
+        "location": "Plant",
+        "contractType": "Permanent"
+      },
+      {
+        "position": "Process Operator (2)",
+        "grade": "C1",
+        "status": "Ongoing",
+        "comments": "First interviews done, second round interview ongoing with Mr. Andrew",
+        "budgeted": "Yes",
+        "department": "Production",
+        "location": "Plant",
+        "contractType": "Permanent"
+      },
+      {
+        "position": "Shift Supervisor",
+        "grade": "C3",
+        "status": "Ongoing",
+        "comments": "Awaiting for shortlist from the manager",
+        "budgeted": "Yes",
+        "department": "Production",
+        "location": "Plant",
+        "contractType": "Permanent"
+      },
+      {
+        "position": "Sales and Marketing Head",
+        "grade": "D5",
+        "status": "Ongoing",
+        "comments": "Interviews done",
+        "budgeted": "Yes",
+        "department": "Sales and Marketing",
+        "location": "HQ",
+        "contractType": "Permanent"
+      },
+      {
+        "position": "Logistic superintendent",
+        "grade": "D1",
+        "status": "Ongoing",
+        "comments": "Interviews done, offer to be sent",
+        "budgeted": "Yes",
+        "department": "Supply Chain",
+        "location": "HQ",
+        "contractType": "Permanent"
+      },
+      {
+        "position": "Instrumentation Foreman",
+        "grade": "C4",
+        "status": "Started",
+        "comments": "Waiting for the shortlisting from the manager",
+        "budgeted": "yes",
+        "department": "Engineering",
+        "location": "Plant",
+        "contractType": "Permanent"
+      },
+      {
+        "position": "Lab Analyst",
+        "grade": "B5",
+        "status": "Done",
+        "comments": "Offer sent and starting soon",
+        "budgeted": "yes",
+        "department": "QA",
+        "location": "Plant",
+        "contractType": "Permanent"
+      },
+      {
+        "position": "Warehouse Officer",
+        "grade": "C2",
+        "status": "Done",
+        "comments": "Notification letter sent, candidate starting soon",
+        "budgeted": "yes",
+        "department": "Supply Chain",
+        "location": "Kisangani",
+        "contractType": "Outsourced"
+      }
+    ],
+    "newPositions": [
+      {
+        "position": "Maintenance Planner",
+        "grade": "C2",
+        "status": "Ongoing",
+        "comments": "Second interviews are to be scheduled.",
+        "budgeted": "Yes",
+        "department": "Engineering",
+        "location": "Plant",
+        "contractType": "Permanent"
+      },
+      {
+        "position": "Mechanical foreman",
+        "grade": "C4",
+        "status": "Started",
+        "comments": "Vacancy advertised",
+        "budgeted": "No",
+        "department": "Engineering",
+        "location": "Plant",
+        "contractType": "Permanent"
+      },
+      {
+        "position": "Quality Manager",
+        "grade": "D2",
+        "status": "Started",
+        "comments": "Vacancy advertised",
+        "budgeted": "No",
+        "department": "QA",
+        "location": "Plant",
+        "contractType": "Permanent"
+      },
+      {
+        "position": "Talent and development Manager",
+        "grade": "D2",
+        "status": "Started",
+        "comments": "Vacancy advertised",
+        "budgeted": "No",
+        "department": "HR",
+        "location": "Plant",
+        "contractType": "Permanent"
+      },
+      {
+        "position": "CPME Officer",
+        "grade": "C4",
+        "status": "Not started",
+        "comments": "Vacancy to be advertised",
+        "budgeted": "Yes",
+        "department": "CPME",
+        "location": "Plant",
+        "contractType": "Permanent"
+      },
+      {
+        "position": "Buyer",
+        "grade": "C2",
+        "status": "Ongoing",
+        "comments": "Interviews to be planned",
+        "budgeted": "No",
+        "department": "Supply chain",
+        "location": "HQ",
+        "contractType": "Permanent"
+      },
+      {
+        "position": "CRO (2)",
+        "grade": "C2",
+        "status": "Ongoing",
+        "comments": "Offer sent, waiting for response",
+        "budgeted": "yes",
+        "department": "Sales and Marketing",
+        "location": "",
+        "contractType": "Permanent"
+      },
+      {
+        "position": "Sales Consultant",
+        "grade": "C2",
+        "status": "Ongoing",
+        "comments": "Final Interviews pending MD's availability",
+        "budgeted": "No",
+        "department": "Sales and Marketing",
+        "location": "Kindu",
+        "contractType": "Permanent"
+      },
+      {
+        "position": "Warehouse operator",
+        "grade": "C2",
+        "status": "Ongoing",
+        "comments": "Offer to be sent",
+        "budgeted": "No",
+        "department": "Supply chain",
+        "location": "Kindu",
+        "contractType": "Permanent"
+      },
+      {
+        "position": "Lab Analyst",
+        "grade": "B5",
+        "status": "Ongoing",
+        "comments": "Candidate did not accept the offer, vacancy to be advertised",
+        "budgeted": "yes",
+        "department": "QA",
+        "location": "Zamba",
+        "contractType": "Permanent"
+      },
+      {
+        "position": "Lab Analyst",
+        "grade": "",
+        "status": "Not Started",
+        "comments": "Through Capital HR",
+        "budgeted": "No",
+        "department": "Albatros",
+        "location": "Lubudi – Grand Katanga",
+        "contractType": "Outsourced"
+      },
+      {
+        "position": "Community Liaison Assistant",
+        "grade": "",
+        "status": "Not Started",
+        "comments": "Through Capital HR",
+        "budgeted": "No",
+        "department": "Albatros",
+        "location": "Lubudi – Grand Katanga",
+        "contractType": "Outsourced"
+      },
+      {
+        "position": "Accountant – pettycash",
+        "grade": "",
+        "status": "Not Started",
+        "comments": "Through Capital HR",
+        "budgeted": "No",
+        "department": "Albatros",
+        "location": "Lubudi – Grand Katanga",
+        "contractType": "Outsourced"
+      },
+      {
+        "position": "Logistics and Customs",
+        "grade": "",
+        "status": "Started",
+        "comments": "Through Capital HR",
+        "budgeted": "No",
+        "department": "Supply Chain",
+        "location": "HQ",
+        "contractType": "Outsourced"
+      },
+      {
+        "position": "Warehouse Assistant",
+        "grade": "",
+        "status": "Not Started",
+        "comments": "Through Capital HR",
+        "budgeted": "No",
+        "department": "Albatros",
+        "location": "Lubudi – Grand Katanga",
+        "contractType": "Outsourced"
+      }
+    ]
+  },
+  "audit": {
+    "summary": "Closed 12/23 (52%)  ·  +7 since last EXCO  ·  Overdue 7  ·  On going 1",
+    "rows": [
+      {
+        "number": "01",
+        "finding": "Complete all missing documents in employee files",
+        "severity": "Medium",
+        "status": "Open",
+        "comments": "—",
+        "dueDate": "6/30/2026"
+      },
+      {
+        "number": "02",
+        "finding": "Ensure all induction plan are properly documented",
+        "severity": "Medium",
+        "status": "Closed",
+        "comments": "—",
+        "dueDate": "6/30/2026"
+      },
+      {
+        "number": "03",
+        "finding": "Introduce a KPI related to proper documentation filing within the recruitment process in the Recruitment Officer scorecard",
+        "severity": "Medium",
+        "status": "Open",
+        "comments": "—",
+        "dueDate": "6/30/2026"
+      },
+      {
+        "number": "04",
+        "finding": "Conduct an annual internal audit of employee files to ensure compliance and completeness and close the Gap (85% compliance rate)",
+        "severity": "Medium",
+        "status": "Closed",
+        "comments": "—",
+        "dueDate": "6/30/2026"
+      },
+      {
+        "number": "05",
+        "finding": "Define and streamline the approval workflow to reduce delays (Everything should be signed the last day)",
+        "severity": "Medium",
+        "status": "Open",
+        "comments": "—",
+        "dueDate": "6/30/2026"
+      },
+      {
+        "number": "06",
+        "finding": "Employee files update",
+        "severity": "High",
+        "status": "Closed",
+        "comments": "—",
+        "dueDate": "9/30/2025"
+      },
+      {
+        "number": "07",
+        "finding": "Ensure all FY26 training records are properly documented and closed",
+        "severity": "High",
+        "status": "Overdue",
+        "comments": "—",
+        "dueDate": "6/30/2026"
+      },
+      {
+        "number": "08",
+        "finding": "Ensure that all required employee data is systematically shared with Finance on an annual basis, no later than end of april",
+        "severity": "Low",
+        "status": "Closed",
+        "comments": "—",
+        "dueDate": "6/30/2026"
+      },
+      {
+        "number": "09",
+        "finding": "Establish a formal procedure defining roles and responsibilities between HR and Finance, including timelines and data requirements",
+        "severity": "Low",
+        "status": "Closed",
+        "comments": "—",
+        "dueDate": "6/30/2026"
+      },
+      {
+        "number": "10",
+        "finding": "Establish a formal procedure for conducting surveys, including confidentiality requirements and formal agreements with providers",
+        "severity": "High",
+        "status": "Closed",
+        "comments": "—",
+        "dueDate": "6/30/2026"
+      },
+      {
+        "number": "11",
+        "finding": "Finalize and standardize reference checks",
+        "severity": "Medium",
+        "status": "Closed",
+        "comments": "—",
+        "dueDate": "6/30/2026"
+      },
+      {
+        "number": "12",
+        "finding": "Implement a formal action plan and ensure proper closure tracking",
+        "severity": "High",
+        "status": "Overdue",
+        "comments": "—",
+        "dueDate": "6/30/2026"
+      },
+      {
+        "number": "13",
+        "finding": "Implement an automatic recruitment System",
+        "severity": "Medium",
+        "status": "On going",
+        "comments": "—",
+        "dueDate": "3/31/2027"
+      },
+      {
+        "number": "14",
+        "finding": "Include a mandatory handover/ tracking file within the clearance process (Update the clearance from)",
+        "severity": "High",
+        "status": "Closed",
+        "comments": "—",
+        "dueDate": "6/30/2026"
+      },
+      {
+        "number": "15",
+        "finding": "Introduce a KPI on proper filing and document completeness in employee records",
+        "severity": "Medium",
+        "status": "Overdue",
+        "comments": "—",
+        "dueDate": "6/30/2026"
+      },
+      {
+        "number": "16",
+        "finding": "Issue a decision note to formalize interview outcomes",
+        "severity": "Medium",
+        "status": "Overdue",
+        "comments": "—",
+        "dueDate": "6/30/2026"
+      },
+      {
+        "number": "17",
+        "finding": "Notify all pending candidates of their probation status",
+        "severity": "Medium",
+        "status": "Overdue",
+        "comments": "—",
+        "dueDate": "6/30/2026"
+      },
+      {
+        "number": "18",
+        "finding": "Organize an alignment session between Human Resources and Legal to clarify requirements and define the appropriate framework documentation.",
+        "severity": "Low",
+        "status": "Closed",
+        "comments": "—",
+        "dueDate": "6/30/2026"
+      },
+      {
+        "number": "19",
+        "finding": "Organize focus group sessions (plant and head office) to gather additional insigh",
+        "severity": "High",
+        "status": "Overdue",
+        "comments": "—",
+        "dueDate": "6/30/2026"
+      },
+      {
+        "number": "20",
+        "finding": "Publish an updated and comprehensive training plan FY27, including clear objectives and cost tracking",
+        "severity": "High",
+        "status": "Overdue",
+        "comments": "—",
+        "dueDate": "6/30/2026"
+      },
+      {
+        "number": "21",
+        "finding": "Send regret letters to all unsuccessful candidates",
+        "severity": "Medium",
+        "status": "Closed",
+        "comments": "—",
+        "dueDate": "6/30/2026"
+      },
+      {
+        "number": "22",
+        "finding": "Send Training Plan FY26 asap",
+        "severity": "High",
+        "status": "Closed",
+        "comments": "—",
+        "dueDate": "6/30/2026"
+      },
+      {
+        "number": "23",
+        "finding": "Update the procedure or policy to include a clear requirement for timely clearance and final payment processing (48H hours before the last)",
+        "severity": "Medium",
+        "status": "Closed",
+        "comments": "—",
+        "dueDate": "6/30/2026"
+      }
+    ]
+  },
+  "governance": {
+    "note": "Cumulative progression % Closed",
+    "progressionPctByMonth": {
+      "Jan": "75%",
+      "Feb": "0%",
+      "Mar": "0%",
+      "Apr": "0%",
+      "May": "0%",
+      "Jun": "5%",
+      "Jul": "9%",
+      "Aug": "55%",
+      "Sep": "55%"
+    }
+  },
+  "slideCount": 16,
+  "slideTitles": [
+    "EXCO MEETING HELD ON 31 JULY 2026",
+    "Agenda",
+    "Summary",
+    "KPI Summary",
+    "HR KPI — Trends",
+    "HR KPI — Trends",
+    "HR KPI AND DIVERSITY",
+    "HR KPI AND DIVERSITY",
+    "OVERTIME - Hours",
+    "Overtime vs Leave Balance",
+    "CSR – FY27",
+    "Cahier des Charges",
+    "Recruitment – FY27",
+    "Internal AUDIT",
+    "Governance — Audit",
+    "Thank You"
+  ]
+}

@@ -9,7 +9,7 @@ import {
 } from './exco-dashboard-slides-data';
 import {
   resolveCahierHighlights,
-  resolveCsrFy27Rows,
+  resolveCsrHighlights,
   stripCsrUpdateMarkup,
 } from './exco-csr-fy27';
 import { resolveRecruitment } from './exco-recruitment-fy27';
@@ -18,7 +18,7 @@ import {
   summarizeInternalAudit,
   type InternalAuditRow,
 } from './exco-audit-internal';
-import type { ExcoCahierHighlight, ExcoCsrFy27Row, ExcoRecruitmentRow } from './exco-types';
+import type { ExcoCahierHighlight, ExcoRecruitmentRow } from './exco-types';
 
 export type ExcoSlidesPayload = {
   periodLabel: string;
@@ -26,7 +26,7 @@ export type ExcoSlidesPayload = {
   month: number;
   csr: {
     summary: ExcoCsrSlideData;
-    fy27Rows: ExcoCsrFy27Row[];
+    highlights: ExcoCahierHighlight[];
   };
   cahier: {
     highlights: ExcoCahierHighlight[];
@@ -48,12 +48,10 @@ export type ExcoSlidesPayload = {
 };
 
 export function buildExcoSlidesPayload(report: ExcoReportPayload): ExcoSlidesPayload {
-  const fy27Rows = resolveCsrFy27Rows(report.overlays).map((row) => ({
+  const csrHighlights = resolveCsrHighlights(report.overlays).map((row) => ({
     ...row,
-    objective: stripCsrUpdateMarkup(row.objective),
-    progress: stripCsrUpdateMarkup(row.progress),
-    risks: stripCsrUpdateMarkup(row.risks),
-    nextSteps: stripCsrUpdateMarkup(row.nextSteps),
+    title: stripCsrUpdateMarkup(row.title),
+    body: stripCsrUpdateMarkup(row.body),
   }));
   const recruitment = resolveRecruitment(report.overlays).map((row) => ({
     ...row,
@@ -68,7 +66,7 @@ export function buildExcoSlidesPayload(report: ExcoReportPayload): ExcoSlidesPay
     month: report.month,
     csr: {
       summary: buildCsrSlideData(report),
-      fy27Rows,
+      highlights: csrHighlights,
     },
     cahier: {
       highlights: resolveCahierHighlights(report.overlays),

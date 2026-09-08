@@ -1,6 +1,6 @@
 import { NextResponse } from 'next/server';
 import { excelErrorResponse } from '@/lib/excel-io';
-import { normalizeProject, validateBudgetPrevuVerification } from '@/lib/projects';
+import { appendProjectFieldHistory, normalizeProject } from '@/lib/projects';
 import { deleteProject, getProject, upsertProject } from '@/lib/projects-store';
 import { checkPermission } from '@/lib/require-permission';
 import type { ProjectRecord } from '@/lib/project-types';
@@ -18,11 +18,11 @@ export async function PUT(request: Request, { params }: Params) {
       return NextResponse.json({ error: 'Projet introuvable' }, { status: 404 });
     }
     const body = (await request.json()) as ProjectRecord;
-    const normalized = normalizeProject({ ...existing, ...body, id });
-    const validationError = validateBudgetPrevuVerification(normalized);
-    if (validationError) {
-      return NextResponse.json({ error: validationError }, { status: 400 });
-    }
+    const withHistory = appendProjectFieldHistory(
+      existing,
+      normalizeProject({ ...existing, ...body, id }),
+    );
+    const normalized = normalizeProject(withHistory);
     const saved = await withAudit(
       {
         module: 'projects',

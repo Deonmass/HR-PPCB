@@ -126,8 +126,8 @@ const NAV: NavSection[] = [
     color: '#06b6d4',
     items: [
       { href: '/project/dashboard', label: 'Dashboard', icon: 'dashboard', menuId: 'project.dashboard' },
-      { href: '/project/projects', label: 'Projects', icon: 'projects', menuId: 'project.projects' },
-      { href: '/project/expenses-details', label: 'Expenses details', icon: 'expenses', menuId: 'project.expenses' },
+      { href: '/project/csr', label: 'CSR', icon: 'projects', menuId: 'project.projects' },
+      { href: '/project/cahier-de-charges', label: 'Cahier de charges', icon: 'projects', menuId: 'project.projects' },
     ],
   },
   {
@@ -330,8 +330,8 @@ const ITEM_LABEL_KEY: Record<string, MessageKey> = {
   '/employes/offres': 'nav.poste.offers',
   '/employes/mouvements': 'nav.poste.movements',
   '/project/dashboard': 'nav.project.dashboard',
-  '/project/projects': 'nav.project.projects',
-  '/project/expenses-details': 'nav.project.expenses',
+  '/project/csr': 'nav.project.csr',
+  '/project/cahier-de-charges': 'nav.project.cahier',
   '/protocol/visa-travail': 'nav.protocol.workVisa',
   '/protocol/visa-volant': 'nav.protocol.flyingVisa',
   '/protocol/visa-voyage': 'nav.protocol.travelVisa',

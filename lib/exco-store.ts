@@ -14,12 +14,17 @@ import {
   type ExcoOverlays,
   type ExcoReportRecord,
 } from './exco-types';
-import { normalizeCahierHighlights, normalizeCsrFy27Rows } from './exco-csr-fy27';
+import { normalizeCahierHighlights, normalizeCsrFy27Rows, normalizeCsrHighlights } from './exco-csr-fy27';
 import { canPersistProjectFiles, getWritableDataRoot } from './runtime-mode';
 
 interface StoreData {
   reports: ExcoReportRecord[];
 }
+
+/** Cache court pour éviter re-parse de reports.json sous fan-out concurrent. */
+const STORE_CACHE_TTL_MS = 2500;
+let storeCache: { at: number; data: StoreData } | null = null;
+let storeReadInFlight: Promise<StoreData> | null = null;
 
 function resolvePath(): string {
   if (canPersistProjectFiles()) {
@@ -52,6 +57,7 @@ function mergeOverlays(raw: Partial<ExcoOverlays> | undefined): ExcoOverlays {
     isoActions: Array.isArray(raw.isoActions) ? raw.isoActions : [],
     csrProjects: Array.isArray(raw.csrProjects) ? raw.csrProjects : [],
     csrFy27Rows: normalizeCsrFy27Rows(raw.csrFy27Rows),
+    csrHighlights: normalizeCsrHighlights(raw.csrHighlights),
     cahierHighlights: normalizeCahierHighlights(raw.cahierHighlights),
     trainingTopics: Array.isArray(raw.trainingTopics) ? raw.trainingTopics : [],
     upcomingTrainings: Array.isArray(raw.upcomingTrainings) ? raw.upcomingTrainings : [],
@@ -110,27 +116,48 @@ function normalizeRecord(raw: unknown): ExcoReportRecord | null {
 }
 
 async function readStore(): Promise<StoreData> {
-  const filePath = resolvePath();
-  await hydrateDurableFile(DURABLE_EXCO_REPORTS_KEY, filePath);
-  try {
-    const raw = await fsPromises.readFile(filePath, 'utf8');
-    const parsed = JSON.parse(raw) as Partial<StoreData>;
-    const reports = Array.isArray(parsed.reports)
-      ? parsed.reports.map(normalizeRecord).filter((r): r is ExcoReportRecord => Boolean(r))
-      : [];
-    return { reports };
-  } catch (err) {
-    const code = (err as NodeJS.ErrnoException)?.code;
-    if (code === 'ENOENT') return { reports: [] };
-    throw err;
+  const now = Date.now();
+  if (storeCache && now - storeCache.at < STORE_CACHE_TTL_MS) {
+    return storeCache.data;
   }
+  if (storeReadInFlight) return storeReadInFlight;
+
+  storeReadInFlight = (async () => {
+    const filePath = resolvePath();
+    await hydrateDurableFile(DURABLE_EXCO_REPORTS_KEY, filePath);
+    try {
+      const raw = await fsPromises.readFile(filePath, 'utf8');
+      const parsed = JSON.parse(raw) as Partial<StoreData>;
+      const reports = Array.isArray(parsed.reports)
+        ? parsed.reports.map(normalizeRecord).filter((r): r is ExcoReportRecord => Boolean(r))
+        : [];
+      const data = { reports };
+      storeCache = { at: Date.now(), data };
+      return data;
+    } catch (err) {
+      const code = (err as NodeJS.ErrnoException)?.code;
+      if (code === 'ENOENT') {
+        const data = { reports: [] as ExcoReportRecord[] };
+        storeCache = { at: Date.now(), data };
+        return data;
+      }
+      throw err;
+    } finally {
+      storeReadInFlight = null;
+    }
+  })();
+
+  return storeReadInFlight;
 }
 
 async function writeStore(store: StoreData): Promise<void> {
+  storeCache = null;
+  storeReadInFlight = null;
   const filePath = resolvePath();
   await fsPromises.mkdir(path.dirname(filePath), { recursive: true });
   await fsPromises.writeFile(filePath, JSON.stringify(store, null, 2), 'utf8');
   await persistDurableFile(DURABLE_EXCO_REPORTS_KEY, filePath);
+  storeCache = { at: Date.now(), data: store };
 }
 
 export async function getExcoOverlays(

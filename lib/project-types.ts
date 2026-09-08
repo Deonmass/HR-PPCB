@@ -1,4 +1,4 @@
-export type ProjectStatus = 'Terminé' | 'En cours' | 'Non debuté' | string;
+export type ProjectStatus = 'Terminé' | 'En cours' | 'Non debuté' | 'Closed' | string;
 
 export interface BudgetRow {
   categorie?: string;
@@ -36,6 +36,15 @@ export interface ProjectDashboard {
   }>;
 }
 
+/** Historique des changements d’évolution (%) et de commentaire. */
+export interface ProjectHistoryEntry {
+  id: string;
+  at: string;
+  field: 'evolution' | 'commentaire';
+  from: string | number | null;
+  to: string | number | null;
+}
+
 export interface ProjectRecord {
   id: string;
   numero: number | null;
@@ -53,6 +62,10 @@ export interface ProjectRecord {
   budgetPrevuVerifie?: boolean;
   ecart: number | null;
   pctBudget: number | null;
+  /** Avancement 0–100 ; pilote le statut. */
+  evolution: number;
+  commentaire: string;
+  history: ProjectHistoryEntry[];
   statut: ProjectStatus;
 }
 

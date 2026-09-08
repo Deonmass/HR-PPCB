@@ -185,6 +185,52 @@ export const DEFAULT_CAHIER_HIGHLIGHTS: ExcoCahierHighlight[] = [
   },
 ];
 
+/** Blocs CSR (Tag / Titre / Texte / Progression) — format unifié avec Cahier. */
+export const DEFAULT_CSR_HIGHLIGHTS: ExcoCahierHighlight[] = [
+  {
+    id: 'csr-scholarship',
+    icon: 'scholarship',
+    title: 'Scholarship Programme',
+    body: 'The programme is fully operational and continues to support beneficiaries in accordance with the approved framework.',
+    progressPct: 100,
+  },
+  {
+    id: 'csr-zamba-tank',
+    icon: 'infrastructure',
+    title: 'Zamba Water Tank Replacement',
+    body: "A replacement tank is already available. The community has agreed on the new installation site. [[The village's agreement for the new location of the tank]]",
+    progressPct: 40,
+  },
+  {
+    id: 'csr-mwinda',
+    icon: 'agriculture',
+    title: 'Mwinda Partnership – Local PPE Manufacturing',
+    body: 'Procurement review concluded that Mwinda is the only qualified supplier. A Sole Supplier Justification has been prepared and submitted for approval. [[After procurement realized that Mwinda is a sole supplier, a Justification Form for Purchasing from a Sole Supplier was created and placed in the circuit for approval.]]',
+    progressPct: 55,
+  },
+  {
+    id: 'csr-ppc-school',
+    icon: 'scholarship',
+    title: 'PPC School',
+    body: "The potable water project has been completed successfully. The school's legal documentation has been prepared. [[The contract is signed by MD]]",
+    progressPct: 85,
+  },
+  {
+    id: 'csr-sewing',
+    icon: 'leisure',
+    title: 'Sewing Workshop',
+    body: 'The training programme has been successfully completed, and certificates were awarded on 27 June 2026.',
+    progressPct: 100,
+  },
+  {
+    id: 'csr-electrification',
+    icon: 'electricity',
+    title: 'Zamba & Malanga Cité Electrification Project',
+    body: '[[Completion: 80%. Ongoing work: Improvement of the grounding networks. Widening the control room to have access to the acquired cells. Progress status: Zamba 1st: two cabins installed, only the connection remains; Malanga Cité: send a letter to the AT of Songololo for the formalities of the new transformer location.]]',
+    progressPct: 80,
+  },
+];
+
 function asText(value: unknown): string {
   return typeof value === 'string' ? value : value == null ? '' : String(value);
 }
@@ -202,6 +248,31 @@ const CAHIER_ICONS = new Set<ExcoCahierIcon>([
   'leisure',
   'electricity',
 ]);
+
+function guessIconFromTitle(title: string): ExcoCahierIcon {
+  const t = title.toLowerCase();
+  if (/scholar|school|bourse|educ/.test(t)) return 'scholarship';
+  if (/electr|snel|power/.test(t)) return 'electricity';
+  if (/agri|mwinda|ppe|sewing|farm/.test(t)) return 'agriculture';
+  if (/sport|leisure|football|soccer/.test(t)) return 'leisure';
+  return 'infrastructure';
+}
+
+function guessPctFromText(text: string): number {
+  const m = text.match(/(\d{1,3})\s*%/);
+  if (!m) return 50;
+  return asPct(m[1]);
+}
+
+export function csrFy27RowsToHighlights(rows: ExcoCsrFy27Row[]): ExcoCahierHighlight[] {
+  return rows.map((row, i) => ({
+    id: row.id || `csr-mig-${i + 1}`,
+    icon: guessIconFromTitle(row.name),
+    title: row.name,
+    body: [row.progress, row.objective, row.nextSteps].filter(Boolean).join('\n\n'),
+    progressPct: guessPctFromText(`${row.progress} ${row.nextSteps}`),
+  }));
+}
 
 export function normalizeCsrFy27Rows(raw: unknown): ExcoCsrFy27Row[] {
   if (!Array.isArray(raw)) return [];
@@ -226,7 +297,7 @@ export function normalizeCahierHighlights(raw: unknown): ExcoCahierHighlight[] {
       ? (r.icon as ExcoCahierIcon)
       : 'infrastructure';
     return {
-      id: asText(r.id) || `cahier-${i + 1}`,
+      id: asText(r.id) || `block-${i + 1}`,
       icon,
       title: asText(r.title),
       body: asText(r.body),
@@ -235,8 +306,20 @@ export function normalizeCahierHighlights(raw: unknown): ExcoCahierHighlight[] {
   });
 }
 
+export function normalizeCsrHighlights(raw: unknown): ExcoCahierHighlight[] {
+  return normalizeCahierHighlights(raw);
+}
+
 export function resolveCsrFy27Rows(overlays: Pick<ExcoOverlays, 'csrFy27Rows'>): ExcoCsrFy27Row[] {
   return overlays.csrFy27Rows?.length ? overlays.csrFy27Rows : DEFAULT_CSR_FY27_ROWS;
+}
+
+export function resolveCsrHighlights(
+  overlays: Pick<ExcoOverlays, 'csrHighlights' | 'csrFy27Rows'>,
+): ExcoCahierHighlight[] {
+  if (overlays.csrHighlights?.length) return overlays.csrHighlights;
+  if (overlays.csrFy27Rows?.length) return csrFy27RowsToHighlights(overlays.csrFy27Rows);
+  return DEFAULT_CSR_HIGHLIGHTS;
 }
 
 export function resolveCahierHighlights(
@@ -253,4 +336,8 @@ export function emptyCsrFy27Row(id: string): ExcoCsrFy27Row {
 
 export function emptyCahierHighlight(id: string): ExcoCahierHighlight {
   return { id, icon: 'infrastructure', title: '', body: '', progressPct: 0 };
+}
+
+export function emptyProjectBlock(id: string): ExcoCahierHighlight {
+  return emptyCahierHighlight(id);
 }

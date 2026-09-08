@@ -374,22 +374,49 @@ function uniqueRecordsByMatricule<T extends { matricule: string; updatedAt?: str
   return items.filter((item) => latest.get(item.matricule) === item);
 }
 
+const EMPLOYEES_BUNDLE_TTL_MS = 2500;
+let employeesBundleCache: {
+  at: number;
+  data: { employees: Employee[]; exits: Employee[] };
+} | null = null;
+let employeesBundleInFlight: Promise<{ employees: Employee[]; exits: Employee[] }> | null = null;
+
+/** Invalide le cache bundle (après écriture employés / sorties). */
+export function invalidateEmployeesBundleCache(): void {
+  employeesBundleCache = null;
+  employeesBundleInFlight = null;
+}
+
 export async function readEmployeesBundle(): Promise<{ employees: Employee[]; exits: Employee[] }> {
-  await ensureMigrated();
-  const [employeesStore, exitsStore, docsStore] = await Promise.all([
-    readEmployeesStore(),
-    readExitsStore(),
-    readCheckDocumentsStore(),
-  ]);
-  const docsByEmployeeId = new Map(docsStore.documents.map((item) => [item.employeeId, item]));
-  return {
-    employees: uniqueRecordsByMatricule(employeesStore.employees)
-      .map((employee) => composeEmployee(employee, docsByEmployeeId.get(employee.id)))
-      .sort((a, b) => a.nom.localeCompare(b.nom, 'fr')),
-    exits: uniqueRecordsByMatricule(exitsStore.exits)
-      .map((employee) => composeEmployee(employee, docsByEmployeeId.get(employee.id)))
-      .sort((a, b) => a.nom.localeCompare(b.nom, 'fr')),
-  };
+  const now = Date.now();
+  if (employeesBundleCache && now - employeesBundleCache.at < EMPLOYEES_BUNDLE_TTL_MS) {
+    return employeesBundleCache.data;
+  }
+  if (employeesBundleInFlight) return employeesBundleInFlight;
+
+  employeesBundleInFlight = (async () => {
+    await ensureMigrated();
+    const [employeesStore, exitsStore, docsStore] = await Promise.all([
+      readEmployeesStore(),
+      readExitsStore(),
+      readCheckDocumentsStore(),
+    ]);
+    const docsByEmployeeId = new Map(docsStore.documents.map((item) => [item.employeeId, item]));
+    const data = {
+      employees: uniqueRecordsByMatricule(employeesStore.employees)
+        .map((employee) => composeEmployee(employee, docsByEmployeeId.get(employee.id)))
+        .sort((a, b) => a.nom.localeCompare(b.nom, 'fr')),
+      exits: uniqueRecordsByMatricule(exitsStore.exits)
+        .map((employee) => composeEmployee(employee, docsByEmployeeId.get(employee.id)))
+        .sort((a, b) => a.nom.localeCompare(b.nom, 'fr')),
+    };
+    employeesBundleCache = { at: Date.now(), data };
+    return data;
+  })().finally(() => {
+    employeesBundleInFlight = null;
+  });
+
+  return employeesBundleInFlight;
 }
 
 export async function readEmployees(): Promise<Employee[]> {

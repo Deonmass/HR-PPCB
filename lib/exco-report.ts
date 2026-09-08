@@ -21,6 +21,10 @@ import {
 } from './exco-ot-import';
 import { applyWorkbookSnapshotToComputed } from './exco-workbook-apply';
 import {
+  applyUniqueBaseToComputed,
+  buildExcoUniqueBase,
+} from './exco-unique-base';
+import {
   EXCO_FY_START_YEAR,
   TEMPLATE_TREND_BASELINE_2026,
 } from './exco-template-baseline';
@@ -43,6 +47,7 @@ import {
   type ExcoTrendMonth,
 } from './exco-types';
 import { listMouvements } from './mouvements-store';
+import { inheritNarrative } from './exco-narrative-format';
 import { listWeeklyOvertimeWeeks } from './overtimes-json-store';
 import { getPostesBundle } from './postes-store';
 import {
@@ -349,6 +354,8 @@ function mergeCsrProjects(
       pctBudget: p.pctBudget,
       dateDebut: p.dateDebut,
       dateFin: p.dateFin,
+      evolution: Number.isFinite(p.evolution) ? p.evolution : null,
+      commentaire: (p.commentaire || '').trim(),
       objective: ov?.objective?.trim() || buildCsrObjective(p),
       progress: ov?.progress?.trim() || buildCsrProgress(p),
       risks: ov?.risks || '',
@@ -736,6 +743,38 @@ async function computeBlock(
     { label: '10+ yrs', min: 10, max: 80 },
   ]);
 
+  const genderByLocationMap = new Map<string, { male: number; female: number }>();
+  for (const e of present) {
+    const location = siteBucket(e.localisation || '');
+    const cur = genderByLocationMap.get(location) || { male: 0, female: 0 };
+    if (isMaleGender(e.gender)) cur.male += 1;
+    else if (isFemaleGender(e.gender)) cur.female += 1;
+    genderByLocationMap.set(location, cur);
+  }
+  const genderLocOrder = ['Plant', 'HQ and Regions', 'Lubudi', 'Graduates', 'Non renseigné'];
+  const genderByLocation: ExcoComputedBlock['genderByLocation'] = [];
+  for (const location of genderLocOrder) {
+    const g = genderByLocationMap.get(location);
+    if (!g && location === 'Non renseigné') continue;
+    const male = g?.male ?? 0;
+    const female = g?.female ?? 0;
+    if (location !== 'Non renseigné' || male + female > 0) {
+      genderByLocation.push({ location, male, female, total: male + female });
+    }
+  }
+  for (const [location, g] of genderByLocationMap) {
+    if (!genderLocOrder.includes(location)) {
+      genderByLocation.push({
+        location,
+        male: g.male,
+        female: g.female,
+        total: g.male + g.female,
+      });
+    }
+  }
+  const preRetirement = ages.filter((a) => a >= 55).length;
+  const retirement = ages.filter((a) => a >= 60).length;
+
   const siteMap = new Map<string, number>();
   for (const e of present) {
     const site = siteBucket(e.localisation || '');
@@ -1044,6 +1083,9 @@ async function computeBlock(
     prevAverageSeniorityYears: avg(prevSeniorities),
     ageBands,
     seniorityBands,
+    genderByLocation,
+    preRetirement,
+    retirement,
     headcountBySite,
     exitsByReason,
     prevExitsByReason,
@@ -1066,6 +1108,40 @@ async function computeBlock(
     auditTotal: 0,
     auditClosed: 0,
     auditClosedPct: 0,
+  };
+}
+
+/** Reprend finance / CSR / recrutement / narrative du mois précédent si le mois courant est encore vide. */
+function inheritOngoingOverlays(
+  current: ExcoOverlays,
+  previous: ExcoOverlays | null,
+): ExcoOverlays {
+  if (!previous) return current;
+  const hasStaffYtd = Object.keys(current.staffCostYtdByMonth || {}).length > 0;
+  const hasFx = current.generationMeta?.fxRateFcPerUsd != null;
+  return {
+    ...current,
+    financeByMonth: {
+      ...(previous.financeByMonth || {}),
+      ...(current.financeByMonth || {}),
+    },
+    staffCostYtdByMonth: hasStaffYtd
+      ? current.staffCostYtdByMonth
+      : previous.staffCostYtdByMonth,
+    csrFy27Rows: current.csrFy27Rows?.length
+      ? current.csrFy27Rows
+      : previous.csrFy27Rows,
+    csrHighlights: current.csrHighlights?.length
+      ? current.csrHighlights
+      : previous.csrHighlights,
+    cahierHighlights: current.cahierHighlights?.length
+      ? current.cahierHighlights
+      : previous.cahierHighlights,
+    recruitment: current.recruitment?.length
+      ? current.recruitment
+      : previous.recruitment,
+    narrative: inheritNarrative(current.narrative, previous.narrative),
+    generationMeta: hasFx ? current.generationMeta : previous.generationMeta ?? current.generationMeta,
   };
 }
 
@@ -1187,17 +1263,17 @@ function buildKpiSummary(
     metric('headcount', 'Headcount', computed.headcount, 'computed', {
       deltaPct: deltaPct(computed.headcount, computed.prevHeadcount),
       prevValue: computed.prevHeadcount ?? tPrev?.headcount ?? null,
-      hint: 'Effectif présent au dernier jour du mois — module Employés (sans les sorties du mois).',
+      hint: 'Effectif fin de mois — BASE New report du mois (vs mois précédent).',
     }),
     metric('hires', 'Hires', computed.hires, 'computed', {
       deltaPct: deltaPct(computed.hires, computed.prevHires),
       prevValue: computed.prevHires ?? tPrev?.hires ?? null,
-      hint: 'IN du mois — employés dont la date d’engagement (appointmentDate) tombe dans le mois du rapport.',
+      hint: 'IN du mois — feuille IN OUT du New report (ou Engagements si pas de New report).',
     }),
     metric('exits', 'Exits', computed.exits, 'computed', {
       deltaPct: deltaPct(computed.exits, computed.prevExits),
       prevValue: computed.prevExits ?? tPrev?.exits ?? null,
-      hint: 'OUT du mois — employés sortis dont la date de fin de contrat tombe dans le mois du rapport.',
+      hint: 'OUT du mois — feuille IN OUT du New report (ou Engagements si pas de New report).',
     }),
     metric('turnover', 'Turnover %', computed.turnoverPct, 'computed', {
       deltaPct: deltaPct(computed.turnoverPct, computed.prevTurnoverPct),
@@ -1342,7 +1418,11 @@ function buildKpiSummary(
       'computed',
       {
         prevValue: prevGender,
-        hint: 'Répartition Hommes/Femmes parmi les employés présents fin de mois (champ genre, module Employés).',
+        deltaPct: deltaPct(
+          computed.genderMalePct,
+          computed.prevGenderMalePct ?? tPrev?.genderMalePct ?? null,
+        ),
+        hint: 'Répartition Hommes/Femmes parmi les employés présents fin de mois (champ genre, module Employés). Écart = variation du % hommes.',
       },
     ),
     metric('averageAge', 'Average Age', computed.averageAge, 'computed', {
@@ -1398,7 +1478,10 @@ export async function buildExcoReport(
   year: number,
   month: number,
 ): Promise<ExcoReportPayload> {
-  const { overlays, updatedAt, updatedBy } = await getExcoOverlays(year, month);
+  const { overlays: rawOverlays, updatedAt, updatedBy } = await getExcoOverlays(year, month);
+  const prevOverlays =
+    month > 1 ? (await getExcoOverlays(year, month - 1)).overlays : null;
+  const overlays = inheritOngoingOverlays(rawOverlays, prevOverlays);
   const yearOtImports = await getExcoYearOvertimeImports(year);
   const yearLeaveImports = await getExcoYearLeaveImports(year);
   const auditActions = await listAuditHrActions();
@@ -1419,9 +1502,80 @@ export async function buildExcoReport(
         : mergeAuditFindings(auditActions, overlays, asOf),
   };
   const computedRaw = await computeBlock(year, month, mergedOverlays);
-  const computed = mergedOverlays.workbookSnapshot
-    ? applyWorkbookSnapshotToComputed(computedRaw, mergedOverlays.workbookSnapshot)
+  const snap = mergedOverlays.workbookSnapshot;
+  const snapMatchesPeriod =
+    Boolean(snap)
+    && snap!.params.year === year
+    && snap!.params.month === month;
+  // New report du mois = source de vérité effectif / IN-OUT / démographie
+  let computed = snapMatchesPeriod
+    ? applyWorkbookSnapshotToComputed(computedRaw, snap!)
     : computedRaw;
+
+  const prev = prevPeriod(year, month);
+  const [uniqueCurrent, uniquePrev, prevOverlaysPack] = await Promise.all([
+    buildExcoUniqueBase(year, month),
+    buildExcoUniqueBase(prev.year, prev.month),
+    getExcoOverlays(prev.year, prev.month),
+  ]);
+
+  // Si le mois précédent a aussi un New report, forcer prevHeadcount / prev IN-OUT
+  const prevSnap = prevOverlaysPack.overlays.workbookSnapshot;
+  const prevSnapMatches =
+    Boolean(prevSnap)
+    && prevSnap!.params.year === prev.year
+    && prevSnap!.params.month === prev.month;
+  if (prevSnapMatches && prevSnap) {
+    const prevIo = prevSnap.inOut.months.find((m) => m.calendarMonth === prev.month);
+    computed = {
+      ...computed,
+      prevHeadcount: prevSnap.headcount.headcount,
+      prevHires: prevIo?.in ?? computed.prevHires,
+      prevExits: prevIo?.out ?? computed.prevExits,
+      prevAverageAge: prevSnap.headcount.averageAge ?? computed.prevAverageAge,
+      prevAverageSeniorityYears:
+        prevSnap.headcount.averageLengthOfService ?? computed.prevAverageSeniorityYears,
+      prevGenderMalePct: prevSnap.headcount.malePct ?? computed.prevGenderMalePct,
+      prevGenderFemalePct: prevSnap.headcount.femalePct ?? computed.prevGenderFemalePct,
+    };
+  }
+
+  if (uniqueCurrent.headcount > 0) {
+    if (snapMatchesPeriod) {
+      // Garder les formules Headcount / IN OUT du New report ; BASE pour les listes.
+      computed = {
+        ...computed,
+        presentList: uniqueCurrent.employees.map((e) => ({
+          matricule: e.matricule,
+          nom: e.nom,
+          localisation: e.locationSite,
+          departement: e.department,
+          grade: e.grade,
+          genre: e.gender,
+          company: '',
+          appointmentDate: e.emplDate,
+          site: e.locationSite || 'Non renseigné',
+          reason: 'Présent',
+        })),
+        headcount: uniqueCurrent.headcount || computed.headcount,
+        prevHeadcount:
+          uniquePrev.headcount > 0 ? uniquePrev.headcount : computed.prevHeadcount,
+      };
+    } else {
+      const engCur = Boolean(
+        (mergedOverlays.engagementsImportsByMonth?.[String(month)] || []).length,
+      );
+      const engPrev = Boolean(
+        (prevOverlaysPack.overlays.engagementsImportsByMonth?.[String(prev.month)] || [])
+          .length,
+      );
+      computed = applyUniqueBaseToComputed(computed, uniqueCurrent, uniquePrev, {
+        useEngagementsCurrent: engCur && !uniqueCurrent.fromWorkbook,
+        useEngagementsPrev: engPrev && !uniquePrev.fromWorkbook,
+      });
+    }
+  }
+
   const asOfIso = `${asOf.getFullYear()}-${String(asOf.getMonth() + 1).padStart(2, '0')}-${String(asOf.getDate()).padStart(2, '0')}`;
   const auditDash = buildAuditHrDashboard(auditActions, asOfIso);
   computed.auditProgression = auditDash.progression;
@@ -1429,7 +1583,6 @@ export async function buildExcoReport(
   computed.auditClosed = auditDash.closed;
   computed.auditClosedPct = auditDash.closedPct;
   const kpiSummary = buildKpiSummary(computed, mergedOverlays, month);
-  const prev = prevPeriod(year, month);
   const payload: ExcoReportPayload = {
     year,
     month,

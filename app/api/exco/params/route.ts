@@ -2,6 +2,7 @@ import { NextResponse } from 'next/server';
 import { listExcoUploads } from '@/lib/exco-uploads';
 import { getExcoOverlays, saveExcoOverlays } from '@/lib/exco-store';
 import { emptyExcoOverlays } from '@/lib/exco-types';
+import { inheritNarrative } from '@/lib/exco-narrative-format';
 import { checkPermission } from '@/lib/require-permission';
 import { getAuditActor, withAudit } from '@/lib/with-audit';
 
@@ -71,6 +72,8 @@ export async function GET(request: Request) {
       return NextResponse.json({ error: 'Période invalide' }, { status: 400 });
     }
     const { overlays } = await getExcoOverlays(year, month);
+    const prevOverlays =
+      month > 1 ? (await getExcoOverlays(year, month - 1)).overlays : null;
     const uploads = await listExcoUploads(year, month);
     const importedSources = overlays.importedSources || {};
     const imported = {
@@ -82,7 +85,10 @@ export async function GET(request: Request) {
       imported.componentPostedUnits
       || imported.leaveBalances
       || imported.engagementsTerminations;
-    const n = overlays.narrative || emptyExcoOverlays().narrative;
+    const n = inheritNarrative(
+      overlays.narrative || emptyExcoOverlays().narrative,
+      prevOverlays?.narrative,
+    );
     const leaveSnap = overlays.leaveImportsByMonth?.[String(month)];
     const otSnap = overlays.overtimeImportsByMonth?.[String(month)];
     const leaveDaysByMatricule: Record<string, number> = {};

@@ -17,6 +17,7 @@ import { readEmployeesBundle } from './employees-json-store';
 import { getExcoOverlays } from './exco-store';
 import { listDepartments } from './settings-store';
 import type { Employee } from './types';
+import { buildExcoUniqueBase } from './exco-unique-base';
 
 export type ExcoMismatchKind =
   | 'missing_in_system'
@@ -66,6 +67,16 @@ export interface ExcoBaseReconcileResult {
   terminationsInMonth: Array<ExcoEngagementRow & { displayName: string }>;
   historicalTerminations: Array<ExcoEngagementRow & { displayName: string }>;
   historicalMissingInSystem: Array<ExcoEngagementRow & { displayName: string }>;
+  /** BASE unique du mois (seed + système + mouvements). */
+  uniqueBase: {
+    headcount: number;
+    seedYear: number;
+    seedMonth: number;
+    sheet: import('./exco-workbook-types').ExcoSheetTable;
+    hiresInMonth: number;
+    exitsInMonth: number;
+    fromWorkbook: boolean;
+  };
 }
 
 function norm(s: string): string {
@@ -98,10 +109,30 @@ export async function reconcileExcoBase(input: {
   const allSystem = new Map([...actives, ...exits]);
 
   let baseEmployees: ExcoWorkbookEmployee[] = [];
-  const newReport = await resolveExcoBaseWorkbook(year, month);
-  if (newReport) {
-    const snap = parseExcoNewReport(newReport.buffer, newReport.originalName);
-    baseEmployees = snap.employees;
+  const unique = await buildExcoUniqueBase(year, month);
+  if (unique.employees.length) {
+    baseEmployees = unique.employees.map((e) => ({
+      matricule: e.matricule,
+      nom: e.nom,
+      gender: e.gender,
+      nationality: e.nationality,
+      position: e.position,
+      grade: e.grade,
+      age: e.age,
+      ageCat: e.ageCat,
+      emplDate: e.emplDate,
+      lengthOfService: e.lengthOfService,
+      lengthOfServiceCat: e.lengthOfServiceCat,
+      department: e.department,
+      locationSite: e.locationSite,
+      leaveBalance: e.leaveBalance,
+    }));
+  } else {
+    const newReport = await resolveExcoBaseWorkbook(year, month);
+    if (newReport) {
+      const snap = parseExcoNewReport(newReport.buffer, newReport.originalName);
+      baseEmployees = snap.employees;
+    }
   }
 
   const mismatches: ExcoEmployeeMismatch[] = [];
@@ -223,5 +254,14 @@ export async function reconcileExcoBase(input: {
     terminationsInMonth: withName(terminationsInMonth),
     historicalTerminations: withName(historicalTerminations),
     historicalMissingInSystem: withName(historicalMissingInSystem),
+    uniqueBase: {
+      headcount: unique.headcount,
+      seedYear: unique.seedYear,
+      seedMonth: unique.seedMonth,
+      sheet: unique.sheet,
+      hiresInMonth: unique.hiresInMonth.length,
+      exitsInMonth: unique.exitsInMonth.length,
+      fromWorkbook: unique.fromWorkbook,
+    },
   };
 }

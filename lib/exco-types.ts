@@ -145,6 +145,9 @@ export interface ExcoCsrProject {
   pctBudget?: number | null;
   dateDebut?: string;
   dateFin?: string;
+  /** Avancement 0–100 (module Projet). */
+  evolution?: number | null;
+  commentaire?: string;
 }
 
 export interface ExcoCsrSecteurRow {
@@ -317,8 +320,10 @@ export interface ExcoOverlays {
   auditFindings: ExcoAuditFinding[];
   isoActions: ExcoIsoAction[];
   csrProjects: ExcoCsrProject[];
-  /** Slide CSR – FY27 (tableau initiatives). Vide = contenu par défaut. */
+  /** Slide CSR – FY27 (tableau legacy). Prefer csrHighlights. */
   csrFy27Rows: ExcoCsrFy27Row[];
+  /** Slide CSR – blocs Tag / Titre / Texte / Progression. */
+  csrHighlights: ExcoCahierHighlight[];
   /** Slide Cahier des Charges (icônes + textes). Vide = contenu par défaut. */
   cahierHighlights: ExcoCahierHighlight[];
   trainingTopics: ExcoTrainingTopic[];
@@ -408,6 +413,14 @@ export interface ExcoComputedBlock {
   prevAverageSeniorityYears: number | null;
   ageBands: ExcoCountRow[];
   seniorityBands: ExcoCountRow[];
+  genderByLocation: Array<{
+    location: string;
+    male: number;
+    female: number;
+    total: number;
+  }>;
+  preRetirement: number;
+  retirement: number;
   headcountBySite: ExcoSiteHeadcountRow[];
   exitsByReason: ExcoCountRow[];
   prevExitsByReason: ExcoCountRow[];
@@ -488,6 +501,7 @@ export function emptyExcoOverlays(): ExcoOverlays {
     isoActions: [],
     csrProjects: [],
     csrFy27Rows: [],
+    csrHighlights: [],
     cahierHighlights: [],
     trainingTopics: [],
     upcomingTrainings: [],

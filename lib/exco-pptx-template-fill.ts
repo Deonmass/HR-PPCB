@@ -6,7 +6,7 @@ import JSZip from 'jszip';
 import type { ExcoReportPayload } from './exco-types';
 import { formatExcoPeriodLabel } from './exco-types';
 import { loadExcoPptxExtracted } from './exco-pptx-baseline';
-import { resolveCahierHighlights, resolveCsrFy27Rows, stripCsrUpdateMarkup } from './exco-csr-fy27';
+import { resolveCahierHighlights, resolveCsrHighlights, stripCsrUpdateMarkup } from './exco-csr-fy27';
 import { resolveRecruitment } from './exco-recruitment-fy27';
 import { buildInternalAuditRows, summarizeInternalAudit } from './exco-audit-internal';
 import { buildGouvernanceSlideData } from './exco-dashboard-slides-data';
@@ -117,19 +117,15 @@ async function buildReplacementPairs(
       `Closed ${sum.closed}/${sum.total} (${gov.auditClosedPct || sum.closedPct}%)  ·  Overdue ${sum.overdue}  ·  On going ${sum.ongoing}`,
     ]);
 
-    const csrNow = resolveCsrFy27Rows(report.overlays);
-    for (let i = 0; i < (extracted.csrFy27Rows || []).length; i += 1) {
-      const old = extracted.csrFy27Rows[i];
+    const csrNow = resolveCsrHighlights(report.overlays);
+    for (let i = 0; i < Math.max(csrNow.length, (extracted.csrFy27Rows || []).length); i += 1) {
+      const old = extracted.csrFy27Rows?.[i];
       const neu = csrNow[i];
-      if (!old || !neu) continue;
-      if (old.name && neu.name && old.name !== neu.name) pairs.push([old.name, neu.name]);
-      for (const f of ['objective', 'progress', 'risks', 'nextSteps'] as const) {
-        const a = stripCsrUpdateMarkup(String(old[f] || '')).trim();
-        const b = stripCsrUpdateMarkup(String(neu[f] || '')).trim();
-        if (a && b && a !== b && a.length < 200 && !a.includes('\n')) {
-          pairs.push([a, b]);
-        }
-      }
+      if (!neu) continue;
+      if (old?.name && neu.title && old.name !== neu.title) pairs.push([old.name, neu.title]);
+      const a = stripCsrUpdateMarkup(String(old?.progress || '')).trim();
+      const b = stripCsrUpdateMarkup(neu.body || '').trim();
+      if (a && b && a !== b && a.length < 200 && !a.includes('\n')) pairs.push([a, b]);
     }
 
     const cahierNow = resolveCahierHighlights(report.overlays);

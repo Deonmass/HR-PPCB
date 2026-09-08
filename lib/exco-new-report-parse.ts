@@ -1,7 +1,9 @@
 /**
- * Parseur du classeur « New report.xlsx » — source unique des données EXCO.
+ * Parseur du classeur « New report.xlsx » — seed historique EXCO (une fois).
  * Feuilles : Params, BASE, Headacount, IN OUT, Staff_Cost_KPI, OVT,
  * overtime_base, leavebalances_base.
+ * Les mois suivants s’appuient sur les imports Component / Leave / Engagements
+ * et la BASE unique (seed + système + mouvements).
  */
 import * as XLSX from 'xlsx';
 import { compareExcoDepartments } from './exco-department-map';
@@ -482,38 +484,120 @@ function parseInOut(wb: XLSX.WorkBook): ExcoWorkbookSnapshot['inOut'] {
     exitsByReason.push({ label, value });
   }
 
+  // Repérer la ligne d’en-tête des listes IN / OUT (colonnes variables selon le mois).
+  let listHeaderRow = -1;
+  for (let r = 16; r < Math.min(rows.length, 30); r += 1) {
+    const a = asString(cell(rows[r], 0)).toLowerCase();
+    if (a.includes('emp number') || a === 'emp number') {
+      listHeaderRow = r;
+      break;
+    }
+  }
+  if (listHeaderRow < 0) listHeaderRow = 19;
+
+  const listHeader = rows[listHeaderRow] || [];
+  const normHeader = (v: unknown) =>
+    asString(v)
+      .normalize('NFD')
+      .replace(/\p{Diacritic}/gu, '')
+      .toLowerCase()
+      .replace(/[^a-z0-9]+/g, ' ')
+      .trim();
+
+  // Deux blocs « Emp Number » : IN puis OUT
+  const empNumberCols: number[] = [];
+  for (let c = 0; c < listHeader.length; c += 1) {
+    if (normHeader(listHeader[c]) === 'emp number') empNumberCols.push(c);
+  }
+  const inStart = empNumberCols[0] ?? 0;
+  const outStart = empNumberCols[1] ?? (empNumberCols[0] != null ? empNumberCols[0] + 9 : 9);
+
+  const findCol = (start: number, end: number, ...needles: string[]) => {
+    for (let c = start; c < end; c += 1) {
+      const h = normHeader(listHeader[c]);
+      if (!h) continue;
+      if (needles.some((n) => h === n || h.includes(n))) return c;
+    }
+    return -1;
+  };
+
+  const inEnd = outStart;
+  const outEnd = listHeader.length + 5;
+  const inCols = {
+    mat: inStart,
+    last: findCol(inStart, inEnd, 'emp last name', 'last name'),
+    first: findCol(inStart, inEnd, 'first name'),
+    gender: findCol(inStart, inEnd, 'gender'),
+    grade: findCol(inStart, inEnd, 'grade'),
+    position: findCol(inStart, inEnd, 'position'),
+    dept: findCol(inStart, inEnd, 'department', 'departments'),
+    date: findCol(inStart, inEnd, 'employment date'),
+  };
+  const outCols = {
+    mat: outStart,
+    last: findCol(outStart, outEnd, 'emp last name', 'last name'),
+    first: findCol(outStart, outEnd, 'first name'),
+    gender: findCol(outStart, outEnd, 'gender'),
+    grade: findCol(outStart, outEnd, 'grade'),
+    position: findCol(outStart, outEnd, 'position'),
+    dept: findCol(outStart, outEnd, 'departement', 'department'),
+    date: findCol(outStart, outEnd, 'termination date'),
+    reason: findCol(outStart, outEnd, 'termination reason', 'reason'),
+  };
+
+  const formatListDate = (value: unknown): string => {
+    const parts = excelDateToParts(value);
+    if (parts) {
+      return `${String(parts.day).padStart(2, '0')}/${String(parts.month).padStart(2, '0')}/${parts.year}`;
+    }
+    return asString(value);
+  };
+
+  const displayName = (last: string, first: string) => {
+    const l = last.trim();
+    const f = first.trim();
+    if (f && l && f.toLowerCase() === l.toLowerCase()) return f;
+    return `${f} ${l}`.trim();
+  };
+
   const inList: ExcoHireListRow[] = [];
   const outList: ExcoHireListRow[] = [];
-  for (let r = 20; r < rows.length; r += 1) {
+  for (let r = listHeaderRow + 1; r < rows.length; r += 1) {
     const row = rows[r];
-    const inMat = asString(cell(row, 0));
-    if (inMat) {
+    const inMat = asString(cell(row, inCols.mat));
+    if (inMat && /^\d{5,}$/.test(inMat)) {
       inList.push({
         matricule: inMat,
-        nom: `${asString(cell(row, 2))} ${asString(cell(row, 1))}`.trim(),
+        nom: displayName(
+          asString(cell(row, inCols.last >= 0 ? inCols.last : inStart + 1)),
+          asString(cell(row, inCols.first >= 0 ? inCols.first : inStart + 2)),
+        ),
         localisation: '',
-        departement: asString(cell(row, 6)),
-        grade: asString(cell(row, 4)),
-        genre: asString(cell(row, 3)),
+        departement: asString(cell(row, inCols.dept >= 0 ? inCols.dept : inStart + 6)),
+        grade: asString(cell(row, inCols.grade >= 0 ? inCols.grade : inStart + 4)),
+        genre: asString(cell(row, inCols.gender >= 0 ? inCols.gender : inStart + 3)),
         company: '',
-        appointmentDate: asString(cell(row, 7)),
+        appointmentDate: formatListDate(cell(row, inCols.date >= 0 ? inCols.date : inStart + 7)),
         site: 'Plant',
         reason: 'Embauche',
       });
     }
-    const outMat = asString(cell(row, 9));
-    if (outMat) {
+    const outMat = asString(cell(row, outCols.mat));
+    if (outMat && /^\d{5,}$/.test(outMat)) {
       outList.push({
         matricule: outMat,
-        nom: `${asString(cell(row, 11))} ${asString(cell(row, 10))}`.trim(),
+        nom: displayName(
+          asString(cell(row, outCols.last >= 0 ? outCols.last : outStart + 1)),
+          asString(cell(row, outCols.first >= 0 ? outCols.first : outStart + 2)),
+        ),
         localisation: '',
-        departement: asString(cell(row, 15)),
-        grade: asString(cell(row, 13)),
-        genre: asString(cell(row, 12)),
+        departement: asString(cell(row, outCols.dept >= 0 ? outCols.dept : outStart + 6)),
+        grade: asString(cell(row, outCols.grade >= 0 ? outCols.grade : outStart + 4)),
+        genre: asString(cell(row, outCols.gender >= 0 ? outCols.gender : outStart + 3)),
         company: '',
-        appointmentDate: asString(cell(row, 17)),
+        appointmentDate: formatListDate(cell(row, outCols.date >= 0 ? outCols.date : outStart + 8)),
         site: 'Plant',
-        reason: asString(cell(row, 18)) || 'Sortie',
+        reason: asString(cell(row, outCols.reason >= 0 ? outCols.reason : outStart + 9)) || 'Sortie',
       });
     }
   }

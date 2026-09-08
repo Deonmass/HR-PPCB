@@ -2,8 +2,8 @@ import { NextResponse } from 'next/server';
 import { buildExcoReport } from '@/lib/exco-report';
 import { listExcoSavedPeriods, getExcoOverlays, saveExcoOverlays } from '@/lib/exco-store';
 import { emptyExcoOverlays, type ExcoOverlays } from '@/lib/exco-types';
-import { normalizeCahierHighlights, normalizeCsrFy27Rows } from '@/lib/exco-csr-fy27';
-import { syncCahierHighlightsToProjects } from '@/lib/exco-cahier-project-sync';
+import { normalizeCahierHighlights, normalizeCsrFy27Rows, normalizeCsrHighlights } from '@/lib/exco-csr-fy27';
+import { syncCahierHighlightsToProjects, syncCsrHighlightsToProjects } from '@/lib/exco-cahier-project-sync';
 import { checkPermission } from '@/lib/require-permission';
 import { getAuditActor, withAudit } from '@/lib/with-audit';
 
@@ -135,6 +135,9 @@ export async function PUT(request: Request) {
       csrFy27Rows: normalizeCsrFy27Rows(
         incoming.csrFy27Rows ?? existing.overlays.csrFy27Rows,
       ),
+      csrHighlights: normalizeCsrHighlights(
+        incoming.csrHighlights ?? existing.overlays.csrHighlights,
+      ),
       cahierHighlights: normalizeCahierHighlights(
         incoming.cahierHighlights ?? existing.overlays.cahierHighlights,
       ),
@@ -163,6 +166,13 @@ export async function PUT(request: Request) {
     if (Array.isArray(incoming.cahierHighlights)) {
       try {
         await syncCahierHighlightsToProjects(overlays.cahierHighlights || []);
+      } catch {
+        // overlays déjà sauvés — sync projets best-effort
+      }
+    }
+    if (Array.isArray(incoming.csrHighlights)) {
+      try {
+        await syncCsrHighlightsToProjects(overlays.csrHighlights || []);
       } catch {
         // overlays déjà sauvés — sync projets best-effort
       }

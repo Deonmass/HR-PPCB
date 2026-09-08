@@ -25,6 +25,7 @@ import {
   type ClassificationStatRow,
 } from '@/lib/classification-types';
 import { confirmDelete, showError, showSuccess } from '@/lib/swal';
+import { triggerDownload } from '@/lib/declaration-download-client';
 import {
   buildColumnFilterValues,
   countActiveColumnFilters,
@@ -582,11 +583,17 @@ export default function ClassificationPage() {
     can('employes.classification', 'delete')
     || can('employes.postes', 'delete')
     || can('employes.liste', 'delete');
+  const canExport =
+    can('employes.classification', 'export')
+    || can('employes.classification', 'view')
+    || can('employes.postes', 'export')
+    || can('employes.liste', 'export');
 
   const [tab, setTab] = useState<PageTab>('dashboard');
   const [postes, setPostes] = useState<ClassificationPoste[]>([]);
   const [loading, setLoading] = useState(true);
   const [refreshing, setRefreshing] = useState(false);
+  const [exporting, setExporting] = useState(false);
   const [search, setSearch] = useState('');
   const [colFilters, setColFilters] = useState<Record<FilterKey, string[]>>(EMPTY_FILTERS);
   const [collapsed, setCollapsed] = useState<Record<string, boolean>>({});
@@ -627,6 +634,26 @@ export default function ClassificationPage() {
   useEffect(() => {
     void load();
   }, [load]);
+
+  const exportExcel = async () => {
+    if (exporting) return;
+    setExporting(true);
+    try {
+      const res = await fetch('/api/employes/classification/export');
+      if (!res.ok) {
+        const json = await res.json().catch(() => ({}));
+        await showError((json as { error?: string })?.error || 'Export impossible');
+        return;
+      }
+      const blob = await res.blob();
+      const headerName = res.headers.get('Content-Disposition')?.match(/filename="([^"]+)"/)?.[1];
+      triggerDownload(blob, headerName || 'CLASSIFICATION_GENERALE_DES_EMPLOIS.xlsx');
+    } catch {
+      await showError('Erreur d’export');
+    } finally {
+      setExporting(false);
+    }
+  };
 
   const dashboard = useMemo(() => buildClassificationDashboard(postes), [postes]);
   const suggestions = useMemo(
@@ -887,6 +914,26 @@ export default function ClassificationPage() {
                   onClick={() => setColFilters(EMPTY_FILTERS)}
                 >
                   Effacer les filtres ({activeFilters})
+                </button>
+              ) : null}
+              {canExport ? (
+                <button
+                  type="button"
+                  className="btn btn-outline btn-export btn-with-icon btn-sm"
+                  disabled={exporting || loading || postes.length === 0}
+                  onClick={() => void exportExcel()}
+                  title="Télécharger la grille Excel (classification + postes par département)"
+                >
+                  {exporting ? (
+                    <span className="btn-spinner" aria-hidden="true" />
+                  ) : (
+                    <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden>
+                      <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
+                      <polyline points="7 10 12 15 17 10" />
+                      <line x1="12" y1="15" x2="12" y2="3" />
+                    </svg>
+                  )}
+                  {exporting ? 'Export…' : 'Export'}
                 </button>
               ) : null}
               {canCreate && tab === 'tableau' && (

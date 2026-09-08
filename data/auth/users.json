@@ -346,6 +346,42 @@
           }
         },
         {
+          "menuId": "politique.longs-etats",
+          "label": "Longs états de service",
+          "actions": {
+            "view": true,
+            "create": true,
+            "edit": true,
+            "delete": true,
+            "export": true,
+            "undo": true
+          }
+        },
+        {
+          "menuId": "politique.convention-collective",
+          "label": "Convention collective",
+          "actions": {
+            "view": true,
+            "create": true,
+            "edit": true,
+            "delete": true,
+            "export": true,
+            "undo": true
+          }
+        },
+        {
+          "menuId": "politique.heures-sup",
+          "label": "Heures supplémentaires (oct. 25)",
+          "actions": {
+            "view": true,
+            "create": true,
+            "edit": true,
+            "delete": true,
+            "export": true,
+            "undo": true
+          }
+        },
+        {
           "menuId": "protocol.visa-travail",
           "label": "Visa de travail",
           "actions": {
@@ -600,6 +636,18 @@
         {
           "menuId": "parametres.logs",
           "label": "Logs",
+          "actions": {
+            "view": true,
+            "create": true,
+            "edit": true,
+            "delete": true,
+            "export": true,
+            "undo": true
+          }
+        },
+        {
+          "menuId": "settings.json",
+          "label": "Fichiers JSON",
           "actions": {
             "view": true,
             "create": true,
@@ -1018,6 +1066,42 @@
           }
         },
         {
+          "menuId": "politique.longs-etats",
+          "label": "Longs états de service",
+          "actions": {
+            "view": true,
+            "create": false,
+            "edit": false,
+            "delete": false,
+            "export": false,
+            "undo": true
+          }
+        },
+        {
+          "menuId": "politique.convention-collective",
+          "label": "Convention collective",
+          "actions": {
+            "view": true,
+            "create": true,
+            "edit": true,
+            "delete": true,
+            "export": true,
+            "undo": true
+          }
+        },
+        {
+          "menuId": "politique.heures-sup",
+          "label": "Heures supplémentaires (oct. 25)",
+          "actions": {
+            "view": false,
+            "create": false,
+            "edit": false,
+            "delete": false,
+            "export": false,
+            "undo": false
+          }
+        },
+        {
           "menuId": "protocol.visa-travail",
           "label": "Visa de travail",
           "actions": {
@@ -1272,6 +1356,18 @@
         {
           "menuId": "parametres.logs",
           "label": "Logs",
+          "actions": {
+            "view": false,
+            "create": false,
+            "edit": false,
+            "delete": false,
+            "export": false,
+            "undo": false
+          }
+        },
+        {
+          "menuId": "settings.json",
+          "label": "Fichiers JSON",
           "actions": {
             "view": false,
             "create": false,
@@ -1627,6 +1723,42 @@
           }
         },
         {
+          "menuId": "politique.longs-etats",
+          "label": "Longs états de service",
+          "actions": {
+            "view": true,
+            "create": true,
+            "edit": true,
+            "delete": true,
+            "export": true,
+            "undo": true
+          }
+        },
+        {
+          "menuId": "politique.convention-collective",
+          "label": "Convention collective",
+          "actions": {
+            "view": true,
+            "create": true,
+            "edit": true,
+            "delete": true,
+            "export": true,
+            "undo": true
+          }
+        },
+        {
+          "menuId": "politique.heures-sup",
+          "label": "Heures supplémentaires (oct. 25)",
+          "actions": {
+            "view": false,
+            "create": false,
+            "edit": false,
+            "delete": false,
+            "export": false,
+            "undo": false
+          }
+        },
+        {
           "menuId": "protocol.visa-travail",
           "label": "Visa de travail",
           "actions": {
@@ -1889,6 +2021,18 @@
             "export": false,
             "undo": false
           }
+        },
+        {
+          "menuId": "settings.json",
+          "label": "Fichiers JSON",
+          "actions": {
+            "view": false,
+            "create": false,
+            "edit": false,
+            "delete": false,
+            "export": false,
+            "undo": false
+          }
         }
       ]
     },
@@ -1903,7 +2047,7 @@
       "linkedEmployee": {
         "matricule": "70000295",
         "nom": "KINKINIA DIAVEZUKA PELAGIE",
-        "departement": "Administration",
+        "departement": "MD Office",
         "grade": "D2",
         "jobTitle": "Plant HR Manager",
         "localisation": "Zamba"
@@ -2248,6 +2392,42 @@
           }
         },
         {
+          "menuId": "politique.longs-etats",
+          "label": "Longs états de service",
+          "actions": {
+            "view": true,
+            "create": true,
+            "edit": true,
+            "delete": true,
+            "export": true,
+            "undo": true
+          }
+        },
+        {
+          "menuId": "politique.convention-collective",
+          "label": "Convention collective",
+          "actions": {
+            "view": true,
+            "create": true,
+            "edit": true,
+            "delete": true,
+            "export": true,
+            "undo": true
+          }
+        },
+        {
+          "menuId": "politique.heures-sup",
+          "label": "Heures supplémentaires (oct. 25)",
+          "actions": {
+            "view": true,
+            "create": true,
+            "edit": true,
+            "delete": true,
+            "export": true,
+            "undo": true
+          }
+        },
+        {
           "menuId": "protocol.visa-travail",
           "label": "Visa de travail",
           "actions": {
@@ -2502,6 +2682,18 @@
         {
           "menuId": "parametres.logs",
           "label": "Logs",
+          "actions": {
+            "view": false,
+            "create": false,
+            "edit": false,
+            "delete": false,
+            "export": false,
+            "undo": false
+          }
+        },
+        {
+          "menuId": "settings.json",
+          "label": "Fichiers JSON",
           "actions": {
             "view": false,
             "create": false,
@@ -2869,6 +3061,42 @@
           }
         },
         {
+          "menuId": "politique.longs-etats",
+          "label": "Longs états de service",
+          "actions": {
+            "view": true,
+            "create": true,
+            "edit": true,
+            "delete": true,
+            "export": true,
+            "undo": true
+          }
+        },
+        {
+          "menuId": "politique.convention-collective",
+          "label": "Convention collective",
+          "actions": {
+            "view": true,
+            "create": true,
+            "edit": true,
+            "delete": true,
+            "export": true,
+            "undo": true
+          }
+        },
+        {
+          "menuId": "politique.heures-sup",
+          "label": "Heures supplémentaires (oct. 25)",
+          "actions": {
+            "view": true,
+            "create": true,
+            "edit": true,
+            "delete": true,
+            "export": true,
+            "undo": true
+          }
+        },
+        {
           "menuId": "protocol.visa-travail",
           "label": "Visa de travail",
           "actions": {
@@ -3123,6 +3351,18 @@
         {
           "menuId": "parametres.logs",
           "label": "Logs",
+          "actions": {
+            "view": true,
+            "create": true,
+            "edit": true,
+            "delete": true,
+            "export": true,
+            "undo": true
+          }
+        },
+        {
+          "menuId": "settings.json",
+          "label": "Fichiers JSON",
           "actions": {
             "view": true,
             "create": true,
@@ -3490,6 +3730,42 @@
           }
         },
         {
+          "menuId": "politique.longs-etats",
+          "label": "Longs états de service",
+          "actions": {
+            "view": true,
+            "create": true,
+            "edit": true,
+            "delete": true,
+            "export": true,
+            "undo": true
+          }
+        },
+        {
+          "menuId": "politique.convention-collective",
+          "label": "Convention collective",
+          "actions": {
+            "view": true,
+            "create": true,
+            "edit": true,
+            "delete": true,
+            "export": true,
+            "undo": true
+          }
+        },
+        {
+          "menuId": "politique.heures-sup",
+          "label": "Heures supplémentaires (oct. 25)",
+          "actions": {
+            "view": true,
+            "create": true,
+            "edit": true,
+            "delete": true,
+            "export": true,
+            "undo": true
+          }
+        },
+        {
           "menuId": "protocol.visa-travail",
           "label": "Visa de travail",
           "actions": {
@@ -3744,6 +4020,18 @@
         {
           "menuId": "parametres.logs",
           "label": "Logs",
+          "actions": {
+            "view": true,
+            "create": true,
+            "edit": true,
+            "delete": true,
+            "export": true,
+            "undo": true
+          }
+        },
+        {
+          "menuId": "settings.json",
+          "label": "Fichiers JSON",
           "actions": {
             "view": true,
             "create": true,
@@ -4099,6 +4387,42 @@
           }
         },
         {
+          "menuId": "politique.longs-etats",
+          "label": "Longs états de service",
+          "actions": {
+            "view": true,
+            "create": false,
+            "edit": true,
+            "delete": false,
+            "export": true,
+            "undo": false
+          }
+        },
+        {
+          "menuId": "politique.convention-collective",
+          "label": "Convention collective",
+          "actions": {
+            "view": true,
+            "create": false,
+            "edit": true,
+            "delete": false,
+            "export": true,
+            "undo": false
+          }
+        },
+        {
+          "menuId": "politique.heures-sup",
+          "label": "Heures supplémentaires (oct. 25)",
+          "actions": {
+            "view": false,
+            "create": false,
+            "edit": false,
+            "delete": false,
+            "export": false,
+            "undo": false
+          }
+        },
+        {
           "menuId": "protocol.visa-travail",
           "label": "Visa de travail",
           "actions": {
@@ -4353,6 +4677,18 @@
         {
           "menuId": "parametres.logs",
           "label": "Logs",
+          "actions": {
+            "view": false,
+            "create": false,
+            "edit": false,
+            "delete": false,
+            "export": false,
+            "undo": false
+          }
+        },
+        {
+          "menuId": "settings.json",
+          "label": "Fichiers JSON",
           "actions": {
             "view": false,
             "create": false,

@@ -14,6 +14,8 @@ import {
   applyExpenseTotalsToProjects,
   applyStatusAfterExpense,
   computeProjectDashboard,
+  evolutionFromLegacyStatut,
+  normalizeProject,
   sumExpensesForProject,
 } from './projects';
 import type { ProjectExpense, ProjectRecord, ProjectsData } from './project-types';
@@ -113,6 +115,9 @@ function rowToProject(row: AoaRow, absoluteIndex: number): ProjectRecord | null 
     budgetPrevuVerifie: isTruthyFlag(row[PROJECTS_VERIFIED_COL]),
     ecart: num(row[12]),
     pctBudget: num(row[13]),
+    evolution: evolutionFromLegacyStatut(str(row[15]) || 'Non debuté'),
+    commentaire: '',
+    history: [],
     statut: str(row[15]) || 'Non debuté',
   };
 }
@@ -187,7 +192,10 @@ async function readExpensesStore(): Promise<{ expenses: ProjectExpense[] }> {
 }
 
 function buildProjectsData(projects: ProjectRecord[], expenses: ProjectExpense[]): ProjectsData {
-  const projectsWithDepense = applyExpenseTotalsToProjects(projects, expenses);
+  const projectsWithDepense = applyExpenseTotalsToProjects(
+    projects.map((p) => normalizeProject(p)),
+    expenses,
+  );
   return {
     source: projectsPath(),
     importedAt: new Date().toISOString(),

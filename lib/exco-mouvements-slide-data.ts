@@ -98,7 +98,21 @@ function buildInOutSection(report: ExcoReportPayload): ExcoTrendTableSection {
   ) =>
     fyCols.map((c) => {
       const t = trendAt(trends, c.year, c.month, report.year);
-      return cell(t ? getter(t) : null, digits, c.visible);
+      const raw = cell(t ? getter(t) : null, digits, c.visible);
+      if (!c.isCurrent || !c.visible || !raw) return raw;
+      const prevMonth = c.month > 1 ? c.month - 1 : null;
+      const prev =
+        prevMonth != null
+          ? trendAt(trends, c.year, prevMonth, report.year)
+          : undefined;
+      const curV = t ? getter(t) : null;
+      const prevV = prev ? getter(prev) : null;
+      if (curV == null || prevV == null || !Number.isFinite(curV) || !Number.isFinite(prevV)) {
+        return raw;
+      }
+      if (curV > prevV) return `${raw} ▲`;
+      if (curV < prevV) return `${raw} ▼`;
+      return `${raw} •`;
     });
 
   return sectionWithCurrent(fyCols, {

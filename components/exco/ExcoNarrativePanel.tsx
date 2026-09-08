@@ -1,7 +1,7 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import { CAHIER_ICON_OPTIONS } from '@/lib/exco-csr-fy27';
+import { CAHIER_ICON_OPTIONS, emptyProjectBlock } from '@/lib/exco-csr-fy27';
 import type { ExcoCahierHighlight, ExcoCahierIcon } from '@/lib/exco-types';
 
 type SlideTab = 'csr' | 'recruitment' | 'audit';
@@ -13,13 +13,12 @@ type SlidesPayload = {
   periodLabel: string;
   csr: {
     summary: { kpis: Array<{ label: string; value: string }> };
-    fy27Rows: Array<{
+    highlights: Array<{
       id: string;
-      name: string;
-      objective: string;
-      progress: string;
-      risks: string;
-      nextSteps: string;
+      icon: string;
+      title: string;
+      body: string;
+      progressPct: number;
     }>;
   };
   cahier: {
@@ -110,89 +109,54 @@ function MetricStrip({
   );
 }
 
-function CsrContent({ data }: { data: SlidesPayload }) {
-  return (
-    <>
-      <section className="exco-panel exco-panel-accent-teal">
-        <div className="exco-panel-head">
-          <h3>CSR — {data.periodLabel}</h3>
-        </div>
-        <MetricStrip items={data.csr.summary.kpis} accent="teal" />
-      </section>
-      <section className="exco-panel">
-        <div className="exco-panel-head">
-          <h3>CSR FY27 — Projects</h3>
-          <span className="exco-muted">{data.csr.fy27Rows.length} lignes</span>
-        </div>
-        <div className="exco-sheet-scroll">
-          <table className="exco-mini-table exco-slide-table">
-            <thead>
-              <tr>
-                <th>Project</th>
-                <th>Objective</th>
-                <th>Progress</th>
-                <th>Risks</th>
-                <th>Next steps</th>
-              </tr>
-            </thead>
-            <tbody>
-              {data.csr.fy27Rows.map((r) => (
-                <tr key={r.id}>
-                  <td>{r.name}</td>
-                  <td>{r.objective}</td>
-                  <td>{r.progress}</td>
-                  <td>{r.risks}</td>
-                  <td>{r.nextSteps}</td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
-      </section>
-    </>
-  );
+function toDrafts(
+  highlights: Array<{ id: string; icon: string; title: string; body: string; progressPct: number }>,
+): ExcoCahierHighlight[] {
+  return highlights.map((h) => ({
+    id: h.id,
+    icon: (h.icon as ExcoCahierIcon) || 'infrastructure',
+    title: h.title,
+    body: h.body,
+    progressPct: h.progressPct || 0,
+  }));
 }
 
-function CahierContent({
-  data,
+function ProjectBlocksEditor({
+  title,
+  highlights,
   year,
   month,
   canEdit,
+  overlayKey,
   onSaved,
 }: {
-  data: SlidesPayload;
+  title: string;
+  highlights: Array<{ id: string; icon: string; title: string; body: string; progressPct: number }>;
   year: number;
   month: number;
   canEdit: boolean;
+  overlayKey: 'csrHighlights' | 'cahierHighlights';
   onSaved: (highlights: ExcoCahierHighlight[]) => void;
 }) {
-  const [drafts, setDrafts] = useState<ExcoCahierHighlight[]>(() =>
-    data.cahier.highlights.map((h) => ({
-      id: h.id,
-      icon: (h.icon as ExcoCahierIcon) || 'infrastructure',
-      title: h.title,
-      body: h.body,
-      progressPct: h.progressPct || 0,
-    })),
-  );
+  const [drafts, setDrafts] = useState<ExcoCahierHighlight[]>(() => toDrafts(highlights));
   const [saving, setSaving] = useState(false);
   const [msg, setMsg] = useState('');
   const [err, setErr] = useState('');
 
   useEffect(() => {
-    setDrafts(
-      data.cahier.highlights.map((h) => ({
-        id: h.id,
-        icon: (h.icon as ExcoCahierIcon) || 'infrastructure',
-        title: h.title,
-        body: h.body,
-        progressPct: h.progressPct || 0,
-      })),
-    );
-  }, [data.cahier.highlights]);
+    setDrafts(toDrafts(highlights));
+  }, [highlights]);
 
   const update = (id: string, patch: Partial<ExcoCahierHighlight>) => {
     setDrafts((prev) => prev.map((h) => (h.id === id ? { ...h, ...patch } : h)));
+  };
+
+  const addBlock = () => {
+    setDrafts((prev) => [...prev, emptyProjectBlock(`block-${Date.now()}`)]);
+  };
+
+  const removeBlock = (id: string) => {
+    setDrafts((prev) => prev.filter((h) => h.id !== id));
   };
 
   const save = async () => {
@@ -207,13 +171,13 @@ function CahierContent({
         body: JSON.stringify({
           year,
           month,
-          overlays: { cahierHighlights: drafts },
+          overlays: { [overlayKey]: drafts },
         }),
       });
       const json = await res.json();
       if (!res.ok) throw new Error(json.error || 'Enregistrement impossible');
       onSaved(drafts);
-      setMsg('Cahier enregistré — projets mis à jour.');
+      setMsg('Blocs enregistrés.');
     } catch (e) {
       setErr(e instanceof Error ? e.message : 'Erreur');
     } finally {
@@ -224,38 +188,55 @@ function CahierContent({
   return (
     <section className="exco-panel exco-panel-accent-teal">
       <div className="exco-panel-head">
-        <h3>Cahier des charges — {data.periodLabel}</h3>
-        {canEdit && (
-          <button
-            type="button"
-            className="btn btn-primary"
-            disabled={saving}
-            onClick={() => void save()}
-          >
-            {saving ? 'Enregistrement…' : 'Enregistrer'}
-          </button>
-        )}
+        <h3>
+          {title} — {year}-{String(month).padStart(2, '0')}
+        </h3>
+        {canEdit ? (
+          <div className="exco-cahier-actions">
+            <button type="button" className="btn btn-outline btn-sm" onClick={addBlock}>
+              + Ajouter un bloc
+            </button>
+            <button
+              type="button"
+              className="btn btn-primary"
+              disabled={saving}
+              onClick={() => void save()}
+            >
+              {saving ? 'Enregistrement…' : 'Enregistrer'}
+            </button>
+          </div>
+        ) : null}
       </div>
-      {msg && <p className="exco-ok-banner">{msg}</p>}
-      {err && <p className="exco-warn-banner">{err}</p>}
+      {msg ? <p className="exco-ok-banner">{msg}</p> : null}
+      {err ? <p className="exco-warn-banner">{err}</p> : null}
       <div className="exco-cahier-grid">
         {drafts.map((h) => (
           <article key={h.id} className="exco-cahier-card">
             {canEdit ? (
               <>
-                <label className="exco-cahier-field">
-                  <span>Icône</span>
-                  <select
-                    value={h.icon}
-                    onChange={(e) => update(h.id, { icon: e.target.value as ExcoCahierIcon })}
+                <div className="exco-cahier-card-top">
+                  <label className="exco-cahier-field">
+                    <span>Tag</span>
+                    <select
+                      value={h.icon}
+                      onChange={(e) => update(h.id, { icon: e.target.value as ExcoCahierIcon })}
+                    >
+                      {CAHIER_ICON_OPTIONS.map((opt) => (
+                        <option key={opt.id} value={opt.id}>
+                          {opt.label}
+                        </option>
+                      ))}
+                    </select>
+                  </label>
+                  <button
+                    type="button"
+                    className="btn btn-ghost btn-sm exco-cahier-remove"
+                    title="Retirer ce bloc"
+                    onClick={() => removeBlock(h.id)}
                   >
-                    {CAHIER_ICON_OPTIONS.map((opt) => (
-                      <option key={opt.id} value={opt.id}>
-                        {opt.label}
-                      </option>
-                    ))}
-                  </select>
-                </label>
+                    Retirer
+                  </button>
+                </div>
                 <label className="exco-cahier-field">
                   <span>Titre</span>
                   <input
@@ -267,7 +248,7 @@ function CahierContent({
                 <label className="exco-cahier-field">
                   <span>Texte</span>
                   <textarea
-                    rows={14}
+                    rows={8}
                     value={h.body}
                     onChange={(e) => update(h.id, { body: e.target.value })}
                   />
@@ -300,11 +281,45 @@ function CahierContent({
             <em>{h.progressPct || 0}%</em>
           </article>
         ))}
-        {!drafts.length && (
-          <p className="exco-muted">Aucun highlight Cahier des charges.</p>
-        )}
+        {!drafts.length ? (
+          <p className="exco-muted">Aucun bloc. Ajoutez-en un pour commencer.</p>
+        ) : null}
       </div>
     </section>
+  );
+}
+
+function CsrContent({
+  data,
+  year,
+  month,
+  canEdit,
+  onSaved,
+}: {
+  data: SlidesPayload;
+  year: number;
+  month: number;
+  canEdit: boolean;
+  onSaved: (highlights: ExcoCahierHighlight[]) => void;
+}) {
+  return (
+    <>
+      <section className="exco-panel exco-panel-accent-teal">
+        <div className="exco-panel-head">
+          <h3>CSR — {data.periodLabel}</h3>
+        </div>
+        <MetricStrip items={data.csr.summary.kpis} accent="teal" />
+      </section>
+      <ProjectBlocksEditor
+        title="CSR"
+        highlights={data.csr.highlights}
+        year={year}
+        month={month}
+        canEdit={canEdit}
+        overlayKey="csrHighlights"
+        onSaved={onSaved}
+      />
+    </>
   );
 }
 
@@ -356,7 +371,7 @@ export default function ExcoNarrativePanel({
   if (tab === 'csr') {
     return (
       <div className="exco-panel-stack exco-slide-panel">
-        <div className="exco-ot-subtabs" role="tablist" aria-label="CSR">
+        <div className="exco-ot-subtabs" role="tablist" aria-label="Project">
           <button
             type="button"
             role="tab"
@@ -378,13 +393,30 @@ export default function ExcoNarrativePanel({
         </div>
         <div className="exco-ot-tab-body">
           {csrSub === 'csr' ? (
-            <CsrContent data={data} />
-          ) : (
-            <CahierContent
+            <CsrContent
               data={data}
               year={year}
               month={month}
               canEdit={canEdit}
+              onSaved={(highlights) => {
+                setData((prev) =>
+                  prev
+                    ? {
+                        ...prev,
+                        csr: { ...prev.csr, highlights },
+                      }
+                    : prev,
+                );
+              }}
+            />
+          ) : (
+            <ProjectBlocksEditor
+              title="Cahier des charges"
+              highlights={data.cahier.highlights}
+              year={year}
+              month={month}
+              canEdit={canEdit}
+              overlayKey="cahierHighlights"
               onSaved={(highlights) => {
                 setData((prev) =>
                   prev

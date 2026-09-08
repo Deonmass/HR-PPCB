@@ -1,6 +1,6 @@
 import { NextResponse } from 'next/server';
 import { excelErrorResponse } from '@/lib/excel-io';
-import { assignProjectNumero, normalizeProject, validateBudgetPrevuVerification } from '@/lib/projects';
+import { assignProjectNumero, normalizeProject } from '@/lib/projects';
 import { readProjects, upsertProject } from '@/lib/projects-store';
 import { checkAnyPermission, checkPermission } from '@/lib/require-permission';
 import type { ProjectRecord } from '@/lib/project-types';
@@ -36,12 +36,17 @@ export async function POST(request: Request) {
       return NextResponse.json({ error: 'Projet déjà existant' }, { status: 409 });
     }
     const normalized = normalizeProject(
-      assignProjectNumero({ ...body, id }, data.projects),
+      assignProjectNumero(
+        {
+          ...body,
+          id,
+          evolution: body.evolution ?? 0,
+          commentaire: body.commentaire ?? '',
+          history: Array.isArray(body.history) ? body.history : [],
+        },
+        data.projects,
+      ),
     );
-    const validationError = validateBudgetPrevuVerification(normalized);
-    if (validationError) {
-      return NextResponse.json({ error: validationError }, { status: 400 });
-    }
     const saved = await withAudit(
       {
         module: 'projects',

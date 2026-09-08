@@ -133,12 +133,12 @@ function appendPresentationSheets(wb: ExcelJS.Workbook, report: ExcoReportPayloa
     const name = 'EXCO_CSR';
     if (wb.getWorksheet(name)) wb.removeWorksheet(name);
     const ws = wb.addWorksheet(name, { views: [{ state: 'frozen', ySplit: 1 }] });
-    ws.addRow(['Name', 'Objective', 'Progress', 'Risks', 'Next steps']);
+    ws.addRow(['Tag', 'Title', 'Body', 'Progress %']);
     styleHeader(ws.getRow(1));
-    for (const row of slides.csr.fy27Rows) {
-      ws.addRow([row.name, row.objective, row.progress, row.risks, row.nextSteps]);
+    for (const h of slides.csr.highlights) {
+      ws.addRow([h.icon || '', h.title || '', h.body || '', h.progressPct ?? 0]);
     }
-    autoWidth(ws, 14, 48);
+    autoWidth(ws, 12, 50);
   }
 
   {

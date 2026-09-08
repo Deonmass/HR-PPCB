@@ -1,18 +1,16 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import SaveButton from '@/components/SaveButton';
 import ProjectStatusBadge from '@/components/ProjectStatusBadge';
 import {
-  PROJECT_STATUS_OPTIONS,
   PROJECT_TYPES,
-  formatPct,
-  formatUsd,
+  clampEvolution,
+  formatEvolutionPct,
   normalizeProject,
-  validateBudgetPrevuVerification,
+  statutFromEvolution,
 } from '@/lib/projects';
-import type { ProjectRecord } from '@/lib/project-types';
-import { showWarning } from '@/lib/swal';
+import type { ProjectHistoryEntry, ProjectRecord } from '@/lib/project-types';
 
 export type ProjectModalMode = 'view' | 'edit' | 'create';
 
@@ -22,7 +20,6 @@ interface Props {
   sectors: string[];
   onClose: () => void;
   onSave: (project: ProjectRecord) => Promise<void>;
-  onStatusChange?: (project: ProjectRecord) => Promise<void>;
   onEdit?: () => void;
 }
 
@@ -31,13 +28,33 @@ function displayValue(value: string | number | null | undefined): string {
   return String(value);
 }
 
+function formatHistoryAt(iso: string): string {
+  const d = new Date(iso);
+  if (Number.isNaN(d.getTime())) return iso;
+  return d.toLocaleString('fr-FR', {
+    day: '2-digit',
+    month: '2-digit',
+    year: 'numeric',
+    hour: '2-digit',
+    minute: '2-digit',
+  });
+}
+
+function historyLabel(entry: ProjectHistoryEntry): string {
+  if (entry.field === 'evolution') {
+    return `Évolution ${formatEvolutionPct(Number(entry.from))} → ${formatEvolutionPct(Number(entry.to))}`;
+  }
+  const from = entry.from == null || entry.from === '' ? '—' : String(entry.from);
+  const to = entry.to == null || entry.to === '' ? '—' : String(entry.to);
+  return `Commentaire « ${from} » → « ${to} »`;
+}
+
 export default function ProjectModal({
   project,
   mode,
   sectors,
   onClose,
   onSave,
-  onStatusChange,
   onEdit,
 }: Props) {
   const [saving, setSaving] = useState(false);
@@ -59,61 +76,43 @@ export default function ProjectModal({
       budgetPrevuVerifie: false,
       ecart: null,
       pctBudget: null,
+      evolution: 0,
+      commentaire: '',
+      history: [],
       statut: 'Non debuté',
     },
   );
 
   useEffect(() => {
-    if (project) setForm(project);
+    if (project) setForm(normalizeProject(project));
   }, [project]);
 
   const readOnly = mode === 'view';
   const title =
     mode === 'create' ? 'Nouveau projet' : mode === 'edit' ? 'Modifier le projet' : 'Détails du projet';
 
-  const preview = normalizeProject(form);
-  const isUnplannedProject = Boolean(form.budgetPrevuVerifie);
+  const preview = useMemo(() => {
+    const evolution = clampEvolution(form.evolution);
+    return normalizeProject({ ...form, evolution, statut: statutFromEvolution(evolution) });
+  }, [form]);
 
-  const updateBudgetField = (patch: Partial<Pick<ProjectRecord, 'budgetPrevu' | 'budgetDepense'>>) => {
+  const history = preview.history || [];
+
+  const setEvolution = (raw: string) => {
+    const evolution = clampEvolution(raw === '' ? 0 : Number(raw));
     setForm((current) => ({
       ...current,
-      ...patch,
-      budgetPrevuVerifie: false,
-    }));
-  };
-
-  const toggleUnplannedProject = (checked: boolean) => {
-    setForm((current) => ({
-      ...current,
-      budgetPrevuVerifie: checked,
-      budgetPrevu: checked ? Number(current.budgetDepense) || 0 : current.budgetPrevu,
+      evolution,
+      statut: statutFromEvolution(evolution),
     }));
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (readOnly) return;
-    const next = normalizeProject(form);
-    const validationError = validateBudgetPrevuVerification(next);
-    if (validationError) {
-      await showWarning(validationError);
-      return;
-    }
     setSaving(true);
     try {
-      await onSave(next);
-    } finally {
-      setSaving(false);
-    }
-  };
-
-  const handleStatusChange = async (newStatut: string) => {
-    if (!onStatusChange || newStatut === form.statut) return;
-    const next = normalizeProject({ ...form, statut: newStatut });
-    setSaving(true);
-    try {
-      await onStatusChange(next);
-      setForm(next);
+      await onSave(normalizeProject(form));
     } finally {
       setSaving(false);
     }
@@ -130,22 +129,11 @@ export default function ProjectModal({
     { label: 'Date début', value: displayValue(form.dateDebut) },
     { label: 'Date fin', value: displayValue(form.dateFin) },
     { label: 'Responsable', value: displayValue(form.responsable) },
-    { label: 'Budget prévu', value: formatUsd(preview.budgetPrevu) },
-    { label: 'Budget dépensé', value: formatUsd(preview.budgetDepense) },
-    {
-      label: 'Projet non prévu',
-      value: preview.budgetPrevuVerifie ? 'Oui' : 'Non',
-    },
-    { label: 'Écart', value: formatUsd(preview.ecart) },
-    { label: '% budget utilisé', value: formatPct(preview.pctBudget) },
+    { label: 'Évolution', value: formatEvolutionPct(preview.evolution) },
+    { label: 'Commentaire', value: displayValue(preview.commentaire) },
     {
       label: 'Statut',
-      value: (
-        <ProjectStatusBadge
-          statut={form.statut}
-          onChange={readOnly && onStatusChange ? handleStatusChange : undefined}
-        />
-      ),
+      value: <ProjectStatusBadge statut={preview.statut} />,
     },
   ];
 
@@ -161,14 +149,31 @@ export default function ProjectModal({
         <form onSubmit={handleSubmit}>
           <div className="modal-body">
             {readOnly ? (
-              <div className="detail-grid">
-                {detailRows.map((row) => (
-                  <div className="detail-row" key={row.label}>
-                    <span className="detail-label">{row.label}</span>
-                    <span className="detail-value">{row.value}</span>
-                  </div>
-                ))}
-              </div>
+              <>
+                <div className="detail-grid">
+                  {detailRows.map((row) => (
+                    <div className="detail-row" key={row.label}>
+                      <span className="detail-label">{row.label}</span>
+                      <span className="detail-value">{row.value}</span>
+                    </div>
+                  ))}
+                </div>
+                <div className="project-history-block">
+                  <h4>Historique</h4>
+                  {history.length === 0 ? (
+                    <p className="project-history-empty">Aucun changement enregistré.</p>
+                  ) : (
+                    <ul className="project-history-list">
+                      {history.map((entry) => (
+                        <li key={entry.id}>
+                          <span className="project-history-at">{formatHistoryAt(entry.at)}</span>
+                          <span className="project-history-text">{historyLabel(entry)}</span>
+                        </li>
+                      ))}
+                    </ul>
+                  )}
+                </div>
+              </>
             ) : (
               <div className="form-grid">
                 <div className="form-group full">
@@ -180,15 +185,24 @@ export default function ProjectModal({
                   />
                 </div>
                 <div className="form-group">
-                  <label>Statut</label>
-                  <select
-                    value={form.statut}
-                    onChange={(e) => setForm({ ...form, statut: e.target.value })}
-                  >
-                    {PROJECT_STATUS_OPTIONS.map((option) => (
-                      <option key={option.value} value={option.value}>{option.label}</option>
-                    ))}
-                  </select>
+                  <label>Évolution (%)</label>
+                  <input
+                    type="number"
+                    min={0}
+                    max={100}
+                    step={1}
+                    value={form.evolution ?? 0}
+                    onChange={(e) => setEvolution(e.target.value)}
+                  />
+                  <span className="form-hint">
+                    0 % = Non débuté · 1–99 % = En cours · 100 % = Closed
+                  </span>
+                </div>
+                <div className="form-group">
+                  <label>Statut (auto)</label>
+                  <div className="project-status-readonly">
+                    <ProjectStatusBadge statut={preview.statut} />
+                  </div>
                 </div>
                 <div className="form-group">
                   <label>Type de projet</label>
@@ -249,43 +263,28 @@ export default function ProjectModal({
                     onChange={(e) => setForm({ ...form, dateFin: e.target.value })}
                   />
                 </div>
-                <div className="form-group">
-                  <label>Budget prévu ($)</label>
-                  <input
-                    type="number"
-                    step="0.01"
-                    value={isUnplannedProject ? (form.budgetDepense || '') : (form.budgetPrevu ?? '')}
-                    readOnly={isUnplannedProject}
-                    className={isUnplannedProject ? 'input-readonly' : undefined}
-                    onChange={(e) =>
-                      updateBudgetField({
-                        budgetPrevu: e.target.value === '' ? null : Number(e.target.value),
-                      })
-                    }
+                <div className="form-group full">
+                  <label>Commentaire</label>
+                  <textarea
+                    rows={3}
+                    value={form.commentaire || ''}
+                    onChange={(e) => setForm({ ...form, commentaire: e.target.value })}
+                    placeholder="Notes / suivi du projet…"
                   />
                 </div>
-                <div className="form-group">
-                  <label>Budget dépensé ($)</label>
-                  <input
-                    type="number"
-                    step="0.01"
-                    value={form.budgetDepense}
-                    readOnly
-                    className="input-readonly"
-                    title="Somme calculée depuis Expenses details"
-                  />
-                  <span className="form-hint">Somme des dépenses du projet (Expenses details)</span>
-                </div>
-                <div className="form-group full project-budget-verify">
-                  <label className="form-checkbox">
-                    <input
-                      type="checkbox"
-                      checked={isUnplannedProject}
-                      onChange={(e) => toggleUnplannedProject(e.target.checked)}
-                    />
-                    <span>Projet non prévu</span>
-                  </label>
-                </div>
+                {history.length > 0 ? (
+                  <div className="form-group full project-history-block">
+                    <h4>Historique</h4>
+                    <ul className="project-history-list">
+                      {history.slice(0, 8).map((entry) => (
+                        <li key={entry.id}>
+                          <span className="project-history-at">{formatHistoryAt(entry.at)}</span>
+                          <span className="project-history-text">{historyLabel(entry)}</span>
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                ) : null}
               </div>
             )}
           </div>
@@ -293,7 +292,9 @@ export default function ProjectModal({
             {readOnly ? (
               <>
                 <button type="button" className="btn btn-outline" onClick={onClose}>Fermer</button>
-                <button type="button" className="btn btn-primary" onClick={onEdit}>Modifier</button>
+                {onEdit ? (
+                  <button type="button" className="btn btn-primary" onClick={onEdit}>Modifier</button>
+                ) : null}
               </>
             ) : (
               <>

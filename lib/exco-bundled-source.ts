@@ -199,15 +199,51 @@ async function persistSnapshot(
   return nextOverlays;
 }
 
-/** Charge New report.xlsx bundlé, persiste si besoin, renvoie feuilles + rapport. */
-export async function loadBundledExcoWorkbook(): Promise<ExcoBundledPayload> {
-  const fileBuf = await fs.readFile(EXCO_BUNDLED_REPORT_PATH);
+/** Charge New report du mois (sources/YYYY-MM) ou bundlé, persiste si besoin. */
+export async function loadBundledExcoWorkbook(
+  period?: { year: number; month: number },
+  opts?: { light?: boolean },
+): Promise<ExcoBundledPayload> {
+  const { resolveExcoBaseWorkbook } = await import('./exco-base-source');
+  const resolved = period
+    ? await resolveExcoBaseWorkbook(period.year, period.month)
+    : null;
+
+  let fileBuf: Buffer;
+  let sourceFile: string;
+  if (resolved) {
+    fileBuf = Buffer.from(resolved.buffer);
+    sourceFile = resolved.originalName;
+  } else {
+    fileBuf = await fs.readFile(EXCO_BUNDLED_REPORT_PATH);
+    sourceFile = 'New report.xlsx';
+  }
   const ab = fileBuf.buffer.slice(
     fileBuf.byteOffset,
     fileBuf.byteOffset + fileBuf.byteLength,
-  );
-  const sourceFile = 'New report.xlsx';
+  ) as ArrayBuffer;
   let snap = parseExcoNewReport(ab, sourceFile);
+  // Si on a forcé un mois via le dossier sources/YYYY-MM, aligner params
+  if (period && (snap.params.year !== period.year || snap.params.month !== period.month)) {
+    const monthKey = `${period.year}-${String(period.month).padStart(2, '0')}`;
+    const monthPath = path.join(
+      process.cwd(),
+      'data',
+      'exco',
+      'sources',
+      monthKey,
+      'New report.xlsx',
+    );
+    try {
+      await fs.access(monthPath);
+      snap = {
+        ...snap,
+        params: { ...snap.params, year: period.year, month: period.month },
+      };
+    } catch {
+      // keep parsed params
+    }
+  }
   const sheets = readExcoWorkbookSheets(ab);
 
   // Prefer uploaded Leave Balances (Mco + Qco) for Annual Closing averages
@@ -264,13 +300,18 @@ export async function loadBundledExcoWorkbook(): Promise<ExcoBundledPayload> {
     || overlays.workbookSnapshot.params.year !== snap.params.year
     || overlays.workbookSnapshot.params.month !== snap.params.month
     || overlays.workbookSnapshot.headcount.headcount !== snap.headcount.headcount
+    || overlays.workbookSnapshot.employees.length !== snap.employees.length
     || !(overlays.generationMeta?.sourceFiles || []).includes(sourceFile);
 
   if (needsPersist) {
     await persistSnapshot(snap, sourceFile);
   }
 
-  const report = await buildExcoReport(snap.params.year, snap.params.month);
+  // Mode light (changement de période UI) : pas de rebuild rapport — le client
+  // charge déjà /api/exco/report une seule fois.
+  const report = opts?.light
+    ? null
+    : await buildExcoReport(snap.params.year, snap.params.month);
   const pptx = await loadExcoPptxExtracted();
 
   // Noms système pour l’onglet BASE (matricule → nom)

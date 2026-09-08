@@ -33,7 +33,11 @@ export async function GET(request: Request) {
     const period = periodFrom(new URL(request.url));
     if (!period) return NextResponse.json({ error: 'Période invalide' }, { status: 400 });
     const result = await reconcileExcoBase(period);
-    return NextResponse.json(result);
+    return NextResponse.json({
+      ...result,
+      /** Alias pratique pour l’UI Params (feuille BASE unique). */
+      baseSheet: result.uniqueBase.sheet,
+    });
   } catch (err) {
     const message = err instanceof Error ? err.message : 'Réconciliation impossible';
     return NextResponse.json({ error: message }, { status: 500 });

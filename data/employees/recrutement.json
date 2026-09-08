@@ -6,13 +6,13 @@
       "position": "Fitter (Plumber)",
       "grade": "C2",
       "status": "Ongoing",
-      "comments": "Shortlisting done, interview to be planned",
+      "comments": "Awaiting for shortlist from the manager",
       "budgeted": "Yes",
       "department": "Engineering",
       "location": "Plant",
       "contractType": "Permanent",
-      "createdAt": "2026-08-28T10:50:48.039Z",
-      "updatedAt": "2026-08-28T10:50:48.039Z"
+      "createdAt": "2026-09-07T21:36:39.331Z",
+      "updatedAt": "2026-09-07T21:36:39.331Z"
     },
     {
       "id": "rec-replacement-process-operator-2-c1",
@@ -20,13 +20,13 @@
       "position": "Process Operator (2)",
       "grade": "C1",
       "status": "Ongoing",
-      "comments": "First interviews done, second round interview ongoing with Mr. Andrew",
+      "comments": "Offers to be sent",
       "budgeted": "Yes",
       "department": "Production",
       "location": "Plant",
       "contractType": "Permanent",
-      "createdAt": "2026-08-28T10:50:48.039Z",
-      "updatedAt": "2026-08-28T10:50:48.039Z"
+      "createdAt": "2026-09-07T21:36:39.331Z",
+      "updatedAt": "2026-09-07T21:36:39.331Z"
     },
     {
       "id": "rec-replacement-shift-supervisor-c3",
@@ -39,36 +39,37 @@
       "department": "Production",
       "location": "Plant",
       "contractType": "Permanent",
-      "createdAt": "2026-08-28T10:50:48.039Z",
-      "updatedAt": "2026-08-28T10:50:48.039Z"
+      "createdAt": "2026-09-07T21:36:39.331Z",
+      "updatedAt": "2026-09-07T21:36:39.331Z"
     },
     {
       "id": "rec-replacement-sales-and-marketing-head-d5",
       "category": "replacement",
       "position": "Sales and Marketing Head",
       "grade": "D5",
-      "status": "Ongoing",
-      "comments": "Interviews done",
+      "status": "Done",
+      "comments": "",
       "budgeted": "Yes",
       "department": "Sales and Marketing",
       "location": "HQ",
       "contractType": "Permanent",
-      "createdAt": "2026-08-28T10:50:48.039Z",
-      "updatedAt": "2026-08-28T10:50:48.039Z"
+      "filledAt": "2026-08-01",
+      "createdAt": "2026-09-07T21:36:39.331Z",
+      "updatedAt": "2026-09-07T21:36:39.331Z"
     },
     {
       "id": "rec-replacement-logistic-superintendent-d1",
       "category": "replacement",
       "position": "Logistic superintendent",
       "grade": "D1",
-      "status": "Ongoing",
-      "comments": "Interviews done, offer to be sent",
+      "status": "Cancelled",
+      "comments": "",
       "budgeted": "Yes",
       "department": "Supply Chain",
       "location": "HQ",
       "contractType": "Permanent",
-      "createdAt": "2026-08-28T10:50:48.039Z",
-      "updatedAt": "2026-08-28T10:50:48.039Z"
+      "createdAt": "2026-09-07T21:36:39.331Z",
+      "updatedAt": "2026-09-07T21:36:39.331Z"
     },
     {
       "id": "rec-replacement-instrumentation-foreman-c4",
@@ -76,27 +77,28 @@
       "position": "Instrumentation Foreman",
       "grade": "C4",
       "status": "Started",
-      "comments": "Waiting for the shortlisting from the manager",
+      "comments": "Interviews to be planned",
       "budgeted": "Yes",
       "department": "Engineering",
       "location": "Plant",
       "contractType": "Permanent",
-      "createdAt": "2026-08-28T10:50:48.039Z",
-      "updatedAt": "2026-08-28T10:50:48.039Z"
+      "createdAt": "2026-09-07T21:36:39.331Z",
+      "updatedAt": "2026-09-07T21:36:39.331Z"
     },
     {
-      "id": "rec-replacement-lab-analyst-b5",
+      "id": "rec-replacement-lab-analyst-plant",
       "category": "replacement",
       "position": "Lab Analyst",
       "grade": "B5",
       "status": "Done",
-      "comments": "Offer sent and starting soon",
+      "comments": "",
       "budgeted": "Yes",
       "department": "QA",
       "location": "Plant",
-      "contractType": "Permanent",
-      "createdAt": "2026-08-28T10:50:48.039Z",
-      "updatedAt": "2026-08-28T10:50:48.039Z"
+      "contractType": "Outsourced",
+      "filledAt": "2026-08-01",
+      "createdAt": "2026-09-07T21:36:39.331Z",
+      "updatedAt": "2026-09-07T21:36:39.331Z"
     },
     {
       "id": "rec-replacement-warehouse-officer-c2",
@@ -104,13 +106,56 @@
       "position": "Warehouse Officer",
       "grade": "C2",
       "status": "Done",
-      "comments": "Notification letter sent, candidate starting soon",
+      "comments": "Notification letter awaiting signature",
       "budgeted": "Yes",
       "department": "Supply Chain",
       "location": "Kisangani",
       "contractType": "Outsourced",
-      "createdAt": "2026-08-28T10:50:48.039Z",
-      "updatedAt": "2026-08-28T10:50:48.039Z"
+      "filledAt": "2026-08-01",
+      "createdAt": "2026-09-07T21:36:39.331Z",
+      "updatedAt": "2026-09-07T21:36:39.331Z"
+    },
+    {
+      "id": "rec-replacement-qa-manager-d2",
+      "category": "replacement",
+      "position": "QA Manager",
+      "grade": "D2",
+      "status": "Started",
+      "comments": "Vacancy Advertised",
+      "budgeted": "Yes",
+      "department": "QA",
+      "location": "Plant",
+      "contractType": "Permanent",
+      "createdAt": "2026-09-07T21:36:39.331Z",
+      "updatedAt": "2026-09-07T21:36:39.331Z"
+    },
+    {
+      "id": "rec-replacement-internal-auditor-hq",
+      "category": "replacement",
+      "position": "Internal Auditor",
+      "grade": "",
+      "status": "Started",
+      "comments": "Vacancy Advertised",
+      "budgeted": "Yes",
+      "department": "Audit",
+      "location": "HQ",
+      "contractType": "Permanent",
+      "createdAt": "2026-09-07T21:36:39.331Z",
+      "updatedAt": "2026-09-07T21:36:39.331Z"
+    },
+    {
+      "id": "rec-replacement-legal-counsel-c4",
+      "category": "replacement",
+      "position": "Legal Counsel",
+      "grade": "C4",
+      "status": "Started",
+      "comments": "Vacancy Advertised",
+      "budgeted": "Yes",
+      "department": "Legal",
+      "location": "HQ",
+      "contractType": "Permanent",
+      "createdAt": "2026-09-07T21:36:39.331Z",
+      "updatedAt": "2026-09-07T21:36:39.331Z"
     },
     {
       "id": "rec-new-maintenance-planner-c2",
@@ -118,13 +163,13 @@
       "position": "Maintenance Planner",
       "grade": "C2",
       "status": "Ongoing",
-      "comments": "Second interviews are to be scheduled.",
+      "comments": "Offer to be sent",
       "budgeted": "Yes",
       "department": "Engineering",
       "location": "Plant",
       "contractType": "Permanent",
-      "createdAt": "2026-08-28T10:50:48.039Z",
-      "updatedAt": "2026-08-28T10:50:48.039Z"
+      "createdAt": "2026-09-07T21:36:39.331Z",
+      "updatedAt": "2026-09-07T21:36:39.331Z"
     },
     {
       "id": "rec-new-mechanical-foreman-c4",
@@ -132,41 +177,27 @@
       "position": "Mechanical foreman",
       "grade": "C4",
       "status": "Started",
-      "comments": "Vacancy advertised",
+      "comments": "Awaiting for shortlist from the manager",
       "budgeted": "No",
       "department": "Engineering",
       "location": "Plant",
       "contractType": "Permanent",
-      "createdAt": "2026-08-28T10:50:48.039Z",
-      "updatedAt": "2026-08-28T10:50:48.039Z"
-    },
-    {
-      "id": "rec-new-quality-manager-d2",
-      "category": "new",
-      "position": "Quality Manager",
-      "grade": "D2",
-      "status": "Started",
-      "comments": "Vacancy advertised",
-      "budgeted": "No",
-      "department": "QA",
-      "location": "Plant",
-      "contractType": "Permanent",
-      "createdAt": "2026-08-28T10:50:48.039Z",
-      "updatedAt": "2026-08-28T10:50:48.039Z"
+      "createdAt": "2026-09-07T21:36:39.331Z",
+      "updatedAt": "2026-09-07T21:36:39.331Z"
     },
     {
       "id": "rec-new-talent-and-development-manager-d2",
       "category": "new",
       "position": "Talent and development Manager",
       "grade": "D2",
-      "status": "Started",
-      "comments": "Vacancy advertised",
+      "status": "Ongoing",
+      "comments": "Interviews are underway",
       "budgeted": "No",
       "department": "HR",
       "location": "Plant",
       "contractType": "Permanent",
-      "createdAt": "2026-08-28T10:50:48.039Z",
-      "updatedAt": "2026-08-28T10:50:48.039Z"
+      "createdAt": "2026-09-07T21:36:39.331Z",
+      "updatedAt": "2026-09-07T21:36:39.331Z"
     },
     {
       "id": "rec-new-cpme-officer-c4",
@@ -179,8 +210,8 @@
       "department": "CPME",
       "location": "Plant",
       "contractType": "Permanent",
-      "createdAt": "2026-08-28T10:50:48.039Z",
-      "updatedAt": "2026-08-28T10:50:48.039Z"
+      "createdAt": "2026-09-07T21:36:39.331Z",
+      "updatedAt": "2026-09-07T21:36:39.331Z"
     },
     {
       "id": "rec-new-buyer-c2",
@@ -188,28 +219,28 @@
       "position": "Buyer",
       "grade": "C2",
       "status": "Ongoing",
-      "comments": "Interviews to be planned",
+      "comments": "Awaiting for shortlist from the manager",
       "budgeted": "No",
       "department": "Supply chain",
       "location": "HQ",
       "contractType": "Permanent",
-      "createdAt": "2026-08-28T10:50:48.039Z",
-      "updatedAt": "2026-08-28T10:50:48.039Z"
+      "createdAt": "2026-09-07T21:36:39.331Z",
+      "updatedAt": "2026-09-07T21:36:39.331Z"
     },
     {
       "id": "rec-new-cro-2-c2",
       "category": "new",
       "position": "CRO (2)",
       "grade": "C2",
-      "status": "Ongoing",
-      "comments": "Offer sent, waiting for response",
+      "status": "Done",
+      "comments": "",
       "budgeted": "Yes",
       "department": "Sales and Marketing",
       "location": "",
-      "contractType": "Permanent",
+      "contractType": "",
       "filledAt": "2026-08-14",
-      "createdAt": "2026-08-28T10:50:48.039Z",
-      "updatedAt": "2026-08-28T10:50:48.039Z"
+      "createdAt": "2026-09-07T21:36:39.331Z",
+      "updatedAt": "2026-09-07T21:36:39.331Z"
     },
     {
       "id": "rec-new-sales-consultant-c2",
@@ -217,13 +248,13 @@
       "position": "Sales Consultant",
       "grade": "C2",
       "status": "Ongoing",
-      "comments": "Final Interviews pending MD's availability",
+      "comments": "Final interviews to be plan",
       "budgeted": "No",
       "department": "Sales and Marketing",
       "location": "Kindu",
       "contractType": "Permanent",
-      "createdAt": "2026-08-28T10:50:48.039Z",
-      "updatedAt": "2026-08-28T10:50:48.039Z"
+      "createdAt": "2026-09-07T21:36:39.331Z",
+      "updatedAt": "2026-09-07T21:36:39.331Z"
     },
     {
       "id": "rec-new-warehouse-operator-c2",
@@ -236,26 +267,25 @@
       "department": "Supply chain",
       "location": "Kindu",
       "contractType": "Permanent",
-      "createdAt": "2026-08-28T10:50:48.039Z",
-      "updatedAt": "2026-08-28T10:50:48.039Z"
+      "createdAt": "2026-09-07T21:36:39.331Z",
+      "updatedAt": "2026-09-07T21:36:39.331Z"
     },
     {
-      "id": "rec-new-lab-analyst-b5",
+      "id": "rec-new-lab-analyst-zamba",
       "category": "new",
       "position": "Lab Analyst",
       "grade": "B5",
-      "status": "Ongoing",
+      "status": "",
       "comments": "Candidate did not accept the offer, vacancy to be advertised",
       "budgeted": "Yes",
       "department": "QA",
       "location": "Zamba",
-      "contractType": "Permanent",
-      "filledAt": "2026-08-12",
-      "createdAt": "2026-08-28T10:50:48.039Z",
-      "updatedAt": "2026-08-28T10:50:48.039Z"
+      "contractType": "Outsourced",
+      "createdAt": "2026-09-07T21:36:39.331Z",
+      "updatedAt": "2026-09-07T21:36:39.331Z"
     },
     {
-      "id": "rec-new-lab-analyst-lubudi-grand-katanga",
+      "id": "rec-new-lab-analyst-albatros",
       "category": "new",
       "position": "Lab Analyst",
       "grade": "",
@@ -265,8 +295,8 @@
       "department": "Albatros",
       "location": "Lubudi – Grand Katanga",
       "contractType": "Outsourced",
-      "createdAt": "2026-08-28T10:50:48.039Z",
-      "updatedAt": "2026-08-28T10:50:48.039Z"
+      "createdAt": "2026-09-07T21:36:39.331Z",
+      "updatedAt": "2026-09-07T21:36:39.331Z"
     },
     {
       "id": "rec-new-community-liaison-assistant-lubudi-grand-katanga",
@@ -279,8 +309,8 @@
       "department": "Albatros",
       "location": "Lubudi – Grand Katanga",
       "contractType": "Outsourced",
-      "createdAt": "2026-08-28T10:50:48.039Z",
-      "updatedAt": "2026-08-28T10:50:48.039Z"
+      "createdAt": "2026-09-07T21:36:39.331Z",
+      "updatedAt": "2026-09-07T21:36:39.331Z"
     },
     {
       "id": "rec-new-accountant-pettycash-lubudi-grand-katanga",
@@ -293,8 +323,8 @@
       "department": "Albatros",
       "location": "Lubudi – Grand Katanga",
       "contractType": "Outsourced",
-      "createdAt": "2026-08-28T10:50:48.039Z",
-      "updatedAt": "2026-08-28T10:50:48.039Z"
+      "createdAt": "2026-09-07T21:36:39.331Z",
+      "updatedAt": "2026-09-07T21:36:39.331Z"
     },
     {
       "id": "rec-new-logistics-and-customs-hq",
@@ -307,8 +337,8 @@
       "department": "Supply Chain",
       "location": "HQ",
       "contractType": "Outsourced",
-      "createdAt": "2026-08-28T10:50:48.039Z",
-      "updatedAt": "2026-08-28T10:50:48.039Z"
+      "createdAt": "2026-09-07T21:36:39.331Z",
+      "updatedAt": "2026-09-07T21:36:39.331Z"
     },
     {
       "id": "rec-new-warehouse-assistant-lubudi-grand-katanga",
@@ -321,8 +351,8 @@
       "department": "Albatros",
       "location": "Lubudi – Grand Katanga",
       "contractType": "Outsourced",
-      "createdAt": "2026-08-28T10:50:48.039Z",
-      "updatedAt": "2026-08-28T10:50:48.039Z"
+      "createdAt": "2026-09-07T21:36:39.331Z",
+      "updatedAt": "2026-09-07T21:36:39.331Z"
     }
   ]
 }

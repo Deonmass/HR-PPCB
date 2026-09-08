@@ -14,23 +14,27 @@ import {
   type ExcoOtVsLeaveSlideData,
 } from '@/lib/exco-ot-slide-data';
 import {
-  buildCsrSlideData,
   buildGouvernanceSlideData,
   buildTrainingSlideData,
   type ExcoCsrSlideData,
   type ExcoGouvernanceSlideData,
   type ExcoTrainingSlideData,
 } from '@/lib/exco-dashboard-slides-data';
-import { resolveCahierHighlights, resolveCsrFy27Rows, parseCsrUpdateMarkup, csrTextHasUpdate, csrSlideText } from '@/lib/exco-csr-fy27';
+import { resolveCahierHighlights, resolveCsrHighlights, parseCsrUpdateMarkup, csrTextHasUpdate, csrSlideText } from '@/lib/exco-csr-fy27';
 import { resolveRecruitment } from '@/lib/exco-recruitment-fy27';
+import { buildExcoSectorTables } from '@/lib/exco-project-sector-table';
 import { buildInternalAuditRows, summarizeInternalAudit } from '@/lib/exco-audit-internal';
 import type { InternalAuditRow } from '@/lib/exco-audit-internal';
 import { splitNarrativePoints } from '@/lib/exco-narrative-format';
 import type { ExcoCahierHighlight, ExcoCsrFy27Row } from '@/lib/exco-types';
+import { formatKpiDelta, kpiDeltaTone } from '@/lib/exco-kpi-format';
+import { EXCO_KPI_GROUPS, EXCO_KPI_SUMMARY_KEYS } from '@/lib/exco-kpi-layout';
 import {
   buildTrendsSlideSections,
   type ExcoTrendTableSection,
 } from '@/lib/exco-trends-slide-data';
+
+export { EXCO_KPI_GROUPS, EXCO_KPI_SUMMARY_KEYS } from '@/lib/exco-kpi-layout';
 
 function esc(s: string): string {
   return s
@@ -87,40 +91,28 @@ function formatPrevMetricValue(kpi: ExcoMetricValue): string {
   return formatMetricValue({ ...kpi, value: kpi.prevValue ?? null });
 }
 
-function formatDelta(
-  deltaPct: number | null | undefined,
-  trend?: 'up' | 'down' | '',
-): string {
-  if (deltaPct == null || !Number.isFinite(deltaPct)) return '• 0% vs prev.';
-  const pct = Math.round(deltaPct * 10000) / 100;
-  const arrow =
-    pct > 0 || trend === 'up' ? '▲' : pct < 0 || trend === 'down' ? '▼' : '•';
-  return `${arrow} ${Math.abs(pct)}% vs prev.`;
+function formatDelta(kpi: ExcoMetricValue): string {
+  const text = formatKpiDelta(kpi);
+  if (!text) return '• 0% vs prev.';
+  return text;
 }
 
-function kpiTrend(kpi: ExcoMetricValue): 'up' | 'down' | '' {
-  const cur = typeof kpi.value === 'number' ? kpi.value : null;
-  const prev = typeof kpi.prevValue === 'number' ? kpi.prevValue : null;
-  if (cur != null && prev != null) {
-    if (cur > prev) return 'up';
-    if (cur < prev) return 'down';
-    return '';
-  }
-  if (kpi.deltaPct == null || !Number.isFinite(kpi.deltaPct) || kpi.deltaPct === 0) return '';
-  return kpi.deltaPct > 0 ? 'up' : 'down';
-}
-
-function deltaTone(trend: 'up' | 'down' | ''): string {
-  if (trend === 'up') return '#15803d';
-  if (trend === 'down') return '#dc2626';
+function deltaToneFromKpi(kpi: ExcoMetricValue): string {
+  const tone = kpiDeltaTone(kpi);
+  if (tone === 'up') return '#15803d';
+  if (tone === 'down') return '#dc2626';
   return '#16161e';
 }
 
 function meetingLine(report: ExcoReportPayload): string {
   const n = report.overlays.narrative;
   const title = (n.meetingTitle?.trim() || 'EXCO MEETING').toUpperCase();
-  const raw = (n.meetingDate || '').trim();
-  let date = raw || '—';
+  let raw = (n.meetingDate || '').trim();
+  if (!raw) {
+    const d = new Date(report.year, report.month, 0);
+    raw = `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
+  }
+  let date = raw;
   if (/^\d{4}-\d{2}-\d{2}/.test(raw)) {
     const d = new Date(`${raw.slice(0, 10)}T00:00:00`);
     if (!Number.isNaN(d.getTime())) {
@@ -131,49 +123,9 @@ function meetingLine(report: ExcoReportPayload): string {
       });
     }
   }
-  const place = (n.meetingPlace?.trim() || '—').toUpperCase();
+  const place = (n.meetingPlace?.trim() || 'Zamba').toUpperCase();
   return `${title} HELD ON ${date.toUpperCase()}, IN ${place}`;
 }
-
-/**
- * Groupes KPI Summary (slide unique, 20 cartes = 2 × 2 rangées de 5).
- * Reproduit le layout EXCO demandé.
- */
-export const EXCO_KPI_GROUPS: Array<{ title: string; keys: string[] }> = [
-  {
-    title: 'Headcount & profile',
-    keys: [
-      'headcount',
-      'genderRatio',
-      'averageAge',
-      'seniority',
-      'onboardingSurvey',
-      'hires',
-      'exits',
-      'turnover',
-      'attrition',
-      'succession',
-    ],
-  },
-  {
-    title: 'Cost, productivity & development',
-    keys: [
-      'leaveBalance',
-      'leaveCost',
-      'staffCost',
-      'overtimeCost',
-      'revenuePerEmp',
-      'volumePerEmp',
-      'trainingCost',
-      'trainingHours',
-      'climateSurvey',
-      'competencyGap',
-    ],
-  },
-];
-
-/** Flat order for PPTX export (same 20 cards). */
-export const EXCO_KPI_SUMMARY_KEYS = EXCO_KPI_GROUPS.flatMap((g) => g.keys);
 
 export const EXCO_PREVIEW_TOC = [
   { n: '01', label: 'Summary', hint: 'Highlights · Lowlights · Focus' },
@@ -182,7 +134,7 @@ export const EXCO_PREVIEW_TOC = [
   { n: '04', label: 'Movements', hint: 'Staff movement · Overtime' },
   { n: '05', label: 'Overtime', hint: 'Overview · Top 15 OT & Leave' },
   { n: '06', label: 'Training', hint: 'Topics · Sessions' },
-  { n: '07', label: 'CSR', hint: 'Summary · FY27 · Cahier' },
+  { n: '07', label: 'CSR / Cahier', hint: 'Secteur · Commentaire · Évolution' },
   { n: '08', label: 'Recruitment', hint: 'Replacements · New positions' },
   { n: '09', label: 'Governance', hint: 'Audit table · Progression' },
   { n: '—', label: 'Thank You', hint: 'Closing slide' },
@@ -209,12 +161,11 @@ export function groupExcoKpis(
 }
 
 function renderCard(kpi: ExcoMetricValue): string {
-  const trend = kpiTrend(kpi);
   return `<article class="kpi-card">
   <h3>${esc(kpi.label)}</h3>
   <strong>${esc(formatMetricValue(kpi))}</strong>
   <div class="kpi-foot">
-    <span class="delta" style="color:${deltaTone(trend)}">${esc(formatDelta(kpi.deltaPct, trend))}</span>
+    <span class="delta" style="color:${deltaToneFromKpi(kpi)}">${esc(formatDelta(kpi))}</span>
     <span class="prev" title="Previous month">${esc(formatPrevMetricValue(kpi))}</span>
   </div>
 </article>`;
@@ -251,15 +202,21 @@ function renderTrendTable(section: ExcoTrendTableSection): string {
 
 function renderBarChart(series: ExcoBarSeries, tone: 'red' | 'black' = 'red'): string {
   const isExits = series.title.toLowerCase().includes('departure');
+  const maxPct = Math.max(...series.items.map((it) => it.pct || 0), 0.01);
   const bars = series.items.length
     ? series.items
         .map((it) => {
           const ratio = it.ratioLabel ? esc(it.ratioLabel) : String(it.value);
+          const barPct = isExits
+            ? (it.value || 0) > 0
+              ? Math.max(8, Math.min(100, ((it.pct || 0) / maxPct) * 100))
+              : 0
+            : Math.min(100, it.pct);
           if (isExits) {
             return `<div class="mv-bar-block">
   <div class="mv-bar-row">
     <span class="mv-bar-lab">${esc(it.label)}</span>
-    <div class="mv-bar-track"><span style="width:${Math.min(100, it.pct)}%"></span></div>
+    <div class="mv-bar-track"><span style="width:${barPct}%"></span></div>
     <span class="mv-bar-val">${it.pct}%</span>
   </div>
   <div class="mv-bar-meta">
@@ -269,8 +226,8 @@ function renderBarChart(series: ExcoBarSeries, tone: 'red' | 'black' = 'red'): s
           }
           return `<div class="mv-bar-row">
   <span class="mv-bar-lab">${esc(it.label)}</span>
-  <div class="mv-bar-track"><span style="width:${Math.min(100, it.pct)}%"></span></div>
-  <span class="mv-bar-val">${it.pct}%</span>
+  <div class="mv-bar-track"><span style="width:${barPct}%"></span></div>
+  <span class="mv-bar-val">${typeof it.value === 'number' ? it.value : it.pct}</span>
 </div>`;
         })
         .join('')
@@ -369,12 +326,27 @@ function renderOtVsLeaveTopsSlide(vs: ExcoOtVsLeaveSlideData): string {
 
 function renderOtSlide(ot: ExcoOtSlideData): string {
   const rows = ot.rows
-    .map(
-      (r) => `<tr>
+    .map((r) => {
+      const zero = !((r.monthHours || 0) > 0);
+      const weight = zero ? 'font-weight:400' : 'font-weight:700';
+      const cur = r.monthHours || 0;
+      const prevH = r.prevMonthHours || 0;
+      let arrow = '•';
+      let arrowColor = '#6b6b7a';
+      if (cur > prevH) {
+        arrow = '▲';
+        arrowColor = '#dc2626';
+      } else if (cur < prevH) {
+        arrow = '▼';
+        arrowColor = '#15803d';
+      }
+      return `<tr style="${weight}">
   <td class="trend-label">${esc(r.department)}</td>
+  <td class="trend-prev">${esc(formatOtHours(r.prevMonthHours))}</td>
   <td class="trend-current">${esc(formatOtHours(r.monthHours))}</td>
-</tr>`,
-    )
+  <td class="ot-delta" style="color:${arrowColor};text-align:center;font-weight:700">${arrow}</td>
+</tr>`;
+    })
     .join('');
   const cols = ot.rows
     .map((r) => {
@@ -392,17 +364,25 @@ function renderOtSlide(ot: ExcoOtSlideData): string {
     })
     .join('');
 
+  const totalCur = ot.totalMonthHours || 0;
+  const totalPrev = ot.totalPrevMonthHours || 0;
+  let totalArrow = '•';
+  if (totalCur > totalPrev) totalArrow = '▲';
+  else if (totalCur < totalPrev) totalArrow = '▼';
+
   return `<div class="ot-split">
   <div class="ot-left">
     <div class="trend-scroll">
       <table class="trend-table ot-month-table">
         <thead><tr>
           <th>Department</th>
+          <th>${esc(ot.prevMonthLabel)}</th>
           <th class="trend-current">${esc(ot.monthLabel)}</th>
+          <th>Δ</th>
         </tr></thead>
         <tbody>
-          ${rows || '<tr><td colspan="2">—</td></tr>'}
-          <tr class="ot-total"><td class="trend-label">Total</td><td class="trend-current">${esc(formatOtHours(ot.totalMonthHours))}</td></tr>
+          ${rows || '<tr><td colspan="4">—</td></tr>'}
+          <tr class="ot-total"><td class="trend-label">Total</td><td>${esc(formatOtHours(ot.totalPrevMonthHours))}</td><td class="trend-current">${esc(formatOtHours(ot.totalMonthHours))}</td><td style="text-align:center">${totalArrow}</td></tr>
         </tbody>
       </table>
     </div>
@@ -519,6 +499,33 @@ function renderCsrSummarySlide(csr: ExcoCsrSlideData): string {
     ${renderPieChart('Breakdown by sector', csr.bySecteurPie)}
   </div>
 </div>`;
+}
+
+function renderProjectSectorTable(
+  rows: Array<{ secteur: string; commentaire: string; evolution: string }>,
+): string {
+  const body = (rows.length ? rows : [{ secteur: '—', commentaire: 'Aucune donnée', evolution: '—' }])
+    .map(
+      (r) => `<tr>
+  <td class="proj-sec">${esc(r.secteur)}</td>
+  <td>${esc(r.commentaire.length > 280 ? `${r.commentaire.slice(0, 277)}…` : r.commentaire)}</td>
+  <td class="proj-evo">${esc(r.evolution)}</td>
+</tr>`,
+    )
+    .join('');
+  return `<div class="proj-table-wrap">
+  <table class="trend-table proj-sector-table">
+    <thead><tr><th>Secteur</th><th>Commentaire</th><th>Évolution</th></tr></thead>
+    <tbody>${body}</tbody>
+  </table>
+</div>`;
+}
+
+function projectRowsFromReport(report: ExcoReportPayload): {
+  csr: Array<{ secteur: string; commentaire: string; evolution: string }>;
+  cahier: Array<{ secteur: string; commentaire: string; evolution: string }>;
+} {
+  return buildExcoSectorTables(report);
 }
 
 function renderCsrUpdateHtml(value: string, mode: 'slide' | 'full' = 'slide'): string {
@@ -691,7 +698,6 @@ export function buildExcoPreviewHtml(report: ExcoReportPayload): string {
   const ot = buildOtSlideData(report);
   const otVs = buildOtVsLeaveSlideData(report);
   const training = buildTrainingSlideData(report);
-  const csr = buildCsrSlideData(report);
   const gov = buildGouvernanceSlideData(report);
   const govTableHtml = renderInternalAuditSlide(buildInternalAuditRows(report));
 
@@ -726,9 +732,9 @@ export function buildExcoPreviewHtml(report: ExcoReportPayload): string {
   const otVsHtml = renderOtVsLeaveSlide(otVs);
   const otVsTopsHtml = renderOtVsLeaveTopsSlide(otVs);
   const trainingHtml = renderTrainingSlide(training);
-  const csrHtml = renderCsrSummarySlide(csr);
-  const csrFy27Html = renderCsrFy27Slide(resolveCsrFy27Rows(report.overlays));
-  const cahierHtml = renderCahierSlide(resolveCahierHighlights(report.overlays));
+  const projectTables = projectRowsFromReport(report);
+  const csrHtml = renderProjectSectorTable(projectTables.csr);
+  const cahierHtml = renderProjectSectorTable(projectTables.cahier);
   const govAuditHtml = renderGovAuditSlide(gov);
 
   const recAll = resolveRecruitment(report.overlays);
@@ -1157,6 +1163,10 @@ export function buildExcoPreviewHtml(report: ExcoReportPayload): string {
     padding-top: 7px !important;
     padding-bottom: 7px !important;
   }
+  .proj-table-wrap { padding: 8px 4px; height: 100%; overflow: auto; }
+  .proj-sector-table th { background: #e30613 !important; color: #fff !important; }
+  .proj-sector-table td.proj-sec { font-weight: 700; width: 18%; vertical-align: top; }
+  .proj-sector-table td.proj-evo { text-align: center; font-weight: 700; color: #e30613; width: 12%; }
   .ot-month-table th:first-child,
   .ot-month-table td.trend-label { width: auto; }
   .ot-month-table th:last-child,
@@ -1741,21 +1751,10 @@ export function buildExcoPreviewHtml(report: ExcoReportPayload): string {
     <div class="bar-top"></div>
     <header class="head">
       <span class="badge">07</span>
-      <div class="head-txt"><p class="brand">PPC · HR EXCO</p><h1>CSR &amp; Specifications</h1></div>
+      <div class="head-txt"><p class="brand">PPC · HR EXCO</p><h1>CSR</h1></div>
       <span class="period">${esc(report.periodLabel)}</span>
     </header>
     <div class="body">${csrHtml}</div>
-    <footer class="bar-bot"></footer>
-  </section>
-
-  <section class="slide slide-white">
-    <div class="bar-top"></div>
-    <header class="head">
-      <span class="badge">07</span>
-      <div class="head-txt"><p class="brand">PPC · HR EXCO</p><h1>CSR – FY27</h1></div>
-      <span class="period">${esc(report.periodLabel)}</span>
-    </header>
-    <div class="body">${csrFy27Html}</div>
     <footer class="bar-bot"></footer>
   </section>
 
