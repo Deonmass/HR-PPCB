@@ -4723,12 +4723,12 @@
           "menuId": "audit.points",
           "label": "Audit points",
           "actions": {
-            "view": false,
-            "create": false,
-            "edit": false,
-            "delete": false,
-            "export": false,
-            "undo": false
+            "view": true,
+            "create": true,
+            "edit": true,
+            "delete": true,
+            "export": true,
+            "undo": true
           }
         },
         {
@@ -4771,36 +4771,36 @@
           "menuId": "documents.attestation-conge",
           "label": "Attestation de congé",
           "actions": {
-            "view": false,
-            "create": false,
-            "edit": false,
-            "delete": false,
-            "export": false,
-            "undo": false
+            "view": true,
+            "create": true,
+            "edit": true,
+            "delete": true,
+            "export": true,
+            "undo": true
           }
         },
         {
           "menuId": "travel.attestation",
           "label": "Attestation de service",
           "actions": {
-            "view": false,
-            "create": false,
-            "edit": false,
-            "delete": false,
-            "export": false,
-            "undo": false
+            "view": true,
+            "create": true,
+            "edit": true,
+            "delete": true,
+            "export": true,
+            "undo": true
           }
         },
         {
           "menuId": "travel.etablir",
           "label": "Cash request",
           "actions": {
-            "view": false,
-            "create": false,
-            "edit": false,
-            "delete": false,
-            "export": false,
-            "undo": false
+            "view": true,
+            "create": true,
+            "edit": true,
+            "delete": true,
+            "export": true,
+            "undo": true
           }
         },
         {
@@ -4819,36 +4819,36 @@
           "menuId": "documents.convention-collective",
           "label": "Convention collective",
           "actions": {
-            "view": false,
-            "create": false,
-            "edit": false,
-            "delete": false,
-            "export": false,
-            "undo": false
+            "view": true,
+            "create": true,
+            "edit": true,
+            "delete": true,
+            "export": true,
+            "undo": true
           }
         },
         {
           "menuId": "documents.composition-familiale",
           "label": "Déclaration de composition familiale",
           "actions": {
-            "view": false,
-            "create": false,
-            "edit": false,
-            "delete": false,
-            "export": false,
-            "undo": false
+            "view": true,
+            "create": true,
+            "edit": true,
+            "delete": true,
+            "export": true,
+            "undo": true
           }
         },
         {
           "menuId": "documents.mouvement-travailleur",
           "label": "Déclaration de mouvement de travailleur",
           "actions": {
-            "view": false,
-            "create": false,
-            "edit": false,
-            "delete": false,
-            "export": false,
-            "undo": false
+            "view": true,
+            "create": true,
+            "edit": true,
+            "delete": true,
+            "export": true,
+            "undo": true
           }
         },
         {
@@ -4867,36 +4867,36 @@
           "menuId": "documents.exit",
           "label": "Exit forms",
           "actions": {
-            "view": false,
-            "create": false,
-            "edit": false,
-            "delete": false,
-            "export": false,
-            "undo": false
+            "view": true,
+            "create": true,
+            "edit": true,
+            "delete": true,
+            "export": true,
+            "undo": true
           }
         },
         {
           "menuId": "documents.appraisal",
           "label": "Interim appraisal evaluation",
           "actions": {
-            "view": false,
-            "create": false,
-            "edit": false,
-            "delete": false,
-            "export": false,
-            "undo": false
+            "view": true,
+            "create": true,
+            "edit": true,
+            "delete": true,
+            "export": true,
+            "undo": true
           }
         },
         {
           "menuId": "documents.newcomer",
           "label": "Newcomer",
           "actions": {
-            "view": false,
-            "create": false,
-            "edit": false,
-            "delete": false,
-            "export": false,
-            "undo": false
+            "view": true,
+            "create": true,
+            "edit": true,
+            "delete": true,
+            "export": true,
+            "undo": true
           }
         },
         {
@@ -4999,36 +4999,36 @@
           "menuId": "employes.conge",
           "label": "Congé",
           "actions": {
-            "view": false,
-            "create": false,
-            "edit": false,
-            "delete": false,
-            "export": false,
-            "undo": false
+            "view": true,
+            "create": true,
+            "edit": true,
+            "delete": true,
+            "export": true,
+            "undo": true
           }
         },
         {
           "menuId": "employes.contractants",
           "label": "Contractants",
           "actions": {
-            "view": false,
-            "create": false,
-            "edit": false,
-            "delete": false,
-            "export": false,
-            "undo": false
+            "view": true,
+            "create": true,
+            "edit": true,
+            "delete": true,
+            "export": true,
+            "undo": true
           }
         },
         {
           "menuId": "employes.dependants",
           "label": "Dependants",
           "actions": {
-            "view": false,
-            "create": false,
-            "edit": false,
-            "delete": false,
-            "export": false,
-            "undo": false
+            "view": true,
+            "create": true,
+            "edit": true,
+            "delete": true,
+            "export": true,
+            "undo": true
           }
         },
         {
@@ -5143,12 +5143,12 @@
           "menuId": "employes.liste",
           "label": "Liste employés",
           "actions": {
-            "view": false,
-            "create": false,
-            "edit": false,
-            "delete": false,
-            "export": false,
-            "undo": false
+            "view": true,
+            "create": true,
+            "edit": true,
+            "delete": true,
+            "export": true,
+            "undo": true
           }
         },
         {
@@ -5203,24 +5203,24 @@
           "menuId": "settings.centres",
           "label": "Centre de coût",
           "actions": {
-            "view": false,
-            "create": false,
-            "edit": false,
-            "delete": false,
-            "export": false,
-            "undo": false
+            "view": true,
+            "create": true,
+            "edit": true,
+            "delete": true,
+            "export": true,
+            "undo": true
           }
         },
         {
           "menuId": "settings.departements",
           "label": "Départements",
           "actions": {
-            "view": false,
-            "create": false,
-            "edit": false,
-            "delete": false,
-            "export": false,
-            "undo": false
+            "view": true,
+            "create": true,
+            "edit": true,
+            "delete": true,
+            "export": true,
+            "undo": true
           }
         },
         {
@@ -5275,192 +5275,192 @@
           "menuId": "politique.aide-medicale",
           "label": "Aide médicale",
           "actions": {
-            "view": false,
-            "create": false,
-            "edit": false,
-            "delete": false,
-            "export": false,
-            "undo": false
+            "view": true,
+            "create": true,
+            "edit": true,
+            "delete": true,
+            "export": true,
+            "undo": true
           }
         },
         {
           "menuId": "politique.alcool",
           "label": "Alcool et substances",
           "actions": {
-            "view": false,
-            "create": false,
-            "edit": false,
-            "delete": false,
-            "export": false,
-            "undo": false
+            "view": true,
+            "create": true,
+            "edit": true,
+            "delete": true,
+            "export": true,
+            "undo": true
           }
         },
         {
           "menuId": "politique.code-conduite",
           "label": "Code de bonne conduite",
           "actions": {
-            "view": false,
-            "create": false,
-            "edit": false,
-            "delete": false,
-            "export": false,
-            "undo": false
+            "view": true,
+            "create": true,
+            "edit": true,
+            "delete": true,
+            "export": true,
+            "undo": true
           }
         },
         {
           "menuId": "politique.code-ethique",
           "label": "Code de conduite et éthique",
           "actions": {
-            "view": false,
-            "create": false,
-            "edit": false,
-            "delete": false,
-            "export": false,
-            "undo": false
+            "view": true,
+            "create": true,
+            "edit": true,
+            "delete": true,
+            "export": true,
+            "undo": true
           }
         },
         {
           "menuId": "politique.convention-collective",
           "label": "Convention collective",
           "actions": {
-            "view": false,
-            "create": false,
-            "edit": false,
-            "delete": false,
-            "export": false,
-            "undo": false
+            "view": true,
+            "create": true,
+            "edit": true,
+            "delete": true,
+            "export": true,
+            "undo": true
           }
         },
         {
           "menuId": "politique.harcelement",
           "label": "Harcèlement",
           "actions": {
-            "view": false,
-            "create": false,
-            "edit": false,
-            "delete": false,
-            "export": false,
-            "undo": false
+            "view": true,
+            "create": true,
+            "edit": true,
+            "delete": true,
+            "export": true,
+            "undo": true
           }
         },
         {
           "menuId": "politique.heures-sup",
           "label": "Heures supplémentaires (oct. 25)",
           "actions": {
-            "view": false,
-            "create": false,
-            "edit": false,
-            "delete": false,
-            "export": false,
-            "undo": false
+            "view": true,
+            "create": true,
+            "edit": true,
+            "delete": true,
+            "export": true,
+            "undo": true
           }
         },
         {
           "menuId": "politique.longs-etats",
           "label": "Longs états de service",
           "actions": {
-            "view": false,
-            "create": false,
-            "edit": false,
-            "delete": false,
-            "export": false,
-            "undo": false
+            "view": true,
+            "create": true,
+            "edit": true,
+            "delete": true,
+            "export": true,
+            "undo": true
           }
         },
         {
           "menuId": "politique.voyages",
           "label": "Politique de voyage",
           "actions": {
-            "view": false,
-            "create": false,
-            "edit": false,
-            "delete": false,
-            "export": false,
-            "undo": false
+            "view": true,
+            "create": true,
+            "edit": true,
+            "delete": true,
+            "export": true,
+            "undo": true
           }
         },
         {
           "menuId": "politique.village",
           "label": "Politique Village (maisons)",
           "actions": {
-            "view": false,
-            "create": false,
-            "edit": false,
-            "delete": false,
-            "export": false,
-            "undo": false
+            "view": true,
+            "create": true,
+            "edit": true,
+            "delete": true,
+            "export": true,
+            "undo": true
           }
         },
         {
           "menuId": "politique.manuco",
           "label": "Règlement Manuco",
           "actions": {
-            "view": false,
-            "create": false,
-            "edit": false,
-            "delete": false,
-            "export": false,
-            "undo": false
+            "view": true,
+            "create": true,
+            "edit": true,
+            "delete": true,
+            "export": true,
+            "undo": true
           }
         },
         {
           "menuId": "employes.classification",
           "label": "Classification des postes",
           "actions": {
-            "view": false,
-            "create": false,
-            "edit": false,
-            "delete": false,
-            "export": false,
-            "undo": false
+            "view": true,
+            "create": true,
+            "edit": true,
+            "delete": true,
+            "export": true,
+            "undo": true
           }
         },
         {
           "menuId": "employes.mouvements",
           "label": "Mouvements",
           "actions": {
-            "view": false,
-            "create": false,
-            "edit": false,
-            "delete": false,
-            "export": false,
-            "undo": false
+            "view": true,
+            "create": true,
+            "edit": true,
+            "delete": true,
+            "export": true,
+            "undo": true
           }
         },
         {
           "menuId": "employes.offres",
           "label": "Offres",
           "actions": {
-            "view": false,
-            "create": false,
-            "edit": false,
-            "delete": false,
-            "export": false,
-            "undo": false
+            "view": true,
+            "create": true,
+            "edit": true,
+            "delete": true,
+            "export": true,
+            "undo": true
           }
         },
         {
           "menuId": "employes.postes",
           "label": "Postes",
           "actions": {
-            "view": false,
-            "create": false,
-            "edit": false,
-            "delete": false,
-            "export": false,
-            "undo": false
+            "view": true,
+            "create": true,
+            "edit": true,
+            "delete": true,
+            "export": true,
+            "undo": true
           }
         },
         {
           "menuId": "employes.recrutement",
           "label": "Recrutement",
           "actions": {
-            "view": false,
-            "create": false,
-            "edit": false,
-            "delete": false,
-            "export": false,
-            "undo": false
+            "view": true,
+            "create": true,
+            "edit": true,
+            "delete": true,
+            "export": true,
+            "undo": true
           }
         },
         {
@@ -5551,12 +5551,12 @@
           "menuId": "exco.rapport",
           "label": "EXCO",
           "actions": {
-            "view": false,
-            "create": false,
-            "edit": false,
-            "delete": false,
-            "export": false,
-            "undo": false
+            "view": true,
+            "create": true,
+            "edit": true,
+            "delete": true,
+            "export": true,
+            "undo": true
           }
         },
         {
