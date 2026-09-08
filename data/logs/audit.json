@@ -1,6 +1,40 @@
 {
   "entries": [
     {
+      "id": "log-000708",
+      "at": "2026-09-08T15:27:03.554Z",
+      "userId": "admin",
+      "userName": "Administrateur",
+      "module": "settings.utilisateurs",
+      "moduleLabel": "Paramètres — Utilisateurs",
+      "action": "create",
+      "actionLabel": "Création",
+      "entityType": "auth.user",
+      "entityId": "Kiesse.Banguli@ppcdrc.cd",
+      "summary": "Création utilisateur Kiesse Banguli",
+      "details": "Création utilisateur Kiesse Banguli",
+      "after": {
+        "id": "Kiesse.Banguli@ppcdrc.cd",
+        "username": "Kiesse.Banguli@ppcdrc.cd",
+        "displayName": "Kiesse Banguli",
+        "initials": "KB",
+        "email": "Kiesse.Banguli@ppcdrc.cd",
+        "matricule": "70000019",
+        "linkedEmployee": {
+          "matricule": "70000019",
+          "nom": "BANGULI KIESSE SANDRINE",
+          "departement": "Human Resources",
+          "grade": "D1",
+          "jobTitle": "Payroll and Admin Manager",
+          "localisation": "Kinshasa"
+        },
+        "active": true,
+        "createdAt": "2026-09-08T15:26:59.693Z"
+      },
+      "undoable": true,
+      "undone": false
+    },
+    {
       "id": "log-000707",
       "at": "2026-09-08T14:17:38.853Z",
       "userId": "admin",
@@ -78379,5 +78413,5 @@
       }
     }
   ],
-  "nextSeq": 708
+  "nextSeq": 709
 }
