@@ -1,12 +1,13 @@
 'use client';
 
-import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import { createPortal } from 'react-dom';
 import TimesheetShiftSelect from '@/components/overtime/TimesheetShiftSelect';
 import { BtnSpinner } from '@/components/overtime/TimesheetIcons';
 import type { TimesheetPeriodDay } from '@/lib/timesheet-period';
 import type { TimesheetDayEntry, TimesheetShiftType } from '@/lib/timesheet-types';
 import { TIMESHEET_SHIFT_OPTIONS } from '@/lib/timesheet-types';
+import { continueShifterCycleFrom } from '@/lib/timesheet-bulk-shifts';
 import { showError, showSuccess } from '@/lib/swal';
 import type { Employee } from '@/lib/types';
 
@@ -33,8 +34,10 @@ interface Props {
   periodMonth: number;
   canEdit?: boolean;
   locked?: boolean;
+  canClear?: boolean;
   onClose: () => void;
   onSaved: () => void;
+  onClear?: () => void;
 }
 
 const COLUMN_MENU_WIDTH = 176;
@@ -90,8 +93,10 @@ export default function TimesheetPlanningWeekModal({
   periodMonth,
   canEdit = false,
   locked = false,
+  canClear = false,
   onClose,
   onSaved,
+  onClear,
 }: Props) {
   const [rows, setRows] = useState<AgentWeekRow[]>([]);
   const [loading, setLoading] = useState(false);
@@ -101,32 +106,55 @@ export default function TimesheetPlanningWeekModal({
   const menuRef = useRef<HTMLDivElement | null>(null);
   const columnMenuButtonRefs = useRef<Map<string, HTMLButtonElement>>(new Map());
 
-  const loadWeek = useCallback(async () => {
-    if (!open || !department) return;
-    setLoading(true);
-    try {
-      const params = new URLSearchParams({
-        year: String(periodYear),
-        month: String(periodMonth),
-        department,
-        weekIndex: String(weekIndex),
-        scope: 'planning-week',
-      });
-      const res = await fetch(`/api/timesheet/entries?${params}`);
-      const json = (await res.json()) as {
-        entries?: Record<string, Record<string, TimesheetDayEntry>>;
-      };
-      setRows(buildRows(agents, weekDays, json.entries ?? {}));
-    } catch {
-      setRows(buildRows(agents, weekDays, {}));
-    } finally {
-      setLoading(false);
-    }
-  }, [agents, department, open, periodMonth, periodYear, weekDays, weekIndex]);
+  const agentsRef = useRef(agents);
+  const weekDaysRef = useRef(weekDays);
+  agentsRef.current = agents;
+  weekDaysRef.current = weekDays;
+
+  const weekLoadKey = [
+    open ? '1' : '0',
+    department,
+    String(periodYear),
+    String(periodMonth),
+    String(weekIndex),
+    agents.map((agent) => agent.matricule).join(','),
+    weekDays.map((day) => `${day.dateKey}:${day.isInactive ? '0' : '1'}`).join(','),
+  ].join('|');
 
   useEffect(() => {
-    loadWeek();
-  }, [loadWeek]);
+    if (!open || !department) return;
+
+    let cancelled = false;
+    setLoading(true);
+
+    const params = new URLSearchParams({
+      year: String(periodYear),
+      month: String(periodMonth),
+      department,
+      weekIndex: String(weekIndex),
+      scope: 'planning-week',
+    });
+
+    fetch(`/api/timesheet/entries?${params}`)
+      .then(async (res) => {
+        const json = (await res.json()) as {
+          entries?: Record<string, Record<string, TimesheetDayEntry>>;
+        };
+        if (cancelled) return;
+        setRows(buildRows(agentsRef.current, weekDaysRef.current, json.entries ?? {}));
+      })
+      .catch(() => {
+        if (cancelled) return;
+        setRows(buildRows(agentsRef.current, weekDaysRef.current, {}));
+      })
+      .finally(() => {
+        if (!cancelled) setLoading(false);
+      });
+
+    return () => {
+      cancelled = true;
+    };
+  }, [weekLoadKey, open, department, periodYear, periodMonth, weekIndex]);
 
   useEffect(() => {
     if (!open) {
@@ -164,17 +192,19 @@ export default function TimesheetPlanningWeekModal({
     };
   }, [columnMenu]);
 
+  const activeDays = useMemo(() => weekDays.filter((day) => !day.isInactive), [weekDays]);
+
   const plannedCells = useMemo(() => {
     let total = 0;
     let filled = 0;
     for (const row of rows) {
-      for (const day of weekDays) {
+      for (const day of activeDays) {
         total += 1;
         if (row.shifts[day.dateKey]) filled += 1;
       }
     }
     return { total, filled, percent: total ? Math.round((filled / total) * 100) : 0 };
-  }, [rows, weekDays]);
+  }, [rows, activeDays]);
 
   const filteredRows = useMemo(() => {
     const query = searchQuery.trim().toLowerCase();
@@ -187,22 +217,61 @@ export default function TimesheetPlanningWeekModal({
 
   const updateShift = (matricule: string, dateKey: string, shiftType: TimesheetShiftType | null) => {
     if (!canEdit || locked) return;
+    if (weekDays.find((day) => day.dateKey === dateKey)?.isInactive) return;
     setRows((prev) =>
-      prev.map((row) =>
-        row.matricule === matricule
-          ? { ...row, shifts: { ...row.shifts, [dateKey]: shiftType } }
-          : row,
-      ),
+      prev.map((row) => {
+        if (row.matricule !== matricule) return row;
+
+        const shifts = { ...row.shifts, [dateKey]: shiftType };
+        if (!shiftType || shiftType === 'general') {
+          return { ...row, shifts };
+        }
+
+        const dayIndex = weekDays.findIndex((day) => day.dateKey === dateKey);
+        if (dayIndex < 0) return { ...row, shifts };
+
+        const previousDay = dayIndex > 0 ? weekDays[dayIndex - 1] : undefined;
+        const previousShift = previousDay ? row.shifts[previousDay.dateKey] ?? null : null;
+        const following = continueShifterCycleFrom(
+          shiftType,
+          previousShift,
+          weekDays.length - dayIndex - 1,
+        );
+        if (!following) return { ...row, shifts };
+
+        following.forEach((nextShift, offset) => {
+          const day = weekDays[dayIndex + 1 + offset];
+          if (!day || day.isInactive) return;
+          shifts[day.dateKey] = nextShift;
+        });
+        return { ...row, shifts };
+      }),
     );
   };
 
   const fillColumn = (dateKey: string, shiftType: TimesheetShiftType) => {
     if (!canEdit || locked) return;
+    if (weekDays.find((day) => day.dateKey === dateKey)?.isInactive) return;
     setRows((prev) =>
       prev.map((row) => ({
         ...row,
         shifts: { ...row.shifts, [dateKey]: shiftType },
       })),
+    );
+    setColumnMenu(null);
+  };
+
+  const fillGeneralWeek = () => {
+    if (!canEdit || locked) return;
+    setRows((prev) =>
+      prev.map((row) => {
+        const shifts = { ...row.shifts };
+        for (const day of weekDays) {
+          if (day.isInactive) continue;
+          shifts[day.dateKey] = day.isWeekend ? 'off' : 'general';
+        }
+        return { ...row, shifts };
+      }),
     );
     setColumnMenu(null);
   };
@@ -221,7 +290,7 @@ export default function TimesheetPlanningWeekModal({
     if (!canEdit || locked) return;
 
     const incomplete = rows.some((row) =>
-      weekDays.some((day) => row.shifts[day.dateKey] === null || row.shifts[day.dateKey] === undefined),
+      activeDays.some((day) => row.shifts[day.dateKey] === null || row.shifts[day.dateKey] === undefined),
     );
     if (incomplete) {
       await showError('Définissez un shift pour chaque agent et chaque jour avant d\'enregistrer.');
@@ -330,6 +399,17 @@ export default function TimesheetPlanningWeekModal({
                 value={searchQuery}
                 onChange={(event) => setSearchQuery(event.target.value)}
               />
+              {canEdit && !locked ? (
+                <button
+                  type="button"
+                  className="btn btn-outline timesheet-planning-week-fill-general"
+                  onClick={fillGeneralWeek}
+                  disabled={loading}
+                  title="General Shift du lundi au vendredi, Off le week-end — pour tous les agents"
+                >
+                  General Shift — toute la semaine
+                </button>
+              ) : null}
               <span className="timesheet-planning-week-search-count">
                 {filteredRows.length}/{rows.length} agent(s)
               </span>
@@ -342,13 +422,21 @@ export default function TimesheetPlanningWeekModal({
                     <th className="timesheet-planning-week-agent-col sticky-col">Agent</th>
                     <th className="timesheet-planning-week-mat-col sticky-col">Mat.</th>
                     {weekDays.map((day) => (
-                      <th key={day.dateKey} className="timesheet-planning-week-day-col">
+                      <th
+                        key={day.dateKey}
+                        className={[
+                          'timesheet-planning-week-day-col',
+                          day.isInactive ? 'is-inactive' : '',
+                        ]
+                          .filter(Boolean)
+                          .join(' ')}
+                      >
                         <div className="timesheet-planning-week-day-header">
                           <div className="timesheet-planning-week-day-labels">
                             <span>{day.date.getDate()}</span>
                             <small>{day.dayLabel}</small>
                           </div>
-                          {canEdit && !locked ? (
+                          {canEdit && !locked && !day.isInactive ? (
                             <button
                               type="button"
                               ref={(node) => {
@@ -392,11 +480,11 @@ export default function TimesheetPlanningWeekModal({
                         </td>
                         <td className="timesheet-planning-week-mat-cell sticky-col">{row.matricule}</td>
                         {weekDays.map((day) => (
-                          <td key={day.dateKey}>
+                          <td key={day.dateKey} className={day.isInactive ? 'is-inactive' : undefined}>
                             <TimesheetShiftSelect
-                              value={row.shifts[day.dateKey] ?? null}
+                              value={day.isInactive ? null : row.shifts[day.dateKey] ?? null}
                               onChange={(shiftType) => updateShift(row.matricule, day.dateKey, shiftType)}
-                              disabled={!canEdit || locked}
+                              disabled={!canEdit || locked || day.isInactive}
                               variant="planning"
                             />
                           </td>
@@ -413,6 +501,16 @@ export default function TimesheetPlanningWeekModal({
             <button type="button" className="btn btn-outline" onClick={onClose}>
               Fermer
             </button>
+            {canClear && onClear ? (
+              <button
+                type="button"
+                className="btn btn-outline timesheet-planning-week-clear-btn"
+                onClick={onClear}
+                disabled={saving || loading}
+              >
+                Effacer le planning
+              </button>
+            ) : null}
             {canEdit && !locked ? (
               <button
                 type="button"

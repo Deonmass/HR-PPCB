@@ -9,6 +9,7 @@ export {
   saveEmployeePeriodEntries,
   savePlanningDayEntries,
   savePlanningWeekEntries,
+  clearPlanningWeekEntries,
   type SaveDayEntriesInput,
   type SaveEmployeePeriodInput,
   type SavePlanningWeekInput,

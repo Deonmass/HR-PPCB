@@ -15,7 +15,7 @@ import {
   downloadTimesheetWorkbook,
   exportTimesheetWorkbook,
 } from '@/lib/timesheet-export';
-import { applyShiftSelection } from '@/lib/timesheet-shift-hours';
+import { applyShiftSelection, hydrateTimesheetActualFromPlanning } from '@/lib/timesheet-shift-hours';
 import { applyGeneralShiftToPeriod, applyShifterPatternToPeriod } from '@/lib/timesheet-bulk-shifts';
 import { shouldShowOffDayHighlight } from '@/lib/timesheet-off-day';
 import { refreshTimesheetRowsForPeriod } from '@/lib/timesheet-rows';
@@ -38,19 +38,32 @@ import {
 import type { TimesheetAccessContext, TimesheetViewScope } from '@/lib/timesheet-permissions';
 import type { Employee } from '@/lib/types';
 
-function mergeManagerEntries(rows: TimesheetRowData[], entries: Record<string, TimesheetDayEntry>): TimesheetRowData[] {
+function mergeManagerEntries(
+  rows: TimesheetRowData[],
+  entries: Record<string, TimesheetDayEntry>,
+  localisation = '',
+): TimesheetRowData[] {
   return rows.map((row) => {
     const entry = entries[row.dateKey];
     if (!entry) return row;
     const hasHours = Boolean(entry.from?.trim() || entry.to?.trim());
     const hasShift = entry.shiftType !== null && entry.shiftType !== undefined;
     if (!hasHours && !hasShift) return row;
-    return finalizeTimesheetRow({
+    const withShift = {
       ...row,
       from: hasHours ? entry.from : row.from,
       to: hasHours ? entry.to : row.to,
       shiftType: hasShift ? entry.shiftType : row.shiftType,
-    });
+    };
+    if (hasShift && !hasHours) {
+      return finalizeTimesheetRow(
+        applyShiftSelection(withShift, withShift.shiftType, {
+          date: row.date,
+          localisation,
+        }),
+      );
+    }
+    return finalizeTimesheetRow(hydrateTimesheetActualFromPlanning(withShift, localisation));
   });
 }
 
@@ -175,7 +188,7 @@ export default function TimesheetEditor({
     fetch(`/api/timesheet/entries?${params}`)
       .then((res) => res.json())
       .then((json: { entries?: Record<string, TimesheetDayEntry> }) => {
-        setRows((prev) => mergeManagerEntries(prev, json.entries ?? {}));
+        setRows((prev) => mergeManagerEntries(prev, json.entries ?? {}, employee.localisation ?? ''));
       })
       .catch(() => undefined);
   }, [employee, period.year, period.month]);

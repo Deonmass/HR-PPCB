@@ -34,3 +34,19 @@ export function applyShiftSelection<T extends { from: string; to: string; shiftT
   }
   return { ...row, shiftType };
 }
+
+/** If Actual is empty, copy the planned shift hours so the timesheet shows the planning by default. */
+export function hydrateTimesheetActualFromPlanning<
+  T extends { from: string; to: string; shiftType: TimesheetShiftType | null; date?: Date },
+>(row: T, localisation = ''): T {
+  if (row.from?.trim() && row.to?.trim()) return row;
+  if (row.shiftType === 'off') {
+    return { ...row, from: '', to: '' };
+  }
+  const defaults = getShiftDefaultHours(row.shiftType, {
+    date: row.date,
+    localisation,
+  });
+  if (!defaults) return row;
+  return { ...row, from: defaults.from, to: defaults.to };
+}

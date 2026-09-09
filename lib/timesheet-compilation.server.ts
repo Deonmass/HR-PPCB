@@ -96,6 +96,7 @@ export async function buildCompilationData(
 
     let nightNormal = 0;
     for (const day of period.days) {
+      if (day.isInactive) continue;
       nightNormal += dayNormalNight(entries[day.dateKey], {
         date: day.date,
         localisation: employee.localisation ?? '',

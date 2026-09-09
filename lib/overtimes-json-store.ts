@@ -560,15 +560,19 @@ export async function getPlanningCompleteWeekIndexes(
   year: number,
   month: number,
   departmentMatricules: Set<string>,
-  periodDateKeys: string[],
+  periodDays: Array<{ dateKey: string; isInactive?: boolean }>,
 ): Promise<number[]> {
   const total = departmentMatricules.size;
-  if (!total || !periodDateKeys.length) return [];
+  if (!total || !periodDays.length) return [];
   const days = (await readMonthPeriod(year, month)).days;
-  const weekCount = Math.ceil(periodDateKeys.length / 7);
+  const weekCount = Math.ceil(periodDays.length / 7);
   const complete: number[] = [];
   for (let weekIndex = 0; weekIndex < weekCount; weekIndex += 1) {
-    const weekDayKeys = periodDateKeys.slice(weekIndex * 7, weekIndex * 7 + 7);
+    const weekDayKeys = periodDays
+      .slice(weekIndex * 7, weekIndex * 7 + 7)
+      .filter((day) => !day.isInactive)
+      .map((day) => day.dateKey);
+    if (!weekDayKeys.length) continue;
     let weekComplete = true;
     for (const dateKey of weekDayKeys) {
       const dayEntries = days[dateKey] ?? {};
@@ -633,6 +637,30 @@ export async function savePlanningWeekEntries(input: SavePlanningWeekInput): Pro
     }
     await writeMonthPeriod(input.year, input.month, period);
   });
+}
+
+export async function clearPlanningWeekEntries(input: {
+  year: number;
+  month: number;
+  dateKeys: string[];
+  matricules: Set<string>;
+}): Promise<number> {
+  let removed = 0;
+  await withJsonStoreLock(monthLockKey(input.year, input.month), async () => {
+    const period = await readMonthPeriod(input.year, input.month);
+    for (const dateKey of input.dateKeys) {
+      const dayMap = period.days[dateKey];
+      if (!dayMap) continue;
+      for (const matricule of input.matricules) {
+        if (!dayMap[matricule]) continue;
+        delete dayMap[matricule];
+        removed += 1;
+      }
+      if (!Object.keys(dayMap).length) delete period.days[dateKey];
+    }
+    await writeMonthPeriod(input.year, input.month, period);
+  });
+  return removed;
 }
 
 export async function savePlanningDayEntries(

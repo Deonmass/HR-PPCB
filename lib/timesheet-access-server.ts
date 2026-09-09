@@ -6,6 +6,7 @@ import { getSession, getSessionCookieName } from '@/lib/auth-store';
 import { readEmployees } from '@/lib/employees-json-store';
 import { canPerformAction } from '@/lib/permission-check';
 import { checkPermission } from '@/lib/require-permission';
+import { isZambaLocalisation } from '@/lib/timesheet-calc';
 import {
   buildTimesheetAccessContext,
   canAccessDepartment,
@@ -142,5 +143,7 @@ export function filterTimesheetEmployees(
   context: NonNullable<Awaited<ReturnType<typeof getTimesheetAccessFromSession>>>,
   department?: string,
 ) {
-  return filterEmployeesForTimesheetScope(context.employees, context.access, department);
+  return filterEmployeesForTimesheetScope(context.employees, context.access, department).filter((employee) =>
+    isZambaLocalisation(employee.localisation),
+  );
 }

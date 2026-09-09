@@ -6,7 +6,7 @@ import TimesheetTimeInput from '@/components/overtime/TimesheetTimeInput';
 import TimesheetDatePicker from '@/components/overtime/TimesheetDatePicker';
 import { BtnSpinner, CardSpinner } from '@/components/overtime/TimesheetIcons';
 import { buildTimesheetPeriod, isTimesheetWeekend, parseTimesheetDateFr, snapToTimesheetWeekStart } from '@/lib/timesheet-period';
-import { refreshTimesheetRowsForPeriod, shiftTimesheetRowsToStart } from '@/lib/timesheet-rows';
+import { shiftTimesheetRowsToStart, buildEmployeeTimesheetRows } from '@/lib/timesheet-rows';
 import type { TimesheetDayEntry, TimesheetRowData } from '@/lib/timesheet-types';
 import { finalizeTimesheetRow } from '@/lib/timesheet-ws';
 import {
@@ -80,27 +80,6 @@ function timesForGeneralPreset(
     return isFridayDate(date) ? { from: '07:00', to: '13:30' } : { from: '07:00', to: '16:30' };
   }
   return { from: '08:30', to: '17:30' };
-}
-
-function mergeEntries(
-  rows: TimesheetRowData[],
-  entries: Record<string, TimesheetDayEntry>,
-): TimesheetRowData[] {
-  return rows.map((row) => {
-    const entry = entries[row.dateKey];
-    if (!entry) return row;
-    const hasHours = Boolean(entry.from?.trim() || entry.to?.trim());
-    const hasShift = entry.shiftType !== null && entry.shiftType !== undefined;
-    const hasHoliday = entry.holiday !== undefined;
-    if (!hasHours && !hasShift && !hasHoliday) return row;
-    return finalizeTimesheetRow({
-      ...row,
-      from: hasHours ? entry.from : row.from,
-      to: hasHours ? entry.to : row.to,
-      shiftType: hasShift ? entry.shiftType : row.shiftType,
-      holiday: hasHoliday ? Boolean(entry.holiday) : Boolean(row.holiday),
-    });
-  });
 }
 
 function rowsSignature(rows: TimesheetRowData[]): string {
@@ -184,7 +163,6 @@ export default function TimesheetEmployeeMonthModal({
     setFollowShifterCycle(false);
     savedSignatureRef.current = '';
 
-    const base = refreshTimesheetRowsForPeriod(period);
     const entriesParams = new URLSearchParams({
       year: String(year),
       month: String(month),
@@ -211,7 +189,7 @@ export default function TimesheetEmployeeMonthModal({
     ])
       .then(([entries, byWeek]) => {
         if (cancelled) return;
-        const merged = mergeEntries(base, entries);
+        const merged = buildEmployeeTimesheetRows(period, entries, localisation);
         setRows(merged);
         setFollowShifterCycle(detectShifterCycleStart(merged) !== null);
         savedSignatureRef.current = rowsSignature(merged);
@@ -219,7 +197,7 @@ export default function TimesheetEmployeeMonthModal({
       })
       .catch(() => {
         if (!cancelled) {
-          setRows(base);
+          setRows(buildEmployeeTimesheetRows(period, {}, localisation));
           setFollowShifterCycle(false);
           savedSignatureRef.current = rowsSignature(base);
           setWeeklyOtByIndex({});
@@ -232,7 +210,7 @@ export default function TimesheetEmployeeMonthModal({
     return () => {
       cancelled = true;
     };
-  }, [open, matricule, department, year, month, period]);
+  }, [open, matricule, department, year, month, period, localisation]);
 
   useEffect(() => {
     if (!actualMenu) return;
@@ -262,11 +240,10 @@ export default function TimesheetEmployeeMonthModal({
   const lines = useMemo(
     () =>
       buildTimesheetTemplateLines(rows, weeklyOtByIndex, localisation, {
-        explicitActual: canEdit,
         year,
         month,
       }),
-    [rows, weeklyOtByIndex, localisation, canEdit, year, month],
+    [rows, weeklyOtByIndex, localisation, year, month],
   );
   const totals = useMemo(() => sumTimesheetTemplateLines(lines), [lines]);
 
@@ -612,7 +589,7 @@ export default function TimesheetEmployeeMonthModal({
                           <td className="timesheet-template-actual-cell">
                             {editable ? (
                               <TimesheetTimeInput
-                                value={line.row.from}
+                                value={line.actualFrom === 'OFF' ? '' : line.actualFrom}
                                 placeholder="OFF"
                                 onChange={(value) => updateRow(line.row.dateKey, { from: value })}
                               />
@@ -623,7 +600,7 @@ export default function TimesheetEmployeeMonthModal({
                           <td className="timesheet-template-actual-cell">
                             {editable ? (
                               <TimesheetTimeInput
-                                value={line.row.to}
+                                value={line.actualTo === 'OFF' ? '' : line.actualTo}
                                 placeholder="OFF"
                                 onChange={(value) => updateRow(line.row.dateKey, { to: value })}
                               />

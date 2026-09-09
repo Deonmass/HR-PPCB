@@ -17,6 +17,7 @@ import {
   saveEmployeePeriodEntries,
   savePlanningDayEntries,
   savePlanningWeekEntries,
+  clearPlanningWeekEntries,
 } from '@/lib/timesheet-store';
 import { buildTimesheetPeriod } from '@/lib/timesheet-period';
 import type { TimesheetShiftType } from '@/lib/timesheet-types';
@@ -68,7 +69,7 @@ export async function GET(request: Request) {
         periodData.year,
         periodData.month,
         matricules,
-        periodData.days.map((day) => day.dateKey),
+        periodData.days.map((day) => ({ dateKey: day.dateKey, isInactive: day.isInactive })),
       );
       return NextResponse.json({
         savedDateKeys,
@@ -161,14 +162,21 @@ export async function PUT(request: Request) {
         return NextResponse.json({ error: 'Semaine ou grille invalide' }, { status: 400 });
       }
 
+      const periodData = buildTimesheetPeriod(body.year, body.month);
+      const inactiveDateKeys = new Set(
+        periodData.days.filter((day) => day.isInactive).map((day) => day.dateKey),
+      );
+
       const flatEntries = body.grid
         .filter((row) => allowedMatricules.has(row.matricule))
         .flatMap((row) =>
-          row.shifts.map((shift) => ({
-            matricule: row.matricule,
-            dateKey: shift.dateKey,
-            shiftType: shift.shiftType,
-          })),
+          row.shifts
+            .filter((shift) => !inactiveDateKeys.has(shift.dateKey))
+            .map((shift) => ({
+              matricule: row.matricule,
+              dateKey: shift.dateKey,
+              shiftType: shift.shiftType,
+            })),
         );
 
       await withAudit(
@@ -197,6 +205,45 @@ export async function PUT(request: Request) {
       );
 
       return NextResponse.json({ ok: true, saved: flatEntries.length });
+    }
+
+    if (body.mode === 'planning-week-clear') {
+      if (!Number.isFinite(body.weekIndex)) {
+        return NextResponse.json({ error: 'Semaine invalide' }, { status: 400 });
+      }
+
+      const periodData = buildTimesheetPeriod(body.year, body.month);
+      const weekDays = periodData.days.slice((body.weekIndex as number) * 7, (body.weekIndex as number) * 7 + 7);
+      const dateKeys = weekDays.map((day) => day.dateKey);
+      if (!dateKeys.length) {
+        return NextResponse.json({ error: 'Semaine introuvable' }, { status: 400 });
+      }
+
+      const removed = await withAudit(
+        {
+          module: 'timesheet',
+          action: 'delete',
+          summary: `Suppression planning semaine ${body.weekIndex} — ${body.department} (${body.month}/${body.year})`,
+          undoable: false,
+          meta: {
+            year: body.year,
+            month: body.month,
+            department: body.department,
+            weekIndex: body.weekIndex,
+          },
+          path: '/api/timesheet/entries',
+          method: 'PUT',
+        },
+        () =>
+          clearPlanningWeekEntries({
+            year: body.year,
+            month: body.month,
+            dateKeys,
+            matricules: allowedMatricules,
+          }),
+      );
+
+      return NextResponse.json({ ok: true, removed });
     }
 
     if (body.mode === 'employee-month') {

@@ -17,9 +17,10 @@ export function hasTimesheetWorkedHours(row: WorkedHoursRow): boolean {
   return rowTotalHours(row) > 0;
 }
 
-/** Rest day in the template: no Actual times (shift OFF can fall on any weekday). */
+/** Rest day in the template: Off shift, or no planned shift and no Actual times. */
 export function shouldGrayTimesheetTemplateRow(row: TimesheetRowData): boolean {
   if (row.holiday) return false;
+  if (row.shiftType && row.shiftType !== 'off') return false;
   return !hasTimesheetActualTimes(row);
 }
 

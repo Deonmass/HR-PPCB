@@ -4,14 +4,15 @@ import { TIMESHEET_WS_OFF, type TimesheetPeriodDay } from './timesheet-period';
 import type { TimesheetRowData } from './timesheet-types';
 
 /**
- * WS column: OFF when Actual has no From/To (rest day for any weekday),
- * or when the planned shift is Off. Otherwise the week label (including Sat/Sun worked).
+ * WS column: OFF when the day is a rest day (shift Off, or nothing planned/worked).
+ * A planned working shift keeps the week label even before Actual From/To are typed.
  */
 export function getTimesheetWsExportValue(
   row: Pick<TimesheetRowData, 'scheduledWs' | 'shiftType' | 'from' | 'to'>,
 ): string {
-  if (!hasTimesheetActualTimes(row)) return TIMESHEET_WS_OFF;
   if (row.shiftType === 'off') return TIMESHEET_WS_OFF;
+  if (row.shiftType) return row.scheduledWs;
+  if (!hasTimesheetActualTimes(row)) return TIMESHEET_WS_OFF;
   return row.scheduledWs;
 }
 

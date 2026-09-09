@@ -38,6 +38,36 @@ export function rotateShifterCycle(startShift: TimesheetShiftType): TimesheetShi
   return [...SHIFTER_CYCLE.slice(start), ...SHIFTER_CYCLE.slice(0, start)];
 }
 
+/**
+ * Position in the 2-2-2-2 cycle. Same shift as the previous day = second day of the pair.
+ * Ex. S1 then S1 → second S1; S1 then S2 → first S2.
+ */
+export function shifterCyclePosition(
+  shiftType: TimesheetShiftType,
+  previousShift: TimesheetShiftType | null,
+): number {
+  const first = SHIFTER_CYCLE.indexOf(shiftType);
+  if (first < 0) return -1;
+  const second = SHIFTER_CYCLE.lastIndexOf(shiftType);
+  if (second > first && previousShift === shiftType) return second;
+  return first;
+}
+
+/** Shifts that follow `shiftType` in the rotating roster. */
+export function continueShifterCycleFrom(
+  shiftType: TimesheetShiftType,
+  previousShift: TimesheetShiftType | null,
+  followingDayCount: number,
+): TimesheetShiftType[] | null {
+  const position = shifterCyclePosition(shiftType, previousShift);
+  if (position < 0) return null;
+  if (followingDayCount <= 0) return [];
+  return Array.from(
+    { length: followingDayCount },
+    (_, offset) => SHIFTER_CYCLE[(position + 1 + offset) % SHIFTER_CYCLE.length],
+  );
+}
+
 export function applyShifterDay(
   row: TimesheetRowData,
   dayIndex: number,

@@ -2,7 +2,7 @@ import 'server-only';
 
 import XlsxPopulate from 'xlsx-populate';
 import { TIMESHEET_TEMPLATE_PATH as RESOLVED_TIMESHEET_TEMPLATE_PATH } from './excel-export-template-paths';
-import { actualTimesForTemplateRow } from './timesheet-template-view';
+import { actualTimesForTemplateRow, scheduleTimesForRow } from './timesheet-template-view';
 import { shouldGrayTimesheetTemplateRow } from './timesheet-off-day';
 import { normalHoursBreakdown } from './timesheet-calc';
 import type { DepartmentExportPayload, TimesheetExportPayload } from './timesheet-export';
@@ -163,8 +163,9 @@ function fillDayRow(sheet: PopulateSheet, excelRow: number, row: TimesheetRowDat
   setCellValue(sheet, cellRef(excelRow, COL.date), toExportDate(row.date));
   setCellValue(sheet, cellRef(excelRow, COL.day), row.dayLabel);
   setCellValue(sheet, cellRef(excelRow, COL.ws), getTimesheetWsExportValue(row));
-  setCellValue(sheet, cellRef(excelRow, COL.asFrom), AS_PER_WS_FROM);
-  setCellValue(sheet, cellRef(excelRow, COL.asTo), AS_PER_WS_TO);
+  const schedule = scheduleTimesForRow(row, localisation);
+  setCellValue(sheet, cellRef(excelRow, COL.asFrom), schedule?.from ?? 'OFF');
+  setCellValue(sheet, cellRef(excelRow, COL.asTo), schedule?.to ?? 'OFF');
   const actual = actualTimesForTemplateRow(row, localisation);
   setCellValue(sheet, cellRef(excelRow, COL.actualFrom), actual.from);
   setCellValue(sheet, cellRef(excelRow, COL.actualTo), actual.to);

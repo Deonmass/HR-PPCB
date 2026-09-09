@@ -414,7 +414,7 @@ export default function TimesheetManagerView({
         <div className="panel timesheet-calendar-panel timesheet-calendar-panel-full">
           <div className="timesheet-calendar-header">
             <h3>Calendrier période</h3>
-            <span>{period.days.length} jours</span>
+            <span>{formatPeriodRange(period)}</span>
           </div>
 
           <div className="timesheet-calendar-grid timesheet-calendar-grid-full timesheet-calendar-grid-with-ot">
@@ -537,9 +537,12 @@ export default function TimesheetManagerView({
                     'timesheet-calendar-day',
                     'timesheet-calendar-day-neutral',
                     day.isWeekend ? 'weekend' : '',
+                    day.isInactive ? 'is-inactive' : '',
                   ]
                     .filter(Boolean)
                     .join(' ')}
+                  aria-disabled={day.isInactive || undefined}
+                  title={day.isInactive ? 'Jour hors période' : undefined}
                 >
                   <span className="timesheet-calendar-day-num">
                     {day.date.getDate()}

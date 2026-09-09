@@ -1,18 +1,25 @@
 import { buildTimesheetDaysFromStart, type TimesheetPeriod } from './timesheet-period';
+import { hydrateTimesheetActualFromPlanning } from './timesheet-shift-hours';
 import type { TimesheetDayEntry, TimesheetRowData } from './timesheet-types';
 import { createTimesheetRowFromDay, finalizeTimesheetRow } from './timesheet-ws';
 
 export function buildEmployeeTimesheetRows(
   period: TimesheetPeriod,
   entries: Record<string, TimesheetDayEntry> = {},
+  localisation = '',
 ): TimesheetRowData[] {
   return period.days.map((day) => {
     const entry = entries[day.dateKey];
-    return createTimesheetRowFromDay(day, {
+    if (day.isInactive) {
+      return createTimesheetRowFromDay(day, { shiftType: 'off', from: '', to: '' });
+    }
+    const row = createTimesheetRowFromDay(day, {
       from: entry?.from ?? '',
       to: entry?.to ?? '',
       shiftType: entry?.shiftType ?? null,
+      holiday: Boolean(entry?.holiday),
     });
+    return finalizeTimesheetRow(hydrateTimesheetActualFromPlanning(row, localisation));
   });
 }
 

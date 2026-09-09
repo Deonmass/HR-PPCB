@@ -102,14 +102,16 @@ export function isActualTimesEditable(row: TimesheetRowData): boolean {
   return scheduleTimesForRow(row) !== null || Boolean(row.holiday);
 }
 
-/** Actual From/To — entered times, or OFF when the day was not worked. */
+/** Actual From/To — entered times, planned shift schedule, or OFF. */
 export function actualTimesForTemplateRow(
   row: TimesheetRowData,
-  _localisation = '',
+  localisation = '',
 ): { from: string; to: string } {
   const from = row.from?.trim();
   const to = row.to?.trim();
   if (from && to) return { from, to };
+  const schedule = scheduleTimesForRow(row, localisation);
+  if (schedule) return schedule;
   return { from: 'OFF', to: 'OFF' };
 }
 

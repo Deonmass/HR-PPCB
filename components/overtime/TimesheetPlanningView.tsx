@@ -7,6 +7,7 @@ import TimesheetPlanningDayModal from '@/components/overtime/TimesheetPlanningDa
 import TimesheetPlanningWeekModal from '@/components/overtime/TimesheetPlanningWeekModal';
 import { CardSpinner, IconDownload, IconWeekDone } from '@/components/overtime/TimesheetIcons';
 import { buildTimesheetCalendarCells } from '@/lib/timesheet-calendar-cells';
+import { confirmAction, showError, showSuccess } from '@/lib/swal';
 import {
   buildTimesheetPeriod,
   listTimesheetMonthOptions,
@@ -161,14 +162,53 @@ export default function TimesheetPlanningView({ onDepartmentChange, toolbarSlotI
   }, [loadCalendarStatus]);
 
   const calendarCells = useMemo(() => buildTimesheetCalendarCells(period.days), [period.days]);
-  const weekPlanDays =
-    weekPlanIndex === null ? [] : period.days.slice(weekPlanIndex * 7, weekPlanIndex * 7 + 7);
+  const weekPlanDays = useMemo(
+    () =>
+      weekPlanIndex === null ? [] : period.days.slice(weekPlanIndex * 7, weekPlanIndex * 7 + 7),
+    [period.days, weekPlanIndex],
+  );
   const viewDay = period.days.find((day) => day.dateKey === viewDayKey) ?? null;
 
   const openPlanWeek = (weekIndex: number, readOnly: boolean) => {
     if (!readOnly && !canEdit) return;
     setWeekPlanReadOnly(readOnly);
     setWeekPlanIndex(weekIndex);
+  };
+
+  const clearWeekPlanning = async (weekIndex: number) => {
+    if (!canEdit || !department) return;
+    const weekLabel = WEEK_LABELS[weekIndex] ?? `Semaine ${weekIndex + 1}`;
+    const confirmed = await confirmAction(
+      `Effacer le planning — ${weekLabel} ?`,
+      'Les shifts de tous les agents de cette semaine seront supprimés. Cette action ne supprime pas les overtimes.',
+      'Effacer',
+    );
+    if (!confirmed) return;
+    try {
+      const res = await fetch('/api/timesheet/entries', {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          mode: 'planning-week-clear',
+          year: period.year,
+          month: period.month,
+          department,
+          weekIndex,
+        }),
+      });
+      if (!res.ok) {
+        const json = (await res.json()) as { error?: string };
+        throw new Error(json.error ?? 'Suppression impossible');
+      }
+      await showSuccess(`Planning effacé pour ${weekLabel}`);
+      if (weekPlanIndex === weekIndex) {
+        setWeekPlanIndex(null);
+        setWeekPlanReadOnly(false);
+      }
+      await loadCalendarStatus();
+    } catch (err) {
+      await showError(err instanceof Error ? err.message : 'Suppression impossible');
+    }
   };
 
   const buildPlanCardMenuItems = (weekIndex: number, isPlanned: boolean): ContextMenuItem[] => {
@@ -186,6 +226,15 @@ export default function TimesheetPlanningView({ onDepartmentChange, toolbarSlotI
           label: 'Modifier le planning',
           icon: 'edit',
           onClick: () => openPlanWeek(weekIndex, false),
+        });
+        items.push({
+          id: 'clear-week',
+          label: 'Effacer le planning',
+          icon: 'delete',
+          danger: true,
+          onClick: () => {
+            void clearWeekPlanning(weekIndex);
+          },
         });
       }
       return items;
@@ -274,7 +323,7 @@ export default function TimesheetPlanningView({ onDepartmentChange, toolbarSlotI
         <div className="panel timesheet-calendar-panel timesheet-calendar-panel-full">
           <div className="timesheet-calendar-header">
             <h3>Planning mensuel</h3>
-            <span>{period.days.length} jours</span>
+            <span>{formatPeriodRange(period)}</span>
           </div>
 
           <div className="timesheet-calendar-grid timesheet-calendar-grid-full timesheet-calendar-grid-with-ot">
@@ -304,7 +353,7 @@ export default function TimesheetPlanningView({ onDepartmentChange, toolbarSlotI
                         ? 'Clic ou clic droit pour planifier la semaine'
                         : isPlanned
                           ? canEdit
-                            ? 'Clic pour consulter · Clic droit pour modifier'
+                            ? 'Clic pour consulter · Clic droit pour modifier ou effacer'
                             : 'Clic pour consulter le planning'
                           : 'Planning non modifiable'
                     }
@@ -350,7 +399,7 @@ export default function TimesheetPlanningView({ onDepartmentChange, toolbarSlotI
               const weekIndex = Math.floor(cell.index / 7);
               const isWeekPlanned = !statusLoading && plannedWeekIndexes.has(weekIndex);
 
-              if (isWeekPlanned) {
+              if (isWeekPlanned && !day.isInactive) {
                 return (
                   <button
                     key={day.dateKey}
@@ -385,9 +434,12 @@ export default function TimesheetPlanningView({ onDepartmentChange, toolbarSlotI
                     'timesheet-calendar-day',
                     'timesheet-calendar-day-neutral',
                     day.isWeekend ? 'weekend' : '',
+                    day.isInactive ? 'is-inactive' : '',
                   ]
                     .filter(Boolean)
                     .join(' ')}
+                  aria-disabled={day.isInactive || undefined}
+                  title={day.isInactive ? 'Jour hors période' : undefined}
                 >
                   <span className="timesheet-calendar-day-num">
                     {day.date.getDate()}
@@ -414,6 +466,10 @@ export default function TimesheetPlanningView({ onDepartmentChange, toolbarSlotI
             periodMonth={period.month}
             canEdit={canEdit && !weekPlanReadOnly}
             locked={weekPlanReadOnly || !canEdit}
+            canClear={canEdit}
+            onClear={() => {
+              void clearWeekPlanning(weekPlanIndex);
+            }}
             onClose={() => {
               setWeekPlanIndex(null);
               setWeekPlanReadOnly(false);

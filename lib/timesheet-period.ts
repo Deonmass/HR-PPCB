@@ -14,6 +14,8 @@ export interface TimesheetPeriodDay {
   ws: string;
   weekNumber: number;
   isWeekend: boolean;
+  /** Jour hors cycle (après le lundi ≤ 15 du mois nommé). */
+  isInactive: boolean;
 }
 
 export interface TimesheetPeriod {
@@ -29,9 +31,9 @@ function startOfDay(date: Date): Date {
   return new Date(date.getFullYear(), date.getMonth(), date.getDate());
 }
 
-/** Mid-month cycle: Monday ≤ 15 of previous month → Sunday ≥ 15 of named month. */
+/** Mid-month cycle: Monday ≤ 15 of previous month → Monday ≤ 15 of named month. */
 export const TIMESHEET_WEEKS_PER_PERIOD = 6;
-export const TIMESHEET_DAYS_PER_PERIOD = 28;
+export const TIMESHEET_DAYS_PER_PERIOD = 42;
 
 export function formatTimesheetMonthLabel(year: number, month: number): string {
   const label = new Date(year, month - 1, 1).toLocaleDateString('en-US', {
@@ -139,7 +141,7 @@ export function snapToTimesheetWeekStart(date: Date): Date {
 
 /**
  * Début de période : le lundi ≤ 15 du mois précédent.
- * Ex. août 2026 : lundi 13 juillet (le 15 est un mercredi).
+ * Ex. septembre 2026 : lundi 10 août (le 15 août est un samedi).
  */
 function timesheetPeriodStart(year: number, month: number): Date {
   return mondayOnOrBefore(startOfDay(new Date(year, month - 2, 15)));
@@ -154,9 +156,12 @@ function sundayOnOrAfter(date: Date): Date {
   return cursor;
 }
 
-/** Fin de période : le dimanche ≥ 15 du mois nommé (ex. août 2026 → 16 août). */
-function timesheetPeriodEnd(year: number, month: number): Date {
-  return sundayOnOrAfter(startOfDay(new Date(year, month - 1, 15)));
+/**
+ * Dernier lundi actif : le lundi ≤ 15 du mois nommé.
+ * Ex. septembre 2026 → lundi 14 septembre.
+ */
+export function timesheetPeriodCutoff(year: number, month: number): Date {
+  return mondayOnOrBefore(startOfDay(new Date(year, month - 1, 15)));
 }
 
 export function parseLocalDateKey(value: string): Date | null {
@@ -211,31 +216,37 @@ export function buildTimesheetDaysFromStart(start: Date, dayCount = TIMESHEET_DA
       ws: `HS Sem. ${weekNumber}`,
       weekNumber,
       isWeekend,
+      isInactive: false,
     });
   }
   return days;
 }
 
 /**
- * Période timesheet d'un mois nommé (ex. août) :
+ * Période timesheet d'un mois nommé (ex. septembre) :
  * - début = lundi ≤ 15 du mois précédent
- * - fin = dimanche ≥ 15 du mois nommé
- * - semaines lundi → dimanche
- * Ex. août 2026 : 13 juil. → 16 août (5 semaines).
+ * - fin affichée = lundi ≤ 15 du mois nommé (dernier lundi avant le 15)
+ * - grille jusqu’au dimanche de cette dernière semaine
+ * - jours après la fin affichée : inactifs
+ * Ex. septembre 2026 : 10 août → 14 sept. (grille jusqu’au 20 sept.).
  */
 export function buildTimesheetPeriod(year: number, month: number): TimesheetPeriod {
   const start = timesheetPeriodStart(year, month);
-  const end = timesheetPeriodEnd(year, month);
-  const dayCount = Math.round((end.getTime() - start.getTime()) / 86_400_000) + 1;
-  const days = buildTimesheetDaysFromStart(start, dayCount);
-  const last = days[days.length - 1]?.date ?? end;
+  const cutoff = timesheetPeriodCutoff(year, month);
+  const gridEnd = sundayOnOrAfter(cutoff);
+  const dayCount = Math.round((gridEnd.getTime() - start.getTime()) / 86_400_000) + 1;
+  const cutoffTime = cutoff.getTime();
+  const days = buildTimesheetDaysFromStart(start, dayCount).map((day) => ({
+    ...day,
+    isInactive: startOfDay(day.date).getTime() > cutoffTime,
+  }));
 
   return {
     year,
     month,
     monthLabel: formatTimesheetMonthLabel(year, month),
     start,
-    end: last,
+    end: cutoff,
     days,
   };
 }
