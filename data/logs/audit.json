@@ -1,6 +1,42 @@
 {
   "entries": [
     {
+      "id": "log-000712",
+      "at": "2026-09-09T10:59:08.577Z",
+      "userId": "Serge.Muakasa",
+      "userName": "Serge Muakasa",
+      "userEmail": "Serge.Muakasa@ppcdrc.cd",
+      "module": "factures-suivi",
+      "moduleLabel": "Factures suivi",
+      "action": "create",
+      "actionLabel": "Création",
+      "summary": "Création lot de 1 facture(s)",
+      "details": "Création lot de 1 facture(s)",
+      "after": [
+        {
+          "id": "fac-2141",
+          "date": "09/09/2026",
+          "societe": "Kikotech - Transport",
+          "facture": "Proforma n 230/2026",
+          "montant": 400,
+          "echeance": "",
+          "pr": "11195692",
+          "datePr": "",
+          "po": "",
+          "datePo": "",
+          "grn": "",
+          "dateGrn": "",
+          "payment": "",
+          "datePym": "",
+          "commentaire": "Au PR — en attente du PO.",
+          "statut": "unpaid",
+          "statutLabel": "unpaid"
+        }
+      ],
+      "undoable": false,
+      "undone": false
+    },
+    {
       "id": "log-000711",
       "at": "2026-09-09T08:33:23.217Z",
       "userId": "admin",
@@ -80315,5 +80351,5 @@
       }
     }
   ],
-  "nextSeq": 712
+  "nextSeq": 713
 }
