@@ -188,10 +188,12 @@ export default function TimesheetEditor({
     fetch(`/api/timesheet/entries?${params}`)
       .then((res) => res.json())
       .then((json: { entries?: Record<string, TimesheetDayEntry> }) => {
-        setRows((prev) => mergeManagerEntries(prev, json.entries ?? {}, employee.localisation ?? ''));
+        const localisation =
+          employees.find((item) => item.matricule === employee.matricule)?.localisation ?? '';
+        setRows((prev) => mergeManagerEntries(prev, json.entries ?? {}, localisation));
       })
       .catch(() => undefined);
-  }, [employee, period.year, period.month]);
+  }, [employee, employees, period.year, period.month]);
 
   const canEdit = useMemo(() => {
     if (!employee) return false;

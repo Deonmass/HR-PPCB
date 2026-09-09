@@ -197,9 +197,10 @@ export default function TimesheetEmployeeMonthModal({
       })
       .catch(() => {
         if (!cancelled) {
-          setRows(buildEmployeeTimesheetRows(period, {}, localisation));
+          const emptyRows = buildEmployeeTimesheetRows(period, {}, localisation);
+          setRows(emptyRows);
           setFollowShifterCycle(false);
-          savedSignatureRef.current = rowsSignature(base);
+          savedSignatureRef.current = rowsSignature(emptyRows);
           setWeeklyOtByIndex({});
         }
       })
