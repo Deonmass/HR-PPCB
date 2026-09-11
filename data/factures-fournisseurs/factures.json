@@ -14857,7 +14857,26 @@
       "commentaire": "Au PR — en attente du PO.",
       "statut": "unpaid",
       "statutLabel": "unpaid"
+    },
+    {
+      "id": "fac-2143",
+      "date": "08/09/2026",
+      "societe": "Jalingo",
+      "facture": "Facture Proforma n 83/2026",
+      "montant": 128,
+      "echeance": "",
+      "pr": "11196634",
+      "datePr": "",
+      "po": "",
+      "datePo": "",
+      "grn": "",
+      "dateGrn": "",
+      "payment": "",
+      "datePym": "",
+      "commentaire": "Au PR — en attente du PO.",
+      "statut": "unpaid",
+      "statutLabel": "unpaid"
     }
   ],
-  "nextFactureSeq": 2143
+  "nextFactureSeq": 2144
 }
