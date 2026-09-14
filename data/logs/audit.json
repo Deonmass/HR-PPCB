@@ -1,6 +1,33 @@
 {
   "entries": [
     {
+      "id": "log-000734",
+      "at": "2026-09-14T19:44:00.399Z",
+      "userId": "Serge.Muakasa",
+      "userName": "Serge Muakasa",
+      "userEmail": "Serge.Muakasa@ppcdrc.cd",
+      "module": "guest-house",
+      "moduleLabel": "Guest house",
+      "action": "error",
+      "actionLabel": "Erreur",
+      "summary": "Cette chambre / cet hôtel est déjà réservé(e) sur cette période",
+      "details": "Échec de l’action « update » sur guest-house: Cette chambre / cet hôtel est déjà réservé(e) sur cette période",
+      "undoable": false,
+      "undone": false,
+      "error": {
+        "message": "Cette chambre / cet hôtel est déjà réservé(e) sur cette période",
+        "stack": "Error: Cette chambre / cet hôtel est déjà réservé(e) sur cette période\n    at C (/var/task/.next/server/chunks/300.js:1:12130)\n    at async j (/var/task/.next/server/chunks/3003.js:1:1055)\n    at async C (/var/task/.next/server/app/api/village/guest-house/route.js:1:4185)\n    at async rH.do (/var/task/node_modules/next/dist/compiled/next-server/app-route.runtime.prod.js:5:21048)\n    at async rH.handle (/var/task/node_modules/next/dist/compiled/next-server/app-route.runtime.prod.js:5:25866)\n    at async k (/var/task/.next/server/app/api/village/guest-house/route.js:1:8628)\n    at async rH.handleResponse (/var/task/node_modules/next/dist/compiled/next-server/app-route.runtime.prod.js:1:110770)\n    at async g (/var/task/.next/server/app/api/village/guest-house/route.js:1:9631)\n    at async I (/var/task/.next/server/app/api/village/guest-house/route.js:1:10753)\n    at async ib.renderToResponseWithComponentsImpl (/var/task/node_modules/next/dist/compiled/next-server/server.runtime.prod.js:13:28532)",
+        "path": "/api/village/guest-house",
+        "method": "POST",
+        "context": {
+          "action": "update",
+          "entityType": "guest-house.reservation",
+          "entityId": "fb614cda-9e49-4847-a0c3-67c0d9175434",
+          "summary": "Modification réservation fb614cda-9e49-4847-a0c3-67c0d9175434"
+        }
+      }
+    },
+    {
       "id": "log-000733",
       "at": "2026-09-14T19:42:32.699Z",
       "userId": "Serge.Muakasa",
@@ -84627,5 +84654,5 @@
       }
     }
   ],
-  "nextSeq": 734
+  "nextSeq": 735
 }
