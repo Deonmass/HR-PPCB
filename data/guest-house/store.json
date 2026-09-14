@@ -725,9 +725,10 @@
       "motif": "Mission to the plant",
       "startDate": "2026-09-01",
       "endDate": "2026-09-04",
-      "status": "pending",
+      "roomId": "8b14162d-ae3b-49a5-bcb6-812c2d8d5b5b",
+      "status": "confirmed",
       "mission": "Mission to the plant",
-      "updatedAt": "2026-09-14T19:57:03.797Z"
+      "updatedAt": "2026-09-14T19:57:29.258Z"
     },
     {
       "id": "0b393247-732b-498f-b180-e6bef319159c",
@@ -25695,6 +25696,18 @@
     }
   ],
   "passages": [
+    {
+      "id": "0de06985-cd7d-4c24-9f10-182c478c42e8",
+      "roomId": "8b14162d-ae3b-49a5-bcb6-812c2d8d5b5b",
+      "reservationId": "031640ad-e5e0-4bbe-90c9-3b19ab995aa1",
+      "numero": "GH-2026-4392",
+      "personName": "MUZILA EBALOSONG Papy",
+      "matricule": "70000297",
+      "motif": "Mission to the plant",
+      "startDate": "2026-09-01",
+      "endDate": "2026-09-04",
+      "checkedInAt": "2026-09-14T19:57:29.258Z"
+    },
     {
       "id": "619e025e-8ef8-4ec9-80a1-18d9d6209940",
       "roomId": "3219d898-ff74-496c-a62e-2295012276ae",
