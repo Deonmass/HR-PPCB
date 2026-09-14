@@ -716,6 +716,19 @@
   ],
   "reservations": [
     {
+      "id": "62334986-5335-478c-a1e7-256a47f93dd8",
+      "numero": "GH-2026-4396",
+      "createdAt": "2026-09-14T20:06:44.462Z",
+      "personName": "Georgina CPM",
+      "isAgent": false,
+      "motif": "Mission to the plant",
+      "startDate": "2026-09-01",
+      "endDate": "2026-09-14",
+      "status": "pending",
+      "mission": "Mission to the plant",
+      "updatedAt": "2026-09-14T20:06:44.462Z"
+    },
+    {
       "id": "ac19711c-239a-4bdd-8e26-4aebec04f97d",
       "numero": "GH-2026-4395",
       "createdAt": "2026-09-14T20:05:28.027Z",
@@ -43494,5 +43507,5 @@
       "checkedOutAt": "2025-09-24T12:00:00.000Z"
     }
   ],
-  "nextReservationSeq": 4396
+  "nextReservationSeq": 4397
 }
