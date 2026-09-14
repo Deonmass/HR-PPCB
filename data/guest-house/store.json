@@ -724,9 +724,10 @@
       "motif": "Mission to the plant",
       "startDate": "2026-09-03",
       "endDate": "2026-09-09",
-      "status": "pending",
+      "roomId": "7dbc2817-6744-4ae5-8827-0961bd7aa54a",
+      "status": "confirmed",
       "mission": "Mission to the plant",
-      "updatedAt": "2026-09-14T20:18:29.349Z"
+      "updatedAt": "2026-09-14T20:18:52.898Z"
     },
     {
       "id": "b667e532-a2f5-4e63-b92b-b5d9ddc7f28c",
@@ -25751,6 +25752,17 @@
     }
   ],
   "passages": [
+    {
+      "id": "e66bc8af-4b1a-4b03-b82b-9174cdd2a935",
+      "roomId": "7dbc2817-6744-4ae5-8827-0961bd7aa54a",
+      "reservationId": "ab805e96-ad9c-492e-bf23-3062cc3cbbcd",
+      "numero": "GH-2026-4398",
+      "personName": "CEO ORC",
+      "motif": "Mission to the plant",
+      "startDate": "2026-09-03",
+      "endDate": "2026-09-09",
+      "checkedInAt": "2026-09-14T20:18:52.898Z"
+    },
     {
       "id": "e00b326d-ae32-4993-83b5-128980b9861f",
       "roomId": "85c3d598-623c-402f-9053-e43840e24325",
