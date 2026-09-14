@@ -1166,12 +1166,12 @@
       "isAgent": false,
       "motif": "Blasting mission to the plant",
       "startDate": "2026-08-28",
-      "endDate": "2026-09-30",
+      "endDate": "2026-09-03",
       "roomId": "12ee1ff4-eb03-4592-b1da-589006209e77",
       "status": "confirmed",
       "company": "AEL",
       "mission": "Blasting mission to the plant",
-      "updatedAt": "2026-08-26T10:20:41.982Z"
+      "updatedAt": "2026-09-14T20:08:07.187Z"
     },
     {
       "id": "0ce87037-06f9-4059-b341-ea825f339550",
@@ -26092,7 +26092,7 @@
       "personName": "Jonathan AEL",
       "motif": "Blasting mission to the plant",
       "startDate": "2026-08-28",
-      "endDate": "2026-09-30",
+      "endDate": "2026-09-03",
       "checkedInAt": "2026-08-26T10:20:41.982Z"
     },
     {
