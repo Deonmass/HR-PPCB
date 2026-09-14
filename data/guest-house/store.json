@@ -725,9 +725,10 @@
       "motif": "Mission to the plant",
       "startDate": "2026-09-08",
       "endDate": "2026-09-11",
-      "status": "pending",
+      "roomId": "3219d898-ff74-496c-a62e-2295012276ae",
+      "status": "confirmed",
       "mission": "Mission to the plant",
-      "updatedAt": "2026-09-14T20:35:19.640Z"
+      "updatedAt": "2026-09-14T20:35:43.174Z"
     },
     {
       "id": "39199ed2-5b3f-448f-af8a-37434dab4989",
@@ -25836,6 +25837,18 @@
     }
   ],
   "passages": [
+    {
+      "id": "043687cc-1ff3-4dc1-a137-a205570cd297",
+      "roomId": "3219d898-ff74-496c-a62e-2295012276ae",
+      "reservationId": "3f528fd7-1112-42c1-9d6c-61830cdd56a0",
+      "numero": "GH-2026-4404",
+      "personName": "MOLA BOIKA OLIVIER",
+      "matricule": "70000253",
+      "motif": "Mission to the plant",
+      "startDate": "2026-09-08",
+      "endDate": "2026-09-11",
+      "checkedInAt": "2026-09-14T20:35:43.174Z"
+    },
     {
       "id": "a6166a11-2a0c-4d67-b6a5-db59fa9983c3",
       "roomId": "4e4bd694-e96e-4748-a98a-882d842f616e",
