@@ -1,6 +1,52 @@
 {
   "entries": [
     {
+      "id": "log-000804",
+      "at": "2026-09-14T21:00:41.457Z",
+      "userId": "Serge.Muakasa",
+      "userName": "Serge Muakasa",
+      "userEmail": "Serge.Muakasa@ppcdrc.cd",
+      "module": "guest-house",
+      "moduleLabel": "Guest house",
+      "action": "update",
+      "actionLabel": "Modification",
+      "entityType": "guest-house.reservation",
+      "entityId": "2d26bd1e-4c99-4a7f-a193-9b0d372832bc",
+      "summary": "Statut réservation 2d26bd1e-4c99-4a7f-a193-9b0d372832bc → confirmed",
+      "details": "Statut réservation 2d26bd1e-4c99-4a7f-a193-9b0d372832bc → confirmed",
+      "before": {
+        "id": "2d26bd1e-4c99-4a7f-a193-9b0d372832bc",
+        "numero": "GH-2026-4415",
+        "createdAt": "2026-09-14T21:00:14.272Z",
+        "personName": "NDONDA LUFULUABO PASCAL",
+        "matricule": "70000307",
+        "isAgent": true,
+        "motif": "Induction mission to the plant",
+        "startDate": "2026-09-13",
+        "endDate": "2026-09-17",
+        "status": "pending",
+        "mission": "induction mission to the plant",
+        "updatedAt": "2026-09-14T21:00:14.272Z"
+      },
+      "after": {
+        "id": "2d26bd1e-4c99-4a7f-a193-9b0d372832bc",
+        "numero": "GH-2026-4415",
+        "createdAt": "2026-09-14T21:00:14.272Z",
+        "personName": "NDONDA LUFULUABO PASCAL",
+        "matricule": "70000307",
+        "isAgent": true,
+        "motif": "Induction mission to the plant",
+        "startDate": "2026-09-13",
+        "endDate": "2026-09-17",
+        "roomId": "12ee1ff4-eb03-4592-b1da-589006209e77",
+        "status": "confirmed",
+        "mission": "induction mission to the plant",
+        "updatedAt": "2026-09-14T21:00:37.863Z"
+      },
+      "undoable": true,
+      "undone": false
+    },
+    {
       "id": "log-000803",
       "at": "2026-09-14T21:00:17.116Z",
       "userId": "Serge.Muakasa",
@@ -87286,5 +87332,5 @@
       }
     }
   ],
-  "nextSeq": 804
+  "nextSeq": 805
 }
