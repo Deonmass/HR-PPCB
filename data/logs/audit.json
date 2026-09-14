@@ -1,6 +1,36 @@
 {
   "entries": [
     {
+      "id": "log-000790",
+      "at": "2026-09-14T20:48:07.657Z",
+      "userId": "Serge.Muakasa",
+      "userName": "Serge Muakasa",
+      "userEmail": "Serge.Muakasa@ppcdrc.cd",
+      "module": "guest-house",
+      "moduleLabel": "Guest house",
+      "action": "create",
+      "actionLabel": "Création",
+      "entityType": "guest-house.reservation",
+      "entityId": "54899d22-978e-4527-97c7-e51792182abd",
+      "summary": "Création réservation Expot Beton Laureat",
+      "details": "Création réservation Expot Beton Laureat",
+      "after": {
+        "id": "54899d22-978e-4527-97c7-e51792182abd",
+        "numero": "GH-2026-4410",
+        "createdAt": "2026-09-14T20:48:04.803Z",
+        "personName": "Expot Beton Laureat",
+        "isAgent": false,
+        "motif": "Visit Expot Beton Laureat",
+        "startDate": "2026-09-10",
+        "endDate": "2026-09-12",
+        "status": "pending",
+        "mission": "Visit Expot Beton Laureat",
+        "updatedAt": "2026-09-14T20:48:04.803Z"
+      },
+      "undoable": true,
+      "undone": false
+    },
+    {
       "id": "log-000789",
       "at": "2026-09-14T20:46:53.462Z",
       "userId": "Serge.Muakasa",
@@ -86762,5 +86792,5 @@
       }
     }
   ],
-  "nextSeq": 790
+  "nextSeq": 791
 }
