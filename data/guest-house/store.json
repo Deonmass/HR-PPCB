@@ -716,6 +716,19 @@
   ],
   "reservations": [
     {
+      "id": "873696e5-aaaa-4789-994f-bbecf4cfff60",
+      "numero": "GH-2026-4385",
+      "createdAt": "2026-09-14T19:24:22.531Z",
+      "personName": "Francois du bois",
+      "isAgent": false,
+      "motif": "Garage Maintenance Mobile Equipment",
+      "startDate": "2026-09-01",
+      "endDate": "2026-09-20",
+      "status": "pending",
+      "mission": "Garage Maintenance Mobile Equipment",
+      "updatedAt": "2026-09-14T19:24:22.531Z"
+    },
+    {
       "id": "d888bc7a-301a-44d9-98ab-c15db5ebf1e2",
       "numero": "GH-2026-4384",
       "createdAt": "2026-09-09T07:12:59.563Z",
@@ -43253,5 +43266,5 @@
       "checkedOutAt": "2025-09-24T12:00:00.000Z"
     }
   ],
-  "nextReservationSeq": 4385
+  "nextReservationSeq": 4386
 }
