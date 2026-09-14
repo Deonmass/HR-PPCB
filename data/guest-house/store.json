@@ -724,9 +724,10 @@
       "motif": "Garage Maintenance Mobile Equipment",
       "startDate": "2026-09-01",
       "endDate": "2026-09-20",
-      "status": "pending",
+      "roomId": "873277c8-cfe8-4e40-af16-61f1a3f4c273",
+      "status": "confirmed",
       "mission": "Garage Maintenance Mobile Equipment",
-      "updatedAt": "2026-09-14T19:24:22.531Z"
+      "updatedAt": "2026-09-14T19:24:50.588Z"
     },
     {
       "id": "d888bc7a-301a-44d9-98ab-c15db5ebf1e2",
@@ -25607,6 +25608,17 @@
     }
   ],
   "passages": [
+    {
+      "id": "23ea339e-77cd-49d8-9661-f0b4a5dc55f4",
+      "roomId": "873277c8-cfe8-4e40-af16-61f1a3f4c273",
+      "reservationId": "873696e5-aaaa-4789-994f-bbecf4cfff60",
+      "numero": "GH-2026-4385",
+      "personName": "Francois du bois",
+      "motif": "Garage Maintenance Mobile Equipment",
+      "startDate": "2026-09-01",
+      "endDate": "2026-09-20",
+      "checkedInAt": "2026-09-14T19:24:50.588Z"
+    },
     {
       "id": "1883d80f-f4a2-4a96-a019-dbcca7f23a4a",
       "roomId": "12ee1ff4-eb03-4592-b1da-589006209e77",
