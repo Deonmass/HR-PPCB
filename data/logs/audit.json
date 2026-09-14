@@ -1,6 +1,37 @@
 {
   "entries": [
     {
+      "id": "log-000767",
+      "at": "2026-09-14T20:25:16.931Z",
+      "userId": "Serge.Muakasa",
+      "userName": "Serge Muakasa",
+      "userEmail": "Serge.Muakasa@ppcdrc.cd",
+      "module": "guest-house",
+      "moduleLabel": "Guest house",
+      "action": "create",
+      "actionLabel": "Création",
+      "entityType": "guest-house.reservation",
+      "entityId": "d98fbdf3-a669-4032-8bcb-5c9bd25b3f95",
+      "summary": "Création réservation NDAYA ABELI CARDOSO TANYA",
+      "details": "Création réservation NDAYA ABELI CARDOSO TANYA",
+      "after": {
+        "id": "d98fbdf3-a669-4032-8bcb-5c9bd25b3f95",
+        "numero": "GH-2026-4400",
+        "createdAt": "2026-09-14T20:25:13.515Z",
+        "personName": "NDAYA ABELI CARDOSO TANYA",
+        "matricule": "70000200",
+        "isAgent": true,
+        "motif": "Mission to the plant",
+        "startDate": "2026-09-06",
+        "endDate": "2026-09-15",
+        "status": "pending",
+        "mission": "Mission to the plant",
+        "updatedAt": "2026-09-14T20:25:13.515Z"
+      },
+      "undoable": true,
+      "undone": false
+    },
+    {
       "id": "log-000766",
       "at": "2026-09-14T20:23:43.308Z",
       "userId": "Serge.Muakasa",
@@ -85896,5 +85927,5 @@
       }
     }
   ],
-  "nextSeq": 767
+  "nextSeq": 768
 }
