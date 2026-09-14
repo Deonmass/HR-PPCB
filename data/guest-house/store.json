@@ -724,9 +724,10 @@
       "motif": "Mission to the plant",
       "startDate": "2026-09-01",
       "endDate": "2026-09-14",
-      "status": "pending",
+      "roomId": "0b0cdc0d-ba79-4f68-8533-c90cad3390cb",
+      "status": "confirmed",
       "mission": "Mission to the plant",
-      "updatedAt": "2026-09-14T20:06:44.462Z"
+      "updatedAt": "2026-09-14T20:07:09.869Z"
     },
     {
       "id": "ac19711c-239a-4bdd-8e26-4aebec04f97d",
@@ -25723,6 +25724,17 @@
     }
   ],
   "passages": [
+    {
+      "id": "95e4bb09-d6fa-4202-ac11-c60d215f3262",
+      "roomId": "0b0cdc0d-ba79-4f68-8533-c90cad3390cb",
+      "reservationId": "62334986-5335-478c-a1e7-256a47f93dd8",
+      "numero": "GH-2026-4396",
+      "personName": "Georgina CPM",
+      "motif": "Mission to the plant",
+      "startDate": "2026-09-01",
+      "endDate": "2026-09-14",
+      "checkedInAt": "2026-09-14T20:07:09.869Z"
+    },
     {
       "id": "3822e328-4053-4d26-be6f-c2f4f6575214",
       "roomId": "e49a08a4-e1db-4824-b8f6-48f1c30c0346",
