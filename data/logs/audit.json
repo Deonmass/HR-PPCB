@@ -1,6 +1,36 @@
 {
   "entries": [
     {
+      "id": "log-000749",
+      "at": "2026-09-14T19:59:34.779Z",
+      "userId": "Serge.Muakasa",
+      "userName": "Serge Muakasa",
+      "userEmail": "Serge.Muakasa@ppcdrc.cd",
+      "module": "guest-house",
+      "moduleLabel": "Guest house",
+      "action": "create",
+      "actionLabel": "Création",
+      "entityType": "guest-house.reservation",
+      "entityId": "8f0400db-b836-4ceb-a196-95616a47a4e7",
+      "summary": "Création réservation Sud African",
+      "details": "Création réservation Sud African",
+      "after": {
+        "id": "8f0400db-b836-4ceb-a196-95616a47a4e7",
+        "numero": "GH-2026-4393",
+        "createdAt": "2026-09-14T19:59:29.906Z",
+        "personName": "Sud African",
+        "isAgent": false,
+        "motif": "Mission to the plant",
+        "startDate": "2026-09-01",
+        "endDate": "2026-09-12",
+        "status": "pending",
+        "mission": "Mission to the plant",
+        "updatedAt": "2026-09-14T19:59:29.906Z"
+      },
+      "undoable": true,
+      "undone": false
+    },
+    {
       "id": "log-000748",
       "at": "2026-09-14T19:58:55.960Z",
       "userId": "Serge.Muakasa",
@@ -85207,5 +85237,5 @@
       }
     }
   ],
-  "nextSeq": 749
+  "nextSeq": 750
 }
