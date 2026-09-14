@@ -716,6 +716,20 @@
   ],
   "reservations": [
     {
+      "id": "75bcda3e-b4df-45c7-b657-b1be44ee6ada",
+      "numero": "GH-2026-4387",
+      "createdAt": "2026-09-14T19:32:31.691Z",
+      "personName": "ZAKUANI BAHATI BENNY",
+      "matricule": "70000177",
+      "isAgent": true,
+      "motif": "Mission to the plant",
+      "startDate": "2026-09-02",
+      "endDate": "2026-09-04",
+      "status": "pending",
+      "mission": "Mission to the plant",
+      "updatedAt": "2026-09-14T19:32:31.691Z"
+    },
+    {
       "id": "8d6ea9da-ccc4-42f4-9674-e5e75d21b529",
       "numero": "GH-2026-4386",
       "createdAt": "2026-09-14T19:30:53.797Z",
@@ -43303,5 +43317,5 @@
       "checkedOutAt": "2025-09-24T12:00:00.000Z"
     }
   ],
-  "nextReservationSeq": 4387
+  "nextReservationSeq": 4388
 }
