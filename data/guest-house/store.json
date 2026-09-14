@@ -724,9 +724,10 @@
       "motif": "Mission to the plant",
       "startDate": "2026-09-13",
       "endDate": "2026-09-14",
-      "status": "pending",
+      "roomId": "2ef11cfa-1396-4c82-ac99-85b12d6093be",
+      "status": "confirmed",
       "mission": "Mission to the plant",
-      "updatedAt": "2026-09-14T20:56:42.987Z"
+      "updatedAt": "2026-09-14T20:57:03.543Z"
     },
     {
       "id": "627f86b4-4d8c-4f35-a334-2646feb3722d",
@@ -25950,6 +25951,17 @@
     }
   ],
   "passages": [
+    {
+      "id": "0f55b9ea-9b32-4a44-8688-ff874aaf2296",
+      "roomId": "2ef11cfa-1396-4c82-ac99-85b12d6093be",
+      "reservationId": "6516a6e5-0241-4d36-89ef-0ee0e0ac887c",
+      "numero": "GH-2026-4412",
+      "personName": "Tsasa",
+      "motif": "Mission to the plant",
+      "startDate": "2026-09-13",
+      "endDate": "2026-09-14",
+      "checkedInAt": "2026-09-14T20:57:03.543Z"
+    },
     {
       "id": "432d3f27-473c-437f-9c52-20b61dcd91ed",
       "roomId": "7dbc2817-6744-4ae5-8827-0961bd7aa54a",
