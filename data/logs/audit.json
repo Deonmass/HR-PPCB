@@ -1,6 +1,37 @@
 {
   "entries": [
     {
+      "id": "log-000743",
+      "at": "2026-09-14T19:55:44.904Z",
+      "userId": "Serge.Muakasa",
+      "userName": "Serge Muakasa",
+      "userEmail": "Serge.Muakasa@ppcdrc.cd",
+      "module": "guest-house",
+      "moduleLabel": "Guest house",
+      "action": "create",
+      "actionLabel": "Création",
+      "entityType": "guest-house.reservation",
+      "entityId": "0b393247-732b-498f-b180-e6bef319159c",
+      "summary": "Création réservation MULOLO KANKOLONGO MANIX",
+      "details": "Création réservation MULOLO KANKOLONGO MANIX",
+      "after": {
+        "id": "0b393247-732b-498f-b180-e6bef319159c",
+        "numero": "GH-2026-4391",
+        "createdAt": "2026-09-14T19:55:41.433Z",
+        "personName": "MULOLO KANKOLONGO MANIX",
+        "matricule": "70000034",
+        "isAgent": true,
+        "motif": "Mission to the plant",
+        "startDate": "2026-09-01",
+        "endDate": "2026-09-04",
+        "status": "pending",
+        "mission": "Mission to the plant",
+        "updatedAt": "2026-09-14T19:55:41.433Z"
+      },
+      "undoable": true,
+      "undone": false
+    },
+    {
       "id": "log-000742",
       "at": "2026-09-14T19:54:40.512Z",
       "userId": "Serge.Muakasa",
@@ -84974,5 +85005,5 @@
       }
     }
   ],
-  "nextSeq": 743
+  "nextSeq": 744
 }
