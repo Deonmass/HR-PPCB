@@ -1,6 +1,36 @@
 {
   "entries": [
     {
+      "id": "log-000757",
+      "at": "2026-09-14T20:06:47.776Z",
+      "userId": "Serge.Muakasa",
+      "userName": "Serge Muakasa",
+      "userEmail": "Serge.Muakasa@ppcdrc.cd",
+      "module": "guest-house",
+      "moduleLabel": "Guest house",
+      "action": "create",
+      "actionLabel": "Création",
+      "entityType": "guest-house.reservation",
+      "entityId": "62334986-5335-478c-a1e7-256a47f93dd8",
+      "summary": "Création réservation Georgina CPM",
+      "details": "Création réservation Georgina CPM",
+      "after": {
+        "id": "62334986-5335-478c-a1e7-256a47f93dd8",
+        "numero": "GH-2026-4396",
+        "createdAt": "2026-09-14T20:06:44.462Z",
+        "personName": "Georgina CPM",
+        "isAgent": false,
+        "motif": "Mission to the plant",
+        "startDate": "2026-09-01",
+        "endDate": "2026-09-14",
+        "status": "pending",
+        "mission": "Mission to the plant",
+        "updatedAt": "2026-09-14T20:06:44.462Z"
+      },
+      "undoable": true,
+      "undone": false
+    },
+    {
       "id": "log-000756",
       "at": "2026-09-14T20:05:54.530Z",
       "userId": "Serge.Muakasa",
@@ -85506,5 +85536,5 @@
       }
     }
   ],
-  "nextSeq": 757
+  "nextSeq": 758
 }
