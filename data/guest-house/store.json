@@ -725,9 +725,10 @@
       "motif": "Mission to the plant",
       "startDate": "2026-09-01",
       "endDate": "2026-09-04",
-      "status": "pending",
+      "roomId": "3219d898-ff74-496c-a62e-2295012276ae",
+      "status": "confirmed",
       "mission": "Mission to the plant",
-      "updatedAt": "2026-09-14T19:55:41.433Z"
+      "updatedAt": "2026-09-14T19:56:03.714Z"
     },
     {
       "id": "6d0d78da-279c-4070-9d84-ecac09d2ebb2",
@@ -25680,6 +25681,18 @@
     }
   ],
   "passages": [
+    {
+      "id": "619e025e-8ef8-4ec9-80a1-18d9d6209940",
+      "roomId": "3219d898-ff74-496c-a62e-2295012276ae",
+      "reservationId": "0b393247-732b-498f-b180-e6bef319159c",
+      "numero": "GH-2026-4391",
+      "personName": "MULOLO KANKOLONGO MANIX",
+      "matricule": "70000034",
+      "motif": "Mission to the plant",
+      "startDate": "2026-09-01",
+      "endDate": "2026-09-04",
+      "checkedInAt": "2026-09-14T19:56:03.714Z"
+    },
     {
       "id": "bd92e243-dc85-4a53-b941-d087cf214cda",
       "roomId": "7dbc2817-6744-4ae5-8827-0961bd7aa54a",
