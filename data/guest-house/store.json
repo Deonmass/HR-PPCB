@@ -716,6 +716,19 @@
   ],
   "reservations": [
     {
+      "id": "6d0d78da-279c-4070-9d84-ecac09d2ebb2",
+      "numero": "GH-2026-4390",
+      "createdAt": "2026-09-14T19:54:14.708Z",
+      "personName": "Bertin Epiroc",
+      "isAgent": false,
+      "motif": "Mission to the plant",
+      "startDate": "2026-09-01",
+      "endDate": "2026-09-02",
+      "status": "pending",
+      "mission": "Mission to the plant",
+      "updatedAt": "2026-09-14T19:54:14.708Z"
+    },
+    {
       "id": "ce65d0cc-104c-41df-b7ce-89796d2a7798",
       "numero": "GH-2026-4389",
       "createdAt": "2026-09-14T19:51:31.678Z",
@@ -43368,5 +43381,5 @@
       "checkedOutAt": "2025-09-24T12:00:00.000Z"
     }
   ],
-  "nextReservationSeq": 4390
+  "nextReservationSeq": 4391
 }
