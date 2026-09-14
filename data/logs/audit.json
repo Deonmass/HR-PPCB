@@ -1,6 +1,52 @@
 {
   "entries": [
     {
+      "id": "log-000736",
+      "at": "2026-09-14T19:45:53.048Z",
+      "userId": "Serge.Muakasa",
+      "userName": "Serge Muakasa",
+      "userEmail": "Serge.Muakasa@ppcdrc.cd",
+      "module": "guest-house",
+      "moduleLabel": "Guest house",
+      "action": "update",
+      "actionLabel": "Modification",
+      "entityType": "guest-house.reservation",
+      "entityId": "9e5c5589-ffb9-4f28-9689-1db9f540eb57",
+      "summary": "Statut réservation 9e5c5589-ffb9-4f28-9689-1db9f540eb57 → confirmed",
+      "details": "Statut réservation 9e5c5589-ffb9-4f28-9689-1db9f540eb57 → confirmed",
+      "before": {
+        "id": "9e5c5589-ffb9-4f28-9689-1db9f540eb57",
+        "numero": "GH-2026-4388",
+        "createdAt": "2026-09-14T19:36:10.308Z",
+        "personName": "BILONDA KAZADI DIANE",
+        "matricule": "70000045",
+        "isAgent": true,
+        "motif": "Mont Crystal challenge",
+        "startDate": "2026-08-28",
+        "endDate": "2026-08-30",
+        "status": "pending",
+        "mission": "Mont Crystal challenge",
+        "updatedAt": "2026-09-14T19:36:10.308Z"
+      },
+      "after": {
+        "id": "9e5c5589-ffb9-4f28-9689-1db9f540eb57",
+        "numero": "GH-2026-4388",
+        "createdAt": "2026-09-14T19:36:10.308Z",
+        "personName": "BILONDA KAZADI DIANE",
+        "matricule": "70000045",
+        "isAgent": true,
+        "motif": "Mont Crystal challenge",
+        "startDate": "2026-08-28",
+        "endDate": "2026-08-30",
+        "roomId": "4e4bd694-e96e-4748-a98a-882d842f616e",
+        "status": "confirmed",
+        "mission": "Mont Crystal challenge",
+        "updatedAt": "2026-09-14T19:45:50.287Z"
+      },
+      "undoable": true,
+      "undone": false
+    },
+    {
       "id": "log-000735",
       "at": "2026-09-14T19:45:34.206Z",
       "userId": "Serge.Muakasa",
@@ -84686,5 +84732,5 @@
       }
     }
   ],
-  "nextSeq": 736
+  "nextSeq": 737
 }
