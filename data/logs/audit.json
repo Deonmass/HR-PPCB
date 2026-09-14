@@ -1,6 +1,36 @@
 {
   "entries": [
     {
+      "id": "log-000765",
+      "at": "2026-09-14T20:23:08.963Z",
+      "userId": "Serge.Muakasa",
+      "userName": "Serge Muakasa",
+      "userEmail": "Serge.Muakasa@ppcdrc.cd",
+      "module": "guest-house",
+      "moduleLabel": "Guest house",
+      "action": "create",
+      "actionLabel": "Création",
+      "entityType": "guest-house.reservation",
+      "entityId": "5983f702-2493-4745-8ca5-f07688fc71e6",
+      "summary": "Création réservation Amidou",
+      "details": "Création réservation Amidou",
+      "after": {
+        "id": "5983f702-2493-4745-8ca5-f07688fc71e6",
+        "numero": "GH-2026-4399",
+        "createdAt": "2026-09-14T20:23:05.418Z",
+        "personName": "Amidou",
+        "isAgent": false,
+        "motif": "Mission to the plant",
+        "startDate": "2026-09-05",
+        "endDate": "2026-09-11",
+        "status": "pending",
+        "mission": "Mission to the plant",
+        "updatedAt": "2026-09-14T20:23:05.418Z"
+      },
+      "undoable": true,
+      "undone": false
+    },
+    {
       "id": "log-000764",
       "at": "2026-09-14T20:18:56.186Z",
       "userId": "Serge.Muakasa",
@@ -85822,5 +85852,5 @@
       }
     }
   ],
-  "nextSeq": 765
+  "nextSeq": 766
 }
