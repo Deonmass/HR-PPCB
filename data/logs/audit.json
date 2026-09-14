@@ -1,6 +1,36 @@
 {
   "entries": [
     {
+      "id": "log-000778",
+      "at": "2026-09-14T20:37:54.654Z",
+      "userId": "Serge.Muakasa",
+      "userName": "Serge Muakasa",
+      "userEmail": "Serge.Muakasa@ppcdrc.cd",
+      "module": "guest-house",
+      "moduleLabel": "Guest house",
+      "action": "create",
+      "actionLabel": "Création",
+      "entityType": "guest-house.reservation",
+      "entityId": "759e3096-4968-4276-87bb-3bb5ec7af644",
+      "summary": "Création réservation Joel Moke",
+      "details": "Création réservation Joel Moke",
+      "after": {
+        "id": "759e3096-4968-4276-87bb-3bb5ec7af644",
+        "numero": "GH-2026-4405",
+        "createdAt": "2026-09-14T20:37:50.916Z",
+        "personName": "Joel Moke",
+        "isAgent": false,
+        "motif": "Mission to the plant",
+        "startDate": "2026-09-08",
+        "endDate": "2026-09-08",
+        "status": "pending",
+        "mission": "Mission to the plant",
+        "updatedAt": "2026-09-14T20:37:50.916Z"
+      },
+      "undoable": true,
+      "undone": false
+    },
+    {
       "id": "log-000777",
       "at": "2026-09-14T20:35:46.190Z",
       "userId": "Serge.Muakasa",
@@ -86298,5 +86328,5 @@
       }
     }
   ],
-  "nextSeq": 778
+  "nextSeq": 779
 }
