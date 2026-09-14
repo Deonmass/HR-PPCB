@@ -724,9 +724,10 @@
       "motif": "Mission to the plant",
       "startDate": "2026-09-07",
       "endDate": "2026-09-09",
-      "status": "pending",
+      "roomId": "3d273d81-0642-4fac-b424-a54146ad7acc",
+      "status": "confirmed",
       "mission": "Mission to the plant",
-      "updatedAt": "2026-09-14T20:27:49.616Z"
+      "updatedAt": "2026-09-14T20:28:24.209Z"
     },
     {
       "id": "d98fbdf3-a669-4032-8bcb-5c9bd25b3f95",
@@ -25794,6 +25795,17 @@
     }
   ],
   "passages": [
+    {
+      "id": "44687cb9-404d-4a33-9152-d82273dfe984",
+      "roomId": "3d273d81-0642-4fac-b424-a54146ad7acc",
+      "reservationId": "3c2ec395-63a2-4ce2-80cf-796f54666816",
+      "numero": "GH-2026-4401",
+      "personName": "Pedrola",
+      "motif": "Mission to the plant",
+      "startDate": "2026-09-07",
+      "endDate": "2026-09-09",
+      "checkedInAt": "2026-09-14T20:28:24.209Z"
+    },
     {
       "id": "10a939b8-21fe-4c6a-9519-81125c0c6c9f",
       "roomId": "8b14162d-ae3b-49a5-bcb6-812c2d8d5b5b",
