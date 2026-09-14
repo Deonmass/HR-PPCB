@@ -725,9 +725,10 @@
       "motif": "Mission to the plant",
       "startDate": "2026-09-06",
       "endDate": "2026-09-15",
-      "status": "pending",
+      "roomId": "8b14162d-ae3b-49a5-bcb6-812c2d8d5b5b",
+      "status": "confirmed",
       "mission": "Mission to the plant",
-      "updatedAt": "2026-09-14T20:25:13.515Z"
+      "updatedAt": "2026-09-14T20:25:36.494Z"
     },
     {
       "id": "5983f702-2493-4745-8ca5-f07688fc71e6",
@@ -25780,6 +25781,18 @@
     }
   ],
   "passages": [
+    {
+      "id": "10a939b8-21fe-4c6a-9519-81125c0c6c9f",
+      "roomId": "8b14162d-ae3b-49a5-bcb6-812c2d8d5b5b",
+      "reservationId": "d98fbdf3-a669-4032-8bcb-5c9bd25b3f95",
+      "numero": "GH-2026-4400",
+      "personName": "NDAYA ABELI CARDOSO TANYA",
+      "matricule": "70000200",
+      "motif": "Mission to the plant",
+      "startDate": "2026-09-06",
+      "endDate": "2026-09-15",
+      "checkedInAt": "2026-09-14T20:25:36.494Z"
+    },
     {
       "id": "6469ba00-0119-4535-b473-ff337075f351",
       "roomId": "12ee1ff4-eb03-4592-b1da-589006209e77",
