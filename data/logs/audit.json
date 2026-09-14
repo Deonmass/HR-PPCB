@@ -1,6 +1,42 @@
 {
   "entries": [
     {
+      "id": "log-000720",
+      "at": "2026-09-14T17:40:47.742Z",
+      "userId": "Serge.Muakasa",
+      "userName": "Serge Muakasa",
+      "userEmail": "Serge.Muakasa@ppcdrc.cd",
+      "module": "factures-suivi",
+      "moduleLabel": "Factures suivi",
+      "action": "create",
+      "actionLabel": "Création",
+      "summary": "Création lot de 1 facture(s)",
+      "details": "Création lot de 1 facture(s)",
+      "after": [
+        {
+          "id": "fac-2144",
+          "date": "11/09/2026",
+          "societe": "Flat Hotel Mont Sinai",
+          "facture": "Facture n 090/26",
+          "montant": 100,
+          "echeance": "",
+          "pr": "11197059",
+          "datePr": "",
+          "po": "",
+          "datePo": "",
+          "grn": "",
+          "dateGrn": "",
+          "payment": "",
+          "datePym": "",
+          "commentaire": "Au PR — en attente du PO.",
+          "statut": "unpaid",
+          "statutLabel": "unpaid"
+        }
+      ],
+      "undoable": false,
+      "undone": false
+    },
+    {
       "id": "log-000719",
       "at": "2026-09-14T14:01:17.318Z",
       "userId": "admin",
@@ -84141,5 +84177,5 @@
       }
     }
   ],
-  "nextSeq": 720
+  "nextSeq": 721
 }
