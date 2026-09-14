@@ -1,6 +1,50 @@
 {
   "entries": [
     {
+      "id": "log-000727",
+      "at": "2026-09-14T19:31:34.087Z",
+      "userId": "Serge.Muakasa",
+      "userName": "Serge Muakasa",
+      "userEmail": "Serge.Muakasa@ppcdrc.cd",
+      "module": "guest-house",
+      "moduleLabel": "Guest house",
+      "action": "update",
+      "actionLabel": "Modification",
+      "entityType": "guest-house.reservation",
+      "entityId": "8d6ea9da-ccc4-42f4-9674-e5e75d21b529",
+      "summary": "Statut réservation 8d6ea9da-ccc4-42f4-9674-e5e75d21b529 → confirmed",
+      "details": "Statut réservation 8d6ea9da-ccc4-42f4-9674-e5e75d21b529 → confirmed",
+      "before": {
+        "id": "8d6ea9da-ccc4-42f4-9674-e5e75d21b529",
+        "numero": "GH-2026-4386",
+        "createdAt": "2026-09-14T19:30:53.797Z",
+        "personName": "Amidou - Engineering",
+        "isAgent": false,
+        "motif": "Mission to the plant",
+        "startDate": "2026-09-02",
+        "endDate": "2026-09-11",
+        "status": "pending",
+        "mission": "Mission to the plant",
+        "updatedAt": "2026-09-14T19:30:53.797Z"
+      },
+      "after": {
+        "id": "8d6ea9da-ccc4-42f4-9674-e5e75d21b529",
+        "numero": "GH-2026-4386",
+        "createdAt": "2026-09-14T19:30:53.797Z",
+        "personName": "Amidou - Engineering",
+        "isAgent": false,
+        "motif": "Mission to the plant",
+        "startDate": "2026-09-02",
+        "endDate": "2026-09-11",
+        "roomId": "ed91c14e-915f-4d22-971c-fd4bb7feb33e",
+        "status": "confirmed",
+        "mission": "Mission to the plant",
+        "updatedAt": "2026-09-14T19:31:29.998Z"
+      },
+      "undoable": true,
+      "undone": false
+    },
+    {
       "id": "log-000726",
       "at": "2026-09-14T19:30:57.630Z",
       "userId": "Serge.Muakasa",
@@ -84358,5 +84402,5 @@
       }
     }
   ],
-  "nextSeq": 727
+  "nextSeq": 728
 }
