@@ -1,6 +1,49 @@
 {
   "entries": [
     {
+      "id": "log-000783",
+      "at": "2026-09-14T20:40:56.761Z",
+      "userId": "Serge.Muakasa",
+      "userName": "Serge Muakasa",
+      "userEmail": "Serge.Muakasa@ppcdrc.cd",
+      "module": "guest-house",
+      "moduleLabel": "Guest house",
+      "action": "update",
+      "actionLabel": "Modification",
+      "entityType": "guest-house.reservation",
+      "entityId": "d888bc7a-301a-44d9-98ab-c15db5ebf1e2",
+      "summary": "Statut réservation d888bc7a-301a-44d9-98ab-c15db5ebf1e2 → rejected",
+      "details": "Statut réservation d888bc7a-301a-44d9-98ab-c15db5ebf1e2 → rejected",
+      "before": {
+        "id": "d888bc7a-301a-44d9-98ab-c15db5ebf1e2",
+        "numero": "GH-2026-4384",
+        "createdAt": "2026-09-09T07:12:59.563Z",
+        "personName": "TSASA NKONGO PAUL",
+        "matricule": "70000144",
+        "isAgent": true,
+        "motif": "Mission to the plant",
+        "startDate": "2026-09-23",
+        "endDate": "2026-09-24",
+        "status": "pending",
+        "updatedAt": "2026-09-09T07:12:59.563Z"
+      },
+      "after": {
+        "id": "d888bc7a-301a-44d9-98ab-c15db5ebf1e2",
+        "numero": "GH-2026-4384",
+        "createdAt": "2026-09-09T07:12:59.563Z",
+        "personName": "TSASA NKONGO PAUL",
+        "matricule": "70000144",
+        "isAgent": true,
+        "motif": "Mission to the plant",
+        "startDate": "2026-09-23",
+        "endDate": "2026-09-24",
+        "status": "rejected",
+        "updatedAt": "2026-09-14T20:40:53.753Z"
+      },
+      "undoable": true,
+      "undone": false
+    },
+    {
       "id": "log-000782",
       "at": "2026-09-14T20:40:28.219Z",
       "userId": "Serge.Muakasa",
@@ -86494,5 +86537,5 @@
       }
     }
   ],
-  "nextSeq": 783
+  "nextSeq": 784
 }
