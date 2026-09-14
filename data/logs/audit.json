@@ -1,6 +1,36 @@
 {
   "entries": [
     {
+      "id": "log-000763",
+      "at": "2026-09-14T20:18:33.011Z",
+      "userId": "Serge.Muakasa",
+      "userName": "Serge Muakasa",
+      "userEmail": "Serge.Muakasa@ppcdrc.cd",
+      "module": "guest-house",
+      "moduleLabel": "Guest house",
+      "action": "create",
+      "actionLabel": "Création",
+      "entityType": "guest-house.reservation",
+      "entityId": "ab805e96-ad9c-492e-bf23-3062cc3cbbcd",
+      "summary": "Création réservation CEO ORC",
+      "details": "Création réservation CEO ORC",
+      "after": {
+        "id": "ab805e96-ad9c-492e-bf23-3062cc3cbbcd",
+        "numero": "GH-2026-4398",
+        "createdAt": "2026-09-14T20:18:29.349Z",
+        "personName": "CEO ORC",
+        "isAgent": false,
+        "motif": "Mission to the plant",
+        "startDate": "2026-09-03",
+        "endDate": "2026-09-09",
+        "status": "pending",
+        "mission": "Mission to the plant",
+        "updatedAt": "2026-09-14T20:18:29.349Z"
+      },
+      "undoable": true,
+      "undone": false
+    },
+    {
       "id": "log-000762",
       "at": "2026-09-14T20:16:48.065Z",
       "userId": "Serge.Muakasa",
@@ -85748,5 +85778,5 @@
       }
     }
   ],
-  "nextSeq": 763
+  "nextSeq": 764
 }
