@@ -1,6 +1,36 @@
 {
   "entries": [
     {
+      "id": "log-000723",
+      "at": "2026-09-14T19:24:26.114Z",
+      "userId": "Serge.Muakasa",
+      "userName": "Serge Muakasa",
+      "userEmail": "Serge.Muakasa@ppcdrc.cd",
+      "module": "guest-house",
+      "moduleLabel": "Guest house",
+      "action": "create",
+      "actionLabel": "Création",
+      "entityType": "guest-house.reservation",
+      "entityId": "873696e5-aaaa-4789-994f-bbecf4cfff60",
+      "summary": "Création réservation Francois du bois",
+      "details": "Création réservation Francois du bois",
+      "after": {
+        "id": "873696e5-aaaa-4789-994f-bbecf4cfff60",
+        "numero": "GH-2026-4385",
+        "createdAt": "2026-09-14T19:24:22.531Z",
+        "personName": "Francois du bois",
+        "isAgent": false,
+        "motif": "Garage Maintenance Mobile Equipment",
+        "startDate": "2026-09-01",
+        "endDate": "2026-09-20",
+        "status": "pending",
+        "mission": "Garage Maintenance Mobile Equipment",
+        "updatedAt": "2026-09-14T19:24:22.531Z"
+      },
+      "undoable": true,
+      "undone": false
+    },
+    {
       "id": "log-000722",
       "at": "2026-09-14T19:19:10.809Z",
       "userId": "Serge.Muakasa",
@@ -84207,5 +84237,5 @@
       }
     }
   ],
-  "nextSeq": 723
+  "nextSeq": 724
 }
