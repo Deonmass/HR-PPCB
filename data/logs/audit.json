@@ -1,6 +1,50 @@
 {
   "entries": [
     {
+      "id": "log-000779",
+      "at": "2026-09-14T20:38:31.891Z",
+      "userId": "Serge.Muakasa",
+      "userName": "Serge Muakasa",
+      "userEmail": "Serge.Muakasa@ppcdrc.cd",
+      "module": "guest-house",
+      "moduleLabel": "Guest house",
+      "action": "update",
+      "actionLabel": "Modification",
+      "entityType": "guest-house.reservation",
+      "entityId": "759e3096-4968-4276-87bb-3bb5ec7af644",
+      "summary": "Statut réservation 759e3096-4968-4276-87bb-3bb5ec7af644 → confirmed",
+      "details": "Statut réservation 759e3096-4968-4276-87bb-3bb5ec7af644 → confirmed",
+      "before": {
+        "id": "759e3096-4968-4276-87bb-3bb5ec7af644",
+        "numero": "GH-2026-4405",
+        "createdAt": "2026-09-14T20:37:50.916Z",
+        "personName": "Joel Moke",
+        "isAgent": false,
+        "motif": "Mission to the plant",
+        "startDate": "2026-09-08",
+        "endDate": "2026-09-08",
+        "status": "pending",
+        "mission": "Mission to the plant",
+        "updatedAt": "2026-09-14T20:37:50.916Z"
+      },
+      "after": {
+        "id": "759e3096-4968-4276-87bb-3bb5ec7af644",
+        "numero": "GH-2026-4405",
+        "createdAt": "2026-09-14T20:37:50.916Z",
+        "personName": "Joel Moke",
+        "isAgent": false,
+        "motif": "Mission to the plant",
+        "startDate": "2026-09-08",
+        "endDate": "2026-09-08",
+        "roomId": "2ef11cfa-1396-4c82-ac99-85b12d6093be",
+        "status": "confirmed",
+        "mission": "Mission to the plant",
+        "updatedAt": "2026-09-14T20:38:29.123Z"
+      },
+      "undoable": true,
+      "undone": false
+    },
+    {
       "id": "log-000778",
       "at": "2026-09-14T20:37:54.654Z",
       "userId": "Serge.Muakasa",
@@ -86328,5 +86372,5 @@
       }
     }
   ],
-  "nextSeq": 779
+  "nextSeq": 780
 }
