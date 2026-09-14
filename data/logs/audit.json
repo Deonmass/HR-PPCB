@@ -1,6 +1,53 @@
 {
   "entries": [
     {
+      "id": "log-000747",
+      "at": "2026-09-14T19:58:19.267Z",
+      "userId": "Serge.Muakasa",
+      "userName": "Serge Muakasa",
+      "userEmail": "Serge.Muakasa@ppcdrc.cd",
+      "module": "guest-house",
+      "moduleLabel": "Guest house",
+      "action": "update",
+      "actionLabel": "Modification",
+      "entityType": "guest-house.reservation",
+      "entityId": "0ce87037-06f9-4059-b341-ea825f339550",
+      "summary": "Modification réservation 0ce87037-06f9-4059-b341-ea825f339550",
+      "details": "Modification réservation 0ce87037-06f9-4059-b341-ea825f339550",
+      "before": {
+        "id": "0ce87037-06f9-4059-b341-ea825f339550",
+        "numero": "GH-2026-4361",
+        "createdAt": "2026-08-26T10:19:06.397Z",
+        "personName": "Felly Pongo",
+        "isAgent": false,
+        "motif": "Blasting mission to the plant",
+        "startDate": "2026-08-28",
+        "endDate": "2026-09-30",
+        "roomId": "2ef11cfa-1396-4c82-ac99-85b12d6093be",
+        "status": "confirmed",
+        "company": "AEL",
+        "mission": "Blasting mission to the plant",
+        "updatedAt": "2026-08-26T10:19:41.770Z"
+      },
+      "after": {
+        "id": "0ce87037-06f9-4059-b341-ea825f339550",
+        "numero": "GH-2026-4361",
+        "createdAt": "2026-08-26T10:19:06.397Z",
+        "personName": "Felly Pongo",
+        "isAgent": false,
+        "motif": "Blasting mission to the plant",
+        "startDate": "2026-08-28",
+        "endDate": "2026-09-04",
+        "roomId": "2ef11cfa-1396-4c82-ac99-85b12d6093be",
+        "status": "confirmed",
+        "company": "AEL",
+        "mission": "Blasting mission to the plant",
+        "updatedAt": "2026-09-14T19:58:15.618Z"
+      },
+      "undoable": true,
+      "undone": false
+    },
+    {
       "id": "log-000746",
       "at": "2026-09-14T19:57:32.640Z",
       "userId": "Serge.Muakasa",
@@ -85128,5 +85175,5 @@
       }
     }
   ],
-  "nextSeq": 747
+  "nextSeq": 748
 }
