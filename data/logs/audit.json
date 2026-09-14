@@ -1,6 +1,38 @@
 {
   "entries": [
     {
+      "id": "log-000735",
+      "at": "2026-09-14T19:45:34.206Z",
+      "userId": "Serge.Muakasa",
+      "userName": "Serge Muakasa",
+      "userEmail": "Serge.Muakasa@ppcdrc.cd",
+      "module": "guest-house",
+      "moduleLabel": "Guest house",
+      "action": "delete",
+      "actionLabel": "Suppression",
+      "entityType": "guest-house.reservation",
+      "entityId": "fb614cda-9e49-4847-a0c3-67c0d9175434",
+      "summary": "Suppression réservation fb614cda-9e49-4847-a0c3-67c0d9175434",
+      "details": "Suppression réservation fb614cda-9e49-4847-a0c3-67c0d9175434",
+      "before": {
+        "id": "fb614cda-9e49-4847-a0c3-67c0d9175434",
+        "numero": "GH-2026-4364",
+        "createdAt": "2026-08-26T10:23:57.152Z",
+        "personName": "Sud African",
+        "isAgent": false,
+        "motif": "Repair drilling machine",
+        "startDate": "2026-08-31",
+        "endDate": "2026-08-31",
+        "roomId": "4e4bd694-e96e-4748-a98a-882d842f616e",
+        "status": "confirmed",
+        "mission": "Repair drilling machine",
+        "updatedAt": "2026-09-14T19:42:28.785Z"
+      },
+      "after": null,
+      "undoable": true,
+      "undone": false
+    },
+    {
       "id": "log-000734",
       "at": "2026-09-14T19:44:00.399Z",
       "userId": "Serge.Muakasa",
@@ -84654,5 +84686,5 @@
       }
     }
   ],
-  "nextSeq": 735
+  "nextSeq": 736
 }
