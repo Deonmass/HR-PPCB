@@ -1,6 +1,38 @@
 {
   "entries": [
     {
+      "id": "log-000752",
+      "at": "2026-09-14T20:02:42.116Z",
+      "userId": "Serge.Muakasa",
+      "userName": "Serge Muakasa",
+      "userEmail": "Serge.Muakasa@ppcdrc.cd",
+      "module": "guest-house",
+      "moduleLabel": "Guest house",
+      "action": "delete",
+      "actionLabel": "Suppression",
+      "entityType": "guest-house.reservation",
+      "entityId": "8f0400db-b836-4ceb-a196-95616a47a4e7",
+      "summary": "Suppression réservation 8f0400db-b836-4ceb-a196-95616a47a4e7",
+      "details": "Suppression réservation 8f0400db-b836-4ceb-a196-95616a47a4e7",
+      "before": {
+        "id": "8f0400db-b836-4ceb-a196-95616a47a4e7",
+        "numero": "GH-2026-4393",
+        "createdAt": "2026-09-14T19:59:29.906Z",
+        "personName": "Sud African",
+        "isAgent": false,
+        "motif": "Mission to the plant",
+        "startDate": "2026-09-01",
+        "endDate": "2026-09-12",
+        "roomId": "85c3d598-623c-402f-9053-e43840e24325",
+        "status": "confirmed",
+        "mission": "Mission to the plant",
+        "updatedAt": "2026-09-14T20:01:53.680Z"
+      },
+      "after": null,
+      "undoable": true,
+      "undone": false
+    },
+    {
       "id": "log-000751",
       "at": "2026-09-14T20:01:57.454Z",
       "userId": "Serge.Muakasa",
@@ -85326,5 +85358,5 @@
       }
     }
   ],
-  "nextSeq": 752
+  "nextSeq": 753
 }
