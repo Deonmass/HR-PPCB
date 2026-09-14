@@ -1,6 +1,52 @@
 {
   "entries": [
     {
+      "id": "log-000802",
+      "at": "2026-09-14T20:59:49.342Z",
+      "userId": "Serge.Muakasa",
+      "userName": "Serge Muakasa",
+      "userEmail": "Serge.Muakasa@ppcdrc.cd",
+      "module": "guest-house",
+      "moduleLabel": "Guest house",
+      "action": "update",
+      "actionLabel": "Modification",
+      "entityType": "guest-house.reservation",
+      "entityId": "3bd6b447-6a5c-4efe-b4a3-b64b7d0bdc8e",
+      "summary": "Statut réservation 3bd6b447-6a5c-4efe-b4a3-b64b7d0bdc8e → confirmed",
+      "details": "Statut réservation 3bd6b447-6a5c-4efe-b4a3-b64b7d0bdc8e → confirmed",
+      "before": {
+        "id": "3bd6b447-6a5c-4efe-b4a3-b64b7d0bdc8e",
+        "numero": "GH-2026-4414",
+        "createdAt": "2026-09-14T20:59:23.209Z",
+        "personName": "KITUMAINI NASHI ELODIE",
+        "matricule": "70000285",
+        "isAgent": true,
+        "motif": "Induction mission to the plant",
+        "startDate": "2026-09-13",
+        "endDate": "2026-09-17",
+        "status": "pending",
+        "mission": "induction mission to the plant",
+        "updatedAt": "2026-09-14T20:59:23.209Z"
+      },
+      "after": {
+        "id": "3bd6b447-6a5c-4efe-b4a3-b64b7d0bdc8e",
+        "numero": "GH-2026-4414",
+        "createdAt": "2026-09-14T20:59:23.209Z",
+        "personName": "KITUMAINI NASHI ELODIE",
+        "matricule": "70000285",
+        "isAgent": true,
+        "motif": "Induction mission to the plant",
+        "startDate": "2026-09-13",
+        "endDate": "2026-09-17",
+        "roomId": "e49a08a4-e1db-4824-b8f6-48f1c30c0346",
+        "status": "confirmed",
+        "mission": "induction mission to the plant",
+        "updatedAt": "2026-09-14T20:59:46.330Z"
+      },
+      "undoable": true,
+      "undone": false
+    },
+    {
       "id": "log-000801",
       "at": "2026-09-14T20:59:26.026Z",
       "userId": "Serge.Muakasa",
@@ -87209,5 +87255,5 @@
       }
     }
   ],
-  "nextSeq": 802
+  "nextSeq": 803
 }
