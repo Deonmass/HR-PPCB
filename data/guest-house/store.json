@@ -716,6 +716,19 @@
   ],
   "reservations": [
     {
+      "id": "96581bba-50aa-4aed-9583-11b28e68b5b3",
+      "numero": "GH-2026-4402",
+      "createdAt": "2026-09-14T20:29:33.064Z",
+      "personName": "Amidou",
+      "isAgent": false,
+      "motif": "Mission to the plant",
+      "startDate": "2026-09-07",
+      "endDate": "2026-09-12",
+      "status": "pending",
+      "mission": "Mission to the plant",
+      "updatedAt": "2026-09-14T20:29:33.064Z"
+    },
+    {
       "id": "3c2ec395-63a2-4ce2-80cf-796f54666816",
       "numero": "GH-2026-4401",
       "createdAt": "2026-09-14T20:27:49.616Z",
@@ -43646,5 +43659,5 @@
       "checkedOutAt": "2025-09-24T12:00:00.000Z"
     }
   ],
-  "nextReservationSeq": 4402
+  "nextReservationSeq": 4403
 }
