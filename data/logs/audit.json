@@ -1,6 +1,36 @@
 {
   "entries": [
     {
+      "id": "log-000769",
+      "at": "2026-09-14T20:27:54.043Z",
+      "userId": "Serge.Muakasa",
+      "userName": "Serge Muakasa",
+      "userEmail": "Serge.Muakasa@ppcdrc.cd",
+      "module": "guest-house",
+      "moduleLabel": "Guest house",
+      "action": "create",
+      "actionLabel": "Création",
+      "entityType": "guest-house.reservation",
+      "entityId": "3c2ec395-63a2-4ce2-80cf-796f54666816",
+      "summary": "Création réservation Pedrola",
+      "details": "Création réservation Pedrola",
+      "after": {
+        "id": "3c2ec395-63a2-4ce2-80cf-796f54666816",
+        "numero": "GH-2026-4401",
+        "createdAt": "2026-09-14T20:27:49.616Z",
+        "personName": "Pedrola",
+        "isAgent": false,
+        "motif": "Mission to the plant",
+        "startDate": "2026-09-07",
+        "endDate": "2026-09-09",
+        "status": "pending",
+        "mission": "Mission to the plant",
+        "updatedAt": "2026-09-14T20:27:49.616Z"
+      },
+      "undoable": true,
+      "undone": false
+    },
+    {
       "id": "log-000768",
       "at": "2026-09-14T20:25:39.600Z",
       "userId": "Serge.Muakasa",
@@ -85973,5 +86003,5 @@
       }
     }
   ],
-  "nextSeq": 769
+  "nextSeq": 770
 }
