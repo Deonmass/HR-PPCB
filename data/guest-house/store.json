@@ -716,6 +716,19 @@
   ],
   "reservations": [
     {
+      "id": "3c2ec395-63a2-4ce2-80cf-796f54666816",
+      "numero": "GH-2026-4401",
+      "createdAt": "2026-09-14T20:27:49.616Z",
+      "personName": "Pedrola",
+      "isAgent": false,
+      "motif": "Mission to the plant",
+      "startDate": "2026-09-07",
+      "endDate": "2026-09-09",
+      "status": "pending",
+      "mission": "Mission to the plant",
+      "updatedAt": "2026-09-14T20:27:49.616Z"
+    },
+    {
       "id": "d98fbdf3-a669-4032-8bcb-5c9bd25b3f95",
       "numero": "GH-2026-4400",
       "createdAt": "2026-09-14T20:25:13.515Z",
@@ -43621,5 +43634,5 @@
       "checkedOutAt": "2025-09-24T12:00:00.000Z"
     }
   ],
-  "nextReservationSeq": 4401
+  "nextReservationSeq": 4402
 }
