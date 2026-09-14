@@ -1,6 +1,37 @@
 {
   "entries": [
     {
+      "id": "log-000730",
+      "at": "2026-09-14T19:36:13.691Z",
+      "userId": "Serge.Muakasa",
+      "userName": "Serge Muakasa",
+      "userEmail": "Serge.Muakasa@ppcdrc.cd",
+      "module": "guest-house",
+      "moduleLabel": "Guest house",
+      "action": "create",
+      "actionLabel": "Création",
+      "entityType": "guest-house.reservation",
+      "entityId": "9e5c5589-ffb9-4f28-9689-1db9f540eb57",
+      "summary": "Création réservation BILONDA KAZADI DIANE",
+      "details": "Création réservation BILONDA KAZADI DIANE",
+      "after": {
+        "id": "9e5c5589-ffb9-4f28-9689-1db9f540eb57",
+        "numero": "GH-2026-4388",
+        "createdAt": "2026-09-14T19:36:10.308Z",
+        "personName": "BILONDA KAZADI DIANE",
+        "matricule": "70000045",
+        "isAgent": true,
+        "motif": "Mont Crystal challenge",
+        "startDate": "2026-08-28",
+        "endDate": "2026-08-30",
+        "status": "pending",
+        "mission": "Mont Crystal challenge",
+        "updatedAt": "2026-09-14T19:36:10.308Z"
+      },
+      "undoable": true,
+      "undone": false
+    },
+    {
       "id": "log-000729",
       "at": "2026-09-14T19:33:00.344Z",
       "userId": "Serge.Muakasa",
@@ -84479,5 +84510,5 @@
       }
     }
   ],
-  "nextSeq": 730
+  "nextSeq": 731
 }
