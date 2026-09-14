@@ -1,6 +1,33 @@
 {
   "entries": [
     {
+      "id": "log-000719",
+      "at": "2026-09-14T14:01:17.318Z",
+      "userId": "admin",
+      "userName": "Administrateur",
+      "module": "timesheet.overtimes",
+      "moduleLabel": "Timesheet — Heures sup.",
+      "action": "import",
+      "actionLabel": "Import",
+      "summary": "Import HS bulk semaine 4",
+      "details": "Import HS bulk semaine 4",
+      "after": {
+        "results": [
+          {
+            "department": "Supply Chain",
+            "status": "imported",
+            "imported": 1,
+            "skipped": 0
+          }
+        ],
+        "importedMatriculeKeys": {},
+        "totalImported": 1,
+        "totalSkipped": 0
+      },
+      "undoable": false,
+      "undone": false
+    },
+    {
       "id": "log-000718",
       "at": "2026-09-14T13:49:05.825Z",
       "userId": "Sosthene.Kamanda@ppcdrc.cd",
@@ -84114,5 +84141,5 @@
       }
     }
   ],
-  "nextSeq": 719
+  "nextSeq": 720
 }
