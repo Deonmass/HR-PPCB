@@ -1,6 +1,50 @@
 {
   "entries": [
     {
+      "id": "log-000742",
+      "at": "2026-09-14T19:54:40.512Z",
+      "userId": "Serge.Muakasa",
+      "userName": "Serge Muakasa",
+      "userEmail": "Serge.Muakasa@ppcdrc.cd",
+      "module": "guest-house",
+      "moduleLabel": "Guest house",
+      "action": "update",
+      "actionLabel": "Modification",
+      "entityType": "guest-house.reservation",
+      "entityId": "6d0d78da-279c-4070-9d84-ecac09d2ebb2",
+      "summary": "Statut réservation 6d0d78da-279c-4070-9d84-ecac09d2ebb2 → confirmed",
+      "details": "Statut réservation 6d0d78da-279c-4070-9d84-ecac09d2ebb2 → confirmed",
+      "before": {
+        "id": "6d0d78da-279c-4070-9d84-ecac09d2ebb2",
+        "numero": "GH-2026-4390",
+        "createdAt": "2026-09-14T19:54:14.708Z",
+        "personName": "Bertin Epiroc",
+        "isAgent": false,
+        "motif": "Mission to the plant",
+        "startDate": "2026-09-01",
+        "endDate": "2026-09-02",
+        "status": "pending",
+        "mission": "Mission to the plant",
+        "updatedAt": "2026-09-14T19:54:14.708Z"
+      },
+      "after": {
+        "id": "6d0d78da-279c-4070-9d84-ecac09d2ebb2",
+        "numero": "GH-2026-4390",
+        "createdAt": "2026-09-14T19:54:14.708Z",
+        "personName": "Bertin Epiroc",
+        "isAgent": false,
+        "motif": "Mission to the plant",
+        "startDate": "2026-09-01",
+        "endDate": "2026-09-02",
+        "roomId": "7dbc2817-6744-4ae5-8827-0961bd7aa54a",
+        "status": "confirmed",
+        "mission": "Mission to the plant",
+        "updatedAt": "2026-09-14T19:54:37.393Z"
+      },
+      "undoable": true,
+      "undone": false
+    },
+    {
       "id": "log-000741",
       "at": "2026-09-14T19:54:19.688Z",
       "userId": "Serge.Muakasa",
@@ -84930,5 +84974,5 @@
       }
     }
   ],
-  "nextSeq": 742
+  "nextSeq": 743
 }
