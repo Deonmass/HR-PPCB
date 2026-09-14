@@ -1,6 +1,52 @@
 {
   "entries": [
     {
+      "id": "log-000777",
+      "at": "2026-09-14T20:35:46.190Z",
+      "userId": "Serge.Muakasa",
+      "userName": "Serge Muakasa",
+      "userEmail": "Serge.Muakasa@ppcdrc.cd",
+      "module": "guest-house",
+      "moduleLabel": "Guest house",
+      "action": "update",
+      "actionLabel": "Modification",
+      "entityType": "guest-house.reservation",
+      "entityId": "3f528fd7-1112-42c1-9d6c-61830cdd56a0",
+      "summary": "Statut réservation 3f528fd7-1112-42c1-9d6c-61830cdd56a0 → confirmed",
+      "details": "Statut réservation 3f528fd7-1112-42c1-9d6c-61830cdd56a0 → confirmed",
+      "before": {
+        "id": "3f528fd7-1112-42c1-9d6c-61830cdd56a0",
+        "numero": "GH-2026-4404",
+        "createdAt": "2026-09-14T20:35:19.640Z",
+        "personName": "MOLA BOIKA OLIVIER",
+        "matricule": "70000253",
+        "isAgent": true,
+        "motif": "Mission to the plant",
+        "startDate": "2026-09-08",
+        "endDate": "2026-09-11",
+        "status": "pending",
+        "mission": "Mission to the plant",
+        "updatedAt": "2026-09-14T20:35:19.640Z"
+      },
+      "after": {
+        "id": "3f528fd7-1112-42c1-9d6c-61830cdd56a0",
+        "numero": "GH-2026-4404",
+        "createdAt": "2026-09-14T20:35:19.640Z",
+        "personName": "MOLA BOIKA OLIVIER",
+        "matricule": "70000253",
+        "isAgent": true,
+        "motif": "Mission to the plant",
+        "startDate": "2026-09-08",
+        "endDate": "2026-09-11",
+        "roomId": "3219d898-ff74-496c-a62e-2295012276ae",
+        "status": "confirmed",
+        "mission": "Mission to the plant",
+        "updatedAt": "2026-09-14T20:35:43.174Z"
+      },
+      "undoable": true,
+      "undone": false
+    },
+    {
       "id": "log-000776",
       "at": "2026-09-14T20:35:23.474Z",
       "userId": "Serge.Muakasa",
@@ -86252,5 +86298,5 @@
       }
     }
   ],
-  "nextSeq": 777
+  "nextSeq": 778
 }
