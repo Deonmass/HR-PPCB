@@ -1,6 +1,40 @@
 {
   "entries": [
     {
+      "id": "log-000715",
+      "at": "2026-09-14T12:17:25.996Z",
+      "userId": "admin",
+      "userName": "Administrateur",
+      "module": "settings.utilisateurs",
+      "moduleLabel": "Paramètres — Utilisateurs",
+      "action": "create",
+      "actionLabel": "Création",
+      "entityType": "auth.user",
+      "entityId": "Sosthene.Kamanda@ppcdrc.cd",
+      "summary": "Création utilisateur Sosthene Kamanda",
+      "details": "Création utilisateur Sosthene Kamanda",
+      "after": {
+        "id": "Sosthene.Kamanda@ppcdrc.cd",
+        "username": "Sosthene.Kamanda@ppcdrc.cd",
+        "displayName": "Sosthene Kamanda",
+        "initials": "SK",
+        "email": "Sosthene.Kamanda@ppcdrc.cd",
+        "matricule": "70000210",
+        "linkedEmployee": {
+          "matricule": "70000210",
+          "nom": "KAMANDA NYOMBA SOSTHENE",
+          "departement": "Quality Assurance",
+          "grade": "C2",
+          "jobTitle": "Senior Lab Analyst",
+          "localisation": "Zamba"
+        },
+        "active": true,
+        "createdAt": "2026-09-14T12:17:22.617Z"
+      },
+      "undoable": true,
+      "undone": false
+    },
+    {
       "id": "log-000714",
       "at": "2026-09-11T07:58:25.316Z",
       "userId": "Serge.Muakasa",
@@ -80423,5 +80457,5 @@
       }
     }
   ],
-  "nextSeq": 715
+  "nextSeq": 716
 }
