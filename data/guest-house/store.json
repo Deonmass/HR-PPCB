@@ -716,6 +716,19 @@
   ],
   "reservations": [
     {
+      "id": "22aa8d68-77b9-4b31-8edf-8014abfc535d",
+      "numero": "GH-2026-4394",
+      "createdAt": "2026-09-14T20:04:24.084Z",
+      "personName": "Sud Africain",
+      "isAgent": false,
+      "motif": "Mission to the plant",
+      "startDate": "2026-09-01",
+      "endDate": "2026-09-12",
+      "status": "pending",
+      "mission": "Mission to the plant",
+      "updatedAt": "2026-09-14T20:04:24.084Z"
+    },
+    {
       "id": "031640ad-e5e0-4bbe-90c9-3b19ab995aa1",
       "numero": "GH-2026-4392",
       "createdAt": "2026-09-14T19:57:03.797Z",
@@ -43444,5 +43457,5 @@
       "checkedOutAt": "2025-09-24T12:00:00.000Z"
     }
   ],
-  "nextReservationSeq": 4394
+  "nextReservationSeq": 4395
 }
