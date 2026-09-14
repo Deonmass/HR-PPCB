@@ -1,6 +1,52 @@
 {
   "entries": [
     {
+      "id": "log-000785",
+      "at": "2026-09-14T20:43:06.559Z",
+      "userId": "Serge.Muakasa",
+      "userName": "Serge Muakasa",
+      "userEmail": "Serge.Muakasa@ppcdrc.cd",
+      "module": "guest-house",
+      "moduleLabel": "Guest house",
+      "action": "update",
+      "actionLabel": "Modification",
+      "entityType": "guest-house.reservation",
+      "entityId": "f23ebc04-94fe-4062-a514-1e0228c53b28",
+      "summary": "Statut réservation f23ebc04-94fe-4062-a514-1e0228c53b28 → confirmed",
+      "details": "Statut réservation f23ebc04-94fe-4062-a514-1e0228c53b28 → confirmed",
+      "before": {
+        "id": "f23ebc04-94fe-4062-a514-1e0228c53b28",
+        "numero": "GH-2026-4407",
+        "createdAt": "2026-09-14T20:42:43.904Z",
+        "personName": "KABAMBA MUTUNGILAYI GERVAIS",
+        "matricule": "70000178",
+        "isAgent": true,
+        "motif": "Visit Expot Beton Laureat",
+        "startDate": "2026-09-09",
+        "endDate": "2026-09-12",
+        "status": "pending",
+        "mission": "Visit Expot Beton Laureat",
+        "updatedAt": "2026-09-14T20:42:43.904Z"
+      },
+      "after": {
+        "id": "f23ebc04-94fe-4062-a514-1e0228c53b28",
+        "numero": "GH-2026-4407",
+        "createdAt": "2026-09-14T20:42:43.904Z",
+        "personName": "KABAMBA MUTUNGILAYI GERVAIS",
+        "matricule": "70000178",
+        "isAgent": true,
+        "motif": "Visit Expot Beton Laureat",
+        "startDate": "2026-09-09",
+        "endDate": "2026-09-12",
+        "roomId": "2ef11cfa-1396-4c82-ac99-85b12d6093be",
+        "status": "confirmed",
+        "mission": "Visit Expot Beton Laureat",
+        "updatedAt": "2026-09-14T20:43:03.200Z"
+      },
+      "undoable": true,
+      "undone": false
+    },
+    {
       "id": "log-000784",
       "at": "2026-09-14T20:42:46.872Z",
       "userId": "Serge.Muakasa",
@@ -86568,5 +86614,5 @@
       }
     }
   ],
-  "nextSeq": 785
+  "nextSeq": 786
 }
