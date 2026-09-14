@@ -1058,20 +1058,6 @@
       "updatedAt": "2026-08-26T10:39:45.762Z"
     },
     {
-      "id": "291fd862-0fa0-4842-a978-6accce1caf69",
-      "numero": "GH-2026-4368",
-      "createdAt": "2026-08-26T10:30:09.143Z",
-      "personName": "Epiroc",
-      "isAgent": false,
-      "motif": "Mission to the plant",
-      "startDate": "2026-08-29",
-      "endDate": "2026-09-05",
-      "roomId": "d9ec3499-ad6d-4215-8ef9-c20a4f6b1714",
-      "status": "confirmed",
-      "mission": "Mission to the plant with Plant team",
-      "updatedAt": "2026-08-26T10:30:36.906Z"
-    },
-    {
       "id": "982fe459-414b-4f49-9eff-0f93f34e9679",
       "numero": "GH-2026-4367",
       "createdAt": "2026-08-26T10:28:33.241Z",
