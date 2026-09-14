@@ -1,6 +1,50 @@
 {
   "entries": [
     {
+      "id": "log-000775",
+      "at": "2026-09-14T20:32:30.431Z",
+      "userId": "Serge.Muakasa",
+      "userName": "Serge Muakasa",
+      "userEmail": "Serge.Muakasa@ppcdrc.cd",
+      "module": "guest-house",
+      "moduleLabel": "Guest house",
+      "action": "update",
+      "actionLabel": "Modification",
+      "entityType": "guest-house.reservation",
+      "entityId": "39199ed2-5b3f-448f-af8a-37434dab4989",
+      "summary": "Statut réservation 39199ed2-5b3f-448f-af8a-37434dab4989 → confirmed",
+      "details": "Statut réservation 39199ed2-5b3f-448f-af8a-37434dab4989 → confirmed",
+      "before": {
+        "id": "39199ed2-5b3f-448f-af8a-37434dab4989",
+        "numero": "GH-2026-4403",
+        "createdAt": "2026-09-14T20:32:05.142Z",
+        "personName": "Villawood - l espagnol",
+        "isAgent": false,
+        "motif": "Mission to the plant",
+        "startDate": "2026-09-08",
+        "endDate": "2026-09-09",
+        "status": "pending",
+        "mission": "Mission to the plant",
+        "updatedAt": "2026-09-14T20:32:05.142Z"
+      },
+      "after": {
+        "id": "39199ed2-5b3f-448f-af8a-37434dab4989",
+        "numero": "GH-2026-4403",
+        "createdAt": "2026-09-14T20:32:05.142Z",
+        "personName": "Villawood - l espagnol",
+        "isAgent": false,
+        "motif": "Mission to the plant",
+        "startDate": "2026-09-08",
+        "endDate": "2026-09-09",
+        "roomId": "4e4bd694-e96e-4748-a98a-882d842f616e",
+        "status": "confirmed",
+        "mission": "Mission to the plant",
+        "updatedAt": "2026-09-14T20:32:27.790Z"
+      },
+      "undoable": true,
+      "undone": false
+    },
+    {
       "id": "log-000774",
       "at": "2026-09-14T20:32:08.666Z",
       "userId": "Serge.Muakasa",
@@ -86177,5 +86221,5 @@
       }
     }
   ],
-  "nextSeq": 775
+  "nextSeq": 776
 }
