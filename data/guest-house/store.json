@@ -723,12 +723,12 @@
       "matricule": "70000045",
       "isAgent": true,
       "motif": "Mont Crystal challenge",
-      "startDate": "2026-08-28",
+      "startDate": "2026-08-27",
       "endDate": "2026-08-30",
       "roomId": "4e4bd694-e96e-4748-a98a-882d842f616e",
       "status": "confirmed",
       "mission": "Mont Crystal challenge",
-      "updatedAt": "2026-09-14T19:45:50.287Z"
+      "updatedAt": "2026-09-14T19:49:15.860Z"
     },
     {
       "id": "75bcda3e-b4df-45c7-b657-b1be44ee6ada",
@@ -25646,7 +25646,7 @@
       "personName": "BILONDA KAZADI DIANE",
       "matricule": "70000045",
       "motif": "Mont Crystal challenge",
-      "startDate": "2026-08-28",
+      "startDate": "2026-08-27",
       "endDate": "2026-08-30",
       "checkedInAt": "2026-09-14T19:45:50.287Z"
     },
