@@ -722,13 +722,13 @@
       "personName": "GLODY BENGESHA ELONGO",
       "matricule": "70000313",
       "isAgent": true,
-      "motif": "Mission to the plant",
+      "motif": "Induction mission to the plant",
       "startDate": "2026-09-13",
       "endDate": "2026-09-17",
       "roomId": "d9ec3499-ad6d-4215-8ef9-c20a4f6b1714",
       "status": "confirmed",
-      "mission": "Mission to the plant",
-      "updatedAt": "2026-09-14T20:58:02.723Z"
+      "mission": "induction mission to the plant",
+      "updatedAt": "2026-09-14T20:58:50.449Z"
     },
     {
       "id": "6516a6e5-0241-4d36-89ef-0ee0e0ac887c",
@@ -25973,7 +25973,7 @@
       "numero": "GH-2026-4413",
       "personName": "GLODY BENGESHA ELONGO",
       "matricule": "70000313",
-      "motif": "Mission to the plant",
+      "motif": "Induction mission to the plant",
       "startDate": "2026-09-13",
       "endDate": "2026-09-17",
       "checkedInAt": "2026-09-14T20:58:02.723Z"
