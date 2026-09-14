@@ -1,6 +1,50 @@
 {
   "entries": [
     {
+      "id": "log-000724",
+      "at": "2026-09-14T19:24:54.518Z",
+      "userId": "Serge.Muakasa",
+      "userName": "Serge Muakasa",
+      "userEmail": "Serge.Muakasa@ppcdrc.cd",
+      "module": "guest-house",
+      "moduleLabel": "Guest house",
+      "action": "update",
+      "actionLabel": "Modification",
+      "entityType": "guest-house.reservation",
+      "entityId": "873696e5-aaaa-4789-994f-bbecf4cfff60",
+      "summary": "Statut réservation 873696e5-aaaa-4789-994f-bbecf4cfff60 → confirmed",
+      "details": "Statut réservation 873696e5-aaaa-4789-994f-bbecf4cfff60 → confirmed",
+      "before": {
+        "id": "873696e5-aaaa-4789-994f-bbecf4cfff60",
+        "numero": "GH-2026-4385",
+        "createdAt": "2026-09-14T19:24:22.531Z",
+        "personName": "Francois du bois",
+        "isAgent": false,
+        "motif": "Garage Maintenance Mobile Equipment",
+        "startDate": "2026-09-01",
+        "endDate": "2026-09-20",
+        "status": "pending",
+        "mission": "Garage Maintenance Mobile Equipment",
+        "updatedAt": "2026-09-14T19:24:22.531Z"
+      },
+      "after": {
+        "id": "873696e5-aaaa-4789-994f-bbecf4cfff60",
+        "numero": "GH-2026-4385",
+        "createdAt": "2026-09-14T19:24:22.531Z",
+        "personName": "Francois du bois",
+        "isAgent": false,
+        "motif": "Garage Maintenance Mobile Equipment",
+        "startDate": "2026-09-01",
+        "endDate": "2026-09-20",
+        "roomId": "873277c8-cfe8-4e40-af16-61f1a3f4c273",
+        "status": "confirmed",
+        "mission": "Garage Maintenance Mobile Equipment",
+        "updatedAt": "2026-09-14T19:24:50.588Z"
+      },
+      "undoable": true,
+      "undone": false
+    },
+    {
       "id": "log-000723",
       "at": "2026-09-14T19:24:26.114Z",
       "userId": "Serge.Muakasa",
@@ -84237,5 +84281,5 @@
       }
     }
   ],
-  "nextSeq": 724
+  "nextSeq": 725
 }
