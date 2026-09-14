@@ -716,6 +716,19 @@
   ],
   "reservations": [
     {
+      "id": "ab805e96-ad9c-492e-bf23-3062cc3cbbcd",
+      "numero": "GH-2026-4398",
+      "createdAt": "2026-09-14T20:18:29.349Z",
+      "personName": "CEO ORC",
+      "isAgent": false,
+      "motif": "Mission to the plant",
+      "startDate": "2026-09-03",
+      "endDate": "2026-09-09",
+      "status": "pending",
+      "mission": "Mission to the plant",
+      "updatedAt": "2026-09-14T20:18:29.349Z"
+    },
+    {
       "id": "b667e532-a2f5-4e63-b92b-b5d9ddc7f28c",
       "numero": "GH-2026-4397",
       "createdAt": "2026-09-14T20:16:23.235Z",
@@ -43544,5 +43557,5 @@
       "checkedOutAt": "2025-09-24T12:00:00.000Z"
     }
   ],
-  "nextReservationSeq": 4398
+  "nextReservationSeq": 4399
 }
