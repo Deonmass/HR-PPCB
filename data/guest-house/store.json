@@ -724,9 +724,10 @@
       "motif": "Mission to the plant",
       "startDate": "2026-09-08",
       "endDate": "2026-09-08",
-      "status": "pending",
+      "roomId": "2ef11cfa-1396-4c82-ac99-85b12d6093be",
+      "status": "confirmed",
       "mission": "Mission to the plant",
-      "updatedAt": "2026-09-14T20:37:50.916Z"
+      "updatedAt": "2026-09-14T20:38:29.123Z"
     },
     {
       "id": "3f528fd7-1112-42c1-9d6c-61830cdd56a0",
@@ -25850,6 +25851,17 @@
     }
   ],
   "passages": [
+    {
+      "id": "47293713-ae8e-4012-a154-45d587570557",
+      "roomId": "2ef11cfa-1396-4c82-ac99-85b12d6093be",
+      "reservationId": "759e3096-4968-4276-87bb-3bb5ec7af644",
+      "numero": "GH-2026-4405",
+      "personName": "Joel Moke",
+      "motif": "Mission to the plant",
+      "startDate": "2026-09-08",
+      "endDate": "2026-09-08",
+      "checkedInAt": "2026-09-14T20:38:29.123Z"
+    },
     {
       "id": "043687cc-1ff3-4dc1-a137-a205570cd297",
       "roomId": "3219d898-ff74-496c-a62e-2295012276ae",
