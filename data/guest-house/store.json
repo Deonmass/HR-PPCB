@@ -738,12 +738,12 @@
       "matricule": "70000177",
       "isAgent": true,
       "motif": "Mission to the plant",
-      "startDate": "2026-09-02",
+      "startDate": "2026-09-01",
       "endDate": "2026-09-04",
       "roomId": "4e4bd694-e96e-4748-a98a-882d842f616e",
       "status": "confirmed",
       "mission": "Mission to the plant",
-      "updatedAt": "2026-09-14T19:32:57.118Z"
+      "updatedAt": "2026-09-14T19:49:45.353Z"
     },
     {
       "id": "8d6ea9da-ccc4-42f4-9674-e5e75d21b529",
@@ -25658,7 +25658,7 @@
       "personName": "ZAKUANI BAHATI BENNY",
       "matricule": "70000177",
       "motif": "Mission to the plant",
-      "startDate": "2026-09-02",
+      "startDate": "2026-09-01",
       "endDate": "2026-09-04",
       "checkedInAt": "2026-09-14T19:32:57.118Z"
     },
