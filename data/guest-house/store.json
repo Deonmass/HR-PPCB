@@ -724,9 +724,10 @@
       "motif": "Mission to the plant",
       "startDate": "2026-09-01",
       "endDate": "2026-09-04",
-      "status": "pending",
+      "roomId": "85c3d598-623c-402f-9053-e43840e24325",
+      "status": "confirmed",
       "mission": "Mission to the plant",
-      "updatedAt": "2026-09-14T20:16:23.235Z"
+      "updatedAt": "2026-09-14T20:16:45.188Z"
     },
     {
       "id": "62334986-5335-478c-a1e7-256a47f93dd8",
@@ -25737,6 +25738,17 @@
     }
   ],
   "passages": [
+    {
+      "id": "e00b326d-ae32-4993-83b5-128980b9861f",
+      "roomId": "85c3d598-623c-402f-9053-e43840e24325",
+      "reservationId": "b667e532-a2f5-4e63-b92b-b5d9ddc7f28c",
+      "numero": "GH-2026-4397",
+      "personName": "Visiteur",
+      "motif": "Mission to the plant",
+      "startDate": "2026-09-01",
+      "endDate": "2026-09-04",
+      "checkedInAt": "2026-09-14T20:16:45.188Z"
+    },
     {
       "id": "95e4bb09-d6fa-4202-ac11-c60d215f3262",
       "roomId": "0b0cdc0d-ba79-4f68-8533-c90cad3390cb",
