@@ -1,6 +1,53 @@
 {
   "entries": [
     {
+      "id": "log-000800",
+      "at": "2026-09-14T20:58:53.363Z",
+      "userId": "Serge.Muakasa",
+      "userName": "Serge Muakasa",
+      "userEmail": "Serge.Muakasa@ppcdrc.cd",
+      "module": "guest-house",
+      "moduleLabel": "Guest house",
+      "action": "update",
+      "actionLabel": "Modification",
+      "entityType": "guest-house.reservation",
+      "entityId": "06e741be-d14a-42ba-87e1-dbff9f827dd8",
+      "summary": "Modification réservation 06e741be-d14a-42ba-87e1-dbff9f827dd8",
+      "details": "Modification réservation 06e741be-d14a-42ba-87e1-dbff9f827dd8",
+      "before": {
+        "id": "06e741be-d14a-42ba-87e1-dbff9f827dd8",
+        "numero": "GH-2026-4413",
+        "createdAt": "2026-09-14T20:57:44.320Z",
+        "personName": "GLODY BENGESHA ELONGO",
+        "matricule": "70000313",
+        "isAgent": true,
+        "motif": "Mission to the plant",
+        "startDate": "2026-09-13",
+        "endDate": "2026-09-17",
+        "roomId": "d9ec3499-ad6d-4215-8ef9-c20a4f6b1714",
+        "status": "confirmed",
+        "mission": "Mission to the plant",
+        "updatedAt": "2026-09-14T20:58:02.723Z"
+      },
+      "after": {
+        "id": "06e741be-d14a-42ba-87e1-dbff9f827dd8",
+        "numero": "GH-2026-4413",
+        "createdAt": "2026-09-14T20:57:44.320Z",
+        "personName": "GLODY BENGESHA ELONGO",
+        "matricule": "70000313",
+        "isAgent": true,
+        "motif": "Induction mission to the plant",
+        "startDate": "2026-09-13",
+        "endDate": "2026-09-17",
+        "roomId": "d9ec3499-ad6d-4215-8ef9-c20a4f6b1714",
+        "status": "confirmed",
+        "mission": "induction mission to the plant",
+        "updatedAt": "2026-09-14T20:58:50.449Z"
+      },
+      "undoable": true,
+      "undone": false
+    },
+    {
       "id": "log-000799",
       "at": "2026-09-14T20:58:05.449Z",
       "userId": "Serge.Muakasa",
@@ -87131,5 +87178,5 @@
       }
     }
   ],
-  "nextSeq": 800
+  "nextSeq": 801
 }
