@@ -1,6 +1,37 @@
 {
   "entries": [
     {
+      "id": "log-000780",
+      "at": "2026-09-14T20:39:38.570Z",
+      "userId": "Serge.Muakasa",
+      "userName": "Serge Muakasa",
+      "userEmail": "Serge.Muakasa@ppcdrc.cd",
+      "module": "guest-house",
+      "moduleLabel": "Guest house",
+      "action": "create",
+      "actionLabel": "Création",
+      "entityType": "guest-house.reservation",
+      "entityId": "696d7047-b1bc-4717-806e-93de4e757c86",
+      "summary": "Création réservation ZODULUA GADUA Jean Jacques",
+      "details": "Création réservation ZODULUA GADUA Jean Jacques",
+      "after": {
+        "id": "696d7047-b1bc-4717-806e-93de4e757c86",
+        "numero": "GH-2026-4406",
+        "createdAt": "2026-09-14T20:39:35.565Z",
+        "personName": "ZODULUA GADUA Jean Jacques",
+        "matricule": "70000009",
+        "isAgent": true,
+        "motif": "Mission to the plant",
+        "startDate": "2026-09-09",
+        "endDate": "2026-09-09",
+        "status": "pending",
+        "mission": "Mission to the plant",
+        "updatedAt": "2026-09-14T20:39:35.565Z"
+      },
+      "undoable": true,
+      "undone": false
+    },
+    {
       "id": "log-000779",
       "at": "2026-09-14T20:38:31.891Z",
       "userId": "Serge.Muakasa",
@@ -86372,5 +86403,5 @@
       }
     }
   ],
-  "nextSeq": 780
+  "nextSeq": 781
 }
