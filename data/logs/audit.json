@@ -1,6 +1,50 @@
 {
   "entries": [
     {
+      "id": "log-000754",
+      "at": "2026-09-14T20:04:50.342Z",
+      "userId": "Serge.Muakasa",
+      "userName": "Serge Muakasa",
+      "userEmail": "Serge.Muakasa@ppcdrc.cd",
+      "module": "guest-house",
+      "moduleLabel": "Guest house",
+      "action": "update",
+      "actionLabel": "Modification",
+      "entityType": "guest-house.reservation",
+      "entityId": "22aa8d68-77b9-4b31-8edf-8014abfc535d",
+      "summary": "Statut réservation 22aa8d68-77b9-4b31-8edf-8014abfc535d → confirmed",
+      "details": "Statut réservation 22aa8d68-77b9-4b31-8edf-8014abfc535d → confirmed",
+      "before": {
+        "id": "22aa8d68-77b9-4b31-8edf-8014abfc535d",
+        "numero": "GH-2026-4394",
+        "createdAt": "2026-09-14T20:04:24.084Z",
+        "personName": "Sud Africain",
+        "isAgent": false,
+        "motif": "Mission to the plant",
+        "startDate": "2026-09-01",
+        "endDate": "2026-09-12",
+        "status": "pending",
+        "mission": "Mission to the plant",
+        "updatedAt": "2026-09-14T20:04:24.084Z"
+      },
+      "after": {
+        "id": "22aa8d68-77b9-4b31-8edf-8014abfc535d",
+        "numero": "GH-2026-4394",
+        "createdAt": "2026-09-14T20:04:24.084Z",
+        "personName": "Sud Africain",
+        "isAgent": false,
+        "motif": "Mission to the plant",
+        "startDate": "2026-09-01",
+        "endDate": "2026-09-12",
+        "roomId": "d9ec3499-ad6d-4215-8ef9-c20a4f6b1714",
+        "status": "confirmed",
+        "mission": "Mission to the plant",
+        "updatedAt": "2026-09-14T20:04:47.181Z"
+      },
+      "undoable": true,
+      "undone": false
+    },
+    {
       "id": "log-000753",
       "at": "2026-09-14T20:04:27.422Z",
       "userId": "Serge.Muakasa",
@@ -85388,5 +85432,5 @@
       }
     }
   ],
-  "nextSeq": 754
+  "nextSeq": 755
 }
