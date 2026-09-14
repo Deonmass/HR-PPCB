@@ -716,6 +716,19 @@
   ],
   "reservations": [
     {
+      "id": "759e3096-4968-4276-87bb-3bb5ec7af644",
+      "numero": "GH-2026-4405",
+      "createdAt": "2026-09-14T20:37:50.916Z",
+      "personName": "Joel Moke",
+      "isAgent": false,
+      "motif": "Mission to the plant",
+      "startDate": "2026-09-08",
+      "endDate": "2026-09-08",
+      "status": "pending",
+      "mission": "Mission to the plant",
+      "updatedAt": "2026-09-14T20:37:50.916Z"
+    },
+    {
       "id": "3f528fd7-1112-42c1-9d6c-61830cdd56a0",
       "numero": "GH-2026-4404",
       "createdAt": "2026-09-14T20:35:19.640Z",
@@ -43711,5 +43724,5 @@
       "checkedOutAt": "2025-09-24T12:00:00.000Z"
     }
   ],
-  "nextReservationSeq": 4405
+  "nextReservationSeq": 4406
 }
