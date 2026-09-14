@@ -1,6 +1,50 @@
 {
   "entries": [
     {
+      "id": "log-000764",
+      "at": "2026-09-14T20:18:56.186Z",
+      "userId": "Serge.Muakasa",
+      "userName": "Serge Muakasa",
+      "userEmail": "Serge.Muakasa@ppcdrc.cd",
+      "module": "guest-house",
+      "moduleLabel": "Guest house",
+      "action": "update",
+      "actionLabel": "Modification",
+      "entityType": "guest-house.reservation",
+      "entityId": "ab805e96-ad9c-492e-bf23-3062cc3cbbcd",
+      "summary": "Statut réservation ab805e96-ad9c-492e-bf23-3062cc3cbbcd → confirmed",
+      "details": "Statut réservation ab805e96-ad9c-492e-bf23-3062cc3cbbcd → confirmed",
+      "before": {
+        "id": "ab805e96-ad9c-492e-bf23-3062cc3cbbcd",
+        "numero": "GH-2026-4398",
+        "createdAt": "2026-09-14T20:18:29.349Z",
+        "personName": "CEO ORC",
+        "isAgent": false,
+        "motif": "Mission to the plant",
+        "startDate": "2026-09-03",
+        "endDate": "2026-09-09",
+        "status": "pending",
+        "mission": "Mission to the plant",
+        "updatedAt": "2026-09-14T20:18:29.349Z"
+      },
+      "after": {
+        "id": "ab805e96-ad9c-492e-bf23-3062cc3cbbcd",
+        "numero": "GH-2026-4398",
+        "createdAt": "2026-09-14T20:18:29.349Z",
+        "personName": "CEO ORC",
+        "isAgent": false,
+        "motif": "Mission to the plant",
+        "startDate": "2026-09-03",
+        "endDate": "2026-09-09",
+        "roomId": "7dbc2817-6744-4ae5-8827-0961bd7aa54a",
+        "status": "confirmed",
+        "mission": "Mission to the plant",
+        "updatedAt": "2026-09-14T20:18:52.898Z"
+      },
+      "undoable": true,
+      "undone": false
+    },
+    {
       "id": "log-000763",
       "at": "2026-09-14T20:18:33.011Z",
       "userId": "Serge.Muakasa",
@@ -85778,5 +85822,5 @@
       }
     }
   ],
-  "nextSeq": 764
+  "nextSeq": 765
 }
