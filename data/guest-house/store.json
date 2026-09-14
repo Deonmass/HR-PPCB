@@ -724,9 +724,10 @@
       "motif": "Visit Expot Beton Laureat",
       "startDate": "2026-09-10",
       "endDate": "2026-09-12",
-      "status": "pending",
+      "roomId": "3d273d81-0642-4fac-b424-a54146ad7acc",
+      "status": "confirmed",
       "mission": "Visit Expot Beton Laureat",
-      "updatedAt": "2026-09-14T20:46:30.102Z"
+      "updatedAt": "2026-09-14T20:46:50.854Z"
     },
     {
       "id": "0f28418f-575d-4244-8b1c-57d2520a9d51",
@@ -25908,6 +25909,17 @@
     }
   ],
   "passages": [
+    {
+      "id": "57f893ba-ee29-4848-825e-c35d7a4678e0",
+      "roomId": "3d273d81-0642-4fac-b424-a54146ad7acc",
+      "reservationId": "45e829c3-6df6-4bb8-90eb-3992edc9b60b",
+      "numero": "GH-2026-4409",
+      "personName": "Expot Beton Laureat",
+      "motif": "Visit Expot Beton Laureat",
+      "startDate": "2026-09-10",
+      "endDate": "2026-09-12",
+      "checkedInAt": "2026-09-14T20:46:50.854Z"
+    },
     {
       "id": "bd9775fc-a1c3-4e6b-96ba-daec483ffba5",
       "roomId": "85c3d598-623c-402f-9053-e43840e24325",
