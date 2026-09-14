@@ -716,6 +716,19 @@
   ],
   "reservations": [
     {
+      "id": "0f28418f-575d-4244-8b1c-57d2520a9d51",
+      "numero": "GH-2026-4408",
+      "createdAt": "2026-09-14T20:44:17.607Z",
+      "personName": "Expot Beton Laureat",
+      "isAgent": false,
+      "motif": "Visit Expot Beton Laureat",
+      "startDate": "2026-09-09",
+      "endDate": "2026-09-12",
+      "status": "pending",
+      "mission": "Visit Expot Beton Laureat",
+      "updatedAt": "2026-09-14T20:44:17.607Z"
+    },
+    {
       "id": "f23ebc04-94fe-4062-a514-1e0228c53b28",
       "numero": "GH-2026-4407",
       "createdAt": "2026-09-14T20:42:43.904Z",
@@ -43790,5 +43803,5 @@
       "checkedOutAt": "2025-09-24T12:00:00.000Z"
     }
   ],
-  "nextReservationSeq": 4408
+  "nextReservationSeq": 4409
 }
