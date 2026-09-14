@@ -1,6 +1,36 @@
 {
   "entries": [
     {
+      "id": "log-000761",
+      "at": "2026-09-14T20:16:26.290Z",
+      "userId": "Serge.Muakasa",
+      "userName": "Serge Muakasa",
+      "userEmail": "Serge.Muakasa@ppcdrc.cd",
+      "module": "guest-house",
+      "moduleLabel": "Guest house",
+      "action": "create",
+      "actionLabel": "Création",
+      "entityType": "guest-house.reservation",
+      "entityId": "b667e532-a2f5-4e63-b92b-b5d9ddc7f28c",
+      "summary": "Création réservation Visiteur",
+      "details": "Création réservation Visiteur",
+      "after": {
+        "id": "b667e532-a2f5-4e63-b92b-b5d9ddc7f28c",
+        "numero": "GH-2026-4397",
+        "createdAt": "2026-09-14T20:16:23.235Z",
+        "personName": "Visiteur",
+        "isAgent": false,
+        "motif": "Mission to the plant",
+        "startDate": "2026-09-01",
+        "endDate": "2026-09-04",
+        "status": "pending",
+        "mission": "Mission to the plant",
+        "updatedAt": "2026-09-14T20:16:23.235Z"
+      },
+      "undoable": true,
+      "undone": false
+    },
+    {
       "id": "log-000760",
       "at": "2026-09-14T20:14:03.269Z",
       "userId": "Serge.Muakasa",
@@ -85674,5 +85704,5 @@
       }
     }
   ],
-  "nextSeq": 761
+  "nextSeq": 762
 }
