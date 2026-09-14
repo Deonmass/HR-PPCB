@@ -1,6 +1,52 @@
 {
   "entries": [
     {
+      "id": "log-000746",
+      "at": "2026-09-14T19:57:32.640Z",
+      "userId": "Serge.Muakasa",
+      "userName": "Serge Muakasa",
+      "userEmail": "Serge.Muakasa@ppcdrc.cd",
+      "module": "guest-house",
+      "moduleLabel": "Guest house",
+      "action": "update",
+      "actionLabel": "Modification",
+      "entityType": "guest-house.reservation",
+      "entityId": "031640ad-e5e0-4bbe-90c9-3b19ab995aa1",
+      "summary": "Statut réservation 031640ad-e5e0-4bbe-90c9-3b19ab995aa1 → confirmed",
+      "details": "Statut réservation 031640ad-e5e0-4bbe-90c9-3b19ab995aa1 → confirmed",
+      "before": {
+        "id": "031640ad-e5e0-4bbe-90c9-3b19ab995aa1",
+        "numero": "GH-2026-4392",
+        "createdAt": "2026-09-14T19:57:03.797Z",
+        "personName": "MUZILA EBALOSONG Papy",
+        "matricule": "70000297",
+        "isAgent": true,
+        "motif": "Mission to the plant",
+        "startDate": "2026-09-01",
+        "endDate": "2026-09-04",
+        "status": "pending",
+        "mission": "Mission to the plant",
+        "updatedAt": "2026-09-14T19:57:03.797Z"
+      },
+      "after": {
+        "id": "031640ad-e5e0-4bbe-90c9-3b19ab995aa1",
+        "numero": "GH-2026-4392",
+        "createdAt": "2026-09-14T19:57:03.797Z",
+        "personName": "MUZILA EBALOSONG Papy",
+        "matricule": "70000297",
+        "isAgent": true,
+        "motif": "Mission to the plant",
+        "startDate": "2026-09-01",
+        "endDate": "2026-09-04",
+        "roomId": "8b14162d-ae3b-49a5-bcb6-812c2d8d5b5b",
+        "status": "confirmed",
+        "mission": "Mission to the plant",
+        "updatedAt": "2026-09-14T19:57:29.258Z"
+      },
+      "undoable": true,
+      "undone": false
+    },
+    {
       "id": "log-000745",
       "at": "2026-09-14T19:57:07.629Z",
       "userId": "Serge.Muakasa",
@@ -85082,5 +85128,5 @@
       }
     }
   ],
-  "nextSeq": 746
+  "nextSeq": 747
 }
