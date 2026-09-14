@@ -724,9 +724,10 @@
       "motif": "Mission to the plant",
       "startDate": "2026-09-02",
       "endDate": "2026-09-11",
-      "status": "pending",
+      "roomId": "ed91c14e-915f-4d22-971c-fd4bb7feb33e",
+      "status": "confirmed",
       "mission": "Mission to the plant",
-      "updatedAt": "2026-09-14T19:30:53.797Z"
+      "updatedAt": "2026-09-14T19:31:29.998Z"
     },
     {
       "id": "873696e5-aaaa-4789-994f-bbecf4cfff60",
@@ -25621,6 +25622,17 @@
     }
   ],
   "passages": [
+    {
+      "id": "c4205203-fc9d-47ca-8999-f5bc0e6839a2",
+      "roomId": "ed91c14e-915f-4d22-971c-fd4bb7feb33e",
+      "reservationId": "8d6ea9da-ccc4-42f4-9674-e5e75d21b529",
+      "numero": "GH-2026-4386",
+      "personName": "Amidou - Engineering",
+      "motif": "Mission to the plant",
+      "startDate": "2026-09-02",
+      "endDate": "2026-09-11",
+      "checkedInAt": "2026-09-14T19:31:29.998Z"
+    },
     {
       "id": "23ea339e-77cd-49d8-9661-f0b4a5dc55f4",
       "roomId": "873277c8-cfe8-4e40-af16-61f1a3f4c273",
