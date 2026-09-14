@@ -1,6 +1,21 @@
 {
   "entries": [
     {
+      "id": "log-000718",
+      "at": "2026-09-14T13:49:05.825Z",
+      "userId": "Sosthene.Kamanda@ppcdrc.cd",
+      "userName": "Sosthene Kamanda",
+      "userEmail": "Sosthene.Kamanda@ppcdrc.cd",
+      "module": "timesheet",
+      "moduleLabel": "Timesheet",
+      "action": "export",
+      "actionLabel": "Export",
+      "summary": "Export timesheet employé 70000077",
+      "details": "Export individuel 70000077 — 9/2026",
+      "undoable": false,
+      "undone": false
+    },
+    {
       "id": "log-000717",
       "at": "2026-09-14T12:23:20.812Z",
       "userId": "admin",
@@ -84099,5 +84114,5 @@
       }
     }
   ],
-  "nextSeq": 718
+  "nextSeq": 719
 }
