@@ -725,9 +725,10 @@
       "motif": "Visit Expot Beton Laureat",
       "startDate": "2026-09-09",
       "endDate": "2026-09-12",
-      "status": "pending",
+      "roomId": "2ef11cfa-1396-4c82-ac99-85b12d6093be",
+      "status": "confirmed",
       "mission": "Visit Expot Beton Laureat",
-      "updatedAt": "2026-09-14T20:42:43.904Z"
+      "updatedAt": "2026-09-14T20:43:03.200Z"
     },
     {
       "id": "696d7047-b1bc-4717-806e-93de4e757c86",
@@ -25880,6 +25881,18 @@
     }
   ],
   "passages": [
+    {
+      "id": "c2f74623-1bb9-4984-a32b-b7980b71304a",
+      "roomId": "2ef11cfa-1396-4c82-ac99-85b12d6093be",
+      "reservationId": "f23ebc04-94fe-4062-a514-1e0228c53b28",
+      "numero": "GH-2026-4407",
+      "personName": "KABAMBA MUTUNGILAYI GERVAIS",
+      "matricule": "70000178",
+      "motif": "Visit Expot Beton Laureat",
+      "startDate": "2026-09-09",
+      "endDate": "2026-09-12",
+      "checkedInAt": "2026-09-14T20:43:03.200Z"
+    },
     {
       "id": "34d76d63-d11c-4669-a3b2-b841e1f0b8b4",
       "roomId": "85c3d598-623c-402f-9053-e43840e24325",
