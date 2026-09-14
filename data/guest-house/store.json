@@ -725,9 +725,10 @@
       "motif": "Mission to the plant",
       "startDate": "2026-09-08",
       "endDate": "2026-09-08",
-      "status": "pending",
+      "roomId": "85c3d598-623c-402f-9053-e43840e24325",
+      "status": "confirmed",
       "mission": "Mission to the plant",
-      "updatedAt": "2026-09-14T20:40:00.397Z"
+      "updatedAt": "2026-09-14T20:40:25.327Z"
     },
     {
       "id": "759e3096-4968-4276-87bb-3bb5ec7af644",
@@ -25865,6 +25866,18 @@
     }
   ],
   "passages": [
+    {
+      "id": "34d76d63-d11c-4669-a3b2-b841e1f0b8b4",
+      "roomId": "85c3d598-623c-402f-9053-e43840e24325",
+      "reservationId": "696d7047-b1bc-4717-806e-93de4e757c86",
+      "numero": "GH-2026-4406",
+      "personName": "ZODULUA GADUA Jean Jacques",
+      "matricule": "70000009",
+      "motif": "Mission to the plant",
+      "startDate": "2026-09-08",
+      "endDate": "2026-09-08",
+      "checkedInAt": "2026-09-14T20:40:25.327Z"
+    },
     {
       "id": "47293713-ae8e-4012-a154-45d587570557",
       "roomId": "2ef11cfa-1396-4c82-ac99-85b12d6093be",
