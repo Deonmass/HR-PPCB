@@ -724,9 +724,10 @@
       "motif": "Mission to the plant",
       "startDate": "2026-09-01",
       "endDate": "2026-09-12",
-      "status": "pending",
+      "roomId": "d9ec3499-ad6d-4215-8ef9-c20a4f6b1714",
+      "status": "confirmed",
       "mission": "Mission to the plant",
-      "updatedAt": "2026-09-14T20:04:24.084Z"
+      "updatedAt": "2026-09-14T20:04:47.181Z"
     },
     {
       "id": "031640ad-e5e0-4bbe-90c9-3b19ab995aa1",
@@ -25695,6 +25696,17 @@
     }
   ],
   "passages": [
+    {
+      "id": "1cc980f2-e361-423d-9763-ca8005340511",
+      "roomId": "d9ec3499-ad6d-4215-8ef9-c20a4f6b1714",
+      "reservationId": "22aa8d68-77b9-4b31-8edf-8014abfc535d",
+      "numero": "GH-2026-4394",
+      "personName": "Sud Africain",
+      "motif": "Mission to the plant",
+      "startDate": "2026-09-01",
+      "endDate": "2026-09-12",
+      "checkedInAt": "2026-09-14T20:04:47.181Z"
+    },
     {
       "id": "15dc62b6-7817-4776-8d87-b6a02c2699cb",
       "roomId": "85c3d598-623c-402f-9053-e43840e24325",
