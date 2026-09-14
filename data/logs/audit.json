@@ -1,6 +1,36 @@
 {
   "entries": [
     {
+      "id": "log-000794",
+      "at": "2026-09-14T20:55:19.009Z",
+      "userId": "Serge.Muakasa",
+      "userName": "Serge Muakasa",
+      "userEmail": "Serge.Muakasa@ppcdrc.cd",
+      "module": "guest-house",
+      "moduleLabel": "Guest house",
+      "action": "create",
+      "actionLabel": "Création",
+      "entityType": "guest-house.reservation",
+      "entityId": "6516a6e5-0241-4d36-89ef-0ee0e0ac887c",
+      "summary": "Création réservation Tsasa",
+      "details": "Création réservation Tsasa",
+      "after": {
+        "id": "6516a6e5-0241-4d36-89ef-0ee0e0ac887c",
+        "numero": "GH-2026-4412",
+        "createdAt": "2026-09-14T20:55:15.712Z",
+        "personName": "Tsasa",
+        "isAgent": false,
+        "motif": "Mission to the plant",
+        "startDate": "2026-09-12",
+        "endDate": "2026-09-14",
+        "status": "pending",
+        "mission": "Mission to the plant",
+        "updatedAt": "2026-09-14T20:55:15.712Z"
+      },
+      "undoable": true,
+      "undone": false
+    },
+    {
       "id": "log-000793",
       "at": "2026-09-14T20:49:39.186Z",
       "userId": "Serge.Muakasa",
@@ -86910,5 +86940,5 @@
       }
     }
   ],
-  "nextSeq": 794
+  "nextSeq": 795
 }
