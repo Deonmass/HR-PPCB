@@ -724,9 +724,10 @@
       "motif": "Mission to the plant",
       "startDate": "2026-09-01",
       "endDate": "2026-09-02",
-      "status": "pending",
+      "roomId": "7dbc2817-6744-4ae5-8827-0961bd7aa54a",
+      "status": "confirmed",
       "mission": "Mission to the plant",
-      "updatedAt": "2026-09-14T19:54:14.708Z"
+      "updatedAt": "2026-09-14T19:54:37.393Z"
     },
     {
       "id": "ce65d0cc-104c-41df-b7ce-89796d2a7798",
@@ -25665,6 +25666,17 @@
     }
   ],
   "passages": [
+    {
+      "id": "bd92e243-dc85-4a53-b941-d087cf214cda",
+      "roomId": "7dbc2817-6744-4ae5-8827-0961bd7aa54a",
+      "reservationId": "6d0d78da-279c-4070-9d84-ecac09d2ebb2",
+      "numero": "GH-2026-4390",
+      "personName": "Bertin Epiroc",
+      "motif": "Mission to the plant",
+      "startDate": "2026-09-01",
+      "endDate": "2026-09-02",
+      "checkedInAt": "2026-09-14T19:54:37.393Z"
+    },
     {
       "id": "8abb8c76-6745-44e6-9273-603b6c6a121b",
       "roomId": "cfdfa27e-7353-401d-9090-1a3ca1c1fc80",
