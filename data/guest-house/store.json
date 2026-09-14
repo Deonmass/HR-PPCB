@@ -716,6 +716,19 @@
   ],
   "reservations": [
     {
+      "id": "b667e532-a2f5-4e63-b92b-b5d9ddc7f28c",
+      "numero": "GH-2026-4397",
+      "createdAt": "2026-09-14T20:16:23.235Z",
+      "personName": "Visiteur",
+      "isAgent": false,
+      "motif": "Mission to the plant",
+      "startDate": "2026-09-01",
+      "endDate": "2026-09-04",
+      "status": "pending",
+      "mission": "Mission to the plant",
+      "updatedAt": "2026-09-14T20:16:23.235Z"
+    },
+    {
       "id": "62334986-5335-478c-a1e7-256a47f93dd8",
       "numero": "GH-2026-4396",
       "createdAt": "2026-09-14T20:06:44.462Z",
@@ -43519,5 +43532,5 @@
       "checkedOutAt": "2025-09-24T12:00:00.000Z"
     }
   ],
-  "nextReservationSeq": 4397
+  "nextReservationSeq": 4398
 }
