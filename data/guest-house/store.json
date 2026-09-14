@@ -1057,20 +1057,6 @@
       "updatedAt": "2026-08-26T10:25:30.147Z"
     },
     {
-      "id": "fb614cda-9e49-4847-a0c3-67c0d9175434",
-      "numero": "GH-2026-4364",
-      "createdAt": "2026-08-26T10:23:57.152Z",
-      "personName": "Sud African",
-      "isAgent": false,
-      "motif": "Repair drilling machine",
-      "startDate": "2026-08-31",
-      "endDate": "2026-08-31",
-      "roomId": "4e4bd694-e96e-4748-a98a-882d842f616e",
-      "status": "confirmed",
-      "mission": "Repair drilling machine",
-      "updatedAt": "2026-09-14T19:42:28.785Z"
-    },
-    {
       "id": "0b2764a5-abcc-4ecb-910f-6c693b8e1742",
       "numero": "GH-2026-4363",
       "createdAt": "2026-08-26T10:22:22.296Z",
