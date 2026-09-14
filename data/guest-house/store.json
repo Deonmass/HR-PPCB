@@ -716,6 +716,19 @@
   ],
   "reservations": [
     {
+      "id": "6516a6e5-0241-4d36-89ef-0ee0e0ac887c",
+      "numero": "GH-2026-4412",
+      "createdAt": "2026-09-14T20:55:15.712Z",
+      "personName": "Tsasa",
+      "isAgent": false,
+      "motif": "Mission to the plant",
+      "startDate": "2026-09-12",
+      "endDate": "2026-09-14",
+      "status": "pending",
+      "mission": "Mission to the plant",
+      "updatedAt": "2026-09-14T20:55:15.712Z"
+    },
+    {
       "id": "627f86b4-4d8c-4f35-a334-2646feb3722d",
       "numero": "GH-2026-4411",
       "createdAt": "2026-09-14T20:49:14.277Z",
@@ -43890,5 +43903,5 @@
       "checkedOutAt": "2025-09-24T12:00:00.000Z"
     }
   ],
-  "nextReservationSeq": 4412
+  "nextReservationSeq": 4413
 }
