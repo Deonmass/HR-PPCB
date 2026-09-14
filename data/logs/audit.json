@@ -1,6 +1,36 @@
 {
   "entries": [
     {
+      "id": "log-000741",
+      "at": "2026-09-14T19:54:19.688Z",
+      "userId": "Serge.Muakasa",
+      "userName": "Serge Muakasa",
+      "userEmail": "Serge.Muakasa@ppcdrc.cd",
+      "module": "guest-house",
+      "moduleLabel": "Guest house",
+      "action": "create",
+      "actionLabel": "Création",
+      "entityType": "guest-house.reservation",
+      "entityId": "6d0d78da-279c-4070-9d84-ecac09d2ebb2",
+      "summary": "Création réservation Bertin Epiroc",
+      "details": "Création réservation Bertin Epiroc",
+      "after": {
+        "id": "6d0d78da-279c-4070-9d84-ecac09d2ebb2",
+        "numero": "GH-2026-4390",
+        "createdAt": "2026-09-14T19:54:14.708Z",
+        "personName": "Bertin Epiroc",
+        "isAgent": false,
+        "motif": "Mission to the plant",
+        "startDate": "2026-09-01",
+        "endDate": "2026-09-02",
+        "status": "pending",
+        "mission": "Mission to the plant",
+        "updatedAt": "2026-09-14T19:54:14.708Z"
+      },
+      "undoable": true,
+      "undone": false
+    },
+    {
       "id": "log-000740",
       "at": "2026-09-14T19:52:01.727Z",
       "userId": "Serge.Muakasa",
@@ -84900,5 +84930,5 @@
       }
     }
   ],
-  "nextSeq": 741
+  "nextSeq": 742
 }
