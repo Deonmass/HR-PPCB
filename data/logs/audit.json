@@ -1,6 +1,50 @@
 {
   "entries": [
     {
+      "id": "log-000762",
+      "at": "2026-09-14T20:16:48.065Z",
+      "userId": "Serge.Muakasa",
+      "userName": "Serge Muakasa",
+      "userEmail": "Serge.Muakasa@ppcdrc.cd",
+      "module": "guest-house",
+      "moduleLabel": "Guest house",
+      "action": "update",
+      "actionLabel": "Modification",
+      "entityType": "guest-house.reservation",
+      "entityId": "b667e532-a2f5-4e63-b92b-b5d9ddc7f28c",
+      "summary": "Statut réservation b667e532-a2f5-4e63-b92b-b5d9ddc7f28c → confirmed",
+      "details": "Statut réservation b667e532-a2f5-4e63-b92b-b5d9ddc7f28c → confirmed",
+      "before": {
+        "id": "b667e532-a2f5-4e63-b92b-b5d9ddc7f28c",
+        "numero": "GH-2026-4397",
+        "createdAt": "2026-09-14T20:16:23.235Z",
+        "personName": "Visiteur",
+        "isAgent": false,
+        "motif": "Mission to the plant",
+        "startDate": "2026-09-01",
+        "endDate": "2026-09-04",
+        "status": "pending",
+        "mission": "Mission to the plant",
+        "updatedAt": "2026-09-14T20:16:23.235Z"
+      },
+      "after": {
+        "id": "b667e532-a2f5-4e63-b92b-b5d9ddc7f28c",
+        "numero": "GH-2026-4397",
+        "createdAt": "2026-09-14T20:16:23.235Z",
+        "personName": "Visiteur",
+        "isAgent": false,
+        "motif": "Mission to the plant",
+        "startDate": "2026-09-01",
+        "endDate": "2026-09-04",
+        "roomId": "85c3d598-623c-402f-9053-e43840e24325",
+        "status": "confirmed",
+        "mission": "Mission to the plant",
+        "updatedAt": "2026-09-14T20:16:45.188Z"
+      },
+      "undoable": true,
+      "undone": false
+    },
+    {
       "id": "log-000761",
       "at": "2026-09-14T20:16:26.290Z",
       "userId": "Serge.Muakasa",
@@ -85704,5 +85748,5 @@
       }
     }
   ],
-  "nextSeq": 762
+  "nextSeq": 763
 }
