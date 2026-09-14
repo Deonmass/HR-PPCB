@@ -725,9 +725,10 @@
       "motif": "Mont Crystal challenge",
       "startDate": "2026-08-28",
       "endDate": "2026-08-30",
-      "status": "pending",
+      "roomId": "4e4bd694-e96e-4748-a98a-882d842f616e",
+      "status": "confirmed",
       "mission": "Mont Crystal challenge",
-      "updatedAt": "2026-09-14T19:36:10.308Z"
+      "updatedAt": "2026-09-14T19:45:50.287Z"
     },
     {
       "id": "75bcda3e-b4df-45c7-b657-b1be44ee6ada",
@@ -25637,6 +25638,18 @@
     }
   ],
   "passages": [
+    {
+      "id": "c68fa40f-7a3e-4a88-ad8b-605a1e1bfadf",
+      "roomId": "4e4bd694-e96e-4748-a98a-882d842f616e",
+      "reservationId": "9e5c5589-ffb9-4f28-9689-1db9f540eb57",
+      "numero": "GH-2026-4388",
+      "personName": "BILONDA KAZADI DIANE",
+      "matricule": "70000045",
+      "motif": "Mont Crystal challenge",
+      "startDate": "2026-08-28",
+      "endDate": "2026-08-30",
+      "checkedInAt": "2026-09-14T19:45:50.287Z"
+    },
     {
       "id": "663c0c97-d03a-45cd-ab6c-1e188092f12c",
       "roomId": "4e4bd694-e96e-4748-a98a-882d842f616e",
