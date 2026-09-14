@@ -724,9 +724,10 @@
       "motif": "Asset audit to the plant and village",
       "startDate": "2026-09-01",
       "endDate": "2026-09-14",
-      "status": "pending",
+      "roomId": "cfdfa27e-7353-401d-9090-1a3ca1c1fc80",
+      "status": "confirmed",
       "mission": "Asset audit to the plant and village",
-      "updatedAt": "2026-09-14T19:51:31.678Z"
+      "updatedAt": "2026-09-14T19:51:57.943Z"
     },
     {
       "id": "9e5c5589-ffb9-4f28-9689-1db9f540eb57",
@@ -25651,6 +25652,17 @@
     }
   ],
   "passages": [
+    {
+      "id": "8abb8c76-6745-44e6-9273-603b6c6a121b",
+      "roomId": "cfdfa27e-7353-401d-9090-1a3ca1c1fc80",
+      "reservationId": "ce65d0cc-104c-41df-b7ce-89796d2a7798",
+      "numero": "GH-2026-4389",
+      "personName": "Jean Pierre CPM",
+      "motif": "Asset audit to the plant and village",
+      "startDate": "2026-09-01",
+      "endDate": "2026-09-14",
+      "checkedInAt": "2026-09-14T19:51:57.943Z"
+    },
     {
       "id": "c68fa40f-7a3e-4a88-ad8b-605a1e1bfadf",
       "roomId": "4e4bd694-e96e-4748-a98a-882d842f616e",
