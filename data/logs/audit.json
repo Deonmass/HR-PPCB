@@ -1,6 +1,36 @@
 {
   "entries": [
     {
+      "id": "log-000821",
+      "at": "2026-09-15T09:17:37.356Z",
+      "userId": "Serge.Muakasa",
+      "userName": "Serge Muakasa",
+      "userEmail": "Serge.Muakasa@ppcdrc.cd",
+      "module": "guest-house",
+      "moduleLabel": "Guest house",
+      "action": "create",
+      "actionLabel": "Création",
+      "entityType": "guest-house.reservation",
+      "entityId": "632dc277-a25b-444e-9e41-3bc36818470e",
+      "summary": "Création réservation Aboubacry Athie",
+      "details": "Création réservation Aboubacry Athie",
+      "after": {
+        "id": "632dc277-a25b-444e-9e41-3bc36818470e",
+        "numero": "GH-2026-4422",
+        "createdAt": "2026-09-15T09:17:33.991Z",
+        "personName": "Aboubacry Athie",
+        "isAgent": false,
+        "motif": "Mission to the plant",
+        "startDate": "2026-09-15",
+        "endDate": "2026-09-19",
+        "status": "pending",
+        "mission": "Mission to the plant",
+        "updatedAt": "2026-09-15T09:17:33.991Z"
+      },
+      "undoable": true,
+      "undone": false
+    },
+    {
       "id": "log-000820",
       "at": "2026-09-15T08:45:47.813Z",
       "userId": "admin",
@@ -87868,5 +87898,5 @@
       }
     }
   ],
-  "nextSeq": 821
+  "nextSeq": 822
 }
