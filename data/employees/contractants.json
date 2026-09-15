@@ -312,7 +312,7 @@
     },
     {
       "id": "2",
-      "denomination": "MD Services",
+      "denomination": "Capital HR",
       "typeService": "Placement",
       "employees": [
         {
@@ -2137,7 +2137,7 @@
         }
       ],
       "createdAt": "2026-08-12T11:55:22.134Z",
-      "updatedAt": "2026-08-31T09:01:05.145Z"
+      "updatedAt": "2026-09-15T11:06:35.595Z"
     },
     {
       "id": "3",
