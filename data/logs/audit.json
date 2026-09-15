@@ -1,6 +1,37 @@
 {
   "entries": [
     {
+      "id": "log-000807",
+      "at": "2026-09-15T06:45:27.223Z",
+      "userId": "Serge.Muakasa",
+      "userName": "Serge Muakasa",
+      "userEmail": "Serge.Muakasa@ppcdrc.cd",
+      "module": "guest-house",
+      "moduleLabel": "Guest house",
+      "action": "create",
+      "actionLabel": "Création",
+      "entityType": "guest-house.reservation",
+      "entityId": "4651bfdb-7351-41a5-a4db-14b393f72f73",
+      "summary": "Création réservation EWULI SUKA Carine",
+      "details": "Création réservation EWULI SUKA Carine",
+      "after": {
+        "id": "4651bfdb-7351-41a5-a4db-14b393f72f73",
+        "numero": "GH-2026-4417",
+        "createdAt": "2026-09-15T06:45:24.375Z",
+        "personName": "EWULI SUKA Carine",
+        "matricule": "70000265",
+        "isAgent": true,
+        "motif": "Exco meeting to the plant",
+        "startDate": "2026-09-15",
+        "endDate": "2026-09-19",
+        "status": "pending",
+        "mission": "Exco meeting to the plant",
+        "updatedAt": "2026-09-15T06:45:24.375Z"
+      },
+      "undoable": true,
+      "undone": false
+    },
+    {
       "id": "log-000806",
       "at": "2026-09-15T06:44:57.425Z",
       "userId": "Serge.Muakasa",
@@ -87409,5 +87440,5 @@
       }
     }
   ],
-  "nextSeq": 807
+  "nextSeq": 808
 }
