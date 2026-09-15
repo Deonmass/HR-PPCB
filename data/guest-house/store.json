@@ -716,6 +716,19 @@
   ],
   "reservations": [
     {
+      "id": "976043b3-9592-4c8c-a997-2aee65fad0b5",
+      "numero": "GH-2026-4420",
+      "createdAt": "2026-09-15T06:48:35.175Z",
+      "personName": "Freddy Olela",
+      "isAgent": false,
+      "motif": "Exco meeting to the plant",
+      "startDate": "2026-09-15",
+      "endDate": "2026-09-19",
+      "status": "pending",
+      "mission": "Exco meeting to the plant",
+      "updatedAt": "2026-09-15T06:48:35.175Z"
+    },
+    {
       "id": "d7ac7be2-48b7-4b3a-be0b-082072c0ce5e",
       "numero": "GH-2026-4419",
       "createdAt": "2026-09-15T06:46:58.628Z",
@@ -44104,5 +44117,5 @@
       "checkedOutAt": "2025-09-24T12:00:00.000Z"
     }
   ],
-  "nextReservationSeq": 4420
+  "nextReservationSeq": 4421
 }
