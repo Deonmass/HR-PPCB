@@ -1,6 +1,41 @@
 {
   "entries": [
     {
+      "id": "log-000833",
+      "at": "2026-09-15T15:00:28.147Z",
+      "userId": "admin",
+      "userName": "Administrateur",
+      "userEmail": "admin",
+      "module": "settings.utilisateurs",
+      "moduleLabel": "Paramètres — Utilisateurs",
+      "action": "create",
+      "actionLabel": "Création",
+      "entityType": "auth.user",
+      "entityId": "karine.mvutu@ppcdrc.cd",
+      "summary": "Création utilisateur Karine Mvutu",
+      "details": "Création utilisateur Karine Mvutu",
+      "after": {
+        "id": "karine.mvutu@ppcdrc.cd",
+        "username": "karine.mvutu@ppcdrc.cd",
+        "displayName": "Karine Mvutu",
+        "initials": "KM",
+        "email": "karine.mvutu@ppcdrc.cd",
+        "matricule": "70000107",
+        "linkedEmployee": {
+          "matricule": "70000107",
+          "nom": "MVUTU LUTEMBE KARINE",
+          "departement": "SHE",
+          "grade": "C2",
+          "jobTitle": "OH Nurse",
+          "localisation": "Zamba"
+        },
+        "active": true,
+        "createdAt": "2026-09-15T15:00:24.487Z"
+      },
+      "undoable": true,
+      "undone": false
+    },
+    {
       "id": "log-000832",
       "at": "2026-09-15T12:00:48.460Z",
       "userId": "admin",
@@ -90055,5 +90090,5 @@
       }
     }
   ],
-  "nextSeq": 833
+  "nextSeq": 834
 }
