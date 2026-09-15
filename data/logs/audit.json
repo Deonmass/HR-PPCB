@@ -1,6 +1,37 @@
 {
   "entries": [
     {
+      "id": "log-000809",
+      "at": "2026-09-15T06:46:11.289Z",
+      "userId": "Serge.Muakasa",
+      "userName": "Serge Muakasa",
+      "userEmail": "Serge.Muakasa@ppcdrc.cd",
+      "module": "guest-house",
+      "moduleLabel": "Guest house",
+      "action": "create",
+      "actionLabel": "Création",
+      "entityType": "guest-house.reservation",
+      "entityId": "be4a4fb5-ba34-4cfc-a701-aec3b7afbeb1",
+      "summary": "Création réservation ODIPO WERE Edgard",
+      "details": "Création réservation ODIPO WERE Edgard",
+      "after": {
+        "id": "be4a4fb5-ba34-4cfc-a701-aec3b7afbeb1",
+        "numero": "GH-2026-4418",
+        "createdAt": "2026-09-15T06:46:08.586Z",
+        "personName": "ODIPO WERE Edgard",
+        "matricule": "70000203",
+        "isAgent": true,
+        "motif": "Exco meeting to the plant",
+        "startDate": "2026-09-15",
+        "endDate": "2026-09-19",
+        "status": "pending",
+        "mission": "Exco meeting to the plant",
+        "updatedAt": "2026-09-15T06:46:08.586Z"
+      },
+      "undoable": true,
+      "undone": false
+    },
+    {
       "id": "log-000808",
       "at": "2026-09-15T06:45:47.659Z",
       "userId": "Serge.Muakasa",
@@ -87486,5 +87517,5 @@
       }
     }
   ],
-  "nextSeq": 809
+  "nextSeq": 810
 }
