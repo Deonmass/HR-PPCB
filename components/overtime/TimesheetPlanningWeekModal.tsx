@@ -29,6 +29,7 @@ interface Props {
   weekLabel: string;
   weekDays: TimesheetPeriodDay[];
   department: string;
+  scopeLabel?: string;
   agents: Employee[];
   periodYear: number;
   periodMonth: number;
@@ -88,6 +89,7 @@ export default function TimesheetPlanningWeekModal({
   weekLabel,
   weekDays,
   department,
+  scopeLabel,
   agents,
   periodYear,
   periodMonth,
@@ -289,14 +291,6 @@ export default function TimesheetPlanningWeekModal({
   const handleSave = async () => {
     if (!canEdit || locked) return;
 
-    const incomplete = rows.some((row) =>
-      activeDays.some((day) => row.shifts[day.dateKey] === null || row.shifts[day.dateKey] === undefined),
-    );
-    if (incomplete) {
-      await showError('Définissez un shift pour chaque agent et chaque jour avant d\'enregistrer.');
-      return;
-    }
-
     setSaving(true);
     try {
       const res = await fetch('/api/timesheet/entries', {
@@ -368,7 +362,7 @@ export default function TimesheetPlanningWeekModal({
             <div className="timesheet-planning-week-header-main">
               <h3>Planifier — {weekLabel}</h3>
               <p className="timesheet-manager-modal-subtitle">
-                {department}
+                {scopeLabel ?? department}
                 {locked ? ' · Semaine planifiée' : ''}
               </p>
             </div>

@@ -26,7 +26,7 @@ const RULES: Rule[] = [
   {
     aliases: ['sales_cec', 'sales cec', 'sales-cec', 'cec'],
     department: 'Sales and Marketing',
-    serviceName: 'Sales_CEC',
+    serviceName: 'CEC',
   },
   {
     aliases: [
@@ -38,7 +38,12 @@ const RULES: Rule[] = [
       'packaging & logistics optimization',
     ],
     department: 'Production',
-    serviceName: 'Packaging and Logistics Optimization',
+    serviceName: 'Packing Plant',
+  },
+  {
+    aliases: ['driver', 'drivers', 'chauffeur', 'chauffeurs'],
+    department: 'Transport and Transit',
+    serviceName: 'Driver',
   },
 
   // —— HR ——
@@ -171,8 +176,26 @@ export const EXCO_CANONICAL_DEPARTMENTS = [
 
 /** Services à garantir sous un département parent. */
 export const EXCO_CANONICAL_SERVICES: Array<{ department: string; serviceName: string }> = [
-  { department: 'Sales and Marketing', serviceName: 'Sales_CEC' },
-  { department: 'Production', serviceName: 'Packaging and Logistics Optimization' },
+  { department: 'Sales and Marketing', serviceName: 'CEC' },
+  { department: 'Sales and Marketing', serviceName: 'Marketing' },
+  { department: 'Production', serviceName: 'Packing Plant' },
+  { department: 'Transport and Transit', serviceName: 'Driver' },
+];
+
+const SERVICE_ALIASES: Array<{ name: string; aliases: string[] }> = [
+  { name: 'CEC', aliases: ['cec', 'sales_cec', 'sales cec', 'sales-cec'] },
+  { name: 'Marketing', aliases: ['marketing', 'mark', 'sales_marketing', 'sales marketing', 'sales-marketing'] },
+  {
+    name: 'Packing Plant',
+    aliases: [
+      'packing plant',
+      'packaging and logistics optimization',
+      'packaging & logistics optimization',
+      'packaging and logistics',
+      'packaging & logistics',
+    ],
+  },
+  { name: 'Driver', aliases: ['driver', 'drivers', 'chauffeur', 'chauffeurs'] },
 ];
 
 /**
@@ -188,6 +211,7 @@ export const EXCO_LEGACY_DEPARTMENTS_TO_DEACTIVATE = [
   'Sales & Logistics',
   'Packaging & Logistics',
   'Packaging and Logistics',
+  'Packaging and Logistics Optimization',
   'Supply chain',
 ] as const;
 
@@ -271,4 +295,48 @@ export function compareExcoDepartments(a: string, b: string): number {
 
 export function sortExcoDepartments<T extends string>(names: T[]): T[] {
   return [...names].sort(compareExcoDepartments);
+}
+
+/** Libellé service canonique (Packing Plant, CEC, Driver…). */
+export function normalizeServiceName(raw: string): string {
+  const key = aliasKey(raw);
+  if (!key) return '';
+  for (const spec of SERVICE_ALIASES) {
+    if (aliasKey(spec.name) === key || spec.aliases.some((alias) => aliasKey(alias) === key)) {
+      return spec.name;
+    }
+  }
+  return raw.trim();
+}
+
+export function isDriverJobTitle(jobTitle?: string): boolean {
+  const text = aliasKey(jobTitle || '');
+  if (!text) return false;
+  if (/\b(moe|mobile equipment|engin)\b/.test(text)) return false;
+  return /\b(driver|chauffeur)\b/.test(text);
+}
+
+export function canonicalizeServiceSettings<T extends { id: string; name: string; code?: string; departmentId: string; active?: boolean }>(
+  services: T[],
+): { items: T[]; changed: boolean } {
+  const byKey = new Map<string, T>();
+  let changed = false;
+  for (const service of services) {
+    const name = normalizeServiceName(service.name) || service.name.trim();
+    const code = normalizeServiceName(service.code || '') || name;
+    if (name !== service.name || code !== (service.code || '')) changed = true;
+    const key = `${service.departmentId}::${aliasKey(name)}`;
+    const existing = byKey.get(key);
+    if (existing) {
+      changed = true;
+      if (service.active && existing.active === false) {
+        byKey.set(key, { ...existing, ...service, name, code, active: true });
+      }
+      continue;
+    }
+    byKey.set(key, { ...service, name, code });
+  }
+  const items = Array.from(byKey.values());
+  if (items.length !== services.length) changed = true;
+  return { items, changed };
 }

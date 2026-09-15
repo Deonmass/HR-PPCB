@@ -37,6 +37,8 @@ export const POLITIQUE_HUB_MENU_IDS = [
   'politique.voyages',
   'politique.alcool',
   'politique.harcelement',
+  'politique.exploitation',
+  'politique.cas-disciplinaires',
 ];
 
 export const RAPPORT_HUB_MENU_IDS = [
@@ -68,6 +70,8 @@ export const ROUTE_MENU_MAP: RouteMenuEntry[] = [
   { prefix: '/politique/doc/voyages', menuId: 'politique.voyages' },
   { prefix: '/politique/doc/alcool', menuId: 'politique.alcool' },
   { prefix: '/politique/doc/harcelement', menuId: 'politique.harcelement' },
+  { prefix: '/politique/doc/exploitation', menuId: 'politique.exploitation' },
+  { prefix: '/politique/doc/cas-disciplinaires', menuId: 'politique.cas-disciplinaires' },
   { prefix: '/politique', menuId: 'politique.longs-etats' },
   { prefix: '/documents-voyage/attestation-services', menuId: 'travel.attestation' },
   { prefix: '/documents-voyage/payment-voucher', menuId: 'travel.payment-voucher' },
@@ -112,6 +116,8 @@ export const ROUTE_MENU_MAP: RouteMenuEntry[] = [
   { prefix: '/charroi-automobile/achats', menuId: 'charroi.achats' },
   { prefix: '/charroi-automobile', menuId: 'charroi' },
   { prefix: '/employes', menuId: 'employes.liste' },
+  { prefix: '/sante/dashboard', menuId: 'sante.dashboard' },
+  { prefix: '/sante/donnees', menuId: 'sante.donnees' },
   { prefix: '/sante', menuId: 'sante' },
   { prefix: '/training', menuId: 'training' },
 ];
@@ -159,6 +165,15 @@ export function routeViewMenuIds(pathname: string): string[] {
     || normalized.startsWith('/village/liste/')
   ) {
     return ['village.dependants-liste', 'village.maisons'];
+  }
+  if (normalized === '/sante/dashboard' || normalized.startsWith('/sante/dashboard/')) {
+    return ['sante.dashboard', 'sante'];
+  }
+  if (normalized === '/sante/donnees' || normalized.startsWith('/sante/donnees/')) {
+    return ['sante.donnees', 'sante'];
+  }
+  if (normalized === '/sante') {
+    return ['sante.dashboard', 'sante.donnees', 'sante'];
   }
   if (
     normalized === '/charroi-automobile'

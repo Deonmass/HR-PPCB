@@ -160,7 +160,7 @@ export async function appendAuditLog(partial: AppendAuditLogInput): Promise<Audi
       at: new Date().toISOString(),
       userId: (partial.userId || 'system').trim() || 'system',
       userName: (partial.userName || 'Système').trim() || 'Système',
-      userEmail: partial.userEmail?.trim() || undefined,
+      userEmail: (partial.userEmail || '').trim() || (partial.userId && partial.userId !== 'system' ? partial.userId : undefined),
       module: partial.module.trim() || 'system',
       moduleLabel: resolveAuditModuleLabel(partial.module, partial.moduleLabel),
       action: partial.action,
@@ -363,7 +363,12 @@ export async function listAuditFilterOptions(): Promise<{
   const usersMap = new Map<string, string>();
   for (const entry of store.entries) {
     if (!modulesMap.has(entry.module)) modulesMap.set(entry.module, entry.moduleLabel);
-    if (!usersMap.has(entry.userId)) usersMap.set(entry.userId, entry.userName);
+    if (!usersMap.has(entry.userId)) {
+      usersMap.set(
+        entry.userId,
+        entry.userEmail ? `${entry.userName} · ${entry.userEmail}` : entry.userName,
+      );
+    }
   }
   return {
     modules: [...modulesMap.entries()]

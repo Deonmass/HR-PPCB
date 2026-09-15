@@ -304,6 +304,13 @@ export default function AccueilPage() {
       const res = await fetch('/api/dashboard/home');
       const json = await res.json();
       if (!res.ok) {
+        if (res.status === 401 || json.error === 'Non authentifié') {
+          const next = typeof window !== 'undefined'
+            ? `${window.location.pathname}${window.location.search}`
+            : '/accueil';
+          window.location.replace(`/login?next=${encodeURIComponent(next)}`);
+          return;
+        }
         setData(null);
         setError(json.error || t('common.loadError'));
         return;
@@ -328,6 +335,10 @@ export default function AccueilPage() {
 
   const employesSectorPlaceholders = useMemo(
     () => (data?.placeholders ?? []).filter((item) => item.href === '/heures-supplementaires'),
+    [data],
+  );
+  const santePlaceholders = useMemo(
+    () => (data?.placeholders ?? []).filter((item) => item.href.startsWith('/sante')),
     [data],
   );
   const documentsSectorPlaceholders = useMemo(
@@ -375,6 +386,7 @@ export default function AccueilPage() {
     || data?.dependants
     || data?.documents
     || employesSectorPlaceholders.length
+    || santePlaceholders.length
     || can('employes.liste', 'view'),
   );
   const hasPosteSector = Boolean(
@@ -626,6 +638,12 @@ export default function AccueilPage() {
                   <section className="panel home-module-panel home-module-placeholders">
                     <ModuleHead title={t('home.employees.overtime')} subtitle={t('home.employees.overtimeSub')} />
                     <PlaceholderGrid items={employesSectorPlaceholders} />
+                  </section>
+                )}
+                {santePlaceholders.length > 0 && (
+                  <section className="panel home-module-panel home-module-placeholders">
+                    <ModuleHead title={t('nav.health')} subtitle="Fiche journalière des pathologies" />
+                    <PlaceholderGrid items={santePlaceholders} />
                   </section>
                 )}
               </div>

@@ -2,10 +2,23 @@ import 'server-only';
 
 import { cookies } from 'next/headers';
 import { getSession, getSessionCookieName } from './auth-store';
+import { findUserByIdFromParams } from './params-users-store';
 import type { SessionUser } from './auth-types';
 import { appendAuditLog, logAuditError } from './audit-log-store';
 import type { AuditAction, AuditActor, AppendAuditLogInput } from './audit-log-types';
 import { hasUndoHandler } from './audit-undo-registry';
+
+export function resolveAuditUserEmail(user: {
+  email?: string;
+  username?: string;
+  id?: string;
+}): string {
+  const email = user.email?.trim();
+  if (email) return email;
+  const username = user.username?.trim();
+  if (username?.includes('@')) return username;
+  return username || user.id || '';
+}
 
 export async function getAuditActor(): Promise<AuditActor | null> {
   try {
@@ -13,7 +26,21 @@ export async function getAuditActor(): Promise<AuditActor | null> {
     const token = cookieStore.get(getSessionCookieName())?.value;
     const session = await getSession(token);
     if (!session?.user) return null;
-    return actorFromSessionUser(session.user);
+    let user = session.user;
+    try {
+      const fresh = await findUserByIdFromParams(session.user.id);
+      if (fresh) {
+        user = {
+          ...session.user,
+          email: fresh.email || session.user.email,
+          displayName: fresh.displayName || session.user.displayName,
+          username: fresh.username || session.user.username,
+        };
+      }
+    } catch {
+      // keep session user
+    }
+    return actorFromSessionUser(user);
   } catch {
     return null;
   }
@@ -23,7 +50,7 @@ export function actorFromSessionUser(user: SessionUser): AuditActor {
   return {
     userId: user.id,
     userName: user.displayName || user.username,
-    userEmail: user.email,
+    userEmail: resolveAuditUserEmail(user),
   };
 }
 

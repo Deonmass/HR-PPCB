@@ -4,7 +4,7 @@ import fs from 'fs';
 import fsPromises from 'fs/promises';
 import path from 'path';
 import type { CostCenterSetting, DepartmentSetting, ServiceSetting } from './auth-types';
-import { compareExcoDepartments } from './exco-department-map';
+import { canonicalizeServiceSettings, compareExcoDepartments, normalizeServiceName } from './exco-department-map';
 import {
   DURABLE_COST_CENTERS_KEY,
   DURABLE_DEPARTMENTS_KEY,
@@ -141,7 +141,15 @@ export async function listCostCentersFromParams(): Promise<CostCenterSetting[]> 
 
 export async function listServicesFromParams(): Promise<ServiceSetting[]> {
   const store = await readServicesStore();
-  return [...store.services]
+  const { items, changed } = canonicalizeServiceSettings(store.services);
+  if (changed) {
+    try {
+      await writeJsonFile(DURABLE_SERVICES_KEY, servicesPath(), { services: items });
+    } catch {
+      /* lecture canonique même si la persistance échoue */
+    }
+  }
+  return [...items]
     .filter((item) => item?.name?.trim() && item?.departmentId?.trim())
     .sort((a, b) => a.name.localeCompare(b.name, 'fr'));
 }
@@ -262,7 +270,7 @@ export async function deleteCostCenterFromParams(id: string): Promise<boolean> {
 
 export async function upsertServiceInParams(item: ServiceSetting): Promise<ServiceSetting> {
   const store = await readServicesStore();
-  const name = item.name.trim();
+  const name = normalizeServiceName(item.name.trim()) || item.name.trim();
   const departmentId = item.departmentId?.trim() ?? '';
   if (!name) throw new Error('Nom du service requis');
   if (!departmentId) throw new Error('Département associé requis');
@@ -275,7 +283,7 @@ export async function upsertServiceInParams(item: ServiceSetting): Promise<Servi
   const next: ServiceSetting = {
     id: item.id?.trim() || serviceIdFromName(departmentId, name),
     name,
-    code: item.code?.trim() || name,
+    code: normalizeServiceName(item.code?.trim() || '') || name,
     departmentId,
     active: item.active ?? true,
   };
@@ -287,7 +295,7 @@ export async function upsertServiceInParams(item: ServiceSetting): Promise<Servi
     const duplicate = store.services.findIndex(
       (service) =>
         service.departmentId === departmentId
-        && service.name.trim().toLowerCase() === name.toLowerCase(),
+        && (normalizeServiceName(service.name) || service.name.trim()) === name,
     );
     if (duplicate >= 0) {
       next.id = store.services[duplicate].id;

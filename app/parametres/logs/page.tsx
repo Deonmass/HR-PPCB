@@ -303,7 +303,7 @@ export default function AuditLogsPage() {
       buildColumnFilterValues(entries, {
         date: (e) => formatDate(e.at),
         module: (e) => e.moduleLabel,
-        utilisateur: (e) => e.userName,
+        utilisateur: (e) => e.userEmail || e.userName,
         action: (e) => actionDisplay(e),
       }),
     [entries],
@@ -315,7 +315,7 @@ export default function AuditLogsPage() {
         (e) =>
           matchesColumnFilter(colFilters.date, formatDate(e.at)) &&
           matchesColumnFilter(colFilters.module, e.moduleLabel) &&
-          matchesColumnFilter(colFilters.utilisateur, e.userName) &&
+          matchesColumnFilter(colFilters.utilisateur, e.userEmail || e.userName) &&
           matchesColumnFilter(colFilters.action, actionDisplay(e)),
       ),
     [entries, colFilters],
@@ -511,8 +511,8 @@ export default function AuditLogsPage() {
                       <div>{entry.moduleLabel}</div>
                     </td>
                     <td>
-                      <div>{entry.userName}</div>
-                      {entry.userEmail ? <div className="text-muted">{entry.userEmail}</div> : null}
+                      <div>{entry.userEmail || entry.userName}</div>
+                      {entry.userEmail ? <div className="text-muted">{entry.userName}</div> : null}
                     </td>
                     <td className="audit-col-action">
                       <ActionBadge action={entry.action} />
@@ -560,7 +560,7 @@ export default function AuditLogsPage() {
                   <span className="text-muted">Action</span>
                   <div><ActionBadge action={detail.action} /></div>
                 </div>
-                <div><span className="text-muted">Utilisateur</span><div>{detail.userName}{detail.userEmail ? ` · ${detail.userEmail}` : ''}</div></div>
+                <div><span className="text-muted">Utilisateur</span><div>{detail.userEmail || detail.userName}{detail.userEmail ? ` · ${detail.userName}` : ''}</div></div>
                 <div><span className="text-muted">Entité</span><div>{detail.entityType || '—'}{detail.entityId ? ` · ${detail.entityId}` : ''}</div></div>
               </div>
               <div className="form-group">

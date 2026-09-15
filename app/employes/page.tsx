@@ -57,6 +57,7 @@ type FilterKey =
   | 'matricule'
   | 'nom'
   | 'departement'
+  | 'service'
   | 'grade'
   | 'localisation'
   | 'age'
@@ -81,6 +82,7 @@ const EMPTY_FILTERS: Record<FilterKey, string[]> = {
   matricule: [],
   nom: [],
   departement: [],
+  service: [],
   grade: [],
   localisation: [],
   age: [],
@@ -299,6 +301,8 @@ export default function EmployesPage() {
         || e.nom.toLowerCase().includes(q)
         || e.matricule.includes(q)
         || e.departement.toLowerCase().includes(q)
+        || (e.service ?? '').toLowerCase().includes(q)
+        || (e.jobTitle ?? '').toLowerCase().includes(q)
         || (e.localisation ?? '').toLowerCase().includes(q)
         || (e.raisonExit ?? '').toLowerCase().includes(q)
         || (e.typeContrat ?? '').toLowerCase().includes(q)
@@ -320,6 +324,7 @@ export default function EmployesPage() {
         matricule: (e) => e.matricule,
         nom: (e) => e.nom,
         departement: (e) => e.departement,
+        service: (e) => e.service || '',
         grade: (e) => e.grade,
         localisation: (e) => e.localisation,
         age: (e) => formatYears(resolveEmployeeAge(e)),
@@ -360,6 +365,7 @@ export default function EmployesPage() {
           matchesColumnFilter(colFilters.matricule, e.matricule) &&
           matchesColumnFilter(colFilters.nom, e.nom) &&
           matchesColumnFilter(colFilters.departement, e.departement) &&
+          matchesColumnFilter(colFilters.service, e.service || '') &&
           matchesColumnFilter(colFilters.grade, e.grade) &&
           matchesColumnFilter(colFilters.localisation, e.localisation) &&
           matchesColumnFilter(colFilters.age, formatYears(resolveEmployeeAge(e))) &&
@@ -871,6 +877,14 @@ export default function EmployesPage() {
                             onChange={(next) => setColFilters((p) => ({ ...p, departement: next }))}
                           />
                         </th>
+                        <th className="th-filter emp-col-service">
+                          <TableHeaderFilter
+                            label="Service"
+                            values={filterValues.service}
+                            selected={colFilters.service}
+                            onChange={(next) => setColFilters((p) => ({ ...p, service: next }))}
+                          />
+                        </th>
                         <th className="th-filter emp-col-loc">
                           <TableHeaderFilter
                             label="Site"
@@ -890,12 +904,28 @@ export default function EmployesPage() {
                       </>
                     ) : (
                       <>
+                        <th className="th-filter emp-col-poste">
+                          <TableHeaderFilter
+                            label="Poste"
+                            values={filterValues.poste}
+                            selected={colFilters.poste}
+                            onChange={(next) => setColFilters((p) => ({ ...p, poste: next }))}
+                          />
+                        </th>
                         <th className="th-filter emp-col-dept">
                           <TableHeaderFilter
                             label="Département"
                             values={filterValues.departement}
                             selected={colFilters.departement}
                             onChange={(next) => setColFilters((p) => ({ ...p, departement: next }))}
+                          />
+                        </th>
+                        <th className="th-filter emp-col-service">
+                          <TableHeaderFilter
+                            label="Service"
+                            values={filterValues.service}
+                            selected={colFilters.service}
+                            onChange={(next) => setColFilters((p) => ({ ...p, service: next }))}
                           />
                         </th>
                         <th className="th-filter emp-col-grade">
@@ -953,17 +983,7 @@ export default function EmployesPage() {
                       </>
                     )}
                     {tab === 'liste' && (
-                      <>
-                        <th className="th-filter emp-col-poste">
-                          <TableHeaderFilter
-                            label="Poste"
-                            values={filterValues.poste}
-                            selected={colFilters.poste}
-                            onChange={(next) => setColFilters((p) => ({ ...p, poste: next }))}
-                          />
-                        </th>
-                        <th className="emp-col-dossier">Dossier</th>
-                      </>
+                      <th className="emp-col-dossier">Dossier</th>
                     )}
                     {tab === 'cdd' && (
                       <>
@@ -1131,13 +1151,22 @@ export default function EmployesPage() {
                               <td className="col-clip emp-col-dept" title={e.departement || undefined}>
                                 {e.departement || '—'}
                               </td>
+                              <td className="col-clip emp-col-service" title={e.service || undefined}>
+                                {e.service || '—'}
+                              </td>
                               <td className="emp-col-loc">{e.localisation || '—'}</td>
                               <td className="emp-col-contrat">{e.typeContrat || '—'}</td>
                             </>
                           ) : (
                             <>
+                              <td className="col-clip emp-col-poste" title={e.jobTitle || undefined}>
+                                {e.jobTitle || '—'}
+                              </td>
                               <td className="col-clip emp-col-dept" title={e.departement || undefined}>
-                                {e.departement}
+                                {e.departement || '—'}
+                              </td>
+                              <td className="col-clip emp-col-service" title={e.service || undefined}>
+                                {e.service || '—'}
                               </td>
                               <td className="emp-col-grade">{e.grade}</td>
                               <td className="emp-col-loc">{e.localisation}</td>
@@ -1163,19 +1192,14 @@ export default function EmployesPage() {
                             </>
                           )}
                           {tab === 'liste' && (
-                            <>
-                              <td className="col-clip emp-col-poste" title={e.jobTitle || undefined}>
-                                {e.jobTitle}
-                              </td>
-                              <td className="emp-col-dossier">
-                                <div className="progress-wrap">
-                                  <div className="progress-bar">
-                                    <div className={`progress-fill ${rateCls}`} style={{ width: `${pct}%` }} />
-                                  </div>
-                                  <span className="progress-pct">{pct}%</span>
+                            <td className="emp-col-dossier">
+                              <div className="progress-wrap">
+                                <div className="progress-bar">
+                                  <div className={`progress-fill ${rateCls}`} style={{ width: `${pct}%` }} />
                                 </div>
-                              </td>
-                            </>
+                                <span className="progress-pct">{pct}%</span>
+                              </div>
+                            </td>
                           )}
                           {tab === 'cdd' && (
                             <>

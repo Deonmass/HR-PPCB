@@ -2,9 +2,9 @@ export const TIMESHEET_COMPANY_DEFAULT = 'PPC Barnet';
 
 export const TIMESHEET_SHIFTS = {
   general: { label: 'Shift général', start: '07:00', end: '16:30' },
-  shift1: { label: 'Shift 1', start: '06:00', end: '14:00' },
-  shift2: { label: 'Shift 2', start: '14:00', end: '22:00', nightFrom: '19:00', nightHours: 3 },
-  shift3: { label: 'Shift 3', start: '22:00', end: '06:00', nightFrom: '22:00', nightTo: '05:00', nightHours: 7 },
+  shift1: { label: 'Shift 1 (Morning)', start: '06:00', end: '14:00' },
+  shift2: { label: 'Shift 2 (After)', start: '14:00', end: '22:00', nightFrom: '19:00', nightHours: 3 },
+  shift3: { label: 'Shift 3 (Night)', start: '22:00', end: '06:00', nightFrom: '22:00', nightTo: '05:00', nightHours: 7 },
 } as const;
 
 export const TIMESHEET_POLICY_SECTIONS = [
@@ -12,9 +12,9 @@ export const TIMESHEET_POLICY_SECTIONS = [
     title: 'Horaires de travail et shifts',
     items: [
       'Shift général : 07h00 à 16h30',
-      'Shift 1 : 06h00 à 14h00',
-      'Shift 2 : 14h00 à 22h00 — dont 3 heures de nuit de 19h00 à 22h00',
-      'Shift 3 : 22h00 à 06h00 — dont 7 heures de nuit de 22h00 à 05h00',
+      'Shift 1 (Morning) : 06h00 à 14h00',
+      'Shift 2 (After) : 14h00 à 22h00 — dont 3 heures de nuit de 19h00 à 22h00',
+      'Shift 3 (Night) : 22h00 à 06h00 — dont 7 heures de nuit de 22h00 à 05h00',
       'Toute prestation en dehors de ces plages fait objet d\'heures supplémentaires, sous réserve d\'approbation du Head of Department.',
     ],
   },
@@ -30,7 +30,7 @@ export const TIMESHEET_POLICY_SECTIONS = [
   {
     title: 'Sélection du shift et calculs',
     items: [
-      'Cochez le type de shift de la journée : Général, Shift 1, Shift 2 ou Shift 3.',
+      'Cochez le type de shift de la journée : Général, Shift 1 (Morning), Shift 2 (After) ou Shift 3 (Night).',
       'Saisissez l\'heure de début et de fin réellement prestées.',
       'Général HS : heures sup. hors plage 07h00–16h30 (hors nuit).',
       'Shift 1 HS : heures sup. hors plage 06h00–14h00 (hors nuit).',

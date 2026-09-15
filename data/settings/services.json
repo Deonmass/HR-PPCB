@@ -2,16 +2,30 @@
   "services": [
     {
       "id": "svc-sales-and-marketing-sales-cec",
-      "name": "Sales_CEC",
-      "code": "Sales_CEC",
+      "name": "CEC",
+      "code": "CEC",
       "departmentId": "dept-sales-and-marketing",
       "active": true
     },
     {
       "id": "svc-production-packaging-and-logistics-optimization",
-      "name": "Packaging and Logistics Optimization",
-      "code": "Packaging and Logistics Optimization",
+      "name": "Packing Plant",
+      "code": "Packing Plant",
       "departmentId": "dept-production",
+      "active": true
+    },
+    {
+      "id": "svc-sales-and-marketing-marketing",
+      "name": "Marketing",
+      "code": "Marketing",
+      "departmentId": "dept-sales-and-marketing",
+      "active": true
+    },
+    {
+      "id": "svc-transport-and-transit-driver",
+      "name": "Driver",
+      "code": "Driver",
+      "departmentId": "dept-transport-and-transit",
       "active": true
     },
     {
@@ -22,10 +36,24 @@
       "active": false
     },
     {
-      "id": "svc-sales-and-marketing-marketing",
-      "name": "Sales_Marketing",
-      "code": "Mark",
-      "departmentId": "dept-sales-and-marketing",
+      "id": "svc-human-resources-recrutement",
+      "name": "Recrutement",
+      "code": "REC",
+      "departmentId": "dept-human-resources",
+      "active": true
+    },
+    {
+      "id": "svc-human-resources-driver",
+      "name": "Driver",
+      "code": "DRI",
+      "departmentId": "dept-human-resources",
+      "active": true
+    },
+    {
+      "id": "svc-human-resources-admin",
+      "name": "Admin",
+      "code": "Admin",
+      "departmentId": "dept-human-resources",
       "active": true
     }
   ]

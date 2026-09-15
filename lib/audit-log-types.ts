@@ -51,7 +51,7 @@ export interface AuditLogsStore {
 export interface AuditActor {
   userId: string;
   userName: string;
-  userEmail?: string;
+  userEmail: string;
 }
 
 export interface AppendAuditLogInput {
@@ -135,6 +135,8 @@ export const AUDIT_MODULE_LABELS: Record<string, string> = {
   'politique.voyages': 'Politique — Voyages',
   'politique.alcool': 'Politique — Alcool et substances',
   'politique.harcelement': 'Politique — Harcèlement',
+  'politique.exploitation': 'Politique — Exploitation',
+  'politique.cas-disciplinaires': 'Politique — Cas disciplinaires',
   'exco.rapport': 'Rapport — EXCO',
   'settings.json': 'Paramètres — Fichiers JSON',
   postes: 'Postes',
@@ -149,6 +151,7 @@ export const AUDIT_MODULE_LABELS: Record<string, string> = {
   'village.dependants': 'Village — Dépendants',
   'village.assign': 'Village — Affectations',
   timesheet: 'Timesheet',
+  sante: 'Santé',
   'timesheet.overtimes': 'Timesheet — Heures sup.',
   'timesheet.compilation': 'Timesheet — Compilation',
   'audit-hr': 'Audit points',

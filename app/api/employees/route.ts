@@ -30,6 +30,9 @@ export async function GET() {
     { menuId: 'protocol.visa-travail', action: 'view' },
     { menuId: 'employes.mouvements', action: 'view' },
     { menuId: 'employes.postes', action: 'view' },
+    { menuId: 'sante.donnees', action: 'view' },
+    { menuId: 'sante.dashboard', action: 'view' },
+    { menuId: 'sante', action: 'view' },
     { menuId: 'exco.rapport', action: 'view' },
   ]);
   if (denied) return denied;

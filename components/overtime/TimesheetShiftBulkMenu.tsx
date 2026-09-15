@@ -98,7 +98,7 @@ export default function TimesheetShiftBulkMenu({
               }}
             >
               <strong>Shifter</strong>
-              <span>2 j. Shift 1 · 2 j. Shift 2 · 2 j. Shift 3 · 2 j. Off (répété)</span>
+              <span>2 j. Shift 1 (Morning) · 2 j. Shift 2 (After) · 2 j. Shift 3 (Night) · 2 j. Off (répété)</span>
             </button>
           </div>,
           document.body,

@@ -43,7 +43,7 @@ export const PERMISSION_MENU_CATALOG: PermissionMenuGroup[] = withSortedMenus([
       { id: 'employes.contractants', label: 'Contractants' },
       { id: 'employes.check-documents', label: 'Check documents' },
       { id: 'employes.heures', label: 'HS — Mon timesheet' },
-      { id: 'employes.heures.dept', label: 'HS — Voir mon département' },
+      { id: 'employes.heures.dept', label: 'HS — Superviseur (départements / services)' },
       { id: 'employes.heures.all', label: 'HS — Voir tous les départements' },
       { id: 'employes.heures.import', label: 'HS — Importer OT' },
       { id: 'employes.heures.validate', label: 'HS — Valider OT' },
@@ -112,6 +112,8 @@ export const PERMISSION_MENU_CATALOG: PermissionMenuGroup[] = withSortedMenus([
       { id: 'politique.voyages', label: 'Politique de voyage' },
       { id: 'politique.alcool', label: 'Alcool et substances' },
       { id: 'politique.harcelement', label: 'Harcèlement' },
+      { id: 'politique.exploitation', label: 'Exploitation' },
+      { id: 'politique.cas-disciplinaires', label: 'Gestion des cas disciplinaires' },
     ],
   },
   {
@@ -138,7 +140,8 @@ export const PERMISSION_MENU_CATALOG: PermissionMenuGroup[] = withSortedMenus([
     id: 'sante',
     label: 'Santé',
     items: [
-      { id: 'sante', label: 'Santé' },
+      { id: 'sante.dashboard', label: 'Santé — Dashboard' },
+      { id: 'sante.donnees', label: 'Santé — Données' },
     ],
   },
   {
@@ -306,6 +309,16 @@ export function mergePermissionsWithCatalog(menus: MenuPermission[]): MenuPermis
           };
         }
       }
+      if (defaultMenu.menuId === 'sante.dashboard' || defaultMenu.menuId === 'sante.donnees') {
+        const sante = menus.find((menu) => menu.menuId === 'sante');
+        if (sante) {
+          return {
+            menuId: defaultMenu.menuId,
+            label: defaultMenu.label,
+            actions: { ...sante.actions },
+          };
+        }
+      }
       if (defaultMenu.menuId === 'training') {
         const liste = menus.find((menu) => menu.menuId === 'employes.liste');
         if (liste) {
@@ -349,6 +362,25 @@ export function mergePermissionsWithCatalog(menus: MenuPermission[]): MenuPermis
         export: Boolean(existing.actions.export),
         undo: Boolean(existing.actions.undo),
       },
+      overtimeScope:
+        defaultMenu.menuId === 'employes.heures.dept' && existing.overtimeScope
+          ? {
+              departmentIds: Array.from(
+                new Set(
+                  (existing.overtimeScope.departmentIds ?? [])
+                    .map((id) => String(id).trim())
+                    .filter(Boolean),
+                ),
+              ),
+              serviceIds: Array.from(
+                new Set(
+                  (existing.overtimeScope.serviceIds ?? [])
+                    .map((id) => String(id).trim())
+                    .filter(Boolean),
+                ),
+              ),
+            }
+          : existing.overtimeScope,
     };
   });
 

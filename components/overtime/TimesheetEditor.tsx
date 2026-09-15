@@ -29,11 +29,18 @@ import type { TimesheetDayEntry, TimesheetRowData } from '@/lib/timesheet-types'
 import { finalizeTimesheetRow } from '@/lib/timesheet-ws';
 import { showError } from '@/lib/swal';
 import { usePermissions } from '@/contexts/PermissionContext';
-import { getDepartments } from '@/lib/employee-utils';
+import {
+  departmentForService,
+  employeesForOrgFilter,
+  listScopedTimesheetOrgOptions,
+} from '@/lib/timesheet-org-filter';
+import TimesheetOrgFilterSelect from '@/components/overtime/TimesheetOrgFilterSelect';
 import {
   canEditTimesheetForMatricule,
   matchesDepartment,
   TIMESHEET_MENU,
+  timesheetLockedDepartment,
+  timesheetLockedService,
 } from '@/lib/timesheet-permissions';
 import type { TimesheetAccessContext, TimesheetViewScope } from '@/lib/timesheet-permissions';
 import type { Employee } from '@/lib/types';
@@ -88,6 +95,8 @@ interface TimesheetEditorProps {
     scope: TimesheetViewScope | null;
     linkedEmployee: Employee | null;
     department: string | null;
+    allowedDepartments?: string[];
+    allowedServices?: string[];
     permissions: TimesheetAccessContext['permissions'] | null;
   };
 }
@@ -107,6 +116,7 @@ export default function TimesheetEditor({
   const [rows, setRows] = useState<TimesheetRowData[]>(() => refreshTimesheetRowsForPeriod(period));
   const [employees, setEmployees] = useState<Employee[]>([]);
   const [department, setDepartment] = useState(defaultDepartment);
+  const [service, setService] = useState('');
   const [employee, setEmployee] = useState<EmployeeSelection | null>(null);
   const [exporting, setExporting] = useState(false);
   const [toolbarReady, setToolbarReady] = useState(false);
@@ -126,21 +136,31 @@ export default function TimesheetEditor({
   const lockedDepartment =
     scope === 'self'
       ? access?.linkedEmployee?.departement ?? ''
-      : scope === 'department'
-        ? access?.department ?? ''
-        : '';
+      : timesheetLockedDepartment(scope, access?.allowedDepartments, access?.department);
+  const lockedService = scope === 'self' ? '' : timesheetLockedService(scope, access?.allowedServices);
 
-  const departments = useMemo(() => {
-    if (lockedDepartment) return [lockedDepartment];
-    return getDepartments(employees);
-  }, [employees, lockedDepartment]);
+  const { departments, services } = useMemo(
+    () =>
+      listScopedTimesheetOrgOptions(employees, {
+        scope,
+        allowedDepartments: access?.allowedDepartments,
+        allowedServices: access?.allowedServices,
+      }),
+    [access?.allowedDepartments, access?.allowedServices, employees, scope],
+  );
+  const orgFilterLocked =
+    scope === 'self' ||
+    Boolean(lockedService) ||
+    (Boolean(lockedDepartment) && services.length <= 1 && departments.length <= 1);
 
   const departmentEmployees = useMemo(
     () =>
-      employees.filter(
-        (item) => item.nom.trim() && (!department || matchesDepartment(item.departement, department)),
+      employeesForOrgFilter(
+        employees,
+        service ? 'service' : 'department',
+        service || department,
       ),
-    [department, employees],
+    [department, employees, service],
   );
 
   useEffect(() => {
@@ -148,12 +168,49 @@ export default function TimesheetEditor({
   }, [defaultDepartment, scope]);
 
   useEffect(() => {
-    if (lockedDepartment) {
-      setDepartment(lockedDepartment);
+    if (lockedService) {
+      setService(lockedService);
+      const parent = departmentForService(employees, lockedService, {
+        preferDepartments: [
+          lockedDepartment,
+          access?.department ?? '',
+          ...(access?.allowedDepartments ?? []),
+        ],
+        allowCanonicalFallback: false,
+      });
+      if (parent) setDepartment(parent);
       return;
     }
-    if (!department && departments.length) setDepartment(departments[0]);
-  }, [department, departments, lockedDepartment]);
+    if (lockedDepartment) {
+      setDepartment(lockedDepartment);
+      setService((current) => {
+        if (!current) return current;
+        return services.some((item) => item.name === current) ? current : '';
+      });
+      return;
+    }
+    if (service && services.some((item) => item.name === service)) return;
+    if (services.length === 1) {
+      setService(services[0].name);
+      const parent = departmentForService(employees, services[0].name, {
+        preferDepartments: [lockedDepartment, ...(access?.allowedDepartments ?? [])],
+        allowCanonicalFallback: false,
+      });
+      if (parent) setDepartment(parent);
+      return;
+    }
+    if (!department && departments.length) setDepartment(departments[0].name);
+  }, [
+    access?.allowedDepartments,
+    access?.department,
+    department,
+    departments,
+    employees,
+    lockedDepartment,
+    lockedService,
+    service,
+    services,
+  ]);
 
   useEffect(() => {
     if (scope !== 'self' || employee) return;
@@ -204,6 +261,11 @@ export default function TimesheetEditor({
           scope,
           linkedEmployee: access.linkedEmployee,
           userDepartment: access.department,
+          allowedDepartments: access.allowedDepartments ?? [],
+          allowedServices: access.allowedServices ?? [],
+          overtimeScope: { departmentIds: [], serviceIds: [] },
+          departmentCatalog: [],
+          serviceCatalog: [],
           permissions: access.permissions,
         },
         employee.matricule,
@@ -212,7 +274,16 @@ export default function TimesheetEditor({
 
     if (scope === 'self') return can(TIMESHEET_MENU.self, 'edit');
     return can(TIMESHEET_MENU.department, 'edit') || can(TIMESHEET_MENU.all, 'edit');
-  }, [access?.department, access?.linkedEmployee, access?.permissions, can, employee, scope]);
+  }, [
+    access?.allowedDepartments,
+    access?.allowedServices,
+    access?.department,
+    access?.linkedEmployee,
+    access?.permissions,
+    can,
+    employee,
+    scope,
+  ]);
 
   const canExport = Boolean(access?.permissions?.exportOwn && employee);
 
@@ -302,27 +373,40 @@ export default function TimesheetEditor({
         <span className="overtime-inline-hint">{formatPeriodRange(period)}</span>
         {scope !== 'self' && (
           <>
-            <label className="overtime-inline-field">
-              <span>Département</span>
-              <select
-                value={department}
-                onChange={(e) => setDepartment(e.target.value)}
-                disabled={Boolean(lockedDepartment)}
-              >
-                {departments.map((name) => (
-                  <option key={name} value={name}>
-                    {name}
-                  </option>
-                ))}
-              </select>
-            </label>
+            <TimesheetOrgFilterSelect
+              departments={departments}
+              services={services}
+              department={department}
+              service={service}
+              disabled={orgFilterLocked}
+              onChange={(kind, name) => {
+                if (orgFilterLocked) return;
+                if (kind === 'service') {
+                  if (!services.some((item) => item.name === name)) return;
+                  setService(name);
+                  const parent = departmentForService(employees, name, {
+                    preferDepartments: [lockedDepartment, ...(access?.allowedDepartments ?? [])],
+                    allowCanonicalFallback: false,
+                  });
+                  if (parent) setDepartment(parent);
+                  setEmployee(null);
+                  return;
+                }
+                if (kind === 'department') {
+                  if (!departments.some((item) => item.name === name)) return;
+                  setService('');
+                  setDepartment(name);
+                  setEmployee(null);
+                }
+              }}
+            />
             <label className="overtime-inline-field overtime-inline-field-grow">
               <span>Employé</span>
               <EmployeePicker
                 employees={departmentEmployees}
                 value={employee}
                 onChange={setEmployee}
-                department={department}
+                department={service ? undefined : department}
               />
             </label>
           </>
@@ -373,8 +457,8 @@ export default function TimesheetEditor({
                 <th>Début</th>
                 <th>Fin</th>
                 <th title="Général heures supplémentaires">Gén.</th>
-                <th title="Shift 1 heures supplémentaires">S1</th>
-                <th title="Shift 2 heures supplémentaires">S2</th>
+                <th title="Shift 1 (Morning) heures supplémentaires">S1 (Morning)</th>
+                <th title="Shift 2 (After) heures supplémentaires">S2 (After)</th>
                 <th title="Heures de nuit">Nuit</th>
                 <th title="Total heures du jour">Total</th>
               </tr>

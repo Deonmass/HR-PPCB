@@ -1,6 +1,7 @@
 import { NextResponse } from 'next/server';
 import { cookies } from 'next/headers';
 import { destroySession, getSession, getSessionCookieName } from '@/lib/auth-store';
+import { appendAuditLog } from '@/lib/audit-log-store';
 import { actorFromSessionUser } from '@/lib/with-audit';
 
 const LOGOUT_BUDGET_MS = 3500;
@@ -30,6 +31,16 @@ export async function POST() {
   }
 
   if (actor) {
+    await appendAuditLog({
+      userId: actor.userId,
+      userName: actor.userName,
+      userEmail: actor.userEmail,
+      module: 'auth',
+      action: 'logout',
+      summary: `Déconnexion ${actor.userEmail || actor.userName}`,
+      details: `Déconnexion de ${actor.userName} (${actor.userEmail || actor.userId})`,
+      undoable: false,
+    }).catch(() => undefined);
   }
 
   const response = NextResponse.json({ ok: true });

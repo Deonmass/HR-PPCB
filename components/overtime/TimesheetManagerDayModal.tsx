@@ -220,9 +220,9 @@ export default function TimesheetManagerDayModal({
                   <th>Début</th>
                   <th>Fin</th>
                   <th title="Général heures supplémentaires">Gén.</th>
-                  <th title="Shift 1 heures supplémentaires">S1</th>
-                  <th title="Shift 2 heures supplémentaires">S2</th>
-                  <th title="Shift 3 heures supplémentaires">S3</th>
+                  <th title="Shift 1 (Morning) heures supplémentaires">S1 (Morning)</th>
+                  <th title="Shift 2 (After) heures supplémentaires">S2 (After)</th>
+                  <th title="Shift 3 (Night) heures supplémentaires">S3 (Night)</th>
                   <th title="Heures de nuit">Nuit</th>
                   <th title="Total heures du jour">Total</th>
                 </tr>

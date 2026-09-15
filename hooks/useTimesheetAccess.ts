@@ -9,6 +9,8 @@ export interface TimesheetAccessState {
   scope: TimesheetViewScope | null;
   linkedEmployee: Employee | null;
   department: string | null;
+  allowedDepartments: string[];
+  allowedServices: string[];
   permissions: TimesheetAccessContext['permissions'] | null;
 }
 
@@ -17,6 +19,8 @@ const EMPTY_STATE: TimesheetAccessState = {
   scope: null,
   linkedEmployee: null,
   department: null,
+  allowedDepartments: [],
+  allowedServices: [],
   permissions: null,
 };
 
@@ -35,6 +39,8 @@ export function useTimesheetAccess() {
         scope: TimesheetViewScope;
         employee: Employee | null;
         department: string | null;
+        allowedDepartments?: string[];
+        allowedServices?: string[];
         permissions: TimesheetAccessContext['permissions'];
       };
       setState({
@@ -42,6 +48,8 @@ export function useTimesheetAccess() {
         scope: json.scope,
         linkedEmployee: json.employee,
         department: json.department,
+        allowedDepartments: json.allowedDepartments ?? [],
+        allowedServices: json.allowedServices ?? [],
         permissions: json.permissions,
       });
     } catch {

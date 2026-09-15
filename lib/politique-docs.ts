@@ -8,7 +8,9 @@ export type PolitiqueDocId =
   | 'aide-medicale'
   | 'voyages'
   | 'alcool'
-  | 'harcelement';
+  | 'harcelement'
+  | 'exploitation'
+  | 'cas-disciplinaires';
 
 export interface PolitiqueKeyword {
   id: string;
@@ -153,6 +155,32 @@ export const POLITIQUE_DOCS: PolitiqueDocMeta[] = [
     pdfFile: 'harcelement.pdf',
     totalPages: 3,
     i18nKey: 'harassment',
+    searchable: false,
+  },
+  {
+    id: 'exploitation',
+    slug: 'exploitation',
+    menuId: 'politique.exploitation',
+    title: 'Politique d’exploitation',
+    description: 'Règles d’exploitation des sites et des installations PPC Barnet.',
+    badge: 'Opérations',
+    accent: '#0e7490',
+    pdfFile: 'politique-exploitation.pdf',
+    totalPages: 1,
+    i18nKey: 'exploitation',
+    searchable: false,
+  },
+  {
+    id: 'cas-disciplinaires',
+    slug: 'cas-disciplinaires',
+    menuId: 'politique.cas-disciplinaires',
+    title: 'Gestion des cas disciplinaires',
+    description: 'Procédure de traitement des cas disciplinaires.',
+    badge: 'Discipline',
+    accent: '#9f1239',
+    pdfFile: 'politique-cas-disciplinaires.pdf',
+    totalPages: 1,
+    i18nKey: 'discipline',
     searchable: false,
   },
 ];

@@ -35,6 +35,7 @@ import { confirmAction, showError, showSuccess } from '@/lib/swal';
 import type { Employee } from '@/lib/types';
 import type { DepartmentSetting, ServiceSetting } from '@/lib/auth-types';
 import { applyEmployeeServicePrefill } from '@/lib/employee-utils';
+import { normalizeServiceName } from '@/lib/exco-department-map';
 import ExitDocsModal from '@/components/documents/ExitDocsModal';
 import { usePermissions } from '@/contexts/PermissionContext';
 
@@ -388,9 +389,9 @@ export default function EmployeeViewModal({ employee, canEdit = false, initialTa
       ? services.filter((s) => s.departmentId === deptId)
       : []
     )
-      .map((s) => s.name.trim())
+      .map((s) => normalizeServiceName(s.name) || s.name.trim())
       .filter(Boolean);
-    const currentSvc = (draft.service || '').trim();
+    const currentSvc = normalizeServiceName(draft.service || '') || (draft.service || '').trim();
     if (currentSvc && !svcOptions.includes(currentSvc)) svcOptions.unshift(currentSvc);
 
     return ORG_FIELDS_BASE.map((field) => {

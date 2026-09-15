@@ -19,7 +19,18 @@ import {
   IconWeekDone,
 } from '@/components/overtime/TimesheetIcons';
 import type { TimesheetAccessContext, TimesheetViewScope } from '@/lib/timesheet-permissions';
-import { matchesDepartment, TIMESHEET_MENU } from '@/lib/timesheet-permissions';
+import {
+  matchesDepartment,
+  TIMESHEET_MENU,
+  timesheetLockedDepartment,
+  timesheetLockedService,
+} from '@/lib/timesheet-permissions';
+import {
+  departmentForService,
+  employeesForOrgFilter,
+  listScopedTimesheetOrgOptions,
+} from '@/lib/timesheet-org-filter';
+import TimesheetOrgFilterSelect from '@/components/overtime/TimesheetOrgFilterSelect';
 import { usePermissions } from '@/contexts/PermissionContext';
 import { confirmAction, showError, showSuccess } from '@/lib/swal';
 
@@ -47,6 +58,8 @@ interface Props {
     loading: boolean;
     scope: TimesheetViewScope | null;
     department: string | null;
+    allowedDepartments?: string[];
+    allowedServices?: string[];
     permissions: TimesheetAccessContext['permissions'] | null;
   };
 }
@@ -73,6 +86,7 @@ export default function TimesheetManagerView({
   );
   const [employees, setEmployees] = useState<Employee[]>([]);
   const [department, setDepartment] = useState('');
+  const [service, setService] = useState('');
   const [lockedWeekIndexes, setLockedWeekIndexes] = useState<Set<number>>(new Set());
   const [importedWeekIndexes, setImportedWeekIndexes] = useState<Set<number>>(new Set());
   const [plannedWeekIndexes, setPlannedWeekIndexes] = useState<Set<number>>(new Set());
@@ -134,24 +148,33 @@ export default function TimesheetManagerView({
     setToolbarReady(true);
   }, []);
 
-  const departments = useMemo(() => {
-    const counts = new Map<string, number>();
-    for (const employee of employees) {
-      const name = employee.departement?.trim();
-      if (!name || !employee.nom.trim()) continue;
-      counts.set(name, (counts.get(name) ?? 0) + 1);
-    }
-    return Array.from(counts.entries())
-      .sort(([a], [b]) => a.localeCompare(b, 'fr'))
-      .map(([name, count]) => ({ name, count }));
-  }, [employees]);
+  const scope = access?.scope ?? 'department';
+  const lockedDepartment = timesheetLockedDepartment(
+    scope,
+    access?.allowedDepartments,
+    access?.department,
+  );
+  const lockedService = timesheetLockedService(scope, access?.allowedServices);
+  const { departments, services } = useMemo(
+    () =>
+      listScopedTimesheetOrgOptions(employees, {
+        scope,
+        allowedDepartments: access?.allowedDepartments,
+        allowedServices: access?.allowedServices,
+      }),
+    [access?.allowedDepartments, access?.allowedServices, employees, scope],
+  );
+  const orgFilterLocked =
+    Boolean(lockedService) || (Boolean(lockedDepartment) && services.length <= 1 && departments.length <= 1);
 
   const departmentAgents = useMemo(
     () =>
-      employees
-        .filter((employee) => employee.nom.trim() && matchesDepartment(employee.departement, department))
-        .sort((a, b) => a.nom.localeCompare(b.nom, 'fr')),
-    [department, employees],
+      employeesForOrgFilter(
+        employees,
+        service ? 'service' : 'department',
+        service || department,
+      ),
+    [department, employees, service],
   );
 
   const loadWeekStatus = useCallback(async () => {
@@ -204,16 +227,45 @@ export default function TimesheetManagerView({
       .catch(() => setEmployees([]));
   }, []);
 
-  const scope = access?.scope ?? 'department';
-  const lockedDepartment = scope === 'department' ? access?.department ?? '' : '';
   const canEdit =
     can(TIMESHEET_MENU.department, 'edit') ||
     can(TIMESHEET_MENU.all, 'edit') ||
     Boolean(access?.permissions?.editManager);
 
   useEffect(() => {
-    if (lockedDepartment) setDepartment(lockedDepartment);
-  }, [lockedDepartment]);
+    if (lockedService) {
+      setService(lockedService);
+      const parent = departmentForService(employees, lockedService, {
+        preferDepartments: [
+          lockedDepartment,
+          access?.department ?? '',
+          ...(access?.allowedDepartments ?? []),
+        ],
+        allowCanonicalFallback: false,
+      });
+      if (parent) setDepartment(parent);
+      return;
+    }
+    if (lockedDepartment) {
+      setDepartment(lockedDepartment);
+      setService((current) => {
+        if (!current) return current;
+        if (!services.some((item) => item.name === current)) return '';
+        const parent = departmentForService(employees, current, {
+          preferDepartments: [lockedDepartment],
+          allowCanonicalFallback: false,
+        });
+        return parent && matchesDepartment(parent, lockedDepartment) ? current : '';
+      });
+    }
+  }, [
+    access?.allowedDepartments,
+    access?.department,
+    employees,
+    lockedDepartment,
+    lockedService,
+    services,
+  ]);
 
   useEffect(() => {
     const nextPeriod = buildTimesheetPeriod(selectedMonth.year, selectedMonth.month);
@@ -225,8 +277,28 @@ export default function TimesheetManagerView({
   }, [selectedMonth]);
 
   useEffect(() => {
+    if (lockedService) return;
+    if (service && services.some((item) => item.name === service)) return;
+    if (services.length === 1) {
+      setService(services[0].name);
+      const parent = departmentForService(employees, services[0].name, {
+        preferDepartments: [lockedDepartment, ...(access?.allowedDepartments ?? [])],
+        allowCanonicalFallback: false,
+      });
+      if (parent) setDepartment(parent);
+      return;
+    }
     if (!department && departments.length) setDepartment(departments[0].name);
-  }, [department, departments]);
+  }, [
+    access?.allowedDepartments,
+    department,
+    departments,
+    employees,
+    lockedDepartment,
+    lockedService,
+    service,
+    services,
+  ]);
 
   useEffect(() => {
     loadWeekStatus();
@@ -295,20 +367,31 @@ export default function TimesheetManagerView({
           </select>
         </label>
         <span className="overtime-inline-hint">{formatPeriodRange(period)}</span>
-        <label className="overtime-inline-field">
-          <span>Département</span>
-          <select
-            value={department}
-            onChange={(e) => setDepartment(e.target.value)}
-            disabled={Boolean(lockedDepartment)}
-          >
-            {departments.map((item) => (
-              <option key={item.name} value={item.name}>
-                {item.name} ({item.count})
-              </option>
-            ))}
-          </select>
-        </label>
+        <TimesheetOrgFilterSelect
+          departments={departments}
+          services={services}
+          department={department}
+          service={service}
+          disabled={orgFilterLocked}
+          onChange={(kind, name) => {
+            if (orgFilterLocked) return;
+            if (kind === 'service') {
+              if (!services.some((item) => item.name === name)) return;
+              setService(name);
+              const parent = departmentForService(employees, name, {
+                preferDepartments: [lockedDepartment, ...(access?.allowedDepartments ?? [])],
+                allowCanonicalFallback: false,
+              });
+              if (parent) setDepartment(parent);
+              return;
+            }
+            if (kind === 'department') {
+              if (!departments.some((item) => item.name === name)) return;
+              setService('');
+              setDepartment(name);
+            }
+          }}
+        />
         <span className="overtime-inline-count">{departmentAgents.length} agent(s)</span>
       </div>
     ) : null;

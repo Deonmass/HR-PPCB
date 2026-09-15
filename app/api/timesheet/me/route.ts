@@ -23,6 +23,8 @@ export async function GET() {
     scope: access.scope,
     employee: access.linkedEmployee,
     department: access.userDepartment,
+    allowedDepartments: access.allowedDepartments,
+    allowedServices: access.allowedServices,
     permissions: access.permissions,
   });
 }

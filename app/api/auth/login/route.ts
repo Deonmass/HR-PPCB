@@ -4,7 +4,7 @@ import {
   createSession,
   getSessionCookieName,
 } from '@/lib/auth-store';
-import { logAuditError } from '@/lib/audit-log-store';
+import { appendAuditLog, logAuditError } from '@/lib/audit-log-store';
 import { actorFromSessionUser } from '@/lib/with-audit';
 
 export async function POST(request: Request) {
@@ -26,6 +26,16 @@ export async function POST(request: Request) {
 
     const session = await createSession(auth.user, auth.menus);
     const actor = actorFromSessionUser(auth.user);
+    await appendAuditLog({
+      userId: actor.userId,
+      userName: actor.userName,
+      userEmail: actor.userEmail,
+      module: 'auth',
+      action: 'login',
+      summary: `Connexion ${actor.userEmail || actor.userName}`,
+      details: `Connexion de ${actor.userName} (${actor.userEmail || actor.userId})`,
+      undoable: false,
+    });
 
     const response = NextResponse.json({ user: auth.user, menus: auth.menus });
     response.cookies.set(getSessionCookieName(), session.token, {

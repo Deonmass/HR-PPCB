@@ -23,6 +23,10 @@ export async function POST(request: Request) {
   try {
     const body = (await request.json()) as Partial<AuthUser> & { password?: string };
     const username = body.username?.trim() ?? '';
+    const email = body.email?.trim() ?? '';
+    if (!email.includes('@')) {
+      return NextResponse.json({ error: 'Email requis pour tracer les actions' }, { status: 400 });
+    }
     const user = await withAudit(
       {
         module: 'settings.utilisateurs',
@@ -42,7 +46,7 @@ export async function POST(request: Request) {
           username,
           displayName: body.displayName ?? '',
           initials: body.initials ?? '',
-          email: body.email,
+          email,
           matricule: body.matricule,
           active: body.active ?? true,
           password: body.password,

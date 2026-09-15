@@ -1,5 +1,14 @@
-import type { MenuPermission, SessionUser } from './auth-types';
+import type { DepartmentSetting, MenuPermission, OvertimeAccessScope, SessionUser, ServiceSetting } from './auth-types';
 import { departmentsEqual } from './exco-department-map';
+import {
+  canAccessDepartmentWithOvertimeScope,
+  employeeMatchesOvertimeScope,
+  getOvertimeScopeFromMenus,
+  hasExplicitOvertimeScope,
+  resolveAllowedDepartmentNames,
+  resolveAllowedServiceNames,
+  resolveServiceNamesForDepartments,
+} from './overtime-scope';
 import { canPerformAction } from './permission-check';
 import type { Employee } from './types';
 
@@ -23,6 +32,12 @@ export interface TimesheetAccessContext {
   scope: TimesheetViewScope;
   linkedEmployee: Employee | null;
   userDepartment: string | null;
+  allowedDepartments: string[];
+  /** Vide = non restreint (scope all). Sinon liste des services du périmètre. */
+  allowedServices: string[];
+  overtimeScope: OvertimeAccessScope;
+  departmentCatalog: DepartmentSetting[];
+  serviceCatalog: ServiceSetting[];
   permissions: {
     viewOwn: boolean;
     editOwn: boolean;
@@ -91,9 +106,32 @@ export function buildTimesheetAccessContext(
   user: SessionUser,
   menus: MenuPermission[],
   employees: Employee[],
+  catalogs?: { departments: DepartmentSetting[]; services: ServiceSetting[] },
 ): TimesheetAccessContext {
   const scope = resolveTimesheetViewScope(menus);
   const linkedEmployee = resolveEmployeeForSession(user, employees);
+  const overtimeScope = getOvertimeScopeFromMenus(menus);
+  const departments = catalogs?.departments ?? [];
+  const services = catalogs?.services ?? [];
+  const explicit = hasExplicitOvertimeScope(overtimeScope);
+  const scopedDepartments = explicit
+    ? resolveAllowedDepartmentNames(overtimeScope, departments, services)
+    : [];
+  const fallbackDepartment = linkedEmployee?.departement?.trim() || null;
+  const allowedDepartments =
+    scope === 'all'
+      ? []
+      : explicit
+        ? scopedDepartments
+        : fallbackDepartment
+          ? [fallbackDepartment]
+          : [];
+  const allowedServices =
+    scope === 'all'
+      ? []
+      : explicit
+        ? resolveAllowedServiceNames(overtimeScope, departments, services)
+        : resolveServiceNamesForDepartments(allowedDepartments, departments, services);
 
   const importOvertime = hasAnyAction(menus, TIMESHEET_MENU.importOvertime);
   const validateOvertime =
@@ -117,7 +155,12 @@ export function buildTimesheetAccessContext(
   return {
     scope,
     linkedEmployee,
-    userDepartment: linkedEmployee?.departement?.trim() || null,
+    userDepartment: allowedDepartments[0] ?? fallbackDepartment,
+    allowedDepartments,
+    allowedServices,
+    overtimeScope,
+    departmentCatalog: departments,
+    serviceCatalog: services,
     permissions: {
       viewOwn: canPerformAction(menus, TIMESHEET_MENU.self, 'view'),
       editOwn: canPerformAction(menus, TIMESHEET_MENU.self, 'edit'),
@@ -160,9 +203,24 @@ export function filterEmployeesForTimesheetScope(
   }
 
   if (access.scope === 'department') {
-    const dept = access.userDepartment;
-    if (!dept) return [];
-    return withName.filter((employee) => matchesDepartment(employee.departement, dept));
+    const scoped = hasExplicitOvertimeScope(access.overtimeScope)
+      ? withName.filter((employee) =>
+          employeeMatchesOvertimeScope(
+            employee,
+            access.overtimeScope,
+            access.departmentCatalog,
+            access.serviceCatalog,
+          ),
+        )
+      : (() => {
+          const dept = access.userDepartment;
+          if (!dept) return [];
+          return withName.filter((employee) => matchesDepartment(employee.departement, dept));
+        })();
+    if (selectedDepartment) {
+      return scoped.filter((employee) => matchesDepartment(employee.departement, selectedDepartment));
+    }
+    return scoped;
   }
 
   if (!access.linkedEmployee) return [];
@@ -180,6 +238,14 @@ export function canAccessEmployeeMatricule(
   if (access.scope === 'all') return true;
 
   if (access.scope === 'department') {
+    if (hasExplicitOvertimeScope(access.overtimeScope)) {
+      return employeeMatchesOvertimeScope(
+        employee,
+        access.overtimeScope,
+        access.departmentCatalog,
+        access.serviceCatalog,
+      );
+    }
     if (!access.userDepartment) return false;
     return matchesDepartment(employee.departement, access.userDepartment);
   }
@@ -193,10 +259,41 @@ export function canAccessDepartment(
 ): boolean {
   if (access.scope === 'all') return Boolean(department.trim());
   if (access.scope === 'department') {
+    if (hasExplicitOvertimeScope(access.overtimeScope)) {
+      return canAccessDepartmentWithOvertimeScope(
+        department,
+        access.overtimeScope,
+        access.departmentCatalog,
+        access.serviceCatalog,
+      );
+    }
     if (!access.userDepartment) return false;
     return matchesDepartment(department, access.userDepartment);
   }
   return false;
+}
+
+export function timesheetLockedDepartment(
+  scope: TimesheetViewScope | null | undefined,
+  allowedDepartments: string[] | undefined,
+  userDepartment: string | null | undefined,
+): string {
+  if (scope === 'all' || scope === 'self' || !scope) return '';
+  const allowed = (allowedDepartments ?? []).map((name) => name.trim()).filter(Boolean);
+  if (allowed.length > 1) return '';
+  if (allowed.length === 1) return allowed[0];
+  return userDepartment?.trim() || '';
+}
+
+/** Service unique du périmètre → verrouiller le filtre org sur ce service. */
+export function timesheetLockedService(
+  scope: TimesheetViewScope | null | undefined,
+  allowedServices: string[] | undefined,
+): string {
+  if (scope === 'all' || scope === 'self' || !scope) return '';
+  const allowed = (allowedServices ?? []).map((name) => name.trim()).filter(Boolean);
+  if (allowed.length !== 1) return '';
+  return allowed[0];
 }
 
 export function canEditOwnTimesheet(access: TimesheetAccessContext, matricule: string): boolean {

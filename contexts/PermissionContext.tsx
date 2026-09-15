@@ -35,7 +35,20 @@ export function PermissionProvider({ children }: { children: ReactNode }) {
     try {
       const res = await fetch('/api/auth/session');
       if (!res.ok) {
-        // Ne pas effacer les droits en refresh silencieux (erreur réseau / 401 transitoire).
+        if (res.status === 401) {
+          setUser(null);
+          setMenus([]);
+          if (typeof window !== 'undefined') {
+            const path = window.location.pathname;
+            if (path !== '/login') {
+              // Cookie invalidé par /api/auth/session — éviter la boucle middleware.
+              const next = `${path}${window.location.search}`;
+              window.location.replace(`/login?next=${encodeURIComponent(next)}`);
+            }
+          }
+          return;
+        }
+        // Ne pas effacer les droits en refresh silencieux (erreur réseau).
         if (!options?.silent) {
           setUser(null);
           setMenus([]);
@@ -110,6 +123,8 @@ export function PermissionProvider({ children }: { children: ReactNode }) {
       '/politique/convention-collective',
       '/politique/heures-supplementaires',
       '/politique/doc/village',
+      '/politique/doc/exploitation',
+      '/politique/doc/cas-disciplinaires',
       '/protocol/visa-travail',
       '/protocol/visa-volant',
       '/protocol/visa-voyage',
@@ -119,6 +134,8 @@ export function PermissionProvider({ children }: { children: ReactNode }) {
       '/factures-fournisseurs/soa',
       '/factures-fournisseurs/fournisseurs',
       '/sante',
+      '/sante/dashboard',
+      '/sante/donnees',
       '/charroi-automobile/vehicules',
       '/charroi-automobile/achats',
       '/village/maisons',

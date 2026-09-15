@@ -6,6 +6,7 @@ import { getSession, getSessionCookieName } from '@/lib/auth-store';
 import { readEmployees } from '@/lib/employees-json-store';
 import { canPerformAction } from '@/lib/permission-check';
 import { checkPermission } from '@/lib/require-permission';
+import { listDepartments, listServices } from '@/lib/settings-store';
 import { isZambaLocalisation } from '@/lib/timesheet-calc';
 import {
   buildTimesheetAccessContext,
@@ -21,8 +22,15 @@ export async function getTimesheetAccessFromSession() {
   const session = await getSession(token);
   if (!session) return null;
 
-  const employees = await readEmployees();
-  const access = buildTimesheetAccessContext(session.user, session.menus, employees);
+  const [employees, departments, services] = await Promise.all([
+    readEmployees(),
+    listDepartments(),
+    listServices(),
+  ]);
+  const access = buildTimesheetAccessContext(session.user, session.menus, employees, {
+    departments,
+    services,
+  });
   return { session, access, employees };
 }
 

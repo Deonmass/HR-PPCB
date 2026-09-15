@@ -270,13 +270,13 @@ export function isZambaLocalisation(localisation?: string | null): boolean {
 
 /**
  * General-shift schedule. On Fridays it is shortened per the collective agreement:
- * Zamba employees work 07h00–13h30, employees of other localisations 08h00–17h30.
+ * Zamba employees work 07h00–13h00, employees of other localisations 08h00–17h30.
  * Every other day keeps the standard 07h00–16h30 schedule.
  */
 export function generalShiftInterval(ctx?: ShiftScheduleContext): MinuteInterval {
   if (isFriday(ctx?.date)) {
     return isZambaLocalisation(ctx?.localisation)
-      ? { start: 7 * MIN, end: 13 * MIN + 30 }
+      ? { start: 7 * MIN, end: 13 * MIN }
       : { start: 8 * MIN, end: 17 * MIN + 30 };
   }
   return { start: GENERAL_START, end: GENERAL_END };

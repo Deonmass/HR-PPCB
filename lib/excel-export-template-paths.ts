@@ -25,6 +25,7 @@ export const EXPORT_TEMPLATE_SUBDIRS = {
   attestations: 'attestations',
   audit: 'audit',
   contrats: 'contrats',
+  sante: 'sante',
 } as const;
 
 export const EXPORT_TEMPLATE_FILES = {
@@ -48,6 +49,7 @@ export const EXPORT_TEMPLATE_FILES = {
   travelMissionOrder: 'Ordre de mission.docx',
   travelFlightBooking: 'FLIGHT BOOKING FORM DOC-PPCB-HR-06 version 03.doc',
   auditHr: 'Audit_HR_template.xlsm',
+  santePathologies: 'PATHOLOGIES_TEMPLATE.xlsx',
 } as const;
 
 const FILE_TO_SUBDIR: Record<string, string> = {
@@ -71,6 +73,7 @@ const FILE_TO_SUBDIR: Record<string, string> = {
   [EXPORT_TEMPLATE_FILES.travelMissionOrder]: EXPORT_TEMPLATE_SUBDIRS.travel,
   [EXPORT_TEMPLATE_FILES.travelFlightBooking]: EXPORT_TEMPLATE_SUBDIRS.travel,
   [EXPORT_TEMPLATE_FILES.auditHr]: EXPORT_TEMPLATE_SUBDIRS.audit,
+  [EXPORT_TEMPLATE_FILES.santePathologies]: EXPORT_TEMPLATE_SUBDIRS.sante,
 };
 
 /** Resolve Excel/templates/<subdir>/<file> (env override first). */
@@ -140,6 +143,12 @@ export const AUDIT_HR_EXPORT_TEMPLATE_PATH = resolveExportTemplate(
   EXPORT_TEMPLATE_FILES.auditHr,
   process.env.AUDIT_HR_EXPORT_TEMPLATE_XLSX,
   EXPORT_TEMPLATE_SUBDIRS.audit,
+);
+
+export const SANTE_PATHOLOGIES_TEMPLATE_PATH = resolveExportTemplate(
+  EXPORT_TEMPLATE_FILES.santePathologies,
+  process.env.SANTE_PATHOLOGIES_TEMPLATE_XLSX,
+  EXPORT_TEMPLATE_SUBDIRS.sante,
 );
 
 export {

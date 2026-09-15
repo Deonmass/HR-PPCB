@@ -20,6 +20,7 @@ import type { Employee } from '@/lib/types';
 import { emptyEmployeeHrProfile } from '@/lib/types';
 import type { DepartmentSetting, ServiceSetting } from '@/lib/auth-types';
 import { applyEmployeeServicePrefill } from '@/lib/employee-utils';
+import { normalizeServiceName } from '@/lib/exco-department-map';
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 
 interface Props {
@@ -356,9 +357,9 @@ export default function EmployeeModal({
     const currentDept = (form.departement || '').trim().toLowerCase();
     const deptId = departments.find((d) => d.name.trim().toLowerCase() === currentDept)?.id;
     const names = (deptId ? services.filter((s) => s.departmentId === deptId) : [])
-      .map((s) => s.name.trim())
+      .map((s) => normalizeServiceName(s.name) || s.name.trim())
       .filter(Boolean);
-    const current = (form.service || '').trim();
+    const current = normalizeServiceName(form.service || '') || (form.service || '').trim();
     if (current && !names.includes(current)) names.unshift(current);
     return [...new Set(names)];
   }, [departments, services, form.departement, form.service]);
@@ -775,7 +776,7 @@ export default function EmployeeModal({
                 <label htmlFor="emp-service">Service</label>
                 <select
                   id="emp-service"
-                  value={form.service || ''}
+                  value={normalizeServiceName(form.service || '') || form.service || ''}
                   onChange={(e) => patch('service', e.target.value)}
                   disabled={serviceOptions.length === 0}
                 >

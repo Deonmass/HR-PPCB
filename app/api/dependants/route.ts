@@ -11,6 +11,9 @@ export async function GET() {
     { menuId: 'village.dependants-dashboard', action: 'view' },
     { menuId: 'village.dependants-liste', action: 'view' },
     { menuId: 'village.maisons', action: 'view' },
+    { menuId: 'sante.donnees', action: 'view' },
+    { menuId: 'sante.dashboard', action: 'view' },
+    { menuId: 'sante', action: 'view' },
   ]);
   if (denied) return denied;
 

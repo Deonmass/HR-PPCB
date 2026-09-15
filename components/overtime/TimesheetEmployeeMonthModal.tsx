@@ -53,7 +53,7 @@ const SCHEDULE_PRESETS: SchedulePreset[] = [
   {
     id: 'general-zamba',
     label: 'General Shift — Zamba',
-    detail: '07:00–16:30 · ven. → 13:30',
+    detail: '07:00–16:30 · ven. → 13:00',
   },
   {
     id: 'general-kinshasa',
@@ -77,7 +77,7 @@ function timesForGeneralPreset(
   date: Date | string,
 ): { from: string; to: string } {
   if (presetId === 'general-zamba') {
-    return isFridayDate(date) ? { from: '07:00', to: '13:30' } : { from: '07:00', to: '16:30' };
+    return isFridayDate(date) ? { from: '07:00', to: '13:00' } : { from: '07:00', to: '16:30' };
   }
   return { from: '08:30', to: '17:30' };
 }
@@ -510,9 +510,9 @@ export default function TimesheetEmployeeMonthModal({
                       <th className="timesheet-template-actual-head">From</th>
                       <th className="timesheet-template-actual-head">To</th>
                       <th title="Ordinary">Ord.</th>
-                      <th>S1</th>
-                      <th>S2</th>
-                      <th>S3</th>
+                      <th title="Shift 1 (Morning)">S1 (Morning)</th>
+                      <th title="Shift 2 (After)">S2 (After)</th>
+                      <th title="Shift 3 (Night)">S3 (Night)</th>
                       <th>Night</th>
                       <th>1.3</th>
                       <th>1.6</th>

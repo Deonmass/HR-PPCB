@@ -44,10 +44,17 @@ export interface AuthSession {
 
 export type PermissionAction = 'view' | 'create' | 'edit' | 'delete' | 'export' | 'undo';
 
+/** Périmètre HS superviseur : département entier et/ou services précis. */
+export interface OvertimeAccessScope {
+  departmentIds: string[];
+  serviceIds: string[];
+}
+
 export interface MenuPermission {
   menuId: string;
   label: string;
   actions: Record<PermissionAction, boolean>;
+  overtimeScope?: OvertimeAccessScope;
 }
 
 export interface RolePermissions {

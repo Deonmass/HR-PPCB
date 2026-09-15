@@ -178,6 +178,8 @@ const NAV: NavSection[] = [
       'politique.voyages',
       'politique.alcool',
       'politique.harcelement',
+      'politique.exploitation',
+      'politique.cas-disciplinaires',
     ],
   },
   {
@@ -227,13 +229,25 @@ const NAV: NavSection[] = [
     ],
   },
   {
-    type: 'link',
+    type: 'group',
     id: 'sante',
-    href: '/sante',
-    label: 'Santé',
+    title: 'Santé',
     icon: 'health',
     color: '#22c55e',
-    menuIds: ['sante'],
+    items: [
+      {
+        href: '/sante/dashboard',
+        label: 'Dashboard',
+        icon: 'dashboard',
+        menuIds: ['sante.dashboard', 'sante'],
+      },
+      {
+        href: '/sante/donnees',
+        label: 'Données',
+        icon: 'docs',
+        menuIds: ['sante.donnees', 'sante'],
+      },
+    ],
   },
   {
     type: 'link',
@@ -342,6 +356,8 @@ const ITEM_LABEL_KEY: Record<string, MessageKey> = {
   '/charroi-automobile/vehicules': 'nav.fleet.vehicles',
   '/charroi-automobile/achats': 'nav.fleet.purchases',
   '/village/maisons': 'nav.village.houses',
+  '/sante/dashboard': 'nav.health.dashboard',
+  '/sante/donnees': 'nav.health.data',
   '/village/guest-house': 'nav.village.guestHouse',
   '/parametres/departements': 'nav.settings.departments',
   '/parametres/centres-de-cout': 'nav.settings.costCenters',

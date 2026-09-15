@@ -16,7 +16,17 @@ import {
 import PermissionsProgress from '@/components/PermissionsProgress';
 import { usePermissions } from '@/contexts/PermissionContext';
 import { showError, showSuccess } from '@/lib/swal';
-import type { AuthUser, MenuPermission, PermissionAction, RolePermissions } from '@/lib/auth-types';
+import type {
+  AuthUser,
+  DepartmentSetting,
+  MenuPermission,
+  OvertimeAccessScope,
+  PermissionAction,
+  RolePermissions,
+  ServiceSetting,
+} from '@/lib/auth-types';
+import OvertimeScopePicker from '@/components/OvertimeScopePicker';
+import { getOvertimeScopeFromMenus, hasExplicitOvertimeScope } from '@/lib/overtime-scope';
 
 type SafeUser = Omit<AuthUser, 'password'>;
 type SideMode = 'roles' | 'users';
@@ -35,6 +45,8 @@ function PermissionsContent() {
   const [loadingPermissions, setLoadingPermissions] = useState(false);
   const [saving, setSaving] = useState(false);
   const [newRoleName, setNewRoleName] = useState('');
+  const [departments, setDepartments] = useState<DepartmentSetting[]>([]);
+  const [services, setServices] = useState<ServiceSetting[]>([]);
 
   const loadUsers = useCallback(async () => {
     setLoadingUsers(true);
@@ -74,6 +86,14 @@ function PermissionsContent() {
   useEffect(() => {
     void loadUsers();
     void loadRoles();
+    fetch('/api/settings/departments')
+      .then((res) => (res.ok ? res.json() : []))
+      .then((json: DepartmentSetting[]) => setDepartments(Array.isArray(json) ? json : []))
+      .catch(() => setDepartments([]));
+    fetch('/api/settings/services')
+      .then((res) => (res.ok ? res.json() : []))
+      .then((json: ServiceSetting[]) => setServices(Array.isArray(json) ? json : []))
+      .catch(() => setServices([]));
   }, [loadUsers, loadRoles]);
 
   useEffect(() => {
@@ -96,7 +116,7 @@ function PermissionsContent() {
     () => (menus ? groupPermissionsByCatalog(menus) : []),
     [menus],
   );
-  const [openGroupIds, setOpenGroupIds] = useState<string[]>([]);
+  const [openGroupIds, setOpenGroupIds] = useState<string[]>(['employes']);
 
   const toggleGroup = (groupId: string) => {
     setOpenGroupIds((prev) =>
@@ -185,6 +205,45 @@ function PermissionsContent() {
     });
   };
 
+  const updateOvertimeScope = (scope: OvertimeAccessScope) => {
+    if (!menus || !canEdit) return;
+    const explicit = hasExplicitOvertimeScope(scope);
+    setMenus((prev) => {
+      if (!prev) return prev;
+      const has = prev.some((menu) => menu.menuId === 'employes.heures.dept');
+      const label =
+        PERMISSION_MENU_CATALOG.flatMap((g) => g.items).find((i) => i.id === 'employes.heures.dept')
+          ?.label ?? 'HS — Superviseur (départements / services)';
+      if (!has) {
+        return [
+          ...prev,
+          {
+            menuId: 'employes.heures.dept',
+            label,
+            actions: {
+              view: explicit,
+              create: false,
+              edit: false,
+              delete: false,
+              export: false,
+              undo: false,
+            },
+            overtimeScope: scope,
+          },
+        ];
+      }
+      return prev.map((menu) =>
+        menu.menuId === 'employes.heures.dept'
+          ? {
+              ...menu,
+              overtimeScope: scope,
+              actions: explicit ? { ...menu.actions, view: true } : menu.actions,
+            }
+          : menu,
+      );
+    });
+  };
+
   const handleSave = async () => {
     if (!menus || !canEdit) return;
     setSaving(true);
@@ -239,27 +298,6 @@ function PermissionsContent() {
     }
   };
 
-  const handleApplyRole = async (roleId: string) => {
-    if (!selectedUserId || !canEdit) return;
-    setSaving(true);
-    try {
-      const res = await fetch('/api/auth/permissions', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ action: 'applyRole', roleId, userId: selectedUserId }),
-      });
-      const json = await res.json();
-      if (!res.ok) {
-        await showError(json.error || 'Erreur');
-        return;
-      }
-      setMenus(json.menus ?? []);
-      await showSuccess('Rôle appliqué à l’utilisateur');
-    } finally {
-      setSaving(false);
-    }
-  };
-
   if (loadingUsers) return <div className="loading">Chargement...</div>;
 
   const selectionTitle =
@@ -273,8 +311,8 @@ function PermissionsContent() {
 
   return (
     <PermissionGate menuId="settings.permissions" action="view">
-    <>
-      <div className="page-header">
+    <div className="permissions-page">
+      <div className="page-header permissions-sticky-header">
         <div>
           <div className="page-header-title-row">
             <h2>Permissions</h2>
@@ -418,27 +456,6 @@ function PermissionsContent() {
                       Tout replier
                     </button>
                   </div>
-                  {sideMode === 'users' && canEdit && roles.length > 0 ? (
-                    <label className="permissions-apply-role">
-                      <span>Appliquer rôle</span>
-                      <select
-                        defaultValue=""
-                        disabled={saving}
-                        onChange={(e) => {
-                          const roleId = e.target.value;
-                          if (roleId) void handleApplyRole(roleId);
-                          e.currentTarget.value = '';
-                        }}
-                      >
-                        <option value="">Choisir…</option>
-                        {roles.map((role) => (
-                          <option key={role.roleId} value={role.roleId}>
-                            {role.roleName}
-                          </option>
-                        ))}
-                      </select>
-                    </label>
-                  ) : null}
                 </div>
               </div>
 
@@ -486,8 +503,18 @@ function PermissionsContent() {
                             const allChecked = isMenuFullyChecked(menu);
                             const partiallyChecked = isMenuPartiallyChecked(menu);
                             const supportsUndo = menu.menuId === 'parametres.logs';
+                            const allDepartmentsGranted = Boolean(
+                              menus?.find((item) => item.menuId === 'employes.heures.all')?.actions.view,
+                            );
+                            const supervisorMenu =
+                              menu.menuId === 'employes.heures.dept' ? menu : null;
+                            const showOvertimeScope = Boolean(
+                              supervisorMenu
+                              && PERMISSION_ACTIONS.some((action) => supervisorMenu.actions[action.id]),
+                            );
                             return (
-                              <div key={menu.menuId} className={gridClass}>
+                              <div key={menu.menuId} className="permissions-row-block">
+                              <div className={gridClass}>
                                 <span className="permissions-row-label" title={menu.label}>
                                   {shortMenuLabel(menu.label)}
                                 </span>
@@ -534,6 +561,17 @@ function PermissionsContent() {
                                   </label>
                                 )}
                               </div>
+                              {showOvertimeScope ? (
+                                <OvertimeScopePicker
+                                  departments={departments}
+                                  services={services}
+                                  value={getOvertimeScopeFromMenus(menus)}
+                                  disabled={!canEdit}
+                                  allDepartmentsGranted={allDepartmentsGranted}
+                                  onChange={updateOvertimeScope}
+                                />
+                              ) : null}
+                              </div>
                             );
                           })
                             : null}
@@ -548,7 +586,7 @@ function PermissionsContent() {
           )}
         </section>
       </div>
-    </>
+    </div>
     </PermissionGate>
   );
 }

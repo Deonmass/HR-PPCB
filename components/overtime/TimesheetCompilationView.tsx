@@ -32,7 +32,17 @@ import TimesheetCompilationSimulationModal from '@/components/overtime/Timesheet
 import { usePermissions } from '@/contexts/PermissionContext';
 import { downloadTimesheetWorkbook } from '@/lib/timesheet-export';
 import type { TimesheetAccessContext, TimesheetViewScope } from '@/lib/timesheet-permissions';
-import { matchesDepartment, TIMESHEET_MENU } from '@/lib/timesheet-permissions';
+import {
+  TIMESHEET_MENU,
+  timesheetLockedDepartment,
+  timesheetLockedService,
+} from '@/lib/timesheet-permissions';
+import {
+  departmentForService,
+  employeesForOrgFilter,
+  listScopedTimesheetOrgOptions,
+} from '@/lib/timesheet-org-filter';
+import TimesheetOrgFilterSelect from '@/components/overtime/TimesheetOrgFilterSelect';
 import { showError } from '@/lib/swal';
 import { compareNumber, compareText, toggleSortDir } from '@/lib/table-sort';
 import type { Employee } from '@/lib/types';
@@ -81,6 +91,8 @@ interface Props {
     loading: boolean;
     scope: TimesheetViewScope | null;
     department: string | null;
+    allowedDepartments?: string[];
+    allowedServices?: string[];
     permissions: TimesheetAccessContext['permissions'] | null;
   };
 }
@@ -153,6 +165,7 @@ export default function TimesheetCompilationView({
   const [department, setDepartment] = useState(
     initialDepartment?.trim() ? initialDepartment : ALL_DEPARTMENTS,
   );
+  const [service, setService] = useState('');
   const [data, setData] = useState<CompilationData | null>(null);
   const [loading, setLoading] = useState(false);
   const [exporting, setExporting] = useState(false);
@@ -184,19 +197,23 @@ export default function TimesheetCompilationView({
   }, []);
 
   const scope = access?.scope ?? 'department';
-  const lockedDepartment = scope === 'department' ? access?.department ?? '' : '';
-
-  const departments = useMemo(() => {
-    const counts = new Map<string, number>();
-    for (const employee of employees) {
-      const name = employee.departement?.trim();
-      if (!name || !employee.nom.trim()) continue;
-      counts.set(name, (counts.get(name) ?? 0) + 1);
-    }
-    return Array.from(counts.entries())
-      .sort(([a], [b]) => a.localeCompare(b, 'fr'))
-      .map(([name, count]) => ({ name, count }));
-  }, [employees]);
+  const lockedDepartment = timesheetLockedDepartment(
+    scope,
+    access?.allowedDepartments,
+    access?.department,
+  );
+  const lockedService = timesheetLockedService(scope, access?.allowedServices);
+  const { departments, services } = useMemo(
+    () =>
+      listScopedTimesheetOrgOptions(employees, {
+        scope,
+        allowedDepartments: access?.allowedDepartments,
+        allowedServices: access?.allowedServices,
+      }),
+    [access?.allowedDepartments, access?.allowedServices, employees, scope],
+  );
+  const orgFilterLocked =
+    Boolean(lockedService) || (Boolean(lockedDepartment) && services.length <= 1 && departments.length <= 1);
 
   useEffect(() => {
     fetch('/api/timesheet/employees')
@@ -206,14 +223,52 @@ export default function TimesheetCompilationView({
   }, []);
 
   useEffect(() => {
+    if (lockedService) {
+      setService(lockedService);
+      const parent = departmentForService(employees, lockedService, {
+        preferDepartments: [
+          lockedDepartment,
+          access?.department ?? '',
+          ...(access?.allowedDepartments ?? []),
+        ],
+        allowCanonicalFallback: false,
+      });
+      if (parent) setDepartment(parent);
+      return;
+    }
     if (lockedDepartment) {
       setDepartment(lockedDepartment);
+      setService((current) => {
+        if (!current) return current;
+        return services.some((item) => item.name === current) ? current : '';
+      });
+      return;
+    }
+    if (service && services.some((item) => item.name === service)) return;
+    if (services.length === 1) {
+      setService(services[0].name);
+      const parent = departmentForService(employees, services[0].name, {
+        preferDepartments: [lockedDepartment, ...(access?.allowedDepartments ?? [])],
+        allowCanonicalFallback: false,
+      });
+      if (parent) setDepartment(parent);
       return;
     }
     if (!department) {
       setDepartment(scope === 'all' ? ALL_DEPARTMENTS : departments[0]?.name ?? '');
     }
-  }, [lockedDepartment, department, departments, scope]);
+  }, [
+    access?.allowedDepartments,
+    access?.department,
+    department,
+    departments,
+    employees,
+    lockedDepartment,
+    lockedService,
+    scope,
+    service,
+    services,
+  ]);
 
   useEffect(() => {
     if (!department) {
@@ -295,12 +350,18 @@ export default function TimesheetCompilationView({
 
   const searchedRows = useMemo<CompilationRow[]>(() => {
     const q = searchQuery.trim().toLowerCase();
-    if (!q) return baseRows;
+    const serviceMatricules = service
+      ? new Set(
+          employeesForOrgFilter(employees, 'service', service).map((employee) => employee.matricule),
+        )
+      : null;
     return baseRows.filter((row) => {
+      if (serviceMatricules && !serviceMatricules.has(row.matricule)) return false;
+      if (!q) return true;
       const haystack = `${row.matricule} ${row.nom} ${row.departement} ${row.localisation} ${row.grade}`.toLowerCase();
       return haystack.includes(q);
     });
-  }, [baseRows, searchQuery]);
+  }, [baseRows, employees, searchQuery, service]);
 
   const filterValues = useMemo(
     () =>
@@ -497,21 +558,36 @@ export default function TimesheetCompilationView({
             ))}
           </select>
         </label>
-        <label className="overtime-inline-field">
-          <span>Département</span>
-          <select
-            value={department}
-            onChange={(e) => setDepartment(e.target.value)}
-            disabled={Boolean(lockedDepartment)}
-          >
-            {!lockedDepartment ? <option value={ALL_DEPARTMENTS}>Tous les Départements</option> : null}
-            {departments.map((item) => (
-              <option key={item.name} value={item.name}>
-                {item.name} ({item.count})
-              </option>
-            ))}
-          </select>
-        </label>
+        <TimesheetOrgFilterSelect
+          departments={departments}
+          services={services}
+          department={department === ALL_DEPARTMENTS ? '' : department}
+          service={service}
+          includeAll={!lockedDepartment && !lockedService}
+          allValue={ALL_DEPARTMENTS}
+          disabled={orgFilterLocked}
+          onChange={(kind, name) => {
+            if (orgFilterLocked) return;
+            if (kind === 'all') {
+              setService('');
+              setDepartment(ALL_DEPARTMENTS);
+              return;
+            }
+            if (kind === 'service') {
+              if (!services.some((item) => item.name === name)) return;
+              setService(name);
+              const parent = departmentForService(employees, name, {
+                preferDepartments: [lockedDepartment, ...(access?.allowedDepartments ?? [])],
+                allowCanonicalFallback: false,
+              });
+              if (parent) setDepartment(parent);
+              return;
+            }
+            if (!departments.some((item) => item.name === name)) return;
+            setService('');
+            setDepartment(name);
+          }}
+        />
         <label className="overtime-inline-field overtime-inline-field-search">
           <span>Recherche</span>
           <input

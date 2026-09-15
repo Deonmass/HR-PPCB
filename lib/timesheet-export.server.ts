@@ -45,6 +45,8 @@ const ROW_COLUMNS = 'ABCDEFGHIJKLMNOPQRST'.split('');
 const OFF_ROW_FILL_REF = 'A6';
 const PRISTINE_SHEET = '__TIMESHEET_TEMPLATE__';
 const WEEK_SEPARATOR_FILL = 'F4CCCC';
+/** Matches the TIMESHEET template (A9:A42). Extra period rows have no format and overflow as serials. */
+const DATE_NUMBER_FORMAT = '[$-409]d\\-mmm;@';
 
 type PopulateSheet = ReturnType<
   Awaited<ReturnType<typeof XlsxPopulate.fromFileAsync>>['sheet']
@@ -80,11 +82,34 @@ function overtimeValue(hours: number): number | '' {
   return hours ? Math.round(hours * 100) / 100 : '';
 }
 
-function toExportDate(value: Date | string): Date {
-  if (value instanceof Date) return value;
-  const parsed = new Date(value);
-  if (!Number.isNaN(parsed.getTime())) return parsed;
-  return new Date(`${String(value).slice(0, 10)}T12:00:00`);
+function rowDateKey(row: TimesheetRowData): string {
+  const match = /^(\d{4})-(\d{2})-(\d{2})/.exec(row.dateKey ?? '');
+  if (match) return `${match[1]}-${match[2]}-${match[3]}`;
+  const value =
+    row.date instanceof Date && !Number.isNaN(row.date.getTime())
+      ? row.date
+      : new Date(String(row.date));
+  if (Number.isNaN(value.getTime())) return '1970-01-01';
+  const y = value.getFullYear();
+  const m = String(value.getMonth() + 1).padStart(2, '0');
+  const d = String(value.getDate()).padStart(2, '0');
+  return `${y}-${m}-${d}`;
+}
+
+/** Date-only Excel serial (1899-12-30 epoch) so the cell stays a calendar day, not a timezone datetime. */
+function toExportDateSerial(row: TimesheetRowData): number {
+  const date = new Date(`${rowDateKey(row)}T00:00:00Z`);
+  const epoch = Date.UTC(1899, 11, 30);
+  return Math.round((date.getTime() - epoch) / 86_400_000);
+}
+
+function writeDayDate(sheet: PopulateSheet, excelRow: number, row: TimesheetRowData) {
+  const cell = sheet.cell(cellRef(excelRow, COL.date));
+  cell.value(toExportDateSerial(row));
+  cell.style({
+    numberFormat: DATE_NUMBER_FORMAT,
+    horizontalAlignment: 'center',
+  });
 }
 
 function applyOffRowGrayFill(sheet: PopulateSheet, excelRow: number) {
@@ -160,7 +185,7 @@ function fillTimesheetHeader(sheet: PopulateSheet, payload: TimesheetExportPaylo
 function fillDayRow(sheet: PopulateSheet, excelRow: number, row: TimesheetRowData, localisation: string) {
   const normal = computeNormalHours(row, localisation);
 
-  setCellValue(sheet, cellRef(excelRow, COL.date), toExportDate(row.date));
+  writeDayDate(sheet, excelRow, row);
   setCellValue(sheet, cellRef(excelRow, COL.day), row.dayLabel);
   setCellValue(sheet, cellRef(excelRow, COL.ws), getTimesheetWsExportValue(row));
   const schedule = scheduleTimesForRow(row, localisation);

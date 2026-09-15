@@ -243,11 +243,23 @@ async function findValidSession(token?: string | null): Promise<AuthSession | nu
 
   // Toujours relire les permissions utilisateur (nouveaux menus actifs sans reconnexion).
   let menus = session.menus ?? [];
+  let user = session.user;
   try {
     menus = await getUserPermissionsFromParams(session.userId);
-    // Met à jour la session en arrière-plan si l’écart est détecté.
-    if (JSON.stringify(menus) !== JSON.stringify(session.menus)) {
+    const freshUser = await findUserByIdFromParams(session.userId);
+    if (freshUser) {
+      user = {
+        ...session.user,
+        email: freshUser.email || session.user.email,
+        displayName: freshUser.displayName || session.user.displayName,
+        username: freshUser.username || session.user.username,
+        matricule: freshUser.matricule || session.user.matricule,
+        linkedEmployee: freshUser.linkedEmployee || session.user.linkedEmployee,
+      };
+    }
+    if (JSON.stringify(menus) !== JSON.stringify(session.menus) || user.email !== session.user.email) {
       session.menus = menus;
+      session.user = user;
       void writeSessionsFile(sessionsData).catch(() => undefined);
     }
   } catch {
@@ -258,7 +270,7 @@ async function findValidSession(token?: string | null): Promise<AuthSession | nu
     menus = session.menus;
   }
 
-  return { ...session, menus };
+  return { ...session, user, menus };
 }
 
 export async function getSessionUser(token?: string | null): Promise<SessionUser | null> {

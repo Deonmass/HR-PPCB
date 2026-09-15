@@ -103,6 +103,10 @@ export default function UtilisateursPage() {
       await showError('Identifiant et nom affiché requis');
       return;
     }
+    if (!form.email.trim() || !form.email.includes('@')) {
+      await showError('Email requis — chaque action sera tracée avec cet email');
+      return;
+    }
     setSaving(true);
     try {
       const method = form.id ? 'PUT' : 'POST';
@@ -277,7 +281,13 @@ export default function UtilisateursPage() {
                 </div>
                 <div className="form-group">
                   <label>Email</label>
-                  <input value={form.email} onChange={(e) => setForm({ ...form, email: e.target.value })} />
+                  <input
+                    type="email"
+                    required
+                    value={form.email}
+                    onChange={(e) => setForm({ ...form, email: e.target.value })}
+                  />
+                  <p className="form-hint">Utilisé pour tracer toutes les actions dans les logs.</p>
                 </div>
                 <div className="form-group form-group-full">
                   <label>Employé lié</label>

@@ -16,6 +16,7 @@ export async function GET(request: Request) {
     grade: employee.grade,
     jobTitle: employee.jobTitle,
     localisation: employee.localisation ?? '',
+    service: employee.service ?? '',
   }));
 
   return NextResponse.json(employees);

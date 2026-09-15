@@ -54,6 +54,7 @@ export const DURABLE_RRF_HISTORY_KEY = 'data/documents/rrf-history.json';
 export const DURABLE_CONVENTION_NOTES_KEY = 'data/documents/convention-collective-notes.json';
 export const DURABLE_EXCO_REPORTS_KEY = 'data/exco/reports.json';
 export const DURABLE_AUDIT_HR_KEY = 'data/audit/actions.json';
+export const DURABLE_SANTE_VISITS_KEY = 'data/sante/visits.json';
 
 interface GithubRepoTarget {
   owner: string;

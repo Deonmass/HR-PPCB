@@ -522,11 +522,14 @@ export async function buildHomeDashboard(menus: MenuPermission[]): Promise<HomeD
     result.protocol = { links: protocolLinks };
   }
 
-  if (can(menus, 'sante')) {
+  if (can(menus, 'sante') || can(menus, 'sante.dashboard') || can(menus, 'sante.donnees')) {
     placeholders.push({
       label: 'Santé',
-      description: 'Module santé — suivi médical et visites',
-      href: '/sante',
+      description: 'Fiche journalière des pathologies',
+      href:
+        can(menus, 'sante.dashboard') || can(menus, 'sante')
+          ? '/sante/dashboard'
+          : '/sante/donnees',
     });
   }
 
