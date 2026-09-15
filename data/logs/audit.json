@@ -1,6 +1,52 @@
 {
   "entries": [
     {
+      "id": "log-000824",
+      "at": "2026-09-15T09:19:52.131Z",
+      "userId": "Serge.Muakasa",
+      "userName": "Serge Muakasa",
+      "userEmail": "Serge.Muakasa@ppcdrc.cd",
+      "module": "guest-house",
+      "moduleLabel": "Guest house",
+      "action": "update",
+      "actionLabel": "Modification",
+      "entityType": "guest-house.reservation",
+      "entityId": "1ed1064f-75eb-4992-8960-cc2df8eee0ab",
+      "summary": "Statut réservation 1ed1064f-75eb-4992-8960-cc2df8eee0ab → confirmed",
+      "details": "Statut réservation 1ed1064f-75eb-4992-8960-cc2df8eee0ab → confirmed",
+      "before": {
+        "id": "1ed1064f-75eb-4992-8960-cc2df8eee0ab",
+        "numero": "GH-2026-4423",
+        "createdAt": "2026-09-15T09:19:17.976Z",
+        "personName": "ZAKUANI BAHATI BENNY",
+        "matricule": "70000177",
+        "isAgent": true,
+        "motif": "Mission to the plant",
+        "startDate": "2026-09-15",
+        "endDate": "2026-09-19",
+        "status": "pending",
+        "mission": "Mission to the plant",
+        "updatedAt": "2026-09-15T09:19:17.976Z"
+      },
+      "after": {
+        "id": "1ed1064f-75eb-4992-8960-cc2df8eee0ab",
+        "numero": "GH-2026-4423",
+        "createdAt": "2026-09-15T09:19:17.976Z",
+        "personName": "ZAKUANI BAHATI BENNY",
+        "matricule": "70000177",
+        "isAgent": true,
+        "motif": "Mission to the plant",
+        "startDate": "2026-09-15",
+        "endDate": "2026-09-19",
+        "roomId": "2ef11cfa-1396-4c82-ac99-85b12d6093be",
+        "status": "confirmed",
+        "mission": "Mission to the plant",
+        "updatedAt": "2026-09-15T09:19:48.765Z"
+      },
+      "undoable": true,
+      "undone": false
+    },
+    {
       "id": "log-000823",
       "at": "2026-09-15T09:19:21.175Z",
       "userId": "Serge.Muakasa",
@@ -87973,5 +88019,5 @@
       }
     }
   ],
-  "nextSeq": 824
+  "nextSeq": 825
 }
