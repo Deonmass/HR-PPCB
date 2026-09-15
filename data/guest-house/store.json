@@ -725,9 +725,10 @@
       "motif": "Exco meeting to the plant",
       "startDate": "2026-09-15",
       "endDate": "2026-09-19",
-      "status": "pending",
+      "roomId": "4e4bd694-e96e-4748-a98a-882d842f616e",
+      "status": "confirmed",
       "mission": "Exco meeting to the plant",
-      "updatedAt": "2026-09-15T06:46:58.628Z"
+      "updatedAt": "2026-09-15T06:47:23.115Z"
     },
     {
       "id": "be4a4fb5-ba34-4cfc-a701-aec3b7afbeb1",
@@ -26055,6 +26056,18 @@
     }
   ],
   "passages": [
+    {
+      "id": "7390f5cd-61aa-4cfa-b7e2-e1a7016692b6",
+      "roomId": "4e4bd694-e96e-4748-a98a-882d842f616e",
+      "reservationId": "d7ac7be2-48b7-4b3a-be0b-082072c0ce5e",
+      "numero": "GH-2026-4419",
+      "personName": "BABALA MATWAN ANTOINE",
+      "matricule": "70000291",
+      "motif": "Exco meeting to the plant",
+      "startDate": "2026-09-15",
+      "endDate": "2026-09-19",
+      "checkedInAt": "2026-09-15T06:47:23.115Z"
+    },
     {
       "id": "7cc3e2dc-ceee-419c-8ed6-e2d7dd999aa7",
       "roomId": "ed91c14e-915f-4d22-971c-fd4bb7feb33e",
