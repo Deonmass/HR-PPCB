@@ -725,9 +725,10 @@
       "motif": "Exco meeting to the plant",
       "startDate": "2026-09-15",
       "endDate": "2026-09-19",
-      "status": "pending",
+      "roomId": "7dbc2817-6744-4ae5-8827-0961bd7aa54a",
+      "status": "confirmed",
       "mission": "Exco meeting to the plant",
-      "updatedAt": "2026-09-15T06:50:20.206Z"
+      "updatedAt": "2026-09-15T06:50:39.905Z"
     },
     {
       "id": "976043b3-9592-4c8c-a997-2aee65fad0b5",
@@ -26084,6 +26085,18 @@
     }
   ],
   "passages": [
+    {
+      "id": "d00beffc-2390-4b29-9101-e9d002cc49e0",
+      "roomId": "7dbc2817-6744-4ae5-8827-0961bd7aa54a",
+      "reservationId": "31809c18-38d5-4220-bba8-fe815fa0b5e3",
+      "numero": "GH-2026-4421",
+      "personName": "BOOKE BASA MICHAEL",
+      "matricule": "70000296",
+      "motif": "Exco meeting to the plant",
+      "startDate": "2026-09-15",
+      "endDate": "2026-09-19",
+      "checkedInAt": "2026-09-15T06:50:39.905Z"
+    },
     {
       "id": "f216002c-038b-40dc-9fc3-5bf57aa43032",
       "roomId": "cfdfa27e-7353-401d-9090-1a3ca1c1fc80",
