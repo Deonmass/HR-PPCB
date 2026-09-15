@@ -2,15 +2,15 @@
   "entries": [
     {
       "id": "log-000818",
-      "at": "2026-09-15T08:45:17.271Z",
+      "at": "2026-09-15T08:45:21.511Z",
       "userId": "admin",
       "userName": "Administrateur",
       "module": "travel.attestation",
       "moduleLabel": "Attestation de service",
       "action": "export",
       "actionLabel": "Export",
-      "summary": "Aperçu PDF attestation",
-      "details": "Aperçu PDF attestation",
+      "summary": "Aperçu PDF attestation KINKINIA DIAVEZUKA PELAGIE",
+      "details": "Aperçu PDF attestation KINKINIA DIAVEZUKA PELAGIE",
       "undoable": false,
       "undone": false
     },
