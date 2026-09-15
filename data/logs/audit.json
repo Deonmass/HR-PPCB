@@ -1,6 +1,52 @@
 {
   "entries": [
     {
+      "id": "log-000812",
+      "at": "2026-09-15T06:47:25.881Z",
+      "userId": "Serge.Muakasa",
+      "userName": "Serge Muakasa",
+      "userEmail": "Serge.Muakasa@ppcdrc.cd",
+      "module": "guest-house",
+      "moduleLabel": "Guest house",
+      "action": "update",
+      "actionLabel": "Modification",
+      "entityType": "guest-house.reservation",
+      "entityId": "d7ac7be2-48b7-4b3a-be0b-082072c0ce5e",
+      "summary": "Statut réservation d7ac7be2-48b7-4b3a-be0b-082072c0ce5e → confirmed",
+      "details": "Statut réservation d7ac7be2-48b7-4b3a-be0b-082072c0ce5e → confirmed",
+      "before": {
+        "id": "d7ac7be2-48b7-4b3a-be0b-082072c0ce5e",
+        "numero": "GH-2026-4419",
+        "createdAt": "2026-09-15T06:46:58.628Z",
+        "personName": "BABALA MATWAN ANTOINE",
+        "matricule": "70000291",
+        "isAgent": true,
+        "motif": "Exco meeting to the plant",
+        "startDate": "2026-09-15",
+        "endDate": "2026-09-19",
+        "status": "pending",
+        "mission": "Exco meeting to the plant",
+        "updatedAt": "2026-09-15T06:46:58.628Z"
+      },
+      "after": {
+        "id": "d7ac7be2-48b7-4b3a-be0b-082072c0ce5e",
+        "numero": "GH-2026-4419",
+        "createdAt": "2026-09-15T06:46:58.628Z",
+        "personName": "BABALA MATWAN ANTOINE",
+        "matricule": "70000291",
+        "isAgent": true,
+        "motif": "Exco meeting to the plant",
+        "startDate": "2026-09-15",
+        "endDate": "2026-09-19",
+        "roomId": "4e4bd694-e96e-4748-a98a-882d842f616e",
+        "status": "confirmed",
+        "mission": "Exco meeting to the plant",
+        "updatedAt": "2026-09-15T06:47:23.115Z"
+      },
+      "undoable": true,
+      "undone": false
+    },
+    {
       "id": "log-000811",
       "at": "2026-09-15T06:47:02.348Z",
       "userId": "Serge.Muakasa",
@@ -87594,5 +87640,5 @@
       }
     }
   ],
-  "nextSeq": 812
+  "nextSeq": 813
 }
