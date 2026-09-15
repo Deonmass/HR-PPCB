@@ -725,9 +725,10 @@
       "motif": "Exco meeting to the plant",
       "startDate": "2026-09-15",
       "endDate": "2026-09-19",
-      "status": "pending",
+      "roomId": "ed91c14e-915f-4d22-971c-fd4bb7feb33e",
+      "status": "confirmed",
       "mission": "Exco meeting to the plant",
-      "updatedAt": "2026-09-15T06:46:08.586Z"
+      "updatedAt": "2026-09-15T06:46:30.608Z"
     },
     {
       "id": "4651bfdb-7351-41a5-a4db-14b393f72f73",
@@ -26040,6 +26041,18 @@
     }
   ],
   "passages": [
+    {
+      "id": "7cc3e2dc-ceee-419c-8ed6-e2d7dd999aa7",
+      "roomId": "ed91c14e-915f-4d22-971c-fd4bb7feb33e",
+      "reservationId": "be4a4fb5-ba34-4cfc-a701-aec3b7afbeb1",
+      "numero": "GH-2026-4418",
+      "personName": "ODIPO WERE Edgard",
+      "matricule": "70000203",
+      "motif": "Exco meeting to the plant",
+      "startDate": "2026-09-15",
+      "endDate": "2026-09-19",
+      "checkedInAt": "2026-09-15T06:46:30.608Z"
+    },
     {
       "id": "45cb3dec-3f40-4e32-a70d-4e970d715ab0",
       "roomId": "3d273d81-0642-4fac-b424-a54146ad7acc",
