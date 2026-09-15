@@ -724,9 +724,10 @@
       "motif": "Mission to the plant",
       "startDate": "2026-09-15",
       "endDate": "2026-09-19",
-      "status": "pending",
+      "roomId": "3219d898-ff74-496c-a62e-2295012276ae",
+      "status": "confirmed",
       "mission": "Mission to the plant",
-      "updatedAt": "2026-09-15T09:17:33.991Z"
+      "updatedAt": "2026-09-15T09:18:29.657Z"
     },
     {
       "id": "31809c18-38d5-4220-bba8-fe815fa0b5e3",
@@ -26098,6 +26099,17 @@
     }
   ],
   "passages": [
+    {
+      "id": "a3886375-9209-4d12-88dd-5c3079e4bf1f",
+      "roomId": "3219d898-ff74-496c-a62e-2295012276ae",
+      "reservationId": "632dc277-a25b-444e-9e41-3bc36818470e",
+      "numero": "GH-2026-4422",
+      "personName": "Aboubacry Athie",
+      "motif": "Mission to the plant",
+      "startDate": "2026-09-15",
+      "endDate": "2026-09-19",
+      "checkedInAt": "2026-09-15T09:18:29.657Z"
+    },
     {
       "id": "d00beffc-2390-4b29-9101-e9d002cc49e0",
       "roomId": "7dbc2817-6744-4ae5-8827-0961bd7aa54a",
