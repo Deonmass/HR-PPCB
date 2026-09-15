@@ -1,6 +1,36 @@
 {
   "entries": [
     {
+      "id": "log-000813",
+      "at": "2026-09-15T06:48:38.856Z",
+      "userId": "Serge.Muakasa",
+      "userName": "Serge Muakasa",
+      "userEmail": "Serge.Muakasa@ppcdrc.cd",
+      "module": "guest-house",
+      "moduleLabel": "Guest house",
+      "action": "create",
+      "actionLabel": "Création",
+      "entityType": "guest-house.reservation",
+      "entityId": "976043b3-9592-4c8c-a997-2aee65fad0b5",
+      "summary": "Création réservation Freddy Olela",
+      "details": "Création réservation Freddy Olela",
+      "after": {
+        "id": "976043b3-9592-4c8c-a997-2aee65fad0b5",
+        "numero": "GH-2026-4420",
+        "createdAt": "2026-09-15T06:48:35.175Z",
+        "personName": "Freddy Olela",
+        "isAgent": false,
+        "motif": "Exco meeting to the plant",
+        "startDate": "2026-09-15",
+        "endDate": "2026-09-19",
+        "status": "pending",
+        "mission": "Exco meeting to the plant",
+        "updatedAt": "2026-09-15T06:48:35.175Z"
+      },
+      "undoable": true,
+      "undone": false
+    },
+    {
       "id": "log-000812",
       "at": "2026-09-15T06:47:25.881Z",
       "userId": "Serge.Muakasa",
@@ -87640,5 +87670,5 @@
       }
     }
   ],
-  "nextSeq": 813
+  "nextSeq": 814
 }
