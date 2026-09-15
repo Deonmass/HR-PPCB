@@ -1,6 +1,37 @@
 {
   "entries": [
     {
+      "id": "log-000811",
+      "at": "2026-09-15T06:47:02.348Z",
+      "userId": "Serge.Muakasa",
+      "userName": "Serge Muakasa",
+      "userEmail": "Serge.Muakasa@ppcdrc.cd",
+      "module": "guest-house",
+      "moduleLabel": "Guest house",
+      "action": "create",
+      "actionLabel": "Création",
+      "entityType": "guest-house.reservation",
+      "entityId": "d7ac7be2-48b7-4b3a-be0b-082072c0ce5e",
+      "summary": "Création réservation BABALA MATWAN ANTOINE",
+      "details": "Création réservation BABALA MATWAN ANTOINE",
+      "after": {
+        "id": "d7ac7be2-48b7-4b3a-be0b-082072c0ce5e",
+        "numero": "GH-2026-4419",
+        "createdAt": "2026-09-15T06:46:58.628Z",
+        "personName": "BABALA MATWAN ANTOINE",
+        "matricule": "70000291",
+        "isAgent": true,
+        "motif": "Exco meeting to the plant",
+        "startDate": "2026-09-15",
+        "endDate": "2026-09-19",
+        "status": "pending",
+        "mission": "Exco meeting to the plant",
+        "updatedAt": "2026-09-15T06:46:58.628Z"
+      },
+      "undoable": true,
+      "undone": false
+    },
+    {
       "id": "log-000810",
       "at": "2026-09-15T06:46:34.389Z",
       "userId": "Serge.Muakasa",
@@ -87563,5 +87594,5 @@
       }
     }
   ],
-  "nextSeq": 811
+  "nextSeq": 812
 }
