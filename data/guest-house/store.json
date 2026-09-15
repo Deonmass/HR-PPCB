@@ -725,9 +725,10 @@
       "motif": "Exco meeting to the plant",
       "startDate": "2026-09-15",
       "endDate": "2026-09-19",
-      "status": "pending",
+      "roomId": "0b0cdc0d-ba79-4f68-8533-c90cad3390cb",
+      "status": "confirmed",
       "mission": "Exco meeting to the plant",
-      "updatedAt": "2026-09-15T09:20:33.485Z"
+      "updatedAt": "2026-09-15T09:20:56.984Z"
     },
     {
       "id": "1ed1064f-75eb-4992-8960-cc2df8eee0ab",
@@ -26128,6 +26129,18 @@
     }
   ],
   "passages": [
+    {
+      "id": "2b98f888-a7b4-4019-a3aa-a8c708682910",
+      "roomId": "0b0cdc0d-ba79-4f68-8533-c90cad3390cb",
+      "reservationId": "af22a39c-8a82-4ac3-ad20-331c35b2daf3",
+      "numero": "GH-2026-4424",
+      "personName": "NDONGALA STEPHANIE",
+      "matricule": "70000292",
+      "motif": "Exco meeting to the plant",
+      "startDate": "2026-09-15",
+      "endDate": "2026-09-19",
+      "checkedInAt": "2026-09-15T09:20:56.984Z"
+    },
     {
       "id": "d178e9fa-2d7d-4673-a1e7-7a3e89b61503",
       "roomId": "2ef11cfa-1396-4c82-ac99-85b12d6093be",
