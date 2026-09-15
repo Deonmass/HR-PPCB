@@ -724,9 +724,10 @@
       "motif": "Exco meeting to the plant",
       "startDate": "2026-09-15",
       "endDate": "2026-09-19",
-      "status": "pending",
+      "roomId": "cfdfa27e-7353-401d-9090-1a3ca1c1fc80",
+      "status": "confirmed",
       "mission": "Exco meeting to the plant",
-      "updatedAt": "2026-09-15T06:48:35.175Z"
+      "updatedAt": "2026-09-15T06:49:03.376Z"
     },
     {
       "id": "d7ac7be2-48b7-4b3a-be0b-082072c0ce5e",
@@ -26069,6 +26070,17 @@
     }
   ],
   "passages": [
+    {
+      "id": "f216002c-038b-40dc-9fc3-5bf57aa43032",
+      "roomId": "cfdfa27e-7353-401d-9090-1a3ca1c1fc80",
+      "reservationId": "976043b3-9592-4c8c-a997-2aee65fad0b5",
+      "numero": "GH-2026-4420",
+      "personName": "Freddy Olela",
+      "motif": "Exco meeting to the plant",
+      "startDate": "2026-09-15",
+      "endDate": "2026-09-19",
+      "checkedInAt": "2026-09-15T06:49:03.376Z"
+    },
     {
       "id": "7390f5cd-61aa-4cfa-b7e2-e1a7016692b6",
       "roomId": "4e4bd694-e96e-4748-a98a-882d842f616e",
