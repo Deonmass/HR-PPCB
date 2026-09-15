@@ -1,6 +1,27 @@
 {
   "entries": [
     {
+      "id": "log-000829",
+      "at": "2026-09-15T09:58:00.147Z",
+      "userId": "admin",
+      "userName": "Administrateur",
+      "module": "timesheet",
+      "moduleLabel": "Timesheet",
+      "action": "update",
+      "actionLabel": "Modification",
+      "summary": "Enregistrement planning semaine 3 — Engineering (9/2026)",
+      "details": "Enregistrement planning semaine 3 — Engineering (9/2026)",
+      "undoable": false,
+      "undone": false,
+      "meta": {
+        "year": 2026,
+        "month": 9,
+        "department": "Engineering",
+        "weekIndex": 3,
+        "saved": 196
+      }
+    },
+    {
       "id": "log-000828",
       "at": "2026-09-15T09:56:47.732Z",
       "userId": "admin",
@@ -88138,5 +88159,5 @@
       }
     }
   ],
-  "nextSeq": 829
+  "nextSeq": 830
 }
