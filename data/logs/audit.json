@@ -1,6 +1,37 @@
 {
   "entries": [
     {
+      "id": "log-000815",
+      "at": "2026-09-15T06:50:23.152Z",
+      "userId": "Serge.Muakasa",
+      "userName": "Serge Muakasa",
+      "userEmail": "Serge.Muakasa@ppcdrc.cd",
+      "module": "guest-house",
+      "moduleLabel": "Guest house",
+      "action": "create",
+      "actionLabel": "Création",
+      "entityType": "guest-house.reservation",
+      "entityId": "31809c18-38d5-4220-bba8-fe815fa0b5e3",
+      "summary": "Création réservation BOOKE BASA MICHAEL",
+      "details": "Création réservation BOOKE BASA MICHAEL",
+      "after": {
+        "id": "31809c18-38d5-4220-bba8-fe815fa0b5e3",
+        "numero": "GH-2026-4421",
+        "createdAt": "2026-09-15T06:50:20.206Z",
+        "personName": "BOOKE BASA MICHAEL",
+        "matricule": "70000296",
+        "isAgent": true,
+        "motif": "Exco meeting to the plant",
+        "startDate": "2026-09-15",
+        "endDate": "2026-09-19",
+        "status": "pending",
+        "mission": "Exco meeting to the plant",
+        "updatedAt": "2026-09-15T06:50:20.206Z"
+      },
+      "undoable": true,
+      "undone": false
+    },
+    {
       "id": "log-000814",
       "at": "2026-09-15T06:49:06.650Z",
       "userId": "Serge.Muakasa",
@@ -87714,5 +87745,5 @@
       }
     }
   ],
-  "nextSeq": 815
+  "nextSeq": 816
 }
