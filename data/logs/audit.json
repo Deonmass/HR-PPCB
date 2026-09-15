@@ -1,6 +1,37 @@
 {
   "entries": [
     {
+      "id": "log-000825",
+      "at": "2026-09-15T09:20:36.172Z",
+      "userId": "Serge.Muakasa",
+      "userName": "Serge Muakasa",
+      "userEmail": "Serge.Muakasa@ppcdrc.cd",
+      "module": "guest-house",
+      "moduleLabel": "Guest house",
+      "action": "create",
+      "actionLabel": "Création",
+      "entityType": "guest-house.reservation",
+      "entityId": "af22a39c-8a82-4ac3-ad20-331c35b2daf3",
+      "summary": "Création réservation NDONGALA STEPHANIE",
+      "details": "Création réservation NDONGALA STEPHANIE",
+      "after": {
+        "id": "af22a39c-8a82-4ac3-ad20-331c35b2daf3",
+        "numero": "GH-2026-4424",
+        "createdAt": "2026-09-15T09:20:33.485Z",
+        "personName": "NDONGALA STEPHANIE",
+        "matricule": "70000292",
+        "isAgent": true,
+        "motif": "Exco meeting to the plant",
+        "startDate": "2026-09-15",
+        "endDate": "2026-09-19",
+        "status": "pending",
+        "mission": "Exco meeting to the plant",
+        "updatedAt": "2026-09-15T09:20:33.485Z"
+      },
+      "undoable": true,
+      "undone": false
+    },
+    {
       "id": "log-000824",
       "at": "2026-09-15T09:19:52.131Z",
       "userId": "Serge.Muakasa",
@@ -88019,5 +88050,5 @@
       }
     }
   ],
-  "nextSeq": 825
+  "nextSeq": 826
 }
