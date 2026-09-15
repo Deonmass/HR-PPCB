@@ -1,6 +1,52 @@
 {
   "entries": [
     {
+      "id": "log-000810",
+      "at": "2026-09-15T06:46:34.389Z",
+      "userId": "Serge.Muakasa",
+      "userName": "Serge Muakasa",
+      "userEmail": "Serge.Muakasa@ppcdrc.cd",
+      "module": "guest-house",
+      "moduleLabel": "Guest house",
+      "action": "update",
+      "actionLabel": "Modification",
+      "entityType": "guest-house.reservation",
+      "entityId": "be4a4fb5-ba34-4cfc-a701-aec3b7afbeb1",
+      "summary": "Statut réservation be4a4fb5-ba34-4cfc-a701-aec3b7afbeb1 → confirmed",
+      "details": "Statut réservation be4a4fb5-ba34-4cfc-a701-aec3b7afbeb1 → confirmed",
+      "before": {
+        "id": "be4a4fb5-ba34-4cfc-a701-aec3b7afbeb1",
+        "numero": "GH-2026-4418",
+        "createdAt": "2026-09-15T06:46:08.586Z",
+        "personName": "ODIPO WERE Edgard",
+        "matricule": "70000203",
+        "isAgent": true,
+        "motif": "Exco meeting to the plant",
+        "startDate": "2026-09-15",
+        "endDate": "2026-09-19",
+        "status": "pending",
+        "mission": "Exco meeting to the plant",
+        "updatedAt": "2026-09-15T06:46:08.586Z"
+      },
+      "after": {
+        "id": "be4a4fb5-ba34-4cfc-a701-aec3b7afbeb1",
+        "numero": "GH-2026-4418",
+        "createdAt": "2026-09-15T06:46:08.586Z",
+        "personName": "ODIPO WERE Edgard",
+        "matricule": "70000203",
+        "isAgent": true,
+        "motif": "Exco meeting to the plant",
+        "startDate": "2026-09-15",
+        "endDate": "2026-09-19",
+        "roomId": "ed91c14e-915f-4d22-971c-fd4bb7feb33e",
+        "status": "confirmed",
+        "mission": "Exco meeting to the plant",
+        "updatedAt": "2026-09-15T06:46:30.608Z"
+      },
+      "undoable": true,
+      "undone": false
+    },
+    {
       "id": "log-000809",
       "at": "2026-09-15T06:46:11.289Z",
       "userId": "Serge.Muakasa",
@@ -87517,5 +87563,5 @@
       }
     }
   ],
-  "nextSeq": 810
+  "nextSeq": 811
 }
