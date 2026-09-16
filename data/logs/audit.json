@@ -1,6 +1,28 @@
 {
   "entries": [
     {
+      "id": "log-000843",
+      "at": "2026-09-16T10:27:22.283Z",
+      "userId": "admin",
+      "userName": "Administrateur",
+      "userEmail": "admin",
+      "module": "timesheet",
+      "moduleLabel": "Timesheet",
+      "action": "update",
+      "actionLabel": "Modification",
+      "summary": "Enregistrement planning semaine 1 — Production (9/2026)",
+      "details": "Enregistrement planning semaine 1 — Production (9/2026)",
+      "undoable": false,
+      "undone": false,
+      "meta": {
+        "year": 2026,
+        "month": 9,
+        "department": "Production",
+        "weekIndex": 1,
+        "saved": 35
+      }
+    },
+    {
       "id": "log-000842",
       "at": "2026-09-16T09:40:57.997Z",
       "userId": "admin",
@@ -94093,5 +94115,5 @@
       }
     }
   ],
-  "nextSeq": 843
+  "nextSeq": 844
 }
