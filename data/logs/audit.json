@@ -1,6 +1,28 @@
 {
   "entries": [
     {
+      "id": "log-000842",
+      "at": "2026-09-16T09:40:57.997Z",
+      "userId": "admin",
+      "userName": "Administrateur",
+      "userEmail": "admin",
+      "module": "timesheet",
+      "moduleLabel": "Timesheet",
+      "action": "delete",
+      "actionLabel": "Suppression",
+      "summary": "Suppression planning semaine 3 — Engineering (9/2026)",
+      "details": "Suppression planning semaine 3 — Engineering (9/2026)",
+      "after": 196,
+      "undoable": false,
+      "undone": false,
+      "meta": {
+        "year": 2026,
+        "month": 9,
+        "department": "Engineering",
+        "weekIndex": 3
+      }
+    },
+    {
       "id": "log-000841",
       "at": "2026-09-16T09:40:51.441Z",
       "userId": "admin",
@@ -94071,5 +94093,5 @@
       }
     }
   ],
-  "nextSeq": 842
+  "nextSeq": 843
 }
