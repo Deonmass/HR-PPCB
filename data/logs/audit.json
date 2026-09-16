@@ -1,6 +1,59 @@
 {
   "entries": [
     {
+      "id": "log-000864",
+      "at": "2026-09-16T17:02:33.308Z",
+      "userId": "admin",
+      "userName": "Administrateur",
+      "userEmail": "admin",
+      "module": "settings.utilisateurs",
+      "moduleLabel": "Paramètres — Utilisateurs",
+      "action": "update",
+      "actionLabel": "Modification",
+      "entityType": "auth.user",
+      "entityId": "Serge.Muakasa",
+      "summary": "Modification utilisateur Serge Muakasa",
+      "details": "Modification utilisateur Serge Muakasa",
+      "before": {
+        "id": "Serge.Muakasa",
+        "username": "Serge.Muakasa",
+        "displayName": "Serge Muakasa",
+        "initials": "SM",
+        "email": "Serge.Muakasa@ppcdrc.cd",
+        "matricule": "70000008",
+        "linkedEmployee": {
+          "matricule": "70000008",
+          "nom": "MUAKASA NSONI SERGE",
+          "departement": "Human Resources",
+          "grade": "C4",
+          "jobTitle": "Estate Officer",
+          "localisation": "Zamba"
+        },
+        "active": true,
+        "createdAt": "2026-07-28T12:02:15.277Z"
+      },
+      "after": {
+        "id": "Serge.Muakasa@ppcdrc.cd",
+        "username": "Serge.Muakasa@ppcdrc.cd",
+        "displayName": "Serge Muakasa",
+        "initials": "SM",
+        "email": "Serge.Muakasa@ppcdrc.cd",
+        "matricule": "70000008",
+        "linkedEmployee": {
+          "matricule": "70000008",
+          "nom": "MUAKASA NSONI SERGE",
+          "departement": "Human Resources",
+          "grade": "C4",
+          "jobTitle": "Estate Officer",
+          "localisation": "Zamba"
+        },
+        "active": true,
+        "createdAt": "2026-07-28T12:02:15.277Z"
+      },
+      "undoable": true,
+      "undone": false
+    },
+    {
       "id": "log-000863",
       "at": "2026-09-16T17:01:43.266Z",
       "userId": "Sosthene.Kamanda@ppcdrc.cd",
@@ -103619,5 +103672,5 @@
       }
     }
   ],
-  "nextSeq": 864
+  "nextSeq": 865
 }
