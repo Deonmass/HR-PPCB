@@ -22,14 +22,13 @@ import { replaceDocxSpanWithRuns, replaceDocxText } from './docx-fill';
 import { fillDocxTemplateToBuffer, fillEmptyParagraph } from './docx-template';
 import { CONTRAT_STANDARD_TEMPLATE_PATH } from './excel-export-template-paths';
 
-/** Cellules vides du tableau « Personnes à charge » (lignes 2–4 du modèle). */
+/** Cellules vides du tableau « Personnes à charge » (lignes 3–4 du modèle Glody). */
 const DEPENDANT_EMPTY_CELLS: Array<{
   prenom: string;
   nom: string;
   postNom: string;
   birth: string;
 }> = [
-  { prenom: '697F9101', nom: '5DEAC986', postNom: '134204AE', birth: '66BA495F' },
   { prenom: '7B2748C7', nom: '2D1FECB6', postNom: '3CC8C3AE', birth: '7D07C193' },
   { prenom: '777A9F1E', nom: '36372D59', postNom: '7DD37516', birth: '343FD151' },
 ];
@@ -38,18 +37,18 @@ const APOS = '\u2019';
 
 /** Représentant légal du préambule (DG) — jamais le manager RH du formulaire. */
 const EMPLOYER_DG_NAME = 'Patrick KAHASHA MBASHA';
-const EMPLOYER_BLOCK_START = 'La soci\u00e9t\u00e9 PPC BARNET DRC MANUFACTURING S A';
-const EMPLOYER_BLOCK_END = `ayant pouvoir a l${APOS}effet des pr\u00e9sentes`;
+const EMPLOYER_BLOCK_START = 'La soci\u00e9t\u00e9 PPC BARNET DRC MANUFACTURING S.A.';
+const EMPLOYER_BLOCK_END = `ayant pouvoir \u00e0 l${APOS}effet des pr\u00e9sentes`;
 
 function employerPreambleRuns(): Array<{ text: string; bold?: boolean }> {
   return [
     {
       text:
-        `La soci\u00e9t\u00e9 PPC BARNET DRC MANUFACTURING S A, avec Conseil d${APOS}Administration au capital social de CDF 20.052.125.000, ayant son si\u00e8ge social au 5eme \u00e9tage, Immeuble D, Concession la promenade II, croisement des avenues OUA et Massamba, Quartier Basoko dans la commune de Ngaliema, \u00e0 Kinshasa, R\u00e9publique D\u00e9mocratique du Congo,  Immatricul\u00e9e au Registre de Commerce et de Credit Mobilier (RCCM) sous le num\u00e9ro 14-B-01677, dont le num\u00e9ro d${APOS} Identification Nationale est 01-C2301-N79031 Q et le num\u00e9ro d${APOS}imp\u00f4t A1402387L, affili\u00e9e \u00e0 la CNSS sous le N\u00b0 1003780600, repr\u00e9sent\u00e9e par Monsieur `,
+        `La soci\u00e9t\u00e9 PPC BARNET DRC MANUFACTURING S.A., avec Conseil d${APOS}Administration au capital social de CDF 20.052.125.000, ayant son si\u00e8ge social au 5\u00e8me \u00e9tage, Immeuble D, Concession la promenade II, croisement des avenues OUA et Massamba, Quartier Basoko dans la commune de Ngaliema, \u00e0 Kinshasa, R\u00e9publique D\u00e9mocratique du Congo, immatricul\u00e9e au Registre de Commerce et de Cr\u00e9dit Mobilier (RCCM) sous le num\u00e9ro 14-B-01677, dont le num\u00e9ro d${APOS}Identification Nationale est 01-C2301-N79031 Q et le num\u00e9ro d${APOS}imp\u00f4t A1402387L, affili\u00e9e \u00e0 la CNSS sous le N\u00b0 1003780600, repr\u00e9sent\u00e9e par Monsieur `,
     },
     { text: EMPLOYER_DG_NAME, bold: true },
     {
-      text: `, en qualit\u00e9 de Directeur G\u00e9n\u00e9ral, ayant pouvoir a l${APOS}effet des pr\u00e9sentes`,
+      text: `, en qualit\u00e9 de Directeur G\u00e9n\u00e9ral, ayant pouvoir \u00e0 l${APOS}effet des pr\u00e9sentes`,
     },
   ];
 }
@@ -100,15 +99,15 @@ function buildArticle1(form: ContratStandardFormData): string {
   if (form.contractType === 'CDI') {
     return (
       `Ce contrat est conclu pour une durée indéterminée à compter du ${start} `
-      + `et assortie d’une période d’essai de ${trial}.`
+      + `et assorti d’une période d’essai de ${trial}.`
     );
   }
   const duration = annotateCddDurationLabel(
-    safe(form.contractDurationLabel, '1 an renouvelable'),
+    safe(form.contractDurationLabel, '12 mois renouvelables'),
   );
   return (
     `Ce contrat est conclu pour une durée déterminée (${duration}) à compter du ${start} `
-    + `et assortie d’une période d’essai de ${trial}.`
+    + `et assorti d’une période d’essai de ${trial}.`
   );
 }
 
@@ -118,17 +117,17 @@ function buildSalarySentence(form: ContratStandardFormData): string {
   const cdf = usd * rate;
   const usdFmt = formatUsdAmount(usd);
   const cdfFmt = formatCdfAmount(cdf);
-  const words = usdToWordsPhrase(usd);
+  const words = usdToWordsPhrase(usd).replace(/^./, (c) => c.toLowerCase());
   return (
     `Il est alloué au travailleur une rémunération nette mensuelle de ${cdfFmt} `
-    + `Francs Congolais/équivalent à USD ${usdFmt} (${words}).`
+    + `francs congolais, équivalant à USD ${usdFmt} (${words}).`
   );
 }
 
 function buildTitle(form: ContratStandardFormData): string {
   return form.contractType === 'CDI'
-    ? 'CONTRAT DE TRAVAIL A DUREE INDETERMINEE'
-    : 'CONTRAT DE TRAVAIL A DUREE DETERMINEE';
+    ? 'CONTRAT DE TRAVAIL À DURÉE INDÉTERMINÉE'
+    : 'CONTRAT DE TRAVAIL À DURÉE DÉTERMINÉE';
 }
 
 function depCell(value: string): string {
@@ -154,20 +153,33 @@ function splitDependantRow(row: ContratDependantRow | undefined): SplitDepRow {
 
 function fillDependantRow0(xml: string, row: SplitDepRow): string {
   let out = xml;
-  // Remplacer les 4 cellules de l’échantillon (y compris « Massadi », souvent oublié).
-  out = replaceDocxText(out, 'Bryanna', depCell(row.prenom), { optional: true });
-  out = replaceDocxText(out, 'Massadi', depCell(row.nom), { optional: true });
-  out = replaceDocxText(out, 'Jayne', depCell(row.postNom), { optional: true });
-  out = replaceDocxText(out, 'Kinshasa-04/08/2025', depCell(row.birthPlaceDate), {
+  out = replaceDocxText(out, 'NOAH-GLORIC', depCell(row.prenom), { optional: true });
+  out = replaceDocxText(out, 'MAPENDO', depCell(row.postNom), { optional: true });
+  out = replaceDocxText(out, 'Kinshasa-30/06/2019', depCell(row.birthPlaceDate), {
     optional: true,
   });
+  // Après remplacement du conjoint, 1er « MPEZO » restant = ligne 1 du tableau.
+  out = replaceDocxText(out, 'MPEZO', depCell(row.nom), { occurrence: 1, optional: true });
+  return out;
+}
+
+function fillDependantRow1(xml: string, row: SplitDepRow): string {
+  let out = xml;
+  out = replaceDocxText(out, 'ANAIA-DENISE', depCell(row.prenom), { optional: true });
+  out = replaceDocxText(out, 'Kinshasa-25/09/2023', depCell(row.birthPlaceDate), {
+    optional: true,
+  });
+  // Nom déjà remplacé dans le titre → « ELONGO » restant = post-nom ligne 2.
+  out = replaceDocxText(out, 'ELONGO', depCell(row.postNom), { optional: true });
+  // Après ligne 1, le « MPEZO » restant = ligne 2.
+  out = replaceDocxText(out, 'MPEZO', depCell(row.nom), { occurrence: 1, optional: true });
   return out;
 }
 
 function fillDependantExtraRows(xml: string, rows: SplitDepRow[]): string {
   let out = xml;
   for (let i = 0; i < DEPENDANT_EMPTY_CELLS.length; i += 1) {
-    const row = rows[i + 1];
+    const row = rows[i + 2];
     const cells = DEPENDANT_EMPTY_CELLS[i];
     if (!row || !cells) continue;
     const hasAny = [row.prenom, row.nom, row.postNom, row.birthPlaceDate].some((v) => v.trim());
@@ -203,98 +215,100 @@ function fillBodyXml(xml: string, form: ContratStandardFormData): string {
   const manager = safe(form.lineManagerTitle, '—');
   const location = formatPrestationLocation(form.workLocation);
   const marital = formatMaritalStatusFr(form.maritalStatus, form.civility);
-  // Remplacer seulement la valeur modèle pour conserver tabulations / mise en forme.
   const nameLine = `${form.civility} : ${safe(form.employeeName)}`;
 
   let out = xml;
-  out = replaceDocxText(out, 'CONTRAT DE TRAVAIL A DUREE DETERMINEE', buildTitle(form), {
+  out = replaceDocxText(out, 'CONTRAT DE TRAVAIL À DURÉE DÉTERMINÉE', buildTitle(form), {
     optional: true,
   });
-  out = replaceDocxText(out, 'Monsieur/Madame : MASSADI Gedeon', nameLine, { optional: true });
-  out = replaceDocxText(out, 'Monsieur/Madame\u00a0: MASSADI Gedeon', nameLine, { optional: true });
-  out = replaceDocxText(out, 'MASSADI Gedeon', safe(form.employeeName), { optional: true });
+  out = replaceDocxText(out, 'Madame : GLODY ELONGO BENGESHA', nameLine, { optional: true });
+  out = replaceDocxText(out, 'GLODY ELONGO BENGESHA', safe(form.employeeName), { optional: true });
 
   out = replaceDocxText(out, 'Congolaise', safe(form.nationality, 'Congolaise'), { optional: true });
 
   const birth = formatLongFr(parseIsoDate(form.birthDate), '—');
-  out = replaceDocxText(out, '04 février 1994', birth, { optional: true });
+  out = replaceDocxText(out, '23 juillet 1991', birth, { optional: true });
 
-  out = replaceDocxText(out, 'Marié', marital, { optional: true });
+  out = replaceDocxText(out, 'Mariée', marital, { optional: true });
 
-  // Adresse identité (en-tête) + Article 12 — remplacer la valeur modèle uniquement.
   out = replaceDocxText(
     out,
-    '67, av Matadi, Q/Kilimani, C/ Kintambo- Kinshasa',
+    'Avenue NGOMBI 42/16, Q/KINSUKA PÊCHEUR C/NGALIEMA',
     safe(form.address),
     { optional: true },
   );
   out = replaceDocxText(
     out,
-    '126, Av Baraka, Q/Mongala, C/Kinshasa- Kinshasa',
+    'Avenue NGOMBI 42/16, Q/KINSUKA PECHEUR C/NGALIEMA',
     safe(form.address),
     { optional: true },
   );
 
-  out = replaceDocxText(out, '+243 81 451 10 83', safe(form.phone), { optional: true });
-  out = replaceDocxText(out, 'gedeonmass44@gmail.com', safe(form.email), { optional: true });
-  out = replaceDocxText(out, '11994769200I', safe(form.cnss), { optional: true });
-  out = replaceDocxText(out, 'NN30020326449', safe(form.identityNumber), { optional: true });
+  out = replaceDocxText(out, '+243 970 762 769', safe(form.phone), { optional: true });
+  out = replaceDocxText(out, 'glodyelongo@gmail.com', safe(form.email), { optional: true });
+  // CNSS modèle « — » : remplacé seulement si une valeur est fournie.
+  if (form.cnss.trim()) {
+    out = replaceDocxText(out, 'N° CNSS :  —', `N° CNSS :  ${safe(form.cnss)}`, { optional: true });
+    out = replaceDocxText(out, 'N° CNSS : —', `N° CNSS : ${safe(form.cnss)}`, { optional: true });
+  }
+  out = replaceDocxText(out, 'OP1684663', safe(form.identityNumber), { optional: true });
 
   const spouse = splitPersonName(form.spouseFullName);
-  out = replaceDocxText(out, 'Rebecca', safe(spouse.prenom, '—'), { optional: true });
-  out = replaceDocxText(out, 'Maboso', safe(spouse.nom, '—'), { optional: true });
-  out = replaceDocxText(out, 'Mombando', safe(spouse.postNom, '—'), { optional: true });
+  out = replaceDocxText(out, 'ERICK', safe(spouse.prenom, '—'), { optional: true });
+  out = replaceDocxText(out, 'FUENDE', safe(spouse.postNom, '—'), { optional: true });
+  out = replaceDocxText(out, 'MPEZO', safe(spouse.nom, '—'), { occurrence: 1, optional: true });
 
   const deps = (form.dependants.length ? form.dependants : [{ fullName: '', birthPlaceDate: '' }])
     .map(splitDependantRow);
   out = fillDependantRow0(out, deps[0] || { prenom: '', nom: '', postNom: '', birthPlaceDate: '' });
+  out = fillDependantRow1(
+    out,
+    deps[1] || { prenom: '', nom: '', postNom: '', birthPlaceDate: '' },
+  );
   out = fillDependantExtraRows(out, deps);
 
   out = replaceDocxText(
     out,
-    'Ce contrat est conclu pour une durée déterminée (1 an renouvelable) à compter du 17 juin 2026 et assortie d’une période d’essai de 5 mois.',
+    'Ce contrat est conclu pour une durée déterminée (12 mois renouvelables) à compter du 21 août 2026 et assorti d’une période d’essai de 5 mois.',
     buildArticle1(form),
     { optional: true },
   );
 
   out = replaceDocxText(
     out,
-    'en qualité de HR Admin. Il aura comme supérieur hiérarchique le Plant HR Manager.',
+    'en qualité de Marketing Officer. Il aura comme supérieur hiérarchique le Marketing Manager.',
     `en qualité de ${jobTitle}. Il aura comme supérieur hiérarchique le ${manager}.`,
     { optional: true },
   );
-  out = replaceDocxText(out, 'HR Admin', jobTitle, { occurrence: 'all', optional: true });
+  out = replaceDocxText(out, 'Marketing Officer', jobTitle, { occurrence: 'all', optional: true });
   out = replaceDocxText(
     out,
-    'supérieur hiérarchique le Plant HR Manager',
+    'supérieur hiérarchique le Marketing Manager',
     `supérieur hiérarchique le ${manager}`,
     { optional: true },
   );
 
-  // Zamba → conserver / écrire « Kimpese (usine) » ; sinon remplacer le lieu modèle.
-  if (!/^kimpese\s*\(usine\)$/i.test(location)) {
+  if (!/^kinshasa$/i.test(location)) {
     out = replaceDocxText(
       out,
-      'Le lieu des prestations est fixé à Kimpese (usine), RDC, ou tout autre lieu que l’employeur désignera.',
+      'Le lieu des prestations est fixé à Kinshasa, RDC, ou tout autre lieu que l’employeur désignera.',
       `Le lieu des prestations est fixé à ${location}, RDC, ou tout autre lieu que l’employeur désignera.`,
       { optional: true },
     );
-    out = replaceDocxText(out, 'Kimpese (usine)', location, { optional: true });
   }
 
-  out = replaceDocxText(out, 'Catégorie : C1 (Agent de Maîtrise)', `Catégorie : ${categoryLine}`, {
+  out = replaceDocxText(out, 'Catégorie : C2 (Agent de maîtrise)', `Catégorie : ${categoryLine}`, {
     optional: true,
   });
-  out = replaceDocxText(out, 'C1 (Agent de Maîtrise)', categoryLine, { optional: true });
+  out = replaceDocxText(out, 'C2 (Agent de maîtrise)', categoryLine, { optional: true });
 
   out = replaceDocxText(
     out,
-    'Il est alloué au travailleur une rémunération nette mensuelle de 2,809,843 Francs Congolais/équivalent à USD 1,223 (Mille deux cent vingt-trois dollars américains).',
+    'Il est alloué au travailleur une rémunération nette mensuelle de 2,342,620 francs congolais, équivalant à USD 1,015 (mille quinze dollars américains).',
     buildSalarySentence(form),
     { optional: true },
   );
 
-  // Période d’essai (art. 1 déjà traité + art. 5)
   out = replaceDocxText(
     out,
     'une période d’essai fixée à 5 mois',
@@ -318,18 +332,20 @@ function fillBodyXml(xml: string, form: ContratStandardFormData): string {
 
   out = replaceDocxText(
     out,
-    'Pour les agents de maitrise, la durée du préavis est fixée à un (1) mois. Cette durée est augmentée de neuf (9) jours ouvrables par année entière de services continus, comptée de date à date.',
+    'Pour les agents de maîtrise, la durée du préavis est fixée à un (1) mois. Cette durée est augmentée de neuf (9) jours ouvrables par année entière de services continus, comptée de date à date.',
     rules.noticeArticleSentence,
     { optional: true },
   );
 
   const docDate = formatLongFr(parseIsoDate(form.documentDate));
-  out = replaceDocxText(out, 'Ainsi fait à Kinshasa, le 03 juin 2026.', `Ainsi fait à Kinshasa, le ${docDate}.`, {
-    optional: true,
-  });
-  out = replaceDocxText(out, '03 juin 2026', docDate, { optional: true });
+  out = replaceDocxText(
+    out,
+    'Ainsi fait à Kinshasa, le 2 septembre 2026.',
+    `Ainsi fait à Kinshasa, le ${docDate}.`,
+    { optional: true },
+  );
+  out = replaceDocxText(out, '2 septembre 2026', docDate, { optional: true });
 
-  // Préambule employeur : DG fixe, gras uniquement sur le nom (pas le manager RH).
   out = replaceDocxSpanWithRuns(
     out,
     EMPLOYER_BLOCK_START,
@@ -349,6 +365,7 @@ async function fillFooterJobTitle(buffer: Buffer, jobTitle: string): Promise<Buf
     if (!file) continue;
     let xml = await file.async('string');
     try {
+      xml = replaceDocxText(xml, 'Marketing Officer', jobTitle, { occurrence: 'all', optional: true });
       xml = replaceDocxText(xml, 'HR Admin', jobTitle, { occurrence: 'all', optional: true });
     } catch {
       // ignore

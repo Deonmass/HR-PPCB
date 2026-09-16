@@ -34983,6 +34983,24 @@ html[data-theme="light"] .sante-table-wrap th {
   background: rgba(34, 197, 94, 0.18);
 }
 
+.sante-patho-pill {
+  display: inline-block;
+  max-width: 100%;
+  padding: 0.14rem 0.5rem;
+  border-radius: 999px;
+  font-size: 0.72rem;
+  font-weight: 600;
+  line-height: 1.25;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  vertical-align: middle;
+}
+
+html[data-theme='dark'] .sante-patho-pill {
+  filter: brightness(1.15);
+}
+
 .sante-filter-hint {
   margin: 0 0 0.5rem;
   font-size: 0.8rem;

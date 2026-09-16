@@ -12,6 +12,7 @@ import {
   formatSanteDateFr,
   isFamilyPatientType,
   santeDisplayName,
+  santePathologieBadgeStyle,
 } from '@/lib/sante-utils';
 import type { SanteVisit } from '@/lib/sante-types';
 
@@ -204,7 +205,9 @@ export default function SanteDataView({
               </td>
             </tr>
           ) : (
-            filtered.map((row) => (
+            filtered.map((row) => {
+              const pathoTone = santePathologieBadgeStyle(row.pathologie);
+              return (
               <tr
                 key={row.visit.id}
                 onClick={() => onHistory(row.visit)}
@@ -222,7 +225,15 @@ export default function SanteDataView({
                 <td>{row.visit.age ?? '—'}</td>
                 <td>{row.type}</td>
                 <td>{row.lien}</td>
-                <td>{row.pathologie}</td>
+                <td>
+                  {pathoTone ? (
+                    <span className="sante-patho-pill" style={pathoTone} title={row.pathologie}>
+                      {row.pathologie}
+                    </span>
+                  ) : (
+                    row.pathologie
+                  )}
+                </td>
                 <td>{row.traitement}</td>
                 <td>
                   <span className={row.reference.toUpperCase() === 'NON' ? '' : 'sante-ref-pill'}>
@@ -230,7 +241,8 @@ export default function SanteDataView({
                   </span>
                 </td>
               </tr>
-            ))
+              );
+            })
           )}
         </tbody>
       </table>

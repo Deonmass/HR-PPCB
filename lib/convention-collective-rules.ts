@@ -38,13 +38,13 @@ export const CLASSIFICATION_RULES: Record<ContractClassification, Classification
   maitrise: {
     id: 'maitrise',
     label: 'Maîtrise',
-    categoryNoun: 'Agent de Maîtrise',
+    categoryNoun: 'Agent de maîtrise',
     trialMonths: 5,
     annualLeaveDays: 22,
     noticeBaseLabel: 'un (1) mois',
     noticeIncreaseDaysPerYear: 9,
     noticeArticleSentence:
-      'Pour les agents de maitrise, la durée du préavis est fixée à un (1) mois. '
+      'Pour les agents de maîtrise, la durée du préavis est fixée à un (1) mois. '
       + 'Cette durée est augmentée de neuf (9) jours ouvrables par année entière de services continus, '
       + 'comptée de date à date.',
   },

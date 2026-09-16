@@ -1,6 +1,6 @@
 'use client';
 
-import { formatSanteDateFr, santeDisplayName } from '@/lib/sante-utils';
+import { formatSanteDateFr, santeDisplayName, santePathologieBadgeStyle } from '@/lib/sante-utils';
 import type { SantePersonHistory } from '@/lib/sante-types';
 
 interface Props {
@@ -34,14 +34,23 @@ export default function SanteHistoryModal({ history, onClose }: Props) {
             <span>{history.visits.length} consultation(s)</span>
           </div>
           <ol className="sante-timeline">
-            {history.visits.map((visit) => (
+            {history.visits.map((visit) => {
+              const pathoTone = santePathologieBadgeStyle(visit.pathologie);
+              return (
               <li key={visit.id} className="sante-timeline-item">
                 <div className="sante-timeline-dot" />
                 <div className="sante-timeline-card">
                   <div className="sante-timeline-date">{formatSanteDateFr(visit.date)}</div>
                   <strong>{santeDisplayName(visit)}</strong>
                   <p>
-                    <span className="text-muted">Pathologie</span> {visit.pathologie || '—'}
+                    <span className="text-muted">Pathologie</span>{' '}
+                    {pathoTone ? (
+                      <span className="sante-patho-pill" style={pathoTone}>
+                        {visit.pathologie}
+                      </span>
+                    ) : (
+                      visit.pathologie || '—'
+                    )}
                   </p>
                   <p>
                     <span className="text-muted">Traitement</span> {visit.traitement || '—'}
@@ -51,7 +60,8 @@ export default function SanteHistoryModal({ history, onClose }: Props) {
                   </p>
                 </div>
               </li>
-            ))}
+              );
+            })}
           </ol>
         </div>
       </div>

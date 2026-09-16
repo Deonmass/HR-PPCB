@@ -13,13 +13,13 @@ interface ThemeContextValue {
 }
 
 const ThemeContext = createContext<ThemeContextValue>({
-  theme: 'dark',
+  theme: 'light',
   toggleTheme: () => {},
   isSwitching: false,
 });
 
 export function ThemeProvider({ children }: { children: React.ReactNode }) {
-  const [theme, setTheme] = useState<AppTheme>('dark');
+  const [theme, setTheme] = useState<AppTheme>('light');
   const [mounted, setMounted] = useState(false);
   const [isSwitching, setIsSwitching] = useState(false);
 

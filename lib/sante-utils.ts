@@ -312,3 +312,42 @@ export function splitEmployeeNom(nom: string): { nom: string; postnom: string } 
   if (parts.length === 1) return { nom: parts[0], postnom: '' };
   return { nom: parts[0], postnom: parts.slice(1).join(' ') };
 }
+
+/** Palette stable pour badges pathologie (une teinte par libellé). */
+const SANTE_PATHOLOGIE_PALETTE = [
+  { bg: 'rgba(59, 130, 246, 0.18)', color: '#1d4ed8' },
+  { bg: 'rgba(16, 185, 129, 0.18)', color: '#047857' },
+  { bg: 'rgba(245, 158, 11, 0.2)', color: '#b45309' },
+  { bg: 'rgba(236, 72, 153, 0.18)', color: '#be185d' },
+  { bg: 'rgba(139, 92, 246, 0.18)', color: '#6d28d9' },
+  { bg: 'rgba(6, 182, 212, 0.18)', color: '#0e7490' },
+  { bg: 'rgba(239, 68, 68, 0.16)', color: '#b91c1c' },
+  { bg: 'rgba(132, 204, 22, 0.2)', color: '#4d7c0f' },
+  { bg: 'rgba(249, 115, 22, 0.18)', color: '#c2410c' },
+  { bg: 'rgba(99, 102, 241, 0.18)', color: '#4338ca' },
+  { bg: 'rgba(20, 184, 166, 0.18)', color: '#0f766e' },
+  { bg: 'rgba(217, 70, 239, 0.16)', color: '#a21caf' },
+] as const;
+
+function hashSanteLabel(value: string): number {
+  const key = value
+    .normalize('NFD')
+    .replace(/\p{Diacritic}/gu, '')
+    .trim()
+    .toUpperCase();
+  let hash = 0;
+  for (let i = 0; i < key.length; i += 1) {
+    hash = (hash * 31 + key.charCodeAt(i)) >>> 0;
+  }
+  return hash;
+}
+
+export function santePathologieBadgeStyle(pathologie: string): {
+  background: string;
+  color: string;
+} | null {
+  const label = pathologie.trim();
+  if (!label || label === '—') return null;
+  const tone = SANTE_PATHOLOGIE_PALETTE[hashSanteLabel(label) % SANTE_PATHOLOGIE_PALETTE.length];
+  return { background: tone.bg, color: tone.color };
+}

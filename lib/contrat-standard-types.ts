@@ -73,7 +73,7 @@ export function emptyContratForm(): ContratStandardFormData {
       { ...EMPTY_DEPENDANT_ROW },
     ],
     contractType: 'CDD',
-    contractDurationLabel: '1 an renouvelable',
+    contractDurationLabel: '12 mois renouvelables',
     startDate: '',
     trialMonths: 5,
     jobTitle: '',
