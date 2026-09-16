@@ -1,6 +1,21 @@
 {
   "entries": [
     {
+      "id": "log-000863",
+      "at": "2026-09-16T17:01:43.266Z",
+      "userId": "Sosthene.Kamanda@ppcdrc.cd",
+      "userName": "Sosthene Kamanda",
+      "userEmail": "Sosthene.Kamanda@ppcdrc.cd",
+      "module": "auth",
+      "moduleLabel": "Authentification",
+      "action": "logout",
+      "actionLabel": "Déconnexion",
+      "summary": "Déconnexion Sosthene.Kamanda@ppcdrc.cd",
+      "details": "Déconnexion de Sosthene Kamanda (Sosthene.Kamanda@ppcdrc.cd)",
+      "undoable": false,
+      "undone": false
+    },
+    {
       "id": "log-000862",
       "at": "2026-09-16T16:07:55.358Z",
       "userId": "admin",
@@ -103604,5 +103619,5 @@
       }
     }
   ],
-  "nextSeq": 863
+  "nextSeq": 864
 }
