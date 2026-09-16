@@ -1425,6 +1425,23 @@
           },
           "updatedAt": "2026-09-16T11:17:43.322Z",
           "updatedBy": "admin"
+        },
+        "Quality Assurance::1": {
+          "weekIndex": 1,
+          "department": "Quality Assurance",
+          "weekFromTo": "du 17/08/2026 au 24/08/2026",
+          "locked": false,
+          "entries": {
+            "70000276": {
+              "matricule": "70000276",
+              "ot13": 0,
+              "ot16": 0,
+              "ot2": 16.086,
+              "night": 0
+            }
+          },
+          "updatedAt": "2026-09-16T11:21:24.417Z",
+          "updatedBy": "admin"
         }
       }
     }
