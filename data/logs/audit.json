@@ -1,6 +1,27 @@
 {
   "entries": [
     {
+      "id": "log-000861",
+      "at": "2026-09-16T16:07:41.229Z",
+      "userId": "admin",
+      "userName": "Administrateur",
+      "userEmail": "admin",
+      "module": "village.maisons",
+      "moduleLabel": "Village — Maisons",
+      "action": "error",
+      "actionLabel": "Erreur",
+      "summary": "Erreur lors de l'accès au fichier Excel : Cannot read properties of undefined (reading 'cell')",
+      "details": "Échec export village: Erreur lors de l'accès au fichier Excel : Cannot read properties of undefined (reading 'cell')",
+      "undoable": false,
+      "undone": false,
+      "error": {
+        "message": "Erreur lors de l'accès au fichier Excel : Cannot read properties of undefined (reading 'cell')",
+        "stack": "TypeError: Cannot read properties of undefined (reading 'cell')\n    at /var/task/.next/server/chunks/306.js:1:3930\n    at Array.forEach (<anonymous>)\n    at d (/var/task/.next/server/chunks/306.js:1:3912)\n    at y (/var/task/.next/server/chunks/306.js:1:4062)\n    at V (/var/task/.next/server/app/api/village/export/route.js:1:7627)\n    at async Z (/var/task/.next/server/app/api/village/export/route.js:1:8138)\n    at async rH.do (/var/task/node_modules/next/dist/compiled/next-server/app-route.runtime.prod.js:5:21048)\n    at async rH.handle (/var/task/node_modules/next/dist/compiled/next-server/app-route.runtime.prod.js:5:25866)\n    at async k (/var/task/.next/server/app/api/village/export/route.js:1:11490)\n    at async rH.handleResponse (/var/task/node_modules/next/dist/compiled/next-server/app-route.runtime.prod.js:1:110770)",
+        "path": "/api/village/export",
+        "method": "GET"
+      }
+    },
+    {
       "id": "log-000860",
       "at": "2026-09-16T13:21:11.381Z",
       "userId": "admin",
@@ -103562,5 +103583,5 @@
       }
     }
   ],
-  "nextSeq": 861
+  "nextSeq": 862
 }
