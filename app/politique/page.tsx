@@ -47,6 +47,16 @@ function IconClock() {
   );
 }
 
+function IconWallet() {
+  return (
+    <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+      <rect x="2" y="6" width="20" height="14" rx="2" />
+      <path d="M2 10h20" />
+      <path d="M16 14h2" />
+    </svg>
+  );
+}
+
 function IconHouse() {
   return (
     <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
@@ -162,6 +172,16 @@ const CARDS: PolicyCard[] = [
     badge: 'Oct. 25',
     icon: <IconClock />,
   },
+  {
+    id: 'paie',
+    title: 'SMIG & simulation de paie',
+    description: 'Tableau SMIG RDC (décret 25/22) et simulateur CNSS / ONEM / INPP / IRPP / net à payer.',
+    href: '/politique/paie',
+    menuId: 'politique.paie',
+    accent: '#1d4ed8',
+    badge: 'Paie',
+    icon: <IconWallet />,
+  },
   ...POLITIQUE_DOCS.map((doc) => ({
     id: doc.id,
     title: doc.title,
@@ -215,6 +235,14 @@ export default function PolitiqueHubPage() {
               title: t('pol.ot.title'),
               description: t('pol.ot.desc'),
               badge: t('pol.ot.badge'),
+            };
+          }
+          if (card.id === 'paie') {
+            return {
+              ...card,
+              title: t('pol.paie.title'),
+              description: t('pol.paie.desc'),
+              badge: t('pol.paie.badge'),
             };
           }
           const extra = POLITIQUE_DOCS.find((doc) => doc.id === card.id);

@@ -355,12 +355,8 @@ export function appendGuestHouseSheetsToWorkbook(
     headers: string[],
     rows: Array<Array<string | number>>,
   ) => {
-    let sheet: PopulateSheet;
-    try {
-      sheet = workbook.sheet(sheetName);
-    } catch {
-      sheet = workbook.addSheet(sheetName);
-    }
+    // xlsx-populate returns undefined for missing sheets (does not throw).
+    const sheet = workbook.sheet(sheetName) ?? workbook.addSheet(sheetName);
     headers.forEach((header, col) => {
       sheet.cell(1, col + 1).value(header);
       try {

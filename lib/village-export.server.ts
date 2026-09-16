@@ -71,11 +71,18 @@ function getOrCreateSheet(
   workbook: PopulateWorkbook,
   sheetName: string,
 ): { sheet: PopulateSheet; created: boolean } {
-  try {
-    return { sheet: workbook.sheet(sheetName), created: false };
-  } catch {
-    return { sheet: workbook.addSheet(sheetName), created: true };
+  // xlsx-populate returns undefined for missing sheets (does not throw).
+  const existing = workbook.sheet(sheetName);
+  if (existing) return { sheet: existing, created: false };
+  return { sheet: workbook.addSheet(sheetName), created: true };
+}
+
+function requireSheet(workbook: PopulateWorkbook, sheetName: string): PopulateSheet {
+  const sheet = workbook.sheet(sheetName);
+  if (!sheet) {
+    throw new Error(`Feuille Excel « ${sheetName} » introuvable dans le template Village`);
   }
+  return sheet;
 }
 
 function applyListeHeaderStyleToSheet(
@@ -87,7 +94,7 @@ function applyListeHeaderStyleToSheet(
   const { sheet, created } = getOrCreateSheet(workbook, sheetName);
   for (let col = 1; col <= headers.length; col++) {
     sheet.cell(1, col).value(headers[col - 1] ?? '');
-    if (created) {
+    if (created && liste) {
       copyCellStyle(liste, sheet, 1, Math.min(col, 10), 1, col);
     }
   }
@@ -504,7 +511,7 @@ export async function buildVillageExportBuffer(
   const workbook = await XlsxPopulate.fromFileAsync(templatePath);
 
   // Liste
-  const listeSheet = workbook.sheet('Liste');
+  const listeSheet = requireSheet(workbook, 'Liste');
   clearSheetData(listeSheet, 2, LISTE_HEADERS.length);
   for (let col = 1; col <= LISTE_HEADERS.length; col++) {
     listeSheet.cell(1, col).value(LISTE_HEADERS[col - 1] ?? '');
@@ -517,7 +524,7 @@ export async function buildVillageExportBuffer(
   const listeLast = listeData.length ? 1 + listeData.length : 1;
 
   // Maisons occupees — titre L1, en-têtes L2, données dès L3
-  const occSheet = workbook.sheet('Maisons occupees');
+  const occSheet = requireSheet(workbook, 'Maisons occupees');
   clearSheetData(occSheet, 3, 8);
   for (let col = 1; col <= MAISON_HEADERS.length; col++) {
     occSheet.cell(2, col).value(MAISON_HEADERS[col - 1] ?? '');
@@ -528,7 +535,7 @@ export async function buildVillageExportBuffer(
   const occLast = occData.length ? 2 + occData.length : 3;
 
   // Maisons vides — en-têtes L1, données dès L2
-  const videSheet = workbook.sheet('Maisons vides');
+  const videSheet = requireSheet(workbook, 'Maisons vides');
   clearSheetData(videSheet, 2, 8);
   for (let col = 1; col <= MAISON_HEADERS.length; col++) {
     videSheet.cell(1, col).value(MAISON_HEADERS[col - 1] ?? '');
@@ -539,7 +546,7 @@ export async function buildVillageExportBuffer(
   const videLast = videData.length ? 1 + videData.length : 2;
 
   // Dashboard — formules seules, graphiques intacts
-  const dashSheet = workbook.sheet('Dashboard');
+  const dashSheet = requireSheet(workbook, 'Dashboard');
   fillDashboardFormulas(
     dashSheet,
     stats,

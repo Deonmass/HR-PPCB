@@ -127,6 +127,7 @@ export const AUDIT_MODULE_LABELS: Record<string, string> = {
   'politique.longs-etats': 'Politique — Longs états de service',
   'politique.convention-collective': 'Politique — Convention collective',
   'politique.heures-sup': 'Politique — Heures supplémentaires',
+  'politique.paie': 'Politique — SMIG & paie',
   'politique.village': 'Politique — Village (maisons)',
   'politique.code-conduite': 'Politique — Code de bonne conduite',
   'politique.code-ethique': 'Politique — Code de conduite et éthique',

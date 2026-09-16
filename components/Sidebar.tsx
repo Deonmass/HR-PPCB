@@ -170,6 +170,7 @@ const NAV: NavSection[] = [
       'politique.longs-etats',
       'politique.convention-collective',
       'politique.heures-sup',
+      'politique.paie',
       'politique.village',
       'politique.code-conduite',
       'politique.code-ethique',

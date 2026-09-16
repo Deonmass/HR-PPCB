@@ -33723,6 +33723,583 @@ button.exco-ot-vcol:not(:disabled):focus-visible .exco-ot-vtrack {
   min-height: 28rem;
 }
 
+.politique-paie-page {
+  gap: 0.85rem;
+  flex: 1;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+.politique-paie-header-actions {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 0.5rem 0.65rem;
+}
+
+.politique-paie-tabs {
+  margin: 0;
+  padding: 0.2rem;
+  border-radius: 10px;
+  background: color-mix(in srgb, var(--surface-2, #f4f4f5) 100%, transparent);
+  border: 1px solid var(--border, #e4e4e7);
+  gap: 0.15rem;
+}
+
+.politique-paie-tabs .tab-btn {
+  min-height: 2rem;
+  padding: 0.35rem 0.85rem;
+  border-radius: 8px;
+  font-weight: 650;
+}
+
+.politique-paie-tabs .tab-btn.active {
+  box-shadow: 0 1px 2px color-mix(in srgb, #0f172a 10%, transparent);
+}
+
+.politique-paie-disclaimer {
+  margin: 0;
+  padding: 0.55rem 0.75rem;
+  border-radius: 8px;
+  background: color-mix(in srgb, #f59e0b 12%, var(--surface, #fff));
+  border: 1px solid color-mix(in srgb, #f59e0b 28%, transparent);
+  font-size: 0.78rem;
+  line-height: 1.4;
+  color: #78350f;
+  flex-shrink: 0;
+}
+
+.politique-paie-section {
+  padding: 0.9rem 1rem 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.politique-paie-smig-tab {
+  flex: 1;
+  min-height: 0;
+}
+
+.politique-paie-sim-tab {
+  flex: 1;
+  min-height: 0;
+  overflow: auto;
+}
+
+.politique-paie-section-head {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 0.5rem 0.75rem;
+  flex-shrink: 0;
+}
+
+.politique-paie-smig-head {
+  justify-content: space-between;
+  flex-wrap: nowrap;
+  gap: 0.75rem;
+}
+
+.politique-paie-smig-head-left {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 0.5rem 0.75rem;
+  min-width: 0;
+}
+
+.politique-paie-section-head h3 {
+  margin: 0;
+  font-size: 1rem;
+}
+
+.politique-paie-period-inline {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  font-size: 0.72rem;
+  font-weight: 600;
+  color: #3f3f46;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
+.politique-paie-period-inline select {
+  font: inherit;
+  font-weight: 500;
+  padding: 0.3rem 0.45rem;
+  border-radius: 7px;
+  border: 1px solid var(--border, #d4d4d8);
+  background: var(--surface, #fff);
+  color: inherit;
+  min-width: 12rem;
+}
+
+.politique-paie-chip {
+  font-size: 0.68rem;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+  padding: 0.2rem 0.45rem;
+  border-radius: 999px;
+  background: color-mix(in srgb, #1d4ed8 12%, transparent);
+  color: #1e3a8a;
+}
+
+.politique-paie-table-wrap {
+  flex: 1;
+  min-height: 0;
+  overflow: auto;
+}
+
+.politique-paie-smig-table {
+  width: 100%;
+}
+
+.politique-paie-smig-table td,
+.politique-paie-smig-table th {
+  white-space: nowrap;
+  font-size: 0.68rem;
+  padding: 0.28rem 0.45rem;
+  line-height: 1.25;
+}
+
+.politique-paie-smig-table th {
+  vertical-align: bottom;
+}
+
+.politique-paie-th-sub {
+  display: block;
+  font-size: 0.58rem;
+  font-weight: 500;
+  color: #71717a;
+  text-transform: none;
+  letter-spacing: 0;
+}
+
+.politique-paie-stack-cell {
+  text-align: right !important;
+}
+
+.politique-paie-stack-cell .is-day {
+  display: block;
+  font-weight: 650;
+  font-variant-numeric: tabular-nums;
+}
+
+.politique-paie-stack-cell .is-month {
+  display: block;
+  margin-top: 0.08rem;
+  font-size: 0.6rem;
+  color: #71717a;
+  font-variant-numeric: tabular-nums;
+}
+
+.politique-paie-smig-table tr.is-current-smig td {
+  background: color-mix(in srgb, #1d4ed8 8%, transparent);
+  font-weight: 600;
+}
+
+.politique-paie-smig-table tbody tr {
+  cursor: pointer;
+}
+
+.politique-paie-inline-badge {
+  display: inline-block;
+  margin-left: 0.35rem;
+  padding: 0.05rem 0.28rem;
+  border-radius: 999px;
+  font-size: 0.55rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  background: #1d4ed8;
+  color: #fff;
+  vertical-align: middle;
+}
+
+.politique-paie-source {
+  margin: 0;
+  font-size: 0.72rem;
+  color: #71717a;
+  flex-shrink: 0;
+}
+
+.politique-paie-split {
+  display: grid;
+  grid-template-columns: minmax(0, 1.05fr) minmax(300px, 0.95fr);
+  gap: 1rem;
+  align-items: start;
+}
+
+.politique-paie-form-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0.55rem 0.65rem;
+}
+
+.politique-paie-form-grid label {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  font-size: 0.72rem;
+  font-weight: 600;
+  color: #3f3f46;
+}
+
+.politique-paie-form-grid label.is-wide {
+  grid-column: 1 / -1;
+}
+
+.politique-paie-form-grid input,
+.politique-paie-form-grid select {
+  font: inherit;
+  font-weight: 500;
+  padding: 0.4rem 0.5rem;
+  border-radius: 7px;
+  border: 1px solid var(--border, #d4d4d8);
+  background: var(--surface, #fff);
+  color: inherit;
+}
+
+.politique-paie-field-hint {
+  font-size: 0.65rem;
+  font-weight: 500;
+  color: #71717a;
+}
+
+.politique-paie-form-actions {
+  margin-top: 0.65rem;
+}
+
+.politique-paie-rates-inline {
+  margin-top: 0.85rem;
+  padding: 0.7rem 0.8rem;
+  border-radius: 9px;
+  border: 1px solid var(--border, #e4e4e7);
+  background: color-mix(in srgb, var(--surface-2, #fafafa) 100%, transparent);
+}
+
+.politique-paie-rates-inline h4 {
+  margin: 0 0 0.4rem;
+  font-size: 0.76rem;
+}
+
+.politique-paie-rates-inline dl {
+  margin: 0 0 0.45rem;
+  display: grid;
+  gap: 0.3rem;
+}
+
+.politique-paie-rates-inline dl > div {
+  display: flex;
+  justify-content: space-between;
+  gap: 0.5rem;
+  font-size: 0.72rem;
+}
+
+.politique-paie-rates-inline dt {
+  color: #71717a;
+}
+
+.politique-paie-rates-inline dd {
+  margin: 0;
+  font-weight: 700;
+}
+
+.politique-paie-rates-inline ul {
+  margin: 0;
+  padding-left: 1rem;
+  font-size: 0.7rem;
+  line-height: 1.4;
+  color: #52525b;
+}
+
+.politique-paie-bulletin-card {
+  border-radius: 12px;
+  border: 1px solid color-mix(in srgb, #1d4ed8 22%, var(--border, #e4e4e7));
+  background:
+    linear-gradient(180deg, color-mix(in srgb, #1d4ed8 6%, #fff) 0%, var(--surface, #fff) 7.5rem),
+    var(--surface, #fff);
+  overflow: hidden;
+  box-shadow: 0 8px 24px color-mix(in srgb, #0f172a 6%, transparent);
+  display: flex;
+  flex-direction: column;
+  max-height: calc(100vh - 11rem);
+}
+
+.politique-paie-bulletin-card.is-linking-mode {
+  outline: 2px solid color-mix(in srgb, #1d4ed8 55%, transparent);
+  outline-offset: 1px;
+}
+
+.politique-paie-bulletin-head {
+  display: flex;
+  justify-content: space-between;
+  gap: 0.75rem;
+  padding: 0.9rem 1rem;
+  border-bottom: 1px solid var(--border, #e4e4e7);
+  flex-shrink: 0;
+}
+
+.politique-paie-bulletin-kicker {
+  margin: 0 0 0.15rem;
+  font-size: 0.65rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: #64748b;
+}
+
+.politique-paie-bulletin-head h4 {
+  margin: 0;
+  font-size: 1rem;
+}
+
+.politique-paie-bulletin-head p {
+  margin: 0.2rem 0 0;
+  font-size: 0.72rem;
+  color: #52525b;
+}
+
+.politique-paie-bulletin-net {
+  text-align: right;
+  flex-shrink: 0;
+}
+
+.politique-paie-bulletin-net span {
+  display: block;
+  font-size: 0.65rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  color: #64748b;
+}
+
+.politique-paie-bulletin-net strong {
+  display: block;
+  margin-top: 0.15rem;
+  font-size: 1.15rem;
+  color: #166534;
+}
+
+.politique-paie-link-hint {
+  margin: 0;
+  padding: 0.4rem 1rem;
+  font-size: 0.72rem;
+  font-weight: 600;
+  color: #1e3a8a;
+  background: color-mix(in srgb, #1d4ed8 10%, transparent);
+  border-bottom: 1px solid color-mix(in srgb, #1d4ed8 20%, transparent);
+}
+
+.politique-paie-bulletin-lines {
+  margin: 0;
+  padding: 0.35rem 0;
+  overflow: auto;
+  flex: 1;
+  min-height: 0;
+}
+
+.politique-paie-block {
+  display: flex;
+  flex-direction: column;
+  min-height: 0.25rem;
+}
+
+.politique-paie-block.is-drop-target {
+  outline: 1px dashed color-mix(in srgb, #1d4ed8 45%, transparent);
+  outline-offset: -2px;
+  border-radius: 6px;
+  background: color-mix(in srgb, #1d4ed8 4%, transparent);
+}
+
+.politique-paie-b-row {
+  display: flex;
+  justify-content: space-between;
+  gap: 0.75rem;
+  padding: 0.38rem 1rem;
+  font-size: 0.78rem;
+}
+
+.politique-paie-b-row dt {
+  color: #52525b;
+  cursor: help;
+}
+
+.politique-paie-b-row dd {
+  margin: 0;
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+  text-align: right;
+}
+
+.politique-paie-b-row.is-pickable {
+  cursor: crosshair;
+  background: color-mix(in srgb, #22c55e 8%, transparent);
+}
+
+.politique-paie-b-row.is-pickable:hover {
+  background: color-mix(in srgb, #22c55e 18%, transparent);
+}
+
+.politique-paie-b-row.is-emph {
+  background: color-mix(in srgb, #1d4ed8 6%, transparent);
+}
+
+.politique-paie-b-row.is-emph dt,
+.politique-paie-b-row.is-emph dd {
+  font-weight: 700;
+}
+
+.politique-paie-bulletin-lines .is-sep {
+  height: 1px;
+  padding: 0;
+  margin: 0.25rem 1rem;
+  background: var(--border, #e4e4e7);
+}
+
+.politique-paie-b-row.is-net {
+  margin-top: 0.25rem;
+  background: color-mix(in srgb, #22c55e 12%, transparent);
+}
+
+.politique-paie-b-row.is-net dt,
+.politique-paie-b-row.is-net dd {
+  font-weight: 800;
+  color: #166534;
+  font-size: 0.88rem;
+}
+
+.politique-paie-b-row.is-cost {
+  border-top: 1px dashed var(--border, #e4e4e7);
+  margin-top: 0.15rem;
+}
+
+.politique-paie-b-row.is-cost dd {
+  color: #1e3a8a;
+}
+
+.politique-paie-custom-line {
+  margin: 0.25rem 0.55rem;
+  padding: 0.4rem 0.5rem;
+  border-radius: 8px;
+  border: 1px dashed color-mix(in srgb, #1d4ed8 35%, transparent);
+  background: color-mix(in srgb, #1d4ed8 5%, #fff);
+  cursor: grab;
+}
+
+.politique-paie-custom-line.is-linking {
+  border-style: solid;
+  border-color: #1d4ed8;
+  box-shadow: 0 0 0 2px color-mix(in srgb, #1d4ed8 25%, transparent);
+}
+
+.politique-paie-custom-main {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.3rem;
+}
+
+.politique-paie-drag {
+  color: #94a3b8;
+  font-size: 0.85rem;
+  user-select: none;
+}
+
+.politique-paie-custom-label {
+  flex: 1 1 6rem;
+  min-width: 5rem;
+  font: inherit;
+  font-size: 0.72rem;
+  font-weight: 600;
+  padding: 0.25rem 0.35rem;
+  border-radius: 6px;
+  border: 1px solid var(--border, #d4d4d8);
+  background: var(--surface, #fff);
+}
+
+.politique-paie-custom-main select,
+.politique-paie-custom-main input[type='number'],
+.politique-paie-custom-meta select {
+  font: inherit;
+  font-size: 0.7rem;
+  padding: 0.25rem 0.3rem;
+  border-radius: 6px;
+  border: 1px solid var(--border, #d4d4d8);
+  background: var(--surface, #fff);
+  max-width: 5.5rem;
+}
+
+.politique-paie-custom-main input[type='number'] {
+  width: 4.5rem;
+}
+
+.politique-paie-custom-amt {
+  font-size: 0.72rem;
+  font-variant-numeric: tabular-nums;
+  margin-left: auto;
+}
+
+.politique-paie-custom-main .btn.is-active-link {
+  background: #1d4ed8;
+  color: #fff;
+  border-color: #1d4ed8;
+}
+
+.politique-paie-custom-line.is-validated {
+  border-style: solid;
+  background: color-mix(in srgb, #22c55e 6%, #fff);
+  border-color: color-mix(in srgb, #16a34a 28%, transparent);
+}
+
+.politique-paie-custom-validated-label {
+  flex: 1 1 6rem;
+  min-width: 5rem;
+  font-size: 0.75rem;
+  font-weight: 650;
+}
+
+.politique-paie-custom-pct-hint {
+  font-size: 0.65rem;
+  color: #64748b;
+  white-space: nowrap;
+}
+
+.politique-paie-custom-meta {
+  display: none;
+}
+
+.politique-paie-bulletin-foot {
+  padding: 0.55rem 1rem 0.75rem;
+  border-top: 1px solid var(--border, #e4e4e7);
+  flex-shrink: 0;
+}
+
+@media (max-width: 960px) {
+  .politique-paie-split,
+  .politique-paie-form-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .politique-paie-smig-head {
+    flex-wrap: wrap;
+  }
+
+  .politique-paie-bulletin-head {
+    flex-direction: column;
+  }
+
+  .politique-paie-bulletin-net {
+    text-align: left;
+  }
+
+  .politique-paie-bulletin-card {
+    max-height: none;
+  }
+}
+
 .admin-json-page {
   display: flex;
   flex-direction: column;

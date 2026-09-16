@@ -104,6 +104,7 @@ export const PERMISSION_MENU_CATALOG: PermissionMenuGroup[] = withSortedMenus([
       { id: 'politique.longs-etats', label: 'Longs états de service' },
       { id: 'politique.convention-collective', label: 'Convention collective' },
       { id: 'politique.heures-sup', label: 'Heures supplémentaires (oct. 25)' },
+      { id: 'politique.paie', label: 'SMIG & simulation de paie' },
       { id: 'politique.village', label: 'Politique Village (maisons)' },
       { id: 'politique.code-conduite', label: 'Code de bonne conduite' },
       { id: 'politique.code-ethique', label: 'Code de conduite et éthique' },
