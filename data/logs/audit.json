@@ -1,6 +1,75 @@
 {
   "entries": [
     {
+      "id": "log-000838",
+      "at": "2026-09-16T03:27:45.010Z",
+      "userId": "Pelagie.Kinkinia",
+      "userName": "Pelagie Kinkinia",
+      "userEmail": "Pelagie.Kinkinia@ppcdrc.cd",
+      "module": "projects",
+      "moduleLabel": "Projets",
+      "action": "update",
+      "actionLabel": "Modification",
+      "entityType": "project",
+      "entityId": "p-27",
+      "summary": "Modification projet Apiculture | Nkumba",
+      "details": "Modification projet Apiculture | Nkumba",
+      "before": {
+        "id": "p-27",
+        "numero": 14,
+        "name": "Apiculture | Nkumba",
+        "lieu": "Nkumba",
+        "secteur": "Agriculture et élevage",
+        "typeProjet": "Cahier de charges",
+        "sousActivite": "Formation et installation ruches",
+        "annee": "FY2024",
+        "dateDebut": "",
+        "dateFin": "",
+        "responsable": "",
+        "budgetPrevu": 892.5,
+        "budgetDepense": 892.5,
+        "budgetPrevuVerifie": false,
+        "ecart": 0,
+        "pctBudget": 1,
+        "statut": "Closed",
+        "evolution": 100,
+        "commentaire": "",
+        "history": []
+      },
+      "after": {
+        "id": "p-27",
+        "numero": 14,
+        "name": "Apiculture | Nkumba",
+        "lieu": "Nkumba",
+        "secteur": "Agriculture et élevage",
+        "typeProjet": "Cahier de charges",
+        "sousActivite": "Formation et installation ruches",
+        "annee": "FY2024",
+        "dateDebut": "",
+        "dateFin": "",
+        "responsable": "",
+        "budgetPrevu": 892.5,
+        "budgetDepense": 892.5,
+        "budgetPrevuVerifie": false,
+        "ecart": 0,
+        "pctBudget": 1,
+        "statut": "En cours",
+        "evolution": 20,
+        "commentaire": "",
+        "history": [
+          {
+            "id": "h-1789529260981-evo",
+            "at": "2026-09-16T03:27:40.981Z",
+            "field": "evolution",
+            "from": 100,
+            "to": 20
+          }
+        ]
+      },
+      "undoable": true,
+      "undone": false
+    },
+    {
       "id": "log-000837",
       "at": "2026-09-16T03:24:12.565Z",
       "userId": "Pelagie.Kinkinia",
@@ -93936,5 +94005,5 @@
       }
     }
   ],
-  "nextSeq": 838
+  "nextSeq": 839
 }
