@@ -454,7 +454,18 @@
       "budgetPrevuVerifie": false,
       "ecart": 0,
       "pctBudget": 1,
-      "statut": "Terminé"
+      "statut": "En cours",
+      "evolution": 20,
+      "commentaire": "",
+      "history": [
+        {
+          "id": "h-1789529260981-evo",
+          "at": "2026-09-16T03:27:40.981Z",
+          "field": "evolution",
+          "from": 100,
+          "to": 20
+        }
+      ]
     },
     {
       "id": "p-28",
