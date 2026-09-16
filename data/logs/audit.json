@@ -1,6 +1,29 @@
 {
   "entries": [
     {
+      "id": "log-000873",
+      "at": "2026-09-16T17:13:23.105Z",
+      "userId": "system",
+      "userName": "Système",
+      "module": "auth",
+      "moduleLabel": "Authentification",
+      "action": "error",
+      "actionLabel": "Erreur",
+      "summary": "Identifiants invalides",
+      "details": "Échec de connexion pour « Serge.Muakasa »",
+      "undoable": false,
+      "undone": false,
+      "error": {
+        "message": "Identifiants invalides",
+        "path": "/api/auth/login",
+        "method": "POST",
+        "status": 401,
+        "context": {
+          "username": "Serge.Muakasa"
+        }
+      }
+    },
+    {
       "id": "log-000872",
       "at": "2026-09-16T17:13:02.774Z",
       "userId": "system",
@@ -103830,5 +103853,5 @@
       }
     }
   ],
-  "nextSeq": 873
+  "nextSeq": 874
 }
