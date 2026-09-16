@@ -1,6 +1,34 @@
 {
   "entries": [
     {
+      "id": "log-000854",
+      "at": "2026-09-16T11:32:12.728Z",
+      "userId": "admin",
+      "userName": "Administrateur",
+      "userEmail": "admin",
+      "module": "timesheet.overtimes",
+      "moduleLabel": "Timesheet — Heures sup.",
+      "action": "import",
+      "actionLabel": "Import",
+      "summary": "Import HS bulk semaine 4",
+      "details": "Import HS bulk semaine 4",
+      "after": {
+        "results": [
+          {
+            "department": "Mining",
+            "status": "imported",
+            "imported": 2,
+            "skipped": 0
+          }
+        ],
+        "importedMatriculeKeys": {},
+        "totalImported": 2,
+        "totalSkipped": 0
+      },
+      "undoable": false,
+      "undone": false
+    },
+    {
       "id": "log-000853",
       "at": "2026-09-16T11:29:56.176Z",
       "userId": "admin",
@@ -94395,5 +94423,5 @@
       }
     }
   ],
-  "nextSeq": 854
+  "nextSeq": 855
 }
