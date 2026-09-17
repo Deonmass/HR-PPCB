@@ -1,6 +1,59 @@
 {
   "entries": [
     {
+      "id": "log-000891",
+      "at": "2026-09-17T10:31:04.278Z",
+      "userId": "Charite.Tshimanga@ppcdrc.cd",
+      "userName": "Charite Tshimanga",
+      "userEmail": "Charite.Tshimanga@ppcdrc.cd",
+      "module": "recrutement",
+      "moduleLabel": "Recrutement",
+      "action": "update",
+      "actionLabel": "Modification",
+      "entityType": "recrutement",
+      "entityId": "rec-replacement-legal-counsel-c4",
+      "summary": "Modification recrutement Legal Counsel",
+      "details": "Modification recrutement Legal Counsel",
+      "before": {
+        "id": "rec-replacement-legal-counsel-c4",
+        "category": "replacement",
+        "position": "Legal Counsel",
+        "grade": "C4",
+        "status": "Started",
+        "comments": "Vacancy Advertised",
+        "budgeted": "Yes",
+        "department": "Legal",
+        "location": "HQ",
+        "contractType": "Permanent",
+        "createdAt": "2026-09-07T21:36:39.331Z",
+        "updatedAt": "2026-09-07T21:36:39.331Z"
+      },
+      "after": {
+        "id": "rec-replacement-legal-counsel-c4",
+        "category": "replacement",
+        "position": "Legal Counsel",
+        "grade": "C4",
+        "status": "Started",
+        "comments": "awaiting shortlist",
+        "budgeted": "Yes",
+        "department": "Legal",
+        "location": "HQ",
+        "contractType": "Permanent",
+        "createdAt": "2026-09-07T21:36:39.331Z",
+        "updatedAt": "2026-09-17T10:31:01.367Z",
+        "slots": 1,
+        "catalogTitle": "",
+        "catalogMatch": false,
+        "occupants": [],
+        "vacantHeadcount": 0,
+        "recruitmentDates": [],
+        "filledInAugust": false,
+        "suggestedStatus": ""
+      },
+      "undoable": false,
+      "undone": false
+    },
+    {
       "id": "log-000890",
       "at": "2026-09-17T10:30:20.939Z",
       "userId": "Charite.Tshimanga@ppcdrc.cd",
@@ -108194,5 +108247,5 @@
       }
     }
   ],
-  "nextSeq": 891
+  "nextSeq": 892
 }
