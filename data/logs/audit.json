@@ -1,6 +1,21 @@
 {
   "entries": [
     {
+      "id": "log-000882",
+      "at": "2026-09-17T10:14:07.567Z",
+      "userId": "Charite.Tshimanga@ppcdrc.cd",
+      "userName": "Charite Tshimanga",
+      "userEmail": "Charite.Tshimanga@ppcdrc.cd",
+      "module": "auth",
+      "moduleLabel": "Authentification",
+      "action": "login",
+      "actionLabel": "Connexion",
+      "summary": "Connexion Charite.Tshimanga@ppcdrc.cd",
+      "details": "Connexion de Charite Tshimanga (Charite.Tshimanga@ppcdrc.cd)",
+      "undoable": false,
+      "undone": false
+    },
+    {
       "id": "log-000881",
       "at": "2026-09-17T10:13:02.759Z",
       "userId": "admin",
@@ -105912,5 +105927,5 @@
       }
     }
   ],
-  "nextSeq": 882
+  "nextSeq": 883
 }
