@@ -1,6 +1,41 @@
 {
   "entries": [
     {
+      "id": "log-000880",
+      "at": "2026-09-17T10:11:55.230Z",
+      "userId": "admin",
+      "userName": "Administrateur",
+      "userEmail": "admin",
+      "module": "settings.utilisateurs",
+      "moduleLabel": "Paramètres — Utilisateurs",
+      "action": "create",
+      "actionLabel": "Création",
+      "entityType": "auth.user",
+      "entityId": "Charite.Tshimanga@ppcdrc.cd",
+      "summary": "Création utilisateur Charite Tshimanga",
+      "details": "Création utilisateur Charite Tshimanga",
+      "after": {
+        "id": "Charite.Tshimanga@ppcdrc.cd",
+        "username": "Charite.Tshimanga@ppcdrc.cd",
+        "displayName": "Charite Tshimanga",
+        "initials": "CT",
+        "email": "Charite.Tshimanga@ppcdrc.cd",
+        "matricule": "70000269",
+        "linkedEmployee": {
+          "matricule": "70000269",
+          "nom": "TSHIMANGA KALOMBO CHARITE",
+          "departement": "Human Resources",
+          "grade": "C2",
+          "jobTitle": "Junior Talent Management",
+          "localisation": "Kinshasa"
+        },
+        "active": true,
+        "createdAt": "2026-09-17T10:11:52.021Z"
+      },
+      "undoable": true,
+      "undone": false
+    },
+    {
       "id": "log-000879",
       "at": "2026-09-16T19:14:45.911Z",
       "userId": "admin",
@@ -103959,5 +103994,5 @@
       }
     }
   ],
-  "nextSeq": 880
+  "nextSeq": 881
 }
