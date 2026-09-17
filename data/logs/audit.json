@@ -1,6 +1,63 @@
 {
   "entries": [
     {
+      "id": "log-000884",
+      "at": "2026-09-17T10:17:26.681Z",
+      "userId": "Charite.Tshimanga@ppcdrc.cd",
+      "userName": "Charite Tshimanga",
+      "userEmail": "Charite.Tshimanga@ppcdrc.cd",
+      "module": "recrutement",
+      "moduleLabel": "Recrutement",
+      "action": "update",
+      "actionLabel": "Modification",
+      "entityType": "recrutement",
+      "entityId": "rec-replacement-lab-analyst-plant",
+      "summary": "Modification recrutement Lab Analyst",
+      "details": "Modification recrutement Lab Analyst",
+      "before": {
+        "id": "rec-replacement-lab-analyst-plant",
+        "category": "replacement",
+        "position": "Lab Analyst",
+        "grade": "B5",
+        "status": "Done",
+        "comments": "",
+        "budgeted": "Yes",
+        "department": "QA",
+        "location": "Plant",
+        "contractType": "Outsourced",
+        "filledAt": "2026-08-01",
+        "createdAt": "2026-09-07T21:36:39.331Z",
+        "updatedAt": "2026-09-07T21:36:39.331Z"
+      },
+      "after": {
+        "id": "rec-replacement-lab-analyst-plant",
+        "category": "replacement",
+        "position": "Lab Analyst",
+        "grade": "B5",
+        "status": "Done",
+        "comments": "",
+        "budgeted": "Yes",
+        "department": "QA",
+        "location": "Plant",
+        "contractType": "Permanent",
+        "filledAt": "2026-08-01",
+        "createdAt": "2026-09-07T21:36:39.331Z",
+        "updatedAt": "2026-09-17T10:17:23.662Z",
+        "slots": 1,
+        "catalogTitle": "Lab Analyst",
+        "catalogMatch": true,
+        "occupants": [],
+        "vacantHeadcount": 0,
+        "recruitmentDates": [
+          "2026-08-01"
+        ],
+        "filledInAugust": true,
+        "suggestedStatus": ""
+      },
+      "undoable": false,
+      "undone": false
+    },
+    {
       "id": "log-000883",
       "at": "2026-09-17T10:14:43.921Z",
       "userId": "Charite.Tshimanga@ppcdrc.cd",
@@ -105942,5 +105999,5 @@
       }
     }
   ],
-  "nextSeq": 884
+  "nextSeq": 885
 }
