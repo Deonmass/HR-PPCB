@@ -1,6 +1,59 @@
 {
   "entries": [
     {
+      "id": "log-000890",
+      "at": "2026-09-17T10:30:20.939Z",
+      "userId": "Charite.Tshimanga@ppcdrc.cd",
+      "userName": "Charite Tshimanga",
+      "userEmail": "Charite.Tshimanga@ppcdrc.cd",
+      "module": "recrutement",
+      "moduleLabel": "Recrutement",
+      "action": "update",
+      "actionLabel": "Modification",
+      "entityType": "recrutement",
+      "entityId": "rec-replacement-internal-auditor-hq",
+      "summary": "Modification recrutement Internal Auditor",
+      "details": "Modification recrutement Internal Auditor",
+      "before": {
+        "id": "rec-replacement-internal-auditor-hq",
+        "category": "replacement",
+        "position": "Internal Auditor",
+        "grade": "",
+        "status": "Started",
+        "comments": "Vacancy Advertised",
+        "budgeted": "Yes",
+        "department": "Audit",
+        "location": "HQ",
+        "contractType": "Permanent",
+        "createdAt": "2026-09-07T21:36:39.331Z",
+        "updatedAt": "2026-09-07T21:36:39.331Z"
+      },
+      "after": {
+        "id": "rec-replacement-internal-auditor-hq",
+        "category": "replacement",
+        "position": "Internal Auditor",
+        "grade": "",
+        "status": "Started",
+        "comments": "awaiting shortlist",
+        "budgeted": "Yes",
+        "department": "Audit",
+        "location": "HQ",
+        "contractType": "Permanent",
+        "createdAt": "2026-09-07T21:36:39.331Z",
+        "updatedAt": "2026-09-17T10:30:18.267Z",
+        "slots": 1,
+        "catalogTitle": "",
+        "catalogMatch": false,
+        "occupants": [],
+        "vacantHeadcount": 0,
+        "recruitmentDates": [],
+        "filledInAugust": false,
+        "suggestedStatus": ""
+      },
+      "undoable": false,
+      "undone": false
+    },
+    {
       "id": "log-000889",
       "at": "2026-09-17T10:29:23.622Z",
       "userId": "Charite.Tshimanga@ppcdrc.cd",
@@ -108141,5 +108194,5 @@
       }
     }
   ],
-  "nextSeq": 890
+  "nextSeq": 891
 }
