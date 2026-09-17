@@ -8642,168 +8642,168 @@
           "menuId": "politique.aide-medicale",
           "label": "Aide médicale",
           "actions": {
-            "view": false,
-            "create": false,
-            "edit": false,
-            "delete": false,
-            "export": false,
-            "undo": false
+            "view": true,
+            "create": true,
+            "edit": true,
+            "delete": true,
+            "export": true,
+            "undo": true
           }
         },
         {
           "menuId": "politique.alcool",
           "label": "Alcool et substances",
           "actions": {
-            "view": false,
-            "create": false,
-            "edit": false,
-            "delete": false,
-            "export": false,
-            "undo": false
+            "view": true,
+            "create": true,
+            "edit": true,
+            "delete": true,
+            "export": true,
+            "undo": true
           }
         },
         {
           "menuId": "politique.code-conduite",
           "label": "Code de bonne conduite",
           "actions": {
-            "view": false,
-            "create": false,
-            "edit": false,
-            "delete": false,
-            "export": false,
-            "undo": false
+            "view": true,
+            "create": true,
+            "edit": true,
+            "delete": true,
+            "export": true,
+            "undo": true
           }
         },
         {
           "menuId": "politique.code-ethique",
           "label": "Code de conduite et éthique",
           "actions": {
-            "view": false,
-            "create": false,
-            "edit": false,
-            "delete": false,
-            "export": false,
-            "undo": false
+            "view": true,
+            "create": true,
+            "edit": true,
+            "delete": true,
+            "export": true,
+            "undo": true
           }
         },
         {
           "menuId": "politique.convention-collective",
           "label": "Convention collective",
           "actions": {
-            "view": false,
-            "create": false,
-            "edit": false,
-            "delete": false,
-            "export": false,
-            "undo": false
+            "view": true,
+            "create": true,
+            "edit": true,
+            "delete": true,
+            "export": true,
+            "undo": true
           }
         },
         {
           "menuId": "politique.exploitation",
           "label": "Exploitation",
           "actions": {
-            "view": false,
-            "create": false,
-            "edit": false,
-            "delete": false,
-            "export": false,
-            "undo": false
+            "view": true,
+            "create": true,
+            "edit": true,
+            "delete": true,
+            "export": true,
+            "undo": true
           }
         },
         {
           "menuId": "politique.cas-disciplinaires",
           "label": "Gestion des cas disciplinaires",
           "actions": {
-            "view": false,
-            "create": false,
-            "edit": false,
-            "delete": false,
-            "export": false,
-            "undo": false
+            "view": true,
+            "create": true,
+            "edit": true,
+            "delete": true,
+            "export": true,
+            "undo": true
           }
         },
         {
           "menuId": "politique.harcelement",
           "label": "Harcèlement",
           "actions": {
-            "view": false,
-            "create": false,
-            "edit": false,
-            "delete": false,
-            "export": false,
-            "undo": false
+            "view": true,
+            "create": true,
+            "edit": true,
+            "delete": true,
+            "export": true,
+            "undo": true
           }
         },
         {
           "menuId": "politique.heures-sup",
           "label": "Heures supplémentaires (oct. 25)",
           "actions": {
-            "view": false,
-            "create": false,
-            "edit": false,
-            "delete": false,
-            "export": false,
-            "undo": false
+            "view": true,
+            "create": true,
+            "edit": true,
+            "delete": true,
+            "export": true,
+            "undo": true
           }
         },
         {
           "menuId": "politique.longs-etats",
           "label": "Longs états de service",
           "actions": {
-            "view": false,
-            "create": false,
-            "edit": false,
-            "delete": false,
-            "export": false,
-            "undo": false
+            "view": true,
+            "create": true,
+            "edit": true,
+            "delete": true,
+            "export": true,
+            "undo": true
           }
         },
         {
           "menuId": "politique.voyages",
           "label": "Politique de voyage",
           "actions": {
-            "view": false,
-            "create": false,
-            "edit": false,
-            "delete": false,
-            "export": false,
-            "undo": false
+            "view": true,
+            "create": true,
+            "edit": true,
+            "delete": true,
+            "export": true,
+            "undo": true
           }
         },
         {
           "menuId": "politique.village",
           "label": "Politique Village (maisons)",
           "actions": {
-            "view": false,
-            "create": false,
-            "edit": false,
-            "delete": false,
-            "export": false,
-            "undo": false
+            "view": true,
+            "create": true,
+            "edit": true,
+            "delete": true,
+            "export": true,
+            "undo": true
           }
         },
         {
           "menuId": "politique.manuco",
           "label": "Règlement Manuco",
           "actions": {
-            "view": false,
-            "create": false,
-            "edit": false,
-            "delete": false,
-            "export": false,
-            "undo": false
+            "view": true,
+            "create": true,
+            "edit": true,
+            "delete": true,
+            "export": true,
+            "undo": true
           }
         },
         {
           "menuId": "politique.paie",
           "label": "SMIG & simulation de paie",
           "actions": {
-            "view": false,
-            "create": false,
-            "edit": false,
-            "delete": false,
-            "export": false,
-            "undo": false
+            "view": true,
+            "create": true,
+            "edit": true,
+            "delete": true,
+            "export": true,
+            "undo": true
           }
         },
         {
