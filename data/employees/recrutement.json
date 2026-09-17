@@ -280,9 +280,10 @@
       "budgeted": "Yes",
       "department": "QA",
       "location": "Zamba",
-      "contractType": "Outsourced",
+      "contractType": "Permanent",
+      "filledAt": "2026-08-12",
       "createdAt": "2026-09-07T21:36:39.331Z",
-      "updatedAt": "2026-09-07T21:36:39.331Z"
+      "updatedAt": "2026-09-17T10:26:57.454Z"
     },
     {
       "id": "rec-new-lab-analyst-albatros",
