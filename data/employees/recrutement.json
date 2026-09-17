@@ -248,13 +248,13 @@
       "position": "Sales Consultant",
       "grade": "C2",
       "status": "Ongoing",
-      "comments": "Final interviews to be plan",
+      "comments": "Interviews completed; Offer to be sent",
       "budgeted": "No",
       "department": "Sales and Marketing",
       "location": "Kindu",
       "contractType": "Permanent",
       "createdAt": "2026-09-07T21:36:39.331Z",
-      "updatedAt": "2026-09-07T21:36:39.331Z"
+      "updatedAt": "2026-09-17T10:24:42.232Z"
     },
     {
       "id": "rec-new-warehouse-operator-c2",
