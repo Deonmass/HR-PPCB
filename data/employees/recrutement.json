@@ -149,13 +149,13 @@
       "position": "Legal Counsel",
       "grade": "C4",
       "status": "Started",
-      "comments": "Vacancy Advertised",
+      "comments": "awaiting shortlist",
       "budgeted": "Yes",
       "department": "Legal",
       "location": "HQ",
       "contractType": "Permanent",
       "createdAt": "2026-09-07T21:36:39.331Z",
-      "updatedAt": "2026-09-07T21:36:39.331Z"
+      "updatedAt": "2026-09-17T10:31:01.367Z"
     },
     {
       "id": "rec-new-maintenance-planner-c2",
