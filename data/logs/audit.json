@@ -1,6 +1,59 @@
 {
   "entries": [
     {
+      "id": "log-000892",
+      "at": "2026-09-17T10:44:56.155Z",
+      "userId": "admin",
+      "userName": "Administrateur",
+      "userEmail": "admin",
+      "module": "recrutement",
+      "moduleLabel": "Recrutement",
+      "action": "update",
+      "actionLabel": "Modification",
+      "entityType": "recrutement",
+      "entityId": "rec-replacement-qa-manager-d2",
+      "summary": "Modification recrutement QA Manager",
+      "details": "Modification recrutement QA Manager",
+      "before": {
+        "id": "rec-replacement-qa-manager-d2",
+        "category": "replacement",
+        "position": "QA Manager",
+        "grade": "D2",
+        "status": "Started",
+        "comments": "Interviews completed; awaiting for panel's evaluations",
+        "budgeted": "Yes",
+        "department": "QA",
+        "location": "Plant",
+        "contractType": "Permanent",
+        "createdAt": "2026-09-07T21:36:39.331Z",
+        "updatedAt": "2026-09-17T10:29:20.524Z"
+      },
+      "after": {
+        "id": "rec-replacement-qa-manager-d2",
+        "category": "replacement",
+        "position": "QA Manager",
+        "grade": "D2",
+        "status": "Started",
+        "comments": "Interviews ongiong",
+        "budgeted": "Yes",
+        "department": "QA",
+        "location": "Plant",
+        "contractType": "Permanent",
+        "createdAt": "2026-09-07T21:36:39.331Z",
+        "updatedAt": "2026-09-17T10:44:53.073Z",
+        "slots": 1,
+        "catalogTitle": "",
+        "catalogMatch": false,
+        "occupants": [],
+        "vacantHeadcount": 0,
+        "recruitmentDates": [],
+        "filledInAugust": false,
+        "suggestedStatus": ""
+      },
+      "undoable": false,
+      "undone": false
+    },
+    {
       "id": "log-000891",
       "at": "2026-09-17T10:31:04.278Z",
       "userId": "Charite.Tshimanga@ppcdrc.cd",
@@ -108247,5 +108300,5 @@
       }
     }
   ],
-  "nextSeq": 892
+  "nextSeq": 893
 }
