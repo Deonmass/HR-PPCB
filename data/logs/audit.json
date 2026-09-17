@@ -1,6 +1,59 @@
 {
   "entries": [
     {
+      "id": "log-000885",
+      "at": "2026-09-17T10:22:12.568Z",
+      "userId": "Charite.Tshimanga@ppcdrc.cd",
+      "userName": "Charite Tshimanga",
+      "userEmail": "Charite.Tshimanga@ppcdrc.cd",
+      "module": "recrutement",
+      "moduleLabel": "Recrutement",
+      "action": "update",
+      "actionLabel": "Modification",
+      "entityType": "recrutement",
+      "entityId": "rec-new-talent-and-development-manager-d2",
+      "summary": "Modification recrutement Talent and development Manager",
+      "details": "Modification recrutement Talent and development Manager",
+      "before": {
+        "id": "rec-new-talent-and-development-manager-d2",
+        "category": "new",
+        "position": "Talent and development Manager",
+        "grade": "D2",
+        "status": "Ongoing",
+        "comments": "Interviews are underway",
+        "budgeted": "No",
+        "department": "HR",
+        "location": "Plant",
+        "contractType": "Permanent",
+        "createdAt": "2026-09-07T21:36:39.331Z",
+        "updatedAt": "2026-09-07T21:36:39.331Z"
+      },
+      "after": {
+        "id": "rec-new-talent-and-development-manager-d2",
+        "category": "new",
+        "position": "Talent and development Manager",
+        "grade": "D2",
+        "status": "Ongoing",
+        "comments": "Interviews completed; awaiting the panel’s evaluations.",
+        "budgeted": "No",
+        "department": "HR",
+        "location": "Plant",
+        "contractType": "Permanent",
+        "createdAt": "2026-09-07T21:36:39.331Z",
+        "updatedAt": "2026-09-17T10:22:09.280Z",
+        "slots": 1,
+        "catalogTitle": "Talent & Development Manager",
+        "catalogMatch": true,
+        "occupants": [],
+        "vacantHeadcount": 0,
+        "recruitmentDates": [],
+        "filledInAugust": false,
+        "suggestedStatus": ""
+      },
+      "undoable": false,
+      "undone": false
+    },
+    {
       "id": "log-000884",
       "at": "2026-09-17T10:17:26.681Z",
       "userId": "Charite.Tshimanga@ppcdrc.cd",
@@ -105999,5 +106052,5 @@
       }
     }
   ],
-  "nextSeq": 885
+  "nextSeq": 886
 }
