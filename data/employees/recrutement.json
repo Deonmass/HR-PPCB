@@ -95,10 +95,10 @@
       "budgeted": "Yes",
       "department": "QA",
       "location": "Plant",
-      "contractType": "Outsourced",
+      "contractType": "Permanent",
       "filledAt": "2026-08-01",
       "createdAt": "2026-09-07T21:36:39.331Z",
-      "updatedAt": "2026-09-07T21:36:39.331Z"
+      "updatedAt": "2026-09-17T10:17:23.662Z"
     },
     {
       "id": "rec-replacement-warehouse-officer-c2",
@@ -275,7 +275,7 @@
       "category": "new",
       "position": "Lab Analyst",
       "grade": "B5",
-      "status": "",
+      "status": "Not started",
       "comments": "Candidate did not accept the offer, vacancy to be advertised",
       "budgeted": "Yes",
       "department": "QA",
