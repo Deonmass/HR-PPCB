@@ -1,6 +1,59 @@
 {
   "entries": [
     {
+      "id": "log-000887",
+      "at": "2026-09-17T10:24:46.370Z",
+      "userId": "Charite.Tshimanga@ppcdrc.cd",
+      "userName": "Charite Tshimanga",
+      "userEmail": "Charite.Tshimanga@ppcdrc.cd",
+      "module": "recrutement",
+      "moduleLabel": "Recrutement",
+      "action": "update",
+      "actionLabel": "Modification",
+      "entityType": "recrutement",
+      "entityId": "rec-new-sales-consultant-c2",
+      "summary": "Modification recrutement Sales Consultant",
+      "details": "Modification recrutement Sales Consultant",
+      "before": {
+        "id": "rec-new-sales-consultant-c2",
+        "category": "new",
+        "position": "Sales Consultant",
+        "grade": "C2",
+        "status": "Ongoing",
+        "comments": "Final interviews to be plan",
+        "budgeted": "No",
+        "department": "Sales and Marketing",
+        "location": "Kindu",
+        "contractType": "Permanent",
+        "createdAt": "2026-09-07T21:36:39.331Z",
+        "updatedAt": "2026-09-07T21:36:39.331Z"
+      },
+      "after": {
+        "id": "rec-new-sales-consultant-c2",
+        "category": "new",
+        "position": "Sales Consultant",
+        "grade": "C2",
+        "status": "Ongoing",
+        "comments": "Interviews completed; Offer to be sent",
+        "budgeted": "No",
+        "department": "Sales and Marketing",
+        "location": "Kindu",
+        "contractType": "Permanent",
+        "createdAt": "2026-09-07T21:36:39.331Z",
+        "updatedAt": "2026-09-17T10:24:42.232Z",
+        "slots": 1,
+        "catalogTitle": "Sales Consultant",
+        "catalogMatch": true,
+        "occupants": [],
+        "vacantHeadcount": 0,
+        "recruitmentDates": [],
+        "filledInAugust": false,
+        "suggestedStatus": ""
+      },
+      "undoable": false,
+      "undone": false
+    },
+    {
       "id": "log-000886",
       "at": "2026-09-17T10:23:54.865Z",
       "userId": "admin",
@@ -107970,5 +108023,5 @@
       }
     }
   ],
-  "nextSeq": 887
+  "nextSeq": 888
 }
