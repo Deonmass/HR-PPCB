@@ -135,13 +135,13 @@
       "position": "Internal Auditor",
       "grade": "",
       "status": "Started",
-      "comments": "Vacancy Advertised",
+      "comments": "awaiting shortlist",
       "budgeted": "Yes",
       "department": "Audit",
       "location": "HQ",
       "contractType": "Permanent",
       "createdAt": "2026-09-07T21:36:39.331Z",
-      "updatedAt": "2026-09-07T21:36:39.331Z"
+      "updatedAt": "2026-09-17T10:30:18.267Z"
     },
     {
       "id": "rec-replacement-legal-counsel-c4",
