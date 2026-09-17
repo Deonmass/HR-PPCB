@@ -1,6 +1,59 @@
 {
   "entries": [
     {
+      "id": "log-000889",
+      "at": "2026-09-17T10:29:23.622Z",
+      "userId": "Charite.Tshimanga@ppcdrc.cd",
+      "userName": "Charite Tshimanga",
+      "userEmail": "Charite.Tshimanga@ppcdrc.cd",
+      "module": "recrutement",
+      "moduleLabel": "Recrutement",
+      "action": "update",
+      "actionLabel": "Modification",
+      "entityType": "recrutement",
+      "entityId": "rec-replacement-qa-manager-d2",
+      "summary": "Modification recrutement QA Manager",
+      "details": "Modification recrutement QA Manager",
+      "before": {
+        "id": "rec-replacement-qa-manager-d2",
+        "category": "replacement",
+        "position": "QA Manager",
+        "grade": "D2",
+        "status": "Started",
+        "comments": "Vacancy Advertised",
+        "budgeted": "Yes",
+        "department": "QA",
+        "location": "Plant",
+        "contractType": "Permanent",
+        "createdAt": "2026-09-07T21:36:39.331Z",
+        "updatedAt": "2026-09-07T21:36:39.331Z"
+      },
+      "after": {
+        "id": "rec-replacement-qa-manager-d2",
+        "category": "replacement",
+        "position": "QA Manager",
+        "grade": "D2",
+        "status": "Started",
+        "comments": "Interviews completed; awaiting for panel's evaluations",
+        "budgeted": "Yes",
+        "department": "QA",
+        "location": "Plant",
+        "contractType": "Permanent",
+        "createdAt": "2026-09-07T21:36:39.331Z",
+        "updatedAt": "2026-09-17T10:29:20.524Z",
+        "slots": 1,
+        "catalogTitle": "",
+        "catalogMatch": false,
+        "occupants": [],
+        "vacantHeadcount": 0,
+        "recruitmentDates": [],
+        "filledInAugust": false,
+        "suggestedStatus": ""
+      },
+      "undoable": false,
+      "undone": false
+    },
+    {
       "id": "log-000888",
       "at": "2026-09-17T10:27:00.696Z",
       "userId": "Charite.Tshimanga@ppcdrc.cd",
@@ -108088,5 +108141,5 @@
       }
     }
   ],
-  "nextSeq": 889
+  "nextSeq": 890
 }
