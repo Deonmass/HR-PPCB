@@ -1,6 +1,71 @@
 {
   "entries": [
     {
+      "id": "log-000888",
+      "at": "2026-09-17T10:27:00.696Z",
+      "userId": "Charite.Tshimanga@ppcdrc.cd",
+      "userName": "Charite Tshimanga",
+      "userEmail": "Charite.Tshimanga@ppcdrc.cd",
+      "module": "recrutement",
+      "moduleLabel": "Recrutement",
+      "action": "update",
+      "actionLabel": "Modification",
+      "entityType": "recrutement",
+      "entityId": "rec-new-lab-analyst-zamba",
+      "summary": "Modification recrutement Lab Analyst",
+      "details": "Modification recrutement Lab Analyst",
+      "before": {
+        "id": "rec-new-lab-analyst-zamba",
+        "category": "new",
+        "position": "Lab Analyst",
+        "grade": "B5",
+        "status": "Not started",
+        "comments": "Candidate did not accept the offer, vacancy to be advertised",
+        "budgeted": "Yes",
+        "department": "QA",
+        "location": "Zamba",
+        "contractType": "Outsourced",
+        "createdAt": "2026-09-07T21:36:39.331Z",
+        "updatedAt": "2026-09-07T21:36:39.331Z"
+      },
+      "after": {
+        "id": "rec-new-lab-analyst-zamba",
+        "category": "new",
+        "position": "Lab Analyst",
+        "grade": "B5",
+        "status": "Not started",
+        "comments": "Candidate did not accept the offer, vacancy to be advertised",
+        "budgeted": "Yes",
+        "department": "QA",
+        "location": "Zamba",
+        "contractType": "Permanent",
+        "filledAt": "2026-08-12",
+        "createdAt": "2026-09-07T21:36:39.331Z",
+        "updatedAt": "2026-09-17T10:26:57.454Z",
+        "slots": 1,
+        "catalogTitle": "Lab Analyst",
+        "catalogMatch": true,
+        "occupants": [
+          {
+            "matricule": "70000310",
+            "nom": "RACHIDI ZOBELA JUDITH",
+            "localisation": "Zamba",
+            "grade": "B5",
+            "appointmentDate": "12/08/2026",
+            "appointmentIso": "2026-08-12"
+          }
+        ],
+        "vacantHeadcount": 0,
+        "recruitmentDates": [
+          "2026-08-12"
+        ],
+        "filledInAugust": true,
+        "suggestedStatus": "Done"
+      },
+      "undoable": false,
+      "undone": false
+    },
+    {
       "id": "log-000887",
       "at": "2026-09-17T10:24:46.370Z",
       "userId": "Charite.Tshimanga@ppcdrc.cd",
@@ -108023,5 +108088,5 @@
       }
     }
   ],
-  "nextSeq": 888
+  "nextSeq": 889
 }
