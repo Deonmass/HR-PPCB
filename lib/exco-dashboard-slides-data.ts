@@ -1,5 +1,34 @@
+import fs from 'fs';
+import path from 'path';
 import type { ExcoReportPayload } from '@/lib/exco-types';
 import { excoFyColumns } from '@/lib/exco-trends-slide-data';
+import { canPersistProjectFiles, getWritableDataRoot } from '@/lib/runtime-mode';
+import { buildTrainingDashboard } from '@/lib/training-compute';
+import { DEFAULT_TRAINING_KPIS, type TrainingStoreData } from '@/lib/training-types';
+
+function readTrainingStoreSync(): TrainingStoreData | null {
+  try {
+    const candidates = [
+      canPersistProjectFiles()
+        ? path.join(process.cwd(), 'data', 'training', 'training.json')
+        : path.join(getWritableDataRoot(), 'training', 'training.json'),
+      path.join(process.cwd(), 'data', 'training', 'training.json'),
+    ];
+    for (const file of candidates) {
+      if (!fs.existsSync(file)) continue;
+      const raw = JSON.parse(fs.readFileSync(file, 'utf8')) as TrainingStoreData;
+      return {
+        kpis: { ...DEFAULT_TRAINING_KPIS, ...(raw.kpis || {}) },
+        monthlyCosts: raw.monthlyCosts || {},
+        entries: Array.isArray(raw.entries) ? raw.entries : [],
+        updatedAt: raw.updatedAt || '',
+      };
+    }
+    return null;
+  } catch {
+    return null;
+  }
+}
 
 function money(n: number | null | undefined, digits = 0): string {
   if (n == null || !Number.isFinite(n)) return '—';
@@ -29,14 +58,70 @@ export type ExcoTrainingSlideData = {
   avgHoursPerEmp: string;
   topicsCount: number;
   skillBars: Array<{ label: string; pct: number }>;
-  costMonths: Array<{ label: string; hq: string; plant: string; hqN: number; plantN: number }>;
+  costMonths: Array<{ label: string; hq: string; plant: string; hqN: number; plantN: number; isCurrent?: boolean }>;
+  hoursPlantPct?: string;
+  hoursHqPct?: string;
   upcoming: string[];
   covered: string[];
 };
 
+/**
+ * Prefer live Training module data (monthly HQ/Plant history + imports).
+ * Falls back to EXCO overlays / finance snaps when Training store is empty.
+ */
 export function buildTrainingSlideData(report: ExcoReportPayload): ExcoTrainingSlideData {
   const mk = report.overlays.manualKpis;
   const hc = report.computed.headcount || 0;
+
+  const store = readTrainingStoreSync();
+  if (store) {
+    const dash = buildTrainingDashboard(store, report.year, report.month, 'calendar');
+    const hasCosts = dash.costMonths.some((m) => m.total > 0) || dash.entries.length > 0;
+    if (hasCosts) {
+      const hours = mk.trainingHours ?? dash.kpis.hoursYtd;
+      const avg =
+        mk.trainingHours != null && hc > 0
+          ? Math.round((mk.trainingHours / hc) * 10) / 10
+          : dash.kpis.avgHoursPerEmployee;
+      const overlayUpcoming = (report.overlays.upcomingTrainings || [])
+        .map((t) => t.title?.trim())
+        .filter(Boolean) as string[];
+      const overlayCovered = (report.overlays.trainingTopics || [])
+        .map((t) => t.title?.trim())
+        .filter(Boolean) as string[];
+      return {
+        periodLabel: report.periodLabel,
+        budget: money(mk.trainingBudget ?? dash.kpis.budgetUsd, 0),
+        actual: money(mk.trainingCost ?? dash.actualSpend, 2),
+        plantPct: `${Number(mk.trainingPlantPct ?? dash.kpis.plantBudgetPct).toFixed(0)}%`,
+        hqPct: `${Number(mk.trainingHqPct ?? dash.kpis.hqBudgetPct).toFixed(0)}%`,
+        hoursYtd: `${num(hours, 0)} Hours YTD`,
+        avgHoursPerEmp: `${avg} Hours`,
+        hoursPlantPct: `${dash.kpis.hoursPlantPct}%`,
+        hoursHqPct: `${dash.kpis.hoursHqPct}%`,
+        topicsCount: dash.topicsCount || overlayCovered.length,
+        skillBars: [
+          { label: 'Technical Skills (Hours)', pct: mk.technicalSkillsHoursPct ?? dash.kpis.technicalSkillsPct },
+          { label: 'Soft Skills (Hours)', pct: mk.softSkillsHoursPct ?? dash.kpis.softSkillsPct },
+          { label: 'Safety Topics (Hours)', pct: mk.safetyTopicsHoursPct ?? dash.kpis.safetyTopicsPct },
+        ].map((s) => ({
+          ...s,
+          pct: s.pct != null && Number.isFinite(s.pct) ? Math.round(Number(s.pct) * 100) / 100 : 0,
+        })),
+        costMonths: dash.costMonths.map((m) => ({
+          label: m.label,
+          hq: m.hq ? Math.round(m.hq).toLocaleString('en-US') : '',
+          plant: m.plant ? Math.round(m.plant).toLocaleString('en-US') : '',
+          hqN: m.hq,
+          plantN: m.plant,
+          isCurrent: m.isCurrent,
+        })),
+        upcoming: overlayUpcoming.length ? overlayUpcoming : dash.upcoming,
+        covered: dash.covered.length ? dash.covered : overlayCovered,
+      };
+    }
+  }
+
   const hours = mk.trainingHours ?? null;
   const avg =
     hours != null && hc > 0 ? Math.round((hours / hc) * 10) / 10 : null;
@@ -109,6 +194,7 @@ const PIE_COLORS = [
   '#7C3AED',
   '#BE185D',
 ];
+
 
 const MONTH_SHORT_EN = [
   'Jan',

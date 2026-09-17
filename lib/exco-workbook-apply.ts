@@ -3,6 +3,10 @@
  */
 import type { ExcoWorkbookSnapshot } from './exco-new-report-parse';
 import { siteBucketFromLocation, workbookEmployeesToHireList } from './exco-new-report-parse';
+import {
+  EXCO_SITE,
+  buildExcoGenderByLocation,
+} from './exco-site-buckets';
 import type { ExcoComputedBlock, ExcoTrendMonth } from './exco-types';
 
 function roundRate(n: number): number {
@@ -12,6 +16,16 @@ function roundRate(n: number): number {
 function pctFromRate(rate: number | null | undefined): number | null {
   if (rate == null || !Number.isFinite(rate)) return null;
   return roundRate(rate * (rate <= 1 ? 100 : 1));
+}
+
+function isMaleGender(g: string): boolean {
+  const s = g.trim().toLowerCase();
+  return s.startsWith('m') || s.includes('homme') || s.includes('male');
+}
+
+function isFemaleGender(g: string): boolean {
+  const s = g.trim().toLowerCase();
+  return s.startsWith('f') || s.includes('femme') || s.includes('female');
 }
 
 /** Feuille IN OUT renseignée (sinon on garde les mouvements calculés système). */
@@ -42,10 +56,10 @@ export function applyWorkbookSnapshotToComputed(
 ): ExcoComputedBlock {
   const hc = snap.headcount;
   const presentList = workbookEmployeesToHireList(snap.employees);
-  const plant = snap.employees.filter((e) => siteBucketFromLocation(e.locationSite) === 'Plant').length;
-  const hq = snap.employees.filter((e) => siteBucketFromLocation(e.locationSite) === 'HQ and Regions').length;
-  const lubudi = snap.employees.filter((e) => siteBucketFromLocation(e.locationSite) === 'Lubudi').length;
-  const graduates = snap.employees.filter((e) => siteBucketFromLocation(e.locationSite) === 'Graduates').length;
+  const plant = snap.employees.filter((e) => siteBucketFromLocation(e.locationSite) === EXCO_SITE.plant).length;
+  const hq = snap.employees.filter((e) => siteBucketFromLocation(e.locationSite) === EXCO_SITE.kinshasa).length;
+  const lubudi = snap.employees.filter((e) => siteBucketFromLocation(e.locationSite) === EXCO_SITE.lubudi).length;
+  const graduates = snap.employees.filter((e) => siteBucketFromLocation(e.locationSite) === EXCO_SITE.graduates).length;
 
   const useWorkbookInOut = workbookHasInOutData(snap);
   const currentInOut = snap.inOut.months.find((m) => m.calendarMonth === snap.params.month);
@@ -61,21 +75,28 @@ export function applyWorkbookSnapshotToComputed(
   const prevHires = useWorkbookInOut ? (prevInOut?.in ?? null) : computed.prevHires;
   const prevExits = useWorkbookInOut ? (prevInOut?.out ?? null) : computed.prevExits;
 
+  // Toujours recalculer depuis Location_Site (BASE), jamais la feuille Headcount Excel.
+  const genderByLocation = buildExcoGenderByLocation(
+    snap.employees,
+    isMaleGender,
+    isFemaleGender,
+  );
+
   const genderMalePctSites = (() => {
-    const plantLoc = hc.genderByLocation.find((g) => /plant/i.test(g.location));
-    const lub = hc.genderByLocation.find((g) => /lubudi/i.test(g.location));
+    const plantLoc = genderByLocation.find((g) => g.location === EXCO_SITE.plant);
+    const lub = genderByLocation.find((g) => g.location === EXCO_SITE.lubudi);
     const sitesMale = (plantLoc?.male ?? 0) + (lub?.male ?? 0);
     const sitesTotal = (plantLoc?.total ?? 0) + (lub?.total ?? 0);
     return sitesTotal ? roundRate((sitesMale / sitesTotal) * 100) : null;
   })();
   const genderFemalePctSites = (() => {
-    const plantLoc = hc.genderByLocation.find((g) => /plant/i.test(g.location));
-    const lub = hc.genderByLocation.find((g) => /lubudi/i.test(g.location));
+    const plantLoc = genderByLocation.find((g) => g.location === EXCO_SITE.plant);
+    const lub = genderByLocation.find((g) => g.location === EXCO_SITE.lubudi);
     const sitesFemale = (plantLoc?.female ?? 0) + (lub?.female ?? 0);
     const sitesTotal = (plantLoc?.total ?? 0) + (lub?.total ?? 0);
     return sitesTotal ? roundRate((sitesFemale / sitesTotal) * 100) : null;
   })();
-  const hqLoc = hc.genderByLocation.find((g) => /kinshasa|hq|region/i.test(g.location));
+  const hqLoc = genderByLocation.find((g) => g.location === EXCO_SITE.kinshasa);
   const genderMalePctHq = hqLoc?.total ? roundRate((hqLoc.male / hqLoc.total) * 100) : null;
   const genderFemalePctHq = hqLoc?.total ? roundRate((hqLoc.female / hqLoc.total) * 100) : null;
 
@@ -116,15 +137,18 @@ export function applyWorkbookSnapshotToComputed(
     averageSeniorityYears: hc.averageLengthOfService,
     ageBands: hc.ageBands,
     seniorityBands: hc.seniorityBands,
-    genderByLocation: hc.genderByLocation || computed.genderByLocation,
+    genderByLocation,
     preRetirement: hc.preRetirement ?? computed.preRetirement,
     retirement: hc.retirement ?? computed.retirement,
-    headcountBySite: [
-      { site: 'Plant', headcount: plant, delta: null },
-      { site: 'HQ and Regions', headcount: hq, delta: null },
-      { site: 'Lubudi', headcount: lubudi, delta: null },
-      { site: 'Graduates', headcount: graduates, delta: null },
-    ],
+    headcountBySite:
+      computed.headcountBySite?.length > 0
+        ? computed.headcountBySite
+        : [
+            { site: EXCO_SITE.plant, headcount: plant, delta: null },
+            { site: EXCO_SITE.kinshasa, headcount: hq, delta: null },
+            { site: EXCO_SITE.lubudi, headcount: lubudi, delta: null },
+            { site: EXCO_SITE.graduates, headcount: graduates, delta: null },
+          ],
     exitsByReason: useWorkbookInOut ? snap.inOut.exitsByReason : computed.exitsByReason,
     exitsList: useWorkbookInOut ? snap.inOut.outList : computed.exitsList,
     overtimeHoursTotal: computed.overtimeHoursTotal,

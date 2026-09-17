@@ -1,0 +1,175 @@
+{
+  "kpis": {
+    "budgetUsd": 507500,
+    "plantBudgetPct": 65,
+    "hqBudgetPct": 35,
+    "hoursYtd": 1728,
+    "hoursPlantPct": 50,
+    "hoursHqPct": 50,
+    "avgHoursPerEmployee": 10,
+    "technicalSkillsPct": 0,
+    "softSkillsPct": 67,
+    "safetyTopicsPct": 33,
+    "upcoming": [
+      "AI",
+      "Retirement preparation"
+    ]
+  },
+  "monthlyCosts": {
+    "2026-04": {
+      "year": 2026,
+      "month": 4,
+      "hq": 2500,
+      "plant": 2170,
+      "fromEntries": false
+    },
+    "2026-05": {
+      "year": 2026,
+      "month": 5,
+      "hq": 25720,
+      "plant": 2342,
+      "fromEntries": false
+    },
+    "2026-06": {
+      "year": 2026,
+      "month": 6,
+      "hq": 2700,
+      "plant": 30,
+      "fromEntries": false
+    },
+    "2026-07": {
+      "year": 2026,
+      "month": 7,
+      "hq": 1370,
+      "plant": 2500,
+      "fromEntries": true
+    },
+    "2026-08": {
+      "year": 2026,
+      "month": 8,
+      "hq": 6550,
+      "plant": 400,
+      "fromEntries": false,
+      "updatedAt": "2026-09-17T15:05:12.428Z"
+    },
+    "2026-10": {
+      "year": 2026,
+      "month": 10,
+      "hq": 0,
+      "plant": 0,
+      "fromEntries": false,
+      "updatedAt": "2026-09-17T15:05:13.612Z"
+    }
+  },
+  "entries": [
+    {
+      "id": "seed-1",
+      "postingDate": "2026-07-01",
+      "amount": 600,
+      "costCenterType": "HQ",
+      "text": "Perdiem des formateurs",
+      "year": 2026,
+      "month": 7,
+      "documentNumber": "1900006474",
+      "importedAt": "2026-09-17T00:00:00.000Z",
+      "sourceFile": "New report Training"
+    },
+    {
+      "id": "seed-2",
+      "postingDate": "2026-07-02",
+      "amount": 2500,
+      "costCenterType": "Plant",
+      "text": "C.N.P.R.ITRAINING COURSE FEES",
+      "year": 2026,
+      "month": 7,
+      "documentNumber": "5000085759",
+      "importedAt": "2026-09-17T00:00:00.000Z",
+      "sourceFile": "New report Training"
+    },
+    {
+      "id": "seed-3",
+      "postingDate": "2026-07-15",
+      "amount": 200,
+      "costCenterType": "HQ",
+      "text": "Trainee Elliot",
+      "year": 2026,
+      "month": 7,
+      "documentNumber": "100114207",
+      "importedAt": "2026-09-17T00:00:00.000Z",
+      "sourceFile": "New report Training"
+    },
+    {
+      "id": "seed-4",
+      "postingDate": "2026-07-24",
+      "amount": 285,
+      "costCenterType": "HQ",
+      "text": "Formation anglais CALI ANGELE",
+      "year": 2026,
+      "month": 7,
+      "documentNumber": "100114943",
+      "importedAt": "2026-09-17T00:00:00.000Z",
+      "sourceFile": "New report Training"
+    },
+    {
+      "id": "seed-5",
+      "postingDate": "2026-07-27",
+      "amount": 285,
+      "costCenterType": "HQ",
+      "text": "Frais de Formation d'anglais CALI 3 Rimels NTONDO",
+      "year": 2026,
+      "month": 7,
+      "documentNumber": "100114957",
+      "importedAt": "2026-09-17T00:00:00.000Z",
+      "sourceFile": "New report Training"
+    },
+    {
+      "id": "seed-6",
+      "postingDate": "2026-08-07",
+      "amount": 200,
+      "costCenterType": "Plant",
+      "text": "Trainee Pevid Luambo",
+      "year": 2026,
+      "month": 8,
+      "documentNumber": "100007448",
+      "importedAt": "2026-09-17T00:00:00.000Z",
+      "sourceFile": "New report Training"
+    },
+    {
+      "id": "seed-7",
+      "postingDate": "2026-08-07",
+      "amount": 200,
+      "costCenterType": "Plant",
+      "text": "Trainee Kutu Medina",
+      "year": 2026,
+      "month": 8,
+      "documentNumber": "100115761",
+      "importedAt": "2026-09-17T00:00:00.000Z",
+      "sourceFile": "New report Training"
+    },
+    {
+      "id": "seed-8",
+      "postingDate": "2026-08-12",
+      "amount": 4050,
+      "costCenterType": "HQ",
+      "text": "Chartered management accountant training",
+      "year": 2026,
+      "month": 8,
+      "documentNumber": "100116817",
+      "importedAt": "2026-09-17T00:00:00.000Z",
+      "sourceFile": "New report Training"
+    },
+    {
+      "id": "seed-9",
+      "postingDate": "2026-08-31",
+      "amount": 2500,
+      "costCenterType": "HQ",
+      "text": "C.N.P.R.ITRAINING COURSE FEES",
+      "year": 2026,
+      "month": 8,
+      "documentNumber": "100119617",
+      "importedAt": "2026-09-17T00:00:00.000Z",
+      "sourceFile": "New report Training"
+    }
+  ],
+  "updatedAt": "2026-09-17T15:05:13.612Z"
+}

@@ -103,6 +103,7 @@ export function recruitmentContractTone(contractType: string): RecBadgeTone {
   const s = (contractType || '').trim().toLowerCase();
   if (/outsourc/.test(s)) return 'alert';
   if (/permanent/.test(s)) return 'yes';
+  if (/fixed|durée|duree|détermin|determin|cdd/.test(s)) return 'started';
   return 'neutral';
 }
 

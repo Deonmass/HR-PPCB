@@ -1,4 +1,5 @@
 import { visibleManualKpis, type ExcoReportPayload, type ExcoTrendMonth } from '@/lib/exco-types';
+import { EXCO_SITE } from '@/lib/exco-site-buckets';
 import {
   EXCO_FY_MONTH_LABELS,
   EXCO_FY_START_YEAR,
@@ -176,10 +177,10 @@ export function buildTrendsHeadcountSection(report: ExcoReportPayload): ExcoTren
   const prev = trends.find((t) => t.month === report.month - 1);
 
   const keys = [
-    ['Plant', 'plant'],
-    ['HQ and Regions', 'hq'],
-    ['Lubudi', 'lubudi'],
-    ['Graduates', 'graduates'],
+    [EXCO_SITE.plant, 'plant'],
+    [EXCO_SITE.kinshasa, 'hq'],
+    [EXCO_SITE.lubudi, 'lubudi'],
+    [EXCO_SITE.graduates, 'graduates'],
     ['Total', 'headcount'],
   ] as const;
 

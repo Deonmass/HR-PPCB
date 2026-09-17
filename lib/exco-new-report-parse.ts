@@ -7,6 +7,7 @@
  */
 import * as XLSX from 'xlsx';
 import { compareExcoDepartments } from './exco-department-map';
+import { EXCO_SITE, excoSiteBucket, type ExcoSiteBucket } from './exco-site-buckets';
 import type { ExcoLeaveMonthImport, ExcoOtMonthImport } from './exco-ot-import';
 import { mapExcoOtDepartment } from './exco-ot-import';
 import { readOtBasePanelFromSheet, computeOtBasePanelKpis } from './exco-ot-base-kpis';
@@ -299,12 +300,8 @@ function monthKeyToCalendar(key: string): number | null {
   return map[k] ?? null;
 }
 
-function siteBucketFromLocation(location: string): 'Plant' | 'HQ and Regions' | 'Lubudi' | 'Graduates' {
-  const loc = location.trim().toLowerCase();
-  if (loc.includes('lubudi')) return 'Lubudi';
-  if (loc.includes('graduate')) return 'Graduates';
-  if (loc.includes('plant') || loc.includes('zamba') || loc.includes('malanga')) return 'Plant';
-  return 'HQ and Regions';
+function siteBucketFromLocation(location: string): ExcoSiteBucket {
+  return excoSiteBucket(location);
 }
 
 function round2(n: number): number {
@@ -1107,8 +1104,8 @@ function parseLeave(
     valueFcTotal += value;
     all.push(closing);
     const site = siteBucketFromLocation(siteByMat[matricule] || '');
-    if (site === 'Plant') plant.push(closing);
-    else if (site === 'Lubudi') lubudi.push(closing);
+    if (site === EXCO_SITE.plant) plant.push(closing);
+    else if (site === EXCO_SITE.lubudi) lubudi.push(closing);
     else hq.push(closing);
   }
 

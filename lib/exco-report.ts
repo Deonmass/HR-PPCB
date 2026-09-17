@@ -21,6 +21,13 @@ import {
 } from './exco-ot-import';
 import { applyWorkbookSnapshotToComputed } from './exco-workbook-apply';
 import {
+  EXCO_SITE,
+  EXCO_SITE_ORDER,
+  buildExcoGenderByLocation,
+  excoSiteBucket,
+  isExcoHqSite,
+} from './exco-site-buckets';
+import {
   applyUniqueBaseToComputed,
   buildExcoUniqueBase,
 } from './exco-unique-base';
@@ -91,23 +98,11 @@ function resolveAge(employee: Employee, asOf: Date): number | null {
 }
 
 function siteBucket(localisation: string): string {
-  const loc = localisation.trim().toLowerCase();
-  if (!loc) return 'Non renseigné';
-  if (loc.includes('lubudi')) return 'Lubudi';
-  if (
-    loc.includes('plant')
-    || loc.includes('zamba')
-    || loc.includes('malanga')
-    || loc.includes('usine')
-  ) {
-    return 'Plant';
-  }
-  if (loc.includes('graduate') || loc.includes('stagiaire')) return 'Graduates';
-  return 'HQ and Regions';
+  return excoSiteBucket(localisation);
 }
 
 function isHqSite(site: string): boolean {
-  return site === 'HQ and Regions';
+  return isExcoHqSite(site);
 }
 
 function sharePct(part: number, total: number): number | null {
@@ -612,10 +607,10 @@ async function buildCalendarYearTrends(
       month,
       label,
       headcount,
-      plant: bySite.get('Plant') ?? 0,
-      hq: bySite.get('HQ and Regions') ?? 0,
-      lubudi: bySite.get('Lubudi') ?? 0,
-      graduates: bySite.get('Graduates') ?? 0,
+      plant: bySite.get(EXCO_SITE.plant) ?? 0,
+      hq: bySite.get(EXCO_SITE.kinshasa) ?? 0,
+      lubudi: bySite.get(EXCO_SITE.lubudi) ?? 0,
+      graduates: bySite.get(EXCO_SITE.graduates) ?? 0,
       genderMalePct:
         headcount > 0 ? ratioToRate(males.length, headcount) : null,
       genderFemalePct:
@@ -760,35 +755,11 @@ async function computeBlock(
     { label: '10+ yrs', min: 10, max: 80 },
   ]);
 
-  const genderByLocationMap = new Map<string, { male: number; female: number }>();
-  for (const e of present) {
-    const location = siteBucket(e.localisation || '');
-    const cur = genderByLocationMap.get(location) || { male: 0, female: 0 };
-    if (isMaleGender(e.gender)) cur.male += 1;
-    else if (isFemaleGender(e.gender)) cur.female += 1;
-    genderByLocationMap.set(location, cur);
-  }
-  const genderLocOrder = ['Plant', 'HQ and Regions', 'Lubudi', 'Graduates', 'Non renseigné'];
-  const genderByLocation: ExcoComputedBlock['genderByLocation'] = [];
-  for (const location of genderLocOrder) {
-    const g = genderByLocationMap.get(location);
-    if (!g && location === 'Non renseigné') continue;
-    const male = g?.male ?? 0;
-    const female = g?.female ?? 0;
-    if (location !== 'Non renseigné' || male + female > 0) {
-      genderByLocation.push({ location, male, female, total: male + female });
-    }
-  }
-  for (const [location, g] of genderByLocationMap) {
-    if (!genderLocOrder.includes(location)) {
-      genderByLocation.push({
-        location,
-        male: g.male,
-        female: g.female,
-        total: g.male + g.female,
-      });
-    }
-  }
+  const genderByLocation = buildExcoGenderByLocation(
+    present,
+    isMaleGender,
+    isFemaleGender,
+  );
   const preRetirement = ages.filter((a) => a >= 55).length;
   const retirement = ages.filter((a) => a >= 60).length;
 
@@ -797,16 +768,16 @@ async function computeBlock(
     const site = siteBucket(e.localisation || '');
     siteMap.set(site, (siteMap.get(site) ?? 0) + 1);
   }
-  const siteOrder = ['Plant', 'HQ and Regions', 'Lubudi', 'Graduates', 'Non renseigné'];
+  const siteOrder = [...EXCO_SITE_ORDER];
   const headcountBySite = siteOrder
-    .filter((s) => siteMap.has(s) || s !== 'Non renseigné')
+    .filter((s) => siteMap.has(s) || s !== EXCO_SITE.unknown)
     .map((site) => ({
       site,
       headcount: siteMap.get(site) ?? 0,
       delta: null as number | null,
     }));
   for (const [site, count] of siteMap) {
-    if (!siteOrder.includes(site)) {
+    if (!(EXCO_SITE_ORDER as readonly string[]).includes(site)) {
       headcountBySite.push({ site, headcount: count, delta: null });
     }
   }
@@ -1602,7 +1573,28 @@ export async function buildExcoReport(
 
   if (uniqueCurrent.headcount > 0) {
     if (snapMatchesPeriod) {
-      // Garder les formules Headcount / IN OUT du New report ; BASE pour les listes.
+      // Garder les formules Headcount / IN OUT du New report ; BASE pour les listes
+      // + Gender per location recalculé (buckets Plant/Zamba, Kinshasa…, Lubudi…).
+      const genderByLocation = buildExcoGenderByLocation(
+        uniqueCurrent.employees.map((e) => ({
+          localisation: e.locationSite,
+          gender: e.gender,
+        })),
+        isMaleGender,
+        isFemaleGender,
+      );
+      const siteMap = new Map<string, number>();
+      for (const e of uniqueCurrent.employees) {
+        const site = excoSiteBucket(e.locationSite || '');
+        siteMap.set(site, (siteMap.get(site) ?? 0) + 1);
+      }
+      const headcountBySite = EXCO_SITE_ORDER.filter(
+        (s) => siteMap.has(s) || s !== EXCO_SITE.unknown,
+      ).map((site) => ({
+        site,
+        headcount: siteMap.get(site) ?? 0,
+        delta: null as number | null,
+      }));
       computed = {
         ...computed,
         presentList: uniqueCurrent.employees.map((e) => ({
@@ -1614,12 +1606,14 @@ export async function buildExcoReport(
           genre: e.gender,
           company: '',
           appointmentDate: e.emplDate,
-          site: e.locationSite || 'Non renseigné',
+          site: excoSiteBucket(e.locationSite || ''),
           reason: 'Présent',
         })),
         headcount: uniqueCurrent.headcount || computed.headcount,
         prevHeadcount:
           uniquePrev.headcount > 0 ? uniquePrev.headcount : computed.prevHeadcount,
+        genderByLocation,
+        headcountBySite,
       };
     } else {
       const engCur = Boolean(

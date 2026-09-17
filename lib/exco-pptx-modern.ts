@@ -832,15 +832,20 @@ export async function buildModernExcoContentPptx(report: ExcoReportPayload): Pro
     });
   }
 
-  // —— Synthèse ——
+  // —— Synthèse : Highlight / Lowlight / Focus (slides séparées = template Aug-26) ——
   {
-    const s = pptx.addSlide();
-    await paintSlideCanvas(s, assets);
-    addChrome(s, 'Summary', `${prev} → ${period}`, period, '01');
     const n = o.narrative;
-    panel(s, 0.4, 1.22, 4.1, 5.95, 'Highlights', n.highlights || '', 'H');
-    panel(s, 4.65, 1.22, 4.1, 5.95, 'Lowlights', n.lowlights || '', 'L');
-    panel(s, 8.9, 1.22, 4.0, 5.95, 'Focus', n.focus || '', 'F');
+    const blocks: Array<{ title: string; body: string; glyph: string }> = [
+      { title: 'Highlight', body: n.highlights || '', glyph: 'P' },
+      { title: 'Lowlight', body: n.lowlights || '', glyph: 'P' },
+      { title: 'Focus', body: n.focus || '', glyph: 'P' },
+    ];
+    for (const block of blocks) {
+      const s = pptx.addSlide();
+      await paintSlideCanvas(s, assets);
+      addChrome(s, block.title, '', period, '01');
+      panel(s, 0.45, 1.2, 12.4, 5.9, block.title, block.body, block.glyph);
+    }
   }
 
   // —— KPI Summary (1 slide, 20 cartes, 2 blocs × 5 cols) ——
@@ -1595,6 +1600,39 @@ export async function buildModernExcoContentPptx(report: ExcoReportPayload): Pro
       x: 0.35, y: 2.9, w: 8.2, h: 0.26,
       fontSize: 12, bold: true, color: PPC.ink, fontFace: FONT,
     });
+    const chartMonths = tr.costMonths.filter((m) => m.hqN > 0 || m.plantN > 0);
+    if (chartMonths.length) {
+      s.addChart(
+        'bar',
+        [
+          {
+            name: 'HQ',
+            labels: chartMonths.map((m) => m.label),
+            values: chartMonths.map((m) => m.hqN),
+          },
+          {
+            name: 'Plant',
+            labels: chartMonths.map((m) => m.label),
+            values: chartMonths.map((m) => m.plantN),
+          },
+        ],
+        {
+          x: 0.35,
+          y: 3.15,
+          w: 8.2,
+          h: 1.55,
+          barGrouping: 'stacked',
+          showValue: false,
+          showLegend: true,
+          showTitle: false,
+          chartColors: ['1E3A5F', 'E85D04'],
+          valAxisMinVal: 0,
+          catAxisLabelFontSize: 7,
+          valAxisLabelFontSize: 7,
+          legendPos: 'b',
+        },
+      );
+    }
     const costHead = [
       { text: '', options: { bold: true, color: PPC.white, fill: { color: PPC.black } } },
       ...tr.costMonths.map((m) => ({
@@ -1618,7 +1656,7 @@ export async function buildModernExcoContentPptx(report: ExcoReportPayload): Pro
     ];
     s.addTable([costHead, hqRow, plantRow], {
       x: 0.35,
-      y: 3.2,
+      y: chartMonths.length ? 4.8 : 3.2,
       w: 8.2,
       colW: [0.7, ...tr.costMonths.map(() => 7.5 / Math.max(tr.costMonths.length, 1))],
       border: TABLE_BORDER,
@@ -1629,15 +1667,15 @@ export async function buildModernExcoContentPptx(report: ExcoReportPayload): Pro
 
     // Upcoming
     s.addShape('roundRect', {
-      x: 0.35, y: 4.35, w: 8.2, h: 2.55,
+      x: 0.35, y: chartMonths.length ? 5.55 : 4.35, w: 8.2, h: chartMonths.length ? 1.5 : 2.55,
       fill: { color: PPC.white }, line: { color: PPC.line, pt: 1 }, rectRadius: 0.06,
     });
     s.addShape('rect', {
-      x: 0.35, y: 4.35, w: 8.2, h: 0.34,
+      x: 0.35, y: chartMonths.length ? 5.55 : 4.35, w: 8.2, h: 0.34,
       fill: { color: PPC.black }, line: { color: PPC.black },
     });
     s.addText('Upcoming Training Sessions', {
-      x: 0.5, y: 4.38, w: 7.9, h: 0.28,
+      x: 0.5, y: chartMonths.length ? 5.58 : 4.38, w: 7.9, h: 0.28,
       fontSize: 12, bold: true, color: PPC.white, fontFace: FONT,
     });
     s.addText(
@@ -1645,7 +1683,7 @@ export async function buildModernExcoContentPptx(report: ExcoReportPayload): Pro
         ? tr.upcoming.slice(0, 8).map((t) => `• ${t}`).join('\n')
         : '—',
       {
-        x: 0.55, y: 4.8, w: 7.8, h: 1.95,
+        x: 0.55, y: chartMonths.length ? 5.95 : 4.8, w: 7.8, h: chartMonths.length ? 0.95 : 1.95,
         fontSize: 12, color: PPC.ink, fontFace: FONT, valign: 'top',
       },
     );

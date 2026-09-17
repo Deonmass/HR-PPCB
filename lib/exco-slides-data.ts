@@ -4,8 +4,10 @@ import type { ExcoReportPayload } from './exco-types';
 import {
   buildCsrSlideData,
   buildGouvernanceSlideData,
+  buildTrainingSlideData,
   type ExcoCsrSlideData,
   type ExcoGouvernanceSlideData,
+  type ExcoTrainingSlideData,
 } from './exco-dashboard-slides-data';
 import {
   resolveCahierHighlights,
@@ -40,6 +42,7 @@ export type ExcoSlidesPayload = {
     summary: ReturnType<typeof summarizeInternalAudit>;
   };
   gouvernance: ExcoGouvernanceSlideData;
+  training: ExcoTrainingSlideData;
   thankYou: {
     title: string;
     subtitle: string;
@@ -80,6 +83,7 @@ export function buildExcoSlidesPayload(report: ExcoReportPayload): ExcoSlidesPay
       summary: summarizeInternalAudit(auditRows),
     },
     gouvernance: buildGouvernanceSlideData(report),
+    training: buildTrainingSlideData(report),
     thankYou: {
       title: report.overlays.narrative?.thankYouTitle?.trim() || 'Et merci',
       subtitle: report.overlays.narrative?.thankYouMessage?.trim() || 'Thank You',

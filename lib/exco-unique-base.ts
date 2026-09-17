@@ -1,7 +1,7 @@
 /**
  * BASE EXCO unique par mois :
  * — New report du mois (workbookSnapshot ou data/exco/sources/YYYY-MM/) = source de vérité effectif
- * — noms / départements enrichis depuis le système (sans ajouter d’effectifs hors BASE)
+ * — noms / départements / **Location_Site** enrichis depuis le système Employés (localisation)
  * — sans snapshot : roll-forward depuis le mois précédent + engagements
  */
 import 'server-only';
@@ -17,6 +17,7 @@ import {
 import { resolveExcoBaseWorkbook } from './exco-base-source';
 import { parseExcoNewReport, type ExcoWorkbookEmployee } from './exco-new-report-parse';
 import { resolveExcoDepartment } from './exco-department-map';
+import { excoSiteBucket } from './exco-site-buckets';
 import { getExcoOverlays } from './exco-store';
 import { fcToUsd, type ExcoLeaveMonthImport, type ExcoOtMonthImport } from './exco-ot-import';
 import type { ExcoSheetTable } from './exco-workbook-types';
@@ -237,7 +238,8 @@ function rowFromWorkbook(
     lengthOfService: los,
     lengthOfServiceCat: e.lengthOfServiceCat || seniorityCat(los),
     department: dept,
-    locationSite: e.locationSite || sys?.localisation || '',
+    // Localisation système = source de vérité (Gender per location / buckets EXCO).
+    locationSite: (sys?.localisation || '').trim() || e.locationSite || '',
     leaveBalance: e.leaveBalance,
     allowanceAmount: e.allowanceAmount ?? null,
     ovtHours: e.ovtHours ?? null,
@@ -609,7 +611,7 @@ export function uniqueBaseRowToHireList(
     genre: row.gender,
     company: '',
     appointmentDate: row.emplDate,
-    site: row.locationSite || 'Non renseigné',
+    site: excoSiteBucket(row.locationSite),
     reason,
   };
 }

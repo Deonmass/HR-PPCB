@@ -10,7 +10,7 @@ import {
   type RecBadgeTone,
 } from '@/lib/exco-recruitment-fy27';
 
-type SlideTab = 'csr' | 'recruitment' | 'audit';
+type SlideTab = 'csr' | 'recruitment' | 'training' | 'audit';
 type CsrSubTab = 'csr' | 'cahier';
 
 export type ExcoNarrativeTabId = SlideTab;
@@ -59,6 +59,29 @@ type SlidesPayload = {
       location: string;
       contractType: string;
     }>;
+  };
+  training?: {
+    periodLabel: string;
+    budget: string;
+    actual: string;
+    plantPct: string;
+    hqPct: string;
+    hoursYtd: string;
+    avgHoursPerEmp: string;
+    hoursPlantPct?: string;
+    hoursHqPct?: string;
+    topicsCount: number;
+    skillBars: Array<{ label: string; pct: number }>;
+    costMonths: Array<{
+      label: string;
+      hq: string;
+      plant: string;
+      hqN: number;
+      plantN: number;
+      isCurrent?: boolean;
+    }>;
+    upcoming: string[];
+    covered: string[];
   };
   audit: {
     rows: Array<{
@@ -405,6 +428,20 @@ export default function ExcoNarrativePanel({
             csr: { summary: { kpis: [] }, highlights: DEFAULT_CSR_HIGHLIGHTS },
             cahier: { highlights: DEFAULT_CAHIER_HIGHLIGHTS },
             recruitment: { replacements: [], newPositions: [] },
+            training: {
+              periodLabel: `${year}-${String(month).padStart(2, '0')}`,
+              budget: '—',
+              actual: '—',
+              plantPct: '—',
+              hqPct: '—',
+              hoursYtd: '—',
+              avgHoursPerEmp: '—',
+              topicsCount: 0,
+              skillBars: [],
+              costMonths: [],
+              upcoming: [],
+              covered: [],
+            },
             audit: {
               rows: [],
               summary: { total: 0, closed: 0, open: 0, ongoing: 0, overdue: 0, closedPct: 0 },
@@ -556,6 +593,225 @@ export default function ExcoNarrativePanel({
             </div>
           </section>
         ))}
+      </div>
+    );
+  }
+
+  if (tab === 'training') {
+    const tr = data.training;
+    if (!tr) {
+      return (
+        <p className="exco-muted">
+          Données Training indisponibles. Ouvrez le module Training pour importer / saisir les coûts.
+        </p>
+      );
+    }
+    const maxCost = Math.max(...tr.costMonths.map((m) => m.hqN + m.plantN), 1);
+    const ticksTop = (() => {
+      const step = maxCost <= 5000 ? 1000 : maxCost <= 15000 ? 2500 : 5000;
+      return Math.ceil(maxCost / step) * step || step;
+    })();
+    const tickValues: number[] = [];
+    {
+      const step = ticksTop <= 5000 ? 1000 : ticksTop <= 15000 ? 2500 : 5000;
+      for (let v = 0; v <= ticksTop; v += step) tickValues.push(v);
+    }
+
+    return (
+      <div className="exco-panel-stack exco-slide-panel exco-training-panel">
+        <div className="exco-panel-head exco-training-panel-head">
+          <h3>Training — {tr.periodLabel || data.periodLabel}</h3>
+          <a className="exco-muted" href="/training">
+            Ouvrir le module Training →
+          </a>
+        </div>
+
+        <div className="training-dash exco-training-dash">
+          <div className="training-dash-kpis">
+            <article className="training-card training-card-budget">
+              <h3>Training Budget</h3>
+              <strong>{tr.budget}</strong>
+              <p>
+                &gt; {tr.plantPct} Plant &nbsp; &gt; {tr.hqPct} HQ
+              </p>
+              <div className="training-card-actual">
+                Actual: <em>{tr.actual}</em>
+              </div>
+            </article>
+            <article className="training-card training-card-hours">
+              <h3>Training Hours</h3>
+              <strong>{tr.hoursYtd}</strong>
+              <p>
+                &gt; {tr.hoursPlantPct || tr.plantPct} Plant &nbsp; &gt;{' '}
+                {tr.hoursHqPct || tr.hqPct} HQ
+              </p>
+              <div className="training-card-actual is-dark">
+                Average per Employee: <em>{tr.avgHoursPerEmp}</em>
+              </div>
+            </article>
+            <article className="training-card training-card-topics">
+              <header>
+                <span>Topics Covered</span>
+                <b>{tr.topicsCount}</b>
+              </header>
+              {tr.skillBars.map((s) => (
+                <div key={s.label} className="training-skill">
+                  <div className="training-skill-lab">
+                    <span>{s.label}</span>
+                    <strong>{s.pct}%</strong>
+                  </div>
+                  <div className="training-skill-track">
+                    <i style={{ width: `${Math.min(100, s.pct)}%` }} />
+                  </div>
+                </div>
+              ))}
+            </article>
+          </div>
+
+          <div className="training-dash-mid">
+            <div className="training-dash-cost">
+              <article className="panel training-stack-chart">
+                <header className="training-stack-chart-head">
+                  <h4>COST PER MONTH (USD)</h4>
+                  <div className="training-stack-legend">
+                    <span>
+                      <i className="is-hq" aria-hidden /> HQ
+                    </span>
+                    <span>
+                      <i className="is-plant" aria-hidden /> Plant
+                    </span>
+                  </div>
+                </header>
+                <div className="training-stack-body">
+                  <div className="training-stack-yaxis" aria-hidden>
+                    {[...tickValues].reverse().map((v) => (
+                      <span key={v}>{v.toLocaleString('en-US')}</span>
+                    ))}
+                  </div>
+                  <div className="training-stack-main">
+                    <div className="training-stack-plot">
+                      <div className="training-stack-grid" aria-hidden>
+                        {tickValues.map((v) => (
+                          <i key={v} style={{ bottom: `${(v / ticksTop) * 100}%` }} />
+                        ))}
+                      </div>
+                      <div className="training-stack-bars">
+                        {tr.costMonths.map((m) => {
+                          const hqH = (m.hqN / ticksTop) * 100;
+                          const plantH = (m.plantN / ticksTop) * 100;
+                          return (
+                            <div
+                              key={m.label}
+                              className={`training-stack-col${m.isCurrent ? ' is-current' : ''}`}
+                              title={`${m.label}: HQ ${m.hq || 0} · Plant ${m.plant || 0}`}
+                            >
+                              <div className="training-stack-stack">
+                                <span className="is-plant" style={{ height: `${Math.max(plantH, 0)}%` }} />
+                                <span className="is-hq" style={{ height: `${Math.max(hqH, 0)}%` }} />
+                              </div>
+                            </div>
+                          );
+                        })}
+                      </div>
+                    </div>
+                    <div className="training-stack-labels">
+                      {tr.costMonths.map((m) => (
+                        <span
+                          key={`lab-${m.label}`}
+                          className={m.isCurrent ? 'is-current' : undefined}
+                        >
+                          {m.label}
+                        </span>
+                      ))}
+                    </div>
+                  </div>
+                </div>
+              </article>
+
+              <div className="training-bottom-row">
+                <div className="panel training-cost-table-wrap">
+                  <div className="training-cost-table-head">
+                    <h4 className="training-cost-evolution-title">Evolution</h4>
+                    <p className="training-cost-hint">HQ / Plant amounts</p>
+                  </div>
+                  <div className="training-cost-table-scroll">
+                    <table className="training-cost-table">
+                      <thead>
+                        <tr>
+                          <th className="training-cost-corner" />
+                          {tr.costMonths.map((m) => (
+                            <th
+                              key={m.label}
+                              className={m.isCurrent ? 'is-current-month' : undefined}
+                            >
+                              {m.label}
+                            </th>
+                          ))}
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <tr>
+                          <td className="is-hq">HQ</td>
+                          {tr.costMonths.map((m) => (
+                            <td
+                              key={`hq-${m.label}`}
+                              className={m.isCurrent ? 'is-current-month' : undefined}
+                            >
+                              {m.hq || <span className="training-cost-empty">—</span>}
+                            </td>
+                          ))}
+                        </tr>
+                        <tr>
+                          <td className="is-plant-label">Plant</td>
+                          {tr.costMonths.map((m) => (
+                            <td
+                              key={`plant-${m.label}`}
+                              className={m.isCurrent ? 'is-current-month' : undefined}
+                            >
+                              {m.plant || <span className="training-cost-empty">—</span>}
+                            </td>
+                          ))}
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+
+                <div className="panel training-upcoming">
+                  <div className="training-upcoming-head">
+                    <h4>Upcoming Training Sessions</h4>
+                  </div>
+                  <ul className="training-upcoming-list">
+                    {(tr.upcoming.length ? tr.upcoming : ['—']).map((item, i) => (
+                      <li key={`${i}-${item}`}>
+                        <span>{item}</span>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              </div>
+            </div>
+
+            <div className="panel training-covered">
+              <h3>List of Training Covered</h3>
+              <p className="training-covered-meta">
+                From Trainee cost import · {tr.periodLabel || data.periodLabel}
+              </p>
+              <table>
+                <tbody>
+                  {(tr.covered.length ? tr.covered : ['— No imported trainings —']).map(
+                    (item, i) => (
+                      <tr key={`${i}-${item}`}>
+                        <td className="n">{tr.covered.length ? i + 1 : ''}</td>
+                        <td>{item}</td>
+                      </tr>
+                    ),
+                  )}
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
       </div>
     );
   }

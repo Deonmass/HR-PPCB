@@ -38,7 +38,7 @@ export interface ExcoHireListRow {
   genre: string;
   company: string;
   appointmentDate: string;
-  /** Bucket site (Plant, HQ and Regions, Lubudi, Graduates). */
+  /** Bucket site (Plant/Zamba, Kinshasa incl. Kisangani/Moanda, Lubudi and Lubumbashi, Graduates). */
   site: string;
   /** Embauche / présent — libellé pour le modal. */
   reason?: string;

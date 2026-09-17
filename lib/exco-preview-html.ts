@@ -446,6 +446,17 @@ function renderTrainingSlide(tr: ExcoTrainingSlideData): string {
   <div class="tr-mid">
     <div class="tr-cost">
       <h3>COST PER MONTH (USD)</h3>
+      <div class="tr-cost-chart" aria-hidden="true">
+        ${tr.costMonths
+          .filter((m) => m.hqN > 0 || m.plantN > 0)
+          .map((m) => {
+            const max = Math.max(...tr.costMonths.map((x) => x.hqN + x.plantN), 1);
+            const hqH = Math.round((m.hqN / max) * 100);
+            const plantH = Math.round((m.plantN / max) * 100);
+            return `<div class="tr-bar"><div class="tr-bar-stack"><i class="hq" style="height:${hqH}%"></i><i class="plant" style="height:${plantH}%"></i></div><span>${esc(m.label)}</span></div>`;
+          })
+          .join('')}
+      </div>
       <table class="trend-table ovl-red tr-cost-table">
         <thead><tr><th></th>${costHead}</tr></thead>
         <tbody>
@@ -1470,6 +1481,19 @@ export function buildExcoPreviewHtml(report: ExcoReportPayload): string {
   .tr-cost h3, .tr-covered h3 { margin: 0; font-size: 10px; font-weight: 700; }
   .tr-covered h3 { background: var(--red); color: #fff; padding: 3px 6px; border-radius: 3px; }
   .tr-cost-table { font-size: 6.5px; }
+  .tr-cost-chart {
+    display: flex; align-items: flex-end; gap: 4px; height: 72px;
+    padding: 2px 4px 0; border-bottom: 1px solid var(--line); margin-bottom: 4px;
+  }
+  .tr-bar { flex: 1; min-width: 0; display: flex; flex-direction: column; align-items: center; gap: 2px; height: 100%; }
+  .tr-bar-stack {
+    flex: 1; width: 70%; max-width: 18px; display: flex; flex-direction: column-reverse;
+    background: #f3f4f6; border-radius: 2px 2px 0 0; overflow: hidden;
+  }
+  .tr-bar-stack i { display: block; width: 100%; }
+  .tr-bar-stack i.hq { background: #1e3a5f; }
+  .tr-bar-stack i.plant { background: #e85d04; }
+  .tr-bar span { font-size: 6px; color: var(--muted); }
   .tr-upcoming { margin-top: auto; border-top: 1px solid var(--line); padding-top: 4px; }
   .tr-upcoming h4 { margin: 0 0 2px; font-size: 9px; background: var(--black); color: #fff; padding: 3px 6px; }
   .tr-upcoming ul { margin: 0; padding-left: 14px; font-size: 8px; }
@@ -1632,11 +1656,11 @@ export function buildExcoPreviewHtml(report: ExcoReportPayload): string {
   .gov-evo-kpi strong { font-size: 22px; color: var(--ink); margin-right: 4px; }
   .gov-evo-sub { margin: 0; font-size: 11px; color: var(--muted); }
   .gov-evo-txt { margin: 4px 0 0; font-size: 11px; line-height: 1.45; color: var(--ink); }
-  .recruit-body { gap: 3px; overflow: hidden; }
+  .recruit-body { gap: 3px; overflow: auto; }
   .recruit-h { margin: 2px 0 2px; font-size: 11px; color: var(--red); font-weight: 700; }
-  .rec-table { font-size: 7.2px; line-height: 1.2; table-layout: fixed; width: 100%; }
+  .rec-table { font-size: 7.2px; line-height: 1.2; table-layout: fixed; width: 100%; background: #fff; }
   .rec-table th { font-size: 7.5px; padding: 3px 4px; }
-  .rec-table td { padding: 2px 4px; vertical-align: middle; font-weight: 400; height: 18px; }
+  .rec-table td { padding: 2px 4px; vertical-align: middle; font-weight: 400; height: 18px; background: #fff; color: var(--ink); }
   .rec-table td.has-upd { background: #e8f0fe !important; }
   .exco-rec-badge { display: inline-block; padding: 1px 6px; border-radius: 999px; font-size: 7px; font-weight: 700; letter-spacing: 0.02em; }
   .exco-rec-badge.is-done, .exco-rec-badge.is-yes { background: #dcfce7; color: #166534; }

@@ -52,6 +52,7 @@ type TabId =
   | 'summary'
   | 'csr'
   | 'recruitment'
+  | 'training'
   | 'audit';
 
 const TAB_DEFS: { id: TabId; labelKey: MessageKey }[] = [
@@ -64,6 +65,7 @@ const TAB_DEFS: { id: TabId; labelKey: MessageKey }[] = [
   { id: 'overtime', labelKey: 'exco.tab.overtime' },
   { id: 'csr', labelKey: 'exco.tab.csr' },
   { id: 'recruitment', labelKey: 'exco.tab.recruitment' },
+  { id: 'training', labelKey: 'exco.tab.training' },
   { id: 'audit', labelKey: 'exco.tab.audit' },
 ];
 
@@ -2080,10 +2082,8 @@ export default function ExcoPage() {
     setBaseSheetSource((prev) =>
       prev.includes('BASE unique') ? prev : String(data.sourceFile || 'New report.xlsx'),
     );
-    if (samePeriod) {
-      const hc = data.snapshot?.headcount as HeadcountView | undefined;
-      if (hc) setHeadcount(hc);
-    }
+    // Ne pas écraser Gender per location / effectifs avec la feuille Headcount Excel
+    // (libellés Kinshasa_Regions / Plant / Lubudi souvent faux vs localisations employés).
     if (data.namesByMatricule && typeof data.namesByMatricule === 'object') {
       const normalized: Record<string, string> = {};
       for (const [k, v] of Object.entries(data.namesByMatricule)) {
@@ -4446,7 +4446,7 @@ export default function ExcoPage() {
             </div>
           )}
 
-          {(tab === 'csr' || tab === 'recruitment' || tab === 'audit') && (
+          {(tab === 'csr' || tab === 'recruitment' || tab === 'training' || tab === 'audit') && (
             <ExcoNarrativePanel tab={tab} year={year} month={month} canEdit={canEdit} />
           )}
         </div>
