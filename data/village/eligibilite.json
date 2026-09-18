@@ -1,3 +1,449 @@
 {
-  "entries": {}
+  "updatedAt": "2026-09-18T12:26:20.828Z",
+  "entries": {
+    "70000011": {
+      "matricule": "70000011",
+      "scores": {
+        "criticalPosition": null,
+        "seniorityEmployment": null,
+        "mobilityRequirement": null,
+        "talentAttraction": null,
+        "familyComposition": 20
+      },
+      "note": "",
+      "updatedAt": "2026-09-18T12:26:20.828Z"
+    },
+    "70000013": {
+      "matricule": "70000013",
+      "scores": {
+        "criticalPosition": null,
+        "seniorityEmployment": null,
+        "mobilityRequirement": null,
+        "talentAttraction": null,
+        "familyComposition": 20
+      },
+      "note": "",
+      "updatedAt": "2026-09-18T12:26:20.828Z"
+    },
+    "70000024": {
+      "matricule": "70000024",
+      "scores": {
+        "criticalPosition": null,
+        "seniorityEmployment": null,
+        "mobilityRequirement": null,
+        "talentAttraction": null,
+        "familyComposition": 3
+      },
+      "note": "",
+      "updatedAt": "2026-09-18T12:26:20.828Z"
+    },
+    "70000042": {
+      "matricule": "70000042",
+      "scores": {
+        "criticalPosition": null,
+        "seniorityEmployment": null,
+        "mobilityRequirement": null,
+        "talentAttraction": null,
+        "familyComposition": 20
+      },
+      "note": "",
+      "updatedAt": "2026-09-18T12:26:20.828Z"
+    },
+    "70000043": {
+      "matricule": "70000043",
+      "scores": {
+        "criticalPosition": null,
+        "seniorityEmployment": null,
+        "mobilityRequirement": null,
+        "talentAttraction": null,
+        "familyComposition": 20
+      },
+      "note": "",
+      "updatedAt": "2026-09-18T12:26:20.828Z"
+    },
+    "70000056": {
+      "matricule": "70000056",
+      "scores": {
+        "criticalPosition": null,
+        "seniorityEmployment": null,
+        "mobilityRequirement": null,
+        "talentAttraction": null,
+        "familyComposition": 20
+      },
+      "note": "",
+      "updatedAt": "2026-09-18T12:26:20.828Z"
+    },
+    "70000068": {
+      "matricule": "70000068",
+      "scores": {
+        "criticalPosition": null,
+        "seniorityEmployment": null,
+        "mobilityRequirement": null,
+        "talentAttraction": null,
+        "familyComposition": 20
+      },
+      "note": "",
+      "updatedAt": "2026-09-18T12:26:20.828Z"
+    },
+    "70000069": {
+      "matricule": "70000069",
+      "scores": {
+        "criticalPosition": 0,
+        "seniorityEmployment": 20,
+        "mobilityRequirement": 20,
+        "talentAttraction": 0,
+        "familyComposition": 9
+      },
+      "note": "",
+      "updatedAt": "2026-09-18T12:26:20.828Z"
+    },
+    "70000070": {
+      "matricule": "70000070",
+      "scores": {
+        "criticalPosition": 0,
+        "seniorityEmployment": 20,
+        "mobilityRequirement": 20,
+        "talentAttraction": 0,
+        "familyComposition": 20
+      },
+      "note": "",
+      "updatedAt": "2026-09-18T12:26:20.828Z"
+    },
+    "70000077": {
+      "matricule": "70000077",
+      "scores": {
+        "criticalPosition": null,
+        "seniorityEmployment": null,
+        "mobilityRequirement": null,
+        "talentAttraction": null,
+        "familyComposition": 9
+      },
+      "note": "",
+      "updatedAt": "2026-09-18T12:26:20.828Z"
+    },
+    "70000082": {
+      "matricule": "70000082",
+      "scores": {
+        "criticalPosition": null,
+        "seniorityEmployment": null,
+        "mobilityRequirement": null,
+        "talentAttraction": null,
+        "familyComposition": 20
+      },
+      "note": "",
+      "updatedAt": "2026-09-18T12:26:20.828Z"
+    },
+    "70000084": {
+      "matricule": "70000084",
+      "scores": {
+        "criticalPosition": null,
+        "seniorityEmployment": null,
+        "mobilityRequirement": null,
+        "talentAttraction": null,
+        "familyComposition": 6
+      },
+      "note": "",
+      "updatedAt": "2026-09-18T12:26:20.828Z"
+    },
+    "70000087": {
+      "matricule": "70000087",
+      "scores": {
+        "criticalPosition": null,
+        "seniorityEmployment": null,
+        "mobilityRequirement": null,
+        "talentAttraction": null,
+        "familyComposition": 6
+      },
+      "note": "",
+      "updatedAt": "2026-09-18T12:26:20.828Z"
+    },
+    "70000093": {
+      "matricule": "70000093",
+      "scores": {
+        "criticalPosition": null,
+        "seniorityEmployment": null,
+        "mobilityRequirement": null,
+        "talentAttraction": null,
+        "familyComposition": 20
+      },
+      "note": "",
+      "updatedAt": "2026-09-18T12:26:20.828Z"
+    },
+    "70000096": {
+      "matricule": "70000096",
+      "scores": {
+        "criticalPosition": null,
+        "seniorityEmployment": null,
+        "mobilityRequirement": null,
+        "talentAttraction": null,
+        "familyComposition": 20
+      },
+      "note": "",
+      "updatedAt": "2026-09-18T12:26:20.828Z"
+    },
+    "70000097": {
+      "matricule": "70000097",
+      "scores": {
+        "criticalPosition": null,
+        "seniorityEmployment": null,
+        "mobilityRequirement": null,
+        "talentAttraction": null,
+        "familyComposition": 20
+      },
+      "note": "",
+      "updatedAt": "2026-09-18T12:26:20.828Z"
+    },
+    "70000099": {
+      "matricule": "70000099",
+      "scores": {
+        "criticalPosition": null,
+        "seniorityEmployment": null,
+        "mobilityRequirement": null,
+        "talentAttraction": null,
+        "familyComposition": 20
+      },
+      "note": "",
+      "updatedAt": "2026-09-18T12:26:20.828Z"
+    },
+    "70000101": {
+      "matricule": "70000101",
+      "scores": {
+        "criticalPosition": null,
+        "seniorityEmployment": null,
+        "mobilityRequirement": null,
+        "talentAttraction": null,
+        "familyComposition": 20
+      },
+      "note": "",
+      "updatedAt": "2026-09-18T12:26:20.828Z"
+    },
+    "70000102": {
+      "matricule": "70000102",
+      "scores": {
+        "criticalPosition": null,
+        "seniorityEmployment": null,
+        "mobilityRequirement": null,
+        "talentAttraction": null,
+        "familyComposition": 20
+      },
+      "note": "",
+      "updatedAt": "2026-09-18T12:26:20.828Z"
+    },
+    "70000111": {
+      "matricule": "70000111",
+      "scores": {
+        "criticalPosition": null,
+        "seniorityEmployment": null,
+        "mobilityRequirement": null,
+        "talentAttraction": null,
+        "familyComposition": 9
+      },
+      "note": "",
+      "updatedAt": "2026-09-18T12:26:20.828Z"
+    },
+    "70000129": {
+      "matricule": "70000129",
+      "scores": {
+        "criticalPosition": null,
+        "seniorityEmployment": null,
+        "mobilityRequirement": null,
+        "talentAttraction": null,
+        "familyComposition": 20
+      },
+      "note": "",
+      "updatedAt": "2026-09-18T12:26:20.828Z"
+    },
+    "70000211": {
+      "matricule": "70000211",
+      "scores": {
+        "criticalPosition": null,
+        "seniorityEmployment": null,
+        "mobilityRequirement": null,
+        "talentAttraction": null,
+        "familyComposition": 9
+      },
+      "note": "",
+      "updatedAt": "2026-09-18T12:26:20.828Z"
+    },
+    "70000212": {
+      "matricule": "70000212",
+      "scores": {
+        "criticalPosition": null,
+        "seniorityEmployment": null,
+        "mobilityRequirement": null,
+        "talentAttraction": null,
+        "familyComposition": 20
+      },
+      "note": "",
+      "updatedAt": "2026-09-18T12:26:20.828Z"
+    },
+    "70000214": {
+      "matricule": "70000214",
+      "scores": {
+        "criticalPosition": null,
+        "seniorityEmployment": null,
+        "mobilityRequirement": null,
+        "talentAttraction": null,
+        "familyComposition": 20
+      },
+      "note": "",
+      "updatedAt": "2026-09-18T12:26:20.828Z"
+    },
+    "70000229": {
+      "matricule": "70000229",
+      "scores": {
+        "criticalPosition": null,
+        "seniorityEmployment": null,
+        "mobilityRequirement": null,
+        "talentAttraction": null,
+        "familyComposition": 9
+      },
+      "note": "",
+      "updatedAt": "2026-09-18T12:26:20.828Z"
+    },
+    "70000238": {
+      "matricule": "70000238",
+      "scores": {
+        "criticalPosition": null,
+        "seniorityEmployment": null,
+        "mobilityRequirement": null,
+        "talentAttraction": null,
+        "familyComposition": 20
+      },
+      "note": "",
+      "updatedAt": "2026-09-18T12:26:20.828Z"
+    },
+    "70000242": {
+      "matricule": "70000242",
+      "scores": {
+        "criticalPosition": null,
+        "seniorityEmployment": null,
+        "mobilityRequirement": null,
+        "talentAttraction": null,
+        "familyComposition": 0
+      },
+      "note": "",
+      "updatedAt": "2026-09-18T12:26:20.828Z"
+    },
+    "70000243": {
+      "matricule": "70000243",
+      "scores": {
+        "criticalPosition": null,
+        "seniorityEmployment": null,
+        "mobilityRequirement": null,
+        "talentAttraction": null,
+        "familyComposition": 6
+      },
+      "note": "",
+      "updatedAt": "2026-09-18T12:26:20.828Z"
+    },
+    "70000264": {
+      "matricule": "70000264",
+      "scores": {
+        "criticalPosition": null,
+        "seniorityEmployment": null,
+        "mobilityRequirement": null,
+        "talentAttraction": null,
+        "familyComposition": 9
+      },
+      "note": "",
+      "updatedAt": "2026-09-18T12:26:20.828Z"
+    },
+    "70000275": {
+      "matricule": "70000275",
+      "scores": {
+        "criticalPosition": null,
+        "seniorityEmployment": null,
+        "mobilityRequirement": null,
+        "talentAttraction": null,
+        "familyComposition": 9
+      },
+      "note": "",
+      "updatedAt": "2026-09-18T12:26:20.828Z"
+    },
+    "70000276": {
+      "matricule": "70000276",
+      "scores": {
+        "criticalPosition": null,
+        "seniorityEmployment": null,
+        "mobilityRequirement": null,
+        "talentAttraction": null,
+        "familyComposition": 0
+      },
+      "note": "",
+      "updatedAt": "2026-09-18T12:26:20.828Z"
+    },
+    "70000283": {
+      "matricule": "70000283",
+      "scores": {
+        "criticalPosition": null,
+        "seniorityEmployment": null,
+        "mobilityRequirement": null,
+        "talentAttraction": null,
+        "familyComposition": 6
+      },
+      "note": "",
+      "updatedAt": "2026-09-18T12:26:20.828Z"
+    },
+    "70000293": {
+      "matricule": "70000293",
+      "scores": {
+        "criticalPosition": null,
+        "seniorityEmployment": null,
+        "mobilityRequirement": null,
+        "talentAttraction": null,
+        "familyComposition": 20
+      },
+      "note": "",
+      "updatedAt": "2026-09-18T12:26:20.828Z"
+    },
+    "70000306": {
+      "matricule": "70000306",
+      "scores": {
+        "criticalPosition": null,
+        "seniorityEmployment": null,
+        "mobilityRequirement": null,
+        "talentAttraction": null,
+        "familyComposition": 20
+      },
+      "note": "",
+      "updatedAt": "2026-09-18T12:26:20.828Z"
+    },
+    "70000308": {
+      "matricule": "70000308",
+      "scores": {
+        "criticalPosition": null,
+        "seniorityEmployment": null,
+        "mobilityRequirement": null,
+        "talentAttraction": null,
+        "familyComposition": 6
+      },
+      "note": "",
+      "updatedAt": "2026-09-18T12:26:20.828Z"
+    },
+    "70000309": {
+      "matricule": "70000309",
+      "scores": {
+        "criticalPosition": null,
+        "seniorityEmployment": null,
+        "mobilityRequirement": null,
+        "talentAttraction": null,
+        "familyComposition": 9
+      },
+      "note": "",
+      "updatedAt": "2026-09-18T12:26:20.828Z"
+    },
+    "70000310": {
+      "matricule": "70000310",
+      "scores": {
+        "criticalPosition": null,
+        "seniorityEmployment": null,
+        "mobilityRequirement": null,
+        "talentAttraction": null,
+        "familyComposition": 0
+      },
+      "note": "",
+      "updatedAt": "2026-09-18T12:26:20.828Z"
+    }
+  }
 }
