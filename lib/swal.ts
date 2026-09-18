@@ -1,4 +1,5 @@
 import Swal from 'sweetalert2';
+import { humanizeErrorMessage } from '@/lib/api-client-error';
 import { tRuntime } from '@/lib/i18n';
 
 const ppcTheme = {
@@ -104,7 +105,7 @@ export function showError(message: string, title = 'Erreur'): Promise<void> {
     ...baseConfig(),
     icon: 'error',
     title,
-    text: message,
+    text: humanizeErrorMessage(message),
     confirmButtonText: 'OK',
   }).then(() => undefined);
 }

@@ -26,6 +26,7 @@ import {
   buildExcoGenderByLocation,
   excoSiteBucket,
   isExcoHqSite,
+  type ExcoSiteBucket,
 } from './exco-site-buckets';
 import {
   applyUniqueBaseToComputed,
@@ -97,7 +98,7 @@ function resolveAge(employee: Employee, asOf: Date): number | null {
   return null;
 }
 
-function siteBucket(localisation: string): string {
+function siteBucket(localisation: string): ExcoSiteBucket {
   return excoSiteBucket(localisation);
 }
 
@@ -763,7 +764,7 @@ async function computeBlock(
   const preRetirement = ages.filter((a) => a >= 55).length;
   const retirement = ages.filter((a) => a >= 60).length;
 
-  const siteMap = new Map<string, number>();
+  const siteMap = new Map<ExcoSiteBucket, number>();
   for (const e of present) {
     const site = siteBucket(e.localisation || '');
     siteMap.set(site, (siteMap.get(site) ?? 0) + 1);
@@ -777,7 +778,7 @@ async function computeBlock(
       delta: null as number | null,
     }));
   for (const [site, count] of siteMap) {
-    if (!(EXCO_SITE_ORDER as readonly string[]).includes(site)) {
+    if (!EXCO_SITE_ORDER.includes(site)) {
       headcountBySite.push({ site, headcount: count, delta: null });
     }
   }

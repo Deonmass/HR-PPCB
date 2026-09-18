@@ -4,6 +4,7 @@ import { Fragment, useEffect, useMemo, useState } from 'react';
 import { isChildStatut, isSpouseStatut } from '@/lib/dependants-utils';
 import { formatDisplayName } from '@/lib/format-display-name';
 import { HORS_EFFECTIF_DEPT, type VillageDrilldownRow } from '@/lib/village-agents';
+import VillageEligibiliteModal from '@/components/village/VillageEligibiliteModal';
 
 interface Props {
   title: string;
@@ -64,14 +65,16 @@ export default function VillageDrilldownModal({
 }: Props) {
   const [search, setSearch] = useState('');
   const [expanded, setExpanded] = useState<Record<string, boolean>>({});
+  const [eligibiliteOpen, setEligibiliteOpen] = useState(false);
+  const showEligibilite = /kimpese/i.test(title);
 
   useEffect(() => {
     const onKey = (event: KeyboardEvent) => {
-      if (event.key === 'Escape') onClose();
+      if (event.key === 'Escape' && !eligibiliteOpen) onClose();
     };
     window.addEventListener('keydown', onKey);
     return () => window.removeEventListener('keydown', onKey);
-  }, [onClose]);
+  }, [onClose, eligibiliteOpen]);
 
   const filtered = useMemo(() => {
     const q = search.trim().toLowerCase();
@@ -101,9 +104,21 @@ export default function VillageDrilldownModal({
                 : ''}
             </p>
           </div>
-          <button type="button" className="btn-icon" onClick={onClose} aria-label="Fermer">
-            ×
-          </button>
+          <div className="village-eligibilite-header-actions">
+            {showEligibilite ? (
+              <button
+                type="button"
+                className="btn btn-primary btn-sm"
+                onClick={() => setEligibiliteOpen(true)}
+                title="Notation des critères d’attribution maison village"
+              >
+                Éligibilité au village
+              </button>
+            ) : null}
+            <button type="button" className="btn-icon" onClick={onClose} aria-label="Fermer">
+              ×
+            </button>
+          </div>
         </div>
 
         <div className="dependants-drilldown-toolbar">
@@ -219,6 +234,11 @@ export default function VillageDrilldownModal({
           )}
         </div>
       </div>
+
+      <VillageEligibiliteModal
+        open={eligibiliteOpen}
+        onClose={() => setEligibiliteOpen(false)}
+      />
     </div>
   );
 }

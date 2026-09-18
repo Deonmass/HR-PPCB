@@ -1,13 +1,43 @@
-async function downloadBlobFromResponse(response: Response, fallbackName: string): Promise<void> {
-  if (!response.ok) {
-    let message = 'Export impossible';
-    try {
-      const payload = await response.json() as { error?: string };
-      if (payload.error) message = payload.error;
-    } catch {
-      // ignore
+import { humanizeErrorMessage } from '@/lib/api-client-error';
+
+async function errorMessageFromResponse(
+  response: Response,
+  fallback: string,
+): Promise<string> {
+  try {
+    const text = (await response.text()).trim();
+    if (text) {
+      try {
+        const payload = JSON.parse(text) as { error?: string };
+        if (payload.error) {
+          return humanizeErrorMessage(payload.error, fallback);
+        }
+      } catch {
+        // corps non-JSON (HTML / texte serveur)
+      }
+      if (/Internal Server Error/i.test(text)) {
+        return 'Erreur serveur pendant l’export. Réessayez dans un moment.';
+      }
     }
-    throw new Error(message);
+  } catch {
+    // ignore
+  }
+  if (response.status === 403) return 'Vous n’avez pas la permission d’exporter.';
+  if (response.status === 401) return 'Votre session a expiré. Reconnectez-vous.';
+  if (response.status >= 500) {
+    return 'Erreur serveur pendant l’export. Réessayez dans un moment.';
+  }
+  return fallback;
+}
+
+async function downloadBlobFromResponse(
+  response: Response,
+  fallbackName: string,
+): Promise<void> {
+  if (!response.ok) {
+    throw new Error(
+      await errorMessageFromResponse(response, 'Export impossible. Réessayez.'),
+    );
   }
 
   const blob = await response.blob();
@@ -37,25 +67,27 @@ export async function downloadVillagePptx(presentation?: unknown): Promise<void>
   await downloadBlobFromResponse(response, 'VILLAGE_MAISONS.pptx');
 }
 
+export async function downloadVillageEligibiliteExport(
+  options?: { signal?: AbortSignal },
+): Promise<void> {
+  const response = await fetch('/api/village/eligibilite/export', {
+    signal: options?.signal,
+  });
+  await downloadBlobFromResponse(response, 'VILLAGE_ELIGIBILITE_KIMPESE.xlsx');
+}
+
 export async function fetchVillagePreviewHtml(presentation?: unknown): Promise<string> {
   const response = await fetch('/api/village/preview', {
     method: presentation ? 'POST' : 'GET',
     headers: presentation ? { 'Content-Type': 'application/json' } : undefined,
     body: presentation ? JSON.stringify(presentation) : undefined,
   });
-  const type = response.headers.get('content-type') || '';
   if (!response.ok) {
-    let message = 'Aperçu impossible';
-    if (type.includes('json')) {
-      try {
-        const payload = (await response.json()) as { error?: string };
-        if (payload.error) message = payload.error;
-      } catch {
-        // ignore
-      }
-    }
-    throw new Error(message);
+    throw new Error(
+      await errorMessageFromResponse(response, 'Aperçu impossible. Réessayez.'),
+    );
   }
+  const type = response.headers.get('content-type') || '';
   if (!type.includes('text/html')) {
     throw new Error('Aperçu indisponible');
   }

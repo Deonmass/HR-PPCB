@@ -29,6 +29,7 @@ export const DURABLE_VILLAGE_TAILLES_KEY = 'data/village/tailles.json';
 export const DURABLE_VILLAGE_AFFECTATION_HISTORY_KEY = 'data/village/affectation-history.json';
 export const DURABLE_VILLAGE_AFFECTATION_SUGGESTIONS_KEY = 'data/village/affectation-suggestions.json';
 export const DURABLE_VILLAGE_PRESENTATION_KEY = 'data/village/presentation.json';
+export const DURABLE_VILLAGE_ELIGIBILITE_KEY = 'data/village/eligibilite.json';
 export const DURABLE_FACTURES_SUIVI_KEY = 'data/factures-fournisseurs/factures.json';
 export const DURABLE_FOURNISSEURS_KEY = 'data/factures-fournisseurs/fournisseurs.json';
 export const DURABLE_PROJECTS_KEY = 'data/projects/projects.json';
@@ -55,6 +56,7 @@ export const DURABLE_CONVENTION_NOTES_KEY = 'data/documents/convention-collectiv
 export const DURABLE_EXCO_REPORTS_KEY = 'data/exco/reports.json';
 export const DURABLE_AUDIT_HR_KEY = 'data/audit/actions.json';
 export const DURABLE_SANTE_VISITS_KEY = 'data/sante/visits.json';
+export const DURABLE_TRAINING_KEY = 'data/training/training.json';
 
 interface GithubRepoTarget {
   owner: string;

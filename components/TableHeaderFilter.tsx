@@ -10,6 +10,14 @@ interface Props {
   /** Valeurs cochées ([] = aucun filtre → tout). */
   selected: string[];
   onChange: (next: string[]) => void;
+  /** Tooltip au survol (ex. libellé complet d’un critère). */
+  tooltip?: string;
+  /** Tri optionnel affiché dans le panneau du filtre. */
+  sort?: {
+    active: boolean;
+    dir: 'asc' | 'desc';
+    onSort: (dir: 'asc' | 'desc') => void;
+  };
 }
 
 interface PanelPos {
@@ -19,7 +27,14 @@ interface PanelPos {
 }
 
 /** Filtre de colonne façon Excel : entonnoir + liste à cocher + Valider. */
-export default function TableHeaderFilter({ label, values, selected, onChange }: Props) {
+export default function TableHeaderFilter({
+  label,
+  values,
+  selected,
+  onChange,
+  tooltip,
+  sort,
+}: Props) {
   const [open, setOpen] = useState(false);
   const [query, setQuery] = useState('');
   const [draft, setDraft] = useState<string[]>(selected);
@@ -113,6 +128,11 @@ export default function TableHeaderFilter({ label, values, selected, onChange }:
     setOpen(false);
   };
 
+  const applySort = (dir: 'asc' | 'desc') => {
+    sort?.onSort(dir);
+    setOpen(false);
+  };
+
   const panel =
     open && pos
       ? createPortal(
@@ -122,6 +142,24 @@ export default function TableHeaderFilter({ label, values, selected, onChange }:
             role="menu"
             style={{ top: pos.top, left: pos.left, minWidth: pos.minWidth }}
           >
+            {sort ? (
+              <div className="table-hf-sort-row">
+                <button
+                  type="button"
+                  className={`btn btn-ghost btn-sm table-hf-sort-btn${sort.active && sort.dir === 'asc' ? ' is-active' : ''}`}
+                  onClick={() => applySort('asc')}
+                >
+                  ▲ Croissant
+                </button>
+                <button
+                  type="button"
+                  className={`btn btn-ghost btn-sm table-hf-sort-btn${sort.active && sort.dir === 'desc' ? ' is-active' : ''}`}
+                  onClick={() => applySort('desc')}
+                >
+                  ▼ Décroissant
+                </button>
+              </div>
+            ) : null}
             <input
               type="search"
               className="table-hf-search"
@@ -177,13 +215,21 @@ export default function TableHeaderFilter({ label, values, selected, onChange }:
       <button
         ref={btnRef}
         type="button"
-        className={`table-hf-btn${active ? ' active' : ''}${open ? ' open' : ''}`}
+        className={`table-hf-btn${active ? ' active' : ''}${open ? ' open' : ''}${sort?.active ? ' is-sorted' : ''}`}
         onClick={() => setOpen((prev) => !prev)}
-        title={active ? `${label} — ${selected.length} filtre(s)` : `Filtrer ${label}`}
+        title={
+          tooltip
+            || (active ? `${label} — ${selected.length} filtre(s)` : `Filtrer ${label}`)
+        }
         aria-label={`Filtrer ${label}`}
         aria-expanded={open}
       >
         <span className="table-hf-label">{label}</span>
+        {sort?.active ? (
+          <span className="table-hf-sort-indicator" aria-hidden>
+            {sort.dir === 'asc' ? '▲' : '▼'}
+          </span>
+        ) : null}
         <svg
           viewBox="0 0 24 24"
           width="12"

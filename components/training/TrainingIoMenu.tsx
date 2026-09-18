@@ -92,7 +92,7 @@ export default function TrainingIoMenu({
   const rootRef = useRef<HTMLDivElement>(null);
   const fileRef = useRef<HTMLInputElement>(null);
 
-  const actions: Array<{
+  const allActions: Array<{
     id: IoAction;
     label: string;
     Icon: (p: { className?: string }) => ReactNode;
@@ -101,7 +101,8 @@ export default function TrainingIoMenu({
     { id: 'import', label: 'Import Trainee cost', Icon: IconUpload, show: Boolean(canImport) },
     { id: 'pptx', label: 'Export PPTX', Icon: IconPptx, show: Boolean(canExport) },
     { id: 'excel', label: 'Export Excel', Icon: IconExcel, show: Boolean(canExport) },
-  ].filter((a) => a.show);
+  ];
+  const actions = allActions.filter((a) => a.show);
 
   useEffect(() => {
     if (!open) return;

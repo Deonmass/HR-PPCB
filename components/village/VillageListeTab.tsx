@@ -30,6 +30,7 @@ import {
 import { formatDisplayName } from '@/lib/format-display-name';
 import type { VillageMaison } from '@/lib/village-types';
 import VillageSkeleton from '@/components/village/VillageSkeleton';
+import VillageEligibiliteModal from '@/components/village/VillageEligibiliteModal';
 
 type Tab = 'village' | 'kimpese';
 type SortKey = 'matricule' | 'nom' | 'statut' | 'maison' | 'type' | 'departement' | 'famille';
@@ -135,6 +136,7 @@ export default function VillageListeTab() {
     group: FamilyGroup;
     agent?: VillageAgentRow;
   } | null>(null);
+  const [eligibiliteOpen, setEligibiliteOpen] = useState(false);
 
   const canAssign = can('village.maisons', 'edit')
     || can('village.dependants-liste', 'edit');
@@ -678,6 +680,16 @@ export default function VillageListeTab() {
               Effacer les filtres ({activeFilterCount})
             </button>
           ) : null}
+          {tab === 'kimpese' ? (
+            <button
+              type="button"
+              className="btn btn-primary btn-sm"
+              onClick={() => setEligibiliteOpen(true)}
+              title="Notation des critères d’attribution maison village"
+            >
+              Éligibilité au village
+            </button>
+          ) : null}
         </div>
 
         <div className="dependants-table-wrap village-liste-table-scroll">
@@ -857,6 +869,11 @@ export default function VillageListeTab() {
           onClose={() => setContextMenu(null)}
         />
       )}
+
+      <VillageEligibiliteModal
+        open={eligibiliteOpen}
+        onClose={() => setEligibiliteOpen(false)}
+      />
     </>
   );
 }

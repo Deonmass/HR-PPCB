@@ -22456,6 +22456,32 @@ html[data-theme='light'] .charroi-hf-panel {
   padding-top: 0.35rem;
   border-top: 1px solid var(--border);
 }
+.table-hf-sort-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.25rem;
+  margin-bottom: 0.35rem;
+  padding-bottom: 0.35rem;
+  border-bottom: 1px solid var(--border);
+}
+.table-hf-sort-btn {
+  flex: 1 1 auto;
+  font-size: 0.68rem;
+  padding: 0.2rem 0.35rem;
+}
+.table-hf-sort-btn.is-active {
+  color: var(--accent);
+  border-color: color-mix(in srgb, var(--accent) 45%, var(--border));
+}
+.table-hf-btn.is-sorted .table-hf-label,
+.table-hf-sort-indicator {
+  color: var(--accent);
+}
+.table-hf-sort-indicator {
+  font-size: 0.65rem;
+  line-height: 1;
+  opacity: 0.9;
+}
 .charroi-hf-panel-km { min-width: 210px; }
 .charroi-hf-km-fields {
   display: flex;
@@ -35657,4 +35683,633 @@ html[data-theme='dark'] .sante-patho-pill {
 
 .sante-history-modal {
   width: min(640px, 94vw);
+}
+
+/* Éligibilité village (Kimpese) */
+.village-eligibilite-overlay {
+  z-index: 1200;
+  padding: 0 !important;
+  align-items: stretch !important;
+  justify-content: stretch !important;
+}
+
+.village-eligibilite-modal,
+.village-eligibilite-modal-full {
+  width: 100vw !important;
+  max-width: 100vw !important;
+  height: 100vh !important;
+  max-height: 100vh !important;
+  min-height: 100vh;
+  border-radius: 0 !important;
+  margin: 0 !important;
+  padding: 0.75rem 1rem 1rem !important;
+  position: relative;
+}
+
+.village-eligibilite-header-actions {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  flex-shrink: 0;
+}
+
+.village-eligibilite-modal-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 0.75rem;
+  flex-wrap: wrap;
+}
+
+.village-eligibilite-header-left {
+  display: flex;
+  align-items: center;
+  gap: 0.85rem;
+  flex: 1;
+  min-width: 0;
+  flex-wrap: wrap;
+}
+
+.village-eligibilite-save-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  color: #fff !important;
+  border: 0 !important;
+  background: linear-gradient(135deg, #ff3b4a 0%, #e30613 45%, #b10510 100%) !important;
+  box-shadow: 0 6px 16px rgba(227, 6, 19, 0.28);
+}
+
+.village-eligibilite-save-btn:hover:not(:disabled) {
+  filter: brightness(1.05);
+  box-shadow: 0 8px 18px rgba(227, 6, 19, 0.36);
+  transform: translateY(-1px);
+}
+
+.village-eligibilite-save-btn:disabled {
+  opacity: 0.55;
+  box-shadow: none;
+  transform: none;
+}
+
+.village-eligibilite-excel-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+}
+
+.village-eligibilite-excel-btn .btn-spinner {
+  margin-right: 0;
+  border-color: color-mix(in srgb, currentColor 25%, transparent);
+  border-top-color: currentColor;
+}
+
+.village-eligibilite-hint-bar {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem 1rem;
+  flex-wrap: wrap;
+  padding: 0 0.15rem 0.65rem;
+}
+
+.village-eligibilite-hint-search {
+  flex: 0 1 18rem;
+  min-width: 12rem;
+  max-width: 22rem;
+}
+
+.village-eligibilite-legend {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.45rem;
+  flex: 1;
+  min-width: 0;
+}
+
+.village-eligibilite-legend li {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 0.35rem;
+  padding: 0.28rem 0.55rem;
+  border-radius: 8px;
+  background: color-mix(in srgb, var(--border, #e2e8f0) 55%, transparent);
+  font-size: 0.72rem;
+  line-height: 1.25;
+  color: var(--muted);
+}
+
+.village-eligibilite-legend strong {
+  color: var(--text);
+  font-weight: 700;
+  white-space: nowrap;
+}
+
+.village-eligibilite-legend span {
+  white-space: nowrap;
+}
+
+.village-eligibilite-toolbar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.village-eligibilite-hint {
+  margin: 0;
+  font-size: 0.72rem;
+  color: var(--muted);
+}
+
+.village-eligibilite-col-total,
+.village-eligibilite-modal .village-eligibilite-table th.village-eligibilite-col-total,
+.village-eligibilite-modal .village-eligibilite-table td.village-eligibilite-col-total {
+  width: 4.5rem !important;
+  min-width: 4.5rem !important;
+  max-width: 5rem !important;
+  text-align: center;
+  padding-left: 0.3rem !important;
+  padding-right: 0.3rem !important;
+  position: sticky;
+  right: 0;
+  z-index: 2;
+  background: #ffffff;
+  box-shadow: -6px 0 10px -8px rgba(15, 23, 42, 0.35);
+}
+
+html[data-theme='dark'] .village-eligibilite-col-total,
+html:not([data-theme='light']) .village-eligibilite-col-total,
+html[data-theme='dark'] .village-eligibilite-modal .village-eligibilite-table th.village-eligibilite-col-total,
+html:not([data-theme='light']) .village-eligibilite-modal .village-eligibilite-table th.village-eligibilite-col-total,
+html[data-theme='dark'] .village-eligibilite-modal .village-eligibilite-table td.village-eligibilite-col-total,
+html:not([data-theme='light']) .village-eligibilite-modal .village-eligibilite-table td.village-eligibilite-col-total {
+  background: #0c0c10;
+}
+
+.village-eligibilite-modal .village-eligibilite-table thead th.village-eligibilite-col-total {
+  z-index: 3;
+  background: #f1f5f9;
+}
+
+html[data-theme='dark'] .village-eligibilite-modal .village-eligibilite-table thead th.village-eligibilite-col-total,
+html:not([data-theme='light']) .village-eligibilite-modal .village-eligibilite-table thead th.village-eligibilite-col-total {
+  background: #16161c;
+}
+
+.village-eligibilite-col-total .village-eligibilite-th-inner {
+  justify-content: center;
+}
+
+.village-eligibilite-col-grade,
+.village-eligibilite-modal .village-eligibilite-table th.village-eligibilite-col-grade,
+.village-eligibilite-modal .village-eligibilite-table td.village-eligibilite-col-grade {
+  width: 3.6rem;
+  min-width: 3.4rem;
+  max-width: 4.2rem;
+  text-align: center;
+  padding-left: 0.25rem !important;
+  padding-right: 0.25rem !important;
+}
+
+.village-eligibilite-col-grade .village-eligibilite-th-inner {
+  justify-content: center;
+}
+
+.village-eligibilite-col-anciennete,
+.village-eligibilite-modal .village-eligibilite-table th.village-eligibilite-col-anciennete,
+.village-eligibilite-modal .village-eligibilite-table td.village-eligibilite-col-anciennete {
+  width: 6.5rem;
+  min-width: 6rem;
+  max-width: 7.5rem;
+  text-align: center;
+  padding-left: 0.3rem !important;
+  padding-right: 0.3rem !important;
+  font-variant-numeric: tabular-nums;
+}
+
+.village-eligibilite-col-anciennete .village-eligibilite-th-inner {
+  justify-content: center;
+}
+
+.village-eligibilite-total {
+  font-variant-numeric: tabular-nums;
+  text-align: center !important;
+  font-weight: 700;
+  color: var(--ppc-red, #e30613);
+}
+
+.village-eligibilite-table-wrap {
+  overflow-x: auto !important;
+  overflow-y: auto;
+  flex: 1;
+  min-height: 0;
+}
+
+.village-eligibilite-loading {
+  flex: 1;
+  min-height: 12rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.65rem;
+  color: var(--muted);
+  padding: 2rem 1rem;
+}
+
+.village-eligibilite-loading p {
+  margin: 0;
+  font-size: 0.92rem;
+  font-weight: 600;
+  color: var(--text);
+}
+
+.village-eligibilite-loading-sub {
+  font-size: 0.72rem;
+  color: var(--muted);
+}
+
+.village-eligibilite-spinner {
+  width: 2.25rem;
+  height: 2.25rem;
+  border: 3px solid color-mix(in srgb, var(--ppc-red, #e30613) 18%, transparent);
+  border-top-color: var(--ppc-red, #e30613);
+  border-radius: 50%;
+  animation: btnSpin 0.7s linear infinite;
+}
+
+.village-eligibilite-modal .village-eligibilite-table {
+  table-layout: fixed;
+  width: max(100%, 1220px);
+  min-width: 1220px;
+}
+
+.village-eligibilite-modal .village-eligibilite-table th,
+.village-eligibilite-modal .village-eligibilite-table td {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.village-eligibilite-modal .village-eligibilite-table thead th {
+  overflow: hidden;
+  vertical-align: bottom;
+}
+
+.village-eligibilite-modal .village-eligibilite-table th:nth-child(2),
+.village-eligibilite-modal .village-eligibilite-table td:nth-child(2),
+.village-eligibilite-modal .village-eligibilite-table th:nth-child(3),
+.village-eligibilite-modal .village-eligibilite-table td:nth-child(3) {
+  white-space: normal;
+  word-break: break-word;
+  overflow: visible;
+  text-overflow: unset;
+  min-width: 0;
+}
+
+/* Annule les largeurs gÃ©nÃ©riques dashboard-list (nth-child) */
+.village-eligibilite-modal .village-eligibilite-table th:nth-child(1),
+.village-eligibilite-modal .village-eligibilite-table td:nth-child(1),
+.village-eligibilite-modal .village-eligibilite-table th:nth-child(2),
+.village-eligibilite-modal .village-eligibilite-table td:nth-child(2),
+.village-eligibilite-modal .village-eligibilite-table th:nth-child(3),
+.village-eligibilite-modal .village-eligibilite-table td:nth-child(3),
+.village-eligibilite-modal .village-eligibilite-table th:nth-child(4),
+.village-eligibilite-modal .village-eligibilite-table td:nth-child(4),
+.village-eligibilite-modal .village-eligibilite-table th:nth-child(8),
+.village-eligibilite-modal .village-eligibilite-table td:nth-child(8),
+.village-eligibilite-modal .village-eligibilite-table th:nth-child(9),
+.village-eligibilite-modal .village-eligibilite-table td:nth-child(9) {
+  width: auto;
+}
+
+.village-eligibilite-th-inner {
+  display: flex;
+  align-items: center;
+  gap: 2px;
+  justify-content: center;
+}
+
+.village-eligibilite-th-sub {
+  margin-top: 0.15rem;
+  font-size: 0.58rem;
+  font-weight: 500;
+  text-transform: none;
+  letter-spacing: 0;
+  color: var(--muted);
+  line-height: 1.1;
+  text-align: center;
+}
+
+.village-eligibilite-col-n,
+.village-eligibilite-modal .village-eligibilite-table th.village-eligibilite-col-n,
+.village-eligibilite-modal .village-eligibilite-table td.village-eligibilite-col-n {
+  width: 2.4rem;
+  max-width: 2.8rem;
+  min-width: 2.2rem;
+  padding-left: 0.3rem !important;
+  padding-right: 0.3rem !important;
+  text-align: center;
+  font-variant-numeric: tabular-nums;
+}
+
+.village-eligibilite-col-fonction {
+  min-width: 10rem;
+  white-space: normal !important;
+}
+
+.village-eligibilite-fonction-cell {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 0.28rem;
+  line-height: 1.25;
+}
+
+.village-eligibilite-fonction-label {
+  white-space: normal;
+  word-break: break-word;
+}
+
+.village-eligibilite-dept-badge {
+  display: inline-flex;
+  align-items: center;
+  max-width: 100%;
+  padding: 0.12rem 0.45rem;
+  border-radius: 999px;
+  font-size: 0.65rem;
+  font-weight: 600;
+  line-height: 1.2;
+  color: #1e3a5f;
+  background: rgba(30, 58, 95, 0.1);
+  border: 1px solid rgba(30, 58, 95, 0.18);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+html[data-theme='dark'] .village-eligibilite-dept-badge,
+html:not([data-theme='light']) .village-eligibilite-dept-badge {
+  color: #bfdbfe;
+  background: rgba(59, 130, 246, 0.18);
+  border-color: rgba(147, 197, 253, 0.28);
+}
+
+.village-eligibilite-col-dep,
+.village-eligibilite-modal .village-eligibilite-table th.village-eligibilite-col-dep,
+.village-eligibilite-modal .village-eligibilite-table td.village-eligibilite-col-dep {
+  text-align: center;
+  width: 6.2rem !important;
+  min-width: 6.2rem !important;
+  max-width: 6.8rem;
+}
+
+.village-eligibilite-col-dep .village-eligibilite-th-inner {
+  justify-content: center;
+}
+
+.village-eligibilite-crit-col,
+.village-eligibilite-modal .village-eligibilite-table th.village-eligibilite-crit-col,
+.village-eligibilite-modal .village-eligibilite-table td.village-eligibilite-crit-col {
+  width: 5.8rem !important;
+  min-width: 5.8rem !important;
+  max-width: 6.2rem;
+  text-align: center;
+  padding-left: 0.3rem !important;
+  padding-right: 0.3rem !important;
+  background: color-mix(in srgb, #6366f1 8%, transparent);
+}
+
+html[data-theme='light'] .village-eligibilite-crit-col,
+html[data-theme='light'] .village-eligibilite-modal .village-eligibilite-table th.village-eligibilite-crit-col,
+html[data-theme='light'] .village-eligibilite-modal .village-eligibilite-table td.village-eligibilite-crit-col {
+  background: #eef2ff;
+}
+
+.village-eligibilite-crit-col .village-eligibilite-th-inner {
+  justify-content: center;
+  flex-direction: column;
+  gap: 0.1rem;
+  width: 100%;
+}
+
+.village-eligibilite-modal .village-eligibilite-table th.village-eligibilite-crit-col .table-hf,
+.village-eligibilite-modal .village-eligibilite-table th.village-eligibilite-col-dep .table-hf {
+  width: 100%;
+  max-width: 100%;
+}
+
+.village-eligibilite-modal .village-eligibilite-table th.village-eligibilite-crit-col .table-hf-btn,
+.village-eligibilite-modal .village-eligibilite-table th.village-eligibilite-col-dep .table-hf-btn {
+  width: 100%;
+  max-width: 100%;
+  justify-content: center;
+  gap: 0.15rem;
+  padding: 0.15rem 0.1rem;
+  white-space: normal;
+  height: auto;
+  min-height: 1.6rem;
+}
+
+.village-eligibilite-modal .village-eligibilite-table th.village-eligibilite-crit-col .table-hf-label,
+.village-eligibilite-modal .village-eligibilite-table th.village-eligibilite-col-dep .table-hf-label {
+  display: block;
+  white-space: normal;
+  text-align: center;
+  font-size: 0.58rem;
+  line-height: 1.15;
+  max-width: 100%;
+  overflow: hidden;
+}
+
+.village-eligibilite-modal .village-eligibilite-table td.village-eligibilite-crit-col {
+  overflow: visible;
+}
+
+.village-eligibilite-modal .village-eligibilite-table td.village-eligibilite-col-total {
+  overflow: visible;
+}
+
+.village-eligibilite-modal .village-eligibilite-table tbody tr:hover td.village-eligibilite-col-total {
+  background: #eef2ff;
+}
+
+html[data-theme='dark'] .village-eligibilite-modal .village-eligibilite-table tbody tr:hover td.village-eligibilite-col-total,
+html:not([data-theme='light']) .village-eligibilite-modal .village-eligibilite-table tbody tr:hover td.village-eligibilite-col-total {
+  background: #1a1a22;
+}
+
+.village-eligibilite-sort-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.2rem;
+  width: 100%;
+  justify-content: flex-start;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: inherit;
+  font: inherit;
+  cursor: pointer;
+  text-align: left;
+}
+
+.village-eligibilite-sort-label {
+  display: inline-flex;
+  flex-direction: column;
+  align-items: flex-start;
+  line-height: 1.15;
+}
+
+.village-eligibilite-dep-cell {
+  text-align: center !important;
+  font-variant-numeric: tabular-nums;
+  font-weight: 600;
+}
+
+.village-eligibilite-dep-btn {
+  appearance: none;
+  border: 0;
+  background: color-mix(in srgb, var(--ppc-red, #e30613) 10%, transparent);
+  color: var(--ppc-red, #e30613);
+  font: inherit;
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+  min-width: 2rem;
+  padding: 0.2rem 0.45rem;
+  border-radius: 999px;
+  cursor: pointer;
+  text-decoration: underline;
+  text-decoration-color: color-mix(in srgb, currentColor 35%, transparent);
+  text-underline-offset: 2px;
+}
+
+.village-eligibilite-dep-btn:hover {
+  background: color-mix(in srgb, var(--ppc-red, #e30613) 18%, transparent);
+  text-decoration-color: currentColor;
+}
+
+.village-eligibilite-family-overlay {
+  position: absolute;
+  inset: 0;
+  z-index: 5;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1rem;
+  background: rgba(15, 23, 42, 0.35);
+}
+
+.village-eligibilite-family-panel {
+  width: min(560px, 100%);
+  max-height: min(70vh, 520px);
+  overflow: auto;
+  border-radius: 12px;
+  border: 1px solid var(--border);
+  background: var(--surface, #fff);
+  box-shadow: 0 18px 40px rgba(15, 23, 42, 0.22);
+  padding: 0.85rem 1rem 1rem;
+}
+
+html[data-theme='dark'] .village-eligibilite-family-panel,
+html:not([data-theme='light']) .village-eligibilite-family-panel {
+  background: #121218;
+}
+
+.village-eligibilite-family-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 0.75rem;
+  margin-bottom: 0.75rem;
+}
+
+.village-eligibilite-family-header h4 {
+  margin: 0;
+  font-size: 1rem;
+}
+
+.village-eligibilite-family-header p {
+  margin: 0.2rem 0 0;
+  font-size: 0.78rem;
+  color: var(--muted);
+}
+
+.village-eligibilite-family-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.8rem;
+}
+
+.village-eligibilite-family-table th,
+.village-eligibilite-family-table td {
+  text-align: left;
+  padding: 0.4rem 0.45rem;
+  border-bottom: 1px solid var(--border);
+}
+
+.village-eligibilite-family-table th {
+  font-size: 0.68rem;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+  color: var(--muted);
+}
+
+.village-eligibilite-score-auto {
+  display: inline-block;
+  min-width: 2.2rem;
+  padding: 0.2rem 0.35rem;
+  border-radius: 6px;
+  background: rgba(148, 163, 184, 0.18);
+  font-variant-numeric: tabular-nums;
+  font-weight: 600;
+}
+
+.village-eligibilite-identity {
+  display: flex;
+  flex-direction: column;
+  gap: 0.1rem;
+  line-height: 1.25;
+}
+
+.village-eligibilite-mat {
+  font-size: 0.68rem;
+  color: var(--muted);
+  font-variant-numeric: tabular-nums;
+}
+
+.village-eligibilite-max {
+  display: block;
+  font-size: 0.58rem;
+  font-weight: 500;
+  text-transform: none;
+  letter-spacing: 0;
+  color: var(--muted);
+}
+
+.village-eligibilite-score-cell {
+  text-align: center;
+  width: 4.2rem;
+}
+
+.village-eligibilite-score-input {
+  width: 3.6rem;
+  max-width: 100%;
+  padding: 0.28rem 0.3rem;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  background: var(--surface, #fff);
+  color: inherit;
+  font: inherit;
+  font-variant-numeric: tabular-nums;
+  text-align: center;
+}
+
+.village-eligibilite-score-input:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
 }
