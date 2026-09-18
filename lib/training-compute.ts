@@ -49,13 +49,15 @@ export function buildTrainingDashboard(
   const denom = hqTotal + plantTotal;
 
   const entriesForCovered = store.entries.filter((e) => {
-    if (mode === 'calendar' && e.year !== viewYear) return false;
-    if (viewMonth != null && e.month !== viewMonth) return false;
-    if (mode === 'fy') {
-      const keys = new Set(seq.map((s) => monthKey(s.year, s.month)));
-      if (!keys.has(monthKey(e.year, e.month))) return false;
+    if (mode === 'calendar') {
+      if (e.year !== viewYear) return false;
+      // YTD jusqu’au mois sélectionné (ou année entière si « All months »)
+      if (viewMonth != null && e.month > viewMonth) return false;
+      return true;
     }
-    return true;
+    // FY : uniquement les mois de la séquence affichée
+    const keys = new Set(seq.map((s) => monthKey(s.year, s.month)));
+    return keys.has(monthKey(e.year, e.month));
   });
 
   const covered = [

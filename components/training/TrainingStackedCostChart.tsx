@@ -37,7 +37,7 @@ export default function TrainingStackedCostChart({
   }, [max]);
 
   return (
-    <article className="panel training-stack-chart">
+    <article className="training-stack-chart">
       <header className="training-stack-chart-head">
         <h4>{title}</h4>
         <div className="training-stack-legend">

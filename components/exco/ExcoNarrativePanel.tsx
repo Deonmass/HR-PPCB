@@ -616,6 +616,14 @@ export default function ExcoNarrativePanel({
       const step = ticksTop <= 5000 ? 1000 : ticksTop <= 15000 ? 2500 : 5000;
       for (let v = 0; v <= ticksTop; v += step) tickValues.push(v);
     }
+    const coveredRows = Array.from({ length: 15 }, (_, i) => tr.covered[i] ?? '');
+    const plantPct = String(tr.plantPct || '').replace(/\s*%\s*$/, '');
+    const hqPct = String(tr.hqPct || '').replace(/\s*%\s*$/, '');
+    const hoursPlantPct = String(tr.hoursPlantPct || tr.plantPct || '').replace(/\s*%\s*$/, '');
+    const hoursHqPct = String(tr.hoursHqPct || tr.hqPct || '').replace(/\s*%\s*$/, '');
+    const actualLabel = String(tr.actual || '')
+      .replace(/^\$\s*/, '')
+      .replace(/\s*\$\s*$/, '');
 
     return (
       <div className="exco-panel-stack exco-slide-panel exco-training-panel">
@@ -626,189 +634,219 @@ export default function ExcoNarrativePanel({
           </a>
         </div>
 
-        <div className="training-dash exco-training-dash">
+        <div className="training-dash training-dash-exco exco-training-dash">
           <div className="training-dash-kpis">
             <article className="training-card training-card-budget">
-              <h3>Training Budget</h3>
-              <strong>{tr.budget}</strong>
-              <p>
-                &gt; {tr.plantPct} Plant &nbsp; &gt; {tr.hqPct} HQ
-              </p>
-              <div className="training-card-actual">
-                Actual: <em>{tr.actual}</em>
+              <span className="training-card-icon" aria-hidden>
+                <svg viewBox="0 0 24 24" width="22" height="22">
+                  <path
+                    fill="currentColor"
+                    d="M4 18h2V10H4v8zm4 0h2V6H8v12zm4 0h2v-5h-2v5zm4 0h2V8h-2v10zM3 20h18v2H3v-2z"
+                  />
+                </svg>
+              </span>
+              <div className="training-card-body">
+                <h3>Training Budget</h3>
+                <strong>{tr.budget}</strong>
+                <ul>
+                  <li>&gt; {plantPct} % Plant</li>
+                  <li>&gt; {hqPct} % HQ</li>
+                </ul>
+              </div>
+              <div className="training-card-footer is-actual">
+                Actual: <em>{actualLabel ? `${actualLabel} $` : '—'}</em>
               </div>
             </article>
+
             <article className="training-card training-card-hours">
-              <h3>Training Hours</h3>
-              <strong>{tr.hoursYtd}</strong>
-              <p>
-                &gt; {tr.hoursPlantPct || tr.plantPct} Plant &nbsp; &gt;{' '}
-                {tr.hoursHqPct || tr.hqPct} HQ
-              </p>
-              <div className="training-card-actual is-dark">
+              <span className="training-card-icon is-accent" aria-hidden>
+                <svg viewBox="0 0 24 24" width="22" height="22">
+                  <path
+                    fill="currentColor"
+                    d="M12 2a8 8 0 1 0 8 8A8 8 0 0 0 12 2zm0 14.5A6.5 6.5 0 1 1 18.5 10 6.5 6.5 0 0 1 12 16.5z"
+                  />
+                  <path
+                    fill="currentColor"
+                    d="M11.2 7h1.6v3.2l2.2 1.3-.8 1.3-2.8-1.7V7z"
+                  />
+                </svg>
+              </span>
+              <div className="training-card-body">
+                <h3>Training Hours</h3>
+                <strong>{tr.hoursYtd}</strong>
+                <ul>
+                  <li>&gt; {hoursPlantPct} % Plant</li>
+                  <li>&gt; {hoursHqPct} % HQ</li>
+                </ul>
+              </div>
+              <div className="training-card-footer">
                 Average per Employee: <em>{tr.avgHoursPerEmp}</em>
               </div>
             </article>
+
             <article className="training-card training-card-topics">
-              <header>
+              <span className="training-card-icon is-dark" aria-hidden>
+                <svg viewBox="0 0 24 24" width="22" height="22">
+                  <path
+                    fill="currentColor"
+                    d="M4 18h16v2H4v-2zm2-2.5V7h2.5l1.2 2H14V7h2v8.5h-2V11H9.2L8 9H6v6.5H6z"
+                  />
+                </svg>
+              </span>
+              <header className="training-topics-head">
                 <span>Topics Covered</span>
                 <b>{tr.topicsCount}</b>
               </header>
-              {tr.skillBars.map((s) => (
-                <div key={s.label} className="training-skill">
-                  <div className="training-skill-lab">
+              <div className="training-topics-rows">
+                {tr.skillBars.map((s) => (
+                  <div key={s.label} className="training-skill-row">
                     <span>{s.label}</span>
                     <strong>{s.pct}%</strong>
                   </div>
-                  <div className="training-skill-track">
-                    <i style={{ width: `${Math.min(100, s.pct)}%` }} />
-                  </div>
-                </div>
-              ))}
+                ))}
+              </div>
             </article>
           </div>
 
           <div className="training-dash-mid">
-            <div className="training-dash-cost">
-              <article className="panel training-stack-chart">
-                <header className="training-stack-chart-head">
-                  <h4>COST PER MONTH (USD)</h4>
-                  <div className="training-stack-legend">
-                    <span>
-                      <i className="is-hq" aria-hidden /> HQ
-                    </span>
-                    <span>
-                      <i className="is-plant" aria-hidden /> Plant
-                    </span>
-                  </div>
-                </header>
-                <div className="training-stack-body">
-                  <div className="training-stack-yaxis" aria-hidden>
-                    {[...tickValues].reverse().map((v) => (
-                      <span key={v}>{v.toLocaleString('en-US')}</span>
-                    ))}
-                  </div>
-                  <div className="training-stack-main">
-                    <div className="training-stack-plot">
-                      <div className="training-stack-grid" aria-hidden>
-                        {tickValues.map((v) => (
-                          <i key={v} style={{ bottom: `${(v / ticksTop) * 100}%` }} />
-                        ))}
-                      </div>
-                      <div className="training-stack-bars">
-                        {tr.costMonths.map((m) => {
-                          const hqH = (m.hqN / ticksTop) * 100;
-                          const plantH = (m.plantN / ticksTop) * 100;
-                          return (
-                            <div
-                              key={m.label}
-                              className={`training-stack-col${m.isCurrent ? ' is-current' : ''}`}
-                              title={`${m.label}: HQ ${m.hq || 0} · Plant ${m.plant || 0}`}
-                            >
-                              <div className="training-stack-stack">
-                                <span className="is-plant" style={{ height: `${Math.max(plantH, 0)}%` }} />
-                                <span className="is-hq" style={{ height: `${Math.max(hqH, 0)}%` }} />
-                              </div>
-                            </div>
-                          );
-                        })}
-                      </div>
+            <div className="training-dash-left">
+              <div className="training-cost-block">
+                <article className="training-stack-chart">
+                  <header className="training-stack-chart-head">
+                    <h4>COST PER MONTH (USD)</h4>
+                    <div className="training-stack-legend">
+                      <span>
+                        <i className="is-hq" aria-hidden /> HQ
+                      </span>
+                      <span>
+                        <i className="is-plant" aria-hidden /> Plant
+                      </span>
                     </div>
-                    <div className="training-stack-labels">
-                      {tr.costMonths.map((m) => (
-                        <span
-                          key={`lab-${m.label}`}
-                          className={m.isCurrent ? 'is-current' : undefined}
-                        >
-                          {m.label}
-                        </span>
+                  </header>
+                  <div className="training-stack-body">
+                    <div className="training-stack-yaxis" aria-hidden>
+                      {[...tickValues].reverse().map((v) => (
+                        <span key={v}>{v.toLocaleString('en-US')}</span>
                       ))}
                     </div>
+                    <div className="training-stack-main">
+                      <div className="training-stack-plot">
+                        <div className="training-stack-grid" aria-hidden>
+                          {tickValues.map((v) => (
+                            <i key={v} style={{ bottom: `${(v / ticksTop) * 100}%` }} />
+                          ))}
+                        </div>
+                        <div className="training-stack-bars">
+                          {tr.costMonths.map((m) => {
+                            const hqH = (m.hqN / ticksTop) * 100;
+                            const plantH = (m.plantN / ticksTop) * 100;
+                            return (
+                              <div
+                                key={m.label}
+                                className={`training-stack-col${m.isCurrent ? ' is-current' : ''}`}
+                                title={`${m.label}: HQ ${m.hq || 0} · Plant ${m.plant || 0}`}
+                              >
+                                <div className="training-stack-stack">
+                                  <span
+                                    className="is-plant"
+                                    style={{ height: `${Math.max(plantH, 0)}%` }}
+                                  />
+                                  <span
+                                    className="is-hq"
+                                    style={{ height: `${Math.max(hqH, 0)}%` }}
+                                  />
+                                </div>
+                              </div>
+                            );
+                          })}
+                        </div>
+                      </div>
+                      <div className="training-stack-labels">
+                        {tr.costMonths.map((m) => (
+                          <span
+                            key={`lab-${m.label}`}
+                            className={m.isCurrent ? 'is-current' : undefined}
+                          >
+                            {m.label}
+                          </span>
+                        ))}
+                      </div>
+                    </div>
                   </div>
-                </div>
-              </article>
+                </article>
 
-              <div className="training-bottom-row">
-                <div className="panel training-cost-table-wrap">
-                  <div className="training-cost-table-head">
-                    <h4 className="training-cost-evolution-title">Evolution</h4>
-                    <p className="training-cost-hint">HQ / Plant amounts</p>
-                  </div>
-                  <div className="training-cost-table-scroll">
-                    <table className="training-cost-table">
-                      <thead>
-                        <tr>
-                          <th className="training-cost-corner" />
-                          {tr.costMonths.map((m) => (
-                            <th
-                              key={m.label}
-                              className={m.isCurrent ? 'is-current-month' : undefined}
-                            >
-                              {m.label}
-                            </th>
-                          ))}
-                        </tr>
-                      </thead>
-                      <tbody>
-                        <tr>
-                          <td className="is-hq">HQ</td>
-                          {tr.costMonths.map((m) => (
-                            <td
-                              key={`hq-${m.label}`}
-                              className={m.isCurrent ? 'is-current-month' : undefined}
-                            >
-                              {m.hq || <span className="training-cost-empty">—</span>}
-                            </td>
-                          ))}
-                        </tr>
-                        <tr>
-                          <td className="is-plant-label">Plant</td>
-                          {tr.costMonths.map((m) => (
-                            <td
-                              key={`plant-${m.label}`}
-                              className={m.isCurrent ? 'is-current-month' : undefined}
-                            >
-                              {m.plant || <span className="training-cost-empty">—</span>}
-                            </td>
-                          ))}
-                        </tr>
-                      </tbody>
-                    </table>
-                  </div>
+                <div className="training-cost-table-scroll">
+                  <table className="training-cost-table">
+                    <thead>
+                      <tr>
+                        <th className="training-cost-corner" />
+                        {tr.costMonths.map((m) => (
+                          <th
+                            key={m.label}
+                            className={m.isCurrent ? 'is-current-month' : undefined}
+                          >
+                            {m.label}
+                          </th>
+                        ))}
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr>
+                        <td className="is-hq">HQ</td>
+                        {tr.costMonths.map((m) => (
+                          <td
+                            key={`hq-${m.label}`}
+                            className={m.isCurrent ? 'is-current-month' : undefined}
+                          >
+                            {m.hq || <span className="training-cost-empty" />}
+                          </td>
+                        ))}
+                      </tr>
+                      <tr>
+                        <td className="is-plant-label">Plant</td>
+                        {tr.costMonths.map((m) => (
+                          <td
+                            key={`plant-${m.label}`}
+                            className={m.isCurrent ? 'is-current-month' : undefined}
+                          >
+                            {m.plant || <span className="training-cost-empty" />}
+                          </td>
+                        ))}
+                      </tr>
+                    </tbody>
+                  </table>
                 </div>
+              </div>
 
-                <div className="panel training-upcoming">
-                  <div className="training-upcoming-head">
-                    <h4>Upcoming Training Sessions</h4>
-                  </div>
-                  <ul className="training-upcoming-list">
-                    {(tr.upcoming.length ? tr.upcoming : ['—']).map((item, i) => (
-                      <li key={`${i}-${item}`}>
-                        <span>{item}</span>
-                      </li>
-                    ))}
-                  </ul>
+              <div className="training-upcoming">
+                <div className="training-upcoming-head">
+                  <h4>Upcoming Training Sessions</h4>
                 </div>
+                <ul className="training-upcoming-list">
+                  {(tr.upcoming.length ? tr.upcoming : []).map((item, i) => (
+                    <li key={`${i}-${item}`}>
+                      <span>{item}</span>
+                    </li>
+                  ))}
+                  {!tr.upcoming.length ? (
+                    <li className="is-empty">
+                      <span>—</span>
+                    </li>
+                  ) : null}
+                </ul>
               </div>
             </div>
 
-            <div className="panel training-covered">
+            <div className="training-covered">
               <h3>List of Training Covered</h3>
-              <p className="training-covered-meta">
-                From Trainee cost import · {tr.periodLabel || data.periodLabel}
-              </p>
-              <table>
-                <tbody>
-                  {(tr.covered.length ? tr.covered : ['— No imported trainings —']).map(
-                    (item, i) => (
-                      <tr key={`${i}-${item}`}>
-                        <td className="n">{tr.covered.length ? i + 1 : ''}</td>
-                        <td>{item}</td>
-                      </tr>
-                    ),
-                  )}
-                </tbody>
-              </table>
+              <ol className="training-covered-list">
+                {coveredRows.map((item, i) => (
+                  <li key={`covered-${i}`}>
+                    <span className="n">{i + 1}.</span>
+                    <span className="txt">{item || '\u00a0'}</span>
+                  </li>
+                ))}
+              </ol>
             </div>
           </div>
         </div>
