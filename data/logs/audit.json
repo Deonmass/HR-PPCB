@@ -1,6 +1,21 @@
 {
   "entries": [
     {
+      "id": "log-000907",
+      "at": "2026-09-18T12:26:25.810Z",
+      "userId": "Serge.Muakasa@ppcdrc.cd",
+      "userName": "Serge Muakasa",
+      "userEmail": "Serge.Muakasa@ppcdrc.cd",
+      "module": "village.maisons",
+      "moduleLabel": "Village — Maisons",
+      "action": "other",
+      "actionLabel": "Autre",
+      "summary": "Enregistrement éligibilité village (37 agents)",
+      "details": "Enregistrement éligibilité village (37 agents)",
+      "undoable": false,
+      "undone": false
+    },
+    {
       "id": "log-000906",
       "at": "2026-09-18T12:20:36.806Z",
       "userId": "Serge.Muakasa@ppcdrc.cd",
@@ -108588,5 +108603,5 @@
       }
     }
   ],
-  "nextSeq": 907
+  "nextSeq": 908
 }
