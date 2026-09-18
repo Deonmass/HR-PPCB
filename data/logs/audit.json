@@ -1,6 +1,21 @@
 {
   "entries": [
     {
+      "id": "log-000901",
+      "at": "2026-09-18T07:02:51.363Z",
+      "userId": "Serge.Muakasa@ppcdrc.cd",
+      "userName": "Serge Muakasa",
+      "userEmail": "Serge.Muakasa@ppcdrc.cd",
+      "module": "village.maisons",
+      "moduleLabel": "Village — Maisons",
+      "action": "export",
+      "actionLabel": "Export",
+      "summary": "Export village (VILLAGE_KIMPESE_2026-09-18.xlsx)",
+      "details": "Fichier Excel exporté : VILLAGE_KIMPESE_2026-09-18.xlsx",
+      "undoable": false,
+      "undone": false
+    },
+    {
       "id": "log-000900",
       "at": "2026-09-18T06:55:43.329Z",
       "userId": "Serge.Muakasa@ppcdrc.cd",
@@ -108485,5 +108500,5 @@
       }
     }
   ],
-  "nextSeq": 901
+  "nextSeq": 902
 }
