@@ -64,12 +64,13 @@ export const ELIGIBILITE_MAX_TOTAL = ELIGIBILITE_CRITERIA.reduce((s, c) => s + c
 
 /**
  * Cote Family /20 :
- * seul = 0 ; puis 3 points × nombre de dépendants ; plafonné à 20.
- * Ex. 1→3, 2→6, 3→9, 4→12, 5→15, 6→18, 7+→20.
+ * 0–3 dépendants : 3 points × dépendant ; dès 4 dépendants : 20/20.
+ * Ex. 0→0, 1→3, 2→6, 3→9, 4+→20.
  */
 export function computeFamilyCompositionScore(dependantsCount: number, max = 20): number {
   const n = Math.max(0, Math.floor(Number(dependantsCount) || 0));
-  return Math.min(max, n * 3);
+  if (n > 3) return max;
+  return n * 3;
 }
 
 export function emptyEligibiliteScores(): VillageEligibiliteScores {

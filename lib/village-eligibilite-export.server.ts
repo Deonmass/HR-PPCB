@@ -16,6 +16,7 @@ export interface VillageEligibiliteFamilyBaseRow {
   matricule: string;
   nom: string;
   dependantsCount: number;
+  enfantsCount: number;
   dependantsNames: string;
 }
 
@@ -88,7 +89,7 @@ function writeBaseAgentsSheet(
   const ws = wb.addWorksheet(BASE_SHEET, {
     views: [{ state: 'frozen', ySplit: 1 }],
   });
-  const headers = ['Matricule', 'Nom agent', 'Nb dépendants', 'Noms dépendants'];
+  const headers = ['Matricule', 'Nom agent', 'Nb dépendants', 'Nb enfants', 'Noms dépendants'];
   headers.forEach((h, i) => {
     ws.getCell(1, i + 1).value = h;
   });
@@ -100,13 +101,16 @@ function writeBaseAgentsSheet(
     ws.getCell(r, 2).value = row.nom;
     ws.getCell(r, 3).value = row.dependantsCount;
     ws.getCell(r, 3).alignment = { horizontal: 'center' };
-    ws.getCell(r, 4).value = row.dependantsNames || '';
+    ws.getCell(r, 4).value = row.enfantsCount;
+    ws.getCell(r, 4).alignment = { horizontal: 'center' };
+    ws.getCell(r, 5).value = row.dependantsNames || '';
   });
 
   ws.getColumn(1).width = 14;
   ws.getColumn(2).width = 28;
   ws.getColumn(3).width = 14;
-  ws.getColumn(4).width = 48;
+  ws.getColumn(4).width = 12;
+  ws.getColumn(5).width = 48;
 
   if (baseRows.length > 0) {
     ws.autoFilter = {
@@ -197,7 +201,7 @@ export async function buildVillageEligibiliteWorkbookBuffer(
 
   ws.mergeCells(2, 1, 2, lastCol);
   const sub = ws.getCell(2, 1);
-  sub.value = `${rows.length} agent(s) · Export ${stamp} · Dépendants = RECHERCHEV vers « ${BASE_SHEET} » · Family auto · Total max ${ELIGIBILITE_MAX_TOTAL}`;
+  sub.value = `${rows.length} agent(s) · Export ${stamp} · Dépendants = RECHERCHEV vers « ${BASE_SHEET} » · Family auto (0–3 dép. ×3 pts, dès 4 = 20) · Total max ${ELIGIBILITE_MAX_TOTAL}`;
   sub.font = { size: 10, italic: true, color: { argb: 'FF64748B' } };
   sub.alignment = { vertical: 'middle', wrapText: true };
   ws.getRow(2).height = 22;
@@ -223,7 +227,7 @@ export async function buildVillageEligibiliteWorkbookBuffer(
   styleHeaderRow(ws, headerRow, headers.length, COL.critStart, COL.family);
 
   const dataStart = headerRow + 1;
-  const vlookupRange = `'${baseMeta.sheetName}'!$A$${baseMeta.dataStart}:$C$${baseMeta.dataEnd}`;
+  const vlookupRange = `'${baseMeta.sheetName}'!$A$${baseMeta.dataStart}:$D$${baseMeta.dataEnd}`;
   const matColL = colLetter(COL.matricule);
   const depColL = colLetter(COL.dependants);
   const critStartL = colLetter(COL.critStart);
@@ -240,7 +244,7 @@ export async function buildVillageEligibiliteWorkbookBuffer(
     ws.getCell(r, COL.grade).value = row.grade;
     ws.getCell(r, COL.anciennete).value = row.anciennete;
 
-    // Nb dépendants via RECHERCHEV sur Base agents
+    // Nb dépendants via RECHERCHEV sur Base agents (col 3)
     const depCell = ws.getCell(r, COL.dependants);
     depCell.value = {
       formula: `IFERROR(VLOOKUP(${matColL}${r},${vlookupRange},3,FALSE),0)`,
@@ -257,8 +261,9 @@ export async function buildVillageEligibiliteWorkbookBuffer(
       };
       cell.alignment = { horizontal: 'center' };
       if (c.key === 'familyComposition') {
+        // Family auto : Nb dépendants — 0–3 × 3 pts ; dès 4 → 20
         cell.value = {
-          formula: `MIN(20,MAX(0,${depColL}${r})*3)`,
+          formula: `IF(MAX(0,${depColL}${r})>3,20,MAX(0,${depColL}${r})*3)`,
         };
       } else {
         const v = row.scores[c.key];

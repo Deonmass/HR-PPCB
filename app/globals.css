@@ -35713,6 +35713,44 @@ html[data-theme='dark'] .sante-patho-pill {
   flex-shrink: 0;
 }
 
+.village-eligibilite-header-actions .dashboard-list-close,
+.village-eligibilite-header-actions .btn-icon.dashboard-list-close {
+  width: 2rem;
+  height: 2rem;
+  min-width: 2rem;
+  min-height: 2rem;
+  padding: 0;
+  border-radius: 50%;
+  border: 1px solid var(--border, #e2e8f0);
+  background: #ffffff;
+  color: #0f172a;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.25rem;
+  line-height: 1;
+  flex-shrink: 0;
+  cursor: pointer;
+}
+
+html[data-theme='dark'] .village-eligibilite-header-actions .dashboard-list-close,
+html:not([data-theme='light']) .village-eligibilite-header-actions .dashboard-list-close {
+  background: #1e1e28;
+  color: #f8fafc;
+  border-color: rgba(255, 255, 255, 0.14);
+}
+
+.village-eligibilite-header-actions .dashboard-list-close:hover {
+  background: color-mix(in srgb, var(--ppc-red, #e30613) 10%, #ffffff);
+  color: var(--ppc-red, #e30613);
+  border-color: color-mix(in srgb, var(--ppc-red, #e30613) 45%, transparent);
+}
+
+html[data-theme='dark'] .village-eligibilite-header-actions .dashboard-list-close:hover,
+html:not([data-theme='light']) .village-eligibilite-header-actions .dashboard-list-close:hover {
+  background: color-mix(in srgb, var(--ppc-red, #e30613) 18%, #1e1e28);
+}
+
 .village-eligibilite-modal-header {
   display: flex;
   align-items: flex-start;
@@ -35809,7 +35847,7 @@ html[data-theme='dark'] .sante-patho-pill {
 }
 
 .village-eligibilite-legend span {
-  white-space: nowrap;
+  white-space: normal;
 }
 
 .village-eligibilite-toolbar {
@@ -36201,7 +36239,7 @@ html:not([data-theme='light']) .village-eligibilite-modal .village-eligibilite-t
   align-items: center;
   justify-content: center;
   padding: 1rem;
-  background: rgba(15, 23, 42, 0.35);
+  background: rgba(15, 23, 42, 0.45);
 }
 
 .village-eligibilite-family-panel {
@@ -36210,7 +36248,7 @@ html:not([data-theme='light']) .village-eligibilite-modal .village-eligibilite-t
   overflow: auto;
   border-radius: 12px;
   border: 1px solid var(--border);
-  background: var(--surface, #fff);
+  background: #ffffff;
   box-shadow: 0 18px 40px rgba(15, 23, 42, 0.22);
   padding: 0.85rem 1rem 1rem;
 }
@@ -36226,6 +36264,49 @@ html:not([data-theme='light']) .village-eligibilite-family-panel {
   justify-content: space-between;
   gap: 0.75rem;
   margin-bottom: 0.75rem;
+}
+
+.village-eligibilite-family-header .dashboard-list-close,
+.village-eligibilite-family-header .btn-icon {
+  width: 2rem;
+  height: 2rem;
+  min-width: 2rem;
+  min-height: 2rem;
+  padding: 0;
+  border-radius: 50%;
+  border: 1px solid var(--border, #e2e8f0);
+  background: #ffffff;
+  color: #0f172a;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.25rem;
+  line-height: 1;
+  flex-shrink: 0;
+  cursor: pointer;
+}
+
+html[data-theme='dark'] .village-eligibilite-family-header .dashboard-list-close,
+html:not([data-theme='light']) .village-eligibilite-family-header .dashboard-list-close,
+html[data-theme='dark'] .village-eligibilite-family-header .btn-icon,
+html:not([data-theme='light']) .village-eligibilite-family-header .btn-icon {
+  background: #1e1e28;
+  color: #f8fafc;
+  border-color: rgba(255, 255, 255, 0.14);
+}
+
+.village-eligibilite-family-header .dashboard-list-close:hover,
+.village-eligibilite-family-header .btn-icon:hover {
+  background: color-mix(in srgb, var(--ppc-red, #e30613) 10%, #ffffff);
+  color: var(--ppc-red, #e30613);
+  border-color: color-mix(in srgb, var(--ppc-red, #e30613) 45%, transparent);
+}
+
+html[data-theme='dark'] .village-eligibilite-family-header .dashboard-list-close:hover,
+html:not([data-theme='light']) .village-eligibilite-family-header .dashboard-list-close:hover,
+html[data-theme='dark'] .village-eligibilite-family-header .btn-icon:hover,
+html:not([data-theme='light']) .village-eligibilite-family-header .btn-icon:hover {
+  background: color-mix(in srgb, var(--ppc-red, #e30613) 18%, #1e1e28);
 }
 
 .village-eligibilite-family-header h4 {

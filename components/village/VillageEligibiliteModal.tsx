@@ -574,7 +574,9 @@ export default function VillageEligibiliteModal({ open, onClose }: Props) {
             </li>
             <li>
               <strong>Family auto</strong>
-              <span>seul = 0 · 3 × nb dépendants · max 20</span>
+              <span>
+                0 à 3 dépendants = 3 pts chacun (1→3, 2→6, 3→9) · dès 4 dépendants = 20/20
+              </span>
             </li>
             <li>
               <strong>% éligibilité</strong>
@@ -760,7 +762,11 @@ export default function VillageEligibiliteModal({ open, onClose }: Props) {
                           {isFamily ? (
                             <span
                               className="village-eligibilite-score-auto"
-                              title={`Family auto : 3 × ${row.dependantsCount} dépendant${row.dependantsCount !== 1 ? 's' : ''} = ${typeof value === 'number' ? value : 0}/20`}
+                              title={
+                                row.dependantsCount > 3
+                                  ? `Family auto : ${row.dependantsCount} dépendants (≥ 4) → 20/20`
+                                  : `Family auto : 3 × ${row.dependantsCount} dépendant${row.dependantsCount !== 1 ? 's' : ''} = ${typeof value === 'number' ? value : 0}/20`
+                              }
                             >
                               {typeof value === 'number' ? value : '—'}
                             </span>

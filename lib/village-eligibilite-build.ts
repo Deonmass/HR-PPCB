@@ -1,7 +1,7 @@
 import 'server-only';
 
 import { computeSeniority, formatSeniority } from './employee-columns';
-import { buildFamilyGroups } from './dependants-utils';
+import { buildFamilyGroups, isChildStatut } from './dependants-utils';
 import type { Dependant } from './dependants-types';
 import { formatDisplayName } from './format-display-name';
 import type { Employee } from './types';
@@ -112,6 +112,7 @@ export function buildEligibiliteFamilyExport(
     matricule: string;
     nom: string;
     dependantsCount: number;
+    enfantsCount: number;
     dependantsNames: string;
   }>;
   detail: Array<{
@@ -142,6 +143,7 @@ export function buildEligibiliteFamilyExport(
       matricule: mat,
       nom: row.nom,
       dependantsCount: famille.length,
+      enfantsCount: famille.filter((m) => isChildStatut(m.statut)).length,
       dependantsNames: famille
         .map((m) => formatDisplayName(m.nom))
         .filter(Boolean)
