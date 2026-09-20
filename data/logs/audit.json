@@ -1,6 +1,21 @@
 {
   "entries": [
     {
+      "id": "log-000927",
+      "at": "2026-09-20T14:34:17.013Z",
+      "userId": "admin",
+      "userName": "Administrateur",
+      "userEmail": "admin",
+      "module": "timesheet",
+      "moduleLabel": "Timesheet",
+      "action": "export",
+      "actionLabel": "Export",
+      "summary": "Export timesheet employé 70000164",
+      "details": "Export individuel 70000164 — 9/2026",
+      "undoable": false,
+      "undone": false
+    },
+    {
       "id": "log-000926",
       "at": "2026-09-20T14:23:21.948Z",
       "userId": "admin",
@@ -110023,5 +110038,5 @@
       }
     }
   ],
-  "nextSeq": 927
+  "nextSeq": 928
 }
