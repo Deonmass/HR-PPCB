@@ -794,7 +794,7 @@
       "grade": "C1",
       "jobTitle": "CEC Officer",
       "localisation": "Zamba",
-      "service": "",
+      "service": "CEC",
       "company": "PPC Barnet DRC Manufacturing",
       "centreCout": "KM5416",
       "appointmentDate": "01/06/2021",
@@ -832,7 +832,7 @@
       "cnss": "11991550905L",
       "nif": "B2222595L",
       "createdAt": "2026-07-28T09:40:37.715Z",
-      "updatedAt": "2026-09-20T13:41:24.008Z"
+      "updatedAt": "2026-09-20T13:41:50.589Z"
     },
     {
       "id": "4fde4528-dabf-4def-81b4-335d9047f6ab",
