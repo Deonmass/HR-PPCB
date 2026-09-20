@@ -3,6 +3,14 @@ import { hydrateTimesheetActualFromPlanning } from './timesheet-shift-hours';
 import type { TimesheetDayEntry, TimesheetRowData } from './timesheet-types';
 import { createTimesheetRowFromDay, finalizeTimesheetRow } from './timesheet-ws';
 
+/** Jour hors période réactivé au planning (shift / heures / jour férié enregistrés). */
+function hasTimesheetDayActivity(entry: TimesheetDayEntry | undefined): boolean {
+  if (!entry) return false;
+  if (entry.shiftType != null) return true;
+  if (entry.from?.trim() || entry.to?.trim()) return true;
+  return Boolean(entry.holiday);
+}
+
 export function buildEmployeeTimesheetRows(
   period: TimesheetPeriod,
   entries: Record<string, TimesheetDayEntry> = {},
@@ -10,7 +18,8 @@ export function buildEmployeeTimesheetRows(
 ): TimesheetRowData[] {
   return period.days.map((day) => {
     const entry = entries[day.dateKey];
-    if (day.isInactive) {
+    // Hors période sans planning : OFF. Si un shift a été planifié (journée réactivée), on l’applique.
+    if (day.isInactive && !hasTimesheetDayActivity(entry)) {
       return createTimesheetRowFromDay(day, { shiftType: 'off', from: '', to: '' });
     }
     const row = createTimesheetRowFromDay(day, {

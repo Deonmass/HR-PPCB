@@ -96,8 +96,12 @@ export async function buildCompilationData(
 
     let nightNormal = 0;
     for (const day of period.days) {
-      if (day.isInactive) continue;
-      nightNormal += dayNormalNight(entries[day.dateKey], {
+      const entry = entries[day.dateKey];
+      // Inclure les jours hors période réactivés (shift / heures enregistrés).
+      if (day.isInactive && !(entry?.shiftType != null || entry?.from?.trim() || entry?.to?.trim() || entry?.holiday)) {
+        continue;
+      }
+      nightNormal += dayNormalNight(entry, {
         date: day.date,
         localisation: employee.localisation ?? '',
       });
