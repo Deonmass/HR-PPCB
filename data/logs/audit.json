@@ -1,6 +1,72 @@
 {
   "entries": [
     {
+      "id": "log-000926",
+      "at": "2026-09-20T14:23:21.948Z",
+      "userId": "admin",
+      "userName": "Administrateur",
+      "userEmail": "admin",
+      "module": "timesheet",
+      "moduleLabel": "Timesheet",
+      "action": "update",
+      "actionLabel": "Modification",
+      "summary": "Enregistrement planning semaine 5 — Sales and Marketing (9/2026)",
+      "details": "Enregistrement planning semaine 5 — Sales and Marketing (9/2026)",
+      "undoable": false,
+      "undone": false,
+      "meta": {
+        "year": 2026,
+        "month": 9,
+        "department": "Sales and Marketing",
+        "weekIndex": 5,
+        "saved": 28
+      }
+    },
+    {
+      "id": "log-000925",
+      "at": "2026-09-20T14:22:49.104Z",
+      "userId": "admin",
+      "userName": "Administrateur",
+      "userEmail": "admin",
+      "module": "timesheet",
+      "moduleLabel": "Timesheet",
+      "action": "update",
+      "actionLabel": "Modification",
+      "summary": "Enregistrement planning semaine 5 — Sales and Marketing (9/2026)",
+      "details": "Enregistrement planning semaine 5 — Sales and Marketing (9/2026)",
+      "undoable": false,
+      "undone": false,
+      "meta": {
+        "year": 2026,
+        "month": 9,
+        "department": "Sales and Marketing",
+        "weekIndex": 5,
+        "saved": 28
+      }
+    },
+    {
+      "id": "log-000924",
+      "at": "2026-09-20T14:20:38.761Z",
+      "userId": "admin",
+      "userName": "Administrateur",
+      "userEmail": "admin",
+      "module": "timesheet",
+      "moduleLabel": "Timesheet",
+      "action": "delete",
+      "actionLabel": "Suppression",
+      "summary": "Suppression planning semaine 5 — Sales and Marketing (9/2026)",
+      "details": "Suppression planning semaine 5 — Sales and Marketing (9/2026)",
+      "after": 4,
+      "undoable": false,
+      "undone": false,
+      "meta": {
+        "year": 2026,
+        "month": 9,
+        "department": "Sales and Marketing",
+        "weekIndex": 5
+      }
+    },
+    {
       "id": "log-000923",
       "at": "2026-09-20T14:06:47.333Z",
       "userId": "admin",
@@ -109957,5 +110023,5 @@
       }
     }
   ],
-  "nextSeq": 924
+  "nextSeq": 927
 }

@@ -1,7 +1,7 @@
 {
   "year": 2026,
   "month": 9,
-  "updatedAt": "2026-09-20T14:06:44.735Z",
+  "updatedAt": "2026-09-20T14:23:18.951Z",
   "agents": {
     "70000008": {
       "matricule": "70000008",
@@ -3241,7 +3241,16 @@
           "from": "",
           "to": "",
           "shiftType": "shift3",
-          "updatedAt": "2026-09-20T14:06:44.734Z",
+          "updatedAt": "2026-09-20T14:23:18.950Z",
+          "updatedBy": "admin"
+        },
+        "2026-09-15": {
+          "matricule": "70000111",
+          "present": false,
+          "from": "",
+          "to": "",
+          "shiftType": "off",
+          "updatedAt": "2026-09-20T14:23:18.950Z",
           "updatedBy": "admin"
         }
       }
@@ -3516,7 +3525,16 @@
           "from": "",
           "to": "",
           "shiftType": "off",
-          "updatedAt": "2026-09-20T14:06:44.734Z",
+          "updatedAt": "2026-09-20T14:23:18.950Z",
+          "updatedBy": "admin"
+        },
+        "2026-09-15": {
+          "matricule": "70000155",
+          "present": false,
+          "from": "",
+          "to": "",
+          "shiftType": "shift1",
+          "updatedAt": "2026-09-20T14:23:18.950Z",
           "updatedBy": "admin"
         }
       }
@@ -3791,7 +3809,16 @@
           "from": "",
           "to": "",
           "shiftType": "shift1",
-          "updatedAt": "2026-09-20T14:06:44.734Z",
+          "updatedAt": "2026-09-20T14:23:18.950Z",
+          "updatedBy": "admin"
+        },
+        "2026-09-15": {
+          "matricule": "70000164",
+          "present": false,
+          "from": "",
+          "to": "",
+          "shiftType": "shift2",
+          "updatedAt": "2026-09-20T14:23:18.950Z",
           "updatedBy": "admin"
         }
       }
@@ -4066,7 +4093,16 @@
           "from": "",
           "to": "",
           "shiftType": "general",
-          "updatedAt": "2026-09-20T14:06:44.734Z",
+          "updatedAt": "2026-09-20T14:23:18.950Z",
+          "updatedBy": "admin"
+        },
+        "2026-09-15": {
+          "matricule": "70000205",
+          "present": false,
+          "from": "",
+          "to": "",
+          "shiftType": "general",
+          "updatedAt": "2026-09-20T14:23:18.950Z",
           "updatedBy": "admin"
         }
       }
