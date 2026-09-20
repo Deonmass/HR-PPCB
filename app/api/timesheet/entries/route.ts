@@ -133,6 +133,7 @@ export async function PUT(request: Request) {
       mode?: string;
       weekIndex?: number;
       matricule?: string;
+      activatedDateKeys?: string[];
       grid?: Array<{
         matricule: string;
         shifts: Array<{ dateKey: string; shiftType: TimesheetShiftType | null }>;
@@ -163,15 +164,28 @@ export async function PUT(request: Request) {
       }
 
       const periodData = buildTimesheetPeriod(body.year, body.month);
-      const inactiveDateKeys = new Set(
-        periodData.days.filter((day) => day.isInactive).map((day) => day.dateKey),
+      const weekDateKeys = new Set(
+        periodData.days
+          .slice((body.weekIndex as number) * 7, (body.weekIndex as number) * 7 + 7)
+          .map((day) => day.dateKey),
+      );
+      // Jours hors période : exclus sauf réactivation explicite (activatedDateKeys).
+      const activatedOverride = new Set(
+        Array.isArray(body.activatedDateKeys) ? body.activatedDateKeys.filter(Boolean) : [],
+      );
+      const inactiveBlocked = new Set(
+        periodData.days
+          .filter((day) => day.isInactive && !activatedOverride.has(day.dateKey))
+          .map((day) => day.dateKey),
       );
 
       const flatEntries = body.grid
         .filter((row) => allowedMatricules.has(row.matricule))
         .flatMap((row) =>
           row.shifts
-            .filter((shift) => !inactiveDateKeys.has(shift.dateKey))
+            .filter(
+              (shift) => weekDateKeys.has(shift.dateKey) && !inactiveBlocked.has(shift.dateKey),
+            )
             .map((shift) => ({
               matricule: row.matricule,
               dateKey: shift.dateKey,
