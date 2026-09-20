@@ -1,6 +1,28 @@
 {
   "entries": [
     {
+      "id": "log-000919",
+      "at": "2026-09-20T13:53:05.817Z",
+      "userId": "admin",
+      "userName": "Administrateur",
+      "userEmail": "admin",
+      "module": "timesheet",
+      "moduleLabel": "Timesheet",
+      "action": "update",
+      "actionLabel": "Modification",
+      "summary": "Enregistrement planning semaine 1 — Sales and Marketing (9/2026)",
+      "details": "Enregistrement planning semaine 1 — Sales and Marketing (9/2026)",
+      "undoable": false,
+      "undone": false,
+      "meta": {
+        "year": 2026,
+        "month": 9,
+        "department": "Sales and Marketing",
+        "weekIndex": 1,
+        "saved": 28
+      }
+    },
+    {
       "id": "log-000918",
       "at": "2026-09-20T13:48:52.739Z",
       "userId": "admin",
@@ -109847,5 +109869,5 @@
       }
     }
   ],
-  "nextSeq": 919
+  "nextSeq": 920
 }
