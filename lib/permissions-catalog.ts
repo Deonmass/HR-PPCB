@@ -52,17 +52,12 @@ export const PERMISSION_MENU_CATALOG: PermissionMenuGroup[] = withSortedMenus([
       { id: 'employes.heures.export', label: 'HS — Exporter' },
       { id: 'employes.heures.simulation', label: 'HS — Simulation' },
       { id: 'employes.conge', label: 'Congé' },
-    ],
-  },
-  {
-    id: 'poste',
-    label: 'Poste',
-    items: [
-      { id: 'employes.postes', label: 'Postes' },
-      { id: 'employes.recrutement', label: 'Recrutement' },
       { id: 'employes.classification', label: 'Classification des postes' },
+      { id: 'employes.recrutement', label: 'Recrutement' },
       { id: 'employes.offres', label: 'Offres' },
       { id: 'employes.mouvements', label: 'Mouvements' },
+      // Conservé pour compat API / héritage de droits (menu UI retiré).
+      { id: 'employes.postes', label: 'Postes (API)' },
     ],
   },
   {

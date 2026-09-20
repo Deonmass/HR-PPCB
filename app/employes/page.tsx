@@ -39,9 +39,9 @@ import {
   resolveDateFinContrat,
   resolveDateFinPeriodeEssai,
   resolveDureeContratMois,
-  resolveEssaiEcheanceEval,
   resolveEssaiStatutEval,
   essaiStatutClass,
+  TRIAL_EVAL_ALERT_DAYS,
 } from '@/lib/employees-trial';
 import {
   buildColumnFilterValues,
@@ -73,10 +73,8 @@ type FilterKey =
   | 'mois'
   | 'finEssai'
   | 'actions'
-  | 'resp'
   | 'echeance'
-  | 'statut'
-  | 'comment';
+  | 'statut';
 
 const EMPTY_FILTERS: Record<FilterKey, string[]> = {
   matricule: [],
@@ -98,10 +96,8 @@ const EMPTY_FILTERS: Record<FilterKey, string[]> = {
   mois: [],
   finEssai: [],
   actions: [],
-  resp: [],
   echeance: [],
   statut: [],
-  comment: [],
 };
 
 const CURRENT_YEAR = new Date().getFullYear();
@@ -118,6 +114,28 @@ function formatYears(value: number | null): string {
 
 function dateCellClass(value: string): string {
   return isDisplayDatePast(value) ? 'col-date employees-date-past' : 'col-date';
+}
+
+/** Compte à rebours jusqu’à la fin de période d’essai (jours / mois / ans). */
+function formatEssaiCountdown(days: number | null): string {
+  if (days == null) return '—';
+  const n = Math.abs(days);
+  if (n < 30) return `${n} j`;
+  if (n < 365) {
+    const months = Math.max(1, Math.round(n / 30.4375));
+    return months === 1 ? '1 mois' : `${months} mois`;
+  }
+  const years = Math.max(1, Math.round(n / 365.25));
+  return years === 1 ? '1 an' : `${years} ans`;
+}
+
+function essaiCountdownLabel(employee: Employee): string {
+  const fin = resolveDateFinPeriodeEssai(employee);
+  return formatEssaiCountdown(daysUntilDisplayDate(fin));
+}
+
+function essaiStatutLabel(statut: string): string {
+  return statut === 'Overdue' ? 'échu' : statut;
 }
 
 function seniorityParts(employee: Employee, yearFilter: number | '', monthFilter: number | '') {
@@ -340,14 +358,8 @@ export default function EmployesPage() {
         mois: (e) => moisValue(e),
         finEssai: (e) => resolveDateFinPeriodeEssai(e),
         actions: (e) => e.essaiActions,
-        resp: (e) => e.essaiResponsable,
-        echeance: (e) =>
-          resolveEssaiEcheanceEval({
-            ...e,
-            dateFinPeriodeEssai: resolveDateFinPeriodeEssai(e),
-          }),
-        statut: (e) => resolveEssaiStatutEval(e),
-        comment: (e) => e.essaiCommentaire,
+        echeance: (e) => essaiCountdownLabel(e),
+        statut: (e) => essaiStatutLabel(resolveEssaiStatutEval(e)),
       }),
     [toolbarFiltered, yearFilter, monthFilter],
   );
@@ -357,10 +369,6 @@ export default function EmployesPage() {
       toolbarFiltered.filter((e) => {
         const finEssai = resolveDateFinPeriodeEssai(e);
         const finContrat = resolveDateFinContrat(e);
-        const echeance = resolveEssaiEcheanceEval({
-          ...e,
-          dateFinPeriodeEssai: finEssai,
-        });
         return (
           matchesColumnFilter(colFilters.matricule, e.matricule) &&
           matchesColumnFilter(colFilters.nom, e.nom) &&
@@ -381,10 +389,8 @@ export default function EmployesPage() {
           matchesColumnFilter(colFilters.mois, moisValue(e)) &&
           matchesColumnFilter(colFilters.finEssai, finEssai) &&
           matchesColumnFilter(colFilters.actions, e.essaiActions) &&
-          matchesColumnFilter(colFilters.resp, e.essaiResponsable) &&
-          matchesColumnFilter(colFilters.echeance, echeance) &&
-          matchesColumnFilter(colFilters.statut, resolveEssaiStatutEval(e)) &&
-          matchesColumnFilter(colFilters.comment, e.essaiCommentaire)
+          matchesColumnFilter(colFilters.echeance, essaiCountdownLabel(e)) &&
+          matchesColumnFilter(colFilters.statut, essaiStatutLabel(resolveEssaiStatutEval(e)))
         );
       }),
     [toolbarFiltered, colFilters, yearFilter, monthFilter],
@@ -758,7 +764,7 @@ export default function EmployesPage() {
                   >
                     <option value="">Tous les statuts</option>
                     {ESSAI_STATUTS_EVAL.filter((s) => s !== 'Done').map((s) => (
-                      <option key={s} value={s}>{s}</option>
+                      <option key={s} value={s}>{essaiStatutLabel(s)}</option>
                     ))}
                   </select>
                 )}
@@ -837,8 +843,12 @@ export default function EmployesPage() {
                     Rouge — évaluation essai ≤ 30 jours
                   </span>
                   <span className="employees-row-legend-item">
+                    <span className="employees-essai-countdown is-urgent employees-row-legend-date">30 j</span>
+                    Badge rouge — ≤ 1 mois avant fin d&apos;essai (ou déjà échu)
+                  </span>
+                  <span className="employees-row-legend-item">
                     <strong className="employees-date-past employees-row-legend-date">Fin</strong>
-                    Date en rouge gras — Fin essai ou Échéance déjà passée
+                    Date en rouge gras — Fin essai déjà passée
                   </span>
                 </>
               )}
@@ -847,7 +857,9 @@ export default function EmployesPage() {
           <div className="panel employees-list-panel">
             <div className="employees-table-wrap is-compact">
               <table
-                className={`employees-table employees-table-compact${tab === 'essai' || tab === 'cdd' ? ' is-wide' : ''}`}
+                className={`employees-table employees-table-compact${
+                  tab === 'essai' ? ' is-essai' : tab === 'cdd' ? ' is-cdd' : ''
+                }`}
               >
                 <thead>
                   <tr>
@@ -1047,22 +1059,6 @@ export default function EmployesPage() {
                             onChange={(next) => setColFilters((p) => ({ ...p, finEssai: next }))}
                           />
                         </th>
-                        <th className="th-filter emp-col-actions">
-                          <TableHeaderFilter
-                            label="Actions"
-                            values={filterValues.actions}
-                            selected={colFilters.actions}
-                            onChange={(next) => setColFilters((p) => ({ ...p, actions: next }))}
-                          />
-                        </th>
-                        <th className="th-filter emp-col-resp">
-                          <TableHeaderFilter
-                            label="Resp."
-                            values={filterValues.resp}
-                            selected={colFilters.resp}
-                            onChange={(next) => setColFilters((p) => ({ ...p, resp: next }))}
-                          />
-                        </th>
                         <th className="th-filter emp-col-echeance">
                           <TableHeaderFilter
                             label="Échéance"
@@ -1079,12 +1075,12 @@ export default function EmployesPage() {
                             onChange={(next) => setColFilters((p) => ({ ...p, statut: next }))}
                           />
                         </th>
-                        <th className="th-filter emp-col-comment">
+                        <th className="th-filter emp-col-actions">
                           <TableHeaderFilter
-                            label="Comment."
-                            values={filterValues.comment}
-                            selected={colFilters.comment}
-                            onChange={(next) => setColFilters((p) => ({ ...p, comment: next }))}
+                            label="Actions"
+                            values={filterValues.actions}
+                            selected={colFilters.actions}
+                            onChange={(next) => setColFilters((p) => ({ ...p, actions: next }))}
                           />
                         </th>
                       </>
@@ -1094,7 +1090,7 @@ export default function EmployesPage() {
                 <tbody>
                   {filtered.length === 0 ? (
                     <tr>
-                      <td colSpan={14} className="empty-state">
+                      <td colSpan={12} className="empty-state">
                         {tab === 'exit'
                           ? 'Aucune sortie enregistrée.'
                           : tab === 'cdd'
@@ -1130,10 +1126,9 @@ export default function EmployesPage() {
                                     : '';
                       const daysLeft = daysUntilDisplayDate(finEssai);
                       const daysCdd = daysUntilDisplayDate(finContrat);
-                      const echeance = resolveEssaiEcheanceEval({
-                        ...e,
-                        dateFinPeriodeEssai: finEssai,
-                      });
+                      const countdownLabel = formatEssaiCountdown(daysLeft);
+                      const countdownUrgent =
+                        daysLeft != null && daysLeft <= TRIAL_EVAL_ALERT_DAYS;
                       const cddAlerteDate = resolveCddAlerteDate(e);
                       const essaiStatut = resolveEssaiStatutEval(e);
                       return (
@@ -1154,7 +1149,9 @@ export default function EmployesPage() {
                               <td className="col-clip emp-col-service" title={e.service || undefined}>
                                 {e.service || '—'}
                               </td>
-                              <td className="emp-col-loc">{e.localisation || '—'}</td>
+                              <td className="col-clip emp-col-loc" title={e.localisation || undefined}>
+                                {e.localisation || '—'}
+                              </td>
                               <td className="emp-col-contrat">{e.typeContrat || '—'}</td>
                             </>
                           ) : (
@@ -1227,28 +1224,30 @@ export default function EmployesPage() {
                               <td className="col-date emp-col-debut">{e.appointmentDate || '—'}</td>
                               <td className={`emp-col-fin ${dateCellClass(finEssai)}`.trim()}>
                                 {finEssai || '—'}
-                                {evalAlert && daysLeft != null && daysLeft >= 0 && (
-                                  <span className="employees-essai-days" title="Jours restants">
-                                    {' '}J-{daysLeft}
+                              </td>
+                              <td className="emp-col-echeance col-echeance">
+                                {daysLeft == null ? (
+                                  '—'
+                                ) : (
+                                  <span
+                                    className={`employees-essai-countdown${countdownUrgent ? ' is-urgent' : ''}`}
+                                    title={
+                                      daysLeft < 0
+                                        ? `Fin d’essai dépassée depuis ${countdownLabel}`
+                                        : `Restant avant fin d’essai${finEssai ? ` (${finEssai})` : ''}`
+                                    }
+                                  >
+                                    {countdownLabel}
                                   </span>
                                 )}
                               </td>
-                              <td className="col-clip emp-col-actions" title={e.essaiActions || undefined}>
-                                {e.essaiActions || '—'}
-                              </td>
-                              <td className="col-clip emp-col-resp" title={e.essaiResponsable || undefined}>
-                                {e.essaiResponsable || '—'}
-                              </td>
-                              <td className={`emp-col-echeance ${dateCellClass(echeance)} col-echeance`.trim()}>
-                                {echeance || '—'}
-                              </td>
                               <td className="emp-col-statut">
                                 <span className={`employees-essai-status ${essaiStatutClass(essaiStatut)}`}>
-                                  {essaiStatut}
+                                  {essaiStatutLabel(essaiStatut)}
                                 </span>
                               </td>
-                              <td className="col-clip emp-col-comment" title={e.essaiCommentaire || undefined}>
-                                {e.essaiCommentaire || '—'}
+                              <td className="col-clip emp-col-actions" title={e.essaiActions || undefined}>
+                                {e.essaiActions || '—'}
                               </td>
                             </>
                           )}

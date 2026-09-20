@@ -10,6 +10,8 @@ import DashboardListModal, {
 import PermissionGate from '@/components/PermissionGate';
 import RefreshButton from '@/components/RefreshButton';
 import RowContextMenu, { type ContextMenuItem } from '@/components/RowContextMenu';
+import RecrutementExportMenu from '@/components/recrutement/RecrutementExportMenu';
+import RecrutementDashboardView from '@/components/recrutement/RecrutementDashboardView';
 import { usePermissions } from '@/contexts/PermissionContext';
 import {
   RECRUITMENT_BUDGETED,
@@ -21,16 +23,50 @@ import {
   type RecrutementBundle,
   type RecrutementCatalogOption,
   type RecrutementCategory,
-  type RecrutementDashboard,
   type RecrutementInput,
   type RecrutementRowEnriched,
 } from '@/lib/recrutement-types';
 import { confirmDelete, showError, showSuccess } from '@/lib/swal';
 import { useI18n } from '@/contexts/LocaleContext';
+import TableHeaderFilter from '@/components/TableHeaderFilter';
+import {
+  buildColumnFilterValues,
+  countActiveColumnFilters,
+  matchesColumnFilter,
+} from '@/lib/table-column-filters';
+import { localizeJobTitle } from '@/lib/bilingual-title';
+import {
+  countRecrutementByZone,
+  filterRecrutementByZone,
+  sortRecrutementByLocation,
+  type RecrutementLocationZone,
+} from '@/lib/recrutement-location-groups';
 import type { MessageKey } from '@/lib/i18n';
 
 type ModalMode = 'create' | 'edit' | 'view';
+type PageTab = 'dashboard' | 'replacement' | 'new';
 type Translate = (key: MessageKey, vars?: Record<string, string | number>) => string;
+
+type RecColKey =
+  | 'position'
+  | 'grade'
+  | 'status'
+  | 'comments'
+  | 'budgeted'
+  | 'department'
+  | 'location'
+  | 'contract';
+
+const EMPTY_REC_FILTERS: Record<RecColKey, string[]> = {
+  position: [],
+  grade: [],
+  status: [],
+  comments: [],
+  budgeted: [],
+  department: [],
+  location: [],
+  contract: [],
+};
 
 function drillColumns(t: Translate): DashboardListColumn[] {
   return [
@@ -44,7 +80,9 @@ function drillColumns(t: Translate): DashboardListColumn[] {
 }
 
 function statusLabel(status: string, t: Translate): string {
-  switch (String(status).toLowerCase()) {
+  const s = String(status).toLowerCase();
+  if (/cancel/.test(s)) return t('rec.status.cancelled');
+  switch (s) {
     case 'done':
       return t('rec.status.done');
     case 'ongoing':
@@ -69,6 +107,9 @@ function contractLabel(value: string, t: Translate): string {
   const v = String(value).toLowerCase();
   if (v === 'permanent') return t('rec.contract.permanent');
   if (v === 'outsourced') return t('rec.contract.outsourced');
+  if (v === 'fixed-term' || v === 'fixed term' || /durée|duree|détermin|determin/.test(v)) {
+    return t('rec.contract.fixedTerm');
+  }
   return value || '—';
 }
 
@@ -160,15 +201,20 @@ function RecrutementModal({
   onSubmit: () => void;
   onEditFromView?: () => void;
 }) {
-  const { t } = useI18n();
+  const { t, locale } = useI18n();
   const readOnly = mode === 'view';
   const title =
     mode === 'create' ? t('rec.modal.create') : mode === 'edit' ? t('rec.modal.edit') : t('rec.modal.view');
   const query = form.position.trim().toLowerCase();
   const suggestions = useMemo(() => {
     if (!query) return catalog.slice(0, 8);
-    return catalog.filter((c) => c.title.toLowerCase().includes(query)).slice(0, 8);
-  }, [catalog, query]);
+    return catalog
+      .filter((c) => {
+        const localized = localizeJobTitle(c.title, locale).toLowerCase();
+        return c.title.toLowerCase().includes(query) || localized.includes(query);
+      })
+      .slice(0, 8);
+  }, [catalog, query, locale]);
 
   return (
     <div className="modal-overlay open" onClick={() => !saving && onClose()}>
@@ -222,7 +268,7 @@ function RecrutementModal({
               <span>{t('rec.position')} *</span>
               {readOnly ? (
                 <div className="mvt-readonly-value">
-                  <strong>{form.position || '—'}</strong>
+                  <strong>{localizeJobTitle(form.position, locale) || form.position || '—'}</strong>
                 </div>
               ) : (
                 <>
@@ -232,9 +278,12 @@ function RecrutementModal({
                     value={form.position}
                     onChange={(e) => {
                       const position = e.target.value;
-                      const hit = catalog.find(
-                        (c) => c.title.toLowerCase() === position.trim().toLowerCase(),
-                      );
+                      const hit = catalog.find((c) => {
+                        const raw = c.title.toLowerCase();
+                        const loc = localizeJobTitle(c.title, locale).toLowerCase();
+                        const q = position.trim().toLowerCase();
+                        return raw === q || loc === q;
+                      });
                       if (hit) onPickCatalog(hit);
                       else onChange({ ...form, position });
                     }}
@@ -243,10 +292,20 @@ function RecrutementModal({
                   />
                   <datalist id="rec-poste-catalog">
                     {catalog.map((c) => (
-                      <option key={`${c.source}-${c.title}`} value={c.title} />
+                      <option
+                        key={`${c.source}-${c.title}`}
+                        value={c.title}
+                        label={localizeJobTitle(c.title, locale)}
+                      />
                     ))}
                   </datalist>
-                  {suggestions.length > 0 && form.position && !catalog.some((c) => c.title.toLowerCase() === query) ? (
+                  {suggestions.length > 0 && form.position && !catalog.some((c) => {
+                    const q = query;
+                    return (
+                      c.title.toLowerCase() === q
+                      || localizeJobTitle(c.title, locale).toLowerCase() === q
+                    );
+                  }) ? (
                     <div className="rec-suggest-list">
                       {suggestions.map((c) => (
                         <button
@@ -255,7 +314,7 @@ function RecrutementModal({
                           className="rec-suggest-item"
                           onClick={() => onPickCatalog(c)}
                         >
-                          <strong>{c.title}</strong>
+                          <strong>{localizeJobTitle(c.title, locale)}</strong>
                           <span>
                             {[c.department, c.location, c.grade]
                               .filter(Boolean)
@@ -375,7 +434,7 @@ function RecrutementModal({
               <div className="rec-match-head">
                 <strong>{t('rec.catalogLink')}</strong>
                 {preview.catalogTitle ? (
-                  <Link href={`/employes/postes?q=${encodeURIComponent(preview.catalogTitle)}`}>
+                  <Link href={`/employes/classification?q=${encodeURIComponent(preview.catalogTitle)}`}>
                     {t('rec.seeCatalog', { title: preview.catalogTitle })}
                   </Link>
                 ) : null}
@@ -464,74 +523,144 @@ function RecTable({
   onOpen: (row: RecrutementRowEnriched, mode: ModalMode) => void;
   onContext: (e: ReactMouseEvent, row: RecrutementRowEnriched) => void;
 }) {
-  const { t } = useI18n();
+  const { t, locale } = useI18n();
+  const unset = t('rec.unset');
+  const [colFilters, setColFilters] = useState(EMPTY_REC_FILTERS);
+
+  const filterValues = useMemo(
+    () =>
+      buildColumnFilterValues(rows, {
+        position: (r) => localizeJobTitle(r.position, locale),
+        grade: (r) => r.grade,
+        status: (r) => statusLabel(r.status, t),
+        comments: (r) => r.comments,
+        budgeted: (r) => budgetedLabel(r.budgeted || '', t),
+        department: (r) => r.department,
+        location: (r) => (r.location || '').trim() || unset,
+        contract: (r) => contractLabel(r.contractType || '', t),
+      }),
+    [rows, locale, t, unset],
+  );
+
+  const filteredRows = useMemo(
+    () =>
+      rows.filter(
+        (r) =>
+          matchesColumnFilter(colFilters.position, localizeJobTitle(r.position, locale)) &&
+          matchesColumnFilter(colFilters.grade, r.grade) &&
+          matchesColumnFilter(colFilters.status, statusLabel(r.status, t)) &&
+          matchesColumnFilter(colFilters.comments, r.comments) &&
+          matchesColumnFilter(colFilters.budgeted, budgetedLabel(r.budgeted || '', t)) &&
+          matchesColumnFilter(colFilters.department, r.department) &&
+          matchesColumnFilter(colFilters.location, (r.location || '').trim() || unset) &&
+          matchesColumnFilter(colFilters.contract, contractLabel(r.contractType || '', t)),
+      ),
+    [rows, colFilters, locale, t, unset],
+  );
+
+  const activeFilterCount = countActiveColumnFilters(colFilters);
+  const sortedRows = sortRecrutementByLocation(filteredRows);
+
   return (
-    <div className="table-wrap rec-table-wrap">
-      <table className="data-table rec-table">
-        <thead>
-          <tr>
-            <th>{t('rec.col.position')}</th>
-            <th>{t('rec.col.grade')}</th>
-            <th>{t('rec.col.status')}</th>
-            <th>{t('rec.col.comments')}</th>
-            <th>{t('rec.col.budgeted')}</th>
-            <th>{t('rec.col.department')}</th>
-            <th>{t('rec.col.location')}</th>
-            <th>{t('rec.col.contract')}</th>
-          </tr>
-        </thead>
-        <tbody>
-          {rows.length === 0 ? (
+    <div className="rec-table-shell">
+      {activeFilterCount > 0 ? (
+        <div className="rec-table-filter-bar">
+          <button
+            type="button"
+            className="btn btn-ghost btn-sm"
+            onClick={() => setColFilters(EMPTY_REC_FILTERS)}
+          >
+            {t('rec.clearFilters', { count: activeFilterCount })}
+          </button>
+          <span className="rec-tab-meta">
+            {t(filteredRows.length === 1 ? 'rec.rows' : 'rec.rowsPlural', {
+              count: filteredRows.length,
+            })}
+          </span>
+        </div>
+      ) : null}
+      <div className="table-wrap rec-table-wrap">
+        <table className="data-table rec-table">
+          <thead>
             <tr>
-              <td colSpan={8} className="empty-state">
-                {t('rec.empty')}
-              </td>
+              {(
+                [
+                  ['position', t('rec.col.position')],
+                  ['grade', t('rec.col.grade')],
+                  ['status', t('rec.col.status')],
+                  ['comments', t('rec.col.comments')],
+                  ['budgeted', t('rec.col.budgeted')],
+                  ['department', t('rec.col.department')],
+                  ['location', t('rec.col.location')],
+                  ['contract', t('rec.col.contract')],
+                ] as const
+              ).map(([key, label]) => (
+                <th key={key} className="th-filter">
+                  <TableHeaderFilter
+                    label={label}
+                    values={filterValues[key]}
+                    selected={colFilters[key]}
+                    onChange={(next) => setColFilters((p) => ({ ...p, [key]: next }))}
+                  />
+                </th>
+              ))}
             </tr>
-          ) : (
-            rows.map((row) => (
-              <tr
-                key={row.id}
-                className={`${canEdit ? 'has-context-menu' : ''}${row.filledInAugust ? ' rec-row-filled' : ''}`}
-                onDoubleClick={() => onOpen(row, canEdit ? 'edit' : 'view')}
-                onContextMenu={(e) => onContext(e, row)}
-              >
-                <td>
-                  <div className="rec-pos-cell">
-                    <strong>{row.position}</strong>
-                    {row.filledInAugust || row.recruitmentDates.length ? (
-                      <span className={`rec-chip${row.filledInAugust ? ' rec-chip-august' : ''}`}>
-                        {datesLabel(row, t)}
-                      </span>
-                    ) : null}
-                    {row.catalogMatch ? (
-                      <Link
-                        className="rec-chip rec-chip-match"
-                        href={`/employes/postes?q=${encodeURIComponent(row.catalogTitle)}`}
-                        onClick={(e) => e.stopPropagation()}
-                        title={t('rec.seeInCatalog')}
-                      >
-                        {row.catalogTitle}
-                        {row.occupants.length
-                          ? ` · ${t(row.occupants.length === 1 ? 'rec.occupants' : 'rec.occupantsPlural', { count: row.occupants.length })}`
-                          : ''}
-                      </Link>
-                    ) : null}
-                  </div>
+          </thead>
+          <tbody>
+            {sortedRows.length === 0 ? (
+              <tr>
+                <td colSpan={8} className="empty-state">
+                  {t('rec.empty')}
                 </td>
-                <td>{row.grade || '—'}</td>
-                <td>
-                  <span className={`rec-status ${statusClass(row.status)}`}>{statusLabel(row.status, t)}</span>
-                </td>
-                <td className="rec-comments">{row.comments || '—'}</td>
-                <td>{budgetedLabel(row.budgeted || '', t)}</td>
-                <td>{row.department || '—'}</td>
-                <td>{row.location || '—'}</td>
-                <td>{contractLabel(row.contractType || '', t)}</td>
               </tr>
-            ))
-          )}
-        </tbody>
-      </table>
+            ) : (
+              sortedRows.map((row) => (
+                <tr
+                  key={row.id}
+                  className={`${canEdit ? 'has-context-menu' : ''}${row.filledInAugust ? ' rec-row-filled' : ''}`}
+                  onDoubleClick={() => onOpen(row, canEdit ? 'edit' : 'view')}
+                  onContextMenu={(e) => onContext(e, row)}
+                >
+                  <td>
+                    <div className="rec-pos-cell">
+                      <strong>{localizeJobTitle(row.position, locale)}</strong>
+                      {row.filledInAugust || row.recruitmentDates.length ? (
+                        <span className={`rec-chip${row.filledInAugust ? ' rec-chip-august' : ''}`}>
+                          {datesLabel(row, t)}
+                        </span>
+                      ) : null}
+                      {row.catalogMatch ? (
+                        <Link
+                          className="rec-chip rec-chip-match"
+                          href={`/employes/classification?q=${encodeURIComponent(row.catalogTitle)}`}
+                          onClick={(e) => e.stopPropagation()}
+                          title={t('rec.seeInCatalog')}
+                        >
+                          {localizeJobTitle(row.catalogTitle, locale)}
+                          {row.occupants.length
+                            ? ` · ${t(row.occupants.length === 1 ? 'rec.occupants' : 'rec.occupantsPlural', { count: row.occupants.length })}`
+                            : ''}
+                        </Link>
+                      ) : null}
+                    </div>
+                  </td>
+                  <td>{row.grade || '—'}</td>
+                  <td>
+                    <span className={`rec-status ${statusClass(row.status)}`}>
+                      {statusLabel(row.status, t)}
+                    </span>
+                  </td>
+                  <td className="rec-comments">{row.comments || '—'}</td>
+                  <td>{budgetedLabel(row.budgeted || '', t)}</td>
+                  <td>{row.department || '—'}</td>
+                  <td>{row.location || '—'}</td>
+                  <td>{contractLabel(row.contractType || '', t)}</td>
+                </tr>
+              ))
+            )}
+          </tbody>
+        </table>
+      </div>
     </div>
   );
 }
@@ -547,13 +676,18 @@ export default function RecrutementPage() {
     || can('employes.postes', 'edit');
   const canEdit = can('employes.recrutement', 'edit') || can('employes.postes', 'edit');
   const canDelete = can('employes.recrutement', 'delete') || can('employes.postes', 'delete');
+  const canExport =
+    can('employes.recrutement', 'export')
+    || can('employes.recrutement', 'view')
+    || can('employes.classification', 'export')
+    || can('employes.postes', 'export');
 
-  type PageTab = 'dashboard' | RecrutementCategory;
   const [bundle, setBundle] = useState<RecrutementBundle | null>(null);
   const [loading, setLoading] = useState(true);
   const [refreshing, setRefreshing] = useState(false);
   const [search, setSearch] = useState('');
   const [activeTab, setActiveTab] = useState<PageTab>('dashboard');
+  const [locationZone, setLocationZone] = useState<RecrutementLocationZone>('all');
   const [modalOpen, setModalOpen] = useState(false);
   const [modalMode, setModalMode] = useState<ModalMode>('create');
   const [form, setForm] = useState<RecrutementInput>(EMPTY_FORM);
@@ -589,24 +723,29 @@ export default function RecrutementPage() {
   }, [load]);
 
   const rows = bundle?.rows || [];
-  const dashboard: RecrutementDashboard | null = bundle?.dashboard ?? null;
   const catalog = bundle?.catalog || [];
+
+  const zoneCounts = useMemo(() => countRecrutementByZone(rows), [rows]);
+
+  const scopedRows = useMemo(
+    () => filterRecrutementByZone(rows, locationZone),
+    [rows, locationZone],
+  );
 
   const filtered = useMemo(() => {
     const q = search.trim().toLowerCase();
-    if (!q) return rows;
-    return rows.filter((r) =>
+    if (!q) return scopedRows;
+    return scopedRows.filter((r) =>
       [r.position, r.grade, r.status, r.comments, r.department, r.location, r.contractType, r.catalogTitle]
         .join(' ')
         .toLowerCase()
         .includes(q),
     );
-  }, [rows, search]);
+  }, [scopedRows, search]);
 
   const replacements = filtered.filter((r) => r.category === 'replacement');
   const newPositions = filtered.filter((r) => r.category === 'new');
   const tabRows = activeTab === 'replacement' ? replacements : activeTab === 'new' ? newPositions : [];
-  const listCount = activeTab === 'replacement' ? replacements.length : activeTab === 'new' ? newPositions.length : filtered.length;
 
   const activeRow = rows.find((r) => r.id === activeId) || null;
   const preview = useMemo(() => {
@@ -719,7 +858,7 @@ export default function RecrutementPage() {
   const openDrill = (title: string, predicate: (r: RecrutementRowEnriched) => boolean) => {
     setDrill({
       title,
-      rows: rows.filter(predicate).map((r) => rowToCells(r, t)),
+      rows: scopedRows.filter(predicate).map((r) => rowToCells(r, t)),
     });
   };
 
@@ -738,7 +877,7 @@ export default function RecrutementPage() {
                 label: t('rec.openPoste'),
                 icon: 'doc' as const,
                 onClick: () =>
-                  router.push(`/employes/postes?q=${encodeURIComponent(contextMenu.item.catalogTitle)}`),
+                  router.push(`/employes/classification?q=${encodeURIComponent(contextMenu.item.catalogTitle)}`),
               },
             ]
           : []),
@@ -780,23 +919,26 @@ export default function RecrutementPage() {
         { menuId: 'employes.liste', action: 'view' },
       ]}
     >
-      <div className="mvt-page rec-page">
-        <div className="page-header page-header-with-tabs mvt-page-header">
-          <div>
+      <div className="mvt-page mvt-page-fill rec-page">
+        <div className="page-header page-header-with-tabs mvt-page-header rec-page-header">
+          <div className="rec-page-header-main">
             <div className="page-header-title-row">
               <h2>{t('rec.title')}</h2>
               <RefreshButton onClick={() => load(true)} loading={refreshing} />
             </div>
-            <p className="mvt-page-sub">
-              {t('rec.subtitle')}
-              <span className="mvt-count-pill">
-                {listCount}
-                {activeTab !== 'dashboard' && filtered.length !== rows.length ? ` / ${rows.length}` : ''}
-              </span>
-            </p>
           </div>
-          <div className="page-header-actions mvt-header-actions">
-            <div className="tabs header-tabs header-tabs-compact mvt-tabs" role="tablist">
+          <div className="page-header-actions mvt-header-actions rec-header-actions">
+            {canExport ? <RecrutementExportMenu disabled={loading || !rows.length} /> : null}
+            {canCreate ? (
+              <button
+                type="button"
+                className="btn btn-primary btn-sm mvt-primary-btn"
+                onClick={() => openCreate(createCategory)}
+              >
+                {t('common.add')}
+              </button>
+            ) : null}
+            <div className="tabs header-tabs header-tabs-compact mvt-tabs rec-main-tabs" role="tablist">
               {(
                 [
                   ['dashboard', t('rec.tab.dashboard')],
@@ -813,98 +955,45 @@ export default function RecrutementPage() {
                   onClick={() => setActiveTab(id)}
                 >
                   {label}
-                  {id === 'replacement' ? <span className="rec-header-tab-count">{replacements.length}</span> : null}
-                  {id === 'new' ? <span className="rec-header-tab-count">{newPositions.length}</span> : null}
+                  {id === 'replacement' ? (
+                    <span className="rec-header-tab-count">{replacements.length}</span>
+                  ) : null}
+                  {id === 'new' ? (
+                    <span className="rec-header-tab-count">{newPositions.length}</span>
+                  ) : null}
                 </button>
               ))}
             </div>
-            {canCreate ? (
-              <button
-                type="button"
-                className="btn btn-primary btn-sm mvt-primary-btn"
-                onClick={() => openCreate(createCategory)}
-              >
-                {t('common.add')}
-              </button>
-            ) : null}
           </div>
         </div>
 
-        {activeTab === 'dashboard' && dashboard ? (
-          <section className="rec-dashboard">
-            <p className="rec-dashboard-hint">{t('rec.dashboard.hint')}</p>
-            <div className="travel-history-cards mvt-kpi-strip postes-kpi-strip rec-kpi-strip">
+        <div className="rec-zone-toolbar">
+          <div className="rec-zone-tabs" role="tablist" aria-label={t('rec.zone.label')}>
+            {(
+              [
+                ['all', t('rec.zone.all'), rows.length],
+                ['plant', t('rec.zone.plant'), zoneCounts.plant],
+                ['hq', t('rec.zone.hq'), zoneCounts.hq],
+                ['region', t('rec.zone.region'), zoneCounts.region],
+              ] as const
+            ).map(([id, label, count]) => (
               <button
+                key={id}
                 type="button"
-                className="card card-glow card-glow-red travel-history-card postes-kpi-card"
-                title={t('rec.drill.all')}
-                onClick={() => openDrill(t('rec.drill.all'), () => true)}
+                role="tab"
+                aria-selected={locationZone === id}
+                className={`rec-zone-tab${locationZone === id ? ' is-active' : ''}`}
+                onClick={() => setLocationZone(id)}
               >
-                <div className="card-label">{t('rec.kpi.total')}</div>
-                <div className="card-value">{dashboard.total}</div>
+                <span>{label}</span>
+                <em>{count}</em>
               </button>
-              <button
-                type="button"
-                className="card card-glow card-glow-cyan travel-history-card postes-kpi-card"
-                title={t('rec.drill.replacements')}
-                onClick={() => {
-                  setActiveTab('replacement');
-                }}
-              >
-                <div className="card-label">{t('rec.kpi.replacements')}</div>
-                <div className="card-value">{dashboard.replacements}</div>
-              </button>
-              <button
-                type="button"
-                className="card card-glow card-glow-violet travel-history-card postes-kpi-card"
-                title={t('rec.drill.newPositions')}
-                onClick={() => {
-                  setActiveTab('new');
-                }}
-              >
-                <div className="card-label">{t('rec.kpi.newPositions')}</div>
-                <div className="card-value">{dashboard.newPositions}</div>
-              </button>
-              <button
-                type="button"
-                className="card card-glow card-glow-amber travel-history-card postes-kpi-card"
-                title={t('rec.drill.ongoing')}
-                onClick={() =>
-                  openDrill(t('rec.drill.ongoing'), (r) => r.status.toLowerCase() === 'ongoing')
-                }
-              >
-                <div className="card-label">{t('rec.kpi.ongoing')}</div>
-                <div className="card-value">{dashboard.ongoing}</div>
-              </button>
-              <button
-                type="button"
-                className="card card-glow card-glow-green travel-history-card postes-kpi-card"
-                title={t('rec.drill.done')}
-                onClick={() => openDrill(t('rec.drill.done'), (r) => r.status.toLowerCase() === 'done')}
-              >
-                <div className="card-label">{t('rec.kpi.done')}</div>
-                <div className="card-value">{dashboard.done}</div>
-              </button>
-              <button
-                type="button"
-                className="card card-glow card-glow-red travel-history-card postes-kpi-card rec-kpi-month"
-                title={t('rec.drill.august')}
-                onClick={() =>
-                  openDrill(t('rec.drill.august'), (r) => r.filledInAugust)
-                }
-              >
-                <div className="card-label">{t('rec.kpi.filledAugust')}</div>
-                <div className="card-value">{dashboard.filledAugust}</div>
-              </button>
-            </div>
-          </section>
-        ) : null}
-
-        {activeTab === 'replacement' || activeTab === 'new' ? (
-          <section className="exco-panel rec-table-card">
-            <div className="rec-toolbar-in-card">
+            ))}
+          </div>
+          {activeTab === 'replacement' || activeTab === 'new' ? (
+            <div className="rec-zone-search">
               <label className="mvt-search">
-                <svg viewBox="0 0 24 24" width="16" height="16" aria-hidden>
+                <svg viewBox="0 0 24 24" width="14" height="14" aria-hidden>
                   <circle cx="11" cy="11" r="7" fill="none" stroke="currentColor" strokeWidth="2" />
                   <path d="M20 20l-3.5-3.5" fill="none" stroke="currentColor" strokeWidth="2" />
                 </svg>
@@ -924,6 +1013,21 @@ export default function RecrutementPage() {
                 {t(tabRows.length === 1 ? 'rec.rows' : 'rec.rowsPlural', { count: tabRows.length })}
               </span>
             </div>
+          ) : null}
+        </div>
+
+        {activeTab === 'dashboard' ? (
+          <div className="rec-dashboard-scroll">
+            <RecrutementDashboardView
+              rows={filtered}
+              onDrill={openDrill}
+              onOpenTab={(tab) => setActiveTab(tab)}
+            />
+          </div>
+        ) : null}
+
+        {activeTab === 'replacement' || activeTab === 'new' ? (
+          <section className="exco-panel rec-table-card">
             <RecTable
               rows={tabRows}
               canEdit={canEdit || canCreate}

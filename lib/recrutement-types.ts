@@ -7,7 +7,7 @@ export const RECRUITMENT_STATUSES = ['Not started', 'Started', 'Ongoing', 'Done'
 export type RecrutementStatus = (typeof RECRUITMENT_STATUSES)[number];
 
 export const RECRUITMENT_BUDGETED = ['Yes', 'No'] as const;
-export const RECRUITMENT_CONTRACTS = ['Permanent', 'Outsourced'] as const;
+export const RECRUITMENT_CONTRACTS = ['Permanent', 'Outsourced', 'Fixed-term'] as const;
 
 export interface RecrutementOccupant {
   matricule: string;

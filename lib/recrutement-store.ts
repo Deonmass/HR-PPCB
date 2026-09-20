@@ -8,6 +8,7 @@ import {
   hydrateDurableFile,
   persistDurableFile,
 } from './durable-fs';
+import { listClassificationPostes } from './classification-store';
 import { DEFAULT_RECRUITMENT_ROWS } from './exco-recruitment-fy27';
 import { readEmployeesBundle } from './employees-json-store';
 import { getPostesBundle } from './postes-store';
@@ -177,31 +178,27 @@ function buildDashboard(rows: RecrutementRowEnriched[]): RecrutementDashboard {
 }
 
 async function enrichAll(rows: RecrutementRow[]): Promise<RecrutementBundle> {
-  const [postes, { employees }] = await Promise.all([getPostesBundle(), readEmployeesBundle()]);
+  const [classification, postes, { employees }] = await Promise.all([
+    listClassificationPostes(),
+    getPostesBundle().catch(() => ({ vacants: [] as Awaited<ReturnType<typeof getPostesBundle>>['vacants'] })),
+    readEmployeesBundle(),
+  ]);
   const enriched = rows.map((row) =>
-    enrichRecrutementRow(row, postes.groups, postes.vacants, employees),
+    enrichRecrutementRow(row, classification, postes.vacants || [], employees),
   );
   const catalogMap = new Map<string, RecrutementCatalogOption>();
-  for (const g of postes.groups) {
-    catalogMap.set(`c:${g.title.toLowerCase()}`, {
-      title: g.title,
-      department: g.department,
-      location: g.location,
-      grade: g.grade,
-      occupants: g.count,
-      source: 'catalogue',
-    });
-  }
-  for (const v of postes.vacants) {
-    const key = `v:${v.title.toLowerCase()}`;
-    if (catalogMap.has(`c:${v.title.toLowerCase()}`)) continue;
+  for (const poste of classification) {
+    const title = String(poste.title || '').trim();
+    if (!title) continue;
+    const key = title.toLowerCase();
+    if (catalogMap.has(key)) continue;
     catalogMap.set(key, {
-      title: v.title,
-      department: v.department,
-      location: v.location,
-      grade: v.grade,
+      title,
+      department: poste.department || '',
+      location: poste.location || '',
+      grade: poste.gradeNouveau || poste.gradePaterson || '',
       occupants: 0,
-      source: 'vacant',
+      source: 'catalogue',
     });
   }
   const catalog = [...catalogMap.values()].sort((a, b) => a.title.localeCompare(b.title, 'fr'));

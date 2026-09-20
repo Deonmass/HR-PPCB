@@ -1,4 +1,5 @@
-import type { PosteGroup, VacantPoste } from './postes-types';
+import type { ClassificationPoste } from './classification-types';
+import type { VacantPoste } from './postes-types';
 import {
   isAugust2026,
   normalizeRecrutementStatus,
@@ -87,15 +88,16 @@ function occupantFromEmployee(emp: Employee): RecrutementOccupant {
   };
 }
 
-function scoreGroup(row: RecrutementRow, group: PosteGroup, title: string): number {
-  if (!titlesMatch(title, group.title)) return 0;
+function scoreClassification(row: RecrutementRow, poste: ClassificationPoste, title: string): number {
+  if (!titlesMatch(title, poste.title)) return 0;
   let score = 40;
-  if (fold(title) === fold(group.title)) score += 30;
-  if (row.location && locationsCompatible(row.location, group.location)) score += 20;
-  if (row.department && fold(row.department) && fold(group.department).includes(fold(row.department))) {
+  if (fold(title) === fold(poste.title)) score += 30;
+  if (row.location && locationsCompatible(row.location, poste.location)) score += 20;
+  if (row.department && fold(row.department) && fold(poste.department).includes(fold(row.department))) {
     score += 8;
   }
-  if (row.grade && fold(row.grade) === fold(group.grade)) score += 6;
+  const grade = poste.gradeNouveau || poste.gradePaterson || '';
+  if (row.grade && fold(row.grade) === fold(grade)) score += 6;
   return score;
 }
 
@@ -109,38 +111,27 @@ function filterOccupants(
 
 export function enrichRecrutementRow(
   row: RecrutementRow,
-  groups: PosteGroup[],
+  classification: ClassificationPoste[],
   vacants: VacantPoste[],
   employees: Employee[],
 ): RecrutementRowEnriched {
   const { title, slots } = parseSlotsFromPosition(row.position);
-  let best: PosteGroup | null = null;
+  let best: ClassificationPoste | null = null;
   let bestScore = 0;
-  for (const group of groups) {
-    const score = scoreGroup(row, group, title);
+  for (const poste of classification) {
+    const score = scoreClassification(row, poste, title);
     if (score > bestScore) {
-      best = group;
+      best = poste;
       bestScore = score;
     }
   }
 
-  const empByMat = new Map(employees.map((e) => [e.matricule, e]));
-  let occupants: RecrutementOccupant[] = [];
-  if (best && bestScore >= 40) {
-    occupants = best.occupants
-      .map((o) => empByMat.get(o.matricule))
-      .filter((e): e is Employee => e != null && String(e.statut || '').toLowerCase() !== 'inactive')
-      .map(occupantFromEmployee);
-    occupants = filterOccupants(occupants, row.location);
-  }
-
-  if (!occupants.length) {
-    occupants = employees
-      .filter((e) => String(e.statut || '').toLowerCase() !== 'inactive')
-      .filter((e) => titlesMatch(title, e.jobTitle || e.position || ''))
-      .filter((e) => locationsCompatible(row.location, e.localisation))
-      .map(occupantFromEmployee);
-  }
+  let occupants = employees
+    .filter((e) => String(e.statut || '').toLowerCase() !== 'inactive')
+    .filter((e) => titlesMatch(title, e.jobTitle || e.position || ''))
+    .filter((e) => locationsCompatible(row.location, e.localisation))
+    .map(occupantFromEmployee);
+  occupants = filterOccupants(occupants, row.location);
 
   if (row.category === 'new') {
     const recent = occupants.filter((o) => o.appointmentIso && o.appointmentIso >= '2026-08-01');

@@ -677,22 +677,6 @@ export default function AccueilPage() {
                     </span>
                   </Link>
                 )}
-                {can('employes.postes', 'view') && (
-                  <Link href="/employes/postes" className="panel home-module-panel home-coming-card">
-                    <div className="home-coming-card-head">
-                      <span className="home-coming-card-icon" aria-hidden>
-                        <DocIcon name="rrf" />
-                      </span>
-                      <div>
-                        <h3>{t('home.poste.postes')}</h3>
-                        <p>{t('home.poste.postesSub')}</p>
-                      </div>
-                    </div>
-                    <span className="home-coming-badge" style={{ color: '#047857', background: '#ecfdf5', borderColor: '#a7f3d0' }}>
-                      {t('common.open')}
-                    </span>
-                  </Link>
-                )}
                 {can('employes.recrutement', 'view') && (
                   <Link href="/employes/recrutement" className="panel home-module-panel home-coming-card">
                     <div className="home-coming-card-head">
@@ -709,7 +693,7 @@ export default function AccueilPage() {
                     </span>
                   </Link>
                 )}
-                {can('employes.classification', 'view') && (
+                {(can('employes.classification', 'view') || can('employes.postes', 'view')) && (
                   <Link href="/employes/classification" className="panel home-module-panel home-coming-card">
                     <div className="home-coming-card-head">
                       <span className="home-coming-card-icon" aria-hidden>

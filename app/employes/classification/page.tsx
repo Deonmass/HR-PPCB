@@ -1,6 +1,7 @@
 'use client';
 
-import { useCallback, useEffect, useMemo, useState, type MouseEvent as ReactMouseEvent, type ReactNode } from 'react';
+import { Suspense, useCallback, useEffect, useMemo, useState, type MouseEvent as ReactMouseEvent, type ReactNode } from 'react';
+import { useSearchParams } from 'next/navigation';
 import DashboardListModal, {
   type DashboardListColumn,
   type DashboardListRow,
@@ -24,6 +25,8 @@ import {
   type ClassificationPosteInput,
   type ClassificationStatRow,
 } from '@/lib/classification-types';
+import { localizeJobTitle } from '@/lib/bilingual-title';
+import { useI18n } from '@/contexts/LocaleContext';
 import { confirmDelete, showError, showSuccess } from '@/lib/swal';
 import { triggerDownload } from '@/lib/declaration-download-client';
 import {
@@ -71,11 +74,11 @@ function toForm(poste?: ClassificationPoste | null, preset?: Partial<Classificat
   };
 }
 
-function posteToRow(poste: ClassificationPoste): DashboardListRow {
+function posteToRow(poste: ClassificationPoste, locale: 'fr' | 'en' = 'fr'): DashboardListRow {
   return {
     id: poste.id,
     cells: {
-      title: poste.title,
+      title: localizeJobTitle(poste.title, locale),
       department: poste.department || '—',
       location: poste.location || '—',
       classification: poste.classification || '—',
@@ -570,7 +573,17 @@ function PosteModal({
 }
 
 export default function ClassificationPage() {
+  return (
+    <Suspense fallback={<div className="mvt-page"><p className="empty-state">Chargement…</p></div>}>
+      <ClassificationPageInner />
+    </Suspense>
+  );
+}
+
+function ClassificationPageInner() {
   const { can } = usePermissions();
+  const { locale } = useI18n();
+  const searchParams = useSearchParams();
   const canCreate =
     can('employes.classification', 'create')
     || can('employes.postes', 'create')
@@ -594,7 +607,7 @@ export default function ClassificationPage() {
   const [loading, setLoading] = useState(true);
   const [refreshing, setRefreshing] = useState(false);
   const [exporting, setExporting] = useState(false);
-  const [search, setSearch] = useState('');
+  const [search, setSearch] = useState(() => searchParams.get('q')?.trim() || '');
   const [colFilters, setColFilters] = useState<Record<FilterKey, string[]>>(EMPTY_FILTERS);
   const [collapsed, setCollapsed] = useState<Record<string, boolean>>({});
   const [contextMenu, setContextMenu] = useState<
@@ -609,6 +622,13 @@ export default function ClassificationPage() {
     saving: boolean;
   } | null>(null);
   const [drill, setDrill] = useState<{ title: string; rows: DashboardListRow[] } | null>(null);
+
+  useEffect(() => {
+    const q = searchParams.get('q')?.trim();
+    if (!q) return;
+    setSearch(q);
+    setTab('tableau');
+  }, [searchParams]);
 
   const load = useCallback(async (isRefresh = false) => {
     if (isRefresh) setRefreshing(true);
@@ -675,6 +695,8 @@ export default function ClassificationPage() {
       if (q) {
         const hay = [
           p.title,
+          localizeJobTitle(p.title, 'fr'),
+          localizeJobTitle(p.title, 'en'),
           p.department,
           p.location,
           p.classification,
@@ -685,14 +707,17 @@ export default function ClassificationPage() {
           .toLowerCase();
         if (!hay.includes(q)) return false;
       }
-      if (!matchesColumnFilter(colFilters.title, p.title)) return false;
+      const titleForFilter = localizeJobTitle(p.title, locale);
+      if (!matchesColumnFilter(colFilters.title, titleForFilter) && !matchesColumnFilter(colFilters.title, p.title)) {
+        return false;
+      }
       if (!matchesColumnFilter(colFilters.department, p.department || p.departmentShort)) return false;
       if (!matchesColumnFilter(colFilters.location, p.location)) return false;
       if (!matchesColumnFilter(colFilters.grade, p.gradeNouveau || p.gradePaterson)) return false;
       if (!matchesColumnFilter(colFilters.classification, p.classification)) return false;
       return true;
     });
-  }, [postes, search, colFilters]);
+  }, [postes, search, colFilters, locale]);
 
   const groups = useMemo(() => {
     const map = new Map<string, ClassificationPoste[]>();
@@ -714,13 +739,13 @@ export default function ClassificationPage() {
   const filterValues = useMemo(
     () =>
       buildColumnFilterValues(postes, {
-        title: (p) => p.title,
+        title: (p) => localizeJobTitle(p.title, locale),
         department: (p) => p.department || p.departmentShort,
         location: (p) => p.location,
         grade: (p) => p.gradeNouveau || p.gradePaterson,
         classification: (p) => p.classification,
       }),
-    [postes],
+    [postes, locale],
   );
   const activeFilters = countActiveColumnFilters(colFilters);
 
@@ -763,7 +788,10 @@ export default function ClassificationPage() {
   };
 
   const removePoste = async (poste: ClassificationPoste) => {
-    const ok = await confirmDelete(`Supprimer « ${poste.title} » ?`, 'Cette action est irréversible.');
+    const ok = await confirmDelete(
+      `Supprimer « ${localizeJobTitle(poste.title, locale)} » ?`,
+      'Cette action est irréversible.',
+    );
     if (!ok) return;
     try {
       const res = await fetch(`/api/employes/classification/${poste.id}`, { method: 'DELETE' });
@@ -951,7 +979,7 @@ export default function ClassificationPage() {
               dashboard={dashboard}
               onOpenTable={() => setTab('tableau')}
               onDrill={(title, predicate) =>
-                setDrill({ title, rows: postes.filter(predicate).map(posteToRow) })
+                setDrill({ title, rows: postes.filter(predicate).map((p) => posteToRow(p, locale)) })
               }
             />
           )}
@@ -1050,7 +1078,7 @@ export default function ClassificationPage() {
                               onDoubleClick={() => openView(poste)}
                             >
                               <td />
-                              <td><strong>{poste.title}</strong></td>
+                              <td><strong>{localizeJobTitle(poste.title, locale)}</strong></td>
                               <td>{poste.department || '—'}</td>
                               <td>{poste.location || '—'}</td>
                               <td>{poste.gradeNouveau || poste.gradePaterson || '—'}</td>

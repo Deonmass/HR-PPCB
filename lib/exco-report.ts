@@ -778,7 +778,7 @@ async function computeBlock(
       delta: null as number | null,
     }));
   for (const [site, count] of siteMap) {
-    if (!EXCO_SITE_ORDER.includes(site)) {
+    if (!(EXCO_SITE_ORDER as readonly string[]).includes(site)) {
       headcountBySite.push({ site, headcount: count, delta: null });
     }
   }

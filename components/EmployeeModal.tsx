@@ -21,6 +21,13 @@ import { emptyEmployeeHrProfile } from '@/lib/types';
 import type { DepartmentSetting, ServiceSetting } from '@/lib/auth-types';
 import { applyEmployeeServicePrefill } from '@/lib/employee-utils';
 import { normalizeServiceName } from '@/lib/exco-department-map';
+import { localizeJobTitle } from '@/lib/bilingual-title';
+import {
+  employeeFieldsFromClassification,
+  findClassificationPoste,
+  type ClassificationPosteRef,
+} from '@/lib/classification-poste-apply';
+import { useI18n } from '@/contexts/LocaleContext';
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 
 interface Props {
@@ -96,10 +103,20 @@ function trialMonthsForGrade(grade: string): number | null {
   return CLASSIFICATION_RULES[resolveClassification(trimmed)].trialMonths;
 }
 
-function filterPosteTitles(titles: string[], query: string): string[] {
+function filterPosteTitles(
+  titles: string[],
+  query: string,
+  locale: 'fr' | 'en',
+): string[] {
   const q = query.trim().toLowerCase();
   if (!q) return titles.slice(0, 20);
-  return titles.filter((title) => title.toLowerCase().includes(q)).slice(0, 20);
+  return titles
+    .filter((title) => {
+      const raw = title.toLowerCase();
+      const localized = localizeJobTitle(title, locale).toLowerCase();
+      return raw.includes(q) || localized.includes(q);
+    })
+    .slice(0, 20);
 }
 
 function NameSearchDoneIcon() {
@@ -128,6 +145,7 @@ export default function EmployeeModal({
   onClose,
   onSave,
 }: Props) {
+  const { locale } = useI18n();
   const [form, setForm] = useState<Employee>(blankEmployee);
   const [saving, setSaving] = useState(false);
   const [fetchedEmployees, setFetchedEmployees] = useState<Employee[]>([]);
@@ -138,6 +156,7 @@ export default function EmployeeModal({
   const [posteGroups, setPosteGroups] = useState<PosteGroup[]>([]);
   const [vacants, setVacants] = useState<VacantPoste[]>([]);
   const [posteTitles, setPosteTitles] = useState<string[]>([]);
+  const [classificationPostes, setClassificationPostes] = useState<ClassificationPosteRef[]>([]);
   const [companyOptions, setCompanyOptions] = useState<string[]>(DEFAULT_COMPANIES);
   const [postePickerOpen, setPostePickerOpen] = useState(false);
   const [departments, setDepartments] = useState<DepartmentSetting[]>([]);
@@ -186,10 +205,11 @@ export default function EmployeeModal({
         : fetch('/api/employees').then((res) => (res.ok ? res.json() : [])),
       fetch('/api/dependants').then((res) => (res.ok ? res.json() : null)),
       fetch('/api/employes/postes').then((res) => (res.ok ? res.json() : null)),
+      fetch('/api/employes/classification').then((res) => (res.ok ? res.json() : null)),
       fetch('/api/settings/departments').then((res) => (res.ok ? res.json() : [])),
       fetch('/api/settings/services').then((res) => (res.ok ? res.json() : [])),
     ])
-      .then(([empsRaw, depsRaw, postesRaw, deptRaw, svcRaw]) => {
+      .then(([empsRaw, depsRaw, postesRaw, classificationRaw, deptRaw, svcRaw]) => {
         if (cancelled) return;
         if (Array.isArray(empsRaw)) {
           setFetchedEmployees(empsRaw as Employee[]);
@@ -209,12 +229,32 @@ export default function EmployeeModal({
         const apiTitles = Array.isArray(postesRaw?.titles)
           ? (postesRaw.titles as string[])
           : [];
-        const titles = [
-          ...apiTitles,
-          ...suggestTitles,
-          ...groups.map((g) => g.title),
-          ...vacantList.map((v) => v.title),
-        ].filter(Boolean);
+        const classificationList = Array.isArray(classificationRaw?.postes)
+          ? (classificationRaw.postes as ClassificationPosteRef[])
+          : Array.isArray(classificationRaw)
+            ? (classificationRaw as ClassificationPosteRef[])
+            : [];
+        const normalizedClass = classificationList
+          .map((p) => ({
+            title: String(p.title || '').trim(),
+            department: String(p.department || '').trim(),
+            location: String(p.location || '').trim(),
+            gradeNouveau: String(p.gradeNouveau || '').trim(),
+            gradePaterson: String(p.gradePaterson || '').trim(),
+          }))
+          .filter((p) => p.title);
+        setClassificationPostes(normalizedClass);
+        const classificationTitles = normalizedClass.map((p) => p.title);
+        const titles = (
+          classificationTitles.length
+            ? classificationTitles
+            : [
+                ...apiTitles,
+                ...suggestTitles,
+                ...groups.map((g) => g.title),
+                ...vacantList.map((v) => v.title),
+              ]
+        ).filter(Boolean);
         setPosteGroups(groups);
         setVacants(vacantList);
         setPosteTitles([...new Set(titles)].sort((a, b) => a.localeCompare(b, 'fr')));
@@ -240,6 +280,7 @@ export default function EmployeeModal({
         setPosteGroups([]);
         setVacants([]);
         setPosteTitles([]);
+        setClassificationPostes([]);
         setDepartments([]);
         setServices([]);
       });
@@ -317,8 +358,8 @@ export default function EmployeeModal({
   }, [form.jobTitle, form.departement, form.localisation, form.grade, form.centreCout, form.company, posteGroups, vacants]);
 
   const posteSuggestions = useMemo(
-    () => filterPosteTitles(posteTitles, form.jobTitle),
-    [posteTitles, form.jobTitle],
+    () => filterPosteTitles(posteTitles, form.jobTitle, locale === 'en' ? 'en' : 'fr'),
+    [posteTitles, form.jobTitle, locale],
   );
 
   const companySelectOptions = useMemo(() => {
@@ -369,6 +410,24 @@ export default function EmployeeModal({
   };
 
   const applyPosteTitle = useCallback((title: string) => {
+    const classHit = findClassificationPoste(classificationPostes, title);
+    if (classHit) {
+      const fields = employeeFieldsFromClassification(classHit);
+      const trial = trialMonthsForGrade(fields.grade);
+      setForm((f) =>
+        applyEmployeeServicePrefill({
+          ...f,
+          jobTitle: fields.jobTitle,
+          position: fields.position || f.position,
+          grade: fields.grade || f.grade,
+          departement: fields.departement || f.departement,
+          localisation: fields.localisation || f.localisation,
+          periodeEssaiMois: trial ?? f.periodeEssaiMois,
+        }),
+      );
+      setPostePickerOpen(false);
+      return;
+    }
     const group = posteGroups.find((g) => g.title === title);
     const vacant = vacants.find((v) => v.title === title);
     const grade = group?.grade || vacant?.grade || '';
@@ -387,12 +446,13 @@ export default function EmployeeModal({
       }),
     );
     setPostePickerOpen(false);
-  }, [posteGroups, vacants]);
+  }, [classificationPostes, posteGroups, vacants]);
 
   const handleJobTitleInput = (value: string) => {
+    const classHit = findClassificationPoste(classificationPostes, value);
     const group = posteGroups.find((g) => g.title === value);
     const vacant = vacants.find((v) => v.title === value);
-    if (group || vacant) {
+    if (classHit || group || vacant) {
       applyPosteTitle(value);
       return;
     }
@@ -708,9 +768,21 @@ export default function EmployeeModal({
                         onMouseDown={(ev) => ev.preventDefault()}
                         onClick={() => applyPosteTitle(title)}
                       >
-                        <span className="project-picker-name">{title}</span>
+                        <span className="project-picker-name">
+                          {localizeJobTitle(title, locale === 'en' ? 'en' : 'fr')}
+                        </span>
                         <span className="project-picker-meta">
                           {(() => {
+                            const classHit = findClassificationPoste(classificationPostes, title);
+                            if (classHit) {
+                              return [
+                                classHit.gradeNouveau || classHit.gradePaterson,
+                                classHit.department,
+                                classHit.location,
+                              ]
+                                .filter(Boolean)
+                                .join(' · ');
+                            }
                             const group = posteGroups.find((g) => g.title === title);
                             const vacant = vacants.find((v) => v.title === title);
                             const parts = [

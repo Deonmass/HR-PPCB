@@ -1,6 +1,6 @@
 'use client';
 
-import { useCallback, useEffect, useMemo, useState } from 'react';
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import {
   calcDocumentCompletion,
   calcRowCellStats,
@@ -36,8 +36,17 @@ import type { Employee } from '@/lib/types';
 import type { DepartmentSetting, ServiceSetting } from '@/lib/auth-types';
 import { applyEmployeeServicePrefill } from '@/lib/employee-utils';
 import { normalizeServiceName } from '@/lib/exco-department-map';
+import {
+  employeeFieldsFromClassification,
+  filterClassificationTitles,
+  findClassificationPoste,
+  type ClassificationPosteRef,
+} from '@/lib/classification-poste-apply';
+import { localizeJobTitle } from '@/lib/bilingual-title';
+import { CLASSIFICATION_RULES, resolveClassification } from '@/lib/convention-collective-rules';
 import ExitDocsModal from '@/components/documents/ExitDocsModal';
 import { usePermissions } from '@/contexts/PermissionContext';
+import { useI18n } from '@/contexts/LocaleContext';
 
 type TabId = 'infos' | 'essai' | 'cddVersCdi' | 'docs' | 'famille';
 
@@ -329,6 +338,8 @@ function FamilyOrgChart({ group, employee }: { group: FamilyGroup | null; employ
 
 export default function EmployeeViewModal({ employee, canEdit = false, initialTab = 'infos', onClose, onUpdated }: Props) {
   const { can } = usePermissions();
+  const { locale } = useI18n();
+  const appLocale = locale === 'en' ? 'en' : 'fr';
   const [tab, setTab] = useState<TabId>(initialTab);
   const [draft, setDraft] = useState<Employee>(employee);
   const [exitDocsOpen, setExitDocsOpen] = useState(false);
@@ -340,6 +351,9 @@ export default function EmployeeViewModal({ employee, canEdit = false, initialTa
   const [departmentNames, setDepartmentNames] = useState<string[]>([]);
   const [departments, setDepartments] = useState<DepartmentSetting[]>([]);
   const [services, setServices] = useState<ServiceSetting[]>([]);
+  const [classificationPostes, setClassificationPostes] = useState<ClassificationPosteRef[]>([]);
+  const [jobSuggestOpen, setJobSuggestOpen] = useState(false);
+  const jobWrapRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     setDraft(applyEmployeeServicePrefill(employee));
@@ -355,8 +369,9 @@ export default function EmployeeViewModal({ employee, canEdit = false, initialTa
     Promise.all([
       fetch('/api/settings/departments').then((res) => (res.ok ? res.json() : [])),
       fetch('/api/settings/services').then((res) => (res.ok ? res.json() : [])),
+      fetch('/api/employes/classification').then((res) => (res.ok ? res.json() : null)),
     ])
-      .then(([deptJson, svcJson]: [unknown, unknown]) => {
+      .then(([deptJson, svcJson, classRaw]: [unknown, unknown, unknown]) => {
         if (cancelled) return;
         const deptList = Array.isArray(deptJson) ? (deptJson as DepartmentSetting[]) : [];
         const svcList = Array.isArray(svcJson) ? (svcJson as ServiceSetting[]) : [];
@@ -364,17 +379,55 @@ export default function EmployeeViewModal({ employee, canEdit = false, initialTa
         setServices(svcList);
         const names = deptList.map((item) => String(item.name || '').trim()).filter(Boolean);
         setDepartmentNames([...new Set(names)].sort((a, b) => a.localeCompare(b, 'fr')));
+        const postesRaw = (classRaw as { postes?: ClassificationPosteRef[] } | null)?.postes;
+        const list = Array.isArray(postesRaw) ? postesRaw : [];
+        setClassificationPostes(
+          list
+            .map((p) => ({
+              title: String(p.title || '').trim(),
+              department: String(p.department || '').trim(),
+              location: String(p.location || '').trim(),
+              gradeNouveau: String(p.gradeNouveau || '').trim(),
+              gradePaterson: String(p.gradePaterson || '').trim(),
+            }))
+            .filter((p) => p.title),
+        );
       })
       .catch(() => {
         if (!cancelled) {
           setDepartments([]);
           setServices([]);
           setDepartmentNames([]);
+          setClassificationPostes([]);
         }
       });
     return () => {
       cancelled = true;
     };
+  }, []);
+
+  const jobSuggestions = useMemo(
+    () =>
+      editingKey === 'jobTitle'
+        ? filterClassificationTitles(classificationPostes, editValue, appLocale, 12)
+        : [],
+    [editingKey, classificationPostes, editValue, appLocale],
+  );
+
+  useEffect(() => {
+    if (editingKey !== 'jobTitle' || !jobSuggestOpen) return;
+    const onDown = (event: MouseEvent) => {
+      if (jobWrapRef.current?.contains(event.target as Node)) return;
+      setJobSuggestOpen(false);
+    };
+    document.addEventListener('mousedown', onDown);
+    return () => document.removeEventListener('mousedown', onDown);
+  }, [editingKey, jobSuggestOpen]);
+
+  const trialMonthsForGrade = useCallback((grade: string): number | null => {
+    const trimmed = grade.trim();
+    if (!trimmed) return null;
+    return CLASSIFICATION_RULES[resolveClassification(trimmed)].trialMonths;
   }, []);
 
   const orgFields = useMemo((): FieldDef[] => {
@@ -469,12 +522,14 @@ export default function EmployeeViewModal({ employee, canEdit = false, initialTa
     const raw = current == null ? '' : String(current);
     setEditingKey(key);
     setEditValue(field.type === 'date' ? toDateInputValue(raw) : raw);
+    setJobSuggestOpen(key === 'jobTitle');
   };
 
   const cancelEdit = () => {
     if (saving) return;
     setEditingKey(null);
     setEditValue('');
+    setJobSuggestOpen(false);
   };
 
   const saveField = async (overrideValue?: string) => {
@@ -497,6 +552,26 @@ export default function EmployeeViewModal({ employee, canEdit = false, initialTa
       (preview as unknown as Record<string, unknown>)[editingKey] = fromDateInputValue(valueToSave);
     } else {
       (preview as unknown as Record<string, unknown>)[editingKey] = valueToSave;
+    }
+    if (editingKey === 'jobTitle') {
+      const matched = findClassificationPoste(classificationPostes, valueToSave);
+      if (matched) {
+        const fields = employeeFieldsFromClassification(matched);
+        preview.jobTitle = fields.jobTitle;
+        preview.position = fields.position;
+        if (fields.grade) {
+          preview.grade = fields.grade;
+          const trial = trialMonthsForGrade(fields.grade);
+          if (trial != null) preview.periodeEssaiMois = trial;
+        }
+        if (fields.departement) {
+          preview.departement = fields.departement;
+          Object.assign(preview, applyEmployeeServicePrefill({ ...preview, service: '' }));
+        }
+        if (fields.localisation) preview.localisation = fields.localisation;
+      } else {
+        preview.position = valueToSave || preview.position;
+      }
     }
     if (editingKey === 'raisonExit') {
       if (isRealExitRaison(preview.raisonExit)) {
@@ -581,6 +656,56 @@ export default function EmployeeViewModal({ employee, canEdit = false, initialTa
 
   const renderInlineEditor = (field: FieldDef) => {
     const disabled = saving;
+    if (field.key === 'jobTitle') {
+      return (
+        <div className="employee-job-suggest" ref={jobWrapRef}>
+          <input
+            autoFocus
+            type="text"
+            className="employee-inline-job-input"
+            value={editValue}
+            disabled={disabled}
+            placeholder="Rechercher un poste de la classification…"
+            autoComplete="off"
+            onFocus={() => setJobSuggestOpen(true)}
+            onChange={(e) => {
+              setEditValue(e.target.value);
+              setJobSuggestOpen(true);
+            }}
+            onKeyDown={(e) => {
+              if (e.key === 'Enter') void saveField();
+              if (e.key === 'Escape') cancelEdit();
+            }}
+          />
+          {jobSuggestOpen && jobSuggestions.length > 0 ? (
+            <div className="employee-job-suggest-list" role="listbox">
+              {jobSuggestions.map((poste) => {
+                const grade = poste.gradeNouveau || poste.gradePaterson || '—';
+                return (
+                  <button
+                    key={poste.title}
+                    type="button"
+                    role="option"
+                    className="employee-job-suggest-item"
+                    onMouseDown={(ev) => ev.preventDefault()}
+                    onClick={() => {
+                      setEditValue(poste.title);
+                      setJobSuggestOpen(false);
+                      void saveField(poste.title);
+                    }}
+                  >
+                    <strong>{localizeJobTitle(poste.title, appLocale)}</strong>
+                    <span>
+                      {[grade, poste.department, poste.location].filter(Boolean).join(' · ')}
+                    </span>
+                  </button>
+                );
+              })}
+            </div>
+          ) : null}
+        </div>
+      );
+    }
     if (field.type === 'select' && field.options) {
       return (
         <select
