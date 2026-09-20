@@ -1,7 +1,7 @@
 {
   "year": 2026,
   "month": 9,
-  "updatedAt": "2026-09-16T10:27:19.618Z",
+  "updatedAt": "2026-09-20T14:06:44.735Z",
   "agents": {
     "70000008": {
       "matricule": "70000008",
@@ -273,6 +273,69 @@
           "updatedAt": "2026-09-09T11:05:34.936Z",
           "updatedBy": "admin"
         },
+        "2026-08-17": {
+          "matricule": "70000049",
+          "present": false,
+          "from": "",
+          "to": "",
+          "shiftType": "general",
+          "updatedAt": "2026-09-09T11:07:41.026Z",
+          "updatedBy": "admin"
+        },
+        "2026-08-18": {
+          "matricule": "70000049",
+          "present": false,
+          "from": "",
+          "to": "",
+          "shiftType": "general",
+          "updatedAt": "2026-09-09T11:07:41.026Z",
+          "updatedBy": "admin"
+        },
+        "2026-08-19": {
+          "matricule": "70000049",
+          "present": false,
+          "from": "",
+          "to": "",
+          "shiftType": "general",
+          "updatedAt": "2026-09-09T11:07:41.026Z",
+          "updatedBy": "admin"
+        },
+        "2026-08-20": {
+          "matricule": "70000049",
+          "present": false,
+          "from": "",
+          "to": "",
+          "shiftType": "general",
+          "updatedAt": "2026-09-09T11:07:41.026Z",
+          "updatedBy": "admin"
+        },
+        "2026-08-21": {
+          "matricule": "70000049",
+          "present": false,
+          "from": "",
+          "to": "",
+          "shiftType": "general",
+          "updatedAt": "2026-09-09T11:07:41.026Z",
+          "updatedBy": "admin"
+        },
+        "2026-08-22": {
+          "matricule": "70000049",
+          "present": false,
+          "from": "",
+          "to": "",
+          "shiftType": "off",
+          "updatedAt": "2026-09-09T11:07:41.026Z",
+          "updatedBy": "admin"
+        },
+        "2026-08-23": {
+          "matricule": "70000049",
+          "present": false,
+          "from": "",
+          "to": "",
+          "shiftType": "off",
+          "updatedAt": "2026-09-09T11:07:41.026Z",
+          "updatedBy": "admin"
+        },
         "2026-08-31": {
           "matricule": "70000049",
           "present": false,
@@ -460,69 +523,6 @@
           "to": "",
           "shiftType": "off",
           "updatedAt": "2026-09-09T11:10:53.497Z",
-          "updatedBy": "admin"
-        },
-        "2026-08-17": {
-          "matricule": "70000049",
-          "present": false,
-          "from": "",
-          "to": "",
-          "shiftType": "general",
-          "updatedAt": "2026-09-09T11:07:41.026Z",
-          "updatedBy": "admin"
-        },
-        "2026-08-18": {
-          "matricule": "70000049",
-          "present": false,
-          "from": "",
-          "to": "",
-          "shiftType": "general",
-          "updatedAt": "2026-09-09T11:07:41.026Z",
-          "updatedBy": "admin"
-        },
-        "2026-08-19": {
-          "matricule": "70000049",
-          "present": false,
-          "from": "",
-          "to": "",
-          "shiftType": "general",
-          "updatedAt": "2026-09-09T11:07:41.026Z",
-          "updatedBy": "admin"
-        },
-        "2026-08-20": {
-          "matricule": "70000049",
-          "present": false,
-          "from": "",
-          "to": "",
-          "shiftType": "general",
-          "updatedAt": "2026-09-09T11:07:41.026Z",
-          "updatedBy": "admin"
-        },
-        "2026-08-21": {
-          "matricule": "70000049",
-          "present": false,
-          "from": "",
-          "to": "",
-          "shiftType": "general",
-          "updatedAt": "2026-09-09T11:07:41.026Z",
-          "updatedBy": "admin"
-        },
-        "2026-08-22": {
-          "matricule": "70000049",
-          "present": false,
-          "from": "",
-          "to": "",
-          "shiftType": "off",
-          "updatedAt": "2026-09-09T11:07:41.026Z",
-          "updatedBy": "admin"
-        },
-        "2026-08-23": {
-          "matricule": "70000049",
-          "present": false,
-          "from": "",
-          "to": "",
-          "shiftType": "off",
-          "updatedAt": "2026-09-09T11:07:41.026Z",
           "updatedBy": "admin"
         }
       }
@@ -797,6 +797,69 @@
           "updatedAt": "2026-09-09T11:05:34.936Z",
           "updatedBy": "admin"
         },
+        "2026-08-17": {
+          "matricule": "70000076",
+          "present": false,
+          "from": "",
+          "to": "",
+          "shiftType": "general",
+          "updatedAt": "2026-09-09T11:07:41.026Z",
+          "updatedBy": "admin"
+        },
+        "2026-08-18": {
+          "matricule": "70000076",
+          "present": false,
+          "from": "",
+          "to": "",
+          "shiftType": "general",
+          "updatedAt": "2026-09-09T11:07:41.026Z",
+          "updatedBy": "admin"
+        },
+        "2026-08-19": {
+          "matricule": "70000076",
+          "present": false,
+          "from": "",
+          "to": "",
+          "shiftType": "general",
+          "updatedAt": "2026-09-09T11:07:41.026Z",
+          "updatedBy": "admin"
+        },
+        "2026-08-20": {
+          "matricule": "70000076",
+          "present": false,
+          "from": "",
+          "to": "",
+          "shiftType": "general",
+          "updatedAt": "2026-09-09T11:07:41.026Z",
+          "updatedBy": "admin"
+        },
+        "2026-08-21": {
+          "matricule": "70000076",
+          "present": false,
+          "from": "",
+          "to": "",
+          "shiftType": "general",
+          "updatedAt": "2026-09-09T11:07:41.026Z",
+          "updatedBy": "admin"
+        },
+        "2026-08-22": {
+          "matricule": "70000076",
+          "present": false,
+          "from": "",
+          "to": "",
+          "shiftType": "off",
+          "updatedAt": "2026-09-09T11:07:41.026Z",
+          "updatedBy": "admin"
+        },
+        "2026-08-23": {
+          "matricule": "70000076",
+          "present": false,
+          "from": "",
+          "to": "",
+          "shiftType": "off",
+          "updatedAt": "2026-09-09T11:07:41.026Z",
+          "updatedBy": "admin"
+        },
         "2026-08-31": {
           "matricule": "70000076",
           "present": false,
@@ -984,69 +1047,6 @@
           "to": "",
           "shiftType": "off",
           "updatedAt": "2026-09-09T11:10:53.497Z",
-          "updatedBy": "admin"
-        },
-        "2026-08-17": {
-          "matricule": "70000076",
-          "present": false,
-          "from": "",
-          "to": "",
-          "shiftType": "general",
-          "updatedAt": "2026-09-09T11:07:41.026Z",
-          "updatedBy": "admin"
-        },
-        "2026-08-18": {
-          "matricule": "70000076",
-          "present": false,
-          "from": "",
-          "to": "",
-          "shiftType": "general",
-          "updatedAt": "2026-09-09T11:07:41.026Z",
-          "updatedBy": "admin"
-        },
-        "2026-08-19": {
-          "matricule": "70000076",
-          "present": false,
-          "from": "",
-          "to": "",
-          "shiftType": "general",
-          "updatedAt": "2026-09-09T11:07:41.026Z",
-          "updatedBy": "admin"
-        },
-        "2026-08-20": {
-          "matricule": "70000076",
-          "present": false,
-          "from": "",
-          "to": "",
-          "shiftType": "general",
-          "updatedAt": "2026-09-09T11:07:41.026Z",
-          "updatedBy": "admin"
-        },
-        "2026-08-21": {
-          "matricule": "70000076",
-          "present": false,
-          "from": "",
-          "to": "",
-          "shiftType": "general",
-          "updatedAt": "2026-09-09T11:07:41.026Z",
-          "updatedBy": "admin"
-        },
-        "2026-08-22": {
-          "matricule": "70000076",
-          "present": false,
-          "from": "",
-          "to": "",
-          "shiftType": "off",
-          "updatedAt": "2026-09-09T11:07:41.026Z",
-          "updatedBy": "admin"
-        },
-        "2026-08-23": {
-          "matricule": "70000076",
-          "present": false,
-          "from": "",
-          "to": "",
-          "shiftType": "off",
-          "updatedAt": "2026-09-09T11:07:41.026Z",
           "updatedBy": "admin"
         }
       }
@@ -1117,6 +1117,69 @@
           "updatedAt": "2026-09-09T11:05:34.936Z",
           "updatedBy": "admin"
         },
+        "2026-08-17": {
+          "matricule": "70000077",
+          "present": false,
+          "from": "",
+          "to": "",
+          "shiftType": "shift3",
+          "updatedAt": "2026-09-09T11:07:41.026Z",
+          "updatedBy": "admin"
+        },
+        "2026-08-18": {
+          "matricule": "70000077",
+          "present": false,
+          "from": "",
+          "to": "",
+          "shiftType": "shift3",
+          "updatedAt": "2026-09-09T11:07:41.026Z",
+          "updatedBy": "admin"
+        },
+        "2026-08-19": {
+          "matricule": "70000077",
+          "present": false,
+          "from": "",
+          "to": "",
+          "shiftType": "off",
+          "updatedAt": "2026-09-09T11:07:41.026Z",
+          "updatedBy": "admin"
+        },
+        "2026-08-20": {
+          "matricule": "70000077",
+          "present": false,
+          "from": "",
+          "to": "",
+          "shiftType": "off",
+          "updatedAt": "2026-09-09T11:07:41.026Z",
+          "updatedBy": "admin"
+        },
+        "2026-08-21": {
+          "matricule": "70000077",
+          "present": false,
+          "from": "",
+          "to": "",
+          "shiftType": "shift1",
+          "updatedAt": "2026-09-09T11:07:41.026Z",
+          "updatedBy": "admin"
+        },
+        "2026-08-22": {
+          "matricule": "70000077",
+          "present": false,
+          "from": "",
+          "to": "",
+          "shiftType": "shift1",
+          "updatedAt": "2026-09-09T11:07:41.026Z",
+          "updatedBy": "admin"
+        },
+        "2026-08-23": {
+          "matricule": "70000077",
+          "present": false,
+          "from": "",
+          "to": "",
+          "shiftType": "shift2",
+          "updatedAt": "2026-09-09T11:07:41.026Z",
+          "updatedBy": "admin"
+        },
         "2026-08-31": {
           "matricule": "70000077",
           "present": false,
@@ -1304,69 +1367,6 @@
           "to": "",
           "shiftType": "shift1",
           "updatedAt": "2026-09-09T11:10:53.497Z",
-          "updatedBy": "admin"
-        },
-        "2026-08-17": {
-          "matricule": "70000077",
-          "present": false,
-          "from": "",
-          "to": "",
-          "shiftType": "shift3",
-          "updatedAt": "2026-09-09T11:07:41.026Z",
-          "updatedBy": "admin"
-        },
-        "2026-08-18": {
-          "matricule": "70000077",
-          "present": false,
-          "from": "",
-          "to": "",
-          "shiftType": "shift3",
-          "updatedAt": "2026-09-09T11:07:41.026Z",
-          "updatedBy": "admin"
-        },
-        "2026-08-19": {
-          "matricule": "70000077",
-          "present": false,
-          "from": "",
-          "to": "",
-          "shiftType": "off",
-          "updatedAt": "2026-09-09T11:07:41.026Z",
-          "updatedBy": "admin"
-        },
-        "2026-08-20": {
-          "matricule": "70000077",
-          "present": false,
-          "from": "",
-          "to": "",
-          "shiftType": "off",
-          "updatedAt": "2026-09-09T11:07:41.026Z",
-          "updatedBy": "admin"
-        },
-        "2026-08-21": {
-          "matricule": "70000077",
-          "present": false,
-          "from": "",
-          "to": "",
-          "shiftType": "shift1",
-          "updatedAt": "2026-09-09T11:07:41.026Z",
-          "updatedBy": "admin"
-        },
-        "2026-08-22": {
-          "matricule": "70000077",
-          "present": false,
-          "from": "",
-          "to": "",
-          "shiftType": "shift1",
-          "updatedAt": "2026-09-09T11:07:41.026Z",
-          "updatedBy": "admin"
-        },
-        "2026-08-23": {
-          "matricule": "70000077",
-          "present": false,
-          "from": "",
-          "to": "",
-          "shiftType": "shift2",
-          "updatedAt": "2026-09-09T11:07:41.026Z",
           "updatedBy": "admin"
         }
       }
@@ -1437,6 +1437,69 @@
           "updatedAt": "2026-09-09T11:05:34.936Z",
           "updatedBy": "admin"
         },
+        "2026-08-17": {
+          "matricule": "70000080",
+          "present": false,
+          "from": "",
+          "to": "",
+          "shiftType": "general",
+          "updatedAt": "2026-09-09T11:07:41.026Z",
+          "updatedBy": "admin"
+        },
+        "2026-08-18": {
+          "matricule": "70000080",
+          "present": false,
+          "from": "",
+          "to": "",
+          "shiftType": "general",
+          "updatedAt": "2026-09-09T11:07:41.026Z",
+          "updatedBy": "admin"
+        },
+        "2026-08-19": {
+          "matricule": "70000080",
+          "present": false,
+          "from": "",
+          "to": "",
+          "shiftType": "general",
+          "updatedAt": "2026-09-09T11:07:41.026Z",
+          "updatedBy": "admin"
+        },
+        "2026-08-20": {
+          "matricule": "70000080",
+          "present": false,
+          "from": "",
+          "to": "",
+          "shiftType": "general",
+          "updatedAt": "2026-09-09T11:07:41.026Z",
+          "updatedBy": "admin"
+        },
+        "2026-08-21": {
+          "matricule": "70000080",
+          "present": false,
+          "from": "",
+          "to": "",
+          "shiftType": "general",
+          "updatedAt": "2026-09-09T11:07:41.026Z",
+          "updatedBy": "admin"
+        },
+        "2026-08-22": {
+          "matricule": "70000080",
+          "present": false,
+          "from": "",
+          "to": "",
+          "shiftType": "off",
+          "updatedAt": "2026-09-09T11:07:41.026Z",
+          "updatedBy": "admin"
+        },
+        "2026-08-23": {
+          "matricule": "70000080",
+          "present": false,
+          "from": "",
+          "to": "",
+          "shiftType": "off",
+          "updatedAt": "2026-09-09T11:07:41.026Z",
+          "updatedBy": "admin"
+        },
         "2026-08-31": {
           "matricule": "70000080",
           "present": false,
@@ -1624,69 +1687,6 @@
           "to": "",
           "shiftType": "off",
           "updatedAt": "2026-09-09T11:10:53.497Z",
-          "updatedBy": "admin"
-        },
-        "2026-08-17": {
-          "matricule": "70000080",
-          "present": false,
-          "from": "",
-          "to": "",
-          "shiftType": "general",
-          "updatedAt": "2026-09-09T11:07:41.026Z",
-          "updatedBy": "admin"
-        },
-        "2026-08-18": {
-          "matricule": "70000080",
-          "present": false,
-          "from": "",
-          "to": "",
-          "shiftType": "general",
-          "updatedAt": "2026-09-09T11:07:41.026Z",
-          "updatedBy": "admin"
-        },
-        "2026-08-19": {
-          "matricule": "70000080",
-          "present": false,
-          "from": "",
-          "to": "",
-          "shiftType": "general",
-          "updatedAt": "2026-09-09T11:07:41.026Z",
-          "updatedBy": "admin"
-        },
-        "2026-08-20": {
-          "matricule": "70000080",
-          "present": false,
-          "from": "",
-          "to": "",
-          "shiftType": "general",
-          "updatedAt": "2026-09-09T11:07:41.026Z",
-          "updatedBy": "admin"
-        },
-        "2026-08-21": {
-          "matricule": "70000080",
-          "present": false,
-          "from": "",
-          "to": "",
-          "shiftType": "general",
-          "updatedAt": "2026-09-09T11:07:41.026Z",
-          "updatedBy": "admin"
-        },
-        "2026-08-22": {
-          "matricule": "70000080",
-          "present": false,
-          "from": "",
-          "to": "",
-          "shiftType": "off",
-          "updatedAt": "2026-09-09T11:07:41.026Z",
-          "updatedBy": "admin"
-        },
-        "2026-08-23": {
-          "matricule": "70000080",
-          "present": false,
-          "from": "",
-          "to": "",
-          "shiftType": "off",
-          "updatedAt": "2026-09-09T11:07:41.026Z",
           "updatedBy": "admin"
         }
       }
@@ -1757,6 +1757,69 @@
           "updatedAt": "2026-09-09T11:05:34.936Z",
           "updatedBy": "admin"
         },
+        "2026-08-17": {
+          "matricule": "70000081",
+          "present": false,
+          "from": "",
+          "to": "",
+          "shiftType": "off",
+          "updatedAt": "2026-09-09T11:07:41.026Z",
+          "updatedBy": "admin"
+        },
+        "2026-08-18": {
+          "matricule": "70000081",
+          "present": false,
+          "from": "",
+          "to": "",
+          "shiftType": "off",
+          "updatedAt": "2026-09-09T11:07:41.026Z",
+          "updatedBy": "admin"
+        },
+        "2026-08-19": {
+          "matricule": "70000081",
+          "present": false,
+          "from": "",
+          "to": "",
+          "shiftType": "shift1",
+          "updatedAt": "2026-09-09T11:07:41.026Z",
+          "updatedBy": "admin"
+        },
+        "2026-08-20": {
+          "matricule": "70000081",
+          "present": false,
+          "from": "",
+          "to": "",
+          "shiftType": "shift1",
+          "updatedAt": "2026-09-09T11:07:41.026Z",
+          "updatedBy": "admin"
+        },
+        "2026-08-21": {
+          "matricule": "70000081",
+          "present": false,
+          "from": "",
+          "to": "",
+          "shiftType": "shift2",
+          "updatedAt": "2026-09-09T11:07:41.026Z",
+          "updatedBy": "admin"
+        },
+        "2026-08-22": {
+          "matricule": "70000081",
+          "present": false,
+          "from": "",
+          "to": "",
+          "shiftType": "shift2",
+          "updatedAt": "2026-09-09T11:07:41.026Z",
+          "updatedBy": "admin"
+        },
+        "2026-08-23": {
+          "matricule": "70000081",
+          "present": false,
+          "from": "",
+          "to": "",
+          "shiftType": "shift3",
+          "updatedAt": "2026-09-09T11:07:41.026Z",
+          "updatedBy": "admin"
+        },
         "2026-08-31": {
           "matricule": "70000081",
           "present": false,
@@ -1944,69 +2007,6 @@
           "to": "",
           "shiftType": "shift2",
           "updatedAt": "2026-09-09T11:10:53.497Z",
-          "updatedBy": "admin"
-        },
-        "2026-08-17": {
-          "matricule": "70000081",
-          "present": false,
-          "from": "",
-          "to": "",
-          "shiftType": "off",
-          "updatedAt": "2026-09-09T11:07:41.026Z",
-          "updatedBy": "admin"
-        },
-        "2026-08-18": {
-          "matricule": "70000081",
-          "present": false,
-          "from": "",
-          "to": "",
-          "shiftType": "off",
-          "updatedAt": "2026-09-09T11:07:41.026Z",
-          "updatedBy": "admin"
-        },
-        "2026-08-19": {
-          "matricule": "70000081",
-          "present": false,
-          "from": "",
-          "to": "",
-          "shiftType": "shift1",
-          "updatedAt": "2026-09-09T11:07:41.026Z",
-          "updatedBy": "admin"
-        },
-        "2026-08-20": {
-          "matricule": "70000081",
-          "present": false,
-          "from": "",
-          "to": "",
-          "shiftType": "shift1",
-          "updatedAt": "2026-09-09T11:07:41.026Z",
-          "updatedBy": "admin"
-        },
-        "2026-08-21": {
-          "matricule": "70000081",
-          "present": false,
-          "from": "",
-          "to": "",
-          "shiftType": "shift2",
-          "updatedAt": "2026-09-09T11:07:41.026Z",
-          "updatedBy": "admin"
-        },
-        "2026-08-22": {
-          "matricule": "70000081",
-          "present": false,
-          "from": "",
-          "to": "",
-          "shiftType": "shift2",
-          "updatedAt": "2026-09-09T11:07:41.026Z",
-          "updatedBy": "admin"
-        },
-        "2026-08-23": {
-          "matricule": "70000081",
-          "present": false,
-          "from": "",
-          "to": "",
-          "shiftType": "shift3",
-          "updatedAt": "2026-09-09T11:07:41.026Z",
           "updatedBy": "admin"
         }
       }
@@ -2077,6 +2077,69 @@
           "updatedAt": "2026-09-09T11:05:34.936Z",
           "updatedBy": "admin"
         },
+        "2026-08-17": {
+          "matricule": "70000082",
+          "present": false,
+          "from": "",
+          "to": "",
+          "shiftType": "shift1",
+          "updatedAt": "2026-09-09T11:07:41.026Z",
+          "updatedBy": "admin"
+        },
+        "2026-08-18": {
+          "matricule": "70000082",
+          "present": false,
+          "from": "",
+          "to": "",
+          "shiftType": "shift1",
+          "updatedAt": "2026-09-09T11:07:41.026Z",
+          "updatedBy": "admin"
+        },
+        "2026-08-19": {
+          "matricule": "70000082",
+          "present": false,
+          "from": "",
+          "to": "",
+          "shiftType": "shift2",
+          "updatedAt": "2026-09-09T11:07:41.026Z",
+          "updatedBy": "admin"
+        },
+        "2026-08-20": {
+          "matricule": "70000082",
+          "present": false,
+          "from": "",
+          "to": "",
+          "shiftType": "shift2",
+          "updatedAt": "2026-09-09T11:07:41.026Z",
+          "updatedBy": "admin"
+        },
+        "2026-08-21": {
+          "matricule": "70000082",
+          "present": false,
+          "from": "",
+          "to": "",
+          "shiftType": "shift3",
+          "updatedAt": "2026-09-09T11:07:41.026Z",
+          "updatedBy": "admin"
+        },
+        "2026-08-22": {
+          "matricule": "70000082",
+          "present": false,
+          "from": "",
+          "to": "",
+          "shiftType": "shift3",
+          "updatedAt": "2026-09-09T11:07:41.026Z",
+          "updatedBy": "admin"
+        },
+        "2026-08-23": {
+          "matricule": "70000082",
+          "present": false,
+          "from": "",
+          "to": "",
+          "shiftType": "off",
+          "updatedAt": "2026-09-09T11:07:41.026Z",
+          "updatedBy": "admin"
+        },
         "2026-08-31": {
           "matricule": "70000082",
           "present": false,
@@ -2264,69 +2327,6 @@
           "to": "",
           "shiftType": "shift3",
           "updatedAt": "2026-09-09T11:10:53.497Z",
-          "updatedBy": "admin"
-        },
-        "2026-08-17": {
-          "matricule": "70000082",
-          "present": false,
-          "from": "",
-          "to": "",
-          "shiftType": "shift1",
-          "updatedAt": "2026-09-09T11:07:41.026Z",
-          "updatedBy": "admin"
-        },
-        "2026-08-18": {
-          "matricule": "70000082",
-          "present": false,
-          "from": "",
-          "to": "",
-          "shiftType": "shift1",
-          "updatedAt": "2026-09-09T11:07:41.026Z",
-          "updatedBy": "admin"
-        },
-        "2026-08-19": {
-          "matricule": "70000082",
-          "present": false,
-          "from": "",
-          "to": "",
-          "shiftType": "shift2",
-          "updatedAt": "2026-09-09T11:07:41.026Z",
-          "updatedBy": "admin"
-        },
-        "2026-08-20": {
-          "matricule": "70000082",
-          "present": false,
-          "from": "",
-          "to": "",
-          "shiftType": "shift2",
-          "updatedAt": "2026-09-09T11:07:41.026Z",
-          "updatedBy": "admin"
-        },
-        "2026-08-21": {
-          "matricule": "70000082",
-          "present": false,
-          "from": "",
-          "to": "",
-          "shiftType": "shift3",
-          "updatedAt": "2026-09-09T11:07:41.026Z",
-          "updatedBy": "admin"
-        },
-        "2026-08-22": {
-          "matricule": "70000082",
-          "present": false,
-          "from": "",
-          "to": "",
-          "shiftType": "shift3",
-          "updatedAt": "2026-09-09T11:07:41.026Z",
-          "updatedBy": "admin"
-        },
-        "2026-08-23": {
-          "matricule": "70000082",
-          "present": false,
-          "from": "",
-          "to": "",
-          "shiftType": "off",
-          "updatedAt": "2026-09-09T11:07:41.026Z",
           "updatedBy": "admin"
         }
       }
@@ -2397,6 +2397,69 @@
           "updatedAt": "2026-09-09T11:05:34.936Z",
           "updatedBy": "admin"
         },
+        "2026-08-17": {
+          "matricule": "70000083",
+          "present": false,
+          "from": "",
+          "to": "",
+          "shiftType": "general",
+          "updatedAt": "2026-09-09T11:07:41.026Z",
+          "updatedBy": "admin"
+        },
+        "2026-08-18": {
+          "matricule": "70000083",
+          "present": false,
+          "from": "",
+          "to": "",
+          "shiftType": "general",
+          "updatedAt": "2026-09-09T11:07:41.026Z",
+          "updatedBy": "admin"
+        },
+        "2026-08-19": {
+          "matricule": "70000083",
+          "present": false,
+          "from": "",
+          "to": "",
+          "shiftType": "general",
+          "updatedAt": "2026-09-09T11:07:41.026Z",
+          "updatedBy": "admin"
+        },
+        "2026-08-20": {
+          "matricule": "70000083",
+          "present": false,
+          "from": "",
+          "to": "",
+          "shiftType": "general",
+          "updatedAt": "2026-09-09T11:07:41.026Z",
+          "updatedBy": "admin"
+        },
+        "2026-08-21": {
+          "matricule": "70000083",
+          "present": false,
+          "from": "",
+          "to": "",
+          "shiftType": "general",
+          "updatedAt": "2026-09-09T11:07:41.026Z",
+          "updatedBy": "admin"
+        },
+        "2026-08-22": {
+          "matricule": "70000083",
+          "present": false,
+          "from": "",
+          "to": "",
+          "shiftType": "off",
+          "updatedAt": "2026-09-09T11:07:41.026Z",
+          "updatedBy": "admin"
+        },
+        "2026-08-23": {
+          "matricule": "70000083",
+          "present": false,
+          "from": "",
+          "to": "",
+          "shiftType": "off",
+          "updatedAt": "2026-09-09T11:07:41.026Z",
+          "updatedBy": "admin"
+        },
         "2026-08-31": {
           "matricule": "70000083",
           "present": false,
@@ -2584,69 +2647,6 @@
           "to": "",
           "shiftType": "off",
           "updatedAt": "2026-09-09T11:10:53.497Z",
-          "updatedBy": "admin"
-        },
-        "2026-08-17": {
-          "matricule": "70000083",
-          "present": false,
-          "from": "",
-          "to": "",
-          "shiftType": "general",
-          "updatedAt": "2026-09-09T11:07:41.026Z",
-          "updatedBy": "admin"
-        },
-        "2026-08-18": {
-          "matricule": "70000083",
-          "present": false,
-          "from": "",
-          "to": "",
-          "shiftType": "general",
-          "updatedAt": "2026-09-09T11:07:41.026Z",
-          "updatedBy": "admin"
-        },
-        "2026-08-19": {
-          "matricule": "70000083",
-          "present": false,
-          "from": "",
-          "to": "",
-          "shiftType": "general",
-          "updatedAt": "2026-09-09T11:07:41.026Z",
-          "updatedBy": "admin"
-        },
-        "2026-08-20": {
-          "matricule": "70000083",
-          "present": false,
-          "from": "",
-          "to": "",
-          "shiftType": "general",
-          "updatedAt": "2026-09-09T11:07:41.026Z",
-          "updatedBy": "admin"
-        },
-        "2026-08-21": {
-          "matricule": "70000083",
-          "present": false,
-          "from": "",
-          "to": "",
-          "shiftType": "general",
-          "updatedAt": "2026-09-09T11:07:41.026Z",
-          "updatedBy": "admin"
-        },
-        "2026-08-22": {
-          "matricule": "70000083",
-          "present": false,
-          "from": "",
-          "to": "",
-          "shiftType": "off",
-          "updatedAt": "2026-09-09T11:07:41.026Z",
-          "updatedBy": "admin"
-        },
-        "2026-08-23": {
-          "matricule": "70000083",
-          "present": false,
-          "from": "",
-          "to": "",
-          "shiftType": "off",
-          "updatedAt": "2026-09-09T11:07:41.026Z",
           "updatedBy": "admin"
         }
       }
@@ -2717,6 +2717,69 @@
           "updatedAt": "2026-09-09T11:05:34.936Z",
           "updatedBy": "admin"
         },
+        "2026-08-17": {
+          "matricule": "70000084",
+          "present": false,
+          "from": "",
+          "to": "",
+          "shiftType": "shift2",
+          "updatedAt": "2026-09-09T11:07:41.026Z",
+          "updatedBy": "admin"
+        },
+        "2026-08-18": {
+          "matricule": "70000084",
+          "present": false,
+          "from": "",
+          "to": "",
+          "shiftType": "shift2",
+          "updatedAt": "2026-09-09T11:07:41.026Z",
+          "updatedBy": "admin"
+        },
+        "2026-08-19": {
+          "matricule": "70000084",
+          "present": false,
+          "from": "",
+          "to": "",
+          "shiftType": "shift3",
+          "updatedAt": "2026-09-09T11:07:41.026Z",
+          "updatedBy": "admin"
+        },
+        "2026-08-20": {
+          "matricule": "70000084",
+          "present": false,
+          "from": "",
+          "to": "",
+          "shiftType": "shift3",
+          "updatedAt": "2026-09-09T11:07:41.026Z",
+          "updatedBy": "admin"
+        },
+        "2026-08-21": {
+          "matricule": "70000084",
+          "present": false,
+          "from": "",
+          "to": "",
+          "shiftType": "off",
+          "updatedAt": "2026-09-09T11:07:41.026Z",
+          "updatedBy": "admin"
+        },
+        "2026-08-22": {
+          "matricule": "70000084",
+          "present": false,
+          "from": "",
+          "to": "",
+          "shiftType": "off",
+          "updatedAt": "2026-09-09T11:07:41.026Z",
+          "updatedBy": "admin"
+        },
+        "2026-08-23": {
+          "matricule": "70000084",
+          "present": false,
+          "from": "",
+          "to": "",
+          "shiftType": "shift1",
+          "updatedAt": "2026-09-09T11:07:41.026Z",
+          "updatedBy": "admin"
+        },
         "2026-08-31": {
           "matricule": "70000084",
           "present": false,
@@ -2905,68 +2968,1105 @@
           "shiftType": "off",
           "updatedAt": "2026-09-09T11:10:53.497Z",
           "updatedBy": "admin"
-        },
-        "2026-08-17": {
-          "matricule": "70000084",
-          "present": false,
-          "from": "",
-          "to": "",
-          "shiftType": "shift2",
-          "updatedAt": "2026-09-09T11:07:41.026Z",
-          "updatedBy": "admin"
-        },
-        "2026-08-18": {
-          "matricule": "70000084",
-          "present": false,
-          "from": "",
-          "to": "",
-          "shiftType": "shift2",
-          "updatedAt": "2026-09-09T11:07:41.026Z",
-          "updatedBy": "admin"
-        },
-        "2026-08-19": {
-          "matricule": "70000084",
-          "present": false,
-          "from": "",
-          "to": "",
-          "shiftType": "shift3",
-          "updatedAt": "2026-09-09T11:07:41.026Z",
-          "updatedBy": "admin"
-        },
-        "2026-08-20": {
-          "matricule": "70000084",
-          "present": false,
-          "from": "",
-          "to": "",
-          "shiftType": "shift3",
-          "updatedAt": "2026-09-09T11:07:41.026Z",
-          "updatedBy": "admin"
-        },
-        "2026-08-21": {
-          "matricule": "70000084",
-          "present": false,
-          "from": "",
-          "to": "",
-          "shiftType": "off",
-          "updatedAt": "2026-09-09T11:07:41.026Z",
-          "updatedBy": "admin"
-        },
-        "2026-08-22": {
-          "matricule": "70000084",
-          "present": false,
-          "from": "",
-          "to": "",
-          "shiftType": "off",
-          "updatedAt": "2026-09-09T11:07:41.026Z",
-          "updatedBy": "admin"
-        },
-        "2026-08-23": {
-          "matricule": "70000084",
+        }
+      }
+    },
+    "70000111": {
+      "matricule": "70000111",
+      "days": {
+        "2026-08-16": {
+          "matricule": "70000111",
           "present": false,
           "from": "",
           "to": "",
           "shiftType": "shift1",
-          "updatedAt": "2026-09-09T11:07:41.026Z",
+          "updatedAt": "2026-09-20T13:48:50.189Z",
+          "updatedBy": "admin"
+        },
+        "2026-08-17": {
+          "matricule": "70000111",
+          "present": false,
+          "from": "",
+          "to": "",
+          "shiftType": "shift1",
+          "updatedAt": "2026-09-20T13:53:03.098Z",
+          "updatedBy": "admin"
+        },
+        "2026-08-18": {
+          "matricule": "70000111",
+          "present": false,
+          "from": "",
+          "to": "",
+          "shiftType": "shift2",
+          "updatedAt": "2026-09-20T13:53:03.098Z",
+          "updatedBy": "admin"
+        },
+        "2026-08-19": {
+          "matricule": "70000111",
+          "present": false,
+          "from": "",
+          "to": "",
+          "shiftType": "shift2",
+          "updatedAt": "2026-09-20T13:53:03.098Z",
+          "updatedBy": "admin"
+        },
+        "2026-08-20": {
+          "matricule": "70000111",
+          "present": false,
+          "from": "",
+          "to": "",
+          "shiftType": "shift3",
+          "updatedAt": "2026-09-20T13:53:03.098Z",
+          "updatedBy": "admin"
+        },
+        "2026-08-21": {
+          "matricule": "70000111",
+          "present": false,
+          "from": "",
+          "to": "",
+          "shiftType": "shift3",
+          "updatedAt": "2026-09-20T13:53:03.098Z",
+          "updatedBy": "admin"
+        },
+        "2026-08-22": {
+          "matricule": "70000111",
+          "present": false,
+          "from": "",
+          "to": "",
+          "shiftType": "off",
+          "updatedAt": "2026-09-20T13:53:03.098Z",
+          "updatedBy": "admin"
+        },
+        "2026-08-23": {
+          "matricule": "70000111",
+          "present": false,
+          "from": "",
+          "to": "",
+          "shiftType": "off",
+          "updatedAt": "2026-09-20T13:53:03.098Z",
+          "updatedBy": "admin"
+        },
+        "2026-08-31": {
+          "matricule": "70000111",
+          "present": false,
+          "from": "",
+          "to": "",
+          "shiftType": "off",
+          "updatedAt": "2026-09-20T14:01:05.719Z",
+          "updatedBy": "admin"
+        },
+        "2026-09-01": {
+          "matricule": "70000111",
+          "present": false,
+          "from": "",
+          "to": "",
+          "shiftType": "shift1",
+          "updatedAt": "2026-09-20T14:01:05.719Z",
+          "updatedBy": "admin"
+        },
+        "2026-09-02": {
+          "matricule": "70000111",
+          "present": false,
+          "from": "",
+          "to": "",
+          "shiftType": "shift1",
+          "updatedAt": "2026-09-20T14:01:05.719Z",
+          "updatedBy": "admin"
+        },
+        "2026-09-03": {
+          "matricule": "70000111",
+          "present": false,
+          "from": "",
+          "to": "",
+          "shiftType": "shift2",
+          "updatedAt": "2026-09-20T14:01:05.719Z",
+          "updatedBy": "admin"
+        },
+        "2026-09-04": {
+          "matricule": "70000111",
+          "present": false,
+          "from": "",
+          "to": "",
+          "shiftType": "shift2",
+          "updatedAt": "2026-09-20T14:01:05.719Z",
+          "updatedBy": "admin"
+        },
+        "2026-09-05": {
+          "matricule": "70000111",
+          "present": false,
+          "from": "",
+          "to": "",
+          "shiftType": "shift3",
+          "updatedAt": "2026-09-20T14:01:05.719Z",
+          "updatedBy": "admin"
+        },
+        "2026-09-06": {
+          "matricule": "70000111",
+          "present": false,
+          "from": "",
+          "to": "",
+          "shiftType": "shift3",
+          "updatedAt": "2026-09-20T14:01:05.719Z",
+          "updatedBy": "admin"
+        },
+        "2026-09-07": {
+          "matricule": "70000111",
+          "present": false,
+          "from": "",
+          "to": "",
+          "shiftType": "off",
+          "updatedAt": "2026-09-20T14:04:20.360Z",
+          "updatedBy": "admin"
+        },
+        "2026-09-08": {
+          "matricule": "70000111",
+          "present": false,
+          "from": "",
+          "to": "",
+          "shiftType": "off",
+          "updatedAt": "2026-09-20T14:04:20.360Z",
+          "updatedBy": "admin"
+        },
+        "2026-09-09": {
+          "matricule": "70000111",
+          "present": false,
+          "from": "",
+          "to": "",
+          "shiftType": "shift1",
+          "updatedAt": "2026-09-20T14:04:20.360Z",
+          "updatedBy": "admin"
+        },
+        "2026-09-10": {
+          "matricule": "70000111",
+          "present": false,
+          "from": "",
+          "to": "",
+          "shiftType": "shift1",
+          "updatedAt": "2026-09-20T14:04:20.360Z",
+          "updatedBy": "admin"
+        },
+        "2026-09-11": {
+          "matricule": "70000111",
+          "present": false,
+          "from": "",
+          "to": "",
+          "shiftType": "shift2",
+          "updatedAt": "2026-09-20T14:04:20.360Z",
+          "updatedBy": "admin"
+        },
+        "2026-09-12": {
+          "matricule": "70000111",
+          "present": false,
+          "from": "",
+          "to": "",
+          "shiftType": "shift2",
+          "updatedAt": "2026-09-20T14:04:20.360Z",
+          "updatedBy": "admin"
+        },
+        "2026-09-13": {
+          "matricule": "70000111",
+          "present": false,
+          "from": "",
+          "to": "",
+          "shiftType": "shift3",
+          "updatedAt": "2026-09-20T14:04:20.360Z",
+          "updatedBy": "admin"
+        },
+        "2026-08-24": {
+          "matricule": "70000111",
+          "present": false,
+          "from": "",
+          "to": "",
+          "shiftType": "shift1",
+          "updatedAt": "2026-09-20T13:56:05.622Z",
+          "updatedBy": "admin"
+        },
+        "2026-08-25": {
+          "matricule": "70000111",
+          "present": false,
+          "from": "",
+          "to": "",
+          "shiftType": "shift1",
+          "updatedAt": "2026-09-20T13:56:05.622Z",
+          "updatedBy": "admin"
+        },
+        "2026-08-26": {
+          "matricule": "70000111",
+          "present": false,
+          "from": "",
+          "to": "",
+          "shiftType": "shift2",
+          "updatedAt": "2026-09-20T13:56:05.622Z",
+          "updatedBy": "admin"
+        },
+        "2026-08-27": {
+          "matricule": "70000111",
+          "present": false,
+          "from": "",
+          "to": "",
+          "shiftType": "shift2",
+          "updatedAt": "2026-09-20T13:56:05.622Z",
+          "updatedBy": "admin"
+        },
+        "2026-08-28": {
+          "matricule": "70000111",
+          "present": false,
+          "from": "",
+          "to": "",
+          "shiftType": "shift3",
+          "updatedAt": "2026-09-20T13:56:05.622Z",
+          "updatedBy": "admin"
+        },
+        "2026-08-29": {
+          "matricule": "70000111",
+          "present": false,
+          "from": "",
+          "to": "",
+          "shiftType": "shift3",
+          "updatedAt": "2026-09-20T13:56:05.622Z",
+          "updatedBy": "admin"
+        },
+        "2026-08-30": {
+          "matricule": "70000111",
+          "present": false,
+          "from": "",
+          "to": "",
+          "shiftType": "off",
+          "updatedAt": "2026-09-20T13:56:05.622Z",
+          "updatedBy": "admin"
+        },
+        "2026-09-14": {
+          "matricule": "70000111",
+          "present": false,
+          "from": "",
+          "to": "",
+          "shiftType": "shift3",
+          "updatedAt": "2026-09-20T14:06:44.734Z",
+          "updatedBy": "admin"
+        }
+      }
+    },
+    "70000155": {
+      "matricule": "70000155",
+      "days": {
+        "2026-08-16": {
+          "matricule": "70000155",
+          "present": false,
+          "from": "",
+          "to": "",
+          "shiftType": "shift2",
+          "updatedAt": "2026-09-20T13:48:50.189Z",
+          "updatedBy": "admin"
+        },
+        "2026-08-17": {
+          "matricule": "70000155",
+          "present": false,
+          "from": "",
+          "to": "",
+          "shiftType": "shift2",
+          "updatedAt": "2026-09-20T13:53:03.098Z",
+          "updatedBy": "admin"
+        },
+        "2026-08-18": {
+          "matricule": "70000155",
+          "present": false,
+          "from": "",
+          "to": "",
+          "shiftType": "shift3",
+          "updatedAt": "2026-09-20T13:53:03.098Z",
+          "updatedBy": "admin"
+        },
+        "2026-08-19": {
+          "matricule": "70000155",
+          "present": false,
+          "from": "",
+          "to": "",
+          "shiftType": "shift3",
+          "updatedAt": "2026-09-20T13:53:03.098Z",
+          "updatedBy": "admin"
+        },
+        "2026-08-20": {
+          "matricule": "70000155",
+          "present": false,
+          "from": "",
+          "to": "",
+          "shiftType": "off",
+          "updatedAt": "2026-09-20T13:53:03.098Z",
+          "updatedBy": "admin"
+        },
+        "2026-08-21": {
+          "matricule": "70000155",
+          "present": false,
+          "from": "",
+          "to": "",
+          "shiftType": "off",
+          "updatedAt": "2026-09-20T13:53:03.098Z",
+          "updatedBy": "admin"
+        },
+        "2026-08-22": {
+          "matricule": "70000155",
+          "present": false,
+          "from": "",
+          "to": "",
+          "shiftType": "shift1",
+          "updatedAt": "2026-09-20T13:53:03.098Z",
+          "updatedBy": "admin"
+        },
+        "2026-08-23": {
+          "matricule": "70000155",
+          "present": false,
+          "from": "",
+          "to": "",
+          "shiftType": "shift1",
+          "updatedAt": "2026-09-20T13:53:03.098Z",
+          "updatedBy": "admin"
+        },
+        "2026-08-31": {
+          "matricule": "70000155",
+          "present": false,
+          "from": "",
+          "to": "",
+          "shiftType": "shift1",
+          "updatedAt": "2026-09-20T14:01:05.719Z",
+          "updatedBy": "admin"
+        },
+        "2026-09-01": {
+          "matricule": "70000155",
+          "present": false,
+          "from": "",
+          "to": "",
+          "shiftType": "shift2",
+          "updatedAt": "2026-09-20T14:01:05.719Z",
+          "updatedBy": "admin"
+        },
+        "2026-09-02": {
+          "matricule": "70000155",
+          "present": false,
+          "from": "",
+          "to": "",
+          "shiftType": "shift2",
+          "updatedAt": "2026-09-20T14:01:05.719Z",
+          "updatedBy": "admin"
+        },
+        "2026-09-03": {
+          "matricule": "70000155",
+          "present": false,
+          "from": "",
+          "to": "",
+          "shiftType": "shift3",
+          "updatedAt": "2026-09-20T14:01:05.719Z",
+          "updatedBy": "admin"
+        },
+        "2026-09-04": {
+          "matricule": "70000155",
+          "present": false,
+          "from": "",
+          "to": "",
+          "shiftType": "shift3",
+          "updatedAt": "2026-09-20T14:01:05.719Z",
+          "updatedBy": "admin"
+        },
+        "2026-09-05": {
+          "matricule": "70000155",
+          "present": false,
+          "from": "",
+          "to": "",
+          "shiftType": "off",
+          "updatedAt": "2026-09-20T14:01:05.719Z",
+          "updatedBy": "admin"
+        },
+        "2026-09-06": {
+          "matricule": "70000155",
+          "present": false,
+          "from": "",
+          "to": "",
+          "shiftType": "off",
+          "updatedAt": "2026-09-20T14:01:05.719Z",
+          "updatedBy": "admin"
+        },
+        "2026-09-07": {
+          "matricule": "70000155",
+          "present": false,
+          "from": "",
+          "to": "",
+          "shiftType": "shift1",
+          "updatedAt": "2026-09-20T14:04:20.360Z",
+          "updatedBy": "admin"
+        },
+        "2026-09-08": {
+          "matricule": "70000155",
+          "present": false,
+          "from": "",
+          "to": "",
+          "shiftType": "shift1",
+          "updatedAt": "2026-09-20T14:04:20.360Z",
+          "updatedBy": "admin"
+        },
+        "2026-09-09": {
+          "matricule": "70000155",
+          "present": false,
+          "from": "",
+          "to": "",
+          "shiftType": "shift2",
+          "updatedAt": "2026-09-20T14:04:20.360Z",
+          "updatedBy": "admin"
+        },
+        "2026-09-10": {
+          "matricule": "70000155",
+          "present": false,
+          "from": "",
+          "to": "",
+          "shiftType": "shift2",
+          "updatedAt": "2026-09-20T14:04:20.360Z",
+          "updatedBy": "admin"
+        },
+        "2026-09-11": {
+          "matricule": "70000155",
+          "present": false,
+          "from": "",
+          "to": "",
+          "shiftType": "shift3",
+          "updatedAt": "2026-09-20T14:04:20.360Z",
+          "updatedBy": "admin"
+        },
+        "2026-09-12": {
+          "matricule": "70000155",
+          "present": false,
+          "from": "",
+          "to": "",
+          "shiftType": "shift3",
+          "updatedAt": "2026-09-20T14:04:20.360Z",
+          "updatedBy": "admin"
+        },
+        "2026-09-13": {
+          "matricule": "70000155",
+          "present": false,
+          "from": "",
+          "to": "",
+          "shiftType": "off",
+          "updatedAt": "2026-09-20T14:04:20.360Z",
+          "updatedBy": "admin"
+        },
+        "2026-08-24": {
+          "matricule": "70000155",
+          "present": false,
+          "from": "",
+          "to": "",
+          "shiftType": "shift2",
+          "updatedAt": "2026-09-20T13:56:05.622Z",
+          "updatedBy": "admin"
+        },
+        "2026-08-25": {
+          "matricule": "70000155",
+          "present": false,
+          "from": "",
+          "to": "",
+          "shiftType": "shift2",
+          "updatedAt": "2026-09-20T13:56:05.622Z",
+          "updatedBy": "admin"
+        },
+        "2026-08-26": {
+          "matricule": "70000155",
+          "present": false,
+          "from": "",
+          "to": "",
+          "shiftType": "shift3",
+          "updatedAt": "2026-09-20T13:56:05.622Z",
+          "updatedBy": "admin"
+        },
+        "2026-08-27": {
+          "matricule": "70000155",
+          "present": false,
+          "from": "",
+          "to": "",
+          "shiftType": "shift3",
+          "updatedAt": "2026-09-20T13:56:05.622Z",
+          "updatedBy": "admin"
+        },
+        "2026-08-28": {
+          "matricule": "70000155",
+          "present": false,
+          "from": "",
+          "to": "",
+          "shiftType": "off",
+          "updatedAt": "2026-09-20T13:56:05.622Z",
+          "updatedBy": "admin"
+        },
+        "2026-08-29": {
+          "matricule": "70000155",
+          "present": false,
+          "from": "",
+          "to": "",
+          "shiftType": "off",
+          "updatedAt": "2026-09-20T13:56:05.622Z",
+          "updatedBy": "admin"
+        },
+        "2026-08-30": {
+          "matricule": "70000155",
+          "present": false,
+          "from": "",
+          "to": "",
+          "shiftType": "shift1",
+          "updatedAt": "2026-09-20T13:56:05.622Z",
+          "updatedBy": "admin"
+        },
+        "2026-09-14": {
+          "matricule": "70000155",
+          "present": false,
+          "from": "",
+          "to": "",
+          "shiftType": "off",
+          "updatedAt": "2026-09-20T14:06:44.734Z",
+          "updatedBy": "admin"
+        }
+      }
+    },
+    "70000164": {
+      "matricule": "70000164",
+      "days": {
+        "2026-08-16": {
+          "matricule": "70000164",
+          "present": false,
+          "from": "",
+          "to": "",
+          "shiftType": "shift3",
+          "updatedAt": "2026-09-20T13:48:50.189Z",
+          "updatedBy": "admin"
+        },
+        "2026-08-17": {
+          "matricule": "70000164",
+          "present": false,
+          "from": "",
+          "to": "",
+          "shiftType": "shift3",
+          "updatedAt": "2026-09-20T13:53:03.098Z",
+          "updatedBy": "admin"
+        },
+        "2026-08-18": {
+          "matricule": "70000164",
+          "present": false,
+          "from": "",
+          "to": "",
+          "shiftType": "off",
+          "updatedAt": "2026-09-20T13:53:03.098Z",
+          "updatedBy": "admin"
+        },
+        "2026-08-19": {
+          "matricule": "70000164",
+          "present": false,
+          "from": "",
+          "to": "",
+          "shiftType": "off",
+          "updatedAt": "2026-09-20T13:53:03.098Z",
+          "updatedBy": "admin"
+        },
+        "2026-08-20": {
+          "matricule": "70000164",
+          "present": false,
+          "from": "",
+          "to": "",
+          "shiftType": "shift1",
+          "updatedAt": "2026-09-20T13:53:03.098Z",
+          "updatedBy": "admin"
+        },
+        "2026-08-21": {
+          "matricule": "70000164",
+          "present": false,
+          "from": "",
+          "to": "",
+          "shiftType": "shift1",
+          "updatedAt": "2026-09-20T13:53:03.098Z",
+          "updatedBy": "admin"
+        },
+        "2026-08-22": {
+          "matricule": "70000164",
+          "present": false,
+          "from": "",
+          "to": "",
+          "shiftType": "shift2",
+          "updatedAt": "2026-09-20T13:53:03.098Z",
+          "updatedBy": "admin"
+        },
+        "2026-08-23": {
+          "matricule": "70000164",
+          "present": false,
+          "from": "",
+          "to": "",
+          "shiftType": "shift2",
+          "updatedAt": "2026-09-20T13:53:03.098Z",
+          "updatedBy": "admin"
+        },
+        "2026-08-31": {
+          "matricule": "70000164",
+          "present": false,
+          "from": "",
+          "to": "",
+          "shiftType": "shift2",
+          "updatedAt": "2026-09-20T14:01:05.719Z",
+          "updatedBy": "admin"
+        },
+        "2026-09-01": {
+          "matricule": "70000164",
+          "present": false,
+          "from": "",
+          "to": "",
+          "shiftType": "shift3",
+          "updatedAt": "2026-09-20T14:01:05.719Z",
+          "updatedBy": "admin"
+        },
+        "2026-09-02": {
+          "matricule": "70000164",
+          "present": false,
+          "from": "",
+          "to": "",
+          "shiftType": "shift3",
+          "updatedAt": "2026-09-20T14:01:05.719Z",
+          "updatedBy": "admin"
+        },
+        "2026-09-03": {
+          "matricule": "70000164",
+          "present": false,
+          "from": "",
+          "to": "",
+          "shiftType": "off",
+          "updatedAt": "2026-09-20T14:01:05.719Z",
+          "updatedBy": "admin"
+        },
+        "2026-09-04": {
+          "matricule": "70000164",
+          "present": false,
+          "from": "",
+          "to": "",
+          "shiftType": "off",
+          "updatedAt": "2026-09-20T14:01:05.719Z",
+          "updatedBy": "admin"
+        },
+        "2026-09-05": {
+          "matricule": "70000164",
+          "present": false,
+          "from": "",
+          "to": "",
+          "shiftType": "shift1",
+          "updatedAt": "2026-09-20T14:01:05.719Z",
+          "updatedBy": "admin"
+        },
+        "2026-09-06": {
+          "matricule": "70000164",
+          "present": false,
+          "from": "",
+          "to": "",
+          "shiftType": "shift1",
+          "updatedAt": "2026-09-20T14:01:05.719Z",
+          "updatedBy": "admin"
+        },
+        "2026-09-07": {
+          "matricule": "70000164",
+          "present": false,
+          "from": "",
+          "to": "",
+          "shiftType": "shift2",
+          "updatedAt": "2026-09-20T14:04:20.360Z",
+          "updatedBy": "admin"
+        },
+        "2026-09-08": {
+          "matricule": "70000164",
+          "present": false,
+          "from": "",
+          "to": "",
+          "shiftType": "shift2",
+          "updatedAt": "2026-09-20T14:04:20.360Z",
+          "updatedBy": "admin"
+        },
+        "2026-09-09": {
+          "matricule": "70000164",
+          "present": false,
+          "from": "",
+          "to": "",
+          "shiftType": "shift3",
+          "updatedAt": "2026-09-20T14:04:20.360Z",
+          "updatedBy": "admin"
+        },
+        "2026-09-10": {
+          "matricule": "70000164",
+          "present": false,
+          "from": "",
+          "to": "",
+          "shiftType": "shift3",
+          "updatedAt": "2026-09-20T14:04:20.360Z",
+          "updatedBy": "admin"
+        },
+        "2026-09-11": {
+          "matricule": "70000164",
+          "present": false,
+          "from": "",
+          "to": "",
+          "shiftType": "off",
+          "updatedAt": "2026-09-20T14:04:20.360Z",
+          "updatedBy": "admin"
+        },
+        "2026-09-12": {
+          "matricule": "70000164",
+          "present": false,
+          "from": "",
+          "to": "",
+          "shiftType": "off",
+          "updatedAt": "2026-09-20T14:04:20.360Z",
+          "updatedBy": "admin"
+        },
+        "2026-09-13": {
+          "matricule": "70000164",
+          "present": false,
+          "from": "",
+          "to": "",
+          "shiftType": "shift1",
+          "updatedAt": "2026-09-20T14:04:20.360Z",
+          "updatedBy": "admin"
+        },
+        "2026-08-24": {
+          "matricule": "70000164",
+          "present": false,
+          "from": "",
+          "to": "",
+          "shiftType": "shift3",
+          "updatedAt": "2026-09-20T13:56:05.622Z",
+          "updatedBy": "admin"
+        },
+        "2026-08-25": {
+          "matricule": "70000164",
+          "present": false,
+          "from": "",
+          "to": "",
+          "shiftType": "shift3",
+          "updatedAt": "2026-09-20T13:56:05.622Z",
+          "updatedBy": "admin"
+        },
+        "2026-08-26": {
+          "matricule": "70000164",
+          "present": false,
+          "from": "",
+          "to": "",
+          "shiftType": "off",
+          "updatedAt": "2026-09-20T13:56:05.622Z",
+          "updatedBy": "admin"
+        },
+        "2026-08-27": {
+          "matricule": "70000164",
+          "present": false,
+          "from": "",
+          "to": "",
+          "shiftType": "off",
+          "updatedAt": "2026-09-20T13:56:05.622Z",
+          "updatedBy": "admin"
+        },
+        "2026-08-28": {
+          "matricule": "70000164",
+          "present": false,
+          "from": "",
+          "to": "",
+          "shiftType": "shift1",
+          "updatedAt": "2026-09-20T13:56:05.622Z",
+          "updatedBy": "admin"
+        },
+        "2026-08-29": {
+          "matricule": "70000164",
+          "present": false,
+          "from": "",
+          "to": "",
+          "shiftType": "shift1",
+          "updatedAt": "2026-09-20T13:56:05.622Z",
+          "updatedBy": "admin"
+        },
+        "2026-08-30": {
+          "matricule": "70000164",
+          "present": false,
+          "from": "",
+          "to": "",
+          "shiftType": "shift2",
+          "updatedAt": "2026-09-20T13:56:05.622Z",
+          "updatedBy": "admin"
+        },
+        "2026-09-14": {
+          "matricule": "70000164",
+          "present": false,
+          "from": "",
+          "to": "",
+          "shiftType": "shift1",
+          "updatedAt": "2026-09-20T14:06:44.734Z",
+          "updatedBy": "admin"
+        }
+      }
+    },
+    "70000205": {
+      "matricule": "70000205",
+      "days": {
+        "2026-08-16": {
+          "matricule": "70000205",
+          "present": false,
+          "from": "",
+          "to": "",
+          "shiftType": "general",
+          "updatedAt": "2026-09-20T13:48:50.189Z",
+          "updatedBy": "admin"
+        },
+        "2026-08-17": {
+          "matricule": "70000205",
+          "present": false,
+          "from": "",
+          "to": "",
+          "shiftType": "general",
+          "updatedAt": "2026-09-20T13:53:03.098Z",
+          "updatedBy": "admin"
+        },
+        "2026-08-18": {
+          "matricule": "70000205",
+          "present": false,
+          "from": "",
+          "to": "",
+          "shiftType": "general",
+          "updatedAt": "2026-09-20T13:53:03.098Z",
+          "updatedBy": "admin"
+        },
+        "2026-08-19": {
+          "matricule": "70000205",
+          "present": false,
+          "from": "",
+          "to": "",
+          "shiftType": "general",
+          "updatedAt": "2026-09-20T13:53:03.098Z",
+          "updatedBy": "admin"
+        },
+        "2026-08-20": {
+          "matricule": "70000205",
+          "present": false,
+          "from": "",
+          "to": "",
+          "shiftType": "general",
+          "updatedAt": "2026-09-20T13:53:03.098Z",
+          "updatedBy": "admin"
+        },
+        "2026-08-21": {
+          "matricule": "70000205",
+          "present": false,
+          "from": "",
+          "to": "",
+          "shiftType": "general",
+          "updatedAt": "2026-09-20T13:53:03.098Z",
+          "updatedBy": "admin"
+        },
+        "2026-08-22": {
+          "matricule": "70000205",
+          "present": false,
+          "from": "",
+          "to": "",
+          "shiftType": "off",
+          "updatedAt": "2026-09-20T13:53:03.098Z",
+          "updatedBy": "admin"
+        },
+        "2026-08-23": {
+          "matricule": "70000205",
+          "present": false,
+          "from": "",
+          "to": "",
+          "shiftType": "off",
+          "updatedAt": "2026-09-20T13:53:03.098Z",
+          "updatedBy": "admin"
+        },
+        "2026-08-31": {
+          "matricule": "70000205",
+          "present": false,
+          "from": "",
+          "to": "",
+          "shiftType": "general",
+          "updatedAt": "2026-09-20T14:01:05.719Z",
+          "updatedBy": "admin"
+        },
+        "2026-09-01": {
+          "matricule": "70000205",
+          "present": false,
+          "from": "",
+          "to": "",
+          "shiftType": "general",
+          "updatedAt": "2026-09-20T14:01:05.719Z",
+          "updatedBy": "admin"
+        },
+        "2026-09-02": {
+          "matricule": "70000205",
+          "present": false,
+          "from": "",
+          "to": "",
+          "shiftType": "general",
+          "updatedAt": "2026-09-20T14:01:05.719Z",
+          "updatedBy": "admin"
+        },
+        "2026-09-03": {
+          "matricule": "70000205",
+          "present": false,
+          "from": "",
+          "to": "",
+          "shiftType": "general",
+          "updatedAt": "2026-09-20T14:01:05.719Z",
+          "updatedBy": "admin"
+        },
+        "2026-09-04": {
+          "matricule": "70000205",
+          "present": false,
+          "from": "",
+          "to": "",
+          "shiftType": "general",
+          "updatedAt": "2026-09-20T14:01:05.719Z",
+          "updatedBy": "admin"
+        },
+        "2026-09-05": {
+          "matricule": "70000205",
+          "present": false,
+          "from": "",
+          "to": "",
+          "shiftType": "off",
+          "updatedAt": "2026-09-20T14:01:05.719Z",
+          "updatedBy": "admin"
+        },
+        "2026-09-06": {
+          "matricule": "70000205",
+          "present": false,
+          "from": "",
+          "to": "",
+          "shiftType": "off",
+          "updatedAt": "2026-09-20T14:01:05.719Z",
+          "updatedBy": "admin"
+        },
+        "2026-09-07": {
+          "matricule": "70000205",
+          "present": false,
+          "from": "",
+          "to": "",
+          "shiftType": "general",
+          "updatedAt": "2026-09-20T14:04:20.360Z",
+          "updatedBy": "admin"
+        },
+        "2026-09-08": {
+          "matricule": "70000205",
+          "present": false,
+          "from": "",
+          "to": "",
+          "shiftType": "general",
+          "updatedAt": "2026-09-20T14:04:20.360Z",
+          "updatedBy": "admin"
+        },
+        "2026-09-09": {
+          "matricule": "70000205",
+          "present": false,
+          "from": "",
+          "to": "",
+          "shiftType": "general",
+          "updatedAt": "2026-09-20T14:04:20.360Z",
+          "updatedBy": "admin"
+        },
+        "2026-09-10": {
+          "matricule": "70000205",
+          "present": false,
+          "from": "",
+          "to": "",
+          "shiftType": "general",
+          "updatedAt": "2026-09-20T14:04:20.360Z",
+          "updatedBy": "admin"
+        },
+        "2026-09-11": {
+          "matricule": "70000205",
+          "present": false,
+          "from": "",
+          "to": "",
+          "shiftType": "general",
+          "updatedAt": "2026-09-20T14:04:20.360Z",
+          "updatedBy": "admin"
+        },
+        "2026-09-12": {
+          "matricule": "70000205",
+          "present": false,
+          "from": "",
+          "to": "",
+          "shiftType": "off",
+          "updatedAt": "2026-09-20T14:04:20.360Z",
+          "updatedBy": "admin"
+        },
+        "2026-09-13": {
+          "matricule": "70000205",
+          "present": false,
+          "from": "",
+          "to": "",
+          "shiftType": "off",
+          "updatedAt": "2026-09-20T14:04:20.360Z",
+          "updatedBy": "admin"
+        },
+        "2026-08-24": {
+          "matricule": "70000205",
+          "present": false,
+          "from": "",
+          "to": "",
+          "shiftType": "general",
+          "updatedAt": "2026-09-20T13:56:05.622Z",
+          "updatedBy": "admin"
+        },
+        "2026-08-25": {
+          "matricule": "70000205",
+          "present": false,
+          "from": "",
+          "to": "",
+          "shiftType": "general",
+          "updatedAt": "2026-09-20T13:56:05.622Z",
+          "updatedBy": "admin"
+        },
+        "2026-08-26": {
+          "matricule": "70000205",
+          "present": false,
+          "from": "",
+          "to": "",
+          "shiftType": "general",
+          "updatedAt": "2026-09-20T13:56:05.622Z",
+          "updatedBy": "admin"
+        },
+        "2026-08-27": {
+          "matricule": "70000205",
+          "present": false,
+          "from": "",
+          "to": "",
+          "shiftType": "general",
+          "updatedAt": "2026-09-20T13:56:05.622Z",
+          "updatedBy": "admin"
+        },
+        "2026-08-28": {
+          "matricule": "70000205",
+          "present": false,
+          "from": "",
+          "to": "",
+          "shiftType": "general",
+          "updatedAt": "2026-09-20T13:56:05.622Z",
+          "updatedBy": "admin"
+        },
+        "2026-08-29": {
+          "matricule": "70000205",
+          "present": false,
+          "from": "",
+          "to": "",
+          "shiftType": "off",
+          "updatedAt": "2026-09-20T13:56:05.622Z",
+          "updatedBy": "admin"
+        },
+        "2026-08-30": {
+          "matricule": "70000205",
+          "present": false,
+          "from": "",
+          "to": "",
+          "shiftType": "off",
+          "updatedAt": "2026-09-20T13:56:05.622Z",
+          "updatedBy": "admin"
+        },
+        "2026-09-14": {
+          "matricule": "70000205",
+          "present": false,
+          "from": "",
+          "to": "",
+          "shiftType": "general",
+          "updatedAt": "2026-09-20T14:06:44.734Z",
           "updatedBy": "admin"
         }
       }
@@ -3037,6 +4137,69 @@
           "updatedAt": "2026-09-09T11:05:34.936Z",
           "updatedBy": "admin"
         },
+        "2026-08-17": {
+          "matricule": "70000210",
+          "present": false,
+          "from": "",
+          "to": "",
+          "shiftType": "general",
+          "updatedAt": "2026-09-09T11:07:41.026Z",
+          "updatedBy": "admin"
+        },
+        "2026-08-18": {
+          "matricule": "70000210",
+          "present": false,
+          "from": "",
+          "to": "",
+          "shiftType": "general",
+          "updatedAt": "2026-09-09T11:07:41.026Z",
+          "updatedBy": "admin"
+        },
+        "2026-08-19": {
+          "matricule": "70000210",
+          "present": false,
+          "from": "",
+          "to": "",
+          "shiftType": "general",
+          "updatedAt": "2026-09-09T11:07:41.026Z",
+          "updatedBy": "admin"
+        },
+        "2026-08-20": {
+          "matricule": "70000210",
+          "present": false,
+          "from": "",
+          "to": "",
+          "shiftType": "general",
+          "updatedAt": "2026-09-09T11:07:41.026Z",
+          "updatedBy": "admin"
+        },
+        "2026-08-21": {
+          "matricule": "70000210",
+          "present": false,
+          "from": "",
+          "to": "",
+          "shiftType": "general",
+          "updatedAt": "2026-09-09T11:07:41.026Z",
+          "updatedBy": "admin"
+        },
+        "2026-08-22": {
+          "matricule": "70000210",
+          "present": false,
+          "from": "",
+          "to": "",
+          "shiftType": "off",
+          "updatedAt": "2026-09-09T11:07:41.026Z",
+          "updatedBy": "admin"
+        },
+        "2026-08-23": {
+          "matricule": "70000210",
+          "present": false,
+          "from": "",
+          "to": "",
+          "shiftType": "off",
+          "updatedAt": "2026-09-09T11:07:41.026Z",
+          "updatedBy": "admin"
+        },
         "2026-08-31": {
           "matricule": "70000210",
           "present": false,
@@ -3224,69 +4387,6 @@
           "to": "",
           "shiftType": "off",
           "updatedAt": "2026-09-09T11:10:53.497Z",
-          "updatedBy": "admin"
-        },
-        "2026-08-17": {
-          "matricule": "70000210",
-          "present": false,
-          "from": "",
-          "to": "",
-          "shiftType": "general",
-          "updatedAt": "2026-09-09T11:07:41.026Z",
-          "updatedBy": "admin"
-        },
-        "2026-08-18": {
-          "matricule": "70000210",
-          "present": false,
-          "from": "",
-          "to": "",
-          "shiftType": "general",
-          "updatedAt": "2026-09-09T11:07:41.026Z",
-          "updatedBy": "admin"
-        },
-        "2026-08-19": {
-          "matricule": "70000210",
-          "present": false,
-          "from": "",
-          "to": "",
-          "shiftType": "general",
-          "updatedAt": "2026-09-09T11:07:41.026Z",
-          "updatedBy": "admin"
-        },
-        "2026-08-20": {
-          "matricule": "70000210",
-          "present": false,
-          "from": "",
-          "to": "",
-          "shiftType": "general",
-          "updatedAt": "2026-09-09T11:07:41.026Z",
-          "updatedBy": "admin"
-        },
-        "2026-08-21": {
-          "matricule": "70000210",
-          "present": false,
-          "from": "",
-          "to": "",
-          "shiftType": "general",
-          "updatedAt": "2026-09-09T11:07:41.026Z",
-          "updatedBy": "admin"
-        },
-        "2026-08-22": {
-          "matricule": "70000210",
-          "present": false,
-          "from": "",
-          "to": "",
-          "shiftType": "off",
-          "updatedAt": "2026-09-09T11:07:41.026Z",
-          "updatedBy": "admin"
-        },
-        "2026-08-23": {
-          "matricule": "70000210",
-          "present": false,
-          "from": "",
-          "to": "",
-          "shiftType": "off",
-          "updatedAt": "2026-09-09T11:07:41.026Z",
           "updatedBy": "admin"
         }
       }
@@ -3425,6 +4525,69 @@
           "updatedAt": "2026-09-09T11:05:34.936Z",
           "updatedBy": "admin"
         },
+        "2026-08-17": {
+          "matricule": "70000276",
+          "present": false,
+          "from": "",
+          "to": "",
+          "shiftType": "general",
+          "updatedAt": "2026-09-09T11:07:41.026Z",
+          "updatedBy": "admin"
+        },
+        "2026-08-18": {
+          "matricule": "70000276",
+          "present": false,
+          "from": "",
+          "to": "",
+          "shiftType": "general",
+          "updatedAt": "2026-09-09T11:07:41.026Z",
+          "updatedBy": "admin"
+        },
+        "2026-08-19": {
+          "matricule": "70000276",
+          "present": false,
+          "from": "",
+          "to": "",
+          "shiftType": "general",
+          "updatedAt": "2026-09-09T11:07:41.026Z",
+          "updatedBy": "admin"
+        },
+        "2026-08-20": {
+          "matricule": "70000276",
+          "present": false,
+          "from": "",
+          "to": "",
+          "shiftType": "general",
+          "updatedAt": "2026-09-09T11:07:41.026Z",
+          "updatedBy": "admin"
+        },
+        "2026-08-21": {
+          "matricule": "70000276",
+          "present": false,
+          "from": "",
+          "to": "",
+          "shiftType": "general",
+          "updatedAt": "2026-09-09T11:07:41.026Z",
+          "updatedBy": "admin"
+        },
+        "2026-08-22": {
+          "matricule": "70000276",
+          "present": false,
+          "from": "",
+          "to": "",
+          "shiftType": "off",
+          "updatedAt": "2026-09-09T11:07:41.026Z",
+          "updatedBy": "admin"
+        },
+        "2026-08-23": {
+          "matricule": "70000276",
+          "present": false,
+          "from": "",
+          "to": "",
+          "shiftType": "off",
+          "updatedAt": "2026-09-09T11:07:41.026Z",
+          "updatedBy": "admin"
+        },
         "2026-08-31": {
           "matricule": "70000276",
           "present": false,
@@ -3612,69 +4775,6 @@
           "to": "",
           "shiftType": "off",
           "updatedAt": "2026-09-09T11:10:53.497Z",
-          "updatedBy": "admin"
-        },
-        "2026-08-17": {
-          "matricule": "70000276",
-          "present": false,
-          "from": "",
-          "to": "",
-          "shiftType": "general",
-          "updatedAt": "2026-09-09T11:07:41.026Z",
-          "updatedBy": "admin"
-        },
-        "2026-08-18": {
-          "matricule": "70000276",
-          "present": false,
-          "from": "",
-          "to": "",
-          "shiftType": "general",
-          "updatedAt": "2026-09-09T11:07:41.026Z",
-          "updatedBy": "admin"
-        },
-        "2026-08-19": {
-          "matricule": "70000276",
-          "present": false,
-          "from": "",
-          "to": "",
-          "shiftType": "general",
-          "updatedAt": "2026-09-09T11:07:41.026Z",
-          "updatedBy": "admin"
-        },
-        "2026-08-20": {
-          "matricule": "70000276",
-          "present": false,
-          "from": "",
-          "to": "",
-          "shiftType": "general",
-          "updatedAt": "2026-09-09T11:07:41.026Z",
-          "updatedBy": "admin"
-        },
-        "2026-08-21": {
-          "matricule": "70000276",
-          "present": false,
-          "from": "",
-          "to": "",
-          "shiftType": "general",
-          "updatedAt": "2026-09-09T11:07:41.026Z",
-          "updatedBy": "admin"
-        },
-        "2026-08-22": {
-          "matricule": "70000276",
-          "present": false,
-          "from": "",
-          "to": "",
-          "shiftType": "off",
-          "updatedAt": "2026-09-09T11:07:41.026Z",
-          "updatedBy": "admin"
-        },
-        "2026-08-23": {
-          "matricule": "70000276",
-          "present": false,
-          "from": "",
-          "to": "",
-          "shiftType": "off",
-          "updatedAt": "2026-09-09T11:07:41.026Z",
           "updatedBy": "admin"
         }
       }
@@ -3881,6 +4981,69 @@
           "updatedAt": "2026-09-09T11:05:34.936Z",
           "updatedBy": "admin"
         },
+        "2026-08-17": {
+          "matricule": "70000310",
+          "present": false,
+          "from": "",
+          "to": "",
+          "shiftType": "general",
+          "updatedAt": "2026-09-09T11:07:41.026Z",
+          "updatedBy": "admin"
+        },
+        "2026-08-18": {
+          "matricule": "70000310",
+          "present": false,
+          "from": "",
+          "to": "",
+          "shiftType": "general",
+          "updatedAt": "2026-09-09T11:07:41.026Z",
+          "updatedBy": "admin"
+        },
+        "2026-08-19": {
+          "matricule": "70000310",
+          "present": false,
+          "from": "",
+          "to": "",
+          "shiftType": "general",
+          "updatedAt": "2026-09-09T11:07:41.026Z",
+          "updatedBy": "admin"
+        },
+        "2026-08-20": {
+          "matricule": "70000310",
+          "present": false,
+          "from": "",
+          "to": "",
+          "shiftType": "general",
+          "updatedAt": "2026-09-09T11:07:41.026Z",
+          "updatedBy": "admin"
+        },
+        "2026-08-21": {
+          "matricule": "70000310",
+          "present": false,
+          "from": "",
+          "to": "",
+          "shiftType": "general",
+          "updatedAt": "2026-09-09T11:07:41.026Z",
+          "updatedBy": "admin"
+        },
+        "2026-08-22": {
+          "matricule": "70000310",
+          "present": false,
+          "from": "",
+          "to": "",
+          "shiftType": "off",
+          "updatedAt": "2026-09-09T11:07:41.026Z",
+          "updatedBy": "admin"
+        },
+        "2026-08-23": {
+          "matricule": "70000310",
+          "present": false,
+          "from": "",
+          "to": "",
+          "shiftType": "off",
+          "updatedAt": "2026-09-09T11:07:41.026Z",
+          "updatedBy": "admin"
+        },
         "2026-08-31": {
           "matricule": "70000310",
           "present": false,
@@ -4068,69 +5231,6 @@
           "to": "",
           "shiftType": "off",
           "updatedAt": "2026-09-09T11:10:53.497Z",
-          "updatedBy": "admin"
-        },
-        "2026-08-17": {
-          "matricule": "70000310",
-          "present": false,
-          "from": "",
-          "to": "",
-          "shiftType": "general",
-          "updatedAt": "2026-09-09T11:07:41.026Z",
-          "updatedBy": "admin"
-        },
-        "2026-08-18": {
-          "matricule": "70000310",
-          "present": false,
-          "from": "",
-          "to": "",
-          "shiftType": "general",
-          "updatedAt": "2026-09-09T11:07:41.026Z",
-          "updatedBy": "admin"
-        },
-        "2026-08-19": {
-          "matricule": "70000310",
-          "present": false,
-          "from": "",
-          "to": "",
-          "shiftType": "general",
-          "updatedAt": "2026-09-09T11:07:41.026Z",
-          "updatedBy": "admin"
-        },
-        "2026-08-20": {
-          "matricule": "70000310",
-          "present": false,
-          "from": "",
-          "to": "",
-          "shiftType": "general",
-          "updatedAt": "2026-09-09T11:07:41.026Z",
-          "updatedBy": "admin"
-        },
-        "2026-08-21": {
-          "matricule": "70000310",
-          "present": false,
-          "from": "",
-          "to": "",
-          "shiftType": "general",
-          "updatedAt": "2026-09-09T11:07:41.026Z",
-          "updatedBy": "admin"
-        },
-        "2026-08-22": {
-          "matricule": "70000310",
-          "present": false,
-          "from": "",
-          "to": "",
-          "shiftType": "off",
-          "updatedAt": "2026-09-09T11:07:41.026Z",
-          "updatedBy": "admin"
-        },
-        "2026-08-23": {
-          "matricule": "70000310",
-          "present": false,
-          "from": "",
-          "to": "",
-          "shiftType": "off",
-          "updatedAt": "2026-09-09T11:07:41.026Z",
           "updatedBy": "admin"
         }
       }
