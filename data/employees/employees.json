@@ -3455,7 +3455,7 @@
       "grade": "C2",
       "jobTitle": "Customer Service Clerk",
       "localisation": "Zamba",
-      "service": "",
+      "service": "CEC",
       "company": "PPC Barnet DRC Manufacturing",
       "centreCout": "KM5416",
       "appointmentDate": "03/08/2020",
@@ -3493,7 +3493,7 @@
       "cnss": "11965510738H",
       "nif": "B2222691Q",
       "createdAt": "2026-07-28T09:40:37.715Z",
-      "updatedAt": "2026-09-20T13:39:14.035Z"
+      "updatedAt": "2026-09-20T13:39:35.423Z"
     },
     {
       "id": "fd9f808b-b364-4ff9-aaa5-336c9154b2ef",
