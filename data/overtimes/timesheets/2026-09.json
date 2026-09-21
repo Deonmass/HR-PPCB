@@ -1,7 +1,7 @@
 {
   "year": 2026,
   "month": 9,
-  "updatedAt": "2026-09-21T09:14:21.327Z",
+  "updatedAt": "2026-09-21T09:39:50.650Z",
   "agents": {
     "70000008": {
       "matricule": "70000008",
@@ -1189,7 +1189,7 @@
           "to": "",
           "shiftType": "off",
           "holiday": false,
-          "updatedAt": "2026-09-21T09:14:21.325Z",
+          "updatedAt": "2026-09-21T09:39:50.649Z",
           "updatedBy": "admin"
         },
         "2026-08-11": {
@@ -1199,7 +1199,7 @@
           "to": "",
           "shiftType": "off",
           "holiday": false,
-          "updatedAt": "2026-09-21T09:14:21.325Z",
+          "updatedAt": "2026-09-21T09:39:50.649Z",
           "updatedBy": "admin"
         },
         "2026-08-12": {
@@ -1209,7 +1209,7 @@
           "to": "",
           "shiftType": "off",
           "holiday": false,
-          "updatedAt": "2026-09-21T09:14:21.325Z",
+          "updatedAt": "2026-09-21T09:39:50.649Z",
           "updatedBy": "admin"
         },
         "2026-08-13": {
@@ -1219,7 +1219,7 @@
           "to": "",
           "shiftType": "off",
           "holiday": false,
-          "updatedAt": "2026-09-21T09:14:21.325Z",
+          "updatedAt": "2026-09-21T09:39:50.649Z",
           "updatedBy": "admin"
         },
         "2026-08-14": {
@@ -1229,7 +1229,7 @@
           "to": "",
           "shiftType": "off",
           "holiday": false,
-          "updatedAt": "2026-09-21T09:14:21.325Z",
+          "updatedAt": "2026-09-21T09:39:50.649Z",
           "updatedBy": "admin"
         },
         "2026-08-15": {
@@ -1239,7 +1239,7 @@
           "to": "",
           "shiftType": "off",
           "holiday": false,
-          "updatedAt": "2026-09-21T09:14:21.325Z",
+          "updatedAt": "2026-09-21T09:39:50.649Z",
           "updatedBy": "admin"
         },
         "2026-08-16": {
@@ -1247,9 +1247,9 @@
           "present": false,
           "from": "",
           "to": "",
-          "shiftType": "off",
+          "shiftType": "al",
           "holiday": false,
-          "updatedAt": "2026-09-21T09:14:21.325Z",
+          "updatedAt": "2026-09-21T09:39:50.649Z",
           "updatedBy": "admin"
         },
         "2026-08-17": {
@@ -1257,9 +1257,9 @@
           "present": false,
           "from": "",
           "to": "",
-          "shiftType": "off",
+          "shiftType": "al",
           "holiday": false,
-          "updatedAt": "2026-09-21T09:14:21.325Z",
+          "updatedAt": "2026-09-21T09:39:50.649Z",
           "updatedBy": "admin"
         },
         "2026-08-18": {
@@ -1267,9 +1267,9 @@
           "present": false,
           "from": "",
           "to": "",
-          "shiftType": "off",
+          "shiftType": "al",
           "holiday": false,
-          "updatedAt": "2026-09-21T09:14:21.325Z",
+          "updatedAt": "2026-09-21T09:39:50.649Z",
           "updatedBy": "admin"
         },
         "2026-08-19": {
@@ -1277,9 +1277,9 @@
           "present": false,
           "from": "",
           "to": "",
-          "shiftType": "off",
+          "shiftType": "al",
           "holiday": false,
-          "updatedAt": "2026-09-21T09:14:21.325Z",
+          "updatedAt": "2026-09-21T09:39:50.649Z",
           "updatedBy": "admin"
         },
         "2026-08-20": {
@@ -1287,9 +1287,9 @@
           "present": false,
           "from": "",
           "to": "",
-          "shiftType": "off",
+          "shiftType": "al",
           "holiday": false,
-          "updatedAt": "2026-09-21T09:14:21.325Z",
+          "updatedAt": "2026-09-21T09:39:50.649Z",
           "updatedBy": "admin"
         },
         "2026-08-21": {
@@ -1297,9 +1297,9 @@
           "present": false,
           "from": "",
           "to": "",
-          "shiftType": "off",
+          "shiftType": "al",
           "holiday": false,
-          "updatedAt": "2026-09-21T09:14:21.325Z",
+          "updatedAt": "2026-09-21T09:39:50.649Z",
           "updatedBy": "admin"
         },
         "2026-08-22": {
@@ -1307,9 +1307,9 @@
           "present": false,
           "from": "",
           "to": "",
-          "shiftType": "off",
+          "shiftType": "al",
           "holiday": false,
-          "updatedAt": "2026-09-21T09:14:21.325Z",
+          "updatedAt": "2026-09-21T09:39:50.649Z",
           "updatedBy": "admin"
         },
         "2026-08-23": {
@@ -1317,9 +1317,9 @@
           "present": false,
           "from": "",
           "to": "",
-          "shiftType": "off",
+          "shiftType": "al",
           "holiday": false,
-          "updatedAt": "2026-09-21T09:14:21.325Z",
+          "updatedAt": "2026-09-21T09:39:50.649Z",
           "updatedBy": "admin"
         },
         "2026-09-15": {
@@ -1329,7 +1329,7 @@
           "to": "22:00",
           "shiftType": "shift2",
           "holiday": false,
-          "updatedAt": "2026-09-21T09:14:21.325Z",
+          "updatedAt": "2026-09-21T09:39:50.649Z",
           "updatedBy": "admin"
         },
         "2026-09-16": {
@@ -1339,7 +1339,7 @@
           "to": "",
           "shiftType": "off",
           "holiday": false,
-          "updatedAt": "2026-09-21T09:14:21.325Z",
+          "updatedAt": "2026-09-21T09:39:50.649Z",
           "updatedBy": "admin"
         },
         "2026-09-17": {
@@ -1349,7 +1349,7 @@
           "to": "",
           "shiftType": "off",
           "holiday": false,
-          "updatedAt": "2026-09-21T09:14:21.325Z",
+          "updatedAt": "2026-09-21T09:39:50.649Z",
           "updatedBy": "admin"
         },
         "2026-09-18": {
@@ -1359,7 +1359,7 @@
           "to": "",
           "shiftType": "off",
           "holiday": false,
-          "updatedAt": "2026-09-21T09:14:21.325Z",
+          "updatedAt": "2026-09-21T09:39:50.649Z",
           "updatedBy": "admin"
         },
         "2026-09-19": {
@@ -1369,7 +1369,7 @@
           "to": "",
           "shiftType": "off",
           "holiday": false,
-          "updatedAt": "2026-09-21T09:14:21.325Z",
+          "updatedAt": "2026-09-21T09:39:50.649Z",
           "updatedBy": "admin"
         },
         "2026-09-20": {
@@ -1379,7 +1379,7 @@
           "to": "",
           "shiftType": "off",
           "holiday": false,
-          "updatedAt": "2026-09-21T09:14:21.325Z",
+          "updatedAt": "2026-09-21T09:39:50.649Z",
           "updatedBy": "admin"
         },
         "2026-08-31": {
@@ -1387,9 +1387,9 @@
           "present": false,
           "from": "",
           "to": "",
-          "shiftType": "off",
+          "shiftType": "al",
           "holiday": false,
-          "updatedAt": "2026-09-21T09:14:21.325Z",
+          "updatedAt": "2026-09-21T09:39:50.649Z",
           "updatedBy": "admin"
         },
         "2026-09-01": {
@@ -1397,9 +1397,9 @@
           "present": false,
           "from": "",
           "to": "",
-          "shiftType": "off",
+          "shiftType": "al",
           "holiday": false,
-          "updatedAt": "2026-09-21T09:14:21.325Z",
+          "updatedAt": "2026-09-21T09:39:50.649Z",
           "updatedBy": "admin"
         },
         "2026-09-02": {
@@ -1407,9 +1407,9 @@
           "present": false,
           "from": "",
           "to": "",
-          "shiftType": "off",
+          "shiftType": "al",
           "holiday": false,
-          "updatedAt": "2026-09-21T09:14:21.325Z",
+          "updatedAt": "2026-09-21T09:39:50.649Z",
           "updatedBy": "admin"
         },
         "2026-09-03": {
@@ -1417,9 +1417,9 @@
           "present": false,
           "from": "",
           "to": "",
-          "shiftType": "off",
+          "shiftType": "al",
           "holiday": false,
-          "updatedAt": "2026-09-21T09:14:21.325Z",
+          "updatedAt": "2026-09-21T09:39:50.649Z",
           "updatedBy": "admin"
         },
         "2026-09-04": {
@@ -1427,9 +1427,9 @@
           "present": false,
           "from": "",
           "to": "",
-          "shiftType": "off",
+          "shiftType": "al",
           "holiday": false,
-          "updatedAt": "2026-09-21T09:14:21.325Z",
+          "updatedAt": "2026-09-21T09:39:50.649Z",
           "updatedBy": "admin"
         },
         "2026-09-05": {
@@ -1437,9 +1437,9 @@
           "present": false,
           "from": "",
           "to": "",
-          "shiftType": "off",
+          "shiftType": "al",
           "holiday": false,
-          "updatedAt": "2026-09-21T09:14:21.325Z",
+          "updatedAt": "2026-09-21T09:39:50.649Z",
           "updatedBy": "admin"
         },
         "2026-09-06": {
@@ -1447,9 +1447,9 @@
           "present": false,
           "from": "",
           "to": "",
-          "shiftType": "off",
+          "shiftType": "al",
           "holiday": false,
-          "updatedAt": "2026-09-21T09:14:21.325Z",
+          "updatedAt": "2026-09-21T09:39:50.649Z",
           "updatedBy": "admin"
         },
         "2026-09-07": {
@@ -1457,9 +1457,9 @@
           "present": false,
           "from": "",
           "to": "",
-          "shiftType": "off",
+          "shiftType": "al",
           "holiday": false,
-          "updatedAt": "2026-09-21T09:14:21.325Z",
+          "updatedAt": "2026-09-21T09:39:50.649Z",
           "updatedBy": "admin"
         },
         "2026-09-08": {
@@ -1467,9 +1467,9 @@
           "present": false,
           "from": "",
           "to": "",
-          "shiftType": "off",
+          "shiftType": "al",
           "holiday": false,
-          "updatedAt": "2026-09-21T09:14:21.325Z",
+          "updatedAt": "2026-09-21T09:39:50.649Z",
           "updatedBy": "admin"
         },
         "2026-09-09": {
@@ -1477,9 +1477,9 @@
           "present": false,
           "from": "",
           "to": "",
-          "shiftType": "off",
+          "shiftType": "al",
           "holiday": false,
-          "updatedAt": "2026-09-21T09:14:21.325Z",
+          "updatedAt": "2026-09-21T09:39:50.649Z",
           "updatedBy": "admin"
         },
         "2026-09-10": {
@@ -1487,9 +1487,9 @@
           "present": false,
           "from": "",
           "to": "",
-          "shiftType": "off",
+          "shiftType": "al",
           "holiday": false,
-          "updatedAt": "2026-09-21T09:14:21.325Z",
+          "updatedAt": "2026-09-21T09:39:50.649Z",
           "updatedBy": "admin"
         },
         "2026-09-11": {
@@ -1497,9 +1497,9 @@
           "present": false,
           "from": "",
           "to": "",
-          "shiftType": "off",
+          "shiftType": "al",
           "holiday": false,
-          "updatedAt": "2026-09-21T09:14:21.325Z",
+          "updatedAt": "2026-09-21T09:39:50.649Z",
           "updatedBy": "admin"
         },
         "2026-09-12": {
@@ -1507,9 +1507,9 @@
           "present": false,
           "from": "",
           "to": "",
-          "shiftType": "off",
+          "shiftType": "al",
           "holiday": false,
-          "updatedAt": "2026-09-21T09:14:21.325Z",
+          "updatedAt": "2026-09-21T09:39:50.649Z",
           "updatedBy": "admin"
         },
         "2026-09-13": {
@@ -1517,9 +1517,9 @@
           "present": false,
           "from": "",
           "to": "",
-          "shiftType": "off",
+          "shiftType": "al",
           "holiday": false,
-          "updatedAt": "2026-09-21T09:14:21.325Z",
+          "updatedAt": "2026-09-21T09:39:50.649Z",
           "updatedBy": "admin"
         },
         "2026-08-24": {
@@ -1527,9 +1527,9 @@
           "present": false,
           "from": "",
           "to": "",
-          "shiftType": "off",
+          "shiftType": "al",
           "holiday": false,
-          "updatedAt": "2026-09-21T09:14:21.325Z",
+          "updatedAt": "2026-09-21T09:39:50.649Z",
           "updatedBy": "admin"
         },
         "2026-08-25": {
@@ -1537,9 +1537,9 @@
           "present": false,
           "from": "",
           "to": "",
-          "shiftType": "off",
+          "shiftType": "al",
           "holiday": false,
-          "updatedAt": "2026-09-21T09:14:21.325Z",
+          "updatedAt": "2026-09-21T09:39:50.649Z",
           "updatedBy": "admin"
         },
         "2026-08-26": {
@@ -1547,9 +1547,9 @@
           "present": false,
           "from": "",
           "to": "",
-          "shiftType": "off",
+          "shiftType": "al",
           "holiday": false,
-          "updatedAt": "2026-09-21T09:14:21.325Z",
+          "updatedAt": "2026-09-21T09:39:50.649Z",
           "updatedBy": "admin"
         },
         "2026-08-27": {
@@ -1557,9 +1557,9 @@
           "present": false,
           "from": "",
           "to": "",
-          "shiftType": "off",
+          "shiftType": "al",
           "holiday": false,
-          "updatedAt": "2026-09-21T09:14:21.325Z",
+          "updatedAt": "2026-09-21T09:39:50.649Z",
           "updatedBy": "admin"
         },
         "2026-08-28": {
@@ -1567,9 +1567,9 @@
           "present": false,
           "from": "",
           "to": "",
-          "shiftType": "off",
+          "shiftType": "al",
           "holiday": false,
-          "updatedAt": "2026-09-21T09:14:21.325Z",
+          "updatedAt": "2026-09-21T09:39:50.649Z",
           "updatedBy": "admin"
         },
         "2026-08-29": {
@@ -1577,9 +1577,9 @@
           "present": false,
           "from": "",
           "to": "",
-          "shiftType": "off",
+          "shiftType": "al",
           "holiday": false,
-          "updatedAt": "2026-09-21T09:14:21.325Z",
+          "updatedAt": "2026-09-21T09:39:50.649Z",
           "updatedBy": "admin"
         },
         "2026-08-30": {
@@ -1587,9 +1587,9 @@
           "present": false,
           "from": "",
           "to": "",
-          "shiftType": "off",
+          "shiftType": "al",
           "holiday": false,
-          "updatedAt": "2026-09-21T09:14:21.325Z",
+          "updatedAt": "2026-09-21T09:39:50.649Z",
           "updatedBy": "admin"
         },
         "2026-09-14": {
@@ -1599,7 +1599,7 @@
           "to": "16:30",
           "shiftType": "general",
           "holiday": false,
-          "updatedAt": "2026-09-21T09:14:21.325Z",
+          "updatedAt": "2026-09-21T09:39:50.649Z",
           "updatedBy": "admin"
         }
       }
