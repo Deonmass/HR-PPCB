@@ -1,6 +1,44 @@
 {
   "entries": [
     {
+      "id": "log-000956",
+      "at": "2026-09-21T08:08:33.301Z",
+      "userId": "karine.mvutu@ppcdrc.cd",
+      "userName": "Karine Mvutu",
+      "userEmail": "karine.mvutu@ppcdrc.cd",
+      "module": "sante",
+      "moduleLabel": "Santé",
+      "action": "create",
+      "actionLabel": "Création",
+      "entityType": "sante.visit",
+      "entityId": "sante-muayr11n-8minxh",
+      "summary": "Cas santé — ADHULE LEMA · RHONORHE",
+      "details": "Cas santé — ADHULE LEMA · RHONORHE",
+      "after": {
+        "id": "sante-muayr11n-8minxh",
+        "date": "2026-09-19",
+        "nom": "ADHULE",
+        "postnom": "LEMA",
+        "sexe": "M",
+        "age": 4,
+        "typeMalade": "ENFANT",
+        "pathologie": "RHONORHE",
+        "traitement": "GOUTTE NASALE",
+        "reference": "NON",
+        "year": 2026,
+        "month": 9,
+        "employeeMatricule": "",
+        "employeeNom": "",
+        "dependantId": null,
+        "createdAt": "2026-09-21T08:08:29.963Z",
+        "updatedAt": "2026-09-21T08:08:29.963Z",
+        "createdBy": "karine.mvutu@ppcdrc.cd",
+        "updatedBy": "karine.mvutu@ppcdrc.cd"
+      },
+      "undoable": false,
+      "undone": false
+    },
+    {
       "id": "log-000955",
       "at": "2026-09-21T08:07:55.217Z",
       "userId": "admin",
@@ -111064,5 +111102,5 @@
       }
     }
   ],
-  "nextSeq": 956
+  "nextSeq": 957
 }
