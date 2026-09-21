@@ -148,6 +148,11 @@ export function computeTemplateDayHours(
   const holiday = Boolean(row.holiday);
   const isOff = isTimesheetNonWorkingShift(row.shiftType);
 
+  // OFF / leave / absence : pas d'heures normales ni de nuit (sauf férié avec heures prestées).
+  if (isOff && !holiday) {
+    return { normal: emptyNormal() };
+  }
+
   if (holiday || isOff) {
     return { normal: { ...emptyNormal(), night } };
   }

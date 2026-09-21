@@ -1,6 +1,6 @@
 import 'server-only';
 
-import { legalNightHours, standardShiftBreakdown } from './timesheet-calc';
+import { legalNightHours, type ShiftScheduleContext } from './timesheet-calc';
 import { resolveTimesheetPeriod } from './timesheet-period-bounds-store';
 import {
   TIMESHEET_WEEKS_PER_PERIOD,
@@ -12,6 +12,7 @@ import {
   type CompilationRow,
   type CompilationWeek,
 } from './timesheet-compilation';
+import { getShiftDefaultHours } from './timesheet-shift-hours';
 import { getEmployeeTimesheetEntries } from './timesheet-store';
 import type { TimesheetDayEntry } from './timesheet-types';
 import { getLockedWeekIndexes, getWeeklyOvertimeWeek } from './timesheet-weekly-ot-store';
@@ -32,20 +33,23 @@ function formatWeekRange(days: TimesheetPeriodDay[]): string {
 }
 
 /**
- * Night hours shown in the timesheet "Night" column (19:00–05:00 of Actual).
- * Actual From/To are enough: many saved days have hours but `shiftType: null`.
+ * Night hours = legal night portion (19:00–05:00) of Actual From/To,
+ * same as the employee timesheet Night column (hydrates from planned shift if Actual empty).
  */
 function dayNormalNight(
   entry: TimesheetDayEntry | undefined,
-  ctx: { date: Date; localisation: string },
+  ctx: ShiftScheduleContext,
 ): number {
   if (!entry) return 0;
-  const from = entry.from?.trim() ?? '';
-  const to = entry.to?.trim() ?? '';
-  if (from && to) {
-    return legalNightHours(from, to);
+  let from = entry.from?.trim() ?? '';
+  let to = entry.to?.trim() ?? '';
+  if (!from || !to) {
+    const defaults = getShiftDefaultHours(entry.shiftType, ctx);
+    if (!defaults) return 0;
+    from = defaults.from;
+    to = defaults.to;
   }
-  return standardShiftBreakdown(entry.shiftType, ctx).night;
+  return legalNightHours(from, to);
 }
 
 export async function buildCompilationData(
@@ -96,11 +100,9 @@ export async function buildCompilationData(
 
     let nightNormal = 0;
     for (const day of period.days) {
+      // Hors période : jamais d'heures de nuit timesheet.
+      if (day.isInactive) continue;
       const entry = entries[day.dateKey];
-      // Inclure les jours hors période réactivés (shift / heures enregistrés).
-      if (day.isInactive && !(entry?.shiftType != null || entry?.from?.trim() || entry?.to?.trim() || entry?.holiday)) {
-        continue;
-      }
       nightNormal += dayNormalNight(entry, {
         date: day.date,
         localisation: employee.localisation ?? '',

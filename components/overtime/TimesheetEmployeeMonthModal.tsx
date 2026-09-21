@@ -290,24 +290,33 @@ export default function TimesheetEmployeeMonthModal({
     ) => {
       if (!canEdit) return;
       setRows((prev) => {
+        const inactiveKeys = new Set(
+          period.days.filter((day) => day.isInactive).map((day) => day.dateKey),
+        );
         const next = prev.map((row) => {
           if (row.dateKey !== dateKey) return row;
+          if (inactiveKeys.has(row.dateKey)) return row;
           return finalizeTimesheetRow({ ...row, ...patch });
         });
 
-        const firstKey = prev[0]?.dateKey;
+        const firstActive = next.find((row) => !inactiveKeys.has(row.dateKey));
+        const firstKey = firstActive?.dateKey;
         const timesChanged = patch.from !== undefined || patch.to !== undefined;
-        if (!followShifterCycle || !timesChanged || dateKey !== firstKey) {
+        if (!followShifterCycle || !timesChanged || dateKey !== firstKey || !firstActive) {
           return next;
         }
 
-        const startShift = inferTimesheetShiftFromActual(next[0].from, next[0].to);
+        const startShift = inferTimesheetShiftFromActual(firstActive.from, firstActive.to);
         if (!startShift) return next;
-        return applyShifterPatternToPeriod(next, startShift);
+        return applyShifterPatternToPeriod(next, startShift).map((row) =>
+          inactiveKeys.has(row.dateKey)
+            ? finalizeTimesheetRow({ ...row, shiftType: 'off', from: '', to: '' })
+            : row,
+        );
       });
       setDirty(true);
     },
-    [canEdit, followShifterCycle],
+    [canEdit, followShifterCycle, period.days],
   );
 
   const applyShiftToRow = useCallback(
@@ -383,39 +392,56 @@ export default function TimesheetEmployeeMonthModal({
       if (!canEdit) return;
       const preset = SCHEDULE_PRESETS.find((item) => item.id === presetId);
       if (!preset) return;
+      const inactiveKeys = new Set(
+        period.days.filter((day) => day.isInactive).map((day) => day.dateKey),
+      );
 
       setRows((prev) => {
+        const applyActive = (rows: TimesheetRowData[]) =>
+          rows.map((row) => {
+            if (inactiveKeys.has(row.dateKey)) {
+              return finalizeTimesheetRow({ ...row, shiftType: 'off', from: '', to: '' });
+            }
+            return row;
+          });
+
         if (presetId === 'shifter') {
-          const inferred = prev[0]
-            ? inferTimesheetShiftFromActual(prev[0].from, prev[0].to)
+          const firstActive = prev.find((row) => !inactiveKeys.has(row.dateKey));
+          const inferred = firstActive
+            ? inferTimesheetShiftFromActual(firstActive.from, firstActive.to)
             : null;
           const startShift = inferred && inferred !== 'off' ? inferred : 'shift1';
-          return applyShifterPatternToPeriod(prev, startShift);
+          return applyActive(applyShifterPatternToPeriod(prev, startShift));
         }
 
-        return prev.map((row) => {
-          if (isTimesheetWeekend(row.date)) {
+        return applyActive(
+          prev.map((row) => {
+            if (inactiveKeys.has(row.dateKey)) {
+              return finalizeTimesheetRow({ ...row, shiftType: 'off', from: '', to: '' });
+            }
+            if (isTimesheetWeekend(row.date)) {
+              return finalizeTimesheetRow({
+                ...row,
+                from: '',
+                to: '',
+                shiftType: 'off',
+              });
+            }
+            const times = timesForGeneralPreset(presetId, row.date);
             return finalizeTimesheetRow({
               ...row,
-              from: '',
-              to: '',
-              shiftType: 'off',
+              from: times.from,
+              to: times.to,
+              shiftType: 'general',
             });
-          }
-          const times = timesForGeneralPreset(presetId, row.date);
-          return finalizeTimesheetRow({
-            ...row,
-            from: times.from,
-            to: times.to,
-            shiftType: 'general',
-          });
-        });
+          }),
+        );
       });
       setFollowShifterCycle(presetId === 'shifter');
       setDirty(true);
       setActualMenu(null);
     },
-    [canEdit],
+    [canEdit, period.days],
   );
 
   const updateStartDate = useCallback(
