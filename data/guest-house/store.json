@@ -73,9 +73,9 @@
   "rooms": [
     {
       "id": "2ffc7bc3-4bfc-4a10-94c6-aa7fe1f89aa0",
-      "roomNumber": "VIP",
+      "roomNumber": "CH. 1/2 VIP",
       "roomName": "ZAMBA",
-      "templateLabel": "Room # VIP - ZAMBA",
+      "templateLabel": "Room # CH. 1/2 VIP - ZAMBA",
       "templateRow": 4,
       "building": "Batiment #1",
       "buildingKey": "Batiment #1",
@@ -89,7 +89,7 @@
       "sortOrder": 1,
       "status": "available",
       "createdAt": "2026-07-28T13:13:01.229Z",
-      "updatedAt": "2026-07-28T13:13:01.229Z"
+      "updatedAt": "2026-09-21T17:21:06.446Z"
     },
     {
       "id": "873277c8-cfe8-4e40-af16-61f1a3f4c273",
