@@ -1,6 +1,44 @@
 {
   "entries": [
     {
+      "id": "log-000944",
+      "at": "2026-09-21T07:48:18.834Z",
+      "userId": "karine.mvutu@ppcdrc.cd",
+      "userName": "Karine Mvutu",
+      "userEmail": "karine.mvutu@ppcdrc.cd",
+      "module": "sante",
+      "moduleLabel": "Santé",
+      "action": "create",
+      "actionLabel": "Création",
+      "entityType": "sante.visit",
+      "entityId": "sante-muay108b-7i8qr6",
+      "summary": "Cas santé — LONGO  MATONDO · SYNDROME VERTIGINEUX",
+      "details": "Cas santé — LONGO  MATONDO · SYNDROME VERTIGINEUX",
+      "after": {
+        "id": "sante-muay108b-7i8qr6",
+        "date": "2026-09-14",
+        "nom": "LONGO",
+        "postnom": "MATONDO",
+        "sexe": "F",
+        "age": 15,
+        "typeMalade": "ENFANT",
+        "pathologie": "SYNDROME VERTIGINEUX",
+        "traitement": "PARACETAMOLE",
+        "reference": "IME",
+        "year": 2026,
+        "month": 9,
+        "employeeMatricule": "70000124",
+        "employeeNom": "LONGO ZOLA CHRISPIN",
+        "dependantId": 195,
+        "createdAt": "2026-09-21T07:48:15.851Z",
+        "updatedAt": "2026-09-21T07:48:15.851Z",
+        "createdBy": "karine.mvutu@ppcdrc.cd",
+        "updatedBy": "karine.mvutu@ppcdrc.cd"
+      },
+      "undoable": false,
+      "undone": false
+    },
+    {
       "id": "log-000943",
       "at": "2026-09-21T07:45:32.828Z",
       "userId": "karine.mvutu@ppcdrc.cd",
@@ -110623,5 +110661,5 @@
       }
     }
   ],
-  "nextSeq": 944
+  "nextSeq": 945
 }
