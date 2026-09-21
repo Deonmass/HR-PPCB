@@ -1,6 +1,50 @@
 {
   "entries": [
     {
+      "id": "log-001005",
+      "at": "2026-09-21T13:02:23.924Z",
+      "userId": "admin",
+      "userName": "Administrateur",
+      "userEmail": "admin",
+      "module": "guest-house",
+      "moduleLabel": "Guest house",
+      "action": "update",
+      "actionLabel": "Modification",
+      "entityType": "guest-house.reservation",
+      "entityId": "e1062419-3971-42d3-9851-645b731d0815",
+      "summary": "Statut réservation e1062419-3971-42d3-9851-645b731d0815 → confirmed",
+      "details": "Statut réservation e1062419-3971-42d3-9851-645b731d0815 → confirmed",
+      "before": {
+        "id": "e1062419-3971-42d3-9851-645b731d0815",
+        "numero": "GH-2026-4425",
+        "createdAt": "2026-09-21T12:53:55.945Z",
+        "personName": "Didier",
+        "isAgent": false,
+        "motif": "TBA",
+        "startDate": "2026-09-19",
+        "endDate": "2026-09-26",
+        "status": "pending",
+        "notes": "de la part de Mr Jack Ilondo",
+        "updatedAt": "2026-09-21T13:00:58.593Z"
+      },
+      "after": {
+        "id": "e1062419-3971-42d3-9851-645b731d0815",
+        "numero": "GH-2026-4425",
+        "createdAt": "2026-09-21T12:53:55.945Z",
+        "personName": "Didier",
+        "isAgent": false,
+        "motif": "TBA",
+        "startDate": "2026-09-19",
+        "endDate": "2026-09-26",
+        "roomId": "8b14162d-ae3b-49a5-bcb6-812c2d8d5b5b",
+        "status": "confirmed",
+        "notes": "de la part de Mr Jack Ilondo",
+        "updatedAt": "2026-09-21T13:02:21.382Z"
+      },
+      "undoable": true,
+      "undone": false
+    },
+    {
       "id": "log-001004",
       "at": "2026-09-21T13:01:55.128Z",
       "userId": "admin",
@@ -112595,5 +112639,5 @@
       }
     }
   ],
-  "nextSeq": 1005
+  "nextSeq": 1006
 }
