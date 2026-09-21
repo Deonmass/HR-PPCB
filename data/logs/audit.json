@@ -1,6 +1,44 @@
 {
   "entries": [
     {
+      "id": "log-000932",
+      "at": "2026-09-21T07:31:06.676Z",
+      "userId": "karine.mvutu@ppcdrc.cd",
+      "userName": "Karine Mvutu",
+      "userEmail": "karine.mvutu@ppcdrc.cd",
+      "module": "sante",
+      "moduleLabel": "Santé",
+      "action": "create",
+      "actionLabel": "Création",
+      "entityType": "sante.visit",
+      "entityId": "sante-muaxevqk-gur2zr",
+      "summary": "Cas santé — KILONDO WOLENG STEPHANE · TENSION OCCULAIRE",
+      "details": "Cas santé — KILONDO WOLENG STEPHANE · TENSION OCCULAIRE",
+      "after": {
+        "id": "sante-muaxevqk-gur2zr",
+        "date": "2026-09-07",
+        "nom": "KILONDO",
+        "postnom": "WOLENG STEPHANE",
+        "sexe": "M",
+        "age": 32,
+        "typeMalade": "AGENT",
+        "pathologie": "TENSION OCCULAIRE",
+        "traitement": "PARACETAMOLE",
+        "reference": "OPHTALMOLOGIE IME",
+        "year": 2026,
+        "month": 9,
+        "employeeMatricule": "70000275",
+        "employeeNom": "KILONDO WOLENG STEPHANE",
+        "dependantId": null,
+        "createdAt": "2026-09-21T07:31:03.596Z",
+        "updatedAt": "2026-09-21T07:31:03.596Z",
+        "createdBy": "karine.mvutu@ppcdrc.cd",
+        "updatedBy": "karine.mvutu@ppcdrc.cd"
+      },
+      "undoable": false,
+      "undone": false
+    },
+    {
       "id": "log-000931",
       "at": "2026-09-21T07:29:28.411Z",
       "userId": "karine.mvutu@ppcdrc.cd",
@@ -110167,5 +110205,5 @@
       }
     }
   ],
-  "nextSeq": 932
+  "nextSeq": 933
 }
