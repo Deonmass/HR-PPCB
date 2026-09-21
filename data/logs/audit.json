@@ -1,6 +1,36 @@
 {
   "entries": [
     {
+      "id": "log-000993",
+      "at": "2026-09-21T12:53:58.928Z",
+      "userId": "admin",
+      "userName": "Administrateur",
+      "userEmail": "admin",
+      "module": "guest-house",
+      "moduleLabel": "Guest house",
+      "action": "create",
+      "actionLabel": "Création",
+      "entityType": "guest-house.reservation",
+      "entityId": "e1062419-3971-42d3-9851-645b731d0815",
+      "summary": "Création réservation Didier",
+      "details": "Création réservation Didier",
+      "after": {
+        "id": "e1062419-3971-42d3-9851-645b731d0815",
+        "numero": "GH-2026-4425",
+        "createdAt": "2026-09-21T12:53:55.945Z",
+        "personName": "Didier",
+        "isAgent": false,
+        "motif": "TBA",
+        "startDate": "2026-09-18",
+        "endDate": "2026-09-26",
+        "status": "pending",
+        "notes": "de la part de Mr Jack Ilondo",
+        "updatedAt": "2026-09-21T12:53:55.945Z"
+      },
+      "undoable": true,
+      "undone": false
+    },
+    {
       "id": "log-000992",
       "at": "2026-09-21T12:50:06.113Z",
       "userId": "admin",
@@ -112162,5 +112192,5 @@
       }
     }
   ],
-  "nextSeq": 993
+  "nextSeq": 994
 }
