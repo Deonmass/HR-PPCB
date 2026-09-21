@@ -1,6 +1,44 @@
 {
   "entries": [
     {
+      "id": "log-000931",
+      "at": "2026-09-21T07:29:28.411Z",
+      "userId": "karine.mvutu@ppcdrc.cd",
+      "userName": "Karine Mvutu",
+      "userEmail": "karine.mvutu@ppcdrc.cd",
+      "module": "sante",
+      "moduleLabel": "Santé",
+      "action": "create",
+      "actionLabel": "Création",
+      "entityType": "sante.visit",
+      "entityId": "sante-muaxcsgq-y3icjg",
+      "summary": "Cas santé — KILONDO WOLENG STEPHANE · ANGINE",
+      "details": "Cas santé — KILONDO WOLENG STEPHANE · ANGINE",
+      "after": {
+        "id": "sante-muaxcsgq-y3icjg",
+        "date": "2026-09-07",
+        "nom": "KILONDO",
+        "postnom": "WOLENG STEPHANE",
+        "sexe": "M",
+        "age": 32,
+        "typeMalade": "AGENT",
+        "pathologie": "ANGINE",
+        "traitement": "VITAMINE C",
+        "reference": "NON",
+        "year": 2026,
+        "month": 9,
+        "employeeMatricule": "70000275",
+        "employeeNom": "KILONDO WOLENG STEPHANE",
+        "dependantId": null,
+        "createdAt": "2026-09-21T07:29:26.042Z",
+        "updatedAt": "2026-09-21T07:29:26.042Z",
+        "createdBy": "karine.mvutu@ppcdrc.cd",
+        "updatedBy": "karine.mvutu@ppcdrc.cd"
+      },
+      "undoable": false,
+      "undone": false
+    },
+    {
       "id": "log-000930",
       "at": "2026-09-21T07:28:30.265Z",
       "userId": "karine.mvutu@ppcdrc.cd",
@@ -110129,5 +110167,5 @@
       }
     }
   ],
-  "nextSeq": 931
+  "nextSeq": 932
 }
