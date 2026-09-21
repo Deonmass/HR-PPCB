@@ -766,9 +766,10 @@
       "motif": "TBA",
       "startDate": "2026-09-19",
       "endDate": "2026-09-26",
-      "status": "pending",
+      "roomId": "8b14162d-ae3b-49a5-bcb6-812c2d8d5b5b",
+      "status": "confirmed",
       "notes": "de la part de Mr Jack Ilondo",
-      "updatedAt": "2026-09-21T13:00:58.593Z"
+      "updatedAt": "2026-09-21T13:02:21.382Z"
     },
     {
       "id": "af22a39c-8a82-4ac3-ad20-331c35b2daf3",
@@ -26184,6 +26185,17 @@
     }
   ],
   "passages": [
+    {
+      "id": "c68abd74-d807-461c-9075-58aebc465b53",
+      "roomId": "8b14162d-ae3b-49a5-bcb6-812c2d8d5b5b",
+      "reservationId": "e1062419-3971-42d3-9851-645b731d0815",
+      "numero": "GH-2026-4425",
+      "personName": "Didier",
+      "motif": "TBA",
+      "startDate": "2026-09-19",
+      "endDate": "2026-09-26",
+      "checkedInAt": "2026-09-21T13:02:21.382Z"
+    },
     {
       "id": "7a6ff077-00c0-4e2a-9ef3-9e55e5fff090",
       "roomId": "2ef11cfa-1396-4c82-ac99-85b12d6093be",
