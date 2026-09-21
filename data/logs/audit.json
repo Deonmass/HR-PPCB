@@ -1,6 +1,44 @@
 {
   "entries": [
     {
+      "id": "log-000951",
+      "at": "2026-09-21T08:02:45.112Z",
+      "userId": "karine.mvutu@ppcdrc.cd",
+      "userName": "Karine Mvutu",
+      "userEmail": "karine.mvutu@ppcdrc.cd",
+      "module": "sante",
+      "moduleLabel": "Santé",
+      "action": "create",
+      "actionLabel": "Création",
+      "entityType": "sante.visit",
+      "entityId": "sante-muayjl5m-hxiqig",
+      "summary": "Cas santé — NZUZI TABILA · RHINORHE",
+      "details": "Cas santé — NZUZI TABILA · RHINORHE",
+      "after": {
+        "id": "sante-muayjl5m-hxiqig",
+        "date": "2026-09-17",
+        "nom": "NZUZI",
+        "postnom": "TABILA",
+        "sexe": "M",
+        "age": 10,
+        "typeMalade": "ENFANT",
+        "pathologie": "RHINORHE",
+        "traitement": "GOUTTE NASALE",
+        "reference": "NON",
+        "year": 2026,
+        "month": 9,
+        "employeeMatricule": "70000061",
+        "employeeNom": "NZUZI TABILA JOEL",
+        "dependantId": 435,
+        "createdAt": "2026-09-21T08:02:42.778Z",
+        "updatedAt": "2026-09-21T08:02:42.778Z",
+        "createdBy": "karine.mvutu@ppcdrc.cd",
+        "updatedBy": "karine.mvutu@ppcdrc.cd"
+      },
+      "undoable": false,
+      "undone": false
+    },
+    {
       "id": "log-000950",
       "at": "2026-09-21T08:01:37.144Z",
       "userId": "karine.mvutu@ppcdrc.cd",
@@ -110889,5 +110927,5 @@
       }
     }
   ],
-  "nextSeq": 951
+  "nextSeq": 952
 }
