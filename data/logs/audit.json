@@ -1,6 +1,44 @@
 {
   "entries": [
     {
+      "id": "log-000946",
+      "at": "2026-09-21T07:50:59.000Z",
+      "userId": "karine.mvutu@ppcdrc.cd",
+      "userName": "Karine Mvutu",
+      "userEmail": "karine.mvutu@ppcdrc.cd",
+      "module": "sante",
+      "moduleLabel": "Santé",
+      "action": "create",
+      "actionLabel": "Création",
+      "entityType": "sante.visit",
+      "entityId": "sante-muay4g7e-6ka3z6",
+      "summary": "Cas santé — LISANGOLA ITOFELE L EMMANUEL · SYNDROME VERTIGINEUX",
+      "details": "Cas santé — LISANGOLA ITOFELE L EMMANUEL · SYNDROME VERTIGINEUX",
+      "after": {
+        "id": "sante-muay4g7e-6ka3z6",
+        "date": "2026-09-16",
+        "nom": "LISANGOLA",
+        "postnom": "ITOFELE L EMMANUEL",
+        "sexe": "M",
+        "age": 40,
+        "typeMalade": "AGENT",
+        "pathologie": "SYNDROME VERTIGINEUX",
+        "traitement": "",
+        "reference": "IME",
+        "year": 2026,
+        "month": 9,
+        "employeeMatricule": "70000137",
+        "employeeNom": "LISANGOLA ITOFELE L EMMANUEL",
+        "dependantId": null,
+        "createdAt": "2026-09-21T07:50:56.522Z",
+        "updatedAt": "2026-09-21T07:50:56.522Z",
+        "createdBy": "karine.mvutu@ppcdrc.cd",
+        "updatedBy": "karine.mvutu@ppcdrc.cd"
+      },
+      "undoable": false,
+      "undone": false
+    },
+    {
       "id": "log-000945",
       "at": "2026-09-21T07:50:09.088Z",
       "userId": "karine.mvutu@ppcdrc.cd",
@@ -110699,5 +110737,5 @@
       }
     }
   ],
-  "nextSeq": 946
+  "nextSeq": 947
 }
