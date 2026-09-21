@@ -716,6 +716,19 @@
   ],
   "reservations": [
     {
+      "id": "92a890a4-054c-432b-9c68-19db902882a6",
+      "numero": "GH-2026-4432",
+      "createdAt": "2026-09-21T17:00:28.282Z",
+      "personName": "Freddy Bulu",
+      "isAgent": false,
+      "motif": "Maintenance des cameras de surveillance : Usine et village PPC",
+      "startDate": "2026-09-22",
+      "endDate": "2026-09-26",
+      "status": "pending",
+      "notes": "booké par Nathan",
+      "updatedAt": "2026-09-21T17:00:28.282Z"
+    },
+    {
       "id": "a0044a7f-c4ce-49dc-8762-097a3a4efa58",
       "numero": "GH-2026-4431",
       "createdAt": "2026-09-21T13:57:24.296Z",
@@ -44399,5 +44412,5 @@
       "checkedOutAt": "2025-09-24T12:00:00.000Z"
     }
   ],
-  "nextReservationSeq": 4432
+  "nextReservationSeq": 4433
 }
