@@ -71,7 +71,7 @@
       "sexe": "M",
       "age": 4,
       "typeMalade": "ENFANT",
-      "pathologie": "RHONORHE",
+      "pathologie": "RHINORHE",
       "traitement": "GOUTTE NASALE",
       "reference": "NON",
       "year": 2026,
@@ -80,9 +80,9 @@
       "employeeNom": "",
       "dependantId": null,
       "createdAt": "2026-09-21T08:08:29.963Z",
-      "updatedAt": "2026-09-21T08:08:29.963Z",
+      "updatedAt": "2026-09-21T09:31:08.166Z",
       "createdBy": "karine.mvutu@ppcdrc.cd",
-      "updatedBy": "karine.mvutu@ppcdrc.cd"
+      "updatedBy": "admin"
     },
     {
       "id": "sante-muaypph3-1h898m",
