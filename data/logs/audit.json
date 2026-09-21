@@ -1,6 +1,36 @@
 {
   "entries": [
     {
+      "id": "log-001020",
+      "at": "2026-09-21T17:01:55.199Z",
+      "userId": "admin",
+      "userName": "Administrateur",
+      "userEmail": "admin",
+      "module": "guest-house",
+      "moduleLabel": "Guest house",
+      "action": "create",
+      "actionLabel": "Création",
+      "entityType": "guest-house.reservation",
+      "entityId": "b5efb9d0-944b-468a-9f84-3e98fe2a69b4",
+      "summary": "Création réservation Tony Katshiayi",
+      "details": "Création réservation Tony Katshiayi",
+      "after": {
+        "id": "b5efb9d0-944b-468a-9f84-3e98fe2a69b4",
+        "numero": "GH-2026-4433",
+        "createdAt": "2026-09-21T17:01:52.362Z",
+        "personName": "Tony Katshiayi",
+        "isAgent": false,
+        "motif": "Maintenance des cameras de surveillance : Usine et village PPC",
+        "startDate": "2026-09-22",
+        "endDate": "2026-09-26",
+        "status": "pending",
+        "notes": "Booké par Nathan",
+        "updatedAt": "2026-09-21T17:01:52.362Z"
+      },
+      "undoable": true,
+      "undone": false
+    },
+    {
       "id": "log-001019",
       "at": "2026-09-21T17:00:32.460Z",
       "userId": "admin",
@@ -113032,5 +113062,5 @@
       }
     }
   ],
-  "nextSeq": 1020
+  "nextSeq": 1021
 }
