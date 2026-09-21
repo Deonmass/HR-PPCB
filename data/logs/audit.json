@@ -1,6 +1,44 @@
 {
   "entries": [
     {
+      "id": "log-000934",
+      "at": "2026-09-21T07:34:00.804Z",
+      "userId": "karine.mvutu@ppcdrc.cd",
+      "userName": "Karine Mvutu",
+      "userEmail": "karine.mvutu@ppcdrc.cd",
+      "module": "sante",
+      "moduleLabel": "Santé",
+      "action": "create",
+      "actionLabel": "Création",
+      "entityType": "sante.visit",
+      "entityId": "sante-muaximae-hn3k4x",
+      "summary": "Cas santé — KUABI KAELYS · GRIPPE",
+      "details": "Cas santé — KUABI KAELYS · GRIPPE",
+      "after": {
+        "id": "sante-muaximae-hn3k4x",
+        "date": "2026-09-10",
+        "nom": "KUABI",
+        "postnom": "KAELYS",
+        "sexe": "F",
+        "age": 2,
+        "typeMalade": "ENFANT",
+        "pathologie": "GRIPPE",
+        "traitement": "ANTI  GRIPPALE ET GOUTTE NASALE",
+        "reference": "NON",
+        "year": 2026,
+        "month": 9,
+        "employeeMatricule": "",
+        "employeeNom": "",
+        "dependantId": null,
+        "createdAt": "2026-09-21T07:33:57.974Z",
+        "updatedAt": "2026-09-21T07:33:57.974Z",
+        "createdBy": "karine.mvutu@ppcdrc.cd",
+        "updatedBy": "karine.mvutu@ppcdrc.cd"
+      },
+      "undoable": false,
+      "undone": false
+    },
+    {
       "id": "log-000933",
       "at": "2026-09-21T07:32:53.530Z",
       "userId": "karine.mvutu@ppcdrc.cd",
@@ -110243,5 +110281,5 @@
       }
     }
   ],
-  "nextSeq": 934
+  "nextSeq": 935
 }
