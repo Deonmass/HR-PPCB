@@ -1,6 +1,44 @@
 {
   "entries": [
     {
+      "id": "log-000941",
+      "at": "2026-09-21T07:42:05.211Z",
+      "userId": "karine.mvutu@ppcdrc.cd",
+      "userName": "Karine Mvutu",
+      "userEmail": "karine.mvutu@ppcdrc.cd",
+      "module": "sante",
+      "moduleLabel": "Santé",
+      "action": "create",
+      "actionLabel": "Création",
+      "entityType": "sante.visit",
+      "entityId": "sante-muaxszvh-k509dn",
+      "summary": "Cas santé — BALAY BODUGA · PALUDISME SIMPLE",
+      "details": "Cas santé — BALAY BODUGA · PALUDISME SIMPLE",
+      "after": {
+        "id": "sante-muaxszvh-k509dn",
+        "date": "2026-09-13",
+        "nom": "BALAY",
+        "postnom": "BODUGA",
+        "sexe": "F",
+        "age": 38,
+        "typeMalade": "EPOUSE",
+        "pathologie": "PALUDISME SIMPLE",
+        "traitement": "ANTI PALUDEEN ET ANTI PYRETIQUE",
+        "reference": "NON",
+        "year": 2026,
+        "month": 9,
+        "employeeMatricule": "",
+        "employeeNom": "",
+        "dependantId": null,
+        "createdAt": "2026-09-21T07:42:02.141Z",
+        "updatedAt": "2026-09-21T07:42:02.141Z",
+        "createdBy": "karine.mvutu@ppcdrc.cd",
+        "updatedBy": "karine.mvutu@ppcdrc.cd"
+      },
+      "undoable": false,
+      "undone": false
+    },
+    {
       "id": "log-000940",
       "at": "2026-09-21T07:40:52.650Z",
       "userId": "karine.mvutu@ppcdrc.cd",
@@ -110509,5 +110547,5 @@
       }
     }
   ],
-  "nextSeq": 941
+  "nextSeq": 942
 }
