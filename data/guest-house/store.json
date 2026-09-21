@@ -738,9 +738,10 @@
       "motif": "TBA",
       "startDate": "2026-09-19",
       "endDate": "2026-09-26",
-      "status": "pending",
+      "roomId": "e49a08a4-e1db-4824-b8f6-48f1c30c0346",
+      "status": "confirmed",
       "notes": "de la part de Mr Jack Ilondo",
-      "updatedAt": "2026-09-21T12:59:22.092Z"
+      "updatedAt": "2026-09-21T13:01:27.370Z"
     },
     {
       "id": "dd47dbd0-7f5a-44e3-b304-d6de93580b28",
@@ -26182,6 +26183,17 @@
     }
   ],
   "passages": [
+    {
+      "id": "e6c3b360-70e1-47bf-b1ec-b8a1999b094b",
+      "roomId": "e49a08a4-e1db-4824-b8f6-48f1c30c0346",
+      "reservationId": "9b0cc2ba-f29a-49ff-997f-5377d809c01b",
+      "numero": "GH-2026-4427",
+      "personName": "Francklin",
+      "motif": "TBA",
+      "startDate": "2026-09-19",
+      "endDate": "2026-09-26",
+      "checkedInAt": "2026-09-21T13:01:27.370Z"
+    },
     {
       "id": "6d44031f-5f72-42b3-8e38-32eb97c07c45",
       "roomId": "d9ec3499-ad6d-4215-8ef9-c20a4f6b1714",
