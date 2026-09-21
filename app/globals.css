@@ -7462,6 +7462,57 @@ html[data-theme="light"] .compilation-table tbody tr:hover td.compilation-sticky
   white-space: nowrap;
 }
 
+.timesheet-period-bounds-editor {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  flex-wrap: wrap;
+}
+.timesheet-period-bounds-editor label {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  margin: 0;
+  font-size: 0.78rem;
+  color: var(--muted);
+}
+.timesheet-period-bounds-editor label span {
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.02em;
+  font-size: 0.68rem;
+  color: var(--muted);
+  white-space: nowrap;
+}
+.timesheet-period-bounds-editor input[type='date'] {
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  background: var(--bg-elevated);
+  color: var(--text);
+  padding: 0.25rem 0.4rem;
+  font-size: 0.78rem;
+}
+.timesheet-period-bounds-sep {
+  color: var(--muted);
+  font-weight: 600;
+}
+.timesheet-period-bounds-save {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  min-height: 1.85rem;
+  padding: 0.28rem 0.7rem;
+  font-size: 0.72rem;
+  line-height: 1.1;
+}
+.timesheet-period-bounds-save:disabled,
+.timesheet-period-bounds-save[aria-disabled='true'] {
+  opacity: 0.45;
+  cursor: not-allowed;
+  pointer-events: none;
+  filter: grayscale(0.25);
+}
+
 .timesheet-calendar-week-legend {
   display: flex;
   flex-wrap: wrap;
@@ -8621,6 +8672,16 @@ html[data-theme="light"] .compilation-table tbody tr:hover td.compilation-sticky
   width: 7.6rem;
   white-space: nowrap;
 }
+.timesheet-template-table .timesheet-template-ws-col {
+  min-width: 8.5rem;
+  width: 8.5rem;
+}
+.timesheet-template-table .timesheet-template-ws-col .timesheet-shift-select {
+  width: 100%;
+  min-width: 0;
+  max-width: none;
+  font-size: 0.72rem;
+}
 .timesheet-datepicker {
   display: inline-flex;
   align-items: center;
@@ -8669,7 +8730,7 @@ html[data-theme="light"] .compilation-table tbody tr:hover td.compilation-sticky
 }
 .timesheet-datepicker-pop {
   position: fixed;
-  z-index: 80;
+  z-index: 2100;
   width: 268px;
   padding: 0.7rem 0.75rem 0.8rem;
   border: 1px solid var(--border-strong);
@@ -8837,6 +8898,9 @@ html[data-theme="light"] .compilation-table tbody tr:hover td.compilation-sticky
 .timesheet-template-off-row td {
   background: var(--surface);
   color: var(--muted);
+}
+.timesheet-template-inactive-row td {
+  opacity: 0.48;
 }
 .timesheet-template-table tfoot .timesheet-subtotal-row td,
 .timesheet-template-table tfoot .timesheet-accumulative-row td {

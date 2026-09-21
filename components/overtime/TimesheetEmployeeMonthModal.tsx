@@ -4,16 +4,27 @@ import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { createPortal } from 'react-dom';
 import TimesheetTimeInput from '@/components/overtime/TimesheetTimeInput';
 import TimesheetDatePicker from '@/components/overtime/TimesheetDatePicker';
+import TimesheetShiftSelect from '@/components/overtime/TimesheetShiftSelect';
 import { BtnSpinner, CardSpinner } from '@/components/overtime/TimesheetIcons';
-import { buildTimesheetPeriod, isTimesheetWeekend, parseTimesheetDateFr, snapToTimesheetWeekStart } from '@/lib/timesheet-period';
+import { buildTimesheetPeriod, isTimesheetWeekend, parseTimesheetDateFr } from '@/lib/timesheet-period';
+import {
+  applyTimesheetPeriodBounds,
+  boundsFromPeriod,
+  formatTimesheetPeriodBoundsLabel,
+  type TimesheetPeriodBounds,
+} from '@/lib/timesheet-period-bounds';
+import type { TimesheetPeriod } from '@/lib/timesheet-period';
 import { shiftTimesheetRowsToStart, buildEmployeeTimesheetRows } from '@/lib/timesheet-rows';
-import type { TimesheetDayEntry, TimesheetRowData } from '@/lib/timesheet-types';
+import type { TimesheetDayEntry, TimesheetRowData, TimesheetShiftType } from '@/lib/timesheet-types';
 import { finalizeTimesheetRow } from '@/lib/timesheet-ws';
 import {
   applyShifterPatternToPeriod,
+  continueGeneralShiftFrom,
+  continueShifterCycleFrom,
   detectShifterCycleStart,
   inferTimesheetShiftFromActual,
 } from '@/lib/timesheet-bulk-shifts';
+import { applyShiftSelection } from '@/lib/timesheet-shift-hours';
 import type { WeeklyOvertimeEntry } from '@/lib/timesheet-weekly-ot';
 import { downloadTimesheetWorkbook, exportTimesheetWorkbook } from '@/lib/timesheet-export';
 import { TIMESHEET_COMPANY_DEFAULT } from '@/lib/timesheet-policy';
@@ -137,7 +148,10 @@ export default function TimesheetEmployeeMonthModal({
   canEdit = false,
   onClose,
 }: Props) {
-  const period = useMemo(() => buildTimesheetPeriod(year, month), [year, month]);
+  const [period, setPeriod] = useState<TimesheetPeriod>(() => buildTimesheetPeriod(year, month));
+  const [periodLabel, setPeriodLabel] = useState(() =>
+    formatTimesheetPeriodBoundsLabel(boundsFromPeriod(buildTimesheetPeriod(year, month))),
+  );
   const [rows, setRows] = useState<TimesheetRowData[]>([]);
   const [weeklyOtByIndex, setWeeklyOtByIndex] = useState<
     Record<number, WeeklyOvertimeEntry | undefined>
@@ -163,6 +177,10 @@ export default function TimesheetEmployeeMonthModal({
     setFollowShifterCycle(false);
     savedSignatureRef.current = '';
 
+    const basePeriod = buildTimesheetPeriod(year, month);
+    setPeriod(basePeriod);
+    setPeriodLabel(formatTimesheetPeriodBoundsLabel(boundsFromPeriod(basePeriod)));
+
     const entriesParams = new URLSearchParams({
       year: String(year),
       month: String(month),
@@ -186,10 +204,17 @@ export default function TimesheetEmployeeMonthModal({
         const json = (await res.json()) as { byWeek?: Record<number, WeeklyOvertimeEntry> };
         return json.byWeek ?? {};
       }),
+      fetch(`/api/timesheet/period-bounds?year=${year}&month=${month}`).then(async (res) => {
+        if (!res.ok) return null;
+        return (await res.json()) as { bounds?: TimesheetPeriodBounds };
+      }),
     ])
-      .then(([entries, byWeek]) => {
+      .then(([entries, byWeek, boundsJson]) => {
         if (cancelled) return;
-        const merged = buildEmployeeTimesheetRows(period, entries, localisation);
+        const resolved = applyTimesheetPeriodBounds(basePeriod, boundsJson?.bounds ?? null);
+        setPeriod(resolved);
+        setPeriodLabel(formatTimesheetPeriodBoundsLabel(boundsFromPeriod(resolved)));
+        const merged = buildEmployeeTimesheetRows(resolved, entries, localisation);
         setRows(merged);
         setFollowShifterCycle(detectShifterCycleStart(merged) !== null);
         savedSignatureRef.current = rowsSignature(merged);
@@ -197,7 +222,7 @@ export default function TimesheetEmployeeMonthModal({
       })
       .catch(() => {
         if (!cancelled) {
-          const emptyRows = buildEmployeeTimesheetRows(period, {}, localisation);
+          const emptyRows = buildEmployeeTimesheetRows(basePeriod, {}, localisation);
           setRows(emptyRows);
           setFollowShifterCycle(false);
           savedSignatureRef.current = rowsSignature(emptyRows);
@@ -211,7 +236,7 @@ export default function TimesheetEmployeeMonthModal({
     return () => {
       cancelled = true;
     };
-  }, [open, matricule, department, year, month, period, localisation]);
+  }, [open, matricule, department, year, month, localisation]);
 
   useEffect(() => {
     if (!actualMenu) return;
@@ -275,6 +300,73 @@ export default function TimesheetEmployeeMonthModal({
     [canEdit, followShifterCycle],
   );
 
+  const applyShiftToRow = useCallback(
+    (row: TimesheetRowData, shiftType: TimesheetShiftType | null): TimesheetRowData => {
+      if (shiftType === 'off') {
+        return finalizeTimesheetRow({ ...row, shiftType: 'off', from: '', to: '' });
+      }
+      return finalizeTimesheetRow(
+        applyShiftSelection(row, shiftType, { date: row.date, localisation }),
+      );
+    },
+    [localisation],
+  );
+
+  /** Même règle que le planning : shift → From/To, puis suite sur le reste de la période. */
+  const updateShift = useCallback(
+    (dateKey: string, shiftType: TimesheetShiftType | null) => {
+      if (!canEdit) return;
+      const inactiveKeys = new Set(
+        period.days.filter((day) => day.isInactive).map((day) => day.dateKey),
+      );
+      if (inactiveKeys.has(dateKey)) return;
+
+      setRows((prev) => {
+        const index = prev.findIndex((row) => row.dateKey === dateKey);
+        if (index < 0) return prev;
+
+        const next = [...prev];
+        next[index] = applyShiftToRow(next[index], shiftType);
+
+        if (!shiftType) {
+          return next;
+        }
+
+        if (shiftType === 'general') {
+          const following = continueGeneralShiftFrom(
+            next.slice(index + 1).map((row) => ({ isWeekend: isTimesheetWeekend(row.date) })),
+          );
+          following.forEach((nextShift, offset) => {
+            const rowIndex = index + 1 + offset;
+            const row = next[rowIndex];
+            if (!row || inactiveKeys.has(row.dateKey)) return;
+            next[rowIndex] = applyShiftToRow(row, nextShift);
+          });
+          return next;
+        }
+
+        const previousShift = index > 0 ? next[index - 1].shiftType : null;
+        const following = continueShifterCycleFrom(
+          shiftType,
+          previousShift,
+          next.length - index - 1,
+        );
+        if (!following) return next;
+
+        following.forEach((nextShift, offset) => {
+          const rowIndex = index + 1 + offset;
+          const row = next[rowIndex];
+          if (!row || inactiveKeys.has(row.dateKey)) return;
+          next[rowIndex] = applyShiftToRow(row, nextShift);
+        });
+        return next;
+      });
+      setFollowShifterCycle(Boolean(shiftType && shiftType !== 'general'));
+      setDirty(true);
+    },
+    [applyShiftToRow, canEdit, period.days],
+  );
+
   const fillFromPreset = useCallback(
     (presetId: SchedulePresetId) => {
       if (!canEdit) return;
@@ -320,10 +412,9 @@ export default function TimesheetEmployeeMonthModal({
       if (!canEdit) return;
       const parsed = parseTimesheetDateFr(value);
       if (!parsed) return;
-      const start = snapToTimesheetWeekStart(parsed);
       setRows((prev) => {
         if (!prev[0]) return prev;
-        const next = shiftTimesheetRowsToStart(prev, start);
+        const next = shiftTimesheetRowsToStart(prev, parsed);
         if (next[0]?.dateKey === prev[0].dateKey) return prev;
         return next;
       });
@@ -457,6 +548,7 @@ export default function TimesheetEmployeeMonthModal({
                 {department ? ` · ${department}` : ''}
                 {localisation ? ` · ${localisation}` : ''}
                 {monthLabel ? ` · ${monthLabel}` : ''}
+                {periodLabel ? ` · ${periodLabel}` : ''}
               </p>
             </div>
             <button type="button" className="modal-close" onClick={handleClose}>
@@ -549,7 +641,9 @@ export default function TimesheetEmployeeMonthModal({
                         );
                       }
 
-                      const editable = Boolean(canEdit);
+                      const dayMeta = period.days.find((day) => day.dateKey === line.row.dateKey);
+                      const dayInactive = Boolean(dayMeta?.isInactive);
+                      const editable = Boolean(canEdit) && !dayInactive;
                       const isStartDate = line.row.dateKey === rows[0]?.dateKey;
 
                       return (
@@ -558,6 +652,7 @@ export default function TimesheetEmployeeMonthModal({
                           className={[
                             line.gray ? 'timesheet-template-off-row' : '',
                             line.holiday ? 'timesheet-template-holiday-row' : '',
+                            dayInactive ? 'timesheet-template-inactive-row' : '',
                           ]
                             .filter(Boolean)
                             .join(' ')}
@@ -567,8 +662,12 @@ export default function TimesheetEmployeeMonthModal({
                               type="checkbox"
                               className="timesheet-template-holiday-check"
                               checked={Boolean(line.row.holiday)}
-                              disabled={!canEdit}
-                              title="Jour férié — heures en overtime"
+                              disabled={!editable}
+                              title={
+                                dayInactive
+                                  ? 'Jour hors période'
+                                  : 'Jour férié — heures en overtime'
+                              }
                               aria-label={`Férié ${fmtDate(line.row.date)}`}
                               onChange={(event) =>
                                 updateRow(line.row.dateKey, { holiday: event.target.checked })
@@ -586,7 +685,17 @@ export default function TimesheetEmployeeMonthModal({
                             )}
                           </td>
                           <td>{line.row.dayLabel}</td>
-                          <td>{line.ws || '—'}</td>
+                          <td className="timesheet-template-ws-col">
+                            {editable ? (
+                              <TimesheetShiftSelect
+                                value={line.row.shiftType}
+                                onChange={(shiftType) => updateShift(line.row.dateKey, shiftType)}
+                                variant="planning"
+                              />
+                            ) : (
+                              line.ws || '—'
+                            )}
+                          </td>
                           <td className="timesheet-template-actual-cell">
                             {editable ? (
                               <TimesheetTimeInput

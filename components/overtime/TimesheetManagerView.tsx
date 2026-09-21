@@ -9,6 +9,12 @@ import {
   listTimesheetMonthOptions,
   type TimesheetPeriod,
 } from '@/lib/timesheet-period';
+import {
+  applyTimesheetPeriodBounds,
+  boundsFromPeriod,
+  formatTimesheetPeriodBoundsLabel,
+  type TimesheetPeriodBounds,
+} from '@/lib/timesheet-period-bounds';
 import type { Employee } from '@/lib/types';
 import {
   CardSpinner,
@@ -35,12 +41,10 @@ import { usePermissions } from '@/contexts/PermissionContext';
 import { confirmAction, showError, showSuccess } from '@/lib/swal';
 
 function formatPeriodRange(period: TimesheetPeriod): string {
-  const fmt = (date: Date) =>
-    date.toLocaleDateString('fr-FR', { day: '2-digit', month: 'short', year: 'numeric' });
-  return `${fmt(period.start)} → ${fmt(period.end)}`;
+  return formatTimesheetPeriodBoundsLabel(boundsFromPeriod(period));
 }
 
-const WEEK_LABELS = ['Semaine 1', 'Semaine 2', 'Semaine 3', 'Semaine 4'];
+const WEEK_LABELS = ['Semaine 1', 'Semaine 2', 'Semaine 3', 'Semaine 4', 'Semaine 5', 'Semaine 6'];
 
 interface Props {
   onDepartmentChange?: (department: string) => void;
@@ -268,12 +272,28 @@ export default function TimesheetManagerView({
   ]);
 
   useEffect(() => {
-    const nextPeriod = buildTimesheetPeriod(selectedMonth.year, selectedMonth.month);
+    let cancelled = false;
+    const base = buildTimesheetPeriod(selectedMonth.year, selectedMonth.month);
     setPeriod((current) =>
-      current.year === nextPeriod.year && current.month === nextPeriod.month ? current : nextPeriod,
+      current.year === base.year && current.month === base.month ? current : base,
     );
     setWeekOtIndex(null);
-    onPeriodChangeRef.current?.(nextPeriod.year, nextPeriod.month);
+    onPeriodChangeRef.current?.(base.year, base.month);
+
+    fetch(`/api/timesheet/period-bounds?year=${selectedMonth.year}&month=${selectedMonth.month}`)
+      .then(async (res) => {
+        if (!res.ok) return null;
+        return (await res.json()) as { bounds?: TimesheetPeriodBounds };
+      })
+      .then((json) => {
+        if (cancelled || !json?.bounds) return;
+        setPeriod(applyTimesheetPeriodBounds(base, json.bounds));
+      })
+      .catch(() => undefined);
+
+    return () => {
+      cancelled = true;
+    };
   }, [selectedMonth]);
 
   useEffect(() => {

@@ -250,12 +250,20 @@ export default function TimesheetPlanningWeekModal({
         if (row.matricule !== matricule) return row;
 
         const shifts = { ...row.shifts, [dateKey]: shiftType };
-        if (!shiftType || shiftType === 'general') {
+        if (!shiftType) {
           return { ...row, shifts };
         }
 
         const dayIndex = weekDays.findIndex((day) => day.dateKey === dateKey);
         if (dayIndex < 0) return { ...row, shifts };
+
+        if (shiftType === 'general') {
+          weekDays.slice(dayIndex + 1).forEach((day) => {
+            if (!isDayEditable(day)) return;
+            shifts[day.dateKey] = day.isWeekend ? 'off' : 'general';
+          });
+          return { ...row, shifts };
+        }
 
         const previousDay = dayIndex > 0 ? weekDays[dayIndex - 1] : undefined;
         const previousShift = previousDay ? row.shifts[previousDay.dateKey] ?? null : null;

@@ -5,7 +5,7 @@ import { createPortal } from 'react-dom';
 import RowContextMenu, { type ContextMenuItem } from '@/components/RowContextMenu';
 import TimesheetPlanningDayModal from '@/components/overtime/TimesheetPlanningDayModal';
 import TimesheetPlanningWeekModal from '@/components/overtime/TimesheetPlanningWeekModal';
-import { CardSpinner, IconDownload, IconWeekDone } from '@/components/overtime/TimesheetIcons';
+import { BtnSpinner, CardSpinner, IconDownload, IconWeekDone } from '@/components/overtime/TimesheetIcons';
 import { buildTimesheetCalendarCells } from '@/lib/timesheet-calendar-cells';
 import { confirmAction, showError, showSuccess } from '@/lib/swal';
 import {
@@ -13,6 +13,12 @@ import {
   listTimesheetMonthOptions,
   type TimesheetPeriod,
 } from '@/lib/timesheet-period';
+import {
+  applyTimesheetPeriodBounds,
+  boundsFromPeriod,
+  formatTimesheetPeriodBoundsLabel,
+  type TimesheetPeriodBounds,
+} from '@/lib/timesheet-period-bounds';
 import type { TimesheetAccessContext, TimesheetViewScope } from '@/lib/timesheet-permissions';
 import {
   matchesDepartment,
@@ -30,12 +36,10 @@ import { usePermissions } from '@/contexts/PermissionContext';
 import type { Employee } from '@/lib/types';
 
 function formatPeriodRange(period: TimesheetPeriod): string {
-  const fmt = (date: Date) =>
-    date.toLocaleDateString('fr-FR', { day: '2-digit', month: 'short', year: 'numeric' });
-  return `${fmt(period.start)} → ${fmt(period.end)}`;
+  return formatTimesheetPeriodBoundsLabel(boundsFromPeriod(period));
 }
 
-const WEEK_LABELS = ['Semaine 1', 'Semaine 2', 'Semaine 3', 'Semaine 4'];
+const WEEK_LABELS = ['Semaine 1', 'Semaine 2', 'Semaine 3', 'Semaine 4', 'Semaine 5', 'Semaine 6'];
 
 interface Props {
   onDepartmentChange?: (department: string) => void;
@@ -57,6 +61,13 @@ export default function TimesheetPlanningView({ onDepartmentChange, toolbarSlotI
   const [period, setPeriod] = useState(() =>
     buildTimesheetPeriod(monthOptions[0].year, monthOptions[0].month),
   );
+  const [boundsDraft, setBoundsDraft] = useState<TimesheetPeriodBounds>(() =>
+    boundsFromPeriod(buildTimesheetPeriod(monthOptions[0].year, monthOptions[0].month)),
+  );
+  const [savedBounds, setSavedBounds] = useState<TimesheetPeriodBounds>(() =>
+    boundsFromPeriod(buildTimesheetPeriod(monthOptions[0].year, monthOptions[0].month)),
+  );
+  const [boundsSaving, setBoundsSaving] = useState(false);
   const [employees, setEmployees] = useState<Employee[]>([]);
   const [department, setDepartment] = useState('');
   const [service, setService] = useState('');
@@ -89,6 +100,8 @@ export default function TimesheetPlanningView({ onDepartmentChange, toolbarSlotI
     can(TIMESHEET_MENU.department, 'edit') ||
     can(TIMESHEET_MENU.all, 'edit') ||
     Boolean(access?.permissions?.editManager);
+  const canConfigurePeriod =
+    can(TIMESHEET_MENU.all, 'view') || Boolean(access?.permissions?.viewAll);
 
   const { departments, services } = useMemo(
     () =>
@@ -222,11 +235,36 @@ export default function TimesheetPlanningView({ onDepartmentChange, toolbarSlotI
   }, [department, onDepartmentChange]);
 
   useEffect(() => {
-    const nextPeriod = buildTimesheetPeriod(selectedMonth.year, selectedMonth.month);
-    setPeriod(nextPeriod);
+    let cancelled = false;
+    const base = buildTimesheetPeriod(selectedMonth.year, selectedMonth.month);
+    const defaults = boundsFromPeriod(base);
+    setPeriod(base);
+    setBoundsDraft(defaults);
+    setSavedBounds(defaults);
     setWeekPlanIndex(null);
     setWeekPlanReadOnly(false);
     setViewDayKey(null);
+
+    fetch(
+      `/api/timesheet/period-bounds?year=${selectedMonth.year}&month=${selectedMonth.month}`,
+    )
+      .then(async (res) => {
+        if (!res.ok) return null;
+        return (await res.json()) as { bounds?: TimesheetPeriodBounds };
+      })
+      .then((json) => {
+        if (cancelled || !json?.bounds) return;
+        const next = applyTimesheetPeriodBounds(base, json.bounds);
+        const nextBounds = boundsFromPeriod(next);
+        setPeriod(next);
+        setBoundsDraft(nextBounds);
+        setSavedBounds(nextBounds);
+      })
+      .catch(() => undefined);
+
+    return () => {
+      cancelled = true;
+    };
   }, [selectedMonth]);
 
   useEffect(() => {
@@ -240,11 +278,46 @@ export default function TimesheetPlanningView({ onDepartmentChange, toolbarSlotI
     [period.days, weekPlanIndex],
   );
   const viewDay = period.days.find((day) => day.dateKey === viewDayKey) ?? null;
+  const boundsDirty =
+    boundsDraft.activeStart !== savedBounds.activeStart ||
+    boundsDraft.activeEnd !== savedBounds.activeEnd;
 
   const openPlanWeek = (weekIndex: number, readOnly: boolean) => {
     if (!readOnly && !canEdit) return;
     setWeekPlanReadOnly(readOnly);
     setWeekPlanIndex(weekIndex);
+  };
+
+  const savePeriodBounds = async (nextBounds: TimesheetPeriodBounds) => {
+    if (!canConfigurePeriod) return;
+    setBoundsSaving(true);
+    try {
+      const res = await fetch('/api/timesheet/period-bounds', {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          year: period.year,
+          month: period.month,
+          activeStart: nextBounds.activeStart,
+          activeEnd: nextBounds.activeEnd,
+        }),
+      });
+      const json = (await res.json()) as { error?: string; bounds?: TimesheetPeriodBounds };
+      if (!res.ok) throw new Error(json.error ?? 'Enregistrement impossible');
+      const base = buildTimesheetPeriod(period.year, period.month);
+      const applied = applyTimesheetPeriodBounds(base, json.bounds ?? nextBounds);
+      const appliedBounds = boundsFromPeriod(applied);
+      setPeriod(applied);
+      setBoundsDraft(appliedBounds);
+      setSavedBounds(appliedBounds);
+      await showSuccess('Période timesheet mise à jour');
+      await loadCalendarStatus();
+    } catch (err) {
+      await showError(err instanceof Error ? err.message : 'Enregistrement impossible');
+      setBoundsDraft(savedBounds);
+    } finally {
+      setBoundsSaving(false);
+    }
   };
 
   const clearWeekPlanning = async (weekIndex: number) => {
@@ -406,7 +479,54 @@ export default function TimesheetPlanningView({ onDepartmentChange, toolbarSlotI
         <div className="panel timesheet-calendar-panel timesheet-calendar-panel-full">
           <div className="timesheet-calendar-header">
             <h3>Planning mensuel</h3>
-            <span>{formatPeriodRange(period)}</span>
+            {canConfigurePeriod ? (
+              <div className="timesheet-period-bounds-editor" title="Définir les dates actives du timesheet">
+                <label>
+                  <span>Début</span>
+                  <input
+                    type="date"
+                    value={boundsDraft.activeStart}
+                    min={period.days[0]?.dateKey}
+                    max={boundsDraft.activeEnd}
+                    disabled={boundsSaving}
+                    onChange={(e) =>
+                      setBoundsDraft((prev) => ({ ...prev, activeStart: e.target.value }))
+                    }
+                  />
+                </label>
+                <span className="timesheet-period-bounds-sep">→</span>
+                <label>
+                  <span>Fin</span>
+                  <input
+                    type="date"
+                    value={boundsDraft.activeEnd}
+                    min={boundsDraft.activeStart}
+                    max={period.days[period.days.length - 1]?.dateKey}
+                    disabled={boundsSaving}
+                    onChange={(e) =>
+                      setBoundsDraft((prev) => ({ ...prev, activeEnd: e.target.value }))
+                    }
+                  />
+                </label>
+                <button
+                  type="button"
+                  className="btn btn-primary timesheet-period-bounds-save"
+                  disabled={boundsSaving || !boundsDirty}
+                  aria-disabled={boundsSaving || !boundsDirty}
+                  title={
+                    boundsDirty
+                      ? 'Enregistrer les dates actives du timesheet'
+                      : 'Aucune modification — changez le début ou la fin pour activer'
+                  }
+                  onClick={() => void savePeriodBounds(boundsDraft)}
+                >
+                  {boundsSaving ? <BtnSpinner /> : null}
+                  {boundsSaving ? 'Enregistrement…' : 'Enregistrer'}
+                </button>
+              </div>
+            ) : (
+              <span>{formatPeriodRange(period)}</span>
+            )}
           </div>
 
           <div className="timesheet-calendar-grid timesheet-calendar-grid-full timesheet-calendar-grid-with-ot">

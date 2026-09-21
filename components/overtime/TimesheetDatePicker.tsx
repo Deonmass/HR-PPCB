@@ -198,7 +198,7 @@ export default function TimesheetDatePicker({ value, onCommit }: Props) {
         value={focused ? draft : value}
         placeholder="JJ/MM/AAAA"
         maxLength={10}
-        title="Date de début — les semaines suivantes restent lundi → dimanche"
+        title="Date de début — les jours suivants suivent à partir de cette date"
         aria-label="Date de début du timesheet"
         onFocus={() => {
           setFocused(true);

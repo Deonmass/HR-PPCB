@@ -38,6 +38,7 @@ export const DURABLE_PROJECT_EXPENSES_KEY = 'data/projects/expenses.json';
 export const DURABLE_OVERTIMES_TIMESHEETS_KEY = 'data/overtimes/timesheets.json';
 export const DURABLE_OVERTIMES_TIMESHEETS_DIR = 'data/overtimes/timesheets';
 export const DURABLE_OVERTIMES_WEEKLY_KEY = 'data/overtimes/weekly-overtime.json';
+export const DURABLE_TIMESHEET_PERIOD_BOUNDS_KEY = 'data/timesheet/period-bounds.json';
 
 export function durableTimesheetsMonthKey(year: number, month: number): string {
   const y = String(Math.trunc(year)).padStart(4, '0');

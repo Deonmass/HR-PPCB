@@ -6,7 +6,7 @@ import {
   requireTimesheetModuleAccess,
 } from '@/lib/timesheet-access-server';
 import { buildCompilationData, compilationWeekIndexes } from '@/lib/timesheet-compilation.server';
-import { buildTimesheetPeriod } from '@/lib/timesheet-period';
+import { resolveTimesheetPeriod } from '@/lib/timesheet-period-bounds-store';
 import { setWeeklyOvertimeMonthClosed } from '@/lib/timesheet-weekly-ot-store';
 import type { Employee } from '@/lib/types';
 import { withAudit } from '@/lib/with-audit';
@@ -81,7 +81,7 @@ export async function POST(request: Request) {
       return NextResponse.json({ error: 'Paramètres year et month requis' }, { status: 400 });
     }
 
-    const period = buildTimesheetPeriod(year as number, month as number);
+    const period = await resolveTimesheetPeriod(year as number, month as number);
     const weekIndexes = compilationWeekIndexes(period.days.length);
 
     let departments: string[];

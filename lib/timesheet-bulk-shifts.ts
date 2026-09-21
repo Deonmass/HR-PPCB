@@ -68,6 +68,16 @@ export function continueShifterCycleFrom(
   );
 }
 
+/**
+ * Suite General Shift : jours ouvrés = general, week-ends = OFF.
+ * Retourne les shifts pour les jours après le jour sélectionné.
+ */
+export function continueGeneralShiftFrom(
+  followingDays: Array<{ isWeekend: boolean }>,
+): TimesheetShiftType[] {
+  return followingDays.map((day) => (day.isWeekend ? 'off' : 'general'));
+}
+
 export function applyShifterDay(
   row: TimesheetRowData,
   dayIndex: number,

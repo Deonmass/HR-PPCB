@@ -1,8 +1,8 @@
 import 'server-only';
 
 import { legalNightHours, standardShiftBreakdown } from './timesheet-calc';
+import { resolveTimesheetPeriod } from './timesheet-period-bounds-store';
 import {
-  buildTimesheetPeriod,
   TIMESHEET_WEEKS_PER_PERIOD,
   type TimesheetPeriodDay,
 } from './timesheet-period';
@@ -54,7 +54,7 @@ export async function buildCompilationData(
   department: string,
   employees: Employee[],
 ): Promise<CompilationData> {
-  const period = buildTimesheetPeriod(year, month);
+  const period = await resolveTimesheetPeriod(year, month);
   const weekCount = Math.min(TIMESHEET_WEEKS_PER_PERIOD, Math.ceil(period.days.length / 7));
 
   const weeks: CompilationWeek[] = [];

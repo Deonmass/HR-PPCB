@@ -19,7 +19,7 @@ import {
   savePlanningWeekEntries,
   clearPlanningWeekEntries,
 } from '@/lib/timesheet-store';
-import { buildTimesheetPeriod } from '@/lib/timesheet-period';
+import { resolveTimesheetPeriod } from '@/lib/timesheet-period-bounds-store';
 import type { TimesheetShiftType } from '@/lib/timesheet-types';
 import { withAudit } from '@/lib/with-audit';
 
@@ -62,7 +62,7 @@ export async function GET(request: Request) {
 
       const scopedEmployees = filterTimesheetEmployees(accessResult, department);
       const matricules = new Set(scopedEmployees.map((employee) => employee.matricule));
-      const periodData = buildTimesheetPeriod(period.year, period.month);
+      const periodData = await resolveTimesheetPeriod(period.year, period.month);
       const { savedDateKeys, completeDateKeys, planningCompleteDateKeys } =
         await getDepartmentCalendarStatus(periodData.year, periodData.month, matricules);
       const planningCompleteWeekIndexes = await getPlanningCompleteWeekIndexes(
@@ -84,7 +84,7 @@ export async function GET(request: Request) {
       const accessResult = await requireTimesheetDepartmentAccess(department);
       if ('error' in accessResult && accessResult.error) return accessResult.error;
 
-      const periodData = buildTimesheetPeriod(period.year, period.month);
+      const periodData = await resolveTimesheetPeriod(period.year, period.month);
       const weekDays = periodData.days.slice(weekIndex * 7, weekIndex * 7 + 7);
       const dateKeys = weekDays.map((day) => day.dateKey);
       const entries = await getWeekPlanningEntries(period.year, period.month, dateKeys);
@@ -163,7 +163,7 @@ export async function PUT(request: Request) {
         return NextResponse.json({ error: 'Semaine ou grille invalide' }, { status: 400 });
       }
 
-      const periodData = buildTimesheetPeriod(body.year, body.month);
+      const periodData = await resolveTimesheetPeriod(body.year, body.month);
       const weekDateKeys = new Set(
         periodData.days
           .slice((body.weekIndex as number) * 7, (body.weekIndex as number) * 7 + 7)
@@ -226,7 +226,7 @@ export async function PUT(request: Request) {
         return NextResponse.json({ error: 'Semaine invalide' }, { status: 400 });
       }
 
-      const periodData = buildTimesheetPeriod(body.year, body.month);
+      const periodData = await resolveTimesheetPeriod(body.year, body.month);
       const weekDays = periodData.days.slice((body.weekIndex as number) * 7, (body.weekIndex as number) * 7 + 7);
       const dateKeys = weekDays.map((day) => day.dateKey);
       if (!dateKeys.length) {
