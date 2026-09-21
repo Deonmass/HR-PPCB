@@ -716,6 +716,19 @@
   ],
   "reservations": [
     {
+      "id": "e5cc1962-651b-4da6-810f-7bcc52dd8f36",
+      "numero": "GH-2026-4429",
+      "createdAt": "2026-09-21T13:03:22.127Z",
+      "personName": "Jourdain",
+      "isAgent": false,
+      "motif": "TBA",
+      "startDate": "2026-09-20",
+      "endDate": "2026-09-26",
+      "status": "pending",
+      "notes": "Eng",
+      "updatedAt": "2026-09-21T13:03:22.127Z"
+    },
+    {
       "id": "2554fc2c-41d9-46a9-bd1c-ad0fa991cacc",
       "numero": "GH-2026-4428",
       "createdAt": "2026-09-21T12:56:06.069Z",
@@ -44335,5 +44348,5 @@
       "checkedOutAt": "2025-09-24T12:00:00.000Z"
     }
   ],
-  "nextReservationSeq": 4429
+  "nextReservationSeq": 4430
 }
