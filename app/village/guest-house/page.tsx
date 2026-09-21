@@ -2389,133 +2389,218 @@ export default function VillageGuestHousePage() {
         <SideDrawer
           open={drawer === 'reservation'}
           title={editingReservation ? `Modifier ${editingReservation.numero}` : 'Nouvelle réservation'}
+          width={480}
           onClose={() => {
             setDrawer(null);
             setEditingReservation(null);
           }}
-        >
-          <div className="form-group">
-            <label>
-              <input
-                type="checkbox"
-                checked={reservationForm.isAgent}
-                onChange={(e) => setReservationForm((prev) => ({
-                  ...prev,
-                  isAgent: e.target.checked,
-                  matricule: e.target.checked ? prev.matricule : '',
-                }))}
-              />
-              {' '}Agent PPC (suggestions employés)
-            </label>
-          </div>
-          <div className="form-group">
-            <label htmlFor="gh-person">Personne</label>
-            {reservationForm.isAgent ? (
-              <EmployeeSuggestInput
-                id="gh-person"
-                employees={employees}
-                value={reservationForm.personName}
-                onChange={(value) => setReservationForm((prev) => ({ ...prev, personName: value }))}
-                onEmployeeSelect={(employee) => setReservationForm((prev) => ({
-                  ...prev,
-                  personName: employee.nom,
-                  matricule: employee.matricule,
-                  isAgent: true,
-                }))}
-                placeholder="Rechercher un agent…"
-                required
-              />
-            ) : (
-              <input
-                id="gh-person"
-                value={reservationForm.personName}
-                onChange={(e) => setReservationForm((prev) => ({ ...prev, personName: e.target.value }))}
-                required
-              />
-            )}
-          </div>
-          {reservationForm.isAgent && (
-            <div className="form-group">
-              <label htmlFor="gh-matricule">Matricule</label>
-              <input id="gh-matricule" value={reservationForm.matricule} readOnly />
+          footer={(
+            <div className="guest-house-res-form-footer">
+              <button
+                type="button"
+                className="btn btn-outline"
+                disabled={saving}
+                onClick={() => {
+                  setDrawer(null);
+                  setEditingReservation(null);
+                }}
+              >
+                Annuler
+              </button>
+              <button
+                type="button"
+                className="btn btn-primary btn-with-icon"
+                disabled={saving}
+                onClick={() => void saveReservation()}
+              >
+                {saving
+                  ? (editingReservation ? 'Enregistrement…' : 'Création…')
+                  : (editingReservation ? 'Enregistrer' : 'Créer la réservation')}
+              </button>
             </div>
           )}
-          <div className="form-group">
-            <label htmlFor="gh-motif">Motif</label>
-            <input
-              id="gh-motif"
-              value={reservationForm.motif}
-              onChange={(e) => setReservationForm((prev) => ({ ...prev, motif: e.target.value }))}
-              required
-            />
+        >
+          <div className="guest-house-res-form">
+            <section className="guest-house-res-section">
+              <div className="guest-house-res-section-head">
+                <h4>Identité</h4>
+                <p>Qui séjourne à la guest house</p>
+              </div>
+
+              <div
+                className={`guest-house-res-toggle${reservationForm.isAgent ? ' is-on' : ''}`}
+                role="group"
+                aria-label="Type de personne"
+              >
+                <button
+                  type="button"
+                  className={!reservationForm.isAgent ? 'is-active' : undefined}
+                  onClick={() => setReservationForm((prev) => ({
+                    ...prev,
+                    isAgent: false,
+                    matricule: '',
+                  }))}
+                >
+                  Externe
+                </button>
+                <button
+                  type="button"
+                  className={reservationForm.isAgent ? 'is-active' : undefined}
+                  onClick={() => setReservationForm((prev) => ({ ...prev, isAgent: true }))}
+                >
+                  Agent PPC
+                </button>
+              </div>
+
+              <div className="form-group">
+                <label htmlFor="gh-person">
+                  {reservationForm.isAgent ? 'Agent' : 'Personne'}
+                </label>
+                {reservationForm.isAgent ? (
+                  <EmployeeSuggestInput
+                    id="gh-person"
+                    employees={employees}
+                    value={reservationForm.personName}
+                    onChange={(value) => setReservationForm((prev) => ({ ...prev, personName: value }))}
+                    onEmployeeSelect={(employee) => setReservationForm((prev) => ({
+                      ...prev,
+                      personName: employee.nom,
+                      matricule: employee.matricule,
+                      isAgent: true,
+                    }))}
+                    placeholder="Rechercher un agent…"
+                    required
+                  />
+                ) : (
+                  <input
+                    id="gh-person"
+                    value={reservationForm.personName}
+                    onChange={(e) => setReservationForm((prev) => ({ ...prev, personName: e.target.value }))}
+                    placeholder="Nom complet"
+                    required
+                  />
+                )}
+              </div>
+
+              {reservationForm.isAgent ? (
+                <div className="form-group">
+                  <label htmlFor="gh-matricule">Matricule</label>
+                  <input
+                    id="gh-matricule"
+                    value={reservationForm.matricule}
+                    readOnly
+                    placeholder="Sélectionnez un agent"
+                  />
+                </div>
+              ) : null}
+
+              <div className="form-group">
+                <label htmlFor="gh-motif">Motif</label>
+                <input
+                  id="gh-motif"
+                  value={reservationForm.motif}
+                  onChange={(e) => setReservationForm((prev) => ({ ...prev, motif: e.target.value }))}
+                  placeholder="Ex. mission, formation…"
+                  required
+                />
+              </div>
+            </section>
+
+            <section className="guest-house-res-section">
+              <div className="guest-house-res-section-head">
+                <h4>Séjour</h4>
+                <p>Période d’occupation de la chambre</p>
+              </div>
+
+              <div className="guest-house-res-grid-2">
+                <div className="form-group">
+                  <label htmlFor="gh-start">Date début</label>
+                  <input
+                    id="gh-start"
+                    type="date"
+                    value={reservationForm.startDate}
+                    onChange={(e) => setReservationForm((prev) => ({ ...prev, startDate: e.target.value }))}
+                    required
+                  />
+                </div>
+                <div className="form-group">
+                  <label htmlFor="gh-end">Date fin</label>
+                  <input
+                    id="gh-end"
+                    type="date"
+                    value={reservationForm.endDate}
+                    onChange={(e) => setReservationForm((prev) => ({ ...prev, endDate: e.target.value }))}
+                    required
+                  />
+                </div>
+              </div>
+
+              {reservationForm.startDate && reservationForm.endDate ? (
+                <div className="guest-house-res-stay-hint">
+                  Durée : {stayDayCount(reservationForm.startDate, reservationForm.endDate)} jour(s)
+                </div>
+              ) : null}
+
+              <div className="form-group">
+                <label htmlFor="gh-notes">Notes</label>
+                <textarea
+                  id="gh-notes"
+                  rows={3}
+                  value={reservationForm.notes}
+                  onChange={(e) => setReservationForm((prev) => ({ ...prev, notes: e.target.value }))}
+                  placeholder="Informations utiles pour l’accueil…"
+                />
+              </div>
+            </section>
+
+            <section className="guest-house-res-section">
+              <div className="guest-house-res-section-head">
+                <h4>Contexte & contact</h4>
+                <p>Optionnel — organisme et coordonnées</p>
+              </div>
+
+              <div className="guest-house-res-grid-2">
+                <div className="form-group">
+                  <label htmlFor="gh-company">Société / organisme</label>
+                  <input
+                    id="gh-company"
+                    value={reservationForm.company}
+                    onChange={(e) => setReservationForm((prev) => ({ ...prev, company: e.target.value }))}
+                  />
+                </div>
+                <div className="form-group">
+                  <label htmlFor="gh-mission">Mission</label>
+                  <input
+                    id="gh-mission"
+                    value={reservationForm.mission}
+                    onChange={(e) => setReservationForm((prev) => ({ ...prev, mission: e.target.value }))}
+                  />
+                </div>
+              </div>
+
+              <div className="guest-house-res-grid-2">
+                <div className="form-group">
+                  <label htmlFor="gh-phone">Téléphone</label>
+                  <input
+                    id="gh-phone"
+                    value={reservationForm.phone}
+                    onChange={(e) => setReservationForm((prev) => ({ ...prev, phone: e.target.value }))}
+                    placeholder="+243…"
+                  />
+                </div>
+                <div className="form-group">
+                  <label htmlFor="gh-email">Email</label>
+                  <input
+                    id="gh-email"
+                    type="email"
+                    value={reservationForm.email}
+                    onChange={(e) => setReservationForm((prev) => ({ ...prev, email: e.target.value }))}
+                    placeholder="nom@domaine.com"
+                  />
+                </div>
+              </div>
+            </section>
           </div>
-          <div className="form-group">
-            <label htmlFor="gh-start">Date début</label>
-            <input
-              id="gh-start"
-              type="date"
-              value={reservationForm.startDate}
-              onChange={(e) => setReservationForm((prev) => ({ ...prev, startDate: e.target.value }))}
-              required
-            />
-          </div>
-          <div className="form-group">
-            <label htmlFor="gh-end">Date fin</label>
-            <input
-              id="gh-end"
-              type="date"
-              value={reservationForm.endDate}
-              onChange={(e) => setReservationForm((prev) => ({ ...prev, endDate: e.target.value }))}
-              required
-            />
-          </div>
-          <div className="form-group">
-            <label htmlFor="gh-notes">Notes</label>
-            <textarea
-              id="gh-notes"
-              rows={2}
-              value={reservationForm.notes}
-              onChange={(e) => setReservationForm((prev) => ({ ...prev, notes: e.target.value }))}
-            />
-          </div>
-          <div className="form-group">
-            <label htmlFor="gh-company">Société / organisme</label>
-            <input
-              id="gh-company"
-              value={reservationForm.company}
-              onChange={(e) => setReservationForm((prev) => ({ ...prev, company: e.target.value }))}
-            />
-          </div>
-          <div className="form-group">
-            <label htmlFor="gh-mission">Mission</label>
-            <input
-              id="gh-mission"
-              value={reservationForm.mission}
-              onChange={(e) => setReservationForm((prev) => ({ ...prev, mission: e.target.value }))}
-            />
-          </div>
-          <div className="form-group">
-            <label htmlFor="gh-phone">Téléphone</label>
-            <input
-              id="gh-phone"
-              value={reservationForm.phone}
-              onChange={(e) => setReservationForm((prev) => ({ ...prev, phone: e.target.value }))}
-            />
-          </div>
-          <div className="form-group">
-            <label htmlFor="gh-email">Email</label>
-            <input
-              id="gh-email"
-              type="email"
-              value={reservationForm.email}
-              onChange={(e) => setReservationForm((prev) => ({ ...prev, email: e.target.value }))}
-            />
-          </div>
-          <button type="button" className="btn btn-primary" disabled={saving} onClick={() => void saveReservation()}>
-            {saving
-              ? (editingReservation ? 'Enregistrement…' : 'Création…')
-              : (editingReservation ? 'Enregistrer' : 'Créer')}
-          </button>
         </SideDrawer>
 
         {resContextMenu && (

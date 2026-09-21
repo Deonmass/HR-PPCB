@@ -20682,6 +20682,147 @@ html:not([data-theme='light']) .guest-house-floorplan-roof {
   }
 }
 
+/* ── Reservation drawer form ──────────────────────────────── */
+.guest-house-res-form {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.guest-house-res-section {
+  display: flex;
+  flex-direction: column;
+  gap: 0.7rem;
+  padding: 0.85rem 0.9rem;
+  border-radius: 14px;
+  border: 1px solid color-mix(in srgb, var(--border) 85%, transparent);
+  background: color-mix(in srgb, var(--surface) 55%, var(--panel));
+}
+
+.guest-house-res-section-head h4 {
+  margin: 0;
+  font-size: 0.86rem;
+  font-weight: 750;
+  letter-spacing: 0.01em;
+  color: var(--text);
+  text-transform: none;
+}
+
+.guest-house-res-section-head p {
+  margin: 0.18rem 0 0;
+  font-size: 0.72rem;
+  color: var(--muted);
+}
+
+.guest-house-res-form .form-group label {
+  text-transform: none;
+  letter-spacing: 0.01em;
+  font-size: 0.78rem;
+  font-weight: 650;
+  color: var(--text);
+}
+
+.guest-house-res-form .form-group input,
+.guest-house-res-form .form-group textarea,
+.guest-house-res-form .form-group select {
+  border-radius: 10px;
+  min-height: 2.35rem;
+  border-color: color-mix(in srgb, var(--border) 90%, #94a3b8);
+  background: var(--panel);
+}
+
+.guest-house-res-form .form-group textarea {
+  min-height: 4.5rem;
+  resize: vertical;
+}
+
+.guest-house-res-form .form-group input[readonly] {
+  opacity: 0.85;
+  background: color-mix(in srgb, var(--surface) 70%, var(--panel));
+}
+
+.guest-house-res-toggle {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.25rem;
+  padding: 0.22rem;
+  border-radius: 12px;
+  background: color-mix(in srgb, var(--surface) 80%, #cbd5e1);
+  border: 1px solid color-mix(in srgb, var(--border) 80%, transparent);
+}
+
+.guest-house-res-toggle button {
+  appearance: none;
+  border: none;
+  border-radius: 9px;
+  padding: 0.55rem 0.65rem;
+  font-size: 0.8rem;
+  font-weight: 700;
+  color: var(--muted);
+  background: transparent;
+  cursor: pointer;
+  transition: background 0.15s ease, color 0.15s ease, box-shadow 0.15s ease;
+}
+
+.guest-house-res-toggle button.is-active {
+  color: var(--text);
+  background: var(--panel);
+  box-shadow: 0 4px 12px rgba(22, 22, 30, 0.08);
+}
+
+.guest-house-res-toggle.is-on button.is-active {
+  color: #fff;
+  background: linear-gradient(135deg, #e30613, #c40510);
+}
+
+.guest-house-res-grid-2 {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.65rem;
+}
+
+.guest-house-res-stay-hint {
+  display: inline-flex;
+  align-self: flex-start;
+  padding: 0.28rem 0.6rem;
+  border-radius: 999px;
+  font-size: 0.72rem;
+  font-weight: 700;
+  color: #1d4ed8;
+  background: color-mix(in srgb, #3b82f6 14%, transparent);
+}
+
+.guest-house-res-form-footer {
+  display: flex;
+  justify-content: flex-end;
+  gap: 0.55rem;
+  width: 100%;
+}
+
+@media (max-width: 520px) {
+  .guest-house-res-grid-2 {
+    grid-template-columns: 1fr;
+  }
+
+  .guest-house-res-form-footer {
+    flex-direction: column-reverse;
+  }
+
+  .guest-house-res-form-footer .btn {
+    width: 100%;
+  }
+}
+
+html[data-theme='dark'] .guest-house-res-section,
+html:not([data-theme='light']) .guest-house-res-section {
+  background: color-mix(in srgb, var(--surface) 40%, var(--panel));
+}
+
+html[data-theme='dark'] .guest-house-res-toggle button.is-active,
+html:not([data-theme='light']) .guest-house-res-toggle button.is-active {
+  box-shadow: none;
+}
+
 .guest-house-export-group {
   display: inline-flex;
   align-items: center;
