@@ -1072,11 +1072,11 @@
       "isAgent": true,
       "motif": "Mission to the plant",
       "startDate": "2026-09-06",
-      "endDate": "2026-09-15",
+      "endDate": "2026-09-18",
       "roomId": "8b14162d-ae3b-49a5-bcb6-812c2d8d5b5b",
       "status": "confirmed",
       "mission": "Mission to the plant",
-      "updatedAt": "2026-09-14T20:25:36.494Z"
+      "updatedAt": "2026-09-21T12:48:43.357Z"
     },
     {
       "id": "5983f702-2493-4745-8ca5-f07688fc71e6",
@@ -26404,7 +26404,7 @@
       "matricule": "70000200",
       "motif": "Mission to the plant",
       "startDate": "2026-09-06",
-      "endDate": "2026-09-15",
+      "endDate": "2026-09-18",
       "checkedInAt": "2026-09-14T20:25:36.494Z"
     },
     {
