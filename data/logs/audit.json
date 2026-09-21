@@ -1,6 +1,44 @@
 {
   "entries": [
     {
+      "id": "log-000930",
+      "at": "2026-09-21T07:28:30.265Z",
+      "userId": "karine.mvutu@ppcdrc.cd",
+      "userName": "Karine Mvutu",
+      "userEmail": "karine.mvutu@ppcdrc.cd",
+      "module": "sante",
+      "moduleLabel": "Santé",
+      "action": "create",
+      "actionLabel": "Création",
+      "entityType": "sante.visit",
+      "entityId": "sante-muaxbj9q-x2p3qu",
+      "summary": "Cas santé — MOLEKA NYABONINGI · ANGINE",
+      "details": "Cas santé — MOLEKA NYABONINGI · ANGINE",
+      "after": {
+        "id": "sante-muaxbj9q-x2p3qu",
+        "date": "2026-09-07",
+        "nom": "MOLEKA",
+        "postnom": "NYABONINGI",
+        "sexe": "F",
+        "age": 7,
+        "typeMalade": "ENFANT",
+        "pathologie": "ANGINE",
+        "traitement": "VITAMINE C",
+        "reference": "NON",
+        "year": 2026,
+        "month": 9,
+        "employeeMatricule": "70000109",
+        "employeeNom": "MOLEKA GBANGA FRED",
+        "dependantId": 313,
+        "createdAt": "2026-09-21T07:28:27.470Z",
+        "updatedAt": "2026-09-21T07:28:27.470Z",
+        "createdBy": "karine.mvutu@ppcdrc.cd",
+        "updatedBy": "karine.mvutu@ppcdrc.cd"
+      },
+      "undoable": false,
+      "undone": false
+    },
+    {
       "id": "log-000929",
       "at": "2026-09-21T07:26:52.107Z",
       "userId": "karine.mvutu@ppcdrc.cd",
@@ -110091,5 +110129,5 @@
       }
     }
   ],
-  "nextSeq": 930
+  "nextSeq": 931
 }
