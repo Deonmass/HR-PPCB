@@ -1,6 +1,51 @@
 {
   "entries": [
     {
+      "id": "log-000988",
+      "at": "2026-09-21T12:41:33.654Z",
+      "userId": "admin",
+      "userName": "Administrateur",
+      "userEmail": "admin",
+      "module": "guest-house",
+      "moduleLabel": "Guest house",
+      "action": "update",
+      "actionLabel": "Modification",
+      "entityType": "guest-house.reservation",
+      "entityId": "873696e5-aaaa-4789-994f-bbecf4cfff60",
+      "summary": "Modification réservation 873696e5-aaaa-4789-994f-bbecf4cfff60",
+      "details": "Modification réservation 873696e5-aaaa-4789-994f-bbecf4cfff60",
+      "before": {
+        "id": "873696e5-aaaa-4789-994f-bbecf4cfff60",
+        "numero": "GH-2026-4385",
+        "createdAt": "2026-09-14T19:24:22.531Z",
+        "personName": "Francois du bois",
+        "isAgent": false,
+        "motif": "Garage Maintenance Mobile Equipment",
+        "startDate": "2026-09-01",
+        "endDate": "2026-09-20",
+        "roomId": "873277c8-cfe8-4e40-af16-61f1a3f4c273",
+        "status": "confirmed",
+        "mission": "Garage Maintenance Mobile Equipment",
+        "updatedAt": "2026-09-14T19:24:50.588Z"
+      },
+      "after": {
+        "id": "873696e5-aaaa-4789-994f-bbecf4cfff60",
+        "numero": "GH-2026-4385",
+        "createdAt": "2026-09-14T19:24:22.531Z",
+        "personName": "Francois du bois",
+        "isAgent": false,
+        "motif": "Garage Maintenance Mobile Equipment",
+        "startDate": "2026-09-01",
+        "endDate": "2026-09-26",
+        "roomId": "873277c8-cfe8-4e40-af16-61f1a3f4c273",
+        "status": "confirmed",
+        "mission": "Garage Maintenance Mobile Equipment",
+        "updatedAt": "2026-09-21T12:41:29.518Z"
+      },
+      "undoable": true,
+      "undone": false
+    },
+    {
       "id": "log-000987",
       "at": "2026-09-21T12:15:34.126Z",
       "userId": "admin",
@@ -111931,5 +111976,5 @@
       }
     }
   ],
-  "nextSeq": 988
+  "nextSeq": 989
 }
