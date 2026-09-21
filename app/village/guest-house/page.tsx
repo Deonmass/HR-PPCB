@@ -1505,7 +1505,7 @@ export default function VillageGuestHousePage() {
                 canCreate={canCreate}
                 canEdit={canEdit}
                 canDelete={canDelete}
-                onCreateRoom={(building) => openRoomCreate('standard', building)}
+                onCreateReservation={openReservationCreate}
                 onEditRoom={openRoomEdit}
                 onDeleteRoom={(room) => { void removeRoom(room); }}
                 onHistory={openHistory}

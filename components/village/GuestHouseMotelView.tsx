@@ -22,7 +22,7 @@ interface Props {
   canCreate?: boolean;
   canEdit?: boolean;
   canDelete?: boolean;
-  onCreateRoom?: (building: string) => void;
+  onCreateReservation?: () => void;
   onEditRoom: (room: GuestRoom) => void;
   onDeleteRoom: (room: GuestRoom) => void;
   onHistory: (room: GuestRoom) => void;
@@ -48,7 +48,7 @@ function formatDaysLeftShort(endDate: string): string {
   const days = remainingDays(endDate);
   if (days < 0) return 'Terminé';
   if (days === 0) return 'Jour J';
-  return `${days} j`;
+  return `${days} j rest.`;
 }
 
 function statusLabel(status: MotelRoomStatus): string {
@@ -65,13 +65,24 @@ function IconPlus({ size = 14 }: { size?: number }) {
   );
 }
 
-function IconBed({ size = 18 }: { size?: number }) {
+function IconBed({ size = 22 }: { size?: number }) {
   return (
-    <svg viewBox="0 0 24 24" width={size} height={size} fill="none" stroke="currentColor" strokeWidth="1.6" aria-hidden>
+    <svg viewBox="0 0 24 24" width={size} height={size} fill="none" stroke="currentColor" strokeWidth="1.5" aria-hidden>
       <path d="M3 18V9a2 2 0 0 1 2-2h6v11" />
       <path d="M11 11h8a2 2 0 0 1 2 2v5" />
       <path d="M3 18h18" />
       <path d="M7 9V7a1 1 0 0 1 1-1h2" />
+    </svg>
+  );
+}
+
+function IconShower({ size = 14 }: { size?: number }) {
+  return (
+    <svg viewBox="0 0 24 24" width={size} height={size} fill="none" stroke="currentColor" strokeWidth="1.7" aria-hidden>
+      <path d="M4 12h16" />
+      <path d="M12 4v4" />
+      <path d="M8 16v.01M12 17v.01M16 16v.01M10 20v.01M14 20v.01" />
+      <path d="M8 8a4 4 0 0 1 8 0" />
     </svg>
   );
 }
@@ -94,7 +105,7 @@ export default function GuestHouseMotelView({
   canCreate = false,
   canEdit = false,
   canDelete = false,
-  onCreateRoom,
+  onCreateReservation,
   onEditRoom,
   onDeleteRoom,
   onHistory,
@@ -123,7 +134,7 @@ export default function GuestHouseMotelView({
         <div>
           <h3>Plan des chambres</h3>
           <p className="text-muted">
-            Plan type motel · Bâtiment 1 &amp; 2 · {totals.occupied} occupée(s) · {totals.empty} vide(s)
+            Bâtiment 1 &amp; 2 · chambre + douche · {totals.occupied} occupée(s) · {totals.empty} vide(s)
             {totals.reserved ? ` · ${totals.reserved} réservée(s)` : ''}
           </p>
         </div>
@@ -135,29 +146,31 @@ export default function GuestHouseMotelView({
       </div>
 
       <div className="guest-house-motel-plans">
-        {buildings.map(({ building, rooms }, buildingIndex) => {
+        {buildings.map(({ building, rooms }) => {
           const shortLabel = building.replace(/^Batiment\s*#?/i, 'Bâtiment ');
           const occupiedCount = rooms.filter((r) => r.status === 'occupied').length;
 
           return (
             <article key={building} className="guest-house-floorplan">
               <header className="guest-house-floorplan-head">
-                <div>
-                  <h4>{shortLabel}</h4>
-                  <p>
-                    {rooms.length} chambre(s) · {occupiedCount} occupée(s)
-                    {buildingIndex === 0 ? ' · étage chambres' : ''}
-                  </p>
+                <div className="guest-house-floorplan-title-block">
+                  <span className="guest-house-floorplan-building-badge" aria-hidden />
+                  <div>
+                    <h4>{shortLabel}</h4>
+                    <p>
+                      {rooms.length} chambre(s) · {occupiedCount} occupée(s)
+                    </p>
+                  </div>
                 </div>
-                {canCreate && onCreateRoom ? (
+                {canCreate && onCreateReservation ? (
                   <button
                     type="button"
-                    className="btn btn-ghost btn-sm btn-with-icon"
-                    onClick={() => onCreateRoom(building)}
-                    title={`Ajouter une chambre — ${building}`}
+                    className="btn btn-primary btn-sm btn-with-icon"
+                    onClick={onCreateReservation}
+                    title="Nouvelle réservation"
                   >
                     <IconPlus size={13} />
-                    Chambre
+                    Réservation
                   </button>
                 ) : null}
               </header>
@@ -167,13 +180,10 @@ export default function GuestHouseMotelView({
               ) : (
                 <div className="guest-house-floorplan-scroll">
                   <div
-                    className="guest-house-floorplan-strip"
+                    className="guest-house-floorplan-building"
                     style={{ '--gh-room-count': String(Math.max(rooms.length, 1)) } as CSSProperties}
                   >
-                    <div className="guest-house-floorplan-corridor" aria-hidden>
-                      <span>DÉGAGEMENT</span>
-                    </div>
-
+                    <div className="guest-house-floorplan-roof" aria-hidden />
                     <div className="guest-house-floorplan-units" role="list">
                       {rooms.map(({ room, status, linkedReservation }) => {
                         const daysLeft = linkedReservation
@@ -212,32 +222,26 @@ export default function GuestHouseMotelView({
                             className={`guest-house-floorplan-unit is-${status}`}
                             title={`${roomDisplayName(room)} — ${statusLabel(status)}`}
                           >
-                            <div className="guest-house-floorplan-balcony" aria-hidden>
-                              BALCON
-                            </div>
-
-                            <div className="guest-house-floorplan-unit-main">
+                            <div className="guest-house-floorplan-sleep">
                               <div className="guest-house-floorplan-unit-top">
-                                <strong className="guest-house-floorplan-ch-label">
-                                  {roomUnitLabel(room)}
-                                </strong>
+                                <div>
+                                  <strong className="guest-house-floorplan-ch-label">
+                                    {roomUnitLabel(room)}
+                                  </strong>
+                                  {room.roomName ? (
+                                    <span className="guest-house-floorplan-room-name" title={room.roomName}>
+                                      {room.roomName}
+                                    </span>
+                                  ) : null}
+                                </div>
                                 <CardActionMenu
                                   ariaLabel={`Actions ${roomDisplayName(room)}`}
                                   items={menuItems}
                                 />
                               </div>
 
-                              {room.roomName ? (
-                                <div className="guest-house-floorplan-room-name" title={room.roomName}>
-                                  {room.roomName}
-                                </div>
-                              ) : null}
-
-                              <div className="guest-house-floorplan-furnish" aria-hidden>
-                                <span className="guest-house-floorplan-bed">
-                                  <IconBed size={16} />
-                                </span>
-                                <span className="guest-house-floorplan-toil">TOIL.</span>
+                              <div className="guest-house-floorplan-bed-area" aria-hidden>
+                                <IconBed size={28} />
                               </div>
 
                               {linkedReservation ? (
@@ -265,10 +269,17 @@ export default function GuestHouseMotelView({
                                 </div>
                               ) : (
                                 <div className="guest-house-floorplan-info is-vacant">
-                                  <span>{statusLabel(status)}</span>
-                                  <span>Libre</span>
+                                  <span className="guest-house-floorplan-status-pill">
+                                    {statusLabel(status)}
+                                  </span>
+                                  <span>Disponible</span>
                                 </div>
                               )}
+                            </div>
+
+                            <div className="guest-house-floorplan-bath" aria-hidden>
+                              <span className="guest-house-floorplan-bath-label">Douche</span>
+                              <IconShower size={15} />
                             </div>
                           </div>
                         );
