@@ -1,6 +1,36 @@
 {
   "entries": [
     {
+      "id": "log-001007",
+      "at": "2026-09-21T13:04:24.947Z",
+      "userId": "admin",
+      "userName": "Administrateur",
+      "userEmail": "admin",
+      "module": "guest-house",
+      "moduleLabel": "Guest house",
+      "action": "create",
+      "actionLabel": "Création",
+      "entityType": "guest-house.reservation",
+      "entityId": "55a5feec-b5c3-4c1a-8fed-c1c7786f8f88",
+      "summary": "Création réservation Michée et Prince",
+      "details": "Création réservation Michée et Prince",
+      "after": {
+        "id": "55a5feec-b5c3-4c1a-8fed-c1c7786f8f88",
+        "numero": "GH-2026-4430",
+        "createdAt": "2026-09-21T13:04:21.867Z",
+        "personName": "Michée et Prince",
+        "isAgent": false,
+        "motif": "TBA",
+        "startDate": "2026-09-20",
+        "endDate": "2026-09-26",
+        "status": "pending",
+        "notes": "Fire service / safety",
+        "updatedAt": "2026-09-21T13:04:21.867Z"
+      },
+      "undoable": true,
+      "undone": false
+    },
+    {
       "id": "log-001006",
       "at": "2026-09-21T13:03:25.038Z",
       "userId": "admin",
@@ -112669,5 +112699,5 @@
       }
     }
   ],
-  "nextSeq": 1007
+  "nextSeq": 1008
 }
