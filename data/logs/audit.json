@@ -1,6 +1,29 @@
 {
   "entries": [
     {
+      "id": "log-000976",
+      "at": "2026-09-21T10:27:42.150Z",
+      "userId": "admin",
+      "userName": "Administrateur",
+      "userEmail": "admin",
+      "module": "timesheet",
+      "moduleLabel": "Timesheet",
+      "action": "update",
+      "actionLabel": "Modification",
+      "summary": "Enregistrement timesheet 70000083 — Quality Assurance (9/2026)",
+      "details": "Enregistrement timesheet 70000083 — Quality Assurance (9/2026)",
+      "undoable": false,
+      "undone": false,
+      "meta": {
+        "year": 2026,
+        "month": 9,
+        "department": "Quality Assurance",
+        "matricule": "70000083",
+        "mode": "employee-month",
+        "count": 42
+      }
+    },
+    {
       "id": "log-000975",
       "at": "2026-09-21T10:25:56.964Z",
       "userId": "admin",
@@ -111655,5 +111678,5 @@
       }
     }
   ],
-  "nextSeq": 976
+  "nextSeq": 977
 }
