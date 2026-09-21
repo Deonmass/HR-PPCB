@@ -1,6 +1,44 @@
 {
   "entries": [
     {
+      "id": "log-000960",
+      "at": "2026-09-21T08:13:23.784Z",
+      "userId": "karine.mvutu@ppcdrc.cd",
+      "userName": "Karine Mvutu",
+      "userEmail": "karine.mvutu@ppcdrc.cd",
+      "module": "sante",
+      "moduleLabel": "Santé",
+      "action": "create",
+      "actionLabel": "Création",
+      "entityType": "sante.visit",
+      "entityId": "sante-muayx9c0-cy38u6",
+      "summary": "Cas santé — BIPENDU ILUNGA · SUSPUCION PALUDISME SIMPLE",
+      "details": "Cas santé — BIPENDU ILUNGA · SUSPUCION PALUDISME SIMPLE",
+      "after": {
+        "id": "sante-muayx9c0-cy38u6",
+        "date": "2026-09-20",
+        "nom": "BIPENDU",
+        "postnom": "ILUNGA",
+        "sexe": "F",
+        "age": 1,
+        "typeMalade": "ENFANT",
+        "pathologie": "SUSPUCION PALUDISME SIMPLE",
+        "traitement": "ANTI VOMITIF",
+        "reference": "CENTRE HOSPITALIER LAMBA",
+        "year": 2026,
+        "month": 9,
+        "employeeMatricule": "70000226",
+        "employeeNom": "KANKONDE ILUNGA ALIDOR",
+        "dependantId": 523,
+        "createdAt": "2026-09-21T08:13:20.640Z",
+        "updatedAt": "2026-09-21T08:13:20.640Z",
+        "createdBy": "karine.mvutu@ppcdrc.cd",
+        "updatedBy": "karine.mvutu@ppcdrc.cd"
+      },
+      "undoable": false,
+      "undone": false
+    },
+    {
       "id": "log-000959",
       "at": "2026-09-21T08:11:48.520Z",
       "userId": "karine.mvutu@ppcdrc.cd",
@@ -111201,5 +111239,5 @@
       }
     }
   ],
-  "nextSeq": 960
+  "nextSeq": 961
 }
