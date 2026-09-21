@@ -1,6 +1,144 @@
 {
   "entries": [
     {
+      "id": "log-000978",
+      "at": "2026-09-21T10:33:00.782Z",
+      "userId": "admin",
+      "userName": "Administrateur",
+      "userEmail": "admin",
+      "module": "timesheet",
+      "moduleLabel": "Timesheet",
+      "action": "update",
+      "actionLabel": "Modification",
+      "summary": "Enregistrement timesheet 70000081 — Quality Assurance (9/2026)",
+      "details": "Enregistrement timesheet 70000081 — Quality Assurance (9/2026)",
+      "undoable": false,
+      "undone": false,
+      "meta": {
+        "year": 2026,
+        "month": 9,
+        "department": "Quality Assurance",
+        "matricule": "70000081",
+        "mode": "employee-month",
+        "count": 42
+      }
+    },
+    {
+      "id": "log-000977",
+      "at": "2026-09-21T10:30:41.775Z",
+      "userId": "admin",
+      "userName": "Administrateur",
+      "userEmail": "admin",
+      "module": "timesheet",
+      "moduleLabel": "Timesheet",
+      "action": "update",
+      "actionLabel": "Modification",
+      "summary": "Enregistrement timesheet 70000080 — Quality Assurance (9/2026)",
+      "details": "Enregistrement timesheet 70000080 — Quality Assurance (9/2026)",
+      "undoable": false,
+      "undone": false,
+      "meta": {
+        "year": 2026,
+        "month": 9,
+        "department": "Quality Assurance",
+        "matricule": "70000080",
+        "mode": "employee-month",
+        "count": 42
+      }
+    },
+    {
+      "id": "log-000976",
+      "at": "2026-09-21T10:27:42.150Z",
+      "userId": "admin",
+      "userName": "Administrateur",
+      "userEmail": "admin",
+      "module": "timesheet",
+      "moduleLabel": "Timesheet",
+      "action": "update",
+      "actionLabel": "Modification",
+      "summary": "Enregistrement timesheet 70000083 — Quality Assurance (9/2026)",
+      "details": "Enregistrement timesheet 70000083 — Quality Assurance (9/2026)",
+      "undoable": false,
+      "undone": false,
+      "meta": {
+        "year": 2026,
+        "month": 9,
+        "department": "Quality Assurance",
+        "matricule": "70000083",
+        "mode": "employee-month",
+        "count": 42
+      }
+    },
+    {
+      "id": "log-000975",
+      "at": "2026-09-21T10:25:56.964Z",
+      "userId": "admin",
+      "userName": "Administrateur",
+      "userEmail": "admin",
+      "module": "timesheet",
+      "moduleLabel": "Timesheet",
+      "action": "update",
+      "actionLabel": "Modification",
+      "summary": "Enregistrement timesheet 70000276 — Quality Assurance (9/2026)",
+      "details": "Enregistrement timesheet 70000276 — Quality Assurance (9/2026)",
+      "undoable": false,
+      "undone": false,
+      "meta": {
+        "year": 2026,
+        "month": 9,
+        "department": "Quality Assurance",
+        "matricule": "70000276",
+        "mode": "employee-month",
+        "count": 42
+      }
+    },
+    {
+      "id": "log-000974",
+      "at": "2026-09-21T10:23:36.588Z",
+      "userId": "admin",
+      "userName": "Administrateur",
+      "userEmail": "admin",
+      "module": "timesheet",
+      "moduleLabel": "Timesheet",
+      "action": "update",
+      "actionLabel": "Modification",
+      "summary": "Enregistrement timesheet 70000077 — Quality Assurance (9/2026)",
+      "details": "Enregistrement timesheet 70000077 — Quality Assurance (9/2026)",
+      "undoable": false,
+      "undone": false,
+      "meta": {
+        "year": 2026,
+        "month": 9,
+        "department": "Quality Assurance",
+        "matricule": "70000077",
+        "mode": "employee-month",
+        "count": 42
+      }
+    },
+    {
+      "id": "log-000973",
+      "at": "2026-09-21T10:19:55.808Z",
+      "userId": "admin",
+      "userName": "Administrateur",
+      "userEmail": "admin",
+      "module": "timesheet",
+      "moduleLabel": "Timesheet",
+      "action": "update",
+      "actionLabel": "Modification",
+      "summary": "Enregistrement timesheet 70000210 — Quality Assurance (9/2026)",
+      "details": "Enregistrement timesheet 70000210 — Quality Assurance (9/2026)",
+      "undoable": false,
+      "undone": false,
+      "meta": {
+        "year": 2026,
+        "month": 9,
+        "department": "Quality Assurance",
+        "matricule": "70000210",
+        "mode": "employee-month",
+        "count": 42
+      }
+    },
+    {
       "id": "log-000972",
       "at": "2026-09-21T09:59:10.017Z",
       "userId": "admin",
@@ -111586,5 +111724,5 @@
       }
     }
   ],
-  "nextSeq": 973
+  "nextSeq": 979
 }
