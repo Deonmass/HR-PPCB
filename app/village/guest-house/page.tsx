@@ -13,6 +13,7 @@ import TableHeaderFilter from '@/components/TableHeaderFilter';
 import { EmployeeSuggestInput } from '@/components/EmployeePicker';
 import CardActionMenu from '@/components/CardActionMenu';
 import GuestHouseMonthlyChart from '@/components/village/GuestHouseMonthlyChart';
+import GuestHouseMotelView from '@/components/village/GuestHouseMotelView';
 import GuestHouseRoomOccupancyChart from '@/components/village/GuestHouseRoomOccupancyChart';
 import { usePermissions } from '@/contexts/PermissionContext';
 import type {
@@ -910,13 +911,16 @@ export default function VillageGuestHousePage() {
     setFutureColFilters((prev) => ({ ...prev, [key]: next }));
   };
 
-  const openRoomCreate = (category: GuestRoomCategory = 'standard') => {
+  const openRoomCreate = (
+    category: GuestRoomCategory = 'standard',
+    building = category === 'kimpese' ? KIMPESE_BUILDING : 'Batiment #1',
+  ) => {
     setEditingRoom(null);
     setRoomForm({
       category,
       roomNumber: '',
       roomName: '',
-      building: category === 'kimpese' ? KIMPESE_BUILDING : 'Batiment #1',
+      building: category === 'kimpese' ? KIMPESE_BUILDING : building,
       hotelName: '',
       characteristics: '',
       notes: '',
@@ -1495,6 +1499,17 @@ export default function VillageGuestHousePage() {
                   <span className="guest-house-kpi-icon"><IconBed /></span>
                 </button>
               </div>
+
+              <GuestHouseMotelView
+                roomsByBuilding={roomsGrouped}
+                canCreate={canCreate}
+                canEdit={canEdit}
+                canDelete={canDelete}
+                onCreateRoom={(building) => openRoomCreate('standard', building)}
+                onEditRoom={openRoomEdit}
+                onDeleteRoom={(room) => { void removeRoom(room); }}
+                onHistory={openHistory}
+              />
 
               <GuestHouseMonthlyChart
                 years={dashboard.years ?? []}
