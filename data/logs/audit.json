@@ -1,6 +1,51 @@
 {
   "entries": [
     {
+      "id": "log-000989",
+      "at": "2026-09-21T12:43:23.462Z",
+      "userId": "admin",
+      "userName": "Administrateur",
+      "userEmail": "admin",
+      "module": "guest-house",
+      "moduleLabel": "Guest house",
+      "action": "update",
+      "actionLabel": "Modification",
+      "entityType": "guest-house.reservation",
+      "entityId": "632dc277-a25b-444e-9e41-3bc36818470e",
+      "summary": "Modification réservation 632dc277-a25b-444e-9e41-3bc36818470e",
+      "details": "Modification réservation 632dc277-a25b-444e-9e41-3bc36818470e",
+      "before": {
+        "id": "632dc277-a25b-444e-9e41-3bc36818470e",
+        "numero": "GH-2026-4422",
+        "createdAt": "2026-09-15T09:17:33.991Z",
+        "personName": "Aboubacry Athie",
+        "isAgent": false,
+        "motif": "Mission to the plant",
+        "startDate": "2026-09-15",
+        "endDate": "2026-09-19",
+        "roomId": "3219d898-ff74-496c-a62e-2295012276ae",
+        "status": "confirmed",
+        "mission": "Mission to the plant",
+        "updatedAt": "2026-09-15T09:18:29.657Z"
+      },
+      "after": {
+        "id": "632dc277-a25b-444e-9e41-3bc36818470e",
+        "numero": "GH-2026-4422",
+        "createdAt": "2026-09-15T09:17:33.991Z",
+        "personName": "Pablito (Chinois)",
+        "isAgent": false,
+        "motif": "Mission to the plant",
+        "startDate": "2026-09-14",
+        "endDate": "2026-09-26",
+        "roomId": "3219d898-ff74-496c-a62e-2295012276ae",
+        "status": "confirmed",
+        "mission": "Mission to the plant",
+        "updatedAt": "2026-09-21T12:43:20.463Z"
+      },
+      "undoable": true,
+      "undone": false
+    },
+    {
       "id": "log-000988",
       "at": "2026-09-21T12:41:33.654Z",
       "userId": "admin",
@@ -111976,5 +112021,5 @@
       }
     }
   ],
-  "nextSeq": 989
+  "nextSeq": 990
 }
