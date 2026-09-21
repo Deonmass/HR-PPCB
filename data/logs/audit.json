@@ -1,6 +1,44 @@
 {
   "entries": [
     {
+      "id": "log-000939",
+      "at": "2026-09-21T07:39:09.685Z",
+      "userId": "karine.mvutu@ppcdrc.cd",
+      "userName": "Karine Mvutu",
+      "userEmail": "karine.mvutu@ppcdrc.cd",
+      "module": "sante",
+      "moduleLabel": "Santé",
+      "action": "create",
+      "actionLabel": "Création",
+      "entityType": "sante.visit",
+      "entityId": "sante-muaxp8pa-3z7aqc",
+      "summary": "Cas santé — TULOMBA RHEANE · SYNDROME GRIPPAL",
+      "details": "Cas santé — TULOMBA RHEANE · SYNDROME GRIPPAL",
+      "after": {
+        "id": "sante-muaxp8pa-3z7aqc",
+        "date": "2026-09-12",
+        "nom": "TULOMBA",
+        "postnom": "RHEANE",
+        "sexe": "F",
+        "age": 3,
+        "typeMalade": "ENFANT",
+        "pathologie": "SYNDROME GRIPPAL",
+        "traitement": "ANTI  GRIPPALE ET GOUTTE NASALE",
+        "reference": "NON",
+        "year": 2026,
+        "month": 9,
+        "employeeMatricule": "",
+        "employeeNom": "",
+        "dependantId": null,
+        "createdAt": "2026-09-21T07:39:06.958Z",
+        "updatedAt": "2026-09-21T07:39:06.958Z",
+        "createdBy": "karine.mvutu@ppcdrc.cd",
+        "updatedBy": "karine.mvutu@ppcdrc.cd"
+      },
+      "undoable": false,
+      "undone": false
+    },
+    {
       "id": "log-000938",
       "at": "2026-09-21T07:38:05.087Z",
       "userId": "karine.mvutu@ppcdrc.cd",
@@ -110433,5 +110471,5 @@
       }
     }
   ],
-  "nextSeq": 939
+  "nextSeq": 940
 }
