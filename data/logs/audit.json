@@ -1,6 +1,44 @@
 {
   "entries": [
     {
+      "id": "log-000947",
+      "at": "2026-09-21T07:52:22.937Z",
+      "userId": "karine.mvutu@ppcdrc.cd",
+      "userName": "Karine Mvutu",
+      "userEmail": "karine.mvutu@ppcdrc.cd",
+      "module": "sante",
+      "moduleLabel": "Santé",
+      "action": "create",
+      "actionLabel": "Création",
+      "entityType": "sante.visit",
+      "entityId": "sante-muay68zz-21xj0r",
+      "summary": "Cas santé — MAKANI MAYAMONA · PLAIE TRAUMATIQUE/ACCIDENT DE TRAVAIL",
+      "details": "Cas santé — MAKANI MAYAMONA · PLAIE TRAUMATIQUE/ACCIDENT DE TRAVAIL",
+      "after": {
+        "id": "sante-muay68zz-21xj0r",
+        "date": "2026-09-17",
+        "nom": "MAKANI",
+        "postnom": "MAYAMONA",
+        "sexe": "M",
+        "age": 25,
+        "typeMalade": "CONTRACTANT",
+        "pathologie": "PLAIE TRAUMATIQUE/ACCIDENT DE TRAVAIL",
+        "traitement": "ANTI INFLAMMATOIRE ET PENSEMENT COMPRESSIF",
+        "reference": "IME",
+        "year": 2026,
+        "month": 9,
+        "employeeMatricule": "",
+        "employeeNom": "",
+        "dependantId": null,
+        "createdAt": "2026-09-21T07:52:20.495Z",
+        "updatedAt": "2026-09-21T07:52:20.495Z",
+        "createdBy": "karine.mvutu@ppcdrc.cd",
+        "updatedBy": "karine.mvutu@ppcdrc.cd"
+      },
+      "undoable": false,
+      "undone": false
+    },
+    {
       "id": "log-000946",
       "at": "2026-09-21T07:50:59.000Z",
       "userId": "karine.mvutu@ppcdrc.cd",
@@ -110737,5 +110775,5 @@
       }
     }
   ],
-  "nextSeq": 947
+  "nextSeq": 948
 }
