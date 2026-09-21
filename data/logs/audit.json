@@ -1,6 +1,44 @@
 {
   "entries": [
     {
+      "id": "log-000959",
+      "at": "2026-09-21T08:11:48.520Z",
+      "userId": "karine.mvutu@ppcdrc.cd",
+      "userName": "Karine Mvutu",
+      "userEmail": "karine.mvutu@ppcdrc.cd",
+      "module": "sante",
+      "moduleLabel": "Santé",
+      "action": "create",
+      "actionLabel": "Création",
+      "entityType": "sante.visit",
+      "entityId": "sante-muayv7kv-w13212",
+      "summary": "Cas santé — SALEM ADHULE · SUSPUCION PALUDISME",
+      "details": "Cas santé — SALEM ADHULE · SUSPUCION PALUDISME",
+      "after": {
+        "id": "sante-muayv7kv-w13212",
+        "date": "2026-09-20",
+        "nom": "SALEM",
+        "postnom": "ADHULE",
+        "sexe": "F",
+        "age": 10,
+        "typeMalade": "ENFANT",
+        "pathologie": "SUSPUCION PALUDISME",
+        "traitement": "PARACETAMOLE",
+        "reference": "LAMBA",
+        "year": 2026,
+        "month": 9,
+        "employeeMatricule": "70000112",
+        "employeeNom": "ADHULE NYADRIA JOEL",
+        "dependantId": 15,
+        "createdAt": "2026-09-21T08:11:45.055Z",
+        "updatedAt": "2026-09-21T08:11:45.055Z",
+        "createdBy": "karine.mvutu@ppcdrc.cd",
+        "updatedBy": "karine.mvutu@ppcdrc.cd"
+      },
+      "undoable": false,
+      "undone": false
+    },
+    {
       "id": "log-000958",
       "at": "2026-09-21T08:10:45.763Z",
       "userId": "karine.mvutu@ppcdrc.cd",
@@ -111163,5 +111201,5 @@
       }
     }
   ],
-  "nextSeq": 959
+  "nextSeq": 960
 }
