@@ -1,6 +1,36 @@
 {
   "entries": [
     {
+      "id": "log-001021",
+      "at": "2026-09-21T17:02:24.235Z",
+      "userId": "admin",
+      "userName": "Administrateur",
+      "userEmail": "admin",
+      "module": "guest-house",
+      "moduleLabel": "Guest house",
+      "action": "create",
+      "actionLabel": "Création",
+      "entityType": "guest-house.reservation",
+      "entityId": "b12180ce-6402-4f79-bab2-e5aa62575fe1",
+      "summary": "Création réservation Dieuleveut",
+      "details": "Création réservation Dieuleveut",
+      "after": {
+        "id": "b12180ce-6402-4f79-bab2-e5aa62575fe1",
+        "numero": "GH-2026-4434",
+        "createdAt": "2026-09-21T17:02:21.196Z",
+        "personName": "Dieuleveut",
+        "isAgent": false,
+        "motif": "Maintenance des cameras de surveillance : Usine et village PPC",
+        "startDate": "2026-09-22",
+        "endDate": "2026-09-26",
+        "status": "pending",
+        "notes": "Booké par Nathan",
+        "updatedAt": "2026-09-21T17:02:21.196Z"
+      },
+      "undoable": true,
+      "undone": false
+    },
+    {
       "id": "log-001020",
       "at": "2026-09-21T17:01:55.199Z",
       "userId": "admin",
@@ -113062,5 +113092,5 @@
       }
     }
   ],
-  "nextSeq": 1021
+  "nextSeq": 1022
 }
