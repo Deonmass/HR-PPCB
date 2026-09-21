@@ -1,6 +1,44 @@
 {
   "entries": [
     {
+      "id": "log-000949",
+      "at": "2026-09-21T07:54:35.005Z",
+      "userId": "karine.mvutu@ppcdrc.cd",
+      "userName": "Karine Mvutu",
+      "userEmail": "karine.mvutu@ppcdrc.cd",
+      "module": "sante",
+      "moduleLabel": "Santé",
+      "action": "create",
+      "actionLabel": "Création",
+      "entityType": "sante.visit",
+      "entityId": "sante-muay92w7-2jupt3",
+      "summary": "Cas santé — LONGO  MAMBAKASA · GRIPPE",
+      "details": "Cas santé — LONGO  MAMBAKASA · GRIPPE",
+      "after": {
+        "id": "sante-muay92w7-2jupt3",
+        "date": "2026-09-17",
+        "nom": "LONGO",
+        "postnom": "MAMBAKASA",
+        "sexe": "F",
+        "age": 10,
+        "typeMalade": "ENFANT",
+        "pathologie": "GRIPPE",
+        "traitement": "ANTI  GRIPPALE ET GOUTTE NASALE",
+        "reference": "NON",
+        "year": 2026,
+        "month": 9,
+        "employeeMatricule": "70000124",
+        "employeeNom": "LONGO ZOLA CHRISPIN",
+        "dependantId": 196,
+        "createdAt": "2026-09-21T07:54:32.551Z",
+        "updatedAt": "2026-09-21T07:54:32.551Z",
+        "createdBy": "karine.mvutu@ppcdrc.cd",
+        "updatedBy": "karine.mvutu@ppcdrc.cd"
+      },
+      "undoable": false,
+      "undone": false
+    },
+    {
       "id": "log-000948",
       "at": "2026-09-21T07:53:36.290Z",
       "userId": "karine.mvutu@ppcdrc.cd",
@@ -110813,5 +110851,5 @@
       }
     }
   ],
-  "nextSeq": 949
+  "nextSeq": 950
 }
