@@ -738,9 +738,10 @@
       "motif": "TBA",
       "startDate": "2026-09-20",
       "endDate": "2026-09-26",
-      "status": "pending",
+      "roomId": "12ee1ff4-eb03-4592-b1da-589006209e77",
+      "status": "confirmed",
       "notes": "Eng",
-      "updatedAt": "2026-09-21T13:03:22.127Z"
+      "updatedAt": "2026-09-21T13:05:11.902Z"
     },
     {
       "id": "2554fc2c-41d9-46a9-bd1c-ad0fa991cacc",
@@ -26212,6 +26213,17 @@
     }
   ],
   "passages": [
+    {
+      "id": "2df43b39-6312-4230-a3f6-cb780a5a16fd",
+      "roomId": "12ee1ff4-eb03-4592-b1da-589006209e77",
+      "reservationId": "e5cc1962-651b-4da6-810f-7bcc52dd8f36",
+      "numero": "GH-2026-4429",
+      "personName": "Jourdain",
+      "motif": "TBA",
+      "startDate": "2026-09-20",
+      "endDate": "2026-09-26",
+      "checkedInAt": "2026-09-21T13:05:11.902Z"
+    },
     {
       "id": "43a7181d-b76a-46da-8933-6356ba79d040",
       "roomId": "85c3d598-623c-402f-9053-e43840e24325",
