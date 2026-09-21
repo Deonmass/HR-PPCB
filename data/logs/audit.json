@@ -1,6 +1,49 @@
 {
   "entries": [
     {
+      "id": "log-001001",
+      "at": "2026-09-21T12:59:55.744Z",
+      "userId": "admin",
+      "userName": "Administrateur",
+      "userEmail": "admin",
+      "module": "guest-house",
+      "moduleLabel": "Guest house",
+      "action": "update",
+      "actionLabel": "Modification",
+      "entityType": "guest-house.reservation",
+      "entityId": "dd47dbd0-7f5a-44e3-b304-d6de93580b28",
+      "summary": "Modification réservation dd47dbd0-7f5a-44e3-b304-d6de93580b28",
+      "details": "Modification réservation dd47dbd0-7f5a-44e3-b304-d6de93580b28",
+      "before": {
+        "id": "dd47dbd0-7f5a-44e3-b304-d6de93580b28",
+        "numero": "GH-2026-4426",
+        "createdAt": "2026-09-21T12:54:53.868Z",
+        "personName": "Jérémie",
+        "isAgent": false,
+        "motif": "TBA",
+        "startDate": "2026-09-18",
+        "endDate": "2026-09-26",
+        "status": "pending",
+        "notes": "de la part de Mr Jack Ilondo",
+        "updatedAt": "2026-09-21T12:54:53.868Z"
+      },
+      "after": {
+        "id": "dd47dbd0-7f5a-44e3-b304-d6de93580b28",
+        "numero": "GH-2026-4426",
+        "createdAt": "2026-09-21T12:54:53.868Z",
+        "personName": "Jérémie",
+        "isAgent": false,
+        "motif": "TBA",
+        "startDate": "2026-09-19",
+        "endDate": "2026-09-26",
+        "status": "pending",
+        "notes": "de la part de Mr Jack Ilondo",
+        "updatedAt": "2026-09-21T12:59:52.160Z"
+      },
+      "undoable": true,
+      "undone": false
+    },
+    {
       "id": "log-001000",
       "at": "2026-09-21T12:59:26.051Z",
       "userId": "admin",
@@ -112421,5 +112464,5 @@
       }
     }
   ],
-  "nextSeq": 1001
+  "nextSeq": 1002
 }
