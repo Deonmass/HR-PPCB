@@ -60,7 +60,12 @@ type SchedulePreset = {
   detail: string;
 };
 
-type ActualMenuState = { top: number; left: number };
+type LeaveFillType = 'al' | 'sl';
+
+const LEAVE_FILL_OPTIONS: { id: LeaveFillType; label: string; color: string }[] = [
+  { id: 'al', label: 'AL — Annual Leave', color: '#059669' },
+  { id: 'sl', label: 'SL — Sick Leave', color: '#d97706' },
+];
 
 const ACTUAL_MENU_WIDTH = 280;
 
@@ -166,6 +171,9 @@ export default function TimesheetEmployeeMonthModal({
   const [dirty, setDirty] = useState(false);
   const [actualMenu, setActualMenu] = useState<ActualMenuState | null>(null);
   const [followShifterCycle, setFollowShifterCycle] = useState(false);
+  const [leaveFrom, setLeaveFrom] = useState('');
+  const [leaveTo, setLeaveTo] = useState('');
+  const [leaveType, setLeaveType] = useState<LeaveFillType>('al');
   const savedSignatureRef = useRef('');
   const menuRef = useRef<HTMLDivElement | null>(null);
   const menuButtonRef = useRef<HTMLButtonElement | null>(null);
@@ -179,6 +187,9 @@ export default function TimesheetEmployeeMonthModal({
     setDirty(false);
     setActualMenu(null);
     setFollowShifterCycle(false);
+    setLeaveFrom('');
+    setLeaveTo('');
+    setLeaveType('al');
     savedSignatureRef.current = '';
 
     const basePeriod = buildTimesheetPeriod(year, month);
@@ -460,6 +471,48 @@ export default function TimesheetEmployeeMonthModal({
     [canEdit],
   );
 
+  const applyLeavePeriod = useCallback(() => {
+    if (!canEdit) return;
+    const fromKey = leaveFrom.trim();
+    const toKey = leaveTo.trim();
+    if (!/^\d{4}-\d{2}-\d{2}$/.test(fromKey) || !/^\d{4}-\d{2}-\d{2}$/.test(toKey)) {
+      void showError('Indiquez une période de congé valide (début et fin).');
+      return;
+    }
+    const startKey = fromKey <= toKey ? fromKey : toKey;
+    const endKey = fromKey <= toKey ? toKey : fromKey;
+    const inactiveKeys = new Set(
+      period.days.filter((day) => day.isInactive).map((day) => day.dateKey),
+    );
+
+    const targets = rows.filter(
+      (row) =>
+        row.dateKey >= startKey && row.dateKey <= endKey && !inactiveKeys.has(row.dateKey),
+    );
+    if (!targets.length) {
+      void showError('Aucune journée active dans cette période.');
+      return;
+    }
+
+    setRows((prev) =>
+      prev.map((row) => {
+        if (row.dateKey < startKey || row.dateKey > endKey) return row;
+        if (inactiveKeys.has(row.dateKey)) return row;
+        return finalizeTimesheetRow({
+          ...row,
+          shiftType: leaveType,
+          from: '',
+          to: '',
+        });
+      }),
+    );
+    setFollowShifterCycle(false);
+    setDirty(true);
+    void showSuccess(
+      `${targets.length} jour(s) marqué(s) en ${leaveType === 'al' ? 'AL' : 'SL'}.`,
+    );
+  }, [canEdit, leaveFrom, leaveTo, leaveType, period.days, rows]);
+
   const toggleActualMenu = () => {
     const button = menuButtonRef.current;
     if (!button) return;
@@ -577,7 +630,7 @@ export default function TimesheetEmployeeMonthModal({
           className="modal modal-form timesheet-month-modal"
           onClick={(e) => e.stopPropagation()}
         >
-          <div className="modal-header">
+          <div className="modal-header timesheet-month-modal-header">
             <div>
               <h3>Timesheet — {nom}</h3>
               <p className="timesheet-manager-modal-subtitle">
@@ -588,6 +641,60 @@ export default function TimesheetEmployeeMonthModal({
                 {periodLabel ? ` · ${periodLabel}` : ''}
               </p>
             </div>
+            {canEdit ? (
+              <div className="timesheet-leave-fill" title="Remplir une période en congé">
+                <label>
+                  <span>Du</span>
+                  <input
+                    type="date"
+                    value={leaveFrom}
+                    min={period.days[0]?.dateKey}
+                    max={leaveTo || period.days[period.days.length - 1]?.dateKey}
+                    onChange={(e) => setLeaveFrom(e.target.value)}
+                  />
+                </label>
+                <label>
+                  <span>Au</span>
+                  <input
+                    type="date"
+                    value={leaveTo}
+                    min={leaveFrom || period.days[0]?.dateKey}
+                    max={period.days[period.days.length - 1]?.dateKey}
+                    onChange={(e) => setLeaveTo(e.target.value)}
+                  />
+                </label>
+                <select
+                  className={[
+                    'timesheet-leave-fill-type',
+                    leaveType === 'al' ? 'is-shift-al' : '',
+                    leaveType === 'sl' ? 'is-shift-sl' : '',
+                  ]
+                    .filter(Boolean)
+                    .join(' ')}
+                  value={leaveType}
+                  style={{
+                    color: leaveType === 'al' ? '#059669' : '#d97706',
+                    borderColor: leaveType === 'al' ? '#059669' : '#d97706',
+                  }}
+                  onChange={(e) => setLeaveType(e.target.value as LeaveFillType)}
+                  aria-label="Type de congé"
+                >
+                  {LEAVE_FILL_OPTIONS.map((option) => (
+                    <option key={option.id} value={option.id} style={{ color: option.color }}>
+                      {option.label}
+                    </option>
+                  ))}
+                </select>
+                <button
+                  type="button"
+                  className="btn btn-primary timesheet-leave-fill-apply"
+                  disabled={!leaveFrom || !leaveTo}
+                  onClick={() => applyLeavePeriod()}
+                >
+                  Appliquer
+                </button>
+              </div>
+            ) : null}
             <button type="button" className="modal-close" onClick={handleClose}>
               ×
             </button>
