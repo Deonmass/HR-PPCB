@@ -1272,11 +1272,11 @@
       "isAgent": false,
       "motif": "Garage Maintenance Mobile Equipment",
       "startDate": "2026-09-01",
-      "endDate": "2026-09-20",
+      "endDate": "2026-09-26",
       "roomId": "873277c8-cfe8-4e40-af16-61f1a3f4c273",
       "status": "confirmed",
       "mission": "Garage Maintenance Mobile Equipment",
-      "updatedAt": "2026-09-14T19:24:50.588Z"
+      "updatedAt": "2026-09-21T12:41:29.518Z"
     },
     {
       "id": "d888bc7a-301a-44d9-98ab-c15db5ebf1e2",
@@ -26573,7 +26573,7 @@
       "personName": "Francois du bois",
       "motif": "Garage Maintenance Mobile Equipment",
       "startDate": "2026-09-01",
-      "endDate": "2026-09-20",
+      "endDate": "2026-09-26",
       "checkedInAt": "2026-09-14T19:24:50.588Z"
     },
     {
