@@ -1,6 +1,36 @@
 {
   "entries": [
     {
+      "id": "log-001006",
+      "at": "2026-09-21T13:03:25.038Z",
+      "userId": "admin",
+      "userName": "Administrateur",
+      "userEmail": "admin",
+      "module": "guest-house",
+      "moduleLabel": "Guest house",
+      "action": "create",
+      "actionLabel": "Création",
+      "entityType": "guest-house.reservation",
+      "entityId": "e5cc1962-651b-4da6-810f-7bcc52dd8f36",
+      "summary": "Création réservation Jourdain",
+      "details": "Création réservation Jourdain",
+      "after": {
+        "id": "e5cc1962-651b-4da6-810f-7bcc52dd8f36",
+        "numero": "GH-2026-4429",
+        "createdAt": "2026-09-21T13:03:22.127Z",
+        "personName": "Jourdain",
+        "isAgent": false,
+        "motif": "TBA",
+        "startDate": "2026-09-20",
+        "endDate": "2026-09-26",
+        "status": "pending",
+        "notes": "Eng",
+        "updatedAt": "2026-09-21T13:03:22.127Z"
+      },
+      "undoable": true,
+      "undone": false
+    },
+    {
       "id": "log-001005",
       "at": "2026-09-21T13:02:23.924Z",
       "userId": "admin",
@@ -112639,5 +112669,5 @@
       }
     }
   ],
-  "nextSeq": 1006
+  "nextSeq": 1007
 }
