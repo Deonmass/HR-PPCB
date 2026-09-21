@@ -211,11 +211,22 @@ export function buildTimesheetTemplateLines(
   rows: TimesheetRowData[],
   weeklyOtByIndex: Record<number, WeeklyOvertimeEntry | undefined>,
   localisation = '',
-  options?: { explicitActual?: boolean; year?: number; month?: number },
+  options?: {
+    explicitActual?: boolean;
+    year?: number;
+    month?: number;
+    /** Jours hors période : pas d'heures normales / nuit affichées. */
+    inactiveDateKeys?: ReadonlySet<string> | string[];
+  },
 ): TimesheetTemplateLine[] {
   const explicitActual = options?.explicitActual ?? false;
   const year = options?.year;
   const month = options?.month;
+  const inactiveKeys = options?.inactiveDateKeys
+    ? options.inactiveDateKeys instanceof Set
+      ? options.inactiveDateKeys
+      : new Set(options.inactiveDateKeys)
+    : null;
   const inserts =
     Number.isInteger(year) && Number.isInteger(month)
       ? overtimeWeekInsertsAfterRow(rows, year as number, month as number)
@@ -250,7 +261,22 @@ export function buildTimesheetTemplateLines(
         otNight: imported?.night ?? 0,
       });
     }
-    lines.push(buildDayLine(row, localisation, explicitActual));
+    const line = buildDayLine(row, localisation, explicitActual);
+    if (inactiveKeys?.has(row.dateKey)) {
+      lines.push({
+        ...line,
+        actualFrom: 'OFF',
+        actualTo: 'OFF',
+        ordinary: 0,
+        shift1: 0,
+        shift2: 0,
+        shift3: 0,
+        night: 0,
+        gray: true,
+      });
+    } else {
+      lines.push(line);
+    }
   });
 
   return lines;

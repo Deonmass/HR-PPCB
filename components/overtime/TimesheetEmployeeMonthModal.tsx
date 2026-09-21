@@ -267,13 +267,19 @@ export default function TimesheetEmployeeMonthModal({
     };
   }, [actualMenu]);
 
+  const inactiveDateKeys = useMemo(
+    () => new Set(period.days.filter((day) => day.isInactive).map((day) => day.dateKey)),
+    [period.days],
+  );
+
   const lines = useMemo(
     () =>
       buildTimesheetTemplateLines(rows, weeklyOtByIndex, localisation, {
         year,
         month,
+        inactiveDateKeys,
       }),
-    [rows, weeklyOtByIndex, localisation, year, month],
+    [rows, weeklyOtByIndex, localisation, year, month, inactiveDateKeys],
   );
   const totals = useMemo(() => sumTimesheetTemplateLines(lines), [lines]);
 
