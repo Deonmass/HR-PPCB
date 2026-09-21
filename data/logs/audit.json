@@ -1,6 +1,44 @@
 {
   "entries": [
     {
+      "id": "log-000958",
+      "at": "2026-09-21T08:10:45.763Z",
+      "userId": "karine.mvutu@ppcdrc.cd",
+      "userName": "Karine Mvutu",
+      "userEmail": "karine.mvutu@ppcdrc.cd",
+      "module": "sante",
+      "moduleLabel": "Santé",
+      "action": "create",
+      "actionLabel": "Création",
+      "entityType": "sante.visit",
+      "entityId": "sante-muaytvdq-3qgb8l",
+      "summary": "Cas santé — MUKEKWA JOSH · SUSPUCION PALUDISME SIMPLE",
+      "details": "Cas santé — MUKEKWA JOSH · SUSPUCION PALUDISME SIMPLE",
+      "after": {
+        "id": "sante-muaytvdq-3qgb8l",
+        "date": "2026-09-19",
+        "nom": "MUKEKWA",
+        "postnom": "JOSH",
+        "sexe": "M",
+        "age": 3,
+        "typeMalade": "ENFANT",
+        "pathologie": "SUSPUCION PALUDISME SIMPLE",
+        "traitement": "PARACETAMOLE",
+        "reference": "IME",
+        "year": 2026,
+        "month": 9,
+        "employeeMatricule": "70000290",
+        "employeeNom": "MUTOMBO SHAMBUYI LÉONARD",
+        "dependantId": 657,
+        "createdAt": "2026-09-21T08:10:42.590Z",
+        "updatedAt": "2026-09-21T08:10:42.590Z",
+        "createdBy": "karine.mvutu@ppcdrc.cd",
+        "updatedBy": "karine.mvutu@ppcdrc.cd"
+      },
+      "undoable": false,
+      "undone": false
+    },
+    {
       "id": "log-000957",
       "at": "2026-09-21T08:08:42.968Z",
       "userId": "admin",
@@ -111125,5 +111163,5 @@
       }
     }
   ],
-  "nextSeq": 958
+  "nextSeq": 959
 }
