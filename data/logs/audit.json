@@ -1,6 +1,44 @@
 {
   "entries": [
     {
+      "id": "log-000952",
+      "at": "2026-09-21T08:04:05.158Z",
+      "userId": "karine.mvutu@ppcdrc.cd",
+      "userName": "Karine Mvutu",
+      "userEmail": "karine.mvutu@ppcdrc.cd",
+      "module": "sante",
+      "moduleLabel": "Santé",
+      "action": "create",
+      "actionLabel": "Création",
+      "entityType": "sante.visit",
+      "entityId": "sante-muaylajj-3pn2h6",
+      "summary": "Cas santé — KIAKENGO LUFUANKENDA · ANGINE",
+      "details": "Cas santé — KIAKENGO LUFUANKENDA · ANGINE",
+      "after": {
+        "id": "sante-muaylajj-3pn2h6",
+        "date": "2026-09-17",
+        "nom": "KIAKENGO",
+        "postnom": "LUFUANKENDA",
+        "sexe": "F",
+        "age": 15,
+        "typeMalade": "ENFANT",
+        "pathologie": "ANGINE",
+        "traitement": "VITAMINE C",
+        "reference": "NON",
+        "year": 2026,
+        "month": 9,
+        "employeeMatricule": "",
+        "employeeNom": "",
+        "dependantId": null,
+        "createdAt": "2026-09-21T08:04:02.335Z",
+        "updatedAt": "2026-09-21T08:04:02.335Z",
+        "createdBy": "karine.mvutu@ppcdrc.cd",
+        "updatedBy": "karine.mvutu@ppcdrc.cd"
+      },
+      "undoable": false,
+      "undone": false
+    },
+    {
       "id": "log-000951",
       "at": "2026-09-21T08:02:45.112Z",
       "userId": "karine.mvutu@ppcdrc.cd",
@@ -110927,5 +110965,5 @@
       }
     }
   ],
-  "nextSeq": 952
+  "nextSeq": 953
 }
