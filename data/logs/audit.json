@@ -1,6 +1,37 @@
 {
   "entries": [
     {
+      "id": "log-001010",
+      "at": "2026-09-21T13:57:27.880Z",
+      "userId": "admin",
+      "userName": "Administrateur",
+      "userEmail": "admin",
+      "module": "guest-house",
+      "moduleLabel": "Guest house",
+      "action": "create",
+      "actionLabel": "Création",
+      "entityType": "guest-house.reservation",
+      "entityId": "a0044a7f-c4ce-49dc-8762-097a3a4efa58",
+      "summary": "Création réservation Cam Tarik",
+      "details": "Création réservation Cam Tarik",
+      "after": {
+        "id": "a0044a7f-c4ce-49dc-8762-097a3a4efa58",
+        "numero": "GH-2026-4431",
+        "createdAt": "2026-09-21T13:57:24.296Z",
+        "personName": "Cam Tarik",
+        "isAgent": false,
+        "motif": "Correction of mining weighbridge",
+        "startDate": "2026-09-22",
+        "endDate": "2026-09-29",
+        "status": "pending",
+        "notes": "Booked by Elias Kipruto Tanui <Elias.Tanui@ppcdrc.cd>",
+        "phone": "+90 562 044 8789",
+        "updatedAt": "2026-09-21T13:57:24.296Z"
+      },
+      "undoable": true,
+      "undone": false
+    },
+    {
       "id": "log-001009",
       "at": "2026-09-21T13:05:14.703Z",
       "userId": "admin",
@@ -112787,5 +112818,5 @@
       }
     }
   ],
-  "nextSeq": 1010
+  "nextSeq": 1011
 }
