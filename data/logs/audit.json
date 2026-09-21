@@ -1,6 +1,44 @@
 {
   "entries": [
     {
+      "id": "log-000937",
+      "at": "2026-09-21T07:36:48.589Z",
+      "userId": "karine.mvutu@ppcdrc.cd",
+      "userName": "Karine Mvutu",
+      "userEmail": "karine.mvutu@ppcdrc.cd",
+      "module": "sante",
+      "moduleLabel": "Santé",
+      "action": "create",
+      "actionLabel": "Création",
+      "entityType": "sante.visit",
+      "entityId": "sante-muaxm866-a1u24x",
+      "summary": "Cas santé — BADIBANGA MUTSHIPAYI Leon · GRIPPE",
+      "details": "Cas santé — BADIBANGA MUTSHIPAYI Leon · GRIPPE",
+      "after": {
+        "id": "sante-muaxm866-a1u24x",
+        "date": "2026-09-11",
+        "nom": "BADIBANGA",
+        "postnom": "MUTSHIPAYI Leon",
+        "sexe": "M",
+        "age": 33,
+        "typeMalade": "AGENT",
+        "pathologie": "GRIPPE",
+        "traitement": "ANTI  GRIPPALE  GOUTTE NASALE ET ANTIBIOTIQUE",
+        "reference": "NON",
+        "year": 2026,
+        "month": 9,
+        "employeeMatricule": "70000244",
+        "employeeNom": "BADIBANGA MUTSHIPAYI Leon",
+        "dependantId": null,
+        "createdAt": "2026-09-21T07:36:46.302Z",
+        "updatedAt": "2026-09-21T07:36:46.302Z",
+        "createdBy": "karine.mvutu@ppcdrc.cd",
+        "updatedBy": "karine.mvutu@ppcdrc.cd"
+      },
+      "undoable": false,
+      "undone": false
+    },
+    {
       "id": "log-000936",
       "at": "2026-09-21T07:35:51.642Z",
       "userId": "karine.mvutu@ppcdrc.cd",
@@ -110357,5 +110395,5 @@
       }
     }
   ],
-  "nextSeq": 937
+  "nextSeq": 938
 }
