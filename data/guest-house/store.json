@@ -724,9 +724,10 @@
       "motif": "TBA",
       "startDate": "2026-09-20",
       "endDate": "2026-09-26",
-      "status": "pending",
+      "roomId": "85c3d598-623c-402f-9053-e43840e24325",
+      "status": "confirmed",
       "notes": "Fire service / safety",
-      "updatedAt": "2026-09-21T13:04:21.867Z"
+      "updatedAt": "2026-09-21T13:04:48.524Z"
     },
     {
       "id": "e5cc1962-651b-4da6-810f-7bcc52dd8f36",
@@ -26211,6 +26212,17 @@
     }
   ],
   "passages": [
+    {
+      "id": "43a7181d-b76a-46da-8933-6356ba79d040",
+      "roomId": "85c3d598-623c-402f-9053-e43840e24325",
+      "reservationId": "55a5feec-b5c3-4c1a-8fed-c1c7786f8f88",
+      "numero": "GH-2026-4430",
+      "personName": "Michée et Prince",
+      "motif": "TBA",
+      "startDate": "2026-09-20",
+      "endDate": "2026-09-26",
+      "checkedInAt": "2026-09-21T13:04:48.524Z"
+    },
     {
       "id": "c68abd74-d807-461c-9075-58aebc465b53",
       "roomId": "8b14162d-ae3b-49a5-bcb6-812c2d8d5b5b",
