@@ -62,6 +62,8 @@ type SchedulePreset = {
 
 type LeaveFillType = 'al' | 'sl';
 
+type ActualMenuState = { top: number; left: number };
+
 const LEAVE_FILL_OPTIONS: { id: LeaveFillType; label: string; color: string }[] = [
   { id: 'al', label: 'AL — Annual Leave', color: '#059669' },
   { id: 'sl', label: 'SL — Sick Leave', color: '#d97706' },
