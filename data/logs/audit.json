@@ -1,6 +1,44 @@
 {
   "entries": [
     {
+      "id": "log-000954",
+      "at": "2026-09-21T08:07:31.005Z",
+      "userId": "karine.mvutu@ppcdrc.cd",
+      "userName": "Karine Mvutu",
+      "userEmail": "karine.mvutu@ppcdrc.cd",
+      "module": "sante",
+      "moduleLabel": "Santé",
+      "action": "create",
+      "actionLabel": "Création",
+      "entityType": "sante.visit",
+      "entityId": "sante-muaypph3-1h898m",
+      "summary": "Cas santé — MVUTU LUTEMBE KARINE · SURMENAGE",
+      "details": "Cas santé — MVUTU LUTEMBE KARINE · SURMENAGE",
+      "after": {
+        "id": "sante-muaypph3-1h898m",
+        "date": "2026-09-18",
+        "nom": "MVUTU",
+        "postnom": "LUTEMBE KARINE",
+        "sexe": "F",
+        "age": 41,
+        "typeMalade": "AGENT",
+        "pathologie": "SURMENAGE",
+        "traitement": "ANXIOLITIQUE",
+        "reference": "NON",
+        "year": 2026,
+        "month": 9,
+        "employeeMatricule": "70000107",
+        "employeeNom": "MVUTU LUTEMBE KARINE",
+        "dependantId": null,
+        "createdAt": "2026-09-21T08:07:28.311Z",
+        "updatedAt": "2026-09-21T08:07:28.311Z",
+        "createdBy": "karine.mvutu@ppcdrc.cd",
+        "updatedBy": "karine.mvutu@ppcdrc.cd"
+      },
+      "undoable": false,
+      "undone": false
+    },
+    {
       "id": "log-000953",
       "at": "2026-09-21T08:06:37.972Z",
       "userId": "karine.mvutu@ppcdrc.cd",
@@ -111003,5 +111041,5 @@
       }
     }
   ],
-  "nextSeq": 954
+  "nextSeq": 955
 }
