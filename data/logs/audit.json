@@ -1,6 +1,44 @@
 {
   "entries": [
     {
+      "id": "log-000940",
+      "at": "2026-09-21T07:40:52.650Z",
+      "userId": "karine.mvutu@ppcdrc.cd",
+      "userName": "Karine Mvutu",
+      "userEmail": "karine.mvutu@ppcdrc.cd",
+      "module": "sante",
+      "moduleLabel": "Santé",
+      "action": "create",
+      "actionLabel": "Création",
+      "entityType": "sante.visit",
+      "entityId": "sante-muaxrfss-uxa6t8",
+      "summary": "Cas santé — TANUI ESTRELA · SYNDROME GRIPPAL",
+      "details": "Cas santé — TANUI ESTRELA · SYNDROME GRIPPAL",
+      "after": {
+        "id": "sante-muaxrfss-uxa6t8",
+        "date": "2026-09-13",
+        "nom": "TANUI",
+        "postnom": "ESTRELA",
+        "sexe": "F",
+        "age": 4,
+        "typeMalade": "ENFANT",
+        "pathologie": "SYNDROME GRIPPAL",
+        "traitement": "ANTI  GRIPPALE ET GOUTTE NASALE",
+        "reference": "NON",
+        "year": 2026,
+        "month": 9,
+        "employeeMatricule": "",
+        "employeeNom": "",
+        "dependantId": null,
+        "createdAt": "2026-09-21T07:40:49.468Z",
+        "updatedAt": "2026-09-21T07:40:49.468Z",
+        "createdBy": "karine.mvutu@ppcdrc.cd",
+        "updatedBy": "karine.mvutu@ppcdrc.cd"
+      },
+      "undoable": false,
+      "undone": false
+    },
+    {
       "id": "log-000939",
       "at": "2026-09-21T07:39:09.685Z",
       "userId": "karine.mvutu@ppcdrc.cd",
@@ -110471,5 +110509,5 @@
       }
     }
   ],
-  "nextSeq": 940
+  "nextSeq": 941
 }
