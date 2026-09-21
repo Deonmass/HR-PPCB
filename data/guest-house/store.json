@@ -73,9 +73,9 @@
   "rooms": [
     {
       "id": "2ffc7bc3-4bfc-4a10-94c6-aa7fe1f89aa0",
-      "roomNumber": "VIP",
+      "roomNumber": "1/2 VIP",
       "roomName": "ZAMBA",
-      "templateLabel": "Room # VIP - ZAMBA",
+      "templateLabel": "Room # 1/2 VIP - ZAMBA",
       "templateRow": 4,
       "building": "Batiment #1",
       "buildingKey": "Batiment #1",
@@ -89,7 +89,7 @@
       "sortOrder": 1,
       "status": "available",
       "createdAt": "2026-07-28T13:13:01.229Z",
-      "updatedAt": "2026-07-28T13:13:01.229Z"
+      "updatedAt": "2026-09-21T17:21:47.467Z"
     },
     {
       "id": "873277c8-cfe8-4e40-af16-61f1a3f4c273",
@@ -716,6 +716,143 @@
   ],
   "reservations": [
     {
+      "id": "b12180ce-6402-4f79-bab2-e5aa62575fe1",
+      "numero": "GH-2026-4434",
+      "createdAt": "2026-09-21T17:02:21.196Z",
+      "personName": "Dieuleveut",
+      "isAgent": false,
+      "motif": "Maintenance des cameras de surveillance : Usine et village PPC",
+      "startDate": "2026-09-22",
+      "endDate": "2026-09-26",
+      "status": "pending",
+      "notes": "Booké par Nathan",
+      "updatedAt": "2026-09-21T17:02:21.196Z"
+    },
+    {
+      "id": "b5efb9d0-944b-468a-9f84-3e98fe2a69b4",
+      "numero": "GH-2026-4433",
+      "createdAt": "2026-09-21T17:01:52.362Z",
+      "personName": "Tony Katshiayi",
+      "isAgent": false,
+      "motif": "Maintenance des cameras de surveillance : Usine et village PPC",
+      "startDate": "2026-09-22",
+      "endDate": "2026-09-26",
+      "status": "pending",
+      "notes": "Booké par Nathan",
+      "updatedAt": "2026-09-21T17:01:52.362Z"
+    },
+    {
+      "id": "92a890a4-054c-432b-9c68-19db902882a6",
+      "numero": "GH-2026-4432",
+      "createdAt": "2026-09-21T17:00:28.282Z",
+      "personName": "Freddy Bulu",
+      "isAgent": false,
+      "motif": "Maintenance des cameras de surveillance : Usine et village PPC",
+      "startDate": "2026-09-22",
+      "endDate": "2026-09-26",
+      "status": "pending",
+      "notes": "booké par Nathan",
+      "updatedAt": "2026-09-21T17:00:28.282Z"
+    },
+    {
+      "id": "a0044a7f-c4ce-49dc-8762-097a3a4efa58",
+      "numero": "GH-2026-4431",
+      "createdAt": "2026-09-21T13:57:24.296Z",
+      "personName": "Cam Tarik",
+      "isAgent": false,
+      "motif": "Correction of mining weighbridge",
+      "startDate": "2026-09-22",
+      "endDate": "2026-09-29",
+      "status": "pending",
+      "notes": "Booked by Elias Kipruto Tanui <Elias.Tanui@ppcdrc.cd>",
+      "phone": "+90 562 044 8789",
+      "updatedAt": "2026-09-21T13:57:24.296Z"
+    },
+    {
+      "id": "55a5feec-b5c3-4c1a-8fed-c1c7786f8f88",
+      "numero": "GH-2026-4430",
+      "createdAt": "2026-09-21T13:04:21.867Z",
+      "personName": "Michée et Prince",
+      "isAgent": false,
+      "motif": "TBA",
+      "startDate": "2026-09-20",
+      "endDate": "2026-09-26",
+      "roomId": "85c3d598-623c-402f-9053-e43840e24325",
+      "status": "confirmed",
+      "notes": "Fire service / safety",
+      "updatedAt": "2026-09-21T13:04:48.524Z"
+    },
+    {
+      "id": "e5cc1962-651b-4da6-810f-7bcc52dd8f36",
+      "numero": "GH-2026-4429",
+      "createdAt": "2026-09-21T13:03:22.127Z",
+      "personName": "Jourdain",
+      "isAgent": false,
+      "motif": "TBA",
+      "startDate": "2026-09-20",
+      "endDate": "2026-09-26",
+      "roomId": "12ee1ff4-eb03-4592-b1da-589006209e77",
+      "status": "confirmed",
+      "notes": "Eng",
+      "updatedAt": "2026-09-21T13:05:11.902Z"
+    },
+    {
+      "id": "2554fc2c-41d9-46a9-bd1c-ad0fa991cacc",
+      "numero": "GH-2026-4428",
+      "createdAt": "2026-09-21T12:56:06.069Z",
+      "personName": "Octave",
+      "isAgent": false,
+      "motif": "TBA",
+      "startDate": "2026-09-19",
+      "endDate": "2026-09-26",
+      "roomId": "d9ec3499-ad6d-4215-8ef9-c20a4f6b1714",
+      "status": "confirmed",
+      "notes": "de la part de Mr Jack Ilondo",
+      "updatedAt": "2026-09-21T12:57:30.027Z"
+    },
+    {
+      "id": "9b0cc2ba-f29a-49ff-997f-5377d809c01b",
+      "numero": "GH-2026-4427",
+      "createdAt": "2026-09-21T12:55:35.454Z",
+      "personName": "Francklin",
+      "isAgent": false,
+      "motif": "TBA",
+      "startDate": "2026-09-19",
+      "endDate": "2026-09-26",
+      "roomId": "e49a08a4-e1db-4824-b8f6-48f1c30c0346",
+      "status": "confirmed",
+      "notes": "de la part de Mr Jack Ilondo",
+      "updatedAt": "2026-09-21T13:01:27.370Z"
+    },
+    {
+      "id": "dd47dbd0-7f5a-44e3-b304-d6de93580b28",
+      "numero": "GH-2026-4426",
+      "createdAt": "2026-09-21T12:54:53.868Z",
+      "personName": "Jérémie",
+      "isAgent": false,
+      "motif": "TBA",
+      "startDate": "2026-09-19",
+      "endDate": "2026-09-26",
+      "roomId": "2ef11cfa-1396-4c82-ac99-85b12d6093be",
+      "status": "confirmed",
+      "notes": "de la part de Mr Jack Ilondo",
+      "updatedAt": "2026-09-21T13:01:51.877Z"
+    },
+    {
+      "id": "e1062419-3971-42d3-9851-645b731d0815",
+      "numero": "GH-2026-4425",
+      "createdAt": "2026-09-21T12:53:55.945Z",
+      "personName": "Didier",
+      "isAgent": false,
+      "motif": "TBA",
+      "startDate": "2026-09-19",
+      "endDate": "2026-09-26",
+      "roomId": "8b14162d-ae3b-49a5-bcb6-812c2d8d5b5b",
+      "status": "confirmed",
+      "notes": "de la part de Mr Jack Ilondo",
+      "updatedAt": "2026-09-21T13:02:21.382Z"
+    },
+    {
       "id": "af22a39c-8a82-4ac3-ad20-331c35b2daf3",
       "numero": "GH-2026-4424",
       "createdAt": "2026-09-15T09:20:33.485Z",
@@ -739,25 +876,25 @@
       "isAgent": true,
       "motif": "Mission to the plant",
       "startDate": "2026-09-15",
-      "endDate": "2026-09-19",
+      "endDate": "2026-09-18",
       "roomId": "2ef11cfa-1396-4c82-ac99-85b12d6093be",
       "status": "confirmed",
       "mission": "Mission to the plant",
-      "updatedAt": "2026-09-15T09:19:48.765Z"
+      "updatedAt": "2026-09-21T12:49:26.292Z"
     },
     {
       "id": "632dc277-a25b-444e-9e41-3bc36818470e",
       "numero": "GH-2026-4422",
       "createdAt": "2026-09-15T09:17:33.991Z",
-      "personName": "Aboubacry Athie",
+      "personName": "Pablito (Chinois)",
       "isAgent": false,
       "motif": "Mission to the plant",
-      "startDate": "2026-09-15",
-      "endDate": "2026-09-19",
+      "startDate": "2026-09-14",
+      "endDate": "2026-09-26",
       "roomId": "3219d898-ff74-496c-a62e-2295012276ae",
       "status": "confirmed",
       "mission": "Mission to the plant",
-      "updatedAt": "2026-09-15T09:18:29.657Z"
+      "updatedAt": "2026-09-21T12:43:20.463Z"
     },
     {
       "id": "31809c18-38d5-4220-bba8-fe815fa0b5e3",
@@ -872,11 +1009,11 @@
       "isAgent": true,
       "motif": "Induction mission to the plant",
       "startDate": "2026-09-13",
-      "endDate": "2026-09-17",
+      "endDate": "2026-09-18",
       "roomId": "e49a08a4-e1db-4824-b8f6-48f1c30c0346",
       "status": "confirmed",
       "mission": "induction mission to the plant",
-      "updatedAt": "2026-09-14T20:59:46.330Z"
+      "updatedAt": "2026-09-21T12:50:02.526Z"
     },
     {
       "id": "06e741be-d14a-42ba-87e1-dbff9f827dd8",
@@ -1072,11 +1209,11 @@
       "isAgent": true,
       "motif": "Mission to the plant",
       "startDate": "2026-09-06",
-      "endDate": "2026-09-15",
+      "endDate": "2026-09-18",
       "roomId": "8b14162d-ae3b-49a5-bcb6-812c2d8d5b5b",
       "status": "confirmed",
       "mission": "Mission to the plant",
-      "updatedAt": "2026-09-14T20:25:36.494Z"
+      "updatedAt": "2026-09-21T12:48:43.357Z"
     },
     {
       "id": "5983f702-2493-4745-8ca5-f07688fc71e6",
@@ -1272,11 +1409,11 @@
       "isAgent": false,
       "motif": "Garage Maintenance Mobile Equipment",
       "startDate": "2026-09-01",
-      "endDate": "2026-09-20",
+      "endDate": "2026-09-26",
       "roomId": "873277c8-cfe8-4e40-af16-61f1a3f4c273",
       "status": "confirmed",
       "mission": "Garage Maintenance Mobile Equipment",
-      "updatedAt": "2026-09-14T19:24:50.588Z"
+      "updatedAt": "2026-09-21T12:41:29.518Z"
     },
     {
       "id": "d888bc7a-301a-44d9-98ab-c15db5ebf1e2",
@@ -26130,6 +26267,72 @@
   ],
   "passages": [
     {
+      "id": "2df43b39-6312-4230-a3f6-cb780a5a16fd",
+      "roomId": "12ee1ff4-eb03-4592-b1da-589006209e77",
+      "reservationId": "e5cc1962-651b-4da6-810f-7bcc52dd8f36",
+      "numero": "GH-2026-4429",
+      "personName": "Jourdain",
+      "motif": "TBA",
+      "startDate": "2026-09-20",
+      "endDate": "2026-09-26",
+      "checkedInAt": "2026-09-21T13:05:11.902Z"
+    },
+    {
+      "id": "43a7181d-b76a-46da-8933-6356ba79d040",
+      "roomId": "85c3d598-623c-402f-9053-e43840e24325",
+      "reservationId": "55a5feec-b5c3-4c1a-8fed-c1c7786f8f88",
+      "numero": "GH-2026-4430",
+      "personName": "Michée et Prince",
+      "motif": "TBA",
+      "startDate": "2026-09-20",
+      "endDate": "2026-09-26",
+      "checkedInAt": "2026-09-21T13:04:48.524Z"
+    },
+    {
+      "id": "c68abd74-d807-461c-9075-58aebc465b53",
+      "roomId": "8b14162d-ae3b-49a5-bcb6-812c2d8d5b5b",
+      "reservationId": "e1062419-3971-42d3-9851-645b731d0815",
+      "numero": "GH-2026-4425",
+      "personName": "Didier",
+      "motif": "TBA",
+      "startDate": "2026-09-19",
+      "endDate": "2026-09-26",
+      "checkedInAt": "2026-09-21T13:02:21.382Z"
+    },
+    {
+      "id": "7a6ff077-00c0-4e2a-9ef3-9e55e5fff090",
+      "roomId": "2ef11cfa-1396-4c82-ac99-85b12d6093be",
+      "reservationId": "dd47dbd0-7f5a-44e3-b304-d6de93580b28",
+      "numero": "GH-2026-4426",
+      "personName": "Jérémie",
+      "motif": "TBA",
+      "startDate": "2026-09-19",
+      "endDate": "2026-09-26",
+      "checkedInAt": "2026-09-21T13:01:51.877Z"
+    },
+    {
+      "id": "e6c3b360-70e1-47bf-b1ec-b8a1999b094b",
+      "roomId": "e49a08a4-e1db-4824-b8f6-48f1c30c0346",
+      "reservationId": "9b0cc2ba-f29a-49ff-997f-5377d809c01b",
+      "numero": "GH-2026-4427",
+      "personName": "Francklin",
+      "motif": "TBA",
+      "startDate": "2026-09-19",
+      "endDate": "2026-09-26",
+      "checkedInAt": "2026-09-21T13:01:27.370Z"
+    },
+    {
+      "id": "6d44031f-5f72-42b3-8e38-32eb97c07c45",
+      "roomId": "d9ec3499-ad6d-4215-8ef9-c20a4f6b1714",
+      "reservationId": "2554fc2c-41d9-46a9-bd1c-ad0fa991cacc",
+      "numero": "GH-2026-4428",
+      "personName": "Octave",
+      "motif": "TBA",
+      "startDate": "2026-09-19",
+      "endDate": "2026-09-26",
+      "checkedInAt": "2026-09-21T12:57:30.027Z"
+    },
+    {
       "id": "2b98f888-a7b4-4019-a3aa-a8c708682910",
       "roomId": "0b0cdc0d-ba79-4f68-8533-c90cad3390cb",
       "reservationId": "af22a39c-8a82-4ac3-ad20-331c35b2daf3",
@@ -26150,7 +26353,7 @@
       "matricule": "70000177",
       "motif": "Mission to the plant",
       "startDate": "2026-09-15",
-      "endDate": "2026-09-19",
+      "endDate": "2026-09-18",
       "checkedInAt": "2026-09-15T09:19:48.765Z"
     },
     {
@@ -26158,10 +26361,10 @@
       "roomId": "3219d898-ff74-496c-a62e-2295012276ae",
       "reservationId": "632dc277-a25b-444e-9e41-3bc36818470e",
       "numero": "GH-2026-4422",
-      "personName": "Aboubacry Athie",
+      "personName": "Pablito (Chinois)",
       "motif": "Mission to the plant",
-      "startDate": "2026-09-15",
-      "endDate": "2026-09-19",
+      "startDate": "2026-09-14",
+      "endDate": "2026-09-26",
       "checkedInAt": "2026-09-15T09:18:29.657Z"
     },
     {
@@ -26256,7 +26459,7 @@
       "matricule": "70000285",
       "motif": "Induction mission to the plant",
       "startDate": "2026-09-13",
-      "endDate": "2026-09-17",
+      "endDate": "2026-09-18",
       "checkedInAt": "2026-09-14T20:59:46.330Z"
     },
     {
@@ -26404,7 +26607,7 @@
       "matricule": "70000200",
       "motif": "Mission to the plant",
       "startDate": "2026-09-06",
-      "endDate": "2026-09-15",
+      "endDate": "2026-09-18",
       "checkedInAt": "2026-09-14T20:25:36.494Z"
     },
     {
@@ -26573,7 +26776,7 @@
       "personName": "Francois du bois",
       "motif": "Garage Maintenance Mobile Equipment",
       "startDate": "2026-09-01",
-      "endDate": "2026-09-20",
+      "endDate": "2026-09-26",
       "checkedInAt": "2026-09-14T19:24:50.588Z"
     },
     {
@@ -44235,5 +44438,5 @@
       "checkedOutAt": "2025-09-24T12:00:00.000Z"
     }
   ],
-  "nextReservationSeq": 4425
+  "nextReservationSeq": 4435
 }
