@@ -3,10 +3,9 @@ import 'server-only';
 import XlsxPopulate from 'xlsx-populate';
 import { TIMESHEET_TEMPLATE_PATH as RESOLVED_TIMESHEET_TEMPLATE_PATH } from './excel-export-template-paths';
 import { actualTimesForTemplateRow, scheduleTimesForRow } from './timesheet-template-view';
-import { shouldGrayTimesheetTemplateRow } from './timesheet-off-day';
 import { normalHoursBreakdown } from './timesheet-calc';
 import type { DepartmentExportPayload, TimesheetExportPayload } from './timesheet-export';
-import { formatTimesheetMonthLabel, overtimeWeekInsertsAfterRow } from './timesheet-period';
+import { formatTimesheetMonthLabel, isTimesheetWeekend, overtimeWeekInsertsAfterRow } from './timesheet-period';
 import type { TimesheetRowData } from './timesheet-types';
 import { getTimesheetWsExportValue } from './timesheet-ws';
 import { getWeeklyOvertimeWeek } from './timesheet-weekly-ot-store';
@@ -49,6 +48,9 @@ const TEMPLATE_ACCUMULATIVE_STYLE_ROW = 43;
 const OFF_ROW_FILL_REF = 'A6';
 const PRISTINE_SHEET = '__TIMESHEET_TEMPLATE__';
 const WEEK_SEPARATOR_FILL = 'F4CCCC';
+/** Uniform body font for day / week / totals rows. */
+const BODY_FONT_FAMILY = 'Calibri';
+const BODY_FONT_SIZE = 12;
 /** Matches the TIMESHEET template day rows (A9…). */
 const DATE_NUMBER_FORMAT = '[$-409]d\\-mmm;@';
 
@@ -116,7 +118,7 @@ function writeDayDate(sheet: PopulateSheet, excelRow: number, row: TimesheetRowD
   });
 }
 
-function applyOffRowGrayFill(sheet: PopulateSheet, excelRow: number) {
+function applyWeekendGrayFill(sheet: PopulateSheet, excelRow: number) {
   const grayFill = sheet.cell(OFF_ROW_FILL_REF).style('fill');
   for (const col of ROW_COLUMNS) {
     sheet.cell(cellRef(excelRow, col)).style('fill', grayFill);
@@ -155,6 +157,8 @@ function applyCapturedChrome(sheet: PopulateSheet, excelRow: number, chrome: Tot
       fontColor: chrome.fontColor,
       bold: chrome.bold,
       border: chrome.border,
+      fontFamily: BODY_FONT_FAMILY,
+      fontSize: BODY_FONT_SIZE,
     });
   }
 }
@@ -172,6 +176,8 @@ function resetToDayRowStyle(sheet: PopulateSheet, excelRow: number) {
       fontColor: '000000',
       bold: false,
       border,
+      fontFamily: BODY_FONT_FAMILY,
+      fontSize: BODY_FONT_SIZE,
     });
   }
 }
@@ -184,6 +190,8 @@ function applyWeekSeparatorStyle(sheet: PopulateSheet, excelRow: number) {
       fontColor: '000000',
       bold: true,
       border,
+      fontFamily: BODY_FONT_FAMILY,
+      fontSize: BODY_FONT_SIZE,
     });
   }
 }
@@ -263,8 +271,8 @@ function fillDayRow(sheet: PopulateSheet, excelRow: number, row: TimesheetRowDat
   setCellValue(sheet, cellRef(excelRow, COL.shift3), overtimeValue(normal.shift3));
   setCellValue(sheet, cellRef(excelRow, COL.nightNormal), overtimeValue(normal.night));
 
-  if (shouldGrayTimesheetTemplateRow(row)) {
-    applyOffRowGrayFill(sheet, excelRow);
+  if (isTimesheetWeekend(row.date)) {
+    applyWeekendGrayFill(sheet, excelRow);
   }
 }
 
