@@ -1,6 +1,44 @@
 {
   "entries": [
     {
+      "id": "log-000933",
+      "at": "2026-09-21T07:32:53.530Z",
+      "userId": "karine.mvutu@ppcdrc.cd",
+      "userName": "Karine Mvutu",
+      "userEmail": "karine.mvutu@ppcdrc.cd",
+      "module": "sante",
+      "moduleLabel": "Santé",
+      "action": "create",
+      "actionLabel": "Création",
+      "entityType": "sante.visit",
+      "entityId": "sante-muaxh6th-y8dv3s",
+      "summary": "Cas santé — NKAZIANGANI NSUAMI · SUSPUCION PALUDISME SIMPLE",
+      "details": "Cas santé — NKAZIANGANI NSUAMI · SUSPUCION PALUDISME SIMPLE",
+      "after": {
+        "id": "sante-muaxh6th-y8dv3s",
+        "date": "2026-09-08",
+        "nom": "NKAZIANGANI",
+        "postnom": "NSUAMI",
+        "sexe": "F",
+        "age": 43,
+        "typeMalade": "EPOUSE",
+        "pathologie": "SUSPUCION PALUDISME SIMPLE",
+        "traitement": "SYMPTOMATIQUE ANTI PALUDEEN ET ANTI PYRETIQUE",
+        "reference": "NON",
+        "year": 2026,
+        "month": 9,
+        "employeeMatricule": "",
+        "employeeNom": "",
+        "dependantId": null,
+        "createdAt": "2026-09-21T07:32:51.269Z",
+        "updatedAt": "2026-09-21T07:32:51.269Z",
+        "createdBy": "karine.mvutu@ppcdrc.cd",
+        "updatedBy": "karine.mvutu@ppcdrc.cd"
+      },
+      "undoable": false,
+      "undone": false
+    },
+    {
       "id": "log-000932",
       "at": "2026-09-21T07:31:06.676Z",
       "userId": "karine.mvutu@ppcdrc.cd",
@@ -110205,5 +110243,5 @@
       }
     }
   ],
-  "nextSeq": 933
+  "nextSeq": 934
 }
