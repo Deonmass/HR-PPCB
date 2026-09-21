@@ -1,6 +1,44 @@
 {
   "entries": [
     {
+      "id": "log-000945",
+      "at": "2026-09-21T07:50:09.088Z",
+      "userId": "karine.mvutu@ppcdrc.cd",
+      "userName": "Karine Mvutu",
+      "userEmail": "karine.mvutu@ppcdrc.cd",
+      "module": "sante",
+      "moduleLabel": "Santé",
+      "action": "create",
+      "actionLabel": "Création",
+      "entityType": "sante.visit",
+      "entityId": "sante-muay3dl5-w7fvnh",
+      "summary": "Cas santé — BUKONGO PERO · GASTRO ENTERITE NON FEBRILE",
+      "details": "Cas santé — BUKONGO PERO · GASTRO ENTERITE NON FEBRILE",
+      "after": {
+        "id": "sante-muay3dl5-w7fvnh",
+        "date": "2026-09-15",
+        "nom": "BUKONGO",
+        "postnom": "PERO",
+        "sexe": "M",
+        "age": 2,
+        "typeMalade": "ENFANT",
+        "pathologie": "GASTRO ENTERITE NON FEBRILE",
+        "traitement": "MAYAMYCINE SIROP",
+        "reference": "NON",
+        "year": 2026,
+        "month": 9,
+        "employeeMatricule": "70000032",
+        "employeeNom": "NEMWANDJARE PERO PHILEMON",
+        "dependantId": 447,
+        "createdAt": "2026-09-21T07:50:06.473Z",
+        "updatedAt": "2026-09-21T07:50:06.473Z",
+        "createdBy": "karine.mvutu@ppcdrc.cd",
+        "updatedBy": "karine.mvutu@ppcdrc.cd"
+      },
+      "undoable": false,
+      "undone": false
+    },
+    {
       "id": "log-000944",
       "at": "2026-09-21T07:48:18.834Z",
       "userId": "karine.mvutu@ppcdrc.cd",
@@ -110661,5 +110699,5 @@
       }
     }
   ],
-  "nextSeq": 945
+  "nextSeq": 946
 }
