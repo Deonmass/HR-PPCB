@@ -1,6 +1,36 @@
 {
   "entries": [
     {
+      "id": "log-000995",
+      "at": "2026-09-21T12:54:57.752Z",
+      "userId": "admin",
+      "userName": "Administrateur",
+      "userEmail": "admin",
+      "module": "guest-house",
+      "moduleLabel": "Guest house",
+      "action": "create",
+      "actionLabel": "Création",
+      "entityType": "guest-house.reservation",
+      "entityId": "dd47dbd0-7f5a-44e3-b304-d6de93580b28",
+      "summary": "Création réservation Jérémie",
+      "details": "Création réservation Jérémie",
+      "after": {
+        "id": "dd47dbd0-7f5a-44e3-b304-d6de93580b28",
+        "numero": "GH-2026-4426",
+        "createdAt": "2026-09-21T12:54:53.868Z",
+        "personName": "Jérémie",
+        "isAgent": false,
+        "motif": "TBA",
+        "startDate": "2026-09-18",
+        "endDate": "2026-09-26",
+        "status": "pending",
+        "notes": "de la part de Mr Jack Ilondo",
+        "updatedAt": "2026-09-21T12:54:53.868Z"
+      },
+      "undoable": true,
+      "undone": false
+    },
+    {
       "id": "log-000994",
       "at": "2026-09-21T12:54:38.265Z",
       "userId": "admin",
@@ -112217,5 +112247,5 @@
       }
     }
   ],
-  "nextSeq": 995
+  "nextSeq": 996
 }
