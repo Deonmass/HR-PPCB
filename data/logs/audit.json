@@ -1,6 +1,36 @@
 {
   "entries": [
     {
+      "id": "log-000997",
+      "at": "2026-09-21T12:56:08.835Z",
+      "userId": "admin",
+      "userName": "Administrateur",
+      "userEmail": "admin",
+      "module": "guest-house",
+      "moduleLabel": "Guest house",
+      "action": "create",
+      "actionLabel": "Création",
+      "entityType": "guest-house.reservation",
+      "entityId": "2554fc2c-41d9-46a9-bd1c-ad0fa991cacc",
+      "summary": "Création réservation Octave",
+      "details": "Création réservation Octave",
+      "after": {
+        "id": "2554fc2c-41d9-46a9-bd1c-ad0fa991cacc",
+        "numero": "GH-2026-4428",
+        "createdAt": "2026-09-21T12:56:06.069Z",
+        "personName": "Octave",
+        "isAgent": false,
+        "motif": "TBA",
+        "startDate": "2026-09-19",
+        "endDate": "2026-09-26",
+        "status": "pending",
+        "notes": "de la part de Mr Jack Ilondo",
+        "updatedAt": "2026-09-21T12:56:06.069Z"
+      },
+      "undoable": true,
+      "undone": false
+    },
+    {
       "id": "log-000996",
       "at": "2026-09-21T12:55:38.437Z",
       "userId": "admin",
@@ -112277,5 +112307,5 @@
       }
     }
   ],
-  "nextSeq": 997
+  "nextSeq": 998
 }
