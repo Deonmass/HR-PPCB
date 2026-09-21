@@ -1,6 +1,44 @@
 {
   "entries": [
     {
+      "id": "log-000942",
+      "at": "2026-09-21T07:44:16.941Z",
+      "userId": "karine.mvutu@ppcdrc.cd",
+      "userName": "Karine Mvutu",
+      "userEmail": "karine.mvutu@ppcdrc.cd",
+      "module": "sante",
+      "moduleLabel": "Santé",
+      "action": "create",
+      "actionLabel": "Création",
+      "entityType": "sante.visit",
+      "entityId": "sante-muaxvtcb-iadkj3",
+      "summary": "Cas santé — TUMBU  MASIMBO · BRULURE",
+      "details": "Cas santé — TUMBU  MASIMBO · BRULURE",
+      "after": {
+        "id": "sante-muaxvtcb-iadkj3",
+        "date": "2026-09-14",
+        "nom": "TUMBU",
+        "postnom": "MASIMBO",
+        "sexe": "F",
+        "age": 61,
+        "typeMalade": "CONTRACTANT",
+        "pathologie": "BRULURE",
+        "traitement": "ANTIBIOTIQUE  IBUPROFENE ET APPLICATION CREME FLAMAZINE",
+        "reference": "NON",
+        "year": 2026,
+        "month": 9,
+        "employeeMatricule": "",
+        "employeeNom": "",
+        "dependantId": null,
+        "createdAt": "2026-09-21T07:44:13.643Z",
+        "updatedAt": "2026-09-21T07:44:13.643Z",
+        "createdBy": "karine.mvutu@ppcdrc.cd",
+        "updatedBy": "karine.mvutu@ppcdrc.cd"
+      },
+      "undoable": false,
+      "undone": false
+    },
+    {
       "id": "log-000941",
       "at": "2026-09-21T07:42:05.211Z",
       "userId": "karine.mvutu@ppcdrc.cd",
@@ -110547,5 +110585,5 @@
       }
     }
   ],
-  "nextSeq": 942
+  "nextSeq": 943
 }
