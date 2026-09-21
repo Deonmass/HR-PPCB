@@ -1,6 +1,29 @@
 {
   "entries": [
     {
+      "id": "log-000957",
+      "at": "2026-09-21T08:08:42.968Z",
+      "userId": "admin",
+      "userName": "Administrateur",
+      "userEmail": "admin",
+      "module": "timesheet",
+      "moduleLabel": "Timesheet",
+      "action": "update",
+      "actionLabel": "Modification",
+      "summary": "Enregistrement timesheet 70000030 — Production (9/2026)",
+      "details": "Enregistrement timesheet 70000030 — Production (9/2026)",
+      "undoable": false,
+      "undone": false,
+      "meta": {
+        "year": 2026,
+        "month": 9,
+        "department": "Production",
+        "matricule": "70000030",
+        "mode": "employee-month",
+        "count": 42
+      }
+    },
+    {
       "id": "log-000956",
       "at": "2026-09-21T08:08:33.301Z",
       "userId": "karine.mvutu@ppcdrc.cd",
@@ -111102,5 +111125,5 @@
       }
     }
   ],
-  "nextSeq": 957
+  "nextSeq": 958
 }
