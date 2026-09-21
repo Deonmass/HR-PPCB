@@ -29,6 +29,7 @@ import {
 } from '@/lib/timesheet-compilation-policy';
 import TimesheetEmployeeMonthModal from '@/components/overtime/TimesheetEmployeeMonthModal';
 import TimesheetCompilationSimulationModal from '@/components/overtime/TimesheetCompilationSimulationModal';
+import RefreshButton from '@/components/RefreshButton';
 import { usePermissions } from '@/contexts/PermissionContext';
 import { downloadTimesheetWorkbook } from '@/lib/timesheet-export';
 import type { TimesheetAccessContext, TimesheetViewScope } from '@/lib/timesheet-permissions';
@@ -662,12 +663,21 @@ export default function TimesheetCompilationView({
                 </button>
               </div>
             ) : (
-              <h3>
-                Compilation des heures supplémentaires
-                {closed ? <span className="compilation-closed-badge">Mois clôturé</span> : null}
-              </h3>
+              <div className="compilation-header-title">
+                <h3>
+                  Compilation des heures supplémentaires
+                  {closed ? <span className="compilation-closed-badge">Mois clôturé</span> : null}
+                </h3>
+              </div>
             )}
-            <span>{data ? `${agentCount} agent(s)` : ''}</span>
+            <div className="compilation-header-meta">
+              <span>{data ? `${agentCount} agent(s)` : ''}</span>
+              <RefreshButton
+                onClick={() => setReloadTick((tick) => tick + 1)}
+                loading={loading}
+                title="Actualiser la compilation"
+              />
+            </div>
           </div>
 
           {loading ? (
@@ -1084,6 +1094,7 @@ export default function TimesheetCompilationView({
           monthLabel={selectedMonth.label}
           canEdit={canEditTimesheet}
           onClose={() => setMonthModal(null)}
+          onSaved={() => setReloadTick((tick) => tick + 1)}
         />
       ) : null}
 

@@ -50,6 +50,8 @@ interface Props {
   monthLabel?: string;
   canEdit?: boolean;
   onClose: () => void;
+  /** Called after a successful save so parent lists can refresh. */
+  onSaved?: () => void;
 }
 
 type SchedulePresetId = 'general-zamba' | 'general-kinshasa' | 'shifter';
@@ -158,6 +160,7 @@ export default function TimesheetEmployeeMonthModal({
   monthLabel,
   canEdit = false,
   onClose,
+  onSaved,
 }: Props) {
   const [period, setPeriod] = useState<TimesheetPeriod>(() => buildTimesheetPeriod(year, month));
   const [periodLabel, setPeriodLabel] = useState(() =>
@@ -551,6 +554,7 @@ export default function TimesheetEmployeeMonthModal({
 
       savedSignatureRef.current = rowsSignature(rows);
       setDirty(false);
+      onSaved?.();
       await showSuccess('Timesheet enregistré');
     } catch (err) {
       await showError(err instanceof Error ? err.message : 'Enregistrement impossible');

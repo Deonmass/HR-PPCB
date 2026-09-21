@@ -42,6 +42,7 @@ import {
 type Tab = 'dashboard' | 'reservations' | 'rooms';
 type DrawerKind = 'room' | 'reservation' | 'confirm' | 'history';
 type KpiModal = 'rooms' | 'occupied' | 'empty' | 'pending' | 'kimpese' | 'occupancy' | null;
+type ReservationsPane = 'reservations' | 'occupations';
 type ValidatedSubTab = 'approved' | 'rejected';
 
 type PendingFilterKey = 'numero' | 'personne' | 'motif' | 'periode' | 'jours';
@@ -405,6 +406,7 @@ export default function VillageGuestHousePage() {
   const [kpiModal, setKpiModal] = useState<KpiModal>(null);
   /** Month key for the occupation-by-room modal (may differ from page filter). */
   const [occupancyDetailMonth, setOccupancyDetailMonth] = useState(currentMonthKey);
+  const [reservationsPane, setReservationsPane] = useState<ReservationsPane>('reservations');
   const [validatedSubTab, setValidatedSubTab] = useState<ValidatedSubTab>('approved');
   /** Shared month filter for lists, dashboard KPIs, occupancy, and export. */
   const [viewMonth, setViewMonth] = useState(currentMonthKey);
@@ -702,23 +704,41 @@ export default function VillageGuestHousePage() {
     const today = todayIso();
     const onsiteRoomsList = rooms.filter((r) => !isKimpeseRoom(r));
     const kimpeseRooms = rooms.filter(isKimpeseRoom);
+
+    // Snapshot « aujourd’hui » — aligné sur le plan des chambres (Occupé / Réservé / Vide)
     const occupiedRoomIds = new Set(
-      roomOccupancy.filter((item) => item.nights > 0).map((item) => item.roomId),
+      reservations
+        .filter(
+          (item) =>
+            item.status === 'confirmed'
+            && Boolean(item.roomId)
+            && item.startDate <= today
+            && item.endDate >= today,
+        )
+        .map((item) => item.roomId as string),
     );
+    const reservedRoomIds = new Set(
+      reservations
+        .filter(
+          (item) =>
+            (item.status === 'confirmed' || item.status === 'pending')
+            && Boolean(item.roomId)
+            && item.startDate > today,
+        )
+        .map((item) => item.roomId as string),
+    );
+
     const occupiedOnsite = onsiteRoomsList.filter((room) => occupiedRoomIds.has(room.id)).length;
-    const emptyOnsite = onsiteRoomsList.filter((room) => !occupiedRoomIds.has(room.id));
-    const reservedOnsite = onsiteRoomsList.filter((room) => {
-      if (occupiedRoomIds.has(room.id)) return false;
-      return reservations.some(
-        (item) =>
-          item.roomId === room.id
-          && (item.status === 'confirmed' || item.status === 'pending')
-          && overlapsMonth(item.startDate, item.endDate, viewMonth)
-          && item.startDate > today,
-      );
-    });
+    const reservedOnsite = onsiteRoomsList.filter(
+      (room) => !occupiedRoomIds.has(room.id) && reservedRoomIds.has(room.id),
+    );
+    const emptyOnsite = onsiteRoomsList.filter(
+      (room) => !occupiedRoomIds.has(room.id) && !reservedRoomIds.has(room.id),
+    );
     const kimpeseOccupied = kimpeseRooms.filter((room) => occupiedRoomIds.has(room.id)).length;
     const onsiteRooms = onsiteRoomsList.length;
+
+    // Taux du mois sélectionné (nuits / capacité) — distinct du snapshot du jour
     const totalNights = roomOccupancy
       .filter((item) => !item.isKimpese)
       .reduce((sum, item) => sum + item.nights, 0);
@@ -727,12 +747,12 @@ export default function VillageGuestHousePage() {
       ? ratioToRate(totalNights, capacityNights)
       : 0;
 
-    const occupiedReservations = monthReservations.filter(
-      (item) =>
-        (item.status === 'confirmed' || item.status === 'completed')
-        && Boolean(item.roomId)
-        && nightsCoveredInMonth(item.startDate, item.endDate, viewMonth) > 0,
-    );
+    const occupiedReservations = reservations.filter((item) => {
+      if (item.status !== 'confirmed' || !item.roomId) return false;
+      if (item.startDate > today || item.endDate < today) return false;
+      const room = roomsById.get(item.roomId);
+      return Boolean(room && !isKimpeseRoom(room));
+    });
 
     const endingSoon = reservations
       .filter((item) => item.status === 'confirmed' && overlapsMonth(item.startDate, item.endDate, viewMonth))
@@ -1431,7 +1451,7 @@ export default function VillageGuestHousePage() {
           </div>
         </div>
 
-        <div className={`guest-house-body${tab === 'reservations' || tab === 'dashboard' ? ' is-fill' : ''}`}>
+        <div className={`guest-house-body${tab === 'reservations' ? ' is-fill' : tab === 'dashboard' ? ' is-dashboard' : ''}`}>
           {tab === 'dashboard' && dashboard && (
             <div className="guest-house-dashboard">
               <p className="guest-house-period-label text-muted">
@@ -1440,7 +1460,7 @@ export default function VillageGuestHousePage() {
               <div className="guest-house-kpi-grid">
                 <button
                   type="button"
-                  className="card card-glow card-glow-cyan guest-house-kpi-card"
+                  className="card card-glow card-glow-cyan guest-house-kpi-card is-rooms"
                   onClick={() => setKpiModal('rooms')}
                 >
                   <div className="guest-house-kpi-text">
@@ -1451,19 +1471,21 @@ export default function VillageGuestHousePage() {
                 </button>
                 <button
                   type="button"
-                  className="card card-glow card-glow-green guest-house-kpi-card"
+                  className="card card-glow card-glow-green guest-house-kpi-card is-occupied"
                   onClick={() => setKpiModal('occupied')}
                 >
                   <div className="guest-house-kpi-text">
                     <div className="card-label">Occupées</div>
                     <div className="card-value">{monthDashboard.occupied}</div>
-                    <div className="text-muted guest-house-kpi-sub">{formatRate(monthDashboard.occupancyRate)} taux</div>
+                    <div className="text-muted guest-house-kpi-sub">
+                      {formatRate(monthDashboard.occupancyRate)} taux mois
+                    </div>
                   </div>
                   <span className="guest-house-kpi-icon"><IconUsers /></span>
                 </button>
                 <button
                   type="button"
-                  className="card card-glow card-glow-violet guest-house-kpi-card"
+                  className="card card-glow card-glow-violet guest-house-kpi-card is-empty"
                   onClick={() => setKpiModal('empty')}
                 >
                   <div className="guest-house-kpi-text">
@@ -1477,7 +1499,7 @@ export default function VillageGuestHousePage() {
                 </button>
                 <button
                   type="button"
-                  className="card card-glow card-glow-orange guest-house-kpi-card"
+                  className="card card-glow card-glow-orange guest-house-kpi-card is-pending"
                   onClick={() => setKpiModal('pending')}
                 >
                   <div className="guest-house-kpi-text">
@@ -1488,7 +1510,7 @@ export default function VillageGuestHousePage() {
                 </button>
                 <button
                   type="button"
-                  className="card card-glow card-glow-cyan guest-house-kpi-card"
+                  className="card card-glow card-glow-amber guest-house-kpi-card is-kimpese"
                   onClick={() => setKpiModal('kimpese')}
                 >
                   <div className="guest-house-kpi-text">
@@ -1832,307 +1854,326 @@ export default function VillageGuestHousePage() {
           {tab === 'reservations' && (
             <div className="guest-house-reservations-layout">
               <div className="panel panel-padded guest-house-panel-fill">
-                <div className="guest-house-section-head">
-                  <div>
-                    <h3>En attente</h3>
-                    <p className="text-muted">{pending.length} · {monthLabelFr(viewMonth)}</p>
-                  </div>
-                  {canCreate && (
+                <div className="guest-house-section-head guest-house-reservations-head">
+                  <div className="tabs guest-house-subtabs guest-house-pane-tabs">
                     <button
                       type="button"
-                      className="btn btn-primary btn-sm guest-house-icon-btn"
-                      onClick={openReservationCreate}
-                      title="Nouvelle réservation"
-                      aria-label="Nouvelle réservation"
+                      className={`guest-house-subtab${reservationsPane === 'reservations' ? ' active' : ''}`}
+                      onClick={() => setReservationsPane('reservations')}
                     >
-                      <IconPlus size={16} />
+                      Réservations
+                      {pending.length > 0 && <span className="employees-tab-count">{pending.length}</span>}
                     </button>
-                  )}
-                </div>
-                {pending.length === 0 ? (
-                  <div className="guest-house-panel-empty">
-                    <p className="text-muted">Aucune réservation en attente.</p>
+                    <button
+                      type="button"
+                      className={`guest-house-subtab${reservationsPane === 'occupations' ? ' active' : ''}`}
+                      onClick={() => setReservationsPane('occupations')}
+                    >
+                      Occupations
+                      {approved.length > 0 && <span className="employees-tab-count">{approved.length}</span>}
+                    </button>
                   </div>
-                ) : (
-                  <>
-                    {pendingActiveCount > 0 ? (
+                  <div className="guest-house-reservations-head-actions">
+                    {reservationsPane === 'occupations' && (
+                      <div className="guest-house-validated-tools">
+                        <div className="tabs guest-house-subtabs">
+                          <button
+                            type="button"
+                            className={`guest-house-subtab${validatedSubTab === 'approved' ? ' active' : ''}`}
+                            onClick={() => setValidatedSubTab('approved')}
+                          >
+                            Approuvé ({approved.length})
+                          </button>
+                          <button
+                            type="button"
+                            className={`guest-house-subtab${validatedSubTab === 'rejected' ? ' active' : ''}`}
+                            onClick={() => setValidatedSubTab('rejected')}
+                          >
+                            Rejeté ({rejected.length})
+                          </button>
+                        </div>
+                        <button
+                          type="button"
+                          className="guest-house-occupancy-badge"
+                          onClick={() => openOccupancyModal(viewMonth)}
+                          title="Voir l’occupation par chambre"
+                        >
+                          Occupation <strong>{formatRate(monthDashboard.occupancyRate)}</strong>
+                        </button>
+                      </div>
+                    )}
+                    {reservationsPane === 'reservations' && canCreate && (
                       <button
                         type="button"
-                        className="btn btn-ghost btn-sm"
-                        style={{ marginBottom: '0.5rem' }}
-                        onClick={() => setPendingColFilters(EMPTY_PENDING)}
+                        className="btn btn-primary btn-sm guest-house-icon-btn"
+                        onClick={openReservationCreate}
+                        title="Nouvelle réservation"
+                        aria-label="Nouvelle réservation"
                       >
-                        Effacer les filtres ({pendingActiveCount})
+                        <IconPlus size={16} />
                       </button>
-                    ) : null}
-                  <div className="table-wrap guest-house-panel-scroll">
-                    <table className="data-table guest-house-compact-table">
-                      <thead>
-                        <tr>
-                          <th className="th-filter">
-                            <TableHeaderFilter
-                              label="N°"
-                              values={pendingFilterValues.numero}
-                              selected={pendingColFilters.numero}
-                              onChange={setPendingColFilter('numero')}
-                            />
-                          </th>
-                          <th className="th-filter">
-                            <TableHeaderFilter
-                              label="Personne"
-                              values={pendingFilterValues.personne}
-                              selected={pendingColFilters.personne}
-                              onChange={setPendingColFilter('personne')}
-                            />
-                          </th>
-                          <th className="th-filter">
-                            <TableHeaderFilter
-                              label="Motif"
-                              values={pendingFilterValues.motif}
-                              selected={pendingColFilters.motif}
-                              onChange={setPendingColFilter('motif')}
-                            />
-                          </th>
-                          <th className="th-filter">
-                            <TableHeaderFilter
-                              label="Période"
-                              values={pendingFilterValues.periode}
-                              selected={pendingColFilters.periode}
-                              onChange={setPendingColFilter('periode')}
-                            />
-                          </th>
-                          <th className="th-filter">
-                            <TableHeaderFilter
-                              label="Jours"
-                              values={pendingFilterValues.jours}
-                              selected={pendingColFilters.jours}
-                              onChange={setPendingColFilter('jours')}
-                            />
-                          </th>
-                          {(canEdit || canDelete) && <th>Actions</th>}
-                        </tr>
-                      </thead>
-                      <tbody>
-                        {filteredPending.map((item) => {
-                          const days = remainingDays(item.endDate);
-                          const motifCol = IMPORT_MOTIF_RE.test(item.motif.trim()) ? '—' : (item.motif || '—');
-                          const busy = rowBusyId === item.id;
-                          return (
-                            <tr
-                              key={item.id}
-                              className={busy ? 'guest-house-row-busy' : undefined}
-                              onContextMenu={(event) => openReservationContextMenu(event, item)}
-                            >
-                              <td>
-                                {busy ? <span className="btn-spinner" aria-hidden="true" /> : item.numero}
-                              </td>
-                              <td>
-                                <div className="guest-house-person-cell">
-                                  <strong>{item.personName}</strong>
-                                  {item.isAgent && item.matricule && (
-                                    <span className="text-muted">Agent · {item.matricule}</span>
-                                  )}
-                                </div>
-                              </td>
-                              <td>{motifCol}</td>
-                              <td className="guest-house-period-cell">
-                                {formatDate(item.startDate)} → {formatDate(item.endDate)}
-                              </td>
-                              <td>
-                                <span className={`guest-house-days-left${days <= 2 ? ' is-critical' : ''}`}>
-                                  {days} j
-                                </span>
-                              </td>
-                              {(canEdit || canDelete) && (
-                                <td>
-                                  <div className="guest-house-row-actions">
-                                    {canEdit && (
-                                      <>
-                                        <button
-                                          type="button"
-                                          className="btn btn-primary btn-sm btn-with-icon"
-                                          disabled={busy}
-                                          onClick={() => openConfirm(item)}
-                                        >
-                                          <IconCheck size={13} />
-                                          OK
-                                        </button>
-                                        <button
-                                          type="button"
-                                          className="btn btn-ghost btn-sm btn-with-icon"
-                                          disabled={busy}
-                                          onClick={() => void setStatus(item, 'rejected')}
-                                        >
-                                          {busy && saving
-                                            ? <span className="btn-spinner" aria-hidden="true" />
-                                            : <IconX size={13} />}
-                                          Non
-                                        </button>
-                                      </>
-                                    )}
-                                  </div>
-                                </td>
-                              )}
-                            </tr>
-                          );
-                        })}
-                      </tbody>
-                    </table>
+                    )}
                   </div>
-                  </>
-                )}
-              </div>
+                </div>
 
-              <div className="panel panel-padded guest-house-panel-fill">
-                <div className="guest-house-section-head">
-                  <div>
-                    <h3>En cours / validées</h3>
-                    <p className="text-muted">{monthLabelFr(viewMonth)}</p>
-                  </div>
-                  <div className="guest-house-validated-tools">
-                    <button
-                      type="button"
-                      className="guest-house-occupancy-badge"
-                      onClick={() => openOccupancyModal(viewMonth)}
-                      title="Voir l’occupation par chambre"
-                    >
-                      Occupation <strong>{formatRate(monthDashboard.occupancyRate)}</strong>
-                    </button>
-                    <div className="tabs guest-house-subtabs">
-                      <button
-                        type="button"
-                        className={`guest-house-subtab${validatedSubTab === 'approved' ? ' active' : ''}`}
-                        onClick={() => setValidatedSubTab('approved')}
-                      >
-                        Approuvé ({approved.length})
-                      </button>
-                      <button
-                        type="button"
-                        className={`guest-house-subtab${validatedSubTab === 'rejected' ? ' active' : ''}`}
-                        onClick={() => setValidatedSubTab('rejected')}
-                      >
-                        Rejeté ({rejected.length})
-                      </button>
+                <div className="guest-house-panel-body">
+                {reservationsPane === 'reservations' ? (
+                  pending.length === 0 ? (
+                    <div className="guest-house-panel-empty">
+                      <p className="text-muted">Aucune réservation en attente.</p>
                     </div>
-                  </div>
-                </div>
-                {validatedList.length === 0 ? (
-                  <div className="guest-house-panel-empty">
-                    <p className="text-muted">
-                      {validatedSubTab === 'approved' ? 'Aucune réservation approuvée.' : 'Aucune réservation rejetée.'}
-                    </p>
-                  </div>
-                ) : (
-                  <>
-                    {validatedActiveCount > 0 ? (
-                      <button
-                        type="button"
-                        className="btn btn-ghost btn-sm"
-                        style={{ marginBottom: '0.5rem' }}
-                        onClick={() => setValidatedColFilters(EMPTY_VALIDATED)}
-                      >
-                        Effacer les filtres ({validatedActiveCount})
-                      </button>
-                    ) : null}
-                  <div className="table-wrap guest-house-panel-scroll">
-                    <table className="data-table guest-house-compact-table">
-                      <thead>
-                        <tr>
-                          <th className="th-filter">
-                            <TableHeaderFilter
-                              label="N°"
-                              values={validatedFilterValues.numero}
-                              selected={validatedColFilters.numero}
-                              onChange={setValidatedColFilter('numero')}
-                            />
-                          </th>
-                          <th className="th-filter">
-                            <TableHeaderFilter
-                              label="Personne"
-                              values={validatedFilterValues.personne}
-                              selected={validatedColFilters.personne}
-                              onChange={setValidatedColFilter('personne')}
-                            />
-                          </th>
-                          <th className="th-filter">
-                            <TableHeaderFilter
-                              label="Chambre"
-                              values={validatedFilterValues.chambre}
-                              selected={validatedColFilters.chambre}
-                              onChange={setValidatedColFilter('chambre')}
-                            />
-                          </th>
-                          <th className="th-filter">
-                            <TableHeaderFilter
-                              label="Période"
-                              values={validatedFilterValues.periode}
-                              selected={validatedColFilters.periode}
-                              onChange={setValidatedColFilter('periode')}
-                            />
-                          </th>
-                          <th className="th-filter">
-                            <TableHeaderFilter
-                              label="Nbr Jours"
-                              values={validatedFilterValues.nbrJours}
-                              selected={validatedColFilters.nbrJours}
-                              onChange={setValidatedColFilter('nbrJours')}
-                            />
-                          </th>
-                          <th className="th-filter">
-                            <TableHeaderFilter
-                              label="Restant"
-                              values={validatedFilterValues.restant}
-                              selected={validatedColFilters.restant}
-                              onChange={setValidatedColFilter('restant')}
-                            />
-                          </th>
-                        </tr>
-                      </thead>
-                      <tbody>
-                        {filteredValidated.map((item) => {
-                          const motifSub = personMotifSubtitle(item.motif);
-                          const daysLeft = remainingDays(item.endDate);
-                          const busy = rowBusyId === item.id;
-                          return (
-                            <tr
-                              key={item.id}
-                              className={busy ? 'guest-house-row-busy' : undefined}
-                              onContextMenu={(event) => openReservationContextMenu(event, item)}
-                            >
-                              <td>
-                                {busy ? <span className="btn-spinner" aria-hidden="true" /> : item.numero}
-                              </td>
-                              <td>
-                                <div className="guest-house-person-cell">
-                                  <strong>{item.personName}</strong>
-                                  {motifSub && <span className="text-muted">{motifSub}</span>}
-                                </div>
-                              </td>
-                              <td>{item.roomId ? (() => {
-                                const room = roomsById.get(item.roomId);
-                                return room ? roomDisplayName(room) : '—';
-                              })() : '—'}</td>
-                              <td className="guest-house-period-cell">
-                                {formatDate(item.startDate)} → {formatDate(item.endDate)}
-                              </td>
-                              <td>
-                                <span className="guest-house-time-chip">
-                                  {formatTempsEcoule(item.startDate, item.endDate)}
-                                </span>
-                              </td>
-                              <td>
-                                <span className={`guest-house-time-chip${daysLeft <= 2 && daysLeft >= 0 ? ' is-critical' : ''}`}>
-                                  {formatTempsRestant(item.startDate, item.endDate)}
-                                </span>
-                              </td>
+                  ) : (
+                    <>
+                      {pendingActiveCount > 0 ? (
+                        <button
+                          type="button"
+                          className="btn btn-ghost btn-sm"
+                          style={{ marginBottom: '0.5rem' }}
+                          onClick={() => setPendingColFilters(EMPTY_PENDING)}
+                        >
+                          Effacer les filtres ({pendingActiveCount})
+                        </button>
+                      ) : null}
+                      <div className="table-wrap guest-house-panel-scroll">
+                        <table className="data-table guest-house-compact-table guest-house-table-pending">
+                          <thead>
+                            <tr>
+                              <th title="N° de série">#</th>
+                              <th className="th-filter">
+                                <TableHeaderFilter
+                                  label="Réf."
+                                  values={pendingFilterValues.numero}
+                                  selected={pendingColFilters.numero}
+                                  onChange={setPendingColFilter('numero')}
+                                />
+                              </th>
+                              <th className="th-filter">
+                                <TableHeaderFilter
+                                  label="Personne"
+                                  values={pendingFilterValues.personne}
+                                  selected={pendingColFilters.personne}
+                                  onChange={setPendingColFilter('personne')}
+                                />
+                              </th>
+                              <th className="th-filter">
+                                <TableHeaderFilter
+                                  label="Motif"
+                                  values={pendingFilterValues.motif}
+                                  selected={pendingColFilters.motif}
+                                  onChange={setPendingColFilter('motif')}
+                                />
+                              </th>
+                              <th className="th-filter">
+                                <TableHeaderFilter
+                                  label="Période"
+                                  values={pendingFilterValues.periode}
+                                  selected={pendingColFilters.periode}
+                                  onChange={setPendingColFilter('periode')}
+                                />
+                              </th>
+                              <th className="th-filter">
+                                <TableHeaderFilter
+                                  label="Jours"
+                                  values={pendingFilterValues.jours}
+                                  selected={pendingColFilters.jours}
+                                  onChange={setPendingColFilter('jours')}
+                                />
+                              </th>
+                              {(canEdit || canDelete) && <th>Actions</th>}
                             </tr>
-                          );
-                        })}
-                      </tbody>
-                    </table>
-                  </div>
-                  </>
+                          </thead>
+                          <tbody>
+                            {filteredPending.map((item, index) => {
+                              const days = remainingDays(item.endDate);
+                              const motifCol = IMPORT_MOTIF_RE.test(item.motif.trim()) ? '—' : (item.motif || '—');
+                              const busy = rowBusyId === item.id;
+                              return (
+                                <tr
+                                  key={item.id}
+                                  className={busy ? 'guest-house-row-busy' : undefined}
+                                  onContextMenu={(event) => openReservationContextMenu(event, item)}
+                                >
+                                  <td className="guest-house-serial-cell">{index + 1}</td>
+                                  <td>
+                                    {busy ? <span className="btn-spinner" aria-hidden="true" /> : item.numero}
+                                  </td>
+                                  <td className="guest-house-person-td">
+                                    <div className="guest-house-person-cell">
+                                      <strong>{item.personName}</strong>
+                                      {item.isAgent && item.matricule && (
+                                        <span className="text-muted">Agent · {item.matricule}</span>
+                                      )}
+                                    </div>
+                                  </td>
+                                  <td className="guest-house-motif-td">{motifCol}</td>
+                                  <td className="guest-house-period-cell">
+                                    {formatDate(item.startDate)} → {formatDate(item.endDate)}
+                                  </td>
+                                  <td>
+                                    <span className={`guest-house-days-left${days <= 2 ? ' is-critical' : ''}`}>
+                                      {days} j
+                                    </span>
+                                  </td>
+                                  {(canEdit || canDelete) && (
+                                    <td>
+                                      <div className="guest-house-row-actions">
+                                        {canEdit && (
+                                          <>
+                                            <button
+                                              type="button"
+                                              className="btn btn-primary btn-sm btn-with-icon"
+                                              disabled={busy}
+                                              onClick={() => openConfirm(item)}
+                                            >
+                                              <IconCheck size={13} />
+                                              OK
+                                            </button>
+                                            <button
+                                              type="button"
+                                              className="btn btn-ghost btn-sm btn-with-icon"
+                                              disabled={busy}
+                                              onClick={() => void setStatus(item, 'rejected')}
+                                            >
+                                              {busy && saving
+                                                ? <span className="btn-spinner" aria-hidden="true" />
+                                                : <IconX size={13} />}
+                                              Non
+                                            </button>
+                                          </>
+                                        )}
+                                      </div>
+                                    </td>
+                                  )}
+                                </tr>
+                              );
+                            })}
+                          </tbody>
+                        </table>
+                      </div>
+                    </>
+                  )
+                ) : (
+                  validatedList.length === 0 ? (
+                    <div className="guest-house-panel-empty">
+                      <p className="text-muted">
+                        {validatedSubTab === 'approved' ? 'Aucune réservation approuvée.' : 'Aucune réservation rejetée.'}
+                      </p>
+                    </div>
+                  ) : (
+                    <>
+                      {validatedActiveCount > 0 ? (
+                        <button
+                          type="button"
+                          className="btn btn-ghost btn-sm"
+                          style={{ marginBottom: '0.5rem' }}
+                          onClick={() => setValidatedColFilters(EMPTY_VALIDATED)}
+                        >
+                          Effacer les filtres ({validatedActiveCount})
+                        </button>
+                      ) : null}
+                      <div className="table-wrap guest-house-panel-scroll">
+                        <table className="data-table guest-house-compact-table guest-house-table-occupations">
+                          <thead>
+                            <tr>
+                              <th title="N° de série">#</th>
+                              <th className="th-filter">
+                                <TableHeaderFilter
+                                  label="Réf."
+                                  values={validatedFilterValues.numero}
+                                  selected={validatedColFilters.numero}
+                                  onChange={setValidatedColFilter('numero')}
+                                />
+                              </th>
+                              <th className="th-filter">
+                                <TableHeaderFilter
+                                  label="Personne"
+                                  values={validatedFilterValues.personne}
+                                  selected={validatedColFilters.personne}
+                                  onChange={setValidatedColFilter('personne')}
+                                />
+                              </th>
+                              <th className="th-filter">
+                                <TableHeaderFilter
+                                  label="Chambre"
+                                  values={validatedFilterValues.chambre}
+                                  selected={validatedColFilters.chambre}
+                                  onChange={setValidatedColFilter('chambre')}
+                                />
+                              </th>
+                              <th className="th-filter">
+                                <TableHeaderFilter
+                                  label="Période"
+                                  values={validatedFilterValues.periode}
+                                  selected={validatedColFilters.periode}
+                                  onChange={setValidatedColFilter('periode')}
+                                />
+                              </th>
+                              <th className="th-filter">
+                                <TableHeaderFilter
+                                  label="Nbr Jours"
+                                  values={validatedFilterValues.nbrJours}
+                                  selected={validatedColFilters.nbrJours}
+                                  onChange={setValidatedColFilter('nbrJours')}
+                                />
+                              </th>
+                              <th className="th-filter">
+                                <TableHeaderFilter
+                                  label="Restant"
+                                  values={validatedFilterValues.restant}
+                                  selected={validatedColFilters.restant}
+                                  onChange={setValidatedColFilter('restant')}
+                                />
+                              </th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                            {filteredValidated.map((item, index) => {
+                              const motifSub = personMotifSubtitle(item.motif);
+                              const daysLeft = remainingDays(item.endDate);
+                              const busy = rowBusyId === item.id;
+                              return (
+                                <tr
+                                  key={item.id}
+                                  className={busy ? 'guest-house-row-busy' : undefined}
+                                  onContextMenu={(event) => openReservationContextMenu(event, item)}
+                                >
+                                  <td className="guest-house-serial-cell">{index + 1}</td>
+                                  <td>
+                                    {busy ? <span className="btn-spinner" aria-hidden="true" /> : item.numero}
+                                  </td>
+                                  <td className="guest-house-person-td">
+                                    <div className="guest-house-person-cell">
+                                      <strong>{item.personName}</strong>
+                                      {motifSub && <span className="text-muted">{motifSub}</span>}
+                                    </div>
+                                  </td>
+                                  <td>{item.roomId ? (() => {
+                                    const room = roomsById.get(item.roomId);
+                                    return room ? roomDisplayName(room) : '—';
+                                  })() : '—'}</td>
+                                  <td className="guest-house-period-cell">
+                                    {formatDate(item.startDate)} → {formatDate(item.endDate)}
+                                  </td>
+                                  <td>
+                                    <span className="guest-house-time-chip">
+                                      {formatTempsEcoule(item.startDate, item.endDate)}
+                                    </span>
+                                  </td>
+                                  <td>
+                                    <span className={`guest-house-time-chip${daysLeft <= 2 && daysLeft >= 0 ? ' is-critical' : ''}`}>
+                                      {formatTempsRestant(item.startDate, item.endDate)}
+                                    </span>
+                                  </td>
+                                </tr>
+                              );
+                            })}
+                          </tbody>
+                        </table>
+                      </div>
+                    </>
+                  )
                 )}
+                </div>
               </div>
             </div>
           )}
@@ -2383,7 +2424,8 @@ export default function VillageGuestHousePage() {
               onChange={(e) => setRoomForm((prev) => ({ ...prev, notes: e.target.value }))}
             />
           </div>
-          <button type="button" className="btn btn-primary" disabled={saving} onClick={() => void saveRoom()}>
+          <button type="button" className="btn btn-primary btn-with-icon" disabled={saving} onClick={() => void saveRoom()}>
+            {saving ? <span className="btn-spinner" aria-hidden="true" /> : null}
             {saving ? 'Enregistrement…' : 'Enregistrer'}
           </button>
         </SideDrawer>
@@ -2415,6 +2457,7 @@ export default function VillageGuestHousePage() {
                 disabled={saving}
                 onClick={() => void saveReservation()}
               >
+                {saving ? <span className="btn-spinner" aria-hidden="true" /> : null}
                 {saving
                   ? (editingReservation ? 'Enregistrement…' : 'Création…')
                   : (editingReservation ? 'Enregistrer' : 'Créer la réservation')}
@@ -2672,7 +2715,9 @@ export default function VillageGuestHousePage() {
                 disabled={saving || !confirmRoomId}
                 onClick={() => void setStatus(confirmTarget, 'confirmed', confirmRoomId)}
               >
-                <IconCheck size={14} />
+                {saving
+                  ? <span className="btn-spinner" aria-hidden="true" />
+                  : <IconCheck size={14} />}
                 {saving ? 'Confirmation…' : 'Confirmer la réservation'}
               </button>
             </>

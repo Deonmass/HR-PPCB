@@ -9,6 +9,7 @@ import TimesheetPlanningView from '@/components/overtime/TimesheetPlanningView';
 import TimesheetPolicyModal from '@/components/overtime/TimesheetPolicyModal';
 import { IconManager } from '@/components/overtime/TimesheetIcons';
 import PermissionGate from '@/components/PermissionGate';
+import RefreshButton from '@/components/RefreshButton';
 import { usePermissions } from '@/contexts/PermissionContext';
 import { useTimesheetAccess } from '@/hooks/useTimesheetAccess';
 import { listTimesheetMonthOptions } from '@/lib/timesheet-period';
@@ -137,6 +138,10 @@ export default function HeuresSupplementairesPage() {
             <div className="overtime-header-top">
               <div className="page-header-title-row">
                 <h2 className="overtime-page-title">Heures sup.</h2>
+                <RefreshButton
+                  onClick={() => setOtRefreshKey((value) => value + 1)}
+                  title="Actualiser"
+                />
                 <button
                   type="button"
                   className="page-info-btn"

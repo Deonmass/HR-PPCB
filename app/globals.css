@@ -6175,14 +6175,14 @@ html[data-theme="light"] .btn-export.btn-with-icon .btn-spinner {
 .overtime-sticky {
   flex-shrink: 0;
   z-index: 60;
-  padding-bottom: 0.35rem;
+  padding-bottom: 0.25rem;
   box-shadow: 0 4px 16px rgba(0, 0, 0, 0.35);
   margin-left: 0 !important;
   margin-right: 0 !important;
   margin-top: 0 !important;
   padding-left: 1rem !important;
   padding-right: 1rem !important;
-  padding-top: 0.85rem !important;
+  padding-top: 0.55rem !important;
 }
 
 .overtime-body {
@@ -6194,7 +6194,7 @@ html[data-theme="light"] .btn-export.btn-with-icon .btn-spinner {
   overflow: hidden;
   display: flex;
   flex-direction: column;
-  padding-top: 0.35rem;
+  padding-top: 0.15rem;
   padding-left: 0 !important;
   padding-right: 0 !important;
 }
@@ -6759,9 +6759,9 @@ html[data-theme="light"] .btn-export.btn-with-icon .btn-spinner {
 }
 
 .compilation-table {
-  --tg-w: 3.4rem;
-  --freeze-mat-w: 5.75rem;
-  --freeze-name-w: 14rem;
+  --tg-w: 3.2rem;
+  --freeze-mat-w: 5rem;
+  --freeze-name-w: 10.5rem;
   border-collapse: separate;
   border-spacing: 0;
   width: max-content;
@@ -6774,7 +6774,7 @@ html[data-theme="light"] .btn-export.btn-with-icon .btn-spinner {
 .compilation-table td {
   border-right: 1px solid var(--border);
   border-bottom: 1px solid var(--border);
-  padding: 0.3rem 0.5rem;
+  padding: 0.22rem 0.35rem;
   text-align: center;
   color: var(--text);
 }
@@ -7244,6 +7244,25 @@ html[data-theme="light"] .compilation-table tbody tr:hover td.compilation-sticky
 .compilation-header {
   align-items: center;
 }
+
+.compilation-header-title {
+  display: flex;
+  align-items: center;
+  gap: 0.45rem;
+  min-width: 0;
+}
+
+.compilation-header-meta {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  flex-shrink: 0;
+}
+
+.compilation-header-meta .btn-icon-refresh {
+  width: 1.55rem;
+  height: 1.55rem;
+}
 .compilation-subtabs {
   display: inline-flex;
   gap: 0.35rem;
@@ -7441,8 +7460,8 @@ html[data-theme="light"] .compilation-table tbody tr:hover td.compilation-sticky
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 1rem;
-  margin-bottom: 0.65rem;
+  gap: 0.65rem;
+  margin-bottom: 0.35rem;
 }
 
 .timesheet-calendar-header h3 {
@@ -20372,21 +20391,25 @@ html[data-theme='light'] .village-dept-taille-table td:first-child {
   }
 }
 
-/* ?? Guest house ?? */
-.guest-house-page {
-  display: flex;
-  flex-direction: column;
-  gap: 0;
-  min-height: 100%;
-  height: 100%;
-  flex: 1;
-}
-
 .main:has(.guest-house-page) {
   display: flex;
   flex-direction: column;
-  min-height: calc(100vh - 0px);
-  padding-bottom: 0.75rem;
+  height: 100vh;
+  max-height: 100vh;
+  overflow: hidden;
+  padding-top: 0.75rem !important;
+  padding-bottom: 0.5rem !important;
+}
+
+.guest-house-page {
+  display: grid;
+  grid-template-rows: auto minmax(0, 1fr);
+  gap: 0;
+  min-height: 0;
+  flex: 1 1 auto;
+  overflow: hidden;
+  width: 100%;
+  height: 100%;
 }
 
 .guest-house-page .page-header {
@@ -20394,12 +20417,12 @@ html[data-theme='light'] .village-dept-taille-table td:first-child {
 }
 
 .guest-house-sticky {
-  position: sticky;
-  top: 0;
+  position: relative;
   z-index: 20;
   background: var(--bg);
   padding-bottom: 0.2rem;
   border-bottom: 1px solid color-mix(in srgb, var(--border) 80%, transparent);
+  flex-shrink: 0;
 }
 
 .guest-house-page .page-header h2 {
@@ -20453,21 +20476,38 @@ html[data-theme='light'] .village-dept-taille-table td:first-child {
   display: flex;
   flex-direction: column;
   gap: 0.55rem;
-  padding-top: 0.55rem;
-  flex: 1;
+  padding-top: 0.45rem;
   min-height: 0;
+  overflow: hidden;
 }
 
 .guest-house-body.is-fill {
-  flex: 1;
+  display: grid;
+  grid-template-rows: minmax(0, 1fr);
+  gap: 0;
+  padding-top: 0.45rem;
+  min-height: 0;
+  overflow: hidden;
+  height: 100%;
+}
+
+/* Dashboard : scroll vertical, contenu non écrasé */
+.guest-house-body.is-dashboard {
+  display: block;
+  overflow-x: hidden;
+  overflow-y: auto;
+  min-height: 0;
+  height: 100%;
+  padding-top: 0.45rem;
+  padding-bottom: 0.75rem;
 }
 
 .guest-house-dashboard {
   display: flex;
   flex-direction: column;
-  gap: 0.55rem;
-  flex: 1;
-  min-height: calc(100vh - 8.5rem);
+  gap: 0.75rem;
+  min-height: 0;
+  flex: none;
 }
 
 .guest-house-period-label {
@@ -20493,11 +20533,26 @@ html[data-theme='light'] .village-dept-taille-table td:first-child {
   display: flex;
   flex-direction: column;
   gap: 1rem;
+  flex-shrink: 0;
 }
 
 .guest-house-motel-head {
-  align-items: flex-start;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
   gap: 0.75rem;
+  flex-wrap: wrap;
+  margin-bottom: 0;
+}
+
+.guest-house-motel-head h3 {
+  margin: 0;
+  font-size: 0.95rem;
+  font-weight: 700;
+}
+
+.guest-house-motel-head > div:first-child p {
+  margin: 0.15rem 0 0;
 }
 
 .guest-house-motel-legend {
@@ -20607,22 +20662,25 @@ html[data-theme='light'] .village-dept-taille-table td:first-child {
 .guest-house-floorplan-scroll {
   overflow-x: auto;
   overflow-y: hidden;
-  padding: 0.35rem 0.15rem 0.55rem;
+  padding: 0.25rem 0.1rem 0.4rem;
   -webkit-overflow-scrolling: touch;
 }
 
 .guest-house-floorplan-building {
   --gh-room-count: 7;
+  --gh-bath-w: 1.85rem;
   position: relative;
-  min-width: max(100%, calc(var(--gh-room-count) * 10.5rem));
-  padding: 0.85rem 0.75rem 0.75rem;
-  border-radius: 18px;
+  width: 100%;
+  min-width: 0;
+  padding: 0.65rem 0.55rem 0.55rem;
+  border-radius: 14px;
   border: 1px solid color-mix(in srgb, var(--border) 80%, #94a3b8);
   background:
     linear-gradient(180deg, color-mix(in srgb, #dbe4f0 55%, var(--panel)) 0%, var(--panel) 38%);
   box-shadow:
     0 1px 0 color-mix(in srgb, #fff 65%, transparent) inset,
     0 14px 28px rgba(22, 22, 30, 0.07);
+  box-sizing: border-box;
 }
 
 .guest-house-floorplan-roof {
@@ -20639,20 +20697,88 @@ html[data-theme='light'] .village-dept-taille-table td:first-child {
 
 .guest-house-floorplan-units {
   display: grid;
-  grid-template-columns: repeat(var(--gh-room-count), minmax(10rem, 1fr));
-  gap: 0.55rem;
+  grid-template-columns: repeat(var(--gh-room-count), minmax(0, 1fr));
+  gap: 0.4rem;
+  width: 100%;
 }
 
 .guest-house-floorplan-unit {
   display: grid;
-  grid-template-columns: minmax(0, 1fr) 2.55rem;
-  min-height: 9.75rem;
-  border-radius: 14px;
+  grid-template-columns: minmax(0, 1fr) var(--gh-bath-w);
+  min-height: 7.6rem;
+  min-width: 0;
+  border-radius: 12px;
   border: 1px solid color-mix(in srgb, var(--border) 90%, #94a3b8);
   overflow: hidden;
   background: var(--panel);
   box-shadow: 0 6px 16px rgba(22, 22, 30, 0.05);
   transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+
+/* Large screens (~24in): more breathing room */
+@media (min-width: 1600px) {
+  .guest-house-floorplan-building {
+    --gh-bath-w: 2.4rem;
+    padding: 0.85rem 0.75rem 0.75rem;
+  }
+
+  .guest-house-floorplan-units {
+    gap: 0.55rem;
+  }
+
+  .guest-house-floorplan-unit {
+    min-height: 9.75rem;
+    border-radius: 14px;
+  }
+}
+
+/* Laptop 13-15in: compact, avoid horizontal scroll */
+@media (max-width: 1440px) {
+  .guest-house-floorplan-building {
+    --gh-bath-w: 1.55rem;
+    padding: 0.5rem 0.4rem 0.4rem;
+  }
+
+  .guest-house-floorplan-units {
+    gap: 0.28rem;
+  }
+
+  .guest-house-floorplan-unit {
+    min-height: 6.4rem;
+    border-radius: 10px;
+  }
+
+  .guest-house-floorplan-sleep {
+    padding: 0.35rem 0.35rem 0.3rem;
+    gap: 0.15rem;
+  }
+
+  .guest-house-floorplan-bath {
+    font-size: 0.48rem;
+    letter-spacing: 0.04em;
+  }
+
+  .guest-house-floorplan-ch-label {
+    font-size: 0.68rem;
+  }
+
+  .guest-house-floorplan-room-name {
+    font-size: 0.58rem;
+  }
+
+  .guest-house-floorplan-bed-area svg {
+    width: 20px;
+    height: 20px;
+  }
+
+  .guest-house-floorplan-info {
+    font-size: 0.58rem;
+  }
+
+  .guest-house-floorplan-status-pill {
+    font-size: 0.52rem;
+    padding: 0.05rem 0.28rem;
+  }
 }
 
 .guest-house-floorplan-unit:hover {
@@ -21092,17 +21218,77 @@ html:not([data-theme='light']) .guest-house-res-toggle button.is-active {
   text-align: left;
   cursor: pointer;
   position: relative;
-  border: 0;
+  border: 1px solid color-mix(in srgb, var(--border) 80%, transparent);
   width: 100%;
-  padding: 0.5rem 0.65rem;
+  padding: 0.55rem 0.7rem;
   display: flex;
   align-items: center;
   justify-content: space-between;
   gap: 0.45rem;
+  overflow: hidden;
+  border-radius: var(--radius);
+  background: var(--panel);
 }
+
+.guest-house-kpi-card::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  opacity: 1;
+  pointer-events: none;
+  border-radius: inherit;
+}
+
+.guest-house-kpi-card.is-rooms {
+  border-color: color-mix(in srgb, #06b6d4 35%, var(--border));
+  background: linear-gradient(135deg, color-mix(in srgb, #06b6d4 14%, #fff), #fff);
+}
+.guest-house-kpi-card.is-rooms::before {
+  background: linear-gradient(135deg, rgba(6, 182, 212, 0.18), transparent 70%);
+}
+.guest-house-kpi-card.is-rooms .guest-house-kpi-icon { color: #0891b2; opacity: 0.85; }
+
+.guest-house-kpi-card.is-occupied {
+  border-color: color-mix(in srgb, #e30613 32%, var(--border));
+  background: linear-gradient(135deg, color-mix(in srgb, #e30613 12%, #fff), #fff);
+}
+.guest-house-kpi-card.is-occupied::before {
+  background: linear-gradient(135deg, rgba(227, 6, 19, 0.16), transparent 70%);
+}
+.guest-house-kpi-card.is-occupied .guest-house-kpi-icon { color: #e30613; opacity: 0.85; }
+.guest-house-kpi-card.is-occupied .guest-house-kpi-sub { color: #b91c1c; }
+
+.guest-house-kpi-card.is-empty {
+  border-color: color-mix(in srgb, #22c55e 35%, var(--border));
+  background: linear-gradient(135deg, color-mix(in srgb, #22c55e 14%, #fff), #fff);
+}
+.guest-house-kpi-card.is-empty::before {
+  background: linear-gradient(135deg, rgba(34, 197, 94, 0.18), transparent 70%);
+}
+.guest-house-kpi-card.is-empty .guest-house-kpi-icon { color: #16a34a; opacity: 0.85; }
+
+.guest-house-kpi-card.is-pending {
+  border-color: color-mix(in srgb, #f59e0b 38%, var(--border));
+  background: linear-gradient(135deg, color-mix(in srgb, #f59e0b 16%, #fff), #fff);
+}
+.guest-house-kpi-card.is-pending::before {
+  background: linear-gradient(135deg, rgba(245, 158, 11, 0.2), transparent 70%);
+}
+.guest-house-kpi-card.is-pending .guest-house-kpi-icon { color: #d97706; opacity: 0.85; }
+
+.guest-house-kpi-card.is-kimpese {
+  border-color: color-mix(in srgb, #8b5cf6 35%, var(--border));
+  background: linear-gradient(135deg, color-mix(in srgb, #8b5cf6 14%, #fff), #fff);
+}
+.guest-house-kpi-card.is-kimpese::before {
+  background: linear-gradient(135deg, rgba(139, 92, 246, 0.18), transparent 70%);
+}
+.guest-house-kpi-card.is-kimpese .guest-house-kpi-icon { color: #7c3aed; opacity: 0.85; }
 
 .guest-house-kpi-text {
   min-width: 0;
+  position: relative;
+  z-index: 1;
 }
 
 .guest-house-kpi-card .card-label {
@@ -21123,8 +21309,9 @@ html:not([data-theme='light']) .guest-house-res-toggle button.is-active {
   flex-shrink: 0;
   align-items: center;
   justify-content: center;
-  color: var(--muted);
-  opacity: 0.38;
+  position: relative;
+  z-index: 1;
+  opacity: 0.85;
 }
 
 .guest-house-kpi-icon svg {
@@ -21134,35 +21321,110 @@ html:not([data-theme='light']) .guest-house-res-toggle button.is-active {
 
 .guest-house-reservations-layout {
   display: grid;
-  grid-template-columns: minmax(0, 1.05fr) minmax(0, 1fr);
-  gap: 0.55rem;
+  grid-template-rows: minmax(0, 1fr);
+  gap: 0;
   align-items: stretch;
-  flex: 1;
-  min-height: calc(100vh - 8.2rem);
+  min-height: 0;
+  width: 100%;
+  min-width: 0;
+  height: 100%;
+  overflow: hidden;
+}
+
+.guest-house-reservations-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.65rem;
+  flex-wrap: nowrap;
+  flex-shrink: 0;
+  margin: 0;
+  padding: 0 0.65rem 0.45rem;
+  min-height: 1.7rem;
+  box-sizing: content-box;
+}
+
+.guest-house-reservations-head-actions {
+  display: flex;
+  align-items: center;
+  gap: 0.45rem;
+  margin-left: auto;
+  flex-wrap: nowrap;
+  flex-shrink: 0;
+}
+
+.guest-house-pane-tabs {
+  flex-shrink: 0;
+  height: 1.7rem;
+  min-height: 1.7rem;
+  align-items: center;
+  box-sizing: border-box;
+}
+
+.guest-house-pane-tabs .guest-house-subtab {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  height: calc(1.7rem - 4px);
+  min-height: calc(1.7rem - 4px);
+  padding: 0 0.7rem;
+  font-size: 0.76rem;
+  line-height: 1;
+  box-sizing: border-box;
+}
+
+.guest-house-pane-tabs .employees-tab-count {
+  margin-left: 0.1rem;
+}
+
+.guest-house-pane-tabs .guest-house-subtab.active .employees-tab-count {
+  background: rgba(255, 255, 255, 0.22);
+  color: #fff;
 }
 
 .guest-house-panel-fill {
-  display: flex;
-  flex-direction: column;
+  display: grid;
+  grid-template-rows: auto minmax(0, 1fr);
   min-height: 0;
-  height: auto;
-  flex: 1;
-  padding: 0.65rem !important;
+  width: 100%;
+  min-width: 0;
+  height: 100%;
+  padding: 0.55rem 0 0 !important;
+  margin-bottom: 0 !important;
   overflow: hidden;
 }
 
 .guest-house-reservations-layout > .guest-house-panel-fill {
-  min-height: 100%;
+  min-height: 0;
+}
+
+.guest-house-panel-body {
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
   height: 100%;
+  overflow: hidden;
+}
+
+.guest-house-panel-body > .btn {
+  flex-shrink: 0;
+  align-self: flex-start;
+  margin: 0 0.65rem 0.4rem;
+}
+
+.guest-house-panel-body > .guest-house-panel-scroll,
+.guest-house-panel-body > .guest-house-panel-empty {
+  flex: 1 1 0;
+  min-height: 0;
 }
 
 .guest-house-panel-empty {
-  flex: 1;
   display: flex;
   align-items: center;
   justify-content: center;
-  min-height: 8rem;
-  border-radius: 8px;
+  min-height: 0;
+  height: auto;
+  border-radius: 0;
   background: color-mix(in srgb, var(--border) 22%, transparent);
 }
 
@@ -21170,10 +21432,44 @@ html:not([data-theme='light']) .guest-house-res-toggle button.is-active {
   margin: 0;
 }
 
+/* Annule le plafond global .table-wrap { max-height: calc(100vh - 280px) } */
+.guest-house-page .table-wrap,
+.guest-house-panel-scroll,
+.guest-house-page .table-wrap.guest-house-panel-scroll {
+  max-height: none !important;
+}
+
 .guest-house-panel-scroll {
-  flex: 1;
-  min-height: 0;
-  overflow: auto;
+  flex: 1 1 0;
+  min-height: 0 !important;
+  height: auto !important;
+  width: 100%;
+  margin: 0;
+  padding: 0;
+  overflow: auto !important;
+  border-top: 1px solid color-mix(in srgb, var(--border) 70%, transparent);
+}
+
+.guest-house-panel-scroll .guest-house-compact-table {
+  border-bottom: none;
+  width: 100%;
+}
+
+.guest-house-panel-scroll .guest-house-compact-table thead th {
+  position: sticky;
+  top: 0;
+  z-index: 2;
+  background: var(--surface);
+}
+
+.guest-house-panel-scroll .guest-house-compact-table th:first-child,
+.guest-house-panel-scroll .guest-house-compact-table td:first-child {
+  padding-left: 0.75rem;
+}
+
+.guest-house-panel-scroll .guest-house-compact-table th:last-child,
+.guest-house-panel-scroll .guest-house-compact-table td:last-child {
+  padding-right: 0.75rem;
 }
 
 .guest-house-subtabs {
@@ -21517,12 +21813,17 @@ html:not([data-theme='light']) .guest-house-room-card.is-reserved {
 
 @media (max-width: 1100px) {
   .guest-house-reservations-layout {
-    grid-template-columns: 1fr;
-    min-height: auto;
+    min-height: 0;
   }
 
   .guest-house-panel-fill {
-    min-height: 18rem;
+    min-height: 0;
+  }
+
+  .guest-house-reservations-head {
+    flex-wrap: wrap;
+    min-height: 0;
+    row-gap: 0.4rem;
   }
 }
 
@@ -21547,6 +21848,10 @@ html:not([data-theme='light']) .guest-house-room-card.is-reserved {
   flex-shrink: 0;
 }
 
+.guest-house-section-head.guest-house-reservations-head {
+  margin-bottom: 0;
+}
+
 .guest-house-section-head h3 {
   margin: 0;
   font-size: 0.84rem;
@@ -21558,48 +21863,100 @@ html:not([data-theme='light']) .guest-house-room-card.is-reserved {
 }
 
 .guest-house-page .data-table {
-  font-size: 0.72rem;
+  font-size: 0.78rem;
+  width: 100%;
+  table-layout: fixed;
 }
 
 .guest-house-page .data-table th,
 .guest-house-page .data-table td {
-  padding: 0.28rem 0.35rem;
+  padding: 0.4rem 0.55rem;
   white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  vertical-align: middle;
 }
 
 .guest-house-page .data-table strong {
-  font-size: 0.72rem;
+  font-size: 0.78rem;
   font-weight: 600;
 }
 
 .guest-house-compact-table {
   width: 100%;
+  table-layout: fixed;
+}
+
+/* Réservations en attente : # | Réf | Personne | Motif | Période | Jours | Actions */
+.guest-house-table-pending th:nth-child(1),
+.guest-house-table-pending td:nth-child(1) { width: 3.2rem; text-align: center; }
+.guest-house-table-pending th:nth-child(2),
+.guest-house-table-pending td:nth-child(2) { width: 11%; }
+.guest-house-table-pending th:nth-child(3),
+.guest-house-table-pending td:nth-child(3) { width: 24%; }
+.guest-house-table-pending th:nth-child(4),
+.guest-house-table-pending td:nth-child(4) { width: 16%; }
+.guest-house-table-pending th:nth-child(5),
+.guest-house-table-pending td:nth-child(5) { width: 20%; }
+.guest-house-table-pending th:nth-child(6),
+.guest-house-table-pending td:nth-child(6) { width: 7%; }
+.guest-house-table-pending th:nth-child(7),
+.guest-house-table-pending td:nth-child(7) { width: 16%; }
+
+/* Occupations : # | Réf | Personne | Chambre | Période | Nbr Jours | Restant */
+.guest-house-table-occupations th:nth-child(1),
+.guest-house-table-occupations td:nth-child(1) { width: 3.2rem; text-align: center; }
+.guest-house-table-occupations th:nth-child(2),
+.guest-house-table-occupations td:nth-child(2) { width: 12%; }
+.guest-house-table-occupations th:nth-child(3),
+.guest-house-table-occupations td:nth-child(3) { width: 26%; }
+.guest-house-table-occupations th:nth-child(4),
+.guest-house-table-occupations td:nth-child(4) { width: 15%; }
+.guest-house-table-occupations th:nth-child(5),
+.guest-house-table-occupations td:nth-child(5) { width: 20%; }
+.guest-house-table-occupations th:nth-child(6),
+.guest-house-table-occupations td:nth-child(6) { width: 10%; }
+.guest-house-table-occupations th:nth-child(7),
+.guest-house-table-occupations td:nth-child(7) { width: 11%; }
+
+.guest-house-serial-cell {
+  font-variant-numeric: tabular-nums;
+  font-weight: 650;
+  color: var(--muted);
+  font-size: 0.72rem;
 }
 
 .guest-house-period-cell {
   white-space: nowrap;
   font-variant-numeric: tabular-nums;
-  font-size: 0.68rem;
+  font-size: 0.74rem;
 }
 
 .guest-house-person-cell {
   display: flex;
   flex-direction: column;
-  gap: 0.05rem;
-  font-size: 0.72rem;
+  gap: 0.08rem;
+  font-size: 0.78rem;
   min-width: 0;
-  max-width: 9rem;
+  max-width: none;
 }
 
 .guest-house-person-cell .text-muted {
-  font-size: 0.62rem;
+  font-size: 0.68rem;
   overflow: hidden;
   text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 .guest-house-person-cell strong {
   overflow: hidden;
   text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.guest-house-page .data-table td.guest-house-person-td,
+.guest-house-page .data-table td.guest-house-motif-td {
+  white-space: normal;
 }
 
 .guest-house-row-actions {
@@ -21656,55 +22013,79 @@ html:not([data-theme='light']) .guest-house-days-left.is-critical {
   align-items: center;
   justify-content: center;
   gap: 0.3rem;
-  height: 1.55rem;
-  min-height: 1.55rem;
-  padding: 0 0.55rem;
+  height: 1.7rem;
+  min-height: 1.7rem;
+  max-height: 1.7rem;
+  padding: 0 0.65rem;
+  margin: 0;
   border-radius: 999px;
   border: 1px solid color-mix(in srgb, #e30613 30%, var(--border));
   background: color-mix(in srgb, #e30613 9%, var(--panel));
   color: var(--text);
-  font-size: 0.66rem;
+  font-size: 0.68rem;
   font-weight: 600;
   cursor: pointer;
   white-space: nowrap;
   line-height: 1;
   box-sizing: border-box;
+  flex-shrink: 0;
+  vertical-align: middle;
 }
 
 .guest-house-occupancy-badge strong {
   color: #b91c1c;
-  font-size: 0.7rem;
+  font-size: 0.72rem;
   line-height: 1;
+  font-weight: 700;
 }
 
 .guest-house-validated-tools {
-  display: flex;
+  display: inline-flex;
   flex-wrap: nowrap;
   align-items: center;
   justify-content: flex-end;
-  gap: 0.35rem;
-  align-self: center;
-  height: 1.55rem;
+  gap: 0.4rem;
+  height: 1.7rem;
+  min-height: 1.7rem;
+  margin: 0;
+  padding: 0;
+}
+
+/* Annule .tabs { margin-bottom: 1.5rem; padding: 0.35rem } qui décale le badge */
+.guest-house-validated-tools .tabs,
+.guest-house-validated-tools .guest-house-subtabs,
+.guest-house-pane-tabs.tabs,
+.guest-house-reservations-head .tabs {
+  margin: 0 !important;
+  margin-bottom: 0 !important;
 }
 
 .guest-house-validated-tools .guest-house-subtabs {
   display: inline-flex;
-  height: 1.55rem;
-  min-height: 1.55rem;
+  height: 1.7rem;
+  min-height: 1.7rem;
+  max-height: 1.7rem;
   align-items: center;
-  padding: 2px;
+  padding: 2px !important;
+  gap: 0.3rem;
   box-sizing: border-box;
+  width: fit-content;
+  border: 1px solid color-mix(in srgb, var(--border) 70%, transparent);
+  background: color-mix(in srgb, var(--border) 35%, transparent);
 }
 
 .guest-house-validated-tools .guest-house-subtab {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  height: calc(1.55rem - 4px);
-  min-height: calc(1.55rem - 4px);
-  padding: 0 0.45rem;
-  font-size: 0.66rem;
+  height: calc(1.7rem - 4px);
+  min-height: calc(1.7rem - 4px);
+  max-height: calc(1.7rem - 4px);
+  padding: 0 0.55rem;
+  margin: 0;
+  font-size: 0.68rem;
   line-height: 1;
+  box-sizing: border-box;
 }
 
 html[data-theme='dark'] .guest-house-occupancy-badge strong,
@@ -21718,8 +22099,17 @@ html:not([data-theme='light']) .guest-house-time-chip.is-critical {
 }
 
 .guest-house-page .table-wrap {
-  overflow-x: auto;
-  max-width: 100%;
+  overflow: auto;
+  max-width: none;
+  min-width: 0;
+  max-height: none !important;
+}
+
+.guest-house-page .table-wrap.guest-house-panel-scroll {
+  width: 100%;
+  max-height: none !important;
+  height: auto !important;
+  flex: 1 1 0;
 }
 
 .guest-house-chart-panel {
@@ -21728,7 +22118,7 @@ html:not([data-theme='light']) .guest-house-time-chip.is-critical {
   gap: 0.55rem;
   padding: 0.65rem !important;
   flex-shrink: 0;
-  min-height: 13rem;
+  min-height: 0;
 }
 
 .guest-house-chart-head {
@@ -21926,22 +22316,23 @@ html[data-theme='light'] .guest-house-chart-filters .filter-select option {
 .guest-house-histo-track {
   position: relative;
   display: flex;
-  align-items: flex-end;
-  justify-content: center;
+  flex-direction: column;
+  justify-content: flex-end;
+  align-items: center;
   width: 100%;
   height: 9.5rem;
   padding: 0 0.15rem;
   overflow: visible;
+  box-sizing: border-box;
 }
 
 .guest-house-histo-shell {
   position: relative;
-  display: flex;
-  flex-direction: column;
-  justify-content: flex-end;
+  display: block;
   width: min(100%, 2.5rem);
   min-height: 0;
-  border-radius: 6px 6px 3px 3px;
+  margin: 0;
+  border-radius: 6px 6px 2px 2px;
   overflow: visible;
   background: linear-gradient(180deg, #67e8f9, #0891b2);
   box-shadow: inset 0 0 0 1px color-mix(in srgb, #000 6%, transparent);
@@ -21950,6 +22341,7 @@ html[data-theme='light'] .guest-house-chart-filters .filter-select option {
     transform 0.15s ease,
     box-shadow 0.15s ease;
   will-change: height;
+  align-self: center;
 }
 
 .guest-house-histo-shell.is-occupancy {
@@ -21967,8 +22359,9 @@ html[data-theme='light'] .guest-house-chart-filters .filter-select option {
 }
 
 .guest-house-histo-col.is-active .guest-house-histo-shell {
-  transform: translateY(-2px);
-  box-shadow: 0 4px 12px color-mix(in srgb, #000 12%, transparent);
+  transform: none;
+  filter: brightness(1.05);
+  box-shadow: 0 2px 8px color-mix(in srgb, #000 10%, transparent);
 }
 
 .guest-house-histo-col.is-selected .guest-house-histo-tip {
@@ -22146,7 +22539,7 @@ html[data-theme='light'] .guest-house-chart-filters .filter-select option {
 
 @media (max-width: 1366px) {
   .guest-house-reservations-layout {
-    min-height: calc(100vh - 8.8rem);
+    min-height: 0;
   }
 
   .guest-house-histo-wrap {
@@ -22171,17 +22564,36 @@ html[data-theme='light'] .guest-house-chart-filters .filter-select option {
   }
 }
 
-/* Guest house ? dark mode polish */
-html:not([data-theme='light']) .guest-house-page .guest-house-kpi-card,
-html[data-theme='dark'] .guest-house-page .guest-house-kpi-card {
-  background: color-mix(in srgb, var(--bg-elevated) 88%, #fff 4%);
+/* Guest house — dark mode polish */
+html:not([data-theme='light']) .guest-house-page .guest-house-kpi-card.is-rooms,
+html[data-theme='dark'] .guest-house-page .guest-house-kpi-card.is-rooms {
+  background: linear-gradient(135deg, color-mix(in srgb, #06b6d4 22%, #16161c), #16161c);
+  color: var(--text);
+}
+html:not([data-theme='light']) .guest-house-page .guest-house-kpi-card.is-occupied,
+html[data-theme='dark'] .guest-house-page .guest-house-kpi-card.is-occupied {
+  background: linear-gradient(135deg, color-mix(in srgb, #e30613 22%, #16161c), #16161c);
+  color: var(--text);
+}
+html:not([data-theme='light']) .guest-house-page .guest-house-kpi-card.is-empty,
+html[data-theme='dark'] .guest-house-page .guest-house-kpi-card.is-empty {
+  background: linear-gradient(135deg, color-mix(in srgb, #22c55e 20%, #16161c), #16161c);
+  color: var(--text);
+}
+html:not([data-theme='light']) .guest-house-page .guest-house-kpi-card.is-pending,
+html[data-theme='dark'] .guest-house-page .guest-house-kpi-card.is-pending {
+  background: linear-gradient(135deg, color-mix(in srgb, #f59e0b 20%, #16161c), #16161c);
+  color: var(--text);
+}
+html:not([data-theme='light']) .guest-house-page .guest-house-kpi-card.is-kimpese,
+html[data-theme='dark'] .guest-house-page .guest-house-kpi-card.is-kimpese {
+  background: linear-gradient(135deg, color-mix(in srgb, #8b5cf6 22%, #16161c), #16161c);
   color: var(--text);
 }
 
 html:not([data-theme='light']) .guest-house-kpi-icon,
 html[data-theme='dark'] .guest-house-kpi-icon {
-  color: #e2e8f0;
-  opacity: 0.28;
+  opacity: 0.9;
 }
 
 html:not([data-theme='light']) .guest-house-histo-wrap,
