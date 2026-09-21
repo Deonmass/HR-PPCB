@@ -16,6 +16,10 @@ import {
 import type { TimesheetPeriod } from '@/lib/timesheet-period';
 import { shiftTimesheetRowsToStart, buildEmployeeTimesheetRows } from '@/lib/timesheet-rows';
 import type { TimesheetDayEntry, TimesheetRowData, TimesheetShiftType } from '@/lib/timesheet-types';
+import {
+  isTimesheetLeaveOrAbsentShift,
+  isTimesheetNonWorkingShift,
+} from '@/lib/timesheet-types';
 import { finalizeTimesheetRow } from '@/lib/timesheet-ws';
 import {
   applyShifterPatternToPeriod,
@@ -302,8 +306,8 @@ export default function TimesheetEmployeeMonthModal({
 
   const applyShiftToRow = useCallback(
     (row: TimesheetRowData, shiftType: TimesheetShiftType | null): TimesheetRowData => {
-      if (shiftType === 'off') {
-        return finalizeTimesheetRow({ ...row, shiftType: 'off', from: '', to: '' });
+      if (isTimesheetNonWorkingShift(shiftType)) {
+        return finalizeTimesheetRow({ ...row, shiftType, from: '', to: '' });
       }
       return finalizeTimesheetRow(
         applyShiftSelection(row, shiftType, { date: row.date, localisation }),
@@ -328,7 +332,8 @@ export default function TimesheetEmployeeMonthModal({
         const next = [...prev];
         next[index] = applyShiftToRow(next[index], shiftType);
 
-        if (!shiftType) {
+        // AL / SL / A : jour seul, pas de propagation.
+        if (!shiftType || isTimesheetLeaveOrAbsentShift(shiftType)) {
           return next;
         }
 
@@ -361,7 +366,7 @@ export default function TimesheetEmployeeMonthModal({
         });
         return next;
       });
-      setFollowShifterCycle(Boolean(shiftType && shiftType !== 'general'));
+      setFollowShifterCycle(Boolean(shiftType && shiftType !== 'general' && !isTimesheetLeaveOrAbsentShift(shiftType)));
       setDirty(true);
     },
     [applyShiftToRow, canEdit, period.days],
@@ -653,6 +658,9 @@ export default function TimesheetEmployeeMonthModal({
                             line.gray ? 'timesheet-template-off-row' : '',
                             line.holiday ? 'timesheet-template-holiday-row' : '',
                             dayInactive ? 'timesheet-template-inactive-row' : '',
+                            line.row.shiftType === 'al' ? 'timesheet-template-al-row' : '',
+                            line.row.shiftType === 'sl' ? 'timesheet-template-sl-row' : '',
+                            line.row.shiftType === 'a' ? 'timesheet-template-absent-row' : '',
                           ]
                             .filter(Boolean)
                             .join(' ')}

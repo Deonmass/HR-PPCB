@@ -18,8 +18,17 @@ export default function TimesheetShiftSelector({ value, onChange, compact, disab
       {TIMESHEET_SHIFT_OPTIONS.map((option) => (
         <label
           key={option.id}
-          className={`timesheet-shift-option${value === option.id ? ' active' : ''}`}
+          className={[
+            'timesheet-shift-option',
+            value === option.id ? 'active' : '',
+            option.id === 'al' ? 'is-shift-al' : '',
+            option.id === 'sl' ? 'is-shift-sl' : '',
+            option.id === 'a' ? 'is-shift-a' : '',
+          ]
+            .filter(Boolean)
+            .join(' ')}
           title={`${option.label} (${option.schedule})`}
+          style={option.color ? { color: option.color } : undefined}
         >
           <input
             type="radio"

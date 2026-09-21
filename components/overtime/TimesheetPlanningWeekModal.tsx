@@ -6,7 +6,7 @@ import TimesheetShiftSelect from '@/components/overtime/TimesheetShiftSelect';
 import { BtnSpinner } from '@/components/overtime/TimesheetIcons';
 import type { TimesheetPeriodDay } from '@/lib/timesheet-period';
 import type { TimesheetDayEntry, TimesheetShiftType } from '@/lib/timesheet-types';
-import { TIMESHEET_SHIFT_OPTIONS } from '@/lib/timesheet-types';
+import { isTimesheetLeaveOrAbsentShift, TIMESHEET_SHIFT_OPTIONS } from '@/lib/timesheet-types';
 import { continueShifterCycleFrom } from '@/lib/timesheet-bulk-shifts';
 import { showError, showSuccess } from '@/lib/swal';
 import type { Employee } from '@/lib/types';
@@ -250,7 +250,7 @@ export default function TimesheetPlanningWeekModal({
         if (row.matricule !== matricule) return row;
 
         const shifts = { ...row.shifts, [dateKey]: shiftType };
-        if (!shiftType) {
+        if (!shiftType || isTimesheetLeaveOrAbsentShift(shiftType)) {
           return { ...row, shifts };
         }
 
@@ -418,7 +418,15 @@ export default function TimesheetPlanningWeekModal({
                     key={option.id}
                     type="button"
                     role="menuitem"
-                    className="timesheet-planning-week-col-dropdown-item"
+                    className={[
+                      'timesheet-planning-week-col-dropdown-item',
+                      option.id === 'al' ? 'is-shift-al' : '',
+                      option.id === 'sl' ? 'is-shift-sl' : '',
+                      option.id === 'a' ? 'is-shift-a' : '',
+                    ]
+                      .filter(Boolean)
+                      .join(' ')}
+                    style={option.color ? { color: option.color, fontWeight: 700 } : undefined}
                     onClick={() => fillColumn(columnMenu.dateKey, option.id)}
                   >
                     {option.planningLabel}

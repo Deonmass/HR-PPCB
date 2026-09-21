@@ -1,8 +1,12 @@
 import { generalShiftTimes, type ShiftScheduleContext } from './timesheet-calc';
-import type { TimesheetShiftType } from './timesheet-types';
+import {
+  isTimesheetNonWorkingShift,
+  type TimesheetShiftType,
+  type TimesheetWorkingShiftType,
+} from './timesheet-types';
 
 export const TIMESHEET_SHIFT_DEFAULT_HOURS: Record<
-  Exclude<TimesheetShiftType, 'off'>,
+  TimesheetWorkingShiftType,
   { from: string; to: string }
 > = {
   general: { from: '07:00', to: '16:30' },
@@ -15,7 +19,7 @@ export function getShiftDefaultHours(
   shiftType: TimesheetShiftType | null,
   ctx?: ShiftScheduleContext,
 ): { from: string; to: string } | null {
-  if (!shiftType || shiftType === 'off') return null;
+  if (!shiftType || isTimesheetNonWorkingShift(shiftType)) return null;
   if (shiftType === 'general') return generalShiftTimes(ctx);
   return TIMESHEET_SHIFT_DEFAULT_HOURS[shiftType];
 }
@@ -29,8 +33,8 @@ export function applyShiftSelection<T extends { from: string; to: string; shiftT
   if (defaults) {
     return { ...row, shiftType, from: defaults.from, to: defaults.to };
   }
-  if (shiftType === null) {
-    return { ...row, shiftType: null, from: '', to: '' };
+  if (shiftType === null || isTimesheetNonWorkingShift(shiftType)) {
+    return { ...row, shiftType, from: '', to: '' };
   }
   return { ...row, shiftType };
 }
@@ -40,7 +44,7 @@ export function hydrateTimesheetActualFromPlanning<
   T extends { from: string; to: string; shiftType: TimesheetShiftType | null; date?: Date },
 >(row: T, localisation = ''): T {
   if (row.from?.trim() && row.to?.trim()) return row;
-  if (row.shiftType === 'off') {
+  if (isTimesheetNonWorkingShift(row.shiftType)) {
     return { ...row, from: '', to: '' };
   }
   const defaults = getShiftDefaultHours(row.shiftType, {

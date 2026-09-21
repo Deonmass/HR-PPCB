@@ -9,6 +9,7 @@ import {
 import { hasTimesheetActualTimes, shouldGrayTimesheetTemplateRow } from './timesheet-off-day';
 import { overtimeWeekInsertsAfterRow } from './timesheet-period';
 import type { TimesheetHourBreakdown, TimesheetRowData, TimesheetShiftType } from './timesheet-types';
+import { isTimesheetNonWorkingShift } from './timesheet-types';
 import { getTimesheetWsExportValue } from './timesheet-ws';
 import type { WeeklyOvertimeEntry } from './timesheet-weekly-ot';
 
@@ -21,6 +22,9 @@ const SHIFT_SCHEDULE_TIMES: Record<TimesheetShiftType, { from: string; to: strin
   shift2: { from: '14:00', to: '22:00' },
   shift3: { from: '22:00', to: '06:00' },
   off: null,
+  al: null,
+  sl: null,
+  a: null,
 };
 
 export type TimesheetTemplateDayLine = {
@@ -84,7 +88,7 @@ export function scheduleTimesForRow(
   row: TimesheetRowData,
   localisation = '',
 ): { from: string; to: string } | null {
-  if (row.shiftType === 'off') return null;
+  if (isTimesheetNonWorkingShift(row.shiftType)) return null;
 
   if (row.shiftType) {
     if (row.shiftType === 'general') {
@@ -142,13 +146,14 @@ export function computeTemplateDayHours(
   }
 
   const holiday = Boolean(row.holiday);
-  const isOff = row.shiftType === 'off';
+  const isOff = isTimesheetNonWorkingShift(row.shiftType);
 
   if (holiday || isOff) {
     return { normal: { ...emptyNormal(), night } };
   }
 
-  const shiftType = row.shiftType && row.shiftType !== 'off' ? row.shiftType : 'general';
+  const shiftType =
+    row.shiftType && !isTimesheetNonWorkingShift(row.shiftType) ? row.shiftType : 'general';
   const schedule = asPerWsTimes(row, localisation);
   const overlap = overlapHours(actualFrom, actualTo, schedule.from, schedule.to);
   const otHours = Math.max(0, Math.round((worked - overlap) * 100) / 100);

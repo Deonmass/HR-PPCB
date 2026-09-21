@@ -1,5 +1,5 @@
 import { rowTotalHours } from './timesheet-calc';
-import type { TimesheetRowData } from './timesheet-types';
+import { isTimesheetNonWorkingShift, type TimesheetRowData } from './timesheet-types';
 
 type WorkedHoursRow = Pick<
   TimesheetRowData,
@@ -17,16 +17,16 @@ export function hasTimesheetWorkedHours(row: WorkedHoursRow): boolean {
   return rowTotalHours(row) > 0;
 }
 
-/** Rest day in the template: Off shift, or no planned shift and no Actual times. */
+/** Rest day in the template: Off / leave / absence, or no planned shift and no Actual times. */
 export function shouldGrayTimesheetTemplateRow(row: TimesheetRowData): boolean {
   if (row.holiday) return false;
-  if (row.shiftType && row.shiftType !== 'off') return false;
+  if (row.shiftType && !isTimesheetNonWorkingShift(row.shiftType)) return false;
   return !hasTimesheetActualTimes(row);
 }
 
 /** Scheduled rest day: shift Off (week-end for general, cycle end for shifter). */
 export function isTimesheetOffShift(row: Pick<TimesheetRowData, 'shiftType'>): boolean {
-  return row.shiftType === 'off';
+  return isTimesheetNonWorkingShift(row.shiftType);
 }
 
 /** Gray highlight: Off day with no hours worked (overtime on Off removes the gray). */

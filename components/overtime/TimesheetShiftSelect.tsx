@@ -23,6 +23,9 @@ function optionLabel(
 
 export default function TimesheetShiftSelect({ value, onChange, disabled, id, compact, variant = 'default' }: Props) {
   const isPlanning = variant === 'planning';
+  const selected = TIMESHEET_SHIFT_OPTIONS.find((option) => option.id === value);
+  const accent = selected?.color;
+
   return (
     <select
       id={id}
@@ -30,11 +33,15 @@ export default function TimesheetShiftSelect({ value, onChange, disabled, id, co
         'timesheet-shift-select',
         compact ? 'timesheet-shift-select-compact' : '',
         isPlanning ? 'timesheet-shift-select-planning' : '',
+        value === 'al' ? 'is-shift-al' : '',
+        value === 'sl' ? 'is-shift-sl' : '',
+        value === 'a' ? 'is-shift-a' : '',
       ]
         .filter(Boolean)
         .join(' ')}
       value={value ?? ''}
       disabled={disabled}
+      style={accent ? { color: accent, borderColor: accent, fontWeight: 700 } : undefined}
       onChange={(e) => {
         const next = e.target.value;
         onChange(next ? (next as TimesheetShiftType) : null);
@@ -42,7 +49,21 @@ export default function TimesheetShiftSelect({ value, onChange, disabled, id, co
     >
       <option value="">{compact && !isPlanning ? '—' : 'Sélectionner'}</option>
       {TIMESHEET_SHIFT_OPTIONS.map((option) => (
-        <option key={option.id} value={option.id} title={option.schedule}>
+        <option
+          key={option.id}
+          value={option.id}
+          title={option.schedule}
+          className={
+            option.id === 'al'
+              ? 'timesheet-shift-option-al'
+              : option.id === 'sl'
+                ? 'timesheet-shift-option-sl'
+                : option.id === 'a'
+                  ? 'timesheet-shift-option-a'
+                  : undefined
+          }
+          style={option.color ? { color: option.color, fontWeight: 700 } : undefined}
+        >
           {optionLabel(option, variant, Boolean(compact))}
         </option>
       ))}

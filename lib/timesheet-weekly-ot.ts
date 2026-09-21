@@ -77,6 +77,9 @@ export function mapToNormalHoursColumns(
     case 'shift3':
       return { ordinary: 0, shift1: 0, shift2: 0, shift3: calc.shift3, night: calc.night };
     case 'off':
+    case 'al':
+    case 'sl':
+    case 'a':
       return { ordinary: calc.ordinary, shift1: 0, shift2: 0, shift3: 0, night: calc.night };
     default:
       return { ordinary: 0, shift1: 0, shift2: 0, shift3: 0, night: 0 };

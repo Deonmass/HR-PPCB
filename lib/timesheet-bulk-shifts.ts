@@ -84,10 +84,10 @@ export function applyShifterDay(
   cycle: TimesheetShiftType[] = SHIFTER_CYCLE,
 ): TimesheetRowData {
   const shiftType = cycle[dayIndex % cycle.length];
-  if (shiftType === 'off') {
+  if (shiftType === 'off' || shiftType === 'al' || shiftType === 'sl' || shiftType === 'a') {
     return finalizeTimesheetRow({
       ...row,
-      shiftType: 'off',
+      shiftType,
       from: '',
       to: '',
     });

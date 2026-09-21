@@ -1,4 +1,5 @@
-import type { TimesheetHourBreakdown, TimesheetShiftType } from './timesheet-types';
+import type { TimesheetHourBreakdown, TimesheetShiftType, TimesheetWorkingShiftType } from './timesheet-types';
+import { isTimesheetNonWorkingShift } from './timesheet-types';
 
 export type { TimesheetHourBreakdown, TimesheetShiftType };
 
@@ -239,13 +240,16 @@ export function calculateTimesheetHours(
     case 'shift3':
       return calcShift3(work);
     case 'off':
+    case 'al':
+    case 'sl':
+    case 'a':
       return calcOff(work);
     default:
       return emptyBreakdown();
   }
 }
 
-const SHIFT_STANDARD_TIMES: Record<Exclude<TimesheetShiftType, 'off'>, MinuteInterval> = {
+const SHIFT_STANDARD_TIMES: Record<TimesheetWorkingShiftType, MinuteInterval> = {
   general: { start: GENERAL_START, end: GENERAL_END },
   shift1: { start: S1_START, end: S1_END },
   shift2: { start: S2_START, end: S2_END },
@@ -301,7 +305,7 @@ export function generalShiftTimes(ctx?: ShiftScheduleContext): { from: string; t
  */
 function breakdownFromWork(
   work: MinuteInterval[],
-  shiftType: Exclude<TimesheetShiftType, 'off'>,
+  shiftType: TimesheetWorkingShiftType,
 ): TimesheetHourBreakdown {
   const duration = minutesToHours(totalMinutes(work));
 
@@ -333,7 +337,7 @@ export function normalHoursBreakdown(
   to: string,
   shiftType: TimesheetShiftType | null,
 ): TimesheetHourBreakdown {
-  if (!shiftType || shiftType === 'off') return emptyBreakdown();
+  if (!shiftType || isTimesheetNonWorkingShift(shiftType)) return emptyBreakdown();
   const start = parseTimeToMinutes(from);
   const end = parseTimeToMinutes(to);
   if (start === null || end === null || start === end) return emptyBreakdown();
@@ -345,7 +349,7 @@ export function standardShiftBreakdown(
   shiftType: TimesheetShiftType | null,
   ctx?: ShiftScheduleContext,
 ): TimesheetHourBreakdown {
-  if (!shiftType || shiftType === 'off') return emptyBreakdown();
+  if (!shiftType || isTimesheetNonWorkingShift(shiftType)) return emptyBreakdown();
   const times = shiftType === 'general' ? generalShiftInterval(ctx) : SHIFT_STANDARD_TIMES[shiftType];
   return breakdownFromWork(splitWorkIntervals(times.start, times.end), shiftType);
 }
