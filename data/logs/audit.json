@@ -1,6 +1,44 @@
 {
   "entries": [
     {
+      "id": "log-000967",
+      "at": "2026-09-21T09:29:14.472Z",
+      "userId": "admin",
+      "userName": "Administrateur",
+      "userEmail": "admin",
+      "module": "sante",
+      "moduleLabel": "Santé",
+      "action": "create",
+      "actionLabel": "Création",
+      "entityType": "sante.visit",
+      "entityId": "sante-mub1mt32-u6q57s",
+      "summary": "Cas santé — MASSADI GEDEON GEDEON · PLAIE TRAUMATIQUE/ACCIDENT DE TRAVAIL",
+      "details": "Cas santé — MASSADI GEDEON GEDEON · PLAIE TRAUMATIQUE/ACCIDENT DE TRAVAIL",
+      "after": {
+        "id": "sante-mub1mt32-u6q57s",
+        "date": "2026-09-21",
+        "nom": "MASSADI",
+        "postnom": "GEDEON GEDEON",
+        "sexe": "M",
+        "age": 32,
+        "typeMalade": "AGENT",
+        "pathologie": "PLAIE TRAUMATIQUE/ACCIDENT DE TRAVAIL",
+        "traitement": "ANSET SIROP",
+        "reference": "NON",
+        "year": 2026,
+        "month": 9,
+        "employeeMatricule": "70000308",
+        "employeeNom": "MASSADI GEDEON GEDEON",
+        "dependantId": null,
+        "createdAt": "2026-09-21T09:29:11.870Z",
+        "updatedAt": "2026-09-21T09:29:11.870Z",
+        "createdBy": "admin",
+        "updatedBy": "admin"
+      },
+      "undoable": false,
+      "undone": false
+    },
+    {
       "id": "log-000966",
       "at": "2026-09-21T09:27:14.922Z",
       "userId": "Serge.Muakasa@ppcdrc.cd",
@@ -111361,5 +111399,5 @@
       }
     }
   ],
-  "nextSeq": 967
+  "nextSeq": 968
 }
