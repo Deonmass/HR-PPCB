@@ -1,5 +1,6 @@
 'use client';
 
+import type { CSSProperties } from 'react';
 import CardActionMenu from '@/components/CardActionMenu';
 import {
   GUEST_HOUSE_BUILDINGS,
@@ -33,7 +34,7 @@ function formatDate(value: string): string {
   if (!/^\d{4}-\d{2}-\d{2}/.test(value)) return value || '—';
   const date = new Date(`${value.slice(0, 10)}T00:00:00`);
   if (Number.isNaN(date.getTime())) return value;
-  return date.toLocaleDateString('fr-FR');
+  return date.toLocaleDateString('fr-FR', { day: '2-digit', month: '2-digit' });
 }
 
 function remainingDays(endDate: string): number {
@@ -43,22 +44,11 @@ function remainingDays(endDate: string): number {
   return Math.floor((end.getTime() - today.getTime()) / 86_400_000);
 }
 
-function formatHoursMinutesLeft(endDate: string, now = new Date()): string {
-  const end = new Date(`${endDate.slice(0, 10)}T23:59:59`);
-  if (Number.isNaN(end.getTime())) return '0 h 00';
-  const ms = end.getTime() - now.getTime();
-  if (ms <= 0) return '0 h 00';
-  const totalMins = Math.floor(ms / 60_000);
-  const hours = Math.floor(totalMins / 60);
-  const mins = totalMins % 60;
-  return `${hours} h ${String(mins).padStart(2, '0')}`;
-}
-
-function formatDaysLeftDisplay(endDate: string): string {
+function formatDaysLeftShort(endDate: string): string {
   const days = remainingDays(endDate);
   if (days < 0) return 'Terminé';
-  if (days === 0) return formatHoursMinutesLeft(endDate);
-  return `${days} j restant${days > 1 ? 's' : ''}`;
+  if (days === 0) return 'Jour J';
+  return `${days} j`;
 }
 
 function statusLabel(status: MotelRoomStatus): string {
@@ -75,10 +65,28 @@ function IconPlus({ size = 14 }: { size?: number }) {
   );
 }
 
+function IconBed({ size = 18 }: { size?: number }) {
+  return (
+    <svg viewBox="0 0 24 24" width={size} height={size} fill="none" stroke="currentColor" strokeWidth="1.6" aria-hidden>
+      <path d="M3 18V9a2 2 0 0 1 2-2h6v11" />
+      <path d="M11 11h8a2 2 0 0 1 2 2v5" />
+      <path d="M3 18h18" />
+      <path d="M7 9V7a1 1 0 0 1 1-1h2" />
+    </svg>
+  );
+}
+
 function sortRooms(items: MotelRoomItem[]): MotelRoomItem[] {
   return [...items].sort((a, b) =>
     a.room.roomNumber.localeCompare(b.room.roomNumber, 'fr', { numeric: true }),
   );
+}
+
+function roomUnitLabel(room: GuestRoom): string {
+  const num = (room.roomNumber || '').trim();
+  if (!num) return 'CH.';
+  if (/^vip$/i.test(num)) return 'VIP';
+  return `CH. ${num}`;
 }
 
 export default function GuestHouseMotelView({
@@ -115,7 +123,7 @@ export default function GuestHouseMotelView({
         <div>
           <h3>Plan des chambres</h3>
           <p className="text-muted">
-            Vue motel · Bâtiment 1 &amp; 2 · {totals.occupied} occupée(s) · {totals.empty} vide(s)
+            Plan type motel · Bâtiment 1 &amp; 2 · {totals.occupied} occupée(s) · {totals.empty} vide(s)
             {totals.reserved ? ` · ${totals.reserved} réservée(s)` : ''}
           </p>
         </div>
@@ -126,18 +134,19 @@ export default function GuestHouseMotelView({
         </div>
       </div>
 
-      <div className="guest-house-motel-campus">
-        {buildings.map(({ building, rooms }) => {
-          const shortLabel = building.replace(/^Batiment\s*#?/i, 'Bât. ');
+      <div className="guest-house-motel-plans">
+        {buildings.map(({ building, rooms }, buildingIndex) => {
+          const shortLabel = building.replace(/^Batiment\s*#?/i, 'Bâtiment ');
           const occupiedCount = rooms.filter((r) => r.status === 'occupied').length;
+
           return (
-            <article key={building} className="guest-house-motel-building">
-              <div className="guest-house-motel-roof" aria-hidden />
-              <header className="guest-house-motel-building-head">
+            <article key={building} className="guest-house-floorplan">
+              <header className="guest-house-floorplan-head">
                 <div>
                   <h4>{shortLabel}</h4>
                   <p>
                     {rooms.length} chambre(s) · {occupiedCount} occupée(s)
+                    {buildingIndex === 0 ? ' · étage chambres' : ''}
                   </p>
                 </div>
                 {canCreate && onCreateRoom ? (
@@ -156,90 +165,116 @@ export default function GuestHouseMotelView({
               {rooms.length === 0 ? (
                 <p className="text-muted guest-house-motel-empty">Aucune chambre dans ce bâtiment.</p>
               ) : (
-                <div className="guest-house-motel-doors" role="list">
-                  {rooms.map(({ room, status, linkedReservation }) => {
-                    const daysLeft = linkedReservation
-                      ? remainingDays(linkedReservation.endDate)
-                      : null;
-                    const menuItems = [
-                      {
-                        id: 'history',
-                        label: 'Historique',
-                        icon: 'view' as const,
-                        onClick: () => onHistory(room),
-                      },
-                      ...(canEdit
-                        ? [{
-                            id: 'edit',
-                            label: 'Modifier',
-                            icon: 'edit' as const,
-                            onClick: () => onEditRoom(room),
-                          }]
-                        : []),
-                      ...(canDelete
-                        ? [{
-                            id: 'delete',
-                            label: 'Supprimer',
-                            icon: 'delete' as const,
-                            danger: true,
-                            onClick: () => onDeleteRoom(room),
-                          }]
-                        : []),
-                    ];
+                <div className="guest-house-floorplan-scroll">
+                  <div
+                    className="guest-house-floorplan-strip"
+                    style={{ '--gh-room-count': String(Math.max(rooms.length, 1)) } as CSSProperties}
+                  >
+                    <div className="guest-house-floorplan-corridor" aria-hidden>
+                      <span>DÉGAGEMENT</span>
+                    </div>
 
-                    return (
-                      <div
-                        key={room.id}
-                        role="listitem"
-                        className={`guest-house-motel-door is-${status}`}
-                      >
-                        <div className="guest-house-motel-door-knob" aria-hidden />
-                        <div className="guest-house-motel-door-top">
-                          <div>
-                            <strong className="guest-house-motel-door-number">
-                              {room.roomNumber || roomDisplayName(room)}
-                            </strong>
-                            {room.roomName ? (
-                              <span className="guest-house-motel-door-name">{room.roomName}</span>
-                            ) : null}
-                          </div>
-                          <CardActionMenu
-                            ariaLabel={`Actions chambre ${roomDisplayName(room)}`}
-                            items={menuItems}
-                          />
-                        </div>
+                    <div className="guest-house-floorplan-units" role="list">
+                      {rooms.map(({ room, status, linkedReservation }) => {
+                        const daysLeft = linkedReservation
+                          ? remainingDays(linkedReservation.endDate)
+                          : null;
+                        const menuItems = [
+                          {
+                            id: 'history',
+                            label: 'Historique',
+                            icon: 'view' as const,
+                            onClick: () => onHistory(room),
+                          },
+                          ...(canEdit
+                            ? [{
+                                id: 'edit',
+                                label: 'Modifier',
+                                icon: 'edit' as const,
+                                onClick: () => onEditRoom(room),
+                              }]
+                            : []),
+                          ...(canDelete
+                            ? [{
+                                id: 'delete',
+                                label: 'Supprimer',
+                                icon: 'delete' as const,
+                                danger: true,
+                                onClick: () => onDeleteRoom(room),
+                              }]
+                            : []),
+                        ];
 
-                        <span className={`guest-house-motel-door-badge is-${status}`}>
-                          {statusLabel(status)}
-                        </span>
+                        return (
+                          <div
+                            key={room.id}
+                            role="listitem"
+                            className={`guest-house-floorplan-unit is-${status}`}
+                            title={`${roomDisplayName(room)} — ${statusLabel(status)}`}
+                          >
+                            <div className="guest-house-floorplan-balcony" aria-hidden>
+                              BALCON
+                            </div>
 
-                        {linkedReservation ? (
-                          <div className="guest-house-motel-door-body">
-                            <div className="guest-house-motel-occupant" title={linkedReservation.personName}>
-                              {linkedReservation.personName}
-                            </div>
-                            <div className="guest-house-motel-dates">
-                              <span>{formatDate(linkedReservation.startDate)}</span>
-                              <span aria-hidden>→</span>
-                              <span>{formatDate(linkedReservation.endDate)}</span>
-                            </div>
-                            <div
-                              className={`guest-house-motel-restant${
-                                daysLeft != null && daysLeft <= 2 && daysLeft >= 0 ? ' is-critical' : ''
-                              }`}
-                            >
-                              {formatDaysLeftDisplay(linkedReservation.endDate)}
+                            <div className="guest-house-floorplan-unit-main">
+                              <div className="guest-house-floorplan-unit-top">
+                                <strong className="guest-house-floorplan-ch-label">
+                                  {roomUnitLabel(room)}
+                                </strong>
+                                <CardActionMenu
+                                  ariaLabel={`Actions ${roomDisplayName(room)}`}
+                                  items={menuItems}
+                                />
+                              </div>
+
+                              {room.roomName ? (
+                                <div className="guest-house-floorplan-room-name" title={room.roomName}>
+                                  {room.roomName}
+                                </div>
+                              ) : null}
+
+                              <div className="guest-house-floorplan-furnish" aria-hidden>
+                                <span className="guest-house-floorplan-bed">
+                                  <IconBed size={16} />
+                                </span>
+                                <span className="guest-house-floorplan-toil">TOIL.</span>
+                              </div>
+
+                              {linkedReservation ? (
+                                <div className="guest-house-floorplan-info">
+                                  <div
+                                    className="guest-house-floorplan-occupant"
+                                    title={linkedReservation.personName}
+                                  >
+                                    {linkedReservation.personName}
+                                  </div>
+                                  <div className="guest-house-floorplan-dates">
+                                    {formatDate(linkedReservation.startDate)}
+                                    {' → '}
+                                    {formatDate(linkedReservation.endDate)}
+                                  </div>
+                                  <div
+                                    className={`guest-house-floorplan-restant${
+                                      daysLeft != null && daysLeft <= 2 && daysLeft >= 0
+                                        ? ' is-critical'
+                                        : ''
+                                    }`}
+                                  >
+                                    {formatDaysLeftShort(linkedReservation.endDate)}
+                                  </div>
+                                </div>
+                              ) : (
+                                <div className="guest-house-floorplan-info is-vacant">
+                                  <span>{statusLabel(status)}</span>
+                                  <span>Libre</span>
+                                </div>
+                              )}
                             </div>
                           </div>
-                        ) : (
-                          <div className="guest-house-motel-door-body is-vacant">
-                            <span>Libre</span>
-                            <span className="text-muted">Aucune occupation</span>
-                          </div>
-                        )}
-                      </div>
-                    );
-                  })}
+                        );
+                      })}
+                    </div>
+                  </div>
                 </div>
               )}
             </article>

@@ -20317,11 +20317,11 @@ html[data-theme='light'] .village-dept-taille-table td:first-child {
   font-size: 0.62rem;
 }
 
-/* ── Motel plan (dashboard) ───────────────────────────────── */
+/* ── Motel floor plan (dashboard) ─────────────────────────── */
 .guest-house-motel {
   display: flex;
   flex-direction: column;
-  gap: 0.85rem;
+  gap: 0.9rem;
 }
 
 .guest-house-motel-head {
@@ -20350,11 +20350,10 @@ html[data-theme='light'] .village-dept-taille-table td:first-child {
   content: '';
   width: 0.55rem;
   height: 0.55rem;
-  border-radius: 999px;
+  border-radius: 2px;
 }
 
-.guest-house-motel-legend-item.is-occupied,
-.guest-house-motel-door-badge.is-occupied {
+.guest-house-motel-legend-item.is-occupied {
   color: #b91c1c;
   background: color-mix(in srgb, #e30613 12%, var(--panel));
   border-color: color-mix(in srgb, #e30613 28%, transparent);
@@ -20364,8 +20363,7 @@ html[data-theme='light'] .village-dept-taille-table td:first-child {
   background: #e30613;
 }
 
-.guest-house-motel-legend-item.is-empty,
-.guest-house-motel-door-badge.is-empty {
+.guest-house-motel-legend-item.is-empty {
   color: #15803d;
   background: color-mix(in srgb, #22c55e 12%, var(--panel));
   border-color: color-mix(in srgb, #22c55e 28%, transparent);
@@ -20375,8 +20373,7 @@ html[data-theme='light'] .village-dept-taille-table td:first-child {
   background: #22c55e;
 }
 
-.guest-house-motel-legend-item.is-reserved,
-.guest-house-motel-door-badge.is-reserved {
+.guest-house-motel-legend-item.is-reserved {
   color: #b45309;
   background: color-mix(in srgb, #f59e0b 14%, var(--panel));
   border-color: color-mix(in srgb, #f59e0b 32%, transparent);
@@ -20386,56 +20383,36 @@ html[data-theme='light'] .village-dept-taille-table td:first-child {
   background: #f59e0b;
 }
 
-.guest-house-motel-campus {
-  display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 1rem;
-  align-items: start;
-}
-
-.guest-house-motel-building {
-  position: relative;
+.guest-house-motel-plans {
   display: flex;
   flex-direction: column;
-  gap: 0.65rem;
-  padding: 0.85rem 0.85rem 0.95rem;
-  border-radius: 14px;
-  border: 1px solid var(--border);
-  background:
-    linear-gradient(180deg, color-mix(in srgb, var(--surface) 88%, #dbe4f0) 0%, var(--panel) 42%);
-  box-shadow: 0 1px 0 color-mix(in srgb, #fff 55%, transparent) inset;
+  gap: 1.15rem;
 }
 
-.guest-house-motel-roof {
-  position: absolute;
-  left: 8%;
-  right: 8%;
-  top: -0.45rem;
-  height: 0.7rem;
-  border-radius: 8px 8px 2px 2px;
-  background: linear-gradient(180deg, #8b93a7 0%, #5f677a 100%);
-  opacity: 0.72;
-  pointer-events: none;
+.guest-house-floorplan {
+  display: flex;
+  flex-direction: column;
+  gap: 0.55rem;
 }
 
-.guest-house-motel-building-head {
+.guest-house-floorplan-head {
   display: flex;
   align-items: flex-start;
   justify-content: space-between;
   gap: 0.65rem;
-  padding-top: 0.15rem;
 }
 
-.guest-house-motel-building-head h4 {
+.guest-house-floorplan-head h4 {
   margin: 0;
-  font-size: 0.95rem;
+  font-size: 0.88rem;
   font-weight: 700;
-  letter-spacing: 0.01em;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
 }
 
-.guest-house-motel-building-head p {
-  margin: 0.15rem 0 0;
-  font-size: 0.72rem;
+.guest-house-floorplan-head p {
+  margin: 0.12rem 0 0;
+  font-size: 0.7rem;
   color: var(--muted);
 }
 
@@ -20445,164 +20422,218 @@ html[data-theme='light'] .village-dept-taille-table td:first-child {
   text-align: center;
 }
 
-.guest-house-motel-doors {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(168px, 1fr));
-  gap: 0.65rem;
+.guest-house-floorplan-scroll {
+  overflow-x: auto;
+  overflow-y: hidden;
+  padding-bottom: 0.25rem;
+  -webkit-overflow-scrolling: touch;
 }
 
-.guest-house-motel-door {
+.guest-house-floorplan-strip {
+  --gh-room-count: 7;
+  display: grid;
+  grid-template-rows: 1.35rem minmax(11.5rem, auto);
+  min-width: max(100%, calc(var(--gh-room-count) * 7.4rem));
+  border: 1.5px solid color-mix(in srgb, var(--text) 55%, #64748b);
+  background:
+    repeating-linear-gradient(
+      90deg,
+      transparent,
+      transparent calc(100% / var(--gh-room-count) - 1px),
+      color-mix(in srgb, var(--text) 12%, transparent) calc(100% / var(--gh-room-count) - 1px),
+      color-mix(in srgb, var(--text) 12%, transparent) calc(100% / var(--gh-room-count))
+    ),
+    color-mix(in srgb, var(--panel) 92%, #e8edf5);
+}
+
+.guest-house-floorplan-corridor {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-bottom: 1.5px solid color-mix(in srgb, var(--text) 45%, #64748b);
+  background: color-mix(in srgb, #94a3b8 18%, var(--panel));
+  letter-spacing: 0.28em;
+  font-size: 0.62rem;
+  font-weight: 700;
+  color: color-mix(in srgb, var(--text) 70%, #64748b);
+  text-transform: uppercase;
+}
+
+.guest-house-floorplan-units {
+  display: grid;
+  grid-template-columns: repeat(var(--gh-room-count), minmax(7.2rem, 1fr));
+  min-height: 11.5rem;
+}
+
+.guest-house-floorplan-unit {
   position: relative;
   display: flex;
   flex-direction: column;
-  gap: 0.4rem;
-  min-height: 9.5rem;
-  padding: 0.65rem 0.7rem 0.7rem;
-  border-radius: 12px 12px 10px 10px;
-  border: 1px solid transparent;
+  min-width: 0;
+  border-right: 1.5px solid color-mix(in srgb, var(--text) 40%, #64748b);
   background: var(--panel);
-  box-shadow:
-    0 1px 0 color-mix(in srgb, #fff 50%, transparent) inset,
-    0 8px 18px rgba(22, 22, 30, 0.06);
 }
 
-.guest-house-motel-door-knob {
-  position: absolute;
-  right: 0.55rem;
-  top: 48%;
-  width: 0.42rem;
-  height: 0.42rem;
-  border-radius: 999px;
-  background: color-mix(in srgb, var(--muted) 55%, #cbd5e1);
-  box-shadow: 0 0 0 2px color-mix(in srgb, var(--panel) 70%, transparent);
+.guest-house-floorplan-unit:last-child {
+  border-right: none;
 }
 
-.guest-house-motel-door.is-occupied {
-  background: color-mix(in srgb, #e30613 11%, var(--panel));
-  border-color: color-mix(in srgb, #e30613 38%, transparent);
+.guest-house-floorplan-unit.is-occupied {
+  background: color-mix(in srgb, #e30613 14%, #fff);
 }
 
-.guest-house-motel-door.is-empty {
-  background: color-mix(in srgb, #22c55e 11%, var(--panel));
-  border-color: color-mix(in srgb, #22c55e 38%, transparent);
+.guest-house-floorplan-unit.is-empty {
+  background: color-mix(in srgb, #22c55e 12%, #fff);
 }
 
-.guest-house-motel-door.is-reserved {
-  background: color-mix(in srgb, #f59e0b 13%, var(--panel));
-  border-color: color-mix(in srgb, #f59e0b 40%, transparent);
+.guest-house-floorplan-unit.is-reserved {
+  background: color-mix(in srgb, #f59e0b 16%, #fff);
 }
 
-.guest-house-motel-door-top {
+.guest-house-floorplan-balcony {
+  flex: 0 0 auto;
+  padding: 0.18rem 0.25rem;
+  border-bottom: 1px dashed color-mix(in srgb, var(--text) 28%, transparent);
+  text-align: center;
+  font-size: 0.55rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  color: color-mix(in srgb, var(--muted) 85%, #64748b);
+  background: color-mix(in srgb, #cbd5e1 22%, transparent);
+}
+
+.guest-house-floorplan-unit-main {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 0.28rem;
+  min-height: 0;
+  padding: 0.4rem 0.4rem 0.45rem;
+}
+
+.guest-house-floorplan-unit-top {
   display: flex;
   align-items: flex-start;
   justify-content: space-between;
-  gap: 0.4rem;
-  padding-right: 0.65rem;
+  gap: 0.2rem;
 }
 
-.guest-house-motel-door-number {
-  display: block;
-  font-size: 1.05rem;
-  font-weight: 750;
+.guest-house-floorplan-ch-label {
+  font-size: 0.78rem;
+  font-weight: 800;
+  letter-spacing: 0.04em;
   line-height: 1.1;
-  letter-spacing: 0.02em;
 }
 
-.guest-house-motel-door-name {
-  display: block;
-  margin-top: 0.12rem;
-  font-size: 0.68rem;
+.guest-house-floorplan-room-name {
+  font-size: 0.62rem;
   color: var(--muted);
-  max-width: 8.5rem;
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
 }
 
-.guest-house-motel-door-badge {
-  align-self: flex-start;
-  padding: 0.12rem 0.45rem;
-  border-radius: 999px;
-  font-size: 0.62rem;
-  font-weight: 700;
-  text-transform: uppercase;
-  letter-spacing: 0.04em;
-  border: 1px solid transparent;
+.guest-house-floorplan-furnish {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 0.25rem;
+  margin-top: 0.1rem;
+  min-height: 1.6rem;
 }
 
-.guest-house-motel-door-body {
+.guest-house-floorplan-bed {
+  display: inline-flex;
+  color: color-mix(in srgb, var(--text) 45%, #64748b);
+  opacity: 0.75;
+}
+
+.guest-house-floorplan-toil {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 2.1rem;
+  padding: 0.2rem 0.25rem;
+  border: 1px solid color-mix(in srgb, var(--text) 35%, transparent);
+  font-size: 0.5rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  color: color-mix(in srgb, var(--text) 55%, #64748b);
+  background: color-mix(in srgb, var(--panel) 70%, #e2e8f0);
+}
+
+.guest-house-floorplan-info {
   display: flex;
   flex-direction: column;
-  gap: 0.22rem;
+  gap: 0.12rem;
   margin-top: auto;
-  padding-top: 0.2rem;
-  font-size: 0.72rem;
-}
-
-.guest-house-motel-door-body.is-vacant {
-  color: var(--muted);
-  gap: 0.1rem;
-}
-
-.guest-house-motel-occupant {
-  font-weight: 650;
-  font-size: 0.78rem;
+  padding-top: 0.25rem;
+  border-top: 1px solid color-mix(in srgb, var(--text) 12%, transparent);
+  font-size: 0.66rem;
   line-height: 1.25;
+}
+
+.guest-house-floorplan-info.is-vacant {
+  color: var(--muted);
+  font-weight: 600;
+}
+
+.guest-house-floorplan-occupant {
+  font-weight: 700;
+  font-size: 0.7rem;
   overflow: hidden;
   display: -webkit-box;
   -webkit-line-clamp: 2;
   -webkit-box-orient: vertical;
 }
 
-.guest-house-motel-dates {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  gap: 0.25rem;
+.guest-house-floorplan-dates {
   color: var(--muted);
   font-variant-numeric: tabular-nums;
+  font-size: 0.62rem;
 }
 
-.guest-house-motel-restant {
-  font-weight: 700;
+.guest-house-floorplan-restant {
+  font-weight: 800;
+  font-size: 0.68rem;
   color: var(--text);
 }
 
-.guest-house-motel-restant.is-critical {
+.guest-house-floorplan-restant.is-critical {
   color: #e30613;
 }
 
-.guest-house-motel-door .settings-card-menu-btn {
-  width: 1.55rem;
-  height: 1.55rem;
-  border-radius: 7px;
+.guest-house-floorplan-unit .settings-card-menu-btn {
+  width: 1.35rem;
+  height: 1.35rem;
+  border-radius: 4px;
+  flex-shrink: 0;
 }
 
-@media (max-width: 980px) {
-  .guest-house-motel-campus {
-    grid-template-columns: 1fr;
-  }
+html[data-theme='dark'] .guest-house-floorplan-unit.is-occupied,
+html:not([data-theme='light']) .guest-house-floorplan-unit.is-occupied {
+  background: color-mix(in srgb, #e30613 22%, var(--panel));
 }
 
-@media (max-width: 560px) {
-  .guest-house-motel-doors {
-    grid-template-columns: 1fr 1fr;
-  }
+html[data-theme='dark'] .guest-house-floorplan-unit.is-empty,
+html:not([data-theme='light']) .guest-house-floorplan-unit.is-empty {
+  background: color-mix(in srgb, #22c55e 18%, var(--panel));
+}
 
-  .guest-house-motel-building-head {
+html[data-theme='dark'] .guest-house-floorplan-unit.is-reserved,
+html:not([data-theme='light']) .guest-house-floorplan-unit.is-reserved {
+  background: color-mix(in srgb, #f59e0b 20%, var(--panel));
+}
+
+html[data-theme='dark'] .guest-house-floorplan-strip,
+html:not([data-theme='light']) .guest-house-floorplan-strip {
+  background: var(--panel);
+}
+
+@media (max-width: 720px) {
+  .guest-house-floorplan-head {
     flex-direction: column;
   }
-}
-
-html[data-theme='dark'] .guest-house-motel-building,
-html:not([data-theme='light']) .guest-house-motel-building {
-  background: linear-gradient(180deg, rgba(255, 255, 255, 0.04), var(--panel));
-  box-shadow: none;
-}
-
-html[data-theme='dark'] .guest-house-motel-roof,
-html:not([data-theme='light']) .guest-house-motel-roof {
-  opacity: 0.45;
 }
 
 .guest-house-export-group {
