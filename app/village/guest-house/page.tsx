@@ -2389,7 +2389,7 @@ export default function VillageGuestHousePage() {
         <SideDrawer
           open={drawer === 'reservation'}
           title={editingReservation ? `Modifier ${editingReservation.numero}` : 'Nouvelle réservation'}
-          width={480}
+          width={440}
           onClose={() => {
             setDrawer(null);
             setEditingReservation(null);
@@ -2545,7 +2545,7 @@ export default function VillageGuestHousePage() {
                 <label htmlFor="gh-notes">Notes</label>
                 <textarea
                   id="gh-notes"
-                  rows={3}
+                  rows={2}
                   value={reservationForm.notes}
                   onChange={(e) => setReservationForm((prev) => ({ ...prev, notes: e.target.value }))}
                   placeholder="Informations utiles pour l’accueil…"
