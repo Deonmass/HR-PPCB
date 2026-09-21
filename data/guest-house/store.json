@@ -716,6 +716,19 @@
   ],
   "reservations": [
     {
+      "id": "b5efb9d0-944b-468a-9f84-3e98fe2a69b4",
+      "numero": "GH-2026-4433",
+      "createdAt": "2026-09-21T17:01:52.362Z",
+      "personName": "Tony Katshiayi",
+      "isAgent": false,
+      "motif": "Maintenance des cameras de surveillance : Usine et village PPC",
+      "startDate": "2026-09-22",
+      "endDate": "2026-09-26",
+      "status": "pending",
+      "notes": "Booké par Nathan",
+      "updatedAt": "2026-09-21T17:01:52.362Z"
+    },
+    {
       "id": "92a890a4-054c-432b-9c68-19db902882a6",
       "numero": "GH-2026-4432",
       "createdAt": "2026-09-21T17:00:28.282Z",
@@ -44412,5 +44425,5 @@
       "checkedOutAt": "2025-09-24T12:00:00.000Z"
     }
   ],
-  "nextReservationSeq": 4433
+  "nextReservationSeq": 4434
 }
