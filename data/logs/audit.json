@@ -1,6 +1,44 @@
 {
   "entries": [
     {
+      "id": "log-000929",
+      "at": "2026-09-21T07:26:52.107Z",
+      "userId": "karine.mvutu@ppcdrc.cd",
+      "userName": "Karine Mvutu",
+      "userEmail": "karine.mvutu@ppcdrc.cd",
+      "module": "sante",
+      "moduleLabel": "Santé",
+      "action": "create",
+      "actionLabel": "Création",
+      "entityType": "sante.visit",
+      "entityId": "sante-muax9fu4-d18hf8",
+      "summary": "Cas santé — NZAZI KALUZAKI TOUBI · COXARTHROSE",
+      "details": "Cas santé — NZAZI KALUZAKI TOUBI · COXARTHROSE",
+      "after": {
+        "id": "sante-muax9fu4-d18hf8",
+        "date": "2026-09-03",
+        "nom": "NZAZI",
+        "postnom": "KALUZAKI TOUBI",
+        "sexe": "M",
+        "age": 54.75,
+        "typeMalade": "AGENT",
+        "pathologie": "COXARTHROSE",
+        "traitement": "ANTI INFLAMMATOIRE",
+        "reference": "NON",
+        "year": 2026,
+        "month": 9,
+        "employeeMatricule": "70000042",
+        "employeeNom": "NZAZI KALUZAKI TOUBI",
+        "dependantId": null,
+        "createdAt": "2026-09-21T07:26:49.708Z",
+        "updatedAt": "2026-09-21T07:26:49.708Z",
+        "createdBy": "karine.mvutu@ppcdrc.cd",
+        "updatedBy": "karine.mvutu@ppcdrc.cd"
+      },
+      "undoable": false,
+      "undone": false
+    },
+    {
       "id": "log-000928",
       "at": "2026-09-21T07:24:01.224Z",
       "userId": "karine.mvutu@ppcdrc.cd",
@@ -110053,5 +110091,5 @@
       }
     }
   ],
-  "nextSeq": 929
+  "nextSeq": 930
 }
