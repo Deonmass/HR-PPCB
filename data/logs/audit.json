@@ -1,6 +1,44 @@
 {
   "entries": [
     {
+      "id": "log-000943",
+      "at": "2026-09-21T07:45:32.828Z",
+      "userId": "karine.mvutu@ppcdrc.cd",
+      "userName": "Karine Mvutu",
+      "userEmail": "karine.mvutu@ppcdrc.cd",
+      "module": "sante",
+      "moduleLabel": "Santé",
+      "action": "create",
+      "actionLabel": "Création",
+      "entityType": "sante.visit",
+      "entityId": "sante-muaxxgbt-n6s1g1",
+      "summary": "Cas santé — KALAMBAY TSHILOMBO YANNICK · LUMBAGO",
+      "details": "Cas santé — KALAMBAY TSHILOMBO YANNICK · LUMBAGO",
+      "after": {
+        "id": "sante-muaxxgbt-n6s1g1",
+        "date": "2026-09-14",
+        "nom": "KALAMBAY",
+        "postnom": "TSHILOMBO YANNICK",
+        "sexe": "M",
+        "age": 38,
+        "typeMalade": "AGENT",
+        "pathologie": "LUMBAGO",
+        "traitement": "ANTI INFLAMMATOIRE",
+        "reference": "IME",
+        "year": 2026,
+        "month": 9,
+        "employeeMatricule": "70000261",
+        "employeeNom": "KALAMBAY TSHILOMBO YANNICK",
+        "dependantId": null,
+        "createdAt": "2026-09-21T07:45:30.088Z",
+        "updatedAt": "2026-09-21T07:45:30.088Z",
+        "createdBy": "karine.mvutu@ppcdrc.cd",
+        "updatedBy": "karine.mvutu@ppcdrc.cd"
+      },
+      "undoable": false,
+      "undone": false
+    },
+    {
       "id": "log-000942",
       "at": "2026-09-21T07:44:16.941Z",
       "userId": "karine.mvutu@ppcdrc.cd",
@@ -110585,5 +110623,5 @@
       }
     }
   ],
-  "nextSeq": 943
+  "nextSeq": 944
 }
