@@ -1,6 +1,53 @@
 {
   "entries": [
     {
+      "id": "log-000992",
+      "at": "2026-09-21T12:50:06.113Z",
+      "userId": "admin",
+      "userName": "Administrateur",
+      "userEmail": "admin",
+      "module": "guest-house",
+      "moduleLabel": "Guest house",
+      "action": "update",
+      "actionLabel": "Modification",
+      "entityType": "guest-house.reservation",
+      "entityId": "3bd6b447-6a5c-4efe-b4a3-b64b7d0bdc8e",
+      "summary": "Modification réservation 3bd6b447-6a5c-4efe-b4a3-b64b7d0bdc8e",
+      "details": "Modification réservation 3bd6b447-6a5c-4efe-b4a3-b64b7d0bdc8e",
+      "before": {
+        "id": "3bd6b447-6a5c-4efe-b4a3-b64b7d0bdc8e",
+        "numero": "GH-2026-4414",
+        "createdAt": "2026-09-14T20:59:23.209Z",
+        "personName": "KITUMAINI NASHI ELODIE",
+        "matricule": "70000285",
+        "isAgent": true,
+        "motif": "Induction mission to the plant",
+        "startDate": "2026-09-13",
+        "endDate": "2026-09-17",
+        "roomId": "e49a08a4-e1db-4824-b8f6-48f1c30c0346",
+        "status": "confirmed",
+        "mission": "induction mission to the plant",
+        "updatedAt": "2026-09-14T20:59:46.330Z"
+      },
+      "after": {
+        "id": "3bd6b447-6a5c-4efe-b4a3-b64b7d0bdc8e",
+        "numero": "GH-2026-4414",
+        "createdAt": "2026-09-14T20:59:23.209Z",
+        "personName": "KITUMAINI NASHI ELODIE",
+        "matricule": "70000285",
+        "isAgent": true,
+        "motif": "Induction mission to the plant",
+        "startDate": "2026-09-13",
+        "endDate": "2026-09-18",
+        "roomId": "e49a08a4-e1db-4824-b8f6-48f1c30c0346",
+        "status": "confirmed",
+        "mission": "induction mission to the plant",
+        "updatedAt": "2026-09-21T12:50:02.526Z"
+      },
+      "undoable": true,
+      "undone": false
+    },
+    {
       "id": "log-000991",
       "at": "2026-09-21T12:49:29.666Z",
       "userId": "admin",
@@ -112115,5 +112162,5 @@
       }
     }
   ],
-  "nextSeq": 992
+  "nextSeq": 993
 }
