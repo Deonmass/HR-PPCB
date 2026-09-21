@@ -1,6 +1,50 @@
 {
   "entries": [
     {
+      "id": "log-001008",
+      "at": "2026-09-21T13:04:51.218Z",
+      "userId": "admin",
+      "userName": "Administrateur",
+      "userEmail": "admin",
+      "module": "guest-house",
+      "moduleLabel": "Guest house",
+      "action": "update",
+      "actionLabel": "Modification",
+      "entityType": "guest-house.reservation",
+      "entityId": "55a5feec-b5c3-4c1a-8fed-c1c7786f8f88",
+      "summary": "Statut réservation 55a5feec-b5c3-4c1a-8fed-c1c7786f8f88 → confirmed",
+      "details": "Statut réservation 55a5feec-b5c3-4c1a-8fed-c1c7786f8f88 → confirmed",
+      "before": {
+        "id": "55a5feec-b5c3-4c1a-8fed-c1c7786f8f88",
+        "numero": "GH-2026-4430",
+        "createdAt": "2026-09-21T13:04:21.867Z",
+        "personName": "Michée et Prince",
+        "isAgent": false,
+        "motif": "TBA",
+        "startDate": "2026-09-20",
+        "endDate": "2026-09-26",
+        "status": "pending",
+        "notes": "Fire service / safety",
+        "updatedAt": "2026-09-21T13:04:21.867Z"
+      },
+      "after": {
+        "id": "55a5feec-b5c3-4c1a-8fed-c1c7786f8f88",
+        "numero": "GH-2026-4430",
+        "createdAt": "2026-09-21T13:04:21.867Z",
+        "personName": "Michée et Prince",
+        "isAgent": false,
+        "motif": "TBA",
+        "startDate": "2026-09-20",
+        "endDate": "2026-09-26",
+        "roomId": "85c3d598-623c-402f-9053-e43840e24325",
+        "status": "confirmed",
+        "notes": "Fire service / safety",
+        "updatedAt": "2026-09-21T13:04:48.524Z"
+      },
+      "undoable": true,
+      "undone": false
+    },
+    {
       "id": "log-001007",
       "at": "2026-09-21T13:04:24.947Z",
       "userId": "admin",
@@ -112699,5 +112743,5 @@
       }
     }
   ],
-  "nextSeq": 1008
+  "nextSeq": 1009
 }
