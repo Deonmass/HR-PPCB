@@ -1,6 +1,67 @@
 {
   "entries": [
     {
+      "id": "log-000965",
+      "at": "2026-09-21T09:14:24.189Z",
+      "userId": "admin",
+      "userName": "Administrateur",
+      "userEmail": "admin",
+      "module": "timesheet",
+      "moduleLabel": "Timesheet",
+      "action": "update",
+      "actionLabel": "Modification",
+      "summary": "Enregistrement timesheet 70000059 — Production (9/2026)",
+      "details": "Enregistrement timesheet 70000059 — Production (9/2026)",
+      "undoable": false,
+      "undone": false,
+      "meta": {
+        "year": 2026,
+        "month": 9,
+        "department": "Production",
+        "matricule": "70000059",
+        "mode": "employee-month",
+        "count": 42
+      }
+    },
+    {
+      "id": "log-000964",
+      "at": "2026-09-21T09:09:41.742Z",
+      "userId": "admin",
+      "userName": "Administrateur",
+      "userEmail": "admin",
+      "module": "timesheet",
+      "moduleLabel": "Timesheet",
+      "action": "update",
+      "actionLabel": "Modification",
+      "summary": "Enregistrement timesheet 70000061 — Production (9/2026)",
+      "details": "Enregistrement timesheet 70000061 — Production (9/2026)",
+      "undoable": false,
+      "undone": false,
+      "meta": {
+        "year": 2026,
+        "month": 9,
+        "department": "Production",
+        "matricule": "70000061",
+        "mode": "employee-month",
+        "count": 42
+      }
+    },
+    {
+      "id": "log-000963",
+      "at": "2026-09-21T09:04:56.337Z",
+      "userId": "Serge.Muakasa@ppcdrc.cd",
+      "userName": "Serge Muakasa",
+      "userEmail": "Serge.Muakasa@ppcdrc.cd",
+      "module": "auth",
+      "moduleLabel": "Authentification",
+      "action": "login",
+      "actionLabel": "Connexion",
+      "summary": "Connexion Serge.Muakasa@ppcdrc.cd",
+      "details": "Connexion de Serge Muakasa (Serge.Muakasa@ppcdrc.cd)",
+      "undoable": false,
+      "undone": false
+    },
+    {
       "id": "log-000962",
       "at": "2026-09-21T08:31:24.450Z",
       "userId": "admin",
@@ -111285,5 +111346,5 @@
       }
     }
   ],
-  "nextSeq": 963
+  "nextSeq": 966
 }
