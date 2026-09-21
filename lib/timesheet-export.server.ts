@@ -42,10 +42,14 @@ const COL = {
 const DATA_COLUMNS = Object.values(COL);
 /** Full row span (DATE → AUTH) used for row-wide fills/styles. */
 const ROW_COLUMNS = 'ABCDEFGHIJKLMNOPQRST'.split('');
+/** Template: last plain day row before fixed Sub-Total / Accumulative styles. */
+const TEMPLATE_DAY_STYLE_ROW = 9;
+const TEMPLATE_SUBTOTAL_STYLE_ROW = 42;
+const TEMPLATE_ACCUMULATIVE_STYLE_ROW = 43;
 const OFF_ROW_FILL_REF = 'A6';
 const PRISTINE_SHEET = '__TIMESHEET_TEMPLATE__';
 const WEEK_SEPARATOR_FILL = 'F4CCCC';
-/** Matches the TIMESHEET template (A9:A42). Extra period rows have no format and overflow as serials. */
+/** Matches the TIMESHEET template day rows (A9…). */
 const DATE_NUMBER_FORMAT = '[$-409]d\\-mmm;@';
 
 type PopulateSheet = ReturnType<
@@ -119,12 +123,67 @@ function applyOffRowGrayFill(sheet: PopulateSheet, excelRow: number) {
   }
 }
 
+/** Snapshot of template totals chrome before data overwrites rows 42–43. */
+type TotalsChrome = {
+  fill: unknown;
+  fontColor: unknown;
+  bold: unknown;
+  border: unknown;
+};
+
+function captureTotalsChrome(sheet: PopulateSheet): { subtotal: TotalsChrome; accumulative: TotalsChrome } {
+  const border = sheet.cell(cellRef(TEMPLATE_DAY_STYLE_ROW, COL.date)).style('border');
+  const read = (styleFromRow: number): TotalsChrome => {
+    const sample = sheet.cell(cellRef(styleFromRow, COL.date));
+    return {
+      fill: sample.style('fill'),
+      fontColor: sample.style('fontColor'),
+      bold: sample.style('bold'),
+      border,
+    };
+  };
+  return {
+    subtotal: read(TEMPLATE_SUBTOTAL_STYLE_ROW),
+    accumulative: read(TEMPLATE_ACCUMULATIVE_STYLE_ROW),
+  };
+}
+
+function applyCapturedChrome(sheet: PopulateSheet, excelRow: number, chrome: TotalsChrome) {
+  for (const col of ROW_COLUMNS) {
+    sheet.cell(cellRef(excelRow, col)).style({
+      fill: chrome.fill,
+      fontColor: chrome.fontColor,
+      bold: chrome.bold,
+      border: chrome.border,
+    });
+  }
+}
+
+/**
+ * Reset a row to a plain day look (clears template Sub-Total / Accumulative fills
+ * that would otherwise "stick" when data overflows past row 41).
+ */
+function resetToDayRowStyle(sheet: PopulateSheet, excelRow: number) {
+  const sample = sheet.cell(cellRef(TEMPLATE_DAY_STYLE_ROW, COL.date));
+  const border = sample.style('border');
+  for (const col of ROW_COLUMNS) {
+    sheet.cell(cellRef(excelRow, col)).style({
+      fill: undefined,
+      fontColor: '000000',
+      bold: false,
+      border,
+    });
+  }
+}
+
 function applyWeekSeparatorStyle(sheet: PopulateSheet, excelRow: number) {
+  const border = sheet.cell(cellRef(TEMPLATE_DAY_STYLE_ROW, COL.date)).style('border');
   for (const col of ROW_COLUMNS) {
     sheet.cell(cellRef(excelRow, col)).style({
       fill: WEEK_SEPARATOR_FILL,
       fontColor: '000000',
       bold: true,
+      border,
     });
   }
 }
@@ -185,6 +244,10 @@ function fillTimesheetHeader(sheet: PopulateSheet, payload: TimesheetExportPaylo
 function fillDayRow(sheet: PopulateSheet, excelRow: number, row: TimesheetRowData, localisation: string) {
   const normal = computeNormalHours(row, localisation);
 
+  // Clear leftover template totals values (esp. rows 42–43) before writing the day.
+  clearRow(sheet, excelRow);
+  resetToDayRowStyle(sheet, excelRow);
+
   writeDayDate(sheet, excelRow, row);
   setCellValue(sheet, cellRef(excelRow, COL.day), row.dayLabel);
   setCellValue(sheet, cellRef(excelRow, COL.ws), getTimesheetWsExportValue(row));
@@ -206,9 +269,10 @@ function fillDayRow(sheet: PopulateSheet, excelRow: number, row: TimesheetRowDat
 }
 
 function fillWeekRow(sheet: PopulateSheet, excelRow: number, line: Extract<ExportLine, { kind: 'week' }>) {
+  clearRow(sheet, excelRow);
   applyWeekSeparatorStyle(sheet, excelRow);
   setCellValue(sheet, cellRef(excelRow, COL.date), `Semaine ${line.weekIndex + 1}`);
-  // Normal hours (H–L) are left empty: the Sub-Total/Accumulative formulas sum the day rows.
+  // Normal hours (H–L) stay empty: Sub-Total / Accumulative formulas sum the day rows.
   setCellValue(sheet, cellRef(excelRow, COL.ot13), overtimeValue(line.ot.ot13));
   setCellValue(sheet, cellRef(excelRow, COL.ot16), overtimeValue(line.ot.ot16));
   setCellValue(sheet, cellRef(excelRow, COL.ot2), overtimeValue(line.ot.ot2));
@@ -222,6 +286,9 @@ function clearRow(sheet: PopulateSheet, excelRow: number) {
 }
 
 async function fillTimesheetSheet(sheet: PopulateSheet, payload: TimesheetExportPayload) {
+  // Capture totals chrome BEFORE day rows overwrite template rows 42–43.
+  const totalsChrome = captureTotalsChrome(sheet);
+
   fillTimesheetHeader(sheet, payload);
   const localisation = payload.localisation ?? '';
   const lines = buildExportLines(payload.rows, payload.period.year, payload.period.month);
@@ -244,30 +311,36 @@ async function fillTimesheetSheet(sheet: PopulateSheet, payload: TimesheetExport
   }
 
   const lastDataRow = excelRow - 1;
+  const clearThrough = Math.max(excelRow + 2, TEMPLATE_ACCUMULATIVE_STYLE_ROW + 2, DATA_START_ROW + 56);
 
-  for (let row = excelRow; row < DATA_START_ROW + 56; row += 1) {
+  for (let row = excelRow; row <= clearThrough; row += 1) {
     clearRow(sheet, row);
+    resetToDayRowStyle(sheet, row);
   }
 
-  fillTotalsRows(sheet, DATA_START_ROW, lastDataRow, excelRow);
+  fillTotalsRows(sheet, DATA_START_ROW, lastDataRow, excelRow, totalsChrome);
 }
 
 /**
  * Sub-Total and Accumulative Total rows use live SUM formulas so they recalculate
  * automatically. Normal-hours columns sum the day rows (week rows are blank there),
  * while overtime columns sum the week rows (day rows are blank there).
+ * Styles come from a snapshot of template rows 42 / 43 (black totals chrome).
  */
 function fillTotalsRows(
   sheet: PopulateSheet,
   firstDataRow: number,
   lastDataRow: number,
   subtotalRow: number,
+  totalsChrome: { subtotal: TotalsChrome; accumulative: TotalsChrome },
 ) {
   const accumulativeRow = subtotalRow + 1;
   const range = (col: string) => `SUM(${col}${firstDataRow}:${col}${lastDataRow})`;
   const normalCols = [COL.ordinary, COL.shift1, COL.shift2, COL.shift3, COL.nightNormal];
   const otCols = [COL.ot13, COL.ot16, COL.ot2, COL.otNight];
 
+  clearRow(sheet, subtotalRow);
+  applyCapturedChrome(sheet, subtotalRow, totalsChrome.subtotal);
   setCellValue(sheet, cellRef(subtotalRow, COL.date), 'Sub-Total');
   for (const col of normalCols) {
     setFormula(sheet, cellRef(subtotalRow, col), range(col));
@@ -276,6 +349,8 @@ function fillTotalsRows(
     setFormula(sheet, cellRef(subtotalRow, col), range(col));
   }
 
+  clearRow(sheet, accumulativeRow);
+  applyCapturedChrome(sheet, accumulativeRow, totalsChrome.accumulative);
   setCellValue(sheet, cellRef(accumulativeRow, COL.date), 'Accumulative Total');
   // Accumulative Total carries only the Night + Overtime totals (columns L → P).
   const accumulativeCols = [COL.nightNormal, ...otCols];
