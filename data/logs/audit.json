@@ -1,6 +1,65 @@
 {
   "entries": [
     {
+      "id": "log-000969",
+      "at": "2026-09-21T09:31:11.007Z",
+      "userId": "admin",
+      "userName": "Administrateur",
+      "userEmail": "admin",
+      "module": "sante",
+      "moduleLabel": "Santé",
+      "action": "update",
+      "actionLabel": "Modification",
+      "entityType": "sante.visit",
+      "entityId": "sante-muayr11n-8minxh",
+      "summary": "Modification cas santé — ADHULE",
+      "details": "Modification cas santé — ADHULE",
+      "before": {
+        "id": "sante-muayr11n-8minxh",
+        "date": "2026-09-19",
+        "nom": "ADHULE",
+        "postnom": "LEMA",
+        "sexe": "M",
+        "age": 4,
+        "typeMalade": "ENFANT",
+        "pathologie": "RHONORHE",
+        "traitement": "GOUTTE NASALE",
+        "reference": "NON",
+        "year": 2026,
+        "month": 9,
+        "employeeMatricule": "",
+        "employeeNom": "",
+        "dependantId": null,
+        "createdAt": "2026-09-21T08:08:29.963Z",
+        "updatedAt": "2026-09-21T08:08:29.963Z",
+        "createdBy": "karine.mvutu@ppcdrc.cd",
+        "updatedBy": "karine.mvutu@ppcdrc.cd"
+      },
+      "after": {
+        "id": "sante-muayr11n-8minxh",
+        "date": "2026-09-19",
+        "nom": "ADHULE",
+        "postnom": "LEMA",
+        "sexe": "M",
+        "age": 4,
+        "typeMalade": "ENFANT",
+        "pathologie": "RHINORHE",
+        "traitement": "GOUTTE NASALE",
+        "reference": "NON",
+        "year": 2026,
+        "month": 9,
+        "employeeMatricule": "",
+        "employeeNom": "",
+        "dependantId": null,
+        "createdAt": "2026-09-21T08:08:29.963Z",
+        "updatedAt": "2026-09-21T09:31:08.166Z",
+        "createdBy": "karine.mvutu@ppcdrc.cd",
+        "updatedBy": "admin"
+      },
+      "undoable": false,
+      "undone": false
+    },
+    {
       "id": "log-000968",
       "at": "2026-09-21T09:30:24.301Z",
       "userId": "admin",
@@ -111458,5 +111517,5 @@
       }
     }
   ],
-  "nextSeq": 969
+  "nextSeq": 970
 }
