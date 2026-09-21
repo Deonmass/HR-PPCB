@@ -1,6 +1,63 @@
 {
   "entries": [
     {
+      "id": "log-001023",
+      "at": "2026-09-21T17:21:50.631Z",
+      "userId": "admin",
+      "userName": "Administrateur",
+      "userEmail": "admin",
+      "module": "guest-house",
+      "moduleLabel": "Guest house",
+      "action": "update",
+      "actionLabel": "Modification",
+      "entityType": "guest-house.room",
+      "entityId": "2ffc7bc3-4bfc-4a10-94c6-aa7fe1f89aa0",
+      "summary": "Modification chambre 2ffc7bc3-4bfc-4a10-94c6-aa7fe1f89aa0",
+      "details": "Modification chambre 2ffc7bc3-4bfc-4a10-94c6-aa7fe1f89aa0",
+      "before": {
+        "id": "2ffc7bc3-4bfc-4a10-94c6-aa7fe1f89aa0",
+        "roomNumber": "CH. 1/2 VIP",
+        "roomName": "ZAMBA",
+        "templateLabel": "Room # CH. 1/2 VIP - ZAMBA",
+        "templateRow": 4,
+        "building": "Batiment #1",
+        "buildingKey": "Batiment #1",
+        "category": "standard",
+        "hotelName": "",
+        "characteristics": "VIP",
+        "capacity": 1,
+        "floor": "",
+        "amenities": [],
+        "notes": "",
+        "sortOrder": 1,
+        "status": "available",
+        "createdAt": "2026-07-28T13:13:01.229Z",
+        "updatedAt": "2026-09-21T17:21:06.446Z"
+      },
+      "after": {
+        "id": "2ffc7bc3-4bfc-4a10-94c6-aa7fe1f89aa0",
+        "roomNumber": "1/2 VIP",
+        "roomName": "ZAMBA",
+        "templateLabel": "Room # 1/2 VIP - ZAMBA",
+        "templateRow": 4,
+        "building": "Batiment #1",
+        "buildingKey": "Batiment #1",
+        "category": "standard",
+        "hotelName": "",
+        "characteristics": "VIP",
+        "capacity": 1,
+        "floor": "",
+        "amenities": [],
+        "notes": "",
+        "sortOrder": 1,
+        "status": "available",
+        "createdAt": "2026-07-28T13:13:01.229Z",
+        "updatedAt": "2026-09-21T17:21:47.467Z"
+      },
+      "undoable": true,
+      "undone": false
+    },
+    {
       "id": "log-001022",
       "at": "2026-09-21T17:21:10.010Z",
       "userId": "admin",
@@ -113149,5 +113206,5 @@
       }
     }
   ],
-  "nextSeq": 1023
+  "nextSeq": 1024
 }
