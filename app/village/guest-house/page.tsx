@@ -13,7 +13,9 @@ import TableHeaderFilter from '@/components/TableHeaderFilter';
 import { EmployeeSuggestInput } from '@/components/EmployeePicker';
 import CardActionMenu from '@/components/CardActionMenu';
 import GuestHouseMonthlyChart from '@/components/village/GuestHouseMonthlyChart';
-import GuestHouseMotelView from '@/components/village/GuestHouseMotelView';
+import GuestHouseMotelView, {
+  type MotelRoomStatus,
+} from '@/components/village/GuestHouseMotelView';
 import GuestHouseRoomOccupancyChart from '@/components/village/GuestHouseRoomOccupancyChart';
 import { usePermissions } from '@/contexts/PermissionContext';
 import type {
@@ -1221,7 +1223,7 @@ export default function VillageGuestHousePage() {
           (item.status === 'confirmed' || item.status === 'pending')
           && item.startDate > today,
       );
-      const status = activeReservation
+      const status: MotelRoomStatus = activeReservation
         ? 'occupied'
         : upcomingReservation
           ? 'reserved'
