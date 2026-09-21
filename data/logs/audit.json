@@ -1,6 +1,44 @@
 {
   "entries": [
     {
+      "id": "log-000938",
+      "at": "2026-09-21T07:38:05.087Z",
+      "userId": "karine.mvutu@ppcdrc.cd",
+      "userName": "Karine Mvutu",
+      "userEmail": "karine.mvutu@ppcdrc.cd",
+      "module": "sante",
+      "moduleLabel": "Santé",
+      "action": "create",
+      "actionLabel": "Création",
+      "entityType": "sante.visit",
+      "entityId": "sante-muaxnv1g-bhikh1",
+      "summary": "Cas santé — TANDU  XENA · SYNDROME GRIPPAL",
+      "details": "Cas santé — TANDU  XENA · SYNDROME GRIPPAL",
+      "after": {
+        "id": "sante-muaxnv1g-bhikh1",
+        "date": "2026-09-12",
+        "nom": "TANDU",
+        "postnom": "XENA",
+        "sexe": "F",
+        "age": 3,
+        "typeMalade": "ENFANT",
+        "pathologie": "SYNDROME GRIPPAL",
+        "traitement": "ANTI  GRIPPALE ET GOUTTE NASALE",
+        "reference": "NON",
+        "year": 2026,
+        "month": 9,
+        "employeeMatricule": "",
+        "employeeNom": "",
+        "dependantId": null,
+        "createdAt": "2026-09-21T07:38:02.596Z",
+        "updatedAt": "2026-09-21T07:38:02.596Z",
+        "createdBy": "karine.mvutu@ppcdrc.cd",
+        "updatedBy": "karine.mvutu@ppcdrc.cd"
+      },
+      "undoable": false,
+      "undone": false
+    },
+    {
       "id": "log-000937",
       "at": "2026-09-21T07:36:48.589Z",
       "userId": "karine.mvutu@ppcdrc.cd",
@@ -110395,5 +110433,5 @@
       }
     }
   ],
-  "nextSeq": 938
+  "nextSeq": 939
 }
