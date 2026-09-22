@@ -1,6 +1,21 @@
 {
   "entries": [
     {
+      "id": "log-001048",
+      "at": "2026-09-22T11:38:29.483Z",
+      "userId": "admin",
+      "userName": "Administrateur",
+      "userEmail": "admin",
+      "module": "documents.attestation-conge",
+      "moduleLabel": "Attestation de congé",
+      "action": "export",
+      "actionLabel": "Export",
+      "summary": "Aperçu PDF attestation congé",
+      "details": "Aperçu PDF attestation congé",
+      "undoable": false,
+      "undone": false
+    },
+    {
       "id": "log-001047",
       "at": "2026-09-22T11:38:24.719Z",
       "userId": "admin",
@@ -114800,5 +114815,5 @@
       }
     }
   ],
-  "nextSeq": 1048
+  "nextSeq": 1049
 }
