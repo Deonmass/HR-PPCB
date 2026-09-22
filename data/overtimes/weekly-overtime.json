@@ -2756,6 +2756,58 @@
           },
           "updatedAt": "2026-09-22T13:55:51.441Z",
           "updatedBy": "admin"
+        },
+        "Engineering::0": {
+          "weekIndex": 0,
+          "department": "Engineering",
+          "weekFromTo": "du 10/08/2026 au 17/08/2026",
+          "locked": false,
+          "entries": {
+            "70000052": {
+              "matricule": "70000052",
+              "ot13": 2,
+              "ot16": 3.63,
+              "ot2": 0,
+              "night": 5.63
+            },
+            "70000058": {
+              "matricule": "70000058",
+              "ot13": 2,
+              "ot16": 7.359,
+              "ot2": 0,
+              "night": 7.065
+            },
+            "70000079": {
+              "matricule": "70000079",
+              "ot13": 0,
+              "ot16": 0,
+              "ot2": 20.5,
+              "night": 1.746
+            },
+            "70000104": {
+              "matricule": "70000104",
+              "ot13": 2,
+              "ot16": 7.42,
+              "ot2": 10.994,
+              "night": 0
+            },
+            "70000116": {
+              "matricule": "70000116",
+              "ot13": 2,
+              "ot16": 9.319,
+              "ot2": 0,
+              "night": 0
+            },
+            "70000284": {
+              "matricule": "70000284",
+              "ot13": 0,
+              "ot16": 0,
+              "ot2": 2.035,
+              "night": 0
+            }
+          },
+          "updatedAt": "2026-09-22T14:19:58.904Z",
+          "updatedBy": "admin"
         }
       }
     }
