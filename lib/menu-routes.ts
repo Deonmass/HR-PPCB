@@ -21,6 +21,7 @@ export const DOCUMENTS_HUB_MENU_IDS = [
   'documents.newcomer',
   'documents.contrat-standard',
   'documents.attestation-conge',
+  'documents.attestation-residence',
   'documents.composition-familiale',
   'documents.mouvement-travailleur',
 ];
@@ -57,6 +58,7 @@ export const ROUTE_MENU_MAP: RouteMenuEntry[] = [
   { prefix: '/documents/newcomer', menuId: 'documents.newcomer' },
   { prefix: '/documents/contrat-standard', menuId: 'documents.contrat-standard' },
   { prefix: '/documents/attestation-conge', menuId: 'documents.attestation-conge' },
+  { prefix: '/documents/attestation-residence', menuId: 'documents.attestation-residence' },
   { prefix: '/documents/composition-familiale', menuId: 'documents.composition-familiale' },
   { prefix: '/documents/mouvement-travailleur', menuId: 'documents.mouvement-travailleur' },
   { prefix: '/documents', menuId: 'travel.historique' },

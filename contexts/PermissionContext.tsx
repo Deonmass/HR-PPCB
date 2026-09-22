@@ -113,6 +113,7 @@ export function PermissionProvider({ children }: { children: ReactNode }) {
       '/documents/entetes',
       '/documents/contrat-standard',
       '/documents/attestation-conge',
+      '/documents/attestation-residence',
       '/documents/convention-collective',
       '/documents/rrf',
       '/documents/exit',

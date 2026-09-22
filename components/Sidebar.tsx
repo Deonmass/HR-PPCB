@@ -152,6 +152,7 @@ const NAV: NavSection[] = [
       'documents.newcomer',
       'documents.contrat-standard',
       'documents.attestation-conge',
+      'documents.attestation-residence',
       'documents.composition-familiale',
       'documents.mouvement-travailleur',
     ],

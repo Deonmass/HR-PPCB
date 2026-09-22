@@ -251,6 +251,15 @@ const CARDS: DocCard[] = [
     icon: <IconBadgeCheck />,
   },
   {
+    id: 'attestation-residence',
+    title: 'Attestation de résidence',
+    description: 'Attestation de résidence — employé, signataire, adresse et date de résidence.',
+    href: '/documents/attestation-residence',
+    menuId: 'documents.attestation-residence',
+    accent: '#0369a1',
+    icon: <IconBadgeCheck />,
+  },
+  {
     id: 'payment-voucher',
     title: 'Payment voucher',
     description: 'Bon de paiement.',
@@ -340,6 +349,7 @@ const DOC_I18N: Record<string, { title: MessageKey; desc: MessageKey; badge?: Me
   'trip-budget': { title: 'docs.card.budget.title', desc: 'docs.card.budget.desc' },
   'attestation-service': { title: 'docs.card.attestation.title', desc: 'docs.card.attestation.desc' },
   'attestation-conge': { title: 'docs.card.leave.title', desc: 'docs.card.leave.desc' },
+  'attestation-residence': { title: 'docs.card.residence.title', desc: 'docs.card.residence.desc' },
   'payment-voucher': { title: 'docs.card.voucher.title', desc: 'docs.card.voucher.desc' },
   'interim-appraisal': { title: 'docs.card.appraisal.title', desc: 'docs.card.appraisal.desc' },
   'exit-forms': { title: 'docs.card.exit.title', desc: 'docs.card.exit.desc', badge: 'docs.card.exit.badge' },

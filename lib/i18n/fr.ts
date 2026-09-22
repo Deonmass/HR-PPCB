@@ -405,6 +405,8 @@ export const fr = {
   'docs.card.attestation.desc': 'Attestation de service (FR/EN) basée sur l’agent sélectionné.',
   'docs.card.leave.title': 'Attestation de congé',
   'docs.card.leave.desc': 'Attestation de congé — employé, signataire et période (début / reprise).',
+  'docs.card.residence.title': 'Attestation de résidence',
+  'docs.card.residence.desc': 'Attestation de résidence — employé, signataire, adresse et date de résidence.',
   'docs.card.voucher.title': 'Payment voucher',
   'docs.card.voucher.desc': 'Bon de paiement.',
   'docs.card.appraisal.title': 'Interim appraisal evaluation',

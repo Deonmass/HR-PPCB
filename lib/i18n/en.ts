@@ -407,6 +407,8 @@ export const en: Record<MessageKey, string> = {
   'docs.card.attestation.desc': 'Service attestation (FR/EN) based on the selected employee.',
   'docs.card.leave.title': 'Leave attestation',
   'docs.card.leave.desc': 'Leave attestation — employee, signatory and period (start / return).',
+  'docs.card.residence.title': 'Residence attestation',
+  'docs.card.residence.desc': 'Residence attestation — employee, signatory, address and residence start date.',
   'docs.card.voucher.title': 'Payment voucher',
   'docs.card.voucher.desc': 'Payment voucher.',
   'docs.card.appraisal.title': 'Interim appraisal evaluation',

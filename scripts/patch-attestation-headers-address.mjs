@@ -22,6 +22,7 @@ const ADDRESS_LINES = [
 const FILES = [
   'Excel/templates/attestations/Attestation de service .docx',
   'Excel/templates/attestations/attestation-conge.docx',
+  'Excel/templates/attestations/attestation-residence.docx',
   'Excel/templates/exit/Attestation de fin de service.docx',
 ];
 

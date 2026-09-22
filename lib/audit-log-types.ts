@@ -121,6 +121,7 @@ export const AUDIT_MODULE_LABELS: Record<string, string> = {
   'documents.newcomer': 'Newcomer',
   'documents.contrat-standard': 'Contrat standard',
   'documents.attestation-conge': 'Attestation de congé',
+  'documents.attestation-residence': 'Attestation de résidence',
   'documents.convention-collective': 'Convention collective',
   'documents.composition-familiale': 'Déclaration de composition familiale',
   'documents.mouvement-travailleur': 'Déclaration de mouvement de travailleur',

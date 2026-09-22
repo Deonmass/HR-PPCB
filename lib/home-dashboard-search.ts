@@ -77,6 +77,7 @@ function moduleShortcuts(menus: MenuPermission[]): Array<{
     { title: 'Ordre de mission', subtitle: 'Registre par site KN / ZA / ZC / LU', href: '/documents-voyage/document/mission-order', menuIds: ['travel.etablir', 'travel.mission.kinshasa', 'travel.mission.zamba', 'travel.mission.zamba-consultant', 'travel.mission.lubudi'] },
     { title: 'Attestation de service', subtitle: 'Génération attestations', href: '/documents-voyage/attestation-services', menuIds: ['travel.attestation'] },
     { title: 'Attestation de congé', subtitle: 'Employé, signataire, période', href: '/documents/attestation-conge', menuIds: ['documents.attestation-conge'] },
+    { title: 'Attestation de résidence', subtitle: 'Employé, signataire, adresse', href: '/documents/attestation-residence', menuIds: ['documents.attestation-residence'] },
     { title: 'Déclaration de composition familiale', subtitle: 'Formulaire CNSS F6', href: '/documents/composition-familiale', menuIds: ['documents.composition-familiale'] },
     { title: 'Déclaration de mouvement de travailleur', subtitle: 'Formulaire ONEM DMT', href: '/documents/mouvement-travailleur', menuIds: ['documents.mouvement-travailleur'] },
     { title: 'Projets', subtitle: 'Dashboard projets', href: '/project/dashboard', menuIds: ['project.dashboard'] },

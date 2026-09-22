@@ -88,6 +88,7 @@ export const PERMISSION_MENU_CATALOG: PermissionMenuGroup[] = withSortedMenus([
       { id: 'documents.newcomer', label: 'Newcomer' },
       { id: 'documents.contrat-standard', label: 'Contrat standard' },
       { id: 'documents.attestation-conge', label: 'Attestation de congé' },
+      { id: 'documents.attestation-residence', label: 'Attestation de résidence' },
       { id: 'documents.composition-familiale', label: 'Déclaration de composition familiale' },
       { id: 'documents.mouvement-travailleur', label: 'Déclaration de mouvement de travailleur' },
     ],
@@ -257,6 +258,18 @@ export function mergePermissionsWithCatalog(menus: MenuPermission[]): MenuPermis
             menuId: defaultMenu.menuId,
             label: defaultMenu.label,
             actions: { ...doc.actions },
+          };
+        }
+      }
+      if (defaultMenu.menuId === 'documents.attestation-residence') {
+        const donor = menus.find((menu) => menu.menuId === 'documents.attestation-conge')
+          || menus.find((menu) => menu.menuId === 'documents.contrat-standard')
+          || menus.find((menu) => menu.menuId === 'documents.exit');
+        if (donor) {
+          return {
+            menuId: defaultMenu.menuId,
+            label: defaultMenu.label,
+            actions: { ...donor.actions },
           };
         }
       }

@@ -20,6 +20,8 @@ export async function GET() {
     { menuId: 'travel.mission.zamba-consultant', action: 'view' },
     { menuId: 'travel.mission.lubudi', action: 'view' },
     { menuId: 'travel.attestation', action: 'view' },
+    { menuId: 'documents.attestation-conge', action: 'view' },
+    { menuId: 'documents.attestation-residence', action: 'view' },
     { menuId: 'documents.composition-familiale', action: 'view' },
     { menuId: 'documents.mouvement-travailleur', action: 'view' },
     { menuId: 'settings.utilisateurs', action: 'view' },
