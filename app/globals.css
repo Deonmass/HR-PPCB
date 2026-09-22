@@ -1,4 +1,4 @@
-﻿@import '@fontsource/exo-2/300.css';
+@import '@fontsource/exo-2/300.css';
 @import '@fontsource/exo-2/400.css';
 @import '@fontsource/exo-2/500.css';
 @import '@fontsource/exo-2/600.css';
@@ -19133,38 +19133,38 @@ html[data-theme="light"] .factures-soa-solde-pill {
 .village-toolbar-row {
   display: flex;
   flex-wrap: nowrap;
-  gap: 0.4rem;
+  gap: 0.35rem;
   align-items: center;
-  margin-bottom: 0.55rem;
+  margin-bottom: 0.4rem;
   min-width: 0;
 }
 
 .village-toolbar-search {
   flex: 1 1 auto;
-  min-width: 140px;
+  min-width: 120px;
   max-width: none;
-  min-height: 34px;
-  height: 34px;
-  font-size: 0.8rem;
-  padding: 0 0.55rem;
+  min-height: 30px;
+  height: 30px;
+  font-size: 0.75rem;
+  padding: 0 0.5rem;
 }
 
 .village-toolbar-filter {
   flex: 0 0 auto;
-  min-height: 34px;
-  height: 34px;
-  min-width: 110px;
-  max-width: 150px;
-  font-size: 0.78rem;
-  padding: 0 0.4rem;
+  min-height: 30px;
+  height: 30px;
+  min-width: 100px;
+  max-width: 140px;
+  font-size: 0.72rem;
+  padding: 0 0.35rem;
 }
 
 .village-toolbar-row .btn {
   flex-shrink: 0;
-  min-height: 34px;
-  height: 34px;
-  padding: 0 0.7rem;
-  font-size: 0.78rem;
+  min-height: 30px;
+  height: 30px;
+  padding: 0 0.6rem;
+  font-size: 0.72rem;
   white-space: nowrap;
 }
 
@@ -19554,40 +19554,42 @@ html[data-theme='light'] .side-drawer-form select {
 }
 
 .village-taille-group {
-  margin-bottom: 1.25rem;
+  margin-bottom: 0.85rem;
 }
 
 .village-taille-group-head {
   display: flex;
   align-items: baseline;
   justify-content: space-between;
-  gap: 0.75rem;
-  margin-bottom: 0.65rem;
-  padding-bottom: 0.35rem;
+  gap: 0.5rem;
+  margin-bottom: 0.45rem;
+  padding-bottom: 0.25rem;
   border-bottom: 1px solid var(--border);
 }
 
 .village-taille-group-head h3 {
   margin: 0;
-  font-size: 1rem;
+  font-size: 0.88rem;
 }
 
 .village-taille-group-head span {
-  font-size: 0.8rem;
+  font-size: 0.72rem;
   color: var(--muted);
 }
 
 .village-house-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(148px, 1fr));
-  gap: 0.75rem;
+  grid-template-columns: repeat(auto-fill, minmax(112px, 1fr));
+  gap: 0.75rem 0.6rem;
+  align-items: start;
+  padding-top: 0.35rem;
 }
 
 .village-house-grid.is-studio {
   display: flex;
   flex-wrap: wrap;
   align-items: stretch;
-  gap: 0.75rem;
+  gap: 0.75rem 0.6rem;
 }
 
 .village-house-studio-col {
@@ -19595,74 +19597,165 @@ html[data-theme='light'] .side-drawer-form select {
   flex-direction: column;
   gap: 0.75rem;
   flex: 0 0 auto;
-  width: 148px;
+  width: 112px;
 }
 
-.village-house-studio-col .village-house-card {
+.village-house-studio-col .village-house {
   width: 100%;
-  min-height: 96px;
 }
 
-.village-house-card {
+.village-house {
+  --vh-fill: #f8fafc;
+  --vh-edge: rgba(71, 85, 105, 0.28);
+  --vh-ink: #334155;
+  --vh-roof: #64748b;
+  --vh-roof-dark: #475569;
+  --vh-door: #475569;
+  --vh-window: color-mix(in srgb, #38bdf8 35%, #fff);
   display: flex;
   flex-direction: column;
-  gap: 0.25rem;
-  align-items: flex-start;
-  text-align: left;
-  padding: 0.75rem 0.8rem;
-  border-radius: 12px;
-  border: 1px solid transparent;
+  align-items: stretch;
+  width: 100%;
+  max-width: 128px;
+  margin: 0 auto;
+  padding: 0 0.2rem;
+  border: none;
+  background: transparent;
   cursor: default;
   font: inherit;
-  transition: transform 0.15s, box-shadow 0.15s, border-color 0.15s;
+  color: var(--vh-ink);
+  transition: transform 0.15s ease;
   position: relative;
+  filter: drop-shadow(0 4px 8px rgba(22, 22, 30, 0.12));
 }
 
-.village-house-card.is-occupied {
-  background: rgba(16, 185, 129, 0.1);
-  border-color: rgba(16, 185, 129, 0.35);
-  color: #065f46;
+.village-house.is-occupied {
+  --vh-fill: color-mix(in srgb, #e30613 11%, #fff);
+  --vh-edge: color-mix(in srgb, #e30613 42%, transparent);
+  --vh-ink: #b91c1c;
+  --vh-roof: #dc2626;
+  --vh-roof-dark: #991b1b;
+  --vh-door: #7f1d1d;
+  --vh-window: color-mix(in srgb, #fecaca 55%, #fff);
 }
 
-.village-house-card.is-empty {
-  background: rgba(245, 158, 11, 0.1);
-  border-color: rgba(245, 158, 11, 0.35);
-  color: #92400e;
+.village-house.is-empty {
+  --vh-fill: color-mix(in srgb, #22c55e 11%, #fff);
+  --vh-edge: color-mix(in srgb, #22c55e 40%, transparent);
+  --vh-ink: #15803d;
+  --vh-roof: #16a34a;
+  --vh-roof-dark: #166534;
+  --vh-door: #14532d;
+  --vh-window: color-mix(in srgb, #bbf7d0 55%, #fff);
 }
 
-html[data-theme='dark'] .village-house-card.is-occupied {
-  color: #6ee7b7;
+html[data-theme='dark'] .village-house.is-occupied,
+html:not([data-theme='light']) .village-house.is-occupied {
+  --vh-fill: color-mix(in srgb, #e30613 20%, #16161c);
+  --vh-edge: color-mix(in srgb, #e30613 48%, transparent);
+  --vh-ink: #fecaca;
+  --vh-roof: #ef4444;
+  --vh-roof-dark: #b91c1c;
+  --vh-door: #7f1d1d;
+  --vh-window: color-mix(in srgb, #e30613 25%, #1e1e28);
 }
 
-html[data-theme='dark'] .village-house-card.is-empty {
-  color: #fcd34d;
+html[data-theme='dark'] .village-house.is-empty,
+html:not([data-theme='light']) .village-house.is-empty {
+  --vh-fill: color-mix(in srgb, #22c55e 16%, #16161c);
+  --vh-edge: color-mix(in srgb, #22c55e 42%, transparent);
+  --vh-ink: #86efac;
+  --vh-roof: #22c55e;
+  --vh-roof-dark: #15803d;
+  --vh-door: #14532d;
+  --vh-window: color-mix(in srgb, #22c55e 22%, #1e1e28);
 }
 
-.village-house-card:hover {
+.village-house:hover {
   transform: translateY(-2px);
-  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
+  filter: drop-shadow(0 8px 14px rgba(22, 22, 30, 0.16));
 }
 
-.village-house-card-top {
+/* Toit trapézoïdal + avant-toit + cheminée */
+.village-house-crown {
+  position: relative;
+  z-index: 1;
+  height: 1.55rem;
+  margin: 0 -0.1rem;
+  flex-shrink: 0;
+}
+
+.village-house-roof {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0.18rem;
+  top: 0.15rem;
+  background: linear-gradient(180deg, var(--vh-roof) 0%, var(--vh-roof-dark) 100%);
+  clip-path: polygon(6% 100%, 50% 0%, 94% 100%);
+}
+
+.village-house-chimney {
+  position: absolute;
+  right: 16%;
+  bottom: 0.55rem;
+  width: 0.4rem;
+  height: 0.95rem;
+  border-radius: 2px 2px 0 0;
+  background: var(--vh-roof-dark);
+  box-shadow: 0 -2px 0 1.5px color-mix(in srgb, var(--vh-roof-dark) 75%, #111);
+  z-index: 0;
+}
+
+.village-house-eave {
+  position: absolute;
+  left: -3%;
+  right: -3%;
+  bottom: 0;
+  height: 0.26rem;
+  border-radius: 2px;
+  background: color-mix(in srgb, var(--vh-roof-dark) 90%, #111);
+  z-index: 2;
+}
+
+.village-house-body {
+  position: relative;
+  z-index: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.08rem;
+  align-items: flex-start;
+  text-align: left;
+  min-height: 4.75rem;
+  padding: 0.4rem 0.45rem 1.2rem;
+  border: 1.5px solid var(--vh-edge);
+  border-radius: 0 0 8px 8px;
+  background:
+    linear-gradient(180deg, color-mix(in srgb, var(--vh-fill) 92%, #fff) 0%, var(--vh-fill) 100%);
+  color: var(--vh-ink);
+}
+
+.village-house-top {
   display: flex;
   align-items: center;
-  gap: 0.45rem;
+  gap: 0.2rem;
   width: 100%;
 }
 
 .village-house-more {
   margin-left: auto;
-  width: 28px;
-  height: 28px;
+  width: 20px;
+  height: 20px;
   border: none;
-  border-radius: 8px;
+  border-radius: 5px;
   background: transparent;
   color: inherit;
   display: inline-flex;
   align-items: center;
   justify-content: center;
   cursor: pointer;
-  opacity: 0.7;
+  opacity: 0.65;
+  flex-shrink: 0;
 }
 
 .village-house-more:hover {
@@ -19674,32 +19767,90 @@ html[data-theme='dark'] .village-house-more:hover {
   background: rgba(255, 255, 255, 0.1);
 }
 
-.village-house-icon {
-  width: 22px;
-  height: 22px;
-  flex-shrink: 0;
-}
-
 .village-house-numero {
-  font-size: 1.05rem;
+  font-size: 0.95rem;
+  font-weight: 800;
+  line-height: 1;
+  letter-spacing: -0.02em;
 }
 
 .village-house-status {
-  font-size: 0.72rem;
+  font-size: 0.58rem;
   font-weight: 700;
   text-transform: uppercase;
   letter-spacing: 0.04em;
-  opacity: 0.85;
+  opacity: 0.8;
+  line-height: 1.15;
 }
 
 .village-house-occupant {
-  font-size: 0.8rem;
-  line-height: 1.25;
+  font-size: 0.68rem;
+  line-height: 1.2;
   text-transform: none;
   display: -webkit-box;
   -webkit-line-clamp: 2;
   -webkit-box-orient: vertical;
   overflow: hidden;
+  width: 100%;
+  padding-right: 1.35rem;
+}
+
+.village-house-window {
+  position: absolute;
+  right: 0.45rem;
+  bottom: 1.15rem;
+  width: 0.95rem;
+  height: 0.85rem;
+  border-radius: 2px;
+  background: var(--vh-window);
+  border: 1px solid color-mix(in srgb, var(--vh-ink) 22%, transparent);
+  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.25);
+}
+
+.village-house-window::before,
+.village-house-window::after {
+  content: '';
+  position: absolute;
+  background: color-mix(in srgb, var(--vh-ink) 28%, transparent);
+}
+
+.village-house-window::before {
+  left: 50%;
+  top: 0;
+  bottom: 0;
+  width: 1px;
+  transform: translateX(-50%);
+}
+
+.village-house-window::after {
+  top: 50%;
+  left: 0;
+  right: 0;
+  height: 1px;
+  transform: translateY(-50%);
+}
+
+.village-house-door {
+  position: absolute;
+  left: 0.45rem;
+  bottom: 0;
+  width: 1rem;
+  height: 1.05rem;
+  border-radius: 3px 3px 0 0;
+  background: var(--vh-door);
+  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.12);
+}
+
+.village-house-door::after {
+  content: '';
+  position: absolute;
+  right: 0.16rem;
+  top: 50%;
+  width: 0.16rem;
+  height: 0.16rem;
+  border-radius: 50%;
+  background: color-mix(in srgb, #fff 60%, transparent);
+  transform: translateY(-50%);
 }
 
 .village-house-occupant.is-externe,
@@ -19753,8 +19904,13 @@ html:not([data-theme='light']) .project-picker-list {
 }
 
 .village-house-type {
-  font-size: 0.72rem;
+  font-size: 0.62rem;
   opacity: 0.7;
+  line-height: 1.15;
+  max-width: 100%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 .village-liste-panel {
@@ -19868,14 +20024,18 @@ html:not([data-theme='light']) .project-picker-list {
 }
 
 .village-maisons-page {
-  --header-ctrl-h: 40px;
+  --header-ctrl-h: 30px;
+}
+
+.village-maisons-page .dependants-sticky.check-docs-sticky {
+  padding-top: 0.55rem;
+  padding-bottom: 0.35rem;
 }
 
 .village-maisons-page .village-maisons-header.check-docs-header {
-  display: flex;
-  flex-direction: column;
-  align-items: stretch;
-  gap: 0.35rem;
+  display: block;
+  padding-bottom: 0 !important;
+  gap: 0;
   flex-wrap: nowrap;
 }
 
@@ -19883,27 +20043,69 @@ html:not([data-theme='light']) .project-picker-list {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 0.75rem 1rem;
-  flex-wrap: wrap;
+  gap: 0.55rem 0.75rem;
+  flex-wrap: nowrap;
   min-width: 0;
+  width: 100%;
 }
 
-.village-maisons-page .village-maisons-header .check-docs-header-left {
+.village-maisons-page .village-maisons-title-block {
   flex: 0 1 auto;
   min-width: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 0.05rem;
 }
 
-.village-maisons-page .village-maisons-header .check-docs-header-actions {
+.village-maisons-page .village-maisons-header .check-docs-header-left h2,
+.village-maisons-page .village-maisons-title-block h2 {
+  font-size: 1.05rem;
+  line-height: 1.15;
+  margin: 0;
+}
+
+.village-maisons-page .village-maisons-header .page-header-title-row {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  min-height: var(--header-ctrl-h);
+}
+
+.village-maisons-page .village-maisons-header-actions {
   flex: 1 1 auto;
+  display: flex;
+  align-items: center;
   justify-content: flex-end;
+  gap: 0.4rem;
   min-width: 0;
+  flex-wrap: nowrap;
+}
+
+.village-maisons-page .village-maisons-export-group {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  flex-shrink: 0;
+}
+
+.village-maisons-page .village-maisons-export-group .btn {
+  min-height: var(--header-ctrl-h);
+  height: var(--header-ctrl-h);
+  padding: 0 0.55rem;
+  font-size: 0.72rem;
+  gap: 0.3rem;
 }
 
 .village-maisons-page .village-maisons-header-sub {
   margin: 0 !important;
-  white-space: normal !important;
-  line-height: 1.35;
+  margin-top: 0 !important;
+  white-space: nowrap !important;
+  line-height: 1.2;
   max-width: 100%;
+  font-size: 0.68rem !important;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .village-maisons-page .header-tabs-compact,
@@ -19913,20 +20115,26 @@ html:not([data-theme='light']) .project-picker-list {
   overflow-x: auto;
   max-width: none;
   width: auto;
+  height: var(--header-ctrl-h) !important;
+  min-height: var(--header-ctrl-h);
+  padding: 2px !important;
+  gap: 0.12rem;
+  align-items: center;
+  margin-bottom: 0 !important;
 }
 
 .village-maisons-page .tab-btn,
 .village-maisons-page .tab-btn.tab-btn-sm,
 .village-maisons-page .tab-btn-sm {
-  font-size: 0.78rem !important;
-  padding: 0 0.65rem !important;
-  min-height: calc(var(--header-ctrl-h) - 6px);
+  font-size: 0.68rem !important;
+  padding: 0 0.45rem !important;
+  min-height: calc(var(--header-ctrl-h) - 4px) !important;
+  height: calc(var(--header-ctrl-h) - 4px) !important;
   white-space: nowrap !important;
   word-break: keep-all !important;
   overflow-wrap: normal !important;
   flex-shrink: 0;
-  line-height: 1.15 !important;
-  height: auto !important;
+  line-height: 1 !important;
 }
 
 .village-liste-subtabs.header-tabs-compact {
@@ -20248,7 +20456,8 @@ html[data-theme='light'] .village-dept-taille-table td:first-child {
   margin-bottom: 0 !important;
   height: 100%;
   max-height: none;
-  padding-bottom: 0.75rem;
+  padding: 0.65rem 0.75rem 0.55rem !important;
+  padding-bottom: 0.55rem;
 }
 
 .village-maisons-page .village-maisons-scroll,
@@ -20259,11 +20468,27 @@ html[data-theme='light'] .village-dept-taille-table td:first-child {
 }
 
 .village-maisons-page .village-taille-group {
-  margin-bottom: 0.75rem;
+  margin-bottom: 0.55rem;
 }
 
 .village-maisons-page .village-taille-group:last-child {
   margin-bottom: 0;
+}
+
+@media (max-width: 1100px) {
+  .village-maisons-page .village-maisons-header-top {
+    flex-wrap: wrap;
+    align-items: flex-start;
+  }
+
+  .village-maisons-page .village-maisons-header-actions {
+    width: 100%;
+    justify-content: flex-start;
+  }
+
+  .village-maisons-page .village-maisons-header-sub {
+    white-space: normal !important;
+  }
 }
 
 .village-skeleton {
@@ -20607,6 +20832,17 @@ html[data-theme='light'] .village-dept-taille-table td:first-child {
   background: #f59e0b;
 }
 
+.guest-house-motel-legend-item.is-unassigned {
+  color: #6d28d9;
+  border-color: color-mix(in srgb, #8b5cf6 36%, transparent);
+}
+
+.guest-house-motel-legend-item.is-unassigned::before {
+  background: #8b5cf6;
+  border-radius: 50%;
+  box-shadow: 0 0 0 2px color-mix(in srgb, #8b5cf6 25%, transparent);
+}
+
 .guest-house-motel-plans {
   display: flex;
   flex-direction: column;
@@ -20624,6 +20860,52 @@ html[data-theme='light'] .village-dept-taille-table td:first-child {
   align-items: center;
   justify-content: space-between;
   gap: 0.75rem;
+}
+
+.guest-house-floorplan-head-actions {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  flex-shrink: 0;
+}
+
+@keyframes guest-house-full-blink {
+  0%,
+  100% {
+    opacity: 1;
+    transform: scale(1);
+    box-shadow: 0 0 0 0 color-mix(in srgb, #e30613 45%, transparent);
+  }
+  50% {
+    opacity: 0.55;
+    transform: scale(1.04);
+    box-shadow: 0 0 0 4px color-mix(in srgb, #e30613 18%, transparent);
+  }
+}
+
+.guest-house-full-badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 1.45rem;
+  padding: 0.12rem 0.55rem;
+  border-radius: 999px;
+  font-size: 0.65rem;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: #fff;
+  background: linear-gradient(135deg, #e30613, #b91c1c);
+  border: 1px solid color-mix(in srgb, #7f1d1d 40%, transparent);
+  animation: guest-house-full-blink 1.05s ease-in-out infinite;
+  user-select: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .guest-house-full-badge {
+    animation: none;
+    opacity: 1;
+  }
 }
 
 .guest-house-floorplan-title-block {
@@ -20801,6 +21083,10 @@ html[data-theme='light'] .village-dept-taille-table td:first-child {
   background: linear-gradient(160deg, color-mix(in srgb, #f59e0b 12%, #fff), #fff);
 }
 
+.guest-house-floorplan-unit.is-reserved.is-provisional {
+  border-style: dashed;
+}
+
 .guest-house-floorplan-sleep {
   display: flex;
   flex-direction: column;
@@ -20907,6 +21193,12 @@ html[data-theme='light'] .village-dept-taille-table td:first-child {
 .guest-house-floorplan-unit.is-occupied .guest-house-floorplan-status-pill {
   color: #b91c1c;
   background: color-mix(in srgb, #e30613 14%, transparent);
+}
+
+.guest-house-floorplan-status-pill.is-reserved,
+.guest-house-floorplan-unit.is-reserved .guest-house-floorplan-status-pill {
+  color: #b45309;
+  background: color-mix(in srgb, #f59e0b 18%, transparent);
 }
 
 .guest-house-floorplan-occupant {

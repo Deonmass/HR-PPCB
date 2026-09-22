@@ -367,12 +367,11 @@ export function buildDashboard(data: GuestHouseStoreData): GuestHouseDashboard {
   );
   const reservedOnsite = onsiteRoomsList.filter((room) => {
     if (occupiedRoomIds.has(room.id)) return false;
-    return data.reservations.some(
-      (item) =>
-        item.roomId === room.id
-        && (item.status === 'confirmed' || item.status === 'pending')
-        && item.startDate > today,
-    );
+    return data.reservations.some((item) => {
+      if (item.roomId !== room.id || item.endDate < today) return false;
+      if (item.status === 'pending') return true;
+      return item.status === 'confirmed' && item.startDate > today;
+    });
   });
 
   const kimpeseOccupied = kimpeseRooms.filter((room) => occupiedRoomIds.has(room.id)).length;

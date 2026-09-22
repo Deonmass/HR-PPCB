@@ -1,6 +1,6 @@
 'use client';
 
-import type { CSSProperties } from 'react';
+import { useMemo, type CSSProperties } from 'react';
 import CardActionMenu from '@/components/CardActionMenu';
 import {
   GUEST_HOUSE_BUILDINGS,
@@ -19,6 +19,8 @@ export interface MotelRoomItem {
 
 interface Props {
   roomsByBuilding: Record<string, MotelRoomItem[]>;
+  /** Réservations en attente sans chambre (mois courant) — affichées sur les vides, surplus en légende. */
+  unassignedReservations?: GuestReservation[];
   canCreate?: boolean;
   canEdit?: boolean;
   canDelete?: boolean;
@@ -100,8 +102,17 @@ function roomUnitLabel(room: GuestRoom): string {
   return `CH. ${num}`;
 }
 
+/** Chambre VIP (ex. 1/2 VIP) — exclue du placement automatique des réservations sans chambre. */
+function isVipRoom(room: GuestRoom): boolean {
+  const tokens = [room.roomNumber, room.roomName, room.templateLabel]
+    .map((v) => (v || '').trim().toLowerCase())
+    .filter(Boolean);
+  return tokens.some((t) => /\bvip\b/.test(t));
+}
+
 export default function GuestHouseMotelView({
   roomsByBuilding,
+  unassignedReservations = [],
   canCreate = false,
   canEdit = false,
   canDelete = false,
@@ -110,23 +121,48 @@ export default function GuestHouseMotelView({
   onDeleteRoom,
   onHistory,
 }: Props) {
-  const buildings = ONSITE_BUILDINGS.map((building) => ({
-    building,
-    rooms: sortRooms(roomsByBuilding[building] ?? []),
-  }));
+  const buildings = useMemo(
+    () =>
+      ONSITE_BUILDINGS.map((building) => ({
+        building,
+        rooms: sortRooms(roomsByBuilding[building] ?? []),
+      })),
+    [roomsByBuilding],
+  );
+
+  /** Place les réservations sans chambre sur les vides (affichage) ; le surplus = légende. */
+  const { provisionalByRoomId, overflowUnassigned } = useMemo(() => {
+    const queue = [...unassignedReservations].sort((a, b) =>
+      a.startDate.localeCompare(b.startDate) || a.numero.localeCompare(b.numero),
+    );
+    const map = new Map<string, GuestReservation>();
+    for (const block of buildings) {
+      for (const item of block.rooms) {
+        if (item.status !== 'empty' || queue.length === 0) continue;
+        if (isVipRoom(item.room)) continue;
+        const next = queue.shift();
+        if (next) map.set(item.room.id, next);
+      }
+    }
+    return { provisionalByRoomId: map, overflowUnassigned: queue.length };
+  }, [buildings, unassignedReservations]);
 
   const totals = buildings.reduce(
     (acc, block) => {
       for (const item of block.rooms) {
         acc.total += 1;
-        if (item.status === 'occupied') acc.occupied += 1;
-        else if (item.status === 'reserved') acc.reserved += 1;
+        const provisional = provisionalByRoomId.get(item.room.id);
+        const status = provisional ? 'reserved' : item.status;
+        if (status === 'occupied') acc.occupied += 1;
+        else if (status === 'reserved') acc.reserved += 1;
         else acc.empty += 1;
       }
       return acc;
     },
     { total: 0, occupied: 0, reserved: 0, empty: 0 },
   );
+
+  const showUnassignedLegend = overflowUnassigned > 0;
 
   return (
     <section className="panel panel-padded guest-house-motel">
@@ -136,59 +172,87 @@ export default function GuestHouseMotelView({
           <p className="text-muted">
             Bâtiment 1 &amp; 2 · chambre + douche · {totals.occupied} occupée(s) · {totals.empty} vide(s)
             {totals.reserved ? ` · ${totals.reserved} réservée(s)` : ''}
+            {showUnassignedLegend ? ` · ${overflowUnassigned} sans chambre` : ''}
           </p>
         </div>
         <div className="guest-house-motel-legend" aria-hidden>
           <span className="guest-house-motel-legend-item is-occupied">Occupé</span>
           <span className="guest-house-motel-legend-item is-reserved">Réservé</span>
           <span className="guest-house-motel-legend-item is-empty">Vide</span>
+          {showUnassignedLegend ? (
+            <span className="guest-house-motel-legend-item is-unassigned">
+              Sans chambre ({overflowUnassigned})
+            </span>
+          ) : null}
         </div>
       </div>
 
       <div className="guest-house-motel-plans">
         {buildings.map(({ building, rooms }) => {
           const shortLabel = building.replace(/^Batiment\s*#?/i, 'Bâtiment ');
-          const occupiedCount = rooms.filter((r) => r.status === 'occupied').length;
+          const displayRooms = rooms.map((item) => {
+            const provisional = provisionalByRoomId.get(item.room.id);
+            if (!provisional) return item;
+            return {
+              ...item,
+              status: 'reserved' as const,
+              linkedReservation: provisional,
+            };
+          });
+          const occupiedCount = displayRooms.filter((r) => r.status === 'occupied').length;
+          const reservedCount = displayRooms.filter((r) => r.status === 'reserved').length;
+          const emptyCount = displayRooms.filter((r) => r.status === 'empty').length;
+          const isFull = displayRooms.length > 0 && emptyCount === 0;
 
           return (
-            <article key={building} className="guest-house-floorplan">
+            <article key={building} className={`guest-house-floorplan${isFull ? ' is-full' : ''}`}>
               <header className="guest-house-floorplan-head">
                 <div className="guest-house-floorplan-title-block">
                   <span className="guest-house-floorplan-building-badge" aria-hidden />
                   <div>
                     <h4>{shortLabel}</h4>
                     <p>
-                      {rooms.length} chambre(s) · {occupiedCount} occupée(s)
+                      {displayRooms.length} chambre(s) · {occupiedCount} occupée(s)
+                      {reservedCount ? ` · ${reservedCount} réservée(s)` : ''}
+                      {emptyCount ? ` · ${emptyCount} vide(s)` : ''}
                     </p>
                   </div>
                 </div>
-                {canCreate && onCreateReservation ? (
-                  <button
-                    type="button"
-                    className="btn btn-primary btn-sm btn-with-icon"
-                    onClick={onCreateReservation}
-                    title="Nouvelle réservation"
-                  >
-                    <IconPlus size={13} />
-                    Réservation
-                  </button>
-                ) : null}
+                <div className="guest-house-floorplan-head-actions">
+                  {isFull ? (
+                    <span className="guest-house-full-badge" title="Aucune chambre libre dans ce bâtiment">
+                      FULL
+                    </span>
+                  ) : null}
+                  {canCreate && onCreateReservation ? (
+                    <button
+                      type="button"
+                      className="btn btn-primary btn-sm btn-with-icon"
+                      onClick={onCreateReservation}
+                      title="Nouvelle réservation"
+                    >
+                      <IconPlus size={13} />
+                      Réservation
+                    </button>
+                  ) : null}
+                </div>
               </header>
 
-              {rooms.length === 0 ? (
+              {displayRooms.length === 0 ? (
                 <p className="text-muted guest-house-motel-empty">Aucune chambre dans ce bâtiment.</p>
               ) : (
                 <div className="guest-house-floorplan-scroll">
                   <div
                     className="guest-house-floorplan-building"
-                    style={{ '--gh-room-count': String(Math.max(rooms.length, 1)) } as CSSProperties}
+                    style={{ '--gh-room-count': String(Math.max(displayRooms.length, 1)) } as CSSProperties}
                   >
                     <div className="guest-house-floorplan-roof" aria-hidden />
                     <div className="guest-house-floorplan-units" role="list">
-                      {rooms.map(({ room, status, linkedReservation }) => {
+                      {displayRooms.map(({ room, status, linkedReservation }) => {
                         const daysLeft = linkedReservation
                           ? remainingDays(linkedReservation.endDate)
                           : null;
+                        const isProvisional = provisionalByRoomId.has(room.id);
                         const menuItems = [
                           {
                             id: 'history',
@@ -219,8 +283,12 @@ export default function GuestHouseMotelView({
                           <div
                             key={room.id}
                             role="listitem"
-                            className={`guest-house-floorplan-unit is-${status}`}
-                            title={`${roomDisplayName(room)} — ${statusLabel(status)}`}
+                            className={`guest-house-floorplan-unit is-${status}${isProvisional ? ' is-provisional' : ''}`}
+                            title={
+                              isProvisional
+                                ? `${roomDisplayName(room)} — Réservé (sans attribution définitive)`
+                                : `${roomDisplayName(room)} — ${statusLabel(status)}`
+                            }
                           >
                             <div className="guest-house-floorplan-sleep">
                               <div className="guest-house-floorplan-unit-top">
@@ -246,6 +314,11 @@ export default function GuestHouseMotelView({
 
                               {linkedReservation ? (
                                 <div className="guest-house-floorplan-info">
+                                  {status === 'reserved' ? (
+                                    <span className="guest-house-floorplan-status-pill is-reserved">
+                                      Réservé
+                                    </span>
+                                  ) : null}
                                   <div
                                     className="guest-house-floorplan-occupant"
                                     title={linkedReservation.personName}

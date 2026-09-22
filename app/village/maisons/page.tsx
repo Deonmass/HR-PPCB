@@ -148,35 +148,6 @@ interface SuggestionForm {
   commentaire: string;
 }
 
-function HouseIcon() {
-  return (
-    <svg className="village-house-icon" viewBox="0 0 24 24" aria-hidden>
-      <path
-        d="M3 10.5 12 3l9 7.5"
-        fill="none"
-        stroke="currentColor"
-        strokeWidth="1.8"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-      />
-      <path
-        d="M5 10v10h14V10"
-        fill="none"
-        stroke="currentColor"
-        strokeWidth="1.8"
-        strokeLinejoin="round"
-      />
-      <path
-        d="M10 20v-6h4v6"
-        fill="none"
-        stroke="currentColor"
-        strokeWidth="1.8"
-        strokeLinejoin="round"
-      />
-    </svg>
-  );
-}
-
 function MoreIcon() {
   return (
     <svg viewBox="0 0 24 24" width="16" height="16" aria-hidden>
@@ -1249,7 +1220,7 @@ function VillageMaisonsPageInner() {
         <div className="dependants-sticky check-docs-sticky">
           <div className="page-header page-header-with-tabs check-docs-header dependants-header village-maisons-header">
             <div className="village-maisons-header-top">
-              <div className="check-docs-header-left">
+              <div className="check-docs-header-left village-maisons-title-block">
                 <div className="page-header-title-row">
                   <h2>Village / Kimpese</h2>
                   <RefreshButton
@@ -1257,8 +1228,22 @@ function VillageMaisonsPageInner() {
                     loading={loading && (tab === 'maisons' || tab === 'vides' || tab === 'tailles')}
                   />
                 </div>
+                <p className="dependants-header-sub village-maisons-header-sub">
+                  {tab === 'dashboard'
+                    ? 'Indicateurs Zamba, logements et répartition'
+                    : tab === 'liste'
+                      ? 'Familles Village et Kimpese'
+                      : tab === 'photo'
+                        ? 'Photo du village'
+                        : (
+                        <>
+                          Feuilles Excel <strong>MAISON</strong> et <strong>TYPE</strong> · {maisons.length}{' '}
+                          maison(s)
+                        </>
+                      )}
+                </p>
               </div>
-              <div className="check-docs-header-actions">
+              <div className="check-docs-header-actions village-maisons-header-actions">
                 <div className="tabs header-tabs header-tabs-compact">
                   {canViewDashboard && (
                     <button
@@ -1312,19 +1297,19 @@ function VillageMaisonsPageInner() {
                   )}
                 </div>
                 {canExport && (
-                  <>
+                  <div className="village-maisons-export-group">
                     <button
                       type="button"
-                      className="btn btn-secondary btn-with-icon"
+                      className="btn btn-secondary btn-sm btn-with-icon"
                       title="Préparer et exporter la présentation PowerPoint"
                       onClick={() => setPresentationOpen(true)}
                     >
                       <PptxIcon />
-                      Préparer la présentation
+                      Présentation
                     </button>
                     <button
                       type="button"
-                      className="btn btn-secondary btn-with-icon"
+                      className="btn btn-secondary btn-sm btn-with-icon"
                       disabled={exporting}
                       onClick={async () => {
                         setExporting(true);
@@ -1340,24 +1325,10 @@ function VillageMaisonsPageInner() {
                       {exporting ? <span className="btn-spinner" aria-hidden="true" /> : <ExportIcon />}
                       {exporting ? 'Export…' : 'Exporter'}
                     </button>
-                  </>
+                  </div>
                 )}
               </div>
             </div>
-            <p className="dependants-header-sub village-maisons-header-sub">
-              {tab === 'dashboard'
-                ? 'Indicateurs Zamba, logements et répartition'
-                : tab === 'liste'
-                  ? 'Familles Village et Kimpese'
-                  : tab === 'photo'
-                    ? 'Photo du village'
-                    : (
-                    <>
-                      Feuilles Excel <strong>MAISON</strong> et <strong>TYPE</strong> · {maisons.length}{' '}
-                      maison(s)
-                    </>
-                  )}
-            </p>
           </div>
         </div>
 
@@ -1718,7 +1689,7 @@ function VillageMaisonsPageInner() {
                             return (
                               <div
                                 key={m.numero}
-                                className={`village-house-card${m.occupied ? ' is-occupied' : ' is-empty'}`}
+                                className={`village-house${m.occupied ? ' is-occupied' : ' is-empty'}`}
                                 title={
                                   m.occupied
                                     ? `${m.numero} — ${formatDisplayName(occupant?.nom ?? '')}`
@@ -1737,39 +1708,47 @@ function VillageMaisonsPageInner() {
                                   });
                                 }}
                               >
-                                <div className="village-house-card-top">
-                                  <HouseIcon />
-                                  <strong className="village-house-numero">{m.numero}</strong>
-                                  <button
-                                    type="button"
-                                    className="village-house-more"
-                                    title="Actions"
-                                    onClick={(e) => {
-                                      e.stopPropagation();
-                                      setContextMenu({
-                                        x: e.clientX,
-                                        y: e.clientY,
-                                        kind: 'maison',
-                                        maison: m,
-                                      });
-                                    }}
+                                <div className="village-house-crown" aria-hidden>
+                                  <span className="village-house-chimney" />
+                                  <div className="village-house-roof" />
+                                  <span className="village-house-eave" />
+                                </div>
+                                <div className="village-house-body">
+                                  <div className="village-house-top">
+                                    <strong className="village-house-numero">{m.numero}</strong>
+                                    <button
+                                      type="button"
+                                      className="village-house-more"
+                                      title="Actions"
+                                      onClick={(e) => {
+                                        e.stopPropagation();
+                                        setContextMenu({
+                                          x: e.clientX,
+                                          y: e.clientY,
+                                          kind: 'maison',
+                                          maison: m,
+                                        });
+                                      }}
+                                    >
+                                      <MoreIcon />
+                                    </button>
+                                  </div>
+                                  <div className="village-house-status">
+                                    {m.occupied ? 'Occupée' : 'Vide'}
+                                  </div>
+                                  <div
+                                    className={`village-house-occupant${
+                                      occupant?.externe ? ' is-externe' : ''
+                                    }`}
                                   >
-                                    <MoreIcon />
-                                  </button>
+                                    {occupant ? formatDisplayName(occupant.nom) : '—'}
+                                  </div>
+                                  {m.typeMaison && m.typeMaison !== tailleLabel ? (
+                                    <div className="village-house-type">{m.typeMaison}</div>
+                                  ) : null}
+                                  <span className="village-house-window" aria-hidden />
+                                  <span className="village-house-door" aria-hidden />
                                 </div>
-                                <div className="village-house-status">
-                                  {m.occupied ? 'Occupée' : 'Vide'}
-                                </div>
-                                <div
-                                  className={`village-house-occupant${
-                                    occupant?.externe ? ' is-externe' : ''
-                                  }`}
-                                >
-                                  {occupant ? formatDisplayName(occupant.nom) : '—'}
-                                </div>
-                                {m.typeMaison && m.typeMaison !== tailleLabel ? (
-                                  <div className="village-house-type">{m.typeMaison}</div>
-                                ) : null}
                               </div>
                             );
                           });

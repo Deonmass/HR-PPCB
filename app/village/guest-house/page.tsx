@@ -719,12 +719,13 @@ export default function VillageGuestHousePage() {
     );
     const reservedRoomIds = new Set(
       reservations
-        .filter(
-          (item) =>
-            (item.status === 'confirmed' || item.status === 'pending')
-            && Boolean(item.roomId)
-            && item.startDate > today,
-        )
+        .filter((item) => {
+          if (!item.roomId) return false;
+          if (item.endDate < today) return false;
+          if (occupiedRoomIds.has(item.roomId)) return false;
+          if (item.status === 'pending') return true;
+          return item.status === 'confirmed' && item.startDate > today;
+        })
         .map((item) => item.roomId as string),
     );
 
@@ -1238,17 +1239,20 @@ export default function VillageGuestHousePage() {
           && item.startDate <= today
           && item.endDate >= today,
       );
-      const upcomingReservation = roomReservations.find(
-        (item) =>
-          (item.status === 'confirmed' || item.status === 'pending')
-          && item.startDate > today,
-      );
+      // Réservé : réservation future confirmée, ou pending qui tient encore la chambre
+      const reservedReservation = !activeReservation
+        ? roomReservations.find((item) => {
+            if (item.endDate < today) return false;
+            if (item.status === 'pending') return true;
+            return item.status === 'confirmed' && item.startDate > today;
+          })
+        : undefined;
       const status: MotelRoomStatus = activeReservation
         ? 'occupied'
-        : upcomingReservation
+        : reservedReservation
           ? 'reserved'
           : 'empty';
-      const linkedReservation = activeReservation ?? upcomingReservation ?? null;
+      const linkedReservation = activeReservation ?? reservedReservation ?? null;
       return {
         room,
         status,
@@ -1270,6 +1274,12 @@ export default function VillageGuestHousePage() {
     }
     return groups;
   }, [rooms, reservations, passages]);
+
+  /** Réservations en attente sans chambre attribuée (mois affiché). */
+  const unassignedPending = useMemo(
+    () => pending.filter((item) => !item.roomId || !roomsById.has(item.roomId)),
+    [pending, roomsById],
+  );
 
   const buildingOrder = useMemo(() => {
     const keys = Object.keys(roomsGrouped);
@@ -1526,6 +1536,7 @@ export default function VillageGuestHousePage() {
 
               <GuestHouseMotelView
                 roomsByBuilding={roomsGrouped}
+                unassignedReservations={unassignedPending}
                 canCreate={canCreate}
                 canEdit={canEdit}
                 canDelete={canDelete}
