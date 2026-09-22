@@ -2,7 +2,7 @@
   "entries": [
     {
       "id": "log-001056",
-      "at": "2026-09-22T11:41:02.639Z",
+      "at": "2026-09-22T11:41:07.383Z",
       "userId": "admin",
       "userName": "Administrateur",
       "userEmail": "admin",
@@ -10,8 +10,8 @@
       "moduleLabel": "Attestation de service",
       "action": "export",
       "actionLabel": "Export",
-      "summary": "Aperçu PDF attestation leo",
-      "details": "Aperçu PDF attestation leo",
+      "summary": "Aperçu PDF attestation MPONGO KOLONGO LEON",
+      "details": "Aperçu PDF attestation MPONGO KOLONGO LEON",
       "undoable": false,
       "undone": false
     },
