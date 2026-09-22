@@ -120,8 +120,8 @@ export function parseCompilationExportBuffer(
     throw new Error('Aucune colonne semaine (1.3 / 1.6 / 2 / N) trouvée');
   }
 
-  // Limiter à 4 semaines comme l'export
-  const weekCols = weekStarts.slice(0, 4);
+  // Toutes les semaines présentes (Timesheet N + totaux viennent après le dernier bloc)
+  const weekCols = weekStarts;
 
   // Timesheet N = première colonne N après le dernier bloc semaine qui n'est pas dans un bloc
   const lastWeekEnd = weekCols[weekCols.length - 1] + 3;

@@ -12,13 +12,14 @@ import {
   type PolicyChange,
 } from './timesheet-compilation-policy';
 import { OVERTIMES_EXPORT_XLSX_PATH } from './excel-overtimes-paths';
+import { TIMESHEET_WEEKS_PER_PERIOD } from './timesheet-period';
 
 const WEEK_START_COL = 6; // F
 const DATA_START_ROW = 4;
-const LAST_DATA_COL = 27; // AA = Total
-/** Timesheet N + Total Général (V–AA) — styles du template à conserver. */
-const TOTAL_GEN_FIRST_COL = 22;
-const TOTAL_GEN_LAST_COL = 27;
+/** Layout template (4 semaines) : Timesheet N + Total Général en V–AA. */
+const TEMPLATE_WEEK_COUNT = 4;
+const TEMPLATE_TOTAL_GEN_FIRST_COL = 22;
+const TEMPLATE_TOTAL_GEN_LAST_COL = 27;
 const POLICY_YELLOW = 'FFFFFF00';
 const TOTAL_BLACK = 'FF000000';
 const TOTAL_WHITE = 'FFFFFFFF';
@@ -29,6 +30,8 @@ const OT_FIELDS: { key: keyof CompilationRowWeek; label: string }[] = [
   { key: 'ot2', label: '2' },
   { key: 'night', label: 'N' },
 ];
+
+const TOTAL_GEN_LABELS = ['1.3', '1.6', '2', 'N', 'Total'] as const;
 
 const SHEET_RAW = 'Données brutes';
 const SHEET_POLICY = 'Politique';
@@ -51,8 +54,12 @@ function weekCol(weekPos: number, field: keyof CompilationRowWeek): number {
   return WEEK_START_COL + weekPos * 4 + Math.max(0, offset);
 }
 
-function isTotalGeneralCol(col: number): boolean {
-  return col >= TOTAL_GEN_FIRST_COL && col <= TOTAL_GEN_LAST_COL;
+/** Colonnes Timesheet N + Total Général selon le nombre de semaines présentes. */
+function layoutForWeekCount(weekCount: number) {
+  const nightCol = WEEK_START_COL + weekCount * 4;
+  const totalStart = nightCol + 1;
+  const lastDataCol = totalStart + 4;
+  return { nightCol, totalStart, lastDataCol };
 }
 
 function buildChangeCommentMap(changes: PolicyChange[]): Map<string, string> {
@@ -79,13 +86,16 @@ function cloneStyle(style: Partial<ExcelJS.Style> | ExcelJS.Style): ExcelJS.Styl
   return JSON.parse(JSON.stringify(style)) as ExcelJS.Style;
 }
 
-/** Capture les styles template des colonnes Timesheet N + Total Général (ligne modèle). */
-function captureTotalGeneralStyles(sheet: ExcelJS.Worksheet): Map<number, ExcelJS.Style> {
-  const map = new Map<number, ExcelJS.Style>();
-  for (let c = TOTAL_GEN_FIRST_COL; c <= TOTAL_GEN_LAST_COL; c++) {
-    map.set(c, cloneStyle(sheet.getCell(DATA_START_ROW, c).style));
+/**
+ * Capture les styles template Timesheet N + Total Général (V–AA),
+ * indexés 0…5 pour les remapper sur le layout dynamique.
+ */
+function captureTotalGeneralStyles(sheet: ExcelJS.Worksheet): ExcelJS.Style[] {
+  const styles: ExcelJS.Style[] = [];
+  for (let c = TEMPLATE_TOTAL_GEN_FIRST_COL; c <= TEMPLATE_TOTAL_GEN_LAST_COL; c++) {
+    styles.push(cloneStyle(sheet.getCell(DATA_START_ROW, c).style));
   }
-  return map;
+  return styles;
 }
 
 /** Fresh style object — avoids mutating ExcelJS shared stylesheet entries. */
@@ -140,15 +150,18 @@ function applyYellowAndComment(cell: ExcelJS.Cell, comment: string) {
 
 function clearDataArea(
   sheet: ExcelJS.Worksheet,
-  totalStyles: Map<number, ExcelJS.Style>,
+  weekCount: number,
+  totalStyles: ExcelJS.Style[],
 ) {
+  const { nightCol, lastDataCol } = layoutForWeekCount(weekCount);
   const last = Math.max(sheet.rowCount, DATA_START_ROW);
   for (let r = DATA_START_ROW; r <= last; r++) {
-    for (let c = 1; c <= LAST_DATA_COL; c++) {
+    for (let c = 1; c <= lastDataCol; c++) {
       const cell = sheet.getCell(r, c);
       cell.value = null;
-      if (isTotalGeneralCol(c) && totalStyles.has(c)) {
-        cell.style = cloneStyle(totalStyles.get(c)!);
+      const totalOffset = c - nightCol;
+      if (totalOffset >= 0 && totalOffset < totalStyles.length) {
+        cell.style = cloneStyle(totalStyles[totalOffset]!);
       } else {
         cell.style = plainCellStyle() as ExcelJS.Style;
       }
@@ -165,20 +178,71 @@ function keepOnlyCompilationSheet(workbook: ExcelJS.Workbook) {
   }
 }
 
+function copyHeaderCell(
+  sheet: ExcelJS.Worksheet,
+  fromCol: number,
+  toCol: number,
+  rows: number[] = [1, 2, 3],
+) {
+  for (const r of rows) {
+    const src = sheet.getCell(r, fromCol);
+    const dst = sheet.getCell(r, toCol);
+    dst.value = src.value;
+    dst.style = cloneStyle(src.style);
+  }
+  const width = sheet.getColumn(fromCol).width;
+  if (width != null) sheet.getColumn(toCol).width = width;
+}
+
+/**
+ * Réécrit les en-têtes pour N semaines présentes :
+ * semaines OT, puis Timesheet N, puis Total Général (1.3 / 1.6 / 2 / N / Total).
+ */
 function writeWeekHeaders(sheet: ExcelJS.Worksheet, weeks: CompilationData['weeks']) {
   const weekCount = weeks.length;
+  const { nightCol, totalStart, lastDataCol } = layoutForWeekCount(weekCount);
+
+  // Étendre les colonnes semaine au-delà du template (5e / 6e semaine).
+  for (let pos = TEMPLATE_WEEK_COUNT; pos < weekCount; pos++) {
+    for (let c = 0; c < 4; c++) {
+      copyHeaderCell(sheet, WEEK_START_COL + c, WEEK_START_COL + pos * 4 + c);
+    }
+  }
+
+  // Copier Timesheet + Total Général vers leur position dynamique (avant d’écraser le template).
+  for (let offset = 0; offset < 6; offset++) {
+    copyHeaderCell(
+      sheet,
+      TEMPLATE_TOTAL_GEN_FIRST_COL + offset,
+      nightCol + offset,
+    );
+  }
+
   weeks.forEach((week, pos) => {
     const start = WEEK_START_COL + pos * 4;
     for (let c = 0; c < 4; c++) {
       sheet.getCell(1, start + c).value = week.label;
       sheet.getCell(2, start + c).value = week.range;
+      sheet.getCell(3, start + c).value = OT_FIELDS[c]!.label;
     }
   });
-  for (let pos = weekCount; pos < 4; pos++) {
-    const start = WEEK_START_COL + pos * 4;
-    for (let c = 0; c < 4; c++) {
-      sheet.getCell(1, start + c).value = `Semaine ${pos + 1}`;
-      sheet.getCell(2, start + c).value = '';
+
+  sheet.getCell(1, nightCol).value = 'Timesheet';
+  sheet.getCell(2, nightCol).value = null;
+  sheet.getCell(3, nightCol).value = 'N';
+
+  for (let i = 0; i < TOTAL_GEN_LABELS.length; i++) {
+    const col = totalStart + i;
+    sheet.getCell(1, col).value = 'Total Général';
+    sheet.getCell(2, col).value = null;
+    sheet.getCell(3, col).value = TOTAL_GEN_LABELS[i];
+  }
+
+  // Effacer le surplus du template (semaines / totaux hors layout actuel).
+  const clearUntil = Math.max(TEMPLATE_TOTAL_GEN_LAST_COL, lastDataCol);
+  for (let c = lastDataCol + 1; c <= clearUntil; c++) {
+    for (const r of [1, 2, 3]) {
+      sheet.getCell(r, c).value = null;
     }
   }
 }
@@ -187,13 +251,12 @@ function fillSheetRows(
   sheet: ExcelJS.Worksheet,
   rows: CompilationRow[],
   weekCount: number,
-  totalStyles: Map<number, ExcelJS.Style>,
+  totalStyles: ExcelJS.Style[],
   policyComments?: Map<string, string>,
 ) {
-  const nightCol = WEEK_START_COL + weekCount * 4;
-  const totalStart = nightCol + 1;
+  const { nightCol, totalStart, lastDataCol } = layoutForWeekCount(weekCount);
 
-  clearDataArea(sheet, totalStyles);
+  clearDataArea(sheet, weekCount, totalStyles);
 
   rows.forEach((row, index) => {
     const excelRow = DATA_START_ROW + index;
@@ -217,7 +280,7 @@ function fillSheetRows(
       });
     });
 
-    const nightStyle = totalStyles.get(nightCol);
+    const nightStyle = totalStyles[0];
     if (nightStyle) {
       setTotalGeneralValue(sheet.getCell(excelRow, nightCol), num(row.nightNormal), nightStyle);
     } else {
@@ -239,23 +302,22 @@ function fillSheetRows(
     const refTotalOt13 = sheet.getCell(excelRow, totalStart).address;
     const refTotalOt16 = sheet.getCell(excelRow, totalStart + 1).address;
     const refTotalOt2 = sheet.getCell(excelRow, totalStart + 2).address;
-    const refTotalOtNight = sheet.getCell(excelRow, totalStart + 3).address;
 
     const sumOrZero = (refs: string[]) => (refs.length ? `SUM(${refs.join(',')})` : '0');
 
-    const writeTotal = (col: number, value: ExcelJS.CellValue) => {
-      const style = totalStyles.get(col);
+    const writeTotal = (col: number, styleIndex: number, value: ExcelJS.CellValue) => {
+      const style = totalStyles[styleIndex];
       if (style) setTotalGeneralValue(sheet.getCell(excelRow, col), value, style);
       else setPlainValue(sheet.getCell(excelRow, col), value);
     };
 
-    writeTotal(totalStart, { formula: sumOrZero(ot13Refs) });
-    writeTotal(totalStart + 1, { formula: sumOrZero(ot16Refs) });
-    writeTotal(totalStart + 2, { formula: sumOrZero(ot2Refs) });
-    writeTotal(totalStart + 3, {
+    writeTotal(totalStart, 1, { formula: sumOrZero(ot13Refs) });
+    writeTotal(totalStart + 1, 2, { formula: sumOrZero(ot16Refs) });
+    writeTotal(totalStart + 2, 3, { formula: sumOrZero(ot2Refs) });
+    writeTotal(totalStart + 3, 4, {
       formula: `${sumOrZero(otNightRefs)}+${refNightNormal}`,
     });
-    writeTotal(totalStart + 4, {
+    writeTotal(totalStart + 4, 5, {
       formula: `${refTotalOt13}+${refTotalOt16}+${refTotalOt2}`,
     });
   });
@@ -265,7 +327,7 @@ function fillSheetRows(
   const totalRow = lastData + 1;
 
   // Ligne TOTAL — fond noir, texte blanc, formules SUM
-  for (let c = 1; c <= LAST_DATA_COL; c++) {
+  for (let c = 1; c <= lastDataCol; c++) {
     const cell = sheet.getCell(totalRow, c);
     if (c === 1) {
       cell.value = 'TOTAL';
@@ -296,11 +358,12 @@ function fillSheetRows(
 
   // Neutraliser les lignes vides résiduelles du template (au-delà du TOTAL)
   for (let r = totalRow + 1; r <= sheet.rowCount; r++) {
-    for (let c = 1; c <= LAST_DATA_COL; c++) {
+    for (let c = 1; c <= lastDataCol; c++) {
       const cell = sheet.getCell(r, c);
       cell.value = null;
-      if (isTotalGeneralCol(c) && totalStyles.has(c)) {
-        cell.style = cloneStyle(totalStyles.get(c)!);
+      const totalOffset = c - nightCol;
+      if (totalOffset >= 0 && totalOffset < totalStyles.length) {
+        cell.style = cloneStyle(totalStyles[totalOffset]!);
       } else {
         cell.style = plainCellStyle() as ExcelJS.Style;
       }
@@ -309,7 +372,11 @@ function fillSheetRows(
   }
 }
 
-function copySheetStructure(source: ExcelJS.Worksheet, target: ExcelJS.Worksheet) {
+function copySheetStructure(
+  source: ExcelJS.Worksheet,
+  target: ExcelJS.Worksheet,
+  lastDataCol: number,
+) {
   source.columns.forEach((col, index) => {
     if (col.width != null) target.getColumn(index + 1).width = col.width;
   });
@@ -318,7 +385,7 @@ function copySheetStructure(source: ExcelJS.Worksheet, target: ExcelJS.Worksheet
     const srcRow = source.getRow(r);
     const dstRow = target.getRow(r);
     if (srcRow.height != null) dstRow.height = srcRow.height;
-    for (let c = 1; c <= LAST_DATA_COL; c++) {
+    for (let c = 1; c <= lastDataCol; c++) {
       const src = source.getCell(r, c);
       const dst = target.getCell(r, c);
       dst.value = src.value;
@@ -349,6 +416,7 @@ export interface CompilationExportOptions {
 /**
  * Export compilation OT à partir du template Excel/templates/overtimes/OVERTIMES.xlsx.
  * Produit toujours 2 feuilles : « Données brutes » et « Politique ».
+ * Inclut toutes les semaines présentes dans la période (jusqu’à 6).
  */
 export async function buildCompilationWorkbookBuffer(
   data: CompilationData,
@@ -384,14 +452,15 @@ export async function buildCompilationWorkbookBuffer(
   const totalStyles = captureTotalGeneralStyles(rawSheet);
   rawSheet.name = SHEET_RAW;
 
-  const weeks = data.weeks.slice(0, 4);
+  const weeks = data.weeks.slice(0, TIMESHEET_WEEKS_PER_PERIOD);
   const weekCount = weeks.length;
+  const { lastDataCol } = layoutForWeekCount(weekCount);
 
   writeWeekHeaders(rawSheet, weeks);
   fillSheetRows(rawSheet, rawRows, weekCount, totalStyles);
 
   const policySheet = workbook.addWorksheet(SHEET_POLICY);
-  copySheetStructure(rawSheet, policySheet);
+  copySheetStructure(rawSheet, policySheet, lastDataCol);
   writeWeekHeaders(policySheet, weeks);
   fillSheetRows(
     policySheet,
