@@ -1,6 +1,21 @@
 {
   "entries": [
     {
+      "id": "log-001088",
+      "at": "2026-09-22T15:54:53.122Z",
+      "userId": "admin",
+      "userName": "Administrateur",
+      "userEmail": "admin",
+      "module": "timesheet.compilation",
+      "moduleLabel": "Timesheet — Compilation",
+      "action": "export",
+      "actionLabel": "Export",
+      "summary": "Export simulation compilation OT 9/2026",
+      "details": "Export Excel simulation compilation OT",
+      "undoable": false,
+      "undone": false
+    },
+    {
       "id": "log-001087",
       "at": "2026-09-22T15:52:45.921Z",
       "userId": "admin",
@@ -117171,5 +117186,5 @@
       }
     }
   ],
-  "nextSeq": 1088
+  "nextSeq": 1089
 }
