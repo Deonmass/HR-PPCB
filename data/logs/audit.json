@@ -1,6 +1,29 @@
 {
   "entries": [
     {
+      "id": "log-001042",
+      "at": "2026-09-22T10:52:59.546Z",
+      "userId": "admin",
+      "userName": "Administrateur",
+      "userEmail": "admin",
+      "module": "timesheet",
+      "moduleLabel": "Timesheet",
+      "action": "update",
+      "actionLabel": "Modification",
+      "summary": "Enregistrement timesheet 70000124 — Mining (9/2026)",
+      "details": "Enregistrement timesheet 70000124 — Mining (9/2026)",
+      "undoable": false,
+      "undone": false,
+      "meta": {
+        "year": 2026,
+        "month": 9,
+        "department": "Mining",
+        "matricule": "70000124",
+        "mode": "employee-month",
+        "count": 42
+      }
+    },
+    {
       "id": "log-001041",
       "at": "2026-09-22T10:41:42.174Z",
       "userId": "admin",
@@ -114514,5 +114537,5 @@
       }
     }
   ],
-  "nextSeq": 1042
+  "nextSeq": 1043
 }
