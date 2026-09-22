@@ -1,6 +1,21 @@
 {
   "entries": [
     {
+      "id": "log-001083",
+      "at": "2026-09-22T14:37:54.250Z",
+      "userId": "Marie.Yowali",
+      "userName": "Marie Yowali",
+      "userEmail": "Marie.Yowali@ppcdrc.cd",
+      "module": "employees",
+      "moduleLabel": "Employés",
+      "action": "export",
+      "actionLabel": "Export",
+      "summary": "Export employés (EMPLOYEES_HR_2026-09-22.xlsx)",
+      "details": "Fichier Excel exporté : EMPLOYEES_HR_2026-09-22.xlsx",
+      "undoable": false,
+      "undone": false
+    },
+    {
       "id": "log-001082",
       "at": "2026-09-22T14:37:09.788Z",
       "userId": "Marie.Yowali",
@@ -116876,5 +116891,5 @@
       }
     }
   ],
-  "nextSeq": 1083
+  "nextSeq": 1084
 }
