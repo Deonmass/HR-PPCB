@@ -30,9 +30,11 @@ import {
 } from '@/lib/timesheet-bulk-shifts';
 import { applyShiftSelection } from '@/lib/timesheet-shift-hours';
 import type { WeeklyOvertimeEntry } from '@/lib/timesheet-weekly-ot';
+import { emptyWeeklyOvertimeEntry } from '@/lib/timesheet-weekly-ot';
 import { downloadTimesheetWorkbook, exportTimesheetWorkbook } from '@/lib/timesheet-export';
 import { TIMESHEET_COMPANY_DEFAULT } from '@/lib/timesheet-policy';
-import { showError, showSuccess } from '@/lib/swal';
+import { confirmAction, showError, showSuccess } from '@/lib/swal';
+import { useTimesheetAccess } from '@/hooks/useTimesheetAccess';
 import {
   buildTimesheetTemplateLines,
   formatHoursValue,
@@ -52,6 +54,19 @@ interface Props {
   onClose: () => void;
   /** Called after a successful save so parent lists can refresh. */
   onSaved?: () => void;
+}
+
+type OtField = 'ot13' | 'ot16' | 'ot2' | 'night';
+
+function parseOtInput(value: string): number {
+  const parsed = Number.parseFloat(value.replace(',', '.'));
+  if (!Number.isFinite(parsed) || parsed < 0) return 0;
+  return Math.round(parsed * 1000) / 1000;
+}
+
+function otEntryHasData(entry: WeeklyOvertimeEntry | undefined): boolean {
+  if (!entry) return false;
+  return entry.ot13 > 0 || entry.ot16 > 0 || entry.ot2 > 0 || entry.night > 0;
 }
 
 type SchedulePresetId = 'general-zamba' | 'general-kinshasa' | 'shifter';
@@ -162,6 +177,10 @@ export default function TimesheetEmployeeMonthModal({
   onClose,
   onSaved,
 }: Props) {
+  const { permissions } = useTimesheetAccess();
+  const canEditValidated = Boolean(permissions?.editValidatedOvertime);
+  const canConfirmOt = Boolean(permissions?.validateOvertime);
+
   const [period, setPeriod] = useState<TimesheetPeriod>(() => buildTimesheetPeriod(year, month));
   const [periodLabel, setPeriodLabel] = useState(() =>
     formatTimesheetPeriodBoundsLabel(boundsFromPeriod(buildTimesheetPeriod(year, month))),
@@ -170,9 +189,12 @@ export default function TimesheetEmployeeMonthModal({
   const [weeklyOtByIndex, setWeeklyOtByIndex] = useState<
     Record<number, WeeklyOvertimeEntry | undefined>
   >({});
+  const [lockedWeekIndexes, setLockedWeekIndexes] = useState<Set<number>>(() => new Set());
+  const [dirtyOtWeekIndexes, setDirtyOtWeekIndexes] = useState<Set<number>>(() => new Set());
   const [loading, setLoading] = useState(false);
   const [exporting, setExporting] = useState(false);
   const [saving, setSaving] = useState(false);
+  const [confirmingOt, setConfirmingOt] = useState(false);
   const [dirty, setDirty] = useState(false);
   const [actualMenu, setActualMenu] = useState<ActualMenuState | null>(null);
   const [followShifterCycle, setFollowShifterCycle] = useState(false);
@@ -189,6 +211,8 @@ export default function TimesheetEmployeeMonthModal({
     setLoading(true);
     setRows([]);
     setWeeklyOtByIndex({});
+    setLockedWeekIndexes(new Set());
+    setDirtyOtWeekIndexes(new Set());
     setDirty(false);
     setActualMenu(null);
     setFollowShifterCycle(false);
@@ -220,16 +244,27 @@ export default function TimesheetEmployeeMonthModal({
         return json.entries ?? {};
       }),
       fetch(`/api/timesheet/weekly-ot?${otParams}`).then(async (res) => {
-        if (!res.ok) return {} as Record<number, WeeklyOvertimeEntry>;
-        const json = (await res.json()) as { byWeek?: Record<number, WeeklyOvertimeEntry> };
-        return json.byWeek ?? {};
+        if (!res.ok) {
+          return {
+            byWeek: {} as Record<number, WeeklyOvertimeEntry>,
+            lockedWeekIndexes: [] as number[],
+          };
+        }
+        const json = (await res.json()) as {
+          byWeek?: Record<number, WeeklyOvertimeEntry>;
+          lockedWeekIndexes?: number[];
+        };
+        return {
+          byWeek: json.byWeek ?? {},
+          lockedWeekIndexes: json.lockedWeekIndexes ?? [],
+        };
       }),
       fetch(`/api/timesheet/period-bounds?year=${year}&month=${month}`).then(async (res) => {
         if (!res.ok) return null;
         return (await res.json()) as { bounds?: TimesheetPeriodBounds };
       }),
     ])
-      .then(([entries, byWeek, boundsJson]) => {
+      .then(([entries, otPayload, boundsJson]) => {
         if (cancelled) return;
         const resolved = applyTimesheetPeriodBounds(basePeriod, boundsJson?.bounds ?? null);
         setPeriod(resolved);
@@ -238,7 +273,9 @@ export default function TimesheetEmployeeMonthModal({
         setRows(merged);
         setFollowShifterCycle(detectShifterCycleStart(merged) !== null);
         savedSignatureRef.current = rowsSignature(merged);
-        setWeeklyOtByIndex(byWeek);
+        setWeeklyOtByIndex(otPayload.byWeek);
+        setLockedWeekIndexes(new Set(otPayload.lockedWeekIndexes));
+        setDirtyOtWeekIndexes(new Set());
       })
       .catch(() => {
         if (!cancelled) {
@@ -247,6 +284,8 @@ export default function TimesheetEmployeeMonthModal({
           setFollowShifterCycle(false);
           savedSignatureRef.current = rowsSignature(emptyRows);
           setWeeklyOtByIndex({});
+          setLockedWeekIndexes(new Set());
+          setDirtyOtWeekIndexes(new Set());
         }
       })
       .finally(() => {
@@ -298,6 +337,56 @@ export default function TimesheetEmployeeMonthModal({
     [rows, weeklyOtByIndex, localisation, year, month, inactiveDateKeys],
   );
   const totals = useMemo(() => sumTimesheetTemplateLines(lines), [lines]);
+
+  const weekIndexesOnSheet = useMemo(
+    () =>
+      Array.from(
+        new Set(lines.filter((line) => line.kind === 'week').map((line) => line.weekIndex)),
+      ).sort((a, b) => a - b),
+    [lines],
+  );
+
+  const confirmableWeekIndexes = useMemo(
+    () =>
+      weekIndexesOnSheet.filter(
+        (weekIndex) =>
+          !lockedWeekIndexes.has(weekIndex) && otEntryHasData(weeklyOtByIndex[weekIndex]),
+      ),
+    [lockedWeekIndexes, weekIndexesOnSheet, weeklyOtByIndex],
+  );
+
+  const canEditWeekOt = useCallback(
+    (weekIndex: number) => {
+      if (!canEdit) return false;
+      if (lockedWeekIndexes.has(weekIndex)) return canEditValidated;
+      return true;
+    },
+    [canEdit, canEditValidated, lockedWeekIndexes],
+  );
+
+  const updateWeekOt = useCallback(
+    (weekIndex: number, field: OtField, value: string) => {
+      if (!canEditWeekOt(weekIndex)) return;
+      setWeeklyOtByIndex((prev) => {
+        const current = prev[weekIndex] ?? emptyWeeklyOvertimeEntry(matricule);
+        return {
+          ...prev,
+          [weekIndex]: {
+            ...current,
+            matricule,
+            [field]: parseOtInput(value),
+          },
+        };
+      });
+      setDirtyOtWeekIndexes((prev) => {
+        const next = new Set(prev);
+        next.add(weekIndex);
+        return next;
+      });
+      setDirty(true);
+    },
+    [canEditWeekOt, matricule],
+  );
 
   const updateRow = useCallback(
     (
@@ -526,40 +615,139 @@ export default function TimesheetEmployeeMonthModal({
 
   const handleSave = async () => {
     if (!canEdit || !department) return;
+
+    const rowsDirty = rowsSignature(rows) !== savedSignatureRef.current;
+    const otDirty = dirtyOtWeekIndexes.size > 0;
+    if (!rowsDirty && !otDirty) return;
+
+    if (otDirty) {
+      const confirmed = await confirmAction(
+        'Enregistrer les overtimes ?',
+        'Les heures supplémentaires modifiées seront mises à jour pour cet agent.',
+        'Enregistrer',
+      );
+      if (!confirmed) return;
+    }
+
     setSaving(true);
     try {
-      const res = await fetch('/api/timesheet/entries', {
-        method: 'PUT',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          year,
-          month,
-          department,
-          matricule,
-          mode: 'employee-month',
-          entries: rows.map((row) => ({
-            dateKey: row.dateKey,
-            from: row.from,
-            to: row.to,
-            shiftType: row.shiftType,
-            holiday: Boolean(row.holiday),
-          })),
-        }),
-      });
+      if (rowsDirty) {
+        const res = await fetch('/api/timesheet/entries', {
+          method: 'PUT',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            year,
+            month,
+            department,
+            matricule,
+            mode: 'employee-month',
+            entries: rows.map((row) => ({
+              dateKey: row.dateKey,
+              from: row.from,
+              to: row.to,
+              shiftType: row.shiftType,
+              holiday: Boolean(row.holiday),
+            })),
+          }),
+        });
 
-      if (!res.ok) {
-        const json = (await res.json()) as { error?: string };
-        throw new Error(json.error ?? 'Enregistrement impossible');
+        if (!res.ok) {
+          const json = (await res.json()) as { error?: string };
+          throw new Error(json.error ?? 'Enregistrement impossible');
+        }
+
+        savedSignatureRef.current = rowsSignature(rows);
       }
 
-      savedSignatureRef.current = rowsSignature(rows);
+      if (otDirty) {
+        const weeksToSave = Array.from(dirtyOtWeekIndexes);
+        for (const weekIndex of weeksToSave) {
+          const entry = weeklyOtByIndex[weekIndex] ?? emptyWeeklyOvertimeEntry(matricule);
+          const res = await fetch('/api/timesheet/weekly-ot', {
+            method: 'PUT',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+              year,
+              month,
+              department,
+              weekIndex,
+              entries: [{ ...entry, matricule }],
+            }),
+          });
+          if (!res.ok) {
+            const json = (await res.json()) as { error?: string };
+            throw new Error(
+              json.error ?? `Enregistrement overtime semaine ${weekIndex + 1} impossible`,
+            );
+          }
+        }
+        setDirtyOtWeekIndexes(new Set());
+      }
+
       setDirty(false);
       onSaved?.();
-      await showSuccess('Timesheet enregistré');
+      await showSuccess(
+        otDirty && rowsDirty
+          ? 'Timesheet et overtimes enregistrés'
+          : otDirty
+            ? 'Overtimes enregistrés'
+            : 'Timesheet enregistré',
+      );
     } catch (err) {
       await showError(err instanceof Error ? err.message : 'Enregistrement impossible');
     } finally {
       setSaving(false);
+    }
+  };
+
+  const handleConfirmOt = async () => {
+    if (!canConfirmOt || !department || confirmableWeekIndexes.length === 0) return;
+
+    const weekLabels = confirmableWeekIndexes.map((index) => `Semaine ${index + 1}`).join(', ');
+    const confirmed = await confirmAction(
+      'Confirmer les overtimes ?',
+      `Après confirmation, les heures sup. (${weekLabels}) seront verrouillées pour le département ${department}.`,
+      'Confirmer',
+    );
+    if (!confirmed) return;
+
+    if (dirtyOtWeekIndexes.size > 0) {
+      await showError('Enregistrez d’abord les overtimes modifiés avant de confirmer.');
+      return;
+    }
+
+    setConfirmingOt(true);
+    try {
+      for (const weekIndex of confirmableWeekIndexes) {
+        const res = await fetch('/api/timesheet/weekly-ot', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            action: 'confirm',
+            year,
+            month,
+            department,
+            weekIndex,
+          }),
+        });
+        if (!res.ok) {
+          const json = (await res.json()) as { error?: string };
+          throw new Error(
+            json.error ?? `Confirmation semaine ${weekIndex + 1} impossible`,
+          );
+        }
+      }
+      setLockedWeekIndexes((prev) => {
+        const next = new Set(prev);
+        for (const weekIndex of confirmableWeekIndexes) next.add(weekIndex);
+        return next;
+      });
+      onSaved?.();
+      await showSuccess('Overtimes confirmés et verrouillés');
+    } catch (err) {
+      await showError(err instanceof Error ? err.message : 'Confirmation impossible');
+    } finally {
+      setConfirmingOt(false);
     }
   };
 
@@ -592,7 +780,8 @@ export default function TimesheetEmployeeMonthModal({
   };
 
   const handleClose = () => {
-    if (dirty && rowsSignature(rows) !== savedSignatureRef.current) {
+    const rowsDirty = rowsSignature(rows) !== savedSignatureRef.current;
+    if (dirty && (rowsDirty || dirtyOtWeekIndexes.size > 0)) {
       const leave = window.confirm('Des modifications ne sont pas enregistrées. Fermer quand même ?');
       if (!leave) return;
     }
@@ -765,28 +954,58 @@ export default function TimesheetEmployeeMonthModal({
                   <tbody>
                     {lines.map((line) => {
                       if (line.kind === 'week') {
+                        const weekLocked = lockedWeekIndexes.has(line.weekIndex);
+                        const otEditable = canEditWeekOt(line.weekIndex);
+                        const otValues = {
+                          ot13: line.ot13,
+                          ot16: line.ot16,
+                          ot2: line.ot2,
+                          night: line.otNight,
+                        } as const;
                         return (
-                          <tr key={`week-${line.weekIndex}`} className="timesheet-template-week-row">
+                          <tr
+                            key={`week-${line.weekIndex}`}
+                            className={[
+                              'timesheet-template-week-row',
+                              weekLocked ? 'timesheet-template-week-row-locked' : '',
+                            ]
+                              .filter(Boolean)
+                              .join(' ')}
+                          >
                             <td colSpan={6}>
                               <strong>{line.label}</strong>
+                              {weekLocked ? (
+                                <span className="timesheet-template-week-locked-badge">
+                                  {' '}
+                                  · Confirmé
+                                </span>
+                              ) : null}
                             </td>
                             <td className="timesheet-calc-cell" />
                             <td className="timesheet-calc-cell" />
                             <td className="timesheet-calc-cell" />
                             <td className="timesheet-calc-cell" />
                             <td className="timesheet-calc-cell" />
-                            <td className="timesheet-calc-cell timesheet-ot-cell">
-                              {formatHoursValue(line.ot13)}
-                            </td>
-                            <td className="timesheet-calc-cell timesheet-ot-cell">
-                              {formatHoursValue(line.ot16)}
-                            </td>
-                            <td className="timesheet-calc-cell timesheet-ot-cell">
-                              {formatHoursValue(line.ot2)}
-                            </td>
-                            <td className="timesheet-calc-cell timesheet-ot-cell">
-                              {formatHoursValue(line.otNight)}
-                            </td>
+                            {(['ot13', 'ot16', 'ot2', 'night'] as const).map((field) => (
+                              <td key={field} className="timesheet-calc-cell timesheet-ot-cell">
+                                {otEditable ? (
+                                  <input
+                                    type="number"
+                                    min="0"
+                                    step="0.01"
+                                    className="timesheet-week-ot-input timesheet-template-ot-input"
+                                    value={otValues[field] || ''}
+                                    title={`Overtime ${field === 'ot13' ? '1.3' : field === 'ot16' ? '1.6' : field === 'ot2' ? '2' : 'Night'} — ${line.label}`}
+                                    aria-label={`${line.label} overtime ${field}`}
+                                    onChange={(e) =>
+                                      updateWeekOt(line.weekIndex, field, e.target.value)
+                                    }
+                                  />
+                                ) : (
+                                  formatHoursValue(otValues[field])
+                                )}
+                              </td>
+                            ))}
                           </tr>
                         );
                       }
@@ -949,10 +1168,26 @@ export default function TimesheetEmployeeMonthModal({
                 type="button"
                 className="btn btn-primary"
                 onClick={() => void handleSave()}
-                disabled={loading || saving || !dirty}
+                disabled={loading || saving || confirmingOt || !dirty}
               >
                 {saving ? <BtnSpinner /> : null}
                 Enregistrer
+              </button>
+            ) : null}
+            {canConfirmOt && confirmableWeekIndexes.length > 0 ? (
+              <button
+                type="button"
+                className="btn btn-accent"
+                onClick={() => void handleConfirmOt()}
+                disabled={loading || saving || confirmingOt || dirtyOtWeekIndexes.size > 0}
+                title={
+                  dirtyOtWeekIndexes.size > 0
+                    ? 'Enregistrez d’abord les overtimes modifiés'
+                    : 'Confirmer et verrouiller les overtimes de la/des semaine(s)'
+                }
+              >
+                {confirmingOt ? <BtnSpinner /> : null}
+                Confirmer OT
               </button>
             ) : null}
             <button

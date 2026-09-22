@@ -8969,6 +8969,18 @@ html[data-theme="light"] .compilation-table tbody tr:hover td.compilation-sticky
   color: #1a1a1a;
   background: #f4cccc;
 }
+.timesheet-template-week-row .timesheet-template-ot-input {
+  background: rgba(255, 255, 255, 0.85);
+  color: #1a1a1a;
+  border-color: #d4a0a0;
+  font-weight: 600;
+  text-align: right;
+}
+.timesheet-template-week-row-locked .timesheet-template-week-locked-badge {
+  font-weight: 600;
+  font-size: 0.78rem;
+  opacity: 0.75;
+}
 .timesheet-template-week-row td:first-child {
   text-align: left;
 }

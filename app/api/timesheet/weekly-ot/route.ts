@@ -64,13 +64,16 @@ export async function GET(request: Request) {
     if (!canAccessEmployeeMatricule(accessResult.access, accessResult.employees, matricule)) {
       return NextResponse.json({ error: 'Accès timesheet refusé pour cet employé' }, { status: 403 });
     }
-    const byWeek = await getDepartmentWeeklyOtForMatricule(
-      period.year,
-      period.month,
-      department,
-      matricule,
-    );
-    return NextResponse.json({ byWeek });
+    const [byWeek, lockedWeekIndexes] = await Promise.all([
+      getDepartmentWeeklyOtForMatricule(
+        period.year,
+        period.month,
+        department,
+        matricule,
+      ),
+      getLockedWeekIndexes(period.year, period.month, department),
+    ]);
+    return NextResponse.json({ byWeek, lockedWeekIndexes });
   }
 
   if (Number.isFinite(weekIndex)) {
