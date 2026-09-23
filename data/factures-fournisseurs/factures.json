@@ -14933,7 +14933,26 @@
       "commentaire": "Au PR — en attente du PO.",
       "statut": "unpaid",
       "statutLabel": "unpaid"
+    },
+    {
+      "id": "fac-2147",
+      "date": "23/09/2026",
+      "societe": "Gringo",
+      "facture": "FACTURE N FC/CD02015819/1-13/2026",
+      "montant": 9690,
+      "echeance": "",
+      "pr": "11198707",
+      "datePr": "",
+      "po": "",
+      "datePo": "",
+      "grn": "",
+      "dateGrn": "",
+      "payment": "",
+      "datePym": "",
+      "commentaire": "Au PR — en attente du PO.",
+      "statut": "unpaid",
+      "statutLabel": "unpaid"
     }
   ],
-  "nextFactureSeq": 2147
+  "nextFactureSeq": 2148
 }
