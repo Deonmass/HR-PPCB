@@ -1,6 +1,51 @@
 {
   "entries": [
     {
+      "id": "log-001129",
+      "at": "2026-09-23T13:31:46.735Z",
+      "userId": "admin",
+      "userName": "Administrateur",
+      "userEmail": "admin",
+      "module": "guest-house",
+      "moduleLabel": "Guest house",
+      "action": "update",
+      "actionLabel": "Modification",
+      "entityType": "guest-house.reservation",
+      "entityId": "e5cc1962-651b-4da6-810f-7bcc52dd8f36",
+      "summary": "Modification réservation e5cc1962-651b-4da6-810f-7bcc52dd8f36",
+      "details": "Modification réservation e5cc1962-651b-4da6-810f-7bcc52dd8f36",
+      "before": {
+        "id": "e5cc1962-651b-4da6-810f-7bcc52dd8f36",
+        "numero": "GH-2026-4429",
+        "createdAt": "2026-09-21T13:03:22.127Z",
+        "personName": "Jourdain",
+        "isAgent": false,
+        "motif": "TBA",
+        "startDate": "2026-09-20",
+        "endDate": "2026-09-26",
+        "roomId": "12ee1ff4-eb03-4592-b1da-589006209e77",
+        "status": "confirmed",
+        "notes": "Eng",
+        "updatedAt": "2026-09-21T13:05:11.902Z"
+      },
+      "after": {
+        "id": "e5cc1962-651b-4da6-810f-7bcc52dd8f36",
+        "numero": "GH-2026-4429",
+        "createdAt": "2026-09-21T13:03:22.127Z",
+        "personName": "Jourdain",
+        "isAgent": false,
+        "motif": "TBA",
+        "startDate": "2026-09-20",
+        "endDate": "2026-09-23",
+        "roomId": "12ee1ff4-eb03-4592-b1da-589006209e77",
+        "status": "confirmed",
+        "notes": "Eng",
+        "updatedAt": "2026-09-23T13:31:42.923Z"
+      },
+      "undoable": true,
+      "undone": false
+    },
+    {
       "id": "log-001128",
       "at": "2026-09-23T12:33:44.377Z",
       "userId": "Serge.Muakasa@ppcdrc.cd",
@@ -118405,5 +118450,5 @@
       }
     }
   ],
-  "nextSeq": 1129
+  "nextSeq": 1130
 }
