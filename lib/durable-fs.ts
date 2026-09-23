@@ -38,12 +38,25 @@ export const DURABLE_PROJECT_EXPENSES_KEY = 'data/projects/expenses.json';
 export const DURABLE_OVERTIMES_TIMESHEETS_KEY = 'data/overtimes/timesheets.json';
 export const DURABLE_OVERTIMES_TIMESHEETS_DIR = 'data/overtimes/timesheets';
 export const DURABLE_OVERTIMES_WEEKLY_KEY = 'data/overtimes/weekly-overtime.json';
+export const DURABLE_OVERTIMES_COMPILATIONS_DIR = 'data/overtimes/compilations';
 export const DURABLE_TIMESHEET_PERIOD_BOUNDS_KEY = 'data/timesheet/period-bounds.json';
 
 export function durableTimesheetsMonthKey(year: number, month: number): string {
   const y = String(Math.trunc(year)).padStart(4, '0');
   const m = String(Math.trunc(month)).padStart(2, '0');
   return `${DURABLE_OVERTIMES_TIMESHEETS_DIR}/${y}-${m}.json`;
+}
+
+export function durableCompilationSnapshotKey(
+  year: number,
+  month: number,
+  department: string,
+): string {
+  const y = String(Math.trunc(year)).padStart(4, '0');
+  const m = String(Math.trunc(month)).padStart(2, '0');
+  const dept = department.trim() || '__ALL__';
+  const safe = dept.replace(/[^a-zA-Z0-9._-]+/g, '_').slice(0, 80);
+  return `${DURABLE_OVERTIMES_COMPILATIONS_DIR}/${y}-${m}__${safe}.json`;
 }
 export const DURABLE_TRAVEL_HISTORY_KEY = 'data/travel/history.json';
 export const DURABLE_MISSION_ORDERS_KEY = 'data/travel/mission-orders.json';

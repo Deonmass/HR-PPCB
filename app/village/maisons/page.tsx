@@ -345,6 +345,11 @@ function VillageMaisonsPageInner() {
   const [assignMaison, setAssignMaison] = useState<VillageMaisonOccupancy | null>(null);
   const [assignSelection, setAssignSelection] = useState<EmployeeSelection | null>(null);
   const [assignRaison, setAssignRaison] = useState('');
+  const [assignDate, setAssignDate] = useState(() => {
+    const d = new Date();
+    const pad = (n: number) => String(n).padStart(2, '0');
+    return `${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(d.getDate())}`;
+  });
   const [moveTargetNumero, setMoveTargetNumero] = useState('');
 
   const [search, setSearch] = useState('');
@@ -533,6 +538,9 @@ function VillageMaisonsPageInner() {
     setAssignMaison(maison);
     setAssignSelection(null);
     setAssignRaison('');
+    const d = new Date();
+    const pad = (n: number) => String(n).padStart(2, '0');
+    setAssignDate(`${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(d.getDate())}`);
     setMoveTargetNumero('');
     setAssignOpen(true);
   };
@@ -542,6 +550,9 @@ function VillageMaisonsPageInner() {
     setAssignMaison(maison);
     setAssignSelection(null);
     setAssignRaison('');
+    const d = new Date();
+    const pad = (n: number) => String(n).padStart(2, '0');
+    setAssignDate(`${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(d.getDate())}`);
     setMoveTargetNumero('');
     setAssignOpen(true);
   };
@@ -551,6 +562,11 @@ function VillageMaisonsPageInner() {
     if (!occupant) return;
     showActionLoading('Libération…', 'Veuillez patienter');
     try {
+      const today = (() => {
+        const d = new Date();
+        const pad = (n: number) => String(n).padStart(2, '0');
+        return `${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(d.getDate())}`;
+      })();
       const res = await fetch('/api/village/assign', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -562,6 +578,7 @@ function VillageMaisonsPageInner() {
                 nom: occupant.nom,
                 ancienNumero: maison.numero,
                 action: 'Liberer',
+                date: today,
               }
             : {
                 matricule: occupant.matricule,
@@ -569,6 +586,7 @@ function VillageMaisonsPageInner() {
                 nom: occupant.nom,
                 ancienNumero: maison.numero,
                 action: 'Liberer',
+                date: today,
               },
         ),
       });
@@ -591,6 +609,10 @@ function VillageMaisonsPageInner() {
       await showError('Saisissez ou choisissez un occupant');
       return;
     }
+    if (!assignDate.trim()) {
+      await showError('Indiquez la date d’affectation');
+      return;
+    }
     const matricule = assignSelection?.matricule?.trim() ?? '';
     const isExterne = !matricule;
     setSaving(true);
@@ -608,12 +630,16 @@ function VillageMaisonsPageInner() {
                     numeroVilla: '',
                     nom: occupant.nom,
                     ancienNumero: maison.numero,
+                    action: 'Liberer',
+                    date: assignDate,
                   }
                 : {
                     matricule: occupant.matricule,
                     numeroVilla: '',
                     nom: occupant.nom,
                     ancienNumero: maison.numero,
+                    action: 'Liberer',
+                    date: assignDate,
                   },
             ),
           });
@@ -634,6 +660,7 @@ function VillageMaisonsPageInner() {
                 raison: assignRaison || '',
                 action: assignMode === 'replace' ? 'Remplacer' : 'Affecter',
                 ancienNumero: assignMode === 'replace' ? maison.numero : '',
+                date: assignDate,
               }
             : {
                 matricule,
@@ -643,6 +670,7 @@ function VillageMaisonsPageInner() {
                 raison: assignRaison || '',
                 ancienNumero: assignMode === 'replace' ? maison.numero : '',
                 action: assignMode === 'replace' ? 'Remplacer' : 'Affecter',
+                date: assignDate,
               },
         ),
       });
@@ -684,6 +712,10 @@ function VillageMaisonsPageInner() {
       await showError('Indiquez la raison du déplacement');
       return;
     }
+    if (!assignDate.trim()) {
+      await showError('Indiquez la date du déplacement');
+      return;
+    }
     const dest = occupancy.find((m) => m.numero.trim().toLowerCase() === cible.toLowerCase());
     if (!dest) {
       await showError(`Maison « ${cible} » introuvable`);
@@ -709,6 +741,7 @@ function VillageMaisonsPageInner() {
             ancienNumero: maison.numero,
             action: 'Deplacer',
             raison,
+            date: assignDate,
           }),
         });
         const releaseJson = (await releaseRes.json()) as { error?: string };
@@ -727,6 +760,7 @@ function VillageMaisonsPageInner() {
                 ancienNumero: maison.numero,
                 raison,
                 action: 'Deplacer',
+                date: assignDate,
               }
             : {
                 matricule: occupant.matricule,
@@ -736,6 +770,7 @@ function VillageMaisonsPageInner() {
                 ancienNumero: maison.numero,
                 raison,
                 action: 'Deplacer',
+                date: assignDate,
               },
         ),
       });
@@ -2134,6 +2169,17 @@ function VillageMaisonsPageInner() {
                     <span>{h.action || '—'}</span>
                   </div>
                   <strong>{formatDisplayName(h.nom) || h.matricule || '—'}</strong>
+                  {h.ancienNumero || h.numeroVilla ? (
+                    <div>
+                      {h.ancienNumero && h.numeroVilla
+                        ? `${h.ancienNumero} → ${h.numeroVilla}`
+                        : h.numeroVilla
+                          ? `Maison ${h.numeroVilla}`
+                          : h.ancienNumero
+                            ? `Libération ${h.ancienNumero}`
+                            : null}
+                    </div>
+                  ) : null}
                   {h.raison ? <div>Raison : {h.raison}</div> : null}
                   {h.commentaire ? <div>Commentaire : {h.commentaire}</div> : null}
                 </div>
@@ -2243,6 +2289,7 @@ function VillageMaisonsPageInner() {
               className="btn btn-primary"
               disabled={
                 saving ||
+                !assignDate.trim() ||
                 (assignMode === 'move'
                   ? !moveTargetNumero.trim() || !assignRaison.trim()
                   : !assignSelection?.nom?.trim())
@@ -2307,6 +2354,16 @@ function VillageMaisonsPageInner() {
                   )}
                 </label>
                 <label>
+                  Date du déplacement
+                  <input
+                    type="date"
+                    className="filter-select"
+                    value={assignDate}
+                    onChange={(e) => setAssignDate(e.target.value)}
+                    disabled={saving}
+                  />
+                </label>
+                <label>
                   Raison
                   <input
                     className="filter-select"
@@ -2349,6 +2406,20 @@ function VillageMaisonsPageInner() {
                       Nom hors effectif — affichage en couleur distincte.
                     </span>
                   ) : null}
+                </label>
+                <label>
+                  Date d’affectation
+                  <input
+                    type="date"
+                    className="filter-select"
+                    value={assignDate}
+                    onChange={(e) => setAssignDate(e.target.value)}
+                    disabled={saving}
+                  />
+                  <span className="field-hint">
+                    Première affectation = date d’entrée au village (ancienneté). Conservée en cas de
+                    déplacement.
+                  </span>
                 </label>
                 <label>
                   Raison

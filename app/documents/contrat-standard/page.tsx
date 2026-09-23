@@ -305,16 +305,38 @@ export default function ContratStandardPage() {
         </div>
 
         {selected ? (
-          <div className="exit-docs-employee">
-            <strong>{selected.nom}</strong>
+          <div className="exit-docs-employee contrat-selected-agent">
             <span>
               {selected.matricule} · {selected.jobTitle || selected.position || '—'} ·{' '}
               {selected.departement || '—'}
+              {selected.typeContrat ? ` · ${selected.typeContrat}` : ''}
             </span>
           </div>
         ) : (
           <p className="docs-generator-placeholder">Sélectionnez un agent pour préremplir le contrat.</p>
         )}
+
+        <div className="form-group contrat-type-field">
+          <label>Type de contrat</label>
+          <div className="contrat-type-toggle" role="group" aria-label="Type de contrat">
+            <button
+              type="button"
+              className={`contrat-type-btn${form.contractType === 'CDD' ? ' is-active' : ''}`}
+              onClick={() => setForm((p) => ({ ...p, contractType: 'CDD' }))}
+            >
+              CDD
+              <span>Durée déterminée</span>
+            </button>
+            <button
+              type="button"
+              className={`contrat-type-btn${form.contractType === 'CDI' ? ' is-active' : ''}`}
+              onClick={() => setForm((p) => ({ ...p, contractType: 'CDI' }))}
+            >
+              CDI
+              <span>Durée indéterminée</span>
+            </button>
+          </div>
+        </div>
 
         <div className="form-grid form-grid-2 contrat-standard-grid">
           <div className="form-group">
@@ -438,7 +460,7 @@ export default function ContratStandardPage() {
           </div>
         </div>
 
-        <h3 className="contrat-section-title">Article 1 — Durée & essai</h3>
+        <h3 className="contrat-section-title">Article 1 — Durée &amp; essai</h3>
         <div className="form-grid form-grid-2">
           <div className="form-group">
             <label>Type de contrat</label>
@@ -448,6 +470,7 @@ export default function ContratStandardPage() {
                 ...p,
                 contractType: e.target.value === 'CDI' ? 'CDI' : 'CDD',
               }))}
+              aria-label="Type de contrat CDD ou CDI"
             >
               <option value="CDD">CDD — durée déterminée</option>
               <option value="CDI">CDI — durée indéterminée</option>
@@ -466,7 +489,12 @@ export default function ContratStandardPage() {
                 placeholder="12 mois renouvelable"
               />
             </div>
-          ) : null}
+          ) : (
+            <div className="form-group">
+              <label>Durée</label>
+              <input value="Indéterminée (CDI)" disabled readOnly />
+            </div>
+          )}
           <div className="form-group">
             <label>Date de début</label>
             <input

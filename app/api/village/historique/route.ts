@@ -16,6 +16,7 @@ export async function GET(request: Request) {
   try {
     const { searchParams } = new URL(request.url);
     const numero = searchParams.get('numero')?.trim() ?? '';
+    const matricule = searchParams.get('matricule')?.trim() ?? '';
     let history = await readAffectationHistory();
     if (numero) {
       const key = numero.toLowerCase();
@@ -24,6 +25,10 @@ export async function GET(request: Request) {
           h.numeroVilla.toLowerCase() === key
           || h.ancienNumero.toLowerCase() === key,
       );
+    }
+    if (matricule) {
+      const key = matricule.toLowerCase();
+      history = history.filter((h) => h.matricule.trim().toLowerCase() === key);
     }
     return NextResponse.json({ history });
   } catch (err) {

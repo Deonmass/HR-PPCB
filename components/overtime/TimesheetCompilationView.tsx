@@ -301,15 +301,17 @@ export default function TimesheetCompilationView({
 
   const isAll = department === ALL_DEPARTMENTS;
   const closed = data?.closed ?? false;
+  const frozen = Boolean(data?.frozen);
   const canEditTimesheet =
     (can(TIMESHEET_MENU.department, 'edit') ||
       can(TIMESHEET_MENU.all, 'edit') ||
       Boolean(access?.permissions?.editManager)) &&
-    !closed;
+    !closed &&
+    !frozen;
 
-  // A closed month is, by definition, already policy-applied.
+  // A closed/frozen month is, by definition, already policy-applied.
   useEffect(() => {
-    if (closed) {
+    if (closed || frozen) {
       setPolicyApplied(true);
       setSubTab('avec');
     } else {
@@ -318,10 +320,18 @@ export default function TimesheetCompilationView({
     }
     setReverted(new Set());
     setColFilters(EMPTY_COL_FILTERS);
-  }, [closed, department, selectedMonth]);
+  }, [closed, frozen, department, selectedMonth]);
 
   const rawRows = useMemo<CompilationRow[]>(() => data?.rows ?? [], [data]);
-  const policy = useMemo(() => applyCompilationPolicy(rawRows), [rawRows]);
+  const policy = useMemo(() => {
+    if (frozen && data?.policyRows) {
+      return {
+        rows: data.policyRows,
+        changes: (data.policyChanges ?? []) as PolicyChange[],
+      };
+    }
+    return applyCompilationPolicy(rawRows);
+  }, [frozen, data?.policyRows, data?.policyChanges, rawRows]);
 
   const weekChangeMap = useMemo(() => {
     const map = new Map<string, PolicyChange[]>();
@@ -666,12 +676,30 @@ export default function TimesheetCompilationView({
               <div className="compilation-header-title">
                 <h3>
                   Compilation des heures supplémentaires
-                  {closed ? <span className="compilation-closed-badge">Mois clôturé</span> : null}
+                  {frozen ? (
+                    <span className="compilation-closed-badge">Extrait sauvegardé</span>
+                  ) : closed ? (
+                    <span className="compilation-closed-badge">Mois clôturé</span>
+                  ) : null}
                 </h3>
               </div>
             )}
             <div className="compilation-header-meta">
               <span>{data ? `${agentCount} agent(s)` : ''}</span>
+              {frozen ? (
+                <span
+                  className="compilation-closed-badge"
+                  title={
+                    data?.snapshot?.savedAt
+                      ? `Extrait sauvegardé le ${new Date(data.snapshot.savedAt).toLocaleString('fr-FR')}`
+                      : 'Compilation figée (extrait sauvegardé)'
+                  }
+                >
+                  Extrait sauvegardé
+                </span>
+              ) : closed ? (
+                <span className="compilation-closed-badge">Mois clôturé</span>
+              ) : null}
               <RefreshButton
                 onClick={() => setReloadTick((tick) => tick + 1)}
                 loading={loading}
@@ -984,7 +1012,7 @@ export default function TimesheetCompilationView({
           {hasData && (canApplyPolicy || canExport || canSimulate || (canClose && usePolicyView)) ? (
             <div className="timesheet-calendar-panel-footer compilation-footer">
               <div className="compilation-footer-left">
-                {canApplyPolicy && !policyApplied ? (
+                {canApplyPolicy && !policyApplied && !frozen ? (
                   <>
                     <button type="button" className="btn-apply-policy btn-with-icon" onClick={handleApplyPolicy}>
                       <IconPolicy size={14} />
@@ -1067,7 +1095,7 @@ export default function TimesheetCompilationView({
                 ))}
               </ul>
               <p className="compilation-cell-pop-reason">{hoverPop.changes[0]?.reason}</p>
-              {!closed ? (
+              {!closed && !frozen ? (
                 <button
                   type="button"
                   className="compilation-cell-pop-undo btn-with-icon"

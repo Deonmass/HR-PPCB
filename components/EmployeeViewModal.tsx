@@ -45,10 +45,32 @@ import {
 import { localizeJobTitle } from '@/lib/bilingual-title';
 import { CLASSIFICATION_RULES, resolveClassification } from '@/lib/convention-collective-rules';
 import ExitDocsModal from '@/components/documents/ExitDocsModal';
+import TimesheetEmployeeMonthModal from '@/components/overtime/TimesheetEmployeeMonthModal';
 import { usePermissions } from '@/contexts/PermissionContext';
 import { useI18n } from '@/contexts/LocaleContext';
+import { listTimesheetMonthOptions } from '@/lib/timesheet-period';
 
-type TabId = 'infos' | 'essai' | 'cddVersCdi' | 'docs' | 'famille';
+type TabId = 'infos' | 'essai' | 'cddVersCdi' | 'docs' | 'famille' | 'timesheets';
+
+type HousingHistoryRow = {
+  date: string;
+  action: string;
+  matricule: string;
+  nom: string;
+  numeroVilla: string;
+  typeMaison: string;
+  ancienNumero: string;
+  raison: string;
+  commentaire: string;
+};
+
+function formatVillageDateDisplay(value?: string): string {
+  const raw = (value || '').trim();
+  if (!raw) return '—';
+  const iso = /^(\d{4})-(\d{2})-(\d{2})/.exec(raw);
+  if (iso) return `${iso[3]}/${iso[2]}/${iso[1]}`;
+  return raw;
+}
 
 type EditableKey = Exclude<
   keyof Employee,
@@ -348,12 +370,21 @@ export default function EmployeeViewModal({ employee, canEdit = false, initialTa
   const [saving, setSaving] = useState(false);
   const [familyGroup, setFamilyGroup] = useState<FamilyGroup | null>(null);
   const [familyLoading, setFamilyLoading] = useState(false);
+  const [housingHistory, setHousingHistory] = useState<HousingHistoryRow[]>([]);
+  const [housingHistoryLoading, setHousingHistoryLoading] = useState(false);
+  const [timesheetMonth, setTimesheetMonth] = useState<{
+    year: number;
+    month: number;
+    label: string;
+  } | null>(null);
   const [departmentNames, setDepartmentNames] = useState<string[]>([]);
   const [departments, setDepartments] = useState<DepartmentSetting[]>([]);
   const [services, setServices] = useState<ServiceSetting[]>([]);
   const [classificationPostes, setClassificationPostes] = useState<ClassificationPosteRef[]>([]);
   const [jobSuggestOpen, setJobSuggestOpen] = useState(false);
   const jobWrapRef = useRef<HTMLDivElement>(null);
+
+  const timesheetMonths = useMemo(() => listTimesheetMonthOptions(18), []);
 
   useEffect(() => {
     setDraft(applyEmployeeServicePrefill(employee));
@@ -500,16 +531,40 @@ export default function EmployeeViewModal({ employee, canEdit = false, initialTa
     }
   }, [employee.matricule]);
 
+  const loadHousingHistory = useCallback(async () => {
+    setHousingHistoryLoading(true);
+    try {
+      const res = await fetch(
+        `/api/village/historique?matricule=${encodeURIComponent(employee.matricule)}`,
+        { cache: 'no-store' },
+      );
+      if (!res.ok) {
+        setHousingHistory([]);
+        return;
+      }
+      const json = (await res.json()) as { history?: HousingHistoryRow[] };
+      setHousingHistory(json.history ?? []);
+    } catch {
+      setHousingHistory([]);
+    } finally {
+      setHousingHistoryLoading(false);
+    }
+  }, [employee.matricule]);
+
   useEffect(() => {
     void loadFamily();
-  }, [loadFamily]);
+    void loadHousingHistory();
+  }, [loadFamily, loadHousingHistory]);
 
   useEffect(() => {
     if (tab === 'famille') void loadFamily();
   }, [tab, loadFamily]);
 
   const villaNumber = familyGroup?.employee.numeroVilla?.trim() || '';
+  const dateEntreeVillage = familyGroup?.employee.dateEntreeVillage?.trim() || '';
   const isVillageResident = Boolean(villaNumber);
+  const showLogementSection =
+    isVillageResident || Boolean(dateEntreeVillage) || housingHistory.length > 0 || housingHistoryLoading;
 
   const completion = calcDocumentCompletion(draft);
   const cellStats = calcRowCellStats(draft);
@@ -862,6 +917,13 @@ export default function EmployeeViewModal({ employee, canEdit = false, initialTa
           <button type="button" className={`modal-tab-btn${tab === 'famille' ? ' active' : ''}`} onClick={() => setTab('famille')}>
             Composition familiale
           </button>
+          <button
+            type="button"
+            className={`modal-tab-btn${tab === 'timesheets' ? ' active' : ''}`}
+            onClick={() => setTab('timesheets')}
+          >
+            Timesheets &amp; Overtime
+          </button>
         </div>
 
         <div className="modal-body employee-view-body">
@@ -869,7 +931,7 @@ export default function EmployeeViewModal({ employee, canEdit = false, initialTa
             <>
               {renderSection('Identité', IDENTITY_FIELDS)}
               {renderSection('Poste & organisation', orgFields)}
-              {isVillageResident ? (
+              {showLogementSection ? (
                 <section className="employee-view-section">
                   <div className="employee-view-section-label">Logement village</div>
                   <table className="employee-view-table">
@@ -878,12 +940,54 @@ export default function EmployeeViewModal({ employee, canEdit = false, initialTa
                         <th scope="row">N° villa</th>
                         <td>
                           <div className="employee-view-value-row">
-                            <span>{villaNumber}</span>
+                            <span>{villaNumber || '—'}</span>
+                          </div>
+                        </td>
+                      </tr>
+                      <tr>
+                        <th scope="row">Entrée village</th>
+                        <td>
+                          <div className="employee-view-value-row">
+                            <span title="Ancienneté village — conservée malgré les déplacements">
+                              {formatVillageDateDisplay(dateEntreeVillage)}
+                            </span>
                           </div>
                         </td>
                       </tr>
                     </tbody>
                   </table>
+                  <div className="employee-housing-history">
+                    <div className="employee-housing-history-title">Historique des maisons</div>
+                    {housingHistoryLoading ? (
+                      <p className="empty-state">Chargement…</p>
+                    ) : housingHistory.length === 0 ? (
+                      <p className="empty-state">Aucun déplacement enregistré.</p>
+                    ) : (
+                      <div className="village-history-list">
+                        {housingHistory.map((h, idx) => (
+                          <div
+                            key={`${h.date}-${h.action}-${h.numeroVilla}-${idx}`}
+                            className="village-history-item"
+                          >
+                            <div className="village-history-item-head">
+                              <span>{h.date || '—'}</span>
+                              <span>{h.action || '—'}</span>
+                            </div>
+                            {h.ancienNumero || h.numeroVilla ? (
+                              <strong>
+                                {h.ancienNumero && h.numeroVilla
+                                  ? `${h.ancienNumero} → ${h.numeroVilla}`
+                                  : h.numeroVilla
+                                    ? `Maison ${h.numeroVilla}`
+                                    : `Libération ${h.ancienNumero}`}
+                              </strong>
+                            ) : null}
+                            {h.raison ? <div>Raison : {h.raison}</div> : null}
+                          </div>
+                        ))}
+                      </div>
+                    )}
+                  </div>
                 </section>
               ) : null}
               <div className="employee-contract-exit-block">
@@ -1019,12 +1123,54 @@ export default function EmployeeViewModal({ employee, canEdit = false, initialTa
               )}
             </section>
           )}
+
+          {tab === 'timesheets' && (
+            <section className="employee-view-section">
+              <div className="employee-view-section-label">Timesheets &amp; Overtime</div>
+              <p className="employee-timesheet-hint">
+                Cliquez sur un mois pour ouvrir la timesheet de {draft.nom}.
+              </p>
+              <div className="employee-timesheet-month-grid">
+                {timesheetMonths.map((opt) => (
+                  <button
+                    key={`${opt.year}-${opt.month}`}
+                    type="button"
+                    className="employee-timesheet-month-card"
+                    title={`Voir le détail — ${opt.label}`}
+                    onClick={() => setTimesheetMonth(opt)}
+                  >
+                    <span className="employee-timesheet-month-label">
+                      {opt.label.charAt(0).toUpperCase() + opt.label.slice(1)}
+                    </span>
+                    <span className="employee-timesheet-month-meta">
+                      {String(opt.month).padStart(2, '0')}/{opt.year}
+                    </span>
+                  </button>
+                ))}
+              </div>
+            </section>
+          )}
         </div>
 
         <div className="modal-footer">
           <button type="button" className="btn btn-outline" onClick={onClose}>Fermer</button>
         </div>
       </div>
+
+      {timesheetMonth ? (
+        <TimesheetEmployeeMonthModal
+          open
+          matricule={draft.matricule}
+          nom={draft.nom}
+          department={draft.departement || ''}
+          localisation={draft.localisation || ''}
+          year={timesheetMonth.year}
+          month={timesheetMonth.month}
+          monthLabel={timesheetMonth.label}
+          canEdit={false}
+          onClose={() => setTimesheetMonth(null)}
+        />
+      ) : null}
 
       {exitDocsOpen && (
         <ExitDocsModal employee={draft} onClose={() => setExitDocsOpen(false)} />

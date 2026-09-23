@@ -25,6 +25,8 @@ export async function POST(request: Request) {
       action?: string;
       /** Occupant hors effectif (nom libre, sans matricule). */
       externe?: boolean;
+      /** Date d’affectation / événement (YYYY-MM-DD). */
+      date?: string;
     };
     const matricule = body.matricule?.trim() ?? '';
     const numeroVilla = body.numeroVilla?.trim() ?? '';
@@ -90,6 +92,7 @@ export async function POST(request: Request) {
                 ancienNumero: body.ancienNumero?.trim() || '',
                 raison: body.raison?.trim() || '',
                 commentaire: body.commentaire?.trim() || 'Hors effectif',
+                date: body.date,
               },
             ]);
           } catch (histoErr) {
@@ -148,6 +151,7 @@ export async function POST(request: Request) {
           numeroVilla,
           typeMaison,
           setLocalisationZamba: body.setLocalisationZamba !== false && Boolean(numeroVilla),
+          dateAffectation: body.date?.trim() || undefined,
         });
         try {
           await appendAffectationHistory([
@@ -160,6 +164,7 @@ export async function POST(request: Request) {
               ancienNumero: body.ancienNumero?.trim() || '',
               raison: body.raison?.trim() || '',
               commentaire: body.commentaire?.trim() || '',
+              date: body.date,
             },
           ]);
         } catch (histoErr) {

@@ -7,6 +7,7 @@ import RefreshButton from '@/components/RefreshButton';
 import { EmployeeSuggestInput } from '@/components/EmployeePicker';
 import { usePermissions } from '@/contexts/PermissionContext';
 import { localizeJobTitle } from '@/lib/job-title-i18n';
+import { filterAttestationSignatories } from '@/lib/attestation-signatories';
 import type { LeaveAttestationFormData, LeaveAttestationRecord } from '@/lib/leave-attestation-types';
 import type { Employee } from '@/lib/types';
 import { confirmDelete, showError } from '@/lib/swal';
@@ -313,6 +314,11 @@ export default function AttestationCongePage() {
     ];
   }, [selectedEmployee, form]);
 
+  const signatoryEmployees = useMemo(
+    () => filterAttestationSignatories(employees),
+    [employees],
+  );
+
   return (
     <PermissionGate
       anyOf={[
@@ -407,16 +413,19 @@ export default function AttestationCongePage() {
                 <label htmlFor="hod-name">Nom complet</label>
                 <EmployeeSuggestInput
                   id="hod-name"
-                  employees={employees}
+                  employees={signatoryEmployees}
                   value={form.hodName}
                   onChange={(value) => {
                     patchForm({ hodName: value });
                     setSelectedHod(null);
                   }}
                   onEmployeeSelect={handleHodSelect}
-                  placeholder="Rechercher ou saisir le nom du responsable…"
+                  placeholder="HR, chef d’usine ou MD…"
                   required
                 />
+                <span className="field-hint">
+                  Signataires autorisés : responsables HR, chef d’usine / Plant Manager, MD.
+                </span>
               </div>
 
               <h3 className="service-attestation-section-title">Employé concerné</h3>

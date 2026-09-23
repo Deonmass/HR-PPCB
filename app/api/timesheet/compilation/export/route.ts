@@ -7,6 +7,11 @@ import {
 } from '@/lib/timesheet-access-server';
 import { buildCompilationData } from '@/lib/timesheet-compilation.server';
 import { buildCompilationWorkbookBuffer } from '@/lib/timesheet-compilation-export.server';
+import { applyCompilationPolicy } from '@/lib/timesheet-compilation-policy';
+import {
+  getCompilationSnapshot,
+  saveCompilationSnapshot,
+} from '@/lib/timesheet-compilation-snapshot-store';
 import type { Employee } from '@/lib/types';
 import { auditSimpleAction, getAuditActor } from '@/lib/with-audit';
 import { logAuditError } from '@/lib/audit-log-store';
@@ -28,17 +33,20 @@ export async function GET(request: Request) {
 
   let employees: Employee[];
   let label: string;
+  let userId: string | undefined;
 
   if (!department || department === ALL_DEPARTMENTS) {
     const accessResult = await requireTimesheetModuleAccess();
     if ('error' in accessResult && accessResult.error) return accessResult.error;
     employees = filterTimesheetEmployees(accessResult);
     label = ALL_DEPARTMENTS;
+    userId = accessResult.session.user.id;
   } else {
     const accessResult = await requireTimesheetDepartmentAccess(department);
     if ('error' in accessResult && accessResult.error) return accessResult.error;
     employees = filterTimesheetEmployees(accessResult, department);
     label = department;
+    userId = accessResult.session.user.id;
   }
 
   employees = employees
@@ -46,9 +54,35 @@ export async function GET(request: Request) {
     .sort((a, b) => a.nom.localeCompare(b.nom, 'fr'));
 
   try {
-    // data.rows = brutes ; le builder produit aussi la feuille Politique
-    const data = await buildCompilationData(year, month, label, employees);
-    const buffer = await buildCompilationWorkbookBuffer(data);
+    const existing = await getCompilationSnapshot(year, month, label);
+    const data =
+      existing?.data ??
+      (await buildCompilationData(year, month, label, employees));
+    const policyRows = existing?.policyRows;
+    const policyChanges = existing?.policyChanges;
+    const policy =
+      policyRows && policyChanges
+        ? { rows: policyRows, changes: policyChanges }
+        : applyCompilationPolicy(data.rows);
+
+    const buffer = await buildCompilationWorkbookBuffer(data, {
+      policyRows: policy.rows,
+      policyChanges: policy.changes,
+    });
+
+    if (!existing) {
+      await saveCompilationSnapshot({
+        year,
+        month,
+        department: label,
+        data,
+        policyRows: policy.rows,
+        policyChanges: policy.changes,
+        source: 'export',
+        userId,
+      });
+    }
+
     await auditSimpleAction({
       module: 'timesheet.compilation',
       action: 'export',

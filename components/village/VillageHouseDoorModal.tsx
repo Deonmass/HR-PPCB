@@ -53,6 +53,12 @@ type Stage =
 
 type DetailIcon = 'badge' | 'dept' | 'family' | 'home' | 'capacity' | 'note';
 
+function formatVillageEntryDate(value: string): string {
+  const iso = /^(\d{4})-(\d{2})-(\d{2})/.exec(value.trim());
+  if (iso) return `${iso[3]}/${iso[2]}/${iso[1]}`;
+  return value.trim() || '—';
+}
+
 interface Props {
   maison: VillageMaisonOccupancy;
   tailleLabel: string;
@@ -489,6 +495,13 @@ export default function VillageHouseDoorModal({
                           : '—'
                       }
                     />
+                    {occupant!.dateEntreeVillage ? (
+                      <DetailRow
+                        icon="note"
+                        label="Entrée village"
+                        value={formatVillageEntryDate(occupant!.dateEntreeVillage)}
+                      />
+                    ) : null}
                   </>
                 ) : null}
                 <DetailRow

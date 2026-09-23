@@ -24,6 +24,8 @@ export interface VillageAgentRow {
   departement: string;
   numeroVilla: string;
   typeMaison: string;
+  /** Ancienneté village (YYYY-MM-DD). */
+  dateEntreeVillage?: string;
 }
 
 function norm(s: string | undefined | null): string {
@@ -40,8 +42,18 @@ function villaKey(numero: string | undefined | null): string {
 /** Infos villa depuis la feuille DEPENDANTS (ligne employé par matricule). */
 export function buildVillaInfoByMatricule(
   dependants: Dependant[],
-): Map<string, { numeroVilla: string; typeMaison: string; localisation: string }> {
-  const map = new Map<string, { numeroVilla: string; typeMaison: string; localisation: string }>();
+): Map<string, {
+  numeroVilla: string;
+  typeMaison: string;
+  localisation: string;
+  dateEntreeVillage: string;
+}> {
+  const map = new Map<string, {
+    numeroVilla: string;
+    typeMaison: string;
+    localisation: string;
+    dateEntreeVillage: string;
+  }>();
   for (const d of dependants) {
     if (!isEmployeeStatut(d.statut)) continue;
     const matricule = norm(d.matricule);
@@ -50,6 +62,7 @@ export function buildVillaInfoByMatricule(
       numeroVilla: norm(d.numeroVilla),
       typeMaison: norm(d.typeMaison),
       localisation: norm(d.localisation),
+      dateEntreeVillage: norm(d.dateEntreeVillage),
     });
   }
   return map;
@@ -85,6 +98,7 @@ export function buildZambaAgentsFromEmployees(
       departement: norm(e.departement),
       numeroVilla: villa?.numeroVilla ?? '',
       typeMaison: villa?.typeMaison ?? '',
+      dateEntreeVillage: villa?.dateEntreeVillage || undefined,
     });
   }
 
@@ -163,6 +177,7 @@ export function buildMaisonOccupancy(
       departement: a.departement,
       familleSize: familleSizeByMat.get(norm(a.matricule)) ?? 1,
       externe: false,
+      dateEntreeVillage: a.dateEntreeVillage || undefined,
     }));
     // Hors effectif : toute personne en maison sans être employé actif
     const externeNom = norm(maison.occupantExterne);
@@ -173,6 +188,7 @@ export function buildMaisonOccupancy(
         departement: HORS_EFFECTIF_DEPT,
         familleSize: 1,
         externe: true,
+        dateEntreeVillage: undefined,
       });
     }
     const tailleKey = norm(maison.taille).toLowerCase();

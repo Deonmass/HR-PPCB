@@ -134,6 +134,7 @@ function enrichRecord(
     localisation: record.localisation,
     numeroVilla: record.numeroVilla,
     typeMaison: record.typeMaison,
+    dateEntreeVillage: record.dateEntreeVillage,
     dateNaissance: record.dateNaissance,
     age: resolveDependantAge(record.age, record.dateNaissance),
     compositionFamille: record.compositionFamille,
@@ -766,6 +767,8 @@ export async function assignEmployeeMaison(params: {
   numeroVilla: string;
   typeMaison?: string;
   setLocalisationZamba?: boolean;
+  /** Date d’affectation YYYY-MM-DD — sert d’entrée village si première affectation. */
+  dateAffectation?: string;
 }): Promise<Dependant> {
   const results = await assignManyEmployeeMaisons([params]);
   const first = results[0];
@@ -779,21 +782,38 @@ export async function assignManyEmployeeMaisons(
     numeroVilla: string;
     typeMaison?: string;
     setLocalisationZamba?: boolean;
+    dateAffectation?: string;
   }>,
 ): Promise<Dependant[]> {
   await ensureMigrated();
   const [store, people] = await Promise.all([readStore(), readPeopleIndex()]);
   const updated: Dependant[] = [];
   const now = new Date().toISOString();
+  const todayIso = () => {
+    const d = new Date();
+    const pad = (n: number) => String(n).padStart(2, '0');
+    return `${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(d.getDate())}`;
+  };
 
   for (const item of items) {
     const family = store.dependants.filter((row) => familyGroupKey(row) === item.matricule.trim());
     if (!family.length) continue;
+    const entryDate = (item.dateAffectation || '').trim() || todayIso();
     for (const row of family) {
-      row.numeroVilla = item.numeroVilla;
-      row.typeMaison = item.typeMaison?.trim() || '';
-      if (item.setLocalisationZamba !== false && item.numeroVilla) {
-        row.localisation = 'Zamba';
+      if (item.numeroVilla) {
+        row.numeroVilla = item.numeroVilla;
+        row.typeMaison = item.typeMaison?.trim() || '';
+        if (item.setLocalisationZamba !== false) {
+          row.localisation = 'Zamba';
+        }
+        // Ancienneté village : posée à la 1re affectation, conservée aux déménagements.
+        if (!row.dateEntreeVillage?.trim()) {
+          row.dateEntreeVillage = entryDate;
+        }
+      } else {
+        row.numeroVilla = '';
+        row.typeMaison = '';
+        row.dateEntreeVillage = '';
       }
       row.updatedAt = now;
     }

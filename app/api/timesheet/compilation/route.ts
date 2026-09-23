@@ -6,6 +6,13 @@ import {
   requireTimesheetModuleAccess,
 } from '@/lib/timesheet-access-server';
 import { buildCompilationData, compilationWeekIndexes } from '@/lib/timesheet-compilation.server';
+import { applyCompilationPolicy } from '@/lib/timesheet-compilation-policy';
+import {
+  compilationDataFromSnapshot,
+  deleteCompilationSnapshot,
+  getCompilationSnapshot,
+  saveCompilationSnapshot,
+} from '@/lib/timesheet-compilation-snapshot-store';
 import { resolveTimesheetPeriod } from '@/lib/timesheet-period-bounds-store';
 import { setWeeklyOvertimeMonthClosed } from '@/lib/timesheet-weekly-ot-store';
 import type { Employee } from '@/lib/types';
@@ -47,6 +54,11 @@ export async function GET(request: Request) {
     .sort((a, b) => a.nom.localeCompare(b.nom, 'fr'));
 
   try {
+    const snapshot = await getCompilationSnapshot(year, month, label);
+    if (snapshot) {
+      return NextResponse.json(compilationDataFromSnapshot(snapshot));
+    }
+
     const data = await buildCompilationData(year, month, label, employees);
     return NextResponse.json(data);
   } catch (err) {
@@ -85,15 +97,21 @@ export async function POST(request: Request) {
     const weekIndexes = compilationWeekIndexes(period.days.length);
 
     let departments: string[];
+    let label: string;
+    let employees: Employee[];
+
     if (isAllDepartments(department)) {
-      const employees = filterTimesheetEmployees(userResult);
+      employees = filterTimesheetEmployees(userResult);
       departments = Array.from(
         new Set(employees.map((employee) => employee.departement?.trim()).filter(Boolean) as string[]),
       );
+      label = ALL_DEPARTMENTS;
     } else {
       const accessResult = await requireTimesheetDepartmentAccess(department as string);
       if ('error' in accessResult && accessResult.error) return accessResult.error;
       departments = [department as string];
+      label = department as string;
+      employees = filterTimesheetEmployees(accessResult, department as string);
     }
 
     for (const dept of departments) {
@@ -105,6 +123,31 @@ export async function POST(request: Request) {
         closed: action === 'close',
         userId: userResult.session.user.id,
       });
+    }
+
+    if (action === 'close') {
+      const scopedEmployees = employees
+        .filter((employee) => employee.nom.trim())
+        .sort((a, b) => a.nom.localeCompare(b.nom, 'fr'));
+      const data = await buildCompilationData(
+        year as number,
+        month as number,
+        label,
+        scopedEmployees,
+      );
+      const policy = applyCompilationPolicy(data.rows);
+      await saveCompilationSnapshot({
+        year: year as number,
+        month: month as number,
+        department: label,
+        data: { ...data, closed: true },
+        policyRows: policy.rows,
+        policyChanges: policy.changes,
+        source: 'close',
+        userId: userResult.session.user.id,
+      });
+    } else {
+      await deleteCompilationSnapshot(year as number, month as number, label);
     }
 
     await withAudit(

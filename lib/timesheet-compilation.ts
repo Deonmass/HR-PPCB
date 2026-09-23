@@ -37,6 +37,23 @@ export interface CompilationData {
   rows: CompilationRow[];
   /** True when every week of the period is locked (month closed / editions frozen). */
   closed: boolean;
+  /** True when serving a saved extract (export / clôture) instead of live OT. */
+  frozen?: boolean;
+  snapshot?: {
+    savedAt: string;
+    savedBy?: string;
+    source: 'export' | 'close' | 'import';
+  };
+  /** Présent quand frozen : lignes politiques de l’extrait. */
+  policyRows?: CompilationRow[];
+  policyChanges?: Array<{
+    matricule: string;
+    weekPos: number;
+    field: keyof CompilationRowWeek;
+    from: number;
+    to: number;
+    reason: string;
+  }>;
 }
 
 export function sumCompilationRow(row: CompilationRow): CompilationTotals {

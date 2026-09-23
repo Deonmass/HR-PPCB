@@ -65,12 +65,32 @@ function emptyWeek(): CompilationRowWeek {
  */
 export function parseCompilationExportBuffer(
   buffer: ArrayBuffer | Buffer,
-  meta?: { year?: number; month?: number; department?: string; fileName?: string },
+  meta?: {
+    year?: number;
+    month?: number;
+    department?: string;
+    fileName?: string;
+    /** Nom exact de feuille, ou regex (ex. /brut|politique|august/i). */
+    sheetName?: string | RegExp;
+  },
 ): CompilationData {
   const wb = XLSX.read(buffer, { type: 'buffer', cellDates: false });
-  const sheetName =
-    wb.SheetNames.find((n) => /compilation/i.test(n)) ?? wb.SheetNames[0];
-  if (!sheetName) throw new Error('Fichier Excel vide');
+  let sheetName: string | undefined;
+  if (meta?.sheetName) {
+    if (typeof meta.sheetName === 'string') {
+      sheetName = wb.SheetNames.find((n) => n === meta.sheetName) ?? meta.sheetName;
+    } else {
+      sheetName = wb.SheetNames.find((n) => meta.sheetName!.test(n));
+    }
+  }
+  if (!sheetName) {
+    sheetName =
+      wb.SheetNames.find((n) => /politique/i.test(n)) ??
+      wb.SheetNames.find((n) => /compilation/i.test(n)) ??
+      wb.SheetNames.find((n) => !/brut/i.test(n)) ??
+      wb.SheetNames[0];
+  }
+  if (!sheetName || !wb.Sheets[sheetName]) throw new Error('Fichier Excel vide');
 
   const rows = XLSX.utils.sheet_to_json(wb.Sheets[sheetName], {
     header: 1,
@@ -102,7 +122,7 @@ export function parseCompilationExportBuffer(
     throw new Error('Colonnes Matricule / Employee Name introuvables');
   }
 
-  // Détecter les blocs semaine : séquences 1.3, 1.6, 2, N
+  // Détecter les blocs semaine : séquences 1.3, 1.6, 2, N (hors Timesheet / Total Général)
   const weekStarts: number[] = [];
   for (let c = 0; c < headers.length - 3; c++) {
     if (
@@ -111,6 +131,14 @@ export function parseCompilationExportBuffer(
       && isOt2Header(headers[c + 2])
       && isNightHeader(headers[c + 3])
     ) {
+      const group = normalizeHeader(groupRow[c]);
+      if (
+        group.includes('total')
+        || group.includes('timesheet')
+        || group.includes('general')
+      ) {
+        break;
+      }
       weekStarts.push(c);
       c += 3;
     }
@@ -188,5 +216,88 @@ export function parseCompilationExportBuffer(
     weeks,
     rows: dataRows,
     closed: false,
+  };
+}
+
+function round2(value: number): number {
+  return Math.round(value * 100) / 100;
+}
+
+/** Diff brut → politique pour reconstruire les highlights d’un extrait Excel. */
+export function diffCompilationPolicyChanges(
+  rawRows: CompilationRow[],
+  policyRows: CompilationRow[],
+): import('./timesheet-compilation-policy').PolicyChange[] {
+  const changes: import('./timesheet-compilation-policy').PolicyChange[] = [];
+  const byMat = new Map(policyRows.map((row) => [row.matricule, row]));
+  for (const raw of rawRows) {
+    const pol = byMat.get(raw.matricule);
+    if (!pol) continue;
+    const weekCount = Math.max(raw.weeks.length, pol.weeks.length);
+    for (let weekPos = 0; weekPos < weekCount; weekPos++) {
+      const rw = raw.weeks[weekPos];
+      const pw = pol.weeks[weekPos];
+      if (!rw || !pw) continue;
+      (['ot13', 'ot16', 'ot2', 'night'] as const).forEach((field) => {
+        const from = round2(rw[field] ?? 0);
+        const to = round2(pw[field] ?? 0);
+        if (from === to) return;
+        changes.push({
+          matricule: raw.matricule,
+          weekPos,
+          field,
+          from,
+          to,
+          reason: 'Extrait Excel — différence brut / politique',
+        });
+      });
+    }
+  }
+  return changes;
+}
+
+/**
+ * Lit un classeur d’extrait (feuilles « Données brutes » + politique / mois).
+ */
+export function parseCompilationExtractWorkbook(
+  buffer: ArrayBuffer | Buffer,
+  meta: { year: number; month: number; department: string },
+): {
+  data: CompilationData;
+  policyRows: CompilationRow[];
+  policyChanges: import('./timesheet-compilation-policy').PolicyChange[];
+} {
+  const wb = XLSX.read(buffer, { type: 'buffer', cellDates: false });
+  const rawSheet =
+    wb.SheetNames.find((n) => /brut/i.test(n)) ??
+    wb.SheetNames.find((n) => /compilation/i.test(n));
+  const policySheet =
+    wb.SheetNames.find((n) => /politique/i.test(n)) ??
+    wb.SheetNames.find((n) => n !== rawSheet && !/brut/i.test(n)) ??
+    wb.SheetNames[0];
+
+  if (!rawSheet && !policySheet) throw new Error('Aucune feuille exploitable');
+
+  const data = parseCompilationExportBuffer(buffer, {
+    ...meta,
+    sheetName: rawSheet ?? policySheet!,
+  });
+  const policyData = parseCompilationExportBuffer(buffer, {
+    ...meta,
+    sheetName: policySheet ?? rawSheet!,
+  });
+
+  // Aligner les semaines sur le brut si les deux feuilles diffèrent légèrement.
+  const policyRows = policyData.rows.map((row) => {
+    const weekCount = data.weeks.length;
+    const weeks = row.weeks.slice(0, weekCount);
+    while (weeks.length < weekCount) weeks.push(emptyWeek());
+    return { ...row, weeks };
+  });
+
+  return {
+    data: { ...data, closed: true, frozen: true },
+    policyRows,
+    policyChanges: diffCompilationPolicyChanges(data.rows, policyRows),
   };
 }

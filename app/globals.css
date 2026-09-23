@@ -848,7 +848,8 @@ html[data-theme="light"] .sidebar-tip-hint {
 .travel-history-sticky,
 .project-dashboard-sticky,
 .exco-sticky,
-.audit-hr-sticky {
+.audit-hr-sticky,
+.service-attestation-sticky {
   --text: #f0f0f5;
   --muted: #8b8b9a;
   --border: rgba(255, 255, 255, 0.08);
@@ -885,7 +886,8 @@ html[data-theme="light"] .cash-request-sticky,
 html[data-theme="light"] .travel-history-sticky,
 html[data-theme="light"] .project-dashboard-sticky,
 html[data-theme="light"] .exco-sticky,
-html[data-theme="light"] .audit-hr-sticky {
+html[data-theme="light"] .audit-hr-sticky,
+html[data-theme="light"] .service-attestation-sticky {
   --text: #16161e;
   --muted: #494955;
   --border: rgba(0, 0, 0, 0.12);
@@ -3187,8 +3189,7 @@ body:has(.village-pptx-overlay) .project-picker-list-portal {
 .service-attestation-sticky {
   position: sticky;
   top: 0;
-  z-index: 5;
-  padding-bottom: 0.5rem;
+  z-index: 20;
 }
 
 .service-attestation-sticky .page-header {
@@ -9000,6 +9001,44 @@ html[data-theme="light"] .compilation-table tbody tr:hover td.compilation-sticky
 .timesheet-template-absent-row td {
   background: rgba(220, 38, 38, 0.12);
 }
+.timesheet-template-table tbody tr.timesheet-template-al-row td.timesheet-template-actual-cell {
+  background: rgba(5, 150, 105, 0.18);
+}
+.timesheet-template-table tbody tr.timesheet-template-sl-row td.timesheet-template-actual-cell {
+  background: rgba(217, 119, 6, 0.2);
+}
+.timesheet-template-table tbody tr.timesheet-template-absent-row td.timesheet-template-actual-cell {
+  background: rgba(220, 38, 38, 0.16);
+}
+.timesheet-ws-label {
+  display: inline-block;
+  font-weight: 700;
+  letter-spacing: 0.03em;
+}
+.timesheet-ws-label.is-shift-al {
+  color: #059669;
+}
+.timesheet-ws-label.is-shift-sl {
+  color: #d97706;
+}
+.timesheet-ws-label.is-shift-a {
+  color: #dc2626;
+}
+.timesheet-template-al-row .timesheet-template-ws-col,
+.timesheet-template-al-row .timesheet-ws-label {
+  color: #059669;
+  font-weight: 700;
+}
+.timesheet-template-sl-row .timesheet-template-ws-col,
+.timesheet-template-sl-row .timesheet-ws-label {
+  color: #d97706;
+  font-weight: 700;
+}
+.timesheet-template-absent-row .timesheet-template-ws-col,
+.timesheet-template-absent-row .timesheet-ws-label {
+  color: #dc2626;
+  font-weight: 700;
+}
 .timesheet-shift-select.is-shift-al,
 .timesheet-shift-select.is-shift-al option:checked {
   color: #059669 !important;
@@ -9038,6 +9077,15 @@ html[data-theme='light'] .timesheet-template-sl-row td {
 }
 html[data-theme='light'] .timesheet-template-absent-row td {
   background: #fee2e2;
+}
+html[data-theme='light'] .timesheet-template-table tbody tr.timesheet-template-al-row td.timesheet-template-actual-cell {
+  background: #a7f3d0;
+}
+html[data-theme='light'] .timesheet-template-table tbody tr.timesheet-template-sl-row td.timesheet-template-actual-cell {
+  background: #fed7aa;
+}
+html[data-theme='light'] .timesheet-template-table tbody tr.timesheet-template-absent-row td.timesheet-template-actual-cell {
+  background: #fecaca;
 }
 
 .timesheet-template-table tfoot .timesheet-subtotal-row td,
@@ -16459,6 +16507,66 @@ html[data-theme="light"] .employees-row-context:hover td {
   background: color-mix(in srgb, #7c3aed 18%, transparent);
 }
 
+.employee-housing-history {
+  margin-top: 0.85rem;
+}
+
+.employee-housing-history-title {
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--muted);
+  margin-bottom: 0.5rem;
+}
+
+.employee-timesheet-hint {
+  margin: 0 0 0.85rem;
+  font-size: 0.85rem;
+  color: var(--muted);
+}
+
+.employee-timesheet-month-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+  gap: 0.65rem;
+}
+
+.employee-timesheet-month-card {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 0.35rem;
+  padding: 0.85rem 0.9rem;
+  border-radius: 10px;
+  border: 1px solid var(--border);
+  background: var(--bg-elevated, #111116);
+  color: inherit;
+  cursor: pointer;
+  text-align: left;
+  transition: border-color 0.15s ease, background 0.15s ease, transform 0.12s ease;
+}
+
+.employee-timesheet-month-card:hover {
+  border-color: var(--accent, #3b82f6);
+  transform: translateY(-1px);
+}
+
+html[data-theme='light'] .employee-timesheet-month-card {
+  background: #f8fafc;
+}
+
+.employee-timesheet-month-label {
+  font-size: 0.9rem;
+  font-weight: 600;
+  text-transform: capitalize;
+}
+
+.employee-timesheet-month-meta {
+  font-size: 0.75rem;
+  color: var(--muted);
+}
+
 /* Employee view modal */
 .employee-view-modal.modal {
   max-width: 760px;
@@ -16663,6 +16771,7 @@ html[data-theme="light"] .employee-docs-summary {
 .employee-view-tabs .modal-tab-btn {
   font-size: 0.75rem;
   padding: 0.4rem 0.65rem;
+  white-space: nowrap;
 }
 
 .employee-essai-panel {

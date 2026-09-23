@@ -112,6 +112,7 @@ export function PermissionProvider({ children }: { children: ReactNode }) {
       '/documents-voyage/payment-voucher',
       '/documents/entetes',
       '/documents/contrat-standard',
+      '/documents/contrat-bail',
       '/documents/attestation-conge',
       '/documents/attestation-residence',
       '/documents/convention-collective',

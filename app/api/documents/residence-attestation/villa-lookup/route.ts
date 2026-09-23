@@ -9,6 +9,8 @@ export async function GET() {
   const denied = await checkAnyPermission([
     { menuId: 'documents.attestation-residence', action: 'view' },
     { menuId: 'documents.attestation-residence', action: 'create' },
+    { menuId: 'documents.contrat-bail', action: 'view' },
+    { menuId: 'documents.contrat-bail', action: 'create' },
   ]);
   if (denied) return denied;
 

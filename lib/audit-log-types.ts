@@ -120,6 +120,7 @@ export const AUDIT_MODULE_LABELS: Record<string, string> = {
   'documents.rrf': 'RRF',
   'documents.newcomer': 'Newcomer',
   'documents.contrat-standard': 'Contrat standard',
+  'documents.contrat-bail': 'Contrat de bail',
   'documents.attestation-conge': 'Attestation de congé',
   'documents.attestation-residence': 'Attestation de résidence',
   'documents.convention-collective': 'Convention collective',

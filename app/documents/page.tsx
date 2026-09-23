@@ -318,6 +318,16 @@ const CARDS: DocCard[] = [
     icon: <IconContract />,
   },
   {
+    id: 'contrat-bail',
+    title: 'Contrat de bail',
+    description: 'Accord d’hébergement village (FR) — occupant, locaux, dates et signataire RH.',
+    href: '/documents/contrat-bail',
+    menuId: 'documents.contrat-bail',
+    accent: '#0f766e',
+    badge: 'Village',
+    icon: <IconContract />,
+  },
+  {
     id: 'composition-familiale',
     title: 'Déclaration de composition familiale',
     description: 'Formulaire CNSS F6 — identité et famille (conjoint, enfants) depuis la fiche agent.',
@@ -356,6 +366,7 @@ const DOC_I18N: Record<string, { title: MessageKey; desc: MessageKey; badge?: Me
   newcomer: { title: 'docs.card.newcomer.title', desc: 'docs.card.newcomer.desc', badge: 'docs.card.newcomer.badge' },
   rrf: { title: 'docs.card.rrf.title', desc: 'docs.card.rrf.desc', badge: 'docs.card.rrf.badge' },
   'contrat-standard': { title: 'docs.card.contract.title', desc: 'docs.card.contract.desc' },
+  'contrat-bail': { title: 'docs.card.bail.title', desc: 'docs.card.bail.desc', badge: 'docs.card.bail.badge' },
   'composition-familiale': { title: 'docs.card.family.title', desc: 'docs.card.family.desc', badge: 'docs.card.family.badge' },
   'mouvement-travailleur': { title: 'docs.card.dmt.title', desc: 'docs.card.dmt.desc', badge: 'docs.card.dmt.badge' },
 };

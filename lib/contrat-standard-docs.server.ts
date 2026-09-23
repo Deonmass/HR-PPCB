@@ -44,7 +44,7 @@ function employerPreambleRuns(): Array<{ text: string; bold?: boolean }> {
   return [
     {
       text:
-        `La soci\u00e9t\u00e9 PPC BARNET DRC MANUFACTURING S.A., avec Conseil d${APOS}Administration au capital social de CDF 20.052.125.000, ayant son si\u00e8ge social au 5\u00e8me \u00e9tage, Immeuble D, Concession la promenade II, croisement des avenues OUA et Massamba, Quartier Basoko dans la commune de Ngaliema, \u00e0 Kinshasa, R\u00e9publique D\u00e9mocratique du Congo, immatricul\u00e9e au Registre de Commerce et de Cr\u00e9dit Mobilier (RCCM) sous le num\u00e9ro 14-B-01677, dont le num\u00e9ro d${APOS}Identification Nationale est 01-C2301-N79031 Q et le num\u00e9ro d${APOS}imp\u00f4t A1402387L, affili\u00e9e \u00e0 la CNSS sous le N\u00b0 1003780600, repr\u00e9sent\u00e9e par Monsieur `,
+        `La soci\u00e9t\u00e9 PPC BARNET DRC MANUFACTURING S.A., avec Conseil d${APOS}Administration au capital social de CDF 20.052.125.000, ayant son si\u00e8ge social au 5e \u00e9tage, Immeuble D, Concession la promenade II, croisement des avenues OUA et Massamba, Quartier Basoko dans la commune de Ngaliema, \u00e0 Kinshasa, R\u00e9publique D\u00e9mocratique du Congo, immatricul\u00e9e au Registre de Commerce et de Cr\u00e9dit Mobilier (RCCM) sous le num\u00e9ro 14-B-01677, dont le num\u00e9ro d${APOS}Identification Nationale est 01-C2301-N79031 Q et le num\u00e9ro d${APOS}imp\u00f4t A1402387L, affili\u00e9e \u00e0 la CNSS sous le N\u00b0 1003780600, repr\u00e9sent\u00e9e par Monsieur `,
     },
     { text: EMPLOYER_DG_NAME, bold: true },
     {
@@ -297,6 +297,10 @@ function fillBodyXml(xml: string, form: ContratStandardFormData): string {
     );
   }
 
+  out = replaceDocxText(out, 'Catégorie : C2 (Agent de Maîtrise)', `Catégorie : ${categoryLine}`, {
+    optional: true,
+  });
+  out = replaceDocxText(out, 'C2 (Agent de Maîtrise)', categoryLine, { optional: true });
   out = replaceDocxText(out, 'Catégorie : C2 (Agent de maîtrise)', `Catégorie : ${categoryLine}`, {
     optional: true,
   });

@@ -38,7 +38,7 @@ export const CLASSIFICATION_RULES: Record<ContractClassification, Classification
   maitrise: {
     id: 'maitrise',
     label: 'Maîtrise',
-    categoryNoun: 'Agent de maîtrise',
+    categoryNoun: 'Agent de Maîtrise',
     trialMonths: 5,
     annualLeaveDays: 22,
     noticeBaseLabel: 'un (1) mois',
@@ -57,7 +57,7 @@ export const CLASSIFICATION_RULES: Record<ContractClassification, Classification
     noticeBaseLabel: 'trois (3) mois',
     noticeIncreaseDaysPerYear: 16,
     noticeArticleSentence:
-      'Pour les agents de cadre, la durée du préavis est fixée à trois (3) mois. '
+      'Pour les cadres, la durée du préavis est fixée à trois (3) mois. '
       + 'Cette durée est augmentée de seize (16) jours ouvrables par année d’ancienneté.',
   },
 };

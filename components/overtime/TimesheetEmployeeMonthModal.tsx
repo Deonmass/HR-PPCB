@@ -701,7 +701,7 @@ export default function TimesheetEmployeeMonthModal({
   };
 
   const handleConfirmOt = async () => {
-    if (!canConfirmOt || !department || confirmableWeekIndexes.length === 0) return;
+    if (!canEdit || !canConfirmOt || !department || confirmableWeekIndexes.length === 0) return;
 
     const weekLabels = confirmableWeekIndexes.map((index) => `Semaine ${index + 1}`).join(', ');
     const confirmed = await confirmAction(
@@ -1065,7 +1065,18 @@ export default function TimesheetEmployeeMonthModal({
                                 variant="planning"
                               />
                             ) : (
-                              line.ws || '—'
+                              <span
+                                className={[
+                                  'timesheet-ws-label',
+                                  line.row.shiftType === 'al' ? 'is-shift-al' : '',
+                                  line.row.shiftType === 'sl' ? 'is-shift-sl' : '',
+                                  line.row.shiftType === 'a' ? 'is-shift-a' : '',
+                                ]
+                                  .filter(Boolean)
+                                  .join(' ')}
+                              >
+                                {line.ws || '—'}
+                              </span>
                             )}
                           </td>
                           <td className="timesheet-template-actual-cell">
@@ -1174,7 +1185,7 @@ export default function TimesheetEmployeeMonthModal({
                 Enregistrer
               </button>
             ) : null}
-            {canConfirmOt && confirmableWeekIndexes.length > 0 ? (
+            {canEdit && canConfirmOt && confirmableWeekIndexes.length > 0 ? (
               <button
                 type="button"
                 className="btn btn-accent"

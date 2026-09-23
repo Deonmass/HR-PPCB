@@ -39,6 +39,7 @@ export const EXPORT_TEMPLATE_FILES = {
   leaveAttestation: 'attestation-conge.docx',
   residenceAttestation: 'attestation-residence.docx',
   contratStandard: 'contrat-standard.docx',
+  contratBail: 'contrat-bail.docx',
   facturesSuivi: 'FACTURES_SUIVI_EXPORT_TEMPLATE.xlsx',
   overtimesTimesheet: 'Timesheet template.xlsx',
   overtimesCompilation: 'OVERTIMES.xlsx',
@@ -64,6 +65,7 @@ const FILE_TO_SUBDIR: Record<string, string> = {
   [EXPORT_TEMPLATE_FILES.leaveAttestation]: EXPORT_TEMPLATE_SUBDIRS.attestations,
   [EXPORT_TEMPLATE_FILES.residenceAttestation]: EXPORT_TEMPLATE_SUBDIRS.attestations,
   [EXPORT_TEMPLATE_FILES.contratStandard]: EXPORT_TEMPLATE_SUBDIRS.contrats,
+  [EXPORT_TEMPLATE_FILES.contratBail]: EXPORT_TEMPLATE_SUBDIRS.village,
   [EXPORT_TEMPLATE_FILES.facturesSuivi]: EXPORT_TEMPLATE_SUBDIRS.factures,
   [EXPORT_TEMPLATE_FILES.overtimesTimesheet]: EXPORT_TEMPLATE_SUBDIRS.overtimes,
   [EXPORT_TEMPLATE_FILES.overtimesCompilation]: EXPORT_TEMPLATE_SUBDIRS.overtimes,
@@ -144,6 +146,12 @@ export const RESIDENCE_ATTESTATION_TEMPLATE_PATH = resolveExportTemplate(
 export const CONTRAT_STANDARD_TEMPLATE_PATH = resolveExportTemplate(
   EXPORT_TEMPLATE_FILES.contratStandard,
   process.env.CONTRAT_STANDARD_TEMPLATE_DOCX,
+);
+
+export const CONTRAT_BAIL_TEMPLATE_PATH = resolveExportTemplate(
+  EXPORT_TEMPLATE_FILES.contratBail,
+  process.env.CONTRAT_BAIL_TEMPLATE_DOCX,
+  EXPORT_TEMPLATE_SUBDIRS.village,
 );
 
 export const AUDIT_HR_EXPORT_TEMPLATE_PATH = resolveExportTemplate(

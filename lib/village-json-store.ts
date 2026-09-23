@@ -85,6 +85,19 @@ function nowDisplay(): string {
   return `${pad(d.getDate())}/${pad(d.getMonth() + 1)}/${d.getFullYear()} ${pad(d.getHours())}:${pad(d.getMinutes())}`;
 }
 
+/** Accepte YYYY-MM-DD ou une date déjà affichée ; sinon horodatage courant. */
+export function resolveAffectationHistoryDate(value?: string): string {
+  const raw = (value || '').trim();
+  if (!raw) return nowDisplay();
+  const iso = /^(\d{4})-(\d{2})-(\d{2})$/.exec(raw);
+  if (iso) {
+    const d = new Date();
+    const pad = (n: number) => String(n).padStart(2, '0');
+    return `${iso[3]}/${iso[2]}/${iso[1]} ${pad(d.getHours())}:${pad(d.getMinutes())}`;
+  }
+  return raw;
+}
+
 function newSuggestionId(): string {
   return `sug-${Date.now().toString(36)}-${Math.random().toString(36).slice(2, 7)}`;
 }
@@ -365,7 +378,7 @@ export async function appendAffectationHistory(
   const store = await readHistoryStore();
   for (const entry of entries) {
     store.entries.push({
-      date: entry.date || nowDisplay(),
+      date: resolveAffectationHistoryDate(entry.date),
       action: entry.action,
       matricule: entry.matricule,
       nom: entry.nom ?? '',

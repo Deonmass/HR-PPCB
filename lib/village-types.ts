@@ -39,6 +39,8 @@ export interface VillageMaisonOccupancy extends VillageMaison {
     familleSize: number;
     /** Occupant hors employé (stocké sur la feuille MAISON). */
     externe?: boolean;
+    /** Date d’entrée au village (YYYY-MM-DD), stable malgré les déménagements. */
+    dateEntreeVillage?: string;
   }>;
   occupantCount: number;
   capacite: number | null;

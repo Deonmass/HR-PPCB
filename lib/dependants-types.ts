@@ -25,6 +25,11 @@ export interface Dependant {
    */
   numeroVilla?: string;
   typeMaison?: string;
+  /**
+   * Date d’entrée au village (YYYY-MM-DD).
+   * Conservée lors des déplacements de maison ; effacée à la libération.
+   */
+  dateEntreeVillage?: string;
   dateNaissance: string;
   age: number | null;
   compositionFamille: number | null;

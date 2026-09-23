@@ -2,7 +2,8 @@ import { NextResponse } from 'next/server';
 import type { CompilationData } from '@/lib/timesheet-compilation';
 import { buildCompilationWorkbookBuffer } from '@/lib/timesheet-compilation-export.server';
 import type { PolicyChange } from '@/lib/timesheet-compilation-policy';
-import { checkTimesheetDepartmentExport } from '@/lib/timesheet-access-server';
+import { checkTimesheetDepartmentExport, requireTimesheetModuleAccess } from '@/lib/timesheet-access-server';
+import { saveCompilationSnapshot } from '@/lib/timesheet-compilation-snapshot-store';
 import { auditSimpleAction, getAuditActor } from '@/lib/with-audit';
 import { logAuditError } from '@/lib/audit-log-store';
 
@@ -22,6 +23,8 @@ export async function POST(request: Request) {
       /** @deprecated utiliser policyRows */
       rows?: CompilationData['rows'];
       policyChanges?: PolicyChange[];
+      /** Persister l’extrait (défaut true hors simulation pure). */
+      persist?: boolean;
     };
     if (!body.data?.weeks?.length) {
       return NextResponse.json({ error: 'Données de compilation invalides' }, { status: 400 });
@@ -30,11 +33,31 @@ export async function POST(request: Request) {
       return NextResponse.json({ error: 'Aucune ligne à exporter' }, { status: 400 });
     }
 
-    const policyRows = body.policyRows ?? body.rows;
+    const policyRows = body.policyRows ?? body.rows ?? body.data.rows;
+    const policyChanges = body.policyChanges ?? [];
     const buffer = await buildCompilationWorkbookBuffer(body.data, {
       policyRows,
-      policyChanges: body.policyChanges,
+      policyChanges,
     });
+
+    const shouldPersist = body.persist !== false;
+    if (shouldPersist) {
+      const access = await requireTimesheetModuleAccess();
+      const userId = !('error' in access && access.error)
+        ? access.session.user.id
+        : undefined;
+      await saveCompilationSnapshot({
+        year: body.data.year,
+        month: body.data.month,
+        department: body.data.department,
+        data: body.data,
+        policyRows,
+        policyChanges,
+        source: 'export',
+        userId,
+      });
+    }
+
     await auditSimpleAction({
       module: 'timesheet.compilation',
       action: 'export',
