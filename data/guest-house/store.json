@@ -763,10 +763,11 @@
       "motif": "Correction of mining weighbridge",
       "startDate": "2026-09-22",
       "endDate": "2026-09-29",
-      "status": "pending",
+      "roomId": "7dbc2817-6744-4ae5-8827-0961bd7aa54a",
+      "status": "confirmed",
       "notes": "Booked by Elias Kipruto Tanui <Elias.Tanui@ppcdrc.cd>",
       "phone": "+90 562 044 8789",
-      "updatedAt": "2026-09-21T13:57:24.296Z"
+      "updatedAt": "2026-09-23T07:04:33.931Z"
     },
     {
       "id": "55a5feec-b5c3-4c1a-8fed-c1c7786f8f88",
@@ -26266,6 +26267,17 @@
     }
   ],
   "passages": [
+    {
+      "id": "66292fe6-df72-4338-8a71-d031bde75d82",
+      "roomId": "7dbc2817-6744-4ae5-8827-0961bd7aa54a",
+      "reservationId": "a0044a7f-c4ce-49dc-8762-097a3a4efa58",
+      "numero": "GH-2026-4431",
+      "personName": "Cam Tarik",
+      "motif": "Correction of mining weighbridge",
+      "startDate": "2026-09-22",
+      "endDate": "2026-09-29",
+      "checkedInAt": "2026-09-23T07:04:33.931Z"
+    },
     {
       "id": "2df43b39-6312-4230-a3f6-cb780a5a16fd",
       "roomId": "12ee1ff4-eb03-4592-b1da-589006209e77",
