@@ -1,6 +1,21 @@
 {
   "entries": [
     {
+      "id": "log-001130",
+      "at": "2026-09-23T14:13:21.550Z",
+      "userId": "admin",
+      "userName": "Administrateur",
+      "userEmail": "admin",
+      "module": "documents.exit",
+      "moduleLabel": "Documents",
+      "action": "export",
+      "actionLabel": "Export",
+      "summary": "Document exit « Attestation de fin de service » — KADIMA MPINGA MINOU Fleur  (70000311)",
+      "details": "Document exit « Attestation de fin de service » — KADIMA MPINGA MINOU Fleur  (70000311)",
+      "undoable": false,
+      "undone": false
+    },
+    {
       "id": "log-001129",
       "at": "2026-09-23T13:31:46.735Z",
       "userId": "admin",
@@ -118450,5 +118465,5 @@
       }
     }
   ],
-  "nextSeq": 1130
+  "nextSeq": 1131
 }
