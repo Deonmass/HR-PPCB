@@ -7619,7 +7619,7 @@
       "grade": "C2",
       "jobTitle": "Customer Relationship Officer",
       "localisation": "Kinshasa",
-      "service": "",
+      "service": "CEC",
       "company": "PPC Barnet DRC Manufacturing",
       "centreCout": "KC6310",
       "appointmentDate": "14/08/2026",
@@ -7657,7 +7657,7 @@
       "cnss": "21994431462S",
       "nif": "",
       "createdAt": "2026-08-24T13:47:53.112Z",
-      "updatedAt": "2026-09-23T14:23:05.699Z"
+      "updatedAt": "2026-09-23T14:24:43.049Z"
     }
   ]
 }
