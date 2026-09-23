@@ -1,6 +1,42 @@
 {
   "entries": [
     {
+      "id": "log-001138",
+      "at": "2026-09-23T14:54:46.605Z",
+      "userId": "Serge.Muakasa@ppcdrc.cd",
+      "userName": "Serge Muakasa",
+      "userEmail": "Serge.Muakasa@ppcdrc.cd",
+      "module": "factures-suivi",
+      "moduleLabel": "Factures suivi",
+      "action": "create",
+      "actionLabel": "Création",
+      "summary": "Création lot de 1 facture(s)",
+      "details": "Création lot de 1 facture(s)",
+      "after": [
+        {
+          "id": "fac-2155",
+          "date": "23/09/2026",
+          "societe": "Fedyza",
+          "facture": "Facture n 039/Top K/Fedyza/08/2026",
+          "montant": 930,
+          "echeance": "",
+          "pr": "11198758",
+          "datePr": "",
+          "po": "",
+          "datePo": "",
+          "grn": "",
+          "dateGrn": "",
+          "payment": "",
+          "datePym": "",
+          "commentaire": "Au PR — en attente du PO.",
+          "statut": "unpaid",
+          "statutLabel": "unpaid"
+        }
+      ],
+      "undoable": false,
+      "undone": false
+    },
+    {
       "id": "log-001137",
       "at": "2026-09-23T14:38:10.631Z",
       "userId": "Serge.Muakasa@ppcdrc.cd",
@@ -119318,5 +119354,5 @@
       }
     }
   ],
-  "nextSeq": 1138
+  "nextSeq": 1139
 }
