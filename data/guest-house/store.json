@@ -716,6 +716,19 @@
   ],
   "reservations": [
     {
+      "id": "a9925427-b01f-4c44-a80e-acf8d4e46aab",
+      "numero": "GH-2026-4436",
+      "createdAt": "2026-09-23T07:14:10.604Z",
+      "personName": "Topographe 2",
+      "isAgent": false,
+      "motif": "Topographe",
+      "startDate": "2026-09-22",
+      "endDate": "2026-09-28",
+      "status": "pending",
+      "notes": "Booké par Nelson",
+      "updatedAt": "2026-09-23T07:14:10.604Z"
+    },
+    {
       "id": "45ca8ff2-804a-4567-a6dc-c8e4ebf03e82",
       "numero": "GH-2026-4435",
       "createdAt": "2026-09-23T07:13:27.495Z",
@@ -44463,5 +44476,5 @@
       "checkedOutAt": "2025-09-24T12:00:00.000Z"
     }
   ],
-  "nextReservationSeq": 4436
+  "nextReservationSeq": 4437
 }
