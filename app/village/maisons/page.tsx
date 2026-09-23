@@ -126,11 +126,11 @@ function studioSuffixRank(suffix: string): number {
 }
 
 /** Colonnes Studio : un numéro = une colonne (B puis A). */
-function groupStudioColumns(list: VillageMaisonOccupancy[]): Array<{
+function groupStudioColumns(list: MaisonDisplay[]): Array<{
   base: number;
-  houses: VillageMaisonOccupancy[];
+  houses: MaisonDisplay[];
 }> {
-  const map = new Map<number, VillageMaisonOccupancy[]>();
+  const map = new Map<number, MaisonDisplay[]>();
   for (const maison of list) {
     const { n } = parseMaisonNumeroParts(maison.numero);
     const bucket = map.get(n) ?? [];
@@ -965,7 +965,7 @@ function VillageMaisonsPageInner() {
   }, [occupancy, search, filterTaille, filterStatut, tailles]);
 
   const groupedByTaille = useMemo(() => {
-    const map = new Map<string, VillageMaisonOccupancy[]>();
+    const map = new Map<string, MaisonDisplay[]>();
     for (const m of filteredMaisons) {
       const label = resolveTailleLabel(m.taille, tailles);
       const list = map.get(label) ?? [];
