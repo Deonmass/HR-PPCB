@@ -182,6 +182,7 @@ export default function GuestHouseUnitDoorModal({
 }: Props) {
   const titleId = useId();
   const closeBtnRef = useRef<HTMLButtonElement>(null);
+  const modalRef = useRef<HTMLDivElement>(null);
   const hasVisitors = visitors.length > 0;
   const hasSide = true;
   const canExpand = true;
@@ -192,16 +193,33 @@ export default function GuestHouseUnitDoorModal({
       : computeFromTransform(origin, hasSide),
   );
   const closingRef = useRef(false);
+  const travelStartedRef = useRef(false);
 
   useLayoutEffect(() => {
-    setFromTransform(computeFromTransform(origin, hasSide));
+    const next = computeFromTransform(origin, hasSide);
+    setFromTransform(next);
+    const el = modalRef.current;
+    if (el) {
+      el.style.transform = next;
+      // Force a paint so the travel CSS transition always runs (esp. production).
+      void el.getBoundingClientRect();
+    }
   }, [origin, hasSide]);
 
   useEffect(() => {
-    const id = window.requestAnimationFrame(() => {
-      window.requestAnimationFrame(() => setStage('travel'));
+    if (travelStartedRef.current) return undefined;
+    let outer = 0;
+    let inner = 0;
+    outer = window.requestAnimationFrame(() => {
+      inner = window.requestAnimationFrame(() => {
+        travelStartedRef.current = true;
+        setStage('travel');
+      });
     });
-    return () => window.cancelAnimationFrame(id);
+    return () => {
+      window.cancelAnimationFrame(outer);
+      window.cancelAnimationFrame(inner);
+    };
   }, []);
 
   useEffect(() => {
@@ -303,6 +321,7 @@ export default function GuestHouseUnitDoorModal({
       }}
     >
       <div
+        ref={modalRef}
         className={`village-house-door-modal ${shapeClass}${toneClass}${
           hasSide ? ' has-room' : ''
         }${doorOpen ? ' is-door-open' : ''}${contentVisible ? ' is-content-visible' : ''}${
@@ -356,6 +375,13 @@ export default function GuestHouseUnitDoorModal({
                 ))}
               </dl>
             </div>
+
+            {/* Porte gauche : peek principal (comme les maisons village) */}
+            <div className="village-house-door-modal-door" aria-hidden>
+              <span className="village-house-door-modal-door-panel">
+                <span className="village-house-door-modal-knob" />
+              </span>
+            </div>
           </div>
 
           <aside className="village-house-door-modal-room is-side-panel" aria-label="Statut séjour">
@@ -397,6 +423,7 @@ export default function GuestHouseUnitDoorModal({
             </div>
           </aside>
 
+          {/* Porte droite : panneau jours / Réserver (sibling pour rester visible avant expand) */}
           <div className="village-house-door-modal-door is-right" aria-hidden>
             <span className="village-house-door-modal-door-panel">
               <span className="village-house-door-modal-knob" />

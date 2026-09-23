@@ -2263,7 +2263,7 @@ export default function VillageGuestHousePage() {
                       <button
                         type="button"
                         className="btn btn-primary btn-sm guest-house-icon-btn"
-                        onClick={openReservationCreate}
+                        onClick={() => openReservationCreate()}
                         title="Nouvelle réservation"
                         aria-label="Nouvelle réservation"
                       >

@@ -274,6 +274,7 @@ export default function VillageHouseDoorModal({
 }: Props) {
   const titleId = useId();
   const closeBtnRef = useRef<HTMLButtonElement>(null);
+  const modalRef = useRef<HTMLDivElement>(null);
   const hasRoom = familyMembers.length > 0;
   const canExpand = hasRoom || actions.length > 0;
   const shape = resolveHouseShape(tailleLabel || maison.typeMaison || maison.taille);
@@ -286,6 +287,7 @@ export default function VillageHouseDoorModal({
   const occupant = maison.occupants[0];
   const occupied = maison.occupied && Boolean(occupant);
   const closingRef = useRef(false);
+  const travelStartedRef = useRef(false);
 
   const sortedFamily = useMemo(
     () =>
@@ -299,14 +301,29 @@ export default function VillageHouseDoorModal({
   );
 
   useLayoutEffect(() => {
-    setFromTransform(computeFromTransform(origin));
+    const next = computeFromTransform(origin);
+    setFromTransform(next);
+    const el = modalRef.current;
+    if (el) {
+      el.style.transform = next;
+      void el.getBoundingClientRect();
+    }
   }, [origin]);
 
   useEffect(() => {
-    const id = window.requestAnimationFrame(() => {
-      window.requestAnimationFrame(() => setStage('travel'));
+    if (travelStartedRef.current) return undefined;
+    let outer = 0;
+    let inner = 0;
+    outer = window.requestAnimationFrame(() => {
+      inner = window.requestAnimationFrame(() => {
+        travelStartedRef.current = true;
+        setStage('travel');
+      });
     });
-    return () => window.cancelAnimationFrame(id);
+    return () => {
+      window.cancelAnimationFrame(outer);
+      window.cancelAnimationFrame(inner);
+    };
   }, []);
 
   useEffect(() => {
@@ -398,6 +415,7 @@ export default function VillageHouseDoorModal({
       }}
     >
       <div
+        ref={modalRef}
         className={`village-house-door-modal shape-${shape}${occupied ? ' is-occupied' : ' is-empty'}${
           hasRoom ? ' has-room' : ''
         }${doorOpen ? ' is-door-open' : ''}${contentVisible ? ' is-content-visible' : ''}${

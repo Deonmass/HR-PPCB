@@ -472,7 +472,7 @@ export default function GuestHouseMotelView({
                       <button
                         type="button"
                         className="btn btn-primary btn-sm btn-with-icon"
-                        onClick={onCreateReservation}
+                        onClick={() => onCreateReservation()}
                         title="Nouvelle réservation"
                       >
                         <IconPlus size={13} />
@@ -723,7 +723,7 @@ export default function GuestHouseMotelView({
                     <button
                       type="button"
                       className="btn btn-primary btn-sm btn-with-icon"
-                      onClick={onCreateReservation}
+                      onClick={() => onCreateReservation()}
                       title="Nouvelle réservation"
                     >
                       <IconPlus size={13} />
