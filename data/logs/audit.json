@@ -1,6 +1,36 @@
 {
   "entries": [
     {
+      "id": "log-001092",
+      "at": "2026-09-23T07:14:36.637Z",
+      "userId": "admin",
+      "userName": "Administrateur",
+      "userEmail": "admin",
+      "module": "guest-house",
+      "moduleLabel": "Guest house",
+      "action": "create",
+      "actionLabel": "Création",
+      "entityType": "guest-house.reservation",
+      "entityId": "99e69e33-980d-4ab4-9c13-cac5fb888dd7",
+      "summary": "Création réservation Topographe 3",
+      "details": "Création réservation Topographe 3",
+      "after": {
+        "id": "99e69e33-980d-4ab4-9c13-cac5fb888dd7",
+        "numero": "GH-2026-4437",
+        "createdAt": "2026-09-23T07:14:33.813Z",
+        "personName": "Topographe 3",
+        "isAgent": false,
+        "motif": "Topographe",
+        "startDate": "2026-09-22",
+        "endDate": "2026-09-28",
+        "status": "pending",
+        "notes": "Booké par Nelson",
+        "updatedAt": "2026-09-23T07:14:33.813Z"
+      },
+      "undoable": true,
+      "undone": false
+    },
+    {
       "id": "log-001091",
       "at": "2026-09-23T07:14:14.016Z",
       "userId": "admin",
@@ -117292,5 +117322,5 @@
       }
     }
   ],
-  "nextSeq": 1092
+  "nextSeq": 1093
 }
