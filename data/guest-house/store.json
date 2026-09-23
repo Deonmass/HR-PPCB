@@ -750,9 +750,10 @@
       "motif": "Topographe",
       "startDate": "2026-09-22",
       "endDate": "2026-09-28",
-      "status": "pending",
+      "roomId": "0b0cdc0d-ba79-4f68-8533-c90cad3390cb",
+      "status": "confirmed",
       "notes": "Booké par Nelson",
-      "updatedAt": "2026-09-23T07:13:27.495Z"
+      "updatedAt": "2026-09-23T07:18:28.417Z"
     },
     {
       "id": "b12180ce-6402-4f79-bab2-e5aa62575fe1",
@@ -26309,6 +26310,17 @@
     }
   ],
   "passages": [
+    {
+      "id": "bd9af3e2-0dd8-4b32-874b-673bc416eccf",
+      "roomId": "0b0cdc0d-ba79-4f68-8533-c90cad3390cb",
+      "reservationId": "45ca8ff2-804a-4567-a6dc-c8e4ebf03e82",
+      "numero": "GH-2026-4435",
+      "personName": "Topographe 1",
+      "motif": "Topographe",
+      "startDate": "2026-09-22",
+      "endDate": "2026-09-28",
+      "checkedInAt": "2026-09-23T07:18:28.417Z"
+    },
     {
       "id": "5b42246e-7744-445b-b5b0-22d4c17c841c",
       "roomId": "4e4bd694-e96e-4748-a98a-882d842f616e",
