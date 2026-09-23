@@ -1,6 +1,42 @@
 {
   "entries": [
     {
+      "id": "log-001107",
+      "at": "2026-09-23T10:23:25.015Z",
+      "userId": "Serge.Muakasa@ppcdrc.cd",
+      "userName": "Serge Muakasa",
+      "userEmail": "Serge.Muakasa@ppcdrc.cd",
+      "module": "factures-suivi",
+      "moduleLabel": "Factures suivi",
+      "action": "create",
+      "actionLabel": "Création",
+      "summary": "Création lot de 1 facture(s)",
+      "details": "Création lot de 1 facture(s)",
+      "after": [
+        {
+          "id": "fac-2147",
+          "date": "23/09/2026",
+          "societe": "Gringo",
+          "facture": "FACTURE N FC/CD02015819/1-13/2026",
+          "montant": 9690,
+          "echeance": "",
+          "pr": "11198707",
+          "datePr": "",
+          "po": "",
+          "datePo": "",
+          "grn": "",
+          "dateGrn": "",
+          "payment": "",
+          "datePym": "",
+          "commentaire": "Au PR — en attente du PO.",
+          "statut": "unpaid",
+          "statutLabel": "unpaid"
+        }
+      ],
+      "undoable": false,
+      "undone": false
+    },
+    {
       "id": "log-001106",
       "at": "2026-09-23T10:09:57.615Z",
       "userId": "Serge.Muakasa@ppcdrc.cd",
@@ -117859,5 +117895,5 @@
       }
     }
   ],
-  "nextSeq": 1107
+  "nextSeq": 1108
 }
