@@ -14952,7 +14952,26 @@
       "commentaire": "Au PR — en attente du PO.",
       "statut": "unpaid",
       "statutLabel": "unpaid"
+    },
+    {
+      "id": "fac-2148",
+      "date": "23/09/2026",
+      "societe": "Kikotech",
+      "facture": "Proforma n 261/2026",
+      "montant": 122.3,
+      "echeance": "",
+      "pr": "11198717",
+      "datePr": "",
+      "po": "",
+      "datePo": "",
+      "grn": "",
+      "dateGrn": "",
+      "payment": "",
+      "datePym": "",
+      "commentaire": "Au PR — en attente du PO.",
+      "statut": "unpaid",
+      "statutLabel": "unpaid"
     }
   ],
-  "nextFactureSeq": 2148
+  "nextFactureSeq": 2149
 }
