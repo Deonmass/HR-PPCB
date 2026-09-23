@@ -1,6 +1,35 @@
 {
   "entries": [
     {
+      "id": "log-001103",
+      "at": "2026-09-23T10:06:40.548Z",
+      "userId": "admin",
+      "userName": "Administrateur",
+      "userEmail": "admin",
+      "module": "guest-house",
+      "moduleLabel": "Guest house",
+      "action": "create",
+      "actionLabel": "Création",
+      "entityType": "guest-house.reservation",
+      "entityId": "a6275922-b69d-4b7b-9349-0c096260c912",
+      "summary": "Création réservation JC",
+      "details": "Création réservation JC",
+      "after": {
+        "id": "a6275922-b69d-4b7b-9349-0c096260c912",
+        "numero": "GH-2026-4438",
+        "createdAt": "2026-09-23T10:06:37.094Z",
+        "personName": "JC",
+        "isAgent": false,
+        "motif": "Chauffeur qui a accompagné Tarik",
+        "startDate": "2026-09-22",
+        "endDate": "2026-09-23",
+        "status": "pending",
+        "updatedAt": "2026-09-23T10:06:37.094Z"
+      },
+      "undoable": true,
+      "undone": false
+    },
+    {
       "id": "log-001102",
       "at": "2026-09-23T10:03:03.861Z",
       "userId": "admin",
@@ -117709,5 +117738,5 @@
       }
     }
   ],
-  "nextSeq": 1103
+  "nextSeq": 1104
 }
