@@ -1,6 +1,51 @@
 {
   "entries": [
     {
+      "id": "log-001110",
+      "at": "2026-09-23T11:37:10.737Z",
+      "userId": "admin",
+      "userName": "Administrateur",
+      "userEmail": "admin",
+      "module": "guest-house",
+      "moduleLabel": "Guest house",
+      "action": "update",
+      "actionLabel": "Modification",
+      "entityType": "guest-house.reservation",
+      "entityId": "45ca8ff2-804a-4567-a6dc-c8e4ebf03e82",
+      "summary": "Modification réservation 45ca8ff2-804a-4567-a6dc-c8e4ebf03e82",
+      "details": "Modification réservation 45ca8ff2-804a-4567-a6dc-c8e4ebf03e82",
+      "before": {
+        "id": "45ca8ff2-804a-4567-a6dc-c8e4ebf03e82",
+        "numero": "GH-2026-4435",
+        "createdAt": "2026-09-23T07:13:27.495Z",
+        "personName": "Topographe 1",
+        "isAgent": false,
+        "motif": "Topographe",
+        "startDate": "2026-09-22",
+        "endDate": "2026-09-28",
+        "roomId": "0b0cdc0d-ba79-4f68-8533-c90cad3390cb",
+        "status": "confirmed",
+        "notes": "Booké par Nelson",
+        "updatedAt": "2026-09-23T07:18:28.417Z"
+      },
+      "after": {
+        "id": "45ca8ff2-804a-4567-a6dc-c8e4ebf03e82",
+        "numero": "GH-2026-4435",
+        "createdAt": "2026-09-23T07:13:27.495Z",
+        "personName": "CHRISTIAN BELUKE AYONA",
+        "isAgent": false,
+        "motif": "Topographe",
+        "startDate": "2026-09-22",
+        "endDate": "2026-09-28",
+        "roomId": "0b0cdc0d-ba79-4f68-8533-c90cad3390cb",
+        "status": "confirmed",
+        "notes": "Booké par Nelson",
+        "updatedAt": "2026-09-23T11:37:07.830Z"
+      },
+      "undoable": true,
+      "undone": false
+    },
+    {
       "id": "log-001109",
       "at": "2026-09-23T11:36:31.569Z",
       "userId": "admin",
@@ -117985,5 +118030,5 @@
       }
     }
   ],
-  "nextSeq": 1110
+  "nextSeq": 1111
 }
