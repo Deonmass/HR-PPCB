@@ -19651,6 +19651,24 @@ html[data-theme='light'] .side-drawer-form select {
   --vh-window: color-mix(in srgb, #fecaca 55%, #fff);
 }
 
+.village-house.is-guest-reserved {
+  --vh-fill: color-mix(in srgb, #f59e0b 12%, #fff);
+  --vh-edge: color-mix(in srgb, #f59e0b 48%, transparent);
+  --vh-ink: #9a3412;
+  --vh-roof: #f59e0b;
+  --vh-roof-dark: #d97706;
+  --vh-door: #b45309;
+  --vh-window: color-mix(in srgb, #fde68a 55%, #fff);
+}
+
+.village-house.is-guest-house .village-house-status.is-guest {
+  font-size: 0.58rem;
+  font-weight: 800;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  opacity: 0.85;
+}
+
 .village-house.is-empty {
   --vh-fill: color-mix(in srgb, #22c55e 11%, #fff);
   --vh-edge: color-mix(in srgb, #22c55e 40%, transparent);
@@ -19670,6 +19688,17 @@ html:not([data-theme='light']) .village-house.is-occupied {
   --vh-roof-dark: #b91c1c;
   --vh-door: #7f1d1d;
   --vh-window: color-mix(in srgb, #e30613 25%, #1e1e28);
+}
+
+html[data-theme='dark'] .village-house.is-guest-reserved,
+html:not([data-theme='light']) .village-house.is-guest-reserved {
+  --vh-fill: color-mix(in srgb, #f59e0b 18%, #16161c);
+  --vh-edge: color-mix(in srgb, #f59e0b 48%, transparent);
+  --vh-ink: #fdba74;
+  --vh-roof: #f59e0b;
+  --vh-roof-dark: #d97706;
+  --vh-door: #b45309;
+  --vh-window: color-mix(in srgb, #f59e0b 22%, #1e1e28);
 }
 
 html[data-theme='dark'] .village-house.is-empty,
@@ -21746,6 +21775,69 @@ html[data-theme='light'] .village-dept-taille-table td:first-child {
   -webkit-overflow-scrolling: touch;
 }
 
+.guest-house-floorplan-scroll-wrap {
+  position: relative;
+}
+
+.guest-house-floorplan-scroll-wrap .guest-house-floorplan-scroll.is-rail {
+  scroll-behavior: smooth;
+  scrollbar-width: thin;
+  padding-right: 0.35rem;
+}
+
+.guest-house-floorplan-scroll-fab {
+  position: absolute;
+  top: 50%;
+  z-index: 4;
+  transform: translateY(-50%);
+  width: 2.35rem;
+  height: 2.35rem;
+  border-radius: 999px;
+  border: 1px solid color-mix(in srgb, var(--border) 70%, #94a3b8);
+  background: color-mix(in srgb, var(--panel) 92%, #fff);
+  color: var(--text);
+  box-shadow: 0 8px 22px rgba(15, 23, 42, 0.18);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+
+.guest-house-floorplan-scroll-fab:hover {
+  transform: translateY(-50%) scale(1.06);
+  box-shadow: 0 10px 26px rgba(15, 23, 42, 0.22);
+}
+
+.guest-house-floorplan-scroll-fab.is-right {
+  right: 0.35rem;
+}
+
+.guest-house-floorplan-scroll-fab.is-left {
+  left: 0.35rem;
+}
+
+.guest-house-floorplan.is-kimpese .guest-house-floorplan-building.is-kimpese,
+.guest-house-floorplan-building.is-kimpese {
+  width: max-content;
+  min-width: 100%;
+  box-sizing: border-box;
+}
+
+.guest-house-floorplan-units.is-kimpese-rail {
+  display: flex;
+  flex-wrap: nowrap;
+  width: max-content;
+  gap: 0.55rem;
+  grid-template-columns: none;
+}
+
+.guest-house-floorplan-units.is-kimpese-rail .guest-house-floorplan-unit {
+  flex: 0 0 10.5rem;
+  width: 10.5rem;
+  min-width: 10.5rem;
+}
+
 .guest-house-floorplan-building {
   --gh-room-count: 7;
   --gh-bath-w: 1.85rem;
@@ -22074,6 +22166,94 @@ html:not([data-theme='light']) .guest-house-floorplan-roof {
   display: flex;
   flex-direction: column;
   gap: 0.7rem;
+}
+
+.guest-house-room-form {
+  display: flex;
+  flex-direction: column;
+  gap: 1.15rem;
+}
+
+.guest-house-room-form .form-group {
+  margin: 0;
+  gap: 0.45rem;
+}
+
+.guest-house-room-form-hint {
+  margin: 0.15rem 0 0;
+  font-size: 0.78rem;
+}
+
+.guest-house-room-form-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 7.5rem) minmax(0, 1fr);
+  gap: 1.15rem 0.9rem;
+}
+
+.guest-house-room-form-span {
+  grid-column: 1 / -1;
+}
+
+.guest-house-room-form-actions {
+  margin-top: 0.35rem;
+  padding-top: 0.85rem;
+  border-top: 1px solid var(--border);
+}
+
+.guest-house-spin-field {
+  position: relative;
+  display: flex;
+  align-items: stretch;
+}
+
+.guest-house-spin-field input {
+  width: 100%;
+  padding-right: 2.15rem;
+}
+
+.guest-house-spin-btns {
+  position: absolute;
+  top: 1px;
+  right: 1px;
+  bottom: 1px;
+  width: 1.85rem;
+  display: flex;
+  flex-direction: column;
+  border-left: 1px solid var(--border);
+  overflow: hidden;
+  border-radius: 0 8px 8px 0;
+}
+
+.guest-house-spin-btn {
+  flex: 1 1 50%;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0;
+  padding: 0;
+  border: none;
+  background: color-mix(in srgb, var(--panel) 88%, #94a3b8);
+  color: var(--text);
+  cursor: pointer;
+  line-height: 1;
+}
+
+.guest-house-spin-btn + .guest-house-spin-btn {
+  border-top: 1px solid var(--border);
+}
+
+.guest-house-spin-btn:hover {
+  background: color-mix(in srgb, var(--panel) 70%, #94a3b8);
+}
+
+.guest-house-spin-btn:active {
+  background: color-mix(in srgb, #e30613 12%, var(--panel));
+}
+
+@media (max-width: 480px) {
+  .guest-house-room-form-grid {
+    grid-template-columns: 1fr;
+  }
 }
 
 .guest-house-confirm-form {

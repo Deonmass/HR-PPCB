@@ -83,6 +83,71 @@ function lodgingLabel(
   return '—';
 }
 
+/** Champ N° avec flèches +/- (incrémente si numérique, sinon saisie libre VIP…). */
+function RoomNumberSpinField({
+  id,
+  value,
+  onChange,
+  placeholder,
+  required,
+}: {
+  id: string;
+  value: string;
+  onChange: (next: string) => void;
+  placeholder?: string;
+  required?: boolean;
+}) {
+  const bump = (delta: number) => {
+    const trimmed = value.trim();
+    const n = Number.parseInt(trimmed, 10);
+    if (Number.isFinite(n) && String(n) === trimmed) {
+      onChange(String(Math.max(0, n + delta)));
+      return;
+    }
+    if (!trimmed) {
+      onChange(String(Math.max(0, delta > 0 ? 1 : 0)));
+    }
+  };
+
+  return (
+    <div className="guest-house-spin-field">
+      <input
+        id={id}
+        value={value}
+        onChange={(e) => onChange(e.target.value)}
+        placeholder={placeholder}
+        required={required}
+        inputMode="text"
+        autoComplete="off"
+      />
+      <div className="guest-house-spin-btns" aria-hidden={false}>
+        <button
+          type="button"
+          className="guest-house-spin-btn"
+          aria-label="Augmenter le numéro"
+          tabIndex={-1}
+          onClick={() => bump(1)}
+        >
+          <svg viewBox="0 0 24 24" width="12" height="12" fill="none" stroke="currentColor" strokeWidth="2.4" aria-hidden>
+            <path d="m6 14 6-6 6 6" />
+          </svg>
+        </button>
+        <button
+          type="button"
+          className="guest-house-spin-btn"
+          aria-label="Diminuer le numéro"
+          tabIndex={-1}
+          onClick={() => bump(-1)}
+        >
+          <svg viewBox="0 0 24 24" width="12" height="12" fill="none" stroke="currentColor" strokeWidth="2.4" aria-hidden>
+            <path d="m6 10 6 6 6-6" />
+          </svg>
+        </button>
+      </div>
+    </div>
+  );
+}
+
 const iconProps = {
   fill: 'none',
   stroke: 'currentColor',
@@ -2542,6 +2607,7 @@ export default function VillageGuestHousePage() {
               canDelete={canDelete}
               onCreateReservation={openReservationCreate}
               onEditRoom={openRoomEdit}
+              onEditReservation={openReservationEdit}
               onDeleteRoom={(room) => { void removeRoom(room); }}
               onHistory={openHistory}
               onClearProposal={(item) => { void clearProposalDisplay(item); }}
@@ -2570,6 +2636,7 @@ export default function VillageGuestHousePage() {
           }
           onClose={() => setDrawer(null)}
         >
+          <div className="guest-house-room-form">
           {!editingRoom && (
             <div className="form-group">
               <label htmlFor="gh-category">Catégorie</label>
@@ -2604,24 +2671,24 @@ export default function VillageGuestHousePage() {
                 placeholder="Ex. Hôtel Auberge du Centre"
                 required
               />
-              <p className="text-muted" style={{ marginTop: '0.35rem', fontSize: '0.78rem' }}>
-                Utilisé quand la guest house est pleine — débordement Kimpese.
+              <p className="text-muted guest-house-room-form-hint">
+                Utilisé quand la guest house est pleine — débordement Hors village.
               </p>
             </div>
           ) : (
-            <>
+            <div className="guest-house-room-form-grid">
               <div className="form-group">
                 <label htmlFor="gh-room-number">N° chambre</label>
-                <input
+                <RoomNumberSpinField
                   id="gh-room-number"
                   value={roomForm.roomNumber}
-                  onChange={(e) => setRoomForm((prev) => ({ ...prev, roomNumber: e.target.value }))}
+                  onChange={(roomNumber) => setRoomForm((prev) => ({ ...prev, roomNumber }))}
                   placeholder="Ex. 3 ou VIP"
                   required
                 />
               </div>
               <div className="form-group">
-                <label htmlFor="gh-room-name">Nom (template)</label>
+                <label htmlFor="gh-room-name">Dénomination</label>
                 <input
                   id="gh-room-name"
                   value={roomForm.roomName}
@@ -2629,7 +2696,7 @@ export default function VillageGuestHousePage() {
                   placeholder="Ex. MALANGA"
                 />
               </div>
-              <div className="form-group">
+              <div className="form-group guest-house-room-form-span">
                 <label htmlFor="gh-building">Lieu / Bâtiment</label>
                 <select
                   id="gh-building"
@@ -2641,7 +2708,7 @@ export default function VillageGuestHousePage() {
                   <option value="Batiment #2">Batiment #2</option>
                 </select>
               </div>
-            </>
+            </div>
           )}
           <div className="form-group">
             <label htmlFor="gh-characteristics">Caractéristique</label>
@@ -2662,10 +2729,13 @@ export default function VillageGuestHousePage() {
               onChange={(e) => setRoomForm((prev) => ({ ...prev, notes: e.target.value }))}
             />
           </div>
-          <button type="button" className="btn btn-primary btn-with-icon" disabled={saving} onClick={() => void saveRoom()}>
-            {saving ? <span className="btn-spinner" aria-hidden="true" /> : null}
-            {saving ? 'Enregistrement…' : 'Enregistrer'}
-          </button>
+          <div className="guest-house-room-form-actions">
+            <button type="button" className="btn btn-primary btn-with-icon" disabled={saving} onClick={() => void saveRoom()}>
+              {saving ? <span className="btn-spinner" aria-hidden="true" /> : null}
+              {saving ? 'Enregistrement…' : 'Enregistrer'}
+            </button>
+          </div>
+          </div>
         </SideDrawer>
 
         <SideDrawer

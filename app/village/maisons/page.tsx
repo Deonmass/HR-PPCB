@@ -37,6 +37,7 @@ import {
   buildZambaAgentsFromEmployees,
   splitVillageKimpese,
 } from '@/lib/village-agents';
+import type { GuestMaisonLodgingSummary } from '@/lib/guest-house-types';
 import { downloadVillageExport } from '@/lib/village-export';
 import type { VillageMaison, VillageMaisonOccupancy, VillageTaille } from '@/lib/village-types';
 
@@ -44,6 +45,28 @@ type Tab = 'dashboard' | 'liste' | 'maisons' | 'vides' | 'tailles' | 'photo';
 type DrawerKind = 'maison' | 'taille';
 type TailleFilterKey = 'code' | 'label' | 'capacite' | 'commentaires';
 type VideFilterKey = 'numero' | 'type' | 'suggestions';
+
+type MaisonDisplay = VillageMaisonOccupancy & {
+  /** Occupation Guest House liée (visiteurs temporaires). */
+  guestHouse?: GuestMaisonLodgingSummary | null;
+};
+
+function isMaisonVisuallyOccupied(m: MaisonDisplay): boolean {
+  return m.occupied || Boolean(m.guestHouse?.occupied || m.guestHouse?.reserved);
+}
+
+function maisonDisplayLabel(m: MaisonDisplay): string {
+  if (m.occupied && m.occupants[0]) {
+    return formatDisplayName(m.occupants[0].nom);
+  }
+  const gh = m.guestHouse;
+  if (!gh) return '—';
+  if (gh.names.length === 0) {
+    return gh.occupied ? 'Guest house' : 'Sous réserve';
+  }
+  if (gh.names.length === 1) return formatDisplayName(gh.names[0]!);
+  return `${formatDisplayName(gh.names[0]!)} +${gh.names.length - 1}`;
+}
 
 const EMPTY_TAILLE_FILTERS: Record<TailleFilterKey, string[]> = {
   code: [],
@@ -275,6 +298,9 @@ function VillageMaisonsPageInner() {
   const [tab, setTab] = useState<Tab>('maisons');
   const [maisons, setMaisons] = useState<VillageMaison[]>([]);
   const [tailles, setTailles] = useState<VillageTaille[]>([]);
+  const [guestHouseByMaison, setGuestHouseByMaison] = useState<
+    Record<string, GuestMaisonLodgingSummary>
+  >({});
   const [employees, setEmployees] = useState<Employee[]>([]);
   const [dependants, setDependants] = useState<Dependant[]>([]);
   const [suggestions, setSuggestions] = useState<SuggestionRow[]>([]);
@@ -305,7 +331,7 @@ function VillageMaisonsPageInner() {
   const [historyRows, setHistoryRows] = useState<HistoRow[]>([]);
   const [historyLoading, setHistoryLoading] = useState(false);
   const [doorPeek, setDoorPeek] = useState<{
-    maison: VillageMaisonOccupancy;
+    maison: MaisonDisplay;
     phase: HouseDoorPhase;
     origin: HouseOriginRect;
   } | null>(null);
@@ -393,6 +419,7 @@ function VillageMaisonsPageInner() {
       const maisonsJson = (await resMaisons.json()) as {
         maisons?: VillageMaison[];
         tailles?: VillageTaille[];
+        guestHouseByMaison?: Record<string, GuestMaisonLodgingSummary>;
       };
       const employeesJson = (await resEmployees.json()) as Employee[] | { error?: string };
       const dependantsJson = (await resDependants.json()) as { dependants?: Dependant[] };
@@ -402,12 +429,14 @@ function VillageMaisonsPageInner() {
       };
       setMaisons(maisonsJson.maisons ?? []);
       setTailles(maisonsJson.tailles ?? []);
+      setGuestHouseByMaison(maisonsJson.guestHouseByMaison ?? {});
       setEmployees(Array.isArray(employeesJson) ? employeesJson : []);
       setDependants(dependantsJson.dependants ?? []);
       setSuggestions(suggestionsJson.suggestions ?? []);
     } catch {
       setMaisons([]);
       setTailles([]);
+      setGuestHouseByMaison({});
       setSuggestions([]);
     } finally {
       setLoading(false);
@@ -432,11 +461,14 @@ function VillageMaisonsPageInner() {
     setDoorPeek(null);
   }, [tab]);
 
-  const occupancy = useMemo(() => {
+  const occupancy = useMemo((): MaisonDisplay[] => {
     const zamba = buildZambaAgentsFromEmployees(employees, dependants);
     const { village } = splitVillageKimpese(zamba);
-    return buildMaisonOccupancy(maisons, tailles, village, dependants);
-  }, [employees, dependants, maisons, tailles]);
+    return buildMaisonOccupancy(maisons, tailles, village, dependants).map((m) => ({
+      ...m,
+      guestHouse: guestHouseByMaison[m.numero.trim().toLowerCase()] ?? null,
+    }));
+  }, [employees, dependants, maisons, tailles, guestHouseByMaison]);
 
   const familyByMatricule = useMemo(() => {
     const map = new Map<string, HouseDoorFamilyMember[]>();
@@ -474,7 +506,7 @@ function VillageMaisonsPageInner() {
   const emptyMaisons = useMemo(
     () =>
       occupancy
-        .filter((m) => !m.occupied)
+        .filter((m) => !isMaisonVisuallyOccupied(m))
         .slice()
         .sort((a, b) => compareMaisonNumero(a.numero, b.numero)),
     [occupancy],
@@ -749,7 +781,7 @@ function VillageMaisonsPageInner() {
   };
 
   const openDoorPeek = useCallback(
-    (maison: VillageMaisonOccupancy, sourceEl: HTMLElement | null) => {
+    (maison: MaisonDisplay, sourceEl: HTMLElement | null) => {
       window.clearTimeout(doorPeekTimers.current.open);
       window.clearTimeout(doorPeekTimers.current.close);
       const rect = sourceEl?.getBoundingClientRect();
@@ -795,12 +827,37 @@ function VillageMaisonsPageInner() {
     return familyByMatricule.get(occupant.matricule.trim().toLowerCase()) ?? [];
   }, [doorPeek, familyByMatricule]);
 
+  /** Maison enrichie pour le modal (visiteurs Guest House → occupants affichés). */
+  const doorModalMaison = useMemo((): VillageMaisonOccupancy | null => {
+    if (!doorPeek) return null;
+    const m = doorPeek.maison;
+    if (m.occupied || !m.guestHouse) return m;
+    if (!m.guestHouse.occupied && !m.guestHouse.reserved) return m;
+    const dept = m.guestHouse.reserved ? 'Guest house · sous réserve' : 'Guest house';
+    const names = m.guestHouse.names.length > 0
+      ? m.guestHouse.names
+      : [m.guestHouse.reserved ? 'Sous réserve' : 'Visiteur Guest house'];
+    return {
+      ...m,
+      occupied: true,
+      occupants: names.map((nom) => ({
+        matricule: '',
+        nom,
+        departement: dept,
+        familleSize: 0,
+        externe: true,
+      })),
+      occupantCount: names.length,
+    };
+  }, [doorPeek]);
+
   const doorActions = useMemo((): HouseDoorAction[] => {
     if (!doorPeek) return [];
-    const m = doorPeek.maison;
+    const m = doorPeek.maison as MaisonDisplay;
     const items: HouseDoorAction[] = [];
+    const guestOnly = !m.occupied && Boolean(m.guestHouse?.occupied || m.guestHouse?.reserved);
     if (canEdit) {
-      if (!m.occupied) {
+      if (!m.occupied && !guestOnly) {
         items.push({
           id: 'assign',
           label: 'Affecter',
@@ -810,7 +867,7 @@ function VillageMaisonsPageInner() {
             openAssignDrawer(m, 'assign');
           },
         });
-      } else {
+      } else if (m.occupied) {
         items.push({
           id: 'replace',
           label: 'Remplacer',
@@ -885,18 +942,21 @@ function VillageMaisonsPageInner() {
     const q = search.trim().toLowerCase();
     return occupancy.filter((m) => {
       const tailleLabel = resolveTailleLabel(m.taille, tailles);
+      const shownOccupied = isMaisonVisuallyOccupied(m);
       if (filterTaille && tailleLabel !== filterTaille) return false;
-      if (filterStatut === 'occupee' && !m.occupied) return false;
-      if (filterStatut === 'vide' && m.occupied) return false;
+      if (filterStatut === 'occupee' && !shownOccupied) return false;
+      if (filterStatut === 'vide' && shownOccupied) return false;
       if (!q) return true;
       const hay = [
         m.numero,
         m.taille,
         tailleLabel,
         m.typeMaison,
-        m.occupied ? 'occupee' : 'vide',
+        shownOccupied ? 'occupee' : 'vide',
+        m.guestHouse ? 'guest house' : '',
         m.commentaires,
         ...m.occupants.map((o) => `${o.nom} ${o.matricule}`),
+        ...(m.guestHouse?.names ?? []),
       ]
         .join(' ')
         .toLowerCase();
@@ -1260,10 +1320,11 @@ function VillageMaisonsPageInner() {
   const contextItems = useMemo((): ContextMenuItem[] => {
     if (!contextMenu) return [];
     if (contextMenu.kind === 'maison' && contextMenu.maison) {
-      const m = contextMenu.maison;
+      const m = contextMenu.maison as MaisonDisplay;
+      const guestOnly = !m.occupied && Boolean(m.guestHouse?.occupied || m.guestHouse?.reserved);
       const items: ContextMenuItem[] = [];
       if (canEdit) {
-        if (!m.occupied) {
+        if (!m.occupied && !guestOnly) {
           items.push({
             id: 'assign',
             label: 'Affecter',
@@ -1272,7 +1333,7 @@ function VillageMaisonsPageInner() {
               openAssignDrawer(m, 'assign');
             },
           });
-        } else {
+        } else if (m.occupied) {
           items.push({
             id: 'replace',
             label: 'Remplacer',
@@ -1829,17 +1890,19 @@ function VillageMaisonsPageInner() {
                       <h3>{tailleLabel}</h3>
                       <span>
                         {list.length} maison{list.length > 1 ? 's' : ''} ·{' '}
-                        {list.filter((x) => x.occupied).length} occupée
-                        {list.filter((x) => x.occupied).length > 1 ? 's' : ''} ·{' '}
-                        {list.filter((x) => !x.occupied).length} vide
-                        {list.filter((x) => !x.occupied).length > 1 ? 's' : ''}
+                        {list.filter((x) => isMaisonVisuallyOccupied(x)).length} occupée
+                        {list.filter((x) => isMaisonVisuallyOccupied(x)).length > 1 ? 's' : ''} ·{' '}
+                        {list.filter((x) => !isMaisonVisuallyOccupied(x)).length} vide
+                        {list.filter((x) => !isMaisonVisuallyOccupied(x)).length > 1 ? 's' : ''}
                       </span>
                     </header>
                     <div className={`village-house-grid${isStudioTaille(tailleLabel) ? ' is-studio' : ''}`}>
                       {(isStudioTaille(tailleLabel) ? groupStudioColumns(list) : [{ base: 0, houses: list }]).map(
                         (column) => {
                           const cards = column.houses.map((m) => {
-                            const occupant = m.occupants[0];
+                            const shownOccupied = isMaisonVisuallyOccupied(m);
+                            const guestOnly = !m.occupied && Boolean(m.guestHouse?.occupied || m.guestHouse?.reserved);
+                            const label = maisonDisplayLabel(m);
                             const isSource = doorPeek?.maison.numero === m.numero;
                             return (
                               <div
@@ -1847,11 +1910,15 @@ function VillageMaisonsPageInner() {
                                 role="button"
                                 tabIndex={0}
                                 className={`village-house is-clickable shape-${resolveHouseShape(tailleLabel)}${
-                                  m.occupied ? ' is-occupied' : ' is-empty'
-                                }${isSource ? ' is-door-source' : ''}`}
+                                  shownOccupied
+                                    ? guestOnly && m.guestHouse?.reserved
+                                      ? ' is-guest-reserved'
+                                      : ' is-occupied'
+                                    : ' is-empty'
+                                }${guestOnly ? ' is-guest-house' : ''}${isSource ? ' is-door-source' : ''}`}
                                 title={
-                                  m.occupied
-                                    ? `${m.numero} — ${formatDisplayName(occupant?.nom ?? '')}`
+                                  shownOccupied
+                                    ? `${m.numero} — ${label}${guestOnly ? ' (Guest house)' : ''}`
                                     : `${m.numero} — Vide`
                                 }
                                 onClick={(e) => openDoorPeek(m, e.currentTarget)}
@@ -1900,15 +1967,19 @@ function VillageMaisonsPageInner() {
                                       <MoreIcon />
                                     </button>
                                   </div>
-                                  {!m.occupied ? (
+                                  {!shownOccupied ? (
                                     <div className="village-house-status">Vide</div>
+                                  ) : guestOnly ? (
+                                    <div className="village-house-status is-guest">
+                                      {m.guestHouse?.reserved ? 'Sous réserve' : 'Guest house'}
+                                    </div>
                                   ) : null}
                                   <div
                                     className={`village-house-occupant${
-                                      occupant?.externe ? ' is-externe' : ''
+                                      m.occupants[0]?.externe || guestOnly ? ' is-externe' : ''
                                     }`}
                                   >
-                                    {occupant ? formatDisplayName(occupant.nom) : '—'}
+                                    {shownOccupied ? label : '—'}
                                   </div>
                                   {m.typeMaison && m.typeMaison !== tailleLabel ? (
                                     <div className="village-house-type">{m.typeMaison}</div>
@@ -2071,9 +2142,9 @@ function VillageMaisonsPageInner() {
           )}
         </SideDrawer>
 
-        {doorPeek ? (
+        {doorPeek && doorModalMaison ? (
           <VillageHouseDoorModal
-            maison={doorPeek.maison}
+            maison={doorModalMaison}
             tailleLabel={resolveTailleLabel(doorPeek.maison.taille, tailles)}
             origin={doorPeek.origin}
             phase={doorPeek.phase}

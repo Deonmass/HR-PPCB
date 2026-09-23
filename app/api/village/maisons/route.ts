@@ -1,5 +1,7 @@
 import { NextResponse } from 'next/server';
 import { excelErrorResponse } from '@/lib/excel-io';
+import { listGuestMaisonLodgingSummaries } from '@/lib/guest-house-store';
+import type { GuestMaisonLodgingSummary } from '@/lib/guest-house-types';
 import { checkAnyPermission } from '@/lib/require-permission';
 import {
   deleteMaison,
@@ -20,7 +22,16 @@ export async function GET() {
   if (denied) return denied;
   try {
     const data = await readVillageCatalog();
-    return NextResponse.json(data);
+    let guestHouseByMaison: Record<string, GuestMaisonLodgingSummary> = {};
+    try {
+      const summaries = await listGuestMaisonLodgingSummaries();
+      guestHouseByMaison = Object.fromEntries(
+        summaries.map((s) => [s.numero.trim().toLowerCase(), s] as const),
+      );
+    } catch {
+      guestHouseByMaison = {};
+    }
+    return NextResponse.json({ ...data, guestHouseByMaison });
   } catch (err) {
     const { status, message } = excelErrorResponse(err);
     return NextResponse.json({ error: message }, { status });

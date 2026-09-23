@@ -1,6 +1,14 @@
 'use client';
 
-import { useCallback, useMemo, useState, type CSSProperties } from 'react';
+import {
+  useCallback,
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+  type CSSProperties,
+  type ReactNode,
+} from 'react';
 import CardActionMenu from '@/components/CardActionMenu';
 import GuestHouseUnitDoorModal, {
   type GuestUnitDoorDetail,
@@ -50,6 +58,8 @@ interface Props {
   canDelete?: boolean;
   onCreateReservation?: (prefill?: { roomId?: string; maisonNumero?: string }) => void;
   onEditRoom: (room: GuestRoom) => void;
+  /** Ouvre le formulaire de modification de la réservation liée. */
+  onEditReservation?: (reservation: GuestReservation) => void;
   onDeleteRoom: (room: GuestRoom) => void;
   onHistory: (room: GuestRoom) => void;
   /** Retire l’affichage chambre/maison sans annuler la réservation. */
@@ -156,6 +166,85 @@ function IconShower({ size = 14 }: { size?: number }) {
   );
 }
 
+function IconChevron({ dir }: { dir: 'left' | 'right' }) {
+  return (
+    <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" strokeWidth="2.4" aria-hidden>
+      {dir === 'right' ? <path d="m9 6 6 6-6 6" /> : <path d="m15 6-6 6 6 6" />}
+    </svg>
+  );
+}
+
+/** Scroll horizontal avec flèche flottante (hôtels Kimpese). */
+function FloorplanScrollRail({
+  children,
+  className = '',
+}: {
+  children: ReactNode;
+  className?: string;
+}) {
+  const ref = useRef<HTMLDivElement>(null);
+  const [canLeft, setCanLeft] = useState(false);
+  const [canRight, setCanRight] = useState(false);
+
+  const update = useCallback(() => {
+    const el = ref.current;
+    if (!el) return;
+    const max = el.scrollWidth - el.clientWidth;
+    setCanLeft(el.scrollLeft > 6);
+    setCanRight(max > 6 && el.scrollLeft < max - 6);
+  }, []);
+
+  useEffect(() => {
+    const el = ref.current;
+    if (!el) return;
+    update();
+    el.addEventListener('scroll', update, { passive: true });
+    const ro = typeof ResizeObserver !== 'undefined' ? new ResizeObserver(update) : null;
+    ro?.observe(el);
+    window.addEventListener('resize', update);
+    return () => {
+      el.removeEventListener('scroll', update);
+      ro?.disconnect();
+      window.removeEventListener('resize', update);
+    };
+  }, [update, children]);
+
+  const scrollByDir = (dir: 'left' | 'right') => {
+    const el = ref.current;
+    if (!el) return;
+    const step = Math.max(180, Math.floor(el.clientWidth * 0.7));
+    el.scrollBy({ left: dir === 'right' ? step : -step, behavior: 'smooth' });
+  };
+
+  return (
+    <div className={`guest-house-floorplan-scroll-wrap${className ? ` ${className}` : ''}`}>
+      <div ref={ref} className="guest-house-floorplan-scroll is-rail">
+        {children}
+      </div>
+      {canLeft ? (
+        <button
+          type="button"
+          className="guest-house-floorplan-scroll-fab is-left"
+          aria-label="Défiler vers la gauche"
+          onClick={() => scrollByDir('left')}
+        >
+          <IconChevron dir="left" />
+        </button>
+      ) : null}
+      {canRight ? (
+        <button
+          type="button"
+          className="guest-house-floorplan-scroll-fab is-right"
+          aria-label="Défiler vers la droite"
+          onClick={() => scrollByDir('right')}
+        >
+          <IconChevron dir="right" />
+        </button>
+      ) : null}
+    </div>
+  );
+}
+
 function sortRooms(items: MotelRoomItem[]): MotelRoomItem[] {
   return [...items].sort((a, b) =>
     a.room.roomNumber.localeCompare(b.room.roomNumber, 'fr', { numeric: true }),
@@ -177,6 +266,87 @@ function roomUnitLabel(room: GuestRoom): string {
   if (!num) return 'CH.';
   if (/^vip$/i.test(num)) return 'VIP';
   return `CH. ${num}`;
+}
+
+type RoomMenuIcon = 'view' | 'edit' | 'delete' | 'cancel' | 'add' | 'toggle';
+
+function buildRoomMenuItems(opts: {
+  room: GuestRoom;
+  linkedReservation: GuestReservation | null;
+  isKimpese: boolean;
+  canEdit: boolean;
+  canDelete: boolean;
+  pendingActions: HouseDoorAction[];
+  onHistory: (room: GuestRoom) => void;
+  onEditRoom: (room: GuestRoom) => void;
+  onEditReservation?: (reservation: GuestReservation) => void;
+  onDeleteRoom: (room: GuestRoom) => void;
+}): Array<{
+  id: string;
+  label: string;
+  icon: RoomMenuIcon;
+  onClick: () => void;
+  danger?: boolean;
+}> {
+  const {
+    room,
+    linkedReservation,
+    isKimpese,
+    canEdit,
+    canDelete,
+    pendingActions,
+    onHistory,
+    onEditRoom,
+    onEditReservation,
+    onDeleteRoom,
+  } = opts;
+  const items: Array<{
+    id: string;
+    label: string;
+    icon: RoomMenuIcon;
+    onClick: () => void;
+    danger?: boolean;
+  }> = [
+    {
+      id: 'history',
+      label: 'Historique',
+      icon: 'view',
+      onClick: () => onHistory(room),
+    },
+    ...pendingActions.map((a) => ({
+      id: a.id,
+      label: a.label,
+      icon: (a.icon ?? 'view') as RoomMenuIcon,
+      onClick: a.onClick,
+      danger: a.danger,
+    })),
+  ];
+  if (canEdit && linkedReservation && onEditReservation) {
+    items.push({
+      id: 'edit-reservation',
+      label: 'Modifier la réservation',
+      icon: 'edit',
+      onClick: () => onEditReservation(linkedReservation),
+    });
+  }
+  if (canEdit) {
+    items.push({
+      id: 'edit',
+      label: isKimpese ? 'Modifier hôtel' : 'Modifier chambre',
+      icon: 'edit',
+      onClick: () => onEditRoom(room),
+    });
+  }
+  if (canDelete) {
+    items.push({
+      id: 'delete',
+      label: 'Supprimer',
+      icon: 'delete',
+      danger: true,
+      onClick: () => onDeleteRoom(room),
+    });
+  }
+  return items;
 }
 
 /** Chambre VIP (ex. 1/2 VIP) — exclue du placement automatique des réservations sans chambre. */
@@ -215,6 +385,7 @@ export default function GuestHouseMotelView({
   canDelete = false,
   onCreateReservation,
   onEditRoom,
+  onEditReservation,
   onDeleteRoom,
   onHistory,
   onClearProposal,
@@ -370,7 +541,7 @@ export default function GuestHouseMotelView({
     {
       key: 'bat4',
       kind: 'rooms',
-      label: 'Bâtiment 4',
+      label: 'Hors village',
       subtitle: 'Hôtels Kimpese',
       rooms: kimpese,
       showBath: false,
@@ -751,7 +922,8 @@ export default function GuestHouseMotelView({
                     : 'Aucune chambre dans ce bâtiment.'}
                 </p>
               ) : (
-                <div className="guest-house-floorplan-scroll">
+                (() => {
+                  const scrollInner = (
                   <div
                     className={`guest-house-floorplan-building${isKimpese ? ' is-kimpese' : ''}`}
                     style={{ '--gh-room-count': String(Math.max(displayRooms.length, 1)) } as CSSProperties}
@@ -760,7 +932,10 @@ export default function GuestHouseMotelView({
                       className={`guest-house-floorplan-roof${isKimpese ? ' is-kimpese' : ''}`}
                       aria-hidden
                     />
-                    <div className="guest-house-floorplan-units" role="list">
+                    <div
+                      className={`guest-house-floorplan-units${isKimpese ? ' is-kimpese-rail' : ''}`}
+                      role="list"
+                    >
                       {displayRooms.map(({ room, status, linkedReservation }) => {
                         const daysLeft = linkedReservation
                           ? remainingDays(linkedReservation.endDate)
@@ -774,38 +949,18 @@ export default function GuestHouseMotelView({
                         const pendingActions = buildPendingActions(linkedReservation, {
                           provisional: isProvisional,
                         });
-                        const menuItems = [
-                          {
-                            id: 'history',
-                            label: 'Historique',
-                            icon: 'view' as const,
-                            onClick: () => onHistory(room),
-                          },
-                          ...pendingActions.map((a) => ({
-                            id: a.id,
-                            label: a.label,
-                            icon: (a.icon ?? 'view') as 'view' | 'edit' | 'delete' | 'cancel' | 'add' | 'toggle',
-                            onClick: a.onClick,
-                            danger: a.danger,
-                          })),
-                          ...(canEdit
-                            ? [{
-                                id: 'edit',
-                                label: 'Modifier',
-                                icon: 'edit' as const,
-                                onClick: () => onEditRoom(room),
-                              }]
-                            : []),
-                          ...(canDelete
-                            ? [{
-                                id: 'delete',
-                                label: 'Supprimer',
-                                icon: 'delete' as const,
-                                danger: true,
-                                onClick: () => onDeleteRoom(room),
-                              }]
-                            : []),
-                        ];
+                        const menuItems = buildRoomMenuItems({
+                          room,
+                          linkedReservation,
+                          isKimpese,
+                          canEdit,
+                          canDelete,
+                          pendingActions,
+                          onHistory,
+                          onEditRoom,
+                          onEditReservation,
+                          onDeleteRoom,
+                        });
 
                         return (
                           <div
@@ -853,10 +1008,21 @@ export default function GuestHouseMotelView({
                                 },
                                 ...pendingActions,
                               ];
+                              if (canEdit && linkedReservation && onEditReservation) {
+                                actions.push({
+                                  id: 'edit-reservation',
+                                  label: 'Modifier la réservation',
+                                  icon: 'edit',
+                                  onClick: () => {
+                                    closeUnitDoor();
+                                    onEditReservation(linkedReservation);
+                                  },
+                                });
+                              }
                               if (canEdit) {
                                 actions.push({
                                   id: 'edit',
-                                  label: 'Modifier',
+                                  label: isKimpese ? 'Modifier hôtel' : 'Modifier chambre',
                                   icon: 'edit',
                                   onClick: () => {
                                     closeUnitDoor();
@@ -1007,7 +1173,13 @@ export default function GuestHouseMotelView({
                       })}
                     </div>
                   </div>
-                </div>
+                  );
+                  return isKimpese ? (
+                    <FloorplanScrollRail className="is-kimpese-rail">{scrollInner}</FloorplanScrollRail>
+                  ) : (
+                    <div className="guest-house-floorplan-scroll">{scrollInner}</div>
+                  );
+                })()
               )}
             </article>
           );

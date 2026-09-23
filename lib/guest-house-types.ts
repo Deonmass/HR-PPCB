@@ -221,3 +221,13 @@ export const GUEST_HOUSE_BUILDINGS = ['Batiment #1', 'Batiment #2', 'Kimpese'] a
 export const KIMPESE_BUILDING = 'Kimpese';
 /** Capacité max de personnes en maison village (séjours Guest House temporaires). */
 export const GUEST_HOUSE_MAISON_CAPACITY = 5;
+
+/** Occupation Guest House d’une maison village (pour lier la vue Maisons). */
+export type GuestMaisonLodgingSummary = {
+  numero: string;
+  occupiedCount: number;
+  reservedCount: number;
+  names: string[];
+  occupied: boolean;
+  reserved: boolean;
+};

@@ -27,6 +27,7 @@ import {
   GUEST_HOUSE_MAISON_CAPACITY,
   KIMPESE_BUILDING,
   roomDisplayName,
+  type GuestMaisonLodgingSummary,
 } from './guest-house-types';
 import { canPersistProjectFiles, getWritableDataRoot } from './runtime-mode';
 import { ratioToRate } from './format-rate';
@@ -361,6 +362,62 @@ export async function getGuestHouseBundle(): Promise<
 }
 
 export type GuestEmptyMaison = VillageMaisonOccupancy & { guestLodgers: number };
+
+/**
+ * Occupation Guest House par numéro de maison (confirmé aujourd’hui / sous réserve).
+ * Sert à synchroniser l’affichage « Maisons » village.
+ */
+export async function listGuestMaisonLodgingSummaries(
+  data?: GuestHouseStoreData,
+): Promise<GuestMaisonLodgingSummary[]> {
+  const store = data ?? (await readStore());
+  const today = todayIso();
+  const byNumero = new Map<string, GuestReservation[]>();
+
+  for (const item of store.reservations) {
+    const num = (item.maisonNumero || '').trim();
+    if (!num) continue;
+    if (item.status !== 'confirmed' && item.status !== 'pending' && item.status !== 'completed') {
+      continue;
+    }
+    if (item.endDate < today && item.status !== 'pending') continue;
+    const key = num.toLowerCase();
+    const list = byNumero.get(key) ?? [];
+    list.push(item);
+    byNumero.set(key, list);
+  }
+
+  const summaries: GuestMaisonLodgingSummary[] = [];
+  for (const [key, visitors] of byNumero) {
+    const occupiedVisitors = visitors.filter(
+      (v) =>
+        (v.status === 'confirmed' || v.status === 'completed')
+        && v.startDate <= today
+        && v.endDate >= today,
+    );
+    const reservedVisitors = visitors.filter((v) => {
+      if (v.status === 'pending') return true;
+      return v.status === 'confirmed' && v.startDate > today;
+    });
+    const occupiedCount = occupiedVisitors.length;
+    const reservedCount = reservedVisitors.length;
+    if (occupiedCount === 0 && reservedCount === 0) continue;
+    const primary = occupiedVisitors.length > 0 ? occupiedVisitors : reservedVisitors;
+    const names = primary.map((v) => v.personName).filter(Boolean);
+    summaries.push({
+      numero: visitors[0]?.maisonNumero?.trim() || key,
+      occupiedCount,
+      reservedCount,
+      names,
+      occupied: occupiedCount > 0,
+      reserved: occupiedCount === 0 && reservedCount > 0,
+    });
+  }
+
+  return summaries.sort((a, b) =>
+    a.numero.localeCompare(b.numero, 'fr', { numeric: true }),
+  );
+}
 
 /** Maisons village sans occupant permanent, avec compteur de lodgers GH sur la période (optionnelle). */
 export async function listEmptyMaisonsForGuestHouse(
