@@ -1,6 +1,63 @@
 {
   "entries": [
     {
+      "id": "log-001102",
+      "at": "2026-09-23T10:03:03.861Z",
+      "userId": "admin",
+      "userName": "Administrateur",
+      "userEmail": "admin",
+      "module": "guest-house",
+      "moduleLabel": "Guest house",
+      "action": "update",
+      "actionLabel": "Modification",
+      "entityType": "guest-house.room",
+      "entityId": "0b0cdc0d-ba79-4f68-8533-c90cad3390cb",
+      "summary": "Modification chambre 0b0cdc0d-ba79-4f68-8533-c90cad3390cb",
+      "details": "Modification chambre 0b0cdc0d-ba79-4f68-8533-c90cad3390cb",
+      "before": {
+        "id": "0b0cdc0d-ba79-4f68-8533-c90cad3390cb",
+        "roomNumber": "14",
+        "roomName": "NANGA",
+        "templateLabel": "Room # 14 - NANGA",
+        "templateRow": 19,
+        "building": "Batiment #2",
+        "buildingKey": "Batiment #2",
+        "category": "standard",
+        "hotelName": "",
+        "characteristics": "",
+        "capacity": 1,
+        "floor": "",
+        "amenities": [],
+        "notes": "",
+        "sortOrder": 13,
+        "status": "available",
+        "createdAt": "2026-07-28T13:13:01.229Z",
+        "updatedAt": "2026-07-28T13:13:01.229Z"
+      },
+      "after": {
+        "id": "0b0cdc0d-ba79-4f68-8533-c90cad3390cb",
+        "roomNumber": "14",
+        "roomName": "NANGA",
+        "templateLabel": "Room # 14 - NANGA",
+        "templateRow": 19,
+        "building": "Batiment #2",
+        "buildingKey": "Batiment #2",
+        "category": "standard",
+        "hotelName": "",
+        "characteristics": "",
+        "capacity": 1,
+        "floor": "",
+        "amenities": [],
+        "notes": "",
+        "sortOrder": 13,
+        "status": "available",
+        "createdAt": "2026-07-28T13:13:01.229Z",
+        "updatedAt": "2026-09-23T10:03:00.144Z"
+      },
+      "undoable": true,
+      "undone": false
+    },
+    {
       "id": "log-001101",
       "at": "2026-09-23T10:02:22.855Z",
       "userId": "Serge.Muakasa@ppcdrc.cd",
@@ -117652,5 +117709,5 @@
       }
     }
   ],
-  "nextSeq": 1102
+  "nextSeq": 1103
 }
