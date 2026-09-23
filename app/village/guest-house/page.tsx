@@ -11,7 +11,6 @@ import RowContextMenu, { type ContextMenuItem } from '@/components/RowContextMen
 import SideDrawer from '@/components/SideDrawer';
 import TableHeaderFilter from '@/components/TableHeaderFilter';
 import { EmployeeSuggestInput } from '@/components/EmployeePicker';
-import CardActionMenu from '@/components/CardActionMenu';
 import GuestHouseMonthlyChart from '@/components/village/GuestHouseMonthlyChart';
 import GuestHouseMotelView, {
   type MotelRoomStatus,
@@ -27,12 +26,13 @@ import type {
 } from '@/lib/guest-house-types';
 import {
   GUEST_HOUSE_BUILDINGS,
+  GUEST_HOUSE_MAISON_CAPACITY,
   KIMPESE_BUILDING,
   roomDisplayName,
 } from '@/lib/guest-house-types';
 import type { Employee } from '@/lib/types';
 import { formatRate, ratioToRate } from '@/lib/format-rate';
-import { confirmDelete, showError, showSuccess } from '@/lib/swal';
+import { confirmAction, confirmDelete, showError, showSuccess } from '@/lib/swal';
 import {
   buildColumnFilterValues,
   countActiveColumnFilters,
@@ -69,6 +69,18 @@ const EMPTY_FUTURE: Record<FutureFilterKey, string[]> = {
 
 function isKimpeseRoom(room: GuestRoom): boolean {
   return room.category === 'kimpese' || room.building === KIMPESE_BUILDING;
+}
+
+function lodgingLabel(
+  item: Pick<GuestReservation, 'roomId' | 'maisonNumero'>,
+  roomsById: Map<string, GuestRoom>,
+): string {
+  if (item.maisonNumero) return `Maison ${item.maisonNumero}`;
+  if (item.roomId) {
+    const room = roomsById.get(item.roomId);
+    return room ? roomDisplayName(room) : '—';
+  }
+  return '—';
 }
 
 const iconProps = {
@@ -236,6 +248,32 @@ function stayDayCount(startDate: string, endDate: string): number {
   return Math.floor((b.getTime() - a.getTime()) / 86_400_000) + 1;
 }
 
+/** Inclusive date ranges overlap (YYYY-MM-DD). */
+function dateRangesOverlap(
+  aStart: string,
+  aEnd: string,
+  bStart: string,
+  bEnd: string,
+): boolean {
+  return aStart.slice(0, 10) <= bEnd.slice(0, 10) && bStart.slice(0, 10) <= aEnd.slice(0, 10);
+}
+
+function roomConflictDuring(
+  roomId: string,
+  startDate: string,
+  endDate: string,
+  items: GuestReservation[],
+  excludeId?: string,
+): GuestReservation | null {
+  for (const item of items) {
+    if (excludeId && item.id === excludeId) continue;
+    if (item.roomId !== roomId) continue;
+    if (item.status !== 'confirmed' && item.status !== 'completed') continue;
+    if (dateRangesOverlap(startDate, endDate, item.startDate, item.endDate)) return item;
+  }
+  return null;
+}
+
 function todayIso(): string {
   return new Date().toISOString().slice(0, 10);
 }
@@ -385,6 +423,11 @@ export default function VillageGuestHousePage() {
   const [tab, setTab] = useState<Tab>('dashboard');
   const [rooms, setRooms] = useState<GuestRoom[]>([]);
   const [reservations, setReservations] = useState<GuestReservation[]>([]);
+  const [emptyMaisons, setEmptyMaisons] = useState<
+    Array<{ numero: string; typeMaison: string; taille: string }>
+  >([]);
+  /** Propositions retirées de l’affichage provisoire (sans annuler la réservation). */
+  const [hiddenProposalIds, setHiddenProposalIds] = useState<string[]>([]);
   const [passages, setPassages] = useState<GuestRoomPassage[]>([]);
   const [dashboard, setDashboard] = useState<GuestHouseDashboard | null>(null);
   const [employees, setEmployees] = useState<Employee[]>([]);
@@ -442,8 +485,11 @@ export default function VillageGuestHousePage() {
     mission: '',
     phone: '',
     email: '',
+    roomId: '',
+    maisonNumero: '',
   });
   const [confirmRoomId, setConfirmRoomId] = useState('');
+  const [confirmMaisonNumero, setConfirmMaisonNumero] = useState('');
   const [saving, setSaving] = useState(false);
   /** Réservation dont une action (rejet / suppression) est en cours — pour le spinner de ligne. */
   const [rowBusyId, setRowBusyId] = useState<string | null>(null);
@@ -471,6 +517,17 @@ export default function VillageGuestHousePage() {
       setReservations(Array.isArray(guestJson.reservations) ? guestJson.reservations : []);
       setPassages(Array.isArray(guestJson.passages) ? guestJson.passages : []);
       setDashboard(guestJson.dashboard ?? null);
+      setEmptyMaisons(
+        Array.isArray(guestJson.emptyMaisons)
+          ? guestJson.emptyMaisons.map(
+              (m: { numero?: string; typeMaison?: string; taille?: string }) => ({
+                numero: String(m.numero ?? ''),
+                typeMaison: String(m.typeMaison ?? ''),
+                taille: String(m.taille ?? ''),
+              }),
+            )
+          : [],
+      );
       setEmployees(Array.isArray(employeesJson) ? employeesJson : []);
     } catch {
       await showError('Erreur de chargement Guest house');
@@ -775,8 +832,8 @@ export default function VillageGuestHousePage() {
         personName: item.personName,
         endDate: item.endDate,
         daysLeft,
-        roomNumber: room ? roomDisplayName(room) : '—',
-        building: room?.building ?? '—',
+        roomNumber: lodgingLabel(item, roomsById),
+        building: room?.building ?? (item.maisonNumero ? 'Village' : '—'),
         isKimpese: room ? isKimpeseRoom(room) : false,
       }));
 
@@ -796,8 +853,8 @@ export default function VillageGuestHousePage() {
           startDate: item.startDate,
           endDate: item.endDate,
           status: item.status,
-          roomNumber: room ? roomDisplayName(room) : '—',
-          building: room?.building ?? '—',
+          roomNumber: lodgingLabel(item, roomsById),
+          building: room?.building ?? (item.maisonNumero ? 'Village' : '—'),
           isKimpese: room ? isKimpeseRoom(room) : false,
         };
       })
@@ -979,7 +1036,7 @@ export default function VillageGuestHousePage() {
     ));
   };
 
-  const openReservationCreate = () => {
+  const openReservationCreate = (prefill?: { roomId?: string; maisonNumero?: string }) => {
     setEditingReservation(null);
     setReservationForm({
       personName: '',
@@ -993,6 +1050,8 @@ export default function VillageGuestHousePage() {
       mission: '',
       phone: '',
       email: '',
+      roomId: prefill?.roomId || '',
+      maisonNumero: prefill?.maisonNumero || '',
     });
     setDrawer('reservation');
   };
@@ -1012,6 +1071,8 @@ export default function VillageGuestHousePage() {
       mission: item.mission || '',
       phone: item.phone || '',
       email: item.email || '',
+      roomId: item.roomId || '',
+      maisonNumero: item.maisonNumero || '',
     });
     setDrawer('reservation');
   };
@@ -1019,11 +1080,129 @@ export default function VillageGuestHousePage() {
   const openConfirm = (reservation: GuestReservation) => {
     setConfirmTarget(reservation);
     setConfirmRoomId(reservation.roomId || '');
+    setConfirmMaisonNumero(reservation.maisonNumero || '');
     setDrawer('confirm');
+  };
+
+  const confirmMaisonOptions = useMemo(() => {
+    if (!confirmTarget) return [] as Array<{
+      numero: string;
+      typeMaison: string;
+      taille: string;
+      lodgers: number;
+      remaining: number;
+    }>;
+    return emptyMaisons
+      .map((maison) => {
+        const key = maison.numero.trim().toLowerCase();
+        const lodgers = reservations.filter((item) => {
+          if (item.id === confirmTarget.id) return false;
+          if (item.status !== 'confirmed' && item.status !== 'completed') return false;
+          if (!item.maisonNumero) return false;
+          if (item.maisonNumero.trim().toLowerCase() !== key) return false;
+          return dateRangesOverlap(
+            confirmTarget.startDate,
+            confirmTarget.endDate,
+            item.startDate,
+            item.endDate,
+          );
+        }).length;
+        return {
+          ...maison,
+          lodgers,
+          remaining: GUEST_HOUSE_MAISON_CAPACITY - lodgers,
+        };
+      })
+      .filter((m) => m.remaining > 0 && m.numero)
+      .sort((a, b) => a.numero.localeCompare(b.numero, 'fr', { numeric: true }));
+  }, [confirmTarget, emptyMaisons, reservations]);
+
+  const confirmRoomOptions = useMemo(() => {
+    if (!confirmTarget) {
+      return {
+        freeOnsite: [] as GuestRoom[],
+        busyOnsite: [] as Array<{ room: GuestRoom; conflict: GuestReservation }>,
+        kimpese: [] as GuestRoom[],
+        freeCount: 0,
+      };
+    }
+    const freeOnsite: GuestRoom[] = [];
+    const busyOnsite: Array<{ room: GuestRoom; conflict: GuestReservation }> = [];
+    const kimpese: GuestRoom[] = [];
+    for (const room of rooms) {
+      if (isKimpeseRoom(room)) {
+        kimpese.push(room);
+        continue;
+      }
+      const conflict = roomConflictDuring(
+        room.id,
+        confirmTarget.startDate,
+        confirmTarget.endDate,
+        reservations,
+        confirmTarget.id,
+      );
+      if (conflict) busyOnsite.push({ room, conflict });
+      else freeOnsite.push(room);
+    }
+    const byBuilding = (a: GuestRoom, b: GuestRoom) =>
+      a.building.localeCompare(b.building, 'fr') ||
+      roomDisplayName(a).localeCompare(roomDisplayName(b), 'fr');
+    freeOnsite.sort(byBuilding);
+    busyOnsite.sort((a, b) => byBuilding(a.room, b.room));
+    kimpese.sort((a, b) => roomDisplayName(a).localeCompare(roomDisplayName(b), 'fr'));
+    return { freeOnsite, busyOnsite, kimpese, freeCount: freeOnsite.length };
+  }, [confirmTarget, rooms, reservations]);
+
+  const confirmSelectedRoom = useMemo(
+    () => (confirmRoomId ? rooms.find((room) => room.id === confirmRoomId) ?? null : null),
+    [confirmRoomId, rooms],
+  );
+
+  const confirmSelectedMaison = useMemo(
+    () =>
+      confirmMaisonNumero
+        ? confirmMaisonOptions.find((m) => m.numero === confirmMaisonNumero) ?? null
+        : null,
+    [confirmMaisonNumero, confirmMaisonOptions],
+  );
+
+  const confirmSelectedBusy = useMemo(() => {
+    if (!confirmTarget || !confirmRoomId || !confirmSelectedRoom || isKimpeseRoom(confirmSelectedRoom)) {
+      return null;
+    }
+    return roomConflictDuring(
+      confirmRoomId,
+      confirmTarget.startDate,
+      confirmTarget.endDate,
+      reservations,
+      confirmTarget.id,
+    );
+  }, [confirmTarget, confirmRoomId, confirmSelectedRoom, reservations]);
+
+  const confirmLodgingValue = confirmMaisonNumero
+    ? `maison:${confirmMaisonNumero}`
+    : confirmRoomId
+      ? `room:${confirmRoomId}`
+      : '';
+
+  const setConfirmLodging = (value: string) => {
+    if (value.startsWith('maison:')) {
+      setConfirmMaisonNumero(value.slice('maison:'.length));
+      setConfirmRoomId('');
+      return;
+    }
+    if (value.startsWith('room:')) {
+      setConfirmRoomId(value.slice('room:'.length));
+      setConfirmMaisonNumero('');
+      return;
+    }
+    setConfirmRoomId('');
+    setConfirmMaisonNumero('');
   };
 
   const saveRoom = async () => {
     setSaving(true);
+    const returnToConfirm = Boolean(confirmTarget);
     try {
       const res = await fetch('/api/village/guest-house', {
         method: 'POST',
@@ -1034,7 +1213,7 @@ export default function VillageGuestHousePage() {
           ...roomForm,
         }),
       });
-      const json = (await res.json().catch(() => ({}))) as { error?: string };
+      const json = (await res.json().catch(() => ({}))) as GuestRoom & { error?: string };
       if (!res.ok) {
         await showError(json.error || `Enregistrement impossible (HTTP ${res.status})`);
         return;
@@ -1042,6 +1221,10 @@ export default function VillageGuestHousePage() {
       setDrawer(null);
       await showSuccess(editingRoom ? 'Chambre mise à jour' : 'Chambre créée');
       await load(true);
+      if (returnToConfirm) {
+        if (json.id) setConfirmRoomId(json.id);
+        setDrawer('confirm');
+      }
     } catch (err) {
       await showError(err instanceof Error ? err.message : 'Enregistrement impossible (réseau)');
     } finally {
@@ -1059,6 +1242,13 @@ export default function VillageGuestHousePage() {
           entity: 'reservation',
           ...(editingReservation ? { action: 'update', id: editingReservation.id } : {}),
           ...reservationForm,
+          // À la création : proposition déjà ciblée sur la chambre / maison du plan
+          ...(editingReservation
+            ? {}
+            : {
+                roomId: reservationForm.maisonNumero ? '' : (reservationForm.roomId || undefined),
+                maisonNumero: reservationForm.maisonNumero || undefined,
+              }),
         }),
       });
       const json = (await res.json().catch(() => ({}))) as { error?: string };
@@ -1085,6 +1275,7 @@ export default function VillageGuestHousePage() {
     reservation: GuestReservation,
     status: 'confirmed' | 'rejected' | 'cancelled',
     roomId?: string,
+    maisonNumero?: string,
   ) => {
     setSaving(true);
     setRowBusyId(reservation.id);
@@ -1097,7 +1288,8 @@ export default function VillageGuestHousePage() {
           action: 'status',
           id: reservation.id,
           status,
-          roomId,
+          roomId: maisonNumero ? '' : roomId,
+          maisonNumero: maisonNumero || '',
         }),
       });
       const json = (await res.json().catch(() => ({}))) as { error?: string };
@@ -1107,6 +1299,8 @@ export default function VillageGuestHousePage() {
       }
       setDrawer(null);
       setConfirmTarget(null);
+      setConfirmRoomId('');
+      setConfirmMaisonNumero('');
       await showSuccess(
         status === 'confirmed' ? 'Réservation confirmée' : status === 'rejected' ? 'Réservation refusée' : 'Réservation annulée',
       );
@@ -1117,6 +1311,64 @@ export default function VillageGuestHousePage() {
       setSaving(false);
       setRowBusyId(null);
     }
+  };
+
+  const clearProposalDisplay = async (item: GuestReservation) => {
+    if (rowBusyId) return;
+    if (item.status !== 'pending') return;
+    if (!(await confirmAction(
+      'Retirer de l’affichage ?',
+      `${item.numero} — ${item.personName}. La chambre / maison redevient vide à l’écran ; la réservation reste en attente.`,
+      'Retirer l’affichage',
+    ))) {
+      return;
+    }
+    // Toujours masquer du placement provisoire local
+    setHiddenProposalIds((prev) => (
+      prev.includes(item.id) ? prev : [...prev, item.id]
+    ));
+    // S’il y a une attribution stockée, la retirer sans changer le statut
+    if (item.roomId || item.maisonNumero) {
+      setSaving(true);
+      setRowBusyId(item.id);
+      try {
+        const res = await fetch('/api/village/guest-house', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            entity: 'reservation',
+            action: 'clear-lodging',
+            id: item.id,
+          }),
+        });
+        const json = (await res.json().catch(() => ({}))) as { error?: string };
+        if (!res.ok) {
+          await showError(json.error || `Action impossible (HTTP ${res.status})`);
+          return;
+        }
+        await showSuccess('Affichage retiré — réservation toujours en attente');
+        await load(true);
+      } catch (err) {
+        await showError(err instanceof Error ? err.message : 'Action impossible (réseau)');
+      } finally {
+        setSaving(false);
+        setRowBusyId(null);
+      }
+      return;
+    }
+    await showSuccess('Affichage retiré — réservation toujours en attente');
+  };
+
+  const cancelReservation = async (item: GuestReservation) => {
+    if (rowBusyId) return;
+    if (!(await confirmAction(
+      'Annuler cette réservation ?',
+      `${item.numero} — ${item.personName}. La réservation sera annulée.`,
+      'Annuler la réservation',
+    ))) {
+      return;
+    }
+    await setStatus(item, 'cancelled', '');
   };
 
   const removeReservation = async (item: GuestReservation) => {
@@ -1148,6 +1400,26 @@ export default function VillageGuestHousePage() {
   /** Menu contextuel (clic droit) des réservations — modifier / supprimer. */
   const reservationMenuItems = (item: GuestReservation): ContextMenuItem[] => {
     const items: ContextMenuItem[] = [];
+    if (canEdit && item.status === 'pending') {
+      items.push({
+        id: 'clear-proposal',
+        label: 'Annuler la proposition',
+        icon: 'cancel',
+        onClick: () => void clearProposalDisplay(item),
+      });
+      items.push({
+        id: 'validate',
+        label: 'Valider la réservation',
+        icon: 'permissions',
+        onClick: () => openConfirm(item),
+      });
+      items.push({
+        id: 'cancel-reservation',
+        label: 'Annuler la réservation',
+        icon: 'toggle',
+        onClick: () => void cancelReservation(item),
+      });
+    }
     if (canEdit) {
       items.push({
         id: 'edit',
@@ -1275,20 +1547,109 @@ export default function VillageGuestHousePage() {
     return groups;
   }, [rooms, reservations, passages]);
 
-  /** Réservations en attente sans chambre attribuée (mois affiché). */
+  /** Réservations en attente sans logement attribué (mois affiché). */
   const unassignedPending = useMemo(
-    () => pending.filter((item) => !item.roomId || !roomsById.has(item.roomId)),
-    [pending, roomsById],
+    () => pending.filter((item) => {
+      if (hiddenProposalIds.includes(item.id)) return false;
+      if (item.maisonNumero) return false;
+      return !item.roomId || !roomsById.has(item.roomId);
+    }),
+    [pending, roomsById, hiddenProposalIds],
   );
 
-  const buildingOrder = useMemo(() => {
-    const keys = Object.keys(roomsGrouped);
-    const preferred = GUEST_HOUSE_BUILDINGS as readonly string[];
-    const rest = keys
-      .filter((k) => !preferred.includes(k))
-      .sort((a, b) => a.localeCompare(b, 'fr'));
-    return [...preferred.filter((k) => keys.includes(k)), ...rest];
-  }, [roomsGrouped]);
+  /** Maisons village vides / avec visiteurs GH (Back up village). */
+  const maisonUnits = useMemo(() => {
+    const today = todayIso();
+    const byNumero = new Map<string, GuestReservation[]>();
+    for (const item of reservations) {
+      const num = (item.maisonNumero || '').trim();
+      if (!num) continue;
+      if (item.status !== 'confirmed' && item.status !== 'pending' && item.status !== 'completed') {
+        continue;
+      }
+      // Actives aujourd'hui, futures, ou en attente encore valides
+      if (item.endDate < today && item.status !== 'pending') continue;
+      const key = num.toLowerCase();
+      const list = byNumero.get(key) ?? [];
+      list.push(item);
+      byNumero.set(key, list);
+    }
+
+    const metaByNumero = new Map(
+      emptyMaisons.map((m) => [m.numero.trim().toLowerCase(), m] as const),
+    );
+
+    const units: Array<{
+      numero: string;
+      typeMaison?: string;
+      taille?: string;
+      lodgers: number;
+      capacity: number;
+      status: MotelRoomStatus;
+      linkedReservation: GuestReservation | null;
+      visitors: GuestReservation[];
+    }> = [];
+
+    for (const [, visitors] of byNumero) {
+      const sorted = [...visitors].sort((a, b) => {
+        const aActive = a.status === 'confirmed' && a.startDate <= today && a.endDate >= today;
+        const bActive = b.status === 'confirmed' && b.startDate <= today && b.endDate >= today;
+        if (aActive !== bActive) return aActive ? -1 : 1;
+        if (a.status === 'pending' && b.status !== 'pending') return -1;
+        if (b.status === 'pending' && a.status !== 'pending') return 1;
+        return a.startDate.localeCompare(b.startDate);
+      });
+      const primary = sorted[0] ?? null;
+      const lodgers = sorted.length;
+      const activeCount = sorted.filter(
+        (v) =>
+          (v.status === 'confirmed' || v.status === 'completed')
+          && v.startDate <= today
+          && v.endDate >= today,
+      ).length;
+      const pendingCount = sorted.filter((v) => v.status === 'pending').length;
+      const status: MotelRoomStatus = activeCount > 0
+        ? 'occupied'
+        : pendingCount > 0 || sorted.some((v) => v.status === 'confirmed' && v.startDate > today)
+          ? 'reserved'
+          : 'empty';
+      const numero = primary?.maisonNumero?.trim() || sorted[0]?.maisonNumero?.trim() || '';
+      const meta = metaByNumero.get(numero.toLowerCase());
+      units.push({
+        numero,
+        typeMaison: meta?.typeMaison,
+        taille: meta?.taille,
+        lodgers,
+        capacity: GUEST_HOUSE_MAISON_CAPACITY,
+        status,
+        linkedReservation: primary,
+        visitors: sorted,
+      });
+    }
+
+    // Maisons village vides (sans occupant permanent) encore disponibles
+    for (const maison of emptyMaisons) {
+      const key = maison.numero.trim().toLowerCase();
+      if (!key || byNumero.has(key)) continue;
+      units.push({
+        numero: maison.numero,
+        typeMaison: maison.typeMaison,
+        taille: maison.taille,
+        lodgers: 0,
+        capacity: GUEST_HOUSE_MAISON_CAPACITY,
+        status: 'empty',
+        linkedReservation: null,
+        visitors: [],
+      });
+    }
+
+    return units.sort((a, b) => {
+      const rank = (s: MotelRoomStatus) => (s === 'occupied' ? 0 : s === 'reserved' ? 1 : 2);
+      const d = rank(a.status) - rank(b.status);
+      if (d !== 0) return d;
+      return a.numero.localeCompare(b.numero, 'fr', { numeric: true });
+    });
+  }, [reservations, emptyMaisons]);
 
   const kpiModalContent = useMemo(() => {
     if (!dashboard || !kpiModal) return null;
@@ -1310,10 +1671,7 @@ export default function VillageGuestHousePage() {
       cells: {
         numero: item.numero,
         person: item.personName,
-        room: (() => {
-          const room = item.roomId ? roomsById.get(item.roomId) : undefined;
-          return room ? roomDisplayName(room) : '—';
-        })(),
+        room: lodgingLabel(item, roomsById),
         start: formatDate(item.startDate),
         end: formatDate(item.endDate),
         status: statusLabel(item.status),
@@ -1461,7 +1819,7 @@ export default function VillageGuestHousePage() {
           </div>
         </div>
 
-        <div className={`guest-house-body${tab === 'reservations' ? ' is-fill' : tab === 'dashboard' ? ' is-dashboard' : ''}`}>
+        <div className={`guest-house-body${tab === 'reservations' ? ' is-fill' : tab === 'dashboard' ? ' is-dashboard' : tab === 'rooms' ? ' is-rooms' : ''}`}>
           {tab === 'dashboard' && dashboard && (
             <div className="guest-house-dashboard">
               <p className="guest-house-period-label text-muted">
@@ -1533,18 +1891,6 @@ export default function VillageGuestHousePage() {
                   <span className="guest-house-kpi-icon"><IconBed /></span>
                 </button>
               </div>
-
-              <GuestHouseMotelView
-                roomsByBuilding={roomsGrouped}
-                unassignedReservations={unassignedPending}
-                canCreate={canCreate}
-                canEdit={canEdit}
-                canDelete={canDelete}
-                onCreateReservation={openReservationCreate}
-                onEditRoom={openRoomEdit}
-                onDeleteRoom={(room) => { void removeRoom(room); }}
-                onHistory={openHistory}
-              />
 
               <GuestHouseMonthlyChart
                 years={dashboard.years ?? []}
@@ -2158,10 +2504,7 @@ export default function VillageGuestHousePage() {
                                       {motifSub && <span className="text-muted">{motifSub}</span>}
                                     </div>
                                   </td>
-                                  <td>{item.roomId ? (() => {
-                                    const room = roomsById.get(item.roomId);
-                                    return room ? roomDisplayName(room) : '—';
-                                  })() : '—'}</td>
+                                  <td>{lodgingLabel(item, roomsById)}</td>
                                   <td className="guest-house-period-cell">
                                     {formatDate(item.startDate)} → {formatDate(item.endDate)}
                                   </td>
@@ -2190,138 +2533,22 @@ export default function VillageGuestHousePage() {
           )}
 
           {tab === 'rooms' && (
-            <div className="panel panel-padded">
-              <div className="guest-house-section-head guest-house-rooms-head">
-                <div>
-                  <h3>Chambres & Kimpese</h3>
-                  <p className="text-muted">
-                    Batiment #1 / #2 · Kimpese = overflow
-                  </p>
-                </div>
-                {canCreate && (
-                  <div className="guest-house-row-actions">
-                    <button type="button" className="btn btn-primary btn-sm btn-with-icon" onClick={() => openRoomCreate('standard')}>
-                      <IconPlus size={14} />
-                      Chambre
-                    </button>
-                    <button type="button" className="btn btn-secondary btn-sm btn-with-icon" onClick={() => openRoomCreate('kimpese')}>
-                      <IconPlus size={14} />
-                      Hôtel Kimpese
-                    </button>
-                  </div>
-                )}
-              </div>
-              {rooms.length === 0 ? (
-                <p className="text-muted">Aucune chambre enregistrée.</p>
-              ) : (
-                <div className="guest-house-room-groups">
-                  {buildingOrder.map((place) => {
-                    const groupedRooms = roomsGrouped[place] ?? [];
-                    const isKimpeseGroup = place === KIMPESE_BUILDING;
-                    return (
-                      <section
-                        key={place}
-                        className={`guest-house-room-group${isKimpeseGroup ? ' is-kimpese' : ''}`}
-                      >
-                        <div className="guest-house-room-group-head">
-                          <div>
-                            <h4>{place}</h4>
-                            <p className="text-muted">
-                              {isKimpeseGroup
-                                ? `${groupedRooms.length} hôtel(s) externe(s) — utilisé-texte`
-                                : `${groupedRooms.length} chambre(s)`}
-                            </p>
-                          </div>
-                          {canCreate && isKimpeseGroup && (
-                            <button
-                              type="button"
-                              className="btn btn-ghost btn-sm btn-with-icon"
-                              onClick={() => openRoomCreate('kimpese')}
-                            >
-                              <IconPlus size={13} />
-                              Ajouter un hôtel
-                            </button>
-                          )}
-                        </div>
-                        {groupedRooms.length === 0 ? (
-                          <p className="text-muted">
-                            {isKimpeseGroup
-                              ? 'Aucun hôtel Kimpese — utilisé-en quand la guest house est pleine.'
-                              : 'Aucune chambre dans ce bâtiment.'}
-                          </p>
-                        ) : (
-                          <div className="guest-house-room-grid">
-                            {groupedRooms
-                              .sort((a, b) => {
-                                if (isKimpeseGroup) {
-                                  return roomDisplayName(a.room).localeCompare(roomDisplayName(b.room), 'fr');
-                                }
-                                return a.room.roomNumber.localeCompare(b.room.roomNumber, 'fr', { numeric: true });
-                              })
-                              .map(({ room, status, linkedReservation }) => {
-                                const menuItems = [
-                                  {
-                                    id: 'history',
-                                    label: 'Historique',
-                                    icon: 'view' as const,
-                                    onClick: () => openHistory(room),
-                                  },
-                                  ...(canEdit ? [{
-                                    id: 'edit',
-                                    label: 'Modifier',
-                                    icon: 'edit' as const,
-                                    onClick: () => openRoomEdit(room),
-                                  }] : []),
-                                  ...(canDelete ? [{
-                                    id: 'delete',
-                                    label: 'Supprimer',
-                                    icon: 'delete' as const,
-                                    danger: true,
-                                    onClick: () => { void removeRoom(room); },
-                                  }] : []),
-                                ];
-                                return (
-                                <article key={room.id} className={`guest-house-room-card is-${status}`}>
-                                  <div className="guest-house-room-card-top">
-                                    <div>
-                                      <strong className="guest-house-room-number">
-                                        {roomDisplayName(room)}
-                                      </strong>
-                                      <div className="guest-house-room-status">
-                                        {status === 'occupied' ? 'Occupé' : status === 'reserved' ? 'Réservé' : 'Vide'}
-                                      </div>
-                                    </div>
-                                    <CardActionMenu
-                                      ariaLabel={`Actions ${roomDisplayName(room)}`}
-                                      items={menuItems}
-                                    />
-                                  </div>
-                                  <div className="guest-house-room-meta">
-                                    <span>
-                                      {isKimpeseRoom(room)
-                                        ? 'Overflow · hôtel externe'
-                                        : (room.characteristics || room.templateLabel || 'Aucune caractéristique')}
-                                    </span>
-                                    {linkedReservation ? (
-                                      <span>
-                                        {linkedReservation.personName}
-                                        {linkedReservation.startDate ? ` · ${formatDate(linkedReservation.startDate)}` : ''}
-                                      </span>
-                                    ) : (
-                                      <span>Aucune réservation active</span>
-                                    )}
-                                  </div>
-                                </article>
-                                );
-                              })}
-                          </div>
-                        )}
-                      </section>
-                    );
-                  })}
-                </div>
-              )}
-            </div>
+              <GuestHouseMotelView
+              roomsByBuilding={roomsGrouped}
+              maisonUnits={maisonUnits}
+              unassignedReservations={unassignedPending}
+              canCreate={canCreate}
+              canEdit={canEdit}
+              canDelete={canDelete}
+              onCreateReservation={openReservationCreate}
+              onEditRoom={openRoomEdit}
+              onDeleteRoom={(room) => { void removeRoom(room); }}
+              onHistory={openHistory}
+              onClearProposal={(item) => { void clearProposalDisplay(item); }}
+              onValidateReservation={(item) => openConfirm(item)}
+              onCancelReservation={(item) => { void cancelReservation(item); }}
+              onCreateKimpeseHotel={() => openRoomCreate('kimpese')}
+            />
           )}
         </div>
 
@@ -2597,6 +2824,20 @@ export default function VillageGuestHousePage() {
                 </div>
               ) : null}
 
+              {!editingReservation && (reservationForm.roomId || reservationForm.maisonNumero) ? (
+                <div className="guest-house-res-stay-hint is-lodging">
+                  Proposition sur{' '}
+                  <strong>
+                    {reservationForm.maisonNumero
+                      ? `Maison ${reservationForm.maisonNumero}`
+                      : (() => {
+                          const room = roomsById.get(reservationForm.roomId);
+                          return room ? roomDisplayName(room) : 'chambre sélectionnée';
+                        })()}
+                  </strong>
+                </div>
+              ) : null}
+
               <div className="form-group">
                 <label htmlFor="gh-notes">Notes</label>
                 <textarea
@@ -2670,68 +2911,207 @@ export default function VillageGuestHousePage() {
 
         <SideDrawer
           open={drawer === 'confirm' && Boolean(confirmTarget)}
-          title={`Confirmer ${confirmTarget?.numero ?? ''}`}
+          title="Confirmer la réservation"
+          width={460}
           onClose={() => {
             setDrawer(null);
             setConfirmTarget(null);
           }}
+          footer={
+            confirmTarget ? (
+              <div className="guest-house-confirm-footer">
+                <button
+                  type="button"
+                  className="btn btn-outline"
+                  disabled={saving}
+                  onClick={() => {
+                    setDrawer(null);
+                    setConfirmTarget(null);
+                  }}
+                >
+                  Annuler
+                </button>
+                <button
+                  type="button"
+                  className="btn btn-primary btn-with-icon"
+                  disabled={
+                    saving
+                    || (!confirmRoomId && !confirmMaisonNumero)
+                    || Boolean(confirmSelectedBusy)
+                  }
+                  title={
+                    confirmSelectedBusy
+                      ? 'Cette chambre est déjà occupée sur la période'
+                      : !confirmRoomId && !confirmMaisonNumero
+                        ? 'Choisissez une chambre, un hôtel ou une maison vide'
+                        : undefined
+                  }
+                  onClick={() =>
+                    void setStatus(
+                      confirmTarget,
+                      'confirmed',
+                      confirmRoomId || undefined,
+                      confirmMaisonNumero || undefined,
+                    )
+                  }
+                >
+                  {saving ? <span className="btn-spinner" aria-hidden="true" /> : <IconCheck size={14} />}
+                  {saving ? 'Confirmation…' : 'Confirmer'}
+                </button>
+              </div>
+            ) : null
+          }
         >
           {confirmTarget && (
-            <>
-              <p>
-                <strong>{confirmTarget.personName}</strong>
-                <br />
-                {formatDate(confirmTarget.startDate)} → {formatDate(confirmTarget.endDate)}
-              </p>
-              <div className="form-group">
-                <label htmlFor="gh-confirm-room">Chambre / Hôtel Kimpese</label>
-                <select
-                  id="gh-confirm-room"
-                  value={confirmRoomId}
-                  onChange={(e) => setConfirmRoomId(e.target.value)}
-                  required
-                >
-                  <option value="">Sélectionner…</option>
-                  <optgroup label="Batiment #1">
-                    {rooms.filter((r) => r.building === 'Batiment #1').map((room) => (
-                      <option key={room.id} value={room.id}>
-                        {roomDisplayName(room)}
-                        {room.characteristics ? ` · ${room.characteristics}` : ''}
-                      </option>
-                    ))}
-                  </optgroup>
-                  <optgroup label="Batiment #2">
-                    {rooms.filter((r) => r.building === 'Batiment #2').map((room) => (
-                      <option key={room.id} value={room.id}>
-                        {roomDisplayName(room)}
-                        {room.characteristics ? ` · ${room.characteristics}` : ''}
-                      </option>
-                    ))}
-                  </optgroup>
-                  <optgroup label="Kimpese (hôtels externes)">
-                    {rooms.filter(isKimpeseRoom).map((room) => (
-                      <option key={room.id} value={room.id}>
-                        {roomDisplayName(room)}
-                      </option>
-                    ))}
-                  </optgroup>
-                </select>
-                <p className="text-muted" style={{ marginTop: '0.35rem', fontSize: '0.78rem' }}>
-                  Si aucune chambre libre : attribuez un hôtel Kimpese (créer l’entrée si besoin).
+            <div className="guest-house-confirm-form">
+              <section className="guest-house-confirm-summary">
+                <div className="guest-house-confirm-summary-top">
+                  <span className="guest-house-confirm-ref">{confirmTarget.numero}</span>
+                  <span className="guest-house-confirm-nights">
+                    {stayDayCount(confirmTarget.startDate, confirmTarget.endDate)} j
+                  </span>
+                </div>
+                <h4 className="guest-house-confirm-name">{confirmTarget.personName}</h4>
+                <p className="guest-house-confirm-dates">
+                  {formatDate(confirmTarget.startDate)}
+                  <span aria-hidden="true"> → </span>
+                  {formatDate(confirmTarget.endDate)}
                 </p>
-              </div>
-              <button
-                type="button"
-                className="btn btn-primary btn-with-icon"
-                disabled={saving || !confirmRoomId}
-                onClick={() => void setStatus(confirmTarget, 'confirmed', confirmRoomId)}
-              >
-                {saving
-                  ? <span className="btn-spinner" aria-hidden="true" />
-                  : <IconCheck size={14} />}
-                {saving ? 'Confirmation…' : 'Confirmer la réservation'}
-              </button>
-            </>
+                {(confirmTarget.motif && confirmTarget.motif !== '—') || confirmTarget.company ? (
+                  <p className="guest-house-confirm-meta">
+                    {[confirmTarget.motif !== '—' ? confirmTarget.motif : '', confirmTarget.company]
+                      .filter(Boolean)
+                      .join(' · ')}
+                  </p>
+                ) : null}
+              </section>
+
+              <section className="guest-house-res-section">
+                <div className="guest-house-res-section-head">
+                  <h4>Attribution logement</h4>
+                  <p>
+                    {confirmRoomOptions.freeCount > 0
+                      ? `${confirmRoomOptions.freeCount} chambre(s) libre(s)`
+                      : 'Aucune chambre Guest House libre'}
+                    {confirmMaisonOptions.length > 0
+                      ? ` · ${confirmMaisonOptions.length} maison(s) vide(s) (max ${GUEST_HOUSE_MAISON_CAPACITY} pers.)`
+                      : ''}
+                  </p>
+                </div>
+
+                <div className="form-group">
+                  <label htmlFor="gh-confirm-room">Chambre, hôtel ou maison</label>
+                  <select
+                    id="gh-confirm-room"
+                    className="guest-house-confirm-select"
+                    value={confirmLodgingValue}
+                    onChange={(e) => setConfirmLodging(e.target.value)}
+                    required
+                  >
+                    <option value="">Sélectionner…</option>
+                    {confirmRoomOptions.freeOnsite.length > 0 ? (
+                      <optgroup label="Disponibles — Guest House">
+                        {confirmRoomOptions.freeOnsite.map((room) => (
+                          <option key={room.id} value={`room:${room.id}`}>
+                            {roomDisplayName(room)}
+                            {room.characteristics ? ` · ${room.characteristics}` : ''}
+                            {` · ${room.building}`}
+                          </option>
+                        ))}
+                      </optgroup>
+                    ) : null}
+                    {confirmMaisonOptions.length > 0 ? (
+                      <optgroup label={`Maisons vides (max ${GUEST_HOUSE_MAISON_CAPACITY} pers.)`}>
+                        {confirmMaisonOptions.map((maison) => (
+                          <option key={maison.numero} value={`maison:${maison.numero}`}>
+                            Maison {maison.numero}
+                            {maison.typeMaison ? ` · ${maison.typeMaison}` : ''}
+                            {` · ${maison.lodgers}/${GUEST_HOUSE_MAISON_CAPACITY}`}
+                          </option>
+                        ))}
+                      </optgroup>
+                    ) : null}
+                    {confirmRoomOptions.busyOnsite.length > 0 ? (
+                      <optgroup label="Occupées sur la période">
+                        {confirmRoomOptions.busyOnsite.map(({ room, conflict }) => (
+                          <option key={room.id} value={`room:${room.id}`} disabled>
+                            {roomDisplayName(room)} — {conflict.personName}
+                          </option>
+                        ))}
+                      </optgroup>
+                    ) : null}
+                    <optgroup label="Hôtels Kimpese (overflow)">
+                      {confirmRoomOptions.kimpese.length === 0 ? (
+                        <option value="" disabled>
+                          Aucun hôtel enregistré
+                        </option>
+                      ) : (
+                        confirmRoomOptions.kimpese.map((room) => (
+                          <option key={room.id} value={`room:${room.id}`}>
+                            {roomDisplayName(room)}
+                          </option>
+                        ))
+                      )}
+                    </optgroup>
+                  </select>
+                </div>
+
+                {confirmSelectedMaison ? (
+                  <div className="guest-house-confirm-choice is-maison">
+                    <strong>Maison {confirmSelectedMaison.numero}</strong>
+                    <span>
+                      Maison vide · {confirmSelectedMaison.lodgers + 1}/{GUEST_HOUSE_MAISON_CAPACITY}{' '}
+                      personne(s) sur la période
+                      {confirmSelectedMaison.typeMaison
+                        ? ` · ${confirmSelectedMaison.typeMaison}`
+                        : ''}
+                    </span>
+                  </div>
+                ) : null}
+
+                {confirmSelectedRoom ? (
+                  <div
+                    className={`guest-house-confirm-choice${
+                      isKimpeseRoom(confirmSelectedRoom) ? ' is-kimpese' : ''
+                    }${confirmSelectedBusy ? ' is-busy' : ''}`}
+                  >
+                    <strong>{roomDisplayName(confirmSelectedRoom)}</strong>
+                    <span>
+                      {isKimpeseRoom(confirmSelectedRoom)
+                        ? 'Hôtel Kimpese · overflow'
+                        : confirmSelectedBusy
+                          ? `Occupée par ${confirmSelectedBusy.personName}`
+                          : `${confirmSelectedRoom.building} · disponible`}
+                      {confirmSelectedRoom.characteristics
+                        ? ` · ${confirmSelectedRoom.characteristics}`
+                        : ''}
+                    </span>
+                  </div>
+                ) : null}
+
+                {confirmSelectedBusy ? (
+                  <p className="guest-house-confirm-warn" role="alert">
+                    Cette chambre est déjà attribuée sur ces dates. Choisissez une chambre libre, une
+                    maison vide ou un hôtel Kimpese.
+                  </p>
+                ) : null}
+
+                <div className="guest-house-confirm-hint">
+                  <p>
+                    Maisons vides : jusqu’à {GUEST_HOUSE_MAISON_CAPACITY} personnes. Sinon hôtel
+                    Kimpese (créez l’entrée si besoin).
+                  </p>
+                  <button
+                    type="button"
+                    className="btn btn-outline btn-sm"
+                    disabled={saving}
+                    onClick={() => openRoomCreate('kimpese')}
+                  >
+                    + Hôtel Kimpese
+                  </button>
+                </div>
+              </section>
+            </div>
           )}
         </SideDrawer>
 

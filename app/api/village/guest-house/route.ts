@@ -8,6 +8,7 @@ import {
   getGuestRoom,
   updateGuestReservation,
   updateGuestReservationStatus,
+  clearGuestReservationLodging,
   upsertGuestRoom,
 } from '@/lib/guest-house-store';
 import type {
@@ -46,6 +47,7 @@ export async function POST(request: Request) {
       id?: string;
       status?: GuestReservationStatus;
       roomId?: string;
+      maisonNumero?: string;
       category?: GuestRoomCategory;
     } & Partial<GuestRoomInput> & Partial<GuestReservationInput>;
 
@@ -123,7 +125,26 @@ export async function POST(request: Request) {
             path: '/api/village/guest-house',
             method: 'POST',
           },
-          () => updateGuestReservationStatus(body.id!, body.status!, body.roomId),
+          () => updateGuestReservationStatus(body.id!, body.status!, body.roomId, body.maisonNumero),
+        );
+        return NextResponse.json(updated);
+      }
+      if (body.action === 'clear-lodging') {
+        const denied = await checkPermission(MENU, 'edit');
+        if (denied) return denied;
+        if (!body.id) return NextResponse.json({ error: 'ID requis' }, { status: 400 });
+        const updated = await withAudit(
+          {
+            module: 'guest-house',
+            action: 'update',
+            entityType: 'guest-house.reservation',
+            entityId: body.id,
+            summary: `Retrait affichage logement réservation ${body.id}`,
+            getBefore: () => getGuestReservation(body.id!),
+            path: '/api/village/guest-house',
+            method: 'POST',
+          },
+          () => clearGuestReservationLodging(body.id!),
         );
         return NextResponse.json(updated);
       }

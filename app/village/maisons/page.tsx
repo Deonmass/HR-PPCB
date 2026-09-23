@@ -1,6 +1,6 @@
 'use client';
 
-import { Suspense, useCallback, useEffect, useMemo, useState } from 'react';
+import { Suspense, useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import PermissionGate from '@/components/PermissionGate';
 import RefreshButton from '@/components/RefreshButton';
@@ -9,12 +9,20 @@ import SideDrawer from '@/components/SideDrawer';
 import TableHeaderFilter from '@/components/TableHeaderFilter';
 import EmployeePicker, { type EmployeeSelection } from '@/components/EmployeePicker';
 import VillageDashboardTab from '@/components/village/VillageDashboardTab';
+import VillageHouseDoorModal, {
+  type HouseDoorAction,
+  type HouseDoorFamilyMember,
+  type HouseDoorPhase,
+  type HouseOriginRect,
+  resolveHouseShape,
+} from '@/components/village/VillageHouseDoorModal';
 import VillageListeTab from '@/components/village/VillageListeTab';
 import VillagePhotoViewer from '@/components/village/VillagePhotoViewer';
 import VillagePresentationModal from '@/components/village/VillagePresentationModal';
 import VillageSkeleton from '@/components/village/VillageSkeleton';
 import { usePermissions } from '@/contexts/PermissionContext';
 import type { Dependant } from '@/lib/dependants-types';
+import { buildFamilyGroups } from '@/lib/dependants-utils';
 import type { Employee } from '@/lib/types';
 import { formatDisplayName } from '@/lib/format-display-name';
 import { closeSwal, confirmDelete, showActionLoading, showError, showSuccess } from '@/lib/swal';
@@ -296,6 +304,12 @@ function VillageMaisonsPageInner() {
   const [historyMaison, setHistoryMaison] = useState('');
   const [historyRows, setHistoryRows] = useState<HistoRow[]>([]);
   const [historyLoading, setHistoryLoading] = useState(false);
+  const [doorPeek, setDoorPeek] = useState<{
+    maison: VillageMaisonOccupancy;
+    phase: HouseDoorPhase;
+    origin: HouseOriginRect;
+  } | null>(null);
+  const doorPeekTimers = useRef<{ open?: number; close?: number }>({});
 
   const [suggestionOpen, setSuggestionOpen] = useState(false);
   const [suggestionForm, setSuggestionForm] = useState<SuggestionForm>(emptySuggestionForm);
@@ -415,6 +429,7 @@ function VillageMaisonsPageInner() {
     setSuggestionOpen(false);
     setHistoryOpen(false);
     setAssignOpen(false);
+    setDoorPeek(null);
   }, [tab]);
 
   const occupancy = useMemo(() => {
@@ -422,6 +437,21 @@ function VillageMaisonsPageInner() {
     const { village } = splitVillageKimpese(zamba);
     return buildMaisonOccupancy(maisons, tailles, village, dependants);
   }, [employees, dependants, maisons, tailles]);
+
+  const familyByMatricule = useMemo(() => {
+    const map = new Map<string, HouseDoorFamilyMember[]>();
+    for (const group of buildFamilyGroups(dependants)) {
+      map.set(
+        group.matricule.trim().toLowerCase(),
+        group.famille.map((m) => ({
+          nom: m.nom,
+          age: m.age,
+          statut: m.statut,
+        })),
+      );
+    }
+    return map;
+  }, [dependants]);
 
   const kimpeseAgents = useMemo(() => {
     const zamba = buildZambaAgentsFromEmployees(employees, dependants);
@@ -717,6 +747,130 @@ function VillageMaisonsPageInner() {
       setHistoryLoading(false);
     }
   };
+
+  const openDoorPeek = useCallback(
+    (maison: VillageMaisonOccupancy, sourceEl: HTMLElement | null) => {
+      window.clearTimeout(doorPeekTimers.current.open);
+      window.clearTimeout(doorPeekTimers.current.close);
+      const rect = sourceEl?.getBoundingClientRect();
+      const origin: HouseOriginRect = rect
+        ? {
+            top: rect.top,
+            left: rect.left,
+            width: rect.width,
+            height: rect.height,
+          }
+        : {
+            top: window.innerHeight / 2 - 40,
+            left: window.innerWidth / 2 - 40,
+            width: 80,
+            height: 100,
+          };
+      setDoorPeek({ maison, phase: 'open', origin });
+    },
+    [],
+  );
+
+  const closeDoorPeek = useCallback(() => {
+    setDoorPeek((prev) => {
+      if (!prev || prev.phase === 'closing') return prev;
+      return { ...prev, phase: 'closing' };
+    });
+  }, []);
+
+  const finishDoorPeek = useCallback(() => {
+    setDoorPeek(null);
+  }, []);
+
+  useEffect(() => {
+    return () => {
+      window.clearTimeout(doorPeekTimers.current.open);
+      window.clearTimeout(doorPeekTimers.current.close);
+    };
+  }, []);
+
+  const doorFamilyMembers = useMemo((): HouseDoorFamilyMember[] => {
+    const occupant = doorPeek?.maison.occupants[0];
+    if (!occupant?.matricule || occupant.externe) return [];
+    return familyByMatricule.get(occupant.matricule.trim().toLowerCase()) ?? [];
+  }, [doorPeek, familyByMatricule]);
+
+  const doorActions = useMemo((): HouseDoorAction[] => {
+    if (!doorPeek) return [];
+    const m = doorPeek.maison;
+    const items: HouseDoorAction[] = [];
+    if (canEdit) {
+      if (!m.occupied) {
+        items.push({
+          id: 'assign',
+          label: 'Affecter',
+          icon: 'add',
+          onClick: () => {
+            closeDoorPeek();
+            openAssignDrawer(m, 'assign');
+          },
+        });
+      } else {
+        items.push({
+          id: 'replace',
+          label: 'Remplacer',
+          icon: 'home',
+          onClick: () => {
+            closeDoorPeek();
+            openAssignDrawer(m, 'replace');
+          },
+        });
+        items.push({
+          id: 'release',
+          label: 'Libérer',
+          icon: 'toggle',
+          onClick: () => {
+            closeDoorPeek();
+            void releaseMaison(m);
+          },
+        });
+        items.push({
+          id: 'move',
+          label: 'Déplacer',
+          icon: 'move',
+          onClick: () => {
+            closeDoorPeek();
+            openMoveDrawer(m);
+          },
+        });
+      }
+      items.push({
+        id: 'edit',
+        label: 'Modifier',
+        icon: 'edit',
+        onClick: () => {
+          closeDoorPeek();
+          openEditMaison(m);
+        },
+      });
+    }
+    items.push({
+      id: 'history',
+      label: 'Historique',
+      icon: 'view',
+      onClick: () => {
+        void openHistorique(m);
+      },
+    });
+    if (canDelete) {
+      items.push({
+        id: 'delete',
+        label: 'Supprimer',
+        icon: 'delete',
+        danger: true,
+        onClick: () => {
+          closeDoorPeek();
+          void removeMaison(m.numero);
+        },
+      });
+    }
+    return items;
+  }, [doorPeek, canEdit, canDelete, closeDoorPeek]);
 
   /** Libellés de taille uniquement (pas les codes). */
   const tailleLabels = useMemo(() => {
@@ -1686,15 +1840,27 @@ function VillageMaisonsPageInner() {
                         (column) => {
                           const cards = column.houses.map((m) => {
                             const occupant = m.occupants[0];
+                            const isSource = doorPeek?.maison.numero === m.numero;
                             return (
                               <div
                                 key={m.numero}
-                                className={`village-house${m.occupied ? ' is-occupied' : ' is-empty'}`}
+                                role="button"
+                                tabIndex={0}
+                                className={`village-house is-clickable shape-${resolveHouseShape(tailleLabel)}${
+                                  m.occupied ? ' is-occupied' : ' is-empty'
+                                }${isSource ? ' is-door-source' : ''}`}
                                 title={
                                   m.occupied
                                     ? `${m.numero} — ${formatDisplayName(occupant?.nom ?? '')}`
                                     : `${m.numero} — Vide`
                                 }
+                                onClick={(e) => openDoorPeek(m, e.currentTarget)}
+                                onKeyDown={(e) => {
+                                  if (e.key === 'Enter' || e.key === ' ') {
+                                    e.preventDefault();
+                                    openDoorPeek(m, e.currentTarget);
+                                  }
+                                }}
                                 onDoubleClick={() => {
                                   if (canEdit) openEditMaison(m);
                                 }}
@@ -1710,7 +1876,8 @@ function VillageMaisonsPageInner() {
                               >
                                 <div className="village-house-crown" aria-hidden>
                                   <span className="village-house-chimney" />
-                                  <div className="village-house-roof" />
+                                  <div className="village-house-roof roof-main" />
+                                  <div className="village-house-roof roof-twin" />
                                   <span className="village-house-eave" />
                                 </div>
                                 <div className="village-house-body">
@@ -1733,9 +1900,9 @@ function VillageMaisonsPageInner() {
                                       <MoreIcon />
                                     </button>
                                   </div>
-                                  <div className="village-house-status">
-                                    {m.occupied ? 'Occupée' : 'Vide'}
-                                  </div>
+                                  {!m.occupied ? (
+                                    <div className="village-house-status">Vide</div>
+                                  ) : null}
                                   <div
                                     className={`village-house-occupant${
                                       occupant?.externe ? ' is-externe' : ''
@@ -1903,6 +2070,19 @@ function VillageMaisonsPageInner() {
             </div>
           )}
         </SideDrawer>
+
+        {doorPeek ? (
+          <VillageHouseDoorModal
+            maison={doorPeek.maison}
+            tailleLabel={resolveTailleLabel(doorPeek.maison.taille, tailles)}
+            origin={doorPeek.origin}
+            phase={doorPeek.phase}
+            familyMembers={doorFamilyMembers}
+            actions={doorActions}
+            onRequestClose={closeDoorPeek}
+            onClosed={finishDoorPeek}
+          />
+        ) : null}
 
         <SideDrawer
           open={suggestionOpen}

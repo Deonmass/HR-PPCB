@@ -63,6 +63,11 @@ export interface GuestReservation {
   startDate: string;
   endDate: string;
   roomId?: string;
+  /**
+   * Maison village vide (overflow temporaire).
+   * Mutuellement exclusif avec roomId — max GUEST_HOUSE_MAISON_CAPACITY personnes.
+   */
+  maisonNumero?: string;
   status: GuestReservationStatus;
   notes?: string;
   company?: string;
@@ -84,6 +89,8 @@ export interface GuestReservation {
 export interface GuestRoomPassage {
   id: string;
   roomId: string;
+  /** Présent si le séjour est en maison village (roomId peut être vide). */
+  maisonNumero?: string;
   reservationId: string;
   numero: string;
   personName: string;
@@ -212,3 +219,5 @@ export function buildTemplateLabel(room: Pick<GuestRoom, 'category' | 'roomNumbe
 
 export const GUEST_HOUSE_BUILDINGS = ['Batiment #1', 'Batiment #2', 'Kimpese'] as const;
 export const KIMPESE_BUILDING = 'Kimpese';
+/** Capacité max de personnes en maison village (séjours Guest House temporaires). */
+export const GUEST_HOUSE_MAISON_CAPACITY = 5;

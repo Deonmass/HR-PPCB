@@ -6,7 +6,7 @@ import { createPortal } from 'react-dom';
 export interface ContextMenuItem {
   id: string;
   label: string;
-  icon: 'view' | 'edit' | 'delete' | 'add' | 'expenses' | 'toggle' | 'permissions' | 'home' | 'doc' | 'import' | 'move';
+  icon: 'view' | 'edit' | 'delete' | 'add' | 'expenses' | 'toggle' | 'permissions' | 'home' | 'doc' | 'import' | 'move' | 'cancel';
   danger?: boolean;
   onClick: () => void;
 }
@@ -131,6 +131,15 @@ function MenuIcon({ name }: { name: ContextMenuItem['icon'] }) {
         <path d="M3 10.5 12 3l9 7.5" />
         <path d="M5 10v10h14V10" />
         <path d="M10 20v-6h4v6" />
+      </svg>
+    );
+  }
+  if (name === 'cancel') {
+    return (
+      <svg viewBox="0 0 24 24" {...props}>
+        <circle cx="12" cy="12" r="9" />
+        <path d="m9 9 6 6" />
+        <path d="m15 9-6 6" />
       </svg>
     );
   }

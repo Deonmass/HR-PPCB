@@ -24,11 +24,21 @@ import type {
 } from './guest-house-types';
 import {
   buildTemplateLabel,
+  GUEST_HOUSE_MAISON_CAPACITY,
   KIMPESE_BUILDING,
   roomDisplayName,
 } from './guest-house-types';
 import { canPersistProjectFiles, getWritableDataRoot } from './runtime-mode';
 import { ratioToRate } from './format-rate';
+import { readEmployees } from './employees-json-store';
+import { readDependantsData } from './dependants-json-store';
+import { readVillageCatalog } from './village-store';
+import {
+  buildMaisonOccupancy,
+  buildZambaAgentsFromEmployees,
+  splitVillageKimpese,
+} from './village-agents';
+import type { VillageMaisonOccupancy } from './village-types';
 
 const MONTH_LABELS = [
   'Janvier', 'Février', 'Mars', 'Avril', 'Mai', 'Juin',
@@ -171,6 +181,7 @@ function normalizeReservation(raw: Partial<GuestReservation>): GuestReservation 
     startDate,
     endDate,
     roomId: str(raw.roomId) || undefined,
+    maisonNumero: str(raw.maisonNumero) || undefined,
     status,
     notes: str(raw.notes) || undefined,
     company: str(raw.company) || undefined,
@@ -192,11 +203,12 @@ function ensurePassages(data: GuestHouseStoreData): GuestHouseStoreData {
   let changed = false;
   for (const item of data.reservations) {
     if (item.status !== 'confirmed' && item.status !== 'completed') continue;
-    if (!item.roomId) continue;
+    if (!item.roomId && !item.maisonNumero) continue;
     if (passages.some((p) => p.reservationId === item.id)) continue;
     passages.unshift({
       id: randomUUID(),
-      roomId: item.roomId,
+      roomId: item.roomId || '',
+      maisonNumero: item.maisonNumero,
       reservationId: item.id,
       numero: item.numero,
       personName: item.personName,
@@ -337,9 +349,64 @@ function buildYearMonthly(data: GuestHouseStoreData, year: number): GuestHouseMo
   return points;
 }
 
-export async function getGuestHouseBundle(): Promise<GuestHouseStoreData & { dashboard: GuestHouseDashboard }> {
+export async function getGuestHouseBundle(): Promise<
+  GuestHouseStoreData & {
+    dashboard: GuestHouseDashboard;
+    emptyMaisons: Array<VillageMaisonOccupancy & { guestLodgers: number }>;
+  }
+> {
   const data = await readStore();
-  return { ...data, dashboard: buildDashboard(data) };
+  const emptyMaisons = await listEmptyMaisonsForGuestHouse(data);
+  return { ...data, dashboard: buildDashboard(data), emptyMaisons };
+}
+
+export type GuestEmptyMaison = VillageMaisonOccupancy & { guestLodgers: number };
+
+/** Maisons village sans occupant permanent, avec compteur de lodgers GH sur la période (optionnelle). */
+export async function listEmptyMaisonsForGuestHouse(
+  data?: GuestHouseStoreData,
+  period?: { startDate: string; endDate: string; excludeReservationId?: string },
+): Promise<GuestEmptyMaison[]> {
+  const store = data ?? (await readStore());
+  const [employees, dependantsData, catalog] = await Promise.all([
+    readEmployees(),
+    readDependantsData(),
+    readVillageCatalog(),
+  ]);
+  const zamba = buildZambaAgentsFromEmployees(employees, dependantsData.dependants ?? []);
+  const { village } = splitVillageKimpese(zamba);
+  const occupancy = buildMaisonOccupancy(
+    catalog.maisons,
+    catalog.tailles,
+    village,
+    dependantsData.dependants ?? [],
+  );
+  const empty = occupancy.filter((m) => !m.occupied);
+
+  return empty
+    .map((maison) => {
+      const key = maison.numero.trim().toLowerCase();
+      let guestLodgers = 0;
+      for (const item of store.reservations) {
+        if (item.status !== 'confirmed' && item.status !== 'completed') continue;
+        if (!item.maisonNumero) continue;
+        if (item.maisonNumero.trim().toLowerCase() !== key) continue;
+        if (period?.excludeReservationId && item.id === period.excludeReservationId) continue;
+        if (period) {
+          if (!datesOverlap(item.startDate, item.endDate, period.startDate, period.endDate)) {
+            continue;
+          }
+        } else {
+          // Compte les lodgers actifs aujourd'hui si pas de période.
+          const today = todayIso();
+          if (item.endDate < today || item.startDate > today) continue;
+        }
+        guestLodgers += 1;
+      }
+      return { ...maison, guestLodgers };
+    })
+    .filter((m) => m.guestLodgers < GUEST_HOUSE_MAISON_CAPACITY)
+    .sort((a, b) => a.numero.localeCompare(b.numero, 'fr', { numeric: true }));
 }
 
 export async function getGuestRoom(id: string): Promise<GuestRoom | null> {
@@ -654,10 +721,32 @@ export async function updateGuestReservation(
   return updated;
 }
 
+/** Retire chambre / maison de la proposition sans changer le statut (pending reste pending). */
+export async function clearGuestReservationLodging(id: string): Promise<GuestReservation> {
+  const data = await readStore();
+  const index = data.reservations.findIndex((item) => item.id === id);
+  if (index < 0) throw new Error('Réservation introuvable');
+  const current = data.reservations[index];
+  if (current.status !== 'pending') {
+    throw new Error('Seules les propositions en attente peuvent être retirées de l’affichage');
+  }
+  const now = new Date().toISOString();
+  const updated: GuestReservation = {
+    ...current,
+    roomId: undefined,
+    maisonNumero: undefined,
+    updatedAt: now,
+  };
+  data.reservations[index] = updated;
+  await writeStore(data);
+  return updated;
+}
+
 export async function updateGuestReservationStatus(
   id: string,
   status: GuestReservationStatus,
   roomId?: string,
+  maisonNumero?: string,
 ): Promise<GuestReservation> {
   const data = await readStore();
   const index = data.reservations.findIndex((item) => item.id === id);
@@ -665,18 +754,53 @@ export async function updateGuestReservationStatus(
   const current = data.reservations[index];
 
   let nextRoomId = roomId !== undefined ? str(roomId) || undefined : current.roomId;
+  let nextMaison = maisonNumero !== undefined
+    ? str(maisonNumero) || undefined
+    : current.maisonNumero;
+
+  // roomId and maisonNumero are mutually exclusive when confirming.
   if (status === 'confirmed') {
-    if (!nextRoomId) throw new Error('Attribuez une chambre (ou un hôtel Kimpese) pour confirmer');
-    const roomExists = data.rooms.some((room) => room.id === nextRoomId);
-    if (!roomExists) throw new Error('Chambre / hôtel introuvable');
-    const conflict = data.reservations.some(
-      (item) =>
-        item.id !== id
-        && item.status === 'confirmed'
-        && item.roomId === nextRoomId
-        && datesOverlap(item.startDate, item.endDate, current.startDate, current.endDate),
-    );
-    if (conflict) throw new Error('Cette chambre / cet hôtel est déjà réservé(e) sur cette période');
+    if (maisonNumero !== undefined && str(maisonNumero)) {
+      nextMaison = str(maisonNumero);
+      nextRoomId = undefined;
+    } else if (roomId !== undefined && str(roomId)) {
+      nextRoomId = str(roomId);
+      nextMaison = undefined;
+    }
+
+    if (!nextRoomId && !nextMaison) {
+      throw new Error('Attribuez une chambre, un hôtel Kimpese ou une maison vide pour confirmer');
+    }
+
+    if (nextMaison) {
+      const empty = await listEmptyMaisonsForGuestHouse(data, {
+        startDate: current.startDate,
+        endDate: current.endDate,
+        excludeReservationId: id,
+      });
+      const maison = empty.find(
+        (m) => m.numero.trim().toLowerCase() === nextMaison!.toLowerCase(),
+      );
+      if (!maison) {
+        throw new Error(
+          'Maison introuvable, déjà occupée (affectation permanente), ou pleine (max 5 personnes)',
+        );
+      }
+      if (maison.guestLodgers >= GUEST_HOUSE_MAISON_CAPACITY) {
+        throw new Error(`Maison pleine (max ${GUEST_HOUSE_MAISON_CAPACITY} personnes)`);
+      }
+    } else if (nextRoomId) {
+      const roomExists = data.rooms.some((room) => room.id === nextRoomId);
+      if (!roomExists) throw new Error('Chambre / hôtel introuvable');
+      const conflict = data.reservations.some(
+        (item) =>
+          item.id !== id
+          && item.status === 'confirmed'
+          && item.roomId === nextRoomId
+          && datesOverlap(item.startDate, item.endDate, current.startDate, current.endDate),
+      );
+      if (conflict) throw new Error('Cette chambre / cet hôtel est déjà réservé(e) sur cette période');
+    }
   }
 
   const now = new Date().toISOString();
@@ -684,16 +808,18 @@ export async function updateGuestReservationStatus(
     ...current,
     status,
     roomId: nextRoomId,
+    maisonNumero: nextMaison,
     updatedAt: now,
   };
   data.reservations[index] = updated;
 
-  if (status === 'confirmed' && nextRoomId) {
+  if (status === 'confirmed' && (nextRoomId || nextMaison)) {
     const existingPassage = data.passages.find((p) => p.reservationId === id);
     if (!existingPassage) {
       const passage: GuestRoomPassage = {
         id: randomUUID(),
-        roomId: nextRoomId,
+        roomId: nextRoomId || '',
+        maisonNumero: nextMaison,
         reservationId: id,
         numero: updated.numero,
         personName: updated.personName,
@@ -705,7 +831,8 @@ export async function updateGuestReservationStatus(
       };
       data.passages.unshift(passage);
     } else {
-      existingPassage.roomId = nextRoomId;
+      existingPassage.roomId = nextRoomId || '';
+      existingPassage.maisonNumero = nextMaison;
       existingPassage.startDate = updated.startDate;
       existingPassage.endDate = updated.endDate;
     }
