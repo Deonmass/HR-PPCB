@@ -1,6 +1,99 @@
 {
   "entries": [
     {
+      "id": "log-001137",
+      "at": "2026-09-23T14:38:10.631Z",
+      "userId": "Serge.Muakasa@ppcdrc.cd",
+      "userName": "Serge Muakasa",
+      "userEmail": "Serge.Muakasa@ppcdrc.cd",
+      "module": "factures-suivi",
+      "moduleLabel": "Factures suivi",
+      "action": "create",
+      "actionLabel": "Création",
+      "summary": "Création lot de 4 facture(s)",
+      "details": "Création lot de 4 facture(s)",
+      "after": [
+        {
+          "id": "fac-2151",
+          "date": "23/09/2026",
+          "societe": "Fedyza",
+          "facture": "Facture n 038/Top K/Fedyza/08/2026",
+          "montant": 1240,
+          "echeance": "",
+          "pr": "11198748",
+          "datePr": "",
+          "po": "",
+          "datePo": "",
+          "grn": "",
+          "dateGrn": "",
+          "payment": "",
+          "datePym": "",
+          "commentaire": "Au PR — en attente du PO.",
+          "statut": "unpaid",
+          "statutLabel": "unpaid"
+        },
+        {
+          "id": "fac-2152",
+          "date": "23/09/2026",
+          "societe": "Fedyza",
+          "facture": "Facture n 040/Top K/Fedyza/08/2026",
+          "montant": 450,
+          "echeance": "",
+          "pr": "11198748",
+          "datePr": "",
+          "po": "",
+          "datePo": "",
+          "grn": "",
+          "dateGrn": "",
+          "payment": "",
+          "datePym": "",
+          "commentaire": "Au PR — en attente du PO.",
+          "statut": "unpaid",
+          "statutLabel": "unpaid"
+        },
+        {
+          "id": "fac-2153",
+          "date": "23/09/2026",
+          "societe": "Fedyza",
+          "facture": "Facture n 041/Top K/Fedyza/08/2026",
+          "montant": 15,
+          "echeance": "",
+          "pr": "11198748",
+          "datePr": "",
+          "po": "",
+          "datePo": "",
+          "grn": "",
+          "dateGrn": "",
+          "payment": "",
+          "datePym": "",
+          "commentaire": "Au PR — en attente du PO.",
+          "statut": "unpaid",
+          "statutLabel": "unpaid"
+        },
+        {
+          "id": "fac-2154",
+          "date": "23/09/2026",
+          "societe": "Fedyza",
+          "facture": "Facture n 042/Top K/Fedyza/08/2026",
+          "montant": 375,
+          "echeance": "",
+          "pr": "11198748",
+          "datePr": "",
+          "po": "",
+          "datePo": "",
+          "grn": "",
+          "dateGrn": "",
+          "payment": "",
+          "datePym": "",
+          "commentaire": "Au PR — en attente du PO.",
+          "statut": "unpaid",
+          "statutLabel": "unpaid"
+        }
+      ],
+      "undoable": false,
+      "undone": false
+    },
+    {
       "id": "log-001136",
       "at": "2026-09-23T14:30:57.511Z",
       "userId": "Marie.Yowali",
@@ -119225,5 +119318,5 @@
       }
     }
   ],
-  "nextSeq": 1137
+  "nextSeq": 1138
 }
