@@ -1,6 +1,50 @@
 {
   "entries": [
     {
+      "id": "log-001093",
+      "at": "2026-09-23T07:16:33.533Z",
+      "userId": "admin",
+      "userName": "Administrateur",
+      "userEmail": "admin",
+      "module": "guest-house",
+      "moduleLabel": "Guest house",
+      "action": "update",
+      "actionLabel": "Modification",
+      "entityType": "guest-house.reservation",
+      "entityId": "b12180ce-6402-4f79-bab2-e5aa62575fe1",
+      "summary": "Statut réservation b12180ce-6402-4f79-bab2-e5aa62575fe1 → confirmed",
+      "details": "Statut réservation b12180ce-6402-4f79-bab2-e5aa62575fe1 → confirmed",
+      "before": {
+        "id": "b12180ce-6402-4f79-bab2-e5aa62575fe1",
+        "numero": "GH-2026-4434",
+        "createdAt": "2026-09-21T17:02:21.196Z",
+        "personName": "Dieuleveut",
+        "isAgent": false,
+        "motif": "Maintenance des cameras de surveillance : Usine et village PPC",
+        "startDate": "2026-09-22",
+        "endDate": "2026-09-26",
+        "status": "pending",
+        "notes": "Booké par Nathan",
+        "updatedAt": "2026-09-21T17:02:21.196Z"
+      },
+      "after": {
+        "id": "b12180ce-6402-4f79-bab2-e5aa62575fe1",
+        "numero": "GH-2026-4434",
+        "createdAt": "2026-09-21T17:02:21.196Z",
+        "personName": "Dieuleveut",
+        "isAgent": false,
+        "motif": "Maintenance des cameras de surveillance : Usine et village PPC",
+        "startDate": "2026-09-22",
+        "endDate": "2026-09-26",
+        "roomId": "cfdfa27e-7353-401d-9090-1a3ca1c1fc80",
+        "status": "confirmed",
+        "notes": "Booké par Nathan",
+        "updatedAt": "2026-09-23T07:16:30.020Z"
+      },
+      "undoable": true,
+      "undone": false
+    },
+    {
       "id": "log-001092",
       "at": "2026-09-23T07:14:36.637Z",
       "userId": "admin",
@@ -117322,5 +117366,5 @@
       }
     }
   ],
-  "nextSeq": 1093
+  "nextSeq": 1094
 }
