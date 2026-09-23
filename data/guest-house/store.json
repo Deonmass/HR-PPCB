@@ -724,9 +724,10 @@
       "motif": "Topographe",
       "startDate": "2026-09-22",
       "endDate": "2026-09-28",
-      "status": "pending",
+      "maisonNumero": "45",
+      "status": "confirmed",
       "notes": "Booké par Nelson",
-      "updatedAt": "2026-09-23T07:14:33.813Z"
+      "updatedAt": "2026-09-23T09:57:16.737Z"
     },
     {
       "id": "a9925427-b01f-4c44-a80e-acf8d4e46aab",
@@ -26310,6 +26311,18 @@
     }
   ],
   "passages": [
+    {
+      "id": "06e2481e-26ae-4b94-827e-aaac043e1b12",
+      "roomId": "",
+      "maisonNumero": "45",
+      "reservationId": "99e69e33-980d-4ab4-9c13-cac5fb888dd7",
+      "numero": "GH-2026-4437",
+      "personName": "Topographe 3",
+      "motif": "Topographe",
+      "startDate": "2026-09-22",
+      "endDate": "2026-09-28",
+      "checkedInAt": "2026-09-23T09:57:16.737Z"
+    },
     {
       "id": "bd9af3e2-0dd8-4b32-874b-673bc416eccf",
       "roomId": "0b0cdc0d-ba79-4f68-8533-c90cad3390cb",
