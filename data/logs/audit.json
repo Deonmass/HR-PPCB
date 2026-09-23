@@ -1,6 +1,21 @@
 {
   "entries": [
     {
+      "id": "log-001117",
+      "at": "2026-09-23T12:03:29.829Z",
+      "userId": "admin",
+      "userName": "Administrateur",
+      "userEmail": "admin",
+      "module": "documents.attestation-conge",
+      "moduleLabel": "Attestation de congé",
+      "action": "export",
+      "actionLabel": "Export",
+      "summary": "Aperçu PDF attestation congé ilon",
+      "details": "Aperçu PDF attestation congé ilon",
+      "undoable": false,
+      "undone": false
+    },
+    {
       "id": "log-001116",
       "at": "2026-09-23T12:03:25.019Z",
       "userId": "admin",
@@ -118120,5 +118135,5 @@
       }
     }
   ],
-  "nextSeq": 1117
+  "nextSeq": 1118
 }
