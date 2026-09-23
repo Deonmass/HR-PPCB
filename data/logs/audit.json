@@ -1,6 +1,21 @@
 {
   "entries": [
     {
+      "id": "log-001098",
+      "at": "2026-09-23T09:39:34.275Z",
+      "userId": "Serge.Muakasa@ppcdrc.cd",
+      "userName": "Serge Muakasa",
+      "userEmail": "Serge.Muakasa@ppcdrc.cd",
+      "module": "auth",
+      "moduleLabel": "Authentification",
+      "action": "login",
+      "actionLabel": "Connexion",
+      "summary": "Connexion Serge.Muakasa@ppcdrc.cd",
+      "details": "Connexion de Serge Muakasa (Serge.Muakasa@ppcdrc.cd)",
+      "undoable": false,
+      "undone": false
+    },
+    {
       "id": "log-001097",
       "at": "2026-09-23T08:13:21.853Z",
       "userId": "admin",
@@ -117513,5 +117528,5 @@
       }
     }
   ],
-  "nextSeq": 1098
+  "nextSeq": 1099
 }
