@@ -777,9 +777,10 @@
       "motif": "Maintenance des cameras de surveillance : Usine et village PPC",
       "startDate": "2026-09-22",
       "endDate": "2026-09-26",
-      "status": "pending",
+      "roomId": "4e4bd694-e96e-4748-a98a-882d842f616e",
+      "status": "confirmed",
       "notes": "Booké par Nathan",
-      "updatedAt": "2026-09-21T17:01:52.362Z"
+      "updatedAt": "2026-09-23T07:17:41.943Z"
     },
     {
       "id": "92a890a4-054c-432b-9c68-19db902882a6",
@@ -26308,6 +26309,17 @@
     }
   ],
   "passages": [
+    {
+      "id": "5b42246e-7744-445b-b5b0-22d4c17c841c",
+      "roomId": "4e4bd694-e96e-4748-a98a-882d842f616e",
+      "reservationId": "b5efb9d0-944b-468a-9f84-3e98fe2a69b4",
+      "numero": "GH-2026-4433",
+      "personName": "Tony Katshiayi",
+      "motif": "Maintenance des cameras de surveillance : Usine et village PPC",
+      "startDate": "2026-09-22",
+      "endDate": "2026-09-26",
+      "checkedInAt": "2026-09-23T07:17:41.943Z"
+    },
     {
       "id": "de74e94b-0262-4b65-82aa-c9508c07781c",
       "roomId": "ed91c14e-915f-4d22-971c-fd4bb7feb33e",
