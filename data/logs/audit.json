@@ -1,6 +1,21 @@
 {
   "entries": [
     {
+      "id": "log-001120",
+      "at": "2026-09-23T12:03:49.394Z",
+      "userId": "admin",
+      "userName": "Administrateur",
+      "userEmail": "admin",
+      "module": "documents.attestation-conge",
+      "moduleLabel": "Attestation de congé",
+      "action": "export",
+      "actionLabel": "Export",
+      "summary": "Téléchargement DOCX attestation congé ILONDO LIKOMBA Jack Lethycien",
+      "details": "Téléchargement DOCX attestation congé ILONDO LIKOMBA Jack Lethycien",
+      "undoable": false,
+      "undone": false
+    },
+    {
       "id": "log-001119",
       "at": "2026-09-23T12:03:36.721Z",
       "userId": "admin",
@@ -118186,5 +118201,5 @@
       }
     }
   ],
-  "nextSeq": 1120
+  "nextSeq": 1121
 }
