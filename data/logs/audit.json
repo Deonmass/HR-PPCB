@@ -1,6 +1,50 @@
 {
   "entries": [
     {
+      "id": "log-001100",
+      "at": "2026-09-23T09:57:46.336Z",
+      "userId": "admin",
+      "userName": "Administrateur",
+      "userEmail": "admin",
+      "module": "guest-house",
+      "moduleLabel": "Guest house",
+      "action": "update",
+      "actionLabel": "Modification",
+      "entityType": "guest-house.reservation",
+      "entityId": "a9925427-b01f-4c44-a80e-acf8d4e46aab",
+      "summary": "Statut réservation a9925427-b01f-4c44-a80e-acf8d4e46aab → confirmed",
+      "details": "Statut réservation a9925427-b01f-4c44-a80e-acf8d4e46aab → confirmed",
+      "before": {
+        "id": "a9925427-b01f-4c44-a80e-acf8d4e46aab",
+        "numero": "GH-2026-4436",
+        "createdAt": "2026-09-23T07:14:10.604Z",
+        "personName": "Topographe 2",
+        "isAgent": false,
+        "motif": "Topographe",
+        "startDate": "2026-09-22",
+        "endDate": "2026-09-28",
+        "status": "pending",
+        "notes": "Booké par Nelson",
+        "updatedAt": "2026-09-23T07:14:10.604Z"
+      },
+      "after": {
+        "id": "a9925427-b01f-4c44-a80e-acf8d4e46aab",
+        "numero": "GH-2026-4436",
+        "createdAt": "2026-09-23T07:14:10.604Z",
+        "personName": "Topographe 2",
+        "isAgent": false,
+        "motif": "Topographe",
+        "startDate": "2026-09-22",
+        "endDate": "2026-09-28",
+        "maisonNumero": "45",
+        "status": "confirmed",
+        "notes": "Booké par Nelson",
+        "updatedAt": "2026-09-23T09:57:43.009Z"
+      },
+      "undoable": true,
+      "undone": false
+    },
+    {
       "id": "log-001099",
       "at": "2026-09-23T09:57:20.780Z",
       "userId": "admin",
@@ -117572,5 +117616,5 @@
       }
     }
   ],
-  "nextSeq": 1100
+  "nextSeq": 1101
 }
