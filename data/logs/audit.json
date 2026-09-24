@@ -1,6 +1,51 @@
 {
   "entries": [
     {
+      "id": "log-001146",
+      "at": "2026-09-24T13:32:29.168Z",
+      "userId": "admin",
+      "userName": "Administrateur",
+      "userEmail": "admin",
+      "module": "guest-house",
+      "moduleLabel": "Guest house",
+      "action": "update",
+      "actionLabel": "Modification",
+      "entityType": "guest-house.reservation",
+      "entityId": "2554fc2c-41d9-46a9-bd1c-ad0fa991cacc",
+      "summary": "Modification réservation 2554fc2c-41d9-46a9-bd1c-ad0fa991cacc",
+      "details": "Modification réservation 2554fc2c-41d9-46a9-bd1c-ad0fa991cacc",
+      "before": {
+        "id": "2554fc2c-41d9-46a9-bd1c-ad0fa991cacc",
+        "numero": "GH-2026-4428",
+        "createdAt": "2026-09-21T12:56:06.069Z",
+        "personName": "Octave",
+        "isAgent": false,
+        "motif": "TBA",
+        "startDate": "2026-09-19",
+        "endDate": "2026-09-26",
+        "roomId": "d9ec3499-ad6d-4215-8ef9-c20a4f6b1714",
+        "status": "confirmed",
+        "notes": "de la part de Mr Jack Ilondo",
+        "updatedAt": "2026-09-21T12:57:30.027Z"
+      },
+      "after": {
+        "id": "2554fc2c-41d9-46a9-bd1c-ad0fa991cacc",
+        "numero": "GH-2026-4428",
+        "createdAt": "2026-09-21T12:56:06.069Z",
+        "personName": "Octave Wayekua",
+        "isAgent": false,
+        "motif": "AEMI",
+        "startDate": "2026-09-19",
+        "endDate": "2026-09-26",
+        "roomId": "d9ec3499-ad6d-4215-8ef9-c20a4f6b1714",
+        "status": "confirmed",
+        "notes": "de la part de Mr Jack Ilondo",
+        "updatedAt": "2026-09-24T13:32:26.097Z"
+      },
+      "undoable": true,
+      "undone": false
+    },
+    {
       "id": "log-001145",
       "at": "2026-09-24T13:31:57.030Z",
       "userId": "admin",
@@ -119620,5 +119665,5 @@
       }
     }
   ],
-  "nextSeq": 1146
+  "nextSeq": 1147
 }
