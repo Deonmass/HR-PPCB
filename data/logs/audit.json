@@ -1,6 +1,51 @@
 {
   "entries": [
     {
+      "id": "log-001144",
+      "at": "2026-09-24T13:31:12.884Z",
+      "userId": "admin",
+      "userName": "Administrateur",
+      "userEmail": "admin",
+      "module": "guest-house",
+      "moduleLabel": "Guest house",
+      "action": "update",
+      "actionLabel": "Modification",
+      "entityType": "guest-house.reservation",
+      "entityId": "9b0cc2ba-f29a-49ff-997f-5377d809c01b",
+      "summary": "Modification réservation 9b0cc2ba-f29a-49ff-997f-5377d809c01b",
+      "details": "Modification réservation 9b0cc2ba-f29a-49ff-997f-5377d809c01b",
+      "before": {
+        "id": "9b0cc2ba-f29a-49ff-997f-5377d809c01b",
+        "numero": "GH-2026-4427",
+        "createdAt": "2026-09-21T12:55:35.454Z",
+        "personName": "Francklin",
+        "isAgent": false,
+        "motif": "TBA",
+        "startDate": "2026-09-19",
+        "endDate": "2026-09-26",
+        "roomId": "e49a08a4-e1db-4824-b8f6-48f1c30c0346",
+        "status": "confirmed",
+        "notes": "de la part de Mr Jack Ilondo",
+        "updatedAt": "2026-09-21T13:01:27.370Z"
+      },
+      "after": {
+        "id": "9b0cc2ba-f29a-49ff-997f-5377d809c01b",
+        "numero": "GH-2026-4427",
+        "createdAt": "2026-09-21T12:55:35.454Z",
+        "personName": "Franklin mampuya",
+        "isAgent": false,
+        "motif": "AEMI",
+        "startDate": "2026-09-19",
+        "endDate": "2026-09-26",
+        "roomId": "e49a08a4-e1db-4824-b8f6-48f1c30c0346",
+        "status": "confirmed",
+        "notes": "de la part de Mr Jack Ilondo",
+        "updatedAt": "2026-09-24T13:31:08.214Z"
+      },
+      "undoable": true,
+      "undone": false
+    },
+    {
       "id": "log-001143",
       "at": "2026-09-24T13:29:43.542Z",
       "userId": "admin",
@@ -119530,5 +119575,5 @@
       }
     }
   ],
-  "nextSeq": 1144
+  "nextSeq": 1145
 }
