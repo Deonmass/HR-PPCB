@@ -1,6 +1,49 @@
 {
   "entries": [
     {
+      "id": "log-001142",
+      "at": "2026-09-24T13:20:42.038Z",
+      "userId": "admin",
+      "userName": "Administrateur",
+      "userEmail": "admin",
+      "module": "guest-house",
+      "moduleLabel": "Guest house",
+      "action": "update",
+      "actionLabel": "Modification",
+      "entityType": "guest-house.reservation",
+      "entityId": "4767a6bf-dc4b-42a8-ba9d-1175b82abf69",
+      "summary": "Statut réservation 4767a6bf-dc4b-42a8-ba9d-1175b82abf69 → confirmed",
+      "details": "Statut réservation 4767a6bf-dc4b-42a8-ba9d-1175b82abf69 → confirmed",
+      "before": {
+        "id": "4767a6bf-dc4b-42a8-ba9d-1175b82abf69",
+        "numero": "GH-2026-4439",
+        "createdAt": "2026-09-24T13:19:37.450Z",
+        "personName": "Bamba",
+        "isAgent": false,
+        "motif": "De la société AEMI",
+        "startDate": "2026-09-24",
+        "endDate": "2026-09-26",
+        "roomId": "3d273d81-0642-4fac-b424-a54146ad7acc",
+        "status": "pending",
+        "updatedAt": "2026-09-24T13:20:23.058Z"
+      },
+      "after": {
+        "id": "4767a6bf-dc4b-42a8-ba9d-1175b82abf69",
+        "numero": "GH-2026-4439",
+        "createdAt": "2026-09-24T13:19:37.450Z",
+        "personName": "Bamba",
+        "isAgent": false,
+        "motif": "De la société AEMI",
+        "startDate": "2026-09-24",
+        "endDate": "2026-09-26",
+        "roomId": "3d273d81-0642-4fac-b424-a54146ad7acc",
+        "status": "confirmed",
+        "updatedAt": "2026-09-24T13:20:38.866Z"
+      },
+      "undoable": true,
+      "undone": false
+    },
+    {
       "id": "log-001141",
       "at": "2026-09-24T13:20:26.394Z",
       "userId": "admin",
@@ -119442,5 +119485,5 @@
       }
     }
   ],
-  "nextSeq": 1142
+  "nextSeq": 1143
 }
