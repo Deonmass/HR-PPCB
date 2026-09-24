@@ -900,15 +900,15 @@
       "id": "dd47dbd0-7f5a-44e3-b304-d6de93580b28",
       "numero": "GH-2026-4426",
       "createdAt": "2026-09-21T12:54:53.868Z",
-      "personName": "Jérémie",
+      "personName": "Jérémie Bueya",
       "isAgent": false,
-      "motif": "TBA",
+      "motif": "AEMI",
       "startDate": "2026-09-19",
       "endDate": "2026-09-26",
       "roomId": "2ef11cfa-1396-4c82-ac99-85b12d6093be",
       "status": "confirmed",
       "notes": "de la part de Mr Jack Ilondo",
-      "updatedAt": "2026-09-21T13:01:51.877Z"
+      "updatedAt": "2026-09-24T13:29:39.658Z"
     },
     {
       "id": "e1062419-3971-42d3-9851-645b731d0815",
@@ -26477,8 +26477,8 @@
       "roomId": "2ef11cfa-1396-4c82-ac99-85b12d6093be",
       "reservationId": "dd47dbd0-7f5a-44e3-b304-d6de93580b28",
       "numero": "GH-2026-4426",
-      "personName": "Jérémie",
-      "motif": "TBA",
+      "personName": "Jérémie Bueya",
+      "motif": "AEMI",
       "startDate": "2026-09-19",
       "endDate": "2026-09-26",
       "checkedInAt": "2026-09-21T13:01:51.877Z"
