@@ -900,7 +900,7 @@
       "id": "dd47dbd0-7f5a-44e3-b304-d6de93580b28",
       "numero": "GH-2026-4426",
       "createdAt": "2026-09-21T12:54:53.868Z",
-      "personName": "Jérémie Bueya",
+      "personName": "Franklin mampuya",
       "isAgent": false,
       "motif": "AEMI",
       "startDate": "2026-09-19",
@@ -908,7 +908,7 @@
       "roomId": "2ef11cfa-1396-4c82-ac99-85b12d6093be",
       "status": "confirmed",
       "notes": "de la part de Mr Jack Ilondo",
-      "updatedAt": "2026-09-24T13:29:39.658Z"
+      "updatedAt": "2026-09-24T13:33:49.976Z"
     },
     {
       "id": "e1062419-3971-42d3-9851-645b731d0815",
@@ -26477,7 +26477,7 @@
       "roomId": "2ef11cfa-1396-4c82-ac99-85b12d6093be",
       "reservationId": "dd47dbd0-7f5a-44e3-b304-d6de93580b28",
       "numero": "GH-2026-4426",
-      "personName": "Jérémie Bueya",
+      "personName": "Franklin mampuya",
       "motif": "AEMI",
       "startDate": "2026-09-19",
       "endDate": "2026-09-26",
