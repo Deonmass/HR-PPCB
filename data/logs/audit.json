@@ -1,6 +1,21 @@
 {
   "entries": [
     {
+      "id": "log-001139",
+      "at": "2026-09-24T06:38:30.536Z",
+      "userId": "admin",
+      "userName": "Administrateur",
+      "userEmail": "admin",
+      "module": "employees",
+      "moduleLabel": "Employés",
+      "action": "export",
+      "actionLabel": "Export",
+      "summary": "Export employés (EMPLOYEES_HR_2026-09-24.xlsx)",
+      "details": "Fichier Excel exporté : EMPLOYEES_HR_2026-09-24.xlsx",
+      "undoable": false,
+      "undone": false
+    },
+    {
       "id": "log-001138",
       "at": "2026-09-23T14:54:46.605Z",
       "userId": "Serge.Muakasa@ppcdrc.cd",
@@ -119354,5 +119369,5 @@
       }
     }
   ],
-  "nextSeq": 1139
+  "nextSeq": 1140
 }
