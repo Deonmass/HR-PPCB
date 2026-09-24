@@ -1,6 +1,51 @@
 {
   "entries": [
     {
+      "id": "log-001149",
+      "at": "2026-09-24T13:34:21.197Z",
+      "userId": "admin",
+      "userName": "Administrateur",
+      "userEmail": "admin",
+      "module": "guest-house",
+      "moduleLabel": "Guest house",
+      "action": "update",
+      "actionLabel": "Modification",
+      "entityType": "guest-house.reservation",
+      "entityId": "2554fc2c-41d9-46a9-bd1c-ad0fa991cacc",
+      "summary": "Modification réservation 2554fc2c-41d9-46a9-bd1c-ad0fa991cacc",
+      "details": "Modification réservation 2554fc2c-41d9-46a9-bd1c-ad0fa991cacc",
+      "before": {
+        "id": "2554fc2c-41d9-46a9-bd1c-ad0fa991cacc",
+        "numero": "GH-2026-4428",
+        "createdAt": "2026-09-21T12:56:06.069Z",
+        "personName": "Octave Wayekua",
+        "isAgent": false,
+        "motif": "AEMI",
+        "startDate": "2026-09-19",
+        "endDate": "2026-09-26",
+        "roomId": "d9ec3499-ad6d-4215-8ef9-c20a4f6b1714",
+        "status": "confirmed",
+        "notes": "de la part de Mr Jack Ilondo",
+        "updatedAt": "2026-09-24T13:32:26.097Z"
+      },
+      "after": {
+        "id": "2554fc2c-41d9-46a9-bd1c-ad0fa991cacc",
+        "numero": "GH-2026-4428",
+        "createdAt": "2026-09-21T12:56:06.069Z",
+        "personName": "Didier Boliki",
+        "isAgent": false,
+        "motif": "AEMI",
+        "startDate": "2026-09-19",
+        "endDate": "2026-09-26",
+        "roomId": "d9ec3499-ad6d-4215-8ef9-c20a4f6b1714",
+        "status": "confirmed",
+        "notes": "de la part de Mr Jack Ilondo",
+        "updatedAt": "2026-09-24T13:34:16.897Z"
+      },
+      "undoable": true,
+      "undone": false
+    },
+    {
       "id": "log-001148",
       "at": "2026-09-24T13:33:53.803Z",
       "userId": "admin",
@@ -119755,5 +119800,5 @@
       }
     }
   ],
-  "nextSeq": 1149
+  "nextSeq": 1150
 }
