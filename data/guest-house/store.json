@@ -886,15 +886,15 @@
       "id": "9b0cc2ba-f29a-49ff-997f-5377d809c01b",
       "numero": "GH-2026-4427",
       "createdAt": "2026-09-21T12:55:35.454Z",
-      "personName": "Francklin",
+      "personName": "Franklin mampuya",
       "isAgent": false,
-      "motif": "TBA",
+      "motif": "AEMI",
       "startDate": "2026-09-19",
       "endDate": "2026-09-26",
       "roomId": "e49a08a4-e1db-4824-b8f6-48f1c30c0346",
       "status": "confirmed",
       "notes": "de la part de Mr Jack Ilondo",
-      "updatedAt": "2026-09-21T13:01:27.370Z"
+      "updatedAt": "2026-09-24T13:31:08.214Z"
     },
     {
       "id": "dd47dbd0-7f5a-44e3-b304-d6de93580b28",
@@ -26488,8 +26488,8 @@
       "roomId": "e49a08a4-e1db-4824-b8f6-48f1c30c0346",
       "reservationId": "9b0cc2ba-f29a-49ff-997f-5377d809c01b",
       "numero": "GH-2026-4427",
-      "personName": "Francklin",
-      "motif": "TBA",
+      "personName": "Franklin mampuya",
+      "motif": "AEMI",
       "startDate": "2026-09-19",
       "endDate": "2026-09-26",
       "checkedInAt": "2026-09-21T13:01:27.370Z"
