@@ -218,5 +218,15 @@
     "issuedBy": "Administrateur",
     "id": "exit-1790333725031-tij11l",
     "createdAt": "2026-09-25T10:55:25.031Z"
+  },
+  {
+    "matricule": "70000049",
+    "employeeName": "PONGO PONGO LIWANDA LUTE CHARLES",
+    "doc": "attestation-fin-service",
+    "docLabel": "Attestation de fin de service",
+    "fileName": "Attestation de fin de service - PONGO PONGO LIWANDA LUTE CHARLES.docx",
+    "issuedBy": "Administrateur",
+    "id": "exit-1790333735097-h3svet",
+    "createdAt": "2026-09-25T10:55:35.097Z"
   }
 ]
