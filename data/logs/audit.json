@@ -1,6 +1,21 @@
 {
   "entries": [
     {
+      "id": "log-001163",
+      "at": "2026-09-25T10:55:12.847Z",
+      "userId": "admin",
+      "userName": "Administrateur",
+      "userEmail": "admin",
+      "module": "documents.exit",
+      "moduleLabel": "Documents",
+      "action": "export",
+      "actionLabel": "Export",
+      "summary": "Document exit « Employee exit clearance form » — PONGO PONGO LIWANDA LUTE CHARLES (70000049)",
+      "details": "Document exit « Employee exit clearance form » — PONGO PONGO LIWANDA LUTE CHARLES (70000049)",
+      "undoable": false,
+      "undone": false
+    },
+    {
       "id": "log-001162",
       "at": "2026-09-25T10:12:51.810Z",
       "userId": "admin",
@@ -120526,5 +120541,5 @@
       }
     }
   ],
-  "nextSeq": 1163
+  "nextSeq": 1164
 }
