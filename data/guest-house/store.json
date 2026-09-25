@@ -723,10 +723,10 @@
       "isAgent": false,
       "motif": "De la société AEMI",
       "startDate": "2026-09-24",
-      "endDate": "2026-09-26",
+      "endDate": "2026-09-25",
       "roomId": "3d273d81-0642-4fac-b424-a54146ad7acc",
       "status": "confirmed",
-      "updatedAt": "2026-09-24T13:20:38.866Z"
+      "updatedAt": "2026-09-25T15:07:28.542Z"
     },
     {
       "id": "a6275922-b69d-4b7b-9349-0c096260c912",
@@ -26346,7 +26346,7 @@
       "personName": "Bamba",
       "motif": "De la société AEMI",
       "startDate": "2026-09-24",
-      "endDate": "2026-09-26",
+      "endDate": "2026-09-25",
       "checkedInAt": "2026-09-24T13:20:38.866Z"
     },
     {
