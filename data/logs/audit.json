@@ -1,6 +1,29 @@
 {
   "entries": [
     {
+      "id": "log-001175",
+      "at": "2026-09-25T13:51:15.567Z",
+      "userId": "system",
+      "userName": "Système",
+      "module": "auth",
+      "moduleLabel": "Authentification",
+      "action": "error",
+      "actionLabel": "Erreur",
+      "summary": "Identifiants invalides",
+      "details": "Échec de connexion pour « charite.tshimanga@ppcdrc.cd »",
+      "undoable": false,
+      "undone": false,
+      "error": {
+        "message": "Identifiants invalides",
+        "path": "/api/auth/login",
+        "method": "POST",
+        "status": 401,
+        "context": {
+          "username": "charite.tshimanga@ppcdrc.cd"
+        }
+      }
+    },
+    {
       "id": "log-001174",
       "at": "2026-09-25T13:50:53.462Z",
       "userId": "system",
@@ -120844,5 +120867,5 @@
       }
     }
   ],
-  "nextSeq": 1175
+  "nextSeq": 1176
 }
