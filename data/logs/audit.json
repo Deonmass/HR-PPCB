@@ -1,6 +1,21 @@
 {
   "entries": [
     {
+      "id": "log-001167",
+      "at": "2026-09-25T10:58:09.074Z",
+      "userId": "admin",
+      "userName": "Administrateur",
+      "userEmail": "admin",
+      "module": "documents.exit",
+      "moduleLabel": "Documents",
+      "action": "export",
+      "actionLabel": "Export",
+      "summary": "Document exit « Employee exit clearance form » — LISANGOLA ITOFELE L EMMANUEL (70000137)",
+      "details": "Document exit « Employee exit clearance form » — LISANGOLA ITOFELE L EMMANUEL (70000137)",
+      "undoable": false,
+      "undone": false
+    },
+    {
       "id": "log-001166",
       "at": "2026-09-25T10:55:50.266Z",
       "userId": "admin",
@@ -120586,5 +120601,5 @@
       }
     }
   ],
-  "nextSeq": 1167
+  "nextSeq": 1168
 }
