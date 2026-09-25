@@ -1,6 +1,21 @@
 {
   "entries": [
     {
+      "id": "log-001166",
+      "at": "2026-09-25T10:55:50.266Z",
+      "userId": "admin",
+      "userName": "Administrateur",
+      "userEmail": "admin",
+      "module": "documents.exit",
+      "moduleLabel": "Documents",
+      "action": "export",
+      "actionLabel": "Export",
+      "summary": "Document exit « User removal form » — PONGO PONGO LIWANDA LUTE CHARLES (70000049)",
+      "details": "Document exit « User removal form » — PONGO PONGO LIWANDA LUTE CHARLES (70000049)",
+      "undoable": false,
+      "undone": false
+    },
+    {
       "id": "log-001165",
       "at": "2026-09-25T10:55:38.296Z",
       "userId": "admin",
@@ -120571,5 +120586,5 @@
       }
     }
   ],
-  "nextSeq": 1166
+  "nextSeq": 1167
 }
