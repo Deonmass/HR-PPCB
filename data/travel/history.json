@@ -10,7 +10,18 @@
       "tripDays": 1,
       "totalBudget": 110,
       "recordId": "cr-1786955455990"
+    },
+    {
+      "rowIndex": 10,
+      "date": "2026-09-25",
+      "ref": "PPCB-DOC-HR-ZA/043/09/2026",
+      "employee": "KINKINIA DIAVEZUKA PELAGIE (70000295)",
+      "department": "Human Resources — Plant HR Manager",
+      "travelDates": "25/09/2026 → 25/09/2026",
+      "tripDays": 1,
+      "totalBudget": 1970,
+      "recordId": "cr-1790334459817"
     }
   ],
-  "nextRowIndex": 10
+  "nextRowIndex": 11
 }
