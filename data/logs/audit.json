@@ -1,6 +1,44 @@
 {
   "entries": [
     {
+      "id": "log-001153",
+      "at": "2026-09-25T07:03:18.427Z",
+      "userId": "karine.mvutu@ppcdrc.cd",
+      "userName": "Karine Mvutu",
+      "userEmail": "karine.mvutu@ppcdrc.cd",
+      "module": "sante",
+      "moduleLabel": "Santé",
+      "action": "create",
+      "actionLabel": "Création",
+      "entityType": "sante.visit",
+      "entityId": "sante-mugm6idi-ulnm34",
+      "summary": "Cas santé — MOLEK  · SUSPUCION PALUDISME SIMPLE",
+      "details": "Cas santé — MOLEK  · SUSPUCION PALUDISME SIMPLE",
+      "after": {
+        "id": "sante-mugm6idi-ulnm34",
+        "date": "2026-09-21",
+        "nom": "MOLEK",
+        "postnom": "",
+        "sexe": "M",
+        "age": 38,
+        "typeMalade": "AGENT",
+        "pathologie": "SUSPUCION PALUDISME SIMPLE",
+        "traitement": "ANTI PALUDEEN  ET ANTI PYRETIQUE",
+        "reference": "NON",
+        "year": 2026,
+        "month": 9,
+        "employeeMatricule": "70000109",
+        "employeeNom": "MOLEKA GBANGA FRED",
+        "dependantId": null,
+        "createdAt": "2026-09-25T07:03:14.310Z",
+        "updatedAt": "2026-09-25T07:03:14.310Z",
+        "createdBy": "karine.mvutu@ppcdrc.cd",
+        "updatedBy": "karine.mvutu@ppcdrc.cd"
+      },
+      "undoable": false,
+      "undone": false
+    },
+    {
       "id": "log-001152",
       "at": "2026-09-24T17:52:54.122Z",
       "userId": "admin",
@@ -119905,5 +119943,5 @@
       }
     }
   ],
-  "nextSeq": 1153
+  "nextSeq": 1154
 }
