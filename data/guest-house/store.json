@@ -904,11 +904,11 @@
       "isAgent": false,
       "motif": "AEMI",
       "startDate": "2026-09-19",
-      "endDate": "2026-09-26",
+      "endDate": "2026-09-25",
       "roomId": "2ef11cfa-1396-4c82-ac99-85b12d6093be",
       "status": "confirmed",
       "notes": "de la part de Mr Jack Ilondo",
-      "updatedAt": "2026-09-24T13:33:49.976Z"
+      "updatedAt": "2026-09-25T15:06:06.146Z"
     },
     {
       "id": "e1062419-3971-42d3-9851-645b731d0815",
@@ -26480,7 +26480,7 @@
       "personName": "Franklin mampuya",
       "motif": "AEMI",
       "startDate": "2026-09-19",
-      "endDate": "2026-09-26",
+      "endDate": "2026-09-25",
       "checkedInAt": "2026-09-21T13:01:51.877Z"
     },
     {
