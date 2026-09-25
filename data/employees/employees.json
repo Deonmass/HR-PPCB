@@ -4166,10 +4166,11 @@
       "id": "55d0f50b-1470-4498-8b72-560df9aca74d",
       "matricule": "70000299",
       "nom": "MIRINDI CARINE",
-      "departement": "MD Office",
-      "grade": "C3",
-      "jobTitle": "HR Officer",
-      "localisation": "Lubudi",
+      "departement": "Human Resources",
+      "grade": "C2",
+      "jobTitle": "Occupational Health Nurse ( Infirmier(ère) de santé au travail )",
+      "localisation": "Usine",
+      "service": "",
       "company": "PPC Barnet DRC Manufacturing",
       "centreCout": "DL5110",
       "appointmentDate": "01/12/2025",
@@ -4183,7 +4184,7 @@
       "personnelSubArea": "",
       "employeeSubGroup": "Contract",
       "payrollArea": "Monthly",
-      "position": "",
+      "position": "Occupational Health Nurse ( Infirmier(ère) de santé au travail )",
       "departmentHr": "HR",
       "lineManagerName": "Carine Ewuli",
       "lineManagerPosition": "Head of HR",
@@ -4207,7 +4208,7 @@
       "cnss": "21983391368Q",
       "nif": "G2500283S",
       "createdAt": "2026-07-28T09:40:37.715Z",
-      "updatedAt": "2026-08-07T09:50:33.330Z"
+      "updatedAt": "2026-09-25T09:27:08.921Z"
     },
     {
       "id": "6cc8efdd-4006-4997-985f-cc3d63ca5477",
