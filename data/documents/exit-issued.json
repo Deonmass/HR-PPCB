@@ -198,5 +198,15 @@
     "issuedBy": "Administrateur",
     "id": "exit-1790172797179-1b0hy2",
     "createdAt": "2026-09-23T14:13:17.179Z"
+  },
+  {
+    "matricule": "70000049",
+    "employeeName": "PONGO PONGO LIWANDA LUTE CHARLES",
+    "doc": "clearance",
+    "docLabel": "Employee exit clearance form",
+    "fileName": "Employee exit clearance form - PONGO PONGO LIWANDA LUTE CHARLES.docx",
+    "issuedBy": "Administrateur",
+    "id": "exit-1790333708474-sejwx4",
+    "createdAt": "2026-09-25T10:55:08.474Z"
   }
 ]
