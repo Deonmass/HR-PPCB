@@ -1,6 +1,21 @@
 {
   "entries": [
     {
+      "id": "log-001168",
+      "at": "2026-09-25T10:58:20.459Z",
+      "userId": "admin",
+      "userName": "Administrateur",
+      "userEmail": "admin",
+      "module": "documents.exit",
+      "moduleLabel": "Documents",
+      "action": "export",
+      "actionLabel": "Export",
+      "summary": "Document exit « Exit interview form » — LISANGOLA ITOFELE L EMMANUEL (70000137)",
+      "details": "Document exit « Exit interview form » — LISANGOLA ITOFELE L EMMANUEL (70000137)",
+      "undoable": false,
+      "undone": false
+    },
+    {
       "id": "log-001167",
       "at": "2026-09-25T10:58:09.074Z",
       "userId": "admin",
@@ -120601,5 +120616,5 @@
       }
     }
   ],
-  "nextSeq": 1168
+  "nextSeq": 1169
 }
