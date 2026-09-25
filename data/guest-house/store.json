@@ -918,11 +918,11 @@
       "isAgent": false,
       "motif": "AEMI",
       "startDate": "2026-09-19",
-      "endDate": "2026-09-26",
+      "endDate": "2026-09-25",
       "roomId": "8b14162d-ae3b-49a5-bcb6-812c2d8d5b5b",
       "status": "confirmed",
       "notes": "de la part de Mr Jack Ilondo",
-      "updatedAt": "2026-09-24T13:33:22.673Z"
+      "updatedAt": "2026-09-25T15:04:56.481Z"
     },
     {
       "id": "af22a39c-8a82-4ac3-ad20-331c35b2daf3",
@@ -26469,7 +26469,7 @@
       "personName": "Jeremie bueya",
       "motif": "AEMI",
       "startDate": "2026-09-19",
-      "endDate": "2026-09-26",
+      "endDate": "2026-09-25",
       "checkedInAt": "2026-09-21T13:02:21.382Z"
     },
     {
