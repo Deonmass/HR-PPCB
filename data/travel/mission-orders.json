@@ -6324,6 +6324,29 @@
       "recordId": "",
       "source": "import",
       "createdAt": "2026-01-01T00:00:00.000Z"
+    },
+    {
+      "id": "mo-cr-1790334459817",
+      "site": "zamba",
+      "sr": "051",
+      "registerDate": "2026-09-25",
+      "missionRef": "PPCB-DOC-HR-ZA/043/09/2026",
+      "matricule": "70000295",
+      "employeeName": "KINKINIA DIAVEZUKA PELAGIE",
+      "category": "",
+      "title": "Plant HR Manager",
+      "purpose": "Budget Farewell M CHARLES MPONGO MPONGO",
+      "destination": "",
+      "transportMeans": "",
+      "departureDate": "2026-09-25",
+      "returnDate": "2026-09-25",
+      "days": 1,
+      "type": "",
+      "amount": 1970,
+      "observation": "",
+      "recordId": "cr-1790334459817",
+      "source": "app",
+      "createdAt": "2026-09-25T11:07:40.343Z"
     }
   ]
 }
