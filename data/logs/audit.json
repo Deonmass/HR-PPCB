@@ -1,6 +1,21 @@
 {
   "entries": [
     {
+      "id": "log-001164",
+      "at": "2026-09-25T10:55:28.392Z",
+      "userId": "admin",
+      "userName": "Administrateur",
+      "userEmail": "admin",
+      "module": "documents.exit",
+      "moduleLabel": "Documents",
+      "action": "export",
+      "actionLabel": "Export",
+      "summary": "Document exit « Exit interview form » — PONGO PONGO LIWANDA LUTE CHARLES (70000049)",
+      "details": "Document exit « Exit interview form » — PONGO PONGO LIWANDA LUTE CHARLES (70000049)",
+      "undoable": false,
+      "undone": false
+    },
+    {
       "id": "log-001163",
       "at": "2026-09-25T10:55:12.847Z",
       "userId": "admin",
@@ -120541,5 +120556,5 @@
       }
     }
   ],
-  "nextSeq": 1164
+  "nextSeq": 1165
 }
