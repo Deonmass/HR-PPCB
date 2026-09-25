@@ -890,11 +890,11 @@
       "isAgent": false,
       "motif": "AEMI",
       "startDate": "2026-09-19",
-      "endDate": "2026-09-26",
+      "endDate": "2026-09-25",
       "roomId": "e49a08a4-e1db-4824-b8f6-48f1c30c0346",
       "status": "confirmed",
       "notes": "de la part de Mr Jack Ilondo",
-      "updatedAt": "2026-09-24T13:34:45.592Z"
+      "updatedAt": "2026-09-25T15:06:49.896Z"
     },
     {
       "id": "dd47dbd0-7f5a-44e3-b304-d6de93580b28",
@@ -26491,7 +26491,7 @@
       "personName": "Octave Wayekua",
       "motif": "AEMI",
       "startDate": "2026-09-19",
-      "endDate": "2026-09-26",
+      "endDate": "2026-09-25",
       "checkedInAt": "2026-09-21T13:01:27.370Z"
     },
     {
