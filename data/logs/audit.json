@@ -1,6 +1,51 @@
 {
   "entries": [
     {
+      "id": "log-001178",
+      "at": "2026-09-25T15:05:01.022Z",
+      "userId": "admin",
+      "userName": "Administrateur",
+      "userEmail": "admin",
+      "module": "guest-house",
+      "moduleLabel": "Guest house",
+      "action": "update",
+      "actionLabel": "Modification",
+      "entityType": "guest-house.reservation",
+      "entityId": "e1062419-3971-42d3-9851-645b731d0815",
+      "summary": "Modification réservation e1062419-3971-42d3-9851-645b731d0815",
+      "details": "Modification réservation e1062419-3971-42d3-9851-645b731d0815",
+      "before": {
+        "id": "e1062419-3971-42d3-9851-645b731d0815",
+        "numero": "GH-2026-4425",
+        "createdAt": "2026-09-21T12:53:55.945Z",
+        "personName": "Jeremie bueya",
+        "isAgent": false,
+        "motif": "AEMI",
+        "startDate": "2026-09-19",
+        "endDate": "2026-09-26",
+        "roomId": "8b14162d-ae3b-49a5-bcb6-812c2d8d5b5b",
+        "status": "confirmed",
+        "notes": "de la part de Mr Jack Ilondo",
+        "updatedAt": "2026-09-24T13:33:22.673Z"
+      },
+      "after": {
+        "id": "e1062419-3971-42d3-9851-645b731d0815",
+        "numero": "GH-2026-4425",
+        "createdAt": "2026-09-21T12:53:55.945Z",
+        "personName": "Jeremie bueya",
+        "isAgent": false,
+        "motif": "AEMI",
+        "startDate": "2026-09-19",
+        "endDate": "2026-09-25",
+        "roomId": "8b14162d-ae3b-49a5-bcb6-812c2d8d5b5b",
+        "status": "confirmed",
+        "notes": "de la part de Mr Jack Ilondo",
+        "updatedAt": "2026-09-25T15:04:56.481Z"
+      },
+      "undoable": true,
+      "undone": false
+    },
+    {
       "id": "log-001177",
       "at": "2026-09-25T14:15:19.869Z",
       "userId": "Marie.Yowali",
@@ -120905,5 +120950,5 @@
       }
     }
   ],
-  "nextSeq": 1178
+  "nextSeq": 1179
 }
