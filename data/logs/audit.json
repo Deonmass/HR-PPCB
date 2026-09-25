@@ -1,6 +1,143 @@
 {
   "entries": [
     {
+      "id": "log-001171",
+      "at": "2026-09-25T11:07:41.499Z",
+      "userId": "admin",
+      "userName": "Administrateur",
+      "userEmail": "admin",
+      "module": "travel.etablir",
+      "moduleLabel": "Cash request",
+      "action": "create",
+      "actionLabel": "Création",
+      "entityType": "travel.cash-request",
+      "entityId": "cr-1790334459817",
+      "summary": "Génération documents voyage PPCB-DOC-HR-ZA/043/09/2026",
+      "details": "Documents générés (SSE) pour KINKINIA DIAVEZUKA PELAGIE (PPCB-DOC-HR-ZA/043/09/2026)",
+      "after": {
+        "id": "cr-1790334459817",
+        "type": "cash-request",
+        "createdAt": "2026-09-25T11:07:40.343Z",
+        "missionRef": "PPCB-DOC-HR-ZA/043/09/2026",
+        "employeeMatricule": "70000295",
+        "employeeName": "KINKINIA DIAVEZUKA PELAGIE",
+        "employeeDepartment": "Human Resources",
+        "costCenter": "KM5413",
+        "requestorLine": "KINKINIA DIAVEZUKA PELAGIE (70000295)        Department : Human Resources        Coast center : KM5413",
+        "objet": "Budget Farewell M CHARLES MPONGO MPONGO",
+        "requestDate": "2026-09-25",
+        "travel": {
+          "position": "Plant HR Manager",
+          "department": "Human Resources",
+          "tripPurpose": "Budget Farewell M CHARLES MPONGO MPONGO",
+          "costCenter": "KM5413",
+          "documentDate": "2026-09-25",
+          "departureDate": "2026-09-25",
+          "departurePlace": "",
+          "destinationPlace": "",
+          "returnDate": "2026-09-25",
+          "peopleCount": 1,
+          "companyName": "PPC Barnet Manufacturing SA",
+          "departmentToWorkWith": "",
+          "contactPerson": "",
+          "transportMeans": "",
+          "paymentOrderSignatory": "",
+          "budgetLines": [
+            {
+              "label": "Cadeaux PPC à Charles : Trophée en bois en forme d'éléphant",
+              "amount": 100
+            },
+            {
+              "label": "Cadeaux PPC à Charles : Cristal de mérite",
+              "amount": 70
+            },
+            {
+              "label": "Cadeaux PPC à Emmanuel : Cristal de mérite",
+              "amount": 70
+            },
+            {
+              "label": "Restauration Ets FAVOUR (60 x 20)",
+              "amount": 1200
+            },
+            {
+              "label": "Boisson (60 x 3)",
+              "amount": 180
+            },
+            {
+              "label": "Décoration coin photo & location des chaises & espace",
+              "amount": 150
+            },
+            {
+              "label": "Couverture médiatique",
+              "amount": 200
+            }
+          ],
+          "isInternationalTravel": false,
+          "missionSite": "zamba",
+          "missionCategory": "",
+          "missionType": "",
+          "missionObservation": ""
+        },
+        "lines": [
+          {
+            "ref": "1",
+            "description": "Cadeaux PPC à Charles : Trophée en bois en forme d'éléphant",
+            "currency": "USD",
+            "amount": 100
+          },
+          {
+            "ref": "2",
+            "description": "Cadeaux PPC à Charles : Cristal de mérite",
+            "currency": "USD",
+            "amount": 70
+          },
+          {
+            "ref": "3",
+            "description": "Cadeaux PPC à Emmanuel : Cristal de mérite",
+            "currency": "USD",
+            "amount": 70
+          },
+          {
+            "ref": "4",
+            "description": "Restauration Ets FAVOUR (60 x 20)",
+            "currency": "USD",
+            "amount": 1200
+          },
+          {
+            "ref": "5",
+            "description": "Boisson (60 x 3)",
+            "currency": "USD",
+            "amount": 180
+          },
+          {
+            "ref": "6",
+            "description": "Décoration coin photo & location des chaises & espace",
+            "currency": "USD",
+            "amount": 150
+          },
+          {
+            "ref": "7",
+            "description": "Couverture médiatique",
+            "currency": "USD",
+            "amount": 200
+          }
+        ],
+        "total": 1970,
+        "fileName": "Cash Request - KINKINIA DIAVEZUKA PELAGIE.xlsx",
+        "filePath": "/tmp/hr-rh-app/travel/output/Cash Request - KINKINIA DIAVEZUKA PELAGIE.xlsx",
+        "files": [
+          {
+            "type": "cash-request",
+            "fileName": "Cash Request - KINKINIA DIAVEZUKA PELAGIE.xlsx",
+            "filePath": "/tmp/hr-rh-app/travel/output/Cash Request - KINKINIA DIAVEZUKA PELAGIE.xlsx"
+          }
+        ],
+        "saveDirectory": "/tmp/hr-rh-app/travel/output"
+      },
+      "undoable": false,
+      "undone": false
+    },
+    {
       "id": "log-001170",
       "at": "2026-09-25T10:58:40.270Z",
       "userId": "admin",
@@ -120646,5 +120783,5 @@
       }
     }
   ],
-  "nextSeq": 1171
+  "nextSeq": 1172
 }
