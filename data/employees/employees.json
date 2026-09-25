@@ -792,7 +792,7 @@
       "nom": "BOMPETA MPINGO ERICK",
       "departement": "Sales and Marketing",
       "grade": "C1",
-      "jobTitle": "CEC Officer",
+      "jobTitle": "Customer Relationship Officer",
       "localisation": "Zamba",
       "service": "CEC",
       "company": "PPC Barnet DRC Manufacturing",
@@ -832,7 +832,7 @@
       "cnss": "11991550905L",
       "nif": "B2222595L",
       "createdAt": "2026-07-28T09:40:37.715Z",
-      "updatedAt": "2026-09-20T13:41:50.589Z"
+      "updatedAt": "2026-09-25T13:47:30.370Z"
     },
     {
       "id": "4fde4528-dabf-4def-81b4-335d9047f6ab",
@@ -1278,7 +1278,7 @@
       "nom": "GLODY BENGESHA ELONGO",
       "departement": "Sales and Marketing",
       "grade": "C2",
-      "jobTitle": "Customer Relationship Officer",
+      "jobTitle": "Marketing Officer",
       "localisation": "Kinshasa",
       "service": "",
       "company": "PPC Barnet DRC Manufacturing",
@@ -1294,7 +1294,7 @@
       "personnelSubArea": "",
       "employeeSubGroup": "",
       "payrollArea": "",
-      "position": "Customer Relationship Officer",
+      "position": "Marketing Officer",
       "departmentHr": "",
       "lineManagerName": "MUZILA EBALOSONG Papy",
       "lineManagerPosition": "Marketing Manager",
@@ -1318,7 +1318,7 @@
       "cnss": "",
       "nif": "",
       "createdAt": "2026-08-27T14:00:27.779Z",
-      "updatedAt": "2026-09-01T07:37:28.792Z"
+      "updatedAt": "2026-09-25T13:47:30.370Z"
     },
     {
       "id": "366da121-4839-40b0-a73d-31c55e0bc8ae",
@@ -2237,7 +2237,7 @@
       "nom": "KIAMUENEDIOKO KINSOMONA HORNEL",
       "departement": "Sales and Marketing",
       "grade": "C2",
-      "jobTitle": "Customer Relationship Clerk",
+      "jobTitle": "Customer Relationship Admin",
       "localisation": "Zamba",
       "service": "CEC",
       "company": "PPC Barnet DRC Manufacturing",
@@ -2277,7 +2277,7 @@
       "cnss": "21993390332G",
       "nif": "B2222613F",
       "createdAt": "2026-07-28T09:40:37.715Z",
-      "updatedAt": "2026-09-20T13:38:28.576Z"
+      "updatedAt": "2026-09-25T13:47:30.370Z"
     },
     {
       "id": "2edbd6f8-bab8-4ed5-a08c-91244e2e9fe7",
@@ -3506,7 +3506,7 @@
       "nom": "MANANGA MAMBULU JOSEPH",
       "departement": "Sales and Marketing",
       "grade": "C1",
-      "jobTitle": "CEC Officer",
+      "jobTitle": "Customer Relationship Admin",
       "localisation": "Zamba",
       "service": "CEC",
       "company": "PPC Barnet DRC Manufacturing",
@@ -3546,7 +3546,7 @@
       "cnss": "11979504087S",
       "nif": "B2222632B",
       "createdAt": "2026-07-28T09:40:37.715Z",
-      "updatedAt": "2026-09-20T13:40:39.111Z"
+      "updatedAt": "2026-09-25T13:47:30.370Z"
     },
     {
       "id": "401cde65-41e9-4a47-bf1d-cd340def5ff2",

@@ -1012,7 +1012,7 @@
       "nom": "BOMPETA MPINGO ERICK",
       "departement": "Human Resources",
       "grade": "C1",
-      "jobTitle": "CEC Officer",
+      "jobTitle": "Customer Relationship Officer",
       "localisation": "Zamba",
       "documents": {
         "Copie carte electeur passeport": "Y",
@@ -1058,7 +1058,8 @@
       "periodeEssaiMois": null,
       "dateFinPeriodeEssai": "",
       "dateFinContrat": "",
-      "raisonExit": "NA"
+      "raisonExit": "NA",
+      "updatedAt": "2026-09-25T13:47:30.370Z"
     },
     {
       "matricule": "70000296",
@@ -2708,7 +2709,7 @@
       "nom": "KIAMUENEDIOKO KINSOMONA HORNEL",
       "departement": "Human Resources",
       "grade": "C2",
-      "jobTitle": "Customer Relationship Clerk",
+      "jobTitle": "Customer Relationship Admin",
       "localisation": "Zamba",
       "documents": {
         "Copie carte electeur passeport": "Y",
@@ -2754,7 +2755,8 @@
       "periodeEssaiMois": null,
       "dateFinPeriodeEssai": "",
       "dateFinContrat": "",
-      "raisonExit": "NA"
+      "raisonExit": "NA",
+      "updatedAt": "2026-09-25T13:47:30.370Z"
     },
     {
       "matricule": "70000176",
@@ -4245,7 +4247,7 @@
       "nom": "MANANGA MAMBULU JOSEPH",
       "departement": "Human Resources",
       "grade": "C1",
-      "jobTitle": "CEC Officer",
+      "jobTitle": "Customer Relationship Admin",
       "localisation": "Zamba",
       "documents": {
         "Copie carte electeur passeport": "Y",
@@ -4291,7 +4293,8 @@
       "periodeEssaiMois": null,
       "dateFinPeriodeEssai": "",
       "dateFinContrat": "",
-      "raisonExit": "NA"
+      "raisonExit": "NA",
+      "updatedAt": "2026-09-25T13:47:30.370Z"
     },
     {
       "matricule": "70000175",
