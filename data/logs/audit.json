@@ -1,6 +1,21 @@
 {
   "entries": [
     {
+      "id": "log-001156",
+      "at": "2026-09-25T08:52:47.735Z",
+      "userId": "admin",
+      "userName": "Administrateur",
+      "userEmail": "admin",
+      "module": "employees",
+      "moduleLabel": "Employés",
+      "action": "export",
+      "actionLabel": "Export",
+      "summary": "Export employés (EMPLOYEES_HR_2026-09-25.xlsx)",
+      "details": "Fichier Excel exporté : EMPLOYEES_HR_2026-09-25.xlsx",
+      "undoable": false,
+      "undone": false
+    },
+    {
       "id": "log-001155",
       "at": "2026-09-25T07:08:50.488Z",
       "userId": "karine.mvutu@ppcdrc.cd",
@@ -120019,5 +120034,5 @@
       }
     }
   ],
-  "nextSeq": 1156
+  "nextSeq": 1157
 }
