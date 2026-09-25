@@ -1,6 +1,21 @@
 {
   "entries": [
     {
+      "id": "log-001165",
+      "at": "2026-09-25T10:55:38.296Z",
+      "userId": "admin",
+      "userName": "Administrateur",
+      "userEmail": "admin",
+      "module": "documents.exit",
+      "moduleLabel": "Documents",
+      "action": "export",
+      "actionLabel": "Export",
+      "summary": "Document exit « Attestation de fin de service » — PONGO PONGO LIWANDA LUTE CHARLES (70000049)",
+      "details": "Document exit « Attestation de fin de service » — PONGO PONGO LIWANDA LUTE CHARLES (70000049)",
+      "undoable": false,
+      "undone": false
+    },
+    {
       "id": "log-001164",
       "at": "2026-09-25T10:55:28.392Z",
       "userId": "admin",
@@ -120556,5 +120571,5 @@
       }
     }
   ],
-  "nextSeq": 1165
+  "nextSeq": 1166
 }
