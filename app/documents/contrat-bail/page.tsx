@@ -265,7 +265,7 @@ export default function ContratBailPage() {
         </div>
 
         {can('documents.contrat-bail', 'create') ? (
-          <div className="exit-docs-actions" style={{ marginTop: '1.25rem' }}>
+          <div className="exit-docs-actions">
             <button
               type="button"
               className="btn btn-primary"
