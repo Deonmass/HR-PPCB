@@ -1,6 +1,21 @@
 {
   "entries": [
     {
+      "id": "log-001172",
+      "at": "2026-09-25T11:07:49.889Z",
+      "userId": "admin",
+      "userName": "Administrateur",
+      "userEmail": "admin",
+      "module": "travel.etablir",
+      "moduleLabel": "Cash request",
+      "action": "export",
+      "actionLabel": "Export",
+      "summary": "Téléchargement document voyage PPCB-DOC-HR-ZA/043/09/2026",
+      "details": "Fichier Cash Request - KINKINIA DIAVEZUKA PELAGIE.xlsx (cash-request)",
+      "undoable": false,
+      "undone": false
+    },
+    {
       "id": "log-001171",
       "at": "2026-09-25T11:07:41.499Z",
       "userId": "admin",
@@ -120783,5 +120798,5 @@
       }
     }
   ],
-  "nextSeq": 1172
+  "nextSeq": 1173
 }
