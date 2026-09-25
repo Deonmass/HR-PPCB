@@ -1,6 +1,21 @@
 {
   "entries": [
     {
+      "id": "log-001162",
+      "at": "2026-09-25T10:12:51.810Z",
+      "userId": "admin",
+      "userName": "Administrateur",
+      "userEmail": "admin",
+      "module": "training",
+      "moduleLabel": "training",
+      "action": "update",
+      "actionLabel": "Modification",
+      "summary": "Mise à jour KPIs Training",
+      "details": "Mise à jour KPIs Training",
+      "undoable": false,
+      "undone": false
+    },
+    {
       "id": "log-001161",
       "at": "2026-09-25T10:12:39.381Z",
       "userId": "admin",
@@ -120511,5 +120526,5 @@
       }
     }
   ],
-  "nextSeq": 1162
+  "nextSeq": 1163
 }
