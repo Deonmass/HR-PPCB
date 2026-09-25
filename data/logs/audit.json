@@ -1,6 +1,44 @@
 {
   "entries": [
     {
+      "id": "log-001154",
+      "at": "2026-09-25T07:04:54.169Z",
+      "userId": "karine.mvutu@ppcdrc.cd",
+      "userName": "Karine Mvutu",
+      "userEmail": "karine.mvutu@ppcdrc.cd",
+      "module": "sante",
+      "moduleLabel": "Santé",
+      "action": "create",
+      "actionLabel": "Création",
+      "entityType": "sante.visit",
+      "entityId": "sante-mugm8lj8-dcvv2d",
+      "summary": "Cas santé — DIMENENE LUZAYADIO PAMPHIL · SYNDROME DOULOUREUX DE LA JAMBE DROITE",
+      "details": "Cas santé — DIMENENE LUZAYADIO PAMPHIL · SYNDROME DOULOUREUX DE LA JAMBE DROITE",
+      "after": {
+        "id": "sante-mugm8lj8-dcvv2d",
+        "date": "2026-09-22",
+        "nom": "DIMENENE",
+        "postnom": "LUZAYADIO PAMPHIL",
+        "sexe": "M",
+        "age": 54,
+        "typeMalade": "AGENT",
+        "pathologie": "SYNDROME DOULOUREUX DE LA JAMBE DROITE",
+        "traitement": "ANTI INFLAMATOIRE",
+        "reference": "NON",
+        "year": 2026,
+        "month": 9,
+        "employeeMatricule": "70000099",
+        "employeeNom": "DIMENENE LUZAYADIO PAMPHIL",
+        "dependantId": null,
+        "createdAt": "2026-09-25T07:04:51.716Z",
+        "updatedAt": "2026-09-25T07:04:51.716Z",
+        "createdBy": "karine.mvutu@ppcdrc.cd",
+        "updatedBy": "karine.mvutu@ppcdrc.cd"
+      },
+      "undoable": false,
+      "undone": false
+    },
+    {
       "id": "log-001153",
       "at": "2026-09-25T07:03:18.427Z",
       "userId": "karine.mvutu@ppcdrc.cd",
@@ -119943,5 +119981,5 @@
       }
     }
   ],
-  "nextSeq": 1154
+  "nextSeq": 1155
 }
