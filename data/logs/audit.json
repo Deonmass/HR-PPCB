@@ -1,6 +1,21 @@
 {
   "entries": [
     {
+      "id": "log-001169",
+      "at": "2026-09-25T10:58:30.101Z",
+      "userId": "admin",
+      "userName": "Administrateur",
+      "userEmail": "admin",
+      "module": "documents.exit",
+      "moduleLabel": "Documents",
+      "action": "export",
+      "actionLabel": "Export",
+      "summary": "Document exit « Attestation de fin de service » — LISANGOLA ITOFELE L EMMANUEL (70000137)",
+      "details": "Document exit « Attestation de fin de service » — LISANGOLA ITOFELE L EMMANUEL (70000137)",
+      "undoable": false,
+      "undone": false
+    },
+    {
       "id": "log-001168",
       "at": "2026-09-25T10:58:20.459Z",
       "userId": "admin",
@@ -120616,5 +120631,5 @@
       }
     }
   ],
-  "nextSeq": 1169
+  "nextSeq": 1170
 }
