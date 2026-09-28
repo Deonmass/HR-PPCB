@@ -1,6 +1,21 @@
 {
   "entries": [
     {
+      "id": "log-001187",
+      "at": "2026-09-28T14:15:10.097Z",
+      "userId": "admin",
+      "userName": "Administrateur",
+      "userEmail": "admin",
+      "module": "documents.exit",
+      "moduleLabel": "Documents",
+      "action": "export",
+      "actionLabel": "Export",
+      "summary": "Document exit « User removal form » — TULENGI KASIAMA REAGAN (70000058)",
+      "details": "Document exit « User removal form » — TULENGI KASIAMA REAGAN (70000058)",
+      "undoable": false,
+      "undone": false
+    },
+    {
       "id": "log-001186",
       "at": "2026-09-28T14:14:58.508Z",
       "userId": "admin",
@@ -121188,5 +121203,5 @@
       }
     }
   ],
-  "nextSeq": 1187
+  "nextSeq": 1188
 }
