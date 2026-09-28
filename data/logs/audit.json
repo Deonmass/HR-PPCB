@@ -1,6 +1,21 @@
 {
   "entries": [
     {
+      "id": "log-001184",
+      "at": "2026-09-28T14:14:34.868Z",
+      "userId": "admin",
+      "userName": "Administrateur",
+      "userEmail": "admin",
+      "module": "documents.exit",
+      "moduleLabel": "Documents",
+      "action": "export",
+      "actionLabel": "Export",
+      "summary": "Document exit « Employee exit clearance form » — TULENGI KASIAMA REAGAN (70000058)",
+      "details": "Document exit « Employee exit clearance form » — TULENGI KASIAMA REAGAN (70000058)",
+      "undoable": false,
+      "undone": false
+    },
+    {
       "id": "log-001183",
       "at": "2026-09-27T18:37:36.766Z",
       "userId": "Serge.Muakasa@ppcdrc.cd",
@@ -121143,5 +121158,5 @@
       }
     }
   ],
-  "nextSeq": 1184
+  "nextSeq": 1185
 }
