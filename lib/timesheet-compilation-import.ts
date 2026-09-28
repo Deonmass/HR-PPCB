@@ -78,9 +78,11 @@ export function parseCompilationExportBuffer(
   let sheetName: string | undefined;
   if (meta?.sheetName) {
     if (typeof meta.sheetName === 'string') {
-      sheetName = wb.SheetNames.find((n) => n === meta.sheetName) ?? meta.sheetName;
+      const exact = meta.sheetName;
+      sheetName = wb.SheetNames.find((n) => n === exact) ?? exact;
     } else {
-      sheetName = wb.SheetNames.find((n) => meta.sheetName!.test(n));
+      const pattern = meta.sheetName;
+      sheetName = wb.SheetNames.find((n) => pattern.test(n));
     }
   }
   if (!sheetName) {
