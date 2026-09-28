@@ -1,6 +1,21 @@
 {
   "entries": [
     {
+      "id": "log-001186",
+      "at": "2026-09-28T14:14:58.508Z",
+      "userId": "admin",
+      "userName": "Administrateur",
+      "userEmail": "admin",
+      "module": "documents.exit",
+      "moduleLabel": "Documents",
+      "action": "export",
+      "actionLabel": "Export",
+      "summary": "Document exit « Attestation de fin de service » — TULENGI KASIAMA REAGAN (70000058)",
+      "details": "Document exit « Attestation de fin de service » — TULENGI KASIAMA REAGAN (70000058)",
+      "undoable": false,
+      "undone": false
+    },
+    {
       "id": "log-001185",
       "at": "2026-09-28T14:14:47.065Z",
       "userId": "admin",
@@ -121173,5 +121188,5 @@
       }
     }
   ],
-  "nextSeq": 1186
+  "nextSeq": 1187
 }
