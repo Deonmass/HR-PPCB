@@ -298,5 +298,15 @@
     "issuedBy": "Administrateur",
     "id": "exit-1790604883079-hmwrfo",
     "createdAt": "2026-09-28T14:14:43.079Z"
+  },
+  {
+    "matricule": "70000058",
+    "employeeName": "TULENGI KASIAMA REAGAN",
+    "doc": "attestation-fin-service",
+    "docLabel": "Attestation de fin de service",
+    "fileName": "Attestation de fin de service - TULENGI KASIAMA REAGAN.docx",
+    "issuedBy": "Administrateur",
+    "id": "exit-1790604894519-k8ze93",
+    "createdAt": "2026-09-28T14:14:54.519Z"
   }
 ]
