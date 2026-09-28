@@ -278,5 +278,15 @@
     "issuedBy": "Administrateur",
     "id": "exit-1790333917097-2s0n73",
     "createdAt": "2026-09-25T10:58:37.097Z"
+  },
+  {
+    "matricule": "70000058",
+    "employeeName": "TULENGI KASIAMA REAGAN",
+    "doc": "clearance",
+    "docLabel": "Employee exit clearance form",
+    "fileName": "Employee exit clearance form - TULENGI KASIAMA REAGAN.docx",
+    "issuedBy": "Administrateur",
+    "id": "exit-1790604870052-khh4t2",
+    "createdAt": "2026-09-28T14:14:30.052Z"
   }
 ]
