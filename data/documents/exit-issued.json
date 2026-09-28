@@ -288,5 +288,15 @@
     "issuedBy": "Administrateur",
     "id": "exit-1790604870052-khh4t2",
     "createdAt": "2026-09-28T14:14:30.052Z"
+  },
+  {
+    "matricule": "70000058",
+    "employeeName": "TULENGI KASIAMA REAGAN",
+    "doc": "interview",
+    "docLabel": "Exit interview form",
+    "fileName": "Exit interview form - TULENGI KASIAMA REAGAN.docx",
+    "issuedBy": "Administrateur",
+    "id": "exit-1790604883079-hmwrfo",
+    "createdAt": "2026-09-28T14:14:43.079Z"
   }
 ]
