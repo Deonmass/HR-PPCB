@@ -10375,12 +10375,17 @@
           "menuId": "employes.contractants",
           "label": "Contractants",
           "actions": {
-            "view": false,
-            "create": false,
-            "edit": false,
-            "delete": false,
-            "export": false,
-            "undo": false
+            "view": true,
+            "create": true,
+            "edit": true,
+            "delete": true,
+            "export": true,
+            "undo": true
+          },
+          "contractantScope": {
+            "contractantIds": [
+              "9"
+            ]
           }
         },
         {
