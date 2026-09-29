@@ -1,6 +1,49 @@
 {
   "entries": [
     {
+      "id": "log-001211",
+      "at": "2026-09-29T12:54:22.485Z",
+      "userId": "mukwilunaomie@gmail.com",
+      "userName": "Naomie Mukwilu",
+      "userEmail": "mukwilunaomie@gmail.com",
+      "module": "contractants",
+      "moduleLabel": "contractants",
+      "action": "update",
+      "actionLabel": "Modification",
+      "entityType": "contractant-employee",
+      "entityId": "677",
+      "summary": "Modification employé contractant — MBUNGA NTOTO GUYLAIN",
+      "details": "Modification employé contractant — MBUNGA NTOTO GUYLAIN",
+      "after": {
+        "id": "677",
+        "nom": "MBUNGA NTOTO GUYLAIN",
+        "sexe": "M",
+        "lieuAffectation": "Zamba",
+        "fonction": "Opérateur Wheel Loader",
+        "departement": "Opérations",
+        "service": "",
+        "telephone": "892009637",
+        "etatCivil": "M",
+        "statut": "Permanent",
+        "dateEmbauche": "",
+        "dateSortie": "2026-09-28",
+        "managerEmployeeId": "",
+        "family": [],
+        "matriculePpc": "",
+        "numeroCnss": "",
+        "numeroCompte": "",
+        "banque": "",
+        "nbDependants": 0,
+        "txJr": 0,
+        "coutTransport": 0,
+        "payrollSite": "",
+        "createdAt": "2026-08-15T09:22:38.385Z",
+        "updatedAt": "2026-09-29T12:54:18.224Z"
+      },
+      "undoable": false,
+      "undone": false
+    },
+    {
       "id": "log-001210",
       "at": "2026-09-29T12:52:59.918Z",
       "userId": "mukwilunaomie@gmail.com",
@@ -123692,5 +123735,5 @@
       }
     }
   ],
-  "nextSeq": 1211
+  "nextSeq": 1212
 }
