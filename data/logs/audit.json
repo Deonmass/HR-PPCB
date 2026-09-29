@@ -1,6 +1,21 @@
 {
   "entries": [
     {
+      "id": "log-001218",
+      "at": "2026-09-29T13:41:27.490Z",
+      "userId": "espoir.vuvu@ppcdrc.cd",
+      "userName": "Espoir Vuvu",
+      "userEmail": "espoir.vuvu@ppcdrc.cd",
+      "module": "auth",
+      "moduleLabel": "Authentification",
+      "action": "logout",
+      "actionLabel": "Déconnexion",
+      "summary": "Déconnexion espoir.vuvu@ppcdrc.cd",
+      "details": "Déconnexion de Espoir Vuvu (espoir.vuvu@ppcdrc.cd)",
+      "undoable": false,
+      "undone": false
+    },
+    {
       "id": "log-001217",
       "at": "2026-09-29T13:41:19.391Z",
       "userId": "admin",
@@ -127786,5 +127801,5 @@
       }
     }
   ],
-  "nextSeq": 1218
+  "nextSeq": 1219
 }
