@@ -125,6 +125,7 @@ function toEmployeeRecord(employee: Employee, now: string, id: string = randomUU
     datePassageCdi: employee.datePassageCdi || '',
     cnss: employee.cnss || '',
     nif: employee.nif || '',
+    telephone: employee.telephone || '',
     createdAt: now,
     updatedAt: now,
   };
@@ -139,10 +140,14 @@ function applyContractDefaults(employee: Employee): Employee {
     employee.appointmentDate || '',
     dureeContratMois,
   );
+  // Date saisie prioritaire : elle peut différer de durée × date d'embauche.
   let dateFinContrat =
-    (dureeContratMois != null && dureeContratMois > 0 && finContratFromDuree)
+    String(employee.dateFinContrat || '').trim()
+    || ((dureeContratMois != null && dureeContratMois > 0 && finContratFromDuree)
       ? finContratFromDuree
-      : (employee.dateFinContrat || finContratFromDuree || '');
+      : '')
+    || finContratFromDuree
+    || '';
   let raisonExit = employee.raisonExit || '';
 
   if (isRealExitRaison(raisonExit)) {
@@ -360,6 +365,7 @@ function composeEmployee(
     datePassageCdi: record.datePassageCdi || '',
     cnss: record.cnss || '',
     nif: record.nif || '',
+    telephone: record.telephone || '',
   });
 }
 
@@ -564,6 +570,39 @@ export async function setEmployeeLocalisationOnly(
   target.updatedAt = now;
   await writeAllStores(employeesStore, exitsStore, docsStore);
   return true;
+}
+
+/** Écrit les MSISDN airtime sur les fiches (actifs et sorties), sans autre champ. */
+export async function applyAirtimePhones(
+  updates: { matricule: string; telephone: string }[],
+): Promise<number> {
+  const pending = updates.filter((item) => item.matricule.trim() && item.telephone.trim());
+  if (!pending.length) return 0;
+
+  await ensureMigrated();
+  const [employeesStore, exitsStore, docsStore] = await Promise.all([
+    readEmployeesStore(),
+    readExitsStore(),
+    readCheckDocumentsStore(),
+  ]);
+  const byMatricule = new Map(pending.map((item) => [item.matricule.trim(), item.telephone.trim()]));
+  const now = new Date().toISOString();
+  let changed = 0;
+
+  const patch = (records: { matricule: string; telephone?: string; updatedAt: string }[]) => {
+    for (const record of records) {
+      const next = byMatricule.get(record.matricule);
+      if (!next || (record.telephone || '') === next) continue;
+      record.telephone = next;
+      record.updatedAt = now;
+      changed += 1;
+    }
+  };
+
+  patch(employeesStore.employees);
+  patch(exitsStore.exits);
+  if (changed > 0) await writeAllStores(employeesStore, exitsStore, docsStore);
+  return changed;
 }
 
 export async function deleteEmployee(matricule: string): Promise<boolean> {

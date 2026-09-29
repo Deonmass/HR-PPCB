@@ -15,6 +15,25 @@ export const CONTRACTANT_ETATS_CIVILS = [
 
 export type ContractantEtatCivilId = (typeof CONTRACTANT_ETATS_CIVILS)[number]['id'];
 
+export const CONTRACTANT_FAMILY_LIENS = [
+  'Conjoint(e)',
+  'Enfant',
+  'Père',
+  'Mère',
+  'Frère',
+  'Sœur',
+  'Autre',
+] as const;
+export type ContractantFamilyLien = (typeof CONTRACTANT_FAMILY_LIENS)[number];
+
+export interface ContractantFamilyMember {
+  id: string;
+  nom: string;
+  lien: ContractantFamilyLien | string;
+  dateNaissance: string;
+  sexe: ContractantSexe | '';
+}
+
 export interface ContractantEmployee {
   id: string;
   /** Noms et post-noms */
@@ -24,10 +43,32 @@ export interface ContractantEmployee {
   lieuAffectation: string;
   fonction: string;
   departement: string;
+  /** Service rattaché au département (paramètres). */
+  service: string;
   telephone: string;
   etatCivil: ContractantEtatCivilId;
   /** Permanent ou Journalier */
   statut: ContractantEmployeeStatut;
+  /** Date d’embauche (YYYY-MM-DD). */
+  dateEmbauche: string;
+  /** Date de sortie si quitté (YYYY-MM-DD). */
+  dateSortie: string;
+  /** Id d’un autre employé du même contractant (N+1) pour l’organigramme. */
+  managerEmployeeId: string;
+  family: ContractantFamilyMember[];
+  /** Matricule PPC (ex. CHRS_PPC0118). */
+  matriculePpc: string;
+  numeroCnss: string;
+  numeroCompte: string;
+  banque: string;
+  /** Nombre de dépendants fiscaux (rabais IPR). */
+  nbDependants: number;
+  /** Taux journalier USD (Tx/Jr). */
+  txJr: number;
+  /** Coût transport / jour USD. */
+  coutTransport: number;
+  /** Site usine / hors-site / les deux. */
+  payrollSite: 'site' | 'hors-site' | '';
   createdAt: string;
   updatedAt: string;
 }
@@ -53,9 +94,22 @@ export interface ContractantEmployeeInput {
   lieuAffectation: string;
   fonction: string;
   departement: string;
+  service?: string;
   telephone: string;
   etatCivil: ContractantEtatCivilId;
   statut: ContractantEmployeeStatut;
+  dateEmbauche?: string;
+  dateSortie?: string;
+  managerEmployeeId?: string;
+  family?: ContractantFamilyMember[];
+  matriculePpc?: string;
+  numeroCnss?: string;
+  numeroCompte?: string;
+  banque?: string;
+  nbDependants?: number;
+  txJr?: number;
+  coutTransport?: number;
+  payrollSite?: 'site' | 'hors-site' | '';
 }
 
 export function isContractantSexe(value: string): value is ContractantSexe {
@@ -72,6 +126,14 @@ export function isContractantEmployeeStatut(value: string): value is Contractant
 
 export function etatCivilLabel(id: string): string {
   return CONTRACTANT_ETATS_CIVILS.find((item) => item.id === id)?.label || id || '—';
+}
+
+/** Matricule synthétique pour timesheets / planning. */
+export function contractantEmployeeMatricule(
+  contractantId: string,
+  employeeId: string,
+): string {
+  return `CTR-${contractantId}-${employeeId}`;
 }
 
 /** Icône / couleur de carte selon le type de service. */

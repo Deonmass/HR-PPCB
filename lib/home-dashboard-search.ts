@@ -92,6 +92,7 @@ function moduleShortcuts(menus: MenuPermission[]): Array<{
     { title: 'Guest house', subtitle: 'Réservations guest house', href: '/village/guest-house', menuIds: ['village.guest-house'] },
     { title: 'Heures supplémentaires', subtitle: 'Timesheet OT', href: '/heures-supplementaires', menuIds: ['employes.heures'] },
     { title: 'Congé', subtitle: 'Planning journalier et soldes', href: '/employes/conge', menuIds: ['employes.conge'] },
+    { title: 'Airtime', subtitle: 'Numéros, quota et carte par site', href: '/employes/airtime', menuIds: ['employes.airtime'] },
     { title: 'Utilisateurs', subtitle: 'Comptes application', href: '/parametres/utilisateurs', menuIds: ['settings.utilisateurs'] },
     { title: 'Permissions', subtitle: 'Droits d’accès', href: '/parametres/permissions', menuIds: ['settings.permissions'] },
     { title: 'Départements', subtitle: 'Référentiel RH', href: '/parametres/departements', menuIds: ['settings.departements'] },

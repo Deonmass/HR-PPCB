@@ -1,6 +1,7 @@
 'use client';
 
 import { useMemo, useState } from 'react';
+import AirtimeDrcMap, { type AirtimePlaceStat } from '@/components/airtime/AirtimeDrcMap';
 import DashboardListModal, {
   type DashboardListColumn,
   type DashboardListRow,
@@ -43,6 +44,8 @@ interface DrillState {
   kind: DrillKind;
   label: string;
   value?: string;
+  /** Pour un site : Hommes, Femmes, ou agents sans sexe. */
+  sexe?: 'M' | 'F' | 'none';
   /** Pour drill mois : 1–12 */
   month?: number;
   year?: number;
@@ -51,6 +54,10 @@ interface DrillState {
 interface Props {
   contractants: Contractant[];
   employees: FlatEmployee[];
+  /** Masquer le filtre contractant (espace mono-contractant). */
+  hideContractantFilter?: boolean;
+  /** Mode compact (accueil espace contractant). */
+  compact?: boolean;
 }
 
 const EMP_COLUMNS: DashboardListColumn[] = [
@@ -60,6 +67,7 @@ const EMP_COLUMNS: DashboardListColumn[] = [
   { key: 'lieu', label: 'Lieu' },
   { key: 'fonction', label: 'Fonction' },
   { key: 'departement', label: 'Dépt.' },
+  { key: 'typeService', label: 'Service' },
   { key: 'telephone', label: 'Tél.' },
   { key: 'etatCivil', label: 'État civil' },
   { key: 'statut', label: 'Statut' },
@@ -167,6 +175,7 @@ function toEmployeeRows(list: FlatEmployee[]): DashboardListRow[] {
       lieu: e.lieuAffectation || '—',
       fonction: e.fonction || '—',
       departement: e.departement || '—',
+      typeService: e.typeService || '—',
       telephone: e.telephone || '—',
       etatCivil: etatCivilLabel(e.etatCivil),
       statut: e.statut,
@@ -189,7 +198,12 @@ function etatLabelToCode(label: string): string {
   return known?.id || label;
 }
 
-export default function ContractantsDashboard({ contractants, employees }: Props) {
+export default function ContractantsDashboard({
+  contractants,
+  employees,
+  hideContractantFilter = false,
+  compact = false,
+}: Props) {
   const currentYear = new Date().getFullYear();
   const [contractantFilter, setContractantFilter] = useState('');
   const [localisationFilter, setLocalisationFilter] = useState('');
@@ -283,7 +297,6 @@ export default function ContractantsDashboard({ contractants, employees }: Props
       parSexe: countBy(filteredEmployees, (e) => e.sexe),
       parStatut: countBy(filteredEmployees, (e) => e.statut),
       parEtatCivil: countBy(filteredEmployees, (e) => e.etatCivil),
-      parLieu: countBy(filteredEmployees, (e) => e.lieuAffectation),
       parDepartement: countBy(filteredEmployees, (e) => e.departement),
       parFonction: countBy(filteredEmployees, (e) => e.fonction),
       parService: countBy(filteredEmployees, (e) => e.typeService),
@@ -300,11 +313,6 @@ export default function ContractantsDashboard({ contractants, employees }: Props
   const contractantSlices = useMemo(
     () => toDonutSlices(stats.parContractant, contractantColors),
     [stats.parContractant, contractantColors],
-  );
-
-  const lieuSlices = useMemo(
-    () => toDonutSlices(stats.parLieu, PALETTE),
-    [stats.parLieu],
   );
 
   const departementSlices = useMemo(
@@ -411,6 +419,8 @@ export default function ContractantsDashboard({ contractants, employees }: Props
         break;
       case 'lieu':
         list = list.filter((e) => blank(e.lieuAffectation) === drill.value);
+        if (drill.sexe === 'M' || drill.sexe === 'F') list = list.filter((e) => e.sexe === drill.sexe);
+        else if (drill.sexe === 'none') list = list.filter((e) => e.sexe !== 'M' && e.sexe !== 'F');
         break;
       case 'departement':
         list = list.filter((e) => blank(e.departement) === drill.value);
@@ -449,6 +459,40 @@ export default function ContractantsDashboard({ contractants, employees }: Props
       };
     });
   }, [drill, filteredContractants, filteredEmployees]);
+
+  const mapSites = useMemo((): AirtimePlaceStat[] => {
+    const buckets = new Map<string, { hommes: number; femmes: number; total: number }>();
+    for (const employee of filteredEmployees) {
+      const label = blank(employee.lieuAffectation);
+      const bucket = buckets.get(label) || { hommes: 0, femmes: 0, total: 0 };
+      bucket.total += 1;
+      if (employee.sexe === 'M') bucket.hommes += 1;
+      else if (employee.sexe === 'F') bucket.femmes += 1;
+      buckets.set(label, bucket);
+    }
+    return [...buckets.entries()]
+      .sort((a, b) => b[1].total - a[1].total || a[0].localeCompare(b[0], 'fr'))
+      .map(([label, bucket]) => {
+        const sansInformation = bucket.total - bucket.hommes - bucket.femmes;
+        return {
+          id: label,
+          label,
+          total: bucket.total,
+          ppc: 0,
+          contractant: bucket.total,
+          assigned: 0,
+          unassigned: 0,
+          facts: [
+            { id: 'hommes', label: 'Hommes', value: bucket.hommes },
+            { id: 'femmes', label: 'Femmes', value: bucket.femmes },
+            ...(sansInformation > 0
+              ? [{ id: 'sans', label: 'Sans information', value: sansInformation }]
+              : []),
+            { id: 'total', label: 'Total', value: bucket.total },
+          ],
+        };
+      });
+  }, [filteredEmployees]);
 
   const periodHint = useMemo(() => {
     if (yearFilter === '') return 'Toutes périodes';
@@ -519,21 +563,23 @@ export default function ContractantsDashboard({ contractants, employees }: Props
   ];
 
   return (
-    <div className="contractants-dashboard">
+    <div className={`contractants-dashboard${compact ? ' is-compact' : ''}`}>
       <div className="contractants-dash-filters">
-        <select
-          className="filter-select"
-          value={contractantFilter}
-          onChange={(e) => setContractantFilter(e.target.value)}
-          title="Filtrer par contractant"
-        >
-          <option value="">Tous les contractants</option>
-          {contractants.map((c) => (
-            <option key={c.id} value={c.id}>
-              {c.denomination}
-            </option>
-          ))}
-        </select>
+        {!hideContractantFilter && (
+          <select
+            className="filter-select"
+            value={contractantFilter}
+            onChange={(e) => setContractantFilter(e.target.value)}
+            title="Filtrer par contractant"
+          >
+            <option value="">Tous les contractants</option>
+            {contractants.map((c) => (
+              <option key={c.id} value={c.id}>
+                {c.denomination}
+              </option>
+            ))}
+          </select>
+        )}
         <select
           className="filter-select"
           value={localisationFilter}
@@ -602,7 +648,36 @@ export default function ContractantsDashboard({ contractants, employees }: Props
         ))}
       </div>
 
-      <div className="contractants-evolution-wrap">
+      <div className="contractants-stage">
+        <section className="panel contractants-map-panel">
+          <h3>Carte des sites</h3>
+          {mapSites.length === 0 ? (
+            <p className="empty-state">Aucune donnée disponible.</p>
+          ) : (
+            <AirtimeDrcMap
+              bare
+              sites={mapSites}
+              onSelect={(lieu, slice) => {
+                const sexe = slice === 'hommes' ? 'M' : slice === 'femmes' ? 'F' : slice === 'sans' ? 'none' : undefined;
+                const gender = slice === 'hommes'
+                  ? 'Hommes'
+                  : slice === 'femmes'
+                    ? 'Femmes'
+                    : slice === 'sans'
+                      ? 'Sans information'
+                      : '';
+                openDrill({
+                  kind: 'lieu',
+                  label: gender ? `${lieu} · ${gender}` : `Lieu · ${lieu}`,
+                  value: lieu,
+                  sexe,
+                });
+              }}
+            />
+          )}
+        </section>
+        <div className="contractants-stage-side">
+        <div className="contractants-evolution-wrap">
         <DependantsBarChart
           title={`Évolution de l’effectif — ${evolutionYear}`}
           items={monthlyEvolution.map((m) => ({ label: m.label, value: m.value }))}
@@ -622,39 +697,57 @@ export default function ContractantsDashboard({ contractants, employees }: Props
             });
           }}
         />
+        </div>
+        <div className="contractants-stage-charts">
+          <HomeDonutChart
+            title="Répartition par sexe"
+            slices={sexeSlices}
+            centerLabel="Total"
+            emptyLabel="Aucun employé"
+            onTitleClick={() => openDrill({ kind: 'all', label: 'Répartition par sexe' })}
+            onItemClick={(label) =>
+              openDrill({ kind: 'sexe', label: `Sexe · ${label}`, value: label })
+            }
+          />
+          <HomeDonutChart
+            title="Statut"
+            slices={statutSlices}
+            centerLabel="Total"
+            emptyLabel="Aucun employé"
+            onTitleClick={() => openDrill({ kind: 'all', label: 'Statut' })}
+            onItemClick={(label) =>
+              openDrill({ kind: 'statut', label: `Statut · ${label}`, value: label })
+            }
+          />
+        </div>
+        </div>
       </div>
 
       <div className="contractants-charts-grid home-charts-grid">
-        <HomeDonutChart
-          title="Par contractant"
-          slices={contractantSlices}
-          centerLabel="Employés"
-          emptyLabel="Aucun employé"
-          onTitleClick={() => openDrill({ kind: 'all', label: 'Par contractant' })}
-          onItemClick={(label) =>
-            openDrill({ kind: 'contractant', label: `Contractant · ${label}`, value: label })
-          }
-        />
-        <HomeDonutChart
-          title="Type de service"
-          slices={serviceSlices}
-          centerLabel="Employés"
-          emptyLabel="Aucun type de service"
-          onTitleClick={() => openDrill({ kind: 'all', label: 'Type de service' })}
-          onItemClick={(label) =>
-            openDrill({ kind: 'service', label: `Service · ${label}`, value: label })
-          }
-        />
-        <HomeDonutChart
-          title="Par lieu d'affectation"
-          slices={lieuSlices}
-          centerLabel="Employés"
-          emptyLabel="Aucun lieu renseigné"
-          onTitleClick={() => openDrill({ kind: 'all', label: "Par lieu d'affectation" })}
-          onItemClick={(label) =>
-            openDrill({ kind: 'lieu', label: `Lieu · ${label}`, value: label })
-          }
-        />
+        {!hideContractantFilter && (
+          <HomeDonutChart
+            title="Par contractant"
+            slices={contractantSlices}
+            centerLabel="Employés"
+            emptyLabel="Aucun employé"
+            onTitleClick={() => openDrill({ kind: 'all', label: 'Par contractant' })}
+            onItemClick={(label) =>
+              openDrill({ kind: 'contractant', label: `Contractant · ${label}`, value: label })
+            }
+          />
+        )}
+        {!hideContractantFilter && (
+          <HomeDonutChart
+            title="Type de service"
+            slices={serviceSlices}
+            centerLabel="Employés"
+            emptyLabel="Aucun type de service"
+            onTitleClick={() => openDrill({ kind: 'all', label: 'Type de service' })}
+            onItemClick={(label) =>
+              openDrill({ kind: 'service', label: `Service · ${label}`, value: label })
+            }
+          />
+        )}
         <HomeDonutChart
           title="Par département"
           slices={departementSlices}
@@ -682,26 +775,6 @@ export default function ContractantsDashboard({ contractants, employees }: Props
             }
             openDrill({ kind: 'fonction', label: `Fonction · ${label}`, value: label });
           }}
-        />
-        <HomeDonutChart
-          title="Répartition par sexe"
-          slices={sexeSlices}
-          centerLabel="Total"
-          emptyLabel="Aucun employé"
-          onTitleClick={() => openDrill({ kind: 'all', label: 'Répartition par sexe' })}
-          onItemClick={(label) =>
-            openDrill({ kind: 'sexe', label: `Sexe · ${label}`, value: label })
-          }
-        />
-        <HomeDonutChart
-          title="Statut (Permanent / Journalier)"
-          slices={statutSlices}
-          centerLabel="Total"
-          emptyLabel="Aucun employé"
-          onTitleClick={() => openDrill({ kind: 'all', label: 'Statut' })}
-          onItemClick={(label) =>
-            openDrill({ kind: 'statut', label: `Statut · ${label}`, value: label })
-          }
         />
         <HomeDonutChart
           title="État civil"

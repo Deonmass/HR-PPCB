@@ -5,6 +5,7 @@ import { useCallback, useEffect, useMemo, useState, type ReactNode } from 'react
 import HomeBarChart from '@/components/home/HomeBarChart';
 import HomeDonutChart from '@/components/home/HomeDonutChart';
 import HomeGlobalSearch from '@/components/home/HomeGlobalSearch';
+import HomeWorkforceMap from '@/components/home/HomeWorkforceMap';
 import RefreshButton from '@/components/RefreshButton';
 import { usePermissions } from '@/contexts/PermissionContext';
 import { useI18n } from '@/contexts/LocaleContext';
@@ -588,6 +589,10 @@ export default function AccueilPage() {
                       </div>
                     </div>
                   </section>
+                )}
+
+                {(can('employes.liste', 'view') || can('employes.contractants', 'view')) && (
+                  <HomeWorkforceMap />
                 )}
 
                 {data.documents && (

@@ -11,6 +11,7 @@ type Params = { params: Promise<{ matricule: string }> };
 export async function GET(_: Request, { params }: Params) {
   const denied = await checkAnyPermission([
     { menuId: 'employes.liste', action: 'view' },
+    { menuId: 'employes.airtime', action: 'view' },
     { menuId: 'travel.etablir', action: 'view' },
     { menuId: 'travel.mission.kinshasa', action: 'view' },
     { menuId: 'travel.mission.zamba', action: 'view' },

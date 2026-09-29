@@ -12,6 +12,7 @@ import type {
   Contractant,
   ContractantEmployee,
   ContractantEmployeeInput,
+  ContractantFamilyMember,
   ContractantInput,
 } from './contractants-types';
 import {
@@ -51,6 +52,21 @@ function emptyStore(): StoreData {
   return { nextContractantId: 1, nextEmployeeId: 1, contractants: [] };
 }
 
+function normalizeFamilyMember(raw: unknown): ContractantFamilyMember | null {
+  if (!raw || typeof raw !== 'object') return null;
+  const r = raw as Partial<ContractantFamilyMember>;
+  const nom = String(r.nom || '').trim();
+  if (!nom) return null;
+  const sexeRaw = String(r.sexe || '').trim().toUpperCase();
+  return {
+    id: String(r.id || randomUUID()),
+    nom,
+    lien: String(r.lien || 'Autre').trim() || 'Autre',
+    dateNaissance: String(r.dateNaissance || '').trim(),
+    sexe: isContractantSexe(sexeRaw) ? sexeRaw : '',
+  };
+}
+
 function normalizeEmployee(raw: unknown): ContractantEmployee | null {
   if (!raw || typeof raw !== 'object') return null;
   const r = raw as Partial<ContractantEmployee> & { statut?: string };
@@ -64,6 +80,14 @@ function normalizeEmployee(raw: unknown): ContractantEmployee | null {
   let fonction = String(r.fonction || '').trim();
   // MALANGA / KIMPESE / etc. sont des lieux, pas des fonctions.
   if (isLocalisationLabel(fonction)) fonction = '';
+  const family = Array.isArray(r.family)
+    ? r.family.map(normalizeFamilyMember).filter((m): m is ContractantFamilyMember => Boolean(m))
+    : [];
+  const payrollSiteRaw = String(r.payrollSite || '').trim().toLowerCase();
+  const payrollSite =
+    payrollSiteRaw === 'site' || payrollSiteRaw === 'hors-site'
+      ? payrollSiteRaw
+      : '';
   return {
     id: String(r.id),
     nom: String(r.nom || '').trim(),
@@ -71,9 +95,22 @@ function normalizeEmployee(raw: unknown): ContractantEmployee | null {
     lieuAffectation: normalizeLocalisation(r.lieuAffectation),
     fonction,
     departement: String(r.departement || '').trim(),
+    service: String(r.service || '').trim(),
     telephone: String(r.telephone || '').trim(),
     etatCivil,
     statut,
+    dateEmbauche: String(r.dateEmbauche || '').trim(),
+    dateSortie: String(r.dateSortie || '').trim(),
+    managerEmployeeId: String(r.managerEmployeeId || '').trim(),
+    family,
+    matriculePpc: String(r.matriculePpc || '').trim(),
+    numeroCnss: String(r.numeroCnss || '').trim(),
+    numeroCompte: String(r.numeroCompte || '').trim(),
+    banque: String(r.banque || '').trim(),
+    nbDependants: Math.max(0, Math.round(Number(r.nbDependants) || 0)),
+    txJr: Number.isFinite(Number(r.txJr)) ? Number(r.txJr) : 0,
+    coutTransport: Number.isFinite(Number(r.coutTransport)) ? Number(r.coutTransport) : 0,
+    payrollSite,
     createdAt: String(r.createdAt || new Date().toISOString()),
     updatedAt: String(r.updatedAt || r.createdAt || new Date().toISOString()),
   };
@@ -169,7 +206,6 @@ function validateEmployeeInput(input: ContractantEmployeeInput): ContractantEmpl
   if (!nom) throw new Error('Nom requis');
   if (sexeRaw && !isContractantSexe(sexeRaw)) throw new Error('Sexe invalide');
   if (!lieuAffectation) throw new Error('Lieu d’affectation requis');
-  if (!departement) throw new Error('Département requis');
   if (!isContractantEtatCivil(etatRaw)) throw new Error('État civil invalide');
   if (!isContractantEmployeeStatut(statutRaw)) {
     throw new Error('Statut invalide (Permanent ou Journalier)');
@@ -180,10 +216,50 @@ function validateEmployeeInput(input: ContractantEmployeeInput): ContractantEmpl
     lieuAffectation,
     fonction,
     departement,
+    service: String(input.service || '').trim(),
     telephone,
     etatCivil: etatRaw,
     statut: statutRaw,
+    dateEmbauche: String(input.dateEmbauche || '').trim(),
+    dateSortie: String(input.dateSortie || '').trim(),
+    managerEmployeeId: String(input.managerEmployeeId || '').trim(),
+    family: Array.isArray(input.family)
+      ? input.family.map(normalizeFamilyMember).filter((m): m is ContractantFamilyMember => Boolean(m))
+      : [],
+    matriculePpc: String(input.matriculePpc || '').trim(),
+    numeroCnss: String(input.numeroCnss || '').trim(),
+    numeroCompte: String(input.numeroCompte || '').trim(),
+    banque: String(input.banque || '').trim(),
+    nbDependants: Math.max(0, Math.round(Number(input.nbDependants) || 0)),
+    txJr: Number.isFinite(Number(input.txJr)) ? Number(input.txJr) : 0,
+    coutTransport: Number.isFinite(Number(input.coutTransport)) ? Number(input.coutTransport) : 0,
+    payrollSite:
+      input.payrollSite === 'site' || input.payrollSite === 'hors-site' ? input.payrollSite : '',
   };
+}
+
+/** Écrit les MSISDN airtime sur les employés contractants déjà rapprochés. */
+export async function applyContractantPhones(
+  updates: { contractantId: string; employeeId: string; telephone: string }[],
+): Promise<number> {
+  const pending = updates.filter((item) => item.contractantId && item.employeeId && item.telephone.trim());
+  if (!pending.length) return 0;
+  const store = await readStore();
+  const now = new Date().toISOString();
+  let changed = 0;
+  for (const update of pending) {
+    const contractant = store.contractants.find((item) => item.id === update.contractantId);
+    const employee = contractant?.employees.find((item) => item.id === update.employeeId);
+    if (!employee) continue;
+    const next = update.telephone.trim();
+    if ((employee.telephone || '') === next) continue;
+    employee.telephone = next;
+    employee.updatedAt = now;
+    if (contractant) contractant.updatedAt = now;
+    changed += 1;
+  }
+  if (changed > 0) await writeStore(store);
+  return changed;
 }
 
 export async function listContractants(): Promise<Contractant[]> {
@@ -260,9 +336,22 @@ export async function createContractantEmployee(
     lieuAffectation: data.lieuAffectation,
     fonction: data.fonction,
     departement: data.departement,
+    service: data.service || '',
     telephone: data.telephone,
     etatCivil: data.etatCivil,
     statut: data.statut,
+    dateEmbauche: data.dateEmbauche || '',
+    dateSortie: data.dateSortie || '',
+    managerEmployeeId: data.managerEmployeeId || '',
+    family: data.family || [],
+    matriculePpc: data.matriculePpc || '',
+    numeroCnss: data.numeroCnss || '',
+    numeroCompte: data.numeroCompte || '',
+    banque: data.banque || '',
+    nbDependants: data.nbDependants || 0,
+    txJr: data.txJr || 0,
+    coutTransport: data.coutTransport || 0,
+    payrollSite: data.payrollSite || '',
     createdAt: now,
     updatedAt: now,
   };
@@ -295,9 +384,24 @@ export async function updateContractantEmployee(
     lieuAffectation: data.lieuAffectation,
     fonction: data.fonction,
     departement: data.departement,
+    service: data.service || '',
     telephone: data.telephone,
     etatCivil: data.etatCivil,
     statut: data.statut,
+    dateEmbauche: data.dateEmbauche ?? prev.dateEmbauche,
+    dateSortie: data.dateSortie ?? prev.dateSortie,
+    managerEmployeeId: data.managerEmployeeId ?? prev.managerEmployeeId,
+    family: data.family ?? prev.family,
+    matriculePpc: data.matriculePpc || prev.matriculePpc || '',
+    numeroCnss: data.numeroCnss || prev.numeroCnss || '',
+    numeroCompte: data.numeroCompte || prev.numeroCompte || '',
+    banque: data.banque || prev.banque || '',
+    nbDependants:
+      input.nbDependants !== undefined ? data.nbDependants || 0 : prev.nbDependants || 0,
+    txJr: input.txJr !== undefined ? data.txJr || 0 : prev.txJr || 0,
+    coutTransport:
+      input.coutTransport !== undefined ? data.coutTransport || 0 : prev.coutTransport || 0,
+    payrollSite: data.payrollSite || prev.payrollSite || '',
     updatedAt: new Date().toISOString(),
   };
   contractant.employees[index] = next;
@@ -386,9 +490,22 @@ export async function importContractantEmployees(
       lieuAffectation: normalizeLocalisation(input.lieuAffectation),
       fonction: isLocalisationLabel(input.fonction) ? '' : String(input.fonction || '').trim(),
       departement: String(input.departement || '').trim(),
+      service: String(input.service || '').trim(),
       telephone: String(input.telephone || '').trim(),
       etatCivil: isContractantEtatCivil(etatRaw) ? etatRaw : 'C',
       statut: isContractantEmployeeStatut(statutRaw) ? statutRaw : 'Permanent',
+      dateEmbauche: String(input.dateEmbauche || '').trim(),
+      dateSortie: String(input.dateSortie || '').trim(),
+      managerEmployeeId: '',
+      family: [],
+      matriculePpc: '',
+      numeroCnss: '',
+      numeroCompte: '',
+      banque: '',
+      nbDependants: 0,
+      txJr: 0,
+      coutTransport: 0,
+      payrollSite: '',
       createdAt: now,
       updatedAt: now,
     });
@@ -440,9 +557,22 @@ export async function replaceContractantEmployees(
       lieuAffectation: normalizeLocalisation(input.lieuAffectation),
       fonction: isLocalisationLabel(input.fonction) ? '' : String(input.fonction || '').trim(),
       departement: String(input.departement || '').trim(),
+      service: String(input.service || '').trim(),
       telephone: String(input.telephone || '').trim(),
       etatCivil: isContractantEtatCivil(etatRaw) ? etatRaw : 'C',
       statut: isContractantEmployeeStatut(statutRaw) ? statutRaw : 'Permanent',
+      dateEmbauche: String(input.dateEmbauche || '').trim(),
+      dateSortie: String(input.dateSortie || '').trim(),
+      managerEmployeeId: '',
+      family: [],
+      matriculePpc: '',
+      numeroCnss: '',
+      numeroCompte: '',
+      banque: '',
+      nbDependants: 0,
+      txJr: 0,
+      coutTransport: 0,
+      payrollSite: '',
       createdAt: now,
       updatedAt: now,
     });

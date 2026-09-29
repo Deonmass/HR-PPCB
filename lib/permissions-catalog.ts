@@ -51,6 +51,7 @@ export const PERMISSION_MENU_CATALOG: PermissionMenuGroup[] = withSortedMenus([
       { id: 'employes.heures.policy', label: 'HS — Appliquer la politique' },
       { id: 'employes.heures.export', label: 'HS — Exporter' },
       { id: 'employes.heures.simulation', label: 'HS — Simulation' },
+      { id: 'employes.airtime', label: 'Airtime' },
       { id: 'employes.conge', label: 'Congé' },
       { id: 'employes.classification', label: 'Classification des postes' },
       { id: 'employes.recrutement', label: 'Recrutement' },
@@ -368,6 +369,17 @@ export function mergePermissionsWithCatalog(menus: MenuPermission[]): MenuPermis
             menuId: defaultMenu.menuId,
             label: defaultMenu.label,
             actions: { ...etablir.actions },
+          };
+        }
+      }
+      if (defaultMenu.menuId === 'employes.airtime') {
+        const donor = menus.find((menu) => menu.menuId === 'employes.liste')
+          || menus.find((menu) => menu.menuId === 'employes.conge');
+        if (donor) {
+          return {
+            menuId: defaultMenu.menuId,
+            label: defaultMenu.label,
+            actions: { ...donor.actions },
           };
         }
       }

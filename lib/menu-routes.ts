@@ -93,6 +93,7 @@ export const ROUTE_MENU_MAP: RouteMenuEntry[] = [
   { prefix: '/factures-fournisseurs/liste', menuId: 'factures.fournisseur.liste' },
   { prefix: '/factures-fournisseurs/factures', menuId: 'factures.fournisseur.factures' },
   { prefix: '/factures-fournisseurs/soa', menuId: 'factures.fournisseur.soa' },
+  { prefix: '/employes/airtime', menuId: 'employes.airtime' },
   { prefix: '/employes/conge', menuId: 'employes.conge' },
   { prefix: '/employes/dependants', menuId: 'employes.dependants' },
   { prefix: '/employes/offres', menuId: 'employes.offres' },
