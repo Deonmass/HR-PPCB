@@ -1,6 +1,32 @@
 {
   "entries": [
     {
+      "id": "log-001203",
+      "at": "2026-09-29T12:47:19.188Z",
+      "userId": "admin",
+      "userName": "Administrateur",
+      "userEmail": "admin",
+      "module": "settings.utilisateurs",
+      "moduleLabel": "Paramètres — Utilisateurs",
+      "action": "create",
+      "actionLabel": "Création",
+      "entityType": "auth.user",
+      "entityId": "mukwilunaomie@gmail.com",
+      "summary": "Création utilisateur Naomie Mukwilu",
+      "details": "Création utilisateur Naomie Mukwilu",
+      "after": {
+        "id": "mukwilunaomie@gmail.com",
+        "username": "mukwilunaomie@gmail.com",
+        "displayName": "Naomie Mukwilu",
+        "initials": "NM",
+        "email": "mukwilunaomie@gmail.com",
+        "active": true,
+        "createdAt": "2026-09-29T12:47:15.427Z"
+      },
+      "undoable": true,
+      "undone": false
+    },
+    {
       "id": "log-001202",
       "at": "2026-09-29T10:26:24.794Z",
       "userId": "gd.mwankana@capitalhrsolutions.net",
@@ -121581,5 +121607,5 @@
       }
     }
   ],
-  "nextSeq": 1203
+  "nextSeq": 1204
 }
