@@ -58,6 +58,8 @@ export interface EmployeeHrProfile {
   cnss: string;
   /** Numéro NIF */
   nif: string;
+  /** Numéro de téléphone (MSISDN airtime). */
+  telephone?: string;
 }
 
 export interface Employee extends EmployeeHrProfile {
@@ -110,6 +112,7 @@ export function emptyEmployeeHrProfile(): EmployeeHrProfile {
     datePassageCdi: '',
     cnss: '',
     nif: '',
+    telephone: '',
   };
 }
 
