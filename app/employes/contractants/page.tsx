@@ -1,6 +1,7 @@
 'use client';
 
 import { useCallback, useEffect, useMemo, useRef, useState, type ChangeEvent, type MouseEvent as ReactMouseEvent } from 'react';
+import { useSearchParams } from 'next/navigation';
 import PermissionGate from '@/components/PermissionGate';
 import RefreshButton from '@/components/RefreshButton';
 import RowContextMenu, { type ContextMenuItem } from '@/components/RowContextMenu';
@@ -195,7 +196,14 @@ export default function ContractantsPage() {
   const canEdit = can('employes.contractants', 'edit') || can('employes.liste', 'edit');
   const canDelete = can('employes.contractants', 'delete') || can('employes.liste', 'delete');
 
+  const searchParams = useSearchParams();
+
   const [tab, setTab] = useState<PageTab>('contractants');
+
+  useEffect(() => {
+    const next = searchParams.get('tab');
+    if (next === 'dashboard' || next === 'employes' || next === 'contractants') setTab(next);
+  }, [searchParams]);
   const [contractants, setContractants] = useState<Contractant[]>([]);
   const [departements, setDepartements] = useState<string[]>([]);
   const [loading, setLoading] = useState(true);

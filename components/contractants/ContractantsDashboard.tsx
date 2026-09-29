@@ -227,7 +227,7 @@ export default function ContractantsDashboard({
   }, [employees, contractants, currentYear]);
 
   const baseEmployees = useMemo(() => {
-    let rows = employees;
+    let rows = employees.filter((employee) => !String(employee.dateSortie || '').trim());
     if (contractantFilter) {
       rows = rows.filter((e) => e.contractantId === contractantFilter);
     }

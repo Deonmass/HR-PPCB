@@ -58,6 +58,8 @@ interface Props {
   canValidateOt?: boolean;
   canEditValidated?: boolean;
   onImportWeek?: (weekIndex: number) => void;
+  /** When set, skip `/api/timesheet/employees` and use this list. */
+  employeesOverride?: Employee[];
   access?: {
     loading: boolean;
     scope: TimesheetViewScope | null;
@@ -80,6 +82,7 @@ export default function TimesheetManagerView({
   canValidateOt = false,
   canEditValidated = false,
   onImportWeek,
+  employeesOverride,
   access,
 }: Props) {
   const { can } = usePermissions();
@@ -225,11 +228,15 @@ export default function TimesheetManagerView({
   }, [department]);
 
   useEffect(() => {
+    if (employeesOverride) {
+      setEmployees(employeesOverride);
+      return;
+    }
     fetch('/api/timesheet/employees')
       .then((res) => (res.ok ? res.json() : []))
       .then((json: Employee[]) => setEmployees(json))
       .catch(() => setEmployees([]));
-  }, []);
+  }, [employeesOverride]);
 
   const canEdit =
     can(TIMESHEET_MENU.department, 'edit') ||

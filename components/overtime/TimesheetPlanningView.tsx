@@ -44,6 +44,8 @@ const WEEK_LABELS = ['Semaine 1', 'Semaine 2', 'Semaine 3', 'Semaine 4', 'Semain
 interface Props {
   onDepartmentChange?: (department: string) => void;
   toolbarSlotId?: string;
+  /** When set, skip `/api/timesheet/employees` and use this list. */
+  employeesOverride?: Employee[];
   access?: {
     loading: boolean;
     scope: TimesheetViewScope | null;
@@ -54,7 +56,12 @@ interface Props {
   };
 }
 
-export default function TimesheetPlanningView({ onDepartmentChange, toolbarSlotId, access }: Props) {
+export default function TimesheetPlanningView({
+  onDepartmentChange,
+  toolbarSlotId,
+  employeesOverride,
+  access,
+}: Props) {
   const { can } = usePermissions();
   const monthOptions = useMemo(() => listTimesheetMonthOptions(12), []);
   const [selectedMonth, setSelectedMonth] = useState(monthOptions[0]);
@@ -165,11 +172,15 @@ export default function TimesheetPlanningView({ onDepartmentChange, toolbarSlotI
   }, [department, period.month, period.year]);
 
   useEffect(() => {
+    if (employeesOverride) {
+      setEmployees(employeesOverride);
+      return;
+    }
     fetch('/api/timesheet/employees')
       .then((res) => (res.ok ? res.json() : []))
       .then((json: Employee[]) => setEmployees(json))
       .catch(() => setEmployees([]));
-  }, []);
+  }, [employeesOverride]);
 
   useEffect(() => {
     if (lockedService) {

@@ -88,6 +88,8 @@ interface Props {
   canClose?: boolean;
   canApplyPolicy?: boolean;
   canSimulate?: boolean;
+  /** When set, skip `/api/timesheet/employees` and use this list. */
+  employeesOverride?: Employee[];
   access?: {
     loading: boolean;
     scope: TimesheetViewScope | null;
@@ -149,6 +151,7 @@ export default function TimesheetCompilationView({
   canClose = false,
   canApplyPolicy = false,
   canSimulate = false,
+  employeesOverride,
   access,
 }: Props) {
   const { can } = usePermissions();
@@ -217,11 +220,15 @@ export default function TimesheetCompilationView({
     Boolean(lockedService) || (Boolean(lockedDepartment) && services.length <= 1 && departments.length <= 1);
 
   useEffect(() => {
+    if (employeesOverride) {
+      setEmployees(employeesOverride);
+      return;
+    }
     fetch('/api/timesheet/employees')
       .then((res) => (res.ok ? res.json() : []))
       .then((json: Employee[]) => setEmployees(json))
       .catch(() => setEmployees([]));
-  }, []);
+  }, [employeesOverride]);
 
   useEffect(() => {
     if (lockedService) {

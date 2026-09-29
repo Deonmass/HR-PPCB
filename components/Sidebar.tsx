@@ -57,6 +57,8 @@ type NavLinkSection = {
   menuIds?: string[];
   /** Préfixes de routes supplémentaires considérés comme actifs. */
   activePrefixes?: string[];
+  /** Préfixes exclus (ex. sous-routes discipline / planning). */
+  excludePrefixes?: string[];
 };
 
 type NavSection = NavGroup | NavLinkSection;
@@ -67,15 +69,47 @@ function buildContractantOnlyNav(_contractorLabel: string): NavSection[] {
     {
       type: 'link',
       id: 'home',
-      href: '/employes/contractants',
+      href: '/employes/contractants?tab=dashboard',
       label: 'Accueil',
       icon: 'home',
       color: '#e30613',
       alwaysVisible: true,
+      excludePrefixes: [
+        '/employes/contractants/discipline',
+        '/employes/contractants/planning',
+      ],
+    },
+    {
+      type: 'group',
+      id: 'contractant-space',
+      title: 'Mon espace',
+      icon: 'users',
+      color: '#e30613',
+      items: [
+        {
+          href: '/employes/contractants?tab=employes',
+          label: 'Liste des employés',
+          icon: 'users',
+          menuId: 'employes.contractants',
+        },
+        {
+          href: '/employes/contractants/discipline',
+          label: 'Cas disciplinaire',
+          icon: 'docs',
+          menuId: 'employes.contractants',
+          activePrefixes: ['/employes/contractants/discipline'],
+        },
+        {
+          href: '/employes/contractants/planning',
+          label: 'Planning de travail',
+          icon: 'clock',
+          menuId: 'employes.contractants',
+          activePrefixes: ['/employes/contractants/planning'],
+        },
+      ],
     },
   ];
 }
-
 const NAV: NavSection[] = [
   {
     type: 'link',
@@ -464,7 +498,9 @@ function isNavItemActive(pathname: string, item: NavItem, search = '') {
 
   // Liens avec ?tab=… (ex. Village) — match exact sur le tab courant.
   if (itemTab) {
-    return pathname === pathOnly && currentTab === itemTab;
+    const defaultTab =
+      pathOnly === '/employes/contractants' && !currentTab ? 'dashboard' : currentTab;
+    return pathname === pathOnly && defaultTab === itemTab;
   }
 
   // Lien « Maisons » : actif sur toute la page village/maisons (y compris les onglets).
@@ -822,9 +858,25 @@ function NavGroupSection({
 
 function NavStandaloneSection({ section, collapsed }: { section: NavLinkSection; collapsed: boolean }) {
   const pathname = usePathname();
+  const searchParams = useSearchParams();
+  const excluded = Boolean(
+    section.excludePrefixes?.some(
+      (prefix) => pathname === prefix || pathname.startsWith(`${prefix}/`),
+    ),
+  );
+  const sectionTab = hrefTab(section.href);
+  const currentTab = searchParams.get('tab');
+  const pathOnly = section.href.split('?')[0]!;
+  const tabMatched = sectionTab
+    ? pathname === pathOnly
+      && (currentTab || (pathOnly === '/employes/contractants' ? 'dashboard' : null)) === sectionTab
+    : null;
   const active =
-    isActive(pathname, section.href) ||
-    Boolean(section.activePrefixes?.some((prefix) => isActive(pathname, prefix)));
+    !excluded
+    && (tabMatched === true
+      || (tabMatched === null
+        && (isActive(pathname, section.href)
+          || Boolean(section.activePrefixes?.some((prefix) => isActive(pathname, prefix))))));
 
   return (
     <div className="nav-menu-section" style={{ '--nav-color': section.color } as CSSProperties}>
