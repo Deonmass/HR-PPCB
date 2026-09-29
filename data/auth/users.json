@@ -11388,11 +11388,11 @@
           "menuId": "employes.dependants",
           "label": "Dependants",
           "actions": {
-            "view": false,
+            "view": true,
             "create": false,
             "edit": false,
             "delete": false,
-            "export": false,
+            "export": true,
             "undo": false
           }
         },
