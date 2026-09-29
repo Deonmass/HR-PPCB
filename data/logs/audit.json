@@ -1,6 +1,21 @@
 {
   "entries": [
     {
+      "id": "log-001210",
+      "at": "2026-09-29T12:52:59.918Z",
+      "userId": "mukwilunaomie@gmail.com",
+      "userName": "Naomie Mukwilu",
+      "userEmail": "mukwilunaomie@gmail.com",
+      "module": "auth",
+      "moduleLabel": "Authentification",
+      "action": "login",
+      "actionLabel": "Connexion",
+      "summary": "Connexion mukwilunaomie@gmail.com",
+      "details": "Connexion de Naomie Mukwilu (mukwilunaomie@gmail.com)",
+      "undoable": false,
+      "undone": false
+    },
+    {
       "id": "log-001209",
       "at": "2026-09-29T12:52:51.027Z",
       "userId": "mukwilunaomie@gmail.com",
@@ -123677,5 +123692,5 @@
       }
     }
   ],
-  "nextSeq": 1210
+  "nextSeq": 1211
 }
