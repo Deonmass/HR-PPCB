@@ -1,6 +1,44 @@
 {
   "entries": [
     {
+      "id": "log-001225",
+      "at": "2026-09-29T14:59:18.277Z",
+      "userId": "espoir.vuvu@ppcdrc.cd",
+      "userName": "Espoir Vuvu",
+      "userEmail": "espoir.vuvu@ppcdrc.cd",
+      "module": "sante",
+      "moduleLabel": "Santé",
+      "action": "create",
+      "actionLabel": "Création",
+      "entityType": "sante.visit",
+      "entityId": "sante-mumsy1vr-zda444",
+      "summary": "Cas santé — TANDU NKWALA BERTIN · ANGINE",
+      "details": "Cas santé — TANDU NKWALA BERTIN · ANGINE",
+      "after": {
+        "id": "sante-mumsy1vr-zda444",
+        "date": "2026-09-29",
+        "nom": "TANDU",
+        "postnom": "NKWALA BERTIN",
+        "sexe": "M",
+        "age": 48,
+        "typeMalade": "AGENT",
+        "pathologie": "ANGINE",
+        "traitement": "VItamine c et anti tousif",
+        "reference": "NON",
+        "year": 2026,
+        "month": 9,
+        "employeeMatricule": "70000081",
+        "employeeNom": "TANDU NKWALA BERTIN",
+        "dependantId": null,
+        "createdAt": "2026-09-29T14:59:14.055Z",
+        "updatedAt": "2026-09-29T14:59:14.055Z",
+        "createdBy": "espoir.vuvu@ppcdrc.cd",
+        "updatedBy": "espoir.vuvu@ppcdrc.cd"
+      },
+      "undoable": false,
+      "undone": false
+    },
+    {
       "id": "log-001224",
       "at": "2026-09-29T14:56:58.415Z",
       "userId": "espoir.vuvu@ppcdrc.cd",
@@ -127922,5 +127960,5 @@
       }
     }
   ],
-  "nextSeq": 1225
+  "nextSeq": 1226
 }
