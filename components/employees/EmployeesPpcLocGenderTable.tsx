@@ -1,5 +1,6 @@
 'use client';
 
+import AirtimeDrcMap, { type AirtimePlaceStat } from '@/components/airtime/AirtimeDrcMap';
 import EnlargeableChartPanel, {
   type ChartDeptFilterSource,
 } from '@/components/EnlargeableChartPanel';
@@ -12,85 +13,37 @@ interface BodyProps {
   onCellClick?: (localisation: string, gender: GenderCol) => void;
 }
 
+function sitesFromRows(rows: HrLocalisationGenderRow[]): AirtimePlaceStat[] {
+  return rows.map((row) => ({
+    id: row.label,
+    label: row.label,
+    total: row.total,
+    ppc: row.total,
+    contractant: 0,
+    assigned: 0,
+    unassigned: 0,
+    facts: [
+      { id: 'hommes', label: 'Hommes', value: row.hommes },
+      { id: 'femmes', label: 'Femmes', value: row.femmes },
+      { id: 'total', label: 'Total', value: row.total },
+    ],
+  }));
+}
+
 export function EmployeesPpcLocGenderTableBody({ rows, onCellClick }: BodyProps) {
   if (!rows.length) {
     return <p className="empty-state">Aucune donnée disponible.</p>;
   }
 
-  const totals = rows.reduce(
-    (acc, row) => ({
-      hommes: acc.hommes + row.hommes,
-      femmes: acc.femmes + row.femmes,
-      total: acc.total + row.total,
-    }),
-    { hommes: 0, femmes: 0, total: 0 },
-  );
-
-  const canDrill = Boolean(onCellClick);
-
-  const cell = (
-    localisation: string,
-    gender: GenderCol,
-    value: string | number,
-    className = '',
-  ) => {
-    if (!canDrill) {
-      return <span className={className}>{value}</span>;
-    }
-    return (
-      <span
-        role="button"
-        tabIndex={0}
-        className={`employees-ppc-loc-cell ${className}`.trim()}
-        onClick={(event) => {
-          event.stopPropagation();
-          onCellClick?.(localisation, gender);
-        }}
-        onKeyDown={(event) => {
-          if (event.key === 'Enter' || event.key === ' ') {
-            event.preventDefault();
-            event.stopPropagation();
-            onCellClick?.(localisation, gender);
-          }
-        }}
-        title={`Voir ${localisation}${gender === 'total' ? '' : gender === 'hommes' ? ' · Hommes' : ' · Femmes'}`}
-      >
-        {value}
-      </span>
-    );
-  };
-
   return (
-    <div className="employees-ppc-loc-table-wrap">
-      <table className="employees-ppc-loc-table">
-        <thead>
-          <tr>
-            <th>Localisation</th>
-            <th className="is-num is-hommes">Hommes</th>
-            <th className="is-num is-femmes">Femmes</th>
-            <th className="is-num is-total">Total</th>
-          </tr>
-        </thead>
-        <tbody>
-          {rows.map((row) => (
-            <tr key={row.label} className={canDrill ? 'is-interactive' : undefined}>
-              <td>{cell(row.label, 'total', row.label, 'is-label')}</td>
-              <td className="is-num is-hommes">{cell(row.label, 'hommes', row.hommes)}</td>
-              <td className="is-num is-femmes">{cell(row.label, 'femmes', row.femmes)}</td>
-              <td className="is-num is-total">{cell(row.label, 'total', row.total, 'is-strong')}</td>
-            </tr>
-          ))}
-        </tbody>
-        <tfoot>
-          <tr>
-            <th>Total</th>
-            <th className="is-num is-hommes">{totals.hommes}</th>
-            <th className="is-num is-femmes">{totals.femmes}</th>
-            <th className="is-num is-total">{totals.total}</th>
-          </tr>
-        </tfoot>
-      </table>
-    </div>
+    <AirtimeDrcMap
+      bare
+      sites={sitesFromRows(rows)}
+      onSelect={(localisation, slice) => {
+        const gender: GenderCol = slice === 'hommes' || slice === 'femmes' ? slice : 'total';
+        onCellClick?.(localisation, gender);
+      }}
+    />
   );
 }
 
@@ -98,9 +51,10 @@ interface Props {
   title: string;
   rows: HrLocalisationGenderRow[];
   deptFilter?: ChartDeptFilterSource;
+  onCellClick?: (localisation: string, gender: GenderCol) => void;
 }
 
-export default function EmployeesPpcLocGenderTable({ title, rows, deptFilter }: Props) {
+export default function EmployeesPpcLocGenderTable({ title, rows, deptFilter, onCellClick }: Props) {
   if (!rows.length) {
     return (
       <div className="panel travel-history-chart-panel">
@@ -119,7 +73,7 @@ export default function EmployeesPpcLocGenderTable({ title, rows, deptFilter }: 
       clickToEnlarge
       deptFilter={deptFilter}
     >
-      <EmployeesPpcLocGenderTableBody rows={rows} />
+      <EmployeesPpcLocGenderTableBody rows={rows} onCellClick={onCellClick} />
     </EnlargeableChartPanel>
   );
 }

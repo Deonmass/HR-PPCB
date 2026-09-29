@@ -781,16 +781,11 @@ export default function EmployeesHrDashboardView({
         <EmployeesPpcLocGenderTable
           title="Total employé PPC par localisation"
           rows={ppcLocRows}
-          deptFilter={ppcLocDeptFilter((emps, ctx) => (
+          onCellClick={(localisation, gender) => openPpcLocCell(employees, localisation, gender)}
+          deptFilter={ppcLocDeptFilter((emps) => (
             <EmployeesPpcLocGenderTableBody
               rows={buildPpcLocalisationGenderRows(emps)}
-              onCellClick={(localisation, gender) => {
-                if (gender === 'total') {
-                  ctx.onSegmentClick?.(localisation);
-                  return;
-                }
-                openPpcLocCell(emps, localisation, gender);
-              }}
+              onCellClick={(localisation, gender) => openPpcLocCell(emps, localisation, gender)}
             />
           ))}
         />
