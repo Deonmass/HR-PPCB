@@ -1,6 +1,21 @@
 {
   "entries": [
     {
+      "id": "log-001195",
+      "at": "2026-09-29T08:33:11.300Z",
+      "userId": "admin",
+      "userName": "Administrateur",
+      "userEmail": "admin",
+      "module": "auth",
+      "moduleLabel": "Authentification",
+      "action": "login",
+      "actionLabel": "Connexion",
+      "summary": "Connexion admin",
+      "details": "Connexion de Administrateur (admin)",
+      "undoable": false,
+      "undone": false
+    },
+    {
       "id": "log-001194",
       "at": "2026-09-29T08:32:46.904Z",
       "userId": "system",
@@ -121450,5 +121465,5 @@
       }
     }
   ],
-  "nextSeq": 1195
+  "nextSeq": 1196
 }
