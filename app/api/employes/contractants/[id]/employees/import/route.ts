@@ -1,7 +1,11 @@
 import { NextResponse } from 'next/server';
 import { parseContractantEmployeesImportBuffer } from '@/lib/contractants-import';
+import {
+  canAccessContractantId,
+  getContractantScopeFromMenus,
+} from '@/lib/contractant-scope';
 import { getContractant, importContractantEmployees } from '@/lib/contractants-store';
-import { checkAnyPermission } from '@/lib/require-permission';
+import { checkAnyPermission, getActiveSession } from '@/lib/require-permission';
 import { logAuditError } from '@/lib/audit-log-store';
 import { auditSimpleAction, getAuditActor } from '@/lib/with-audit';
 
@@ -20,6 +24,14 @@ export async function POST(request: Request, context: Ctx) {
 
   try {
     const { id } = await context.params;
+    const session = await getActiveSession();
+    const scope = getContractantScopeFromMenus(session?.menus);
+    if (!canAccessContractantId(id, scope)) {
+      return NextResponse.json(
+        { error: 'Ce contractant n’est pas dans votre périmètre.' },
+        { status: 403 },
+      );
+    }
     const existing = await getContractant(id);
     if (!existing) {
       return NextResponse.json({ error: 'Contractant introuvable' }, { status: 404 });

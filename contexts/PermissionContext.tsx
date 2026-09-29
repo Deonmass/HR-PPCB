@@ -12,11 +12,17 @@ import {
 import { routeViewMenuIds } from '@/lib/menu-routes';
 import { canPerformAction } from '@/lib/permission-check';
 import type { MenuPermission, PermissionAction, SessionUser } from '@/lib/auth-types';
+import {
+  CONTRACTANT_HOME_PATH,
+  isContractantOnlyUser,
+} from '@/lib/contractant-scope';
 
 interface PermissionContextValue {
   user: SessionUser | null;
   menus: MenuPermission[];
   isLoading: boolean;
+  /** Utilisateur limité à un/des contractant(s) (menu & accueil dédiés). */
+  isContractantOnly: boolean;
   can: (menuId: string, action: PermissionAction) => boolean;
   canViewPath: (pathname: string) => boolean;
   firstAccessiblePath: string | null;
@@ -86,7 +92,11 @@ export function PermissionProvider({ children }: { children: ReactNode }) {
     [menus],
   );
 
+  const isContractantOnly = useMemo(() => isContractantOnlyUser(menus), [menus]);
+
   const firstAccessiblePath = useMemo(() => {
+    if (isContractantOnly) return CONTRACTANT_HOME_PATH;
+
     const candidates = [
       '/accueil',
       '/rapport',
@@ -118,6 +128,7 @@ export function PermissionProvider({ children }: { children: ReactNode }) {
       '/documents/convention-collective',
       '/documents/rrf',
       '/documents/exit',
+      '/documents/reponse-demission',
       '/documents/newcomer',
       '/documents/interim-appraisal',
       '/politique',
@@ -155,20 +166,37 @@ export function PermissionProvider({ children }: { children: ReactNode }) {
       if (menuIds.some((menuId) => canPerformAction(menus, menuId, 'view'))) return path;
     }
     return '/accueil';
-  }, [menus]);
+  }, [menus, isContractantOnly]);
 
   const canViewPath = useCallback(
     (pathname: string) => {
+      if (isContractantOnly) {
+        return (
+          pathname === CONTRACTANT_HOME_PATH
+          || pathname.startsWith(`${CONTRACTANT_HOME_PATH}/`)
+          || pathname === '/acces-refuse'
+          || pathname === '/login'
+        );
+      }
       const menuIds = routeViewMenuIds(pathname);
       if (menuIds.length === 0) return true;
       return menuIds.some((menuId) => can(menuId, 'view'));
     },
-    [can],
+    [can, isContractantOnly],
   );
 
   const value = useMemo(
-    () => ({ user, menus, isLoading, can, canViewPath, firstAccessiblePath, refresh }),
-    [user, menus, isLoading, can, canViewPath, firstAccessiblePath, refresh],
+    () => ({
+      user,
+      menus,
+      isLoading,
+      isContractantOnly,
+      can,
+      canViewPath,
+      firstAccessiblePath,
+      refresh,
+    }),
+    [user, menus, isLoading, isContractantOnly, can, canViewPath, firstAccessiblePath, refresh],
   );
 
   return <PermissionContext.Provider value={value}>{children}</PermissionContext.Provider>;

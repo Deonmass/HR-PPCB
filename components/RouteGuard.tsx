@@ -10,7 +10,7 @@ export default function RouteGuard({ children }: { children: ReactNode }) {
   const pathname = usePathname();
   const router = useRouter();
   const { t } = useI18n();
-  const { isLoading, user, can, firstAccessiblePath } = usePermissions();
+  const { isLoading, user, can, firstAccessiblePath, isContractantOnly } = usePermissions();
 
   useEffect(() => {
     if (isLoading || pathname === '/login' || pathname === '/acces-refuse') return;
@@ -18,6 +18,22 @@ export default function RouteGuard({ children }: { children: ReactNode }) {
     if (!user) {
       const next = `${pathname}${typeof window !== 'undefined' ? window.location.search : ''}`;
       router.replace(`/login?next=${encodeURIComponent(next)}`);
+      return;
+    }
+
+    // Accueil RH global → dashboard contractant dédié
+    if (isContractantOnly && (pathname === '/accueil' || pathname === '/')) {
+      if (firstAccessiblePath) router.replace(firstAccessiblePath);
+      return;
+    }
+
+    if (isContractantOnly) {
+      const allowed =
+        pathname === '/employes/contractants'
+        || pathname.startsWith('/employes/contractants/');
+      if (!allowed && firstAccessiblePath && firstAccessiblePath !== pathname) {
+        router.replace(firstAccessiblePath);
+      }
       return;
     }
 
@@ -31,7 +47,7 @@ export default function RouteGuard({ children }: { children: ReactNode }) {
         router.replace('/acces-refuse');
       }
     }
-  }, [isLoading, pathname, user, can, firstAccessiblePath, router]);
+  }, [isLoading, pathname, user, can, firstAccessiblePath, isContractantOnly, router]);
 
   if (isLoading) {
     return <div className="loading">{t('common.loading')}</div>;
@@ -39,6 +55,19 @@ export default function RouteGuard({ children }: { children: ReactNode }) {
 
   if (!user) {
     return <div className="loading">{t('common.redirecting')}</div>;
+  }
+
+  if (isContractantOnly) {
+    if (pathname === '/accueil' || pathname === '/') {
+      return <div className="loading">{t('common.redirecting')}</div>;
+    }
+    const allowed =
+      pathname === '/employes/contractants'
+      || pathname.startsWith('/employes/contractants/');
+    if (!allowed) {
+      return <div className="loading">{t('common.redirecting')}</div>;
+    }
+    return <>{children}</>;
   }
 
   const menuIds = routeViewMenuIds(pathname);

@@ -415,6 +415,18 @@ export function mergePermissionsWithCatalog(menus: MenuPermission[]): MenuPermis
               ),
             }
           : existing.overtimeScope,
+      contractantScope:
+        defaultMenu.menuId === 'employes.contractants' && existing.contractantScope
+          ? {
+              contractantIds: Array.from(
+                new Set(
+                  (existing.contractantScope.contractantIds ?? [])
+                    .map((id) => String(id).trim())
+                    .filter(Boolean),
+                ),
+              ),
+            }
+          : existing.contractantScope,
     };
   });
 

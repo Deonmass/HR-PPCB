@@ -50,11 +50,17 @@ export interface OvertimeAccessScope {
   serviceIds: string[];
 }
 
+/** Périmètre Contractants : uniquement les sociétés cochées (ex. EKMM). */
+export interface ContractantAccessScope {
+  contractantIds: string[];
+}
+
 export interface MenuPermission {
   menuId: string;
   label: string;
   actions: Record<PermissionAction, boolean>;
   overtimeScope?: OvertimeAccessScope;
+  contractantScope?: ContractantAccessScope;
 }
 
 export interface RolePermissions {

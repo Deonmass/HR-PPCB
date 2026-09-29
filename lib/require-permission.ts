@@ -3,10 +3,10 @@ import 'server-only';
 import { cookies } from 'next/headers';
 import { NextResponse } from 'next/server';
 import { getSession, getSessionCookieName } from './auth-store';
-import type { PermissionAction } from './auth-types';
+import type { AuthSession, PermissionAction } from './auth-types';
 import { canPerformAction } from './permission-check';
 
-async function getActiveSession() {
+export async function getActiveSession(): Promise<AuthSession | null> {
   const cookieStore = await cookies();
   const token = cookieStore.get(getSessionCookieName())?.value;
   return getSession(token);

@@ -1,7 +1,11 @@
 import { NextResponse } from 'next/server';
+import {
+  canAccessContractantId,
+  getContractantScopeFromMenus,
+} from '@/lib/contractant-scope';
 import { createContractantEmployee } from '@/lib/contractants-store';
 import type { ContractantEmployeeInput } from '@/lib/contractants-types';
-import { checkAnyPermission } from '@/lib/require-permission';
+import { checkAnyPermission, getActiveSession } from '@/lib/require-permission';
 import { withAudit } from '@/lib/with-audit';
 
 interface Ctx {
@@ -19,6 +23,14 @@ export async function POST(request: Request, context: Ctx) {
 
   try {
     const { id } = await context.params;
+    const session = await getActiveSession();
+    const scope = getContractantScopeFromMenus(session?.menus);
+    if (!canAccessContractantId(id, scope)) {
+      return NextResponse.json(
+        { error: 'Ce contractant n’est pas dans votre périmètre.' },
+        { status: 403 },
+      );
+    }
     const body = (await request.json()) as ContractantEmployeeInput;
     const saved = await withAudit(
       {

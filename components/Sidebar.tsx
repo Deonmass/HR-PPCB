@@ -7,6 +7,7 @@ import {
   useEffect,
   useId,
   useLayoutEffect,
+  useMemo,
   useRef,
   useState,
   Fragment,
@@ -59,6 +60,21 @@ type NavLinkSection = {
 };
 
 type NavSection = NavGroup | NavLinkSection;
+
+/** Menu latéral réduit pour un utilisateur limité à un contractant. */
+function buildContractantOnlyNav(_contractorLabel: string): NavSection[] {
+  return [
+    {
+      type: 'link',
+      id: 'home',
+      href: '/employes/contractants',
+      label: 'Accueil',
+      icon: 'home',
+      color: '#e30613',
+      alwaysVisible: true,
+    },
+  ];
+}
 
 const NAV: NavSection[] = [
   {
@@ -849,7 +865,8 @@ export default function Sidebar() {
   const { collapsed, toggle } = useSidebar();
   const { theme, toggleTheme, isSwitching } = useTheme();
   const { t, locale } = useI18n();
-  const { user, can, isLoading: permissionsLoading } = usePermissions();
+  const { user, can, isLoading: permissionsLoading, isContractantOnly } = usePermissions();
+  const [contractorLabel, setContractorLabel] = useState('Dashboard');
   const [openGroups, setOpenGroups] = useState<Record<string, boolean>>(() =>
     buildInitialOpenGroups(pathname, typeof window !== 'undefined' ? window.location.search.slice(1) : ''),
   );
@@ -857,6 +874,34 @@ export default function Sidebar() {
   const [profileMenuOpen, setProfileMenuOpen] = useState(false);
   const [passwordModalOpen, setPasswordModalOpen] = useState(false);
   const profileRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    if (!isContractantOnly) {
+      setContractorLabel('Dashboard');
+      return;
+    }
+    let cancelled = false;
+    void (async () => {
+      try {
+        const res = await fetch('/api/employes/contractants');
+        if (!res.ok) return;
+        const json = (await res.json()) as {
+          contractants?: { denomination?: string }[];
+        };
+        const names = (json.contractants ?? [])
+          .map((item) => item.denomination?.trim())
+          .filter(Boolean) as string[];
+        if (!cancelled && names.length) {
+          setContractorLabel(names.length === 1 ? names[0]! : names.join(' · '));
+        }
+      } catch {
+        // ignore
+      }
+    })();
+    return () => {
+      cancelled = true;
+    };
+  }, [isContractantOnly]);
 
   useEffect(() => {
     if (!profileMenuOpen) return;
@@ -876,29 +921,34 @@ export default function Sidebar() {
     };
   }, [profileMenuOpen]);
 
-  const visibleNav = sortNavSections(
-    translateNav(
-      NAV.map((section) => {
-        if (section.type === 'link') {
-          if (section.alwaysVisible) return section;
-          if (section.menuIds?.length) {
-            return section.menuIds.some((id) => can(id, 'view')) ? section : null;
-          }
-          if (can(section.id, 'view')) return section;
-          return null;
-        }
-        const items = section.items.filter((item) => {
-          if (item.menuIds?.length) return item.menuIds.some((id) => can(id, 'view'));
-          if (item.menuId) return can(item.menuId, 'view');
-          return false;
-        });
-        if (!items.length) return null;
-        return { ...section, items };
-      }).filter((section): section is NavSection => section !== null),
-      t,
-    ),
-    locale,
+  const baseNav = useMemo(
+    () => (isContractantOnly ? buildContractantOnlyNav(contractorLabel) : NAV),
+    [isContractantOnly, contractorLabel],
   );
+
+  const filteredBaseNav = baseNav
+    .map((section) => {
+      if (section.type === 'link') {
+        if (section.alwaysVisible) return section;
+        if (section.menuIds?.length) {
+          return section.menuIds.some((id) => can(id, 'view')) ? section : null;
+        }
+        if (can(section.id, 'view')) return section;
+        return null;
+      }
+      const items = section.items.filter((item) => {
+        if (item.menuIds?.length) return item.menuIds.some((id) => can(id, 'view'));
+        if (item.menuId) return can(item.menuId, 'view');
+        return false;
+      });
+      if (!items.length) return null;
+      return { ...section, items };
+    })
+    .filter((section): section is NavSection => section !== null);
+
+  const visibleNav = isContractantOnly
+    ? translateNav(filteredBaseNav, t)
+    : sortNavSections(translateNav(filteredBaseNav, t), locale);
 
   const handleLogout = async () => {
     if (loggingOut) return;
@@ -927,14 +977,14 @@ export default function Sidebar() {
   useEffect(() => {
     setOpenGroups((prev) => {
       const next = { ...prev };
-      for (const section of NAV) {
+      for (const section of baseNav) {
         if (section.type === 'group' && section.items.some((item) => isNavItemActive(pathname, item, search))) {
           next[section.id] = true;
         }
       }
       return next;
     });
-  }, [pathname, search]);
+  }, [pathname, search, baseNav]);
 
   const toggleGroup = (id: string) => {
     setOpenGroups((prev) => ({ ...prev, [id]: !prev[id] }));
@@ -946,13 +996,18 @@ export default function Sidebar() {
         <div className="sidebar-brand">
           {!collapsed && (
             <div className="sidebar-brand-text">
-              <h1>{t('brand.name')}</h1>
-              <p>{t('brand.tagline')}</p>
+              <h1>{isContractantOnly ? contractorLabel : t('brand.name')}</h1>
+              <p>{isContractantOnly ? 'Espace contractant' : t('brand.tagline')}</p>
             </div>
           )}
           {collapsed && (
-            <SidebarTip label={t('brand.name')} enabled color="#e30613" hint={t('brand.tagline')}>
-              <span className="sidebar-brand-mini">RH</span>
+            <SidebarTip
+              label={isContractantOnly ? contractorLabel : t('brand.name')}
+              enabled
+              color="#e30613"
+              hint={isContractantOnly ? 'Espace contractant' : t('brand.tagline')}
+            >
+              <span className="sidebar-brand-mini">{isContractantOnly ? 'C' : 'RH'}</span>
             </SidebarTip>
           )}
         </div>

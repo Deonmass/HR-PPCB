@@ -9052,11 +9052,11 @@
       "id": "gd.mwankana@capitalhrsolutions.net",
       "username": "gd.mwankana@capitalhrsolutions.net",
       "password": "123",
-      "displayName": "Guy Daniel",
+      "displayName": "Guy daniel",
       "initials": "GD",
       "email": "gd.mwankana@capitalhrsolutions.net",
       "active": true,
-      "createdAt": "2026-09-29T08:35:09.200Z",
+      "createdAt": "2026-09-24T15:30:02.422Z",
       "menus": [
         {
           "menuId": "audit.points",
@@ -9374,12 +9374,17 @@
           "menuId": "employes.contractants",
           "label": "Contractants",
           "actions": {
-            "view": false,
-            "create": false,
-            "edit": false,
-            "delete": false,
-            "export": false,
-            "undo": false
+            "view": true,
+            "create": true,
+            "edit": true,
+            "delete": true,
+            "export": true,
+            "undo": true
+          },
+          "contractantScope": {
+            "contractantIds": [
+              "2"
+            ]
           }
         },
         {

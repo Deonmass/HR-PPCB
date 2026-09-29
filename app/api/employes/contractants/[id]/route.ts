@@ -1,15 +1,31 @@
 import { NextResponse } from 'next/server';
 import {
+  canAccessContractantId,
+  getContractantScopeFromMenus,
+} from '@/lib/contractant-scope';
+import {
   deleteContractant,
   getContractant,
   updateContractant,
 } from '@/lib/contractants-store';
 import type { ContractantInput } from '@/lib/contractants-types';
-import { checkAnyPermission } from '@/lib/require-permission';
+import { checkAnyPermission, getActiveSession } from '@/lib/require-permission';
 import { withAudit } from '@/lib/with-audit';
 
 interface Ctx {
   params: Promise<{ id: string }>;
+}
+
+async function denyIfOutsideScope(contractantId: string): Promise<NextResponse | null> {
+  const session = await getActiveSession();
+  const scope = getContractantScopeFromMenus(session?.menus);
+  if (!canAccessContractantId(contractantId, scope)) {
+    return NextResponse.json(
+      { error: 'Ce contractant n’est pas dans votre périmètre.' },
+      { status: 403 },
+    );
+  }
+  return null;
 }
 
 export async function GET(_request: Request, context: Ctx) {
@@ -22,6 +38,8 @@ export async function GET(_request: Request, context: Ctx) {
 
   try {
     const { id } = await context.params;
+    const outside = await denyIfOutsideScope(id);
+    if (outside) return outside;
     const contractant = await getContractant(id);
     if (!contractant) {
       return NextResponse.json({ error: 'Contractant introuvable' }, { status: 404 });
@@ -42,6 +60,8 @@ export async function PUT(request: Request, context: Ctx) {
 
   try {
     const { id } = await context.params;
+    const outside = await denyIfOutsideScope(id);
+    if (outside) return outside;
     const body = (await request.json()) as ContractantInput;
     const saved = await withAudit(
       {
@@ -75,6 +95,8 @@ export async function DELETE(_request: Request, context: Ctx) {
 
   try {
     const { id } = await context.params;
+    const outside = await denyIfOutsideScope(id);
+    if (outside) return outside;
     const ok = await withAudit(
       {
         module: 'contractants',

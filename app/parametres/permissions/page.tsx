@@ -18,6 +18,7 @@ import { usePermissions } from '@/contexts/PermissionContext';
 import { showError, showSuccess } from '@/lib/swal';
 import type {
   AuthUser,
+  ContractantAccessScope,
   DepartmentSetting,
   MenuPermission,
   OvertimeAccessScope,
@@ -26,7 +27,13 @@ import type {
   ServiceSetting,
 } from '@/lib/auth-types';
 import OvertimeScopePicker from '@/components/OvertimeScopePicker';
+import ContractantScopePicker from '@/components/ContractantScopePicker';
 import { getOvertimeScopeFromMenus, hasExplicitOvertimeScope } from '@/lib/overtime-scope';
+import {
+  getContractantScopeFromMenus,
+  hasExplicitContractantScope,
+} from '@/lib/contractant-scope';
+import type { Contractant } from '@/lib/contractants-types';
 
 type SafeUser = Omit<AuthUser, 'password'>;
 type SideMode = 'roles' | 'users';
@@ -47,6 +54,7 @@ function PermissionsContent() {
   const [newRoleName, setNewRoleName] = useState('');
   const [departments, setDepartments] = useState<DepartmentSetting[]>([]);
   const [services, setServices] = useState<ServiceSetting[]>([]);
+  const [contractants, setContractants] = useState<Contractant[]>([]);
 
   const loadUsers = useCallback(async () => {
     setLoadingUsers(true);
@@ -94,6 +102,12 @@ function PermissionsContent() {
       .then((res) => (res.ok ? res.json() : []))
       .then((json: ServiceSetting[]) => setServices(Array.isArray(json) ? json : []))
       .catch(() => setServices([]));
+    fetch('/api/employes/contractants?forPermissions=1')
+      .then((res) => (res.ok ? res.json() : { contractants: [] }))
+      .then((json: { contractants?: Contractant[] }) =>
+        setContractants(Array.isArray(json.contractants) ? json.contractants : []),
+      )
+      .catch(() => setContractants([]));
   }, [loadUsers, loadRoles]);
 
   useEffect(() => {
@@ -237,6 +251,45 @@ function PermissionsContent() {
           ? {
               ...menu,
               overtimeScope: scope,
+              actions: explicit ? { ...menu.actions, view: true } : menu.actions,
+            }
+          : menu,
+      );
+    });
+  };
+
+  const updateContractantScope = (scope: ContractantAccessScope) => {
+    if (!menus || !canEdit) return;
+    const explicit = hasExplicitContractantScope(scope);
+    setMenus((prev) => {
+      if (!prev) return prev;
+      const has = prev.some((menu) => menu.menuId === 'employes.contractants');
+      const label =
+        PERMISSION_MENU_CATALOG.flatMap((g) => g.items).find((i) => i.id === 'employes.contractants')
+          ?.label ?? 'Contractants';
+      if (!has) {
+        return [
+          ...prev,
+          {
+            menuId: 'employes.contractants',
+            label,
+            actions: {
+              view: explicit,
+              create: false,
+              edit: false,
+              delete: false,
+              export: false,
+              undo: false,
+            },
+            contractantScope: scope,
+          },
+        ];
+      }
+      return prev.map((menu) =>
+        menu.menuId === 'employes.contractants'
+          ? {
+              ...menu,
+              contractantScope: scope,
               actions: explicit ? { ...menu.actions, view: true } : menu.actions,
             }
           : menu,
@@ -512,6 +565,12 @@ function PermissionsContent() {
                               supervisorMenu
                               && PERMISSION_ACTIONS.some((action) => supervisorMenu.actions[action.id]),
                             );
+                            const contractantsMenu =
+                              menu.menuId === 'employes.contractants' ? menu : null;
+                            const showContractantScope = Boolean(
+                              contractantsMenu
+                              && PERMISSION_ACTIONS.some((action) => contractantsMenu.actions[action.id]),
+                            );
                             return (
                               <div key={menu.menuId} className="permissions-row-block">
                               <div className={gridClass}>
@@ -569,6 +628,14 @@ function PermissionsContent() {
                                   disabled={!canEdit}
                                   allDepartmentsGranted={allDepartmentsGranted}
                                   onChange={updateOvertimeScope}
+                                />
+                              ) : null}
+                              {showContractantScope ? (
+                                <ContractantScopePicker
+                                  contractants={contractants}
+                                  value={getContractantScopeFromMenus(menus)}
+                                  disabled={!canEdit}
+                                  onChange={updateContractantScope}
                                 />
                               ) : null}
                               </div>

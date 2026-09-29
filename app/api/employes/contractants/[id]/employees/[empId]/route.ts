@@ -1,14 +1,30 @@
 import { NextResponse } from 'next/server';
 import {
+  canAccessContractantId,
+  getContractantScopeFromMenus,
+} from '@/lib/contractant-scope';
+import {
   deleteContractantEmployee,
   updateContractantEmployee,
 } from '@/lib/contractants-store';
 import type { ContractantEmployeeInput } from '@/lib/contractants-types';
-import { checkAnyPermission } from '@/lib/require-permission';
+import { checkAnyPermission, getActiveSession } from '@/lib/require-permission';
 import { withAudit } from '@/lib/with-audit';
 
 interface Ctx {
   params: Promise<{ id: string; empId: string }>;
+}
+
+async function denyIfOutsideScope(contractantId: string): Promise<NextResponse | null> {
+  const session = await getActiveSession();
+  const scope = getContractantScopeFromMenus(session?.menus);
+  if (!canAccessContractantId(contractantId, scope)) {
+    return NextResponse.json(
+      { error: 'Ce contractant n’est pas dans votre périmètre.' },
+      { status: 403 },
+    );
+  }
+  return null;
 }
 
 export async function PUT(request: Request, context: Ctx) {
@@ -20,6 +36,8 @@ export async function PUT(request: Request, context: Ctx) {
 
   try {
     const { id, empId } = await context.params;
+    const outside = await denyIfOutsideScope(id);
+    if (outside) return outside;
     const body = (await request.json()) as ContractantEmployeeInput;
     const saved = await withAudit(
       {
@@ -53,6 +71,8 @@ export async function DELETE(_request: Request, context: Ctx) {
 
   try {
     const { id, empId } = await context.params;
+    const outside = await denyIfOutsideScope(id);
+    if (outside) return outside;
     const ok = await withAudit(
       {
         module: 'contractants',
