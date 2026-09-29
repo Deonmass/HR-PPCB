@@ -1,6 +1,21 @@
 {
   "entries": [
     {
+      "id": "log-001206",
+      "at": "2026-09-29T12:50:25.343Z",
+      "userId": "mukwilunaomie@gmail.com",
+      "userName": "Naomie Mukwilu",
+      "userEmail": "mukwilunaomie@gmail.com",
+      "module": "auth",
+      "moduleLabel": "Authentification",
+      "action": "login",
+      "actionLabel": "Connexion",
+      "summary": "Connexion mukwilunaomie@gmail.com",
+      "details": "Connexion de Naomie Mukwilu (mukwilunaomie@gmail.com)",
+      "undoable": false,
+      "undone": false
+    },
+    {
       "id": "log-001205",
       "at": "2026-09-29T12:48:30.961Z",
       "userId": "gd.mwankana@capitalhrsolutions.net",
@@ -123617,5 +123632,5 @@
       }
     }
   ],
-  "nextSeq": 1206
+  "nextSeq": 1207
 }
