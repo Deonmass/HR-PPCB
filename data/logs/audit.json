@@ -1,6 +1,21 @@
 {
   "entries": [
     {
+      "id": "log-001212",
+      "at": "2026-09-29T13:35:29.477Z",
+      "userId": "admin",
+      "userName": "Administrateur",
+      "userEmail": "admin",
+      "module": "sante",
+      "moduleLabel": "Santé",
+      "action": "export",
+      "actionLabel": "Export",
+      "summary": "Export pathologies (230 cas)",
+      "details": "Export pathologies (230 cas)",
+      "undoable": false,
+      "undone": false
+    },
+    {
       "id": "log-001211",
       "at": "2026-09-29T12:54:22.485Z",
       "userId": "mukwilunaomie@gmail.com",
@@ -123735,5 +123750,5 @@
       }
     }
   ],
-  "nextSeq": 1212
+  "nextSeq": 1213
 }
