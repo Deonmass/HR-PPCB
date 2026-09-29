@@ -1,12 +1,14 @@
 'use client';
 
 import { useCallback, useEffect, useMemo, useRef, useState, type ChangeEvent, type MouseEvent as ReactMouseEvent } from 'react';
-import { useSearchParams } from 'next/navigation';
+import { useRouter, useSearchParams } from 'next/navigation';
 import PermissionGate from '@/components/PermissionGate';
 import RefreshButton from '@/components/RefreshButton';
 import RowContextMenu, { type ContextMenuItem } from '@/components/RowContextMenu';
 import TableHeaderFilter from '@/components/TableHeaderFilter';
 import ContractantsDashboard from '@/components/contractants/ContractantsDashboard';
+import ContractantHomeDashboard from '@/components/contractants/ContractantHomeDashboard';
+import ContractantEmployeeDetailModal from '@/components/contractants/ContractantEmployeeDetailModal';
 import { usePermissions } from '@/contexts/PermissionContext';
 import {
   CONTRACTANT_EMPLOYEE_STATUTS,
@@ -18,10 +20,17 @@ import {
   type ContractantEmployee,
   type ContractantEmployeeStatut,
   type ContractantEtatCivilId,
+  type ContractantFamilyMember,
   type ContractantSexe,
 } from '@/lib/contractants-types';
+import {
+  getContractantScopeFromMenus,
+  hasExplicitContractantScope,
+} from '@/lib/contractant-scope';
+import type { DepartmentSetting, ServiceSetting } from '@/lib/auth-types';
 import { DEFAULT_LOCALISATIONS } from '@/lib/localisations';
 import { compareExcoDepartments } from '@/lib/exco-department-map';
+import { isContractantEffectifEmployee } from '@/lib/capital-hr-effectif';
 import {
   buildColumnFilterValues,
   countActiveColumnFilters,
@@ -29,7 +38,7 @@ import {
 } from '@/lib/table-column-filters';
 import { confirmAction, confirmDelete, closeSwal, showActionLoading, showError, showSuccess, showSuccessHtml } from '@/lib/swal';
 
-type PageTab = 'dashboard' | 'contractants' | 'employes';
+type PageTab = 'dashboard' | 'contractants' | 'employes' | 'exit';
 
 type EmpFilterKey =
   | 'nom'
@@ -37,6 +46,7 @@ type EmpFilterKey =
   | 'lieuAffectation'
   | 'fonction'
   | 'departement'
+  | 'service'
   | 'telephone'
   | 'etatCivil'
   | 'statut'
@@ -54,9 +64,13 @@ type EmployeeForm = {
   lieuAffectation: string;
   fonction: string;
   departement: string;
+  service: string;
   telephone: string;
   etatCivil: ContractantEtatCivilId;
   statut: ContractantEmployeeStatut;
+  dateEmbauche: string;
+  dateSortie: string;
+  managerEmployeeId: string;
 };
 
 type FlatEmployee = ContractantEmployee & {
@@ -72,9 +86,13 @@ const EMPTY_EMPLOYEE: Omit<EmployeeForm, 'contractantId'> = {
   lieuAffectation: 'Zamba',
   fonction: '',
   departement: '',
+  service: '',
   telephone: '',
   etatCivil: 'C',
   statut: 'Permanent',
+  dateEmbauche: '',
+  dateSortie: '',
+  managerEmployeeId: '',
 };
 const EMPTY_EMP_FILTERS: Record<EmpFilterKey, string[]> = {
   nom: [],
@@ -82,6 +100,7 @@ const EMPTY_EMP_FILTERS: Record<EmpFilterKey, string[]> = {
   lieuAffectation: [],
   fonction: [],
   departement: [],
+  service: [],
   telephone: [],
   etatCivil: [],
   statut: [],
@@ -191,21 +210,61 @@ function ServiceIcon({ kind }: { kind: ReturnType<typeof resolveContractantServi
 }
 
 export default function ContractantsPage() {
-  const { can } = usePermissions();
+  const { can, menus, isContractantOnly, user } = usePermissions();
   const canCreate = can('employes.contractants', 'create') || can('employes.liste', 'create');
   const canEdit = can('employes.contractants', 'edit') || can('employes.liste', 'edit');
   const canDelete = can('employes.contractants', 'delete') || can('employes.liste', 'delete');
+  const contractantScope = getContractantScopeFromMenus(menus);
+  const hasScopedContractants = hasExplicitContractantScope(contractantScope);
+  /** Accueil avancé (salutation / new / exits) pour espace contractant. */
+  const useHomeDashboard = isContractantOnly || hasScopedContractants;
+  /** Avec périmètre limité, pas de création de nouvelle société. */
+  const canCreateContractor = canCreate && !hasScopedContractants;
+  const hideContractantColumn = isContractantOnly || hasScopedContractants;
 
+  const router = useRouter();
   const searchParams = useSearchParams();
+  const tabFromUrl = searchParams.get('tab');
 
-  const [tab, setTab] = useState<PageTab>('contractants');
+  const [tab, setTabState] = useState<PageTab>(() => {
+    if (
+      tabFromUrl === 'employes'
+      || tabFromUrl === 'contractants'
+      || tabFromUrl === 'dashboard'
+      || tabFromUrl === 'exit'
+    ) {
+      return tabFromUrl;
+    }
+    return 'contractants';
+  });
+
+  const setTab = useCallback(
+    (next: PageTab) => {
+      setTabState(next);
+      const params = new URLSearchParams(searchParams.toString());
+      if (next === 'dashboard') params.delete('tab');
+      else params.set('tab', next);
+      const qs = params.toString();
+      router.replace(qs ? `/employes/contractants?${qs}` : '/employes/contractants', {
+        scroll: false,
+      });
+    },
+    [router, searchParams],
+  );
 
   useEffect(() => {
-    const next = searchParams.get('tab');
-    if (next === 'dashboard' || next === 'employes' || next === 'contractants') setTab(next);
-  }, [searchParams]);
+    if (tabFromUrl === 'employes' || tabFromUrl === 'contractants' || tabFromUrl === 'dashboard' || tabFromUrl === 'exit') {
+      setTabState(tabFromUrl);
+      return;
+    }
+    if (isContractantOnly) setTabState('dashboard');
+  }, [tabFromUrl, isContractantOnly]);
+
   const [contractants, setContractants] = useState<Contractant[]>([]);
-  const [departements, setDepartements] = useState<string[]>([]);
+  const [departements, setDepartements] = useState<DepartmentSetting[]>([]);
+  const [services, setServices] = useState<ServiceSetting[]>([]);
+  const [disciplineCounts, setDisciplineCounts] = useState<Record<string, number>>({});
+  const [disciplineOpenCount, setDisciplineOpenCount] = useState(0);
   const [loading, setLoading] = useState(true);
   const [refreshing, setRefreshing] = useState(false);
   const [search, setSearch] = useState('');
@@ -240,13 +299,20 @@ export default function ContractantsPage() {
     saving: boolean;
   } | null>(null);
 
+  useEffect(() => {
+    setColFilters(EMPTY_EMP_FILTERS);
+    setSearch('');
+  }, [tab]);
+
   const load = useCallback(async (isRefresh = false) => {
     if (isRefresh) setRefreshing(true);
     else setLoading(true);
     try {
-      const [resContractants, resDepts] = await Promise.all([
-        fetch('/api/employes/contractants'),
+      const [resContractants, resDepts, resServices, resDiscipline] = await Promise.all([
+        fetch('/api/employes/contractants', { cache: 'no-store' }),
         fetch('/api/settings/departments'),
+        fetch('/api/settings/services'),
+        fetch('/api/employes/contractants/discipline'),
       ]);
       const data = await resContractants.json();
       if (!resContractants.ok) {
@@ -264,12 +330,35 @@ export default function ContractantsPage() {
             : [];
         setDepartements(
           list
-            .map((d: { name?: string; label?: string } | string) =>
-              typeof d === 'string' ? d : d.name || d.label || '',
+            .map((d: DepartmentSetting | string) =>
+              typeof d === 'string'
+                ? ({ id: d, name: d, active: true } satisfies DepartmentSetting)
+                : d,
             )
-            .map((s: string) => s.trim())
-            .filter(Boolean),
+            .filter((d: DepartmentSetting) => Boolean(d?.name?.trim())),
         );
+      }
+      if (resServices.ok) {
+        const svcData = await resServices.json();
+        const list = Array.isArray(svcData)
+          ? svcData
+          : Array.isArray(svcData?.services)
+            ? svcData.services
+            : [];
+        setServices(list.filter((s: ServiceSetting) => Boolean(s?.name?.trim())));
+      }
+      if (resDiscipline.ok) {
+        const discData = await resDiscipline.json();
+        const cases = Array.isArray(discData?.cases) ? discData.cases : [];
+        const counts: Record<string, number> = {};
+        let open = 0;
+        for (const item of cases as { employeeId?: string; statut?: string }[]) {
+          const eid = String(item.employeeId || '');
+          if (eid) counts[eid] = (counts[eid] || 0) + 1;
+          if (item.statut === 'Ouvert' || item.statut === 'En cours') open += 1;
+        }
+        setDisciplineCounts(counts);
+        setDisciplineOpenCount(open);
       }
     } catch (err) {
       await showError(err instanceof Error ? err.message : 'Chargement impossible');
@@ -330,25 +419,66 @@ export default function ContractantsPage() {
     return rows.sort((a, b) => a.nom.localeCompare(b.nom, 'fr', { sensitivity: 'base' }));
   }, [contractants]);
 
+  const activeEmployees = useMemo(
+    () =>
+      allEmployees.filter((e) =>
+        isContractantEffectifEmployee(e, e.contractantNom),
+      ),
+    [allEmployees],
+  );
+
+  const exitEmployees = useMemo(
+    () =>
+      allEmployees
+        .filter((e) => Boolean(String(e.dateSortie || '').trim()))
+        .sort((a, b) => {
+          const da = String(a.dateSortie || '');
+          const db = String(b.dateSortie || '');
+          if (da !== db) return db.localeCompare(da);
+          return a.nom.localeCompare(b.nom, 'fr', { sensitivity: 'base' });
+        }),
+    [allEmployees],
+  );
+
+  const listEmployees = tab === 'exit' ? exitEmployees : activeEmployees;
+
   const localisationOptions = useMemo(() => [...DEFAULT_LOCALISATIONS], []);
 
   const departementOptions = useMemo(() => {
     const set = new Set<string>();
-    for (const d of departements) if (d.trim()) set.add(d.trim());
+    for (const d of departements) {
+      const name = d.name?.trim();
+      if (name) set.add(name);
+    }
     for (const e of allEmployees) if (e.departement.trim()) set.add(e.departement.trim());
     return [...set].sort(compareExcoDepartments);
   }, [departements, allEmployees]);
 
+  const serviceOptionsForDept = useCallback(
+    (departement: string, currentService = '') => {
+      const currentDept = departement.trim().toLowerCase();
+      const deptId = departements.find((d) => d.name.trim().toLowerCase() === currentDept)?.id;
+      const names = (deptId ? services.filter((s) => s.departmentId === deptId && s.active !== false) : [])
+        .map((s) => s.name.trim())
+        .filter(Boolean);
+      const current = currentService.trim();
+      if (current && !names.includes(current)) names.unshift(current);
+      return [...new Set(names)];
+    },
+    [departements, services],
+  );
+
   const stats = useMemo(() => {
-    const hommes = allEmployees.filter((e) => e.sexe === 'M').length;
-    const femmes = allEmployees.filter((e) => e.sexe === 'F').length;
+    const hommes = activeEmployees.filter((e) => e.sexe === 'M').length;
+    const femmes = activeEmployees.filter((e) => e.sexe === 'F').length;
     return {
       contractants: contractants.length,
-      employes: allEmployees.length,
+      employes: activeEmployees.length,
+      exits: exitEmployees.length,
       hommes,
       femmes,
     };
-  }, [contractants, allEmployees]);
+  }, [contractants, activeEmployees, exitEmployees]);
 
   const filteredContractants = useMemo(() => {
     const q = search.trim().toLowerCase();
@@ -362,18 +492,21 @@ export default function ContractantsPage() {
 
   const searchedEmployees = useMemo(() => {
     const q = search.trim().toLowerCase();
-    if (!q) return allEmployees;
-    return allEmployees.filter(
+    if (!q) return listEmployees;
+    return listEmployees.filter(
       (e) =>
         e.nom.toLowerCase().includes(q)
         || e.fonction.toLowerCase().includes(q)
         || e.departement.toLowerCase().includes(q)
+        || (e.service || '').toLowerCase().includes(q)
+        || e.typeService.toLowerCase().includes(q)
         || e.lieuAffectation.toLowerCase().includes(q)
         || e.telephone.toLowerCase().includes(q)
         || e.contractantNom.toLowerCase().includes(q)
-        || etatCivilLabel(e.etatCivil).toLowerCase().includes(q),
+        || etatCivilLabel(e.etatCivil).toLowerCase().includes(q)
+        || (e.dateSortie || '').toLowerCase().includes(q),
     );
-  }, [allEmployees, search]);
+  }, [listEmployees, search]);
 
   const empFilterValues = useMemo(
     () =>
@@ -383,9 +516,10 @@ export default function ContractantsPage() {
         lieuAffectation: (e) => e.lieuAffectation,
         fonction: (e) => e.fonction,
         departement: (e) => e.departement,
+        service: (e) => e.service || '',
         telephone: (e) => e.telephone,
         etatCivil: (e) => etatCivilLabel(e.etatCivil),
-        statut: (e) => e.statut,
+        statut: (e) => (e.dateSortie ? 'Sorti' : e.statut),
         contractant: (e) => e.contractantNom,
       }),
     [searchedEmployees],
@@ -400,9 +534,10 @@ export default function ContractantsPage() {
           && matchesColumnFilter(colFilters.lieuAffectation, e.lieuAffectation)
           && matchesColumnFilter(colFilters.fonction, e.fonction)
           && matchesColumnFilter(colFilters.departement, e.departement)
+          && matchesColumnFilter(colFilters.service, e.service || '')
           && matchesColumnFilter(colFilters.telephone, e.telephone)
           && matchesColumnFilter(colFilters.etatCivil, etatCivilLabel(e.etatCivil))
-          && matchesColumnFilter(colFilters.statut, e.statut)
+          && matchesColumnFilter(colFilters.statut, e.dateSortie ? 'Sorti' : e.statut)
           && matchesColumnFilter(colFilters.contractant, e.contractantNom),
       ),
     [searchedEmployees, colFilters],
@@ -472,9 +607,13 @@ export default function ContractantsPage() {
         lieuAffectation: e.lieuAffectation,
         fonction: e.fonction,
         departement: e.departement,
+        service: e.service || '',
         telephone: e.telephone,
         etatCivil: e.etatCivil,
         statut: e.statut || 'Permanent',
+        dateEmbauche: e.dateEmbauche || '',
+        dateSortie: e.dateSortie || '',
+        managerEmployeeId: e.managerEmployeeId || '',
       },
       saving: false,
     });
@@ -489,8 +628,26 @@ export default function ContractantsPage() {
       openCreateEmployee(selected.id);
       return;
     }
-    openCreateContractor();
+    if (tab === 'dashboard' && canCreate) {
+      if (hasScopedContractants && contractants[0]) {
+        openCreateEmployee(contractants[0].id);
+        return;
+      }
+      if (canCreateContractor) {
+        openCreateContractor();
+      }
+      return;
+    }
+    if (canCreateContractor) {
+      openCreateContractor();
+    }
   };
+
+  const showPlusButton =
+    canCreate
+    && (tab === 'employes'
+      || (tab === 'contractants' && Boolean(selected || canCreateContractor))
+      || (tab === 'dashboard' && Boolean(canCreateContractor || (hasScopedContractants && contractants.length > 0))));
 
   const openEmployeesForContractant = (c: Contractant) => {
     pendingContractantFilter.current = c.denomination;
@@ -646,6 +803,25 @@ export default function ContractantsPage() {
           icon: 'edit',
           onClick: () => openEditEmployee(emp, emp.contractantId),
         });
+        if (!emp.dateSortie) {
+          items.push({
+            id: 'exit',
+            label: 'Exit / Sortie',
+            icon: 'cancel',
+            onClick: () => {
+              void exitEmployee(emp, emp.contractantId);
+            },
+          });
+        } else {
+          items.push({
+            id: 'rehire',
+            label: 'Annuler la sortie',
+            icon: 'toggle',
+            onClick: () => {
+              void clearEmployeeExit(emp, emp.contractantId);
+            },
+          });
+        }
       }
       if (canDelete) {
         items.push({
@@ -710,9 +886,13 @@ export default function ContractantsPage() {
         lieuAffectation: employeeModal.form.lieuAffectation,
         fonction: employeeModal.form.fonction,
         departement: employeeModal.form.departement,
+        service: employeeModal.form.service,
         telephone: employeeModal.form.telephone,
         etatCivil: employeeModal.form.etatCivil,
         statut: employeeModal.form.statut,
+        dateEmbauche: employeeModal.form.dateEmbauche,
+        dateSortie: employeeModal.form.dateSortie,
+        managerEmployeeId: employeeModal.form.managerEmployeeId,
       };
       const res = await fetch(
         isEdit
@@ -767,18 +947,128 @@ export default function ContractantsPage() {
     }
   };
 
+  const patchEmployeeExit = async (
+    e: ContractantEmployee,
+    contractantId: string,
+    dateSortie: string,
+  ) => {
+    showActionLoading(dateSortie ? 'Enregistrement de la sortie…' : 'Annulation de la sortie…');
+    try {
+      const res = await fetch(`/api/employes/contractants/${contractantId}/employees/${e.id}`, {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          nom: e.nom,
+          sexe: e.sexe,
+          lieuAffectation: e.lieuAffectation,
+          fonction: e.fonction,
+          departement: e.departement,
+          service: e.service,
+          telephone: e.telephone,
+          etatCivil: e.etatCivil,
+          statut: e.statut,
+          dateEmbauche: e.dateEmbauche,
+          dateSortie,
+          managerEmployeeId: e.managerEmployeeId,
+          family: e.family || [],
+          matriculePpc: e.matriculePpc,
+          numeroCnss: e.numeroCnss,
+          numeroCompte: e.numeroCompte,
+          banque: e.banque,
+          nbDependants: e.nbDependants,
+          txJr: e.txJr,
+          coutTransport: e.coutTransport,
+          payrollSite: e.payrollSite,
+        }),
+      });
+      const data = await res.json().catch(() => ({}));
+      closeSwal();
+      if (!res.ok) {
+        await showError(data?.error || 'Mise à jour impossible');
+        return;
+      }
+      await showSuccess(dateSortie ? 'Sortie enregistrée' : 'Sortie annulée');
+      await load(true);
+    } catch (err) {
+      closeSwal();
+      await showError(err instanceof Error ? err.message : 'Mise à jour impossible');
+    }
+  };
+
+  const exitEmployee = async (e: ContractantEmployee, contractantId: string) => {
+    const today = new Date().toISOString().slice(0, 10);
+    const { default: Swal } = await import('sweetalert2');
+    const result = await Swal.fire({
+      title: 'Date de sortie',
+      text: `Enregistrer la sortie de « ${e.nom} »`,
+      input: 'date',
+      inputValue: today,
+      showCancelButton: true,
+      confirmButtonText: 'Confirmer la sortie',
+      cancelButtonText: 'Annuler',
+      reverseButtons: true,
+      inputValidator: (value) => {
+        if (!value) return 'Date requise';
+        return undefined;
+      },
+    });
+    if (!result.isConfirmed || !result.value) return;
+    const dateSortie = String(result.value).slice(0, 10);
+    const ok = await confirmAction(
+      'Confirmer la sortie',
+      `L’employé « ${e.nom} » sera marqué sorti au ${dateSortie}.`,
+      'Confirmer',
+    );
+    if (!ok) return;
+    await patchEmployeeExit(e, contractantId, dateSortie);
+  };
+
+  const clearEmployeeExit = async (e: ContractantEmployee, contractantId: string) => {
+    const ok = await confirmAction(
+      'Annuler la sortie',
+      `Réactiver « ${e.nom} » (supprimer la date de sortie) ?`,
+      'Réactiver',
+    );
+    if (!ok) return;
+    await patchEmployeeExit(e, contractantId, '');
+  };
+
+  const scopedTitle = useMemo(() => {
+    if (!hasScopedContractants && !isContractantOnly) return null;
+    const names = contractants.map((c) => c.denomination.trim()).filter(Boolean);
+    if (!names.length) return null;
+    return names.length === 1 ? names[0]! : names.join(' · ');
+  }, [contractants, hasScopedContractants, isContractantOnly]);
+
   const subtitle = useMemo(() => {
     if (tab === 'dashboard') {
+      if (scopedTitle) {
+        return useHomeDashboard
+          ? `Accueil · ${stats.employes} employé${stats.employes > 1 ? 's' : ''}`
+          : `Dashboard · ${stats.employes} employé${stats.employes > 1 ? 's' : ''}`;
+      }
       return `${stats.contractants} contractant${stats.contractants > 1 ? 's' : ''} · ${stats.employes} employé${stats.employes > 1 ? 's' : ''}`;
     }
-    if (tab === 'employes') {
+    if (tab === 'employes' || tab === 'exit') {
       const filterHint =
         colFilters.contractant.length === 1 ? ` · ${colFilters.contractant[0]}` : '';
-      return `${filteredEmployees.length} employé${filteredEmployees.length > 1 ? 's' : ''} contractant${filteredEmployees.length > 1 ? 's' : ''}${filterHint}`;
+      if (tab === 'exit') {
+        return `${filteredEmployees.length} sortie${filteredEmployees.length > 1 ? 's' : ''}${filterHint}`;
+      }
+      return `${filteredEmployees.length} employé${filteredEmployees.length > 1 ? 's' : ''}${filterHint}`;
     }
     if (selected) return selected.denomination;
     return `${filteredContractants.length} contractant${filteredContractants.length > 1 ? 's' : ''}`;
-  }, [tab, stats, filteredEmployees.length, filteredContractants.length, selected, colFilters.contractant]);
+  }, [
+    tab,
+    stats,
+    filteredEmployees.length,
+    filteredContractants.length,
+    selected,
+    colFilters.contractant,
+    scopedTitle,
+    useHomeDashboard,
+  ]);
 
   const plusTitle =
     tab === 'employes' || (tab === 'contractants' && selected)
@@ -797,13 +1087,13 @@ export default function ContractantsPage() {
           <div className="page-header page-header-with-tabs contractants-header">
             <div>
               <div className="page-header-title-row">
-                <h2>Contractants</h2>
+                <h2>{scopedTitle || 'Contractants'}</h2>
                 <RefreshButton onClick={() => void load(true)} loading={refreshing} />
               </div>
               <p>{subtitle}</p>
             </div>
             <div className="contractants-header-actions">
-              {tab === 'contractants' && !selected && (
+              {tab === 'contractants' && !selected && !isContractantOnly && (
                 <div
                   ref={searchWrapRef}
                   className={`search-expand-wrap${searchOpen ? ' search-expand-open' : ''}${search.trim() ? ' search-expand-active' : ''}`}
@@ -842,26 +1132,36 @@ export default function ContractantsPage() {
                   className={`tab-btn tab-btn-sm${tab === 'dashboard' ? ' active' : ''}`}
                   onClick={() => setTab('dashboard')}
                 >
-                  Dashboard
+                  {useHomeDashboard ? 'Accueil' : 'Dashboard'}
                 </button>
-                <button
-                  type="button"
-                  className={`tab-btn tab-btn-sm${tab === 'contractants' ? ' active' : ''}`}
-                  onClick={() => setTab('contractants')}
-                >
-                  Contractants
-                  <span className="employees-tab-count">{stats.contractants}</span>
-                </button>
+                {!isContractantOnly && (
+                  <button
+                    type="button"
+                    className={`tab-btn tab-btn-sm${tab === 'contractants' ? ' active' : ''}`}
+                    onClick={() => setTab('contractants')}
+                  >
+                    Contractants
+                    <span className="employees-tab-count">{stats.contractants}</span>
+                  </button>
+                )}
                 <button
                   type="button"
                   className={`tab-btn tab-btn-sm${tab === 'employes' ? ' active' : ''}`}
                   onClick={() => setTab('employes')}
                 >
-                  Liste employés
+                  Liste des employés
                   <span className="employees-tab-count">{stats.employes}</span>
                 </button>
+                <button
+                  type="button"
+                  className={`tab-btn tab-btn-sm${tab === 'exit' ? ' active' : ''}`}
+                  onClick={() => setTab('exit')}
+                >
+                  Exit
+                  <span className="employees-tab-count">{stats.exits}</span>
+                </button>
               </div>
-              {canCreate && (
+              {showPlusButton && (
                 <button
                   type="button"
                   className="btn btn-accent btn-icon-only"
@@ -871,8 +1171,7 @@ export default function ContractantsPage() {
                 >
                   <PlusIcon />
                 </button>
-              )}
-            </div>
+              )}            </div>
           </div>
         </div>
 
@@ -880,14 +1179,32 @@ export default function ContractantsPage() {
         {loading ? (
           <div className="loading">Chargement...</div>
         ) : tab === 'dashboard' ? (
-          <ContractantsDashboard contractants={contractants} employees={allEmployees} />
-        ) : tab === 'employes' ? (
-          <div className="panel contractants-emp-list-panel">
-            <div className="contractants-emp-list-toolbar">
+          useHomeDashboard ? (
+            <ContractantHomeDashboard
+              userName={user?.displayName || user?.username || ''}
+              contractorLabel={scopedTitle || 'Espace contractant'}
+              contractants={contractants}
+              employees={allEmployees}
+              disciplineOpenCount={disciplineOpenCount}
+              hideContractantFilter={hideContractantColumn}
+            />
+          ) : (
+            <ContractantsDashboard contractants={contractants} employees={activeEmployees} />
+          )
+        ) : tab === 'employes' || tab === 'exit' ? (
+          <div className={`panel contractants-emp-list-panel${hideContractantColumn ? ' contractants-hide-contractant-col' : ''}`}>
+            <div className="contractants-emp-list-toolbar contractants-list-header-row">
+              <h3 className="contractants-page-title">
+                {tab === 'exit' ? 'Sorties (Exit)' : 'Liste des employés'}
+              </h3>
               <input
                 type="search"
-                className="search-input"
-                placeholder="Employé, fonction, contractant…"
+                className="search-input contractants-search-wide"
+                placeholder={
+                  tab === 'exit'
+                    ? 'Employé sorti, fonction, date…'
+                    : 'Employé, fonction, service, département…'
+                }
                 value={search}
                 onChange={(e) => setSearch(e.target.value)}
               />
@@ -947,27 +1264,37 @@ export default function ContractantsPage() {
                     </th>
                     <th>
                       <TableHeaderFilter
+                        label="Service"
+                        values={empFilterValues.service}
+                        selected={colFilters.service}
+                        onChange={(next) => setColFilters((p) => ({ ...p, service: next }))}
+                      />
+                    </th>
+                    <th>
+                      <TableHeaderFilter
                         label="Statut"
                         values={empFilterValues.statut}
                         selected={colFilters.statut}
                         onChange={(next) => setColFilters((p) => ({ ...p, statut: next }))}
                       />
                     </th>
-                    <th>
-                      <TableHeaderFilter
-                        label="Contractant"
-                        values={empFilterValues.contractant}
-                        selected={colFilters.contractant}
-                        onChange={(next) => setColFilters((p) => ({ ...p, contractant: next }))}
-                      />
-                    </th>
+                    {!hideContractantColumn && (
+                      <th>
+                        <TableHeaderFilter
+                          label="Contractant"
+                          values={empFilterValues.contractant}
+                          selected={colFilters.contractant}
+                          onChange={(next) => setColFilters((p) => ({ ...p, contractant: next }))}
+                        />
+                      </th>
+                    )}
                     <th className="col-actions"> </th>
                   </tr>
                 </thead>
                 <tbody>
                   {filteredEmployees.length === 0 ? (
                     <tr className="contractants-empty-row">
-                      <td colSpan={8}>
+                      <td colSpan={hideContractantColumn ? 8 : 9}>
                         <div className="contractants-empty-state">
                           <span className="contractants-empty-icon" aria-hidden>
                             {search.trim() || activeEmpFilterCount > 0 ? (
@@ -979,7 +1306,9 @@ export default function ContractantsPage() {
                           <p>
                             {search.trim() || activeEmpFilterCount > 0
                               ? 'Aucun résultat pour cette recherche.'
-                              : 'Aucun employé contractant.'}
+                              : tab === 'exit'
+                                ? 'Aucune sortie enregistrée.'
+                                : 'Aucun employé contractant.'}
                           </p>
                         </div>
                       </td>
@@ -989,24 +1318,46 @@ export default function ContractantsPage() {
                       <tr
                         key={`${e.contractantId}-${e.id}`}
                         onContextMenu={(ev) => openEmployeeMenu(ev, e)}
+                        onDoubleClick={() => setViewEmployee(e)}
+                        style={{ cursor: 'pointer' }}
                       >
-                        <td className="contractants-col-nom" title={e.nom}>{e.nom}</td>
+                        <td className="contractants-col-nom">{e.nom}</td>
                         <td className="contractants-col-sexe">{e.sexe || '—'}</td>
                         <td className="contractants-col-lieu" title={e.lieuAffectation}>{e.lieuAffectation || '—'}</td>
                         <td className="contractants-col-fonc" title={e.fonction || undefined}>{e.fonction || '—'}</td>
                         <td className="contractants-col-dept" title={e.departement || undefined}>{e.departement || '—'}</td>
-                        <td className="contractants-col-statut">
-                          <span
-                            className={
-                              e.statut === 'Permanent'
-                                ? 'contractant-statut is-permanent'
-                                : 'contractant-statut is-journalier'
-                            }
-                          >
-                            {e.statut}
-                          </span>
+                        <td className="contractants-col-service" title={e.service || undefined}>
+                          {e.service || '—'}
                         </td>
-                        <td className="contractants-col-contractant" title={e.contractantNom}>{e.contractantNom}</td>
+                        <td className="contractants-col-statut">
+                          {e.dateSortie ? (
+                            <span className="contractant-statut is-exit" title={`Sorti le ${e.dateSortie}`}>
+                              Sorti{tab === 'exit' ? ` · ${e.dateSortie.slice(0, 10)}` : ''}
+                            </span>
+                          ) : (
+                            <span
+                              className={
+                                e.statut === 'Permanent'
+                                  ? 'contractant-statut is-permanent'
+                                  : 'contractant-statut is-journalier'
+                              }
+                            >
+                              {e.statut}
+                            </span>
+                          )}
+                          {(disciplineCounts[e.id] || 0) > 0 ? (
+                            <span
+                              className="contractant-discipline-badge"
+                              title={`${disciplineCounts[e.id]} cas disciplinaire(s)`}
+                              style={{ marginLeft: '0.35rem' }}
+                            >
+                              {disciplineCounts[e.id]}
+                            </span>
+                          ) : null}
+                        </td>
+                        {!hideContractantColumn && (
+                          <td className="contractants-col-contractant" title={e.contractantNom}>{e.contractantNom}</td>
+                        )}
                         <td className="col-actions">
                           <button
                             type="button"
@@ -1073,7 +1424,9 @@ export default function ContractantsPage() {
                 <p className="text-muted">{selected.typeService}</p>
               </div>
               <div className="contractants-detail-stats">
-                <span><strong>{selected.employees.length}</strong> emp.</span>
+                <span><strong>{
+                  selected.employees.filter((e) => !String(e.dateSortie || '').trim()).length
+                }</strong> emp.</span>
               </div>
             </div>
           </div>
@@ -1096,8 +1449,9 @@ export default function ContractantsPage() {
               <div className="contractants-grid">
                 {filteredContractants.map((c) => {
                   const style = resolveContractantServiceStyle(c.typeService);
-                  const permanents = c.employees.filter((e) => e.statut === 'Permanent').length;
-                  const journaliers = c.employees.filter((e) => e.statut === 'Journalier').length;
+                  const actifs = c.employees.filter((e) => !String(e.dateSortie || '').trim());
+                  const permanents = actifs.filter((e) => e.statut === 'Permanent').length;
+                  const journaliers = actifs.filter((e) => e.statut === 'Journalier').length;
                   const showMenu = canEdit || canDelete || canCreate;
                   return (
                     <div
@@ -1124,7 +1478,7 @@ export default function ContractantsPage() {
                             <h3>{c.denomination}</h3>
                             <p className="contractant-card-service">{c.typeService || '—'}</p>
                           </div>
-                          <span className="contractant-card-count">{c.employees.length}</span>
+                          <span className="contractant-card-count">{actifs.length}</span>
                         </div>
                         <div className="contractant-card-points">
                           <span className="contractant-point is-permanent">
@@ -1356,7 +1710,11 @@ export default function ContractantsPage() {
                   onChange={(e) =>
                     setEmployeeModal({
                       ...employeeModal,
-                      form: { ...employeeModal.form, departement: e.target.value },
+                      form: {
+                        ...employeeModal.form,
+                        departement: e.target.value,
+                        service: '',
+                      },
                     })
                   }
                   placeholder="Suggestion depuis les départements RH"
@@ -1366,6 +1724,28 @@ export default function ContractantsPage() {
                     <option key={d} value={d} />
                   ))}
                 </datalist>
+              </div>
+              <div className="form-group">
+                <label>Service</label>
+                <select
+                  value={employeeModal.form.service}
+                  onChange={(e) =>
+                    setEmployeeModal({
+                      ...employeeModal,
+                      form: { ...employeeModal.form, service: e.target.value },
+                    })
+                  }
+                >
+                  <option value="">— Sélectionner —</option>
+                  {serviceOptionsForDept(
+                    employeeModal.form.departement,
+                    employeeModal.form.service,
+                  ).map((s) => (
+                    <option key={s} value={s}>
+                      {s}
+                    </option>
+                  ))}
+                </select>
               </div>
               <div className="form-group">
                 <label>Numéro téléphone</label>
@@ -1379,6 +1759,34 @@ export default function ContractantsPage() {
                   }
                   placeholder="+243…"
                 />
+              </div>
+              <div className="form-grid form-grid-2">
+                <div className="form-group">
+                  <label>Date d&apos;embauche</label>
+                  <input
+                    type="date"
+                    value={employeeModal.form.dateEmbauche}
+                    onChange={(e) =>
+                      setEmployeeModal({
+                        ...employeeModal,
+                        form: { ...employeeModal.form, dateEmbauche: e.target.value },
+                      })
+                    }
+                  />
+                </div>
+                <div className="form-group">
+                  <label>Date de sortie</label>
+                  <input
+                    type="date"
+                    value={employeeModal.form.dateSortie}
+                    onChange={(e) =>
+                      setEmployeeModal({
+                        ...employeeModal,
+                        form: { ...employeeModal.form, dateSortie: e.target.value },
+                      })
+                    }
+                  />
+                </div>
               </div>
               <div className="form-group">
                 <label>Statut *</label>
@@ -1421,53 +1829,104 @@ export default function ContractantsPage() {
       )}
 
       {viewEmployee && (
-        <div className="modal-overlay open" onClick={() => setViewEmployee(null)}>
-          <div className="modal contractants-modal contractants-view-modal" onClick={(e) => e.stopPropagation()}>
-            <div className="modal-header">
-              <h3>Détail employé</h3>
-              <button
-                type="button"
-                className="modal-close dashboard-list-close"
-                onClick={() => setViewEmployee(null)}
-                aria-label="Fermer"
-              >
-                &times;
-              </button>
-            </div>
-            <div className="modal-body">
-              <dl className="contractants-view-grid">
-                <div><dt>Noms et post-noms</dt><dd>{viewEmployee.nom}</dd></div>
-                <div><dt>Contractant</dt><dd>{viewEmployee.contractantNom}</dd></div>
-                <div><dt>Sexe</dt><dd>{viewEmployee.sexe || '—'}</dd></div>
-                <div><dt>État civil</dt><dd>{etatCivilLabel(viewEmployee.etatCivil)}</dd></div>
-                <div><dt>Lieu d&apos;affectation</dt><dd>{viewEmployee.lieuAffectation || '—'}</dd></div>
-                <div><dt>Fonction</dt><dd>{viewEmployee.fonction || '—'}</dd></div>
-                <div><dt>Département</dt><dd>{viewEmployee.departement || '—'}</dd></div>
-                <div><dt>Téléphone</dt><dd>{viewEmployee.telephone || '—'}</dd></div>
-                <div><dt>Statut</dt><dd>{viewEmployee.statut}</dd></div>
-                <div><dt>Type de service</dt><dd>{viewEmployee.typeService || '—'}</dd></div>
-              </dl>
-            </div>
-            <div className="modal-footer">
-              {canEdit && (
-                <button
-                  type="button"
-                  className="btn btn-secondary"
-                  onClick={() => {
-                    const emp = viewEmployee;
-                    setViewEmployee(null);
-                    openEditEmployee(emp, emp.contractantId);
-                  }}
-                >
-                  Modifier
-                </button>
-              )}
-              <button type="button" className="btn btn-primary" onClick={() => setViewEmployee(null)}>
-                Fermer
-              </button>
-            </div>
-          </div>
-        </div>
+        <ContractantEmployeeDetailModal
+          employee={
+            hideContractantColumn
+              ? { ...viewEmployee, contractantNom: '' }
+              : viewEmployee
+          }
+          peers={
+            contractants.find((c) => c.id === viewEmployee.contractantId)?.employees ?? []
+          }
+          disciplineCount={disciplineCounts[viewEmployee.id] || 0}
+          canEdit={canEdit}
+          onClose={() => setViewEmployee(null)}
+          onEdit={() => {
+            const emp = viewEmployee;
+            setViewEmployee(null);
+            openEditEmployee(emp, emp.contractantId);
+          }}
+          onSaveFamily={async (family: ContractantFamilyMember[]) => {
+            const emp = viewEmployee;
+            showActionLoading('Enregistrement…');
+            try {
+              const res = await fetch(
+                `/api/employes/contractants/${emp.contractantId}/employees/${emp.id}`,
+                {
+                  method: 'PUT',
+                  headers: { 'Content-Type': 'application/json' },
+                  body: JSON.stringify({
+                    nom: emp.nom,
+                    sexe: emp.sexe,
+                    lieuAffectation: emp.lieuAffectation,
+                    fonction: emp.fonction,
+                    departement: emp.departement,
+                    service: emp.service,
+                    telephone: emp.telephone,
+                    etatCivil: emp.etatCivil,
+                    statut: emp.statut,
+                    dateEmbauche: emp.dateEmbauche,
+                    dateSortie: emp.dateSortie,
+                    managerEmployeeId: emp.managerEmployeeId,
+                    family,
+                  }),
+                },
+              );
+              const data = await res.json().catch(() => ({}));
+              closeSwal();
+              if (!res.ok) {
+                await showError(data?.error || 'Enregistrement impossible');
+                return;
+              }
+              await showSuccess('Famille mise à jour');
+              await load(true);
+              setViewEmployee({ ...emp, family });
+            } catch (err) {
+              closeSwal();
+              await showError(err instanceof Error ? err.message : 'Enregistrement impossible');
+            }
+          }}
+          onSaveManager={async (managerEmployeeId: string) => {
+            const emp = viewEmployee;
+            showActionLoading('Enregistrement…');
+            try {
+              const res = await fetch(
+                `/api/employes/contractants/${emp.contractantId}/employees/${emp.id}`,
+                {
+                  method: 'PUT',
+                  headers: { 'Content-Type': 'application/json' },
+                  body: JSON.stringify({
+                    nom: emp.nom,
+                    sexe: emp.sexe,
+                    lieuAffectation: emp.lieuAffectation,
+                    fonction: emp.fonction,
+                    departement: emp.departement,
+                    service: emp.service,
+                    telephone: emp.telephone,
+                    etatCivil: emp.etatCivil,
+                    statut: emp.statut,
+                    dateEmbauche: emp.dateEmbauche,
+                    dateSortie: emp.dateSortie,
+                    managerEmployeeId,
+                    family: emp.family || [],
+                  }),
+                },
+              );
+              const data = await res.json().catch(() => ({}));
+              closeSwal();
+              if (!res.ok) {
+                await showError(data?.error || 'Enregistrement impossible');
+                return;
+              }
+              await showSuccess('Organigramme mis à jour');
+              await load(true);
+              setViewEmployee({ ...emp, managerEmployeeId });
+            } catch (err) {
+              closeSwal();
+              await showError(err instanceof Error ? err.message : 'Enregistrement impossible');
+            }
+          }}
+        />
       )}
 
       <input
