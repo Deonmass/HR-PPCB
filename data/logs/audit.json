@@ -1,6 +1,21 @@
 {
   "entries": [
     {
+      "id": "log-001197",
+      "at": "2026-09-29T08:37:22.391Z",
+      "userId": "admin",
+      "userName": "Administrateur",
+      "userEmail": "admin",
+      "module": "auth",
+      "moduleLabel": "Authentification",
+      "action": "logout",
+      "actionLabel": "Déconnexion",
+      "summary": "Déconnexion admin",
+      "details": "Déconnexion de Administrateur (admin)",
+      "undoable": false,
+      "undone": false
+    },
+    {
       "id": "log-001196",
       "at": "2026-09-29T08:35:12.741Z",
       "userId": "admin",
@@ -121491,5 +121506,5 @@
       }
     }
   ],
-  "nextSeq": 1197
+  "nextSeq": 1198
 }
