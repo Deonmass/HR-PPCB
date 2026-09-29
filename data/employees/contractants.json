@@ -11192,7 +11192,7 @@
           "etatCivil": "M",
           "statut": "Permanent",
           "dateEmbauche": "",
-          "dateSortie": "",
+          "dateSortie": "2026-09-28",
           "managerEmployeeId": "",
           "family": [],
           "matriculePpc": "",
@@ -11204,7 +11204,7 @@
           "coutTransport": 0,
           "payrollSite": "",
           "createdAt": "2026-08-15T09:22:38.385Z",
-          "updatedAt": "2026-08-15T09:22:38.385Z"
+          "updatedAt": "2026-09-29T12:54:18.224Z"
         },
         {
           "id": "678",
@@ -13210,7 +13210,7 @@
         }
       ],
       "createdAt": "2026-08-15T09:22:03.868Z",
-      "updatedAt": "2026-08-15T09:22:38.385Z"
+      "updatedAt": "2026-09-29T12:54:18.224Z"
     },
     {
       "id": "10",
