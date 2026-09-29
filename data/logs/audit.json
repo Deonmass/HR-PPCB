@@ -1,6 +1,32 @@
 {
   "entries": [
     {
+      "id": "log-001196",
+      "at": "2026-09-29T08:35:12.741Z",
+      "userId": "admin",
+      "userName": "Administrateur",
+      "userEmail": "admin",
+      "module": "settings.utilisateurs",
+      "moduleLabel": "Paramètres — Utilisateurs",
+      "action": "create",
+      "actionLabel": "Création",
+      "entityType": "auth.user",
+      "entityId": "gd.mwankana@capitalhrsolutions.net",
+      "summary": "Création utilisateur Guy Daniel",
+      "details": "Création utilisateur Guy Daniel",
+      "after": {
+        "id": "gd.mwankana@capitalhrsolutions.net",
+        "username": "gd.mwankana@capitalhrsolutions.net",
+        "displayName": "Guy Daniel",
+        "initials": "GD",
+        "email": "gd.mwankana@capitalhrsolutions.net",
+        "active": true,
+        "createdAt": "2026-09-29T08:35:09.200Z"
+      },
+      "undoable": true,
+      "undone": false
+    },
+    {
       "id": "log-001195",
       "at": "2026-09-29T08:33:11.300Z",
       "userId": "admin",
@@ -121465,5 +121491,5 @@
       }
     }
   ],
-  "nextSeq": 1196
+  "nextSeq": 1197
 }
