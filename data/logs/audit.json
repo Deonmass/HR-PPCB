@@ -1,6 +1,29 @@
 {
   "entries": [
     {
+      "id": "log-001194",
+      "at": "2026-09-29T08:32:46.904Z",
+      "userId": "system",
+      "userName": "Système",
+      "module": "auth",
+      "moduleLabel": "Authentification",
+      "action": "error",
+      "actionLabel": "Erreur",
+      "summary": "Identifiants invalides",
+      "details": "Échec de connexion pour « gd.mwankana@capitalhrsolutions.net »",
+      "undoable": false,
+      "undone": false,
+      "error": {
+        "message": "Identifiants invalides",
+        "path": "/api/auth/login",
+        "method": "POST",
+        "status": 401,
+        "context": {
+          "username": "gd.mwankana@capitalhrsolutions.net"
+        }
+      }
+    },
+    {
       "id": "log-001193",
       "at": "2026-09-29T08:16:53.579Z",
       "userId": "admin",
@@ -121427,5 +121450,5 @@
       }
     }
   ],
-  "nextSeq": 1194
+  "nextSeq": 1195
 }
