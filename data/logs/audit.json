@@ -1,6 +1,21 @@
 {
   "entries": [
     {
+      "id": "log-001191",
+      "at": "2026-09-29T08:16:33.863Z",
+      "userId": "admin",
+      "userName": "Administrateur",
+      "userEmail": "admin",
+      "module": "auth",
+      "moduleLabel": "Authentification",
+      "action": "logout",
+      "actionLabel": "Déconnexion",
+      "summary": "Déconnexion admin",
+      "details": "Déconnexion de Administrateur (admin)",
+      "undoable": false,
+      "undone": false
+    },
+    {
       "id": "log-001190",
       "at": "2026-09-29T01:25:29.404Z",
       "userId": "Pelagie.Kinkinia",
@@ -121382,5 +121397,5 @@
       }
     }
   ],
-  "nextSeq": 1191
+  "nextSeq": 1192
 }
