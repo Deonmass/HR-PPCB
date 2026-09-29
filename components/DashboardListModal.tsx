@@ -35,6 +35,8 @@ interface Props {
    */
   chipFilterKey?: string;
   chipFilterLabel?: string;
+  /** Classe CSS additionnelle sur le modal (ex. wrap des noms). */
+  className?: string;
 }
 
 function cellToText(value: ReactNode): string {
@@ -56,6 +58,7 @@ export default function DashboardListModal({
   enableColumnFilters = true,
   chipFilterKey,
   chipFilterLabel,
+  className,
 }: Props) {
   const [search, setSearch] = useState('');
   const [colFilters, setColFilters] = useState<Record<string, string[]>>({});
@@ -129,7 +132,7 @@ export default function DashboardListModal({
   return (
     <div className="modal-overlay open dashboard-list-overlay" onClick={onClose} role="presentation">
       <div
-        className="modal dependants-drilldown-modal dashboard-list-modal"
+        className={`modal dependants-drilldown-modal dashboard-list-modal${className ? ` ${className}` : ''}`}
         onClick={(event) => event.stopPropagation()}
         role="dialog"
         aria-modal
@@ -210,6 +213,7 @@ export default function DashboardListModal({
                     <th
                       key={col.key}
                       title={col.label}
+                      className={`dashboard-list-col-${col.key}`}
                       style={col.align ? { textAlign: col.align } : undefined}
                     >
                       {enableColumnFilters && col.filterable !== false ? (
@@ -250,6 +254,7 @@ export default function DashboardListModal({
                           <td
                             key={col.key}
                             title={titleText}
+                            className={`dashboard-list-col-${col.key}`}
                             style={col.align ? { textAlign: col.align } : undefined}
                           >
                             <span className="dashboard-list-cell">{value}</span>
