@@ -1,6 +1,21 @@
 {
   "entries": [
     {
+      "id": "log-001227",
+      "at": "2026-09-30T08:47:49.554Z",
+      "userId": "gd.mwankana@capitalhrsolutions.net",
+      "userName": "Guy daniel",
+      "userEmail": "gd.mwankana@capitalhrsolutions.net",
+      "module": "auth",
+      "moduleLabel": "Authentification",
+      "action": "login",
+      "actionLabel": "Connexion",
+      "summary": "Connexion gd.mwankana@capitalhrsolutions.net",
+      "details": "Connexion de Guy daniel (gd.mwankana@capitalhrsolutions.net)",
+      "undoable": false,
+      "undone": false
+    },
+    {
       "id": "log-001226",
       "at": "2026-09-30T08:47:39.115Z",
       "userId": "espoir.vuvu@ppcdrc.cd",
@@ -127975,5 +127990,5 @@
       }
     }
   ],
-  "nextSeq": 1227
+  "nextSeq": 1228
 }
