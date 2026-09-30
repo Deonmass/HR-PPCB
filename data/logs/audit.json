@@ -1,6 +1,21 @@
 {
   "entries": [
     {
+      "id": "log-001231",
+      "at": "2026-09-30T11:22:50.434Z",
+      "userId": "admin",
+      "userName": "Administrateur",
+      "userEmail": "admin",
+      "module": "auth",
+      "moduleLabel": "Authentification",
+      "action": "login",
+      "actionLabel": "Connexion",
+      "summary": "Connexion admin",
+      "details": "Connexion de Administrateur (admin)",
+      "undoable": false,
+      "undone": false
+    },
+    {
       "id": "log-001230",
       "at": "2026-09-30T10:35:00.772Z",
       "userId": "mukwilunaomie@gmail.com",
@@ -128035,5 +128050,5 @@
       }
     }
   ],
-  "nextSeq": 1231
+  "nextSeq": 1232
 }
