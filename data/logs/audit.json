@@ -1,6 +1,21 @@
 {
   "entries": [
     {
+      "id": "log-001228",
+      "at": "2026-09-30T09:44:13.396Z",
+      "userId": "admin",
+      "userName": "Administrateur",
+      "userEmail": "admin",
+      "module": "auth",
+      "moduleLabel": "Authentification",
+      "action": "login",
+      "actionLabel": "Connexion",
+      "summary": "Connexion admin",
+      "details": "Connexion de Administrateur (admin)",
+      "undoable": false,
+      "undone": false
+    },
+    {
       "id": "log-001227",
       "at": "2026-09-30T08:47:49.554Z",
       "userId": "gd.mwankana@capitalhrsolutions.net",
@@ -127990,5 +128005,5 @@
       }
     }
   ],
-  "nextSeq": 1228
+  "nextSeq": 1229
 }
