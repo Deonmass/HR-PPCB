@@ -6347,6 +6347,29 @@
       "recordId": "cr-1790334459817",
       "source": "app",
       "createdAt": "2026-09-25T11:07:40.343Z"
+    },
+    {
+      "id": "mo-cr-1790772206177",
+      "site": "zamba",
+      "sr": "052",
+      "registerDate": "2026-09-30",
+      "missionRef": "PPCB-DOC-HR-ZA/044/09/2026",
+      "matricule": "70000308",
+      "employeeName": "MASSADI GEDEON GEDEON",
+      "category": "",
+      "title": "HR Administrator",
+      "purpose": "Mission de service à Mbanza Ngungu : Déclaration des mouvements des travailleurs à l'ONEM et depot du rapport des allocation familiale er Trimestre",
+      "destination": "Mbanza Ngungu",
+      "transportMeans": "Voiture",
+      "departureDate": "2026-10-02",
+      "returnDate": "2026-10-02",
+      "days": 1,
+      "type": "",
+      "amount": 100,
+      "observation": "",
+      "recordId": "cr-1790772206177",
+      "source": "app",
+      "createdAt": "2026-09-30T12:43:26.928Z"
     }
   ]
 }
