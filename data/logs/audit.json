@@ -1,6 +1,108 @@
 {
   "entries": [
     {
+      "id": "log-001233",
+      "at": "2026-09-30T12:43:28.150Z",
+      "userId": "admin",
+      "userName": "Administrateur",
+      "userEmail": "admin",
+      "module": "travel.etablir",
+      "moduleLabel": "Cash request",
+      "action": "create",
+      "actionLabel": "Création",
+      "entityType": "travel.cash-request",
+      "entityId": "cr-1790772206177",
+      "summary": "Génération documents voyage PPCB-DOC-HR-ZA/044/09/2026",
+      "details": "Documents générés (SSE) pour MASSADI GEDEON GEDEON (PPCB-DOC-HR-ZA/044/09/2026)",
+      "after": {
+        "id": "cr-1790772206177",
+        "type": "cash-request",
+        "createdAt": "2026-09-30T12:43:26.928Z",
+        "missionRef": "PPCB-DOC-HR-ZA/044/09/2026",
+        "employeeMatricule": "70000308",
+        "employeeName": "MASSADI GEDEON GEDEON",
+        "employeeDepartment": "Human Resources",
+        "costCenter": "KM5413",
+        "requestorLine": "MASSADI GEDEON GEDEON (70000308)        Department : Human Resources        Coast center : KM5413",
+        "objet": "Mission de service à Mbanza Ngungu : Déclaration des mouvements des travailleurs à l'ONEM et depot du rapport des allocation familiale er Trimestre",
+        "requestDate": "2026-09-30",
+        "travel": {
+          "position": "HR Administrator",
+          "department": "Human Resources",
+          "tripPurpose": "Mission de service à Mbanza Ngungu : Déclaration des mouvements des travailleurs à l'ONEM et depot du rapport des allocation familiale er Trimestre",
+          "costCenter": "KM5413",
+          "documentDate": "2026-09-30",
+          "departureDate": "2026-10-02",
+          "departurePlace": "zamba",
+          "destinationPlace": "Mbanza Ngungu",
+          "returnDate": "2026-10-02",
+          "peopleCount": 1,
+          "companyName": "PPC Barnet Manufacturing SA",
+          "departmentToWorkWith": "",
+          "contactPerson": "",
+          "transportMeans": "Voiture",
+          "paymentOrderSignatory": "KINKINIA DIAVEZUKA PELAGIE",
+          "budgetLines": [
+            {
+              "label": "Food allowance",
+              "amount": 50
+            },
+            {
+              "label": "Trip allowance",
+              "amount": 50
+            }
+          ],
+          "isInternationalTravel": false,
+          "missionSite": "zamba",
+          "missionCategory": "",
+          "missionType": "",
+          "missionObservation": ""
+        },
+        "lines": [
+          {
+            "ref": "1",
+            "description": "Food allowance",
+            "currency": "USD",
+            "amount": 50
+          },
+          {
+            "ref": "2",
+            "description": "Trip allowance",
+            "currency": "USD",
+            "amount": 50
+          }
+        ],
+        "total": 100,
+        "fileName": "Cash Request - MASSADI GEDEON GEDEON.xlsx",
+        "filePath": "/tmp/hr-rh-app/travel/output/Cash Request - MASSADI GEDEON GEDEON.xlsx",
+        "files": [
+          {
+            "type": "cash-request",
+            "fileName": "Cash Request - MASSADI GEDEON GEDEON.xlsx",
+            "filePath": "/tmp/hr-rh-app/travel/output/Cash Request - MASSADI GEDEON GEDEON.xlsx"
+          },
+          {
+            "type": "trip-budget",
+            "fileName": "TRIP BUDGET FORM - MASSADI GEDEON GEDEON.xlsx",
+            "filePath": "/tmp/hr-rh-app/travel/output/TRIP BUDGET FORM - MASSADI GEDEON GEDEON.xlsx"
+          },
+          {
+            "type": "travel-authorization",
+            "fileName": "Formulaire d'autorisation de voyage - MASSADI GEDEON GEDEON.docx",
+            "filePath": "/tmp/hr-rh-app/travel/output/Formulaire d'autorisation de voyage - MASSADI GEDEON GEDEON.docx"
+          },
+          {
+            "type": "mission-order",
+            "fileName": "Ordre de mission - MASSADI GEDEON GEDEON.docx",
+            "filePath": "/tmp/hr-rh-app/travel/output/Ordre de mission - MASSADI GEDEON GEDEON.docx"
+          }
+        ],
+        "saveDirectory": "/tmp/hr-rh-app/travel/output"
+      },
+      "undoable": false,
+      "undone": false
+    },
+    {
       "id": "log-001232",
       "at": "2026-09-30T12:39:01.415Z",
       "userId": "admin",
@@ -128071,5 +128173,5 @@
       }
     }
   ],
-  "nextSeq": 1233
+  "nextSeq": 1234
 }
