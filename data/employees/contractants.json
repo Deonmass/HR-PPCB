@@ -1,6 +1,6 @@
 {
   "nextContractantId": 12,
-  "nextEmployeeId": 791,
+  "nextEmployeeId": 792,
   "contractants": [
     {
       "id": "1",
@@ -13285,10 +13285,36 @@
           "payrollSite": "",
           "createdAt": "2026-10-01T12:35:12.203Z",
           "updatedAt": "2026-10-01T12:35:12.203Z"
+        },
+        {
+          "id": "791",
+          "nom": "MBIAVANGA MFUTILA",
+          "sexe": "M",
+          "lieuAffectation": "Zamba",
+          "fonction": "SPOTTER",
+          "departement": "Mines",
+          "service": "",
+          "telephone": "",
+          "etatCivil": "C",
+          "statut": "Journalier",
+          "dateEmbauche": "2026-09-21",
+          "dateSortie": "",
+          "managerEmployeeId": "",
+          "family": [],
+          "matriculePpc": "",
+          "numeroCnss": "",
+          "numeroCompte": "",
+          "banque": "",
+          "nbDependants": 0,
+          "txJr": 0,
+          "coutTransport": 0,
+          "payrollSite": "",
+          "createdAt": "2026-10-01T12:38:01.121Z",
+          "updatedAt": "2026-10-01T12:38:01.121Z"
         }
       ],
       "createdAt": "2026-08-15T09:22:03.868Z",
-      "updatedAt": "2026-10-01T12:35:12.203Z"
+      "updatedAt": "2026-10-01T12:38:01.121Z"
     },
     {
       "id": "10",
