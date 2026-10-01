@@ -738,8 +738,9 @@
       "motif": "TBA",
       "startDate": "2026-09-30",
       "endDate": "2026-09-30",
-      "status": "pending",
-      "updatedAt": "2026-10-01T13:42:37.018Z"
+      "roomId": "cfdfa27e-7353-401d-9090-1a3ca1c1fc80",
+      "status": "confirmed",
+      "updatedAt": "2026-10-01T13:43:15.947Z"
     },
     {
       "id": "fdbf5bce-a610-4017-961f-db101c55a498",
@@ -26431,6 +26432,18 @@
     }
   ],
   "passages": [
+    {
+      "id": "73e6e0a1-a911-4ec0-a73e-479bdc2e6132",
+      "roomId": "cfdfa27e-7353-401d-9090-1a3ca1c1fc80",
+      "reservationId": "35ef182e-91a7-4f2d-9304-45abe4ca5685",
+      "numero": "GH-2026-4446",
+      "personName": "KITAMBO SENEMONA MEDARD",
+      "matricule": "70000024",
+      "motif": "TBA",
+      "startDate": "2026-09-30",
+      "endDate": "2026-09-30",
+      "checkedInAt": "2026-10-01T13:43:15.947Z"
+    },
     {
       "id": "29b36e55-71b1-4c44-b6b2-874bda70baeb",
       "roomId": "8b14162d-ae3b-49a5-bcb6-812c2d8d5b5b",
