@@ -1,6 +1,49 @@
 {
   "entries": [
     {
+      "id": "log-001256",
+      "at": "2026-10-01T12:40:38.458Z",
+      "userId": "mukwilunaomie@gmail.com",
+      "userName": "Naomie Mukwilu",
+      "userEmail": "mukwilunaomie@gmail.com",
+      "module": "contractants",
+      "moduleLabel": "contractants",
+      "action": "create",
+      "actionLabel": "Création",
+      "entityType": "contractant-employee",
+      "entityId": "NGANGA DAVID",
+      "summary": "Employé contractant — NGANGA DAVID",
+      "details": "Employé contractant — NGANGA DAVID",
+      "after": {
+        "id": "792",
+        "nom": "NGANGA DAVID",
+        "sexe": "M",
+        "lieuAffectation": "Zamba",
+        "fonction": "OPERATEUR PELLE",
+        "departement": "Mines",
+        "service": "",
+        "telephone": "",
+        "etatCivil": "C",
+        "statut": "Journalier",
+        "dateEmbauche": "2026-09-28",
+        "dateSortie": "",
+        "managerEmployeeId": "",
+        "family": [],
+        "matriculePpc": "",
+        "numeroCnss": "",
+        "numeroCompte": "",
+        "banque": "",
+        "nbDependants": 0,
+        "txJr": 0,
+        "coutTransport": 0,
+        "payrollSite": "",
+        "createdAt": "2026-10-01T12:40:34.994Z",
+        "updatedAt": "2026-10-01T12:40:34.994Z"
+      },
+      "undoable": false,
+      "undone": false
+    },
+    {
       "id": "log-001255",
       "at": "2026-10-01T12:38:04.647Z",
       "userId": "mukwilunaomie@gmail.com",
@@ -128906,5 +128949,5 @@
       }
     }
   ],
-  "nextSeq": 1256
+  "nextSeq": 1257
 }
