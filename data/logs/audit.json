@@ -1,6 +1,35 @@
 {
   "entries": [
     {
+      "id": "log-001272",
+      "at": "2026-10-01T13:32:30.985Z",
+      "userId": "admin",
+      "userName": "Administrateur",
+      "userEmail": "admin",
+      "module": "guest-house",
+      "moduleLabel": "Guest house",
+      "action": "create",
+      "actionLabel": "Création",
+      "entityType": "guest-house.reservation",
+      "entityId": "98d23464-03fd-4e3b-b8cb-dcff9b3275d3",
+      "summary": "Création réservation Mpile Aloys (Camérounais)",
+      "details": "Création réservation Mpile Aloys (Camérounais)",
+      "after": {
+        "id": "98d23464-03fd-4e3b-b8cb-dcff9b3275d3",
+        "numero": "GH-2026-4442",
+        "createdAt": "2026-10-01T13:32:27.948Z",
+        "personName": "Mpile Aloys (Camérounais)",
+        "isAgent": false,
+        "motif": "TBA",
+        "startDate": "2026-09-27",
+        "endDate": "2026-10-10",
+        "status": "pending",
+        "updatedAt": "2026-10-01T13:32:27.948Z"
+      },
+      "undoable": true,
+      "undone": false
+    },
+    {
       "id": "log-001271",
       "at": "2026-10-01T13:31:01.799Z",
       "userId": "admin",
@@ -129590,5 +129619,5 @@
       }
     }
   ],
-  "nextSeq": 1272
+  "nextSeq": 1273
 }
