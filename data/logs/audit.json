@@ -1,6 +1,36 @@
 {
   "entries": [
     {
+      "id": "log-001290",
+      "at": "2026-10-01T13:48:04.742Z",
+      "userId": "admin",
+      "userName": "Administrateur",
+      "userEmail": "admin",
+      "module": "guest-house",
+      "moduleLabel": "Guest house",
+      "action": "create",
+      "actionLabel": "Création",
+      "entityType": "guest-house.reservation",
+      "entityId": "a9133180-8dc3-44c1-8d19-727d7e7ca61d",
+      "summary": "Création réservation Jonathan AL",
+      "details": "Création réservation Jonathan AL",
+      "after": {
+        "id": "a9133180-8dc3-44c1-8d19-727d7e7ca61d",
+        "numero": "GH-2026-4449",
+        "createdAt": "2026-10-01T13:48:00.967Z",
+        "personName": "Jonathan AL",
+        "isAgent": false,
+        "motif": "Assistant de Phelly agent AL",
+        "startDate": "2026-09-26",
+        "endDate": "2026-10-10",
+        "roomId": "e49a08a4-e1db-4824-b8f6-48f1c30c0346",
+        "status": "pending",
+        "updatedAt": "2026-10-01T13:48:00.967Z"
+      },
+      "undoable": true,
+      "undone": false
+    },
+    {
       "id": "log-001289",
       "at": "2026-10-01T13:45:48.967Z",
       "userId": "admin",
@@ -130236,5 +130266,5 @@
       }
     }
   ],
-  "nextSeq": 1290
+  "nextSeq": 1291
 }
