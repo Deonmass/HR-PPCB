@@ -1,6 +1,21 @@
 {
   "entries": [
     {
+      "id": "log-001297",
+      "at": "2026-10-01T17:37:58.881Z",
+      "userId": "admin",
+      "userName": "Administrateur",
+      "userEmail": "admin",
+      "module": "employees",
+      "moduleLabel": "Employés",
+      "action": "export",
+      "actionLabel": "Export",
+      "summary": "Export employés (EMPLOYEES_HR_2026-10-01.xlsx)",
+      "details": "Fichier Excel exporté : EMPLOYEES_HR_2026-10-01.xlsx",
+      "undoable": false,
+      "undone": false
+    },
+    {
       "id": "log-001296",
       "at": "2026-10-01T15:50:49.479Z",
       "userId": "gd.mwankana@capitalhrsolutions.net",
@@ -130414,5 +130429,5 @@
       }
     }
   ],
-  "nextSeq": 1297
+  "nextSeq": 1298
 }
