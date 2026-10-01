@@ -848,11 +848,11 @@
       "isAgent": false,
       "motif": "TBA",
       "startDate": "2026-09-20",
-      "endDate": "2026-09-26",
+      "endDate": "2026-10-04",
       "roomId": "85c3d598-623c-402f-9053-e43840e24325",
       "status": "confirmed",
       "notes": "Fire service / safety",
-      "updatedAt": "2026-09-21T13:04:48.524Z"
+      "updatedAt": "2026-10-01T13:17:46.386Z"
     },
     {
       "id": "e5cc1962-651b-4da6-810f-7bcc52dd8f36",
@@ -26458,7 +26458,7 @@
       "personName": "Michée et Prince",
       "motif": "TBA",
       "startDate": "2026-09-20",
-      "endDate": "2026-09-26",
+      "endDate": "2026-10-04",
       "checkedInAt": "2026-09-21T13:04:48.524Z"
     },
     {
