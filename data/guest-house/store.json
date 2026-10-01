@@ -725,8 +725,9 @@
       "motif": "TBA",
       "startDate": "2026-09-26",
       "endDate": "2026-09-26",
-      "status": "pending",
-      "updatedAt": "2026-10-01T13:29:20.469Z"
+      "roomId": "8b14162d-ae3b-49a5-bcb6-812c2d8d5b5b",
+      "status": "confirmed",
+      "updatedAt": "2026-10-01T13:30:57.883Z"
     },
     {
       "id": "db79737e-988d-4dcf-b85d-9d51cf1bc314",
@@ -26365,6 +26366,18 @@
     }
   ],
   "passages": [
+    {
+      "id": "81889e23-9118-47d7-94dc-7d41651feae4",
+      "roomId": "8b14162d-ae3b-49a5-bcb6-812c2d8d5b5b",
+      "reservationId": "0a164dac-1715-4b16-ae63-f3adc2a2db39",
+      "numero": "GH-2026-4441",
+      "personName": "SAMBA LUINDA HONORE",
+      "matricule": "70000130",
+      "motif": "TBA",
+      "startDate": "2026-09-26",
+      "endDate": "2026-09-26",
+      "checkedInAt": "2026-10-01T13:30:57.883Z"
+    },
     {
       "id": "5259b028-4e76-454c-855e-6033d1024924",
       "roomId": "12ee1ff4-eb03-4592-b1da-589006209e77",
