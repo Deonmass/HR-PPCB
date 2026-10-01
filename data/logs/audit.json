@@ -1,6 +1,49 @@
 {
   "entries": [
     {
+      "id": "log-001257",
+      "at": "2026-10-01T13:11:52.195Z",
+      "userId": "admin",
+      "userName": "Administrateur",
+      "userEmail": "admin",
+      "module": "guest-house",
+      "moduleLabel": "Guest house",
+      "action": "update",
+      "actionLabel": "Modification",
+      "entityType": "guest-house.reservation",
+      "entityId": "a6275922-b69d-4b7b-9349-0c096260c912",
+      "summary": "Modification réservation a6275922-b69d-4b7b-9349-0c096260c912",
+      "details": "Modification réservation a6275922-b69d-4b7b-9349-0c096260c912",
+      "before": {
+        "id": "a6275922-b69d-4b7b-9349-0c096260c912",
+        "numero": "GH-2026-4438",
+        "createdAt": "2026-09-23T10:06:37.094Z",
+        "personName": "JC",
+        "isAgent": false,
+        "motif": "Chauffeur qui a accompagné Tarik",
+        "startDate": "2026-09-22",
+        "endDate": "2026-09-22",
+        "roomId": "3d273d81-0642-4fac-b424-a54146ad7acc",
+        "status": "confirmed",
+        "updatedAt": "2026-09-23T10:08:09.369Z"
+      },
+      "after": {
+        "id": "a6275922-b69d-4b7b-9349-0c096260c912",
+        "numero": "GH-2026-4438",
+        "createdAt": "2026-09-23T10:06:37.094Z",
+        "personName": "Jean Jacques",
+        "isAgent": false,
+        "motif": "Chauffeur qui a accompagné Tarik",
+        "startDate": "2026-09-22",
+        "endDate": "2026-09-22",
+        "roomId": "3d273d81-0642-4fac-b424-a54146ad7acc",
+        "status": "confirmed",
+        "updatedAt": "2026-10-01T13:11:47.709Z"
+      },
+      "undoable": true,
+      "undone": false
+    },
+    {
       "id": "log-001256",
       "at": "2026-10-01T12:40:38.458Z",
       "userId": "mukwilunaomie@gmail.com",
@@ -128949,5 +128992,5 @@
       }
     }
   ],
-  "nextSeq": 1257
+  "nextSeq": 1258
 }
