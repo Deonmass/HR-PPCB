@@ -1,6 +1,35 @@
 {
   "entries": [
     {
+      "id": "log-001273",
+      "at": "2026-10-01T13:33:44.987Z",
+      "userId": "admin",
+      "userName": "Administrateur",
+      "userEmail": "admin",
+      "module": "guest-house",
+      "moduleLabel": "Guest house",
+      "action": "create",
+      "actionLabel": "Création",
+      "entityType": "guest-house.reservation",
+      "entityId": "043c43d9-3601-4fa9-9dd0-5703f8690005",
+      "summary": "Création réservation Tumte Dieu donnée (Camérounais)",
+      "details": "Création réservation Tumte Dieu donnée (Camérounais)",
+      "after": {
+        "id": "043c43d9-3601-4fa9-9dd0-5703f8690005",
+        "numero": "GH-2026-4443",
+        "createdAt": "2026-10-01T13:33:41.249Z",
+        "personName": "Tumte Dieu donnée (Camérounais)",
+        "isAgent": false,
+        "motif": "TBA",
+        "startDate": "2026-10-04",
+        "endDate": "2026-10-10",
+        "status": "pending",
+        "updatedAt": "2026-10-01T13:33:41.249Z"
+      },
+      "undoable": true,
+      "undone": false
+    },
+    {
       "id": "log-001272",
       "at": "2026-10-01T13:32:30.985Z",
       "userId": "admin",
@@ -129619,5 +129648,5 @@
       }
     }
   ],
-  "nextSeq": 1273
+  "nextSeq": 1274
 }
