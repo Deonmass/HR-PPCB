@@ -12699,8 +12699,8 @@
           "telephone": "846604460",
           "etatCivil": "C",
           "statut": "Journalier",
-          "dateEmbauche": "",
-          "dateSortie": "",
+          "dateEmbauche": "2026-03-13",
+          "dateSortie": "2026-08-13",
           "managerEmployeeId": "",
           "family": [],
           "matriculePpc": "",
@@ -12712,7 +12712,7 @@
           "coutTransport": 0,
           "payrollSite": "",
           "createdAt": "2026-08-15T09:22:38.385Z",
-          "updatedAt": "2026-08-15T09:22:38.385Z"
+          "updatedAt": "2026-10-01T12:10:06.417Z"
         },
         {
           "id": "736",
@@ -13236,7 +13236,7 @@
         }
       ],
       "createdAt": "2026-08-15T09:22:03.868Z",
-      "updatedAt": "2026-10-01T12:06:36.954Z"
+      "updatedAt": "2026-10-01T12:10:06.417Z"
     },
     {
       "id": "10",
