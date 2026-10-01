@@ -1,6 +1,51 @@
 {
   "entries": [
     {
+      "id": "log-001263",
+      "at": "2026-10-01T13:15:01.469Z",
+      "userId": "admin",
+      "userName": "Administrateur",
+      "userEmail": "admin",
+      "module": "guest-house",
+      "moduleLabel": "Guest house",
+      "action": "update",
+      "actionLabel": "Modification",
+      "entityType": "guest-house.reservation",
+      "entityId": "92a890a4-054c-432b-9c68-19db902882a6",
+      "summary": "Modification réservation 92a890a4-054c-432b-9c68-19db902882a6",
+      "details": "Modification réservation 92a890a4-054c-432b-9c68-19db902882a6",
+      "before": {
+        "id": "92a890a4-054c-432b-9c68-19db902882a6",
+        "numero": "GH-2026-4432",
+        "createdAt": "2026-09-21T17:00:28.282Z",
+        "personName": "Freddy Bulu",
+        "isAgent": false,
+        "motif": "Maintenance des cameras de surveillance : Usine et village PPC",
+        "startDate": "2026-09-22",
+        "endDate": "2026-09-26",
+        "roomId": "ed91c14e-915f-4d22-971c-fd4bb7feb33e",
+        "status": "confirmed",
+        "notes": "booké par Nathan",
+        "updatedAt": "2026-09-23T07:17:26.857Z"
+      },
+      "after": {
+        "id": "92a890a4-054c-432b-9c68-19db902882a6",
+        "numero": "GH-2026-4432",
+        "createdAt": "2026-09-21T17:00:28.282Z",
+        "personName": "Freddy Bulu",
+        "isAgent": false,
+        "motif": "Maintenance des cameras de surveillance : Usine et village PPC",
+        "startDate": "2026-09-22",
+        "endDate": "2026-09-29",
+        "roomId": "ed91c14e-915f-4d22-971c-fd4bb7feb33e",
+        "status": "confirmed",
+        "notes": "booké par Nathan",
+        "updatedAt": "2026-10-01T13:14:57.678Z"
+      },
+      "undoable": true,
+      "undone": false
+    },
+    {
       "id": "log-001262",
       "at": "2026-10-01T13:14:38.037Z",
       "userId": "admin",
@@ -129217,5 +129262,5 @@
       }
     }
   ],
-  "nextSeq": 1263
+  "nextSeq": 1264
 }
