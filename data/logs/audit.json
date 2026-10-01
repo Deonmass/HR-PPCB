@@ -1,6 +1,24 @@
 {
   "entries": [
     {
+      "id": "log-001248",
+      "at": "2026-10-01T12:10:57.281Z",
+      "userId": "mukwilunaomie@gmail.com",
+      "userName": "Naomie Mukwilu",
+      "userEmail": "mukwilunaomie@gmail.com",
+      "module": "contractants",
+      "moduleLabel": "contractants",
+      "action": "delete",
+      "actionLabel": "Suppression",
+      "entityType": "contractant-employee",
+      "entityId": "754",
+      "summary": "Suppression employé contractant 754",
+      "details": "Suppression employé contractant 754",
+      "after": true,
+      "undoable": false,
+      "undone": false
+    },
+    {
       "id": "log-001247",
       "at": "2026-10-01T12:10:09.703Z",
       "userId": "mukwilunaomie@gmail.com",
@@ -128587,5 +128605,5 @@
       }
     }
   ],
-  "nextSeq": 1248
+  "nextSeq": 1249
 }
