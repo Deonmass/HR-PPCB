@@ -2880,7 +2880,7 @@
       "dureeContratMois": null,
       "periodeEssaiMois": 5,
       "dateFinPeriodeEssai": "01/03/2019",
-      "dateFinContrat": "",
+      "dateFinContrat": "30/09/2026",
       "raisonExit": "NA",
       "essaiActions": "",
       "essaiResponsable": "",
@@ -2895,7 +2895,7 @@
       "nif": "B2222593J",
       "telephone": "",
       "createdAt": "2026-07-28T09:40:37.715Z",
-      "updatedAt": "2026-10-01T18:44:17.449Z"
+      "updatedAt": "2026-10-01T18:45:54.305Z"
     },
     {
       "id": "c96bdc8e-e3a5-46aa-82b2-6cc80bbebd0e",
