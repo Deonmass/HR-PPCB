@@ -13183,32 +13183,6 @@
           "updatedAt": "2026-08-15T09:22:38.385Z"
         },
         {
-          "id": "754",
-          "nom": "MADIAMBA PHILBERT",
-          "sexe": "M",
-          "lieuAffectation": "Zamba",
-          "fonction": "Opérateur Excavatrice",
-          "departement": "Mines",
-          "service": "",
-          "telephone": "840260370",
-          "etatCivil": "C",
-          "statut": "Journalier",
-          "dateEmbauche": "",
-          "dateSortie": "",
-          "managerEmployeeId": "",
-          "family": [],
-          "matriculePpc": "",
-          "numeroCnss": "",
-          "numeroCompte": "",
-          "banque": "",
-          "nbDependants": 0,
-          "txJr": 0,
-          "coutTransport": 0,
-          "payrollSite": "",
-          "createdAt": "2026-08-15T09:22:38.385Z",
-          "updatedAt": "2026-08-15T09:22:38.385Z"
-        },
-        {
           "id": "787",
           "nom": "KAMOSI MADIAMBA PHYLOBERT",
           "sexe": "M",
@@ -13236,7 +13210,7 @@
         }
       ],
       "createdAt": "2026-08-15T09:22:03.868Z",
-      "updatedAt": "2026-10-01T12:10:06.417Z"
+      "updatedAt": "2026-10-01T12:10:54.682Z"
     },
     {
       "id": "10",
