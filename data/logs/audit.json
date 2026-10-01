@@ -1,6 +1,36 @@
 {
   "entries": [
     {
+      "id": "log-001278",
+      "at": "2026-10-01T13:37:15.736Z",
+      "userId": "admin",
+      "userName": "Administrateur",
+      "userEmail": "admin",
+      "module": "guest-house",
+      "moduleLabel": "Guest house",
+      "action": "create",
+      "actionLabel": "Création",
+      "entityType": "guest-house.reservation",
+      "entityId": "35ef182e-91a7-4f2d-9304-45abe4ca5685",
+      "summary": "Création réservation KITAMBO SENEMONA MEDARD",
+      "details": "Création réservation KITAMBO SENEMONA MEDARD",
+      "after": {
+        "id": "35ef182e-91a7-4f2d-9304-45abe4ca5685",
+        "numero": "GH-2026-4446",
+        "createdAt": "2026-10-01T13:37:11.644Z",
+        "personName": "KITAMBO SENEMONA MEDARD",
+        "matricule": "70000024",
+        "isAgent": true,
+        "motif": "TBA",
+        "startDate": "2026-09-29",
+        "endDate": "2026-09-29",
+        "status": "pending",
+        "updatedAt": "2026-10-01T13:37:11.644Z"
+      },
+      "undoable": true,
+      "undone": false
+    },
+    {
       "id": "log-001277",
       "at": "2026-10-01T13:36:40.929Z",
       "userId": "admin",
@@ -129761,5 +129791,5 @@
       }
     }
   ],
-  "nextSeq": 1278
+  "nextSeq": 1279
 }
