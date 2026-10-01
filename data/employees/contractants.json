@@ -1,6 +1,6 @@
 {
   "nextContractantId": 12,
-  "nextEmployeeId": 789,
+  "nextEmployeeId": 790,
   "contractants": [
     {
       "id": "1",
@@ -13233,10 +13233,36 @@
           "payrollSite": "",
           "createdAt": "2026-10-01T12:25:10.860Z",
           "updatedAt": "2026-10-01T12:25:10.860Z"
+        },
+        {
+          "id": "789",
+          "nom": "KULUNGU MASEYO SARIVE",
+          "sexe": "M",
+          "lieuAffectation": "Zamba",
+          "fonction": "OPERATEUR PELLE",
+          "departement": "Mines",
+          "service": "",
+          "telephone": "",
+          "etatCivil": "C",
+          "statut": "Journalier",
+          "dateEmbauche": "2026-01-06",
+          "dateSortie": "",
+          "managerEmployeeId": "",
+          "family": [],
+          "matriculePpc": "",
+          "numeroCnss": "",
+          "numeroCompte": "",
+          "banque": "",
+          "nbDependants": 0,
+          "txJr": 0,
+          "coutTransport": 0,
+          "payrollSite": "",
+          "createdAt": "2026-10-01T12:33:31.508Z",
+          "updatedAt": "2026-10-01T12:33:31.508Z"
         }
       ],
       "createdAt": "2026-08-15T09:22:03.868Z",
-      "updatedAt": "2026-10-01T12:25:10.860Z"
+      "updatedAt": "2026-10-01T12:33:31.508Z"
     },
     {
       "id": "10",
