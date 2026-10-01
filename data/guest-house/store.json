@@ -761,8 +761,9 @@
       "motif": "TBA",
       "startDate": "2026-09-27",
       "endDate": "2026-10-10",
-      "status": "pending",
-      "updatedAt": "2026-10-01T13:34:47.461Z"
+      "roomId": "2ef11cfa-1396-4c82-ac99-85b12d6093be",
+      "status": "confirmed",
+      "updatedAt": "2026-10-01T13:40:02.948Z"
     },
     {
       "id": "98d23464-03fd-4e3b-b8cb-dcff9b3275d3",
@@ -26427,6 +26428,17 @@
     }
   ],
   "passages": [
+    {
+      "id": "46901bd8-4ce4-426e-849d-711ce2f75b3a",
+      "roomId": "2ef11cfa-1396-4c82-ac99-85b12d6093be",
+      "reservationId": "18c772f6-6754-47a8-8be9-e6c05fb89326",
+      "numero": "GH-2026-4444",
+      "personName": "Phelly pongo",
+      "motif": "TBA",
+      "startDate": "2026-09-27",
+      "endDate": "2026-10-10",
+      "checkedInAt": "2026-10-01T13:40:02.948Z"
+    },
     {
       "id": "81889e23-9118-47d7-94dc-7d41651feae4",
       "roomId": "8b14162d-ae3b-49a5-bcb6-812c2d8d5b5b",
