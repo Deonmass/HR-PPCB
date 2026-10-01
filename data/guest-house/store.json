@@ -749,8 +749,9 @@
       "motif": "TBA",
       "startDate": "2026-09-27",
       "endDate": "2026-10-10",
-      "status": "pending",
-      "updatedAt": "2026-10-01T13:36:03.128Z"
+      "roomId": "12ee1ff4-eb03-4592-b1da-589006209e77",
+      "status": "confirmed",
+      "updatedAt": "2026-10-01T13:40:44.640Z"
     },
     {
       "id": "18c772f6-6754-47a8-8be9-e6c05fb89326",
@@ -26429,6 +26430,17 @@
     }
   ],
   "passages": [
+    {
+      "id": "9a9d1784-29b5-43a1-8271-7cdc3beb2a1e",
+      "roomId": "12ee1ff4-eb03-4592-b1da-589006209e77",
+      "reservationId": "fdbf5bce-a610-4017-961f-db101c55a498",
+      "numero": "GH-2026-4445",
+      "personName": "Tumte Dieu donée (Camerounais)",
+      "motif": "TBA",
+      "startDate": "2026-09-27",
+      "endDate": "2026-10-10",
+      "checkedInAt": "2026-10-01T13:40:44.640Z"
+    },
     {
       "id": "0dacdbfe-039d-4ad1-8b45-8b137aa325d2",
       "roomId": "d9ec3499-ad6d-4215-8ef9-c20a4f6b1714",
