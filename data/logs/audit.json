@@ -1,6 +1,35 @@
 {
   "entries": [
     {
+      "id": "log-001274",
+      "at": "2026-10-01T13:34:51.920Z",
+      "userId": "admin",
+      "userName": "Administrateur",
+      "userEmail": "admin",
+      "module": "guest-house",
+      "moduleLabel": "Guest house",
+      "action": "create",
+      "actionLabel": "Création",
+      "entityType": "guest-house.reservation",
+      "entityId": "18c772f6-6754-47a8-8be9-e6c05fb89326",
+      "summary": "Création réservation Phelly pongo",
+      "details": "Création réservation Phelly pongo",
+      "after": {
+        "id": "18c772f6-6754-47a8-8be9-e6c05fb89326",
+        "numero": "GH-2026-4444",
+        "createdAt": "2026-10-01T13:34:47.461Z",
+        "personName": "Phelly pongo",
+        "isAgent": false,
+        "motif": "TBA",
+        "startDate": "2026-09-27",
+        "endDate": "2026-10-10",
+        "status": "pending",
+        "updatedAt": "2026-10-01T13:34:47.461Z"
+      },
+      "undoable": true,
+      "undone": false
+    },
+    {
       "id": "log-001273",
       "at": "2026-10-01T13:33:44.987Z",
       "userId": "admin",
@@ -129648,5 +129677,5 @@
       }
     }
   ],
-  "nextSeq": 1274
+  "nextSeq": 1275
 }
