@@ -1,6 +1,6 @@
 {
   "nextContractantId": 12,
-  "nextEmployeeId": 790,
+  "nextEmployeeId": 791,
   "contractants": [
     {
       "id": "1",
@@ -13259,10 +13259,36 @@
           "payrollSite": "",
           "createdAt": "2026-10-01T12:33:31.508Z",
           "updatedAt": "2026-10-01T12:33:31.508Z"
+        },
+        {
+          "id": "790",
+          "nom": "KAYEMBE KAYEMBE",
+          "sexe": "M",
+          "lieuAffectation": "Zamba",
+          "fonction": "SPOTTER",
+          "departement": "Mines",
+          "service": "",
+          "telephone": "",
+          "etatCivil": "C",
+          "statut": "Journalier",
+          "dateEmbauche": "2026-03-22",
+          "dateSortie": "",
+          "managerEmployeeId": "",
+          "family": [],
+          "matriculePpc": "",
+          "numeroCnss": "",
+          "numeroCompte": "",
+          "banque": "",
+          "nbDependants": 0,
+          "txJr": 0,
+          "coutTransport": 0,
+          "payrollSite": "",
+          "createdAt": "2026-10-01T12:35:12.203Z",
+          "updatedAt": "2026-10-01T12:35:12.203Z"
         }
       ],
       "createdAt": "2026-08-15T09:22:03.868Z",
-      "updatedAt": "2026-10-01T12:33:31.508Z"
+      "updatedAt": "2026-10-01T12:35:12.203Z"
     },
     {
       "id": "10",
