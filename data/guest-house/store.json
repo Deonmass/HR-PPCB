@@ -1082,11 +1082,11 @@
       "isAgent": false,
       "motif": "Mission to the plant",
       "startDate": "2026-09-14",
-      "endDate": "2026-09-26",
+      "endDate": "2026-10-10",
       "roomId": "3219d898-ff74-496c-a62e-2295012276ae",
       "status": "confirmed",
       "mission": "Mission to the plant",
-      "updatedAt": "2026-09-21T12:43:20.463Z"
+      "updatedAt": "2026-10-01T13:49:03.053Z"
     },
     {
       "id": "31809c18-38d5-4220-bba8-fe815fa0b5e3",
@@ -26759,7 +26759,7 @@
       "personName": "Pablito (Chinois)",
       "motif": "Mission to the plant",
       "startDate": "2026-09-14",
-      "endDate": "2026-09-26",
+      "endDate": "2026-10-10",
       "checkedInAt": "2026-09-15T09:18:29.657Z"
     },
     {
