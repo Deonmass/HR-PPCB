@@ -774,8 +774,9 @@
       "motif": "TBA",
       "startDate": "2026-09-27",
       "endDate": "2026-10-10",
-      "status": "pending",
-      "updatedAt": "2026-10-01T13:32:27.948Z"
+      "roomId": "d9ec3499-ad6d-4215-8ef9-c20a4f6b1714",
+      "status": "confirmed",
+      "updatedAt": "2026-10-01T13:40:24.858Z"
     },
     {
       "id": "0a164dac-1715-4b16-ae63-f3adc2a2db39",
@@ -26428,6 +26429,17 @@
     }
   ],
   "passages": [
+    {
+      "id": "0dacdbfe-039d-4ad1-8b45-8b137aa325d2",
+      "roomId": "d9ec3499-ad6d-4215-8ef9-c20a4f6b1714",
+      "reservationId": "98d23464-03fd-4e3b-b8cb-dcff9b3275d3",
+      "numero": "GH-2026-4442",
+      "personName": "Mpile Aloys (Camérounais)",
+      "motif": "TBA",
+      "startDate": "2026-09-27",
+      "endDate": "2026-10-10",
+      "checkedInAt": "2026-10-01T13:40:24.858Z"
+    },
     {
       "id": "46901bd8-4ce4-426e-849d-711ce2f75b3a",
       "roomId": "2ef11cfa-1396-4c82-ac99-85b12d6093be",
