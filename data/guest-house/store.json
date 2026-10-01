@@ -725,8 +725,8 @@
       "startDate": "2026-09-26",
       "endDate": "2026-10-10",
       "roomId": "3d273d81-0642-4fac-b424-a54146ad7acc",
-      "status": "pending",
-      "updatedAt": "2026-10-01T13:45:13.447Z"
+      "status": "confirmed",
+      "updatedAt": "2026-10-01T13:45:44.752Z"
     },
     {
       "id": "f3e01e97-ad67-4c3a-a009-b5467525dd8a",
@@ -26445,6 +26445,17 @@
     }
   ],
   "passages": [
+    {
+      "id": "25261c5b-2926-425c-b9bc-18cc6a95eebc",
+      "roomId": "3d273d81-0642-4fac-b424-a54146ad7acc",
+      "reservationId": "f4f70afd-8f02-4954-b3bb-fa7e6243881c",
+      "numero": "GH-2026-4448",
+      "personName": "Melchior",
+      "motif": "TBA",
+      "startDate": "2026-09-26",
+      "endDate": "2026-10-10",
+      "checkedInAt": "2026-10-01T13:45:44.752Z"
+    },
     {
       "id": "73e6e0a1-a911-4ec0-a73e-479bdc2e6132",
       "roomId": "cfdfa27e-7353-401d-9090-1a3ca1c1fc80",
