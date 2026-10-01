@@ -1,6 +1,6 @@
 {
   "nextContractantId": 12,
-  "nextEmployeeId": 787,
+  "nextEmployeeId": 788,
   "contractants": [
     {
       "id": "1",
@@ -13207,10 +13207,36 @@
           "payrollSite": "",
           "createdAt": "2026-08-15T09:22:38.385Z",
           "updatedAt": "2026-08-15T09:22:38.385Z"
+        },
+        {
+          "id": "787",
+          "nom": "KAMOSI MADIAMBA PHYLOBERT",
+          "sexe": "M",
+          "lieuAffectation": "Zamba",
+          "fonction": "OPERATEUR PELLE",
+          "departement": "Opérations",
+          "service": "",
+          "telephone": "+243 840 260 370",
+          "etatCivil": "C",
+          "statut": "Journalier",
+          "dateEmbauche": "2026-08-14",
+          "dateSortie": "",
+          "managerEmployeeId": "",
+          "family": [],
+          "matriculePpc": "",
+          "numeroCnss": "",
+          "numeroCompte": "",
+          "banque": "",
+          "nbDependants": 0,
+          "txJr": 0,
+          "coutTransport": 0,
+          "payrollSite": "",
+          "createdAt": "2026-10-01T12:06:36.954Z",
+          "updatedAt": "2026-10-01T12:06:36.954Z"
         }
       ],
       "createdAt": "2026-08-15T09:22:03.868Z",
-      "updatedAt": "2026-10-01T12:01:09.166Z"
+      "updatedAt": "2026-10-01T12:06:36.954Z"
     },
     {
       "id": "10",
