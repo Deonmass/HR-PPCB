@@ -1,6 +1,49 @@
 {
   "entries": [
     {
+      "id": "log-001285",
+      "at": "2026-10-01T13:42:40.875Z",
+      "userId": "admin",
+      "userName": "Administrateur",
+      "userEmail": "admin",
+      "module": "guest-house",
+      "moduleLabel": "Guest house",
+      "action": "update",
+      "actionLabel": "Modification",
+      "entityType": "guest-house.reservation",
+      "entityId": "35ef182e-91a7-4f2d-9304-45abe4ca5685",
+      "summary": "Modification réservation 35ef182e-91a7-4f2d-9304-45abe4ca5685",
+      "details": "Modification réservation 35ef182e-91a7-4f2d-9304-45abe4ca5685",
+      "before": {
+        "id": "35ef182e-91a7-4f2d-9304-45abe4ca5685",
+        "numero": "GH-2026-4446",
+        "createdAt": "2026-10-01T13:37:11.644Z",
+        "personName": "KITAMBO SENEMONA MEDARD",
+        "matricule": "70000024",
+        "isAgent": true,
+        "motif": "TBA",
+        "startDate": "2026-09-29",
+        "endDate": "2026-09-29",
+        "status": "pending",
+        "updatedAt": "2026-10-01T13:37:11.644Z"
+      },
+      "after": {
+        "id": "35ef182e-91a7-4f2d-9304-45abe4ca5685",
+        "numero": "GH-2026-4446",
+        "createdAt": "2026-10-01T13:37:11.644Z",
+        "personName": "KITAMBO SENEMONA MEDARD",
+        "matricule": "70000024",
+        "isAgent": true,
+        "motif": "TBA",
+        "startDate": "2026-09-30",
+        "endDate": "2026-09-30",
+        "status": "pending",
+        "updatedAt": "2026-10-01T13:42:37.018Z"
+      },
+      "undoable": true,
+      "undone": false
+    },
+    {
       "id": "log-001284",
       "at": "2026-10-01T13:41:34.413Z",
       "userId": "admin",
@@ -130033,5 +130076,5 @@
       }
     }
   ],
-  "nextSeq": 1285
+  "nextSeq": 1286
 }
