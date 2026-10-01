@@ -740,18 +740,6 @@
       "updatedAt": "2026-10-01T13:34:47.461Z"
     },
     {
-      "id": "043c43d9-3601-4fa9-9dd0-5703f8690005",
-      "numero": "GH-2026-4443",
-      "createdAt": "2026-10-01T13:33:41.249Z",
-      "personName": "Tumte Dieu donnée (Camérounais)",
-      "isAgent": false,
-      "motif": "TBA",
-      "startDate": "2026-10-04",
-      "endDate": "2026-10-10",
-      "status": "pending",
-      "updatedAt": "2026-10-01T13:33:41.249Z"
-    },
-    {
       "id": "98d23464-03fd-4e3b-b8cb-dcff9b3275d3",
       "numero": "GH-2026-4442",
       "createdAt": "2026-10-01T13:32:27.948Z",
