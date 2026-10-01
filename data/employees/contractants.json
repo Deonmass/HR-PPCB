@@ -1,6 +1,6 @@
 {
   "nextContractantId": 12,
-  "nextEmployeeId": 788,
+  "nextEmployeeId": 789,
   "contractants": [
     {
       "id": "1",
@@ -13207,10 +13207,36 @@
           "payrollSite": "",
           "createdAt": "2026-10-01T12:06:36.954Z",
           "updatedAt": "2026-10-01T12:06:36.954Z"
+        },
+        {
+          "id": "788",
+          "nom": "MATIONA MAFIOTI VICKY",
+          "sexe": "M",
+          "lieuAffectation": "Zamba",
+          "fonction": "DRIVER TT",
+          "departement": "Mines",
+          "service": "",
+          "telephone": "+243 962 390 691",
+          "etatCivil": "M",
+          "statut": "Journalier",
+          "dateEmbauche": "2026-09-21",
+          "dateSortie": "",
+          "managerEmployeeId": "",
+          "family": [],
+          "matriculePpc": "",
+          "numeroCnss": "",
+          "numeroCompte": "",
+          "banque": "",
+          "nbDependants": 0,
+          "txJr": 0,
+          "coutTransport": 0,
+          "payrollSite": "",
+          "createdAt": "2026-10-01T12:25:10.860Z",
+          "updatedAt": "2026-10-01T12:25:10.860Z"
         }
       ],
       "createdAt": "2026-08-15T09:22:03.868Z",
-      "updatedAt": "2026-10-01T12:19:51.959Z"
+      "updatedAt": "2026-10-01T12:25:10.860Z"
     },
     {
       "id": "10",
