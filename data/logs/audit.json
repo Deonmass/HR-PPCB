@@ -1,6 +1,49 @@
 {
   "entries": [
     {
+      "id": "log-001246",
+      "at": "2026-10-01T12:06:40.718Z",
+      "userId": "mukwilunaomie@gmail.com",
+      "userName": "Naomie Mukwilu",
+      "userEmail": "mukwilunaomie@gmail.com",
+      "module": "contractants",
+      "moduleLabel": "contractants",
+      "action": "create",
+      "actionLabel": "Création",
+      "entityType": "contractant-employee",
+      "entityId": "KAMOSI MADIAMBA PHYLOBERT",
+      "summary": "Employé contractant — KAMOSI MADIAMBA PHYLOBERT",
+      "details": "Employé contractant — KAMOSI MADIAMBA PHYLOBERT",
+      "after": {
+        "id": "787",
+        "nom": "KAMOSI MADIAMBA PHYLOBERT",
+        "sexe": "M",
+        "lieuAffectation": "Zamba",
+        "fonction": "OPERATEUR PELLE",
+        "departement": "Opérations",
+        "service": "",
+        "telephone": "+243 840 260 370",
+        "etatCivil": "C",
+        "statut": "Journalier",
+        "dateEmbauche": "2026-08-14",
+        "dateSortie": "",
+        "managerEmployeeId": "",
+        "family": [],
+        "matriculePpc": "",
+        "numeroCnss": "",
+        "numeroCompte": "",
+        "banque": "",
+        "nbDependants": 0,
+        "txJr": 0,
+        "coutTransport": 0,
+        "payrollSite": "",
+        "createdAt": "2026-10-01T12:06:36.954Z",
+        "updatedAt": "2026-10-01T12:06:36.954Z"
+      },
+      "undoable": false,
+      "undone": false
+    },
+    {
       "id": "log-001245",
       "at": "2026-10-01T12:01:12.454Z",
       "userId": "mukwilunaomie@gmail.com",
@@ -128501,5 +128544,5 @@
       }
     }
   ],
-  "nextSeq": 1246
+  "nextSeq": 1247
 }
