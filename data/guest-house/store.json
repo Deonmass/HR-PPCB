@@ -725,8 +725,9 @@
       "motif": "TBA",
       "startDate": "2026-09-24",
       "endDate": "2026-09-24",
-      "status": "pending",
-      "updatedAt": "2026-10-01T13:25:48.299Z"
+      "roomId": "12ee1ff4-eb03-4592-b1da-589006209e77",
+      "status": "confirmed",
+      "updatedAt": "2026-10-01T13:26:32.338Z"
     },
     {
       "id": "4767a6bf-dc4b-42a8-ba9d-1175b82abf69",
@@ -26351,6 +26352,18 @@
     }
   ],
   "passages": [
+    {
+      "id": "5259b028-4e76-454c-855e-6033d1024924",
+      "roomId": "12ee1ff4-eb03-4592-b1da-589006209e77",
+      "reservationId": "db79737e-988d-4dcf-b85d-9d51cf1bc314",
+      "numero": "GH-2026-4440",
+      "personName": "BANGA BANGA APEA ONESIME",
+      "matricule": "70000023",
+      "motif": "TBA",
+      "startDate": "2026-09-24",
+      "endDate": "2026-09-24",
+      "checkedInAt": "2026-10-01T13:26:32.338Z"
+    },
     {
       "id": "8441df59-3661-4c35-a845-bc54c60ae26a",
       "roomId": "3d273d81-0642-4fac-b424-a54146ad7acc",
