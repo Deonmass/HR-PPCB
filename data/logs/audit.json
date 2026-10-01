@@ -1,6 +1,49 @@
 {
   "entries": [
     {
+      "id": "log-001289",
+      "at": "2026-10-01T13:45:48.967Z",
+      "userId": "admin",
+      "userName": "Administrateur",
+      "userEmail": "admin",
+      "module": "guest-house",
+      "moduleLabel": "Guest house",
+      "action": "update",
+      "actionLabel": "Modification",
+      "entityType": "guest-house.reservation",
+      "entityId": "f4f70afd-8f02-4954-b3bb-fa7e6243881c",
+      "summary": "Statut réservation f4f70afd-8f02-4954-b3bb-fa7e6243881c → confirmed",
+      "details": "Statut réservation f4f70afd-8f02-4954-b3bb-fa7e6243881c → confirmed",
+      "before": {
+        "id": "f4f70afd-8f02-4954-b3bb-fa7e6243881c",
+        "numero": "GH-2026-4448",
+        "createdAt": "2026-10-01T13:44:25.324Z",
+        "personName": "Melchior",
+        "isAgent": false,
+        "motif": "TBA",
+        "startDate": "2026-09-26",
+        "endDate": "2026-10-10",
+        "roomId": "3d273d81-0642-4fac-b424-a54146ad7acc",
+        "status": "pending",
+        "updatedAt": "2026-10-01T13:45:13.447Z"
+      },
+      "after": {
+        "id": "f4f70afd-8f02-4954-b3bb-fa7e6243881c",
+        "numero": "GH-2026-4448",
+        "createdAt": "2026-10-01T13:44:25.324Z",
+        "personName": "Melchior",
+        "isAgent": false,
+        "motif": "TBA",
+        "startDate": "2026-09-26",
+        "endDate": "2026-10-10",
+        "roomId": "3d273d81-0642-4fac-b424-a54146ad7acc",
+        "status": "confirmed",
+        "updatedAt": "2026-10-01T13:45:44.752Z"
+      },
+      "undoable": true,
+      "undone": false
+    },
+    {
       "id": "log-001288",
       "at": "2026-10-01T13:45:17.449Z",
       "userId": "admin",
@@ -130193,5 +130236,5 @@
       }
     }
   ],
-  "nextSeq": 1289
+  "nextSeq": 1290
 }
