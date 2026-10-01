@@ -1,6 +1,29 @@
 {
   "entries": [
     {
+      "id": "log-001239",
+      "at": "2026-10-01T11:46:29.558Z",
+      "userId": "system",
+      "userName": "Système",
+      "module": "auth",
+      "moduleLabel": "Authentification",
+      "action": "error",
+      "actionLabel": "Erreur",
+      "summary": "Identifiants invalides",
+      "details": "Échec de connexion pour « mukwilu naomie »",
+      "undoable": false,
+      "undone": false,
+      "error": {
+        "message": "Identifiants invalides",
+        "path": "/api/auth/login",
+        "method": "POST",
+        "status": 401,
+        "context": {
+          "username": "mukwilu naomie"
+        }
+      }
+    },
+    {
       "id": "log-001238",
       "at": "2026-09-30T14:38:01.088Z",
       "userId": "admin",
@@ -128248,5 +128271,5 @@
       }
     }
   ],
-  "nextSeq": 1239
+  "nextSeq": 1240
 }
