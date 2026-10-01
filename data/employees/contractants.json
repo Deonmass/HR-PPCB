@@ -11659,8 +11659,8 @@
           "telephone": "898920758",
           "etatCivil": "M",
           "statut": "Journalier",
-          "dateEmbauche": "",
-          "dateSortie": "",
+          "dateEmbauche": "2024-10-14",
+          "dateSortie": "2026-09-25",
           "managerEmployeeId": "",
           "family": [],
           "matriculePpc": "",
@@ -11672,7 +11672,7 @@
           "coutTransport": 0,
           "payrollSite": "",
           "createdAt": "2026-08-15T09:22:38.385Z",
-          "updatedAt": "2026-08-15T09:22:38.385Z"
+          "updatedAt": "2026-10-01T11:53:42.505Z"
         },
         {
           "id": "696",
@@ -13210,7 +13210,7 @@
         }
       ],
       "createdAt": "2026-08-15T09:22:03.868Z",
-      "updatedAt": "2026-09-29T12:54:18.224Z"
+      "updatedAt": "2026-10-01T11:53:42.505Z"
     },
     {
       "id": "10",
