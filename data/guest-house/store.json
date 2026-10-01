@@ -725,8 +725,8 @@
       "startDate": "2026-09-26",
       "endDate": "2026-10-10",
       "roomId": "e49a08a4-e1db-4824-b8f6-48f1c30c0346",
-      "status": "pending",
-      "updatedAt": "2026-10-01T13:48:00.967Z"
+      "status": "confirmed",
+      "updatedAt": "2026-10-01T13:48:33.176Z"
     },
     {
       "id": "f4f70afd-8f02-4954-b3bb-fa7e6243881c",
@@ -26458,6 +26458,17 @@
     }
   ],
   "passages": [
+    {
+      "id": "e4a52bd3-e31f-4f67-abf4-7dc5a0838ac4",
+      "roomId": "e49a08a4-e1db-4824-b8f6-48f1c30c0346",
+      "reservationId": "a9133180-8dc3-44c1-8d19-727d7e7ca61d",
+      "numero": "GH-2026-4449",
+      "personName": "Jonathan AL",
+      "motif": "Assistant de Phelly agent AL",
+      "startDate": "2026-09-26",
+      "endDate": "2026-10-10",
+      "checkedInAt": "2026-10-01T13:48:33.176Z"
+    },
     {
       "id": "25261c5b-2926-425c-b9bc-18cc6a95eebc",
       "roomId": "3d273d81-0642-4fac-b424-a54146ad7acc",
