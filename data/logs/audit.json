@@ -1,6 +1,37 @@
 {
   "entries": [
     {
+      "id": "log-001266",
+      "at": "2026-10-01T13:25:17.870Z",
+      "userId": "admin",
+      "userName": "Administrateur",
+      "userEmail": "admin",
+      "module": "guest-house",
+      "moduleLabel": "Guest house",
+      "action": "create",
+      "actionLabel": "Création",
+      "entityType": "guest-house.reservation",
+      "entityId": "db79737e-988d-4dcf-b85d-9d51cf1bc314",
+      "summary": "Création réservation BANGA BANGA APEA ONESIME",
+      "details": "Création réservation BANGA BANGA APEA ONESIME",
+      "after": {
+        "id": "db79737e-988d-4dcf-b85d-9d51cf1bc314",
+        "numero": "GH-2026-4440",
+        "createdAt": "2026-10-01T13:25:14.054Z",
+        "personName": "BANGA BANGA APEA ONESIME",
+        "matricule": "70000023",
+        "isAgent": true,
+        "motif": "TBA",
+        "startDate": "2026-09-24",
+        "endDate": "2026-09-24",
+        "status": "pending",
+        "email": "espoir.vuvu@ppcdrc.cd",
+        "updatedAt": "2026-10-01T13:25:14.054Z"
+      },
+      "undoable": true,
+      "undone": false
+    },
+    {
       "id": "log-001265",
       "at": "2026-10-01T13:17:50.028Z",
       "userId": "admin",
@@ -129354,5 +129385,5 @@
       }
     }
   ],
-  "nextSeq": 1266
+  "nextSeq": 1267
 }
