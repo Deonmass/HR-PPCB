@@ -805,11 +805,11 @@
       "isAgent": false,
       "motif": "Maintenance des cameras de surveillance : Usine et village PPC",
       "startDate": "2026-09-22",
-      "endDate": "2026-09-26",
+      "endDate": "2026-09-29",
       "roomId": "4e4bd694-e96e-4748-a98a-882d842f616e",
       "status": "confirmed",
       "notes": "Booké par Nathan",
-      "updatedAt": "2026-09-23T07:17:41.943Z"
+      "updatedAt": "2026-10-01T13:14:35.101Z"
     },
     {
       "id": "92a890a4-054c-432b-9c68-19db902882a6",
@@ -26403,7 +26403,7 @@
       "personName": "Tony Katshiayi",
       "motif": "Maintenance des cameras de surveillance : Usine et village PPC",
       "startDate": "2026-09-22",
-      "endDate": "2026-09-26",
+      "endDate": "2026-09-29",
       "checkedInAt": "2026-09-23T07:17:41.943Z"
     },
     {
