@@ -1,6 +1,48 @@
 {
   "entries": [
     {
+      "id": "log-001283",
+      "at": "2026-10-01T13:40:47.590Z",
+      "userId": "admin",
+      "userName": "Administrateur",
+      "userEmail": "admin",
+      "module": "guest-house",
+      "moduleLabel": "Guest house",
+      "action": "update",
+      "actionLabel": "Modification",
+      "entityType": "guest-house.reservation",
+      "entityId": "fdbf5bce-a610-4017-961f-db101c55a498",
+      "summary": "Statut réservation fdbf5bce-a610-4017-961f-db101c55a498 → confirmed",
+      "details": "Statut réservation fdbf5bce-a610-4017-961f-db101c55a498 → confirmed",
+      "before": {
+        "id": "fdbf5bce-a610-4017-961f-db101c55a498",
+        "numero": "GH-2026-4445",
+        "createdAt": "2026-10-01T13:36:03.128Z",
+        "personName": "Tumte Dieu donée (Camerounais)",
+        "isAgent": false,
+        "motif": "TBA",
+        "startDate": "2026-09-27",
+        "endDate": "2026-10-10",
+        "status": "pending",
+        "updatedAt": "2026-10-01T13:36:03.128Z"
+      },
+      "after": {
+        "id": "fdbf5bce-a610-4017-961f-db101c55a498",
+        "numero": "GH-2026-4445",
+        "createdAt": "2026-10-01T13:36:03.128Z",
+        "personName": "Tumte Dieu donée (Camerounais)",
+        "isAgent": false,
+        "motif": "TBA",
+        "startDate": "2026-09-27",
+        "endDate": "2026-10-10",
+        "roomId": "12ee1ff4-eb03-4592-b1da-589006209e77",
+        "status": "confirmed",
+        "updatedAt": "2026-10-01T13:40:44.640Z"
+      },
+      "undoable": true,
+      "undone": false
+    },
+    {
       "id": "log-001282",
       "at": "2026-10-01T13:40:27.979Z",
       "userId": "admin",
@@ -129949,5 +129991,5 @@
       }
     }
   ],
-  "nextSeq": 1283
+  "nextSeq": 1284
 }
