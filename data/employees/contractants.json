@@ -11373,8 +11373,8 @@
           "telephone": "851490424",
           "etatCivil": "C",
           "statut": "Journalier",
-          "dateEmbauche": "",
-          "dateSortie": "",
+          "dateEmbauche": "2024-09-20",
+          "dateSortie": "2026-09-25",
           "managerEmployeeId": "",
           "family": [],
           "matriculePpc": "",
@@ -11386,7 +11386,7 @@
           "coutTransport": 0,
           "payrollSite": "",
           "createdAt": "2026-08-15T09:22:38.385Z",
-          "updatedAt": "2026-08-15T09:22:38.385Z"
+          "updatedAt": "2026-10-01T12:18:08.959Z"
         },
         {
           "id": "685",
@@ -13210,7 +13210,7 @@
         }
       ],
       "createdAt": "2026-08-15T09:22:03.868Z",
-      "updatedAt": "2026-10-01T12:14:20.980Z"
+      "updatedAt": "2026-10-01T12:18:08.959Z"
     },
     {
       "id": "10",
