@@ -1,6 +1,35 @@
 {
   "entries": [
     {
+      "id": "log-001276",
+      "at": "2026-10-01T13:36:06.406Z",
+      "userId": "admin",
+      "userName": "Administrateur",
+      "userEmail": "admin",
+      "module": "guest-house",
+      "moduleLabel": "Guest house",
+      "action": "create",
+      "actionLabel": "Création",
+      "entityType": "guest-house.reservation",
+      "entityId": "fdbf5bce-a610-4017-961f-db101c55a498",
+      "summary": "Création réservation Tumte Dieu donée (Camerounais)",
+      "details": "Création réservation Tumte Dieu donée (Camerounais)",
+      "after": {
+        "id": "fdbf5bce-a610-4017-961f-db101c55a498",
+        "numero": "GH-2026-4445",
+        "createdAt": "2026-10-01T13:36:03.128Z",
+        "personName": "Tumte Dieu donée (Camerounais)",
+        "isAgent": false,
+        "motif": "TBA",
+        "startDate": "2026-09-27",
+        "endDate": "2026-10-10",
+        "status": "pending",
+        "updatedAt": "2026-10-01T13:36:03.128Z"
+      },
+      "undoable": true,
+      "undone": false
+    },
+    {
       "id": "log-001275",
       "at": "2026-10-01T13:35:46.211Z",
       "userId": "admin",
@@ -129702,5 +129731,5 @@
       }
     }
   ],
-  "nextSeq": 1276
+  "nextSeq": 1277
 }
