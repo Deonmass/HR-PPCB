@@ -1,6 +1,50 @@
 {
   "entries": [
     {
+      "id": "log-001271",
+      "at": "2026-10-01T13:31:01.799Z",
+      "userId": "admin",
+      "userName": "Administrateur",
+      "userEmail": "admin",
+      "module": "guest-house",
+      "moduleLabel": "Guest house",
+      "action": "update",
+      "actionLabel": "Modification",
+      "entityType": "guest-house.reservation",
+      "entityId": "0a164dac-1715-4b16-ae63-f3adc2a2db39",
+      "summary": "Statut réservation 0a164dac-1715-4b16-ae63-f3adc2a2db39 → confirmed",
+      "details": "Statut réservation 0a164dac-1715-4b16-ae63-f3adc2a2db39 → confirmed",
+      "before": {
+        "id": "0a164dac-1715-4b16-ae63-f3adc2a2db39",
+        "numero": "GH-2026-4441",
+        "createdAt": "2026-10-01T13:27:22.766Z",
+        "personName": "SAMBA LUINDA HONORE",
+        "matricule": "70000130",
+        "isAgent": true,
+        "motif": "TBA",
+        "startDate": "2026-09-26",
+        "endDate": "2026-09-26",
+        "status": "pending",
+        "updatedAt": "2026-10-01T13:29:20.469Z"
+      },
+      "after": {
+        "id": "0a164dac-1715-4b16-ae63-f3adc2a2db39",
+        "numero": "GH-2026-4441",
+        "createdAt": "2026-10-01T13:27:22.766Z",
+        "personName": "SAMBA LUINDA HONORE",
+        "matricule": "70000130",
+        "isAgent": true,
+        "motif": "TBA",
+        "startDate": "2026-09-26",
+        "endDate": "2026-09-26",
+        "roomId": "8b14162d-ae3b-49a5-bcb6-812c2d8d5b5b",
+        "status": "confirmed",
+        "updatedAt": "2026-10-01T13:30:57.883Z"
+      },
+      "undoable": true,
+      "undone": false
+    },
+    {
       "id": "log-001270",
       "at": "2026-10-01T13:29:24.048Z",
       "userId": "admin",
@@ -129546,5 +129590,5 @@
       }
     }
   ],
-  "nextSeq": 1271
+  "nextSeq": 1272
 }
