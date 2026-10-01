@@ -12387,8 +12387,8 @@
           "telephone": "891293401",
           "etatCivil": "C",
           "statut": "Journalier",
-          "dateEmbauche": "",
-          "dateSortie": "",
+          "dateEmbauche": "2024-09-26",
+          "dateSortie": "2026-09-08",
           "managerEmployeeId": "",
           "family": [],
           "matriculePpc": "",
@@ -12400,7 +12400,7 @@
           "coutTransport": 0,
           "payrollSite": "",
           "createdAt": "2026-08-15T09:22:38.385Z",
-          "updatedAt": "2026-08-15T09:22:38.385Z"
+          "updatedAt": "2026-10-01T12:14:20.980Z"
         },
         {
           "id": "724",
@@ -13210,7 +13210,7 @@
         }
       ],
       "createdAt": "2026-08-15T09:22:03.868Z",
-      "updatedAt": "2026-10-01T12:10:54.682Z"
+      "updatedAt": "2026-10-01T12:14:20.980Z"
     },
     {
       "id": "10",
