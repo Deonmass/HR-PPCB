@@ -1,6 +1,50 @@
 {
   "entries": [
     {
+      "id": "log-001268",
+      "at": "2026-10-01T13:26:35.783Z",
+      "userId": "admin",
+      "userName": "Administrateur",
+      "userEmail": "admin",
+      "module": "guest-house",
+      "moduleLabel": "Guest house",
+      "action": "update",
+      "actionLabel": "Modification",
+      "entityType": "guest-house.reservation",
+      "entityId": "db79737e-988d-4dcf-b85d-9d51cf1bc314",
+      "summary": "Statut réservation db79737e-988d-4dcf-b85d-9d51cf1bc314 → confirmed",
+      "details": "Statut réservation db79737e-988d-4dcf-b85d-9d51cf1bc314 → confirmed",
+      "before": {
+        "id": "db79737e-988d-4dcf-b85d-9d51cf1bc314",
+        "numero": "GH-2026-4440",
+        "createdAt": "2026-10-01T13:25:14.054Z",
+        "personName": "BANGA BANGA APEA ONESIME",
+        "matricule": "70000023",
+        "isAgent": true,
+        "motif": "TBA",
+        "startDate": "2026-09-24",
+        "endDate": "2026-09-24",
+        "status": "pending",
+        "updatedAt": "2026-10-01T13:25:48.299Z"
+      },
+      "after": {
+        "id": "db79737e-988d-4dcf-b85d-9d51cf1bc314",
+        "numero": "GH-2026-4440",
+        "createdAt": "2026-10-01T13:25:14.054Z",
+        "personName": "BANGA BANGA APEA ONESIME",
+        "matricule": "70000023",
+        "isAgent": true,
+        "motif": "TBA",
+        "startDate": "2026-09-24",
+        "endDate": "2026-09-24",
+        "roomId": "12ee1ff4-eb03-4592-b1da-589006209e77",
+        "status": "confirmed",
+        "updatedAt": "2026-10-01T13:26:32.338Z"
+      },
+      "undoable": true,
+      "undone": false
+    },
+    {
       "id": "log-001267",
       "at": "2026-10-01T13:25:51.786Z",
       "userId": "admin",
@@ -129429,5 +129473,5 @@
       }
     }
   ],
-  "nextSeq": 1268
+  "nextSeq": 1269
 }
