@@ -1,6 +1,48 @@
 {
   "entries": [
     {
+      "id": "log-001282",
+      "at": "2026-10-01T13:40:27.979Z",
+      "userId": "admin",
+      "userName": "Administrateur",
+      "userEmail": "admin",
+      "module": "guest-house",
+      "moduleLabel": "Guest house",
+      "action": "update",
+      "actionLabel": "Modification",
+      "entityType": "guest-house.reservation",
+      "entityId": "98d23464-03fd-4e3b-b8cb-dcff9b3275d3",
+      "summary": "Statut réservation 98d23464-03fd-4e3b-b8cb-dcff9b3275d3 → confirmed",
+      "details": "Statut réservation 98d23464-03fd-4e3b-b8cb-dcff9b3275d3 → confirmed",
+      "before": {
+        "id": "98d23464-03fd-4e3b-b8cb-dcff9b3275d3",
+        "numero": "GH-2026-4442",
+        "createdAt": "2026-10-01T13:32:27.948Z",
+        "personName": "Mpile Aloys (Camérounais)",
+        "isAgent": false,
+        "motif": "TBA",
+        "startDate": "2026-09-27",
+        "endDate": "2026-10-10",
+        "status": "pending",
+        "updatedAt": "2026-10-01T13:32:27.948Z"
+      },
+      "after": {
+        "id": "98d23464-03fd-4e3b-b8cb-dcff9b3275d3",
+        "numero": "GH-2026-4442",
+        "createdAt": "2026-10-01T13:32:27.948Z",
+        "personName": "Mpile Aloys (Camérounais)",
+        "isAgent": false,
+        "motif": "TBA",
+        "startDate": "2026-09-27",
+        "endDate": "2026-10-10",
+        "roomId": "d9ec3499-ad6d-4215-8ef9-c20a4f6b1714",
+        "status": "confirmed",
+        "updatedAt": "2026-10-01T13:40:24.858Z"
+      },
+      "undoable": true,
+      "undone": false
+    },
+    {
       "id": "log-001281",
       "at": "2026-10-01T13:40:06.447Z",
       "userId": "admin",
@@ -129907,5 +129949,5 @@
       }
     }
   ],
-  "nextSeq": 1282
+  "nextSeq": 1283
 }
