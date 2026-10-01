@@ -1,6 +1,36 @@
 {
   "entries": [
     {
+      "id": "log-001277",
+      "at": "2026-10-01T13:36:40.929Z",
+      "userId": "admin",
+      "userName": "Administrateur",
+      "userEmail": "admin",
+      "module": "guest-house",
+      "moduleLabel": "Guest house",
+      "action": "delete",
+      "actionLabel": "Suppression",
+      "entityType": "guest-house.reservation",
+      "entityId": "043c43d9-3601-4fa9-9dd0-5703f8690005",
+      "summary": "Suppression réservation 043c43d9-3601-4fa9-9dd0-5703f8690005",
+      "details": "Suppression réservation 043c43d9-3601-4fa9-9dd0-5703f8690005",
+      "before": {
+        "id": "043c43d9-3601-4fa9-9dd0-5703f8690005",
+        "numero": "GH-2026-4443",
+        "createdAt": "2026-10-01T13:33:41.249Z",
+        "personName": "Tumte Dieu donnée (Camérounais)",
+        "isAgent": false,
+        "motif": "TBA",
+        "startDate": "2026-10-04",
+        "endDate": "2026-10-10",
+        "status": "pending",
+        "updatedAt": "2026-10-01T13:33:41.249Z"
+      },
+      "after": null,
+      "undoable": true,
+      "undone": false
+    },
+    {
       "id": "log-001276",
       "at": "2026-10-01T13:36:06.406Z",
       "userId": "admin",
@@ -129731,5 +129761,5 @@
       }
     }
   ],
-  "nextSeq": 1277
+  "nextSeq": 1278
 }
