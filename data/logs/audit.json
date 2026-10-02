@@ -1,6 +1,53 @@
 {
   "entries": [
     {
+      "id": "log-001331",
+      "at": "2026-10-02T17:08:34.770Z",
+      "userId": "Tresor.Maneka@ppcdrc.cd",
+      "userName": "Tresor Maneka",
+      "userEmail": "Tresor.Maneka@ppcdrc.cd",
+      "module": "charroi.voyages",
+      "moduleLabel": "Charroi — Voyages",
+      "action": "create",
+      "actionLabel": "Création",
+      "entityType": "charroi.voyage",
+      "entityId": "vyg-003",
+      "summary": "Demande de voyage VYG-0003 TSHIOMBE BADIBANGA CALEB Kinshasa → Moanda",
+      "details": "Demande de voyage VYG-0003 TSHIOMBE BADIBANGA CALEB Kinshasa → Moanda",
+      "after": {
+        "id": "vyg-003",
+        "numero": "VYG-0003",
+        "passagerNom": "TSHIOMBE BADIBANGA CALEB",
+        "passagerMatricule": "70000274",
+        "passagerInterne": true,
+        "nombrePersonnes": 1,
+        "depart": "Kinshasa",
+        "destination": "Moanda",
+        "dateDepart": "2026-10-04",
+        "heureDepart": "15:02",
+        "dateArrivee": "",
+        "heureArrivee": "",
+        "motif": "Colecte les information sur les paneaux Pub",
+        "notes": "",
+        "status": "demande",
+        "chauffeurNom": "",
+        "chauffeurMatricule": "",
+        "chauffeurInterne": false,
+        "vehiculeMode": "",
+        "vehiculeId": "",
+        "vehiculeLibelle": "",
+        "foodAllowance": 0,
+        "foodForTheRoad": 0,
+        "tollGate": 0,
+        "confirmedAt": "",
+        "completedAt": "",
+        "createdAt": "2026-10-02T17:08:31.314Z",
+        "updatedAt": "2026-10-02T17:08:31.314Z"
+      },
+      "undoable": false,
+      "undone": false
+    },
+    {
       "id": "log-001330",
       "at": "2026-10-02T13:54:24.099Z",
       "userId": "Serge.Muakasa@ppcdrc.cd",
@@ -134305,5 +134352,5 @@
       }
     }
   ],
-  "nextSeq": 1331
+  "nextSeq": 1332
 }
