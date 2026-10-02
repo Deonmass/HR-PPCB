@@ -1,6 +1,21 @@
 {
   "entries": [
     {
+      "id": "log-001326",
+      "at": "2026-10-02T12:30:32.012Z",
+      "userId": "Tresor.Maneka@ppcdrc.cd",
+      "userName": "Tresor Maneka",
+      "userEmail": "Tresor.Maneka@ppcdrc.cd",
+      "module": "auth",
+      "moduleLabel": "Authentification",
+      "action": "login",
+      "actionLabel": "Connexion",
+      "summary": "Connexion Tresor.Maneka@ppcdrc.cd",
+      "details": "Connexion de Tresor Maneka (Tresor.Maneka@ppcdrc.cd)",
+      "undoable": false,
+      "undone": false
+    },
+    {
       "id": "log-001325",
       "at": "2026-10-02T12:28:17.971Z",
       "userId": "admin",
@@ -134139,5 +134154,5 @@
       }
     }
   ],
-  "nextSeq": 1326
+  "nextSeq": 1327
 }
