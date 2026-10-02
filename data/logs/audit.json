@@ -1,6 +1,44 @@
 {
   "entries": [
     {
+      "id": "log-001321",
+      "at": "2026-10-02T11:42:18.498Z",
+      "userId": "espoir.vuvu@ppcdrc.cd",
+      "userName": "Espoir Vuvu",
+      "userEmail": "espoir.vuvu@ppcdrc.cd",
+      "module": "sante",
+      "moduleLabel": "Santé",
+      "action": "create",
+      "actionLabel": "Création",
+      "entityType": "sante.visit",
+      "entityId": "sante-muqw8ag1-jtf7w3",
+      "summary": "Cas santé — KABUYA CHANCEL · PALUDISME SIMPLE",
+      "details": "Cas santé — KABUYA CHANCEL · PALUDISME SIMPLE",
+      "after": {
+        "id": "sante-muqw8ag1-jtf7w3",
+        "date": "2026-10-01",
+        "nom": "KABUYA",
+        "postnom": "CHANCEL",
+        "sexe": "F",
+        "age": 46,
+        "typeMalade": "CONTRACTANT",
+        "pathologie": "PALUDISME SIMPLE",
+        "traitement": "ANTI PALUDEEN  ET ANTI PYRETIQUE",
+        "reference": "NON",
+        "year": 2026,
+        "month": 10,
+        "employeeMatricule": "",
+        "employeeNom": "",
+        "dependantId": null,
+        "createdAt": "2026-10-02T11:42:15.265Z",
+        "updatedAt": "2026-10-02T11:42:15.265Z",
+        "createdBy": "espoir.vuvu@ppcdrc.cd",
+        "updatedBy": "espoir.vuvu@ppcdrc.cd"
+      },
+      "undoable": false,
+      "undone": false
+    },
+    {
       "id": "log-001320",
       "at": "2026-10-02T11:38:17.496Z",
       "userId": "espoir.vuvu@ppcdrc.cd",
@@ -131927,5 +131965,5 @@
       }
     }
   ],
-  "nextSeq": 1321
+  "nextSeq": 1322
 }
