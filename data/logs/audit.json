@@ -1,6 +1,65 @@
 {
   "entries": [
     {
+      "id": "log-001329",
+      "at": "2026-10-02T13:28:45.128Z",
+      "userId": "Tresor.Maneka@ppcdrc.cd",
+      "userName": "Tresor Maneka",
+      "userEmail": "Tresor.Maneka@ppcdrc.cd",
+      "module": "protocol.voyages",
+      "moduleLabel": "Gestion de voyage",
+      "action": "update",
+      "actionLabel": "Modification",
+      "entityType": "protocol.voyage",
+      "entityId": "pvc-004",
+      "summary": "Modification voyage PVC-0004 TANUI KIPRUTO ELIAS",
+      "details": "Modification voyage PVC-0004 TANUI KIPRUTO ELIAS",
+      "before": {
+        "id": "pvc-004",
+        "numero": "PVC-0004",
+        "date": "2026-10-02",
+        "voyageur": "TANUI KIPRUTO ELIAS",
+        "voyageurMatricule": "70000050",
+        "destination": "Kinshasa - Nairobi - Kinshasa",
+        "ticketAvion": 1237,
+        "visaVolant": 0,
+        "lettreLegaliser": 0,
+        "goPass": 55,
+        "transfert": 0,
+        "hotelNuit": 0,
+        "nbreNuits": 0,
+        "coutHotel": 0,
+        "categorieHotel": "Confort",
+        "appartement": 576,
+        "coutTotal": 1868,
+        "createdAt": "2026-10-02T13:25:43.517Z",
+        "updatedAt": "2026-10-02T13:25:43.517Z"
+      },
+      "after": {
+        "id": "pvc-004",
+        "numero": "PVC-0004",
+        "date": "2026-10-02",
+        "voyageur": "TANUI KIPRUTO ELIAS",
+        "voyageurMatricule": "70000050",
+        "destination": "Kinshasa - Nairobi - Kinshasa",
+        "ticketAvion": 1237,
+        "visaVolant": 0,
+        "lettreLegaliser": 0,
+        "goPass": 55,
+        "transfert": 0,
+        "hotelNuit": 576,
+        "nbreNuits": 3,
+        "coutHotel": 1728,
+        "categorieHotel": "Confort",
+        "appartement": 0,
+        "coutTotal": 3020,
+        "createdAt": "2026-10-02T13:25:43.517Z",
+        "updatedAt": "2026-10-02T13:28:41.550Z"
+      },
+      "undoable": false,
+      "undone": false
+    },
+    {
       "id": "log-001328",
       "at": "2026-10-02T13:27:27.264Z",
       "userId": "Tresor.Maneka@ppcdrc.cd",
@@ -134231,5 +134290,5 @@
       }
     }
   ],
-  "nextSeq": 1329
+  "nextSeq": 1330
 }
