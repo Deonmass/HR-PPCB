@@ -43,27 +43,6 @@
       "updatedAt": "2026-09-30T00:00:00.000Z"
     },
     {
-      "id": "pvc-003",
-      "numero": "PVC-0003",
-      "date": "2026-10-02",
-      "voyageur": "TANUI KIPRUTO ELIAS",
-      "voyageurMatricule": "70000050",
-      "destination": "Kinshasa - Nairobi - Kinshasa",
-      "ticketAvion": 1500,
-      "visaVolant": 0,
-      "lettreLegaliser": 0,
-      "goPass": 55,
-      "transfert": 60,
-      "hotelNuit": 192,
-      "nbreNuits": 1,
-      "coutHotel": 192,
-      "categorieHotel": "Confort",
-      "appartement": 0,
-      "coutTotal": 1807,
-      "createdAt": "2026-10-02T10:54:51.901Z",
-      "updatedAt": "2026-10-02T10:54:51.901Z"
-    },
-    {
       "id": "pvc-004",
       "numero": "PVC-0004",
       "date": "2026-10-02",
