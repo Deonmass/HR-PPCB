@@ -1,6 +1,21 @@
 {
   "entries": [
     {
+      "id": "log-001323",
+      "at": "2026-10-02T12:05:28.443Z",
+      "userId": "mukwilunaomie@gmail.com",
+      "userName": "Naomie Mukwilu",
+      "userEmail": "mukwilunaomie@gmail.com",
+      "module": "auth",
+      "moduleLabel": "Authentification",
+      "action": "logout",
+      "actionLabel": "Déconnexion",
+      "summary": "Déconnexion mukwilunaomie@gmail.com",
+      "details": "Déconnexion de Naomie Mukwilu (mukwilunaomie@gmail.com)",
+      "undoable": false,
+      "undone": false
+    },
+    {
       "id": "log-001322",
       "at": "2026-10-02T11:43:56.457Z",
       "userId": "espoir.vuvu@ppcdrc.cd",
@@ -132003,5 +132018,5 @@
       }
     }
   ],
-  "nextSeq": 1323
+  "nextSeq": 1324
 }
