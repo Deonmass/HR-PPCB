@@ -1,6 +1,44 @@
 {
   "entries": [
     {
+      "id": "log-001320",
+      "at": "2026-10-02T11:38:17.496Z",
+      "userId": "espoir.vuvu@ppcdrc.cd",
+      "userName": "Espoir Vuvu",
+      "userEmail": "espoir.vuvu@ppcdrc.cd",
+      "module": "sante",
+      "moduleLabel": "Santé",
+      "action": "create",
+      "actionLabel": "Création",
+      "entityType": "sante.visit",
+      "entityId": "sante-muqw347g-rmjssd",
+      "summary": "Cas santé — SOFIA NZINGA · PALUDISME SIMPLE",
+      "details": "Cas santé — SOFIA NZINGA · PALUDISME SIMPLE",
+      "after": {
+        "id": "sante-muqw347g-rmjssd",
+        "date": "2026-10-01",
+        "nom": "SOFIA",
+        "postnom": "NZINGA",
+        "sexe": "F",
+        "age": 20,
+        "typeMalade": "CONTRACTANT",
+        "pathologie": "PALUDISME SIMPLE",
+        "traitement": "ANTI PALUDEEN  ET ANTI PYRETIQUE",
+        "reference": "NON",
+        "year": 2026,
+        "month": 10,
+        "employeeMatricule": "",
+        "employeeNom": "",
+        "dependantId": null,
+        "createdAt": "2026-10-02T11:38:13.900Z",
+        "updatedAt": "2026-10-02T11:38:13.900Z",
+        "createdBy": "espoir.vuvu@ppcdrc.cd",
+        "updatedBy": "espoir.vuvu@ppcdrc.cd"
+      },
+      "undoable": false,
+      "undone": false
+    },
+    {
       "id": "log-001319",
       "at": "2026-10-02T11:34:37.641Z",
       "userId": "admin",
@@ -131889,5 +131927,5 @@
       }
     }
   ],
-  "nextSeq": 1320
+  "nextSeq": 1321
 }
