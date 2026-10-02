@@ -1,6 +1,44 @@
 {
   "entries": [
     {
+      "id": "log-001322",
+      "at": "2026-10-02T11:43:56.457Z",
+      "userId": "espoir.vuvu@ppcdrc.cd",
+      "userName": "Espoir Vuvu",
+      "userEmail": "espoir.vuvu@ppcdrc.cd",
+      "module": "sante",
+      "moduleLabel": "Santé",
+      "action": "create",
+      "actionLabel": "Création",
+      "entityType": "sante.visit",
+      "entityId": "sante-muqwadw1-xg7hij",
+      "summary": "Cas santé — KABUYA CHANCEL · SYNDROME DYSPEPTIQUE",
+      "details": "Cas santé — KABUYA CHANCEL · SYNDROME DYSPEPTIQUE",
+      "after": {
+        "id": "sante-muqwadw1-xg7hij",
+        "date": "2026-10-01",
+        "nom": "KABUYA",
+        "postnom": "CHANCEL",
+        "sexe": "F",
+        "age": 46,
+        "typeMalade": "CONTRACTANT",
+        "pathologie": "SYNDROME DYSPEPTIQUE",
+        "traitement": "ANTI ACIDE SIROP",
+        "reference": "NON",
+        "year": 2026,
+        "month": 10,
+        "employeeMatricule": "",
+        "employeeNom": "",
+        "dependantId": null,
+        "createdAt": "2026-10-02T11:43:53.041Z",
+        "updatedAt": "2026-10-02T11:43:53.041Z",
+        "createdBy": "espoir.vuvu@ppcdrc.cd",
+        "updatedBy": "espoir.vuvu@ppcdrc.cd"
+      },
+      "undoable": false,
+      "undone": false
+    },
+    {
       "id": "log-001321",
       "at": "2026-10-02T11:42:18.498Z",
       "userId": "espoir.vuvu@ppcdrc.cd",
@@ -131965,5 +132003,5 @@
       }
     }
   ],
-  "nextSeq": 1322
+  "nextSeq": 1323
 }
