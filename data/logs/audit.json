@@ -1,6 +1,45 @@
 {
   "entries": [
     {
+      "id": "log-001328",
+      "at": "2026-10-02T13:27:27.264Z",
+      "userId": "Tresor.Maneka@ppcdrc.cd",
+      "userName": "Tresor Maneka",
+      "userEmail": "Tresor.Maneka@ppcdrc.cd",
+      "module": "protocol.voyages",
+      "moduleLabel": "Gestion de voyage",
+      "action": "delete",
+      "actionLabel": "Suppression",
+      "entityType": "protocol.voyage",
+      "entityId": "pvc-003",
+      "summary": "Suppression voyage PVC-0003 TANUI KIPRUTO ELIAS",
+      "details": "Suppression voyage PVC-0003 TANUI KIPRUTO ELIAS",
+      "before": {
+        "id": "pvc-003",
+        "numero": "PVC-0003",
+        "date": "2026-10-02",
+        "voyageur": "TANUI KIPRUTO ELIAS",
+        "voyageurMatricule": "70000050",
+        "destination": "Kinshasa - Nairobi - Kinshasa",
+        "ticketAvion": 1500,
+        "visaVolant": 0,
+        "lettreLegaliser": 0,
+        "goPass": 55,
+        "transfert": 60,
+        "hotelNuit": 192,
+        "nbreNuits": 1,
+        "coutHotel": 192,
+        "categorieHotel": "Confort",
+        "appartement": 0,
+        "coutTotal": 1807,
+        "createdAt": "2026-10-02T10:54:51.901Z",
+        "updatedAt": "2026-10-02T10:54:51.901Z"
+      },
+      "after": null,
+      "undoable": false,
+      "undone": false
+    },
+    {
       "id": "log-001327",
       "at": "2026-10-02T13:25:47.324Z",
       "userId": "Tresor.Maneka@ppcdrc.cd",
@@ -134192,5 +134231,5 @@
       }
     }
   ],
-  "nextSeq": 1328
+  "nextSeq": 1329
 }
