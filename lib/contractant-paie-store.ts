@@ -101,7 +101,7 @@ async function readStore(): Promise<StoreData> {
               contractantId: String(m.contractantId || ''),
               year: Number(m.year) || 0,
               month: Number(m.month) || 0,
-              site: m.site === 'hors-site' ? 'hors-site' : 'site',
+              site: (m.site === 'hors-site' ? 'hors-site' : 'site') as ContractantPayrollSite,
               fxRate: Number(m.fxRate) || CONTRACTANT_PAIE_FX_DEFAULT,
               rows: Array.isArray(m.rows)
                 ? m.rows.map(normalizeRow).filter((r): r is ContractantPaieMonthRow => Boolean(r))

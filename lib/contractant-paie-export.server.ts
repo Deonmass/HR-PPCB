@@ -30,8 +30,8 @@ function setText(cell: ExcelJS.Cell, value: string) {
 
 /** Supprime les tableaux Excel (sources de formules partagées). */
 function removeAllTables(ws: ExcelJS.Worksheet) {
-  const names = Object.keys(ws.tables || {});
-  for (const name of names) {
+  const tables = (ws as ExcelJS.Worksheet & { tables?: Record<string, unknown> }).tables;
+  for (const name of Object.keys(tables ?? {})) {
     try {
       ws.removeTable(name);
     } catch {

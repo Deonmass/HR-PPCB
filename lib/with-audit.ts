@@ -1,6 +1,6 @@
 import 'server-only';
 
-import { after } from 'next/server';
+import { after as scheduleAfter } from 'next/server';
 import { cookies } from 'next/headers';
 import { getSession, getSessionCookieName } from './auth-store';
 import { findUserByIdFromParams } from './params-users-store';
@@ -148,7 +148,7 @@ export async function withAudit<T>(
     };
 
     if (options.defer) {
-      after(() => appendAuditLog(payload));
+      scheduleAfter(() => appendAuditLog(payload));
     } else {
       await appendAuditLog(payload);
     }
