@@ -1,6 +1,41 @@
 {
   "entries": [
     {
+      "id": "log-001324",
+      "at": "2026-10-02T12:26:57.344Z",
+      "userId": "admin",
+      "userName": "Administrateur",
+      "userEmail": "admin",
+      "module": "settings.utilisateurs",
+      "moduleLabel": "Paramètres — Utilisateurs",
+      "action": "create",
+      "actionLabel": "Création",
+      "entityType": "auth.user",
+      "entityId": "Tresor.Maneka@ppcdrc.cd",
+      "summary": "Création utilisateur Tresor Maneka",
+      "details": "Création utilisateur Tresor Maneka",
+      "after": {
+        "id": "Tresor.Maneka@ppcdrc.cd",
+        "username": "Tresor.Maneka@ppcdrc.cd",
+        "displayName": "Tresor Maneka",
+        "initials": "TM",
+        "email": "Tresor.Maneka@ppcdrc.cd",
+        "matricule": "70000175",
+        "linkedEmployee": {
+          "matricule": "70000175",
+          "nom": "MANEKA MPUDI TRESOR",
+          "departement": "Human Resources",
+          "grade": "C2",
+          "jobTitle": "Immigration Officer",
+          "localisation": "Kinshasa"
+        },
+        "active": true,
+        "createdAt": "2026-10-02T12:26:53.287Z"
+      },
+      "undoable": true,
+      "undone": false
+    },
+    {
       "id": "log-001323",
       "at": "2026-10-02T12:05:28.443Z",
       "userId": "mukwilunaomie@gmail.com",
@@ -132018,5 +132053,5 @@
       }
     }
   ],
-  "nextSeq": 1324
+  "nextSeq": 1325
 }
