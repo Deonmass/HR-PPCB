@@ -253,7 +253,7 @@ const CARDS: DocCard[] = [
   {
     id: 'attestation-residence',
     title: 'Attestation de résidence',
-    description: 'Attestation de résidence — employé, signataire, adresse et date de résidence.',
+    description: 'Attestation de résidence (FR/EN, 2 pages) — employé, signataire et adresse.',
     href: '/documents/attestation-residence',
     menuId: 'documents.attestation-residence',
     accent: '#0369a1',
@@ -285,6 +285,15 @@ const CARDS: DocCard[] = [
     menuId: 'documents.exit',
     accent: '#ef4444',
     badge: '4 documents',
+    icon: <IconExit />,
+  },
+  {
+    id: 'reponse-demission',
+    title: 'Réponse démission',
+    description: 'Lettre de réponse à une démission — identité, préavis selon la catégorie et date de départ souhaitée.',
+    href: '/documents/reponse-demission',
+    menuId: 'documents.reponse-demission',
+    accent: '#b91c1c',
     icon: <IconExit />,
   },
   {
@@ -363,6 +372,7 @@ const DOC_I18N: Record<string, { title: MessageKey; desc: MessageKey; badge?: Me
   'payment-voucher': { title: 'docs.card.voucher.title', desc: 'docs.card.voucher.desc' },
   'interim-appraisal': { title: 'docs.card.appraisal.title', desc: 'docs.card.appraisal.desc' },
   'exit-forms': { title: 'docs.card.exit.title', desc: 'docs.card.exit.desc', badge: 'docs.card.exit.badge' },
+  'reponse-demission': { title: 'docs.card.demission.title', desc: 'docs.card.demission.desc' },
   newcomer: { title: 'docs.card.newcomer.title', desc: 'docs.card.newcomer.desc', badge: 'docs.card.newcomer.badge' },
   rrf: { title: 'docs.card.rrf.title', desc: 'docs.card.rrf.desc', badge: 'docs.card.rrf.badge' },
   'contrat-standard': { title: 'docs.card.contract.title', desc: 'docs.card.contract.desc' },

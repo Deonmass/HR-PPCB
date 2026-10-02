@@ -5,9 +5,12 @@ import path from 'path';
 import { randomUUID } from 'crypto';
 import fsSync from 'fs';
 import { writeDocxFromTemplate } from './docx-template';
+import { formatAttestationAgentName } from './format-display-name';
+import { splitBilingualLeaveForm } from './leave-attestation-agent';
 import { buildLeaveAttestationPdfBuffer } from './leave-attestation-pdf.server';
 import { buildLeaveAttestationPreviewHtmlForForm } from './leave-attestation-preview.server';
 import {
+  fillBilingualLeaveAttestationXml,
   fillLeaveAttestationXml,
   formatLeaveAttestationFileName,
   LEAVE_ATTESTATION_TEMPLATE_PATH,
@@ -90,19 +93,44 @@ export async function createLeaveAttestation(
 ): Promise<LeaveAttestationRecord> {
   await ensureDataDir();
 
+  const language =
+    form.language === 'both' ? 'both' : form.language === 'en' ? 'en' : 'fr';
+  const normalized: LeaveAttestationFormData = {
+    ...form,
+    language,
+    hodName: formatAttestationAgentName(form.hodName),
+    employeeName: formatAttestationAgentName(form.employeeName),
+    bodyText: form.bodyText?.trim() || undefined,
+    bodyTextEn: form.bodyTextEn?.trim() || undefined,
+    hodFunctionEn: form.hodFunctionEn?.trim() || undefined,
+    employeeGenreEn: form.employeeGenreEn?.trim() || undefined,
+    employeeFunctionEn: form.employeeFunctionEn?.trim() || undefined,
+  };
+
   const id = randomUUID();
-  const fileName = formatLeaveAttestationFileName(form.employeeName, form.documentDate);
+  const fileName = formatLeaveAttestationFileName(
+    normalized.employeeName,
+    normalized.documentDate,
+    language,
+  );
   const docxPath = path.join(FILES_DIR, `${id}.docx`);
   const pdfPath = path.join(FILES_DIR, `${id}.pdf`);
 
-  await writeDocxFromTemplate(LEAVE_ATTESTATION_TEMPLATE_PATH, docxPath, (xml) =>
-    fillLeaveAttestationXml(xml, form),
-  );
-  const previewHtml = await buildLeaveAttestationPreviewHtmlForForm(form);
+  if (language === 'both') {
+    const { fr, en } = splitBilingualLeaveForm(normalized);
+    await writeDocxFromTemplate(LEAVE_ATTESTATION_TEMPLATE_PATH, docxPath, (xml) =>
+      fillBilingualLeaveAttestationXml(xml, fr, en),
+    );
+  } else {
+    await writeDocxFromTemplate(LEAVE_ATTESTATION_TEMPLATE_PATH, docxPath, (xml) =>
+      fillLeaveAttestationXml(xml, normalized),
+    );
+  }
+  const previewHtml = await buildLeaveAttestationPreviewHtmlForForm(normalized);
 
   let savedPdfPath: string | undefined;
   try {
-    const pdfBuffer = await buildLeaveAttestationPdfBuffer(form);
+    const pdfBuffer = await buildLeaveAttestationPdfBuffer(normalized);
     await fs.writeFile(pdfPath, pdfBuffer);
     savedPdfPath = pdfPath;
   } catch {
@@ -110,7 +138,7 @@ export async function createLeaveAttestation(
   }
 
   const record: LeaveAttestationRecord = {
-    ...form,
+    ...normalized,
     id,
     createdAt: new Date().toISOString(),
     fileName,

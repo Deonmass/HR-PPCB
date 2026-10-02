@@ -4,7 +4,10 @@ import fs from 'fs/promises';
 import JSZip from 'jszip';
 import { escapeXmlText } from './docx-template';
 import { PPC_LETTERHEAD_ADDRESS_LINES } from './ppc-letterhead-address';
-import { formatResidenceHodSoussigne } from './residence-attestation-text';
+import {
+  formatResidenceHodSoussigne,
+  resolveResidenceAddressEn,
+} from './residence-attestation-text';
 import type { ResidenceAttestationFormData } from './residence-attestation-types';
 import { RESIDENCE_ATTESTATION_TEMPLATE_PATH } from './residence-attestation-template-paths';
 
@@ -76,22 +79,75 @@ function replaceBracketInXmlOnce(
   return { xml: nextXml, index: match.index + escaped.length };
 }
 
-export function formatResidenceDocumentDate(value: string): string {
+function replaceLiteralInXmlOnce(
+  xml: string,
+  literal: string,
+  value: string,
+  fromIndex = 0,
+): string {
+  const chars = literal.split('').map((char) => char.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'));
+  const gap = '(?:<[^>]+>)*';
+  const pattern = new RegExp(chars.join(gap));
+  const searchFrom = Math.max(0, fromIndex);
+  const slice = xml.slice(searchFrom);
+  const match = pattern.exec(slice);
+  if (!match) return xml;
+  const at = searchFrom + match.index;
+  const escaped = escapeXmlText(value);
+  return `${xml.slice(0, at)}${escaped}${xml.slice(at + match[0].length)}`;
+}
+
+export function formatResidenceDocumentDate(
+  value: string,
+  language: 'fr' | 'en' = 'fr',
+): string {
   const trimmed = value.trim();
   if (!trimmed) return '';
   const date = new Date(`${trimmed}T00:00:00`);
   if (Number.isNaN(date.getTime())) return trimmed;
-  return date.toLocaleDateString('fr-FR', {
+  return date.toLocaleDateString(language === 'fr' ? 'fr-FR' : 'en-US', {
     day: 'numeric',
     month: 'long',
     year: 'numeric',
   });
 }
 
+function applyEnglishBoilerplate(xml: string, employeeGenreEn: string): string {
+  let next = xml;
+  const pronoun = /ms\.?|mrs\.?|miss/i.test(employeeGenreEn) ? 'her' : 'him';
+  const replacements: [string, string][] = [
+    ['ATTESTATION DE RESIDENCE', 'CERTIFICATE OF RESIDENCE'],
+    ['Je soussignée,', 'I, the undersigned,'],
+    ['Je soussigné,', 'I, the undersigned,'],
+    ['atteste par la présente que', 'hereby certify that'],
+    [
+      'employé dans notre entreprise, réside effectivement au',
+      'employed in our company, actually resides at',
+    ],
+    [
+      'employée dans notre entreprise, réside effectivement au',
+      'employed in our company, actually resides at',
+    ],
+    [
+      'La présente lui est délivrée pour faire valoir ce que de droit.',
+      `This certificate is issued to ${pronoun} to do what is right.`,
+    ],
+    ['Fait à Kinshasa le', 'Done in Kinshasa on'],
+    ['de PPC Barnet DRC Manufacturing S.A', 'of PPC Barnet DRC Manufacturing S.A'],
+  ];
+  for (const [from, to] of replacements) {
+    next = replaceLiteralInXmlOnce(next, from, to);
+  }
+  return next;
+}
+
 export function fillResidenceAttestationXml(xml: string, data: ResidenceAttestationFormData): string {
   let next = xml;
   let cursor = 0;
+  const language = data.language === 'en' ? 'en' : 'fr';
   const soussigne = formatResidenceHodSoussigne(data.hodGenre);
+  const address =
+    language === 'en' ? resolveResidenceAddressEn(data) : data.residenceAddress.trim();
 
   ({ xml: next, index: cursor } = replaceBracketInXmlOnce(next, 'soussigne', soussigne, cursor));
   ({ xml: next, index: cursor } = replaceBracketInXmlOnce(next, 'Nom complet HoD', data.hodName.trim(), cursor));
@@ -103,22 +159,64 @@ export function fillResidenceAttestationXml(xml: string, data: ResidenceAttestat
     data.employeeName.trim(),
     cursor,
   ));
-  ({ xml: next, index: cursor } = replaceBracketInXmlOnce(
-    next,
-    'adresse',
-    data.residenceAddress.trim(),
-    cursor,
-  ));
+  ({ xml: next, index: cursor } = replaceBracketInXmlOnce(next, 'adresse', address, cursor));
   ({ xml: next, index: cursor } = replaceBracketInXmlOnce(
     next,
     'DATE',
-    formatResidenceDocumentDate(data.documentDate),
+    formatResidenceDocumentDate(data.documentDate, language),
     cursor,
   ));
   ({ xml: next, index: cursor } = replaceBracketInXmlOnce(next, 'Nom complet HoD', data.hodName.trim(), cursor));
   ({ xml: next } = replaceBracketInXmlOnce(next, 'Fonction HoD', data.hodFunction.trim(), cursor));
 
+  if (language === 'en') {
+    next = applyEnglishBoilerplate(next, data.employeeGenre);
+  }
+
   return next;
+}
+
+const DOCX_PAGE_BREAK = '<w:p><w:r><w:br w:type="page"/></w:r></w:p>';
+
+function extractBodyParts(xml: string): {
+  before: string;
+  inner: string;
+  sectPr: string;
+  after: string;
+} {
+  const openTag = '<w:body>';
+  const closeTag = '</w:body>';
+  const bodyOpen = xml.indexOf(openTag);
+  const bodyClose = xml.lastIndexOf(closeTag);
+  if (bodyOpen < 0 || bodyClose < 0) {
+    throw new Error('Structure word/document.xml invalide (w:body)');
+  }
+  const before = xml.slice(0, bodyOpen + openTag.length);
+  const after = xml.slice(bodyClose);
+  const bodyContent = xml.slice(bodyOpen + openTag.length, bodyClose);
+  const sectIdx = bodyContent.lastIndexOf('<w:sectPr');
+  if (sectIdx < 0) {
+    return { before, inner: bodyContent, sectPr: '', after };
+  }
+  return {
+    before,
+    inner: bodyContent.slice(0, sectIdx),
+    sectPr: bodyContent.slice(sectIdx),
+    after,
+  };
+}
+
+/** Remplit le modèle en deux pages : FR puis EN. */
+export function fillBilingualResidenceAttestationXml(
+  templateXml: string,
+  frData: ResidenceAttestationFormData,
+  enData: ResidenceAttestationFormData,
+): string {
+  const frFilled = fillResidenceAttestationXml(templateXml, { ...frData, language: 'fr' });
+  const enFilled = fillResidenceAttestationXml(templateXml, { ...enData, language: 'en' });
+  const fr = extractBodyParts(frFilled);
+  const en = extractBodyParts(enFilled);
+  return `${fr.before}${fr.inner}${DOCX_PAGE_BREAK}${en.inner}${fr.sectPr || en.sectPr}${fr.after}`;
 }
 
 export function extractDocxPlainText(xml: string): string {
@@ -181,20 +279,51 @@ function escapeHtml(value: string): string {
     .replace(/"/g, '&quot;');
 }
 
-export function formatResidenceAttestationFileName(employeeName: string, documentDate: string): string {
+export function formatResidenceAttestationFileName(
+  employeeName: string,
+  documentDate: string,
+  language: 'fr' | 'en' | 'both' = 'both',
+): string {
   const safeName = employeeName.trim().replace(/[<>:"/\\|?*]+/g, '_').replace(/\s+/g, '_') || 'employe';
   const datePart = documentDate.trim() || new Date().toISOString().slice(0, 10);
-  return `Attestation_residence_${safeName}_${datePart}.docx`;
+  const prefix =
+    language === 'en'
+      ? 'Residence_Certificate'
+      : language === 'both'
+        ? 'Attestation_residence_FR-EN'
+        : 'Attestation_residence';
+  return `${prefix}_${safeName}_${datePart}.docx`;
 }
 
 export function buildResidenceAttestationParagraphs(data: ResidenceAttestationFormData): string[] {
+  const language = data.language === 'en' ? 'en' : 'fr';
   const soussigne = formatResidenceHodSoussigne(data.hodGenre);
+  const hod = data.hodName.trim();
+  const hodFn = data.hodFunction.trim();
+  const empGenre = data.employeeGenre.trim();
+  const emp = data.employeeName.trim();
+  const address =
+    language === 'en' ? resolveResidenceAddressEn(data) : data.residenceAddress.trim();
+  const docDate = formatResidenceDocumentDate(data.documentDate, language);
+  const pronoun = /ms\.?|mrs\.?|miss/i.test(empGenre) ? 'her' : 'him';
+
+  if (language === 'en') {
+    return [
+      'CERTIFICATE OF RESIDENCE',
+      `I, the undersigned, ${hod}, ${hodFn} of PPC Barnet DRC Manufacturing S.A, hereby certify that ${empGenre} ${emp}, employed in our company, actually resides at ${address}.`,
+      `This certificate is issued to ${pronoun} to do what is right.`,
+      `Done in Kinshasa on ${docDate}`,
+      hod,
+      hodFn,
+    ];
+  }
+
   return [
     'ATTESTATION DE RESIDENCE',
-    `Je ${soussigne}, ${data.hodName.trim()}, ${data.hodFunction.trim()} de PPC Barnet DRC Manufacturing S.A, atteste par la présente que ${data.employeeGenre.trim()} ${data.employeeName.trim()}, employé dans notre entreprise, réside effectivement au ${data.residenceAddress.trim()}.`,
+    `Je ${soussigne}, ${hod}, ${hodFn} de PPC Barnet DRC Manufacturing S.A, atteste par la présente que ${empGenre} ${emp}, employé dans notre entreprise, réside effectivement au ${address}.`,
     'La présente lui est délivrée pour faire valoir ce que de droit.',
-    `Fait à Kinshasa le ${formatResidenceDocumentDate(data.documentDate)}`,
-    data.hodName.trim(),
-    data.hodFunction.trim(),
+    `Fait à Kinshasa le ${docDate}`,
+    hod,
+    hodFn,
   ];
 }

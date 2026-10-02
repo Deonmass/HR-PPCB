@@ -5,6 +5,7 @@ import fsPromises from 'fs/promises';
 import path from 'path';
 import {
   buildPhoneRenewalRows,
+  formatMsisdn,
   isAirtimeSimLine,
   lookupAirtimeQuota,
   matchPersonIndexes,
@@ -15,7 +16,7 @@ import type { AirtimeAssignment, AirtimeBundle, AirtimeDirectoryPerson, AirtimeG
 import { applyContractantPhones, listContractants } from './contractants-store';
 import { DURABLE_AIRTIME_KEY, hydrateDurableFile, persistDurableFile } from './durable-fs';
 import { applyAirtimePhones, readEmployeesBundle } from './employees-json-store';
-import type { ContractantEmployee } from './contractants-types';
+import type { Contractant, ContractantEmployee } from './contractants-types';
 import { canPersistProjectFiles, getWritableDataRoot } from './runtime-mode';
 import type { Employee } from './types';
 
@@ -132,6 +133,50 @@ interface ContractantHit {
 
 function indexContractants(people: ContractantHit[]): { names: string[]; people: ContractantHit[] } {
   return { names: people.map((item) => item.employee.nom), people };
+}
+
+function sameCompanyLabel(left: string, right: string): boolean {
+  return left.trim().toLowerCase() === right.trim().toLowerCase();
+}
+
+/**
+ * Numéro airtime (MSISDN) pour chaque employé contractant rapproché par nom
+ * et par société. Renseigné dans `telephoneAirtime`, sans modifier la fiche.
+ */
+export async function withContractantAirtimePhones(contractants: Contractant[]): Promise<Contractant[]> {
+  const store = await readAirtimeStore();
+  const people: ContractantHit[] = [];
+  for (const contractant of contractants) {
+    for (const employee of contractant.employees) {
+      if (!employee.nom.trim()) continue;
+      people.push({
+        contractantId: contractant.id,
+        employee,
+        compagnie: contractant.denomination,
+      });
+    }
+  }
+  const indexed = indexContractants(people);
+  const phoneByEmployee = new Map<string, string>();
+  for (const line of store.lines) {
+    const msisdn = formatMsisdn(line.msisdn);
+    const nom = String(line.nom || '').trim();
+    if (!msisdn || !nom || isAirtimeSimLine(nom)) continue;
+    const indexes = matchPersonIndexes(nom, indexed.names);
+    if (indexes.length !== 1) continue;
+    const hit = indexed.people[indexes[0]!];
+    if (!hit) continue;
+    const societe = String(line.societe || '').trim();
+    if (societe && !sameCompanyLabel(societe, hit.compagnie)) continue;
+    phoneByEmployee.set(`${hit.contractantId}:${hit.employee.id}`, msisdn);
+  }
+  return contractants.map((contractant) => ({
+    ...contractant,
+    employees: contractant.employees.map((employee) => ({
+      ...employee,
+      telephoneAirtime: phoneByEmployee.get(`${contractant.id}:${employee.id}`) || '',
+    })),
+  }));
 }
 
 function enrich(

@@ -14,6 +14,7 @@ import DashboardListModal, {
 } from '@/components/DashboardListModal';
 import {
   buildEmployeesHrDashboard,
+  buildExitsParMois,
   buildPpcLocalisationGenderRows,
   employeeToDashboardListRow,
   buildHrPeriodMomStats,
@@ -25,7 +26,7 @@ import {
   type HrChartSegmentKind,
   type HrPeriodMomStats,
 } from '@/lib/employees-hr-dashboard';
-import { computeSeniority } from '@/lib/employee-columns';
+import { computeSeniority, exitedInYear } from '@/lib/employee-columns';
 import {
   formatChequeValue,
   formatIncentive,
@@ -361,6 +362,22 @@ export default function EmployeesHrDashboardView({
     () => buildEmployeesHrDashboard(employees, exits),
     [employees, exits],
   );
+  /** Sorties de l'année (localisation comprise), sans le filtre mois. */
+  const exitsForMonthlyChart = useMemo(() => {
+    const source = allExits ?? exits;
+    if (typeof year !== 'number') return source;
+    return source.filter((employee) => exitedInYear(employee, year));
+  }, [allExits, exits, year]);
+  const exitsParMoisChart = useMemo(
+    () => buildExitsParMois(
+      exitsForMonthlyChart,
+      typeof year === 'number' ? { year } : undefined,
+    ),
+    [exitsForMonthlyChart, year],
+  );
+  const selectedExitMonthKey = typeof year === 'number' && typeof month === 'number'
+    ? `${year}-${String(month).padStart(2, '0')}`
+    : null;
   const [contractantStats, setContractantStats] = useState<ContractantDashStats>(EMPTY_CONTRACTANT_STATS);
   const [contractantsLoading, setContractantsLoading] = useState(true);
 
@@ -967,13 +984,22 @@ export default function EmployeesHrDashboardView({
         />
         <EmployeesExitMonthlyChart
           title="Sorties par mois et motif"
-          rows={stats.exitsParMois}
-          deptFilter={exitDeptFilter('exitMonth', (emps, ctx) => (
-            <EmployeesExitMonthlyChartBody
-              rows={buildEmployeesHrDashboard([], emps).exitsParMois}
-              onItemClick={ctx.onSegmentClick}
-            />
-          ))}
+          rows={exitsParMoisChart}
+          selectedKey={selectedExitMonthKey}
+          deptFilter={{
+            employees: exitsForMonthlyChart,
+            renderFiltered: (emps, ctx) => (
+              <EmployeesExitMonthlyChartBody
+                rows={buildExitsParMois(emps, typeof year === 'number' ? { year } : undefined)}
+                selectedKey={selectedExitMonthKey}
+                onItemClick={ctx.onSegmentClick}
+              />
+            ),
+            showGenderLegend: true,
+            resolveSegment: (emps, label) => employeesMatchingHrSegment(emps, 'exitMonth', label),
+            toListRow: employeeToDashboardListRow,
+            segmentColumns: EXIT_COLUMNS,
+          }}
         />
         <EmployeesPieChart
           title="Motifs de sortie"

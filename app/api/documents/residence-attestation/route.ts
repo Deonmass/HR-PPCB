@@ -62,16 +62,21 @@ export async function POST(request: Request) {
       },
       () =>
         createResidenceAttestation({
+          language: body.language === 'en' ? 'en' : body.language === 'fr' ? 'fr' : 'both',
           documentDate: body.documentDate!.trim(),
           maisonNumero: body.maisonNumero?.trim() || '',
           residenceAddress: body.residenceAddress!.trim(),
+          residenceAddressEn: body.residenceAddressEn?.trim() || undefined,
           hodGenre: body.hodGenre?.trim() || 'Monsieur',
           hodName: body.hodName!.trim(),
           hodFunction: body.hodFunction!.trim(),
+          hodFunctionEn: body.hodFunctionEn?.trim() || undefined,
           employeeGenre: body.employeeGenre?.trim() || 'M.',
+          employeeGenreEn: body.employeeGenreEn?.trim() || undefined,
           employeeName: body.employeeName!.trim(),
           employeeMatricule: body.employeeMatricule!.trim(),
           employeeFunction: body.employeeFunction!.trim(),
+          employeeFunctionEn: body.employeeFunctionEn?.trim() || undefined,
           employeeDepartment: body.employeeDepartment!.trim(),
         }),
     );

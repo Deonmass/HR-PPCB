@@ -8,6 +8,8 @@ import type { EmployeesExitMonthRow } from '@/lib/employees-hr-dashboard';
 interface Props {
   title: string;
   rows: EmployeesExitMonthRow[];
+  /** Clé YYYY-MM du mois choisi dans le filtre (colonne à marquer). */
+  selectedKey?: string | null;
   deptFilter?: ChartDeptFilterSource;
   /** Corps seul (sans panel) — pour le modal filtré. */
   embedded?: boolean;
@@ -18,13 +20,17 @@ const SERIES = [
   { key: 'licenciement' as const, label: 'Licenciement', color: '#ef4444' },
   { key: 'retraite' as const, label: 'Retraite', color: '#8b5cf6' },
   { key: 'finContrat' as const, label: 'Fin de contrat', color: '#06b6d4' },
+  { key: 'deces' as const, label: 'Décès', color: '#64748b' },
+  { key: 'autre' as const, label: 'Autre', color: '#94a3b8' },
 ];
 
 export function EmployeesExitMonthlyChartBody({
   rows,
+  selectedKey = null,
   onItemClick,
 }: {
   rows: EmployeesExitMonthRow[];
+  selectedKey?: string | null;
   onItemClick?: (label: string) => void;
 }): ReactNode {
   const [hover, setHover] = useState<string | null>(null);
@@ -59,11 +65,12 @@ export function EmployeesExitMonthlyChartBody({
             <ChartHorizontalGrid ticks={gridTicks} />
             <div
               className={`travel-history-chart-cols travel-history-chart-cols-bars dash-chart-bars${hover ? ' has-hover' : ''}`}
-              style={{ gridTemplateColumns: `repeat(${rows.length}, minmax(48px, 1fr))` }}
+              style={{ gridTemplateColumns: `repeat(${rows.length}, minmax(0, 1fr))` }}
             >
               {rows.map((row, index) => {
                 const isActive = hover === row.key;
                 const isDimmed = Boolean(hover && !isActive);
+                const isSelected = Boolean(selectedKey && row.key === selectedKey);
                 const barHeightPct = row.total > 0
                   ? Math.max((row.total / maxValue) * 100 * plotScale, 3)
                   : 0;
@@ -72,7 +79,7 @@ export function EmployeesExitMonthlyChartBody({
                     key={row.key}
                     role={canDrill ? 'button' : undefined}
                     tabIndex={canDrill ? 0 : undefined}
-                    className={`travel-history-chart-col dash-bar-col employees-exit-month-col${isActive ? ' is-active' : ''}${isDimmed ? ' is-dimmed' : ''}${canDrill ? ' is-clickable' : ''}`}
+                    className={`travel-history-chart-col dash-bar-col employees-exit-month-col${isSelected ? ' is-selected' : ''}${isActive ? ' is-active' : ''}${isDimmed ? ' is-dimmed' : ''}${canDrill ? ' is-clickable' : ''}`}
                     style={{ animationDelay: `${index * 40}ms` }}
                     onMouseEnter={() => setHover(row.key)}
                     onMouseLeave={() => setHover(null)}
@@ -88,17 +95,25 @@ export function EmployeesExitMonthlyChartBody({
                       }
                     } : undefined}
                     title={canDrill
-                      ? `Voir la liste — ${row.label}`
-                      : `${row.label}: ${row.total} sortie${row.total > 1 ? 's' : ''}`}
+                      ? `Voir la liste — ${row.label}${isSelected ? ' (mois sélectionné)' : ''}`
+                      : `${row.label}: ${row.total} sortie${row.total > 1 ? 's' : ''}${isSelected ? ' · mois sélectionné' : ''}`}
                   >
                     <div
                       className="employees-exit-stack-wrap"
                       style={{ ['--bar-h' as string]: `${barHeightPct}%` }}
                     >
-                      <span className="travel-history-bar-value dash-bar-value">
-                        {row.total}
-                      </span>
-                      <div className="employees-exit-stack" style={{ height: `${barHeightPct}%` }}>
+                      {row.total > 0 ? (
+                        <span className="travel-history-bar-value dash-bar-value">
+                          {row.total}
+                        </span>
+                      ) : null}
+                      <div
+                        className="employees-exit-stack"
+                        style={{
+                          height: `${barHeightPct}%`,
+                          minHeight: row.total > 0 ? undefined : 0,
+                        }}
+                      >
                         {SERIES.map((s) => {
                           const value = row[s.key];
                           if (!value || !row.total) return null;
@@ -127,17 +142,20 @@ export function EmployeesExitMonthlyChartBody({
           <div className="travel-history-dept-y-spacer" aria-hidden />
           <div
             className="travel-history-chart-cols travel-history-chart-cols-labels"
-            style={{ gridTemplateColumns: `repeat(${rows.length}, minmax(48px, 1fr))` }}
+            style={{ gridTemplateColumns: `repeat(${rows.length}, minmax(0, 1fr))` }}
           >
-            {rows.map((row) => (
-              <span
-                key={`${row.key}-label`}
-                className={`travel-history-chart-label${hover === row.key ? ' is-active' : ''}`}
-                title={row.label}
-              >
-                {row.label}
-              </span>
-            ))}
+            {rows.map((row) => {
+              const isSelected = Boolean(selectedKey && row.key === selectedKey);
+              return (
+                <span
+                  key={`${row.key}-label`}
+                  className={`travel-history-chart-label${hover === row.key ? ' is-active' : ''}${isSelected ? ' is-selected' : ''}`}
+                  title={isSelected ? `${row.label} — mois sélectionné` : row.label}
+                >
+                  {row.label}
+                </span>
+              );
+            })}
           </div>
         </div>
       </div>
@@ -148,11 +166,12 @@ export function EmployeesExitMonthlyChartBody({
 export default function EmployeesExitMonthlyChart({
   title,
   rows,
+  selectedKey = null,
   deptFilter,
   embedded = false,
 }: Props) {
   if (embedded) {
-    return <EmployeesExitMonthlyChartBody rows={rows} />;
+    return <EmployeesExitMonthlyChartBody rows={rows} selectedKey={selectedKey} />;
   }
 
   if (!rows.length) {
@@ -172,6 +191,12 @@ export default function EmployeesExitMonthlyChart({
           {s.label}
         </li>
       ))}
+      {selectedKey ? (
+        <li>
+          <span className="employees-exit-swatch is-selected-month" />
+          Mois sélectionné
+        </li>
+      ) : null}
     </ul>
   );
 
@@ -183,7 +208,7 @@ export default function EmployeesExitMonthlyChart({
       clickToEnlarge
       deptFilter={deptFilter}
     >
-      <EmployeesExitMonthlyChartBody rows={rows} />
+      <EmployeesExitMonthlyChartBody rows={rows} selectedKey={selectedKey} />
     </EnlargeableChartPanel>
   );
 }

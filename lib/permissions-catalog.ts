@@ -51,8 +51,8 @@ export const PERMISSION_MENU_CATALOG: PermissionMenuGroup[] = withSortedMenus([
       { id: 'employes.heures.policy', label: 'HS — Appliquer la politique' },
       { id: 'employes.heures.export', label: 'HS — Exporter' },
       { id: 'employes.heures.simulation', label: 'HS — Simulation' },
-      { id: 'employes.airtime', label: 'Airtime' },
       { id: 'employes.conge', label: 'Congé' },
+      { id: 'employes.airtime', label: 'Airtime' },
       { id: 'employes.classification', label: 'Classification des postes' },
       { id: 'employes.recrutement', label: 'Recrutement' },
       { id: 'employes.offres', label: 'Offres' },
@@ -84,6 +84,7 @@ export const PERMISSION_MENU_CATALOG: PermissionMenuGroup[] = withSortedMenus([
       { id: 'travel.payment-voucher', label: 'Payment voucher' },
       { id: 'documents.appraisal', label: 'Interim appraisal evaluation' },
       { id: 'documents.exit', label: 'Exit forms' },
+      { id: 'documents.reponse-demission', label: 'Réponse démission' },
       { id: 'documents.entetes', label: 'Entête' },
       { id: 'documents.rrf', label: 'RRF' },
       { id: 'documents.newcomer', label: 'Newcomer' },
@@ -109,6 +110,7 @@ export const PERMISSION_MENU_CATALOG: PermissionMenuGroup[] = withSortedMenus([
       { id: 'politique.manuco', label: 'Règlement Manuco' },
       { id: 'politique.aide-medicale', label: 'Aide médicale' },
       { id: 'politique.voyages', label: 'Politique de voyage' },
+      { id: 'politique.cellphone', label: 'Politique cellphone' },
       { id: 'politique.alcool', label: 'Alcool et substances' },
       { id: 'politique.harcelement', label: 'Harcèlement' },
       { id: 'politique.exploitation', label: 'Exploitation' },
@@ -123,6 +125,7 @@ export const PERMISSION_MENU_CATALOG: PermissionMenuGroup[] = withSortedMenus([
       { id: 'protocol.visa-volant', label: 'Visa volant' },
       { id: 'protocol.visa-voyage', label: 'Visa de voyage' },
       { id: 'protocol.billets', label: 'Gestion des Billets' },
+      { id: 'protocol.voyages', label: 'Gestion de voyage' },
     ],
   },
   {
@@ -157,6 +160,7 @@ export const PERMISSION_MENU_CATALOG: PermissionMenuGroup[] = withSortedMenus([
       { id: 'charroi', label: 'Charroi (accès global)' },
       { id: 'charroi.vehicules', label: 'Base véhicules' },
       { id: 'charroi.achats', label: 'Nouveaux achats' },
+      { id: 'charroi.voyages', label: 'Voyage par route' },
     ],
   },
   {
@@ -290,6 +294,7 @@ export function mergePermissionsWithCatalog(menus: MenuPermission[]): MenuPermis
       if (
         defaultMenu.menuId === 'documents.composition-familiale'
         || defaultMenu.menuId === 'documents.mouvement-travailleur'
+        || defaultMenu.menuId === 'documents.reponse-demission'
       ) {
         const donor = menus.find((menu) => menu.menuId === 'documents.contrat-standard')
           || menus.find((menu) => menu.menuId === 'documents.exit')
@@ -425,6 +430,9 @@ export function mergePermissionsWithCatalog(menus: MenuPermission[]): MenuPermis
                     .filter(Boolean),
                 ),
               ),
+              ...(existing.contractantScope.menus
+                ? { menus: { ...existing.contractantScope.menus } }
+                : {}),
             }
           : existing.contractantScope,
     };

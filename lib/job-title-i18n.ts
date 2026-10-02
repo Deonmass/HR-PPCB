@@ -53,6 +53,13 @@ const JOB_TITLE_FR: Record<string, string> = {
 
   // Support
   'driver': 'Chauffeur',
+  'housekeeper': 'Aide ménagère',
+  'maintenance attendant': "Agent d'entretien",
+  'customer accounts officer': 'Chargé(e) des comptes clients',
+  'electrician': 'Électricien(ne)',
+  'laundry attendant': 'Lavandier',
+  'port operator': 'Opérateur portuaire',
+  'lubricator handyman': 'Lubrificateur',
   'security guard': 'Agent de sécurité',
   'receptionist': 'Réceptionniste',
   'secretary': 'Secrétaire',
@@ -244,7 +251,7 @@ export function translateJobTitleToEnglish(jobTitle: string): string {
   if (JOB_TITLE_FR[key]) return toTitleCaseEnglish(key);
   // Valeur FR → clé EN
   if (JOB_TITLE_EN[key]) return toTitleCaseEnglish(JOB_TITLE_EN[key]);
-  // Essayer sans accents / variantes Directeur|Directrice
+  // Essayer sans accents / variantes Directeur|Directrice → forme « Directeur/Directrice »
   const ungendered = key
     .replace(/\bdirectrice\b/g, 'directeur')
     .replace(/\bfinanciere\b/g, 'financier')
@@ -252,6 +259,18 @@ export function translateJobTitleToEnglish(jobTitle: string): string {
     .replace(/\bgenerale\b/g, 'general')
     .replace(/\badjointe\b/g, 'adjoint');
   if (JOB_TITLE_EN[ungendered]) return toTitleCaseEnglish(JOB_TITLE_EN[ungendered]);
+  const slashForm = key
+    .replace(/\bdirectrice\b/g, 'directeur/directrice')
+    .replace(/\bdirecteur\b/g, 'directeur/directrice')
+    .replace(/\bfinanciere\b/g, 'financier(ere)')
+    .replace(/\bcommerciale\b/g, 'commercial(e)')
+    .replace(/\bgenerale\b/g, 'general(e)')
+    .replace(/\badjointe\b/g, 'adjoint(e)');
+  if (JOB_TITLE_EN[slashForm]) return toTitleCaseEnglish(JOB_TITLE_EN[slashForm]);
+  const slashFromUngendered = ungendered.replace(/\bdirecteur\b/g, 'directeur/directrice');
+  if (JOB_TITLE_EN[slashFromUngendered]) {
+    return toTitleCaseEnglish(JOB_TITLE_EN[slashFromUngendered]);
+  }
   return trimmed;
 }
 

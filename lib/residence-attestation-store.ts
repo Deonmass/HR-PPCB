@@ -7,7 +7,9 @@ import fsSync from 'fs';
 import { writeDocxFromTemplate } from './docx-template';
 import { buildResidenceAttestationPdfBuffer } from './residence-attestation-pdf.server';
 import { buildResidenceAttestationPreviewHtmlForForm } from './residence-attestation-preview.server';
+import { splitBilingualResidenceForm } from './residence-attestation-text';
 import {
+  fillBilingualResidenceAttestationXml,
   fillResidenceAttestationXml,
   formatResidenceAttestationFileName,
   RESIDENCE_ATTESTATION_TEMPLATE_PATH,
@@ -90,19 +92,41 @@ export async function createResidenceAttestation(
 ): Promise<ResidenceAttestationRecord> {
   await ensureDataDir();
 
+  const language =
+    form.language === 'en' ? 'en' : form.language === 'fr' ? 'fr' : 'both';
+  const normalized: ResidenceAttestationFormData = {
+    ...form,
+    language,
+    residenceAddressEn: form.residenceAddressEn?.trim() || undefined,
+    hodFunctionEn: form.hodFunctionEn?.trim() || undefined,
+    employeeGenreEn: form.employeeGenreEn?.trim() || undefined,
+    employeeFunctionEn: form.employeeFunctionEn?.trim() || undefined,
+  };
+
   const id = randomUUID();
-  const fileName = formatResidenceAttestationFileName(form.employeeName, form.documentDate);
+  const fileName = formatResidenceAttestationFileName(
+    form.employeeName,
+    form.documentDate,
+    language,
+  );
   const docxPath = path.join(FILES_DIR, `${id}.docx`);
   const pdfPath = path.join(FILES_DIR, `${id}.pdf`);
 
-  await writeDocxFromTemplate(RESIDENCE_ATTESTATION_TEMPLATE_PATH, docxPath, (xml) =>
-    fillResidenceAttestationXml(xml, form),
-  );
-  const previewHtml = await buildResidenceAttestationPreviewHtmlForForm(form);
+  if (language === 'both') {
+    const { fr, en } = splitBilingualResidenceForm(normalized);
+    await writeDocxFromTemplate(RESIDENCE_ATTESTATION_TEMPLATE_PATH, docxPath, (xml) =>
+      fillBilingualResidenceAttestationXml(xml, fr, en),
+    );
+  } else {
+    await writeDocxFromTemplate(RESIDENCE_ATTESTATION_TEMPLATE_PATH, docxPath, (xml) =>
+      fillResidenceAttestationXml(xml, normalized),
+    );
+  }
+  const previewHtml = await buildResidenceAttestationPreviewHtmlForForm(normalized);
 
   let savedPdfPath: string | undefined;
   try {
-    const pdfBuffer = await buildResidenceAttestationPdfBuffer(form);
+    const pdfBuffer = await buildResidenceAttestationPdfBuffer(normalized);
     await fs.writeFile(pdfPath, pdfBuffer);
     savedPdfPath = pdfPath;
   } catch {
@@ -110,7 +134,7 @@ export async function createResidenceAttestation(
   }
 
   const record: ResidenceAttestationRecord = {
-    ...form,
+    ...normalized,
     id,
     createdAt: new Date().toISOString(),
     fileName,

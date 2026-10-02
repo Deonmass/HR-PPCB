@@ -119,6 +119,78 @@ export interface CharroiAchatsStore {
   nextSeq: number;
 }
 
+export type CharroiVoyageStatus = 'demande' | 'pending' | 'effectue' | 'annule';
+
+export type CharroiVoyageVehiculeMode = '' | 'flotte' | 'location';
+
+export interface CharroiVoyage {
+  id: string;
+  numero: string;
+  passagerNom: string;
+  passagerMatricule: string;
+  passagerInterne: boolean;
+  /** Passager principal et accompagnants. */
+  nombrePersonnes: number;
+  depart: string;
+  destination: string;
+  dateDepart: string;
+  heureDepart: string;
+  dateArrivee: string;
+  heureArrivee: string;
+  motif: string;
+  notes: string;
+  status: CharroiVoyageStatus;
+  chauffeurNom: string;
+  chauffeurMatricule: string;
+  chauffeurInterne: boolean;
+  vehiculeMode: CharroiVoyageVehiculeMode;
+  vehiculeId: string;
+  vehiculeLibelle: string;
+  foodAllowance: number;
+  foodForTheRoad: number;
+  tollGate: number;
+  confirmedAt: string;
+  completedAt: string;
+  createdAt: string;
+  updatedAt: string;
+}
+
+export type CharroiVoyageInput = Partial<CharroiVoyage>;
+
+export interface CharroiVoyageConfirmInput {
+  chauffeurNom: string;
+  chauffeurMatricule?: string;
+  chauffeurInterne?: boolean;
+  vehiculeMode: 'flotte' | 'location';
+  vehiculeId?: string;
+  vehiculeLocation?: string;
+  foodAllowance?: number;
+  foodForTheRoad?: number;
+  tollGate?: number;
+}
+
+export const CHARROI_VOYAGE_BUDGET_LINES = [
+  { id: 'foodAllowance', label: 'Food allowance' },
+  { id: 'foodForTheRoad', label: 'Food for the road' },
+  { id: 'tollGate', label: 'Toll gate' },
+] as const;
+
+export function voyageBudgetTotal(input: Pick<CharroiVoyage, 'foodAllowance' | 'foodForTheRoad' | 'tollGate'>): number {
+  return roundMoney(input.foodAllowance + input.foodForTheRoad + input.tollGate);
+}
+
+export interface CharroiVoyagesStore {
+  voyages: CharroiVoyage[];
+  nextSeq: number;
+}
+
+export const CHARROI_VOYAGE_STATUSES: { id: CharroiVoyageStatus; label: string }[] = [
+  { id: 'demande', label: 'Demande' },
+  { id: 'pending', label: 'Pending' },
+  { id: 'effectue', label: 'Effectué' },
+  { id: 'annule', label: 'Annulé' },
+];
+
 export const CHARROI_OBSERVATIONS = [
   'Bon état',
   'Avertissement',

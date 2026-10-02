@@ -14,6 +14,8 @@ export const DURABLE_SERVICES_KEY = 'data/settings/services.json';
 /** @deprecated Params.xlsx deleted — settings live under data/settings/*.json. */
 export const DURABLE_PARAMS_KEY = 'data/settings/departments.json';
 export const DURABLE_GUEST_HOUSE_KEY = 'data/guest-house/store.json';
+/** Delta des réservations / chambres — évite de réécrire le store historique (1,6 Mo) à chaque sauvegarde. */
+export const DURABLE_GUEST_HOUSE_OVERLAY_KEY = 'data/guest-house/overlay.json';
 export const DURABLE_EMPLOYEES_KEY = 'data/employees/employees.json';
 export const DURABLE_EMPLOYEE_EXITS_KEY = 'data/employees/exits.json';
 export const DURABLE_CHECK_DOCUMENTS_KEY = 'data/employees/check-documents.json';
@@ -62,8 +64,10 @@ export const DURABLE_TRAVEL_HISTORY_KEY = 'data/travel/history.json';
 export const DURABLE_MISSION_ORDERS_KEY = 'data/travel/mission-orders.json';
 export const DURABLE_CHARROI_VEHICLES_KEY = 'data/charroi/vehicles.json';
 export const DURABLE_CHARROI_ACHATS_KEY = 'data/charroi/achats.json';
+export const DURABLE_CHARROI_VOYAGES_KEY = 'data/charroi/voyages.json';
 export const DURABLE_AUDIT_LOGS_KEY = 'data/logs/audit.json';
 export const DURABLE_WORK_VISAS_KEY = 'data/protocol/work-visas/store.json';
+export const DURABLE_PROTOCOL_VOYAGES_KEY = 'data/protocol/voyages-couts.json';
 export const DURABLE_EXIT_ISSUED_KEY = 'data/documents/exit-issued.json';
 export const DURABLE_RRF_HISTORY_KEY = 'data/documents/rrf-history.json';
 export const DURABLE_CONVENTION_NOTES_KEY = 'data/documents/convention-collective-notes.json';

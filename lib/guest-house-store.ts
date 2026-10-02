@@ -6,9 +6,16 @@ import fsPromises from 'fs/promises';
 import path from 'path';
 import {
   DURABLE_GUEST_HOUSE_KEY,
+  DURABLE_GUEST_HOUSE_OVERLAY_KEY,
   hydrateDurableFile,
   persistDurableFile,
 } from './durable-fs';
+import {
+  isStayOrderValid,
+  normalizeGuestStaySlot,
+  staysOverlap,
+  type GuestStaySlot,
+} from './guest-stay-slot';
 import type {
   GuestHouseDashboard,
   GuestHouseMeta,
@@ -45,6 +52,10 @@ const MONTH_LABELS = [
   'Janvier', 'Février', 'Mars', 'Avril', 'Mai', 'Juin',
   'Juillet', 'Août', 'Septembre', 'Octobre', 'Novembre', 'Décembre',
 ];
+
+function resolveOverlayPath(): string {
+  return path.join(path.dirname(resolveStorePath()), 'overlay.json');
+}
 
 function resolveStorePath(): string {
   if (canPersistProjectFiles()) {
@@ -95,10 +106,6 @@ function daysBetweenInclusive(start: string, end: string): number {
   const b = parseIsoDate(end);
   if (!a || !b || b < a) return 0;
   return Math.floor((b.getTime() - a.getTime()) / 86_400_000) + 1;
-}
-
-function datesOverlap(aStart: string, aEnd: string, bStart: string, bEnd: string): boolean {
-  return aStart <= bEnd && bStart <= aEnd;
 }
 
 function isActiveOn(reservation: GuestReservation, day: string): boolean {
@@ -180,7 +187,9 @@ function normalizeReservation(raw: Partial<GuestReservation>): GuestReservation 
     isAgent: Boolean(raw.isAgent || str(raw.matricule)),
     motif: str(raw.motif) || '—',
     startDate,
+    startSlot: raw.startSlot ? normalizeGuestStaySlot(raw.startSlot, 'matin') : undefined,
     endDate,
+    endSlot: raw.endSlot ? normalizeGuestStaySlot(raw.endSlot, 'soir') : undefined,
     roomId: str(raw.roomId) || undefined,
     maisonNumero: str(raw.maisonNumero) || undefined,
     status,
@@ -216,7 +225,9 @@ function ensurePassages(data: GuestHouseStoreData): GuestHouseStoreData {
       matricule: item.matricule,
       motif: item.motif,
       startDate: item.startDate,
+      startSlot: item.startSlot,
       endDate: item.endDate,
+      endSlot: item.endSlot,
       checkedInAt: item.updatedAt || item.createdAt,
       checkedOutAt: item.status === 'completed' ? item.updatedAt : undefined,
     });
@@ -259,30 +270,184 @@ function normalizeStore(parsed: Partial<GuestHouseStoreData>): GuestHouseStoreDa
   };
 }
 
-async function readStore(): Promise<GuestHouseStoreData> {
+interface GuestHouseOverlay {
+  version: 1;
+  reservations: GuestReservation[];
+  deletedReservationIds: string[];
+  rooms: GuestRoom[];
+  deletedRoomIds: string[];
+  passages: GuestRoomPassage[];
+  deletedPassageIds: string[];
+  nextReservationSeq?: number;
+  meta?: GuestHouseMeta;
+}
+
+function emptyOverlay(): GuestHouseOverlay {
+  return {
+    version: 1,
+    reservations: [],
+    deletedReservationIds: [],
+    rooms: [],
+    deletedRoomIds: [],
+    passages: [],
+    deletedPassageIds: [],
+  };
+}
+
+let baseCache: GuestHouseStoreData | null = null;
+let overlayCache: GuestHouseOverlay = emptyOverlay();
+let overlayFreshUntil = 0;
+
+function sameJson(a: unknown, b: unknown): boolean {
+  return JSON.stringify(a) === JSON.stringify(b);
+}
+
+function recordSig(item: object): string {
+  const row = item as Record<string, unknown>;
+  return [
+    row.id, row.updatedAt, row.status, row.startDate, row.endDate, row.startSlot, row.endSlot,
+    row.roomId, row.maisonNumero, row.personName, row.motif, row.notes, row.roomNumber, row.roomName,
+  ].join('\u0001');
+}
+
+function applyOverlay(base: GuestHouseStoreData, overlay: GuestHouseOverlay): GuestHouseStoreData {
+  const data = structuredClone(base);
+  if (overlay.meta) data.meta = overlay.meta;
+  if (overlay.nextReservationSeq != null) data.nextReservationSeq = overlay.nextReservationSeq;
+
+  if (overlay.deletedRoomIds.length) {
+    const drop = new Set(overlay.deletedRoomIds);
+    data.rooms = data.rooms.filter((room) => !drop.has(room.id));
+  }
+  for (const room of overlay.rooms) {
+    const index = data.rooms.findIndex((item) => item.id === room.id);
+    if (index >= 0) data.rooms[index] = room;
+    else data.rooms.push(room);
+  }
+
+  if (overlay.deletedReservationIds.length) {
+    const drop = new Set(overlay.deletedReservationIds);
+    data.reservations = data.reservations.filter((item) => !drop.has(item.id));
+  }
+  for (const reservation of overlay.reservations) {
+    const index = data.reservations.findIndex((item) => item.id === reservation.id);
+    if (index >= 0) data.reservations[index] = reservation;
+    else data.reservations.unshift(reservation);
+  }
+
+  if (overlay.deletedPassageIds.length) {
+    const drop = new Set(overlay.deletedPassageIds);
+    data.passages = data.passages.filter((item) => !drop.has(item.id));
+  }
+  for (const passage of overlay.passages) {
+    const index = data.passages.findIndex((item) => item.id === passage.id);
+    if (index >= 0) data.passages[index] = passage;
+    else data.passages.unshift(passage);
+  }
+  return data;
+}
+
+function diffOverlay(base: GuestHouseStoreData, next: GuestHouseStoreData): GuestHouseOverlay {
+  const overlay = emptyOverlay();
+  const baseRooms = new Map(base.rooms.map((room) => [room.id, room]));
+  const nextRooms = new Map(next.rooms.map((room) => [room.id, room]));
+  for (const [id, room] of nextRooms) {
+    const prev = baseRooms.get(id);
+    if (!prev || recordSig(prev) !== recordSig(room)) overlay.rooms.push(room);
+  }
+  for (const id of baseRooms.keys()) {
+    if (!nextRooms.has(id)) overlay.deletedRoomIds.push(id);
+  }
+
+  const baseReservations = new Map(base.reservations.map((item) => [item.id, item]));
+  const nextReservations = new Map(next.reservations.map((item) => [item.id, item]));
+  for (const [id, item] of nextReservations) {
+    const prev = baseReservations.get(id);
+    if (!prev || recordSig(prev) !== recordSig(item)) overlay.reservations.push(item);
+  }
+  for (const id of baseReservations.keys()) {
+    if (!nextReservations.has(id)) overlay.deletedReservationIds.push(id);
+  }
+
+  const basePassages = new Map(base.passages.map((item) => [item.id, item]));
+  const nextPassages = new Map(next.passages.map((item) => [item.id, item]));
+  for (const [id, item] of nextPassages) {
+    const prev = basePassages.get(id);
+    if (!prev || recordSig(prev) !== recordSig(item)) overlay.passages.push(item);
+  }
+  for (const id of basePassages.keys()) {
+    if (!nextPassages.has(id)) overlay.deletedPassageIds.push(id);
+  }
+
+  if (next.nextReservationSeq !== base.nextReservationSeq) {
+    overlay.nextReservationSeq = next.nextReservationSeq;
+  }
+  if (!sameJson(next.meta, base.meta)) overlay.meta = next.meta;
+  return overlay;
+}
+
+async function ensureBase(): Promise<GuestHouseStoreData> {
+  if (baseCache) return baseCache;
   const storePath = resolveStorePath();
   await hydrateDurableFile(DURABLE_GUEST_HOUSE_KEY, storePath);
   try {
     const raw = await fsPromises.readFile(storePath, 'utf8');
     const parsed = JSON.parse(raw) as Partial<GuestHouseStoreData>;
-    const data = normalizeStore(parsed);
-    const ensured = ensurePassages(data);
-    if (ensured.passages.length !== data.passages.length) {
-      await writeStore(ensured);
-    }
-    return ensured;
+    baseCache = normalizeStore(parsed);
   } catch (err) {
     const code = (err as NodeJS.ErrnoException)?.code;
-    if (code === 'ENOENT') return emptyStore();
-    throw err;
+    if (code !== 'ENOENT') throw err;
+    baseCache = emptyStore();
   }
+  return baseCache;
+}
+
+async function ensureOverlay(): Promise<GuestHouseOverlay> {
+  if (Date.now() < overlayFreshUntil) return overlayCache;
+  const overlayPath = resolveOverlayPath();
+  await hydrateDurableFile(DURABLE_GUEST_HOUSE_OVERLAY_KEY, overlayPath);
+  try {
+    const raw = await fsPromises.readFile(overlayPath, 'utf8');
+    const parsed = JSON.parse(raw) as Partial<GuestHouseOverlay>;
+    overlayCache = {
+      ...emptyOverlay(),
+      ...parsed,
+      reservations: Array.isArray(parsed.reservations)
+        ? parsed.reservations
+          .map((item) => normalizeReservation(item))
+          .filter((item): item is GuestReservation => Boolean(item))
+        : [],
+      rooms: Array.isArray(parsed.rooms) ? parsed.rooms : [],
+      passages: Array.isArray(parsed.passages) ? parsed.passages : [],
+      deletedReservationIds: Array.isArray(parsed.deletedReservationIds) ? parsed.deletedReservationIds : [],
+      deletedRoomIds: Array.isArray(parsed.deletedRoomIds) ? parsed.deletedRoomIds : [],
+      deletedPassageIds: Array.isArray(parsed.deletedPassageIds) ? parsed.deletedPassageIds : [],
+    };
+  } catch (err) {
+    const code = (err as NodeJS.ErrnoException)?.code;
+    if (code !== 'ENOENT') throw err;
+    overlayCache = emptyOverlay();
+  }
+  overlayFreshUntil = Date.now() + 1500;
+  return overlayCache;
+}
+
+async function readStore(): Promise<GuestHouseStoreData> {
+  const base = await ensureBase();
+  const overlay = await ensureOverlay();
+  return ensurePassages(applyOverlay(base, overlay));
 }
 
 async function writeStore(data: GuestHouseStoreData): Promise<void> {
-  const storePath = resolveStorePath();
-  await fsPromises.mkdir(path.dirname(storePath), { recursive: true });
-  await fsPromises.writeFile(storePath, JSON.stringify(data, null, 2), 'utf8');
-  await persistDurableFile(DURABLE_GUEST_HOUSE_KEY, storePath);
+  const base = await ensureBase();
+  const overlay = diffOverlay(base, data);
+  if (sameJson(overlay, overlayCache)) return;
+  const overlayPath = resolveOverlayPath();
+  await fsPromises.mkdir(path.dirname(overlayPath), { recursive: true });
+  await fsPromises.writeFile(overlayPath, JSON.stringify(overlay), 'utf8');
+  overlayCache = overlay;
+  overlayFreshUntil = Date.now() + 1500;
+  await persistDurableFile(DURABLE_GUEST_HOUSE_OVERLAY_KEY, overlayPath);
 }
 
 function nextNumero(seq: number): string {
@@ -422,7 +587,13 @@ export async function listGuestMaisonLodgingSummaries(
 /** Maisons village sans occupant permanent, avec compteur de lodgers GH sur la période (optionnelle). */
 export async function listEmptyMaisonsForGuestHouse(
   data?: GuestHouseStoreData,
-  period?: { startDate: string; endDate: string; excludeReservationId?: string },
+  period?: {
+    startDate: string;
+    endDate: string;
+    startSlot?: GuestStaySlot | null;
+    endSlot?: GuestStaySlot | null;
+    excludeReservationId?: string;
+  },
 ): Promise<GuestEmptyMaison[]> {
   const store = data ?? (await readStore());
   const [employees, dependantsData, catalog] = await Promise.all([
@@ -450,9 +621,7 @@ export async function listEmptyMaisonsForGuestHouse(
         if (item.maisonNumero.trim().toLowerCase() !== key) continue;
         if (period?.excludeReservationId && item.id === period.excludeReservationId) continue;
         if (period) {
-          if (!datesOverlap(item.startDate, item.endDate, period.startDate, period.endDate)) {
-            continue;
-          }
+          if (!staysOverlap(item, period)) continue;
         } else {
           // Compte les lodgers actifs aujourd'hui si pas de période.
           const today = todayIso();
@@ -682,8 +851,12 @@ export async function createGuestReservation(input: GuestReservationInput): Prom
   const endDate = str(input.endDate);
   if (!personName) throw new Error('Personne requise');
   if (!motif) throw new Error('Motif requis');
+  const startSlot = input.startSlot ? normalizeGuestStaySlot(input.startSlot, 'midi') : 'midi';
+  const endSlot = input.endSlot ? normalizeGuestStaySlot(input.endSlot, 'matin') : 'matin';
   if (!parseIsoDate(startDate) || !parseIsoDate(endDate)) throw new Error('Dates invalides');
-  if (endDate < startDate) throw new Error('La date de fin doit être après la date de début');
+  if (!isStayOrderValid(startDate, startSlot, endDate, endSlot)) {
+    throw new Error('La sortie doit être au même moment ou après l\'entrée (matin, midi, soir).');
+  }
 
   const data = await readStore();
   const now = new Date().toISOString();
@@ -696,7 +869,9 @@ export async function createGuestReservation(input: GuestReservationInput): Prom
     isAgent: Boolean(input.isAgent || str(input.matricule)),
     motif,
     startDate,
+    startSlot,
     endDate,
+    endSlot,
     roomId: str(input.roomId) || undefined,
     status: 'pending',
     notes: str(input.notes) || undefined,
@@ -726,8 +901,14 @@ export async function updateGuestReservation(
   const endDate = str(input.endDate);
   if (!personName) throw new Error('Personne requise');
   if (!motif) throw new Error('Motif requis');
+  const startSlot = input.startSlot ? normalizeGuestStaySlot(input.startSlot, 'matin') : (undefined);
+  const endSlot = input.endSlot ? normalizeGuestStaySlot(input.endSlot, 'soir') : (undefined);
+  const orderStart = startSlot ?? 'matin';
+  const orderEnd = endSlot ?? 'soir';
   if (!parseIsoDate(startDate) || !parseIsoDate(endDate)) throw new Error('Dates invalides');
-  if (endDate < startDate) throw new Error('La date de fin doit être après la date de début');
+  if (!isStayOrderValid(startDate, orderStart, endDate, orderEnd)) {
+    throw new Error('La sortie doit être au même moment ou après l\'entrée (matin, midi, soir).');
+  }
 
   const data = await readStore();
   const index = data.reservations.findIndex((item) => item.id === id);
@@ -741,7 +922,7 @@ export async function updateGuestReservation(
         item.id !== id
         && item.status === 'confirmed'
         && item.roomId === current.roomId
-        && datesOverlap(item.startDate, item.endDate, startDate, endDate),
+        && staysOverlap(item, { startDate, endDate, startSlot: orderStart, endSlot: orderEnd }),
     );
     if (conflict) throw new Error('Cette chambre / cet hôtel est déjà réservé(e) sur cette période');
   }
@@ -754,7 +935,9 @@ export async function updateGuestReservation(
     isAgent: Boolean(input.isAgent || str(input.matricule)),
     motif,
     startDate,
+    startSlot: startSlot ?? current.startSlot,
     endDate,
+    endSlot: endSlot ?? current.endSlot,
     notes: str(input.notes) || undefined,
     company: str(input.company) || undefined,
     mission: str(input.mission) || undefined,
@@ -771,7 +954,9 @@ export async function updateGuestReservation(
     passage.matricule = updated.matricule;
     passage.motif = updated.motif;
     passage.startDate = updated.startDate;
+    passage.startSlot = updated.startSlot;
     passage.endDate = updated.endDate;
+    passage.endSlot = updated.endSlot;
   }
 
   await writeStore(data);
@@ -833,6 +1018,8 @@ export async function updateGuestReservationStatus(
       const empty = await listEmptyMaisonsForGuestHouse(data, {
         startDate: current.startDate,
         endDate: current.endDate,
+        startSlot: current.startSlot,
+        endSlot: current.endSlot,
         excludeReservationId: id,
       });
       const maison = empty.find(
@@ -854,7 +1041,7 @@ export async function updateGuestReservationStatus(
           item.id !== id
           && item.status === 'confirmed'
           && item.roomId === nextRoomId
-          && datesOverlap(item.startDate, item.endDate, current.startDate, current.endDate),
+          && staysOverlap(item, current),
       );
       if (conflict) throw new Error('Cette chambre / cet hôtel est déjà réservé(e) sur cette période');
     }
@@ -883,7 +1070,9 @@ export async function updateGuestReservationStatus(
         matricule: updated.matricule,
         motif: updated.motif,
         startDate: updated.startDate,
+        startSlot: updated.startSlot,
         endDate: updated.endDate,
+        endSlot: updated.endSlot,
         checkedInAt: now,
       };
       data.passages.unshift(passage);

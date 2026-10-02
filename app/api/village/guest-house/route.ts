@@ -67,6 +67,7 @@ export async function POST(request: Request) {
             getAfter: () => null,
             path: '/api/village/guest-house',
             method: 'POST',
+            defer: true,
           },
           () => deleteGuestRoom(body.id!),
         );
@@ -87,6 +88,7 @@ export async function POST(request: Request) {
           getBefore: body.id ? () => getGuestRoom(body.id!) : undefined,
           path: '/api/village/guest-house',
           method: 'POST',
+          defer: true,
         },
         () =>
           upsertGuestRoom({
@@ -124,6 +126,7 @@ export async function POST(request: Request) {
             getBefore: () => getGuestReservation(body.id!),
             path: '/api/village/guest-house',
             method: 'POST',
+            defer: true,
           },
           () => updateGuestReservationStatus(body.id!, body.status!, body.roomId, body.maisonNumero),
         );
@@ -143,6 +146,7 @@ export async function POST(request: Request) {
             getBefore: () => getGuestReservation(body.id!),
             path: '/api/village/guest-house',
             method: 'POST',
+            defer: true,
           },
           () => clearGuestReservationLodging(body.id!),
         );
@@ -162,6 +166,7 @@ export async function POST(request: Request) {
             getBefore: () => getGuestReservation(body.id!),
             path: '/api/village/guest-house',
             method: 'POST',
+            defer: true,
           },
           () =>
             updateGuestReservation(body.id!, {
@@ -170,7 +175,9 @@ export async function POST(request: Request) {
               isAgent: body.isAgent,
               motif: body.motif ?? '',
               startDate: body.startDate ?? '',
+              startSlot: body.startSlot,
               endDate: body.endDate ?? '',
+              endSlot: body.endSlot,
               notes: body.notes,
               company: body.company,
               mission: body.mission,
@@ -195,6 +202,7 @@ export async function POST(request: Request) {
             getAfter: () => null,
             path: '/api/village/guest-house',
             method: 'POST',
+            defer: true,
           },
           () => deleteGuestReservation(body.id!),
         );
@@ -215,6 +223,7 @@ export async function POST(request: Request) {
           },
           path: '/api/village/guest-house',
           method: 'POST',
+          defer: true,
         },
         () =>
           createGuestReservation({
@@ -223,7 +232,9 @@ export async function POST(request: Request) {
             isAgent: body.isAgent,
             motif: body.motif ?? '',
             startDate: body.startDate ?? '',
+            startSlot: body.startSlot,
             endDate: body.endDate ?? '',
+            endSlot: body.endSlot,
             roomId: body.roomId,
             notes: body.notes,
             company: body.company,

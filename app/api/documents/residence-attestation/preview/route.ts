@@ -5,7 +5,9 @@ import { NextResponse } from 'next/server';
 import { writeDocxFromTemplate } from '@/lib/docx-template';
 import { buildResidenceAttestationPdfBuffer } from '@/lib/residence-attestation-pdf.server';
 import { buildResidenceAttestationPreviewHtmlForForm } from '@/lib/residence-attestation-preview.server';
+import { splitBilingualResidenceForm } from '@/lib/residence-attestation-text';
 import {
+  fillBilingualResidenceAttestationXml,
   fillResidenceAttestationXml,
   formatResidenceAttestationFileName,
   RESIDENCE_ATTESTATION_TEMPLATE_PATH,
@@ -16,16 +18,21 @@ import { auditSimpleAction } from '@/lib/with-audit';
 
 function normalizeForm(body: Partial<ResidenceAttestationFormData>): ResidenceAttestationFormData {
   return {
+    language: body.language === 'en' ? 'en' : body.language === 'fr' ? 'fr' : 'both',
     documentDate: body.documentDate?.trim() || '',
     maisonNumero: body.maisonNumero?.trim() || '',
     residenceAddress: body.residenceAddress?.trim() || '',
+    residenceAddressEn: body.residenceAddressEn?.trim() || undefined,
     hodGenre: body.hodGenre?.trim() || 'Monsieur',
     hodName: body.hodName?.trim() || '',
     hodFunction: body.hodFunction?.trim() || '',
+    hodFunctionEn: body.hodFunctionEn?.trim() || undefined,
     employeeGenre: body.employeeGenre?.trim() || 'M.',
+    employeeGenreEn: body.employeeGenreEn?.trim() || undefined,
     employeeName: body.employeeName?.trim() || '',
     employeeMatricule: body.employeeMatricule?.trim() || '',
     employeeFunction: body.employeeFunction?.trim() || '',
+    employeeFunctionEn: body.employeeFunctionEn?.trim() || undefined,
     employeeDepartment: body.employeeDepartment?.trim() || '',
   };
 }
@@ -54,10 +61,11 @@ export async function POST(request: Request) {
 
     if (type === 'pdf') {
       const pdfBuffer = await buildResidenceAttestationPdfBuffer(form);
-      const pdfName = formatResidenceAttestationFileName(form.employeeName, form.documentDate).replace(
-        /\.docx$/i,
-        '.pdf',
-      );
+      const pdfName = formatResidenceAttestationFileName(
+        form.employeeName,
+        form.documentDate,
+        form.language,
+      ).replace(/\.docx$/i, '.pdf');
       await auditSimpleAction({
         module: 'documents.attestation-residence',
         action: 'export',
@@ -74,10 +82,21 @@ export async function POST(request: Request) {
     const tempDir = await fs.mkdtemp(path.join(os.tmpdir(), 'residence-attestation-'));
     const docxPath = path.join(tempDir, 'attestation.docx');
     try {
-      await writeDocxFromTemplate(RESIDENCE_ATTESTATION_TEMPLATE_PATH, docxPath, (xml) =>
-        fillResidenceAttestationXml(xml, form),
+      if (form.language === 'both') {
+        const { fr, en } = splitBilingualResidenceForm(form);
+        await writeDocxFromTemplate(RESIDENCE_ATTESTATION_TEMPLATE_PATH, docxPath, (xml) =>
+          fillBilingualResidenceAttestationXml(xml, fr, en),
+        );
+      } else {
+        await writeDocxFromTemplate(RESIDENCE_ATTESTATION_TEMPLATE_PATH, docxPath, (xml) =>
+          fillResidenceAttestationXml(xml, form),
+        );
+      }
+      const fileName = formatResidenceAttestationFileName(
+        form.employeeName,
+        form.documentDate,
+        form.language,
       );
-      const fileName = formatResidenceAttestationFileName(form.employeeName, form.documentDate);
       const buffer = await fs.readFile(docxPath);
       await auditSimpleAction({
         module: 'documents.attestation-residence',

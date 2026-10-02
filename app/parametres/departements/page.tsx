@@ -25,6 +25,8 @@ export default function DepartementsPage() {
   const [saving, setSaving] = useState(false);
   const [syncing, setSyncing] = useState(false);
 
+  const [exporting, setExporting] = useState(false);
+
   const load = useCallback(async (opts?: { sync?: boolean }) => {
     setLoading(true);
     try {
@@ -69,6 +71,33 @@ export default function DepartementsPage() {
   const openEdit = (item: DepartmentSetting) => {
     setForm({ id: item.id, name: item.name, code: item.code || '', active: item.active });
     setModalOpen(true);
+  };
+
+  const handleExportExcel = async () => {
+    setExporting(true);
+    try {
+      const res = await fetch('/api/settings/departments/export');
+      if (!res.ok) {
+        const json = (await res.json().catch(() => ({}))) as { error?: string };
+        await showError(json.error || 'Export impossible');
+        return;
+      }
+      const blob = await res.blob();
+      const contentDisposition = res.headers.get('content-disposition') || '';
+      const match = contentDisposition.match(/filename="?([^"]+)"?/i);
+      const fileName = match?.[1] || 'DEPARTEMENTS_SERVICES.xlsx';
+      const objectUrl = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = objectUrl;
+      a.download = fileName;
+      a.click();
+      URL.revokeObjectURL(objectUrl);
+      await showSuccess('Export Excel téléchargé');
+    } catch {
+      await showError('Export impossible');
+    } finally {
+      setExporting(false);
+    }
   };
 
   const handleSync = async () => {
@@ -183,10 +212,22 @@ export default function DepartementsPage() {
             <RefreshButton onClick={() => load({ sync: true })} loading={syncing} />
           </div>
           <p>
-            {filtered.length} département{filtered.length > 1 ? 's' : ''}
+            {filtered.length} département{filtered.length > 1 ? 's' : ''} — export Excel : départements
+            en colonnes, services en dessous
           </p>
         </div>
         <div className="page-header-actions">
+          {(can('settings.departements', 'export') || can('settings.departements', 'view')) && (
+            <button
+              type="button"
+              className="btn btn-secondary"
+              onClick={() => void handleExportExcel()}
+              disabled={exporting}
+              title="Une colonne par département, services listés en dessous"
+            >
+              {exporting ? 'Export…' : 'Exporter Excel'}
+            </button>
+          )}
           <PermissionGate menuId="settings.departements" action="edit">
             <button
               type="button"

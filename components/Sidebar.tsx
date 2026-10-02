@@ -22,6 +22,8 @@ import { usePermissions } from '@/contexts/PermissionContext';
 import { useTheme } from '@/contexts/ThemeContext';
 import { useI18n } from '@/contexts/LocaleContext';
 import type { MessageKey } from '@/lib/i18n';
+import { contractantMenuVisible, getContractantScopeFromMenus } from '@/lib/contractant-scope';
+import type { ContractantAccessScope } from '@/lib/auth-types';
 import { confirmLogout, showLogoutLoading } from '@/lib/swal';
 
 type NavItem = {
@@ -63,10 +65,11 @@ type NavLinkSection = {
 
 type NavSection = NavGroup | NavLinkSection;
 
-/** Menu latéral réduit pour un utilisateur limité à un contractant. */
-function buildContractantOnlyNav(_contractorLabel: string): NavSection[] {
-  return [
-    {
+/** Menu latéral réduit pour un user limité à un/des contractant(s). */
+function buildContractantOnlyNav(scope: ContractantAccessScope): NavSection[] {
+  const sections: NavSection[] = [];
+  if (contractantMenuVisible(scope, 'dashboard')) {
+    sections.push({
       type: 'link',
       id: 'home',
       href: '/employes/contractants?tab=dashboard',
@@ -78,38 +81,60 @@ function buildContractantOnlyNav(_contractorLabel: string): NavSection[] {
         '/employes/contractants/discipline',
         '/employes/contractants/planning',
       ],
-    },
-    {
+    });
+  }
+  const items = [
+    contractantMenuVisible(scope, 'employes')
+      ? {
+          href: '/employes/contractants?tab=employes',
+          label: 'Liste des employés',
+          icon: 'users' as const,
+          menuId: 'employes.contractants',
+        }
+      : null,
+    contractantMenuVisible(scope, 'discipline')
+      ? {
+          href: '/employes/contractants/discipline',
+          label: 'Cas disciplinaire',
+          icon: 'docs' as const,
+          menuId: 'employes.contractants',
+          activePrefixes: ['/employes/contractants/discipline'],
+        }
+      : null,
+    contractantMenuVisible(scope, 'planning')
+      ? {
+          href: '/employes/contractants/planning',
+          label: 'Planning de travail',
+          icon: 'clock' as const,
+          menuId: 'employes.contractants',
+          activePrefixes: ['/employes/contractants/planning'],
+        }
+      : null,
+  ].filter((item): item is NonNullable<typeof item> => Boolean(item));
+  if (items.length) {
+    sections.push({
       type: 'group',
       id: 'contractant-space',
       title: 'Mon espace',
       icon: 'users',
       color: '#e30613',
-      items: [
-        {
-          href: '/employes/contractants?tab=employes',
-          label: 'Liste des employés',
-          icon: 'users',
-          menuId: 'employes.contractants',
-        },
-        {
-          href: '/employes/contractants/discipline',
-          label: 'Cas disciplinaire',
-          icon: 'docs',
-          menuId: 'employes.contractants',
-          activePrefixes: ['/employes/contractants/discipline'],
-        },
-        {
-          href: '/employes/contractants/planning',
-          label: 'Planning de travail',
-          icon: 'clock',
-          menuId: 'employes.contractants',
-          activePrefixes: ['/employes/contractants/planning'],
-        },
-      ],
-    },
-  ];
+      items,
+    });
+  }
+  if (!sections.length) {
+    sections.push({
+      type: 'link',
+      id: 'home',
+      href: '/employes/contractants?tab=dashboard',
+      label: 'Accueil',
+      icon: 'home',
+      color: '#e30613',
+      alwaysVisible: true,
+    });
+  }
+  return sections;
 }
+
 const NAV: NavSection[] = [
   {
     type: 'link',
@@ -148,7 +173,8 @@ const NAV: NavSection[] = [
     items: [
       { href: '/employes', label: 'Employé', icon: 'users', menuId: 'employes.liste', excludePrefixes: ['/employes/dependants', '/employes/offres', '/employes/mouvements', '/employes/postes', '/employes/classification', '/employes/contractants', '/employes/recrutement', '/employes/conge', '/employes/airtime'] },
       { href: '/employes/dependants', label: 'Dependants', icon: 'users', menuId: 'employes.dependants' },
-      { href: '/employes/contractants', label: 'Contractants', icon: 'users', menuId: 'employes.contractants' },
+      { href: '/employes/contractants', label: 'Contractants', icon: 'users', menuId: 'employes.contractants', excludePrefixes: ['/employes/contractants/paie'] },
+      { href: '/employes/contractants/paie', label: 'Paie contractants', icon: 'docs', menuId: 'employes.contractants', activePrefixes: ['/employes/contractants/paie'] },
       { href: '/check-documents', label: 'Check documents', icon: 'docs', menuId: 'employes.check-documents' },
       { href: '/heures-supplementaires', label: 'Heures supplémentaires', icon: 'clock', menuIds: ['employes.heures', 'employes.heures.dept', 'employes.heures.all'] },
       { href: '/employes/conge', label: 'Congé', icon: 'clock', menuId: 'employes.conge' },
@@ -163,6 +189,13 @@ const NAV: NavSection[] = [
     color: '#4338ca',
     items: [
       { href: '/employes/classification', label: 'Classification des postes', icon: 'docs', menuId: 'employes.classification' },
+      {
+        href: '/employes/postes/effectifs',
+        label: 'Poste',
+        icon: 'users',
+        menuIds: ['employes.classification', 'employes.postes', 'employes.liste', 'employes.contractants'],
+        activePrefixes: ['/employes/postes/effectifs'],
+      },
       { href: '/employes/recrutement', label: 'Recrutement', icon: 'docs', menuId: 'employes.recrutement' },
       { href: '/employes/mouvements', label: 'Mouvements', icon: 'users', menuId: 'employes.mouvements' },
     ],
@@ -198,6 +231,7 @@ const NAV: NavSection[] = [
       'travel.payment-voucher',
       'documents.appraisal',
       'documents.exit',
+      'documents.reponse-demission',
       'documents.entetes',
       'documents.rrf',
       'documents.newcomer',
@@ -228,6 +262,7 @@ const NAV: NavSection[] = [
       'politique.manuco',
       'politique.aide-medicale',
       'politique.voyages',
+      'politique.cellphone',
       'politique.alcool',
       'politique.harcelement',
       'politique.exploitation',
@@ -264,6 +299,12 @@ const NAV: NavSection[] = [
         label: 'Gestion des Billets',
         icon: 'edit',
         menuId: 'protocol.billets',
+      },
+      {
+        href: '/protocol/voyages',
+        label: 'Gestion de voyage',
+        icon: 'travel',
+        menuId: 'protocol.voyages',
       },
     ],
   },
@@ -328,6 +369,12 @@ const NAV: NavSection[] = [
         label: 'Nouveaux achats',
         icon: 'car',
         menuIds: ['charroi.achats', 'charroi'],
+      },
+      {
+        href: '/charroi-automobile/voyages',
+        label: 'Voyage par route',
+        icon: 'car',
+        menuIds: ['charroi.voyages', 'charroi'],
       },
     ],
   },
@@ -401,12 +448,14 @@ const ITEM_LABEL_KEY: Record<string, MessageKey> = {
   '/protocol/visa-volant': 'nav.protocol.flyingVisa',
   '/protocol/visa-voyage': 'nav.protocol.travelVisa',
   '/protocol/billets': 'nav.protocol.tickets',
+  '/protocol/voyages': 'nav.protocol.travelCosts',
   '/factures-fournisseurs/liste': 'nav.supplierInvoices.list',
   '/factures-fournisseurs/factures': 'nav.supplierInvoices.invoices',
   '/factures-fournisseurs/soa': 'nav.supplierInvoices.soa',
   '/factures-fournisseurs/fournisseurs': 'nav.supplierInvoices.suppliers',
   '/charroi-automobile/vehicules': 'nav.fleet.vehicles',
   '/charroi-automobile/achats': 'nav.fleet.purchases',
+  '/charroi-automobile/voyages': 'nav.fleet.trips',
   '/village/maisons': 'nav.village.houses',
   '/sante/dashboard': 'nav.health.dashboard',
   '/sante/donnees': 'nav.health.data',
@@ -496,7 +545,7 @@ function isNavItemActive(pathname: string, item: NavItem, search = '') {
   const currentTab = new URLSearchParams(search.startsWith('?') ? search.slice(1) : search).get('tab');
   const pathOnly = item.href.split('?')[0];
 
-  // Liens avec ?tab=… (ex. Village) — match exact sur le tab courant.
+  // Liens avec ?tab=… (ex. Village / Contractants) — match exact sur le tab courant.
   if (itemTab) {
     const defaultTab =
       pathOnly === '/employes/contractants' && !currentTab ? 'dashboard' : currentTab;
@@ -917,7 +966,7 @@ export default function Sidebar() {
   const { collapsed, toggle } = useSidebar();
   const { theme, toggleTheme, isSwitching } = useTheme();
   const { t, locale } = useI18n();
-  const { user, can, isLoading: permissionsLoading, isContractantOnly } = usePermissions();
+  const { user, can, menus, isLoading: permissionsLoading, isContractantOnly } = usePermissions();
   const [contractorLabel, setContractorLabel] = useState('Dashboard');
   const [openGroups, setOpenGroups] = useState<Record<string, boolean>>(() =>
     buildInitialOpenGroups(pathname, typeof window !== 'undefined' ? window.location.search.slice(1) : ''),
@@ -941,7 +990,7 @@ export default function Sidebar() {
           contractants?: { denomination?: string }[];
         };
         const names = (json.contractants ?? [])
-          .map((item) => item.denomination?.trim())
+          .map((c) => c.denomination?.trim())
           .filter(Boolean) as string[];
         if (!cancelled && names.length) {
           setContractorLabel(names.length === 1 ? names[0]! : names.join(' · '));
@@ -974,8 +1023,10 @@ export default function Sidebar() {
   }, [profileMenuOpen]);
 
   const baseNav = useMemo(
-    () => (isContractantOnly ? buildContractantOnlyNav(contractorLabel) : NAV),
-    [isContractantOnly, contractorLabel],
+    () => (isContractantOnly
+      ? buildContractantOnlyNav(getContractantScopeFromMenus(menus))
+      : NAV),
+    [isContractantOnly, menus],
   );
 
   const filteredBaseNav = baseNav
@@ -1049,7 +1100,7 @@ export default function Sidebar() {
           {!collapsed && (
             <div className="sidebar-brand-text">
               <h1>{isContractantOnly ? contractorLabel : t('brand.name')}</h1>
-              <p>{isContractantOnly ? 'Espace contractant' : t('brand.tagline')}</p>
+      <p>{isContractantOnly ? 'Espace contractant' : t('brand.tagline')}</p>
             </div>
           )}
           {collapsed && (

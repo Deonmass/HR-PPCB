@@ -176,7 +176,7 @@ function toEmployeeRows(list: FlatEmployee[]): DashboardListRow[] {
       fonction: e.fonction || '—',
       departement: e.departement || '—',
       typeService: e.typeService || '—',
-      telephone: e.telephone || '—',
+      telephone: e.telephoneAirtime || '—',
       etatCivil: etatCivilLabel(e.etatCivil),
       statut: e.statut,
       contractant: e.contractantNom,
@@ -315,8 +315,8 @@ export default function ContractantsDashboard({
     [stats.parContractant, contractantColors],
   );
 
-  const departementSlices = useMemo(
-    () => toDonutSlices(stats.parDepartement, PALETTE, 8),
+  const departementBars = useMemo(
+    () => stats.parDepartement.map((row) => ({ label: row.label, value: row.count })),
     [stats.parDepartement],
   );
 
@@ -724,6 +724,18 @@ export default function ContractantsDashboard({
       </div>
 
       <div className="contractants-charts-grid home-charts-grid">
+        <div className="contractants-dept-chart">
+          <DependantsBarChart
+            title="Par département"
+            items={departementBars}
+            barClassName="employees-bar-fill-dept"
+            fitAll
+            compact
+            onItemClick={(label) =>
+              openDrill({ kind: 'departement', label: `Département · ${label}`, value: label })
+            }
+          />
+        </div>
         {!hideContractantFilter && (
           <HomeDonutChart
             title="Par contractant"
@@ -748,20 +760,6 @@ export default function ContractantsDashboard({
             }
           />
         )}
-        <HomeDonutChart
-          title="Par département"
-          slices={departementSlices}
-          centerLabel="Employés"
-          emptyLabel="Aucun département"
-          onTitleClick={() => openDrill({ kind: 'all', label: 'Par département' })}
-          onItemClick={(label) => {
-            if (label === 'Autres') {
-              openDrill({ kind: 'all', label: 'Par département' });
-              return;
-            }
-            openDrill({ kind: 'departement', label: `Département · ${label}`, value: label });
-          }}
-        />
         <HomeDonutChart
           title="Par fonction"
           slices={fonctionSlices}

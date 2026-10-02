@@ -5,12 +5,13 @@ import { useEffect, type ReactNode } from 'react';
 import { usePermissions } from '@/contexts/PermissionContext';
 import { useI18n } from '@/contexts/LocaleContext';
 import { routeViewMenuIds } from '@/lib/menu-routes';
+import { contractantMenuVisible, getContractantScopeFromMenus } from '@/lib/contractant-scope';
 
 export default function RouteGuard({ children }: { children: ReactNode }) {
   const pathname = usePathname();
   const router = useRouter();
   const { t } = useI18n();
-  const { isLoading, user, can, firstAccessiblePath, isContractantOnly } = usePermissions();
+  const { isLoading, user, can, menus, firstAccessiblePath, isContractantOnly } = usePermissions();
 
   useEffect(() => {
     if (isLoading || pathname === '/login' || pathname === '/acces-refuse') return;
@@ -24,6 +25,22 @@ export default function RouteGuard({ children }: { children: ReactNode }) {
     // Accueil RH global → dashboard contractant dédié
     if (isContractantOnly && (pathname === '/accueil' || pathname === '/')) {
       if (firstAccessiblePath) router.replace(firstAccessiblePath);
+      return;
+    }
+
+    const contractantScope = getContractantScopeFromMenus(menus);
+    if (
+      pathname.startsWith('/employes/contractants/discipline')
+      && !contractantMenuVisible(contractantScope, 'discipline')
+    ) {
+      router.replace('/employes/contractants');
+      return;
+    }
+    if (
+      pathname.startsWith('/employes/contractants/planning')
+      && !contractantMenuVisible(contractantScope, 'planning')
+    ) {
+      router.replace('/employes/contractants');
       return;
     }
 
@@ -47,7 +64,7 @@ export default function RouteGuard({ children }: { children: ReactNode }) {
         router.replace('/acces-refuse');
       }
     }
-  }, [isLoading, pathname, user, can, firstAccessiblePath, isContractantOnly, router]);
+  }, [isLoading, pathname, user, can, menus, firstAccessiblePath, isContractantOnly, router]);
 
   if (isLoading) {
     return <div className="loading">{t('common.loading')}</div>;

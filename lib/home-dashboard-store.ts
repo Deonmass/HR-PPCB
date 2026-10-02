@@ -350,6 +350,14 @@ export async function buildHomeDashboard(menus: MenuPermission[]): Promise<HomeD
     });
   }
 
+  if (can(menus, 'documents.reponse-demission')) {
+    placeholders.push({
+      label: 'Réponse démission',
+      description: 'Lettre de réponse à une démission',
+      href: '/documents/reponse-demission',
+    });
+  }
+
   if (can(menus, 'documents.exit')) {
     placeholders.push({
       label: 'Exit forms',
@@ -518,6 +526,13 @@ export async function buildHomeDashboard(menus: MenuPermission[]): Promise<HomeD
       description: 'Billets d’avion',
     });
   }
+  if (can(menus, 'protocol.voyages')) {
+    protocolLinks.push({
+      label: 'Gestion de voyage',
+      href: '/protocol/voyages',
+      description: 'Suivi des coûts de voyage',
+    });
+  }
   if (protocolLinks.length) {
     result.protocol = { links: protocolLinks };
   }
@@ -533,7 +548,12 @@ export async function buildHomeDashboard(menus: MenuPermission[]): Promise<HomeD
     });
   }
 
-  if (can(menus, 'charroi') || can(menus, 'charroi.vehicules') || can(menus, 'charroi.achats')) {
+  if (
+    can(menus, 'charroi')
+    || can(menus, 'charroi.vehicules')
+    || can(menus, 'charroi.achats')
+    || can(menus, 'charroi.voyages')
+  ) {
     if (can(menus, 'charroi') || can(menus, 'charroi.vehicules')) {
       try {
         const vehicles = await listVehicules();
@@ -581,11 +601,20 @@ export async function buildHomeDashboard(menus: MenuPermission[]): Promise<HomeD
         });
       }
     } else {
-      placeholders.push({
-        label: 'Charroi automobile',
-        description: 'Base véhicules et nouveaux achats',
-        href: '/charroi-automobile/vehicules',
-      });
+      if (can(menus, 'charroi.voyages')) {
+        placeholders.push({
+          label: 'Voyage par route',
+          description: 'Demandes, confirmations et voyages effectués',
+          href: '/charroi-automobile/voyages',
+        });
+      }
+      if (can(menus, 'charroi.achats')) {
+        placeholders.push({
+          label: 'Charroi automobile',
+          description: 'Nouveaux achats',
+          href: '/charroi-automobile/achats',
+        });
+      }
     }
   }
 

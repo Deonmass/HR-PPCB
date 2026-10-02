@@ -6,6 +6,7 @@ import path from 'path';
 import {
   DURABLE_CHARROI_ACHATS_KEY,
   DURABLE_CHARROI_VEHICLES_KEY,
+  DURABLE_CHARROI_VOYAGES_KEY,
   hydrateDurableFile,
   persistDurableFile,
 } from './durable-fs';
@@ -21,6 +22,12 @@ import type {
   CharroiVehicule,
   CharroiVehiculeInput,
   CharroiVehiclesStore,
+  CharroiVoyage,
+  CharroiVoyageConfirmInput,
+  CharroiVoyageInput,
+  CharroiVoyageStatus,
+  CharroiVoyageVehiculeMode,
+  CharroiVoyagesStore,
 } from './charroi-types';
 import {
   computeAchatTotal,
@@ -54,6 +61,10 @@ function vehiclesPath(): string {
 
 function achatsPath(): string {
   return resolveStorePath(path.join('data', 'charroi', 'achats.json'));
+}
+
+function voyagesPath(): string {
+  return resolveStorePath(path.join('data', 'charroi', 'voyages.json'));
 }
 
 function emptyVehiclesStore(): CharroiVehiclesStore {
@@ -108,7 +119,7 @@ function achatIdFromSeq(seq: number): string {
   return `ach-${String(seq).padStart(3, '0')}`;
 }
 
-function parseSeq(id: string, prefix: 'veh' | 'ach'): number | null {
+function parseSeq(id: string, prefix: 'veh' | 'ach' | 'vyg'): number | null {
   const match = id.trim().match(new RegExp(`^${prefix}-(\\d+)$`));
   if (!match) return null;
   const seq = Number.parseInt(match[1], 10);
@@ -680,4 +691,394 @@ export async function replaceAchatsStore(store: CharroiAchatsStore): Promise<voi
     achats,
     nextSeq: Math.max(store.nextSeq || 1, maxSeq + 1),
   });
+}
+
+function emptyVoyagesStore(): CharroiVoyagesStore {
+  return { voyages: [], nextSeq: 1 };
+}
+
+function voyageIdFromSeq(seq: number): string {
+  return `vyg-${String(seq).padStart(3, '0')}`;
+}
+
+function voyageNumeroFromSeq(seq: number): string {
+  return `VYG-${String(seq).padStart(4, '0')}`;
+}
+
+function flag(value: unknown): boolean {
+  return value === true || value === 'true' || value === 1 || value === '1';
+}
+
+function normalizeHeure(value: unknown): string {
+  const match = str(value).match(/^(\d{1,2}):(\d{2})/);
+  if (!match) return '';
+  const hours = Number(match[1]);
+  const minutes = Number(match[2]);
+  if (hours > 23 || minutes > 59) return '';
+  return `${String(hours).padStart(2, '0')}:${String(minutes).padStart(2, '0')}`;
+}
+
+function normalizeVoyageStatus(value: unknown): CharroiVoyageStatus {
+  const raw = str(value).toLowerCase();
+  if (raw === 'pending' || raw === 'confirme' || raw === 'confirmé') return 'pending';
+  if (raw === 'effectue' || raw === 'effectué') return 'effectue';
+  if (raw === 'annule' || raw === 'annulé') return 'annule';
+  return 'demande';
+}
+
+function voyageMoney(value: unknown): number {
+  if (value === null || value === undefined || value === '') return 0;
+  const n = typeof value === 'number' ? value : Number(String(value).replace(/\s/g, '').replace(',', '.'));
+  if (!Number.isFinite(n) || n < 0) return 0;
+  return roundMoney(n);
+}
+
+function normalizePersonCount(value: unknown): number {
+  const n = typeof value === 'number' ? value : Number(String(value ?? '').replace(',', '.'));
+  if (!Number.isFinite(n) || n < 1) return 1;
+  return Math.min(99, Math.round(n));
+}
+
+function departPassed(date: string, time: string, now = new Date()): boolean {
+  const [year, month, day] = date.split('-').map((part) => Number(part));
+  const [hours, minutes] = time.split(':').map((part) => Number(part));
+  if (!year || !month || !day) return false;
+  const instant = new Date(year, month - 1, day, hours || 0, minutes || 0, 0, 0);
+  return instant.getTime() <= now.getTime();
+}
+
+function isVoyageAssigned(voyage: Pick<CharroiVoyage, 'chauffeurNom' | 'vehiculeLibelle'>): boolean {
+  return Boolean(voyage.chauffeurNom.trim() && voyage.vehiculeLibelle.trim());
+}
+
+/**
+ * Effectué seulement si le voyage est approuvé (chauffeur + véhicule)
+ * et si la date de départ est passée. Sinon le statut reste Pending.
+ * Une demande non affectée ne quitte pas l'onglet Demandes.
+ */
+function settleDeparted(voyage: CharroiVoyage): CharroiVoyage {
+  if (voyage.status === 'annule') return voyage;
+  if (!isVoyageAssigned(voyage)) {
+    if (voyage.status === 'demande') return voyage;
+    return { ...voyage, status: 'demande', completedAt: '' };
+  }
+  if (!departPassed(voyage.dateDepart, voyage.heureDepart)) {
+    if (voyage.status === 'pending' && !voyage.completedAt) return voyage;
+    return { ...voyage, status: 'pending', completedAt: '' };
+  }
+  if (voyage.status === 'effectue') return voyage;
+  return {
+    ...voyage,
+    status: 'effectue',
+    completedAt: voyage.completedAt || nowIso(),
+  };
+}
+
+function normalizeVehiculeMode(value: unknown): CharroiVoyageVehiculeMode {
+  const raw = str(value).toLowerCase();
+  if (raw === 'flotte') return 'flotte';
+  if (raw === 'location') return 'location';
+  return '';
+}
+
+function normalizeVoyage(
+  input: CharroiVoyageInput,
+  seq: number,
+  timestamps?: { createdAt?: string; updatedAt?: string },
+): CharroiVoyage {
+  const now = nowIso();
+  const passagerNom = str(input.passagerNom);
+  const depart = str(input.depart);
+  const destination = str(input.destination);
+  const dateDepart = str(input.dateDepart);
+  const heureDepart = normalizeHeure(input.heureDepart);
+  if (!passagerNom) throw new Error('Nom du passager requis');
+  if (!depart) throw new Error('Départ requis');
+  if (!destination) throw new Error('Destination requise');
+  if (depart.toLowerCase() === destination.toLowerCase()) {
+    throw new Error('Le départ et la destination doivent être différents');
+  }
+  if (!isIsoDate(dateDepart)) throw new Error('Date de départ invalide');
+  if (!heureDepart) throw new Error('Heure de départ invalide');
+  const dateArrivee = str(input.dateArrivee);
+  if (dateArrivee && !isIsoDate(dateArrivee)) throw new Error("Date d'arrivée invalide");
+  return {
+    id: str(input.id) || voyageIdFromSeq(seq),
+    numero: str(input.numero) || voyageNumeroFromSeq(seq),
+    passagerNom,
+    passagerMatricule: str(input.passagerMatricule),
+    passagerInterne: flag(input.passagerInterne),
+    nombrePersonnes: normalizePersonCount(input.nombrePersonnes),
+    depart,
+    destination,
+    dateDepart,
+    heureDepart,
+    dateArrivee,
+    heureArrivee: normalizeHeure(input.heureArrivee),
+    motif: str(input.motif),
+    notes: str(input.notes),
+    status: normalizeVoyageStatus(input.status),
+    chauffeurNom: str(input.chauffeurNom),
+    chauffeurMatricule: str(input.chauffeurMatricule),
+    chauffeurInterne: flag(input.chauffeurInterne),
+    vehiculeMode: normalizeVehiculeMode(input.vehiculeMode),
+    vehiculeId: str(input.vehiculeId),
+    vehiculeLibelle: str(input.vehiculeLibelle),
+    foodAllowance: voyageMoney(input.foodAllowance),
+    foodForTheRoad: voyageMoney(input.foodForTheRoad),
+    tollGate: voyageMoney(input.tollGate),
+    confirmedAt: str(input.confirmedAt),
+    completedAt: str(input.completedAt),
+    createdAt: timestamps?.createdAt || str(input.createdAt) || now,
+    updatedAt: timestamps?.updatedAt || now,
+  };
+}
+
+async function readVoyagesStore(): Promise<CharroiVoyagesStore> {
+  const store = await readJsonFile<CharroiVoyagesStore>(
+    DURABLE_CHARROI_VOYAGES_KEY,
+    voyagesPath(),
+    emptyVoyagesStore(),
+  );
+  const voyages = Array.isArray(store.voyages)
+    ? store.voyages.map((item, index) => normalizeVoyage(item, index + 1, {
+      createdAt: item.createdAt,
+      updatedAt: item.updatedAt,
+    }))
+    : [];
+  const maxSeq = voyages.reduce((max, item) => {
+    const seq = parseSeq(item.id, 'vyg');
+    return seq != null && seq > max ? seq : max;
+  }, 0);
+  return {
+    voyages,
+    nextSeq: Math.max(Number(store.nextSeq) || 1, maxSeq + 1),
+  };
+}
+
+async function writeVoyagesStore(store: CharroiVoyagesStore): Promise<void> {
+  await writeJsonFile(DURABLE_CHARROI_VOYAGES_KEY, voyagesPath(), store);
+}
+
+export async function listVoyages(): Promise<CharroiVoyage[]> {
+  const store = await readVoyagesStore();
+  let dirty = false;
+  store.voyages = store.voyages.map((item) => {
+    const next = settleDeparted(item);
+    if (next.status !== item.status) dirty = true;
+    return next;
+  });
+  if (dirty) await writeVoyagesStore(store);
+  return [...store.voyages].sort((a, b) => {
+    const left = `${a.dateDepart}T${a.heureDepart}`;
+    const right = `${b.dateDepart}T${b.heureDepart}`;
+    return right.localeCompare(left);
+  });
+}
+
+export async function getVoyage(id: string): Promise<CharroiVoyage | null> {
+  const store = await readVoyagesStore();
+  return store.voyages.find((item) => item.id === id) ?? null;
+}
+
+export async function createVoyage(input: CharroiVoyageInput): Promise<CharroiVoyage> {
+  const store = await readVoyagesStore();
+  const seq = store.nextSeq;
+  const voyage = normalizeVoyage(
+    {
+      ...input,
+      id: voyageIdFromSeq(seq),
+      numero: voyageNumeroFromSeq(seq),
+      status: 'demande',
+      chauffeurNom: '',
+      chauffeurMatricule: '',
+      chauffeurInterne: false,
+      vehiculeMode: '',
+      vehiculeId: '',
+      vehiculeLibelle: '',
+      foodAllowance: 0,
+      foodForTheRoad: 0,
+      tollGate: 0,
+      confirmedAt: '',
+      completedAt: '',
+      dateArrivee: '',
+      heureArrivee: '',
+    },
+    seq,
+  );
+  const settled = settleDeparted(voyage);
+  store.voyages.push(settled);
+  store.nextSeq = seq + 1;
+  await writeVoyagesStore(store);
+  return settled;
+}
+
+export async function updateVoyage(id: string, input: CharroiVoyageInput): Promise<CharroiVoyage> {
+  const store = await readVoyagesStore();
+  const index = store.voyages.findIndex((item) => item.id === id);
+  if (index < 0) throw new Error('Voyage introuvable');
+  const prev = store.voyages[index];
+  const seq = parseSeq(prev.id, 'vyg') ?? index + 1;
+  const updated = normalizeVoyage(
+    {
+      ...prev,
+      ...input,
+      id: prev.id,
+      numero: prev.numero,
+      status: prev.status,
+      chauffeurNom: prev.chauffeurNom,
+      chauffeurMatricule: prev.chauffeurMatricule,
+      chauffeurInterne: prev.chauffeurInterne,
+      vehiculeMode: prev.vehiculeMode,
+      vehiculeId: prev.vehiculeId,
+      vehiculeLibelle: prev.vehiculeLibelle,
+      foodAllowance: prev.foodAllowance,
+      foodForTheRoad: prev.foodForTheRoad,
+      tollGate: prev.tollGate,
+      confirmedAt: prev.confirmedAt,
+      completedAt: prev.completedAt,
+    },
+    seq,
+    { createdAt: prev.createdAt, updatedAt: nowIso() },
+  );
+  const settled = settleDeparted(updated);
+  store.voyages[index] = settled;
+  await writeVoyagesStore(store);
+  return settled;
+}
+
+export async function confirmVoyage(
+  id: string,
+  input: CharroiVoyageConfirmInput,
+): Promise<CharroiVoyage> {
+  const store = await readVoyagesStore();
+  const index = store.voyages.findIndex((item) => item.id === id);
+  if (index < 0) throw new Error('Voyage introuvable');
+  const prev = store.voyages[index];
+  if (prev.status === 'effectue') throw new Error('Voyage déjà effectué');
+  if (prev.status === 'annule') throw new Error('Voyage annulé');
+  const chauffeurNom = str(input.chauffeurNom);
+  if (!chauffeurNom) throw new Error('Chauffeur requis');
+  const mode = input.vehiculeMode;
+  let vehiculeId = '';
+  let vehiculeLibelle = '';
+  if (mode === 'flotte') {
+    vehiculeId = str(input.vehiculeId);
+    const vehicles = await listVehicules();
+    const vehicle = vehicles.find((item) => item.id === vehiculeId);
+    if (!vehicle) throw new Error('Véhicule introuvable');
+    vehiculeLibelle = [vehicle.plaque, vehicle.marque, vehicle.type].filter(Boolean).join(' · ');
+  } else if (mode === 'location') {
+    vehiculeLibelle = str(input.vehiculeLocation);
+    if (!vehiculeLibelle) throw new Error('Véhicule de location requis');
+  } else {
+    throw new Error('Véhicule requis');
+  }
+  const now = nowIso();
+  const updated: CharroiVoyage = {
+    ...prev,
+    status: 'pending',
+    chauffeurNom,
+    chauffeurMatricule: str(input.chauffeurMatricule),
+    chauffeurInterne: flag(input.chauffeurInterne),
+    vehiculeMode: mode,
+    vehiculeId,
+    vehiculeLibelle,
+    foodAllowance: voyageMoney(input.foodAllowance),
+    foodForTheRoad: voyageMoney(input.foodForTheRoad),
+    tollGate: voyageMoney(input.tollGate),
+    confirmedAt: prev.confirmedAt || now,
+    updatedAt: now,
+  };
+  const settled = settleDeparted(updated);
+  store.voyages[index] = settled;
+  await writeVoyagesStore(store);
+  return settled;
+}
+
+export async function completeVoyage(
+  id: string,
+  input: { dateArrivee?: string; heureArrivee?: string } = {},
+): Promise<CharroiVoyage> {
+  const store = await readVoyagesStore();
+  const index = store.voyages.findIndex((item) => item.id === id);
+  if (index < 0) throw new Error('Voyage introuvable');
+  const prev = store.voyages[index];
+  if (!isVoyageAssigned(prev)) {
+    throw new Error('Confirmez le voyage et affectez un chauffeur et un véhicule');
+  }
+  if (!departPassed(prev.dateDepart, prev.heureDepart)) {
+    throw new Error('Date de départ invalide : le départ n\'est pas encore arrivé');
+  }
+  if (prev.status !== 'pending' && prev.status !== 'effectue') {
+    throw new Error('Confirmez le voyage avant de le marquer effectué');
+  }
+  const dateArrivee = str(input.dateArrivee);
+  if (dateArrivee && !isIsoDate(dateArrivee)) throw new Error("Date d'arrivée invalide");
+  const now = nowIso();
+  const updated: CharroiVoyage = {
+    ...prev,
+    status: 'effectue',
+    dateArrivee,
+    heureArrivee: normalizeHeure(input.heureArrivee),
+    completedAt: prev.completedAt || now,
+    updatedAt: now,
+  };
+  store.voyages[index] = updated;
+  await writeVoyagesStore(store);
+  return updated;
+}
+
+export async function cancelVoyage(id: string): Promise<CharroiVoyage> {
+  const store = await readVoyagesStore();
+  const index = store.voyages.findIndex((item) => item.id === id);
+  if (index < 0) throw new Error('Voyage introuvable');
+  const prev = store.voyages[index];
+  if (prev.status === 'effectue') throw new Error('Un voyage effectué ne peut pas être annulé');
+  const updated: CharroiVoyage = {
+    ...prev,
+    status: 'annule',
+    updatedAt: nowIso(),
+  };
+  store.voyages[index] = updated;
+  await writeVoyagesStore(store);
+  return updated;
+}
+
+export async function reopenVoyage(id: string): Promise<CharroiVoyage> {
+  const store = await readVoyagesStore();
+  const index = store.voyages.findIndex((item) => item.id === id);
+  if (index < 0) throw new Error('Voyage introuvable');
+  const prev = store.voyages[index];
+  if (prev.status !== 'annule' && prev.status !== 'effectue') {
+    throw new Error('Seuls un voyage annulé ou effectué peut être rouvert');
+  }
+  const assigned = Boolean(prev.chauffeurNom && prev.vehiculeLibelle);
+  const now = nowIso();
+  const updated: CharroiVoyage = {
+    ...prev,
+    status: assigned && prev.status === 'effectue' ? 'pending' : 'demande',
+    completedAt: '',
+    confirmedAt: assigned && prev.status === 'effectue' ? prev.confirmedAt : '',
+    chauffeurNom: prev.status === 'annule' ? '' : prev.chauffeurNom,
+    chauffeurMatricule: prev.status === 'annule' ? '' : prev.chauffeurMatricule,
+    chauffeurInterne: prev.status === 'annule' ? false : prev.chauffeurInterne,
+    vehiculeMode: prev.status === 'annule' ? '' : prev.vehiculeMode,
+    vehiculeId: prev.status === 'annule' ? '' : prev.vehiculeId,
+    vehiculeLibelle: prev.status === 'annule' ? '' : prev.vehiculeLibelle,
+    updatedAt: now,
+  };
+  const settled = settleDeparted(updated);
+  store.voyages[index] = settled;
+  await writeVoyagesStore(store);
+  return settled;
+}
+
+export async function deleteVoyage(id: string): Promise<boolean> {
+  const store = await readVoyagesStore();
+  const next = store.voyages.filter((item) => item.id !== id);
+  if (next.length === store.voyages.length) return false;
+  store.voyages = next;
+  await writeVoyagesStore(store);
+  return true;
 }

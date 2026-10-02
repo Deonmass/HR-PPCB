@@ -9,6 +9,7 @@ export async function GET() {
     { menuId: 'documents.composition-familiale', action: 'view' },
     { menuId: 'documents.mouvement-travailleur', action: 'view' },
     { menuId: 'documents.exit', action: 'view' },
+    { menuId: 'documents.reponse-demission', action: 'view' },
   ]);
   if (denied) return denied;
   try {

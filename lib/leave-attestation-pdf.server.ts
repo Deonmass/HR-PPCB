@@ -1,13 +1,15 @@
-import 'server-only';
+﻿import 'server-only';
 
 import fs from 'fs/promises';
 import os from 'os';
 import path from 'path';
 import { PDFDocument, StandardFonts, rgb } from 'pdf-lib';
 import { writeDocxFromTemplate } from './docx-template';
+import { splitBilingualLeaveForm } from './leave-attestation-agent';
 import { PPC_LETTERHEAD_ADDRESS_LINES } from './ppc-letterhead-address';
 import {
   buildLeaveAttestationParagraphs,
+  fillBilingualLeaveAttestationXml,
   fillLeaveAttestationXml,
   formatLeaveDocumentDate,
   loadLeaveAttestationHeaderImage,
@@ -18,57 +20,37 @@ import { toWinAnsi } from './pdf-winansi';
 import { convertDocxToPdf } from './travel-pdf';
 import { isWindows } from './windows-shell';
 
+async function mergePdfBuffers(buffers: Buffer[]): Promise<Buffer> {
+  const merged = await PDFDocument.create();
+  for (const buffer of buffers) {
+    const source = await PDFDocument.load(buffer);
+    const pages = await merged.copyPages(source, source.getPageIndices());
+    pages.forEach((page) => merged.addPage(page));
+  }
+  return Buffer.from(await merged.save());
+}
+
 async function buildLeaveAttestationPdfWithPdfLib(
   data: LeaveAttestationFormData,
 ): Promise<Buffer> {
   const pdf = await PDFDocument.create();
-  const page = pdf.addPage([595.28, 841.89]);
   const font = await pdf.embedFont(StandardFonts.TimesRoman);
   const bold = await pdf.embedFont(StandardFonts.TimesRomanBold);
 
   const marginX = 64;
   const maxWidth = 595.28 - marginX * 2;
-  let y = 800;
 
   const headerImage = await loadLeaveAttestationHeaderImage();
-  const addressSize = 8;
-  const addressLineH = 10;
-  let logoBottomY = y;
-
+  let embeddedHeader:
+    | Awaited<ReturnType<PDFDocument['embedPng']>>
+    | Awaited<ReturnType<PDFDocument['embedJpg']>>
+    | null = null;
   if (headerImage) {
-    const embedded =
+    embeddedHeader =
       headerImage.mime === 'image/png'
         ? await pdf.embedPng(headerImage.bytes)
         : await pdf.embedJpg(headerImage.bytes);
-    const width = Math.min(210, maxWidth * 0.42);
-    const height = (embedded.height / embedded.width) * width;
-    const logoY = y - height;
-    page.drawImage(embedded, {
-      x: marginX,
-      y: logoY,
-      width,
-      height,
-    });
-    logoBottomY = logoY;
   }
-
-  let addressY = y - 2;
-  for (const raw of PPC_LETTERHEAD_ADDRESS_LINES) {
-    const line = toWinAnsi(raw);
-    const width = font.widthOfTextAtSize(line, addressSize);
-    page.drawText(line, {
-      x: 595.28 - marginX - width,
-      y: addressY - addressSize,
-      size: addressSize,
-      font,
-      color: rgb(0.12, 0.12, 0.12),
-    });
-    addressY -= addressLineH;
-  }
-
-  y = Math.min(logoBottomY, addressY) - 28;
-
-  const paragraphs = buildLeaveAttestationParagraphs(data);
 
   const wrap = (text: string, size: number, useBold: boolean) => {
     const active = useBold ? bold : font;
@@ -88,27 +70,73 @@ async function buildLeaveAttestationPdfWithPdfLib(
     return lines;
   };
 
-  paragraphs.forEach((paragraph, index) => {
-    const isTitle = index === 0;
-    const isSignature = index >= paragraphs.length - 2;
-    const size = isTitle ? 16 : 12;
-    const useBold = isTitle || isSignature;
-    const lines = wrap(toWinAnsi(paragraph), size, useBold);
-    for (const line of lines) {
-      const active = useBold ? bold : font;
-      const width = active.widthOfTextAtSize(line, size);
-      const x = isTitle ? (595.28 - width) / 2 : marginX;
-      page.drawText(line, {
-        x,
-        y,
-        size,
-        font: active,
-        color: rgb(0.08, 0.08, 0.1),
+  const drawPage = (pageData: LeaveAttestationFormData) => {
+    const page = pdf.addPage([595.28, 841.89]);
+    let y = 800;
+    let logoBottomY = y;
+
+    if (embeddedHeader) {
+      const width = Math.min(210, maxWidth * 0.42);
+      const height = (embeddedHeader.height / embeddedHeader.width) * width;
+      const logoY = y - height;
+      page.drawImage(embeddedHeader, {
+        x: marginX,
+        y: logoY,
+        width,
+        height,
       });
-      y -= size + 6;
+      logoBottomY = logoY;
     }
-    y -= isTitle ? 18 : 12;
-  });
+
+    const addressSize = 8;
+    const addressLineH = 10;
+    let addressY = y - 2;
+    for (const raw of PPC_LETTERHEAD_ADDRESS_LINES) {
+      const line = toWinAnsi(raw);
+      const width = font.widthOfTextAtSize(line, addressSize);
+      page.drawText(line, {
+        x: 595.28 - marginX - width,
+        y: addressY - addressSize,
+        size: addressSize,
+        font,
+        color: rgb(0.12, 0.12, 0.12),
+      });
+      addressY -= addressLineH;
+    }
+
+    y = Math.min(logoBottomY, addressY) - 28;
+
+    const paragraphs = buildLeaveAttestationParagraphs(pageData);
+    paragraphs.forEach((paragraph, index) => {
+      const isTitle = index === 0;
+      const isSignature = index >= paragraphs.length - 2;
+      const size = isTitle ? 16 : 12;
+      const useBold = isTitle || isSignature;
+      const lines = wrap(toWinAnsi(paragraph), size, useBold);
+      for (const line of lines) {
+        const active = useBold ? bold : font;
+        const width = active.widthOfTextAtSize(line, size);
+        const x = isTitle ? (595.28 - width) / 2 : marginX;
+        page.drawText(line, {
+          x,
+          y,
+          size,
+          font: active,
+          color: rgb(0.08, 0.08, 0.1),
+        });
+        y -= size + 6;
+      }
+      y -= isTitle ? 18 : 12;
+    });
+  };
+
+  if (data.language === 'both') {
+    const { fr, en } = splitBilingualLeaveForm(data);
+    drawPage(fr);
+    drawPage(en);
+  } else {
+    drawPage(data);
+  }
 
   void formatLeaveDocumentDate;
   return Buffer.from(await pdf.save());
@@ -121,6 +149,16 @@ export async function buildLeaveAttestationPdfBuffer(
     const tempDir = await fs.mkdtemp(path.join(os.tmpdir(), 'leave-attestation-pdf-'));
     const docxPath = path.join(tempDir, 'attestation.docx');
     try {
+      if (data.language === 'both') {
+        const { fr, en } = splitBilingualLeaveForm(data);
+        await writeDocxFromTemplate(LEAVE_ATTESTATION_TEMPLATE_PATH, docxPath, (xml) =>
+          fillBilingualLeaveAttestationXml(xml, fr, en),
+        );
+        const pdfPath = path.join(tempDir, 'attestation.pdf');
+        await convertDocxToPdf(docxPath, pdfPath);
+        return Buffer.from(await fs.readFile(pdfPath));
+      }
+
       await writeDocxFromTemplate(LEAVE_ATTESTATION_TEMPLATE_PATH, docxPath, (xml) =>
         fillLeaveAttestationXml(xml, data),
       );
@@ -133,5 +171,15 @@ export async function buildLeaveAttestationPdfBuffer(
       await fs.rm(tempDir, { recursive: true, force: true }).catch(() => undefined);
     }
   }
+
+  if (data.language === 'both') {
+    const { fr, en } = splitBilingualLeaveForm(data);
+    const [frBuf, enBuf] = await Promise.all([
+      buildLeaveAttestationPdfWithPdfLib(fr),
+      buildLeaveAttestationPdfWithPdfLib(en),
+    ]);
+    return mergePdfBuffers([frBuf, enBuf]);
+  }
+
   return buildLeaveAttestationPdfWithPdfLib(data);
 }

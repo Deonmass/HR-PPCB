@@ -6,11 +6,13 @@ import PermissionGate from '@/components/PermissionGate';
 import RefreshButton from '@/components/RefreshButton';
 import { EmployeeSuggestInput } from '@/components/EmployeePicker';
 import { usePermissions } from '@/contexts/PermissionContext';
-import { localizeJobTitle } from '@/lib/job-title-i18n';
+import { localizeJobTitle, translateJobTitleToEnglish } from '@/lib/job-title-i18n';
 import { filterAttestationSignatories } from '@/lib/attestation-signatories';
 import {
   buildVillageResidenceAddress,
+  buildVillageResidenceAddressEn,
   formatResidenceEmployeeGenre,
+  formatResidenceEmployeeGenreEn,
   RESIDENCE_VILLAGE_ADDRESS_BASE,
 } from '@/lib/residence-attestation-text';
 import type { ResidenceAttestationFormData, ResidenceAttestationRecord } from '@/lib/residence-attestation-types';
@@ -25,16 +27,21 @@ function todayInputDate(): string {
 
 function createInitialForm(): ResidenceAttestationFormData {
   return {
+    language: 'both',
     documentDate: todayInputDate(),
     maisonNumero: '',
     residenceAddress: '',
+    residenceAddressEn: '',
     hodGenre: 'Monsieur',
     hodName: '',
     hodFunction: '',
+    hodFunctionEn: '',
     employeeGenre: 'M.',
+    employeeGenreEn: 'Mr.',
     employeeName: '',
     employeeMatricule: '',
     employeeFunction: '',
+    employeeFunctionEn: '',
     employeeDepartment: '',
   };
 }
@@ -150,6 +157,7 @@ export default function AttestationResidencePage() {
     patchForm({
       maisonNumero: trimmed,
       residenceAddress: trimmed ? buildVillageResidenceAddress(trimmed) : '',
+      residenceAddressEn: trimmed ? buildVillageResidenceAddressEn(trimmed) : '',
     });
   };
 
@@ -161,13 +169,20 @@ export default function AttestationResidencePage() {
     setAddressAutoVillage(hasVillage);
     setForm((prev) => ({
       ...prev,
+      language: 'both',
       employeeName: employee.nom,
       employeeMatricule: employee.matricule,
       employeeDepartment: employee.departement,
       employeeGenre: formatResidenceEmployeeGenre(employee.gender),
+      employeeGenreEn: formatResidenceEmployeeGenreEn(employee.gender),
       employeeFunction: localizeJobTitle(
         employee.jobTitle || employee.grade,
         'fr',
+        employeeGenreLabel,
+      ),
+      employeeFunctionEn: localizeJobTitle(
+        employee.jobTitle || employee.grade,
+        'en',
         employeeGenreLabel,
       ),
       maisonNumero: hasVillage ? maisonNumero : '',
@@ -176,16 +191,28 @@ export default function AttestationResidencePage() {
         : prev.residenceAddress && !prev.residenceAddress.includes('Village Malanga')
           ? prev.residenceAddress
           : '',
+      residenceAddressEn: hasVillage
+        ? buildVillageResidenceAddressEn(maisonNumero)
+        : prev.residenceAddressEn && !prev.residenceAddressEn.includes('Village Malanga')
+          ? prev.residenceAddressEn
+          : prev.residenceAddress && !prev.residenceAddress.includes('Village Malanga')
+            ? prev.residenceAddress
+            : '',
     }));
   };
 
   const handleHodSelect = (employee: Employee) => {
     setSelectedHod(employee);
     const hodGenre = genreFromEmployee(employee);
+    const hodFunctionFr = localizeJobTitle(employee.jobTitle || employee.grade, 'fr', hodGenre);
     patchForm({
       hodName: employee.nom,
       hodGenre,
-      hodFunction: localizeJobTitle(employee.jobTitle || employee.grade, 'fr', hodGenre),
+      hodFunction: hodFunctionFr,
+      hodFunctionEn:
+        localizeJobTitle(employee.jobTitle || employee.grade, 'en', hodGenre) ||
+        translateJobTitleToEnglish(hodFunctionFr) ||
+        hodFunctionFr,
     });
   };
 
@@ -375,8 +402,8 @@ export default function AttestationResidencePage() {
                 />
               </div>
               <p>
-                Texte officiel Camp PPC Barnet / Village Malanga — numéro de maison auto si
-                l&apos;employé réside au village.
+                Texte officiel Camp PPC Barnet / Village Malanga — export Word / PDF = 2 pages
+                (FR + EN). Numéro de maison auto si l&apos;employé réside au village.
               </p>
             </div>
             <div className="check-docs-header-actions">
@@ -446,7 +473,11 @@ export default function AttestationResidencePage() {
                   value={form.residenceAddress}
                   onChange={(e) => {
                     setAddressAutoVillage(false);
-                    patchForm({ residenceAddress: e.target.value });
+                    patchForm({
+                      residenceAddress: e.target.value,
+                      residenceAddressEn: e.target.value,
+                      maisonNumero: '',
+                    });
                   }}
                   placeholder={RESIDENCE_VILLAGE_ADDRESS_BASE}
                 />
@@ -578,6 +609,7 @@ export default function AttestationResidencePage() {
                       <th>Employé</th>
                       <th>Matricule</th>
                       <th>Maison</th>
+                      <th>Langue</th>
                       <th>Adresse</th>
                       <th>Actions</th>
                     </tr>
@@ -589,6 +621,13 @@ export default function AttestationResidencePage() {
                         <td>{record.employeeName}</td>
                         <td>{record.employeeMatricule}</td>
                         <td>{record.maisonNumero || '—'}</td>
+                        <td>
+                          {record.language === 'en'
+                            ? 'EN'
+                            : record.language === 'fr'
+                              ? 'FR'
+                              : 'FR+EN'}
+                        </td>
                         <td>{record.residenceAddress}</td>
                         <td>
                           <div className="service-attestation-row-actions">
@@ -599,16 +638,33 @@ export default function AttestationResidencePage() {
                                 onClick={() => {
                                   setForm({
                                     ...createInitialForm(),
+                                    language: 'both',
                                     documentDate: record.documentDate,
                                     maisonNumero: record.maisonNumero || '',
                                     residenceAddress: record.residenceAddress,
+                                    residenceAddressEn:
+                                      record.residenceAddressEn ||
+                                      (record.maisonNumero
+                                        ? buildVillageResidenceAddressEn(record.maisonNumero)
+                                        : record.residenceAddress),
                                     hodGenre: record.hodGenre,
                                     hodName: record.hodName,
                                     hodFunction: record.hodFunction,
+                                    hodFunctionEn:
+                                      record.hodFunctionEn ||
+                                      translateJobTitleToEnglish(record.hodFunction) ||
+                                      record.hodFunction,
                                     employeeGenre: record.employeeGenre,
+                                    employeeGenreEn:
+                                      record.employeeGenreEn ||
+                                      formatResidenceEmployeeGenreEn(record.employeeGenre),
                                     employeeName: record.employeeName,
                                     employeeMatricule: record.employeeMatricule,
                                     employeeFunction: record.employeeFunction,
+                                    employeeFunctionEn:
+                                      record.employeeFunctionEn ||
+                                      translateJobTitleToEnglish(record.employeeFunction) ||
+                                      record.employeeFunction,
                                     employeeDepartment: record.employeeDepartment,
                                   });
                                   setAddressAutoVillage(Boolean(record.maisonNumero));

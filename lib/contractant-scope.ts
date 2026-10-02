@@ -1,4 +1,4 @@
-import type { ContractantAccessScope, MenuPermission } from './auth-types';
+import type { ContractantAccessScope, ContractantPortalMenus, MenuPermission } from './auth-types';
 import type { Contractant } from './contractants-types';
 import { canPerformAction } from './permission-check';
 
@@ -6,6 +6,39 @@ const CONTRACTANTS_MENU = 'employes.contractants';
 
 export function emptyContractantScope(): ContractantAccessScope {
   return { contractantIds: [] };
+}
+
+export const CONTRACTANT_PORTAL_MENUS = [
+  { id: 'dashboard', label: 'Accueil' },
+  { id: 'employes', label: 'Liste des employés' },
+  { id: 'exit', label: 'Exit' },
+  { id: 'discipline', label: 'Cas disciplinaire' },
+  { id: 'planning', label: 'Planning de travail' },
+] as const;
+
+export type ContractantPortalMenuId = (typeof CONTRACTANT_PORTAL_MENUS)[number]['id'];
+
+export function normalizeContractantMenus(
+  raw?: ContractantPortalMenus | null,
+): ContractantPortalMenus | undefined {
+  if (!raw) return undefined;
+  const menus: ContractantPortalMenus = {};
+  let explicit = false;
+  for (const item of CONTRACTANT_PORTAL_MENUS) {
+    if (typeof raw[item.id] === 'boolean') {
+      menus[item.id] = raw[item.id];
+      explicit = true;
+    }
+  }
+  return explicit ? menus : undefined;
+}
+
+/** Absent ou true → menu affiché. false → masqué. */
+export function contractantMenuVisible(
+  scope: ContractantAccessScope | null | undefined,
+  id: ContractantPortalMenuId,
+): boolean {
+  return scope?.menus?.[id] !== false;
 }
 
 export function normalizeContractantScope(
@@ -18,7 +51,8 @@ export function normalizeContractantScope(
         .filter(Boolean),
     ),
   );
-  return { contractantIds: unique };
+  const menus = normalizeContractantMenus(raw?.menus);
+  return menus ? { contractantIds: unique, menus } : { contractantIds: unique };
 }
 
 /** true si au moins un contractant est explicitement coché. */

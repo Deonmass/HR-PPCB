@@ -4,12 +4,15 @@ import fs from 'fs/promises';
 import path from 'path';
 import { randomUUID } from 'crypto';
 import { writeDocxFromTemplate } from './docx-template';
+import { formatAttestationAgentName } from './format-display-name';
 import { buildServiceAttestationPdfBuffer } from './service-attestation-pdf.server';
 import {
   buildServiceAttestationPreviewHtmlForForm,
 } from './service-attestation-preview.server';
+import { splitBilingualServiceForm } from './service-attestation-agent';
 import {
   formatServiceAttestationFileName,
+  fillBilingualServiceAttestationXml,
   fillServiceAttestationXml,
   SERVICE_ATTESTATION_TEMPLATE_PATH,
 } from './service-attestation-template';
@@ -95,25 +98,44 @@ export async function createServiceAttestation(
 ): Promise<ServiceAttestationRecord> {
   await ensureDataDir();
 
+  const language =
+    form.language === 'both' ? 'both' : form.language === 'en' ? 'en' : 'fr';
+  const normalized: ServiceAttestationFormData = {
+    ...form,
+    language,
+    hodName: formatAttestationAgentName(form.hodName),
+    employeeName: formatAttestationAgentName(form.employeeName),
+    bodyText: form.bodyText?.trim() || undefined,
+    bodyTextEn: form.bodyTextEn?.trim() || undefined,
+    hodFunctionEn: form.hodFunctionEn?.trim() || undefined,
+    employeeGenreEn: form.employeeGenreEn?.trim() || undefined,
+    employeeFunctionEn: form.employeeFunctionEn?.trim() || undefined,
+  };
+
   const id = randomUUID();
   const fileName = formatServiceAttestationFileName(
-    form.employeeName,
-    form.documentDate,
-    form.language,
+    normalized.employeeName,
+    normalized.documentDate,
+    language,
   );
   const docxPath = path.join(FILES_DIR, `${id}.docx`);
   const pdfPath = path.join(FILES_DIR, `${id}.pdf`);
 
-  let previewHtml = '';
-
-  await writeDocxFromTemplate(SERVICE_ATTESTATION_TEMPLATE_PATH, docxPath, (xml) =>
-    fillServiceAttestationXml(xml, form),
-  );
-  previewHtml = await buildServiceAttestationPreviewHtmlForForm(form);
+  if (language === 'both') {
+    const { fr, en } = splitBilingualServiceForm(normalized);
+    await writeDocxFromTemplate(SERVICE_ATTESTATION_TEMPLATE_PATH, docxPath, (xml) =>
+      fillBilingualServiceAttestationXml(xml, fr, en),
+    );
+  } else {
+    await writeDocxFromTemplate(SERVICE_ATTESTATION_TEMPLATE_PATH, docxPath, (xml) =>
+      fillServiceAttestationXml(xml, normalized),
+    );
+  }
+  const previewHtml = await buildServiceAttestationPreviewHtmlForForm(normalized);
 
   let savedPdfPath: string | undefined;
   try {
-    const pdfBuffer = await buildServiceAttestationPdfBuffer(form);
+    const pdfBuffer = await buildServiceAttestationPdfBuffer(normalized);
     await fs.writeFile(pdfPath, pdfBuffer);
     savedPdfPath = pdfPath;
   } catch {
@@ -121,7 +143,7 @@ export async function createServiceAttestation(
   }
 
   const record: ServiceAttestationRecord = {
-    ...form,
+    ...normalized,
     id,
     createdAt: new Date().toISOString(),
     fileName,

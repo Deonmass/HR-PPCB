@@ -24,6 +24,7 @@ import {
   type ContractantSexe,
 } from '@/lib/contractants-types';
 import {
+  contractantMenuVisible,
   getContractantScopeFromMenus,
   hasExplicitContractantScope,
 } from '@/lib/contractant-scope';
@@ -216,6 +217,10 @@ export default function ContractantsPage() {
   const canDelete = can('employes.contractants', 'delete') || can('employes.liste', 'delete');
   const contractantScope = getContractantScopeFromMenus(menus);
   const hasScopedContractants = hasExplicitContractantScope(contractantScope);
+  const showDashboardTab = contractantMenuVisible(contractantScope, 'dashboard');
+  const showContractantsTab = !isContractantOnly;
+  const showEmployesTab = contractantMenuVisible(contractantScope, 'employes');
+  const showExitTab = contractantMenuVisible(contractantScope, 'exit');
   /** Accueil avancé (salutation / new / exits) pour espace contractant. */
   const useHomeDashboard = isContractantOnly || hasScopedContractants;
   /** Avec périmètre limité, pas de création de nouvelle société. */
@@ -255,10 +260,22 @@ export default function ContractantsPage() {
   useEffect(() => {
     if (tabFromUrl === 'employes' || tabFromUrl === 'contractants' || tabFromUrl === 'dashboard' || tabFromUrl === 'exit') {
       setTabState(tabFromUrl);
-      return;
+    } else if (isContractantOnly && showDashboardTab) {
+      setTabState('dashboard');
     }
-    if (isContractantOnly) setTabState('dashboard');
-  }, [tabFromUrl, isContractantOnly]);
+  }, [tabFromUrl, isContractantOnly, showDashboardTab]);
+
+  useEffect(() => {
+    const allowed: Record<PageTab, boolean> = {
+      dashboard: showDashboardTab,
+      contractants: showContractantsTab,
+      employes: showEmployesTab,
+      exit: showExitTab,
+    };
+    if (allowed[tab]) return;
+    const next = (['dashboard', 'employes', 'exit', 'contractants'] as PageTab[]).find((key) => allowed[key]);
+    if (next) setTab(next);
+  }, [tab, showDashboardTab, showContractantsTab, showEmployesTab, showExitTab, setTab]);
 
   const [contractants, setContractants] = useState<Contractant[]>([]);
   const [departements, setDepartements] = useState<DepartmentSetting[]>([]);
@@ -501,6 +518,7 @@ export default function ContractantsPage() {
         || (e.service || '').toLowerCase().includes(q)
         || e.typeService.toLowerCase().includes(q)
         || e.lieuAffectation.toLowerCase().includes(q)
+        || (e.telephoneAirtime || '').toLowerCase().includes(q)
         || e.telephone.toLowerCase().includes(q)
         || e.contractantNom.toLowerCase().includes(q)
         || etatCivilLabel(e.etatCivil).toLowerCase().includes(q)
@@ -517,7 +535,7 @@ export default function ContractantsPage() {
         fonction: (e) => e.fonction,
         departement: (e) => e.departement,
         service: (e) => e.service || '',
-        telephone: (e) => e.telephone,
+        telephone: (e) => e.telephoneAirtime || '',
         etatCivil: (e) => etatCivilLabel(e.etatCivil),
         statut: (e) => (e.dateSortie ? 'Sorti' : e.statut),
         contractant: (e) => e.contractantNom,
@@ -535,7 +553,7 @@ export default function ContractantsPage() {
           && matchesColumnFilter(colFilters.fonction, e.fonction)
           && matchesColumnFilter(colFilters.departement, e.departement)
           && matchesColumnFilter(colFilters.service, e.service || '')
-          && matchesColumnFilter(colFilters.telephone, e.telephone)
+          && matchesColumnFilter(colFilters.telephone, e.telephoneAirtime || '')
           && matchesColumnFilter(colFilters.etatCivil, etatCivilLabel(e.etatCivil))
           && matchesColumnFilter(colFilters.statut, e.dateSortie ? 'Sorti' : e.statut)
           && matchesColumnFilter(colFilters.contractant, e.contractantNom),
@@ -1127,14 +1145,16 @@ export default function ContractantsPage() {
                 </div>
               )}
               <div className="tabs header-tabs header-tabs-compact contractants-tabs">
-                <button
-                  type="button"
-                  className={`tab-btn tab-btn-sm${tab === 'dashboard' ? ' active' : ''}`}
-                  onClick={() => setTab('dashboard')}
-                >
-                  {useHomeDashboard ? 'Accueil' : 'Dashboard'}
-                </button>
-                {!isContractantOnly && (
+                {showDashboardTab && (
+                  <button
+                    type="button"
+                    className={`tab-btn tab-btn-sm${tab === 'dashboard' ? ' active' : ''}`}
+                    onClick={() => setTab('dashboard')}
+                  >
+                    {useHomeDashboard ? 'Accueil' : 'Dashboard'}
+                  </button>
+                )}
+                {showContractantsTab && (
                   <button
                     type="button"
                     className={`tab-btn tab-btn-sm${tab === 'contractants' ? ' active' : ''}`}
@@ -1144,22 +1164,26 @@ export default function ContractantsPage() {
                     <span className="employees-tab-count">{stats.contractants}</span>
                   </button>
                 )}
-                <button
-                  type="button"
-                  className={`tab-btn tab-btn-sm${tab === 'employes' ? ' active' : ''}`}
-                  onClick={() => setTab('employes')}
-                >
-                  Liste des employés
-                  <span className="employees-tab-count">{stats.employes}</span>
-                </button>
-                <button
-                  type="button"
-                  className={`tab-btn tab-btn-sm${tab === 'exit' ? ' active' : ''}`}
-                  onClick={() => setTab('exit')}
-                >
-                  Exit
-                  <span className="employees-tab-count">{stats.exits}</span>
-                </button>
+                {showEmployesTab && (
+                  <button
+                    type="button"
+                    className={`tab-btn tab-btn-sm${tab === 'employes' ? ' active' : ''}`}
+                    onClick={() => setTab('employes')}
+                  >
+                    Liste des employés
+                    <span className="employees-tab-count">{stats.employes}</span>
+                  </button>
+                )}
+                {showExitTab && (
+                  <button
+                    type="button"
+                    className={`tab-btn tab-btn-sm${tab === 'exit' ? ' active' : ''}`}
+                    onClick={() => setTab('exit')}
+                  >
+                    Exit
+                    <span className="employees-tab-count">{stats.exits}</span>
+                  </button>
+                )}
               </div>
               {showPlusButton && (
                 <button
@@ -1203,7 +1227,7 @@ export default function ContractantsPage() {
                 placeholder={
                   tab === 'exit'
                     ? 'Employé sorti, fonction, date…'
-                    : 'Employé, fonction, service, département…'
+                    : 'Employé, fonction, téléphone, département…'
                 }
                 value={search}
                 onChange={(e) => setSearch(e.target.value)}
@@ -1220,9 +1244,21 @@ export default function ContractantsPage() {
             </div>
             <div className="table-wrap contractants-emp-table-wrap">
               <table className="contractants-table contractants-table-compact">
+                <colgroup>
+                  <col className="contractants-col-nom" />
+                  <col className="contractants-col-sexe" />
+                  <col className="contractants-col-lieu" />
+                  <col className="contractants-col-fonc" />
+                  <col className="contractants-col-dept" />
+                  <col className="contractants-col-service" />
+                  <col className="contractants-col-tel" />
+                  <col className="contractants-col-statut" />
+                  {!hideContractantColumn && <col className="contractants-col-contractant" />}
+                  <col className="contractants-col-actions" />
+                </colgroup>
                 <thead>
                   <tr>
-                    <th>
+                    <th className="contractants-col-nom">
                       <TableHeaderFilter
                         label="Noms"
                         values={empFilterValues.nom}
@@ -1230,7 +1266,7 @@ export default function ContractantsPage() {
                         onChange={(next) => setColFilters((p) => ({ ...p, nom: next }))}
                       />
                     </th>
-                    <th>
+                    <th className="contractants-col-sexe">
                       <TableHeaderFilter
                         label="Sexe"
                         values={empFilterValues.sexe}
@@ -1238,7 +1274,7 @@ export default function ContractantsPage() {
                         onChange={(next) => setColFilters((p) => ({ ...p, sexe: next }))}
                       />
                     </th>
-                    <th>
+                    <th className="contractants-col-lieu">
                       <TableHeaderFilter
                         label="Lieu"
                         values={empFilterValues.lieuAffectation}
@@ -1246,7 +1282,7 @@ export default function ContractantsPage() {
                         onChange={(next) => setColFilters((p) => ({ ...p, lieuAffectation: next }))}
                       />
                     </th>
-                    <th>
+                    <th className="contractants-col-fonc">
                       <TableHeaderFilter
                         label="Fonction"
                         values={empFilterValues.fonction}
@@ -1254,7 +1290,7 @@ export default function ContractantsPage() {
                         onChange={(next) => setColFilters((p) => ({ ...p, fonction: next }))}
                       />
                     </th>
-                    <th>
+                    <th className="contractants-col-dept">
                       <TableHeaderFilter
                         label="Dépt."
                         values={empFilterValues.departement}
@@ -1262,7 +1298,7 @@ export default function ContractantsPage() {
                         onChange={(next) => setColFilters((p) => ({ ...p, departement: next }))}
                       />
                     </th>
-                    <th>
+                    <th className="contractants-col-service">
                       <TableHeaderFilter
                         label="Service"
                         values={empFilterValues.service}
@@ -1270,7 +1306,15 @@ export default function ContractantsPage() {
                         onChange={(next) => setColFilters((p) => ({ ...p, service: next }))}
                       />
                     </th>
-                    <th>
+                    <th className="contractants-col-tel">
+                      <TableHeaderFilter
+                        label="Tél."
+                        values={empFilterValues.telephone}
+                        selected={colFilters.telephone}
+                        onChange={(next) => setColFilters((p) => ({ ...p, telephone: next }))}
+                      />
+                    </th>
+                    <th className="contractants-col-statut">
                       <TableHeaderFilter
                         label="Statut"
                         values={empFilterValues.statut}
@@ -1279,7 +1323,7 @@ export default function ContractantsPage() {
                       />
                     </th>
                     {!hideContractantColumn && (
-                      <th>
+                      <th className="contractants-col-contractant">
                         <TableHeaderFilter
                           label="Contractant"
                           values={empFilterValues.contractant}
@@ -1288,13 +1332,13 @@ export default function ContractantsPage() {
                         />
                       </th>
                     )}
-                    <th className="col-actions"> </th>
+                    <th className="col-actions contractants-col-actions"> </th>
                   </tr>
                 </thead>
                 <tbody>
                   {filteredEmployees.length === 0 ? (
                     <tr className="contractants-empty-row">
-                      <td colSpan={hideContractantColumn ? 8 : 9}>
+                      <td colSpan={hideContractantColumn ? 9 : 10}>
                         <div className="contractants-empty-state">
                           <span className="contractants-empty-icon" aria-hidden>
                             {search.trim() || activeEmpFilterCount > 0 ? (
@@ -1321,13 +1365,16 @@ export default function ContractantsPage() {
                         onDoubleClick={() => setViewEmployee(e)}
                         style={{ cursor: 'pointer' }}
                       >
-                        <td className="contractants-col-nom">{e.nom}</td>
+                        <td className="contractants-col-nom" title={e.nom}>{e.nom}</td>
                         <td className="contractants-col-sexe">{e.sexe || '—'}</td>
                         <td className="contractants-col-lieu" title={e.lieuAffectation}>{e.lieuAffectation || '—'}</td>
                         <td className="contractants-col-fonc" title={e.fonction || undefined}>{e.fonction || '—'}</td>
                         <td className="contractants-col-dept" title={e.departement || undefined}>{e.departement || '—'}</td>
                         <td className="contractants-col-service" title={e.service || undefined}>
                           {e.service || '—'}
+                        </td>
+                        <td className="contractants-col-tel" title={e.telephoneAirtime || undefined}>
+                          {e.telephoneAirtime || '—'}
                         </td>
                         <td className="contractants-col-statut">
                           {e.dateSortie ? (

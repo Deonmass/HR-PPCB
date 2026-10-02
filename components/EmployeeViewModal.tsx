@@ -127,6 +127,7 @@ const ORG_FIELDS_BASE: FieldDef[] = [
   { key: 'centreCout', label: 'Centre de coût' },
   { key: 'cnss', label: 'CNSS' },
   { key: 'nif', label: 'NIF' },
+  { key: 'telephone', label: 'Numéro CUG' },
   { key: 'employeeSubGroup', label: 'Sous-groupe' },
   { key: 'payrollArea', label: 'Payroll Area' },
   { key: 'personnelArea', label: 'Personnel Area' },
@@ -865,7 +866,11 @@ export default function EmployeeViewModal({ employee, canEdit = false, initialTa
                     </div>
                   ) : (
                     <div className="employee-view-value-row">
-                      <span>{display(value as string | number | null)}</span>
+                      <span>
+                        {field.key === 'telephone' && (value == null || value === '')
+                          ? 'pas de numéro CUG'
+                          : display(value as string | number | null)}
+                      </span>
                       {canFieldEdit && (
                         <button
                           type="button"

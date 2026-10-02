@@ -11585,6 +11585,67 @@ html[data-theme="light"] .settings-filter-tab.is-active {
   margin-top: 0.65rem;
 }
 
+.permissions-contractant-grid {
+  display: grid;
+  grid-template-columns: minmax(14rem, 18rem) minmax(0, 1fr);
+  grid-template-areas:
+    "title-menus title-scope"
+    "hint-menus hint-scope"
+    "checks-menus checks-scope";
+  column-gap: 2rem;
+  row-gap: 0.45rem;
+  align-items: center;
+  margin-top: 0;
+}
+
+.permissions-contractant-title-menus { grid-area: title-menus; }
+.permissions-contractant-title-scope { grid-area: title-scope; }
+.permissions-contractant-hint-menus { grid-area: hint-menus; }
+.permissions-contractant-hint-scope { grid-area: hint-scope; }
+.permissions-contractant-checks-menus { grid-area: checks-menus; }
+.permissions-contractant-checks-scope { grid-area: checks-scope; }
+
+.permissions-contractant-grid .permissions-ot-col-title,
+.permissions-contractant-grid .permissions-ot-scope-hint,
+.permissions-contractant-grid .permissions-ot-empty-svc {
+  margin: 0;
+}
+
+.permissions-contractant-hint-scope {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem 1rem;
+  min-width: 0;
+}
+
+.permissions-contractant-hint-scope .permissions-ot-scope-hint {
+  flex: 1 1 auto;
+  min-width: 0;
+}
+
+.permissions-contractant-hint-scope .permissions-ot-scope-actions {
+  margin: 0;
+  flex: 0 0 auto;
+  flex-wrap: nowrap;
+}
+
+.permissions-contractant-checks-menus,
+.permissions-contractant-checks-scope {
+  align-self: start;
+}
+
+.permissions-contractant-checks {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.32rem 0.85rem;
+  margin-top: 0;
+}
+
+.permissions-contractant-checks.is-single {
+  grid-template-columns: 1fr;
+}
+
 .permissions-ot-col {
   display: flex;
   flex-direction: column;
@@ -11607,8 +11668,24 @@ html[data-theme="light"] .settings-filter-tab.is-active {
 }
 
 @media (max-width: 720px) {
-  .permissions-ot-columns {
+  .permissions-ot-columns,
+  .permissions-contractant-checks {
     grid-template-columns: 1fr;
+  }
+
+  .permissions-contractant-grid {
+    grid-template-columns: 1fr;
+    grid-template-areas:
+      "title-menus"
+      "hint-menus"
+      "checks-menus"
+      "title-scope"
+      "hint-scope"
+      "checks-scope";
+  }
+
+  .permissions-contractant-hint-scope {
+    flex-wrap: wrap;
   }
 }
 
@@ -16177,6 +16254,32 @@ html[data-theme="light"] .employees-ppc-loc-table td.is-femmes .employees-ppc-lo
   border-radius: 2px;
   margin-right: 0.3rem;
   vertical-align: middle;
+}
+
+.employees-exit-swatch.is-selected-month {
+  background: transparent;
+  box-shadow: inset 0 0 0 2px #2563eb;
+}
+
+.employees-exit-monthly-panel .travel-history-chart-cols {
+  gap: 0.2rem;
+}
+
+.employees-exit-month-col.is-selected {
+  background: color-mix(in srgb, #2563eb 14%, transparent);
+  box-shadow: inset 0 -3px 0 #2563eb;
+  border-radius: 6px 6px 0 0;
+}
+
+.employees-exit-monthly-panel .travel-history-chart-label {
+  white-space: normal;
+  line-height: 1.15;
+  font-size: 0.55rem;
+}
+
+.employees-exit-monthly-panel .travel-history-chart-label.is-selected {
+  font-weight: 700;
+  color: #1d4ed8;
 }
 
 .employees-exit-plot-body {
@@ -24777,6 +24880,507 @@ html[data-theme='dark'] .guest-house-kimpese-panel {
   color: var(--danger);
 }
 
+.charroi-status.is-confirme,
+.charroi-status.is-pending {
+  background: color-mix(in srgb, #0ea5e9 16%, transparent);
+  color: #0369a1;
+}
+
+.charroi-voyage-budget {
+  width: 100%;
+  margin-top: 0.35rem;
+}
+
+.charroi-voyage-budget th,
+.charroi-voyage-budget td {
+  padding: 0.35rem 0.5rem;
+}
+
+.charroi-voyage-budget input {
+  width: 8.5rem;
+  text-align: right;
+}
+
+.charroi-voyage-budget tfoot td {
+  font-weight: 700;
+}
+
+.charroi-status.is-effectue {
+  background: var(--success-soft);
+  color: var(--success);
+}
+
+.main:has(.charroi-voyage-page) {
+  --main-pad-x: 0.85rem;
+  --main-pad-y: 0.65rem;
+  padding: var(--main-pad-y) var(--main-pad-x);
+}
+
+.charroi-voyage-page .page-header {
+  gap: 0.45rem 0.75rem;
+  padding-bottom: 0.4rem;
+  margin-bottom: 0.45rem;
+}
+
+.charroi-voyage-page .charroi-filters {
+  margin-bottom: 0.55rem;
+  padding: 0.4rem 0.55rem;
+}
+
+.charroi-voyage-empty {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: calc(100vh - 8.5rem);
+  border-radius: 12px;
+  overflow: hidden;
+  background:
+    radial-gradient(circle at 50% 46%, color-mix(in srgb, var(--ppc-red) 7%, transparent), transparent 42%),
+    color-mix(in srgb, var(--panel) 88%, transparent);
+  border: 1px solid color-mix(in srgb, var(--border) 75%, transparent);
+}
+
+.charroi-voyage-empty-icon {
+  position: absolute;
+  width: min(22rem, 58%);
+  height: auto;
+  color: var(--muted);
+  opacity: 0.13;
+  pointer-events: none;
+  user-select: none;
+}
+
+.charroi-voyage-empty p {
+  position: relative;
+  margin: 0;
+  max-width: 18rem;
+  text-align: center;
+  font-size: 0.92rem;
+  font-weight: 650;
+  color: var(--muted);
+}
+
+.charroi-voyage-page h2 {
+  font-size: 1.2rem;
+}
+
+.charroi-voyage-page .page-header p {
+  font-size: 0.74rem;
+  margin: 0.1rem 0 0;
+}
+
+.charroi-voyage-period {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.45rem 0.6rem;
+  align-items: center;
+  margin: 0;
+}
+
+.charroi-voyage-add {
+  width: 2rem;
+  min-width: 2rem;
+  height: 2rem;
+  padding: 0;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 999px;
+}
+
+.charroi-voyage-page .charroi-voyage-table.is-compact {
+  font-size: 0.68rem;
+}
+
+.charroi-voyage-page .charroi-voyage-table.is-compact th,
+.charroi-voyage-page .charroi-voyage-table.is-compact td {
+  padding: 0.32rem 0.38rem;
+}
+
+.main:has(.protocol-voyage-page) {
+  --main-pad-x: 0.85rem;
+  --main-pad-y: 0.65rem;
+  padding: var(--main-pad-y) var(--main-pad-x);
+}
+
+.protocol-voyage-kpis {
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  gap: 0.65rem;
+}
+
+.protocol-voyage-kpis .card-value {
+  font-size: 1.15rem;
+}
+
+.protocol-voyage-stats {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.45rem;
+}
+
+.protocol-voyage-stats button,
+.protocol-voyage-stats div {
+  display: flex;
+  flex-direction: column;
+  gap: 0.1rem;
+  min-width: 8.5rem;
+  padding: 0.45rem 0.7rem;
+  border-radius: 0.65rem;
+  border: 1px solid var(--border);
+  background: var(--panel);
+  text-align: left;
+  font-size: 0.72rem;
+  color: var(--muted);
+}
+
+.protocol-voyage-stats button {
+  cursor: pointer;
+}
+
+.protocol-voyage-stats button:hover {
+  background: var(--surface-hover);
+}
+
+.protocol-voyage-stats strong {
+  color: var(--text);
+  font-size: 0.92rem;
+}
+
+.protocol-voyage-charts {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 0.75rem;
+}
+
+.protocol-voyage-table th,
+.protocol-voyage-table td {
+  padding: 0.55rem 0.65rem;
+  white-space: normal;
+}
+
+@media (max-width: 1100px) {
+  .protocol-voyage-kpis,
+  .protocol-voyage-charts {
+    grid-template-columns: 1fr;
+  }
+}
+
+.charroi-voyage-page .charroi-voyage-charts .panel-head h3,
+.charroi-voyage-page .charroi-voyage-ranks h3,
+.charroi-voyage-page .travel-history-chart-label {
+  font-size: 0.72rem;
+}
+
+.charroi-voyage-period label {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 0.3rem;
+  font-size: 0.62rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+.charroi-voyage-period select {
+  min-width: 4.5rem;
+  height: 1.85rem;
+  padding: 0 0.45rem;
+  border-radius: 0.45rem;
+  border: 1px solid var(--border);
+  background: var(--panel);
+  color: var(--text);
+  font-size: 0.78rem;
+  font-weight: 650;
+  text-transform: none;
+  letter-spacing: 0;
+}
+
+.charroi-voyage-year-chart {
+  margin: 0;
+}
+
+.charroi-voyage-year-plot {
+  min-height: 200px;
+}
+
+.charroi-voyage-page .charroi-voyage-kpi {
+  min-height: 4.05rem;
+  padding: 0.6rem 0.75rem;
+}
+
+.charroi-voyage-page .charroi-voyage-kpi .card-value {
+  font-size: 1.25rem;
+}
+
+.charroi-voyage-page .charroi-voyage-kpi .card-label {
+  font-size: 0.66rem;
+}
+
+.charroi-voyage-page .charroi-voyage-panel h3 {
+  font-size: 0.86rem;
+}
+
+.charroi-voyage-page .charroi-voyage-hint {
+  font-size: 0.68rem;
+  margin-bottom: 0.45rem;
+}
+
+.charroi-voyage-page .charroi-voyage-table {
+  font-size: 0.72rem;
+}
+
+.charroi-voyage-page .charroi-voyage-table th,
+.charroi-voyage-page .charroi-voyage-table td {
+  padding: 0.4rem 0.48rem;
+}
+
+.charroi-voyage-page .charroi-voyage-rank-label {
+  font-size: 0.76rem;
+}
+
+.charroi-voyage-page .charroi-voyage-charts .travel-history-chart-panel {
+  min-height: 200px;
+}
+
+.charroi-voyage-page .guest-house-main-tabs.charroi-voyage-main-tabs {
+  height: auto !important;
+  min-height: 2.2rem;
+  padding: 0.22rem !important;
+  border-radius: 999px;
+  background: color-mix(in srgb, var(--surface) 88%, var(--panel));
+  box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--border) 80%, transparent);
+}
+
+.charroi-voyage-page .charroi-voyage-main-tabs .tab-btn.tab-btn-sm {
+  border-radius: 999px;
+  padding: 0.42rem 0.95rem !important;
+  min-height: 1.9rem !important;
+  height: auto !important;
+  transition: background 0.2s ease, color 0.2s ease, transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.charroi-voyage-page .charroi-voyage-main-tabs .tab-btn.active {
+  transform: translateY(-1px);
+}
+
+.charroi-voyage-toggle {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.35rem;
+}
+
+.charroi-voyage-toggle button {
+  border: 1px solid var(--border);
+  background: transparent;
+  border-radius: 999px;
+  padding: 0.4rem 0.85rem;
+  cursor: pointer;
+}
+
+.charroi-voyage-toggle button.is-active {
+  background: color-mix(in srgb, var(--ppc-red) 12%, transparent);
+  border-color: color-mix(in srgb, var(--ppc-red) 45%, var(--border));
+  font-weight: 650;
+}
+
+.charroi-voyage-dash {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.charroi-voyage-kpis {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 0.85rem;
+}
+
+.charroi-voyage-kpi {
+  min-height: 5.4rem;
+  padding: 1rem 1.15rem;
+  animation: charroi-voyage-rise 0.5s ease both;
+}
+
+.charroi-voyage-kpi .card-value {
+  font-size: 1.65rem;
+}
+
+.charroi-voyage-charts {
+  display: grid;
+  grid-template-columns: minmax(0, 1.25fr) minmax(18rem, 0.9fr);
+  gap: 0.9rem;
+  align-items: stretch;
+}
+
+.charroi-voyage-charts .travel-history-chart-panel {
+  margin: 0;
+  min-height: 280px;
+  animation: charroi-voyage-rise 0.55s ease both;
+}
+
+.charroi-voyage-ranks {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 0.9rem;
+}
+
+.charroi-voyage-panel {
+  margin: 0;
+  padding: 1rem 1.1rem 1.15rem;
+  animation: charroi-voyage-rise 0.55s ease both;
+}
+
+.charroi-voyage-panel h3 {
+  margin: 0;
+  font-size: 1rem;
+}
+
+.charroi-voyage-hint {
+  margin: 0.2rem 0 0.75rem;
+  font-size: 0.78rem;
+}
+
+.charroi-voyage-page .charroi-filters .charroi-voyage-hint {
+  margin: 0;
+}
+
+.charroi-voyage-rank {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+}
+
+.charroi-voyage-rank button {
+  display: grid;
+  grid-template-columns: 1.7rem minmax(0, 1fr) auto;
+  gap: 0.7rem;
+  align-items: center;
+  width: 100%;
+  text-align: left;
+  border: 0;
+  background: transparent;
+  cursor: pointer;
+  padding: 0.4rem 0.25rem;
+  border-radius: 0.55rem;
+  animation: charroi-voyage-rise 0.45s ease both;
+}
+
+.charroi-voyage-rank button:hover {
+  background: var(--surface-hover);
+}
+
+.charroi-voyage-rank-index {
+  width: 1.7rem;
+  height: 1.7rem;
+  border-radius: 999px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.75rem;
+  font-weight: 700;
+  background: color-mix(in srgb, var(--border) 55%, transparent);
+}
+
+.charroi-voyage-rank-index.is-route { color: #c2410c; background: color-mix(in srgb, #f97316 18%, transparent); }
+.charroi-voyage-rank-index.is-driver { color: #0369a1; background: color-mix(in srgb, #0ea5e9 18%, transparent); }
+.charroi-voyage-rank-index.is-fleet { color: #15803d; background: color-mix(in srgb, #22c55e 18%, transparent); }
+
+.charroi-voyage-rank-body {
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.15rem;
+}
+
+.charroi-voyage-rank-label {
+  font-weight: 600;
+  line-height: 1.25;
+}
+
+.charroi-voyage-rank-track {
+  display: block;
+  height: 0.42rem;
+  border-radius: 999px;
+  background: color-mix(in srgb, var(--border) 70%, transparent);
+  overflow: hidden;
+  margin-top: 0.2rem;
+}
+
+.charroi-voyage-rank-fill {
+  display: block;
+  height: 100%;
+  border-radius: inherit;
+  transform-origin: left center;
+  animation: charroi-voyage-bar 0.8s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+.charroi-voyage-rank-fill.is-route { background: #f97316; }
+.charroi-voyage-rank-fill.is-driver { background: #0ea5e9; }
+.charroi-voyage-rank-fill.is-fleet { background: #22c55e; }
+
+.charroi-voyage-table-wrap {
+  max-height: none;
+}
+
+.charroi-voyage-upcoming .charroi-voyage-table-wrap {
+  max-height: 360px;
+}
+
+.charroi-voyage-table th,
+.charroi-voyage-table td {
+  padding: 0.7rem 0.8rem;
+  white-space: normal;
+  vertical-align: middle;
+  line-height: 1.35;
+}
+
+.charroi-voyage-table tbody tr {
+  cursor: context-menu;
+}
+
+.charroi-voyage-table tbody tr.is-pending {
+  opacity: 0.65;
+}
+
+.charroi-voyage-row-spinner {
+  margin-right: 0;
+  border-color: color-mix(in srgb, var(--muted) 35%, transparent);
+  border-top-color: var(--ppc-red);
+}
+
+.charroi-voyage-vehicle-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.45rem 1rem;
+  margin-top: 0.55rem;
+  padding: 0.65rem 0.8rem;
+  border-radius: 0.65rem;
+  background: color-mix(in srgb, var(--surface-hover) 70%, transparent);
+  font-size: 0.84rem;
+}
+
+@keyframes charroi-voyage-rise {
+  from { opacity: 0; transform: translateY(12px); }
+  to { opacity: 1; transform: none; }
+}
+
+@keyframes charroi-voyage-bar {
+  from { transform: scaleX(0); }
+  to { transform: scaleX(1); }
+}
+
+@media (max-width: 1100px) {
+  .charroi-voyage-kpis,
+  .charroi-voyage-ranks,
+  .charroi-voyage-charts {
+    grid-template-columns: 1fr;
+  }
+}
+
 .charroi-form-section {
   margin: 1rem 0 0.65rem;
   font-size: 0.9rem;
@@ -29740,7 +30344,7 @@ html[data-theme="light"] .contractants-sticky {
 .contractants-emp-table-wrap {
   flex: 1;
   min-height: 0;
-  overflow-x: hidden;
+  overflow-x: auto;
   overflow-y: auto;
   max-height: none;
 }
@@ -29753,24 +30357,32 @@ html[data-theme="light"] .contractants-sticky {
 
 .contractants-table-compact th,
 .contractants-table-compact td {
-  padding: 0.18rem 0.35rem;
+  padding: 0.32rem 0.45rem;
   line-height: 1.2;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
   vertical-align: middle;
+  text-align: left;
 }
 
 .contractants-table-compact th {
   font-size: 0.62rem;
+  padding: 0;
 }
 
+.contractants-table-compact col.contractants-col-nom { width: 22%; }
+.contractants-table-compact col.contractants-col-sexe { width: 4.6rem; }
+.contractants-table-compact col.contractants-col-lieu { width: 9%; }
+.contractants-table-compact col.contractants-col-fonc { width: 16%; }
+.contractants-table-compact col.contractants-col-dept { width: 12%; }
+.contractants-table-compact col.contractants-col-service { width: 11%; }
+.contractants-table-compact col.contractants-col-tel { width: 8.4rem; }
+.contractants-table-compact col.contractants-col-statut { width: 7.2rem; }
+.contractants-table-compact col.contractants-col-contractant { width: 12%; }
+.contractants-table-compact col.contractants-col-actions { width: 2.25rem; }
+
 .contractants-table-compact .contractants-col-nom {
-  width: 34%;
-  min-width: 12rem;
-  white-space: normal;
-  overflow: visible;
-  text-overflow: unset;
   font-weight: 600;
   font-size: 0.72rem;
   letter-spacing: -0.01em;
@@ -29778,35 +30390,40 @@ html[data-theme="light"] .contractants-sticky {
 }
 
 .contractants-table-compact .contractants-col-sexe {
-  width: 3.5%;
   text-align: center;
 }
 
-.contractants-table-compact .contractants-col-lieu {
-  width: 10%;
+.contractants-table-compact .table-hf,
+.contractants-table-compact .table-hf-btn {
+  width: 100%;
+  max-width: 100%;
+  min-width: 0;
+  box-sizing: border-box;
 }
 
-.contractants-table-compact .contractants-col-fonc {
-  width: 16%;
+.contractants-table-compact .table-hf-btn {
+  justify-content: flex-start;
+  gap: 0.2rem;
+  padding: 0.32rem 0.45rem;
+  overflow: hidden;
 }
 
-.contractants-table-compact .contractants-col-dept {
-  width: 11%;
+.contractants-table-compact th.contractants-col-sexe .table-hf-btn {
+  justify-content: center;
 }
 
-.contractants-table-compact .contractants-col-statut {
-  width: 9%;
-}
-
-.contractants-table-compact .contractants-col-contractant {
-  width: 13%;
+.contractants-table-compact .table-hf-label {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  min-width: 0;
 }
 
 .contractants-table-compact .col-actions {
-  width: 2.5rem;
+  width: 2.25rem;
   text-align: center;
   white-space: nowrap;
   overflow: visible;
+  padding: 0.18rem 0;
 }
 
 .contractants-row-menu-btn {
@@ -30482,6 +31099,10 @@ html[data-theme="light"] .contractants-dash-filters {
   gap: 0.75rem;
   align-items: stretch;
   margin-bottom: 0.75rem;
+}
+
+.contractants-dept-chart {
+  grid-column: 1 / -1;
 }
 
 .contractants-charts-grid .home-chart-panel {
@@ -41381,6 +42002,20 @@ html:not([data-theme='light']) .training-cost-table td {
 .contractants-page .contractants-table td {
   font-size: 0.72rem;
   padding: 0.35rem 0.45rem;
+}
+.contractants-page .contractants-table.contractants-table-compact th {
+  padding: 0;
+}
+.contractants-page .contractants-table.contractants-table-compact td {
+  padding: 0.32rem 0.45rem;
+}
+.contractants-page .contractants-table.contractants-table-compact td.contractants-col-sexe,
+.contractants-page .contractants-table.contractants-table-compact th.contractants-col-sexe {
+  text-align: center;
+}
+.contractants-page .contractants-table.contractants-table-compact td.col-actions {
+  padding: 0.18rem 0;
+  text-align: center;
 }
 
 .contractant-discipline-form-panel {

@@ -47,6 +47,15 @@ function IconClock() {
   );
 }
 
+function IconPhone() {
+  return (
+    <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+      <rect x="7" y="2" width="10" height="20" rx="2" />
+      <path d="M11 18h2" />
+    </svg>
+  );
+}
+
 function IconWallet() {
   return (
     <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
@@ -181,6 +190,16 @@ const CARDS: PolicyCard[] = [
     accent: '#1d4ed8',
     badge: 'Paie',
     icon: <IconWallet />,
+  },
+  {
+    id: 'cellphone',
+    title: 'Politique cellphone',
+    description: 'Plafonds mensuels d’airtime par catégorie et par grade.',
+    href: '/politique/cellphone',
+    menuId: 'politique.cellphone',
+    accent: '#0e7490',
+    badge: 'Airtime',
+    icon: <IconPhone />,
   },
   ...POLITIQUE_DOCS.map((doc) => ({
     id: doc.id,

@@ -57,6 +57,7 @@ export const RAISON_EXITS = [
   'Licenciement',
   'Retraite',
   'Fin de contrat',
+  'Deces',
 ] as const;
 export type RaisonExit = (typeof RAISON_EXITS)[number];
 

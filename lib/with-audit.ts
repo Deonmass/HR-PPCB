@@ -1,5 +1,6 @@
 import 'server-only';
 
+import { after } from 'next/server';
 import { cookies } from 'next/headers';
 import { getSession, getSessionCookieName } from './auth-store';
 import { findUserByIdFromParams } from './params-users-store';
@@ -72,6 +73,11 @@ export interface WithAuditOptions {
   method?: string;
   /** Si false, n’enregistre pas d’erreur audit en cas d’échec (défaut true). */
   logErrors?: boolean;
+  /**
+   * Écrit le journal après la réponse HTTP.
+   * Utile quand le journal est volumineux et ne doit pas bloquer l'enregistrement.
+   */
+  defer?: boolean;
 }
 
 export async function withAudit<T>(
@@ -141,7 +147,11 @@ export async function withAudit<T>(
       meta: options.meta,
     };
 
-    await appendAuditLog(payload);
+    if (options.defer) {
+      after(() => appendAuditLog(payload));
+    } else {
+      await appendAuditLog(payload);
+    }
     return result;
   } catch (err) {
     if (options.logErrors !== false) {

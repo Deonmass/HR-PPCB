@@ -46,6 +46,8 @@ export interface ContractantEmployee {
   /** Service rattaché au département (paramètres). */
   service: string;
   telephone: string;
+  /** MSISDN airtime pour l’affichage. Non enregistré sur la fiche. */
+  telephoneAirtime?: string;
   etatCivil: ContractantEtatCivilId;
   /** Permanent ou Journalier */
   statut: ContractantEmployeeStatut;

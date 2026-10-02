@@ -4,6 +4,7 @@ import fs from 'fs/promises';
 import JSZip from 'jszip';
 import { escapeXmlText } from './docx-template';
 import { formatDisplayDate } from './xlsx-populate-utils';
+import { formatAttestationAgentName } from './format-display-name';
 import type { ServiceAttestationFormData } from './service-attestation-types';
 import { PPC_LETTERHEAD_ADDRESS_LINES } from './ppc-letterhead-address';
 import { SERVICE_ATTESTATION_TEMPLATE_PATH } from './service-attestation-template-paths';
@@ -111,38 +112,54 @@ function formatDocumentDate(value: string, language: 'fr' | 'en'): string {
   });
 }
 
-function applyEnglishBoilerplate(xml: string): string {
+/** Textes EN issus du modèle Word officiel. */
+function applyEnglishBoilerplate(
+  xml: string,
+  department: string,
+  employeeGenreEn: string,
+): string {
   let next = xml;
+  const dept = department.trim();
+  const pronoun = /ms\.?|mrs\.?|miss/i.test(employeeGenreEn) ? 'her' : 'him';
   const replacements: [string, string][] = [
-    ['ATTESTATION DE SERVICE', 'CERTIFICATE OF EMPLOYMENT'],
-    ['Je soussignée', 'I, the undersigned'],
-    ['Je soussigné', 'I, the undersigned'],
+    ['ATTESTATION DE SERVICE', 'CERTIFICATE OF SERVICE'],
+    ['Je soussignée,', 'I, the undersigned,'],
+    ['Je soussigné,', 'I, the undersigned,'],
     ['atteste par la présente que', 'hereby certify that'],
-    ['Matricule', 'Employee ID'],
+    ['Matricule', 'employee number'],
     [
       'est employée dans notre entreprise depuis le',
-      'has been employed by our company since',
+      'is employed in our company since',
     ],
     [
       'est employé dans notre entreprise depuis le',
-      'has been employed by our company since',
+      'is employed in our company since',
     ],
     [
       ' et occupe actuellement le poste de',
-      ' and currently holds the position of',
+      ', and occupies the position of',
     ],
-    ['au sein du département de', 'in the department of'],
-    ['au sein du département d', 'in the department of'],
+    ...(dept
+      ? ([
+          [` au sein du département de ${dept}`, ''],
+          [` au sein du département d ${dept}`, ''],
+          [` au sein du département de${dept}`, ''],
+        ] as [string, string][])
+      : []),
+    [' au sein du département de', ''],
+    [' au sein du département d', ''],
     [
       'La présente lui est délivrée pour faire valoir ce que de droit.',
-      'This certificate is issued upon request for whatever legal purpose it may serve.',
+      `This certificate is issued to ${pronoun} to do what is right.`,
     ],
-    ['Fait à Kinshasa, le', 'Done in Kinshasa, on'],
+    ['Fait à Kinshasa, le', 'Done in Kinshasa on'],
     ['de PPC Barnet DRC Manufacturing SA', 'of PPC Barnet DRC Manufacturing SA'],
   ];
   for (const [from, to] of replacements) {
     next = replaceLiteralInXmlOnce(next, from, to);
   }
+  // Genre HoD laissé vide en EN → éventuel double espace après la virgule.
+  next = replaceLiteralInXmlOnce(next, 'I, the undersigned,  ', 'I, the undersigned, ');
   return next;
 }
 
@@ -152,45 +169,106 @@ export function fillServiceAttestationXml(
 ): string {
   let next = xml;
   let cursor = 0;
+  const language = data.language === 'en' ? 'en' : 'fr';
+  const hodName = formatAttestationAgentName(data.hodName);
+  const employeeName = formatAttestationAgentName(data.employeeName);
+  // Modèle EN : pas de civilité devant le signataire (« I, the undersigned, Carine EWULI »).
+  const hodGenre = language === 'en' ? '' : data.hodGenre.trim();
 
-  ({ xml: next, index: cursor } = replaceBracketInXmlOnce(next, 'Genre', data.hodGenre.trim(), cursor));
-  ({ xml: next, index: cursor } = replaceBracketInXmlOnce(next, 'Nom complet HoD', data.hodName.trim(), cursor));
+  ({ xml: next, index: cursor } = replaceBracketInXmlOnce(next, 'Genre', hodGenre, cursor));
+  ({ xml: next, index: cursor } = replaceBracketInXmlOnce(next, 'Nom complet HoD', hodName, cursor));
   ({ xml: next, index: cursor } = replaceBracketInXmlOnce(next, 'Fonction HoD', data.hodFunction.trim(), cursor));
   ({ xml: next, index: cursor } = replaceBracketInXmlOnce(next, 'Genre', data.employeeGenre.trim(), cursor));
   ({ xml: next, index: cursor } = replaceBracketInXmlOnce(
     next,
     'Nom complet employe',
-    data.employeeName.trim(),
+    employeeName,
     cursor,
   ));
   ({ xml: next, index: cursor } = replaceBracketInXmlOnce(next, 'Matricule', data.employeeMatricule.trim(), cursor));
   ({ xml: next, index: cursor } = replaceBracketInXmlOnce(
     next,
     'date_embauche',
-    formatDocumentDate(data.dateEmbauche, data.language),
+    formatDocumentDate(data.dateEmbauche, language),
     cursor,
   ));
   ({ xml: next, index: cursor } = replaceBracketInXmlOnce(next, 'Fonction', data.employeeFunction.trim(), cursor));
   ({ xml: next, index: cursor } = replaceBracketInXmlOnce(
     next,
     'Departement',
-    data.employeeDepartment.trim(),
+    language === 'en' ? '' : data.employeeDepartment.trim(),
     cursor,
   ));
   ({ xml: next, index: cursor } = replaceBracketInXmlOnce(
     next,
     'DATE',
-    formatDocumentDate(data.documentDate, data.language),
+    formatDocumentDate(data.documentDate, language),
     cursor,
   ));
-  ({ xml: next, index: cursor } = replaceBracketInXmlOnce(next, 'Nom complet HoD', data.hodName.trim(), cursor));
+  ({ xml: next, index: cursor } = replaceBracketInXmlOnce(next, 'Nom complet HoD', hodName, cursor));
   ({ xml: next } = replaceBracketInXmlOnce(next, 'Fonction HoD', data.hodFunction.trim(), cursor));
 
-  if (data.language === 'en') {
-    next = applyEnglishBoilerplate(next);
+  if (language === 'en') {
+    next = applyEnglishBoilerplate(next, data.employeeDepartment, data.employeeGenre);
+  }
+
+  const customBody = data.bodyText?.trim();
+  if (customBody) {
+    const plain = extractDocxPlainText(next);
+    const lines = plain
+      .split(/\n+/)
+      .map((line) => line.trim())
+      .filter(Boolean);
+    const filledBody = lines[1];
+    if (filledBody && filledBody !== customBody) {
+      next = replaceLiteralInXmlOnce(next, filledBody, customBody);
+    }
   }
 
   return next;
+}
+
+const DOCX_PAGE_BREAK = '<w:p><w:r><w:br w:type="page"/></w:r></w:p>';
+
+function extractBodyParts(xml: string): {
+  before: string;
+  inner: string;
+  sectPr: string;
+  after: string;
+} {
+  const openTag = '<w:body>';
+  const closeTag = '</w:body>';
+  const bodyOpen = xml.indexOf(openTag);
+  const bodyClose = xml.lastIndexOf(closeTag);
+  if (bodyOpen < 0 || bodyClose < 0) {
+    throw new Error('Structure word/document.xml invalide (w:body)');
+  }
+  const before = xml.slice(0, bodyOpen + openTag.length);
+  const after = xml.slice(bodyClose);
+  const bodyContent = xml.slice(bodyOpen + openTag.length, bodyClose);
+  const sectIdx = bodyContent.lastIndexOf('<w:sectPr');
+  if (sectIdx < 0) {
+    return { before, inner: bodyContent, sectPr: '', after };
+  }
+  return {
+    before,
+    inner: bodyContent.slice(0, sectIdx),
+    sectPr: bodyContent.slice(sectIdx),
+    after,
+  };
+}
+
+/** Remplit le modèle en deux pages : FR puis EN. */
+export function fillBilingualServiceAttestationXml(
+  templateXml: string,
+  frData: ServiceAttestationFormData,
+  enData: ServiceAttestationFormData,
+): string {
+  const frFilled = fillServiceAttestationXml(templateXml, { ...frData, language: 'fr' });
+  const enFilled = fillServiceAttestationXml(templateXml, { ...enData, language: 'en' });
+  const fr = extractBodyParts(frFilled);
+  const en = extractBodyParts(enFilled);
+  return `${fr.before}${fr.inner}${DOCX_PAGE_BREAK}${en.inner}${fr.sectPr || en.sectPr}${fr.after}`;
 }
 
 export function extractDocxPlainText(xml: string): string {
@@ -256,10 +334,15 @@ function escapeHtml(value: string): string {
 export function formatServiceAttestationFileName(
   employeeName: string,
   documentDate: string,
-  language: 'fr' | 'en',
+  language: 'fr' | 'en' | 'both' = 'fr',
 ): string {
   const safeName = employeeName.trim().replace(/[<>:"/\\|?*]+/g, '_').replace(/\s+/g, '_') || 'employe';
   const datePart = documentDate.trim() || new Date().toISOString().slice(0, 10);
-  const prefix = language === 'en' ? 'Service_Certificate' : 'Attestation_service';
+  const prefix =
+    language === 'en'
+      ? 'Service_Certificate'
+      : language === 'both'
+        ? 'Attestation_service_FR-EN'
+        : 'Attestation_service';
   return `${prefix}_${safeName}_${datePart}.docx`;
 }

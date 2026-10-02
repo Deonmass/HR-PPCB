@@ -51,8 +51,18 @@ export interface OvertimeAccessScope {
 }
 
 /** Périmètre Contractants : uniquement les sociétés cochées (ex. EKMM). */
+export interface ContractantPortalMenus {
+  dashboard?: boolean;
+  employes?: boolean;
+  exit?: boolean;
+  discipline?: boolean;
+  planning?: boolean;
+}
+
 export interface ContractantAccessScope {
   contractantIds: string[];
+  /** Menus de l'espace contractant. Absent = tous visibles. */
+  menus?: ContractantPortalMenus;
 }
 
 export interface MenuPermission {

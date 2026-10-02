@@ -16,6 +16,7 @@ export const DOCUMENTS_HUB_MENU_IDS = [
   'travel.payment-voucher',
   'documents.appraisal',
   'documents.exit',
+  'documents.reponse-demission',
   'documents.entetes',
   'documents.rrf',
   'documents.newcomer',
@@ -55,6 +56,7 @@ export const ROUTE_MENU_MAP: RouteMenuEntry[] = [
   { prefix: '/documents/rrf', menuId: 'documents.rrf' },
   { prefix: '/documents/entetes', menuId: 'documents.entetes' },
   { prefix: '/documents/exit', menuId: 'documents.exit' },
+  { prefix: '/documents/reponse-demission', menuId: 'documents.reponse-demission' },
   { prefix: '/documents/interim-appraisal', menuId: 'documents.appraisal' },
   { prefix: '/documents/newcomer', menuId: 'documents.newcomer' },
   { prefix: '/documents/contrat-standard', menuId: 'documents.contrat-standard' },
@@ -73,6 +75,7 @@ export const ROUTE_MENU_MAP: RouteMenuEntry[] = [
   { prefix: '/politique/doc/code-ethique', menuId: 'politique.code-ethique' },
   { prefix: '/politique/doc/manuco', menuId: 'politique.manuco' },
   { prefix: '/politique/doc/aide-medicale', menuId: 'politique.aide-medicale' },
+  { prefix: '/politique/cellphone', menuId: 'politique.cellphone' },
   { prefix: '/politique/doc/voyages', menuId: 'politique.voyages' },
   { prefix: '/politique/doc/alcool', menuId: 'politique.alcool' },
   { prefix: '/politique/doc/harcelement', menuId: 'politique.harcelement' },
@@ -89,6 +92,7 @@ export const ROUTE_MENU_MAP: RouteMenuEntry[] = [
   { prefix: '/protocol/visa-volant', menuId: 'protocol.visa-volant' },
   { prefix: '/protocol/visa-voyage', menuId: 'protocol.visa-voyage' },
   { prefix: '/protocol/billets', menuId: 'protocol.billets' },
+  { prefix: '/protocol/voyages', menuId: 'protocol.voyages' },
   { prefix: '/factures-fournisseurs/fournisseurs', menuId: 'factures.fournisseur.fournisseurs' },
   { prefix: '/factures-fournisseurs/liste', menuId: 'factures.fournisseur.liste' },
   { prefix: '/factures-fournisseurs/factures', menuId: 'factures.fournisseur.factures' },
@@ -98,6 +102,7 @@ export const ROUTE_MENU_MAP: RouteMenuEntry[] = [
   { prefix: '/employes/dependants', menuId: 'employes.dependants' },
   { prefix: '/employes/offres', menuId: 'employes.offres' },
   { prefix: '/employes/mouvements', menuId: 'employes.mouvements' },
+  { prefix: '/employes/postes/effectifs', menuId: 'employes.classification' },
   { prefix: '/employes/postes', menuId: 'employes.postes' },
   { prefix: '/employes/recrutement', menuId: 'employes.recrutement' },
   { prefix: '/employes/classification', menuId: 'employes.classification' },
@@ -121,6 +126,7 @@ export const ROUTE_MENU_MAP: RouteMenuEntry[] = [
   { prefix: '/village/liste', menuId: 'village.dependants-liste' },
   { prefix: '/charroi-automobile/vehicules', menuId: 'charroi.vehicules' },
   { prefix: '/charroi-automobile/achats', menuId: 'charroi.achats' },
+  { prefix: '/charroi-automobile/voyages', menuId: 'charroi.voyages' },
   { prefix: '/charroi-automobile', menuId: 'charroi' },
   { prefix: '/employes', menuId: 'employes.liste' },
   { prefix: '/sante/dashboard', menuId: 'sante.dashboard' },
@@ -190,6 +196,9 @@ export function routeViewMenuIds(pathname: string): string[] {
   }
   if (normalized.startsWith('/charroi-automobile/achats')) {
     return ['charroi.achats', 'charroi'];
+  }
+  if (normalized.startsWith('/charroi-automobile/voyages')) {
+    return ['charroi.voyages', 'charroi'];
   }
   if (normalized === '/documents') {
     return [...DOCUMENTS_HUB_MENU_IDS];

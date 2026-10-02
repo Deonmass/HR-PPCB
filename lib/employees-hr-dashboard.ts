@@ -34,6 +34,8 @@ export interface EmployeesExitMonthRow {
   licenciement: number;
   retraite: number;
   finContrat: number;
+  deces: number;
+  autre: number;
   total: number;
 }
 
@@ -257,7 +259,7 @@ function monthLabel(key: string): string {
   return `${monthNames[idx] ?? m} ${y}`;
 }
 
-type RaisonKey = 'demission' | 'licenciement' | 'retraite' | 'finContrat';
+type RaisonKey = 'demission' | 'licenciement' | 'retraite' | 'finContrat' | 'deces';
 
 function normalizeRaisonKey(raison: string): RaisonKey | null {
   const r = raison.trim().toLowerCase().normalize('NFD').replace(/\p{Diacritic}/gu, '');
@@ -265,27 +267,47 @@ function normalizeRaisonKey(raison: string): RaisonKey | null {
   if (r.includes('licenci')) return 'licenciement';
   if (r.includes('retra')) return 'retraite';
   if (r.includes('fin') && r.includes('contrat')) return 'finContrat';
+  if (r.includes('deces') || r.includes('mort')) return 'deces';
   return null;
 }
 
-function buildExitsParMois(exits: Employee[]): EmployeesExitMonthRow[] {
+function emptyExitMonthRow(key: string): EmployeesExitMonthRow {
+  return {
+    key,
+    label: key === 'inconnu' ? 'Non renseigné' : monthLabel(key),
+    demission: 0,
+    licenciement: 0,
+    retraite: 0,
+    finContrat: 0,
+    deces: 0,
+    autre: 0,
+    total: 0,
+  };
+}
+
+/**
+ * Histogramme des sorties.
+ * Si `year` est fourni, les 12 mois de l'année sont toujours présents (y compris à 0).
+ */
+export function buildExitsParMois(
+  exits: Employee[],
+  opts?: { year?: number },
+): EmployeesExitMonthRow[] {
   const map = new Map<string, EmployeesExitMonthRow>();
+  if (opts?.year != null) {
+    for (let month = 1; month <= 12; month += 1) {
+      const key = `${opts.year}-${String(month).padStart(2, '0')}`;
+      map.set(key, emptyExitMonthRow(key));
+    }
+  }
   for (const e of exits) {
     const key = parseExitMonthKey(e.dateFinContrat) ?? 'inconnu';
-    if (!map.has(key)) {
-      map.set(key, {
-        key,
-        label: key === 'inconnu' ? 'Non renseigné' : monthLabel(key),
-        demission: 0,
-        licenciement: 0,
-        retraite: 0,
-        finContrat: 0,
-        total: 0,
-      });
-    }
+    if (opts?.year != null && !key.startsWith(`${opts.year}-`)) continue;
+    if (!map.has(key)) map.set(key, emptyExitMonthRow(key));
     const row = map.get(key)!;
     const raisonKey = normalizeRaisonKey(e.raisonExit);
     if (raisonKey) row[raisonKey] += 1;
+    else row.autre += 1;
     row.total += 1;
   }
 

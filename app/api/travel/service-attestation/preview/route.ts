@@ -6,18 +6,22 @@ import { NextResponse } from 'next/server';
 import { checkAnyPermission } from '@/lib/require-permission';
 import type { ServiceAttestationFormData } from '@/lib/service-attestation-types';
 import { buildServiceAttestationPreviewHtmlForForm } from '@/lib/service-attestation-preview.server';
-import {
-  fillServiceAttestationXml,
-  formatServiceAttestationFileName,
-  SERVICE_ATTESTATION_TEMPLATE_PATH,
-} from '@/lib/service-attestation-template';
 import { writeDocxFromTemplate } from '@/lib/docx-template';
 import { buildServiceAttestationPdfBuffer } from '@/lib/service-attestation-pdf.server';
 import type { ServiceAttestationLanguage } from '@/lib/service-attestation-types';
 import { auditSimpleAction } from '@/lib/with-audit';
+import { splitBilingualServiceForm } from '@/lib/service-attestation-agent';
+import {
+  fillBilingualServiceAttestationXml,
+  fillServiceAttestationXml,
+  formatServiceAttestationFileName,
+  SERVICE_ATTESTATION_TEMPLATE_PATH,
+} from '@/lib/service-attestation-template';
 
 function toLanguage(value: unknown): ServiceAttestationLanguage {
-  return value === 'en' ? 'en' : 'fr';
+  if (value === 'en') return 'en';
+  if (value === 'both') return 'both';
+  return 'fr';
 }
 
 function normalizeForm(body: Partial<ServiceAttestationFormData>): ServiceAttestationFormData {
@@ -27,12 +31,17 @@ function normalizeForm(body: Partial<ServiceAttestationFormData>): ServiceAttest
     hodGenre: body.hodGenre?.trim() || 'Monsieur',
     hodName: body.hodName?.trim() || '',
     hodFunction: body.hodFunction?.trim() || '',
+    hodFunctionEn: body.hodFunctionEn?.trim() || undefined,
     employeeGenre: body.employeeGenre?.trim() || 'Monsieur',
+    employeeGenreEn: body.employeeGenreEn?.trim() || undefined,
     employeeName: body.employeeName?.trim() || '',
     employeeMatricule: body.employeeMatricule?.trim() || '',
     dateEmbauche: body.dateEmbauche?.trim() || '',
     employeeFunction: body.employeeFunction?.trim() || '',
+    employeeFunctionEn: body.employeeFunctionEn?.trim() || undefined,
     employeeDepartment: body.employeeDepartment?.trim() || '',
+    bodyText: body.bodyText?.trim() || undefined,
+    bodyTextEn: body.bodyTextEn?.trim() || undefined,
   };
 }
 
@@ -81,9 +90,16 @@ export async function POST(request: Request) {
     const tempDir = await fs.mkdtemp(path.join(os.tmpdir(), 'service-attestation-'));
     const docxPath = path.join(tempDir, 'attestation.docx');
     try {
-      await writeDocxFromTemplate(SERVICE_ATTESTATION_TEMPLATE_PATH, docxPath, (xml) =>
-        fillServiceAttestationXml(xml, form),
-      );
+      if (form.language === 'both') {
+        const { fr, en } = splitBilingualServiceForm(form);
+        await writeDocxFromTemplate(SERVICE_ATTESTATION_TEMPLATE_PATH, docxPath, (xml) =>
+          fillBilingualServiceAttestationXml(xml, fr, en),
+        );
+      } else {
+        await writeDocxFromTemplate(SERVICE_ATTESTATION_TEMPLATE_PATH, docxPath, (xml) =>
+          fillServiceAttestationXml(xml, form),
+        );
+      }
       const fileName = formatServiceAttestationFileName(
         form.employeeName,
         form.documentDate,

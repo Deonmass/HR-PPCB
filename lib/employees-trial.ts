@@ -185,19 +185,16 @@ export function resolveEssaiStatutEval(
   return 'Ongoing';
 }
 
-/** Fin de contrat : durée + embauche si disponible, sinon date stockée. */
+/** Fin de contrat : date stockée prioritaire, sinon durée + embauche. */
 export function resolveDateFinContrat(
   employee: Pick<Employee, 'appointmentDate' | 'dureeContratMois' | 'dateFinContrat'>,
 ): string {
-  const computed = computeFinContratFromDuree(
+  const stored = String(employee.dateFinContrat || '').trim();
+  if (stored) return stored;
+  return computeFinContratFromDuree(
     employee.appointmentDate || '',
     employee.dureeContratMois,
-  );
-  const duree = employee.dureeContratMois;
-  if (duree != null && Number.isFinite(duree) && duree > 0 && computed) {
-    return computed;
-  }
-  return String(employee.dateFinContrat || '').trim() || computed || '';
+  ) || '';
 }
 
 /** Date d'alerte CDD = 1 mois avant la fin de contrat. */

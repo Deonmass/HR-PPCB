@@ -162,7 +162,7 @@ export default function ContractantEmployeeDetailModal({
                 </div>
                 <div>
                   <dt>Téléphone</dt>
-                  <dd>{employee.telephone || '—'}</dd>
+                  <dd>{employee.telephoneAirtime || '—'}</dd>
                 </div>
                 <div>
                   <dt>Statut</dt>

@@ -25,6 +25,13 @@ import type {
   GuestRoomPassage,
 } from '@/lib/guest-house-types';
 import {
+  GUEST_STAY_SLOT_LABELS,
+  GUEST_STAY_SLOTS,
+  isStayOrderValid,
+  staysOverlap,
+  type GuestStaySlot,
+} from '@/lib/guest-stay-slot';
+import {
   GUEST_HOUSE_BUILDINGS,
   GUEST_HOUSE_MAISON_CAPACITY,
   KIMPESE_BUILDING,
@@ -313,20 +320,24 @@ function stayDayCount(startDate: string, endDate: string): number {
   return Math.floor((b.getTime() - a.getTime()) / 86_400_000) + 1;
 }
 
-/** Inclusive date ranges overlap (YYYY-MM-DD). */
-function dateRangesOverlap(
-  aStart: string,
-  aEnd: string,
-  bStart: string,
-  bEnd: string,
-): boolean {
-  return aStart.slice(0, 10) <= bEnd.slice(0, 10) && bStart.slice(0, 10) <= aEnd.slice(0, 10);
+function formatStayPoint(date: string, slot?: GuestStaySlot | null): string {
+  const label = formatDate(date);
+  if (!slot) return label;
+  return `${label} ${GUEST_STAY_SLOT_LABELS[slot]}`;
+}
+
+function formatStayRange(item: {
+  startDate: string;
+  endDate: string;
+  startSlot?: GuestStaySlot | null;
+  endSlot?: GuestStaySlot | null;
+}): string {
+  return `${formatStayPoint(item.startDate, item.startSlot)} → ${formatStayPoint(item.endDate, item.endSlot)}`;
 }
 
 function roomConflictDuring(
   roomId: string,
-  startDate: string,
-  endDate: string,
+  stay: GuestReservation,
   items: GuestReservation[],
   excludeId?: string,
 ): GuestReservation | null {
@@ -334,7 +345,7 @@ function roomConflictDuring(
     if (excludeId && item.id === excludeId) continue;
     if (item.roomId !== roomId) continue;
     if (item.status !== 'confirmed' && item.status !== 'completed') continue;
-    if (dateRangesOverlap(startDate, endDate, item.startDate, item.endDate)) return item;
+    if (staysOverlap(stay, item)) return item;
   }
   return null;
 }
@@ -544,7 +555,9 @@ export default function VillageGuestHousePage() {
     isAgent: true,
     motif: '',
     startDate: '',
+    startSlot: 'midi' as GuestStaySlot,
     endDate: '',
+    endSlot: 'matin' as GuestStaySlot,
     notes: '',
     company: '',
     mission: '',
@@ -628,8 +641,7 @@ export default function VillageGuestHousePage() {
   );
   const validatedList = validatedSubTab === 'approved' ? approved : rejected;
 
-  const pendingPeriod = (item: GuestReservation) =>
-    `${formatDate(item.startDate)} → ${formatDate(item.endDate)}`;
+  const pendingPeriod = (item: GuestReservation) => formatStayRange(item);
 
   const pendingMotif = (item: GuestReservation) =>
     IMPORT_MOTIF_RE.test(item.motif.trim()) ? '—' : (item.motif || '—');
@@ -947,7 +959,7 @@ export default function VillageGuestHousePage() {
         numero: (item) => item.numero,
         personne: (item) => item.personName,
         hotel: (item) => item.hotel,
-        periode: (item) => `${formatDate(item.startDate)} → ${formatDate(item.endDate)}`,
+        periode: (item) => formatStayRange(item),
         restant: (item) => formatDaysLeftDisplay(item.endDate),
       }),
     [kimpeseLodgers],
@@ -962,7 +974,7 @@ export default function VillageGuestHousePage() {
           matchesColumnFilter(kimpeseColFilters.hotel, item.hotel) &&
           matchesColumnFilter(
             kimpeseColFilters.periode,
-            `${formatDate(item.startDate)} → ${formatDate(item.endDate)}`,
+            formatStayRange(item),
           ) &&
           matchesColumnFilter(kimpeseColFilters.restant, formatDaysLeftDisplay(item.endDate)),
       ),
@@ -1109,7 +1121,9 @@ export default function VillageGuestHousePage() {
       isAgent: true,
       motif: '',
       startDate: '',
+      startSlot: 'midi' as GuestStaySlot,
       endDate: '',
+      endSlot: 'matin' as GuestStaySlot,
       notes: '',
       company: '',
       mission: '',
@@ -1130,7 +1144,9 @@ export default function VillageGuestHousePage() {
       isAgent: Boolean(item.isAgent || item.matricule),
       motif: item.motif === '—' ? '' : item.motif,
       startDate: item.startDate,
+      startSlot: item.startSlot || 'matin',
       endDate: item.endDate,
+      endSlot: item.endSlot || 'soir',
       notes: item.notes || '',
       company: item.company || '',
       mission: item.mission || '',
@@ -1165,12 +1181,7 @@ export default function VillageGuestHousePage() {
           if (item.status !== 'confirmed' && item.status !== 'completed') return false;
           if (!item.maisonNumero) return false;
           if (item.maisonNumero.trim().toLowerCase() !== key) return false;
-          return dateRangesOverlap(
-            confirmTarget.startDate,
-            confirmTarget.endDate,
-            item.startDate,
-            item.endDate,
-          );
+          return staysOverlap(confirmTarget, item);
         }).length;
         return {
           ...maison,
@@ -1201,8 +1212,7 @@ export default function VillageGuestHousePage() {
       }
       const conflict = roomConflictDuring(
         room.id,
-        confirmTarget.startDate,
-        confirmTarget.endDate,
+        confirmTarget,
         reservations,
         confirmTarget.id,
       );
@@ -1237,8 +1247,7 @@ export default function VillageGuestHousePage() {
     }
     return roomConflictDuring(
       confirmRoomId,
-      confirmTarget.startDate,
-      confirmTarget.endDate,
+      confirmTarget,
       reservations,
       confirmTarget.id,
     );
@@ -1285,7 +1294,7 @@ export default function VillageGuestHousePage() {
       }
       setDrawer(null);
       await showSuccess(editingRoom ? 'Chambre mise à jour' : 'Chambre créée');
-      await load(true);
+      void load(true);
       if (returnToConfirm) {
         if (json.id) setConfirmRoomId(json.id);
         setDrawer('confirm');
@@ -1298,6 +1307,15 @@ export default function VillageGuestHousePage() {
   };
 
   const saveReservation = async () => {
+    if (!isStayOrderValid(
+      reservationForm.startDate,
+      reservationForm.startSlot,
+      reservationForm.endDate,
+      reservationForm.endSlot,
+    )) {
+      await showError('La sortie doit être au même moment ou après l\'entrée (matin, midi, soir).');
+      return;
+    }
     setSaving(true);
     try {
       const res = await fetch('/api/village/guest-house', {
@@ -1328,7 +1346,7 @@ export default function VillageGuestHousePage() {
       setEditingReservation(null);
       await showSuccess(editingReservation ? 'Réservation mise à jour' : 'Réservation créée');
       setTab('reservations');
-      await load(true);
+      void load(true);
     } catch (err) {
       await showError(err instanceof Error ? err.message : 'Enregistrement impossible (réseau)');
     } finally {
@@ -1369,7 +1387,7 @@ export default function VillageGuestHousePage() {
       await showSuccess(
         status === 'confirmed' ? 'Réservation confirmée' : status === 'rejected' ? 'Réservation refusée' : 'Réservation annulée',
       );
-      await load(true);
+      void load(true);
     } catch (err) {
       await showError(err instanceof Error ? err.message : 'Action impossible (réseau)');
     } finally {
@@ -1412,7 +1430,7 @@ export default function VillageGuestHousePage() {
           return;
         }
         await showSuccess('Affichage retiré — réservation toujours en attente');
-        await load(true);
+        void load(true);
       } catch (err) {
         await showError(err instanceof Error ? err.message : 'Action impossible (réseau)');
       } finally {
@@ -1454,7 +1472,7 @@ export default function VillageGuestHousePage() {
         return;
       }
       await showSuccess('Réservation supprimée');
-      await load(true);
+      void load(true);
     } catch (err) {
       await showError(err instanceof Error ? err.message : 'Suppression impossible (réseau)');
     } finally {
@@ -1528,7 +1546,7 @@ export default function VillageGuestHousePage() {
       return;
     }
     await showSuccess(isKimpeseRoom(room) ? 'Hôtel Kimpese supprimé' : 'Chambre supprimée');
-    await load(true);
+    void load(true);
   };
 
   const roomPassages = useMemo(() => {
@@ -2055,7 +2073,7 @@ export default function VillageGuestHousePage() {
                             <td>{item.personName}</td>
                             <td>{item.hotel}</td>
                             <td className="guest-house-period-cell">
-                              {formatDate(item.startDate)} → {formatDate(item.endDate)}
+                              {formatStayRange(item)}
                             </td>
                             <td>
                               <span className={`guest-house-days-left${item.daysLeft <= 2 ? ' is-critical' : ''}`}>
@@ -2429,7 +2447,7 @@ export default function VillageGuestHousePage() {
                                   </td>
                                   <td className="guest-house-motif-td">{motifCol}</td>
                                   <td className="guest-house-period-cell">
-                                    {formatDate(item.startDate)} → {formatDate(item.endDate)}
+                                    {formatStayRange(item)}
                                   </td>
                                   <td>
                                     <span className={`guest-house-days-left${days <= 2 ? ' is-critical' : ''}`}>
@@ -2571,7 +2589,7 @@ export default function VillageGuestHousePage() {
                                   </td>
                                   <td>{lodgingLabel(item, roomsById)}</td>
                                   <td className="guest-house-period-cell">
-                                    {formatDate(item.startDate)} → {formatDate(item.endDate)}
+                                    {formatStayRange(item)}
                                   </td>
                                   <td>
                                     <span className="guest-house-time-chip">
@@ -2867,7 +2885,7 @@ export default function VillageGuestHousePage() {
 
               <div className="guest-house-res-grid-2">
                 <div className="form-group">
-                  <label htmlFor="gh-start">Date début</label>
+                  <label htmlFor="gh-start">Date d&apos;entrée</label>
                   <input
                     id="gh-start"
                     type="date"
@@ -2877,7 +2895,7 @@ export default function VillageGuestHousePage() {
                   />
                 </div>
                 <div className="form-group">
-                  <label htmlFor="gh-end">Date fin</label>
+                  <label htmlFor="gh-end">Date de sortie</label>
                   <input
                     id="gh-end"
                     type="date"
@@ -2886,11 +2904,47 @@ export default function VillageGuestHousePage() {
                     required
                   />
                 </div>
+                <div className="form-group">
+                  <label htmlFor="gh-start-slot">Heure d&apos;entrée</label>
+                  <select
+                    id="gh-start-slot"
+                    value={reservationForm.startSlot}
+                    onChange={(e) => setReservationForm((prev) => ({
+                      ...prev,
+                      startSlot: e.target.value as GuestStaySlot,
+                    }))}
+                  >
+                    {GUEST_STAY_SLOTS.map((slot) => (
+                      <option key={slot} value={slot}>{GUEST_STAY_SLOT_LABELS[slot]}</option>
+                    ))}
+                  </select>
+                </div>
+                <div className="form-group">
+                  <label htmlFor="gh-end-slot">Heure de sortie</label>
+                  <select
+                    id="gh-end-slot"
+                    value={reservationForm.endSlot}
+                    onChange={(e) => setReservationForm((prev) => ({
+                      ...prev,
+                      endSlot: e.target.value as GuestStaySlot,
+                    }))}
+                  >
+                    {GUEST_STAY_SLOTS.map((slot) => (
+                      <option key={slot} value={slot}>{GUEST_STAY_SLOT_LABELS[slot]}</option>
+                    ))}
+                  </select>
+                </div>
               </div>
+
+              <p className="guest-house-res-stay-hint">
+                Une sortie le matin libère la chambre pour une entrée à midi ou le soir, le même jour.
+              </p>
 
               {reservationForm.startDate && reservationForm.endDate ? (
                 <div className="guest-house-res-stay-hint">
-                  Durée : {stayDayCount(reservationForm.startDate, reservationForm.endDate)} jour(s)
+                  Séjour : {formatStayRange(reservationForm)}
+                  {' · '}
+                  {stayDayCount(reservationForm.startDate, reservationForm.endDate)} jour(s)
                 </div>
               ) : null}
 
@@ -3043,9 +3097,7 @@ export default function VillageGuestHousePage() {
                 </div>
                 <h4 className="guest-house-confirm-name">{confirmTarget.personName}</h4>
                 <p className="guest-house-confirm-dates">
-                  {formatDate(confirmTarget.startDate)}
-                  <span aria-hidden="true"> → </span>
-                  {formatDate(confirmTarget.endDate)}
+                  {formatStayRange(confirmTarget)}
                 </p>
                 {(confirmTarget.motif && confirmTarget.motif !== '—') || confirmTarget.company ? (
                   <p className="guest-house-confirm-meta">
@@ -3244,7 +3296,7 @@ export default function VillageGuestHousePage() {
                                   )}
                                   <div className="guest-house-history-period">
                                     <span>
-                                      {formatDate(passage.startDate)} → {formatDate(passage.endDate)}
+                                      {formatStayRange(passage)}
                                     </span>
                                     {days > 0 && (
                                       <span className="guest-house-days-left">{days} j</span>

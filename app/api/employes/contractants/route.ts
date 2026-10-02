@@ -3,6 +3,7 @@ import {
   filterContractantsByScope,
   getContractantScopeFromMenus,
 } from '@/lib/contractant-scope';
+import { withContractantAirtimePhones } from '@/lib/airtime-store';
 import {
   createContractant,
   listContractants,
@@ -39,7 +40,8 @@ export async function GET(request: Request) {
     }
 
     const scope = getContractantScopeFromMenus(session?.menus);
-    const contractants = filterContractantsByScope(all, scope);
+    const withPhones = await withContractantAirtimePhones(all);
+    const contractants = filterContractantsByScope(withPhones, scope);
     return NextResponse.json(
       { contractants, scope },
       { headers: { 'Cache-Control': 'no-store' } },

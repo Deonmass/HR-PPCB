@@ -67,17 +67,22 @@ export async function POST(request: Request) {
       },
       () =>
         createServiceAttestation({
-          language: body.language === 'en' ? 'en' : 'fr',
+          language: body.language === 'both' ? 'both' : body.language === 'en' ? 'en' : 'fr',
           documentDate: body.documentDate!.trim(),
           hodGenre: body.hodGenre?.trim() || 'Monsieur',
           hodName: body.hodName!.trim(),
           hodFunction: body.hodFunction!.trim(),
+          hodFunctionEn: body.hodFunctionEn?.trim() || undefined,
           employeeGenre: body.employeeGenre?.trim() || 'Monsieur',
+          employeeGenreEn: body.employeeGenreEn?.trim() || undefined,
           employeeName: body.employeeName!.trim(),
           employeeMatricule: body.employeeMatricule!.trim(),
           dateEmbauche: body.dateEmbauche?.trim() || '',
           employeeFunction: body.employeeFunction!.trim(),
+          employeeFunctionEn: body.employeeFunctionEn?.trim() || undefined,
           employeeDepartment: body.employeeDepartment!.trim(),
+          bodyText: body.bodyText?.trim() || undefined,
+          bodyTextEn: body.bodyTextEn?.trim() || undefined,
         }),
     );
 

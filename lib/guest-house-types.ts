@@ -61,7 +61,11 @@ export interface GuestReservation {
   isAgent: boolean;
   motif: string;
   startDate: string;
+  /** Créneau d'entrée. Absent = matin (jour entier pour l'historique). */
+  startSlot?: import('./guest-stay-slot').GuestStaySlot;
   endDate: string;
+  /** Créneau de sortie. Absent = soir (jour entier pour l'historique). */
+  endSlot?: import('./guest-stay-slot').GuestStaySlot;
   roomId?: string;
   /**
    * Maison village vide (overflow temporaire).
@@ -97,7 +101,9 @@ export interface GuestRoomPassage {
   matricule?: string;
   motif: string;
   startDate: string;
+  startSlot?: import('./guest-stay-slot').GuestStaySlot;
   endDate: string;
+  endSlot?: import('./guest-stay-slot').GuestStaySlot;
   checkedInAt: string;
   checkedOutAt?: string;
 }
@@ -130,7 +136,9 @@ export interface GuestReservationInput {
   isAgent?: boolean;
   motif: string;
   startDate: string;
+  startSlot?: import('./guest-stay-slot').GuestStaySlot;
   endDate: string;
+  endSlot?: import('./guest-stay-slot').GuestStaySlot;
   roomId?: string;
   notes?: string;
   company?: string;
