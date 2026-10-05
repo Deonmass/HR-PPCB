@@ -1,6 +1,21 @@
 {
   "entries": [
     {
+      "id": "log-001333",
+      "at": "2026-10-05T12:17:56.182Z",
+      "userId": "admin",
+      "userName": "Administrateur",
+      "userEmail": "admin",
+      "module": "documents.appraisal",
+      "moduleLabel": "Documents",
+      "action": "export",
+      "actionLabel": "Export",
+      "summary": "Interim appraisal — MUZO NKIENE BLANCHARD (70000306)",
+      "details": "Interim appraisal — MUZO NKIENE BLANCHARD (70000306)",
+      "undoable": false,
+      "undone": false
+    },
+    {
       "id": "log-001332",
       "at": "2026-10-02T17:09:43.085Z",
       "userId": "Tresor.Maneka@ppcdrc.cd",
@@ -134400,5 +134415,5 @@
       }
     }
   ],
-  "nextSeq": 1333
+  "nextSeq": 1334
 }
