@@ -1,6 +1,44 @@
 {
   "entries": [
     {
+      "id": "log-001348",
+      "at": "2026-10-06T08:14:05.463Z",
+      "userId": "admin",
+      "userName": "Administrateur",
+      "userEmail": "admin",
+      "module": "sante",
+      "moduleLabel": "Santé",
+      "action": "create",
+      "actionLabel": "Création",
+      "entityType": "sante.visit",
+      "entityId": "sante-muwejxc0-d58iln",
+      "summary": "Cas santé — MUAKASA NSONI SERGE · cvbvcb",
+      "details": "Cas santé — MUAKASA NSONI SERGE · cvbvcb",
+      "after": {
+        "id": "sante-muwejxc0-d58iln",
+        "date": "2026-10-06",
+        "nom": "MUAKASA",
+        "postnom": "NSONI SERGE",
+        "sexe": "M",
+        "age": 48,
+        "typeMalade": "AGENT",
+        "pathologie": "cvbvcb",
+        "traitement": "cvbcvb",
+        "reference": "NON",
+        "year": 2026,
+        "month": 10,
+        "employeeMatricule": "70000008",
+        "employeeNom": "MUAKASA NSONI SERGE",
+        "dependantId": null,
+        "createdAt": "2026-10-06T08:14:02.112Z",
+        "updatedAt": "2026-10-06T08:14:02.112Z",
+        "createdBy": "admin",
+        "updatedBy": "admin"
+      },
+      "undoable": false,
+      "undone": false
+    },
+    {
       "id": "log-001347",
       "at": "2026-10-06T08:07:55.073Z",
       "userId": "karine.mvutu@ppcdrc.cd",
@@ -134961,5 +134999,5 @@
       }
     }
   ],
-  "nextSeq": 1348
+  "nextSeq": 1349
 }
