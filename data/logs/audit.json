@@ -1,6 +1,29 @@
 {
   "entries": [
     {
+      "id": "log-001335",
+      "at": "2026-10-06T07:01:09.523Z",
+      "userId": "system",
+      "userName": "Système",
+      "module": "auth",
+      "moduleLabel": "Authentification",
+      "action": "error",
+      "actionLabel": "Erreur",
+      "summary": "Identifiants invalides",
+      "details": "Échec de connexion pour « Karine.mvutu@ppcdrc.cd »",
+      "undoable": false,
+      "undone": false,
+      "error": {
+        "message": "Identifiants invalides",
+        "path": "/api/auth/login",
+        "method": "POST",
+        "status": 401,
+        "context": {
+          "username": "Karine.mvutu@ppcdrc.cd"
+        }
+      }
+    },
+    {
       "id": "log-001334",
       "at": "2026-10-05T12:19:40.774Z",
       "userId": "admin",
@@ -134566,5 +134589,5 @@
       }
     }
   ],
-  "nextSeq": 1335
+  "nextSeq": 1336
 }
