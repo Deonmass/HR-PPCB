@@ -1,6 +1,44 @@
 {
   "entries": [
     {
+      "id": "log-001345",
+      "at": "2026-10-06T08:04:41.063Z",
+      "userId": "karine.mvutu@ppcdrc.cd",
+      "userName": "Karine Mvutu",
+      "userEmail": "karine.mvutu@ppcdrc.cd",
+      "module": "sante",
+      "moduleLabel": "Santé",
+      "action": "create",
+      "actionLabel": "Création",
+      "entityType": "sante.visit",
+      "entityId": "sante-muwe7trq-uih373",
+      "summary": "Cas santé — MVUTU LUTEMBE KARINE · GRIPPE",
+      "details": "Cas santé — MVUTU LUTEMBE KARINE · GRIPPE",
+      "after": {
+        "id": "sante-muwe7trq-uih373",
+        "date": "2026-05-10",
+        "nom": "MVUTU",
+        "postnom": "LUTEMBE KARINE",
+        "sexe": "F",
+        "age": 41,
+        "typeMalade": "AGENT",
+        "pathologie": "GRIPPE",
+        "traitement": "ANTI GRIPPAL",
+        "reference": "NON",
+        "year": 2026,
+        "month": 5,
+        "employeeMatricule": "70000107",
+        "employeeNom": "MVUTU LUTEMBE KARINE",
+        "dependantId": null,
+        "createdAt": "2026-10-06T08:04:37.622Z",
+        "updatedAt": "2026-10-06T08:04:37.622Z",
+        "createdBy": "karine.mvutu@ppcdrc.cd",
+        "updatedBy": "karine.mvutu@ppcdrc.cd"
+      },
+      "undoable": false,
+      "undone": false
+    },
+    {
       "id": "log-001344",
       "at": "2026-10-06T08:03:35.717Z",
       "userId": "karine.mvutu@ppcdrc.cd",
@@ -134847,5 +134885,5 @@
       }
     }
   ],
-  "nextSeq": 1345
+  "nextSeq": 1346
 }
