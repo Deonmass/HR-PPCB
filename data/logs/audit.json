@@ -1,6 +1,44 @@
 {
   "entries": [
     {
+      "id": "log-001347",
+      "at": "2026-10-06T08:07:55.073Z",
+      "userId": "karine.mvutu@ppcdrc.cd",
+      "userName": "Karine Mvutu",
+      "userEmail": "karine.mvutu@ppcdrc.cd",
+      "module": "sante",
+      "moduleLabel": "Santé",
+      "action": "create",
+      "actionLabel": "Création",
+      "entityType": "sante.visit",
+      "entityId": "sante-muwebzfl-bwlnmm",
+      "summary": "Cas santé — TUTONDA  DIALEMVO · PALUDISME SIMPLE",
+      "details": "Cas santé — TUTONDA  DIALEMVO · PALUDISME SIMPLE",
+      "after": {
+        "id": "sante-muwebzfl-bwlnmm",
+        "date": "2026-05-10",
+        "nom": "TUTONDA",
+        "postnom": "DIALEMVO",
+        "sexe": "M",
+        "age": 13,
+        "typeMalade": "ENFANT",
+        "pathologie": "PALUDISME SIMPLE",
+        "traitement": "ANTI PALUDEEN  ET ANTI PYRETIQUE",
+        "reference": "NON",
+        "year": 2026,
+        "month": 5,
+        "employeeMatricule": "",
+        "employeeNom": "",
+        "dependantId": null,
+        "createdAt": "2026-10-06T08:07:51.585Z",
+        "updatedAt": "2026-10-06T08:07:51.585Z",
+        "createdBy": "karine.mvutu@ppcdrc.cd",
+        "updatedBy": "karine.mvutu@ppcdrc.cd"
+      },
+      "undoable": false,
+      "undone": false
+    },
+    {
       "id": "log-001346",
       "at": "2026-10-06T08:06:25.652Z",
       "userId": "karine.mvutu@ppcdrc.cd",
@@ -134923,5 +134961,5 @@
       }
     }
   ],
-  "nextSeq": 1347
+  "nextSeq": 1348
 }
