@@ -1,6 +1,44 @@
 {
   "entries": [
     {
+      "id": "log-001341",
+      "at": "2026-10-06T07:51:15.512Z",
+      "userId": "karine.mvutu@ppcdrc.cd",
+      "userName": "Karine Mvutu",
+      "userEmail": "karine.mvutu@ppcdrc.cd",
+      "module": "sante",
+      "moduleLabel": "Santé",
+      "action": "create",
+      "actionLabel": "Création",
+      "entityType": "sante.visit",
+      "entityId": "sante-muwdqka6-zd14jh",
+      "summary": "Cas santé — NLANDU SOMBI · GASTRO ENTERITE NON FEBRILE",
+      "details": "Cas santé — NLANDU SOMBI · GASTRO ENTERITE NON FEBRILE",
+      "after": {
+        "id": "sante-muwdqka6-zd14jh",
+        "date": "2026-03-10",
+        "nom": "NLANDU",
+        "postnom": "SOMBI",
+        "sexe": "M",
+        "age": 54,
+        "typeMalade": "CONTRACTANT",
+        "pathologie": "GASTRO ENTERITE NON FEBRILE",
+        "traitement": "",
+        "reference": "NON",
+        "year": 2026,
+        "month": 3,
+        "employeeMatricule": "",
+        "employeeNom": "",
+        "dependantId": null,
+        "createdAt": "2026-10-06T07:51:12.174Z",
+        "updatedAt": "2026-10-06T07:51:12.174Z",
+        "createdBy": "karine.mvutu@ppcdrc.cd",
+        "updatedBy": "karine.mvutu@ppcdrc.cd"
+      },
+      "undoable": false,
+      "undone": false
+    },
+    {
       "id": "log-001340",
       "at": "2026-10-06T07:49:12.942Z",
       "userId": "admin",
@@ -134695,5 +134733,5 @@
       }
     }
   ],
-  "nextSeq": 1341
+  "nextSeq": 1342
 }
