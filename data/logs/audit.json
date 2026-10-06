@@ -1,6 +1,21 @@
 {
   "entries": [
     {
+      "id": "log-001350",
+      "at": "2026-10-06T08:21:21.329Z",
+      "userId": "karine.mvutu@ppcdrc.cd",
+      "userName": "Karine Mvutu",
+      "userEmail": "karine.mvutu@ppcdrc.cd",
+      "module": "sante",
+      "moduleLabel": "Santé",
+      "action": "export",
+      "actionLabel": "Export",
+      "summary": "Export pathologies (243 cas)",
+      "details": "Export pathologies (243 cas)",
+      "undoable": false,
+      "undone": false
+    },
+    {
       "id": "log-001349",
       "at": "2026-10-06T08:14:55.233Z",
       "userId": "admin",
@@ -135058,5 +135073,5 @@
       }
     }
   ],
-  "nextSeq": 1350
+  "nextSeq": 1351
 }
