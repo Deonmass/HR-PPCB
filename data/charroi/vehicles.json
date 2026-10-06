@@ -282,7 +282,7 @@
       "province": "Kinshasa",
       "proprietaire": "PPC",
       "kilometrage": null,
-      "miseCirculation": "2014",
+      "miseCirculation": "2014-01-01",
       "age": 12,
       "observationTech": "A déclasser",
       "etatManuel": "",
@@ -292,9 +292,9 @@
       "assuranceFin": "",
       "vignetteFin": "",
       "controleTechniqueFin": "",
-      "notes": "",
+      "notes": "Nous avons retiré ce véhicule de la circulation en raison des multiples réparations effectuées au fil du temps ainsi que de son ancienneté, qui ne permet plus de garantir une exploitation fiable et sécurisée.",
       "createdAt": "2026-07-28T16:00:46.888Z",
-      "updatedAt": "2026-07-28T16:00:46.888Z"
+      "updatedAt": "2026-10-06T18:43:43.820Z"
     },
     {
       "id": "veh-011",
