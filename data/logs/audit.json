@@ -1,6 +1,44 @@
 {
   "entries": [
     {
+      "id": "log-001342",
+      "at": "2026-10-06T07:58:17.458Z",
+      "userId": "karine.mvutu@ppcdrc.cd",
+      "userName": "Karine Mvutu",
+      "userEmail": "karine.mvutu@ppcdrc.cd",
+      "module": "sante",
+      "moduleLabel": "Santé",
+      "action": "create",
+      "actionLabel": "Création",
+      "entityType": "sante.visit",
+      "entityId": "sante-muwdzln9-huwkwz",
+      "summary": "Cas santé — BAYISA MAKIESE · SUSPUCION PALUDISME SIMPLE",
+      "details": "Cas santé — BAYISA MAKIESE · SUSPUCION PALUDISME SIMPLE",
+      "after": {
+        "id": "sante-muwdzln9-huwkwz",
+        "date": "2026-03-10",
+        "nom": "BAYISA",
+        "postnom": "MAKIESE",
+        "sexe": "F",
+        "age": 6,
+        "typeMalade": "ENFANT",
+        "pathologie": "SUSPUCION PALUDISME SIMPLE",
+        "traitement": "ANTI PALUDEEN  ET ANTI PYRETIQUE",
+        "reference": "NON",
+        "year": 2026,
+        "month": 3,
+        "employeeMatricule": "70000052",
+        "employeeNom": "BAYISA SIMON DIDIER",
+        "dependantId": 34,
+        "createdAt": "2026-10-06T07:58:13.845Z",
+        "updatedAt": "2026-10-06T07:58:13.845Z",
+        "createdBy": "karine.mvutu@ppcdrc.cd",
+        "updatedBy": "karine.mvutu@ppcdrc.cd"
+      },
+      "undoable": false,
+      "undone": false
+    },
+    {
       "id": "log-001341",
       "at": "2026-10-06T07:51:15.512Z",
       "userId": "karine.mvutu@ppcdrc.cd",
@@ -134733,5 +134771,5 @@
       }
     }
   ],
-  "nextSeq": 1342
+  "nextSeq": 1343
 }
