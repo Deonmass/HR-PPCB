@@ -1,6 +1,48 @@
 {
   "entries": [
     {
+      "id": "log-001356",
+      "at": "2026-10-06T10:19:34.642Z",
+      "userId": "karine.mvutu@ppcdrc.cd",
+      "userName": "Karine Mvutu",
+      "userEmail": "karine.mvutu@ppcdrc.cd",
+      "module": "sante",
+      "moduleLabel": "Santé",
+      "action": "create",
+      "actionLabel": "Création",
+      "entityType": "sante.visit",
+      "entityId": "sante-muwj1ccx-cimppi",
+      "summary": "Cas santé — BADIBANGA MUTSHIPAYI Leon · ANGINE",
+      "details": "Cas santé — BADIBANGA MUTSHIPAYI Leon · ANGINE",
+      "after": {
+        "id": "sante-muwj1ccx-cimppi",
+        "date": "2026-02-10",
+        "nom": "BADIBANGA",
+        "postnom": "MUTSHIPAYI Leon",
+        "sexe": "M",
+        "age": 33,
+        "typeMalade": "AGENT",
+        "pathologie": "ANGINE",
+        "traitement": "VITAMINE C",
+        "reference": "NON",
+        "year": 2026,
+        "month": 2,
+        "employeeMatricule": "70000244",
+        "employeeNom": "BADIBANGA MUTSHIPAYI Leon",
+        "dependantId": null,
+        "commentaire": "",
+        "contractantId": "",
+        "contractantNom": "",
+        "contractantEmployeeId": "",
+        "createdAt": "2026-10-06T10:19:33.201Z",
+        "updatedAt": "2026-10-06T10:19:33.201Z",
+        "createdBy": "karine.mvutu@ppcdrc.cd",
+        "updatedBy": "karine.mvutu@ppcdrc.cd"
+      },
+      "undoable": false,
+      "undone": false
+    },
+    {
       "id": "log-001355",
       "at": "2026-10-06T10:02:37.605Z",
       "userId": "admin",
@@ -135194,5 +135236,5 @@
       }
     }
   ],
-  "nextSeq": 1356
+  "nextSeq": 1357
 }
