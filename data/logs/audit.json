@@ -1,6 +1,65 @@
 {
   "entries": [
     {
+      "id": "log-001349",
+      "at": "2026-10-06T08:14:55.233Z",
+      "userId": "admin",
+      "userName": "Administrateur",
+      "userEmail": "admin",
+      "module": "sante",
+      "moduleLabel": "Santé",
+      "action": "delete",
+      "actionLabel": "Suppression",
+      "entityType": "sante.visit",
+      "entityId": "sante-muwejxc0-d58iln",
+      "summary": "Suppression cas santé — MUAKASA",
+      "details": "Suppression cas santé — MUAKASA",
+      "before": {
+        "id": "sante-muwejxc0-d58iln",
+        "date": "2026-10-06",
+        "nom": "MUAKASA",
+        "postnom": "NSONI SERGE",
+        "sexe": "M",
+        "age": 48,
+        "typeMalade": "AGENT",
+        "pathologie": "cvbvcb",
+        "traitement": "cvbcvb",
+        "reference": "NON",
+        "year": 2026,
+        "month": 10,
+        "employeeMatricule": "70000008",
+        "employeeNom": "MUAKASA NSONI SERGE",
+        "dependantId": null,
+        "createdAt": "2026-10-06T08:14:02.112Z",
+        "updatedAt": "2026-10-06T08:14:02.112Z",
+        "createdBy": "admin",
+        "updatedBy": "admin"
+      },
+      "after": {
+        "id": "sante-muwejxc0-d58iln",
+        "date": "2026-10-06",
+        "nom": "MUAKASA",
+        "postnom": "NSONI SERGE",
+        "sexe": "M",
+        "age": 48,
+        "typeMalade": "AGENT",
+        "pathologie": "cvbvcb",
+        "traitement": "cvbcvb",
+        "reference": "NON",
+        "year": 2026,
+        "month": 10,
+        "employeeMatricule": "70000008",
+        "employeeNom": "MUAKASA NSONI SERGE",
+        "dependantId": null,
+        "createdAt": "2026-10-06T08:14:02.112Z",
+        "updatedAt": "2026-10-06T08:14:02.112Z",
+        "createdBy": "admin",
+        "updatedBy": "admin"
+      },
+      "undoable": false,
+      "undone": false
+    },
+    {
       "id": "log-001348",
       "at": "2026-10-06T08:14:05.463Z",
       "userId": "admin",
@@ -134999,5 +135058,5 @@
       }
     }
   ],
-  "nextSeq": 1349
+  "nextSeq": 1350
 }
