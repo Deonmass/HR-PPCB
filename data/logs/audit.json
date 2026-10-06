@@ -1,6 +1,21 @@
 {
   "entries": [
     {
+      "id": "log-001340",
+      "at": "2026-10-06T07:49:12.942Z",
+      "userId": "admin",
+      "userName": "Administrateur",
+      "userEmail": "admin",
+      "module": "documents.mouvement-travailleur",
+      "moduleLabel": "Documents",
+      "action": "export",
+      "actionLabel": "Export",
+      "summary": "Déclaration de mouvement de travailleur — 3 agents",
+      "details": "Déclaration de mouvement de travailleur — 3 agents",
+      "undoable": false,
+      "undone": false
+    },
+    {
       "id": "log-001339",
       "at": "2026-10-06T07:45:52.750Z",
       "userId": "karine.mvutu@ppcdrc.cd",
@@ -134680,5 +134695,5 @@
       }
     }
   ],
-  "nextSeq": 1340
+  "nextSeq": 1341
 }
