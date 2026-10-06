@@ -30,6 +30,30 @@ const DASHBOARD_SHEET = 'Dashboard';
 const FIRST_DATA_ROW = 3;
 const AGE_COL = EXPORT_EMP_COL.age + 1;
 const END_COL = EXPORT_EMP_LAST_COL + 1;
+const DATE_NUMBER_FORMAT = 'dd/mm/yyyy';
+
+/** Largeurs (caractères Excel) à partir de Numéro CUG — le template laisse AA+ trop étroites ou sans style. */
+const EXPORT_COL_WIDTH: Partial<Record<number, number>> = {
+  [EXPORT_EMP_COL.telephone]: 18,
+  [EXPORT_EMP_COL.statut]: 12,
+  [EXPORT_EMP_COL.typeContrat]: 18,
+  [EXPORT_EMP_COL.dureeContratMois]: 22,
+  [EXPORT_EMP_COL.periodeEssaiMois]: 24,
+  [EXPORT_EMP_COL.dateFinPeriodeEssai]: 26,
+  [EXPORT_EMP_COL.dateFinContrat]: 18,
+  [EXPORT_EMP_COL.raisonExit]: 18,
+  [EXPORT_EMP_COL.essaiActions]: 32,
+  [EXPORT_EMP_COL.essaiResponsable]: 22,
+  [EXPORT_EMP_COL.essaiEcheanceEval]: 22,
+  [EXPORT_EMP_COL.essaiStatutEval]: 18,
+  [EXPORT_EMP_COL.essaiCommentaire]: 28,
+};
+
+const EXPORT_DATE_COLS = [
+  EXPORT_EMP_COL.dateFinPeriodeEssai,
+  EXPORT_EMP_COL.dateFinContrat,
+  EXPORT_EMP_COL.essaiEcheanceEval,
+] as const;
 
 const KEEP_SHEETS = new Set([
   DASHBOARD_SHEET,
@@ -85,6 +109,9 @@ function employeeToExportValues(employee: Employee): (string | number | boolean 
   values[EXPORT_EMP_COL.lineManagerPosition] = cellValue(employee.lineManagerPosition || '');
   values[EXPORT_EMP_COL.cnss] = cellValue(employee.cnss || '');
   values[EXPORT_EMP_COL.nif] = cellValue(employee.nif || '');
+  values[EXPORT_EMP_COL.telephone] = cellValue(
+    employee.telephone == null || employee.telephone === '' ? '' : String(employee.telephone),
+  );
   values[EXPORT_EMP_COL.statut] = cellValue(normalizeEmployeeStatut(employee.statut));
   values[EXPORT_EMP_COL.typeContrat] = cellValue(employee.typeContrat || '');
   values[EXPORT_EMP_COL.dureeContratMois] = cellValue(employee.dureeContratMois ?? '');
@@ -104,11 +131,41 @@ function employeeToExportValues(employee: Employee): (string | number | boolean 
   return values;
 }
 
-/** Écrit / aligne les en-têtes du template (CNSS, NIF, contrat, exit). */
+/** Écrit / aligne les en-têtes du template (CNSS, NIF, CUG, contrat, exit). */
 function applyExportHeaders(sheet: PopulateSheet): void {
   for (let col0 = 0; col0 <= EXPORT_EMP_LAST_COL; col0++) {
     const header = EXPORT_EMP_HEADERS[col0];
     if (header) sheet.cell(2, col0 + 1).value(header);
+  }
+}
+
+/**
+ * Aligne la mise en forme à partir de Numéro CUG (colonnes qui dépassent le style du template).
+ * En-têtes noirs comme A–W, largeurs lisibles, dates en jj/mm/aaaa.
+ */
+function formatExportTail(sheet: PopulateSheet, lastDataRow: number): void {
+  const refStyle = sheet.cell(2, 1).style(['bold', 'fontColor', 'fill']);
+  const headerStyle = {
+    bold: true,
+    fontColor: refStyle.fontColor ?? { theme: 0 },
+    fill: refStyle.fill ?? { type: 'solid', color: { theme: 1 } },
+    horizontalAlignment: 'center',
+    verticalAlignment: 'center',
+    wrapText: true,
+  };
+
+  for (let col0 = EXPORT_EMP_COL.telephone; col0 <= EXPORT_EMP_LAST_COL; col0++) {
+    const col = col0 + 1;
+    const width = EXPORT_COL_WIDTH[col0];
+    if (width) sheet.column(col).width(width);
+    sheet.cell(2, col).style(headerStyle);
+  }
+
+  if (lastDataRow < FIRST_DATA_ROW) return;
+  for (const col0 of EXPORT_DATE_COLS) {
+    for (let row = FIRST_DATA_ROW; row <= lastDataRow; row++) {
+      sheet.cell(row, col0 + 1).style('numberFormat', DATE_NUMBER_FORMAT);
+    }
   }
 }
 
@@ -122,6 +179,17 @@ function findSampleLastRow(sheet: PopulateSheet): number {
     }
   }
   return last;
+}
+
+/** Le template masque certaines lignes (ex. 3–6 et 8 sur Base). On les réaffiche. */
+function unhideSheetRows(sheet: PopulateSheet): void {
+  const rows = (sheet as unknown as {
+    _rows?: Array<{ hidden: { (): boolean; (value: boolean): void } } | undefined>;
+  })._rows;
+  if (!rows) return;
+  for (const row of rows) {
+    if (row?.hidden()) row.hidden(false);
+  }
 }
 
 function clearRow(sheet: PopulateSheet, row: number): void {
@@ -166,6 +234,8 @@ function fillPeopleSheet(sheet: PopulateSheet, employees: Employee[]): number {
     writeEmployeeRow(sheet, FIRST_DATA_ROW + i, employees[i]!);
   }
 
+  formatExportTail(sheet, lastDataRow);
+  unhideSheetRows(sheet);
   return lastDataRow;
 }
 
@@ -320,6 +390,8 @@ export async function buildEmployeesHrExportBuffer(): Promise<Buffer> {
     updateDashboardFormulas(dashboardSheet, lastBaseRow, lastExitRow);
   }
 
+  baseSheet.cell(1, 1).active(true);
+  workbook.activeSheet(baseSheet);
   return workbook.outputAsync() as Promise<Buffer>;
 }
 

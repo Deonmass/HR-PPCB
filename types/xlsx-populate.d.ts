@@ -12,6 +12,8 @@ declare module 'xlsx-populate' {
     style(styles: Record<string, unknown>): Cell;
     hyperlink(): string | Record<string, unknown> | undefined;
     hyperlink(hyperlink: string | Record<string, unknown>): Cell;
+    active(): boolean;
+    active(active: boolean): Cell;
     rowNumber(): number;
     columnNumber(): number;
   }
