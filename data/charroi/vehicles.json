@@ -1603,7 +1603,35 @@
       "notes": "",
       "createdAt": "2026-10-06T18:22:28.887Z",
       "updatedAt": "2026-10-06T18:23:25.565Z"
+    },
+    {
+      "id": "veh-046",
+      "numero": 46,
+      "marque": "Toyota",
+      "type": "Pick up",
+      "numeroChassis": "AHTDK9CD900983651",
+      "plaque": "1717BX01",
+      "cv": "13CV",
+      "assureur": "RAWSUR A",
+      "departement": "Human Resources",
+      "user": "MIRINDI CARINE",
+      "province": "Lubudi",
+      "proprietaire": "LOXEA",
+      "kilometrage": 3799,
+      "miseCirculation": "2026-08-06",
+      "age": 0,
+      "observationTech": "Bon état",
+      "etatManuel": "Bon état",
+      "assuranceHistorique": [],
+      "vignetteHistorique": [],
+      "controleTechniqueHistorique": [],
+      "assuranceFin": "",
+      "vignetteFin": "",
+      "controleTechniqueFin": "",
+      "notes": "",
+      "createdAt": "2026-10-06T18:25:43.057Z",
+      "updatedAt": "2026-10-06T18:25:43.057Z"
     }
   ],
-  "nextSeq": 46
+  "nextSeq": 47
 }
