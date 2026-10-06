@@ -1,6 +1,51 @@
 {
   "entries": [
     {
+      "id": "log-001366",
+      "at": "2026-10-06T18:22:32.864Z",
+      "userId": "Tresor.Maneka@ppcdrc.cd",
+      "userName": "Tresor Maneka",
+      "userEmail": "Tresor.Maneka@ppcdrc.cd",
+      "module": "charroi.vehicules",
+      "moduleLabel": "Charroi — Véhicules",
+      "action": "create",
+      "actionLabel": "Création",
+      "entityType": "charroi.vehicule",
+      "entityId": "veh-045",
+      "summary": "Création véhicule 7226BW01",
+      "details": "Nouveau véhicule enregistré : {\"id\":\"veh-045\",\"numero\":18,\"marque\":\"Toyota\",\"type\":\"Pick up\",\"numeroChassis\":\"AHTDK9CD900983652\",\"plaque\":\"7226BW01\",\"cv\":\"13CV\",\"assureur\":\"RAWSUR A\",\"departement\":\"Human Resources\",\"user\":\"MIRINDI CARINE\",\"province\":\"Lubudi\",\"proprietaire\":\"LOXEA\",\"kilometrage\":2500,\"miseCirculation\":\"2026-07-06\",\"age\":0,\"observationTech\":\"Bon état\",\"etatManuel\":\"Bon état\",\"assuranceHistorique\":[],\"vignetteHistorique\":[],\"controleTechniqueHistorique\":[],\"assuranceFin\":\"\",\"vignetteFin\":\"\",\"controleTechniqueFin\":\"\",\"notes\":\"\",\"createdAt\":\"2026-10-06T18:22:28.887Z\",\"updatedAt\":\"2026-10-06T18:22:28.887Z\"}",
+      "after": {
+        "id": "veh-045",
+        "numero": 18,
+        "marque": "Toyota",
+        "type": "Pick up",
+        "numeroChassis": "AHTDK9CD900983652",
+        "plaque": "7226BW01",
+        "cv": "13CV",
+        "assureur": "RAWSUR A",
+        "departement": "Human Resources",
+        "user": "MIRINDI CARINE",
+        "province": "Lubudi",
+        "proprietaire": "LOXEA",
+        "kilometrage": 2500,
+        "miseCirculation": "2026-07-06",
+        "age": 0,
+        "observationTech": "Bon état",
+        "etatManuel": "Bon état",
+        "assuranceHistorique": [],
+        "vignetteHistorique": [],
+        "controleTechniqueHistorique": [],
+        "assuranceFin": "",
+        "vignetteFin": "",
+        "controleTechniqueFin": "",
+        "notes": "",
+        "createdAt": "2026-10-06T18:22:28.887Z",
+        "updatedAt": "2026-10-06T18:22:28.887Z"
+      },
+      "undoable": true,
+      "undone": false
+    },
+    {
       "id": "log-001365",
       "at": "2026-10-06T14:48:52.804Z",
       "userId": "Kiesse.Banguli@ppcdrc.cd",
@@ -135732,5 +135777,5 @@
       }
     }
   ],
-  "nextSeq": 1366
+  "nextSeq": 1367
 }
