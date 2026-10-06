@@ -1,4 +1,5 @@
 import { NextResponse } from 'next/server';
+import { listContractants } from '@/lib/contractants-store';
 import { readDependantsData } from '@/lib/dependants-json-store';
 import { readEmployees } from '@/lib/employees-json-store';
 import { checkAnyPermission } from '@/lib/require-permission';
@@ -6,8 +7,10 @@ import { createSanteVisit, listSanteVisits } from '@/lib/sante-store';
 import type { SanteVisitInput } from '@/lib/sante-types';
 import {
   buildSanteDashboard,
+  isFamilyPatientType,
   matchDependantForSante,
   matchEmployeeForSante,
+  normalizeSanteType,
   santeUniqueValues,
 } from '@/lib/sante-utils';
 import { getAuditActor, withAudit } from '@/lib/with-audit';
@@ -22,11 +25,36 @@ export async function GET() {
   const denied = await checkAnyPermission(VIEW);
   if (denied) return denied;
   try {
-    const [visits, employees, dependantsData] = await Promise.all([
+    const [visits, employees, dependantsData, contractants] = await Promise.all([
       listSanteVisits(),
       readEmployees(),
       readDependantsData().catch(() => ({ dependants: [] })),
+      listContractants().catch(() => []),
     ]);
+    const seen = new Set<string>();
+    const isActiveContractant = (dateSortie: string) => {
+      const raw = dateSortie.trim();
+      if (!/^\d{4}-\d{2}-\d{2}$/.test(raw)) return true;
+      const date = new Date(`${raw}T00:00:00`);
+      return !Number.isNaN(date.getTime()) && date.getTime() > Date.now();
+    };
+    const contractantEmployees = contractants.flatMap((company) => company.employees
+      .filter((item) => item.nom.trim() && isActiveContractant(item.dateSortie))
+      .map((item) => {
+        const matricule = item.matriculePpc.trim() || item.id;
+        const key = seen.has(matricule) ? `${company.id}-${item.id}` : matricule;
+        seen.add(key);
+        const sexe = item.sexe === 'F' || item.sexe === 'M' ? item.sexe : '';
+        return {
+          id: item.id,
+          nom: item.nom.trim(),
+          matricule: key,
+          sexe,
+          contractantId: company.id,
+          contractantNom: company.denomination,
+        };
+      }))
+      .sort((a, b) => a.nom.localeCompare(b.nom, 'fr'));
     const dashboard = buildSanteDashboard(visits);
     return NextResponse.json({
       visits,
@@ -53,6 +81,10 @@ export async function GET() {
         matricule: d.matricule,
         employeNom: d.employeNom,
       })),
+      contractants: contractants
+        .map((company) => ({ id: company.id, denomination: company.denomination }))
+        .sort((a, b) => a.denomination.localeCompare(b.denomination, 'fr')),
+      contractantEmployees,
     });
   } catch (err) {
     const message = err instanceof Error ? err.message : 'Erreur de chargement';
@@ -69,19 +101,18 @@ export async function POST(request: Request) {
   try {
     const body = (await request.json()) as SanteVisitInput;
     const actor = await getAuditActor();
-    const [employees, dependantsData] = await Promise.all([
-      readEmployees(),
-      readDependantsData().catch(() => ({ dependants: [] })),
-    ]);
+    const type = normalizeSanteType(body.typeMalade || '');
     let input = { ...body };
-    if (!input.employeeMatricule && input.nom) {
+    if (!input.employeeMatricule && type === 'AGENT' && input.nom) {
+      const employees = await readEmployees();
       const emp = matchEmployeeForSante(employees, input.nom, input.postnom || '');
-      if (emp && !/enfant|epouse|conjoint/i.test(input.typeMalade || '')) {
+      if (emp) {
         input.employeeMatricule = emp.matricule;
         input.employeeNom = emp.nom;
       }
     }
-    if (!input.dependantId && /enfant|epouse|conjoint/i.test(input.typeMalade || '')) {
+    if (!input.dependantId && isFamilyPatientType(type)) {
+      const dependantsData = await readDependantsData().catch(() => ({ dependants: [] }));
       const dep = matchDependantForSante(
         dependantsData.dependants,
         input.nom,
@@ -105,6 +136,7 @@ export async function POST(request: Request) {
         summary: `Cas santé — ${input.nom} ${input.postnom || ''} · ${input.pathologie}`.trim(),
         path: '/api/sante',
         method: 'POST',
+        defer: true,
       },
       () => createSanteVisit(input, actor?.userEmail || actor?.userName),
     );

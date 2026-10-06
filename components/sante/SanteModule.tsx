@@ -8,6 +8,7 @@ import SanteDataView from '@/components/sante/SanteDataView';
 import SanteHistoryModal from '@/components/sante/SanteHistoryModal';
 import SanteVisitModal from '@/components/sante/SanteVisitModal';
 import { usePermissions } from '@/contexts/PermissionContext';
+import { SANTE_PATIENT_TYPES } from '@/lib/sante-types';
 import {
   SANTE_MONTH_NAMES,
   buildSanteDashboard,
@@ -18,6 +19,8 @@ import {
   visitToInput,
 } from '@/lib/sante-utils';
 import type {
+  SanteContractantEmployeeLite,
+  SanteContractantLite,
   SanteDependantLite,
   SanteEmployeeLite,
   SantePersonHistory,
@@ -36,6 +39,8 @@ interface Payload {
   references: string[];
   employees: SanteEmployeeLite[];
   dependants: SanteDependantLite[];
+  contractants: SanteContractantLite[];
+  contractantEmployees: SanteContractantEmployeeLite[];
 }
 
 interface Props {
@@ -93,6 +98,8 @@ export default function SanteModule({ view }: Props) {
         references: json.references || [],
         employees: json.employees || [],
         dependants: json.dependants || [],
+        contractants: json.contractants || [],
+        contractantEmployees: json.contractantEmployees || [],
       });
     } catch {
       await showError('Erreur de chargement');
@@ -152,15 +159,20 @@ export default function SanteModule({ view }: Props) {
   };
 
   const saveVisit = async () => {
-    if (!form) return;
+    if (!form || saving) return;
     if (!form.date || !form.nom.trim() || !form.pathologie.trim()) {
       await showError('Date, nom et pathologie sont requis');
       return;
     }
+    if (form.typeMalade === 'CONTRACTANT' && !(form.contractantId || '').trim()) {
+      await showError('Sélectionnez le contractant auquel cette personne est liée');
+      return;
+    }
+    const currentId = editingId;
     setSaving(true);
     try {
-      const res = await fetch(editingId ? `/api/sante/${editingId}` : '/api/sante', {
-        method: editingId ? 'PUT' : 'POST',
+      const res = await fetch(currentId ? `/api/sante/${currentId}` : '/api/sante', {
+        method: currentId ? 'PUT' : 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(form),
       });
@@ -169,10 +181,29 @@ export default function SanteModule({ view }: Props) {
         await showError(json?.error || 'Enregistrement impossible');
         return;
       }
+      const saved = json as SanteVisit;
+      setPayload((prev) => {
+        if (!prev || !saved?.id) return prev;
+        const visits = currentId
+          ? prev.visits.map((item) => (item.id === saved.id ? saved : item))
+          : [saved, ...prev.visits.filter((item) => item.id !== saved.id)];
+        const add = (list: string[], value: string) => (
+          value && !list.includes(value) ? [...list, value].sort((a, b) => a.localeCompare(b, 'fr')) : list
+        );
+        return {
+          ...prev,
+          visits,
+          types: add(prev.types, saved.typeMalade),
+          pathologies: add(prev.pathologies, saved.pathologie),
+          traitements: add(prev.traitements, saved.traitement),
+          references: add(prev.references, saved.reference),
+          years: prev.years.includes(saved.year) ? prev.years : [...prev.years, saved.year],
+        };
+      });
       setForm(null);
       setEditingId(null);
-      await showSuccess(editingId ? 'Cas modifié' : 'Cas enregistré');
-      await load(true);
+      setSaving(false);
+      void showSuccess(currentId ? 'Cas modifié' : 'Cas enregistré');
     } catch {
       await showError('Erreur d’enregistrement');
     } finally {
@@ -231,6 +262,34 @@ export default function SanteModule({ view }: Props) {
             </p>
           </div>
           <div className="page-header-actions mvt-header-actions sante-header-actions">
+            {canCreate ? (
+              <button
+                type="button"
+                className="btn btn-sm sante-btn-add"
+                onClick={() => {
+                  setEditingId(null);
+                  setForm(emptySanteVisitInput());
+                }}
+              >
+                Ajouter
+              </button>
+            ) : null}
+            {canExport ? (
+              <button
+                type="button"
+                className="btn btn-sm btn-with-icon sante-btn-export"
+                onClick={() => void exportFile()}
+                disabled={exporting}
+              >
+                {exporting ? <BtnSpinner /> : null}
+                {exporting ? 'Export…' : 'Exporter Excel'}
+              </button>
+            ) : null}
+          </div>
+        </div>
+
+        <div className="sante-list-toolbar">
+          <div className="sante-list-filters">
             <select
               className="filter-select filter-select-sm"
               value={month}
@@ -264,7 +323,7 @@ export default function SanteModule({ view }: Props) {
               aria-label="Type"
             >
               <option value="">Tous les types</option>
-              {(payload?.types || []).map((item) => (
+              {[...new Set([...(payload?.types || []), ...SANTE_PATIENT_TYPES])].map((item) => (
                 <option key={item} value={item}>
                   {item}
                 </option>
@@ -300,34 +359,8 @@ export default function SanteModule({ view }: Props) {
                   </option>
                 ))}
             </select>
-            {canCreate ? (
-              <button
-                type="button"
-                className="btn btn-sm sante-btn-add"
-                onClick={() => {
-                  setEditingId(null);
-                  setForm(emptySanteVisitInput());
-                }}
-              >
-                Ajouter
-              </button>
-            ) : null}
-            {canExport ? (
-              <button
-                type="button"
-                className="btn btn-sm btn-with-icon sante-btn-export"
-                onClick={() => void exportFile()}
-                disabled={exporting}
-              >
-                {exporting ? <BtnSpinner /> : null}
-                {exporting ? 'Export…' : 'Exporter Excel'}
-              </button>
-            ) : null}
           </div>
-        </div>
-
-        {view === 'donnees' ? (
-          <div className="sante-search-bar">
+          {view === 'donnees' ? (
             <input
               type="search"
               className="search-input"
@@ -335,8 +368,8 @@ export default function SanteModule({ view }: Props) {
               value={q}
               onChange={(e) => setQ(e.target.value)}
             />
-          </div>
-        ) : null}
+          ) : null}
+        </div>
 
         {view === 'dashboard' ? (
           <SanteDashboardView dashboard={dashboard} visits={filtered} />
@@ -361,6 +394,8 @@ export default function SanteModule({ view }: Props) {
             value={form}
             employees={payload?.employees || []}
             dependants={payload?.dependants || []}
+            contractants={payload?.contractants || []}
+            contractantEmployees={payload?.contractantEmployees || []}
             pathologies={payload?.pathologies || []}
             traitements={payload?.traitements || []}
             references={payload?.references || []}

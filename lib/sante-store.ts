@@ -1,5 +1,6 @@
 import 'server-only';
 
+import { after as scheduleAfter } from 'next/server';
 import fs from 'fs';
 import fsPromises from 'fs/promises';
 import path from 'path';
@@ -10,7 +11,7 @@ import {
 } from './durable-fs';
 import { canPersistProjectFiles, getWritableDataRoot } from './runtime-mode';
 import type { SanteVisit, SanteVisitInput } from './sante-types';
-import { formatSanteExcelMonthLabel } from './sante-utils';
+import { formatSanteExcelMonthLabel, normalizeSanteType } from './sante-utils';
 
 interface StoreData {
   visits: SanteVisit[];
@@ -32,6 +33,8 @@ function resolvePath(): string {
   }
   return writable;
 }
+
+let persistQueued = 0;
 
 function uid(): string {
   return `sante-${Date.now().toString(36)}-${Math.random().toString(36).slice(2, 8)}`;
@@ -74,6 +77,10 @@ function normalizeVisit(raw: Partial<SanteVisit>, now: string): SanteVisit | nul
     employeeMatricule: String(raw.employeeMatricule || '').trim(),
     employeeNom: String(raw.employeeNom || '').trim(),
     dependantId: typeof raw.dependantId === 'number' ? raw.dependantId : null,
+    commentaire: String(raw.commentaire || '').trim(),
+    contractantId: String(raw.contractantId || '').trim(),
+    contractantNom: String(raw.contractantNom || '').trim(),
+    contractantEmployeeId: String(raw.contractantEmployeeId || '').trim(),
     createdAt: String(raw.createdAt || now),
     updatedAt: String(raw.updatedAt || now),
     createdBy: raw.createdBy,
@@ -83,7 +90,9 @@ function normalizeVisit(raw: Partial<SanteVisit>, now: string): SanteVisit | nul
 
 async function readStore(): Promise<StoreData> {
   const filePath = resolvePath();
-  await hydrateDurableFile(DURABLE_SANTE_VISITS_KEY, filePath);
+  if (persistQueued === 0) {
+    await hydrateDurableFile(DURABLE_SANTE_VISITS_KEY, filePath);
+  }
   try {
     const raw = await fsPromises.readFile(filePath, 'utf8');
     const parsed = JSON.parse(raw) as StoreData;
@@ -104,7 +113,14 @@ async function writeStore(store: StoreData): Promise<void> {
   const filePath = resolvePath();
   await fsPromises.mkdir(path.dirname(filePath), { recursive: true });
   await fsPromises.writeFile(filePath, `${JSON.stringify(store, null, 2)}\n`, 'utf8');
-  await persistDurableFile(DURABLE_SANTE_VISITS_KEY, filePath);
+  persistQueued += 1;
+  scheduleAfter(() => persistDurableFile(DURABLE_SANTE_VISITS_KEY, filePath)
+    .catch((err) => {
+      console.error('[sante] persist failed', err);
+    })
+    .finally(() => {
+      persistQueued = Math.max(0, persistQueued - 1);
+    }));
 }
 
 export async function listSanteVisits(): Promise<SanteVisit[]> {
@@ -121,6 +137,9 @@ export async function createSanteVisit(input: SanteVisitInput, actor?: string): 
   const { date, year, month } = parseDate(input.date);
   if (!input.nom.trim()) throw new Error('Nom requis');
   if (!input.pathologie.trim()) throw new Error('Pathologie requise');
+  if (normalizeSanteType(input.typeMalade || '') === 'CONTRACTANT' && !(input.contractantId || '').trim()) {
+    throw new Error('Contractant requis');
+  }
   const now = new Date().toISOString();
   const visit: SanteVisit = {
     id: uid(),
@@ -138,6 +157,10 @@ export async function createSanteVisit(input: SanteVisitInput, actor?: string): 
     employeeMatricule: (input.employeeMatricule || '').trim(),
     employeeNom: (input.employeeNom || '').trim(),
     dependantId: input.dependantId ?? null,
+    commentaire: (input.commentaire || '').trim(),
+    contractantId: (input.contractantId || '').trim(),
+    contractantNom: (input.contractantNom || '').trim(),
+    contractantEmployeeId: (input.contractantEmployeeId || '').trim(),
     createdAt: now,
     updatedAt: now,
     createdBy: actor,
@@ -176,12 +199,19 @@ export async function updateSanteVisit(
     employeeMatricule: (input.employeeMatricule || '').trim(),
     employeeNom: (input.employeeNom || '').trim(),
     dependantId: input.dependantId ?? null,
+    commentaire: (input.commentaire || '').trim(),
+    contractantId: (input.contractantId || '').trim(),
+    contractantNom: (input.contractantNom || '').trim(),
+    contractantEmployeeId: (input.contractantEmployeeId || '').trim(),
     updatedAt: new Date().toISOString(),
     updatedBy: actor,
   };
   if (next.age != null && !Number.isFinite(next.age)) next.age = null;
   if (!next.nom) throw new Error('Nom requis');
   if (!next.pathologie) throw new Error('Pathologie requise');
+  if (normalizeSanteType(next.typeMalade) === 'CONTRACTANT' && !next.contractantId) {
+    throw new Error('Contractant requis');
+  }
   store.visits[index] = next;
   await writeStore(store);
   return next;

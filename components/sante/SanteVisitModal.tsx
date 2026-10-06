@@ -1,15 +1,18 @@
 'use client';
 
-import { useEffect, useMemo, useState } from 'react';
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import EmployeePicker, { type EmployeeSelection } from '@/components/EmployeePicker';
+import ProjectPickerDropdown from '@/components/ProjectPickerDropdown';
 import { emptyEmployeeHrProfile } from '@/lib/types';
 import {
   SANTE_PATIENT_TYPES,
+  type SanteContractantEmployeeLite,
+  type SanteContractantLite,
   type SanteDependantLite,
   type SanteEmployeeLite,
   type SanteVisitInput,
 } from '@/lib/sante-types';
-import { isFamilyPatientType, splitEmployeeNom } from '@/lib/sante-utils';
+import { isFamilyPatientType, normalizeSanteType, splitEmployeeNom } from '@/lib/sante-utils';
 import { normalizePersonName } from '@/lib/dependants-pactilis-compare';
 
 interface Props {
@@ -18,6 +21,8 @@ interface Props {
   value: SanteVisitInput;
   employees: SanteEmployeeLite[];
   dependants: SanteDependantLite[];
+  contractants: SanteContractantLite[];
+  contractantEmployees: SanteContractantEmployeeLite[];
   pathologies: string[];
   traitements: string[];
   references: string[];
@@ -25,6 +30,95 @@ interface Props {
   onChange: (next: SanteVisitInput) => void;
   onClose: () => void;
   onSubmit: () => void;
+}
+
+function ContractantPersonPicker({
+  people,
+  selectedId,
+  onSelect,
+}: {
+  people: SanteContractantEmployeeLite[];
+  selectedId: string;
+  onSelect: (person: SanteContractantEmployeeLite | null) => void;
+}) {
+  const wrapRef = useRef<HTMLDivElement>(null);
+  const listRef = useRef<HTMLDivElement>(null);
+  const selected = people.find((person) => person.id === selectedId);
+  const [open, setOpen] = useState(false);
+  const [query, setQuery] = useState(selected?.nom ?? '');
+
+  useEffect(() => {
+    setQuery(selected?.nom ?? '');
+  }, [selected?.nom, selectedId]);
+
+  const suggestions = useMemo(() => {
+    const q = normalizePersonName(query);
+    const list = q
+      ? people.filter((item) => normalizePersonName(`${item.nom} ${item.matricule} ${item.contractantNom}`).includes(q))
+      : people;
+    return list.slice(0, 12);
+  }, [people, query]);
+
+  const dismiss = useCallback(() => {
+    setOpen(false);
+    setQuery(selected?.nom ?? '');
+  }, [selected?.nom]);
+
+  useEffect(() => {
+    if (!open) return;
+    const onPointerDown = (event: MouseEvent) => {
+      const target = event.target as Node;
+      if (wrapRef.current?.contains(target)) return;
+      if (listRef.current?.contains(target)) return;
+      dismiss();
+    };
+    document.addEventListener('mousedown', onPointerDown);
+    return () => document.removeEventListener('mousedown', onPointerDown);
+  }, [dismiss, open]);
+
+  return (
+    <div ref={wrapRef} className={`project-picker${open ? ' is-open' : ''}`}>
+      <input
+        className="project-picker-input"
+        value={query}
+        placeholder="Nom ou matricule…"
+        autoComplete="off"
+        onChange={(e) => {
+          const next = e.target.value;
+          setQuery(next);
+          setOpen(true);
+          if (!next.trim()) onSelect(null);
+        }}
+        onFocus={() => setOpen(true)}
+      />
+      <ProjectPickerDropdown
+        anchorRef={wrapRef}
+        listRef={listRef}
+        open={open && suggestions.length > 0}
+        minWidth={420}
+      >
+        {suggestions.map((person) => (
+          <button
+            key={`${person.contractantId}-${person.id}`}
+            type="button"
+            className={`project-picker-option${selectedId === person.id ? ' active' : ''}`}
+            role="option"
+            onMouseDown={(e) => e.preventDefault()}
+            onClick={() => {
+              onSelect(person);
+              setQuery(person.nom);
+              setOpen(false);
+            }}
+          >
+            <span className="project-picker-name">{person.nom}</span>
+            <span className="project-picker-meta">
+              {person.contractantNom}{person.matricule ? ` · ${person.matricule}` : ''}
+            </span>
+          </button>
+        ))}
+      </ProjectPickerDropdown>
+    </div>
+  );
 }
 
 function genderToSexe(gender?: string): 'M' | 'F' | '' {
@@ -40,6 +134,8 @@ export default function SanteVisitModal({
   value,
   employees,
   dependants,
+  contractants,
+  contractantEmployees,
   pathologies,
   traitements,
   references,
@@ -66,7 +162,10 @@ export default function SanteVisitModal({
       }
     : null;
 
+  const patientType = normalizeSanteType(value.typeMalade);
   const family = isFamilyPatientType(value.typeMalade);
+  const isContractant = patientType === 'CONTRACTANT';
+  const isSocial = patientType === 'CAS SOCIAL';
   const pickerEmployees = useMemo(
     () =>
       employees.map((e) => ({
@@ -100,13 +199,13 @@ export default function SanteVisitModal({
       .slice(0, 20);
   }, [dependants, family, personQuery, value.employeeMatricule, value.nom, value.postnom, value.typeMalade]);
   const agentSuggestions = useMemo(() => {
-    if (family) return [];
+    if (family || isContractant || isSocial) return [];
     const q = normalizePersonName(personQuery || `${value.nom} ${value.postnom}`);
     if (!q) return [];
     return employees
       .filter((e) => normalizePersonName(`${e.nom} ${e.matricule}`).includes(q))
       .slice(0, 8);
-  }, [employees, family, personQuery, value.nom, value.postnom]);
+  }, [employees, family, isContractant, isSocial, personQuery, value.nom, value.postnom]);
 
   if (!open) return null;
 
@@ -152,6 +251,33 @@ export default function SanteVisitModal({
     setShowSuggest(false);
   };
 
+  const applyContractantEmployee = (person: SanteContractantEmployeeLite | null) => {
+    if (!person) {
+      onChange({
+        ...value,
+        contractantEmployeeId: '',
+        employeeMatricule: '',
+        employeeNom: '',
+      });
+      return;
+    }
+    const split = splitEmployeeNom(person.nom);
+    onChange({
+      ...value,
+      nom: split.nom,
+      postnom: split.postnom,
+      sexe: person.sexe || value.sexe,
+      employeeMatricule: person.matricule,
+      employeeNom: person.nom,
+      contractantEmployeeId: person.id,
+      contractantId: person.contractantId,
+      contractantNom: person.contractantNom,
+      dependantId: null,
+    });
+    setPersonQuery('');
+    setShowSuggest(false);
+  };
+
   return (
     <div className="modal-overlay" onClick={onClose}>
       <div className="modal modal-form sante-visit-modal" onClick={(e) => e.stopPropagation()}>
@@ -175,7 +301,20 @@ export default function SanteVisitModal({
               <label>Type de malade</label>
               <select
                 value={value.typeMalade}
-                onChange={(e) => onChange({ ...value, typeMalade: e.target.value, dependantId: null })}
+                onChange={(e) => {
+                  const nextType = e.target.value;
+                  const nextKind = normalizeSanteType(nextType);
+                  onChange({
+                    ...value,
+                    typeMalade: nextType,
+                    dependantId: null,
+                    ...(nextKind === 'CONTRACTANT'
+                      ? { employeeMatricule: '', employeeNom: '' }
+                      : { contractantId: '', contractantNom: '', contractantEmployeeId: '' }),
+                  });
+                  setPersonQuery('');
+                  setShowSuggest(false);
+                }}
               >
                 {SANTE_PATIENT_TYPES.map((type) => (
                   <option key={type} value={type}>
@@ -187,6 +326,25 @@ export default function SanteVisitModal({
                 ) : null}
               </select>
             </div>
+            {isContractant ? (
+              <div className="form-group form-group-full">
+                <label>Contractant</label>
+                <ContractantPersonPicker
+                  people={contractantEmployees}
+                  selectedId={value.contractantEmployeeId || ''}
+                  onSelect={applyContractantEmployee}
+                />
+                {value.contractantEmployeeId ? (
+                  <p className="sante-linked-hint">
+                    Société <strong>{value.contractantNom || '—'}</strong>
+                    {value.employeeMatricule ? ` · ${value.employeeMatricule}` : ''}
+                  </p>
+                ) : (
+                  <p className="sante-linked-hint">Saisissez un nom pour voir les suggestions, ou complétez la fiche si la personne n’est pas enregistrée.</p>
+                )}
+              </div>
+            ) : null}
+            {!isContractant && !isSocial ? (
             <div className="form-group form-group-full">
               <label>{family ? 'Agent lié (parent)' : 'Agent'}</label>
               <EmployeePicker
@@ -204,6 +362,7 @@ export default function SanteVisitModal({
                 <p className="sante-linked-hint">Sélectionnez d’abord l’agent pour voir ses enfants / conjoints.</p>
               ) : null}
             </div>
+            ) : null}
             {family && value.employeeMatricule ? (
               <div className="form-group form-group-full">
                 {dependantSuggestions.length > 0 ? (
@@ -232,7 +391,14 @@ export default function SanteVisitModal({
               <input
                 value={value.nom}
                 onChange={(e) => {
-                  onChange({ ...value, nom: e.target.value, dependantId: family ? value.dependantId : null });
+                  onChange({
+                    ...value,
+                    nom: e.target.value,
+                    dependantId: family ? value.dependantId : null,
+                    ...(isContractant
+                      ? { contractantEmployeeId: '', employeeMatricule: '', employeeNom: '' }
+                      : {}),
+                  });
                   setPersonQuery(e.target.value);
                   setShowSuggest(true);
                 }}
@@ -244,12 +410,40 @@ export default function SanteVisitModal({
               <input
                 value={value.postnom}
                 onChange={(e) => {
-                  onChange({ ...value, postnom: e.target.value });
+                  onChange({
+                    ...value,
+                    postnom: e.target.value,
+                    ...(isContractant
+                      ? { contractantEmployeeId: '', employeeMatricule: '', employeeNom: '' }
+                      : {}),
+                  });
                   setPersonQuery(`${value.nom} ${e.target.value}`);
                   setShowSuggest(true);
                 }}
               />
             </div>
+            {isContractant && !value.contractantEmployeeId && (value.nom.trim() || value.postnom.trim()) ? (
+              <div className="form-group form-group-full">
+                <label>Contractant</label>
+                <select
+                  value={value.contractantId || ''}
+                  onChange={(e) => {
+                    const company = contractants.find((item) => item.id === e.target.value);
+                    onChange({
+                      ...value,
+                      contractantId: company?.id || '',
+                      contractantNom: company?.denomination || '',
+                    });
+                  }}
+                >
+                  <option value="">Choisir le contractant…</option>
+                  {contractants.map((company) => (
+                    <option key={company.id} value={company.id}>{company.denomination}</option>
+                  ))}
+                </select>
+                <p className="sante-linked-hint">Personne non enregistrée : indiquez la société à laquelle elle est liée.</p>
+              </div>
+            ) : null}
             {showSuggest && agentSuggestions.length > 0 ? (
               <div className="form-group form-group-full">
                 <div className="sante-suggest-list">
@@ -324,6 +518,14 @@ export default function SanteVisitModal({
               </datalist>
             </div>
             <div className="form-group form-group-full">
+              <label>Commentaire</label>
+              <textarea
+                rows={3}
+                value={value.commentaire || ''}
+                onChange={(e) => onChange({ ...value, commentaire: e.target.value })}
+              />
+            </div>
+            <div className="form-group form-group-full">
               <label>Référence</label>
               <input
                 list="sante-references"
@@ -343,6 +545,7 @@ export default function SanteVisitModal({
             Annuler
           </button>
           <button type="button" className="btn btn-accent" onClick={onSubmit} disabled={saving}>
+            {saving ? <span className="btn-spinner" aria-hidden="true" /> : null}
             {saving ? 'Enregistrement…' : 'Enregistrer'}
           </button>
         </div>

@@ -26,7 +26,9 @@ export default function SanteHistoryModal({ history, onClose }: Props) {
         <div className="modal-body">
           <div className="sante-history-meta">
             <span>{history.typeMalade}</span>
-            {history.employeeMatricule ? (
+            {history.typeMalade === 'CONTRACTANT' ? (
+              <span>{history.visits[0]?.contractantNom || 'Contractant'}</span>
+            ) : history.employeeMatricule ? (
               <span>
                 Agent {history.employeeNom} · {history.employeeMatricule}
               </span>
@@ -58,6 +60,11 @@ export default function SanteHistoryModal({ history, onClose }: Props) {
                   <p>
                     <span className="text-muted">Référence</span> {visit.reference || 'NON'}
                   </p>
+                  {visit.commentaire ? (
+                    <p>
+                      <span className="text-muted">Commentaire</span> {visit.commentaire}
+                    </p>
+                  ) : null}
                 </div>
               </li>
               );

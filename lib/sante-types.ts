@@ -3,6 +3,7 @@ export const SANTE_PATIENT_TYPES = [
   'ENFANT',
   'EPOUSE',
   'CONTRACTANT',
+  'CAS SOCIAL',
 ] as const;
 
 export type SantePatientType = (typeof SANTE_PATIENT_TYPES)[number] | string;
@@ -23,6 +24,10 @@ export interface SanteVisit {
   employeeMatricule: string;
   employeeNom: string;
   dependantId: number | null;
+  commentaire: string;
+  contractantId: string;
+  contractantNom: string;
+  contractantEmployeeId: string;
   createdAt: string;
   updatedAt: string;
   createdBy?: string;
@@ -42,6 +47,24 @@ export interface SanteVisitInput {
   employeeMatricule?: string;
   employeeNom?: string;
   dependantId?: number | null;
+  commentaire?: string;
+  contractantId?: string;
+  contractantNom?: string;
+  contractantEmployeeId?: string;
+}
+
+export interface SanteContractantLite {
+  id: string;
+  denomination: string;
+}
+
+export interface SanteContractantEmployeeLite {
+  id: string;
+  nom: string;
+  matricule: string;
+  sexe: 'M' | 'F' | '';
+  contractantId: string;
+  contractantNom: string;
 }
 
 export interface SanteChartItem {

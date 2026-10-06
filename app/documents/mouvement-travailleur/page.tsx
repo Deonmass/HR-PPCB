@@ -179,8 +179,9 @@ export default function MouvementTravailleurPage() {
         <div>
           <h2>Déclaration de mouvement de travailleur</h2>
           <p>
-            Formulaire ONEM (DMT) — saisissez l’agent, le salaire et la date sur chaque ligne. Un
-            seul PDF est généré, avec une page par agent.
+            Formulaire ONEM (DMT) — la date sous le motif reprend l’embauche de l’agent. La date
+            saisie est celle du document, en bas à la signature. Un seul PDF est généré, avec une
+            page par agent.
           </p>
         </div>
         <Link href="/documents" className="btn btn-secondary btn-sm docs-dmt-back" prefetch={false}>
@@ -198,7 +199,7 @@ export default function MouvementTravailleurPage() {
                 <th>Motif</th>
                 <th>Salaire</th>
                 <th>Lieu</th>
-                <th>Date</th>
+                <th>Date du document</th>
                 <th className="docs-declaration-col-action"> </th>
               </tr>
             </thead>

@@ -27,6 +27,7 @@ export async function PUT(request: Request, ctx: Ctx) {
         getBefore: async () => before,
         path: `/api/sante/${id}`,
         method: 'PUT',
+        defer: true,
       },
       () => updateSanteVisit(id, body, actor?.userEmail || actor?.userName),
     );

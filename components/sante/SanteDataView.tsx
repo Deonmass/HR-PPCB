@@ -11,6 +11,7 @@ import {
 import {
   formatSanteDateFr,
   isFamilyPatientType,
+  normalizeSanteType,
   santeDisplayName,
   santePathologieBadgeStyle,
 } from '@/lib/sante-utils';
@@ -45,6 +46,9 @@ interface Props {
 }
 
 function lienLabel(visit: SanteVisit): string {
+  if (normalizeSanteType(visit.typeMalade) === 'CONTRACTANT') {
+    return visit.contractantNom || '—';
+  }
   if (!visit.employeeMatricule) return '—';
   if (isFamilyPatientType(visit.typeMalade)) {
     return `${visit.employeeNom || '—'} (${visit.employeeMatricule})`;

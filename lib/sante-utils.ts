@@ -68,6 +68,7 @@ export function normalizeSanteType(raw: string): string {
   if (!v) return 'AGENT';
   if (v.startsWith('ENFANT')) return 'ENFANT';
   if (v.startsWith('EPOUSE') || v.startsWith('ÉPOUSE') || v.startsWith('CONJOINT')) return 'EPOUSE';
+  if (v.includes('CAS SOCIAL') || v === 'SOCIAL') return 'CAS SOCIAL';
   if (v.includes('CONTRACT') || v.includes('CONTACTANT')) return v.includes('AGENT') ? 'AGENT' : 'CONTRACTANT';
   if (v.startsWith('AGENT')) return 'AGENT';
   return v;
@@ -82,9 +83,13 @@ export function santeDisplayName(visit: Pick<SanteVisit, 'nom' | 'postnom'>): st
   return `${visit.nom || ''} ${visit.postnom || ''}`.replace(/\s+/g, ' ').trim();
 }
 
-export function santePersonKey(visit: Pick<SanteVisit, 'typeMalade' | 'employeeMatricule' | 'dependantId' | 'nom' | 'postnom' | 'sexe'>): string {
+export function santePersonKey(visit: Pick<SanteVisit, 'typeMalade' | 'employeeMatricule' | 'dependantId' | 'nom' | 'postnom' | 'sexe' | 'contractantEmployeeId' | 'contractantId'>): string {
   const type = normalizeSanteType(visit.typeMalade);
+  if (visit.contractantEmployeeId) return `ctr-emp:${visit.contractantEmployeeId}`;
   if (visit.dependantId) return `dep:${visit.dependantId}`;
+  if (type === 'CONTRACTANT' && visit.contractantId) {
+    return `ctr:${visit.contractantId}:${normalizePersonName(`${visit.nom} ${visit.postnom}`)}`;
+  }
   if (visit.employeeMatricule && !isFamilyPatientType(type)) return `emp:${visit.employeeMatricule}`;
   const name = normalizePersonName(`${visit.nom} ${visit.postnom}`);
   if (visit.employeeMatricule) return `fam:${visit.employeeMatricule}:${name}`;
@@ -93,6 +98,9 @@ export function santePersonKey(visit: Pick<SanteVisit, 'typeMalade' | 'employeeM
 
 export function santePersonLabel(visit: SanteVisit): string {
   const name = santeDisplayName(visit) || 'Sans nom';
+  if (normalizeSanteType(visit.typeMalade) === 'CONTRACTANT') {
+    return `${name} · ${visit.contractantNom || 'Contractant'}`;
+  }
   if (isFamilyPatientType(visit.typeMalade) && visit.employeeNom) {
     return `${name} · ${visit.employeeNom} (${visit.employeeMatricule || '—'})`;
   }
@@ -153,6 +161,8 @@ export function filterSanteVisits(
       visit.traitement,
       visit.reference,
       visit.typeMalade,
+      visit.commentaire,
+      visit.contractantNom,
     ]
       .join(' ')
       .toLowerCase();
@@ -286,6 +296,10 @@ export function emptySanteVisitInput(today = new Date()): SanteVisitInput {
     employeeMatricule: '',
     employeeNom: '',
     dependantId: null,
+    commentaire: '',
+    contractantId: '',
+    contractantNom: '',
+    contractantEmployeeId: '',
   };
 }
 
@@ -303,6 +317,10 @@ export function visitToInput(visit: SanteVisit): SanteVisitInput {
     employeeMatricule: visit.employeeMatricule,
     employeeNom: visit.employeeNom,
     dependantId: visit.dependantId,
+    commentaire: visit.commentaire || '',
+    contractantId: visit.contractantId || '',
+    contractantNom: visit.contractantNom || '',
+    contractantEmployeeId: visit.contractantEmployeeId || '',
   };
 }
 

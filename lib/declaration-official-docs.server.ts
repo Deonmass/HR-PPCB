@@ -513,6 +513,10 @@ export async function generateMouvementTravailleur(
   const childrenCount = family.children.length || employee.numberOfChildren || 0;
   const today = new Date();
   const documentLabel = formatLongFr(options.documentDate || '', today);
+  const hireDate = parseDate(employee.appointmentDate || '');
+  const hireLabel = hireDate
+    ? `${hireDate.getDate()} ${MONTHS_FR[hireDate.getMonth()]} ${hireDate.getFullYear()}`
+    : '';
   const lieu = (options.lieu || employee.localisation || '').trim() || 'Kinshasa';
   const opt = { winAnsi };
 
@@ -622,7 +626,7 @@ export async function generateMouvementTravailleur(
     });
   }
 
-  drawDottedValue(page, font, `${documentLabel} à ${lieu}`, 547.76, 42, {
+  drawDottedValue(page, font, hireLabel ? `${hireLabel} à ${lieu}` : `à ${lieu}`, 547.76, 42, {
     ...dotted,
     maxWidth: 370,
     dotsUntil: DMT_DOTS_END,
