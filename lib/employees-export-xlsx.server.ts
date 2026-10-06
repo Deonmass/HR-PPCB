@@ -64,7 +64,6 @@ const KEEP_SHEETS = new Set([
 ]);
 
 /** Plafond anti-explosion mémoire (xlsx-populate matérialise chaque cellule touchée). */
-const MAX_TEMPLATE_SCAN = 40;
 const MAX_DATA_ROWS = 2000;
 
 type PopulateWorkbook = Awaited<ReturnType<typeof XlsxPopulate.fromFileAsync>>;
@@ -169,10 +168,17 @@ function formatExportTail(sheet: PopulateSheet, lastDataRow: number): void {
   }
 }
 
-/** Dernière ligne modèle occupée (scan court, sans usedRange étendu). */
+/**
+ * Dernière ligne modèle qui contient un matricule.
+ * On ne s'arrête pas aux 40 premières lignes : le template Base va jusqu'à la ligne 177,
+ * et les lignes non effacées s'ajoutent au décompte (175 au lieu de 173).
+ */
 function findSampleLastRow(sheet: PopulateSheet): number {
+  const rows = (sheet as unknown as { _rows?: unknown[] })._rows;
   let last = FIRST_DATA_ROW - 1;
-  for (let row = FIRST_DATA_ROW; row <= FIRST_DATA_ROW + MAX_TEMPLATE_SCAN; row++) {
+  if (!rows) return last;
+  for (let row = FIRST_DATA_ROW; row < rows.length; row++) {
+    if (!rows[row]) continue;
     const matricule = sheet.cell(row, 1).value();
     if (matricule !== undefined && matricule !== null && String(matricule).trim() !== '') {
       last = row;
@@ -209,7 +215,7 @@ function writeEmployeeRow(sheet: PopulateSheet, row: number, employee: Employee)
 
 /**
  * Remplit une feuille sans range massif ni clone :
- * - efface seulement les lignes modèle existantes (≤ ~40)
+ * - efface les lignes modèle déjà présentes (y compris au-delà des 40 premières)
  * - écrit ligne par ligne (pic mémoire bas)
  */
 function fillPeopleSheet(sheet: PopulateSheet, employees: Employee[]): number {
