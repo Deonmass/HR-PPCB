@@ -1,6 +1,44 @@
 {
   "entries": [
     {
+      "id": "log-001346",
+      "at": "2026-10-06T08:06:25.652Z",
+      "userId": "karine.mvutu@ppcdrc.cd",
+      "userName": "Karine Mvutu",
+      "userEmail": "karine.mvutu@ppcdrc.cd",
+      "module": "sante",
+      "moduleLabel": "Santé",
+      "action": "create",
+      "actionLabel": "Création",
+      "entityType": "sante.visit",
+      "entityId": "sante-muwea2mw-vttymz",
+      "summary": "Cas santé — MUAKASA NSONI SERGE · HYPERGLYCEMIE",
+      "details": "Cas santé — MUAKASA NSONI SERGE · HYPERGLYCEMIE",
+      "after": {
+        "id": "sante-muwea2mw-vttymz",
+        "date": "2026-03-10",
+        "nom": "MUAKASA",
+        "postnom": "NSONI SERGE",
+        "sexe": "M",
+        "age": 48,
+        "typeMalade": "AGENT",
+        "pathologie": "HYPERGLYCEMIE",
+        "traitement": "REGIME SANS SUCRE",
+        "reference": "MEDECINE INTERNE IME",
+        "year": 2026,
+        "month": 3,
+        "employeeMatricule": "70000008",
+        "employeeNom": "MUAKASA NSONI SERGE",
+        "dependantId": null,
+        "createdAt": "2026-10-06T08:06:22.424Z",
+        "updatedAt": "2026-10-06T08:06:22.424Z",
+        "createdBy": "karine.mvutu@ppcdrc.cd",
+        "updatedBy": "karine.mvutu@ppcdrc.cd"
+      },
+      "undoable": false,
+      "undone": false
+    },
+    {
       "id": "log-001345",
       "at": "2026-10-06T08:04:41.063Z",
       "userId": "karine.mvutu@ppcdrc.cd",
@@ -134885,5 +134923,5 @@
       }
     }
   ],
-  "nextSeq": 1346
+  "nextSeq": 1347
 }
