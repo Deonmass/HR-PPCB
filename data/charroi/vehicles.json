@@ -170,7 +170,7 @@
       "province": "Kinshasa",
       "proprietaire": "PPC",
       "kilometrage": 76387,
-      "miseCirculation": "2020",
+      "miseCirculation": "2020-01-01",
       "age": 6,
       "observationTech": "Avertissement",
       "etatManuel": "",
@@ -180,9 +180,9 @@
       "assuranceFin": "",
       "vignetteFin": "",
       "controleTechniqueFin": "",
-      "notes": "",
+      "notes": "Le véhicule est actuellement immobilisé au garage panafrque. Bien que les réparations soient déjà effectuées, sa restitution reste bloquée en raison du paiement en attente .",
       "createdAt": "2026-07-28T16:00:46.888Z",
-      "updatedAt": "2026-07-28T16:00:46.888Z"
+      "updatedAt": "2026-10-06T18:42:06.752Z"
     },
     {
       "id": "veh-007",
