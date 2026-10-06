@@ -1,6 +1,51 @@
 {
   "entries": [
     {
+      "id": "log-001368",
+      "at": "2026-10-06T18:25:46.774Z",
+      "userId": "Tresor.Maneka@ppcdrc.cd",
+      "userName": "Tresor Maneka",
+      "userEmail": "Tresor.Maneka@ppcdrc.cd",
+      "module": "charroi.vehicules",
+      "moduleLabel": "Charroi — Véhicules",
+      "action": "create",
+      "actionLabel": "Création",
+      "entityType": "charroi.vehicule",
+      "entityId": "veh-046",
+      "summary": "Création véhicule 1717BX01",
+      "details": "Nouveau véhicule enregistré : {\"id\":\"veh-046\",\"numero\":46,\"marque\":\"Toyota\",\"type\":\"Pick up\",\"numeroChassis\":\"AHTDK9CD900983651\",\"plaque\":\"1717BX01\",\"cv\":\"13CV\",\"assureur\":\"RAWSUR A\",\"departement\":\"Human Resources\",\"user\":\"MIRINDI CARINE\",\"province\":\"Lubudi\",\"proprietaire\":\"LOXEA\",\"kilometrage\":3799,\"miseCirculation\":\"2026-08-06\",\"age\":0,\"observationTech\":\"Bon état\",\"etatManuel\":\"Bon état\",\"assuranceHistorique\":[],\"vignetteHistorique\":[],\"controleTechniqueHistorique\":[],\"assuranceFin\":\"\",\"vignetteFin\":\"\",\"controleTechniqueFin\":\"\",\"notes\":\"\",\"createdAt\":\"2026-10-06T18:25:43.057Z\",\"updatedAt\":\"2026-10-06T18:25:43.057Z\"}",
+      "after": {
+        "id": "veh-046",
+        "numero": 46,
+        "marque": "Toyota",
+        "type": "Pick up",
+        "numeroChassis": "AHTDK9CD900983651",
+        "plaque": "1717BX01",
+        "cv": "13CV",
+        "assureur": "RAWSUR A",
+        "departement": "Human Resources",
+        "user": "MIRINDI CARINE",
+        "province": "Lubudi",
+        "proprietaire": "LOXEA",
+        "kilometrage": 3799,
+        "miseCirculation": "2026-08-06",
+        "age": 0,
+        "observationTech": "Bon état",
+        "etatManuel": "Bon état",
+        "assuranceHistorique": [],
+        "vignetteHistorique": [],
+        "controleTechniqueHistorique": [],
+        "assuranceFin": "",
+        "vignetteFin": "",
+        "controleTechniqueFin": "",
+        "notes": "",
+        "createdAt": "2026-10-06T18:25:43.057Z",
+        "updatedAt": "2026-10-06T18:25:43.057Z"
+      },
+      "undoable": true,
+      "undone": false
+    },
+    {
       "id": "log-001367",
       "at": "2026-10-06T18:23:28.158Z",
       "userId": "Tresor.Maneka@ppcdrc.cd",
@@ -135850,5 +135895,5 @@
       }
     }
   ],
-  "nextSeq": 1368
+  "nextSeq": 1369
 }
