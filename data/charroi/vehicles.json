@@ -1118,7 +1118,7 @@
       "province": "Kongo Central",
       "proprietaire": "LOXEA",
       "kilometrage": null,
-      "miseCirculation": "2023",
+      "miseCirculation": "2023-01-01",
       "age": 3,
       "observationTech": "Bon état",
       "etatManuel": "",
@@ -1144,9 +1144,9 @@
       "assuranceFin": "2027-01-31",
       "vignetteFin": "",
       "controleTechniqueFin": "2027-02-02",
-      "notes": "",
+      "notes": "Le véhicule est actuellement immobilisé à Zamba en raison d'un problème de freinage avant. La pièce de rechange a été commandée à Paris et nous sommes en attente de CFAO.",
       "createdAt": "2026-07-28T16:00:46.888Z",
-      "updatedAt": "2026-08-10T12:06:25.586Z"
+      "updatedAt": "2026-10-07T15:05:00.641Z"
     },
     {
       "id": "veh-033",
