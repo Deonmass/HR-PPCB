@@ -986,7 +986,7 @@
       "province": "Kongo Central",
       "proprietaire": "LOXEA",
       "kilometrage": null,
-      "miseCirculation": "2022",
+      "miseCirculation": "2022-01-01",
       "age": 4,
       "observationTech": "Bon état",
       "etatManuel": "",
@@ -1012,9 +1012,9 @@
       "assuranceFin": "2027-01-31",
       "vignetteFin": "",
       "controleTechniqueFin": "2027-02-02",
-      "notes": "",
+      "notes": "Le véhicule est actuellement immobilisé à Matadi en raison d'un problème de freinage avant. La pièce de rechange a été commandée à Paris et nous sommes en attente de sa réception afin de procéder à la réparation.",
       "createdAt": "2026-07-28T16:00:46.888Z",
-      "updatedAt": "2026-08-10T12:02:20.561Z"
+      "updatedAt": "2026-10-07T15:03:40.699Z"
     },
     {
       "id": "veh-030",
