@@ -1,6 +1,44 @@
 {
   "entries": [
     {
+      "id": "log-001395",
+      "at": "2026-10-07T15:28:57.353Z",
+      "userId": "Tresor.Maneka@ppcdrc.cd",
+      "userName": "Tresor Maneka",
+      "userEmail": "Tresor.Maneka@ppcdrc.cd",
+      "module": "protocol.voyages",
+      "moduleLabel": "Gestion de voyage",
+      "action": "create",
+      "actionLabel": "Création",
+      "entityType": "protocol.voyage",
+      "entityId": "pvc-005",
+      "summary": "Voyage PVC-0005 DAI CSSP CSSP",
+      "details": "Voyage PVC-0005 DAI CSSP CSSP",
+      "after": {
+        "id": "pvc-005",
+        "numero": "PVC-0005",
+        "date": "2026-10-01",
+        "voyageur": "DAI CSSP",
+        "voyageurMatricule": "",
+        "destination": "CSSP",
+        "ticketAvion": 0,
+        "visaVolant": 1320,
+        "lettreLegaliser": 0,
+        "goPass": 0,
+        "transfert": 0,
+        "hotelNuit": 0,
+        "nbreNuits": 0,
+        "coutHotel": 0,
+        "categorieHotel": "",
+        "appartement": 0,
+        "coutTotal": 1320,
+        "createdAt": "2026-10-07T15:28:54.344Z",
+        "updatedAt": "2026-10-07T15:28:54.344Z"
+      },
+      "undoable": false,
+      "undone": false
+    },
+    {
       "id": "log-001394",
       "at": "2026-10-07T15:23:52.163Z",
       "userId": "admin",
@@ -139345,5 +139383,5 @@
       }
     }
   ],
-  "nextSeq": 1395
+  "nextSeq": 1396
 }
