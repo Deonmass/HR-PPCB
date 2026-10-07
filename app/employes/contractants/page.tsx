@@ -32,6 +32,7 @@ import type { DepartmentSetting, ServiceSetting } from '@/lib/auth-types';
 import { DEFAULT_LOCALISATIONS } from '@/lib/localisations';
 import { compareExcoDepartments } from '@/lib/exco-department-map';
 import { isContractantEffectifEmployee } from '@/lib/capital-hr-effectif';
+import { downloadContractantsListExport } from '@/lib/contractants-list-export';
 import {
   buildColumnFilterValues,
   countActiveColumnFilters,
@@ -283,6 +284,7 @@ export default function ContractantsPage() {
   const [disciplineCounts, setDisciplineCounts] = useState<Record<string, number>>({});
   const [disciplineOpenCount, setDisciplineOpenCount] = useState(0);
   const [loading, setLoading] = useState(true);
+  const [exporting, setExporting] = useState(false);
   const [refreshing, setRefreshing] = useState(false);
   const [search, setSearch] = useState('');
   const [searchOpen, setSearchOpen] = useState(false);
@@ -635,6 +637,17 @@ export default function ContractantsPage() {
       },
       saving: false,
     });
+  };
+
+  const handleExport = async () => {
+    setExporting(true);
+    try {
+      await downloadContractantsListExport();
+    } catch (err) {
+      await showError(err instanceof Error ? err.message : 'Export impossible');
+    } finally {
+      setExporting(false);
+    }
   };
 
   const handlePlusClick = () => {
@@ -1185,6 +1198,24 @@ export default function ContractantsPage() {
                   </button>
                 )}
               </div>
+              <button
+                type="button"
+                className="btn btn-outline btn-export btn-with-icon"
+                disabled={exporting || loading}
+                onClick={() => void handleExport()}
+                title="Exporter la liste — une feuille par contractant"
+              >
+                {exporting ? (
+                  <span className="btn-spinner" aria-hidden="true" />
+                ) : (
+                  <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden>
+                    <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
+                    <polyline points="7 10 12 15 17 10" />
+                    <line x1="12" y1="15" x2="12" y2="3" />
+                  </svg>
+                )}
+                {exporting ? 'Export…' : 'Export'}
+              </button>
               {showPlusButton && (
                 <button
                   type="button"
