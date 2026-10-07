@@ -1,6 +1,111 @@
 {
   "entries": [
     {
+      "id": "log-001387",
+      "at": "2026-10-07T15:03:44.690Z",
+      "userId": "Tresor.Maneka@ppcdrc.cd",
+      "userName": "Tresor Maneka",
+      "userEmail": "Tresor.Maneka@ppcdrc.cd",
+      "module": "charroi.vehicules",
+      "moduleLabel": "Charroi — Véhicules",
+      "action": "update",
+      "actionLabel": "Modification",
+      "entityType": "charroi.vehicule",
+      "entityId": "veh-029",
+      "summary": "Modification véhicule 9261BN01",
+      "details": "Véhicule modifié.\nAvant : {\"id\":\"veh-029\",\"numero\":29,\"marque\":\"Peugeot\",\"type\":\"Pick up\",\"numeroChassis\":\"VR3FDAHDHM3006436\",\"plaque\":\"9261BN01\",\"cv\":\"13CV\",\"assureur\":\"Rawsur\",\"departement\":\"Plant HR\",\"user\":\"Serge M\",\"province\":\"Kongo Central\",\"proprietaire\":\"LOXEA\",\"kilometrage\":null,\"miseCirculation\":\"2022\",\"age\":4,\"observationTech\":\"Bon état\",\"etatManuel\":\"\",\"assuranceHistorique\":[{\"id\":\"doc-msir55kk-g2cd8\",\"dateDebut\":\"2026-01-31\",\"dateFin\":\"2027-01-31\",\"preuveUrl\":\"\",\"createdAt\":\"2026-08-07T09:38:16.820Z\"}],\"vignetteHistorique\":[],\"controleTechniqueHistorique\":[{\"id\":\"doc-msiro5ct-ji785\",\"dateDebut\":\"2026-08-02\",\"dateFin\":\"2027-02-02\",\"preuveUrl\":\"https://ppcafr.sharepoint.com/:b:/r/sites/knshr/HR%20ADMINISTRATION/Controle%20technique%20Aout%202026/9261BN01%20PEUGEOT.pdf?d=w363d97ab72bc48d9a62bf56ad371917f&csf=1&web=1&e=3ZPeI6\",\"createdAt\":\"2026-08-07T09:53:03.005Z\"}],\"assuranceFin\":\"2027-01-31\",\"vignetteFin\":\"\",\"controleTechniqueFin\":\"2027-02-02\",\"notes\":\"\",\"createdAt\":\"2026-07-28T16:00:46.888Z\",\"updatedAt\":\"2026-08-10T12:02:20.561Z\"}\nAprès : {\"id\":\"veh-029\",\"numero\":29,\"marque\":\"Peugeot\",\"type\":\"Pick up\",\"numeroChassis\":\"VR3FDAHDHM3006436\",\"plaque\":\"9261BN01\",\"cv\":\"13CV\",\"assureur\":\"Rawsur\",\"departement\":\"Plant HR\",\"user\":\"Serge M\",\"province\":\"Kongo Central\",\"proprietaire\":\"LOXEA\",\"kilometrage\":null,\"miseCirculation\":\"2022-01-01\",\"age\":4,\"observationTech\":\"Bon état\",\"etatManuel\":\"\",\"assuranceHistorique\":[{\"id\":\"doc-msir55kk-g2cd8\",\"dateDebut\":\"2026-01-31\",\"dateFin\":\"2027-01-31\",\"preuveUrl\":\"\",\"createdAt\":\"2026-08-07T09:38:16.820Z\"}],\"vignetteHistorique\":[],\"controleTechniqueHistorique\":[{\"id\":\"doc-msiro5ct-ji785\",\"dateDebut\":\"2026-08-02\",\"dateFin\":\"2027-02-02\",\"preuveUrl\":\"https://ppcafr.sharepoint.com/:b:/r/sites/knshr/HR%20ADMINISTRATION/Controle%20technique%20Aout%202026/9261BN01%20PEUGEOT.pdf?d=w363d97ab72bc48d9a62bf56ad371917f&csf=1&web=1&e=3ZPeI6\",\"createdAt\":\"2026-08-07T09:53:03.005Z\"}],\"assuranceFin\":\"2027-01-31\",\"vignetteFin\":\"\",\"controleTechniqueFin\":\"2027-02-02\",\"notes\":\"Le véhicule est actuellement immobilisé à Matadi en raison d'un problème de freinage avant. La pièce de rechange a été commandée à Paris et nous sommes en attente de sa réception afin de procéder à la réparation.\",\"createdAt\":\"2026-07-28T16:00:46.888Z\",\"updatedAt\":\"2026-10-07T15:03:40.699Z\"}",
+      "before": {
+        "id": "veh-029",
+        "numero": 29,
+        "marque": "Peugeot",
+        "type": "Pick up",
+        "numeroChassis": "VR3FDAHDHM3006436",
+        "plaque": "9261BN01",
+        "cv": "13CV",
+        "assureur": "Rawsur",
+        "departement": "Plant HR",
+        "user": "Serge M",
+        "province": "Kongo Central",
+        "proprietaire": "LOXEA",
+        "kilometrage": null,
+        "miseCirculation": "2022",
+        "age": 4,
+        "observationTech": "Bon état",
+        "etatManuel": "",
+        "assuranceHistorique": [
+          {
+            "id": "doc-msir55kk-g2cd8",
+            "dateDebut": "2026-01-31",
+            "dateFin": "2027-01-31",
+            "preuveUrl": "",
+            "createdAt": "2026-08-07T09:38:16.820Z"
+          }
+        ],
+        "vignetteHistorique": [],
+        "controleTechniqueHistorique": [
+          {
+            "id": "doc-msiro5ct-ji785",
+            "dateDebut": "2026-08-02",
+            "dateFin": "2027-02-02",
+            "preuveUrl": "https://ppcafr.sharepoint.com/:b:/r/sites/knshr/HR%20ADMINISTRATION/Controle%20technique%20Aout%202026/9261BN01%20PEUGEOT.pdf?d=w363d97ab72bc48d9a62bf56ad371917f&csf=1&web=1&e=3ZPeI6",
+            "createdAt": "2026-08-07T09:53:03.005Z"
+          }
+        ],
+        "assuranceFin": "2027-01-31",
+        "vignetteFin": "",
+        "controleTechniqueFin": "2027-02-02",
+        "notes": "",
+        "createdAt": "2026-07-28T16:00:46.888Z",
+        "updatedAt": "2026-08-10T12:02:20.561Z"
+      },
+      "after": {
+        "id": "veh-029",
+        "numero": 29,
+        "marque": "Peugeot",
+        "type": "Pick up",
+        "numeroChassis": "VR3FDAHDHM3006436",
+        "plaque": "9261BN01",
+        "cv": "13CV",
+        "assureur": "Rawsur",
+        "departement": "Plant HR",
+        "user": "Serge M",
+        "province": "Kongo Central",
+        "proprietaire": "LOXEA",
+        "kilometrage": null,
+        "miseCirculation": "2022-01-01",
+        "age": 4,
+        "observationTech": "Bon état",
+        "etatManuel": "",
+        "assuranceHistorique": [
+          {
+            "id": "doc-msir55kk-g2cd8",
+            "dateDebut": "2026-01-31",
+            "dateFin": "2027-01-31",
+            "preuveUrl": "",
+            "createdAt": "2026-08-07T09:38:16.820Z"
+          }
+        ],
+        "vignetteHistorique": [],
+        "controleTechniqueHistorique": [
+          {
+            "id": "doc-msiro5ct-ji785",
+            "dateDebut": "2026-08-02",
+            "dateFin": "2027-02-02",
+            "preuveUrl": "https://ppcafr.sharepoint.com/:b:/r/sites/knshr/HR%20ADMINISTRATION/Controle%20technique%20Aout%202026/9261BN01%20PEUGEOT.pdf?d=w363d97ab72bc48d9a62bf56ad371917f&csf=1&web=1&e=3ZPeI6",
+            "createdAt": "2026-08-07T09:53:03.005Z"
+          }
+        ],
+        "assuranceFin": "2027-01-31",
+        "vignetteFin": "",
+        "controleTechniqueFin": "2027-02-02",
+        "notes": "Le véhicule est actuellement immobilisé à Matadi en raison d'un problème de freinage avant. La pièce de rechange a été commandée à Paris et nous sommes en attente de sa réception afin de procéder à la réparation.",
+        "createdAt": "2026-07-28T16:00:46.888Z",
+        "updatedAt": "2026-10-07T15:03:40.699Z"
+      },
+      "undoable": true,
+      "undone": false
+    },
+    {
       "id": "log-001386",
       "at": "2026-10-07T15:00:42.027Z",
       "userId": "Tresor.Maneka@ppcdrc.cd",
@@ -138775,5 +138880,5 @@
       }
     }
   ],
-  "nextSeq": 1387
+  "nextSeq": 1388
 }
