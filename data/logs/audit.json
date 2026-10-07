@@ -1,6 +1,21 @@
 {
   "entries": [
     {
+      "id": "log-001382",
+      "at": "2026-10-07T14:31:55.150Z",
+      "userId": "Kiesse.Banguli@ppcdrc.cd",
+      "userName": "Kiesse Banguli",
+      "userEmail": "Kiesse.Banguli@ppcdrc.cd",
+      "module": "auth",
+      "moduleLabel": "Authentification",
+      "action": "logout",
+      "actionLabel": "Déconnexion",
+      "summary": "Déconnexion Kiesse.Banguli@ppcdrc.cd",
+      "details": "Déconnexion de Kiesse Banguli (Kiesse.Banguli@ppcdrc.cd)",
+      "undoable": false,
+      "undone": false
+    },
+    {
       "id": "log-001381",
       "at": "2026-10-07T14:20:08.879Z",
       "userId": "Kiesse.Banguli@ppcdrc.cd",
@@ -138669,5 +138684,5 @@
       }
     }
   ],
-  "nextSeq": 1382
+  "nextSeq": 1383
 }
