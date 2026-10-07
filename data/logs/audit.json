@@ -1,6 +1,52 @@
 {
   "entries": [
     {
+      "id": "log-001386",
+      "at": "2026-10-07T15:00:42.027Z",
+      "userId": "Tresor.Maneka@ppcdrc.cd",
+      "userName": "Tresor Maneka",
+      "userEmail": "Tresor.Maneka@ppcdrc.cd",
+      "module": "charroi.vehicules",
+      "moduleLabel": "Charroi — Véhicules",
+      "action": "delete",
+      "actionLabel": "Suppression",
+      "entityType": "charroi.vehicule",
+      "entityId": "veh-018",
+      "summary": "Suppression véhicule 9703AT01",
+      "details": "Véhicule supprimé : {\"id\":\"veh-018\",\"numero\":18,\"marque\":\"Toyota\",\"type\":\"Coaster\",\"numeroChassis\":\"JTGFB518601073893\",\"plaque\":\"9703AT01\",\"cv\":\"17 CV\",\"assureur\":\"Sfa\",\"departement\":\"Plant HR\",\"user\":\"Pool bus\",\"province\":\"Kongo Central\",\"proprietaire\":\"PPC\",\"kilometrage\":null,\"miseCirculation\":\"2016\",\"age\":10,\"observationTech\":\"A déclasser\",\"etatManuel\":\"A déclasser\",\"assuranceHistorique\":[],\"vignetteHistorique\":[],\"controleTechniqueHistorique\":[],\"assuranceFin\":\"\",\"vignetteFin\":\"\",\"controleTechniqueFin\":\"\",\"notes\":\"\",\"createdAt\":\"2026-07-28T16:00:46.888Z\",\"updatedAt\":\"2026-08-07T08:52:37.503Z\"}",
+      "before": {
+        "id": "veh-018",
+        "numero": 18,
+        "marque": "Toyota",
+        "type": "Coaster",
+        "numeroChassis": "JTGFB518601073893",
+        "plaque": "9703AT01",
+        "cv": "17 CV",
+        "assureur": "Sfa",
+        "departement": "Plant HR",
+        "user": "Pool bus",
+        "province": "Kongo Central",
+        "proprietaire": "PPC",
+        "kilometrage": null,
+        "miseCirculation": "2016",
+        "age": 10,
+        "observationTech": "A déclasser",
+        "etatManuel": "A déclasser",
+        "assuranceHistorique": [],
+        "vignetteHistorique": [],
+        "controleTechniqueHistorique": [],
+        "assuranceFin": "",
+        "vignetteFin": "",
+        "controleTechniqueFin": "",
+        "notes": "",
+        "createdAt": "2026-07-28T16:00:46.888Z",
+        "updatedAt": "2026-08-07T08:52:37.503Z"
+      },
+      "after": null,
+      "undoable": true,
+      "undone": false
+    },
+    {
       "id": "log-001385",
       "at": "2026-10-07T14:57:58.406Z",
       "userId": "admin",
@@ -138729,5 +138775,5 @@
       }
     }
   ],
-  "nextSeq": 1386
+  "nextSeq": 1387
 }
