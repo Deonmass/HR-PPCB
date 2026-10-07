@@ -1,6 +1,25 @@
 {
   "entries": [
     {
+      "id": "log-001381",
+      "at": "2026-10-07T14:20:08.879Z",
+      "userId": "Kiesse.Banguli@ppcdrc.cd",
+      "userName": "Kiesse Banguli",
+      "userEmail": "Kiesse.Banguli@ppcdrc.cd",
+      "module": "settings.utilisateurs",
+      "moduleLabel": "Utilisateurs",
+      "action": "update",
+      "actionLabel": "Mot de passe",
+      "entityType": "auth.password",
+      "entityId": "Kiesse.Banguli@ppcdrc.cd",
+      "summary": "Changement de mot de passe — Kiesse Banguli",
+      "details": "Changement de mot de passe — Kiesse Banguli",
+      "before": null,
+      "after": null,
+      "undoable": false,
+      "undone": false
+    },
+    {
       "id": "log-001380",
       "at": "2026-10-07T14:09:04.082Z",
       "userId": "Serge.Muakasa@ppcdrc.cd",
@@ -138650,5 +138669,5 @@
       }
     }
   ],
-  "nextSeq": 1381
+  "nextSeq": 1382
 }
