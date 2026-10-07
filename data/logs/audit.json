@@ -1,6 +1,111 @@
 {
   "entries": [
     {
+      "id": "log-001389",
+      "at": "2026-10-07T15:05:04.570Z",
+      "userId": "Tresor.Maneka@ppcdrc.cd",
+      "userName": "Tresor Maneka",
+      "userEmail": "Tresor.Maneka@ppcdrc.cd",
+      "module": "charroi.vehicules",
+      "moduleLabel": "Charroi — Véhicules",
+      "action": "update",
+      "actionLabel": "Modification",
+      "entityType": "charroi.vehicule",
+      "entityId": "veh-032",
+      "summary": "Modification véhicule 0983BM01",
+      "details": "Véhicule modifié.\nAvant : {\"id\":\"veh-032\",\"numero\":32,\"marque\":\"Toyota\",\"type\":\"Hiace\",\"numeroChassis\":\"JTFJK02P705016540\",\"plaque\":\"0983BM01\",\"cv\":\"13CV\",\"assureur\":\"Rawsur\",\"departement\":\"Plant HR\",\"user\":\"Serge M\",\"province\":\"Kongo Central\",\"proprietaire\":\"LOXEA\",\"kilometrage\":null,\"miseCirculation\":\"2023\",\"age\":3,\"observationTech\":\"Bon état\",\"etatManuel\":\"\",\"assuranceHistorique\":[{\"id\":\"doc-msir781b-1npyb\",\"dateDebut\":\"2026-01-31\",\"dateFin\":\"2027-01-31\",\"preuveUrl\":\"\",\"createdAt\":\"2026-08-07T09:39:53.327Z\"}],\"vignetteHistorique\":[],\"controleTechniqueHistorique\":[{\"id\":\"doc-msirqrhy-fy0m2\",\"dateDebut\":\"2026-08-02\",\"dateFin\":\"2027-02-02\",\"preuveUrl\":\"https://ppcafr.sharepoint.com/:b:/r/sites/knshr/HR%20ADMINISTRATION/Controle%20technique%20Aout%202026/0983BM01%20TOYOTA%20HIACE.pdf?d=w12cb0b7f9f67408b86b25320206a841e&csf=1&web=1&e=TjdHgT\",\"createdAt\":\"2026-08-07T09:55:05.014Z\"}],\"assuranceFin\":\"2027-01-31\",\"vignetteFin\":\"\",\"controleTechniqueFin\":\"2027-02-02\",\"notes\":\"\",\"createdAt\":\"2026-07-28T16:00:46.888Z\",\"updatedAt\":\"2026-08-10T12:06:25.586Z\"}\nAprès : {\"id\":\"veh-032\",\"numero\":32,\"marque\":\"Toyota\",\"type\":\"Hiace\",\"numeroChassis\":\"JTFJK02P705016540\",\"plaque\":\"0983BM01\",\"cv\":\"13CV\",\"assureur\":\"Rawsur\",\"departement\":\"Plant HR\",\"user\":\"Serge M\",\"province\":\"Kongo Central\",\"proprietaire\":\"LOXEA\",\"kilometrage\":null,\"miseCirculation\":\"2023-01-01\",\"age\":3,\"observationTech\":\"Bon état\",\"etatManuel\":\"\",\"assuranceHistorique\":[{\"id\":\"doc-msir781b-1npyb\",\"dateDebut\":\"2026-01-31\",\"dateFin\":\"2027-01-31\",\"preuveUrl\":\"\",\"createdAt\":\"2026-08-07T09:39:53.327Z\"}],\"vignetteHistorique\":[],\"controleTechniqueHistorique\":[{\"id\":\"doc-msirqrhy-fy0m2\",\"dateDebut\":\"2026-08-02\",\"dateFin\":\"2027-02-02\",\"preuveUrl\":\"https://ppcafr.sharepoint.com/:b:/r/sites/knshr/HR%20ADMINISTRATION/Controle%20technique%20Aout%202026/0983BM01%20TOYOTA%20HIACE.pdf?d=w12cb0b7f9f67408b86b25320206a841e&csf=1&web=1&e=TjdHgT\",\"createdAt\":\"2026-08-07T09:55:05.014Z\"}],\"assuranceFin\":\"2027-01-31\",\"vignetteFin\":\"\",\"controleTechniqueFin\":\"2027-02-02\",\"notes\":\"Le véhicule est actuellement immobilisé à Zamba en raison d'un problème de freinage avant. La pièce de rechange a été commandée à Paris et nous sommes en attente de CFAO.\",\"createdAt\":\"2026-07-28T16:00:46.888Z\",\"updatedAt\":\"2026-10-07T15:05:00.641Z\"}",
+      "before": {
+        "id": "veh-032",
+        "numero": 32,
+        "marque": "Toyota",
+        "type": "Hiace",
+        "numeroChassis": "JTFJK02P705016540",
+        "plaque": "0983BM01",
+        "cv": "13CV",
+        "assureur": "Rawsur",
+        "departement": "Plant HR",
+        "user": "Serge M",
+        "province": "Kongo Central",
+        "proprietaire": "LOXEA",
+        "kilometrage": null,
+        "miseCirculation": "2023",
+        "age": 3,
+        "observationTech": "Bon état",
+        "etatManuel": "",
+        "assuranceHistorique": [
+          {
+            "id": "doc-msir781b-1npyb",
+            "dateDebut": "2026-01-31",
+            "dateFin": "2027-01-31",
+            "preuveUrl": "",
+            "createdAt": "2026-08-07T09:39:53.327Z"
+          }
+        ],
+        "vignetteHistorique": [],
+        "controleTechniqueHistorique": [
+          {
+            "id": "doc-msirqrhy-fy0m2",
+            "dateDebut": "2026-08-02",
+            "dateFin": "2027-02-02",
+            "preuveUrl": "https://ppcafr.sharepoint.com/:b:/r/sites/knshr/HR%20ADMINISTRATION/Controle%20technique%20Aout%202026/0983BM01%20TOYOTA%20HIACE.pdf?d=w12cb0b7f9f67408b86b25320206a841e&csf=1&web=1&e=TjdHgT",
+            "createdAt": "2026-08-07T09:55:05.014Z"
+          }
+        ],
+        "assuranceFin": "2027-01-31",
+        "vignetteFin": "",
+        "controleTechniqueFin": "2027-02-02",
+        "notes": "",
+        "createdAt": "2026-07-28T16:00:46.888Z",
+        "updatedAt": "2026-08-10T12:06:25.586Z"
+      },
+      "after": {
+        "id": "veh-032",
+        "numero": 32,
+        "marque": "Toyota",
+        "type": "Hiace",
+        "numeroChassis": "JTFJK02P705016540",
+        "plaque": "0983BM01",
+        "cv": "13CV",
+        "assureur": "Rawsur",
+        "departement": "Plant HR",
+        "user": "Serge M",
+        "province": "Kongo Central",
+        "proprietaire": "LOXEA",
+        "kilometrage": null,
+        "miseCirculation": "2023-01-01",
+        "age": 3,
+        "observationTech": "Bon état",
+        "etatManuel": "",
+        "assuranceHistorique": [
+          {
+            "id": "doc-msir781b-1npyb",
+            "dateDebut": "2026-01-31",
+            "dateFin": "2027-01-31",
+            "preuveUrl": "",
+            "createdAt": "2026-08-07T09:39:53.327Z"
+          }
+        ],
+        "vignetteHistorique": [],
+        "controleTechniqueHistorique": [
+          {
+            "id": "doc-msirqrhy-fy0m2",
+            "dateDebut": "2026-08-02",
+            "dateFin": "2027-02-02",
+            "preuveUrl": "https://ppcafr.sharepoint.com/:b:/r/sites/knshr/HR%20ADMINISTRATION/Controle%20technique%20Aout%202026/0983BM01%20TOYOTA%20HIACE.pdf?d=w12cb0b7f9f67408b86b25320206a841e&csf=1&web=1&e=TjdHgT",
+            "createdAt": "2026-08-07T09:55:05.014Z"
+          }
+        ],
+        "assuranceFin": "2027-01-31",
+        "vignetteFin": "",
+        "controleTechniqueFin": "2027-02-02",
+        "notes": "Le véhicule est actuellement immobilisé à Zamba en raison d'un problème de freinage avant. La pièce de rechange a été commandée à Paris et nous sommes en attente de CFAO.",
+        "createdAt": "2026-07-28T16:00:46.888Z",
+        "updatedAt": "2026-10-07T15:05:00.641Z"
+      },
+      "undoable": true,
+      "undone": false
+    },
+    {
       "id": "log-001388",
       "at": "2026-10-07T15:04:48.599Z",
       "userId": "admin",
@@ -138969,5 +139074,5 @@
       }
     }
   ],
-  "nextSeq": 1389
+  "nextSeq": 1390
 }
