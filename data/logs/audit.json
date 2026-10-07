@@ -1,6 +1,49 @@
 {
   "entries": [
     {
+      "id": "log-001378",
+      "at": "2026-10-07T07:13:37.416Z",
+      "userId": "admin",
+      "userName": "Administrateur",
+      "userEmail": "admin",
+      "module": "contractants",
+      "moduleLabel": "contractants",
+      "action": "update",
+      "actionLabel": "Modification",
+      "entityType": "contractant-employee",
+      "entityId": "770",
+      "summary": "Modification employé contractant — BASHONGA MOHINDO ALINE",
+      "details": "Modification employé contractant — BASHONGA MOHINDO ALINE",
+      "after": {
+        "id": "770",
+        "nom": "BASHONGA MOHINDO ALINE",
+        "sexe": "F",
+        "lieuAffectation": "Kinshasa",
+        "fonction": "Receptionist",
+        "departement": "",
+        "service": "",
+        "telephone": "899922864",
+        "etatCivil": "C",
+        "statut": "Permanent",
+        "dateEmbauche": "",
+        "dateSortie": "",
+        "managerEmployeeId": "",
+        "family": [],
+        "matriculePpc": "",
+        "numeroCnss": "KINSHASA",
+        "numeroCompte": "",
+        "banque": "",
+        "nbDependants": 0,
+        "txJr": 14.39,
+        "coutTransport": 2.66,
+        "payrollSite": "hors-site",
+        "createdAt": "2026-09-25T08:00:00.000Z",
+        "updatedAt": "2026-10-07T07:13:33.592Z"
+      },
+      "undoable": false,
+      "undone": false
+    },
+    {
       "id": "log-001377",
       "at": "2026-10-06T22:35:19.891Z",
       "userId": "Serge.Muakasa@ppcdrc.cd",
@@ -136494,5 +136537,5 @@
       }
     }
   ],
-  "nextSeq": 1378
+  "nextSeq": 1379
 }
