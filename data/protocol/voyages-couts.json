@@ -426,7 +426,7 @@
       "date": "2026-10-08",
       "voyageur": "Mpille Commic",
       "voyageurMatricule": "",
-      "destination": "Zamba Kinshasa",
+      "destination": "Zamba Kinshasa Cameroun",
       "ticketAvion": 0,
       "visaVolant": 0,
       "lettreLegaliser": 0,
@@ -439,7 +439,7 @@
       "appartement": 0,
       "coutTotal": 155,
       "createdAt": "2026-10-08T15:31:27.292Z",
-      "updatedAt": "2026-10-08T15:31:58.442Z"
+      "updatedAt": "2026-10-08T15:33:18.511Z"
     },
     {
       "id": "pvc-024",
