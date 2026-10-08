@@ -1,6 +1,44 @@
 {
   "entries": [
     {
+      "id": "log-001421",
+      "at": "2026-10-08T15:20:44.082Z",
+      "userId": "Tresor.Maneka@ppcdrc.cd",
+      "userName": "Tresor Maneka",
+      "userEmail": "Tresor.Maneka@ppcdrc.cd",
+      "module": "protocol.voyages",
+      "moduleLabel": "Gestion de voyage",
+      "action": "create",
+      "actionLabel": "Création",
+      "entityType": "protocol.voyage",
+      "entityId": "pvc-018",
+      "summary": "Voyage PVC-0018 MUTOMBO SHAMBUYI LÉONARD Zamba Kinshasa Zamba",
+      "details": "Voyage PVC-0018 MUTOMBO SHAMBUYI LÉONARD Zamba Kinshasa Zamba",
+      "after": {
+        "id": "pvc-018",
+        "numero": "PVC-0018",
+        "date": "2026-10-05",
+        "voyageur": "MUTOMBO SHAMBUYI LÉONARD",
+        "voyageurMatricule": "70000290",
+        "destination": "Zamba Kinshasa Zamba",
+        "ticketAvion": 0,
+        "visaVolant": 0,
+        "lettreLegaliser": 0,
+        "goPass": 0,
+        "transfert": 0,
+        "hotelNuit": 145,
+        "nbreNuits": 4,
+        "coutHotel": 580,
+        "categorieHotel": "",
+        "appartement": 0,
+        "coutTotal": 580,
+        "createdAt": "2026-10-08T15:20:40.524Z",
+        "updatedAt": "2026-10-08T15:20:40.524Z"
+      },
+      "undoable": false,
+      "undone": false
+    },
+    {
       "id": "log-001420",
       "at": "2026-10-08T15:19:12.295Z",
       "userId": "Tresor.Maneka@ppcdrc.cd",
@@ -140373,5 +140411,5 @@
       }
     }
   ],
-  "nextSeq": 1421
+  "nextSeq": 1422
 }
