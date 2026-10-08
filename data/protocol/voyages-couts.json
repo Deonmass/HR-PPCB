@@ -448,7 +448,7 @@
       "voyageur": "Tanto Commic",
       "voyageurMatricule": "",
       "destination": "Zamba Kinshasa Cameroun",
-      "ticketAvion": 0,
+      "ticketAvion": 339,
       "visaVolant": 0,
       "lettreLegaliser": 0,
       "goPass": 55,
@@ -458,9 +458,9 @@
       "coutHotel": 100,
       "categorieHotel": "",
       "appartement": 0,
-      "coutTotal": 155,
+      "coutTotal": 494,
       "createdAt": "2026-10-08T15:32:46.566Z",
-      "updatedAt": "2026-10-08T15:32:46.566Z"
+      "updatedAt": "2026-10-08T15:56:06.488Z"
     }
   ],
   "nextSeq": 25
