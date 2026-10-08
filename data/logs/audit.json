@@ -1,6 +1,65 @@
 {
   "entries": [
     {
+      "id": "log-001417",
+      "at": "2026-10-08T15:15:22.527Z",
+      "userId": "Tresor.Maneka@ppcdrc.cd",
+      "userName": "Tresor Maneka",
+      "userEmail": "Tresor.Maneka@ppcdrc.cd",
+      "module": "protocol.voyages",
+      "moduleLabel": "Gestion de voyage",
+      "action": "update",
+      "actionLabel": "Modification",
+      "entityType": "protocol.voyage",
+      "entityId": "pvc-014",
+      "summary": "Modification voyage PVC-0014 Chancard",
+      "details": "Modification voyage PVC-0014 Chancard",
+      "before": {
+        "id": "pvc-014",
+        "numero": "PVC-0014",
+        "date": "2026-10-08",
+        "voyageur": "Chancard",
+        "voyageurMatricule": "",
+        "destination": "Zamba Kinshasa Zamba",
+        "ticketAvion": 0,
+        "visaVolant": 0,
+        "lettreLegaliser": 0,
+        "goPass": 0,
+        "transfert": 0,
+        "hotelNuit": 100,
+        "nbreNuits": 1,
+        "coutHotel": 100,
+        "categorieHotel": "",
+        "appartement": 0,
+        "coutTotal": 100,
+        "createdAt": "2026-10-08T15:14:57.491Z",
+        "updatedAt": "2026-10-08T15:14:57.491Z"
+      },
+      "after": {
+        "id": "pvc-014",
+        "numero": "PVC-0014",
+        "date": "2026-10-02",
+        "voyageur": "Chancard",
+        "voyageurMatricule": "",
+        "destination": "Zamba Kinshasa Zamba",
+        "ticketAvion": 0,
+        "visaVolant": 0,
+        "lettreLegaliser": 0,
+        "goPass": 0,
+        "transfert": 0,
+        "hotelNuit": 100,
+        "nbreNuits": 1,
+        "coutHotel": 100,
+        "categorieHotel": "",
+        "appartement": 0,
+        "coutTotal": 100,
+        "createdAt": "2026-10-08T15:14:57.491Z",
+        "updatedAt": "2026-10-08T15:15:19.697Z"
+      },
+      "undoable": false,
+      "undone": false
+    },
+    {
       "id": "log-001416",
       "at": "2026-10-08T15:15:00.488Z",
       "userId": "Tresor.Maneka@ppcdrc.cd",
@@ -140200,5 +140259,5 @@
       }
     }
   ],
-  "nextSeq": 1417
+  "nextSeq": 1418
 }
