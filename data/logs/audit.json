@@ -1,6 +1,53 @@
 {
   "entries": [
     {
+      "id": "log-001405",
+      "at": "2026-10-08T08:22:24.271Z",
+      "userId": "admin",
+      "userName": "Administrateur",
+      "userEmail": "admin",
+      "module": "charroi.voyages",
+      "moduleLabel": "Charroi — Voyages",
+      "action": "create",
+      "actionLabel": "Création",
+      "entityType": "charroi.voyage",
+      "entityId": "vyg-006",
+      "summary": "Demande de voyage VYG-0006 MASSADI GEDEON GEDEON Zamba (Village) → Mbanza-Ngungu",
+      "details": "Demande de voyage VYG-0006 MASSADI GEDEON GEDEON Zamba (Village) → Mbanza-Ngungu",
+      "after": {
+        "id": "vyg-006",
+        "numero": "VYG-0006",
+        "passagerNom": "MASSADI GEDEON GEDEON",
+        "passagerMatricule": "70000308",
+        "passagerInterne": true,
+        "nombrePersonnes": 1,
+        "depart": "Zamba (Village)",
+        "destination": "Mbanza-Ngungu",
+        "dateDepart": "2026-10-08",
+        "heureDepart": "11:00",
+        "dateArrivee": "",
+        "heureArrivee": "",
+        "motif": "Mission ONEM et CNSS à Mbanza Ngungu",
+        "notes": "RAS",
+        "status": "demande",
+        "chauffeurNom": "",
+        "chauffeurMatricule": "",
+        "chauffeurInterne": false,
+        "vehiculeMode": "",
+        "vehiculeId": "",
+        "vehiculeLibelle": "",
+        "foodAllowance": 0,
+        "foodForTheRoad": 0,
+        "tollGate": 0,
+        "confirmedAt": "",
+        "completedAt": "",
+        "createdAt": "2026-10-08T08:22:20.935Z",
+        "updatedAt": "2026-10-08T08:22:20.935Z"
+      },
+      "undoable": false,
+      "undone": false
+    },
+    {
       "id": "log-001404",
       "at": "2026-10-08T08:21:13.007Z",
       "userId": "admin",
@@ -139737,5 +139784,5 @@
       }
     }
   ],
-  "nextSeq": 1405
+  "nextSeq": 1406
 }
