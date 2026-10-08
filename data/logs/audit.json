@@ -1,6 +1,44 @@
 {
   "entries": [
     {
+      "id": "log-001422",
+      "at": "2026-10-08T15:25:41.031Z",
+      "userId": "Tresor.Maneka@ppcdrc.cd",
+      "userName": "Tresor Maneka",
+      "userEmail": "Tresor.Maneka@ppcdrc.cd",
+      "module": "protocol.voyages",
+      "moduleLabel": "Gestion de voyage",
+      "action": "create",
+      "actionLabel": "Création",
+      "entityType": "protocol.voyage",
+      "entityId": "pvc-019",
+      "summary": "Voyage PVC-0019 KILONDO WOLENG STEPHANE Zamba Kinshasa Zamba",
+      "details": "Voyage PVC-0019 KILONDO WOLENG STEPHANE Zamba Kinshasa Zamba",
+      "after": {
+        "id": "pvc-019",
+        "numero": "PVC-0019",
+        "date": "2026-10-05",
+        "voyageur": "KILONDO WOLENG STEPHANE",
+        "voyageurMatricule": "70000275",
+        "destination": "Zamba Kinshasa Zamba",
+        "ticketAvion": 0,
+        "visaVolant": 0,
+        "lettreLegaliser": 0,
+        "goPass": 0,
+        "transfert": 0,
+        "hotelNuit": 100,
+        "nbreNuits": 4,
+        "coutHotel": 400,
+        "categorieHotel": "",
+        "appartement": 0,
+        "coutTotal": 400,
+        "createdAt": "2026-10-08T15:25:37.099Z",
+        "updatedAt": "2026-10-08T15:25:37.099Z"
+      },
+      "undoable": false,
+      "undone": false
+    },
+    {
       "id": "log-001421",
       "at": "2026-10-08T15:20:44.082Z",
       "userId": "Tresor.Maneka@ppcdrc.cd",
@@ -140411,5 +140449,5 @@
       }
     }
   ],
-  "nextSeq": 1422
+  "nextSeq": 1423
 }
