@@ -1,6 +1,65 @@
 {
   "entries": [
     {
+      "id": "log-001439",
+      "at": "2026-10-08T16:54:27.389Z",
+      "userId": "Tresor.Maneka@ppcdrc.cd",
+      "userName": "Tresor Maneka",
+      "userEmail": "Tresor.Maneka@ppcdrc.cd",
+      "module": "protocol.voyages",
+      "moduleLabel": "Gestion de voyage",
+      "action": "update",
+      "actionLabel": "Modification",
+      "entityType": "protocol.voyage",
+      "entityId": "pvc-008",
+      "summary": "Modification voyage PVC-0008 Mrs Cynthian",
+      "details": "Modification voyage PVC-0008 Mrs Cynthian",
+      "before": {
+        "id": "pvc-008",
+        "numero": "PVC-0008",
+        "date": "2026-10-02",
+        "voyageur": "Mrs Cynthian",
+        "voyageurMatricule": "",
+        "destination": "Zambie - Lubumbashi - Lusaka",
+        "ticketAvion": 0,
+        "visaVolant": 0,
+        "lettreLegaliser": 1689,
+        "goPass": 0,
+        "transfert": 0,
+        "hotelNuit": 155,
+        "nbreNuits": 2,
+        "coutHotel": 310,
+        "categorieHotel": "Standard",
+        "appartement": 0,
+        "coutTotal": 1999,
+        "createdAt": "2026-10-08T14:25:10.040Z",
+        "updatedAt": "2026-10-08T14:25:10.040Z"
+      },
+      "after": {
+        "id": "pvc-008",
+        "numero": "PVC-0008",
+        "date": "2026-10-02",
+        "voyageur": "Mrs Cynthian",
+        "voyageurMatricule": "",
+        "destination": "Zambie - Lubumbashi - Lusaka",
+        "ticketAvion": 1689,
+        "visaVolant": 0,
+        "lettreLegaliser": 15,
+        "goPass": 0,
+        "transfert": 0,
+        "hotelNuit": 155,
+        "nbreNuits": 2,
+        "coutHotel": 310,
+        "categorieHotel": "Standard",
+        "appartement": 0,
+        "coutTotal": 2014,
+        "createdAt": "2026-10-08T14:25:10.040Z",
+        "updatedAt": "2026-10-08T16:54:24.055Z"
+      },
+      "undoable": false,
+      "undone": false
+    },
+    {
       "id": "log-001438",
       "at": "2026-10-08T16:49:32.520Z",
       "userId": "Tresor.Maneka@ppcdrc.cd",
@@ -141246,5 +141305,5 @@
       }
     }
   ],
-  "nextSeq": 1439
+  "nextSeq": 1440
 }
