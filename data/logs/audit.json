@@ -1,6 +1,53 @@
 {
   "entries": [
     {
+      "id": "log-001404",
+      "at": "2026-10-08T08:21:13.007Z",
+      "userId": "admin",
+      "userName": "Administrateur",
+      "userEmail": "admin",
+      "module": "charroi.voyages",
+      "moduleLabel": "Charroi — Voyages",
+      "action": "create",
+      "actionLabel": "Création",
+      "entityType": "charroi.voyage",
+      "entityId": "vyg-005",
+      "summary": "Demande de voyage VYG-0005 MUTOMBO SHAMBUYI LÉONARD Zamba (Village) → Matadi",
+      "details": "Demande de voyage VYG-0005 MUTOMBO SHAMBUYI LÉONARD Zamba (Village) → Matadi",
+      "after": {
+        "id": "vyg-005",
+        "numero": "VYG-0005",
+        "passagerNom": "MUTOMBO SHAMBUYI LÉONARD",
+        "passagerMatricule": "70000290",
+        "passagerInterne": true,
+        "nombrePersonnes": 2,
+        "depart": "Zamba (Village)",
+        "destination": "Matadi",
+        "dateDepart": "2026-10-09",
+        "heureDepart": "08:00",
+        "dateArrivee": "",
+        "heureArrivee": "",
+        "motif": "Mission avec le ministère de l'environement",
+        "notes": "RAS",
+        "status": "demande",
+        "chauffeurNom": "",
+        "chauffeurMatricule": "",
+        "chauffeurInterne": false,
+        "vehiculeMode": "",
+        "vehiculeId": "",
+        "vehiculeLibelle": "",
+        "foodAllowance": 0,
+        "foodForTheRoad": 0,
+        "tollGate": 0,
+        "confirmedAt": "",
+        "completedAt": "",
+        "createdAt": "2026-10-08T08:21:09.663Z",
+        "updatedAt": "2026-10-08T08:21:09.663Z"
+      },
+      "undoable": false,
+      "undone": false
+    },
+    {
       "id": "log-001403",
       "at": "2026-10-08T08:19:31.127Z",
       "userId": "admin",
@@ -139690,5 +139737,5 @@
       }
     }
   ],
-  "nextSeq": 1404
+  "nextSeq": 1405
 }
