@@ -1,6 +1,53 @@
 {
   "entries": [
     {
+      "id": "log-001402",
+      "at": "2026-10-08T08:18:16.363Z",
+      "userId": "admin",
+      "userName": "Administrateur",
+      "userEmail": "admin",
+      "module": "charroi.voyages",
+      "moduleLabel": "Charroi — Voyages",
+      "action": "create",
+      "actionLabel": "Création",
+      "entityType": "charroi.voyage",
+      "entityId": "vyg-004",
+      "summary": "Demande de voyage VYG-0004 3 Visiteur Camerounais et Mr Jeff Zamba (Village) → Kinshasa",
+      "details": "Demande de voyage VYG-0004 3 Visiteur Camerounais et Mr Jeff Zamba (Village) → Kinshasa",
+      "after": {
+        "id": "vyg-004",
+        "numero": "VYG-0004",
+        "passagerNom": "3 Visiteur Camerounais et Mr Jeff",
+        "passagerMatricule": "",
+        "passagerInterne": false,
+        "nombrePersonnes": 4,
+        "depart": "Zamba (Village)",
+        "destination": "Kinshasa",
+        "dateDepart": "2026-10-08",
+        "heureDepart": "05:00",
+        "dateArrivee": "",
+        "heureArrivee": "",
+        "motif": "Retour apres mission",
+        "notes": "RAS",
+        "status": "demande",
+        "chauffeurNom": "",
+        "chauffeurMatricule": "",
+        "chauffeurInterne": false,
+        "vehiculeMode": "",
+        "vehiculeId": "",
+        "vehiculeLibelle": "",
+        "foodAllowance": 0,
+        "foodForTheRoad": 0,
+        "tollGate": 0,
+        "confirmedAt": "",
+        "completedAt": "",
+        "createdAt": "2026-10-08T08:18:12.824Z",
+        "updatedAt": "2026-10-08T08:18:12.824Z"
+      },
+      "undoable": false,
+      "undone": false
+    },
+    {
       "id": "log-001401",
       "at": "2026-10-08T06:40:05.001Z",
       "userId": "admin",
@@ -139566,5 +139613,5 @@
       }
     }
   ],
-  "nextSeq": 1402
+  "nextSeq": 1403
 }
