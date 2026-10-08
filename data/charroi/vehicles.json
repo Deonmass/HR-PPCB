@@ -1603,7 +1603,35 @@
       "notes": "",
       "createdAt": "2026-10-06T18:25:43.057Z",
       "updatedAt": "2026-10-06T18:25:43.057Z"
+    },
+    {
+      "id": "veh-047",
+      "numero": 18,
+      "marque": "Toyota",
+      "type": "Coaster",
+      "numeroChassis": "JTGFB518601073893",
+      "plaque": "9703AT01",
+      "cv": "17 CV",
+      "assureur": "Sfa",
+      "departement": "Plant HR",
+      "user": "Pool bus",
+      "province": "Kongo Central",
+      "proprietaire": "PPC",
+      "kilometrage": null,
+      "miseCirculation": "2016-01-01",
+      "age": 10,
+      "observationTech": "Déclassé",
+      "etatManuel": "Déclassé",
+      "assuranceHistorique": [],
+      "vignetteHistorique": [],
+      "controleTechniqueHistorique": [],
+      "assuranceFin": "",
+      "vignetteFin": "",
+      "controleTechniqueFin": "",
+      "notes": "",
+      "createdAt": "2026-10-08T06:40:01.719Z",
+      "updatedAt": "2026-10-08T06:40:01.719Z"
     }
   ],
-  "nextSeq": 47
+  "nextSeq": 48
 }
