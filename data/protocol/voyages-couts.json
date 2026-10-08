@@ -62,7 +62,28 @@
       "coutTotal": 1320,
       "createdAt": "2026-10-07T15:28:54.344Z",
       "updatedAt": "2026-10-07T15:28:54.344Z"
+    },
+    {
+      "id": "pvc-006",
+      "numero": "PVC-0006",
+      "date": "2026-10-02",
+      "voyageur": "MAVUANGALA MVIOKI JEAN-PIERRE",
+      "voyageurMatricule": "70000185",
+      "destination": "Kisangani - Kinshasa",
+      "ticketAvion": 330,
+      "visaVolant": 0,
+      "lettreLegaliser": 0,
+      "goPass": 0,
+      "transfert": 60,
+      "hotelNuit": 0,
+      "nbreNuits": 0,
+      "coutHotel": 0,
+      "categorieHotel": "",
+      "appartement": 0,
+      "coutTotal": 390,
+      "createdAt": "2026-10-08T09:34:28.259Z",
+      "updatedAt": "2026-10-08T09:34:28.259Z"
     }
   ],
-  "nextSeq": 6
+  "nextSeq": 7
 }
