@@ -1,6 +1,65 @@
 {
   "entries": [
     {
+      "id": "log-001442",
+      "at": "2026-10-08T19:04:39.136Z",
+      "userId": "Tresor.Maneka@ppcdrc.cd",
+      "userName": "Tresor Maneka",
+      "userEmail": "Tresor.Maneka@ppcdrc.cd",
+      "module": "protocol.voyages",
+      "moduleLabel": "Gestion de voyage",
+      "action": "update",
+      "actionLabel": "Modification",
+      "entityType": "protocol.voyage",
+      "entityId": "pvc-025",
+      "summary": "Modification voyage PVC-0025 Zhang Fangjun CSSP",
+      "details": "Modification voyage PVC-0025 Zhang Fangjun CSSP",
+      "before": {
+        "id": "pvc-025",
+        "numero": "PVC-0025",
+        "date": "2026-10-01",
+        "voyageur": "Zhang Fangjun CSSP",
+        "voyageurMatricule": "",
+        "destination": "Chine Kinshasa Chine",
+        "ticketAvion": 0,
+        "visaVolant": 440,
+        "lettreLegaliser": 0,
+        "goPass": 0,
+        "transfert": 2451,
+        "hotelNuit": 145,
+        "nbreNuits": 1,
+        "coutHotel": 145,
+        "categorieHotel": "",
+        "appartement": 0,
+        "coutTotal": 3036,
+        "createdAt": "2026-10-08T16:47:20.574Z",
+        "updatedAt": "2026-10-08T19:01:52.752Z"
+      },
+      "after": {
+        "id": "pvc-025",
+        "numero": "PVC-0025",
+        "date": "2026-10-01",
+        "voyageur": "Zhang Fangjun CSSP",
+        "voyageurMatricule": "",
+        "destination": "Chine Kinshasa Chine",
+        "ticketAvion": 2451,
+        "visaVolant": 440,
+        "lettreLegaliser": 0,
+        "goPass": 0,
+        "transfert": 0,
+        "hotelNuit": 145,
+        "nbreNuits": 1,
+        "coutHotel": 145,
+        "categorieHotel": "",
+        "appartement": 0,
+        "coutTotal": 3036,
+        "createdAt": "2026-10-08T16:47:20.574Z",
+        "updatedAt": "2026-10-08T19:04:34.945Z"
+      },
+      "undoable": false,
+      "undone": false
+    },
+    {
       "id": "log-001441",
       "at": "2026-10-08T19:03:37.541Z",
       "userId": "Tresor.Maneka@ppcdrc.cd",
@@ -141423,5 +141482,5 @@
       }
     }
   ],
-  "nextSeq": 1442
+  "nextSeq": 1443
 }
