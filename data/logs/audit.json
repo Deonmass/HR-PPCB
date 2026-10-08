@@ -1,6 +1,44 @@
 {
   "entries": [
     {
+      "id": "log-001413",
+      "at": "2026-10-08T15:12:41.007Z",
+      "userId": "Tresor.Maneka@ppcdrc.cd",
+      "userName": "Tresor Maneka",
+      "userEmail": "Tresor.Maneka@ppcdrc.cd",
+      "module": "protocol.voyages",
+      "moduleLabel": "Gestion de voyage",
+      "action": "create",
+      "actionLabel": "Création",
+      "entityType": "protocol.voyage",
+      "entityId": "pvc-012",
+      "summary": "Voyage PVC-0012 KINKINIA DIAVEZUKA PELAGIE Zamba Kinshasa",
+      "details": "Voyage PVC-0012 KINKINIA DIAVEZUKA PELAGIE Zamba Kinshasa",
+      "after": {
+        "id": "pvc-012",
+        "numero": "PVC-0012",
+        "date": "2026-10-02",
+        "voyageur": "KINKINIA DIAVEZUKA PELAGIE",
+        "voyageurMatricule": "70000295",
+        "destination": "Zamba Kinshasa",
+        "ticketAvion": 0,
+        "visaVolant": 0,
+        "lettreLegaliser": 0,
+        "goPass": 0,
+        "transfert": 0,
+        "hotelNuit": 192,
+        "nbreNuits": 2,
+        "coutHotel": 384,
+        "categorieHotel": "",
+        "appartement": 0,
+        "coutTotal": 384,
+        "createdAt": "2026-10-08T15:12:37.663Z",
+        "updatedAt": "2026-10-08T15:12:37.663Z"
+      },
+      "undoable": false,
+      "undone": false
+    },
+    {
       "id": "log-001412",
       "at": "2026-10-08T15:11:47.780Z",
       "userId": "Tresor.Maneka@ppcdrc.cd",
@@ -140027,5 +140065,5 @@
       }
     }
   ],
-  "nextSeq": 1413
+  "nextSeq": 1414
 }
