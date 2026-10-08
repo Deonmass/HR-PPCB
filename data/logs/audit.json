@@ -1,6 +1,44 @@
 {
   "entries": [
     {
+      "id": "log-001429",
+      "at": "2026-10-08T15:32:49.424Z",
+      "userId": "Tresor.Maneka@ppcdrc.cd",
+      "userName": "Tresor Maneka",
+      "userEmail": "Tresor.Maneka@ppcdrc.cd",
+      "module": "protocol.voyages",
+      "moduleLabel": "Gestion de voyage",
+      "action": "create",
+      "actionLabel": "Création",
+      "entityType": "protocol.voyage",
+      "entityId": "pvc-024",
+      "summary": "Voyage PVC-0024 Tanto Commic Zamba Kinshasa Cameroun",
+      "details": "Voyage PVC-0024 Tanto Commic Zamba Kinshasa Cameroun",
+      "after": {
+        "id": "pvc-024",
+        "numero": "PVC-0024",
+        "date": "2026-10-08",
+        "voyageur": "Tanto Commic",
+        "voyageurMatricule": "",
+        "destination": "Zamba Kinshasa Cameroun",
+        "ticketAvion": 0,
+        "visaVolant": 0,
+        "lettreLegaliser": 0,
+        "goPass": 55,
+        "transfert": 0,
+        "hotelNuit": 100,
+        "nbreNuits": 1,
+        "coutHotel": 100,
+        "categorieHotel": "",
+        "appartement": 0,
+        "coutTotal": 155,
+        "createdAt": "2026-10-08T15:32:46.566Z",
+        "updatedAt": "2026-10-08T15:32:46.566Z"
+      },
+      "undoable": false,
+      "undone": false
+    },
+    {
       "id": "log-001428",
       "at": "2026-10-08T15:32:02.174Z",
       "userId": "Tresor.Maneka@ppcdrc.cd",
@@ -140719,5 +140757,5 @@
       }
     }
   ],
-  "nextSeq": 1429
+  "nextSeq": 1430
 }
