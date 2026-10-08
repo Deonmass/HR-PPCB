@@ -45,20 +45,20 @@
       "heureArrivee": "",
       "motif": "Retour apres mission",
       "notes": "RAS",
-      "status": "demande",
-      "chauffeurNom": "",
+      "status": "effectue",
+      "chauffeurNom": "TENDA DIWASILUA BINGI",
       "chauffeurMatricule": "",
       "chauffeurInterne": false,
-      "vehiculeMode": "",
-      "vehiculeId": "",
-      "vehiculeLibelle": "",
+      "vehiculeMode": "flotte",
+      "vehiculeId": "veh-030",
+      "vehiculeLibelle": "9263BN01 · Peugeot · Pick up",
       "foodAllowance": 0,
       "foodForTheRoad": 0,
       "tollGate": 0,
-      "confirmedAt": "",
-      "completedAt": "",
+      "confirmedAt": "2026-10-08T08:19:27.951Z",
+      "completedAt": "2026-10-08T08:19:27.951Z",
       "createdAt": "2026-10-08T08:18:12.824Z",
-      "updatedAt": "2026-10-08T08:18:12.824Z"
+      "updatedAt": "2026-10-08T08:19:27.951Z"
     }
   ],
   "nextSeq": 5
