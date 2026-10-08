@@ -1,6 +1,53 @@
 {
   "entries": [
     {
+      "id": "log-001443",
+      "at": "2026-10-08T19:14:57.331Z",
+      "userId": "Tresor.Maneka@ppcdrc.cd",
+      "userName": "Tresor Maneka",
+      "userEmail": "Tresor.Maneka@ppcdrc.cd",
+      "module": "charroi.voyages",
+      "moduleLabel": "Charroi — Voyages",
+      "action": "create",
+      "actionLabel": "Création",
+      "entityType": "charroi.voyage",
+      "entityId": "vyg-007",
+      "summary": "Demande de voyage VYG-0007 ZAKUANI BAHATI BENNY Kinshasa → Kimpese",
+      "details": "Demande de voyage VYG-0007 ZAKUANI BAHATI BENNY Kinshasa → Kimpese",
+      "after": {
+        "id": "vyg-007",
+        "numero": "VYG-0007",
+        "passagerNom": "ZAKUANI BAHATI BENNY",
+        "passagerMatricule": "70000177",
+        "passagerInterne": true,
+        "nombrePersonnes": 1,
+        "depart": "Kinshasa",
+        "destination": "Kimpese",
+        "dateDepart": "2026-10-08",
+        "heureDepart": "08:02",
+        "dateArrivee": "",
+        "heureArrivee": "",
+        "motif": "Mission de Travail CPME",
+        "notes": "",
+        "status": "demande",
+        "chauffeurNom": "",
+        "chauffeurMatricule": "",
+        "chauffeurInterne": false,
+        "vehiculeMode": "",
+        "vehiculeId": "",
+        "vehiculeLibelle": "",
+        "foodAllowance": 0,
+        "foodForTheRoad": 0,
+        "tollGate": 0,
+        "confirmedAt": "",
+        "completedAt": "",
+        "createdAt": "2026-10-08T19:14:54.207Z",
+        "updatedAt": "2026-10-08T19:14:54.207Z"
+      },
+      "undoable": false,
+      "undone": false
+    },
+    {
       "id": "log-001442",
       "at": "2026-10-08T19:04:39.136Z",
       "userId": "Tresor.Maneka@ppcdrc.cd",
@@ -141482,5 +141529,5 @@
       }
     }
   ],
-  "nextSeq": 1443
+  "nextSeq": 1444
 }
