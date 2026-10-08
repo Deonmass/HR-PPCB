@@ -1,6 +1,44 @@
 {
   "entries": [
     {
+      "id": "log-001420",
+      "at": "2026-10-08T15:19:12.295Z",
+      "userId": "Tresor.Maneka@ppcdrc.cd",
+      "userName": "Tresor Maneka",
+      "userEmail": "Tresor.Maneka@ppcdrc.cd",
+      "module": "protocol.voyages",
+      "moduleLabel": "Gestion de voyage",
+      "action": "create",
+      "actionLabel": "Création",
+      "entityType": "protocol.voyage",
+      "entityId": "pvc-017",
+      "summary": "Voyage PVC-0017 MUTOMBO SHAMBUYI LÉONARD Zamba Matadi Zamba",
+      "details": "Voyage PVC-0017 MUTOMBO SHAMBUYI LÉONARD Zamba Matadi Zamba",
+      "after": {
+        "id": "pvc-017",
+        "numero": "PVC-0017",
+        "date": "2026-10-02",
+        "voyageur": "MUTOMBO SHAMBUYI LÉONARD",
+        "voyageurMatricule": "70000290",
+        "destination": "Zamba Matadi Zamba",
+        "ticketAvion": 0,
+        "visaVolant": 0,
+        "lettreLegaliser": 0,
+        "goPass": 0,
+        "transfert": 0,
+        "hotelNuit": 100,
+        "nbreNuits": 1,
+        "coutHotel": 100,
+        "categorieHotel": "",
+        "appartement": 0,
+        "coutTotal": 100,
+        "createdAt": "2026-10-08T15:19:08.877Z",
+        "updatedAt": "2026-10-08T15:19:08.877Z"
+      },
+      "undoable": false,
+      "undone": false
+    },
+    {
       "id": "log-001419",
       "at": "2026-10-08T15:17:17.743Z",
       "userId": "Tresor.Maneka@ppcdrc.cd",
@@ -140335,5 +140373,5 @@
       }
     }
   ],
-  "nextSeq": 1420
+  "nextSeq": 1421
 }
