@@ -1,6 +1,44 @@
 {
   "entries": [
     {
+      "id": "log-001412",
+      "at": "2026-10-08T15:11:47.780Z",
+      "userId": "Tresor.Maneka@ppcdrc.cd",
+      "userName": "Tresor Maneka",
+      "userEmail": "Tresor.Maneka@ppcdrc.cd",
+      "module": "protocol.voyages",
+      "moduleLabel": "Gestion de voyage",
+      "action": "create",
+      "actionLabel": "Création",
+      "entityType": "protocol.voyage",
+      "entityId": "pvc-011",
+      "summary": "Voyage PVC-0011 ILONDO LIKOMBA Jack Lethycien Zamba Kinshasa",
+      "details": "Voyage PVC-0011 ILONDO LIKOMBA Jack Lethycien Zamba Kinshasa",
+      "after": {
+        "id": "pvc-011",
+        "numero": "PVC-0011",
+        "date": "2026-10-02",
+        "voyageur": "ILONDO LIKOMBA Jack Lethycien",
+        "voyageurMatricule": "70000040",
+        "destination": "Zamba Kinshasa",
+        "ticketAvion": 0,
+        "visaVolant": 0,
+        "lettreLegaliser": 0,
+        "goPass": 0,
+        "transfert": 0,
+        "hotelNuit": 192,
+        "nbreNuits": 2,
+        "coutHotel": 384,
+        "categorieHotel": "",
+        "appartement": 0,
+        "coutTotal": 384,
+        "createdAt": "2026-10-08T15:11:43.924Z",
+        "updatedAt": "2026-10-08T15:11:43.924Z"
+      },
+      "undoable": false,
+      "undone": false
+    },
+    {
       "id": "log-001411",
       "at": "2026-10-08T15:09:29.914Z",
       "userId": "Tresor.Maneka@ppcdrc.cd",
@@ -139989,5 +140027,5 @@
       }
     }
   ],
-  "nextSeq": 1412
+  "nextSeq": 1413
 }
