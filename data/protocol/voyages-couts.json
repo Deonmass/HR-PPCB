@@ -112,9 +112,9 @@
       "voyageur": "Mrs Cynthian",
       "voyageurMatricule": "",
       "destination": "Zambie - Lubumbashi - Lusaka",
-      "ticketAvion": 0,
+      "ticketAvion": 1689,
       "visaVolant": 0,
-      "lettreLegaliser": 1689,
+      "lettreLegaliser": 15,
       "goPass": 0,
       "transfert": 0,
       "hotelNuit": 155,
@@ -122,9 +122,9 @@
       "coutHotel": 310,
       "categorieHotel": "Standard",
       "appartement": 0,
-      "coutTotal": 1999,
+      "coutTotal": 2014,
       "createdAt": "2026-10-08T14:25:10.040Z",
-      "updatedAt": "2026-10-08T14:25:10.040Z"
+      "updatedAt": "2026-10-08T16:54:24.055Z"
     },
     {
       "id": "pvc-009",
