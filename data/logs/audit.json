@@ -1,6 +1,44 @@
 {
   "entries": [
     {
+      "id": "log-001407",
+      "at": "2026-10-08T09:34:31.813Z",
+      "userId": "Tresor.Maneka@ppcdrc.cd",
+      "userName": "Tresor Maneka",
+      "userEmail": "Tresor.Maneka@ppcdrc.cd",
+      "module": "protocol.voyages",
+      "moduleLabel": "Gestion de voyage",
+      "action": "create",
+      "actionLabel": "Création",
+      "entityType": "protocol.voyage",
+      "entityId": "pvc-006",
+      "summary": "Voyage PVC-0006 MAVUANGALA MVIOKI JEAN-PIERRE Kisangani - Kinshasa",
+      "details": "Voyage PVC-0006 MAVUANGALA MVIOKI JEAN-PIERRE Kisangani - Kinshasa",
+      "after": {
+        "id": "pvc-006",
+        "numero": "PVC-0006",
+        "date": "2026-10-02",
+        "voyageur": "MAVUANGALA MVIOKI JEAN-PIERRE",
+        "voyageurMatricule": "70000185",
+        "destination": "Kisangani - Kinshasa",
+        "ticketAvion": 330,
+        "visaVolant": 0,
+        "lettreLegaliser": 0,
+        "goPass": 0,
+        "transfert": 60,
+        "hotelNuit": 0,
+        "nbreNuits": 0,
+        "coutHotel": 0,
+        "categorieHotel": "",
+        "appartement": 0,
+        "coutTotal": 390,
+        "createdAt": "2026-10-08T09:34:28.259Z",
+        "updatedAt": "2026-10-08T09:34:28.259Z"
+      },
+      "undoable": false,
+      "undone": false
+    },
+    {
       "id": "log-001406",
       "at": "2026-10-08T08:27:06.595Z",
       "userId": "Marie.Yowali",
@@ -139799,5 +139837,5 @@
       }
     }
   ],
-  "nextSeq": 1407
+  "nextSeq": 1408
 }
