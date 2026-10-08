@@ -1,6 +1,44 @@
 {
   "entries": [
     {
+      "id": "log-001408",
+      "at": "2026-10-08T14:23:06.089Z",
+      "userId": "Tresor.Maneka@ppcdrc.cd",
+      "userName": "Tresor Maneka",
+      "userEmail": "Tresor.Maneka@ppcdrc.cd",
+      "module": "protocol.voyages",
+      "moduleLabel": "Gestion de voyage",
+      "action": "create",
+      "actionLabel": "Création",
+      "entityType": "protocol.voyage",
+      "entityId": "pvc-007",
+      "summary": "Voyage PVC-0007 Mr Hamadou Cameroun - Kinshasa - Cameroun",
+      "details": "Voyage PVC-0007 Mr Hamadou Cameroun - Kinshasa - Cameroun",
+      "after": {
+        "id": "pvc-007",
+        "numero": "PVC-0007",
+        "date": "2026-10-02",
+        "voyageur": "Mr Hamadou",
+        "voyageurMatricule": "",
+        "destination": "Cameroun - Kinshasa - Cameroun",
+        "ticketAvion": 1683,
+        "visaVolant": 0,
+        "lettreLegaliser": 45,
+        "goPass": 0,
+        "transfert": 0,
+        "hotelNuit": 0,
+        "nbreNuits": 0,
+        "coutHotel": 0,
+        "categorieHotel": "",
+        "appartement": 0,
+        "coutTotal": 1728,
+        "createdAt": "2026-10-08T14:23:02.202Z",
+        "updatedAt": "2026-10-08T14:23:02.202Z"
+      },
+      "undoable": false,
+      "undone": false
+    },
+    {
       "id": "log-001407",
       "at": "2026-10-08T09:34:31.813Z",
       "userId": "Tresor.Maneka@ppcdrc.cd",
@@ -139837,5 +139875,5 @@
       }
     }
   ],
-  "nextSeq": 1408
+  "nextSeq": 1409
 }
