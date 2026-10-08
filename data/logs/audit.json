@@ -1,6 +1,51 @@
 {
   "entries": [
     {
+      "id": "log-001401",
+      "at": "2026-10-08T06:40:05.001Z",
+      "userId": "admin",
+      "userName": "Administrateur",
+      "userEmail": "admin",
+      "module": "charroi.vehicules",
+      "moduleLabel": "Charroi — Véhicules",
+      "action": "create",
+      "actionLabel": "Création",
+      "entityType": "charroi.vehicule",
+      "entityId": "veh-047",
+      "summary": "Création véhicule 9703AT01",
+      "details": "Nouveau véhicule enregistré : {\"id\":\"veh-047\",\"numero\":18,\"marque\":\"Toyota\",\"type\":\"Coaster\",\"numeroChassis\":\"JTGFB518601073893\",\"plaque\":\"9703AT01\",\"cv\":\"17 CV\",\"assureur\":\"Sfa\",\"departement\":\"Plant HR\",\"user\":\"Pool bus\",\"province\":\"Kongo Central\",\"proprietaire\":\"PPC\",\"kilometrage\":null,\"miseCirculation\":\"2016-01-01\",\"age\":10,\"observationTech\":\"Déclassé\",\"etatManuel\":\"Déclassé\",\"assuranceHistorique\":[],\"vignetteHistorique\":[],\"controleTechniqueHistorique\":[],\"assuranceFin\":\"\",\"vignetteFin\":\"\",\"controleTechniqueFin\":\"\",\"notes\":\"\",\"createdAt\":\"2026-10-08T06:40:01.719Z\",\"updatedAt\":\"2026-10-08T06:40:01.719Z\"}",
+      "after": {
+        "id": "veh-047",
+        "numero": 18,
+        "marque": "Toyota",
+        "type": "Coaster",
+        "numeroChassis": "JTGFB518601073893",
+        "plaque": "9703AT01",
+        "cv": "17 CV",
+        "assureur": "Sfa",
+        "departement": "Plant HR",
+        "user": "Pool bus",
+        "province": "Kongo Central",
+        "proprietaire": "PPC",
+        "kilometrage": null,
+        "miseCirculation": "2016-01-01",
+        "age": 10,
+        "observationTech": "Déclassé",
+        "etatManuel": "Déclassé",
+        "assuranceHistorique": [],
+        "vignetteHistorique": [],
+        "controleTechniqueHistorique": [],
+        "assuranceFin": "",
+        "vignetteFin": "",
+        "controleTechniqueFin": "",
+        "notes": "",
+        "createdAt": "2026-10-08T06:40:01.719Z",
+        "updatedAt": "2026-10-08T06:40:01.719Z"
+      },
+      "undoable": true,
+      "undone": false
+    },
+    {
       "id": "log-001400",
       "at": "2026-10-07T19:29:50.841Z",
       "userId": "Serge.Muakasa@ppcdrc.cd",
@@ -139521,5 +139566,5 @@
       }
     }
   ],
-  "nextSeq": 1401
+  "nextSeq": 1402
 }
