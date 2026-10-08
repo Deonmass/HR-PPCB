@@ -390,14 +390,14 @@
       "lettreLegaliser": 0,
       "goPass": 0,
       "transfert": 0,
-      "hotelNuit": 115,
+      "hotelNuit": 135,
       "nbreNuits": 2,
-      "coutHotel": 230,
+      "coutHotel": 270,
       "categorieHotel": "",
       "appartement": 0,
-      "coutTotal": 230,
+      "coutTotal": 270,
       "createdAt": "2026-10-08T15:27:53.483Z",
-      "updatedAt": "2026-10-08T15:27:53.483Z"
+      "updatedAt": "2026-10-08T15:28:35.168Z"
     }
   ],
   "nextSeq": 22
