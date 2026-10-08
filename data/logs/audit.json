@@ -1,6 +1,65 @@
 {
   "entries": [
     {
+      "id": "log-001432",
+      "at": "2026-10-08T15:56:37.545Z",
+      "userId": "Tresor.Maneka@ppcdrc.cd",
+      "userName": "Tresor Maneka",
+      "userEmail": "Tresor.Maneka@ppcdrc.cd",
+      "module": "protocol.voyages",
+      "moduleLabel": "Gestion de voyage",
+      "action": "update",
+      "actionLabel": "Modification",
+      "entityType": "protocol.voyage",
+      "entityId": "pvc-023",
+      "summary": "Modification voyage PVC-0023 Mpille Commic",
+      "details": "Modification voyage PVC-0023 Mpille Commic",
+      "before": {
+        "id": "pvc-023",
+        "numero": "PVC-0023",
+        "date": "2026-10-08",
+        "voyageur": "Mpille Commic",
+        "voyageurMatricule": "",
+        "destination": "Zamba Kinshasa Cameroun",
+        "ticketAvion": 0,
+        "visaVolant": 0,
+        "lettreLegaliser": 0,
+        "goPass": 55,
+        "transfert": 0,
+        "hotelNuit": 100,
+        "nbreNuits": 1,
+        "coutHotel": 100,
+        "categorieHotel": "",
+        "appartement": 0,
+        "coutTotal": 155,
+        "createdAt": "2026-10-08T15:31:27.292Z",
+        "updatedAt": "2026-10-08T15:33:18.511Z"
+      },
+      "after": {
+        "id": "pvc-023",
+        "numero": "PVC-0023",
+        "date": "2026-10-08",
+        "voyageur": "Mpille Commic",
+        "voyageurMatricule": "",
+        "destination": "Zamba Kinshasa Cameroun",
+        "ticketAvion": 339,
+        "visaVolant": 0,
+        "lettreLegaliser": 0,
+        "goPass": 55,
+        "transfert": 0,
+        "hotelNuit": 100,
+        "nbreNuits": 1,
+        "coutHotel": 100,
+        "categorieHotel": "",
+        "appartement": 0,
+        "coutTotal": 494,
+        "createdAt": "2026-10-08T15:31:27.292Z",
+        "updatedAt": "2026-10-08T15:56:34.333Z"
+      },
+      "undoable": false,
+      "undone": false
+    },
+    {
       "id": "log-001431",
       "at": "2026-10-08T15:56:10.063Z",
       "userId": "Tresor.Maneka@ppcdrc.cd",
@@ -140875,5 +140934,5 @@
       }
     }
   ],
-  "nextSeq": 1432
+  "nextSeq": 1433
 }
