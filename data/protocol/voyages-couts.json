@@ -469,11 +469,11 @@
       "voyageur": "Zhang Fangjun CSSP",
       "voyageurMatricule": "",
       "destination": "Chine Kinshasa Chine",
-      "ticketAvion": 0,
+      "ticketAvion": 2451,
       "visaVolant": 440,
       "lettreLegaliser": 0,
       "goPass": 0,
-      "transfert": 2451,
+      "transfert": 0,
       "hotelNuit": 145,
       "nbreNuits": 1,
       "coutHotel": 145,
@@ -481,7 +481,7 @@
       "appartement": 0,
       "coutTotal": 3036,
       "createdAt": "2026-10-08T16:47:20.574Z",
-      "updatedAt": "2026-10-08T19:01:52.752Z"
+      "updatedAt": "2026-10-08T19:04:34.945Z"
     },
     {
       "id": "pvc-026",
