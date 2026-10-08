@@ -195,7 +195,7 @@
       "date": "2026-10-02",
       "voyageur": "KINKINIA DIAVEZUKA PELAGIE",
       "voyageurMatricule": "70000295",
-      "destination": "Zamba Kinshasa",
+      "destination": "Zamba Kinshasa Zamba",
       "ticketAvion": 0,
       "visaVolant": 0,
       "lettreLegaliser": 0,
@@ -208,7 +208,7 @@
       "appartement": 0,
       "coutTotal": 192,
       "createdAt": "2026-10-08T15:12:37.663Z",
-      "updatedAt": "2026-10-08T15:13:04.499Z"
+      "updatedAt": "2026-10-08T15:58:41.224Z"
     },
     {
       "id": "pvc-013",
