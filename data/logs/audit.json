@@ -1,6 +1,44 @@
 {
   "entries": [
     {
+      "id": "log-001423",
+      "at": "2026-10-08T15:26:48.114Z",
+      "userId": "Tresor.Maneka@ppcdrc.cd",
+      "userName": "Tresor Maneka",
+      "userEmail": "Tresor.Maneka@ppcdrc.cd",
+      "module": "protocol.voyages",
+      "moduleLabel": "Gestion de voyage",
+      "action": "create",
+      "actionLabel": "Création",
+      "entityType": "protocol.voyage",
+      "entityId": "pvc-020",
+      "summary": "Voyage PVC-0020 Diki Zamba Kinshasa Zamba",
+      "details": "Voyage PVC-0020 Diki Zamba Kinshasa Zamba",
+      "after": {
+        "id": "pvc-020",
+        "numero": "PVC-0020",
+        "date": "2026-10-05",
+        "voyageur": "Diki",
+        "voyageurMatricule": "",
+        "destination": "Zamba Kinshasa Zamba",
+        "ticketAvion": 0,
+        "visaVolant": 0,
+        "lettreLegaliser": 0,
+        "goPass": 0,
+        "transfert": 0,
+        "hotelNuit": 100,
+        "nbreNuits": 1,
+        "coutHotel": 100,
+        "categorieHotel": "",
+        "appartement": 0,
+        "coutTotal": 100,
+        "createdAt": "2026-10-08T15:26:44.536Z",
+        "updatedAt": "2026-10-08T15:26:44.536Z"
+      },
+      "undoable": false,
+      "undone": false
+    },
+    {
       "id": "log-001422",
       "at": "2026-10-08T15:25:41.031Z",
       "userId": "Tresor.Maneka@ppcdrc.cd",
@@ -140449,5 +140487,5 @@
       }
     }
   ],
-  "nextSeq": 1423
+  "nextSeq": 1424
 }
