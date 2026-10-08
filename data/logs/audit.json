@@ -1,6 +1,53 @@
 {
   "entries": [
     {
+      "id": "log-001444",
+      "at": "2026-10-08T19:16:21.615Z",
+      "userId": "Tresor.Maneka@ppcdrc.cd",
+      "userName": "Tresor Maneka",
+      "userEmail": "Tresor.Maneka@ppcdrc.cd",
+      "module": "charroi.voyages",
+      "moduleLabel": "Charroi — Voyages",
+      "action": "create",
+      "actionLabel": "Création",
+      "entityType": "charroi.voyage",
+      "entityId": "vyg-008",
+      "summary": "Demande de voyage VYG-0008 GLODY BENGESHA ELONGO Kinshasa → Kimpese",
+      "details": "Demande de voyage VYG-0008 GLODY BENGESHA ELONGO Kinshasa → Kimpese",
+      "after": {
+        "id": "vyg-008",
+        "numero": "VYG-0008",
+        "passagerNom": "GLODY BENGESHA ELONGO",
+        "passagerMatricule": "70000313",
+        "passagerInterne": true,
+        "nombrePersonnes": 1,
+        "depart": "Kinshasa",
+        "destination": "Kimpese",
+        "dateDepart": "2026-10-08",
+        "heureDepart": "08:02",
+        "dateArrivee": "",
+        "heureArrivee": "",
+        "motif": "Mission de travail Visite Trasforme",
+        "notes": "",
+        "status": "demande",
+        "chauffeurNom": "",
+        "chauffeurMatricule": "",
+        "chauffeurInterne": false,
+        "vehiculeMode": "",
+        "vehiculeId": "",
+        "vehiculeLibelle": "",
+        "foodAllowance": 0,
+        "foodForTheRoad": 0,
+        "tollGate": 0,
+        "confirmedAt": "",
+        "completedAt": "",
+        "createdAt": "2026-10-08T19:16:18.294Z",
+        "updatedAt": "2026-10-08T19:16:18.294Z"
+      },
+      "undoable": false,
+      "undone": false
+    },
+    {
       "id": "log-001443",
       "at": "2026-10-08T19:14:57.331Z",
       "userId": "Tresor.Maneka@ppcdrc.cd",
@@ -141529,5 +141576,5 @@
       }
     }
   ],
-  "nextSeq": 1444
+  "nextSeq": 1445
 }
