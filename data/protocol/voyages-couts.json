@@ -202,13 +202,13 @@
       "goPass": 0,
       "transfert": 0,
       "hotelNuit": 192,
-      "nbreNuits": 2,
-      "coutHotel": 384,
+      "nbreNuits": 1,
+      "coutHotel": 192,
       "categorieHotel": "",
       "appartement": 0,
-      "coutTotal": 384,
+      "coutTotal": 192,
       "createdAt": "2026-10-08T15:12:37.663Z",
-      "updatedAt": "2026-10-08T15:12:37.663Z"
+      "updatedAt": "2026-10-08T15:13:04.499Z"
     }
   ],
   "nextSeq": 13
