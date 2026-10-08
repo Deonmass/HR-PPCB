@@ -1,6 +1,65 @@
 {
   "entries": [
     {
+      "id": "log-001425",
+      "at": "2026-10-08T15:28:38.653Z",
+      "userId": "Tresor.Maneka@ppcdrc.cd",
+      "userName": "Tresor Maneka",
+      "userEmail": "Tresor.Maneka@ppcdrc.cd",
+      "module": "protocol.voyages",
+      "moduleLabel": "Gestion de voyage",
+      "action": "update",
+      "actionLabel": "Modification",
+      "entityType": "protocol.voyage",
+      "entityId": "pvc-021",
+      "summary": "Modification voyage PVC-0021 Robert",
+      "details": "Modification voyage PVC-0021 Robert",
+      "before": {
+        "id": "pvc-021",
+        "numero": "PVC-0021",
+        "date": "2026-10-02",
+        "voyageur": "Robert",
+        "voyageurMatricule": "",
+        "destination": "Lubudi Lubumbashi Lubudi",
+        "ticketAvion": 0,
+        "visaVolant": 0,
+        "lettreLegaliser": 0,
+        "goPass": 0,
+        "transfert": 0,
+        "hotelNuit": 115,
+        "nbreNuits": 2,
+        "coutHotel": 230,
+        "categorieHotel": "",
+        "appartement": 0,
+        "coutTotal": 230,
+        "createdAt": "2026-10-08T15:27:53.483Z",
+        "updatedAt": "2026-10-08T15:27:53.483Z"
+      },
+      "after": {
+        "id": "pvc-021",
+        "numero": "PVC-0021",
+        "date": "2026-10-02",
+        "voyageur": "Robert",
+        "voyageurMatricule": "",
+        "destination": "Lubudi Lubumbashi Lubudi",
+        "ticketAvion": 0,
+        "visaVolant": 0,
+        "lettreLegaliser": 0,
+        "goPass": 0,
+        "transfert": 0,
+        "hotelNuit": 135,
+        "nbreNuits": 2,
+        "coutHotel": 270,
+        "categorieHotel": "",
+        "appartement": 0,
+        "coutTotal": 270,
+        "createdAt": "2026-10-08T15:27:53.483Z",
+        "updatedAt": "2026-10-08T15:28:35.168Z"
+      },
+      "undoable": false,
+      "undone": false
+    },
+    {
       "id": "log-001424",
       "at": "2026-10-08T15:27:56.810Z",
       "userId": "Tresor.Maneka@ppcdrc.cd",
@@ -140525,5 +140584,5 @@
       }
     }
   ],
-  "nextSeq": 1425
+  "nextSeq": 1426
 }
