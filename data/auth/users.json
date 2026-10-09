@@ -3610,8 +3610,8 @@
       ]
     },
     {
-      "id": "Carine.Ewuli",
-      "username": "Carine.Ewuli",
+      "id": "Carine.Ewuli@ppcdrc.cd",
+      "username": "Carine.Ewuli@ppcdrc.cd",
       "password": "123",
       "displayName": "Carine Ewuli",
       "initials": "CES",
@@ -3620,7 +3620,7 @@
       "linkedEmployee": {
         "matricule": "70000265",
         "nom": "EWULI SUKA Carine",
-        "departement": "Corporate Admin",
+        "departement": "Human Resources",
         "grade": "D5",
         "jobTitle": "Head of Human Resources",
         "localisation": "Kinshasa"
