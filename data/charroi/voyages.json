@@ -188,7 +188,7 @@
       "passagerInterne": true,
       "nombrePersonnes": 3,
       "depart": "Kinshasa",
-      "destination": "Kimpese",
+      "destination": "Matadi",
       "dateDepart": "2026-10-09",
       "heureDepart": "03:30",
       "dateArrivee": "",
@@ -208,7 +208,7 @@
       "confirmedAt": "2026-10-09T09:58:43.484Z",
       "completedAt": "2026-10-09T09:58:43.484Z",
       "createdAt": "2026-10-09T06:54:08.570Z",
-      "updatedAt": "2026-10-09T09:58:43.484Z"
+      "updatedAt": "2026-10-09T10:05:02.117Z"
     },
     {
       "id": "vyg-010",
