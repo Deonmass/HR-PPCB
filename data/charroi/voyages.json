@@ -219,8 +219,8 @@
       "nombrePersonnes": 1,
       "depart": "Moanda",
       "destination": "Kinshasa",
-      "dateDepart": "2026-10-10",
-      "heureDepart": "07:00",
+      "dateDepart": "2026-10-02",
+      "heureDepart": "15:30",
       "dateArrivee": "",
       "heureArrivee": "",
       "motif": "Mission de servvice à Kinshasa Maonda, Kinshasa, du 2-au 10 October 2026",
@@ -238,7 +238,7 @@
       "confirmedAt": "",
       "completedAt": "",
       "createdAt": "2026-10-09T09:55:45.157Z",
-      "updatedAt": "2026-10-09T09:55:45.157Z"
+      "updatedAt": "2026-10-09T09:56:46.545Z"
     }
   ],
   "nextSeq": 11
