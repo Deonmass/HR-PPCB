@@ -70,12 +70,12 @@
       "depart": "Zamba (Village)",
       "destination": "Matadi",
       "dateDepart": "2026-10-09",
-      "heureDepart": "08:00",
+      "heureDepart": "03:00",
       "dateArrivee": "",
       "heureArrivee": "",
       "motif": "Mission avec le ministère de l'environement",
       "notes": "RAS",
-      "status": "pending",
+      "status": "effectue",
       "chauffeurNom": "Tenda",
       "chauffeurMatricule": "",
       "chauffeurInterne": true,
@@ -86,9 +86,9 @@
       "foodForTheRoad": 20,
       "tollGate": 10,
       "confirmedAt": "2026-10-09T06:56:16.678Z",
-      "completedAt": "",
+      "completedAt": "2026-10-09T06:58:22.520Z",
       "createdAt": "2026-10-08T08:21:09.663Z",
-      "updatedAt": "2026-10-09T06:56:16.678Z"
+      "updatedAt": "2026-10-09T06:58:22.520Z"
     },
     {
       "id": "vyg-006",
