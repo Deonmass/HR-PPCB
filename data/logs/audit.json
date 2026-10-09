@@ -1,6 +1,53 @@
 {
   "entries": [
     {
+      "id": "log-001451",
+      "at": "2026-10-09T09:55:48.374Z",
+      "userId": "Tresor.Maneka@ppcdrc.cd",
+      "userName": "Tresor Maneka",
+      "userEmail": "Tresor.Maneka@ppcdrc.cd",
+      "module": "charroi.voyages",
+      "moduleLabel": "Charroi — Voyages",
+      "action": "create",
+      "actionLabel": "Création",
+      "entityType": "charroi.voyage",
+      "entityId": "vyg-010",
+      "summary": "Demande de voyage VYG-0010 TSHIOMBE BADIBANGA CALEB Moanda → Kinshasa",
+      "details": "Demande de voyage VYG-0010 TSHIOMBE BADIBANGA CALEB Moanda → Kinshasa",
+      "after": {
+        "id": "vyg-010",
+        "numero": "VYG-0010",
+        "passagerNom": "TSHIOMBE BADIBANGA CALEB",
+        "passagerMatricule": "70000274",
+        "passagerInterne": true,
+        "nombrePersonnes": 1,
+        "depart": "Moanda",
+        "destination": "Kinshasa",
+        "dateDepart": "2026-10-10",
+        "heureDepart": "07:00",
+        "dateArrivee": "",
+        "heureArrivee": "",
+        "motif": "Mission de servvice à Kinshasa Maonda, Kinshasa, du 2-au 10 October 2026",
+        "notes": "",
+        "status": "demande",
+        "chauffeurNom": "",
+        "chauffeurMatricule": "",
+        "chauffeurInterne": false,
+        "vehiculeMode": "",
+        "vehiculeId": "",
+        "vehiculeLibelle": "",
+        "foodAllowance": 0,
+        "foodForTheRoad": 0,
+        "tollGate": 0,
+        "confirmedAt": "",
+        "completedAt": "",
+        "createdAt": "2026-10-09T09:55:45.157Z",
+        "updatedAt": "2026-10-09T09:55:45.157Z"
+      },
+      "undoable": false,
+      "undone": false
+    },
+    {
       "id": "log-001450",
       "at": "2026-10-09T06:59:32.351Z",
       "userId": "Tresor.Maneka@ppcdrc.cd",
@@ -142008,5 +142055,5 @@
       }
     }
   ],
-  "nextSeq": 1451
+  "nextSeq": 1452
 }
