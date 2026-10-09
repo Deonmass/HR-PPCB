@@ -1,6 +1,21 @@
 {
   "entries": [
     {
+      "id": "log-001465",
+      "at": "2026-10-09T12:06:10.877Z",
+      "userId": "Carine.Ewuli@ppcdrc.cd",
+      "userName": "Carine Ewuli",
+      "userEmail": "Carine.Ewuli@ppcdrc.cd",
+      "module": "auth",
+      "moduleLabel": "Authentification",
+      "action": "login",
+      "actionLabel": "Connexion",
+      "summary": "Connexion Carine.Ewuli@ppcdrc.cd",
+      "details": "Connexion de Carine Ewuli (Carine.Ewuli@ppcdrc.cd)",
+      "undoable": false,
+      "undone": false
+    },
+    {
       "id": "log-001464",
       "at": "2026-10-09T12:06:03.950Z",
       "userId": "admin",
@@ -142531,5 +142546,5 @@
       }
     }
   ],
-  "nextSeq": 1465
+  "nextSeq": 1466
 }
