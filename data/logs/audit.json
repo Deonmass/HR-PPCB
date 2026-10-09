@@ -1,6 +1,59 @@
 {
   "entries": [
     {
+      "id": "log-001463",
+      "at": "2026-10-09T12:05:47.763Z",
+      "userId": "admin",
+      "userName": "Administrateur",
+      "userEmail": "admin",
+      "module": "settings.utilisateurs",
+      "moduleLabel": "Paramètres — Utilisateurs",
+      "action": "update",
+      "actionLabel": "Modification",
+      "entityType": "auth.user",
+      "entityId": "Carine.Ewuli",
+      "summary": "Modification utilisateur Carine Ewuli",
+      "details": "Modification utilisateur Carine Ewuli",
+      "before": {
+        "id": "Carine.Ewuli",
+        "username": "Carine.Ewuli",
+        "displayName": "Carine Ewuli",
+        "initials": "CES",
+        "email": "Carine.Ewuli@ppcdrc.cd",
+        "matricule": "70000265",
+        "linkedEmployee": {
+          "matricule": "70000265",
+          "nom": "EWULI SUKA Carine",
+          "departement": "Corporate Admin",
+          "grade": "D5",
+          "jobTitle": "Head of Human Resources",
+          "localisation": "Kinshasa"
+        },
+        "active": true,
+        "createdAt": "2026-07-28T12:02:15.277Z"
+      },
+      "after": {
+        "id": "Carine.Ewuli@ppcdrc.cd",
+        "username": "Carine.Ewuli@ppcdrc.cd",
+        "displayName": "Carine Ewuli",
+        "initials": "CES",
+        "email": "Carine.Ewuli@ppcdrc.cd",
+        "matricule": "70000265",
+        "linkedEmployee": {
+          "matricule": "70000265",
+          "nom": "EWULI SUKA Carine",
+          "departement": "Human Resources",
+          "grade": "D5",
+          "jobTitle": "Head of Human Resources",
+          "localisation": "Kinshasa"
+        },
+        "active": true,
+        "createdAt": "2026-07-28T12:02:15.277Z"
+      },
+      "undoable": true,
+      "undone": false
+    },
+    {
       "id": "log-001462",
       "at": "2026-10-09T12:04:56.237Z",
       "userId": "admin",
@@ -142463,5 +142516,5 @@
       }
     }
   ],
-  "nextSeq": 1463
+  "nextSeq": 1464
 }
