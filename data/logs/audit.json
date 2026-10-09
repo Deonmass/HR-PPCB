@@ -1,6 +1,29 @@
 {
   "entries": [
     {
+      "id": "log-001459",
+      "at": "2026-10-09T12:00:45.743Z",
+      "userId": "system",
+      "userName": "Système",
+      "module": "auth",
+      "moduleLabel": "Authentification",
+      "action": "error",
+      "actionLabel": "Erreur",
+      "summary": "Identifiants invalides",
+      "details": "Échec de connexion pour « Carine.Ewuli@ppcdrc.cd »",
+      "undoable": false,
+      "undone": false,
+      "error": {
+        "message": "Identifiants invalides",
+        "path": "/api/auth/login",
+        "method": "POST",
+        "status": 401,
+        "context": {
+          "username": "Carine.Ewuli@ppcdrc.cd"
+        }
+      }
+    },
+    {
       "id": "log-001458",
       "at": "2026-10-09T12:00:08.037Z",
       "userId": "system",
@@ -142387,5 +142410,5 @@
       }
     }
   ],
-  "nextSeq": 1459
+  "nextSeq": 1460
 }
