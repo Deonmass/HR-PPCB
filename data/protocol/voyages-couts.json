@@ -477,11 +477,11 @@
       "hotelNuit": 145,
       "nbreNuits": 1,
       "coutHotel": 145,
-      "categorieHotel": "",
+      "categorieHotel": "Standard",
       "appartement": 0,
       "coutTotal": 3036,
       "createdAt": "2026-10-08T16:47:20.574Z",
-      "updatedAt": "2026-10-08T19:04:34.945Z"
+      "updatedAt": "2026-10-09T13:35:33.457Z"
     },
     {
       "id": "pvc-026",
