@@ -1,6 +1,21 @@
 {
   "entries": [
     {
+      "id": "log-001469",
+      "at": "2026-10-09T14:51:57.302Z",
+      "userId": "Kiesse.Banguli@ppcdrc.cd",
+      "userName": "Kiesse Banguli",
+      "userEmail": "Kiesse.Banguli@ppcdrc.cd",
+      "module": "employees",
+      "moduleLabel": "Employés",
+      "action": "export",
+      "actionLabel": "Export",
+      "summary": "Export employés (EMPLOYEES_HR_2026-10-09.xlsx)",
+      "details": "Fichier Excel exporté : EMPLOYEES_HR_2026-10-09.xlsx",
+      "undoable": false,
+      "undone": false
+    },
+    {
       "id": "log-001468",
       "at": "2026-10-09T13:35:36.015Z",
       "userId": "Tresor.Maneka@ppcdrc.cd",
@@ -142679,5 +142694,5 @@
       }
     }
   ],
-  "nextSeq": 1469
+  "nextSeq": 1470
 }
