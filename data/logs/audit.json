@@ -1,6 +1,21 @@
 {
   "entries": [
     {
+      "id": "log-001454",
+      "at": "2026-10-09T09:59:45.870Z",
+      "userId": "Tresor.Maneka@ppcdrc.cd",
+      "userName": "Tresor Maneka",
+      "userEmail": "Tresor.Maneka@ppcdrc.cd",
+      "module": "charroi.voyages",
+      "moduleLabel": "Charroi — Voyages",
+      "action": "export",
+      "actionLabel": "Export",
+      "summary": "Documents chauffeur VYG-0009 JP Musthi",
+      "details": "Documents chauffeur VYG-0009 JP Musthi",
+      "undoable": false,
+      "undone": false
+    },
+    {
       "id": "log-001453",
       "at": "2026-10-09T09:58:46.749Z",
       "userId": "Tresor.Maneka@ppcdrc.cd",
@@ -142209,5 +142224,5 @@
       }
     }
   ],
-  "nextSeq": 1454
+  "nextSeq": 1455
 }
