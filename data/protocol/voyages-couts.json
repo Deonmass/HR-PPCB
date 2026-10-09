@@ -96,14 +96,14 @@
       "lettreLegaliser": 45,
       "goPass": 0,
       "transfert": 0,
-      "hotelNuit": 0,
-      "nbreNuits": 0,
-      "coutHotel": 0,
-      "categorieHotel": "",
+      "hotelNuit": 145,
+      "nbreNuits": 1,
+      "coutHotel": 145,
+      "categorieHotel": "Standard",
       "appartement": 0,
-      "coutTotal": 1728,
+      "coutTotal": 1873,
       "createdAt": "2026-10-08T14:23:02.202Z",
-      "updatedAt": "2026-10-08T19:03:35.056Z"
+      "updatedAt": "2026-10-09T13:34:19.069Z"
     },
     {
       "id": "pvc-008",
