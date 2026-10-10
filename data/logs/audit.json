@@ -1,6 +1,21 @@
 {
   "entries": [
     {
+      "id": "log-001471",
+      "at": "2026-10-10T14:30:07.747Z",
+      "userId": "admin",
+      "userName": "Administrateur",
+      "userEmail": "admin",
+      "module": "auth",
+      "moduleLabel": "Authentification",
+      "action": "login",
+      "actionLabel": "Connexion",
+      "summary": "Connexion admin",
+      "details": "Connexion de Administrateur (admin)",
+      "undoable": false,
+      "undone": false
+    },
+    {
       "id": "log-001470",
       "at": "2026-10-09T16:43:01.936Z",
       "userId": "Kiesse.Banguli@ppcdrc.cd",
@@ -142709,5 +142724,5 @@
       }
     }
   ],
-  "nextSeq": 1471
+  "nextSeq": 1472
 }
