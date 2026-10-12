@@ -1,6 +1,37 @@
 {
   "entries": [
     {
+      "id": "log-001520",
+      "at": "2026-10-12T12:51:26.643Z",
+      "userId": "admin",
+      "userName": "Administrateur",
+      "userEmail": "admin",
+      "module": "guest-house",
+      "moduleLabel": "Guest house",
+      "action": "create",
+      "actionLabel": "Création",
+      "entityType": "guest-house.reservation",
+      "entityId": "298c4028-65bf-48f8-a6f3-e3bef328fb79",
+      "summary": "Création réservation Chauffeur de Yves SAKIEMA",
+      "details": "Création réservation Chauffeur de Yves SAKIEMA",
+      "after": {
+        "id": "298c4028-65bf-48f8-a6f3-e3bef328fb79",
+        "numero": "GH-2026-4455",
+        "createdAt": "2026-10-12T12:51:22.005Z",
+        "personName": "Chauffeur de Yves SAKIEMA",
+        "isAgent": false,
+        "motif": "TBA",
+        "startDate": "2026-10-11",
+        "startSlot": "soir",
+        "endDate": "2026-10-14",
+        "endSlot": "matin",
+        "status": "pending",
+        "updatedAt": "2026-10-12T12:51:22.005Z"
+      },
+      "undoable": true,
+      "undone": false
+    },
+    {
       "id": "log-001519",
       "at": "2026-10-12T12:50:27.808Z",
       "userId": "admin",
@@ -154977,5 +155008,5 @@
       }
     }
   ],
-  "nextSeq": 1520
+  "nextSeq": 1521
 }
