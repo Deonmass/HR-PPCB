@@ -1,6 +1,53 @@
 {
   "entries": [
     {
+      "id": "log-001525",
+      "at": "2026-10-12T12:54:01.688Z",
+      "userId": "admin",
+      "userName": "Administrateur",
+      "userEmail": "admin",
+      "module": "guest-house",
+      "moduleLabel": "Guest house",
+      "action": "update",
+      "actionLabel": "Modification",
+      "entityType": "guest-house.reservation",
+      "entityId": "99e69e33-980d-4ab4-9c13-cac5fb888dd7",
+      "summary": "Modification réservation 99e69e33-980d-4ab4-9c13-cac5fb888dd7",
+      "details": "Modification réservation 99e69e33-980d-4ab4-9c13-cac5fb888dd7",
+      "before": {
+        "id": "99e69e33-980d-4ab4-9c13-cac5fb888dd7",
+        "numero": "GH-2026-4437",
+        "createdAt": "2026-09-23T07:14:33.813Z",
+        "personName": "MUTUKULU MAYALA JOSUE",
+        "isAgent": false,
+        "motif": "Topographe",
+        "startDate": "2026-09-22",
+        "endDate": "2026-10-04",
+        "maisonNumero": "45",
+        "status": "confirmed",
+        "notes": "Booké par Nelson",
+        "updatedAt": "2026-10-01T13:13:14.593Z"
+      },
+      "after": {
+        "id": "99e69e33-980d-4ab4-9c13-cac5fb888dd7",
+        "numero": "GH-2026-4437",
+        "createdAt": "2026-09-23T07:14:33.813Z",
+        "personName": "MUTUKULU MAYALA JOSUE",
+        "isAgent": false,
+        "motif": "Topographe",
+        "startDate": "2026-09-22",
+        "startSlot": "matin",
+        "endDate": "2026-10-03",
+        "endSlot": "soir",
+        "maisonNumero": "45",
+        "status": "confirmed",
+        "notes": "Booké par Nelson",
+        "updatedAt": "2026-10-12T12:53:59.164Z"
+      },
+      "undoable": true,
+      "undone": false
+    },
+    {
       "id": "log-001524",
       "at": "2026-10-12T12:53:21.828Z",
       "userId": "admin",
@@ -155189,5 +155236,5 @@
       }
     }
   ],
-  "nextSeq": 1525
+  "nextSeq": 1526
 }
