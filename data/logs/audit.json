@@ -1,6 +1,48 @@
 {
   "entries": [
     {
+      "id": "log-001489",
+      "at": "2026-10-12T09:19:32.944Z",
+      "userId": "karine.mvutu@ppcdrc.cd",
+      "userName": "Karine Mvutu",
+      "userEmail": "karine.mvutu@ppcdrc.cd",
+      "module": "sante",
+      "moduleLabel": "Santé",
+      "action": "create",
+      "actionLabel": "Création",
+      "entityType": "sante.visit",
+      "entityId": "sante-mv51j98g-whg664",
+      "summary": "Cas santé — TENDU SAPU · ANGINE",
+      "details": "Cas santé — TENDU SAPU · ANGINE",
+      "after": {
+        "id": "sante-mv51j98g-whg664",
+        "date": "2026-10-04",
+        "nom": "TENDU",
+        "postnom": "SAPU",
+        "sexe": "F",
+        "age": 13,
+        "typeMalade": "CAS SOCIAL",
+        "pathologie": "ANGINE",
+        "traitement": "VITAMIN C",
+        "reference": "NON",
+        "year": 2026,
+        "month": 10,
+        "employeeMatricule": "",
+        "employeeNom": "",
+        "dependantId": null,
+        "commentaire": "",
+        "contractantId": "",
+        "contractantNom": "",
+        "contractantEmployeeId": "",
+        "createdAt": "2026-10-12T09:19:31.456Z",
+        "updatedAt": "2026-10-12T09:19:31.456Z",
+        "createdBy": "karine.mvutu@ppcdrc.cd",
+        "updatedBy": "karine.mvutu@ppcdrc.cd"
+      },
+      "undoable": false,
+      "undone": false
+    },
+    {
       "id": "log-001488",
       "at": "2026-10-12T09:18:13.714Z",
       "userId": "karine.mvutu@ppcdrc.cd",
@@ -150559,5 +150601,5 @@
       }
     }
   ],
-  "nextSeq": 1489
+  "nextSeq": 1490
 }
