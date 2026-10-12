@@ -6,7 +6,7 @@
  */
 import 'server-only';
 
-import { computeSeniorityYears, parseDisplayDateParts } from './employee-columns';
+import { computeSeniorityYears, displayDateSortKey, exitAlreadyEffective, parseDisplayDateParts, wasPresentOnAsOf } from './employee-columns';
 import { isFemaleGender, isMaleGender } from './employees-hr-dashboard';
 import { readEmployeesBundle } from './employees-json-store';
 import {
@@ -17,7 +17,7 @@ import {
 import { resolveExcoBaseWorkbook } from './exco-base-source';
 import { parseExcoNewReport, type ExcoWorkbookEmployee } from './exco-new-report-parse';
 import { resolveExcoDepartment } from './exco-department-map';
-import { excoSiteBucket } from './exco-site-buckets';
+import { buildExcoGenderByLocation, EXCO_SITE, EXCO_SITE_ORDER, excoSiteBucket } from './exco-site-buckets';
 import { getExcoOverlays } from './exco-store';
 import { fcToUsd, type ExcoLeaveMonthImport, type ExcoOtMonthImport } from './exco-ot-import';
 import type { ExcoSheetTable } from './exco-workbook-types';
@@ -141,6 +141,43 @@ function employeeMap(employees: Employee[]): Map<string, Employee> {
     if (m) map.set(m, e);
   }
   return map;
+}
+
+function latestExitMap(exits: Employee[]): Map<string, Employee> {
+  const map = new Map<string, Employee>();
+  for (const exit of exits) {
+    const matricule = (exit.matricule || '').trim();
+    if (!matricule) continue;
+    const prev = map.get(matricule);
+    if (
+      !prev
+      || displayDateSortKey(exit.dateFinContrat || '') >= displayDateSortKey(prev.dateFinContrat || '')
+    ) {
+      map.set(matricule, exit);
+    }
+  }
+  return map;
+}
+
+/**
+ * Encore dans l'effectif à la fin du mois.
+ * Une sortie enregistrée au plus tard ce jour-là (y compris le 30/09) n'est plus comptée,
+ * même si la fiche Active n'a pas été mise à jour.
+ * Une réembauche postérieure à cette sortie reste dans l'effectif.
+ * Sans fiche système, la ligne du classeur est conservée.
+ */
+function stillEmployedAt(
+  matricule: string,
+  actives: Map<string, Employee>,
+  exits: Map<string, Employee>,
+  asOf: Date,
+): boolean {
+  const active = actives.get(matricule);
+  const exit = exits.get(matricule);
+  if (exit && exitAlreadyEffective(exit, asOf, active)) return false;
+  if (active) return wasPresentOnAsOf(active, asOf, { isExit: false });
+  if (exit) return wasPresentOnAsOf(exit, asOf, { isExit: true });
+  return true;
 }
 
 function prevPeriod(year: number, month: number): { year: number; month: number } {
@@ -498,6 +535,8 @@ export async function buildExcoUniqueBase(
 ): Promise<ExcoUniqueBaseResult> {
   const asOf = asOfEndOfMonth(year, month);
   const bundle = await readEmployeesBundle();
+  const activeByMat = employeeMap(bundle.employees || []);
+  const exitByMat = latestExitMap(bundle.exits || []);
   const allSystem = employeeMap([...(bundle.employees || []), ...(bundle.exits || [])]);
 
   const { overlays: monthOverlays } = await getExcoOverlays(year, month);
@@ -564,6 +603,12 @@ export async function buildExcoUniqueBase(
   for (const row of monthEngRows) {
     if (row.terminationDate && dateStrOnOrBefore(row.terminationDate, asOf)) {
       roster.delete(row.matricule);
+    }
+  }
+
+  for (const matricule of [...roster.keys()]) {
+    if (!stillEmployedAt(matricule, activeByMat, exitByMat, asOf)) {
+      roster.delete(matricule);
     }
   }
 
@@ -765,6 +810,24 @@ export function applyUniqueBaseToComputed(
     .map(([label, value]) => ({ label, value }))
     .sort((a, b) => b.value - a.value);
 
+  const genderByLocation = buildExcoGenderByLocation(
+    current.employees.map((e) => ({ locationSite: e.locationSite, gender: e.gender })),
+    isMaleGender,
+    isFemaleGender,
+  );
+  const siteMap = new Map<string, number>();
+  for (const e of current.employees) {
+    const site = excoSiteBucket(e.locationSite || '');
+    siteMap.set(site, (siteMap.get(site) ?? 0) + 1);
+  }
+  const headcountBySite = EXCO_SITE_ORDER.filter(
+    (site) => siteMap.has(site) || site !== EXCO_SITE.unknown,
+  ).map((site) => ({
+    site,
+    headcount: siteMap.get(site) ?? 0,
+    delta: null as number | null,
+  }));
+
   return {
     ...computed,
     headcount,
@@ -794,8 +857,12 @@ export function applyUniqueBaseToComputed(
     averageAgeFemale: avg(agesFemale),
     averageSeniorityYears: avg(seniorities),
     prevAverageSeniorityYears: avg(prevSeniorities),
+    preRetirement: ages.filter((a) => a >= 55).length,
+    retirement: ages.filter((a) => a >= 60).length,
     ageBands,
     seniorityBands,
+    genderByLocation,
+    headcountBySite,
     hiresByMonth,
     exitsByMonth,
     exitsByReason: hasEngCurrent ? exitsByReason : computed.exitsByReason,

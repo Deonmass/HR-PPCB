@@ -1,6 +1,7 @@
 import {
   computeAgeFromDisplayDate,
   displayDateSortKey,
+  exitAlreadyEffective,
   parseDisplayDateParts,
   RAISON_EXITS,
   wasPresentOnAsOf,
@@ -205,14 +206,31 @@ export function employeesPresentOnAsOf(
   exits: Employee[] = [],
   asOf: Date,
 ): Employee[] {
+  const exitsByKey = new Map<string, Employee>();
+  for (const exit of Array.isArray(exits) ? exits : []) {
+    const key = employeePresenceKey(exit);
+    const prev = exitsByKey.get(key);
+    if (
+      !prev
+      || displayDateSortKey(exit.dateFinContrat || '') >= displayDateSortKey(prev.dateFinContrat || '')
+    ) {
+      exitsByKey.set(key, exit);
+    }
+  }
   const byKey = new Map<string, Employee>();
-  const add = (employee: Employee, isExit = false) => {
-    if (!wasPresentOnAsOf(employee, asOf, { isExit })) return;
+  for (const employee of Array.isArray(actives) ? actives : []) {
     const key = employeePresenceKey(employee);
+    const exit = exitsByKey.get(key);
+    if (exit && exitAlreadyEffective(exit, asOf, employee)) continue;
+    if (!wasPresentOnAsOf(employee, asOf, { isExit: false })) continue;
     if (!byKey.has(key)) byKey.set(key, employee);
-  };
-  for (const e of Array.isArray(actives) ? actives : []) add(e, false);
-  for (const e of Array.isArray(exits) ? exits : []) add(e, true);
+  }
+  for (const exit of exitsByKey.values()) {
+    const key = employeePresenceKey(exit);
+    if (byKey.has(key)) continue;
+    if (!wasPresentOnAsOf(exit, asOf, { isExit: true })) continue;
+    byKey.set(key, exit);
+  }
   return [...byKey.values()];
 }
 

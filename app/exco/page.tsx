@@ -1901,23 +1901,6 @@ export default function ExcoPage() {
     for (const t of trends) {
       if (t?.month) byMonth.set(Number(t.month), t);
     }
-    const months = CAL_MONTH_KEYS.map((key, idx) => {
-      const cal = idx + 1;
-      const t = byMonth.get(cal);
-      const visible = cal <= through;
-      return {
-        monthKey: key,
-        calendarMonth: cal,
-        in: visible ? (t?.hires ?? 0) : null,
-        out: visible ? (t?.exits ?? 0) : null,
-        attritionRate: visible ? (t?.attritionPct ?? null) : null,
-        turnover: visible ? (t?.turnoverPct ?? null) : null,
-        headcount: visible ? (t?.headcount ?? null) : null,
-      };
-    });
-    const filled = months.filter((row) => row.calendarMonth != null && row.calendarMonth <= through);
-    const ytdIn = filled.reduce((s, row) => s + (row.in || 0), 0);
-    const ytdOut = filled.reduce((s, row) => s + (row.out || 0), 0);
     const hiresByMonthRaw = (c.hiresByMonth || {}) as Record<string, InOutPerson[]>;
     const exitsByMonthRaw = (c.exitsByMonth || {}) as Record<string, InOutPerson[]>;
     const hiresByMonth: Record<number, InOutPerson[]> = {};
@@ -1928,6 +1911,45 @@ export default function ExcoPage() {
     for (const [k, list] of Object.entries(exitsByMonthRaw)) {
       exitsByMonth[Number(k)] = Array.isArray(list) ? list : [];
     }
+    const listedIn = Array.isArray(c.hiresList) ? c.hiresList : [];
+    const listedOut = Array.isArray(c.exitsList)
+      ? c.exitsList
+      : Array.isArray(c.leaversList)
+        ? c.leaversList
+        : [];
+    const inList = (hiresByMonth[through]?.length || 0) > listedIn.length
+      ? hiresByMonth[through]
+      : listedIn;
+    const outList = (exitsByMonth[through]?.length || 0) > listedOut.length
+      ? exitsByMonth[through]
+      : listedOut;
+    hiresByMonth[through] = inList;
+    exitsByMonth[through] = outList;
+    const months = CAL_MONTH_KEYS.map((key, idx) => {
+      const cal = idx + 1;
+      const t = byMonth.get(cal);
+      const visible = cal <= through;
+      const hireRows = hiresByMonth[cal];
+      const exitRows = exitsByMonth[cal];
+      const monthIn = cal === through
+        ? inList.length
+        : (hireRows && hireRows.length > 0 ? hireRows.length : (t?.hires ?? 0));
+      const monthOut = cal === through
+        ? outList.length
+        : (exitRows && exitRows.length > 0 ? exitRows.length : (t?.exits ?? 0));
+      return {
+        monthKey: key,
+        calendarMonth: cal,
+        in: visible ? monthIn : null,
+        out: visible ? monthOut : null,
+        attritionRate: visible ? (t?.attritionPct ?? null) : null,
+        turnover: visible ? (t?.turnoverPct ?? null) : null,
+        headcount: visible ? (t?.headcount ?? null) : null,
+      };
+    });
+    const filled = months.filter((row) => row.calendarMonth != null && row.calendarMonth <= through);
+    const ytdIn = filled.reduce((s, row) => s + (row.in || 0), 0);
+    const ytdOut = filled.reduce((s, row) => s + (row.out || 0), 0);
     setInOut({
       months,
       ytdIn,
@@ -1937,12 +1959,8 @@ export default function ExcoPage() {
       ytdHeadcount: c.headcount ?? null,
       presentList: Array.isArray(c.presentList) ? c.presentList : [],
       exitsByReason: Array.isArray(c.exitsByReason) ? c.exitsByReason : [],
-      inList: Array.isArray(c.hiresList) ? c.hiresList : [],
-      outList: Array.isArray(c.exitsList)
-        ? c.exitsList
-        : Array.isArray(c.leaversList)
-          ? c.leaversList
-          : [],
+      inList,
+      outList,
       hiresByMonth,
       exitsByMonth,
     });

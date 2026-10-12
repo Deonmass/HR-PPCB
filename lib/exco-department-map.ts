@@ -54,6 +54,9 @@ const RULES: Rule[] = [
       'human ressources',
       'human resource',
       'ressources humaines',
+      'plant hr',
+      'hr plant',
+      'hr hq',
     ],
     department: 'Human Resources',
   },
@@ -123,7 +126,7 @@ const RULES: Rule[] = [
     department: 'Production',
   },
   {
-    aliases: ['quality assurance', 'qa', 'laboratory', 'labo'],
+    aliases: ['quality assurance', 'qa', 'q a', 'laboratory', 'labo'],
     department: 'Quality Assurance',
   },
 

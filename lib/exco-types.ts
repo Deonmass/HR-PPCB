@@ -38,6 +38,10 @@ export interface ExcoHireListRow {
   genre: string;
   company: string;
   appointmentDate: string;
+  /** Date d’engagement d’origine (conservée quand `appointmentDate` est la date de sortie). */
+  employmentDate?: string;
+  /** Poste (position ou job title). */
+  position?: string;
   /** Bucket site (Plant/Zamba, Kinshasa incl. Kisangani/Moanda, Lubudi and Lubumbashi, Graduates). */
   site: string;
   /** Embauche / présent — libellé pour le modal. */

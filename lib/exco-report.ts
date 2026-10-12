@@ -154,6 +154,8 @@ function toHireListRow(employee: Employee, reason = 'Embauche'): ExcoHireListRow
     genre: employee.gender || '',
     company: employee.company || '',
     appointmentDate: employee.appointmentDate || '',
+    employmentDate: employee.appointmentDate || '',
+    position: employee.position || employee.jobTitle || '',
     site: siteBucket(employee.localisation || ''),
     reason,
   };
@@ -1506,6 +1508,94 @@ function listMissing(payload: {
   return missing;
 }
 
+function movementRowKey(row: ExcoHireListRow): string {
+  const matricule = (row.matricule || '').trim().toLowerCase();
+  if (matricule) return `m:${matricule}`;
+  return `n:${(row.nom || '').trim().toLowerCase()}|${row.appointmentDate || ''}|${row.reason || ''}`;
+}
+
+/** Union de deux listes IN/OUT. La première liste gagne en cas de doublon. */
+function mergeMovementRows(
+  primary: ExcoHireListRow[] | undefined,
+  extra: ExcoHireListRow[] | undefined,
+): ExcoHireListRow[] {
+  const out: ExcoHireListRow[] = [];
+  const seen = new Set<string>();
+  for (const row of [...(primary || []), ...(extra || [])]) {
+    const key = movementRowKey(row);
+    if (seen.has(key)) continue;
+    seen.add(key);
+    out.push(row);
+  }
+  return out;
+}
+
+function movementReasonRows(rows: ExcoHireListRow[]): ExcoCountRow[] {
+  const counts = new Map<string, number>();
+  for (const row of rows) {
+    const label = (row.reason || '').trim() || 'Non renseigné';
+    counts.set(label, (counts.get(label) ?? 0) + 1);
+  }
+  return [...counts.entries()]
+    .map(([label, value]) => ({ label, value }))
+    .sort((a, b) => b.value - a.value || a.label.localeCompare(b.label, 'fr'));
+}
+
+/**
+ * Le chiffre OUT/IN d'un mois et la liste cliquable doivent être les mêmes personnes.
+ * Un classeur ou un fichier d'engagements peut remplacer la liste par un extrait plus court
+ * tout en laissant le compte du tableau sur les sorties système.
+ */
+function alignMovementListsWithTrends(
+  computed: ExcoComputedBlock,
+  throughMonth: number,
+  systemExitsByMonth: ExcoComputedBlock['exitsByMonth'],
+  systemHiresByMonth: ExcoComputedBlock['hiresByMonth'],
+): ExcoComputedBlock {
+  const exitsByMonth = { ...(computed.exitsByMonth || {}) };
+  const hiresByMonth = { ...(computed.hiresByMonth || {}) };
+
+  for (let m = 1; m <= throughMonth; m += 1) {
+    exitsByMonth[m] = mergeMovementRows(systemExitsByMonth?.[m], exitsByMonth[m]);
+    hiresByMonth[m] = mergeMovementRows(systemHiresByMonth?.[m], hiresByMonth[m]);
+  }
+
+  const trends = (computed.trends || []).map((trend) => {
+    if (trend.month < 1 || trend.month > throughMonth) return trend;
+    const exits = (exitsByMonth[trend.month] || []).length;
+    const hires = (hiresByMonth[trend.month] || []).length;
+    if (exits === trend.exits && hires === trend.hires) return trend;
+    return {
+      ...trend,
+      exits,
+      hires,
+      attritionPct: trend.headcount > 0 ? ratioToRate(exits, trend.headcount) : trend.attritionPct,
+      turnoverPct:
+        trend.headcount > 0 ? ratioToRate((hires + exits) / 2, trend.headcount) : trend.turnoverPct,
+    };
+  });
+
+  const exitsList = exitsByMonth[throughMonth] || computed.exitsList || [];
+  const hiresList = hiresByMonth[throughMonth] || computed.hiresList || [];
+  const exits = exitsList.length;
+  const hires = hiresList.length;
+  const headcount = computed.headcount > 0 ? computed.headcount : 0;
+
+  return {
+    ...computed,
+    exitsList,
+    hiresList,
+    exits,
+    hires,
+    exitsByMonth,
+    hiresByMonth,
+    trends,
+    attritionPct: headcount > 0 ? ratioToRate(exits, headcount) : computed.attritionPct,
+    turnoverPct: headcount > 0 ? ratioToRate((hires + exits) / 2, headcount) : computed.turnoverPct,
+    exitsByReason: movementReasonRows(exitsList),
+  };
+}
+
 export async function buildExcoReport(
   year: number,
   month: number,
@@ -1534,6 +1624,8 @@ export async function buildExcoReport(
         : mergeAuditFindings(auditActions, overlays, asOf),
   };
   const computedRaw = await computeBlock(year, month, mergedOverlays);
+  const systemExitsByMonth = computedRaw.exitsByMonth;
+  const systemHiresByMonth = computedRaw.hiresByMonth;
   const snap = mergedOverlays.workbookSnapshot;
   const snapMatchesPeriod =
     Boolean(snap)
@@ -1637,6 +1729,12 @@ export async function buildExcoReport(
   computed.auditTotal = auditDash.total;
   computed.auditClosed = auditDash.closed;
   computed.auditClosedPct = auditDash.closedPct;
+  computed = alignMovementListsWithTrends(
+    computed,
+    month,
+    systemExitsByMonth,
+    systemHiresByMonth,
+  );
   const kpiSummary = buildKpiSummary(computed, mergedOverlays, month);
   const payload: ExcoReportPayload = {
     year,

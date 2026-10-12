@@ -243,6 +243,27 @@ export function wasPresentOnAsOf(
   return ymdKey(exit.y, exit.m, exit.d) > asOfKey;
 }
 
+/**
+ * Sortie enregistrée déjà effective à `asOf`, y compris le jour même.
+ * Une réembauche (date d'engagement postérieure à cette sortie) reste en poste.
+ */
+export function exitAlreadyEffective(
+  exitRecord: PresenceEmployee,
+  asOf: Date,
+  active?: PresenceEmployee | null,
+): boolean {
+  const exit = parseDisplayDateParts(exitRecord.dateFinContrat ?? '');
+  if (!exit) return false;
+  const asOfKey = ymdKey(asOf.getFullYear(), asOf.getMonth() + 1, asOf.getDate());
+  const exitKey = ymdKey(exit.y, exit.m, exit.d);
+  if (exitKey > asOfKey) return false;
+  if (active) {
+    const hire = parseDisplayDateParts(active.appointmentDate ?? '');
+    if (hire && ymdKey(hire.y, hire.m, hire.d) > exitKey) return false;
+  }
+  return true;
+}
+
 export function wasPresentAtEndOfYearMonth(
   employee: PresenceEmployee,
   year: number,
