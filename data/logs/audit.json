@@ -1,6 +1,38 @@
 {
   "entries": [
     {
+      "id": "log-001508",
+      "at": "2026-10-12T12:44:35.868Z",
+      "userId": "admin",
+      "userName": "Administrateur",
+      "userEmail": "admin",
+      "module": "guest-house",
+      "moduleLabel": "Guest house",
+      "action": "create",
+      "actionLabel": "Création",
+      "entityType": "guest-house.reservation",
+      "entityId": "b194d365-b816-4be0-b6a0-b1c4a283b889",
+      "summary": "Création réservation Lucien Kashala",
+      "details": "Création réservation Lucien Kashala",
+      "after": {
+        "id": "b194d365-b816-4be0-b6a0-b1c4a283b889",
+        "numero": "GH-2026-4452",
+        "createdAt": "2026-10-12T12:44:33.044Z",
+        "personName": "Lucien Kashala",
+        "isAgent": false,
+        "motif": "TBA",
+        "startDate": "2026-10-09",
+        "startSlot": "soir",
+        "endDate": "2026-10-12",
+        "endSlot": "matin",
+        "roomId": "0b0cdc0d-ba79-4f68-8533-c90cad3390cb",
+        "status": "pending",
+        "updatedAt": "2026-10-12T12:44:33.044Z"
+      },
+      "undoable": true,
+      "undone": false
+    },
+    {
       "id": "log-001507",
       "at": "2026-10-12T12:43:20.360Z",
       "userId": "admin",
@@ -154462,5 +154494,5 @@
       }
     }
   ],
-  "nextSeq": 1508
+  "nextSeq": 1509
 }
