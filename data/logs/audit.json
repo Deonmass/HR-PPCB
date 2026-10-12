@@ -1,6 +1,44 @@
 {
   "entries": [
     {
+      "id": "log-001479",
+      "at": "2026-10-12T08:15:51.227Z",
+      "userId": "Tresor.Maneka@ppcdrc.cd",
+      "userName": "Tresor Maneka",
+      "userEmail": "Tresor.Maneka@ppcdrc.cd",
+      "module": "protocol.voyages",
+      "moduleLabel": "Gestion de voyage",
+      "action": "create",
+      "actionLabel": "Création",
+      "entityType": "protocol.voyage",
+      "entityId": "pvc-027",
+      "summary": "Voyage PVC-0027 Pablito Zamba Kinshasa Philippe",
+      "details": "Voyage PVC-0027 Pablito Zamba Kinshasa Philippe",
+      "after": {
+        "id": "pvc-027",
+        "numero": "PVC-0027",
+        "date": "2026-10-10",
+        "voyageur": "Pablito",
+        "voyageurMatricule": "",
+        "destination": "Zamba Kinshasa Philippe",
+        "ticketAvion": 0,
+        "visaVolant": 350,
+        "lettreLegaliser": 0,
+        "goPass": 55,
+        "transfert": 50,
+        "hotelNuit": 192,
+        "nbreNuits": 1,
+        "coutHotel": 192,
+        "categorieHotel": "Stadard",
+        "appartement": 0,
+        "coutTotal": 647,
+        "createdAt": "2026-10-12T08:15:47.861Z",
+        "updatedAt": "2026-10-12T08:15:47.861Z"
+      },
+      "undoable": false,
+      "undone": false
+    },
+    {
       "id": "log-001478",
       "at": "2026-10-12T07:34:34.175Z",
       "userId": "admin",
@@ -148146,5 +148184,5 @@
       }
     }
   ],
-  "nextSeq": 1479
+  "nextSeq": 1480
 }
