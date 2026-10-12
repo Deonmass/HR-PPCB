@@ -1,6 +1,54 @@
 {
   "entries": [
     {
+      "id": "log-001534",
+      "at": "2026-10-12T13:00:55.867Z",
+      "userId": "admin",
+      "userName": "Administrateur",
+      "userEmail": "admin",
+      "module": "guest-house",
+      "moduleLabel": "Guest house",
+      "action": "update",
+      "actionLabel": "Modification",
+      "entityType": "guest-house.reservation",
+      "entityId": "ee86af33-bd99-4c14-95f1-e2537a5f03c3",
+      "summary": "Statut réservation ee86af33-bd99-4c14-95f1-e2537a5f03c3 → confirmed",
+      "details": "Statut réservation ee86af33-bd99-4c14-95f1-e2537a5f03c3 → confirmed",
+      "before": {
+        "id": "ee86af33-bd99-4c14-95f1-e2537a5f03c3",
+        "numero": "GH-2026-4459",
+        "createdAt": "2026-10-12T13:00:34.115Z",
+        "personName": "Olivier MAFOLO",
+        "isAgent": false,
+        "motif": "Mission pour le département de l'Environement",
+        "startDate": "2026-10-07",
+        "startSlot": "midi",
+        "endDate": "2026-10-08",
+        "endSlot": "matin",
+        "status": "pending",
+        "notes": "Booké par Léonardo",
+        "updatedAt": "2026-10-12T13:00:34.115Z"
+      },
+      "after": {
+        "id": "ee86af33-bd99-4c14-95f1-e2537a5f03c3",
+        "numero": "GH-2026-4459",
+        "createdAt": "2026-10-12T13:00:34.115Z",
+        "personName": "Olivier MAFOLO",
+        "isAgent": false,
+        "motif": "Mission pour le département de l'Environement",
+        "startDate": "2026-10-07",
+        "startSlot": "midi",
+        "endDate": "2026-10-08",
+        "endSlot": "matin",
+        "roomId": "7dbc2817-6744-4ae5-8827-0961bd7aa54a",
+        "status": "confirmed",
+        "notes": "Booké par Léonardo",
+        "updatedAt": "2026-10-12T13:00:53.352Z"
+      },
+      "undoable": true,
+      "undone": false
+    },
+    {
       "id": "log-001533",
       "at": "2026-10-12T13:00:37.487Z",
       "userId": "admin",
@@ -155551,5 +155599,5 @@
       }
     }
   ],
-  "nextSeq": 1534
+  "nextSeq": 1535
 }
