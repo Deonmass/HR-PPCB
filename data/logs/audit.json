@@ -1,6 +1,21 @@
 {
   "entries": [
     {
+      "id": "log-001503",
+      "at": "2026-10-12T12:11:20.276Z",
+      "userId": "Kiesse.Banguli@ppcdrc.cd",
+      "userName": "Kiesse Banguli",
+      "userEmail": "Kiesse.Banguli@ppcdrc.cd",
+      "module": "employes.airtime",
+      "moduleLabel": "Airtime",
+      "action": "export",
+      "actionLabel": "Export",
+      "summary": "Export Excel Airtime (174 PPC, 23 contractants)",
+      "details": "Export Excel Airtime (174 PPC, 23 contractants)",
+      "undoable": false,
+      "undone": false
+    },
+    {
       "id": "log-001502",
       "at": "2026-10-12T12:09:34.939Z",
       "userId": "admin",
@@ -151093,5 +151108,5 @@
       }
     }
   ],
-  "nextSeq": 1503
+  "nextSeq": 1504
 }
