@@ -1,6 +1,37 @@
 {
   "entries": [
     {
+      "id": "log-001538",
+      "at": "2026-10-12T13:04:21.440Z",
+      "userId": "admin",
+      "userName": "Administrateur",
+      "userEmail": "admin",
+      "module": "guest-house",
+      "moduleLabel": "Guest house",
+      "action": "create",
+      "actionLabel": "Création",
+      "entityType": "guest-house.reservation",
+      "entityId": "6886abf3-e556-43a4-9709-02034474681e",
+      "summary": "Création réservation SOLUTION FOR AFRICA (Chauffeur)",
+      "details": "Création réservation SOLUTION FOR AFRICA (Chauffeur)",
+      "after": {
+        "id": "6886abf3-e556-43a4-9709-02034474681e",
+        "numero": "GH-2026-4462",
+        "createdAt": "2026-10-12T13:04:18.700Z",
+        "personName": "SOLUTION FOR AFRICA (Chauffeur)",
+        "isAgent": false,
+        "motif": "EQUIPE SOLUTION FOR AFRICA",
+        "startDate": "2026-10-04",
+        "startSlot": "midi",
+        "endDate": "2026-10-05",
+        "endSlot": "matin",
+        "status": "pending",
+        "updatedAt": "2026-10-12T13:04:18.700Z"
+      },
+      "undoable": true,
+      "undone": false
+    },
+    {
       "id": "log-001537",
       "at": "2026-10-12T13:03:53.364Z",
       "userId": "admin",
@@ -155708,5 +155739,5 @@
       }
     }
   ],
-  "nextSeq": 1538
+  "nextSeq": 1539
 }
