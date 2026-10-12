@@ -1,6 +1,53 @@
 {
   "entries": [
     {
+      "id": "log-001547",
+      "at": "2026-10-12T13:32:07.991Z",
+      "userId": "admin",
+      "userName": "Administrateur",
+      "userEmail": "admin",
+      "module": "guest-house",
+      "moduleLabel": "Guest house",
+      "action": "update",
+      "actionLabel": "Modification",
+      "entityType": "guest-house.reservation",
+      "entityId": "9e124333-6abe-4983-91db-35d90dbc5d57",
+      "summary": "Modification réservation 9e124333-6abe-4983-91db-35d90dbc5d57",
+      "details": "Modification réservation 9e124333-6abe-4983-91db-35d90dbc5d57",
+      "before": {
+        "id": "9e124333-6abe-4983-91db-35d90dbc5d57",
+        "numero": "GH-2026-4463",
+        "createdAt": "2026-10-12T13:24:14.947Z",
+        "personName": "Chinois 1",
+        "isAgent": false,
+        "motif": "Réparation usine",
+        "startDate": "2026-10-13",
+        "startSlot": "matin",
+        "endDate": "2026-11-13",
+        "endSlot": "matin",
+        "status": "pending",
+        "notes": "Booké par Tresor",
+        "updatedAt": "2026-10-12T13:24:14.947Z"
+      },
+      "after": {
+        "id": "9e124333-6abe-4983-91db-35d90dbc5d57",
+        "numero": "GH-2026-4463",
+        "createdAt": "2026-10-12T13:24:14.947Z",
+        "personName": "Chinois  Zhang DAI",
+        "isAgent": false,
+        "motif": "Réparation usine",
+        "startDate": "2026-10-13",
+        "startSlot": "matin",
+        "endDate": "2026-11-13",
+        "endSlot": "matin",
+        "status": "pending",
+        "notes": "Booké par Tresor",
+        "updatedAt": "2026-10-12T13:32:05.602Z"
+      },
+      "undoable": true,
+      "undone": false
+    },
+    {
       "id": "log-001546",
       "at": "2026-10-12T13:30:21.244Z",
       "userId": "admin",
@@ -156080,5 +156127,5 @@
       }
     }
   ],
-  "nextSeq": 1547
+  "nextSeq": 1548
 }
