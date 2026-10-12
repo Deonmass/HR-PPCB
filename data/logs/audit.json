@@ -1,6 +1,38 @@
 {
   "entries": [
     {
+      "id": "log-001548",
+      "at": "2026-10-12T13:33:06.810Z",
+      "userId": "admin",
+      "userName": "Administrateur",
+      "userEmail": "admin",
+      "module": "guest-house",
+      "moduleLabel": "Guest house",
+      "action": "create",
+      "actionLabel": "Création",
+      "entityType": "guest-house.reservation",
+      "entityId": "eabc742e-cc0f-4fa8-a389-2f400802a545",
+      "summary": "Création réservation Zhang Fang Jun",
+      "details": "Création réservation Zhang Fang Jun",
+      "after": {
+        "id": "eabc742e-cc0f-4fa8-a389-2f400802a545",
+        "numero": "GH-2026-4465",
+        "createdAt": "2026-10-12T13:33:04.024Z",
+        "personName": "Zhang Fang Jun",
+        "isAgent": false,
+        "motif": "Réparation usine",
+        "startDate": "2026-10-13",
+        "startSlot": "midi",
+        "endDate": "2026-11-13",
+        "endSlot": "matin",
+        "status": "pending",
+        "notes": "Booké par Trésor Maneka",
+        "updatedAt": "2026-10-12T13:33:04.024Z"
+      },
+      "undoable": true,
+      "undone": false
+    },
+    {
       "id": "log-001547",
       "at": "2026-10-12T13:32:07.991Z",
       "userId": "admin",
@@ -156127,5 +156159,5 @@
       }
     }
   ],
-  "nextSeq": 1548
+  "nextSeq": 1549
 }
