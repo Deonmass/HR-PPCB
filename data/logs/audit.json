@@ -1,6 +1,21 @@
 {
   "entries": [
     {
+      "id": "log-001486",
+      "at": "2026-10-12T09:15:08.039Z",
+      "userId": "gd.mwankana@capitalhrsolutions.net",
+      "userName": "Guy daniel",
+      "userEmail": "gd.mwankana@capitalhrsolutions.net",
+      "module": "contractants",
+      "moduleLabel": "contractants",
+      "action": "export",
+      "actionLabel": "Export",
+      "summary": "Export liste contractants (CONTRACTANTS_2026-10-12.xlsx)",
+      "details": "Fichier Excel exporté : CONTRACTANTS_2026-10-12.xlsx",
+      "undoable": false,
+      "undone": false
+    },
+    {
       "id": "log-001485",
       "at": "2026-10-12T09:14:19.909Z",
       "userId": "karine.mvutu@ppcdrc.cd",
@@ -150460,5 +150475,5 @@
       }
     }
   ],
-  "nextSeq": 1486
+  "nextSeq": 1487
 }
