@@ -1,6 +1,53 @@
 {
   "entries": [
     {
+      "id": "log-001535",
+      "at": "2026-10-12T13:01:13.539Z",
+      "userId": "admin",
+      "userName": "Administrateur",
+      "userEmail": "admin",
+      "module": "guest-house",
+      "moduleLabel": "Guest house",
+      "action": "update",
+      "actionLabel": "Modification",
+      "entityType": "guest-house.reservation",
+      "entityId": "a9031495-e071-4ff3-8399-50f9d4c22917",
+      "summary": "Statut réservation a9031495-e071-4ff3-8399-50f9d4c22917 → confirmed",
+      "details": "Statut réservation a9031495-e071-4ff3-8399-50f9d4c22917 → confirmed",
+      "before": {
+        "id": "a9031495-e071-4ff3-8399-50f9d4c22917",
+        "numero": "GH-2026-4458",
+        "createdAt": "2026-10-12T13:00:01.690Z",
+        "personName": "Clapton LUSALA",
+        "isAgent": false,
+        "motif": "Mission pour le département de l'Environement",
+        "startDate": "2026-10-07",
+        "startSlot": "midi",
+        "endDate": "2026-10-08",
+        "endSlot": "matin",
+        "roomId": "4e4bd694-e96e-4748-a98a-882d842f616e",
+        "status": "pending",
+        "updatedAt": "2026-10-12T13:00:01.690Z"
+      },
+      "after": {
+        "id": "a9031495-e071-4ff3-8399-50f9d4c22917",
+        "numero": "GH-2026-4458",
+        "createdAt": "2026-10-12T13:00:01.690Z",
+        "personName": "Clapton LUSALA",
+        "isAgent": false,
+        "motif": "Mission pour le département de l'Environement",
+        "startDate": "2026-10-07",
+        "startSlot": "midi",
+        "endDate": "2026-10-08",
+        "endSlot": "matin",
+        "roomId": "4e4bd694-e96e-4748-a98a-882d842f616e",
+        "status": "confirmed",
+        "updatedAt": "2026-10-12T13:01:11.060Z"
+      },
+      "undoable": true,
+      "undone": false
+    },
+    {
       "id": "log-001534",
       "at": "2026-10-12T13:00:55.867Z",
       "userId": "admin",
@@ -155599,5 +155646,5 @@
       }
     }
   ],
-  "nextSeq": 1535
+  "nextSeq": 1536
 }
