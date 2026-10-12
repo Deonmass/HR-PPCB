@@ -1,6 +1,48 @@
 {
   "entries": [
     {
+      "id": "log-001491",
+      "at": "2026-10-12T09:21:17.826Z",
+      "userId": "karine.mvutu@ppcdrc.cd",
+      "userName": "Karine Mvutu",
+      "userEmail": "karine.mvutu@ppcdrc.cd",
+      "module": "sante",
+      "moduleLabel": "Santé",
+      "action": "create",
+      "actionLabel": "Création",
+      "entityType": "sante.visit",
+      "entityId": "sante-mv51li6p-r1rmxv",
+      "summary": "Cas santé — MUBA KAYEMBE JEREMIE · GRIPPE",
+      "details": "Cas santé — MUBA KAYEMBE JEREMIE · GRIPPE",
+      "after": {
+        "id": "sante-mv51li6p-r1rmxv",
+        "date": "2026-10-04",
+        "nom": "MUBA",
+        "postnom": "KAYEMBE JEREMIE",
+        "sexe": "M",
+        "age": 36,
+        "typeMalade": "AGENT",
+        "pathologie": "GRIPPE",
+        "traitement": "ANTI  GRIPPALE ET GOUTTE NASALE",
+        "reference": "NON",
+        "year": 2026,
+        "month": 10,
+        "employeeMatricule": "70000030",
+        "employeeNom": "MUBA KAYEMBE JEREMIE",
+        "dependantId": null,
+        "commentaire": "",
+        "contractantId": "",
+        "contractantNom": "",
+        "contractantEmployeeId": "",
+        "createdAt": "2026-10-12T09:21:16.369Z",
+        "updatedAt": "2026-10-12T09:21:16.369Z",
+        "createdBy": "karine.mvutu@ppcdrc.cd",
+        "updatedBy": "karine.mvutu@ppcdrc.cd"
+      },
+      "undoable": false,
+      "undone": false
+    },
+    {
       "id": "log-001490",
       "at": "2026-10-12T09:20:23.891Z",
       "userId": "karine.mvutu@ppcdrc.cd",
@@ -150643,5 +150685,5 @@
       }
     }
   ],
-  "nextSeq": 1491
+  "nextSeq": 1492
 }
