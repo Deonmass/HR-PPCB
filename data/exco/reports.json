@@ -205,7 +205,8 @@
         "manualKpis": {
           "headcount": 175,
           "turnoverPct": 0,
-          "attritionPct": 0
+          "attritionPct": 0,
+          "leaveCost": 446454.85
         },
         "financeByMonth": {
           "9": {
@@ -214,7 +215,8 @@
             "revenuePerEmp": 0,
             "staffCostBudgetYtd": null,
             "volumeBudgetYtd": null,
-            "revenueBudgetYtd": null
+            "revenueBudgetYtd": null,
+            "leaveCost": 446454.85
           }
         },
         "staffCostYtdByMonth": {},
@@ -428,7 +430,7 @@
           "9": {
             "year": 2026,
             "month": 9,
-            "fxRateFcPerUsd": 2308,
+            "fxRateFcPerUsd": 2310.25,
             "employees": [
               {
                 "matricule": "70000088",
@@ -900,7 +902,7 @@
           "9": {
             "year": 2026,
             "month": 9,
-            "fxRateFcPerUsd": 2308,
+            "fxRateFcPerUsd": 2310.25,
             "plantAvgDays": 17.43,
             "hqAvgDays": 23.26,
             "lubudiAvgDays": 9.05,
@@ -910,8 +912,8 @@
               986656975.93,
               44765336.53
             ],
-            "leaveCostUsd": 446890.09,
-            "provisionUsd000": 446.89,
+            "leaveCostUsd": 446454.85,
+            "provisionUsd000": 446.45,
             "counts": {
               "plant": 104,
               "hq": 62,
@@ -3440,8 +3442,8 @@
         },
         "workbookSnapshot": null,
         "generationMeta": {
-          "fxRateFcPerUsd": 2308,
-          "generatedAt": "2026-10-12T07:34:28.992Z",
+          "fxRateFcPerUsd": 2310.25,
+          "generatedAt": "2026-10-12T12:26:04.339Z",
           "sourceFiles": [
             "New report.xlsx",
             "Component Posted Units_sept 26.xlsx",
@@ -3450,7 +3452,7 @@
           ]
         }
       },
-      "updatedAt": "2026-10-12T07:34:30.687Z",
+      "updatedAt": "2026-10-12T12:26:06.586Z",
       "updatedBy": "Administrateur"
     },
     {
