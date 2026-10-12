@@ -1,6 +1,38 @@
 {
   "entries": [
     {
+      "id": "log-001533",
+      "at": "2026-10-12T13:00:37.487Z",
+      "userId": "admin",
+      "userName": "Administrateur",
+      "userEmail": "admin",
+      "module": "guest-house",
+      "moduleLabel": "Guest house",
+      "action": "create",
+      "actionLabel": "Création",
+      "entityType": "guest-house.reservation",
+      "entityId": "ee86af33-bd99-4c14-95f1-e2537a5f03c3",
+      "summary": "Création réservation Olivier MAFOLO",
+      "details": "Création réservation Olivier MAFOLO",
+      "after": {
+        "id": "ee86af33-bd99-4c14-95f1-e2537a5f03c3",
+        "numero": "GH-2026-4459",
+        "createdAt": "2026-10-12T13:00:34.115Z",
+        "personName": "Olivier MAFOLO",
+        "isAgent": false,
+        "motif": "Mission pour le département de l'Environement",
+        "startDate": "2026-10-07",
+        "startSlot": "midi",
+        "endDate": "2026-10-08",
+        "endSlot": "matin",
+        "status": "pending",
+        "notes": "Booké par Léonardo",
+        "updatedAt": "2026-10-12T13:00:34.115Z"
+      },
+      "undoable": true,
+      "undone": false
+    },
+    {
       "id": "log-001532",
       "at": "2026-10-12T13:00:04.877Z",
       "userId": "admin",
@@ -155519,5 +155551,5 @@
       }
     }
   ],
-  "nextSeq": 1533
+  "nextSeq": 1534
 }
