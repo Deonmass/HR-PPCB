@@ -1,6 +1,48 @@
 {
   "entries": [
     {
+      "id": "log-001501",
+      "at": "2026-10-12T09:44:18.020Z",
+      "userId": "karine.mvutu@ppcdrc.cd",
+      "userName": "Karine Mvutu",
+      "userEmail": "karine.mvutu@ppcdrc.cd",
+      "module": "sante",
+      "moduleLabel": "Santé",
+      "action": "create",
+      "actionLabel": "Création",
+      "entityType": "sante.visit",
+      "entityId": "sante-mv52f3o7-tu92lq",
+      "summary": "Cas santé — TULENGI KASIAMA REAGAN · LOMBARTHRITE",
+      "details": "Cas santé — TULENGI KASIAMA REAGAN · LOMBARTHRITE",
+      "after": {
+        "id": "sante-mv52f3o7-tu92lq",
+        "date": "2026-10-06",
+        "nom": "TULENGI",
+        "postnom": "KASIAMA REAGAN",
+        "sexe": "M",
+        "age": 41,
+        "typeMalade": "AGENT",
+        "pathologie": "LOMBARTHRITE",
+        "traitement": "ANTI INFLAMMATOIRE",
+        "reference": "NON",
+        "year": 2026,
+        "month": 10,
+        "employeeMatricule": "",
+        "employeeNom": "",
+        "dependantId": null,
+        "commentaire": "",
+        "contractantId": "",
+        "contractantNom": "",
+        "contractantEmployeeId": "",
+        "createdAt": "2026-10-12T09:44:17.239Z",
+        "updatedAt": "2026-10-12T09:44:17.239Z",
+        "createdBy": "karine.mvutu@ppcdrc.cd",
+        "updatedBy": "karine.mvutu@ppcdrc.cd"
+      },
+      "undoable": false,
+      "undone": false
+    },
+    {
       "id": "log-001500",
       "at": "2026-10-12T09:43:14.886Z",
       "userId": "karine.mvutu@ppcdrc.cd",
@@ -151036,5 +151078,5 @@
       }
     }
   ],
-  "nextSeq": 1501
+  "nextSeq": 1502
 }
