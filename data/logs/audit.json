@@ -1,6 +1,48 @@
 {
   "entries": [
     {
+      "id": "log-001496",
+      "at": "2026-10-12T09:28:45.318Z",
+      "userId": "karine.mvutu@ppcdrc.cd",
+      "userName": "Karine Mvutu",
+      "userEmail": "karine.mvutu@ppcdrc.cd",
+      "module": "sante",
+      "moduleLabel": "Santé",
+      "action": "create",
+      "actionLabel": "Création",
+      "entityType": "sante.visit",
+      "entityId": "sante-mv51v3fe-rfg5xh",
+      "summary": "Cas santé — BAYISA BRYAN · GRIPPE",
+      "details": "Cas santé — BAYISA BRYAN · GRIPPE",
+      "after": {
+        "id": "sante-mv51v3fe-rfg5xh",
+        "date": "2026-10-05",
+        "nom": "BAYISA",
+        "postnom": "BRYAN",
+        "sexe": "M",
+        "age": 1,
+        "typeMalade": "ENFANT",
+        "pathologie": "GRIPPE",
+        "traitement": "ANTI  GRIPPALE ET GOUTTE NASALE",
+        "reference": "NON",
+        "year": 2026,
+        "month": 10,
+        "employeeMatricule": "",
+        "employeeNom": "",
+        "dependantId": null,
+        "commentaire": "",
+        "contractantId": "",
+        "contractantNom": "",
+        "contractantEmployeeId": "",
+        "createdAt": "2026-10-12T09:28:43.802Z",
+        "updatedAt": "2026-10-12T09:28:43.802Z",
+        "createdBy": "karine.mvutu@ppcdrc.cd",
+        "updatedBy": "karine.mvutu@ppcdrc.cd"
+      },
+      "undoable": false,
+      "undone": false
+    },
+    {
       "id": "log-001495",
       "at": "2026-10-12T09:27:41.789Z",
       "userId": "karine.mvutu@ppcdrc.cd",
@@ -150853,5 +150895,5 @@
       }
     }
   ],
-  "nextSeq": 1496
+  "nextSeq": 1497
 }
