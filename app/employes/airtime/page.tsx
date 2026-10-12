@@ -162,6 +162,31 @@ export default function AirtimePage() {
   const [directoryError, setDirectoryError] = useState('');
   const [menu, setMenu] = useState<{ x: number; y: number; row: AirtimeAssignment } | null>(null);
   const [saving, setSaving] = useState(false);
+  const [exporting, setExporting] = useState(false);
+
+  async function exportExcel() {
+    setExporting(true);
+    setError('');
+    try {
+      const response = await fetch('/api/employes/airtime/export');
+      if (!response.ok) {
+        const data = await response.json().catch(() => ({}));
+        throw new Error(data.error || 'Export impossible');
+      }
+      const blob = await response.blob();
+      const url = URL.createObjectURL(blob);
+      const link = document.createElement('a');
+      link.href = url;
+      const stamp = new Date().toISOString().slice(0, 10);
+      link.download = `Airtime_PPC_Contractants_${stamp}.xlsx`;
+      link.click();
+      URL.revokeObjectURL(url);
+    } catch (err) {
+      setError(err instanceof Error ? err.message : 'Export impossible');
+    } finally {
+      setExporting(false);
+    }
+  }
 
   async function load() {
     setLoading(true);
@@ -500,6 +525,9 @@ export default function AirtimePage() {
             <button type="button" className="btn btn-secondary airtime-grille-btn" onClick={() => setGrilleOpen(true)} title="Voir la grille airtime">
               <IconInfo />
               Grille Airtime
+            </button>
+            <button type="button" className="btn btn-outline btn-export btn-sm" onClick={() => void exportExcel()} disabled={exporting}>
+              {exporting ? 'Export…' : 'Export Excel'}
             </button>
             <RefreshButton onClick={() => void load()} loading={loading} />
           </div>

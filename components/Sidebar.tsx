@@ -173,8 +173,7 @@ const NAV: NavSection[] = [
     items: [
       { href: '/employes', label: 'Employé', icon: 'users', menuId: 'employes.liste', excludePrefixes: ['/employes/dependants', '/employes/offres', '/employes/mouvements', '/employes/postes', '/employes/classification', '/employes/contractants', '/employes/recrutement', '/employes/conge', '/employes/airtime'] },
       { href: '/employes/dependants', label: 'Dependants', icon: 'users', menuId: 'employes.dependants' },
-      { href: '/employes/contractants', label: 'Contractants', icon: 'users', menuId: 'employes.contractants', excludePrefixes: ['/employes/contractants/paie'] },
-      { href: '/employes/contractants/paie', label: 'Paie contractants', icon: 'docs', menuId: 'employes.contractants', activePrefixes: ['/employes/contractants/paie'] },
+      { href: '/employes/contractants', label: 'Contractants', icon: 'users', menuId: 'employes.contractants' },
       { href: '/check-documents', label: 'Check documents', icon: 'docs', menuId: 'employes.check-documents' },
       { href: '/heures-supplementaires', label: 'Heures supplémentaires', icon: 'clock', menuIds: ['employes.heures', 'employes.heures.dept', 'employes.heures.all'] },
       { href: '/employes/conge', label: 'Congé', icon: 'clock', menuId: 'employes.conge' },
