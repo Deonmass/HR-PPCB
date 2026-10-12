@@ -1,6 +1,48 @@
 {
   "entries": [
     {
+      "id": "log-001488",
+      "at": "2026-10-12T09:18:13.714Z",
+      "userId": "karine.mvutu@ppcdrc.cd",
+      "userName": "Karine Mvutu",
+      "userEmail": "karine.mvutu@ppcdrc.cd",
+      "module": "sante",
+      "moduleLabel": "Santé",
+      "action": "create",
+      "actionLabel": "Création",
+      "entityType": "sante.visit",
+      "entityId": "sante-mv51hk12-joek4y",
+      "summary": "Cas santé — NSIMBA  MENAYAME · ANEMIE/SAIGNEMENT POST PARTUM",
+      "details": "Cas santé — NSIMBA  MENAYAME · ANEMIE/SAIGNEMENT POST PARTUM",
+      "after": {
+        "id": "sante-mv51hk12-joek4y",
+        "date": "2026-10-04",
+        "nom": "NSIMBA",
+        "postnom": "MENAYAME",
+        "sexe": "F",
+        "age": 23,
+        "typeMalade": "CAS SOCIAL",
+        "pathologie": "ANEMIE/SAIGNEMENT POST PARTUM",
+        "traitement": "SERUM PHYSIOLOGIQUE",
+        "reference": "IME",
+        "year": 2026,
+        "month": 10,
+        "employeeMatricule": "",
+        "employeeNom": "",
+        "dependantId": null,
+        "commentaire": "",
+        "contractantId": "",
+        "contractantNom": "",
+        "contractantEmployeeId": "",
+        "createdAt": "2026-10-12T09:18:12.134Z",
+        "updatedAt": "2026-10-12T09:18:12.134Z",
+        "createdBy": "karine.mvutu@ppcdrc.cd",
+        "updatedBy": "karine.mvutu@ppcdrc.cd"
+      },
+      "undoable": false,
+      "undone": false
+    },
+    {
       "id": "log-001487",
       "at": "2026-10-12T09:15:58.025Z",
       "userId": "karine.mvutu@ppcdrc.cd",
@@ -150517,5 +150559,5 @@
       }
     }
   ],
-  "nextSeq": 1488
+  "nextSeq": 1489
 }
