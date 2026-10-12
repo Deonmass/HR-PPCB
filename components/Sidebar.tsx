@@ -171,7 +171,8 @@ const NAV: NavSection[] = [
     icon: 'users',
     color: '#e30613',
     items: [
-      { href: '/employes', label: 'Employé', icon: 'users', menuId: 'employes.liste', excludePrefixes: ['/employes/dependants', '/employes/offres', '/employes/mouvements', '/employes/postes', '/employes/classification', '/employes/contractants', '/employes/recrutement', '/employes/conge', '/employes/airtime'] },
+      { href: '/employes', label: 'Employé', icon: 'users', menuId: 'employes.liste', excludePrefixes: ['/employes/dependants', '/employes/offres', '/employes/mouvements', '/employes/postes', '/employes/classification', '/employes/contractants', '/employes/recrutement', '/employes/conge', '/employes/airtime', '/employes/discipline'] },
+      { href: '/employes/discipline', label: 'Cas disciplinaires', icon: 'docs', menuId: 'employes.discipline' },
       { href: '/employes/dependants', label: 'Dependants', icon: 'users', menuId: 'employes.dependants' },
       { href: '/employes/contractants', label: 'Contractants', icon: 'users', menuId: 'employes.contractants' },
       { href: '/check-documents', label: 'Check documents', icon: 'docs', menuId: 'employes.check-documents' },

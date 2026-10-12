@@ -105,6 +105,7 @@ export const AUDIT_MODULE_LABELS: Record<string, string> = {
   dependants: 'Dépendants',
   'employes.conge': 'Congé',
   'employes.airtime': 'Airtime',
+  'employes.discipline': 'Cas disciplinaires',
   'guest-house': 'Guest house',
   'factures-suivi': 'Factures suivi',
   fournisseurs: 'Fournisseurs',

@@ -111,6 +111,7 @@ export function PermissionProvider({ children }: { children: ReactNode }) {
       '/check-documents',
       '/heures-supplementaires',
       '/employes/conge',
+      '/employes/discipline',
       '/project/dashboard',
       '/project/csr',
       '/project/cahier-de-charges',
