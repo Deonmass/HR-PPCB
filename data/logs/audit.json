@@ -1,6 +1,48 @@
 {
   "entries": [
     {
+      "id": "log-001490",
+      "at": "2026-10-12T09:20:23.891Z",
+      "userId": "karine.mvutu@ppcdrc.cd",
+      "userName": "Karine Mvutu",
+      "userEmail": "karine.mvutu@ppcdrc.cd",
+      "module": "sante",
+      "moduleLabel": "Santé",
+      "action": "create",
+      "actionLabel": "Création",
+      "entityType": "sante.visit",
+      "entityId": "sante-mv51kcev-9ex8sp",
+      "summary": "Cas santé — TENDU SAPU · TOUX",
+      "details": "Cas santé — TENDU SAPU · TOUX",
+      "after": {
+        "id": "sante-mv51kcev-9ex8sp",
+        "date": "2026-10-04",
+        "nom": "TENDU",
+        "postnom": "SAPU",
+        "sexe": "F",
+        "age": 13,
+        "typeMalade": "CAS SOCIAL",
+        "pathologie": "TOUX",
+        "traitement": "PROMETHAZINE",
+        "reference": "NON",
+        "year": 2026,
+        "month": 10,
+        "employeeMatricule": "",
+        "employeeNom": "",
+        "dependantId": null,
+        "commentaire": "",
+        "contractantId": "",
+        "contractantNom": "",
+        "contractantEmployeeId": "",
+        "createdAt": "2026-10-12T09:20:22.231Z",
+        "updatedAt": "2026-10-12T09:20:22.231Z",
+        "createdBy": "karine.mvutu@ppcdrc.cd",
+        "updatedBy": "karine.mvutu@ppcdrc.cd"
+      },
+      "undoable": false,
+      "undone": false
+    },
+    {
       "id": "log-001489",
       "at": "2026-10-12T09:19:32.944Z",
       "userId": "karine.mvutu@ppcdrc.cd",
@@ -150601,5 +150643,5 @@
       }
     }
   ],
-  "nextSeq": 1490
+  "nextSeq": 1491
 }
