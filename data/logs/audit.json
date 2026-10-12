@@ -1,6 +1,38 @@
 {
   "entries": [
     {
+      "id": "log-001510",
+      "at": "2026-10-12T12:45:47.687Z",
+      "userId": "admin",
+      "userName": "Administrateur",
+      "userEmail": "admin",
+      "module": "guest-house",
+      "moduleLabel": "Guest house",
+      "action": "create",
+      "actionLabel": "Création",
+      "entityType": "guest-house.reservation",
+      "entityId": "d1d51159-1044-4fe3-9d91-8b3f08cbc720",
+      "summary": "Création réservation Joseph Masuwa",
+      "details": "Création réservation Joseph Masuwa",
+      "after": {
+        "id": "d1d51159-1044-4fe3-9d91-8b3f08cbc720",
+        "numero": "GH-2026-4453",
+        "createdAt": "2026-10-12T12:45:44.075Z",
+        "personName": "Joseph Masuwa",
+        "isAgent": false,
+        "motif": "TBA",
+        "startDate": "2026-10-09",
+        "startSlot": "soir",
+        "endDate": "2026-10-12",
+        "endSlot": "matin",
+        "roomId": "12ee1ff4-eb03-4592-b1da-589006209e77",
+        "status": "pending",
+        "updatedAt": "2026-10-12T12:45:44.075Z"
+      },
+      "undoable": true,
+      "undone": false
+    },
+    {
       "id": "log-001509",
       "at": "2026-10-12T12:44:54.777Z",
       "userId": "admin",
@@ -154541,5 +154573,5 @@
       }
     }
   ],
-  "nextSeq": 1510
+  "nextSeq": 1511
 }
