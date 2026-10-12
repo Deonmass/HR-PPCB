@@ -9443,6 +9443,18 @@
           }
         },
         {
+          "menuId": "charroi.voyages",
+          "label": "Voyage par route",
+          "actions": {
+            "view": false,
+            "create": false,
+            "edit": false,
+            "delete": false,
+            "export": false,
+            "undo": false
+          }
+        },
+        {
           "menuId": "documents.attestation-conge",
           "label": "Attestation de congé",
           "actions": {
@@ -9647,6 +9659,18 @@
           }
         },
         {
+          "menuId": "documents.reponse-demission",
+          "label": "Réponse démission",
+          "actions": {
+            "view": false,
+            "create": false,
+            "edit": false,
+            "delete": false,
+            "export": false,
+            "undo": false
+          }
+        },
+        {
           "menuId": "documents.rrf",
           "label": "RRF",
           "actions": {
@@ -9661,6 +9685,18 @@
         {
           "menuId": "travel.historique",
           "label": "Voyage",
+          "actions": {
+            "view": false,
+            "create": false,
+            "edit": false,
+            "delete": false,
+            "export": false,
+            "undo": false
+          }
+        },
+        {
+          "menuId": "employes.airtime",
+          "label": "Airtime",
           "actions": {
             "view": false,
             "create": false,
@@ -9720,7 +9756,14 @@
           "contractantScope": {
             "contractantIds": [
               "2"
-            ]
+            ],
+            "menus": {
+              "dashboard": true,
+              "employes": true,
+              "exit": true,
+              "discipline": true,
+              "planning": false
+            }
           }
         },
         {
@@ -10144,6 +10187,18 @@
           }
         },
         {
+          "menuId": "politique.cellphone",
+          "label": "Politique cellphone",
+          "actions": {
+            "view": false,
+            "create": false,
+            "edit": false,
+            "delete": false,
+            "export": false,
+            "undo": false
+          }
+        },
+        {
           "menuId": "politique.voyages",
           "label": "Politique de voyage",
           "actions": {
@@ -10218,6 +10273,18 @@
         {
           "menuId": "project.projects",
           "label": "Projects",
+          "actions": {
+            "view": false,
+            "create": false,
+            "edit": false,
+            "delete": false,
+            "export": false,
+            "undo": false
+          }
+        },
+        {
+          "menuId": "protocol.voyages",
+          "label": "Gestion de voyage",
           "actions": {
             "view": false,
             "create": false,
