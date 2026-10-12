@@ -511,7 +511,7 @@
       "voyageur": "Pablito",
       "voyageurMatricule": "",
       "destination": "Zamba Kinshasa Philippe",
-      "ticketAvion": 0,
+      "ticketAvion": 2998,
       "visaVolant": 350,
       "lettreLegaliser": 0,
       "goPass": 55,
@@ -521,9 +521,9 @@
       "coutHotel": 192,
       "categorieHotel": "Stadard",
       "appartement": 0,
-      "coutTotal": 647,
+      "coutTotal": 3645,
       "createdAt": "2026-10-12T08:15:47.861Z",
-      "updatedAt": "2026-10-12T08:15:47.861Z"
+      "updatedAt": "2026-10-12T08:18:49.051Z"
     }
   ],
   "nextSeq": 28
