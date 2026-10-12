@@ -1,6 +1,38 @@
 {
   "entries": [
     {
+      "id": "log-001532",
+      "at": "2026-10-12T13:00:04.877Z",
+      "userId": "admin",
+      "userName": "Administrateur",
+      "userEmail": "admin",
+      "module": "guest-house",
+      "moduleLabel": "Guest house",
+      "action": "create",
+      "actionLabel": "Création",
+      "entityType": "guest-house.reservation",
+      "entityId": "a9031495-e071-4ff3-8399-50f9d4c22917",
+      "summary": "Création réservation Clapton LUSALA",
+      "details": "Création réservation Clapton LUSALA",
+      "after": {
+        "id": "a9031495-e071-4ff3-8399-50f9d4c22917",
+        "numero": "GH-2026-4458",
+        "createdAt": "2026-10-12T13:00:01.690Z",
+        "personName": "Clapton LUSALA",
+        "isAgent": false,
+        "motif": "Mission pour le département de l'Environement",
+        "startDate": "2026-10-07",
+        "startSlot": "midi",
+        "endDate": "2026-10-08",
+        "endSlot": "matin",
+        "roomId": "4e4bd694-e96e-4748-a98a-882d842f616e",
+        "status": "pending",
+        "updatedAt": "2026-10-12T13:00:01.690Z"
+      },
+      "undoable": true,
+      "undone": false
+    },
+    {
       "id": "log-001531",
       "at": "2026-10-12T12:58:28.187Z",
       "userId": "admin",
@@ -155487,5 +155519,5 @@
       }
     }
   ],
-  "nextSeq": 1532
+  "nextSeq": 1533
 }
