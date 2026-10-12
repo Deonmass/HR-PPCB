@@ -1,6 +1,37 @@
 {
   "entries": [
     {
+      "id": "log-001518",
+      "at": "2026-10-12T12:50:08.323Z",
+      "userId": "admin",
+      "userName": "Administrateur",
+      "userEmail": "admin",
+      "module": "guest-house",
+      "moduleLabel": "Guest house",
+      "action": "create",
+      "actionLabel": "Création",
+      "entityType": "guest-house.reservation",
+      "entityId": "9019d2b9-0525-47c1-9bbd-7944cc66e5d1",
+      "summary": "Création réservation Yves société SAKIEMA",
+      "details": "Création réservation Yves société SAKIEMA",
+      "after": {
+        "id": "9019d2b9-0525-47c1-9bbd-7944cc66e5d1",
+        "numero": "GH-2026-4454",
+        "createdAt": "2026-10-12T12:50:05.007Z",
+        "personName": "Yves société SAKIEMA",
+        "isAgent": false,
+        "motif": "TBA",
+        "startDate": "2026-10-11",
+        "startSlot": "soir",
+        "endDate": "2026-10-14",
+        "endSlot": "matin",
+        "status": "pending",
+        "updatedAt": "2026-10-12T12:50:05.007Z"
+      },
+      "undoable": true,
+      "undone": false
+    },
+    {
       "id": "log-001517",
       "at": "2026-10-12T12:49:07.379Z",
       "userId": "admin",
@@ -154900,5 +154931,5 @@
       }
     }
   ],
-  "nextSeq": 1518
+  "nextSeq": 1519
 }
