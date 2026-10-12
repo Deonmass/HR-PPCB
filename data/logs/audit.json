@@ -1,6 +1,38 @@
 {
   "entries": [
     {
+      "id": "log-001528",
+      "at": "2026-10-12T12:57:14.365Z",
+      "userId": "admin",
+      "userName": "Administrateur",
+      "userEmail": "admin",
+      "module": "guest-house",
+      "moduleLabel": "Guest house",
+      "action": "create",
+      "actionLabel": "Création",
+      "entityType": "guest-house.reservation",
+      "entityId": "a0c8477f-1ccc-48bb-9546-2b13f037bb23",
+      "summary": "Création réservation AFRIDEX agent (dame)",
+      "details": "Création réservation AFRIDEX agent (dame)",
+      "after": {
+        "id": "a0c8477f-1ccc-48bb-9546-2b13f037bb23",
+        "numero": "GH-2026-4456",
+        "createdAt": "2026-10-12T12:57:09.019Z",
+        "personName": "AFRIDEX agent (dame)",
+        "isAgent": false,
+        "motif": "Blasting",
+        "startDate": "2026-10-06",
+        "startSlot": "midi",
+        "endDate": "2026-10-08",
+        "endSlot": "matin",
+        "status": "pending",
+        "notes": "Avec Giscard",
+        "updatedAt": "2026-10-12T12:57:09.019Z"
+      },
+      "undoable": true,
+      "undone": false
+    },
+    {
       "id": "log-001527",
       "at": "2026-10-12T12:54:31.711Z",
       "userId": "admin",
@@ -155330,5 +155362,5 @@
       }
     }
   ],
-  "nextSeq": 1528
+  "nextSeq": 1529
 }
