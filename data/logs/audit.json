@@ -1,6 +1,52 @@
 {
   "entries": [
     {
+      "id": "log-001521",
+      "at": "2026-10-12T12:51:44.965Z",
+      "userId": "admin",
+      "userName": "Administrateur",
+      "userEmail": "admin",
+      "module": "guest-house",
+      "moduleLabel": "Guest house",
+      "action": "update",
+      "actionLabel": "Modification",
+      "entityType": "guest-house.reservation",
+      "entityId": "298c4028-65bf-48f8-a6f3-e3bef328fb79",
+      "summary": "Statut réservation 298c4028-65bf-48f8-a6f3-e3bef328fb79 → confirmed",
+      "details": "Statut réservation 298c4028-65bf-48f8-a6f3-e3bef328fb79 → confirmed",
+      "before": {
+        "id": "298c4028-65bf-48f8-a6f3-e3bef328fb79",
+        "numero": "GH-2026-4455",
+        "createdAt": "2026-10-12T12:51:22.005Z",
+        "personName": "Chauffeur de Yves SAKIEMA",
+        "isAgent": false,
+        "motif": "TBA",
+        "startDate": "2026-10-11",
+        "startSlot": "soir",
+        "endDate": "2026-10-14",
+        "endSlot": "matin",
+        "status": "pending",
+        "updatedAt": "2026-10-12T12:51:22.005Z"
+      },
+      "after": {
+        "id": "298c4028-65bf-48f8-a6f3-e3bef328fb79",
+        "numero": "GH-2026-4455",
+        "createdAt": "2026-10-12T12:51:22.005Z",
+        "personName": "Chauffeur de Yves SAKIEMA",
+        "isAgent": false,
+        "motif": "TBA",
+        "startDate": "2026-10-11",
+        "startSlot": "soir",
+        "endDate": "2026-10-14",
+        "endSlot": "matin",
+        "roomId": "d9ec3499-ad6d-4215-8ef9-c20a4f6b1714",
+        "status": "confirmed",
+        "updatedAt": "2026-10-12T12:51:41.863Z"
+      },
+      "undoable": true,
+      "undone": false
+    },
+    {
       "id": "log-001520",
       "at": "2026-10-12T12:51:26.643Z",
       "userId": "admin",
@@ -155008,5 +155054,5 @@
       }
     }
   ],
-  "nextSeq": 1521
+  "nextSeq": 1522
 }
