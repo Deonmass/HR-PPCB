@@ -1,6 +1,48 @@
 {
   "entries": [
     {
+      "id": "log-001484",
+      "at": "2026-10-12T09:13:10.759Z",
+      "userId": "karine.mvutu@ppcdrc.cd",
+      "userName": "Karine Mvutu",
+      "userEmail": "karine.mvutu@ppcdrc.cd",
+      "module": "sante",
+      "moduleLabel": "Santé",
+      "action": "create",
+      "actionLabel": "Création",
+      "entityType": "sante.visit",
+      "entityId": "sante-mv51b2tp-zcguta",
+      "summary": "Cas santé — KABOYA CHANCEL · PALUDISME SIMPLE",
+      "details": "Cas santé — KABOYA CHANCEL · PALUDISME SIMPLE",
+      "after": {
+        "id": "sante-mv51b2tp-zcguta",
+        "date": "2026-10-01",
+        "nom": "KABOYA",
+        "postnom": "CHANCEL",
+        "sexe": "F",
+        "age": 46,
+        "typeMalade": "CONTRACTANT",
+        "pathologie": "PALUDISME SIMPLE",
+        "traitement": "ANTI PALUDEEN  ET ANTI PYRETIQUE",
+        "reference": "NON",
+        "year": 2026,
+        "month": 10,
+        "employeeMatricule": "",
+        "employeeNom": "",
+        "dependantId": null,
+        "commentaire": "",
+        "contractantId": "4",
+        "contractantNom": "Kikotech",
+        "contractantEmployeeId": "",
+        "createdAt": "2026-10-12T09:13:09.901Z",
+        "updatedAt": "2026-10-12T09:13:09.901Z",
+        "createdBy": "karine.mvutu@ppcdrc.cd",
+        "updatedBy": "karine.mvutu@ppcdrc.cd"
+      },
+      "undoable": false,
+      "undone": false
+    },
+    {
       "id": "log-001483",
       "at": "2026-10-12T09:11:56.520Z",
       "userId": "gd.mwankana@capitalhrsolutions.net",
@@ -150376,5 +150418,5 @@
       }
     }
   ],
-  "nextSeq": 1484
+  "nextSeq": 1485
 }
