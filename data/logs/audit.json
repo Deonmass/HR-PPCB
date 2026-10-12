@@ -1,6 +1,21 @@
 {
   "entries": [
     {
+      "id": "log-001499",
+      "at": "2026-10-12T09:35:50.142Z",
+      "userId": "admin",
+      "userName": "Administrateur",
+      "userEmail": "admin",
+      "module": "exco",
+      "moduleLabel": "exco",
+      "action": "export",
+      "actionLabel": "Export",
+      "summary": "Export Excel EXCO EXCO_HR_REPORT_Sep-26.xlsx",
+      "details": "Export Excel EXCO EXCO_HR_REPORT_Sep-26.xlsx",
+      "undoable": false,
+      "undone": false
+    },
+    {
       "id": "log-001498",
       "at": "2026-10-12T09:33:28.228Z",
       "userId": "karine.mvutu@ppcdrc.cd",
@@ -150979,5 +150994,5 @@
       }
     }
   ],
-  "nextSeq": 1499
+  "nextSeq": 1500
 }
