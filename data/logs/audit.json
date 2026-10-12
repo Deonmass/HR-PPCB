@@ -1,6 +1,37 @@
 {
   "entries": [
     {
+      "id": "log-001544",
+      "at": "2026-10-12T13:28:05.103Z",
+      "userId": "admin",
+      "userName": "Administrateur",
+      "userEmail": "admin",
+      "module": "guest-house",
+      "moduleLabel": "Guest house",
+      "action": "create",
+      "actionLabel": "Création",
+      "entityType": "guest-house.reservation",
+      "entityId": "c6f09cd8-a620-482f-96c0-3e2d58b53692",
+      "summary": "Création réservation JP driver",
+      "details": "Création réservation JP driver",
+      "after": {
+        "id": "c6f09cd8-a620-482f-96c0-3e2d58b53692",
+        "numero": "GH-2026-4464",
+        "createdAt": "2026-10-12T13:28:02.504Z",
+        "personName": "JP driver",
+        "isAgent": false,
+        "motif": "Accompagnement Hamadou",
+        "startDate": "2026-10-11",
+        "startSlot": "midi",
+        "endDate": "2026-10-14",
+        "endSlot": "matin",
+        "status": "pending",
+        "updatedAt": "2026-10-12T13:28:02.504Z"
+      },
+      "undoable": true,
+      "undone": false
+    },
+    {
       "id": "log-001543",
       "at": "2026-10-12T13:24:18.380Z",
       "userId": "admin",
@@ -155956,5 +155987,5 @@
       }
     }
   ],
-  "nextSeq": 1544
+  "nextSeq": 1545
 }
