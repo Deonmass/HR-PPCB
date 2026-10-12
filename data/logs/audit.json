@@ -1,6 +1,48 @@
 {
   "entries": [
     {
+      "id": "log-001500",
+      "at": "2026-10-12T09:43:14.886Z",
+      "userId": "karine.mvutu@ppcdrc.cd",
+      "userName": "Karine Mvutu",
+      "userEmail": "karine.mvutu@ppcdrc.cd",
+      "module": "sante",
+      "moduleLabel": "Santé",
+      "action": "create",
+      "actionLabel": "Création",
+      "entityType": "sante.visit",
+      "entityId": "sante-mv52dqck-vq1a7p",
+      "summary": "Cas santé — MUANAFIOTI EYAYI · ANGINE",
+      "details": "Cas santé — MUANAFIOTI EYAYI · ANGINE",
+      "after": {
+        "id": "sante-mv52dqck-vq1a7p",
+        "date": "2026-10-06",
+        "nom": "MUANAFIOTI",
+        "postnom": "EYAYI",
+        "sexe": "F",
+        "age": 26,
+        "typeMalade": "CONTRACTANT",
+        "pathologie": "ANGINE",
+        "traitement": "VITAMINE C",
+        "reference": "NON",
+        "year": 2026,
+        "month": 10,
+        "employeeMatricule": "",
+        "employeeNom": "",
+        "dependantId": null,
+        "commentaire": "",
+        "contractantId": "2",
+        "contractantNom": "Capital HR",
+        "contractantEmployeeId": "",
+        "createdAt": "2026-10-12T09:43:13.316Z",
+        "updatedAt": "2026-10-12T09:43:13.316Z",
+        "createdBy": "karine.mvutu@ppcdrc.cd",
+        "updatedBy": "karine.mvutu@ppcdrc.cd"
+      },
+      "undoable": false,
+      "undone": false
+    },
+    {
       "id": "log-001499",
       "at": "2026-10-12T09:35:50.142Z",
       "userId": "admin",
@@ -150994,5 +151036,5 @@
       }
     }
   ],
-  "nextSeq": 1500
+  "nextSeq": 1501
 }
