@@ -1,6 +1,53 @@
 {
   "entries": [
     {
+      "id": "log-001542",
+      "at": "2026-10-12T13:16:57.275Z",
+      "userId": "admin",
+      "userName": "Administrateur",
+      "userEmail": "admin",
+      "module": "guest-house",
+      "moduleLabel": "Guest house",
+      "action": "update",
+      "actionLabel": "Modification",
+      "entityType": "guest-house.reservation",
+      "entityId": "18e4919c-82b1-442a-be61-ed8caef1df99",
+      "summary": "Modification réservation 18e4919c-82b1-442a-be61-ed8caef1df99",
+      "details": "Modification réservation 18e4919c-82b1-442a-be61-ed8caef1df99",
+      "before": {
+        "id": "18e4919c-82b1-442a-be61-ed8caef1df99",
+        "numero": "GH-2026-4451",
+        "createdAt": "2026-10-12T12:43:17.267Z",
+        "personName": "Hamadou",
+        "isAgent": false,
+        "motif": "TBA",
+        "startDate": "2026-10-11",
+        "startSlot": "midi",
+        "endDate": "2026-10-14",
+        "endSlot": "matin",
+        "roomId": "3219d898-ff74-496c-a62e-2295012276ae",
+        "status": "confirmed",
+        "updatedAt": "2026-10-12T12:49:04.541Z"
+      },
+      "after": {
+        "id": "18e4919c-82b1-442a-be61-ed8caef1df99",
+        "numero": "GH-2026-4451",
+        "createdAt": "2026-10-12T12:43:17.267Z",
+        "personName": "Hamadou",
+        "isAgent": false,
+        "motif": "TBA",
+        "startDate": "2026-10-11",
+        "startSlot": "midi",
+        "endDate": "2026-11-11",
+        "endSlot": "matin",
+        "roomId": "3219d898-ff74-496c-a62e-2295012276ae",
+        "status": "confirmed",
+        "updatedAt": "2026-10-12T13:16:54.089Z"
+      },
+      "undoable": true,
+      "undone": false
+    },
+    {
       "id": "log-001541",
       "at": "2026-10-12T13:06:26.382Z",
       "userId": "admin",
@@ -155877,5 +155924,5 @@
       }
     }
   ],
-  "nextSeq": 1542
+  "nextSeq": 1543
 }
