@@ -1,6 +1,38 @@
 {
   "entries": [
     {
+      "id": "log-001549",
+      "at": "2026-10-12T13:34:34.467Z",
+      "userId": "admin",
+      "userName": "Administrateur",
+      "userEmail": "admin",
+      "module": "guest-house",
+      "moduleLabel": "Guest house",
+      "action": "create",
+      "actionLabel": "Création",
+      "entityType": "guest-house.reservation",
+      "entityId": "9ef1eac7-25e7-45d3-8816-68d1f1e619af",
+      "summary": "Création réservation Liu HUAZHONG",
+      "details": "Création réservation Liu HUAZHONG",
+      "after": {
+        "id": "9ef1eac7-25e7-45d3-8816-68d1f1e619af",
+        "numero": "GH-2026-4466",
+        "createdAt": "2026-10-12T13:34:31.975Z",
+        "personName": "Liu HUAZHONG",
+        "isAgent": false,
+        "motif": "Réparation usine",
+        "startDate": "2026-10-13",
+        "startSlot": "midi",
+        "endDate": "2026-11-13",
+        "endSlot": "matin",
+        "status": "pending",
+        "notes": "Booké par Trésor Maneka",
+        "updatedAt": "2026-10-12T13:34:31.975Z"
+      },
+      "undoable": true,
+      "undone": false
+    },
+    {
       "id": "log-001548",
       "at": "2026-10-12T13:33:06.810Z",
       "userId": "admin",
@@ -156159,5 +156191,5 @@
       }
     }
   ],
-  "nextSeq": 1549
+  "nextSeq": 1550
 }
