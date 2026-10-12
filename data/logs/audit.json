@@ -1,6 +1,53 @@
 {
   "entries": [
     {
+      "id": "log-001526",
+      "at": "2026-10-12T12:54:15.820Z",
+      "userId": "admin",
+      "userName": "Administrateur",
+      "userEmail": "admin",
+      "module": "guest-house",
+      "moduleLabel": "Guest house",
+      "action": "update",
+      "actionLabel": "Modification",
+      "entityType": "guest-house.reservation",
+      "entityId": "a9925427-b01f-4c44-a80e-acf8d4e46aab",
+      "summary": "Modification réservation a9925427-b01f-4c44-a80e-acf8d4e46aab",
+      "details": "Modification réservation a9925427-b01f-4c44-a80e-acf8d4e46aab",
+      "before": {
+        "id": "a9925427-b01f-4c44-a80e-acf8d4e46aab",
+        "numero": "GH-2026-4436",
+        "createdAt": "2026-09-23T07:14:10.604Z",
+        "personName": "MPUNGA BUKASA JONATHAN",
+        "isAgent": false,
+        "motif": "Topographe",
+        "startDate": "2026-09-22",
+        "endDate": "2026-10-04",
+        "maisonNumero": "45",
+        "status": "confirmed",
+        "notes": "Booké par Nelson",
+        "updatedAt": "2026-10-01T13:13:43.064Z"
+      },
+      "after": {
+        "id": "a9925427-b01f-4c44-a80e-acf8d4e46aab",
+        "numero": "GH-2026-4436",
+        "createdAt": "2026-09-23T07:14:10.604Z",
+        "personName": "MPUNGA BUKASA JONATHAN",
+        "isAgent": false,
+        "motif": "Topographe",
+        "startDate": "2026-09-22",
+        "startSlot": "matin",
+        "endDate": "2026-10-03",
+        "endSlot": "soir",
+        "maisonNumero": "45",
+        "status": "confirmed",
+        "notes": "Booké par Nelson",
+        "updatedAt": "2026-10-12T12:54:13.767Z"
+      },
+      "undoable": true,
+      "undone": false
+    },
+    {
       "id": "log-001525",
       "at": "2026-10-12T12:54:01.688Z",
       "userId": "admin",
@@ -155236,5 +155283,5 @@
       }
     }
   ],
-  "nextSeq": 1526
+  "nextSeq": 1527
 }
