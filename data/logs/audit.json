@@ -1,6 +1,51 @@
 {
   "entries": [
     {
+      "id": "log-001524",
+      "at": "2026-10-12T12:53:21.828Z",
+      "userId": "admin",
+      "userName": "Administrateur",
+      "userEmail": "admin",
+      "module": "guest-house",
+      "moduleLabel": "Guest house",
+      "action": "update",
+      "actionLabel": "Modification",
+      "entityType": "guest-house.reservation",
+      "entityId": "18c772f6-6754-47a8-8be9-e6c05fb89326",
+      "summary": "Modification réservation 18c772f6-6754-47a8-8be9-e6c05fb89326",
+      "details": "Modification réservation 18c772f6-6754-47a8-8be9-e6c05fb89326",
+      "before": {
+        "id": "18c772f6-6754-47a8-8be9-e6c05fb89326",
+        "numero": "GH-2026-4444",
+        "createdAt": "2026-10-01T13:34:47.461Z",
+        "personName": "Phelly pongo",
+        "isAgent": false,
+        "motif": "TBA",
+        "startDate": "2026-09-27",
+        "endDate": "2026-10-10",
+        "roomId": "2ef11cfa-1396-4c82-ac99-85b12d6093be",
+        "status": "confirmed",
+        "updatedAt": "2026-10-01T13:40:02.948Z"
+      },
+      "after": {
+        "id": "18c772f6-6754-47a8-8be9-e6c05fb89326",
+        "numero": "GH-2026-4444",
+        "createdAt": "2026-10-01T13:34:47.461Z",
+        "personName": "Phelly pongo",
+        "isAgent": false,
+        "motif": "TBA",
+        "startDate": "2026-09-27",
+        "startSlot": "matin",
+        "endDate": "2026-10-14",
+        "endSlot": "soir",
+        "roomId": "2ef11cfa-1396-4c82-ac99-85b12d6093be",
+        "status": "confirmed",
+        "updatedAt": "2026-10-12T12:53:19.566Z"
+      },
+      "undoable": true,
+      "undone": false
+    },
+    {
       "id": "log-001523",
       "at": "2026-10-12T12:52:59.319Z",
       "userId": "admin",
@@ -155144,5 +155189,5 @@
       }
     }
   ],
-  "nextSeq": 1524
+  "nextSeq": 1525
 }
