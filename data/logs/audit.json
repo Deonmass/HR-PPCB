@@ -1,6 +1,54 @@
 {
   "entries": [
     {
+      "id": "log-001530",
+      "at": "2026-10-12T12:58:13.771Z",
+      "userId": "admin",
+      "userName": "Administrateur",
+      "userEmail": "admin",
+      "module": "guest-house",
+      "moduleLabel": "Guest house",
+      "action": "update",
+      "actionLabel": "Modification",
+      "entityType": "guest-house.reservation",
+      "entityId": "a0c8477f-1ccc-48bb-9546-2b13f037bb23",
+      "summary": "Statut réservation a0c8477f-1ccc-48bb-9546-2b13f037bb23 → confirmed",
+      "details": "Statut réservation a0c8477f-1ccc-48bb-9546-2b13f037bb23 → confirmed",
+      "before": {
+        "id": "a0c8477f-1ccc-48bb-9546-2b13f037bb23",
+        "numero": "GH-2026-4456",
+        "createdAt": "2026-10-12T12:57:09.019Z",
+        "personName": "AFRIDEX agent (dame)",
+        "isAgent": false,
+        "motif": "Blasting",
+        "startDate": "2026-10-06",
+        "startSlot": "midi",
+        "endDate": "2026-10-08",
+        "endSlot": "matin",
+        "status": "pending",
+        "notes": "Avec Giscard",
+        "updatedAt": "2026-10-12T12:57:09.019Z"
+      },
+      "after": {
+        "id": "a0c8477f-1ccc-48bb-9546-2b13f037bb23",
+        "numero": "GH-2026-4456",
+        "createdAt": "2026-10-12T12:57:09.019Z",
+        "personName": "AFRIDEX agent (dame)",
+        "isAgent": false,
+        "motif": "Blasting",
+        "startDate": "2026-10-06",
+        "startSlot": "midi",
+        "endDate": "2026-10-08",
+        "endSlot": "matin",
+        "roomId": "8b14162d-ae3b-49a5-bcb6-812c2d8d5b5b",
+        "status": "confirmed",
+        "notes": "Avec Giscard",
+        "updatedAt": "2026-10-12T12:58:11.170Z"
+      },
+      "undoable": true,
+      "undone": false
+    },
+    {
       "id": "log-001529",
       "at": "2026-10-12T12:57:55.215Z",
       "userId": "admin",
@@ -155393,5 +155441,5 @@
       }
     }
   ],
-  "nextSeq": 1530
+  "nextSeq": 1531
 }
