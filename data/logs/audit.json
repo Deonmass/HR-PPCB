@@ -1,6 +1,38 @@
 {
   "entries": [
     {
+      "id": "log-001543",
+      "at": "2026-10-12T13:24:18.380Z",
+      "userId": "admin",
+      "userName": "Administrateur",
+      "userEmail": "admin",
+      "module": "guest-house",
+      "moduleLabel": "Guest house",
+      "action": "create",
+      "actionLabel": "Création",
+      "entityType": "guest-house.reservation",
+      "entityId": "9e124333-6abe-4983-91db-35d90dbc5d57",
+      "summary": "Création réservation Chinois 1",
+      "details": "Création réservation Chinois 1",
+      "after": {
+        "id": "9e124333-6abe-4983-91db-35d90dbc5d57",
+        "numero": "GH-2026-4463",
+        "createdAt": "2026-10-12T13:24:14.947Z",
+        "personName": "Chinois 1",
+        "isAgent": false,
+        "motif": "Réparation usine",
+        "startDate": "2026-10-13",
+        "startSlot": "matin",
+        "endDate": "2026-11-13",
+        "endSlot": "matin",
+        "status": "pending",
+        "notes": "Booké par Tresor",
+        "updatedAt": "2026-10-12T13:24:14.947Z"
+      },
+      "undoable": true,
+      "undone": false
+    },
+    {
       "id": "log-001542",
       "at": "2026-10-12T13:16:57.275Z",
       "userId": "admin",
@@ -155924,5 +155956,5 @@
       }
     }
   ],
-  "nextSeq": 1543
+  "nextSeq": 1544
 }
