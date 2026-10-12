@@ -1,6 +1,52 @@
 {
   "entries": [
     {
+      "id": "log-001540",
+      "at": "2026-10-12T13:05:12.773Z",
+      "userId": "admin",
+      "userName": "Administrateur",
+      "userEmail": "admin",
+      "module": "guest-house",
+      "moduleLabel": "Guest house",
+      "action": "update",
+      "actionLabel": "Modification",
+      "entityType": "guest-house.reservation",
+      "entityId": "6c74437c-449a-4833-8011-871b6a44b656",
+      "summary": "Statut réservation 6c74437c-449a-4833-8011-871b6a44b656 → confirmed",
+      "details": "Statut réservation 6c74437c-449a-4833-8011-871b6a44b656 → confirmed",
+      "before": {
+        "id": "6c74437c-449a-4833-8011-871b6a44b656",
+        "numero": "GH-2026-4461",
+        "createdAt": "2026-10-12T13:03:49.824Z",
+        "personName": "SOLUTION FOR AFRICA (indien 2)",
+        "isAgent": false,
+        "motif": "EQUIPE SOLUTION FOR AFRICA",
+        "startDate": "2026-10-04",
+        "startSlot": "midi",
+        "endDate": "2026-10-05",
+        "endSlot": "matin",
+        "status": "pending",
+        "updatedAt": "2026-10-12T13:03:49.824Z"
+      },
+      "after": {
+        "id": "6c74437c-449a-4833-8011-871b6a44b656",
+        "numero": "GH-2026-4461",
+        "createdAt": "2026-10-12T13:03:49.824Z",
+        "personName": "SOLUTION FOR AFRICA (indien 2)",
+        "isAgent": false,
+        "motif": "EQUIPE SOLUTION FOR AFRICA",
+        "startDate": "2026-10-04",
+        "startSlot": "midi",
+        "endDate": "2026-10-05",
+        "endSlot": "matin",
+        "roomId": "4e4bd694-e96e-4748-a98a-882d842f616e",
+        "status": "confirmed",
+        "updatedAt": "2026-10-12T13:05:10.228Z"
+      },
+      "undoable": true,
+      "undone": false
+    },
+    {
       "id": "log-001539",
       "at": "2026-10-12T13:04:47.387Z",
       "userId": "admin",
@@ -155785,5 +155831,5 @@
       }
     }
   ],
-  "nextSeq": 1540
+  "nextSeq": 1541
 }
