@@ -1,6 +1,52 @@
 {
   "entries": [
     {
+      "id": "log-001545",
+      "at": "2026-10-12T13:29:33.413Z",
+      "userId": "admin",
+      "userName": "Administrateur",
+      "userEmail": "admin",
+      "module": "guest-house",
+      "moduleLabel": "Guest house",
+      "action": "update",
+      "actionLabel": "Modification",
+      "entityType": "guest-house.reservation",
+      "entityId": "c6f09cd8-a620-482f-96c0-3e2d58b53692",
+      "summary": "Statut réservation c6f09cd8-a620-482f-96c0-3e2d58b53692 → confirmed",
+      "details": "Statut réservation c6f09cd8-a620-482f-96c0-3e2d58b53692 → confirmed",
+      "before": {
+        "id": "c6f09cd8-a620-482f-96c0-3e2d58b53692",
+        "numero": "GH-2026-4464",
+        "createdAt": "2026-10-12T13:28:02.504Z",
+        "personName": "JP driver",
+        "isAgent": false,
+        "motif": "Accompagnement Hamadou",
+        "startDate": "2026-10-11",
+        "startSlot": "midi",
+        "endDate": "2026-10-14",
+        "endSlot": "matin",
+        "status": "pending",
+        "updatedAt": "2026-10-12T13:28:02.504Z"
+      },
+      "after": {
+        "id": "c6f09cd8-a620-482f-96c0-3e2d58b53692",
+        "numero": "GH-2026-4464",
+        "createdAt": "2026-10-12T13:28:02.504Z",
+        "personName": "JP driver",
+        "isAgent": false,
+        "motif": "Accompagnement Hamadou",
+        "startDate": "2026-10-11",
+        "startSlot": "midi",
+        "endDate": "2026-10-14",
+        "endSlot": "matin",
+        "maisonNumero": "26 B",
+        "status": "confirmed",
+        "updatedAt": "2026-10-12T13:29:30.954Z"
+      },
+      "undoable": true,
+      "undone": false
+    },
+    {
       "id": "log-001544",
       "at": "2026-10-12T13:28:05.103Z",
       "userId": "admin",
@@ -155987,5 +156033,5 @@
       }
     }
   ],
-  "nextSeq": 1545
+  "nextSeq": 1546
 }
