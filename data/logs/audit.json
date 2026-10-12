@@ -1,6 +1,48 @@
 {
   "entries": [
     {
+      "id": "log-001492",
+      "at": "2026-10-12T09:25:36.909Z",
+      "userId": "karine.mvutu@ppcdrc.cd",
+      "userName": "Karine Mvutu",
+      "userEmail": "karine.mvutu@ppcdrc.cd",
+      "module": "sante",
+      "moduleLabel": "Santé",
+      "action": "create",
+      "actionLabel": "Création",
+      "entityType": "sante.visit",
+      "entityId": "sante-mv51r1w0-d9m6fj",
+      "summary": "Cas santé — MOLEKA NYABONINGI · PALUDISME SIMPLE",
+      "details": "Cas santé — MOLEKA NYABONINGI · PALUDISME SIMPLE",
+      "after": {
+        "id": "sante-mv51r1w0-d9m6fj",
+        "date": "2026-10-04",
+        "nom": "MOLEKA",
+        "postnom": "NYABONINGI",
+        "sexe": "F",
+        "age": 7,
+        "typeMalade": "ENFANT",
+        "pathologie": "PALUDISME SIMPLE",
+        "traitement": "ANTI PALUDEEN  ET ANTI PYRETIQUE",
+        "reference": "NON",
+        "year": 2026,
+        "month": 10,
+        "employeeMatricule": "70000109",
+        "employeeNom": "MOLEKA GBANGA FRED",
+        "dependantId": 313,
+        "commentaire": "",
+        "contractantId": "",
+        "contractantNom": "",
+        "contractantEmployeeId": "",
+        "createdAt": "2026-10-12T09:25:35.184Z",
+        "updatedAt": "2026-10-12T09:25:35.184Z",
+        "createdBy": "karine.mvutu@ppcdrc.cd",
+        "updatedBy": "karine.mvutu@ppcdrc.cd"
+      },
+      "undoable": false,
+      "undone": false
+    },
+    {
       "id": "log-001491",
       "at": "2026-10-12T09:21:17.826Z",
       "userId": "karine.mvutu@ppcdrc.cd",
@@ -150685,5 +150727,5 @@
       }
     }
   ],
-  "nextSeq": 1492
+  "nextSeq": 1493
 }
