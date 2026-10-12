@@ -1,6 +1,21 @@
 {
   "entries": [
     {
+      "id": "log-001550",
+      "at": "2026-10-12T13:39:35.714Z",
+      "userId": "admin",
+      "userName": "Administrateur",
+      "userEmail": "admin",
+      "module": "exco",
+      "moduleLabel": "exco",
+      "action": "export",
+      "actionLabel": "Export",
+      "summary": "Export PowerPoint EXCO EXCO_HR_REPORT_Sep-26.pptx",
+      "details": "Export PowerPoint EXCO EXCO_HR_REPORT_Sep-26.pptx",
+      "undoable": false,
+      "undone": false
+    },
+    {
       "id": "log-001549",
       "at": "2026-10-12T13:34:34.467Z",
       "userId": "admin",
@@ -156191,5 +156206,5 @@
       }
     }
   ],
-  "nextSeq": 1550
+  "nextSeq": 1551
 }
