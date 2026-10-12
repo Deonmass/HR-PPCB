@@ -1,6 +1,37 @@
 {
   "entries": [
     {
+      "id": "log-001529",
+      "at": "2026-10-12T12:57:55.215Z",
+      "userId": "admin",
+      "userName": "Administrateur",
+      "userEmail": "admin",
+      "module": "guest-house",
+      "moduleLabel": "Guest house",
+      "action": "create",
+      "actionLabel": "Création",
+      "entityType": "guest-house.reservation",
+      "entityId": "dfd3d9b4-e1ce-44fb-bf16-7025eb6345cd",
+      "summary": "Création réservation FARDC agent",
+      "details": "Création réservation FARDC agent",
+      "after": {
+        "id": "dfd3d9b4-e1ce-44fb-bf16-7025eb6345cd",
+        "numero": "GH-2026-4457",
+        "createdAt": "2026-10-12T12:57:51.057Z",
+        "personName": "FARDC agent",
+        "isAgent": false,
+        "motif": "Blasting",
+        "startDate": "2026-10-06",
+        "startSlot": "midi",
+        "endDate": "2026-10-08",
+        "endSlot": "matin",
+        "status": "pending",
+        "updatedAt": "2026-10-12T12:57:51.057Z"
+      },
+      "undoable": true,
+      "undone": false
+    },
+    {
       "id": "log-001528",
       "at": "2026-10-12T12:57:14.365Z",
       "userId": "admin",
@@ -155362,5 +155393,5 @@
       }
     }
   ],
-  "nextSeq": 1529
+  "nextSeq": 1530
 }
