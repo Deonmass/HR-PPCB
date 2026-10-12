@@ -1,6 +1,52 @@
 {
   "entries": [
     {
+      "id": "log-001531",
+      "at": "2026-10-12T12:58:28.187Z",
+      "userId": "admin",
+      "userName": "Administrateur",
+      "userEmail": "admin",
+      "module": "guest-house",
+      "moduleLabel": "Guest house",
+      "action": "update",
+      "actionLabel": "Modification",
+      "entityType": "guest-house.reservation",
+      "entityId": "dfd3d9b4-e1ce-44fb-bf16-7025eb6345cd",
+      "summary": "Statut réservation dfd3d9b4-e1ce-44fb-bf16-7025eb6345cd → confirmed",
+      "details": "Statut réservation dfd3d9b4-e1ce-44fb-bf16-7025eb6345cd → confirmed",
+      "before": {
+        "id": "dfd3d9b4-e1ce-44fb-bf16-7025eb6345cd",
+        "numero": "GH-2026-4457",
+        "createdAt": "2026-10-12T12:57:51.057Z",
+        "personName": "FARDC agent",
+        "isAgent": false,
+        "motif": "Blasting",
+        "startDate": "2026-10-06",
+        "startSlot": "midi",
+        "endDate": "2026-10-08",
+        "endSlot": "matin",
+        "status": "pending",
+        "updatedAt": "2026-10-12T12:57:51.057Z"
+      },
+      "after": {
+        "id": "dfd3d9b4-e1ce-44fb-bf16-7025eb6345cd",
+        "numero": "GH-2026-4457",
+        "createdAt": "2026-10-12T12:57:51.057Z",
+        "personName": "FARDC agent",
+        "isAgent": false,
+        "motif": "Blasting",
+        "startDate": "2026-10-06",
+        "startSlot": "midi",
+        "endDate": "2026-10-08",
+        "endSlot": "matin",
+        "roomId": "0b0cdc0d-ba79-4f68-8533-c90cad3390cb",
+        "status": "confirmed",
+        "updatedAt": "2026-10-12T12:58:25.608Z"
+      },
+      "undoable": true,
+      "undone": false
+    },
+    {
       "id": "log-001530",
       "at": "2026-10-12T12:58:13.771Z",
       "userId": "admin",
@@ -155441,5 +155487,5 @@
       }
     }
   ],
-  "nextSeq": 1531
+  "nextSeq": 1532
 }
