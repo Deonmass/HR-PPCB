@@ -1,6 +1,37 @@
 {
   "entries": [
     {
+      "id": "log-001537",
+      "at": "2026-10-12T13:03:53.364Z",
+      "userId": "admin",
+      "userName": "Administrateur",
+      "userEmail": "admin",
+      "module": "guest-house",
+      "moduleLabel": "Guest house",
+      "action": "create",
+      "actionLabel": "Création",
+      "entityType": "guest-house.reservation",
+      "entityId": "6c74437c-449a-4833-8011-871b6a44b656",
+      "summary": "Création réservation SOLUTION FOR AFRICA (indien 2)",
+      "details": "Création réservation SOLUTION FOR AFRICA (indien 2)",
+      "after": {
+        "id": "6c74437c-449a-4833-8011-871b6a44b656",
+        "numero": "GH-2026-4461",
+        "createdAt": "2026-10-12T13:03:49.824Z",
+        "personName": "SOLUTION FOR AFRICA (indien 2)",
+        "isAgent": false,
+        "motif": "EQUIPE SOLUTION FOR AFRICA",
+        "startDate": "2026-10-04",
+        "startSlot": "midi",
+        "endDate": "2026-10-05",
+        "endSlot": "matin",
+        "status": "pending",
+        "updatedAt": "2026-10-12T13:03:49.824Z"
+      },
+      "undoable": true,
+      "undone": false
+    },
+    {
       "id": "log-001536",
       "at": "2026-10-12T13:03:21.316Z",
       "userId": "admin",
@@ -155677,5 +155708,5 @@
       }
     }
   ],
-  "nextSeq": 1537
+  "nextSeq": 1538
 }
