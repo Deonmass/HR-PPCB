@@ -1,6 +1,48 @@
 {
   "entries": [
     {
+      "id": "log-001498",
+      "at": "2026-10-12T09:33:28.228Z",
+      "userId": "karine.mvutu@ppcdrc.cd",
+      "userName": "Karine Mvutu",
+      "userEmail": "karine.mvutu@ppcdrc.cd",
+      "module": "sante",
+      "moduleLabel": "Santé",
+      "action": "create",
+      "actionLabel": "Création",
+      "entityType": "sante.visit",
+      "entityId": "sante-mv5215r6-qkjwxq",
+      "summary": "Cas santé — MUANAFIOTI EYAYI · RHINITE",
+      "details": "Cas santé — MUANAFIOTI EYAYI · RHINITE",
+      "after": {
+        "id": "sante-mv5215r6-qkjwxq",
+        "date": "2026-10-06",
+        "nom": "MUANAFIOTI",
+        "postnom": "EYAYI",
+        "sexe": "F",
+        "age": 26,
+        "typeMalade": "CONTRACTANT",
+        "pathologie": "RHINITE",
+        "traitement": "GOUTTE NASALE",
+        "reference": "NON",
+        "year": 2026,
+        "month": 10,
+        "employeeMatricule": "",
+        "employeeNom": "",
+        "dependantId": null,
+        "commentaire": "",
+        "contractantId": "2",
+        "contractantNom": "Capital HR",
+        "contractantEmployeeId": "",
+        "createdAt": "2026-10-12T09:33:26.754Z",
+        "updatedAt": "2026-10-12T09:33:26.754Z",
+        "createdBy": "karine.mvutu@ppcdrc.cd",
+        "updatedBy": "karine.mvutu@ppcdrc.cd"
+      },
+      "undoable": false,
+      "undone": false
+    },
+    {
       "id": "log-001497",
       "at": "2026-10-12T09:30:01.832Z",
       "userId": "karine.mvutu@ppcdrc.cd",
@@ -150937,5 +150979,5 @@
       }
     }
   ],
-  "nextSeq": 1498
+  "nextSeq": 1499
 }
