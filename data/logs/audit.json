@@ -1,6 +1,55 @@
 {
   "entries": [
     {
+      "id": "log-001561",
+      "at": "2026-10-13T09:13:09.065Z",
+      "userId": "admin",
+      "userName": "Administrateur",
+      "userEmail": "admin",
+      "module": "guest-house",
+      "moduleLabel": "Guest house",
+      "action": "update",
+      "actionLabel": "Modification",
+      "entityType": "guest-house.reservation",
+      "entityId": "1a3b9314-2034-4f74-81bf-12c2e10488d8",
+      "summary": "Statut réservation 1a3b9314-2034-4f74-81bf-12c2e10488d8 → confirmed",
+      "details": "Statut réservation 1a3b9314-2034-4f74-81bf-12c2e10488d8 → confirmed",
+      "before": {
+        "id": "1a3b9314-2034-4f74-81bf-12c2e10488d8",
+        "numero": "GH-2026-4468",
+        "createdAt": "2026-10-13T09:12:40.063Z",
+        "personName": "ZAKUANI BAHATI BENNY",
+        "matricule": "70000177",
+        "isAgent": true,
+        "motif": "Réunion Exco",
+        "startDate": "2026-10-13",
+        "startSlot": "midi",
+        "endDate": "2026-10-20",
+        "endSlot": "matin",
+        "roomId": "12ee1ff4-eb03-4592-b1da-589006209e77",
+        "status": "pending",
+        "updatedAt": "2026-10-13T09:12:40.063Z"
+      },
+      "after": {
+        "id": "1a3b9314-2034-4f74-81bf-12c2e10488d8",
+        "numero": "GH-2026-4468",
+        "createdAt": "2026-10-13T09:12:40.063Z",
+        "personName": "ZAKUANI BAHATI BENNY",
+        "matricule": "70000177",
+        "isAgent": true,
+        "motif": "Réunion Exco",
+        "startDate": "2026-10-13",
+        "startSlot": "midi",
+        "endDate": "2026-10-20",
+        "endSlot": "matin",
+        "roomId": "12ee1ff4-eb03-4592-b1da-589006209e77",
+        "status": "confirmed",
+        "updatedAt": "2026-10-13T09:13:05.373Z"
+      },
+      "undoable": true,
+      "undone": false
+    },
+    {
       "id": "log-001560",
       "at": "2026-10-13T09:12:43.103Z",
       "userId": "admin",
@@ -156687,5 +156736,5 @@
       }
     }
   ],
-  "nextSeq": 1561
+  "nextSeq": 1562
 }
