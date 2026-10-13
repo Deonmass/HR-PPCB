@@ -1,6 +1,53 @@
 {
   "entries": [
     {
+      "id": "log-001558",
+      "at": "2026-10-13T08:47:15.934Z",
+      "userId": "admin",
+      "userName": "Administrateur",
+      "userEmail": "admin",
+      "module": "guest-house",
+      "moduleLabel": "Guest house",
+      "action": "update",
+      "actionLabel": "Modification",
+      "entityType": "guest-house.reservation",
+      "entityId": "18e4919c-82b1-442a-be61-ed8caef1df99",
+      "summary": "Modification réservation 18e4919c-82b1-442a-be61-ed8caef1df99",
+      "details": "Modification réservation 18e4919c-82b1-442a-be61-ed8caef1df99",
+      "before": {
+        "id": "18e4919c-82b1-442a-be61-ed8caef1df99",
+        "numero": "GH-2026-4451",
+        "createdAt": "2026-10-12T12:43:17.267Z",
+        "personName": "Hamadou",
+        "isAgent": false,
+        "motif": "TBA",
+        "startDate": "2026-10-11",
+        "startSlot": "midi",
+        "endDate": "2026-11-11",
+        "endSlot": "matin",
+        "roomId": "3219d898-ff74-496c-a62e-2295012276ae",
+        "status": "confirmed",
+        "updatedAt": "2026-10-12T13:16:54.089Z"
+      },
+      "after": {
+        "id": "18e4919c-82b1-442a-be61-ed8caef1df99",
+        "numero": "GH-2026-4451",
+        "createdAt": "2026-10-12T12:43:17.267Z",
+        "personName": "Hamadou (camerounais)",
+        "isAgent": false,
+        "motif": "TBA",
+        "startDate": "2026-10-11",
+        "startSlot": "midi",
+        "endDate": "2026-11-11",
+        "endSlot": "matin",
+        "roomId": "3219d898-ff74-496c-a62e-2295012276ae",
+        "status": "confirmed",
+        "updatedAt": "2026-10-13T08:47:12.612Z"
+      },
+      "undoable": true,
+      "undone": false
+    },
+    {
       "id": "log-001557",
       "at": "2026-10-13T08:45:22.306Z",
       "userId": "admin",
@@ -156560,5 +156607,5 @@
       }
     }
   ],
-  "nextSeq": 1558
+  "nextSeq": 1559
 }
