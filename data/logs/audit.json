@@ -1,6 +1,38 @@
 {
   "entries": [
     {
+      "id": "log-001557",
+      "at": "2026-10-13T08:45:22.306Z",
+      "userId": "admin",
+      "userName": "Administrateur",
+      "userEmail": "admin",
+      "module": "guest-house",
+      "moduleLabel": "Guest house",
+      "action": "create",
+      "actionLabel": "Création",
+      "entityType": "guest-house.reservation",
+      "entityId": "04c510e0-4ad3-44fb-b258-d31f0020203f",
+      "summary": "Création réservation SAMBA LUINDA HONORE",
+      "details": "Création réservation SAMBA LUINDA HONORE",
+      "after": {
+        "id": "04c510e0-4ad3-44fb-b258-d31f0020203f",
+        "numero": "GH-2026-4467",
+        "createdAt": "2026-10-13T08:45:18.396Z",
+        "personName": "SAMBA LUINDA HONORE",
+        "matricule": "70000130",
+        "isAgent": true,
+        "motif": "Accompagner les chinois",
+        "startDate": "2026-10-13",
+        "startSlot": "matin",
+        "endDate": "2026-10-14",
+        "endSlot": "matin",
+        "status": "pending",
+        "updatedAt": "2026-10-13T08:45:18.396Z"
+      },
+      "undoable": true,
+      "undone": false
+    },
+    {
       "id": "log-001556",
       "at": "2026-10-13T08:39:02.854Z",
       "userId": "admin",
@@ -156528,5 +156560,5 @@
       }
     }
   ],
-  "nextSeq": 1557
+  "nextSeq": 1558
 }
