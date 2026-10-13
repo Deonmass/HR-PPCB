@@ -1,6 +1,44 @@
 {
   "entries": [
     {
+      "id": "log-001576",
+      "at": "2026-10-13T19:29:24.303Z",
+      "userId": "Tresor.Maneka@ppcdrc.cd",
+      "userName": "Tresor Maneka",
+      "userEmail": "Tresor.Maneka@ppcdrc.cd",
+      "module": "protocol.voyages",
+      "moduleLabel": "Gestion de voyage",
+      "action": "create",
+      "actionLabel": "Création",
+      "entityType": "protocol.voyage",
+      "entityId": "pvc-030",
+      "summary": "Voyage PVC-0030 MUZILA EBALOSONG Papy Kinshasa Bruxelles Kinshasa",
+      "details": "Voyage PVC-0030 MUZILA EBALOSONG Papy Kinshasa Bruxelles Kinshasa",
+      "after": {
+        "id": "pvc-030",
+        "numero": "PVC-0030",
+        "date": "2026-10-13",
+        "voyageur": "MUZILA EBALOSONG Papy",
+        "voyageurMatricule": "70000297",
+        "destination": "Kinshasa Bruxelles Kinshasa",
+        "ticketAvion": 3550,
+        "visaVolant": 0,
+        "lettreLegaliser": 0,
+        "goPass": 55,
+        "transfert": 0,
+        "hotelNuit": 150,
+        "nbreNuits": 5,
+        "coutHotel": 750,
+        "categorieHotel": "",
+        "appartement": 0,
+        "coutTotal": 4355,
+        "createdAt": "2026-10-13T19:29:21.372Z",
+        "updatedAt": "2026-10-13T19:29:21.372Z"
+      },
+      "undoable": false,
+      "undone": false
+    },
+    {
       "id": "log-001575",
       "at": "2026-10-13T19:28:18.042Z",
       "userId": "Tresor.Maneka@ppcdrc.cd",
@@ -170228,5 +170266,5 @@
       }
     }
   ],
-  "nextSeq": 1576
+  "nextSeq": 1577
 }
