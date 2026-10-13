@@ -1,6 +1,44 @@
 {
   "entries": [
     {
+      "id": "log-001574",
+      "at": "2026-10-13T19:27:23.704Z",
+      "userId": "Tresor.Maneka@ppcdrc.cd",
+      "userName": "Tresor Maneka",
+      "userEmail": "Tresor.Maneka@ppcdrc.cd",
+      "module": "protocol.voyages",
+      "moduleLabel": "Gestion de voyage",
+      "action": "create",
+      "actionLabel": "Création",
+      "entityType": "protocol.voyage",
+      "entityId": "pvc-028",
+      "summary": "Voyage PVC-0028 MOLONGA LYONGA ANDREW Kinshasa Bruxelles Kinshasa",
+      "details": "Voyage PVC-0028 MOLONGA LYONGA ANDREW Kinshasa Bruxelles Kinshasa",
+      "after": {
+        "id": "pvc-028",
+        "numero": "PVC-0028",
+        "date": "2026-10-13",
+        "voyageur": "MOLONGA LYONGA ANDREW",
+        "voyageurMatricule": "70000252",
+        "destination": "Kinshasa Bruxelles Kinshasa",
+        "ticketAvion": 3550,
+        "visaVolant": 0,
+        "lettreLegaliser": 0,
+        "goPass": 55,
+        "transfert": 0,
+        "hotelNuit": 150,
+        "nbreNuits": 5,
+        "coutHotel": 750,
+        "categorieHotel": "",
+        "appartement": 0,
+        "coutTotal": 4355,
+        "createdAt": "2026-10-13T19:27:19.129Z",
+        "updatedAt": "2026-10-13T19:27:19.129Z"
+      },
+      "undoable": false,
+      "undone": false
+    },
+    {
       "id": "log-001573",
       "at": "2026-10-13T17:24:19.657Z",
       "userId": "gd.mwankana@capitalhrsolutions.net",
@@ -170152,5 +170190,5 @@
       }
     }
   ],
-  "nextSeq": 1574
+  "nextSeq": 1575
 }
