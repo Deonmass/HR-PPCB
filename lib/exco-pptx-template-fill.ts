@@ -10,13 +10,20 @@ import { EXCO_KPI_SUMMARY_KEYS } from './exco-kpi-layout';
 import { buildTrainingSlideData, buildGouvernanceSlideData } from './exco-dashboard-slides-data';
 import { buildInternalAuditRows, summarizeInternalAudit } from './exco-audit-internal';
 import { fillTemplateDataSlides } from './exco-pptx-template-tables';
+import {
+  htmlToDrawingParagraphs,
+  parseNarrativeZones,
+  splitHtmlAcrossShapes,
+  zoneHasText,
+  type NarrativeZoneKey,
+  type NarrativeZones,
+} from './exco-narrative-html';
 
 /** Template officiel — disposition Aug-26 ; seules les données du mois exporté changent. */
 const TEMPLATE_REL = path.join('templates', 'exco', 'EXCO_HR_REPORT_Aug-26.pptx');
 
 const BASELINE_PERIOD = 'Aug-26';
-const BASELINE_COVER =
-  'EXCO MEETING HELD ON 31 AUGUST 2026 HELD ON AUG-26, IN ZAMBA';
+const BASELINE_COVER = 'EXCO MEETING HELD ON 31 AUGUST 2026, IN ZAMBA';
 
 /**
  * Cartes KPI Summary (slide 6) — libellé template → clé rapport.
@@ -122,35 +129,6 @@ function replaceAllRuns(xml: string, pairs: Array<[string, string]>): string {
   return out;
 }
 
-function replaceLargestTxBody(xml: string, newPlain: string): string {
-  const bodies = [...xml.matchAll(/<p:txBody>([\s\S]*?)<\/p:txBody>/g)];
-  if (!bodies.length) return xml;
-  let bestIdx = 0;
-  let bestLen = 0;
-  bodies.forEach((m, i) => {
-    const text = [...m[1].matchAll(/<a:t[^>]*>([^<]*)<\/a:t>/g)]
-      .map((t) => t[1])
-      .join('');
-    if (text.length > bestLen) {
-      bestLen = text.length;
-      bestIdx = i;
-    }
-  });
-  if (bestLen < 40) return xml;
-  const oldBody = bodies[bestIdx][0];
-  const lines = newPlain
-    .split(/\n+/)
-    .map((line) => line.trim())
-    .filter(Boolean);
-  const paras = (lines.length ? lines : ['—'])
-    .map(
-      (line) =>
-        `<a:p><a:r><a:rPr lang="en-US" sz="1400"/><a:t>${escapeXml(line)}</a:t></a:r></a:p>`,
-    )
-    .join('');
-  return xml.replace(oldBody, `<p:txBody><a:bodyPr/><a:lstStyle/>${paras}</p:txBody>`);
-}
-
 function shapePlainText(shapeXml: string): string {
   return [...shapeXml.matchAll(/<a:t[^>]*>([^<]*)<\/a:t>/g)]
     .map((m) => m[1])
@@ -172,6 +150,118 @@ function setShapePlainText(shapeXml: string, text: string): string {
     }
     return `<a:t${attrs}></a:t>`;
   });
+}
+
+const NARRATIVE_COLUMNS: Array<{ key: NarrativeZoneKey; label: string }> = [
+  { key: 'plant', label: 'Plant' },
+  { key: 'hq', label: 'HQ' },
+  { key: 'regions', label: 'Regions' },
+];
+
+function replaceShapeTxBody(shapeXml: string, paragraphs: string): string {
+  if (!/<p:txBody>/.test(shapeXml)) return shapeXml;
+  return shapeXml.replace(/<p:txBody>([\s\S]*?)<\/p:txBody>/, (_full, inner: string) => {
+    const bodyPr = inner.match(/<a:bodyPr[\s\S]*?<\/a:bodyPr>|<a:bodyPr[^>]*\/>/)?.[0]
+      || '<a:bodyPr/>';
+    const lst = inner.match(/<a:lstStyle[\s\S]*?<\/a:lstStyle>|<a:lstStyle\/>/)?.[0]
+      || '<a:lstStyle/>';
+    return `<p:txBody>${bodyPr}${lst}${paragraphs}</p:txBody>`;
+  });
+}
+
+function columnContentIndexes(shapes: string[]): Record<NarrativeZoneKey, number[]> {
+  const found = NARRATIVE_COLUMNS.map((col) => ({
+    ...col,
+    idx: shapes.findIndex((sp) => shapePlainText(sp) === col.label),
+  }))
+    .filter((col) => col.idx >= 0)
+    .sort((a, b) => a.idx - b.idx);
+  const out: Record<NarrativeZoneKey, number[]> = { plant: [], hq: [], regions: [] };
+  for (let i = 0; i < found.length; i += 1) {
+    const start = found[i].idx + 1;
+    const end = i + 1 < found.length ? found[i + 1].idx : shapes.length;
+    const longs: number[] = [];
+    const blanks: number[] = [];
+    for (let j = start; j < end; j += 1) {
+      if (!/<p:txBody>/.test(shapes[j])) continue;
+      const text = shapePlainText(shapes[j]);
+      if (text.length > 0 && text.length <= 2) continue;
+      if (NARRATIVE_COLUMNS.some((col) => col.label === text)) continue;
+      if (text.length > 40) longs.push(j);
+      else if (!text) blanks.push(j);
+    }
+    out[found[i].key] = longs.length ? longs : blanks.slice(0, 1);
+  }
+  return out;
+}
+
+/** Remplace Plant / HQ / Régions seulement si la colonne a été préparée. */
+function fillNarrativeColumns(xml: string, zones: NarrativeZones | null): string {
+  if (!zones) return xml;
+  const shapeMatches = [...xml.matchAll(/<p:sp>[\s\S]*?<\/p:sp>/g)];
+  if (!shapeMatches.length) return xml;
+  const shapes = shapeMatches.map((m) => m[0]);
+  const columns = columnContentIndexes(shapes);
+  let changed = false;
+  for (const col of NARRATIVE_COLUMNS) {
+    if (!zoneHasText(zones[col.key])) continue;
+    const idxs = columns[col.key];
+    if (!idxs.length) continue;
+    const chunks = splitHtmlAcrossShapes(zones[col.key], idxs.length);
+    idxs.forEach((shapeIdx, i) => {
+      const paras = htmlToDrawingParagraphs(chunks[i] || '');
+      shapes[shapeIdx] = replaceShapeTxBody(shapes[shapeIdx], paras);
+    });
+    changed = true;
+  }
+  if (!changed) return xml;
+  const parts: string[] = [];
+  let last = 0;
+  for (let i = 0; i < shapeMatches.length; i += 1) {
+    const start = shapeMatches[i].index ?? 0;
+    parts.push(xml.slice(last, start));
+    parts.push(shapes[i]);
+    last = start + shapeMatches[i][0].length;
+  }
+  parts.push(xml.slice(last));
+  return parts.join('');
+}
+
+function decodeXmlText(value: string): string {
+  return value
+    .replace(/&amp;/g, '&')
+    .replace(/&lt;/g, '<')
+    .replace(/&gt;/g, '>')
+    .replace(/&quot;/g, '"');
+}
+
+function shapeRunsToHtml(shapeXml: string): string {
+  const paras = [...shapeXml.matchAll(/<a:p[\s\S]*?<\/a:p>/g)];
+  const html: string[] = [];
+  for (const para of paras) {
+    const chunks = [...para[0].matchAll(/<a:br[\s\S]*?(?:\/>|<\/a:br>)|<a:r>[\s\S]*?<\/a:r>/g)];
+    let inner = '';
+    for (const chunk of chunks) {
+      if (chunk[0].startsWith('<a:br')) {
+        inner += '<br>';
+        continue;
+      }
+      const text = decodeXmlText(
+        [...chunk[0].matchAll(/<a:t[^>]*>([^<]*)<\/a:t>/g)].map((m) => m[1]).join(''),
+      );
+      if (!text) continue;
+      let bit = text
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;');
+      if (/\bu="sng"/.test(chunk[0])) bit = `<u>${bit}</u>`;
+      if (/\bi="1"/.test(chunk[0])) bit = `<em>${bit}</em>`;
+      if (/\bb="1"/.test(chunk[0])) bit = `<strong>${bit}</strong>`;
+      inner += bit;
+    }
+    if (inner.trim()) html.push(`<p>${inner}</p>`);
+  }
+  return html.join('');
 }
 
 function paintDeltaShape(shapeXml: string, tone: ExcoKpiCard['deltaTone']): string {
@@ -427,22 +517,15 @@ export async function buildExcoPptxFromTemplate(report: ExcoReportPayload): Prom
     let xml = await file.async('string');
     const slideNo = Number(name.match(/slide(\d+)/)?.[1] || 0);
 
-    if (slideNo === 3 && n.highlights?.trim()) {
-      xml = replaceLargestTxBody(xml, n.highlights.trim());
-    } else if (slideNo === 4 && n.lowlights?.trim()) {
-      xml = replaceLargestTxBody(xml, n.lowlights.trim());
-    } else if (slideNo === 5 && n.focus?.trim()) {
-      xml = replaceLargestTxBody(xml, n.focus.trim());
-    }
+    if (slideNo === 3) xml = fillNarrativeColumns(xml, parseNarrativeZones(n.highlights));
+    else if (slideNo === 4) xml = fillNarrativeColumns(xml, parseNarrativeZones(n.lowlights));
+    else if (slideNo === 5) xml = fillNarrativeColumns(xml, parseNarrativeZones(n.focus));
 
-    if (slideNo === 6) {
-      xml = fillKpiSummarySlide(xml, report);
-    } else {
-      xml = fillTemplateDataSlides(slideNo, xml, report);
-    }
+    if (slideNo !== 6) xml = fillTemplateDataSlides(slideNo, xml, report);
 
     xml = replaceAllRuns(xml, pairs);
     xml = xml.replace(/>Aug-26</g, `>${escapeXml(period)}<`);
+    if (slideNo === 6) xml = fillKpiSummarySlide(xml, report);
     zip.file(name, xml);
   }
 
@@ -463,4 +546,34 @@ export async function buildExcoPptxFromTemplate(report: ExcoReportPayload): Prom
     compressionOptions: { level: 6 },
   });
   return Buffer.from(out);
+}
+
+/** Texte actuel des colonnes Highlight / Lowlight / Focus dans le modèle. */
+export async function extractTemplateNarrative(): Promise<{
+  highlight: NarrativeZones;
+  lowlight: NarrativeZones;
+  focus: NarrativeZones;
+}> {
+  const templatePath = await resolveExcoPptxTemplatePath();
+  const zip = await JSZip.loadAsync(await fs.readFile(templatePath));
+  const slideOf = { highlight: 3, lowlight: 4, focus: 5 } as const;
+  const empty = { plant: '', hq: '', regions: '' };
+  const out = {
+    highlight: { ...empty },
+    lowlight: { ...empty },
+    focus: { ...empty },
+  };
+  for (const key of Object.keys(slideOf) as Array<keyof typeof slideOf>) {
+    const file = zip.file(`ppt/slides/slide${slideOf[key]}.xml`);
+    if (!file) continue;
+    const xml = await file.async('string');
+    const shapes = [...xml.matchAll(/<p:sp>[\s\S]*?<\/p:sp>/g)].map((m) => m[0]);
+    const cols = columnContentIndexes(shapes);
+    out[key] = {
+      plant: cols.plant.map((i) => shapeRunsToHtml(shapes[i])).filter(Boolean).join(''),
+      hq: cols.hq.map((i) => shapeRunsToHtml(shapes[i])).filter(Boolean).join(''),
+      regions: cols.regions.map((i) => shapeRunsToHtml(shapes[i])).filter(Boolean).join(''),
+    };
+  }
+  return out;
 }

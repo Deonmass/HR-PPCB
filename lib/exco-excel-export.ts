@@ -294,17 +294,18 @@ function movementCols(header: string[], start: number, end: number, kind: 'in' |
 function mapExitReason(reason: string, labels: string[]): string {
   const source = normLabel(reason);
   const rules: Array<[RegExp, RegExp]> = [
+    [/deces|deced|death|deceased/, /deces|death/],
     [/demission|resign/, /resign|demission/],
     [/retrait|retirement/, /retrait|retirement/],
     [/licenci|dismiss|dismis/, /licenci|dismiss|dismis/],
     [/contract|expire|fin de contrat/, /contract|expire/],
     [/amicable|amiable/, /amicable|amiable/],
-    [/deces|death|deceased/, /deces|death/],
   ];
   for (const [sourceRe, labelRe] of rules) {
     if (!sourceRe.test(source)) continue;
     const hit = labels.find((label) => labelRe.test(normLabel(label)));
     if (hit) return hit;
+    if (sourceRe.source.startsWith('deces')) return 'Death';
   }
   return reason.trim();
 }

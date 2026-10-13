@@ -21,14 +21,96 @@ function escapeXml(value: string): string {
 }
 
 function setRunsText(fragment: string, text: string): string {
-  let first = true;
-  return fragment.replace(/<a:t([^>]*)>([^<]*)<\/a:t>/g, (_full, attrs: string) => {
-    if (first) {
-      first = false;
-      return `<a:t${attrs}>${escapeXml(text)}</a:t>`;
+  if (/<a:t(\s[^>]*)?>/.test(fragment)) {
+    let first = true;
+    return fragment.replace(/<a:t([^>]*)>([^<]*)<\/a:t>/g, (_full, attrs: string) => {
+      if (first) {
+        first = false;
+        return `<a:t${attrs}>${escapeXml(text)}</a:t>`;
+      }
+      return `<a:t${attrs}></a:t>`;
+    });
+  }
+  if (!text) return fragment;
+  const rPr = `<a:rPr lang="en-US" sz="800" b="1" dirty="0"><a:solidFill><a:srgbClr val="16161E"/></a:solidFill><a:latin typeface="Segoe UI" pitchFamily="34" charset="0"/><a:ea typeface="Segoe UI" pitchFamily="34" charset="-122"/><a:cs typeface="Segoe UI" pitchFamily="34" charset="-120"/></a:rPr>`;
+  const run = `<a:r>${rPr}<a:t>${escapeXml(text)}</a:t></a:r>`;
+  if (fragment.includes('<a:endParaRPr')) {
+    return fragment.replace('<a:endParaRPr', `${run}<a:endParaRPr`);
+  }
+  return fragment.replace('</a:p>', `${run}</a:p>`);
+}
+
+const TREND_HEADER_CURRENT = 'E30613';
+const TREND_HEADER_IDLE = '0A0A0A';
+const TREND_BODY_CURRENT = 'FCE8E9';
+const TREND_BODY_IDLE = 'FFFFFF';
+const TREND_TEXT_CURRENT = 'E30613';
+const TREND_TEXT_IDLE = '16161E';
+
+function cellFill(tc: string): string {
+  const match = tc.match(
+    /<a:tcPr[\s\S]*<a:solidFill>\s*<a:srgbClr val="([0-9A-Fa-f]{6})"\s*\/>\s*<\/a:solidFill>\s*<\/a:tcPr>/,
+  );
+  return (match?.[1] || '').toUpperCase();
+}
+
+function setCellFill(tc: string, hex: string): string {
+  return tc.replace(
+    /(<a:tcPr[\s\S]*<a:solidFill>\s*<a:srgbClr val=")[0-9A-Fa-f]{6}("\s*\/>\s*<\/a:solidFill>\s*<\/a:tcPr>)/,
+    `$1${hex}$2`,
+  );
+}
+
+function setRunColor(tc: string, hex: string): string {
+  if (!/<a:r[\s>]/.test(tc)) return tc;
+  return tc.replace(
+    /(<a:r[\s>][\s\S]*?<a:solidFill>\s*<a:srgbClr val=")[0-9A-Fa-f]{6}(")/,
+    `$1${hex}$2`,
+  );
+}
+
+/** Le modèle Aug-26 surligne août. Le mois du rapport prend cette colonne. */
+function paintCurrentMonthColumn(tableXml: string, currentCol: number): string {
+  const rows = [...tableXml.matchAll(/<a:tr[\s\S]*?<\/a:tr>/g)];
+  const newRows: string[] = [];
+  for (let r = 0; r < rows.length; r += 1) {
+    const rowXml = rows[r][0];
+    const cells = [...rowXml.matchAll(/<a:tc[\s\S]*?<\/a:tc>/g)];
+    const parts: string[] = [];
+    let last = 0;
+    for (let c = 0; c < cells.length; c += 1) {
+      const m = cells[c];
+      const start = m.index ?? 0;
+      parts.push(rowXml.slice(last, start));
+      let cell = m[0];
+      const fill = cellFill(cell);
+      const isHeader = r === 0;
+      if (c === currentCol) {
+        cell = setCellFill(cell, isHeader ? TREND_HEADER_CURRENT : TREND_BODY_CURRENT);
+        if (!isHeader) cell = setRunColor(cell, TREND_TEXT_CURRENT);
+      } else if (isHeader && fill === TREND_HEADER_CURRENT) {
+        cell = setCellFill(cell, TREND_HEADER_IDLE);
+      } else if (!isHeader && fill === TREND_BODY_CURRENT) {
+        cell = setCellFill(cell, TREND_BODY_IDLE);
+        cell = setRunColor(cell, TREND_TEXT_IDLE);
+      }
+      parts.push(cell);
+      last = start + m[0].length;
     }
-    return `<a:t${attrs}></a:t>`;
-  });
+    parts.push(rowXml.slice(last));
+    newRows.push(parts.join(''));
+  }
+  const tableParts: string[] = [];
+  let tLast = 0;
+  for (let r = 0; r < rows.length; r += 1) {
+    const m = rows[r];
+    const start = m.index ?? 0;
+    tableParts.push(tableXml.slice(tLast, start));
+    tableParts.push(newRows[r]);
+    tLast = start + m[0].length;
+  }
+  tableParts.push(tableXml.slice(tLast));
+  return tableParts.join('');
 }
 
 function cellPlain(tcXml: string): string {
@@ -44,6 +126,7 @@ export function fillTableMatrix(
   xml: string,
   tableIndex: number,
   matrix: string[][],
+  currentCol?: number | null,
 ): string {
   const tables = [...xml.matchAll(/<a:tbl[\s\S]*?<\/a:tbl>/g)];
   if (!tables[tableIndex]) return xml;
@@ -89,7 +172,10 @@ export function fillTableMatrix(
     tLast = start + m[0].length;
   }
   tableParts.push(table.slice(tLast));
-  const newTable = tableParts.join('');
+  const newTable =
+    currentCol != null && currentCol >= 0
+      ? paintCurrentMonthColumn(tableParts.join(''), currentCol)
+      : tableParts.join('');
 
   const tStart = tables[tableIndex].index ?? 0;
   return xml.slice(0, tStart) + newTable + xml.slice(tStart + table.length);
@@ -148,8 +234,8 @@ function replaceShapeByExactText(xml: string, from: string, to: string): string 
 export function fillTrendsSlideA(xml: string, report: ExcoReportPayload): string {
   const { slideA } = buildTrendsSlideSections(report);
   let out = xml;
-  out = fillTableMatrix(out, 0, sectionToMatrix(slideA[0]));
-  out = fillTableMatrix(out, 1, sectionToMatrix(slideA[1]));
+  out = fillTableMatrix(out, 0, sectionToMatrix(slideA[0]), slideA[0].currentHeaderIndex);
+  out = fillTableMatrix(out, 1, sectionToMatrix(slideA[1]), slideA[1].currentHeaderIndex);
   return out;
 }
 
@@ -157,15 +243,210 @@ export function fillTrendsSlideA(xml: string, report: ExcoReportPayload): string
 export function fillTrendsSlideB(xml: string, report: ExcoReportPayload): string {
   const { slideB } = buildTrendsSlideSections(report);
   let out = xml;
-  out = fillTableMatrix(out, 0, sectionToMatrix(slideB[0]));
-  out = fillTableMatrix(out, 1, sectionToMatrix(slideB[1]));
+  out = fillTableMatrix(out, 0, sectionToMatrix(slideB[0]), slideB[0].currentHeaderIndex);
+  out = fillTableMatrix(out, 1, sectionToMatrix(slideB[1]), slideB[1].currentHeaderIndex);
   return out;
+}
+
+const DEPARTURE_LABELS = new Set([
+  'Amicable Separation',
+  'Dismisal',
+  'Dismissal',
+  'Resignation',
+  'Death',
+  'Contract Expired',
+  'Retirement',
+]);
+
+const DEPARTURE_FIRST_Y = 3_749_040;
+const DEPARTURE_BAR_DY = 45_720;
+const DEPARTURE_RATIO_DY = 237_744;
+const DEPARTURE_RATIO_H = 182_880;
+const DEPARTURE_CARD_BOTTOM = 6_446_520;
+const DEPARTURE_TRACK_CX = 1_417_320;
+
+function shapeOff(shapeXml: string): { x: number; y: number } | null {
+  const off = shapeXml.match(/<a:off x="(-?\d+)" y="(-?\d+)"/);
+  if (!off) return null;
+  return { x: Number(off[1]), y: Number(off[2]) };
+}
+
+function shapeFillHex(shapeXml: string): string {
+  const fill = shapeXml.match(/<a:solidFill>\s*<a:srgbClr val="([A-Fa-f0-9]{6})"/);
+  return (fill?.[1] || '').toUpperCase();
+}
+
+function isDepartureValueBar(shapeXml: string): boolean {
+  return !shapePlainText(shapeXml) && shapeFillHex(shapeXml) === 'E30613';
+}
+
+function shiftShapeY(shapeXml: string, delta: number): string {
+  if (!delta) return shapeXml;
+  return shapeXml.replace(
+    /(<a:off x="-?\d+" y=")(-?\d+)(")/,
+    (_, prefix: string, y: string, suffix: string) => `${prefix}${Number(y) + delta}${suffix}`,
+  );
+}
+
+function setShapeY(shapeXml: string, y: number): string {
+  return shapeXml.replace(/(<a:off x="-?\d+" y=")(-?\d+)(")/, `$1${y}$3`);
+}
+
+function setShapeCx(shapeXml: string, cx: number): string {
+  return shapeXml.replace(/(<a:ext cx=")(\d+)(")/, `$1${Math.round(cx)}$3`);
+}
+
+function setShapeCy(shapeXml: string, cy: number): string {
+  return shapeXml.replace(/(<a:ext cx="\d+" cy=")(\d+)(")/, `$1${Math.round(cy)}$3`);
+}
+
+function withShapeId(shapeXml: string, id: number): string {
+  return shapeXml.replace(
+    /(<p:cNvPr id=")(\d+)(" name=")([^"]*)(")/,
+    `$1${id}$3Exit ${id}$5`,
+  );
+}
+
+function departureArrow(delta: number | null | undefined): { glyph: string; color: string } {
+  if (delta == null || !Number.isFinite(delta) || delta === 0) {
+    return { glyph: '•', color: '6B6B7A' };
+  }
+  if (delta > 0) return { glyph: '▲', color: 'B91C1C' };
+  return { glyph: '▼', color: '15803D' };
+}
+
+/**
+ * Le modèle Aug-26 a 5 barres fixes (sans décès) et des comptes /175.
+ * Décès est une ligne clonée, jamais fusionnée avec Resignation.
+ */
+function fillDepartureChart(
+  xml: string,
+  items: Array<{
+    label: string;
+    value: number;
+    pct: number;
+    ratioLabel?: string;
+    deltaPct?: number | null;
+  }>,
+): string {
+  if (!items.length) return xml;
+  const matches = [...xml.matchAll(/<p:sp>([\s\S]*?)<\/p:sp>/g)];
+  const shapes = matches.map((match) => match[0]);
+  const labelHits: Array<{ y: number; canonical: string }> = [];
+  shapes.forEach((shape) => {
+    const text = shapePlainText(shape);
+    if (!DEPARTURE_LABELS.has(text)) return;
+    const off = shapeOff(shape);
+    if (!off || off.x < 8_000_000) return;
+    const canonical = text === 'Dismisal' ? 'Dismissal' : text;
+    labelHits.push({ y: off.y, canonical });
+  });
+  labelHits.sort((a, b) => a.y - b.y);
+  if (!labelHits.length) return xml;
+
+  const groups = new Map<string, { labelY: number; indices: number[] }>();
+  for (let i = 0; i < labelHits.length; i += 1) {
+    const hit = labelHits[i];
+    const nextY = labelHits[i + 1]?.y ?? hit.y + 530_352;
+    const indices: number[] = [];
+    shapes.forEach((shape, index) => {
+      const off = shapeOff(shape);
+      if (!off || off.x < 8_000_000) return;
+      if (off.y < hit.y - 2_000 || off.y >= nextY - 2_000) return;
+      indices.push(index);
+    });
+    groups.set(hit.canonical, { labelY: hit.y, indices });
+  }
+
+  let barProto = '';
+  for (const index of groups.get('Dismissal')?.indices || []) {
+    if (isDepartureValueBar(shapes[index])) {
+      barProto = shapes[index];
+      break;
+    }
+  }
+
+  const gaps = Math.max(items.length - 1, 1);
+  const room = DEPARTURE_CARD_BOTTOM - 36_000 - DEPARTURE_FIRST_Y - DEPARTURE_RATIO_DY - DEPARTURE_RATIO_H;
+  const pitch = Math.min(530_352, Math.floor(room / gaps));
+  const maxValue = Math.max(...items.map((item) => item.value || 0), 0);
+  let nextId = 1 + Math.max(
+    0,
+    ...[...xml.matchAll(/<p:cNvPr id="(\d+)"/g)].map((match) => Number(match[1])),
+  );
+  const drop = new Set<number>();
+  const consumed = new Set<string>();
+  const built: string[] = [];
+
+  const sourceKey = (label: string): string | null => {
+    if (groups.has(label)) return label;
+    if (label === 'Death' && groups.has('Resignation')) return 'Resignation';
+    if (groups.has('Retirement')) return 'Retirement';
+    return null;
+  };
+
+  items.forEach((item, index) => {
+    const key = sourceKey(item.label);
+    const group = key ? groups.get(key) : undefined;
+    if (!group) return;
+    const reuse = consumed.has(key!);
+    if (!reuse) {
+      for (const shapeIndex of group.indices) drop.add(shapeIndex);
+    }
+    consumed.add(key!);
+    const labelY = DEPARTURE_FIRST_Y + index * pitch;
+    const delta = labelY - group.labelY;
+    // Six lignes : la boîte « n/HC » du modèle (5 lignes) déborderait sur le libellé suivant.
+    const ratioCy = Math.min(
+      DEPARTURE_RATIO_H,
+      Math.max(120_000, pitch - DEPARTURE_RATIO_DY - 70_000),
+    );
+    const placed = group.indices.flatMap((shapeIndex) => {
+      const source = reuse ? withShapeId(shapes[shapeIndex], nextId++) : shapes[shapeIndex];
+      const shape = shiftShapeY(source, delta);
+      const text = shapePlainText(shape);
+      if (DEPARTURE_LABELS.has(text)) return [setRunsText(shape, item.label)];
+      if (/^\d+(\.\d+)?%$/.test(text)) {
+        return [setRunsText(shape, `${item.pct.toFixed(2)}%`)];
+      }
+      if (/^\d+\/\d+$/.test(text)) {
+        return [setShapeCy(setRunsText(shape, item.ratioLabel || String(item.value || 0)), ratioCy)];
+      }
+      if (text === '•' || text === '▲' || text === '▼') {
+        const arrow = departureArrow(item.deltaPct);
+        return [setRunColor(setRunsText(shape, arrow.glyph), arrow.color)];
+      }
+      if (isDepartureValueBar(shape)) return [];
+      return [shape];
+    });
+    const barCx = maxValue > 0 && item.value > 0
+      ? Math.round(DEPARTURE_TRACK_CX * (item.value / maxValue))
+      : 0;
+    if (barCx > 0 && barProto) {
+      const bar = setShapeCx(
+        setShapeY(withShapeId(barProto, nextId++), labelY + DEPARTURE_BAR_DY),
+        barCx,
+      );
+      const trackAt = placed.findIndex(
+        (shape) => !shapePlainText(shape) && shapeFillHex(shape) === 'F7F7FA',
+      );
+      if (trackAt >= 0) placed.splice(trackAt + 1, 0, bar);
+      else placed.push(bar);
+    }
+    built.push(...placed);
+  });
+
+  const kept = shapes.map((shape, index) => (drop.has(index) ? '' : shape));
+  const out = rebuildShapes(xml, kept, matches);
+  const closeAt = out.indexOf('</p:spTree>');
+  if (closeAt < 0) return out;
+  return `${out.slice(0, closeAt)}${built.join('')}${out.slice(closeAt)}`;
 }
 
 /** Slide 9 — Staff movement IN/OUT + diversity labels. */
 export function fillMouvementsSlide(xml: string, report: ExcoReportPayload): string {
   const mv = buildMouvementsSlideData(report);
-  let out = fillTableMatrix(xml, 0, sectionToMatrix(mv.inOut));
+  let out = fillTableMatrix(xml, 0, sectionToMatrix(mv.inOut), mv.inOut.currentHeaderIndex);
   out = replaceShapeByExactText(out, '40.2 years old', mv.ageChart.subtitle || '—');
   out = replaceShapeByExactText(out, '5.81 years', mv.seniorityChart.subtitle || '—');
   out = replaceShapeByExactText(
@@ -173,6 +454,7 @@ export function fillMouvementsSlide(xml: string, report: ExcoReportPayload): str
     '4 Out this month · HC 175',
     mv.exitsChart.subtitle || 'No exits',
   );
+  out = fillDepartureChart(out, mv.exitsChart.items);
   return out;
 }
 

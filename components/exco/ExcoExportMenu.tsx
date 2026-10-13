@@ -82,10 +82,12 @@ export default function ExcoExportMenu({
   year,
   month,
   disabled,
+  onPreparePptx,
 }: {
   year: number;
   month: number;
   disabled?: boolean;
+  onPreparePptx?: () => void;
 }) {
   const [open, setOpen] = useState(false);
   const [busy, setBusy] = useState<ExportAction | null>(null);
@@ -164,7 +166,8 @@ export default function ExcoExportMenu({
       if (action === 'preview') {
         await openPreview();
       } else if (action === 'pptx') {
-        await downloadBlob(`/api/exco/export?${q}`, `EXCO_HR_REPORT.pptx`);
+        if (onPreparePptx) onPreparePptx();
+        else await downloadBlob(`/api/exco/export?${q}`, `EXCO_HR_REPORT.pptx`);
       } else {
         await downloadBlob(`/api/exco/export-excel?${q}`, `EXCO_HR_REPORT.xlsx`);
       }

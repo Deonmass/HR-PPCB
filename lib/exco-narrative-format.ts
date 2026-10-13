@@ -66,5 +66,16 @@ export function splitNarrativePoints(body: string): string[] {
 
 /** Normalise le texte éditable : un point par paragraphe (ligne vide entre). */
 export function formatNarrativeForEdit(body: string): string {
+  const raw = (body || '').trim();
+  if (raw.startsWith('{')) {
+    try {
+      const parsed = JSON.parse(raw) as { plant?: unknown; hq?: unknown; regions?: unknown };
+      if (parsed && (typeof parsed.plant === 'string' || typeof parsed.hq === 'string' || typeof parsed.regions === 'string')) {
+        return raw;
+      }
+    } catch {
+      /* texte libre */
+    }
+  }
   return splitNarrativePoints(body).join('\n\n');
 }

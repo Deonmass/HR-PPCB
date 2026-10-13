@@ -218,11 +218,19 @@ function renderBarChart(series: ExcoBarSeries, tone: 'red' | 'black' = 'red'): s
               : 0
             : Math.min(100, it.pct);
           if (isExits) {
+            const delta = it.deltaPct;
+            const arrow = delta == null || !Number.isFinite(delta) || delta === 0
+              ? '•'
+              : delta > 0
+                ? '▲'
+                : '▼';
+            const arrowClass = arrow === '▲' ? ' is-up' : arrow === '▼' ? ' is-down' : '';
             return `<div class="mv-bar-block">
-  <div class="mv-bar-row">
+  <div class="mv-bar-row is-exits">
     <span class="mv-bar-lab">${esc(it.label)}</span>
     <div class="mv-bar-track"><span style="width:${barPct}%"></span></div>
-    <span class="mv-bar-val">${it.pct}%</span>
+    <span class="mv-bar-arrow${arrowClass}">${arrow}</span>
+    <span class="mv-bar-val">${Number(it.pct).toFixed(2)}%</span>
   </div>
   <div class="mv-bar-meta">
     <span class="mv-bar-ratio">${ratio}</span>
@@ -1118,9 +1126,18 @@ export function buildExcoPreviewHtml(report: ExcoReportPayload): string {
     gap: 4px;
     align-items: center;
   }
+  .mv-bar-row.is-exits {
+    grid-template-columns: 78px 1fr 10px 32px;
+    gap: 3px;
+  }
   .mv-bar-lab {
     font-size: 7px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
   }
+  .mv-bar-arrow {
+    font-size: 8px; text-align: center; color: var(--muted); line-height: 1;
+  }
+  .mv-bar-arrow.is-up { color: #b91c1c; }
+  .mv-bar-arrow.is-down { color: #15803d; }
   .mv-bar-track {
     height: 7px; background: #ececf0; border-radius: 2px; overflow: hidden;
   }

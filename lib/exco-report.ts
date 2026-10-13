@@ -1664,6 +1664,10 @@ export async function buildExcoReport(
     };
   }
 
+  function siteCount(site: string): number {
+    return computed.headcountBySite?.find((row) => row.site === site)?.headcount ?? 0;
+  }
+
   if (uniqueCurrent.headcount > 0) {
     if (snapMatchesPeriod) {
       // Garder les formules Headcount / IN OUT du New report ; BASE pour les listes
@@ -1721,6 +1725,26 @@ export async function buildExcoReport(
         useEngagementsPrev: engPrev && !uniquePrev.fromWorkbook,
       });
     }
+    computed = {
+      ...computed,
+      trends: (computed.trends || []).map((trend) =>
+        trend.month === month
+          ? {
+              ...trend,
+              headcount: computed.headcount,
+              plant: siteCount(EXCO_SITE.plant),
+              hq: siteCount(EXCO_SITE.kinshasa),
+              lubudi: siteCount(EXCO_SITE.lubudi),
+              graduates: siteCount(EXCO_SITE.graduates),
+              genderMalePct: computed.genderMalePct ?? trend.genderMalePct,
+              genderFemalePct: computed.genderFemalePct ?? trend.genderFemalePct,
+              averageAge: computed.averageAge ?? trend.averageAge,
+              averageAgeMale: computed.averageAgeMale ?? trend.averageAgeMale,
+              averageAgeFemale: computed.averageAgeFemale ?? trend.averageAgeFemale,
+            }
+          : trend,
+      ),
+    };
   }
 
   const asOfIso = `${asOf.getFullYear()}-${String(asOf.getMonth() + 1).padStart(2, '0')}-${String(asOf.getDate()).padStart(2, '0')}`;

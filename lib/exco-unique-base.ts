@@ -2,12 +2,12 @@
  * BASE EXCO unique par mois :
  * — New report du mois (workbookSnapshot ou data/exco/sources/YYYY-MM/) = source de vérité effectif
  * — noms / départements / **Location_Site** enrichis depuis le système Employés (localisation)
- * — sans snapshot : roll-forward depuis le mois précédent + engagements
+ * — sans New report du mois : lignes Employés encore en poste (ex. sept. 2026 = 172)
  */
 import 'server-only';
 
 import { computeSeniorityYears, displayDateSortKey, exitAlreadyEffective, parseDisplayDateParts, wasPresentOnAsOf } from './employee-columns';
-import { isFemaleGender, isMaleGender } from './employees-hr-dashboard';
+import { employeesPresentOnAsOf, isFemaleGender, isMaleGender } from './employees-hr-dashboard';
 import { readEmployeesBundle } from './employees-json-store';
 import {
   displayEngagementName,
@@ -93,18 +93,6 @@ const BASE_HEADERS = [
 
 function asOfEndOfMonth(year: number, month: number): Date {
   return new Date(year, month, 0, 23, 59, 59);
-}
-
-function datePartsToKey(parts: { y: number; m: number; d: number }): number {
-  return parts.y * 10000 + parts.m * 100 + parts.d;
-}
-
-function dateStrOnOrBefore(dateStr: string, asOf: Date): boolean {
-  const parts = parseDisplayDateParts(dateStr);
-  if (!parts) return false;
-  const asOfKey =
-    asOf.getFullYear() * 10000 + (asOf.getMonth() + 1) * 100 + asOf.getDate();
-  return datePartsToKey(parts) <= asOfKey;
 }
 
 function ageCatFromAge(age: number | null): string {
@@ -282,6 +270,36 @@ function rowFromWorkbook(
     ovtHours: e.ovtHours ?? null,
     ovtCost: e.ovtCost ?? null,
     source,
+  };
+}
+
+/** Fiche système sans ligne classeur : identité Employés, congés / OT remplis ensuite par les imports. */
+function rowFromSystemEmployee(sys: Employee, asOf: Date): ExcoUniqueBaseRow {
+  const birth = sys.dateOfBirth || '';
+  const age = ageFromBirth(birth, asOf);
+  const emplDate = sys.appointmentDate || '';
+  const los = computeSeniorityYears(emplDate, asOf);
+  const dept = (sys.departement || sys.departmentHr || '').trim();
+  return {
+    matricule: (sys.matricule || '').trim(),
+    nom: (sys.nom || '').trim(),
+    gender: sys.gender || '',
+    nationality: sys.nationality || '',
+    position: sys.position || sys.jobTitle || '',
+    grade: sys.grade || '',
+    birth,
+    age,
+    ageCat: ageCatFromAge(age),
+    emplDate,
+    lengthOfService: los,
+    lengthOfServiceCat: seniorityCat(los),
+    department: dept,
+    locationSite: (sys.localisation || '').trim(),
+    leaveBalance: null,
+    allowanceAmount: null,
+    ovtHours: null,
+    ovtCost: null,
+    source: 'seed',
   };
 }
 
@@ -527,7 +545,7 @@ function toSheet(employees: ExcoUniqueBaseRow[]): ExcoSheetTable {
 
 /**
  * BASE officielle du mois = New report du mois (175 pour Jul/Août).
- * Sans fichier : roll-forward mois précédent + engagements du mois.
+ * Sans fichier : lignes Employés encore en poste à la fin du mois.
  */
 export async function buildExcoUniqueBase(
   year: number,
@@ -583,32 +601,36 @@ export async function buildExcoUniqueBase(
     };
   }
 
-  // Roll-forward : BASE mois précédent + entrées − sorties du mois
+  // Pas de New report du mois : l’effectif = lignes Employés encore en poste.
+  // Les anciennes sorties du fichier Engagements ne retirent pas une réembauche toujours active.
   const prev = prevPeriod(year, month);
   const prevBase = await loadMonthWorkbookEmployees(prev.year, prev.month);
+  const priorByMat = new Map(
+    (prevBase?.employees || []).map((e) => [(e.matricule || '').trim(), e]),
+  );
   const roster = new Map<string, ExcoUniqueBaseRow>();
-  for (const e of prevBase?.employees || []) {
-    roster.set(e.matricule, rowFromWorkbook(e, allSystem.get(e.matricule), asOf, 'seed'));
+  for (const sys of employeesPresentOnAsOf(bundle.employees || [], bundle.exits || [], asOf)) {
+    const mat = (sys.matricule || '').trim();
+    if (!mat) continue;
+    const prior = priorByMat.get(mat);
+    roster.set(
+      mat,
+      prior
+        ? rowFromWorkbook(prior, sys, asOf, 'seed')
+        : rowFromSystemEmployee(sys, asOf),
+    );
   }
 
-  for (const row of split.terminationsInMonth) {
-    roster.delete(row.matricule);
-  }
   for (const row of split.engagementsInMonth) {
-    if (!roster.has(row.matricule)) {
-      roster.set(row.matricule, rowFromEngagement(row, allSystem.get(row.matricule), asOf));
+    const mat = (row.matricule || '').trim();
+    if (mat && !roster.has(mat)) {
+      roster.set(mat, rowFromEngagement(row, allSystem.get(mat), asOf));
     }
   }
-
-  for (const row of monthEngRows) {
-    if (row.terminationDate && dateStrOnOrBefore(row.terminationDate, asOf)) {
-      roster.delete(row.matricule);
-    }
-  }
-
-  for (const matricule of [...roster.keys()]) {
-    if (!stillEmployedAt(matricule, activeByMat, exitByMat, asOf)) {
-      roster.delete(matricule);
+  for (const row of split.terminationsInMonth) {
+    const mat = (row.matricule || '').trim();
+    if (mat && !stillEmployedAt(mat, activeByMat, exitByMat, asOf)) {
+      roster.delete(mat);
     }
   }
 

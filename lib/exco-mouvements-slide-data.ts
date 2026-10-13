@@ -1,4 +1,5 @@
 import type { ExcoCountRow, ExcoReportPayload, ExcoTrendMonth } from '@/lib/exco-types';
+import { bucketDepartureReasons } from '@/lib/exco-exit-reasons';
 import {
   EXCO_FY_START_YEAR,
   TEMPLATE_YTD_JUNE_2026,
@@ -169,8 +170,9 @@ export function buildMouvementsSlideData(report: ExcoReportPayload): ExcoMouveme
   const exitsTotal = (c.exitsByReason || []).reduce((s, r) => s + r.value, 0);
   const agentsMonth = c.headcount > 0 ? c.headcount : 0;
   const prevAgents = c.prevHeadcount != null && c.prevHeadcount > 0 ? c.prevHeadcount : 0;
+  const reasons = bucketDepartureReasons(c.exitsByReason || []);
   const prevByReason = new Map(
-    (c.prevExitsByReason || []).map((r) => [r.label.toLowerCase(), r.value]),
+    bucketDepartureReasons(c.prevExitsByReason || []).map((r) => [r.label, r.value]),
   );
 
   return {
@@ -192,12 +194,12 @@ export function buildMouvementsSlideData(report: ExcoReportPayload): ExcoMouveme
       subtitle: exitsTotal
         ? `${exitsTotal} Out this month · HC ${agentsMonth || '—'}`
         : 'No exits',
-      items: (c.exitsByReason || []).map((r) => {
+      items: reasons.map((r) => {
         const count = r.value || 0;
         const pct =
           agentsMonth > 0 ? ratioToRate(count, agentsMonth) : 0;
         const rate = agentsMonth > 0 ? count / agentsMonth : null;
-        const prevCount = prevByReason.get(r.label.toLowerCase()) ?? 0;
+        const prevCount = prevByReason.get(r.label) ?? 0;
         const prevRate = prevAgents > 0 ? prevCount / prevAgents : null;
         return {
           label: r.label,

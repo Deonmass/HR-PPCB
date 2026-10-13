@@ -29,10 +29,12 @@ import {
   OVT_TREND_MONTHS,
   enrichOtEvolutionFromByDept,
 } from '@/lib/exco-new-report-parse';
+import { bucketDepartureReasons, canonicalDepartureLabel, departureLabelFr } from '@/lib/exco-exit-reasons';
 import { otChartDeptLabel } from '@/lib/exco-ot-slide-data';
 import ExcoOtOverviewCharts from '@/components/exco/ExcoOtOverviewCharts';
 import ExcoNarrativePanel from '@/components/exco/ExcoNarrativePanel';
 import ExcoExportMenu from '@/components/exco/ExcoExportMenu';
+import ExcoNarrativeColumns from '@/components/exco/ExcoNarrativeColumns';
 import { kpiSummaryToCardGroups, kpiSummaryToCards, type ExcoKpiCard, type ExcoKpiCardGroup } from '@/lib/exco-kpi-format';
 import type { ExcoComputedBlock, ExcoMetricValue } from '@/lib/exco-types';
 import type { ExcoSheetTable } from '@/lib/exco-workbook-types';
@@ -1173,7 +1175,9 @@ function ExitReasonsPctChart({
               <div
                 className="exco-bar-fill"
                 style={{
-                  width: `${Math.max(2, Math.round((item.value / max) * 100))}%`,
+                  width: item.value > 0
+                    ? `${Math.max(2, Math.round((item.value / max) * 100))}%`
+                    : '0%',
                   background: '#7a1f2b',
                 }}
               />
@@ -1433,6 +1437,7 @@ export default function ExcoPage() {
   const { t } = useI18n();
   const canEdit = can('exco.rapport', 'edit');
   const [tab, setTab] = useState<TabId>('params');
+  const [summaryPane, setSummaryPane] = useState<'highlights' | 'lowlights' | 'focus'>('highlights');
   // Période : bootstrap sur le dernier rapport enregistré (voir effet ci-dessous)
   const [year, setYear] = useState(2026);
   const [month, setMonth] = useState(7);
@@ -1463,6 +1468,7 @@ export default function ExcoPage() {
   const [uniqueBaseOtMats, setUniqueBaseOtMats] = useState<string[]>([]);
   const [uniqueBasePresentMats, setUniqueBasePresentMats] = useState<string[]>([]);
   const [baseSearch, setBaseSearch] = useState('');
+  const [baseRoster, setBaseRoster] = useState<'actifs' | 'exits'>('actifs');
   const [imported, setImported] = useState<ImportedFlags>({
     componentPostedUnits: false,
     leaveBalances: false,
@@ -1622,12 +1628,9 @@ export default function ExcoPage() {
     if (basePayload.baseSheet && typeof basePayload.baseSheet === 'object') {
       setBaseSheet(basePayload.baseSheet);
       const ub = basePayload.uniqueBase;
-      const seedLabel =
-        ub?.fromWorkbook
-          ? `New report ${m}/${y}`
-          : ub?.seedYear && ub?.seedMonth
-            ? `roll-forward depuis ${ub.seedMonth}/${ub.seedYear}`
-            : 'seed New report';
+      const seedLabel = ub?.fromWorkbook
+        ? `New report ${m}/${y}`
+        : 'lignes employés';
       const leaveExtra =
         ub?.leaveExitCount && ub.leaveExitCount > 0
           ? ` · +${ub.leaveExitCount} sorties (Leave Balances)`
@@ -1654,6 +1657,7 @@ export default function ExcoPage() {
           ? ub.presentMatricules.map((m) => normMatricule(m)).filter(Boolean)
           : [],
       );
+      setBaseRoster('actifs');
       setBaseSheetSource(
         `BASE unique · ${seedLabel} · ${ub?.headcount ?? basePayload.baseSheet.rowCount - 1} présents${leaveExtra}`,
       );
@@ -2091,10 +2095,11 @@ export default function ExcoPage() {
     const sheets = (data.sheets || []) as ExcoSheetTable[];
     setBaseSheet((prev) => {
       if (prev && prev.rows?.length > 1) return prev;
+      if (!samePeriod) return prev;
       return (
         sheets.find((s) => s.name.toLowerCase() === 'base')
         || sheets.find((s) => s.id === 'base')
-        || null
+        || prev
       );
     });
     setBaseSheetSource((prev) =>
@@ -2203,9 +2208,11 @@ export default function ExcoPage() {
 
   const openExitReason = useCallback(
     (reason: string) => {
-      const people = (inOut?.outList || []).filter(
-        (p) => (p.reason || 'Non renseigné') === reason,
-      );
+      const wanted = canonicalDepartureLabel(reason);
+      const people = (inOut?.outList || []).filter((p) => {
+        const raw = (p.reason || '').trim() || 'Non renseigné';
+        return canonicalDepartureLabel(raw) === wanted || raw === reason;
+      });
       openInOutList(`Voir la liste — Sorties · ${reason} · ${periodLabel}`, people);
     },
     [inOut, openInOutList, periodLabel],
@@ -2251,14 +2258,27 @@ export default function ExcoPage() {
       }
       return next;
     });
+    const present = new Set(uniqueBasePresentMats);
+    const isExitRow = (row: Array<string | number | null>) => {
+      if (!present.size || matIdx < 0) return false;
+      const mat = normMatricule(String(row[matIdx] ?? ''));
+      return Boolean(mat) && !present.has(mat);
+    };
+    const actifs = rows.filter((row) => !isExitRow(row));
+    const exits = rows.filter((row) => isExitRow(row));
     const q = baseSearch.trim().toLowerCase();
-    const filtered = !q
-      ? rows
-      : rows.filter((row) =>
-          row.some((cell) => String(cell ?? '').toLowerCase().includes(q)),
-        );
-    return { headers: projected.headers, rows: filtered, total: rows.length };
-  }, [baseSheet, namesByMatricule, deptsByMatricule, baseSearch, baseImportColumns, fxRate]);
+    const matchSearch = (row: Array<string | number | null>) =>
+      row.some((cell) => String(cell ?? '').toLowerCase().includes(q));
+    const visibles = baseRoster === 'exits' ? exits : actifs;
+    const filtered = !q ? visibles : visibles.filter(matchSearch);
+    return {
+      headers: projected.headers,
+      rows: filtered,
+      total: rows.length,
+      actifsCount: actifs.length,
+      exitsCount: exits.length,
+    };
+  }, [baseSheet, namesByMatricule, deptsByMatricule, baseSearch, baseImportColumns, fxRate, uniqueBasePresentMats, baseRoster]);
 
   const refreshAll = useCallback(async () => {
     setLoading(true);
@@ -2479,7 +2499,10 @@ export default function ExcoPage() {
       uniqueBaseOtAgents != null && uniqueBaseOtAgents > 0
         ? uniqueBaseOtAgents
         : (uniqueAgents || ot?.totals.agents || 0);
-    const hc = wb?.headcount ?? basePresentCount ?? null;
+    const hc =
+      basePresentCount != null && basePresentCount > 0
+        ? basePresentCount
+        : (wb?.headcount ?? null);
     const pctAgents =
       hc && hc > 0 && agents > 0
         ? Math.round((agents / hc) * 1000) / 10
@@ -2734,7 +2757,11 @@ export default function ExcoPage() {
                   }}
                 />
               </label>
-              <ExcoExportMenu year={year} month={month} disabled={Boolean(busy) || loading} />
+              <ExcoExportMenu
+                year={year}
+                month={month}
+                disabled={Boolean(busy) || loading}
+              />
               <RefreshButton loading={loading} onClick={() => void refreshAll()} />
             </div>
           </div>
@@ -2959,15 +2986,32 @@ export default function ExcoPage() {
                 <div className="exco-panel-head">
                   <h3>{t('exco.base.title')}</h3>
                   <div className="exco-base-toolbar-inline">
-                    <strong className="exco-base-effectif">
-                      {t('exco.base.headcount', {
-                        count: formatNum(basePresentCount ?? baseProjected.total),
-                      })}
-                      {baseLeaveExitCount > 0
-                        ? ` ${t('exco.base.leaveExits', { count: formatNum(baseLeaveExitCount) })}`
-                        : ''}
-                      {baseSearch.trim() ? ` · ${baseProjected.rows.length}` : ''}
-                    </strong>
+                    <div className="exco-base-roster-tabs" role="tablist" aria-label={t('exco.base.title')}>
+                      <button
+                        type="button"
+                        role="tab"
+                        className={`exco-base-roster-tab${baseRoster === 'actifs' ? ' is-active' : ''}`}
+                        aria-selected={baseRoster === 'actifs'}
+                        onClick={() => setBaseRoster('actifs')}
+                      >
+                        {t('exco.base.actifs')}
+                        <span className="exco-base-roster-count">
+                          {formatNum(basePresentCount ?? baseProjected.actifsCount)}
+                        </span>
+                      </button>
+                      <button
+                        type="button"
+                        role="tab"
+                        className={`exco-base-roster-tab is-exits${baseRoster === 'exits' ? ' is-active' : ''}`}
+                        aria-selected={baseRoster === 'exits'}
+                        onClick={() => setBaseRoster('exits')}
+                      >
+                        {t('exco.base.exits')}
+                        <span className="exco-base-roster-count">
+                          {formatNum(baseLeaveExitCount || baseProjected.exitsCount)}
+                        </span>
+                      </button>
+                    </div>
                     <input
                       type="search"
                       className="exco-base-search"
@@ -2978,7 +3022,15 @@ export default function ExcoPage() {
                   </div>
                 </div>
                 <div className="exco-base-scroll-host">
-                  {baseProjected.rows.length > 0 || baseProjected.total > 0 ? (
+                  {baseProjected.total > 0 && baseProjected.rows.length === 0 ? (
+                    <p className="exco-muted" style={{ padding: '0.75rem' }}>
+                      {baseSearch.trim()
+                        ? t('common.noResults')
+                        : baseRoster === 'exits'
+                          ? t('exco.base.exitsEmpty')
+                          : t('exco.base.actifsEmpty')}
+                    </p>
+                  ) : baseProjected.rows.length > 0 || baseProjected.total > 0 ? (
                     <div className="exco-base-scroll-x">
                       <table className="exco-sheet-table exco-base-table">
                         <thead>
@@ -3342,7 +3394,8 @@ export default function ExcoPage() {
               <section className="exco-panel exco-panel-accent-rose is-report-month">
                 <h3>{t('exco.inout.exitTypes', { month: monthLabel })}</h3>
                 <ExitReasonsPctChart
-                  items={inOut?.exitsByReason || []}
+                  items={bucketDepartureReasons(inOut?.exitsByReason || [])
+                    .map((item) => ({ label: departureLabelFr(item.label), value: item.value }))}
                   onItemClick={openExitReason}
                 />
               </section>
@@ -4390,7 +4443,25 @@ export default function ExcoPage() {
 
           {tab === 'summary' && (
             <div className="exco-panel-stack exco-summary-stack">
-              <div className="exco-panel-head" style={{ marginBottom: 0, justifyContent: 'flex-end' }}>
+              <div className="exco-summary-toolbar">
+                <div className="exco-summary-tabs" role="tablist" aria-label="Summary">
+                  {([
+                    ['highlights', 'Highlights', 'teal'],
+                    ['lowlights', 'Lowlights', 'wine'],
+                    ['focus', 'Focus', 'navy'],
+                  ] as const).map(([id, label, tone]) => (
+                    <button
+                      key={id}
+                      type="button"
+                      role="tab"
+                      className={`exco-summary-tab is-${tone}${summaryPane === id ? ' is-active' : ''}`}
+                      aria-selected={summaryPane === id}
+                      onClick={() => setSummaryPane(id)}
+                    >
+                      {label}
+                    </button>
+                  ))}
+                </div>
                 {canEdit && (
                   <button
                     type="button"
@@ -4403,63 +4474,33 @@ export default function ExcoPage() {
                 )}
               </div>
               <div className="exco-panel-grid">
-                <section className="exco-panel exco-panel-accent-teal">
-                  <h3>Highlights</h3>
-                  <textarea
-                    className="exco-narrative-input"
-                    rows={22}
-                    disabled={!canEdit || Boolean(busy)}
-                    value={narrative.highlights || ''}
-                    onChange={(e) =>
-                      setNarrative((prev) => ({ ...prev, highlights: e.target.value }))
-                    }
-                    onBlur={(e) =>
-                      setNarrative((prev) => ({
-                        ...prev,
-                        highlights: formatNarrativeForEdit(e.target.value),
-                      }))
-                    }
-                    placeholder={"Point 1\n\nPoint 2\n\nPoint 3…"}
-                  />
-                </section>
-                <section className="exco-panel exco-panel-accent-wine">
-                  <h3>Lowlights</h3>
-                  <textarea
-                    className="exco-narrative-input"
-                    rows={22}
-                    disabled={!canEdit || Boolean(busy)}
-                    value={narrative.lowlights || ''}
-                    onChange={(e) =>
-                      setNarrative((prev) => ({ ...prev, lowlights: e.target.value }))
-                    }
-                    onBlur={(e) =>
-                      setNarrative((prev) => ({
-                        ...prev,
-                        lowlights: formatNarrativeForEdit(e.target.value),
-                      }))
-                    }
-                    placeholder={"Point 1\n\nPoint 2\n\nPoint 3…"}
-                  />
-                </section>
-                <section className="exco-panel exco-panel-accent-navy">
-                  <h3>Focus</h3>
-                  <textarea
-                    className="exco-narrative-input"
-                    rows={22}
-                    disabled={!canEdit || Boolean(busy)}
-                    value={narrative.focus || ''}
-                    onChange={(e) =>
-                      setNarrative((prev) => ({ ...prev, focus: e.target.value }))
-                    }
-                    onBlur={(e) =>
-                      setNarrative((prev) => ({
-                        ...prev,
-                        focus: formatNarrativeForEdit(e.target.value),
-                      }))
-                    }
-                    placeholder={"Point 1\n\nPoint 2\n\nPoint 3…"}
-                  />
-                </section>
+                {summaryPane === 'highlights' && (
+                  <section className="exco-panel exco-panel-accent-teal">
+                    <ExcoNarrativeColumns
+                      value={narrative.highlights || ''}
+                      disabled={!canEdit || Boolean(busy)}
+                      onChange={(highlights) => setNarrative((prev) => ({ ...prev, highlights }))}
+                    />
+                  </section>
+                )}
+                {summaryPane === 'lowlights' && (
+                  <section className="exco-panel exco-panel-accent-wine">
+                    <ExcoNarrativeColumns
+                      value={narrative.lowlights || ''}
+                      disabled={!canEdit || Boolean(busy)}
+                      onChange={(lowlights) => setNarrative((prev) => ({ ...prev, lowlights }))}
+                    />
+                  </section>
+                )}
+                {summaryPane === 'focus' && (
+                  <section className="exco-panel exco-panel-accent-navy">
+                    <ExcoNarrativeColumns
+                      value={narrative.focus || ''}
+                      disabled={!canEdit || Boolean(busy)}
+                      onChange={(focus) => setNarrative((prev) => ({ ...prev, focus }))}
+                    />
+                  </section>
+                )}
               </div>
             </div>
           )}
