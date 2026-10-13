@@ -4,6 +4,7 @@ import fs from 'fs/promises';
 import path from 'path';
 import PptxGenJS from 'pptxgenjs';
 import type { ExcoCahierHighlight, ExcoCsrFy27Row, ExcoMetricValue, ExcoReportPayload } from './exco-types';
+import { buildExcoCoverLine } from './exco-narrative-format';
 import { groupExcoKpis, EXCO_PREVIEW_TOC } from './exco-preview-html';
 import { formatKpiDelta, kpiDeltaTone } from './exco-kpi-format';
 import { buildMouvementsSlideData } from './exco-mouvements-slide-data';
@@ -106,30 +107,6 @@ function deltaLabel(
   const color =
     tone === 'up' ? PPC.success : tone === 'down' ? PPC.danger : PPC.muted;
   return { text, color };
-}
-
-/** Date de meeting par défaut = dernier jour du mois du rapport. */
-function defaultMeetingDateIso(year: number, month: number): string {
-  const d = new Date(year, month, 0);
-  const yyyy = d.getFullYear();
-  const mm = String(d.getMonth() + 1).padStart(2, '0');
-  const dd = String(d.getDate()).padStart(2, '0');
-  return `${yyyy}-${mm}-${dd}`;
-}
-
-export function meetingDateLabel(raw: string | undefined): string {
-  const value = (raw || '').trim();
-  if (/^\d{4}-\d{2}-\d{2}/.test(value)) {
-    const d = new Date(`${value.slice(0, 10)}T00:00:00`);
-    if (!Number.isNaN(d.getTime())) {
-      return d.toLocaleDateString('en-GB', {
-        day: 'numeric',
-        month: 'long',
-        year: 'numeric',
-      });
-    }
-  }
-  return value || '—';
 }
 
 function addChrome(slide: Slide, title: string, subtitle: string, period: string, sectionNo?: string): void {
@@ -751,11 +728,13 @@ export async function buildModernExcoContentPptx(report: ExcoReportPayload): Pro
 
     // Pastille rouge + ligne meeting (centrée)
     const n = o.narrative;
-    const title = (n.meetingTitle?.trim() || 'EXCO MEETING').toUpperCase();
-    const rawDate = (n.meetingDate || '').trim() || defaultMeetingDateIso(report.year, report.month);
-    const date = meetingDateLabel(rawDate).toUpperCase();
-    const place = (n.meetingPlace?.trim() || 'Zamba').toUpperCase();
-    const meet = `${title} HELD ON ${date}, IN ${place}`;
+    const meet = buildExcoCoverLine({
+      year: report.year,
+      month: report.month,
+      meetingTitle: n.meetingTitle,
+      meetingDate: n.meetingDate,
+      meetingPlace: n.meetingPlace,
+    });
     const meetY = bannerY + bannerH + 1.15;
     const badgePath = path.join(assets, 'cover-badge.png');
     const badgeSize = 0.38;

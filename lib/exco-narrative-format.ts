@@ -1,5 +1,65 @@
 import { emptyExcoOverlays, type ExcoNarrative } from './exco-types';
 
+const PERIOD_LABEL = /^(jan|feb|mar|apr|may|jun|jul|aug|sep|oct|nov|dec)-\d{2}$/i;
+const MONTH_NAMES = [
+  'january', 'february', 'march', 'april', 'may', 'june',
+  'july', 'august', 'september', 'october', 'november', 'december',
+];
+
+function endOfReportMonth(year: number, month: number): string {
+  const end = new Date(year, month, 0);
+  return end.toLocaleDateString('en-GB', {
+    day: 'numeric',
+    month: 'long',
+    year: 'numeric',
+  });
+}
+
+/** Date de réunion du mois exporté. Un libellé « Aug-26 » ou une date d’un autre mois est ignoré. */
+function resolveMeetingDate(raw: string | undefined, year: number, month: number): string {
+  const value = (raw || '').trim();
+  const fallback = endOfReportMonth(year, month);
+  if (!value || PERIOD_LABEL.test(value)) return fallback;
+
+  if (/^\d{4}-\d{2}-\d{2}/.test(value)) {
+    const d = new Date(`${value.slice(0, 10)}T00:00:00`);
+    if (Number.isNaN(d.getTime())) return fallback;
+    if (d.getFullYear() !== year || d.getMonth() + 1 !== month) return fallback;
+    return d.toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric' });
+  }
+
+  if (/\d{4}/.test(value)) {
+    const parsed = new Date(value);
+    if (!Number.isNaN(parsed.getTime())) {
+      if (parsed.getFullYear() !== year || parsed.getMonth() + 1 !== month) return fallback;
+      return parsed.toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric' });
+    }
+  }
+
+  const mentioned = MONTH_NAMES.findIndex((name) => value.toLowerCase().includes(name));
+  if (mentioned >= 0 && mentioned + 1 !== month) return fallback;
+  return value;
+}
+
+/**
+ * Ligne de la page de garde. Le titre ne reprend pas « HELD ON … »
+ * (sinon la date du modèle reste collée devant la date du mois).
+ */
+export function buildExcoCoverLine(input: {
+  year: number;
+  month: number;
+  meetingTitle?: string;
+  meetingDate?: string;
+  meetingPlace?: string;
+}): string {
+  let title = (input.meetingTitle || '').trim() || 'EXCO MEETING';
+  const held = title.search(/\s+held on\b/i);
+  if (held >= 0) title = title.slice(0, held).trim() || 'EXCO MEETING';
+  const date = resolveMeetingDate(input.meetingDate, input.year, input.month).toUpperCase();
+  const place = (input.meetingPlace || '').trim() || 'Zamba';
+  return `${title.toUpperCase()} HELD ON ${date}, IN ${place.toUpperCase()}`;
+}
+
 /** True si Highlights / Lowlights / Focus ont du contenu. */
 export function narrativeHasBody(narrative: ExcoNarrative | null | undefined): boolean {
   if (!narrative) return false;

@@ -10,10 +10,10 @@ import { EXCO_KPI_SUMMARY_KEYS } from './exco-kpi-layout';
 import { buildTrainingSlideData, buildGouvernanceSlideData } from './exco-dashboard-slides-data';
 import { buildInternalAuditRows, summarizeInternalAudit } from './exco-audit-internal';
 import { fillTemplateDataSlides } from './exco-pptx-template-tables';
+import { buildExcoCoverLine } from './exco-narrative-format';
 import {
   htmlToDrawingParagraphs,
   parseNarrativeZones,
-  splitHtmlAcrossShapes,
   zoneHasText,
   type NarrativeZoneKey,
   type NarrativeZones,
@@ -76,38 +76,20 @@ function escapeXml(value: string): string {
     .replace(/"/g, '&quot;');
 }
 
-function meetingDateLabel(raw: string | undefined, year: number, month: number): string {
-  const value = (raw || '').trim();
-  if (/^\d{4}-\d{2}-\d{2}/.test(value)) {
-    const d = new Date(`${value.slice(0, 10)}T00:00:00`);
-    if (!Number.isNaN(d.getTime())) {
-      return d.toLocaleDateString('en-GB', {
-        day: 'numeric',
-        month: 'long',
-        year: 'numeric',
-      });
-    }
-  }
-  if (value) return value;
-  const end = new Date(year, month, 0);
-  return end.toLocaleDateString('en-GB', {
-    day: 'numeric',
-    month: 'long',
-    year: 'numeric',
-  });
-}
-
 function prevPeriodLabel(year: number, month: number): string {
   if (month <= 1) return formatExcoPeriodLabel(year - 1, 12);
   return formatExcoPeriodLabel(year, month - 1);
 }
 
-function buildCoverLine(report: ExcoReportPayload): string {
+function coverLineFor(report: ExcoReportPayload): string {
   const n = report.overlays.narrative || {};
-  const title = (n.meetingTitle?.trim() || 'EXCO MEETING').toUpperCase();
-  const date = meetingDateLabel(n.meetingDate, report.year, report.month).toUpperCase();
-  const place = (n.meetingPlace?.trim() || 'Zamba').toUpperCase();
-  return `${title} HELD ON ${date}, IN ${place}`;
+  return buildExcoCoverLine({
+    year: report.year,
+    month: report.month,
+    meetingTitle: n.meetingTitle,
+    meetingDate: n.meetingDate,
+    meetingPlace: n.meetingPlace,
+  });
 }
 
 function replaceTextRun(xml: string, from: string, to: string): string {
@@ -169,33 +151,86 @@ function replaceShapeTxBody(shapeXml: string, paragraphs: string): string {
   });
 }
 
+function shapeBox(shapeXml: string): { x: number; y: number; cx: number; cy: number } | null {
+  const off = shapeXml.match(/<a:off x="(-?\d+)" y="(-?\d+)"/);
+  const ext = shapeXml.match(/<a:ext cx="(\d+)" cy="(\d+)"/);
+  if (!off || !ext) return null;
+  return {
+    x: Number(off[1]),
+    y: Number(off[2]),
+    cx: Number(ext[1]),
+    cy: Number(ext[2]),
+  };
+}
+
+/** Hauteur mini d’un corps de colonne (badges et titres sont bien plus courts). */
+const NARRATIVE_BODY_MIN_CY = 1_500_000;
+const EMPTY_DRAWING_PARAS = '<a:p><a:endParaRPr lang="en-US" sz="1200"/></a:p>';
+
+/**
+ * Corps Plant / HQ / Regions, rangés par position horizontale.
+ * L’ordre XML du modèle place le texte du mois précédent *avant* le libellé
+ * de colonne, et une forme vide par-dessus : l’ordre XML superposait les deux.
+ */
 function columnContentIndexes(shapes: string[]): Record<NarrativeZoneKey, number[]> {
-  const found = NARRATIVE_COLUMNS.map((col) => ({
-    ...col,
-    idx: shapes.findIndex((sp) => shapePlainText(sp) === col.label),
-  }))
-    .filter((col) => col.idx >= 0)
-    .sort((a, b) => a.idx - b.idx);
+  const anchors = NARRATIVE_COLUMNS.flatMap((col) => {
+    const idx = shapes.findIndex((sp) => shapePlainText(sp) === col.label);
+    const box = idx >= 0 ? shapeBox(shapes[idx]) : null;
+    return box ? [{ key: col.key, x: box.x + box.cx / 2 }] : [];
+  });
   const out: Record<NarrativeZoneKey, number[]> = { plant: [], hq: [], regions: [] };
-  for (let i = 0; i < found.length; i += 1) {
-    const start = found[i].idx + 1;
-    const end = i + 1 < found.length ? found[i + 1].idx : shapes.length;
-    const longs: number[] = [];
-    const blanks: number[] = [];
-    for (let j = start; j < end; j += 1) {
-      if (!/<p:txBody>/.test(shapes[j])) continue;
-      const text = shapePlainText(shapes[j]);
-      if (text.length > 0 && text.length <= 2) continue;
-      if (NARRATIVE_COLUMNS.some((col) => col.label === text)) continue;
-      if (text.length > 40) longs.push(j);
-      else if (!text) blanks.push(j);
+  if (!anchors.length) return out;
+
+  shapes.forEach((sp, idx) => {
+    if (!/<p:txBody>/.test(sp)) return;
+    const box = shapeBox(sp);
+    if (!box || box.cy < NARRATIVE_BODY_MIN_CY) return;
+    const text = shapePlainText(sp);
+    if (text.length > 0 && text.length <= 2) return;
+    if (NARRATIVE_COLUMNS.some((col) => col.label === text)) return;
+    const center = box.x + box.cx / 2;
+    let best = anchors[0];
+    let bestDist = Math.abs(center - best.x);
+    for (const anchor of anchors.slice(1)) {
+      const dist = Math.abs(center - anchor.x);
+      if (dist < bestDist) {
+        best = anchor;
+        bestDist = dist;
+      }
     }
-    out[found[i].key] = longs.length ? longs : blanks.slice(0, 1);
-  }
+    out[best.key].push(idx);
+  });
   return out;
 }
 
-/** Remplace Plant / HQ / Régions seulement si la colonne a été préparée. */
+/** Forme de contenu la plus basse : le cadre sous le titre, pas la carte qui le recouvre. */
+function pickNarrativeTarget(shapes: string[], indexes: number[]): number {
+  let best = indexes[0];
+  let bestY = -1;
+  for (const idx of indexes) {
+    const y = shapeBox(shapes[idx])?.y ?? 0;
+    if (y > bestY) {
+      bestY = y;
+      best = idx;
+    }
+  }
+  return best;
+}
+
+function rebuildShapes(xml: string, shapes: string[], matches: RegExpMatchArray[]): string {
+  const parts: string[] = [];
+  let last = 0;
+  for (let i = 0; i < matches.length; i += 1) {
+    const start = matches[i].index ?? 0;
+    parts.push(xml.slice(last, start));
+    parts.push(shapes[i]);
+    last = start + matches[i][0].length;
+  }
+  parts.push(xml.slice(last));
+  return parts.join('');
+}
+
+/** Remplace Plant / HQ / Régions et efface le texte du mois précédent dans la même colonne. */
 function fillNarrativeColumns(xml: string, zones: NarrativeZones | null): string {
   if (!zones) return xml;
   const shapeMatches = [...xml.matchAll(/<p:sp>[\s\S]*?<\/p:sp>/g)];
@@ -207,24 +242,32 @@ function fillNarrativeColumns(xml: string, zones: NarrativeZones | null): string
     if (!zoneHasText(zones[col.key])) continue;
     const idxs = columns[col.key];
     if (!idxs.length) continue;
-    const chunks = splitHtmlAcrossShapes(zones[col.key], idxs.length);
-    idxs.forEach((shapeIdx, i) => {
-      const paras = htmlToDrawingParagraphs(chunks[i] || '');
-      shapes[shapeIdx] = replaceShapeTxBody(shapes[shapeIdx], paras);
-    });
+    const target = pickNarrativeTarget(shapes, idxs);
+    shapes[target] = replaceShapeTxBody(
+      shapes[target],
+      htmlToDrawingParagraphs(zones[col.key]),
+    );
+    for (const idx of idxs) {
+      if (idx === target || !shapePlainText(shapes[idx])) continue;
+      shapes[idx] = replaceShapeTxBody(shapes[idx], EMPTY_DRAWING_PARAS);
+    }
     changed = true;
   }
   if (!changed) return xml;
-  const parts: string[] = [];
-  let last = 0;
-  for (let i = 0; i < shapeMatches.length; i += 1) {
-    const start = shapeMatches[i].index ?? 0;
-    parts.push(xml.slice(last, start));
-    parts.push(shapes[i]);
-    last = start + shapeMatches[i][0].length;
-  }
-  parts.push(xml.slice(last));
-  return parts.join('');
+  return rebuildShapes(xml, shapes, shapeMatches);
+}
+
+function fillCoverSlide(xml: string, line: string): string {
+  const shapeMatches = [...xml.matchAll(/<p:sp>[\s\S]*?<\/p:sp>/g)];
+  if (!shapeMatches.length) return xml;
+  const shapes = shapeMatches.map((m) => m[0]);
+  const idx = shapes.findIndex((sp) => {
+    const text = shapePlainText(sp);
+    return /EXCO MEETING/i.test(text) && /HELD ON/i.test(text);
+  });
+  if (idx < 0) return xml;
+  shapes[idx] = setShapePlainText(shapes[idx], line);
+  return rebuildShapes(xml, shapes, shapeMatches);
 }
 
 function decodeXmlText(value: string): string {
@@ -363,7 +406,7 @@ function buildSafeReplacementPairs(report: ExcoReportPayload): Array<[string, st
   const c = report.computed;
   const pairs: Array<[string, string]> = [];
 
-  pairs.push([BASELINE_COVER, buildCoverLine(report)]);
+  pairs.push([BASELINE_COVER, coverLineFor(report)]);
   pairs.push(['Jul-26 → Aug-26', `${prevPeriod} → ${period}`]);
   pairs.push([`General Overview — ${BASELINE_PERIOD}`, `General Overview — ${period}`]);
   pairs.push([BASELINE_PERIOD, period]);
@@ -501,6 +544,7 @@ export async function buildExcoPptxFromTemplate(report: ExcoReportPayload): Prom
   const zip = await JSZip.loadAsync(raw);
   const pairs = buildSafeReplacementPairs(report);
   const period = formatExcoPeriodLabel(report.year, report.month);
+  const cover = coverLineFor(report);
   const n = report.overlays.narrative || {};
 
   const slideFiles = Object.keys(zip.files)
@@ -525,6 +569,7 @@ export async function buildExcoPptxFromTemplate(report: ExcoReportPayload): Prom
 
     xml = replaceAllRuns(xml, pairs);
     xml = xml.replace(/>Aug-26</g, `>${escapeXml(period)}<`);
+    if (slideNo === 1) xml = fillCoverSlide(xml, cover);
     if (slideNo === 6) xml = fillKpiSummarySlide(xml, report);
     zip.file(name, xml);
   }

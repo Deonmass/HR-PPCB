@@ -30,7 +30,7 @@ import {
 import { buildExcoSectorTables } from '@/lib/exco-project-sector-table';
 import { buildInternalAuditRows, summarizeInternalAudit } from '@/lib/exco-audit-internal';
 import type { InternalAuditRow } from '@/lib/exco-audit-internal';
-import { splitNarrativePoints } from '@/lib/exco-narrative-format';
+import { buildExcoCoverLine, splitNarrativePoints } from '@/lib/exco-narrative-format';
 import type { ExcoCahierHighlight, ExcoCsrFy27Row } from '@/lib/exco-types';
 import { formatKpiDelta, kpiDeltaTone } from '@/lib/exco-kpi-format';
 import { EXCO_KPI_GROUPS, EXCO_KPI_SUMMARY_KEYS } from '@/lib/exco-kpi-layout';
@@ -111,25 +111,13 @@ function deltaToneFromKpi(kpi: ExcoMetricValue): string {
 
 function meetingLine(report: ExcoReportPayload): string {
   const n = report.overlays.narrative;
-  const title = (n.meetingTitle?.trim() || 'EXCO MEETING').toUpperCase();
-  let raw = (n.meetingDate || '').trim();
-  if (!raw) {
-    const d = new Date(report.year, report.month, 0);
-    raw = `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
-  }
-  let date = raw;
-  if (/^\d{4}-\d{2}-\d{2}/.test(raw)) {
-    const d = new Date(`${raw.slice(0, 10)}T00:00:00`);
-    if (!Number.isNaN(d.getTime())) {
-      date = d.toLocaleDateString('en-GB', {
-        day: 'numeric',
-        month: 'long',
-        year: 'numeric',
-      });
-    }
-  }
-  const place = (n.meetingPlace?.trim() || 'Zamba').toUpperCase();
-  return `${title} HELD ON ${date.toUpperCase()}, IN ${place}`;
+  return buildExcoCoverLine({
+    year: report.year,
+    month: report.month,
+    meetingTitle: n.meetingTitle,
+    meetingDate: n.meetingDate,
+    meetingPlace: n.meetingPlace,
+  });
 }
 
 export const EXCO_PREVIEW_TOC = [
