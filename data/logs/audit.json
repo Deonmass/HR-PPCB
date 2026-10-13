@@ -1,6 +1,53 @@
 {
   "entries": [
     {
+      "id": "log-001559",
+      "at": "2026-10-13T08:59:23.449Z",
+      "userId": "admin",
+      "userName": "Administrateur",
+      "userEmail": "admin",
+      "module": "guest-house",
+      "moduleLabel": "Guest house",
+      "action": "update",
+      "actionLabel": "Modification",
+      "entityType": "guest-house.reservation",
+      "entityId": "04c510e0-4ad3-44fb-b258-d31f0020203f",
+      "summary": "Statut réservation 04c510e0-4ad3-44fb-b258-d31f0020203f → cancelled",
+      "details": "Statut réservation 04c510e0-4ad3-44fb-b258-d31f0020203f → cancelled",
+      "before": {
+        "id": "04c510e0-4ad3-44fb-b258-d31f0020203f",
+        "numero": "GH-2026-4467",
+        "createdAt": "2026-10-13T08:45:18.396Z",
+        "personName": "SAMBA LUINDA HONORE",
+        "matricule": "70000130",
+        "isAgent": true,
+        "motif": "Accompagner les chinois",
+        "startDate": "2026-10-13",
+        "startSlot": "matin",
+        "endDate": "2026-10-14",
+        "endSlot": "matin",
+        "status": "pending",
+        "updatedAt": "2026-10-13T08:45:18.396Z"
+      },
+      "after": {
+        "id": "04c510e0-4ad3-44fb-b258-d31f0020203f",
+        "numero": "GH-2026-4467",
+        "createdAt": "2026-10-13T08:45:18.396Z",
+        "personName": "SAMBA LUINDA HONORE",
+        "matricule": "70000130",
+        "isAgent": true,
+        "motif": "Accompagner les chinois",
+        "startDate": "2026-10-13",
+        "startSlot": "matin",
+        "endDate": "2026-10-14",
+        "endSlot": "matin",
+        "status": "cancelled",
+        "updatedAt": "2026-10-13T08:59:19.804Z"
+      },
+      "undoable": true,
+      "undone": false
+    },
+    {
       "id": "log-001558",
       "at": "2026-10-13T08:47:15.934Z",
       "userId": "admin",
@@ -156607,5 +156654,5 @@
       }
     }
   ],
-  "nextSeq": 1559
+  "nextSeq": 1560
 }
