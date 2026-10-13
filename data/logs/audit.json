@@ -1,6 +1,53 @@
 {
   "entries": [
     {
+      "id": "log-001580",
+      "at": "2026-10-13T19:35:11.285Z",
+      "userId": "Tresor.Maneka@ppcdrc.cd",
+      "userName": "Tresor Maneka",
+      "userEmail": "Tresor.Maneka@ppcdrc.cd",
+      "module": "charroi.voyages",
+      "moduleLabel": "Charroi — Voyages",
+      "action": "create",
+      "actionLabel": "Création",
+      "entityType": "charroi.voyage",
+      "entityId": "vyg-011",
+      "summary": "Demande de voyage VYG-0011 ZAKUANI BAHATI BENNY 3 Chinois Kinshasa → Kimpese",
+      "details": "Demande de voyage VYG-0011 ZAKUANI BAHATI BENNY 3 Chinois Kinshasa → Kimpese",
+      "after": {
+        "id": "vyg-011",
+        "numero": "VYG-0011",
+        "passagerNom": "ZAKUANI BAHATI BENNY 3 Chinois",
+        "passagerMatricule": "",
+        "passagerInterne": true,
+        "nombrePersonnes": 4,
+        "depart": "Kinshasa",
+        "destination": "Kimpese",
+        "dateDepart": "2026-10-13",
+        "heureDepart": "05:00",
+        "dateArrivee": "",
+        "heureArrivee": "",
+        "motif": "Mission de service : avec de chinios de cssp et Mr Benny",
+        "notes": "",
+        "status": "demande",
+        "chauffeurNom": "",
+        "chauffeurMatricule": "",
+        "chauffeurInterne": false,
+        "vehiculeMode": "",
+        "vehiculeId": "",
+        "vehiculeLibelle": "",
+        "foodAllowance": 0,
+        "foodForTheRoad": 0,
+        "tollGate": 0,
+        "confirmedAt": "",
+        "completedAt": "",
+        "createdAt": "2026-10-13T19:35:07.876Z",
+        "updatedAt": "2026-10-13T19:35:07.876Z"
+      },
+      "undoable": false,
+      "undone": false
+    },
+    {
       "id": "log-001579",
       "at": "2026-10-13T19:32:48.729Z",
       "userId": "Tresor.Maneka@ppcdrc.cd",
@@ -170380,5 +170427,5 @@
       }
     }
   ],
-  "nextSeq": 1580
+  "nextSeq": 1581
 }
