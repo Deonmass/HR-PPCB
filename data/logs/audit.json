@@ -1,6 +1,21 @@
 {
   "entries": [
     {
+      "id": "log-001564",
+      "at": "2026-10-13T10:27:11.898Z",
+      "userId": "admin",
+      "userName": "Administrateur",
+      "userEmail": "admin",
+      "module": "village.maisons",
+      "moduleLabel": "Village — Maisons",
+      "action": "export",
+      "actionLabel": "Export",
+      "summary": "Export village (VILLAGE_KIMPESE_2026-10-13.xlsx)",
+      "details": "Fichier Excel exporté : VILLAGE_KIMPESE_2026-10-13.xlsx",
+      "undoable": false,
+      "undone": false
+    },
+    {
       "id": "log-001563",
       "at": "2026-10-13T09:22:35.282Z",
       "userId": "admin",
@@ -156830,5 +156845,5 @@
       }
     }
   ],
-  "nextSeq": 1564
+  "nextSeq": 1565
 }
