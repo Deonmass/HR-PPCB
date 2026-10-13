@@ -1,6 +1,53 @@
 {
   "entries": [
     {
+      "id": "log-001555",
+      "at": "2026-10-13T08:38:29.194Z",
+      "userId": "admin",
+      "userName": "Administrateur",
+      "userEmail": "admin",
+      "module": "guest-house",
+      "moduleLabel": "Guest house",
+      "action": "update",
+      "actionLabel": "Modification",
+      "entityType": "guest-house.reservation",
+      "entityId": "9019d2b9-0525-47c1-9bbd-7944cc66e5d1",
+      "summary": "Modification réservation 9019d2b9-0525-47c1-9bbd-7944cc66e5d1",
+      "details": "Modification réservation 9019d2b9-0525-47c1-9bbd-7944cc66e5d1",
+      "before": {
+        "id": "9019d2b9-0525-47c1-9bbd-7944cc66e5d1",
+        "numero": "GH-2026-4454",
+        "createdAt": "2026-10-12T12:50:05.007Z",
+        "personName": "Yves société SAKIEMA",
+        "isAgent": false,
+        "motif": "TBA",
+        "startDate": "2026-10-11",
+        "startSlot": "soir",
+        "endDate": "2026-10-14",
+        "endSlot": "matin",
+        "roomId": "8b14162d-ae3b-49a5-bcb6-812c2d8d5b5b",
+        "status": "confirmed",
+        "updatedAt": "2026-10-12T12:50:25.304Z"
+      },
+      "after": {
+        "id": "9019d2b9-0525-47c1-9bbd-7944cc66e5d1",
+        "numero": "GH-2026-4454",
+        "createdAt": "2026-10-12T12:50:05.007Z",
+        "personName": "Yves société SAKIEMA",
+        "isAgent": false,
+        "motif": "TBA",
+        "startDate": "2026-10-11",
+        "startSlot": "soir",
+        "endDate": "2026-10-14",
+        "endSlot": "soir",
+        "roomId": "8b14162d-ae3b-49a5-bcb6-812c2d8d5b5b",
+        "status": "confirmed",
+        "updatedAt": "2026-10-13T08:38:25.582Z"
+      },
+      "undoable": true,
+      "undone": false
+    },
+    {
       "id": "log-001554",
       "at": "2026-10-13T06:50:10.611Z",
       "userId": "admin",
@@ -156434,5 +156481,5 @@
       }
     }
   ],
-  "nextSeq": 1555
+  "nextSeq": 1556
 }
