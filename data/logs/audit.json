@@ -1,6 +1,44 @@
 {
   "entries": [
     {
+      "id": "log-001575",
+      "at": "2026-10-13T19:28:18.042Z",
+      "userId": "Tresor.Maneka@ppcdrc.cd",
+      "userName": "Tresor Maneka",
+      "userEmail": "Tresor.Maneka@ppcdrc.cd",
+      "module": "protocol.voyages",
+      "moduleLabel": "Gestion de voyage",
+      "action": "create",
+      "actionLabel": "Création",
+      "entityType": "protocol.voyage",
+      "entityId": "pvc-029",
+      "summary": "Voyage PVC-0029 BOOKE BASA MICHAEL Kinshasa Bruxelles Kinshasa",
+      "details": "Voyage PVC-0029 BOOKE BASA MICHAEL Kinshasa Bruxelles Kinshasa",
+      "after": {
+        "id": "pvc-029",
+        "numero": "PVC-0029",
+        "date": "2026-10-13",
+        "voyageur": "BOOKE BASA MICHAEL",
+        "voyageurMatricule": "70000296",
+        "destination": "Kinshasa Bruxelles Kinshasa",
+        "ticketAvion": 3550,
+        "visaVolant": 0,
+        "lettreLegaliser": 0,
+        "goPass": 55,
+        "transfert": 0,
+        "hotelNuit": 150,
+        "nbreNuits": 5,
+        "coutHotel": 750,
+        "categorieHotel": "",
+        "appartement": 0,
+        "coutTotal": 4355,
+        "createdAt": "2026-10-13T19:28:13.487Z",
+        "updatedAt": "2026-10-13T19:28:13.487Z"
+      },
+      "undoable": false,
+      "undone": false
+    },
+    {
       "id": "log-001574",
       "at": "2026-10-13T19:27:23.704Z",
       "userId": "Tresor.Maneka@ppcdrc.cd",
@@ -170190,5 +170228,5 @@
       }
     }
   ],
-  "nextSeq": 1575
+  "nextSeq": 1576
 }
