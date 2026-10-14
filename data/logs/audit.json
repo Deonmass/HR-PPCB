@@ -1,6 +1,21 @@
 {
   "entries": [
     {
+      "id": "log-001583",
+      "at": "2026-10-14T11:41:28.347Z",
+      "userId": "mukwilunaomie@gmail.com",
+      "userName": "Naomie Mukwilu",
+      "userEmail": "mukwilunaomie@gmail.com",
+      "module": "auth",
+      "moduleLabel": "Authentification",
+      "action": "login",
+      "actionLabel": "Connexion",
+      "summary": "Connexion mukwilunaomie@gmail.com",
+      "details": "Connexion de Naomie Mukwilu (mukwilunaomie@gmail.com)",
+      "undoable": false,
+      "undone": false
+    },
+    {
       "id": "log-001582",
       "at": "2026-10-14T09:32:47.635Z",
       "userId": "Tresor.Maneka@ppcdrc.cd",
@@ -170542,5 +170557,5 @@
       }
     }
   ],
-  "nextSeq": 1583
+  "nextSeq": 1584
 }
