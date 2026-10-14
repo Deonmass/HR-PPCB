@@ -1,6 +1,53 @@
 {
   "entries": [
     {
+      "id": "log-001603",
+      "at": "2026-10-14T13:41:59.713Z",
+      "userId": "Tresor.Maneka@ppcdrc.cd",
+      "userName": "Tresor Maneka",
+      "userEmail": "Tresor.Maneka@ppcdrc.cd",
+      "module": "charroi.voyages",
+      "moduleLabel": "Charroi — Voyages",
+      "action": "create",
+      "actionLabel": "Création",
+      "entityType": "charroi.voyage",
+      "entityId": "vyg-017",
+      "summary": "Demande de voyage VYG-0017 KAHASHA MBASHA PATRICK Kinshasa → Kimpese",
+      "details": "Demande de voyage VYG-0017 KAHASHA MBASHA PATRICK Kinshasa → Kimpese",
+      "after": {
+        "id": "vyg-017",
+        "numero": "VYG-0017",
+        "passagerNom": "KAHASHA MBASHA PATRICK",
+        "passagerMatricule": "70000256",
+        "passagerInterne": true,
+        "nombrePersonnes": 1,
+        "depart": "Kinshasa",
+        "destination": "Kimpese",
+        "dateDepart": "2026-10-15",
+        "heureDepart": "08:00",
+        "dateArrivee": "",
+        "heureArrivee": "",
+        "motif": "exco",
+        "notes": "",
+        "status": "demande",
+        "chauffeurNom": "",
+        "chauffeurMatricule": "",
+        "chauffeurInterne": false,
+        "vehiculeMode": "",
+        "vehiculeId": "",
+        "vehiculeLibelle": "",
+        "foodAllowance": 0,
+        "foodForTheRoad": 0,
+        "tollGate": 0,
+        "confirmedAt": "",
+        "completedAt": "",
+        "createdAt": "2026-10-14T13:41:56.176Z",
+        "updatedAt": "2026-10-14T13:41:56.176Z"
+      },
+      "undoable": false,
+      "undone": false
+    },
+    {
       "id": "log-001602",
       "at": "2026-10-14T13:41:09.780Z",
       "userId": "Tresor.Maneka@ppcdrc.cd",
@@ -171361,5 +171408,5 @@
       }
     }
   ],
-  "nextSeq": 1603
+  "nextSeq": 1604
 }
