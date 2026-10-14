@@ -1,6 +1,32 @@
 {
   "entries": [
     {
+      "id": "log-001611",
+      "at": "2026-10-14T16:58:12.429Z",
+      "userId": "admin",
+      "userName": "Administrateur",
+      "userEmail": "admin",
+      "module": "settings.utilisateurs",
+      "moduleLabel": "Paramètres — Utilisateurs",
+      "action": "create",
+      "actionLabel": "Création",
+      "entityType": "auth.user",
+      "entityId": "olivier.dino@zamba.kmr.cd",
+      "summary": "Création utilisateur Olivier Dino ORC",
+      "details": "Création utilisateur Olivier Dino ORC",
+      "after": {
+        "id": "olivier.dino@zamba.kmr.cd",
+        "username": "olivier.dino@zamba.kmr.cd",
+        "displayName": "Olivier Dino ORC",
+        "initials": "OD",
+        "email": "olivier.dino@zamba.kmr.cd",
+        "active": true,
+        "createdAt": "2026-10-14T16:58:08.047Z"
+      },
+      "undoable": true,
+      "undone": false
+    },
+    {
       "id": "log-001610",
       "at": "2026-10-14T14:28:42.468Z",
       "userId": "Tresor.Maneka@ppcdrc.cd",
@@ -171763,5 +171789,5 @@
       }
     }
   ],
-  "nextSeq": 1611
+  "nextSeq": 1612
 }
