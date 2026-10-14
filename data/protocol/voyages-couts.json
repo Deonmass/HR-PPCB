@@ -671,7 +671,28 @@
       "coutTotal": 7403,
       "createdAt": "2026-10-14T09:32:43.892Z",
       "updatedAt": "2026-10-14T09:32:43.892Z"
+    },
+    {
+      "id": "pvc-035",
+      "numero": "PVC-0035",
+      "date": "2026-10-12",
+      "voyageur": "ODIPO WERE Edgard",
+      "voyageurMatricule": "70000203",
+      "destination": "Lubumbashi Kinshasa Lumbubashi",
+      "ticketAvion": 1190,
+      "visaVolant": 0,
+      "lettreLegaliser": 0,
+      "goPass": 30,
+      "transfert": 0,
+      "hotelNuit": 192,
+      "nbreNuits": 2,
+      "coutHotel": 384,
+      "categorieHotel": "Confort",
+      "appartement": 0,
+      "coutTotal": 1604,
+      "createdAt": "2026-10-14T13:35:24.522Z",
+      "updatedAt": "2026-10-14T13:35:24.522Z"
     }
   ],
-  "nextSeq": 35
+  "nextSeq": 36
 }
