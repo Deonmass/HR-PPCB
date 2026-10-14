@@ -1,6 +1,53 @@
 {
   "entries": [
     {
+      "id": "log-001601",
+      "at": "2026-10-14T13:40:20.746Z",
+      "userId": "Tresor.Maneka@ppcdrc.cd",
+      "userName": "Tresor Maneka",
+      "userEmail": "Tresor.Maneka@ppcdrc.cd",
+      "module": "charroi.voyages",
+      "moduleLabel": "Charroi — Voyages",
+      "action": "create",
+      "actionLabel": "Création",
+      "entityType": "charroi.voyage",
+      "entityId": "vyg-015",
+      "summary": "Demande de voyage VYG-0015 ODIPO WERE Edgard Kinshasa → Kimpese",
+      "details": "Demande de voyage VYG-0015 ODIPO WERE Edgard Kinshasa → Kimpese",
+      "after": {
+        "id": "vyg-015",
+        "numero": "VYG-0015",
+        "passagerNom": "ODIPO WERE Edgard",
+        "passagerMatricule": "70000203",
+        "passagerInterne": true,
+        "nombrePersonnes": 1,
+        "depart": "Kinshasa",
+        "destination": "Kimpese",
+        "dateDepart": "2026-10-15",
+        "heureDepart": "05:00",
+        "dateArrivee": "",
+        "heureArrivee": "",
+        "motif": "EXCO",
+        "notes": "",
+        "status": "demande",
+        "chauffeurNom": "",
+        "chauffeurMatricule": "",
+        "chauffeurInterne": false,
+        "vehiculeMode": "",
+        "vehiculeId": "",
+        "vehiculeLibelle": "",
+        "foodAllowance": 0,
+        "foodForTheRoad": 0,
+        "tollGate": 0,
+        "confirmedAt": "",
+        "completedAt": "",
+        "createdAt": "2026-10-14T13:40:17.186Z",
+        "updatedAt": "2026-10-14T13:40:17.186Z"
+      },
+      "undoable": false,
+      "undone": false
+    },
+    {
       "id": "log-001600",
       "at": "2026-10-14T13:39:39.589Z",
       "userId": "Tresor.Maneka@ppcdrc.cd",
@@ -171267,5 +171314,5 @@
       }
     }
   ],
-  "nextSeq": 1601
+  "nextSeq": 1602
 }
