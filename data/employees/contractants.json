@@ -13080,7 +13080,7 @@
         },
         {
           "id": "750",
-          "nom": "NSIMBA KINANGI",
+          "nom": "NSIMBA KIMBANGI",
           "sexe": "M",
           "lieuAffectation": "Zamba",
           "fonction": "Spotter",
@@ -13102,7 +13102,7 @@
           "coutTransport": 0,
           "payrollSite": "",
           "createdAt": "2026-08-15T09:22:38.385Z",
-          "updatedAt": "2026-08-15T09:22:38.385Z"
+          "updatedAt": "2026-10-14T11:49:56.579Z"
         },
         {
           "id": "751",
@@ -13340,7 +13340,7 @@
         }
       ],
       "createdAt": "2026-08-15T09:22:03.868Z",
-      "updatedAt": "2026-10-14T11:48:59.797Z"
+      "updatedAt": "2026-10-14T11:49:56.579Z"
     },
     {
       "id": "10",
