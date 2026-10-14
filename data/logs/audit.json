@@ -1,6 +1,44 @@
 {
   "entries": [
     {
+      "id": "log-001582",
+      "at": "2026-10-14T09:32:47.635Z",
+      "userId": "Tresor.Maneka@ppcdrc.cd",
+      "userName": "Tresor Maneka",
+      "userEmail": "Tresor.Maneka@ppcdrc.cd",
+      "module": "protocol.voyages",
+      "moduleLabel": "Gestion de voyage",
+      "action": "create",
+      "actionLabel": "Création",
+      "entityType": "protocol.voyage",
+      "entityId": "pvc-034",
+      "summary": "Voyage PVC-0034 MUZADI LUKOKESHA CEDRIC Kinshasa Bruxelles Kinshasa",
+      "details": "Voyage PVC-0034 MUZADI LUKOKESHA CEDRIC Kinshasa Bruxelles Kinshasa",
+      "after": {
+        "id": "pvc-034",
+        "numero": "PVC-0034",
+        "date": "2026-10-14",
+        "voyageur": "MUZADI LUKOKESHA CEDRIC",
+        "voyageurMatricule": "70000135",
+        "destination": "Kinshasa Bruxelles Kinshasa",
+        "ticketAvion": 6598,
+        "visaVolant": 0,
+        "lettreLegaliser": 0,
+        "goPass": 55,
+        "transfert": 0,
+        "hotelNuit": 150,
+        "nbreNuits": 5,
+        "coutHotel": 750,
+        "categorieHotel": "",
+        "appartement": 0,
+        "coutTotal": 7403,
+        "createdAt": "2026-10-14T09:32:43.892Z",
+        "updatedAt": "2026-10-14T09:32:43.892Z"
+      },
+      "undoable": false,
+      "undone": false
+    },
+    {
       "id": "log-001581",
       "at": "2026-10-13T19:36:41.869Z",
       "userId": "Tresor.Maneka@ppcdrc.cd",
@@ -170504,5 +170542,5 @@
       }
     }
   ],
-  "nextSeq": 1582
+  "nextSeq": 1583
 }
