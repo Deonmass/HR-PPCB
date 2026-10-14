@@ -1681,6 +1681,104 @@ export function buildExcoPreviewHtml(report: ExcoReportPayload): string {
   .rec-table td:nth-child(3) { width: 8%; text-align: center; }
   .rec-table td:nth-child(4) { width: 28%; }
   .rec-table td:nth-child(5) { width: 7%; text-align: center; }
+
+  /* Téléphone : le rapport se lit en hauteur, le texte n’est plus rogné dans le 16:9. */
+  @media (max-width: 720px) {
+    body { padding: 10px; }
+    .deck { gap: 14px; }
+    .slide {
+      aspect-ratio: auto;
+      height: auto;
+      overflow: visible;
+    }
+    .body, .synth, .panel, .panel p, .panel ul,
+    .kpi-body, .trend-body, .mv-body, .ot-split,
+    .ovl-summary, .ovl-tops, .ovl-panel, .ovl-narrative, .ovl-table-wrap, .ovl-scroll,
+    .dash-body, .tr-dash, .tr-cost, .tr-covered, .cahier-body, .ia-body, .csr-fy27, .pol-card ul {
+      height: auto;
+      max-height: none;
+      overflow: visible;
+    }
+    .head { padding: 10px 12px 6px; min-height: 0; }
+    .badge { width: 32px; height: 32px; font-size: 13px; }
+    .brand { font-size: 11px; }
+    .head h1 { font-size: 18px; }
+    .head .period { font-size: 13px; }
+
+    .cover .body { padding: 8px 8px 24px; }
+    .cover-banner { width: 100%; margin-top: 8px; }
+    .cover-meet {
+      margin-top: 18px;
+      flex-wrap: wrap;
+      text-align: center;
+    }
+    .cover-meet p { font-size: 15px; line-height: 1.4; }
+
+    .toc-grid {
+      height: auto;
+      grid-template-columns: 1fr;
+      grid-template-rows: none;
+    }
+    .toc-card { padding: 10px 12px; }
+    .toc-txt strong { font-size: 15px; }
+    .toc-txt em { font-size: 12px; white-space: normal; }
+
+    .synth { grid-template-columns: 1fr; }
+    .panel { height: auto; padding: 12px; }
+    .panel h2 { font-size: 16px; }
+    .panel-glyph { width: 22px; height: 22px; font-size: 12px; }
+    .panel p, .panel ul { font-size: 15px; line-height: 1.45; }
+
+    .kpi-body, .trend-body { grid-template-rows: auto; }
+    .kpi-grid { grid-template-columns: 1fr 1fr; grid-template-rows: auto; }
+    .kpi-card { min-height: 76px; }
+    .kpi-card h3 { font-size: 12px; }
+    .kpi-card strong { font-size: 18px; white-space: normal; }
+    .kpi-card .delta, .kpi-card .prev { font-size: 11px; white-space: normal; }
+    .kpi-sep span, .trend-sep span { font-size: 12px; }
+
+    .trend-scroll, .csr-fy27, .ia-body, .recruit-body, .gov-prog-plot {
+      overflow-x: auto;
+      -webkit-overflow-scrolling: touch;
+    }
+    .trend-table, .csr-fy27 table, .ia-body table, .rec-table, .tr-cost-table, .tr-covered table {
+      min-width: 640px;
+      table-layout: auto;
+      font-size: 12px;
+    }
+    .trend-table th, .trend-table td,
+    .rec-table th, .rec-table td,
+    .csr-fy27 th, .csr-fy27 td,
+    .ia-body th, .ia-body td {
+      font-size: 12px;
+      height: auto;
+      padding: 6px 5px;
+    }
+    .exco-rec-badge { font-size: 11px; padding: 2px 7px; }
+
+    .mv-charts, .ot-split, .ovl-two, .tr-top, .tr-mid, .pol-grid,
+    .pie-two, .pie-layout, .gov-audit-body {
+      grid-template-columns: 1fr;
+      height: auto;
+    }
+    .mv-chart, .ot-chart { min-height: 180px; }
+    .mv-bar-row { grid-template-columns: 92px 1fr 40px; }
+    .mv-bar-row.is-exits { grid-template-columns: 92px 1fr 14px 40px; }
+    .mv-bar-lab, .mv-bar-val, .ot-val, .ot-lab, .mv-chart header strong { font-size: 12px; }
+    .ot-left, .ot-right, .ovl-panel, .tr-cost, .tr-covered { overflow: visible; min-height: 0; }
+    .ovl-banner.trend-sep span, .ovl-narrative p, .gov-evo-txt { font-size: 14px; }
+    .ovl-narrative { overflow: visible; }
+
+    .thanks-panel { width: 100%; padding: 28px 16px; }
+    .thanks-panel h1 { font-size: 32px; }
+    .cahier-item { grid-template-columns: 72px 1fr; gap: 10px; height: auto; }
+    .cahier-ring { width: 68px; height: 68px; }
+    .cahier-copy h3 { font-size: 18px; }
+    .cahier-copy p { font-size: 15px; }
+    .gov-prog-cols { min-width: 520px; }
+    .gov-prog-chart { min-height: 200px; }
+    .tr-card p, .tr-full, .pol-card ul { font-size: 13px; }
+  }
 </style>
 </head>
 <body>

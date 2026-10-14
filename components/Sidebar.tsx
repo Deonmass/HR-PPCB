@@ -1,7 +1,7 @@
 'use client';
 
 import Link from 'next/link';
-import { usePathname, useSearchParams } from 'next/navigation';
+import { usePathname } from 'next/navigation';
 import {
   useCallback,
   useEffect,
@@ -10,6 +10,7 @@ import {
   useMemo,
   useRef,
   useState,
+  useSyncExternalStore,
   Fragment,
   type CSSProperties,
   type ReactNode,
@@ -825,8 +826,8 @@ function NavSubLink({
   collapsed: boolean;
 }) {
   const pathname = usePathname();
-  const searchParams = useSearchParams();
-  const active = isNavItemActive(pathname, item, searchParams.toString());
+  const search = useClientSearch();
+  const active = isNavItemActive(pathname, item, search);
 
   return (
     <div className="nav-menu-row nav-menu-sub-row" style={{ '--nav-color': color } as CSSProperties}>
@@ -861,9 +862,9 @@ function NavGroupSection({
   onToggle: () => void;
 }) {
   const pathname = usePathname();
-  const searchParams = useSearchParams();
+  const search = useClientSearch();
   const { t } = useI18n();
-  const hasActive = section.items.some((item) => isNavItemActive(pathname, item, searchParams.toString()));
+  const hasActive = section.items.some((item) => isNavItemActive(pathname, item, search));
 
   return (
     <div className={`nav-menu-section${collapsed && open ? ' collapsed-open' : ''}`} style={{ '--nav-color': section.color } as CSSProperties}>
@@ -907,14 +908,14 @@ function NavGroupSection({
 
 function NavStandaloneSection({ section, collapsed }: { section: NavLinkSection; collapsed: boolean }) {
   const pathname = usePathname();
-  const searchParams = useSearchParams();
+  const search = useClientSearch();
   const excluded = Boolean(
     section.excludePrefixes?.some(
       (prefix) => pathname === prefix || pathname.startsWith(`${prefix}/`),
     ),
   );
   const sectionTab = hrefTab(section.href);
-  const currentTab = searchParams.get('tab');
+  const currentTab = new URLSearchParams(search).get('tab');
   const pathOnly = section.href.split('?')[0]!;
   const tabMatched = sectionTab
     ? pathname === pathOnly
@@ -959,11 +960,53 @@ function buildInitialOpenGroups(pathname: string, search = '') {
   return initial;
 }
 
+const searchListeners = new Set<() => void>();
+let searchListening = false;
+
+function readClientSearch() {
+  return typeof window === 'undefined' ? '' : window.location.search.replace(/^\?/, '');
+}
+
+function ensureSearchListener() {
+  if (searchListening || typeof window === 'undefined') return;
+  searchListening = true;
+  const notify = () => searchListeners.forEach((listener) => listener());
+  window.addEventListener('popstate', notify);
+  document.addEventListener('click', () => window.requestAnimationFrame(notify), true);
+}
+
+/** Recherche d’URL sans useSearchParams, pour ne pas démonter le menu à chaque navigation. */
+function useClientSearch() {
+  usePathname();
+  return useSyncExternalStore(
+    (listener) => {
+      ensureSearchListener();
+      searchListeners.add(listener);
+      return () => searchListeners.delete(listener);
+    },
+    readClientSearch,
+    () => '',
+  );
+}
+
+function useIsPhone() {
+  const [isPhone, setIsPhone] = useState(false);
+  useEffect(() => {
+    const mq = window.matchMedia('(max-width: 900px)');
+    const apply = () => setIsPhone(mq.matches);
+    apply();
+    mq.addEventListener('change', apply);
+    return () => mq.removeEventListener('change', apply);
+  }, []);
+  return isPhone;
+}
+
 export default function Sidebar() {
   const pathname = usePathname();
-  const searchParams = useSearchParams();
-  const search = searchParams.toString();
-  const { collapsed, toggle } = useSidebar();
+  const search = useClientSearch();
+  const { collapsed: storedCollapsed, toggle } = useSidebar();
+  const isPhone = useIsPhone();
+  const collapsed = storedCollapsed && !isPhone;
   const { theme, toggleTheme, isSwitching } = useTheme();
   const { t, locale } = useI18n();
   const { user, can, menus, isLoading: permissionsLoading, isContractantOnly } = usePermissions();
@@ -1079,13 +1122,15 @@ export default function Sidebar() {
 
   useEffect(() => {
     setOpenGroups((prev) => {
+      let changed = false;
       const next = { ...prev };
       for (const section of baseNav) {
-        if (section.type === 'group' && section.items.some((item) => isNavItemActive(pathname, item, search))) {
+        if (section.type === 'group' && !next[section.id] && section.items.some((item) => isNavItemActive(pathname, item, search))) {
           next[section.id] = true;
+          changed = true;
         }
       }
-      return next;
+      return changed ? next : prev;
     });
   }, [pathname, search, baseNav]);
 

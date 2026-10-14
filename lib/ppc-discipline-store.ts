@@ -46,6 +46,14 @@ function todayIso(): string {
   return new Date().toISOString().slice(0, 10);
 }
 
+let storeChain: Promise<unknown> = Promise.resolve();
+
+function enqueue<T>(task: () => Promise<T>): Promise<T> {
+  const run = storeChain.then(task, task);
+  storeChain = run.then(() => undefined, () => undefined);
+  return run;
+}
+
 function normalizeStatut(raw: string): PpcDisciplineStatut {
   return PPC_DISCIPLINE_STATUTS.includes(raw as PpcDisciplineStatut)
     ? (raw as PpcDisciplineStatut)
@@ -174,18 +182,34 @@ export async function getPpcDisciplineCase(id: string): Promise<PpcDisciplineCas
   return store.cases.find((c) => c.id === id) ?? null;
 }
 
-export async function createPpcDisciplineCase(
+export function createPpcDisciplineCase(
+  input: PpcDisciplineCaseInput,
+  createdBy?: string,
+): Promise<PpcDisciplineCase> {
+  return enqueue(() => createPpcDisciplineCaseLocked(input, createdBy));
+}
+
+async function createPpcDisciplineCaseLocked(
   input: PpcDisciplineCaseInput,
   createdBy?: string,
 ): Promise<PpcDisciplineCase> {
   const matricule = String(input.matricule || '').trim();
   const motif = String(input.motif || '').trim();
+  const demandeDate = String(input.demandeDate || '').trim();
+  const demandeEcheance = String(input.demandeEcheance || '').trim();
+  const demandeLien = String(input.demandeLien || '').trim();
   if (!matricule) throw new Error('Agent requis');
   if (!motif) throw new Error('Motif requis');
+  if (!demandeDate) throw new Error('Date d’envoi de la demande requise');
+  if (!demandeEcheance) throw new Error('Échéance de réponse requise');
 
   const now = new Date().toISOString();
   const dateIncident = String(input.dateIncident || todayIso()).trim();
   const auteur = createdBy?.trim() || '—';
+  const demandeLigne = [
+    demandeLien || 'Demande d’explication',
+    `Échéance de réponse : ${demandeEcheance}`,
+  ].join('\n');
   const record: PpcDisciplineCase = {
     id: randomUUID(),
     matricule,
@@ -196,22 +220,29 @@ export async function createPpcDisciplineCase(
     dateIncident,
     motif,
     faits: String(input.faits || '').trim(),
-    demandeDate: '',
+    demandeDate,
     demandeTexte: '',
-    demandeLien: '',
-    demandeEcheance: '',
+    demandeLien,
+    demandeEcheance,
     reponseDate: '',
     reponseTexte: '',
     reponseLien: '',
     sanction: 'Aucune',
     dateSanction: '',
-    statut: normalizeStatut(String(input.statut || 'Ouvert')),
+    statut: "Demande d'explication",
     historique: [{
       id: randomUUID(),
       type: 'ouverture',
       auteur,
       texte: motif,
       date: dateIncident,
+      createdAt: now,
+    }, {
+      id: randomUUID(),
+      type: 'demande',
+      auteur,
+      texte: demandeLigne,
+      date: demandeDate,
       createdAt: now,
     }],
     createdAt: now,
@@ -225,7 +256,15 @@ export async function createPpcDisciplineCase(
   return record;
 }
 
-export async function updatePpcDisciplineCase(
+export function updatePpcDisciplineCase(
+  id: string,
+  patch: Partial<Pick<PpcDisciplineCase, 'dateIncident' | 'motif' | 'faits' | 'statut' | 'sanction'>>,
+  auteur?: string,
+): Promise<PpcDisciplineCase | null> {
+  return enqueue(() => updatePpcDisciplineCaseLocked(id, patch, auteur));
+}
+
+async function updatePpcDisciplineCaseLocked(
   id: string,
   patch: Partial<Pick<PpcDisciplineCase, 'dateIncident' | 'motif' | 'faits' | 'statut' | 'sanction'>>,
   auteur?: string,
@@ -253,20 +292,29 @@ export async function updatePpcDisciplineCase(
   return next;
 }
 
-export async function envoyerDemandeExplication(
+export function envoyerDemandeExplication(
+  id: string,
+  input: { demandeDate?: string; demandeLien: string; demandeEcheance?: string },
+  auteur?: string,
+): Promise<PpcDisciplineCase | null> {
+  return enqueue(() => envoyerDemandeExplicationLocked(id, input, auteur));
+}
+
+async function envoyerDemandeExplicationLocked(
   id: string,
   input: { demandeDate?: string; demandeLien: string; demandeEcheance?: string },
   auteur?: string,
 ): Promise<PpcDisciplineCase | null> {
   const lien = String(input.demandeLien || '').trim();
-  if (!lien) throw new Error('Le lien du document de demande est requis');
+  const date = String(input.demandeDate || '').trim();
+  const echeance = String(input.demandeEcheance || '').trim();
+  if (!date) throw new Error('Date d’envoi requise');
+  if (!echeance) throw new Error('Échéance de réponse requise');
   const store = await readStore();
   const index = store.cases.findIndex((c) => c.id === id);
   if (index < 0) return null;
   const prev = store.cases[index]!;
   assertOpen(prev);
-  const date = String(input.demandeDate || todayIso()).trim();
-  const echeance = String(input.demandeEcheance || '').trim();
   let next: PpcDisciplineCase = {
     ...prev,
     demandeDate: date,
@@ -274,39 +322,67 @@ export async function envoyerDemandeExplication(
     demandeEcheance: echeance,
     statut: "Demande d'explication",
   };
-  const ligne = echeance ? `${lien}\nÉchéance de réponse : ${echeance}` : lien;
+  const ligne = [
+    lien || 'Demande d’explication',
+    `Échéance de réponse : ${echeance}`,
+  ].join('\n');
   next = pushEvent(next, 'demande', auteur || '—', ligne, date);
   store.cases[index] = next;
   await writeStore(store);
   return next;
 }
 
-export async function enregistrerReponseAgent(
+export function enregistrerReponseAgent(
+  id: string,
+  input: { reponseDate?: string; reponseLien: string },
+  auteur?: string,
+): Promise<PpcDisciplineCase | null> {
+  return enqueue(() => enregistrerReponseAgentLocked(id, input, auteur));
+}
+
+async function enregistrerReponseAgentLocked(
   id: string,
   input: { reponseDate?: string; reponseLien: string },
   auteur?: string,
 ): Promise<PpcDisciplineCase | null> {
   const lien = String(input.reponseLien || '').trim();
-  if (!lien) throw new Error('Le lien du document de réponse est requis');
+  const date = String(input.reponseDate || '').trim();
+  if (!date) throw new Error('Date de la réponse requise');
   const store = await readStore();
   const index = store.cases.findIndex((c) => c.id === id);
   if (index < 0) return null;
   const prev = store.cases[index]!;
   assertOpen(prev);
-  const date = String(input.reponseDate || todayIso()).trim();
   let next: PpcDisciplineCase = {
     ...prev,
     reponseDate: date,
     reponseLien: lien,
     statut: 'Réponse reçue',
   };
-  next = pushEvent(next, 'reponse', auteur || '—', lien, date);
+  next = pushEvent(next, 'reponse', auteur || '—', lien || 'Réponse enregistrée', date);
   store.cases[index] = next;
   await writeStore(store);
   return next;
 }
 
-export async function enregistrerActionsPpc(
+export function enregistrerActionsPpc(
+  id: string,
+  input: {
+    demandeDate?: string;
+    demandeLien?: string;
+    demandeEcheance?: string;
+    reponseDate?: string;
+    reponseLien?: string;
+    sanction?: string;
+    dateSanction?: string;
+    texte?: string;
+  },
+  auteur?: string,
+): Promise<PpcDisciplineCase | null> {
+  return enqueue(() => enregistrerActionsPpcLocked(id, input, auteur));
+}
+
+async function enregistrerActionsPpcLocked(
   id: string,
   input: {
     demandeDate?: string;
@@ -335,7 +411,7 @@ export async function enregistrerActionsPpc(
   const dateSanction = String(input.dateSanction || '').trim();
   const note = String(input.texte || '').trim();
   const auteurNom = auteur || '—';
-  const hasDemande = Boolean(demandeLien);
+  const hasDemande = Boolean(demandeLien || demandeDate || demandeEcheance);
   const hasReponse = Boolean(reponseLien);
   const hasSanction = sanction !== 'Aucune';
 
@@ -401,12 +477,21 @@ export async function enregistrerActionsPpc(
   return next;
 }
 
-export async function appliquerSanctionPpc(
+export function appliquerSanctionPpc(
+  id: string,
+  input: { sanction: string; dateSanction?: string; texte?: string },
+  auteur?: string,
+): Promise<PpcDisciplineCase | null> {
+  return enqueue(() => appliquerSanctionPpcLocked(id, input, auteur));
+}
+
+async function appliquerSanctionPpcLocked(
   id: string,
   input: { sanction: string; dateSanction?: string; texte?: string },
   auteur?: string,
 ): Promise<PpcDisciplineCase | null> {
   const sanction = String(input.sanction || '').trim() || 'Aucune';
+  if (sanction === 'Aucune') throw new Error('Choisissez une sanction');
   const store = await readStore();
   const index = store.cases.findIndex((c) => c.id === id);
   if (index < 0) return null;
@@ -432,7 +517,15 @@ export async function appliquerSanctionPpc(
   return next;
 }
 
-export async function commenterPpcDisciplineCase(
+export function commenterPpcDisciplineCase(
+  id: string,
+  auteur: string,
+  texte: string,
+): Promise<PpcDisciplineCase | null> {
+  return enqueue(() => commenterPpcDisciplineCaseLocked(id, auteur, texte));
+}
+
+async function commenterPpcDisciplineCaseLocked(
   id: string,
   auteur: string,
   texte: string,
@@ -447,7 +540,11 @@ export async function commenterPpcDisciplineCase(
   return store.cases[index]!;
 }
 
-export async function deletePpcDisciplineCase(id: string): Promise<boolean> {
+export function deletePpcDisciplineCase(id: string): Promise<boolean> {
+  return enqueue(() => deletePpcDisciplineCaseLocked(id));
+}
+
+async function deletePpcDisciplineCaseLocked(id: string): Promise<boolean> {
   const store = await readStore();
   const before = store.cases.length;
   store.cases = store.cases.filter((c) => c.id !== id);

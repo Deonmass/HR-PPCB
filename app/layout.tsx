@@ -3,6 +3,11 @@ import ChunkLoadRecovery from '@/components/ChunkLoadRecovery';
 import 'sweetalert2/dist/sweetalert2.min.css';
 import './globals.css';
 
+export const viewport = {
+  width: 'device-width',
+  initialScale: 1,
+};
+
 export const metadata = {
   title: 'PPC Barnet RH',
   description: 'Gestion des données RH',

@@ -30,6 +30,9 @@ type CaseForm = {
   dateIncident: string;
   motif: string;
   faits: string;
+  demandeDate: string;
+  demandeEcheance: string;
+  demandeLien: string;
 };
 
 const MENU = 'employes.discipline';
@@ -43,6 +46,9 @@ const EMPTY_FORM: CaseForm = {
   dateIncident: new Date().toISOString().slice(0, 10),
   motif: '',
   faits: '',
+  demandeDate: new Date().toISOString().slice(0, 10),
+  demandeEcheance: '',
+  demandeLien: '',
 };
 
 const EVENT_LABEL: Record<PpcDisciplineEvent['type'], string> = {
@@ -215,10 +221,10 @@ export default function PpcDisciplinePage() {
     setDemandeDate(selected.demandeDate || todayIso());
     setDemandeLien(selected.demandeLien || '');
     setDemandeEcheance(selected.demandeEcheance || '');
-    setReponseDate(selected.reponseDate || todayIso());
+    setReponseDate(selected.reponseDate || '');
     setReponseLien(selected.reponseLien || '');
     setSanction(selected.sanction || 'Aucune');
-    setDateSanction(selected.dateSanction || todayIso());
+    setDateSanction(selected.dateSanction || '');
     setComment('');
   }, [selected]);
 
@@ -257,6 +263,14 @@ export default function PpcDisciplinePage() {
       await showError('Motif requis');
       return;
     }
+    if (!form.demandeDate) {
+      await showError('Date d’envoi de la demande requise');
+      return;
+    }
+    if (!form.demandeEcheance) {
+      await showError('Échéance de réponse requise');
+      return;
+    }
     setSaving(true);
     try {
       const res = await fetch('/api/employes/discipline', {
@@ -271,6 +285,9 @@ export default function PpcDisciplinePage() {
           dateIncident: form.dateIncident,
           motif: form.motif.trim(),
           faits: form.faits.trim(),
+          demandeDate: form.demandeDate,
+          demandeEcheance: form.demandeEcheance,
+          demandeLien: form.demandeLien.trim(),
         }),
       });
       const json = await res.json().catch(() => ({}));
@@ -278,7 +295,7 @@ export default function PpcDisciplinePage() {
         await showError(json?.error || 'Enregistrement impossible');
         return;
       }
-      setForm({ ...EMPTY_FORM, dateIncident: todayIso() });
+      setForm({ ...EMPTY_FORM, dateIncident: todayIso(), demandeDate: todayIso() });
       setTab('liste');
       setDetailTab('dossier');
       setEditing(false);
@@ -287,7 +304,7 @@ export default function PpcDisciplinePage() {
         setCases((prev) => [saved, ...prev.filter((c) => c.id !== saved.id)]);
         setSelected(saved);
       }
-      void showSuccess('Cas disciplinaire ouvert');
+      void showSuccess('Cas enregistré avec la demande d’explication');
     } catch {
       await showError('Erreur d’enregistrement');
     } finally {
@@ -535,9 +552,26 @@ export default function PpcDisciplinePage() {
                   <label>Faits</label>
                   <textarea rows={3} value={form.faits} onChange={(e) => setForm({ ...form, faits: e.target.value })} placeholder="Description des faits" />
                 </div>
+                <div className="form-group">
+                  <label>Date d&apos;envoi de la demande *</label>
+                  <input type="date" required value={form.demandeDate} onChange={(e) => setForm({ ...form, demandeDate: e.target.value })} />
+                </div>
+                <div className="form-group">
+                  <label>Échéance de réponse *</label>
+                  <input type="date" required value={form.demandeEcheance} onChange={(e) => setForm({ ...form, demandeEcheance: e.target.value })} />
+                </div>
+                <div className="form-group contractant-discipline-span">
+                  <label>Lien de la demande</label>
+                  <input
+                    type="text"
+                    value={form.demandeLien}
+                    onChange={(e) => setForm({ ...form, demandeLien: e.target.value })}
+                    placeholder="https://… ou chemin du fichier"
+                  />
+                </div>
                 <div className="contractant-discipline-span" style={{ display: 'flex', gap: '0.45rem' }}>
                   <button type="button" className="btn btn-primary btn-sm" disabled={saving} onClick={() => void submitNew()}>
-                    {saving ? <Spinner label="Enregistrement…" /> : 'Ouvrir le cas'}
+                    {saving ? <Spinner label="Enregistrement…" /> : 'Enregistrer le cas'}
                   </button>
                   <button type="button" className="btn btn-secondary btn-sm" disabled={saving} onClick={() => setTab('liste')}>
                     Annuler
@@ -648,6 +682,28 @@ export default function PpcDisciplinePage() {
                       placeholder="https://… ou chemin du fichier"
                     />
                   </div>
+                  {canEdit && !locked && (
+                    <div className="ppc-discipline-step-actions">
+                      <button
+                        type="button"
+                        className="btn btn-primary btn-sm"
+                        disabled={Boolean(busy)}
+                        onClick={() => {
+                          if (!demandeDate || !demandeEcheance) {
+                            void showError('Date d’envoi et échéance sont requises');
+                            return;
+                          }
+                          void runAction('demande', {
+                            demandeDate,
+                            demandeLien,
+                            demandeEcheance,
+                          }, 'Demande d’explication enregistrée');
+                        }}
+                      >
+                        {busy === 'demande' ? <Spinner label="Enregistrement…" /> : 'Enregistrer la demande'}
+                      </button>
+                    </div>
+                  )}
                 </section>
 
                 <section className="ppc-discipline-step">
@@ -666,6 +722,21 @@ export default function PpcDisciplinePage() {
                       placeholder="https://… ou chemin du fichier"
                     />
                   </div>
+                  {canEdit && !locked && (
+                    <div className="ppc-discipline-step-actions">
+                      <button
+                        type="button"
+                        className="btn btn-primary btn-sm"
+                        disabled={Boolean(busy) || !reponseDate}
+                        onClick={() => void runAction('reponse', {
+                          reponseDate,
+                          reponseLien,
+                        }, 'Réponse enregistrée')}
+                      >
+                        {busy === 'reponse' ? <Spinner label="Enregistrement…" /> : 'Enregistrer la réponse'}
+                      </button>
+                    </div>
+                  )}
                 </section>
 
                 <section className="ppc-discipline-step">
@@ -692,7 +763,23 @@ export default function PpcDisciplinePage() {
                       placeholder="Note ajoutée à l’historique avec la sanction"
                     />
                   </div>
-                  <p className="ppc-discipline-meta">Appliquer la sanction clôture le cas et enregistre la note dans l’historique.</p>
+                  <p className="ppc-discipline-meta">La sanction s’enregistre seule. Elle clôture le cas et ajoute la note à l’historique. La réponse peut rester vide.</p>
+                  {canEdit && !locked && (
+                    <div className="ppc-discipline-step-actions">
+                      <button
+                        type="button"
+                        className="btn btn-primary btn-sm"
+                        disabled={Boolean(busy) || sanction === 'Aucune'}
+                        onClick={() => void runAction('sanction', {
+                          sanction,
+                          dateSanction: dateSanction || todayIso(),
+                          texte: comment,
+                        }, 'Sanction enregistrée — cas clôturé')}
+                      >
+                        {busy === 'sanction' ? <Spinner label="Enregistrement…" /> : 'Enregistrer la sanction'}
+                      </button>
+                    </div>
+                  )}
                 </section>
               </div>
               )}
@@ -734,7 +821,7 @@ export default function PpcDisciplinePage() {
                 </div>
               )}
             </div>
-            {canEdit && detailTab !== 'historique' && (
+            {canEdit && detailTab === 'dossier' && (
               <div className="modal-footer">
                 {detailTab === 'dossier' && !editing && (
                   <button type="button" className="btn btn-secondary btn-sm" disabled={Boolean(busy)} onClick={() => setEditing(true)}>
@@ -760,25 +847,6 @@ export default function PpcDisciplinePage() {
                       {busy === 'update' ? <Spinner label="Enregistrement…" /> : 'Enregistrer'}
                     </button>
                   </>
-                )}
-                {detailTab === 'actions' && (
-                  <button
-                    type="button"
-                    className="btn btn-primary btn-sm"
-                    disabled={Boolean(busy) || locked}
-                    onClick={() => void runAction('actions', {
-                      demandeDate,
-                      demandeLien,
-                      demandeEcheance,
-                      reponseDate,
-                      reponseLien,
-                      sanction,
-                      dateSanction,
-                      texte: comment,
-                    }, sanction && sanction !== 'Aucune' ? 'Sanction enregistrée — cas clôturé' : 'Actions enregistrées')}
-                  >
-                    {busy === 'actions' ? <Spinner label="Enregistrement…" /> : 'Enregistrer'}
-                  </button>
                 )}
               </div>
             )}

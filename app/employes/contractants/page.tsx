@@ -1277,6 +1277,7 @@ export default function ContractantsPage() {
               <table className="contractants-table contractants-table-compact">
                 <colgroup>
                   <col className="contractants-col-nom" />
+                  <col className="contractants-col-matricule" />
                   <col className="contractants-col-sexe" />
                   <col className="contractants-col-lieu" />
                   <col className="contractants-col-fonc" />
@@ -1297,6 +1298,7 @@ export default function ContractantsPage() {
                         onChange={(next) => setColFilters((p) => ({ ...p, nom: next }))}
                       />
                     </th>
+                    <th className="contractants-col-matricule">Matricule</th>
                     <th className="contractants-col-sexe">
                       <TableHeaderFilter
                         label="Sexe"
@@ -1369,7 +1371,7 @@ export default function ContractantsPage() {
                 <tbody>
                   {filteredEmployees.length === 0 ? (
                     <tr className="contractants-empty-row">
-                      <td colSpan={hideContractantColumn ? 9 : 10}>
+                      <td colSpan={hideContractantColumn ? 10 : 11}>
                         <div className="contractants-empty-state">
                           <span className="contractants-empty-icon" aria-hidden>
                             {search.trim() || activeEmpFilterCount > 0 ? (
@@ -1393,10 +1395,12 @@ export default function ContractantsPage() {
                       <tr
                         key={`${e.contractantId}-${e.id}`}
                         onContextMenu={(ev) => openEmployeeMenu(ev, e)}
+                        onClick={() => setViewEmployee(e)}
                         onDoubleClick={() => setViewEmployee(e)}
                         style={{ cursor: 'pointer' }}
                       >
                         <td className="contractants-col-nom" title={e.nom}>{e.nom}</td>
+                        <td className="contractants-col-matricule">{e.matriculePpc || '—'}</td>
                         <td className="contractants-col-sexe">{e.sexe || '—'}</td>
                         <td className="contractants-col-lieu" title={e.lieuAffectation}>{e.lieuAffectation || '—'}</td>
                         <td className="contractants-col-fonc" title={e.fonction || undefined}>{e.fonction || '—'}</td>
@@ -1442,7 +1446,10 @@ export default function ContractantsPage() {
                             className="contractants-row-menu-btn"
                             aria-label={`Actions ${e.nom}`}
                             title="Actions"
-                            onClick={(ev) => openEmployeeMenu(ev, e)}
+                            onClick={(ev) => {
+                              ev.stopPropagation();
+                              openEmployeeMenu(ev, e);
+                            }}
                           >
                             <svg viewBox="0 0 24 24" width="16" height="16" aria-hidden>
                               <circle cx="12" cy="5" r="1.6" fill="currentColor" />

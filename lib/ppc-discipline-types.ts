@@ -80,6 +80,9 @@ export interface PpcDisciplineCaseInput {
   motif: string;
   faits?: string;
   statut?: PpcDisciplineStatut;
+  demandeDate?: string;
+  demandeLien?: string;
+  demandeEcheance?: string;
 }
 
 export interface PpcDisciplineAgent {
