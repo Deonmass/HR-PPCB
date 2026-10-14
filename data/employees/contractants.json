@@ -1,6 +1,6 @@
 {
   "nextContractantId": 14,
-  "nextEmployeeId": 794,
+  "nextEmployeeId": 795,
   "contractants": [
     {
       "id": "1",
@@ -13363,10 +13363,36 @@
           "payrollSite": "",
           "createdAt": "2026-10-14T11:57:55.993Z",
           "updatedAt": "2026-10-14T11:57:55.993Z"
+        },
+        {
+          "id": "794",
+          "nom": "BOFWA IBWENGA MANACE",
+          "sexe": "M",
+          "lieuAffectation": "Zamba",
+          "fonction": "SPOTTER",
+          "departement": "Mining",
+          "service": "",
+          "telephone": "",
+          "etatCivil": "C",
+          "statut": "Journalier",
+          "dateEmbauche": "2026-10-05",
+          "dateSortie": "",
+          "managerEmployeeId": "",
+          "family": [],
+          "matriculePpc": "",
+          "numeroCnss": "",
+          "numeroCompte": "",
+          "banque": "",
+          "nbDependants": 0,
+          "txJr": 0,
+          "coutTransport": 0,
+          "payrollSite": "",
+          "createdAt": "2026-10-14T11:59:48.075Z",
+          "updatedAt": "2026-10-14T11:59:48.075Z"
         }
       ],
       "createdAt": "2026-08-15T09:22:03.868Z",
-      "updatedAt": "2026-10-14T11:57:55.993Z"
+      "updatedAt": "2026-10-14T11:59:48.075Z"
     },
     {
       "id": "10",
