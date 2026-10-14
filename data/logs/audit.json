@@ -1,6 +1,55 @@
 {
   "entries": [
     {
+      "id": "log-001615",
+      "at": "2026-10-14T18:41:18.767Z",
+      "userId": "admin",
+      "userName": "Administrateur",
+      "userEmail": "admin",
+      "module": "guest-house",
+      "moduleLabel": "Guest house",
+      "action": "update",
+      "actionLabel": "Modification",
+      "entityType": "guest-house.reservation",
+      "entityId": "ffeba937-f8c9-4f3f-ba17-c446d95999f8",
+      "summary": "Modification réservation ffeba937-f8c9-4f3f-ba17-c446d95999f8",
+      "details": "Modification réservation ffeba937-f8c9-4f3f-ba17-c446d95999f8",
+      "before": {
+        "id": "ffeba937-f8c9-4f3f-ba17-c446d95999f8",
+        "numero": "GH-2026-4450",
+        "createdAt": "2026-10-12T12:42:33.329Z",
+        "personName": "BABALA MATWAN ANTOINE",
+        "matricule": "70000291",
+        "isAgent": true,
+        "motif": "TBA",
+        "startDate": "2026-10-09",
+        "startSlot": "midi",
+        "endDate": "2026-10-14",
+        "endSlot": "matin",
+        "roomId": "ed91c14e-915f-4d22-971c-fd4bb7feb33e",
+        "status": "confirmed",
+        "updatedAt": "2026-10-12T12:48:47.850Z"
+      },
+      "after": {
+        "id": "ffeba937-f8c9-4f3f-ba17-c446d95999f8",
+        "numero": "GH-2026-4450",
+        "createdAt": "2026-10-12T12:42:33.329Z",
+        "personName": "BABALA MATWAN ANTOINE",
+        "matricule": "70000291",
+        "isAgent": true,
+        "motif": "TBA",
+        "startDate": "2026-10-09",
+        "startSlot": "midi",
+        "endDate": "2026-10-17",
+        "endSlot": "matin",
+        "roomId": "ed91c14e-915f-4d22-971c-fd4bb7feb33e",
+        "status": "confirmed",
+        "updatedAt": "2026-10-14T18:41:14.572Z"
+      },
+      "undoable": true,
+      "undone": false
+    },
+    {
       "id": "log-001614",
       "at": "2026-10-14T18:35:23.014Z",
       "userId": "admin",
@@ -173941,5 +173990,5 @@
       }
     }
   ],
-  "nextSeq": 1615
+  "nextSeq": 1616
 }
