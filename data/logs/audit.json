@@ -1,6 +1,53 @@
 {
   "entries": [
     {
+      "id": "log-001598",
+      "at": "2026-10-14T13:38:04.842Z",
+      "userId": "Tresor.Maneka@ppcdrc.cd",
+      "userName": "Tresor Maneka",
+      "userEmail": "Tresor.Maneka@ppcdrc.cd",
+      "module": "charroi.voyages",
+      "moduleLabel": "Charroi — Voyages",
+      "action": "create",
+      "actionLabel": "Création",
+      "entityType": "charroi.voyage",
+      "entityId": "vyg-012",
+      "summary": "Demande de voyage VYG-0012 EWULI SUKA Carine Kinshasa → Kimpese",
+      "details": "Demande de voyage VYG-0012 EWULI SUKA Carine Kinshasa → Kimpese",
+      "after": {
+        "id": "vyg-012",
+        "numero": "VYG-0012",
+        "passagerNom": "EWULI SUKA Carine",
+        "passagerMatricule": "70000265",
+        "passagerInterne": true,
+        "nombrePersonnes": 1,
+        "depart": "Kinshasa",
+        "destination": "Kimpese",
+        "dateDepart": "2026-10-15",
+        "heureDepart": "05:00",
+        "dateArrivee": "",
+        "heureArrivee": "",
+        "motif": "EXCO",
+        "notes": "",
+        "status": "demande",
+        "chauffeurNom": "",
+        "chauffeurMatricule": "",
+        "chauffeurInterne": false,
+        "vehiculeMode": "",
+        "vehiculeId": "",
+        "vehiculeLibelle": "",
+        "foodAllowance": 0,
+        "foodForTheRoad": 0,
+        "tollGate": 0,
+        "confirmedAt": "",
+        "completedAt": "",
+        "createdAt": "2026-10-14T13:38:01.224Z",
+        "updatedAt": "2026-10-14T13:38:01.224Z"
+      },
+      "undoable": false,
+      "undone": false
+    },
+    {
       "id": "log-001597",
       "at": "2026-10-14T13:35:28.446Z",
       "userId": "Tresor.Maneka@ppcdrc.cd",
@@ -171126,5 +171173,5 @@
       }
     }
   ],
-  "nextSeq": 1598
+  "nextSeq": 1599
 }
