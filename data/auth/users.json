@@ -13864,12 +13864,24 @@
           "menuId": "employes.contractants",
           "label": "Contractants",
           "actions": {
-            "view": false,
-            "create": false,
-            "edit": false,
+            "view": true,
+            "create": true,
+            "edit": true,
             "delete": false,
-            "export": false,
-            "undo": false
+            "export": true,
+            "undo": true
+          },
+          "contractantScope": {
+            "contractantIds": [
+              "12"
+            ],
+            "menus": {
+              "dashboard": true,
+              "employes": true,
+              "exit": true,
+              "discipline": true,
+              "planning": false
+            }
           }
         },
         {
