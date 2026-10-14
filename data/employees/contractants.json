@@ -1,5 +1,5 @@
 {
-  "nextContractantId": 12,
+  "nextContractantId": 13,
   "nextEmployeeId": 793,
   "contractants": [
     {
@@ -13384,6 +13384,14 @@
       ],
       "createdAt": "2026-09-28T13:32:54.562Z",
       "updatedAt": "2026-09-28T13:32:54.562Z"
+    },
+    {
+      "id": "12",
+      "denomination": "ORC",
+      "typeService": "Mécanique",
+      "employees": [],
+      "createdAt": "2026-10-14T11:57:47.910Z",
+      "updatedAt": "2026-10-14T11:57:47.910Z"
     }
   ]
 }
