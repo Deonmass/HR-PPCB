@@ -1,6 +1,31 @@
 {
   "entries": [
     {
+      "id": "log-001588",
+      "at": "2026-10-14T11:57:52.371Z",
+      "userId": "admin",
+      "userName": "Administrateur",
+      "userEmail": "admin",
+      "module": "contractants",
+      "moduleLabel": "contractants",
+      "action": "create",
+      "actionLabel": "Création",
+      "entityType": "contractant",
+      "entityId": "ORC",
+      "summary": "Contractant créé — ORC",
+      "details": "Contractant créé — ORC",
+      "after": {
+        "id": "12",
+        "denomination": "ORC",
+        "typeService": "Mécanique",
+        "employees": [],
+        "createdAt": "2026-10-14T11:57:47.910Z",
+        "updatedAt": "2026-10-14T11:57:47.910Z"
+      },
+      "undoable": false,
+      "undone": false
+    },
+    {
       "id": "log-001587",
       "at": "2026-10-14T11:49:59.469Z",
       "userId": "mukwilunaomie@gmail.com",
@@ -170729,5 +170754,5 @@
       }
     }
   ],
-  "nextSeq": 1588
+  "nextSeq": 1589
 }
