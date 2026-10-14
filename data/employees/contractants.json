@@ -1,5 +1,5 @@
 {
-  "nextContractantId": 13,
+  "nextContractantId": 14,
   "nextEmployeeId": 794,
   "contractants": [
     {
@@ -13418,6 +13418,14 @@
       "employees": [],
       "createdAt": "2026-10-14T11:57:47.910Z",
       "updatedAt": "2026-10-14T11:57:47.910Z"
+    },
+    {
+      "id": "13",
+      "denomination": "GSA",
+      "typeService": "Sécurité",
+      "employees": [],
+      "createdAt": "2026-10-14T11:58:36.127Z",
+      "updatedAt": "2026-10-14T11:58:36.127Z"
     }
   ]
 }
