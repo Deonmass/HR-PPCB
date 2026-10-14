@@ -268,7 +268,7 @@ export const fr = {
   'home.village.guestHouseSub': 'Occupation du jour (site + Kimpese)',
   'home.settings.title': 'Référentiels & administration',
   'home.settings.sub': 'Données de configuration',
-  'home.search.placeholder': 'Employés, modules, véhicules…',
+  'home.search.placeholder': 'Nom, contractant, département, poste…',
   'home.search.open': 'Ouvrir la recherche',
   'home.search.label': 'Recherche',
   'home.search.empty': 'Aucune suggestion pour « {query} »',

@@ -43518,12 +43518,67 @@ html[data-theme="light"] .ppc-discipline-modal .modal-footer {
     background: transparent;
   }
 
+  .mobile-bar {
+    flex-wrap: nowrap;
+    overflow: visible;
+  }
+
+  .mobile-bar-title {
+    flex: 1 1 auto;
+    min-width: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
   .mobile-bar-end {
     margin-left: auto;
     display: flex;
     align-items: center;
     gap: 0.35rem;
     min-width: 0;
+    flex: 0 1 auto;
+    flex-wrap: nowrap;
+    overflow: visible;
+  }
+
+  .mobile-bar .home-global-search {
+    z-index: 30;
+  }
+
+  .mobile-bar .home-global-search-toggle {
+    width: 40px;
+    height: 40px;
+    color: #f0f0f5;
+  }
+
+  .mobile-bar .home-global-search-field {
+    height: 40px;
+  }
+
+  .mobile-bar .home-global-search-field.is-expanded {
+    width: min(15rem, calc(100vw - 12.5rem));
+    height: 40px;
+    min-height: 0;
+    flex-wrap: nowrap;
+    background: #1c1c24;
+    border-color: rgba(255, 255, 255, 0.18);
+    color: #f0f0f5;
+  }
+
+  .mobile-bar .home-global-search-field.is-expanded input,
+  .mobile-bar .home-global-search-field.is-expanded input::placeholder,
+  .mobile-bar .home-global-search-clear {
+    color: #f0f0f5;
+  }
+
+  .mobile-bar .home-global-search-list {
+    position: fixed;
+    top: calc(var(--mobile-bar-h) + 6px);
+    left: 0.65rem;
+    right: 0.65rem;
+    width: auto;
+    z-index: 220;
   }
 
   .mobile-account-btn {
@@ -43541,8 +43596,10 @@ html[data-theme="light"] .ppc-discipline-modal .modal-footer {
   .mobile-header-tools {
     display: flex;
     align-items: center;
+    flex-wrap: nowrap;
     gap: 0.45rem;
-    width: 100%;
+    width: auto;
+    max-width: 100%;
     min-width: 0;
   }
 
@@ -43676,10 +43733,35 @@ html[data-theme="light"] .ppc-discipline-modal .modal-footer {
   .page-header-with-tabs,
   .audit-hr-header,
   .employees-header.page-header {
-    display: flex !important;
-    flex-direction: column !important;
-    align-items: stretch !important;
-    gap: 0.45rem;
+    display: grid !important;
+    grid-template-columns: minmax(0, 1fr) auto !important;
+    align-items: center !important;
+    column-gap: 0.45rem;
+    row-gap: 0.25rem;
+    min-width: 0;
+  }
+
+  .main .page-header > :first-child {
+    grid-column: 1;
+    grid-row: 1;
+    min-width: 0;
+  }
+
+  .main .page-header > .mobile-header-tools {
+    grid-column: 2;
+    grid-row: 1;
+    width: auto;
+    max-width: min(58vw, 15rem);
+    align-self: center;
+    margin: 0;
+  }
+
+  .main .page-header > div:not(.mobile-header-tools):not(:has(*)) {
+    display: none !important;
+  }
+
+  .main .page-header > :not(:first-child):not(.mobile-header-tools) {
+    grid-column: 1 / -1;
     min-width: 0;
   }
 
@@ -43688,6 +43770,13 @@ html[data-theme="light"] .ppc-discipline-modal .modal-footer {
   .audit-hr-header p {
     overflow: visible;
     white-space: normal;
+  }
+
+  .page-header:has(.mobile-header-tools) h2 {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    padding-right: 0;
   }
 
   .page-header-actions,

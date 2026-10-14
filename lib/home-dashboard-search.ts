@@ -2,6 +2,7 @@ import 'server-only';
 
 import type { MenuPermission } from './auth-types';
 import { listVehicules } from './charroi-store';
+import { listContractants } from './contractants-store';
 import { readEmployees } from './employees-json-store';
 import type { HomeSearchResponse, HomeSearchResult } from './home-dashboard-types';
 import { canPerformAction } from './permission-check';
@@ -140,7 +141,11 @@ export async function searchHome(
   if (can(menus, 'employes.liste')) {
     try {
       const employees = await readEmployees();
+      const departments = new Set<string>();
+      const postes = new Set<string>();
       for (const e of employees) {
+        if (e.departement) departments.add(e.departement);
+        if (e.jobTitle) postes.add(e.jobTitle);
         const score = scoreMatch(
           query,
           e.nom,
@@ -157,6 +162,103 @@ export async function searchHome(
             subtitle: [e.matricule, e.jobTitle, e.departement].filter(Boolean).join(' · '),
             href: `/employes?q=${encodeURIComponent(e.matricule || e.nom)}`,
             meta: 'Employé',
+            score,
+          });
+        }
+      }
+      for (const dept of departments) {
+        const score = scoreMatch(query, dept);
+        if (score >= 65) {
+          scored.push({
+            id: `dept-${dept}`,
+            type: 'page',
+            title: dept,
+            subtitle: 'Département',
+            href: '/employes',
+            meta: 'Département',
+            score,
+          });
+        }
+      }
+      for (const poste of postes) {
+        const score = scoreMatch(query, poste);
+        if (score >= 75) {
+          scored.push({
+            id: `poste-${poste}`,
+            type: 'page',
+            title: poste,
+            subtitle: 'Poste',
+            href: '/employes',
+            meta: 'Poste',
+            score,
+          });
+        }
+      }
+    } catch {
+      /* ignore */
+    }
+  }
+
+  if (can(menus, 'employes.contractants')) {
+    try {
+      const contractants = await listContractants();
+      const departments = new Set<string>();
+      const postes = new Set<string>();
+      for (const c of contractants) {
+        const companyScore = scoreMatch(query, c.denomination, c.typeService);
+        if (companyScore >= 55) {
+          scored.push({
+            id: `ctr-${c.id}`,
+            type: 'page',
+            title: c.denomination,
+            subtitle: c.typeService || 'Société contractante',
+            href: '/employes/contractants',
+            meta: 'Contractant',
+            score: companyScore,
+          });
+        }
+        for (const emp of c.employees) {
+          if (emp.dateSortie) continue;
+          if (emp.departement) departments.add(emp.departement);
+          if (emp.fonction) postes.add(emp.fonction);
+          const score = scoreMatch(query, emp.nom, emp.fonction, emp.departement, emp.matriculePpc, c.denomination);
+          if (score >= 55) {
+            scored.push({
+              id: `ctre-${c.id}-${emp.id}`,
+              type: 'employee',
+              title: emp.nom,
+              subtitle: [emp.fonction, emp.departement, c.denomination].filter(Boolean).join(' · '),
+              href: '/employes/contractants?tab=employes',
+              meta: 'Contractant',
+              score,
+            });
+          }
+        }
+      }
+      for (const dept of departments) {
+        const score = scoreMatch(query, dept);
+        if (score >= 65) {
+          scored.push({
+            id: `dept-c-${dept}`,
+            type: 'page',
+            title: dept,
+            subtitle: 'Département',
+            href: '/employes/contractants?tab=employes',
+            meta: 'Département',
+            score,
+          });
+        }
+      }
+      for (const poste of postes) {
+        const score = scoreMatch(query, poste);
+        if (score >= 75) {
+          scored.push({
+            id: `poste-c-${poste}`,
+            type: 'page',
+            title: poste,
+            subtitle: 'Poste',
+            href: '/employes/contractants?tab=employes',
+            meta: 'Poste',
             score,
           });
         }

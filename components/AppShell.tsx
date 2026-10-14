@@ -12,6 +12,7 @@ import ThemeSwitchOverlay from '@/components/ThemeSwitchOverlay';
 import TopProgressBarHost from '@/components/TopProgressBarHost';
 import MobileChrome from '@/components/MobileChrome';
 import MobileAccountMenu from '@/components/MobileAccountMenu';
+import HomeGlobalSearch from '@/components/home/HomeGlobalSearch';
 
 export default function AppShell({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
@@ -69,6 +70,7 @@ export default function AppShell({ children }: { children: React.ReactNode }) {
                     </button>
                     <span className="mobile-bar-title">PPC RH</span>
                     <div className="mobile-bar-end">
+                      <HomeGlobalSearch />
                       <MobileAccountMenu />
                     </div>
                   </div>
