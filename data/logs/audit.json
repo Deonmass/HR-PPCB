@@ -1,6 +1,49 @@
 {
   "entries": [
     {
+      "id": "log-001589",
+      "at": "2026-10-14T11:57:59.789Z",
+      "userId": "mukwilunaomie@gmail.com",
+      "userName": "Naomie Mukwilu",
+      "userEmail": "mukwilunaomie@gmail.com",
+      "module": "contractants",
+      "moduleLabel": "contractants",
+      "action": "create",
+      "actionLabel": "Création",
+      "entityType": "contractant-employee",
+      "entityId": "BOFWA ITOLO EPHRAHIM",
+      "summary": "Employé contractant — BOFWA ITOLO EPHRAHIM",
+      "details": "Employé contractant — BOFWA ITOLO EPHRAHIM",
+      "after": {
+        "id": "793",
+        "nom": "BOFWA ITOLO EPHRAHIM",
+        "sexe": "M",
+        "lieuAffectation": "Zamba",
+        "fonction": "POINTEUR",
+        "departement": "Mining",
+        "service": "",
+        "telephone": "",
+        "etatCivil": "C",
+        "statut": "Journalier",
+        "dateEmbauche": "2026-10-02",
+        "dateSortie": "",
+        "managerEmployeeId": "",
+        "family": [],
+        "matriculePpc": "",
+        "numeroCnss": "",
+        "numeroCompte": "",
+        "banque": "",
+        "nbDependants": 0,
+        "txJr": 0,
+        "coutTransport": 0,
+        "payrollSite": "",
+        "createdAt": "2026-10-14T11:57:55.993Z",
+        "updatedAt": "2026-10-14T11:57:55.993Z"
+      },
+      "undoable": false,
+      "undone": false
+    },
+    {
       "id": "log-001588",
       "at": "2026-10-14T11:57:52.371Z",
       "userId": "admin",
@@ -170754,5 +170797,5 @@
       }
     }
   ],
-  "nextSeq": 1589
+  "nextSeq": 1590
 }
