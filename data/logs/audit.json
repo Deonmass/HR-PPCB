@@ -1,6 +1,49 @@
 {
   "entries": [
     {
+      "id": "log-001587",
+      "at": "2026-10-14T11:49:59.469Z",
+      "userId": "mukwilunaomie@gmail.com",
+      "userName": "Naomie Mukwilu",
+      "userEmail": "mukwilunaomie@gmail.com",
+      "module": "contractants",
+      "moduleLabel": "contractants",
+      "action": "update",
+      "actionLabel": "Modification",
+      "entityType": "contractant-employee",
+      "entityId": "750",
+      "summary": "Modification employé contractant — NSIMBA KIMBANGI",
+      "details": "Modification employé contractant — NSIMBA KIMBANGI",
+      "after": {
+        "id": "750",
+        "nom": "NSIMBA KIMBANGI",
+        "sexe": "M",
+        "lieuAffectation": "Zamba",
+        "fonction": "Spotter",
+        "departement": "Mine",
+        "service": "",
+        "telephone": "",
+        "etatCivil": "M",
+        "statut": "Journalier",
+        "dateEmbauche": "",
+        "dateSortie": "",
+        "managerEmployeeId": "",
+        "family": [],
+        "matriculePpc": "",
+        "numeroCnss": "",
+        "numeroCompte": "",
+        "banque": "",
+        "nbDependants": 0,
+        "txJr": 0,
+        "coutTransport": 0,
+        "payrollSite": "",
+        "createdAt": "2026-08-15T09:22:38.385Z",
+        "updatedAt": "2026-10-14T11:49:56.579Z"
+      },
+      "undoable": false,
+      "undone": false
+    },
+    {
       "id": "log-001586",
       "at": "2026-10-14T11:49:03.612Z",
       "userId": "mukwilunaomie@gmail.com",
@@ -170686,5 +170729,5 @@
       }
     }
   ],
-  "nextSeq": 1587
+  "nextSeq": 1588
 }
