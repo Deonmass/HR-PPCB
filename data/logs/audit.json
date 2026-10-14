@@ -1,6 +1,31 @@
 {
   "entries": [
     {
+      "id": "log-001590",
+      "at": "2026-10-14T11:58:39.076Z",
+      "userId": "admin",
+      "userName": "Administrateur",
+      "userEmail": "admin",
+      "module": "contractants",
+      "moduleLabel": "contractants",
+      "action": "create",
+      "actionLabel": "Création",
+      "entityType": "contractant",
+      "entityId": "GSA",
+      "summary": "Contractant créé — GSA",
+      "details": "Contractant créé — GSA",
+      "after": {
+        "id": "13",
+        "denomination": "GSA",
+        "typeService": "Sécurité",
+        "employees": [],
+        "createdAt": "2026-10-14T11:58:36.127Z",
+        "updatedAt": "2026-10-14T11:58:36.127Z"
+      },
+      "undoable": false,
+      "undone": false
+    },
+    {
       "id": "log-001589",
       "at": "2026-10-14T11:57:59.789Z",
       "userId": "mukwilunaomie@gmail.com",
@@ -170797,5 +170822,5 @@
       }
     }
   ],
-  "nextSeq": 1590
+  "nextSeq": 1591
 }
