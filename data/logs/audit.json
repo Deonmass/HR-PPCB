@@ -1,6 +1,49 @@
 {
   "entries": [
     {
+      "id": "log-001586",
+      "at": "2026-10-14T11:49:03.612Z",
+      "userId": "mukwilunaomie@gmail.com",
+      "userName": "Naomie Mukwilu",
+      "userEmail": "mukwilunaomie@gmail.com",
+      "module": "contractants",
+      "moduleLabel": "contractants",
+      "action": "update",
+      "actionLabel": "Modification",
+      "entityType": "contractant-employee",
+      "entityId": "752",
+      "summary": "Modification employé contractant — MULENDA NGUNZA",
+      "details": "Modification employé contractant — MULENDA NGUNZA",
+      "after": {
+        "id": "752",
+        "nom": "MULENDA NGUNZA",
+        "sexe": "M",
+        "lieuAffectation": "Zamba",
+        "fonction": "Opérateur Excavatrice",
+        "departement": "Mines",
+        "service": "",
+        "telephone": "",
+        "etatCivil": "C",
+        "statut": "Journalier",
+        "dateEmbauche": "",
+        "dateSortie": "2026-09-25",
+        "managerEmployeeId": "",
+        "family": [],
+        "matriculePpc": "",
+        "numeroCnss": "",
+        "numeroCompte": "",
+        "banque": "",
+        "nbDependants": 0,
+        "txJr": 0,
+        "coutTransport": 0,
+        "payrollSite": "",
+        "createdAt": "2026-08-15T09:22:38.385Z",
+        "updatedAt": "2026-10-14T11:48:59.797Z"
+      },
+      "undoable": false,
+      "undone": false
+    },
+    {
       "id": "log-001585",
       "at": "2026-10-14T11:48:10.368Z",
       "userId": "mukwilunaomie@gmail.com",
@@ -170643,5 +170686,5 @@
       }
     }
   ],
-  "nextSeq": 1586
+  "nextSeq": 1587
 }
