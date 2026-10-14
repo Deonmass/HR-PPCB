@@ -1,6 +1,6 @@
 {
   "nextContractantId": 14,
-  "nextEmployeeId": 796,
+  "nextEmployeeId": 797,
   "contractants": [
     {
       "id": "1",
@@ -13415,10 +13415,36 @@
           "payrollSite": "",
           "createdAt": "2026-10-14T12:01:28.445Z",
           "updatedAt": "2026-10-14T12:01:28.445Z"
+        },
+        {
+          "id": "796",
+          "nom": "DIYABANZA DIAKANDA GRACE",
+          "sexe": "M",
+          "lieuAffectation": "Zamba",
+          "fonction": "OPERATEUR WHEEL LOADER",
+          "departement": "Production",
+          "service": "",
+          "telephone": "",
+          "etatCivil": "C",
+          "statut": "Journalier",
+          "dateEmbauche": "2026-10-12",
+          "dateSortie": "",
+          "managerEmployeeId": "",
+          "family": [],
+          "matriculePpc": "",
+          "numeroCnss": "",
+          "numeroCompte": "",
+          "banque": "",
+          "nbDependants": 0,
+          "txJr": 0,
+          "coutTransport": 0,
+          "payrollSite": "",
+          "createdAt": "2026-10-14T12:03:03.607Z",
+          "updatedAt": "2026-10-14T12:03:03.607Z"
         }
       ],
       "createdAt": "2026-08-15T09:22:03.868Z",
-      "updatedAt": "2026-10-14T12:01:28.445Z"
+      "updatedAt": "2026-10-14T12:03:03.607Z"
     },
     {
       "id": "10",
