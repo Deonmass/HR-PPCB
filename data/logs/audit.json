@@ -1,6 +1,53 @@
 {
   "entries": [
     {
+      "id": "log-001604",
+      "at": "2026-10-14T13:42:53.199Z",
+      "userId": "Tresor.Maneka@ppcdrc.cd",
+      "userName": "Tresor Maneka",
+      "userEmail": "Tresor.Maneka@ppcdrc.cd",
+      "module": "charroi.voyages",
+      "moduleLabel": "Charroi — Voyages",
+      "action": "create",
+      "actionLabel": "Création",
+      "entityType": "charroi.voyage",
+      "entityId": "vyg-018",
+      "summary": "Demande de voyage VYG-0018 NDONGALA STEPHANIE Kinshasa → Kimpese",
+      "details": "Demande de voyage VYG-0018 NDONGALA STEPHANIE Kinshasa → Kimpese",
+      "after": {
+        "id": "vyg-018",
+        "numero": "VYG-0018",
+        "passagerNom": "NDONGALA STEPHANIE",
+        "passagerMatricule": "70000292",
+        "passagerInterne": true,
+        "nombrePersonnes": 1,
+        "depart": "Kinshasa",
+        "destination": "Kimpese",
+        "dateDepart": "2026-10-15",
+        "heureDepart": "07:00",
+        "dateArrivee": "",
+        "heureArrivee": "",
+        "motif": "EXCO",
+        "notes": "",
+        "status": "demande",
+        "chauffeurNom": "",
+        "chauffeurMatricule": "",
+        "chauffeurInterne": false,
+        "vehiculeMode": "",
+        "vehiculeId": "",
+        "vehiculeLibelle": "",
+        "foodAllowance": 0,
+        "foodForTheRoad": 0,
+        "tollGate": 0,
+        "confirmedAt": "",
+        "completedAt": "",
+        "createdAt": "2026-10-14T13:42:49.450Z",
+        "updatedAt": "2026-10-14T13:42:49.450Z"
+      },
+      "undoable": false,
+      "undone": false
+    },
+    {
       "id": "log-001603",
       "at": "2026-10-14T13:41:59.713Z",
       "userId": "Tresor.Maneka@ppcdrc.cd",
@@ -171408,5 +171455,5 @@
       }
     }
   ],
-  "nextSeq": 1604
+  "nextSeq": 1605
 }
