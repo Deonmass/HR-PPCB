@@ -12856,7 +12856,7 @@
           "etatCivil": "M",
           "statut": "Journalier",
           "dateEmbauche": "",
-          "dateSortie": "",
+          "dateSortie": "2026-10-08",
           "managerEmployeeId": "",
           "family": [],
           "matriculePpc": "",
@@ -12868,7 +12868,7 @@
           "coutTransport": 0,
           "payrollSite": "",
           "createdAt": "2026-08-15T09:22:38.385Z",
-          "updatedAt": "2026-08-15T09:22:38.385Z"
+          "updatedAt": "2026-10-14T11:48:06.652Z"
         },
         {
           "id": "742",
@@ -13340,7 +13340,7 @@
         }
       ],
       "createdAt": "2026-08-15T09:22:03.868Z",
-      "updatedAt": "2026-10-14T11:45:06.450Z"
+      "updatedAt": "2026-10-14T11:48:06.652Z"
     },
     {
       "id": "10",
