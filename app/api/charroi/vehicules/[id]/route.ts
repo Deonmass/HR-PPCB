@@ -37,6 +37,7 @@ export async function PATCH(request: Request, { params }: Params) {
         getBefore: async () => before,
         path: `/api/charroi/vehicules/${id}`,
         method: 'PATCH',
+        defer: true,
       },
       () => updateVehicule(id.trim(), body),
     );
@@ -67,6 +68,7 @@ export async function DELETE(_request: Request, { params }: Params) {
         getAfter: () => null,
         path: `/api/charroi/vehicules/${id}`,
         method: 'DELETE',
+        defer: true,
       },
       async () => {
         await deleteVehicule(id.trim());

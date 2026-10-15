@@ -160,7 +160,7 @@ export async function searchHome(
             type: 'employee',
             title: e.nom,
             subtitle: [e.matricule, e.jobTitle, e.departement].filter(Boolean).join(' · '),
-            href: `/employes?q=${encodeURIComponent(e.matricule || e.nom)}`,
+            href: `/employes?fiche=${encodeURIComponent(e.matricule)}`,
             meta: 'Employé',
             score,
           });
@@ -212,7 +212,7 @@ export async function searchHome(
             type: 'page',
             title: c.denomination,
             subtitle: c.typeService || 'Société contractante',
-            href: '/employes/contractants',
+            href: `/employes/contractants?id=${encodeURIComponent(c.id)}`,
             meta: 'Contractant',
             score: companyScore,
           });
@@ -228,7 +228,7 @@ export async function searchHome(
               type: 'employee',
               title: emp.nom,
               subtitle: [emp.fonction, emp.departement, c.denomination].filter(Boolean).join(' · '),
-              href: '/employes/contractants?tab=employes',
+              href: `/employes/contractants?tab=employes&fiche=${encodeURIComponent(`${c.id}:${emp.id}`)}`,
               meta: 'Contractant',
               score,
             });

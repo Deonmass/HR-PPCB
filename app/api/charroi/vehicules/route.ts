@@ -48,6 +48,7 @@ export async function POST(request: Request) {
           `Nouveau véhicule enregistré : ${JSON.stringify(after ?? {}, null, 0)}`,
         path: '/api/charroi/vehicules',
         method: 'POST',
+        defer: true,
       },
       () => createVehicule(body),
     );

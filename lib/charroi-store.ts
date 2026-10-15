@@ -3,6 +3,9 @@ import 'server-only';
 import fs from 'fs';
 import fsPromises from 'fs/promises';
 import path from 'path';
+import { normalizeDepartmentName } from './exco-department-map';
+import { resolveResponsable, type ResponsableCandidate } from './charroi-responsable';
+import { readEmployeesBundle } from './employees-json-store';
 import {
   DURABLE_CHARROI_ACHATS_KEY,
   DURABLE_CHARROI_VEHICLES_KEY,
@@ -18,6 +21,7 @@ import type {
   CharroiAchatStatus,
   CharroiDocKind,
   CharroiDocPaiement,
+  CharroiGaragePassage,
   CharroiProprietaire,
   CharroiVehicule,
   CharroiVehiculeInput,
@@ -34,6 +38,7 @@ import {
   computeAgeFromMiseCirculation,
   computeFuelCost,
   computeObservationTech,
+  garagePassageOuvert,
   normalizeEtatManuel,
   normalizeMarqueLabel,
   normalizeProvinceLabel,
@@ -213,6 +218,106 @@ function finKeyOf(kind: CharroiDocKind): keyof Pick<
   return 'controleTechniqueFin';
 }
 
+function normalizeGarage(raw: unknown): CharroiGaragePassage[] {
+  if (!Array.isArray(raw)) return [];
+  const passages: CharroiGaragePassage[] = [];
+  for (const item of raw) {
+    if (!item || typeof item !== 'object') continue;
+    const row = item as Partial<CharroiGaragePassage>;
+    const dateEntree = str(row.dateEntree);
+    if (!isIsoDate(dateEntree)) continue;
+    const dateSortie = str(row.dateSortie);
+    passages.push({
+      id: str(row.id) || `gar-${dateEntree}`,
+      dateEntree,
+      dateSortie: isIsoDate(dateSortie) ? dateSortie : '',
+      raison: str(row.raison),
+      createdAt: str(row.createdAt) || nowIso(),
+    });
+  }
+  passages.sort((a, b) => a.dateEntree.localeCompare(b.dateEntree) || a.createdAt.localeCompare(b.createdAt));
+  return passages;
+}
+
+function toCandidate(item: {
+  matricule?: string;
+  nom?: string;
+  departement?: string;
+  jobTitle?: string;
+}, parti: boolean): ResponsableCandidate | null {
+  const matricule = str(item.matricule);
+  const nom = str(item.nom);
+  if (!matricule || !nom) return null;
+  return {
+    matricule,
+    nom,
+    departement: str(item.departement),
+    jobTitle: str(item.jobTitle),
+    parti,
+  };
+}
+
+async function responsableCandidates(): Promise<ResponsableCandidate[]> {
+  try {
+    const { employees, exits } = await readEmployeesBundle();
+    const actifs = employees
+      .filter((item) => String(item.statut ?? '').trim().toLowerCase() !== 'inactive')
+      .map((item) => toCandidate(item, false))
+      .filter((item): item is ResponsableCandidate => item != null);
+    const partis = exits
+      .map((item) => toCandidate(item, true))
+      .filter((item): item is ResponsableCandidate => item != null);
+    return [...actifs, ...partis];
+  } catch {
+    return [];
+  }
+}
+
+function personDepartment(person: { departement?: string }, fallback: string): string {
+  const canonical = normalizeDepartmentName(person.departement || '');
+  return canonical || str(person.departement) || fallback;
+}
+
+function applyResponsable(
+  vehicle: CharroiVehicule,
+  person: { matricule: string; nom: string; departement?: string; parti?: boolean },
+): CharroiVehicule {
+  const departement = personDepartment(person, vehicle.departement);
+  const parti = Boolean(person.parti);
+  if (
+    vehicle.user === person.nom
+    && vehicle.userMatricule === person.matricule
+    && vehicle.userParti === parti
+    && vehicle.departement === departement
+  ) {
+    return vehicle;
+  }
+  return {
+    ...vehicle,
+    user: person.nom,
+    userMatricule: person.matricule,
+    userParti: parti,
+    departement,
+  };
+}
+
+function linkResponsable(
+  vehicle: CharroiVehicule,
+  employees: ResponsableCandidate[],
+): CharroiVehicule {
+  if (vehicle.userMatricule) {
+    const known = employees.find((item) => item.matricule === vehicle.userMatricule);
+    return known ? applyResponsable(vehicle, known) : vehicle;
+  }
+  const hit = resolveResponsable(vehicle.user, employees, vehicle.departement);
+  if (!hit) {
+    const departement = normalizeDepartmentName(vehicle.departement) || vehicle.departement;
+    if (departement === vehicle.departement) return vehicle;
+    return { ...vehicle, departement };
+  }
+  return applyResponsable(vehicle, hit);
+}
+
 function normalizeVehicule(
   raw: CharroiVehiculeInput,
   fallbackSeq: number,
@@ -244,7 +349,7 @@ function normalizeVehicule(
     plaque: str(raw.plaque),
     cv: str(raw.cv),
     assureur: str(raw.assureur),
-    departement: str(raw.departement),
+    departement: normalizeDepartmentName(str(raw.departement)) || str(raw.departement),
     user: str(raw.user),
     province: normalizeProvinceLabel(raw.province),
     proprietaire: normalizeProprietaire(raw.proprietaire),
@@ -259,6 +364,9 @@ function normalizeVehicule(
     assuranceFin: latestFin(assuranceHistorique, str(raw.assuranceFin)),
     vignetteFin: latestFin(vignetteHistorique, str(raw.vignetteFin)),
     controleTechniqueFin: latestFin(controleTechniqueHistorique, str(raw.controleTechniqueFin)),
+    userMatricule: str(raw.userMatricule),
+    userParti: raw.userParti === true,
+    garageHistorique: normalizeGarage(raw.garageHistorique),
     notes: str(raw.notes),
     createdAt: str(raw.createdAt) || timestamps?.createdAt || stamp,
     updatedAt: timestamps?.updatedAt || stamp,
@@ -322,10 +430,11 @@ async function readVehiclesStore(): Promise<CharroiVehiclesStore> {
     emptyVehiclesStore(),
   );
   const rawList = Array.isArray(store.vehicles) ? store.vehicles : [];
-  const vehicles = rawList.map((item, index) => normalizeVehicule(item, index + 1, {
+  const employees = await responsableCandidates();
+  const vehicles = rawList.map((item, index) => linkResponsable(normalizeVehicule(item, index + 1, {
     createdAt: item.createdAt,
     updatedAt: item.updatedAt,
-  }));
+  }), employees));
   const maxSeq = vehicles.reduce((max, item) => {
     const seq = parseSeq(item.id, 'veh');
     return seq != null && seq > max ? seq : max;
@@ -346,6 +455,11 @@ async function readVehiclesStore(): Promise<CharroiVehiclesStore> {
       || !Array.isArray((raw as CharroiVehicule).assuranceHistorique)
       || !Array.isArray((raw as CharroiVehicule).vignetteHistorique)
       || !Array.isArray((raw as CharroiVehicule).controleTechniqueHistorique)
+      || str(raw.departement) !== item.departement
+      || str(raw.user) !== item.user
+      || str(raw.userMatricule) !== item.userMatricule
+      || (raw.userParti === true) !== item.userParti
+      || !Array.isArray((raw as CharroiVehicule).garageHistorique)
     );
   });
   if (dirty && vehicles.length > 0) {
@@ -397,7 +511,7 @@ export async function getVehicule(id: string): Promise<CharroiVehicule | null> {
 export async function createVehicule(input: CharroiVehiculeInput): Promise<CharroiVehicule> {
   const store = await readVehiclesStore();
   const vehicule = normalizeVehicule(
-    { ...input, id: undefined, numero: input.numero ?? store.nextSeq },
+    { ...input, id: undefined, numero: input.numero == null ? store.nextSeq : input.numero },
     store.nextSeq,
   );
   store.vehicles.push(vehicule);
@@ -423,9 +537,81 @@ export async function updateVehicule(
     vignetteHistorique: input.vignetteHistorique ?? prev.vignetteHistorique,
     controleTechniqueHistorique:
       input.controleTechniqueHistorique ?? prev.controleTechniqueHistorique,
+    garageHistorique: input.garageHistorique ?? prev.garageHistorique,
+    userMatricule: input.userMatricule !== undefined ? input.userMatricule : prev.userMatricule,
+    userParti: input.userParti !== undefined ? input.userParti : prev.userParti,
+    numero: input.numero == null ? prev.numero : input.numero,
   };
   const updated = normalizeVehicule(
     merged,
+    parseSeq(prev.id, 'veh') ?? index + 1,
+    { createdAt: prev.createdAt, updatedAt: nowIso() },
+  );
+  store.vehicles[index] = updated;
+  await writeVehiclesStore(store);
+  return updated;
+}
+
+function garageId(): string {
+  return `gar-${Date.now().toString(36)}-${Math.random().toString(36).slice(2, 6)}`;
+}
+
+/** Ouvre un passage au garage. Refuse si un séjour est déjà en cours. */
+export async function envoyerVehiculeAuGarage(
+  id: string,
+  input: { dateEntree: string; raison: string },
+): Promise<CharroiVehicule | null> {
+  const dateEntree = str(input.dateEntree);
+  const raison = str(input.raison);
+  if (!isIsoDate(dateEntree)) throw new Error('Date d’entrée invalide');
+  if (!raison) throw new Error('La raison du passage au garage est requise');
+
+  const store = await readVehiclesStore();
+  const index = store.vehicles.findIndex((item) => item.id === id);
+  if (index < 0) return null;
+  const prev = store.vehicles[index];
+  if (garagePassageOuvert(prev)) throw new Error('Ce véhicule est déjà au garage');
+
+  const passage: CharroiGaragePassage = {
+    id: garageId(),
+    dateEntree,
+    dateSortie: '',
+    raison,
+    createdAt: nowIso(),
+  };
+  const updated = normalizeVehicule(
+    { ...prev, garageHistorique: [...prev.garageHistorique, passage] },
+    parseSeq(prev.id, 'veh') ?? index + 1,
+    { createdAt: prev.createdAt, updatedAt: nowIso() },
+  );
+  store.vehicles[index] = updated;
+  await writeVehiclesStore(store);
+  return updated;
+}
+
+/** Clôture le passage en cours et remet le véhicule en service. */
+export async function remettreVehiculeEnService(
+  id: string,
+  input: { dateSortie: string },
+): Promise<CharroiVehicule | null> {
+  const dateSortie = str(input.dateSortie);
+  if (!isIsoDate(dateSortie)) throw new Error('Date de remise en service invalide');
+
+  const store = await readVehiclesStore();
+  const index = store.vehicles.findIndex((item) => item.id === id);
+  if (index < 0) return null;
+  const prev = store.vehicles[index];
+  const ouvert = garagePassageOuvert(prev);
+  if (!ouvert) throw new Error('Ce véhicule n’est pas au garage');
+  if (dateSortie < ouvert.dateEntree) {
+    throw new Error('La date de sortie ne peut pas précéder la date d’entrée');
+  }
+
+  const garageHistorique = prev.garageHistorique.map((passage) => (
+    passage.id === ouvert.id ? { ...passage, dateSortie } : passage
+  ));
+  const updated = normalizeVehicule(
+    { ...prev, garageHistorique },
     parseSeq(prev.id, 'veh') ?? index + 1,
     { createdAt: prev.createdAt, updatedAt: nowIso() },
   );

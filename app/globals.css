@@ -23908,6 +23908,59 @@ html:not([data-theme='light']) .guest-house-room-card.is-reserved {
   white-space: normal;
 }
 
+.guest-house-page tr.guest-house-res-row.is-clickable {
+  cursor: pointer;
+}
+
+.guest-house-page tr.guest-house-res-row.is-clickable:hover td {
+  background: color-mix(in srgb, #e30613 6%, transparent);
+}
+
+.guest-house-page tr.guest-house-res-row.is-clickable:focus-visible {
+  outline: 2px solid color-mix(in srgb, #e30613 55%, transparent);
+  outline-offset: -2px;
+}
+
+.guest-house-detail {
+  display: flex;
+  flex-direction: column;
+  gap: 0.85rem;
+}
+
+.guest-house-detail-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem;
+}
+
+.guest-house-detail-list {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.7rem 0.85rem;
+  margin: 0;
+}
+
+.guest-house-detail-list > div.is-wide {
+  grid-column: 1 / -1;
+}
+
+.guest-house-detail-list dt {
+  margin: 0 0 0.12rem;
+  font-size: 0.62rem;
+  font-weight: 750;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+.guest-house-detail-list dd {
+  margin: 0;
+  font-size: 0.92rem;
+  font-weight: 650;
+  line-height: 1.35;
+}
+
 .guest-house-row-actions {
   display: flex;
   flex-wrap: wrap;
@@ -43464,6 +43517,50 @@ html[data-theme="light"] .ppc-discipline-modal .modal-footer {
   }
 }
 
+/* Guest house : les KPI restent en 2 colonnes sur téléphone. */
+@media (max-width: 700px) {
+  .main .guest-house-kpi-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+    gap: 0.45rem;
+  }
+
+  .main .guest-house-kpi-grid > :last-child:nth-child(odd) {
+    grid-column: 1 / -1;
+  }
+}
+
+@media (max-width: 900px) {
+  .main:has(.guest-house-page) {
+    height: 100dvh;
+    max-height: 100dvh;
+    overflow: hidden;
+    padding-top: calc(var(--mobile-bar-h, 52px) + 0.4rem) !important;
+    padding-bottom: 0.4rem !important;
+  }
+
+  .guest-house-sticky {
+    z-index: 50;
+  }
+
+  .guest-house-page .mobile-header-tools,
+  .guest-house-page .mobile-tools-btn {
+    display: inline-flex !important;
+    visibility: visible;
+    opacity: 1;
+  }
+
+  .guest-house-page .mobile-header-tools {
+    display: flex !important;
+  }
+
+  .guest-house-page .mobile-tools-btn {
+    background: #111116;
+    color: #fff;
+    border-color: #111116;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.18);
+  }
+}
+
 /* Téléphone : en-tête fixe, onglets, grilles, donuts. */
 @media (max-width: 900px) {
   :root {
@@ -43556,20 +43653,34 @@ html[data-theme="light"] .ppc-discipline-modal .modal-footer {
     height: 40px;
   }
 
-  .mobile-bar .home-global-search-field.is-expanded {
+  .mobile-bar .home-global-search-field.is-expanded,
+  .mobile-bar .home-global-search-field.is-expanded.is-open,
+  .mobile-bar .home-global-search-field.is-expanded:focus-within {
     width: min(15rem, calc(100vw - 12.5rem));
     height: 40px;
     min-height: 0;
     flex-wrap: nowrap;
-    background: #1c1c24;
-    border-color: rgba(255, 255, 255, 0.18);
-    color: #f0f0f5;
+    background: #2a2a33 !important;
+    border-color: rgba(255, 255, 255, 0.22) !important;
+    box-shadow: none !important;
+    color: #f4f4f5 !important;
+  }
+
+  .mobile-bar .home-global-search-field input {
+    -webkit-appearance: none;
+    appearance: none;
+    background: transparent !important;
+    color: #f4f4f5 !important;
   }
 
   .mobile-bar .home-global-search-field.is-expanded input,
   .mobile-bar .home-global-search-field.is-expanded input::placeholder,
   .mobile-bar .home-global-search-clear {
-    color: #f0f0f5;
+    color: #f4f4f5;
+  }
+
+  .mobile-bar .home-global-search-field input::placeholder {
+    color: rgba(244, 244, 245, 0.55);
   }
 
   .mobile-bar .home-global-search-list {
@@ -43579,7 +43690,33 @@ html[data-theme="light"] .ppc-discipline-modal .modal-footer {
     right: 0.65rem;
     width: auto;
     z-index: 220;
+    background: #16161d;
+    color: #f4f4f5;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    box-shadow: 0 18px 40px rgba(0, 0, 0, 0.45);
   }
+
+  .mobile-bar .home-global-search-item,
+  .mobile-bar .home-search-text strong {
+    color: #f4f4f5;
+  }
+
+  .mobile-bar .home-global-search-item:hover,
+  .mobile-bar .home-global-search-item.is-active {
+    background: rgba(227, 6, 19, 0.28);
+  }
+
+  .mobile-bar .home-search-text span,
+  .mobile-bar .home-global-search-empty {
+    color: #d4d4d8;
+  }
+
+  .mobile-bar .home-search-type-employee { background: rgba(227, 6, 19, 0.35); color: #fff; }
+  .mobile-bar .home-search-type-module { background: rgba(6, 182, 212, 0.28); color: #ecfeff; }
+  .mobile-bar .home-search-type-vehicle { background: rgba(249, 115, 22, 0.28); color: #ffedd5; }
+  .mobile-bar .home-search-type-project { background: rgba(168, 85, 247, 0.28); color: #f3e8ff; }
+  .mobile-bar .home-search-type-travel { background: rgba(34, 197, 94, 0.28); color: #dcfce7; }
+  .mobile-bar .home-search-type-page { background: rgba(255, 255, 255, 0.12); color: #f4f4f5; }
 
   .mobile-account-btn {
     display: inline-flex;
@@ -44394,6 +44531,92 @@ html[data-theme="light"] .ppc-discipline-modal .modal-footer {
     font-size: 0.72rem;
     max-width: none;
     white-space: normal;
+  }
+
+  .guest-house-page table.mobile-data-grid tbody {
+    align-items: start;
+    gap: 0.6rem;
+  }
+
+  .guest-house-page table.mobile-data-grid tr.guest-house-res-row {
+    display: grid !important;
+    grid-template-columns: minmax(0, 1fr) auto;
+    align-content: start;
+    gap: 0.4rem 0.45rem;
+    padding: 0.75rem 0.72rem 0.7rem;
+    min-height: 0;
+  }
+
+  .guest-house-page table.mobile-data-grid tr.guest-house-res-row:active {
+    background: color-mix(in srgb, #e30613 7%, var(--bg-elevated, #fff));
+  }
+
+  .guest-house-page table.mobile-data-grid tr.guest-house-res-row td {
+    display: flex !important;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.08rem;
+    grid-column: 1 / -1;
+    font-size: 0.8rem;
+    line-height: 1.3;
+    white-space: normal !important;
+    overflow: visible !important;
+  }
+
+  .guest-house-page table.mobile-data-grid tr.guest-house-res-row td::before {
+    flex: none;
+    max-width: none;
+    width: auto;
+    margin: 0;
+    font-size: 0.58rem;
+    line-height: 1.15;
+  }
+
+  .guest-house-page table.mobile-data-grid td.guest-house-serial-cell,
+  .guest-house-page table.mobile-data-grid td.guest-house-actions-td {
+    display: none !important;
+  }
+
+  .guest-house-page table.mobile-data-grid td.guest-house-ref-td,
+  .guest-house-page table.mobile-data-grid td.guest-house-rest-td {
+    grid-row: 1;
+  }
+
+  .guest-house-page table.mobile-data-grid td.guest-house-ref-td {
+    grid-column: 1;
+    font-size: 0.68rem;
+    font-weight: 750;
+    color: #b91c1c;
+  }
+
+  .guest-house-page table.mobile-data-grid td.guest-house-rest-td {
+    grid-column: 2;
+    align-items: flex-end;
+  }
+
+  .guest-house-page table.mobile-data-grid td.guest-house-person-td {
+    grid-row: 2;
+    font-size: 0.88rem;
+    font-weight: 750;
+  }
+
+  .guest-house-page table.mobile-data-grid td.guest-house-ref-td::before,
+  .guest-house-page table.mobile-data-grid td.guest-house-person-td::before,
+  .guest-house-page table.mobile-data-grid td.guest-house-rest-td::before {
+    content: none;
+    display: none;
+  }
+
+  .guest-house-page table.mobile-data-grid td.guest-house-person-td strong,
+  .guest-house-page table.mobile-data-grid .guest-house-person-cell,
+  .guest-house-page table.mobile-data-grid .guest-house-person-cell .text-muted {
+    white-space: normal;
+    overflow: visible;
+    text-overflow: unset;
+  }
+
+  .guest-house-page table.mobile-data-grid td.guest-house-person-td strong {
+    font-size: 0.88rem;
   }
 }
 

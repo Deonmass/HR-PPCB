@@ -1,6 +1,7 @@
 'use client';
 
 import { useCallback, useEffect, useMemo, useState } from 'react';
+import { useRouter, useSearchParams } from 'next/navigation';
 import EmployeeModal from '@/components/EmployeeModal';
 import EmployeeViewModal from '@/components/EmployeeViewModal';
 import EmployeesHrDashboardView from '@/components/EmployeesHrDashboardView';
@@ -173,6 +174,8 @@ function moisValue(employee: Employee): string {
 export default function EmployesPage() {
   const { can } = usePermissions();
   const { t } = useI18n();
+  const router = useRouter();
+  const searchParams = useSearchParams();
   const canCreate = can('employes.liste', 'create');
   const canEdit = can('employes.liste', 'edit');
   const canDelete = can('employes.liste', 'delete');
@@ -412,6 +415,23 @@ export default function EmployesPage() {
     setViewing(employee);
     setViewOpen(true);
   };
+
+  const ficheMatricule = searchParams.get('fiche');
+  useEffect(() => {
+    if (!ficheMatricule || loading) return;
+    const person = employees.find((e) => e.matricule === ficheMatricule)
+      || exits.find((e) => e.matricule === ficheMatricule);
+    if (!person) return;
+    setTab('liste');
+    setSearch(person.matricule);
+    setViewTab('infos');
+    setViewing(person);
+    setViewOpen(true);
+    const params = new URLSearchParams(searchParams.toString());
+    params.delete('fiche');
+    const qs = params.toString();
+    router.replace(qs ? `/employes?${qs}` : '/employes', { scroll: false });
+  }, [ficheMatricule, loading, employees, exits, router, searchParams]);
 
   const openEdit = (employee: Employee | null) => {
     setEditing(employee);

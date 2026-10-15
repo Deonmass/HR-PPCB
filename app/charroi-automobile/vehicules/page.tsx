@@ -4,10 +4,11 @@ import { useCallback, useEffect, useMemo, useState } from 'react';
 import CardActionMenu from '@/components/CardActionMenu';
 import CharroiDashboard from '@/components/charroi/CharroiDashboard';
 import CharroiDocHistoryModal from '@/components/charroi/CharroiDocHistoryModal';
+import CharroiGarageModal from '@/components/charroi/CharroiGarageModal';
 import TableHeaderFilter from '@/components/TableHeaderFilter';
 import { countActiveColumnFilters, matchesColumnFilter } from '@/lib/table-column-filters';
 import CharroiKmHeaderFilter from '@/components/charroi/CharroiKmHeaderFilter';
-import { EmployeeSuggestInput } from '@/components/EmployeePicker';
+import { EmployeeSuggestInput, TextSuggestInput } from '@/components/EmployeePicker';
 import PermissionGate from '@/components/PermissionGate';
 import RefreshButton from '@/components/RefreshButton';
 import RowContextMenu, { type ContextMenuItem } from '@/components/RowContextMenu';
@@ -25,13 +26,17 @@ import {
   computeAgeFromMiseCirculation,
   explainObservationTech,
   formatCharroiDate,
+  garagePassageOuvert,
+  isVehiculeAuGarage,
   normalizeMarqueLabel,
   normalizeProvinceLabel,
   toMiseCirculationDateInput,
 } from '@/lib/charroi-types';
 import { downloadVehiculesExport } from '@/lib/charroi-vehicules-export';
+import { resolveResponsable } from '@/lib/charroi-responsable';
+import { departmentsEqual, normalizeDepartmentName } from '@/lib/exco-department-map';
 import { confirmDelete, showError, showSuccess } from '@/lib/swal';
-import type { Employee } from '@/lib/types';
+import { emptyEmployeeHrProfile, type Employee } from '@/lib/types';
 
 const MENU = 'charroi.vehicules';
 const VIEW_ANY = [
@@ -39,7 +44,45 @@ const VIEW_ANY = [
   { menuId: 'charroi', action: 'view' as const },
 ];
 
-type Tab = 'dashboard' | 'liste' | 'declasses';
+type SlimEmployee = {
+  matricule: string;
+  nom: string;
+  departement: string;
+  jobTitle: string;
+  localisation: string;
+  parti?: boolean;
+};
+
+function toSuggestEmployee(row: SlimEmployee): Employee {
+  return {
+    ...emptyEmployeeHrProfile(),
+    matricule: row.matricule,
+    nom: row.nom,
+    departement: row.departement,
+    grade: '',
+    jobTitle: row.jobTitle,
+    localisation: row.localisation,
+    documents: {},
+    parti: Boolean(row.parti),
+  } as Employee & { parti?: boolean };
+}
+
+function linkedDepartment(employee: Employee | undefined): string {
+  const raw = employee?.departement.trim() || '';
+  if (!raw) return '';
+  return normalizeDepartmentName(raw).trim() || raw;
+}
+
+function departmentFiltersEmployees(department: string, employees: Employee[]): boolean {
+  const value = department.trim();
+  if (!value) return false;
+  return employees.some(
+    (employee) => employee.departement.trim() && departmentsEqual(employee.departement, value),
+  );
+}
+
+type Tab = 'dashboard' | 'liste' | 'declasses' | 'garage';
+type GarageMode = 'entree' | 'sortie' | 'historique';
 
 /* ── Modification directe (menu contextuel) ────────────────────── */
 
@@ -138,6 +181,7 @@ type FormState = {
   assureur: string;
   departement: string;
   user: string;
+  userMatricule: string;
   province: string;
   proprietaire: CharroiProprietaire;
   kilometrage: string;
@@ -160,6 +204,7 @@ const emptyForm = (): FormState => ({
   assureur: '',
   departement: '',
   user: '',
+  userMatricule: '',
   province: '',
   proprietaire: 'PPC',
   kilometrage: '',
@@ -189,6 +234,13 @@ function rowClass(item: CharroiVehicule): string {
   }
   if (v.includes('déclass') || v.includes('declas')) return 'charroi-row-click charroi-row-bad';
   return 'charroi-row-click';
+}
+
+function todayIso(): string {
+  const date = new Date();
+  const month = String(date.getMonth() + 1).padStart(2, '0');
+  const day = String(date.getDate()).padStart(2, '0');
+  return `${date.getFullYear()}-${month}-${day}`;
 }
 
 function toNum(raw: string): number | null {
@@ -244,7 +296,8 @@ export default function CharroiVehiculesPage() {
 
   const [tab, setTab] = useState<Tab>('dashboard');
   const [items, setItems] = useState<CharroiVehicule[]>([]);
-  const [employees, setEmployees] = useState<Employee[]>([]);
+  const [employees, setEmployees] = useState<Array<Employee & { parti?: boolean }>>([]);
+  const [departments, setDepartments] = useState<string[]>([]);
   const [loading, setLoading] = useState(true);
   const [refreshing, setRefreshing] = useState(false);
   const [search, setSearch] = useState('');
@@ -258,9 +311,11 @@ export default function CharroiVehiculesPage() {
   const [contextMenu, setContextMenu] = useState<{ x: number; y: number; item: CharroiVehicule } | null>(null);
   const [quickEdit, setQuickEdit] = useState<{ item: CharroiVehicule; field: QuickField } | null>(null);
   const [qeValue, setQeValue] = useState('');
+  const [qeMatricule, setQeMatricule] = useState('');
   const [qeDept, setQeDept] = useState('');
   const [qeSaving, setQeSaving] = useState(false);
   const [docModal, setDocModal] = useState<{ item: CharroiVehicule; kind: CharroiDocKind } | null>(null);
+  const [garageModal, setGarageModal] = useState<{ item: CharroiVehicule; mode: GarageMode } | null>(null);
 
   const load = useCallback(async (isRefresh = false) => {
     if (isRefresh) setRefreshing(true);
@@ -285,10 +340,17 @@ export default function CharroiVehiculesPage() {
 
   useEffect(() => {
     void load();
-    fetch('/api/employees')
-      .then((res) => (res.ok ? res.json() : []))
-      .then((json: Employee[]) => setEmployees(Array.isArray(json) ? json : []))
-      .catch(() => setEmployees([]));
+    fetch('/api/charroi/vehicules/options')
+      .then((res) => (res.ok ? res.json() : null))
+      .then((json: { employees?: SlimEmployee[]; departments?: string[] } | null) => {
+        const rows = Array.isArray(json?.employees) ? json.employees : [];
+        setEmployees(rows.map(toSuggestEmployee));
+        setDepartments(Array.isArray(json?.departments) ? json.departments : []);
+      })
+      .catch(() => {
+        setEmployees([]);
+        setDepartments([]);
+      });
   }, [load]);
 
   const findEmployeeByName = useCallback(
@@ -300,24 +362,53 @@ export default function CharroiVehiculesPage() {
     [employees],
   );
 
-  const declasses = useMemo(
-    () => items.filter((i) => observationClass(i.observationTech).includes('is-retired')),
+  const responsableInfo = useCallback((item: CharroiVehicule): { nom: string; parti: boolean } => {
+    if (item.userMatricule) {
+      const known = employees.find((employee) => employee.matricule === item.userMatricule);
+      if (known?.nom.trim()) return { nom: known.nom.trim(), parti: Boolean(known.parti || item.userParti) };
+    }
+    if (item.userParti && item.user.trim()) return { nom: item.user.trim(), parti: true };
+    const hit = resolveResponsable(item.user, employees, item.departement);
+    if (hit) return { nom: hit.nom, parti: hit.parti };
+    return { nom: item.user.trim(), parti: false };
+  }, [employees]);
+  const responsableName = useCallback(
+    (item: CharroiVehicule) => responsableInfo(item).nom,
+    [responsableInfo],
+  );
+
+  const auGarage = useMemo(
+    () => items.filter((item) => isVehiculeAuGarage(item)),
     [items],
   );
-  const actifs = useMemo(
-    () => items.filter((i) => !observationClass(i.observationTech).includes('is-retired')),
+  const horsGarage = useMemo(
+    () => items.filter((item) => !isVehiculeAuGarage(item)),
     [items],
+  );
+  const declasses = useMemo(
+    () => horsGarage.filter((i) => observationClass(i.observationTech).includes('is-retired')),
+    [horsGarage],
+  );
+  const actifs = useMemo(
+    () => horsGarage.filter((i) => !observationClass(i.observationTech).includes('is-retired')),
+    [horsGarage],
   );
   const base = tab === 'declasses' ? declasses : actifs;
 
   const filterValues = useMemo(() => {
     const result = {} as Record<FilterKey, string[]>;
     (Object.keys(EMPTY_FILTERS) as FilterKey[]).forEach((key) => {
-      const set = new Set(base.map((item) => filterValueOf(item, key)));
+      const set = new Set(base.map((item) => (
+        key === 'user'
+          ? (responsableName(item) || '—')
+          : key === 'departement'
+            ? (normalizeDepartmentName(item.departement) || item.departement || '—')
+            : filterValueOf(item, key)
+      )));
       result[key] = [...set].sort((a, b) => a.localeCompare(b, 'fr'));
     });
     return result;
-  }, [base]);
+  }, [base, responsableName]);
 
   const filtered = useMemo(() => {
     const q = search.trim().toLowerCase();
@@ -325,7 +416,12 @@ export default function CharroiVehiculesPage() {
     const max = toNum(kmMax);
     return base.filter((item) => {
       for (const key of Object.keys(colFilters) as FilterKey[]) {
-        if (!matchesColumnFilter(colFilters[key], filterValueOf(item, key))) return false;
+        const columnValue = key === 'user'
+          ? (responsableName(item) || '—')
+          : key === 'departement'
+            ? (normalizeDepartmentName(item.departement) || item.departement || '—')
+            : filterValueOf(item, key);
+        if (!matchesColumnFilter(colFilters[key], columnValue)) return false;
       }
       if (min != null) {
         if (item.kilometrage == null || item.kilometrage < min) return false;
@@ -336,11 +432,11 @@ export default function CharroiVehiculesPage() {
       if (!q) return true;
       const hay = [
         item.numero, item.marque, item.type, item.numeroChassis, item.plaque,
-        item.user, item.departement, item.province, item.assureur,
+        responsableName(item), item.departement, item.province, item.assureur,
       ].join(' ').toLowerCase();
       return hay.includes(q);
     });
-  }, [base, search, colFilters, kmMin, kmMax]);
+  }, [base, search, colFilters, kmMin, kmMax, responsableName]);
 
   const activeFilterCount = useMemo(() => {
     let count = countActiveColumnFilters(colFilters);
@@ -379,6 +475,10 @@ export default function CharroiVehiculesPage() {
     () => findEmployeeByName(form.user),
     [findEmployeeByName, form.user],
   );
+  const formDepartmentFilter = useMemo(
+    () => (departmentFiltersEmployees(form.departement, employees) ? form.departement : undefined),
+    [employees, form.departement],
+  );
 
   const openCreate = () => {
     setForm(emptyForm());
@@ -397,7 +497,8 @@ export default function CharroiVehiculesPage() {
       cv: item.cv,
       assureur: item.assureur,
       departement: item.departement,
-      user: item.user,
+      user: responsableName(item) || item.user,
+      userMatricule: item.userMatricule || '',
       province: item.province,
       proprietaire: item.proprietaire || 'PPC',
       kilometrage: item.kilometrage == null ? '' : String(item.kilometrage),
@@ -420,16 +521,15 @@ export default function CharroiVehiculesPage() {
     try {
       const kilometrage = toNum(form.kilometrage);
       const payload = {
-        numero: toNum(form.numero),
         marque: normalizeMarqueLabel(form.marque),
         type: form.type.trim(),
         numeroChassis: form.numeroChassis.trim(),
         plaque: form.plaque.trim(),
         cv: form.cv.trim(),
         assureur: form.assureur.trim(),
-        // Le département suit automatiquement le responsable employé.
-        departement: formEmployee ? formEmployee.departement : form.departement.trim(),
+        departement: linkedDepartment(formEmployee) || normalizeDepartmentName(form.departement) || form.departement.trim(),
         user: form.user.trim(),
+        userMatricule: form.userMatricule.trim(),
         province: normalizeProvinceLabel(form.province),
         proprietaire: form.proprietaire,
         kilometrage,
@@ -489,6 +589,7 @@ export default function CharroiVehiculesPage() {
       case 'etat': value = item.etatManuel || ''; break;
     }
     setQeValue(value);
+    setQeMatricule(field === 'user' ? (item.userMatricule || '') : '');
     setQeDept(item.departement);
     setQuickEdit({ item, field });
   };
@@ -496,6 +597,10 @@ export default function CharroiVehiculesPage() {
   const qeEmployee = useMemo(
     () => (quickEdit?.field === 'user' ? findEmployeeByName(qeValue) : undefined),
     [quickEdit, findEmployeeByName, qeValue],
+  );
+  const qeDepartmentFilter = useMemo(
+    () => (departmentFiltersEmployees(qeDept, employees) ? qeDept : undefined),
+    [employees, qeDept],
   );
 
   const handleQuickSave = async () => {
@@ -506,7 +611,8 @@ export default function CharroiVehiculesPage() {
       case 'user':
         patch = {
           user: qeValue.trim(),
-          departement: qeEmployee ? qeEmployee.departement : qeDept.trim(),
+          userMatricule: qeMatricule.trim(),
+          departement: linkedDepartment(qeEmployee) || normalizeDepartmentName(qeDept) || qeDept.trim(),
         };
         break;
       case 'province':
@@ -563,6 +669,29 @@ export default function CharroiVehiculesPage() {
           onClick: () => openQuickEdit(item, field),
         });
       }
+      if (isVehiculeAuGarage(item)) {
+        items.push({
+          id: 'garage-sortie',
+          label: 'Remettre en service',
+          icon: 'home',
+          onClick: () => setGarageModal({ item, mode: 'sortie' }),
+        });
+      } else {
+        items.push({
+          id: 'garage-entree',
+          label: 'Envoyer au garage',
+          icon: 'move',
+          onClick: () => setGarageModal({ item, mode: 'entree' }),
+        });
+      }
+    }
+    if ((item.garageHistorique || []).length > 0) {
+      items.push({
+        id: 'garage-historique',
+        label: 'Historique garage',
+        icon: 'doc',
+        onClick: () => setGarageModal({ item, mode: 'historique' }),
+      });
     }
     (['assurance', 'vignette', 'controleTechnique'] as CharroiDocKind[]).forEach((kind) => {
       items.push({
@@ -581,6 +710,29 @@ export default function CharroiVehiculesPage() {
     ];
     if (canEdit) {
       actions.push({ id: 'edit', label: 'Modifier', icon: 'edit', onClick: () => openEdit(item) });
+      if (isVehiculeAuGarage(item)) {
+        actions.push({
+          id: 'garage-sortie',
+          label: 'Remettre en service',
+          icon: 'home',
+          onClick: () => setGarageModal({ item, mode: 'sortie' }),
+        });
+      } else {
+        actions.push({
+          id: 'garage-entree',
+          label: 'Envoyer au garage',
+          icon: 'move',
+          onClick: () => setGarageModal({ item, mode: 'entree' }),
+        });
+      }
+    }
+    if ((item.garageHistorique || []).length > 0) {
+      actions.push({
+        id: 'garage-historique',
+        label: 'Historique garage',
+        icon: 'doc',
+        onClick: () => setGarageModal({ item, mode: 'historique' }),
+      });
     }
     if (canDelete) {
       actions.push({
@@ -602,7 +754,7 @@ export default function CharroiVehiculesPage() {
     : null;
 
   const renderTable = () => (
-    <>
+    <div className="charroi-list">
       <div className="panel docs-filter-bar-compact charroi-filters">
         <input
           type="search"
@@ -763,8 +915,14 @@ export default function CharroiVehiculesPage() {
                   </td>
                   <td>{item.plaque || '—'}</td>
                   <td>{item.cv || '—'}</td>
-                  <td>{item.departement || '—'}</td>
-                  <td>{item.user || '—'}</td>
+                  <td>{normalizeDepartmentName(item.departement) || item.departement || '—'}</td>
+                  <td>
+                    {responsableInfo(item).nom ? (
+                      <span className={responsableInfo(item).parti ? 'charroi-user-left' : undefined}>
+                        {responsableInfo(item).nom}
+                      </span>
+                    ) : '—'}
+                  </td>
                   <td>{item.province || '—'}</td>
                   <td>
                     <span className={`charroi-owner is-${(item.proprietaire || 'na').toLowerCase()}`}>
@@ -823,12 +981,12 @@ export default function CharroiVehiculesPage() {
           </tbody>
         </table>
       </div>
-    </>
+    </div>
   );
 
   return (
     <PermissionGate anyOf={VIEW_ANY}>
-      <div className="charroi-page">
+      <div className="charroi-page charroi-fill">
         <div className="page-header page-header-with-tabs">
           <div>
             <div className="page-header-title-row">
@@ -837,6 +995,7 @@ export default function CharroiVehiculesPage() {
             </div>
             <p>
               {actifs.length} véhicule{actifs.length > 1 ? 's' : ''}
+              {auGarage.length > 0 ? ` · ${auGarage.length} au garage` : ''}
               {declasses.length > 0 ? ` · ${declasses.length} déclassé${declasses.length > 1 ? 's' : ''}` : ''}
             </p>
           </div>
@@ -859,6 +1018,13 @@ export default function CharroiVehiculesPage() {
                 </button>
                 <button
                   type="button"
+                  className={`tab-btn tab-btn-sm${tab === 'garage' ? ' active' : ''}`}
+                  onClick={() => setTab('garage')}
+                >
+                  Garage{auGarage.length > 0 ? ` (${auGarage.length})` : ''}
+                </button>
+                <button
+                  type="button"
                   className={`tab-btn tab-btn-sm${tab === 'declasses' ? ' active' : ''}`}
                   onClick={() => setTab('declasses')}
                 >
@@ -866,19 +1032,38 @@ export default function CharroiVehiculesPage() {
                 </button>
               </div>
               {canCreate && (
-                <button type="button" className="btn btn-accent btn-sm" onClick={openCreate}>
-                  + Ajouter
+                <button
+                  type="button"
+                  className="btn btn-accent btn-sm btn-with-icon"
+                  onClick={openCreate}
+                  title="Ajouter un véhicule"
+                  aria-label="Ajouter un véhicule"
+                >
+                  <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" strokeWidth="2.25" strokeLinecap="round" aria-hidden>
+                    <line x1="12" y1="5" x2="12" y2="19" />
+                    <line x1="5" y1="12" x2="19" y2="12" />
+                  </svg>
+                  <span>Ajouter</span>
                 </button>
               )}
               <button
                 type="button"
-                className="btn btn-secondary btn-sm"
+                className="btn btn-secondary btn-sm btn-with-icon"
                 onClick={() => {
                   try {
                     const source =
                       tab === 'dashboard'
                         ? items
-                        : filtered;
+                        : tab === 'garage'
+                          ? auGarage.filter((item) => {
+                            const q = search.trim().toLowerCase();
+                            if (!q) return true;
+                            const ouvert = garagePassageOuvert(item);
+                            return [
+                              item.numero, item.marque, item.plaque, responsableName(item), ouvert?.raison,
+                            ].join(' ').toLowerCase().includes(q);
+                          })
+                          : filtered;
                     if (source.length === 0) {
                       void showError('Aucun véhicule à exporter');
                       return;
@@ -900,8 +1085,14 @@ export default function CharroiVehiculesPage() {
                     ? 'Exporter tous les véhicules'
                     : 'Exporter les véhicules visibles (filtres appliqués)'
                 }
+                aria-label="Exporter"
               >
-                Export
+                <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden>
+                  <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
+                  <polyline points="7 10 12 15 17 10" />
+                  <line x1="12" y1="15" x2="12" y2="3" />
+                </svg>
+                <span>Export</span>
               </button>
             </div>
           </div>
@@ -917,12 +1108,115 @@ export default function CharroiVehiculesPage() {
 
         {(tab === 'liste' || tab === 'declasses') && renderTable()}
 
+        {tab === 'garage' && (
+          <div className="charroi-list">
+            <div className="panel docs-filter-bar-compact charroi-filters">
+              <input
+                type="search"
+                className="search-input"
+                placeholder="Rechercher un véhicule au garage…"
+                value={search}
+                onChange={(e) => setSearch(e.target.value)}
+              />
+              <span className="toolbar-count">
+                {auGarage.length} véhicule{auGarage.length > 1 ? 's' : ''} au garage
+              </span>
+            </div>
+            <div className="table-wrap charroi-table-wrap">
+              <table className="data-table charroi-table">
+                <thead>
+                  <tr>
+                    <th>N°</th>
+                    <th>Marque</th>
+                    <th>Plaque</th>
+                    <th>Département</th>
+                    <th>Responsable</th>
+                    <th>Date d’entrée</th>
+                    <th>Raison</th>
+                    <th>Durée</th>
+                    <th />
+                  </tr>
+                </thead>
+                <tbody>
+                  {auGarage.length === 0 ? (
+                    <tr><td colSpan={9} className="empty-state">Aucun véhicule au garage.</td></tr>
+                  ) : (
+                    auGarage
+                      .filter((item) => {
+                        const q = search.trim().toLowerCase();
+                        if (!q) return true;
+                        const ouvert = garagePassageOuvert(item);
+                        return [
+                          item.numero, item.marque, item.plaque, item.departement,
+                          responsableName(item), ouvert?.raison,
+                        ].join(' ').toLowerCase().includes(q);
+                      })
+                      .map((item) => {
+                        const ouvert = garagePassageOuvert(item);
+                        const jours = ouvert ? Math.max(0, Math.round(
+                          (new Date(`${todayIso()}T00:00:00`).getTime()
+                            - new Date(`${ouvert.dateEntree}T00:00:00`).getTime()) / 86_400_000,
+                        )) : null;
+                        return (
+                          <tr
+                            key={item.id}
+                            className="charroi-row-click"
+                            onClick={() => setDetail(item)}
+                            onContextMenu={(event) => {
+                              event.preventDefault();
+                              setContextMenu({ x: event.clientX, y: event.clientY, item });
+                            }}
+                          >
+                            <td>{item.numero ?? '—'}</td>
+                            <td>
+                              <div className="charroi-marque-cell">
+                                <strong>{item.marque || '—'}</strong>
+                                {item.type && <span>{item.type}</span>}
+                              </div>
+                            </td>
+                            <td>{item.plaque || '—'}</td>
+                            <td>{normalizeDepartmentName(item.departement) || item.departement || '—'}</td>
+                            <td>
+                              {responsableInfo(item).nom ? (
+                                <span className={responsableInfo(item).parti ? 'charroi-user-left' : undefined}>
+                                  {responsableInfo(item).nom}
+                                </span>
+                              ) : '—'}
+                            </td>
+                            <td>{ouvert ? formatCharroiDate(ouvert.dateEntree) : '—'}</td>
+                            <td>{ouvert?.raison || '—'}</td>
+                            <td>{jours == null || Number.isNaN(jours) ? '—' : `${jours} j`}</td>
+                            <td className="charroi-actions-cell" onClick={(e) => e.stopPropagation()}>
+                              <CardActionMenu items={menuItems(item)} ariaLabel={`Actions — ${item.plaque || item.marque}`} />
+                            </td>
+                          </tr>
+                        );
+                      })
+                  )}
+                </tbody>
+              </table>
+            </div>
+          </div>
+        )}
+
         {contextMenu && contextItems.length > 0 && (
           <RowContextMenu
             x={contextMenu.x}
             y={contextMenu.y}
             onClose={() => setContextMenu(null)}
             items={contextItems}
+          />
+        )}
+
+        {garageModal && (
+          <CharroiGarageModal
+            vehicle={garageModal.item}
+            mode={garageModal.mode}
+            onClose={() => setGarageModal(null)}
+            onSaved={(updated) => {
+              setItems((prev) => prev.map((v) => (v.id === updated.id ? updated : v)));
+              setDetail((prev) => (prev?.id === updated.id ? updated : prev));
+            }}
           />
         )}
 
@@ -954,22 +1248,33 @@ export default function CharroiVehiculesPage() {
                       <EmployeeSuggestInput
                         employees={employees}
                         value={qeValue}
-                        onChange={(value) => setQeValue(value)}
+                        department={qeDepartmentFilter}
+                        onChange={(value) => {
+                          const employee = findEmployeeByName(value);
+                          setQeValue(value);
+                          setQeMatricule(employee?.matricule || '');
+                          const linked = linkedDepartment(employee);
+                          if (linked) setQeDept(linked);
+                        }}
                         onEmployeeSelect={(employee) => {
                           setQeValue(employee.nom);
-                          setQeDept(employee.departement || '');
+                          setQeMatricule(employee.matricule);
+                          setQeDept(linkedDepartment(employee));
                         }}
                         placeholder="Rechercher un employé ou saisir un nom…"
                       />
                     </div>
                     <div className="form-group">
-                      <label>Département {qeEmployee ? '(suivi automatique)' : ''}</label>
-                      <input
-                        value={qeEmployee ? (qeEmployee.departement || '') : qeDept}
-                        disabled={Boolean(qeEmployee)}
-                        onChange={(e) => setQeDept(e.target.value)}
-                        placeholder="Saisir le département"
+                      <label>Département</label>
+                      <TextSuggestInput
+                        value={qeDept}
+                        suggestions={departments}
+                        onChange={setQeDept}
+                        placeholder="Rechercher un département…"
                       />
+                      {qeEmployee && departmentsEqual(qeDept, qeEmployee.departement) && (
+                        <p className="form-hint">Lié à {qeEmployee.nom}</p>
+                      )}
                     </div>
                   </>
                 )}
@@ -1042,6 +1347,7 @@ export default function CharroiVehiculesPage() {
                   onClick={() => void handleQuickSave()}
                   disabled={qeSaving}
                 >
+                  {qeSaving && <span className="btn-spinner" aria-hidden="true" />}
                   {qeSaving ? 'Enregistrement…' : 'Enregistrer'}
                 </button>
               </div>
@@ -1078,8 +1384,8 @@ export default function CharroiVehiculesPage() {
                     ['Plaque', detail.plaque],
                     ['CV', detail.cv],
                     ['Assureur', detail.assureur],
-                    ['Département', detail.departement],
-                    ['Responsable', detail.user],
+                    ['Département', normalizeDepartmentName(detail.departement) || detail.departement],
+                    ['Responsable', responsableInfo(detail).nom || detail.user],
                     ['Province', detail.province],
                     ['Propriétaire', detail.proprietaire],
                     ['Kilométrage', detail.kilometrage == null ? '—' : detail.kilometrage.toLocaleString('fr-FR')],
@@ -1093,7 +1399,9 @@ export default function CharroiVehiculesPage() {
                   ].map(([label, value]) => (
                     <div className="form-group" key={String(label)}>
                       <label>{label}</label>
-                      <div className="charroi-detail-value">{value || '—'}</div>
+                      <div className={`charroi-detail-value${label === 'Responsable' && responsableInfo(detail).parti ? ' charroi-user-left' : ''}`}>
+                        {value || '—'}
+                      </div>
                     </div>
                   ))}
                 </div>
@@ -1145,7 +1453,6 @@ export default function CharroiVehiculesPage() {
                 </div>
                 <div className="form-grid">
                   {[
-                    ['numero', 'N°'],
                     ['marque', 'Marque'],
                     ['type', 'Type'],
                     ['numeroChassis', 'N° châssis'],
@@ -1167,25 +1474,39 @@ export default function CharroiVehiculesPage() {
                     <EmployeeSuggestInput
                       employees={employees}
                       value={form.user}
-                      onChange={(value) => setForm((prev) => ({ ...prev, user: value }))}
+                      department={formDepartmentFilter}
+                      onChange={(value) => {
+                        const employee = findEmployeeByName(value);
+                        const linked = linkedDepartment(employee);
+                        setForm((prev) => ({
+                          ...prev,
+                          user: value,
+                          userMatricule: employee?.matricule || '',
+                          departement: linked || prev.departement,
+                        }));
+                      }}
                       onEmployeeSelect={(employee) =>
                         setForm((prev) => ({
                           ...prev,
                           user: employee.nom,
-                          departement: employee.departement || prev.departement,
+                          userMatricule: employee.matricule,
+                          departement: linkedDepartment(employee) || prev.departement,
                         }))
                       }
                       placeholder="Rechercher un employé ou saisir un nom…"
                     />
                   </div>
                   <div className="form-group">
-                    <label>Département {formEmployee ? '(suivi automatique)' : ''}</label>
-                    <input
-                      value={formEmployee ? (formEmployee.departement || '') : form.departement}
-                      disabled={Boolean(formEmployee)}
-                      onChange={(e) => setForm({ ...form, departement: e.target.value })}
-                      placeholder="Saisir le département"
+                    <label>Département</label>
+                    <TextSuggestInput
+                      value={form.departement}
+                      suggestions={departments}
+                      onChange={(value) => setForm((prev) => ({ ...prev, departement: value }))}
+                      placeholder="Rechercher un département…"
                     />
+                    {formEmployee && departmentsEqual(form.departement, formEmployee.departement) && (
+                      <p className="form-hint">Lié à {formEmployee.nom}</p>
+                    )}
                   </div>
                   <div className="form-group">
                     <label>Province</label>
@@ -1250,6 +1571,7 @@ export default function CharroiVehiculesPage() {
                   onClick={() => void handleSave()}
                   disabled={saving}
                 >
+                  {saving && <span className="btn-spinner" aria-hidden="true" />}
                   {saving ? 'Enregistrement…' : 'Enregistrer'}
                 </button>
               </div>
