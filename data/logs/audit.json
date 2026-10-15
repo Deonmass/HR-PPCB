@@ -1,6 +1,21 @@
 {
   "entries": [
     {
+      "id": "log-001624",
+      "at": "2026-10-15T16:08:59.207Z",
+      "userId": "admin",
+      "userName": "Administrateur",
+      "userEmail": "admin",
+      "module": "auth",
+      "moduleLabel": "Authentification",
+      "action": "login",
+      "actionLabel": "Connexion",
+      "summary": "Connexion admin",
+      "details": "Connexion de Administrateur (admin)",
+      "undoable": false,
+      "undone": false
+    },
+    {
       "id": "log-001623",
       "at": "2026-10-15T11:45:12.682Z",
       "userId": "olivier.dino@zamba.kmr.cd",
@@ -180914,5 +180929,5 @@
       }
     }
   ],
-  "nextSeq": 1624
+  "nextSeq": 1625
 }
