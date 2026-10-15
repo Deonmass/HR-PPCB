@@ -438,6 +438,37 @@ export default function ContractantsPage() {
     return rows.sort((a, b) => a.nom.localeCompare(b.nom, 'fr', { sensitivity: 'base' }));
   }, [contractants]);
 
+  const openedFromSearch = useRef<string | null>(null);
+  useEffect(() => {
+    if (loading) return;
+    const fiche = searchParams.get('fiche');
+    const companyId = searchParams.get('id');
+    const key = fiche ? `e:${fiche}` : companyId ? `c:${companyId}` : '';
+    if (!key || openedFromSearch.current === key) return;
+
+    if (companyId) {
+      if (!contractants.some((c) => c.id === companyId)) return;
+      openedFromSearch.current = key;
+      setTabState('contractants');
+      setSelectedId(companyId);
+    } else if (fiche) {
+      const [cid, eid] = fiche.split(':');
+      const row = allEmployees.find((e) => e.contractantId === cid && e.id === eid);
+      if (!row) return;
+      openedFromSearch.current = key;
+      setTabState('employes');
+      setSearch(row.nom);
+      setViewEmployee(row);
+    }
+
+    const params = new URLSearchParams(searchParams.toString());
+    params.delete('fiche');
+    params.delete('id');
+    params.set('tab', fiche ? 'employes' : 'contractants');
+    const qs = params.toString();
+    router.replace(qs ? `/employes/contractants?${qs}` : '/employes/contractants', { scroll: false });
+  }, [loading, contractants, allEmployees, searchParams, router]);
+
   const activeEmployees = useMemo(
     () =>
       allEmployees.filter((e) =>

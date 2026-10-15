@@ -549,5 +549,15 @@ export function excelErrorResponse(err: unknown): { status: number; message: str
   if (/EMPLOYEE\.xlsx introuvable|Template introuvable|ENOENT/i.test(message)) {
     return { status: 500, message };
   }
+  if (/^GitHub |HR_GITHUB_TOKEN|Impossible de .+ sur Vercel/i.test(message)) {
+    const status = /\(401\)|: 401 /.test(message)
+      ? 401
+      : /\(403\)|: 403 /.test(message)
+        ? 403
+        : /\(404\)/.test(message)
+          ? 404
+          : 500;
+    return { status, message };
+  }
   return { status: 500, message: `Erreur lors de l'accès au fichier Excel : ${message}` };
 }

@@ -11,8 +11,12 @@ import {
   persistDurableFile,
 } from './durable-fs';
 import {
+  guestStaySlotAt,
   isStayOrderValid,
+  localTodayIso,
   normalizeGuestStaySlot,
+  stayCoversMoment,
+  stayHasEnded,
   staysOverlap,
   type GuestStaySlot,
 } from './guest-stay-slot';
@@ -92,7 +96,7 @@ function str(value: unknown): string {
 }
 
 function todayIso(): string {
-  return new Date().toISOString().slice(0, 10);
+  return localTodayIso();
 }
 
 function parseIsoDate(value: string): Date | null {
@@ -108,13 +112,11 @@ function daysBetweenInclusive(start: string, end: string): number {
   return Math.floor((b.getTime() - a.getTime()) / 86_400_000) + 1;
 }
 
-function isActiveOn(reservation: GuestReservation, day: string): boolean {
-  return (
-    reservation.status === 'confirmed'
-    && Boolean(reservation.roomId)
-    && reservation.startDate <= day
-    && reservation.endDate >= day
-  );
+function isActiveOn(reservation: GuestReservation, day: string, now = new Date()): boolean {
+  if (reservation.status !== 'confirmed' || !reservation.roomId) return false;
+  const today = localTodayIso(now);
+  if (day === today) return stayCoversMoment(reservation, today, guestStaySlotAt(now));
+  return reservation.startDate <= day && reservation.endDate >= day;
 }
 
 function isOnsiteRoom(room: GuestRoom): boolean {
@@ -536,7 +538,9 @@ export async function listGuestMaisonLodgingSummaries(
   data?: GuestHouseStoreData,
 ): Promise<GuestMaisonLodgingSummary[]> {
   const store = data ?? (await readStore());
-  const today = todayIso();
+  const now = new Date();
+  const today = localTodayIso(now);
+  const slot = guestStaySlotAt(now);
   const byNumero = new Map<string, GuestReservation[]>();
 
   for (const item of store.reservations) {
@@ -557,12 +561,12 @@ export async function listGuestMaisonLodgingSummaries(
     const occupiedVisitors = visitors.filter(
       (v) =>
         (v.status === 'confirmed' || v.status === 'completed')
-        && v.startDate <= today
-        && v.endDate >= today,
+        && stayCoversMoment(v, today, slot),
     );
     const reservedVisitors = visitors.filter((v) => {
+      if (stayHasEnded(v, today, slot)) return false;
       if (v.status === 'pending') return true;
-      return v.status === 'confirmed' && v.startDate > today;
+      return v.status === 'confirmed' && !stayCoversMoment(v, today, slot);
     });
     const occupiedCount = occupiedVisitors.length;
     const reservedCount = reservedVisitors.length;
@@ -623,9 +627,9 @@ export async function listEmptyMaisonsForGuestHouse(
         if (period) {
           if (!staysOverlap(item, period)) continue;
         } else {
-          // Compte les lodgers actifs aujourd'hui si pas de période.
-          const today = todayIso();
-          if (item.endDate < today || item.startDate > today) continue;
+          // Compte les lodgers encore présents au créneau actuel.
+          const now = new Date();
+          if (!stayCoversMoment(item, localTodayIso(now), guestStaySlotAt(now))) continue;
         }
         guestLodgers += 1;
       }
@@ -658,12 +662,14 @@ export function buildDashboard(data: GuestHouseStoreData): GuestHouseDashboard {
   const emptyOnsite = onsiteRoomsList.filter(
     (room) => room.status === 'available' && !occupiedRoomIds.has(room.id),
   );
+  const now = new Date();
+  const presenceSlot = guestStaySlotAt(now);
   const reservedOnsite = onsiteRoomsList.filter((room) => {
     if (occupiedRoomIds.has(room.id)) return false;
     return data.reservations.some((item) => {
-      if (item.roomId !== room.id || item.endDate < today) return false;
+      if (item.roomId !== room.id || stayHasEnded(item, today, presenceSlot)) return false;
       if (item.status === 'pending') return true;
-      return item.status === 'confirmed' && item.startDate > today;
+      return item.status === 'confirmed' && !stayCoversMoment(item, today, presenceSlot);
     });
   });
 

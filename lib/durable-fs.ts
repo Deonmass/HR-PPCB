@@ -288,7 +288,10 @@ async function githubJson<T>(
 ): Promise<{ ok: true; data: T } | { ok: false; status: number; text: string }> {
   const res = await githubRequest(target, apiPath, init);
   if (!res.ok) {
-    return { ok: false, status: res.status, text: await res.text() };
+    const text = (await res.text()).trim();
+    const requestId = res.headers.get('x-github-request-id');
+    const detail = [text, requestId ? `request ${requestId}` : ''].filter(Boolean).join(' — ');
+    return { ok: false, status: res.status, text: detail || 'réponse vide' };
   }
   return { ok: true, data: (await res.json()) as T };
 }
@@ -478,21 +481,82 @@ function withGithubWriteLock<T>(fn: () => Promise<T>): Promise<T> {
   return run;
 }
 
-async function createGithubBlob(target: GithubRepoTarget, buffer: Buffer): Promise<string> {
+function utf8BlobContent(buffer: Buffer): string | null {
+  const text = buffer.toString('utf8');
+  return Buffer.from(text, 'utf8').equals(buffer) ? text : null;
+}
+
+async function postGithubBlob(
+  target: GithubRepoTarget,
+  content: string,
+  encoding: 'base64' | 'utf-8',
+): Promise<{ ok: true; sha: string } | { ok: false; status: number; text: string }> {
   const result = await githubJson<{ sha?: string }>(
     target,
     `/repos/${target.owner}/${target.repo}/git/blobs`,
     {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ content: buffer.toString('base64'), encoding: 'base64' }),
+      body: JSON.stringify({ content, encoding }),
+    },
+  );
+  if (!result.ok) return result;
+  if (!result.data.sha) throw new Error('GitHub blob sans sha');
+  return { ok: true, sha: result.data.sha };
+}
+
+async function createGithubBlob(target: GithubRepoTarget, buffer: Buffer): Promise<string> {
+  const attempts: Array<{ content: string; encoding: 'base64' | 'utf-8' }> = [
+    { content: buffer.toString('base64'), encoding: 'base64' },
+  ];
+  const text = utf8BlobContent(buffer);
+  // Au-delà, le JSON échappé du corps utf-8 devient trop lourd ; le secours Contents API prend le relais.
+  if (text != null && buffer.length <= 750_000) attempts.push({ content: text, encoding: 'utf-8' });
+
+  let last: { status: number; text: string } | null = null;
+  for (const attempt of attempts) {
+    const result = await postGithubBlob(target, attempt.content, attempt.encoding);
+    if (result.ok) return result.sha;
+    last = result;
+    const serverError = result.status === 500 || result.status === 502 || result.status === 503 || result.status === 504;
+    if (!serverError || attempt.encoding === 'utf-8') break;
+  }
+  throw formatGithubHttpError('blob', 'git/blobs', last?.status ?? 500, last?.text ?? '');
+}
+
+function isBlobServerFailure(err: unknown): boolean {
+  const message = err instanceof Error ? err.message : String(err);
+  return /GitHub blob git\/blobs échouée \((?:500|502|503|504)\)/.test(message);
+}
+
+/** Secours quand POST git/blobs renvoie 500 (corps vide) — fréquent sur les tokens fine-grained. */
+async function writeGithubFileViaContents(
+  target: GithubRepoTarget,
+  repoPath: string,
+  buffer: Buffer,
+  message: string,
+  currentSha?: string,
+): Promise<string> {
+  const result = await githubJson<{ content?: { sha?: string } }>(
+    target,
+    `/repos/${target.owner}/${target.repo}/contents/${encodedRepoPath(repoPath)}`,
+    {
+      method: 'PUT',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        message,
+        content: buffer.toString('base64'),
+        branch: target.branch,
+        ...(currentSha ? { sha: currentSha } : {}),
+      }),
     },
   );
   if (!result.ok) {
-    throw formatGithubHttpError('blob', 'git/blobs', result.status, result.text);
+    throw formatGithubHttpError('écriture', repoPath, result.status, result.text);
   }
-  if (!result.data.sha) throw new Error('GitHub blob sans sha');
-  return result.data.sha;
+  const sha = result.data.content?.sha;
+  if (!sha) throw new Error(`GitHub écriture ${repoPath} sans sha`);
+  return sha;
 }
 
 async function createGithubTree(
@@ -591,7 +655,20 @@ async function writeGithubFile(
         mergeBase = remoteBuf;
       }
 
-      const blobSha = await createGithubBlob(target, payload);
+      let blobSha: string;
+      try {
+        blobSha = await createGithubBlob(target, payload);
+      } catch (err) {
+        if (!isBlobServerFailure(err)) throw err;
+        const sha = await writeGithubFileViaContents(
+          target,
+          repoPath,
+          payload,
+          message,
+          remote?.sha || undefined,
+        );
+        return { sha, buffer: payload };
+      }
       if (remote?.sha === blobSha) {
         return { sha: blobSha, buffer: payload };
       }

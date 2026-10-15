@@ -27,7 +27,11 @@ import type {
 import {
   GUEST_STAY_SLOT_LABELS,
   GUEST_STAY_SLOTS,
+  guestStaySlotAt,
   isStayOrderValid,
+  localTodayIso,
+  stayCoversMoment,
+  stayHasEnded,
   staysOverlap,
   type GuestStaySlot,
 } from '@/lib/guest-stay-slot';
@@ -351,7 +355,11 @@ function roomConflictDuring(
 }
 
 function todayIso(): string {
-  return new Date().toISOString().slice(0, 10);
+  return localTodayIso();
+}
+
+function presenceNow(now = new Date()): { today: string; slot: GuestStaySlot } {
+  return { today: localTodayIso(now), slot: guestStaySlotAt(now) };
 }
 
 function parseMonthKey(key: string): { year: number; month: number } | null {
@@ -459,6 +467,83 @@ function statusLabel(status: GuestReservation['status']): string {
   }
 }
 
+function ReservationRow({
+  personName,
+  className,
+  onOpen,
+  onContextMenu,
+  children,
+}: {
+  personName: string;
+  className?: string;
+  onOpen: () => void;
+  onContextMenu?: (event: React.MouseEvent) => void;
+  children: React.ReactNode;
+}) {
+  return (
+    <tr
+      className={`guest-house-res-row is-clickable${className ? ` ${className}` : ''}`}
+      tabIndex={0}
+      title={`Voir le détail — ${personName}`}
+      onClick={onOpen}
+      onContextMenu={onContextMenu}
+      onKeyDown={(event) => {
+        if (event.key === 'Enter' || event.key === ' ') {
+          event.preventDefault();
+          onOpen();
+        }
+      }}
+    >
+      {children}
+    </tr>
+  );
+}
+
+function ReservationDetailBody({
+  item,
+  roomsById,
+}: {
+  item: GuestReservation;
+  roomsById: Map<string, GuestRoom>;
+}) {
+  const room = item.roomId ? roomsById.get(item.roomId) : undefined;
+  const lieu = room?.building ?? (item.maisonNumero ? 'Village' : '—');
+  const logement = lodgingLabel(item, roomsById);
+  const rows: Array<{ label: string; value: string; wide?: boolean }> = [
+    { label: 'Personne', value: item.personName || '—', wide: true },
+    ...(item.isAgent && item.matricule ? [{ label: 'Matricule', value: item.matricule }] : []),
+    { label: 'Motif', value: item.motif?.trim() || '—', wide: true },
+    { label: 'Logement', value: logement },
+    { label: 'Lieu', value: room && isKimpeseRoom(room) ? `${lieu} · hôtel externe` : lieu },
+    { label: 'Arrivée', value: formatStayPoint(item.startDate, item.startSlot) },
+    { label: 'Départ', value: formatStayPoint(item.endDate, item.endSlot) },
+    { label: 'Jours restants', value: formatDaysLeftDisplay(item.endDate) },
+    ...(item.company ? [{ label: 'Société', value: item.company, wide: true }] : []),
+    ...(item.mission ? [{ label: 'Mission', value: item.mission, wide: true }] : []),
+    ...(item.phone ? [{ label: 'Téléphone', value: item.phone }] : []),
+    ...(item.email ? [{ label: 'E-mail', value: item.email }] : []),
+    ...(item.notes?.trim() ? [{ label: 'Notes', value: item.notes.trim(), wide: true }] : []),
+  ];
+  return (
+    <div className="guest-house-detail">
+      <div className="guest-house-detail-head">
+        <span className={`guest-house-status-pill is-${item.status}`}>{statusLabel(item.status)}</span>
+        <span className={`guest-house-days-left${remainingDays(item.endDate) <= 2 ? ' is-critical' : ''}`}>
+          {formatDaysLeftDisplay(item.endDate)}
+        </span>
+      </div>
+      <dl className="guest-house-detail-list">
+        {rows.map((row) => (
+          <div key={row.label} className={row.wide ? 'is-wide' : undefined}>
+            <dt>{row.label}</dt>
+            <dd>{row.value}</dd>
+          </div>
+        ))}
+      </dl>
+    </div>
+  );
+}
+
 async function downloadGuestHouseExport(monthKey?: string): Promise<void> {
   const qs = monthKey ? `?month=${encodeURIComponent(monthKey)}` : '';
   const response = await fetch(`/api/village/guest-house/export${qs}`);
@@ -523,12 +608,25 @@ export default function VillageGuestHousePage() {
   /** Expanded month keys (YYYY-MM) in the Historique drawer. */
   const [historyOpenMonths, setHistoryOpenMonths] = useState<string[]>([]);
   const [kpiModal, setKpiModal] = useState<KpiModal>(null);
+  const [detailId, setDetailId] = useState<string | null>(null);
   /** Month key for the occupation-by-room modal (may differ from page filter). */
   const [occupancyDetailMonth, setOccupancyDetailMonth] = useState(currentMonthKey);
   const [reservationsPane, setReservationsPane] = useState<ReservationsPane>('reservations');
   const [validatedSubTab, setValidatedSubTab] = useState<ValidatedSubTab>('approved');
   /** Shared month filter for lists, dashboard KPIs, occupancy, and export. */
   const [viewMonth, setViewMonth] = useState(currentMonthKey);
+  /** Jour et créneau locaux : une sortie matin libère la chambre dès midi. */
+  const [presence, setPresence] = useState(presenceNow);
+  useEffect(() => {
+    const id = window.setInterval(() => {
+      setPresence((prev) => {
+        const next = presenceNow();
+        if (prev.today === next.today && prev.slot === next.slot) return prev;
+        return next;
+      });
+    }, 30_000);
+    return () => window.clearInterval(id);
+  }, []);
   const [pendingColFilters, setPendingColFilters] =
     useState<Record<PendingFilterKey, string[]>>(EMPTY_PENDING);
   const [validatedColFilters, setValidatedColFilters] =
@@ -803,7 +901,7 @@ export default function VillageGuestHousePage() {
   );
 
   const kimpeseLodgers = useMemo(() => {
-    const today = todayIso();
+    const { today, slot } = presence;
     return reservations
       .filter((item) => {
         if (item.status !== 'confirmed' && item.status !== 'completed') return false;
@@ -815,7 +913,7 @@ export default function VillageGuestHousePage() {
       .map((item) => {
         const room = roomsById.get(item.roomId!)!;
         const daysLeft = remainingDays(item.endDate);
-        const active = item.startDate <= today && item.endDate >= today && item.status === 'confirmed';
+        const active = item.status === 'confirmed' && stayCoversMoment(item, today, slot);
         return {
           id: item.id,
           numero: item.numero,
@@ -831,11 +929,11 @@ export default function VillageGuestHousePage() {
         if (a.active !== b.active) return a.active ? -1 : 1;
         return a.endDate.localeCompare(b.endDate) || a.personName.localeCompare(b.personName, 'fr');
       });
-  }, [reservations, roomsById, viewMonth]);
+  }, [reservations, roomsById, viewMonth, presence]);
 
   const monthDashboard = useMemo(() => {
     const bounds = monthBounds(viewMonth);
-    const today = todayIso();
+    const { today, slot } = presence;
     const onsiteRoomsList = rooms.filter((r) => !isKimpeseRoom(r));
     const kimpeseRooms = rooms.filter(isKimpeseRoom);
 
@@ -846,8 +944,7 @@ export default function VillageGuestHousePage() {
           (item) =>
             item.status === 'confirmed'
             && Boolean(item.roomId)
-            && item.startDate <= today
-            && item.endDate >= today,
+            && stayCoversMoment(item, today, slot),
         )
         .map((item) => item.roomId as string),
     );
@@ -855,10 +952,10 @@ export default function VillageGuestHousePage() {
       reservations
         .filter((item) => {
           if (!item.roomId) return false;
-          if (item.endDate < today) return false;
+          if (stayHasEnded(item, today, slot)) return false;
           if (occupiedRoomIds.has(item.roomId)) return false;
           if (item.status === 'pending') return true;
-          return item.status === 'confirmed' && item.startDate > today;
+          return item.status === 'confirmed' && !stayCoversMoment(item, today, slot);
         })
         .map((item) => item.roomId as string),
     );
@@ -884,7 +981,7 @@ export default function VillageGuestHousePage() {
 
     const occupiedReservations = reservations.filter((item) => {
       if (item.status !== 'confirmed' || !item.roomId) return false;
-      if (item.startDate > today || item.endDate < today) return false;
+      if (!stayCoversMoment(item, today, slot)) return false;
       const room = roomsById.get(item.roomId);
       return Boolean(room && !isKimpeseRoom(room));
     });
@@ -951,7 +1048,7 @@ export default function VillageGuestHousePage() {
       occupiedReservations,
       emptyRooms: emptyOnsite,
     };
-  }, [rooms, reservations, roomsById, viewMonth, roomOccupancy, monthReservations, pending]);
+  }, [rooms, reservations, roomsById, viewMonth, roomOccupancy, monthReservations, pending, presence]);
 
   const kimpeseFilterValues = useMemo(
     () =>
@@ -1585,21 +1682,18 @@ export default function VillageGuestHousePage() {
   }, [drawer, historyRoom, roomPassagesByMonth]);
 
   const roomsGrouped = useMemo(() => {
-    const today = todayIso();
+    const { today, slot } = presence;
     const withStatus = rooms.map((room) => {
       const roomReservations = reservations.filter((item) => item.roomId === room.id);
       const activeReservation = roomReservations.find(
-        (item) =>
-          item.status === 'confirmed'
-          && item.startDate <= today
-          && item.endDate >= today,
+        (item) => item.status === 'confirmed' && stayCoversMoment(item, today, slot),
       );
-      // Réservé : réservation future confirmée, ou pending qui tient encore la chambre
+      // Réservé : séjour pas encore commencé, ou pending qui tient encore la chambre
       const reservedReservation = !activeReservation
         ? roomReservations.find((item) => {
-            if (item.endDate < today) return false;
+            if (stayHasEnded(item, today, slot)) return false;
             if (item.status === 'pending') return true;
-            return item.status === 'confirmed' && item.startDate > today;
+            return item.status === 'confirmed' && !stayCoversMoment(item, today, slot);
           })
         : undefined;
       const status: MotelRoomStatus = activeReservation
@@ -1628,7 +1722,7 @@ export default function VillageGuestHousePage() {
       groups[key]!.push(item);
     }
     return groups;
-  }, [rooms, reservations, passages]);
+  }, [rooms, reservations, passages, presence]);
 
   /** Réservations en attente sans logement attribué (mois affiché). */
   const unassignedPending = useMemo(
@@ -1642,7 +1736,7 @@ export default function VillageGuestHousePage() {
 
   /** Maisons village vides / avec visiteurs GH (Back up village). */
   const maisonUnits = useMemo(() => {
-    const today = todayIso();
+    const { today, slot } = presence;
     const byNumero = new Map<string, GuestReservation[]>();
     for (const item of reservations) {
       const num = (item.maisonNumero || '').trim();
@@ -1650,8 +1744,8 @@ export default function VillageGuestHousePage() {
       if (item.status !== 'confirmed' && item.status !== 'pending' && item.status !== 'completed') {
         continue;
       }
-      // Actives aujourd'hui, futures, ou en attente encore valides
-      if (item.endDate < today && item.status !== 'pending') continue;
+      // Encore là, à venir, ou en attente. Une sortie matin est déjà passée l'après-midi.
+      if (item.status !== 'pending' && stayHasEnded(item, today, slot)) continue;
       const key = num.toLowerCase();
       const list = byNumero.get(key) ?? [];
       list.push(item);
@@ -1675,8 +1769,8 @@ export default function VillageGuestHousePage() {
 
     for (const [, visitors] of byNumero) {
       const sorted = [...visitors].sort((a, b) => {
-        const aActive = a.status === 'confirmed' && a.startDate <= today && a.endDate >= today;
-        const bActive = b.status === 'confirmed' && b.startDate <= today && b.endDate >= today;
+        const aActive = a.status === 'confirmed' && stayCoversMoment(a, today, slot);
+        const bActive = b.status === 'confirmed' && stayCoversMoment(b, today, slot);
         if (aActive !== bActive) return aActive ? -1 : 1;
         if (a.status === 'pending' && b.status !== 'pending') return -1;
         if (b.status === 'pending' && a.status !== 'pending') return 1;
@@ -1687,13 +1781,14 @@ export default function VillageGuestHousePage() {
       const activeCount = sorted.filter(
         (v) =>
           (v.status === 'confirmed' || v.status === 'completed')
-          && v.startDate <= today
-          && v.endDate >= today,
+          && stayCoversMoment(v, today, slot),
       ).length;
       const pendingCount = sorted.filter((v) => v.status === 'pending').length;
       const status: MotelRoomStatus = activeCount > 0
         ? 'occupied'
-        : pendingCount > 0 || sorted.some((v) => v.status === 'confirmed' && v.startDate > today)
+        : pendingCount > 0 || sorted.some(
+          (v) => v.status === 'confirmed' && !stayHasEnded(v, today, slot) && !stayCoversMoment(v, today, slot),
+        )
           ? 'reserved'
           : 'empty';
       const numero = primary?.maisonNumero?.trim() || sorted[0]?.maisonNumero?.trim() || '';
@@ -1732,7 +1827,7 @@ export default function VillageGuestHousePage() {
       if (d !== 0) return d;
       return a.numero.localeCompare(b.numero, 'fr', { numeric: true });
     });
-  }, [reservations, emptyMaisons]);
+  }, [reservations, emptyMaisons, presence]);
 
   const kpiModalContent = useMemo(() => {
     if (!dashboard || !kpiModal) return null;
@@ -1824,6 +1919,10 @@ export default function VillageGuestHousePage() {
       rows: pending.map(mapReservation),
     };
   }, [dashboard, kpiModal, rooms, roomsById, pending, monthDashboard, viewMonth, occupancyModalRows]);
+
+  const detailReservation = detailId
+    ? reservations.find((item) => item.id === detailId) ?? null
+    : null;
 
   if (loading) return <div className="loading">Chargement…</div>;
 
@@ -2068,19 +2167,24 @@ export default function VillageGuestHousePage() {
                       </thead>
                       <tbody>
                         {filteredKimpese.map((item) => (
-                          <tr key={item.id} className={item.active ? 'is-active-row' : undefined}>
-                            <td>{item.numero}</td>
-                            <td>{item.personName}</td>
+                          <ReservationRow
+                            key={item.id}
+                            personName={item.personName}
+                            className={item.active ? 'is-active-row' : undefined}
+                            onOpen={() => setDetailId(item.id)}
+                          >
+                            <td className="guest-house-ref-td">{item.numero}</td>
+                            <td className="guest-house-person-td">{item.personName}</td>
                             <td>{item.hotel}</td>
                             <td className="guest-house-period-cell">
                               {formatStayRange(item)}
                             </td>
-                            <td>
+                            <td className="guest-house-rest-td">
                               <span className={`guest-house-days-left${item.daysLeft <= 2 ? ' is-critical' : ''}`}>
                                 {formatDaysLeftDisplay(item.endDate)}
                               </span>
                             </td>
-                          </tr>
+                          </ReservationRow>
                         ))}
                       </tbody>
                     </table>
@@ -2168,21 +2272,25 @@ export default function VillageGuestHousePage() {
                         </thead>
                         <tbody>
                           {filteredEnding.map((item) => (
-                            <tr key={item.id}>
-                              <td>{item.numero}</td>
-                              <td>{item.personName}</td>
+                            <ReservationRow
+                              key={item.id}
+                              personName={item.personName}
+                              onOpen={() => setDetailId(item.id)}
+                            >
+                              <td className="guest-house-ref-td">{item.numero}</td>
+                              <td className="guest-house-person-td">{item.personName}</td>
                               <td>{item.roomNumber}</td>
                               <td>
                                 {item.building}
                                 {item.isKimpese ? ' · overflow' : ''}
                               </td>
                               <td>{formatDate(item.endDate)}</td>
-                              <td>
+                              <td className="guest-house-rest-td">
                                 <span className={`guest-house-days-left${item.daysLeft <= 2 ? ' is-critical' : ''}`}>
                                   {formatDaysLeftDisplay(item.endDate)}
                                 </span>
                               </td>
-                            </tr>
+                            </ReservationRow>
                           ))}
                         </tbody>
                       </table>
@@ -2265,21 +2373,25 @@ export default function VillageGuestHousePage() {
                         </thead>
                         <tbody>
                           {filteredFuture.map((item) => (
-                            <tr key={item.id}>
-                              <td>{item.numero}</td>
-                              <td>{item.personName}</td>
+                            <ReservationRow
+                              key={item.id}
+                              personName={item.personName}
+                              onOpen={() => setDetailId(item.id)}
+                            >
+                              <td className="guest-house-ref-td">{item.numero}</td>
+                              <td className="guest-house-person-td">{item.personName}</td>
                               <td>
                                 {item.roomNumber}
                                 {item.isKimpese ? ' · K' : ''}
                               </td>
                               <td>{formatDate(item.startDate)}</td>
                               <td>{formatDate(item.endDate)}</td>
-                              <td>
+                              <td className="guest-house-rest-td">
                                 <span className={`guest-house-status-pill is-${item.status}`}>
                                   {statusLabel(item.status)}
                                 </span>
                               </td>
-                            </tr>
+                            </ReservationRow>
                           ))}
                         </tbody>
                       </table>
@@ -2428,13 +2540,15 @@ export default function VillageGuestHousePage() {
                               const motifCol = IMPORT_MOTIF_RE.test(item.motif.trim()) ? '—' : (item.motif || '—');
                               const busy = rowBusyId === item.id;
                               return (
-                                <tr
+                                <ReservationRow
                                   key={item.id}
+                                  personName={item.personName}
                                   className={busy ? 'guest-house-row-busy' : undefined}
+                                  onOpen={() => setDetailId(item.id)}
                                   onContextMenu={(event) => openReservationContextMenu(event, item)}
                                 >
                                   <td className="guest-house-serial-cell">{index + 1}</td>
-                                  <td>
+                                  <td className="guest-house-ref-td">
                                     {busy ? <span className="btn-spinner" aria-hidden="true" /> : item.numero}
                                   </td>
                                   <td className="guest-house-person-td">
@@ -2449,13 +2563,13 @@ export default function VillageGuestHousePage() {
                                   <td className="guest-house-period-cell">
                                     {formatStayRange(item)}
                                   </td>
-                                  <td>
+                                  <td className="guest-house-rest-td">
                                     <span className={`guest-house-days-left${days <= 2 ? ' is-critical' : ''}`}>
                                       {days} j
                                     </span>
                                   </td>
                                   {(canEdit || canDelete) && (
-                                    <td>
+                                    <td className="guest-house-actions-td" onClick={(event) => event.stopPropagation()}>
                                       <div className="guest-house-row-actions">
                                         {canEdit && (
                                           <>
@@ -2484,7 +2598,7 @@ export default function VillageGuestHousePage() {
                                       </div>
                                     </td>
                                   )}
-                                </tr>
+                                </ReservationRow>
                               );
                             })}
                           </tbody>
@@ -2572,13 +2686,15 @@ export default function VillageGuestHousePage() {
                               const daysLeft = remainingDays(item.endDate);
                               const busy = rowBusyId === item.id;
                               return (
-                                <tr
+                                <ReservationRow
                                   key={item.id}
+                                  personName={item.personName}
                                   className={busy ? 'guest-house-row-busy' : undefined}
+                                  onOpen={() => setDetailId(item.id)}
                                   onContextMenu={(event) => openReservationContextMenu(event, item)}
                                 >
                                   <td className="guest-house-serial-cell">{index + 1}</td>
-                                  <td>
+                                  <td className="guest-house-ref-td">
                                     {busy ? <span className="btn-spinner" aria-hidden="true" /> : item.numero}
                                   </td>
                                   <td className="guest-house-person-td">
@@ -2596,12 +2712,12 @@ export default function VillageGuestHousePage() {
                                       {formatTempsEcoule(item.startDate, item.endDate)}
                                     </span>
                                   </td>
-                                  <td>
+                                  <td className="guest-house-rest-td">
                                     <span className={`guest-house-time-chip${daysLeft <= 2 && daysLeft >= 0 ? ' is-critical' : ''}`}>
                                       {formatTempsRestant(item.startDate, item.endDate)}
                                     </span>
                                   </td>
-                                </tr>
+                                </ReservationRow>
                               );
                             })}
                           </tbody>
@@ -2644,6 +2760,57 @@ export default function VillageGuestHousePage() {
             onClose={() => setKpiModal(null)}
           />
         )}
+
+        <SideDrawer
+          open={Boolean(detailReservation)}
+          title={detailReservation ? `Détail — ${detailReservation.numero}` : 'Détail'}
+          onClose={() => setDetailId(null)}
+          footer={detailReservation && canEdit ? (
+            <div className="guest-house-res-form-footer">
+              {detailReservation.status === 'pending' && (
+                <button
+                  type="button"
+                  className="btn btn-outline"
+                  onClick={() => {
+                    const item = detailReservation;
+                    setDetailId(null);
+                    void setStatus(item, 'rejected');
+                  }}
+                >
+                  Rejeter
+                </button>
+              )}
+              <button
+                type="button"
+                className="btn btn-outline"
+                onClick={() => {
+                  const item = detailReservation;
+                  setDetailId(null);
+                  openReservationEdit(item);
+                }}
+              >
+                Modifier
+              </button>
+              {detailReservation.status === 'pending' && (
+                <button
+                  type="button"
+                  className="btn btn-primary"
+                  onClick={() => {
+                    const item = detailReservation;
+                    setDetailId(null);
+                    openConfirm(item);
+                  }}
+                >
+                  Valider
+                </button>
+              )}
+            </div>
+          ) : undefined}
+        >
+          {detailReservation && (
+            <ReservationDetailBody item={detailReservation} roomsById={roomsById} />
+          )}
+        </SideDrawer>
 
         <SideDrawer
           open={drawer === 'room'}

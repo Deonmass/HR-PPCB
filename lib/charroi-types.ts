@@ -62,9 +62,24 @@ export interface CharroiVehicule {
   assuranceHistorique: CharroiDocPaiement[];
   vignetteHistorique: CharroiDocPaiement[];
   controleTechniqueHistorique: CharroiDocPaiement[];
+  /** Matricule de l’employé lié au responsable, quand le nom correspond à la liste. */
+  userMatricule: string;
+  /** Le responsable a quitté l’entreprise — le nom s’affiche barré. */
+  userParti: boolean;
+  /** Passages au garage. Un passage sans date de sortie = véhicule actuellement au garage. */
+  garageHistorique: CharroiGaragePassage[];
   notes: string;
   createdAt: string;
   updatedAt: string;
+}
+
+/** Un séjour au garage. `dateSortie` vide tant que le véhicule n’est pas remis en service. */
+export interface CharroiGaragePassage {
+  id: string;
+  dateEntree: string;
+  dateSortie: string;
+  raison: string;
+  createdAt: string;
 }
 
 export type CharroiVehiculeInput = Partial<CharroiVehicule> & {
@@ -284,6 +299,22 @@ export function getVehiculeDocFin(
   if (kind === 'assurance') return vehicle.assuranceFin || '';
   if (kind === 'vignette') return vehicle.vignetteFin || '';
   return vehicle.controleTechniqueFin || '';
+}
+
+export function garagePassageOuvert(
+  item: { garageHistorique?: CharroiGaragePassage[] | null },
+): CharroiGaragePassage | null {
+  const list = item.garageHistorique || [];
+  for (let index = list.length - 1; index >= 0; index -= 1) {
+    if (!String(list[index]?.dateSortie || '').trim()) return list[index];
+  }
+  return null;
+}
+
+export function isVehiculeAuGarage(
+  item: { garageHistorique?: CharroiGaragePassage[] | null },
+): boolean {
+  return garagePassageOuvert(item) != null;
 }
 
 export function formatCharroiDate(dateIso: string | null | undefined): string {

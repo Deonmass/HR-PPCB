@@ -69,3 +69,38 @@ export function staysOverlap(a: GuestStayBounds, b: GuestStayBounds): boolean {
   const b1 = stayBoundRank(b.endDate, bs.endSlot);
   return a0 <= b1 && b0 <= a1;
 }
+
+/** Date locale (le fuseau du poste), pas le jour UTC. */
+export function localTodayIso(now: Date = new Date()): string {
+  const y = now.getFullYear();
+  const m = String(now.getMonth() + 1).padStart(2, '0');
+  const d = String(now.getDate()).padStart(2, '0');
+  return `${y}-${m}-${d}`;
+}
+
+/**
+ * Créneau de l'horloge locale.
+ * Matin avant 12h, midi jusqu'à 18h, soir ensuite.
+ */
+export function guestStaySlotAt(now: Date = new Date()): GuestStaySlot {
+  const hour = now.getHours();
+  if (hour < 12) return 'matin';
+  if (hour < 18) return 'midi';
+  return 'soir';
+}
+
+/** Le séjour couvre encore ce jour et ce créneau (sortie incluse). */
+export function stayCoversMoment(item: GuestStayBounds, date: string, slot: GuestStaySlot): boolean {
+  if (!item.startDate || !item.endDate) return false;
+  const slots = effectiveStaySlots(item);
+  const rank = stayBoundRank(date, slot);
+  return stayBoundRank(item.startDate, slots.startSlot) <= rank
+    && rank <= stayBoundRank(item.endDate, slots.endSlot);
+}
+
+/** Le créneau demandé est après la sortie : la chambre est libérée. */
+export function stayHasEnded(item: GuestStayBounds, date: string, slot: GuestStaySlot): boolean {
+  if (!item.endDate) return false;
+  const slots = effectiveStaySlots(item);
+  return stayBoundRank(date, slot) > stayBoundRank(item.endDate, slots.endSlot);
+}

@@ -19,6 +19,10 @@ import GuestHouseUnitDoorModal, {
   type HouseOriginRect,
 } from '@/components/village/GuestHouseUnitDoorModal';
 import {
+  GUEST_STAY_SLOT_LABELS,
+  type GuestStaySlot,
+} from '@/lib/guest-stay-slot';
+import {
   KIMPESE_BUILDING,
   roomDisplayName,
   type GuestReservation,
@@ -76,6 +80,12 @@ function formatDate(value: string): string {
   const date = new Date(`${value.slice(0, 10)}T00:00:00`);
   if (Number.isNaN(date.getTime())) return value;
   return date.toLocaleDateString('fr-FR', { day: '2-digit', month: '2-digit' });
+}
+
+function formatStayPoint(date: string, slot?: GuestStaySlot | null): string {
+  const label = formatDate(date);
+  if (!slot) return label;
+  return `${label} ${GUEST_STAY_SLOT_LABELS[slot]}`;
 }
 
 function remainingDays(endDate: string): number {
@@ -803,9 +813,9 @@ export default function GuestHouseMotelView({
                                         : maison.linkedReservation.personName}
                                     </div>
                                     <div className="guest-house-floorplan-dates">
-                                      {formatDate(maison.linkedReservation.startDate)}
+                                      {formatStayPoint(maison.linkedReservation.startDate, maison.linkedReservation.startSlot)}
                                       {' → '}
-                                      {formatDate(maison.linkedReservation.endDate)}
+                                      {formatStayPoint(maison.linkedReservation.endDate, maison.linkedReservation.endSlot)}
                                     </div>
                                     <div
                                       className={`guest-house-floorplan-restant${
@@ -1136,9 +1146,9 @@ export default function GuestHouseMotelView({
                                     {linkedReservation.personName}
                                   </div>
                                   <div className="guest-house-floorplan-dates">
-                                    {formatDate(linkedReservation.startDate)}
+                                    {formatStayPoint(linkedReservation.startDate, linkedReservation.startSlot)}
                                     {' → '}
-                                    {formatDate(linkedReservation.endDate)}
+                                    {formatStayPoint(linkedReservation.endDate, linkedReservation.endSlot)}
                                   </div>
                                   <div
                                     className={`guest-house-floorplan-restant${

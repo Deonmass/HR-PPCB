@@ -184,7 +184,7 @@ export default function EmployeePicker({
             onMouseDown={(e) => e.preventDefault()}
             onClick={() => selectEmployee(employee)}
           >
-            <span className="project-picker-name">{employee.nom}</span>
+            <span className={`project-picker-name${(employee as { parti?: boolean }).parti ? ' is-left' : ''}`}>{employee.nom}</span>
             <span className="project-picker-meta">
               {suggestionMeta(employee)}
             </span>
@@ -265,10 +265,96 @@ export function EmployeeSuggestInput({
             onMouseDown={(e) => e.preventDefault()}
             onClick={() => selectEmployee(employee)}
           >
-            <span className="project-picker-name">{employee.nom}</span>
+            <span className={`project-picker-name${(employee as { parti?: boolean }).parti ? ' is-left' : ''}`}>{employee.nom}</span>
             <span className="project-picker-meta">
               {suggestionMeta(employee)}
             </span>
+          </button>
+        ))}
+      </ProjectPickerDropdown>
+    </div>
+  );
+}
+
+export function TextSuggestInput({
+  value,
+  onChange,
+  suggestions,
+  placeholder = 'Rechercher…',
+  id,
+  disabled = false,
+}: {
+  value: string;
+  onChange: (value: string) => void;
+  suggestions: string[];
+  placeholder?: string;
+  id?: string;
+  disabled?: boolean;
+}) {
+  const wrapRef = useRef<HTMLDivElement>(null);
+  const listRef = useRef<HTMLDivElement>(null);
+  const [open, setOpen] = useState(false);
+  const [query, setQuery] = useState(value);
+
+  useEffect(() => {
+    setQuery(value);
+  }, [value]);
+
+  const filtered = useMemo(() => {
+    const q = query.trim().toLowerCase();
+    if (!q) return suggestions.slice(0, 20);
+    const matches = suggestions.filter((item) => item.toLowerCase().includes(q));
+    return (matches.length > 0 ? matches : suggestions).slice(0, 20);
+  }, [query, suggestions]);
+
+  const dismiss = useCallback(() => {
+    setOpen(false);
+    setQuery(value);
+  }, [value]);
+
+  useOutsideDismiss(open, wrapRef, listRef, dismiss);
+
+  const selectValue = (next: string) => {
+    onChange(next);
+    setQuery(next);
+    setOpen(false);
+  };
+
+  return (
+    <div ref={wrapRef} className={`project-picker${open ? ' is-open' : ''}`}>
+      <input
+        id={id}
+        className="project-picker-input"
+        value={query}
+        placeholder={placeholder}
+        disabled={disabled}
+        onChange={(e) => {
+          const next = e.target.value;
+          setQuery(next);
+          onChange(next);
+          setOpen(true);
+        }}
+        onFocus={() => {
+          if (!disabled) setOpen(true);
+        }}
+        autoComplete="off"
+      />
+      <ProjectPickerDropdown
+        anchorRef={wrapRef}
+        listRef={listRef}
+        open={open && !disabled && filtered.length > 0}
+        minWidth={320}
+      >
+        {filtered.map((item) => (
+          <button
+            key={item}
+            type="button"
+            className={`project-picker-option${value === item ? ' active' : ''}`}
+            role="option"
+            onMouseDown={(e) => e.preventDefault()}
+            onClick={() => selectValue(item)}
+          >
+            <span className="project-picker-name">{item}</span>
           </button>
         ))}
       </ProjectPickerDropdown>
