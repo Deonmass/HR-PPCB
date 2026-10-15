@@ -63,10 +63,10 @@
     "2026-09": {
       "year": 2026,
       "month": 9,
-      "hq": 0,
+      "hq": 7416,
       "plant": 0,
       "fromEntries": false,
-      "updatedAt": "2026-10-15T10:09:53.309Z"
+      "updatedAt": "2026-10-15T10:10:08.437Z"
     }
   },
   "entries": [
@@ -179,5 +179,5 @@
       "sourceFile": "New report Training"
     }
   ],
-  "updatedAt": "2026-10-15T10:09:53.309Z"
+  "updatedAt": "2026-10-15T10:10:08.437Z"
 }
