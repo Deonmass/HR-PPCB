@@ -1,6 +1,44 @@
 {
   "entries": [
     {
+      "id": "log-001628",
+      "at": "2026-10-16T16:59:05.163Z",
+      "userId": "Tresor.Maneka@ppcdrc.cd",
+      "userName": "Tresor Maneka",
+      "userEmail": "Tresor.Maneka@ppcdrc.cd",
+      "module": "protocol.voyages",
+      "moduleLabel": "Gestion de voyage",
+      "action": "create",
+      "actionLabel": "Création",
+      "entityType": "protocol.voyage",
+      "entityId": "pvc-036",
+      "summary": "Voyage PVC-0036 Diki et Benny a kisantu puis kinshasa Zamba Kinshasa Zamba",
+      "details": "Voyage PVC-0036 Diki et Benny a kisantu puis kinshasa Zamba Kinshasa Zamba",
+      "after": {
+        "id": "pvc-036",
+        "numero": "PVC-0036",
+        "date": "2026-10-14",
+        "voyageur": "Diki et Benny a kisantu puis kinshasa",
+        "voyageurMatricule": "",
+        "destination": "Zamba Kinshasa Zamba",
+        "ticketAvion": 0,
+        "visaVolant": 0,
+        "lettreLegaliser": 0,
+        "goPass": 0,
+        "transfert": 0,
+        "hotelNuit": 100,
+        "nbreNuits": 3,
+        "coutHotel": 300,
+        "categorieHotel": "",
+        "appartement": 0,
+        "coutTotal": 300,
+        "createdAt": "2026-10-16T16:59:01.756Z",
+        "updatedAt": "2026-10-16T16:59:01.756Z"
+      },
+      "undoable": false,
+      "undone": false
+    },
+    {
       "id": "log-001627",
       "at": "2026-10-16T16:42:41.713Z",
       "userId": "Tresor.Maneka@ppcdrc.cd",
@@ -180974,5 +181012,5 @@
       }
     }
   ],
-  "nextSeq": 1628
+  "nextSeq": 1629
 }
