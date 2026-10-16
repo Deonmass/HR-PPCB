@@ -1,6 +1,65 @@
 {
   "entries": [
     {
+      "id": "log-001631",
+      "at": "2026-10-16T17:03:03.741Z",
+      "userId": "Tresor.Maneka@ppcdrc.cd",
+      "userName": "Tresor Maneka",
+      "userEmail": "Tresor.Maneka@ppcdrc.cd",
+      "module": "protocol.voyages",
+      "moduleLabel": "Gestion de voyage",
+      "action": "update",
+      "actionLabel": "Modification",
+      "entityType": "protocol.voyage",
+      "entityId": "pvc-038",
+      "summary": "Modification voyage PVC-0038 Hamadou",
+      "details": "Modification voyage PVC-0038 Hamadou",
+      "before": {
+        "id": "pvc-038",
+        "numero": "PVC-0038",
+        "date": "2026-10-16",
+        "voyageur": "Hamadou",
+        "voyageurMatricule": "",
+        "destination": "Zamba Kinshasa Doula",
+        "ticketAvion": 0,
+        "visaVolant": 0,
+        "lettreLegaliser": 0,
+        "goPass": 0,
+        "transfert": 0,
+        "hotelNuit": 100,
+        "nbreNuits": 1,
+        "coutHotel": 100,
+        "categorieHotel": "",
+        "appartement": 0,
+        "coutTotal": 100,
+        "createdAt": "2026-10-16T17:00:51.919Z",
+        "updatedAt": "2026-10-16T17:00:51.919Z"
+      },
+      "after": {
+        "id": "pvc-038",
+        "numero": "PVC-0038",
+        "date": "2026-10-16",
+        "voyageur": "Hamadou",
+        "voyageurMatricule": "",
+        "destination": "Zamba Kinshasa Doula",
+        "ticketAvion": 0,
+        "visaVolant": 0,
+        "lettreLegaliser": 0,
+        "goPass": 55,
+        "transfert": 0,
+        "hotelNuit": 100,
+        "nbreNuits": 1,
+        "coutHotel": 100,
+        "categorieHotel": "",
+        "appartement": 0,
+        "coutTotal": 155,
+        "createdAt": "2026-10-16T17:00:51.919Z",
+        "updatedAt": "2026-10-16T17:03:00.369Z"
+      },
+      "undoable": false,
+      "undone": false
+    },
+    {
       "id": "log-001630",
       "at": "2026-10-16T17:00:54.390Z",
       "userId": "Tresor.Maneka@ppcdrc.cd",
@@ -181088,5 +181147,5 @@
       }
     }
   ],
-  "nextSeq": 1631
+  "nextSeq": 1632
 }
