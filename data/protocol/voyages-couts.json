@@ -471,7 +471,7 @@
       "destination": "Chine Kinshasa Chine",
       "ticketAvion": 2451,
       "visaVolant": 440,
-      "lettreLegaliser": 0,
+      "lettreLegaliser": 350,
       "goPass": 0,
       "transfert": 0,
       "hotelNuit": 145,
@@ -479,9 +479,9 @@
       "coutHotel": 145,
       "categorieHotel": "Standard",
       "appartement": 0,
-      "coutTotal": 3036,
+      "coutTotal": 3386,
       "createdAt": "2026-10-08T16:47:20.574Z",
-      "updatedAt": "2026-10-09T13:35:33.457Z"
+      "updatedAt": "2026-10-16T17:48:40.484Z"
     },
     {
       "id": "pvc-026",
