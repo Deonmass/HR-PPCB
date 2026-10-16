@@ -502,13 +502,13 @@
       "vehiculeMode": "flotte",
       "vehiculeId": "veh-030",
       "vehiculeLibelle": "9263BN01 · Peugeot · Pick up",
-      "foodAllowance": 10,
-      "foodForTheRoad": 10,
-      "tollGate": 10,
+      "foodAllowance": 0,
+      "foodForTheRoad": 0,
+      "tollGate": 0,
       "confirmedAt": "2026-10-16T17:10:00.852Z",
       "completedAt": "",
       "createdAt": "2026-10-16T17:06:25.264Z",
-      "updatedAt": "2026-10-16T17:27:16.350Z"
+      "updatedAt": "2026-10-16T17:27:55.536Z"
     },
     {
       "id": "vyg-022",
