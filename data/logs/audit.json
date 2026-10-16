@@ -1,6 +1,44 @@
 {
   "entries": [
     {
+      "id": "log-001629",
+      "at": "2026-10-16T17:00:11.150Z",
+      "userId": "Tresor.Maneka@ppcdrc.cd",
+      "userName": "Tresor Maneka",
+      "userEmail": "Tresor.Maneka@ppcdrc.cd",
+      "module": "protocol.voyages",
+      "moduleLabel": "Gestion de voyage",
+      "action": "create",
+      "actionLabel": "Création",
+      "entityType": "protocol.voyage",
+      "entityId": "pvc-037",
+      "summary": "Voyage PVC-0037 Blaise Nsembolo avec Mr Hamadou Zamba Kinshasa Zamba",
+      "details": "Voyage PVC-0037 Blaise Nsembolo avec Mr Hamadou Zamba Kinshasa Zamba",
+      "after": {
+        "id": "pvc-037",
+        "numero": "PVC-0037",
+        "date": "2026-10-16",
+        "voyageur": "Blaise Nsembolo avec Mr Hamadou",
+        "voyageurMatricule": "",
+        "destination": "Zamba Kinshasa Zamba",
+        "ticketAvion": 0,
+        "visaVolant": 0,
+        "lettreLegaliser": 0,
+        "goPass": 0,
+        "transfert": 0,
+        "hotelNuit": 100,
+        "nbreNuits": 1,
+        "coutHotel": 100,
+        "categorieHotel": "",
+        "appartement": 0,
+        "coutTotal": 100,
+        "createdAt": "2026-10-16T17:00:07.974Z",
+        "updatedAt": "2026-10-16T17:00:07.974Z"
+      },
+      "undoable": false,
+      "undone": false
+    },
+    {
       "id": "log-001628",
       "at": "2026-10-16T16:59:05.163Z",
       "userId": "Tresor.Maneka@ppcdrc.cd",
@@ -181012,5 +181050,5 @@
       }
     }
   ],
-  "nextSeq": 1629
+  "nextSeq": 1630
 }
