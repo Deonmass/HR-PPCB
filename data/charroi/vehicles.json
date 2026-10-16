@@ -9,12 +9,12 @@
       "plaque": "4625AW01",
       "cv": "13 CV",
       "assureur": "Sfa",
-      "departement": "Sales",
-      "user": "Jean Pierre B",
-      "province": "Kisangani",
+      "departement": "Human Resources",
+      "user": "MANEKA MPUDI TRESOR",
+      "province": "Kinshasa",
       "proprietaire": "PPC",
       "kilometrage": 124580,
-      "miseCirculation": "2016",
+      "miseCirculation": "2016-01-01",
       "age": 10,
       "observationTech": "Avertissement",
       "etatManuel": "",
@@ -26,7 +26,7 @@
       "controleTechniqueFin": "",
       "notes": "",
       "createdAt": "2026-07-28T16:00:46.888Z",
-      "updatedAt": "2026-07-28T16:00:46.888Z"
+      "updatedAt": "2026-10-16T17:25:49.321Z"
     },
     {
       "id": "veh-002",
