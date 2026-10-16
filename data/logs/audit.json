@@ -1,6 +1,54 @@
 {
   "entries": [
     {
+      "id": "log-001660",
+      "at": "2026-10-16T17:36:27.365Z",
+      "userId": "admin",
+      "userName": "Administrateur",
+      "userEmail": "admin",
+      "module": "charroi.voyages",
+      "moduleLabel": "Charroi — Voyages",
+      "action": "delete",
+      "actionLabel": "Suppression",
+      "entityType": "charroi.voyage",
+      "entityId": "vyg-016",
+      "summary": "Suppression voyage VYG-0016 Fredy olela",
+      "details": "Suppression voyage VYG-0016 Fredy olela",
+      "before": {
+        "id": "vyg-016",
+        "numero": "VYG-0016",
+        "passagerNom": "Fredy olela",
+        "passagerMatricule": "",
+        "passagerInterne": true,
+        "nombrePersonnes": 1,
+        "depart": "Kinshasa",
+        "destination": "Kimpese",
+        "dateDepart": "2026-10-15",
+        "heureDepart": "05:00",
+        "dateArrivee": "",
+        "heureArrivee": "",
+        "motif": "exco",
+        "notes": "",
+        "status": "effectue",
+        "chauffeurNom": "ZODULUA GADUA Jean Jacques",
+        "chauffeurMatricule": "70000009",
+        "chauffeurInterne": true,
+        "vehiculeMode": "flotte",
+        "vehiculeId": "veh-011",
+        "vehiculeLibelle": "5535BS01 · Toyota · Hiace Bus",
+        "foodAllowance": 0,
+        "foodForTheRoad": 0,
+        "tollGate": 0,
+        "confirmedAt": "2026-10-16T17:16:00.642Z",
+        "completedAt": "2026-10-16T17:16:00.642Z",
+        "createdAt": "2026-10-14T13:41:05.910Z",
+        "updatedAt": "2026-10-16T17:16:00.642Z"
+      },
+      "after": null,
+      "undoable": false,
+      "undone": false
+    },
+    {
       "id": "log-001659",
       "at": "2026-10-16T17:36:04.960Z",
       "userId": "admin",
@@ -182963,5 +183011,5 @@
       }
     }
   ],
-  "nextSeq": 1660
+  "nextSeq": 1661
 }
