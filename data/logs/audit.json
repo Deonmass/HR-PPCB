@@ -1,6 +1,53 @@
 {
   "entries": [
     {
+      "id": "log-001643",
+      "at": "2026-10-16T17:21:18.815Z",
+      "userId": "Tresor.Maneka@ppcdrc.cd",
+      "userName": "Tresor Maneka",
+      "userEmail": "Tresor.Maneka@ppcdrc.cd",
+      "module": "charroi.voyages",
+      "moduleLabel": "Charroi — Voyages",
+      "action": "create",
+      "actionLabel": "Création",
+      "entityType": "charroi.voyage",
+      "entityId": "vyg-022",
+      "summary": "Demande de voyage VYG-0022 MAVUANGALA MVIOKI JEAN-PIERRE, PASCAL Kinshasa → Tshikapa",
+      "details": "Demande de voyage VYG-0022 MAVUANGALA MVIOKI JEAN-PIERRE, PASCAL Kinshasa → Tshikapa",
+      "after": {
+        "id": "vyg-022",
+        "numero": "VYG-0022",
+        "passagerNom": "MAVUANGALA MVIOKI JEAN-PIERRE, PASCAL",
+        "passagerMatricule": "",
+        "passagerInterne": true,
+        "nombrePersonnes": 4,
+        "depart": "Kinshasa",
+        "destination": "Tshikapa",
+        "dateDepart": "2026-10-19",
+        "heureDepart": "05:00",
+        "dateArrivee": "",
+        "heureArrivee": "",
+        "motif": "Mission a tshikapa",
+        "notes": "",
+        "status": "demande",
+        "chauffeurNom": "",
+        "chauffeurMatricule": "",
+        "chauffeurInterne": false,
+        "vehiculeMode": "",
+        "vehiculeId": "",
+        "vehiculeLibelle": "",
+        "foodAllowance": 0,
+        "foodForTheRoad": 0,
+        "tollGate": 0,
+        "confirmedAt": "",
+        "completedAt": "",
+        "createdAt": "2026-10-16T17:21:15.998Z",
+        "updatedAt": "2026-10-16T17:21:15.998Z"
+      },
+      "undoable": false,
+      "undone": false
+    },
+    {
       "id": "log-001642",
       "at": "2026-10-16T17:21:06.984Z",
       "userId": "admin",
@@ -181834,5 +181881,5 @@
       }
     }
   ],
-  "nextSeq": 1643
+  "nextSeq": 1644
 }
