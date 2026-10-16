@@ -1,6 +1,54 @@
 {
   "entries": [
     {
+      "id": "log-001661",
+      "at": "2026-10-16T17:36:36.763Z",
+      "userId": "admin",
+      "userName": "Administrateur",
+      "userEmail": "admin",
+      "module": "charroi.voyages",
+      "moduleLabel": "Charroi — Voyages",
+      "action": "delete",
+      "actionLabel": "Suppression",
+      "entityType": "charroi.voyage",
+      "entityId": "vyg-015",
+      "summary": "Suppression voyage VYG-0015 ODIPO WERE Edgard",
+      "details": "Suppression voyage VYG-0015 ODIPO WERE Edgard",
+      "before": {
+        "id": "vyg-015",
+        "numero": "VYG-0015",
+        "passagerNom": "ODIPO WERE Edgard",
+        "passagerMatricule": "70000203",
+        "passagerInterne": true,
+        "nombrePersonnes": 1,
+        "depart": "Kinshasa",
+        "destination": "Kimpese",
+        "dateDepart": "2026-10-15",
+        "heureDepart": "05:00",
+        "dateArrivee": "",
+        "heureArrivee": "",
+        "motif": "EXCO",
+        "notes": "",
+        "status": "effectue",
+        "chauffeurNom": "ZODULUA GADUA Jean Jacques",
+        "chauffeurMatricule": "70000009",
+        "chauffeurInterne": true,
+        "vehiculeMode": "flotte",
+        "vehiculeId": "veh-011",
+        "vehiculeLibelle": "5535BS01 · Toyota · Hiace Bus",
+        "foodAllowance": 0,
+        "foodForTheRoad": 0,
+        "tollGate": 0,
+        "confirmedAt": "2026-10-16T17:16:36.761Z",
+        "completedAt": "2026-10-16T17:16:36.761Z",
+        "createdAt": "2026-10-14T13:40:17.186Z",
+        "updatedAt": "2026-10-16T17:16:36.761Z"
+      },
+      "after": null,
+      "undoable": false,
+      "undone": false
+    },
+    {
       "id": "log-001660",
       "at": "2026-10-16T17:36:27.365Z",
       "userId": "admin",
@@ -183011,5 +183059,5 @@
       }
     }
   ],
-  "nextSeq": 1661
+  "nextSeq": 1662
 }
