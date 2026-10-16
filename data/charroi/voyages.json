@@ -489,13 +489,13 @@
       "nombrePersonnes": 5,
       "depart": "Zamba (Village)",
       "destination": "Kinshasa",
-      "dateDepart": "2026-10-16",
+      "dateDepart": "2026-10-17",
       "heureDepart": "12:00",
       "dateArrivee": "",
       "heureArrivee": "",
       "motif": "Retour de Mr Hamadou",
       "notes": "",
-      "status": "effectue",
+      "status": "pending",
       "chauffeurNom": "ZODULUA GADUA Jean Jacques",
       "chauffeurMatricule": "70000009",
       "chauffeurInterne": true,
@@ -506,9 +506,9 @@
       "foodForTheRoad": 200,
       "tollGate": 10,
       "confirmedAt": "2026-10-16T17:11:45.878Z",
-      "completedAt": "2026-10-16T17:11:45.878Z",
+      "completedAt": "",
       "createdAt": "2026-10-16T17:06:22.888Z",
-      "updatedAt": "2026-10-16T17:11:45.878Z"
+      "updatedAt": "2026-10-16T17:21:31.110Z"
     },
     {
       "id": "vyg-021",
