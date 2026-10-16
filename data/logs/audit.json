@@ -1,6 +1,54 @@
 {
   "entries": [
     {
+      "id": "log-001659",
+      "at": "2026-10-16T17:36:04.960Z",
+      "userId": "admin",
+      "userName": "Administrateur",
+      "userEmail": "admin",
+      "module": "charroi.voyages",
+      "moduleLabel": "Charroi — Voyages",
+      "action": "delete",
+      "actionLabel": "Suppression",
+      "entityType": "charroi.voyage",
+      "entityId": "vyg-019",
+      "summary": "Suppression voyage VYG-0019 EKWALANGA MONGALIKITA BONIFACE",
+      "details": "Suppression voyage VYG-0019 EKWALANGA MONGALIKITA BONIFACE",
+      "before": {
+        "id": "vyg-019",
+        "numero": "VYG-0019",
+        "passagerNom": "EKWALANGA MONGALIKITA BONIFACE",
+        "passagerMatricule": "70000085",
+        "passagerInterne": true,
+        "nombrePersonnes": 1,
+        "depart": "Kinshasa",
+        "destination": "Kimpese",
+        "dateDepart": "2026-10-15",
+        "heureDepart": "05:00",
+        "dateArrivee": "",
+        "heureArrivee": "",
+        "motif": "EXCO",
+        "notes": "",
+        "status": "effectue",
+        "chauffeurNom": "ZODULUA GADUA Jean Jacques",
+        "chauffeurMatricule": "70000009",
+        "chauffeurInterne": true,
+        "vehiculeMode": "flotte",
+        "vehiculeId": "veh-011",
+        "vehiculeLibelle": "5535BS01 · Toyota · Hiace Bus",
+        "foodAllowance": 0,
+        "foodForTheRoad": 0,
+        "tollGate": 0,
+        "confirmedAt": "2026-10-16T17:15:08.824Z",
+        "completedAt": "2026-10-16T17:15:08.824Z",
+        "createdAt": "2026-10-14T14:28:38.959Z",
+        "updatedAt": "2026-10-16T17:15:08.824Z"
+      },
+      "after": null,
+      "undoable": false,
+      "undone": false
+    },
+    {
       "id": "log-001658",
       "at": "2026-10-16T17:35:56.687Z",
       "userId": "admin",
@@ -182915,5 +182963,5 @@
       }
     }
   ],
-  "nextSeq": 1659
+  "nextSeq": 1660
 }
