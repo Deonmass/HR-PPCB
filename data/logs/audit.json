@@ -1,6 +1,53 @@
 {
   "entries": [
     {
+      "id": "log-001632",
+      "at": "2026-10-16T17:06:26.304Z",
+      "userId": "admin",
+      "userName": "Administrateur",
+      "userEmail": "admin",
+      "module": "charroi.voyages",
+      "moduleLabel": "Charroi — Voyages",
+      "action": "create",
+      "actionLabel": "Création",
+      "entityType": "charroi.voyage",
+      "entityId": "vyg-020",
+      "summary": "Demande de voyage VYG-0020 Mr Hamadou, Sothene familly, femme de paritien Zamba (Village) → Kinshasa",
+      "details": "Demande de voyage VYG-0020 Mr Hamadou, Sothene familly, femme de paritien Zamba (Village) → Kinshasa",
+      "after": {
+        "id": "vyg-020",
+        "numero": "VYG-0020",
+        "passagerNom": "Mr Hamadou, Sothene familly, femme de paritien",
+        "passagerMatricule": "",
+        "passagerInterne": false,
+        "nombrePersonnes": 5,
+        "depart": "Zamba (Village)",
+        "destination": "Kinshasa",
+        "dateDepart": "2026-10-16",
+        "heureDepart": "12:00",
+        "dateArrivee": "",
+        "heureArrivee": "",
+        "motif": "Retour de Mr Hamadou",
+        "notes": "",
+        "status": "demande",
+        "chauffeurNom": "",
+        "chauffeurMatricule": "",
+        "chauffeurInterne": false,
+        "vehiculeMode": "",
+        "vehiculeId": "",
+        "vehiculeLibelle": "",
+        "foodAllowance": 0,
+        "foodForTheRoad": 0,
+        "tollGate": 0,
+        "confirmedAt": "",
+        "completedAt": "",
+        "createdAt": "2026-10-16T17:06:22.888Z",
+        "updatedAt": "2026-10-16T17:06:22.888Z"
+      },
+      "undoable": false,
+      "undone": false
+    },
+    {
       "id": "log-001631",
       "at": "2026-10-16T17:03:03.741Z",
       "userId": "Tresor.Maneka@ppcdrc.cd",
@@ -181147,5 +181194,5 @@
       }
     }
   ],
-  "nextSeq": 1632
+  "nextSeq": 1633
 }
