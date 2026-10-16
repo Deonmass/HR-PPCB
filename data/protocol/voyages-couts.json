@@ -745,16 +745,16 @@
       "ticketAvion": 0,
       "visaVolant": 0,
       "lettreLegaliser": 0,
-      "goPass": 0,
+      "goPass": 55,
       "transfert": 0,
       "hotelNuit": 100,
       "nbreNuits": 1,
       "coutHotel": 100,
       "categorieHotel": "",
       "appartement": 0,
-      "coutTotal": 100,
+      "coutTotal": 155,
       "createdAt": "2026-10-16T17:00:51.919Z",
-      "updatedAt": "2026-10-16T17:00:51.919Z"
+      "updatedAt": "2026-10-16T17:03:00.369Z"
     }
   ],
   "nextSeq": 39
