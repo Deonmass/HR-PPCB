@@ -1,6 +1,54 @@
 {
   "entries": [
     {
+      "id": "log-001665",
+      "at": "2026-10-16T17:38:17.600Z",
+      "userId": "admin",
+      "userName": "Administrateur",
+      "userEmail": "admin",
+      "module": "charroi.voyages",
+      "moduleLabel": "Charroi — Voyages",
+      "action": "delete",
+      "actionLabel": "Suppression",
+      "entityType": "charroi.voyage",
+      "entityId": "vyg-013",
+      "summary": "Suppression voyage VYG-0013 MUTOMBO NTALAJA ACHILLE",
+      "details": "Suppression voyage VYG-0013 MUTOMBO NTALAJA ACHILLE",
+      "before": {
+        "id": "vyg-013",
+        "numero": "VYG-0013",
+        "passagerNom": "MUTOMBO NTALAJA ACHILLE",
+        "passagerMatricule": "70000180",
+        "passagerInterne": true,
+        "nombrePersonnes": 1,
+        "depart": "Kinshasa",
+        "destination": "Kimpese",
+        "dateDepart": "2026-10-15",
+        "heureDepart": "05:00",
+        "dateArrivee": "",
+        "heureArrivee": "",
+        "motif": "EXCO",
+        "notes": "",
+        "status": "effectue",
+        "chauffeurNom": "KILENDA BANGI ALI",
+        "chauffeurMatricule": "70000176",
+        "chauffeurInterne": true,
+        "vehiculeMode": "flotte",
+        "vehiculeId": "veh-039",
+        "vehiculeLibelle": "3705AS05 · Toyota · Prado",
+        "foodAllowance": 300,
+        "foodForTheRoad": 300,
+        "tollGate": 100,
+        "confirmedAt": "2026-10-16T17:14:04.490Z",
+        "completedAt": "2026-10-16T17:14:04.491Z",
+        "createdAt": "2026-10-14T13:38:58.513Z",
+        "updatedAt": "2026-10-16T17:14:04.490Z"
+      },
+      "after": null,
+      "undoable": false,
+      "undone": false
+    },
+    {
       "id": "log-001664",
       "at": "2026-10-16T17:37:59.582Z",
       "userId": "admin",
@@ -183203,5 +183251,5 @@
       }
     }
   ],
-  "nextSeq": 1665
+  "nextSeq": 1666
 }
