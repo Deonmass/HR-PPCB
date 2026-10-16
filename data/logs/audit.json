@@ -1,6 +1,53 @@
 {
   "entries": [
     {
+      "id": "log-001653",
+      "at": "2026-10-16T17:30:19.924Z",
+      "userId": "Tresor.Maneka@ppcdrc.cd",
+      "userName": "Tresor Maneka",
+      "userEmail": "Tresor.Maneka@ppcdrc.cd",
+      "module": "charroi.voyages",
+      "moduleLabel": "Charroi — Voyages",
+      "action": "create",
+      "actionLabel": "Création",
+      "entityType": "charroi.voyage",
+      "entityId": "vyg-023",
+      "summary": "Demande de voyage VYG-0023 Claude Kikunga Kinshasa → Kimpese",
+      "details": "Demande de voyage VYG-0023 Claude Kikunga Kinshasa → Kimpese",
+      "after": {
+        "id": "vyg-023",
+        "numero": "VYG-0023",
+        "passagerNom": "Claude Kikunga",
+        "passagerMatricule": "",
+        "passagerInterne": false,
+        "nombrePersonnes": 4,
+        "depart": "Kinshasa",
+        "destination": "Kimpese",
+        "dateDepart": "2026-10-16",
+        "heureDepart": "13:00",
+        "dateArrivee": "",
+        "heureArrivee": "",
+        "motif": "Mission a Malanga avec la famille de Mr Andrew",
+        "notes": "",
+        "status": "demande",
+        "chauffeurNom": "",
+        "chauffeurMatricule": "",
+        "chauffeurInterne": false,
+        "vehiculeMode": "",
+        "vehiculeId": "",
+        "vehiculeLibelle": "",
+        "foodAllowance": 0,
+        "foodForTheRoad": 0,
+        "tollGate": 0,
+        "confirmedAt": "",
+        "completedAt": "",
+        "createdAt": "2026-10-16T17:30:16.521Z",
+        "updatedAt": "2026-10-16T17:30:16.521Z"
+      },
+      "undoable": false,
+      "undone": false
+    },
+    {
       "id": "log-001652",
       "at": "2026-10-16T17:28:41.765Z",
       "userId": "admin",
@@ -182541,5 +182588,5 @@
       }
     }
   ],
-  "nextSeq": 1653
+  "nextSeq": 1654
 }
