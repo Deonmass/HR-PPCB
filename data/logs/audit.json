@@ -1,6 +1,65 @@
 {
   "entries": [
     {
+      "id": "log-001674",
+      "at": "2026-10-16T17:53:49.415Z",
+      "userId": "Tresor.Maneka@ppcdrc.cd",
+      "userName": "Tresor Maneka",
+      "userEmail": "Tresor.Maneka@ppcdrc.cd",
+      "module": "protocol.voyages",
+      "moduleLabel": "Gestion de voyage",
+      "action": "update",
+      "actionLabel": "Modification",
+      "entityType": "protocol.voyage",
+      "entityId": "pvc-005",
+      "summary": "Modification voyage PVC-0005 Zhang Dai CSSP",
+      "details": "Modification voyage PVC-0005 Zhang Dai CSSP",
+      "before": {
+        "id": "pvc-005",
+        "numero": "PVC-0005",
+        "date": "2026-10-01",
+        "voyageur": "Zhang Dai CSSP",
+        "voyageurMatricule": "",
+        "destination": "Chine Kinshasa Chine",
+        "ticketAvion": 2451,
+        "visaVolant": 440,
+        "lettreLegaliser": 350,
+        "goPass": 0,
+        "transfert": 0,
+        "hotelNuit": 145,
+        "nbreNuits": 1,
+        "coutHotel": 145,
+        "categorieHotel": "",
+        "appartement": 0,
+        "coutTotal": 3386,
+        "createdAt": "2026-10-07T15:28:54.344Z",
+        "updatedAt": "2026-10-16T17:49:01.389Z"
+      },
+      "after": {
+        "id": "pvc-005",
+        "numero": "PVC-0005",
+        "date": "2026-10-01",
+        "voyageur": "Zhang Dai CSSP",
+        "voyageurMatricule": "",
+        "destination": "Chine Kinshasa Chine",
+        "ticketAvion": 2451,
+        "visaVolant": 440,
+        "lettreLegaliser": 350,
+        "goPass": 0,
+        "transfert": 0,
+        "hotelNuit": 145,
+        "nbreNuits": 1,
+        "coutHotel": 145,
+        "categorieHotel": "",
+        "appartement": 0,
+        "coutTotal": 3386,
+        "createdAt": "2026-10-07T15:28:54.344Z",
+        "updatedAt": "2026-10-16T17:53:46.357Z"
+      },
+      "undoable": false,
+      "undone": false
+    },
+    {
       "id": "log-001673",
       "at": "2026-10-16T17:49:03.723Z",
       "userId": "Tresor.Maneka@ppcdrc.cd",
@@ -183691,5 +183750,5 @@
       }
     }
   ],
-  "nextSeq": 1674
+  "nextSeq": 1675
 }
