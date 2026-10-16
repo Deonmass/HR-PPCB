@@ -1,6 +1,33 @@
 {
   "entries": [
     {
+      "id": "log-001642",
+      "at": "2026-10-16T17:21:06.984Z",
+      "userId": "admin",
+      "userName": "Administrateur",
+      "userEmail": "admin",
+      "module": "charroi.voyages",
+      "moduleLabel": "Charroi — Voyages",
+      "action": "error",
+      "actionLabel": "Erreur",
+      "summary": "Voyage déjà effectué",
+      "details": "Échec de l’action « update » sur charroi.voyages: Voyage déjà effectué",
+      "undoable": false,
+      "undone": false,
+      "error": {
+        "message": "Voyage déjà effectué",
+        "stack": "Error: Voyage déjà effectué\n    at am (/var/task/.next/server/chunks/3259.js:1:16830)\n    at async l (/var/task/.next/server/chunks/3003.js:1:1365)\n    at async B (/var/task/.next/server/app/api/charroi/voyages/[id]/route.js:1:2919)\n    at async rH.do (/var/task/node_modules/next/dist/compiled/next-server/app-route.runtime.prod.js:5:21048)\n    at async rH.handle (/var/task/node_modules/next/dist/compiled/next-server/app-route.runtime.prod.js:5:25866)\n    at async k (/var/task/.next/server/app/api/charroi/voyages/[id]/route.js:1:7177)\n    at async rH.handleResponse (/var/task/node_modules/next/dist/compiled/next-server/app-route.runtime.prod.js:1:110770)\n    at async g (/var/task/.next/server/app/api/charroi/voyages/[id]/route.js:1:8180)\n    at async I (/var/task/.next/server/app/api/charroi/voyages/[id]/route.js:1:9302)\n    at async ib.renderToResponseWithComponentsImpl (/var/task/node_modules/next/dist/compiled/next-server/server.runtime.prod.js:13:28532)",
+        "path": "/api/charroi/voyages/vyg-020",
+        "method": "PATCH",
+        "context": {
+          "action": "update",
+          "entityType": "charroi.voyage",
+          "entityId": "vyg-020",
+          "summary": "Confirmation voyage VYG-0020 Mr Hamadou, Sothene familly, femme de paritien"
+        }
+      }
+    },
+    {
       "id": "log-001641",
       "at": "2026-10-16T17:20:45.924Z",
       "userId": "admin",
@@ -181807,5 +181834,5 @@
       }
     }
   ],
-  "nextSeq": 1642
+  "nextSeq": 1643
 }
