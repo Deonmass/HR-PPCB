@@ -1,6 +1,65 @@
 {
   "entries": [
     {
+      "id": "log-001671",
+      "at": "2026-10-16T17:48:06.235Z",
+      "userId": "Tresor.Maneka@ppcdrc.cd",
+      "userName": "Tresor Maneka",
+      "userEmail": "Tresor.Maneka@ppcdrc.cd",
+      "module": "protocol.voyages",
+      "moduleLabel": "Gestion de voyage",
+      "action": "update",
+      "actionLabel": "Modification",
+      "entityType": "protocol.voyage",
+      "entityId": "pvc-026",
+      "summary": "Modification voyage PVC-0026 Lui Huazhog CSSP",
+      "details": "Modification voyage PVC-0026 Lui Huazhog CSSP",
+      "before": {
+        "id": "pvc-026",
+        "numero": "PVC-0026",
+        "date": "2026-10-01",
+        "voyageur": "Lui Huazhog CSSP",
+        "voyageurMatricule": "",
+        "destination": "Chine Kinshasa Chine",
+        "ticketAvion": 2451,
+        "visaVolant": 440,
+        "lettreLegaliser": 0,
+        "goPass": 0,
+        "transfert": 0,
+        "hotelNuit": 145,
+        "nbreNuits": 1,
+        "coutHotel": 145,
+        "categorieHotel": "",
+        "appartement": 0,
+        "coutTotal": 3036,
+        "createdAt": "2026-10-08T16:49:29.065Z",
+        "updatedAt": "2026-10-08T16:49:29.065Z"
+      },
+      "after": {
+        "id": "pvc-026",
+        "numero": "PVC-0026",
+        "date": "2026-10-01",
+        "voyageur": "Lui Huazhog CSSP",
+        "voyageurMatricule": "",
+        "destination": "Chine Kinshasa Chine",
+        "ticketAvion": 2451,
+        "visaVolant": 440,
+        "lettreLegaliser": 350,
+        "goPass": 0,
+        "transfert": 0,
+        "hotelNuit": 145,
+        "nbreNuits": 1,
+        "coutHotel": 145,
+        "categorieHotel": "",
+        "appartement": 0,
+        "coutTotal": 3386,
+        "createdAt": "2026-10-08T16:49:29.065Z",
+        "updatedAt": "2026-10-16T17:48:02.589Z"
+      },
+      "undoable": false,
+      "undone": false
+    },
+    {
       "id": "log-001670",
       "at": "2026-10-16T17:44:15.980Z",
       "userId": "Tresor.Maneka@ppcdrc.cd",
@@ -183514,5 +183573,5 @@
       }
     }
   ],
-  "nextSeq": 1671
+  "nextSeq": 1672
 }
