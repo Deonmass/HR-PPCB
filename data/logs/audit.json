@@ -1,6 +1,49 @@
 {
   "entries": [
     {
+      "id": "log-001679",
+      "at": "2026-10-17T08:09:08.121Z",
+      "userId": "gd.mwankana@capitalhrsolutions.net",
+      "userName": "Guy daniel",
+      "userEmail": "gd.mwankana@capitalhrsolutions.net",
+      "module": "contractants",
+      "moduleLabel": "contractants",
+      "action": "update",
+      "actionLabel": "Modification",
+      "entityType": "contractant-employee",
+      "entityId": "776",
+      "summary": "Modification employé contractant — NZOLANTIMA TEKADIOMONA",
+      "details": "Modification employé contractant — NZOLANTIMA TEKADIOMONA",
+      "after": {
+        "id": "776",
+        "nom": "NZOLANTIMA TEKADIOMONA",
+        "sexe": "",
+        "lieuAffectation": "Zamba",
+        "fonction": "Handyman",
+        "departement": "Engineering",
+        "service": "",
+        "telephone": "",
+        "etatCivil": "C",
+        "statut": "Permanent",
+        "dateEmbauche": "",
+        "dateSortie": "",
+        "managerEmployeeId": "",
+        "family": [],
+        "matriculePpc": "CHRS_PPC0107",
+        "numeroCnss": "",
+        "numeroCompte": "544200039117171",
+        "banque": "EBCDC",
+        "nbDependants": 4,
+        "txJr": 12.541338,
+        "coutTransport": 1.17,
+        "payrollSite": "site",
+        "createdAt": "2026-09-25T08:00:00.000Z",
+        "updatedAt": "2026-10-17T08:09:05.139Z"
+      },
+      "undoable": false,
+      "undone": false
+    },
+    {
       "id": "log-001678",
       "at": "2026-10-17T08:06:51.567Z",
       "userId": "gd.mwankana@capitalhrsolutions.net",
@@ -183894,5 +183937,5 @@
       }
     }
   ],
-  "nextSeq": 1679
+  "nextSeq": 1680
 }
