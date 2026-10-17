@@ -1140,7 +1140,7 @@
           "sexe": "M",
           "lieuAffectation": "Zamba",
           "fonction": "Driller Operator",
-          "departement": "",
+          "departement": "Mining",
           "service": "",
           "telephone": "823995866",
           "etatCivil": "C",
@@ -1158,7 +1158,7 @@
           "coutTransport": 1.17,
           "payrollSite": "site",
           "createdAt": "2026-08-12T12:57:02.481Z",
-          "updatedAt": "2026-09-28T15:12:00.000Z"
+          "updatedAt": "2026-10-17T08:06:12.016Z"
         },
         {
           "id": "105",
@@ -4932,7 +4932,7 @@
         }
       ],
       "createdAt": "2026-08-12T11:55:22.134Z",
-      "updatedAt": "2026-10-17T08:05:44.853Z"
+      "updatedAt": "2026-10-17T08:06:12.016Z"
     },
     {
       "id": "3",
