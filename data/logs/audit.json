@@ -1,6 +1,49 @@
 {
   "entries": [
     {
+      "id": "log-001678",
+      "at": "2026-10-17T08:06:51.567Z",
+      "userId": "gd.mwankana@capitalhrsolutions.net",
+      "userName": "Guy daniel",
+      "userEmail": "gd.mwankana@capitalhrsolutions.net",
+      "module": "contractants",
+      "moduleLabel": "contractants",
+      "action": "update",
+      "actionLabel": "Modification",
+      "entityType": "contractant-employee",
+      "entityId": "785",
+      "summary": "Modification employé contractant — KYUNGU KABUYA BRUNO",
+      "details": "Modification employé contractant — KYUNGU KABUYA BRUNO",
+      "after": {
+        "id": "785",
+        "nom": "KYUNGU KABUYA BRUNO",
+        "sexe": "",
+        "lieuAffectation": "Lubudi",
+        "fonction": "chauffeur",
+        "departement": "Human Resources",
+        "service": "",
+        "telephone": "",
+        "etatCivil": "C",
+        "statut": "Permanent",
+        "dateEmbauche": "",
+        "dateSortie": "",
+        "managerEmployeeId": "",
+        "family": [],
+        "matriculePpc": "",
+        "numeroCnss": "",
+        "numeroCompte": "",
+        "banque": "",
+        "nbDependants": 0,
+        "txJr": 0,
+        "coutTransport": 0,
+        "payrollSite": "hors-site",
+        "createdAt": "2026-09-28T15:12:00.000Z",
+        "updatedAt": "2026-10-17T08:06:48.218Z"
+      },
+      "undoable": false,
+      "undone": false
+    },
+    {
       "id": "log-001677",
       "at": "2026-10-17T08:06:14.678Z",
       "userId": "gd.mwankana@capitalhrsolutions.net",
@@ -183851,5 +183894,5 @@
       }
     }
   ],
-  "nextSeq": 1678
+  "nextSeq": 1679
 }
