@@ -1,6 +1,21 @@
 {
   "entries": [
     {
+      "id": "log-001680",
+      "at": "2026-10-17T08:11:19.412Z",
+      "userId": "admin",
+      "userName": "Administrateur",
+      "userEmail": "admin",
+      "module": "employes.postes",
+      "moduleLabel": "employes.postes",
+      "action": "export",
+      "actionLabel": "Export",
+      "summary": "Export effectifs par poste (POSTES_EFFECTIFS_2026-10-17.xlsx)",
+      "details": "Export effectifs par poste (POSTES_EFFECTIFS_2026-10-17.xlsx)",
+      "undoable": false,
+      "undone": false
+    },
+    {
       "id": "log-001679",
       "at": "2026-10-17T08:09:08.121Z",
       "userId": "gd.mwankana@capitalhrsolutions.net",
@@ -183937,5 +183952,5 @@
       }
     }
   ],
-  "nextSeq": 1680
+  "nextSeq": 1681
 }
