@@ -1,6 +1,49 @@
 {
   "entries": [
     {
+      "id": "log-001677",
+      "at": "2026-10-17T08:06:14.678Z",
+      "userId": "gd.mwankana@capitalhrsolutions.net",
+      "userName": "Guy daniel",
+      "userEmail": "gd.mwankana@capitalhrsolutions.net",
+      "module": "contractants",
+      "moduleLabel": "contractants",
+      "action": "update",
+      "actionLabel": "Modification",
+      "entityType": "contractant-employee",
+      "entityId": "139",
+      "summary": "Modification employé contractant — BONGENDE BOFALE ALAIN",
+      "details": "Modification employé contractant — BONGENDE BOFALE ALAIN",
+      "after": {
+        "id": "139",
+        "nom": "BONGENDE BOFALE ALAIN",
+        "sexe": "M",
+        "lieuAffectation": "Zamba",
+        "fonction": "Driller Operator",
+        "departement": "Mining",
+        "service": "",
+        "telephone": "823995866",
+        "etatCivil": "C",
+        "statut": "Permanent",
+        "dateEmbauche": "",
+        "dateSortie": "",
+        "managerEmployeeId": "",
+        "family": [],
+        "matriculePpc": "CHRS_PPC0017",
+        "numeroCnss": "",
+        "numeroCompte": "",
+        "banque": "",
+        "nbDependants": 0,
+        "txJr": 21.223401,
+        "coutTransport": 1.17,
+        "payrollSite": "site",
+        "createdAt": "2026-08-12T12:57:02.481Z",
+        "updatedAt": "2026-10-17T08:06:12.016Z"
+      },
+      "undoable": false,
+      "undone": false
+    },
+    {
       "id": "log-001676",
       "at": "2026-10-17T08:05:47.896Z",
       "userId": "gd.mwankana@capitalhrsolutions.net",
@@ -183808,5 +183851,5 @@
       }
     }
   ],
-  "nextSeq": 1677
+  "nextSeq": 1678
 }
