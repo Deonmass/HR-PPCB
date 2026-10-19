@@ -1,6 +1,65 @@
 {
   "entries": [
     {
+      "id": "log-001682",
+      "at": "2026-10-19T09:27:51.825Z",
+      "userId": "Tresor.Maneka@ppcdrc.cd",
+      "userName": "Tresor Maneka",
+      "userEmail": "Tresor.Maneka@ppcdrc.cd",
+      "module": "protocol.voyages",
+      "moduleLabel": "Gestion de voyage",
+      "action": "update",
+      "actionLabel": "Modification",
+      "entityType": "protocol.voyage",
+      "entityId": "pvc-035",
+      "summary": "Modification voyage PVC-0035 ODIPO WERE Edgard",
+      "details": "Modification voyage PVC-0035 ODIPO WERE Edgard",
+      "before": {
+        "id": "pvc-035",
+        "numero": "PVC-0035",
+        "date": "2026-10-12",
+        "voyageur": "ODIPO WERE Edgard",
+        "voyageurMatricule": "70000203",
+        "destination": "Lubumbashi Kinshasa Lumbubashi",
+        "ticketAvion": 1190,
+        "visaVolant": 0,
+        "lettreLegaliser": 0,
+        "goPass": 30,
+        "transfert": 0,
+        "hotelNuit": 192,
+        "nbreNuits": 2,
+        "coutHotel": 384,
+        "categorieHotel": "Confort",
+        "appartement": 0,
+        "coutTotal": 1604,
+        "createdAt": "2026-10-14T13:35:24.522Z",
+        "updatedAt": "2026-10-14T13:35:24.522Z"
+      },
+      "after": {
+        "id": "pvc-035",
+        "numero": "PVC-0035",
+        "date": "2026-10-12",
+        "voyageur": "ODIPO WERE Edgard",
+        "voyageurMatricule": "70000203",
+        "destination": "Lubumbashi Kinshasa Lumbubashi",
+        "ticketAvion": 1190,
+        "visaVolant": 0,
+        "lettreLegaliser": 0,
+        "goPass": 30,
+        "transfert": 50,
+        "hotelNuit": 192,
+        "nbreNuits": 3,
+        "coutHotel": 576,
+        "categorieHotel": "Confort",
+        "appartement": 0,
+        "coutTotal": 1846,
+        "createdAt": "2026-10-14T13:35:24.522Z",
+        "updatedAt": "2026-10-19T09:27:47.985Z"
+      },
+      "undoable": false,
+      "undone": false
+    },
+    {
       "id": "log-001681",
       "at": "2026-10-19T08:36:23.186Z",
       "userId": "admin",
@@ -183967,5 +184026,5 @@
       }
     }
   ],
-  "nextSeq": 1682
+  "nextSeq": 1683
 }
