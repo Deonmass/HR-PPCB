@@ -67,10 +67,10 @@
     "2026-09": {
       "year": 2026,
       "month": 9,
-      "hq": 13531.93,
+      "hq": 7416,
       "plant": 0,
       "fromEntries": false,
-      "updatedAt": "2026-10-19T11:20:53.336Z"
+      "updatedAt": "2026-10-19T11:21:08.610Z"
     },
     "2026-01": {
       "year": 2026,
@@ -524,5 +524,5 @@
       "sourceFile": "Book14.xlsx"
     }
   ],
-  "updatedAt": "2026-10-19T11:20:53.336Z"
+  "updatedAt": "2026-10-19T11:21:08.610Z"
 }
