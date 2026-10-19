@@ -80,9 +80,9 @@
       "year": 2026,
       "month": 2,
       "hq": 649.98,
-      "plant": 0,
+      "plant": 4905.03,
       "fromEntries": false,
-      "updatedAt": "2026-10-19T11:13:06.711Z"
+      "updatedAt": "2026-10-19T11:13:37.699Z"
     }
   },
   "entries": [
@@ -195,5 +195,5 @@
       "sourceFile": "New report Training"
     }
   ],
-  "updatedAt": "2026-10-19T11:13:06.711Z"
+  "updatedAt": "2026-10-19T11:13:37.699Z"
 }
