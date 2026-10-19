@@ -67,6 +67,14 @@
       "plant": 6116,
       "fromEntries": false,
       "updatedAt": "2026-10-15T10:10:28.734Z"
+    },
+    "2026-01": {
+      "year": 2026,
+      "month": 1,
+      "hq": 0,
+      "plant": 0,
+      "fromEntries": false,
+      "updatedAt": "2026-10-19T11:09:07.269Z"
     }
   },
   "entries": [
@@ -179,5 +187,5 @@
       "sourceFile": "New report Training"
     }
   ],
-  "updatedAt": "2026-10-15T10:10:28.734Z"
+  "updatedAt": "2026-10-19T11:09:07.269Z"
 }
