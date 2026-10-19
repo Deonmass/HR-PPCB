@@ -50,7 +50,7 @@
       "hq": 6550,
       "plant": 400,
       "fromEntries": false,
-      "updatedAt": "2026-09-17T15:05:12.428Z"
+      "updatedAt": "2026-10-19T11:14:25.778Z"
     },
     "2026-10": {
       "year": 2026,
@@ -203,5 +203,5 @@
       "sourceFile": "New report Training"
     }
   ],
-  "updatedAt": "2026-10-19T11:14:22.025Z"
+  "updatedAt": "2026-10-19T11:14:25.778Z"
 }
