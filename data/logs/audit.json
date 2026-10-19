@@ -1,6 +1,44 @@
 {
   "entries": [
     {
+      "id": "log-001684",
+      "at": "2026-10-19T09:32:43.005Z",
+      "userId": "Tresor.Maneka@ppcdrc.cd",
+      "userName": "Tresor Maneka",
+      "userEmail": "Tresor.Maneka@ppcdrc.cd",
+      "module": "protocol.voyages",
+      "moduleLabel": "Gestion de voyage",
+      "action": "create",
+      "actionLabel": "Création",
+      "entityType": "protocol.voyage",
+      "entityId": "pvc-040",
+      "summary": "Voyage PVC-0040 KAHASHA MBASHA PATRICK Kinshasa Lubumbashi",
+      "details": "Voyage PVC-0040 KAHASHA MBASHA PATRICK Kinshasa Lubumbashi",
+      "after": {
+        "id": "pvc-040",
+        "numero": "PVC-0040",
+        "date": "2026-10-19",
+        "voyageur": "KAHASHA MBASHA PATRICK",
+        "voyageurMatricule": "70000256",
+        "destination": "Kinshasa Lubumbashi",
+        "ticketAvion": 690,
+        "visaVolant": 0,
+        "lettreLegaliser": 0,
+        "goPass": 90,
+        "transfert": 350,
+        "hotelNuit": 185,
+        "nbreNuits": 2,
+        "coutHotel": 370,
+        "categorieHotel": "",
+        "appartement": 3,
+        "coutTotal": 1503,
+        "createdAt": "2026-10-19T09:32:39.180Z",
+        "updatedAt": "2026-10-19T09:32:39.180Z"
+      },
+      "undoable": false,
+      "undone": false
+    },
+    {
       "id": "log-001683",
       "at": "2026-10-19T09:29:42.845Z",
       "userId": "Tresor.Maneka@ppcdrc.cd",
@@ -184064,5 +184102,5 @@
       }
     }
   ],
-  "nextSeq": 1684
+  "nextSeq": 1685
 }
