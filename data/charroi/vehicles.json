@@ -1240,9 +1240,9 @@
       "id": "veh-035",
       "numero": 35,
       "marque": "Toyota",
-      "type": "Pick up",
+      "type": "Land Cru",
       "numeroChassis": "AHTFK6CD200043540",
-      "plaque": "7982AY01",
+      "plaque": "5340BK01",
       "cv": "13CV",
       "assureur": "Rawsur",
       "departement": "Mining",
@@ -1250,8 +1250,8 @@
       "province": "Kongo Central",
       "proprietaire": "LOXEA",
       "kilometrage": null,
-      "miseCirculation": "2017",
-      "age": 9,
+      "miseCirculation": "2020-02-01",
+      "age": 6,
       "observationTech": "Avertissement",
       "etatManuel": "",
       "assuranceHistorique": [
@@ -1278,7 +1278,7 @@
       "controleTechniqueFin": "2027-02-02",
       "notes": "",
       "createdAt": "2026-07-28T16:00:46.888Z",
-      "updatedAt": "2026-08-07T12:10:21.817Z"
+      "updatedAt": "2026-10-19T12:07:49.200Z"
     },
     {
       "id": "veh-036",
