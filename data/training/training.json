@@ -70,7 +70,7 @@
       "hq": 7416,
       "plant": 0,
       "fromEntries": false,
-      "updatedAt": "2026-10-19T11:21:08.610Z"
+      "updatedAt": "2026-10-19T11:21:08.945Z"
     },
     "2026-01": {
       "year": 2026,
@@ -524,5 +524,5 @@
       "sourceFile": "Book14.xlsx"
     }
   ],
-  "updatedAt": "2026-10-19T11:21:08.610Z"
+  "updatedAt": "2026-10-19T11:21:08.945Z"
 }
