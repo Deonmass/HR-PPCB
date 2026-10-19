@@ -1,6 +1,21 @@
 {
   "entries": [
     {
+      "id": "log-001719",
+      "at": "2026-10-19T13:31:06.128Z",
+      "userId": "Tresor.Maneka@ppcdrc.cd",
+      "userName": "Tresor Maneka",
+      "userEmail": "Tresor.Maneka@ppcdrc.cd",
+      "module": "charroi.voyages",
+      "moduleLabel": "Charroi — Voyages",
+      "action": "export",
+      "actionLabel": "Export",
+      "summary": "Documents chauffeur VYG-0011 SAMBA LUINDA HONORE",
+      "details": "Documents chauffeur VYG-0011 SAMBA LUINDA HONORE",
+      "undoable": false,
+      "undone": false
+    },
+    {
       "id": "log-001718",
       "at": "2026-10-19T12:07:53.009Z",
       "userId": "Tresor.Maneka@ppcdrc.cd",
@@ -184813,5 +184828,5 @@
       }
     }
   ],
-  "nextSeq": 1719
+  "nextSeq": 1720
 }
