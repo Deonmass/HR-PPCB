@@ -683,15 +683,15 @@
       "visaVolant": 0,
       "lettreLegaliser": 0,
       "goPass": 30,
-      "transfert": 0,
+      "transfert": 50,
       "hotelNuit": 192,
-      "nbreNuits": 2,
-      "coutHotel": 384,
+      "nbreNuits": 3,
+      "coutHotel": 576,
       "categorieHotel": "Confort",
       "appartement": 0,
-      "coutTotal": 1604,
+      "coutTotal": 1846,
       "createdAt": "2026-10-14T13:35:24.522Z",
-      "updatedAt": "2026-10-14T13:35:24.522Z"
+      "updatedAt": "2026-10-19T09:27:47.985Z"
     },
     {
       "id": "pvc-036",
