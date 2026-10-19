@@ -19,40 +19,42 @@
     "2026-04": {
       "year": 2026,
       "month": 4,
-      "hq": 570,
-      "plant": 2170,
-      "fromEntries": false,
-      "updatedAt": "2026-10-19T11:15:34.311Z"
+      "hq": 3070,
+      "plant": 0,
+      "fromEntries": true,
+      "updatedAt": "2026-10-19T11:17:34.196Z"
     },
     "2026-05": {
       "year": 2026,
       "month": 5,
-      "hq": 942,
-      "plant": 2342,
-      "fromEntries": false,
-      "updatedAt": "2026-10-19T11:16:10.760Z"
+      "hq": 26696.34,
+      "plant": 0,
+      "fromEntries": true,
+      "updatedAt": "2026-10-19T11:17:34.196Z"
     },
     "2026-06": {
       "year": 2026,
       "month": 6,
-      "hq": 2700,
-      "plant": 30,
-      "fromEntries": false
+      "hq": 2529.99,
+      "plant": 0,
+      "fromEntries": true,
+      "updatedAt": "2026-10-19T11:17:34.196Z"
     },
     "2026-07": {
       "year": 2026,
       "month": 7,
-      "hq": 1370,
-      "plant": 2500,
-      "fromEntries": true
+      "hq": 3870,
+      "plant": 0,
+      "fromEntries": true,
+      "updatedAt": "2026-10-19T11:17:34.196Z"
     },
     "2026-08": {
       "year": 2026,
       "month": 8,
-      "hq": 6550,
-      "plant": 0,
-      "fromEntries": false,
-      "updatedAt": "2026-10-19T11:14:46.792Z"
+      "hq": 9050,
+      "plant": 400,
+      "fromEntries": true,
+      "updatedAt": "2026-10-19T11:17:34.196Z"
     },
     "2026-10": {
       "year": 2026,
@@ -65,60 +67,322 @@
     "2026-09": {
       "year": 2026,
       "month": 9,
-      "hq": 7416,
-      "plant": 6116,
-      "fromEntries": false,
-      "updatedAt": "2026-10-15T10:10:28.734Z"
+      "hq": 13531.93,
+      "plant": 0,
+      "fromEntries": true,
+      "updatedAt": "2026-10-19T11:17:34.196Z"
     },
     "2026-01": {
       "year": 2026,
       "month": 1,
       "hq": 375,
       "plant": 0,
-      "fromEntries": false,
-      "updatedAt": "2026-10-19T11:12:30.302Z"
+      "fromEntries": true,
+      "updatedAt": "2026-10-19T11:17:34.196Z"
     },
     "2026-02": {
       "year": 2026,
       "month": 2,
-      "hq": 649.98,
-      "plant": 4905.03,
-      "fromEntries": false,
-      "updatedAt": "2026-10-19T11:13:37.699Z"
+      "hq": 5555.01,
+      "plant": 0,
+      "fromEntries": true,
+      "updatedAt": "2026-10-19T11:17:34.196Z"
     },
     "2026-03": {
       "year": 2026,
       "month": 3,
-      "hq": 29812.89,
-      "plant": 39527.83,
-      "fromEntries": false,
-      "updatedAt": "2026-10-19T11:14:22.025Z"
+      "hq": 69340.72,
+      "plant": 0,
+      "fromEntries": true,
+      "updatedAt": "2026-10-19T11:17:34.196Z"
     }
   },
   "entries": [
     {
+      "postingDate": "2026-01-30",
+      "amount": 375,
+      "costCenterType": "SA",
+      "text": "BUFFET FORMATION FRAUDE",
+      "documentNumber": "100103931",
+      "costCenter": "KC8712",
+      "year": 2026,
+      "month": 1,
+      "id": "tr-mvf5u0z7-8f1p6",
+      "importedAt": "2026-10-19T11:17:34.195Z",
+      "sourceFile": "Book14.xlsx"
+    },
+    {
+      "postingDate": "2026-02-06",
+      "amount": 295,
+      "costCenterType": "SA",
+      "text": "formation anglai",
+      "documentNumber": "100104062",
+      "costCenter": "KC8410",
+      "year": 2026,
+      "month": 2,
+      "id": "tr-mvf5u0z8-gvtm2",
+      "importedAt": "2026-10-19T11:17:34.195Z",
+      "sourceFile": "Book14.xlsx"
+    },
+    {
+      "postingDate": "2026-02-06",
+      "amount": 295,
+      "costCenterType": "SA",
+      "text": "formation anglais",
+      "documentNumber": "100104062",
+      "costCenter": "KC8410",
+      "year": 2026,
+      "month": 2,
+      "id": "tr-mvf5u0z8-jyk1a",
+      "importedAt": "2026-10-19T11:17:34.195Z",
+      "sourceFile": "Book14.xlsx"
+    },
+    {
+      "postingDate": "2026-02-19",
+      "amount": 4905.03,
+      "costCenterType": "WE",
+      "text": "BRITISH REMA ROTARY ENGINEERINSERVICE; LABOUR - SK",
+      "documentNumber": "5000080018",
+      "costCenter": "KM5413",
+      "year": 2026,
+      "month": 2,
+      "id": "tr-mvf5u0z8-ozt1e",
+      "importedAt": "2026-10-19T11:17:34.195Z",
+      "sourceFile": "Book14.xlsx"
+    },
+    {
+      "postingDate": "2026-02-25",
+      "amount": 29.99,
+      "costCenterType": "SA",
+      "text": "Cours d'anglais en ligne",
+      "documentNumber": "100104488",
+      "costCenter": "KC8712",
+      "year": 2026,
+      "month": 2,
+      "id": "tr-mvf5u0z8-5yt3k",
+      "importedAt": "2026-10-19T11:17:34.195Z",
+      "sourceFile": "Book14.xlsx"
+    },
+    {
+      "postingDate": "2026-02-25",
+      "amount": 29.99,
+      "costCenterType": "SA",
+      "text": "Cours d'anglais en ligne",
+      "documentNumber": "100104487",
+      "costCenter": "KC8712",
+      "year": 2026,
+      "month": 2,
+      "id": "tr-mvf5u0z8-derq9",
+      "importedAt": "2026-10-19T11:17:34.195Z",
+      "sourceFile": "Book14.xlsx"
+    },
+    {
+      "postingDate": "2026-03-04",
+      "amount": 37527.83,
+      "costCenterType": "WE",
+      "text": "BRITISH REMA ROTARY ENGINEERINSERVICE; INSPECT/INV",
+      "documentNumber": "5000080399",
+      "costCenter": "KM4421",
+      "year": 2026,
+      "month": 3,
+      "id": "tr-mvf5u0z8-4f7db",
+      "importedAt": "2026-10-19T11:17:34.195Z",
+      "sourceFile": "Book14.xlsx"
+    },
+    {
+      "postingDate": "2026-03-12",
+      "amount": 2000,
+      "costCenterType": "SA",
+      "text": "Enrollment for the 12-Week AI Mastery Training",
+      "documentNumber": "100106661",
+      "costCenter": "KM5413",
+      "year": 2026,
+      "month": 3,
+      "id": "tr-mvf5u0z8-y4cfd",
+      "importedAt": "2026-10-19T11:17:34.195Z",
+      "sourceFile": "Book14.xlsx"
+    },
+    {
+      "postingDate": "2026-03-25",
+      "amount": 29.99,
+      "costCenterType": "SA",
+      "text": "cours d'anglais",
+      "documentNumber": "100107319",
+      "costCenter": "KC8712",
+      "year": 2026,
+      "month": 3,
+      "id": "tr-mvf5u0z8-bocpg",
+      "importedAt": "2026-10-19T11:17:34.195Z",
+      "sourceFile": "Book14.xlsx"
+    },
+    {
+      "postingDate": "2026-03-25",
+      "amount": 3082.9,
+      "costCenterType": "SA",
+      "text": "INSEAD TRAINING",
+      "documentNumber": "100107286",
+      "costCenter": "KC9114",
+      "year": 2026,
+      "month": 3,
+      "id": "tr-mvf5u0z8-1xbai",
+      "importedAt": "2026-10-19T11:17:34.195Z",
+      "sourceFile": "Book14.xlsx"
+    },
+    {
+      "postingDate": "2026-03-30",
+      "amount": 25000,
+      "costCenterType": "WE",
+      "text": "CONSULTING FEESCROWNLINK WORLDWIRE",
+      "documentNumber": "5000081402",
+      "costCenter": "KC8712",
+      "year": 2026,
+      "month": 3,
+      "id": "tr-mvf5u0z8-m43e0",
+      "importedAt": "2026-10-19T11:17:34.195Z",
+      "sourceFile": "Book14.xlsx"
+    },
+    {
+      "postingDate": "2026-03-30",
+      "amount": 1700,
+      "costCenterType": "SA",
+      "text": "NRMCA Training Plant Manager Certification Course",
+      "documentNumber": "100107426",
+      "costCenter": "KC9214",
+      "year": 2026,
+      "month": 3,
+      "id": "tr-mvf5u0z8-hclrd",
+      "importedAt": "2026-10-19T11:17:34.195Z",
+      "sourceFile": "Book14.xlsx"
+    },
+    {
+      "postingDate": "2026-04-21",
+      "amount": 570,
+      "costCenterType": "SA",
+      "text": "Frais de formation CALI Rimels & Angele",
+      "documentNumber": "100108890",
+      "costCenter": "KC8710",
+      "year": 2026,
+      "month": 4,
+      "id": "tr-mvf5u0z8-8ov8h",
+      "importedAt": "2026-10-19T11:17:34.195Z",
+      "sourceFile": "Book14.xlsx"
+    },
+    {
+      "postingDate": "2026-04-22",
+      "amount": 2500,
+      "costCenterType": "WE",
+      "text": "ENTAQ COMPANY LIMITEDTRAINING",
+      "documentNumber": "5000082196",
+      "costCenter": "KM5413",
+      "year": 2026,
+      "month": 4,
+      "id": "tr-mvf5u0z8-jmwjs",
+      "importedAt": "2026-10-19T11:17:34.195Z",
+      "sourceFile": "Book14.xlsx"
+    },
+    {
+      "postingDate": "2026-05-06",
+      "amount": 25754,
+      "costCenterType": "WE",
+      "text": "STE CARE CONSULTING WORLD SARLSAFETY",
+      "documentNumber": "5000082846",
+      "costCenter": "KM5413",
+      "year": 2026,
+      "month": 5,
+      "id": "tr-mvf5u0z8-d3ypp",
+      "importedAt": "2026-10-19T11:17:34.195Z",
+      "sourceFile": "Book14.xlsx"
+    },
+    {
+      "postingDate": "2026-05-20",
+      "amount": 392.35,
+      "costCenterType": "SA",
+      "text": "Training for Certificate in International Financia",
+      "documentNumber": "100109848",
+      "costCenter": "KC8710",
+      "year": 2026,
+      "month": 5,
+      "id": "tr-mvf5u0z8-hslz8",
+      "importedAt": "2026-10-19T11:17:34.195Z",
+      "sourceFile": "Book14.xlsx"
+    },
+    {
+      "postingDate": "2026-05-29",
+      "amount": 29.99,
+      "costCenterType": "SA",
+      "text": "Cours d'angalis",
+      "documentNumber": "100109958",
+      "costCenter": "KC8712",
+      "year": 2026,
+      "month": 5,
+      "id": "tr-mvf5u0z8-lgyif",
+      "importedAt": "2026-10-19T11:17:34.195Z",
+      "sourceFile": "Book14.xlsx"
+    },
+    {
+      "postingDate": "2026-05-30",
+      "amount": 520,
+      "costCenterType": "SA",
+      "text": "Exco training",
+      "documentNumber": "100109960",
+      "costCenter": "KC8810",
+      "year": 2026,
+      "month": 5,
+      "id": "tr-mvf5u0z8-zk001",
+      "importedAt": "2026-10-19T11:17:34.195Z",
+      "sourceFile": "Book14.xlsx"
+    },
+    {
+      "postingDate": "2026-06-29",
+      "amount": 29.99,
+      "costCenterType": "SA",
+      "text": "Cours d'anglais",
+      "documentNumber": "100113451",
+      "costCenter": "KC8712",
+      "year": 2026,
+      "month": 6,
+      "id": "tr-mvf5u0z8-mnoh2",
+      "importedAt": "2026-10-19T11:17:34.195Z",
+      "sourceFile": "Book14.xlsx"
+    },
+    {
+      "postingDate": "2026-06-29",
+      "amount": 2500,
+      "costCenterType": "WE",
+      "text": "C.N.P.R.ITRAINING COURSE FEES",
+      "documentNumber": "5000085581",
+      "costCenter": "KM5413",
+      "year": 2026,
+      "month": 6,
+      "id": "tr-mvf5u0z8-8pdfn",
+      "importedAt": "2026-10-19T11:17:34.195Z",
+      "sourceFile": "Book14.xlsx"
+    },
+    {
       "id": "seed-1",
       "postingDate": "2026-07-01",
       "amount": 600,
-      "costCenterType": "HQ",
+      "costCenterType": "KR",
       "text": "Perdiem des formateurs",
       "year": 2026,
       "month": 7,
       "documentNumber": "1900006474",
-      "importedAt": "2026-09-17T00:00:00.000Z",
-      "sourceFile": "New report Training"
+      "importedAt": "2026-10-19T11:17:34.195Z",
+      "sourceFile": "Book14.xlsx",
+      "costCenter": "KM5812"
     },
     {
       "id": "seed-2",
       "postingDate": "2026-07-02",
       "amount": 2500,
-      "costCenterType": "Plant",
+      "costCenterType": "WE",
       "text": "C.N.P.R.ITRAINING COURSE FEES",
       "year": 2026,
       "month": 7,
       "documentNumber": "5000085759",
-      "importedAt": "2026-09-17T00:00:00.000Z",
-      "sourceFile": "New report Training"
+      "importedAt": "2026-10-19T11:17:34.195Z",
+      "sourceFile": "Book14.xlsx",
+      "costCenter": "KM5413"
     },
     {
       "id": "seed-3",
@@ -136,25 +400,27 @@
       "id": "seed-4",
       "postingDate": "2026-07-24",
       "amount": 285,
-      "costCenterType": "HQ",
+      "costCenterType": "SA",
       "text": "Formation anglais CALI ANGELE",
       "year": 2026,
       "month": 7,
       "documentNumber": "100114943",
-      "importedAt": "2026-09-17T00:00:00.000Z",
-      "sourceFile": "New report Training"
+      "importedAt": "2026-10-19T11:17:34.195Z",
+      "sourceFile": "Book14.xlsx",
+      "costCenter": "KC8412"
     },
     {
       "id": "seed-5",
       "postingDate": "2026-07-27",
       "amount": 285,
-      "costCenterType": "HQ",
+      "costCenterType": "SA",
       "text": "Frais de Formation d'anglais CALI 3 Rimels NTONDO",
       "year": 2026,
       "month": 7,
       "documentNumber": "100114957",
-      "importedAt": "2026-09-17T00:00:00.000Z",
-      "sourceFile": "New report Training"
+      "importedAt": "2026-10-19T11:17:34.195Z",
+      "sourceFile": "Book14.xlsx",
+      "costCenter": "KC8410"
     },
     {
       "id": "seed-6",
@@ -184,13 +450,14 @@
       "id": "seed-8",
       "postingDate": "2026-08-12",
       "amount": 4050,
-      "costCenterType": "HQ",
+      "costCenterType": "SA",
       "text": "Chartered management accountant training",
       "year": 2026,
       "month": 8,
       "documentNumber": "100116817",
-      "importedAt": "2026-09-17T00:00:00.000Z",
-      "sourceFile": "New report Training"
+      "importedAt": "2026-10-19T11:17:34.195Z",
+      "sourceFile": "Book14.xlsx",
+      "costCenter": "KC8412"
     },
     {
       "id": "seed-9",
@@ -203,7 +470,59 @@
       "documentNumber": "100119617",
       "importedAt": "2026-09-17T00:00:00.000Z",
       "sourceFile": "New report Training"
+    },
+    {
+      "postingDate": "2026-08-31",
+      "amount": 2500,
+      "costCenterType": "SA",
+      "text": "Reclassification journal 5000086230 in training ac",
+      "documentNumber": "100119617",
+      "costCenter": "KC9215",
+      "year": 2026,
+      "month": 8,
+      "id": "tr-mvf5u0z8-j8ss9",
+      "importedAt": "2026-10-19T11:17:34.195Z",
+      "sourceFile": "Book14.xlsx"
+    },
+    {
+      "postingDate": "2026-09-15",
+      "amount": 1186.05,
+      "costCenterType": "SA",
+      "text": "Frais complement participation ASCON",
+      "documentNumber": "100120793",
+      "costCenter": "KC9211",
+      "year": 2026,
+      "month": 9,
+      "id": "tr-mvf5u0z8-pghcd",
+      "importedAt": "2026-10-19T11:17:34.195Z",
+      "sourceFile": "Book14.xlsx"
+    },
+    {
+      "postingDate": "2026-09-15",
+      "amount": 6115.88,
+      "costCenterType": "SA",
+      "text": "ZambaLab Laboratory Excellence Programme",
+      "documentNumber": "100120792",
+      "costCenter": "KM5510",
+      "year": 2026,
+      "month": 9,
+      "id": "tr-mvf5u0z8-vbaej",
+      "importedAt": "2026-10-19T11:17:34.195Z",
+      "sourceFile": "Book14.xlsx"
+    },
+    {
+      "postingDate": "2026-09-30",
+      "amount": 6230,
+      "costCenterType": "SA",
+      "text": "Corr. doc 100118917 - Participation ASCO MD,MB&AB",
+      "documentNumber": "100122093",
+      "costCenter": "KC8712",
+      "year": 2026,
+      "month": 9,
+      "id": "tr-mvf5u0z8-nbjii",
+      "importedAt": "2026-10-19T11:17:34.195Z",
+      "sourceFile": "Book14.xlsx"
     }
   ],
-  "updatedAt": "2026-10-19T11:16:10.760Z"
+  "updatedAt": "2026-10-19T11:17:34.196Z"
 }
