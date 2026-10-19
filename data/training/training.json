@@ -71,10 +71,10 @@
     "2026-01": {
       "year": 2026,
       "month": 1,
-      "hq": 0,
+      "hq": 375,
       "plant": 0,
       "fromEntries": false,
-      "updatedAt": "2026-10-19T11:10:14.293Z"
+      "updatedAt": "2026-10-19T11:12:28.638Z"
     }
   },
   "entries": [
@@ -187,5 +187,5 @@
       "sourceFile": "New report Training"
     }
   ],
-  "updatedAt": "2026-10-19T11:10:14.293Z"
+  "updatedAt": "2026-10-19T11:12:28.638Z"
 }
