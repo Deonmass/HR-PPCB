@@ -1,6 +1,36 @@
 {
   "entries": [
     {
+      "id": "log-001698",
+      "at": "2026-10-19T11:14:27.202Z",
+      "userId": "admin",
+      "userName": "Administrateur",
+      "userEmail": "admin",
+      "module": "training",
+      "moduleLabel": "training",
+      "action": "update",
+      "actionLabel": "Modification",
+      "summary": "Training cost 2026-03",
+      "details": "Training cost 2026-03",
+      "undoable": false,
+      "undone": false
+    },
+    {
+      "id": "log-001697",
+      "at": "2026-10-19T11:14:26.308Z",
+      "userId": "admin",
+      "userName": "Administrateur",
+      "userEmail": "admin",
+      "module": "training",
+      "moduleLabel": "training",
+      "action": "update",
+      "actionLabel": "Modification",
+      "summary": "Training cost 2026-03",
+      "details": "Training cost 2026-03",
+      "undoable": false,
+      "undone": false
+    },
+    {
       "id": "log-001696",
       "at": "2026-10-19T11:14:14.222Z",
       "userId": "admin",
@@ -184303,5 +184333,5 @@
       }
     }
   ],
-  "nextSeq": 1697
+  "nextSeq": 1699
 }
