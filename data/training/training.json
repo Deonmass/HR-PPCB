@@ -69,8 +69,8 @@
       "month": 9,
       "hq": 13531.93,
       "plant": 0,
-      "fromEntries": true,
-      "updatedAt": "2026-10-19T11:20:04.583Z"
+      "fromEntries": false,
+      "updatedAt": "2026-10-19T11:20:53.336Z"
     },
     "2026-01": {
       "year": 2026,
@@ -524,5 +524,5 @@
       "sourceFile": "Book14.xlsx"
     }
   ],
-  "updatedAt": "2026-10-19T11:20:04.583Z"
+  "updatedAt": "2026-10-19T11:20:53.336Z"
 }
