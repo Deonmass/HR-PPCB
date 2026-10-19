@@ -1,6 +1,21 @@
 {
   "entries": [
     {
+      "id": "log-001701",
+      "at": "2026-10-19T11:15:23.440Z",
+      "userId": "admin",
+      "userName": "Administrateur",
+      "userEmail": "admin",
+      "module": "training",
+      "moduleLabel": "training",
+      "action": "update",
+      "actionLabel": "Modification",
+      "summary": "Training cost 2026-04",
+      "details": "Training cost 2026-04",
+      "undoable": false,
+      "undone": false
+    },
+    {
       "id": "log-001700",
       "at": "2026-10-19T11:14:50.959Z",
       "userId": "admin",
@@ -184363,5 +184378,5 @@
       }
     }
   ],
-  "nextSeq": 1701
+  "nextSeq": 1702
 }
