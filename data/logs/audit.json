@@ -1,6 +1,21 @@
 {
   "entries": [
     {
+      "id": "log-001705",
+      "at": "2026-10-19T11:17:38.723Z",
+      "userId": "admin",
+      "userName": "Administrateur",
+      "userEmail": "admin",
+      "module": "training",
+      "moduleLabel": "training",
+      "action": "import",
+      "actionLabel": "Import",
+      "summary": "Import coûts formation (Book14.xlsx) — +24 / ~5",
+      "details": "Import coûts formation (Book14.xlsx) — +24 / ~5",
+      "undoable": false,
+      "undone": false
+    },
+    {
       "id": "log-001704",
       "at": "2026-10-19T11:16:14.749Z",
       "userId": "admin",
@@ -184423,5 +184438,5 @@
       }
     }
   ],
-  "nextSeq": 1705
+  "nextSeq": 1706
 }
