@@ -21,7 +21,8 @@
       "month": 4,
       "hq": 2500,
       "plant": 2170,
-      "fromEntries": false
+      "fromEntries": false,
+      "updatedAt": "2026-10-19T11:15:19.078Z"
     },
     "2026-05": {
       "year": 2026,
@@ -203,5 +204,5 @@
       "sourceFile": "New report Training"
     }
   ],
-  "updatedAt": "2026-10-19T11:14:46.792Z"
+  "updatedAt": "2026-10-19T11:15:19.078Z"
 }
