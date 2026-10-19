@@ -22,7 +22,7 @@
       "hq": 3070,
       "plant": 0,
       "fromEntries": true,
-      "updatedAt": "2026-10-19T11:17:34.196Z"
+      "updatedAt": "2026-10-19T11:18:42.687Z"
     },
     "2026-05": {
       "year": 2026,
@@ -30,7 +30,7 @@
       "hq": 26696.34,
       "plant": 0,
       "fromEntries": true,
-      "updatedAt": "2026-10-19T11:17:34.196Z"
+      "updatedAt": "2026-10-19T11:18:42.687Z"
     },
     "2026-06": {
       "year": 2026,
@@ -38,7 +38,7 @@
       "hq": 2529.99,
       "plant": 0,
       "fromEntries": true,
-      "updatedAt": "2026-10-19T11:17:34.196Z"
+      "updatedAt": "2026-10-19T11:18:42.687Z"
     },
     "2026-07": {
       "year": 2026,
@@ -46,7 +46,7 @@
       "hq": 3870,
       "plant": 0,
       "fromEntries": true,
-      "updatedAt": "2026-10-19T11:17:34.196Z"
+      "updatedAt": "2026-10-19T11:18:42.687Z"
     },
     "2026-08": {
       "year": 2026,
@@ -54,7 +54,7 @@
       "hq": 9050,
       "plant": 400,
       "fromEntries": true,
-      "updatedAt": "2026-10-19T11:17:34.196Z"
+      "updatedAt": "2026-10-19T11:18:42.687Z"
     },
     "2026-10": {
       "year": 2026,
@@ -70,7 +70,7 @@
       "hq": 13531.93,
       "plant": 0,
       "fromEntries": true,
-      "updatedAt": "2026-10-19T11:17:34.196Z"
+      "updatedAt": "2026-10-19T11:18:42.687Z"
     },
     "2026-01": {
       "year": 2026,
@@ -78,7 +78,7 @@
       "hq": 375,
       "plant": 0,
       "fromEntries": true,
-      "updatedAt": "2026-10-19T11:17:34.196Z"
+      "updatedAt": "2026-10-19T11:18:42.687Z"
     },
     "2026-02": {
       "year": 2026,
@@ -86,7 +86,7 @@
       "hq": 5555.01,
       "plant": 0,
       "fromEntries": true,
-      "updatedAt": "2026-10-19T11:17:34.196Z"
+      "updatedAt": "2026-10-19T11:18:42.687Z"
     },
     "2026-03": {
       "year": 2026,
@@ -94,7 +94,7 @@
       "hq": 69340.72,
       "plant": 0,
       "fromEntries": true,
-      "updatedAt": "2026-10-19T11:17:34.196Z"
+      "updatedAt": "2026-10-19T11:18:42.687Z"
     }
   },
   "entries": [
@@ -108,7 +108,7 @@
       "year": 2026,
       "month": 1,
       "id": "tr-mvf5u0z7-8f1p6",
-      "importedAt": "2026-10-19T11:17:34.195Z",
+      "importedAt": "2026-10-19T11:18:42.686Z",
       "sourceFile": "Book14.xlsx"
     },
     {
@@ -121,7 +121,7 @@
       "year": 2026,
       "month": 2,
       "id": "tr-mvf5u0z8-gvtm2",
-      "importedAt": "2026-10-19T11:17:34.195Z",
+      "importedAt": "2026-10-19T11:18:42.686Z",
       "sourceFile": "Book14.xlsx"
     },
     {
@@ -134,7 +134,7 @@
       "year": 2026,
       "month": 2,
       "id": "tr-mvf5u0z8-jyk1a",
-      "importedAt": "2026-10-19T11:17:34.195Z",
+      "importedAt": "2026-10-19T11:18:42.686Z",
       "sourceFile": "Book14.xlsx"
     },
     {
@@ -147,7 +147,7 @@
       "year": 2026,
       "month": 2,
       "id": "tr-mvf5u0z8-ozt1e",
-      "importedAt": "2026-10-19T11:17:34.195Z",
+      "importedAt": "2026-10-19T11:18:42.686Z",
       "sourceFile": "Book14.xlsx"
     },
     {
@@ -160,7 +160,7 @@
       "year": 2026,
       "month": 2,
       "id": "tr-mvf5u0z8-5yt3k",
-      "importedAt": "2026-10-19T11:17:34.195Z",
+      "importedAt": "2026-10-19T11:18:42.686Z",
       "sourceFile": "Book14.xlsx"
     },
     {
@@ -173,7 +173,7 @@
       "year": 2026,
       "month": 2,
       "id": "tr-mvf5u0z8-derq9",
-      "importedAt": "2026-10-19T11:17:34.195Z",
+      "importedAt": "2026-10-19T11:18:42.686Z",
       "sourceFile": "Book14.xlsx"
     },
     {
@@ -186,7 +186,7 @@
       "year": 2026,
       "month": 3,
       "id": "tr-mvf5u0z8-4f7db",
-      "importedAt": "2026-10-19T11:17:34.195Z",
+      "importedAt": "2026-10-19T11:18:42.686Z",
       "sourceFile": "Book14.xlsx"
     },
     {
@@ -199,7 +199,7 @@
       "year": 2026,
       "month": 3,
       "id": "tr-mvf5u0z8-y4cfd",
-      "importedAt": "2026-10-19T11:17:34.195Z",
+      "importedAt": "2026-10-19T11:18:42.686Z",
       "sourceFile": "Book14.xlsx"
     },
     {
@@ -212,7 +212,7 @@
       "year": 2026,
       "month": 3,
       "id": "tr-mvf5u0z8-bocpg",
-      "importedAt": "2026-10-19T11:17:34.195Z",
+      "importedAt": "2026-10-19T11:18:42.686Z",
       "sourceFile": "Book14.xlsx"
     },
     {
@@ -225,7 +225,7 @@
       "year": 2026,
       "month": 3,
       "id": "tr-mvf5u0z8-1xbai",
-      "importedAt": "2026-10-19T11:17:34.195Z",
+      "importedAt": "2026-10-19T11:18:42.686Z",
       "sourceFile": "Book14.xlsx"
     },
     {
@@ -238,7 +238,7 @@
       "year": 2026,
       "month": 3,
       "id": "tr-mvf5u0z8-m43e0",
-      "importedAt": "2026-10-19T11:17:34.195Z",
+      "importedAt": "2026-10-19T11:18:42.686Z",
       "sourceFile": "Book14.xlsx"
     },
     {
@@ -251,7 +251,7 @@
       "year": 2026,
       "month": 3,
       "id": "tr-mvf5u0z8-hclrd",
-      "importedAt": "2026-10-19T11:17:34.195Z",
+      "importedAt": "2026-10-19T11:18:42.686Z",
       "sourceFile": "Book14.xlsx"
     },
     {
@@ -264,7 +264,7 @@
       "year": 2026,
       "month": 4,
       "id": "tr-mvf5u0z8-8ov8h",
-      "importedAt": "2026-10-19T11:17:34.195Z",
+      "importedAt": "2026-10-19T11:18:42.686Z",
       "sourceFile": "Book14.xlsx"
     },
     {
@@ -277,7 +277,7 @@
       "year": 2026,
       "month": 4,
       "id": "tr-mvf5u0z8-jmwjs",
-      "importedAt": "2026-10-19T11:17:34.195Z",
+      "importedAt": "2026-10-19T11:18:42.686Z",
       "sourceFile": "Book14.xlsx"
     },
     {
@@ -290,7 +290,7 @@
       "year": 2026,
       "month": 5,
       "id": "tr-mvf5u0z8-d3ypp",
-      "importedAt": "2026-10-19T11:17:34.195Z",
+      "importedAt": "2026-10-19T11:18:42.686Z",
       "sourceFile": "Book14.xlsx"
     },
     {
@@ -303,7 +303,7 @@
       "year": 2026,
       "month": 5,
       "id": "tr-mvf5u0z8-hslz8",
-      "importedAt": "2026-10-19T11:17:34.195Z",
+      "importedAt": "2026-10-19T11:18:42.686Z",
       "sourceFile": "Book14.xlsx"
     },
     {
@@ -316,7 +316,7 @@
       "year": 2026,
       "month": 5,
       "id": "tr-mvf5u0z8-lgyif",
-      "importedAt": "2026-10-19T11:17:34.195Z",
+      "importedAt": "2026-10-19T11:18:42.686Z",
       "sourceFile": "Book14.xlsx"
     },
     {
@@ -329,7 +329,7 @@
       "year": 2026,
       "month": 5,
       "id": "tr-mvf5u0z8-zk001",
-      "importedAt": "2026-10-19T11:17:34.195Z",
+      "importedAt": "2026-10-19T11:18:42.686Z",
       "sourceFile": "Book14.xlsx"
     },
     {
@@ -342,7 +342,7 @@
       "year": 2026,
       "month": 6,
       "id": "tr-mvf5u0z8-mnoh2",
-      "importedAt": "2026-10-19T11:17:34.195Z",
+      "importedAt": "2026-10-19T11:18:42.686Z",
       "sourceFile": "Book14.xlsx"
     },
     {
@@ -355,7 +355,7 @@
       "year": 2026,
       "month": 6,
       "id": "tr-mvf5u0z8-8pdfn",
-      "importedAt": "2026-10-19T11:17:34.195Z",
+      "importedAt": "2026-10-19T11:18:42.686Z",
       "sourceFile": "Book14.xlsx"
     },
     {
@@ -367,7 +367,7 @@
       "year": 2026,
       "month": 7,
       "documentNumber": "1900006474",
-      "importedAt": "2026-10-19T11:17:34.195Z",
+      "importedAt": "2026-10-19T11:18:42.686Z",
       "sourceFile": "Book14.xlsx",
       "costCenter": "KM5812"
     },
@@ -380,7 +380,7 @@
       "year": 2026,
       "month": 7,
       "documentNumber": "5000085759",
-      "importedAt": "2026-10-19T11:17:34.195Z",
+      "importedAt": "2026-10-19T11:18:42.686Z",
       "sourceFile": "Book14.xlsx",
       "costCenter": "KM5413"
     },
@@ -405,7 +405,7 @@
       "year": 2026,
       "month": 7,
       "documentNumber": "100114943",
-      "importedAt": "2026-10-19T11:17:34.195Z",
+      "importedAt": "2026-10-19T11:18:42.686Z",
       "sourceFile": "Book14.xlsx",
       "costCenter": "KC8412"
     },
@@ -418,7 +418,7 @@
       "year": 2026,
       "month": 7,
       "documentNumber": "100114957",
-      "importedAt": "2026-10-19T11:17:34.195Z",
+      "importedAt": "2026-10-19T11:18:42.686Z",
       "sourceFile": "Book14.xlsx",
       "costCenter": "KC8410"
     },
@@ -455,7 +455,7 @@
       "year": 2026,
       "month": 8,
       "documentNumber": "100116817",
-      "importedAt": "2026-10-19T11:17:34.195Z",
+      "importedAt": "2026-10-19T11:18:42.686Z",
       "sourceFile": "Book14.xlsx",
       "costCenter": "KC8412"
     },
@@ -481,7 +481,7 @@
       "year": 2026,
       "month": 8,
       "id": "tr-mvf5u0z8-j8ss9",
-      "importedAt": "2026-10-19T11:17:34.195Z",
+      "importedAt": "2026-10-19T11:18:42.686Z",
       "sourceFile": "Book14.xlsx"
     },
     {
@@ -494,7 +494,7 @@
       "year": 2026,
       "month": 9,
       "id": "tr-mvf5u0z8-pghcd",
-      "importedAt": "2026-10-19T11:17:34.195Z",
+      "importedAt": "2026-10-19T11:18:42.686Z",
       "sourceFile": "Book14.xlsx"
     },
     {
@@ -507,7 +507,7 @@
       "year": 2026,
       "month": 9,
       "id": "tr-mvf5u0z8-vbaej",
-      "importedAt": "2026-10-19T11:17:34.195Z",
+      "importedAt": "2026-10-19T11:18:42.686Z",
       "sourceFile": "Book14.xlsx"
     },
     {
@@ -520,9 +520,9 @@
       "year": 2026,
       "month": 9,
       "id": "tr-mvf5u0z8-nbjii",
-      "importedAt": "2026-10-19T11:17:34.195Z",
+      "importedAt": "2026-10-19T11:18:42.686Z",
       "sourceFile": "Book14.xlsx"
     }
   ],
-  "updatedAt": "2026-10-19T11:17:34.196Z"
+  "updatedAt": "2026-10-19T11:18:42.687Z"
 }
