@@ -1,6 +1,111 @@
 {
   "entries": [
     {
+      "id": "log-001718",
+      "at": "2026-10-19T12:07:53.009Z",
+      "userId": "Tresor.Maneka@ppcdrc.cd",
+      "userName": "Tresor Maneka",
+      "userEmail": "Tresor.Maneka@ppcdrc.cd",
+      "module": "charroi.vehicules",
+      "moduleLabel": "Charroi — Véhicules",
+      "action": "update",
+      "actionLabel": "Modification",
+      "entityType": "charroi.vehicule",
+      "entityId": "veh-035",
+      "summary": "Modification véhicule 7982AY01",
+      "details": "Véhicule modifié.\nAvant : {\"id\":\"veh-035\",\"numero\":35,\"marque\":\"Toyota\",\"type\":\"Pick up\",\"numeroChassis\":\"AHTFK6CD200043540\",\"plaque\":\"7982AY01\",\"cv\":\"13CV\",\"assureur\":\"Rawsur\",\"departement\":\"Mining\",\"user\":\"Marques\",\"province\":\"Kongo Central\",\"proprietaire\":\"LOXEA\",\"kilometrage\":null,\"miseCirculation\":\"2017\",\"age\":9,\"observationTech\":\"Avertissement\",\"etatManuel\":\"\",\"assuranceHistorique\":[{\"id\":\"doc-msira84s-b367l\",\"dateDebut\":\"2026-01-31\",\"dateFin\":\"2027-01-31\",\"preuveUrl\":\"\",\"createdAt\":\"2026-08-07T09:42:13.420Z\"}],\"vignetteHistorique\":[],\"controleTechniqueHistorique\":[{\"id\":\"doc-msirpz5s-12coj\",\"dateDebut\":\"2026-08-02\",\"dateFin\":\"2027-02-02\",\"preuveUrl\":\"\",\"createdAt\":\"2026-08-07T09:54:28.288Z\"}],\"assuranceFin\":\"2027-01-31\",\"vignetteFin\":\"\",\"controleTechniqueFin\":\"2027-02-02\",\"notes\":\"\",\"createdAt\":\"2026-07-28T16:00:46.888Z\",\"updatedAt\":\"2026-08-07T12:10:21.817Z\"}\nAprès : {\"id\":\"veh-035\",\"numero\":35,\"marque\":\"Toyota\",\"type\":\"Land Cru\",\"numeroChassis\":\"AHTFK6CD200043540\",\"plaque\":\"5340BK01\",\"cv\":\"13CV\",\"assureur\":\"Rawsur\",\"departement\":\"Mining\",\"user\":\"Marques\",\"province\":\"Kongo Central\",\"proprietaire\":\"LOXEA\",\"kilometrage\":null,\"miseCirculation\":\"2020-02-01\",\"age\":6,\"observationTech\":\"Avertissement\",\"etatManuel\":\"\",\"assuranceHistorique\":[{\"id\":\"doc-msira84s-b367l\",\"dateDebut\":\"2026-01-31\",\"dateFin\":\"2027-01-31\",\"preuveUrl\":\"\",\"createdAt\":\"2026-08-07T09:42:13.420Z\"}],\"vignetteHistorique\":[],\"controleTechniqueHistorique\":[{\"id\":\"doc-msirpz5s-12coj\",\"dateDebut\":\"2026-08-02\",\"dateFin\":\"2027-02-02\",\"preuveUrl\":\"\",\"createdAt\":\"2026-08-07T09:54:28.288Z\"}],\"assuranceFin\":\"2027-01-31\",\"vignetteFin\":\"\",\"controleTechniqueFin\":\"2027-02-02\",\"notes\":\"\",\"createdAt\":\"2026-07-28T16:00:46.888Z\",\"updatedAt\":\"2026-10-19T12:07:49.200Z\"}",
+      "before": {
+        "id": "veh-035",
+        "numero": 35,
+        "marque": "Toyota",
+        "type": "Pick up",
+        "numeroChassis": "AHTFK6CD200043540",
+        "plaque": "7982AY01",
+        "cv": "13CV",
+        "assureur": "Rawsur",
+        "departement": "Mining",
+        "user": "Marques",
+        "province": "Kongo Central",
+        "proprietaire": "LOXEA",
+        "kilometrage": null,
+        "miseCirculation": "2017",
+        "age": 9,
+        "observationTech": "Avertissement",
+        "etatManuel": "",
+        "assuranceHistorique": [
+          {
+            "id": "doc-msira84s-b367l",
+            "dateDebut": "2026-01-31",
+            "dateFin": "2027-01-31",
+            "preuveUrl": "",
+            "createdAt": "2026-08-07T09:42:13.420Z"
+          }
+        ],
+        "vignetteHistorique": [],
+        "controleTechniqueHistorique": [
+          {
+            "id": "doc-msirpz5s-12coj",
+            "dateDebut": "2026-08-02",
+            "dateFin": "2027-02-02",
+            "preuveUrl": "",
+            "createdAt": "2026-08-07T09:54:28.288Z"
+          }
+        ],
+        "assuranceFin": "2027-01-31",
+        "vignetteFin": "",
+        "controleTechniqueFin": "2027-02-02",
+        "notes": "",
+        "createdAt": "2026-07-28T16:00:46.888Z",
+        "updatedAt": "2026-08-07T12:10:21.817Z"
+      },
+      "after": {
+        "id": "veh-035",
+        "numero": 35,
+        "marque": "Toyota",
+        "type": "Land Cru",
+        "numeroChassis": "AHTFK6CD200043540",
+        "plaque": "5340BK01",
+        "cv": "13CV",
+        "assureur": "Rawsur",
+        "departement": "Mining",
+        "user": "Marques",
+        "province": "Kongo Central",
+        "proprietaire": "LOXEA",
+        "kilometrage": null,
+        "miseCirculation": "2020-02-01",
+        "age": 6,
+        "observationTech": "Avertissement",
+        "etatManuel": "",
+        "assuranceHistorique": [
+          {
+            "id": "doc-msira84s-b367l",
+            "dateDebut": "2026-01-31",
+            "dateFin": "2027-01-31",
+            "preuveUrl": "",
+            "createdAt": "2026-08-07T09:42:13.420Z"
+          }
+        ],
+        "vignetteHistorique": [],
+        "controleTechniqueHistorique": [
+          {
+            "id": "doc-msirpz5s-12coj",
+            "dateDebut": "2026-08-02",
+            "dateFin": "2027-02-02",
+            "preuveUrl": "",
+            "createdAt": "2026-08-07T09:54:28.288Z"
+          }
+        ],
+        "assuranceFin": "2027-01-31",
+        "vignetteFin": "",
+        "controleTechniqueFin": "2027-02-02",
+        "notes": "",
+        "createdAt": "2026-07-28T16:00:46.888Z",
+        "updatedAt": "2026-10-19T12:07:49.200Z"
+      },
+      "undoable": true,
+      "undone": false
+    },
+    {
       "id": "log-001717",
       "at": "2026-10-19T12:02:50.118Z",
       "userId": "Tresor.Maneka@ppcdrc.cd",
@@ -184708,5 +184813,5 @@
       }
     }
   ],
-  "nextSeq": 1718
+  "nextSeq": 1719
 }
