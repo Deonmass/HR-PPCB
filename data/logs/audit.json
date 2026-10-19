@@ -1,6 +1,21 @@
 {
   "entries": [
     {
+      "id": "log-001720",
+      "at": "2026-10-19T13:33:14.899Z",
+      "userId": "Tresor.Maneka@ppcdrc.cd",
+      "userName": "Tresor Maneka",
+      "userEmail": "Tresor.Maneka@ppcdrc.cd",
+      "module": "charroi.voyages",
+      "moduleLabel": "Charroi — Voyages",
+      "action": "export",
+      "actionLabel": "Export",
+      "summary": "Documents chauffeur VYG-0008 ZODULUA GADUA Jean Jacques",
+      "details": "Documents chauffeur VYG-0008 ZODULUA GADUA Jean Jacques",
+      "undoable": false,
+      "undone": false
+    },
+    {
       "id": "log-001719",
       "at": "2026-10-19T13:31:06.128Z",
       "userId": "Tresor.Maneka@ppcdrc.cd",
@@ -184828,5 +184843,5 @@
       }
     }
   ],
-  "nextSeq": 1720
+  "nextSeq": 1721
 }
