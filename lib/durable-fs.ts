@@ -151,9 +151,9 @@ function formatGithubHttpError(action: string, repoPath: string, status: number,
     );
   }
   if (status === 403) {
+    const githubMessage = body.replace(/\s+/g, ' ').trim().slice(0, 240);
     return new Error(
-      `GitHub ${action} ${repoPath} : 403 accès refusé. `
-        + 'Sur le token fine-grained : Repository access = Deonmass/HR-PPCB, Contents = Read and write.',
+      `GitHub ${action} ${repoPath} : 403 accès refusé. ${githubMessage}`.trim(),
     );
   }
   return new Error(`GitHub ${action} ${repoPath} échouée (${status}): ${body.slice(0, 200)}`);
@@ -296,29 +296,75 @@ async function githubJson<T>(
   return { ok: true, data: (await res.json()) as T };
 }
 
-/**
- * SHA du commit HEAD via l'API Git refs — pas Contents `?ref=branch`,
- * dont le cache renvoyait un SHA périmé et provoquait le 409.
- */
+/** SHA du commit HEAD. Plusieurs points d’accès : git/refs est souvent refusé aux jetons fine-grained. */
+function isGithubAccessDenied(err: unknown): boolean {
+  const message = err instanceof Error ? err.message : String(err);
+  return /: 403 | 403 accès refusé|\(403\)/.test(message);
+}
+
 async function getHeadCommitSha(target: GithubRepoTarget): Promise<string> {
   const ref = encodedBranchRef(target.branch);
-  const result = await githubJson<{ object?: { sha?: string } }>(
-    target,
-    `/repos/${target.owner}/${target.repo}/git/ref/heads/${ref}`,
-  );
-  if (result.ok && result.data.object?.sha) return result.data.object.sha;
+  const branch = encodeURIComponent(target.branch);
+  const attempts: Array<{
+    label: string;
+    path: string;
+    sha: (data: { sha?: string; object?: { sha?: string }; commit?: { sha?: string } }) => string | undefined;
+  }> = [
+    {
+      label: 'commit',
+      path: `/repos/${target.owner}/${target.repo}/commits/${branch}`,
+      sha: (data) => data.sha,
+    },
+    {
+      label: 'branche',
+      path: `/repos/${target.owner}/${target.repo}/branches/${branch}`,
+      sha: (data) => data.commit?.sha,
+    },
+    {
+      label: 'ref',
+      path: `/repos/${target.owner}/${target.repo}/git/ref/heads/${ref}`,
+      sha: (data) => data.object?.sha,
+    },
+  ];
 
-  const fallback = await githubJson<{ sha?: string }>(
-    target,
-    `/repos/${target.owner}/${target.repo}/commits/${encodeURIComponent(target.branch)}?per_page=1`,
-  );
-  if (fallback.ok && fallback.data.sha) return fallback.data.sha;
+  let lastFailure: { label: string; status: number; text: string } | null = null;
+  for (const attempt of attempts) {
+    const result = await githubJson<{
+      sha?: string;
+      object?: { sha?: string };
+      commit?: { sha?: string };
+    }>(target, attempt.path);
+    if (result.ok) {
+      const sha = attempt.sha(result.data);
+      if (sha) return sha;
+      continue;
+    }
+    lastFailure = { label: attempt.label, status: result.status, text: result.text };
+    if (result.status !== 403 && result.status !== 404) break;
+  }
 
-  const failed = result.ok ? fallback : result;
-  if (!failed.ok) {
-    throw formatGithubHttpError('ref', `heads/${target.branch}`, failed.status, failed.text);
+  if (lastFailure) {
+    throw formatGithubHttpError(lastFailure.label, `heads/${target.branch}`, lastFailure.status, lastFailure.text);
   }
   throw new Error(`GitHub ref heads/${target.branch} sans sha`);
+}
+
+/** SHA du fichier via l’API Contents, sans passer par git/refs (souvent refusé aux jetons fine-grained). */
+async function readContentBlobSha(
+  target: GithubRepoTarget,
+  repoPath: string,
+): Promise<string | undefined> {
+  const res = await githubRequest(
+    target,
+    `/repos/${target.owner}/${target.repo}/contents/${encodedRepoPath(repoPath)}?ref=${encodeURIComponent(target.branch)}`,
+  );
+  if (res.status === 404) return undefined;
+  if (!res.ok) {
+    const text = await res.text();
+    throw formatGithubHttpError('lecture', repoPath, res.status, text);
+  }
+  const json = (await res.json()) as { sha?: string };
+  return json.sha || undefined;
 }
 
 async function getCommitTreeSha(target: GithubRepoTarget, commitSha: string): Promise<string> {
@@ -559,6 +605,29 @@ async function writeGithubFileViaContents(
   return sha;
 }
 
+/** Écriture directe du fichier quand git/refs ou git/blobs répondent 403. */
+async function writeGithubFileViaContentsFallback(
+  target: GithubRepoTarget,
+  repoPath: string,
+  buffer: Buffer,
+  message: string,
+): Promise<string> {
+  const writeOnce = async (sha: string | undefined) => writeGithubFileViaContents(
+    target,
+    repoPath,
+    buffer,
+    message,
+    sha,
+  );
+  try {
+    return await writeOnce(await readContentBlobSha(target, repoPath));
+  } catch (err) {
+    const text = err instanceof Error ? err.message : String(err);
+    if (!/\(409\)|\(422\)|sha/i.test(text)) throw err;
+    return writeOnce(await readContentBlobSha(target, repoPath));
+  }
+}
+
 async function createGithubTree(
   target: GithubRepoTarget,
   baseTreeSha: string,
@@ -758,13 +827,21 @@ export async function persistDurableFile(repoPath: string, localPath: string): P
   await withGithubWriteLock(async () => {
     const body = await fsPromises.readFile(localPath);
     const label = path.basename(repoPath);
-    const written = await writeGithubFile(
-      target,
-      repoPath,
-      body,
-      `chore(data): update ${label} from RH app${isVercelRuntime() ? ' (Vercel)' : ''}`,
-      lastHydratedContent.get(repoPath),
-    );
+    const message = `chore(data): update ${label} from RH app${isVercelRuntime() ? ' (Vercel)' : ''}`;
+    let written: { sha: string; buffer: Buffer };
+    try {
+      written = await writeGithubFile(
+        target,
+        repoPath,
+        body,
+        message,
+        lastHydratedContent.get(repoPath),
+      );
+    } catch (err) {
+      if (!isGithubAccessDenied(err)) throw err;
+      const sha = await writeGithubFileViaContentsFallback(target, repoPath, body, message);
+      written = { sha, buffer: body };
+    }
     if (!written.buffer.equals(body)) {
       await fsPromises.writeFile(localPath, written.buffer);
     }
