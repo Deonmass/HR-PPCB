@@ -437,12 +437,39 @@ function normalizeEmployeeNameKey(nom: string): string {
 /**
  * Import Excel : ajoute les nouveaux employés et ignore ceux déjà présents (même nom).
  */
+function applyImportedFields(employee: ContractantEmployee, input: ContractantEmployeeInput, now: string): boolean {
+  let changed = false;
+  const matricule = String(input.matriculePpc || '').trim();
+  const departement = String(input.departement || '').trim();
+  const service = String(input.service || '').trim();
+  const sexeRaw = String(input.sexe || '').trim().toUpperCase();
+  if (matricule && employee.matriculePpc !== matricule) {
+    employee.matriculePpc = matricule;
+    changed = true;
+  }
+  if (departement && employee.departement !== departement) {
+    employee.departement = departement;
+    changed = true;
+  }
+  if (service && employee.service !== service) {
+    employee.service = service;
+    changed = true;
+  }
+  if (isContractantSexe(sexeRaw) && employee.sexe !== sexeRaw) {
+    employee.sexe = sexeRaw;
+    changed = true;
+  }
+  if (changed) employee.updatedAt = now;
+  return changed;
+}
+
 export async function importContractantEmployees(
   contractantId: string,
   inputs: ContractantEmployeeInput[],
 ): Promise<{
   contractant: Contractant;
   imported: number;
+  updated: number;
   alreadyPresent: string[];
   skippedEmpty: number;
 } | null> {
@@ -456,7 +483,11 @@ export async function importContractantEmployees(
   const knownNames = new Set(employees.map((e) => normalizeEmployeeNameKey(e.nom)).filter(Boolean));
   const alreadyPresent: string[] = [];
   const alreadyPresentKeys = new Set<string>();
+  const knownMatricules = new Set(
+    employees.map((e) => e.matriculePpc.trim().toLowerCase()).filter(Boolean),
+  );
   let imported = 0;
+  let updated = 0;
   let skippedEmpty = 0;
 
   for (const input of inputs) {
@@ -470,14 +501,25 @@ export async function importContractantEmployees(
       skippedEmpty += 1;
       continue;
     }
-    if (knownNames.has(key)) {
-      if (!alreadyPresentKeys.has(key)) {
+    const matriculeKey = String(input.matriculePpc || '').trim().toLowerCase();
+    const existing = employees.find((employee) => (
+      (matriculeKey && employee.matriculePpc.trim().toLowerCase() === matriculeKey)
+      || normalizeEmployeeNameKey(employee.nom) === key
+    ));
+    if (existing || knownNames.has(key) || (matriculeKey && knownMatricules.has(matriculeKey))) {
+      const target = existing;
+      const didUpdate = target ? applyImportedFields(target, input, now) : false;
+      if (didUpdate) updated += 1;
+      else if (!alreadyPresentKeys.has(key)) {
         alreadyPresentKeys.add(key);
         alreadyPresent.push(nom);
       }
+      knownNames.add(key);
+      if (matriculeKey) knownMatricules.add(matriculeKey);
       continue;
     }
     knownNames.add(key);
+    if (matriculeKey) knownMatricules.add(matriculeKey);
     const sexeRaw = String(input.sexe || '').trim().toUpperCase();
     const etatRaw = String(input.etatCivil || '').trim().toUpperCase();
     const statutRaw = String(input.statut || '').trim();
@@ -486,8 +528,10 @@ export async function importContractantEmployees(
     employees.push({
       id,
       nom,
-      sexe: inferFemaleSexeFromName(nom, isContractantSexe(sexeRaw) ? sexeRaw : ''),
-      lieuAffectation: normalizeLocalisation(input.lieuAffectation),
+      sexe: isContractantSexe(sexeRaw) ? sexeRaw : inferFemaleSexeFromName(nom, ''),
+      lieuAffectation: String(input.lieuAffectation || '').trim()
+        ? normalizeLocalisation(input.lieuAffectation)
+        : '',
       fonction: isLocalisationLabel(input.fonction) ? '' : String(input.fonction || '').trim(),
       departement: String(input.departement || '').trim(),
       service: String(input.service || '').trim(),
@@ -498,7 +542,7 @@ export async function importContractantEmployees(
       dateSortie: String(input.dateSortie || '').trim(),
       managerEmployeeId: '',
       family: [],
-      matriculePpc: '',
+      matriculePpc: String(input.matriculePpc || '').trim(),
       numeroCnss: '',
       numeroCompte: '',
       banque: '',
@@ -526,6 +570,7 @@ export async function importContractantEmployees(
   return {
     contractant: next,
     imported,
+    updated,
     alreadyPresent: alreadyPresent.sort((a, b) => a.localeCompare(b, 'fr', { sensitivity: 'base' })),
     skippedEmpty,
   };
@@ -553,8 +598,10 @@ export async function replaceContractantEmployees(
     employees.push({
       id,
       nom,
-      sexe: inferFemaleSexeFromName(nom, isContractantSexe(sexeRaw) ? sexeRaw : ''),
-      lieuAffectation: normalizeLocalisation(input.lieuAffectation),
+      sexe: isContractantSexe(sexeRaw) ? sexeRaw : inferFemaleSexeFromName(nom, ''),
+      lieuAffectation: String(input.lieuAffectation || '').trim()
+        ? normalizeLocalisation(input.lieuAffectation)
+        : '',
       fonction: isLocalisationLabel(input.fonction) ? '' : String(input.fonction || '').trim(),
       departement: String(input.departement || '').trim(),
       service: String(input.service || '').trim(),
@@ -565,7 +612,7 @@ export async function replaceContractantEmployees(
       dateSortie: String(input.dateSortie || '').trim(),
       managerEmployeeId: '',
       family: [],
-      matriculePpc: '',
+      matriculePpc: String(input.matriculePpc || '').trim(),
       numeroCnss: '',
       numeroCompte: '',
       banque: '',

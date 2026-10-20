@@ -61,11 +61,12 @@ export async function POST(request: Request, context: Ctx) {
     await auditSimpleAction({
       module: 'contractants',
       action: 'import',
-      summary: `Import employés « ${existing.denomination} » — ${result.imported} ajouté(s), ${result.alreadyPresent.length} déjà présent(s)`,
+      summary: `Import employés « ${existing.denomination} » — ${result.imported} ajouté(s), ${result.updated} mis à jour, ${result.alreadyPresent.length} déjà présent(s)`,
       details: `Feuille « ${parsed.sheetName} », ${parsed.skipped} ligne(s) vides ignorée(s)`,
       meta: {
         contractantId: id,
         imported: result.imported,
+        updated: result.updated,
         alreadyPresent: result.alreadyPresent.length,
         skippedEmpty: result.skippedEmpty + parsed.skipped,
         sheetName: parsed.sheetName,
@@ -75,6 +76,7 @@ export async function POST(request: Request, context: Ctx) {
 
     return NextResponse.json({
       imported: result.imported,
+      updated: result.updated,
       alreadyPresent: result.alreadyPresent,
       skipped: result.skippedEmpty + parsed.skipped,
       sheetName: parsed.sheetName,

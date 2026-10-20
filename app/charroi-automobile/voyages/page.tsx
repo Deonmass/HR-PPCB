@@ -1,6 +1,6 @@
 'use client';
 
-import { useCallback, useEffect, useMemo, useState, type FormEvent } from 'react';
+import { useCallback, useEffect, useMemo, useRef, useState, type FormEvent } from 'react';
 import VoyageMonthlyChart, { type VoyageMonthRow } from '@/components/charroi/VoyageMonthlyChart';
 import CardActionMenu from '@/components/CardActionMenu';
 import DashboardListModal, {
@@ -328,12 +328,83 @@ function ActionButton({
   );
 }
 
+function draftNames(draft: string): string[] {
+  return draft.split(',').map((part) => part.trim()).filter(Boolean);
+}
+
+function passengerCount(nom: string, draft = ''): string {
+  const names = passengerNames(appendPassengerNames(nom, draftNames(draft)));
+  return String(Math.max(names.length, 1));
+}
+
+function passengerNames(nom: string): string[] {
+  return nom.split(',').map((part) => part.trim()).filter(Boolean);
+}
+
+function appendPassengerNames(nom: string, additions: string[]): string {
+  const names = passengerNames(nom);
+  for (const raw of additions) {
+    const name = raw.trim();
+    if (!name) continue;
+    if (names.some((prev) => prev.toLocaleLowerCase('fr-FR') === name.toLocaleLowerCase('fr-FR'))) continue;
+    names.push(name);
+  }
+  return names.join(', ');
+}
+
+function alignMatricules(nom: string, previousNom: string, previousMatricules: string): string {
+  const names = passengerNames(nom);
+  const prevNames = passengerNames(previousNom);
+  const prevMats = previousMatricules.split(',').map((part) => part.trim());
+  return names.map((name) => {
+    const found = prevNames.findIndex((prev) => prev === name);
+    return found >= 0 ? (prevMats[found] || '') : '';
+  }).join(', ');
+}
+
+const KONGO_CENTRAL_PLACES = new Set([
+  'kasangulu',
+  'madimba',
+  'kisantu',
+  'inkisi',
+  'mbanza-ngungu',
+  'kimpese',
+  'zamba (kimpese)',
+  'zamba (village)',
+  'zamba',
+  'lukala',
+  'kwilu-ngongo',
+  'songololo',
+  'lufu',
+  'matadi',
+  'boma',
+  'moanda',
+  'kongo central',
+]);
+
+function placeKey(value: string): string {
+  return value.trim().toLocaleLowerCase('fr-FR');
+}
+
+/** Vrai si la destination est la base du véhicule (province ou localités du Kongo Central). */
+function isHomeDestination(province: string, destination: string): boolean {
+  const home = placeKey(province);
+  const dest = placeKey(destination);
+  if (!home || !dest) return false;
+  if (home === dest) return true;
+  if (home === 'kongo central' && KONGO_CENTRAL_PLACES.has(dest)) return true;
+  return false;
+}
+
 function PersonFields({
   legend,
   interne,
   nom,
   employees,
   externeEmployees,
+  multiple = false,
+  draft = '',
+  onDraft,
   onInterne,
   onNom,
   onPick,
@@ -343,13 +414,49 @@ function PersonFields({
   nom: string;
   employees: Employee[];
   externeEmployees?: Employee[];
+  multiple?: boolean;
+  draft?: string;
+  onDraft?: (value: string) => void;
   onInterne: (value: boolean) => void;
   onNom: (value: string) => void;
   onPick: (employee: Employee) => void;
 }) {
+  const names = passengerNames(nom);
+  const pendingNames = draftNames(draft).filter(
+    (name) => !names.some((prev) => prev.toLocaleLowerCase('fr-FR') === name.toLocaleLowerCase('fr-FR')),
+  );
+  const catalog = interne ? employees : (externeEmployees ?? []);
+  const extra = multiple && names.length > 0
+    ? (interne ? externeEmployees : employees)
+    : undefined;
+
+  const commitDraft = (value: string) => {
+    if (!value.includes(',')) {
+      onDraft?.(value);
+      return;
+    }
+    const parts = value.split(',');
+    const rest = parts.pop() ?? '';
+    const additions = parts.map((part) => part.trim()).filter(Boolean);
+    if (additions.length) onNom(appendPassengerNames(nom, additions));
+    const next = rest.replace(/^\s+/, '');
+    onDraft?.(next ? `, ${next}` : ', ');
+  };
+
+  const finishDraft = () => {
+    const additions = draftNames(draft);
+    if (!additions.length) return;
+    onNom(appendPassengerNames(nom, additions));
+    onDraft?.('');
+  };
+
+  const removeName = (index: number) => {
+    onNom(names.filter((_, nameIndex) => nameIndex !== index).join(', '));
+  };
+
   return (
     <div className="form-group" style={{ gridColumn: '1 / -1' }}>
-      <label>{legend}</label>
+      {!multiple && <label>{legend}</label>}
       <div className="charroi-voyage-toggle">
         <button type="button" className={interne ? 'is-active' : ''} onClick={() => onInterne(true)}>
           Interne
@@ -358,23 +465,41 @@ function PersonFields({
           Externe
         </button>
       </div>
-      {interne ? (
+      <div className={multiple ? 'charroi-voyage-passenger-field' : undefined}>
+      {multiple && names.length > 0 && (
+        <ul className="charroi-voyage-passenger-badges">
+          {names.map((name, index) => (
+            <li key={`${name}-${index}`}>
+              <span>{name}</span>
+              <button type="button" aria-label={`Retirer ${name}`} onClick={() => removeName(index)}>
+                <svg viewBox="0 0 24 24" width="10" height="10" fill="none" stroke="currentColor" strokeWidth="2.4" aria-hidden>
+                  <path d="M6 6l12 12M18 6L6 18" />
+                </svg>
+              </button>
+            </li>
+          ))}
+        </ul>
+      )}
+      {interne || externeEmployees ? (
         <EmployeeSuggestInput
-          employees={employees}
-          value={nom}
-          onChange={onNom}
+          employees={catalog}
+          extraEmployees={extra}
+          excludeNames={multiple ? names : undefined}
+          primaryKind={interne ? 'Employé' : 'Contractant'}
+          extraKind={interne ? 'Contractant' : 'Employé'}
+          multiple={multiple}
+          value={multiple ? draft : nom}
+          onChange={multiple ? commitDraft : onNom}
+          onBlur={multiple ? finishDraft : undefined}
           onEmployeeSelect={onPick}
-          placeholder="Nom de l’employé — suggestions internes"
-          required
-        />
-      ) : externeEmployees ? (
-        <EmployeeSuggestInput
-          employees={externeEmployees}
-          value={nom}
-          onChange={onNom}
-          onEmployeeSelect={onPick}
-          placeholder="Contractant — suggestions, ou saisie libre"
-          required
+          placeholder={multiple
+            ? (names.length
+              ? 'Passager suivant'
+              : (interne
+                ? 'Employé — la sélection devient un badge'
+                : 'Contractant — la sélection devient un badge'))
+            : (interne ? 'Nom de l’employé — suggestions internes' : 'Contractant — suggestions, ou saisie libre')}
+          required={multiple ? names.length === 0 && pendingNames.length === 0 : true}
         />
       ) : (
         <input
@@ -383,6 +508,12 @@ function PersonFields({
           placeholder="Nom en saisie libre"
           required
         />
+      )}
+      </div>
+      {multiple && (
+        <span className="text-muted charroi-voyage-hint">
+          Chaque sélection devient un badge, puis une virgule est ajoutée pour le passager suivant.
+        </span>
       )}
     </div>
   );
@@ -408,6 +539,10 @@ export default function CharroiVoyagesPage() {
   const [search, setSearch] = useState('');
   const [demandeFilter, setDemandeFilter] = useState<DemandeFilter>('toutes');
   const [requestForm, setRequestForm] = useState<RequestForm | null>(null);
+  const [passengerDraft, setPassengerDraft] = useState('');
+  const passengerNomRef = useRef('');
+  const passengerDraftRef = useRef('');
+  const passengerMatriculeRef = useRef('');
   const [confirmForm, setConfirmForm] = useState<ConfirmForm | null>(null);
   const [completeForm, setCompleteForm] = useState<CompleteForm | null>(null);
   const [drill, setDrill] = useState<{ title: string; items: CharroiVoyage[] } | null>(null);
@@ -552,6 +687,35 @@ export default function CharroiVoyagesPage() {
       .map((item) => ({ ...item, meta: `${item.people} pers.` }));
   }, [assignedTrips]);
 
+  const awayVehicles = useMemo(() => {
+    const tripsByVehicle = new Map<string, CharroiVoyage[]>();
+    for (const trip of items) {
+      if (trip.status !== 'pending' && trip.status !== 'effectue') continue;
+      if (trip.vehiculeMode === 'location') continue;
+      const vehicle = trip.vehiculeId
+        ? vehicles.find((item) => item.id === trip.vehiculeId)
+        : vehicles.find((item) => item.plaque && trip.vehiculeLibelle.toLowerCase().includes(item.plaque.toLowerCase()));
+      if (!vehicle) continue;
+      const list = tripsByVehicle.get(vehicle.id);
+      if (list) list.push(trip);
+      else tripsByVehicle.set(vehicle.id, [trip]);
+    }
+    const away: Array<{ vehicle: FleetVehicle; trip: CharroiVoyage }> = [];
+    for (const [vehicleId, trips] of tripsByVehicle) {
+      const vehicle = vehicles.find((item) => item.id === vehicleId);
+      if (!vehicle?.province.trim()) continue;
+      trips.sort((a, b) => `${a.dateDepart}T${a.heureDepart || '00:00'}`.localeCompare(`${b.dateDepart}T${b.heureDepart || '00:00'}`));
+      const last = trips[trips.length - 1];
+      if (!last?.destination.trim()) continue;
+      if (isHomeDestination(vehicle.province, last.destination)) continue;
+      away.push({ vehicle, trip: last });
+    }
+    return away.sort((a, b) => (
+      a.vehicle.province.localeCompare(b.vehicle.province, 'fr')
+      || `${b.trip.dateDepart}T${b.trip.heureDepart}`.localeCompare(`${a.trip.dateDepart}T${a.trip.heureDepart}`)
+    ));
+  }, [items, vehicles]);
+
   const upcoming = useMemo(() => {
     return periodItems
       .filter((item) => item.status === 'demande' || item.status === 'pending')
@@ -575,11 +739,21 @@ export default function CharroiVoyagesPage() {
     setDrill({ title: `Voir la liste — ${title}`, items: list });
   }
 
+  function rememberPassengers(nom: string, matricule: string, draft: string) {
+    passengerNomRef.current = nom;
+    passengerMatriculeRef.current = matricule;
+    passengerDraftRef.current = draft;
+  }
+
   function openCreate() {
+    rememberPassengers('', '', '');
+    setPassengerDraft('');
     setRequestForm(emptyRequest());
   }
 
   function openEdit(voyage: CharroiVoyage) {
+    rememberPassengers(voyage.passagerNom, voyage.passagerMatricule, '');
+    setPassengerDraft('');
     setRequestForm({
       id: voyage.id,
       passagerInterne: voyage.passagerInterne,
@@ -627,15 +801,19 @@ export default function CharroiVoyagesPage() {
     if (!requestForm || busy) return;
     setBusy(true);
     try {
+      const baseNom = passengerNomRef.current || requestForm.passagerNom;
+      const baseMatricule = passengerMatriculeRef.current || requestForm.passagerMatricule;
+      const passagerNom = appendPassengerNames(baseNom, draftNames(passengerDraftRef.current)).trim();
+      const passagerMatricule = alignMatricules(passagerNom, baseNom, baseMatricule).trim();
       const payload = {
-        passagerNom: requestForm.passagerNom.trim(),
-        passagerMatricule: requestForm.passagerInterne ? requestForm.passagerMatricule.trim() : '',
+        passagerNom,
+        passagerMatricule,
         passagerInterne: requestForm.passagerInterne,
         depart: requestForm.depart.trim(),
         destination: requestForm.destination.trim(),
         dateDepart: requestForm.dateDepart,
         heureDepart: requestForm.heureDepart,
-        nombrePersonnes: Math.max(1, Number(requestForm.nombrePersonnes) || 1),
+        nombrePersonnes: Math.max(1, Number(passengerCount(passagerNom)) || 1),
         motif: requestForm.motif.trim(),
         notes: requestForm.notes.trim(),
       };
@@ -648,6 +826,8 @@ export default function CharroiVoyagesPage() {
         },
       );
       if (!response.ok) throw new Error(await readError(response));
+      rememberPassengers('', '', '');
+      setPassengerDraft('');
       setRequestForm(null);
       await showSuccess(requestForm.id ? 'Demande mise à jour' : 'Demande de voyage enregistrée');
       await load(true);
@@ -1004,6 +1184,62 @@ export default function CharroiVoyagesPage() {
 
         {!loading && tab === 'dashboard' && (
           <div className="charroi-voyage-dash">
+            <section className="panel charroi-voyage-panel charroi-voyage-away">
+              <div className="charroi-voyage-away-head">
+                <div>
+                  <h3>Véhicules hors de leur base</h3>
+                  <p className="text-muted charroi-voyage-hint">
+                    Dernière course vers une autre destination, sans retour enregistré. Ex. Kongo Central parti à Kinshasa.
+                  </p>
+                </div>
+                <button
+                  type="button"
+                  className="charroi-voyage-away-count"
+                  title="Voir la liste — véhicules hors base"
+                  onClick={() => openDrill(
+                    'Véhicules hors de leur base',
+                    awayVehicles.map((item) => item.trip),
+                  )}
+                >
+                  {awayVehicles.length}
+                </button>
+              </div>
+              {awayVehicles.length === 0 ? (
+                <p className="text-muted">Aucun véhicule affecté n’est signalé ailleurs que sur sa base.</p>
+              ) : (
+                <ul className="charroi-voyage-away-list">
+                  {awayVehicles.map(({ vehicle, trip }) => (
+                    <li key={vehicle.id}>
+                      <button
+                        type="button"
+                        title={`Voir la liste — ${trip.chauffeurNom.trim() || vehicle.plaque || vehicleLabel(vehicle)}`}
+                        onClick={() => openDrill(
+                          `${trip.chauffeurNom.trim() || vehicle.plaque || vehicleLabel(vehicle)} · ${trip.destination}`,
+                          items.filter((item) => item.vehiculeId === vehicle.id || (
+                            vehicle.plaque && item.vehiculeLibelle.toLowerCase().includes(vehicle.plaque.toLowerCase())
+                          )),
+                        )}
+                      >
+                        <strong>{trip.chauffeurNom.trim() || 'Chauffeur non renseigné'}</strong>
+                        <span>
+                          {vehicle.plaque || vehicleLabel(vehicle)}
+                          {vehicle.marque ? ` · ${vehicle.marque}` : ''}
+                          {vehicle.type ? ` · ${vehicle.type}` : ''}
+                        </span>
+                        <span className="charroi-voyage-away-route">
+                          {vehicle.province} → {trip.destination}
+                        </span>
+                        <em className={trip.status === 'pending' ? 'is-pending' : 'is-away'}>
+                          {trip.status === 'pending' ? 'En course' : 'Sans retour'}
+                          {' · '}
+                          {formatDate(trip.dateDepart)}
+                        </em>
+                      </button>
+                    </li>
+                  ))}
+                </ul>
+              )}
+            </section>
             <div className="charroi-voyage-kpis">
               {kpi('Demandes', counts.demande, 'card-glow-amber', periodItems.filter((item) => item.status === 'demande'), 0)}
               {kpi('Pending', counts.pending, 'card-glow-cyan', periodItems.filter((item) => item.status === 'pending'), 70)}
@@ -1105,31 +1341,70 @@ export default function CharroiVoyagesPage() {
         {!loading && tab === 'effectues' && renderTable(effectues, 'Aucun voyage effectué.')}
 
         {requestForm && (
-          <div className="modal-overlay open" onClick={() => setRequestForm(null)}>
+          <div className="modal-overlay open" onClick={() => { rememberPassengers('', '', ''); setPassengerDraft(''); setRequestForm(null); }}>
             <div className="modal modal-lg modal-form" onClick={(event) => event.stopPropagation()}>
               <form onSubmit={(event) => void saveRequest(event)}>
                 <div className="modal-header">
                   <h3>{requestForm.id ? 'Modifier la demande' : 'Nouvelle demande de voyage'}</h3>
-                  <button type="button" className="modal-close" onClick={() => setRequestForm(null)}>×</button>
+                  <button type="button" className="modal-close" onClick={() => { rememberPassengers('', '', ''); setPassengerDraft(''); setRequestForm(null); }}>×</button>
                 </div>
                 <div className="modal-body">
                   <div className="form-grid">
                     <PersonFields
                       legend="Passager"
+                      multiple
                       interne={requestForm.passagerInterne}
                       nom={requestForm.passagerNom}
+                      draft={passengerDraft}
                       employees={employees}
+                      externeEmployees={contractantDrivers}
+                      onDraft={(value) => {
+                        passengerDraftRef.current = value;
+                        setPassengerDraft(value);
+                      }}
                       onInterne={(value) => setRequestForm({
                         ...requestForm,
                         passagerInterne: value,
-                        passagerMatricule: value ? requestForm.passagerMatricule : '',
                       })}
-                      onNom={(value) => setRequestForm({ ...requestForm, passagerNom: value, passagerMatricule: '' })}
-                      onPick={(employee) => setRequestForm({
-                        ...requestForm,
-                        passagerInterne: true,
-                        passagerNom: employee.nom,
-                        passagerMatricule: employee.matricule,
+                      onNom={(value) => {
+                        const matricule = alignMatricules(value, passengerNomRef.current || requestForm.passagerNom, passengerMatriculeRef.current || requestForm.passagerMatricule);
+                        rememberPassengers(value, matricule, passengerDraftRef.current);
+                        setRequestForm({
+                          ...requestForm,
+                          passagerNom: value,
+                          passagerMatricule: matricule,
+                          nombrePersonnes: passengerCount(value, passengerDraftRef.current),
+                        });
+                      }}
+                      onPick={(employee) => setRequestForm((prev) => {
+                        if (!prev) return prev;
+                        const names = passengerNames(prev.passagerNom);
+                        const already = names.some(
+                          (name) => name.toLocaleLowerCase('fr-FR') === employee.nom.trim().toLocaleLowerCase('fr-FR'),
+                        );
+                        if (!already) names.push(employee.nom.trim());
+                        const prevNames = passengerNames(prev.passagerNom);
+                        const prevMats = prev.passagerMatricule.split(',').map((part) => part.trim());
+                        const mats = names.map((name, index) => (
+                          index === names.length - 1 && !already
+                            ? employee.matricule
+                            : (prevMats[prevNames.indexOf(name)] || '')
+                        ));
+                        const contractant = contractantDrivers.some(
+                          (row) => row.matricule === employee.matricule && row.nom === employee.nom,
+                        );
+                        const passagerNom = names.join(', ');
+                        const passagerMatricule = mats.join(', ');
+                        rememberPassengers(passagerNom, passagerMatricule, ', ');
+                        passengerDraftRef.current = ', ';
+                        setPassengerDraft(', ');
+                        return {
+                          ...prev,
+                          passagerNom,
+                          passagerMatricule,
+                          passagerInterne: names.length === 1 ? !contractant : prev.passagerInterne,
+                          nombrePersonnes: String(Math.max(names.length, 1)),
+                        };
                       })}
                     />
                     <PlaceField
@@ -1157,11 +1432,11 @@ export default function CharroiVoyagesPage() {
                         type="number"
                         min={1}
                         max={99}
-                        value={requestForm.nombrePersonnes}
-                        onChange={(event) => setRequestForm({ ...requestForm, nombrePersonnes: event.target.value })}
-                        required
+                        value={passengerCount(requestForm.passagerNom, passengerDraft)}
+                        readOnly
+                        tabIndex={-1}
                       />
-                      <span className="text-muted charroi-voyage-hint">Passager principal et accompagnants.</span>
+                      <span className="text-muted charroi-voyage-hint">Calculé automatiquement selon les passagers.</span>
                     </div>
                     <div className="form-group">
                       <label>Heure de départ</label>

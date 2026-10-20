@@ -32,6 +32,10 @@ function findColumn(headers: string[], candidates: string[]): number {
   );
 }
 
+function findExactColumn(headers: string[], candidates: string[]): number {
+  return headers.findIndex((header) => candidates.some((candidate) => header === candidate));
+}
+
 function cell(row: unknown[], col: number): string {
   if (col < 0) return '';
   const raw = row[col];
@@ -87,9 +91,27 @@ function parseStatut(raw: string): ContractantEmployeeInput['statut'] {
   return 'Permanent';
 }
 
+function composeNom(
+  row: unknown[],
+  nomCol: number,
+  postnomCol: number,
+  prenomCol: number,
+  combinedCol: number,
+): string {
+  if (nomCol >= 0 && (postnomCol >= 0 || prenomCol >= 0)) {
+    return [cell(row, nomCol), cell(row, postnomCol), cell(row, prenomCol)]
+      .map((part) => part.trim())
+      .filter(Boolean)
+      .join(' ');
+  }
+  if (combinedCol >= 0) return cell(row, combinedCol);
+  return cell(row, nomCol);
+}
+
 /**
- * Colonnes attendues (souples) :
- * NOMS ET POST NOMS | SEXE | LIEU D'AFFECTATION | FONCTION | DEPARTEMENT | TELEPHONE | ETAT CIVIL | STATUT
+ * Colonnes principales : MATRICULE, NOM, POSTNOM, PRENOM, SEXE.
+ * DEPARTEMENT et SERVICE sont repris lorsqu’ils sont présents.
+ * Ancien format accepté : NOMS ET POST NOMS, LIEU, FONCTION, TÉLÉPHONE, ÉTAT CIVIL, STATUT.
  */
 export function parseContractantEmployeesImportBuffer(
   buffer: ArrayBuffer,
@@ -104,18 +126,24 @@ export function parseContractantEmployeesImportBuffer(
 
   const headerRowIndex = rows.findIndex((row) => {
     const headers = row.map(normalizeHeader);
-    return headers.some((h) => h.includes('nom')) && headers.some((h) =>
-      h.includes('sexe') || h.includes('fonction') || h.includes('departement') || h.includes('affectation'),
+    const hasName = headers.some((h) => h === 'nom' || h === 'prenom' || h.includes('noms') || h === 'fullname');
+    const hasPerson = headers.some((h) =>
+      h.includes('sexe') || h.includes('matricule') || h === 'prenom' || h.includes('fonction') || h.includes('departement'),
     );
+    return hasName && hasPerson;
   });
   if (headerRowIndex < 0) {
     throw new Error(
-      'En-têtes introuvables (NOMS, SEXE, LIEU D’AFFECTATION, FONCTION, DEPARTEMENT, …)',
+      'En-têtes introuvables (MATRICULE, NOM, POSTNOM, PRENOM, SEXE, et éventuellement DÉPARTEMENT, SERVICE)',
     );
   }
 
   const headers = (rows[headerRowIndex] as unknown[]).map((h) => normalizeHeader(h));
-  const nomCol = findColumn(headers, ['nomsetpostnoms', 'noms', 'nom', 'postnoms', 'fullname']);
+  const nomCol = findExactColumn(headers, ['nom', 'noms']);
+  const postnomCol = findExactColumn(headers, ['postnom', 'postnoms']);
+  const prenomCol = findExactColumn(headers, ['prenom', 'prenoms']);
+  const combinedNomCol = findColumn(headers, ['nomsetpostnoms', 'nomcomplet', 'fullname']);
+  const matriculeCol = findColumn(headers, ['matriculeppc', 'matricule', 'matricul']);
   const sexeCol = findColumn(headers, ['sexe', 'genre', 'gender']);
   const lieuCol = findColumn(headers, [
     'lieudaffectation',
@@ -124,13 +152,9 @@ export function parseContractantEmployeesImportBuffer(
     'lieu',
     'site',
   ]);
-  const fonctionCol = findColumn(headers, ['fonction', 'poste', 'job', 'title']);
-  const departementCol = findColumn(headers, [
-    'departement',
-    'department',
-    'service',
-    'dept',
-  ]);
+  const fonctionCol = findColumn(headers, ['fonction', 'poste', 'jobtitle', 'title']);
+  const departementCol = findExactColumn(headers, ['departement', 'department', 'dept']);
+  const serviceCol = findExactColumn(headers, ['service', 'services']);
   const telephoneCol = findColumn(headers, [
     'numerotelephone',
     'telephone',
@@ -141,8 +165,8 @@ export function parseContractantEmployeesImportBuffer(
   const etatCivilCol = findColumn(headers, ['etatcivil', 'civilstatus', 'marital']);
   const statutCol = findColumn(headers, ['statut', 'status', 'typecontrat', 'categorie']);
 
-  if (nomCol < 0) {
-    throw new Error('Colonne noms introuvable');
+  if (nomCol < 0 && combinedNomCol < 0 && prenomCol < 0) {
+    throw new Error('Colonne nom introuvable');
   }
 
   const parsed: ContractantEmployeeInput[] = [];
@@ -152,27 +176,30 @@ export function parseContractantEmployeesImportBuffer(
     const row = rows[i] as unknown[];
     if (!row || row.every((c) => String(c ?? '').trim() === '')) continue;
 
-    const nom = cell(row, nomCol);
+    const nom = composeNom(row, nomCol, postnomCol, prenomCol, combinedNomCol);
     if (!nom) {
       skipped += 1;
       continue;
     }
 
     const lieuRaw = cell(row, lieuCol);
-    const lieuAffectation = normalizeLocalisation(lieuRaw);
+    const lieuAffectation = lieuCol >= 0 && lieuRaw ? normalizeLocalisation(lieuRaw) : '';
     let fonction = cell(row, fonctionCol);
     // Ne jamais traiter un lieu (MALANGA, KIMPESE, …) comme fonction.
     if (isLocalisationLabel(fonction)) fonction = '';
+    const sexeSaisi = parseSexe(cell(row, sexeCol));
 
     parsed.push({
       nom,
-      sexe: inferFemaleSexeFromName(nom, parseSexe(cell(row, sexeCol))),
+      sexe: sexeSaisi || inferFemaleSexeFromName(nom, ''),
       lieuAffectation,
       fonction,
       departement: cell(row, departementCol),
+      service: cell(row, serviceCol),
       telephone: cell(row, telephoneCol),
       etatCivil: parseEtatCivil(cell(row, etatCivilCol)),
       statut: parseStatut(cell(row, statutCol)),
+      matriculePpc: cell(row, matriculeCol),
     });
   }
 
