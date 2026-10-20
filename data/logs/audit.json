@@ -1,6 +1,44 @@
 {
   "entries": [
     {
+      "id": "log-001725",
+      "at": "2026-10-20T10:35:07.391Z",
+      "userId": "Tresor.Maneka@ppcdrc.cd",
+      "userName": "Tresor Maneka",
+      "userEmail": "Tresor.Maneka@ppcdrc.cd",
+      "module": "protocol.voyages",
+      "moduleLabel": "Gestion de voyage",
+      "action": "create",
+      "actionLabel": "Création",
+      "entityType": "protocol.voyage",
+      "entityId": "pvc-041",
+      "summary": "Voyage PVC-0041 MPAY MAYELE RUFIN Zamba Kinshasa Zamba",
+      "details": "Voyage PVC-0041 MPAY MAYELE RUFIN Zamba Kinshasa Zamba",
+      "after": {
+        "id": "pvc-041",
+        "numero": "PVC-0041",
+        "date": "2026-10-18",
+        "voyageur": "MPAY MAYELE RUFIN",
+        "voyageurMatricule": "70000191",
+        "destination": "Zamba Kinshasa Zamba",
+        "ticketAvion": 0,
+        "visaVolant": 0,
+        "lettreLegaliser": 0,
+        "goPass": 0,
+        "transfert": 0,
+        "hotelNuit": 100,
+        "nbreNuits": 3,
+        "coutHotel": 300,
+        "categorieHotel": "",
+        "appartement": 0,
+        "coutTotal": 300,
+        "createdAt": "2026-10-20T10:35:02.334Z",
+        "updatedAt": "2026-10-20T10:35:02.334Z"
+      },
+      "undoable": false,
+      "undone": false
+    },
+    {
       "id": "log-001724",
       "at": "2026-10-20T07:52:04.365Z",
       "userId": "admin",
@@ -189217,5 +189255,5 @@
       }
     }
   ],
-  "nextSeq": 1725
+  "nextSeq": 1726
 }
