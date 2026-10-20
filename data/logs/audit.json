@@ -1,6 +1,44 @@
 {
   "entries": [
     {
+      "id": "log-001729",
+      "at": "2026-10-20T10:39:36.497Z",
+      "userId": "Tresor.Maneka@ppcdrc.cd",
+      "userName": "Tresor Maneka",
+      "userEmail": "Tresor.Maneka@ppcdrc.cd",
+      "module": "protocol.voyages",
+      "moduleLabel": "Gestion de voyage",
+      "action": "create",
+      "actionLabel": "Création",
+      "entityType": "protocol.voyage",
+      "entityId": "pvc-045",
+      "summary": "Voyage PVC-0045 Chansard ZAMBA KINSHASA ZAMBA",
+      "details": "Voyage PVC-0045 Chansard ZAMBA KINSHASA ZAMBA",
+      "after": {
+        "id": "pvc-045",
+        "numero": "PVC-0045",
+        "date": "2026-10-19",
+        "voyageur": "Chansard",
+        "voyageurMatricule": "",
+        "destination": "ZAMBA KINSHASA ZAMBA",
+        "ticketAvion": 0,
+        "visaVolant": 0,
+        "lettreLegaliser": 0,
+        "goPass": 0,
+        "transfert": 0,
+        "hotelNuit": 100,
+        "nbreNuits": 1,
+        "coutHotel": 100,
+        "categorieHotel": "",
+        "appartement": 0,
+        "coutTotal": 100,
+        "createdAt": "2026-10-20T10:39:32.589Z",
+        "updatedAt": "2026-10-20T10:39:32.589Z"
+      },
+      "undoable": false,
+      "undone": false
+    },
+    {
       "id": "log-001728",
       "at": "2026-10-20T10:38:43.863Z",
       "userId": "Tresor.Maneka@ppcdrc.cd",
@@ -189369,5 +189407,5 @@
       }
     }
   ],
-  "nextSeq": 1729
+  "nextSeq": 1730
 }
