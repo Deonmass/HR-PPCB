@@ -27,10 +27,19 @@ interface SuggestProps {
   value: string;
   onChange: (value: string) => void;
   onEmployeeSelect?: (employee: Employee) => void;
+  onBlur?: () => void;
   required?: boolean;
   placeholder?: string;
   id?: string;
   department?: string;
+  /** Après une virgule, une autre personne peut être ajoutée. */
+  multiple?: boolean;
+  /** Catalogue ajouté dès qu’une virgule est saisie (ex. contractants). */
+  extraEmployees?: Employee[];
+  primaryKind?: string;
+  extraKind?: string;
+  /** Noms déjà retenus, exclus des suggestions. */
+  excludeNames?: string[];
 }
 
 function suggestionMeta(employee: Employee): string {
@@ -195,18 +204,30 @@ export default function EmployeePicker({
   );
 }
 
+function personKey(employee: Employee): string {
+  return `${employee.matricule}\0${employee.nom}`;
+}
+
 export function EmployeeSuggestInput({
   employees,
   value,
   onChange,
   onEmployeeSelect,
+  onBlur,
   required = false,
   placeholder = 'Rechercher ou saisir un nom…',
   id,
   department,
+  multiple = false,
+  extraEmployees,
+  primaryKind = '',
+  extraKind = '',
+  excludeNames,
 }: SuggestProps) {
   const wrapRef = useRef<HTMLDivElement>(null);
   const listRef = useRef<HTMLDivElement>(null);
+  const inputRef = useRef<HTMLInputElement>(null);
+  const skipBlurRef = useRef(false);
   const [open, setOpen] = useState(false);
   const [query, setQuery] = useState(value);
 
@@ -214,9 +235,34 @@ export function EmployeeSuggestInput({
     setQuery(value);
   }, [value]);
 
+  const commaAt = multiple ? query.lastIndexOf(',') : -1;
+  const tail = commaAt >= 0 ? query.slice(commaAt + 1) : query;
+  const mixExtras = Boolean(extraEmployees?.length) && (!multiple || commaAt >= 0);
+  const extraKeys = useMemo(
+    () => new Set((extraEmployees ?? []).map(personKey)),
+    [extraEmployees],
+  );
+  const pool = useMemo(() => {
+    if (!mixExtras || !extraEmployees?.length) return employees;
+    const seen = new Set(employees.map(personKey));
+    return [...employees, ...extraEmployees.filter((employee) => !seen.has(personKey(employee)))];
+  }, [employees, extraEmployees, mixExtras]);
+  const chosen = useMemo(() => {
+    const excluded = new Set((excludeNames ?? []).map((name) => name.trim().toLowerCase()).filter(Boolean));
+    if (commaAt >= 0) {
+      query.slice(0, commaAt).split(',').forEach((part) => {
+        const name = part.trim().toLowerCase();
+        if (name) excluded.add(name);
+      });
+    }
+    return excluded;
+  }, [commaAt, excludeNames, query]);
+
   const suggestions = useMemo(
-    () => filterEmployees(employees, query, department),
-    [department, employees, query],
+    () => filterEmployees(pool, tail, department).filter(
+      (employee) => !chosen.has(employee.nom.trim().toLowerCase()),
+    ),
+    [chosen, department, pool, tail],
   );
 
   const dismiss = useCallback(() => {
@@ -227,15 +273,25 @@ export function EmployeeSuggestInput({
   useOutsideDismiss(open, wrapRef, listRef, dismiss);
 
   const selectEmployee = (employee: Employee) => {
-    onChange(employee.nom);
+    if (!multiple) {
+      onChange(employee.nom);
+      onEmployeeSelect?.(employee);
+      setQuery(employee.nom);
+      setOpen(false);
+      return;
+    }
     onEmployeeSelect?.(employee);
-    setQuery(employee.nom);
+    setQuery(', ');
     setOpen(false);
+    inputRef.current?.focus();
   };
+
+  const tailName = tail.trim().toLowerCase();
 
   return (
     <div ref={wrapRef} className={`project-picker${open ? ' is-open' : ''}`}>
       <input
+        ref={inputRef}
         id={id}
         required={required}
         className="project-picker-input"
@@ -248,6 +304,13 @@ export function EmployeeSuggestInput({
           setOpen(true);
         }}
         onFocus={() => setOpen(true)}
+        onBlur={() => {
+          if (skipBlurRef.current) {
+            skipBlurRef.current = false;
+            return;
+          }
+          onBlur?.();
+        }}
         autoComplete="off"
       />
       <ProjectPickerDropdown
@@ -256,21 +319,29 @@ export function EmployeeSuggestInput({
         open={open && suggestions.length > 0}
         minWidth={400}
       >
-        {suggestions.map((employee) => (
-          <button
-            key={employee.matricule}
-            type="button"
-            className={`project-picker-option${value === employee.nom ? ' active' : ''}`}
-            role="option"
-            onMouseDown={(e) => e.preventDefault()}
-            onClick={() => selectEmployee(employee)}
-          >
-            <span className={`project-picker-name${(employee as { parti?: boolean }).parti ? ' is-left' : ''}`}>{employee.nom}</span>
-            <span className="project-picker-meta">
-              {suggestionMeta(employee)}
-            </span>
-          </button>
-        ))}
+        {suggestions.map((employee) => {
+          const kind = mixExtras
+            ? (extraKeys.has(personKey(employee)) ? extraKind : primaryKind)
+            : '';
+          return (
+            <button
+              key={personKey(employee)}
+              type="button"
+              className={`project-picker-option${tailName === employee.nom.trim().toLowerCase() ? ' active' : ''}`}
+              role="option"
+              onMouseDown={(e) => {
+                e.preventDefault();
+                skipBlurRef.current = true;
+              }}
+              onClick={() => selectEmployee(employee)}
+            >
+              <span className={`project-picker-name${(employee as { parti?: boolean }).parti ? ' is-left' : ''}`}>{employee.nom}</span>
+              <span className="project-picker-meta">
+                {[kind, suggestionMeta(employee)].filter(Boolean).join(' · ')}
+              </span>
+            </button>
+          );
+        })}
       </ProjectPickerDropdown>
     </div>
   );

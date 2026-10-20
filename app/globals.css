@@ -8501,6 +8501,32 @@ html[data-theme="light"] .compilation-table tbody tr:hover td.compilation-sticky
   margin-bottom: 0.75rem;
 }
 
+.timesheet-planning-week-company {
+  display: inline-flex;
+  flex: 0 0 auto;
+  padding: 0.15rem;
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  background: color-mix(in srgb, var(--surface, #fff) 88%, var(--border));
+}
+
+.timesheet-planning-week-company button {
+  border: 0;
+  background: transparent;
+  border-radius: 999px;
+  padding: 0.32rem 0.7rem;
+  font-size: 0.75rem;
+  cursor: pointer;
+  color: var(--muted);
+}
+
+.timesheet-planning-week-company button.is-active {
+  background: var(--surface, #fff);
+  color: inherit;
+  font-weight: 650;
+  box-shadow: 0 1px 2px color-mix(in srgb, #000 8%, transparent);
+}
+
 .timesheet-planning-week-search .search-input {
   flex: 1 1 auto;
   min-width: 0;
@@ -25329,6 +25355,143 @@ html[data-theme='dark'] .guest-house-kimpese-panel {
   background: color-mix(in srgb, var(--ppc-red) 12%, transparent);
   border-color: color-mix(in srgb, var(--ppc-red) 45%, var(--border));
   font-weight: 650;
+}
+
+.charroi-voyage-passenger-field {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.25rem;
+  min-height: 2.15rem;
+  padding: 0.2rem 0.35rem;
+  border: 1px solid var(--border);
+  border-radius: 0.7rem;
+  background: var(--surface, #fff);
+}
+
+.charroi-voyage-passenger-field:focus-within {
+  border-color: color-mix(in srgb, var(--ppc-red) 45%, var(--border));
+}
+
+.charroi-voyage-passenger-field .project-picker {
+  flex: 1 1 12rem;
+  min-width: 8rem;
+}
+
+.charroi-voyage-passenger-field .project-picker-input {
+  border: 0;
+  background: transparent;
+  box-shadow: none;
+  padding-left: 0.35rem;
+}
+
+.charroi-voyage-passenger-badges {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.2rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.charroi-voyage-passenger-badges li {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.1rem;
+  max-width: 100%;
+  padding: 0.02rem 0.08rem 0.02rem 0.38rem;
+  border: 1px solid color-mix(in srgb, var(--ppc-red) 35%, var(--border));
+  border-radius: 999px;
+  background: color-mix(in srgb, var(--ppc-red) 8%, var(--surface, #fff));
+  font-size: 0.68rem;
+  line-height: 1.15;
+}
+
+.charroi-voyage-passenger-badges li span {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.charroi-voyage-passenger-badges button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 0.95rem;
+  height: 0.95rem;
+  padding: 0;
+  border: 0;
+  border-radius: 999px;
+  background: transparent;
+  color: var(--ppc-red, #b42318);
+  cursor: pointer;
+}
+
+.charroi-voyage-passenger-badges button:hover {
+  background: color-mix(in srgb, var(--ppc-red) 14%, transparent);
+}
+
+.charroi-voyage-away-head {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 0.75rem;
+}
+
+.charroi-voyage-away-count {
+  min-width: 2.6rem;
+  padding: 0.35rem 0.7rem;
+  border: 0;
+  border-radius: 999px;
+  background: color-mix(in srgb, #b45309 16%, transparent);
+  color: #9a3412;
+  font-size: 1.25rem;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.charroi-voyage-away-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(16rem, 1fr));
+  gap: 0.55rem;
+  margin: 0.75rem 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.charroi-voyage-away-list button {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 0.12rem;
+  width: 100%;
+  padding: 0.7rem 0.8rem;
+  border: 1px solid var(--border);
+  border-radius: 0.7rem;
+  background: transparent;
+  text-align: left;
+  cursor: pointer;
+}
+
+.charroi-voyage-away-list button:hover {
+  border-color: color-mix(in srgb, #b45309 45%, var(--border));
+}
+
+.charroi-voyage-away-route {
+  font-weight: 650;
+}
+
+.charroi-voyage-away-list em {
+  font-style: normal;
+  font-size: 0.78rem;
+}
+
+.charroi-voyage-away-list em.is-pending {
+  color: #b45309;
+}
+
+.charroi-voyage-away-list em.is-away {
+  color: #b42318;
 }
 
 .charroi-voyage-dash {

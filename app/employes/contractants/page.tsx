@@ -38,7 +38,7 @@ import {
   countActiveColumnFilters,
   matchesColumnFilter,
 } from '@/lib/table-column-filters';
-import { confirmAction, confirmDelete, closeSwal, showActionLoading, showError, showSuccess, showSuccessHtml } from '@/lib/swal';
+import { confirmAction, confirmDelete, closeSwal, promptSelect, showActionLoading, showError, showSuccess, showSuccessHtml } from '@/lib/swal';
 
 type PageTab = 'dashboard' | 'contractants' | 'employes' | 'exit';
 
@@ -788,8 +788,25 @@ export default function ContractantsPage() {
     setViewEmployee(e);
   };
 
-  const startEmployeeImport = (c: Contractant) => {
-    importTargetIdRef.current = c.id;
+  const startEmployeeImport = async (c?: Contractant) => {
+    let target = c ?? null;
+    if (!target && selected) target = selected;
+    if (!target && contractants.length === 1) target = contractants[0] ?? null;
+    if (!target && contractants.length === 0) {
+      await showError('Créez d’abord un contractant.');
+      return;
+    }
+    if (!target) {
+      const id = await promptSelect('Importer dans quel contractant ?', {
+        text: 'Fichier Excel : matricule, nom, postnom, prénom, sexe. Département et service sont repris s’ils sont présents.',
+        inputOptions: Object.fromEntries(contractants.map((item) => [item.id, item.denomination])),
+        confirmText: 'Choisir le fichier',
+      });
+      if (!id) return;
+      target = contractants.find((item) => item.id === id) ?? null;
+    }
+    if (!target) return;
+    importTargetIdRef.current = target.id;
     importFileRef.current?.click();
   };
 
@@ -823,11 +840,15 @@ export default function ContractantsPage() {
         return;
       }
       const imported = Number(data.imported) || 0;
+      const updated = Number(data.updated) || 0;
       const alreadyPresent = Array.isArray(data.alreadyPresent)
         ? data.alreadyPresent.map((n: unknown) => String(n || '').trim()).filter(Boolean)
         : [];
       const parts: string[] = [];
       parts.push(`<p><strong>${imported}</strong> employé(s) ajouté(s).</p>`);
+      if (updated > 0) {
+        parts.push(`<p><strong>${updated}</strong> fiche(s) mise(s) à jour (matricule, sexe, département ou service).</p>`);
+      }
       if (alreadyPresent.length > 0) {
         const list = alreadyPresent
           .map((n: string) => `<li>${n.replace(/</g, '&lt;')}</li>`)
@@ -923,9 +944,11 @@ export default function ContractantsPage() {
     if (canEdit || canCreate) {
       items.push({
         id: 'import',
-        label: 'Mise à jour',
+        label: 'Import Excel',
         icon: 'import',
-        onClick: () => startEmployeeImport(c),
+        onClick: () => {
+          void startEmployeeImport(c);
+        },
       });
     }
     return items;
@@ -1229,6 +1252,22 @@ export default function ContractantsPage() {
                   </button>
                 )}
               </div>
+              {(canCreate || canEdit) && (
+                <button
+                  type="button"
+                  className="btn btn-outline btn-with-icon"
+                  disabled={loading}
+                  onClick={() => void startEmployeeImport()}
+                  title="Importer un Excel : matricule, nom, postnom, prénom, sexe. Département et service si présents."
+                >
+                  <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden>
+                    <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
+                    <polyline points="17 8 12 3 7 8" />
+                    <line x1="12" y1="3" x2="12" y2="15" />
+                  </svg>
+                  Import
+                </button>
+              )}
               <button
                 type="button"
                 className="btn btn-outline btn-export btn-with-icon"
@@ -1507,6 +1546,15 @@ export default function ContractantsPage() {
                 ← Retour
               </button>
               <div className="contractants-detail-actions">
+                {(canCreate || canEdit) && (
+                  <button
+                    type="button"
+                    className="btn btn-ghost btn-sm"
+                    onClick={() => void startEmployeeImport(selected)}
+                  >
+                    Import Excel
+                  </button>
+                )}
                 <button
                   type="button"
                   className="btn btn-ghost btn-sm"

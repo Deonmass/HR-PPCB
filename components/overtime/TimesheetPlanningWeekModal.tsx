@@ -116,6 +116,7 @@ export default function TimesheetPlanningWeekModal({
   const [loading, setLoading] = useState(false);
   const [saving, setSaving] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
+  const [companyFilter, setCompanyFilter] = useState<'all' | 'ppc' | 'contractant'>('all');
   const [activatedDateKeys, setActivatedDateKeys] = useState<Set<string>>(() => new Set());
   const [columnMenu, setColumnMenu] = useState<ColumnMenuState | null>(null);
   const menuRef = useRef<HTMLDivElement | null>(null);
@@ -181,6 +182,7 @@ export default function TimesheetPlanningWeekModal({
   useEffect(() => {
     if (!open) {
       setSearchQuery('');
+      setCompanyFilter('all');
       setColumnMenu(null);
       setActivatedDateKeys(new Set());
     }
@@ -232,14 +234,22 @@ export default function TimesheetPlanningWeekModal({
     return { total, filled, percent: total ? Math.round((filled / total) * 100) : 0 };
   }, [rows, activeDays]);
 
+  const companyRows = useMemo(() => {
+    if (companyFilter === 'all') return rows;
+    return rows.filter((row) => {
+      const contractant = row.matricule.trim().toUpperCase().startsWith('CTR-');
+      return companyFilter === 'contractant' ? contractant : !contractant;
+    });
+  }, [companyFilter, rows]);
+
   const filteredRows = useMemo(() => {
     const query = searchQuery.trim().toLowerCase();
-    if (!query) return rows;
-    return rows.filter(
+    if (!query) return companyRows;
+    return companyRows.filter(
       (row) =>
         row.nom.toLowerCase().includes(query) || row.matricule.toLowerCase().includes(query),
     );
-  }, [rows, searchQuery]);
+  }, [companyRows, searchQuery]);
 
   const updateShift = (matricule: string, dateKey: string, shiftType: TimesheetShiftType | null) => {
     if (!canEdit || locked) return;
@@ -496,6 +506,22 @@ export default function TimesheetPlanningWeekModal({
 
           <div className="modal-body timesheet-manager-modal-body">
             <div className="timesheet-planning-week-search">
+              <div className="timesheet-planning-week-company" role="group" aria-label="Société">
+                {([
+                  ['all', 'Tous'],
+                  ['ppc', 'PPC'],
+                  ['contractant', 'Contractant'],
+                ] as const).map(([id, label]) => (
+                  <button
+                    key={id}
+                    type="button"
+                    className={companyFilter === id ? 'is-active' : ''}
+                    onClick={() => setCompanyFilter(id)}
+                  >
+                    {label}
+                  </button>
+                ))}
+              </div>
               <input
                 type="search"
                 className="search-input"
@@ -515,7 +541,7 @@ export default function TimesheetPlanningWeekModal({
                 </button>
               ) : null}
               <span className="timesheet-planning-week-search-count">
-                {filteredRows.length}/{rows.length} agent(s)
+                {filteredRows.length}/{companyRows.length} agent(s)
               </span>
             </div>
 
