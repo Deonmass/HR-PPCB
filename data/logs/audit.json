@@ -1,6 +1,44 @@
 {
   "entries": [
     {
+      "id": "log-001732",
+      "at": "2026-10-20T10:42:57.994Z",
+      "userId": "Tresor.Maneka@ppcdrc.cd",
+      "userName": "Tresor Maneka",
+      "userEmail": "Tresor.Maneka@ppcdrc.cd",
+      "module": "protocol.voyages",
+      "moduleLabel": "Gestion de voyage",
+      "action": "create",
+      "actionLabel": "Création",
+      "entityType": "protocol.voyage",
+      "entityId": "pvc-048",
+      "summary": "Voyage PVC-0048 SAMBA LUINDA HONORE KINSHASA KIKWIT TSHIKAPA KINSHASA",
+      "details": "Voyage PVC-0048 SAMBA LUINDA HONORE KINSHASA KIKWIT TSHIKAPA KINSHASA",
+      "after": {
+        "id": "pvc-048",
+        "numero": "PVC-0048",
+        "date": "2026-10-19",
+        "voyageur": "SAMBA LUINDA HONORE",
+        "voyageurMatricule": "70000130",
+        "destination": "KINSHASA KIKWIT TSHIKAPA KINSHASA",
+        "ticketAvion": 0,
+        "visaVolant": 0,
+        "lettreLegaliser": 0,
+        "goPass": 0,
+        "transfert": 0,
+        "hotelNuit": 100,
+        "nbreNuits": 1,
+        "coutHotel": 100,
+        "categorieHotel": "FORTUNER HOTEL",
+        "appartement": 0,
+        "coutTotal": 100,
+        "createdAt": "2026-10-20T10:42:54.803Z",
+        "updatedAt": "2026-10-20T10:42:54.803Z"
+      },
+      "undoable": false,
+      "undone": false
+    },
+    {
       "id": "log-001731",
       "at": "2026-10-20T10:41:59.738Z",
       "userId": "Tresor.Maneka@ppcdrc.cd",
@@ -189483,5 +189521,5 @@
       }
     }
   ],
-  "nextSeq": 1732
+  "nextSeq": 1733
 }
