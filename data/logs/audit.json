@@ -1,6 +1,44 @@
 {
   "entries": [
     {
+      "id": "log-001731",
+      "at": "2026-10-20T10:41:59.738Z",
+      "userId": "Tresor.Maneka@ppcdrc.cd",
+      "userName": "Tresor Maneka",
+      "userEmail": "Tresor.Maneka@ppcdrc.cd",
+      "module": "protocol.voyages",
+      "moduleLabel": "Gestion de voyage",
+      "action": "create",
+      "actionLabel": "Création",
+      "entityType": "protocol.voyage",
+      "entityId": "pvc-047",
+      "summary": "Voyage PVC-0047 NDONDA LUFULUABO PASCAL KINSHASA KIKWIT TSHIKAPA",
+      "details": "Voyage PVC-0047 NDONDA LUFULUABO PASCAL KINSHASA KIKWIT TSHIKAPA",
+      "after": {
+        "id": "pvc-047",
+        "numero": "PVC-0047",
+        "date": "2026-10-19",
+        "voyageur": "NDONDA LUFULUABO PASCAL",
+        "voyageurMatricule": "70000307",
+        "destination": "KINSHASA KIKWIT TSHIKAPA",
+        "ticketAvion": 0,
+        "visaVolant": 0,
+        "lettreLegaliser": 0,
+        "goPass": 0,
+        "transfert": 0,
+        "hotelNuit": 100,
+        "nbreNuits": 1,
+        "coutHotel": 100,
+        "categorieHotel": "FORTUNE KWIT",
+        "appartement": 0,
+        "coutTotal": 100,
+        "createdAt": "2026-10-20T10:41:56.359Z",
+        "updatedAt": "2026-10-20T10:41:56.359Z"
+      },
+      "undoable": false,
+      "undone": false
+    },
+    {
       "id": "log-001730",
       "at": "2026-10-20T10:40:56.515Z",
       "userId": "Tresor.Maneka@ppcdrc.cd",
@@ -189445,5 +189483,5 @@
       }
     }
   ],
-  "nextSeq": 1731
+  "nextSeq": 1732
 }
