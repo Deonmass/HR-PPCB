@@ -1,6 +1,44 @@
 {
   "entries": [
     {
+      "id": "log-001727",
+      "at": "2026-10-20T10:36:59.588Z",
+      "userId": "Tresor.Maneka@ppcdrc.cd",
+      "userName": "Tresor Maneka",
+      "userEmail": "Tresor.Maneka@ppcdrc.cd",
+      "module": "protocol.voyages",
+      "moduleLabel": "Gestion de voyage",
+      "action": "create",
+      "actionLabel": "Création",
+      "entityType": "protocol.voyage",
+      "entityId": "pvc-043",
+      "summary": "Voyage PVC-0043 LIONEL Zamba Kinshasa Zamba",
+      "details": "Voyage PVC-0043 LIONEL Zamba Kinshasa Zamba",
+      "after": {
+        "id": "pvc-043",
+        "numero": "PVC-0043",
+        "date": "2026-10-18",
+        "voyageur": "LIONEL",
+        "voyageurMatricule": "",
+        "destination": "Zamba Kinshasa Zamba",
+        "ticketAvion": 0,
+        "visaVolant": 0,
+        "lettreLegaliser": 0,
+        "goPass": 0,
+        "transfert": 0,
+        "hotelNuit": 100,
+        "nbreNuits": 1,
+        "coutHotel": 100,
+        "categorieHotel": "",
+        "appartement": 0,
+        "coutTotal": 100,
+        "createdAt": "2026-10-20T10:36:56.098Z",
+        "updatedAt": "2026-10-20T10:36:56.098Z"
+      },
+      "undoable": false,
+      "undone": false
+    },
+    {
       "id": "log-001726",
       "at": "2026-10-20T10:36:03.817Z",
       "userId": "Tresor.Maneka@ppcdrc.cd",
@@ -189293,5 +189331,5 @@
       }
     }
   ],
-  "nextSeq": 1727
+  "nextSeq": 1728
 }
