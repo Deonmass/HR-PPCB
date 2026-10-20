@@ -1,6 +1,31 @@
 {
   "entries": [
     {
+      "id": "log-001737",
+      "at": "2026-10-20T12:25:02.150Z",
+      "userId": "admin",
+      "userName": "Administrateur",
+      "userEmail": "admin",
+      "module": "timesheet",
+      "moduleLabel": "Timesheet",
+      "action": "update",
+      "actionLabel": "Modification",
+      "summary": "Période timesheet 10/2026 : 2026-09-16 → 2026-10-15",
+      "details": "Période timesheet 10/2026 : 2026-09-16 → 2026-10-15",
+      "after": {
+        "activeStart": "2026-09-16",
+        "activeEnd": "2026-10-15"
+      },
+      "undoable": false,
+      "undone": false,
+      "meta": {
+        "year": 2026,
+        "month": 10,
+        "activeStart": "2026-09-16",
+        "activeEnd": "2026-10-15"
+      }
+    },
+    {
       "id": "log-001736",
       "at": "2026-10-20T12:24:12.393Z",
       "userId": "admin",
@@ -189628,5 +189653,5 @@
       }
     }
   ],
-  "nextSeq": 1737
+  "nextSeq": 1738
 }
