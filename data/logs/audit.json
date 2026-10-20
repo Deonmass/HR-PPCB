@@ -1,6 +1,29 @@
 {
   "entries": [
     {
+      "id": "log-001745",
+      "at": "2026-10-20T13:00:50.359Z",
+      "userId": "admin",
+      "userName": "Administrateur",
+      "userEmail": "admin",
+      "module": "timesheet",
+      "moduleLabel": "Timesheet",
+      "action": "update",
+      "actionLabel": "Modification",
+      "summary": "Enregistrement timesheet 70000283 — Engineering (10/2026)",
+      "details": "Enregistrement timesheet 70000283 — Engineering (10/2026)",
+      "undoable": false,
+      "undone": false,
+      "meta": {
+        "year": 2026,
+        "month": 10,
+        "department": "Engineering",
+        "matricule": "70000283",
+        "mode": "employee-month",
+        "count": 35
+      }
+    },
+    {
       "id": "log-001744",
       "at": "2026-10-20T12:58:03.059Z",
       "userId": "admin",
@@ -189814,5 +189837,5 @@
       }
     }
   ],
-  "nextSeq": 1745
+  "nextSeq": 1746
 }
