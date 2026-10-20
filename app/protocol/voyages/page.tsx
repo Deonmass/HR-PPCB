@@ -43,6 +43,7 @@ type FormState = {
   nbreNuits: string;
   categorieHotel: string;
   appartement: string;
+  autresCharges: string;
 };
 
 const DRILL_COLUMNS: DashboardListColumn[] = [
@@ -98,6 +99,7 @@ function emptyForm(): FormState {
     nbreNuits: '',
     categorieHotel: '',
     appartement: '',
+    autresCharges: '',
   };
 }
 
@@ -118,6 +120,7 @@ function formFrom(item: ProtocolVoyageCout): FormState {
     nbreNuits: item.nbreNuits ? String(item.nbreNuits) : '',
     categorieHotel: item.categorieHotel,
     appartement: text(item.appartement),
+    autresCharges: text(item.autresCharges),
   };
 }
 
@@ -253,6 +256,7 @@ export default function ProtocolVoyagesPage() {
     transfert: num(form.transfert),
     coutHotel: previewHotel,
     appartement: num(form.appartement),
+    autresCharges: num(form.autresCharges),
   }) : 0;
 
   function openDrill(title: string, list: ProtocolVoyageCout[]) {
@@ -296,6 +300,7 @@ export default function ProtocolVoyagesPage() {
         nbreNuits: Math.round(num(form.nbreNuits)),
         categorieHotel: form.categorieHotel.trim(),
         appartement: num(form.appartement),
+        autresCharges: num(form.autresCharges),
       };
       const response = await fetch(form.id ? `/api/protocol/voyages/${form.id}` : '/api/protocol/voyages', {
         method: form.id ? 'PATCH' : 'POST',
@@ -518,7 +523,7 @@ export default function ProtocolVoyagesPage() {
                         <td>{item.destination}</td>
                         <td>{moneyLabel(item.ticketAvion)}</td>
                         <td>{moneyLabel(item.coutHotel)}{item.nbreNuits ? <div className="text-muted">{item.nbreNuits} nuit{item.nbreNuits > 1 ? 's' : ''}</div> : null}</td>
-                        <td>{moneyLabel(item.visaVolant + item.lettreLegaliser + item.goPass + item.transfert + item.appartement)}</td>
+                        <td>{moneyLabel(item.visaVolant + item.lettreLegaliser + item.goPass + item.transfert + item.appartement + item.autresCharges)}</td>
                         <td><strong>{moneyLabel(item.coutTotal)}</strong></td>
                         <td className="charroi-actions-cell">
                           <CardActionMenu items={menuItems(item)} ariaLabel={`Actions — ${item.numero}`} />
@@ -561,38 +566,96 @@ export default function ProtocolVoyagesPage() {
                       <label>Destination</label>
                       <input required value={form.destination} placeholder="Kinshasa - Nairobi - Kinshasa" onChange={(event) => setForm({ ...form, destination: event.target.value })} />
                     </div>
-                    {([
-                      ['ticketAvion', 'Ticket avion ($)'],
-                      ['visaVolant', 'Visa volant ($)'],
-                      ['lettreLegaliser', 'Lettre à légaliser ($)'],
-                      ['goPass', 'Go Pass ($)'],
-                      ['transfert', 'Transfert aéroport–ville ($)'],
-                      ['appartement', 'Appartement ($)'],
-                    ] as const).map(([key, label]) => (
-                      <div className="form-group" key={key}>
-                        <label>{label}</label>
-                        <input type="number" min={0} step="0.01" value={form[key]} onChange={(event) => setForm({ ...form, [key]: event.target.value })} />
-                      </div>
-                    ))}
-                    <div className="form-group">
-                      <label>Hôtel / nuit ($)</label>
-                      <input type="number" min={0} step="0.01" value={form.hotelNuit} onChange={(event) => setForm({ ...form, hotelNuit: event.target.value })} />
-                    </div>
-                    <div className="form-group">
-                      <label>Nombre de nuits</label>
-                      <input type="number" min={0} step="1" value={form.nbreNuits} onChange={(event) => setForm({ ...form, nbreNuits: event.target.value })} />
-                    </div>
-                    <div className="form-group">
-                      <label>Catégorie hôtel</label>
-                      <input value={form.categorieHotel} onChange={(event) => setForm({ ...form, categorieHotel: event.target.value })} />
-                    </div>
-                    <div className="form-group">
-                      <label>Coût hôtel</label>
-                      <input readOnly value={moneyLabel(previewHotel)} />
-                    </div>
                     <div className="form-group" style={{ gridColumn: '1 / -1' }}>
-                      <label>Coût total</label>
-                      <input readOnly value={moneyLabel(previewTotal)} />
+                      <table className="data-table protocol-voyage-charges">
+                        <thead>
+                          <tr>
+                            <th>Charge</th>
+                            <th>Montant ($)</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          {([
+                            ['ticketAvion', 'Ticket avion'],
+                            ['visaVolant', 'Visa volant'],
+                            ['lettreLegaliser', 'Lettre à légaliser'],
+                            ['goPass', 'Go Pass'],
+                            ['transfert', 'Transfert aéroport–ville'],
+                            ['appartement', 'Appartement'],
+                          ] as const).map(([key, label]) => (
+                            <tr key={key}>
+                              <th scope="row">{label}</th>
+                              <td>
+                                <input
+                                  type="number"
+                                  min={0}
+                                  step="0.01"
+                                  value={form[key]}
+                                  aria-label={label}
+                                  onChange={(event) => setForm({ ...form, [key]: event.target.value })}
+                                />
+                              </td>
+                            </tr>
+                          ))}
+                          <tr>
+                            <th scope="row">Hôtel / nuit</th>
+                            <td>
+                              <input
+                                type="number"
+                                min={0}
+                                step="0.01"
+                                value={form.hotelNuit}
+                                aria-label="Hôtel par nuit"
+                                onChange={(event) => setForm({ ...form, hotelNuit: event.target.value })}
+                              />
+                            </td>
+                          </tr>
+                          <tr>
+                            <th scope="row">Nombre de nuits</th>
+                            <td>
+                              <input
+                                type="number"
+                                min={0}
+                                step="1"
+                                value={form.nbreNuits}
+                                aria-label="Nombre de nuits"
+                                onChange={(event) => setForm({ ...form, nbreNuits: event.target.value })}
+                              />
+                            </td>
+                          </tr>
+                          <tr>
+                            <th scope="row">Catégorie hôtel</th>
+                            <td>
+                              <input
+                                value={form.categorieHotel}
+                                aria-label="Catégorie hôtel"
+                                onChange={(event) => setForm({ ...form, categorieHotel: event.target.value })}
+                              />
+                            </td>
+                          </tr>
+                          <tr>
+                            <th scope="row">Coût hôtel</th>
+                            <td><input readOnly value={moneyLabel(previewHotel)} aria-label="Coût hôtel" /></td>
+                          </tr>
+                          <tr>
+                            <th scope="row">Autres charges</th>
+                            <td>
+                              <input
+                                type="number"
+                                min={0}
+                                step="0.01"
+                                value={form.autresCharges}
+                                aria-label="Autres charges"
+                                onChange={(event) => setForm({ ...form, autresCharges: event.target.value })}
+                              />
+                            </td>
+                          </tr>
+                          <tr className="is-total">
+                            <th scope="row">Coût total</th>
+                            <td><input readOnly value={moneyLabel(previewTotal)} aria-label="Coût total" /></td>
+                          </tr>
+                        </tbody>
+                      </table>
                     </div>
                   </div>
                 </div>

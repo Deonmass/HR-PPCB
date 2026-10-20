@@ -332,6 +332,32 @@ function draftNames(draft: string): string[] {
   return draft.split(',').map((part) => part.trim()).filter(Boolean);
 }
 
+function SelectAllBox({
+  checked,
+  indeterminate,
+  label,
+  onChange,
+}: {
+  checked: boolean;
+  indeterminate: boolean;
+  label: string;
+  onChange: () => void;
+}) {
+  const ref = useRef<HTMLInputElement>(null);
+  useEffect(() => {
+    if (ref.current) ref.current.indeterminate = indeterminate;
+  }, [indeterminate]);
+  return (
+    <input
+      ref={ref}
+      type="checkbox"
+      checked={checked}
+      aria-label={label}
+      onChange={onChange}
+    />
+  );
+}
+
 function passengerCount(nom: string, draft = ''): string {
   const names = passengerNames(appendPassengerNames(nom, draftNames(draft)));
   return String(Math.max(names.length, 1));
@@ -547,6 +573,7 @@ export default function CharroiVoyagesPage() {
   const [completeForm, setCompleteForm] = useState<CompleteForm | null>(null);
   const [drill, setDrill] = useState<{ title: string; items: CharroiVoyage[] } | null>(null);
   const [contextMenu, setContextMenu] = useState<{ x: number; y: number; voyage: CharroiVoyage } | null>(null);
+  const [selectedIds, setSelectedIds] = useState<Set<string>>(() => new Set());
   const [pendingId, setPendingId] = useState<string | null>(null);
 
   const load = useCallback(async (silent = false) => {
@@ -973,6 +1000,58 @@ export default function CharroiVoyagesPage() {
     }));
   }
 
+  useEffect(() => {
+    setSelectedIds(new Set());
+  }, [tab, year, month, search, demandeFilter]);
+
+  function toggleSelected(id: string) {
+    setSelectedIds((prev) => {
+      const next = new Set(prev);
+      if (next.has(id)) next.delete(id);
+      else next.add(id);
+      return next;
+    });
+  }
+
+  function toggleAllSelected(list: CharroiVoyage[]) {
+    setSelectedIds((prev) => {
+      const allOn = list.length > 0 && list.every((item) => prev.has(item.id));
+      return allOn ? new Set() : new Set(list.map((item) => item.id));
+    });
+  }
+
+  async function runBulk(
+    chosen: CharroiVoyage[],
+    title: string,
+    detail: string,
+    confirmLabel: string,
+    danger: boolean,
+    apply: (voyage: CharroiVoyage) => Promise<void>,
+    success: string,
+  ) {
+    if (!chosen.length || busy) return;
+    const ok = danger
+      ? await confirmDelete(title, detail)
+      : await confirmAction(title, detail, confirmLabel);
+    if (!ok) return;
+    setBusy(true);
+    try {
+      for (const voyage of chosen) {
+        setPendingId(voyage.id);
+        await apply(voyage);
+      }
+      setSelectedIds(new Set());
+      await showSuccess(success);
+      await load(true);
+    } catch (err) {
+      await showError(err instanceof Error ? err.message : 'Action impossible');
+      await load(true);
+    } finally {
+      setBusy(false);
+      setPendingId(null);
+    }
+  }
+
   function menuItems(voyage: CharroiVoyage): ContextMenuItem[] {
     const itemsMenu: ContextMenuItem[] = [];
     if (canEdit) {
@@ -1027,11 +1106,108 @@ export default function CharroiVoyagesPage() {
     if (list.length === 0) {
       return <p className="text-muted">{empty}</p>;
     }
+    const chosen = compact ? [] : list.filter((voyage) => selectedIds.has(voyage.id));
+    const allChecked = !compact && list.every((voyage) => selectedIds.has(voyage.id));
+    const someChecked = chosen.length > 0 && !allChecked;
+    const canCancelSelection = canEdit && chosen.length > 0 && chosen.every((voyage) => voyage.status === 'demande' || voyage.status === 'pending');
+    const canReopenSelection = canEdit && chosen.length > 0 && chosen.every((voyage) => voyage.status === 'annule' || voyage.status === 'effectue');
+    const selectionLabel = chosen.slice(0, 6).map((voyage) => voyage.numero).join(', ')
+      + (chosen.length > 6 ? ` et ${chosen.length - 6} autre(s)` : '');
     return (
+      <>
+      {chosen.length > 0 && (
+        <div className="charroi-voyage-bulk" aria-live="polite">
+          <span className="charroi-voyage-bulk-count">{chosen.length} sélectionné{chosen.length > 1 ? 's' : ''}</span>
+          {canCancelSelection && (
+            <button
+              type="button"
+              className="btn btn-sm btn-outline"
+              disabled={busy}
+              onClick={() => void runBulk(
+                chosen,
+                `Annuler ${chosen.length} voyage(s) ?`,
+                selectionLabel,
+                'Annuler',
+                false,
+                async (voyage) => {
+                  const response = await fetch(`/api/charroi/voyages/${voyage.id}`, {
+                    method: 'PATCH',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ action: 'cancel' }),
+                  });
+                  if (!response.ok) throw new Error(await readError(response));
+                },
+                `${chosen.length} voyage(s) annulé(s)`,
+              )}
+            >
+              Annuler
+            </button>
+          )}
+          {canReopenSelection && (
+            <button
+              type="button"
+              className="btn btn-sm btn-outline"
+              disabled={busy}
+              onClick={() => void runBulk(
+                chosen,
+                `Rouvrir ${chosen.length} voyage(s) ?`,
+                selectionLabel,
+                'Rouvrir',
+                false,
+                async (voyage) => {
+                  const response = await fetch(`/api/charroi/voyages/${voyage.id}`, {
+                    method: 'PATCH',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ action: 'reopen' }),
+                  });
+                  if (!response.ok) throw new Error(await readError(response));
+                },
+                `${chosen.length} voyage(s) rouvert(s)`,
+              )}
+            >
+              Rouvrir
+            </button>
+          )}
+          {canDelete && (
+            <button
+              type="button"
+              className="btn btn-sm btn-outline"
+              disabled={busy}
+              onClick={() => void runBulk(
+                chosen,
+                `Supprimer ${chosen.length} voyage(s) ?`,
+                selectionLabel,
+                'Supprimer',
+                true,
+                async (voyage) => {
+                  const response = await fetch(`/api/charroi/voyages/${voyage.id}`, { method: 'DELETE' });
+                  if (!response.ok) throw new Error(await readError(response));
+                },
+                `${chosen.length} voyage(s) supprimé(s)`,
+              )}
+            >
+              Supprimer
+            </button>
+          )}
+          <button type="button" className="btn btn-sm btn-ghost" disabled={busy} onClick={() => setSelectedIds(new Set())}>
+            Effacer
+          </button>
+        </div>
+      )}
       <div className="table-wrap charroi-table-wrap charroi-voyage-table-wrap">
         <table className={`data-table charroi-table charroi-voyage-table${compact ? ' is-compact' : ''}`}>
           <thead>
             <tr>
+              {!compact && (
+                <th className="charroi-voyage-select-col">
+                  <SelectAllBox
+                    checked={allChecked}
+                    indeterminate={someChecked}
+                    label="Sélectionner les voyages affichés"
+                    onChange={() => toggleAllSelected(list)}
+                  />
+                </th>
+              )}
               {!compact && <th>N°</th>}
               <th>Passager</th>
               <th>Pers.</th>
@@ -1047,7 +1223,10 @@ export default function CharroiVoyagesPage() {
             {list.map((voyage) => (
               <tr
                 key={voyage.id}
-                className={pendingId === voyage.id ? 'is-pending' : undefined}
+                className={[
+                  pendingId === voyage.id ? 'is-pending' : '',
+                  !compact && selectedIds.has(voyage.id) ? 'is-selected' : '',
+                ].filter(Boolean).join(' ') || undefined}
                 title="Clic droit pour les actions"
                 onContextMenu={(event) => {
                   event.preventDefault();
@@ -1057,6 +1236,16 @@ export default function CharroiVoyagesPage() {
                   setContextMenu({ x: event.clientX, y: event.clientY, voyage });
                 }}
               >
+                {!compact && (
+                  <td className="charroi-voyage-select-col" onClick={(event) => event.stopPropagation()}>
+                    <input
+                      type="checkbox"
+                      checked={selectedIds.has(voyage.id)}
+                      aria-label={`Sélectionner ${voyage.numero}`}
+                      onChange={() => toggleSelected(voyage.id)}
+                    />
+                  </td>
+                )}
                 {!compact && <td>{voyage.numero}</td>}
                 <td>
                   <strong>{voyage.passagerNom}</strong>
@@ -1085,6 +1274,7 @@ export default function CharroiVoyagesPage() {
           </tbody>
         </table>
       </div>
+      </>
     );
   }
 

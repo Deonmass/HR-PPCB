@@ -93,6 +93,7 @@ function normalize(input: ProtocolVoyageCoutInput, seq: number, timestamps?: { c
   const goPass = money(input.goPass);
   const transfert = money(input.transfert);
   const appartement = money(input.appartement);
+  const autresCharges = money(input.autresCharges);
   const now = nowIso();
   return {
     id: str(input.id) || idFromSeq(seq),
@@ -111,6 +112,7 @@ function normalize(input: ProtocolVoyageCoutInput, seq: number, timestamps?: { c
     coutHotel,
     categorieHotel: str(input.categorieHotel),
     appartement,
+    autresCharges,
     coutTotal: computeCoutTotal({
       ticketAvion,
       visaVolant,
@@ -119,6 +121,7 @@ function normalize(input: ProtocolVoyageCoutInput, seq: number, timestamps?: { c
       transfert,
       coutHotel,
       appartement,
+      autresCharges,
     }),
     createdAt: timestamps?.createdAt || str(input.createdAt) || now,
     updatedAt: timestamps?.updatedAt || now,

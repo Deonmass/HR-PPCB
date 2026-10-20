@@ -15,6 +15,7 @@ export interface ProtocolVoyageCout {
   coutHotel: number;
   categorieHotel: string;
   appartement: number;
+  autresCharges: number;
   coutTotal: number;
   createdAt: string;
   updatedAt: string;
@@ -35,6 +36,7 @@ export const PROTOCOL_VOYAGE_COST_NATURES = [
   { id: 'lettreLegaliser', label: 'Lettre à légaliser' },
   { id: 'transfert', label: 'Transferts' },
   { id: 'appartement', label: 'Appartement' },
+  { id: 'autresCharges', label: 'Autres charges' },
 ] as const;
 
 export type ProtocolVoyageCostNature = (typeof PROTOCOL_VOYAGE_COST_NATURES)[number]['id'];
@@ -49,7 +51,7 @@ export function computeCoutHotel(hotelNuit: number, nbreNuits: number): number {
 
 export function computeCoutTotal(input: Pick<
   ProtocolVoyageCout,
-  'ticketAvion' | 'visaVolant' | 'lettreLegaliser' | 'goPass' | 'transfert' | 'coutHotel' | 'appartement'
+  'ticketAvion' | 'visaVolant' | 'lettreLegaliser' | 'goPass' | 'transfert' | 'coutHotel' | 'appartement' | 'autresCharges'
 >): number {
   return roundMoney(
     input.ticketAvion
@@ -58,6 +60,7 @@ export function computeCoutTotal(input: Pick<
     + input.goPass
     + input.transfert
     + input.coutHotel
-    + input.appartement,
+    + input.appartement
+    + input.autresCharges,
   );
 }

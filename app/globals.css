@@ -25230,6 +25230,33 @@ html[data-theme='dark'] .guest-house-kimpese-panel {
   white-space: normal;
 }
 
+.protocol-voyage-charges {
+  width: 100%;
+  margin: 0;
+}
+
+.protocol-voyage-charges th,
+.protocol-voyage-charges td {
+  padding: 0.4rem 0.55rem;
+  vertical-align: middle;
+}
+
+.protocol-voyage-charges tbody th {
+  width: 46%;
+  font-weight: 600;
+  text-align: left;
+}
+
+.protocol-voyage-charges input {
+  width: 100%;
+}
+
+.protocol-voyage-charges tr.is-total th,
+.protocol-voyage-charges tr.is-total td {
+  font-weight: 700;
+  background: color-mix(in srgb, var(--ppc-red, #b42318) 6%, transparent);
+}
+
 @media (max-width: 1100px) {
   .protocol-voyage-kpis,
   .protocol-voyage-charts {
@@ -25631,6 +25658,36 @@ html[data-theme='dark'] .guest-house-kimpese-panel {
 
 .charroi-voyage-table-wrap {
   max-height: none;
+}
+
+.charroi-voyage-select-col {
+  width: 2.2rem;
+  text-align: center;
+}
+
+.charroi-voyage-select-col input {
+  width: 1rem;
+  height: 1rem;
+  accent-color: var(--ppc-red, #b42318);
+  cursor: pointer;
+}
+
+.charroi-voyage-table tr.is-selected td {
+  background: color-mix(in srgb, var(--ppc-red, #b42318) 7%, transparent);
+}
+
+.charroi-voyage-bulk {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.45rem;
+  margin: 0 0 0.7rem;
+}
+
+.charroi-voyage-bulk-count {
+  font-size: 0.82rem;
+  font-weight: 650;
+  margin-right: 0.2rem;
 }
 
 .charroi-voyage-upcoming .charroi-voyage-table-wrap {
