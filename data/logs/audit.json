@@ -1,6 +1,44 @@
 {
   "entries": [
     {
+      "id": "log-001730",
+      "at": "2026-10-20T10:40:56.515Z",
+      "userId": "Tresor.Maneka@ppcdrc.cd",
+      "userName": "Tresor Maneka",
+      "userEmail": "Tresor.Maneka@ppcdrc.cd",
+      "module": "protocol.voyages",
+      "moduleLabel": "Gestion de voyage",
+      "action": "create",
+      "actionLabel": "Création",
+      "entityType": "protocol.voyage",
+      "entityId": "pvc-046",
+      "summary": "Voyage PVC-0046 MAVUANGALA MVIOKI JEAN-PIERRE KINSHASA KIKWIT TSHIKAPA KINSHASA",
+      "details": "Voyage PVC-0046 MAVUANGALA MVIOKI JEAN-PIERRE KINSHASA KIKWIT TSHIKAPA KINSHASA",
+      "after": {
+        "id": "pvc-046",
+        "numero": "PVC-0046",
+        "date": "2026-10-19",
+        "voyageur": "MAVUANGALA MVIOKI JEAN-PIERRE",
+        "voyageurMatricule": "70000185",
+        "destination": "KINSHASA KIKWIT TSHIKAPA KINSHASA",
+        "ticketAvion": 0,
+        "visaVolant": 0,
+        "lettreLegaliser": 0,
+        "goPass": 0,
+        "transfert": 0,
+        "hotelNuit": 100,
+        "nbreNuits": 1,
+        "coutHotel": 100,
+        "categorieHotel": "",
+        "appartement": 0,
+        "coutTotal": 100,
+        "createdAt": "2026-10-20T10:40:53.377Z",
+        "updatedAt": "2026-10-20T10:40:53.377Z"
+      },
+      "undoable": false,
+      "undone": false
+    },
+    {
       "id": "log-001729",
       "at": "2026-10-20T10:39:36.497Z",
       "userId": "Tresor.Maneka@ppcdrc.cd",
@@ -189407,5 +189445,5 @@
       }
     }
   ],
-  "nextSeq": 1730
+  "nextSeq": 1731
 }
