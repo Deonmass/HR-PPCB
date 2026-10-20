@@ -7526,8 +7526,32 @@
           }
         },
         {
+          "menuId": "charroi.voyages",
+          "label": "Voyage par route",
+          "actions": {
+            "view": false,
+            "create": false,
+            "edit": false,
+            "delete": false,
+            "export": false,
+            "undo": false
+          }
+        },
+        {
           "menuId": "documents.attestation-conge",
           "label": "Attestation de congé",
+          "actions": {
+            "view": false,
+            "create": false,
+            "edit": false,
+            "delete": false,
+            "export": false,
+            "undo": false
+          }
+        },
+        {
+          "menuId": "documents.attestation-residence",
+          "label": "Attestation de résidence",
           "actions": {
             "view": false,
             "create": false,
@@ -7552,6 +7576,18 @@
         {
           "menuId": "travel.etablir",
           "label": "Cash request",
+          "actions": {
+            "view": false,
+            "create": false,
+            "edit": false,
+            "delete": false,
+            "export": false,
+            "undo": false
+          }
+        },
+        {
+          "menuId": "documents.contrat-bail",
+          "label": "Contrat de bail",
           "actions": {
             "view": false,
             "create": false,
@@ -7706,6 +7742,18 @@
           }
         },
         {
+          "menuId": "documents.reponse-demission",
+          "label": "Réponse démission",
+          "actions": {
+            "view": false,
+            "create": false,
+            "edit": false,
+            "delete": false,
+            "export": false,
+            "undo": false
+          }
+        },
+        {
           "menuId": "documents.rrf",
           "label": "RRF",
           "actions": {
@@ -7730,8 +7778,44 @@
           }
         },
         {
+          "menuId": "employes.airtime",
+          "label": "Airtime",
+          "actions": {
+            "view": false,
+            "create": false,
+            "edit": false,
+            "delete": false,
+            "export": false,
+            "undo": false
+          }
+        },
+        {
+          "menuId": "employes.discipline",
+          "label": "Cas disciplinaires",
+          "actions": {
+            "view": false,
+            "create": false,
+            "edit": false,
+            "delete": false,
+            "export": false,
+            "undo": false
+          }
+        },
+        {
           "menuId": "employes.check-documents",
           "label": "Check documents",
+          "actions": {
+            "view": false,
+            "create": false,
+            "edit": false,
+            "delete": false,
+            "export": false,
+            "undo": false
+          }
+        },
+        {
+          "menuId": "employes.classification",
+          "label": "Classification des postes",
           "actions": {
             "view": false,
             "create": false,
@@ -7769,11 +7853,11 @@
           "menuId": "employes.dependants",
           "label": "Dependants",
           "actions": {
-            "view": false,
+            "view": true,
             "create": false,
             "edit": false,
             "delete": false,
-            "export": false,
+            "export": true,
             "undo": false
           }
         },
@@ -7888,6 +7972,54 @@
         {
           "menuId": "employes.liste",
           "label": "Liste employés",
+          "actions": {
+            "view": true,
+            "create": false,
+            "edit": false,
+            "delete": false,
+            "export": true,
+            "undo": false
+          }
+        },
+        {
+          "menuId": "employes.mouvements",
+          "label": "Mouvements",
+          "actions": {
+            "view": false,
+            "create": false,
+            "edit": false,
+            "delete": false,
+            "export": false,
+            "undo": false
+          }
+        },
+        {
+          "menuId": "employes.offres",
+          "label": "Offres",
+          "actions": {
+            "view": false,
+            "create": false,
+            "edit": false,
+            "delete": false,
+            "export": false,
+            "undo": false
+          }
+        },
+        {
+          "menuId": "employes.postes",
+          "label": "Postes (API)",
+          "actions": {
+            "view": false,
+            "create": false,
+            "edit": false,
+            "delete": false,
+            "export": false,
+            "undo": false
+          }
+        },
+        {
+          "menuId": "employes.recrutement",
+          "label": "Recrutement",
           "actions": {
             "view": false,
             "create": false,
@@ -8138,6 +8270,18 @@
           }
         },
         {
+          "menuId": "politique.cellphone",
+          "label": "Politique cellphone",
+          "actions": {
+            "view": false,
+            "create": false,
+            "edit": false,
+            "delete": false,
+            "export": false,
+            "undo": false
+          }
+        },
+        {
           "menuId": "politique.voyages",
           "label": "Politique de voyage",
           "actions": {
@@ -8174,56 +8318,8 @@
           }
         },
         {
-          "menuId": "employes.classification",
-          "label": "Classification des postes",
-          "actions": {
-            "view": false,
-            "create": false,
-            "edit": false,
-            "delete": false,
-            "export": false,
-            "undo": false
-          }
-        },
-        {
-          "menuId": "employes.mouvements",
-          "label": "Mouvements",
-          "actions": {
-            "view": false,
-            "create": false,
-            "edit": false,
-            "delete": false,
-            "export": false,
-            "undo": false
-          }
-        },
-        {
-          "menuId": "employes.offres",
-          "label": "Offres",
-          "actions": {
-            "view": false,
-            "create": false,
-            "edit": false,
-            "delete": false,
-            "export": false,
-            "undo": false
-          }
-        },
-        {
-          "menuId": "employes.postes",
-          "label": "Postes",
-          "actions": {
-            "view": false,
-            "create": false,
-            "edit": false,
-            "delete": false,
-            "export": false,
-            "undo": false
-          }
-        },
-        {
-          "menuId": "employes.recrutement",
-          "label": "Recrutement",
+          "menuId": "politique.paie",
+          "label": "SMIG & simulation de paie",
           "actions": {
             "view": false,
             "create": false,
@@ -8260,6 +8356,18 @@
         {
           "menuId": "project.projects",
           "label": "Projects",
+          "actions": {
+            "view": false,
+            "create": false,
+            "edit": false,
+            "delete": false,
+            "export": false,
+            "undo": false
+          }
+        },
+        {
+          "menuId": "protocol.voyages",
+          "label": "Gestion de voyage",
           "actions": {
             "view": false,
             "create": false,
