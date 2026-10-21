@@ -489,21 +489,21 @@
       "controleTechniqueHistorique": [
         {
           "id": "doc-msirdue5-50vlx",
-          "dateDebut": "2026-04-17",
-          "dateFin": "2026-10-17",
+          "dateDebut": "2026-10-17",
+          "dateFin": "2027-04-16",
           "preuveUrl": "",
           "createdAt": "2026-08-07T09:45:02.237Z"
         }
       ],
       "assuranceFin": "2026-11-14",
       "vignetteFin": "2026-01-07",
-      "controleTechniqueFin": "2026-10-17",
+      "controleTechniqueFin": "2027-04-16",
       "userMatricule": "70000029",
       "userParti": false,
       "garageHistorique": [],
       "notes": "",
       "createdAt": "2026-07-28T16:00:46.888Z",
-      "updatedAt": "2026-08-07T11:00:28.672Z"
+      "updatedAt": "2026-10-21T09:53:13.158Z"
     },
     {
       "id": "veh-016",
