@@ -1,6 +1,48 @@
 {
   "entries": [
     {
+      "id": "log-001791",
+      "at": "2026-10-21T10:46:05.371Z",
+      "userId": "karine.mvutu@ppcdrc.cd",
+      "userName": "Karine Mvutu",
+      "userEmail": "karine.mvutu@ppcdrc.cd",
+      "module": "sante",
+      "moduleLabel": "Santé",
+      "action": "create",
+      "actionLabel": "Création",
+      "entityType": "sante.visit",
+      "entityId": "sante-mvhzl7j0-rpcdd5",
+      "summary": "Cas santé — DIMENENE LUZAYADIO PAMPHIL · AMIBIASE",
+      "details": "Cas santé — DIMENENE LUZAYADIO PAMPHIL · AMIBIASE",
+      "after": {
+        "id": "sante-mvhzl7j0-rpcdd5",
+        "date": "2026-07-10",
+        "nom": "DIMENENE",
+        "postnom": "LUZAYADIO PAMPHIL",
+        "sexe": "M",
+        "age": 54,
+        "typeMalade": "AGENT",
+        "pathologie": "AMIBIASE",
+        "traitement": "ANTI HELMINTIQUE",
+        "reference": "NON",
+        "year": 2026,
+        "month": 7,
+        "employeeMatricule": "70000099",
+        "employeeNom": "DIMENENE LUZAYADIO PAMPHIL",
+        "dependantId": null,
+        "commentaire": "",
+        "contractantId": "",
+        "contractantNom": "",
+        "contractantEmployeeId": "",
+        "createdAt": "2026-10-21T10:46:03.612Z",
+        "updatedAt": "2026-10-21T10:46:03.612Z",
+        "createdBy": "karine.mvutu@ppcdrc.cd",
+        "updatedBy": "karine.mvutu@ppcdrc.cd"
+      },
+      "undoable": false,
+      "undone": false
+    },
+    {
       "id": "log-001790",
       "at": "2026-10-21T10:41:17.773Z",
       "userId": "admin",
@@ -191871,5 +191913,5 @@
       }
     }
   ],
-  "nextSeq": 1791
+  "nextSeq": 1792
 }
