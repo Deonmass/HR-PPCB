@@ -1,6 +1,53 @@
 {
   "entries": [
     {
+      "id": "log-001803",
+      "at": "2026-10-21T15:31:55.311Z",
+      "userId": "Tresor.Maneka@ppcdrc.cd",
+      "userName": "Tresor Maneka",
+      "userEmail": "Tresor.Maneka@ppcdrc.cd",
+      "module": "charroi.voyages",
+      "moduleLabel": "Charroi — Voyages",
+      "action": "create",
+      "actionLabel": "Création",
+      "entityType": "charroi.voyage",
+      "entityId": "vyg-026",
+      "summary": "Demande de voyage VYG-0026 Francois du Bois, Espoir, KANKONDE ILUNGA ALIDOR Kinshasa → Kimpese",
+      "details": "Demande de voyage VYG-0026 Francois du Bois, Espoir, KANKONDE ILUNGA ALIDOR Kinshasa → Kimpese",
+      "after": {
+        "id": "vyg-026",
+        "numero": "VYG-0026",
+        "passagerNom": "Francois du Bois, Espoir, KANKONDE ILUNGA ALIDOR",
+        "passagerMatricule": ", , 70000226",
+        "passagerInterne": true,
+        "nombrePersonnes": 3,
+        "depart": "Kinshasa",
+        "destination": "Kimpese",
+        "dateDepart": "2026-10-21",
+        "heureDepart": "07:34",
+        "dateArrivee": "",
+        "heureArrivee": "",
+        "motif": "Retour a Zamba",
+        "notes": "",
+        "status": "demande",
+        "chauffeurNom": "",
+        "chauffeurMatricule": "",
+        "chauffeurInterne": false,
+        "vehiculeMode": "",
+        "vehiculeId": "",
+        "vehiculeLibelle": "",
+        "foodAllowance": 0,
+        "foodForTheRoad": 0,
+        "tollGate": 0,
+        "confirmedAt": "",
+        "completedAt": "",
+        "createdAt": "2026-10-21T15:31:51.233Z",
+        "updatedAt": "2026-10-21T15:31:51.233Z"
+      },
+      "undoable": false,
+      "undone": false
+    },
+    {
       "id": "log-001802",
       "at": "2026-10-21T14:47:46.320Z",
       "userId": "Serge.Muakasa@ppcdrc.cd",
@@ -192324,5 +192371,5 @@
       }
     }
   ],
-  "nextSeq": 1803
+  "nextSeq": 1804
 }
