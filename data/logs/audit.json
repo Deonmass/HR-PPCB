@@ -1,6 +1,117 @@
 {
   "entries": [
     {
+      "id": "log-001771",
+      "at": "2026-10-21T10:08:12.656Z",
+      "userId": "Serge.Muakasa@ppcdrc.cd",
+      "userName": "Serge Muakasa",
+      "userEmail": "Serge.Muakasa@ppcdrc.cd",
+      "module": "charroi.vehicules",
+      "moduleLabel": "Charroi — Véhicules",
+      "action": "update",
+      "actionLabel": "Modification",
+      "entityType": "charroi.vehicule.doc",
+      "entityId": "veh-020",
+      "summary": "Modification Contrôle technique — 2852AT01",
+      "details": "Période Contrôle technique modifiée (doc-msirh8q2-cvcvr).\nAvant : {\"id\":\"veh-020\",\"numero\":20,\"marque\":\"Toyota\",\"type\":\"Pick up\",\"numeroChassis\":\"AHTFK22G403097456\",\"plaque\":\"2852AT01\",\"cv\":\"13 CV\",\"assureur\":\"Sfa\",\"departement\":\"SHE\",\"user\":\"ADHULE NYADRIA JOEL\",\"province\":\"Kongo Central\",\"proprietaire\":\"PPC\",\"kilometrage\":null,\"miseCirculation\":\"2016\",\"age\":10,\"observationTech\":\"Avertissement\",\"etatManuel\":\"\",\"assuranceHistorique\":[{\"id\":\"doc-msipjt5b-coddo\",\"dateDebut\":\"2025-11-14\",\"dateFin\":\"2026-11-14\",\"preuveUrl\":\"\",\"createdAt\":\"2026-08-07T08:53:41.327Z\"}],\"vignetteHistorique\":[],\"controleTechniqueHistorique\":[{\"id\":\"doc-msirh8q2-cvcvr\",\"dateDebut\":\"2026-04-17\",\"dateFin\":\"2026-10-17\",\"preuveUrl\":\"\",\"createdAt\":\"2026-08-07T09:47:40.778Z\"}],\"assuranceFin\":\"2026-11-14\",\"vignetteFin\":\"\",\"controleTechniqueFin\":\"2026-10-17\",\"userMatricule\":\"70000112\",\"userParti\":false,\"garageHistorique\":[],\"notes\":\"\",\"createdAt\":\"2026-07-28T16:00:46.888Z\",\"updatedAt\":\"2026-08-07T09:47:40.778Z\"}\nAprès : {\"id\":\"veh-020\",\"numero\":20,\"marque\":\"Toyota\",\"type\":\"Pick up\",\"numeroChassis\":\"AHTFK22G403097456\",\"plaque\":\"2852AT01\",\"cv\":\"13 CV\",\"assureur\":\"Sfa\",\"departement\":\"SHE\",\"user\":\"ADHULE NYADRIA JOEL\",\"province\":\"Kongo Central\",\"proprietaire\":\"PPC\",\"kilometrage\":null,\"miseCirculation\":\"2016\",\"age\":10,\"observationTech\":\"Avertissement\",\"etatManuel\":\"\",\"assuranceHistorique\":[{\"id\":\"doc-msipjt5b-coddo\",\"dateDebut\":\"2025-11-14\",\"dateFin\":\"2026-11-14\",\"preuveUrl\":\"\",\"createdAt\":\"2026-08-07T08:53:41.327Z\"}],\"vignetteHistorique\":[],\"controleTechniqueHistorique\":[{\"id\":\"doc-msirh8q2-cvcvr\",\"dateDebut\":\"2026-10-17\",\"dateFin\":\"2027-04-16\",\"preuveUrl\":\"\",\"createdAt\":\"2026-08-07T09:47:40.778Z\"}],\"assuranceFin\":\"2026-11-14\",\"vignetteFin\":\"\",\"controleTechniqueFin\":\"2027-04-16\",\"userMatricule\":\"70000112\",\"userParti\":false,\"garageHistorique\":[],\"notes\":\"\",\"createdAt\":\"2026-07-28T16:00:46.888Z\",\"updatedAt\":\"2026-10-21T10:08:09.896Z\"}",
+      "before": {
+        "id": "veh-020",
+        "numero": 20,
+        "marque": "Toyota",
+        "type": "Pick up",
+        "numeroChassis": "AHTFK22G403097456",
+        "plaque": "2852AT01",
+        "cv": "13 CV",
+        "assureur": "Sfa",
+        "departement": "SHE",
+        "user": "ADHULE NYADRIA JOEL",
+        "province": "Kongo Central",
+        "proprietaire": "PPC",
+        "kilometrage": null,
+        "miseCirculation": "2016",
+        "age": 10,
+        "observationTech": "Avertissement",
+        "etatManuel": "",
+        "assuranceHistorique": [
+          {
+            "id": "doc-msipjt5b-coddo",
+            "dateDebut": "2025-11-14",
+            "dateFin": "2026-11-14",
+            "preuveUrl": "",
+            "createdAt": "2026-08-07T08:53:41.327Z"
+          }
+        ],
+        "vignetteHistorique": [],
+        "controleTechniqueHistorique": [
+          {
+            "id": "doc-msirh8q2-cvcvr",
+            "dateDebut": "2026-04-17",
+            "dateFin": "2026-10-17",
+            "preuveUrl": "",
+            "createdAt": "2026-08-07T09:47:40.778Z"
+          }
+        ],
+        "assuranceFin": "2026-11-14",
+        "vignetteFin": "",
+        "controleTechniqueFin": "2026-10-17",
+        "userMatricule": "70000112",
+        "userParti": false,
+        "garageHistorique": [],
+        "notes": "",
+        "createdAt": "2026-07-28T16:00:46.888Z",
+        "updatedAt": "2026-08-07T09:47:40.778Z"
+      },
+      "after": {
+        "id": "veh-020",
+        "numero": 20,
+        "marque": "Toyota",
+        "type": "Pick up",
+        "numeroChassis": "AHTFK22G403097456",
+        "plaque": "2852AT01",
+        "cv": "13 CV",
+        "assureur": "Sfa",
+        "departement": "SHE",
+        "user": "ADHULE NYADRIA JOEL",
+        "province": "Kongo Central",
+        "proprietaire": "PPC",
+        "kilometrage": null,
+        "miseCirculation": "2016",
+        "age": 10,
+        "observationTech": "Avertissement",
+        "etatManuel": "",
+        "assuranceHistorique": [
+          {
+            "id": "doc-msipjt5b-coddo",
+            "dateDebut": "2025-11-14",
+            "dateFin": "2026-11-14",
+            "preuveUrl": "",
+            "createdAt": "2026-08-07T08:53:41.327Z"
+          }
+        ],
+        "vignetteHistorique": [],
+        "controleTechniqueHistorique": [
+          {
+            "id": "doc-msirh8q2-cvcvr",
+            "dateDebut": "2026-10-17",
+            "dateFin": "2027-04-16",
+            "preuveUrl": "",
+            "createdAt": "2026-08-07T09:47:40.778Z"
+          }
+        ],
+        "assuranceFin": "2026-11-14",
+        "vignetteFin": "",
+        "controleTechniqueFin": "2027-04-16",
+        "userMatricule": "70000112",
+        "userParti": false,
+        "garageHistorique": [],
+        "notes": "",
+        "createdAt": "2026-07-28T16:00:46.888Z",
+        "updatedAt": "2026-10-21T10:08:09.896Z"
+      },
+      "undoable": false,
+      "undone": false
+    },
+    {
       "id": "log-001770",
       "at": "2026-10-21T10:07:16.285Z",
       "userId": "Serge.Muakasa@ppcdrc.cd",
@@ -190677,5 +190788,5 @@
       }
     }
   ],
-  "nextSeq": 1771
+  "nextSeq": 1772
 }
