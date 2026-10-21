@@ -732,21 +732,21 @@
       "controleTechniqueHistorique": [
         {
           "id": "doc-msirhvrw-vxy2b",
-          "dateDebut": "2026-04-17",
-          "dateFin": "2026-10-17",
+          "dateDebut": "2026-10-17",
+          "dateFin": "2027-04-16",
           "preuveUrl": "",
           "createdAt": "2026-08-07T09:48:10.652Z"
         }
       ],
       "assuranceFin": "2026-11-14",
       "vignetteFin": "",
-      "controleTechniqueFin": "2026-10-17",
+      "controleTechniqueFin": "2027-04-16",
       "userMatricule": "",
       "userParti": false,
       "garageHistorique": [],
       "notes": "",
       "createdAt": "2026-07-28T16:00:46.888Z",
-      "updatedAt": "2026-08-07T09:48:10.653Z"
+      "updatedAt": "2026-10-21T10:19:16.541Z"
     },
     {
       "id": "veh-022",
