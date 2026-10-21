@@ -2915,6 +2915,23 @@
           },
           "updatedAt": "2026-10-21T19:13:41.584Z",
           "updatedBy": "admin"
+        },
+        "Supply Chain::2": {
+          "weekIndex": 2,
+          "department": "Supply Chain",
+          "weekFromTo": "du 28/09/2026 au 05/10/2026",
+          "locked": false,
+          "entries": {
+            "70000241": {
+              "matricule": "70000241",
+              "ot13": 2,
+              "ot16": 0.587,
+              "ot2": 17.832,
+              "night": 0
+            }
+          },
+          "updatedAt": "2026-10-21T19:21:27.645Z",
+          "updatedBy": "admin"
         }
       }
     }
