@@ -1,6 +1,117 @@
 {
   "entries": [
     {
+      "id": "log-001775",
+      "at": "2026-10-21T10:12:31.562Z",
+      "userId": "Serge.Muakasa@ppcdrc.cd",
+      "userName": "Serge Muakasa",
+      "userEmail": "Serge.Muakasa@ppcdrc.cd",
+      "module": "charroi.vehicules",
+      "moduleLabel": "Charroi — Véhicules",
+      "action": "update",
+      "actionLabel": "Modification",
+      "entityType": "charroi.vehicule.doc",
+      "entityId": "veh-026",
+      "summary": "Modification Contrôle technique — 3489BS01",
+      "details": "Période Contrôle technique modifiée (doc-msirmjc9-jfdsl).\nAvant : {\"id\":\"veh-026\",\"numero\":26,\"marque\":\"Tata\",\"type\":\"Tata LPO\",\"numeroChassis\":\"MAT42271P5LO1960\",\"plaque\":\"3489BS01\",\"cv\":\"48 CV\",\"assureur\":\"Sfa\",\"departement\":\"Human Resources\",\"user\":\"MUAKASA NSONI SERGE\",\"province\":\"Kongo Central\",\"proprietaire\":\"PPC\",\"kilometrage\":null,\"miseCirculation\":\"2024\",\"age\":2,\"observationTech\":\"Bon état\",\"etatManuel\":\"\",\"assuranceHistorique\":[{\"id\":\"doc-msippdw8-8vahv\",\"dateDebut\":\"2025-11-14\",\"dateFin\":\"2026-11-14\",\"preuveUrl\":\"\",\"createdAt\":\"2026-08-07T08:58:01.496Z\"}],\"vignetteHistorique\":[],\"controleTechniqueHistorique\":[{\"id\":\"doc-msirmjc9-jfdsl\",\"dateDebut\":\"2026-04-17\",\"dateFin\":\"2026-10-17\",\"preuveUrl\":\"\",\"createdAt\":\"2026-08-07T09:51:47.817Z\"}],\"assuranceFin\":\"2026-11-14\",\"vignetteFin\":\"\",\"controleTechniqueFin\":\"2026-10-17\",\"userMatricule\":\"70000008\",\"userParti\":false,\"garageHistorique\":[],\"notes\":\"\",\"createdAt\":\"2026-07-28T16:00:46.888Z\",\"updatedAt\":\"2026-08-07T09:51:47.817Z\"}\nAprès : {\"id\":\"veh-026\",\"numero\":26,\"marque\":\"Tata\",\"type\":\"Tata LPO\",\"numeroChassis\":\"MAT42271P5LO1960\",\"plaque\":\"3489BS01\",\"cv\":\"48 CV\",\"assureur\":\"Sfa\",\"departement\":\"Human Resources\",\"user\":\"MUAKASA NSONI SERGE\",\"province\":\"Kongo Central\",\"proprietaire\":\"PPC\",\"kilometrage\":null,\"miseCirculation\":\"2024\",\"age\":2,\"observationTech\":\"Bon état\",\"etatManuel\":\"\",\"assuranceHistorique\":[{\"id\":\"doc-msippdw8-8vahv\",\"dateDebut\":\"2025-11-14\",\"dateFin\":\"2026-11-14\",\"preuveUrl\":\"\",\"createdAt\":\"2026-08-07T08:58:01.496Z\"}],\"vignetteHistorique\":[],\"controleTechniqueHistorique\":[{\"id\":\"doc-msirmjc9-jfdsl\",\"dateDebut\":\"2026-10-17\",\"dateFin\":\"2027-04-16\",\"preuveUrl\":\"\",\"createdAt\":\"2026-08-07T09:51:47.817Z\"}],\"assuranceFin\":\"2026-11-14\",\"vignetteFin\":\"\",\"controleTechniqueFin\":\"2027-04-16\",\"userMatricule\":\"70000008\",\"userParti\":false,\"garageHistorique\":[],\"notes\":\"\",\"createdAt\":\"2026-07-28T16:00:46.888Z\",\"updatedAt\":\"2026-10-21T10:12:28.261Z\"}",
+      "before": {
+        "id": "veh-026",
+        "numero": 26,
+        "marque": "Tata",
+        "type": "Tata LPO",
+        "numeroChassis": "MAT42271P5LO1960",
+        "plaque": "3489BS01",
+        "cv": "48 CV",
+        "assureur": "Sfa",
+        "departement": "Human Resources",
+        "user": "MUAKASA NSONI SERGE",
+        "province": "Kongo Central",
+        "proprietaire": "PPC",
+        "kilometrage": null,
+        "miseCirculation": "2024",
+        "age": 2,
+        "observationTech": "Bon état",
+        "etatManuel": "",
+        "assuranceHistorique": [
+          {
+            "id": "doc-msippdw8-8vahv",
+            "dateDebut": "2025-11-14",
+            "dateFin": "2026-11-14",
+            "preuveUrl": "",
+            "createdAt": "2026-08-07T08:58:01.496Z"
+          }
+        ],
+        "vignetteHistorique": [],
+        "controleTechniqueHistorique": [
+          {
+            "id": "doc-msirmjc9-jfdsl",
+            "dateDebut": "2026-04-17",
+            "dateFin": "2026-10-17",
+            "preuveUrl": "",
+            "createdAt": "2026-08-07T09:51:47.817Z"
+          }
+        ],
+        "assuranceFin": "2026-11-14",
+        "vignetteFin": "",
+        "controleTechniqueFin": "2026-10-17",
+        "userMatricule": "70000008",
+        "userParti": false,
+        "garageHistorique": [],
+        "notes": "",
+        "createdAt": "2026-07-28T16:00:46.888Z",
+        "updatedAt": "2026-08-07T09:51:47.817Z"
+      },
+      "after": {
+        "id": "veh-026",
+        "numero": 26,
+        "marque": "Tata",
+        "type": "Tata LPO",
+        "numeroChassis": "MAT42271P5LO1960",
+        "plaque": "3489BS01",
+        "cv": "48 CV",
+        "assureur": "Sfa",
+        "departement": "Human Resources",
+        "user": "MUAKASA NSONI SERGE",
+        "province": "Kongo Central",
+        "proprietaire": "PPC",
+        "kilometrage": null,
+        "miseCirculation": "2024",
+        "age": 2,
+        "observationTech": "Bon état",
+        "etatManuel": "",
+        "assuranceHistorique": [
+          {
+            "id": "doc-msippdw8-8vahv",
+            "dateDebut": "2025-11-14",
+            "dateFin": "2026-11-14",
+            "preuveUrl": "",
+            "createdAt": "2026-08-07T08:58:01.496Z"
+          }
+        ],
+        "vignetteHistorique": [],
+        "controleTechniqueHistorique": [
+          {
+            "id": "doc-msirmjc9-jfdsl",
+            "dateDebut": "2026-10-17",
+            "dateFin": "2027-04-16",
+            "preuveUrl": "",
+            "createdAt": "2026-08-07T09:51:47.817Z"
+          }
+        ],
+        "assuranceFin": "2026-11-14",
+        "vignetteFin": "",
+        "controleTechniqueFin": "2027-04-16",
+        "userMatricule": "70000008",
+        "userParti": false,
+        "garageHistorique": [],
+        "notes": "",
+        "createdAt": "2026-07-28T16:00:46.888Z",
+        "updatedAt": "2026-10-21T10:12:28.261Z"
+      },
+      "undoable": false,
+      "undone": false
+    },
+    {
       "id": "log-001774",
       "at": "2026-10-21T10:10:51.187Z",
       "userId": "Serge.Muakasa@ppcdrc.cd",
@@ -191121,5 +191232,5 @@
       }
     }
   ],
-  "nextSeq": 1775
+  "nextSeq": 1776
 }
