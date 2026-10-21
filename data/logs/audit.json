@@ -1,6 +1,117 @@
 {
   "entries": [
     {
+      "id": "log-001777",
+      "at": "2026-10-21T10:17:10.104Z",
+      "userId": "Serge.Muakasa@ppcdrc.cd",
+      "userName": "Serge Muakasa",
+      "userEmail": "Serge.Muakasa@ppcdrc.cd",
+      "module": "charroi.vehicules",
+      "moduleLabel": "Charroi — Véhicules",
+      "action": "update",
+      "actionLabel": "Modification",
+      "entityType": "charroi.vehicule.doc",
+      "entityId": "veh-025",
+      "summary": "Modification Contrôle technique — 5759AQ01",
+      "details": "Période Contrôle technique modifiée (doc-msirly95-ipt37).\nAvant : {\"id\":\"veh-025\",\"numero\":25,\"marque\":\"Volvo\",\"type\":\"FM64RB\",\"numeroChassis\":\"YV2SGOD5EA75873\",\"plaque\":\"5759AQ01\",\"cv\":\"30CV\",\"assureur\":\"Sfa\",\"departement\":\"Mining\",\"user\":\"LONGO ZOLA CHRISPIN\",\"province\":\"Kongo Central\",\"proprietaire\":\"PPC\",\"kilometrage\":null,\"miseCirculation\":\"2017\",\"age\":9,\"observationTech\":\"Avertissement\",\"etatManuel\":\"\",\"assuranceHistorique\":[{\"id\":\"doc-msiporp5-g11zd\",\"dateDebut\":\"2025-11-14\",\"dateFin\":\"2026-11-14\",\"preuveUrl\":\"\",\"createdAt\":\"2026-08-07T08:57:32.729Z\"}],\"vignetteHistorique\":[],\"controleTechniqueHistorique\":[{\"id\":\"doc-msirly95-ipt37\",\"dateDebut\":\"2026-04-17\",\"dateFin\":\"2026-10-17\",\"preuveUrl\":\"\",\"createdAt\":\"2026-08-07T09:51:20.489Z\"}],\"assuranceFin\":\"2026-11-14\",\"vignetteFin\":\"\",\"controleTechniqueFin\":\"2026-10-17\",\"userMatricule\":\"70000124\",\"userParti\":false,\"garageHistorique\":[],\"notes\":\"\",\"createdAt\":\"2026-07-28T16:00:46.888Z\",\"updatedAt\":\"2026-08-07T09:51:20.489Z\"}\nAprès : {\"id\":\"veh-025\",\"numero\":25,\"marque\":\"Volvo\",\"type\":\"FM64RB\",\"numeroChassis\":\"YV2SGOD5EA75873\",\"plaque\":\"5759AQ01\",\"cv\":\"30CV\",\"assureur\":\"Sfa\",\"departement\":\"Mining\",\"user\":\"LONGO ZOLA CHRISPIN\",\"province\":\"Kongo Central\",\"proprietaire\":\"PPC\",\"kilometrage\":null,\"miseCirculation\":\"2017\",\"age\":9,\"observationTech\":\"Avertissement\",\"etatManuel\":\"\",\"assuranceHistorique\":[{\"id\":\"doc-msiporp5-g11zd\",\"dateDebut\":\"2025-11-14\",\"dateFin\":\"2026-11-14\",\"preuveUrl\":\"\",\"createdAt\":\"2026-08-07T08:57:32.729Z\"}],\"vignetteHistorique\":[],\"controleTechniqueHistorique\":[{\"id\":\"doc-msirly95-ipt37\",\"dateDebut\":\"2026-10-17\",\"dateFin\":\"2027-04-16\",\"preuveUrl\":\"\",\"createdAt\":\"2026-08-07T09:51:20.489Z\"}],\"assuranceFin\":\"2026-11-14\",\"vignetteFin\":\"\",\"controleTechniqueFin\":\"2027-04-16\",\"userMatricule\":\"70000124\",\"userParti\":false,\"garageHistorique\":[],\"notes\":\"\",\"createdAt\":\"2026-07-28T16:00:46.888Z\",\"updatedAt\":\"2026-10-21T10:17:06.588Z\"}",
+      "before": {
+        "id": "veh-025",
+        "numero": 25,
+        "marque": "Volvo",
+        "type": "FM64RB",
+        "numeroChassis": "YV2SGOD5EA75873",
+        "plaque": "5759AQ01",
+        "cv": "30CV",
+        "assureur": "Sfa",
+        "departement": "Mining",
+        "user": "LONGO ZOLA CHRISPIN",
+        "province": "Kongo Central",
+        "proprietaire": "PPC",
+        "kilometrage": null,
+        "miseCirculation": "2017",
+        "age": 9,
+        "observationTech": "Avertissement",
+        "etatManuel": "",
+        "assuranceHistorique": [
+          {
+            "id": "doc-msiporp5-g11zd",
+            "dateDebut": "2025-11-14",
+            "dateFin": "2026-11-14",
+            "preuveUrl": "",
+            "createdAt": "2026-08-07T08:57:32.729Z"
+          }
+        ],
+        "vignetteHistorique": [],
+        "controleTechniqueHistorique": [
+          {
+            "id": "doc-msirly95-ipt37",
+            "dateDebut": "2026-04-17",
+            "dateFin": "2026-10-17",
+            "preuveUrl": "",
+            "createdAt": "2026-08-07T09:51:20.489Z"
+          }
+        ],
+        "assuranceFin": "2026-11-14",
+        "vignetteFin": "",
+        "controleTechniqueFin": "2026-10-17",
+        "userMatricule": "70000124",
+        "userParti": false,
+        "garageHistorique": [],
+        "notes": "",
+        "createdAt": "2026-07-28T16:00:46.888Z",
+        "updatedAt": "2026-08-07T09:51:20.489Z"
+      },
+      "after": {
+        "id": "veh-025",
+        "numero": 25,
+        "marque": "Volvo",
+        "type": "FM64RB",
+        "numeroChassis": "YV2SGOD5EA75873",
+        "plaque": "5759AQ01",
+        "cv": "30CV",
+        "assureur": "Sfa",
+        "departement": "Mining",
+        "user": "LONGO ZOLA CHRISPIN",
+        "province": "Kongo Central",
+        "proprietaire": "PPC",
+        "kilometrage": null,
+        "miseCirculation": "2017",
+        "age": 9,
+        "observationTech": "Avertissement",
+        "etatManuel": "",
+        "assuranceHistorique": [
+          {
+            "id": "doc-msiporp5-g11zd",
+            "dateDebut": "2025-11-14",
+            "dateFin": "2026-11-14",
+            "preuveUrl": "",
+            "createdAt": "2026-08-07T08:57:32.729Z"
+          }
+        ],
+        "vignetteHistorique": [],
+        "controleTechniqueHistorique": [
+          {
+            "id": "doc-msirly95-ipt37",
+            "dateDebut": "2026-10-17",
+            "dateFin": "2027-04-16",
+            "preuveUrl": "",
+            "createdAt": "2026-08-07T09:51:20.489Z"
+          }
+        ],
+        "assuranceFin": "2026-11-14",
+        "vignetteFin": "",
+        "controleTechniqueFin": "2027-04-16",
+        "userMatricule": "70000124",
+        "userParti": false,
+        "garageHistorique": [],
+        "notes": "",
+        "createdAt": "2026-07-28T16:00:46.888Z",
+        "updatedAt": "2026-10-21T10:17:06.588Z"
+      },
+      "undoable": false,
+      "undone": false
+    },
+    {
       "id": "log-001776",
       "at": "2026-10-21T10:15:53.656Z",
       "userId": "Serge.Muakasa@ppcdrc.cd",
@@ -191343,5 +191454,5 @@
       }
     }
   ],
-  "nextSeq": 1777
+  "nextSeq": 1778
 }
