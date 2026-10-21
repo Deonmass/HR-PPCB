@@ -1,6 +1,117 @@
 {
   "entries": [
     {
+      "id": "log-001773",
+      "at": "2026-10-21T10:10:18.394Z",
+      "userId": "Serge.Muakasa@ppcdrc.cd",
+      "userName": "Serge Muakasa",
+      "userEmail": "Serge.Muakasa@ppcdrc.cd",
+      "module": "charroi.vehicules",
+      "moduleLabel": "Charroi — Véhicules",
+      "action": "update",
+      "actionLabel": "Modification",
+      "entityType": "charroi.vehicule",
+      "entityId": "veh-023",
+      "summary": "Modification véhicule 9088AW01",
+      "details": "Véhicule modifié.\nAvant : {\"id\":\"veh-023\",\"numero\":23,\"marque\":\"Toyota\",\"type\":\"Pick up\",\"numeroChassis\":\"JTELB71J404321213\",\"plaque\":\"9088AW01\",\"cv\":\"13 CV\",\"assureur\":\"Sfa\",\"departement\":\"Engineering\",\"user\":\"LUZOLO NSEMBOLO THOMAS\",\"province\":\"Kongo Central\",\"proprietaire\":\"PPC\",\"kilometrage\":null,\"miseCirculation\":\"2016\",\"age\":10,\"observationTech\":\"Avertissement\",\"etatManuel\":\"\",\"assuranceHistorique\":[{\"id\":\"doc-msipmk1u-p5mux\",\"dateDebut\":\"2025-11-14\",\"dateFin\":\"2026-11-14\",\"preuveUrl\":\"\",\"createdAt\":\"2026-08-07T08:55:49.507Z\"}],\"vignetteHistorique\":[],\"controleTechniqueHistorique\":[{\"id\":\"doc-msirjtpg-04ua7\",\"dateDebut\":\"2026-04-17\",\"dateFin\":\"2026-10-17\",\"preuveUrl\":\"\",\"createdAt\":\"2026-08-07T09:49:41.284Z\"}],\"assuranceFin\":\"2026-11-14\",\"vignetteFin\":\"\",\"controleTechniqueFin\":\"2026-10-17\",\"userMatricule\":\"70000015\",\"userParti\":false,\"garageHistorique\":[],\"notes\":\"\",\"createdAt\":\"2026-07-28T16:00:46.888Z\",\"updatedAt\":\"2026-08-07T09:49:41.284Z\"}\nAprès : {\"id\":\"veh-023\",\"numero\":23,\"marque\":\"Toyota\",\"type\":\"Pick up\",\"numeroChassis\":\"JTELB71J404321213\",\"plaque\":\"9098AW01\",\"cv\":\"13 CV\",\"assureur\":\"Sfa\",\"departement\":\"Engineering\",\"user\":\"LUZOLO NSEMBOLO THOMAS\",\"province\":\"Kongo Central\",\"proprietaire\":\"PPC\",\"kilometrage\":null,\"miseCirculation\":\"2016-01-01\",\"age\":10,\"observationTech\":\"Avertissement\",\"etatManuel\":\"\",\"assuranceHistorique\":[{\"id\":\"doc-msipmk1u-p5mux\",\"dateDebut\":\"2025-11-14\",\"dateFin\":\"2026-11-14\",\"preuveUrl\":\"\",\"createdAt\":\"2026-08-07T08:55:49.507Z\"}],\"vignetteHistorique\":[],\"controleTechniqueHistorique\":[{\"id\":\"doc-msirjtpg-04ua7\",\"dateDebut\":\"2026-04-17\",\"dateFin\":\"2026-10-17\",\"preuveUrl\":\"\",\"createdAt\":\"2026-08-07T09:49:41.284Z\"}],\"assuranceFin\":\"2026-11-14\",\"vignetteFin\":\"\",\"controleTechniqueFin\":\"2026-10-17\",\"userMatricule\":\"70000015\",\"userParti\":false,\"garageHistorique\":[],\"notes\":\"\",\"createdAt\":\"2026-07-28T16:00:46.888Z\",\"updatedAt\":\"2026-10-21T10:10:14.749Z\"}",
+      "before": {
+        "id": "veh-023",
+        "numero": 23,
+        "marque": "Toyota",
+        "type": "Pick up",
+        "numeroChassis": "JTELB71J404321213",
+        "plaque": "9088AW01",
+        "cv": "13 CV",
+        "assureur": "Sfa",
+        "departement": "Engineering",
+        "user": "LUZOLO NSEMBOLO THOMAS",
+        "province": "Kongo Central",
+        "proprietaire": "PPC",
+        "kilometrage": null,
+        "miseCirculation": "2016",
+        "age": 10,
+        "observationTech": "Avertissement",
+        "etatManuel": "",
+        "assuranceHistorique": [
+          {
+            "id": "doc-msipmk1u-p5mux",
+            "dateDebut": "2025-11-14",
+            "dateFin": "2026-11-14",
+            "preuveUrl": "",
+            "createdAt": "2026-08-07T08:55:49.507Z"
+          }
+        ],
+        "vignetteHistorique": [],
+        "controleTechniqueHistorique": [
+          {
+            "id": "doc-msirjtpg-04ua7",
+            "dateDebut": "2026-04-17",
+            "dateFin": "2026-10-17",
+            "preuveUrl": "",
+            "createdAt": "2026-08-07T09:49:41.284Z"
+          }
+        ],
+        "assuranceFin": "2026-11-14",
+        "vignetteFin": "",
+        "controleTechniqueFin": "2026-10-17",
+        "userMatricule": "70000015",
+        "userParti": false,
+        "garageHistorique": [],
+        "notes": "",
+        "createdAt": "2026-07-28T16:00:46.888Z",
+        "updatedAt": "2026-08-07T09:49:41.284Z"
+      },
+      "after": {
+        "id": "veh-023",
+        "numero": 23,
+        "marque": "Toyota",
+        "type": "Pick up",
+        "numeroChassis": "JTELB71J404321213",
+        "plaque": "9098AW01",
+        "cv": "13 CV",
+        "assureur": "Sfa",
+        "departement": "Engineering",
+        "user": "LUZOLO NSEMBOLO THOMAS",
+        "province": "Kongo Central",
+        "proprietaire": "PPC",
+        "kilometrage": null,
+        "miseCirculation": "2016-01-01",
+        "age": 10,
+        "observationTech": "Avertissement",
+        "etatManuel": "",
+        "assuranceHistorique": [
+          {
+            "id": "doc-msipmk1u-p5mux",
+            "dateDebut": "2025-11-14",
+            "dateFin": "2026-11-14",
+            "preuveUrl": "",
+            "createdAt": "2026-08-07T08:55:49.507Z"
+          }
+        ],
+        "vignetteHistorique": [],
+        "controleTechniqueHistorique": [
+          {
+            "id": "doc-msirjtpg-04ua7",
+            "dateDebut": "2026-04-17",
+            "dateFin": "2026-10-17",
+            "preuveUrl": "",
+            "createdAt": "2026-08-07T09:49:41.284Z"
+          }
+        ],
+        "assuranceFin": "2026-11-14",
+        "vignetteFin": "",
+        "controleTechniqueFin": "2026-10-17",
+        "userMatricule": "70000015",
+        "userParti": false,
+        "garageHistorique": [],
+        "notes": "",
+        "createdAt": "2026-07-28T16:00:46.888Z",
+        "updatedAt": "2026-10-21T10:10:14.749Z"
+      },
+      "undoable": true,
+      "undone": false
+    },
+    {
       "id": "log-001772",
       "at": "2026-10-21T10:09:04.250Z",
       "userId": "Serge.Muakasa@ppcdrc.cd",
@@ -190899,5 +191010,5 @@
       }
     }
   ],
-  "nextSeq": 1773
+  "nextSeq": 1774
 }
