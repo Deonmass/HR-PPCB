@@ -1,6 +1,117 @@
 {
   "entries": [
     {
+      "id": "log-001768",
+      "at": "2026-10-21T09:51:55.479Z",
+      "userId": "Serge.Muakasa@ppcdrc.cd",
+      "userName": "Serge Muakasa",
+      "userEmail": "Serge.Muakasa@ppcdrc.cd",
+      "module": "charroi.vehicules",
+      "moduleLabel": "Charroi — Véhicules",
+      "action": "update",
+      "actionLabel": "Modification",
+      "entityType": "charroi.vehicule.doc",
+      "entityId": "veh-017",
+      "summary": "Modification Contrôle technique — 5992AX01",
+      "details": "Période Contrôle technique modifiée (doc-msirf3em-v4u67).\nAvant : {\"id\":\"veh-017\",\"numero\":17,\"marque\":\"Tata\",\"type\":\"Tata LPO-1318\",\"numeroChassis\":\"MAT462271G0LO4093\",\"plaque\":\"5992AX01\",\"cv\":\"48 CV\",\"assureur\":\"Sfa\",\"departement\":\"Human Resources\",\"user\":\"Pool bus\",\"province\":\"Kongo Central\",\"proprietaire\":\"PPC\",\"kilometrage\":null,\"miseCirculation\":\"2017\",\"age\":9,\"observationTech\":\"Avertissement\",\"etatManuel\":\"\",\"assuranceHistorique\":[{\"id\":\"doc-msipeu6s-vzcj7\",\"dateDebut\":\"2025-11-14\",\"dateFin\":\"2026-11-14\",\"preuveUrl\":\"\",\"createdAt\":\"2026-08-07T08:49:49.396Z\"}],\"vignetteHistorique\":[],\"controleTechniqueHistorique\":[{\"id\":\"doc-msirf3em-v4u67\",\"dateDebut\":\"2026-04-17\",\"dateFin\":\"2026-10-17\",\"preuveUrl\":\"\",\"createdAt\":\"2026-08-07T09:46:00.574Z\"}],\"assuranceFin\":\"2026-11-14\",\"vignetteFin\":\"\",\"controleTechniqueFin\":\"2026-10-17\",\"userMatricule\":\"\",\"userParti\":false,\"garageHistorique\":[],\"notes\":\"\",\"createdAt\":\"2026-07-28T16:00:46.888Z\",\"updatedAt\":\"2026-08-07T09:46:00.574Z\"}\nAprès : {\"id\":\"veh-017\",\"numero\":17,\"marque\":\"Tata\",\"type\":\"Tata LPO-1318\",\"numeroChassis\":\"MAT462271G0LO4093\",\"plaque\":\"5992AX01\",\"cv\":\"48 CV\",\"assureur\":\"Sfa\",\"departement\":\"Human Resources\",\"user\":\"Pool bus\",\"province\":\"Kongo Central\",\"proprietaire\":\"PPC\",\"kilometrage\":null,\"miseCirculation\":\"2017\",\"age\":9,\"observationTech\":\"Avertissement\",\"etatManuel\":\"\",\"assuranceHistorique\":[{\"id\":\"doc-msipeu6s-vzcj7\",\"dateDebut\":\"2025-11-14\",\"dateFin\":\"2026-11-14\",\"preuveUrl\":\"\",\"createdAt\":\"2026-08-07T08:49:49.396Z\"}],\"vignetteHistorique\":[],\"controleTechniqueHistorique\":[{\"id\":\"doc-msirf3em-v4u67\",\"dateDebut\":\"2026-10-17\",\"dateFin\":\"2027-04-16\",\"preuveUrl\":\"\",\"createdAt\":\"2026-08-07T09:46:00.574Z\"}],\"assuranceFin\":\"2026-11-14\",\"vignetteFin\":\"\",\"controleTechniqueFin\":\"2027-04-16\",\"userMatricule\":\"\",\"userParti\":false,\"garageHistorique\":[],\"notes\":\"\",\"createdAt\":\"2026-07-28T16:00:46.888Z\",\"updatedAt\":\"2026-10-21T09:51:51.945Z\"}",
+      "before": {
+        "id": "veh-017",
+        "numero": 17,
+        "marque": "Tata",
+        "type": "Tata LPO-1318",
+        "numeroChassis": "MAT462271G0LO4093",
+        "plaque": "5992AX01",
+        "cv": "48 CV",
+        "assureur": "Sfa",
+        "departement": "Human Resources",
+        "user": "Pool bus",
+        "province": "Kongo Central",
+        "proprietaire": "PPC",
+        "kilometrage": null,
+        "miseCirculation": "2017",
+        "age": 9,
+        "observationTech": "Avertissement",
+        "etatManuel": "",
+        "assuranceHistorique": [
+          {
+            "id": "doc-msipeu6s-vzcj7",
+            "dateDebut": "2025-11-14",
+            "dateFin": "2026-11-14",
+            "preuveUrl": "",
+            "createdAt": "2026-08-07T08:49:49.396Z"
+          }
+        ],
+        "vignetteHistorique": [],
+        "controleTechniqueHistorique": [
+          {
+            "id": "doc-msirf3em-v4u67",
+            "dateDebut": "2026-04-17",
+            "dateFin": "2026-10-17",
+            "preuveUrl": "",
+            "createdAt": "2026-08-07T09:46:00.574Z"
+          }
+        ],
+        "assuranceFin": "2026-11-14",
+        "vignetteFin": "",
+        "controleTechniqueFin": "2026-10-17",
+        "userMatricule": "",
+        "userParti": false,
+        "garageHistorique": [],
+        "notes": "",
+        "createdAt": "2026-07-28T16:00:46.888Z",
+        "updatedAt": "2026-08-07T09:46:00.574Z"
+      },
+      "after": {
+        "id": "veh-017",
+        "numero": 17,
+        "marque": "Tata",
+        "type": "Tata LPO-1318",
+        "numeroChassis": "MAT462271G0LO4093",
+        "plaque": "5992AX01",
+        "cv": "48 CV",
+        "assureur": "Sfa",
+        "departement": "Human Resources",
+        "user": "Pool bus",
+        "province": "Kongo Central",
+        "proprietaire": "PPC",
+        "kilometrage": null,
+        "miseCirculation": "2017",
+        "age": 9,
+        "observationTech": "Avertissement",
+        "etatManuel": "",
+        "assuranceHistorique": [
+          {
+            "id": "doc-msipeu6s-vzcj7",
+            "dateDebut": "2025-11-14",
+            "dateFin": "2026-11-14",
+            "preuveUrl": "",
+            "createdAt": "2026-08-07T08:49:49.396Z"
+          }
+        ],
+        "vignetteHistorique": [],
+        "controleTechniqueHistorique": [
+          {
+            "id": "doc-msirf3em-v4u67",
+            "dateDebut": "2026-10-17",
+            "dateFin": "2027-04-16",
+            "preuveUrl": "",
+            "createdAt": "2026-08-07T09:46:00.574Z"
+          }
+        ],
+        "assuranceFin": "2026-11-14",
+        "vignetteFin": "",
+        "controleTechniqueFin": "2027-04-16",
+        "userMatricule": "",
+        "userParti": false,
+        "garageHistorique": [],
+        "notes": "",
+        "createdAt": "2026-07-28T16:00:46.888Z",
+        "updatedAt": "2026-10-21T09:51:51.945Z"
+      },
+      "undoable": false,
+      "undone": false
+    },
+    {
       "id": "log-001767",
       "at": "2026-10-21T09:48:35.408Z",
       "userId": "Serge.Muakasa@ppcdrc.cd",
@@ -190312,5 +190423,5 @@
       }
     }
   ],
-  "nextSeq": 1768
+  "nextSeq": 1769
 }
