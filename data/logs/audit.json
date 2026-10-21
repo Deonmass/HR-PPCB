@@ -1,6 +1,30 @@
 {
   "entries": [
     {
+      "id": "log-001766",
+      "at": "2026-10-21T09:46:24.137Z",
+      "userId": "admin",
+      "userName": "Administrateur",
+      "userEmail": "admin",
+      "module": "contractants",
+      "moduleLabel": "contractants",
+      "action": "import",
+      "actionLabel": "Import",
+      "summary": "Import employés « ORC » — 105 ajouté(s), 0 mis à jour, 0 déjà présent(s)",
+      "details": "Feuille « Feuil1 », 0 ligne(s) vides ignorée(s)",
+      "undoable": false,
+      "undone": false,
+      "meta": {
+        "contractantId": "12",
+        "imported": 105,
+        "updated": 0,
+        "alreadyPresent": 0,
+        "skippedEmpty": 0,
+        "sheetName": "Feuil1",
+        "fileName": "AGENTS ORC.xlsx"
+      }
+    },
+    {
       "id": "log-001765",
       "at": "2026-10-21T08:28:49.221Z",
       "userId": "admin",
@@ -190273,5 +190297,5 @@
       }
     }
   ],
-  "nextSeq": 1766
+  "nextSeq": 1767
 }
