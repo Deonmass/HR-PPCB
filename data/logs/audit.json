@@ -1,6 +1,29 @@
 {
   "entries": [
     {
+      "id": "log-001765",
+      "at": "2026-10-21T08:28:49.221Z",
+      "userId": "admin",
+      "userName": "Administrateur",
+      "userEmail": "admin",
+      "module": "timesheet",
+      "moduleLabel": "Timesheet",
+      "action": "update",
+      "actionLabel": "Modification",
+      "summary": "Enregistrement timesheet 70000226 — Production (10/2026)",
+      "details": "Enregistrement timesheet 70000226 — Production (10/2026)",
+      "undoable": false,
+      "undone": false,
+      "meta": {
+        "year": 2026,
+        "month": 10,
+        "department": "Production",
+        "matricule": "70000226",
+        "mode": "employee-month",
+        "count": 35
+      }
+    },
+    {
       "id": "log-001764",
       "at": "2026-10-21T08:21:56.604Z",
       "userId": "admin",
@@ -190250,5 +190273,5 @@
       }
     }
   ],
-  "nextSeq": 1765
+  "nextSeq": 1766
 }
