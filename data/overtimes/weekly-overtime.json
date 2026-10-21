@@ -2810,6 +2810,34 @@
           "updatedBy": "admin"
         }
       }
+    },
+    "2026-10": {
+      "weeks": {
+        "Mining::3": {
+          "weekIndex": 3,
+          "department": "Mining",
+          "weekFromTo": "du 05/10/2026 au 12/10/2026",
+          "locked": false,
+          "entries": {
+            "70000097": {
+              "matricule": "70000097",
+              "ot13": 2,
+              "ot16": 8,
+              "ot2": 0,
+              "night": 0
+            },
+            "70000102": {
+              "matricule": "70000102",
+              "ot13": 2,
+              "ot16": 4,
+              "ot2": 0,
+              "night": 0
+            }
+          },
+          "updatedAt": "2026-10-21T18:57:27.427Z",
+          "updatedBy": "admin"
+        }
+      }
     }
   }
 }
