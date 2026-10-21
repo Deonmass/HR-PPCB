@@ -1,6 +1,34 @@
 {
   "entries": [
     {
+      "id": "log-001816",
+      "at": "2026-10-21T20:30:11.441Z",
+      "userId": "admin",
+      "userName": "Administrateur",
+      "userEmail": "admin",
+      "module": "timesheet.overtimes",
+      "moduleLabel": "Timesheet — Heures sup.",
+      "action": "import",
+      "actionLabel": "Import",
+      "summary": "Import HS bulk semaine 2",
+      "details": "Import HS bulk semaine 2",
+      "after": {
+        "results": [
+          {
+            "department": "Quality Assurance",
+            "status": "imported",
+            "imported": 3,
+            "skipped": 0
+          }
+        ],
+        "importedMatriculeKeys": {},
+        "totalImported": 3,
+        "totalSkipped": 0
+      },
+      "undoable": false,
+      "undone": false
+    },
+    {
       "id": "log-001815",
       "at": "2026-10-21T20:19:47.669Z",
       "userId": "admin",
@@ -192697,5 +192725,5 @@
       }
     }
   ],
-  "nextSeq": 1816
+  "nextSeq": 1817
 }
