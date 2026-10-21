@@ -1,6 +1,48 @@
 {
   "entries": [
     {
+      "id": "log-001781",
+      "at": "2026-10-21T10:29:44.193Z",
+      "userId": "karine.mvutu@ppcdrc.cd",
+      "userName": "Karine Mvutu",
+      "userEmail": "karine.mvutu@ppcdrc.cd",
+      "module": "sante",
+      "moduleLabel": "Santé",
+      "action": "create",
+      "actionLabel": "Création",
+      "entityType": "sante.visit",
+      "entityId": "sante-mvhz06je-02g3o0",
+      "summary": "Cas santé — KITEMBO MATONDO · SYNDROME DYSPEPTIQUE",
+      "details": "Cas santé — KITEMBO MATONDO · SYNDROME DYSPEPTIQUE",
+      "after": {
+        "id": "sante-mvhz06je-02g3o0",
+        "date": "2026-07-10",
+        "nom": "KITEMBO",
+        "postnom": "MATONDO",
+        "sexe": "F",
+        "age": null,
+        "typeMalade": "EPOUSE",
+        "pathologie": "SYNDROME DYSPEPTIQUE",
+        "traitement": "ANTI ACIDE SIROP",
+        "reference": "NON",
+        "year": 2026,
+        "month": 7,
+        "employeeMatricule": "70000067",
+        "employeeNom": "MPONGO KOLONGO LEON",
+        "dependantId": 319,
+        "commentaire": "",
+        "contractantId": "",
+        "contractantNom": "",
+        "contractantEmployeeId": "",
+        "createdAt": "2026-10-21T10:29:42.554Z",
+        "updatedAt": "2026-10-21T10:29:42.554Z",
+        "createdBy": "karine.mvutu@ppcdrc.cd",
+        "updatedBy": "karine.mvutu@ppcdrc.cd"
+      },
+      "undoable": false,
+      "undone": false
+    },
+    {
       "id": "log-001780",
       "at": "2026-10-21T10:28:03.481Z",
       "userId": "karine.mvutu@ppcdrc.cd",
@@ -191622,5 +191664,5 @@
       }
     }
   ],
-  "nextSeq": 1781
+  "nextSeq": 1782
 }
