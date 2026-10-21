@@ -1,6 +1,133 @@
 {
   "entries": [
     {
+      "id": "log-001770",
+      "at": "2026-10-21T10:07:16.285Z",
+      "userId": "Serge.Muakasa@ppcdrc.cd",
+      "userName": "Serge Muakasa",
+      "userEmail": "Serge.Muakasa@ppcdrc.cd",
+      "module": "charroi.vehicules",
+      "moduleLabel": "Charroi — Véhicules",
+      "action": "update",
+      "actionLabel": "Modification",
+      "entityType": "charroi.vehicule.doc",
+      "entityId": "veh-016",
+      "summary": "Modification Contrôle technique — 9242AX01",
+      "details": "Période Contrôle technique modifiée (doc-msirekln-a0j2q).\nAvant : {\"id\":\"veh-016\",\"numero\":16,\"marque\":\"Tata Xenon\",\"type\":\"Pick up\",\"numeroChassis\":\"MAT464008ESL00267\",\"plaque\":\"9242AX01\",\"cv\":\"11 CV\",\"assureur\":\"Sfa\",\"departement\":\"Engineering\",\"user\":\"MACHARIA KINYANJUI SIMON\",\"province\":\"Kongo Central\",\"proprietaire\":\"PPC\",\"kilometrage\":null,\"miseCirculation\":\"2017\",\"age\":9,\"observationTech\":\"Avertissement\",\"etatManuel\":\"\",\"assuranceHistorique\":[{\"id\":\"doc-msipd9b4-z8550\",\"dateDebut\":\"2025-11-14\",\"dateFin\":\"2026-11-14\",\"preuveUrl\":\"\",\"createdAt\":\"2026-08-07T08:48:35.680Z\"}],\"vignetteHistorique\":[{\"id\":\"doc-msirulx9-9j1sv\",\"dateDebut\":\"2025-01-07\",\"dateFin\":\"2026-01-07\",\"preuveUrl\":\"\",\"createdAt\":\"2026-08-07T09:58:04.413Z\"}],\"controleTechniqueHistorique\":[{\"id\":\"doc-msirekln-a0j2q\",\"dateDebut\":\"2026-04-17\",\"dateFin\":\"2026-10-17\",\"preuveUrl\":\"\",\"createdAt\":\"2026-08-07T09:45:36.203Z\"}],\"assuranceFin\":\"2026-11-14\",\"vignetteFin\":\"2026-01-07\",\"controleTechniqueFin\":\"2026-10-17\",\"userMatricule\":\"70000038\",\"userParti\":false,\"garageHistorique\":[],\"notes\":\"\",\"createdAt\":\"2026-07-28T16:00:46.888Z\",\"updatedAt\":\"2026-08-07T09:58:04.413Z\"}\nAprès : {\"id\":\"veh-016\",\"numero\":16,\"marque\":\"Tata Xenon\",\"type\":\"Pick up\",\"numeroChassis\":\"MAT464008ESL00267\",\"plaque\":\"9242AX01\",\"cv\":\"11 CV\",\"assureur\":\"Sfa\",\"departement\":\"Engineering\",\"user\":\"MACHARIA KINYANJUI SIMON\",\"province\":\"Kongo Central\",\"proprietaire\":\"PPC\",\"kilometrage\":null,\"miseCirculation\":\"2017\",\"age\":9,\"observationTech\":\"Avertissement\",\"etatManuel\":\"\",\"assuranceHistorique\":[{\"id\":\"doc-msipd9b4-z8550\",\"dateDebut\":\"2025-11-14\",\"dateFin\":\"2026-11-14\",\"preuveUrl\":\"\",\"createdAt\":\"2026-08-07T08:48:35.680Z\"}],\"vignetteHistorique\":[{\"id\":\"doc-msirulx9-9j1sv\",\"dateDebut\":\"2025-01-07\",\"dateFin\":\"2026-01-07\",\"preuveUrl\":\"\",\"createdAt\":\"2026-08-07T09:58:04.413Z\"}],\"controleTechniqueHistorique\":[{\"id\":\"doc-msirekln-a0j2q\",\"dateDebut\":\"2026-10-17\",\"dateFin\":\"2027-04-16\",\"preuveUrl\":\"\",\"createdAt\":\"2026-08-07T09:45:36.203Z\"}],\"assuranceFin\":\"2026-11-14\",\"vignetteFin\":\"2026-01-07\",\"controleTechniqueFin\":\"2027-04-16\",\"userMatricule\":\"70000038\",\"userParti\":false,\"garageHistorique\":[],\"notes\":\"\",\"createdAt\":\"2026-07-28T16:00:46.888Z\",\"updatedAt\":\"2026-10-21T10:07:12.944Z\"}",
+      "before": {
+        "id": "veh-016",
+        "numero": 16,
+        "marque": "Tata Xenon",
+        "type": "Pick up",
+        "numeroChassis": "MAT464008ESL00267",
+        "plaque": "9242AX01",
+        "cv": "11 CV",
+        "assureur": "Sfa",
+        "departement": "Engineering",
+        "user": "MACHARIA KINYANJUI SIMON",
+        "province": "Kongo Central",
+        "proprietaire": "PPC",
+        "kilometrage": null,
+        "miseCirculation": "2017",
+        "age": 9,
+        "observationTech": "Avertissement",
+        "etatManuel": "",
+        "assuranceHistorique": [
+          {
+            "id": "doc-msipd9b4-z8550",
+            "dateDebut": "2025-11-14",
+            "dateFin": "2026-11-14",
+            "preuveUrl": "",
+            "createdAt": "2026-08-07T08:48:35.680Z"
+          }
+        ],
+        "vignetteHistorique": [
+          {
+            "id": "doc-msirulx9-9j1sv",
+            "dateDebut": "2025-01-07",
+            "dateFin": "2026-01-07",
+            "preuveUrl": "",
+            "createdAt": "2026-08-07T09:58:04.413Z"
+          }
+        ],
+        "controleTechniqueHistorique": [
+          {
+            "id": "doc-msirekln-a0j2q",
+            "dateDebut": "2026-04-17",
+            "dateFin": "2026-10-17",
+            "preuveUrl": "",
+            "createdAt": "2026-08-07T09:45:36.203Z"
+          }
+        ],
+        "assuranceFin": "2026-11-14",
+        "vignetteFin": "2026-01-07",
+        "controleTechniqueFin": "2026-10-17",
+        "userMatricule": "70000038",
+        "userParti": false,
+        "garageHistorique": [],
+        "notes": "",
+        "createdAt": "2026-07-28T16:00:46.888Z",
+        "updatedAt": "2026-08-07T09:58:04.413Z"
+      },
+      "after": {
+        "id": "veh-016",
+        "numero": 16,
+        "marque": "Tata Xenon",
+        "type": "Pick up",
+        "numeroChassis": "MAT464008ESL00267",
+        "plaque": "9242AX01",
+        "cv": "11 CV",
+        "assureur": "Sfa",
+        "departement": "Engineering",
+        "user": "MACHARIA KINYANJUI SIMON",
+        "province": "Kongo Central",
+        "proprietaire": "PPC",
+        "kilometrage": null,
+        "miseCirculation": "2017",
+        "age": 9,
+        "observationTech": "Avertissement",
+        "etatManuel": "",
+        "assuranceHistorique": [
+          {
+            "id": "doc-msipd9b4-z8550",
+            "dateDebut": "2025-11-14",
+            "dateFin": "2026-11-14",
+            "preuveUrl": "",
+            "createdAt": "2026-08-07T08:48:35.680Z"
+          }
+        ],
+        "vignetteHistorique": [
+          {
+            "id": "doc-msirulx9-9j1sv",
+            "dateDebut": "2025-01-07",
+            "dateFin": "2026-01-07",
+            "preuveUrl": "",
+            "createdAt": "2026-08-07T09:58:04.413Z"
+          }
+        ],
+        "controleTechniqueHistorique": [
+          {
+            "id": "doc-msirekln-a0j2q",
+            "dateDebut": "2026-10-17",
+            "dateFin": "2027-04-16",
+            "preuveUrl": "",
+            "createdAt": "2026-08-07T09:45:36.203Z"
+          }
+        ],
+        "assuranceFin": "2026-11-14",
+        "vignetteFin": "2026-01-07",
+        "controleTechniqueFin": "2027-04-16",
+        "userMatricule": "70000038",
+        "userParti": false,
+        "garageHistorique": [],
+        "notes": "",
+        "createdAt": "2026-07-28T16:00:46.888Z",
+        "updatedAt": "2026-10-21T10:07:12.944Z"
+      },
+      "undoable": false,
+      "undone": false
+    },
+    {
       "id": "log-001769",
       "at": "2026-10-21T09:53:16.914Z",
       "userId": "Serge.Muakasa@ppcdrc.cd",
@@ -190550,5 +190677,5 @@
       }
     }
   ],
-  "nextSeq": 1770
+  "nextSeq": 1771
 }
