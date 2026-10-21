@@ -1,6 +1,29 @@
 {
   "entries": [
     {
+      "id": "log-001782",
+      "at": "2026-10-21T10:30:03.738Z",
+      "userId": "admin",
+      "userName": "Administrateur",
+      "userEmail": "admin",
+      "module": "timesheet",
+      "moduleLabel": "Timesheet",
+      "action": "update",
+      "actionLabel": "Modification",
+      "summary": "Enregistrement timesheet 70000084 — Quality Assurance (10/2026)",
+      "details": "Enregistrement timesheet 70000084 — Quality Assurance (10/2026)",
+      "undoable": false,
+      "undone": false,
+      "meta": {
+        "year": 2026,
+        "month": 10,
+        "department": "Quality Assurance",
+        "matricule": "70000084",
+        "mode": "employee-month",
+        "count": 35
+      }
+    },
+    {
       "id": "log-001781",
       "at": "2026-10-21T10:29:44.193Z",
       "userId": "karine.mvutu@ppcdrc.cd",
@@ -191664,5 +191687,5 @@
       }
     }
   ],
-  "nextSeq": 1782
+  "nextSeq": 1783
 }
