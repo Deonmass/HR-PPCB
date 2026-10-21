@@ -2949,6 +2949,23 @@
           },
           "updatedAt": "2026-10-21T19:22:55.378Z",
           "updatedBy": "admin"
+        },
+        "Production::1": {
+          "weekIndex": 1,
+          "department": "Production",
+          "weekFromTo": "du 21/09/2026 au 28/09/2026",
+          "locked": false,
+          "entries": {
+            "70000226": {
+              "matricule": "70000226",
+              "ot13": 2,
+              "ot16": 1.831,
+              "ot2": 20.011,
+              "night": 0
+            }
+          },
+          "updatedAt": "2026-10-21T19:23:45.768Z",
+          "updatedBy": "admin"
         }
       }
     }
