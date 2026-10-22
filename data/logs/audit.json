@@ -1,6 +1,48 @@
 {
   "entries": [
     {
+      "id": "log-001854",
+      "at": "2026-10-22T16:43:08.586Z",
+      "userId": "karine.mvutu@ppcdrc.cd",
+      "userName": "Karine Mvutu",
+      "userEmail": "karine.mvutu@ppcdrc.cd",
+      "module": "sante",
+      "moduleLabel": "Santé",
+      "action": "create",
+      "actionLabel": "Création",
+      "entityType": "sante.visit",
+      "entityId": "sante-mvjrs8e9-zrovm6",
+      "summary": "Cas santé — TULENGI KASIAMA · LUMBAGO",
+      "details": "Cas santé — TULENGI KASIAMA · LUMBAGO",
+      "after": {
+        "id": "sante-mvjrs8e9-zrovm6",
+        "date": "2026-06-10",
+        "nom": "TULENGI",
+        "postnom": "KASIAMA",
+        "sexe": "M",
+        "age": 40,
+        "typeMalade": "AGENT",
+        "pathologie": "LUMBAGO",
+        "traitement": "ANTI INFLAMATOIRE",
+        "reference": "NON",
+        "year": 2026,
+        "month": 6,
+        "employeeMatricule": "",
+        "employeeNom": "",
+        "dependantId": null,
+        "commentaire": "",
+        "contractantId": "",
+        "contractantNom": "",
+        "contractantEmployeeId": "",
+        "createdAt": "2026-10-22T16:43:06.753Z",
+        "updatedAt": "2026-10-22T16:43:06.753Z",
+        "createdBy": "karine.mvutu@ppcdrc.cd",
+        "updatedBy": "karine.mvutu@ppcdrc.cd"
+      },
+      "undoable": false,
+      "undone": false
+    },
+    {
       "id": "log-001853",
       "at": "2026-10-22T15:13:45.235Z",
       "userId": "admin",
@@ -201904,5 +201946,5 @@
       }
     }
   ],
-  "nextSeq": 1854
+  "nextSeq": 1855
 }
