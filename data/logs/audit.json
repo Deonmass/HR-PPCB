@@ -1,6 +1,29 @@
 {
   "entries": [
     {
+      "id": "log-001824",
+      "at": "2026-10-22T07:37:25.158Z",
+      "userId": "admin",
+      "userName": "Administrateur",
+      "userEmail": "admin",
+      "module": "timesheet",
+      "moduleLabel": "Timesheet",
+      "action": "update",
+      "actionLabel": "Modification",
+      "summary": "Enregistrement timesheet 70000155 — Sales and Marketing (10/2026)",
+      "details": "Enregistrement timesheet 70000155 — Sales and Marketing (10/2026)",
+      "undoable": false,
+      "undone": false,
+      "meta": {
+        "year": 2026,
+        "month": 10,
+        "department": "Sales and Marketing",
+        "matricule": "70000155",
+        "mode": "employee-month",
+        "count": 35
+      }
+    },
+    {
       "id": "log-001823",
       "at": "2026-10-22T07:32:46.473Z",
       "userId": "admin",
@@ -193002,5 +193025,5 @@
       }
     }
   ],
-  "nextSeq": 1824
+  "nextSeq": 1825
 }
