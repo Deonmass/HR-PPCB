@@ -1,6 +1,737 @@
 {
   "entries": [
     {
+      "id": "log-001847",
+      "at": "2026-10-22T14:37:42.552Z",
+      "userId": "admin",
+      "userName": "Administrateur",
+      "userEmail": "admin",
+      "module": "timesheet.overtimes",
+      "moduleLabel": "Timesheet — Heures sup.",
+      "action": "update",
+      "actionLabel": "Modification",
+      "summary": "Enregistrement HS semaine 0 — Engineering (10/2026)",
+      "details": "Enregistrement HS semaine 0 — Engineering (10/2026)",
+      "after": {
+        "weekIndex": 0,
+        "department": "Engineering",
+        "weekFromTo": "du 14/09/2026 au 21/09/2026",
+        "locked": false,
+        "entries": {
+          "70000015": {
+            "matricule": "70000015",
+            "ot13": 0,
+            "ot16": 0,
+            "ot2": 0,
+            "night": 0
+          },
+          "70000038": {
+            "matricule": "70000038",
+            "ot13": 0,
+            "ot16": 0,
+            "ot2": 0,
+            "night": 0
+          },
+          "70000040": {
+            "matricule": "70000040",
+            "ot13": 0,
+            "ot16": 0,
+            "ot2": 0,
+            "night": 0
+          },
+          "70000046": {
+            "matricule": "70000046",
+            "ot13": 0,
+            "ot16": 0,
+            "ot2": 0,
+            "night": 0
+          },
+          "70000052": {
+            "matricule": "70000052",
+            "ot13": 2,
+            "ot16": 7.767,
+            "ot2": 0,
+            "night": 0
+          },
+          "70000079": {
+            "matricule": "70000079",
+            "ot13": 2,
+            "ot16": 10.821,
+            "ot2": 0,
+            "night": 10.229
+          },
+          "70000087": {
+            "matricule": "70000087",
+            "ot13": 0,
+            "ot16": 0,
+            "ot2": 0,
+            "night": 0
+          },
+          "70000088": {
+            "matricule": "70000088",
+            "ot13": 0,
+            "ot16": 0,
+            "ot2": 0,
+            "night": 0
+          },
+          "70000091": {
+            "matricule": "70000091",
+            "ot13": 0,
+            "ot16": 0,
+            "ot2": 0,
+            "night": 0
+          },
+          "70000093": {
+            "matricule": "70000093",
+            "ot13": 2,
+            "ot16": 2.616,
+            "ot2": 0,
+            "night": 0
+          },
+          "70000104": {
+            "matricule": "70000104",
+            "ot13": 2,
+            "ot16": 10,
+            "ot2": 12,
+            "night": 0
+          },
+          "70000109": {
+            "matricule": "70000109",
+            "ot13": 0,
+            "ot16": 0,
+            "ot2": 0,
+            "night": 0
+          },
+          "70000115": {
+            "matricule": "70000115",
+            "ot13": 0,
+            "ot16": 0,
+            "ot2": 0,
+            "night": 0
+          },
+          "70000116": {
+            "matricule": "70000116",
+            "ot13": 2,
+            "ot16": 8.087,
+            "ot2": 5.628,
+            "night": 0
+          },
+          "70000191": {
+            "matricule": "70000191",
+            "ot13": 0,
+            "ot16": 0,
+            "ot2": 0,
+            "night": 0
+          },
+          "70000215": {
+            "matricule": "70000215",
+            "ot13": 2,
+            "ot16": 5.104,
+            "ot2": 16,
+            "night": 5.186
+          },
+          "70000216": {
+            "matricule": "70000216",
+            "ot13": 2,
+            "ot16": 11.606,
+            "ot2": 0,
+            "night": 0
+          },
+          "70000227": {
+            "matricule": "70000227",
+            "ot13": 0,
+            "ot16": 0,
+            "ot2": 17.053,
+            "night": 0
+          },
+          "70000229": {
+            "matricule": "70000229",
+            "ot13": 0,
+            "ot16": 0,
+            "ot2": 0,
+            "night": 0
+          },
+          "70000232": {
+            "matricule": "70000232",
+            "ot13": 0,
+            "ot16": 0,
+            "ot2": 0,
+            "night": 0
+          },
+          "70000261": {
+            "matricule": "70000261",
+            "ot13": 0,
+            "ot16": 0,
+            "ot2": 0,
+            "night": 0
+          },
+          "70000280": {
+            "matricule": "70000280",
+            "ot13": 0,
+            "ot16": 0,
+            "ot2": 0,
+            "night": 0
+          },
+          "70000281": {
+            "matricule": "70000281",
+            "ot13": 0,
+            "ot16": 0,
+            "ot2": 0,
+            "night": 0
+          },
+          "70000283": {
+            "matricule": "70000283",
+            "ot13": 0,
+            "ot16": 0,
+            "ot2": 0,
+            "night": 0
+          },
+          "70000284": {
+            "matricule": "70000284",
+            "ot13": 0,
+            "ot16": 0,
+            "ot2": 0,
+            "night": 0
+          },
+          "70000306": {
+            "matricule": "70000306",
+            "ot13": 0,
+            "ot16": 0,
+            "ot2": 0,
+            "night": 0
+          },
+          "70000309": {
+            "matricule": "70000309",
+            "ot13": 0,
+            "ot16": 0,
+            "ot2": 0,
+            "night": 0
+          },
+          "CTR-2-46": {
+            "matricule": "CTR-2-46",
+            "ot13": 0,
+            "ot16": 0,
+            "ot2": 0,
+            "night": 0
+          },
+          "CTR-4-185": {
+            "matricule": "CTR-4-185",
+            "ot13": 0,
+            "ot16": 0,
+            "ot2": 0,
+            "night": 0
+          },
+          "CTR-4-186": {
+            "matricule": "CTR-4-186",
+            "ot13": 0,
+            "ot16": 0,
+            "ot2": 0,
+            "night": 0
+          },
+          "CTR-2-24": {
+            "matricule": "CTR-2-24",
+            "ot13": 0,
+            "ot16": 0,
+            "ot2": 0,
+            "night": 0
+          },
+          "CTR-2-49": {
+            "matricule": "CTR-2-49",
+            "ot13": 0,
+            "ot16": 0,
+            "ot2": 0,
+            "night": 0
+          },
+          "CTR-2-28": {
+            "matricule": "CTR-2-28",
+            "ot13": 0,
+            "ot16": 0,
+            "ot2": 0,
+            "night": 0
+          },
+          "CTR-2-48": {
+            "matricule": "CTR-2-48",
+            "ot13": 0,
+            "ot16": 0,
+            "ot2": 0,
+            "night": 0
+          },
+          "CTR-4-222": {
+            "matricule": "CTR-4-222",
+            "ot13": 0,
+            "ot16": 0,
+            "ot2": 0,
+            "night": 0
+          },
+          "CTR-4-188": {
+            "matricule": "CTR-4-188",
+            "ot13": 0,
+            "ot16": 0,
+            "ot2": 0,
+            "night": 0
+          },
+          "CTR-4-189": {
+            "matricule": "CTR-4-189",
+            "ot13": 0,
+            "ot16": 0,
+            "ot2": 0,
+            "night": 0
+          },
+          "CTR-4-190": {
+            "matricule": "CTR-4-190",
+            "ot13": 0,
+            "ot16": 0,
+            "ot2": 0,
+            "night": 0
+          },
+          "CTR-4-191": {
+            "matricule": "CTR-4-191",
+            "ot13": 0,
+            "ot16": 0,
+            "ot2": 0,
+            "night": 0
+          },
+          "CTR-2-32": {
+            "matricule": "CTR-2-32",
+            "ot13": 0,
+            "ot16": 0,
+            "ot2": 0,
+            "night": 0
+          },
+          "CTR-4-218": {
+            "matricule": "CTR-4-218",
+            "ot13": 0,
+            "ot16": 0,
+            "ot2": 0,
+            "night": 0
+          },
+          "CTR-4-193": {
+            "matricule": "CTR-4-193",
+            "ot13": 0,
+            "ot16": 0,
+            "ot2": 0,
+            "night": 0
+          },
+          "CTR-4-194": {
+            "matricule": "CTR-4-194",
+            "ot13": 0,
+            "ot16": 0,
+            "ot2": 0,
+            "night": 0
+          },
+          "CTR-4-195": {
+            "matricule": "CTR-4-195",
+            "ot13": 0,
+            "ot16": 0,
+            "ot2": 0,
+            "night": 0
+          },
+          "CTR-4-196": {
+            "matricule": "CTR-4-196",
+            "ot13": 0,
+            "ot16": 0,
+            "ot2": 0,
+            "night": 0
+          },
+          "CTR-4-200": {
+            "matricule": "CTR-4-200",
+            "ot13": 0,
+            "ot16": 0,
+            "ot2": 0,
+            "night": 0
+          },
+          "CTR-4-201": {
+            "matricule": "CTR-4-201",
+            "ot13": 0,
+            "ot16": 0,
+            "ot2": 0,
+            "night": 0
+          },
+          "CTR-4-202": {
+            "matricule": "CTR-4-202",
+            "ot13": 0,
+            "ot16": 0,
+            "ot2": 0,
+            "night": 0
+          },
+          "CTR-4-203": {
+            "matricule": "CTR-4-203",
+            "ot13": 0,
+            "ot16": 0,
+            "ot2": 0,
+            "night": 0
+          },
+          "CTR-4-204": {
+            "matricule": "CTR-4-204",
+            "ot13": 0,
+            "ot16": 0,
+            "ot2": 0,
+            "night": 0
+          },
+          "CTR-4-205": {
+            "matricule": "CTR-4-205",
+            "ot13": 0,
+            "ot16": 0,
+            "ot2": 0,
+            "night": 0
+          },
+          "CTR-4-206": {
+            "matricule": "CTR-4-206",
+            "ot13": 0,
+            "ot16": 0,
+            "ot2": 0,
+            "night": 0
+          },
+          "CTR-2-71": {
+            "matricule": "CTR-2-71",
+            "ot13": 0,
+            "ot16": 0,
+            "ot2": 0,
+            "night": 0
+          },
+          "CTR-4-207": {
+            "matricule": "CTR-4-207",
+            "ot13": 0,
+            "ot16": 0,
+            "ot2": 0,
+            "night": 0
+          },
+          "CTR-4-224": {
+            "matricule": "CTR-4-224",
+            "ot13": 0,
+            "ot16": 0,
+            "ot2": 0,
+            "night": 0
+          },
+          "CTR-2-78": {
+            "matricule": "CTR-2-78",
+            "ot13": 0,
+            "ot16": 0,
+            "ot2": 0,
+            "night": 0
+          },
+          "CTR-2-29": {
+            "matricule": "CTR-2-29",
+            "ot13": 0,
+            "ot16": 0,
+            "ot2": 0,
+            "night": 0
+          },
+          "CTR-2-75": {
+            "matricule": "CTR-2-75",
+            "ot13": 0,
+            "ot16": 0,
+            "ot2": 0,
+            "night": 0
+          },
+          "CTR-2-42": {
+            "matricule": "CTR-2-42",
+            "ot13": 0,
+            "ot16": 0,
+            "ot2": 0,
+            "night": 0
+          },
+          "CTR-2-50": {
+            "matricule": "CTR-2-50",
+            "ot13": 0,
+            "ot16": 0,
+            "ot2": 0,
+            "night": 0
+          },
+          "CTR-2-72": {
+            "matricule": "CTR-2-72",
+            "ot13": 0,
+            "ot16": 0,
+            "ot2": 0,
+            "night": 0
+          },
+          "CTR-2-47": {
+            "matricule": "CTR-2-47",
+            "ot13": 0,
+            "ot16": 0,
+            "ot2": 0,
+            "night": 0
+          },
+          "CTR-2-33": {
+            "matricule": "CTR-2-33",
+            "ot13": 0,
+            "ot16": 0,
+            "ot2": 0,
+            "night": 0
+          },
+          "CTR-2-43": {
+            "matricule": "CTR-2-43",
+            "ot13": 0,
+            "ot16": 0,
+            "ot2": 0,
+            "night": 0
+          },
+          "CTR-2-35": {
+            "matricule": "CTR-2-35",
+            "ot13": 0,
+            "ot16": 0,
+            "ot2": 0,
+            "night": 0
+          },
+          "CTR-4-208": {
+            "matricule": "CTR-4-208",
+            "ot13": 0,
+            "ot16": 0,
+            "ot2": 0,
+            "night": 0
+          },
+          "CTR-2-45": {
+            "matricule": "CTR-2-45",
+            "ot13": 0,
+            "ot16": 0,
+            "ot2": 0,
+            "night": 0
+          },
+          "CTR-2-30": {
+            "matricule": "CTR-2-30",
+            "ot13": 0,
+            "ot16": 0,
+            "ot2": 0,
+            "night": 0
+          },
+          "CTR-4-220": {
+            "matricule": "CTR-4-220",
+            "ot13": 0,
+            "ot16": 0,
+            "ot2": 0,
+            "night": 0
+          },
+          "CTR-2-79": {
+            "matricule": "CTR-2-79",
+            "ot13": 0,
+            "ot16": 0,
+            "ot2": 0,
+            "night": 0
+          },
+          "CTR-2-25": {
+            "matricule": "CTR-2-25",
+            "ot13": 0,
+            "ot16": 0,
+            "ot2": 0,
+            "night": 0
+          },
+          "CTR-2-37": {
+            "matricule": "CTR-2-37",
+            "ot13": 0,
+            "ot16": 0,
+            "ot2": 0,
+            "night": 0
+          },
+          "CTR-4-209": {
+            "matricule": "CTR-4-209",
+            "ot13": 0,
+            "ot16": 0,
+            "ot2": 0,
+            "night": 0
+          },
+          "CTR-2-44": {
+            "matricule": "CTR-2-44",
+            "ot13": 0,
+            "ot16": 0,
+            "ot2": 0,
+            "night": 0
+          },
+          "CTR-2-39": {
+            "matricule": "CTR-2-39",
+            "ot13": 0,
+            "ot16": 0,
+            "ot2": 0,
+            "night": 0
+          },
+          "CTR-2-41": {
+            "matricule": "CTR-2-41",
+            "ot13": 0,
+            "ot16": 0,
+            "ot2": 0,
+            "night": 0
+          },
+          "CTR-2-74": {
+            "matricule": "CTR-2-74",
+            "ot13": 0,
+            "ot16": 0,
+            "ot2": 0,
+            "night": 0
+          },
+          "CTR-2-38": {
+            "matricule": "CTR-2-38",
+            "ot13": 0,
+            "ot16": 0,
+            "ot2": 0,
+            "night": 0
+          },
+          "CTR-2-81": {
+            "matricule": "CTR-2-81",
+            "ot13": 0,
+            "ot16": 0,
+            "ot2": 0,
+            "night": 0
+          },
+          "CTR-2-27": {
+            "matricule": "CTR-2-27",
+            "ot13": 0,
+            "ot16": 0,
+            "ot2": 0,
+            "night": 0
+          },
+          "CTR-4-223": {
+            "matricule": "CTR-4-223",
+            "ot13": 0,
+            "ot16": 0,
+            "ot2": 0,
+            "night": 0
+          },
+          "CTR-2-31": {
+            "matricule": "CTR-2-31",
+            "ot13": 0,
+            "ot16": 0,
+            "ot2": 0,
+            "night": 0
+          },
+          "CTR-4-225": {
+            "matricule": "CTR-4-225",
+            "ot13": 0,
+            "ot16": 0,
+            "ot2": 0,
+            "night": 0
+          },
+          "CTR-2-773": {
+            "matricule": "CTR-2-773",
+            "ot13": 0,
+            "ot16": 0,
+            "ot2": 0,
+            "night": 0
+          },
+          "CTR-2-73": {
+            "matricule": "CTR-2-73",
+            "ot13": 0,
+            "ot16": 0,
+            "ot2": 0,
+            "night": 0
+          },
+          "CTR-2-40": {
+            "matricule": "CTR-2-40",
+            "ot13": 0,
+            "ot16": 0,
+            "ot2": 0,
+            "night": 0
+          },
+          "CTR-2-34": {
+            "matricule": "CTR-2-34",
+            "ot13": 0,
+            "ot16": 0,
+            "ot2": 0,
+            "night": 0
+          },
+          "CTR-2-26": {
+            "matricule": "CTR-2-26",
+            "ot13": 0,
+            "ot16": 0,
+            "ot2": 0,
+            "night": 0
+          },
+          "CTR-2-776": {
+            "matricule": "CTR-2-776",
+            "ot13": 0,
+            "ot16": 0,
+            "ot2": 0,
+            "night": 0
+          },
+          "CTR-2-77": {
+            "matricule": "CTR-2-77",
+            "ot13": 0,
+            "ot16": 0,
+            "ot2": 0,
+            "night": 0
+          },
+          "CTR-4-221": {
+            "matricule": "CTR-4-221",
+            "ot13": 0,
+            "ot16": 0,
+            "ot2": 0,
+            "night": 0
+          },
+          "CTR-4-212": {
+            "matricule": "CTR-4-212",
+            "ot13": 0,
+            "ot16": 0,
+            "ot2": 0,
+            "night": 0
+          },
+          "CTR-4-219": {
+            "matricule": "CTR-4-219",
+            "ot13": 0,
+            "ot16": 0,
+            "ot2": 0,
+            "night": 0
+          },
+          "CTR-4-213": {
+            "matricule": "CTR-4-213",
+            "ot13": 0,
+            "ot16": 0,
+            "ot2": 0,
+            "night": 0
+          },
+          "CTR-2-76": {
+            "matricule": "CTR-2-76",
+            "ot13": 0,
+            "ot16": 0,
+            "ot2": 0,
+            "night": 0
+          },
+          "CTR-2-777": {
+            "matricule": "CTR-2-777",
+            "ot13": 0,
+            "ot16": 0,
+            "ot2": 0,
+            "night": 0
+          },
+          "CTR-4-215": {
+            "matricule": "CTR-4-215",
+            "ot13": 0,
+            "ot16": 0,
+            "ot2": 0,
+            "night": 0
+          },
+          "CTR-4-216": {
+            "matricule": "CTR-4-216",
+            "ot13": 0,
+            "ot16": 0,
+            "ot2": 0,
+            "night": 0
+          },
+          "CTR-4-217": {
+            "matricule": "CTR-4-217",
+            "ot13": 0,
+            "ot16": 0,
+            "ot2": 0,
+            "night": 0
+          },
+          "CTR-2-36": {
+            "matricule": "CTR-2-36",
+            "ot13": 0,
+            "ot16": 0,
+            "ot2": 0,
+            "night": 0
+          }
+        },
+        "updatedAt": "2026-10-22T14:37:38.454Z",
+        "updatedBy": "admin"
+      },
+      "undoable": false,
+      "undone": false,
+      "meta": {
+        "year": 2026,
+        "month": 10,
+        "department": "Engineering",
+        "weekIndex": 0
+      }
+    },
+    {
       "id": "log-001846",
       "at": "2026-10-22T14:37:05.869Z",
       "userId": "Tresor.Maneka@ppcdrc.cd",
@@ -200149,5 +200880,5 @@
       }
     }
   ],
-  "nextSeq": 1847
+  "nextSeq": 1848
 }
