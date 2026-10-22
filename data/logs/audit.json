@@ -1,6 +1,21 @@
 {
   "entries": [
     {
+      "id": "log-001853",
+      "at": "2026-10-22T15:13:45.235Z",
+      "userId": "admin",
+      "userName": "Administrateur",
+      "userEmail": "admin",
+      "module": "timesheet.compilation",
+      "moduleLabel": "Timesheet — Compilation",
+      "action": "export",
+      "actionLabel": "Export",
+      "summary": "Export compilation OT 10/2026 — __ALL__",
+      "details": "Export Excel compilation OT 10/2026 (__ALL__)",
+      "undoable": false,
+      "undone": false
+    },
+    {
       "id": "log-001852",
       "at": "2026-10-22T14:46:07.472Z",
       "userId": "Tresor.Maneka@ppcdrc.cd",
@@ -201889,5 +201904,5 @@
       }
     }
   ],
-  "nextSeq": 1853
+  "nextSeq": 1854
 }
