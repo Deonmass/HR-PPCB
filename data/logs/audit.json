@@ -1,6 +1,53 @@
 {
   "entries": [
     {
+      "id": "log-001846",
+      "at": "2026-10-22T14:37:05.869Z",
+      "userId": "Tresor.Maneka@ppcdrc.cd",
+      "userName": "Tresor Maneka",
+      "userEmail": "Tresor.Maneka@ppcdrc.cd",
+      "module": "charroi.voyages",
+      "moduleLabel": "Charroi — Voyages",
+      "action": "create",
+      "actionLabel": "Création",
+      "entityType": "charroi.voyage",
+      "entityId": "vyg-027",
+      "summary": "Demande de voyage VYG-0027 MAVUANGALA MVIOKI JEAN-PIERRE, NDONDA LUFULUABO PASCAL Tshikapa → Kikwit",
+      "details": "Demande de voyage VYG-0027 MAVUANGALA MVIOKI JEAN-PIERRE, NDONDA LUFULUABO PASCAL Tshikapa → Kikwit",
+      "after": {
+        "id": "vyg-027",
+        "numero": "VYG-0027",
+        "passagerNom": "MAVUANGALA MVIOKI JEAN-PIERRE, NDONDA LUFULUABO PASCAL",
+        "passagerMatricule": "70000185, 70000307",
+        "passagerInterne": true,
+        "nombrePersonnes": 2,
+        "depart": "Tshikapa",
+        "destination": "Kikwit",
+        "dateDepart": "2026-10-22",
+        "heureDepart": "14:00",
+        "dateArrivee": "",
+        "heureArrivee": "",
+        "motif": "Retour Vers Kikwit Tshikapa",
+        "notes": "",
+        "status": "demande",
+        "chauffeurNom": "",
+        "chauffeurMatricule": "",
+        "chauffeurInterne": false,
+        "vehiculeMode": "",
+        "vehiculeId": "",
+        "vehiculeLibelle": "",
+        "foodAllowance": 0,
+        "foodForTheRoad": 0,
+        "tollGate": 0,
+        "confirmedAt": "",
+        "completedAt": "",
+        "createdAt": "2026-10-22T14:37:02.157Z",
+        "updatedAt": "2026-10-22T14:37:02.157Z"
+      },
+      "undoable": false,
+      "undone": false
+    },
+    {
       "id": "log-001845",
       "at": "2026-10-22T14:35:55.073Z",
       "userId": "admin",
@@ -200102,5 +200149,5 @@
       }
     }
   ],
-  "nextSeq": 1846
+  "nextSeq": 1847
 }
