@@ -3176,6 +3176,65 @@
           },
           "updatedAt": "2026-10-22T07:16:50.436Z",
           "updatedBy": "admin"
+        },
+        "Finance::2": {
+          "weekIndex": 2,
+          "department": "Finance",
+          "weekFromTo": "du 28/09/2026 au 05/10/2026",
+          "locked": false,
+          "entries": {
+            "70000101": {
+              "matricule": "70000101",
+              "ot13": 0,
+              "ot16": 0,
+              "ot2": 0,
+              "night": 0
+            },
+            "70000240": {
+              "matricule": "70000240",
+              "ot13": 0,
+              "ot16": 0,
+              "ot2": 0,
+              "night": 0
+            },
+            "70000259": {
+              "matricule": "70000259",
+              "ot13": 0,
+              "ot16": 0,
+              "ot2": 2,
+              "night": 0
+            },
+            "70000270": {
+              "matricule": "70000270",
+              "ot13": 0,
+              "ot16": 0,
+              "ot2": 0,
+              "night": 0
+            },
+            "CTR-2-51": {
+              "matricule": "CTR-2-51",
+              "ot13": 0,
+              "ot16": 0,
+              "ot2": 0,
+              "night": 0
+            },
+            "CTR-9-646": {
+              "matricule": "CTR-9-646",
+              "ot13": 0,
+              "ot16": 0,
+              "ot2": 0,
+              "night": 0
+            },
+            "CTR-2-80": {
+              "matricule": "CTR-2-80",
+              "ot13": 0,
+              "ot16": 0,
+              "ot2": 0,
+              "night": 0
+            }
+          },
+          "updatedAt": "2026-10-22T07:17:37.453Z",
+          "updatedBy": "admin"
         }
       }
     }
