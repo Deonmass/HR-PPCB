@@ -1,6 +1,86 @@
 {
   "entries": [
     {
+      "id": "log-001820",
+      "at": "2026-10-22T07:16:54.165Z",
+      "userId": "admin",
+      "userName": "Administrateur",
+      "userEmail": "admin",
+      "module": "timesheet.overtimes",
+      "moduleLabel": "Timesheet — Heures sup.",
+      "action": "update",
+      "actionLabel": "Modification",
+      "summary": "Enregistrement HS semaine 1 — Finance (10/2026)",
+      "details": "Enregistrement HS semaine 1 — Finance (10/2026)",
+      "after": {
+        "weekIndex": 1,
+        "department": "Finance",
+        "weekFromTo": "du 21/09/2026 au 28/09/2026",
+        "locked": false,
+        "entries": {
+          "70000101": {
+            "matricule": "70000101",
+            "ot13": 0,
+            "ot16": 0,
+            "ot2": 0,
+            "night": 0
+          },
+          "70000240": {
+            "matricule": "70000240",
+            "ot13": 0,
+            "ot16": 0,
+            "ot2": 0,
+            "night": 0
+          },
+          "70000259": {
+            "matricule": "70000259",
+            "ot13": 0,
+            "ot16": 0,
+            "ot2": 12,
+            "night": 0
+          },
+          "70000270": {
+            "matricule": "70000270",
+            "ot13": 0,
+            "ot16": 0,
+            "ot2": 0,
+            "night": 0
+          },
+          "CTR-2-51": {
+            "matricule": "CTR-2-51",
+            "ot13": 0,
+            "ot16": 0,
+            "ot2": 0,
+            "night": 0
+          },
+          "CTR-9-646": {
+            "matricule": "CTR-9-646",
+            "ot13": 0,
+            "ot16": 0,
+            "ot2": 0,
+            "night": 0
+          },
+          "CTR-2-80": {
+            "matricule": "CTR-2-80",
+            "ot13": 0,
+            "ot16": 0,
+            "ot2": 0,
+            "night": 0
+          }
+        },
+        "updatedAt": "2026-10-22T07:16:50.436Z",
+        "updatedBy": "admin"
+      },
+      "undoable": false,
+      "undone": false,
+      "meta": {
+        "year": 2026,
+        "month": 10,
+        "department": "Finance",
+        "weekIndex": 1
+      }
+    },
+    {
       "id": "log-001819",
       "at": "2026-10-21T21:29:33.841Z",
       "userId": "gd.mwankana@capitalhrsolutions.net",
@@ -192796,5 +192876,5 @@
       }
     }
   ],
-  "nextSeq": 1820
+  "nextSeq": 1821
 }
