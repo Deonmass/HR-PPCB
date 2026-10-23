@@ -1,6 +1,48 @@
 {
   "entries": [
     {
+      "id": "log-001869",
+      "at": "2026-10-23T04:10:52.240Z",
+      "userId": "karine.mvutu@ppcdrc.cd",
+      "userName": "Karine Mvutu",
+      "userEmail": "karine.mvutu@ppcdrc.cd",
+      "module": "sante",
+      "moduleLabel": "Santé",
+      "action": "create",
+      "actionLabel": "Création",
+      "entityType": "sante.visit",
+      "entityId": "sante-mvkgcnis-bwjf07",
+      "summary": "Cas santé — MOLONGA LYONGA ANDREW · VERMINOSE",
+      "details": "Cas santé — MOLONGA LYONGA ANDREW · VERMINOSE",
+      "after": {
+        "id": "sante-mvkgcnis-bwjf07",
+        "date": "2026-10-13",
+        "nom": "MOLONGA",
+        "postnom": "LYONGA ANDREW",
+        "sexe": "M",
+        "age": 40,
+        "typeMalade": "AGENT",
+        "pathologie": "VERMINOSE",
+        "traitement": "VERMIFUGE",
+        "reference": "NON",
+        "year": 2026,
+        "month": 10,
+        "employeeMatricule": "70000252",
+        "employeeNom": "MOLONGA LYONGA ANDREW",
+        "dependantId": null,
+        "commentaire": "",
+        "contractantId": "",
+        "contractantNom": "",
+        "contractantEmployeeId": "",
+        "createdAt": "2026-10-23T04:10:50.260Z",
+        "updatedAt": "2026-10-23T04:10:50.260Z",
+        "createdBy": "karine.mvutu@ppcdrc.cd",
+        "updatedBy": "karine.mvutu@ppcdrc.cd"
+      },
+      "undoable": false,
+      "undone": false
+    },
+    {
       "id": "log-001868",
       "at": "2026-10-23T04:09:56.353Z",
       "userId": "karine.mvutu@ppcdrc.cd",
@@ -205290,5 +205332,5 @@
       }
     }
   ],
-  "nextSeq": 1869
+  "nextSeq": 1870
 }
