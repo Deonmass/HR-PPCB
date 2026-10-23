@@ -1,6 +1,48 @@
 {
   "entries": [
     {
+      "id": "log-001886",
+      "at": "2026-10-23T04:33:56.319Z",
+      "userId": "karine.mvutu@ppcdrc.cd",
+      "userName": "Karine Mvutu",
+      "userEmail": "karine.mvutu@ppcdrc.cd",
+      "module": "sante",
+      "moduleLabel": "Santé",
+      "action": "create",
+      "actionLabel": "Création",
+      "entityType": "sante.visit",
+      "entityId": "sante-mvkh6cfe-5dexng",
+      "summary": "Cas santé — KABEYA KABENGELE Tresor Michel · SYNDROME VERTIGINEUX",
+      "details": "Cas santé — KABEYA KABENGELE Tresor Michel · SYNDROME VERTIGINEUX",
+      "after": {
+        "id": "sante-mvkh6cfe-5dexng",
+        "date": "2026-10-22",
+        "nom": "KABEYA",
+        "postnom": "KABENGELE Tresor Michel",
+        "sexe": "M",
+        "age": 41,
+        "typeMalade": "AGENT",
+        "pathologie": "SYNDROME VERTIGINEUX",
+        "traitement": "RAS",
+        "reference": "IME",
+        "year": 2026,
+        "month": 10,
+        "employeeMatricule": "70000027",
+        "employeeNom": "KABEYA KABENGELE Tresor Michel",
+        "dependantId": null,
+        "commentaire": "Voir avis medicale pour chercher la cause",
+        "contractantId": "",
+        "contractantNom": "",
+        "contractantEmployeeId": "",
+        "createdAt": "2026-10-23T04:33:55.562Z",
+        "updatedAt": "2026-10-23T04:33:55.562Z",
+        "createdBy": "karine.mvutu@ppcdrc.cd",
+        "updatedBy": "karine.mvutu@ppcdrc.cd"
+      },
+      "undoable": false,
+      "undone": false
+    },
+    {
       "id": "log-001885",
       "at": "2026-10-23T04:32:48.372Z",
       "userId": "karine.mvutu@ppcdrc.cd",
@@ -206004,5 +206046,5 @@
       }
     }
   ],
-  "nextSeq": 1886
+  "nextSeq": 1887
 }
