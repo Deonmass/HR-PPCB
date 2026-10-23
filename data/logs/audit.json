@@ -1,6 +1,48 @@
 {
   "entries": [
     {
+      "id": "log-001888",
+      "at": "2026-10-23T04:35:50.904Z",
+      "userId": "karine.mvutu@ppcdrc.cd",
+      "userName": "Karine Mvutu",
+      "userEmail": "karine.mvutu@ppcdrc.cd",
+      "module": "sante",
+      "moduleLabel": "Santé",
+      "action": "create",
+      "actionLabel": "Création",
+      "entityType": "sante.visit",
+      "entityId": "sante-mvkh8rzj-h2489o",
+      "summary": "Cas santé — NTUNGA PIERRE DIEU-MERCI · CARIE DENTAIRE",
+      "details": "Cas santé — NTUNGA PIERRE DIEU-MERCI · CARIE DENTAIRE",
+      "after": {
+        "id": "sante-mvkh8rzj-h2489o",
+        "date": "2026-10-19",
+        "nom": "NTUNGA",
+        "postnom": "PIERRE DIEU-MERCI",
+        "sexe": "M",
+        "age": 36,
+        "typeMalade": "AGENT",
+        "pathologie": "CARIE DENTAIRE",
+        "traitement": "DICLOFENAC COMPRIME",
+        "reference": "IME",
+        "year": 2026,
+        "month": 10,
+        "employeeMatricule": "70000227",
+        "employeeNom": "NTUNGA PIERRE DIEU-MERCI",
+        "dependantId": null,
+        "commentaire": "",
+        "contractantId": "",
+        "contractantNom": "",
+        "contractantEmployeeId": "",
+        "createdAt": "2026-10-23T04:35:49.039Z",
+        "updatedAt": "2026-10-23T04:35:49.039Z",
+        "createdBy": "karine.mvutu@ppcdrc.cd",
+        "updatedBy": "karine.mvutu@ppcdrc.cd"
+      },
+      "undoable": false,
+      "undone": false
+    },
+    {
       "id": "log-001887",
       "at": "2026-10-23T04:34:56.148Z",
       "userId": "karine.mvutu@ppcdrc.cd",
@@ -206088,5 +206130,5 @@
       }
     }
   ],
-  "nextSeq": 1888
+  "nextSeq": 1889
 }
