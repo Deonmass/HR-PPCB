@@ -1,6 +1,48 @@
 {
   "entries": [
     {
+      "id": "log-001868",
+      "at": "2026-10-23T04:09:56.353Z",
+      "userId": "karine.mvutu@ppcdrc.cd",
+      "userName": "Karine Mvutu",
+      "userEmail": "karine.mvutu@ppcdrc.cd",
+      "module": "sante",
+      "moduleLabel": "Santé",
+      "action": "create",
+      "actionLabel": "Création",
+      "entityType": "sante.visit",
+      "entityId": "sante-mvkgbgog-o5eu0q",
+      "summary": "Cas santé — KADIMOYO ILUNGA YVAN · SURMENAGE",
+      "details": "Cas santé — KADIMOYO ILUNGA YVAN · SURMENAGE",
+      "after": {
+        "id": "sante-mvkgbgog-o5eu0q",
+        "date": "2026-10-10",
+        "nom": "KADIMOYO",
+        "postnom": "ILUNGA YVAN",
+        "sexe": "M",
+        "age": 34,
+        "typeMalade": "AGENT",
+        "pathologie": "SURMENAGE",
+        "traitement": "REPOS MEDICALE",
+        "reference": "NON",
+        "year": 2026,
+        "month": 10,
+        "employeeMatricule": "70000028",
+        "employeeNom": "KADIMOYO ILUNGA YVAN",
+        "dependantId": null,
+        "commentaire": "",
+        "contractantId": "",
+        "contractantNom": "",
+        "contractantEmployeeId": "",
+        "createdAt": "2026-10-23T04:09:54.736Z",
+        "updatedAt": "2026-10-23T04:09:54.736Z",
+        "createdBy": "karine.mvutu@ppcdrc.cd",
+        "updatedBy": "karine.mvutu@ppcdrc.cd"
+      },
+      "undoable": false,
+      "undone": false
+    },
+    {
       "id": "log-001867",
       "at": "2026-10-23T04:09:00.040Z",
       "userId": "karine.mvutu@ppcdrc.cd",
@@ -205248,5 +205290,5 @@
       }
     }
   ],
-  "nextSeq": 1868
+  "nextSeq": 1869
 }
