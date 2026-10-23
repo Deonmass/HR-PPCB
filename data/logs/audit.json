@@ -1,6 +1,48 @@
 {
   "entries": [
     {
+      "id": "log-001879",
+      "at": "2026-10-23T04:26:06.862Z",
+      "userId": "karine.mvutu@ppcdrc.cd",
+      "userName": "Karine Mvutu",
+      "userEmail": "karine.mvutu@ppcdrc.cd",
+      "module": "sante",
+      "moduleLabel": "Santé",
+      "action": "create",
+      "actionLabel": "Création",
+      "entityType": "sante.visit",
+      "entityId": "sante-mvkgw973-o4cwin",
+      "summary": "Cas santé — KOLONGO MUKEYINA · RHINORHEE",
+      "details": "Cas santé — KOLONGO MUKEYINA · RHINORHEE",
+      "after": {
+        "id": "sante-mvkgw973-o4cwin",
+        "date": "2026-10-17",
+        "nom": "KOLONGO",
+        "postnom": "MUKEYINA",
+        "sexe": "F",
+        "age": 4,
+        "typeMalade": "ENFANT",
+        "pathologie": "RHINORHEE",
+        "traitement": "GOUTTE NASALE",
+        "reference": "NON",
+        "year": 2026,
+        "month": 10,
+        "employeeMatricule": "70000067",
+        "employeeNom": "MPONGO KOLONGO LEON",
+        "dependantId": 320,
+        "commentaire": "",
+        "contractantId": "",
+        "contractantNom": "",
+        "contractantEmployeeId": "",
+        "createdAt": "2026-10-23T04:26:04.815Z",
+        "updatedAt": "2026-10-23T04:26:04.815Z",
+        "createdBy": "karine.mvutu@ppcdrc.cd",
+        "updatedBy": "karine.mvutu@ppcdrc.cd"
+      },
+      "undoable": false,
+      "undone": false
+    },
+    {
       "id": "log-001878",
       "at": "2026-10-23T04:25:07.774Z",
       "userId": "karine.mvutu@ppcdrc.cd",
@@ -205710,5 +205752,5 @@
       }
     }
   ],
-  "nextSeq": 1879
+  "nextSeq": 1880
 }
