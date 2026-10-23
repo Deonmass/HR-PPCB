@@ -1,6 +1,48 @@
 {
   "entries": [
     {
+      "id": "log-001864",
+      "at": "2026-10-23T04:04:19.342Z",
+      "userId": "karine.mvutu@ppcdrc.cd",
+      "userName": "Karine Mvutu",
+      "userEmail": "karine.mvutu@ppcdrc.cd",
+      "module": "sante",
+      "moduleLabel": "Santé",
+      "action": "create",
+      "actionLabel": "Création",
+      "entityType": "sante.visit",
+      "entityId": "sante-mvkg48d5-j9sypj",
+      "summary": "Cas santé — MUBENGAYI  MULUMBA · CERVICALGIE",
+      "details": "Cas santé — MUBENGAYI  MULUMBA · CERVICALGIE",
+      "after": {
+        "id": "sante-mvkg48d5-j9sypj",
+        "date": "2026-10-08",
+        "nom": "MUBENGAYI",
+        "postnom": "MULUMBA",
+        "sexe": "",
+        "age": null,
+        "typeMalade": "CONTRACTANT",
+        "pathologie": "CERVICALGIE",
+        "traitement": "ANTI INFLAMMATOIRE",
+        "reference": "NON",
+        "year": 2026,
+        "month": 10,
+        "employeeMatricule": "",
+        "employeeNom": "",
+        "dependantId": null,
+        "commentaire": "",
+        "contractantId": "11",
+        "contractantNom": "LAMBA",
+        "contractantEmployeeId": "",
+        "createdAt": "2026-10-23T04:04:17.369Z",
+        "updatedAt": "2026-10-23T04:04:17.369Z",
+        "createdBy": "karine.mvutu@ppcdrc.cd",
+        "updatedBy": "karine.mvutu@ppcdrc.cd"
+      },
+      "undoable": false,
+      "undone": false
+    },
+    {
       "id": "log-001863",
       "at": "2026-10-23T04:01:33.872Z",
       "userId": "karine.mvutu@ppcdrc.cd",
@@ -205080,5 +205122,5 @@
       }
     }
   ],
-  "nextSeq": 1864
+  "nextSeq": 1865
 }
