@@ -1,6 +1,48 @@
 {
   "entries": [
     {
+      "id": "log-001883",
+      "at": "2026-10-23T04:29:54.738Z",
+      "userId": "karine.mvutu@ppcdrc.cd",
+      "userName": "Karine Mvutu",
+      "userEmail": "karine.mvutu@ppcdrc.cd",
+      "module": "sante",
+      "moduleLabel": "Santé",
+      "action": "create",
+      "actionLabel": "Création",
+      "entityType": "sante.visit",
+      "entityId": "sante-mvkh15de-0ge83o",
+      "summary": "Cas santé — VUVU DINAYAME · VERMINOSE",
+      "details": "Cas santé — VUVU DINAYAME · VERMINOSE",
+      "after": {
+        "id": "sante-mvkh15de-0ge83o",
+        "date": "2026-10-18",
+        "nom": "VUVU",
+        "postnom": "DINAYAME",
+        "sexe": "M",
+        "age": 32,
+        "typeMalade": "CONTRACTANT",
+        "pathologie": "VERMINOSE",
+        "traitement": "VERMIFUGE",
+        "reference": "NON",
+        "year": 2026,
+        "month": 10,
+        "employeeMatricule": "",
+        "employeeNom": "",
+        "dependantId": null,
+        "commentaire": "",
+        "contractantId": "11",
+        "contractantNom": "LAMBA",
+        "contractantEmployeeId": "",
+        "createdAt": "2026-10-23T04:29:53.138Z",
+        "updatedAt": "2026-10-23T04:29:53.138Z",
+        "createdBy": "karine.mvutu@ppcdrc.cd",
+        "updatedBy": "karine.mvutu@ppcdrc.cd"
+      },
+      "undoable": false,
+      "undone": false
+    },
+    {
       "id": "log-001882",
       "at": "2026-10-23T04:28:41.754Z",
       "userId": "karine.mvutu@ppcdrc.cd",
@@ -205878,5 +205920,5 @@
       }
     }
   ],
-  "nextSeq": 1883
+  "nextSeq": 1884
 }
