@@ -1,6 +1,48 @@
 {
   "entries": [
     {
+      "id": "log-001863",
+      "at": "2026-10-23T04:01:33.872Z",
+      "userId": "karine.mvutu@ppcdrc.cd",
+      "userName": "Karine Mvutu",
+      "userEmail": "karine.mvutu@ppcdrc.cd",
+      "module": "sante",
+      "moduleLabel": "Santé",
+      "action": "create",
+      "actionLabel": "Création",
+      "entityType": "sante.visit",
+      "entityId": "sante-mvkg0pku-s2cad1",
+      "summary": "Cas santé — BAYISA SIMON DIDIER · SYNDROME DYSPEPTIQUE",
+      "details": "Cas santé — BAYISA SIMON DIDIER · SYNDROME DYSPEPTIQUE",
+      "after": {
+        "id": "sante-mvkg0pku-s2cad1",
+        "date": "2026-10-06",
+        "nom": "BAYISA",
+        "postnom": "SIMON DIDIER",
+        "sexe": "M",
+        "age": 45,
+        "typeMalade": "AGENT",
+        "pathologie": "SYNDROME DYSPEPTIQUE",
+        "traitement": "ANTI ACIDE SIROP",
+        "reference": "NON",
+        "year": 2026,
+        "month": 10,
+        "employeeMatricule": "70000052",
+        "employeeNom": "BAYISA SIMON DIDIER",
+        "dependantId": null,
+        "commentaire": "",
+        "contractantId": "",
+        "contractantNom": "",
+        "contractantEmployeeId": "",
+        "createdAt": "2026-10-23T04:01:33.054Z",
+        "updatedAt": "2026-10-23T04:01:33.054Z",
+        "createdBy": "karine.mvutu@ppcdrc.cd",
+        "updatedBy": "karine.mvutu@ppcdrc.cd"
+      },
+      "undoable": false,
+      "undone": false
+    },
+    {
       "id": "log-001862",
       "at": "2026-10-23T04:00:47.205Z",
       "userId": "karine.mvutu@ppcdrc.cd",
@@ -205038,5 +205080,5 @@
       }
     }
   ],
-  "nextSeq": 1863
+  "nextSeq": 1864
 }
