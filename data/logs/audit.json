@@ -1,6 +1,48 @@
 {
   "entries": [
     {
+      "id": "log-001870",
+      "at": "2026-10-23T04:13:51.875Z",
+      "userId": "karine.mvutu@ppcdrc.cd",
+      "userName": "Karine Mvutu",
+      "userEmail": "karine.mvutu@ppcdrc.cd",
+      "module": "sante",
+      "moduleLabel": "Santé",
+      "action": "create",
+      "actionLabel": "Création",
+      "entityType": "sante.visit",
+      "entityId": "sante-mvkggigr-3thiyq",
+      "summary": "Cas santé — LEVO VICTOIRE · SYNDROME GRIPPAL",
+      "details": "Cas santé — LEVO VICTOIRE · SYNDROME GRIPPAL",
+      "after": {
+        "id": "sante-mvkggigr-3thiyq",
+        "date": "2026-10-13",
+        "nom": "LEVO",
+        "postnom": "VICTOIRE",
+        "sexe": "F",
+        "age": 21,
+        "typeMalade": "CONTRACTANT",
+        "pathologie": "SYNDROME GRIPPAL",
+        "traitement": "ANTI GRIPPAL ET GOUTTE NASALE",
+        "reference": "NON",
+        "year": 2026,
+        "month": 10,
+        "employeeMatricule": "",
+        "employeeNom": "",
+        "dependantId": null,
+        "commentaire": "",
+        "contractantId": "11",
+        "contractantNom": "LAMBA",
+        "contractantEmployeeId": "",
+        "createdAt": "2026-10-23T04:13:50.331Z",
+        "updatedAt": "2026-10-23T04:13:50.331Z",
+        "createdBy": "karine.mvutu@ppcdrc.cd",
+        "updatedBy": "karine.mvutu@ppcdrc.cd"
+      },
+      "undoable": false,
+      "undone": false
+    },
+    {
       "id": "log-001869",
       "at": "2026-10-23T04:10:52.240Z",
       "userId": "karine.mvutu@ppcdrc.cd",
@@ -205332,5 +205374,5 @@
       }
     }
   ],
-  "nextSeq": 1870
+  "nextSeq": 1871
 }
