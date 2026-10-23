@@ -1,6 +1,48 @@
 {
   "entries": [
     {
+      "id": "log-001885",
+      "at": "2026-10-23T04:32:48.372Z",
+      "userId": "karine.mvutu@ppcdrc.cd",
+      "userName": "Karine Mvutu",
+      "userEmail": "karine.mvutu@ppcdrc.cd",
+      "module": "sante",
+      "moduleLabel": "Santé",
+      "action": "create",
+      "actionLabel": "Création",
+      "entityType": "sante.visit",
+      "entityId": "sante-mvkh4va9-c305it",
+      "summary": "Cas santé — KINKINIA DIAVEZUKA PELAGIE · LOMBARTHOSE",
+      "details": "Cas santé — KINKINIA DIAVEZUKA PELAGIE · LOMBARTHOSE",
+      "after": {
+        "id": "sante-mvkh4va9-c305it",
+        "date": "2026-10-21",
+        "nom": "KINKINIA",
+        "postnom": "DIAVEZUKA PELAGIE",
+        "sexe": "F",
+        "age": 49,
+        "typeMalade": "AGENT",
+        "pathologie": "LOMBARTHOSE",
+        "traitement": "TRAMADOL INJECTABLE",
+        "reference": "HJ LUKALA",
+        "year": 2026,
+        "month": 10,
+        "employeeMatricule": "70000295",
+        "employeeNom": "KINKINIA DIAVEZUKA PELAGIE",
+        "dependantId": null,
+        "commentaire": "A chercher la cause",
+        "contractantId": "",
+        "contractantNom": "",
+        "contractantEmployeeId": "",
+        "createdAt": "2026-10-23T04:32:46.689Z",
+        "updatedAt": "2026-10-23T04:32:46.689Z",
+        "createdBy": "karine.mvutu@ppcdrc.cd",
+        "updatedBy": "karine.mvutu@ppcdrc.cd"
+      },
+      "undoable": false,
+      "undone": false
+    },
+    {
       "id": "log-001884",
       "at": "2026-10-23T04:31:10.700Z",
       "userId": "karine.mvutu@ppcdrc.cd",
@@ -205962,5 +206004,5 @@
       }
     }
   ],
-  "nextSeq": 1885
+  "nextSeq": 1886
 }
