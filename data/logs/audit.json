@@ -1,6 +1,21 @@
 {
   "entries": [
     {
+      "id": "log-001901",
+      "at": "2026-10-23T14:13:14.713Z",
+      "userId": "mukwilunaomie@gmail.com",
+      "userName": "Naomie Mukwilu",
+      "userEmail": "mukwilunaomie@gmail.com",
+      "module": "auth",
+      "moduleLabel": "Authentification",
+      "action": "login",
+      "actionLabel": "Connexion",
+      "summary": "Connexion mukwilunaomie@gmail.com",
+      "details": "Connexion de Naomie Mukwilu (mukwilunaomie@gmail.com)",
+      "undoable": false,
+      "undone": false
+    },
+    {
       "id": "log-001900",
       "at": "2026-10-23T10:18:33.096Z",
       "userId": "olivier.dino@zamba.kmr.cd",
@@ -207555,5 +207570,5 @@
       }
     }
   ],
-  "nextSeq": 1901
+  "nextSeq": 1902
 }
