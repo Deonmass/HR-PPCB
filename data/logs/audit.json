@@ -1,6 +1,48 @@
 {
   "entries": [
     {
+      "id": "log-001881",
+      "at": "2026-10-23T04:27:39.445Z",
+      "userId": "karine.mvutu@ppcdrc.cd",
+      "userName": "Karine Mvutu",
+      "userEmail": "karine.mvutu@ppcdrc.cd",
+      "module": "sante",
+      "moduleLabel": "Santé",
+      "action": "create",
+      "actionLabel": "Création",
+      "entityType": "sante.visit",
+      "entityId": "sante-mvkgy8v1-98gslx",
+      "summary": "Cas santé — MVUTU LUTEMBE KARINE · VERMINOSE",
+      "details": "Cas santé — MVUTU LUTEMBE KARINE · VERMINOSE",
+      "after": {
+        "id": "sante-mvkgy8v1-98gslx",
+        "date": "2026-10-18",
+        "nom": "MVUTU",
+        "postnom": "LUTEMBE KARINE",
+        "sexe": "F",
+        "age": 41,
+        "typeMalade": "AGENT",
+        "pathologie": "VERMINOSE",
+        "traitement": "VERMIFUGE",
+        "reference": "NON",
+        "year": 2026,
+        "month": 10,
+        "employeeMatricule": "70000107",
+        "employeeNom": "MVUTU LUTEMBE KARINE",
+        "dependantId": null,
+        "commentaire": "",
+        "contractantId": "",
+        "contractantNom": "",
+        "contractantEmployeeId": "",
+        "createdAt": "2026-10-23T04:27:37.693Z",
+        "updatedAt": "2026-10-23T04:27:37.693Z",
+        "createdBy": "karine.mvutu@ppcdrc.cd",
+        "updatedBy": "karine.mvutu@ppcdrc.cd"
+      },
+      "undoable": false,
+      "undone": false
+    },
+    {
       "id": "log-001880",
       "at": "2026-10-23T04:26:54.568Z",
       "userId": "karine.mvutu@ppcdrc.cd",
@@ -205794,5 +205836,5 @@
       }
     }
   ],
-  "nextSeq": 1881
+  "nextSeq": 1882
 }
