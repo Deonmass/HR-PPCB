@@ -1,6 +1,48 @@
 {
   "entries": [
     {
+      "id": "log-001873",
+      "at": "2026-10-23T04:17:38.818Z",
+      "userId": "karine.mvutu@ppcdrc.cd",
+      "userName": "Karine Mvutu",
+      "userEmail": "karine.mvutu@ppcdrc.cd",
+      "module": "sante",
+      "moduleLabel": "Santé",
+      "action": "create",
+      "actionLabel": "Création",
+      "entityType": "sante.visit",
+      "entityId": "sante-mvkgldg8-me6yy7",
+      "summary": "Cas santé — MBANGI MAKULENDA ANDRE · HYPERTENSION ARTERIELLE",
+      "details": "Cas santé — MBANGI MAKULENDA ANDRE · HYPERTENSION ARTERIELLE",
+      "after": {
+        "id": "sante-mvkgldg8-me6yy7",
+        "date": "2026-10-14",
+        "nom": "MBANGI",
+        "postnom": "MAKULENDA ANDRE",
+        "sexe": "M",
+        "age": 56,
+        "typeMalade": "AGENT",
+        "pathologie": "HYPERTENSION ARTERIELLE",
+        "traitement": "PARACETAMOLE",
+        "reference": "IME",
+        "year": 2026,
+        "month": 10,
+        "employeeMatricule": "70000093",
+        "employeeNom": "MBANGI MAKULENDA ANDRE",
+        "dependantId": null,
+        "commentaire": "HTA NEGLIGE,RENDEZ-VIUS DE CONTROLE TENSION HEBDOMADAIRE NON RESPECTE",
+        "contractantId": "",
+        "contractantNom": "",
+        "contractantEmployeeId": "",
+        "createdAt": "2026-10-23T04:17:37.112Z",
+        "updatedAt": "2026-10-23T04:17:37.112Z",
+        "createdBy": "karine.mvutu@ppcdrc.cd",
+        "updatedBy": "karine.mvutu@ppcdrc.cd"
+      },
+      "undoable": false,
+      "undone": false
+    },
+    {
       "id": "log-001872",
       "at": "2026-10-23T04:16:02.042Z",
       "userId": "karine.mvutu@ppcdrc.cd",
@@ -205458,5 +205500,5 @@
       }
     }
   ],
-  "nextSeq": 1873
+  "nextSeq": 1874
 }
