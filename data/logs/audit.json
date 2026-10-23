@@ -1,6 +1,48 @@
 {
   "entries": [
     {
+      "id": "log-001877",
+      "at": "2026-10-23T04:23:04.007Z",
+      "userId": "karine.mvutu@ppcdrc.cd",
+      "userName": "Karine Mvutu",
+      "userEmail": "karine.mvutu@ppcdrc.cd",
+      "module": "sante",
+      "moduleLabel": "Santé",
+      "action": "create",
+      "actionLabel": "Création",
+      "entityType": "sante.visit",
+      "entityId": "sante-mvkgscg0-1revto",
+      "summary": "Cas santé — TANDU MATILA · GRIPPE",
+      "details": "Cas santé — TANDU MATILA · GRIPPE",
+      "after": {
+        "id": "sante-mvkgscg0-1revto",
+        "date": "2026-10-17",
+        "nom": "TANDU",
+        "postnom": "MATILA",
+        "sexe": "F",
+        "age": 16,
+        "typeMalade": "ENFANT",
+        "pathologie": "GRIPPE",
+        "traitement": "ANTI TOUSSIF,GOUTTE NASALE ET PARACETAMOLE",
+        "reference": "NON",
+        "year": 2026,
+        "month": 10,
+        "employeeMatricule": "",
+        "employeeNom": "",
+        "dependantId": null,
+        "commentaire": "",
+        "contractantId": "",
+        "contractantNom": "",
+        "contractantEmployeeId": "",
+        "createdAt": "2026-10-23T04:23:02.400Z",
+        "updatedAt": "2026-10-23T04:23:02.400Z",
+        "createdBy": "karine.mvutu@ppcdrc.cd",
+        "updatedBy": "karine.mvutu@ppcdrc.cd"
+      },
+      "undoable": false,
+      "undone": false
+    },
+    {
       "id": "log-001876",
       "at": "2026-10-23T04:21:18.832Z",
       "userId": "karine.mvutu@ppcdrc.cd",
@@ -205626,5 +205668,5 @@
       }
     }
   ],
-  "nextSeq": 1877
+  "nextSeq": 1878
 }
