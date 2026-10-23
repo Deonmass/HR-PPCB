@@ -1,6 +1,48 @@
 {
   "entries": [
     {
+      "id": "log-001865",
+      "at": "2026-10-23T04:05:41.879Z",
+      "userId": "karine.mvutu@ppcdrc.cd",
+      "userName": "Karine Mvutu",
+      "userEmail": "karine.mvutu@ppcdrc.cd",
+      "module": "sante",
+      "moduleLabel": "Santé",
+      "action": "create",
+      "actionLabel": "Création",
+      "entityType": "sante.visit",
+      "entityId": "sante-mvkg60bf-4uhqi6",
+      "summary": "Cas santé — MUBENGAYI MULUMBA · PARASITOSE INTESTINALE",
+      "details": "Cas santé — MUBENGAYI MULUMBA · PARASITOSE INTESTINALE",
+      "after": {
+        "id": "sante-mvkg60bf-4uhqi6",
+        "date": "2026-10-08",
+        "nom": "MUBENGAYI",
+        "postnom": "MULUMBA",
+        "sexe": "M",
+        "age": 38,
+        "typeMalade": "CONTRACTANT",
+        "pathologie": "PARASITOSE INTESTINALE",
+        "traitement": "VERMIFUGE",
+        "reference": "NON",
+        "year": 2026,
+        "month": 10,
+        "employeeMatricule": "",
+        "employeeNom": "",
+        "dependantId": null,
+        "commentaire": "",
+        "contractantId": "11",
+        "contractantNom": "LAMBA",
+        "contractantEmployeeId": "",
+        "createdAt": "2026-10-23T04:05:40.251Z",
+        "updatedAt": "2026-10-23T04:05:40.251Z",
+        "createdBy": "karine.mvutu@ppcdrc.cd",
+        "updatedBy": "karine.mvutu@ppcdrc.cd"
+      },
+      "undoable": false,
+      "undone": false
+    },
+    {
       "id": "log-001864",
       "at": "2026-10-23T04:04:19.342Z",
       "userId": "karine.mvutu@ppcdrc.cd",
@@ -205122,5 +205164,5 @@
       }
     }
   ],
-  "nextSeq": 1865
+  "nextSeq": 1866
 }
