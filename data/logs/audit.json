@@ -1,6 +1,48 @@
 {
   "entries": [
     {
+      "id": "log-001874",
+      "at": "2026-10-23T04:18:55.918Z",
+      "userId": "karine.mvutu@ppcdrc.cd",
+      "userName": "Karine Mvutu",
+      "userEmail": "karine.mvutu@ppcdrc.cd",
+      "module": "sante",
+      "moduleLabel": "Santé",
+      "action": "create",
+      "actionLabel": "Création",
+      "entityType": "sante.visit",
+      "entityId": "sante-mvkgn105-viapvr",
+      "summary": "Cas santé — MUANDA BALOKI JISCA · HYPERTENSION ARTERIELLE",
+      "details": "Cas santé — MUANDA BALOKI JISCA · HYPERTENSION ARTERIELLE",
+      "after": {
+        "id": "sante-mvkgn105-viapvr",
+        "date": "2026-10-14",
+        "nom": "MUANDA",
+        "postnom": "BALOKI JISCA",
+        "sexe": "M",
+        "age": 43,
+        "typeMalade": "AGENT",
+        "pathologie": "HYPERTENSION ARTERIELLE",
+        "traitement": "AVIS MEDICALE",
+        "reference": "IME",
+        "year": 2026,
+        "month": 10,
+        "employeeMatricule": "70000063",
+        "employeeNom": "MUANDA BALOKI JISCA",
+        "dependantId": null,
+        "commentaire": "",
+        "contractantId": "",
+        "contractantNom": "",
+        "contractantEmployeeId": "",
+        "createdAt": "2026-10-23T04:18:54.293Z",
+        "updatedAt": "2026-10-23T04:18:54.293Z",
+        "createdBy": "karine.mvutu@ppcdrc.cd",
+        "updatedBy": "karine.mvutu@ppcdrc.cd"
+      },
+      "undoable": false,
+      "undone": false
+    },
+    {
       "id": "log-001873",
       "at": "2026-10-23T04:17:38.818Z",
       "userId": "karine.mvutu@ppcdrc.cd",
@@ -205500,5 +205542,5 @@
       }
     }
   ],
-  "nextSeq": 1874
+  "nextSeq": 1875
 }
