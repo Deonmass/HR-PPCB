@@ -1,6 +1,48 @@
 {
   "entries": [
     {
+      "id": "log-001872",
+      "at": "2026-10-23T04:16:02.042Z",
+      "userId": "karine.mvutu@ppcdrc.cd",
+      "userName": "Karine Mvutu",
+      "userEmail": "karine.mvutu@ppcdrc.cd",
+      "module": "sante",
+      "moduleLabel": "Santé",
+      "action": "create",
+      "actionLabel": "Création",
+      "entityType": "sante.visit",
+      "entityId": "sante-mvkgjbho-0z5em2",
+      "summary": "Cas santé — KANANGA HASSAN · SYNDROME GRIPPAL",
+      "details": "Cas santé — KANANGA HASSAN · SYNDROME GRIPPAL",
+      "after": {
+        "id": "sante-mvkgjbho-0z5em2",
+        "date": "2026-10-14",
+        "nom": "KANANGA",
+        "postnom": "HASSAN",
+        "sexe": "M",
+        "age": 32,
+        "typeMalade": "AGENT",
+        "pathologie": "SYNDROME GRIPPAL",
+        "traitement": "ANTI  GRIPPALE ET GOUTTE NASALE",
+        "reference": "NON",
+        "year": 2026,
+        "month": 10,
+        "employeeMatricule": "70000233",
+        "employeeNom": "KANANGA HASSAN",
+        "dependantId": null,
+        "commentaire": "",
+        "contractantId": "",
+        "contractantNom": "",
+        "contractantEmployeeId": "",
+        "createdAt": "2026-10-23T04:16:01.260Z",
+        "updatedAt": "2026-10-23T04:16:01.260Z",
+        "createdBy": "karine.mvutu@ppcdrc.cd",
+        "updatedBy": "karine.mvutu@ppcdrc.cd"
+      },
+      "undoable": false,
+      "undone": false
+    },
+    {
       "id": "log-001871",
       "at": "2026-10-23T04:15:20.308Z",
       "userId": "karine.mvutu@ppcdrc.cd",
@@ -205416,5 +205458,5 @@
       }
     }
   ],
-  "nextSeq": 1872
+  "nextSeq": 1873
 }
