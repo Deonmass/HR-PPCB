@@ -39,6 +39,7 @@ export const PERMISSION_MENU_CATALOG: PermissionMenuGroup[] = withSortedMenus([
     label: 'Employés',
     items: [
       { id: 'employes.liste', label: 'Liste employés' },
+      { id: 'employes.organigramme', label: 'Organigramme' },
       { id: 'employes.discipline', label: 'Cas disciplinaires' },
       { id: 'employes.dependants', label: 'Dependants' },
       { id: 'employes.contractants', label: 'Contractants' },
@@ -378,7 +379,11 @@ export function mergePermissionsWithCatalog(menus: MenuPermission[]): MenuPermis
           };
         }
       }
-      if (defaultMenu.menuId === 'employes.discipline' || defaultMenu.menuId === 'employes.airtime') {
+      if (
+        defaultMenu.menuId === 'employes.discipline'
+        || defaultMenu.menuId === 'employes.airtime'
+        || defaultMenu.menuId === 'employes.organigramme'
+      ) {
         const donor = menus.find((menu) => menu.menuId === 'employes.liste')
           || menus.find((menu) => menu.menuId === 'employes.conge');
         if (donor) {

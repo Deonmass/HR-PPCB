@@ -106,23 +106,28 @@ function applyContractantTimesheetPermissions(
   };
 }
 
-export async function getTimesheetAccessFromSession() {
+export async function getTimesheetAccessFromSession(options?: { includeContractants?: boolean }) {
   const cookieStore = await cookies();
   const token = cookieStore.get(getSessionCookieName())?.value;
   const session = await getSession(token);
   if (!session) return null;
 
+  const includeContractants = options?.includeContractants !== false;
   const [ppcEmployees, departments, services, contractantEmployees] = await Promise.all([
     readEmployees(),
     listDepartments(),
     listServices(),
-    loadScopedContractantEmployees(session.menus),
+    includeContractants ? loadScopedContractantEmployees(session.menus) : Promise.resolve([]),
   ]);
 
   const contractantMode = isContractantTimesheetMode(session.menus);
-  const employees = contractantMode
-    ? contractantEmployees
-    : mergeEmployeesByMatricule(ppcEmployees, contractantEmployees);
+  const employees = includeContractants
+    ? contractantMode
+      ? contractantEmployees
+      : mergeEmployeesByMatricule(ppcEmployees, contractantEmployees)
+    : contractantMode
+      ? []
+      : ppcEmployees;
 
   let access = buildTimesheetAccessContext(session.user, session.menus, employees, {
     departments,
@@ -136,11 +141,13 @@ export async function getTimesheetAccessFromSession() {
   return { session, access, employees };
 }
 
-export async function requireTimesheetModuleAccess(): Promise<
+export async function requireTimesheetModuleAccess(options?: {
+  includeContractants?: boolean;
+}): Promise<
   | { error: NextResponse }
   | Awaited<ReturnType<typeof getTimesheetAccessFromSession>> & { error?: undefined }
 > {
-  const context = await getTimesheetAccessFromSession();
+  const context = await getTimesheetAccessFromSession(options);
   if (!context) {
     return { error: NextResponse.json({ error: 'Non authentifié' }, { status: 401 }) };
   }
@@ -167,8 +174,11 @@ export async function requireTimesheetEmployeeAccess(matricule: string) {
   return result;
 }
 
-export async function requireTimesheetDepartmentAccess(department: string) {
-  const result = await requireTimesheetModuleAccess();
+export async function requireTimesheetDepartmentAccess(
+  department: string,
+  options?: { includeContractants?: boolean },
+) {
+  const result = await requireTimesheetModuleAccess(options);
   if ('error' in result && result.error) return result;
 
   const { access } = result;

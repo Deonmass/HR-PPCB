@@ -2,6 +2,7 @@ import { NextResponse } from 'next/server';
 import {
   checkTimesheetDepartmentExport,
   filterTimesheetEmployees,
+  isContractantTimesheetMatricule,
   requireTimesheetDepartmentAccess,
   requireTimesheetModuleAccess,
 } from '@/lib/timesheet-access-server';
@@ -17,6 +18,7 @@ import { auditSimpleAction, getAuditActor } from '@/lib/with-audit';
 import { logAuditError } from '@/lib/audit-log-store';
 
 const ALL_DEPARTMENTS = '__ALL__';
+const COMPILATION_ACCESS = { includeContractants: false } as const;
 
 export async function GET(request: Request) {
   const { searchParams } = new URL(request.url);
@@ -36,13 +38,13 @@ export async function GET(request: Request) {
   let userId: string | undefined;
 
   if (!department || department === ALL_DEPARTMENTS) {
-    const accessResult = await requireTimesheetModuleAccess();
+    const accessResult = await requireTimesheetModuleAccess(COMPILATION_ACCESS);
     if ('error' in accessResult && accessResult.error) return accessResult.error;
     employees = filterTimesheetEmployees(accessResult);
     label = ALL_DEPARTMENTS;
     userId = accessResult.session.user.id;
   } else {
-    const accessResult = await requireTimesheetDepartmentAccess(department);
+    const accessResult = await requireTimesheetDepartmentAccess(department, COMPILATION_ACCESS);
     if ('error' in accessResult && accessResult.error) return accessResult.error;
     employees = filterTimesheetEmployees(accessResult, department);
     label = department;
@@ -50,16 +52,25 @@ export async function GET(request: Request) {
   }
 
   employees = employees
-    .filter((employee) => employee.nom.trim())
+    .filter((employee) => employee.nom.trim() && !isContractantTimesheetMatricule(employee.matricule))
     .sort((a, b) => a.nom.localeCompare(b.nom, 'fr'));
 
   try {
     const existing = await getCompilationSnapshot(year, month, label);
-    const data =
-      existing?.data ??
-      (await buildCompilationData(year, month, label, employees));
-    const policyRows = existing?.policyRows;
-    const policyChanges = existing?.policyChanges;
+    const snapshotPairs = existing?.data
+      ? existing.data.rows
+          .map((row, index) => ({ row, policyRow: existing.policyRows?.[index] }))
+          .filter((pair) => !isContractantTimesheetMatricule(pair.row.matricule))
+      : null;
+    const data = snapshotPairs
+      ? { ...existing!.data, rows: snapshotPairs.map((pair) => pair.row) }
+      : await buildCompilationData(year, month, label, employees);
+    const policyRows = snapshotPairs && existing?.policyRows
+      ? snapshotPairs.map((pair) => pair.policyRow ?? pair.row)
+      : undefined;
+    const policyChanges = existing?.policyChanges
+      ? existing.policyChanges.filter((change) => !isContractantTimesheetMatricule(change.matricule))
+      : undefined;
     const policy =
       policyRows && policyChanges
         ? { rows: policyRows, changes: policyChanges }

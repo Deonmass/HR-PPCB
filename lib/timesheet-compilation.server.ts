@@ -13,7 +13,7 @@ import {
   type CompilationWeek,
 } from './timesheet-compilation';
 import { getShiftDefaultHours } from './timesheet-shift-hours';
-import { getEmployeeTimesheetEntries } from './timesheet-store';
+import { loadMonthTimesheetByMatricule } from './timesheet-store';
 import type { TimesheetDayEntry } from './timesheet-types';
 import { getLockedWeekIndexes, getWeeklyOvertimeWeek } from './timesheet-weekly-ot-store';
 import type { Employee } from './types';
@@ -57,6 +57,10 @@ export async function buildCompilationData(
   month: number,
   department: string,
   employees: Employee[],
+  options?: {
+    onHeader?: (header: Omit<CompilationData, 'rows'>) => void | Promise<void>;
+    onRow?: (row: CompilationRow) => void | Promise<void>;
+  },
 ): Promise<CompilationData> {
   const period = await resolveTimesheetPeriod(year, month);
   const weekCount = Math.min(TIMESHEET_WEEKS_PER_PERIOD, Math.ceil(period.days.length / 7));
@@ -94,9 +98,16 @@ export async function buildCompilationData(
       return locked ? weeks.every((week) => locked.has(week.index)) : false;
     });
 
+  const entriesByMatricule = await loadMonthTimesheetByMatricule(year, month);
+
+  if (options?.onHeader) {
+    await options.onHeader({ year, month, department, weeks, closed });
+  }
+
   const rows: CompilationRow[] = [];
   for (const employee of employees) {
-    const entries = await getEmployeeTimesheetEntries(year, month, employee.matricule);
+    if (employee.matricule.trim().toUpperCase().startsWith('CTR-')) continue;
+    const entries = entriesByMatricule.get(employee.matricule) ?? {};
 
     let nightNormal = 0;
     for (const day of period.days) {
@@ -120,7 +131,7 @@ export async function buildCompilationData(
       };
     });
 
-    rows.push({
+    const row: CompilationRow = {
       matricule: employee.matricule,
       nom: employee.nom,
       departement: employee.departement,
@@ -128,7 +139,9 @@ export async function buildCompilationData(
       grade: employee.grade,
       weeks: weekData,
       nightNormal: roundCompilationHours(nightNormal),
-    });
+    };
+    rows.push(row);
+    if (options?.onRow) await options.onRow(row);
   }
 
   return { year, month, department, weeks, rows, closed };

@@ -7,6 +7,7 @@ export const fr = {
   'nav.audit': 'Audit points',
   'nav.employees': 'Employés',
   'nav.employees.list': 'Employé',
+  'nav.employees.orgChart': 'Organigramme',
   'nav.employees.dependants': 'Dependants',
   'nav.employees.contractants': 'Contractants',
   'nav.employees.checkDocs': 'Check documents',

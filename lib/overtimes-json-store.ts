@@ -438,6 +438,27 @@ export async function getSavedDateKeysForDepartment(
   return [...savedDateKeys, ...completeDateKeys];
 }
 
+/** Une lecture du mois, indexée par matricule. Les contractants (CTR-) sont ignorés. */
+export async function loadMonthTimesheetByMatricule(
+  year: number,
+  month: number,
+): Promise<Map<string, Record<string, TimesheetDayEntry>>> {
+  const period = await readMonthPeriod(year, month);
+  const byMatricule = new Map<string, Record<string, TimesheetDayEntry>>();
+  for (const [dateKey, dayEntries] of Object.entries(period.days)) {
+    for (const [matricule, entry] of Object.entries(dayEntries)) {
+      if (matricule.trim().toUpperCase().startsWith('CTR-')) continue;
+      let bucket = byMatricule.get(matricule);
+      if (!bucket) {
+        bucket = {};
+        byMatricule.set(matricule, bucket);
+      }
+      bucket[dateKey] = entry;
+    }
+  }
+  return byMatricule;
+}
+
 export async function getEmployeeTimesheetEntries(
   year: number,
   month: number,

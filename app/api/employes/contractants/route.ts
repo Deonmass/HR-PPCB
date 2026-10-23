@@ -17,6 +17,7 @@ export async function GET(request: Request) {
   const denied = await checkAnyPermission([
     { menuId: 'employes.contractants', action: 'view' },
     { menuId: 'employes.liste', action: 'view' },
+    { menuId: 'employes.organigramme', action: 'view' },
     { menuId: 'settings.permissions', action: 'view' },
   ]);
   if (denied) return denied;

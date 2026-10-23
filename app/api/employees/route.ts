@@ -9,6 +9,7 @@ import { withAudit } from '@/lib/with-audit';
 export async function GET() {
   const denied = await checkAnyPermission([
     { menuId: 'employes.liste', action: 'view' },
+    { menuId: 'employes.organigramme', action: 'view' },
     { menuId: 'employes.dependants', action: 'view' },
     { menuId: 'employes.check-documents', action: 'view' },
     { menuId: 'employes.heures', action: 'view' },

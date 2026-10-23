@@ -9,6 +9,7 @@ export const en: Record<MessageKey, string> = {
   'nav.audit': 'Audit points',
   'nav.employees': 'Employees',
   'nav.employees.list': 'Employee',
+  'nav.employees.orgChart': 'Org chart',
   'nav.employees.dependants': 'Dependants',
   'nav.employees.contractants': 'Contractors',
   'nav.employees.checkDocs': 'Check documents',

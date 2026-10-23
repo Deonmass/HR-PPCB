@@ -224,9 +224,11 @@ export default function TimesheetCompilationView({
       setEmployees(employeesOverride);
       return;
     }
-    fetch('/api/timesheet/employees')
+    fetch('/api/timesheet/employees?includeContractants=0')
       .then((res) => (res.ok ? res.json() : []))
-      .then((json: Employee[]) => setEmployees(json))
+      .then((json: Employee[]) =>
+        setEmployees(json.filter((employee) => !employee.matricule.trim().toUpperCase().startsWith('CTR-'))),
+      )
       .catch(() => setEmployees([]));
   }, [employeesOverride]);
 
@@ -283,27 +285,98 @@ export default function TimesheetCompilationView({
       setData(null);
       return;
     }
-    let cancelled = false;
+    const controller = new AbortController();
     setLoading(true);
+    setData(null);
     const params = new URLSearchParams({
       year: String(selectedMonth.year),
       month: String(selectedMonth.month),
       department,
     });
-    fetch(`/api/timesheet/compilation?${params}`)
-      .then((res) => (res.ok ? res.json() : null))
-      .then((json: CompilationData | null) => {
-        if (!cancelled) setData(json);
-      })
-      .catch(() => {
-        if (!cancelled) setData(null);
+
+    const load = async () => {
+      const response = await fetch(`/api/timesheet/compilation?${params}`, {
+        signal: controller.signal,
+      });
+      if (!response.ok || !response.body) {
+        const json = (await response.json().catch(() => null)) as { error?: string } | null;
+        throw new Error(json?.error ?? 'Compilation impossible');
+      }
+
+      const reader = response.body.getReader();
+      const decoder = new TextDecoder();
+      let buffer = '';
+      let current: CompilationData | null = null;
+      let pendingRows: CompilationRow[] = [];
+      let pendingPolicy: CompilationRow[] = [];
+
+      const flush = () => {
+        if (!current || pendingRows.length === 0) return;
+        current = {
+          ...current,
+          rows: [...current.rows, ...pendingRows],
+          policyRows: current.policyRows
+            ? [...current.policyRows, ...pendingPolicy]
+            : pendingPolicy.length
+              ? pendingPolicy
+              : current.policyRows,
+        };
+        pendingRows = [];
+        pendingPolicy = [];
+        setData(current);
+      };
+
+      while (true) {
+        const { done, value } = await reader.read();
+        if (done) break;
+        buffer += decoder.decode(value, { stream: true });
+        const lines = buffer.split('\n');
+        buffer = lines.pop() ?? '';
+        for (const line of lines) {
+          if (!line.trim()) continue;
+          const message = JSON.parse(line) as {
+            type?: string;
+            error?: string;
+            data?: CompilationData;
+            row?: CompilationRow;
+            policyRow?: CompilationRow;
+          };
+          if (message.type === 'error') {
+            throw new Error(message.error || 'Compilation impossible');
+          }
+          if (message.type === 'meta' && message.data) {
+            flush();
+            current = { ...message.data, rows: message.data.rows ?? [] };
+            setData(current);
+            continue;
+          }
+          if (message.type === 'row' && message.row && current) {
+            pendingRows.push(message.row);
+            if (Array.isArray(current.policyRows)) {
+              pendingPolicy.push(message.policyRow ?? message.row);
+            }
+            if (pendingRows.length >= 40) flush();
+          }
+        }
+      }
+      if (buffer.trim()) {
+        const message = JSON.parse(buffer) as { type?: string; error?: string };
+        if (message.type === 'error') throw new Error(message.error || 'Compilation impossible');
+      }
+      flush();
+    };
+
+    void load()
+      .catch((err: unknown) => {
+        if (controller.signal.aborted) return;
+        setData(null);
+        void showError(err instanceof Error ? err.message : 'Compilation impossible');
       })
       .finally(() => {
-        if (!cancelled) setLoading(false);
+        if (!controller.signal.aborted) setLoading(false);
       });
-    return () => {
-      cancelled = true;
-    };
+
+    return () => controller.abort();
   }, [department, selectedMonth, reloadTick, refreshKey]);
 
   const isAll = department === ALL_DEPARTMENTS;
@@ -532,7 +605,10 @@ export default function TimesheetCompilationView({
             policyChanges,
           }),
         });
-        if (!response.ok) throw new Error('Export impossible');
+        if (!response.ok) {
+          const json = (await response.json().catch(() => null)) as { error?: string } | null;
+          throw new Error(json?.error ?? 'Export impossible');
+        }
         buffer = await response.arrayBuffer();
       } else {
         const params = new URLSearchParams({
@@ -541,7 +617,10 @@ export default function TimesheetCompilationView({
           department,
         });
         const response = await fetch(`/api/timesheet/compilation/export?${params}`);
-        if (!response.ok) throw new Error('Export impossible');
+        if (!response.ok) {
+          const json = (await response.json().catch(() => null)) as { error?: string } | null;
+          throw new Error(json?.error ?? 'Export impossible');
+        }
         buffer = await response.arrayBuffer();
       }
       const safeDept = (isAll ? 'tous' : department).replace(/[^a-z0-9]+/gi, '-');
@@ -549,8 +628,8 @@ export default function TimesheetCompilationView({
         buffer,
         `Compilation-OT-${safeDept}-${selectedMonth.year}-${selectedMonth.month}.xlsx`,
       );
-    } catch {
-      // silent: server enforces access; UI simply stops the spinner
+    } catch (err) {
+      await showError(err instanceof Error ? err.message : 'Export impossible');
     } finally {
       setExporting(false);
     }
@@ -715,7 +794,7 @@ export default function TimesheetCompilationView({
             </div>
           </div>
 
-          {loading ? (
+          {loading && !hasData ? (
             <p className="overtime-compilation-placeholder">
               <span className="compilation-inline-spinner" aria-hidden="true" />
               Compilation en cours…

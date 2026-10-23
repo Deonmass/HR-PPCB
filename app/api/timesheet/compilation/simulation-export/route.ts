@@ -42,7 +42,7 @@ export async function POST(request: Request) {
 
     const shouldPersist = body.persist !== false;
     if (shouldPersist) {
-      const access = await requireTimesheetModuleAccess();
+      const access = await requireTimesheetModuleAccess({ includeContractants: false });
       const userId = !('error' in access && access.error)
         ? access.session.user.id
         : undefined;

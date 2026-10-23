@@ -2,6 +2,7 @@ export {
   getDayEntriesMap,
   getDepartmentCalendarStatus,
   getEmployeeTimesheetEntries,
+  loadMonthTimesheetByMatricule,
   getPlanningCompleteWeekIndexes,
   getSavedDateKeysForDepartment,
   getWeekPlanningEntries,

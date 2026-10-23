@@ -382,8 +382,11 @@ export default function EmployeeViewModal({ employee, canEdit = false, initialTa
   const [departments, setDepartments] = useState<DepartmentSetting[]>([]);
   const [services, setServices] = useState<ServiceSetting[]>([]);
   const [classificationPostes, setClassificationPostes] = useState<ClassificationPosteRef[]>([]);
+  const [employeeDirectory, setEmployeeDirectory] = useState<Employee[]>([]);
   const [jobSuggestOpen, setJobSuggestOpen] = useState(false);
+  const [managerSuggestOpen, setManagerSuggestOpen] = useState(false);
   const jobWrapRef = useRef<HTMLDivElement>(null);
+  const managerWrapRef = useRef<HTMLDivElement>(null);
 
   const timesheetMonths = useMemo(() => listTimesheetMonthOptions(18), []);
 
@@ -402,8 +405,9 @@ export default function EmployeeViewModal({ employee, canEdit = false, initialTa
       fetch('/api/settings/departments').then((res) => (res.ok ? res.json() : [])),
       fetch('/api/settings/services').then((res) => (res.ok ? res.json() : [])),
       fetch('/api/employes/classification').then((res) => (res.ok ? res.json() : null)),
+      fetch('/api/employees', { cache: 'no-store' }).then((res) => (res.ok ? res.json() : [])),
     ])
-      .then(([deptJson, svcJson, classRaw]: [unknown, unknown, unknown]) => {
+      .then(([deptJson, svcJson, classRaw, empRaw]: [unknown, unknown, unknown, unknown]) => {
         if (cancelled) return;
         const deptList = Array.isArray(deptJson) ? (deptJson as DepartmentSetting[]) : [];
         const svcList = Array.isArray(svcJson) ? (svcJson as ServiceSetting[]) : [];
@@ -424,6 +428,13 @@ export default function EmployeeViewModal({ employee, canEdit = false, initialTa
             }))
             .filter((p) => p.title),
         );
+        const emps = Array.isArray(empRaw) ? (empRaw as Employee[]) : [];
+        setEmployeeDirectory(
+          emps.filter((e) => {
+            const statut = String(e.statut || 'Active').trim().toLowerCase();
+            return (!statut || statut === 'active') && String(e.nom || '').trim();
+          }),
+        );
       })
       .catch(() => {
         if (!cancelled) {
@@ -431,6 +442,7 @@ export default function EmployeeViewModal({ employee, canEdit = false, initialTa
           setServices([]);
           setDepartmentNames([]);
           setClassificationPostes([]);
+          setEmployeeDirectory([]);
         }
       });
     return () => {
@@ -446,6 +458,27 @@ export default function EmployeeViewModal({ employee, canEdit = false, initialTa
     [editingKey, classificationPostes, editValue, appLocale],
   );
 
+  const managerSuggestions = useMemo(() => {
+    if (editingKey !== 'lineManagerName') return [];
+    const q = editValue
+      .trim()
+      .toLowerCase()
+      .normalize('NFD')
+      .replace(/[\u0300-\u036f]/g, '');
+    const selfMat = String(draft.matricule || '').trim();
+    const pool = employeeDirectory.filter((e) => e.matricule !== selfMat);
+    if (!q) return pool.slice(0, 12);
+    return pool
+      .filter((e) => {
+        const hay = `${e.nom} ${e.matricule} ${e.jobTitle || e.position || ''} ${e.departement || ''}`
+          .toLowerCase()
+          .normalize('NFD')
+          .replace(/[\u0300-\u036f]/g, '');
+        return hay.includes(q);
+      })
+      .slice(0, 12);
+  }, [editingKey, editValue, employeeDirectory, draft.matricule]);
+
   useEffect(() => {
     if (editingKey !== 'jobTitle' || !jobSuggestOpen) return;
     const onDown = (event: MouseEvent) => {
@@ -455,6 +488,16 @@ export default function EmployeeViewModal({ employee, canEdit = false, initialTa
     document.addEventListener('mousedown', onDown);
     return () => document.removeEventListener('mousedown', onDown);
   }, [editingKey, jobSuggestOpen]);
+
+  useEffect(() => {
+    if (editingKey !== 'lineManagerName' || !managerSuggestOpen) return;
+    const onDown = (event: MouseEvent) => {
+      if (managerWrapRef.current?.contains(event.target as Node)) return;
+      setManagerSuggestOpen(false);
+    };
+    document.addEventListener('mousedown', onDown);
+    return () => document.removeEventListener('mousedown', onDown);
+  }, [editingKey, managerSuggestOpen]);
 
   const trialMonthsForGrade = useCallback((grade: string): number | null => {
     const trimmed = grade.trim();
@@ -579,6 +622,7 @@ export default function EmployeeViewModal({ employee, canEdit = false, initialTa
     setEditingKey(key);
     setEditValue(field.type === 'date' ? toDateInputValue(raw) : raw);
     setJobSuggestOpen(key === 'jobTitle');
+    setManagerSuggestOpen(key === 'lineManagerName');
   };
 
   const cancelEdit = () => {
@@ -586,6 +630,7 @@ export default function EmployeeViewModal({ employee, canEdit = false, initialTa
     setEditingKey(null);
     setEditValue('');
     setJobSuggestOpen(false);
+    setManagerSuggestOpen(false);
   };
 
   const saveField = async (overrideValue?: string) => {
@@ -627,6 +672,17 @@ export default function EmployeeViewModal({ employee, canEdit = false, initialTa
         if (fields.localisation) preview.localisation = fields.localisation;
       } else {
         preview.position = valueToSave || preview.position;
+      }
+    }
+    if (editingKey === 'lineManagerName') {
+      const q = valueToSave.trim().toLowerCase();
+      const matched =
+        employeeDirectory.find((e) => e.nom.trim().toLowerCase() === q)
+        || employeeDirectory.find((e) => e.matricule.trim() === valueToSave.trim());
+      if (matched) {
+        preview.lineManagerName = matched.nom;
+        const poste = String(matched.jobTitle || matched.position || '').trim();
+        if (poste) preview.lineManagerPosition = poste;
       }
     }
     if (editingKey === 'raisonExit') {
@@ -757,6 +813,59 @@ export default function EmployeeViewModal({ employee, canEdit = false, initialTa
                   </button>
                 );
               })}
+            </div>
+          ) : null}
+        </div>
+      );
+    }
+    if (field.key === 'lineManagerName') {
+      return (
+        <div className="employee-job-suggest" ref={managerWrapRef}>
+          <input
+            autoFocus
+            type="text"
+            className="employee-inline-job-input"
+            value={editValue}
+            disabled={disabled}
+            placeholder="Rechercher un employé (N+1)…"
+            autoComplete="off"
+            onFocus={() => setManagerSuggestOpen(true)}
+            onChange={(e) => {
+              setEditValue(e.target.value);
+              setManagerSuggestOpen(true);
+            }}
+            onKeyDown={(e) => {
+              if (e.key === 'Enter') void saveField();
+              if (e.key === 'Escape') cancelEdit();
+            }}
+          />
+          {managerSuggestOpen && managerSuggestions.length > 0 ? (
+            <div className="employee-job-suggest-list" role="listbox">
+              {managerSuggestions.map((emp) => (
+                <button
+                  key={emp.matricule}
+                  type="button"
+                  role="option"
+                  className="employee-job-suggest-item"
+                  onMouseDown={(ev) => ev.preventDefault()}
+                  onClick={() => {
+                    setEditValue(emp.nom);
+                    setManagerSuggestOpen(false);
+                    void saveField(emp.nom);
+                  }}
+                >
+                  <strong>{emp.nom}</strong>
+                  <span>
+                    {[
+                      emp.matricule,
+                      emp.jobTitle || emp.position,
+                      emp.departement,
+                    ]
+                      .filter(Boolean)
+                      .join(' · ')}
+                  </span>
+                </button>
+              ))}
             </div>
           ) : null}
         </div>

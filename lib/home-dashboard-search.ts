@@ -42,6 +42,7 @@ function moduleShortcuts(menus: MenuPermission[]): Array<{
     { title: 'Rapport', subtitle: 'Hub des rapports RH', href: '/rapport', menuIds: ['exco.rapport'] },
     { title: 'EXCO', subtitle: 'Rapport mensuel ExCo', href: '/exco', menuIds: ['exco.rapport'] },
     { title: 'Employés', subtitle: 'Liste des agents', href: '/employes', menuIds: ['employes.liste'] },
+    { title: 'Organigramme', subtitle: 'Hiérarchie par line managers (entreprise, département, service)', href: '/employes/organigramme', menuIds: ['employes.organigramme', 'employes.liste'] },
     { title: 'Cas disciplinaires', subtitle: 'Demandes d’explication et sanctions des agents PPC', href: '/employes/discipline', menuIds: ['employes.discipline'] },
     { title: 'Dépendants', subtitle: 'Bénéficiaires médicaux', href: '/employes/dependants', menuIds: ['employes.dependants'] },
     { title: 'Classification des postes', subtitle: 'Grille Hay, Paterson, recrutement et mouvements', href: '/employes/classification', menuIds: ['employes.classification', 'employes.postes', 'employes.recrutement', 'employes.mouvements'] },

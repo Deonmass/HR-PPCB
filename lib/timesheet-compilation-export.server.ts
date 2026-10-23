@@ -178,6 +178,42 @@ function keepOnlyCompilationSheet(workbook: ExcelJS.Workbook) {
   }
 }
 
+function unmergeHeaderBands(sheet: ExcelJS.Worksheet) {
+  const merges = [...((sheet.model as { merges?: string[] } | undefined)?.merges ?? [])];
+  for (const merge of merges) {
+    const match = /^[A-Z]+(\d+):[A-Z]+(\d+)$/.exec(merge);
+    if (!match) continue;
+    const top = Number(match[1]);
+    const bottom = Number(match[2]);
+    if (top > 2 || bottom > 2) continue;
+    try {
+      sheet.unMergeCells(merge);
+    } catch {
+      // fusion déjà retirée
+    }
+  }
+}
+
+/** Fusions d’en-tête alignées sur le nombre de semaines (le template n’en a que 4). */
+function applyHeaderMerges(sheet: ExcelJS.Worksheet, weekCount: number) {
+  const { totalStart } = layoutForWeekCount(weekCount);
+  const merge = (r1: number, c1: number, r2: number, c2: number) => {
+    try {
+      sheet.mergeCells(r1, c1, r2, c2);
+    } catch {
+      // ignore si la plage est déjà fusionnée
+    }
+  };
+
+  merge(1, 1, 2, 5);
+  for (let pos = 0; pos < weekCount; pos += 1) {
+    const start = WEEK_START_COL + pos * 4;
+    merge(1, start, 1, start + 3);
+    merge(2, start, 2, start + 3);
+  }
+  merge(1, totalStart, 1, totalStart + TOTAL_GEN_LABELS.length - 1);
+}
+
 function copyHeaderCell(
   sheet: ExcelJS.Worksheet,
   fromCol: number,
@@ -201,6 +237,10 @@ function copyHeaderCell(
 function writeWeekHeaders(sheet: ExcelJS.Worksheet, weeks: CompilationData['weeks']) {
   const weekCount = weeks.length;
   const { nightCol, totalStart, lastDataCol } = layoutForWeekCount(weekCount);
+
+  // Le template fige Total Général en W1:AA1. À 5 ou 6 semaines cette fusion
+  // recouvre la semaine supplémentaire et la colonne Timesheet.
+  unmergeHeaderBands(sheet);
 
   // Étendre les colonnes semaine au-delà du template (5e / 6e semaine).
   for (let pos = TEMPLATE_WEEK_COUNT; pos < weekCount; pos++) {
@@ -245,6 +285,8 @@ function writeWeekHeaders(sheet: ExcelJS.Worksheet, weeks: CompilationData['week
       sheet.getCell(r, c).value = null;
     }
   }
+
+  applyHeaderMerges(sheet, weekCount);
 }
 
 function fillSheetRows(
