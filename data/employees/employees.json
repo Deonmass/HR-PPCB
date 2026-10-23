@@ -7167,6 +7167,7 @@
       "grade": "C2",
       "jobTitle": "Junior Talent Management",
       "localisation": "Kinshasa",
+      "service": "",
       "company": "PPC Barnet DRC Manufacturing",
       "centreCout": "KC8710",
       "appointmentDate": "03/03/2026",
@@ -7182,7 +7183,7 @@
       "payrollArea": "Monthly",
       "position": "",
       "departmentHr": "HR",
-      "lineManagerName": "Cedric Zynga",
+      "lineManagerName": "ZAKUANI BAHATI BENNY",
       "lineManagerPosition": "Talent & Development Manager",
       "patersonGrade": "",
       "statut": "Active",
@@ -7203,9 +7204,9 @@
       "datePassageCdi": "",
       "cnss": "21998435052V",
       "nif": "C2377641W",
+      "telephone": "840071542",
       "createdAt": "2026-07-28T09:40:37.715Z",
-      "updatedAt": "2026-09-28T12:52:15.317Z",
-      "telephone": "840071542"
+      "updatedAt": "2026-10-23T08:03:30.708Z"
     },
     {
       "id": "b05c78c2-aa5c-4458-8ffb-985934488d9c",
