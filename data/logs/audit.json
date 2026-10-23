@@ -1,6 +1,48 @@
 {
   "entries": [
     {
+      "id": "log-001867",
+      "at": "2026-10-23T04:09:00.040Z",
+      "userId": "karine.mvutu@ppcdrc.cd",
+      "userName": "Karine Mvutu",
+      "userEmail": "karine.mvutu@ppcdrc.cd",
+      "module": "sante",
+      "moduleLabel": "Santé",
+      "action": "create",
+      "actionLabel": "Création",
+      "entityType": "sante.visit",
+      "entityId": "sante-mvkga974-71z5k3",
+      "summary": "Cas santé — MUAKASA NSONI SERGE · DIABETE SUCRE",
+      "details": "Cas santé — MUAKASA NSONI SERGE · DIABETE SUCRE",
+      "after": {
+        "id": "sante-mvkga974-71z5k3",
+        "date": "2026-10-09",
+        "nom": "MUAKASA",
+        "postnom": "NSONI SERGE",
+        "sexe": "M",
+        "age": 48,
+        "typeMalade": "AGENT",
+        "pathologie": "DIABETE SUCRE",
+        "traitement": "REGIME DIETETIQUE SANS SUCRE",
+        "reference": "IME,CMD",
+        "year": 2026,
+        "month": 10,
+        "employeeMatricule": "70000008",
+        "employeeNom": "MUAKASA NSONI SERGE",
+        "dependantId": null,
+        "commentaire": "",
+        "contractantId": "",
+        "contractantNom": "",
+        "contractantEmployeeId": "",
+        "createdAt": "2026-10-23T04:08:58.384Z",
+        "updatedAt": "2026-10-23T04:08:58.384Z",
+        "createdBy": "karine.mvutu@ppcdrc.cd",
+        "updatedBy": "karine.mvutu@ppcdrc.cd"
+      },
+      "undoable": false,
+      "undone": false
+    },
+    {
       "id": "log-001866",
       "at": "2026-10-23T04:07:40.551Z",
       "userId": "karine.mvutu@ppcdrc.cd",
@@ -205206,5 +205248,5 @@
       }
     }
   ],
-  "nextSeq": 1867
+  "nextSeq": 1868
 }
