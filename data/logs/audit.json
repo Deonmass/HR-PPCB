@@ -1,6 +1,48 @@
 {
   "entries": [
     {
+      "id": "log-001875",
+      "at": "2026-10-23T04:19:39.506Z",
+      "userId": "karine.mvutu@ppcdrc.cd",
+      "userName": "Karine Mvutu",
+      "userEmail": "karine.mvutu@ppcdrc.cd",
+      "module": "sante",
+      "moduleLabel": "Santé",
+      "action": "create",
+      "actionLabel": "Création",
+      "entityType": "sante.visit",
+      "entityId": "sante-mvkgnymu-ap0dp9",
+      "summary": "Cas santé — MUANDA BALOKI JISCA · GRIPPE",
+      "details": "Cas santé — MUANDA BALOKI JISCA · GRIPPE",
+      "after": {
+        "id": "sante-mvkgnymu-ap0dp9",
+        "date": "2026-10-14",
+        "nom": "MUANDA",
+        "postnom": "BALOKI JISCA",
+        "sexe": "M",
+        "age": 43,
+        "typeMalade": "AGENT",
+        "pathologie": "GRIPPE",
+        "traitement": "ANTI  GRIPPALE ET GOUTTE NASALE",
+        "reference": "NON",
+        "year": 2026,
+        "month": 10,
+        "employeeMatricule": "70000063",
+        "employeeNom": "MUANDA BALOKI JISCA",
+        "dependantId": null,
+        "commentaire": "",
+        "contractantId": "",
+        "contractantNom": "",
+        "contractantEmployeeId": "",
+        "createdAt": "2026-10-23T04:19:37.878Z",
+        "updatedAt": "2026-10-23T04:19:37.878Z",
+        "createdBy": "karine.mvutu@ppcdrc.cd",
+        "updatedBy": "karine.mvutu@ppcdrc.cd"
+      },
+      "undoable": false,
+      "undone": false
+    },
+    {
       "id": "log-001874",
       "at": "2026-10-23T04:18:55.918Z",
       "userId": "karine.mvutu@ppcdrc.cd",
@@ -205542,5 +205584,5 @@
       }
     }
   ],
-  "nextSeq": 1875
+  "nextSeq": 1876
 }
