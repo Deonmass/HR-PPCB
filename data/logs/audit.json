@@ -1,6 +1,46 @@
 {
   "entries": [
     {
+      "id": "log-001911",
+      "at": "2026-10-24T17:54:46.128Z",
+      "userId": "Tresor.Maneka@ppcdrc.cd",
+      "userName": "Tresor Maneka",
+      "userEmail": "Tresor.Maneka@ppcdrc.cd",
+      "module": "protocol.voyages",
+      "moduleLabel": "Gestion de voyage",
+      "action": "delete",
+      "actionLabel": "Suppression",
+      "entityType": "protocol.voyage",
+      "entityId": "pvc-050",
+      "summary": "Suppression voyage PVC-0050 NGOMA NIMI GLODY",
+      "details": "Suppression voyage PVC-0050 NGOMA NIMI GLODY",
+      "before": {
+        "id": "pvc-050",
+        "numero": "PVC-0050",
+        "date": "2026-10-24",
+        "voyageur": "NGOMA NIMI GLODY",
+        "voyageurMatricule": "70000110",
+        "destination": "Kinshasa Zamba Kinshasa",
+        "ticketAvion": 0,
+        "visaVolant": 0,
+        "lettreLegaliser": 0,
+        "goPass": 0,
+        "transfert": 0,
+        "hotelNuit": 2,
+        "nbreNuits": 0,
+        "coutHotel": 0,
+        "categorieHotel": "Village PPC",
+        "appartement": 0,
+        "autresCharges": 0,
+        "coutTotal": 0,
+        "createdAt": "2026-10-24T17:50:32.428Z",
+        "updatedAt": "2026-10-24T17:50:32.428Z"
+      },
+      "after": null,
+      "undoable": false,
+      "undone": false
+    },
+    {
       "id": "log-001910",
       "at": "2026-10-24T17:54:07.670Z",
       "userId": "Tresor.Maneka@ppcdrc.cd",
@@ -207907,5 +207947,5 @@
       }
     }
   ],
-  "nextSeq": 1911
+  "nextSeq": 1912
 }
