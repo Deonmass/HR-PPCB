@@ -1,6 +1,21 @@
 {
   "entries": [
     {
+      "id": "log-001903",
+      "at": "2026-10-24T06:20:16.077Z",
+      "userId": "olivier.dino@zamba.kmr.cd",
+      "userName": "Olivier Dino ORC",
+      "userEmail": "olivier.dino@zamba.kmr.cd",
+      "module": "auth",
+      "moduleLabel": "Authentification",
+      "action": "login",
+      "actionLabel": "Connexion",
+      "summary": "Connexion olivier.dino@zamba.kmr.cd",
+      "details": "Connexion de Olivier Dino ORC (olivier.dino@zamba.kmr.cd)",
+      "undoable": false,
+      "undone": false
+    },
+    {
       "id": "log-001902",
       "at": "2026-10-23T14:15:08.292Z",
       "userId": "mukwilunaomie@gmail.com",
@@ -207613,5 +207628,5 @@
       }
     }
   ],
-  "nextSeq": 1903
+  "nextSeq": 1904
 }
