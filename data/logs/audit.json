@@ -1,6 +1,45 @@
 {
   "entries": [
     {
+      "id": "log-001914",
+      "at": "2026-10-24T17:58:22.903Z",
+      "userId": "Tresor.Maneka@ppcdrc.cd",
+      "userName": "Tresor Maneka",
+      "userEmail": "Tresor.Maneka@ppcdrc.cd",
+      "module": "protocol.voyages",
+      "moduleLabel": "Gestion de voyage",
+      "action": "create",
+      "actionLabel": "Création",
+      "entityType": "protocol.voyage",
+      "entityId": "pvc-052",
+      "summary": "Voyage PVC-0052 FREDDY KOLWOZI",
+      "details": "Voyage PVC-0052 FREDDY KOLWOZI",
+      "after": {
+        "id": "pvc-052",
+        "numero": "PVC-0052",
+        "date": "2026-10-20",
+        "voyageur": "FREDDY",
+        "voyageurMatricule": "",
+        "destination": "KOLWOZI",
+        "ticketAvion": 0,
+        "visaVolant": 0,
+        "lettreLegaliser": 0,
+        "goPass": 0,
+        "transfert": 0,
+        "hotelNuit": 100,
+        "nbreNuits": 3,
+        "coutHotel": 300,
+        "categorieHotel": "",
+        "appartement": 0,
+        "autresCharges": 0,
+        "coutTotal": 300,
+        "createdAt": "2026-10-24T17:58:19.545Z",
+        "updatedAt": "2026-10-24T17:58:19.545Z"
+      },
+      "undoable": false,
+      "undone": false
+    },
+    {
       "id": "log-001913",
       "at": "2026-10-24T17:57:35.659Z",
       "userId": "Tresor.Maneka@ppcdrc.cd",
@@ -208047,5 +208086,5 @@
       }
     }
   ],
-  "nextSeq": 1914
+  "nextSeq": 1915
 }
