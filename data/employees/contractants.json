@@ -15111,10 +15111,10 @@
           "nom": "ZUNGADIHE KUMBOKO Fabien",
           "sexe": "M",
           "lieuAffectation": "Zamba",
-          "fonction": "",
-          "departement": "",
+          "fonction": "Superintendant Finance et Logistique",
+          "departement": "Finance",
           "service": "",
-          "telephone": "",
+          "telephone": "+243822643009",
           "etatCivil": "C",
           "statut": "Permanent",
           "dateEmbauche": "",
@@ -15130,7 +15130,7 @@
           "coutTransport": 0,
           "payrollSite": "",
           "createdAt": "2026-10-21T09:46:19.251Z",
-          "updatedAt": "2026-10-21T09:46:19.251Z"
+          "updatedAt": "2026-10-24T06:23:05.077Z"
         },
         {
           "id": "860",
@@ -16278,7 +16278,7 @@
         }
       ],
       "createdAt": "2026-10-14T11:57:47.910Z",
-      "updatedAt": "2026-10-21T09:46:19.251Z"
+      "updatedAt": "2026-10-24T06:23:05.077Z"
     },
     {
       "id": "13",
