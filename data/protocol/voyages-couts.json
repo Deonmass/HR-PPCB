@@ -1077,7 +1077,29 @@
       "coutTotal": 300,
       "createdAt": "2026-10-24T17:58:19.545Z",
       "updatedAt": "2026-10-24T17:58:19.545Z"
+    },
+    {
+      "id": "pvc-053",
+      "numero": "PVC-0053",
+      "date": "2026-10-21",
+      "voyageur": "HENOC",
+      "voyageurMatricule": "",
+      "destination": "MATADI",
+      "ticketAvion": 0,
+      "visaVolant": 0,
+      "lettreLegaliser": 0,
+      "goPass": 0,
+      "transfert": 0,
+      "hotelNuit": 100,
+      "nbreNuits": 1,
+      "coutHotel": 100,
+      "categorieHotel": "FORTUNER HOTEL",
+      "appartement": 0,
+      "autresCharges": 0,
+      "coutTotal": 100,
+      "createdAt": "2026-10-24T18:01:35.226Z",
+      "updatedAt": "2026-10-24T18:01:35.226Z"
     }
   ],
-  "nextSeq": 53
+  "nextSeq": 54
 }
