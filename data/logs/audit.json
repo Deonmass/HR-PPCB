@@ -1,6 +1,45 @@
 {
   "entries": [
     {
+      "id": "log-001913",
+      "at": "2026-10-24T17:57:35.659Z",
+      "userId": "Tresor.Maneka@ppcdrc.cd",
+      "userName": "Tresor Maneka",
+      "userEmail": "Tresor.Maneka@ppcdrc.cd",
+      "module": "protocol.voyages",
+      "moduleLabel": "Gestion de voyage",
+      "action": "create",
+      "actionLabel": "Création",
+      "entityType": "protocol.voyage",
+      "entityId": "pvc-051",
+      "summary": "Voyage PVC-0051 MBODI BAUSHILE GAEL KOLWOZI",
+      "details": "Voyage PVC-0051 MBODI BAUSHILE GAEL KOLWOZI",
+      "after": {
+        "id": "pvc-051",
+        "numero": "PVC-0051",
+        "date": "2026-10-20",
+        "voyageur": "MBODI BAUSHILE GAEL",
+        "voyageurMatricule": "70000002",
+        "destination": "KOLWOZI",
+        "ticketAvion": 0,
+        "visaVolant": 0,
+        "lettreLegaliser": 0,
+        "goPass": 0,
+        "transfert": 0,
+        "hotelNuit": 225,
+        "nbreNuits": 3,
+        "coutHotel": 675,
+        "categorieHotel": "HOTEL KAPI YA BOMA KOLWOZI",
+        "appartement": 0,
+        "autresCharges": 0,
+        "coutTotal": 675,
+        "createdAt": "2026-10-24T17:57:32.056Z",
+        "updatedAt": "2026-10-24T17:57:32.056Z"
+      },
+      "undoable": false,
+      "undone": false
+    },
+    {
       "id": "log-001912",
       "at": "2026-10-24T17:55:28.142Z",
       "userId": "Tresor.Maneka@ppcdrc.cd",
@@ -208008,5 +208047,5 @@
       }
     }
   ],
-  "nextSeq": 1913
+  "nextSeq": 1914
 }
