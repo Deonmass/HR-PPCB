@@ -1,6 +1,53 @@
 {
   "entries": [
     {
+      "id": "log-001909",
+      "at": "2026-10-24T17:52:52.045Z",
+      "userId": "Tresor.Maneka@ppcdrc.cd",
+      "userName": "Tresor Maneka",
+      "userEmail": "Tresor.Maneka@ppcdrc.cd",
+      "module": "charroi.voyages",
+      "moduleLabel": "Charroi — Voyages",
+      "action": "create",
+      "actionLabel": "Création",
+      "entityType": "charroi.voyage",
+      "entityId": "vyg-029",
+      "summary": "Demande de voyage VYG-0029 NGOMA NIMI GLODY Kinshasa → Kimpese",
+      "details": "Demande de voyage VYG-0029 NGOMA NIMI GLODY Kinshasa → Kimpese",
+      "after": {
+        "id": "vyg-029",
+        "numero": "VYG-0029",
+        "passagerNom": "NGOMA NIMI GLODY",
+        "passagerMatricule": "70000110",
+        "passagerInterne": true,
+        "nombrePersonnes": 1,
+        "depart": "Kinshasa",
+        "destination": "Kimpese",
+        "dateDepart": "2026-10-24",
+        "heureDepart": "07:00",
+        "dateArrivee": "",
+        "heureArrivee": "",
+        "motif": "MISSION DES SERVICE A CICO",
+        "notes": "",
+        "status": "demande",
+        "chauffeurNom": "",
+        "chauffeurMatricule": "",
+        "chauffeurInterne": false,
+        "vehiculeMode": "",
+        "vehiculeId": "",
+        "vehiculeLibelle": "",
+        "foodAllowance": 0,
+        "foodForTheRoad": 0,
+        "tollGate": 0,
+        "confirmedAt": "",
+        "completedAt": "",
+        "createdAt": "2026-10-24T17:52:48.807Z",
+        "updatedAt": "2026-10-24T17:52:48.807Z"
+      },
+      "undoable": false,
+      "undone": false
+    },
+    {
       "id": "log-001908",
       "at": "2026-10-24T17:50:35.726Z",
       "userId": "Tresor.Maneka@ppcdrc.cd",
@@ -207783,5 +207830,5 @@
       }
     }
   ],
-  "nextSeq": 1909
+  "nextSeq": 1910
 }
