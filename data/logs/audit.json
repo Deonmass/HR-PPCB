@@ -1,6 +1,67 @@
 {
   "entries": [
     {
+      "id": "log-001912",
+      "at": "2026-10-24T17:55:28.142Z",
+      "userId": "Tresor.Maneka@ppcdrc.cd",
+      "userName": "Tresor Maneka",
+      "userEmail": "Tresor.Maneka@ppcdrc.cd",
+      "module": "protocol.voyages",
+      "moduleLabel": "Gestion de voyage",
+      "action": "update",
+      "actionLabel": "Modification",
+      "entityType": "protocol.voyage",
+      "entityId": "pvc-045",
+      "summary": "Modification voyage PVC-0045 Chansard",
+      "details": "Modification voyage PVC-0045 Chansard",
+      "before": {
+        "id": "pvc-045",
+        "numero": "PVC-0045",
+        "date": "2026-10-19",
+        "voyageur": "Chansard",
+        "voyageurMatricule": "",
+        "destination": "ZAMBA KINSHASA ZAMBA",
+        "ticketAvion": 0,
+        "visaVolant": 0,
+        "lettreLegaliser": 0,
+        "goPass": 0,
+        "transfert": 0,
+        "hotelNuit": 100,
+        "nbreNuits": 1,
+        "coutHotel": 100,
+        "categorieHotel": "",
+        "appartement": 0,
+        "autresCharges": 0,
+        "coutTotal": 100,
+        "createdAt": "2026-10-20T10:39:32.589Z",
+        "updatedAt": "2026-10-20T10:39:32.589Z"
+      },
+      "after": {
+        "id": "pvc-045",
+        "numero": "PVC-0045",
+        "date": "2026-10-19",
+        "voyageur": "Chansard",
+        "voyageurMatricule": "",
+        "destination": "ZAMBA KINSHASA ZAMBA",
+        "ticketAvion": 0,
+        "visaVolant": 0,
+        "lettreLegaliser": 0,
+        "goPass": 0,
+        "transfert": 0,
+        "hotelNuit": 100,
+        "nbreNuits": 3,
+        "coutHotel": 300,
+        "categorieHotel": "",
+        "appartement": 0,
+        "autresCharges": 0,
+        "coutTotal": 300,
+        "createdAt": "2026-10-20T10:39:32.589Z",
+        "updatedAt": "2026-10-24T17:55:25.809Z"
+      },
+      "undoable": false,
+      "undone": false
+    },
+    {
       "id": "log-001911",
       "at": "2026-10-24T17:54:46.128Z",
       "userId": "Tresor.Maneka@ppcdrc.cd",
@@ -207947,5 +208008,5 @@
       }
     }
   ],
-  "nextSeq": 1912
+  "nextSeq": 1913
 }
