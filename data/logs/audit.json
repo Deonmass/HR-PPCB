@@ -1,6 +1,45 @@
 {
   "entries": [
     {
+      "id": "log-001908",
+      "at": "2026-10-24T17:50:35.726Z",
+      "userId": "Tresor.Maneka@ppcdrc.cd",
+      "userName": "Tresor Maneka",
+      "userEmail": "Tresor.Maneka@ppcdrc.cd",
+      "module": "protocol.voyages",
+      "moduleLabel": "Gestion de voyage",
+      "action": "create",
+      "actionLabel": "Création",
+      "entityType": "protocol.voyage",
+      "entityId": "pvc-050",
+      "summary": "Voyage PVC-0050 NGOMA NIMI GLODY Kinshasa Zamba Kinshasa",
+      "details": "Voyage PVC-0050 NGOMA NIMI GLODY Kinshasa Zamba Kinshasa",
+      "after": {
+        "id": "pvc-050",
+        "numero": "PVC-0050",
+        "date": "2026-10-24",
+        "voyageur": "NGOMA NIMI GLODY",
+        "voyageurMatricule": "70000110",
+        "destination": "Kinshasa Zamba Kinshasa",
+        "ticketAvion": 0,
+        "visaVolant": 0,
+        "lettreLegaliser": 0,
+        "goPass": 0,
+        "transfert": 0,
+        "hotelNuit": 2,
+        "nbreNuits": 0,
+        "coutHotel": 0,
+        "categorieHotel": "Village PPC",
+        "appartement": 0,
+        "autresCharges": 0,
+        "coutTotal": 0,
+        "createdAt": "2026-10-24T17:50:32.428Z",
+        "updatedAt": "2026-10-24T17:50:32.428Z"
+      },
+      "undoable": false,
+      "undone": false
+    },
+    {
       "id": "log-001907",
       "at": "2026-10-24T09:53:56.289Z",
       "userId": "olivier.dino@zamba.kmr.cd",
@@ -207744,5 +207783,5 @@
       }
     }
   ],
-  "nextSeq": 1908
+  "nextSeq": 1909
 }
