@@ -1033,28 +1033,6 @@
       "coutTotal": 100,
       "createdAt": "2026-10-20T10:43:48.290Z",
       "updatedAt": "2026-10-20T10:43:48.290Z"
-    },
-    {
-      "id": "pvc-050",
-      "numero": "PVC-0050",
-      "date": "2026-10-24",
-      "voyageur": "NGOMA NIMI GLODY",
-      "voyageurMatricule": "70000110",
-      "destination": "Kinshasa Zamba Kinshasa",
-      "ticketAvion": 0,
-      "visaVolant": 0,
-      "lettreLegaliser": 0,
-      "goPass": 0,
-      "transfert": 0,
-      "hotelNuit": 2,
-      "nbreNuits": 0,
-      "coutHotel": 0,
-      "categorieHotel": "Village PPC",
-      "appartement": 0,
-      "autresCharges": 0,
-      "coutTotal": 0,
-      "createdAt": "2026-10-24T17:50:32.428Z",
-      "updatedAt": "2026-10-24T17:50:32.428Z"
     }
   ],
   "nextSeq": 51
