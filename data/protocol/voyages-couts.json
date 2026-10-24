@@ -937,14 +937,14 @@
       "goPass": 0,
       "transfert": 0,
       "hotelNuit": 100,
-      "nbreNuits": 1,
-      "coutHotel": 100,
+      "nbreNuits": 3,
+      "coutHotel": 300,
       "categorieHotel": "",
       "appartement": 0,
       "autresCharges": 0,
-      "coutTotal": 100,
+      "coutTotal": 300,
       "createdAt": "2026-10-20T10:39:32.589Z",
-      "updatedAt": "2026-10-20T10:39:32.589Z"
+      "updatedAt": "2026-10-24T17:55:25.809Z"
     },
     {
       "id": "pvc-046",
