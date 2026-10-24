@@ -1,6 +1,49 @@
 {
   "entries": [
     {
+      "id": "log-001904",
+      "at": "2026-10-24T06:23:07.740Z",
+      "userId": "olivier.dino@zamba.kmr.cd",
+      "userName": "Olivier Dino ORC",
+      "userEmail": "olivier.dino@zamba.kmr.cd",
+      "module": "contractants",
+      "moduleLabel": "contractants",
+      "action": "update",
+      "actionLabel": "Modification",
+      "entityType": "contractant-employee",
+      "entityId": "859",
+      "summary": "Modification employé contractant — ZUNGADIHE KUMBOKO Fabien",
+      "details": "Modification employé contractant — ZUNGADIHE KUMBOKO Fabien",
+      "after": {
+        "id": "859",
+        "nom": "ZUNGADIHE KUMBOKO Fabien",
+        "sexe": "M",
+        "lieuAffectation": "Zamba",
+        "fonction": "Superintendant Finance et Logistique",
+        "departement": "Finance",
+        "service": "",
+        "telephone": "+243822643009",
+        "etatCivil": "C",
+        "statut": "Permanent",
+        "dateEmbauche": "",
+        "dateSortie": "",
+        "managerEmployeeId": "",
+        "family": [],
+        "matriculePpc": "OR119",
+        "numeroCnss": "",
+        "numeroCompte": "",
+        "banque": "",
+        "nbDependants": 0,
+        "txJr": 0,
+        "coutTransport": 0,
+        "payrollSite": "",
+        "createdAt": "2026-10-21T09:46:19.251Z",
+        "updatedAt": "2026-10-24T06:23:05.077Z"
+      },
+      "undoable": false,
+      "undone": false
+    },
+    {
       "id": "log-001903",
       "at": "2026-10-24T06:20:16.077Z",
       "userId": "olivier.dino@zamba.kmr.cd",
@@ -207628,5 +207671,5 @@
       }
     }
   ],
-  "nextSeq": 1904
+  "nextSeq": 1905
 }
