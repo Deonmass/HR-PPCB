@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useMemo, useRef, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { createPortal } from 'react-dom';
 import OrganigrammeTeamDialog from '@/components/organigramme/OrganigrammeTeamDialog';
 import {
@@ -318,7 +318,6 @@ export default function OrganigrammeTree({
   const groups = useMemo(() => groupOrgNodesByPoste(roots), [roots]);
   const [menu, setMenu] = useState<MenuState | null>(null);
   const [team, setTeam] = useState<OrgPosteGroup | null>(null);
-  const openedAt = useRef(0);
 
   const visible = useMemo(() => {
     const q = fold(search.trim());
@@ -328,23 +327,22 @@ export default function OrganigrammeTree({
 
   useEffect(() => {
     if (!menu) return;
-    const close = (event?: Event) => {
-      if (event && 'button' in event && (event as MouseEvent).button === 2) return;
-      if (Date.now() - openedAt.current < 350) return;
+    const close = (event: Event) => {
+      const target = event.target;
+      const element = target instanceof Element ? target : target instanceof Node ? target.parentElement : null;
+      if (element?.closest('.org-menu')) return;
       setMenu(null);
     };
     const onKey = (event: KeyboardEvent) => {
       if (event.key === 'Escape') setMenu(null);
     };
     const timer = window.setTimeout(() => {
-      window.addEventListener('click', close);
-      window.addEventListener('scroll', close, true);
+      document.addEventListener('pointerdown', close, true);
     }, 0);
     window.addEventListener('keydown', onKey);
     return () => {
       window.clearTimeout(timer);
-      window.removeEventListener('click', close);
-      window.removeEventListener('scroll', close, true);
+      document.removeEventListener('pointerdown', close, true);
       window.removeEventListener('keydown', onKey);
     };
   }, [menu]);
@@ -370,7 +368,6 @@ export default function OrganigrammeTree({
     if (count === 0) return;
     event.preventDefault();
     event.stopPropagation();
-    openedAt.current = Date.now();
     const width = 280;
     const height = 16 + count * 38;
     const tool = event.currentTarget instanceof HTMLElement && event.currentTarget.classList.contains('org-chart-tool')
