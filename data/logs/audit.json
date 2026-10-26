@@ -1,6 +1,50 @@
 {
   "entries": [
     {
+      "id": "log-001938",
+      "at": "2026-10-26T10:38:16.018Z",
+      "userId": "admin",
+      "userName": "Administrateur",
+      "userEmail": "admin",
+      "module": "contractants",
+      "moduleLabel": "contractants",
+      "action": "update",
+      "actionLabel": "Modification",
+      "entityType": "contractant-employee",
+      "entityId": "780",
+      "summary": "Modification employé contractant — KILUVENGI MUKE DEV",
+      "details": "Modification employé contractant — KILUVENGI MUKE DEV",
+      "after": {
+        "id": "780",
+        "nom": "KILUVENGI MUKE DEV",
+        "sexe": "M",
+        "lieuAffectation": "Zamba",
+        "fonction": "Sampler",
+        "departement": "Quality Assurance",
+        "service": "",
+        "telephone": "",
+        "etatCivil": "C",
+        "statut": "Permanent",
+        "dateEmbauche": "",
+        "dateSortie": "",
+        "managerEmployeeId": "",
+        "managerMatricule": "",
+        "family": [],
+        "matriculePpc": "",
+        "numeroCnss": "",
+        "numeroCompte": "",
+        "banque": "",
+        "nbDependants": 0,
+        "txJr": 4.55384,
+        "coutTransport": 1.17,
+        "payrollSite": "site",
+        "createdAt": "2026-09-25T08:00:00.000Z",
+        "updatedAt": "2026-10-26T10:38:12.410Z"
+      },
+      "undoable": false,
+      "undone": false
+    },
+    {
       "id": "log-001937",
       "at": "2026-10-26T10:29:53.246Z",
       "userId": "admin",
@@ -209435,5 +209479,5 @@
       }
     }
   ],
-  "nextSeq": 1938
+  "nextSeq": 1939
 }
