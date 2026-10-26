@@ -1,6 +1,50 @@
 {
   "entries": [
     {
+      "id": "log-001956",
+      "at": "2026-10-26T12:02:35.220Z",
+      "userId": "admin",
+      "userName": "Administrateur",
+      "userEmail": "admin",
+      "module": "contractants",
+      "moduleLabel": "contractants",
+      "action": "update",
+      "actionLabel": "Modification",
+      "entityType": "contractant-employee",
+      "entityId": "67",
+      "summary": "Modification employé contractant — NDAY MUDIBU FREDDY",
+      "details": "Modification employé contractant — NDAY MUDIBU FREDDY",
+      "after": {
+        "id": "67",
+        "nom": "NDAY MUDIBU FREDDY",
+        "sexe": "M",
+        "lieuAffectation": "Lubudi",
+        "fonction": "Driver",
+        "departement": "Human Resources",
+        "service": "Driver",
+        "telephone": "802222945",
+        "etatCivil": "C",
+        "statut": "Permanent",
+        "dateEmbauche": "",
+        "dateSortie": "",
+        "managerEmployeeId": "",
+        "managerMatricule": "70000299",
+        "family": [],
+        "matriculePpc": "",
+        "numeroCnss": "LUBUDI",
+        "numeroCompte": "0976977095",
+        "banque": "Airtel Money",
+        "nbDependants": 0,
+        "txJr": 11.646044,
+        "coutTransport": 1.2,
+        "payrollSite": "hors-site",
+        "createdAt": "2026-08-12T12:57:02.481Z",
+        "updatedAt": "2026-10-26T12:02:32.077Z"
+      },
+      "undoable": false,
+      "undone": false
+    },
+    {
       "id": "log-001955",
       "at": "2026-10-26T12:02:08.816Z",
       "userId": "admin",
@@ -210125,5 +210169,5 @@
       }
     }
   ],
-  "nextSeq": 1956
+  "nextSeq": 1957
 }
