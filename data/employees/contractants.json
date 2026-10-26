@@ -1731,7 +1731,7 @@
           "dateEmbauche": "",
           "dateSortie": "",
           "managerEmployeeId": "",
-          "managerMatricule": "70000008",
+          "managerMatricule": "70000175",
           "family": [],
           "matriculePpc": "",
           "numeroCnss": "KINSHASA",
@@ -1742,7 +1742,7 @@
           "coutTransport": 1.17,
           "payrollSite": "hors-site",
           "createdAt": "2026-08-12T12:57:02.481Z",
-          "updatedAt": "2026-10-25T16:46:32.043Z"
+          "updatedAt": "2026-10-26T12:04:00.962Z"
         },
         {
           "id": "780",
@@ -5121,7 +5121,7 @@
         }
       ],
       "createdAt": "2026-08-12T11:55:22.134Z",
-      "updatedAt": "2026-10-26T12:02:32.077Z"
+      "updatedAt": "2026-10-26T12:04:00.962Z"
     },
     {
       "id": "3",
