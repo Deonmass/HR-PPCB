@@ -1,6 +1,50 @@
 {
   "entries": [
     {
+      "id": "log-001945",
+      "at": "2026-10-26T10:54:23.215Z",
+      "userId": "admin",
+      "userName": "Administrateur",
+      "userEmail": "admin",
+      "module": "contractants",
+      "moduleLabel": "contractants",
+      "action": "update",
+      "actionLabel": "Modification",
+      "entityType": "contractant-employee",
+      "entityId": "765",
+      "summary": "Modification employé contractant — NUMBI IMANGO Théophil",
+      "details": "Modification employé contractant — NUMBI IMANGO Théophil",
+      "after": {
+        "id": "765",
+        "nom": "NUMBI IMANGO Théophil",
+        "sexe": "M",
+        "lieuAffectation": "Lubudi",
+        "fonction": "Spooter",
+        "departement": "",
+        "service": "",
+        "telephone": "",
+        "etatCivil": "C",
+        "statut": "Permanent",
+        "dateEmbauche": "",
+        "dateSortie": "",
+        "managerEmployeeId": "",
+        "managerMatricule": "",
+        "family": [],
+        "matriculePpc": "",
+        "numeroCnss": "LUBUDI",
+        "numeroCompte": "",
+        "banque": "",
+        "nbDependants": 0,
+        "txJr": 3.91,
+        "coutTransport": 0.4119,
+        "payrollSite": "hors-site",
+        "createdAt": "2026-09-25T08:00:00.000Z",
+        "updatedAt": "2026-10-26T10:54:20.316Z"
+      },
+      "undoable": false,
+      "undone": false
+    },
+    {
       "id": "log-001944",
       "at": "2026-10-26T10:53:06.257Z",
       "userId": "admin",
@@ -209670,5 +209714,5 @@
       }
     }
   ],
-  "nextSeq": 1945
+  "nextSeq": 1946
 }
