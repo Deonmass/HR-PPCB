@@ -1,6 +1,50 @@
 {
   "entries": [
     {
+      "id": "log-001933",
+      "at": "2026-10-26T09:27:06.173Z",
+      "userId": "admin",
+      "userName": "Administrateur",
+      "userEmail": "admin",
+      "module": "contractants",
+      "moduleLabel": "contractants",
+      "action": "update",
+      "actionLabel": "Modification",
+      "entityType": "contractant-employee",
+      "entityId": "783",
+      "summary": "Modification employé contractant — NSOLANI KASA Exaucé",
+      "details": "Modification employé contractant — NSOLANI KASA Exaucé",
+      "after": {
+        "id": "783",
+        "nom": "NSOLANI KASA Exaucé",
+        "sexe": "",
+        "lieuAffectation": "Zamba",
+        "fonction": "Sampler",
+        "departement": "Quality Assurance",
+        "service": "",
+        "telephone": "",
+        "etatCivil": "C",
+        "statut": "Permanent",
+        "dateEmbauche": "",
+        "dateSortie": "",
+        "managerEmployeeId": "",
+        "managerMatricule": "70000081",
+        "family": [],
+        "matriculePpc": "",
+        "numeroCnss": "",
+        "numeroCompte": "",
+        "banque": "",
+        "nbDependants": 0,
+        "txJr": 4.55384,
+        "coutTransport": 1.17,
+        "payrollSite": "site",
+        "createdAt": "2026-09-25T08:00:00.000Z",
+        "updatedAt": "2026-10-26T09:27:03.428Z"
+      },
+      "undoable": false,
+      "undone": false
+    },
+    {
       "id": "log-001932",
       "at": "2026-10-26T09:26:55.281Z",
       "userId": "admin",
@@ -209235,5 +209279,5 @@
       }
     }
   ],
-  "nextSeq": 1933
+  "nextSeq": 1934
 }
