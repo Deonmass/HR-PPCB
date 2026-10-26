@@ -1,6 +1,30 @@
 {
   "entries": [
     {
+      "id": "log-001940",
+      "at": "2026-10-26T10:39:04.466Z",
+      "userId": "admin",
+      "userName": "Administrateur",
+      "userEmail": "admin",
+      "module": "settings.services",
+      "moduleLabel": "Paramètres — Services",
+      "action": "create",
+      "actionLabel": "Création",
+      "entityType": "settings.service",
+      "entityId": "svc-quality-assurance-salle-physique",
+      "summary": "Création service Salle Physique",
+      "details": "Création service Salle Physique",
+      "after": {
+        "id": "svc-quality-assurance-salle-physique",
+        "name": "Salle Physique",
+        "code": "SP",
+        "departmentId": "dept-quality-assurance",
+        "active": true
+      },
+      "undoable": true,
+      "undone": false
+    },
+    {
       "id": "log-001939",
       "at": "2026-10-26T10:38:37.289Z",
       "userId": "admin",
@@ -209503,5 +209527,5 @@
       }
     }
   ],
-  "nextSeq": 1940
+  "nextSeq": 1941
 }
