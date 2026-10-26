@@ -62,6 +62,13 @@
       "code": "Adm",
       "departmentId": "dept-quality-assurance",
       "active": true
+    },
+    {
+      "id": "svc-quality-assurance-salle-chimique",
+      "name": "Salle chimique",
+      "code": "SC",
+      "departmentId": "dept-quality-assurance",
+      "active": true
     }
   ]
 }
