@@ -1,6 +1,50 @@
 {
   "entries": [
     {
+      "id": "log-001928",
+      "at": "2026-10-26T09:25:25.457Z",
+      "userId": "admin",
+      "userName": "Administrateur",
+      "userEmail": "admin",
+      "module": "contractants",
+      "moduleLabel": "contractants",
+      "action": "update",
+      "actionLabel": "Modification",
+      "entityType": "contractant-employee",
+      "entityId": "110",
+      "summary": "Modification employé contractant — MATONDO KONDE ABIMELEK",
+      "details": "Modification employé contractant — MATONDO KONDE ABIMELEK",
+      "after": {
+        "id": "110",
+        "nom": "MATONDO KONDE ABIMELEK",
+        "sexe": "M",
+        "lieuAffectation": "Zamba",
+        "fonction": "Lab Tester",
+        "departement": "Quality Assurance",
+        "service": "",
+        "telephone": "814162323",
+        "etatCivil": "M",
+        "statut": "Permanent",
+        "dateEmbauche": "",
+        "dateSortie": "",
+        "managerEmployeeId": "",
+        "managerMatricule": "70000080",
+        "family": [],
+        "matriculePpc": "CHRS_PPC0058",
+        "numeroCnss": "",
+        "numeroCompte": "544100123045456",
+        "banque": "EBCDC",
+        "nbDependants": 4,
+        "txJr": 9.068513,
+        "coutTransport": 1.17,
+        "payrollSite": "site",
+        "createdAt": "2026-08-12T12:57:02.481Z",
+        "updatedAt": "2026-10-26T09:25:22.834Z"
+      },
+      "undoable": false,
+      "undone": false
+    },
+    {
       "id": "log-001927",
       "at": "2026-10-26T09:24:30.016Z",
       "userId": "admin",
@@ -209015,5 +209059,5 @@
       }
     }
   ],
-  "nextSeq": 1928
+  "nextSeq": 1929
 }
