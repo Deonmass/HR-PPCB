@@ -1,6 +1,50 @@
 {
   "entries": [
     {
+      "id": "log-001930",
+      "at": "2026-10-26T09:26:32.470Z",
+      "userId": "admin",
+      "userName": "Administrateur",
+      "userEmail": "admin",
+      "module": "contractants",
+      "moduleLabel": "contractants",
+      "action": "update",
+      "actionLabel": "Modification",
+      "entityType": "contractant-employee",
+      "entityId": "111",
+      "summary": "Modification employé contractant — MABIALA MPEKO Dieu le veut",
+      "details": "Modification employé contractant — MABIALA MPEKO Dieu le veut",
+      "after": {
+        "id": "111",
+        "nom": "MABIALA MPEKO Dieu le veut",
+        "sexe": "M",
+        "lieuAffectation": "Zamba",
+        "fonction": "Sampler",
+        "departement": "Quality Assurance",
+        "service": "",
+        "telephone": "891750161",
+        "etatCivil": "C",
+        "statut": "Permanent",
+        "dateEmbauche": "",
+        "dateSortie": "",
+        "managerEmployeeId": "",
+        "managerMatricule": "70000081",
+        "family": [],
+        "matriculePpc": "CHRS_PPC0047",
+        "numeroCnss": "",
+        "numeroCompte": "544200137032560",
+        "banque": "EBCDC",
+        "nbDependants": 0,
+        "txJr": 4.55384,
+        "coutTransport": 1.17,
+        "payrollSite": "site",
+        "createdAt": "2026-08-12T12:57:02.481Z",
+        "updatedAt": "2026-10-26T09:26:29.065Z"
+      },
+      "undoable": false,
+      "undone": false
+    },
+    {
       "id": "log-001929",
       "at": "2026-10-26T09:25:53.433Z",
       "userId": "admin",
@@ -209103,5 +209147,5 @@
       }
     }
   ],
-  "nextSeq": 1930
+  "nextSeq": 1931
 }
