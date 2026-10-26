@@ -1,6 +1,30 @@
 {
   "entries": [
     {
+      "id": "log-001941",
+      "at": "2026-10-26T10:39:28.331Z",
+      "userId": "admin",
+      "userName": "Administrateur",
+      "userEmail": "admin",
+      "module": "settings.services",
+      "moduleLabel": "Paramètres — Services",
+      "action": "create",
+      "actionLabel": "Création",
+      "entityType": "settings.service",
+      "entityId": "svc-quality-assurance-routine",
+      "summary": "Création service Routine",
+      "details": "Création service Routine",
+      "after": {
+        "id": "svc-quality-assurance-routine",
+        "name": "Routine",
+        "code": "R",
+        "departmentId": "dept-quality-assurance",
+        "active": true
+      },
+      "undoable": true,
+      "undone": false
+    },
+    {
       "id": "log-001940",
       "at": "2026-10-26T10:39:04.466Z",
       "userId": "admin",
@@ -209527,5 +209551,5 @@
       }
     }
   ],
-  "nextSeq": 1941
+  "nextSeq": 1942
 }
