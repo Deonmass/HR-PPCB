@@ -3613,7 +3613,7 @@
           "sexe": "",
           "lieuAffectation": "Zamba",
           "fonction": "Sampler",
-          "departement": "",
+          "departement": "Quality Assurance",
           "service": "",
           "telephone": "",
           "etatCivil": "C",
@@ -3632,7 +3632,7 @@
           "coutTransport": 1.17,
           "payrollSite": "site",
           "createdAt": "2026-09-25T08:00:00.000Z",
-          "updatedAt": "2026-09-28T15:12:00.000Z"
+          "updatedAt": "2026-10-26T08:39:50.386Z"
         },
         {
           "id": "38",
@@ -5121,7 +5121,7 @@
         }
       ],
       "createdAt": "2026-08-12T11:55:22.134Z",
-      "updatedAt": "2026-10-26T08:34:39.550Z"
+      "updatedAt": "2026-10-26T08:39:50.386Z"
     },
     {
       "id": "3",
