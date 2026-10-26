@@ -8,7 +8,9 @@ import RowContextMenu, { type ContextMenuItem } from '@/components/RowContextMen
 import TableHeaderFilter from '@/components/TableHeaderFilter';
 import ContractantsDashboard from '@/components/contractants/ContractantsDashboard';
 import ContractantHomeDashboard from '@/components/contractants/ContractantHomeDashboard';
-import ContractantEmployeeDetailModal from '@/components/contractants/ContractantEmployeeDetailModal';
+import ContractantEmployeeDetailModal, {
+  type DetailInterne,
+} from '@/components/contractants/ContractantEmployeeDetailModal';
 import { usePermissions } from '@/contexts/PermissionContext';
 import {
   CONTRACTANT_EMPLOYEE_STATUTS,
@@ -279,6 +281,7 @@ export default function ContractantsPage() {
   }, [tab, showDashboardTab, showContractantsTab, showEmployesTab, showExitTab, setTab]);
 
   const [contractants, setContractants] = useState<Contractant[]>([]);
+  const [internes, setInternes] = useState<DetailInterne[]>([]);
   const [departements, setDepartements] = useState<DepartmentSetting[]>([]);
   const [services, setServices] = useState<ServiceSetting[]>([]);
   const [disciplineCounts, setDisciplineCounts] = useState<Record<string, number>>({});
@@ -327,11 +330,12 @@ export default function ContractantsPage() {
     if (isRefresh) setRefreshing(true);
     else setLoading(true);
     try {
-      const [resContractants, resDepts, resServices, resDiscipline] = await Promise.all([
+      const [resContractants, resDepts, resServices, resDiscipline, resInternes] = await Promise.all([
         fetch('/api/employes/contractants', { cache: 'no-store' }),
         fetch('/api/settings/departments'),
         fetch('/api/settings/services'),
         fetch('/api/employes/contractants/discipline'),
+        fetch('/api/employees', { cache: 'no-store' }),
       ]);
       const data = await resContractants.json();
       if (!resContractants.ok) {
@@ -378,6 +382,26 @@ export default function ContractantsPage() {
         }
         setDisciplineCounts(counts);
         setDisciplineOpenCount(open);
+      }
+      if (resInternes.ok) {
+        const empData = await resInternes.json();
+        const list = Array.isArray(empData) ? empData : Array.isArray(empData?.employees) ? empData.employees : [];
+        setInternes(
+          list
+            .filter((item: { matricule?: string; nom?: string; statut?: string }) => {
+              const statut = String(item.statut || 'Active').trim().toLowerCase();
+              return Boolean(String(item.matricule || '').trim() && String(item.nom || '').trim())
+                && (!statut || statut === 'active');
+            })
+            .map((item: { matricule?: string; nom?: string; jobTitle?: string; position?: string; lineManagerName?: string }) => ({
+              matricule: String(item.matricule || '').trim(),
+              nom: String(item.nom || '').trim(),
+              poste: String(item.jobTitle || item.position || '').trim(),
+              lineManagerName: String(item.lineManagerName || '').trim(),
+            })),
+        );
+      } else {
+        setInternes([]);
       }
     } catch (err) {
       await showError(err instanceof Error ? err.message : 'Chargement impossible');
@@ -2002,6 +2026,8 @@ export default function ContractantsPage() {
           peers={
             contractants.find((c) => c.id === viewEmployee.contractantId)?.employees ?? []
           }
+          directory={allEmployees}
+          internes={internes}
           disciplineCount={disciplineCounts[viewEmployee.id] || 0}
           canEdit={canEdit}
           onClose={() => setViewEmployee(null)}

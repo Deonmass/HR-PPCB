@@ -10,6 +10,7 @@ import {
   type ContractantFamilyLien,
   type ContractantSexe,
 } from '@/lib/contractants-types';
+import { resolveLineManagerMatricule } from '@/lib/organigramme';
 
 export type DetailFlatEmployee = ContractantEmployee & {
   contractantId: string;
@@ -17,15 +18,94 @@ export type DetailFlatEmployee = ContractantEmployee & {
   typeService: string;
 };
 
+export type DetailInterne = {
+  matricule: string;
+  nom: string;
+  poste: string;
+  lineManagerName: string;
+};
+
+type LineNode = {
+  key: string;
+  nom: string;
+  detail: string;
+  kind: 'interne' | 'contractant';
+};
+
 interface Props {
   employee: DetailFlatEmployee;
   peers: ContractantEmployee[];
+  directory: DetailFlatEmployee[];
+  internes: DetailInterne[];
   disciplineCount: number;
   canEdit: boolean;
   onClose: () => void;
   onEdit: () => void;
   onSaveFamily: (family: ContractantFamilyMember[]) => Promise<void>;
   onSaveManager: (managerEmployeeId: string) => Promise<void>;
+}
+
+function buildContractantLine(
+  employee: DetailFlatEmployee,
+  directory: DetailFlatEmployee[],
+  internes: DetailInterne[],
+): { line: LineNode[]; reports: DetailFlatEmployee[] } {
+  const byId = new Map(directory.map((item) => [item.id, item]));
+  const byMatricule = new Map(internes.map((item) => [item.matricule, item]));
+  const namePool = internes.map((item) => ({ matricule: item.matricule, nom: item.nom }));
+  const up: LineNode[] = [];
+  const seen = new Set<string>([`c:${employee.id}`]);
+
+  const firstMatricule = String(employee.managerMatricule || '').trim();
+  const firstManager = String(employee.managerEmployeeId || '').trim();
+  let step: { kind: 'c'; id: string } | { kind: 'i'; matricule: string } | null = firstMatricule
+    ? { kind: 'i', matricule: firstMatricule }
+    : firstManager && firstManager !== employee.id
+      ? { kind: 'c', id: firstManager }
+      : null;
+
+  while (step && up.length < 8) {
+    const key = step.kind === 'c' ? `c:${step.id}` : `i:${step.matricule}`;
+    if (seen.has(key)) break;
+    seen.add(key);
+    if (step.kind === 'c') {
+      const person = byId.get(step.id);
+      if (!person || String(person.dateSortie || '').trim()) break;
+      up.push({
+        key,
+        nom: person.nom,
+        detail: [person.fonction, person.contractantNom].filter(Boolean).join(' · '),
+        kind: 'contractant',
+      });
+      const nextMatricule = String(person.managerMatricule || '').trim();
+      const nextId = String(person.managerEmployeeId || '').trim();
+      if (nextMatricule) step = { kind: 'i', matricule: nextMatricule };
+      else if (nextId && nextId !== person.id) step = { kind: 'c', id: nextId };
+      else step = null;
+    } else {
+      const person = byMatricule.get(step.matricule);
+      if (!person) break;
+      up.push({
+        key,
+        nom: person.nom,
+        detail: person.poste,
+        kind: 'interne',
+      });
+      const next = resolveLineManagerMatricule(person.lineManagerName, namePool, person.matricule);
+      step = next ? { kind: 'i', matricule: next } : null;
+    }
+  }
+
+  const reports = directory
+    .filter((item) => (
+      item.id !== employee.id
+      && !String(item.dateSortie || '').trim()
+      && !String(item.managerMatricule || '').trim()
+      && String(item.managerEmployeeId || '').trim() === employee.id
+    ))
+    .sort((a, b) => a.nom.localeCompare(b.nom, 'fr', { sensitivity: 'base' }));
+
+  return { line: up.reverse(), reports };
 }
 
 function newFamilyId(): string {
@@ -35,6 +115,8 @@ function newFamilyId(): string {
 export default function ContractantEmployeeDetailModal({
   employee,
   peers,
+  directory,
+  internes,
   disciplineCount,
   canEdit,
   onClose,
@@ -49,13 +131,9 @@ export default function ContractantEmployeeDetailModal({
   const [savingFamily, setSavingFamily] = useState(false);
   const [savingManager, setSavingManager] = useState(false);
 
-  const manager = useMemo(
-    () => peers.find((p) => p.id === managerId) ?? null,
-    [peers, managerId],
-  );
-  const reports = useMemo(
-    () => peers.filter((p) => p.managerEmployeeId === employee.id && p.id !== employee.id),
-    [peers, employee.id],
+  const { line, reports } = useMemo(
+    () => buildContractantLine(employee, directory, internes),
+    [employee, directory, internes],
   );
   const managerOptions = useMemo(
     () => peers.filter((p) => p.id !== employee.id).sort((a, b) => a.nom.localeCompare(b.nom, 'fr')),
@@ -225,18 +303,20 @@ export default function ContractantEmployeeDetailModal({
             <section className="contractant-emp-detail-section">
               <h4>Organigramme</h4>
               <div className="contractant-org-chart">
-                {manager ? (
-                  <>
-                    <div className="contractant-org-node">
-                      <span className="contractant-org-node-role">N+1</span>
-                      {manager.nom}
+                {line.map((node, index) => (
+                  <div key={node.key} className="contractant-org-step">
+                    <div className={`contractant-org-node is-${node.kind}`}>
+                      <span className="contractant-org-node-role">N+{line.length - index}</span>
+                      {node.nom}
+                      {node.detail ? <span className="contractant-org-node-detail">{node.detail}</span> : null}
                     </div>
                     <div className="contractant-org-line" aria-hidden />
-                  </>
-                ) : null}
+                  </div>
+                ))}
                 <div className="contractant-org-node is-self">
                   <span className="contractant-org-node-role">Employé</span>
                   {employee.nom}
+                  {employee.fonction ? <span className="contractant-org-node-detail">{employee.fonction}</span> : null}
                 </div>
                 {reports.length > 0 ? (
                   <>

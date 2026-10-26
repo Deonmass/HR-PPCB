@@ -42301,10 +42301,31 @@ html:not([data-theme='light']) .training-cost-table td {
   max-width: 16rem;
   background: #f9fafb;
 }
+.contractant-org-step {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.35rem;
+}
 .contractant-org-node.is-self {
   background: #fef2f2;
   border-color: #fecaca;
   font-weight: 700;
+}
+.contractant-org-node.is-interne {
+  background: #fff;
+  border-color: #1e3a5f;
+}
+.contractant-org-node.is-contractant {
+  background: #fef9c3;
+  border-color: #facc15;
+}
+.contractant-org-node-detail {
+  display: block;
+  margin-top: 0.12rem;
+  font-size: 0.72rem;
+  font-weight: 500;
+  color: var(--muted, #6b7280);
 }
 .contractant-org-node-role {
   display: block;
