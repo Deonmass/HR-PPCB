@@ -1,6 +1,50 @@
 {
   "entries": [
     {
+      "id": "log-001935",
+      "at": "2026-10-26T09:27:27.716Z",
+      "userId": "admin",
+      "userName": "Administrateur",
+      "userEmail": "admin",
+      "module": "contractants",
+      "moduleLabel": "contractants",
+      "action": "update",
+      "actionLabel": "Modification",
+      "entityType": "contractant-employee",
+      "entityId": "113",
+      "summary": "Modification employé contractant — NTUKU NDOLUMINGU Exauce",
+      "details": "Modification employé contractant — NTUKU NDOLUMINGU Exauce",
+      "after": {
+        "id": "113",
+        "nom": "NTUKU NDOLUMINGU Exauce",
+        "sexe": "M",
+        "lieuAffectation": "Zamba",
+        "fonction": "Sampler",
+        "departement": "Quality Assurance",
+        "service": "",
+        "telephone": "896654462",
+        "etatCivil": "C",
+        "statut": "Permanent",
+        "dateEmbauche": "",
+        "dateSortie": "",
+        "managerEmployeeId": "",
+        "managerMatricule": "70000081",
+        "family": [],
+        "matriculePpc": "CHRS_PPC0106",
+        "numeroCnss": "",
+        "numeroCompte": "544200133835634",
+        "banque": "EBCDC",
+        "nbDependants": 0,
+        "txJr": 4.55384,
+        "coutTransport": 1.17,
+        "payrollSite": "site",
+        "createdAt": "2026-08-12T12:57:02.481Z",
+        "updatedAt": "2026-10-26T09:27:24.037Z"
+      },
+      "undoable": false,
+      "undone": false
+    },
+    {
       "id": "log-001934",
       "at": "2026-10-26T09:27:16.468Z",
       "userId": "admin",
@@ -209323,5 +209367,5 @@
       }
     }
   ],
-  "nextSeq": 1935
+  "nextSeq": 1936
 }
