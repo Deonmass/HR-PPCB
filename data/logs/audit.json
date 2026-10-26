@@ -1,6 +1,50 @@
 {
   "entries": [
     {
+      "id": "log-001929",
+      "at": "2026-10-26T09:25:53.433Z",
+      "userId": "admin",
+      "userName": "Administrateur",
+      "userEmail": "admin",
+      "module": "contractants",
+      "moduleLabel": "contractants",
+      "action": "update",
+      "actionLabel": "Modification",
+      "entityType": "contractant-employee",
+      "entityId": "109",
+      "summary": "Modification employé contractant — BAVUIDI NSIAMUNU BODRI",
+      "details": "Modification employé contractant — BAVUIDI NSIAMUNU BODRI",
+      "after": {
+        "id": "109",
+        "nom": "BAVUIDI NSIAMUNU BODRI",
+        "sexe": "M",
+        "lieuAffectation": "Zamba",
+        "fonction": "Lab Tester",
+        "departement": "Quality Assurance",
+        "service": "",
+        "telephone": "854764572",
+        "etatCivil": "M",
+        "statut": "Permanent",
+        "dateEmbauche": "",
+        "dateSortie": "",
+        "managerEmployeeId": "",
+        "managerMatricule": "70000276",
+        "family": [],
+        "matriculePpc": "CHRS_PPC0009",
+        "numeroCnss": "",
+        "numeroCompte": "544100123060297",
+        "banque": "EBCDC",
+        "nbDependants": 4,
+        "txJr": 9.068513,
+        "coutTransport": 1.17,
+        "payrollSite": "site",
+        "createdAt": "2026-08-12T12:57:02.481Z",
+        "updatedAt": "2026-10-26T09:25:49.875Z"
+      },
+      "undoable": false,
+      "undone": false
+    },
+    {
       "id": "log-001928",
       "at": "2026-10-26T09:25:25.457Z",
       "userId": "admin",
@@ -209059,5 +209103,5 @@
       }
     }
   ],
-  "nextSeq": 1929
+  "nextSeq": 1930
 }
