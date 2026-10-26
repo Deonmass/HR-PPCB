@@ -76,6 +76,13 @@
       "code": "SP",
       "departmentId": "dept-quality-assurance",
       "active": true
+    },
+    {
+      "id": "svc-quality-assurance-routine",
+      "name": "Routine",
+      "code": "R",
+      "departmentId": "dept-quality-assurance",
+      "active": true
     }
   ]
 }
