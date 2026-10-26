@@ -3853,11 +3853,11 @@
         {
           "id": "768",
           "nom": "NGUVU MUNYANGI ROBERT",
-          "sexe": "",
+          "sexe": "M",
           "lieuAffectation": "Lubudi",
           "fonction": "Driver",
           "departement": "Human Resources",
-          "service": "",
+          "service": "Driver",
           "telephone": "800407000",
           "etatCivil": "C",
           "statut": "Permanent",
@@ -3875,7 +3875,7 @@
           "coutTransport": 1.22,
           "payrollSite": "hors-site",
           "createdAt": "2026-09-25T08:00:00.000Z",
-          "updatedAt": "2026-10-25T16:46:32.577Z"
+          "updatedAt": "2026-10-26T12:00:55.395Z"
         },
         {
           "id": "103",
@@ -5121,7 +5121,7 @@
         }
       ],
       "createdAt": "2026-08-12T11:55:22.134Z",
-      "updatedAt": "2026-10-26T11:50:11.635Z"
+      "updatedAt": "2026-10-26T12:00:55.395Z"
     },
     {
       "id": "3",
