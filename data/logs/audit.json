@@ -1,6 +1,50 @@
 {
   "entries": [
     {
+      "id": "log-001958",
+      "at": "2026-10-26T12:05:02.729Z",
+      "userId": "admin",
+      "userName": "Administrateur",
+      "userEmail": "admin",
+      "module": "contractants",
+      "moduleLabel": "contractants",
+      "action": "update",
+      "actionLabel": "Modification",
+      "entityType": "contractant-employee",
+      "entityId": "771",
+      "summary": "Modification employé contractant — SOMBO NGUTU ALBERT",
+      "details": "Modification employé contractant — SOMBO NGUTU ALBERT",
+      "after": {
+        "id": "771",
+        "nom": "SOMBO NGUTU ALBERT",
+        "sexe": "",
+        "lieuAffectation": "Kisangani",
+        "fonction": "Driver",
+        "departement": "Human Resources",
+        "service": "",
+        "telephone": "",
+        "etatCivil": "C",
+        "statut": "Permanent",
+        "dateEmbauche": "",
+        "dateSortie": "",
+        "managerEmployeeId": "",
+        "managerMatricule": "70000175",
+        "family": [],
+        "matriculePpc": "",
+        "numeroCnss": "KISANGANI",
+        "numeroCompte": "",
+        "banque": "",
+        "nbDependants": 0,
+        "txJr": 14.39,
+        "coutTransport": 23.0533,
+        "payrollSite": "hors-site",
+        "createdAt": "2026-09-25T08:00:00.000Z",
+        "updatedAt": "2026-10-26T12:04:58.921Z"
+      },
+      "undoable": false,
+      "undone": false
+    },
+    {
       "id": "log-001957",
       "at": "2026-10-26T12:04:04.745Z",
       "userId": "admin",
@@ -210213,5 +210257,5 @@
       }
     }
   ],
-  "nextSeq": 1958
+  "nextSeq": 1959
 }
