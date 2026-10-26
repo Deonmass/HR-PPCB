@@ -1,6 +1,50 @@
 {
   "entries": [
     {
+      "id": "log-001936",
+      "at": "2026-10-26T09:27:38.901Z",
+      "userId": "admin",
+      "userName": "Administrateur",
+      "userEmail": "admin",
+      "module": "contractants",
+      "moduleLabel": "contractants",
+      "action": "update",
+      "actionLabel": "Modification",
+      "entityType": "contractant-employee",
+      "entityId": "114",
+      "summary": "Modification employé contractant — VUMA SUENGE",
+      "details": "Modification employé contractant — VUMA SUENGE",
+      "after": {
+        "id": "114",
+        "nom": "VUMA SUENGE",
+        "sexe": "M",
+        "lieuAffectation": "Zamba",
+        "fonction": "Sampler",
+        "departement": "Quality Assurance",
+        "service": "",
+        "telephone": "893460811",
+        "etatCivil": "M",
+        "statut": "Permanent",
+        "dateEmbauche": "",
+        "dateSortie": "",
+        "managerEmployeeId": "",
+        "managerMatricule": "70000081",
+        "family": [],
+        "matriculePpc": "CHRS_PPC0119",
+        "numeroCnss": "",
+        "numeroCompte": "544200133819047",
+        "banque": "EBCDC",
+        "nbDependants": 3,
+        "txJr": 4.55384,
+        "coutTransport": 1.17,
+        "payrollSite": "site",
+        "createdAt": "2026-08-12T12:57:02.481Z",
+        "updatedAt": "2026-10-26T09:27:36.204Z"
+      },
+      "undoable": false,
+      "undone": false
+    },
+    {
       "id": "log-001935",
       "at": "2026-10-26T09:27:27.716Z",
       "userId": "admin",
@@ -209367,5 +209411,5 @@
       }
     }
   ],
-  "nextSeq": 1936
+  "nextSeq": 1937
 }
