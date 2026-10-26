@@ -1,6 +1,30 @@
 {
   "entries": [
     {
+      "id": "log-001937",
+      "at": "2026-10-26T10:29:53.246Z",
+      "userId": "admin",
+      "userName": "Administrateur",
+      "userEmail": "admin",
+      "module": "settings.services",
+      "moduleLabel": "Paramètres — Services",
+      "action": "create",
+      "actionLabel": "Création",
+      "entityType": "settings.service",
+      "entityId": "svc-quality-assurance-admin",
+      "summary": "Création service Admin",
+      "details": "Création service Admin",
+      "after": {
+        "id": "svc-quality-assurance-admin",
+        "name": "Admin",
+        "code": "Adm",
+        "departmentId": "dept-quality-assurance",
+        "active": true
+      },
+      "undoable": true,
+      "undone": false
+    },
+    {
       "id": "log-001936",
       "at": "2026-10-26T09:27:38.901Z",
       "userId": "admin",
@@ -209411,5 +209435,5 @@
       }
     }
   ],
-  "nextSeq": 1937
+  "nextSeq": 1938
 }
