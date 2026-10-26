@@ -69,6 +69,13 @@
       "code": "SC",
       "departmentId": "dept-quality-assurance",
       "active": true
+    },
+    {
+      "id": "svc-quality-assurance-salle-physique",
+      "name": "Salle Physique",
+      "code": "SP",
+      "departmentId": "dept-quality-assurance",
+      "active": true
     }
   ]
 }
