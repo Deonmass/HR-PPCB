@@ -55,8 +55,10 @@ export interface ContractantEmployee {
   dateEmbauche: string;
   /** Date de sortie si quitté (YYYY-MM-DD). */
   dateSortie: string;
-  /** Id d’un autre employé du même contractant (N+1) pour l’organigramme. */
+  /** Id d’un employé contractant (N+1) pour l’organigramme. */
   managerEmployeeId: string;
+  /** Matricule d’un employé interne (N+1). Prioritaire sur managerEmployeeId. */
+  managerMatricule?: string;
   family: ContractantFamilyMember[];
   /** Matricule PPC (ex. CHRS_PPC0118). */
   matriculePpc: string;
@@ -103,6 +105,8 @@ export interface ContractantEmployeeInput {
   dateEmbauche?: string;
   dateSortie?: string;
   managerEmployeeId?: string;
+  /** Matricule d’un employé interne (N+1). Vide pour effacer le lien. */
+  managerMatricule?: string;
   family?: ContractantFamilyMember[];
   matriculePpc?: string;
   numeroCnss?: string;

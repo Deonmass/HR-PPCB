@@ -114,7 +114,7 @@ const RULES: Rule[] = [
     department: 'Engineering',
   },
   {
-    aliases: ['mining', 'mine', 'quarry', 'drilling', 'hauling', 'blast'],
+    aliases: ['mining', 'mine', 'mines', 'quarry', 'drilling', 'hauling', 'blast'],
     department: 'Mining',
   },
   {

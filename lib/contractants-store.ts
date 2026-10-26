@@ -102,6 +102,7 @@ function normalizeEmployee(raw: unknown): ContractantEmployee | null {
     dateEmbauche: String(r.dateEmbauche || '').trim(),
     dateSortie: String(r.dateSortie || '').trim(),
     managerEmployeeId: String(r.managerEmployeeId || '').trim(),
+    managerMatricule: String(r.managerMatricule || '').trim(),
     family,
     matriculePpc: String(r.matriculePpc || '').trim(),
     numeroCnss: String(r.numeroCnss || '').trim(),
@@ -223,6 +224,9 @@ function validateEmployeeInput(input: ContractantEmployeeInput): ContractantEmpl
     dateEmbauche: String(input.dateEmbauche || '').trim(),
     dateSortie: String(input.dateSortie || '').trim(),
     managerEmployeeId: String(input.managerEmployeeId || '').trim(),
+    managerMatricule: input.managerMatricule !== undefined
+      ? String(input.managerMatricule || '').trim()
+      : undefined,
     family: Array.isArray(input.family)
       ? input.family.map(normalizeFamilyMember).filter((m): m is ContractantFamilyMember => Boolean(m))
       : [],
@@ -343,6 +347,7 @@ export async function createContractantEmployee(
     dateEmbauche: data.dateEmbauche || '',
     dateSortie: data.dateSortie || '',
     managerEmployeeId: data.managerEmployeeId || '',
+    managerMatricule: data.managerMatricule || '',
     family: data.family || [],
     matriculePpc: data.matriculePpc || '',
     numeroCnss: data.numeroCnss || '',
@@ -390,7 +395,12 @@ export async function updateContractantEmployee(
     statut: data.statut,
     dateEmbauche: data.dateEmbauche ?? prev.dateEmbauche,
     dateSortie: data.dateSortie ?? prev.dateSortie,
-    managerEmployeeId: data.managerEmployeeId ?? prev.managerEmployeeId,
+    managerEmployeeId: input.managerEmployeeId !== undefined
+      ? String(input.managerEmployeeId || '').trim()
+      : prev.managerEmployeeId,
+    managerMatricule: input.managerMatricule !== undefined
+      ? String(input.managerMatricule || '').trim()
+      : (prev.managerMatricule || ''),
     family: data.family ?? prev.family,
     matriculePpc: data.matriculePpc || prev.matriculePpc || '',
     numeroCnss: data.numeroCnss || prev.numeroCnss || '',
