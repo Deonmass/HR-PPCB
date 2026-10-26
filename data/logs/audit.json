@@ -1,6 +1,50 @@
 {
   "entries": [
     {
+      "id": "log-001947",
+      "at": "2026-10-26T11:40:29.913Z",
+      "userId": "admin",
+      "userName": "Administrateur",
+      "userEmail": "admin",
+      "module": "contractants",
+      "moduleLabel": "contractants",
+      "action": "update",
+      "actionLabel": "Modification",
+      "entityType": "contractant-employee",
+      "entityId": "68",
+      "summary": "Modification employé contractant — SENGA BANZA FAUSTINE",
+      "details": "Modification employé contractant — SENGA BANZA FAUSTINE",
+      "after": {
+        "id": "68",
+        "nom": "SENGA BANZA FAUSTINE",
+        "sexe": "F",
+        "lieuAffectation": "Lubudi",
+        "fonction": "AIDE MENAGERE",
+        "departement": "Human Resources",
+        "service": "",
+        "telephone": "",
+        "etatCivil": "C",
+        "statut": "Permanent",
+        "dateEmbauche": "",
+        "dateSortie": "",
+        "managerEmployeeId": "",
+        "managerMatricule": "70000299",
+        "family": [],
+        "matriculePpc": "",
+        "numeroCnss": "",
+        "numeroCompte": "0986891544",
+        "banque": "Airtel Money",
+        "nbDependants": 0,
+        "txJr": 8.733732,
+        "coutTransport": 0.81,
+        "payrollSite": "hors-site",
+        "createdAt": "2026-08-12T12:57:02.481Z",
+        "updatedAt": "2026-10-26T11:40:25.908Z"
+      },
+      "undoable": false,
+      "undone": false
+    },
+    {
       "id": "log-001946",
       "at": "2026-10-26T10:59:02.636Z",
       "userId": "admin",
@@ -209729,5 +209773,5 @@
       }
     }
   ],
-  "nextSeq": 1947
+  "nextSeq": 1948
 }
