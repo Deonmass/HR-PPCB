@@ -4242,7 +4242,7 @@
           "dateEmbauche": "",
           "dateSortie": "",
           "managerEmployeeId": "",
-          "managerMatricule": "",
+          "managerMatricule": "70000081",
           "family": [],
           "matriculePpc": "",
           "numeroCnss": "",
@@ -4253,7 +4253,7 @@
           "coutTransport": 1.17,
           "payrollSite": "site",
           "createdAt": "2026-09-25T08:00:00.000Z",
-          "updatedAt": "2026-10-26T08:40:19.516Z"
+          "updatedAt": "2026-10-26T09:27:03.428Z"
         },
         {
           "id": "779",
@@ -5121,7 +5121,7 @@
         }
       ],
       "createdAt": "2026-08-12T11:55:22.134Z",
-      "updatedAt": "2026-10-26T09:26:52.516Z"
+      "updatedAt": "2026-10-26T09:27:03.428Z"
     },
     {
       "id": "3",
