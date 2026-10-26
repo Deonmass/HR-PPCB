@@ -810,6 +810,7 @@
           "dateEmbauche": "",
           "dateSortie": "",
           "managerEmployeeId": "",
+          "managerMatricule": "70000008",
           "family": [],
           "matriculePpc": "CHRS_PPC0005",
           "numeroCnss": "",
@@ -820,7 +821,7 @@
           "coutTransport": 1.17,
           "payrollSite": "site",
           "createdAt": "2026-08-12T12:57:02.481Z",
-          "updatedAt": "2026-09-28T15:12:00.000Z"
+          "updatedAt": "2026-10-25T18:10:14.154Z"
         },
         {
           "id": "770",
@@ -1122,6 +1123,7 @@
           "dateEmbauche": "",
           "dateSortie": "",
           "managerEmployeeId": "",
+          "managerMatricule": "70000008",
           "family": [],
           "matriculePpc": "CHRS_PPC0016",
           "numeroCnss": "",
@@ -1132,7 +1134,7 @@
           "coutTransport": 1.17,
           "payrollSite": "site",
           "createdAt": "2026-08-12T12:57:02.481Z",
-          "updatedAt": "2026-09-28T15:12:00.000Z"
+          "updatedAt": "2026-10-25T18:10:14.328Z"
         },
         {
           "id": "139",
@@ -1278,6 +1280,7 @@
           "dateEmbauche": "",
           "dateSortie": "",
           "managerEmployeeId": "",
+          "managerMatricule": "70000008",
           "family": [],
           "matriculePpc": "CHRS_PPC0021",
           "numeroCnss": "",
@@ -1288,7 +1291,7 @@
           "coutTransport": 1.17,
           "payrollSite": "site",
           "createdAt": "2026-08-12T12:57:02.481Z",
-          "updatedAt": "2026-09-28T15:12:00.000Z"
+          "updatedAt": "2026-10-25T16:46:31.751Z"
         },
         {
           "id": "88",
@@ -1330,6 +1333,7 @@
           "dateEmbauche": "",
           "dateSortie": "",
           "managerEmployeeId": "",
+          "managerMatricule": "70000008",
           "family": [],
           "matriculePpc": "CHRS_PPC0023",
           "numeroCnss": "",
@@ -1340,7 +1344,7 @@
           "coutTransport": 1.17,
           "payrollSite": "site",
           "createdAt": "2026-08-12T12:57:02.481Z",
-          "updatedAt": "2026-09-28T15:12:00.000Z"
+          "updatedAt": "2026-10-25T16:46:31.900Z"
         },
         {
           "id": "3",
@@ -1668,6 +1672,7 @@
           "dateEmbauche": "",
           "dateSortie": "",
           "managerEmployeeId": "",
+          "managerMatricule": "70000008",
           "family": [],
           "matriculePpc": "",
           "numeroCnss": "KINSHASA",
@@ -1678,7 +1683,7 @@
           "coutTransport": 1.17,
           "payrollSite": "hors-site",
           "createdAt": "2026-08-12T12:57:02.481Z",
-          "updatedAt": "2026-09-28T15:12:00.000Z"
+          "updatedAt": "2026-10-25T16:46:32.043Z"
         },
         {
           "id": "780",
@@ -1980,6 +1985,7 @@
           "dateEmbauche": "",
           "dateSortie": "",
           "managerEmployeeId": "",
+          "managerMatricule": "70000308",
           "family": [],
           "matriculePpc": "CHRS_PPC0039",
           "numeroCnss": "",
@@ -1990,7 +1996,7 @@
           "coutTransport": 1.17,
           "payrollSite": "site",
           "createdAt": "2026-08-12T12:57:02.481Z",
-          "updatedAt": "2026-09-28T15:12:00.000Z"
+          "updatedAt": "2026-10-25T18:11:03.876Z"
         },
         {
           "id": "119",
@@ -2214,6 +2220,7 @@
           "dateEmbauche": "",
           "dateSortie": "",
           "managerEmployeeId": "",
+          "managerMatricule": "70000008",
           "family": [],
           "matriculePpc": "",
           "numeroCnss": "",
@@ -2224,7 +2231,7 @@
           "coutTransport": 1.17,
           "payrollSite": "site",
           "createdAt": "2026-09-25T08:00:00.000Z",
-          "updatedAt": "2026-09-28T15:12:00.000Z"
+          "updatedAt": "2026-10-25T16:46:32.174Z"
         },
         {
           "id": "111",
@@ -2318,6 +2325,7 @@
           "dateEmbauche": "",
           "dateSortie": "",
           "managerEmployeeId": "",
+          "managerMatricule": "70000008",
           "family": [],
           "matriculePpc": "CHRS_PPC0049",
           "numeroCnss": "",
@@ -2328,7 +2336,7 @@
           "coutTransport": 1.17,
           "payrollSite": "site",
           "createdAt": "2026-08-12T12:57:02.481Z",
-          "updatedAt": "2026-09-28T15:12:00.000Z"
+          "updatedAt": "2026-10-25T16:46:32.302Z"
         },
         {
           "id": "762",
@@ -2500,6 +2508,7 @@
           "dateEmbauche": "",
           "dateSortie": "",
           "managerEmployeeId": "",
+          "managerMatricule": "70000008",
           "family": [],
           "matriculePpc": "CHRS_PPC0054",
           "numeroCnss": "",
@@ -2510,7 +2519,7 @@
           "coutTransport": 1.17,
           "payrollSite": "site",
           "createdAt": "2026-08-12T12:57:02.481Z",
-          "updatedAt": "2026-09-28T15:12:00.000Z"
+          "updatedAt": "2026-10-25T18:10:14.489Z"
         },
         {
           "id": "35",
@@ -2916,6 +2925,7 @@
           "dateEmbauche": "",
           "dateSortie": "",
           "managerEmployeeId": "",
+          "managerMatricule": "70000008",
           "family": [],
           "matriculePpc": "CHRS_PPC0068",
           "numeroCnss": "",
@@ -2926,7 +2936,7 @@
           "coutTransport": 1.17,
           "payrollSite": "site",
           "createdAt": "2026-08-12T12:57:02.481Z",
-          "updatedAt": "2026-09-28T15:12:00.000Z"
+          "updatedAt": "2026-10-25T18:09:16.938Z"
         },
         {
           "id": "37",
@@ -3254,6 +3264,7 @@
           "dateEmbauche": "",
           "dateSortie": "",
           "managerEmployeeId": "",
+          "managerMatricule": "70000008",
           "family": [],
           "matriculePpc": "CHRS_PPC0078",
           "numeroCnss": "",
@@ -3264,7 +3275,7 @@
           "coutTransport": 1.17,
           "payrollSite": "site",
           "createdAt": "2026-09-25T08:00:00.000Z",
-          "updatedAt": "2026-09-28T15:47:02.037Z"
+          "updatedAt": "2026-10-25T16:46:32.433Z"
         },
         {
           "id": "96",
@@ -3722,6 +3733,7 @@
           "dateEmbauche": "",
           "dateSortie": "",
           "managerEmployeeId": "",
+          "managerMatricule": "70000008",
           "family": [],
           "matriculePpc": "",
           "numeroCnss": "LUBUDI",
@@ -3732,7 +3744,7 @@
           "coutTransport": 1.22,
           "payrollSite": "hors-site",
           "createdAt": "2026-09-25T08:00:00.000Z",
-          "updatedAt": "2026-09-28T15:12:00.000Z"
+          "updatedAt": "2026-10-25T16:46:32.577Z"
         },
         {
           "id": "103",
@@ -4008,6 +4020,7 @@
           "dateEmbauche": "",
           "dateSortie": "",
           "managerEmployeeId": "",
+          "managerMatricule": "70000008",
           "family": [],
           "matriculePpc": "CHRS_PPC0101",
           "numeroCnss": "",
@@ -4018,7 +4031,7 @@
           "coutTransport": 1.17,
           "payrollSite": "site",
           "createdAt": "2026-08-12T12:57:02.481Z",
-          "updatedAt": "2026-09-28T15:12:00.000Z"
+          "updatedAt": "2026-10-25T16:46:33.025Z"
         },
         {
           "id": "11",
@@ -4528,6 +4541,7 @@
           "dateEmbauche": "",
           "dateSortie": "",
           "managerEmployeeId": "",
+          "managerMatricule": "70000008",
           "family": [],
           "matriculePpc": "CHRS_PPC0114",
           "numeroCnss": "",
@@ -4538,7 +4552,7 @@
           "coutTransport": 1.17,
           "payrollSite": "site",
           "createdAt": "2026-08-12T12:57:02.481Z",
-          "updatedAt": "2026-09-28T15:12:00.000Z"
+          "updatedAt": "2026-10-25T16:46:33.143Z"
         },
         {
           "id": "68",
@@ -4580,6 +4594,7 @@
           "dateEmbauche": "",
           "dateSortie": "",
           "managerEmployeeId": "",
+          "managerMatricule": "70000008",
           "family": [],
           "matriculePpc": "",
           "numeroCnss": "KISANGANI",
@@ -4590,7 +4605,7 @@
           "coutTransport": 23.0533,
           "payrollSite": "hors-site",
           "createdAt": "2026-09-25T08:00:00.000Z",
-          "updatedAt": "2026-09-28T15:12:00.000Z"
+          "updatedAt": "2026-10-25T16:46:33.272Z"
         },
         {
           "id": "761",
@@ -4658,6 +4673,7 @@
           "dateEmbauche": "",
           "dateSortie": "",
           "managerEmployeeId": "",
+          "managerMatricule": "70000008",
           "family": [],
           "matriculePpc": "CHRS_PPC0116",
           "numeroCnss": "",
@@ -4668,7 +4684,7 @@
           "coutTransport": 1.17,
           "payrollSite": "site",
           "createdAt": "2026-08-12T12:57:02.481Z",
-          "updatedAt": "2026-09-28T15:12:00.000Z"
+          "updatedAt": "2026-10-25T16:46:33.396Z"
         },
         {
           "id": "116",
@@ -13525,6 +13541,7 @@
           "dateEmbauche": "",
           "dateSortie": "",
           "managerEmployeeId": "",
+          "managerMatricule": "70000107",
           "family": [],
           "matriculePpc": "",
           "numeroCnss": "",
@@ -13535,7 +13552,7 @@
           "coutTransport": 0,
           "payrollSite": "",
           "createdAt": "2026-09-28T13:32:54.562Z",
-          "updatedAt": "2026-09-28T13:32:54.562Z"
+          "updatedAt": "2026-10-25T18:11:57.675Z"
         }
       ],
       "createdAt": "2026-09-28T13:32:54.562Z",
