@@ -1,6 +1,50 @@
 {
   "entries": [
     {
+      "id": "log-001955",
+      "at": "2026-10-26T12:02:08.816Z",
+      "userId": "admin",
+      "userName": "Administrateur",
+      "userEmail": "admin",
+      "module": "contractants",
+      "moduleLabel": "contractants",
+      "action": "update",
+      "actionLabel": "Modification",
+      "entityType": "contractant-employee",
+      "entityId": "785",
+      "summary": "Modification employé contractant — KYUNGU KABUYA BRUNO",
+      "details": "Modification employé contractant — KYUNGU KABUYA BRUNO",
+      "after": {
+        "id": "785",
+        "nom": "KYUNGU KABUYA BRUNO",
+        "sexe": "M",
+        "lieuAffectation": "Lubudi",
+        "fonction": "Driver",
+        "departement": "Human Resources",
+        "service": "Driver",
+        "telephone": "",
+        "etatCivil": "C",
+        "statut": "Permanent",
+        "dateEmbauche": "",
+        "dateSortie": "",
+        "managerEmployeeId": "",
+        "managerMatricule": "70000299",
+        "family": [],
+        "matriculePpc": "",
+        "numeroCnss": "",
+        "numeroCompte": "",
+        "banque": "",
+        "nbDependants": 0,
+        "txJr": 0,
+        "coutTransport": 0,
+        "payrollSite": "hors-site",
+        "createdAt": "2026-09-28T15:12:00.000Z",
+        "updatedAt": "2026-10-26T12:02:05.700Z"
+      },
+      "undoable": false,
+      "undone": false
+    },
+    {
       "id": "log-001954",
       "at": "2026-10-26T12:01:13.816Z",
       "userId": "admin",
@@ -210081,5 +210125,5 @@
       }
     }
   ],
-  "nextSeq": 1955
+  "nextSeq": 1956
 }
