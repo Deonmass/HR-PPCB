@@ -5068,11 +5068,11 @@
         {
           "id": "785",
           "nom": "KYUNGU KABUYA BRUNO",
-          "sexe": "",
+          "sexe": "M",
           "lieuAffectation": "Lubudi",
-          "fonction": "chauffeur",
+          "fonction": "Driver",
           "departement": "Human Resources",
-          "service": "",
+          "service": "Driver",
           "telephone": "",
           "etatCivil": "C",
           "statut": "Permanent",
@@ -5090,7 +5090,7 @@
           "coutTransport": 0,
           "payrollSite": "hors-site",
           "createdAt": "2026-09-28T15:12:00.000Z",
-          "updatedAt": "2026-10-26T11:41:03.267Z"
+          "updatedAt": "2026-10-26T12:02:05.700Z"
         },
         {
           "id": "786",
@@ -5121,7 +5121,7 @@
         }
       ],
       "createdAt": "2026-08-12T11:55:22.134Z",
-      "updatedAt": "2026-10-26T12:01:10.508Z"
+      "updatedAt": "2026-10-26T12:02:05.700Z"
     },
     {
       "id": "3",
