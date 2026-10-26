@@ -1,6 +1,50 @@
 {
   "entries": [
     {
+      "id": "log-001931",
+      "at": "2026-10-26T09:26:42.863Z",
+      "userId": "admin",
+      "userName": "Administrateur",
+      "userEmail": "admin",
+      "module": "contractants",
+      "moduleLabel": "contractants",
+      "action": "update",
+      "actionLabel": "Modification",
+      "entityType": "contractant-employee",
+      "entityId": "112",
+      "summary": "Modification employé contractant — MAKANZU MANKELA Jonathan",
+      "details": "Modification employé contractant — MAKANZU MANKELA Jonathan",
+      "after": {
+        "id": "112",
+        "nom": "MAKANZU MANKELA Jonathan",
+        "sexe": "M",
+        "lieuAffectation": "Zamba",
+        "fonction": "Sampler",
+        "departement": "Quality Assurance",
+        "service": "",
+        "telephone": "898074686",
+        "etatCivil": "C",
+        "statut": "Permanent",
+        "dateEmbauche": "",
+        "dateSortie": "",
+        "managerEmployeeId": "",
+        "managerMatricule": "70000081",
+        "family": [],
+        "matriculePpc": "CHRS_PPC0048",
+        "numeroCnss": "",
+        "numeroCompte": "844100053313355",
+        "banque": "EBCDC",
+        "nbDependants": 0,
+        "txJr": 4.55384,
+        "coutTransport": 1.17,
+        "payrollSite": "site",
+        "createdAt": "2026-08-12T12:57:02.481Z",
+        "updatedAt": "2026-10-26T09:26:40.162Z"
+      },
+      "undoable": false,
+      "undone": false
+    },
+    {
       "id": "log-001930",
       "at": "2026-10-26T09:26:32.470Z",
       "userId": "admin",
@@ -209147,5 +209191,5 @@
       }
     }
   ],
-  "nextSeq": 1931
+  "nextSeq": 1932
 }
