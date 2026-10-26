@@ -3594,7 +3594,7 @@
           "dateEmbauche": "",
           "dateSortie": "",
           "managerEmployeeId": "",
-          "managerMatricule": "",
+          "managerMatricule": "70000299",
           "family": [],
           "matriculePpc": "",
           "numeroCnss": "LUBUDI",
@@ -3605,7 +3605,7 @@
           "coutTransport": 1.2,
           "payrollSite": "hors-site",
           "createdAt": "2026-08-12T12:57:02.481Z",
-          "updatedAt": "2026-09-28T15:12:00.000Z"
+          "updatedAt": "2026-10-26T11:41:15.930Z"
         },
         {
           "id": "782",
@@ -5121,7 +5121,7 @@
         }
       ],
       "createdAt": "2026-08-12T11:55:22.134Z",
-      "updatedAt": "2026-10-26T11:41:03.267Z"
+      "updatedAt": "2026-10-26T11:41:15.930Z"
     },
     {
       "id": "3",
