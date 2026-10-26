@@ -1,6 +1,50 @@
 {
   "entries": [
     {
+      "id": "log-001921",
+      "at": "2026-10-26T08:39:53.766Z",
+      "userId": "admin",
+      "userName": "Administrateur",
+      "userEmail": "admin",
+      "module": "contractants",
+      "moduleLabel": "contractants",
+      "action": "update",
+      "actionLabel": "Modification",
+      "entityType": "contractant-employee",
+      "entityId": "782",
+      "summary": "Modification employé contractant — NDAYA VANGU Syntiche",
+      "details": "Modification employé contractant — NDAYA VANGU Syntiche",
+      "after": {
+        "id": "782",
+        "nom": "NDAYA VANGU Syntiche",
+        "sexe": "",
+        "lieuAffectation": "Zamba",
+        "fonction": "Sampler",
+        "departement": "Quality Assurance",
+        "service": "",
+        "telephone": "",
+        "etatCivil": "C",
+        "statut": "Permanent",
+        "dateEmbauche": "",
+        "dateSortie": "",
+        "managerEmployeeId": "",
+        "managerMatricule": "",
+        "family": [],
+        "matriculePpc": "",
+        "numeroCnss": "",
+        "numeroCompte": "",
+        "banque": "",
+        "nbDependants": 0,
+        "txJr": 4.55384,
+        "coutTransport": 1.17,
+        "payrollSite": "site",
+        "createdAt": "2026-09-25T08:00:00.000Z",
+        "updatedAt": "2026-10-26T08:39:50.386Z"
+      },
+      "undoable": false,
+      "undone": false
+    },
+    {
       "id": "log-001920",
       "at": "2026-10-26T08:34:43.027Z",
       "userId": "admin",
@@ -208279,5 +208323,5 @@
       }
     }
   ],
-  "nextSeq": 1921
+  "nextSeq": 1922
 }
