@@ -1,6 +1,50 @@
 {
   "entries": [
     {
+      "id": "log-001934",
+      "at": "2026-10-26T09:27:16.468Z",
+      "userId": "admin",
+      "userName": "Administrateur",
+      "userEmail": "admin",
+      "module": "contractants",
+      "moduleLabel": "contractants",
+      "action": "update",
+      "actionLabel": "Modification",
+      "entityType": "contractant-employee",
+      "entityId": "779",
+      "summary": "Modification employé contractant — NSOMPETI SULUTANI-IBBAH JOSEPH",
+      "details": "Modification employé contractant — NSOMPETI SULUTANI-IBBAH JOSEPH",
+      "after": {
+        "id": "779",
+        "nom": "NSOMPETI SULUTANI-IBBAH JOSEPH",
+        "sexe": "",
+        "lieuAffectation": "Zamba",
+        "fonction": "Sampler",
+        "departement": "Quality Assurance",
+        "service": "",
+        "telephone": "",
+        "etatCivil": "C",
+        "statut": "Permanent",
+        "dateEmbauche": "",
+        "dateSortie": "",
+        "managerEmployeeId": "",
+        "managerMatricule": "70000081",
+        "family": [],
+        "matriculePpc": "",
+        "numeroCnss": "",
+        "numeroCompte": "",
+        "banque": "",
+        "nbDependants": 0,
+        "txJr": 4.55384,
+        "coutTransport": 1.17,
+        "payrollSite": "site",
+        "createdAt": "2026-09-25T08:00:00.000Z",
+        "updatedAt": "2026-10-26T09:27:13.571Z"
+      },
+      "undoable": false,
+      "undone": false
+    },
+    {
       "id": "log-001933",
       "at": "2026-10-26T09:27:06.173Z",
       "userId": "admin",
@@ -209279,5 +209323,5 @@
       }
     }
   ],
-  "nextSeq": 1934
+  "nextSeq": 1935
 }
