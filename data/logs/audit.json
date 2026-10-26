@@ -1,6 +1,50 @@
 {
   "entries": [
     {
+      "id": "log-001957",
+      "at": "2026-10-26T12:04:04.745Z",
+      "userId": "admin",
+      "userName": "Administrateur",
+      "userEmail": "admin",
+      "module": "contractants",
+      "moduleLabel": "contractants",
+      "action": "update",
+      "actionLabel": "Modification",
+      "entityType": "contractant-employee",
+      "entityId": "70",
+      "summary": "Modification employé contractant — KIKUNGA WA KIKINGA Claude",
+      "details": "Modification employé contractant — KIKUNGA WA KIKINGA Claude",
+      "after": {
+        "id": "70",
+        "nom": "KIKUNGA WA KIKINGA Claude",
+        "sexe": "M",
+        "lieuAffectation": "Kinshasa",
+        "fonction": "Driver",
+        "departement": "Human Resources",
+        "service": "",
+        "telephone": "801917000",
+        "etatCivil": "C",
+        "statut": "Permanent",
+        "dateEmbauche": "",
+        "dateSortie": "",
+        "managerEmployeeId": "",
+        "managerMatricule": "70000175",
+        "family": [],
+        "matriculePpc": "",
+        "numeroCnss": "KINSHASA",
+        "numeroCompte": "077200289171154",
+        "banque": "E-BCDC",
+        "nbDependants": 0,
+        "txJr": 12.541338,
+        "coutTransport": 1.17,
+        "payrollSite": "hors-site",
+        "createdAt": "2026-08-12T12:57:02.481Z",
+        "updatedAt": "2026-10-26T12:04:00.962Z"
+      },
+      "undoable": false,
+      "undone": false
+    },
+    {
       "id": "log-001956",
       "at": "2026-10-26T12:02:35.220Z",
       "userId": "admin",
@@ -210169,5 +210213,5 @@
       }
     }
   ],
-  "nextSeq": 1957
+  "nextSeq": 1958
 }
