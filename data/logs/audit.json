@@ -1,6 +1,30 @@
 {
   "entries": [
     {
+      "id": "log-001939",
+      "at": "2026-10-26T10:38:37.289Z",
+      "userId": "admin",
+      "userName": "Administrateur",
+      "userEmail": "admin",
+      "module": "settings.services",
+      "moduleLabel": "Paramètres — Services",
+      "action": "create",
+      "actionLabel": "Création",
+      "entityType": "settings.service",
+      "entityId": "svc-quality-assurance-salle-chimique",
+      "summary": "Création service Salle chimique",
+      "details": "Création service Salle chimique",
+      "after": {
+        "id": "svc-quality-assurance-salle-chimique",
+        "name": "Salle chimique",
+        "code": "SC",
+        "departmentId": "dept-quality-assurance",
+        "active": true
+      },
+      "undoable": true,
+      "undone": false
+    },
+    {
       "id": "log-001938",
       "at": "2026-10-26T10:38:16.018Z",
       "userId": "admin",
@@ -209479,5 +209503,5 @@
       }
     }
   ],
-  "nextSeq": 1939
+  "nextSeq": 1940
 }
