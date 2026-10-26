@@ -1,6 +1,21 @@
 {
   "entries": [
     {
+      "id": "log-001918",
+      "at": "2026-10-26T06:28:11.386Z",
+      "userId": "berth.lubenzo",
+      "userName": "Berth Lubenzo",
+      "userEmail": "Berth.Lubenzo@ppcdrc.cd",
+      "module": "auth",
+      "moduleLabel": "Authentification",
+      "action": "login",
+      "actionLabel": "Connexion",
+      "summary": "Connexion Berth.Lubenzo@ppcdrc.cd",
+      "details": "Connexion de Berth Lubenzo (Berth.Lubenzo@ppcdrc.cd)",
+      "undoable": false,
+      "undone": false
+    },
+    {
       "id": "log-001917",
       "at": "2026-10-25T23:06:43.704Z",
       "userId": "Serge.Muakasa@ppcdrc.cd",
@@ -208176,5 +208191,5 @@
       }
     }
   ],
-  "nextSeq": 1918
+  "nextSeq": 1919
 }
