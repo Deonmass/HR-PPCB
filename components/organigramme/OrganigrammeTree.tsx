@@ -39,11 +39,18 @@ type Props = {
   onEditRole: (person: OrgPersonTarget) => void;
 };
 
+type HiddenCard = {
+  id: string;
+  title: string;
+  reports: number;
+};
+
 type MenuState = {
   x: number;
   y: number;
   person: OrgPersonTarget | null;
   people: OrgPersonTarget[];
+  card: HiddenCard;
 };
 
 function fold(value: string): string {
@@ -114,6 +121,7 @@ function PosteCard({
   forceCollapse,
   hasFiche,
   canEditMember,
+  hiddenIds,
   onOpenMenu,
   onOpenTeam,
 }: {
@@ -124,11 +132,11 @@ function PosteCard({
   forceCollapse: number;
   hasFiche: (matricule: string) => boolean;
   canEditMember: (member: OrgPosteMember) => boolean;
-  onOpenMenu: (event: React.MouseEvent, person: OrgPersonTarget | null, people: OrgPersonTarget[]) => void;
+  hiddenIds: ReadonlySet<string>;
+  onOpenMenu: (event: React.MouseEvent, person: OrgPersonTarget | null, people: OrgPersonTarget[], card: HiddenCard) => void;
   onOpenTeam: (group: OrgPosteGroup) => void;
 }) {
   const q = fold(search.trim());
-  const hasChildren = group.children.length > 0;
   const [open, setOpen] = useState(depth < 2);
 
   useEffect(() => {
@@ -143,11 +151,13 @@ function PosteCard({
     if (q) setOpen(true);
   }, [q]);
 
-  if (!groupMatches(group, q)) return null;
+  if (hiddenIds.has(group.id) || !groupMatches(group, q)) return null;
 
-  const visibleChildren = q
+  const visibleChildren = (q
     ? group.children.filter((c) => groupMatches(c, q))
-    : group.children;
+    : group.children
+  ).filter((child) => !hiddenIds.has(child.id));
+  const hasChildren = visibleChildren.length > 0;
   const reports = countPosteDescendants(group);
   const multi = group.members.length > 1;
   const hit = q
@@ -168,8 +178,13 @@ function PosteCard({
     .map((member) => toTarget(member, group.jobTitle));
   const openable = group.members.filter((member) => canOpenMember(member));
 
+  const card: HiddenCard = {
+    id: group.id,
+    title: group.jobTitle || 'Carte',
+    reports,
+  };
+
   const openCardMenu = (event: React.MouseEvent, member?: OrgPosteMember) => {
-    if (openable.length === 0) return;
     let personMember: OrgPosteMember | undefined;
     if (member && canOpenMember(member)) {
       personMember = member;
@@ -182,6 +197,7 @@ function PosteCard({
       event,
       personMember ? toTarget(personMember, group.jobTitle) : null,
       editablePeople,
+      card,
     );
   };
 
@@ -252,17 +268,15 @@ function PosteCard({
             {external ? <span className="org-chart-pill is-warn">Externe</span> : null}
           </div>
           <div className="org-chart-card-tools">
-            {openable.length > 0 ? (
-              <button
-                type="button"
-                className="org-chart-tool"
-                title="Actions"
-                aria-label="Actions de la carte"
-                onClick={(event) => openCardMenu(event)}
-              >
-                <IconMore />
-              </button>
-            ) : null}
+            <button
+              type="button"
+              className="org-chart-tool"
+              title="Actions"
+              aria-label="Actions de la carte"
+              onClick={(event) => openCardMenu(event)}
+            >
+              <IconMore />
+            </button>
             {hasChildren ? (
               <button
                 type="button"
@@ -291,6 +305,7 @@ function PosteCard({
               forceCollapse={forceCollapse}
               hasFiche={hasFiche}
               canEditMember={canEditMember}
+              hiddenIds={hiddenIds}
               onOpenMenu={onOpenMenu}
               onOpenTeam={onOpenTeam}
             />
@@ -318,6 +333,8 @@ export default function OrganigrammeTree({
   const groups = useMemo(() => groupOrgNodesByPoste(roots), [roots]);
   const [menu, setMenu] = useState<MenuState | null>(null);
   const [team, setTeam] = useState<OrgPosteGroup | null>(null);
+  const [hidden, setHidden] = useState<HiddenCard[]>([]);
+  const hiddenIds = useMemo(() => new Set(hidden.map((card) => card.id)), [hidden]);
 
   const visible = useMemo(() => {
     const q = fold(search.trim());
@@ -355,7 +372,16 @@ export default function OrganigrammeTree({
     return canEdit && hasFiche(member.matricule);
   };
 
-  const openMenu = (event: React.MouseEvent, person: OrgPersonTarget | null, people: OrgPersonTarget[]) => {
+  const hideCard = (card: HiddenCard) => {
+    setHidden((prev) => (prev.some((item) => item.id === card.id) ? prev : [...prev, card]));
+    setMenu(null);
+  };
+
+  const showCard = (id: string) => {
+    setHidden((prev) => prev.filter((item) => item.id !== id));
+  };
+
+  const openMenu = (event: React.MouseEvent, person: OrgPersonTarget | null, people: OrgPersonTarget[], card: HiddenCard) => {
     const showFiche = Boolean(person && !person.isContractant && hasFiche(person.matricule));
     const showPerson = Boolean(person && (
       person.isContractant
@@ -364,8 +390,7 @@ export default function OrganigrammeTree({
     ));
     const showGroup = people.length > 1;
     const showRole = Boolean(person && !person.isContractant && canEdit && hasFiche(person.matricule));
-    const count = [showFiche, showPerson, showGroup, showRole].filter(Boolean).length;
-    if (count === 0) return;
+    const count = [showFiche, showPerson, showGroup, showRole, true].filter(Boolean).length;
     event.preventDefault();
     event.stopPropagation();
     const width = 280;
@@ -388,16 +413,47 @@ export default function OrganigrammeTree({
     const maxY = (box?.bottom ?? window.innerHeight) - height - 8;
     const x = Math.max(8, minX, Math.min(left, maxX, window.innerWidth - width - 8));
     const y = Math.max(8, minY, Math.min(top, maxY, window.innerHeight - height - 8));
-    setMenu({ x, y, person, people });
+    setMenu({ x, y, person, people, card });
   };
 
-  if (visible.length === 0) {
+  const hiddenBar = hidden.length > 0 ? (
+    <div className="org-hidden-bar" aria-label="Cartes masquées">
+      <span className="org-hidden-label">
+        {hidden.length === 1 ? '1 carte masquée' : `${hidden.length} cartes masquées`}
+      </span>
+      {hidden.map((card) => (
+        <span key={card.id} className="org-hidden-chip">
+          <span>
+            {card.title}
+            {card.reports > 0 ? ` · ${card.reports} N-` : ''}
+          </span>
+          <button type="button" onClick={() => showCard(card.id)}>
+            Afficher
+          </button>
+        </span>
+      ))}
+      {hidden.length > 1 ? (
+        <button type="button" className="org-hidden-clear" onClick={() => setHidden([])}>
+          Tout afficher
+        </button>
+      ) : null}
+    </div>
+  ) : null;
+
+  const shown = visible.filter((group) => !hiddenIds.has(group.id));
+
+  if (shown.length === 0) {
     return (
-      <p className="org-empty">
-        {search.trim()
-          ? 'Aucun résultat pour cette recherche.'
-          : 'Aucun employé à afficher pour ce périmètre.'}
-      </p>
+      <>
+        {hiddenBar}
+        <p className="org-empty">
+          {hidden.length > 0 && !search.trim()
+            ? 'Toutes les cartes de ce niveau sont masquées.'
+            : search.trim()
+              ? 'Aucun résultat pour cette recherche.'
+              : 'Aucun employé à afficher pour ce périmètre.'}
+        </p>
+      </>
     );
   }
 
@@ -415,9 +471,11 @@ export default function OrganigrammeTree({
   );
 
   return (
+    <>
+    {hiddenBar}
     <div className="org-chart-scroll" style={{ zoom }}>
       <ul className="org-chart-roots">
-        {visible.map((group) => (
+        {shown.map((group) => (
           <PosteCard
             key={group.id}
             group={group}
@@ -427,6 +485,7 @@ export default function OrganigrammeTree({
             forceCollapse={collapseAllKey}
             hasFiche={hasFiche}
             canEditMember={canEditMember}
+            hiddenIds={hiddenIds}
             onOpenMenu={openMenu}
             onOpenTeam={setTeam}
           />
@@ -460,7 +519,11 @@ export default function OrganigrammeTree({
               const person = canEditMember(member) || (!member.isContractant && hasFiche(member.matricule))
                 ? toTarget(member, team.jobTitle)
                 : null;
-              openMenu(event, person, people);
+              openMenu(event, person, people, {
+                id: team.id,
+                title: team.jobTitle || 'Carte',
+                reports: countPosteDescendants(team),
+              });
             }}
           />,
           document.body,
@@ -528,10 +591,19 @@ export default function OrganigrammeTree({
                 Changer de département et de poste
               </button>
             ) : null}
+            <button
+              type="button"
+              role="menuitem"
+              className="is-hide"
+              onClick={() => hideCard(menu.card)}
+            >
+              {menu.card.reports > 0 ? 'Masquer cette carte et ses N-' : 'Masquer cette carte'}
+            </button>
           </div>,
           document.body,
         )
         : null}
     </div>
+    </>
   );
 }

@@ -82,6 +82,11 @@ function buildContractantLine(
       if (nextMatricule) step = { kind: 'i', matricule: nextMatricule };
       else if (nextId && nextId !== person.id) step = { kind: 'c', id: nextId };
       else step = null;
+    } else if (step.matricule.startsWith('vacant:')) {
+      const title = step.matricule.slice('vacant:'.length).trim();
+      if (!title) break;
+      up.push({ key, nom: title, detail: 'Poste vacant', kind: 'interne' });
+      step = null;
     } else {
       const person = byMatricule.get(step.matricule);
       if (!person) break;

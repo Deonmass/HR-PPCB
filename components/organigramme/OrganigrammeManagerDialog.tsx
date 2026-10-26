@@ -7,7 +7,7 @@ export type OrgManagerChoice = {
   id: string;
   nom: string;
   detail: string;
-  kind?: 'interne' | 'externe';
+  kind?: 'interne' | 'externe' | 'vacant';
 };
 
 type Props = {
@@ -44,7 +44,7 @@ function ChoiceColumn({
                 className={selected === item.id ? 'is-selected' : ''}
                 onClick={() => onSelect(item.id)}
               >
-                <strong>{orgPersonShortName(item.nom) || item.nom}</strong>
+                <strong>{item.kind === 'vacant' ? item.nom : (orgPersonShortName(item.nom) || item.nom)}</strong>
                 {item.detail ? <span>{item.detail}</span> : null}
               </button>
             </li>
@@ -87,10 +87,21 @@ export default function OrganigrammeManagerDialog({
     const matched = q
       ? choices.filter((item) => fold(`${item.nom} ${item.detail} ${item.kind || ''}`).includes(q))
       : choices;
-    const internes = matched.filter((item) => item.kind !== 'externe');
+    const internes = matched.filter((item) => item.kind !== 'externe' && item.kind !== 'vacant');
     const externes = matched.filter((item) => item.kind === 'externe');
-    if (q) return { internes: internes.slice(0, 12), externes: externes.slice(0, 12) };
-    return { internes: internes.slice(0, 8), externes: externes.slice(0, 8) };
+    const vacants = matched.filter((item) => item.kind === 'vacant');
+    if (q) {
+      return {
+        internes: internes.slice(0, 12),
+        externes: externes.slice(0, 12),
+        vacants: vacants.slice(0, 12),
+      };
+    }
+    return {
+      internes: internes.slice(0, 8),
+      externes: externes.slice(0, 8),
+      vacants: vacants.slice(0, 8),
+    };
   }, [choices, query]);
 
   const save = async () => {
@@ -120,17 +131,18 @@ export default function OrganigrammeManagerDialog({
           <input
             type="search"
             autoFocus
-            placeholder="Nom, poste, interne ou externe…"
+            placeholder="Nom, poste, interne, externe ou vacant…"
             value={query}
             onChange={(event) => setQuery(event.target.value)}
           />
         </label>
-        {visible.internes.length === 0 && visible.externes.length === 0 ? (
+        {visible.internes.length === 0 && visible.externes.length === 0 && visible.vacants.length === 0 ? (
           <p className="org-dialog-empty">Aucun N+1 possible.</p>
         ) : (
           <div className="org-choice-columns">
             <ChoiceColumn title="Internes" items={visible.internes} selected={selected} onSelect={setSelected} />
             <ChoiceColumn title="Externes" items={visible.externes} selected={selected} onSelect={setSelected} />
+            <ChoiceColumn title="Postes vacants" items={visible.vacants} selected={selected} onSelect={setSelected} />
           </div>
         )}
         <div className="org-dialog-actions">

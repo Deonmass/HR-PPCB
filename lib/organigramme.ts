@@ -680,13 +680,21 @@ export function moveContractantsUnderInternalManagers(
   contractants: Contractant[],
 ): void {
   const linked = new Map<string, string>();
+  const vacantLinked = new Map<string, string>();
   for (const company of contractants) {
     for (const employee of company.employees || []) {
+      if (String(employee.dateSortie || '').trim()) continue;
       const matricule = String(employee.managerMatricule || '').trim();
-      if (matricule && !String(employee.dateSortie || '').trim()) linked.set(employee.id, matricule);
+      if (!matricule) continue;
+      if (matricule.startsWith('vacant:')) {
+        const title = matricule.slice('vacant:'.length).trim();
+        if (title) vacantLinked.set(employee.id, title);
+        continue;
+      }
+      linked.set(employee.id, matricule);
     }
   }
-  if (linked.size === 0) return;
+  if (linked.size === 0 && vacantLinked.size === 0) return;
 
   const byMatricule = new Map<string, OrgChartNode>();
   const index = (list: OrgChartNode[]) => {
@@ -697,10 +705,36 @@ export function moveContractantsUnderInternalManagers(
   };
   index(ppcRoots);
 
+  const findNode = (list: OrgChartNode[], id: string): OrgChartNode | undefined => {
+    for (const node of list) {
+      if (node.id === id) return node;
+      const child = findNode(node.children, id);
+      if (child) return child;
+    }
+    return undefined;
+  };
+  const ensureVacant = (title: string): OrgChartNode => {
+    const id = `ext:${normKey(title)}`;
+    const existing = findNode(ppcRoots, id);
+    if (existing) return existing;
+    const node = externalNode(title, 'Poste vacant');
+    ppcRoots.push(node);
+    return node;
+  };
+
   const detach = (list: OrgChartNode[]): OrgChartNode[] => {
     const kept: OrgChartNode[] = [];
     for (const node of list) {
       node.children = detach(node.children);
+      const vacantTitle = node.contractantEmployeeId ? vacantLinked.get(node.contractantEmployeeId) : '';
+      if (vacantTitle && !treeHasId(node.children, `ext:${normKey(vacantTitle)}`)) {
+        const parent = ensureVacant(vacantTitle);
+        if (parent.id !== node.id && !parent.children.some((child) => child.id === node.id)) {
+          parent.children.push(node);
+          parent.children.sort((a, b) => a.nom.localeCompare(b.nom, 'fr', { sensitivity: 'base' }));
+        }
+        continue;
+      }
       const matricule = node.contractantEmployeeId ? linked.get(node.contractantEmployeeId) : '';
       const parent = matricule ? byMatricule.get(matricule) : undefined;
       if (parent && parent.id !== node.id && !treeHasId(node.children, parent.id)) {

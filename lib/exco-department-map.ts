@@ -93,6 +93,7 @@ const RULES: Rule[] = [
   },
 
   // —— Admin / MD ——
+  // « Administration » et « Management » sont renommés MD Office.
   {
     aliases: [
       'md office',
@@ -100,6 +101,7 @@ const RULES: Rule[] = [
       'md-office',
       'managing director',
       'administration',
+      'management',
       'corporate admin',
       'admin center',
       'admin',
@@ -110,7 +112,7 @@ const RULES: Rule[] = [
 
   // —— Ops plant ——
   {
-    aliases: ['engineering', 'eng', 'garage', 'estates', 'civil'],
+    aliases: ['engineering', 'eng', 'garage', 'estates', 'civil', 'maintenance', 'maint'],
     department: 'Engineering',
   },
   {
@@ -122,7 +124,7 @@ const RULES: Rule[] = [
     department: 'Optimization',
   },
   {
-    aliases: ['production', 'prod', 'burning', 'milling', 'bagging'],
+    aliases: ['production', 'prod', 'burning', 'milling', 'bagging', 'usine', 'operations', 'operation'],
     department: 'Production',
   },
   {

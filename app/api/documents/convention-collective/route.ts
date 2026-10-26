@@ -16,6 +16,7 @@ import { auditSimpleAction, getAuditActor } from '@/lib/with-audit';
 const CONVENTION_VIEW = [
   { menuId: 'politique.convention-collective', action: 'view' as const },
   { menuId: 'documents.convention-collective', action: 'view' as const },
+  { menuId: 'politique.heures-sup', action: 'view' as const },
 ];
 const CONVENTION_CREATE = [
   { menuId: 'politique.convention-collective', action: 'create' as const },

@@ -23,6 +23,7 @@ import {
   type OrganigrammeScope,
 } from '@/lib/organigramme';
 import { confirmAction, showError, showSuccess } from '@/lib/swal';
+import type { VacantPoste } from '@/lib/postes-types';
 import type { Employee } from '@/lib/types';
 
 const MENU = 'employes.organigramme';
@@ -116,6 +117,7 @@ export default function OrganigrammePage() {
   const loadedOnce = useRef(false);
   const [employees, setEmployees] = useState<Employee[]>([]);
   const [contractants, setContractants] = useState<Contractant[]>([]);
+  const [vacantPostes, setVacantPostes] = useState<VacantPoste[]>([]);
   const [loading, setLoading] = useState(true);
   const [refreshing, setRefreshing] = useState(false);
   const [exporting, setExporting] = useState(false);
@@ -138,9 +140,10 @@ export default function OrganigrammePage() {
     if (isRefresh) setRefreshing(true);
     else setLoading(true);
     try {
-      const [resEmp, resCtr] = await Promise.all([
+      const [resEmp, resCtr, resVacants] = await Promise.all([
         fetch('/api/employees', { cache: 'no-store' }),
         fetch('/api/employes/contractants', { cache: 'no-store' }),
+        fetch('/api/employes/postes?vacants=1', { cache: 'no-store' }),
       ]);
       const empJson = (await resEmp.json()) as Employee[] | { error?: string };
       if (!resEmp.ok) {
@@ -156,9 +159,16 @@ export default function OrganigrammePage() {
       } else {
         setContractants([]);
       }
+      if (resVacants.ok) {
+        const vacantJson = (await resVacants.json()) as { vacants?: VacantPoste[] };
+        setVacantPostes(Array.isArray(vacantJson.vacants) ? vacantJson.vacants : []);
+      } else {
+        setVacantPostes([]);
+      }
     } catch (err) {
       setEmployees([]);
       setContractants([]);
+      setVacantPostes([]);
       await showError(err instanceof Error ? err.message : 'Chargement impossible');
     } finally {
       setLoading(false);
@@ -326,14 +336,53 @@ export default function OrganigrammePage() {
       ...item,
       detail: [fonctionById.get(item.id.slice(2)), item.detail].filter(Boolean).join(' · '),
     }));
-    return [...internes, ...labeled].sort((a, b) => a.nom.localeCompare(b.nom, 'fr', { sensitivity: 'base' }));
-  }, [managerEdit, contractants, employees]);
+    const occupiedTitles = new Set(
+      active.map((item) => foldLabel(item.jobTitle || item.position || '')).filter(Boolean),
+    );
+    const ownTitles = new Set(managerEdit.map((item) => foldLabel(item.jobTitle)).filter(Boolean));
+    const vacantByKey = new Map<string, { id: string; nom: string; detail: string }>();
+    for (const item of active) {
+      const title = String(item.lineManagerPosition || '').trim();
+      const key = foldLabel(title);
+      if (!key || title === '0' || occupiedTitles.has(key) || ownTitles.has(key)) continue;
+      if (!vacantByKey.has(key)) {
+        vacantByKey.set(key, {
+          id: `v:${encodeURIComponent(title)}`,
+          nom: title,
+          detail: 'Poste vacant',
+        });
+      }
+    }
+    for (const poste of vacantPostes) {
+      const title = String(poste.title || '').trim();
+      const key = foldLabel(title);
+      if (!key || ownTitles.has(key)) continue;
+      vacantByKey.set(key, {
+        id: `v:${poste.id}`,
+        nom: title,
+        detail: [poste.department, poste.location].filter(Boolean).join(' · ') || 'Poste vacant',
+      });
+    }
+    const vacants = [...vacantByKey.values()].map((item) => ({
+      ...item,
+      kind: 'vacant' as const,
+    }));
+    return [...internes, ...labeled, ...vacants].sort((a, b) => a.nom.localeCompare(b.nom, 'fr', { sensitivity: 'base' }));
+  }, [managerEdit, contractants, employees, vacantPostes]);
 
   const saveManagers = async (choiceId: string) => {
     if (!managerEdit?.length) return;
-    const kind = choiceId.startsWith('i:') ? 'interne' : choiceId.startsWith('e:') ? 'externe' : '';
-    const ref = choiceId.slice(2);
-    if (!kind || !ref) {
+    const choice = managerChoices.find((item) => item.id === choiceId);
+    const vacantTitle = choice?.kind === 'vacant' ? choice.nom.trim() : '';
+    const kind = vacantTitle
+      ? 'vacant'
+      : choiceId.startsWith('i:')
+        ? 'interne'
+        : choiceId.startsWith('e:')
+          ? 'externe'
+          : '';
+    const ref = choiceId.startsWith('v:') ? '' : choiceId.slice(2);
+    if (!kind || (!vacantTitle && !ref)) {
       await showError('N+1 introuvable.');
       return;
     }
@@ -341,7 +390,7 @@ export default function OrganigrammePage() {
     const external = kind === 'externe'
       ? contractants.flatMap((company) => (company.employees || []).map((employee) => ({ company, employee }))).find((item) => item.employee.id === ref)
       : undefined;
-    const managerName = internal?.nom || external?.employee.nom || '';
+    const managerName = vacantTitle || internal?.nom || external?.employee.nom || '';
     if (!managerName) {
       await showError('N+1 introuvable.');
       return;
@@ -354,9 +403,11 @@ export default function OrganigrammePage() {
 
     const contractantPeople = managerEdit.filter((item) => item.isContractant);
     const internalPeople = managerEdit.filter((item) => !item.isContractant);
-    const link = kind === 'interne'
-      ? { employeeId: '', matricule: ref }
-      : { employeeId: ref, matricule: '' };
+    const link = kind === 'vacant'
+      ? { employeeId: '', matricule: `vacant:${vacantTitle}` }
+      : kind === 'interne'
+        ? { employeeId: '', matricule: ref }
+        : { employeeId: ref, matricule: '' };
 
     if (contractantPeople.length > 0) {
       const savedIds = new Set<string>();
@@ -404,10 +455,10 @@ export default function OrganigrammePage() {
 
     if (internalPeople.length > 0) {
       const saved: Employee[] = [];
-      const lineName = internal?.nom || external?.employee.nom || '';
-      const linePosition = String(
-        internal?.jobTitle || internal?.position || external?.employee.fonction || '',
-      ).trim();
+      const lineName = vacantTitle || internal?.nom || external?.employee.nom || '';
+      const linePosition = vacantTitle
+        ? 'Poste vacant'
+        : String(internal?.jobTitle || internal?.position || external?.employee.fonction || '').trim();
       try {
         for (const person of internalPeople) {
           const employee = employeesByMatricule.get(person.matricule);

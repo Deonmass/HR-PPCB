@@ -274,6 +274,11 @@ function normalizeVacant(raw: unknown): VacantPoste | null {
   };
 }
 
+export async function listVacantPostes(): Promise<VacantPoste[]> {
+  const store = await readVacantsStore();
+  return [...store.vacants].sort((a, b) => a.title.localeCompare(b.title, 'fr', { sensitivity: 'base' }));
+}
+
 export async function getPostesBundle(): Promise<PostesBundle> {
   const [{ employees }, vacantsStore] = await Promise.all([
     readEmployeesBundle(),

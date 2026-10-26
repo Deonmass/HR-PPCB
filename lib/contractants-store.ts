@@ -21,6 +21,7 @@ import {
   isContractantSexe,
 } from './contractants-types';
 import { inferFemaleSexeFromName } from './contractants-gender';
+import { normalizeServiceName, resolveExcoDepartment } from './exco-department-map';
 import { isLocalisationLabel, normalizeLocalisation } from './localisations';
 import { canPersistProjectFiles, getWritableDataRoot } from './runtime-mode';
 import { randomUUID } from 'crypto';
@@ -67,6 +68,19 @@ function normalizeFamilyMember(raw: unknown): ContractantFamilyMember | null {
   };
 }
 
+/** Libellé département du référentiel, et service si l’ancien libellé en était un. */
+function canonicalizeContractantOrg(departement: string, service: string): { departement: string; service: string } {
+  const resolved = resolveExcoDepartment(departement);
+  const nextDept = resolved.department || departement.trim();
+  const stored = service.trim();
+  const nextService = stored
+    ? normalizeServiceName(stored)
+    : resolved.serviceName
+      ? normalizeServiceName(resolved.serviceName)
+      : '';
+  return { departement: nextDept, service: nextService };
+}
+
 function normalizeEmployee(raw: unknown): ContractantEmployee | null {
   if (!raw || typeof raw !== 'object') return null;
   const r = raw as Partial<ContractantEmployee> & { statut?: string };
@@ -88,14 +102,15 @@ function normalizeEmployee(raw: unknown): ContractantEmployee | null {
     payrollSiteRaw === 'site' || payrollSiteRaw === 'hors-site'
       ? payrollSiteRaw
       : '';
+  const org = canonicalizeContractantOrg(String(r.departement || ''), String(r.service || ''));
   return {
     id: String(r.id),
     nom: String(r.nom || '').trim(),
     sexe,
     lieuAffectation: normalizeLocalisation(r.lieuAffectation),
     fonction,
-    departement: String(r.departement || '').trim(),
-    service: String(r.service || '').trim(),
+    departement: org.departement,
+    service: org.service,
     telephone: String(r.telephone || '').trim(),
     etatCivil,
     statut,
@@ -200,7 +215,10 @@ function validateEmployeeInput(input: ContractantEmployeeInput): ContractantEmpl
   const lieuAffectation = normalizeLocalisation(lieuRaw);
   let fonction = String(input.fonction || '').trim();
   if (isLocalisationLabel(fonction)) fonction = '';
-  const departement = String(input.departement || '').trim();
+  const org = canonicalizeContractantOrg(
+    String(input.departement || ''),
+    String(input.service || ''),
+  );
   const telephone = String(input.telephone || '').trim();
   const etatRaw = String(input.etatCivil || '').trim().toUpperCase();
   const statutRaw = String(input.statut || '').trim();
@@ -216,8 +234,8 @@ function validateEmployeeInput(input: ContractantEmployeeInput): ContractantEmpl
     sexe: inferFemaleSexeFromName(nom, isContractantSexe(sexeRaw) ? sexeRaw : ''),
     lieuAffectation,
     fonction,
-    departement,
-    service: String(input.service || '').trim(),
+    departement: org.departement,
+    service: org.service,
     telephone,
     etatCivil: etatRaw,
     statut: statutRaw,
@@ -450,8 +468,9 @@ function normalizeEmployeeNameKey(nom: string): string {
 function applyImportedFields(employee: ContractantEmployee, input: ContractantEmployeeInput, now: string): boolean {
   let changed = false;
   const matricule = String(input.matriculePpc || '').trim();
-  const departement = String(input.departement || '').trim();
-  const service = String(input.service || '').trim();
+  const org = canonicalizeContractantOrg(String(input.departement || ''), String(input.service || ''));
+  const departement = org.departement;
+  const service = org.service;
   const sexeRaw = String(input.sexe || '').trim().toUpperCase();
   if (matricule && employee.matriculePpc !== matricule) {
     employee.matriculePpc = matricule;
@@ -543,8 +562,7 @@ export async function importContractantEmployees(
         ? normalizeLocalisation(input.lieuAffectation)
         : '',
       fonction: isLocalisationLabel(input.fonction) ? '' : String(input.fonction || '').trim(),
-      departement: String(input.departement || '').trim(),
-      service: String(input.service || '').trim(),
+      ...canonicalizeContractantOrg(String(input.departement || ''), String(input.service || '')),
       telephone: String(input.telephone || '').trim(),
       etatCivil: isContractantEtatCivil(etatRaw) ? etatRaw : 'C',
       statut: isContractantEmployeeStatut(statutRaw) ? statutRaw : 'Permanent',
@@ -613,8 +631,7 @@ export async function replaceContractantEmployees(
         ? normalizeLocalisation(input.lieuAffectation)
         : '',
       fonction: isLocalisationLabel(input.fonction) ? '' : String(input.fonction || '').trim(),
-      departement: String(input.departement || '').trim(),
-      service: String(input.service || '').trim(),
+      ...canonicalizeContractantOrg(String(input.departement || ''), String(input.service || '')),
       telephone: String(input.telephone || '').trim(),
       etatCivil: isContractantEtatCivil(etatRaw) ? etatRaw : 'C',
       statut: isContractantEmployeeStatut(statutRaw) ? statutRaw : 'Permanent',

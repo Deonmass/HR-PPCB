@@ -2,6 +2,7 @@ import { NextResponse } from 'next/server';
 import {
   createVacantPoste,
   getPostesBundle,
+  listVacantPostes,
   renamePosteTitle,
   updateCatalogPoste,
   updateEmployeePoste,
@@ -14,14 +15,19 @@ import type {
 import { checkAnyPermission } from '@/lib/require-permission';
 import { withAudit } from '@/lib/with-audit';
 
-export async function GET() {
+export async function GET(request: Request) {
   const denied = await checkAnyPermission([
     { menuId: 'employes.postes', action: 'view' },
     { menuId: 'employes.liste', action: 'view' },
+    { menuId: 'employes.organigramme', action: 'view' },
   ]);
   if (denied) return denied;
 
   try {
+    if (new URL(request.url).searchParams.get('vacants') === '1') {
+      const vacants = await listVacantPostes();
+      return NextResponse.json({ vacants });
+    }
     const data = await getPostesBundle();
     return NextResponse.json(data);
   } catch (err) {

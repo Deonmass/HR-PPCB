@@ -1,3 +1,5 @@
+import { POLICY_RULES } from './timesheet-compilation-policy';
+
 export const TIMESHEET_COMPANY_DEFAULT = 'PPC Barnet';
 
 export const TIMESHEET_SHIFTS = {
@@ -8,6 +10,10 @@ export const TIMESHEET_SHIFTS = {
 } as const;
 
 export const TIMESHEET_POLICY_SECTIONS = [
+  {
+    title: 'Abattement conventionnel',
+    items: POLICY_RULES.map((rule) => `${rule.title}. ${rule.description}`),
+  },
   {
     title: 'Horaires de travail et shifts',
     items: [

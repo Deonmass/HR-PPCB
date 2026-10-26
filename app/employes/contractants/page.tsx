@@ -32,7 +32,7 @@ import {
 } from '@/lib/contractant-scope';
 import type { DepartmentSetting, ServiceSetting } from '@/lib/auth-types';
 import { DEFAULT_LOCALISATIONS } from '@/lib/localisations';
-import { compareExcoDepartments } from '@/lib/exco-department-map';
+import { compareExcoDepartments, normalizeDepartmentName } from '@/lib/exco-department-map';
 import { isContractantEffectifEmployee } from '@/lib/capital-hr-effectif';
 import { downloadContractantsListExport } from '@/lib/contractants-list-export';
 import {
@@ -521,10 +521,14 @@ export default function ContractantsPage() {
   const departementOptions = useMemo(() => {
     const set = new Set<string>();
     for (const d of departements) {
-      const name = d.name?.trim();
+      if (d.active === false) continue;
+      const name = normalizeDepartmentName(d.name || '');
       if (name) set.add(name);
     }
-    for (const e of allEmployees) if (e.departement.trim()) set.add(e.departement.trim());
+    for (const e of allEmployees) {
+      const name = normalizeDepartmentName(e.departement);
+      if (name) set.add(name);
+    }
     return [...set].sort(compareExcoDepartments);
   }, [departements, allEmployees]);
 
