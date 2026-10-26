@@ -4420,11 +4420,11 @@
         {
           "id": "778",
           "nom": "NZINGA SOPHIA SYNTICHE",
-          "sexe": "",
+          "sexe": "M",
           "lieuAffectation": "Zamba",
           "fonction": "Sampler",
-          "departement": "",
-          "service": "",
+          "departement": "Quality Assurance",
+          "service": "Routine",
           "telephone": "",
           "etatCivil": "C",
           "statut": "Permanent",
@@ -4442,7 +4442,7 @@
           "coutTransport": 1.17,
           "payrollSite": "site",
           "createdAt": "2026-09-25T08:00:00.000Z",
-          "updatedAt": "2026-09-28T15:12:00.000Z"
+          "updatedAt": "2026-10-26T10:53:02.357Z"
         },
         {
           "id": "776",
@@ -5121,7 +5121,7 @@
         }
       ],
       "createdAt": "2026-08-12T11:55:22.134Z",
-      "updatedAt": "2026-10-26T10:44:08.149Z"
+      "updatedAt": "2026-10-26T10:53:02.357Z"
     },
     {
       "id": "3",
