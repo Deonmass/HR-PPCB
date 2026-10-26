@@ -1,6 +1,37 @@
 {
   "entries": [
     {
+      "id": "log-001942",
+      "at": "2026-10-26T10:39:48.797Z",
+      "userId": "admin",
+      "userName": "Administrateur",
+      "userEmail": "admin",
+      "module": "settings.services",
+      "moduleLabel": "Paramètres — Services",
+      "action": "update",
+      "actionLabel": "Modification",
+      "entityType": "settings.service",
+      "entityId": "svc-quality-assurance-routine",
+      "summary": "Modification service Routine",
+      "details": "Modification service Routine",
+      "before": {
+        "id": "svc-quality-assurance-routine",
+        "name": "Routine",
+        "code": "R",
+        "departmentId": "dept-quality-assurance",
+        "active": true
+      },
+      "after": {
+        "id": "svc-quality-assurance-routine",
+        "name": "Routine",
+        "code": "Routine",
+        "departmentId": "dept-quality-assurance",
+        "active": true
+      },
+      "undoable": true,
+      "undone": false
+    },
+    {
       "id": "log-001941",
       "at": "2026-10-26T10:39:28.331Z",
       "userId": "admin",
@@ -209551,5 +209582,5 @@
       }
     }
   ],
-  "nextSeq": 1942
+  "nextSeq": 1943
 }
