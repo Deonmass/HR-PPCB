@@ -1,6 +1,42 @@
 {
   "entries": [
     {
+      "id": "log-001963",
+      "at": "2026-10-26T17:32:41.318Z",
+      "userId": "Serge.Muakasa@ppcdrc.cd",
+      "userName": "Serge Muakasa",
+      "userEmail": "Serge.Muakasa@ppcdrc.cd",
+      "module": "factures-suivi",
+      "moduleLabel": "Factures suivi",
+      "action": "create",
+      "actionLabel": "Création",
+      "summary": "Création lot de 1 facture(s)",
+      "details": "Création lot de 1 facture(s)",
+      "after": [
+        {
+          "id": "fac-2164",
+          "date": "30/09/2026",
+          "societe": "Capital HR",
+          "facture": "Facture n° FC/CD02002360/1120/2026",
+          "montant": 52941.52,
+          "echeance": "",
+          "pr": "11205645",
+          "datePr": "",
+          "po": "",
+          "datePo": "",
+          "grn": "",
+          "dateGrn": "",
+          "payment": "",
+          "datePym": "",
+          "commentaire": "Au PR — en attente du PO.",
+          "statut": "unpaid",
+          "statutLabel": "unpaid"
+        }
+      ],
+      "undoable": false,
+      "undone": false
+    },
+    {
       "id": "log-001962",
       "at": "2026-10-26T15:59:02.319Z",
       "userId": "Serge.Muakasa@ppcdrc.cd",
@@ -210474,5 +210510,5 @@
       }
     }
   ],
-  "nextSeq": 1963
+  "nextSeq": 1964
 }
