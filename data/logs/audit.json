@@ -1,6 +1,50 @@
 {
   "entries": [
     {
+      "id": "log-001951",
+      "at": "2026-10-26T11:45:06.236Z",
+      "userId": "admin",
+      "userName": "Administrateur",
+      "userEmail": "admin",
+      "module": "contractants",
+      "moduleLabel": "contractants",
+      "action": "update",
+      "actionLabel": "Modification",
+      "entityType": "contractant-employee",
+      "entityId": "775",
+      "summary": "Modification employé contractant — MUTSHI MUNA JEAN PIERRE",
+      "details": "Modification employé contractant — MUTSHI MUNA JEAN PIERRE",
+      "after": {
+        "id": "775",
+        "nom": "MUTSHI MUNA JEAN PIERRE",
+        "sexe": "",
+        "lieuAffectation": "Zamba",
+        "fonction": "Driver",
+        "departement": "Human Resources",
+        "service": "",
+        "telephone": "891401899",
+        "etatCivil": "C",
+        "statut": "Permanent",
+        "dateEmbauche": "",
+        "dateSortie": "",
+        "managerEmployeeId": "",
+        "managerMatricule": "70000175",
+        "family": [],
+        "matriculePpc": "CHRS_PPC0078",
+        "numeroCnss": "",
+        "numeroCompte": "522100130128429",
+        "banque": "EBCDC",
+        "nbDependants": 5,
+        "txJr": 12.541338,
+        "coutTransport": 1.17,
+        "payrollSite": "site",
+        "createdAt": "2026-09-25T08:00:00.000Z",
+        "updatedAt": "2026-10-26T11:45:02.528Z"
+      },
+      "undoable": false,
+      "undone": false
+    },
+    {
       "id": "log-001950",
       "at": "2026-10-26T11:42:08.106Z",
       "userId": "admin",
@@ -209905,5 +209949,5 @@
       }
     }
   ],
-  "nextSeq": 1951
+  "nextSeq": 1952
 }
