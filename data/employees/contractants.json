@@ -975,7 +975,7 @@
           "dateEmbauche": "",
           "dateSortie": "",
           "managerEmployeeId": "",
-          "managerMatricule": "",
+          "managerMatricule": "70000276",
           "family": [],
           "matriculePpc": "CHRS_PPC0009",
           "numeroCnss": "",
@@ -986,7 +986,7 @@
           "coutTransport": 1.17,
           "payrollSite": "site",
           "createdAt": "2026-08-12T12:57:02.481Z",
-          "updatedAt": "2026-09-28T15:12:00.000Z"
+          "updatedAt": "2026-10-26T09:25:49.875Z"
         },
         {
           "id": "28",
@@ -5121,7 +5121,7 @@
         }
       ],
       "createdAt": "2026-08-12T11:55:22.134Z",
-      "updatedAt": "2026-10-26T09:25:22.834Z"
+      "updatedAt": "2026-10-26T09:25:49.875Z"
     },
     {
       "id": "3",
