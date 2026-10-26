@@ -1,6 +1,50 @@
 {
   "entries": [
     {
+      "id": "log-001954",
+      "at": "2026-10-26T12:01:13.816Z",
+      "userId": "admin",
+      "userName": "Administrateur",
+      "userEmail": "admin",
+      "module": "contractants",
+      "moduleLabel": "contractants",
+      "action": "update",
+      "actionLabel": "Modification",
+      "entityType": "contractant-employee",
+      "entityId": "768",
+      "summary": "Modification employé contractant — NGUVU MUNYANGI ROBERT",
+      "details": "Modification employé contractant — NGUVU MUNYANGI ROBERT",
+      "after": {
+        "id": "768",
+        "nom": "NGUVU MUNYANGI ROBERT",
+        "sexe": "",
+        "lieuAffectation": "Lubudi",
+        "fonction": "Driver",
+        "departement": "Human Resources",
+        "service": "",
+        "telephone": "800407000",
+        "etatCivil": "C",
+        "statut": "Permanent",
+        "dateEmbauche": "",
+        "dateSortie": "",
+        "managerEmployeeId": "",
+        "managerMatricule": "70000299",
+        "family": [],
+        "matriculePpc": "",
+        "numeroCnss": "LUBUDI",
+        "numeroCompte": "",
+        "banque": "",
+        "nbDependants": 0,
+        "txJr": 11.71,
+        "coutTransport": 1.22,
+        "payrollSite": "hors-site",
+        "createdAt": "2026-09-25T08:00:00.000Z",
+        "updatedAt": "2026-10-26T12:01:10.508Z"
+      },
+      "undoable": false,
+      "undone": false
+    },
+    {
       "id": "log-001953",
       "at": "2026-10-26T12:01:00.035Z",
       "userId": "admin",
@@ -210037,5 +210081,5 @@
       }
     }
   ],
-  "nextSeq": 1954
+  "nextSeq": 1955
 }
