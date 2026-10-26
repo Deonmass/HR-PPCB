@@ -1,6 +1,50 @@
 {
   "entries": [
     {
+      "id": "log-001952",
+      "at": "2026-10-26T11:50:15.366Z",
+      "userId": "admin",
+      "userName": "Administrateur",
+      "userEmail": "admin",
+      "module": "contractants",
+      "moduleLabel": "contractants",
+      "action": "update",
+      "actionLabel": "Modification",
+      "entityType": "contractant-employee",
+      "entityId": "770",
+      "summary": "Modification employé contractant — BASHONGA MOHINDO ALINE",
+      "details": "Modification employé contractant — BASHONGA MOHINDO ALINE",
+      "after": {
+        "id": "770",
+        "nom": "BASHONGA MOHINDO ALINE",
+        "sexe": "F",
+        "lieuAffectation": "Kinshasa",
+        "fonction": "Receptionist",
+        "departement": "Human Resources",
+        "service": "Admin",
+        "telephone": "899922864",
+        "etatCivil": "C",
+        "statut": "Permanent",
+        "dateEmbauche": "",
+        "dateSortie": "",
+        "managerEmployeeId": "",
+        "managerMatricule": "",
+        "family": [],
+        "matriculePpc": "",
+        "numeroCnss": "KINSHASA",
+        "numeroCompte": "",
+        "banque": "",
+        "nbDependants": 0,
+        "txJr": 14.39,
+        "coutTransport": 2.66,
+        "payrollSite": "hors-site",
+        "createdAt": "2026-09-25T08:00:00.000Z",
+        "updatedAt": "2026-10-26T11:50:11.635Z"
+      },
+      "undoable": false,
+      "undone": false
+    },
+    {
       "id": "log-001951",
       "at": "2026-10-26T11:45:06.236Z",
       "userId": "admin",
@@ -209949,5 +209993,5 @@
       }
     }
   ],
-  "nextSeq": 1952
+  "nextSeq": 1953
 }
