@@ -6932,6 +6932,7 @@
       "grade": "B3",
       "jobTitle": "Chemical Lab Technician",
       "localisation": "Zamba",
+      "service": "",
       "company": "PPC Barnet DRC Manufacturing",
       "centreCout": "KM5510",
       "appointmentDate": "03/10/2016",
@@ -6947,7 +6948,7 @@
       "payrollArea": "Monthly",
       "position": "Chemical Lab Technician",
       "departmentHr": "Quality Assurance",
-      "lineManagerName": "QA Chemist",
+      "lineManagerName": "MUSAKO KINZONZOLI MOISE",
       "lineManagerPosition": "QA Chemist",
       "patersonGrade": "",
       "statut": "Active",
@@ -6968,8 +6969,9 @@
       "datePassageCdi": "",
       "cnss": "11991346024O",
       "nif": "B2222560Y",
+      "telephone": "",
       "createdAt": "2026-07-28T09:40:37.715Z",
-      "updatedAt": "2026-08-20T15:29:26.665Z"
+      "updatedAt": "2026-10-26T09:23:50.061Z"
     },
     {
       "id": "bbe91ef9-a2c0-45a3-877f-f92fd6b8993b",
