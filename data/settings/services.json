@@ -80,7 +80,7 @@
     {
       "id": "svc-quality-assurance-routine",
       "name": "Routine",
-      "code": "R",
+      "code": "Routine",
       "departmentId": "dept-quality-assurance",
       "active": true
     }
