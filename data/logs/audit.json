@@ -1,6 +1,21 @@
 {
   "entries": [
     {
+      "id": "log-001946",
+      "at": "2026-10-26T10:59:02.636Z",
+      "userId": "admin",
+      "userName": "Administrateur",
+      "userEmail": "admin",
+      "module": "employes.postes",
+      "moduleLabel": "employes.postes",
+      "action": "export",
+      "actionLabel": "Export",
+      "summary": "Export effectifs par poste (POSTES_EFFECTIFS_2026-10-26.xlsx)",
+      "details": "Export effectifs par poste (POSTES_EFFECTIFS_2026-10-26.xlsx)",
+      "undoable": false,
+      "undone": false
+    },
+    {
       "id": "log-001945",
       "at": "2026-10-26T10:54:23.215Z",
       "userId": "admin",
@@ -209714,5 +209729,5 @@
       }
     }
   ],
-  "nextSeq": 1946
+  "nextSeq": 1947
 }
