@@ -1,6 +1,50 @@
 {
   "entries": [
     {
+      "id": "log-001950",
+      "at": "2026-10-26T11:42:08.106Z",
+      "userId": "admin",
+      "userName": "Administrateur",
+      "userEmail": "admin",
+      "module": "contractants",
+      "moduleLabel": "contractants",
+      "action": "update",
+      "actionLabel": "Modification",
+      "entityType": "contractant-employee",
+      "entityId": "69",
+      "summary": "Modification employé contractant — BALOY KIMPINDE MARGUERITTE",
+      "details": "Modification employé contractant — BALOY KIMPINDE MARGUERITTE",
+      "after": {
+        "id": "69",
+        "nom": "BALOY KIMPINDE MARGUERITTE",
+        "sexe": "F",
+        "lieuAffectation": "Lubudi",
+        "fonction": "CUISINIERE",
+        "departement": "Human Resources",
+        "service": "",
+        "telephone": "802222943",
+        "etatCivil": "C",
+        "statut": "Permanent",
+        "dateEmbauche": "",
+        "dateSortie": "",
+        "managerEmployeeId": "",
+        "managerMatricule": "70000299",
+        "family": [],
+        "matriculePpc": "",
+        "numeroCnss": "LUBUDI",
+        "numeroCompte": "0977660115",
+        "banque": "Airtel Money",
+        "nbDependants": 0,
+        "txJr": 8.733732,
+        "coutTransport": 0.81,
+        "payrollSite": "hors-site",
+        "createdAt": "2026-08-12T12:57:02.481Z",
+        "updatedAt": "2026-10-26T11:42:05.121Z"
+      },
+      "undoable": false,
+      "undone": false
+    },
+    {
       "id": "log-001949",
       "at": "2026-10-26T11:41:18.749Z",
       "userId": "admin",
@@ -209861,5 +209905,5 @@
       }
     }
   ],
-  "nextSeq": 1950
+  "nextSeq": 1951
 }
