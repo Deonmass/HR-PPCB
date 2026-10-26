@@ -859,8 +859,8 @@
           "sexe": "F",
           "lieuAffectation": "Kinshasa",
           "fonction": "Receptionist",
-          "departement": "",
-          "service": "",
+          "departement": "Human Resources",
+          "service": "Admin",
           "telephone": "899922864",
           "etatCivil": "C",
           "statut": "Permanent",
@@ -878,7 +878,7 @@
           "coutTransport": 2.66,
           "payrollSite": "hors-site",
           "createdAt": "2026-09-25T08:00:00.000Z",
-          "updatedAt": "2026-10-07T07:13:33.592Z"
+          "updatedAt": "2026-10-26T11:50:11.635Z"
         },
         {
           "id": "83",
@@ -5121,7 +5121,7 @@
         }
       ],
       "createdAt": "2026-08-12T11:55:22.134Z",
-      "updatedAt": "2026-10-26T11:45:02.528Z"
+      "updatedAt": "2026-10-26T11:50:11.635Z"
     },
     {
       "id": "3",
