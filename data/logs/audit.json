@@ -1,6 +1,35 @@
 {
   "entries": [
     {
+      "id": "log-002030",
+      "at": "2026-10-27T13:10:50.702Z",
+      "userId": "admin",
+      "userName": "Administrateur",
+      "userEmail": "admin",
+      "module": "employees",
+      "moduleLabel": "Employés",
+      "action": "update",
+      "actionLabel": "Modification",
+      "entityType": "employee",
+      "summary": "N+1 mis à jour (1)",
+      "details": "N+1 mis à jour (1)",
+      "after": {
+        "employees": [
+          {
+            "matricule": "70000022",
+            "lineManagerName": "MUZILA EBALOSONG Papy",
+            "lineManagerPosition": "Marketing Manager",
+            "departement": "Sales and Marketing",
+            "departmentHr": "Sales and Marketing",
+            "service": ""
+          }
+        ],
+        "contractants": []
+      },
+      "undoable": false,
+      "undone": false
+    },
+    {
       "id": "log-002029",
       "at": "2026-10-27T12:53:46.905Z",
       "userId": "admin",
@@ -217279,5 +217308,5 @@
       }
     }
   ],
-  "nextSeq": 2030
+  "nextSeq": 2031
 }
