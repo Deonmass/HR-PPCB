@@ -847,6 +847,7 @@ export function moveContractantsUnderInternalManagers(
   ppcRoots: OrgChartNode[],
   ctrRoots: OrgChartNode[],
   contractants: Contractant[],
+  employees: Employee[] = [],
 ): void {
   const linked = new Map<string, string>();
   const vacantLinked = new Map<string, string>();
@@ -873,6 +874,18 @@ export function moveContractantsUnderInternalManagers(
     }
   };
   index(ppcRoots);
+
+  const ensureOutsideManager = (matricule: string): OrgChartNode | undefined => {
+    const existing = byMatricule.get(matricule);
+    if (existing) return existing;
+    const employee = employees.find((item) => item.matricule === matricule && isActiveEmployee(item));
+    if (!employee) return undefined;
+    const chart = toChartEmployee(employee);
+    const node = employeeNode(chart, { isOutsideScope: true });
+    ppcRoots.push(node);
+    byMatricule.set(matricule, node);
+    return node;
+  };
 
   const findNode = (list: OrgChartNode[], id: string): OrgChartNode | undefined => {
     for (const node of list) {
@@ -905,7 +918,7 @@ export function moveContractantsUnderInternalManagers(
         continue;
       }
       const matricule = node.contractantEmployeeId ? linked.get(node.contractantEmployeeId) : '';
-      const parent = matricule ? byMatricule.get(matricule) : undefined;
+      const parent = matricule ? ensureOutsideManager(matricule) : undefined;
       if (parent && parent.id !== node.id && !treeHasId([node], parent.id) && !treeHasId([parent], node.id)) {
         if (!parent.children.some((child) => child.id === node.id)) parent.children.push(node);
         parent.children.sort((a, b) => a.nom.localeCompare(b.nom, 'fr', { sensitivity: 'base' }));

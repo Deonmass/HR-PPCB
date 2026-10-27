@@ -45274,6 +45274,58 @@ html[data-theme='light'] .org-sticky {
   display: none;
 }
 
+.org-chart-branches {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 1.25rem;
+  margin-top: 0.95rem;
+  padding-left: 0.85rem;
+}
+
+.org-chart-branches::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 50%;
+  height: 1px;
+  background: #94a3b8;
+}
+
+.org-chart-branches > .org-chart-children {
+  margin-top: 0;
+  width: max-content;
+  max-width: 100%;
+  justify-content: flex-start;
+}
+
+.org-chart-branches > .org-chart-children::before {
+  left: -0.85rem;
+}
+
+.org-chart-branches > .org-chart-children:not(:last-child)::after {
+  content: '';
+  position: absolute;
+  left: -0.85rem;
+  top: 0;
+  bottom: -1.25rem;
+  width: 1px;
+  background: #94a3b8;
+  z-index: 0;
+}
+
+.org-chart-branches > .org-chart-children > .org-chart-node:first-child:not(:only-child)::after {
+  display: none;
+}
+
+.org-chart-branches > .org-chart-children > .org-chart-node:only-child::after {
+  display: block;
+  left: 50%;
+  right: 0;
+}
+
 .org-chart-card {
   position: relative;
   z-index: 2;

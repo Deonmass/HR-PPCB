@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useMemo, useState } from 'react';
+import { createContext, useContext, useEffect, useMemo, useRef, useState } from 'react';
 import { createPortal } from 'react-dom';
 import OrganigrammeTeamDialog from '@/components/organigramme/OrganigrammeTeamDialog';
 import {
@@ -42,6 +42,38 @@ type Props = {
   onChangeDepartments?: (people: OrgPersonTarget[]) => void;
   selectionClearKey?: number;
 };
+
+const OrgColumnsContext = createContext(6);
+const CARD_SLOT_PX = 156;
+
+function nodeUnits(group: OrgPosteGroup, depth: number, maxCols: number): number {
+  if (depth >= 2 || group.children.length === 0) return 1;
+  const rows = packRows(group.children, maxCols, depth);
+  let widest = 1;
+  for (const row of rows) {
+    const width = row.reduce((total, child) => total + nodeUnits(child, depth + 1, maxCols), 0);
+    widest = Math.max(widest, width);
+  }
+  return widest;
+}
+
+function packRows(children: OrgPosteGroup[], maxCols: number, depth: number): OrgPosteGroup[][] {
+  const rows: OrgPosteGroup[][] = [];
+  let row: OrgPosteGroup[] = [];
+  let used = 0;
+  for (const child of children) {
+    const width = Math.min(maxCols, Math.max(1, nodeUnits(child, depth + 1, maxCols)));
+    if (row.length > 0 && used + width > maxCols) {
+      rows.push(row);
+      row = [];
+      used = 0;
+    }
+    row.push(child);
+    used += width;
+  }
+  if (row.length > 0) rows.push(row);
+  return rows;
+}
 
 type HiddenCard = {
   id: string;
@@ -119,6 +151,66 @@ function IconMore() {
   );
 }
 
+function ChildRows({
+  groups,
+  depth,
+  search,
+  forceExpand,
+  forceCollapse,
+  hasFiche,
+  canEditMember,
+  hiddenIds,
+  selectedIds,
+  onToggleSelect,
+  onOpenMenu,
+  onOpenTeam,
+}: {
+  groups: OrgPosteGroup[];
+  depth: number;
+  search: string;
+  forceExpand: number;
+  forceCollapse: number;
+  hasFiche: (matricule: string) => boolean;
+  canEditMember: (member: OrgPosteMember) => boolean;
+  hiddenIds: ReadonlySet<string>;
+  selectedIds: ReadonlySet<string>;
+  onToggleSelect: (id: string) => void;
+  onOpenMenu: (event: React.MouseEvent, person: OrgPersonTarget | null, people: OrgPersonTarget[], card: HiddenCard) => void;
+  onOpenTeam: (group: OrgPosteGroup) => void;
+}) {
+  const maxCols = useContext(OrgColumnsContext);
+  const rows = packRows(groups, maxCols, depth);
+  const cards = (row: OrgPosteGroup[]) => row.map((child) => (
+    <PosteCard
+      key={child.id}
+      group={child}
+      depth={depth + 1}
+      search={search}
+      forceExpand={forceExpand}
+      forceCollapse={forceCollapse}
+      hasFiche={hasFiche}
+      canEditMember={canEditMember}
+      hiddenIds={hiddenIds}
+      selectedIds={selectedIds}
+      onToggleSelect={onToggleSelect}
+      onOpenMenu={onOpenMenu}
+      onOpenTeam={onOpenTeam}
+    />
+  ));
+  if (rows.length <= 1) {
+    return <ul className="org-chart-children">{cards(rows[0] || [])}</ul>;
+  }
+  return (
+    <div className="org-chart-branches">
+      {rows.map((row, index) => (
+        <ul key={row.map((item) => item.id).join('+') || index} className="org-chart-children">
+          {cards(row)}
+        </ul>
+      ))}
+    </div>
+  );
+}
+
 function PosteCard({
   group,
   depth,
@@ -174,8 +266,8 @@ function PosteCard({
     ? fold(group.jobTitle).includes(q) || group.members.some((m) => memberMatches(m, q))
     : false;
   const outside = group.members.some((m) => m.isOutsideScope);
-  const external = group.members.every((m) => m.isExternal);
   const contractant = Boolean(group.isContractant);
+  const external = group.members.every((m) => m.isExternal) && !contractant;
   const vacant = Boolean(group.isVacant);
   const capitalHr = contractant && group.members.length > 0 && group.members.every((member) => (
     isCapitalHrCompany(member.contractantName || member.nom)
@@ -330,25 +422,20 @@ function PosteCard({
       </div>
 
       {hasChildren && open && visibleChildren.length > 0 ? (
-        <ul className="org-chart-children">
-          {visibleChildren.map((child) => (
-            <PosteCard
-              key={child.id}
-              group={child}
-              depth={depth + 1}
-              search={search}
-              forceExpand={forceExpand}
-              forceCollapse={forceCollapse}
-              hasFiche={hasFiche}
-              canEditMember={canEditMember}
-              hiddenIds={hiddenIds}
-              selectedIds={selectedIds}
-              onToggleSelect={onToggleSelect}
-              onOpenMenu={onOpenMenu}
-              onOpenTeam={onOpenTeam}
-            />
-          ))}
-        </ul>
+        <ChildRows
+          groups={visibleChildren}
+          depth={depth}
+          search={search}
+          forceExpand={forceExpand}
+          forceCollapse={forceCollapse}
+          hasFiche={hasFiche}
+          canEditMember={canEditMember}
+          hiddenIds={hiddenIds}
+          selectedIds={selectedIds}
+          onToggleSelect={onToggleSelect}
+          onOpenMenu={onOpenMenu}
+          onOpenTeam={onOpenTeam}
+        />
       ) : null}
     </li>
   );
@@ -371,6 +458,21 @@ export default function OrganigrammeTree({
   selectionClearKey = 0,
 }: Props) {
   const groups = useMemo(() => groupOrgNodesByPoste(roots), [roots]);
+  const scrollRef = useRef<HTMLDivElement>(null);
+  const [maxCols, setMaxCols] = useState(6);
+
+  useEffect(() => {
+    const element = scrollRef.current;
+    if (!element) return;
+    const update = () => {
+      const width = element.clientWidth || 960;
+      setMaxCols(Math.max(4, Math.floor(width / CARD_SLOT_PX)));
+    };
+    update();
+    const observer = new ResizeObserver(update);
+    observer.observe(element);
+    return () => observer.disconnect();
+  }, [roots, search]);
   const [menu, setMenu] = useState<MenuState | null>(null);
   const [team, setTeam] = useState<OrgPosteGroup | null>(null);
   const [hidden, setHidden] = useState<HiddenCard[]>([]);
@@ -579,7 +681,8 @@ export default function OrganigrammeTree({
     <>
     {selectBar}
     {hiddenBar}
-    <div className="org-chart-scroll" style={{ zoom }}>
+    <OrgColumnsContext.Provider value={maxCols}>
+    <div className="org-chart-scroll" ref={scrollRef} style={{ zoom }}>
       <ul className="org-chart-roots">
         {shown.map((group) => (
           <PosteCard
@@ -727,6 +830,7 @@ export default function OrganigrammeTree({
         )
         : null}
     </div>
+    </OrgColumnsContext.Provider>
     </>
   );
 }

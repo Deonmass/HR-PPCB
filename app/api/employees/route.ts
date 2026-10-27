@@ -6,7 +6,7 @@ import type { Employee } from '@/lib/types';
 import { emptyEmployeeHrProfile } from '@/lib/types';
 import { withAudit } from '@/lib/with-audit';
 
-export async function GET() {
+export async function GET(request: Request) {
   const denied = await checkAnyPermission([
     { menuId: 'employes.liste', action: 'view' },
     { menuId: 'employes.organigramme', action: 'view' },
@@ -43,8 +43,15 @@ export async function GET() {
   ]);
   if (denied) return denied;
   try {
-    const { employees } = await readEmployeesBundle();
-    return NextResponse.json(employees);
+    const { employees, exits } = await readEmployeesBundle();
+    const excludeExits = new URL(request.url).searchParams.get('excludeExits') === '1';
+    if (!excludeExits) return NextResponse.json(employees);
+    const gone = new Set(
+      exits.map((item) => String(item.matricule || '').trim()).filter(Boolean),
+    );
+    return NextResponse.json(
+      employees.filter((item) => !gone.has(String(item.matricule || '').trim())),
+    );
   } catch (err) {
     const { status, message } = excelErrorResponse(err);
     return NextResponse.json({ error: message }, { status });

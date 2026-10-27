@@ -116,7 +116,7 @@ export default function OrganigrammePage() {
     else setLoading(true);
     try {
       const [resEmp, resCtr, resVacants] = await Promise.all([
-        fetch('/api/employees', { cache: 'no-store' }),
+        fetch('/api/employees?excludeExits=1', { cache: 'no-store' }),
         fetch('/api/employes/contractants', { cache: 'no-store' }),
         fetch('/api/employes/postes?vacants=1', { cache: 'no-store' }),
       ]);
@@ -197,11 +197,11 @@ export default function OrganigrammePage() {
       service: service || undefined,
       employees,
     });
-    moveContractantsUnderInternalManagers(ppc.roots, ctr.roots, contractants);
+    moveContractantsUnderInternalManagers(ppc.roots, ctr.roots, contractants, employees);
     const ctrVisible = showContractants || search.trim()
       ? ctr.roots
       : ctr.roots.filter((node) => !isCapitalHrCompany(node.contractantName || node.nom));
-    if (ctrVisible.length > 0) adoptContractantManagers(ppc.roots, ctrVisible);
+    adoptContractantManagers(ppc.roots, ctrVisible);
     const populations = countContractantPopulations([...ppc.roots, ...ctr.roots]);
     return {
       roots: [...ppc.roots, ...ctrVisible],
