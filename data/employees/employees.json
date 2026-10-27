@@ -393,8 +393,8 @@
       "payrollArea": "Monthly",
       "position": "Customer Relationship Officer",
       "departmentHr": "Sales and Marketing",
-      "lineManagerName": "Marketing Manager",
-      "lineManagerPosition": "0",
+      "lineManagerName": "MUZILA EBALOSONG Papy",
+      "lineManagerPosition": "Marketing Manager",
       "patersonGrade": "",
       "statut": "Active",
       "typeContrat": "",
@@ -416,7 +416,7 @@
       "nif": "B2222665M",
       "telephone": "840072006",
       "createdAt": "2026-07-28T09:40:37.715Z",
-      "updatedAt": "2026-10-27T12:32:38.458Z"
+      "updatedAt": "2026-10-27T12:40:07.526Z"
     },
     {
       "id": "117dbc89-78ab-43f2-a41c-556d2e369282",
@@ -2045,8 +2045,8 @@
       "payrollArea": "Monthly",
       "position": "Customer Relationship Officer",
       "departmentHr": "Sales and Marketing",
-      "lineManagerName": "Marketing Manager",
-      "lineManagerPosition": "Customer Excellence Officer",
+      "lineManagerName": "MUZILA EBALOSONG Papy",
+      "lineManagerPosition": "Marketing Manager",
       "patersonGrade": "",
       "statut": "Active",
       "typeContrat": "",
@@ -2068,7 +2068,7 @@
       "nif": "B2222592H",
       "telephone": "840123690",
       "createdAt": "2026-07-28T09:40:37.715Z",
-      "updatedAt": "2026-10-27T12:33:31.342Z"
+      "updatedAt": "2026-10-27T12:40:07.526Z"
     },
     {
       "id": "6005dcaf-ae46-494c-8e55-5f4857b80d37",
