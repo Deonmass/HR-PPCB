@@ -1,6 +1,32 @@
 {
   "entries": [
     {
+      "id": "log-002026",
+      "at": "2026-10-27T12:45:45.128Z",
+      "userId": "admin",
+      "userName": "Administrateur",
+      "userEmail": "admin",
+      "module": "employees",
+      "moduleLabel": "Employés",
+      "action": "update",
+      "actionLabel": "Modification",
+      "entityType": "employee",
+      "summary": "N+1 mis à jour (1)",
+      "details": "N+1 mis à jour (1)",
+      "after": {
+        "employees": [
+          {
+            "matricule": "70000157",
+            "lineManagerName": "KILOSO SANDA HELENA",
+            "lineManagerPosition": "Senior Regional Sales Consultant Retail & Funa"
+          }
+        ],
+        "contractants": 0
+      },
+      "undoable": false,
+      "undone": false
+    },
+    {
       "id": "log-002025",
       "at": "2026-10-27T12:44:53.871Z",
       "userId": "admin",
@@ -217047,5 +217073,5 @@
       }
     }
   ],
-  "nextSeq": 2026
+  "nextSeq": 2027
 }
