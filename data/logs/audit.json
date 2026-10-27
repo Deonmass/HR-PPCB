@@ -1,6 +1,21 @@
 {
   "entries": [
     {
+      "id": "log-002033",
+      "at": "2026-10-27T14:16:05.120Z",
+      "userId": "admin",
+      "userName": "Administrateur",
+      "userEmail": "admin",
+      "module": "documents.exit",
+      "moduleLabel": "Documents",
+      "action": "export",
+      "actionLabel": "Export",
+      "summary": "Document exit « Employee exit clearance form » — NZAZI KALUZAKI TOUBI (70000042)",
+      "details": "Document exit « Employee exit clearance form » — NZAZI KALUZAKI TOUBI (70000042)",
+      "undoable": false,
+      "undone": false
+    },
+    {
       "id": "log-002032",
       "at": "2026-10-27T13:33:56.254Z",
       "userId": "Serge.Muakasa@ppcdrc.cd",
@@ -217352,5 +217367,5 @@
       }
     }
   ],
-  "nextSeq": 2033
+  "nextSeq": 2034
 }
