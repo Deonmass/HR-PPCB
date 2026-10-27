@@ -1,6 +1,31 @@
 {
   "entries": [
     {
+      "id": "log-001983",
+      "at": "2026-10-27T10:16:27.918Z",
+      "userId": "admin",
+      "userName": "Administrateur",
+      "userEmail": "admin",
+      "module": "contractants",
+      "moduleLabel": "contractants",
+      "action": "create",
+      "actionLabel": "Création",
+      "entityType": "contractant",
+      "entityId": "Consutants Externes",
+      "summary": "Contractant créé — Consutants Externes",
+      "details": "Contractant créé — Consutants Externes",
+      "after": {
+        "id": "14",
+        "denomination": "Consutants Externes",
+        "typeService": "Consutance",
+        "employees": [],
+        "createdAt": "2026-10-27T10:16:24.117Z",
+        "updatedAt": "2026-10-27T10:16:24.117Z"
+      },
+      "undoable": false,
+      "undone": false
+    },
+    {
       "id": "log-001982",
       "at": "2026-10-27T09:56:23.337Z",
       "userId": "admin",
@@ -213040,5 +213065,5 @@
       }
     }
   ],
-  "nextSeq": 1983
+  "nextSeq": 1984
 }
