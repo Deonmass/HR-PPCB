@@ -1,6 +1,21 @@
 {
   "entries": [
     {
+      "id": "log-001987",
+      "at": "2026-10-27T11:09:53.698Z",
+      "userId": "Marie.Yowali",
+      "userName": "Marie Yowali",
+      "userEmail": "Marie.Yowali@ppcdrc.cd",
+      "module": "employes.airtime",
+      "moduleLabel": "Airtime",
+      "action": "export",
+      "actionLabel": "Export",
+      "summary": "Export Excel Airtime (174 PPC, 23 contractants)",
+      "details": "Export Excel Airtime (174 PPC, 23 contractants)",
+      "undoable": false,
+      "undone": false
+    },
+    {
       "id": "log-001986",
       "at": "2026-10-27T11:08:46.586Z",
       "userId": "Marie.Yowali",
@@ -213150,5 +213165,5 @@
       }
     }
   ],
-  "nextSeq": 1987
+  "nextSeq": 1988
 }
