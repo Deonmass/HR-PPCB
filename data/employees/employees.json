@@ -2212,6 +2212,7 @@
       "grade": "D2",
       "jobTitle": "Alternative Fuels & Raw Materials Manager",
       "localisation": "Zamba",
+      "service": "",
       "company": "PPC Barnet DRC Manufacturing",
       "centreCout": "KC9211",
       "appointmentDate": "09/07/2025",
@@ -2227,8 +2228,8 @@
       "payrollArea": "Monthly",
       "position": "",
       "departmentHr": "Managing Director",
-      "lineManagerName": "Patrick Kahasha",
-      "lineManagerPosition": "Managing Director",
+      "lineManagerName": "BOOKE BASA MICHAEL",
+      "lineManagerPosition": "Head of Supply Chain",
       "patersonGrade": "",
       "statut": "Active",
       "typeContrat": "CDI",
@@ -2248,9 +2249,9 @@
       "datePassageCdi": "",
       "cnss": "11984541514I",
       "nif": "F2599670W",
+      "telephone": "859999714",
       "createdAt": "2026-07-28T09:40:37.715Z",
-      "updatedAt": "2026-09-28T12:52:15.317Z",
-      "telephone": "859999714"
+      "updatedAt": "2026-10-27T09:50:39.686Z"
     },
     {
       "id": "61ad1c54-f592-470a-a8b3-a60c46678146",
