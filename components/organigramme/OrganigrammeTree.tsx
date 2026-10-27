@@ -39,6 +39,8 @@ type Props = {
   onEditManager: (person: OrgPersonTarget) => void;
   onEditGroupManager: (people: OrgPersonTarget[]) => void;
   onEditRole: (person: OrgPersonTarget) => void;
+  onChangeDepartments?: (people: OrgPersonTarget[]) => void;
+  selectionClearKey?: number;
 };
 
 type HiddenCard = {
@@ -126,6 +128,8 @@ function PosteCard({
   hasFiche,
   canEditMember,
   hiddenIds,
+  selectedIds,
+  onToggleSelect,
   onOpenMenu,
   onOpenTeam,
 }: {
@@ -137,6 +141,8 @@ function PosteCard({
   hasFiche: (matricule: string) => boolean;
   canEditMember: (member: OrgPosteMember) => boolean;
   hiddenIds: ReadonlySet<string>;
+  selectedIds: ReadonlySet<string>;
+  onToggleSelect: (id: string) => void;
   onOpenMenu: (event: React.MouseEvent, person: OrgPersonTarget | null, people: OrgPersonTarget[], card: HiddenCard) => void;
   onOpenTeam: (group: OrgPosteGroup) => void;
 }) {
@@ -181,6 +187,8 @@ function PosteCard({
   const editablePeople = group.members
     .filter((member) => canEditMember(member))
     .map((member) => toTarget(member, group.jobTitle));
+  const selected = selectedIds.has(group.id);
+  const selectable = editablePeople.length > 0;
   const openable = group.members.filter((member) => canOpenMember(member));
 
   const card: HiddenCard = {
@@ -218,6 +226,7 @@ function PosteCard({
           capitalHr ? 'is-capital-hr' : '',
           vacant ? 'is-vacant' : '',
           hit ? 'is-hit' : '',
+          selected ? 'is-selected' : '',
         ]
           .filter(Boolean)
           .join(' ')}
@@ -280,6 +289,21 @@ function PosteCard({
             {external && !vacant ? <span className="org-chart-pill is-warn">Externe</span> : null}
           </div>
           <div className="org-chart-card-tools">
+            {selectable ? (
+              <button
+                type="button"
+                className={`org-chart-tool org-chart-select${selected ? ' is-on' : ''}`}
+                aria-pressed={selected}
+                title={selected ? 'Retirer de la sélection' : 'Sélectionner cette carte'}
+                aria-label={selected ? 'Retirer cette carte de la sélection' : 'Sélectionner cette carte'}
+                onClick={(event) => {
+                  event.stopPropagation();
+                  onToggleSelect(group.id);
+                }}
+              >
+                {selected ? '✓' : ''}
+              </button>
+            ) : null}
             <button
               type="button"
               className="org-chart-tool"
@@ -318,6 +342,8 @@ function PosteCard({
               hasFiche={hasFiche}
               canEditMember={canEditMember}
               hiddenIds={hiddenIds}
+              selectedIds={selectedIds}
+              onToggleSelect={onToggleSelect}
               onOpenMenu={onOpenMenu}
               onOpenTeam={onOpenTeam}
             />
@@ -341,12 +367,54 @@ export default function OrganigrammeTree({
   onEditManager,
   onEditGroupManager,
   onEditRole,
+  onChangeDepartments,
+  selectionClearKey = 0,
 }: Props) {
   const groups = useMemo(() => groupOrgNodesByPoste(roots), [roots]);
   const [menu, setMenu] = useState<MenuState | null>(null);
   const [team, setTeam] = useState<OrgPosteGroup | null>(null);
   const [hidden, setHidden] = useState<HiddenCard[]>([]);
+  const [selectedIds, setSelectedIds] = useState<Set<string>>(() => new Set());
   const hiddenIds = useMemo(() => new Set(hidden.map((card) => card.id)), [hidden]);
+
+  useEffect(() => {
+    if (selectionClearKey > 0) setSelectedIds(new Set());
+  }, [selectionClearKey]);
+
+  const toggleSelect = (id: string) => {
+    setSelectedIds((prev) => {
+      const next = new Set(prev);
+      if (next.has(id)) next.delete(id);
+      else next.add(id);
+      return next;
+    });
+  };
+
+  const selectedPeople = useMemo(() => {
+    if (!onChangeDepartments || selectedIds.size === 0) return [];
+    const out: OrgPersonTarget[] = [];
+    const seen = new Set<string>();
+    const walk = (list: OrgPosteGroup[]) => {
+      for (const group of list) {
+        if (selectedIds.has(group.id)) {
+          for (const member of group.members) {
+            if (member.isExternal || member.isVacant) continue;
+            const editable = member.isContractant
+              ? canEditContractant && Boolean(member.contractantId && member.contractantEmployeeId)
+              : canEdit && hasFiche(member.matricule);
+            if (!editable) continue;
+            const key = member.isContractant ? `c:${member.contractantEmployeeId}` : `i:${member.matricule}`;
+            if (seen.has(key)) continue;
+            seen.add(key);
+            out.push(toTarget(member, group.jobTitle));
+          }
+        }
+        walk(group.children);
+      }
+    };
+    walk(groups);
+    return out;
+  }, [groups, selectedIds, onChangeDepartments, canEdit, canEditContractant, hasFiche]);
 
   const visible = useMemo(() => {
     const q = fold(search.trim());
@@ -402,7 +470,8 @@ export default function OrganigrammeTree({
     ));
     const showGroup = people.length > 1;
     const showRole = Boolean(person && !person.isContractant && canEdit && hasFiche(person.matricule));
-    const count = [showFiche, showPerson, showGroup, showRole, true].filter(Boolean).length;
+    const showSelect = Boolean(onChangeDepartments) && people.length > 0;
+    const count = [showFiche, showPerson, showGroup, showRole, showSelect, true].filter(Boolean).length;
     event.preventDefault();
     event.stopPropagation();
     const width = 280;
@@ -452,11 +521,34 @@ export default function OrganigrammeTree({
     </div>
   ) : null;
 
+  const selectBar = onChangeDepartments && selectedIds.size > 0 ? (
+    <div className="org-select-bar" aria-label="Cartes sélectionnées">
+      <span className="org-hidden-label">
+        {selectedIds.size === 1 ? '1 carte sélectionnée' : `${selectedIds.size} cartes sélectionnées`}
+        {selectedPeople.length > 0
+          ? ` · ${selectedPeople.length === 1 ? '1 agent' : `${selectedPeople.length} agents`}`
+          : ''}
+      </span>
+      <button
+        type="button"
+        className="btn btn-primary btn-sm"
+        disabled={selectedPeople.length === 0}
+        onClick={() => onChangeDepartments(selectedPeople)}
+      >
+        Changer le département
+      </button>
+      <button type="button" className="org-hidden-clear" onClick={() => setSelectedIds(new Set())}>
+        Annuler
+      </button>
+    </div>
+  ) : null;
+
   const shown = visible.filter((group) => !hiddenIds.has(group.id));
 
   if (shown.length === 0) {
     return (
       <>
+        {selectBar}
         {hiddenBar}
         <p className="org-empty">
           {hidden.length > 0 && !search.trim()
@@ -481,9 +573,11 @@ export default function OrganigrammeTree({
   const editRoleOk = Boolean(
     menu?.person && !menu.person.isContractant && canEdit && hasFiche(menu.person.matricule),
   );
+  const selectOk = Boolean(onChangeDepartments && menu && menu.people.length > 0);
 
   return (
     <>
+    {selectBar}
     {hiddenBar}
     <div className="org-chart-scroll" style={{ zoom }}>
       <ul className="org-chart-roots">
@@ -498,6 +592,8 @@ export default function OrganigrammeTree({
             hasFiche={hasFiche}
             canEditMember={canEditMember}
             hiddenIds={hiddenIds}
+            selectedIds={selectedIds}
+            onToggleSelect={toggleSelect}
             onOpenMenu={openMenu}
             onOpenTeam={setTeam}
           />
@@ -601,6 +697,21 @@ export default function OrganigrammeTree({
                 }}
               >
                 Changer de département et de poste
+              </button>
+            ) : null}
+            {selectOk && menu ? (
+              <button
+                type="button"
+                role="menuitem"
+                onClick={() => {
+                  const id = menu.card.id;
+                  setMenu(null);
+                  toggleSelect(id);
+                }}
+              >
+                {selectedIds.has(menu.card.id)
+                  ? 'Retirer cette carte de la sélection'
+                  : 'Sélectionner cette carte'}
               </button>
             ) : null}
             <button

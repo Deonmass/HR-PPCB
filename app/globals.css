@@ -45309,6 +45309,35 @@ html[data-theme='light'] .org-sticky {
   border-color: #ca8a04;
 }
 
+.org-chart-card.is-selected {
+  border-color: #1e3a5f;
+  box-shadow: 0 0 0 2px rgba(30, 58, 95, 0.28);
+}
+
+.org-chart-select.is-on {
+  background: #1e3a5f;
+  border-color: #1e3a5f;
+  color: #fff;
+  font-size: 0.72rem;
+  font-weight: 700;
+}
+
+.org-select-bar {
+  position: sticky;
+  top: 0;
+  z-index: 5;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.4rem 0.55rem;
+  margin: 0 0 0.45rem;
+  padding: 0.4rem 0.55rem;
+  border: 1px solid #cbd5e1;
+  border-radius: 8px;
+  background: #fff;
+  font-size: 0.75rem;
+}
+
 .org-chart-card.is-hit {
   border-color: #e30613;
   box-shadow: 0 0 0 1px rgba(227, 6, 19, 0.22);
@@ -46169,6 +46198,8 @@ html[data-theme='light'] .org-chart-children > .org-chart-node:last-child::after
   body.org-printing .org-footer,
   body.org-printing .org-menu,
   body.org-printing .org-hidden-bar,
+  body.org-printing .org-select-bar,
+  body.org-printing .org-chart-select,
   body.org-printing .org-dialog-backdrop {
     display: none !important;
   }

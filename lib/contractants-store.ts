@@ -21,7 +21,7 @@ import {
   isContractantSexe,
 } from './contractants-types';
 import { inferFemaleSexeFromName } from './contractants-gender';
-import { normalizeServiceName, resolveExcoDepartment } from './exco-department-map';
+import { departmentsEqual, normalizeServiceName, resolveExcoDepartment } from './exco-department-map';
 import { isLocalisationLabel, normalizeLocalisation } from './localisations';
 import { canPersistProjectFiles, getWritableDataRoot } from './runtime-mode';
 import { randomUUID } from 'crypto';
@@ -438,25 +438,56 @@ export async function updateContractantEmployee(
   return next;
 }
 
+function applyContractantDepartment(
+  employee: { departement: string; service: string },
+  departement: string,
+  service: string,
+) {
+  const nextDept = departement.trim();
+  if (!nextDept) return;
+  const same = departmentsEqual(employee.departement || '', nextDept);
+  employee.departement = nextDept;
+  if (!same) employee.service = service.trim();
+}
+
 export async function patchContractantManagerLinks(
   updates: Array<{
     contractantId: string;
     employeeId: string;
     managerEmployeeId: string;
     managerMatricule: string;
+    departement?: string;
+    service?: string;
   }>,
-): Promise<number> {
+): Promise<Array<{
+  contractantId: string;
+  employeeId: string;
+  managerEmployeeId: string;
+  managerMatricule: string;
+  departement: string;
+  service: string;
+}>> {
   const clean = updates
     .map((item) => ({
       contractantId: String(item.contractantId || '').trim(),
       employeeId: String(item.employeeId || '').trim(),
       managerEmployeeId: String(item.managerEmployeeId || '').trim(),
       managerMatricule: String(item.managerMatricule || '').trim(),
+      departement: String(item.departement || '').trim(),
+      service: String(item.service || '').trim(),
     }))
     .filter((item) => item.contractantId && item.employeeId);
-  if (clean.length === 0) return 0;
+  if (clean.length === 0) return [];
   const store = await readStore();
   const now = new Date().toISOString();
+  const saved: Array<{
+    contractantId: string;
+    employeeId: string;
+    managerEmployeeId: string;
+    managerMatricule: string;
+    departement: string;
+    service: string;
+  }> = [];
   for (const update of clean) {
     const company = store.contractants.find((item) => item.id === update.contractantId);
     const employee = company?.employees.find((item) => item.id === update.employeeId);
@@ -465,11 +496,55 @@ export async function patchContractantManagerLinks(
     }
     employee.managerEmployeeId = update.managerEmployeeId;
     employee.managerMatricule = update.managerMatricule;
+    applyContractantDepartment(employee, update.departement, update.service);
     employee.updatedAt = now;
     company.updatedAt = now;
+    saved.push({
+      contractantId: company.id,
+      employeeId: employee.id,
+      managerEmployeeId: employee.managerEmployeeId,
+      managerMatricule: employee.managerMatricule || '',
+      departement: employee.departement,
+      service: employee.service || '',
+    });
   }
   await writeStore(store);
-  return clean.length;
+  return saved;
+}
+
+export async function patchContractantDepartments(
+  updates: Array<{ contractantId: string; employeeId: string; departement: string; service?: string }>,
+): Promise<Array<{ contractantId: string; employeeId: string; departement: string; service: string }>> {
+  const clean = updates
+    .map((item) => ({
+      contractantId: String(item.contractantId || '').trim(),
+      employeeId: String(item.employeeId || '').trim(),
+      departement: String(item.departement || '').trim(),
+      service: String(item.service || '').trim(),
+    }))
+    .filter((item) => item.contractantId && item.employeeId && item.departement);
+  if (clean.length === 0) return [];
+  const store = await readStore();
+  const now = new Date().toISOString();
+  const saved: Array<{ contractantId: string; employeeId: string; departement: string; service: string }> = [];
+  for (const update of clean) {
+    const company = store.contractants.find((item) => item.id === update.contractantId);
+    const employee = company?.employees.find((item) => item.id === update.employeeId);
+    if (!company || !employee) {
+      throw new Error('Contractant introuvable');
+    }
+    applyContractantDepartment(employee, update.departement, update.service);
+    employee.updatedAt = now;
+    company.updatedAt = now;
+    saved.push({
+      contractantId: company.id,
+      employeeId: employee.id,
+      departement: employee.departement,
+      service: employee.service || '',
+    });
+  }
+  await writeStore(store);
+  return saved;
 }
 
 export async function deleteContractantEmployee(

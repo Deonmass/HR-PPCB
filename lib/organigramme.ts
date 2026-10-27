@@ -244,6 +244,97 @@ export function isVacantPostLabel(value: string): boolean {
  * Titre du poste vacant, identique dans la fiche et sur la carte.
  * `null` si ce line manager est une personne.
  */
+/** Département canonique, et service seulement si le libellé en est un. */
+export function departmentPlacement(raw: string): { departement: string; service: string } {
+  const resolved = resolveExcoDepartment(raw);
+  return {
+    departement: resolved.department || String(raw || '').trim(),
+    service: resolved.serviceName ? normalizeServiceName(resolved.serviceName) : '',
+  };
+}
+
+type ReportingEmployee = {
+  matricule: string;
+  nom: string;
+  departement?: string;
+  departmentHr?: string;
+  statut?: string;
+};
+
+type ReportingContractant = {
+  id: string;
+  nom: string;
+  departement?: string;
+  dateSortie?: string;
+};
+
+/**
+ * Département du N+1 : agent PPC, contractant, ou poste vacant.
+ * Chaîne vide si le N+1 n’a pas de département connu.
+ */
+export function reportingDepartment(input: {
+  lineManagerName?: string;
+  lineManagerPosition?: string;
+  managerMatricule?: string;
+  managerEmployeeId?: string;
+  employees: ReportingEmployee[];
+  contractants: ReportingContractant[];
+  vacantDepartments?: Array<{ title: string; department: string }>;
+}): string {
+  const name = String(input.lineManagerName || '').trim();
+  const position = String(input.lineManagerPosition || '').trim();
+  const matricule = String(input.managerMatricule || '').trim();
+  const employeeId = String(input.managerEmployeeId || '').trim();
+  const canon = (raw: string) => departmentPlacement(raw).departement;
+
+  const vacantTitle = /^vacant:/i.test(matricule)
+    ? matricule.slice('vacant:'.length).trim()
+    : vacantPostTitle(name, position);
+  if (vacantTitle) {
+    const key = foldOrgLabel(vacantTitle);
+    const hit = (input.vacantDepartments || []).find((item) => foldOrgLabel(item.title) === key);
+    return hit?.department ? canon(hit.department) : '';
+  }
+
+  if (matricule && !/^vacant:/i.test(matricule)) {
+    const person = input.employees.find((item) => item.matricule === matricule);
+    const dept = String(person?.departement || person?.departmentHr || '').trim();
+    return dept ? canon(dept) : '';
+  }
+
+  if (employeeId) {
+    const person = input.contractants.find((item) => item.id === employeeId);
+    const dept = String(person?.departement || '').trim();
+    return dept ? canon(dept) : '';
+  }
+
+  if (!name) return '';
+  const active = input.employees.filter((item) => {
+    const statut = String(item.statut || 'Active').trim().toLowerCase();
+    return !statut || statut === 'active';
+  });
+  const exact = findBestNameMatch(
+    name,
+    active.map((item) => ({ matricule: item.matricule, nom: item.nom })),
+    100,
+  );
+  if (exact) {
+    const person = active.find((item) => item.matricule === exact.candidate.matricule);
+    const dept = String(person?.departement || person?.departmentHr || '').trim();
+    if (dept) return canon(dept);
+  }
+  const key = personTokenKey(name);
+  if (!key) return '';
+  const matches = input.contractants.filter((item) => (
+    String(item.nom || '').trim()
+    && !String(item.dateSortie || '').trim()
+    && personTokenKey(item.nom) === key
+  ));
+  if (matches.length !== 1) return '';
+  const dept = String(matches[0]?.departement || '').trim();
+  return dept ? canon(dept) : '';
+}
+
 export function vacantPostTitle(lineManagerName: string, lineManagerPosition: string): string | null {
   const name = String(lineManagerName || '').trim();
   const position = String(lineManagerPosition || '').trim();

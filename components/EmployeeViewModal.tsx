@@ -762,11 +762,37 @@ export default function EmployeeViewModal({ employee, canEdit = false, initialTa
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify(next),
         });
+      const payload = (await res.json().catch(() => ({}))) as Employee & {
+        error?: string;
+        employees?: Array<{
+          matricule: string;
+          lineManagerName: string;
+          lineManagerPosition: string;
+          departement: string;
+          departmentHr: string;
+          service: string;
+        }>;
+      };
       if (!res.ok) {
-        const err = await res.json().catch(() => ({}));
-        throw new Error(err.error || 'Enregistrement impossible');
+        throw new Error(payload.error || 'Enregistrement impossible');
       }
-      const saved = managerOnly ? next : (await res.json()) as Employee;
+      const managerRow = managerOnly
+        ? payload.employees?.find((item) => item.matricule === employee.matricule)
+        : undefined;
+      const saved = managerOnly
+        ? {
+          ...next,
+          lineManagerName: managerRow?.lineManagerName || next.lineManagerName,
+          lineManagerPosition: managerRow?.lineManagerPosition || next.lineManagerPosition,
+          ...(managerRow
+            ? {
+              departement: managerRow.departement,
+              departmentHr: managerRow.departmentHr || managerRow.departement,
+              service: managerRow.service ?? next.service,
+            }
+            : {}),
+        }
+        : payload;
       setDraft(saved);
       onUpdated?.(saved);
       window.dispatchEvent(new CustomEvent('hr-employee-updated', { detail: saved }));

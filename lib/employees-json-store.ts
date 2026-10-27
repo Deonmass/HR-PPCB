@@ -30,6 +30,7 @@ import {
   todayDisplayDate,
 } from './employee-columns';
 import { resolveEssaiEcheanceEval, applyCddVersCdiHistory, computeFinContratFromDuree, resolveEssaiStatutEval } from './employees-trial';
+import { departmentsEqual } from './exco-department-map';
 import { applyEmployeeServicePrefill } from './employee-utils';
 import { canPersistProjectFiles, getWritableDataRoot } from './runtime-mode';
 import type { Employee, EmployeeDocuments } from './types';
@@ -546,14 +547,42 @@ export async function upsertEmployee(employee: Employee): Promise<Employee> {
   return saved;
 }
 
+function applyStoredDepartment(
+  current: { departement: string; departmentHr: string; service?: string },
+  departement: string,
+  service: string,
+) {
+  const nextDept = departement.trim();
+  if (!nextDept) return;
+  const same = departmentsEqual(current.departement || '', nextDept);
+  current.departement = nextDept;
+  current.departmentHr = nextDept;
+  if (!same) current.service = service.trim();
+}
+
 export async function patchEmployeeLineManagers(
-  updates: Array<{ matricule: string; lineManagerName: string; lineManagerPosition: string }>,
-): Promise<Array<{ matricule: string; lineManagerName: string; lineManagerPosition: string }>> {
+  updates: Array<{
+    matricule: string;
+    lineManagerName: string;
+    lineManagerPosition: string;
+    departement?: string;
+    service?: string;
+  }>,
+): Promise<Array<{
+  matricule: string;
+  lineManagerName: string;
+  lineManagerPosition: string;
+  departement: string;
+  departmentHr: string;
+  service: string;
+}>> {
   const clean = updates
     .map((item) => ({
       matricule: String(item.matricule || '').trim(),
       lineManagerName: String(item.lineManagerName || '').trim(),
       lineManagerPosition: String(item.lineManagerPosition || '').trim(),
+      departement: String(item.departement || '').trim(),
+      service: String(item.service || '').trim(),
     }))
     .filter((item) => item.matricule);
   if (clean.length === 0) return [];
@@ -566,19 +595,75 @@ export async function patchEmployeeLineManagers(
     throw new Error(`Employé introuvable : ${missing.map((item) => item.matricule).join(', ')}`);
   }
   const now = new Date().toISOString();
+  const saved: Array<{
+    matricule: string;
+    lineManagerName: string;
+    lineManagerPosition: string;
+    departement: string;
+    departmentHr: string;
+    service: string;
+  }> = [];
   for (const update of clean) {
     const index = employeesStore.employees.findIndex((item) => item.matricule === update.matricule);
     const current = employeesStore.employees[index]!;
+    applyStoredDepartment(current, update.departement, update.service);
     employeesStore.employees[index] = {
       ...current,
       lineManagerName: update.lineManagerName,
       lineManagerPosition: update.lineManagerPosition,
       updatedAt: now,
     };
+    const next = employeesStore.employees[index]!;
+    saved.push({
+      matricule: next.matricule,
+      lineManagerName: next.lineManagerName,
+      lineManagerPosition: next.lineManagerPosition,
+      departement: next.departement,
+      departmentHr: next.departmentHr,
+      service: next.service || '',
+    });
   }
   await writeJsonFile(DURABLE_EMPLOYEES_KEY, employeesPath(), employeesStore);
   invalidateEmployeesBundleCache();
-  return clean;
+  return saved;
+}
+
+export async function patchEmployeeDepartments(
+  updates: Array<{ matricule: string; departement: string; service?: string }>,
+): Promise<Array<{ matricule: string; departement: string; departmentHr: string; service: string }>> {
+  const clean = updates
+    .map((item) => ({
+      matricule: String(item.matricule || '').trim(),
+      departement: String(item.departement || '').trim(),
+      service: String(item.service || '').trim(),
+    }))
+    .filter((item) => item.matricule && item.departement);
+  if (clean.length === 0) return [];
+  await ensureMigrated();
+  const employeesStore = await readEmployeesStore();
+  const missing = clean.filter(
+    (item) => !employeesStore.employees.some((employee) => employee.matricule === item.matricule),
+  );
+  if (missing.length > 0) {
+    throw new Error(`Employé introuvable : ${missing.map((item) => item.matricule).join(', ')}`);
+  }
+  const now = new Date().toISOString();
+  const saved: Array<{ matricule: string; departement: string; departmentHr: string; service: string }> = [];
+  for (const update of clean) {
+    const index = employeesStore.employees.findIndex((item) => item.matricule === update.matricule);
+    const current = employeesStore.employees[index]!;
+    applyStoredDepartment(current, update.departement, update.service);
+    current.updatedAt = now;
+    saved.push({
+      matricule: current.matricule,
+      departement: current.departement,
+      departmentHr: current.departmentHr,
+      service: current.service || '',
+    });
+  }
+  await writeJsonFile(DURABLE_EMPLOYEES_KEY, employeesPath(), employeesStore);
+  invalidateEmployeesBundleCache();
+  return saved;
 }
 
 /** Met à jour uniquement la localisation employé (sans reboucler vers dépendants). */

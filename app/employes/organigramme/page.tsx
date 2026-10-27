@@ -1,6 +1,7 @@
 'use client';
 
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import OrganigrammeDepartmentDialog from '@/components/organigramme/OrganigrammeDepartmentDialog';
 import OrganigrammeManagerDialog from '@/components/organigramme/OrganigrammeManagerDialog';
 import OrganigrammePersonDialog from '@/components/organigramme/OrganigrammePersonDialog';
 import OrganigrammeTree, { type OrgPersonTarget } from '@/components/organigramme/OrganigrammeTree';
@@ -19,9 +20,11 @@ import {
   countContractantPopulations,
   moveContractantsUnderInternalManagers,
   orgPersonShortName,
+  reportingDepartment,
   resolveLineManagerMatricule,
   type OrganigrammeScope,
 } from '@/lib/organigramme';
+import { compareExcoDepartments, EXCO_CANONICAL_DEPARTMENTS } from '@/lib/exco-department-map';
 import { confirmAction, showError, showSuccess } from '@/lib/swal';
 import type { VacantPoste } from '@/lib/postes-types';
 import type { Employee } from '@/lib/types';
@@ -101,6 +104,8 @@ export default function OrganigrammePage() {
   const [fiche, setFiche] = useState<Employee | null>(null);
   const [edit, setEdit] = useState<{ mode: 'manager' | 'role'; person: OrgPersonTarget } | null>(null);
   const [managerEdit, setManagerEdit] = useState<OrgPersonTarget[] | null>(null);
+  const [departmentEdit, setDepartmentEdit] = useState<OrgPersonTarget[] | null>(null);
+  const [selectionClearKey, setSelectionClearKey] = useState(0);
 
   const allowed = can(MENU, 'view') || can('employes.liste', 'view');
   const canEdit = can(MENU, 'edit') || can('employes.liste', 'edit');
@@ -167,6 +172,11 @@ export default function OrganigrammePage() {
     () => listOrganigrammeDepartments(employees, contractants),
     [employees, contractants],
   );
+  const departmentChoices = useMemo(() => {
+    const names = new Set<string>(EXCO_CANONICAL_DEPARTMENTS);
+    for (const name of departments) if (name.trim()) names.add(name.trim());
+    return [...names].sort(compareExcoDepartments);
+  }, [departments]);
   const services = useMemo(
     () => listOrganigrammeServices(employees, departement || undefined, contractants),
     [employees, contractants, departement],
@@ -380,12 +390,6 @@ export default function OrganigrammePage() {
       return;
     }
     const summaryLabel = vacantTitle || orgPersonShortName(managerName) || managerName;
-    const summary = managerEdit.length > 1
-      ? `${managerEdit.length} agents → ${summaryLabel}`
-      : `N+1 : ${summaryLabel}`;
-    const confirmed = await confirmAction('Confirmer le N+1 ?', summary, 'Enregistrer');
-    if (!confirmed) return;
-
     const contractantPeople = managerEdit.filter((item) => item.isContractant);
     const internalPeople = managerEdit.filter((item) => !item.isContractant);
     const link = kind === 'vacant'
@@ -397,6 +401,25 @@ export default function OrganigrammePage() {
     const linePosition = vacantTitle
       ? 'Poste vacant'
       : String(internal?.jobTitle || internal?.position || external?.employee.fonction || '').trim();
+    const nextDepartment = reportingDepartment({
+      lineManagerName: lineName,
+      lineManagerPosition: linePosition,
+      managerMatricule: link.matricule,
+      managerEmployeeId: link.employeeId,
+      employees,
+      contractants: contractants.flatMap((company) => (company.employees || []).map((employee) => ({
+        id: employee.id,
+        nom: employee.nom,
+        departement: employee.departement,
+        dateSortie: employee.dateSortie,
+      }))),
+      vacantDepartments: vacantPostes.map((poste) => ({ title: poste.title, department: poste.department })),
+    });
+    const summary = managerEdit.length > 1
+      ? `${managerEdit.length} agents → ${summaryLabel}${nextDepartment ? ` · ${nextDepartment}` : ''}`
+      : `N+1 : ${summaryLabel}${nextDepartment ? ` · ${nextDepartment}` : ''}`;
+    const confirmed = await confirmAction('Confirmer le N+1 ?', summary, 'Enregistrer');
+    if (!confirmed) return;
 
     const employeeUpdates = internalPeople.flatMap((person) => {
       const employee = employeesByMatricule.get(person.matricule);
@@ -433,32 +456,71 @@ export default function OrganigrammePage() {
           contractants: contractantUpdates,
         }),
       });
-      const json = (await res.json()) as { error?: string };
+      const json = (await res.json()) as {
+        error?: string;
+        employees?: Array<{
+          matricule: string;
+          lineManagerName: string;
+          lineManagerPosition: string;
+          departement: string;
+          departmentHr: string;
+          service: string;
+        }>;
+        contractants?: Array<{
+          employeeId: string;
+          managerEmployeeId: string;
+          managerMatricule: string;
+          departement: string;
+          service: string;
+        }>;
+      };
       if (!res.ok) throw new Error(json.error || 'Enregistrement impossible');
-      if (employeeUpdates.length > 0) {
-        const byMatricule = new Map(employeeUpdates.map((item) => [item.matricule, item]));
+      const savedEmployees = json.employees || [];
+      const savedContractants = json.contractants || [];
+      if (savedEmployees.length > 0) {
+        const byMatricule = new Map(savedEmployees.map((item) => [item.matricule, item]));
         setEmployees((prev) => prev.map((item) => {
           const update = byMatricule.get(item.matricule);
           return update
-            ? { ...item, lineManagerName: update.lineManagerName, lineManagerPosition: update.lineManagerPosition }
+            ? {
+              ...item,
+              lineManagerName: update.lineManagerName,
+              lineManagerPosition: update.lineManagerPosition,
+              departement: update.departement,
+              departmentHr: update.departmentHr,
+              service: update.service,
+            }
             : item;
         }));
         setFiche((current) => {
           if (!current) return current;
           const update = byMatricule.get(current.matricule);
           return update
-            ? { ...current, lineManagerName: update.lineManagerName, lineManagerPosition: update.lineManagerPosition }
+            ? {
+              ...current,
+              lineManagerName: update.lineManagerName,
+              lineManagerPosition: update.lineManagerPosition,
+              departement: update.departement,
+              departmentHr: update.departmentHr,
+              service: update.service,
+            }
             : current;
         });
       }
-      if (contractantUpdates.length > 0) {
-        const byId = new Map(contractantUpdates.map((item) => [item.employeeId, item]));
+      if (savedContractants.length > 0) {
+        const byId = new Map(savedContractants.map((item) => [item.employeeId, item]));
         setContractants((prev) => prev.map((company) => ({
           ...company,
           employees: company.employees.map((employee) => {
             const update = byId.get(employee.id);
             return update
-              ? { ...employee, managerEmployeeId: update.managerEmployeeId, managerMatricule: update.managerMatricule }
+              ? {
+                ...employee,
+                managerEmployeeId: update.managerEmployeeId,
+                managerMatricule: update.managerMatricule,
+                departement: update.departement,
+                service: update.service,
+              }
               : employee;
           }),
         })));
@@ -468,8 +530,98 @@ export default function OrganigrammePage() {
       return;
     }
 
-    await showSuccess(managerEdit.length > 1 ? 'N+1 du groupe enregistré.' : 'N+1 enregistré.');
+    await showSuccess(
+      nextDepartment
+        ? (managerEdit.length > 1 ? 'N+1 du groupe enregistré. Le département suit le N+1.' : 'N+1 enregistré. Le département suit le N+1.')
+        : (managerEdit.length > 1 ? 'N+1 du groupe enregistré.' : 'N+1 enregistré.'),
+    );
     setManagerEdit(null);
+  };
+
+  const saveDepartments = async (departement: string) => {
+    if (!departmentEdit?.length) return;
+    const label = departement.trim();
+    if (!label) {
+      await showError('Choisissez un département.');
+      return;
+    }
+    const summary = departmentEdit.length === 1
+      ? `${orgPersonShortName(departmentEdit[0]!.nom)} → ${label}`
+      : `${departmentEdit.length} agents → ${label}`;
+    const confirmed = await confirmAction('Confirmer le département ?', summary, 'Enregistrer');
+    if (!confirmed) return;
+
+    const employeeUpdates = departmentEdit
+      .filter((person) => !person.isContractant && person.matricule)
+      .map((person) => ({ matricule: person.matricule }));
+    const contractantUpdates = departmentEdit.flatMap((person) => {
+      if (!person.isContractant || !person.contractantEmployeeId) return [];
+      const found = contractants
+        .flatMap((company) => (company.employees || []).map((employee) => ({ company, employee })))
+        .find((item) => item.employee.id === person.contractantEmployeeId);
+      if (!found) return [];
+      return [{ contractantId: found.company.id, employeeId: found.employee.id }];
+    });
+    if (employeeUpdates.length === 0 && contractantUpdates.length === 0) {
+      await showError('Aucun agent à mettre à jour.');
+      return;
+    }
+
+    try {
+      const res = await fetch('/api/employes/organigramme/departements', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          departement: label,
+          employees: employeeUpdates,
+          contractants: contractantUpdates,
+        }),
+      });
+      const json = (await res.json()) as {
+        error?: string;
+        departement?: string;
+        employees?: Array<{ matricule: string; departement: string; departmentHr: string; service: string }>;
+        contractants?: Array<{ employeeId: string; departement: string; service: string }>;
+      };
+      if (!res.ok) throw new Error(json.error || 'Enregistrement impossible');
+      const savedEmployees = json.employees || [];
+      const savedContractants = json.contractants || [];
+      if (savedEmployees.length > 0) {
+        const byMatricule = new Map(savedEmployees.map((item) => [item.matricule, item]));
+        setEmployees((prev) => prev.map((item) => {
+          const update = byMatricule.get(item.matricule);
+          return update
+            ? { ...item, departement: update.departement, departmentHr: update.departmentHr, service: update.service }
+            : item;
+        }));
+        setFiche((current) => {
+          if (!current) return current;
+          const update = byMatricule.get(current.matricule);
+          return update
+            ? { ...current, departement: update.departement, departmentHr: update.departmentHr, service: update.service }
+            : current;
+        });
+      }
+      if (savedContractants.length > 0) {
+        const byId = new Map(savedContractants.map((item) => [item.employeeId, item]));
+        setContractants((prev) => prev.map((company) => ({
+          ...company,
+          employees: company.employees.map((employee) => {
+            const update = byId.get(employee.id);
+            return update
+              ? { ...employee, departement: update.departement, service: update.service }
+              : employee;
+          }),
+        })));
+      }
+    } catch (err) {
+      await showError(err instanceof Error ? err.message : 'Enregistrement impossible');
+      return;
+    }
+
+    await showSuccess(departmentEdit.length > 1 ? 'Département du groupe enregistré.' : 'Département enregistré.');
+    setDepartmentEdit(null);
+    setSelectionClearKey((value) => value + 1);
   };
 
   const managerWho = managerEdit?.length === 1
@@ -584,6 +736,8 @@ export default function OrganigrammePage() {
               onEditManager={(person) => setManagerEdit([person])}
               onEditGroupManager={(people) => setManagerEdit(people)}
               onEditRole={(person) => setEdit({ mode: 'role', person })}
+              onChangeDepartments={canEdit || canEditContractant ? (people) => setDepartmentEdit(people) : undefined}
+              selectionClearKey={selectionClearKey}
             />
           )}
         </section>
@@ -678,6 +832,15 @@ export default function OrganigrammePage() {
           choices={managerChoices}
           onClose={() => setManagerEdit(null)}
           onSave={saveManagers}
+        />
+      ) : null}
+
+      {departmentEdit ? (
+        <OrganigrammeDepartmentDialog
+          count={departmentEdit.length}
+          departments={departmentChoices}
+          onClose={() => setDepartmentEdit(null)}
+          onSave={saveDepartments}
         />
       ) : null}
 

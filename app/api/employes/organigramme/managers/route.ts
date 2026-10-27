@@ -1,7 +1,9 @@
 import { NextResponse } from 'next/server';
-import { patchContractantManagerLinks } from '@/lib/contractants-store';
-import { patchEmployeeLineManagers } from '@/lib/employees-json-store';
+import { listContractants, patchContractantManagerLinks } from '@/lib/contractants-store';
+import { patchEmployeeLineManagers, readEmployees } from '@/lib/employees-json-store';
 import { excelErrorResponse } from '@/lib/excel-io';
+import { departmentPlacement, reportingDepartment } from '@/lib/organigramme';
+import { listVacantPostes } from '@/lib/postes-store';
 import { checkAnyPermission } from '@/lib/require-permission';
 import { withAudit } from '@/lib/with-audit';
 
@@ -40,6 +42,23 @@ export async function POST(request: Request) {
       return NextResponse.json({ error: 'Trop de modifications' }, { status: 400 });
     }
 
+    const [directory, companies, vacants] = await Promise.all([
+      readEmployees(),
+      listContractants(),
+      listVacantPostes(),
+    ]);
+    const contractantPeople = companies.flatMap((company) => company.employees || []);
+    const vacantDepartments = vacants.map((poste) => ({
+      title: poste.title,
+      department: poste.department,
+    }));
+    const placedDepartment = (raw: string) => {
+      const placed = raw ? departmentPlacement(raw) : null;
+      return placed?.departement
+        ? { departement: placed.departement, service: placed.service }
+        : { departement: '', service: '' };
+    };
+
     const result = await withAudit(
       {
         module: 'employees',
@@ -52,20 +71,46 @@ export async function POST(request: Request) {
       },
       async () => {
         const savedEmployees = employees.length > 0
-          ? await patchEmployeeLineManagers(employees.map((item) => ({
-            matricule: String(item.matricule || ''),
-            lineManagerName: String(item.lineManagerName || ''),
-            lineManagerPosition: String(item.lineManagerPosition || ''),
-          })))
+          ? await patchEmployeeLineManagers(employees.map((item) => {
+            const lineManagerName = String(item.lineManagerName || '');
+            const lineManagerPosition = String(item.lineManagerPosition || '');
+            const org = placedDepartment(reportingDepartment({
+              lineManagerName,
+              lineManagerPosition,
+              employees: directory,
+              contractants: contractantPeople,
+              vacantDepartments,
+            }));
+            return {
+              matricule: String(item.matricule || ''),
+              lineManagerName,
+              lineManagerPosition,
+              departement: org.departement,
+              service: org.service,
+            };
+          }))
           : [];
         const savedContractants = contractants.length > 0
-          ? await patchContractantManagerLinks(contractants.map((item) => ({
-            contractantId: String(item.contractantId || ''),
-            employeeId: String(item.employeeId || ''),
-            managerEmployeeId: String(item.managerEmployeeId || ''),
-            managerMatricule: String(item.managerMatricule || ''),
-          })))
-          : 0;
+          ? await patchContractantManagerLinks(contractants.map((item) => {
+            const managerEmployeeId = String(item.managerEmployeeId || '');
+            const managerMatricule = String(item.managerMatricule || '');
+            const org = placedDepartment(reportingDepartment({
+              managerEmployeeId,
+              managerMatricule,
+              employees: directory,
+              contractants: contractantPeople,
+              vacantDepartments,
+            }));
+            return {
+              contractantId: String(item.contractantId || ''),
+              employeeId: String(item.employeeId || ''),
+              managerEmployeeId,
+              managerMatricule,
+              departement: org.departement,
+              service: org.service,
+            };
+          }))
+          : [];
         return { employees: savedEmployees, contractants: savedContractants };
       },
     );
