@@ -368,5 +368,15 @@
     "issuedBy": "Administrateur",
     "id": "exit-1793110970518-3h2dfa",
     "createdAt": "2026-10-27T14:22:50.518Z"
+  },
+  {
+    "matricule": "70000042",
+    "employeeName": "NZAZI KALUZAKI TOUBI",
+    "doc": "user-removal",
+    "docLabel": "User removal form",
+    "fileName": "User removal form - NZAZI KALUZAKI TOUBI.docx",
+    "issuedBy": "Administrateur",
+    "id": "exit-1793110985141-x4lugs",
+    "createdAt": "2026-10-27T14:23:05.141Z"
   }
 ]
