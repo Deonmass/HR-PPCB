@@ -1,5 +1,5 @@
 {
-  "nextContractantId": 14,
+  "nextContractantId": 15,
   "nextEmployeeId": 904,
   "contractants": [
     {
@@ -16910,6 +16910,14 @@
       "employees": [],
       "createdAt": "2026-10-14T11:58:36.127Z",
       "updatedAt": "2026-10-14T11:58:36.127Z"
+    },
+    {
+      "id": "14",
+      "denomination": "Consutants Externes",
+      "typeService": "Consutance",
+      "employees": [],
+      "createdAt": "2026-10-27T10:16:24.117Z",
+      "updatedAt": "2026-10-27T10:16:24.117Z"
     }
   ]
 }
