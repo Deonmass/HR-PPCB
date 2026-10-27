@@ -1,6 +1,35 @@
 {
   "entries": [
     {
+      "id": "log-002031",
+      "at": "2026-10-27T13:13:47.347Z",
+      "userId": "admin",
+      "userName": "Administrateur",
+      "userEmail": "admin",
+      "module": "employees",
+      "moduleLabel": "Employés",
+      "action": "update",
+      "actionLabel": "Modification",
+      "entityType": "employee",
+      "summary": "N+1 mis à jour (1)",
+      "details": "N+1 mis à jour (1)",
+      "after": {
+        "employees": [],
+        "contractants": [
+          {
+            "contractantId": "14",
+            "employeeId": "904",
+            "managerEmployeeId": "",
+            "managerMatricule": "70000256",
+            "departement": "MD Office",
+            "service": ""
+          }
+        ]
+      },
+      "undoable": false,
+      "undone": false
+    },
+    {
       "id": "log-002030",
       "at": "2026-10-27T13:10:50.702Z",
       "userId": "admin",
@@ -217308,5 +217337,5 @@
       }
     }
   ],
-  "nextSeq": 2031
+  "nextSeq": 2032
 }
