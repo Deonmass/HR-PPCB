@@ -1,6 +1,21 @@
 {
   "entries": [
     {
+      "id": "log-002035",
+      "at": "2026-10-27T14:16:30.445Z",
+      "userId": "admin",
+      "userName": "Administrateur",
+      "userEmail": "admin",
+      "module": "documents.exit",
+      "moduleLabel": "Documents",
+      "action": "export",
+      "actionLabel": "Export",
+      "summary": "Document exit « User removal form » — NZAZI KALUZAKI TOUBI (70000042)",
+      "details": "Document exit « User removal form » — NZAZI KALUZAKI TOUBI (70000042)",
+      "undoable": false,
+      "undone": false
+    },
+    {
       "id": "log-002034",
       "at": "2026-10-27T14:16:18.346Z",
       "userId": "admin",
@@ -217382,5 +217397,5 @@
       }
     }
   ],
-  "nextSeq": 2035
+  "nextSeq": 2036
 }
