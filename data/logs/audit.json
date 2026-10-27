@@ -1,6 +1,35 @@
 {
   "entries": [
     {
+      "id": "log-002028",
+      "at": "2026-10-27T12:48:07.184Z",
+      "userId": "admin",
+      "userName": "Administrateur",
+      "userEmail": "admin",
+      "module": "employees",
+      "moduleLabel": "Employés",
+      "action": "update",
+      "actionLabel": "Modification",
+      "entityType": "employee",
+      "summary": "N+1 mis à jour (1)",
+      "details": "N+1 mis à jour (1)",
+      "after": {
+        "employees": [
+          {
+            "matricule": "70000139",
+            "lineManagerName": "KADIMA TSHONDO Ben Paulin",
+            "lineManagerPosition": "Senior Regional Sales Consultant",
+            "departement": "Sales and Marketing",
+            "departmentHr": "Sales and Marketing",
+            "service": ""
+          }
+        ],
+        "contractants": []
+      },
+      "undoable": false,
+      "undone": false
+    },
+    {
       "id": "log-002027",
       "at": "2026-10-27T12:46:37.912Z",
       "userId": "admin",
@@ -217099,5 +217128,5 @@
       }
     }
   ],
-  "nextSeq": 2028
+  "nextSeq": 2029
 }
