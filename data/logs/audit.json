@@ -1,6 +1,32 @@
 {
   "entries": [
     {
+      "id": "log-001985",
+      "at": "2026-10-27T11:05:46.385Z",
+      "userId": "admin",
+      "userName": "Administrateur",
+      "userEmail": "admin",
+      "module": "employees",
+      "moduleLabel": "Employés",
+      "action": "update",
+      "actionLabel": "Modification",
+      "entityType": "employee",
+      "summary": "N+1 mis à jour (1)",
+      "details": "N+1 mis à jour (1)",
+      "after": {
+        "employees": [
+          {
+            "matricule": "70000293",
+            "lineManagerName": "BOOKE BASA MICHAEL",
+            "lineManagerPosition": "Head of Supply Chain"
+          }
+        ],
+        "contractants": 0
+      },
+      "undoable": false,
+      "undone": false
+    },
+    {
       "id": "log-001984",
       "at": "2026-10-27T10:50:19.471Z",
       "userId": "admin",
@@ -213109,5 +213135,5 @@
       }
     }
   ],
-  "nextSeq": 1985
+  "nextSeq": 1986
 }
