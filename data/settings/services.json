@@ -16,8 +16,8 @@
     },
     {
       "id": "svc-sales-and-marketing-marketing",
-      "name": "Marketing",
-      "code": "Marketing",
+      "name": "Sales",
+      "code": "Sales",
       "departmentId": "dept-sales-and-marketing",
       "active": true
     },
