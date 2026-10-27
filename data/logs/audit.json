@@ -1,6 +1,37 @@
 {
   "entries": [
     {
+      "id": "log-002024",
+      "at": "2026-10-27T12:44:11.562Z",
+      "userId": "admin",
+      "userName": "Administrateur",
+      "userEmail": "admin",
+      "module": "employees",
+      "moduleLabel": "Employés",
+      "action": "update",
+      "actionLabel": "Modification",
+      "entityType": "employee",
+      "summary": "N+1 mis à jour (2)",
+      "details": "N+1 mis à jour (2)",
+      "after": {
+        "employees": [
+          {
+            "matricule": "70000011",
+            "lineManagerName": "TSASA NKONGO PAUL",
+            "lineManagerPosition": "Senior Regional Sales Consultant"
+          },
+          {
+            "matricule": "70000238",
+            "lineManagerName": "TSASA NKONGO PAUL",
+            "lineManagerPosition": "Senior Regional Sales Consultant"
+          }
+        ],
+        "contractants": 0
+      },
+      "undoable": false,
+      "undone": false
+    },
+    {
       "id": "log-002023",
       "at": "2026-10-27T12:43:06.295Z",
       "userId": "admin",
@@ -216990,5 +217021,5 @@
       }
     }
   ],
-  "nextSeq": 2024
+  "nextSeq": 2025
 }
