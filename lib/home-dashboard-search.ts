@@ -3,6 +3,7 @@ import 'server-only';
 import type { MenuPermission } from './auth-types';
 import { listVehicules } from './charroi-store';
 import { listContractants } from './contractants-store';
+import { orgSearchText } from './organigramme';
 import { readEmployees } from './employees-json-store';
 import type { HomeSearchResponse, HomeSearchResult } from './home-dashboard-types';
 import { canPerformAction } from './permission-check';
@@ -15,11 +16,11 @@ function can(menus: MenuPermission[], menuId: string): boolean {
 }
 
 function scoreMatch(query: string, ...fields: string[]): number {
-  const q = query.trim().toLowerCase();
+  const q = orgSearchText(query);
   if (!q) return 0;
   let best = 0;
   for (const field of fields) {
-    const f = String(field || '').toLowerCase();
+    const f = orgSearchText(field);
     if (!f) continue;
     if (f === q) best = Math.max(best, 100);
     else if (f.startsWith(q)) best = Math.max(best, 85);

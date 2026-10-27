@@ -8,6 +8,7 @@ import {
   groupOrgNodesByPoste,
   isCapitalHrCompany,
   orgPersonShortName,
+  orgSearchText,
   VACANT_POST_LABEL,
   type OrgChartNode,
   type OrgPosteGroup,
@@ -63,14 +64,16 @@ function fold(value: string): string {
 
 function memberMatches(member: OrgPosteMember, q: string): boolean {
   if (!q) return true;
-  return fold(
+  const query = orgSearchText(q);
+  return orgSearchText(
     `${member.nom} ${member.matricule} ${member.jobTitle} ${member.departement} ${member.service} ${member.contractantName || ''}`,
-  ).includes(q);
+  ).includes(query);
 }
 
 function groupMatches(group: OrgPosteGroup, q: string): boolean {
   if (!q) return true;
-  if (fold(group.jobTitle).includes(q)) return true;
+  const query = orgSearchText(q);
+  if (orgSearchText(group.jobTitle).includes(query)) return true;
   if (group.members.some((m) => memberMatches(m, q))) return true;
   return group.children.some((c) => groupMatches(c, q));
 }

@@ -80,6 +80,20 @@ export function isCapitalHrCompany(name: string | undefined): boolean {
   return foldOrgLabel(name || '') === 'capital hr';
 }
 
+/** Texte de recherche : accents ignorés, et « consutant » vaut « consultant ». */
+export function orgSearchText(value: string): string {
+  return foldOrgLabel(value).replace(/consut/g, 'consult');
+}
+
+/** Même personne quel que soit l’ordre « NOM Prénom » / « Prénom Nom ». */
+function personTokenKey(value: string): string {
+  return foldOrgLabel(value)
+    .split(' ')
+    .filter((token) => token.length >= 2)
+    .sort()
+    .join(' ');
+}
+
 /** Compte les agents contractants déjà placés dans les arbres (Capital HR à part). */
 export function countContractantPopulations(roots: OrgChartNode[]): { capitalHr: number; autres: number } {
   let capitalHr = 0;
@@ -412,6 +426,19 @@ export function buildOrganigramme(
 
   const byMatricule = new Map(allActive.map((e) => [e.matricule, e]));
   const nameCandidates = allActive.map((e) => ({ matricule: e.matricule, nom: e.nom }));
+  const contractantNameCounts = new Map<string, number>();
+  for (const company of options.contractants || []) {
+    for (const person of company.employees || []) {
+      if (!String(person.nom || '').trim() || String(person.dateSortie || '').trim()) continue;
+      const key = personTokenKey(person.nom);
+      if (!key) continue;
+      contractantNameCounts.set(key, (contractantNameCounts.get(key) || 0) + 1);
+    }
+  }
+  const reportsToOneContractant = (name: string) => {
+    const key = personTokenKey(name);
+    return Boolean(key && contractantNameCounts.get(key) === 1);
+  };
 
   const scoped = allActive.filter((e) => inScope(e, scope, departement, service));
   const scopedIds = new Set(scoped.map((e) => e.matricule));
@@ -423,6 +450,16 @@ export function buildOrganigramme(
   for (const emp of scoped) {
     const lmName = emp.lineManagerName;
     if (vacantPostTitle(lmName, emp.lineManagerPosition)) {
+      managerOf.set(emp.matricule, null);
+      continue;
+    }
+    const exactManager = findBestNameMatch(lmName, nameCandidates, 100);
+    if (exactManager && exactManager.candidate.matricule !== emp.matricule) {
+      managerOf.set(emp.matricule, exactManager.candidate.matricule);
+      managerLinks += 1;
+      continue;
+    }
+    if (reportsToOneContractant(lmName)) {
       managerOf.set(emp.matricule, null);
       continue;
     }
@@ -778,7 +815,7 @@ export function moveContractantsUnderInternalManagers(
       }
       const matricule = node.contractantEmployeeId ? linked.get(node.contractantEmployeeId) : '';
       const parent = matricule ? byMatricule.get(matricule) : undefined;
-      if (parent && parent.id !== node.id && !treeHasId(node.children, parent.id)) {
+      if (parent && parent.id !== node.id && !treeHasId([node], parent.id) && !treeHasId([parent], node.id)) {
         if (!parent.children.some((child) => child.id === node.id)) parent.children.push(node);
         parent.children.sort((a, b) => a.nom.localeCompare(b.nom, 'fr', { sensitivity: 'base' }));
         continue;
@@ -801,10 +838,12 @@ export function adoptContractantManagers(ppcRoots: OrgChartNode[], ctrRoots: Org
   const collect = (list: OrgChartNode[]) => {
     for (const node of list) {
       if (node.contractantEmployeeId && node.nom.trim()) {
-        const key = foldOrgLabel(node.nom);
-        const bucket = byName.get(key) || [];
-        bucket.push(node);
-        byName.set(key, bucket);
+        const key = personTokenKey(node.nom);
+        if (key) {
+          const bucket = byName.get(key) || [];
+          bucket.push(node);
+          byName.set(key, bucket);
+        }
       }
       collect(node.children);
     }
@@ -818,10 +857,10 @@ export function adoptContractantManagers(ppcRoots: OrgChartNode[], ctrRoots: Org
       walk(node.children);
       const synthetic = Boolean(node.isExternal) && !node.isVacant && !node.matricule && !node.contractantEmployeeId;
       if (!synthetic || node.children.length === 0) continue;
-      const matches = (byName.get(foldOrgLabel(node.nom)) || []).filter((item) => item.id !== node.id);
+      const matches = (byName.get(personTokenKey(node.nom)) || []).filter((item) => item.id !== node.id);
       if (matches.length !== 1) continue;
       const target = matches[0]!;
-      if (treeHasId([target], node.id) || node.children.some((child) => child.id === target.id)) continue;
+      if (treeHasId([target], node.id) || treeHasId(node.children, target.id)) continue;
       for (const child of node.children) {
         if (!target.children.some((item) => item.id === child.id)) target.children.push(child);
       }

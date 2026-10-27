@@ -13,6 +13,7 @@ import {
   adoptContractantManagers,
   buildContractantOrganigramme,
   buildOrganigramme,
+  isCapitalHrCompany,
   listOrganigrammeDepartments,
   listOrganigrammeServices,
   countContractantPopulations,
@@ -187,16 +188,19 @@ export default function OrganigrammePage() {
       employees,
     });
     moveContractantsUnderInternalManagers(ppc.roots, ctr.roots, contractants);
-    if (showContractants) adoptContractantManagers(ppc.roots, ctr.roots);
+    const ctrVisible = showContractants || search.trim()
+      ? ctr.roots
+      : ctr.roots.filter((node) => !isCapitalHrCompany(node.contractantName || node.nom));
+    if (ctrVisible.length > 0) adoptContractantManagers(ppc.roots, ctrVisible);
     const populations = countContractantPopulations([...ppc.roots, ...ctr.roots]);
     return {
-      roots: showContractants ? [...ppc.roots, ...ctr.roots] : ppc.roots,
+      roots: [...ppc.roots, ...ctrVisible],
       internes: ppc.employeeCount,
       externes: ctr.employeeCount,
       capitalHr: populations.capitalHr,
       autres: populations.autres,
     };
-  }, [employees, contractants, scope, departement, service, showContractants]);
+  }, [employees, contractants, scope, departement, service, showContractants, search]);
 
   const title = useMemo(() => {
     if (service) return `Organigramme — ${service}`;

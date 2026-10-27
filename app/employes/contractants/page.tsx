@@ -33,6 +33,7 @@ import {
 import type { DepartmentSetting, ServiceSetting } from '@/lib/auth-types';
 import { DEFAULT_LOCALISATIONS } from '@/lib/localisations';
 import { compareExcoDepartments, normalizeDepartmentName } from '@/lib/exco-department-map';
+import { orgSearchText } from '@/lib/organigramme';
 import { isContractantEffectifEmployee } from '@/lib/capital-hr-effectif';
 import { downloadContractantsListExport } from '@/lib/contractants-list-export';
 import {
@@ -560,32 +561,35 @@ export default function ContractantsPage() {
   }, [contractants, activeEmployees, exitEmployees]);
 
   const filteredContractants = useMemo(() => {
-    const q = search.trim().toLowerCase();
+    const q = orgSearchText(search);
     if (!q) return contractants;
-    return contractants.filter(
-      (c) =>
-        c.denomination.toLowerCase().includes(q)
-        || c.typeService.toLowerCase().includes(q),
-    );
+    return contractants.filter((c) => orgSearchText(
+      [
+        c.denomination,
+        c.typeService,
+        ...(c.employees || []).flatMap((employee) => [employee.nom, employee.fonction]),
+      ].join(' '),
+    ).includes(q));
   }, [contractants, search]);
 
   const searchedEmployees = useMemo(() => {
-    const q = search.trim().toLowerCase();
+    const q = orgSearchText(search);
     if (!q) return listEmployees;
-    return listEmployees.filter(
-      (e) =>
-        e.nom.toLowerCase().includes(q)
-        || e.fonction.toLowerCase().includes(q)
-        || e.departement.toLowerCase().includes(q)
-        || (e.service || '').toLowerCase().includes(q)
-        || e.typeService.toLowerCase().includes(q)
-        || e.lieuAffectation.toLowerCase().includes(q)
-        || (e.telephoneAirtime || '').toLowerCase().includes(q)
-        || e.telephone.toLowerCase().includes(q)
-        || e.contractantNom.toLowerCase().includes(q)
-        || etatCivilLabel(e.etatCivil).toLowerCase().includes(q)
-        || (e.dateSortie || '').toLowerCase().includes(q),
-    );
+    return listEmployees.filter((e) => orgSearchText(
+      [
+        e.nom,
+        e.fonction,
+        e.departement,
+        e.service || '',
+        e.typeService,
+        e.lieuAffectation,
+        e.telephoneAirtime || '',
+        e.telephone,
+        e.contractantNom,
+        etatCivilLabel(e.etatCivil),
+        e.dateSortie || '',
+      ].join(' '),
+    ).includes(q));
   }, [listEmployees, search]);
 
   const empFilterValues = useMemo(
