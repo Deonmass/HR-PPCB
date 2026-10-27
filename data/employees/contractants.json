@@ -16930,7 +16930,7 @@
           "dateEmbauche": "",
           "dateSortie": "",
           "managerEmployeeId": "",
-          "managerMatricule": "",
+          "managerMatricule": "70000256",
           "family": [],
           "matriculePpc": "",
           "numeroCnss": "",
@@ -16941,11 +16941,11 @@
           "coutTransport": 0,
           "payrollSite": "",
           "createdAt": "2026-10-27T10:50:15.560Z",
-          "updatedAt": "2026-10-27T10:50:15.560Z"
+          "updatedAt": "2026-10-27T11:43:21.440Z"
         }
       ],
       "createdAt": "2026-10-27T10:16:24.117Z",
-      "updatedAt": "2026-10-27T10:50:15.560Z"
+      "updatedAt": "2026-10-27T11:43:21.440Z"
     }
   ]
 }
