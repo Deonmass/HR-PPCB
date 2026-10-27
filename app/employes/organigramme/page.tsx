@@ -201,7 +201,7 @@ export default function OrganigrammePage() {
     const ctrVisible = showContractants || search.trim()
       ? ctr.roots
       : ctr.roots.filter((node) => !isCapitalHrCompany(node.contractantName || node.nom));
-    adoptContractantManagers(ppc.roots, ctrVisible);
+    adoptContractantManagers(ppc.roots, ctrVisible, contractants, employees);
     const populations = countContractantPopulations([...ppc.roots, ...ctr.roots]);
     return {
       roots: [...ppc.roots, ...ctrVisible],

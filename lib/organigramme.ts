@@ -935,25 +935,112 @@ export function moveContractantsUnderInternalManagers(
 
 /**
  * Quand le N+1 d’un interne est un contractant (même nom), place l’interne sous cette carte.
- * Ne déplace que si la carte contractante est déjà dans l’un des arbres fournis.
+ * Si le contractant est hors du filtre, sa carte est quand même créée, et son propre N+1
+ * s’affiche au-dessus.
  */
-export function adoptContractantManagers(ppcRoots: OrgChartNode[], ctrRoots: OrgChartNode[]): void {
+export function adoptContractantManagers(
+  ppcRoots: OrgChartNode[],
+  ctrRoots: OrgChartNode[],
+  contractants: Contractant[] = [],
+  employees: Employee[] = [],
+): void {
   const byName = new Map<string, OrgChartNode[]>();
+  const remember = (node: OrgChartNode) => {
+    if (!node.contractantEmployeeId || !node.nom.trim()) return;
+    const key = personTokenKey(node.nom);
+    if (!key) return;
+    const bucket = byName.get(key) || [];
+    if (!bucket.some((item) => item.id === node.id)) bucket.push(node);
+    byName.set(key, bucket);
+  };
   const collect = (list: OrgChartNode[]) => {
     for (const node of list) {
-      if (node.contractantEmployeeId && node.nom.trim()) {
-        const key = personTokenKey(node.nom);
-        if (key) {
-          const bucket = byName.get(key) || [];
-          bucket.push(node);
-          byName.set(key, bucket);
-        }
-      }
+      remember(node);
       collect(node.children);
     }
   };
   collect(ppcRoots);
   collect(ctrRoots);
+
+  const byMatricule = new Map<string, OrgChartNode>();
+  const indexManagers = (list: OrgChartNode[]) => {
+    for (const node of list) {
+      if (node.matricule && !node.isContractant) byMatricule.set(node.matricule, node);
+      indexManagers(node.children);
+    }
+  };
+  indexManagers(ppcRoots);
+
+  const ensureOutsideManager = (matricule: string): OrgChartNode | undefined => {
+    const existing = byMatricule.get(matricule);
+    if (existing) return existing;
+    const employee = employees.find((item) => item.matricule === matricule && isActiveEmployee(item));
+    if (!employee) return undefined;
+    const node = employeeNode(toChartEmployee(employee), { isOutsideScope: true });
+    ppcRoots.push(node);
+    byMatricule.set(matricule, node);
+    return node;
+  };
+
+  const contractantFromRecord = (name: string): OrgChartNode | undefined => {
+    const key = personTokenKey(name);
+    if (!key) return undefined;
+    const hits: Array<{ company: Contractant; person: Contractant['employees'][number] }> = [];
+    for (const company of contractants) {
+      for (const person of company.employees || []) {
+        if (!String(person.nom || '').trim() || String(person.dateSortie || '').trim()) continue;
+        if (personTokenKey(person.nom) === key) hits.push({ company, person });
+      }
+    }
+    if (hits.length !== 1) return undefined;
+    const { company, person } = hits[0]!;
+    const place = resolvedOrgPlacement(person.departement || '', person.service || '');
+    return {
+      id: `ctr-emp:${person.id}`,
+      matricule: String(person.matriculePpc || '').trim(),
+      nom: String(person.nom || '').trim(),
+      jobTitle: String(person.fonction || '').trim(),
+      grade: '',
+      departement: place.departement,
+      service: place.service,
+      localisation: String(person.lieuAffectation || '').trim(),
+      isContractant: true,
+      contractantName: String(company.denomination || '').trim(),
+      contractantId: company.id,
+      contractantEmployeeId: person.id,
+      children: [],
+    };
+  };
+
+  const managerMatriculeOf = (node: OrgChartNode): string => {
+    const id = node.contractantEmployeeId;
+    if (!id) return '';
+    for (const company of contractants) {
+      const person = (company.employees || []).find((item) => item.id === id);
+      if (person) return String(person.managerMatricule || '').trim();
+    }
+    return '';
+  };
+
+  const giveChildren = (target: OrgChartNode, source: OrgChartNode): boolean => {
+    if (treeHasId([target], source.id) || treeHasId(source.children, target.id)) return false;
+    for (const child of source.children) {
+      if (!target.children.some((item) => item.id === child.id)) target.children.push(child);
+    }
+    target.children.sort((a, b) => a.nom.localeCompare(b.nom, 'fr', { sensitivity: 'base' }));
+    return true;
+  };
+
+  const placeUnderManager = (target: OrgChartNode): boolean => {
+    const matricule = managerMatriculeOf(target);
+    if (!matricule || matricule.startsWith('vacant:')) return false;
+    const parent = ensureOutsideManager(matricule);
+    if (!parent || parent.id === target.id) return false;
+    if (treeHasId([target], parent.id) || treeHasId([parent], target.id)) return false;
+    if (!parent.children.some((child) => child.id === target.id)) parent.children.push(target);
+    parent.children.sort((a, b) => a.nom.localeCompare(b.nom, 'fr', { sensitivity: 'base' }));
+    return true;
+  };
 
   const walk = (list: OrgChartNode[]) => {
     for (let index = list.length - 1; index >= 0; index -= 1) {
@@ -962,13 +1049,15 @@ export function adoptContractantManagers(ppcRoots: OrgChartNode[], ctrRoots: Org
       const synthetic = Boolean(node.isExternal) && !node.isVacant && !node.matricule && !node.contractantEmployeeId;
       if (!synthetic || node.children.length === 0) continue;
       const matches = (byName.get(personTokenKey(node.nom)) || []).filter((item) => item.id !== node.id);
-      if (matches.length !== 1) continue;
-      const target = matches[0]!;
-      if (treeHasId([target], node.id) || treeHasId(node.children, target.id)) continue;
-      for (const child of node.children) {
-        if (!target.children.some((item) => item.id === child.id)) target.children.push(child);
+      if (matches.length > 1) continue;
+      const target = matches[0] || contractantFromRecord(node.nom);
+      if (!target || !giveChildren(target, node)) continue;
+      remember(target);
+      if (matches.length === 0) {
+        if (!placeUnderManager(target)) list.splice(index, 1, target);
+        else list.splice(index, 1);
+        continue;
       }
-      target.children.sort((a, b) => a.nom.localeCompare(b.nom, 'fr', { sensitivity: 'base' }));
       list.splice(index, 1);
     }
   };
