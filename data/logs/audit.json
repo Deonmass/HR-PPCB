@@ -1,6 +1,32 @@
 {
   "entries": [
     {
+      "id": "log-002019",
+      "at": "2026-10-27T12:39:42.884Z",
+      "userId": "admin",
+      "userName": "Administrateur",
+      "userEmail": "admin",
+      "module": "employees",
+      "moduleLabel": "Employés",
+      "action": "update",
+      "actionLabel": "Modification",
+      "entityType": "employee",
+      "summary": "N+1 mis à jour (1)",
+      "details": "N+1 mis à jour (1)",
+      "after": {
+        "employees": [
+          {
+            "matricule": "70000164",
+            "lineManagerName": "BOMPETA MPINGO ERICK",
+            "lineManagerPosition": "Customer Relationship Officer"
+          }
+        ],
+        "contractants": 0
+      },
+      "undoable": false,
+      "undone": false
+    },
+    {
       "id": "log-002018",
       "at": "2026-10-27T12:39:21.804Z",
       "userId": "admin",
@@ -216850,5 +216876,5 @@
       }
     }
   ],
-  "nextSeq": 2019
+  "nextSeq": 2020
 }
