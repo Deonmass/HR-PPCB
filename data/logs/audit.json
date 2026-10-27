@@ -1,6 +1,37 @@
 {
   "entries": [
     {
+      "id": "log-002020",
+      "at": "2026-10-27T12:40:10.231Z",
+      "userId": "admin",
+      "userName": "Administrateur",
+      "userEmail": "admin",
+      "module": "employees",
+      "moduleLabel": "Employés",
+      "action": "update",
+      "actionLabel": "Modification",
+      "entityType": "employee",
+      "summary": "N+1 mis à jour (2)",
+      "details": "N+1 mis à jour (2)",
+      "after": {
+        "employees": [
+          {
+            "matricule": "70000078",
+            "lineManagerName": "MUZILA EBALOSONG Papy",
+            "lineManagerPosition": "Marketing Manager"
+          },
+          {
+            "matricule": "70000134",
+            "lineManagerName": "MUZILA EBALOSONG Papy",
+            "lineManagerPosition": "Marketing Manager"
+          }
+        ],
+        "contractants": 0
+      },
+      "undoable": false,
+      "undone": false
+    },
+    {
       "id": "log-002019",
       "at": "2026-10-27T12:39:42.884Z",
       "userId": "admin",
@@ -216876,5 +216907,5 @@
       }
     }
   ],
-  "nextSeq": 2020
+  "nextSeq": 2021
 }
