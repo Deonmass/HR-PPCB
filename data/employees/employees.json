@@ -7814,8 +7814,8 @@
       "payrollArea": "",
       "position": "Warehouse Operator ( Magasinier )",
       "departmentHr": "",
-      "lineManagerName": "",
-      "lineManagerPosition": "",
+      "lineManagerName": "MAVUANGALA MVIOKI JEAN-PIERRE",
+      "lineManagerPosition": "Logistic Manager",
       "patersonGrade": "",
       "statut": "Active",
       "typeContrat": "CDD",
@@ -7837,7 +7837,7 @@
       "nif": "",
       "telephone": "",
       "createdAt": "2026-10-27T07:14:12.536Z",
-      "updatedAt": "2026-10-27T07:14:12.536Z"
+      "updatedAt": "2026-10-27T09:47:21.391Z"
     }
   ]
 }
