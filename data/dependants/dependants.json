@@ -15435,6 +15435,27 @@
       "lienDocument": "",
       "createdAt": "2026-09-02T08:40:12.910Z",
       "updatedAt": "2026-09-03T11:53:44.286Z"
+    },
+    {
+      "id": 739,
+      "employeeId": "222667c0-a7a1-4b78-b30f-af900f1b8701",
+      "matricule": "70000314",
+      "pactilis": "",
+      "statut": "Employé",
+      "sexe": "M",
+      "nom": "MAKABU TSHONDO François",
+      "localisation": "Tshikapa",
+      "numeroVilla": "",
+      "typeMaison": "",
+      "dateNaissance": "23/10/1990",
+      "age": 36,
+      "compositionFamille": 0,
+      "enfants": 0,
+      "total": 1,
+      "commentaires": "",
+      "lienDocument": "",
+      "createdAt": "2026-10-27T07:14:18.076Z",
+      "updatedAt": "2026-10-27T07:14:18.076Z"
     }
   ]
 }
