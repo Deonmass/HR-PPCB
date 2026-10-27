@@ -1,6 +1,21 @@
 {
   "entries": [
     {
+      "id": "log-002037",
+      "at": "2026-10-27T14:22:55.939Z",
+      "userId": "admin",
+      "userName": "Administrateur",
+      "userEmail": "admin",
+      "module": "documents.exit",
+      "moduleLabel": "Documents",
+      "action": "export",
+      "actionLabel": "Export",
+      "summary": "Document exit « Attestation de fin de service » — NZAZI KALUZAKI TOUBI (70000042)",
+      "details": "Document exit « Attestation de fin de service » — NZAZI KALUZAKI TOUBI (70000042)",
+      "undoable": false,
+      "undone": false
+    },
+    {
       "id": "log-002036",
       "at": "2026-10-27T14:22:40.805Z",
       "userId": "admin",
@@ -217412,5 +217427,5 @@
       }
     }
   ],
-  "nextSeq": 2037
+  "nextSeq": 2038
 }
