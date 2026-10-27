@@ -16922,7 +16922,7 @@
           "sexe": "M",
           "lieuAffectation": "Kinshasa",
           "fonction": "Head of Sales and Marketing",
-          "departement": "Sales and Marketing",
+          "departement": "MD Office",
           "service": "",
           "telephone": "",
           "etatCivil": "M",
@@ -16941,11 +16941,11 @@
           "coutTransport": 0,
           "payrollSite": "",
           "createdAt": "2026-10-27T10:50:15.560Z",
-          "updatedAt": "2026-10-27T11:43:21.440Z"
+          "updatedAt": "2026-10-27T13:13:43.739Z"
         }
       ],
       "createdAt": "2026-10-27T10:16:24.117Z",
-      "updatedAt": "2026-10-27T11:43:21.440Z"
+      "updatedAt": "2026-10-27T13:13:43.739Z"
     }
   ]
 }
