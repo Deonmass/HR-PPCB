@@ -358,5 +358,15 @@
     "issuedBy": "Administrateur",
     "id": "exit-1793110956136-vqnzh8",
     "createdAt": "2026-10-27T14:22:36.136Z"
+  },
+  {
+    "matricule": "70000042",
+    "employeeName": "NZAZI KALUZAKI TOUBI",
+    "doc": "attestation-fin-service",
+    "docLabel": "Attestation de fin de service",
+    "fileName": "Attestation de fin de service - NZAZI KALUZAKI TOUBI.docx",
+    "issuedBy": "Administrateur",
+    "id": "exit-1793110970518-3h2dfa",
+    "createdAt": "2026-10-27T14:22:50.518Z"
   }
 ]
