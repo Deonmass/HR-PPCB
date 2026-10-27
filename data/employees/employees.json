@@ -7264,6 +7264,7 @@
       "grade": "C2",
       "jobTitle": "Junior Tax",
       "localisation": "Kinshasa",
+      "service": "",
       "company": "PPC Barnet DRC Manufacturing",
       "centreCout": "KC8411",
       "appointmentDate": "03/03/2026",
@@ -7279,8 +7280,8 @@
       "payrollArea": "Monthly",
       "position": "",
       "departmentHr": "Finance",
-      "lineManagerName": "Cyrille Kone",
-      "lineManagerPosition": "Finance Manager",
+      "lineManagerName": "MBALE KABANGU HUGO",
+      "lineManagerPosition": "Tax Manager",
       "patersonGrade": "",
       "statut": "Active",
       "typeContrat": "CDI",
@@ -7300,9 +7301,9 @@
       "datePassageCdi": "",
       "cnss": "11999709859O",
       "nif": "C2377639T",
+      "telephone": "840115709",
       "createdAt": "2026-07-28T09:40:37.715Z",
-      "updatedAt": "2026-09-28T12:52:15.317Z",
-      "telephone": "840115709"
+      "updatedAt": "2026-10-27T09:36:32.247Z"
     },
     {
       "id": "673de6d9-d088-4e91-88db-c432502896da",
