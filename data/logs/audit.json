@@ -1,6 +1,37 @@
 {
   "entries": [
     {
+      "id": "log-001997",
+      "at": "2026-10-27T12:26:38.330Z",
+      "userId": "admin",
+      "userName": "Administrateur",
+      "userEmail": "admin",
+      "module": "settings.services",
+      "moduleLabel": "Paramètres — Services",
+      "action": "update",
+      "actionLabel": "Modification",
+      "entityType": "settings.service",
+      "entityId": "svc-sales-and-marketing-marketing",
+      "summary": "Modification service Sales",
+      "details": "Modification service Sales",
+      "before": {
+        "id": "svc-sales-and-marketing-marketing",
+        "name": "Marketing",
+        "code": "Marketing",
+        "departmentId": "dept-sales-and-marketing",
+        "active": true
+      },
+      "after": {
+        "id": "svc-sales-and-marketing-marketing",
+        "name": "Sales",
+        "code": "Sales",
+        "departmentId": "dept-sales-and-marketing",
+        "active": true
+      },
+      "undoable": true,
+      "undone": false
+    },
+    {
       "id": "log-001996",
       "at": "2026-10-27T12:25:05.519Z",
       "userId": "admin",
@@ -213768,5 +213799,5 @@
       }
     }
   ],
-  "nextSeq": 1997
+  "nextSeq": 1998
 }
