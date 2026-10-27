@@ -1,6 +1,32 @@
 {
   "entries": [
     {
+      "id": "log-001992",
+      "at": "2026-10-27T12:15:59.307Z",
+      "userId": "admin",
+      "userName": "Administrateur",
+      "userEmail": "admin",
+      "module": "employees",
+      "moduleLabel": "Employés",
+      "action": "update",
+      "actionLabel": "Modification",
+      "entityType": "employee",
+      "summary": "N+1 mis à jour (1)",
+      "details": "N+1 mis à jour (1)",
+      "after": {
+        "employees": [
+          {
+            "matricule": "70000297",
+            "lineManagerName": "OLELA Freddy",
+            "lineManagerPosition": "Head of Sales and Marketing"
+          }
+        ],
+        "contractants": 0
+      },
+      "undoable": false,
+      "undone": false
+    },
+    {
       "id": "log-001991",
       "at": "2026-10-27T11:43:24.171Z",
       "userId": "admin",
@@ -213513,5 +213539,5 @@
       }
     }
   ],
-  "nextSeq": 1992
+  "nextSeq": 1993
 }
