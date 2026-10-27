@@ -49,6 +49,7 @@ export async function PUT(request: Request, { params }: Params) {
         getBefore: () => getEmployee(matricule),
         path: `/api/employees/${matricule}`,
         method: 'PUT',
+        defer: true,
       },
       async () => {
         const current = await getEmployee(matricule);

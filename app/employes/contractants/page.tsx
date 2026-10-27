@@ -393,11 +393,12 @@ export default function ContractantsPage() {
               return Boolean(String(item.matricule || '').trim() && String(item.nom || '').trim())
                 && (!statut || statut === 'active');
             })
-            .map((item: { matricule?: string; nom?: string; jobTitle?: string; position?: string; lineManagerName?: string }) => ({
+            .map((item: { matricule?: string; nom?: string; jobTitle?: string; position?: string; lineManagerName?: string; lineManagerPosition?: string }) => ({
               matricule: String(item.matricule || '').trim(),
               nom: String(item.nom || '').trim(),
               poste: String(item.jobTitle || item.position || '').trim(),
               lineManagerName: String(item.lineManagerName || '').trim(),
+              lineManagerPosition: String(item.lineManagerPosition || '').trim(),
             })),
         );
       } else {

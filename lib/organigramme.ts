@@ -33,6 +33,8 @@ export interface OrgChartNode {
   localisation: string;
   /** Nœud synthétique (manager hors périmètre ou non résolu dans la base). */
   isExternal?: boolean;
+  /** Poste sans titulaire. Le libellé affiché est le titre du poste, pas un nom de personne. */
+  isVacant?: boolean;
   /** Manager hors du filtre département/service courant. */
   isOutsideScope?: boolean;
   /** Personnel contractant (couleur distincte). */
@@ -218,6 +220,29 @@ function toChartEmployee(employee: Employee): OrgChartEmployee {
   };
 }
 
+export const VACANT_POST_LABEL = 'Poste vacant';
+
+export function isVacantPostLabel(value: string): boolean {
+  return foldOrgLabel(value) === 'poste vacant';
+}
+
+/**
+ * Titre du poste vacant, identique dans la fiche et sur la carte.
+ * `null` si ce line manager est une personne.
+ */
+export function vacantPostTitle(lineManagerName: string, lineManagerPosition: string): string | null {
+  const name = String(lineManagerName || '').trim();
+  const position = String(lineManagerPosition || '').trim();
+  if (/^vacant:/i.test(name)) {
+    const title = name.slice('vacant:'.length).trim();
+    return title || null;
+  }
+  if (isVacantPostLabel(position) && name && !isVacantPostLabel(name)) return name;
+  if (isVacantPostLabel(name) && position && !isVacantPostLabel(position)) return position;
+  if (isVacantPostLabel(position) || isVacantPostLabel(name)) return VACANT_POST_LABEL;
+  return null;
+}
+
 function looksLikePersonName(value: string): boolean {
   const trimmed = value.trim();
   if (!trimmed) return false;
@@ -397,6 +422,10 @@ export function buildOrganigramme(
 
   for (const emp of scoped) {
     const lmName = emp.lineManagerName;
+    if (vacantPostTitle(lmName, emp.lineManagerPosition)) {
+      managerOf.set(emp.matricule, null);
+      continue;
+    }
     if (!looksLikePersonName(lmName)) {
       managerOf.set(emp.matricule, null);
       continue;
@@ -448,6 +477,18 @@ export function buildOrganigramme(
 
   for (const emp of scoped) {
     const node = nodeMap.get(emp.matricule)!;
+    const vacantTitle = vacantPostTitle(emp.lineManagerName, emp.lineManagerPosition);
+    if (vacantTitle) {
+      const parent = ensureExternal(
+        `vacant:${normKey(vacantTitle)}`,
+        vacantTitle,
+        vacantTitle,
+        false,
+      );
+      parent.isVacant = true;
+      parent.children.push(node);
+      continue;
+    }
     const managerMat = managerOf.get(emp.matricule) ?? null;
 
     if (
@@ -717,7 +758,7 @@ export function moveContractantsUnderInternalManagers(
     const id = `ext:${normKey(title)}`;
     const existing = findNode(ppcRoots, id);
     if (existing) return existing;
-    const node = externalNode(title, 'Poste vacant');
+    const node = externalNode(title, title, { isVacant: true });
     ppcRoots.push(node);
     return node;
   };
@@ -775,7 +816,7 @@ export function adoptContractantManagers(ppcRoots: OrgChartNode[], ctrRoots: Org
     for (let index = list.length - 1; index >= 0; index -= 1) {
       const node = list[index]!;
       walk(node.children);
-      const synthetic = Boolean(node.isExternal) && !node.matricule && !node.contractantEmployeeId;
+      const synthetic = Boolean(node.isExternal) && !node.isVacant && !node.matricule && !node.contractantEmployeeId;
       if (!synthetic || node.children.length === 0) continue;
       const matches = (byName.get(foldOrgLabel(node.nom)) || []).filter((item) => item.id !== node.id);
       if (matches.length !== 1) continue;
@@ -818,6 +859,7 @@ export interface OrgPosteMember {
   service: string;
   localisation: string;
   isExternal?: boolean;
+  isVacant?: boolean;
   isOutsideScope?: boolean;
   isContractant?: boolean;
   contractantName?: string;
@@ -840,10 +882,12 @@ export interface OrgPosteGroup {
   jobTitle: string;
   members: OrgPosteMember[];
   isContractant?: boolean;
+  isVacant?: boolean;
   children: OrgPosteGroup[];
 }
 
 function posteGroupKey(node: OrgChartNode): string {
+  if (node.isVacant) return `vacant:${normKey(node.nom || node.jobTitle)}`;
   const kind = node.isContractant ? 'ctr' : 'ppc';
   const title = normKey(node.jobTitle);
   if (title) return `${kind}:title:${title}`;
@@ -862,6 +906,7 @@ function nodeToMember(node: OrgChartNode, manager: OrgChartNode | null): OrgPost
     service: node.service,
     localisation: node.localisation,
     isExternal: node.isExternal,
+    isVacant: node.isVacant,
     isOutsideScope: node.isOutsideScope,
     isContractant: node.isContractant,
     contractantName: node.contractantName,
@@ -896,9 +941,13 @@ function groupManagedNodes(items: ManagedOrgNode[]): OrgPosteGroup[] {
   return order.map((key) => {
     const groupItems = buckets.get(key)!;
     const groupNodes = groupItems.map((item) => item.node);
-    const title =
-      groupNodes.find((n) => n.jobTitle)?.jobTitle
-      || (groupNodes.length === 1 ? groupNodes[0]!.nom : 'Poste');
+    const vacantGroup = groupNodes.every((node) => node.isVacant);
+    const title = vacantGroup
+      ? (groupNodes[0]!.nom || groupNodes[0]!.jobTitle || VACANT_POST_LABEL)
+      : (
+        groupNodes.find((n) => n.jobTitle)?.jobTitle
+        || (groupNodes.length === 1 ? groupNodes[0]!.nom : 'Poste')
+      );
     const childItems: ManagedOrgNode[] = [];
     for (const item of groupItems) {
       for (const child of item.node.children) {
@@ -909,6 +958,7 @@ function groupManagedNodes(items: ManagedOrgNode[]): OrgPosteGroup[] {
       id: `poste:${key}:${groupNodes.map((n) => n.matricule || n.id).join('+')}`,
       jobTitle: title,
       isContractant: groupNodes.some((n) => n.isContractant),
+      isVacant: vacantGroup,
       members: groupItems
         .map((item) => nodeToMember(item.node, item.manager))
         .sort((a, b) => a.nom.localeCompare(b.nom, 'fr', { sensitivity: 'base' })),

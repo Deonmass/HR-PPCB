@@ -10,7 +10,7 @@ import {
   type ContractantFamilyLien,
   type ContractantSexe,
 } from '@/lib/contractants-types';
-import { resolveLineManagerMatricule } from '@/lib/organigramme';
+import { resolveLineManagerMatricule, vacantPostTitle } from '@/lib/organigramme';
 
 export type DetailFlatEmployee = ContractantEmployee & {
   contractantId: string;
@@ -23,13 +23,14 @@ export type DetailInterne = {
   nom: string;
   poste: string;
   lineManagerName: string;
+  lineManagerPosition: string;
 };
 
 type LineNode = {
   key: string;
   nom: string;
   detail: string;
-  kind: 'interne' | 'contractant';
+  kind: 'interne' | 'contractant' | 'vacant';
 };
 
 interface Props {
@@ -85,7 +86,7 @@ function buildContractantLine(
     } else if (step.matricule.startsWith('vacant:')) {
       const title = step.matricule.slice('vacant:'.length).trim();
       if (!title) break;
-      up.push({ key, nom: title, detail: 'Poste vacant', kind: 'interne' });
+      up.push({ key, nom: title, detail: 'Poste vacant', kind: 'vacant' });
       step = null;
     } else {
       const person = byMatricule.get(step.matricule);
@@ -96,8 +97,13 @@ function buildContractantLine(
         detail: person.poste,
         kind: 'interne',
       });
-      const next = resolveLineManagerMatricule(person.lineManagerName, namePool, person.matricule);
-      step = next ? { kind: 'i', matricule: next } : null;
+      const vacant = vacantPostTitle(person.lineManagerName, person.lineManagerPosition);
+      if (vacant) {
+        step = { kind: 'i', matricule: `vacant:${vacant}` };
+      } else {
+        const next = resolveLineManagerMatricule(person.lineManagerName, namePool, person.matricule);
+        step = next ? { kind: 'i', matricule: next } : null;
+      }
     }
   }
 

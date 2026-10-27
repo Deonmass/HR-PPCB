@@ -438,6 +438,40 @@ export async function updateContractantEmployee(
   return next;
 }
 
+export async function patchContractantManagerLinks(
+  updates: Array<{
+    contractantId: string;
+    employeeId: string;
+    managerEmployeeId: string;
+    managerMatricule: string;
+  }>,
+): Promise<number> {
+  const clean = updates
+    .map((item) => ({
+      contractantId: String(item.contractantId || '').trim(),
+      employeeId: String(item.employeeId || '').trim(),
+      managerEmployeeId: String(item.managerEmployeeId || '').trim(),
+      managerMatricule: String(item.managerMatricule || '').trim(),
+    }))
+    .filter((item) => item.contractantId && item.employeeId);
+  if (clean.length === 0) return 0;
+  const store = await readStore();
+  const now = new Date().toISOString();
+  for (const update of clean) {
+    const company = store.contractants.find((item) => item.id === update.contractantId);
+    const employee = company?.employees.find((item) => item.id === update.employeeId);
+    if (!company || !employee) {
+      throw new Error('Contractant introuvable');
+    }
+    employee.managerEmployeeId = update.managerEmployeeId;
+    employee.managerMatricule = update.managerMatricule;
+    employee.updatedAt = now;
+    company.updatedAt = now;
+  }
+  await writeStore(store);
+  return clean.length;
+}
+
 export async function deleteContractantEmployee(
   contractantId: string,
   employeeId: string,

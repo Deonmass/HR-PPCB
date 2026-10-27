@@ -145,11 +145,18 @@ export default function OrganigrammeManagerDialog({
             <ChoiceColumn title="Postes vacants" items={visible.vacants} selected={selected} onSelect={setSelected} />
           </div>
         )}
+        {saving ? (
+          <p className="org-dialog-saving" role="status">
+            <span className="btn-spinner" aria-hidden="true" />
+            Enregistrement du N+1…
+          </p>
+        ) : null}
         <div className="org-dialog-actions">
           <button type="button" className="btn btn-secondary btn-sm" onClick={onClose} disabled={saving}>
             Annuler
           </button>
           <button type="button" className="btn btn-primary btn-sm" onClick={() => void save()} disabled={saving || !selected}>
+            {saving ? <span className="btn-spinner" aria-hidden="true" /> : null}
             {saving ? 'Enregistrement…' : 'Enregistrer'}
           </button>
         </div>

@@ -744,18 +744,32 @@ export default function EmployeeViewModal({ employee, canEdit = false, initialTa
         }
       }
 
-      const res = await fetch(`/api/employees/${encodeURIComponent(employee.matricule)}`, {
-        method: 'PUT',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(next),
-      });
+      const managerOnly = editingKey === 'lineManagerName';
+      const res = managerOnly
+        ? await fetch('/api/employes/organigramme/managers', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            employees: [{
+              matricule: employee.matricule,
+              lineManagerName: next.lineManagerName,
+              lineManagerPosition: next.lineManagerPosition,
+            }],
+          }),
+        })
+        : await fetch(`/api/employees/${encodeURIComponent(employee.matricule)}`, {
+          method: 'PUT',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(next),
+        });
       if (!res.ok) {
         const err = await res.json().catch(() => ({}));
         throw new Error(err.error || 'Enregistrement impossible');
       }
-      const saved = (await res.json()) as Employee;
+      const saved = managerOnly ? next : (await res.json()) as Employee;
       setDraft(saved);
       onUpdated?.(saved);
+      window.dispatchEvent(new CustomEvent('hr-employee-updated', { detail: saved }));
       setEditingKey(null);
       setEditValue('');
       await showSuccess('Modification enregistrée');

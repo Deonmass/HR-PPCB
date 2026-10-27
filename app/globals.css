@@ -42320,6 +42320,11 @@ html:not([data-theme='light']) .training-cost-table td {
   background: #fff;
   border-color: #1e3a5f;
 }
+.contractant-org-node.is-vacant {
+  background: #f5f3ff;
+  border-color: #8b5cf6;
+  color: #5b21b6;
+}
 .contractant-org-node.is-contractant {
   background: #fef9c3;
   border-color: #facc15;
@@ -45042,6 +45047,11 @@ html[data-theme='light'] .org-sticky {
   border-color: #0284c7;
 }
 
+.org-legend-swatch.is-vacant {
+  background: #f5f3ff;
+  border-color: #8b5cf6;
+}
+
 .org-legend-swatch.is-capital-hr {
   background: #fde047;
   border-color: #ca8a04;
@@ -45310,6 +45320,13 @@ html[data-theme='light'] .org-sticky {
   background: #f8fafc;
 }
 
+.org-chart-card.is-vacant {
+  background: #f5f3ff;
+  border: 1px solid #8b5cf6;
+  border-style: solid;
+  box-shadow: 0 1px 4px rgba(109, 40, 217, 0.16);
+}
+
 .org-chart-card.is-contractant {
   background: #e0f2fe;
   border-color: #7dd3fc;
@@ -45381,6 +45398,12 @@ html[data-theme='light'] .org-sticky {
   font-size: 0.9rem;
 }
 
+.org-chart-avatar.is-poste-vacant {
+  background: linear-gradient(145deg, #6d28d9, #a78bfa);
+  color: #fff;
+  font-size: 0.72rem;
+}
+
 .org-chart-avatar.is-more {
   background: #e2e8f0;
   color: #475569;
@@ -45402,6 +45425,11 @@ html[data-theme='light'] .org-sticky {
 
 .org-chart-card.is-capital-hr .org-chart-card-title {
   color: #854d0e;
+}
+
+.org-chart-card.is-vacant .org-chart-card-title,
+.org-chart-card.is-vacant .org-chart-person-name {
+  color: #5b21b6;
 }
 
 .org-chart-card-people {
@@ -45714,6 +45742,22 @@ html[data-theme='light'] .org-sticky {
 .org-choice-kind.is-externe {
   color: #854d0e;
   background: #fef9c3;
+}
+
+.org-dialog-saving {
+  display: flex;
+  align-items: center;
+  gap: 0.45rem;
+  margin: 0.2rem 0 0;
+  color: #5b21b6;
+  font-size: 0.82rem;
+  font-weight: 650;
+}
+
+.org-dialog-saving .btn-spinner {
+  margin-right: 0;
+  border-color: rgba(91, 33, 182, 0.25);
+  border-top-color: #6d28d9;
 }
 
 .org-dialog-actions {

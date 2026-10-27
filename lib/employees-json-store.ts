@@ -521,6 +521,7 @@ export async function upsertEmployee(employee: Employee): Promise<Employee> {
   }
 
   await writeAllStores(employeesStore, exitsStore, docsStore);
+  invalidateEmployeesBundleCache();
   const saved = composeEmployee(nextRecord, docsStore.documents.find((item) => item.employeeId === nextRecord.id));
 
   const previousLoc = (existing?.localisation || '').trim();
@@ -530,14 +531,54 @@ export async function upsertEmployee(employee: Employee): Promise<Employee> {
     await syncFamilyLocalisationFromEmployee(saved.matricule, nextLoc);
   }
 
-  try {
-    const { ensureEmployeeInDependants } = await import('./dependants-json-store');
-    await ensureEmployeeInDependants(saved, nextRecord.id);
-  } catch (err) {
-    console.error('[employees] sync dependants failed', saved.matricule, err);
+  const identityChanged = !existing
+    || existing.nom !== nextRecord.nom
+    || existing.matricule !== nextRecord.matricule;
+  if (identityChanged) {
+    try {
+      const { ensureEmployeeInDependants } = await import('./dependants-json-store');
+      await ensureEmployeeInDependants(saved, nextRecord.id);
+    } catch (err) {
+      console.error('[employees] sync dependants failed', saved.matricule, err);
+    }
   }
 
   return saved;
+}
+
+export async function patchEmployeeLineManagers(
+  updates: Array<{ matricule: string; lineManagerName: string; lineManagerPosition: string }>,
+): Promise<Array<{ matricule: string; lineManagerName: string; lineManagerPosition: string }>> {
+  const clean = updates
+    .map((item) => ({
+      matricule: String(item.matricule || '').trim(),
+      lineManagerName: String(item.lineManagerName || '').trim(),
+      lineManagerPosition: String(item.lineManagerPosition || '').trim(),
+    }))
+    .filter((item) => item.matricule);
+  if (clean.length === 0) return [];
+  await ensureMigrated();
+  const employeesStore = await readEmployeesStore();
+  const missing = clean.filter(
+    (item) => !employeesStore.employees.some((employee) => employee.matricule === item.matricule),
+  );
+  if (missing.length > 0) {
+    throw new Error(`Employé introuvable : ${missing.map((item) => item.matricule).join(', ')}`);
+  }
+  const now = new Date().toISOString();
+  for (const update of clean) {
+    const index = employeesStore.employees.findIndex((item) => item.matricule === update.matricule);
+    const current = employeesStore.employees[index]!;
+    employeesStore.employees[index] = {
+      ...current,
+      lineManagerName: update.lineManagerName,
+      lineManagerPosition: update.lineManagerPosition,
+      updatedAt: now,
+    };
+  }
+  await writeJsonFile(DURABLE_EMPLOYEES_KEY, employeesPath(), employeesStore);
+  invalidateEmployeesBundleCache();
+  return clean;
 }
 
 /** Met à jour uniquement la localisation employé (sans reboucler vers dépendants). */

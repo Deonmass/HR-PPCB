@@ -9,7 +9,6 @@ import PermissionGate from '@/components/PermissionGate';
 import RefreshButton from '@/components/RefreshButton';
 import { usePermissions } from '@/contexts/PermissionContext';
 import type { Contractant } from '@/lib/contractants-types';
-import type { ContractantEmployee } from '@/lib/contractants-types';
 import {
   adoptContractantManagers,
   buildContractantOrganigramme,
@@ -39,36 +38,6 @@ function chainHits(startId: string, targets: Set<string>, nextOf: Map<string, st
     current = nextOf.get(current) || '';
   }
   return false;
-}
-
-function contractantPayload(
-  employee: ContractantEmployee,
-  manager: { employeeId: string; matricule: string },
-) {
-  return {
-    nom: employee.nom,
-    sexe: employee.sexe,
-    lieuAffectation: employee.lieuAffectation,
-    fonction: employee.fonction,
-    departement: employee.departement,
-    service: employee.service,
-    telephone: employee.telephone,
-    etatCivil: employee.etatCivil,
-    statut: employee.statut,
-    dateEmbauche: employee.dateEmbauche,
-    dateSortie: employee.dateSortie,
-    managerEmployeeId: manager.employeeId,
-    managerMatricule: manager.matricule,
-    family: employee.family || [],
-    matriculePpc: employee.matriculePpc,
-    numeroCnss: employee.numeroCnss,
-    numeroCompte: employee.numeroCompte,
-    banque: employee.banque,
-    nbDependants: employee.nbDependants,
-    txJr: employee.txJr,
-    coutTransport: employee.coutTransport,
-    payrollSite: employee.payrollSite,
-  };
 }
 
 function foldLabel(value: string): string {
@@ -181,6 +150,17 @@ export default function OrganigrammePage() {
     loadedOnce.current = true;
     void load();
   }, [allowed, load]);
+
+  useEffect(() => {
+    const onEmployee = (event: Event) => {
+      const next = (event as CustomEvent<Employee>).detail;
+      if (!next?.matricule) return;
+      setEmployees((prev) => prev.map((item) => (item.matricule === next.matricule ? { ...item, ...next } : item)));
+      setFiche((current) => (current?.matricule === next.matricule ? { ...current, ...next } : current));
+    };
+    window.addEventListener('hr-employee-updated', onEmployee);
+    return () => window.removeEventListener('hr-employee-updated', onEmployee);
+  }, []);
 
   const departments = useMemo(
     () => listOrganigrammeDepartments(employees, contractants),
@@ -395,9 +375,10 @@ export default function OrganigrammePage() {
       await showError('N+1 introuvable.');
       return;
     }
+    const summaryLabel = vacantTitle || orgPersonShortName(managerName) || managerName;
     const summary = managerEdit.length > 1
-      ? `${managerEdit.length} agents → ${orgPersonShortName(managerName)}`
-      : `N+1 : ${orgPersonShortName(managerName)}`;
+      ? `${managerEdit.length} agents → ${summaryLabel}`
+      : `N+1 : ${summaryLabel}`;
     const confirmed = await confirmAction('Confirmer le N+1 ?', summary, 'Enregistrer');
     if (!confirmed) return;
 
@@ -408,87 +389,79 @@ export default function OrganigrammePage() {
       : kind === 'interne'
         ? { employeeId: '', matricule: ref }
         : { employeeId: ref, matricule: '' };
+    const lineName = vacantTitle || internal?.nom || external?.employee.nom || '';
+    const linePosition = vacantTitle
+      ? 'Poste vacant'
+      : String(internal?.jobTitle || internal?.position || external?.employee.fonction || '').trim();
 
-    if (contractantPeople.length > 0) {
-      const savedIds = new Set<string>();
-      try {
-        for (const person of contractantPeople) {
-          const found = contractants
-            .flatMap((company) => (company.employees || []).map((employee) => ({ company, employee })))
-            .find((item) => item.employee.id === person.contractantEmployeeId);
-          if (!found) continue;
-          const res = await fetch(
-            `/api/employes/contractants/${found.company.id}/employees/${found.employee.id}`,
-            {
-              method: 'PUT',
-              headers: { 'Content-Type': 'application/json' },
-              body: JSON.stringify(contractantPayload(found.employee, link)),
-            },
-          );
-          const json = (await res.json()) as { error?: string };
-          if (!res.ok) throw new Error(json.error || 'Enregistrement impossible');
-          savedIds.add(found.employee.id);
-        }
-        setContractants((prev) => prev.map((company) => ({
-          ...company,
-          employees: company.employees.map((employee) => (
-            savedIds.has(employee.id)
-              ? { ...employee, managerEmployeeId: link.employeeId, managerMatricule: link.matricule }
-              : employee
-          )),
-        })));
-      } catch (err) {
-        if (savedIds.size > 0) {
-          setContractants((prev) => prev.map((company) => ({
-            ...company,
-            employees: company.employees.map((employee) => (
-              savedIds.has(employee.id)
-                ? { ...employee, managerEmployeeId: link.employeeId, managerMatricule: link.matricule }
-                : employee
-            )),
-          })));
-        }
-        await showError(err instanceof Error ? err.message : 'Enregistrement impossible');
-        return;
-      }
+    const employeeUpdates = internalPeople.flatMap((person) => {
+      const employee = employeesByMatricule.get(person.matricule);
+      if (!employee) return [];
+      return [{
+        matricule: employee.matricule,
+        lineManagerName: lineName,
+        lineManagerPosition: linePosition || employee.lineManagerPosition,
+      }];
+    });
+    const contractantUpdates = contractantPeople.flatMap((person) => {
+      const found = contractants
+        .flatMap((company) => (company.employees || []).map((employee) => ({ company, employee })))
+        .find((item) => item.employee.id === person.contractantEmployeeId);
+      if (!found) return [];
+      return [{
+        contractantId: found.company.id,
+        employeeId: found.employee.id,
+        managerEmployeeId: link.employeeId,
+        managerMatricule: link.matricule,
+      }];
+    });
+    if (employeeUpdates.length === 0 && contractantUpdates.length === 0) {
+      await showError('N+1 introuvable.');
+      return;
     }
 
-    if (internalPeople.length > 0) {
-      const saved: Employee[] = [];
-      const lineName = vacantTitle || internal?.nom || external?.employee.nom || '';
-      const linePosition = vacantTitle
-        ? 'Poste vacant'
-        : String(internal?.jobTitle || internal?.position || external?.employee.fonction || '').trim();
-      try {
-        for (const person of internalPeople) {
-          const employee = employeesByMatricule.get(person.matricule);
-          if (!employee) continue;
-          const next: Employee = {
-            ...employee,
-            lineManagerName: lineName,
-            lineManagerPosition: linePosition || employee.lineManagerPosition,
-          };
-          const res = await fetch(`/api/employees/${encodeURIComponent(employee.matricule)}`, {
-            method: 'PUT',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(next),
-          });
-          const json = (await res.json()) as Employee & { error?: string };
-          if (!res.ok) throw new Error(json.error || 'Enregistrement impossible');
-          saved.push(json);
-        }
-        if (saved.length > 0) {
-          const byMatricule = new Map(saved.map((item) => [item.matricule, item]));
-          setEmployees((prev) => prev.map((item) => byMatricule.get(item.matricule) || item));
-        }
-      } catch (err) {
-        if (saved.length > 0) {
-          const byMatricule = new Map(saved.map((item) => [item.matricule, item]));
-          setEmployees((prev) => prev.map((item) => byMatricule.get(item.matricule) || item));
-        }
-        await showError(err instanceof Error ? err.message : 'Enregistrement impossible');
-        return;
+    try {
+      const res = await fetch('/api/employes/organigramme/managers', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          employees: employeeUpdates,
+          contractants: contractantUpdates,
+        }),
+      });
+      const json = (await res.json()) as { error?: string };
+      if (!res.ok) throw new Error(json.error || 'Enregistrement impossible');
+      if (employeeUpdates.length > 0) {
+        const byMatricule = new Map(employeeUpdates.map((item) => [item.matricule, item]));
+        setEmployees((prev) => prev.map((item) => {
+          const update = byMatricule.get(item.matricule);
+          return update
+            ? { ...item, lineManagerName: update.lineManagerName, lineManagerPosition: update.lineManagerPosition }
+            : item;
+        }));
+        setFiche((current) => {
+          if (!current) return current;
+          const update = byMatricule.get(current.matricule);
+          return update
+            ? { ...current, lineManagerName: update.lineManagerName, lineManagerPosition: update.lineManagerPosition }
+            : current;
+        });
       }
+      if (contractantUpdates.length > 0) {
+        const byId = new Map(contractantUpdates.map((item) => [item.employeeId, item]));
+        setContractants((prev) => prev.map((company) => ({
+          ...company,
+          employees: company.employees.map((employee) => {
+            const update = byId.get(employee.id);
+            return update
+              ? { ...employee, managerEmployeeId: update.managerEmployeeId, managerMatricule: update.managerMatricule }
+              : employee;
+          }),
+        })));
+      }
+    } catch (err) {
+      await showError(err instanceof Error ? err.message : 'Enregistrement impossible');
+      return;
     }
 
     await showSuccess(managerEdit.length > 1 ? 'N+1 du groupe enregistré.' : 'N+1 enregistré.');
@@ -653,6 +626,10 @@ export default function OrganigrammePage() {
               <i className="org-legend-swatch is-other" aria-hidden />
               Autres
               <strong>{loading ? '…' : built.autres}</strong>
+            </span>
+            <span className="org-legend-item">
+              <i className="org-legend-swatch is-vacant" aria-hidden />
+              Poste vacant
             </span>
           </div>
           <div className="org-zoom" aria-label="Zoom">

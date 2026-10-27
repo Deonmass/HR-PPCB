@@ -8,6 +8,7 @@ import {
   groupOrgNodesByPoste,
   isCapitalHrCompany,
   orgPersonShortName,
+  VACANT_POST_LABEL,
   type OrgChartNode,
   type OrgPosteGroup,
   type OrgPosteMember,
@@ -166,6 +167,7 @@ function PosteCard({
   const outside = group.members.some((m) => m.isOutsideScope);
   const external = group.members.every((m) => m.isExternal);
   const contractant = Boolean(group.isContractant);
+  const vacant = Boolean(group.isVacant);
   const capitalHr = contractant && group.members.length > 0 && group.members.every((member) => (
     isCapitalHrCompany(member.contractantName || member.nom)
   ));
@@ -211,6 +213,7 @@ function PosteCard({
           outside ? 'is-outside' : '',
           contractant ? 'is-contractant' : '',
           capitalHr ? 'is-capital-hr' : '',
+          vacant ? 'is-vacant' : '',
           hit ? 'is-hit' : '',
         ]
           .filter(Boolean)
@@ -229,7 +232,9 @@ function PosteCard({
         }}
       >
         <div className="org-chart-card-avatars" aria-hidden>
-          {group.members.slice(0, multi ? 4 : 1).map((m) => (
+          {vacant ? (
+            <span className="org-chart-avatar is-poste-vacant" title={VACANT_POST_LABEL}>V</span>
+          ) : group.members.slice(0, multi ? 4 : 1).map((m) => (
             <span
               key={m.id}
               className={`org-chart-avatar${m.isExternal ? ' is-vacant' : ''}${m.isContractant ? ' is-contractant' : ''}${m.isContractant && isCapitalHrCompany(m.contractantName || m.nom) ? ' is-capital-hr' : ''}`}
@@ -238,7 +243,7 @@ function PosteCard({
               {m.isExternal ? '·' : initials(m.nom)}
             </span>
           ))}
-          {group.members.length > 4 ? (
+          {!vacant && group.members.length > 4 ? (
             <span className="org-chart-avatar is-more">+{group.members.length - 4}</span>
           ) : null}
         </div>
@@ -246,7 +251,11 @@ function PosteCard({
         <div className="org-chart-card-title">{group.jobTitle || '—'}</div>
 
         <div className="org-chart-card-people">
-          {group.members.map((m) => {
+          {vacant ? (
+            <div className="org-chart-person">
+              <span className="org-chart-person-name">{VACANT_POST_LABEL}</span>
+            </div>
+          ) : group.members.map((m) => {
             const short = orgPersonShortName(m.nom);
             return (
               <div
@@ -265,7 +274,7 @@ function PosteCard({
             {multi ? <span className="org-chart-pill">{group.members.length} pers.</span> : null}
             {reports > 0 ? <span className="org-chart-pill">{reports} N-1</span> : null}
             {outside ? <span className="org-chart-pill is-warn">Hors périmètre</span> : null}
-            {external ? <span className="org-chart-pill is-warn">Externe</span> : null}
+            {external && !vacant ? <span className="org-chart-pill is-warn">Externe</span> : null}
           </div>
           <div className="org-chart-card-tools">
             <button
