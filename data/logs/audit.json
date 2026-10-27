@@ -1,6 +1,21 @@
 {
   "entries": [
     {
+      "id": "log-001966",
+      "at": "2026-10-27T09:20:02.013Z",
+      "userId": "Kiesse.Banguli@ppcdrc.cd",
+      "userName": "Kiesse Banguli",
+      "userEmail": "Kiesse.Banguli@ppcdrc.cd",
+      "module": "auth",
+      "moduleLabel": "Authentification",
+      "action": "login",
+      "actionLabel": "Connexion",
+      "summary": "Connexion Kiesse.Banguli@ppcdrc.cd",
+      "details": "Connexion de Kiesse Banguli (Kiesse.Banguli@ppcdrc.cd)",
+      "undoable": false,
+      "undone": false
+    },
+    {
       "id": "log-001965",
       "at": "2026-10-27T07:15:26.797Z",
       "userId": "admin",
@@ -210609,5 +210624,5 @@
       }
     }
   ],
-  "nextSeq": 1966
+  "nextSeq": 1967
 }
