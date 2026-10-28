@@ -1,6 +1,48 @@
 {
   "entries": [
     {
+      "id": "log-002049",
+      "at": "2026-10-28T10:20:04.918Z",
+      "userId": "karine.mvutu@ppcdrc.cd",
+      "userName": "Karine Mvutu",
+      "userEmail": "karine.mvutu@ppcdrc.cd",
+      "module": "sante",
+      "moduleLabel": "Santé",
+      "action": "create",
+      "actionLabel": "Création",
+      "entityType": "sante.visit",
+      "entityId": "sante-mvryqpzq-2oomml",
+      "summary": "Cas santé — ONOSAMBA  FALCON · PALUDISME SIMPLE",
+      "details": "Cas santé — ONOSAMBA  FALCON · PALUDISME SIMPLE",
+      "after": {
+        "id": "sante-mvryqpzq-2oomml",
+        "date": "2026-10-26",
+        "nom": "ONOSAMBA",
+        "postnom": "FALCON",
+        "sexe": "M",
+        "age": 9,
+        "typeMalade": "ENFANT",
+        "pathologie": "PALUDISME SIMPLE",
+        "traitement": "ANTI PALUDEEN  ET ANTI PYRETIQUE",
+        "reference": "NON",
+        "year": 2026,
+        "month": 10,
+        "employeeMatricule": "",
+        "employeeNom": "",
+        "dependantId": null,
+        "commentaire": "",
+        "contractantId": "",
+        "contractantNom": "",
+        "contractantEmployeeId": "",
+        "createdAt": "2026-10-28T10:20:02.966Z",
+        "updatedAt": "2026-10-28T10:20:02.966Z",
+        "createdBy": "karine.mvutu@ppcdrc.cd",
+        "updatedBy": "karine.mvutu@ppcdrc.cd"
+      },
+      "undoable": false,
+      "undone": false
+    },
+    {
       "id": "log-002048",
       "at": "2026-10-28T10:18:55.163Z",
       "userId": "karine.mvutu@ppcdrc.cd",
@@ -217866,5 +217908,5 @@
       }
     }
   ],
-  "nextSeq": 2049
+  "nextSeq": 2050
 }
