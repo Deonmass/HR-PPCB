@@ -1,6 +1,48 @@
 {
   "entries": [
     {
+      "id": "log-002050",
+      "at": "2026-10-28T10:22:12.362Z",
+      "userId": "karine.mvutu@ppcdrc.cd",
+      "userName": "Karine Mvutu",
+      "userEmail": "karine.mvutu@ppcdrc.cd",
+      "module": "sante",
+      "moduleLabel": "Santé",
+      "action": "create",
+      "actionLabel": "Création",
+      "entityType": "sante.visit",
+      "entityId": "sante-mvrytgdz-ozjlke",
+      "summary": "Cas santé — KAHAMBO ONOSAMBA · TOUX",
+      "details": "Cas santé — KAHAMBO ONOSAMBA · TOUX",
+      "after": {
+        "id": "sante-mvrytgdz-ozjlke",
+        "date": "2026-10-26",
+        "nom": "KAHAMBO",
+        "postnom": "ONOSAMBA",
+        "sexe": "F",
+        "age": 7,
+        "typeMalade": "ENFANT",
+        "pathologie": "TOUX",
+        "traitement": "ANTI TOUSSIF BETATOUX",
+        "reference": "NON",
+        "year": 2026,
+        "month": 10,
+        "employeeMatricule": "",
+        "employeeNom": "",
+        "dependantId": null,
+        "commentaire": "",
+        "contractantId": "",
+        "contractantNom": "",
+        "contractantEmployeeId": "",
+        "createdAt": "2026-10-28T10:22:10.487Z",
+        "updatedAt": "2026-10-28T10:22:10.487Z",
+        "createdBy": "karine.mvutu@ppcdrc.cd",
+        "updatedBy": "karine.mvutu@ppcdrc.cd"
+      },
+      "undoable": false,
+      "undone": false
+    },
+    {
       "id": "log-002049",
       "at": "2026-10-28T10:20:04.918Z",
       "userId": "karine.mvutu@ppcdrc.cd",
@@ -217908,5 +217950,5 @@
       }
     }
   ],
-  "nextSeq": 2050
+  "nextSeq": 2051
 }
