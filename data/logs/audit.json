@@ -1,6 +1,48 @@
 {
   "entries": [
     {
+      "id": "log-002054",
+      "at": "2026-10-28T12:06:39.165Z",
+      "userId": "karine.mvutu@ppcdrc.cd",
+      "userName": "Karine Mvutu",
+      "userEmail": "karine.mvutu@ppcdrc.cd",
+      "module": "sante",
+      "moduleLabel": "Santé",
+      "action": "create",
+      "actionLabel": "Création",
+      "entityType": "sante.visit",
+      "entityId": "sante-mvs2jryi-vpobjs",
+      "summary": "Cas santé — NLANDU NDONGALA ERICK · HYPOGLYCEMIE",
+      "details": "Cas santé — NLANDU NDONGALA ERICK · HYPOGLYCEMIE",
+      "after": {
+        "id": "sante-mvs2jryi-vpobjs",
+        "date": "2026-10-28",
+        "nom": "NLANDU",
+        "postnom": "NDONGALA ERICK",
+        "sexe": "M",
+        "age": 45,
+        "typeMalade": "AGENT",
+        "pathologie": "HYPOGLYCEMIE",
+        "traitement": "EAU SUCRE",
+        "reference": "IME",
+        "year": 2026,
+        "month": 10,
+        "employeeMatricule": "70000076",
+        "employeeNom": "NLANDU NDONGALA ERICK",
+        "dependantId": null,
+        "commentaire": "AVIS MEDICALE",
+        "contractantId": "",
+        "contractantNom": "",
+        "contractantEmployeeId": "",
+        "createdAt": "2026-10-28T12:06:37.386Z",
+        "updatedAt": "2026-10-28T12:06:37.386Z",
+        "createdBy": "karine.mvutu@ppcdrc.cd",
+        "updatedBy": "karine.mvutu@ppcdrc.cd"
+      },
+      "undoable": false,
+      "undone": false
+    },
+    {
       "id": "log-002053",
       "at": "2026-10-28T10:46:37.291Z",
       "userId": "Tresor.Maneka@ppcdrc.cd",
@@ -218116,5 +218158,5 @@
       }
     }
   ],
-  "nextSeq": 2054
+  "nextSeq": 2055
 }
