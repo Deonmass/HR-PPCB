@@ -1,6 +1,48 @@
 {
   "entries": [
     {
+      "id": "log-002047",
+      "at": "2026-10-28T10:15:04.607Z",
+      "userId": "karine.mvutu@ppcdrc.cd",
+      "userName": "Karine Mvutu",
+      "userEmail": "karine.mvutu@ppcdrc.cd",
+      "module": "sante",
+      "moduleLabel": "Santé",
+      "action": "create",
+      "actionLabel": "Création",
+      "entityType": "sante.visit",
+      "entityId": "sante-mvrykacd-l8vro9",
+      "summary": "Cas santé — KAMBA  BENA · CEPHALEE D'ORIGINE INCONNU",
+      "details": "Cas santé — KAMBA  BENA · CEPHALEE D'ORIGINE INCONNU",
+      "after": {
+        "id": "sante-mvrykacd-l8vro9",
+        "date": "2026-10-21",
+        "nom": "KAMBA",
+        "postnom": "BENA",
+        "sexe": "M",
+        "age": 24,
+        "typeMalade": "CONTRACTANT",
+        "pathologie": "CEPHALEE D'ORIGINE INCONNU",
+        "traitement": "PARACETAMOLE",
+        "reference": "NON",
+        "year": 2026,
+        "month": 10,
+        "employeeMatricule": "",
+        "employeeNom": "",
+        "dependantId": null,
+        "commentaire": "",
+        "contractantId": "2",
+        "contractantNom": "Capital HR",
+        "contractantEmployeeId": "",
+        "createdAt": "2026-10-28T10:15:02.749Z",
+        "updatedAt": "2026-10-28T10:15:02.749Z",
+        "createdBy": "karine.mvutu@ppcdrc.cd",
+        "updatedBy": "karine.mvutu@ppcdrc.cd"
+      },
+      "undoable": false,
+      "undone": false
+    },
+    {
       "id": "log-002046",
       "at": "2026-10-28T10:11:44.084Z",
       "userId": "karine.mvutu@ppcdrc.cd",
@@ -217782,5 +217824,5 @@
       }
     }
   ],
-  "nextSeq": 2047
+  "nextSeq": 2048
 }
