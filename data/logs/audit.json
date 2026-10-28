@@ -1,6 +1,48 @@
 {
   "entries": [
     {
+      "id": "log-002051",
+      "at": "2026-10-28T10:24:16.920Z",
+      "userId": "karine.mvutu@ppcdrc.cd",
+      "userName": "Karine Mvutu",
+      "userEmail": "karine.mvutu@ppcdrc.cd",
+      "module": "sante",
+      "moduleLabel": "Santé",
+      "action": "create",
+      "actionLabel": "Création",
+      "entityType": "sante.visit",
+      "entityId": "sante-mvryw4jt-z369r4",
+      "summary": "Cas santé — SAIDI KABONGO · FIEVRE D'ORIGINE INCONNU",
+      "details": "Cas santé — SAIDI KABONGO · FIEVRE D'ORIGINE INCONNU",
+      "after": {
+        "id": "sante-mvryw4jt-z369r4",
+        "date": "2026-10-27",
+        "nom": "SAIDI",
+        "postnom": "KABONGO",
+        "sexe": "F",
+        "age": 7,
+        "typeMalade": "ENFANT",
+        "pathologie": "FIEVRE D'ORIGINE INCONNU",
+        "traitement": "PARACETAMOLE INJECTABLE",
+        "reference": "MD Kinshasa",
+        "year": 2026,
+        "month": 10,
+        "employeeMatricule": "70000238",
+        "employeeNom": "SAIDI MOUSSA TRESOR",
+        "dependantId": 549,
+        "commentaire": "Voir avis medicale pour investigation et prise en charge",
+        "contractantId": "",
+        "contractantNom": "",
+        "contractantEmployeeId": "",
+        "createdAt": "2026-10-28T10:24:15.113Z",
+        "updatedAt": "2026-10-28T10:24:15.113Z",
+        "createdBy": "karine.mvutu@ppcdrc.cd",
+        "updatedBy": "karine.mvutu@ppcdrc.cd"
+      },
+      "undoable": false,
+      "undone": false
+    },
+    {
       "id": "log-002050",
       "at": "2026-10-28T10:22:12.362Z",
       "userId": "karine.mvutu@ppcdrc.cd",
@@ -217950,5 +217992,5 @@
       }
     }
   ],
-  "nextSeq": 2051
+  "nextSeq": 2052
 }
