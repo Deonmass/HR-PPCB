@@ -1,6 +1,53 @@
 {
   "entries": [
     {
+      "id": "log-002052",
+      "at": "2026-10-28T10:44:22.556Z",
+      "userId": "Tresor.Maneka@ppcdrc.cd",
+      "userName": "Tresor Maneka",
+      "userEmail": "Tresor.Maneka@ppcdrc.cd",
+      "module": "charroi.voyages",
+      "moduleLabel": "Charroi — Voyages",
+      "action": "create",
+      "actionLabel": "Création",
+      "entityType": "charroi.voyage",
+      "entityId": "vyg-030",
+      "summary": "Demande de voyage VYG-0030 LUCIO DA CONCEICAO Kinshasa → Zamba (Village)",
+      "details": "Demande de voyage VYG-0030 LUCIO DA CONCEICAO Kinshasa → Zamba (Village)",
+      "after": {
+        "id": "vyg-030",
+        "numero": "VYG-0030",
+        "passagerNom": "LUCIO DA CONCEICAO",
+        "passagerMatricule": "70000232",
+        "passagerInterne": true,
+        "nombrePersonnes": 1,
+        "depart": "Kinshasa",
+        "destination": "Zamba (Village)",
+        "dateDepart": "2026-10-28",
+        "heureDepart": "05:00",
+        "dateArrivee": "",
+        "heureArrivee": "",
+        "motif": "RETOUR DE LUCIO A ZAMBA",
+        "notes": "",
+        "status": "demande",
+        "chauffeurNom": "",
+        "chauffeurMatricule": "",
+        "chauffeurInterne": false,
+        "vehiculeMode": "",
+        "vehiculeId": "",
+        "vehiculeLibelle": "",
+        "foodAllowance": 0,
+        "foodForTheRoad": 0,
+        "tollGate": 0,
+        "confirmedAt": "",
+        "completedAt": "",
+        "createdAt": "2026-10-28T10:44:19.142Z",
+        "updatedAt": "2026-10-28T10:44:19.142Z"
+      },
+      "undoable": false,
+      "undone": false
+    },
+    {
       "id": "log-002051",
       "at": "2026-10-28T10:24:16.920Z",
       "userId": "karine.mvutu@ppcdrc.cd",
@@ -217992,5 +218039,5 @@
       }
     }
   ],
-  "nextSeq": 2052
+  "nextSeq": 2053
 }
