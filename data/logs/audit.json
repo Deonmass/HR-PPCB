@@ -1,6 +1,65 @@
 {
   "entries": [
     {
+      "id": "log-002042",
+      "at": "2026-10-28T08:10:20.281Z",
+      "userId": "admin",
+      "userName": "Administrateur",
+      "userEmail": "admin",
+      "module": "employes.discipline",
+      "moduleLabel": "Cas disciplinaires",
+      "action": "create",
+      "actionLabel": "Création",
+      "entityType": "ppc-discipline",
+      "entityId": "KAMANDA NYOMBA SOSTHENE",
+      "summary": "Cas disciplinaire PPC — KAMANDA NYOMBA SOSTHENE",
+      "details": "Cas disciplinaire PPC — KAMANDA NYOMBA SOSTHENE",
+      "after": {
+        "id": "2c5ee852-681e-4f42-beee-dd46348ed524",
+        "matricule": "70000210",
+        "employeeName": "KAMANDA NYOMBA SOSTHENE",
+        "departement": "Quality Assurance",
+        "jobTitle": "Senior Lab Analyst",
+        "parti": false,
+        "dateIncident": "2026-10-28",
+        "motif": "Arrêt du four des 26 au 28 septembre 2026.",
+        "faits": "L'usine a connu un arrêt du four d'environ 34 heures (perte estimée à 0,7 million USD), après environ quatre heures de broyage avec un LSF inférieur à 90. Le tas examiné le 28 septembre 2026 présentait un LSF de 323,4 et un écart-type de 73,9, hors spécifications. Aucune action corrective documentée n'a précédé sa consommation, et l'assistance attendue en salle de contrôle n'a pas été apportée à temps.",
+        "demandeDate": "2026-09-30",
+        "demandeTexte": "",
+        "demandeLien": "",
+        "demandeEcheance": "2026-10-02",
+        "reponseDate": "",
+        "reponseTexte": "",
+        "reponseLien": "",
+        "sanction": "Aucune",
+        "dateSanction": "",
+        "statut": "Demande d'explication",
+        "historique": [
+          {
+            "id": "f3b55422-ad5c-498c-b825-14991156a80c",
+            "type": "ouverture",
+            "auteur": "Administrateur",
+            "texte": "Arrêt du four des 26 au 28 septembre 2026.",
+            "date": "2026-10-28",
+            "createdAt": "2026-10-28T08:10:19.756Z"
+          },
+          {
+            "id": "3229e2c1-975e-4434-804f-f7051eecdad3",
+            "type": "demande",
+            "auteur": "Administrateur",
+            "texte": "Demande d’explication\nÉchéance de réponse : 2026-10-02",
+            "date": "2026-09-30",
+            "createdAt": "2026-10-28T08:10:19.756Z"
+          }
+        ],
+        "createdAt": "2026-10-28T08:10:19.756Z",
+        "updatedAt": "2026-10-28T08:10:19.756Z",
+        "createdBy": "Administrateur"
+      },
+      "undoable": false,
+      "undone": false
+    },
+    {
       "id": "log-002041",
       "at": "2026-10-28T08:09:30.292Z",
       "userId": "admin",
@@ -217531,5 +217590,5 @@
       }
     }
   ],
-  "nextSeq": 2042
+  "nextSeq": 2043
 }
