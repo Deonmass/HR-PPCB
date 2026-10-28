@@ -1,6 +1,48 @@
 {
   "entries": [
     {
+      "id": "log-002048",
+      "at": "2026-10-28T10:18:55.163Z",
+      "userId": "karine.mvutu@ppcdrc.cd",
+      "userName": "Karine Mvutu",
+      "userEmail": "karine.mvutu@ppcdrc.cd",
+      "module": "sante",
+      "moduleLabel": "Santé",
+      "action": "create",
+      "actionLabel": "Création",
+      "entityType": "sante.visit",
+      "entityId": "sante-mvryp8dz-s2iadg",
+      "summary": "Cas santé — BABALA MATWAN ANTOINE · ANIEN CAS CYATALGIE",
+      "details": "Cas santé — BABALA MATWAN ANTOINE · ANIEN CAS CYATALGIE",
+      "after": {
+        "id": "sante-mvryp8dz-s2iadg",
+        "date": "2026-10-26",
+        "nom": "BABALA",
+        "postnom": "MATWAN ANTOINE",
+        "sexe": "M",
+        "age": 27,
+        "typeMalade": "AGENT",
+        "pathologie": "ANIEN CAS CYATALGIE",
+        "traitement": "Tribexfort injectable et dola cr",
+        "reference": "CMD",
+        "year": 2026,
+        "month": 10,
+        "employeeMatricule": "70000291",
+        "employeeNom": "BABALA MATWAN ANTOINE",
+        "dependantId": null,
+        "commentaire": "voir consultation aupres du neurochirurgien au CMD",
+        "contractantId": "",
+        "contractantNom": "",
+        "contractantEmployeeId": "",
+        "createdAt": "2026-10-28T10:18:53.495Z",
+        "updatedAt": "2026-10-28T10:18:53.495Z",
+        "createdBy": "karine.mvutu@ppcdrc.cd",
+        "updatedBy": "karine.mvutu@ppcdrc.cd"
+      },
+      "undoable": false,
+      "undone": false
+    },
+    {
       "id": "log-002047",
       "at": "2026-10-28T10:15:04.607Z",
       "userId": "karine.mvutu@ppcdrc.cd",
@@ -217824,5 +217866,5 @@
       }
     }
   ],
-  "nextSeq": 2048
+  "nextSeq": 2049
 }
