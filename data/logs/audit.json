@@ -1,6 +1,65 @@
 {
   "entries": [
     {
+      "id": "log-002041",
+      "at": "2026-10-28T08:09:30.292Z",
+      "userId": "admin",
+      "userName": "Administrateur",
+      "userEmail": "admin",
+      "module": "employes.discipline",
+      "moduleLabel": "Cas disciplinaires",
+      "action": "create",
+      "actionLabel": "Création",
+      "entityType": "ppc-discipline",
+      "entityId": "RUKOMEZA KARHIBULA GISCARD",
+      "summary": "Cas disciplinaire PPC — RUKOMEZA KARHIBULA GISCARD",
+      "details": "Cas disciplinaire PPC — RUKOMEZA KARHIBULA GISCARD",
+      "after": {
+        "id": "d28a1ce3-1719-427e-b816-954d5386f84e",
+        "matricule": "70000266",
+        "employeeName": "RUKOMEZA KARHIBULA GISCARD",
+        "departement": "Mining",
+        "jobTitle": "Mining Manager",
+        "parti": false,
+        "dateIncident": "2026-09-30",
+        "motif": "Arrêt du four des 26 au 28 septembre 2026.",
+        "faits": "L'usine a connu un arrêt du four d'environ 34 heures (perte estimée à 0,7 million USD), après environ quatre heures de broyage avec un LSF inférieur à 90. Le tas examiné le 28 septembre 2026 présentait un LSF de 323,4 et un écart-type de 73,9, hors spécifications. Aucune action corrective documentée n'a précédé sa consommation, et l'assistance attendue en salle de contrôle n'a pas été apportée à temps.",
+        "demandeDate": "2026-09-30",
+        "demandeTexte": "",
+        "demandeLien": "",
+        "demandeEcheance": "2026-10-02",
+        "reponseDate": "",
+        "reponseTexte": "",
+        "reponseLien": "",
+        "sanction": "Aucune",
+        "dateSanction": "",
+        "statut": "Demande d'explication",
+        "historique": [
+          {
+            "id": "536034fa-1d15-45f2-ad9f-3e9d9547be6b",
+            "type": "ouverture",
+            "auteur": "Administrateur",
+            "texte": "Arrêt du four des 26 au 28 septembre 2026.",
+            "date": "2026-09-30",
+            "createdAt": "2026-10-28T08:09:28.899Z"
+          },
+          {
+            "id": "b5a929a8-0e3e-405d-acac-29d379d71efc",
+            "type": "demande",
+            "auteur": "Administrateur",
+            "texte": "Demande d’explication\nÉchéance de réponse : 2026-10-02",
+            "date": "2026-09-30",
+            "createdAt": "2026-10-28T08:09:28.899Z"
+          }
+        ],
+        "createdAt": "2026-10-28T08:09:28.899Z",
+        "updatedAt": "2026-10-28T08:09:28.899Z",
+        "createdBy": "Administrateur"
+      },
+      "undoable": false,
+      "undone": false
+    },
+    {
       "id": "log-002040",
       "at": "2026-10-28T07:42:54.795Z",
       "userId": "admin",
@@ -217472,5 +217531,5 @@
       }
     }
   ],
-  "nextSeq": 2041
+  "nextSeq": 2042
 }
