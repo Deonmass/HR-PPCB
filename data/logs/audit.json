@@ -1,6 +1,36 @@
 {
   "entries": [
     {
+      "id": "log-002072",
+      "at": "2026-10-29T11:02:00.833Z",
+      "userId": "admin",
+      "userName": "Administrateur",
+      "userEmail": "admin",
+      "module": "employees",
+      "moduleLabel": "Employés",
+      "action": "update",
+      "actionLabel": "Modification",
+      "entityType": "employee",
+      "summary": "N+1 mis à jour (1)",
+      "details": "N+1 mis à jour (1)",
+      "after": {
+        "employees": [
+          {
+            "matricule": "70000083",
+            "lineManagerName": "Quality Manager",
+            "lineManagerPosition": "Poste vacant",
+            "departement": "Quality Assurance",
+            "departmentHr": "QA",
+            "service": ""
+          }
+        ],
+        "contractants": [],
+        "vacants": []
+      },
+      "undoable": false,
+      "undone": false
+    },
+    {
       "id": "log-002071",
       "at": "2026-10-29T11:01:20.410Z",
       "userId": "admin",
@@ -218800,5 +218830,5 @@
       }
     }
   ],
-  "nextSeq": 2072
+  "nextSeq": 2073
 }
