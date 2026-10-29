@@ -1,6 +1,45 @@
 {
   "entries": [
     {
+      "id": "log-002082",
+      "at": "2026-10-29T12:28:12.063Z",
+      "userId": "Tresor.Maneka@ppcdrc.cd",
+      "userName": "Tresor Maneka",
+      "userEmail": "Tresor.Maneka@ppcdrc.cd",
+      "module": "protocol.voyages",
+      "moduleLabel": "Gestion de voyage",
+      "action": "create",
+      "actionLabel": "Création",
+      "entityType": "protocol.voyage",
+      "entityId": "pvc-055",
+      "summary": "Voyage PVC-0055 Kamel Algerie Kinshasa Algerie",
+      "details": "Voyage PVC-0055 Kamel Algerie Kinshasa Algerie",
+      "after": {
+        "id": "pvc-055",
+        "numero": "PVC-0055",
+        "date": "2026-10-23",
+        "voyageur": "Kamel",
+        "voyageurMatricule": "",
+        "destination": "Algerie Kinshasa Algerie",
+        "ticketAvion": 0,
+        "visaVolant": 440,
+        "lettreLegaliser": 0,
+        "goPass": 0,
+        "transfert": 0,
+        "hotelNuit": 145,
+        "nbreNuits": 0,
+        "coutHotel": 0,
+        "categorieHotel": "Standard",
+        "appartement": 0,
+        "autresCharges": 0,
+        "coutTotal": 440,
+        "createdAt": "2026-10-29T12:28:08.596Z",
+        "updatedAt": "2026-10-29T12:28:08.596Z"
+      },
+      "undoable": false,
+      "undone": false
+    },
+    {
       "id": "log-002081",
       "at": "2026-10-29T12:25:31.991Z",
       "userId": "Tresor.Maneka@ppcdrc.cd",
@@ -219766,5 +219805,5 @@
       }
     }
   ],
-  "nextSeq": 2082
+  "nextSeq": 2083
 }
