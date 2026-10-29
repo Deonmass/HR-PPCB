@@ -1,6 +1,50 @@
 {
   "entries": [
     {
+      "id": "log-002062",
+      "at": "2026-10-29T06:59:36.317Z",
+      "userId": "admin",
+      "userName": "Administrateur",
+      "userEmail": "admin",
+      "module": "contractants",
+      "moduleLabel": "contractants",
+      "action": "update",
+      "actionLabel": "Modification",
+      "entityType": "contractant-employee",
+      "entityId": "781",
+      "summary": "Modification employé contractant — MAVINGA NKUAMBA RUBEN",
+      "details": "Modification employé contractant — MAVINGA NKUAMBA RUBEN",
+      "after": {
+        "id": "781",
+        "nom": "MAVINGA NKUAMBA RUBEN",
+        "sexe": "M",
+        "lieuAffectation": "Zamba",
+        "fonction": "Warehouse Clerk",
+        "departement": "Supply Chain",
+        "service": "",
+        "telephone": "",
+        "etatCivil": "C",
+        "statut": "Permanent",
+        "dateEmbauche": "",
+        "dateSortie": "",
+        "managerEmployeeId": "",
+        "managerMatricule": "",
+        "family": [],
+        "matriculePpc": "CHRS_PPC0062",
+        "numeroCnss": "",
+        "numeroCompte": "544100061256553",
+        "banque": "EBCDC",
+        "nbDependants": 0,
+        "txJr": 11.49949,
+        "coutTransport": 1.17,
+        "payrollSite": "site",
+        "createdAt": "2026-09-25T08:00:00.000Z",
+        "updatedAt": "2026-10-29T06:59:32.194Z"
+      },
+      "undoable": false,
+      "undone": false
+    },
+    {
       "id": "log-002061",
       "at": "2026-10-29T06:57:45.324Z",
       "userId": "admin",
@@ -218429,5 +218473,5 @@
       }
     }
   ],
-  "nextSeq": 2062
+  "nextSeq": 2063
 }
