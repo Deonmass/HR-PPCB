@@ -7851,16 +7851,17 @@
       "essaiActions": "",
       "essaiResponsable": "",
       "essaiEcheanceEval": "12/10/2026",
-      "essaiStatutEval": "Ongoing",
-      "essaiCommentaire": "",
+      "essaiStatutEval": "Done",
+      "essaiCommentaire": "Approved",
       "cddHistoriqueDebut": "",
       "cddHistoriqueFin": "",
       "cddHistoriqueDureeMois": null,
       "datePassageCdi": "",
       "cnss": "",
       "nif": "",
+      "telephone": "",
       "createdAt": "2026-08-11T14:44:00.747Z",
-      "updatedAt": "2026-08-28T10:14:25.387Z"
+      "updatedAt": "2026-10-29T11:20:02.615Z"
     },
     {
       "id": "e73092bf-495b-45aa-93a9-4243da4e0599",
