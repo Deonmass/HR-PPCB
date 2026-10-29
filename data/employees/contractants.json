@@ -1,6 +1,6 @@
 {
   "nextContractantId": 15,
-  "nextEmployeeId": 906,
+  "nextEmployeeId": 907,
   "contractants": [
     {
       "id": "1",
@@ -5118,10 +5118,37 @@
           "payrollSite": "",
           "createdAt": "2026-10-29T07:43:07.064Z",
           "updatedAt": "2026-10-29T07:43:07.064Z"
+        },
+        {
+          "id": "906",
+          "nom": "MUTIMA VELA",
+          "sexe": "",
+          "lieuAffectation": "Zamba",
+          "fonction": "",
+          "departement": "",
+          "service": "",
+          "telephone": "",
+          "etatCivil": "C",
+          "statut": "Permanent",
+          "dateEmbauche": "",
+          "dateSortie": "",
+          "managerEmployeeId": "",
+          "managerMatricule": "",
+          "family": [],
+          "matriculePpc": "",
+          "numeroCnss": "",
+          "numeroCompte": "",
+          "banque": "",
+          "nbDependants": 0,
+          "txJr": 0,
+          "coutTransport": 0,
+          "payrollSite": "",
+          "createdAt": "2026-10-29T07:43:42.396Z",
+          "updatedAt": "2026-10-29T07:43:42.396Z"
         }
       ],
       "createdAt": "2026-08-12T11:55:22.134Z",
-      "updatedAt": "2026-10-29T07:43:07.064Z"
+      "updatedAt": "2026-10-29T07:43:42.396Z"
     },
     {
       "id": "3",
