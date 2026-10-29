@@ -1,6 +1,36 @@
 {
   "entries": [
     {
+      "id": "log-002071",
+      "at": "2026-10-29T11:01:20.410Z",
+      "userId": "admin",
+      "userName": "Administrateur",
+      "userEmail": "admin",
+      "module": "employees",
+      "moduleLabel": "Employés",
+      "action": "update",
+      "actionLabel": "Modification",
+      "entityType": "employee",
+      "summary": "N+1 mis à jour (1)",
+      "details": "N+1 mis à jour (1)",
+      "after": {
+        "employees": [
+          {
+            "matricule": "70000033",
+            "lineManagerName": "Optimization Manager",
+            "lineManagerPosition": "Poste vacant",
+            "departement": "Optimization",
+            "departmentHr": "Optimization",
+            "service": ""
+          }
+        ],
+        "contractants": [],
+        "vacants": []
+      },
+      "undoable": false,
+      "undone": false
+    },
+    {
       "id": "log-002070",
       "at": "2026-10-29T10:47:51.785Z",
       "userId": "Serge.Muakasa@ppcdrc.cd",
@@ -218770,5 +218800,5 @@
       }
     }
   ],
-  "nextSeq": 2071
+  "nextSeq": 2072
 }
