@@ -1,6 +1,50 @@
 {
   "entries": [
     {
+      "id": "log-002067",
+      "at": "2026-10-29T07:43:46.542Z",
+      "userId": "admin",
+      "userName": "Administrateur",
+      "userEmail": "admin",
+      "module": "contractants",
+      "moduleLabel": "contractants",
+      "action": "create",
+      "actionLabel": "Création",
+      "entityType": "contractant-employee",
+      "entityId": "MUTIMA VELA",
+      "summary": "Employé contractant — MUTIMA VELA",
+      "details": "Employé contractant — MUTIMA VELA",
+      "after": {
+        "id": "906",
+        "nom": "MUTIMA VELA",
+        "sexe": "",
+        "lieuAffectation": "Zamba",
+        "fonction": "",
+        "departement": "",
+        "service": "",
+        "telephone": "",
+        "etatCivil": "C",
+        "statut": "Permanent",
+        "dateEmbauche": "",
+        "dateSortie": "",
+        "managerEmployeeId": "",
+        "managerMatricule": "",
+        "family": [],
+        "matriculePpc": "",
+        "numeroCnss": "",
+        "numeroCompte": "",
+        "banque": "",
+        "nbDependants": 0,
+        "txJr": 0,
+        "coutTransport": 0,
+        "payrollSite": "",
+        "createdAt": "2026-10-29T07:43:42.396Z",
+        "updatedAt": "2026-10-29T07:43:42.396Z"
+      },
+      "undoable": false,
+      "undone": false
+    },
+    {
       "id": "log-002066",
       "at": "2026-10-29T07:43:10.704Z",
       "userId": "admin",
@@ -218623,5 +218667,5 @@
       }
     }
   ],
-  "nextSeq": 2067
+  "nextSeq": 2068
 }
