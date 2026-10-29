@@ -3,7 +3,7 @@ import { listContractants, patchContractantManagerLinks } from '@/lib/contractan
 import { patchEmployeeLineManagers, readEmployees } from '@/lib/employees-json-store';
 import { excelErrorResponse } from '@/lib/excel-io';
 import { departmentPlacement, reportingDepartment } from '@/lib/organigramme';
-import { listVacantPostes } from '@/lib/postes-store';
+import { listVacantPostes, setVacantPosteReportsTo } from '@/lib/postes-store';
 import { checkAnyPermission } from '@/lib/require-permission';
 import { withAudit } from '@/lib/with-audit';
 
@@ -20,6 +20,13 @@ type ContractantUpdate = {
   managerMatricule?: string;
 };
 
+type VacantUpdate = {
+  title?: string;
+  reportsTo?: string;
+  department?: string;
+  location?: string;
+};
+
 export async function POST(request: Request) {
   const denied = await checkAnyPermission([
     { menuId: 'employes.organigramme', action: 'edit' },
@@ -32,23 +39,25 @@ export async function POST(request: Request) {
     const body = (await request.json()) as {
       employees?: EmployeeUpdate[];
       contractants?: ContractantUpdate[];
+      vacants?: VacantUpdate[];
     };
     const employees = Array.isArray(body.employees) ? body.employees : [];
     const contractants = Array.isArray(body.contractants) ? body.contractants : [];
-    if (employees.length === 0 && contractants.length === 0) {
+    const vacants = Array.isArray(body.vacants) ? body.vacants : [];
+    if (employees.length === 0 && contractants.length === 0 && vacants.length === 0) {
       return NextResponse.json({ error: 'Aucune modification' }, { status: 400 });
     }
-    if (employees.length > 200 || contractants.length > 200) {
+    if (employees.length > 200 || contractants.length > 200 || vacants.length > 50) {
       return NextResponse.json({ error: 'Trop de modifications' }, { status: 400 });
     }
 
-    const [directory, companies, vacants] = await Promise.all([
+    const [directory, companies, existingVacants] = await Promise.all([
       readEmployees(),
       listContractants(),
       listVacantPostes(),
     ]);
     const contractantPeople = companies.flatMap((company) => company.employees || []);
-    const vacantDepartments = vacants.map((poste) => ({
+    const vacantDepartments = existingVacants.map((poste) => ({
       title: poste.title,
       department: poste.department,
     }));
@@ -64,7 +73,7 @@ export async function POST(request: Request) {
         module: 'employees',
         action: 'update',
         entityType: 'employee',
-        summary: `N+1 mis à jour (${employees.length + contractants.length})`,
+        summary: `N+1 mis à jour (${employees.length + contractants.length + vacants.length})`,
         path: '/api/employes/organigramme/managers',
         method: 'POST',
         defer: true,
@@ -111,7 +120,16 @@ export async function POST(request: Request) {
             };
           }))
           : [];
-        return { employees: savedEmployees, contractants: savedContractants };
+        const savedVacants = [];
+        for (const item of vacants) {
+          savedVacants.push(await setVacantPosteReportsTo({
+            title: String(item.title || ''),
+            reportsTo: String(item.reportsTo || ''),
+            department: item.department,
+            location: item.location,
+          }));
+        }
+        return { employees: savedEmployees, contractants: savedContractants, vacants: savedVacants };
       },
     );
     return NextResponse.json(result);

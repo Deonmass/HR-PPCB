@@ -497,6 +497,29 @@ function inScope(
 /**
  * Construit la forêt d’organigramme à partir des line managers.
  */
+function titleMatchKeys(title: string): string[] {
+  const raw = String(title || '').trim();
+  const short = raw.replace(/\s*\([^)]*\)\s*$/, '').trim();
+  return [...new Set([foldOrgLabel(raw), foldOrgLabel(short)].filter(Boolean))];
+}
+
+function containsNodeId(node: OrgChartNode, id: string): boolean {
+  if (node.id === id) return true;
+  return node.children.some((child) => containsNodeId(child, id));
+}
+
+function detachOrgNode(list: OrgChartNode[], id: string): OrgChartNode | null {
+  for (let index = 0; index < list.length; index += 1) {
+    if (list[index]!.id === id) {
+      const [removed] = list.splice(index, 1);
+      return removed || null;
+    }
+    const child = detachOrgNode(list[index]!.children, id);
+    if (child) return child;
+  }
+  return null;
+}
+
 export function buildOrganigramme(
   employees: Employee[],
   options: {
@@ -504,6 +527,8 @@ export function buildOrganigramme(
     departement?: string;
     service?: string;
     contractants?: Contractant[];
+    /** N+1 enregistré sur un poste vacant (titre → responsable). */
+    vacantReports?: Array<{ title: string; reportsTo: string }>;
   },
 ): OrganigrammeBuildResult {
   const scope = options.scope;
@@ -659,6 +684,52 @@ export function buildOrganigramme(
     }
 
     roots.push(node);
+  }
+
+  const vacantReports = (options.vacantReports || []).filter((item) => item.title.trim() && item.reportsTo.trim());
+  if (vacantReports.length > 0) {
+    const vacantByKey = new Map<string, OrgChartNode>();
+    const employeeByMatricule = new Map<string, OrgChartNode>();
+    const indexChart = (list: OrgChartNode[]) => {
+      for (const node of list) {
+        if (node.isVacant) {
+          for (const key of titleMatchKeys(node.nom)) vacantByKey.set(key, node);
+          for (const key of titleMatchKeys(node.jobTitle)) vacantByKey.set(key, node);
+        } else if (node.matricule) {
+          employeeByMatricule.set(node.matricule, node);
+        }
+        indexChart(node.children);
+      }
+    };
+    indexChart(roots);
+    for (const link of vacantReports) {
+      const node = titleMatchKeys(link.title).map((key) => vacantByKey.get(key)).find(Boolean);
+      if (!node) continue;
+      let parent = titleMatchKeys(link.reportsTo).map((key) => vacantByKey.get(key)).find(Boolean);
+      if (parent?.id === node.id) parent = undefined;
+      if (!parent) {
+        const matricule = resolveLineManagerMatricule(link.reportsTo, nameCandidates);
+        if (matricule) {
+          parent = employeeByMatricule.get(matricule);
+          if (!parent && byMatricule.has(matricule)) {
+            const mgr = byMatricule.get(matricule)!;
+            parent = ensureExternal(`mgr:${mgr.matricule}`, mgr.nom, mgr.jobTitle, true);
+            parent.matricule = mgr.matricule;
+            parent.departement = mgr.departement;
+            parent.service = mgr.service;
+            parent.grade = mgr.grade;
+            parent.localisation = mgr.localisation;
+            parent.isExternal = false;
+            parent.isOutsideScope = true;
+            employeeByMatricule.set(matricule, parent);
+          }
+        }
+      }
+      if (!parent || parent.id === node.id || containsNodeId(node, parent.id)) continue;
+      const removed = detachOrgNode(roots, node.id);
+      if (!removed) continue;
+      if (!parent.children.some((child) => child.id === removed.id)) parent.children.push(removed);
+    }
   }
 
   const sortNodes = (list: OrgChartNode[]) => {

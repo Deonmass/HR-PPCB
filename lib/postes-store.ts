@@ -304,6 +304,60 @@ export async function getPostesBundle(): Promise<PostesBundle> {
   };
 }
 
+function vacantTitleKeys(title: string): string[] {
+  const fold = (value: string) => String(value || '')
+    .normalize('NFD')
+    .replace(/\p{Diacritic}/gu, '')
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, ' ')
+    .replace(/\s+/g, ' ')
+    .trim();
+  const raw = String(title || '').trim();
+  const short = raw.replace(/\s*\([^)]*\)\s*$/, '').trim();
+  return [...new Set([fold(raw), fold(short)].filter(Boolean))];
+}
+
+/** Enregistre le N+1 d’un poste vacant (crée la fiche si elle n’existe que dans la classification). */
+export async function setVacantPosteReportsTo(input: {
+  title: string;
+  reportsTo: string;
+  department?: string;
+  location?: string;
+}): Promise<VacantPoste> {
+  const title = String(input.title || '').trim();
+  const reportsTo = String(input.reportsTo || '').trim();
+  if (!title) throw new Error('Intitulé du poste requis');
+  if (!reportsTo) throw new Error('N+1 requis');
+  const store = await readVacantsStore();
+  const keys = new Set(vacantTitleKeys(title));
+  const index = store.vacants.findIndex((item) => vacantTitleKeys(item.title).some((key) => keys.has(key)));
+  const now = new Date().toISOString();
+  if (index >= 0) {
+    const next: VacantPoste = { ...store.vacants[index]!, reportsTo, updatedAt: now };
+    store.vacants[index] = next;
+    await writeVacantsStore(store);
+    return next;
+  }
+  const item: VacantPoste = {
+    id: `vac-${Date.now().toString(36)}-${Math.random().toString(36).slice(2, 7)}`,
+    title,
+    department: String(input.department || '').trim(),
+    location: String(input.location || '').trim(),
+    grade: '',
+    reportsTo,
+    costCenter: '',
+    jobDescription: '',
+    jobLevel: '',
+    headcount: 1,
+    notes: '',
+    createdAt: now,
+    updatedAt: now,
+  };
+  store.vacants.push(item);
+  await writeVacantsStore(store);
+  return item;
+}
+
 export async function createVacantPoste(input: VacantPosteInput): Promise<VacantPoste> {
   const title = String(input.title || '').trim();
   if (!title) throw new Error('Intitulé du poste requis');

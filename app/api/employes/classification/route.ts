@@ -12,6 +12,7 @@ export async function GET() {
     { menuId: 'employes.classification', action: 'view' },
     { menuId: 'employes.postes', action: 'view' },
     { menuId: 'employes.liste', action: 'view' },
+    { menuId: 'employes.organigramme', action: 'view' },
   ]);
   if (denied) return denied;
 

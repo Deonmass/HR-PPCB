@@ -22,6 +22,7 @@ export type OrgPersonTarget = {
   departement: string;
   service: string;
   isContractant?: boolean;
+  isVacant?: boolean;
   contractantId?: string;
   contractantEmployeeId?: string;
 };
@@ -96,6 +97,7 @@ function toTarget(member: OrgPosteMember, jobTitle: string): OrgPersonTarget {
     departement: member.departement,
     service: member.service,
     isContractant: member.isContractant,
+    isVacant: member.isVacant,
     contractantId: member.contractantId,
     contractantEmployeeId: member.contractantEmployeeId,
   };
@@ -198,6 +200,18 @@ function PosteCard({
   };
 
   const openCardMenu = (event: React.MouseEvent, member?: OrgPosteMember) => {
+    if (group.isVacant) {
+      const title = group.jobTitle || VACANT_POST_LABEL;
+      onOpenMenu(event, {
+        matricule: '',
+        nom: title,
+        jobTitle: title,
+        departement: group.members[0]?.departement || '',
+        service: group.members[0]?.service || '',
+        isVacant: true,
+      }, [], card);
+      return;
+    }
     let personMember: OrgPosteMember | undefined;
     if (member && canOpenMember(member)) {
       personMember = member;
@@ -464,9 +478,11 @@ export default function OrganigrammeTree({
   const openMenu = (event: React.MouseEvent, person: OrgPersonTarget | null, people: OrgPersonTarget[], card: HiddenCard) => {
     const showFiche = Boolean(person && !person.isContractant && hasFiche(person.matricule));
     const showPerson = Boolean(person && (
-      person.isContractant
-        ? canEditContractant && person.contractantEmployeeId
-        : canEdit && hasFiche(person.matricule)
+      person.isVacant
+        ? canEdit
+        : person.isContractant
+          ? canEditContractant && person.contractantEmployeeId
+          : canEdit && hasFiche(person.matricule)
     ));
     const showGroup = people.length > 1;
     const showRole = Boolean(person && !person.isContractant && canEdit && hasFiche(person.matricule));
@@ -565,9 +581,11 @@ export default function OrganigrammeTree({
     menu?.person && !menu.person.isContractant && hasFiche(menu.person.matricule),
   );
   const editPersonOk = Boolean(menu?.person && (
-    menu.person.isContractant
-      ? canEditContractant && menu.person.contractantId && menu.person.contractantEmployeeId
-      : canEdit && hasFiche(menu.person.matricule)
+    menu.person.isVacant
+      ? canEdit
+      : menu.person.isContractant
+        ? canEditContractant && menu.person.contractantId && menu.person.contractantEmployeeId
+        : canEdit && hasFiche(menu.person.matricule)
   ));
   const editGroupOk = Boolean(menu && menu.people.length > 1);
   const editRoleOk = Boolean(
@@ -668,9 +686,11 @@ export default function OrganigrammeTree({
                   if (person) onEditManager(person);
                 }}
               >
-                {menu.people.length > 1
-                  ? `Modifier le N+1 de ${orgPersonShortName(menu.person.nom)}`
-                  : 'Modifier N+1'}
+                {menu.person?.isVacant
+                  ? 'Modifier le N+1'
+                  : menu.people.length > 1
+                    ? `Modifier le N+1 de ${orgPersonShortName(menu.person.nom)}`
+                    : 'Modifier N+1'}
               </button>
             ) : null}
             {editGroupOk ? (

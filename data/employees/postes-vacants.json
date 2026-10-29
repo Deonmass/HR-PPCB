@@ -1,3 +1,19 @@
 {
-  "vacants": []
+  "vacants": [
+    {
+      "id": "vac-mvtf91ck-70398",
+      "title": "Optimization Manager",
+      "department": "Optimization",
+      "location": "Usine",
+      "grade": "",
+      "reportsTo": "MOLONGA LYONGA ANDREW",
+      "costCenter": "",
+      "jobDescription": "",
+      "jobLevel": "",
+      "headcount": 1,
+      "notes": "",
+      "createdAt": "2026-10-29T10:49:57.524Z",
+      "updatedAt": "2026-10-29T10:49:57.524Z"
+    }
+  ]
 }

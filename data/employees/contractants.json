@@ -1,6 +1,6 @@
 {
   "nextContractantId": 15,
-  "nextEmployeeId": 908,
+  "nextEmployeeId": 913,
   "contractants": [
     {
       "id": "1",
@@ -723,7 +723,7 @@
           "nom": "BAKUSU METUSALA Richard",
           "sexe": "M",
           "lieuAffectation": "Zamba",
-          "fonction": "Plumber ( Plombier )",
+          "fonction": "Plumber",
           "departement": "Engineering",
           "service": "",
           "telephone": "895818906",
@@ -743,7 +743,7 @@
           "coutTransport": 1.17,
           "payrollSite": "site",
           "createdAt": "2026-08-12T12:57:02.481Z",
-          "updatedAt": "2026-09-28T15:12:00.000Z"
+          "updatedAt": "2026-10-29T10:55:59.251Z"
         },
         {
           "id": "101",
@@ -858,7 +858,7 @@
           "nom": "BASHONGA MOHINDO ALINE",
           "sexe": "F",
           "lieuAffectation": "Kinshasa",
-          "fonction": "Receptionist",
+          "fonction": "Receptionniste",
           "departement": "Human Resources",
           "service": "Admin",
           "telephone": "899922864",
@@ -878,7 +878,7 @@
           "coutTransport": 2.66,
           "payrollSite": "hors-site",
           "createdAt": "2026-09-25T08:00:00.000Z",
-          "updatedAt": "2026-10-26T11:50:11.635Z"
+          "updatedAt": "2026-10-29T10:55:59.251Z"
         },
         {
           "id": "83",
@@ -1047,7 +1047,7 @@
           "nom": "BILONGO LUKOMBO Gaston",
           "sexe": "M",
           "lieuAffectation": "Zamba",
-          "fonction": "Handyman",
+          "fonction": "Handy Man Mechanical",
           "departement": "Engineering",
           "service": "",
           "telephone": "896670637",
@@ -1067,14 +1067,14 @@
           "coutTransport": 1.17,
           "payrollSite": "site",
           "createdAt": "2026-08-12T12:57:02.481Z",
-          "updatedAt": "2026-09-28T15:12:00.000Z"
+          "updatedAt": "2026-10-29T10:55:59.251Z"
         },
         {
           "id": "8",
           "nom": "BILONGO MAFUILA JEAN PIERRE",
           "sexe": "M",
           "lieuAffectation": "Zamba",
-          "fonction": "Parking Queue System Clerk",
+          "fonction": "Parking Field Marshall",
           "departement": "Supply Chain",
           "service": "",
           "telephone": "899541933",
@@ -1094,14 +1094,14 @@
           "coutTransport": 1.17,
           "payrollSite": "site",
           "createdAt": "2026-08-12T12:57:02.481Z",
-          "updatedAt": "2026-09-28T15:12:00.000Z"
+          "updatedAt": "2026-10-29T10:55:59.251Z"
         },
         {
           "id": "124",
           "nom": "BITALA MAYASI FABRICE",
           "sexe": "M",
           "lieuAffectation": "Zamba",
-          "fonction": "Issuer/receiver ( Magasinier (sorties/entrées) )",
+          "fonction": "Issuer",
           "departement": "Supply Chain",
           "service": "",
           "telephone": "840609867",
@@ -1121,7 +1121,7 @@
           "coutTransport": 1.17,
           "payrollSite": "site",
           "createdAt": "2026-08-12T12:57:02.481Z",
-          "updatedAt": "2026-09-28T15:12:00.000Z"
+          "updatedAt": "2026-10-29T10:55:59.251Z"
         },
         {
           "id": "95",
@@ -1263,7 +1263,7 @@
           "nom": "DIAKIKADILA MPOFI ANDRE",
           "sexe": "M",
           "lieuAffectation": "Zamba",
-          "fonction": "Fitter & Turner ( Ajusteur–tourneur (monteur & Tourneur) )",
+          "fonction": "Fitter",
           "departement": "Engineering",
           "service": "",
           "telephone": "895805235",
@@ -1283,7 +1283,7 @@
           "coutTransport": 1.17,
           "payrollSite": "site",
           "createdAt": "2026-08-12T12:57:02.481Z",
-          "updatedAt": "2026-09-28T15:12:00.000Z"
+          "updatedAt": "2026-10-29T10:55:59.251Z"
         },
         {
           "id": "87",
@@ -1506,7 +1506,7 @@
           "nom": "KALENGA MBAYO Chancelle",
           "sexe": "F",
           "lieuAffectation": "Lubudi",
-          "fonction": "Maintenance Attendant",
+          "fonction": "Agent d'entretien",
           "departement": "Human Resources",
           "service": "",
           "telephone": "",
@@ -1526,7 +1526,7 @@
           "coutTransport": 0.8039,
           "payrollSite": "hors-site",
           "createdAt": "2026-09-25T08:00:00.000Z",
-          "updatedAt": "2026-10-29T06:30:14.761Z"
+          "updatedAt": "2026-10-29T10:55:59.251Z"
         },
         {
           "id": "89",
@@ -1803,7 +1803,7 @@
           "nom": "KINKELA WANZAMBI JAEBET",
           "sexe": "M",
           "lieuAffectation": "Zamba",
-          "fonction": "Fitter & Turner ( Ajusteur–tourneur (monteur & Tourneur) )",
+          "fonction": "Fitter",
           "departement": "Engineering",
           "service": "",
           "telephone": "808676443",
@@ -1823,7 +1823,7 @@
           "coutTransport": 1.17,
           "payrollSite": "site",
           "createdAt": "2026-08-12T12:57:02.481Z",
-          "updatedAt": "2026-09-28T15:12:00.000Z"
+          "updatedAt": "2026-10-29T10:55:59.251Z"
         },
         {
           "id": "29",
@@ -2262,7 +2262,7 @@
           "nom": "LUZOLO MVIBUDULU Trésor",
           "sexe": "M",
           "lieuAffectation": "Zamba",
-          "fonction": "Handyman",
+          "fonction": "Handy Man Mechanical",
           "departement": "Engineering",
           "service": "",
           "telephone": "896791064",
@@ -2282,7 +2282,7 @@
           "coutTransport": 1.17,
           "payrollSite": "site",
           "createdAt": "2026-08-12T12:57:02.481Z",
-          "updatedAt": "2026-09-28T15:12:00.000Z"
+          "updatedAt": "2026-10-29T10:55:59.251Z"
         },
         {
           "id": "774",
@@ -2451,7 +2451,7 @@
           "nom": "MAKOSI LUNZAYILADIO JOHN",
           "sexe": "M",
           "lieuAffectation": "Zamba",
-          "fonction": "Boilermaker ( Chaudronnier )",
+          "fonction": "Boiler Maker",
           "departement": "Engineering",
           "service": "",
           "telephone": "895013654",
@@ -2471,14 +2471,14 @@
           "coutTransport": 1.17,
           "payrollSite": "site",
           "createdAt": "2026-08-12T12:57:02.481Z",
-          "updatedAt": "2026-09-28T15:12:00.000Z"
+          "updatedAt": "2026-10-29T10:55:59.251Z"
         },
         {
           "id": "772",
           "nom": "MALOMAMO YEMA Jean Marie",
           "sexe": "F",
           "lieuAffectation": "Kisangani",
-          "fonction": "Forklift Operator",
+          "fonction": "Chauffeur Chariot elevateur",
           "departement": "Production",
           "service": "",
           "telephone": "",
@@ -2498,7 +2498,7 @@
           "coutTransport": 3.2042,
           "payrollSite": "hors-site",
           "createdAt": "2026-09-25T08:00:00.000Z",
-          "updatedAt": "2026-10-29T06:57:42.289Z"
+          "updatedAt": "2026-10-29T10:55:59.251Z"
         },
         {
           "id": "85",
@@ -2532,7 +2532,7 @@
           "nom": "MAMPUYA LUTOMASANSA Hugor",
           "sexe": "M",
           "lieuAffectation": "Zamba",
-          "fonction": "Mechanical Engineer",
+          "fonction": "Mechanical",
           "departement": "Engineering",
           "service": "",
           "telephone": "841277799",
@@ -2552,14 +2552,14 @@
           "coutTransport": 1.17,
           "payrollSite": "site",
           "createdAt": "2026-08-12T12:57:02.481Z",
-          "updatedAt": "2026-09-28T15:12:00.000Z"
+          "updatedAt": "2026-10-29T10:55:59.251Z"
         },
         {
           "id": "43",
           "nom": "MANDIANGU NDONGALA DIEU",
           "sexe": "M",
           "lieuAffectation": "Zamba",
-          "fonction": "Fitter & Turner ( Ajusteur–tourneur (monteur & Tourneur) )",
+          "fonction": "Fitter",
           "departement": "Engineering",
           "service": "",
           "telephone": "899850024",
@@ -2579,7 +2579,7 @@
           "coutTransport": 1.17,
           "payrollSite": "site",
           "createdAt": "2026-08-12T12:57:02.481Z",
-          "updatedAt": "2026-09-28T15:12:00.000Z"
+          "updatedAt": "2026-10-29T10:55:59.251Z"
         },
         {
           "id": "64",
@@ -2721,7 +2721,7 @@
           "nom": "MATONDO NZUZI ROGER",
           "sexe": "M",
           "lieuAffectation": "Zamba",
-          "fonction": "Fitter & Turner ( Ajusteur–tourneur (monteur & Tourneur) )",
+          "fonction": "Fitter",
           "departement": "Engineering",
           "service": "",
           "telephone": "896102732",
@@ -2741,7 +2741,7 @@
           "coutTransport": 1.17,
           "payrollSite": "site",
           "createdAt": "2026-08-12T12:57:02.481Z",
-          "updatedAt": "2026-09-28T15:12:00.000Z"
+          "updatedAt": "2026-10-29T10:55:59.251Z"
         },
         {
           "id": "84",
@@ -3018,7 +3018,7 @@
           "nom": "MBIKI MUYINDA HYPPOLITE",
           "sexe": "M",
           "lieuAffectation": "Zamba",
-          "fonction": "Laundry Attendant",
+          "fonction": "Lavandier",
           "departement": "Human Resources",
           "service": "",
           "telephone": "825115611",
@@ -3038,7 +3038,7 @@
           "coutTransport": 1.17,
           "payrollSite": "site",
           "createdAt": "2026-08-12T12:57:02.481Z",
-          "updatedAt": "2026-10-25T18:09:16.938Z"
+          "updatedAt": "2026-10-29T10:55:59.251Z"
         },
         {
           "id": "37",
@@ -3072,7 +3072,7 @@
           "nom": "MBUTA KAMAYA YENS",
           "sexe": "M",
           "lieuAffectation": "Zamba",
-          "fonction": "Parking Queue System Clerk",
+          "fonction": "Parking Field Marshall",
           "departement": "Supply Chain",
           "service": "",
           "telephone": "815717596",
@@ -3092,7 +3092,7 @@
           "coutTransport": 1.17,
           "payrollSite": "site",
           "createdAt": "2026-08-12T12:57:02.481Z",
-          "updatedAt": "2026-09-28T15:12:00.000Z"
+          "updatedAt": "2026-10-29T10:55:59.251Z"
         },
         {
           "id": "16",
@@ -3207,7 +3207,7 @@
           "nom": "MPAKA KANKU JONATHAN",
           "sexe": "M",
           "lieuAffectation": "Zamba",
-          "fonction": "Parking Queue System Clerk",
+          "fonction": "Parking Field Marshall",
           "departement": "Supply Chain",
           "service": "",
           "telephone": "850858741",
@@ -3227,14 +3227,14 @@
           "coutTransport": 1.17,
           "payrollSite": "site",
           "createdAt": "2026-08-12T12:57:02.481Z",
-          "updatedAt": "2026-09-28T15:12:00.000Z"
+          "updatedAt": "2026-10-29T10:55:59.251Z"
         },
         {
           "id": "73",
           "nom": "NSIYASOBUA MPILA Emmanuel",
           "sexe": "M",
           "lieuAffectation": "Zamba",
-          "fonction": "Fitter & Turner ( Ajusteur–tourneur (monteur & Tourneur) )",
+          "fonction": "Fitter",
           "departement": "Engineering",
           "service": "",
           "telephone": "898189934",
@@ -3254,7 +3254,7 @@
           "coutTransport": 1.17,
           "payrollSite": "site",
           "createdAt": "2026-08-12T12:57:02.481Z",
-          "updatedAt": "2026-09-28T15:12:00.000Z"
+          "updatedAt": "2026-10-29T10:55:59.251Z"
         },
         {
           "id": "39",
@@ -3295,7 +3295,7 @@
           "etatCivil": "C",
           "statut": "Permanent",
           "dateEmbauche": "",
-          "dateSortie": "",
+          "dateSortie": "2026-10-29",
           "managerEmployeeId": "",
           "managerMatricule": "",
           "family": [],
@@ -3308,7 +3308,7 @@
           "coutTransport": 5.01,
           "payrollSite": "hors-site",
           "createdAt": "2026-08-12T12:57:02.481Z",
-          "updatedAt": "2026-09-28T15:12:00.000Z"
+          "updatedAt": "2026-10-29T10:55:59.251Z"
         },
         {
           "id": "764",
@@ -3423,7 +3423,7 @@
           "nom": "MUZIAMA KAHOTA MIRIAM",
           "sexe": "F",
           "lieuAffectation": "Zamba",
-          "fonction": "Electrician",
+          "fonction": "Electricienne",
           "departement": "Engineering",
           "service": "",
           "telephone": "829290895",
@@ -3443,7 +3443,7 @@
           "coutTransport": 1.17,
           "payrollSite": "site",
           "createdAt": "2026-08-12T12:57:02.481Z",
-          "updatedAt": "2026-09-28T15:12:00.000Z"
+          "updatedAt": "2026-10-29T10:55:59.251Z"
         },
         {
           "id": "91",
@@ -3585,7 +3585,7 @@
           "nom": "NDAY MUDIBU FREDDY",
           "sexe": "M",
           "lieuAffectation": "Lubudi",
-          "fonction": "Driver",
+          "fonction": "Chauffeur",
           "departement": "Human Resources",
           "service": "Driver",
           "telephone": "802222945",
@@ -3605,7 +3605,7 @@
           "coutTransport": 1.2,
           "payrollSite": "hors-site",
           "createdAt": "2026-08-12T12:57:02.481Z",
-          "updatedAt": "2026-10-26T12:02:32.077Z"
+          "updatedAt": "2026-10-29T10:55:59.251Z"
         },
         {
           "id": "782",
@@ -3855,7 +3855,7 @@
           "nom": "NGUVU MUNYANGI ROBERT",
           "sexe": "",
           "lieuAffectation": "Lubudi",
-          "fonction": "Driver",
+          "fonction": "Chauffeur",
           "departement": "Human Resources",
           "service": "",
           "telephone": "800407000",
@@ -3875,7 +3875,7 @@
           "coutTransport": 1.22,
           "payrollSite": "hors-site",
           "createdAt": "2026-09-25T08:00:00.000Z",
-          "updatedAt": "2026-10-26T12:01:10.508Z"
+          "updatedAt": "2026-10-29T10:55:59.251Z"
         },
         {
           "id": "103",
@@ -4125,7 +4125,7 @@
           "nom": "NSEKA MAKUMBU",
           "sexe": "M",
           "lieuAffectation": "Zamba",
-          "fonction": "Crane Operator",
+          "fonction": "Fitter and Driver Crane Operator",
           "departement": "Engineering",
           "service": "",
           "telephone": "896778987",
@@ -4145,7 +4145,7 @@
           "coutTransport": 1.17,
           "payrollSite": "site",
           "createdAt": "2026-08-12T12:57:02.481Z",
-          "updatedAt": "2026-09-28T15:12:00.000Z"
+          "updatedAt": "2026-10-29T10:55:59.251Z"
         },
         {
           "id": "63",
@@ -4213,7 +4213,7 @@
           "etatCivil": "C",
           "statut": "Permanent",
           "dateEmbauche": "",
-          "dateSortie": "",
+          "dateSortie": "2026-10-29",
           "managerEmployeeId": "",
           "managerMatricule": "",
           "family": [],
@@ -4226,7 +4226,7 @@
           "coutTransport": 1.17,
           "payrollSite": "site",
           "createdAt": "2026-09-25T08:00:00.000Z",
-          "updatedAt": "2026-09-28T15:12:00.000Z"
+          "updatedAt": "2026-10-29T10:55:59.251Z"
         },
         {
           "id": "783",
@@ -4314,7 +4314,7 @@
           "nom": "NTALA MBOTE CHIRAC",
           "sexe": "M",
           "lieuAffectation": "Zamba",
-          "fonction": "Lubricator Handyman",
+          "fonction": "Lubricator Supervisor",
           "departement": "Engineering",
           "service": "",
           "telephone": "895220922",
@@ -4334,7 +4334,7 @@
           "coutTransport": 1.17,
           "payrollSite": "site",
           "createdAt": "2026-08-12T12:57:02.481Z",
-          "updatedAt": "2026-09-28T15:12:00.000Z"
+          "updatedAt": "2026-10-29T10:55:59.251Z"
         },
         {
           "id": "26",
@@ -4392,7 +4392,7 @@
         },
         {
           "id": "765",
-          "nom": "NUMBI IMANGO Théophil",
+          "nom": "NUMBI IMANGO Théophile",
           "sexe": "M",
           "lieuAffectation": "Lubudi",
           "fonction": "Spooter",
@@ -4415,7 +4415,7 @@
           "coutTransport": 0.4119,
           "payrollSite": "hors-site",
           "createdAt": "2026-09-25T08:00:00.000Z",
-          "updatedAt": "2026-10-29T07:00:47.217Z"
+          "updatedAt": "2026-10-29T10:55:59.251Z"
         },
         {
           "id": "778",
@@ -4449,7 +4449,7 @@
           "nom": "NZOLANTIMA TEKADIOMONA",
           "sexe": "",
           "lieuAffectation": "Zamba",
-          "fonction": "Handyman",
+          "fonction": "Handyman Fitter",
           "departement": "Engineering",
           "service": "",
           "telephone": "",
@@ -4469,7 +4469,7 @@
           "coutTransport": 1.17,
           "payrollSite": "site",
           "createdAt": "2026-09-25T08:00:00.000Z",
-          "updatedAt": "2026-10-17T08:09:05.139Z"
+          "updatedAt": "2026-10-29T10:55:59.251Z"
         },
         {
           "id": "77",
@@ -4585,7 +4585,7 @@
           "sexe": "M",
           "lieuAffectation": "Zamba",
           "fonction": "Process Technician",
-          "departement": "Optimization",
+          "departement": "Production",
           "service": "",
           "telephone": "814200391",
           "etatCivil": "C",
@@ -4604,7 +4604,7 @@
           "coutTransport": 1.17,
           "payrollSite": "site",
           "createdAt": "2026-08-12T12:57:02.481Z",
-          "updatedAt": "2026-10-29T08:25:38.170Z"
+          "updatedAt": "2026-10-29T10:55:59.251Z"
         },
         {
           "id": "129",
@@ -4665,7 +4665,7 @@
           "nom": "SANDABA NZAYILADIO BODRICK",
           "sexe": "",
           "lieuAffectation": "Zamba",
-          "fonction": "Lubricator Handyman",
+          "fonction": "Mechanical Lubricator",
           "departement": "Engineering",
           "service": "",
           "telephone": "",
@@ -4685,7 +4685,7 @@
           "coutTransport": 1.17,
           "payrollSite": "site",
           "createdAt": "2026-09-25T08:00:00.000Z",
-          "updatedAt": "2026-09-28T15:12:00.000Z"
+          "updatedAt": "2026-10-29T10:55:59.251Z"
         },
         {
           "id": "52",
@@ -4753,7 +4753,7 @@
           "etatCivil": "C",
           "statut": "Permanent",
           "dateEmbauche": "",
-          "dateSortie": "",
+          "dateSortie": "2026-10-29",
           "managerEmployeeId": "",
           "managerMatricule": "70000175",
           "family": [],
@@ -4766,14 +4766,14 @@
           "coutTransport": 23.0533,
           "payrollSite": "hors-site",
           "createdAt": "2026-09-25T08:00:00.000Z",
-          "updatedAt": "2026-10-26T12:04:58.921Z"
+          "updatedAt": "2026-10-29T10:55:59.251Z"
         },
         {
           "id": "761",
           "nom": "SONGBELE Jacques",
           "sexe": "",
-          "lieuAffectation": "Zamba",
-          "fonction": "Warehouse Administrator",
+          "lieuAffectation": "Mbandaka",
+          "fonction": "Warehouse",
           "departement": "Supply Chain",
           "service": "",
           "telephone": "",
@@ -4793,7 +4793,7 @@
           "coutTransport": 4.7604,
           "payrollSite": "hors-site",
           "createdAt": "2026-09-25T08:00:00.000Z",
-          "updatedAt": "2026-09-28T15:12:00.000Z"
+          "updatedAt": "2026-10-29T10:55:59.251Z"
         },
         {
           "id": "123",
@@ -4962,7 +4962,7 @@
           "nom": "USENI KITOKO Cesar",
           "sexe": "",
           "lieuAffectation": "Kinshasa",
-          "fonction": "Warehouse Administrator",
+          "fonction": "Warehouse",
           "departement": "Supply Chain",
           "service": "",
           "telephone": "855533190",
@@ -4982,7 +4982,7 @@
           "coutTransport": 4.7604,
           "payrollSite": "hors-site",
           "createdAt": "2026-09-25T08:00:00.000Z",
-          "updatedAt": "2026-09-28T15:12:00.000Z"
+          "updatedAt": "2026-10-29T10:55:59.251Z"
         },
         {
           "id": "114",
@@ -5070,7 +5070,7 @@
           "nom": "KYUNGU KABUYA BRUNO",
           "sexe": "M",
           "lieuAffectation": "Lubudi",
-          "fonction": "Driver",
+          "fonction": "Spooter",
           "departement": "Human Resources",
           "service": "Driver",
           "telephone": "",
@@ -5090,7 +5090,7 @@
           "coutTransport": 0,
           "payrollSite": "hors-site",
           "createdAt": "2026-09-28T15:12:00.000Z",
-          "updatedAt": "2026-10-26T12:02:05.700Z"
+          "updatedAt": "2026-10-29T10:55:59.251Z"
         },
         {
           "id": "905",
@@ -5115,17 +5115,17 @@
           "nbDependants": 0,
           "txJr": 0,
           "coutTransport": 0,
-          "payrollSite": "",
+          "payrollSite": "site",
           "createdAt": "2026-10-29T07:43:07.064Z",
-          "updatedAt": "2026-10-29T07:43:07.064Z"
+          "updatedAt": "2026-10-29T10:55:59.251Z"
         },
         {
           "id": "906",
           "nom": "MUTIMA VELA",
-          "sexe": "",
+          "sexe": "M",
           "lieuAffectation": "Zamba",
-          "fonction": "",
-          "departement": "",
+          "fonction": "Patroller",
+          "departement": "Production",
           "service": "",
           "telephone": "",
           "etatCivil": "C",
@@ -5142,17 +5142,17 @@
           "nbDependants": 0,
           "txJr": 0,
           "coutTransport": 0,
-          "payrollSite": "",
+          "payrollSite": "site",
           "createdAt": "2026-10-29T07:43:42.396Z",
-          "updatedAt": "2026-10-29T07:43:42.396Z"
+          "updatedAt": "2026-10-29T10:55:59.251Z"
         },
         {
           "id": "907",
           "nom": "NZOLA BASEVAKUAWU",
           "sexe": "",
           "lieuAffectation": "Zamba",
-          "fonction": "",
-          "departement": "",
+          "fonction": "Housekeeping",
+          "departement": "Production",
           "service": "",
           "telephone": "",
           "etatCivil": "C",
@@ -5169,13 +5169,175 @@
           "nbDependants": 0,
           "txJr": 0,
           "coutTransport": 0,
-          "payrollSite": "",
+          "payrollSite": "site",
           "createdAt": "2026-10-29T07:44:13.666Z",
-          "updatedAt": "2026-10-29T07:44:13.666Z"
+          "updatedAt": "2026-10-29T10:55:59.251Z"
+        },
+        {
+          "id": "786",
+          "nom": "MALO MALO YEMA JEAN",
+          "sexe": "",
+          "lieuAffectation": "Kisangani",
+          "fonction": "CONDUCTEUR ELEVATEUR",
+          "departement": "",
+          "service": "",
+          "telephone": "",
+          "etatCivil": "C",
+          "statut": "Permanent",
+          "dateEmbauche": "",
+          "dateSortie": "2026-10-29",
+          "managerEmployeeId": "",
+          "managerMatricule": "",
+          "family": [],
+          "matriculePpc": "",
+          "numeroCnss": "",
+          "numeroCompte": "",
+          "banque": "",
+          "nbDependants": 0,
+          "txJr": 0,
+          "coutTransport": 0,
+          "payrollSite": "hors-site",
+          "createdAt": "2026-09-28T15:12:00.000Z",
+          "updatedAt": "2026-10-29T10:55:59.251Z"
+        },
+        {
+          "id": "908",
+          "nom": "XAVIER KIWANGA",
+          "sexe": "M",
+          "lieuAffectation": "Lubudi",
+          "fonction": "Spooter",
+          "departement": "Production",
+          "service": "",
+          "telephone": "",
+          "etatCivil": "C",
+          "statut": "Permanent",
+          "dateEmbauche": "",
+          "dateSortie": "",
+          "managerEmployeeId": "",
+          "managerMatricule": "",
+          "family": [],
+          "matriculePpc": "",
+          "numeroCnss": "",
+          "numeroCompte": "",
+          "banque": "",
+          "nbDependants": 0,
+          "txJr": 0,
+          "coutTransport": 0,
+          "payrollSite": "hors-site",
+          "createdAt": "2026-10-29T10:00:00.000Z",
+          "updatedAt": "2026-10-29T10:55:59.251Z"
+        },
+        {
+          "id": "909",
+          "nom": "Joseph WAMANGA",
+          "sexe": "M",
+          "lieuAffectation": "Lubudi",
+          "fonction": "Spooter",
+          "departement": "Production",
+          "service": "",
+          "telephone": "",
+          "etatCivil": "C",
+          "statut": "Permanent",
+          "dateEmbauche": "",
+          "dateSortie": "",
+          "managerEmployeeId": "",
+          "managerMatricule": "",
+          "family": [],
+          "matriculePpc": "",
+          "numeroCnss": "",
+          "numeroCompte": "",
+          "banque": "",
+          "nbDependants": 0,
+          "txJr": 0,
+          "coutTransport": 0,
+          "payrollSite": "hors-site",
+          "createdAt": "2026-10-29T10:00:00.000Z",
+          "updatedAt": "2026-10-29T10:55:59.251Z"
+        },
+        {
+          "id": "910",
+          "nom": "OWANGA Grace",
+          "sexe": "F",
+          "lieuAffectation": "Kindu",
+          "fonction": "Sales consultant",
+          "departement": "Sales and Marketing",
+          "service": "",
+          "telephone": "",
+          "etatCivil": "C",
+          "statut": "Permanent",
+          "dateEmbauche": "",
+          "dateSortie": "",
+          "managerEmployeeId": "",
+          "managerMatricule": "",
+          "family": [],
+          "matriculePpc": "",
+          "numeroCnss": "",
+          "numeroCompte": "",
+          "banque": "",
+          "nbDependants": 0,
+          "txJr": 0,
+          "coutTransport": 0,
+          "payrollSite": "hors-site",
+          "createdAt": "2026-10-29T10:00:00.000Z",
+          "updatedAt": "2026-10-29T10:55:59.251Z"
+        },
+        {
+          "id": "911",
+          "nom": "GAUTHIER KASONYA",
+          "sexe": "M",
+          "lieuAffectation": "Kisangani",
+          "fonction": "Warehouse officer",
+          "departement": "Supply Chain",
+          "service": "",
+          "telephone": "",
+          "etatCivil": "C",
+          "statut": "Permanent",
+          "dateEmbauche": "",
+          "dateSortie": "",
+          "managerEmployeeId": "",
+          "managerMatricule": "",
+          "family": [],
+          "matriculePpc": "",
+          "numeroCnss": "",
+          "numeroCompte": "",
+          "banque": "",
+          "nbDependants": 0,
+          "txJr": 0,
+          "coutTransport": 0,
+          "payrollSite": "hors-site",
+          "createdAt": "2026-10-29T10:00:00.000Z",
+          "updatedAt": "2026-10-29T10:55:59.251Z"
+        },
+        {
+          "id": "912",
+          "nom": "MWAMBA Maurice",
+          "sexe": "M",
+          "lieuAffectation": "Kindu",
+          "fonction": "Warehouse officer",
+          "departement": "Supply Chain",
+          "service": "",
+          "telephone": "",
+          "etatCivil": "C",
+          "statut": "Permanent",
+          "dateEmbauche": "",
+          "dateSortie": "",
+          "managerEmployeeId": "",
+          "managerMatricule": "",
+          "family": [],
+          "matriculePpc": "",
+          "numeroCnss": "",
+          "numeroCompte": "",
+          "banque": "",
+          "nbDependants": 0,
+          "txJr": 0,
+          "coutTransport": 0,
+          "payrollSite": "hors-site",
+          "createdAt": "2026-10-29T10:00:00.000Z",
+          "updatedAt": "2026-10-29T10:55:59.251Z"
         }
       ],
       "createdAt": "2026-08-12T11:55:22.134Z",
-      "updatedAt": "2026-10-29T08:25:38.170Z"
+      "updatedAt": "2026-10-29T10:55:59.251Z"
     },
     {
       "id": "3",

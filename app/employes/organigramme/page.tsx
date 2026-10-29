@@ -24,7 +24,9 @@ import {
   resolveLineManagerMatricule,
   type OrganigrammeScope,
 } from '@/lib/organigramme';
+import type { ClassificationPoste } from '@/lib/classification-types';
 import { compareExcoDepartments, EXCO_CANONICAL_DEPARTMENTS } from '@/lib/exco-department-map';
+import { matchClassificationPoste } from '@/lib/postes-effectifs';
 import { confirmAction, showError, showSuccess } from '@/lib/swal';
 import type { VacantPoste } from '@/lib/postes-types';
 import type { Employee } from '@/lib/types';
@@ -54,6 +56,14 @@ function foldLabel(value: string): string {
 function isActiveEmployee(employee: Employee): boolean {
   const statut = String(employee.statut || 'Active').trim().toLowerCase();
   return !statut || statut === 'active';
+}
+
+/** « Optimization Manager ( Responsable optimisation ) » → titre court + traduction. */
+function classificationChoiceTitle(title: string): { nom: string; extra: string } {
+  const raw = String(title || '').trim();
+  const match = raw.match(/^(.*?)\s*\(\s*([^()]+)\s*\)\s*$/);
+  if (match?.[1] && match[2]) return { nom: match[1].trim(), extra: match[2].trim() };
+  return { nom: raw, extra: '' };
 }
 
 function IconDownload() {
@@ -91,6 +101,7 @@ export default function OrganigrammePage() {
   const [employees, setEmployees] = useState<Employee[]>([]);
   const [contractants, setContractants] = useState<Contractant[]>([]);
   const [vacantPostes, setVacantPostes] = useState<VacantPoste[]>([]);
+  const [classificationPostes, setClassificationPostes] = useState<ClassificationPoste[]>([]);
   const [loading, setLoading] = useState(true);
   const [refreshing, setRefreshing] = useState(false);
   const [exporting, setExporting] = useState(false);
@@ -115,10 +126,11 @@ export default function OrganigrammePage() {
     if (isRefresh) setRefreshing(true);
     else setLoading(true);
     try {
-      const [resEmp, resCtr, resVacants] = await Promise.all([
+      const [resEmp, resCtr, resVacants, resClass] = await Promise.all([
         fetch('/api/employees?excludeExits=1', { cache: 'no-store' }),
         fetch('/api/employes/contractants', { cache: 'no-store' }),
         fetch('/api/employes/postes?vacants=1', { cache: 'no-store' }),
+        fetch('/api/employes/classification', { cache: 'no-store' }),
       ]);
       const empJson = (await resEmp.json()) as Employee[] | { error?: string };
       if (!resEmp.ok) {
@@ -140,10 +152,17 @@ export default function OrganigrammePage() {
       } else {
         setVacantPostes([]);
       }
+      if (resClass.ok) {
+        const classJson = (await resClass.json()) as { postes?: ClassificationPoste[] };
+        setClassificationPostes(Array.isArray(classJson.postes) ? classJson.postes : []);
+      } else {
+        setClassificationPostes([]);
+      }
     } catch (err) {
       setEmployees([]);
       setContractants([]);
       setVacantPostes([]);
+      setClassificationPostes([]);
       await showError(err instanceof Error ? err.message : 'Chargement impossible');
     } finally {
       setLoading(false);
@@ -190,6 +209,9 @@ export default function OrganigrammePage() {
       departement: departement || undefined,
       service: service || undefined,
       contractants,
+      vacantReports: vacantPostes
+        .filter((poste) => poste.reportsTo.trim())
+        .map((poste) => ({ title: poste.title, reportsTo: poste.reportsTo })),
     });
     const ctr = buildContractantOrganigramme(contractants, {
       scope,
@@ -210,7 +232,7 @@ export default function OrganigrammePage() {
       capitalHr: populations.capitalHr,
       autres: populations.autres,
     };
-  }, [employees, contractants, scope, departement, service, showContractants, search]);
+  }, [employees, contractants, vacantPostes, scope, departement, service, showContractants, search]);
 
   const title = useMemo(() => {
     if (service) return `Organigramme — ${service}`;
@@ -302,9 +324,16 @@ export default function OrganigrammePage() {
       }
     }
     const nextCtr = new Map(externes.map((item) => [item.id, item.managerEmployeeId]));
+    const reportMats = new Set(
+      active
+        .filter((item) => targetNames.has(foldLabel(item.lineManagerName || '')))
+        .map((item) => item.matricule),
+    );
     const internes = active
       .filter((item) => !targetMats.has(item.matricule))
       .filter((item) => !targetMats.size || !chainHits(item.matricule, targetMats, nextEmp))
+      .filter((item) => !reportMats.has(item.matricule))
+      .filter((item) => !reportMats.size || !chainHits(item.matricule, reportMats, nextEmp))
       .filter((item) => !targetNames.has(foldLabel(item.lineManagerName || '')))
       .map((item) => ({
         id: `i:${item.matricule}`,
@@ -316,6 +345,11 @@ export default function OrganigrammePage() {
       .filter((item) => !targetCtr.has(item.id))
       .filter((item) => !targetCtr.size || !chainHits(item.id, targetCtr, nextCtr))
       .filter((item) => !item.managerMatricule || !targetMats.has(item.managerMatricule))
+      .filter((item) => {
+        const matricule = item.managerMatricule.trim();
+        if (!matricule.toLowerCase().startsWith('vacant:')) return true;
+        return !targetNames.has(foldLabel(matricule.slice('vacant:'.length)));
+      })
       .map((item) => ({
         id: `e:${item.id}`,
         kind: 'externe' as const,
@@ -357,12 +391,36 @@ export default function OrganigrammePage() {
         detail: [poste.department, poste.location].filter(Boolean).join(' · ') || 'Poste vacant',
       });
     }
+    const occupiedClassIds = new Set<string>();
+    const markOccupied = (title: string) => {
+      const matched = matchClassificationPoste(title, classificationPostes);
+      if (matched) occupiedClassIds.add(matched.id);
+    };
+    for (const item of active) markOccupied(item.jobTitle || item.position || '');
+    for (const item of managerEdit) markOccupied(item.jobTitle || '');
+    for (const company of contractants) {
+      for (const employee of company.employees || []) {
+        if (!String(employee.nom || '').trim() || String(employee.dateSortie || '').trim()) continue;
+        markOccupied(employee.fonction || '');
+      }
+    }
+    for (const poste of classificationPostes) {
+      if (occupiedClassIds.has(poste.id)) continue;
+      const choice = classificationChoiceTitle(poste.title);
+      const key = foldLabel(choice.nom);
+      if (!key || ownTitles.has(key) || occupiedTitles.has(key)) continue;
+      vacantByKey.set(key, {
+        id: `v:cls:${poste.id}`,
+        nom: choice.nom,
+        detail: [choice.extra, poste.department, poste.location, 'Classification'].filter(Boolean).join(' · '),
+      });
+    }
     const vacants = [...vacantByKey.values()].map((item) => ({
       ...item,
       kind: 'vacant' as const,
     }));
     return [...internes, ...labeled, ...vacants].sort((a, b) => a.nom.localeCompare(b.nom, 'fr', { sensitivity: 'base' }));
-  }, [managerEdit, contractants, employees, vacantPostes]);
+  }, [managerEdit, contractants, employees, vacantPostes, classificationPostes]);
 
   const saveManagers = async (choiceId: string) => {
     if (!managerEdit?.length) return;
@@ -390,8 +448,9 @@ export default function OrganigrammePage() {
       return;
     }
     const summaryLabel = vacantTitle || orgPersonShortName(managerName) || managerName;
+    const vacantPeople = managerEdit.filter((item) => item.isVacant);
     const contractantPeople = managerEdit.filter((item) => item.isContractant);
-    const internalPeople = managerEdit.filter((item) => !item.isContractant);
+    const internalPeople = managerEdit.filter((item) => !item.isContractant && !item.isVacant);
     const link = kind === 'vacant'
       ? { employeeId: '', matricule: `vacant:${vacantTitle}` }
       : kind === 'interne'
@@ -413,7 +472,13 @@ export default function OrganigrammePage() {
         departement: employee.departement,
         dateSortie: employee.dateSortie,
       }))),
-      vacantDepartments: vacantPostes.map((poste) => ({ title: poste.title, department: poste.department })),
+      vacantDepartments: [
+        ...vacantPostes.map((poste) => ({ title: poste.title, department: poste.department })),
+        ...classificationPostes.map((poste) => ({
+          title: classificationChoiceTitle(poste.title).nom,
+          department: poste.department,
+        })),
+      ],
     });
     const summary = managerEdit.length > 1
       ? `${managerEdit.length} agents → ${summaryLabel}${nextDepartment ? ` · ${nextDepartment}` : ''}`
@@ -442,7 +507,20 @@ export default function OrganigrammePage() {
         managerMatricule: link.matricule,
       }];
     });
-    if (employeeUpdates.length === 0 && contractantUpdates.length === 0) {
+    const vacantUpdates = vacantPeople.map((person) => {
+      const title = person.jobTitle || person.nom;
+      const classified = classificationPostes.find((poste) => {
+        const choice = classificationChoiceTitle(poste.title);
+        return foldLabel(choice.nom) === foldLabel(title) || foldLabel(poste.title) === foldLabel(title);
+      });
+      return {
+        title,
+        reportsTo: lineName,
+        department: classified?.department || person.departement || '',
+        location: classified?.location || '',
+      };
+    });
+    if (employeeUpdates.length === 0 && contractantUpdates.length === 0 && vacantUpdates.length === 0) {
       await showError('N+1 introuvable.');
       return;
     }
@@ -454,6 +532,7 @@ export default function OrganigrammePage() {
         body: JSON.stringify({
           employees: employeeUpdates,
           contractants: contractantUpdates,
+          vacants: vacantUpdates,
         }),
       });
       const json = (await res.json()) as {
@@ -473,6 +552,7 @@ export default function OrganigrammePage() {
           departement: string;
           service: string;
         }>;
+        vacants?: VacantPoste[];
       };
       if (!res.ok) throw new Error(json.error || 'Enregistrement impossible');
       const savedEmployees = json.employees || [];
@@ -505,6 +585,18 @@ export default function OrganigrammePage() {
               service: update.service,
             }
             : current;
+        });
+      }
+      const savedVacants = json.vacants || [];
+      if (savedVacants.length > 0) {
+        setVacantPostes((prev) => {
+          const next = [...prev];
+          for (const saved of savedVacants) {
+            const index = next.findIndex((item) => item.id === saved.id);
+            if (index >= 0) next[index] = saved;
+            else next.push(saved);
+          }
+          return next;
         });
       }
       if (savedContractants.length > 0) {
@@ -625,7 +717,7 @@ export default function OrganigrammePage() {
   };
 
   const managerWho = managerEdit?.length === 1
-    ? orgPersonShortName(managerEdit[0]!.nom)
+    ? (managerEdit[0]!.isVacant ? managerEdit[0]!.nom : orgPersonShortName(managerEdit[0]!.nom))
     : managerEdit && managerEdit.length > 1
       ? `${managerEdit.length} agents${managerEdit[0]?.jobTitle ? ` · ${managerEdit[0].jobTitle}` : ''}`
       : '';

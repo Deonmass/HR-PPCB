@@ -68,6 +68,8 @@ export function excoSiteBucket(localisation: string | null | undefined): ExcoSit
     || loc.includes('bumba')
     || loc.includes('kikwit')
     || loc.includes('kananga')
+    || loc.includes('kindu')
+    || loc.includes('mbandaka')
     || (loc.includes('bena') && loc.includes('dibele'))
     || loc.includes('region')
     || loc.includes('hq')

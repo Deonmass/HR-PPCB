@@ -11,6 +11,8 @@ export const DEFAULT_LOCALISATIONS = [
   'Bena Dibele',
   'Kikwit',
   'Kananga',
+  'Kindu',
+  'Mbandaka',
 ] as const;
 
 export type LocalisationName = (typeof DEFAULT_LOCALISATIONS)[number] | string;
@@ -68,6 +70,8 @@ export function isLocalisationLabel(raw: string | null | undefined): boolean {
   if (key.includes('bena') && key.includes('dibele')) return true;
   if (key.includes('kikwit')) return true;
   if (key.includes('kananga')) return true;
+  if (key.includes('kindu')) return true;
+  if (key.includes('mbandaka')) return true;
   return false;
 }
 
@@ -95,6 +99,8 @@ export function normalizeLocalisation(raw: string | null | undefined): string {
   if (key.includes('bena') && key.includes('dibele')) return 'Bena Dibele';
   if (key.includes('kikwit')) return 'Kikwit';
   if (key.includes('kananga')) return 'Kananga';
+  if (key.includes('kindu')) return 'Kindu';
+  if (key.includes('mbandaka')) return 'Mbandaka';
   // Complexe Zamba (usine / camps locaux)
   if (isZambaAreaLocalisation(value)) return 'Zamba';
   // Pas une localisation habituelle → site par défaut

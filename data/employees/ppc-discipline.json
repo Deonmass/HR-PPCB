@@ -1,0 +1,38 @@
+{
+  "cases": [
+    {
+      "id": "43dd4a12-0903-4828-9b04-dd2387d12aa2",
+      "matricule": "70000059",
+      "employeeName": "LUZOLAWO MANKELA RODRIGUE",
+      "departement": "Production",
+      "jobTitle": "Packing/Loading Shift Supervisor",
+      "parti": false,
+      "dateIncident": "2026-10-14",
+      "motif": "Explication sur un manque de suivi de procédure operational",
+      "faits": "Monsieur Rodrick Luzolawo,\n\nIl a été porté à votre attention qu'en date du 08 octobre 2026 à exactement 09h23 min, sous votre supervision ; un chauffeur (convoyeur) s'était permis de monter sur le camion-citerne sans attacher sa ceinture de sécurité, en violation des règles et procédures de sécurité en vigueur sur le site.\n\nÀ la suite de cet échange téléphonique, vous avez indiqué que les dispositions nécessaires seraient prises afin de corriger immédiatement cette situation et de vous assurer du respect des exigences de sécurité par le personnel concerné.\n\nCependant, lors de sa ronde effectuée à 12h06 le même jour, le Directeur du Département a constaté à nouveau le même manquement, démontrant ainsi que la situation n'avait pas été prise au sérieux, ni corrigée malgré le signalement qui vous avait été fait près de trois heures auparavant.\n\nCette situation soulève des interrogations quant au suivi apporté à une préoccupation liée à la sécurité et à l'exécution de vos responsabilités de supervision. Le non-respect des règles de sécurité expose les personnes concernées ainsi que l'entreprise à des risques importants d'accident.\n\nPar la présente, nous vous demandons de bien vouloir fournir, par écrit, vos explications sur les circonstances ayant conduit à cette situation et les raisons pour lesquelles les mesures correctives annoncées n'ont pas été effectivement mises en œuvre.\n\nVos explications sont attendues dans un délai de 48 heures à compter de la réception de la présente.\n\nVeuillez agréer, Monsieur, l'expression de nos salutations distinguées.",
+      "demandeDate": "",
+      "demandeTexte": "",
+      "demandeLien": "",
+      "demandeEcheance": "",
+      "reponseDate": "",
+      "reponseTexte": "",
+      "reponseLien": "",
+      "sanction": "Aucune",
+      "dateSanction": "",
+      "statut": "Ouvert",
+      "historique": [
+        {
+          "id": "529aae25-a722-490e-ab11-d25249589b19",
+          "type": "ouverture",
+          "auteur": "Administrateur",
+          "texte": "Explication sur un manque de suivi de procédure operational",
+          "date": "2026-10-14",
+          "createdAt": "2026-10-14T12:56:37.449Z"
+        }
+      ],
+      "createdAt": "2026-10-14T12:56:37.449Z",
+      "updatedAt": "2026-10-14T12:56:37.449Z",
+      "createdBy": "Administrateur"
+    }
+  ]
+}
