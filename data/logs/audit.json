@@ -1,6 +1,50 @@
 {
   "entries": [
     {
+      "id": "log-002065",
+      "at": "2026-10-29T07:02:40.369Z",
+      "userId": "admin",
+      "userName": "Administrateur",
+      "userEmail": "admin",
+      "module": "contractants",
+      "moduleLabel": "contractants",
+      "action": "update",
+      "actionLabel": "Modification",
+      "entityType": "contractant-employee",
+      "entityId": "764",
+      "summary": "Modification employé contractant — MUTELA MBAU Christian",
+      "details": "Modification employé contractant — MUTELA MBAU Christian",
+      "after": {
+        "id": "764",
+        "nom": "MUTELA MBAU Christian",
+        "sexe": "",
+        "lieuAffectation": "Lubudi",
+        "fonction": "Spooter",
+        "departement": "",
+        "service": "",
+        "telephone": "",
+        "etatCivil": "C",
+        "statut": "Permanent",
+        "dateEmbauche": "",
+        "dateSortie": "2026-10-29",
+        "managerEmployeeId": "",
+        "managerMatricule": "",
+        "family": [],
+        "matriculePpc": "",
+        "numeroCnss": "LUBUDI",
+        "numeroCompte": "",
+        "banque": "",
+        "nbDependants": 0,
+        "txJr": 3.91,
+        "coutTransport": 0.4119,
+        "payrollSite": "hors-site",
+        "createdAt": "2026-09-25T08:00:00.000Z",
+        "updatedAt": "2026-10-29T07:02:36.518Z"
+      },
+      "undoable": false,
+      "undone": false
+    },
+    {
       "id": "log-002064",
       "at": "2026-10-29T07:02:14.670Z",
       "userId": "admin",
@@ -218535,5 +218579,5 @@
       }
     }
   ],
-  "nextSeq": 2065
+  "nextSeq": 2066
 }
