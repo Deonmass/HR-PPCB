@@ -31,15 +31,23 @@ export interface HomeCharts {
   travelByDepartment: HomeBarItem[];
   charroiStatus: HomeChartSlice[];
   villageHouseTypes: HomeChartSlice[];
+  santeByType: HomeChartSlice[];
+  overtimeByDepartment: HomeBarItem[];
 }
 
 export interface HomeEmployesSection {
+  /** Agents encore en poste à la fin du mois courant. */
   total: number;
   departments: number;
   avgCompletion: number;
   needsAttention: number;
   active: number;
+  /** Sorties dont la date tombe dans le mois courant. */
   inactive: number;
+  men: number;
+  women: number;
+  periodYear: number;
+  periodMonth: number;
   topDepartments: HomeBarItem[];
   href: string;
 }
@@ -96,6 +104,76 @@ export interface HomeCharroiSection {
   vignetteSoon: number;
   controleSoon: number;
   href: string;
+  hasFleet: boolean;
+  voyages?: {
+    total: number;
+    pending: number;
+    done: number;
+    href: string;
+  };
+}
+
+export interface HomeOvertimeSection {
+  periodYear: number;
+  periodMonth: number;
+  agents: number;
+  hours: number;
+  weeks: number;
+  departments: number;
+  href: string;
+}
+
+export interface HomeSanteSection {
+  periodYear: number;
+  periodMonth: number;
+  cases: number;
+  agents: number;
+  children: number;
+  referred: number;
+  href: string;
+}
+
+export interface HomeCongeSection {
+  effectif: number;
+  onLeave: number;
+  onLeaveMonth: number;
+  href: string;
+}
+
+export interface HomeDisciplineSection {
+  open: number;
+  closed: number;
+  total: number;
+  href: string;
+}
+
+export interface HomeMouvementsSection {
+  total: number;
+  thisMonth: number;
+  thisYear: number;
+  promotions: number;
+  href: string;
+}
+
+export interface HomeRecrutementSection {
+  total: number;
+  ongoing: number;
+  done: number;
+  notStarted: number;
+  href: string;
+}
+
+export interface HomePostesSection {
+  occupied: number;
+  vacant: number;
+  titles: number;
+  href: string;
+}
+
+export interface HomeTrainingSection {
+  topics: number;
+  spend: number;
+  href: string;
 }
 
 export interface HomeSettingsSection {
@@ -146,6 +224,18 @@ export interface HomeFacturesSection {
 
 export interface HomeProtocolSection {
   links: HomeModuleLink[];
+  workVisas?: {
+    total: number;
+    valid: number;
+    expired: number;
+    alerts: number;
+    href: string;
+  };
+  voyages?: {
+    total: number;
+    cost: number;
+    href: string;
+  };
 }
 
 export interface HomeModulePlaceholder {
@@ -167,6 +257,14 @@ export interface HomeDashboardData {
   factures?: HomeFacturesSection;
   protocol?: HomeProtocolSection;
   settings?: HomeSettingsSection;
+  overtime?: HomeOvertimeSection;
+  sante?: HomeSanteSection;
+  conge?: HomeCongeSection;
+  discipline?: HomeDisciplineSection;
+  mouvements?: HomeMouvementsSection;
+  recrutement?: HomeRecrutementSection;
+  postes?: HomePostesSection;
+  training?: HomeTrainingSection;
   placeholders: HomeModulePlaceholder[];
 }
 

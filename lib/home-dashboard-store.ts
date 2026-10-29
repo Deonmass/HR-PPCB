@@ -2,16 +2,18 @@ import 'server-only';
 
 import { listUsers } from './auth-store';
 import type { MenuPermission } from './auth-types';
-import { listVehicules } from './charroi-store';
+import { listVehicules, listVoyages } from './charroi-store';
 import {
   CHARROI_EXPIRY_SOON_DAYS,
   getVehiculeDocFin,
   type CharroiDocKind,
 } from './charroi-types';
-import { readDashboard } from './dashboard-store';
-import { calcDocumentCompletion, getDepartments } from './documents';
+import { buildDashboardFromEmployees, calcDocumentCompletion } from './documents';
 import { roundRate } from './format-rate';
-import { readEmployees } from './employees-json-store';
+import { endOfYearMonth, exitedInYearMonth } from './employee-columns';
+import { resolveExcoDepartment } from './exco-department-map';
+import { readEmployeesBundle } from './employees-json-store';
+import { employeesPresentOnAsOf, isFemaleGender, isMaleGender } from './employees-hr-dashboard';
 import { readDependantsData } from './dependants-json-store';
 import type {
   HomeBarItem,
@@ -32,6 +34,18 @@ import { listCostCenters, listDepartments } from './settings-store';
 import { readTravelHistory } from './travel-history-store';
 import { readVillageCatalog } from './village-store';
 import { daysUntil } from './work-visa-validity';
+import { listSanteVisits } from './sante-store';
+import { buildSanteDashboard } from './sante-utils';
+import { listWeeklyOvertimeWeeks } from './overtimes-json-store';
+import { buildMouvementsDashboard, listMouvements } from './mouvements-store';
+import { getRecrutementBundle } from './recrutement-store';
+import { getPostesBundle } from './postes-store';
+import { getTrainingDashboard } from './training-store';
+import { listWorkVisaDossiers } from './work-visa-store';
+import { listProtocolVoyages } from './protocol-voyage-store';
+import { getCongeBundle } from './conge-store';
+import { buildCongeDashboard } from './conge-dashboard';
+import { listPpcDisciplineCases } from './ppc-discipline-store';
 
 function can(menus: MenuPermission[], menuId: string, action: 'view' = 'view'): boolean {
   return canPerformAction(menus, menuId, action);
@@ -80,6 +94,8 @@ function emptyCharts(): HomeCharts {
     travelByDepartment: [],
     charroiStatus: [],
     villageHouseTypes: [],
+    santeByType: [],
+    overtimeByDepartment: [],
   };
 }
 
@@ -139,51 +155,69 @@ function countDocSoon(
   return n;
 }
 
+async function loadCurrentHeadcount() {
+  const now = new Date();
+  const periodYear = now.getFullYear();
+  const periodMonth = now.getMonth() + 1;
+  const asOf = endOfYearMonth(periodYear, periodMonth);
+  const { employees, exits } = await readEmployeesBundle();
+  const present = employeesPresentOnAsOf(employees, exits, asOf);
+  const exitsThisMonth = exits.filter((employee) => exitedInYearMonth(employee, periodYear, periodMonth)).length;
+  return { periodYear, periodMonth, asOf, present, exitsThisMonth };
+}
+
 export async function buildHomeDashboard(menus: MenuPermission[]): Promise<HomeDashboardData> {
   const kpis: HomeKpi[] = [];
   const placeholders: HomeDashboardData['placeholders'] = [];
   const charts = emptyCharts();
   const result: HomeDashboardData = { kpis, charts, placeholders };
+  const wantsHeadcount = can(menus, 'employes.liste') || can(menus, 'employes.check-documents');
+  const headcount = wantsHeadcount ? await loadCurrentHeadcount() : null;
 
-  if (can(menus, 'employes.liste')) {
-    const employees = await readEmployees();
-    const departments = getDepartments(employees);
+  if (can(menus, 'employes.liste') && headcount) {
+    const { periodYear, periodMonth, asOf, present, exitsThisMonth } = headcount;
+    const departments = new Set<string>();
     let completionSum = 0;
     let needsAttention = 0;
-    let active = 0;
-    let inactive = 0;
+    let men = 0;
+    let women = 0;
     const byDept = new Map<string, number>();
 
-    for (const employee of employees) {
+    for (const employee of present) {
       const { pct } = calcDocumentCompletion(employee);
       completionSum += pct;
       if (pct < 50) needsAttention += 1;
-      const statut = String(employee.statut || '').toLowerCase();
-      if (!statut || statut === 'active' || statut === 'actif') active += 1;
-      else inactive += 1;
-      const dept = String(employee.departement || '—').trim() || '—';
+      if (isMaleGender(employee.gender)) men += 1;
+      else if (isFemaleGender(employee.gender)) women += 1;
+      const resolved = resolveExcoDepartment(employee.departement || '');
+      const dept = (resolved.department || String(employee.departement || '').trim() || '—');
+      if (dept !== '—') departments.add(dept);
       byDept.set(dept, (byDept.get(dept) || 0) + 1);
     }
 
-    const avgCompletion =
-      employees.length > 0 ? roundRate(completionSum / employees.length) : 0;
-    const topDepartments = topCountBars(byDept, 8);
+    const avgCompletion = present.length > 0 ? roundRate(completionSum / present.length) : 0;
+    const topDepartments = topCountBars(byDept, 6);
+    const monthLabel = asOf.toLocaleDateString('fr-FR', { month: 'long', year: 'numeric' });
 
     result.employes = {
-      total: employees.length,
-      departments: departments.length,
+      total: present.length,
+      departments: departments.size,
       avgCompletion,
       needsAttention,
-      active,
-      inactive,
+      active: present.length,
+      inactive: exitsThisMonth,
+      men,
+      women,
+      periodYear,
+      periodMonth,
       topDepartments,
       href: '/employes',
     };
     charts.employeesByDepartment = topDepartments;
     kpis.push({
       label: 'Employés',
-      value: employees.length,
-      meta: `${active} actifs · ${departments.length} départements`,
+      value: present.length,
+      meta: `En poste · ${monthLabel}`,
       color: 'red',
       href: '/employes',
     });
@@ -224,8 +258,8 @@ export async function buildHomeDashboard(menus: MenuPermission[]): Promise<HomeD
     });
   }
 
-  if (can(menus, 'employes.check-documents')) {
-    const dashboard = await readDashboard();
+  if (can(menus, 'employes.check-documents') && headcount) {
+    const dashboard = buildDashboardFromEmployees(headcount.present);
     const conformePct = parseRate(dashboard.dashboard.conformeRate);
     const nonConformePct = parseRate(dashboard.dashboard.noConformeRate)
       || Math.max(0, 100 - conformePct);
@@ -427,11 +461,50 @@ export async function buildHomeDashboard(menus: MenuPermission[]): Promise<HomeD
   }
 
   if (canViewTimesheetModule(menus)) {
-    placeholders.push({
-      label: 'Heures supplémentaires',
-      description: 'Import Excel et traitement selon la politique PPCB',
-      href: '/heures-supplementaires',
-    });
+    try {
+      const now = new Date();
+      const periodYear = now.getFullYear();
+      const periodMonth = now.getMonth() + 1;
+      const weeks = await listWeeklyOvertimeWeeks(periodYear, periodMonth);
+      const agents = new Set<string>();
+      const departments = new Set<string>();
+      const byDept = new Map<string, number>();
+      let hours = 0;
+      for (const week of weeks) {
+        const dept = week.department?.trim() || '—';
+        if (dept !== '—') departments.add(dept);
+        for (const entry of Object.values(week.entries || {})) {
+          const total = (entry.ot13 || 0) + (entry.ot16 || 0) + (entry.ot2 || 0);
+          if (total <= 0) continue;
+          hours += total;
+          if (entry.matricule) agents.add(entry.matricule);
+          byDept.set(dept, (byDept.get(dept) || 0) + total);
+        }
+      }
+      result.overtime = {
+        periodYear,
+        periodMonth,
+        agents: agents.size,
+        hours: Math.round(hours * 10) / 10,
+        weeks: weeks.length,
+        departments: departments.size,
+        href: '/heures-supplementaires',
+      };
+      charts.overtimeByDepartment = [...byDept.entries()]
+        .sort((a, b) => b[1] - a[1])
+        .slice(0, 6)
+        .map(([label, value], index) => ({
+          label,
+          value: Math.round(value * 10) / 10,
+          color: ['#e30613', '#f97316', '#eab308', '#22c55e', '#06b6d4', '#6366f1'][index % 6],
+        }));
+    } catch {
+      placeholders.push({
+        label: 'Heures supplémentaires',
+        description: 'Import Excel et traitement selon la politique PPCB',
+        href: '/heures-supplementaires',
+      });
+    }
   }
 
   if (
@@ -533,19 +606,71 @@ export async function buildHomeDashboard(menus: MenuPermission[]): Promise<HomeD
       description: 'Suivi des coûts de voyage',
     });
   }
-  if (protocolLinks.length) {
-    result.protocol = { links: protocolLinks };
+  if (protocolLinks.length || can(menus, 'protocol.visa-travail') || can(menus, 'protocol.voyages')) {
+    const protocol: NonNullable<HomeDashboardData['protocol']> = { links: protocolLinks };
+    if (can(menus, 'protocol.visa-travail')) {
+      try {
+        const visas = await listWorkVisaDossiers();
+        protocol.workVisas = {
+          total: visas.kpis.total,
+          valid: visas.kpis.visasValides,
+          expired: visas.kpis.visasExpires,
+          alerts: visas.kpis.alerts4m,
+          href: '/protocol/visa-travail',
+        };
+      } catch {
+        // le lien reste disponible
+      }
+    }
+    if (can(menus, 'protocol.voyages')) {
+      try {
+        const voyages = await listProtocolVoyages();
+        protocol.voyages = {
+          total: voyages.length,
+          cost: Math.round(voyages.reduce((sum, item) => sum + (item.coutTotal || 0), 0) * 100) / 100,
+          href: '/protocol/voyages',
+        };
+      } catch {
+        // le lien reste disponible
+      }
+    }
+    if (protocol.links.length || protocol.workVisas || protocol.voyages) {
+      result.protocol = protocol;
+    }
   }
 
   if (can(menus, 'sante') || can(menus, 'sante.dashboard') || can(menus, 'sante.donnees')) {
-    placeholders.push({
-      label: 'Santé',
-      description: 'Fiche journalière des pathologies',
-      href:
-        can(menus, 'sante.dashboard') || can(menus, 'sante')
-          ? '/sante/dashboard'
-          : '/sante/donnees',
-    });
+    const href = can(menus, 'sante.dashboard') || can(menus, 'sante') ? '/sante/dashboard' : '/sante/donnees';
+    try {
+      const now = new Date();
+      const periodYear = now.getFullYear();
+      const periodMonth = now.getMonth() + 1;
+      const visits = await listSanteVisits();
+      const monthVisits = visits.filter((visit) => visit.year === periodYear && visit.month === periodMonth);
+      const dash = buildSanteDashboard(monthVisits);
+      const agents = dash.kpis.find((item) => item.label === 'Agents')?.value ?? 0;
+      const children = dash.kpis.find((item) => item.label === 'Enfants')?.value ?? 0;
+      result.sante = {
+        periodYear,
+        periodMonth,
+        cases: dash.total,
+        agents,
+        children,
+        referred: dash.references,
+        href,
+      };
+      charts.santeByType = dash.byType.slice(0, 6).map((item, index) => ({
+        label: item.label,
+        value: item.value,
+        color: ['#e30613', '#3b82f6', '#22c55e', '#a855f7', '#f97316', '#64748b'][index % 6],
+      }));
+    } catch {
+      placeholders.push({
+        label: 'Santé',
+        description: 'Fiche journalière des pathologies',
+        href,
+      });
+    }
   }
 
   if (
@@ -575,6 +700,7 @@ export async function buildHomeDashboard(menus: MenuPermission[]): Promise<HomeD
           vignetteSoon,
           controleSoon,
           href: '/charroi-automobile/vehicules',
+          hasFleet: true,
         };
         charts.charroiStatus = [
           { label: 'Assurance ≤30j', value: assuranceSoon, color: '#e30613' },
@@ -602,11 +728,15 @@ export async function buildHomeDashboard(menus: MenuPermission[]): Promise<HomeD
       }
     } else {
       if (can(menus, 'charroi.voyages')) {
-        placeholders.push({
-          label: 'Voyage par route',
-          description: 'Demandes, confirmations et voyages effectués',
+        result.charroi = {
+          total: 0,
+          alertes: 0,
+          assuranceSoon: 0,
+          vignetteSoon: 0,
+          controleSoon: 0,
           href: '/charroi-automobile/voyages',
-        });
+          hasFleet: false,
+        };
       }
       if (can(menus, 'charroi.achats')) {
         placeholders.push({
@@ -682,6 +812,123 @@ export async function buildHomeDashboard(menus: MenuPermission[]): Promise<HomeD
           guestHouse,
         };
       }
+    }
+  }
+
+  if (can(menus, 'charroi.voyages') || can(menus, 'charroi')) {
+    try {
+      const voyages = await listVoyages();
+      const pending = voyages.filter((item) => item.status === 'demande' || item.status === 'pending').length;
+      const done = voyages.filter((item) => item.status === 'effectue').length;
+      const current = result.charroi ?? {
+        total: 0,
+        alertes: 0,
+        assuranceSoon: 0,
+        vignetteSoon: 0,
+        controleSoon: 0,
+        href: '/charroi-automobile/voyages',
+        hasFleet: false,
+      };
+      result.charroi = {
+        ...current,
+        voyages: {
+          total: voyages.length,
+          pending,
+          done,
+          href: '/charroi-automobile/voyages',
+        },
+      };
+    } catch {
+      // la flotte reste affichée sans le décompte des voyages
+    }
+  }
+
+  if (can(menus, 'employes.conge')) {
+    try {
+      const bundle = await getCongeBundle();
+      const today = new Date().toISOString().slice(0, 10);
+      const dash = buildCongeDashboard(bundle, today);
+      const valueOf = (key: string) => dash.kpis.find((item) => item.key === key)?.value ?? 0;
+      result.conge = {
+        effectif: valueOf('effectif'),
+        onLeave: valueOf('onLeave'),
+        onLeaveMonth: valueOf('onLeaveMonth'),
+        href: '/employes/conge',
+      };
+    } catch {
+      // module masqué si le planning est illisible
+    }
+  }
+
+  if (can(menus, 'employes.discipline')) {
+    try {
+      const cases = await listPpcDisciplineCases();
+      const open = cases.filter((item) => item.statut !== 'Clos').length;
+      result.discipline = {
+        open,
+        closed: cases.length - open,
+        total: cases.length,
+        href: '/employes/discipline',
+      };
+    } catch {
+      // module masqué si les dossiers sont illisibles
+    }
+  }
+
+  if (can(menus, 'employes.mouvements')) {
+    try {
+      const dash = buildMouvementsDashboard(await listMouvements());
+      result.mouvements = {
+        total: dash.total,
+        thisMonth: dash.thisMonth,
+        thisYear: dash.thisYear,
+        promotions: dash.promotions,
+        href: '/employes/mouvements',
+      };
+    } catch {
+      // carte lien conservée côté page
+    }
+  }
+
+  if (can(menus, 'employes.recrutement')) {
+    try {
+      const bundle = await getRecrutementBundle();
+      result.recrutement = {
+        total: bundle.dashboard.total,
+        ongoing: bundle.dashboard.ongoing + bundle.dashboard.started,
+        done: bundle.dashboard.done,
+        notStarted: bundle.dashboard.notStarted,
+        href: '/employes/recrutement',
+      };
+    } catch {
+      // carte lien conservée côté page
+    }
+  }
+
+  if (can(menus, 'employes.classification') || can(menus, 'employes.postes')) {
+    try {
+      const bundle = await getPostesBundle();
+      result.postes = {
+        occupied: bundle.totalOccupied,
+        vacant: bundle.totalVacantSlots,
+        titles: bundle.titles.length,
+        href: '/employes/classification',
+      };
+    } catch {
+      // carte lien conservée côté page
+    }
+  }
+
+  if (can(menus, 'training')) {
+    try {
+      const dash = await getTrainingDashboard();
+      result.training = {
+        topics: dash.topicsCount,
+        spend: dash.actualSpend,
+        href: '/training',
+      };
+    } catch {
+      // carte « bientôt » conservée côté page
     }
   }
 

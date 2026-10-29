@@ -11,6 +11,8 @@ import DashboardListModal, {
   type DashboardListRow,
 } from '@/components/DashboardListModal';
 import type { Contractant } from '@/lib/contractants-types';
+import { endOfYearMonth } from '@/lib/employee-columns';
+import { employeesPresentOnAsOf } from '@/lib/employees-hr-dashboard';
 import type { Employee } from '@/lib/types';
 
 const COLORS = ['#e30613', '#2563eb', '#0d9488', '#f59e0b', '#7c3aed', '#db2777', '#0891b2', '#ea580c', '#64748b', '#16a34a'];
@@ -43,10 +45,6 @@ function shortCompany(value: string): string {
   return value.trim() || '—';
 }
 
-function isActiveEmployee(employee: Employee): boolean {
-  return !/^(inact|exit)/i.test(employee.statut || '');
-}
-
 export default function HomeWorkforceMap() {
   const [people, setPeople] = useState<Person[]>([]);
   const [loading, setLoading] = useState(true);
@@ -56,15 +54,22 @@ export default function HomeWorkforceMap() {
     let cancelled = false;
     void (async () => {
       try {
-        const [employeesRes, contractantsRes] = await Promise.all([
+        const [employeesRes, exitsRes, contractantsRes] = await Promise.all([
           fetch('/api/employees', { cache: 'no-store' }),
+          fetch('/api/employees/exits', { cache: 'no-store' }),
           fetch('/api/employes/contractants', { cache: 'no-store' }),
         ]);
         const next: Person[] = [];
         if (employeesRes.ok) {
           const employees = await employeesRes.json() as Employee[];
-          for (const employee of Array.isArray(employees) ? employees : []) {
-            if (!isActiveEmployee(employee)) continue;
+          const exits = exitsRes.ok ? await exitsRes.json() as Employee[] : [];
+          const now = new Date();
+          const present = employeesPresentOnAsOf(
+            Array.isArray(employees) ? employees : [],
+            Array.isArray(exits) ? exits : [],
+            endOfYearMonth(now.getFullYear(), now.getMonth() + 1),
+          );
+          for (const employee of present) {
             const lieu = employee.localisation?.trim() || 'Non renseigné';
             next.push({
               id: `ppc-${employee.matricule}`,

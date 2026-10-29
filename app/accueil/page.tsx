@@ -99,6 +99,39 @@ function ModuleHead({
   );
 }
 
+function StatPanel({
+  title,
+  subtitle,
+  href,
+  stats,
+}: {
+  title: string;
+  subtitle?: string;
+  href?: string;
+  stats: Array<{ label: string; value: string | number; alert?: boolean }>;
+}) {
+  return (
+    <section className="panel home-module-panel">
+      <ModuleHead title={title} subtitle={subtitle} href={href} />
+      <div className="home-stat-grid">
+        {stats.map((item) => (
+          <div key={item.label} className={`home-stat-box${item.alert ? ' home-stat-alert' : ''}`}>
+            <span>{item.label}</span>
+            <strong>{item.value}</strong>
+          </div>
+        ))}
+      </div>
+    </section>
+  );
+}
+
+function periodLabel(year: number, month: number, locale: string): string {
+  return new Date(year, month - 1, 1).toLocaleDateString(locale === 'en' ? 'en-GB' : 'fr-FR', {
+    month: 'long',
+    year: 'numeric',
+  });
+}
+
 function SectorBlock({
   title,
   accent,
@@ -377,8 +410,10 @@ export default function AccueilPage() {
       || charts.dependantsBreakdown.length
       || charts.projectsBudget.length
       || charts.travelByDepartment.length
-      || charts.charroiStatus.length
+      ||       charts.charroiStatus.length
       || charts.villageHouseTypes.length
+      || charts.santeByType.length
+      || charts.overtimeByDepartment.length
     ),
   );
 
@@ -403,7 +438,9 @@ export default function AccueilPage() {
   const hasCharroiSector = Boolean(data?.charroi);
   const hasVillageSector = Boolean(data?.village);
   const hasFacturesSector = Boolean(data?.factures?.links.length);
-  const hasProtocolSector = Boolean(data?.protocol?.links.length);
+  const hasProtocolSector = Boolean(
+    data?.protocol && (data.protocol.links.length || data.protocol.workVisas || data.protocol.voyages),
+  );
   const hasSettingsSector = Boolean(data?.settings);
 
   return (
@@ -416,9 +453,20 @@ export default function AccueilPage() {
             <RefreshButton onClick={() => load(true)} loading={refreshing} />
           </div>
           <div className="home-hero-title-row">
-            <h2>
-              {greeting}, {user?.displayName || t('common.user')}
-            </h2>
+            <div>
+              <h2>
+                {greeting}, {user?.displayName || t('common.user')}
+              </h2>
+              {data?.employes ? (
+                <p className="home-hero-lead">
+                  {t('home.hero.lead', {
+                    count: data.employes.total,
+                    month: new Date(data.employes.periodYear, data.employes.periodMonth - 1, 1)
+                      .toLocaleDateString(locale === 'en' ? 'en-GB' : 'fr-FR', { month: 'long', year: 'numeric' }),
+                  })}
+                </p>
+              ) : null}
+            </div>
             <HomeGlobalSearch />
           </div>
         </div>
@@ -512,6 +560,21 @@ export default function AccueilPage() {
                     centerLabel={t('home.chart.houses')}
                   />
                 )}
+                {charts.santeByType.length > 0 && (
+                  <HomeDonutChart
+                    title={t('home.chart.sante')}
+                    slices={charts.santeByType}
+                    centerLabel={t('home.sante.cases')}
+                  />
+                )}
+                {charts.overtimeByDepartment.length > 0 && (
+                  <HomeBarChart
+                    title={t('home.chart.overtime')}
+                    items={charts.overtimeByDepartment}
+                    valueLabel={t('home.chart.hours')}
+                    maxBars={6}
+                  />
+                )}
               </div>
             </section>
           )}
@@ -528,12 +591,16 @@ export default function AccueilPage() {
                     />
                     <div className="home-stat-grid">
                       <div className="home-stat-box">
-                        <span>{t('home.stat.totalEmployees')}</span>
+                        <span>{t('home.stat.active')}</span>
                         <strong>{data.employes.total}</strong>
                       </div>
                       <div className="home-stat-box">
-                        <span>{t('home.stat.active')}</span>
-                        <strong>{data.employes.active}</strong>
+                        <span>{t('home.stat.men')}</span>
+                        <strong>{data.employes.men}</strong>
+                      </div>
+                      <div className="home-stat-box">
+                        <span>{t('home.stat.women')}</span>
+                        <strong>{data.employes.women}</strong>
                       </div>
                       <div className="home-stat-box">
                         <span>{t('home.stat.inactive')}</span>
@@ -542,10 +609,6 @@ export default function AccueilPage() {
                       <div className="home-stat-box">
                         <span>{t('home.stat.departments')}</span>
                         <strong>{data.employes.departments}</strong>
-                      </div>
-                      <div className="home-stat-box">
-                        <span>{t('home.stat.avgCompletion')}</span>
-                        <strong>{formatRate(data.employes.avgCompletion)}</strong>
                       </div>
                       <div className="home-stat-box home-stat-alert">
                         <span>{t('home.stat.riskFiles')}</span>
@@ -629,7 +692,7 @@ export default function AccueilPage() {
                             {data.documents.departments.map((dept) => (
                               <tr key={dept.name}>
                                 <td>{dept.name}</td>
-                                <td>{dept.rate}%</td>
+                                <td>{dept.rate}</td>
                               </tr>
                             ))}
                           </tbody>
@@ -639,17 +702,69 @@ export default function AccueilPage() {
                   </section>
                 )}
 
-                {employesSectorPlaceholders.length > 0 && (
+                {data.overtime ? (
+                  <StatPanel
+                    title={t('home.employees.overtime')}
+                    subtitle={t('home.overtime.sub', {
+                      month: periodLabel(data.overtime.periodYear, data.overtime.periodMonth, locale),
+                    })}
+                    href={data.overtime.href}
+                    stats={[
+                      { label: t('home.overtime.hours'), value: data.overtime.hours.toLocaleString(locale === 'en' ? 'en-GB' : 'fr-FR') },
+                      { label: t('home.overtime.agents'), value: data.overtime.agents },
+                      { label: t('home.overtime.weeks'), value: data.overtime.weeks },
+                      { label: t('home.overtime.departments'), value: data.overtime.departments },
+                    ]}
+                  />
+                ) : employesSectorPlaceholders.length > 0 ? (
                   <section className="panel home-module-panel home-module-placeholders">
                     <ModuleHead title={t('home.employees.overtime')} subtitle={t('home.employees.overtimeSub')} />
                     <PlaceholderGrid items={employesSectorPlaceholders} />
                   </section>
-                )}
-                {santePlaceholders.length > 0 && (
+                ) : null}
+                {data.sante ? (
+                  <StatPanel
+                    title={t('nav.health')}
+                    subtitle={t('home.sante.sub', {
+                      month: periodLabel(data.sante.periodYear, data.sante.periodMonth, locale),
+                    })}
+                    href={data.sante.href}
+                    stats={[
+                      { label: t('home.sante.cases'), value: data.sante.cases },
+                      { label: t('home.sante.agents'), value: data.sante.agents },
+                      { label: t('home.sante.children'), value: data.sante.children },
+                      { label: t('home.sante.referred'), value: data.sante.referred },
+                    ]}
+                  />
+                ) : santePlaceholders.length > 0 ? (
                   <section className="panel home-module-panel home-module-placeholders">
-                    <ModuleHead title={t('nav.health')} subtitle="Fiche journalière des pathologies" />
+                    <ModuleHead title={t('nav.health')} subtitle={t('home.sante.fallback')} />
                     <PlaceholderGrid items={santePlaceholders} />
                   </section>
+                ) : null}
+                {data.conge && (
+                  <StatPanel
+                    title={t('home.conge.title')}
+                    subtitle={t('home.conge.sub')}
+                    href={data.conge.href}
+                    stats={[
+                      { label: t('home.conge.staff'), value: data.conge.effectif },
+                      { label: t('home.conge.onLeave'), value: data.conge.onLeave, alert: data.conge.onLeave > 0 },
+                      { label: t('home.conge.onLeaveMonth'), value: data.conge.onLeaveMonth },
+                    ]}
+                  />
+                )}
+                {data.discipline && (
+                  <StatPanel
+                    title={t('home.discipline.title')}
+                    subtitle={t('home.discipline.sub')}
+                    href={data.discipline.href}
+                    stats={[
+                      { label: t('home.discipline.open'), value: data.discipline.open, alert: data.discipline.open > 0 },
+                      { label: t('home.discipline.closed'), value: data.discipline.closed },
+                      { label: t('home.stat.total'), value: data.discipline.total },
+                    ]}
+                  />
                 )}
               </div>
             </SectorBlock>
@@ -666,7 +781,19 @@ export default function AccueilPage() {
                     icon="offers"
                   />
                 )}
-                {can('employes.mouvements', 'view') && (
+                {data.mouvements ? (
+                  <StatPanel
+                    title={t('home.poste.movements')}
+                    subtitle={t('home.poste.movementsSub')}
+                    href={data.mouvements.href}
+                    stats={[
+                      { label: t('home.poste.month'), value: data.mouvements.thisMonth },
+                      { label: t('home.poste.year'), value: data.mouvements.thisYear },
+                      { label: t('home.poste.promotions'), value: data.mouvements.promotions },
+                      { label: t('home.stat.total'), value: data.mouvements.total },
+                    ]}
+                  />
+                ) : can('employes.mouvements', 'view') ? (
                   <Link href="/employes/mouvements" className="panel home-module-panel home-coming-card">
                     <div className="home-coming-card-head">
                       <span className="home-coming-card-icon" aria-hidden>
@@ -681,8 +808,20 @@ export default function AccueilPage() {
                       {t('common.open')}
                     </span>
                   </Link>
-                )}
-                {can('employes.recrutement', 'view') && (
+                ) : null}
+                {data.recrutement ? (
+                  <StatPanel
+                    title={t('home.poste.recruitment')}
+                    subtitle={t('home.poste.recruitmentSub')}
+                    href={data.recrutement.href}
+                    stats={[
+                      { label: t('home.stat.total'), value: data.recrutement.total },
+                      { label: t('home.recruitment.ongoing'), value: data.recrutement.ongoing },
+                      { label: t('home.recruitment.done'), value: data.recrutement.done },
+                      { label: t('home.recruitment.notStarted'), value: data.recrutement.notStarted },
+                    ]}
+                  />
+                ) : can('employes.recrutement', 'view') ? (
                   <Link href="/employes/recrutement" className="panel home-module-panel home-coming-card">
                     <div className="home-coming-card-head">
                       <span className="home-coming-card-icon" aria-hidden>
@@ -697,8 +836,19 @@ export default function AccueilPage() {
                       {t('common.open')}
                     </span>
                   </Link>
-                )}
-                {(can('employes.classification', 'view') || can('employes.postes', 'view')) && (
+                ) : null}
+                {data.postes ? (
+                  <StatPanel
+                    title={t('home.poste.classification')}
+                    subtitle={t('home.poste.classificationSub')}
+                    href={data.postes.href}
+                    stats={[
+                      { label: t('home.classification.occupied'), value: data.postes.occupied },
+                      { label: t('home.classification.vacant'), value: data.postes.vacant, alert: data.postes.vacant > 0 },
+                      { label: t('home.classification.titles'), value: data.postes.titles },
+                    ]}
+                  />
+                ) : (can('employes.classification', 'view') || can('employes.postes', 'view')) ? (
                   <Link href="/employes/classification" className="panel home-module-panel home-coming-card">
                     <div className="home-coming-card-head">
                       <span className="home-coming-card-icon" aria-hidden>
@@ -713,15 +863,25 @@ export default function AccueilPage() {
                       {t('common.open')}
                     </span>
                   </Link>
-                )}
-                {can('training', 'view') && (
+                ) : null}
+                {data.training ? (
+                  <StatPanel
+                    title={t('training.title')}
+                    subtitle={t('home.training.sub')}
+                    href={data.training.href}
+                    stats={[
+                      { label: t('home.training.topics'), value: data.training.topics },
+                      { label: t('home.training.spend'), value: formatUsdCompact(data.training.spend) },
+                    ]}
+                  />
+                ) : can('training', 'view') ? (
                   <ComingSoonCard
                     title={t('training.title')}
                     description={t('training.description')}
                     href="/training"
                     icon="rrf"
                   />
-                )}
+                ) : null}
               </div>
             </SectorBlock>
           )}
@@ -785,6 +945,33 @@ export default function AccueilPage() {
           {hasDocumentsSector && (
             <SectorBlock title={t('home.sector.documents')} accent="violet">
               <div className="home-sector-full">
+                {data.travel && (
+                  <section className="panel home-module-panel home-module-wide">
+                    <ModuleHead
+                      title={t('home.travel.title')}
+                      subtitle={t('home.travel.sub')}
+                      href={data.travel.hrefHistorique}
+                    />
+                    <div className="home-stat-grid home-stat-grid-4">
+                      <div className="home-stat-box">
+                        <span>{t('home.travel.trips')}</span>
+                        <strong>{data.travel.dashboard.totalTrips}</strong>
+                      </div>
+                      <div className="home-stat-box">
+                        <span>{t('home.travel.month')}</span>
+                        <strong>{data.travel.dashboard.tripsThisMonth}</strong>
+                      </div>
+                      <div className="home-stat-box home-stat-money">
+                        <span>{t('home.travel.budget')}</span>
+                        <strong>{formatUsdCompact(data.travel.dashboard.totalBudget)}</strong>
+                      </div>
+                      <div className="home-stat-box home-stat-money">
+                        <span>{t('home.travel.monthBudget')}</span>
+                        <strong>{formatUsdCompact(data.travel.dashboard.budgetThisMonth)}</strong>
+                      </div>
+                    </div>
+                  </section>
+                )}
                 <DocumentCards items={documentsLinks} />
               </div>
             </SectorBlock>
@@ -792,16 +979,46 @@ export default function AccueilPage() {
 
           {hasProtocolSector && data.protocol && (
             <SectorBlock title={t('home.sector.protocol')} accent="violet">
-              <div className="home-sector-full">
-                <div className="home-link-cards">
-                  {data.protocol.links.map((item) => (
-                    <Link key={item.href} href={item.href} className="home-link-card home-link-card-protocol">
-                      <strong>{item.label}</strong>
-                      {item.description && <span>{item.description}</span>}
-                    </Link>
-                  ))}
-                </div>
+              <div className="home-dashboard-grid">
+                {data.protocol.workVisas && (
+                  <StatPanel
+                    title={t('home.protocol.visasTitle')}
+                    subtitle={t('home.protocol.visasSub')}
+                    href={data.protocol.workVisas.href}
+                    stats={[
+                      { label: t('home.stat.total'), value: data.protocol.workVisas.total },
+                      { label: t('home.protocol.valid'), value: data.protocol.workVisas.valid },
+                      { label: t('home.protocol.expired'), value: data.protocol.workVisas.expired, alert: data.protocol.workVisas.expired > 0 },
+                      { label: t('home.protocol.alerts'), value: data.protocol.workVisas.alerts, alert: data.protocol.workVisas.alerts > 0 },
+                    ]}
+                  />
+                )}
+                {data.protocol.voyages && (
+                  <StatPanel
+                    title={t('home.protocol.tripsTitle')}
+                    subtitle={t('home.protocol.tripsSub')}
+                    href={data.protocol.voyages.href}
+                    stats={[
+                      { label: t('home.protocol.trips'), value: data.protocol.voyages.total },
+                      { label: t('home.protocol.cost'), value: formatUsdCompact(data.protocol.voyages.cost) },
+                    ]}
+                  />
+                )}
               </div>
+              {data.protocol.links.some((item) => item.href !== data.protocol?.workVisas?.href && item.href !== data.protocol?.voyages?.href) && (
+                <div className="home-sector-full">
+                  <div className="home-link-cards">
+                    {data.protocol.links
+                      .filter((item) => item.href !== data.protocol?.workVisas?.href && item.href !== data.protocol?.voyages?.href)
+                      .map((item) => (
+                        <Link key={item.href} href={item.href} className="home-link-card home-link-card-protocol">
+                          <strong>{item.label}</strong>
+                          {item.description && <span>{item.description}</span>}
+                        </Link>
+                      ))}
+                  </div>
+                </div>
+              )}
             </SectorBlock>
           )}
 
@@ -861,29 +1078,50 @@ export default function AccueilPage() {
                     href={data.charroi.href}
                   />
                   <div className="home-stat-grid home-stat-grid-4">
-                    <div className="home-stat-box">
-                      <span>{t('home.stat.vehicles')}</span>
-                      <strong>{data.charroi.total}</strong>
-                    </div>
-                    <div className={`home-stat-box${data.charroi.alertes ? ' home-stat-alert' : ''}`}>
-                      <span>{t('home.stat.docAlerts')}</span>
-                      <strong>{data.charroi.alertes}</strong>
-                    </div>
-                    <div className="home-stat-box">
-                      <span>{t('home.stat.insurance')}</span>
-                      <strong>{data.charroi.assuranceSoon}</strong>
-                    </div>
-                    <div className="home-stat-box">
-                      <span>{t('home.stat.vignette')}</span>
-                      <strong>{data.charroi.vignetteSoon}</strong>
-                    </div>
-                    <div className="home-stat-box">
-                      <span>{t('home.stat.techControl')}</span>
-                      <strong>{data.charroi.controleSoon}</strong>
-                    </div>
+                    {data.charroi.hasFleet && (
+                      <>
+                        <div className="home-stat-box">
+                          <span>{t('home.stat.vehicles')}</span>
+                          <strong>{data.charroi.total}</strong>
+                        </div>
+                        <div className={`home-stat-box${data.charroi.alertes ? ' home-stat-alert' : ''}`}>
+                          <span>{t('home.stat.docAlerts')}</span>
+                          <strong>{data.charroi.alertes}</strong>
+                        </div>
+                        <div className="home-stat-box">
+                          <span>{t('home.stat.insurance')}</span>
+                          <strong>{data.charroi.assuranceSoon}</strong>
+                        </div>
+                        <div className="home-stat-box">
+                          <span>{t('home.stat.vignette')}</span>
+                          <strong>{data.charroi.vignetteSoon}</strong>
+                        </div>
+                        <div className="home-stat-box">
+                          <span>{t('home.stat.techControl')}</span>
+                          <strong>{data.charroi.controleSoon}</strong>
+                        </div>
+                      </>
+                    )}
+                    {data.charroi.voyages && (
+                      <>
+                        <div className="home-stat-box">
+                          <span>{t('home.fleet.trips')}</span>
+                          <strong>{data.charroi.voyages.total}</strong>
+                        </div>
+                        <div className={`home-stat-box${data.charroi.voyages.pending ? ' home-stat-alert' : ''}`}>
+                          <span>{t('home.fleet.pending')}</span>
+                          <strong>{data.charroi.voyages.pending}</strong>
+                        </div>
+                        <div className="home-stat-box">
+                          <span>{t('home.fleet.done')}</span>
+                          <strong>{data.charroi.voyages.done}</strong>
+                        </div>
+                      </>
+                    )}
                   </div>
                   <div className="home-module-links">
-                    <Link href={data.charroi.href}>{t('common.open')}</Link>
+                    {data.charroi.hasFleet ? <Link href={data.charroi.href}>{t('home.fleet.openFleet')}</Link> : null}
+                    {data.charroi.voyages ? <Link href={data.charroi.voyages.href}>{t('home.fleet.openTrips')}</Link> : null}
                   </div>
                 </section>
               </div>
@@ -997,7 +1235,7 @@ export default function AccueilPage() {
                       <strong>{data.settings.users}</strong>
                     </div>
                     <div className="home-stat-box">
-                      <span>{t('home.stat.active')}</span>
+                      <span>{t('home.stat.activeUsers')}</span>
                       <strong>{data.settings.activeUsers}</strong>
                     </div>
                   </div>
