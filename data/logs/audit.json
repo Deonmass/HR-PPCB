@@ -1,6 +1,50 @@
 {
   "entries": [
     {
+      "id": "log-002058",
+      "at": "2026-10-29T06:30:18.763Z",
+      "userId": "admin",
+      "userName": "Administrateur",
+      "userEmail": "admin",
+      "module": "contractants",
+      "moduleLabel": "contractants",
+      "action": "update",
+      "actionLabel": "Modification",
+      "entityType": "contractant-employee",
+      "entityId": "767",
+      "summary": "Modification employé contractant — KALENGA MBAYO Chancelle",
+      "details": "Modification employé contractant — KALENGA MBAYO Chancelle",
+      "after": {
+        "id": "767",
+        "nom": "KALENGA MBAYO Chancelle",
+        "sexe": "F",
+        "lieuAffectation": "Lubudi",
+        "fonction": "Maintenance Attendant",
+        "departement": "Human Resources",
+        "service": "",
+        "telephone": "",
+        "etatCivil": "C",
+        "statut": "Permanent",
+        "dateEmbauche": "",
+        "dateSortie": "",
+        "managerEmployeeId": "",
+        "managerMatricule": "",
+        "family": [],
+        "matriculePpc": "",
+        "numeroCnss": "LUBUDI",
+        "numeroCompte": "",
+        "banque": "",
+        "nbDependants": 0,
+        "txJr": 8.8,
+        "coutTransport": 0.8039,
+        "payrollSite": "hors-site",
+        "createdAt": "2026-09-25T08:00:00.000Z",
+        "updatedAt": "2026-10-29T06:30:14.761Z"
+      },
+      "undoable": false,
+      "undone": false
+    },
+    {
       "id": "log-002057",
       "at": "2026-10-29T06:27:54.813Z",
       "userId": "admin",
@@ -218253,5 +218297,5 @@
       }
     }
   ],
-  "nextSeq": 2058
+  "nextSeq": 2059
 }
