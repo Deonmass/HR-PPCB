@@ -3322,7 +3322,7 @@
           "etatCivil": "C",
           "statut": "Permanent",
           "dateEmbauche": "",
-          "dateSortie": "",
+          "dateSortie": "2026-10-29",
           "managerEmployeeId": "",
           "managerMatricule": "",
           "family": [],
@@ -3335,7 +3335,7 @@
           "coutTransport": 0.4119,
           "payrollSite": "hors-site",
           "createdAt": "2026-09-25T08:00:00.000Z",
-          "updatedAt": "2026-09-28T15:12:00.000Z"
+          "updatedAt": "2026-10-29T07:02:36.518Z"
         },
         {
           "id": "59",
@@ -5094,7 +5094,7 @@
         }
       ],
       "createdAt": "2026-08-12T11:55:22.134Z",
-      "updatedAt": "2026-10-29T07:02:10.506Z"
+      "updatedAt": "2026-10-29T07:02:36.518Z"
     },
     {
       "id": "3",
