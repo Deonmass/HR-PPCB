@@ -1,6 +1,24 @@
 {
   "entries": [
     {
+      "id": "log-002064",
+      "at": "2026-10-29T07:02:14.670Z",
+      "userId": "admin",
+      "userName": "Administrateur",
+      "userEmail": "admin",
+      "module": "contractants",
+      "moduleLabel": "contractants",
+      "action": "delete",
+      "actionLabel": "Suppression",
+      "entityType": "contractant-employee",
+      "entityId": "786",
+      "summary": "Suppression employé contractant 786",
+      "details": "Suppression employé contractant 786",
+      "after": true,
+      "undoable": false,
+      "undone": false
+    },
+    {
       "id": "log-002063",
       "at": "2026-10-29T07:00:51.344Z",
       "userId": "admin",
@@ -218517,5 +218535,5 @@
       }
     }
   ],
-  "nextSeq": 2064
+  "nextSeq": 2065
 }
