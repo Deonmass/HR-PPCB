@@ -4396,7 +4396,7 @@
           "sexe": "M",
           "lieuAffectation": "Lubudi",
           "fonction": "Spooter",
-          "departement": "",
+          "departement": "Production",
           "service": "",
           "telephone": "",
           "etatCivil": "C",
@@ -4415,7 +4415,7 @@
           "coutTransport": 0.4119,
           "payrollSite": "hors-site",
           "createdAt": "2026-09-25T08:00:00.000Z",
-          "updatedAt": "2026-10-26T10:54:20.316Z"
+          "updatedAt": "2026-10-29T07:00:47.217Z"
         },
         {
           "id": "778",
@@ -5121,7 +5121,7 @@
         }
       ],
       "createdAt": "2026-08-12T11:55:22.134Z",
-      "updatedAt": "2026-10-29T06:59:32.194Z"
+      "updatedAt": "2026-10-29T07:00:47.217Z"
     },
     {
       "id": "3",
