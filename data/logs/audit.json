@@ -1,6 +1,45 @@
 {
   "entries": [
     {
+      "id": "log-002081",
+      "at": "2026-10-29T12:25:31.991Z",
+      "userId": "Tresor.Maneka@ppcdrc.cd",
+      "userName": "Tresor Maneka",
+      "userEmail": "Tresor.Maneka@ppcdrc.cd",
+      "module": "protocol.voyages",
+      "moduleLabel": "Gestion de voyage",
+      "action": "create",
+      "actionLabel": "Création",
+      "entityType": "protocol.voyage",
+      "entityId": "pvc-054",
+      "summary": "Voyage PVC-0054 Zahang Chine Lubumbashi Chine",
+      "details": "Voyage PVC-0054 Zahang Chine Lubumbashi Chine",
+      "after": {
+        "id": "pvc-054",
+        "numero": "PVC-0054",
+        "date": "2026-10-27",
+        "voyageur": "Zahang",
+        "voyageurMatricule": "",
+        "destination": "Chine Lubumbashi Chine",
+        "ticketAvion": 0,
+        "visaVolant": 850,
+        "lettreLegaliser": 0,
+        "goPass": 0,
+        "transfert": 0,
+        "hotelNuit": 150,
+        "nbreNuits": 1,
+        "coutHotel": 150,
+        "categorieHotel": "Stadard",
+        "appartement": 0,
+        "autresCharges": 0,
+        "coutTotal": 1000,
+        "createdAt": "2026-10-29T12:25:27.773Z",
+        "updatedAt": "2026-10-29T12:25:27.773Z"
+      },
+      "undoable": false,
+      "undone": false
+    },
+    {
       "id": "log-002080",
       "at": "2026-10-29T12:17:57.700Z",
       "userId": "Tresor.Maneka@ppcdrc.cd",
@@ -219727,5 +219766,5 @@
       }
     }
   ],
-  "nextSeq": 2081
+  "nextSeq": 2082
 }
