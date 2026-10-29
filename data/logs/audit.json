@@ -1,6 +1,50 @@
 {
   "entries": [
     {
+      "id": "log-002069",
+      "at": "2026-10-29T08:25:42.311Z",
+      "userId": "admin",
+      "userName": "Administrateur",
+      "userEmail": "admin",
+      "module": "contractants",
+      "moduleLabel": "contractants",
+      "action": "update",
+      "actionLabel": "Modification",
+      "entityType": "contractant-employee",
+      "entityId": "82",
+      "summary": "Modification employé contractant — PIRWOTH UCIRCAN JEAN DE DIEU",
+      "details": "Modification employé contractant — PIRWOTH UCIRCAN JEAN DE DIEU",
+      "after": {
+        "id": "82",
+        "nom": "PIRWOTH UCIRCAN JEAN DE DIEU",
+        "sexe": "M",
+        "lieuAffectation": "Zamba",
+        "fonction": "Process Technician",
+        "departement": "Optimization",
+        "service": "",
+        "telephone": "814200391",
+        "etatCivil": "C",
+        "statut": "Permanent",
+        "dateEmbauche": "",
+        "dateSortie": "",
+        "managerEmployeeId": "",
+        "managerMatricule": "",
+        "family": [],
+        "matriculePpc": "CHRS_PPC0111",
+        "numeroCnss": "",
+        "numeroCompte": "05126-00490623001-67",
+        "banque": "RAWBANK",
+        "nbDependants": 0,
+        "txJr": 12.541338,
+        "coutTransport": 1.17,
+        "payrollSite": "site",
+        "createdAt": "2026-08-12T12:57:02.481Z",
+        "updatedAt": "2026-10-29T08:25:38.170Z"
+      },
+      "undoable": false,
+      "undone": false
+    },
+    {
       "id": "log-002068",
       "at": "2026-10-29T07:44:16.689Z",
       "userId": "admin",
@@ -218711,5 +218755,5 @@
       }
     }
   ],
-  "nextSeq": 2069
+  "nextSeq": 2070
 }
