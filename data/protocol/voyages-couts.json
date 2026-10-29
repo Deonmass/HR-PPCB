@@ -1150,7 +1150,7 @@
       "date": "2026-10-29",
       "voyageur": "KAHASHA MBASHA PATRICK",
       "voyageurMatricule": "70000256",
-      "destination": "Brunelle Kinshasa",
+      "destination": "Bruxelles Kinshasa",
       "ticketAvion": 1150,
       "visaVolant": 0,
       "lettreLegaliser": 0,
@@ -1164,7 +1164,7 @@
       "autresCharges": 0,
       "coutTotal": 1150,
       "createdAt": "2026-10-29T12:29:34.410Z",
-      "updatedAt": "2026-10-29T12:29:34.410Z"
+      "updatedAt": "2026-10-29T12:30:59.680Z"
     }
   ],
   "nextSeq": 57
