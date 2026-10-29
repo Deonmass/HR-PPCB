@@ -2422,10 +2422,10 @@
         {
           "id": "762",
           "nom": "MAKOBO FUANINUA Christian",
-          "sexe": "",
+          "sexe": "M",
           "lieuAffectation": "Lubudi",
           "fonction": "Spooter",
-          "departement": "",
+          "departement": "Production",
           "service": "",
           "telephone": "",
           "etatCivil": "C",
@@ -2444,7 +2444,7 @@
           "coutTransport": 4.7604,
           "payrollSite": "hors-site",
           "createdAt": "2026-09-25T08:00:00.000Z",
-          "updatedAt": "2026-09-28T15:12:00.000Z"
+          "updatedAt": "2026-10-29T06:57:03.209Z"
         },
         {
           "id": "47",
@@ -5121,7 +5121,7 @@
         }
       ],
       "createdAt": "2026-08-12T11:55:22.134Z",
-      "updatedAt": "2026-10-29T06:55:25.347Z"
+      "updatedAt": "2026-10-29T06:57:03.209Z"
     },
     {
       "id": "3",
