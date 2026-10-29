@@ -7510,9 +7510,9 @@
       "employeeSubGroup": "Permanent",
       "payrollArea": "Monthly",
       "position": "",
-      "departmentHr": "Optimisation",
-      "lineManagerName": "Andrew Molonga",
-      "lineManagerPosition": "Plant Manager",
+      "departmentHr": "Optimization",
+      "lineManagerName": "Optimization Manager",
+      "lineManagerPosition": "Poste vacant",
       "patersonGrade": "",
       "statut": "Active",
       "typeContrat": "",
@@ -7534,7 +7534,7 @@
       "nif": "B2222702C",
       "telephone": "840123777",
       "createdAt": "2026-07-28T09:40:37.715Z",
-      "updatedAt": "2026-10-06T11:00:03.288Z"
+      "updatedAt": "2026-10-29T11:01:16.041Z"
     },
     {
       "id": "32b01de4-0e04-47bc-b678-8874133c7d20",
