@@ -4585,7 +4585,7 @@
           "sexe": "M",
           "lieuAffectation": "Zamba",
           "fonction": "Process Technician",
-          "departement": "Production",
+          "departement": "Optimization",
           "service": "",
           "telephone": "814200391",
           "etatCivil": "C",
@@ -4604,7 +4604,7 @@
           "coutTransport": 1.17,
           "payrollSite": "site",
           "createdAt": "2026-08-12T12:57:02.481Z",
-          "updatedAt": "2026-09-28T15:12:00.000Z"
+          "updatedAt": "2026-10-29T08:25:38.170Z"
         },
         {
           "id": "129",
@@ -5175,7 +5175,7 @@
         }
       ],
       "createdAt": "2026-08-12T11:55:22.134Z",
-      "updatedAt": "2026-10-29T07:44:13.666Z"
+      "updatedAt": "2026-10-29T08:25:38.170Z"
     },
     {
       "id": "3",
