@@ -88,7 +88,7 @@
       "id": "dept-supply-chain",
       "name": "Supply Chain",
       "code": "Supply Chain",
-      "active": true
+      "active": false
     },
     {
       "id": "dept-transport-and-transit",
