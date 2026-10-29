@@ -1,6 +1,50 @@
 {
   "entries": [
     {
+      "id": "log-002061",
+      "at": "2026-10-29T06:57:45.324Z",
+      "userId": "admin",
+      "userName": "Administrateur",
+      "userEmail": "admin",
+      "module": "contractants",
+      "moduleLabel": "contractants",
+      "action": "update",
+      "actionLabel": "Modification",
+      "entityType": "contractant-employee",
+      "entityId": "772",
+      "summary": "Modification employé contractant — MALOMAMO YEMA Jean Marie",
+      "details": "Modification employé contractant — MALOMAMO YEMA Jean Marie",
+      "after": {
+        "id": "772",
+        "nom": "MALOMAMO YEMA Jean Marie",
+        "sexe": "F",
+        "lieuAffectation": "Kisangani",
+        "fonction": "Forklift Operator",
+        "departement": "Production",
+        "service": "",
+        "telephone": "",
+        "etatCivil": "C",
+        "statut": "Permanent",
+        "dateEmbauche": "",
+        "dateSortie": "",
+        "managerEmployeeId": "",
+        "managerMatricule": "",
+        "family": [],
+        "matriculePpc": "",
+        "numeroCnss": "KISANGANI",
+        "numeroCompte": "",
+        "banque": "",
+        "nbDependants": 0,
+        "txJr": 15.28,
+        "coutTransport": 3.2042,
+        "payrollSite": "hors-site",
+        "createdAt": "2026-09-25T08:00:00.000Z",
+        "updatedAt": "2026-10-29T06:57:42.289Z"
+      },
+      "undoable": false,
+      "undone": false
+    },
+    {
       "id": "log-002060",
       "at": "2026-10-29T06:57:07.552Z",
       "userId": "admin",
@@ -218385,5 +218429,5 @@
       }
     }
   ],
-  "nextSeq": 2061
+  "nextSeq": 2062
 }
