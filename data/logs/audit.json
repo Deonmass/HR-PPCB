@@ -1,6 +1,50 @@
 {
   "entries": [
     {
+      "id": "log-002059",
+      "at": "2026-10-29T06:55:35.690Z",
+      "userId": "admin",
+      "userName": "Administrateur",
+      "userEmail": "admin",
+      "module": "contractants",
+      "moduleLabel": "contractants",
+      "action": "update",
+      "actionLabel": "Modification",
+      "entityType": "contractant-employee",
+      "entityId": "763",
+      "summary": "Modification employé contractant — LUMUNA KILWINA SERGE",
+      "details": "Modification employé contractant — LUMUNA KILWINA SERGE",
+      "after": {
+        "id": "763",
+        "nom": "LUMUNA KILWINA SERGE",
+        "sexe": "M",
+        "lieuAffectation": "Lubudi",
+        "fonction": "Spooter",
+        "departement": "Production",
+        "service": "",
+        "telephone": "",
+        "etatCivil": "C",
+        "statut": "Permanent",
+        "dateEmbauche": "",
+        "dateSortie": "",
+        "managerEmployeeId": "",
+        "managerMatricule": "",
+        "family": [],
+        "matriculePpc": "",
+        "numeroCnss": "LUBUDI",
+        "numeroCompte": "",
+        "banque": "",
+        "nbDependants": 0,
+        "txJr": 3.91,
+        "coutTransport": 0.4119,
+        "payrollSite": "hors-site",
+        "createdAt": "2026-09-25T08:00:00.000Z",
+        "updatedAt": "2026-10-29T06:55:25.347Z"
+      },
+      "undoable": false,
+      "undone": false
+    },
+    {
       "id": "log-002058",
       "at": "2026-10-29T06:30:18.763Z",
       "userId": "admin",
@@ -218297,5 +218341,5 @@
       }
     }
   ],
-  "nextSeq": 2059
+  "nextSeq": 2060
 }
