@@ -2830,7 +2830,7 @@
           "sexe": "M",
           "lieuAffectation": "Zamba",
           "fonction": "Warehouse Clerk",
-          "departement": "",
+          "departement": "Supply Chain",
           "service": "",
           "telephone": "",
           "etatCivil": "C",
@@ -2849,7 +2849,7 @@
           "coutTransport": 1.17,
           "payrollSite": "site",
           "createdAt": "2026-09-25T08:00:00.000Z",
-          "updatedAt": "2026-10-29T06:27:50.791Z"
+          "updatedAt": "2026-10-29T06:59:32.194Z"
         },
         {
           "id": "23",
@@ -5121,7 +5121,7 @@
         }
       ],
       "createdAt": "2026-08-12T11:55:22.134Z",
-      "updatedAt": "2026-10-29T06:57:42.289Z"
+      "updatedAt": "2026-10-29T06:59:32.194Z"
     },
     {
       "id": "3",
