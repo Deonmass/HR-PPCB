@@ -1,6 +1,21 @@
 {
   "entries": [
     {
+      "id": "log-002085",
+      "at": "2026-10-29T13:30:53.699Z",
+      "userId": "admin",
+      "userName": "Administrateur",
+      "userEmail": "admin",
+      "module": "auth",
+      "moduleLabel": "Authentification",
+      "action": "logout",
+      "actionLabel": "Déconnexion",
+      "summary": "Déconnexion admin",
+      "details": "Déconnexion de Administrateur (admin)",
+      "undoable": false,
+      "undone": false
+    },
+    {
       "id": "log-002084",
       "at": "2026-10-29T12:31:03.241Z",
       "userId": "Tresor.Maneka@ppcdrc.cd",
@@ -219905,5 +219920,5 @@
       }
     }
   ],
-  "nextSeq": 2085
+  "nextSeq": 2086
 }
