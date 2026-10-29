@@ -1,6 +1,45 @@
 {
   "entries": [
     {
+      "id": "log-002083",
+      "at": "2026-10-29T12:29:37.926Z",
+      "userId": "Tresor.Maneka@ppcdrc.cd",
+      "userName": "Tresor Maneka",
+      "userEmail": "Tresor.Maneka@ppcdrc.cd",
+      "module": "protocol.voyages",
+      "moduleLabel": "Gestion de voyage",
+      "action": "create",
+      "actionLabel": "Création",
+      "entityType": "protocol.voyage",
+      "entityId": "pvc-056",
+      "summary": "Voyage PVC-0056 KAHASHA MBASHA PATRICK Brunelle Kinshasa",
+      "details": "Voyage PVC-0056 KAHASHA MBASHA PATRICK Brunelle Kinshasa",
+      "after": {
+        "id": "pvc-056",
+        "numero": "PVC-0056",
+        "date": "2026-10-29",
+        "voyageur": "KAHASHA MBASHA PATRICK",
+        "voyageurMatricule": "70000256",
+        "destination": "Brunelle Kinshasa",
+        "ticketAvion": 1150,
+        "visaVolant": 0,
+        "lettreLegaliser": 0,
+        "goPass": 0,
+        "transfert": 0,
+        "hotelNuit": 0,
+        "nbreNuits": 0,
+        "coutHotel": 0,
+        "categorieHotel": "",
+        "appartement": 0,
+        "autresCharges": 0,
+        "coutTotal": 1150,
+        "createdAt": "2026-10-29T12:29:34.410Z",
+        "updatedAt": "2026-10-29T12:29:34.410Z"
+      },
+      "undoable": false,
+      "undone": false
+    },
+    {
       "id": "log-002082",
       "at": "2026-10-29T12:28:12.063Z",
       "userId": "Tresor.Maneka@ppcdrc.cd",
@@ -219805,5 +219844,5 @@
       }
     }
   ],
-  "nextSeq": 2083
+  "nextSeq": 2084
 }
