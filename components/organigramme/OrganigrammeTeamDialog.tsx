@@ -1,7 +1,8 @@
 'use client';
 
 import { useEffect, useMemo, useRef, useState } from 'react';
-import { isCapitalHrCompany, orgPersonShortName, type OrgPosteGroup, type OrgPosteMember } from '@/lib/organigramme';
+import OrgSiteMark from '@/components/organigramme/OrgSiteMark';
+import { contractantTone, isCapitalHrCompany, orgLocationZone, orgPersonShortName, type OrgPosteGroup, type OrgPosteMember } from '@/lib/organigramme';
 
 type ManagerBucket = {
   key: string;
@@ -160,24 +161,31 @@ export default function OrganigrammeTeamDialog({
                         const meta = personMeta(member);
                         const openable = Boolean(member.matricule) && !member.isContractant && !member.isExternal && hasFiche(member.matricule);
                         const editable = Boolean(canEditMember?.(member) && onEditManager);
+                        const tone = member.isContractant ? contractantTone(member.contractantName || member.nom) : null;
                         return (
                           <li key={member.id} className="org-team-node">
                             <article
                               className={`org-team-card${member.isContractant ? ' is-contractant' : ''}${member.isContractant && isCapitalHrCompany(member.contractantName || member.nom) ? ' is-capital-hr' : ''}`}
+                              style={tone ? { background: tone.background, borderColor: tone.border } : undefined}
                               onContextMenu={onContextMenu ? (event) => onContextMenu(event, member) : undefined}
                             >
                               <span
                                 className={`org-chart-avatar org-team-avatar${member.isExternal ? ' is-vacant' : ''}${member.isContractant ? ' is-contractant' : ''}${member.isContractant && isCapitalHrCompany(member.contractantName || member.nom) ? ' is-capital-hr' : ''}`}
+                                style={tone ? { background: tone.avatar } : undefined}
                                 aria-hidden
                               >
                                 {member.isExternal ? '·' : initials(member.nom)}
                               </span>
                               {openable ? (
-                                <button type="button" className="org-team-card-name" onClick={() => onOpenFiche(member)}>
-                                  {orgPersonShortName(member.nom) || member.nom}
+                                <button type="button" className="org-team-card-name" style={tone ? { color: tone.ink } : undefined} onClick={() => onOpenFiche(member)}>
+                                  <OrgSiteMark zone={orgLocationZone(member.localisation)} />
+                                  <span>{orgPersonShortName(member.nom) || member.nom}</span>
                                 </button>
                               ) : (
-                                <strong className="org-team-card-name">{orgPersonShortName(member.nom) || member.nom}</strong>
+                                <strong className="org-team-card-name" style={tone ? { color: tone.ink } : undefined}>
+                                  <OrgSiteMark zone={orgLocationZone(member.localisation)} />
+                                  <span>{orgPersonShortName(member.nom) || member.nom}</span>
+                                </strong>
                               )}
                               {meta ? <span className="org-team-card-meta">{meta}</span> : null}
                               <div className="org-team-card-tools">

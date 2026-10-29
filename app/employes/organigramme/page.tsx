@@ -5,6 +5,7 @@ import OrganigrammeDepartmentDialog from '@/components/organigramme/Organigramme
 import OrganigrammeManagerDialog from '@/components/organigramme/OrganigrammeManagerDialog';
 import OrganigrammePersonDialog from '@/components/organigramme/OrganigrammePersonDialog';
 import OrganigrammeTree, { type OrgPersonTarget } from '@/components/organigramme/OrganigrammeTree';
+import OrgSiteMark from '@/components/organigramme/OrgSiteMark';
 import EmployeeViewModal from '@/components/EmployeeViewModal';
 import PermissionGate from '@/components/PermissionGate';
 import RefreshButton from '@/components/RefreshButton';
@@ -17,11 +18,12 @@ import {
   isCapitalHrCompany,
   listOrganigrammeDepartments,
   listOrganigrammeServices,
-  countContractantPopulations,
   moveContractantsUnderInternalManagers,
+  ORG_LOCATION_ZONES,
   orgPersonShortName,
   reportingDepartment,
   resolveLineManagerMatricule,
+  summarizeOrganigramme,
   type OrganigrammeScope,
 } from '@/lib/organigramme';
 import type { ClassificationPoste } from '@/lib/classification-types';
@@ -224,13 +226,9 @@ export default function OrganigrammePage() {
       ? ctr.roots
       : ctr.roots.filter((node) => !isCapitalHrCompany(node.contractantName || node.nom));
     adoptContractantManagers(ppc.roots, ctrVisible, contractants, employees);
-    const populations = countContractantPopulations([...ppc.roots, ...ctr.roots]);
     return {
       roots: [...ppc.roots, ...ctrVisible],
-      internes: ppc.employeeCount,
-      externes: ctr.employeeCount,
-      capitalHr: populations.capitalHr,
-      autres: populations.autres,
+      legend: summarizeOrganigramme([...ppc.roots, ...ctr.roots]),
     };
   }, [employees, contractants, vacantPostes, scope, departement, service, showContractants, search]);
 
@@ -806,6 +804,25 @@ export default function OrganigrammePage() {
                 <IconChevrons up />
                 Tout replier
               </button>
+              <div className="org-zoom" aria-label="Zoom">
+                <button
+                  type="button"
+                  onClick={() => setZoom((value) => Math.max(ZOOM_MIN, Math.round((value - 0.1) * 10) / 10))}
+                  disabled={zoom <= ZOOM_MIN}
+                  aria-label="Zoom arrière"
+                >
+                  −
+                </button>
+                <span>{Math.round(zoom * 100)}%</span>
+                <button
+                  type="button"
+                  onClick={() => setZoom((value) => Math.min(ZOOM_MAX, Math.round((value + 0.1) * 10) / 10))}
+                  disabled={zoom >= ZOOM_MAX}
+                  aria-label="Zoom avant"
+                >
+                  +
+                </button>
+              </div>
             </div>
           </div>
         </div>
@@ -834,74 +851,69 @@ export default function OrganigrammePage() {
           )}
         </section>
 
-        <footer className="org-footer">
-          <ul className="org-footer-legend">
-            <li>
-              <i className="org-legend-swatch is-ppc" aria-hidden />
-              <span>Internes</span>
-              <strong>{loading ? '…' : built.internes}</strong>
-            </li>
-            <li>
-              <button
-                type="button"
-                className={`org-footer-toggle${showContractants ? ' is-on' : ''}`}
-                aria-pressed={showContractants}
-                onClick={() => setShowContractants((value) => !value)}
-              >
-                <i className="org-legend-swatch is-contractant" aria-hidden />
-                <span>Externes</span>
-                <strong>{loading ? '…' : built.externes}</strong>
-                <span className="org-footer-toggle-state">
-                  {showContractants ? 'affichés' : 'masqués'}
-                </span>
-              </button>
-            </li>
-            <li className="org-footer-total">
-              <span>Total</span>
-              <strong>{loading ? '…' : built.internes + built.externes}</strong>
-            </li>
-          </ul>
-          <div className="org-footer-key" aria-label="Légende">
-            <span className="org-legend-item">
-              <i className="org-legend-swatch is-ppc" aria-hidden />
-              PPC
-              <strong>{loading ? '…' : built.internes}</strong>
-            </span>
-            <span className="org-legend-item">
-              <i className="org-legend-swatch is-capital-hr" aria-hidden />
-              Capital HR
-              <strong>{loading ? '…' : built.capitalHr}</strong>
-            </span>
-            <span className="org-legend-item">
-              <i className="org-legend-swatch is-other" aria-hidden />
-              Autres
-              <strong>{loading ? '…' : built.autres}</strong>
-            </span>
-            <span className="org-legend-item">
-              <i className="org-legend-swatch is-vacant" aria-hidden />
-              Poste vacant
-            </span>
-          </div>
-          <div className="org-zoom" aria-label="Zoom">
-            <button
-              type="button"
-              onClick={() => setZoom((value) => Math.max(ZOOM_MIN, Math.round((value - 0.1) * 10) / 10))}
-              disabled={zoom <= ZOOM_MIN}
-              aria-label="Zoom arrière"
-            >
-              −
-            </button>
-            <span>{Math.round(zoom * 100)}%</span>
-            <button
-              type="button"
-              onClick={() => setZoom((value) => Math.min(ZOOM_MAX, Math.round((value + 0.1) * 10) / 10))}
-              disabled={zoom >= ZOOM_MAX}
-              aria-label="Zoom avant"
-            >
-              +
-            </button>
-          </div>
-        </footer>
+        <aside className="org-float-legend is-left" aria-label="Contractants">
+          <table className="org-float-table">
+            <tbody>
+              {(loading ? [] : built.legend.companies).map((company) => {
+                const capitalHr = isCapitalHrCompany(company.name);
+                return (
+                  <tr key={company.name}>
+                    <td>
+                      {capitalHr ? (
+                        <button
+                          type="button"
+                          className={`org-float-company${showContractants ? ' is-on' : ''}`}
+                          aria-pressed={showContractants}
+                          onClick={() => setShowContractants((value) => !value)}
+                        >
+                          <i className="org-float-swatch" style={{ background: company.tone.background, borderColor: company.tone.border }} aria-hidden />
+                          <span>{company.name}</span>
+                          <span className="org-float-state">{showContractants ? 'affichés' : 'masqués'}</span>
+                        </button>
+                      ) : (
+                        <span className="org-float-company">
+                          <i className="org-float-swatch" style={{ background: company.tone.background, borderColor: company.tone.border }} aria-hidden />
+                          <span>{company.name}</span>
+                        </span>
+                      )}
+                    </td>
+                    <td>{loading ? '…' : company.count}</td>
+                  </tr>
+                );
+              })}
+              <tr>
+                <td>
+                  <span className="org-float-company">
+                    <i className="org-float-swatch is-vacant" aria-hidden />
+                    <span>Poste vacant</span>
+                  </span>
+                </td>
+                <td>{loading ? '…' : built.legend.vacant}</td>
+              </tr>
+              <tr className="is-total">
+                <td>Total</td>
+                <td>{loading ? '…' : built.legend.total}</td>
+              </tr>
+            </tbody>
+          </table>
+        </aside>
+        <aside className="org-float-legend is-right" aria-label="Localisations">
+          <table className="org-float-table">
+            <tbody>
+              {ORG_LOCATION_ZONES.map((zone) => (
+                <tr key={zone.id}>
+                  <td>
+                    <span className="org-float-company">
+                      <OrgSiteMark zone={zone.id} />
+                      <span>{zone.label}</span>
+                    </span>
+                  </td>
+                  <td>{loading ? '…' : built.legend.locations[zone.id]}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </aside>
       </div>
 
       {fiche ? (

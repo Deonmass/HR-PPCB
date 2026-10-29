@@ -80,6 +80,106 @@ export function isCapitalHrCompany(name: string | undefined): boolean {
   return foldOrgLabel(name || '') === 'capital hr';
 }
 
+export type OrgLocationZone = 'usine' | 'hq' | 'regions';
+
+export const ORG_LOCATION_ZONES: Array<{ id: OrgLocationZone; label: string }> = [
+  { id: 'usine', label: 'Usine' },
+  { id: 'hq', label: 'HQ' },
+  { id: 'regions', label: 'Régions' },
+];
+
+/** Usine (Zamba), HQ (Kinshasa) ou une autre région. */
+export function orgLocationZone(raw: string | null | undefined): OrgLocationZone {
+  const key = foldOrgLabel(raw || '');
+  if (!key) return 'usine';
+  if (
+    key === 'hq'
+    || key === 'kin'
+    || key.includes('kinshasa')
+    || key.includes('head office')
+    || key.includes('headquarter')
+  ) return 'hq';
+  if (
+    key.includes('zamba')
+    || key.includes('usine')
+    || key.includes('plant')
+    || key.includes('kimpese')
+    || key.includes('malanga')
+  ) return 'usine';
+  return 'regions';
+}
+
+export interface ContractantTone {
+  background: string;
+  border: string;
+  ink: string;
+  avatar: string;
+}
+
+const CAPITAL_HR_TONE: ContractantTone = {
+  background: '#fffbeb',
+  border: '#f5d06a',
+  ink: '#854d0e',
+  avatar: '#d97706',
+};
+
+/** Couleur stable d’une société contractante. Capital HR reste or ; les autres se répartissent sur le cercle. */
+export function contractantTone(name: string | undefined): ContractantTone {
+  if (isCapitalHrCompany(name)) return CAPITAL_HR_TONE;
+  const key = foldOrgLabel(name || '') || 'contractant';
+  let hash = 0;
+  for (let index = 0; index < key.length; index += 1) {
+    hash = (hash * 33 + key.charCodeAt(index)) >>> 0;
+  }
+  let hue = hash % 360;
+  if (Math.abs(hue - 42) < 22) hue = (hue + 52) % 360;
+  if (Math.abs(hue - 268) < 18) hue = (hue + 42) % 360;
+  return {
+    background: `hsl(${hue} 78% 95%)`,
+    border: `hsl(${hue} 55% 78%)`,
+    ink: `hsl(${hue} 55% 28%)`,
+    avatar: `hsl(${hue} 58% 42%)`,
+  };
+}
+
+export interface OrganigrammeLegend {
+  companies: Array<{ name: string; count: number; tone: ContractantTone }>;
+  vacant: number;
+  total: number;
+  locations: Record<OrgLocationZone, number>;
+}
+
+/** Contractants, postes vacants, total et sites présents dans l’arbre. */
+export function summarizeOrganigramme(roots: OrgChartNode[]): OrganigrammeLegend {
+  const companies = new Map<string, number>();
+  const locations: Record<OrgLocationZone, number> = { usine: 0, hq: 0, regions: 0 };
+  let vacant = 0;
+  let total = 0;
+  const walk = (list: OrgChartNode[]) => {
+    for (const node of list) {
+      if (node.isVacant) vacant += 1;
+      else if (node.contractantEmployeeId || node.matricule) {
+        total += 1;
+        locations[orgLocationZone(node.localisation)] += 1;
+        if (node.contractantEmployeeId) {
+          const name = (node.contractantName || 'Contractant').trim() || 'Contractant';
+          companies.set(name, (companies.get(name) || 0) + 1);
+        }
+      }
+      walk(node.children);
+    }
+  };
+  walk(roots);
+  return {
+    companies: [...companies.entries()]
+      .map(([name, count]) => ({ name, count, tone: contractantTone(name) }))
+      .sort((a, b) => a.name.localeCompare(b.name, 'fr', { sensitivity: 'base' })),
+    vacant,
+    total,
+    locations,
+  };
+}
+
 /** Texte de recherche : accents ignorés, et « consutant » vaut « consultant ». */
 export function orgSearchText(value: string): string {
   return foldOrgLabel(value).replace(/consut/g, 'consult');

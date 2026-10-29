@@ -44884,6 +44884,7 @@ html[data-theme="light"] .ppc-discipline-modal .modal-footer {
 
 /* —— Organigramme employés —— */
 .org-page {
+  position: relative;
   display: flex;
   flex-direction: column;
   flex: 1 1 auto;
@@ -45122,6 +45123,124 @@ html[data-theme='light'] .org-sticky {
   color: var(--text, #0f172a);
 }
 
+.org-float-legend {
+  position: absolute;
+  z-index: 6;
+  bottom: 1.15rem;
+  max-height: min(42vh, 18rem);
+  overflow: auto;
+  padding: 0.3rem 0.4rem;
+  border: 1px solid var(--border, rgba(148, 163, 184, 0.28));
+  border-radius: 8px;
+  background: color-mix(in srgb, var(--bg, #0f172a) 94%, transparent);
+  box-shadow: 0 8px 22px rgba(15, 23, 42, 0.28);
+  color: var(--text, #e2e8f0);
+}
+
+.org-float-legend.is-left {
+  left: 0.55rem;
+}
+
+.org-float-legend.is-right {
+  right: 0.55rem;
+}
+
+.org-float-table {
+  border-collapse: collapse;
+  font-size: 0.72rem;
+  min-width: 12.5rem;
+}
+
+.org-float-table td {
+  padding: 0.1rem 0.28rem;
+  vertical-align: middle;
+}
+
+.org-float-table td:last-child {
+  text-align: right;
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+
+.org-float-table tr.is-total td {
+  border-top: 1px solid var(--border, rgba(148, 163, 184, 0.35));
+  padding-top: 0.28rem;
+  font-weight: 700;
+}
+
+.org-float-company {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  max-width: 14rem;
+  color: inherit;
+  text-align: left;
+}
+
+button.org-float-company {
+  margin: 0;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  font: inherit;
+  cursor: pointer;
+}
+
+button.org-float-company:not(.is-on) {
+  opacity: 0.55;
+}
+
+.org-float-company > span:nth-child(2) {
+  line-height: 1.2;
+}
+
+.org-float-state {
+  font-size: 0.62rem;
+  text-transform: lowercase;
+  color: var(--muted, #8b8b9a);
+}
+
+.org-float-swatch {
+  width: 0.7rem;
+  height: 0.7rem;
+  border-radius: 2px;
+  border: 1px solid;
+  flex: none;
+}
+
+.org-float-swatch.is-vacant {
+  background: #f5f3ff;
+  border-color: #8b5cf6;
+}
+
+.org-site-icon {
+  display: block;
+  width: 0.72rem;
+  height: 0.72rem;
+  flex: 0 0 auto;
+  margin: 0;
+}
+
+.org-site-icon.is-usine {
+  color: #15803d;
+}
+
+.org-site-icon.is-hq {
+  color: #1d4ed8;
+}
+
+.org-site-icon.is-regions {
+  color: #c2410c;
+}
+
+.org-team-card-name {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.22rem;
+}
+
 .org-footer-legend {
   display: flex;
   flex-wrap: wrap;
@@ -45175,9 +45294,8 @@ html[data-theme='light'] .org-sticky {
 }
 
 .org-chart-scroll {
-  overflow-x: auto;
-  overflow-y: visible;
-  padding: 0.15rem 0.1rem 0.65rem;
+  overflow: visible;
+  padding: 0.15rem 0.1rem 8.5rem;
 }
 
 .org-chart-roots,
@@ -45284,7 +45402,7 @@ html[data-theme='light'] .org-sticky {
   flex-direction: column;
   align-items: center;
   text-align: center;
-  border-radius: 3px;
+  border-radius: 12px;
   border: 1px solid #d0d7e2;
   background: #fff;
   box-shadow: 0 1px 4px rgba(15, 23, 42, 0.07);
@@ -45346,26 +45464,19 @@ html[data-theme='light'] .org-sticky {
 .org-chart-card.is-outside,
 .org-chart-card.is-external {
   border-style: dashed;
-  background: #f8fafc;
+  background: #fff;
 }
 
 .org-chart-card.is-vacant {
   background: #f5f3ff;
-  border: 1px solid #8b5cf6;
+  border: 1px solid #c4b5fd;
   border-style: solid;
-  box-shadow: 0 1px 4px rgba(109, 40, 217, 0.16);
+  box-shadow: 0 1px 4px rgba(109, 40, 217, 0.12);
 }
 
-.org-chart-card.is-contractant {
-  background: #e0f2fe;
-  border-color: #7dd3fc;
-  box-shadow: 0 1px 4px rgba(2, 132, 199, 0.14);
-}
-
+.org-chart-card.is-contractant,
 .org-chart-card.is-capital-hr {
-  background: #fef9c3;
-  border-color: #facc15;
-  box-shadow: 0 1px 4px rgba(202, 138, 4, 0.16);
+  box-shadow: 0 1px 4px rgba(15, 23, 42, 0.06);
 }
 
 .org-chart-card.is-contractant.is-hit {
@@ -45484,12 +45595,21 @@ html[data-theme='light'] .org-sticky {
 }
 
 .org-chart-person-name {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.18rem;
   font-size: 0.55rem;
   font-weight: 600;
   letter-spacing: 0.02em;
   color: #64748b;
-  line-height: 1.2;
+  line-height: 1.15;
   word-break: break-word;
+}
+
+.org-chart-person-name > span,
+.org-team-card-name > span {
+  min-width: 0;
 }
 
 .org-chart-person-meta {
@@ -45849,14 +45969,14 @@ html[data-theme='light'] .org-sticky {
   text-align: center;
   gap: 0.12rem;
   border: 1px solid #d0d7e2;
-  border-radius: 8px;
+  border-radius: 12px;
   background: #fff;
   box-shadow: 0 1px 3px rgba(15, 23, 42, 0.06);
 }
 
 .org-team-card.is-manager {
   border-color: #1e3a5f;
-  background: #f8fafc;
+  background: #fff;
 }
 
 .org-team-card.is-manager::after {
@@ -45870,14 +45990,9 @@ html[data-theme='light'] .org-sticky {
   transform: translateX(-50%);
 }
 
-.org-team-card.is-contractant {
-  background: #e0f2fe;
-  border-color: #7dd3fc;
-}
-
+.org-team-card.is-contractant,
 .org-team-card.is-capital-hr {
-  background: #fef9c3;
-  border-color: #facc15;
+  box-shadow: 0 1px 3px rgba(15, 23, 42, 0.06);
 }
 
 .org-team-card strong,
@@ -46144,7 +46259,8 @@ button.org-team-row-main {
 }
 
 html[data-theme='light'] .org-toolbar,
-html[data-theme='light'] .org-footer {
+html[data-theme='light'] .org-footer,
+html[data-theme='light'] .org-float-legend {
   background: #fff;
 }
 
@@ -46196,6 +46312,7 @@ html[data-theme='light'] .org-chart-children > .org-chart-node:last-child::after
   body.org-printing .mobile-bar,
   body.org-printing .org-sticky,
   body.org-printing .org-footer,
+  body.org-printing .org-float-legend,
   body.org-printing .org-menu,
   body.org-printing .org-hidden-bar,
   body.org-printing .org-select-bar,

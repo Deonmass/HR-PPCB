@@ -2,11 +2,14 @@
 
 import { useEffect, useMemo, useState } from 'react';
 import { createPortal } from 'react-dom';
+import OrgSiteMark from '@/components/organigramme/OrgSiteMark';
 import OrganigrammeTeamDialog from '@/components/organigramme/OrganigrammeTeamDialog';
 import {
+  contractantTone,
   countPosteDescendants,
   groupOrgNodesByPoste,
   isCapitalHrCompany,
+  orgLocationZone,
   orgPersonShortName,
   orgSearchText,
   VACANT_POST_LABEL,
@@ -182,6 +185,11 @@ function PosteCard({
   const capitalHr = contractant && group.members.length > 0 && group.members.every((member) => (
     isCapitalHrCompany(member.contractantName || member.nom)
   ));
+  const companyNames = [...new Set(
+    group.members.map((member) => (member.contractantName || '').trim()).filter(Boolean),
+  )];
+  const cardTone = contractant && companyNames.length === 1 ? contractantTone(companyNames[0]) : null;
+  const vacantLocation = group.members.find((member) => member.localisation.trim())?.localisation || '';
   const canOpenMember = (member: OrgPosteMember) => (
     canEditMember(member)
     || (!member.isContractant && !member.isExternal && hasFiche(member.matricule))
@@ -244,6 +252,7 @@ function PosteCard({
         ]
           .filter(Boolean)
           .join(' ')}
+        style={cardTone ? { background: cardTone.background, borderColor: cardTone.border } : undefined}
         title={multi ? 'Voir les agents' : undefined}
         onClick={(event) => {
           if (!multi) return;
@@ -264,6 +273,7 @@ function PosteCard({
             <span
               key={m.id}
               className={`org-chart-avatar${m.isExternal ? ' is-vacant' : ''}${m.isContractant ? ' is-contractant' : ''}${m.isContractant && isCapitalHrCompany(m.contractantName || m.nom) ? ' is-capital-hr' : ''}`}
+              style={m.isContractant ? { background: contractantTone(m.contractantName || m.nom).avatar } : undefined}
               title={m.nom}
             >
               {m.isExternal ? '·' : initials(m.nom)}
@@ -274,22 +284,29 @@ function PosteCard({
           ) : null}
         </div>
 
-        <div className="org-chart-card-title">{group.jobTitle || '—'}</div>
+        <div className="org-chart-card-title" style={cardTone ? { color: cardTone.ink } : undefined}>{group.jobTitle || '—'}</div>
 
         <div className="org-chart-card-people">
           {vacant ? (
             <div className="org-chart-person">
-              <span className="org-chart-person-name">{VACANT_POST_LABEL}</span>
+              <span className="org-chart-person-name">
+                {vacantLocation ? <OrgSiteMark zone={orgLocationZone(vacantLocation)} /> : null}
+                <span>{VACANT_POST_LABEL}</span>
+              </span>
             </div>
           ) : group.members.map((m) => {
             const short = orgPersonShortName(m.nom);
+            const tone = m.isContractant ? contractantTone(m.contractantName || m.nom) : null;
             return (
               <div
                 key={m.id}
                 data-org-person={m.id}
                 className={`org-chart-person${q && memberMatches(m, q) ? ' is-hit' : ''}`}
               >
-                <span className="org-chart-person-name" title={m.nom}>{short || m.nom}</span>
+                <span className="org-chart-person-name" style={tone ? { color: tone.ink } : undefined} title={m.nom}>
+                  <OrgSiteMark zone={orgLocationZone(m.localisation)} />
+                  <span>{short || m.nom}</span>
+                </span>
               </div>
             );
           })}
