@@ -1,6 +1,42 @@
 {
   "entries": [
     {
+      "id": "log-002128",
+      "at": "2026-10-30T21:14:07.708Z",
+      "userId": "Serge.Muakasa@ppcdrc.cd",
+      "userName": "Serge Muakasa",
+      "userEmail": "Serge.Muakasa@ppcdrc.cd",
+      "module": "factures-suivi",
+      "moduleLabel": "Factures suivi",
+      "action": "create",
+      "actionLabel": "Création",
+      "summary": "Création lot de 1 facture(s)",
+      "details": "Création lot de 1 facture(s)",
+      "after": [
+        {
+          "id": "fac-2168",
+          "date": "15/08/2026",
+          "societe": "MD Services Kinshasa",
+          "facture": "FACT N° 003/MDS-PPC/08/26",
+          "montant": 23314,
+          "echeance": "",
+          "pr": "11207034",
+          "datePr": "",
+          "po": "",
+          "datePo": "",
+          "grn": "",
+          "dateGrn": "",
+          "payment": "",
+          "datePym": "",
+          "commentaire": "Au PR — en attente du PO.",
+          "statut": "unpaid",
+          "statutLabel": "unpaid"
+        }
+      ],
+      "undoable": false,
+      "undone": false
+    },
+    {
       "id": "log-002127",
       "at": "2026-10-30T20:43:45.580Z",
       "userId": "Serge.Muakasa@ppcdrc.cd",
@@ -221838,5 +221874,5 @@
       }
     }
   ],
-  "nextSeq": 2128
+  "nextSeq": 2129
 }
