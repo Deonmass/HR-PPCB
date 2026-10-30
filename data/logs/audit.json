@@ -1,6 +1,44 @@
 {
   "entries": [
     {
+      "id": "log-002122",
+      "at": "2026-10-30T08:48:08.671Z",
+      "userId": "admin",
+      "userName": "Administrateur",
+      "userEmail": "admin",
+      "module": "employees",
+      "moduleLabel": "Employés",
+      "action": "update",
+      "actionLabel": "Modification",
+      "entityType": "employee",
+      "summary": "N+1 mis à jour (2)",
+      "details": "N+1 mis à jour (2)",
+      "after": {
+        "employees": [
+          {
+            "matricule": "70000064",
+            "lineManagerName": "KABANGU MUTAMBAYI CHARLIE",
+            "lineManagerPosition": "Shift Supervisor",
+            "departement": "Production",
+            "departmentHr": "Production",
+            "service": ""
+          },
+          {
+            "matricule": "70000264",
+            "lineManagerName": "KABANGU MUTAMBAYI CHARLIE",
+            "lineManagerPosition": "Shift Supervisor",
+            "departement": "Production",
+            "departmentHr": "Production",
+            "service": ""
+          }
+        ],
+        "contractants": [],
+        "vacants": []
+      },
+      "undoable": false,
+      "undone": false
+    },
+    {
       "id": "log-002121",
       "at": "2026-10-30T08:47:06.197Z",
       "userId": "admin",
@@ -221613,5 +221651,5 @@
       }
     }
   ],
-  "nextSeq": 2122
+  "nextSeq": 2123
 }
