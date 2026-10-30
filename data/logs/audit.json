@@ -1,6 +1,36 @@
 {
   "entries": [
     {
+      "id": "log-002105",
+      "at": "2026-10-30T08:15:59.738Z",
+      "userId": "admin",
+      "userName": "Administrateur",
+      "userEmail": "admin",
+      "module": "employees",
+      "moduleLabel": "Employés",
+      "action": "update",
+      "actionLabel": "Modification",
+      "entityType": "employee",
+      "summary": "N+1 mis à jour (1)",
+      "details": "N+1 mis à jour (1)",
+      "after": {
+        "employees": [],
+        "contractants": [
+          {
+            "contractantId": "2",
+            "employeeId": "767",
+            "managerEmployeeId": "",
+            "managerMatricule": "70000299",
+            "departement": "Human Resources",
+            "service": ""
+          }
+        ],
+        "vacants": []
+      },
+      "undoable": false,
+      "undone": false
+    },
+    {
       "id": "log-002104",
       "at": "2026-10-30T08:08:36.160Z",
       "userId": "Tresor.Maneka@ppcdrc.cd",
@@ -220861,5 +220891,5 @@
       }
     }
   ],
-  "nextSeq": 2105
+  "nextSeq": 2106
 }
