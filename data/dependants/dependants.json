@@ -3725,7 +3725,7 @@
       "statut": "Employé",
       "sexe": "M",
       "nom": "KUABI PANZU CHRISTIAN",
-      "localisation": "Zamba",
+      "localisation": "Usine",
       "numeroVilla": "35",
       "typeMaison": "Twins",
       "dateNaissance": "30/11/1987",
@@ -3736,7 +3736,7 @@
       "commentaires": "",
       "lienDocument": "",
       "createdAt": "2026-07-28T09:40:39.809Z",
-      "updatedAt": "2026-07-28T09:40:39.809Z"
+      "updatedAt": "2026-10-30T08:45:44.904Z"
     },
     {
       "id": 175,
@@ -3746,7 +3746,7 @@
       "statut": "Conjoint",
       "sexe": "F",
       "nom": "BONGO MUSUNDA Merveille",
-      "localisation": "Zamba",
+      "localisation": "Usine",
       "numeroVilla": "35",
       "typeMaison": "Twins",
       "dateNaissance": "16/07/1992",
@@ -3757,7 +3757,7 @@
       "commentaires": "",
       "lienDocument": "",
       "createdAt": "2026-07-28T09:40:39.809Z",
-      "updatedAt": "2026-07-28T09:40:39.809Z"
+      "updatedAt": "2026-10-30T08:45:44.904Z"
     },
     {
       "id": 176,
@@ -3767,7 +3767,7 @@
       "statut": "Enfant",
       "sexe": "F",
       "nom": "KUABI BONGO KAELYS",
-      "localisation": "Zamba",
+      "localisation": "Usine",
       "numeroVilla": "35",
       "typeMaison": "Twins",
       "dateNaissance": "27/03/2024",
@@ -3778,7 +3778,7 @@
       "commentaires": "",
       "lienDocument": "",
       "createdAt": "2026-07-28T09:40:39.809Z",
-      "updatedAt": "2026-07-28T09:40:39.809Z"
+      "updatedAt": "2026-10-30T08:45:44.904Z"
     },
     {
       "id": 177,
@@ -3788,7 +3788,7 @@
       "statut": "Enfant",
       "sexe": "F",
       "nom": "KUABI MUSUNDA KAELA",
-      "localisation": "Zamba",
+      "localisation": "Usine",
       "numeroVilla": "35",
       "typeMaison": "Twins",
       "dateNaissance": "15/08/2025",
@@ -3799,7 +3799,7 @@
       "commentaires": "",
       "lienDocument": "",
       "createdAt": "2026-07-28T09:40:39.809Z",
-      "updatedAt": "2026-07-28T09:40:39.809Z"
+      "updatedAt": "2026-10-30T08:45:44.904Z"
     },
     {
       "id": 178,
