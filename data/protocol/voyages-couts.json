@@ -1173,7 +1173,7 @@
       "voyageur": "MOLA BOIKA OLIVIER",
       "voyageurMatricule": "70000253",
       "destination": "Kinshasa Kisangani Kinshada",
-      "ticketAvion": 480,
+      "ticketAvion": 580,
       "visaVolant": 0,
       "lettreLegaliser": 0,
       "goPass": 30,
@@ -1184,9 +1184,9 @@
       "categorieHotel": "",
       "appartement": 0,
       "autresCharges": 0,
-      "coutTotal": 1110,
+      "coutTotal": 1210,
       "createdAt": "2026-10-30T10:38:22.925Z",
-      "updatedAt": "2026-10-30T10:38:22.925Z"
+      "updatedAt": "2026-10-30T10:40:41.226Z"
     }
   ],
   "nextSeq": 58
