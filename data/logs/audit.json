@@ -1,6 +1,36 @@
 {
   "entries": [
     {
+      "id": "log-002107",
+      "at": "2026-10-30T08:35:32.423Z",
+      "userId": "admin",
+      "userName": "Administrateur",
+      "userEmail": "admin",
+      "module": "employees",
+      "moduleLabel": "Employés",
+      "action": "update",
+      "actionLabel": "Modification",
+      "entityType": "employee",
+      "summary": "N+1 mis à jour (1)",
+      "details": "N+1 mis à jour (1)",
+      "after": {
+        "employees": [
+          {
+            "matricule": "70000028",
+            "lineManagerName": "KABEYA KABENGELE Tresor Michel",
+            "lineManagerPosition": "Production Manager",
+            "departement": "Production",
+            "departmentHr": "Production",
+            "service": ""
+          }
+        ],
+        "contractants": [],
+        "vacants": []
+      },
+      "undoable": false,
+      "undone": false
+    },
+    {
       "id": "log-002106",
       "at": "2026-10-30T08:17:54.653Z",
       "userId": "admin",
@@ -220921,5 +220951,5 @@
       }
     }
   ],
-  "nextSeq": 2107
+  "nextSeq": 2108
 }
