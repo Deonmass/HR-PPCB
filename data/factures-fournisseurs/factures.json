@@ -15370,7 +15370,26 @@
       "commentaire": "Au PR — en attente du PO.",
       "statut": "unpaid",
       "statutLabel": "unpaid"
+    },
+    {
+      "id": "fac-2170",
+      "date": "28/08/2026",
+      "societe": "MD Service",
+      "facture": "FACT N° 005/MDS-PPC/08/26",
+      "montant": 1544,
+      "echeance": "",
+      "pr": "11207036",
+      "datePr": "",
+      "po": "",
+      "datePo": "",
+      "grn": "",
+      "dateGrn": "",
+      "payment": "",
+      "datePym": "",
+      "commentaire": "Au PR — en attente du PO.",
+      "statut": "unpaid",
+      "statutLabel": "unpaid"
     }
   ],
-  "nextFactureSeq": 2170
+  "nextFactureSeq": 2171
 }
