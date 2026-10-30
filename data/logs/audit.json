@@ -1,6 +1,67 @@
 {
   "entries": [
     {
+      "id": "log-002124",
+      "at": "2026-10-30T10:40:45.009Z",
+      "userId": "Tresor.Maneka@ppcdrc.cd",
+      "userName": "Tresor Maneka",
+      "userEmail": "Tresor.Maneka@ppcdrc.cd",
+      "module": "protocol.voyages",
+      "moduleLabel": "Gestion de voyage",
+      "action": "update",
+      "actionLabel": "Modification",
+      "entityType": "protocol.voyage",
+      "entityId": "pvc-057",
+      "summary": "Modification voyage PVC-0057 MOLA BOIKA OLIVIER",
+      "details": "Modification voyage PVC-0057 MOLA BOIKA OLIVIER",
+      "before": {
+        "id": "pvc-057",
+        "numero": "PVC-0057",
+        "date": "2026-10-27",
+        "voyageur": "MOLA BOIKA OLIVIER",
+        "voyageurMatricule": "70000253",
+        "destination": "Kinshasa Kisangani Kinshada",
+        "ticketAvion": 480,
+        "visaVolant": 0,
+        "lettreLegaliser": 0,
+        "goPass": 30,
+        "transfert": 0,
+        "hotelNuit": 150,
+        "nbreNuits": 4,
+        "coutHotel": 600,
+        "categorieHotel": "",
+        "appartement": 0,
+        "autresCharges": 0,
+        "coutTotal": 1110,
+        "createdAt": "2026-10-30T10:38:22.925Z",
+        "updatedAt": "2026-10-30T10:38:22.925Z"
+      },
+      "after": {
+        "id": "pvc-057",
+        "numero": "PVC-0057",
+        "date": "2026-10-27",
+        "voyageur": "MOLA BOIKA OLIVIER",
+        "voyageurMatricule": "70000253",
+        "destination": "Kinshasa Kisangani Kinshada",
+        "ticketAvion": 580,
+        "visaVolant": 0,
+        "lettreLegaliser": 0,
+        "goPass": 30,
+        "transfert": 0,
+        "hotelNuit": 150,
+        "nbreNuits": 4,
+        "coutHotel": 600,
+        "categorieHotel": "",
+        "appartement": 0,
+        "autresCharges": 0,
+        "coutTotal": 1210,
+        "createdAt": "2026-10-30T10:38:22.925Z",
+        "updatedAt": "2026-10-30T10:40:41.226Z"
+      },
+      "undoable": false,
+      "undone": false
+    },
+    {
       "id": "log-002123",
       "at": "2026-10-30T10:38:26.682Z",
       "userId": "Tresor.Maneka@ppcdrc.cd",
@@ -221690,5 +221751,5 @@
       }
     }
   ],
-  "nextSeq": 2124
+  "nextSeq": 2125
 }
