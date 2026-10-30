@@ -1,6 +1,21 @@
 {
   "entries": [
     {
+      "id": "log-002088",
+      "at": "2026-10-30T06:14:13.029Z",
+      "userId": "admin",
+      "userName": "Administrateur",
+      "userEmail": "admin",
+      "module": "auth",
+      "moduleLabel": "Authentification",
+      "action": "login",
+      "actionLabel": "Connexion",
+      "summary": "Connexion admin",
+      "details": "Connexion de Administrateur (admin)",
+      "undoable": false,
+      "undone": false
+    },
+    {
       "id": "log-002087",
       "at": "2026-10-29T19:34:29.746Z",
       "userId": "Serge.Muakasa@ppcdrc.cd",
@@ -219950,5 +219965,5 @@
       }
     }
   ],
-  "nextSeq": 2088
+  "nextSeq": 2089
 }
