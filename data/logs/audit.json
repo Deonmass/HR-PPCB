@@ -1,6 +1,36 @@
 {
   "entries": [
     {
+      "id": "log-002115",
+      "at": "2026-10-30T08:42:23.194Z",
+      "userId": "admin",
+      "userName": "Administrateur",
+      "userEmail": "admin",
+      "module": "employees",
+      "moduleLabel": "Employés",
+      "action": "update",
+      "actionLabel": "Modification",
+      "entityType": "employee",
+      "summary": "N+1 mis à jour (1)",
+      "details": "N+1 mis à jour (1)",
+      "after": {
+        "employees": [
+          {
+            "matricule": "70000072",
+            "lineManagerName": "MUANDA BALOKI JISCA",
+            "lineManagerPosition": "Shift Supervisor",
+            "departement": "Production",
+            "departmentHr": "Production",
+            "service": ""
+          }
+        ],
+        "contractants": [],
+        "vacants": []
+      },
+      "undoable": false,
+      "undone": false
+    },
+    {
       "id": "log-002114",
       "at": "2026-10-30T08:41:34.383Z",
       "userId": "admin",
@@ -221161,5 +221191,5 @@
       }
     }
   ],
-  "nextSeq": 2115
+  "nextSeq": 2116
 }
