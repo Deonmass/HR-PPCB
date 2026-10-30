@@ -1,6 +1,42 @@
 {
   "entries": [
     {
+      "id": "log-002126",
+      "at": "2026-10-30T20:23:52.453Z",
+      "userId": "Serge.Muakasa@ppcdrc.cd",
+      "userName": "Serge Muakasa",
+      "userEmail": "Serge.Muakasa@ppcdrc.cd",
+      "module": "factures-suivi",
+      "moduleLabel": "Factures suivi",
+      "action": "create",
+      "actionLabel": "Création",
+      "summary": "Création lot de 1 facture(s)",
+      "details": "Création lot de 1 facture(s)",
+      "after": [
+        {
+          "id": "fac-2166",
+          "date": "23/08/2026",
+          "societe": "MD Service Permenant",
+          "facture": "Fact n 001/MDS - PPC/08/26",
+          "montant": 100961,
+          "echeance": "",
+          "pr": "11207030",
+          "datePr": "",
+          "po": "",
+          "datePo": "",
+          "grn": "",
+          "dateGrn": "",
+          "payment": "",
+          "datePym": "",
+          "commentaire": "Au PR — en attente du PO.",
+          "statut": "unpaid",
+          "statutLabel": "unpaid"
+        }
+      ],
+      "undoable": false,
+      "undone": false
+    },
+    {
       "id": "log-002125",
       "at": "2026-10-30T20:21:06.237Z",
       "userId": "Serge.Muakasa@ppcdrc.cd",
@@ -221766,5 +221802,5 @@
       }
     }
   ],
-  "nextSeq": 2126
+  "nextSeq": 2127
 }
