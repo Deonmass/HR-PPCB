@@ -1,6 +1,73 @@
 {
   "entries": [
     {
+      "id": "log-002095",
+      "at": "2026-10-30T07:58:45.409Z",
+      "userId": "admin",
+      "userName": "Administrateur",
+      "userEmail": "admin",
+      "module": "employes.discipline",
+      "moduleLabel": "Cas disciplinaires",
+      "action": "update",
+      "actionLabel": "Modification",
+      "entityType": "ppc-discipline",
+      "entityId": "1259998e-d63c-458c-bce5-380b1c2eb0a1",
+      "summary": "MAJ cas disciplinaire PPC — MUSAKO KINZONZOLI MOISE",
+      "details": "MAJ cas disciplinaire PPC — MUSAKO KINZONZOLI MOISE",
+      "after": {
+        "id": "1259998e-d63c-458c-bce5-380b1c2eb0a1",
+        "matricule": "70000083",
+        "employeeName": "MUSAKO KINZONZOLI MOISE",
+        "departement": "Quality Assurance",
+        "jobTitle": "QA Chemist",
+        "parti": false,
+        "dateIncident": "2026-10-30",
+        "motif": "Arrêt du four de 34 heures",
+        "faits": "L'usine a connu un arrêt du four d'environ 34 heures (perte estimée à 0,7 million USD), après environ quatre heures de broyage avec un LSF inférieur à 90. Le tas examiné le 28 septembre 2026, réunion à laquelle vous avez participé, présentait un LSF de 323,4 et un écart-type de 73,9, hors spécifications. La formulation du cru n'a pas été préparée avant sa consommation.",
+        "demandeDate": "2026-10-30",
+        "demandeTexte": "",
+        "demandeLien": "",
+        "demandeEcheance": "2026-10-02",
+        "reponseDate": "2026-10-02",
+        "reponseTexte": "",
+        "reponseLien": "",
+        "sanction": "Aucune",
+        "dateSanction": "",
+        "statut": "Réponse reçue",
+        "historique": [
+          {
+            "id": "b4d141f6-19e6-446d-bf5d-2c38b0684ff8",
+            "type": "ouverture",
+            "auteur": "Administrateur",
+            "texte": "Arrêt du four de 34 heures",
+            "date": "2026-10-30",
+            "createdAt": "2026-10-30T07:58:28.905Z"
+          },
+          {
+            "id": "0c6142e9-e452-44f4-8776-1c30b1701c84",
+            "type": "demande",
+            "auteur": "Administrateur",
+            "texte": "Demande d’explication\nÉchéance de réponse : 2026-10-02",
+            "date": "2026-10-30",
+            "createdAt": "2026-10-30T07:58:28.905Z"
+          },
+          {
+            "id": "48d0187e-f31c-4cd7-a872-8eb082d57934",
+            "type": "reponse",
+            "auteur": "Administrateur",
+            "texte": "Réponse enregistrée",
+            "date": "2026-10-02",
+            "createdAt": "2026-10-30T07:58:44.911Z"
+          }
+        ],
+        "createdAt": "2026-10-30T07:58:28.905Z",
+        "updatedAt": "2026-10-30T07:58:44.911Z",
+        "createdBy": "Administrateur"
+      },
+      "undoable": false,
+      "undone": false
+    },
+    {
       "id": "log-002094",
       "at": "2026-10-30T07:58:29.339Z",
       "userId": "admin",
@@ -220291,5 +220358,5 @@
       }
     }
   ],
-  "nextSeq": 2095
+  "nextSeq": 2096
 }
