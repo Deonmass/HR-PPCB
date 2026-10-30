@@ -1,6 +1,65 @@
 {
   "entries": [
     {
+      "id": "log-002092",
+      "at": "2026-10-30T07:57:31.602Z",
+      "userId": "admin",
+      "userName": "Administrateur",
+      "userEmail": "admin",
+      "module": "employes.discipline",
+      "moduleLabel": "Cas disciplinaires",
+      "action": "create",
+      "actionLabel": "Création",
+      "entityType": "ppc-discipline",
+      "entityId": "KABEYA KABENGELE Tresor Michel",
+      "summary": "Cas disciplinaire PPC — KABEYA KABENGELE Tresor Michel",
+      "details": "Cas disciplinaire PPC — KABEYA KABENGELE Tresor Michel",
+      "after": {
+        "id": "b5465233-2b1e-44c1-8ee9-c0976c5fe29f",
+        "matricule": "70000027",
+        "employeeName": "KABEYA KABENGELE Tresor Michel",
+        "departement": "Production",
+        "jobTitle": "Production Manager",
+        "parti": false,
+        "dateIncident": "2026-10-30",
+        "motif": "Arrêt du four de 34 heures",
+        "faits": "L'usine a connu un arrêt du four d'environ 34 heures (perte estimée à 0,7 million USD), après environ quatre heures de broyage avec un LSF inférieur à 90. Le tas examiné le 28 septembre 2026, réunion à laquelle vous avez participé, présentait un LSF de 323,4 et un écart-type de 73,9, hors spécifications. La formulation du cru n'a pas été préparée avant sa consommation.",
+        "demandeDate": "2026-10-30",
+        "demandeTexte": "",
+        "demandeLien": "",
+        "demandeEcheance": "2026-10-02",
+        "reponseDate": "",
+        "reponseTexte": "",
+        "reponseLien": "",
+        "sanction": "Aucune",
+        "dateSanction": "",
+        "statut": "Demande d'explication",
+        "historique": [
+          {
+            "id": "c14273a8-f04c-46cd-8d4e-f4818c79f8c2",
+            "type": "ouverture",
+            "auteur": "Administrateur",
+            "texte": "Arrêt du four de 34 heures",
+            "date": "2026-10-30",
+            "createdAt": "2026-10-30T07:57:31.009Z"
+          },
+          {
+            "id": "a94c3ce6-31a2-4a3d-b0b1-b6ec60051393",
+            "type": "demande",
+            "auteur": "Administrateur",
+            "texte": "Demande d’explication\nÉchéance de réponse : 2026-10-02",
+            "date": "2026-10-30",
+            "createdAt": "2026-10-30T07:57:31.009Z"
+          }
+        ],
+        "createdAt": "2026-10-30T07:57:31.009Z",
+        "updatedAt": "2026-10-30T07:57:31.009Z",
+        "createdBy": "Administrateur"
+      },
+      "undoable": false,
+      "undone": false
+    },
+    {
       "id": "log-002091",
       "at": "2026-10-30T07:56:53.291Z",
       "userId": "admin",
@@ -220106,5 +220165,5 @@
       }
     }
   ],
-  "nextSeq": 2092
+  "nextSeq": 2093
 }
