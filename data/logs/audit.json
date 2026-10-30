@@ -1,6 +1,36 @@
 {
   "entries": [
     {
+      "id": "log-002113",
+      "at": "2026-10-30T08:41:08.181Z",
+      "userId": "admin",
+      "userName": "Administrateur",
+      "userEmail": "admin",
+      "module": "employees",
+      "moduleLabel": "Employés",
+      "action": "update",
+      "actionLabel": "Modification",
+      "entityType": "employee",
+      "summary": "N+1 mis à jour (1)",
+      "details": "N+1 mis à jour (1)",
+      "after": {
+        "employees": [
+          {
+            "matricule": "70000070",
+            "lineManagerName": "KABANGU MUTAMBAYI CHARLIE",
+            "lineManagerPosition": "Shift Supervisor",
+            "departement": "Production",
+            "departmentHr": "Production",
+            "service": ""
+          }
+        ],
+        "contractants": [],
+        "vacants": []
+      },
+      "undoable": false,
+      "undone": false
+    },
+    {
       "id": "log-002112",
       "at": "2026-10-30T08:38:52.510Z",
       "userId": "admin",
@@ -221101,5 +221131,5 @@
       }
     }
   ],
-  "nextSeq": 2113
+  "nextSeq": 2114
 }
