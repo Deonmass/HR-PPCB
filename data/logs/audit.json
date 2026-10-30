@@ -1,6 +1,36 @@
 {
   "entries": [
     {
+      "id": "log-002116",
+      "at": "2026-10-30T08:43:03.021Z",
+      "userId": "admin",
+      "userName": "Administrateur",
+      "userEmail": "admin",
+      "module": "employees",
+      "moduleLabel": "Employés",
+      "action": "update",
+      "actionLabel": "Modification",
+      "entityType": "employee",
+      "summary": "N+1 mis à jour (1)",
+      "details": "N+1 mis à jour (1)",
+      "after": {
+        "employees": [
+          {
+            "matricule": "70000243",
+            "lineManagerName": "KUABI PANZU CHRISTIAN",
+            "lineManagerPosition": "Process Operator",
+            "departement": "Production",
+            "departmentHr": "Production",
+            "service": ""
+          }
+        ],
+        "contractants": [],
+        "vacants": []
+      },
+      "undoable": false,
+      "undone": false
+    },
+    {
       "id": "log-002115",
       "at": "2026-10-30T08:42:23.194Z",
       "userId": "admin",
@@ -221191,5 +221221,5 @@
       }
     }
   ],
-  "nextSeq": 2116
+  "nextSeq": 2117
 }
