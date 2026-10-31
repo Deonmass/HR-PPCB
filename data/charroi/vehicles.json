@@ -28,16 +28,24 @@
           "createdAt": "2026-10-31T18:30:47.930Z"
         }
       ],
-      "controleTechniqueHistorique": [],
+      "controleTechniqueHistorique": [
+        {
+          "id": "doc-mvwqote0-uawvt",
+          "dateDebut": "2026-08-01",
+          "dateFin": "2027-01-01",
+          "preuveUrl": "",
+          "createdAt": "2026-10-31T18:33:28.008Z"
+        }
+      ],
       "assuranceFin": "",
       "vignetteFin": "2026-12-31",
-      "controleTechniqueFin": "",
+      "controleTechniqueFin": "2027-01-01",
       "userMatricule": "70000175",
       "userParti": false,
       "garageHistorique": [],
       "notes": "",
       "createdAt": "2026-07-28T16:00:46.888Z",
-      "updatedAt": "2026-10-31T18:30:47.930Z"
+      "updatedAt": "2026-10-31T18:33:28.008Z"
     },
     {
       "id": "veh-002",
