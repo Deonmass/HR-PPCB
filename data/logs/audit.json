@@ -1,6 +1,45 @@
 {
   "entries": [
     {
+      "id": "log-002156",
+      "at": "2026-10-31T18:22:57.170Z",
+      "userId": "Tresor.Maneka@ppcdrc.cd",
+      "userName": "Tresor Maneka",
+      "userEmail": "Tresor.Maneka@ppcdrc.cd",
+      "module": "protocol.voyages",
+      "moduleLabel": "Gestion de voyage",
+      "action": "create",
+      "actionLabel": "Création",
+      "entityType": "protocol.voyage",
+      "entityId": "pvc-065",
+      "summary": "Voyage PVC-0065 CYNTHIA ADH VET",
+      "details": "Voyage PVC-0065 CYNTHIA ADH VET",
+      "after": {
+        "id": "pvc-065",
+        "numero": "PVC-0065",
+        "date": "2026-10-30",
+        "voyageur": "CYNTHIA ADH",
+        "voyageurMatricule": "",
+        "destination": "VET",
+        "ticketAvion": 0,
+        "visaVolant": 829,
+        "lettreLegaliser": 0,
+        "goPass": 0,
+        "transfert": 0,
+        "hotelNuit": 0,
+        "nbreNuits": 0,
+        "coutHotel": 0,
+        "categorieHotel": "",
+        "appartement": 0,
+        "autresCharges": 0,
+        "coutTotal": 829,
+        "createdAt": "2026-10-31T18:22:53.947Z",
+        "updatedAt": "2026-10-31T18:22:53.947Z"
+      },
+      "undoable": false,
+      "undone": false
+    },
+    {
       "id": "log-002155",
       "at": "2026-10-31T18:19:54.743Z",
       "userId": "Tresor.Maneka@ppcdrc.cd",
@@ -223166,5 +223205,5 @@
       }
     }
   ],
-  "nextSeq": 2156
+  "nextSeq": 2157
 }
