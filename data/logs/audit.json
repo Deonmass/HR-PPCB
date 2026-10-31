@@ -1,6 +1,45 @@
 {
   "entries": [
     {
+      "id": "log-002154",
+      "at": "2026-10-31T18:16:21.852Z",
+      "userId": "Tresor.Maneka@ppcdrc.cd",
+      "userName": "Tresor Maneka",
+      "userEmail": "Tresor.Maneka@ppcdrc.cd",
+      "module": "protocol.voyages",
+      "moduleLabel": "Gestion de voyage",
+      "action": "create",
+      "actionLabel": "Création",
+      "entityType": "protocol.voyage",
+      "entityId": "pvc-064",
+      "summary": "Voyage PVC-0064 JESSY TSHIKAPA",
+      "details": "Voyage PVC-0064 JESSY TSHIKAPA",
+      "after": {
+        "id": "pvc-064",
+        "numero": "PVC-0064",
+        "date": "2026-10-21",
+        "voyageur": "JESSY",
+        "voyageurMatricule": "",
+        "destination": "TSHIKAPA",
+        "ticketAvion": 0,
+        "visaVolant": 0,
+        "lettreLegaliser": 0,
+        "goPass": 0,
+        "transfert": 0,
+        "hotelNuit": 80,
+        "nbreNuits": 10,
+        "coutHotel": 800,
+        "categorieHotel": "HOTEL PARADISO",
+        "appartement": 0,
+        "autresCharges": 0,
+        "coutTotal": 800,
+        "createdAt": "2026-10-31T18:16:18.703Z",
+        "updatedAt": "2026-10-31T18:16:18.703Z"
+      },
+      "undoable": false,
+      "undone": false
+    },
+    {
       "id": "log-002153",
       "at": "2026-10-31T18:14:09.878Z",
       "userId": "Tresor.Maneka@ppcdrc.cd",
@@ -223066,5 +223105,5 @@
       }
     }
   ],
-  "nextSeq": 2154
+  "nextSeq": 2155
 }
