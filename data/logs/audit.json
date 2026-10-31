@@ -1,6 +1,93 @@
 {
   "entries": [
     {
+      "id": "log-002158",
+      "at": "2026-10-31T18:30:51.334Z",
+      "userId": "Tresor.Maneka@ppcdrc.cd",
+      "userName": "Tresor Maneka",
+      "userEmail": "Tresor.Maneka@ppcdrc.cd",
+      "module": "charroi.vehicules",
+      "moduleLabel": "Charroi — Véhicules",
+      "action": "update",
+      "actionLabel": "Modification",
+      "entityType": "charroi.vehicule.doc",
+      "entityId": "veh-001",
+      "summary": "Ajout Vignette — 4625AW01",
+      "details": "Période Vignette ajoutée.\nAvant : {\"id\":\"veh-001\",\"numero\":1,\"marque\":\"Toyota\",\"type\":\"Pick up\",\"numeroChassis\":\"AHTFK8CD600320444\",\"plaque\":\"4625AW01\",\"cv\":\"13 CV\",\"assureur\":\"Sfa\",\"departement\":\"Human Resources\",\"user\":\"MANEKA MPUDI TRESOR\",\"province\":\"Kinshasa\",\"proprietaire\":\"PPC\",\"kilometrage\":124580,\"miseCirculation\":\"2016-01-01\",\"age\":10,\"observationTech\":\"Avertissement\",\"etatManuel\":\"\",\"assuranceHistorique\":[],\"vignetteHistorique\":[],\"controleTechniqueHistorique\":[],\"assuranceFin\":\"\",\"vignetteFin\":\"\",\"controleTechniqueFin\":\"\",\"userMatricule\":\"70000175\",\"userParti\":false,\"garageHistorique\":[],\"notes\":\"\",\"createdAt\":\"2026-07-28T16:00:46.888Z\",\"updatedAt\":\"2026-10-16T17:25:49.321Z\"}\nAprès : {\"id\":\"veh-001\",\"numero\":1,\"marque\":\"Toyota\",\"type\":\"Pick up\",\"numeroChassis\":\"AHTFK8CD600320444\",\"plaque\":\"4625AW01\",\"cv\":\"13 CV\",\"assureur\":\"Sfa\",\"departement\":\"Human Resources\",\"user\":\"MANEKA MPUDI TRESOR\",\"province\":\"Kinshasa\",\"proprietaire\":\"PPC\",\"kilometrage\":124580,\"miseCirculation\":\"2016-01-01\",\"age\":10,\"observationTech\":\"Avertissement\",\"etatManuel\":\"\",\"assuranceHistorique\":[],\"vignetteHistorique\":[{\"id\":\"doc-mvwqldve-bce77\",\"dateDebut\":\"2025-01-01\",\"dateFin\":\"2026-12-31\",\"preuveUrl\":\"\",\"createdAt\":\"2026-10-31T18:30:47.930Z\"}],\"controleTechniqueHistorique\":[],\"assuranceFin\":\"\",\"vignetteFin\":\"2026-12-31\",\"controleTechniqueFin\":\"\",\"userMatricule\":\"70000175\",\"userParti\":false,\"garageHistorique\":[],\"notes\":\"\",\"createdAt\":\"2026-07-28T16:00:46.888Z\",\"updatedAt\":\"2026-10-31T18:30:47.930Z\"}",
+      "before": {
+        "id": "veh-001",
+        "numero": 1,
+        "marque": "Toyota",
+        "type": "Pick up",
+        "numeroChassis": "AHTFK8CD600320444",
+        "plaque": "4625AW01",
+        "cv": "13 CV",
+        "assureur": "Sfa",
+        "departement": "Human Resources",
+        "user": "MANEKA MPUDI TRESOR",
+        "province": "Kinshasa",
+        "proprietaire": "PPC",
+        "kilometrage": 124580,
+        "miseCirculation": "2016-01-01",
+        "age": 10,
+        "observationTech": "Avertissement",
+        "etatManuel": "",
+        "assuranceHistorique": [],
+        "vignetteHistorique": [],
+        "controleTechniqueHistorique": [],
+        "assuranceFin": "",
+        "vignetteFin": "",
+        "controleTechniqueFin": "",
+        "userMatricule": "70000175",
+        "userParti": false,
+        "garageHistorique": [],
+        "notes": "",
+        "createdAt": "2026-07-28T16:00:46.888Z",
+        "updatedAt": "2026-10-16T17:25:49.321Z"
+      },
+      "after": {
+        "id": "veh-001",
+        "numero": 1,
+        "marque": "Toyota",
+        "type": "Pick up",
+        "numeroChassis": "AHTFK8CD600320444",
+        "plaque": "4625AW01",
+        "cv": "13 CV",
+        "assureur": "Sfa",
+        "departement": "Human Resources",
+        "user": "MANEKA MPUDI TRESOR",
+        "province": "Kinshasa",
+        "proprietaire": "PPC",
+        "kilometrage": 124580,
+        "miseCirculation": "2016-01-01",
+        "age": 10,
+        "observationTech": "Avertissement",
+        "etatManuel": "",
+        "assuranceHistorique": [],
+        "vignetteHistorique": [
+          {
+            "id": "doc-mvwqldve-bce77",
+            "dateDebut": "2025-01-01",
+            "dateFin": "2026-12-31",
+            "preuveUrl": "",
+            "createdAt": "2026-10-31T18:30:47.930Z"
+          }
+        ],
+        "controleTechniqueHistorique": [],
+        "assuranceFin": "",
+        "vignetteFin": "2026-12-31",
+        "controleTechniqueFin": "",
+        "userMatricule": "70000175",
+        "userParti": false,
+        "garageHistorique": [],
+        "notes": "",
+        "createdAt": "2026-07-28T16:00:46.888Z",
+        "updatedAt": "2026-10-31T18:30:47.930Z"
+      },
+      "undoable": false,
+      "undone": false
+    },
+    {
       "id": "log-002157",
       "at": "2026-10-31T18:24:23.190Z",
       "userId": "Tresor.Maneka@ppcdrc.cd",
@@ -223244,5 +223331,5 @@
       }
     }
   ],
-  "nextSeq": 2158
+  "nextSeq": 2159
 }
