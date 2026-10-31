@@ -1205,10 +1205,10 @@
       "coutHotel": 750,
       "categorieHotel": "Standard Hotel Royal",
       "appartement": 0,
-      "autresCharges": 0,
-      "coutTotal": 750,
+      "autresCharges": 250,
+      "coutTotal": 1000,
       "createdAt": "2026-10-31T17:46:38.238Z",
-      "updatedAt": "2026-10-31T17:46:38.238Z"
+      "updatedAt": "2026-10-31T17:49:29.561Z"
     },
     {
       "id": "pvc-059",
