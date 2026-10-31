@@ -1,6 +1,67 @@
 {
   "entries": [
     {
+      "id": "log-002148",
+      "at": "2026-10-31T18:04:19.389Z",
+      "userId": "Tresor.Maneka@ppcdrc.cd",
+      "userName": "Tresor Maneka",
+      "userEmail": "Tresor.Maneka@ppcdrc.cd",
+      "module": "protocol.voyages",
+      "moduleLabel": "Gestion de voyage",
+      "action": "update",
+      "actionLabel": "Modification",
+      "entityType": "protocol.voyage",
+      "entityId": "pvc-047",
+      "summary": "Modification voyage PVC-0047 NDONDA LUFULUABO PASCAL",
+      "details": "Modification voyage PVC-0047 NDONDA LUFULUABO PASCAL",
+      "before": {
+        "id": "pvc-047",
+        "numero": "PVC-0047",
+        "date": "2026-10-19",
+        "voyageur": "NDONDA LUFULUABO PASCAL",
+        "voyageurMatricule": "70000307",
+        "destination": "KINSHASA KIKWIT TSHIKAPA",
+        "ticketAvion": 0,
+        "visaVolant": 0,
+        "lettreLegaliser": 0,
+        "goPass": 0,
+        "transfert": 0,
+        "hotelNuit": 100,
+        "nbreNuits": 1,
+        "coutHotel": 100,
+        "categorieHotel": "FORTUNE KWIT",
+        "appartement": 0,
+        "autresCharges": 0,
+        "coutTotal": 100,
+        "createdAt": "2026-10-20T10:41:56.359Z",
+        "updatedAt": "2026-10-20T10:41:56.359Z"
+      },
+      "after": {
+        "id": "pvc-047",
+        "numero": "PVC-0047",
+        "date": "2026-10-19",
+        "voyageur": "NDONDA LUFULUABO PASCAL",
+        "voyageurMatricule": "70000307",
+        "destination": "KINSHASA KIKWIT TSHIKAPA",
+        "ticketAvion": 0,
+        "visaVolant": 0,
+        "lettreLegaliser": 0,
+        "goPass": 0,
+        "transfert": 0,
+        "hotelNuit": 100,
+        "nbreNuits": 2,
+        "coutHotel": 200,
+        "categorieHotel": "FORTUNE KWIT",
+        "appartement": 0,
+        "autresCharges": 0,
+        "coutTotal": 200,
+        "createdAt": "2026-10-20T10:41:56.359Z",
+        "updatedAt": "2026-10-31T18:04:16.898Z"
+      },
+      "undoable": false,
+      "undone": false
+    },
+    {
       "id": "log-002147",
       "at": "2026-10-31T18:03:45.114Z",
       "userId": "Tresor.Maneka@ppcdrc.cd",
@@ -222766,5 +222827,5 @@
       }
     }
   ],
-  "nextSeq": 2148
+  "nextSeq": 2149
 }
