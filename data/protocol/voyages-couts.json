@@ -1027,12 +1027,12 @@
       "hotelNuit": 100,
       "nbreNuits": 1,
       "coutHotel": 100,
-      "categorieHotel": "FORTUNE HOTEL",
+      "categorieHotel": "FORTUNE HOTEL KIKWIT",
       "appartement": 0,
       "autresCharges": 0,
       "coutTotal": 100,
       "createdAt": "2026-10-20T10:43:48.290Z",
-      "updatedAt": "2026-10-20T10:43:48.290Z"
+      "updatedAt": "2026-10-31T18:03:03.409Z"
     },
     {
       "id": "pvc-051",
