@@ -19,17 +19,25 @@
       "observationTech": "Avertissement",
       "etatManuel": "",
       "assuranceHistorique": [],
-      "vignetteHistorique": [],
+      "vignetteHistorique": [
+        {
+          "id": "doc-mvwqldve-bce77",
+          "dateDebut": "2025-01-01",
+          "dateFin": "2026-12-31",
+          "preuveUrl": "",
+          "createdAt": "2026-10-31T18:30:47.930Z"
+        }
+      ],
       "controleTechniqueHistorique": [],
       "assuranceFin": "",
-      "vignetteFin": "",
+      "vignetteFin": "2026-12-31",
       "controleTechniqueFin": "",
       "userMatricule": "70000175",
       "userParti": false,
       "garageHistorique": [],
       "notes": "",
       "createdAt": "2026-07-28T16:00:46.888Z",
-      "updatedAt": "2026-10-16T17:25:49.321Z"
+      "updatedAt": "2026-10-31T18:30:47.930Z"
     },
     {
       "id": "veh-002",
