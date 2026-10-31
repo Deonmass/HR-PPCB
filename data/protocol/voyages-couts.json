@@ -1201,14 +1201,14 @@
       "goPass": 0,
       "transfert": 0,
       "hotelNuit": 150,
-      "nbreNuits": 5,
-      "coutHotel": 750,
+      "nbreNuits": 2,
+      "coutHotel": 300,
       "categorieHotel": "Standard Hotel Royal",
       "appartement": 0,
-      "autresCharges": 250,
-      "coutTotal": 1000,
+      "autresCharges": 100,
+      "coutTotal": 400,
       "createdAt": "2026-10-31T17:46:38.238Z",
-      "updatedAt": "2026-10-31T17:49:29.561Z"
+      "updatedAt": "2026-10-31T18:19:51.634Z"
     },
     {
       "id": "pvc-059",
