@@ -1,6 +1,45 @@
 {
   "entries": [
     {
+      "id": "log-002139",
+      "at": "2026-10-31T17:50:52.801Z",
+      "userId": "Tresor.Maneka@ppcdrc.cd",
+      "userName": "Tresor Maneka",
+      "userEmail": "Tresor.Maneka@ppcdrc.cd",
+      "module": "protocol.voyages",
+      "moduleLabel": "Gestion de voyage",
+      "action": "create",
+      "actionLabel": "Création",
+      "entityType": "protocol.voyage",
+      "entityId": "pvc-060",
+      "summary": "Voyage PVC-0060 KABANGU MUTAMBAYI CHARLIE Zamba Kinshasa Zamba",
+      "details": "Voyage PVC-0060 KABANGU MUTAMBAYI CHARLIE Zamba Kinshasa Zamba",
+      "after": {
+        "id": "pvc-060",
+        "numero": "PVC-0060",
+        "date": "2026-10-30",
+        "voyageur": "KABANGU MUTAMBAYI CHARLIE",
+        "voyageurMatricule": "70000026",
+        "destination": "Zamba Kinshasa Zamba",
+        "ticketAvion": 0,
+        "visaVolant": 0,
+        "lettreLegaliser": 0,
+        "goPass": 0,
+        "transfert": 0,
+        "hotelNuit": 100,
+        "nbreNuits": 2,
+        "coutHotel": 200,
+        "categorieHotel": "",
+        "appartement": 0,
+        "autresCharges": 100,
+        "coutTotal": 300,
+        "createdAt": "2026-10-31T17:50:49.583Z",
+        "updatedAt": "2026-10-31T17:50:49.583Z"
+      },
+      "undoable": false,
+      "undone": false
+    },
+    {
       "id": "log-002138",
       "at": "2026-10-31T17:49:32.845Z",
       "userId": "Tresor.Maneka@ppcdrc.cd",
@@ -222265,5 +222304,5 @@
       }
     }
   ],
-  "nextSeq": 2139
+  "nextSeq": 2140
 }
