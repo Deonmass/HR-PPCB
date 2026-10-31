@@ -1,6 +1,53 @@
 {
   "entries": [
     {
+      "id": "log-002140",
+      "at": "2026-10-31T17:53:01.512Z",
+      "userId": "Tresor.Maneka@ppcdrc.cd",
+      "userName": "Tresor Maneka",
+      "userEmail": "Tresor.Maneka@ppcdrc.cd",
+      "module": "charroi.voyages",
+      "moduleLabel": "Charroi — Voyages",
+      "action": "create",
+      "actionLabel": "Création",
+      "entityType": "charroi.voyage",
+      "entityId": "vyg-032",
+      "summary": "Demande de voyage VYG-0032 Lionel Kinshasa → Zamba (Kimpese)",
+      "details": "Demande de voyage VYG-0032 Lionel Kinshasa → Zamba (Kimpese)",
+      "after": {
+        "id": "vyg-032",
+        "numero": "VYG-0032",
+        "passagerNom": "Lionel",
+        "passagerMatricule": "",
+        "passagerInterne": false,
+        "nombrePersonnes": 1,
+        "depart": "Kinshasa",
+        "destination": "Zamba (Kimpese)",
+        "dateDepart": "2026-10-31",
+        "heureDepart": "04:00",
+        "dateArrivee": "",
+        "heureArrivee": "",
+        "motif": "",
+        "notes": "",
+        "status": "demande",
+        "chauffeurNom": "",
+        "chauffeurMatricule": "",
+        "chauffeurInterne": false,
+        "vehiculeMode": "",
+        "vehiculeId": "",
+        "vehiculeLibelle": "",
+        "foodAllowance": 0,
+        "foodForTheRoad": 0,
+        "tollGate": 0,
+        "confirmedAt": "",
+        "completedAt": "",
+        "createdAt": "2026-10-31T17:52:57.922Z",
+        "updatedAt": "2026-10-31T17:52:57.922Z"
+      },
+      "undoable": false,
+      "undone": false
+    },
+    {
       "id": "log-002139",
       "at": "2026-10-31T17:50:52.801Z",
       "userId": "Tresor.Maneka@ppcdrc.cd",
@@ -222304,5 +222351,5 @@
       }
     }
   ],
-  "nextSeq": 2140
+  "nextSeq": 2141
 }
