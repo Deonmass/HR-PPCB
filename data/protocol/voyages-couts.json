@@ -959,14 +959,14 @@
       "goPass": 0,
       "transfert": 0,
       "hotelNuit": 100,
-      "nbreNuits": 1,
-      "coutHotel": 100,
-      "categorieHotel": "",
+      "nbreNuits": 2,
+      "coutHotel": 200,
+      "categorieHotel": "HOTEL FORTUNE KIKWIT",
       "appartement": 0,
       "autresCharges": 0,
-      "coutTotal": 100,
+      "coutTotal": 200,
       "createdAt": "2026-10-20T10:40:53.377Z",
-      "updatedAt": "2026-10-20T10:40:53.377Z"
+      "updatedAt": "2026-10-31T18:05:02.162Z"
     },
     {
       "id": "pvc-047",
