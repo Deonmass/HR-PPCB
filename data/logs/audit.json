@@ -1,6 +1,67 @@
 {
   "entries": [
     {
+      "id": "log-002155",
+      "at": "2026-10-31T18:19:54.743Z",
+      "userId": "Tresor.Maneka@ppcdrc.cd",
+      "userName": "Tresor Maneka",
+      "userEmail": "Tresor.Maneka@ppcdrc.cd",
+      "module": "protocol.voyages",
+      "moduleLabel": "Gestion de voyage",
+      "action": "update",
+      "actionLabel": "Modification",
+      "entityType": "protocol.voyage",
+      "entityId": "pvc-058",
+      "summary": "Modification voyage PVC-0058 ADHULE NYADRIA JOEL",
+      "details": "Modification voyage PVC-0058 ADHULE NYADRIA JOEL",
+      "before": {
+        "id": "pvc-058",
+        "numero": "PVC-0058",
+        "date": "2026-10-30",
+        "voyageur": "ADHULE NYADRIA JOEL",
+        "voyageurMatricule": "70000112",
+        "destination": "Zamba Kinshasa Zamba",
+        "ticketAvion": 0,
+        "visaVolant": 0,
+        "lettreLegaliser": 0,
+        "goPass": 0,
+        "transfert": 0,
+        "hotelNuit": 150,
+        "nbreNuits": 5,
+        "coutHotel": 750,
+        "categorieHotel": "Standard Hotel Royal",
+        "appartement": 0,
+        "autresCharges": 250,
+        "coutTotal": 1000,
+        "createdAt": "2026-10-31T17:46:38.238Z",
+        "updatedAt": "2026-10-31T17:49:29.561Z"
+      },
+      "after": {
+        "id": "pvc-058",
+        "numero": "PVC-0058",
+        "date": "2026-10-30",
+        "voyageur": "ADHULE NYADRIA JOEL",
+        "voyageurMatricule": "70000112",
+        "destination": "Zamba Kinshasa Zamba",
+        "ticketAvion": 0,
+        "visaVolant": 0,
+        "lettreLegaliser": 0,
+        "goPass": 0,
+        "transfert": 0,
+        "hotelNuit": 150,
+        "nbreNuits": 2,
+        "coutHotel": 300,
+        "categorieHotel": "Standard Hotel Royal",
+        "appartement": 0,
+        "autresCharges": 100,
+        "coutTotal": 400,
+        "createdAt": "2026-10-31T17:46:38.238Z",
+        "updatedAt": "2026-10-31T18:19:51.634Z"
+      },
+      "undoable": false,
+      "undone": false
+    },
+    {
       "id": "log-002154",
       "at": "2026-10-31T18:16:21.852Z",
       "userId": "Tresor.Maneka@ppcdrc.cd",
@@ -223105,5 +223166,5 @@
       }
     }
   ],
-  "nextSeq": 2155
+  "nextSeq": 2156
 }
