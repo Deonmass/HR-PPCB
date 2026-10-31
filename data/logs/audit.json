@@ -1,6 +1,53 @@
 {
   "entries": [
     {
+      "id": "log-002142",
+      "at": "2026-10-31T17:56:20.233Z",
+      "userId": "Tresor.Maneka@ppcdrc.cd",
+      "userName": "Tresor Maneka",
+      "userEmail": "Tresor.Maneka@ppcdrc.cd",
+      "module": "charroi.voyages",
+      "moduleLabel": "Charroi — Voyages",
+      "action": "create",
+      "actionLabel": "Création",
+      "entityType": "charroi.voyage",
+      "entityId": "vyg-033",
+      "summary": "Demande de voyage VYG-0033 NGOYI MUIKULU MARCEL, KABANGU MUTAMBAYI CHARLIE, MUTOMBO SHAMBUYI LÉONARD Kinshasa → Zamba (Village)",
+      "details": "Demande de voyage VYG-0033 NGOYI MUIKULU MARCEL, KABANGU MUTAMBAYI CHARLIE, MUTOMBO SHAMBUYI LÉONARD Kinshasa → Zamba (Village)",
+      "after": {
+        "id": "vyg-033",
+        "numero": "VYG-0033",
+        "passagerNom": "NGOYI MUIKULU MARCEL, KABANGU MUTAMBAYI CHARLIE, MUTOMBO SHAMBUYI LÉONARD",
+        "passagerMatricule": "70000091, 70000026, 70000290",
+        "passagerInterne": true,
+        "nombrePersonnes": 3,
+        "depart": "Kinshasa",
+        "destination": "Zamba (Village)",
+        "dateDepart": "2026-11-01",
+        "heureDepart": "05:00",
+        "dateArrivee": "",
+        "heureArrivee": "",
+        "motif": "",
+        "notes": "",
+        "status": "demande",
+        "chauffeurNom": "",
+        "chauffeurMatricule": "",
+        "chauffeurInterne": false,
+        "vehiculeMode": "",
+        "vehiculeId": "",
+        "vehiculeLibelle": "",
+        "foodAllowance": 0,
+        "foodForTheRoad": 0,
+        "tollGate": 0,
+        "confirmedAt": "",
+        "completedAt": "",
+        "createdAt": "2026-10-31T17:56:16.464Z",
+        "updatedAt": "2026-10-31T17:56:16.464Z"
+      },
+      "undoable": false,
+      "undone": false
+    },
+    {
       "id": "log-002141",
       "at": "2026-10-31T17:54:33.744Z",
       "userId": "Tresor.Maneka@ppcdrc.cd",
@@ -222428,5 +222475,5 @@
       }
     }
   ],
-  "nextSeq": 2142
+  "nextSeq": 2143
 }
