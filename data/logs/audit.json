@@ -1,6 +1,45 @@
 {
   "entries": [
     {
+      "id": "log-002153",
+      "at": "2026-10-31T18:14:09.878Z",
+      "userId": "Tresor.Maneka@ppcdrc.cd",
+      "userName": "Tresor Maneka",
+      "userEmail": "Tresor.Maneka@ppcdrc.cd",
+      "module": "protocol.voyages",
+      "moduleLabel": "Gestion de voyage",
+      "action": "create",
+      "actionLabel": "Création",
+      "entityType": "protocol.voyage",
+      "entityId": "pvc-063",
+      "summary": "Voyage PVC-0063 MAVUANGALA MVIOKI JEAN-PIERRE TSHIKAPA",
+      "details": "Voyage PVC-0063 MAVUANGALA MVIOKI JEAN-PIERRE TSHIKAPA",
+      "after": {
+        "id": "pvc-063",
+        "numero": "PVC-0063",
+        "date": "2026-10-21",
+        "voyageur": "MAVUANGALA MVIOKI JEAN-PIERRE",
+        "voyageurMatricule": "70000185",
+        "destination": "TSHIKAPA",
+        "ticketAvion": 0,
+        "visaVolant": 0,
+        "lettreLegaliser": 0,
+        "goPass": 0,
+        "transfert": 0,
+        "hotelNuit": 80,
+        "nbreNuits": 2,
+        "coutHotel": 160,
+        "categorieHotel": "HOTEL PARADISO",
+        "appartement": 0,
+        "autresCharges": 0,
+        "coutTotal": 160,
+        "createdAt": "2026-10-31T18:14:06.652Z",
+        "updatedAt": "2026-10-31T18:14:06.652Z"
+      },
+      "undoable": false,
+      "undone": false
+    },
+    {
       "id": "log-002152",
       "at": "2026-10-31T18:12:46.145Z",
       "userId": "Tresor.Maneka@ppcdrc.cd",
@@ -223027,5 +223066,5 @@
       }
     }
   ],
-  "nextSeq": 2153
+  "nextSeq": 2154
 }
