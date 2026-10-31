@@ -1253,7 +1253,29 @@
       "coutTotal": 300,
       "createdAt": "2026-10-31T17:50:49.583Z",
       "updatedAt": "2026-10-31T17:50:49.583Z"
+    },
+    {
+      "id": "pvc-061",
+      "numero": "PVC-0061",
+      "date": "2026-10-31",
+      "voyageur": "SAMBA LUINDA HONORE",
+      "voyageurMatricule": "70000130",
+      "destination": "TSHIKAPA",
+      "ticketAvion": 0,
+      "visaVolant": 0,
+      "lettreLegaliser": 0,
+      "goPass": 0,
+      "transfert": 0,
+      "hotelNuit": 80,
+      "nbreNuits": 2,
+      "coutHotel": 160,
+      "categorieHotel": "HOTEL PARADISI TSHIKAPA",
+      "appartement": 0,
+      "autresCharges": 0,
+      "coutTotal": 160,
+      "createdAt": "2026-10-31T18:10:09.297Z",
+      "updatedAt": "2026-10-31T18:10:09.297Z"
     }
   ],
-  "nextSeq": 61
+  "nextSeq": 62
 }
