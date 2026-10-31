@@ -1297,7 +1297,29 @@
       "coutTotal": 160,
       "createdAt": "2026-10-31T18:12:43.066Z",
       "updatedAt": "2026-10-31T18:12:43.066Z"
+    },
+    {
+      "id": "pvc-063",
+      "numero": "PVC-0063",
+      "date": "2026-10-21",
+      "voyageur": "MAVUANGALA MVIOKI JEAN-PIERRE",
+      "voyageurMatricule": "70000185",
+      "destination": "TSHIKAPA",
+      "ticketAvion": 0,
+      "visaVolant": 0,
+      "lettreLegaliser": 0,
+      "goPass": 0,
+      "transfert": 0,
+      "hotelNuit": 80,
+      "nbreNuits": 2,
+      "coutHotel": 160,
+      "categorieHotel": "HOTEL PARADISO",
+      "appartement": 0,
+      "autresCharges": 0,
+      "coutTotal": 160,
+      "createdAt": "2026-10-31T18:14:06.652Z",
+      "updatedAt": "2026-10-31T18:14:06.652Z"
     }
   ],
-  "nextSeq": 63
+  "nextSeq": 64
 }
