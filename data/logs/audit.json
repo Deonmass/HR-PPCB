@@ -1,6 +1,45 @@
 {
   "entries": [
     {
+      "id": "log-002150",
+      "at": "2026-10-31T18:10:12.837Z",
+      "userId": "Tresor.Maneka@ppcdrc.cd",
+      "userName": "Tresor Maneka",
+      "userEmail": "Tresor.Maneka@ppcdrc.cd",
+      "module": "protocol.voyages",
+      "moduleLabel": "Gestion de voyage",
+      "action": "create",
+      "actionLabel": "Création",
+      "entityType": "protocol.voyage",
+      "entityId": "pvc-061",
+      "summary": "Voyage PVC-0061 SAMBA LUINDA HONORE TSHIKAPA",
+      "details": "Voyage PVC-0061 SAMBA LUINDA HONORE TSHIKAPA",
+      "after": {
+        "id": "pvc-061",
+        "numero": "PVC-0061",
+        "date": "2026-10-31",
+        "voyageur": "SAMBA LUINDA HONORE",
+        "voyageurMatricule": "70000130",
+        "destination": "TSHIKAPA",
+        "ticketAvion": 0,
+        "visaVolant": 0,
+        "lettreLegaliser": 0,
+        "goPass": 0,
+        "transfert": 0,
+        "hotelNuit": 80,
+        "nbreNuits": 2,
+        "coutHotel": 160,
+        "categorieHotel": "HOTEL PARADISI TSHIKAPA",
+        "appartement": 0,
+        "autresCharges": 0,
+        "coutTotal": 160,
+        "createdAt": "2026-10-31T18:10:09.297Z",
+        "updatedAt": "2026-10-31T18:10:09.297Z"
+      },
+      "undoable": false,
+      "undone": false
+    },
+    {
       "id": "log-002149",
       "at": "2026-10-31T18:05:05.387Z",
       "userId": "Tresor.Maneka@ppcdrc.cd",
@@ -222888,5 +222927,5 @@
       }
     }
   ],
-  "nextSeq": 2150
+  "nextSeq": 2151
 }
