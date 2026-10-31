@@ -1363,7 +1363,29 @@
       "coutTotal": 829,
       "createdAt": "2026-10-31T18:22:53.947Z",
       "updatedAt": "2026-10-31T18:22:53.947Z"
+    },
+    {
+      "id": "pvc-066",
+      "numero": "PVC-0066",
+      "date": "2026-10-30",
+      "voyageur": "FRANCOIS DU BOIS",
+      "voyageurMatricule": "",
+      "destination": "VET",
+      "ticketAvion": 0,
+      "visaVolant": 829,
+      "lettreLegaliser": 0,
+      "goPass": 0,
+      "transfert": 0,
+      "hotelNuit": 0,
+      "nbreNuits": 0,
+      "coutHotel": 0,
+      "categorieHotel": "",
+      "appartement": 0,
+      "autresCharges": 0,
+      "coutTotal": 829,
+      "createdAt": "2026-10-31T18:24:19.784Z",
+      "updatedAt": "2026-10-31T18:24:19.784Z"
     }
   ],
-  "nextSeq": 66
+  "nextSeq": 67
 }
