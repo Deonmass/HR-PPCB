@@ -1231,7 +1231,29 @@
       "coutTotal": 300,
       "createdAt": "2026-10-31T17:48:35.499Z",
       "updatedAt": "2026-10-31T17:48:35.499Z"
+    },
+    {
+      "id": "pvc-060",
+      "numero": "PVC-0060",
+      "date": "2026-10-30",
+      "voyageur": "KABANGU MUTAMBAYI CHARLIE",
+      "voyageurMatricule": "70000026",
+      "destination": "Zamba Kinshasa Zamba",
+      "ticketAvion": 0,
+      "visaVolant": 0,
+      "lettreLegaliser": 0,
+      "goPass": 0,
+      "transfert": 0,
+      "hotelNuit": 100,
+      "nbreNuits": 2,
+      "coutHotel": 200,
+      "categorieHotel": "",
+      "appartement": 0,
+      "autresCharges": 100,
+      "coutTotal": 300,
+      "createdAt": "2026-10-31T17:50:49.583Z",
+      "updatedAt": "2026-10-31T17:50:49.583Z"
     }
   ],
-  "nextSeq": 60
+  "nextSeq": 61
 }
