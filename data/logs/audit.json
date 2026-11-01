@@ -1,6 +1,48 @@
 {
   "entries": [
     {
+      "id": "log-002162",
+      "at": "2026-11-01T14:55:49.476Z",
+      "userId": "karine.mvutu@ppcdrc.cd",
+      "userName": "Karine Mvutu",
+      "userEmail": "karine.mvutu@ppcdrc.cd",
+      "module": "sante",
+      "moduleLabel": "Santé",
+      "action": "create",
+      "actionLabel": "Création",
+      "entityType": "sante.visit",
+      "entityId": "sante-mvxycqrh-2h0mwr",
+      "summary": "Cas santé — LUTONADIO DIAMBUDIDI · VERMINOSE",
+      "details": "Cas santé — LUTONADIO DIAMBUDIDI · VERMINOSE",
+      "after": {
+        "id": "sante-mvxycqrh-2h0mwr",
+        "date": "2026-10-31",
+        "nom": "LUTONADIO",
+        "postnom": "DIAMBUDIDI",
+        "sexe": "F",
+        "age": 3,
+        "typeMalade": "ENFANT",
+        "pathologie": "VERMINOSE",
+        "traitement": "VERMIFUGE",
+        "reference": "NON",
+        "year": 2026,
+        "month": 10,
+        "employeeMatricule": "70000057",
+        "employeeNom": "LUTONADIO NGUAWANI OLIVIER",
+        "dependantId": 226,
+        "commentaire": "",
+        "contractantId": "",
+        "contractantNom": "",
+        "contractantEmployeeId": "",
+        "createdAt": "2026-11-01T14:55:47.837Z",
+        "updatedAt": "2026-11-01T14:55:47.837Z",
+        "createdBy": "karine.mvutu@ppcdrc.cd",
+        "updatedBy": "karine.mvutu@ppcdrc.cd"
+      },
+      "undoable": false,
+      "undone": false
+    },
+    {
       "id": "log-002161",
       "at": "2026-11-01T14:53:49.311Z",
       "userId": "karine.mvutu@ppcdrc.cd",
@@ -223491,5 +223533,5 @@
       }
     }
   ],
-  "nextSeq": 2162
+  "nextSeq": 2163
 }
