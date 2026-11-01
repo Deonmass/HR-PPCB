@@ -1,6 +1,48 @@
 {
   "entries": [
     {
+      "id": "log-002165",
+      "at": "2026-11-01T15:00:27.420Z",
+      "userId": "karine.mvutu@ppcdrc.cd",
+      "userName": "Karine Mvutu",
+      "userEmail": "karine.mvutu@ppcdrc.cd",
+      "module": "sante",
+      "moduleLabel": "Santé",
+      "action": "create",
+      "actionLabel": "Création",
+      "entityType": "sante.visit",
+      "entityId": "sante-mvxyip56-lte830",
+      "summary": "Cas santé — DUNDA LUZOLO · PALUDISME SIMPLE",
+      "details": "Cas santé — DUNDA LUZOLO · PALUDISME SIMPLE",
+      "after": {
+        "id": "sante-mvxyip56-lte830",
+        "date": "2026-10-30",
+        "nom": "DUNDA",
+        "postnom": "LUZOLO",
+        "sexe": "M",
+        "age": 15,
+        "typeMalade": "ENFANT",
+        "pathologie": "PALUDISME SIMPLE",
+        "traitement": "ANTI PALUDEEN  ET ANTI PYRETIQUE",
+        "reference": "NON",
+        "year": 2026,
+        "month": 10,
+        "employeeMatricule": "",
+        "employeeNom": "",
+        "dependantId": null,
+        "commentaire": "",
+        "contractantId": "",
+        "contractantNom": "",
+        "contractantEmployeeId": "",
+        "createdAt": "2026-11-01T15:00:25.674Z",
+        "updatedAt": "2026-11-01T15:00:25.674Z",
+        "createdBy": "karine.mvutu@ppcdrc.cd",
+        "updatedBy": "karine.mvutu@ppcdrc.cd"
+      },
+      "undoable": false,
+      "undone": false
+    },
+    {
       "id": "log-002164",
       "at": "2026-11-01T14:59:31.236Z",
       "userId": "karine.mvutu@ppcdrc.cd",
@@ -223617,5 +223659,5 @@
       }
     }
   ],
-  "nextSeq": 2165
+  "nextSeq": 2166
 }
