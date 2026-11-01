@@ -1,6 +1,48 @@
 {
   "entries": [
     {
+      "id": "log-002164",
+      "at": "2026-11-01T14:59:31.236Z",
+      "userId": "karine.mvutu@ppcdrc.cd",
+      "userName": "Karine Mvutu",
+      "userEmail": "karine.mvutu@ppcdrc.cd",
+      "module": "sante",
+      "moduleLabel": "Santé",
+      "action": "create",
+      "actionLabel": "Création",
+      "entityType": "sante.visit",
+      "entityId": "sante-mvxyhhvz-bmlxhv",
+      "summary": "Cas santé — KIAKENGO LUMFUANKENDA · ANGINE",
+      "details": "Cas santé — KIAKENGO LUMFUANKENDA · ANGINE",
+      "after": {
+        "id": "sante-mvxyhhvz-bmlxhv",
+        "date": "2026-10-30",
+        "nom": "KIAKENGO",
+        "postnom": "LUMFUANKENDA",
+        "sexe": "F",
+        "age": 15,
+        "typeMalade": "ENFANT",
+        "pathologie": "ANGINE",
+        "traitement": "VITAMINE C",
+        "reference": "NON",
+        "year": 2026,
+        "month": 10,
+        "employeeMatricule": "70000061",
+        "employeeNom": "NZUZI TABILA JOEL",
+        "dependantId": 437,
+        "commentaire": "",
+        "contractantId": "",
+        "contractantNom": "",
+        "contractantEmployeeId": "",
+        "createdAt": "2026-11-01T14:59:29.615Z",
+        "updatedAt": "2026-11-01T14:59:29.615Z",
+        "createdBy": "karine.mvutu@ppcdrc.cd",
+        "updatedBy": "karine.mvutu@ppcdrc.cd"
+      },
+      "undoable": false,
+      "undone": false
+    },
+    {
       "id": "log-002163",
       "at": "2026-11-01T14:56:41.501Z",
       "userId": "karine.mvutu@ppcdrc.cd",
@@ -223575,5 +223617,5 @@
       }
     }
   ],
-  "nextSeq": 2164
+  "nextSeq": 2165
 }
