@@ -378,5 +378,15 @@
     "issuedBy": "Administrateur",
     "id": "exit-1793110985141-x4lugs",
     "createdAt": "2026-10-27T14:23:05.141Z"
+  },
+  {
+    "matricule": "70000311",
+    "employeeName": "KADIMA MPINGA MINOU Fleur ",
+    "doc": "attestation-fin-service",
+    "docLabel": "Attestation de fin de service",
+    "fileName": "Attestation de fin de service - KADIMA MPINGA MINOU Fleur .docx",
+    "issuedBy": "Kiesse Banguli",
+    "id": "exit-1793618536871-jze2nt",
+    "createdAt": "2026-11-02T11:22:16.871Z"
   }
 ]
