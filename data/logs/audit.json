@@ -1,6 +1,53 @@
 {
   "entries": [
     {
+      "id": "log-002178",
+      "at": "2026-11-02T13:11:12.586Z",
+      "userId": "admin",
+      "userName": "Administrateur",
+      "userEmail": "admin",
+      "module": "guest-house",
+      "moduleLabel": "Guest house",
+      "action": "update",
+      "actionLabel": "Modification",
+      "entityType": "guest-house.reservation",
+      "entityId": "eabc742e-cc0f-4fa8-a389-2f400802a545",
+      "summary": "Modification réservation eabc742e-cc0f-4fa8-a389-2f400802a545",
+      "details": "Modification réservation eabc742e-cc0f-4fa8-a389-2f400802a545",
+      "before": {
+        "id": "eabc742e-cc0f-4fa8-a389-2f400802a545",
+        "numero": "GH-2026-4465",
+        "createdAt": "2026-10-12T13:33:04.024Z",
+        "personName": "Zhang Fang Jun",
+        "isAgent": false,
+        "motif": "Réparation usine",
+        "startDate": "2026-10-13",
+        "startSlot": "midi",
+        "endDate": "2026-11-13",
+        "endSlot": "matin",
+        "status": "pending",
+        "notes": "Booké par Trésor Maneka",
+        "updatedAt": "2026-10-12T13:33:04.024Z"
+      },
+      "after": {
+        "id": "eabc742e-cc0f-4fa8-a389-2f400802a545",
+        "numero": "GH-2026-4465",
+        "createdAt": "2026-10-12T13:33:04.024Z",
+        "personName": "Zhang Fang Jun",
+        "isAgent": false,
+        "motif": "Réparation usine",
+        "startDate": "2026-10-13",
+        "startSlot": "midi",
+        "endDate": "2026-11-30",
+        "endSlot": "matin",
+        "status": "pending",
+        "notes": "Booké par Trésor Maneka",
+        "updatedAt": "2026-11-02T13:11:09.829Z"
+      },
+      "undoable": true,
+      "undone": false
+    },
+    {
       "id": "log-002177",
       "at": "2026-11-02T13:10:43.849Z",
       "userId": "admin",
@@ -226200,5 +226247,5 @@
       }
     }
   ],
-  "nextSeq": 2178
+  "nextSeq": 2179
 }
