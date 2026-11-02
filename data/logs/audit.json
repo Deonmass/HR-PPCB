@@ -1,6 +1,38 @@
 {
   "entries": [
     {
+      "id": "log-002192",
+      "at": "2026-11-02T13:21:07.464Z",
+      "userId": "bola",
+      "userName": "Bola",
+      "userEmail": "bola@chrs.com",
+      "module": "guest-house",
+      "moduleLabel": "Guest house",
+      "action": "create",
+      "actionLabel": "Création",
+      "entityType": "guest-house.reservation",
+      "entityId": "975dc578-a0b2-4299-bfca-f575711ee6f5",
+      "summary": "Création réservation EWULI SUKA Carine",
+      "details": "Création réservation EWULI SUKA Carine",
+      "after": {
+        "id": "975dc578-a0b2-4299-bfca-f575711ee6f5",
+        "numero": "GH-2026-4470",
+        "createdAt": "2026-11-02T13:21:03.722Z",
+        "personName": "EWULI SUKA Carine",
+        "matricule": "70000265",
+        "isAgent": true,
+        "motif": "Reunion exco",
+        "startDate": "2026-10-15",
+        "startSlot": "matin",
+        "endDate": "2026-10-17",
+        "endSlot": "midi",
+        "status": "pending",
+        "updatedAt": "2026-11-02T13:21:03.722Z"
+      },
+      "undoable": true,
+      "undone": false
+    },
+    {
       "id": "log-002191",
       "at": "2026-11-02T13:20:56.458Z",
       "userId": "Tresor.Maneka@ppcdrc.cd",
@@ -226850,5 +226882,5 @@
       }
     }
   ],
-  "nextSeq": 2192
+  "nextSeq": 2193
 }
