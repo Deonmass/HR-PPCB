@@ -15700,12 +15700,12 @@
           "menuId": "village.guest-house",
           "label": "Guest house — réservations & occupation",
           "actions": {
-            "view": false,
-            "create": false,
-            "edit": false,
+            "view": true,
+            "create": true,
+            "edit": true,
             "delete": false,
-            "export": false,
-            "undo": false
+            "export": true,
+            "undo": true
           }
         },
         {
