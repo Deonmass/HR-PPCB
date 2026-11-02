@@ -1,6 +1,50 @@
 {
   "entries": [
     {
+      "id": "log-002172",
+      "at": "2026-11-02T06:33:36.493Z",
+      "userId": "admin",
+      "userName": "Administrateur",
+      "userEmail": "admin",
+      "module": "contractants",
+      "moduleLabel": "contractants",
+      "action": "update",
+      "actionLabel": "Modification",
+      "entityType": "contractant-employee",
+      "entityId": "108",
+      "summary": "Modification employé contractant — BABEKI DIAKIESE Chris",
+      "details": "Modification employé contractant — BABEKI DIAKIESE Chris",
+      "after": {
+        "id": "108",
+        "nom": "BABEKI DIAKIESE Chris",
+        "sexe": "M",
+        "lieuAffectation": "Zamba",
+        "fonction": "CCR Packing  plant operator",
+        "departement": "Production",
+        "service": "Packing Plant",
+        "telephone": "851336153",
+        "etatCivil": "C",
+        "statut": "Permanent",
+        "dateEmbauche": "",
+        "dateSortie": "",
+        "managerEmployeeId": "",
+        "managerMatricule": "",
+        "family": [],
+        "matriculePpc": "CHRS_PPC0002",
+        "numeroCnss": "",
+        "numeroCompte": "544200183230750",
+        "banque": "EBCDC",
+        "nbDependants": 0,
+        "txJr": 4.55384,
+        "coutTransport": 1.17,
+        "payrollSite": "site",
+        "createdAt": "2026-08-12T12:57:02.481Z",
+        "updatedAt": "2026-11-02T06:33:32.375Z"
+      },
+      "undoable": false,
+      "undone": false
+    },
+    {
       "id": "log-002171",
       "at": "2026-11-02T06:32:58.535Z",
       "userId": "admin",
@@ -223919,5 +223963,5 @@
       }
     }
   ],
-  "nextSeq": 2172
+  "nextSeq": 2173
 }
