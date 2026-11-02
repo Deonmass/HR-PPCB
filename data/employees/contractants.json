@@ -1211,7 +1211,7 @@
           "lieuAffectation": "Zamba",
           "fonction": "CCR Packing  plant operator",
           "departement": "Production",
-          "service": "",
+          "service": "Packing Plant",
           "telephone": "858721416",
           "etatCivil": "C",
           "statut": "Permanent",
@@ -1229,7 +1229,7 @@
           "coutTransport": 1.17,
           "payrollSite": "site",
           "createdAt": "2026-08-12T12:57:02.481Z",
-          "updatedAt": "2026-11-02T06:30:59.533Z"
+          "updatedAt": "2026-11-02T06:31:35.240Z"
         },
         {
           "id": "18",
@@ -5337,7 +5337,7 @@
         }
       ],
       "createdAt": "2026-08-12T11:55:22.134Z",
-      "updatedAt": "2026-11-02T06:30:59.533Z"
+      "updatedAt": "2026-11-02T06:31:35.240Z"
     },
     {
       "id": "3",
