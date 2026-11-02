@@ -1,6 +1,37 @@
 {
   "entries": [
     {
+      "id": "log-002180",
+      "at": "2026-11-02T13:12:58.801Z",
+      "userId": "admin",
+      "userName": "Administrateur",
+      "userEmail": "admin",
+      "module": "guest-house",
+      "moduleLabel": "Guest house",
+      "action": "create",
+      "actionLabel": "Création",
+      "entityType": "guest-house.reservation",
+      "entityId": "d105ac28-12b9-45b5-a742-4d3ede3a73c5",
+      "summary": "Création réservation Interprete chonois",
+      "details": "Création réservation Interprete chonois",
+      "after": {
+        "id": "d105ac28-12b9-45b5-a742-4d3ede3a73c5",
+        "numero": "GH-2026-4469",
+        "createdAt": "2026-11-02T13:12:55.175Z",
+        "personName": "Interprete chonois",
+        "isAgent": false,
+        "motif": "Interprete chonois",
+        "startDate": "2026-10-14",
+        "startSlot": "midi",
+        "endDate": "2026-11-30",
+        "endSlot": "matin",
+        "status": "pending",
+        "updatedAt": "2026-11-02T13:12:55.175Z"
+      },
+      "undoable": true,
+      "undone": false
+    },
+    {
       "id": "log-002179",
       "at": "2026-11-02T13:12:00.272Z",
       "userId": "admin",
@@ -226294,5 +226325,5 @@
       }
     }
   ],
-  "nextSeq": 2180
+  "nextSeq": 2181
 }
