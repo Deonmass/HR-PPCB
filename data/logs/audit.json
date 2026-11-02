@@ -1,6 +1,52 @@
 {
   "entries": [
     {
+      "id": "log-002199",
+      "at": "2026-11-02T13:30:21.864Z",
+      "userId": "bola",
+      "userName": "Bola",
+      "userEmail": "bola@chrs.com",
+      "module": "guest-house",
+      "moduleLabel": "Guest house",
+      "action": "update",
+      "actionLabel": "Modification",
+      "entityType": "guest-house.reservation",
+      "entityId": "121461e8-cd01-47d4-bf9f-9dda6f863e3d",
+      "summary": "Statut réservation 121461e8-cd01-47d4-bf9f-9dda6f863e3d → confirmed",
+      "details": "Statut réservation 121461e8-cd01-47d4-bf9f-9dda6f863e3d → confirmed",
+      "before": {
+        "id": "121461e8-cd01-47d4-bf9f-9dda6f863e3d",
+        "numero": "GH-2026-4471",
+        "createdAt": "2026-11-02T13:29:56.143Z",
+        "personName": "Jonathan AL",
+        "isAgent": false,
+        "motif": "Tba",
+        "startDate": "2026-10-15",
+        "startSlot": "midi",
+        "endDate": "2026-11-30",
+        "endSlot": "matin",
+        "status": "pending",
+        "updatedAt": "2026-11-02T13:29:56.143Z"
+      },
+      "after": {
+        "id": "121461e8-cd01-47d4-bf9f-9dda6f863e3d",
+        "numero": "GH-2026-4471",
+        "createdAt": "2026-11-02T13:29:56.143Z",
+        "personName": "Jonathan AL",
+        "isAgent": false,
+        "motif": "Tba",
+        "startDate": "2026-10-15",
+        "startSlot": "midi",
+        "endDate": "2026-11-30",
+        "endSlot": "matin",
+        "roomId": "0b0cdc0d-ba79-4f68-8533-c90cad3390cb",
+        "status": "confirmed",
+        "updatedAt": "2026-11-02T13:30:18.390Z"
+      },
+      "undoable": true,
+      "undone": false
+    },
+    {
       "id": "log-002198",
       "at": "2026-11-02T13:29:59.706Z",
       "userId": "bola",
@@ -227158,5 +227204,5 @@
       }
     }
   ],
-  "nextSeq": 2199
+  "nextSeq": 2200
 }
