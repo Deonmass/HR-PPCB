@@ -1,6 +1,67 @@
 {
   "entries": [
     {
+      "id": "log-002191",
+      "at": "2026-11-02T13:20:56.458Z",
+      "userId": "Tresor.Maneka@ppcdrc.cd",
+      "userName": "Tresor Maneka",
+      "userEmail": "Tresor.Maneka@ppcdrc.cd",
+      "module": "protocol.voyages",
+      "moduleLabel": "Gestion de voyage",
+      "action": "update",
+      "actionLabel": "Modification",
+      "entityType": "protocol.voyage",
+      "entityId": "pvc-029",
+      "summary": "Modification voyage PVC-0029 BOOKE BASA MICHAEL",
+      "details": "Modification voyage PVC-0029 BOOKE BASA MICHAEL",
+      "before": {
+        "id": "pvc-029",
+        "numero": "PVC-0029",
+        "date": "2026-10-13",
+        "voyageur": "BOOKE BASA MICHAEL",
+        "voyageurMatricule": "70000296",
+        "destination": "Kinshasa Bruxelles Kinshasa",
+        "ticketAvion": 3550,
+        "visaVolant": 0,
+        "lettreLegaliser": 0,
+        "goPass": 55,
+        "transfert": 0,
+        "hotelNuit": 150,
+        "nbreNuits": 5,
+        "coutHotel": 750,
+        "categorieHotel": "",
+        "appartement": 0,
+        "autresCharges": 0,
+        "coutTotal": 4355,
+        "createdAt": "2026-10-13T19:28:13.487Z",
+        "updatedAt": "2026-10-13T19:28:13.487Z"
+      },
+      "after": {
+        "id": "pvc-029",
+        "numero": "PVC-0029",
+        "date": "2026-10-13",
+        "voyageur": "BOOKE BASA MICHAEL",
+        "voyageurMatricule": "70000296",
+        "destination": "Kinshasa Bruxelles Kinshasa",
+        "ticketAvion": 3550,
+        "visaVolant": 0,
+        "lettreLegaliser": 0,
+        "goPass": 55,
+        "transfert": 10,
+        "hotelNuit": 150,
+        "nbreNuits": 5,
+        "coutHotel": 750,
+        "categorieHotel": "",
+        "appartement": 0,
+        "autresCharges": 0,
+        "coutTotal": 4365,
+        "createdAt": "2026-10-13T19:28:13.487Z",
+        "updatedAt": "2026-11-02T13:20:53.031Z"
+      },
+      "undoable": false,
+      "undone": false
+    },
+    {
       "id": "log-002190",
       "at": "2026-11-02T13:20:24.728Z",
       "userId": "Tresor.Maneka@ppcdrc.cd",
@@ -226789,5 +226850,5 @@
       }
     }
   ],
-  "nextSeq": 2191
+  "nextSeq": 2192
 }
