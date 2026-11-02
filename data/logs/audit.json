@@ -1,6 +1,32 @@
 {
   "entries": [
     {
+      "id": "log-002196",
+      "at": "2026-11-02T13:27:05.798Z",
+      "userId": "bola",
+      "userName": "Bola",
+      "userEmail": "bola@chrs.com",
+      "module": "guest-house",
+      "moduleLabel": "Guest house",
+      "action": "error",
+      "actionLabel": "Erreur",
+      "summary": "Cette chambre existe déjà dans ce bâtiment",
+      "details": "Échec de l’action « update » sur guest-house: Cette chambre existe déjà dans ce bâtiment",
+      "undoable": false,
+      "undone": false,
+      "error": {
+        "message": "Cette chambre existe déjà dans ce bâtiment",
+        "stack": "Error: Cette chambre existe déjà dans ce bâtiment\n    at Z (/var/task/.next/server/chunks/240.js:1:14039)\n    at async l (/var/task/.next/server/chunks/3003.js:1:1365)\n    at async C (/var/task/.next/server/app/api/village/guest-house/route.js:1:2956)\n    at async rH.do (/var/task/node_modules/next/dist/compiled/next-server/app-route.runtime.prod.js:5:21048)\n    at async rH.handle (/var/task/node_modules/next/dist/compiled/next-server/app-route.runtime.prod.js:5:25866)\n    at async k (/var/task/.next/server/app/api/village/guest-house/route.js:1:9244)\n    at async rH.handleResponse (/var/task/node_modules/next/dist/compiled/next-server/app-route.runtime.prod.js:1:110770)\n    at async g (/var/task/.next/server/app/api/village/guest-house/route.js:1:10247)\n    at async I (/var/task/.next/server/app/api/village/guest-house/route.js:1:11369)\n    at async ib.renderToResponseWithComponentsImpl (/var/task/node_modules/next/dist/compiled/next-server/server.runtime.prod.js:13:28532)",
+        "path": "/api/village/guest-house",
+        "method": "POST",
+        "context": {
+          "action": "update",
+          "entityType": "guest-house.room",
+          "summary": "Modification chambre e49a08a4-e1db-4824-b8f6-48f1c30c0346"
+        }
+      }
+    },
+    {
       "id": "log-002195",
       "at": "2026-11-02T13:24:41.022Z",
       "userId": "bola",
@@ -227054,5 +227080,5 @@
       }
     }
   ],
-  "nextSeq": 2196
+  "nextSeq": 2197
 }
