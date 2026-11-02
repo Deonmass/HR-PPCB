@@ -1,6 +1,50 @@
 {
   "entries": [
     {
+      "id": "log-002168",
+      "at": "2026-11-02T06:31:03.513Z",
+      "userId": "admin",
+      "userName": "Administrateur",
+      "userEmail": "admin",
+      "module": "contractants",
+      "moduleLabel": "contractants",
+      "action": "update",
+      "actionLabel": "Modification",
+      "entityType": "contractant-employee",
+      "entityId": "105",
+      "summary": "Modification employé contractant — BOYENGE SAVUVU",
+      "details": "Modification employé contractant — BOYENGE SAVUVU",
+      "after": {
+        "id": "105",
+        "nom": "BOYENGE SAVUVU",
+        "sexe": "M",
+        "lieuAffectation": "Zamba",
+        "fonction": "CCR Packing  plant operator",
+        "departement": "Production",
+        "service": "",
+        "telephone": "858721416",
+        "etatCivil": "C",
+        "statut": "Permanent",
+        "dateEmbauche": "",
+        "dateSortie": "",
+        "managerEmployeeId": "",
+        "managerMatricule": "",
+        "family": [],
+        "matriculePpc": "CHRS_PPC0018",
+        "numeroCnss": "",
+        "numeroCompte": "544200185847325",
+        "banque": "EBCDC",
+        "nbDependants": 0,
+        "txJr": 4.55384,
+        "coutTransport": 1.17,
+        "payrollSite": "site",
+        "createdAt": "2026-08-12T12:57:02.481Z",
+        "updatedAt": "2026-11-02T06:30:59.533Z"
+      },
+      "undoable": false,
+      "undone": false
+    },
+    {
       "id": "log-002167",
       "at": "2026-11-01T15:06:56.574Z",
       "userId": "karine.mvutu@ppcdrc.cd",
@@ -223743,5 +223787,5 @@
       }
     }
   ],
-  "nextSeq": 2168
+  "nextSeq": 2169
 }
