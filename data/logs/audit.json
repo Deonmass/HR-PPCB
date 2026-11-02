@@ -1,6 +1,21 @@
 {
   "entries": [
     {
+      "id": "log-002173",
+      "at": "2026-11-02T11:22:22.005Z",
+      "userId": "Kiesse.Banguli@ppcdrc.cd",
+      "userName": "Kiesse Banguli",
+      "userEmail": "Kiesse.Banguli@ppcdrc.cd",
+      "module": "documents.exit",
+      "moduleLabel": "Documents",
+      "action": "export",
+      "actionLabel": "Export",
+      "summary": "Document exit « Attestation de fin de service » — KADIMA MPINGA MINOU Fleur  (70000311)",
+      "details": "Document exit « Attestation de fin de service » — KADIMA MPINGA MINOU Fleur  (70000311)",
+      "undoable": false,
+      "undone": false
+    },
+    {
       "id": "log-002172",
       "at": "2026-11-02T06:33:36.493Z",
       "userId": "admin",
@@ -223963,5 +223978,5 @@
       }
     }
   ],
-  "nextSeq": 2173
+  "nextSeq": 2174
 }
