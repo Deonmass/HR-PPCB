@@ -2181,9 +2181,9 @@
           "nom": "LUSAVUVU KIANGEBENI",
           "sexe": "M",
           "lieuAffectation": "Zamba",
-          "fonction": "Limestone Crushing Patrolling",
+          "fonction": "CCR Packing  plant operator",
           "departement": "Production",
-          "service": "",
+          "service": "Packing Plant",
           "telephone": "895142029",
           "etatCivil": "C",
           "statut": "Permanent",
@@ -2201,7 +2201,7 @@
           "coutTransport": 1.17,
           "payrollSite": "site",
           "createdAt": "2026-08-12T12:57:02.481Z",
-          "updatedAt": "2026-09-28T15:12:00.000Z"
+          "updatedAt": "2026-11-02T06:32:06.220Z"
         },
         {
           "id": "42",
@@ -5337,7 +5337,7 @@
         }
       ],
       "createdAt": "2026-08-12T11:55:22.134Z",
-      "updatedAt": "2026-11-02T06:31:35.240Z"
+      "updatedAt": "2026-11-02T06:32:06.220Z"
     },
     {
       "id": "3",
