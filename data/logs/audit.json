@@ -1,6 +1,53 @@
 {
   "entries": [
     {
+      "id": "log-002197",
+      "at": "2026-11-02T13:29:00.263Z",
+      "userId": "bola",
+      "userName": "Bola",
+      "userEmail": "bola@chrs.com",
+      "module": "guest-house",
+      "moduleLabel": "Guest house",
+      "action": "update",
+      "actionLabel": "Modification",
+      "entityType": "guest-house.reservation",
+      "entityId": "a9133180-8dc3-44c1-8d19-727d7e7ca61d",
+      "summary": "Modification réservation a9133180-8dc3-44c1-8d19-727d7e7ca61d",
+      "details": "Modification réservation a9133180-8dc3-44c1-8d19-727d7e7ca61d",
+      "before": {
+        "id": "a9133180-8dc3-44c1-8d19-727d7e7ca61d",
+        "numero": "GH-2026-4449",
+        "createdAt": "2026-10-01T13:48:00.967Z",
+        "personName": "Jonathan AL",
+        "isAgent": false,
+        "motif": "Assistant de Phelly agent AL",
+        "startDate": "2026-09-26",
+        "startSlot": "matin",
+        "endDate": "2026-11-14",
+        "endSlot": "soir",
+        "roomId": "e49a08a4-e1db-4824-b8f6-48f1c30c0346",
+        "status": "confirmed",
+        "updatedAt": "2026-10-13T06:50:07.106Z"
+      },
+      "after": {
+        "id": "a9133180-8dc3-44c1-8d19-727d7e7ca61d",
+        "numero": "GH-2026-4449",
+        "createdAt": "2026-10-01T13:48:00.967Z",
+        "personName": "Jonathan AL",
+        "isAgent": false,
+        "motif": "Assistant de Phelly agent AL",
+        "startDate": "2026-09-26",
+        "startSlot": "matin",
+        "endDate": "2026-10-15",
+        "endSlot": "soir",
+        "roomId": "e49a08a4-e1db-4824-b8f6-48f1c30c0346",
+        "status": "confirmed",
+        "updatedAt": "2026-11-02T13:28:56.614Z"
+      },
+      "undoable": true,
+      "undone": false
+    },
+    {
       "id": "log-002196",
       "at": "2026-11-02T13:27:05.798Z",
       "userId": "bola",
@@ -227080,5 +227127,5 @@
       }
     }
   ],
-  "nextSeq": 2197
+  "nextSeq": 2198
 }
