@@ -1,6 +1,37 @@
 {
   "entries": [
     {
+      "id": "log-002198",
+      "at": "2026-11-02T13:29:59.706Z",
+      "userId": "bola",
+      "userName": "Bola",
+      "userEmail": "bola@chrs.com",
+      "module": "guest-house",
+      "moduleLabel": "Guest house",
+      "action": "create",
+      "actionLabel": "Création",
+      "entityType": "guest-house.reservation",
+      "entityId": "121461e8-cd01-47d4-bf9f-9dda6f863e3d",
+      "summary": "Création réservation Jonathan AL",
+      "details": "Création réservation Jonathan AL",
+      "after": {
+        "id": "121461e8-cd01-47d4-bf9f-9dda6f863e3d",
+        "numero": "GH-2026-4471",
+        "createdAt": "2026-11-02T13:29:56.143Z",
+        "personName": "Jonathan AL",
+        "isAgent": false,
+        "motif": "Tba",
+        "startDate": "2026-10-15",
+        "startSlot": "midi",
+        "endDate": "2026-11-30",
+        "endSlot": "matin",
+        "status": "pending",
+        "updatedAt": "2026-11-02T13:29:56.143Z"
+      },
+      "undoable": true,
+      "undone": false
+    },
+    {
       "id": "log-002197",
       "at": "2026-11-02T13:29:00.263Z",
       "userId": "bola",
@@ -227127,5 +227158,5 @@
       }
     }
   ],
-  "nextSeq": 2198
+  "nextSeq": 2199
 }
