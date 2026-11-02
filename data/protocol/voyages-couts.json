@@ -1155,16 +1155,16 @@
       "visaVolant": 0,
       "lettreLegaliser": 0,
       "goPass": 0,
-      "transfert": 0,
+      "transfert": 25,
       "hotelNuit": 0,
       "nbreNuits": 0,
       "coutHotel": 0,
       "categorieHotel": "",
       "appartement": 0,
       "autresCharges": 0,
-      "coutTotal": 1150,
+      "coutTotal": 1175,
       "createdAt": "2026-10-29T12:29:34.410Z",
-      "updatedAt": "2026-10-29T12:30:59.680Z"
+      "updatedAt": "2026-11-02T13:18:55.935Z"
     },
     {
       "id": "pvc-057",
