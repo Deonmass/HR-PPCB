@@ -1,6 +1,54 @@
 {
   "entries": [
     {
+      "id": "log-002195",
+      "at": "2026-11-02T13:24:41.022Z",
+      "userId": "bola",
+      "userName": "Bola",
+      "userEmail": "bola@chrs.com",
+      "module": "guest-house",
+      "moduleLabel": "Guest house",
+      "action": "update",
+      "actionLabel": "Modification",
+      "entityType": "guest-house.reservation",
+      "entityId": "975dc578-a0b2-4299-bfca-f575711ee6f5",
+      "summary": "Statut réservation 975dc578-a0b2-4299-bfca-f575711ee6f5 → confirmed",
+      "details": "Statut réservation 975dc578-a0b2-4299-bfca-f575711ee6f5 → confirmed",
+      "before": {
+        "id": "975dc578-a0b2-4299-bfca-f575711ee6f5",
+        "numero": "GH-2026-4470",
+        "createdAt": "2026-11-02T13:21:03.722Z",
+        "personName": "EWULI SUKA Carine",
+        "matricule": "70000265",
+        "isAgent": true,
+        "motif": "Reunion exco",
+        "startDate": "2026-10-15",
+        "startSlot": "matin",
+        "endDate": "2026-10-17",
+        "endSlot": "midi",
+        "status": "pending",
+        "updatedAt": "2026-11-02T13:21:03.722Z"
+      },
+      "after": {
+        "id": "975dc578-a0b2-4299-bfca-f575711ee6f5",
+        "numero": "GH-2026-4470",
+        "createdAt": "2026-11-02T13:21:03.722Z",
+        "personName": "EWULI SUKA Carine",
+        "matricule": "70000265",
+        "isAgent": true,
+        "motif": "Reunion exco",
+        "startDate": "2026-10-15",
+        "startSlot": "matin",
+        "endDate": "2026-10-17",
+        "endSlot": "midi",
+        "roomId": "3d273d81-0642-4fac-b424-a54146ad7acc",
+        "status": "confirmed",
+        "updatedAt": "2026-11-02T13:24:37.203Z"
+      },
+      "undoable": true,
+      "undone": false
+    },
+    {
       "id": "log-002194",
       "at": "2026-11-02T13:24:29.889Z",
       "userId": "Tresor.Maneka@ppcdrc.cd",
@@ -227006,5 +227054,5 @@
       }
     }
   ],
-  "nextSeq": 2195
+  "nextSeq": 2196
 }
