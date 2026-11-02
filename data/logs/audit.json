@@ -1,6 +1,32 @@
 {
   "entries": [
     {
+      "id": "log-002174",
+      "at": "2026-11-02T13:05:08.246Z",
+      "userId": "admin",
+      "userName": "Administrateur",
+      "userEmail": "admin",
+      "module": "settings.utilisateurs",
+      "moduleLabel": "Paramètres — Utilisateurs",
+      "action": "create",
+      "actionLabel": "Création",
+      "entityType": "auth.user",
+      "entityId": "bola",
+      "summary": "Création utilisateur Bola",
+      "details": "Création utilisateur Bola",
+      "after": {
+        "id": "bola",
+        "username": "bola",
+        "displayName": "Bola",
+        "initials": "B",
+        "email": "bola@chrs.com",
+        "active": true,
+        "createdAt": "2026-11-02T13:05:02.316Z"
+      },
+      "undoable": true,
+      "undone": false
+    },
+    {
       "id": "log-002173",
       "at": "2026-11-02T11:22:22.005Z",
       "userId": "Kiesse.Banguli@ppcdrc.cd",
@@ -223978,5 +224004,5 @@
       }
     }
   ],
-  "nextSeq": 2174
+  "nextSeq": 2175
 }
