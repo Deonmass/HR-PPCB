@@ -1,6 +1,50 @@
 {
   "entries": [
     {
+      "id": "log-002171",
+      "at": "2026-11-02T06:32:58.535Z",
+      "userId": "admin",
+      "userName": "Administrateur",
+      "userEmail": "admin",
+      "module": "contractants",
+      "moduleLabel": "contractants",
+      "action": "update",
+      "actionLabel": "Modification",
+      "entityType": "contractant-employee",
+      "entityId": "107",
+      "summary": "Modification employé contractant — NGINDU FUKA LIEVIN",
+      "details": "Modification employé contractant — NGINDU FUKA LIEVIN",
+      "after": {
+        "id": "107",
+        "nom": "NGINDU FUKA LIEVIN",
+        "sexe": "M",
+        "lieuAffectation": "Zamba",
+        "fonction": "CCR Packing  plant operator",
+        "departement": "Production",
+        "service": "Packing Plant",
+        "telephone": "895518224",
+        "etatCivil": "C",
+        "statut": "Permanent",
+        "dateEmbauche": "",
+        "dateSortie": "",
+        "managerEmployeeId": "",
+        "managerMatricule": "",
+        "family": [],
+        "matriculePpc": "CHRS_PPC0091",
+        "numeroCnss": "",
+        "numeroCompte": "05126-01148956001-25",
+        "banque": "RAWBANK",
+        "nbDependants": 1,
+        "txJr": 4.55384,
+        "coutTransport": 1.17,
+        "payrollSite": "site",
+        "createdAt": "2026-08-12T12:57:02.481Z",
+        "updatedAt": "2026-11-02T06:32:54.731Z"
+      },
+      "undoable": false,
+      "undone": false
+    },
+    {
       "id": "log-002170",
       "at": "2026-11-02T06:32:09.932Z",
       "userId": "admin",
@@ -223875,5 +223919,5 @@
       }
     }
   ],
-  "nextSeq": 2171
+  "nextSeq": 2172
 }
