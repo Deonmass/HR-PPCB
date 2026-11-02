@@ -1,6 +1,50 @@
 {
   "entries": [
     {
+      "id": "log-002170",
+      "at": "2026-11-02T06:32:09.932Z",
+      "userId": "admin",
+      "userName": "Administrateur",
+      "userEmail": "admin",
+      "module": "contractants",
+      "moduleLabel": "contractants",
+      "action": "update",
+      "actionLabel": "Modification",
+      "entityType": "contractant-employee",
+      "entityId": "106",
+      "summary": "Modification employé contractant — LUSAVUVU KIANGEBENI",
+      "details": "Modification employé contractant — LUSAVUVU KIANGEBENI",
+      "after": {
+        "id": "106",
+        "nom": "LUSAVUVU KIANGEBENI",
+        "sexe": "M",
+        "lieuAffectation": "Zamba",
+        "fonction": "CCR Packing  plant operator",
+        "departement": "Production",
+        "service": "Packing Plant",
+        "telephone": "895142029",
+        "etatCivil": "C",
+        "statut": "Permanent",
+        "dateEmbauche": "",
+        "dateSortie": "",
+        "managerEmployeeId": "",
+        "managerMatricule": "",
+        "family": [],
+        "matriculePpc": "CHRS_PPC0043",
+        "numeroCnss": "",
+        "numeroCompte": "544200185982543",
+        "banque": "EBCDC",
+        "nbDependants": 1,
+        "txJr": 4.55384,
+        "coutTransport": 1.17,
+        "payrollSite": "site",
+        "createdAt": "2026-08-12T12:57:02.481Z",
+        "updatedAt": "2026-11-02T06:32:06.220Z"
+      },
+      "undoable": false,
+      "undone": false
+    },
+    {
       "id": "log-002169",
       "at": "2026-11-02T06:31:39.089Z",
       "userId": "admin",
@@ -223831,5 +223875,5 @@
       }
     }
   ],
-  "nextSeq": 2170
+  "nextSeq": 2171
 }
