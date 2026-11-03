@@ -1,6 +1,21 @@
 {
   "entries": [
     {
+      "id": "log-002203",
+      "at": "2026-11-03T10:19:30.009Z",
+      "userId": "bola",
+      "userName": "Bola",
+      "userEmail": "bola@chrs.com",
+      "module": "auth",
+      "moduleLabel": "Authentification",
+      "action": "login",
+      "actionLabel": "Connexion",
+      "summary": "Connexion bola@chrs.com",
+      "details": "Connexion de Bola (bola@chrs.com)",
+      "undoable": false,
+      "undone": false
+    },
+    {
       "id": "log-002202",
       "at": "2026-11-03T07:04:05.138Z",
       "userId": "admin",
@@ -227301,5 +227316,5 @@
       }
     }
   ],
-  "nextSeq": 2203
+  "nextSeq": 2204
 }
