@@ -1,6 +1,45 @@
 {
   "entries": [
     {
+      "id": "log-002205",
+      "at": "2026-11-03T10:42:51.161Z",
+      "userId": "Tresor.Maneka@ppcdrc.cd",
+      "userName": "Tresor Maneka",
+      "userEmail": "Tresor.Maneka@ppcdrc.cd",
+      "module": "protocol.voyages",
+      "moduleLabel": "Gestion de voyage",
+      "action": "create",
+      "actionLabel": "Création",
+      "entityType": "protocol.voyage",
+      "entityId": "pvc-068",
+      "summary": "Voyage PVC-0068 MBALE KABANGU HUGO Kinshasa Matadi",
+      "details": "Voyage PVC-0068 MBALE KABANGU HUGO Kinshasa Matadi",
+      "after": {
+        "id": "pvc-068",
+        "numero": "PVC-0068",
+        "date": "2026-11-03",
+        "voyageur": "MBALE KABANGU HUGO",
+        "voyageurMatricule": "70000184",
+        "destination": "Kinshasa Matadi",
+        "ticketAvion": 195,
+        "visaVolant": 0,
+        "lettreLegaliser": 0,
+        "goPass": 15,
+        "transfert": 0,
+        "hotelNuit": 150,
+        "nbreNuits": 3,
+        "coutHotel": 450,
+        "categorieHotel": "Hotel Vivi Palace de Matadi",
+        "appartement": 0,
+        "autresCharges": 0,
+        "coutTotal": 660,
+        "createdAt": "2026-11-03T10:42:47.583Z",
+        "updatedAt": "2026-11-03T10:42:47.583Z"
+      },
+      "undoable": false,
+      "undone": false
+    },
+    {
       "id": "log-002204",
       "at": "2026-11-03T10:35:07.019Z",
       "userId": "Tresor.Maneka@ppcdrc.cd",
@@ -227355,5 +227394,5 @@
       }
     }
   ],
-  "nextSeq": 2205
+  "nextSeq": 2206
 }
