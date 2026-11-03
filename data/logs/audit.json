@@ -1,6 +1,73 @@
 {
   "entries": [
     {
+      "id": "log-002202",
+      "at": "2026-11-03T07:04:05.138Z",
+      "userId": "admin",
+      "userName": "Administrateur",
+      "userEmail": "admin",
+      "module": "sante",
+      "moduleLabel": "Santé",
+      "action": "update",
+      "actionLabel": "Modification",
+      "entityType": "sante.visit",
+      "entityId": "sante-mvkgzlnj-srv571",
+      "summary": "Modification cas santé — MOZA",
+      "details": "Modification cas santé — MOZA",
+      "before": {
+        "id": "sante-mvkgzlnj-srv571",
+        "date": "2026-10-18",
+        "nom": "MOZA",
+        "postnom": "USENI",
+        "sexe": "",
+        "age": 13,
+        "typeMalade": "CAS SOCIAL",
+        "pathologie": "PALUDISME SIMPLE",
+        "traitement": "",
+        "reference": "NON",
+        "year": 2026,
+        "month": 10,
+        "employeeMatricule": "",
+        "employeeNom": "",
+        "dependantId": null,
+        "commentaire": "ANTI PALUDEEN ET ANTI PYRETIQUE",
+        "contractantId": "",
+        "contractantNom": "",
+        "contractantEmployeeId": "",
+        "createdAt": "2026-10-23T04:28:40.927Z",
+        "updatedAt": "2026-10-23T04:28:40.927Z",
+        "createdBy": "karine.mvutu@ppcdrc.cd",
+        "updatedBy": "karine.mvutu@ppcdrc.cd"
+      },
+      "after": {
+        "id": "sante-mvkgzlnj-srv571",
+        "date": "2026-10-18",
+        "nom": "MOZA",
+        "postnom": "USENI",
+        "sexe": "F",
+        "age": 13,
+        "typeMalade": "CAS SOCIAL",
+        "pathologie": "PALUDISME SIMPLE",
+        "traitement": "ANTI PALUDEEN ET ANTI PYRETIQUE",
+        "reference": "NON",
+        "year": 2026,
+        "month": 10,
+        "employeeMatricule": "",
+        "employeeNom": "",
+        "dependantId": null,
+        "commentaire": "Petite soeur de l'épouse de l'agent LEONARDO MUTOMBO",
+        "contractantId": "",
+        "contractantNom": "",
+        "contractantEmployeeId": "",
+        "createdAt": "2026-10-23T04:28:40.927Z",
+        "updatedAt": "2026-11-03T07:04:03.645Z",
+        "createdBy": "karine.mvutu@ppcdrc.cd",
+        "updatedBy": "admin"
+      },
+      "undoable": false,
+      "undone": false
+    },
+    {
       "id": "log-002201",
       "at": "2026-11-02T15:16:42.306Z",
       "userId": "admin",
@@ -227234,5 +227301,5 @@
       }
     }
   ],
-  "nextSeq": 2202
+  "nextSeq": 2203
 }
