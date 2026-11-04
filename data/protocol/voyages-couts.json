@@ -1508,15 +1508,15 @@
       "lettreLegaliser": 0,
       "goPass": 0,
       "transfert": 0,
-      "hotelNuit": 80,
+      "hotelNuit": 120,
       "nbreNuits": 3,
-      "coutHotel": 240,
+      "coutHotel": 360,
       "categorieHotel": "Hotel Saint Theresse de likasi",
       "appartement": 0,
       "autresCharges": 0,
-      "coutTotal": 240,
+      "coutTotal": 360,
       "createdAt": "2026-11-04T09:20:17.347Z",
-      "updatedAt": "2026-11-04T09:20:17.347Z"
+      "updatedAt": "2026-11-04T09:25:21.948Z"
     }
   ],
   "nextSeq": 73
