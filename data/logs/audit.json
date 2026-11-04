@@ -1,6 +1,67 @@
 {
   "entries": [
     {
+      "id": "log-002228",
+      "at": "2026-11-04T09:25:51.248Z",
+      "userId": "Tresor.Maneka@ppcdrc.cd",
+      "userName": "Tresor Maneka",
+      "userEmail": "Tresor.Maneka@ppcdrc.cd",
+      "module": "protocol.voyages",
+      "moduleLabel": "Gestion de voyage",
+      "action": "update",
+      "actionLabel": "Modification",
+      "entityType": "protocol.voyage",
+      "entityId": "pvc-072",
+      "summary": "Modification voyage PVC-0072 BUHENDWA JERRY",
+      "details": "Modification voyage PVC-0072 BUHENDWA JERRY",
+      "before": {
+        "id": "pvc-072",
+        "numero": "PVC-0072",
+        "date": "2026-11-03",
+        "voyageur": "BUHENDWA JERRY",
+        "voyageurMatricule": "70000303",
+        "destination": "Lubudi Likasi",
+        "ticketAvion": 0,
+        "visaVolant": 0,
+        "lettreLegaliser": 0,
+        "goPass": 0,
+        "transfert": 0,
+        "hotelNuit": 120,
+        "nbreNuits": 3,
+        "coutHotel": 360,
+        "categorieHotel": "Hotel Saint Theresse de likasi",
+        "appartement": 0,
+        "autresCharges": 0,
+        "coutTotal": 360,
+        "createdAt": "2026-11-04T09:20:17.347Z",
+        "updatedAt": "2026-11-04T09:25:21.948Z"
+      },
+      "after": {
+        "id": "pvc-072",
+        "numero": "PVC-0072",
+        "date": "2026-11-03",
+        "voyageur": "BUHENDWA JERRY",
+        "voyageurMatricule": "70000303",
+        "destination": "Lubudi Likasi",
+        "ticketAvion": 0,
+        "visaVolant": 0,
+        "lettreLegaliser": 0,
+        "goPass": 0,
+        "transfert": 0,
+        "hotelNuit": 120,
+        "nbreNuits": 2,
+        "coutHotel": 240,
+        "categorieHotel": "Hotel Saint Theresse de likasi",
+        "appartement": 0,
+        "autresCharges": 0,
+        "coutTotal": 240,
+        "createdAt": "2026-11-04T09:20:17.347Z",
+        "updatedAt": "2026-11-04T09:25:47.723Z"
+      },
+      "undoable": false,
+      "undone": false
+    },
+    {
       "id": "log-002227",
       "at": "2026-11-04T09:25:25.489Z",
       "userId": "Tresor.Maneka@ppcdrc.cd",
@@ -232441,5 +232502,5 @@
       }
     }
   ],
-  "nextSeq": 2228
+  "nextSeq": 2229
 }
