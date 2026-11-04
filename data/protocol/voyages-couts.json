@@ -1451,7 +1451,29 @@
       "coutTotal": 300,
       "createdAt": "2026-11-04T09:16:28.005Z",
       "updatedAt": "2026-11-04T09:16:28.005Z"
+    },
+    {
+      "id": "pvc-070",
+      "numero": "PVC-0070",
+      "date": "2026-11-04",
+      "voyageur": "KALAMBAY TSHILOMBO YANNICK",
+      "voyageurMatricule": "70000261",
+      "destination": "Zamba Kinshasa",
+      "ticketAvion": 0,
+      "visaVolant": 0,
+      "lettreLegaliser": 0,
+      "goPass": 0,
+      "transfert": 0,
+      "hotelNuit": 100,
+      "nbreNuits": 2,
+      "coutHotel": 200,
+      "categorieHotel": "Hotel Plutonium",
+      "appartement": 0,
+      "autresCharges": 0,
+      "coutTotal": 200,
+      "createdAt": "2026-11-04T09:17:28.124Z",
+      "updatedAt": "2026-11-04T09:17:28.124Z"
     }
   ],
-  "nextSeq": 70
+  "nextSeq": 71
 }
