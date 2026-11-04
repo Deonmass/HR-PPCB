@@ -1,6 +1,45 @@
 {
   "entries": [
     {
+      "id": "log-002229",
+      "at": "2026-11-04T09:26:58.431Z",
+      "userId": "Tresor.Maneka@ppcdrc.cd",
+      "userName": "Tresor Maneka",
+      "userEmail": "Tresor.Maneka@ppcdrc.cd",
+      "module": "protocol.voyages",
+      "moduleLabel": "Gestion de voyage",
+      "action": "create",
+      "actionLabel": "Création",
+      "entityType": "protocol.voyage",
+      "entityId": "pvc-073",
+      "summary": "Voyage PVC-0073 PANDA KYALEVA PATRICK Lubudi likasi",
+      "details": "Voyage PVC-0073 PANDA KYALEVA PATRICK Lubudi likasi",
+      "after": {
+        "id": "pvc-073",
+        "numero": "PVC-0073",
+        "date": "2026-10-30",
+        "voyageur": "PANDA KYALEVA PATRICK",
+        "voyageurMatricule": "70000305",
+        "destination": "Lubudi likasi",
+        "ticketAvion": 0,
+        "visaVolant": 0,
+        "lettreLegaliser": 0,
+        "goPass": 0,
+        "transfert": 0,
+        "hotelNuit": 120,
+        "nbreNuits": 2,
+        "coutHotel": 240,
+        "categorieHotel": "",
+        "appartement": 0,
+        "autresCharges": 0,
+        "coutTotal": 240,
+        "createdAt": "2026-11-04T09:26:55.079Z",
+        "updatedAt": "2026-11-04T09:26:55.079Z"
+      },
+      "undoable": false,
+      "undone": false
+    },
+    {
       "id": "log-002228",
       "at": "2026-11-04T09:25:51.248Z",
       "userId": "Tresor.Maneka@ppcdrc.cd",
@@ -232502,5 +232541,5 @@
       }
     }
   ],
-  "nextSeq": 2229
+  "nextSeq": 2230
 }
