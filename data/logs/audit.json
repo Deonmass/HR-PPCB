@@ -1,6 +1,21 @@
 {
   "entries": [
     {
+      "id": "log-002231",
+      "at": "2026-11-04T14:48:56.683Z",
+      "userId": "Marie.Yowali",
+      "userName": "Marie Yowali",
+      "userEmail": "Marie.Yowali@ppcdrc.cd",
+      "module": "auth",
+      "moduleLabel": "Authentification",
+      "action": "login",
+      "actionLabel": "Connexion",
+      "summary": "Connexion Marie.Yowali@ppcdrc.cd",
+      "details": "Connexion de Marie Yowali (Marie.Yowali@ppcdrc.cd)",
+      "undoable": false,
+      "undone": false
+    },
+    {
       "id": "log-002230",
       "at": "2026-11-04T09:30:30.916Z",
       "userId": "Tresor.Maneka@ppcdrc.cd",
@@ -232580,5 +232595,5 @@
       }
     }
   ],
-  "nextSeq": 2231
+  "nextSeq": 2232
 }
