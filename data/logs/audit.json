@@ -1,6 +1,45 @@
 {
   "entries": [
     {
+      "id": "log-002224",
+      "at": "2026-11-04T09:17:32.492Z",
+      "userId": "Tresor.Maneka@ppcdrc.cd",
+      "userName": "Tresor Maneka",
+      "userEmail": "Tresor.Maneka@ppcdrc.cd",
+      "module": "protocol.voyages",
+      "moduleLabel": "Gestion de voyage",
+      "action": "create",
+      "actionLabel": "Création",
+      "entityType": "protocol.voyage",
+      "entityId": "pvc-070",
+      "summary": "Voyage PVC-0070 KALAMBAY TSHILOMBO YANNICK Zamba Kinshasa",
+      "details": "Voyage PVC-0070 KALAMBAY TSHILOMBO YANNICK Zamba Kinshasa",
+      "after": {
+        "id": "pvc-070",
+        "numero": "PVC-0070",
+        "date": "2026-11-04",
+        "voyageur": "KALAMBAY TSHILOMBO YANNICK",
+        "voyageurMatricule": "70000261",
+        "destination": "Zamba Kinshasa",
+        "ticketAvion": 0,
+        "visaVolant": 0,
+        "lettreLegaliser": 0,
+        "goPass": 0,
+        "transfert": 0,
+        "hotelNuit": 100,
+        "nbreNuits": 2,
+        "coutHotel": 200,
+        "categorieHotel": "Hotel Plutonium",
+        "appartement": 0,
+        "autresCharges": 0,
+        "coutTotal": 200,
+        "createdAt": "2026-11-04T09:17:28.124Z",
+        "updatedAt": "2026-11-04T09:17:28.124Z"
+      },
+      "undoable": false,
+      "undone": false
+    },
+    {
       "id": "log-002223",
       "at": "2026-11-04T09:16:31.896Z",
       "userId": "Tresor.Maneka@ppcdrc.cd",
@@ -232263,5 +232302,5 @@
       }
     }
   ],
-  "nextSeq": 2224
+  "nextSeq": 2225
 }
