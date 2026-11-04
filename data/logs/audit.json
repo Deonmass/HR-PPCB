@@ -1,6 +1,36 @@
 {
   "entries": [
     {
+      "id": "log-002216",
+      "at": "2026-11-04T08:29:12.637Z",
+      "userId": "admin",
+      "userName": "Administrateur",
+      "userEmail": "admin",
+      "module": "employees",
+      "moduleLabel": "Employés",
+      "action": "update",
+      "actionLabel": "Modification",
+      "entityType": "employee",
+      "summary": "N+1 mis à jour (1)",
+      "details": "N+1 mis à jour (1)",
+      "after": {
+        "employees": [],
+        "contractants": [
+          {
+            "contractantId": "2",
+            "employeeId": "117",
+            "managerEmployeeId": "",
+            "managerMatricule": "70000290",
+            "departement": "SHE",
+            "service": ""
+          }
+        ],
+        "vacants": []
+      },
+      "undoable": false,
+      "undone": false
+    },
+    {
       "id": "log-002215",
       "at": "2026-11-04T07:41:35.057Z",
       "userId": "admin",
@@ -227574,5 +227604,5 @@
       }
     }
   ],
-  "nextSeq": 2216
+  "nextSeq": 2217
 }
