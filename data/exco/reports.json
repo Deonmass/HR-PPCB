@@ -182,20 +182,318 @@
         },
         "overtimeCostByDept": {},
         "leaveBalanceByMatricule": {},
-        "overtimeImportsByMonth": {},
+        "overtimeImportsByMonth": {
+          "10": {
+            "year": 2026,
+            "month": 10,
+            "fxRateFcPerUsd": 2311.25,
+            "employees": [
+              {
+                "matricule": "70000052",
+                "nom": "BAYISA SIMON DIDIER",
+                "departmentRaw": "Engineering",
+                "department": "Engineering",
+                "hours": 39.2,
+                "costFc": 865576.28,
+                "leaveBalance": null
+              },
+              {
+                "matricule": "70000241",
+                "nom": "BIAWILA JEAN ROSTAND",
+                "departmentRaw": "Supply Chain",
+                "department": "Supply Chain",
+                "hours": 36.54,
+                "costFc": 727606.7,
+                "leaveBalance": null
+              },
+              {
+                "matricule": "70000226",
+                "nom": "KANKONDE ILUNGA ALIDOR",
+                "departmentRaw": "Production",
+                "department": "Production",
+                "hours": 35.89,
+                "costFc": 340154.64,
+                "leaveBalance": null
+              },
+              {
+                "matricule": "70000212",
+                "nom": "VANGU VANGU ALBERT",
+                "departmentRaw": "Production",
+                "department": "Production",
+                "hours": 33.01,
+                "costFc": 288219.62,
+                "leaveBalance": null
+              },
+              {
+                "matricule": "70000215",
+                "nom": "BINDAMA KAMOSIKO ALPHONSE",
+                "departmentRaw": "Engineering",
+                "department": "Engineering",
+                "hours": 32.79,
+                "costFc": 1000366.67,
+                "leaveBalance": null
+              },
+              {
+                "matricule": "70000104",
+                "nom": "NGOMA NALOLO DIEU",
+                "departmentRaw": "Engineering",
+                "department": "Engineering",
+                "hours": 31.96,
+                "costFc": 943204,
+                "leaveBalance": null
+              },
+              {
+                "matricule": "70000255",
+                "nom": "BILANGA LINGOMA Jonas",
+                "departmentRaw": "Supply Chain",
+                "department": "Supply Chain",
+                "hours": 26.5,
+                "costFc": 804017.09,
+                "leaveBalance": null
+              },
+              {
+                "matricule": "70000079",
+                "nom": "DINANDI MVUMBI PHILIPPE",
+                "departmentRaw": "Engineering",
+                "department": "Engineering",
+                "hours": 25.6,
+                "costFc": 637778.07,
+                "leaveBalance": null
+              },
+              {
+                "matricule": "70000216",
+                "nom": "MANSIAMINA DIANLEMVO PATIENCE",
+                "departmentRaw": "Engineering",
+                "department": "Engineering",
+                "hours": 21.42,
+                "costFc": 568257.59,
+                "leaveBalance": null
+              },
+              {
+                "matricule": "70000276",
+                "nom": "MAWETE NSOTA EMMANUEL",
+                "departmentRaw": "Quality Assurance",
+                "department": "Quality Assurance",
+                "hours": 20.35,
+                "costFc": 265065.98,
+                "leaveBalance": null
+              },
+              {
+                "matricule": "70000309",
+                "nom": "NLANDU TSHIBAMBA JUNIOR",
+                "departmentRaw": "Engineering",
+                "department": "Engineering",
+                "hours": 19.64,
+                "costFc": 381776.54,
+                "leaveBalance": null
+              },
+              {
+                "matricule": "70000116",
+                "nom": "NZUNGU ANTOINE BONHEUR",
+                "departmentRaw": "Engineering",
+                "department": "Engineering",
+                "hours": 18.26,
+                "costFc": 444724.18,
+                "leaveBalance": null
+              },
+              {
+                "matricule": "70000227",
+                "nom": "NTUNGA PIERRE DIEU-MERCI",
+                "departmentRaw": "Engineering",
+                "department": "Engineering",
+                "hours": 17.05,
+                "costFc": 361443.84,
+                "leaveBalance": null
+              },
+              {
+                "matricule": "70000210",
+                "nom": "KAMANDA NYOMBA SOSTHENE",
+                "departmentRaw": "Quality Assurance",
+                "department": "Quality Assurance",
+                "hours": 16.27,
+                "costFc": 430880.79,
+                "leaveBalance": null
+              },
+              {
+                "matricule": "70000026",
+                "nom": "KABANGU MUTAMBAYI CHARLIE",
+                "departmentRaw": "Production",
+                "department": "Production",
+                "hours": 16.01,
+                "costFc": 790863.99,
+                "leaveBalance": null
+              },
+              {
+                "matricule": "70000029",
+                "nom": "MAPHASI VANGU PHILIPPE",
+                "departmentRaw": "Production",
+                "department": "Production",
+                "hours": 15.1,
+                "costFc": 846536.74,
+                "leaveBalance": null
+              },
+              {
+                "matricule": "70000259",
+                "nom": "NSINABAU TAMFUM NATHAN",
+                "departmentRaw": "Finance",
+                "department": "Finance",
+                "hours": 14,
+                "costFc": 522629.62,
+                "leaveBalance": null
+              },
+              {
+                "matricule": "70000261",
+                "nom": "KALAMBAY TSHILOMBO YANNICK",
+                "departmentRaw": "Engineering",
+                "department": "Engineering",
+                "hours": 12.97,
+                "costFc": 411107.4,
+                "leaveBalance": null
+              },
+              {
+                "matricule": "70000076",
+                "nom": "NLANDU NDONGALA ERICK",
+                "departmentRaw": "Quality Assurance",
+                "department": "Quality Assurance",
+                "hours": 12,
+                "costFc": 233280.68,
+                "leaveBalance": null
+              },
+              {
+                "matricule": "70000072",
+                "nom": "NDONGA NGANGULA NOEL",
+                "departmentRaw": "Production",
+                "department": "Production",
+                "hours": 10.52,
+                "costFc": 252101.99,
+                "leaveBalance": null
+              },
+              {
+                "matricule": "70000097",
+                "nom": "NKOSI LIMA MASUDI BIENVENU",
+                "departmentRaw": "Mining",
+                "department": "Mining",
+                "hours": 10,
+                "costFc": 77378.76,
+                "leaveBalance": null
+              },
+              {
+                "matricule": "70000102",
+                "nom": "LUMANISA WASOLOKELE CEDRICK",
+                "departmentRaw": "Mining",
+                "department": "Mining",
+                "hours": 6,
+                "costFc": 40642.99,
+                "leaveBalance": null
+              },
+              {
+                "matricule": "70000093",
+                "nom": "MBANGI MAKULENDA ANDRE",
+                "departmentRaw": "Engineering",
+                "department": "Engineering",
+                "hours": 4.62,
+                "costFc": 34149.21,
+                "leaveBalance": null
+              },
+              {
+                "matricule": "70000247",
+                "nom": "MILAMBU MBENGAY HERVE",
+                "departmentRaw": "SHE",
+                "department": "SHE",
+                "hours": 4.3,
+                "costFc": 157098.76,
+                "leaveBalance": null
+              },
+              {
+                "matricule": "70000229",
+                "nom": "WAMPANGULUA BUKAKA GUYLAIN",
+                "departmentRaw": "Engineering",
+                "department": "Engineering",
+                "hours": 3.53,
+                "costFc": 28135.79,
+                "leaveBalance": null
+              },
+              {
+                "matricule": "70000064",
+                "nom": "KALUNGA MASELE RAMSES",
+                "departmentRaw": "Production",
+                "department": "Production",
+                "hours": 3,
+                "costFc": 66698.15,
+                "leaveBalance": null
+              },
+              {
+                "matricule": "70000115",
+                "nom": "ONOSAMBA LUNDI LUNDI",
+                "departmentRaw": "Engineering",
+                "department": "Engineering",
+                "hours": 1.95,
+                "costFc": 55452.67,
+                "leaveBalance": null
+              }
+            ],
+            "byDept": [
+              {
+                "department": "Engineering",
+                "hours": 228.99,
+                "costFc": 5731972.24
+              },
+              {
+                "department": "Finance",
+                "hours": 14,
+                "costFc": 522629.62
+              },
+              {
+                "department": "Mining",
+                "hours": 16,
+                "costFc": 118021.75
+              },
+              {
+                "department": "Production",
+                "hours": 113.53,
+                "costFc": 2584575.13
+              },
+              {
+                "department": "Quality Assurance",
+                "hours": 48.62,
+                "costFc": 929227.45
+              },
+              {
+                "department": "SHE",
+                "hours": 4.3,
+                "costFc": 157098.76
+              },
+              {
+                "department": "Supply Chain",
+                "hours": 63.04,
+                "costFc": 1531623.79
+              }
+            ],
+            "sourceFiles": [
+              "Component Posted Units_Oct 26.xlsx"
+            ],
+            "importedAt": "2026-11-04T09:02:55.742Z"
+          }
+        },
         "leaveImportsByMonth": {},
         "engagementsImportsByMonth": {},
-        "importedSources": {},
+        "importedSources": {
+          "componentPostedUnits": {
+            "importedAt": "2026-11-04T09:02:55.742Z",
+            "originalName": "Component Posted Units_Oct 26.xlsx"
+          }
+        },
         "workbookSnapshot": null,
         "generationMeta": {
           "fxRateFcPerUsd": 2311.25,
-          "generatedAt": "2026-11-04T09:02:23.334Z",
+          "generatedAt": "2026-11-04T09:02:55.742Z",
           "sourceFiles": [
-            "New report.xlsx"
+            "New report.xlsx",
+            "Component Posted Units_Oct 26.xlsx"
           ]
         }
       },
-      "updatedAt": "2026-11-04T09:02:25.653Z",
+      "updatedAt": "2026-11-04T09:02:58.151Z",
       "updatedBy": "Administrateur"
     },
     {
