@@ -1,6 +1,45 @@
 {
   "entries": [
     {
+      "id": "log-002223",
+      "at": "2026-11-04T09:16:31.896Z",
+      "userId": "Tresor.Maneka@ppcdrc.cd",
+      "userName": "Tresor Maneka",
+      "userEmail": "Tresor.Maneka@ppcdrc.cd",
+      "module": "protocol.voyages",
+      "moduleLabel": "Gestion de voyage",
+      "action": "create",
+      "actionLabel": "Création",
+      "entityType": "protocol.voyage",
+      "entityId": "pvc-069",
+      "summary": "Voyage PVC-0069 UUCHI UMIRAMBE PARICIAN Zamba Kinshasa",
+      "details": "Voyage PVC-0069 UUCHI UMIRAMBE PARICIAN Zamba Kinshasa",
+      "after": {
+        "id": "pvc-069",
+        "numero": "PVC-0069",
+        "date": "2026-11-03",
+        "voyageur": "UUCHI UMIRAMBE PARICIAN",
+        "voyageurMatricule": "70000033",
+        "destination": "Zamba Kinshasa",
+        "ticketAvion": 0,
+        "visaVolant": 0,
+        "lettreLegaliser": 0,
+        "goPass": 0,
+        "transfert": 0,
+        "hotelNuit": 150,
+        "nbreNuits": 2,
+        "coutHotel": 300,
+        "categorieHotel": "Hotel Royal",
+        "appartement": 0,
+        "autresCharges": 0,
+        "coutTotal": 300,
+        "createdAt": "2026-11-04T09:16:28.005Z",
+        "updatedAt": "2026-11-04T09:16:28.005Z"
+      },
+      "undoable": false,
+      "undone": false
+    },
+    {
       "id": "log-002222",
       "at": "2026-11-04T09:04:23.001Z",
       "userId": "admin",
@@ -232224,5 +232263,5 @@
       }
     }
   ],
-  "nextSeq": 2223
+  "nextSeq": 2224
 }
