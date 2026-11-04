@@ -188,15 +188,15 @@
         "importedSources": {},
         "workbookSnapshot": null,
         "generationMeta": {
-          "fxRateFcPerUsd": 2308,
-          "generatedAt": "2026-08-27T10:59:44.765Z",
+          "fxRateFcPerUsd": 2311.25,
+          "generatedAt": "2026-11-04T09:02:23.334Z",
           "sourceFiles": [
             "New report.xlsx"
           ]
         }
       },
-      "updatedAt": "2026-08-27T10:59:44.770Z",
-      "updatedBy": "system"
+      "updatedAt": "2026-11-04T09:02:25.653Z",
+      "updatedBy": "Administrateur"
     },
     {
       "year": 2026,
