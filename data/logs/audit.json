@@ -1,6 +1,89 @@
 {
   "entries": [
     {
+      "id": "log-002218",
+      "at": "2026-11-04T09:02:29.462Z",
+      "userId": "admin",
+      "userName": "Administrateur",
+      "userEmail": "admin",
+      "module": "exco",
+      "moduleLabel": "exco",
+      "action": "update",
+      "actionLabel": "Modification",
+      "entityType": "exco-params",
+      "entityId": "2026-10",
+      "summary": "Params EXCO 10/2026 · taux 2311.25",
+      "details": "Params EXCO 10/2026 · taux 2311.25",
+      "after": {
+        "year": 2026,
+        "month": 10,
+        "overlays": {
+          "manualKpis": {
+            "headcount": 175,
+            "turnoverPct": 0,
+            "attritionPct": 0
+          },
+          "financeByMonth": {
+            "10": {
+              "staffCost": 0,
+              "volumePerEmp": 0,
+              "revenuePerEmp": 0,
+              "staffCostBudgetYtd": null,
+              "volumeBudgetYtd": null,
+              "revenueBudgetYtd": null
+            }
+          },
+          "staffCostYtdByMonth": {},
+          "staffCostFormulaNotes": {},
+          "narrative": {
+            "meetingTitle": "EXCO MEETING",
+            "meetingDate": "",
+            "meetingPlace": "",
+            "highlights": "",
+            "lowlights": "",
+            "focus": "",
+            "approvalItems": "",
+            "medicalCases": "",
+            "thankYouTitle": "Et merci",
+            "thankYouMessage": "Thank You"
+          },
+          "recruitment": [],
+          "auditFindings": [],
+          "isoActions": [],
+          "csrProjects": [],
+          "csrFy27Rows": [],
+          "csrHighlights": [],
+          "cahierHighlights": [],
+          "trainingTopics": [],
+          "upcomingTrainings": [],
+          "policies": {
+            "expiredPendingUpdate": [],
+            "submittedToExco": [],
+            "pendingPublication": [],
+            "underCommunication": []
+          },
+          "overtimeCostByDept": {},
+          "leaveBalanceByMatricule": {},
+          "overtimeImportsByMonth": {},
+          "leaveImportsByMonth": {},
+          "engagementsImportsByMonth": {},
+          "importedSources": {},
+          "workbookSnapshot": null,
+          "generationMeta": {
+            "fxRateFcPerUsd": 2311.25,
+            "generatedAt": "2026-11-04T09:02:23.334Z",
+            "sourceFiles": [
+              "New report.xlsx"
+            ]
+          }
+        },
+        "updatedAt": "2026-11-04T09:02:25.653Z",
+        "updatedBy": "Administrateur"
+      },
+      "undoable": false,
+      "undone": false
+    },
+    {
       "id": "log-002217",
       "at": "2026-11-04T08:47:30.092Z",
       "userId": "Serge.Muakasa@ppcdrc.cd",
@@ -227619,5 +227702,5 @@
       }
     }
   ],
-  "nextSeq": 2218
+  "nextSeq": 2219
 }
