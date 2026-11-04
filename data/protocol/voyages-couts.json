@@ -1473,7 +1473,29 @@
       "coutTotal": 200,
       "createdAt": "2026-11-04T09:17:28.124Z",
       "updatedAt": "2026-11-04T09:17:28.124Z"
+    },
+    {
+      "id": "pvc-071",
+      "numero": "PVC-0071",
+      "date": "2026-11-01",
+      "voyageur": "Jessy",
+      "voyageurMatricule": "",
+      "destination": "Kinshasa Tshikapa",
+      "ticketAvion": 0,
+      "visaVolant": 0,
+      "lettreLegaliser": 0,
+      "goPass": 0,
+      "transfert": 0,
+      "hotelNuit": 80,
+      "nbreNuits": 8,
+      "coutHotel": 640,
+      "categorieHotel": "Hotel Paradiso de Tshikapa",
+      "appartement": 0,
+      "autresCharges": 0,
+      "coutTotal": 640,
+      "createdAt": "2026-11-04T09:19:05.350Z",
+      "updatedAt": "2026-11-04T09:19:05.350Z"
     }
   ],
-  "nextSeq": 71
+  "nextSeq": 72
 }
