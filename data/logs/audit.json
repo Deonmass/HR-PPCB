@@ -1,6 +1,45 @@
 {
   "entries": [
     {
+      "id": "log-002226",
+      "at": "2026-11-04T09:20:21.226Z",
+      "userId": "Tresor.Maneka@ppcdrc.cd",
+      "userName": "Tresor Maneka",
+      "userEmail": "Tresor.Maneka@ppcdrc.cd",
+      "module": "protocol.voyages",
+      "moduleLabel": "Gestion de voyage",
+      "action": "create",
+      "actionLabel": "Création",
+      "entityType": "protocol.voyage",
+      "entityId": "pvc-072",
+      "summary": "Voyage PVC-0072 BUHENDWA JERRY Lubudi Likasi",
+      "details": "Voyage PVC-0072 BUHENDWA JERRY Lubudi Likasi",
+      "after": {
+        "id": "pvc-072",
+        "numero": "PVC-0072",
+        "date": "2026-11-03",
+        "voyageur": "BUHENDWA JERRY",
+        "voyageurMatricule": "70000303",
+        "destination": "Lubudi Likasi",
+        "ticketAvion": 0,
+        "visaVolant": 0,
+        "lettreLegaliser": 0,
+        "goPass": 0,
+        "transfert": 0,
+        "hotelNuit": 80,
+        "nbreNuits": 3,
+        "coutHotel": 240,
+        "categorieHotel": "Hotel Saint Theresse de likasi",
+        "appartement": 0,
+        "autresCharges": 0,
+        "coutTotal": 240,
+        "createdAt": "2026-11-04T09:20:17.347Z",
+        "updatedAt": "2026-11-04T09:20:17.347Z"
+      },
+      "undoable": false,
+      "undone": false
+    },
+    {
       "id": "log-002225",
       "at": "2026-11-04T09:19:09.690Z",
       "userId": "Tresor.Maneka@ppcdrc.cd",
@@ -232341,5 +232380,5 @@
       }
     }
   ],
-  "nextSeq": 2226
+  "nextSeq": 2227
 }
