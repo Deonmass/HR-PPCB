@@ -1,9 +1,14 @@
 import { NextResponse } from 'next/server';
+import { listContractants } from '@/lib/contractants-store';
+import { readEmployees, readExitedEmployees } from '@/lib/employees-json-store';
 import {
+  buildProtocolVoyageDepartmentLookup,
   buildProtocolVoyageExportBuffer,
   buildProtocolVoyageExportFilename,
   filterProtocolVoyagesForExport,
+  filterProtocolVoyagesForSummary,
   protocolVoyagePeriodLabel,
+  protocolVoyageSummaryLabel,
   type ProtocolVoyageExportQuery,
 } from '@/lib/protocol-voyage-export.server';
 import { listProtocolVoyages } from '@/lib/protocol-voyage-store';
@@ -28,17 +33,33 @@ export async function GET(request: Request) {
   if (denied) return denied;
   try {
     const query = parseQuery(new URL(request.url));
-    const items = filterProtocolVoyagesForExport(await listProtocolVoyages(), query);
+    const [voyages, employees, exits, contractants] = await Promise.all([
+      listProtocolVoyages(),
+      readEmployees(),
+      readExitedEmployees(),
+      listContractants(),
+    ]);
+    const items = filterProtocolVoyagesForExport(voyages, query);
+    const summaryItems = filterProtocolVoyagesForSummary(voyages, query);
+    const departmentOf = buildProtocolVoyageDepartmentLookup([
+      ...employees,
+      ...exits,
+      ...contractants.flatMap((contractant) => contractant.employees.map((employee) => ({
+        matricule: employee.matriculePpc,
+        nom: employee.nom,
+        departement: employee.departement,
+      }))),
+    ]);
     const buffer = await withAudit(
       {
         module: MENU,
         action: 'export',
         entityType: 'protocol.voyage',
-        summary: `Export Excel gestion de voyage (${items.length} ligne(s), ${protocolVoyagePeriodLabel(query)})`,
+        summary: `Export Excel gestion de voyage (${items.length} ligne(s), ${protocolVoyagePeriodLabel(query)}, synthèse ${protocolVoyageSummaryLabel(query)})`,
         path: '/api/protocol/voyages/export',
         method: 'GET',
       },
-      async () => buildProtocolVoyageExportBuffer(items, query),
+      async () => buildProtocolVoyageExportBuffer(items, query, { summaryItems, departmentOf }),
     );
     const filename = buildProtocolVoyageExportFilename(query);
     return new NextResponse(new Uint8Array(buffer), {

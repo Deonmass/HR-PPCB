@@ -436,7 +436,9 @@ export default function ProtocolVoyagesPage() {
                 <button
                   type="button"
                   className="btn btn-outline btn-sm btn-with-icon"
-                  title={tab === 'liste' && search.trim() ? 'Exporter les voyages filtrés' : 'Exporter les voyages de la période'}
+                  title={tab === 'liste' && search.trim()
+                    ? 'Exporter les voyages filtrés. La synthèse ajoute les mois jusqu’au mois en cours, puis les départements.'
+                    : 'Exporter la période. La synthèse ajoute les mois jusqu’au mois en cours, puis les départements.'}
                   aria-label="Exporter Excel"
                   disabled={exporting || loading}
                   onClick={() => void exportExcel()}

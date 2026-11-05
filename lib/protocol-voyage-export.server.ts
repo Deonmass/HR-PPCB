@@ -137,6 +137,87 @@ export function buildProtocolVoyageExportFilename(query: ProtocolVoyageExportQue
   return `gestion-voyage-${new Date().toISOString().slice(0, 10)}.xlsx`;
 }
 
+export interface ProtocolVoyageSummaryRange {
+  year: number;
+  fromMonth: number;
+  toMonth: number;
+}
+
+export function protocolVoyageSummaryRange(
+  query: ProtocolVoyageExportQuery,
+  now = new Date(),
+): ProtocolVoyageSummaryRange {
+  const currentYear = now.getFullYear();
+  const currentMonth = now.getMonth() + 1;
+  const year = query.year && query.year > 1900 ? query.year : currentYear;
+  let toMonth = 12;
+  if (year === currentYear) toMonth = currentMonth;
+  else if (year > currentYear) {
+    toMonth = query.month && query.month >= 1 && query.month <= 12 ? query.month : 12;
+  }
+  return { year, fromMonth: 1, toMonth };
+}
+
+export function protocolVoyageSummaryLabel(query: ProtocolVoyageExportQuery, now = new Date()): string {
+  const { year, fromMonth, toMonth } = protocolVoyageSummaryRange(query, now);
+  if (fromMonth === toMonth) return `${MONTHS[fromMonth - 1]} ${year}`;
+  return `${MONTHS[fromMonth - 1]} – ${MONTHS[toMonth - 1]} ${year}`;
+}
+
+export function filterProtocolVoyagesForSummary(
+  items: ProtocolVoyageCout[],
+  query: ProtocolVoyageExportQuery,
+  now = new Date(),
+): ProtocolVoyageCout[] {
+  const { year, toMonth } = protocolVoyageSummaryRange(query, now);
+  const yearText = String(year);
+  const q = query.q?.trim().toLowerCase() ?? '';
+  return items.filter((item) => {
+    if (!item.date.startsWith(yearText)) return false;
+    const month = Number(item.date.slice(5, 7));
+    if (!Number.isFinite(month) || month < 1 || month > toMonth) return false;
+    if (!q) return true;
+    return [
+      item.numero,
+      item.voyageur,
+      item.destination,
+      item.categorieHotel,
+    ].join(' ').toLowerCase().includes(q);
+  });
+}
+
+function normalizePersonName(value: string): string {
+  return value
+    .normalize('NFD')
+    .replace(/[\u0300-\u036f]/g, '')
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, ' ')
+    .trim()
+    .replace(/^(mr|mme|mlle|ms|mrs|dr|m)\s+/, '');
+}
+
+export function buildProtocolVoyageDepartmentLookup(
+  people: { matricule?: string; nom?: string; departement?: string }[],
+): (item: ProtocolVoyageCout) => string {
+  const byMatricule = new Map<string, string>();
+  const byName = new Map<string, string>();
+  for (const person of people) {
+    const department = person.departement?.trim() ?? '';
+    if (!department) continue;
+    const matricule = person.matricule?.trim() ?? '';
+    if (matricule && !byMatricule.has(matricule)) byMatricule.set(matricule, department);
+    const name = normalizePersonName(person.nom ?? '');
+    if (name && !byName.has(name)) byName.set(name, department);
+  }
+  return (item) => {
+    const matricule = item.voyageurMatricule.trim();
+    if (matricule && byMatricule.has(matricule)) return byMatricule.get(matricule) ?? 'Non rattaché';
+    const name = normalizePersonName(item.voyageur);
+    if (name && byName.has(name)) return byName.get(name) ?? 'Non rattaché';
+    return 'Non rattaché';
+  };
+}
+
 export function filterProtocolVoyagesForExport(
   items: ProtocolVoyageCout[],
   query: ProtocolVoyageExportQuery,
@@ -226,51 +307,156 @@ function buildVoyagesSheet(items: ProtocolVoyageCout[], query: ProtocolVoyageExp
   return ws;
 }
 
-function buildSummarySheet(items: ProtocolVoyageCout[], query: ProtocolVoyageExportQuery): XLSX.WorkSheet {
-  const count = items.length;
-  const sum = (pick: (item: ProtocolVoyageCout) => number) => items.reduce((acc, item) => acc + pick(item), 0);
-  const total = sum((item) => item.coutTotal);
+const SUMMARY_HEADERS = [
+  'Libellé',
+  'Voyages',
+  'Nuits',
+  ...PROTOCOL_VOYAGE_COST_NATURES.map((nature) => nature.label),
+  'Coût total',
+];
+const SUMMARY_LAST_COL = SUMMARY_HEADERS.length - 1;
+
+const SECTION_STYLE = {
+  font: { bold: true, sz: 12, color: { rgb: '0F2744' } },
+  alignment: { vertical: 'center' },
+};
+
+function summaryTextStyle(zebra: boolean, bold = false): object {
+  return {
+    font: { sz: 10, color: { rgb: '0F172A' }, bold },
+    fill: { fgColor: { rgb: zebra ? 'F8FAFC' : 'FFFFFF' } },
+    alignment: { horizontal: 'left', vertical: 'center' },
+    border: BORDER,
+  };
+}
+
+function summaryNumberStyle(zebra: boolean, bold = false): object {
+  return {
+    font: { sz: 10, color: { rgb: '0F172A' }, bold },
+    fill: { fgColor: { rgb: zebra ? 'F8FAFC' : 'FFFFFF' } },
+    alignment: { horizontal: 'right', vertical: 'center' },
+    border: BORDER,
+  };
+}
+
+function summaryMetricRow(label: string, items: ProtocolVoyageCout[], zebra: boolean): ExportCell[] {
+  const cells: ExportCell[] = [
+    textCell(label, summaryTextStyle(zebra, true)),
+    numberCell(items.length, summaryNumberStyle(zebra), '#,##0'),
+    numberCell(items.reduce((sum, item) => sum + item.nbreNuits, 0), summaryNumberStyle(zebra), '#,##0'),
+  ];
+  for (const nature of PROTOCOL_VOYAGE_COST_NATURES) {
+    cells.push(numberCell(
+      items.reduce((sum, item) => sum + item[nature.id], 0),
+      summaryNumberStyle(zebra),
+      '#,##0.00',
+    ));
+  }
+  cells.push(numberCell(
+    items.reduce((sum, item) => sum + item.coutTotal, 0),
+    summaryNumberStyle(zebra, true),
+    '#,##0.00',
+  ));
+  return cells;
+}
+
+function summaryTotalRow(firstExcelRow: number, lastExcelRow: number): ExportCell[] {
+  const totalStyleLeft = { ...TOTAL_STYLE, alignment: { horizontal: 'left', vertical: 'center' } };
+  return SUMMARY_HEADERS.map((_, column) => {
+    if (column === 0) return textCell('Total', totalStyleLeft);
+    const format = column <= 2 ? '#,##0' : '#,##0.00';
+    if (lastExcelRow < firstExcelRow) return numberCell(0, TOTAL_STYLE, format);
+    return formulaCell(
+      `SUM(${colLetter(column)}${firstExcelRow}:${colLetter(column)}${lastExcelRow})`,
+      TOTAL_STYLE,
+      format,
+    );
+  });
+}
+
+function buildSummarySheet(
+  items: ProtocolVoyageCout[],
+  query: ProtocolVoyageExportQuery,
+  departmentOf: (item: ProtocolVoyageCout) => string,
+  now = new Date(),
+): XLSX.WorkSheet {
+  const range = protocolVoyageSummaryRange(query, now);
+  const search = query.q?.trim();
+  const subtitle = search
+    ? `${protocolVoyageSummaryLabel(query, now)} · filtre « ${search} » · montants en USD`
+    : `${protocolVoyageSummaryLabel(query, now)} · montants en USD`;
   const rows: ExportCell[][] = [
     [textCell('Synthèse — gestion de voyage', TITLE_STYLE)],
-    [textCell(protocolVoyagePeriodLabel(query), SUBTITLE_STYLE)],
+    [textCell(subtitle, SUBTITLE_STYLE)],
     [],
-    [textCell('Indicateur', HEADER_STYLE), textCell('Valeur', HEADER_STYLE)],
-    [textCell('Période', LABEL_STYLE), textCell(protocolVoyagePeriodLabel(query), bodyStyle(0, false))],
+    [textCell('Par mois', SECTION_STYLE)],
+    SUMMARY_HEADERS.map((label, index) => textCell(index === 0 ? 'Mois' : label, HEADER_STYLE)),
   ];
-  if (query.q?.trim()) {
-    rows.push([textCell('Recherche', LABEL_STYLE), textCell(query.q.trim(), bodyStyle(0, true))]);
+  const monthHeaderExcelRow = rows.length;
+  const monthFirstExcelRow = monthHeaderExcelRow + 1;
+  for (let month = range.fromMonth; month <= range.toMonth; month += 1) {
+    const prefix = `${range.year}-${String(month).padStart(2, '0')}`;
+    const monthItems = items.filter((item) => item.date.startsWith(prefix));
+    rows.push(summaryMetricRow(MONTHS[month - 1], monthItems, month % 2 === 0));
   }
-  rows.push(
-    [textCell('Voyages', LABEL_STYLE), numberCell(count, bodyStyle(11, false), '#,##0')],
-    [textCell('Nuits réservées', LABEL_STYLE), numberCell(sum((item) => item.nbreNuits), bodyStyle(11, true), '#,##0')],
-  );
-  PROTOCOL_VOYAGE_COST_NATURES.forEach((nature, index) => {
-    rows.push([
-      textCell(nature.label, LABEL_STYLE),
-      numberCell(sum((item) => item[nature.id]), bodyStyle(5, index % 2 === 0), '#,##0.00'),
-    ]);
+  const monthLastExcelRow = rows.length;
+  rows.push(summaryTotalRow(monthFirstExcelRow, monthLastExcelRow));
+
+  rows.push([]);
+  rows.push([textCell('Par département', SECTION_STYLE)]);
+  rows.push(SUMMARY_HEADERS.map((label, index) => textCell(index === 0 ? 'Département' : label, HEADER_STYLE)));
+  const departmentHeaderExcelRow = rows.length;
+  const grouped = new Map<string, ProtocolVoyageCout[]>();
+  for (const item of items) {
+    const department = departmentOf(item).trim() || 'Non rattaché';
+    const list = grouped.get(department) ?? [];
+    list.push(item);
+    grouped.set(department, list);
+  }
+  const departments = [...grouped.entries()].sort((a, b) => {
+    const totalA = a[1].reduce((sum, item) => sum + item.coutTotal, 0);
+    const totalB = b[1].reduce((sum, item) => sum + item.coutTotal, 0);
+    if (totalB !== totalA) return totalB - totalA;
+    return a[0].localeCompare(b[0], 'fr', { sensitivity: 'base' });
   });
-  rows.push(
-    [textCell('Coût total', LABEL_STYLE), numberCell(total, { ...TOTAL_STYLE, alignment: { horizontal: 'right', vertical: 'center' } }, '#,##0.00')],
-    [textCell('Coût moyen / voyage', LABEL_STYLE), numberCell(count ? total / count : 0, bodyStyle(5, false), '#,##0.00')],
-  );
+  const departmentFirstExcelRow = departmentHeaderExcelRow + 1;
+  departments.forEach(([department, departmentItems], index) => {
+    rows.push(summaryMetricRow(department, departmentItems, index % 2 === 1));
+  });
+  const departmentLastExcelRow = departments.length ? rows.length : departmentHeaderExcelRow;
+  rows.push(summaryTotalRow(departmentFirstExcelRow, departmentLastExcelRow));
 
   const ws = XLSX.utils.aoa_to_sheet(rows);
-  ws['!cols'] = [{ wch: 28 }, { wch: 36 }];
+  ws['!cols'] = [24, 12, 12, 16, 14, 14, 16, 18, 14, 16, 16, 16].map((wch) => ({ wch }));
+  const rowHeights: { hpt: number }[] = [];
+  rowHeights[0] = { hpt: 24 };
+  rowHeights[1] = { hpt: 18 };
+  rowHeights[3] = { hpt: 20 };
+  rowHeights[departmentHeaderExcelRow - 2] = { hpt: 20 };
+  ws['!rows'] = rowHeights;
   ws['!merges'] = [
-    { s: { r: 0, c: 0 }, e: { r: 0, c: 1 } },
-    { s: { r: 1, c: 0 }, e: { r: 1, c: 1 } },
+    { s: { r: 0, c: 0 }, e: { r: 0, c: SUMMARY_LAST_COL } },
+    { s: { r: 1, c: 0 }, e: { r: 1, c: SUMMARY_LAST_COL } },
+    { s: { r: 3, c: 0 }, e: { r: 3, c: SUMMARY_LAST_COL } },
+    { s: { r: departmentHeaderExcelRow - 2, c: 0 }, e: { r: departmentHeaderExcelRow - 2, c: SUMMARY_LAST_COL } },
   ];
-  ws['!rows'] = [{ hpt: 24 }, { hpt: 18 }];
   return ws;
 }
 
 export function buildProtocolVoyageExportBuffer(
   items: ProtocolVoyageCout[],
   query: ProtocolVoyageExportQuery = {},
+  options?: {
+    summaryItems?: ProtocolVoyageCout[];
+    departmentOf?: (item: ProtocolVoyageCout) => string;
+    now?: Date;
+  },
 ): Buffer {
+  const now = options?.now ?? new Date();
+  const summaryItems = options?.summaryItems ?? filterProtocolVoyagesForSummary(items, query, now);
+  const departmentOf = options?.departmentOf ?? (() => 'Non rattaché');
   const wb = XLSX.utils.book_new();
   XLSX.utils.book_append_sheet(wb, buildVoyagesSheet(items, query), 'Voyages');
-  XLSX.utils.book_append_sheet(wb, buildSummarySheet(items, query), 'Synthèse');
+  XLSX.utils.book_append_sheet(wb, buildSummarySheet(summaryItems, query, departmentOf, now), 'Synthèse');
   return XLSX.write(wb, { bookType: 'xlsx', type: 'buffer' }) as Buffer;
 }
