@@ -134,6 +134,7 @@ export default function ProtocolVoyagesPage() {
   const canCreate = can(MENU, 'create');
   const canEdit = can(MENU, 'edit');
   const canDelete = can(MENU, 'delete');
+  const canExport = can(MENU, 'export');
   const now = new Date();
   const [year, setYear] = useState(now.getFullYear());
   const [month, setMonth] = useState(now.getMonth() + 1);
@@ -143,6 +144,7 @@ export default function ProtocolVoyagesPage() {
   const [loading, setLoading] = useState(true);
   const [refreshing, setRefreshing] = useState(false);
   const [busy, setBusy] = useState(false);
+  const [exporting, setExporting] = useState(false);
   const [search, setSearch] = useState('');
   const [form, setForm] = useState<FormState | null>(null);
   const [drill, setDrill] = useState<{ title: string; items: ProtocolVoyageCout[] } | null>(null);
@@ -334,6 +336,41 @@ export default function ProtocolVoyagesPage() {
     }
   }
 
+  async function exportExcel() {
+    if (exporting) return;
+    const source = tab === 'liste' ? filtered : periodItems;
+    if (source.length === 0) {
+      await showError('Aucun voyage à exporter');
+      return;
+    }
+    setExporting(true);
+    try {
+      const params = new URLSearchParams({
+        year: String(year),
+        month: String(month),
+      });
+      const q = search.trim();
+      if (tab === 'liste' && q) params.set('q', q);
+      const response = await fetch(`/api/protocol/voyages/export?${params}`);
+      if (!response.ok) throw new Error(await readError(response));
+      const blob = await response.blob();
+      const disposition = response.headers.get('Content-Disposition') ?? '';
+      const filename = disposition.match(/filename="([^"]+)"/i)?.[1]
+        ?? `gestion-voyage-${year}.xlsx`;
+      const url = URL.createObjectURL(blob);
+      const anchor = document.createElement('a');
+      anchor.href = url;
+      anchor.download = filename;
+      anchor.click();
+      URL.revokeObjectURL(url);
+      await showSuccess(`${source.length} voyage${source.length > 1 ? 's' : ''} exporté${source.length > 1 ? 's' : ''}`);
+    } catch (err) {
+      await showError(err instanceof Error ? err.message : 'Export Excel impossible');
+    } finally {
+      setExporting(false);
+    }
+  }
+
   function menuItems(item: ProtocolVoyageCout): ContextMenuItem[] {
     const actions: ContextMenuItem[] = [];
     if (canEdit) actions.push({ id: 'edit', label: 'Modifier', icon: 'edit', onClick: () => setForm(formFrom(item)) });
@@ -395,6 +432,25 @@ export default function ProtocolVoyagesPage() {
                   </select>
                 </label>
               </div>
+              {canExport && (
+                <button
+                  type="button"
+                  className="btn btn-outline btn-sm btn-with-icon"
+                  title={tab === 'liste' && search.trim() ? 'Exporter les voyages filtrés' : 'Exporter les voyages de la période'}
+                  aria-label="Exporter Excel"
+                  disabled={exporting || loading}
+                  onClick={() => void exportExcel()}
+                >
+                  {exporting ? <span className="btn-spinner" aria-hidden="true" /> : (
+                    <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden>
+                      <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
+                      <polyline points="7 10 12 15 17 10" />
+                      <line x1="12" y1="15" x2="12" y2="3" />
+                    </svg>
+                  )}
+                  <span>{exporting ? 'Export…' : 'Export Excel'}</span>
+                </button>
+              )}
               {canCreate && (
                 <button type="button" className="btn btn-accent charroi-voyage-add" title="Nouveau voyage" aria-label="Nouveau voyage" onClick={() => setForm(emptyForm())}>
                   <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" strokeWidth="2.2" aria-hidden>
