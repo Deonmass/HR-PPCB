@@ -435,7 +435,7 @@ export default function ProtocolVoyagesPage() {
               {canExport && (
                 <button
                   type="button"
-                  className="btn btn-outline btn-sm btn-with-icon"
+                  className="btn btn-sm btn-with-icon protocol-voyage-excel"
                   title="Exporter. La synthèse est calculée par formules depuis la feuille Voyages, avec le détail mensuel par département et un graphique filtré."
                   aria-label="Exporter Excel"
                   disabled={exporting || loading}

@@ -25158,6 +25158,26 @@ html[data-theme='dark'] .guest-house-kimpese-panel {
   margin: 0;
 }
 
+.protocol-voyage-excel {
+  background: linear-gradient(135deg, #86efac 0%, #22c55e 46%, #15803d 100%);
+  color: #fff;
+  border: none;
+  box-shadow: 0 2px 8px rgba(22, 163, 74, 0.32);
+}
+
+.protocol-voyage-excel:hover:not(:disabled) {
+  background: linear-gradient(135deg, #bbf7d0 0%, #4ade80 42%, #16a34a 100%);
+  color: #fff;
+  box-shadow: 0 4px 14px rgba(22, 163, 74, 0.4);
+  transform: translateY(-1px);
+}
+
+.protocol-voyage-excel:disabled {
+  opacity: 0.62;
+  box-shadow: none;
+  transform: none;
+}
+
 .charroi-voyage-add {
   width: 2rem;
   min-width: 2rem;
