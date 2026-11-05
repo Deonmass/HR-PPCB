@@ -560,8 +560,11 @@ function buildSummarySheet(
   decoded.e.c = Math.max(decoded.e.c, 26);
   decoded.e.r = Math.max(decoded.e.r, Math.max(list.length - 1, rows.length - 1));
   ws['!ref'] = XLSX.utils.encode_range(decoded);
-  ws['!cols'] = [28, 12, 12, 16, 14, 14, 16, 18, 14, 16, 16, 16, 3, 24, 16].concat(Array.from({ length: 11 }, () => ({ wch: 3 })));
-  ws['!cols'][26] = { hidden: true, wch: 16 };
+  const cols: { wch: number; hidden?: boolean }[] = [28, 12, 12, 16, 14, 14, 16, 18, 14, 16, 16, 16, 3, 24, 16]
+    .map((wch) => ({ wch }));
+  while (cols.length < 26) cols.push({ wch: 3 });
+  cols[26] = { hidden: true, wch: 16 };
+  ws['!cols'] = cols;
   const rowHeights: { hpt: number }[] = [];
   rowHeights[0] = { hpt: 24 };
   rowHeights[1] = { hpt: 18 };
