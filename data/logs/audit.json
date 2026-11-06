@@ -1,6 +1,21 @@
 {
   "entries": [
     {
+      "id": "log-002241",
+      "at": "2026-11-06T07:16:58.181Z",
+      "userId": "admin",
+      "userName": "Administrateur",
+      "userEmail": "admin",
+      "module": "documents.exit",
+      "moduleLabel": "Documents",
+      "action": "export",
+      "actionLabel": "Export",
+      "summary": "Document exit « Employee exit clearance form » — MBANGI MAKULENDA ANDRE (70000093)",
+      "details": "Document exit « Employee exit clearance form » — MBANGI MAKULENDA ANDRE (70000093)",
+      "undoable": false,
+      "undone": false
+    },
+    {
       "id": "log-002240",
       "at": "2026-11-06T06:18:41.618Z",
       "userId": "admin",
@@ -599720,5 +599735,5 @@
       }
     }
   ],
-  "nextSeq": 2241
+  "nextSeq": 2242
 }
