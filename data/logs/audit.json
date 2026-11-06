@@ -1,6 +1,21 @@
 {
   "entries": [
     {
+      "id": "log-002261",
+      "at": "2026-11-06T15:54:06.218Z",
+      "userId": "admin",
+      "userName": "Administrateur",
+      "userEmail": "admin",
+      "module": "travel.etablir",
+      "moduleLabel": "Cash request",
+      "action": "export",
+      "actionLabel": "Export",
+      "summary": "Téléchargement document voyage PPCB-DOC-HR-ZA/045/11/2026",
+      "details": "Fichier Formulaire d'autorisation de voyage - RUKOMEZA KARHIBULA GISCARD.docx (travel-authorization)",
+      "undoable": false,
+      "undone": false
+    },
+    {
       "id": "log-002260",
       "at": "2026-11-06T15:53:55.255Z",
       "userId": "admin",
@@ -600365,5 +600380,5 @@
       }
     }
   ],
-  "nextSeq": 2261
+  "nextSeq": 2262
 }
