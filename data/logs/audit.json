@@ -1,6 +1,21 @@
 {
   "entries": [
     {
+      "id": "log-002263",
+      "at": "2026-11-06T15:54:28.149Z",
+      "userId": "admin",
+      "userName": "Administrateur",
+      "userEmail": "admin",
+      "module": "travel.etablir",
+      "moduleLabel": "Cash request",
+      "action": "export",
+      "actionLabel": "Export",
+      "summary": "Téléchargement document voyage PPCB-DOC-HR-ZA/045/11/2026",
+      "details": "Fichier Ordre de mission - RUKOMEZA KARHIBULA GISCARD.docx (mission-order)",
+      "undoable": false,
+      "undone": false
+    },
+    {
       "id": "log-002262",
       "at": "2026-11-06T15:54:17.219Z",
       "userId": "admin",
@@ -600395,5 +600410,5 @@
       }
     }
   ],
-  "nextSeq": 2263
+  "nextSeq": 2264
 }
