@@ -32,7 +32,18 @@
       "tripDays": 1,
       "totalBudget": 100,
       "recordId": "cr-1790772206177"
+    },
+    {
+      "rowIndex": 12,
+      "date": "2026-11-06",
+      "ref": "PPCB-DOC-HR-ZA/045/11/2026",
+      "employee": "RUKOMEZA KARHIBULA GISCARD (70000266)",
+      "department": "Mining — Mining Manager",
+      "travelDates": "08/11/2026 → 17/11/2026",
+      "tripDays": 10,
+      "totalBudget": 1700,
+      "recordId": "cr-1793980412267"
     }
   ],
-  "nextRowIndex": 12
+  "nextRowIndex": 13
 }
