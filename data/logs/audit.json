@@ -1,6 +1,21 @@
 {
   "entries": [
     {
+      "id": "log-002242",
+      "at": "2026-11-06T07:17:14.349Z",
+      "userId": "admin",
+      "userName": "Administrateur",
+      "userEmail": "admin",
+      "module": "documents.exit",
+      "moduleLabel": "Documents",
+      "action": "export",
+      "actionLabel": "Export",
+      "summary": "Document exit « Attestation de fin de service » — MBANGI MAKULENDA ANDRE (70000093)",
+      "details": "Document exit « Attestation de fin de service » — MBANGI MAKULENDA ANDRE (70000093)",
+      "undoable": false,
+      "undone": false
+    },
+    {
       "id": "log-002241",
       "at": "2026-11-06T07:16:58.181Z",
       "userId": "admin",
@@ -599735,5 +599750,5 @@
       }
     }
   ],
-  "nextSeq": 2242
+  "nextSeq": 2243
 }
