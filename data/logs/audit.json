@@ -1,6 +1,64 @@
 {
   "entries": [
     {
+      "id": "log-002254",
+      "at": "2026-11-06T12:39:47.716Z",
+      "userId": "admin",
+      "userName": "Administrateur",
+      "userEmail": "admin",
+      "module": "dependants",
+      "moduleLabel": "Dépendants",
+      "action": "update",
+      "actionLabel": "Modification",
+      "entityType": "dependant",
+      "entityId": "736",
+      "summary": "Modification dépendant #736 — MPEZO FUENDE ERICK",
+      "details": "Modification dépendant #736 — MPEZO FUENDE ERICK",
+      "before": {
+        "id": 736,
+        "employeeId": "f904e459-468f-4268-8078-159664fd2961",
+        "matricule": "70000313",
+        "pactilis": "",
+        "statut": "Conjoint",
+        "sexe": "M",
+        "nom": "MPEZO FUENDE ERICK",
+        "localisation": "Kinshasa",
+        "numeroVilla": "",
+        "typeMaison": "",
+        "dateNaissance": "23/09/1985",
+        "age": 40,
+        "compositionFamille": null,
+        "enfants": null,
+        "total": null,
+        "commentaires": "",
+        "lienDocument": "",
+        "createdAt": "2026-09-02T08:37:47.819Z",
+        "updatedAt": "2026-09-02T08:37:47.819Z"
+      },
+      "after": {
+        "id": 736,
+        "matricule": "70000313",
+        "pactilis": "178321",
+        "statut": "Conjoint",
+        "sexe": "M",
+        "nom": "MPEZO FUENDE ERICK",
+        "localisation": "Kinshasa",
+        "numeroVilla": "",
+        "typeMaison": "",
+        "dateNaissance": "23/09/1985",
+        "age": 41,
+        "compositionFamille": null,
+        "enfants": null,
+        "total": null,
+        "commentaires": "",
+        "lienDocument": "",
+        "employeNom": "GLODY BENGESHA ELONGO",
+        "departement": "Sales and Marketing"
+      },
+      "undoable": true,
+      "undone": false
+    },
+    {
       "id": "log-002253",
       "at": "2026-11-06T12:39:28.926Z",
       "userId": "admin",
@@ -600035,5 +600093,5 @@
       }
     }
   ],
-  "nextSeq": 2254
+  "nextSeq": 2255
 }
