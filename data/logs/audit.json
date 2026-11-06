@@ -1,6 +1,36 @@
 {
   "entries": [
     {
+      "id": "log-002247",
+      "at": "2026-11-06T09:53:17.632Z",
+      "userId": "admin",
+      "userName": "Administrateur",
+      "userEmail": "admin",
+      "module": "employees",
+      "moduleLabel": "Employés",
+      "action": "update",
+      "actionLabel": "Modification",
+      "entityType": "employee",
+      "summary": "N+1 mis à jour (1)",
+      "details": "N+1 mis à jour (1)",
+      "after": {
+        "employees": [
+          {
+            "matricule": "70000109",
+            "lineManagerName": "MUKENDI KABONGO PATRICK",
+            "lineManagerPosition": "Mechanical Engineer",
+            "departement": "Engineering",
+            "departmentHr": "Engineering",
+            "service": ""
+          }
+        ],
+        "contractants": [],
+        "vacants": []
+      },
+      "undoable": false,
+      "undone": false
+    },
+    {
       "id": "log-002246",
       "at": "2026-11-06T09:32:22.909Z",
       "userId": "Serge.Muakasa@ppcdrc.cd",
@@ -599831,5 +599861,5 @@
       }
     }
   ],
-  "nextSeq": 2247
+  "nextSeq": 2248
 }
