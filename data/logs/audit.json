@@ -1,6 +1,25 @@
 {
   "entries": [
     {
+      "id": "log-002257",
+      "at": "2026-11-06T12:42:57.881Z",
+      "userId": "admin",
+      "userName": "Administrateur",
+      "userEmail": "admin",
+      "module": "dependants",
+      "moduleLabel": "Dépendants",
+      "action": "other",
+      "actionLabel": "Autre",
+      "summary": "Comparaison Pactilis (Etat_ASSURESDEPENDANTS PPC 261026.xlsx)",
+      "details": "Vérification Pactilis vs local — 711 lignes",
+      "undoable": false,
+      "undone": false,
+      "meta": {
+        "fileName": "Etat_ASSURESDEPENDANTS PPC 261026.xlsx",
+        "mode": "compare"
+      }
+    },
+    {
       "id": "log-002256",
       "at": "2026-11-06T12:41:13.761Z",
       "userId": "admin",
@@ -600209,5 +600228,5 @@
       }
     }
   ],
-  "nextSeq": 2257
+  "nextSeq": 2258
 }
