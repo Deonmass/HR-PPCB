@@ -1,6 +1,43 @@
 {
   "entries": [
     {
+      "id": "log-002249",
+      "at": "2026-11-06T09:54:54.127Z",
+      "userId": "admin",
+      "userName": "Administrateur",
+      "userEmail": "admin",
+      "module": "employees",
+      "moduleLabel": "Employés",
+      "action": "update",
+      "actionLabel": "Modification",
+      "entityType": "employee",
+      "summary": "N+1 mis à jour (1)",
+      "details": "N+1 mis à jour (1)",
+      "after": {
+        "employees": [],
+        "contractants": [],
+        "vacants": [
+          {
+            "id": "vac-mw4ssyfn-otw4y",
+            "title": "Quality Manager",
+            "department": "",
+            "location": "",
+            "grade": "",
+            "reportsTo": "MOLONGA LYONGA ANDREW",
+            "costCenter": "",
+            "jobDescription": "",
+            "jobLevel": "",
+            "headcount": 1,
+            "notes": "",
+            "createdAt": "2026-11-06T09:54:49.811Z",
+            "updatedAt": "2026-11-06T09:54:49.811Z"
+          }
+        ]
+      },
+      "undoable": false,
+      "undone": false
+    },
+    {
       "id": "log-002248",
       "at": "2026-11-06T09:53:57.491Z",
       "userId": "admin",
@@ -599891,5 +599928,5 @@
       }
     }
   ],
-  "nextSeq": 2249
+  "nextSeq": 2250
 }
