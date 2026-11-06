@@ -1,6 +1,113 @@
 {
   "entries": [
     {
+      "id": "log-002258",
+      "at": "2026-11-06T15:53:35.174Z",
+      "userId": "admin",
+      "userName": "Administrateur",
+      "userEmail": "admin",
+      "module": "travel.etablir",
+      "moduleLabel": "Cash request",
+      "action": "create",
+      "actionLabel": "Création",
+      "entityType": "travel.cash-request",
+      "entityId": "cr-1793980412267",
+      "summary": "Génération documents voyage PPCB-DOC-HR-ZA/045/11/2026",
+      "details": "Documents générés (SSE) pour RUKOMEZA KARHIBULA GISCARD (PPCB-DOC-HR-ZA/045/11/2026)",
+      "after": {
+        "id": "cr-1793980412267",
+        "type": "cash-request",
+        "createdAt": "2026-11-06T15:53:33.153Z",
+        "missionRef": "PPCB-DOC-HR-ZA/045/11/2026",
+        "employeeMatricule": "70000266",
+        "employeeName": "RUKOMEZA KARHIBULA GISCARD",
+        "employeeDepartment": "Mining",
+        "costCenter": "KQ1910",
+        "requestorLine": "RUKOMEZA KARHIBULA GISCARD (70000266)        Department : Mining        Coast center : KQ1910",
+        "objet": "ORDRE DE MISSION POUR KOLWEZI",
+        "requestDate": "2026-11-06",
+        "travel": {
+          "position": "Mining Manager",
+          "department": "Mining",
+          "tripPurpose": "ORDRE DE MISSION POUR KOLWEZI",
+          "costCenter": "KQ1910",
+          "documentDate": "2026-11-06",
+          "departureDate": "2026-11-08",
+          "departurePlace": "zamba",
+          "destinationPlace": "Kolwezi",
+          "returnDate": "2026-11-17",
+          "peopleCount": 1,
+          "companyName": "PPC Barnet Quarring SA",
+          "departmentToWorkWith": "",
+          "contactPerson": "",
+          "transportMeans": "Voiture",
+          "paymentOrderSignatory": "EWULI SUKA Carine",
+          "budgetLines": [
+            {
+              "label": "Food allowance",
+              "amount": 100
+            },
+            {
+              "label": "Trip allowance",
+              "amount": 70
+            }
+          ],
+          "isInternationalTravel": false,
+          "missionSite": "zamba",
+          "missionCategory": "",
+          "missionType": "Manager national",
+          "missionObservation": ""
+        },
+        "lines": [
+          {
+            "ref": "1",
+            "description": "Food allowance",
+            "currency": "USD",
+            "amount": 1000
+          },
+          {
+            "ref": "2",
+            "description": "Trip allowance",
+            "currency": "USD",
+            "amount": 700
+          }
+        ],
+        "total": 1700,
+        "fileName": "Cash Request - RUKOMEZA KARHIBULA GISCARD.xlsx",
+        "filePath": "/tmp/hr-rh-app/travel/output/Cash Request - RUKOMEZA KARHIBULA GISCARD.xlsx",
+        "files": [
+          {
+            "type": "cash-request",
+            "fileName": "Cash Request - RUKOMEZA KARHIBULA GISCARD.xlsx",
+            "filePath": "/tmp/hr-rh-app/travel/output/Cash Request - RUKOMEZA KARHIBULA GISCARD.xlsx"
+          },
+          {
+            "type": "trip-budget",
+            "fileName": "TRIP BUDGET FORM - RUKOMEZA KARHIBULA GISCARD.xlsx",
+            "filePath": "/tmp/hr-rh-app/travel/output/TRIP BUDGET FORM - RUKOMEZA KARHIBULA GISCARD.xlsx"
+          },
+          {
+            "type": "travel-authorization",
+            "fileName": "Formulaire d'autorisation de voyage - RUKOMEZA KARHIBULA GISCARD.docx",
+            "filePath": "/tmp/hr-rh-app/travel/output/Formulaire d'autorisation de voyage - RUKOMEZA KARHIBULA GISCARD.docx"
+          },
+          {
+            "type": "hotel-booking",
+            "fileName": "Hotel booking form - RUKOMEZA KARHIBULA GISCARD.docx",
+            "filePath": "/tmp/hr-rh-app/travel/output/Hotel booking form - RUKOMEZA KARHIBULA GISCARD.docx"
+          },
+          {
+            "type": "mission-order",
+            "fileName": "Ordre de mission - RUKOMEZA KARHIBULA GISCARD.docx",
+            "filePath": "/tmp/hr-rh-app/travel/output/Ordre de mission - RUKOMEZA KARHIBULA GISCARD.docx"
+          }
+        ],
+        "saveDirectory": "/tmp/hr-rh-app/travel/output"
+      },
+      "undoable": false,
+      "undone": false
+    },
+    {
       "id": "log-002257",
       "at": "2026-11-06T12:42:57.881Z",
       "userId": "admin",
@@ -600228,5 +600335,5 @@
       }
     }
   ],
-  "nextSeq": 2258
+  "nextSeq": 2259
 }
