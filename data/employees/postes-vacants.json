@@ -14,6 +14,21 @@
       "notes": "",
       "createdAt": "2026-10-29T10:49:57.524Z",
       "updatedAt": "2026-10-29T10:49:57.524Z"
+    },
+    {
+      "id": "vac-mw4ssyfn-otw4y",
+      "title": "Quality Manager",
+      "department": "",
+      "location": "",
+      "grade": "",
+      "reportsTo": "MOLONGA LYONGA ANDREW",
+      "costCenter": "",
+      "jobDescription": "",
+      "jobLevel": "",
+      "headcount": 1,
+      "notes": "",
+      "createdAt": "2026-11-06T09:54:49.811Z",
+      "updatedAt": "2026-11-06T09:54:49.811Z"
     }
   ]
 }
