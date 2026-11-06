@@ -1,6 +1,21 @@
 {
   "entries": [
     {
+      "id": "log-002262",
+      "at": "2026-11-06T15:54:17.219Z",
+      "userId": "admin",
+      "userName": "Administrateur",
+      "userEmail": "admin",
+      "module": "travel.etablir",
+      "moduleLabel": "Cash request",
+      "action": "export",
+      "actionLabel": "Export",
+      "summary": "Téléchargement document voyage PPCB-DOC-HR-ZA/045/11/2026",
+      "details": "Fichier Hotel booking form - RUKOMEZA KARHIBULA GISCARD.docx (hotel-booking)",
+      "undoable": false,
+      "undone": false
+    },
+    {
       "id": "log-002261",
       "at": "2026-11-06T15:54:06.218Z",
       "userId": "admin",
@@ -600380,5 +600395,5 @@
       }
     }
   ],
-  "nextSeq": 2262
+  "nextSeq": 2263
 }
