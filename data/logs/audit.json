@@ -1,6 +1,21 @@
 {
   "entries": [
     {
+      "id": "log-002250",
+      "at": "2026-11-06T11:58:51.561Z",
+      "userId": "Marie.Yowali",
+      "userName": "Marie Yowali",
+      "userEmail": "Marie.Yowali@ppcdrc.cd",
+      "module": "dependants",
+      "moduleLabel": "Dépendants",
+      "action": "export",
+      "actionLabel": "Export",
+      "summary": "Export dépendants (DEPENDANTS_RESUME_2026-11-06.xlsx)",
+      "details": "Export dépendants (DEPENDANTS_RESUME_2026-11-06.xlsx)",
+      "undoable": false,
+      "undone": false
+    },
+    {
       "id": "log-002249",
       "at": "2026-11-06T09:54:54.127Z",
       "userId": "admin",
@@ -599928,5 +599943,5 @@
       }
     }
   ],
-  "nextSeq": 2250
+  "nextSeq": 2251
 }
