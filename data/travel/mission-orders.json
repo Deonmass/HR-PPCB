@@ -6370,6 +6370,29 @@
       "recordId": "cr-1790772206177",
       "source": "app",
       "createdAt": "2026-09-30T12:43:26.928Z"
+    },
+    {
+      "id": "mo-cr-1793980412267",
+      "site": "zamba",
+      "sr": "053",
+      "registerDate": "2026-11-06",
+      "missionRef": "PPCB-DOC-HR-ZA/045/11/2026",
+      "matricule": "70000266",
+      "employeeName": "RUKOMEZA KARHIBULA GISCARD",
+      "category": "",
+      "title": "Mining Manager",
+      "purpose": "ORDRE DE MISSION POUR KOLWEZI",
+      "destination": "Kolwezi",
+      "transportMeans": "Voiture",
+      "departureDate": "2026-11-08",
+      "returnDate": "2026-11-17",
+      "days": 10,
+      "type": "Manager national",
+      "amount": 1700,
+      "observation": "",
+      "recordId": "cr-1793980412267",
+      "source": "app",
+      "createdAt": "2026-11-06T15:53:33.153Z"
     }
   ]
 }
