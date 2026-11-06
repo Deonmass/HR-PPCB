@@ -398,5 +398,15 @@
     "issuedBy": "Administrateur",
     "id": "exit-1793949413132-zd780n",
     "createdAt": "2026-11-06T07:16:53.132Z"
+  },
+  {
+    "matricule": "70000093",
+    "employeeName": "MBANGI MAKULENDA ANDRE",
+    "doc": "attestation-fin-service",
+    "docLabel": "Attestation de fin de service",
+    "fileName": "Attestation de fin de service - MBANGI MAKULENDA ANDRE.docx",
+    "issuedBy": "Administrateur",
+    "id": "exit-1793949430662-rv7v96",
+    "createdAt": "2026-11-06T07:17:10.662Z"
   }
 ]
