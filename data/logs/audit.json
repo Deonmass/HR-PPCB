@@ -1,6 +1,61 @@
 {
   "entries": [
     {
+      "id": "log-002284",
+      "at": "2026-11-09T13:04:10.839Z",
+      "userId": "Serge.Muakasa@ppcdrc.cd",
+      "userName": "Serge Muakasa",
+      "userEmail": "Serge.Muakasa@ppcdrc.cd",
+      "module": "factures-suivi",
+      "moduleLabel": "Factures suivi",
+      "action": "update",
+      "actionLabel": "Modification",
+      "entityType": "facture.suivi",
+      "entityId": "fac-2179",
+      "summary": "Modification facture Facture n° FC/CD02015819/1-20/2026",
+      "details": "Modification facture Facture n° FC/CD02015819/1-20/2026",
+      "before": {
+        "id": "fac-2179",
+        "date": "09/11/2026",
+        "societe": "Gringo",
+        "facture": "Facture n° FC/CD02015819/1-20/2026",
+        "montant": 9690,
+        "echeance": "",
+        "pr": "11208642",
+        "datePr": "",
+        "po": "",
+        "datePo": "",
+        "grn": "",
+        "dateGrn": "",
+        "payment": "",
+        "datePym": "",
+        "commentaire": "Au PR — en attente du PO.",
+        "statut": "unpaid",
+        "statutLabel": "unpaid"
+      },
+      "after": {
+        "id": "fac-2179",
+        "date": "22/10/2026",
+        "societe": "Gringo",
+        "facture": "Facture n° FC/CD02015819/1-20/2026",
+        "montant": 9690,
+        "echeance": "",
+        "pr": "11208642",
+        "datePr": "",
+        "po": "",
+        "datePo": "",
+        "grn": "",
+        "dateGrn": "",
+        "payment": "",
+        "datePym": "",
+        "commentaire": "Au PR — en attente du PO.",
+        "statut": "unpaid",
+        "statutLabel": "unpaid"
+      },
+      "undoable": true,
+      "undone": false
+    },
+    {
       "id": "log-002283",
       "at": "2026-11-09T13:02:53.057Z",
       "userId": "Serge.Muakasa@ppcdrc.cd",
@@ -926612,5 +926667,5 @@
       }
     }
   ],
-  "nextSeq": 2284
+  "nextSeq": 2285
 }
