@@ -1,6 +1,67 @@
 {
   "entries": [
     {
+      "id": "log-002269",
+      "at": "2026-11-09T12:31:03.261Z",
+      "userId": "Tresor.Maneka@ppcdrc.cd",
+      "userName": "Tresor Maneka",
+      "userEmail": "Tresor.Maneka@ppcdrc.cd",
+      "module": "protocol.voyages",
+      "moduleLabel": "Gestion de voyage",
+      "action": "update",
+      "actionLabel": "Modification",
+      "entityType": "protocol.voyage",
+      "entityId": "pvc-070",
+      "summary": "Modification voyage PVC-0070 KALAMBAY TSHILOMBO YANNICK",
+      "details": "Modification voyage PVC-0070 KALAMBAY TSHILOMBO YANNICK",
+      "before": {
+        "id": "pvc-070",
+        "numero": "PVC-0070",
+        "date": "2026-11-04",
+        "voyageur": "KALAMBAY TSHILOMBO YANNICK",
+        "voyageurMatricule": "70000261",
+        "destination": "Zamba Kinshasa",
+        "ticketAvion": 0,
+        "visaVolant": 0,
+        "lettreLegaliser": 0,
+        "goPass": 0,
+        "transfert": 0,
+        "hotelNuit": 100,
+        "nbreNuits": 2,
+        "coutHotel": 200,
+        "categorieHotel": "Hotel Plutonium",
+        "appartement": 0,
+        "autresCharges": 0,
+        "coutTotal": 200,
+        "createdAt": "2026-11-04T09:17:28.124Z",
+        "updatedAt": "2026-11-04T09:17:28.124Z"
+      },
+      "after": {
+        "id": "pvc-070",
+        "numero": "PVC-0070",
+        "date": "2026-11-04",
+        "voyageur": "KALAMBAY TSHILOMBO YANNICK",
+        "voyageurMatricule": "70000261",
+        "destination": "Zamba Kinshasa",
+        "ticketAvion": 0,
+        "visaVolant": 0,
+        "lettreLegaliser": 0,
+        "goPass": 0,
+        "transfert": 0,
+        "hotelNuit": 100,
+        "nbreNuits": 3,
+        "coutHotel": 300,
+        "categorieHotel": "Hotel Plutonium",
+        "appartement": 0,
+        "autresCharges": 0,
+        "coutTotal": 300,
+        "createdAt": "2026-11-04T09:17:28.124Z",
+        "updatedAt": "2026-11-09T12:30:59.269Z"
+      },
+      "undoable": false,
+      "undone": false
+    },
+    {
       "id": "log-002268",
       "at": "2026-11-09T12:29:36.841Z",
       "userId": "Tresor.Maneka@ppcdrc.cd",
@@ -600673,5 +600734,5 @@
       }
     }
   ],
-  "nextSeq": 2269
+  "nextSeq": 2270
 }
