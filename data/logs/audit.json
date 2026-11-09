@@ -1,6 +1,45 @@
 {
   "entries": [
     {
+      "id": "log-002274",
+      "at": "2026-11-09T12:41:34.428Z",
+      "userId": "Tresor.Maneka@ppcdrc.cd",
+      "userName": "Tresor Maneka",
+      "userEmail": "Tresor.Maneka@ppcdrc.cd",
+      "module": "protocol.voyages",
+      "moduleLabel": "Gestion de voyage",
+      "action": "create",
+      "actionLabel": "Création",
+      "entityType": "protocol.voyage",
+      "entityId": "pvc-077",
+      "summary": "Voyage PVC-0077 jean piere Mtsh driver Boma Matadi Kinshasa Boma",
+      "details": "Voyage PVC-0077 jean piere Mtsh driver Boma Matadi Kinshasa Boma",
+      "after": {
+        "id": "pvc-077",
+        "numero": "PVC-0077",
+        "date": "2026-11-06",
+        "voyageur": "jean piere Mtsh driver",
+        "voyageurMatricule": "",
+        "destination": "Boma Matadi Kinshasa Boma",
+        "ticketAvion": 0,
+        "visaVolant": 0,
+        "lettreLegaliser": 0,
+        "goPass": 0,
+        "transfert": 0,
+        "hotelNuit": 100,
+        "nbreNuits": 1,
+        "coutHotel": 100,
+        "categorieHotel": "Hotel Platunuim",
+        "appartement": 0,
+        "autresCharges": 0,
+        "coutTotal": 100,
+        "createdAt": "2026-11-09T12:41:30.501Z",
+        "updatedAt": "2026-11-09T12:41:30.501Z"
+      },
+      "undoable": false,
+      "undone": false
+    },
+    {
       "id": "log-002273",
       "at": "2026-11-09T12:40:09.837Z",
       "userId": "Tresor.Maneka@ppcdrc.cd",
@@ -600934,5 +600973,5 @@
       }
     }
   ],
-  "nextSeq": 2274
+  "nextSeq": 2275
 }
