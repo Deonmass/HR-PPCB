@@ -1,6 +1,45 @@
 {
   "entries": [
     {
+      "id": "log-002270",
+      "at": "2026-11-09T12:35:08.552Z",
+      "userId": "Tresor.Maneka@ppcdrc.cd",
+      "userName": "Tresor Maneka",
+      "userEmail": "Tresor.Maneka@ppcdrc.cd",
+      "module": "protocol.voyages",
+      "moduleLabel": "Gestion de voyage",
+      "action": "create",
+      "actionLabel": "Création",
+      "entityType": "protocol.voyage",
+      "entityId": "pvc-075",
+      "summary": "Voyage PVC-0075 Diki Zamba Kinshasa ZaMBA",
+      "details": "Voyage PVC-0075 Diki Zamba Kinshasa ZaMBA",
+      "after": {
+        "id": "pvc-075",
+        "numero": "PVC-0075",
+        "date": "2026-10-30",
+        "voyageur": "Diki",
+        "voyageurMatricule": "",
+        "destination": "Zamba Kinshasa ZaMBA",
+        "ticketAvion": 0,
+        "visaVolant": 0,
+        "lettreLegaliser": 0,
+        "goPass": 0,
+        "transfert": 0,
+        "hotelNuit": 100,
+        "nbreNuits": 2,
+        "coutHotel": 200,
+        "categorieHotel": "Hotel Platunium",
+        "appartement": 0,
+        "autresCharges": 0,
+        "coutTotal": 200,
+        "createdAt": "2026-11-09T12:35:04.724Z",
+        "updatedAt": "2026-11-09T12:35:04.724Z"
+      },
+      "undoable": false,
+      "undone": false
+    },
+    {
       "id": "log-002269",
       "at": "2026-11-09T12:31:03.261Z",
       "userId": "Tresor.Maneka@ppcdrc.cd",
@@ -600734,5 +600773,5 @@
       }
     }
   ],
-  "nextSeq": 2270
+  "nextSeq": 2271
 }
