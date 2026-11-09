@@ -1,6 +1,45 @@
 {
   "entries": [
     {
+      "id": "log-002279",
+      "at": "2026-11-09T12:51:28.337Z",
+      "userId": "Tresor.Maneka@ppcdrc.cd",
+      "userName": "Tresor Maneka",
+      "userEmail": "Tresor.Maneka@ppcdrc.cd",
+      "module": "protocol.voyages",
+      "moduleLabel": "Gestion de voyage",
+      "action": "create",
+      "actionLabel": "Création",
+      "entityType": "protocol.voyage",
+      "entityId": "pvc-079",
+      "summary": "Voyage PVC-0079 . Zhang Yongtao Zhengzhou → Lubumbashi → Zhengzhou",
+      "details": "Voyage PVC-0079 . Zhang Yongtao Zhengzhou → Lubumbashi → Zhengzhou",
+      "after": {
+        "id": "pvc-079",
+        "numero": "PVC-0079",
+        "date": "2026-11-07",
+        "voyageur": ". Zhang Yongtao",
+        "voyageurMatricule": "",
+        "destination": "Zhengzhou → Lubumbashi → Zhengzhou",
+        "ticketAvion": 4576,
+        "visaVolant": 0,
+        "lettreLegaliser": 0,
+        "goPass": 0,
+        "transfert": 0,
+        "hotelNuit": 0,
+        "nbreNuits": 0,
+        "coutHotel": 0,
+        "categorieHotel": "",
+        "appartement": 0,
+        "autresCharges": 0,
+        "coutTotal": 4576,
+        "createdAt": "2026-11-09T12:51:25.749Z",
+        "updatedAt": "2026-11-09T12:51:25.749Z"
+      },
+      "undoable": false,
+      "undone": false
+    },
+    {
       "id": "log-002278",
       "at": "2026-11-09T12:50:06.975Z",
       "userId": "Tresor.Maneka@ppcdrc.cd",
@@ -601149,5 +601188,5 @@
       }
     }
   ],
-  "nextSeq": 2279
+  "nextSeq": 2280
 }
