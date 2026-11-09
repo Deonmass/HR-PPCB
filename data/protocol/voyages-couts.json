@@ -1419,16 +1419,16 @@
       "visaVolant": 0,
       "lettreLegaliser": 0,
       "goPass": 15,
-      "transfert": 0,
+      "transfert": 60,
       "hotelNuit": 150,
       "nbreNuits": 3,
       "coutHotel": 450,
       "categorieHotel": "Hotel Vivi Palace de Matadi",
       "appartement": 0,
       "autresCharges": 0,
-      "coutTotal": 660,
+      "coutTotal": 720,
       "createdAt": "2026-11-03T10:42:47.583Z",
-      "updatedAt": "2026-11-03T10:42:47.583Z"
+      "updatedAt": "2026-11-09T12:39:16.383Z"
     },
     {
       "id": "pvc-069",
