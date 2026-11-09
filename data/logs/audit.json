@@ -1,6 +1,53 @@
 {
   "entries": [
     {
+      "id": "log-002280",
+      "at": "2026-11-09T12:58:27.426Z",
+      "userId": "Tresor.Maneka@ppcdrc.cd",
+      "userName": "Tresor Maneka",
+      "userEmail": "Tresor.Maneka@ppcdrc.cd",
+      "module": "charroi.voyages",
+      "moduleLabel": "Charroi — Voyages",
+      "action": "create",
+      "actionLabel": "Création",
+      "entityType": "charroi.voyage",
+      "entityId": "vyg-037",
+      "summary": "Demande de voyage VYG-0037 EWULI SUKA Carine Kinshasa → Zamba (Kimpese)",
+      "details": "Demande de voyage VYG-0037 EWULI SUKA Carine Kinshasa → Zamba (Kimpese)",
+      "after": {
+        "id": "vyg-037",
+        "numero": "VYG-0037",
+        "passagerNom": "EWULI SUKA Carine",
+        "passagerMatricule": "70000265",
+        "passagerInterne": true,
+        "nombrePersonnes": 1,
+        "depart": "Kinshasa",
+        "destination": "Zamba (Kimpese)",
+        "dateDepart": "2026-11-05",
+        "heureDepart": "11:00",
+        "dateArrivee": "",
+        "heureArrivee": "",
+        "motif": "Mission de service",
+        "notes": "",
+        "status": "demande",
+        "chauffeurNom": "",
+        "chauffeurMatricule": "",
+        "chauffeurInterne": false,
+        "vehiculeMode": "",
+        "vehiculeId": "",
+        "vehiculeLibelle": "",
+        "foodAllowance": 0,
+        "foodForTheRoad": 0,
+        "tollGate": 0,
+        "confirmedAt": "",
+        "completedAt": "",
+        "createdAt": "2026-11-09T12:58:23.324Z",
+        "updatedAt": "2026-11-09T12:58:23.324Z"
+      },
+      "undoable": false,
+      "undone": false
+    },
+    {
       "id": "log-002279",
       "at": "2026-11-09T12:51:28.337Z",
       "userId": "Tresor.Maneka@ppcdrc.cd",
@@ -601188,5 +601235,5 @@
       }
     }
   ],
-  "nextSeq": 2280
+  "nextSeq": 2281
 }
