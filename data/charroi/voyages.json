@@ -675,20 +675,20 @@
       "heureArrivee": "",
       "motif": "Retour a zamba pour le soin medicale",
       "notes": "",
-      "status": "demande",
-      "chauffeurNom": "",
+      "status": "effectue",
+      "chauffeurNom": "MUTSHI MUNA JEAN PIERRE",
       "chauffeurMatricule": "",
       "chauffeurInterne": false,
-      "vehiculeMode": "",
-      "vehiculeId": "",
-      "vehiculeLibelle": "",
+      "vehiculeMode": "flotte",
+      "vehiculeId": "veh-043",
+      "vehiculeLibelle": "7127BP01 · Peugeot · Pick up",
       "foodAllowance": 0,
       "foodForTheRoad": 0,
       "tollGate": 0,
-      "confirmedAt": "",
-      "completedAt": "",
+      "confirmedAt": "2026-11-09T12:29:32.592Z",
+      "completedAt": "2026-11-09T12:29:32.592Z",
       "createdAt": "2026-11-09T12:28:52.608Z",
-      "updatedAt": "2026-11-09T12:28:52.608Z"
+      "updatedAt": "2026-11-09T12:29:32.592Z"
     }
   ],
   "nextSeq": 37
