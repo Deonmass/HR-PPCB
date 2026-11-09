@@ -1,6 +1,67 @@
 {
   "entries": [
     {
+      "id": "log-002290",
+      "at": "2026-11-09T17:02:23.010Z",
+      "userId": "Tresor.Maneka@ppcdrc.cd",
+      "userName": "Tresor Maneka",
+      "userEmail": "Tresor.Maneka@ppcdrc.cd",
+      "module": "protocol.voyages",
+      "moduleLabel": "Gestion de voyage",
+      "action": "update",
+      "actionLabel": "Modification",
+      "entityType": "protocol.voyage",
+      "entityId": "pvc-068",
+      "summary": "Modification voyage PVC-0068 MBALE KABANGU HUGO",
+      "details": "Modification voyage PVC-0068 MBALE KABANGU HUGO",
+      "before": {
+        "id": "pvc-068",
+        "numero": "PVC-0068",
+        "date": "2026-11-03",
+        "voyageur": "MBALE KABANGU HUGO",
+        "voyageurMatricule": "70000184",
+        "destination": "Kinshasa Matadi",
+        "ticketAvion": 195,
+        "visaVolant": 0,
+        "lettreLegaliser": 0,
+        "goPass": 15,
+        "transfert": 60,
+        "hotelNuit": 150,
+        "nbreNuits": 3,
+        "coutHotel": 450,
+        "categorieHotel": "Hotel Vivi Palace de Matadi",
+        "appartement": 0,
+        "autresCharges": 0,
+        "coutTotal": 720,
+        "createdAt": "2026-11-03T10:42:47.583Z",
+        "updatedAt": "2026-11-09T12:39:16.383Z"
+      },
+      "after": {
+        "id": "pvc-068",
+        "numero": "PVC-0068",
+        "date": "2026-11-03",
+        "voyageur": "MBALE KABANGU HUGO",
+        "voyageurMatricule": "70000184",
+        "destination": "Kinshasa Matadi",
+        "ticketAvion": 195,
+        "visaVolant": 0,
+        "lettreLegaliser": 0,
+        "goPass": 15,
+        "transfert": 60,
+        "hotelNuit": 181,
+        "nbreNuits": 3,
+        "coutHotel": 543,
+        "categorieHotel": "Hotel Vivi Palace de Matadi",
+        "appartement": 0,
+        "autresCharges": 0,
+        "coutTotal": 813,
+        "createdAt": "2026-11-03T10:42:47.583Z",
+        "updatedAt": "2026-11-09T17:02:17.902Z"
+      },
+      "undoable": false,
+      "undone": false
+    },
+    {
       "id": "log-002289",
       "at": "2026-11-09T16:01:26.109Z",
       "userId": "Kiesse.Banguli@ppcdrc.cd",
@@ -1251991,5 +1252052,5 @@
       }
     }
   ],
-  "nextSeq": 2290
+  "nextSeq": 2291
 }
