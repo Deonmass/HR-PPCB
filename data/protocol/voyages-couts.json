@@ -1107,7 +1107,7 @@
       "voyageur": "M. Zhang Yongtao",
       "voyageurMatricule": "",
       "destination": "Zhengzhou → Lubumbashi → Zhengzhou",
-      "ticketAvion": 4576,
+      "ticketAvion": 0,
       "visaVolant": 850,
       "lettreLegaliser": 0,
       "goPass": 0,
@@ -1118,9 +1118,9 @@
       "categorieHotel": "Stadard",
       "appartement": 0,
       "autresCharges": 0,
-      "coutTotal": 5576,
+      "coutTotal": 1000,
       "createdAt": "2026-10-29T12:25:27.773Z",
-      "updatedAt": "2026-11-09T12:48:45.777Z"
+      "updatedAt": "2026-11-09T12:50:02.979Z"
     },
     {
       "id": "pvc-055",
