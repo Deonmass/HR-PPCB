@@ -438,5 +438,15 @@
     "issuedBy": "Administrateur",
     "id": "exit-1794293444316-5a8bmn",
     "createdAt": "2026-11-10T06:50:44.316Z"
+  },
+  {
+    "matricule": "70000303",
+    "employeeName": "BUHENDWA JERRY",
+    "doc": "attestation-fin-service",
+    "docLabel": "Attestation de fin de service",
+    "fileName": "Attestation de fin de service - BUHENDWA JERRY.docx",
+    "issuedBy": "Administrateur",
+    "id": "exit-1794293458689-rimyu0",
+    "createdAt": "2026-11-10T06:50:58.689Z"
   }
 ]
