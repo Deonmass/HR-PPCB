@@ -1,6 +1,21 @@
 {
   "entries": [
     {
+      "id": "log-002297",
+      "at": "2026-11-10T06:50:31.531Z",
+      "userId": "admin",
+      "userName": "Administrateur",
+      "userEmail": "admin",
+      "module": "documents.exit",
+      "moduleLabel": "Documents",
+      "action": "export",
+      "actionLabel": "Export",
+      "summary": "Document exit « Employee exit clearance form » — BUHENDWA JERRY (70000303)",
+      "details": "Document exit « Employee exit clearance form » — BUHENDWA JERRY (70000303)",
+      "undoable": false,
+      "undone": false
+    },
+    {
       "id": "log-002296",
       "at": "2026-11-10T02:27:04.758Z",
       "userId": "Serge.Muakasa@ppcdrc.cd",
@@ -1252266,5 +1252281,5 @@
       }
     }
   ],
-  "nextSeq": 2297
+  "nextSeq": 2298
 }
