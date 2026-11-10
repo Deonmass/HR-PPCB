@@ -1618,15 +1618,15 @@
       "lettreLegaliser": 0,
       "goPass": 0,
       "transfert": 0,
-      "hotelNuit": 115,
+      "hotelNuit": 100,
       "nbreNuits": 1,
-      "coutHotel": 115,
+      "coutHotel": 100,
       "categorieHotel": "Hotel Platunium",
       "appartement": 0,
       "autresCharges": 0,
-      "coutTotal": 115,
+      "coutTotal": 100,
       "createdAt": "2026-11-09T12:41:30.501Z",
-      "updatedAt": "2026-11-10T14:55:50.527Z"
+      "updatedAt": "2026-11-10T18:17:59.553Z"
     },
     {
       "id": "pvc-078",
