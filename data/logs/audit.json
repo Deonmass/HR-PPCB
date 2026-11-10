@@ -1,6 +1,21 @@
 {
   "entries": [
     {
+      "id": "log-002301",
+      "at": "2026-11-10T10:08:42.324Z",
+      "userId": "admin",
+      "userName": "Administrateur",
+      "userEmail": "admin",
+      "module": "contractants",
+      "moduleLabel": "contractants",
+      "action": "export",
+      "actionLabel": "Export",
+      "summary": "Export liste contractants (CONTRACTANTS_2026-11-10.xlsx)",
+      "details": "Fichier Excel exporté : CONTRACTANTS_2026-11-10.xlsx",
+      "undoable": false,
+      "undone": false
+    },
+    {
       "id": "log-002300",
       "at": "2026-11-10T06:51:19.326Z",
       "userId": "admin",
@@ -1252326,5 +1252341,5 @@
       }
     }
   ],
-  "nextSeq": 2301
+  "nextSeq": 2302
 }
