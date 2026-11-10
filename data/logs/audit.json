@@ -1,6 +1,45 @@
 {
   "entries": [
     {
+      "id": "log-002312",
+      "at": "2026-11-10T14:42:42.301Z",
+      "userId": "Tresor.Maneka@ppcdrc.cd",
+      "userName": "Tresor Maneka",
+      "userEmail": "Tresor.Maneka@ppcdrc.cd",
+      "module": "protocol.voyages",
+      "moduleLabel": "Gestion de voyage",
+      "action": "create",
+      "actionLabel": "Création",
+      "entityType": "protocol.voyage",
+      "entityId": "pvc-083",
+      "summary": "Voyage PVC-0083 KAHASHA MBASHA PATRICK Zamba Matadi Kinshasa",
+      "details": "Voyage PVC-0083 KAHASHA MBASHA PATRICK Zamba Matadi Kinshasa",
+      "after": {
+        "id": "pvc-083",
+        "numero": "PVC-0083",
+        "date": "2026-11-12",
+        "voyageur": "KAHASHA MBASHA PATRICK",
+        "voyageurMatricule": "70000256",
+        "destination": "Zamba Matadi Kinshasa",
+        "ticketAvion": 0,
+        "visaVolant": 0,
+        "lettreLegaliser": 0,
+        "goPass": 0,
+        "transfert": 0,
+        "hotelNuit": 200,
+        "nbreNuits": 1,
+        "coutHotel": 200,
+        "categorieHotel": "Hotel Vivi Palace",
+        "appartement": 0,
+        "autresCharges": 0,
+        "coutTotal": 200,
+        "createdAt": "2026-11-10T14:42:37.716Z",
+        "updatedAt": "2026-11-10T14:42:37.716Z"
+      },
+      "undoable": false,
+      "undone": false
+    },
+    {
       "id": "log-002311",
       "at": "2026-11-10T14:41:04.880Z",
       "userId": "Tresor.Maneka@ppcdrc.cd",
@@ -1253159,5 +1253198,5 @@
       }
     }
   ],
-  "nextSeq": 2312
+  "nextSeq": 2313
 }
