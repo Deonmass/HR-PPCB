@@ -1,6 +1,45 @@
 {
   "entries": [
     {
+      "id": "log-002317",
+      "at": "2026-11-10T18:15:36.115Z",
+      "userId": "Tresor.Maneka@ppcdrc.cd",
+      "userName": "Tresor Maneka",
+      "userEmail": "Tresor.Maneka@ppcdrc.cd",
+      "module": "protocol.voyages",
+      "moduleLabel": "Gestion de voyage",
+      "action": "create",
+      "actionLabel": "Création",
+      "entityType": "protocol.voyage",
+      "entityId": "pvc-086",
+      "summary": "Voyage PVC-0086 RUKOMEZA KARHIBULA GISCARD Kinshasa Lubumbashi Kinshasa",
+      "details": "Voyage PVC-0086 RUKOMEZA KARHIBULA GISCARD Kinshasa Lubumbashi Kinshasa",
+      "after": {
+        "id": "pvc-086",
+        "numero": "PVC-0086",
+        "date": "2026-11-11",
+        "voyageur": "RUKOMEZA KARHIBULA GISCARD",
+        "voyageurMatricule": "70000266",
+        "destination": "Kinshasa Lubumbashi Kinshasa",
+        "ticketAvion": 680,
+        "visaVolant": 0,
+        "lettreLegaliser": 0,
+        "goPass": 30,
+        "transfert": 60,
+        "hotelNuit": 150,
+        "nbreNuits": 1,
+        "coutHotel": 150,
+        "categorieHotel": "Hotel Elais Kinshasa",
+        "appartement": 0,
+        "autresCharges": 0,
+        "coutTotal": 920,
+        "createdAt": "2026-11-10T18:15:31.058Z",
+        "updatedAt": "2026-11-10T18:15:31.058Z"
+      },
+      "undoable": false,
+      "undone": false
+    },
+    {
       "id": "log-002316",
       "at": "2026-11-10T14:57:28.658Z",
       "userId": "Tresor.Maneka@ppcdrc.cd",
@@ -1253398,5 +1253437,5 @@
       }
     }
   ],
-  "nextSeq": 2317
+  "nextSeq": 2318
 }
