@@ -1,6 +1,53 @@
 {
   "entries": [
     {
+      "id": "log-002305",
+      "at": "2026-11-10T14:29:35.052Z",
+      "userId": "Tresor.Maneka@ppcdrc.cd",
+      "userName": "Tresor Maneka",
+      "userEmail": "Tresor.Maneka@ppcdrc.cd",
+      "module": "charroi.voyages",
+      "moduleLabel": "Charroi — Voyages",
+      "action": "create",
+      "actionLabel": "Création",
+      "entityType": "charroi.voyage",
+      "entityId": "vyg-038",
+      "summary": "Demande de voyage VYG-0038 ZAKUANI BAHATI BENNY, NDONGALA STEPHANIE Kinshasa → Zamba (Kimpese)",
+      "details": "Demande de voyage VYG-0038 ZAKUANI BAHATI BENNY, NDONGALA STEPHANIE Kinshasa → Zamba (Kimpese)",
+      "after": {
+        "id": "vyg-038",
+        "numero": "VYG-0038",
+        "passagerNom": "ZAKUANI BAHATI BENNY, NDONGALA STEPHANIE",
+        "passagerMatricule": "70000177, 70000292",
+        "passagerInterne": true,
+        "nombrePersonnes": 2,
+        "depart": "Kinshasa",
+        "destination": "Zamba (Kimpese)",
+        "dateDepart": "2026-11-10",
+        "heureDepart": "03:30",
+        "dateArrivee": "",
+        "heureArrivee": "",
+        "motif": "",
+        "notes": "",
+        "status": "demande",
+        "chauffeurNom": "",
+        "chauffeurMatricule": "",
+        "chauffeurInterne": false,
+        "vehiculeMode": "",
+        "vehiculeId": "",
+        "vehiculeLibelle": "",
+        "foodAllowance": 0,
+        "foodForTheRoad": 0,
+        "tollGate": 0,
+        "confirmedAt": "",
+        "completedAt": "",
+        "createdAt": "2026-11-10T14:29:30.197Z",
+        "updatedAt": "2026-11-10T14:29:30.197Z"
+      },
+      "undoable": false,
+      "undone": false
+    },
+    {
       "id": "log-002304",
       "at": "2026-11-10T13:02:06.432Z",
       "userId": "admin",
@@ -1252794,5 +1252841,5 @@
       }
     }
   ],
-  "nextSeq": 2305
+  "nextSeq": 2306
 }
