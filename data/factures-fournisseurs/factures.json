@@ -15617,7 +15617,26 @@
       "commentaire": "Au PR — en attente du PO.",
       "statut": "unpaid",
       "statutLabel": "unpaid"
+    },
+    {
+      "id": "fac-2183",
+      "date": "04/11/2026",
+      "societe": "Kikotech",
+      "facture": "PROFORMA N° 301/2026",
+      "montant": 21491.2,
+      "echeance": "",
+      "pr": "11208678",
+      "datePr": "",
+      "po": "",
+      "datePo": "",
+      "grn": "",
+      "dateGrn": "",
+      "payment": "",
+      "datePym": "",
+      "commentaire": "Au PR — en attente du PO.",
+      "statut": "unpaid",
+      "statutLabel": "unpaid"
     }
   ],
-  "nextFactureSeq": 2183
+  "nextFactureSeq": 2184
 }
