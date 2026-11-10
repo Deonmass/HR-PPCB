@@ -1,6 +1,45 @@
 {
   "entries": [
     {
+      "id": "log-002311",
+      "at": "2026-11-10T14:41:04.880Z",
+      "userId": "Tresor.Maneka@ppcdrc.cd",
+      "userName": "Tresor Maneka",
+      "userEmail": "Tresor.Maneka@ppcdrc.cd",
+      "module": "protocol.voyages",
+      "moduleLabel": "Gestion de voyage",
+      "action": "create",
+      "actionLabel": "Création",
+      "entityType": "protocol.voyage",
+      "entityId": "pvc-082",
+      "summary": "Voyage PVC-0082 BUHENDWA JERRY Lubudi Lubumbashi Lubudi",
+      "details": "Voyage PVC-0082 BUHENDWA JERRY Lubudi Lubumbashi Lubudi",
+      "after": {
+        "id": "pvc-082",
+        "numero": "PVC-0082",
+        "date": "2026-11-10",
+        "voyageur": "BUHENDWA JERRY",
+        "voyageurMatricule": "70000303",
+        "destination": "Lubudi Lubumbashi Lubudi",
+        "ticketAvion": 0,
+        "visaVolant": 0,
+        "lettreLegaliser": 0,
+        "goPass": 0,
+        "transfert": 0,
+        "hotelNuit": 130,
+        "nbreNuits": 2,
+        "coutHotel": 260,
+        "categorieHotel": "Hotel Cluade 9",
+        "appartement": 0,
+        "autresCharges": 0,
+        "coutTotal": 260,
+        "createdAt": "2026-11-10T14:41:00.246Z",
+        "updatedAt": "2026-11-10T14:41:00.246Z"
+      },
+      "undoable": false,
+      "undone": false
+    },
+    {
       "id": "log-002310",
       "at": "2026-11-10T14:39:42.814Z",
       "userId": "Tresor.Maneka@ppcdrc.cd",
@@ -1253120,5 +1253159,5 @@
       }
     }
   ],
-  "nextSeq": 2311
+  "nextSeq": 2312
 }
