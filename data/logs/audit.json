@@ -1,6 +1,42 @@
 {
   "entries": [
     {
+      "id": "log-002296",
+      "at": "2026-11-10T02:27:04.758Z",
+      "userId": "Serge.Muakasa@ppcdrc.cd",
+      "userName": "Serge Muakasa",
+      "userEmail": "Serge.Muakasa@ppcdrc.cd",
+      "module": "factures-suivi",
+      "moduleLabel": "Factures suivi",
+      "action": "create",
+      "actionLabel": "Création",
+      "summary": "Création lot de 1 facture(s)",
+      "details": "Création lot de 1 facture(s)",
+      "after": [
+        {
+          "id": "fac-2183",
+          "date": "04/11/2026",
+          "societe": "Kikotech",
+          "facture": "PROFORMA N° 301/2026",
+          "montant": 21491.2,
+          "echeance": "",
+          "pr": "11208678",
+          "datePr": "",
+          "po": "",
+          "datePo": "",
+          "grn": "",
+          "dateGrn": "",
+          "payment": "",
+          "datePym": "",
+          "commentaire": "Au PR — en attente du PO.",
+          "statut": "unpaid",
+          "statutLabel": "unpaid"
+        }
+      ],
+      "undoable": false,
+      "undone": false
+    },
+    {
       "id": "log-002295",
       "at": "2026-11-10T02:16:46.150Z",
       "userId": "Serge.Muakasa@ppcdrc.cd",
@@ -1252230,5 +1252266,5 @@
       }
     }
   ],
-  "nextSeq": 2296
+  "nextSeq": 2297
 }
