@@ -1,6 +1,42 @@
 {
   "entries": [
     {
+      "id": "log-002295",
+      "at": "2026-11-10T02:16:46.150Z",
+      "userId": "Serge.Muakasa@ppcdrc.cd",
+      "userName": "Serge Muakasa",
+      "userEmail": "Serge.Muakasa@ppcdrc.cd",
+      "module": "factures-suivi",
+      "moduleLabel": "Factures suivi",
+      "action": "create",
+      "actionLabel": "Création",
+      "summary": "Création lot de 1 facture(s)",
+      "details": "Création lot de 1 facture(s)",
+      "after": [
+        {
+          "id": "fac-2182",
+          "date": "04/11/2026",
+          "societe": "Jalingo",
+          "facture": "FACTURE PROFORMA N°96/2026",
+          "montant": 115.2,
+          "echeance": "",
+          "pr": "11208677",
+          "datePr": "",
+          "po": "",
+          "datePo": "",
+          "grn": "",
+          "dateGrn": "",
+          "payment": "",
+          "datePym": "",
+          "commentaire": "Au PR — en attente du PO.",
+          "statut": "unpaid",
+          "statutLabel": "unpaid"
+        }
+      ],
+      "undoable": false,
+      "undone": false
+    },
+    {
       "id": "log-002294",
       "at": "2026-11-10T02:02:38.721Z",
       "userId": "Serge.Muakasa@ppcdrc.cd",
@@ -1252194,5 +1252230,5 @@
       }
     }
   ],
-  "nextSeq": 2295
+  "nextSeq": 2296
 }
