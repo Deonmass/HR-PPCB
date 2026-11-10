@@ -1,6 +1,67 @@
 {
   "entries": [
     {
+      "id": "log-002315",
+      "at": "2026-11-10T14:55:54.006Z",
+      "userId": "Tresor.Maneka@ppcdrc.cd",
+      "userName": "Tresor Maneka",
+      "userEmail": "Tresor.Maneka@ppcdrc.cd",
+      "module": "protocol.voyages",
+      "moduleLabel": "Gestion de voyage",
+      "action": "update",
+      "actionLabel": "Modification",
+      "entityType": "protocol.voyage",
+      "entityId": "pvc-077",
+      "summary": "Modification voyage PVC-0077 jean piere Mtsh driver",
+      "details": "Modification voyage PVC-0077 jean piere Mtsh driver",
+      "before": {
+        "id": "pvc-077",
+        "numero": "PVC-0077",
+        "date": "2026-11-06",
+        "voyageur": "jean piere Mtsh driver",
+        "voyageurMatricule": "",
+        "destination": "Boma Matadi Kinshasa Boma",
+        "ticketAvion": 0,
+        "visaVolant": 0,
+        "lettreLegaliser": 0,
+        "goPass": 0,
+        "transfert": 0,
+        "hotelNuit": 100,
+        "nbreNuits": 1,
+        "coutHotel": 100,
+        "categorieHotel": "Hotel Platunuim",
+        "appartement": 0,
+        "autresCharges": 0,
+        "coutTotal": 100,
+        "createdAt": "2026-11-09T12:41:30.501Z",
+        "updatedAt": "2026-11-09T12:41:30.501Z"
+      },
+      "after": {
+        "id": "pvc-077",
+        "numero": "PVC-0077",
+        "date": "2026-11-06",
+        "voyageur": "jean piere Mtsh driver",
+        "voyageurMatricule": "",
+        "destination": "Boma Matadi Kinshasa Boma",
+        "ticketAvion": 0,
+        "visaVolant": 0,
+        "lettreLegaliser": 0,
+        "goPass": 0,
+        "transfert": 0,
+        "hotelNuit": 115,
+        "nbreNuits": 1,
+        "coutHotel": 115,
+        "categorieHotel": "Hotel Platunium",
+        "appartement": 0,
+        "autresCharges": 0,
+        "coutTotal": 115,
+        "createdAt": "2026-11-09T12:41:30.501Z",
+        "updatedAt": "2026-11-10T14:55:50.527Z"
+      },
+      "undoable": false,
+      "undone": false
+    },
+    {
       "id": "log-002314",
       "at": "2026-11-10T14:54:36.619Z",
       "userId": "Tresor.Maneka@ppcdrc.cd",
@@ -1253276,5 +1253337,5 @@
       }
     }
   ],
-  "nextSeq": 2315
+  "nextSeq": 2316
 }
