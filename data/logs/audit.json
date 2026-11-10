@@ -1,6 +1,21 @@
 {
   "entries": [
     {
+      "id": "log-002298",
+      "at": "2026-11-10T06:50:48.314Z",
+      "userId": "admin",
+      "userName": "Administrateur",
+      "userEmail": "admin",
+      "module": "documents.exit",
+      "moduleLabel": "Documents",
+      "action": "export",
+      "actionLabel": "Export",
+      "summary": "Document exit « Exit interview form » — BUHENDWA JERRY (70000303)",
+      "details": "Document exit « Exit interview form » — BUHENDWA JERRY (70000303)",
+      "undoable": false,
+      "undone": false
+    },
+    {
       "id": "log-002297",
       "at": "2026-11-10T06:50:31.531Z",
       "userId": "admin",
@@ -1252281,5 +1252296,5 @@
       }
     }
   ],
-  "nextSeq": 2298
+  "nextSeq": 2299
 }
