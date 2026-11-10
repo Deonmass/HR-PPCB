@@ -1,6 +1,45 @@
 {
   "entries": [
     {
+      "id": "log-002310",
+      "at": "2026-11-10T14:39:42.814Z",
+      "userId": "Tresor.Maneka@ppcdrc.cd",
+      "userName": "Tresor Maneka",
+      "userEmail": "Tresor.Maneka@ppcdrc.cd",
+      "module": "protocol.voyages",
+      "moduleLabel": "Gestion de voyage",
+      "action": "create",
+      "actionLabel": "Création",
+      "entityType": "protocol.voyage",
+      "entityId": "pvc-081",
+      "summary": "Voyage PVC-0081 freddy Lubudi Lubumabshi Lubudi",
+      "details": "Voyage PVC-0081 freddy Lubudi Lubumabshi Lubudi",
+      "after": {
+        "id": "pvc-081",
+        "numero": "PVC-0081",
+        "date": "2026-11-10",
+        "voyageur": "freddy",
+        "voyageurMatricule": "",
+        "destination": "Lubudi Lubumabshi Lubudi",
+        "ticketAvion": 0,
+        "visaVolant": 0,
+        "lettreLegaliser": 0,
+        "goPass": 0,
+        "transfert": 0,
+        "hotelNuit": 115,
+        "nbreNuits": 2,
+        "coutHotel": 230,
+        "categorieHotel": "Hotel Goshen de lubumbashi",
+        "appartement": 0,
+        "autresCharges": 0,
+        "coutTotal": 230,
+        "createdAt": "2026-11-10T14:39:38.478Z",
+        "updatedAt": "2026-11-10T14:39:38.478Z"
+      },
+      "undoable": false,
+      "undone": false
+    },
+    {
       "id": "log-002309",
       "at": "2026-11-10T14:38:25.488Z",
       "userId": "Tresor.Maneka@ppcdrc.cd",
@@ -1253081,5 +1253120,5 @@
       }
     }
   ],
-  "nextSeq": 2310
+  "nextSeq": 2311
 }
