@@ -1,6 +1,45 @@
 {
   "entries": [
     {
+      "id": "log-002313",
+      "at": "2026-11-10T14:44:07.197Z",
+      "userId": "Tresor.Maneka@ppcdrc.cd",
+      "userName": "Tresor Maneka",
+      "userEmail": "Tresor.Maneka@ppcdrc.cd",
+      "module": "protocol.voyages",
+      "moduleLabel": "Gestion de voyage",
+      "action": "create",
+      "actionLabel": "Création",
+      "entityType": "protocol.voyage",
+      "entityId": "pvc-084",
+      "summary": "Voyage PVC-0084 KILENDA BANGI ALI Zamba Matadi Kinshasa",
+      "details": "Voyage PVC-0084 KILENDA BANGI ALI Zamba Matadi Kinshasa",
+      "after": {
+        "id": "pvc-084",
+        "numero": "PVC-0084",
+        "date": "2026-11-12",
+        "voyageur": "KILENDA BANGI ALI",
+        "voyageurMatricule": "70000176",
+        "destination": "Zamba Matadi Kinshasa",
+        "ticketAvion": 0,
+        "visaVolant": 0,
+        "lettreLegaliser": 0,
+        "goPass": 0,
+        "transfert": 0,
+        "hotelNuit": 100,
+        "nbreNuits": 1,
+        "coutHotel": 100,
+        "categorieHotel": "",
+        "appartement": 0,
+        "autresCharges": 0,
+        "coutTotal": 100,
+        "createdAt": "2026-11-10T14:44:02.448Z",
+        "updatedAt": "2026-11-10T14:44:02.448Z"
+      },
+      "undoable": false,
+      "undone": false
+    },
+    {
       "id": "log-002312",
       "at": "2026-11-10T14:42:42.301Z",
       "userId": "Tresor.Maneka@ppcdrc.cd",
@@ -1253198,5 +1253237,5 @@
       }
     }
   ],
-  "nextSeq": 2313
+  "nextSeq": 2314
 }
