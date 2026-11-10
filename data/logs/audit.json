@@ -1,6 +1,21 @@
 {
   "entries": [
     {
+      "id": "log-002300",
+      "at": "2026-11-10T06:51:19.326Z",
+      "userId": "admin",
+      "userName": "Administrateur",
+      "userEmail": "admin",
+      "module": "documents.exit",
+      "moduleLabel": "Documents",
+      "action": "export",
+      "actionLabel": "Export",
+      "summary": "Document exit « User removal form » — BUHENDWA JERRY (70000303)",
+      "details": "Document exit « User removal form » — BUHENDWA JERRY (70000303)",
+      "undoable": false,
+      "undone": false
+    },
+    {
       "id": "log-002299",
       "at": "2026-11-10T06:51:02.692Z",
       "userId": "admin",
@@ -1252311,5 +1252326,5 @@
       }
     }
   ],
-  "nextSeq": 2300
+  "nextSeq": 2301
 }
