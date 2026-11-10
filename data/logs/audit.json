@@ -1,6 +1,45 @@
 {
   "entries": [
     {
+      "id": "log-002309",
+      "at": "2026-11-10T14:38:25.488Z",
+      "userId": "Tresor.Maneka@ppcdrc.cd",
+      "userName": "Tresor Maneka",
+      "userEmail": "Tresor.Maneka@ppcdrc.cd",
+      "module": "protocol.voyages",
+      "moduleLabel": "Gestion de voyage",
+      "action": "create",
+      "actionLabel": "Création",
+      "entityType": "protocol.voyage",
+      "entityId": "pvc-080",
+      "summary": "Voyage PVC-0080 MIKINDO KYANGWI PAUL SAMSON Lubudi lubumbashi lubudi",
+      "details": "Voyage PVC-0080 MIKINDO KYANGWI PAUL SAMSON Lubudi lubumbashi lubudi",
+      "after": {
+        "id": "pvc-080",
+        "numero": "PVC-0080",
+        "date": "2026-11-10",
+        "voyageur": "MIKINDO KYANGWI PAUL SAMSON",
+        "voyageurMatricule": "70000302",
+        "destination": "Lubudi lubumbashi lubudi",
+        "ticketAvion": 0,
+        "visaVolant": 0,
+        "lettreLegaliser": 0,
+        "goPass": 0,
+        "transfert": 0,
+        "hotelNuit": 115,
+        "nbreNuits": 2,
+        "coutHotel": 230,
+        "categorieHotel": "Hotel Goshen de Lubumbashi",
+        "appartement": 0,
+        "autresCharges": 0,
+        "coutTotal": 230,
+        "createdAt": "2026-11-10T14:38:20.831Z",
+        "updatedAt": "2026-11-10T14:38:20.831Z"
+      },
+      "undoable": false,
+      "undone": false
+    },
+    {
       "id": "log-002308",
       "at": "2026-11-10T14:34:39.660Z",
       "userId": "Tresor.Maneka@ppcdrc.cd",
@@ -1253042,5 +1253081,5 @@
       }
     }
   ],
-  "nextSeq": 2309
+  "nextSeq": 2310
 }
