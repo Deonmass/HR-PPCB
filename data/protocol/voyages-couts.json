@@ -1662,15 +1662,15 @@
       "lettreLegaliser": 0,
       "goPass": 0,
       "transfert": 0,
-      "hotelNuit": 0,
-      "nbreNuits": 0,
-      "coutHotel": 0,
-      "categorieHotel": "",
+      "hotelNuit": 115,
+      "nbreNuits": 1,
+      "coutHotel": 115,
+      "categorieHotel": "Hotel Goshen",
       "appartement": 0,
       "autresCharges": 0,
-      "coutTotal": 4576,
+      "coutTotal": 4691,
       "createdAt": "2026-11-09T12:51:25.749Z",
-      "updatedAt": "2026-11-09T12:51:25.749Z"
+      "updatedAt": "2026-11-10T14:57:23.248Z"
     },
     {
       "id": "pvc-080",
