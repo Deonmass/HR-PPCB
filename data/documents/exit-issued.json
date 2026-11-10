@@ -418,5 +418,15 @@
     "issuedBy": "Administrateur",
     "id": "exit-1793949446154-fx3jdg",
     "createdAt": "2026-11-06T07:17:26.154Z"
+  },
+  {
+    "matricule": "70000303",
+    "employeeName": "BUHENDWA JERRY",
+    "doc": "clearance",
+    "docLabel": "Employee exit clearance form",
+    "fileName": "Employee exit clearance form - BUHENDWA JERRY.docx",
+    "issuedBy": "Administrateur",
+    "id": "exit-1794293425940-2yqarj",
+    "createdAt": "2026-11-10T06:50:25.940Z"
   }
 ]
