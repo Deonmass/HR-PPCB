@@ -1,6 +1,53 @@
 {
   "entries": [
     {
+      "id": "log-002307",
+      "at": "2026-11-10T14:32:36.993Z",
+      "userId": "Tresor.Maneka@ppcdrc.cd",
+      "userName": "Tresor Maneka",
+      "userEmail": "Tresor.Maneka@ppcdrc.cd",
+      "module": "charroi.voyages",
+      "moduleLabel": "Charroi — Voyages",
+      "action": "create",
+      "actionLabel": "Création",
+      "entityType": "charroi.voyage",
+      "entityId": "vyg-039",
+      "summary": "Demande de voyage VYG-0039 KAHASHA MBASHA PATRICK Kinshasa → Zamba (Kimpese)",
+      "details": "Demande de voyage VYG-0039 KAHASHA MBASHA PATRICK Kinshasa → Zamba (Kimpese)",
+      "after": {
+        "id": "vyg-039",
+        "numero": "VYG-0039",
+        "passagerNom": "KAHASHA MBASHA PATRICK",
+        "passagerMatricule": "70000256",
+        "passagerInterne": true,
+        "nombrePersonnes": 1,
+        "depart": "Kinshasa",
+        "destination": "Zamba (Kimpese)",
+        "dateDepart": "2026-11-09",
+        "heureDepart": "08:30",
+        "dateArrivee": "",
+        "heureArrivee": "",
+        "motif": "",
+        "notes": "",
+        "status": "demande",
+        "chauffeurNom": "",
+        "chauffeurMatricule": "",
+        "chauffeurInterne": false,
+        "vehiculeMode": "",
+        "vehiculeId": "",
+        "vehiculeLibelle": "",
+        "foodAllowance": 0,
+        "foodForTheRoad": 0,
+        "tollGate": 0,
+        "confirmedAt": "",
+        "completedAt": "",
+        "createdAt": "2026-11-10T14:32:32.665Z",
+        "updatedAt": "2026-11-10T14:32:32.665Z"
+      },
+      "undoable": false,
+      "undone": false
+    },
+    {
       "id": "log-002306",
       "at": "2026-11-10T14:30:49.593Z",
       "userId": "Tresor.Maneka@ppcdrc.cd",
@@ -1252918,5 +1252965,5 @@
       }
     }
   ],
-  "nextSeq": 2307
+  "nextSeq": 2308
 }
