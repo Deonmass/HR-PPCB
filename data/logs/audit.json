@@ -1,6 +1,45 @@
 {
   "entries": [
     {
+      "id": "log-002314",
+      "at": "2026-11-10T14:54:36.619Z",
+      "userId": "Tresor.Maneka@ppcdrc.cd",
+      "userName": "Tresor Maneka",
+      "userEmail": "Tresor.Maneka@ppcdrc.cd",
+      "module": "protocol.voyages",
+      "moduleLabel": "Gestion de voyage",
+      "action": "create",
+      "actionLabel": "Création",
+      "entityType": "protocol.voyage",
+      "entityId": "pvc-085",
+      "summary": "Voyage PVC-0085 KAHASHA MBASHA PATRICK Kinshasa Lubumbashi Kinshasa",
+      "details": "Voyage PVC-0085 KAHASHA MBASHA PATRICK Kinshasa Lubumbashi Kinshasa",
+      "after": {
+        "id": "pvc-085",
+        "numero": "PVC-0085",
+        "date": "2026-11-14",
+        "voyageur": "KAHASHA MBASHA PATRICK",
+        "voyageurMatricule": "70000256",
+        "destination": "Kinshasa Lubumbashi Kinshasa",
+        "ticketAvion": 1180,
+        "visaVolant": 0,
+        "lettreLegaliser": 0,
+        "goPass": 30,
+        "transfert": 0,
+        "hotelNuit": 185,
+        "nbreNuits": 2,
+        "coutHotel": 370,
+        "categorieHotel": "Pulluman karavia",
+        "appartement": 0,
+        "autresCharges": 0,
+        "coutTotal": 1580,
+        "createdAt": "2026-11-10T14:54:30.861Z",
+        "updatedAt": "2026-11-10T14:54:30.861Z"
+      },
+      "undoable": false,
+      "undone": false
+    },
+    {
       "id": "log-002313",
       "at": "2026-11-10T14:44:07.197Z",
       "userId": "Tresor.Maneka@ppcdrc.cd",
@@ -1253237,5 +1253276,5 @@
       }
     }
   ],
-  "nextSeq": 2314
+  "nextSeq": 2315
 }
