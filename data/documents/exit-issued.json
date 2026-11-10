@@ -448,5 +448,15 @@
     "issuedBy": "Administrateur",
     "id": "exit-1794293458689-rimyu0",
     "createdAt": "2026-11-10T06:50:58.689Z"
+  },
+  {
+    "matricule": "70000303",
+    "employeeName": "BUHENDWA JERRY",
+    "doc": "user-removal",
+    "docLabel": "User removal form",
+    "fileName": "User removal form - BUHENDWA JERRY.docx",
+    "issuedBy": "Administrateur",
+    "id": "exit-1794293475229-t4uukq",
+    "createdAt": "2026-11-10T06:51:15.229Z"
   }
 ]
