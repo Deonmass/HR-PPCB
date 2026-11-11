@@ -1,6 +1,45 @@
 {
   "entries": [
     {
+      "id": "log-002328",
+      "at": "2026-11-11T19:22:59.062Z",
+      "userId": "Tresor.Maneka@ppcdrc.cd",
+      "userName": "Tresor Maneka",
+      "userEmail": "Tresor.Maneka@ppcdrc.cd",
+      "module": "protocol.voyages",
+      "moduleLabel": "Gestion de voyage",
+      "action": "create",
+      "actionLabel": "Création",
+      "entityType": "protocol.voyage",
+      "entityId": "pvc-092",
+      "summary": "Voyage PVC-0092 EWULI SUKA Carine Kinshasa Paris Kinshasa",
+      "details": "Voyage PVC-0092 EWULI SUKA Carine Kinshasa Paris Kinshasa",
+      "after": {
+        "id": "pvc-092",
+        "numero": "PVC-0092",
+        "date": "2026-11-12",
+        "voyageur": "EWULI SUKA Carine",
+        "voyageurMatricule": "70000265",
+        "destination": "Kinshasa Paris Kinshasa",
+        "ticketAvion": 2575,
+        "visaVolant": 0,
+        "lettreLegaliser": 0,
+        "goPass": 55,
+        "transfert": 10,
+        "hotelNuit": 0,
+        "nbreNuits": 0,
+        "coutHotel": 0,
+        "categorieHotel": "",
+        "appartement": 0,
+        "autresCharges": 0,
+        "coutTotal": 2640,
+        "createdAt": "2026-11-11T19:22:54.363Z",
+        "updatedAt": "2026-11-11T19:22:54.363Z"
+      },
+      "undoable": false,
+      "undone": false
+    },
+    {
       "id": "log-002327",
       "at": "2026-11-11T17:23:16.955Z",
       "userId": "Tresor.Maneka@ppcdrc.cd",
@@ -1253820,5 +1253859,5 @@
       }
     }
   ],
-  "nextSeq": 2328
+  "nextSeq": 2329
 }
