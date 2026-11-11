@@ -1,6 +1,45 @@
 {
   "entries": [
     {
+      "id": "log-002327",
+      "at": "2026-11-11T17:23:16.955Z",
+      "userId": "Tresor.Maneka@ppcdrc.cd",
+      "userName": "Tresor Maneka",
+      "userEmail": "Tresor.Maneka@ppcdrc.cd",
+      "module": "protocol.voyages",
+      "moduleLabel": "Gestion de voyage",
+      "action": "create",
+      "actionLabel": "Création",
+      "entityType": "protocol.voyage",
+      "entityId": "pvc-091",
+      "summary": "Voyage PVC-0091 Freddy driver lubudi Lubudi Kolwozi",
+      "details": "Voyage PVC-0091 Freddy driver lubudi Lubudi Kolwozi",
+      "after": {
+        "id": "pvc-091",
+        "numero": "PVC-0091",
+        "date": "2026-11-11",
+        "voyageur": "Freddy driver lubudi",
+        "voyageurMatricule": "",
+        "destination": "Lubudi Kolwozi",
+        "ticketAvion": 0,
+        "visaVolant": 0,
+        "lettreLegaliser": 0,
+        "goPass": 0,
+        "transfert": 0,
+        "hotelNuit": 1,
+        "nbreNuits": 100,
+        "coutHotel": 100,
+        "categorieHotel": "Hotel le parisien de kolwozi",
+        "appartement": 0,
+        "autresCharges": 0,
+        "coutTotal": 100,
+        "createdAt": "2026-11-11T17:23:12.284Z",
+        "updatedAt": "2026-11-11T17:23:12.284Z"
+      },
+      "undoable": false,
+      "undone": false
+    },
+    {
       "id": "log-002326",
       "at": "2026-11-11T17:22:08.189Z",
       "userId": "Tresor.Maneka@ppcdrc.cd",
@@ -1253781,5 +1253820,5 @@
       }
     }
   ],
-  "nextSeq": 2327
+  "nextSeq": 2328
 }
