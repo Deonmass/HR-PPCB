@@ -1,6 +1,67 @@
 {
   "entries": [
     {
+      "id": "log-002330",
+      "at": "2026-11-11T19:26:19.275Z",
+      "userId": "Tresor.Maneka@ppcdrc.cd",
+      "userName": "Tresor Maneka",
+      "userEmail": "Tresor.Maneka@ppcdrc.cd",
+      "module": "protocol.voyages",
+      "moduleLabel": "Gestion de voyage",
+      "action": "update",
+      "actionLabel": "Modification",
+      "entityType": "protocol.voyage",
+      "entityId": "pvc-093",
+      "summary": "Modification voyage PVC-0093 RUKOMEZA KARHIBULA GISCARD",
+      "details": "Modification voyage PVC-0093 RUKOMEZA KARHIBULA GISCARD",
+      "before": {
+        "id": "pvc-093",
+        "numero": "PVC-0093",
+        "date": "2026-11-11",
+        "voyageur": "RUKOMEZA KARHIBULA GISCARD",
+        "voyageurMatricule": "70000266",
+        "destination": "Kinshasa Kolwozi Kinshasa",
+        "ticketAvion": 0,
+        "visaVolant": 0,
+        "lettreLegaliser": 0,
+        "goPass": 0,
+        "transfert": 0,
+        "hotelNuit": 7,
+        "nbreNuits": 210,
+        "coutHotel": 1470,
+        "categorieHotel": "Hotel Kapi ya Boma",
+        "appartement": 0,
+        "autresCharges": 0,
+        "coutTotal": 1470,
+        "createdAt": "2026-11-11T19:24:53.167Z",
+        "updatedAt": "2026-11-11T19:24:53.167Z"
+      },
+      "after": {
+        "id": "pvc-093",
+        "numero": "PVC-0093",
+        "date": "2026-11-11",
+        "voyageur": "RUKOMEZA KARHIBULA GISCARD",
+        "voyageurMatricule": "70000266",
+        "destination": "Lubumbashi Kolwozi Lubumbashi",
+        "ticketAvion": 0,
+        "visaVolant": 0,
+        "lettreLegaliser": 0,
+        "goPass": 0,
+        "transfert": 0,
+        "hotelNuit": 7,
+        "nbreNuits": 210,
+        "coutHotel": 1470,
+        "categorieHotel": "Hotel Kapi ya Boma",
+        "appartement": 0,
+        "autresCharges": 0,
+        "coutTotal": 1470,
+        "createdAt": "2026-11-11T19:24:53.167Z",
+        "updatedAt": "2026-11-11T19:26:14.104Z"
+      },
+      "undoable": false,
+      "undone": false
+    },
+    {
       "id": "log-002329",
       "at": "2026-11-11T19:24:55.899Z",
       "userId": "Tresor.Maneka@ppcdrc.cd",
@@ -1253898,5 +1253959,5 @@
       }
     }
   ],
-  "nextSeq": 2330
+  "nextSeq": 2331
 }
