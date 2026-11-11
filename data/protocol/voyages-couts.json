@@ -1964,7 +1964,7 @@
       "date": "2026-11-11",
       "voyageur": "RUKOMEZA KARHIBULA GISCARD",
       "voyageurMatricule": "70000266",
-      "destination": "Kinshasa Kolwozi Kinshasa",
+      "destination": "Lubumbashi Kolwozi Lubumbashi",
       "ticketAvion": 0,
       "visaVolant": 0,
       "lettreLegaliser": 0,
@@ -1978,7 +1978,7 @@
       "autresCharges": 0,
       "coutTotal": 1470,
       "createdAt": "2026-11-11T19:24:53.167Z",
-      "updatedAt": "2026-11-11T19:24:53.167Z"
+      "updatedAt": "2026-11-11T19:26:14.104Z"
     }
   ],
   "nextSeq": 94
