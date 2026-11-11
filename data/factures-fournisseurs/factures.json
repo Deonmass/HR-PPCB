@@ -15636,7 +15636,26 @@
       "commentaire": "Au PR — en attente du PO.",
       "statut": "unpaid",
       "statutLabel": "unpaid"
+    },
+    {
+      "id": "fac-2184",
+      "date": "26/10/2026",
+      "societe": "Flat Hotel Mont Sinai",
+      "facture": "FACTURE N° 501/26",
+      "montant": 240,
+      "echeance": "",
+      "pr": "11209008",
+      "datePr": "",
+      "po": "",
+      "datePo": "",
+      "grn": "",
+      "dateGrn": "",
+      "payment": "",
+      "datePym": "",
+      "commentaire": "Au PR — en attente du PO.",
+      "statut": "unpaid",
+      "statutLabel": "unpaid"
     }
   ],
-  "nextFactureSeq": 2184
+  "nextFactureSeq": 2185
 }
