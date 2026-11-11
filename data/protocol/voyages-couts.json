@@ -1789,7 +1789,7 @@
       "voyageur": "KAHASHA MBASHA PATRICK",
       "voyageurMatricule": "70000256",
       "destination": "Kinshasa Lubumbashi Kinshasa",
-      "ticketAvion": 1180,
+      "ticketAvion": 120,
       "visaVolant": 0,
       "lettreLegaliser": 0,
       "goPass": 30,
@@ -1800,9 +1800,9 @@
       "categorieHotel": "Pulluman karavia",
       "appartement": 0,
       "autresCharges": 0,
-      "coutTotal": 1580,
+      "coutTotal": 520,
       "createdAt": "2026-11-10T14:54:30.861Z",
-      "updatedAt": "2026-11-10T14:54:30.861Z"
+      "updatedAt": "2026-11-11T11:19:30.456Z"
     },
     {
       "id": "pvc-086",
