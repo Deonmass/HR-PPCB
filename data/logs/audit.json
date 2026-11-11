@@ -1,6 +1,67 @@
 {
   "entries": [
     {
+      "id": "log-002321",
+      "at": "2026-11-11T11:19:34.929Z",
+      "userId": "Tresor.Maneka@ppcdrc.cd",
+      "userName": "Tresor Maneka",
+      "userEmail": "Tresor.Maneka@ppcdrc.cd",
+      "module": "protocol.voyages",
+      "moduleLabel": "Gestion de voyage",
+      "action": "update",
+      "actionLabel": "Modification",
+      "entityType": "protocol.voyage",
+      "entityId": "pvc-085",
+      "summary": "Modification voyage PVC-0085 KAHASHA MBASHA PATRICK",
+      "details": "Modification voyage PVC-0085 KAHASHA MBASHA PATRICK",
+      "before": {
+        "id": "pvc-085",
+        "numero": "PVC-0085",
+        "date": "2026-11-14",
+        "voyageur": "KAHASHA MBASHA PATRICK",
+        "voyageurMatricule": "70000256",
+        "destination": "Kinshasa Lubumbashi Kinshasa",
+        "ticketAvion": 1180,
+        "visaVolant": 0,
+        "lettreLegaliser": 0,
+        "goPass": 30,
+        "transfert": 0,
+        "hotelNuit": 185,
+        "nbreNuits": 2,
+        "coutHotel": 370,
+        "categorieHotel": "Pulluman karavia",
+        "appartement": 0,
+        "autresCharges": 0,
+        "coutTotal": 1580,
+        "createdAt": "2026-11-10T14:54:30.861Z",
+        "updatedAt": "2026-11-10T14:54:30.861Z"
+      },
+      "after": {
+        "id": "pvc-085",
+        "numero": "PVC-0085",
+        "date": "2026-11-14",
+        "voyageur": "KAHASHA MBASHA PATRICK",
+        "voyageurMatricule": "70000256",
+        "destination": "Kinshasa Lubumbashi Kinshasa",
+        "ticketAvion": 120,
+        "visaVolant": 0,
+        "lettreLegaliser": 0,
+        "goPass": 30,
+        "transfert": 0,
+        "hotelNuit": 185,
+        "nbreNuits": 2,
+        "coutHotel": 370,
+        "categorieHotel": "Pulluman karavia",
+        "appartement": 0,
+        "autresCharges": 0,
+        "coutTotal": 520,
+        "createdAt": "2026-11-10T14:54:30.861Z",
+        "updatedAt": "2026-11-11T11:19:30.456Z"
+      },
+      "undoable": false,
+      "undone": false
+    },
+    {
       "id": "log-002320",
       "at": "2026-11-11T10:13:39.941Z",
       "userId": "Serge.Muakasa@ppcdrc.cd",
@@ -1253552,5 +1253613,5 @@
       }
     }
   ],
-  "nextSeq": 2321
+  "nextSeq": 2322
 }
