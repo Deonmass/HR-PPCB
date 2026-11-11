@@ -1,6 +1,45 @@
 {
   "entries": [
     {
+      "id": "log-002329",
+      "at": "2026-11-11T19:24:55.899Z",
+      "userId": "Tresor.Maneka@ppcdrc.cd",
+      "userName": "Tresor Maneka",
+      "userEmail": "Tresor.Maneka@ppcdrc.cd",
+      "module": "protocol.voyages",
+      "moduleLabel": "Gestion de voyage",
+      "action": "create",
+      "actionLabel": "Création",
+      "entityType": "protocol.voyage",
+      "entityId": "pvc-093",
+      "summary": "Voyage PVC-0093 RUKOMEZA KARHIBULA GISCARD Kinshasa Kolwozi Kinshasa",
+      "details": "Voyage PVC-0093 RUKOMEZA KARHIBULA GISCARD Kinshasa Kolwozi Kinshasa",
+      "after": {
+        "id": "pvc-093",
+        "numero": "PVC-0093",
+        "date": "2026-11-11",
+        "voyageur": "RUKOMEZA KARHIBULA GISCARD",
+        "voyageurMatricule": "70000266",
+        "destination": "Kinshasa Kolwozi Kinshasa",
+        "ticketAvion": 0,
+        "visaVolant": 0,
+        "lettreLegaliser": 0,
+        "goPass": 0,
+        "transfert": 0,
+        "hotelNuit": 7,
+        "nbreNuits": 210,
+        "coutHotel": 1470,
+        "categorieHotel": "Hotel Kapi ya Boma",
+        "appartement": 0,
+        "autresCharges": 0,
+        "coutTotal": 1470,
+        "createdAt": "2026-11-11T19:24:53.167Z",
+        "updatedAt": "2026-11-11T19:24:53.167Z"
+      },
+      "undoable": false,
+      "undone": false
+    },
+    {
       "id": "log-002328",
       "at": "2026-11-11T19:22:59.062Z",
       "userId": "Tresor.Maneka@ppcdrc.cd",
@@ -1253859,5 +1253898,5 @@
       }
     }
   ],
-  "nextSeq": 2329
+  "nextSeq": 2330
 }
