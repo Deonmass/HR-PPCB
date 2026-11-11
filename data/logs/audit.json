@@ -1,6 +1,45 @@
 {
   "entries": [
     {
+      "id": "log-002325",
+      "at": "2026-11-11T17:21:09.872Z",
+      "userId": "Tresor.Maneka@ppcdrc.cd",
+      "userName": "Tresor Maneka",
+      "userEmail": "Tresor.Maneka@ppcdrc.cd",
+      "module": "protocol.voyages",
+      "moduleLabel": "Gestion de voyage",
+      "action": "create",
+      "actionLabel": "Création",
+      "entityType": "protocol.voyage",
+      "entityId": "pvc-089",
+      "summary": "Voyage PVC-0089 LANDU LUYEYE Romuald Zamba Kinshasa Zamba",
+      "details": "Voyage PVC-0089 LANDU LUYEYE Romuald Zamba Kinshasa Zamba",
+      "after": {
+        "id": "pvc-089",
+        "numero": "PVC-0089",
+        "date": "2026-11-11",
+        "voyageur": "LANDU LUYEYE Romuald",
+        "voyageurMatricule": "70000280",
+        "destination": "Zamba Kinshasa Zamba",
+        "ticketAvion": 0,
+        "visaVolant": 0,
+        "lettreLegaliser": 0,
+        "goPass": 0,
+        "transfert": 0,
+        "hotelNuit": 100,
+        "nbreNuits": 2,
+        "coutHotel": 200,
+        "categorieHotel": "Hotel Platunium",
+        "appartement": 0,
+        "autresCharges": 0,
+        "coutTotal": 200,
+        "createdAt": "2026-11-11T17:21:05.505Z",
+        "updatedAt": "2026-11-11T17:21:05.505Z"
+      },
+      "undoable": false,
+      "undone": false
+    },
+    {
       "id": "log-002324",
       "at": "2026-11-11T15:35:41.689Z",
       "userId": "Tresor.Maneka@ppcdrc.cd",
@@ -1253703,5 +1253742,5 @@
       }
     }
   ],
-  "nextSeq": 2325
+  "nextSeq": 2326
 }
