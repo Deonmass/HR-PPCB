@@ -1,6 +1,45 @@
 {
   "entries": [
     {
+      "id": "log-002324",
+      "at": "2026-11-11T15:35:41.689Z",
+      "userId": "Tresor.Maneka@ppcdrc.cd",
+      "userName": "Tresor Maneka",
+      "userEmail": "Tresor.Maneka@ppcdrc.cd",
+      "module": "protocol.voyages",
+      "moduleLabel": "Gestion de voyage",
+      "action": "create",
+      "actionLabel": "Création",
+      "entityType": "protocol.voyage",
+      "entityId": "pvc-088",
+      "summary": "Voyage PVC-0088 ATATALA ANIPAP JEREMIE Lubudi Kolwozi Lubudi",
+      "details": "Voyage PVC-0088 ATATALA ANIPAP JEREMIE Lubudi Kolwozi Lubudi",
+      "after": {
+        "id": "pvc-088",
+        "numero": "PVC-0088",
+        "date": "2026-11-11",
+        "voyageur": "ATATALA ANIPAP JEREMIE",
+        "voyageurMatricule": "70000300",
+        "destination": "Lubudi Kolwozi Lubudi",
+        "ticketAvion": 0,
+        "visaVolant": 0,
+        "lettreLegaliser": 0,
+        "goPass": 0,
+        "transfert": 0,
+        "hotelNuit": 100,
+        "nbreNuits": 3,
+        "coutHotel": 300,
+        "categorieHotel": "Hotel Le Parisien",
+        "appartement": 0,
+        "autresCharges": 0,
+        "coutTotal": 300,
+        "createdAt": "2026-11-11T15:35:36.819Z",
+        "updatedAt": "2026-11-11T15:35:36.819Z"
+      },
+      "undoable": false,
+      "undone": false
+    },
+    {
       "id": "log-002323",
       "at": "2026-11-11T15:08:38.438Z",
       "userId": "gd.mwankana@capitalhrsolutions.net",
@@ -1253664,5 +1253703,5 @@
       }
     }
   ],
-  "nextSeq": 2324
+  "nextSeq": 2325
 }
