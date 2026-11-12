@@ -1,6 +1,98 @@
 {
   "entries": [
     {
+      "id": "log-002337",
+      "at": "2026-11-12T09:44:41.148Z",
+      "userId": "admin",
+      "userName": "Administrateur",
+      "userEmail": "admin",
+      "module": "travel.etablir",
+      "moduleLabel": "Cash request",
+      "action": "create",
+      "actionLabel": "Création",
+      "entityType": "travel.cash-request",
+      "entityId": "cr-1794476678038",
+      "summary": "Génération documents voyage PPCB-DOC-HR-ZA/047/11/2026",
+      "details": "Documents générés (SSE) pour MASSADI GEDEON GEDEON (PPCB-DOC-HR-ZA/047/11/2026)",
+      "after": {
+        "id": "cr-1794476678038",
+        "type": "cash-request",
+        "createdAt": "2026-11-12T09:44:38.627Z",
+        "missionRef": "PPCB-DOC-HR-ZA/047/11/2026",
+        "employeeMatricule": "70000308",
+        "employeeName": "MASSADI GEDEON GEDEON",
+        "employeeDepartment": "Human Resources",
+        "costCenter": "KM5413",
+        "requestorLine": "MASSADI GEDEON GEDEON (70000308)        Department : Human Resources        Coast center : KM5413",
+        "objet": "Mission de service à Mbanza Ngungu : Déclaration des mouvements des travailleurs à l'ONEM et Visa à l'inspection du travail (PV et R.O.I délégation syndicale)",
+        "requestDate": "2026-11-12",
+        "travel": {
+          "position": "HR Administrator",
+          "department": "Human Resources",
+          "tripPurpose": "Mission de service à Mbanza Ngungu : Déclaration des mouvements des travailleurs à l'ONEM et Visa à l'inspection du travail (PV et R.O.I délégation syndicale)",
+          "costCenter": "KM5413",
+          "documentDate": "2026-11-12",
+          "departureDate": "2026-11-13",
+          "departurePlace": "zamba",
+          "destinationPlace": "Mbanza Ngungu",
+          "returnDate": "2026-11-13",
+          "peopleCount": 1,
+          "companyName": "PPC Barnet Manufacturing SA",
+          "departmentToWorkWith": "",
+          "contactPerson": "",
+          "transportMeans": "Voiture",
+          "paymentOrderSignatory": "KINKINIA DIAVEZUKA PELAGIE",
+          "budgetLines": [
+            {
+              "label": "Food allowance for 13th November 2026",
+              "amount": 50
+            },
+            {
+              "label": "Trip allowance for 13th November 2026",
+              "amount": 50
+            }
+          ],
+          "isInternationalTravel": false,
+          "missionSite": "zamba",
+          "missionCategory": "",
+          "missionType": "Other national",
+          "missionObservation": ""
+        },
+        "lines": [
+          {
+            "ref": "1",
+            "description": "Food allowance for 13th November 2026",
+            "currency": "USD",
+            "amount": 50
+          },
+          {
+            "ref": "2",
+            "description": "Trip allowance for 13th November 2026",
+            "currency": "USD",
+            "amount": 50
+          }
+        ],
+        "total": 100,
+        "fileName": "Formulaire d'autorisation de voyage - MASSADI GEDEON GEDEON.docx",
+        "filePath": "/tmp/hr-rh-app/travel/output/Formulaire d'autorisation de voyage - MASSADI GEDEON GEDEON.docx",
+        "files": [
+          {
+            "type": "travel-authorization",
+            "fileName": "Formulaire d'autorisation de voyage - MASSADI GEDEON GEDEON.docx",
+            "filePath": "/tmp/hr-rh-app/travel/output/Formulaire d'autorisation de voyage - MASSADI GEDEON GEDEON.docx"
+          },
+          {
+            "type": "mission-order",
+            "fileName": "Ordre de mission - MASSADI GEDEON GEDEON.docx",
+            "filePath": "/tmp/hr-rh-app/travel/output/Ordre de mission - MASSADI GEDEON GEDEON.docx"
+          }
+        ],
+        "saveDirectory": "/tmp/hr-rh-app/travel/output"
+      },
+      "undoable": false,
+      "undone": false
+    },
+    {
       "id": "log-002336",
       "at": "2026-11-12T09:43:49.548Z",
       "userId": "admin",
@@ -1254278,5 +1254370,5 @@
       }
     }
   ],
-  "nextSeq": 2337
+  "nextSeq": 2338
 }
