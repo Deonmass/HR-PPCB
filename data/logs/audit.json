@@ -1,6 +1,21 @@
 {
   "entries": [
     {
+      "id": "log-002336",
+      "at": "2026-11-12T09:43:49.548Z",
+      "userId": "admin",
+      "userName": "Administrateur",
+      "userEmail": "admin",
+      "module": "travel.etablir",
+      "moduleLabel": "Cash request",
+      "action": "export",
+      "actionLabel": "Export",
+      "summary": "Téléchargement document voyage PPCB-DOC-HR-ZA/046/11/2026",
+      "details": "Fichier TRIP BUDGET FORM - MASSADI GEDEON GEDEON.xlsx (trip-budget)",
+      "undoable": false,
+      "undone": false
+    },
+    {
       "id": "log-002335",
       "at": "2026-11-12T09:43:36.642Z",
       "userId": "admin",
@@ -1254263,5 +1254278,5 @@
       }
     }
   ],
-  "nextSeq": 2336
+  "nextSeq": 2337
 }
