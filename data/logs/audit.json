@@ -1,6 +1,21 @@
 {
   "entries": [
     {
+      "id": "log-002338",
+      "at": "2026-11-12T09:44:53.748Z",
+      "userId": "admin",
+      "userName": "Administrateur",
+      "userEmail": "admin",
+      "module": "travel.etablir",
+      "moduleLabel": "Cash request",
+      "action": "export",
+      "actionLabel": "Export",
+      "summary": "Téléchargement document voyage PPCB-DOC-HR-ZA/047/11/2026",
+      "details": "Fichier Formulaire d'autorisation de voyage - MASSADI GEDEON GEDEON.docx (travel-authorization)",
+      "undoable": false,
+      "undone": false
+    },
+    {
       "id": "log-002337",
       "at": "2026-11-12T09:44:41.148Z",
       "userId": "admin",
@@ -1254370,5 +1254385,5 @@
       }
     }
   ],
-  "nextSeq": 2338
+  "nextSeq": 2339
 }
