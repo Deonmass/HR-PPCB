@@ -1,6 +1,21 @@
 {
   "entries": [
     {
+      "id": "log-002339",
+      "at": "2026-11-12T09:45:04.667Z",
+      "userId": "admin",
+      "userName": "Administrateur",
+      "userEmail": "admin",
+      "module": "travel.etablir",
+      "moduleLabel": "Cash request",
+      "action": "export",
+      "actionLabel": "Export",
+      "summary": "Téléchargement document voyage PPCB-DOC-HR-ZA/047/11/2026",
+      "details": "Fichier Ordre de mission - MASSADI GEDEON GEDEON.docx (mission-order)",
+      "undoable": false,
+      "undone": false
+    },
+    {
       "id": "log-002338",
       "at": "2026-11-12T09:44:53.748Z",
       "userId": "admin",
@@ -1254385,5 +1254400,5 @@
       }
     }
   ],
-  "nextSeq": 2339
+  "nextSeq": 2340
 }
