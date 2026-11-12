@@ -1,6 +1,21 @@
 {
   "entries": [
     {
+      "id": "log-002332",
+      "at": "2026-11-12T09:32:18.149Z",
+      "userId": "admin",
+      "userName": "Administrateur",
+      "userEmail": "admin",
+      "module": "documents.mouvement-travailleur",
+      "moduleLabel": "Documents",
+      "action": "export",
+      "actionLabel": "Export",
+      "summary": "Déclaration de mouvement de travailleur — MAKABU TSHONDO François (70000314)",
+      "details": "Déclaration de mouvement de travailleur — MAKABU TSHONDO François (70000314)",
+      "undoable": false,
+      "undone": false
+    },
+    {
       "id": "log-002331",
       "at": "2026-11-12T09:31:07.923Z",
       "userId": "admin",
@@ -1254110,5 +1254125,5 @@
       }
     }
   ],
-  "nextSeq": 2332
+  "nextSeq": 2333
 }
