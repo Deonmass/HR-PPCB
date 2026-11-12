@@ -7892,7 +7892,7 @@
       "service": "",
       "company": "PPC Barnet DRC Manufacturing",
       "centreCout": "",
-      "appointmentDate": "21/10/2026",
+      "appointmentDate": "29/08/2026",
       "gender": "Male",
       "dateOfBirth": "23/10/1990",
       "age": 36,
@@ -7912,13 +7912,13 @@
       "typeContrat": "CDD",
       "dureeContratMois": 3,
       "periodeEssaiMois": 3,
-      "dateFinPeriodeEssai": "21/01/2027",
-      "dateFinContrat": "21/01/2027",
+      "dateFinPeriodeEssai": "29/11/2026",
+      "dateFinContrat": "29/11/2026",
       "raisonExit": "NA",
       "essaiActions": "",
       "essaiResponsable": "",
       "essaiEcheanceEval": "21/12/2026",
-      "essaiStatutEval": "Ongoing",
+      "essaiStatutEval": "On time",
       "essaiCommentaire": "",
       "cddHistoriqueDebut": "",
       "cddHistoriqueFin": "",
@@ -7928,7 +7928,7 @@
       "nif": "",
       "telephone": "",
       "createdAt": "2026-10-27T07:14:12.536Z",
-      "updatedAt": "2026-10-27T09:47:21.391Z"
+      "updatedAt": "2026-11-12T09:30:59.793Z"
     }
   ]
 }
