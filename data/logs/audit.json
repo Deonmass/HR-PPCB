@@ -1,6 +1,53 @@
 {
   "entries": [
     {
+      "id": "log-002357",
+      "at": "2026-11-13T08:38:40.625Z",
+      "userId": "Tresor.Maneka@ppcdrc.cd",
+      "userName": "Tresor Maneka",
+      "userEmail": "Tresor.Maneka@ppcdrc.cd",
+      "module": "charroi.voyages",
+      "moduleLabel": "Charroi — Voyages",
+      "action": "create",
+      "actionLabel": "Création",
+      "entityType": "charroi.voyage",
+      "entityId": "vyg-040",
+      "summary": "Demande de voyage VYG-0040 LANDU LUYEYE Romuald Zamba (Kimpese) → Kinshasa",
+      "details": "Demande de voyage VYG-0040 LANDU LUYEYE Romuald Zamba (Kimpese) → Kinshasa",
+      "after": {
+        "id": "vyg-040",
+        "numero": "VYG-0040",
+        "passagerNom": "LANDU LUYEYE Romuald",
+        "passagerMatricule": "70000280",
+        "passagerInterne": true,
+        "nombrePersonnes": 1,
+        "depart": "Zamba (Kimpese)",
+        "destination": "Kinshasa",
+        "dateDepart": "2026-11-11",
+        "heureDepart": "15:00",
+        "dateArrivee": "",
+        "heureArrivee": "",
+        "motif": "Mission a kinshasa BTC",
+        "notes": "",
+        "status": "demande",
+        "chauffeurNom": "",
+        "chauffeurMatricule": "",
+        "chauffeurInterne": false,
+        "vehiculeMode": "",
+        "vehiculeId": "",
+        "vehiculeLibelle": "",
+        "foodAllowance": 0,
+        "foodForTheRoad": 0,
+        "tollGate": 0,
+        "confirmedAt": "",
+        "completedAt": "",
+        "createdAt": "2026-11-13T08:38:35.992Z",
+        "updatedAt": "2026-11-13T08:38:35.992Z"
+      },
+      "undoable": false,
+      "undone": false
+    },
+    {
       "id": "log-002356",
       "at": "2026-11-13T08:36:28.586Z",
       "userId": "Tresor.Maneka@ppcdrc.cd",
@@ -1255072,5 +1255119,5 @@
       }
     }
   ],
-  "nextSeq": 2357
+  "nextSeq": 2358
 }
