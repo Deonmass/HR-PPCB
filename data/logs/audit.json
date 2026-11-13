@@ -1,6 +1,21 @@
 {
   "entries": [
     {
+      "id": "log-002370",
+      "at": "2026-11-13T08:49:32.987Z",
+      "userId": "Pelagie.Kinkinia",
+      "userName": "Pelagie Kinkinia",
+      "userEmail": "Pelagie.Kinkinia@ppcdrc.cd",
+      "module": "auth",
+      "moduleLabel": "Authentification",
+      "action": "login",
+      "actionLabel": "Connexion",
+      "summary": "Connexion Pelagie.Kinkinia@ppcdrc.cd",
+      "details": "Connexion de Pelagie Kinkinia (Pelagie.Kinkinia@ppcdrc.cd)",
+      "undoable": false,
+      "undone": false
+    },
+    {
       "id": "log-002369",
       "at": "2026-11-13T08:49:27.467Z",
       "userId": "Pelagie.Kinkinia",
@@ -1257873,5 +1257888,5 @@
       }
     }
   ],
-  "nextSeq": 2370
+  "nextSeq": 2371
 }
