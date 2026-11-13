@@ -1,6 +1,48 @@
 {
   "entries": [
     {
+      "id": "log-002348",
+      "at": "2026-11-13T08:19:04.379Z",
+      "userId": "karine.mvutu@ppcdrc.cd",
+      "userName": "Karine Mvutu",
+      "userEmail": "karine.mvutu@ppcdrc.cd",
+      "module": "sante",
+      "moduleLabel": "Santé",
+      "action": "create",
+      "actionLabel": "Création",
+      "entityType": "sante.visit",
+      "entityId": "sante-mwepgq11-u5z5a6",
+      "summary": "Cas santé — MAKIESE DIYABANZA · FIRONCULOSE",
+      "details": "Cas santé — MAKIESE DIYABANZA · FIRONCULOSE",
+      "after": {
+        "id": "sante-mwepgq11-u5z5a6",
+        "date": "2026-11-09",
+        "nom": "MAKIESE",
+        "postnom": "DIYABANZA",
+        "sexe": "F",
+        "age": 37,
+        "typeMalade": "EPOUSE",
+        "pathologie": "FIRONCULOSE",
+        "traitement": "ANTIBIOTIQUE ET ANTI INFLAMMATOIRE",
+        "reference": "IME",
+        "year": 2026,
+        "month": 11,
+        "employeeMatricule": "70000015",
+        "employeeNom": "LUZOLO NSEMBOLO THOMAS",
+        "dependantId": 232,
+        "commentaire": "Voir avis medicale pour appreciation sur l'inflammation",
+        "contractantId": "",
+        "contractantNom": "",
+        "contractantEmployeeId": "",
+        "createdAt": "2026-11-13T08:19:01.957Z",
+        "updatedAt": "2026-11-13T08:19:01.957Z",
+        "createdBy": "karine.mvutu@ppcdrc.cd",
+        "updatedBy": "karine.mvutu@ppcdrc.cd"
+      },
+      "undoable": false,
+      "undone": false
+    },
+    {
       "id": "log-002347",
       "at": "2026-11-13T08:18:26.414Z",
       "userId": "admin",
@@ -1254688,5 +1254730,5 @@
       }
     }
   ],
-  "nextSeq": 2348
+  "nextSeq": 2349
 }
