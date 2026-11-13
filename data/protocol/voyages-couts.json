@@ -1729,14 +1729,14 @@
       "goPass": 0,
       "transfert": 0,
       "hotelNuit": 130,
-      "nbreNuits": 2,
-      "coutHotel": 260,
+      "nbreNuits": 4,
+      "coutHotel": 520,
       "categorieHotel": "Hotel Cluade 9",
       "appartement": 0,
       "autresCharges": 0,
-      "coutTotal": 260,
+      "coutTotal": 520,
       "createdAt": "2026-11-10T14:41:00.246Z",
-      "updatedAt": "2026-11-10T14:41:00.246Z"
+      "updatedAt": "2026-11-13T08:32:41.879Z"
     },
     {
       "id": "pvc-083",
