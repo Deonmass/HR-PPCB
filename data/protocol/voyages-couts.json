@@ -1742,8 +1742,8 @@
       "id": "pvc-083",
       "numero": "PVC-0083",
       "date": "2026-11-12",
-      "voyageur": "KAHASHA MBASHA PATRICK",
-      "voyageurMatricule": "70000256",
+      "voyageur": "ZAKUANI BAHATI BENNY",
+      "voyageurMatricule": "70000177",
       "destination": "Zamba Matadi Kinshasa",
       "ticketAvion": 0,
       "visaVolant": 0,
@@ -1758,7 +1758,7 @@
       "autresCharges": 0,
       "coutTotal": 200,
       "createdAt": "2026-11-10T14:42:37.716Z",
-      "updatedAt": "2026-11-10T14:42:37.716Z"
+      "updatedAt": "2026-11-13T08:49:57.623Z"
     },
     {
       "id": "pvc-084",
