@@ -733,7 +733,7 @@
       "heureDepart": "03:30",
       "dateArrivee": "",
       "heureArrivee": "",
-      "motif": "",
+      "motif": "Mission a Zamba sur l'iinvitation de DG",
       "notes": "",
       "status": "effectue",
       "chauffeurNom": "SAMBA LUINDA HONORE",
@@ -748,7 +748,7 @@
       "confirmedAt": "2026-11-10T14:30:45.935Z",
       "completedAt": "2026-11-10T14:30:45.935Z",
       "createdAt": "2026-11-10T14:29:30.197Z",
-      "updatedAt": "2026-11-10T14:30:45.935Z"
+      "updatedAt": "2026-11-13T08:41:22.942Z"
     },
     {
       "id": "vyg-039",
