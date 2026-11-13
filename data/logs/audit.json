@@ -1,6 +1,45 @@
 {
   "entries": [
     {
+      "id": "log-002372",
+      "at": "2026-11-13T08:52:57.336Z",
+      "userId": "Tresor.Maneka@ppcdrc.cd",
+      "userName": "Tresor Maneka",
+      "userEmail": "Tresor.Maneka@ppcdrc.cd",
+      "module": "protocol.voyages",
+      "moduleLabel": "Gestion de voyage",
+      "action": "create",
+      "actionLabel": "Création",
+      "entityType": "protocol.voyage",
+      "entityId": "pvc-098",
+      "summary": "Voyage PVC-0098 KAHASHA MBASHA PATRICK Kinshasa Chine Kinshasa",
+      "details": "Voyage PVC-0098 KAHASHA MBASHA PATRICK Kinshasa Chine Kinshasa",
+      "after": {
+        "id": "pvc-098",
+        "numero": "PVC-0098",
+        "date": "2026-11-13",
+        "voyageur": "KAHASHA MBASHA PATRICK",
+        "voyageurMatricule": "70000256",
+        "destination": "Kinshasa Chine Kinshasa",
+        "ticketAvion": 0,
+        "visaVolant": 469,
+        "lettreLegaliser": 0,
+        "goPass": 0,
+        "transfert": 0,
+        "hotelNuit": 0,
+        "nbreNuits": 0,
+        "coutHotel": 0,
+        "categorieHotel": "",
+        "appartement": 0,
+        "autresCharges": 0,
+        "coutTotal": 469,
+        "createdAt": "2026-11-13T08:52:53.207Z",
+        "updatedAt": "2026-11-13T08:52:53.207Z"
+      },
+      "undoable": false,
+      "undone": false
+    },
+    {
       "id": "log-002371",
       "at": "2026-11-13T08:50:01.552Z",
       "userId": "Tresor.Maneka@ppcdrc.cd",
@@ -1257949,5 +1257988,5 @@
       }
     }
   ],
-  "nextSeq": 2372
+  "nextSeq": 2373
 }
