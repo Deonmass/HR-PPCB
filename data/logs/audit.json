@@ -1,6 +1,67 @@
 {
   "entries": [
     {
+      "id": "log-002371",
+      "at": "2026-11-13T08:50:01.552Z",
+      "userId": "Tresor.Maneka@ppcdrc.cd",
+      "userName": "Tresor Maneka",
+      "userEmail": "Tresor.Maneka@ppcdrc.cd",
+      "module": "protocol.voyages",
+      "moduleLabel": "Gestion de voyage",
+      "action": "update",
+      "actionLabel": "Modification",
+      "entityType": "protocol.voyage",
+      "entityId": "pvc-083",
+      "summary": "Modification voyage PVC-0083 KAHASHA MBASHA PATRICK",
+      "details": "Modification voyage PVC-0083 KAHASHA MBASHA PATRICK",
+      "before": {
+        "id": "pvc-083",
+        "numero": "PVC-0083",
+        "date": "2026-11-12",
+        "voyageur": "KAHASHA MBASHA PATRICK",
+        "voyageurMatricule": "70000256",
+        "destination": "Zamba Matadi Kinshasa",
+        "ticketAvion": 0,
+        "visaVolant": 0,
+        "lettreLegaliser": 0,
+        "goPass": 0,
+        "transfert": 0,
+        "hotelNuit": 200,
+        "nbreNuits": 1,
+        "coutHotel": 200,
+        "categorieHotel": "Hotel Vivi Palace",
+        "appartement": 0,
+        "autresCharges": 0,
+        "coutTotal": 200,
+        "createdAt": "2026-11-10T14:42:37.716Z",
+        "updatedAt": "2026-11-10T14:42:37.716Z"
+      },
+      "after": {
+        "id": "pvc-083",
+        "numero": "PVC-0083",
+        "date": "2026-11-12",
+        "voyageur": "ZAKUANI BAHATI BENNY",
+        "voyageurMatricule": "70000177",
+        "destination": "Zamba Matadi Kinshasa",
+        "ticketAvion": 0,
+        "visaVolant": 0,
+        "lettreLegaliser": 0,
+        "goPass": 0,
+        "transfert": 0,
+        "hotelNuit": 200,
+        "nbreNuits": 1,
+        "coutHotel": 200,
+        "categorieHotel": "Hotel Vivi Palace",
+        "appartement": 0,
+        "autresCharges": 0,
+        "coutTotal": 200,
+        "createdAt": "2026-11-10T14:42:37.716Z",
+        "updatedAt": "2026-11-13T08:49:57.623Z"
+      },
+      "undoable": false,
+      "undone": false
+    },
+    {
       "id": "log-002370",
       "at": "2026-11-13T08:49:32.987Z",
       "userId": "Pelagie.Kinkinia",
@@ -1257888,5 +1257949,5 @@
       }
     }
   ],
-  "nextSeq": 2371
+  "nextSeq": 2372
 }
