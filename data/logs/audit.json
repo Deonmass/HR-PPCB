@@ -1,6 +1,48 @@
 {
   "entries": [
     {
+      "id": "log-002342",
+      "at": "2026-11-13T08:05:40.074Z",
+      "userId": "karine.mvutu@ppcdrc.cd",
+      "userName": "Karine Mvutu",
+      "userEmail": "karine.mvutu@ppcdrc.cd",
+      "module": "sante",
+      "moduleLabel": "Santé",
+      "action": "create",
+      "actionLabel": "Création",
+      "entityType": "sante.visit",
+      "entityId": "sante-mweozh8v-oll6po",
+      "summary": "Cas santé — NGIMBI NSILULU DECLAIRK · COLIQUE ABDOMINALE",
+      "details": "Cas santé — NGIMBI NSILULU DECLAIRK · COLIQUE ABDOMINALE",
+      "after": {
+        "id": "sante-mweozh8v-oll6po",
+        "date": "2026-11-02",
+        "nom": "NGIMBI",
+        "postnom": "NSILULU DECLAIRK",
+        "sexe": "M",
+        "age": 32,
+        "typeMalade": "AGENT",
+        "pathologie": "COLIQUE ABDOMINALE",
+        "traitement": "ANTI SPASMODIQUE",
+        "reference": "NON",
+        "year": 2026,
+        "month": 11,
+        "employeeMatricule": "70000283",
+        "employeeNom": "NGIMBI NSILULU DECLAIRK",
+        "dependantId": null,
+        "commentaire": "",
+        "contractantId": "",
+        "contractantNom": "",
+        "contractantEmployeeId": "",
+        "createdAt": "2026-11-13T08:05:37.423Z",
+        "updatedAt": "2026-11-13T08:05:37.423Z",
+        "createdBy": "karine.mvutu@ppcdrc.cd",
+        "updatedBy": "karine.mvutu@ppcdrc.cd"
+      },
+      "undoable": false,
+      "undone": false
+    },
+    {
       "id": "log-002341",
       "at": "2026-11-13T00:16:02.984Z",
       "userId": "Serge.Muakasa@ppcdrc.cd",
@@ -1254451,5 +1254493,5 @@
       }
     }
   ],
-  "nextSeq": 2342
+  "nextSeq": 2343
 }
