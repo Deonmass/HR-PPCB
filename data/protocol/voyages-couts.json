@@ -1926,15 +1926,15 @@
       "lettreLegaliser": 0,
       "goPass": 0,
       "transfert": 0,
-      "hotelNuit": 1,
+      "hotelNuit": 4,
       "nbreNuits": 100,
-      "coutHotel": 100,
+      "coutHotel": 400,
       "categorieHotel": "Hotel le parisien de kolwozi",
       "appartement": 0,
       "autresCharges": 0,
-      "coutTotal": 100,
+      "coutTotal": 400,
       "createdAt": "2026-11-11T17:23:12.284Z",
-      "updatedAt": "2026-11-11T17:23:12.284Z"
+      "updatedAt": "2026-11-13T08:28:05.000Z"
     },
     {
       "id": "pvc-092",
