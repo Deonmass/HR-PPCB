@@ -1,6 +1,48 @@
 {
   "entries": [
     {
+      "id": "log-002363",
+      "at": "2026-11-13T08:42:50.824Z",
+      "userId": "karine.mvutu@ppcdrc.cd",
+      "userName": "Karine Mvutu",
+      "userEmail": "karine.mvutu@ppcdrc.cd",
+      "module": "sante",
+      "moduleLabel": "Santé",
+      "action": "create",
+      "actionLabel": "Création",
+      "entityType": "sante.visit",
+      "entityId": "sante-mweqbaox-gl2d4m",
+      "summary": "Cas santé — MOLONGA LYONGA ANDREW · SURMENAGE",
+      "details": "Cas santé — MOLONGA LYONGA ANDREW · SURMENAGE",
+      "after": {
+        "id": "sante-mweqbaox-gl2d4m",
+        "date": "2026-11-12",
+        "nom": "MOLONGA",
+        "postnom": "LYONGA ANDREW",
+        "sexe": "M",
+        "age": 40,
+        "typeMalade": "AGENT",
+        "pathologie": "SURMENAGE",
+        "traitement": "PARACETAMOLE",
+        "reference": "NON",
+        "year": 2026,
+        "month": 11,
+        "employeeMatricule": "70000252",
+        "employeeNom": "MOLONGA LYONGA ANDREW",
+        "dependantId": null,
+        "commentaire": "",
+        "contractantId": "",
+        "contractantNom": "",
+        "contractantEmployeeId": "",
+        "createdAt": "2026-11-13T08:42:48.417Z",
+        "updatedAt": "2026-11-13T08:42:48.417Z",
+        "createdBy": "karine.mvutu@ppcdrc.cd",
+        "updatedBy": "karine.mvutu@ppcdrc.cd"
+      },
+      "undoable": false,
+      "undone": false
+    },
+    {
       "id": "log-002362",
       "at": "2026-11-13T08:42:21.673Z",
       "userId": "Tresor.Maneka@ppcdrc.cd",
@@ -1255434,5 +1255476,5 @@
       }
     }
   ],
-  "nextSeq": 2363
+  "nextSeq": 2364
 }
