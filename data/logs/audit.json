@@ -1,6 +1,45 @@
 {
   "entries": [
     {
+      "id": "log-002355",
+      "at": "2026-11-13T08:35:21.452Z",
+      "userId": "Tresor.Maneka@ppcdrc.cd",
+      "userName": "Tresor Maneka",
+      "userEmail": "Tresor.Maneka@ppcdrc.cd",
+      "module": "protocol.voyages",
+      "moduleLabel": "Gestion de voyage",
+      "action": "create",
+      "actionLabel": "Création",
+      "entityType": "protocol.voyage",
+      "entityId": "pvc-096",
+      "summary": "Voyage PVC-0096 Robert Driver Lubudi Lubumabshi Likasi Lubudi",
+      "details": "Voyage PVC-0096 Robert Driver Lubudi Lubumabshi Likasi Lubudi",
+      "after": {
+        "id": "pvc-096",
+        "numero": "PVC-0096",
+        "date": "2026-11-12",
+        "voyageur": "Robert Driver Lubudi",
+        "voyageurMatricule": "",
+        "destination": "Lubumabshi Likasi Lubudi",
+        "ticketAvion": 0,
+        "visaVolant": 0,
+        "lettreLegaliser": 0,
+        "goPass": 0,
+        "transfert": 0,
+        "hotelNuit": 110,
+        "nbreNuits": 1,
+        "coutHotel": 110,
+        "categorieHotel": "Hotel Even Likasi",
+        "appartement": 0,
+        "autresCharges": 0,
+        "coutTotal": 110,
+        "createdAt": "2026-11-13T08:35:17.091Z",
+        "updatedAt": "2026-11-13T08:35:17.091Z"
+      },
+      "undoable": false,
+      "undone": false
+    },
+    {
       "id": "log-002354",
       "at": "2026-11-13T08:34:05.200Z",
       "userId": "Tresor.Maneka@ppcdrc.cd",
@@ -1254994,5 +1255033,5 @@
       }
     }
   ],
-  "nextSeq": 2355
+  "nextSeq": 2356
 }
