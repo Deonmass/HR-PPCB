@@ -1,6 +1,33 @@
 {
   "entries": [
     {
+      "id": "log-002347",
+      "at": "2026-11-13T08:18:26.414Z",
+      "userId": "admin",
+      "userName": "Administrateur",
+      "userEmail": "admin",
+      "module": "settings.utilisateurs",
+      "moduleLabel": "Paramètres — Utilisateurs",
+      "action": "delete",
+      "actionLabel": "Suppression",
+      "entityType": "auth.user",
+      "entityId": "mukwilunaomie@gmail.com",
+      "summary": "Suppression utilisateur Naomie Mukwilu",
+      "details": "Suppression utilisateur Naomie Mukwilu",
+      "before": {
+        "id": "mukwilunaomie@gmail.com",
+        "username": "mukwilunaomie@gmail.com",
+        "displayName": "Naomie Mukwilu",
+        "initials": "NM",
+        "email": "mukwilunaomie@gmail.com",
+        "active": true,
+        "createdAt": "2026-09-29T12:47:15.427Z"
+      },
+      "after": null,
+      "undoable": true,
+      "undone": false
+    },
+    {
       "id": "log-002346",
       "at": "2026-11-13T08:16:32.563Z",
       "userId": "karine.mvutu@ppcdrc.cd",
@@ -1254661,5 +1254688,5 @@
       }
     }
   ],
-  "nextSeq": 2347
+  "nextSeq": 2348
 }
