@@ -763,7 +763,7 @@
       "heureDepart": "08:30",
       "dateArrivee": "",
       "heureArrivee": "",
-      "motif": "",
+      "motif": "Visite de travail avec equipe a l'usine PPC",
       "notes": "",
       "status": "effectue",
       "chauffeurNom": "KILENDA BANGI ALI",
@@ -778,7 +778,7 @@
       "confirmedAt": "2026-11-10T14:34:35.122Z",
       "completedAt": "2026-11-10T14:34:35.122Z",
       "createdAt": "2026-11-10T14:32:32.665Z",
-      "updatedAt": "2026-11-10T14:34:35.122Z"
+      "updatedAt": "2026-11-13T08:42:17.284Z"
     },
     {
       "id": "vyg-040",
