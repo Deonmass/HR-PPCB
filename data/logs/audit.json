@@ -1,6 +1,45 @@
 {
   "entries": [
     {
+      "id": "log-002373",
+      "at": "2026-11-13T08:53:47.575Z",
+      "userId": "Tresor.Maneka@ppcdrc.cd",
+      "userName": "Tresor Maneka",
+      "userEmail": "Tresor.Maneka@ppcdrc.cd",
+      "module": "protocol.voyages",
+      "moduleLabel": "Gestion de voyage",
+      "action": "create",
+      "actionLabel": "Création",
+      "entityType": "protocol.voyage",
+      "entityId": "pvc-099",
+      "summary": "Voyage PVC-0099 TANUI KIPRUTO ELIAS Kinshasa Chine Kinshasa",
+      "details": "Voyage PVC-0099 TANUI KIPRUTO ELIAS Kinshasa Chine Kinshasa",
+      "after": {
+        "id": "pvc-099",
+        "numero": "PVC-0099",
+        "date": "2026-11-13",
+        "voyageur": "TANUI KIPRUTO ELIAS",
+        "voyageurMatricule": "70000050",
+        "destination": "Kinshasa Chine Kinshasa",
+        "ticketAvion": 0,
+        "visaVolant": 469,
+        "lettreLegaliser": 0,
+        "goPass": 0,
+        "transfert": 0,
+        "hotelNuit": 0,
+        "nbreNuits": 0,
+        "coutHotel": 0,
+        "categorieHotel": "",
+        "appartement": 0,
+        "autresCharges": 0,
+        "coutTotal": 469,
+        "createdAt": "2026-11-13T08:53:44.985Z",
+        "updatedAt": "2026-11-13T08:53:44.985Z"
+      },
+      "undoable": false,
+      "undone": false
+    },
+    {
       "id": "log-002372",
       "at": "2026-11-13T08:52:57.336Z",
       "userId": "Tresor.Maneka@ppcdrc.cd",
@@ -1257988,5 +1258027,5 @@
       }
     }
   ],
-  "nextSeq": 2373
+  "nextSeq": 2374
 }
