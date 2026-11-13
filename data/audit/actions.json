@@ -5,13 +5,15 @@
       "owner": "Pelagie Kinkinia",
       "action": "Complete all missing documents in employee files",
       "issueCreationDate": "2026-03-27",
-      "dueDate": "2026-06-30",
+      "dueDate": "2027-01-31",
       "closingDate": "",
       "confirmationAudit": "Non",
       "commentaire": "",
       "severity": "Medium",
       "createdAt": "2026-08-13T14:05:21.494Z",
-      "updatedAt": "2026-08-13T14:05:21.494Z"
+      "updatedAt": "2026-11-13T08:28:39.319Z",
+      "createdBy": "Administrateur",
+      "updatedBy": "Administrateur"
     },
     {
       "id": "aud-seed-002",
