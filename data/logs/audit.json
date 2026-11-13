@@ -1,6 +1,67 @@
 {
   "entries": [
     {
+      "id": "log-002353",
+      "at": "2026-11-13T08:32:46.013Z",
+      "userId": "Tresor.Maneka@ppcdrc.cd",
+      "userName": "Tresor Maneka",
+      "userEmail": "Tresor.Maneka@ppcdrc.cd",
+      "module": "protocol.voyages",
+      "moduleLabel": "Gestion de voyage",
+      "action": "update",
+      "actionLabel": "Modification",
+      "entityType": "protocol.voyage",
+      "entityId": "pvc-082",
+      "summary": "Modification voyage PVC-0082 BUHENDWA JERRY",
+      "details": "Modification voyage PVC-0082 BUHENDWA JERRY",
+      "before": {
+        "id": "pvc-082",
+        "numero": "PVC-0082",
+        "date": "2026-11-10",
+        "voyageur": "BUHENDWA JERRY",
+        "voyageurMatricule": "70000303",
+        "destination": "Lubudi Lubumbashi Lubudi",
+        "ticketAvion": 0,
+        "visaVolant": 0,
+        "lettreLegaliser": 0,
+        "goPass": 0,
+        "transfert": 0,
+        "hotelNuit": 130,
+        "nbreNuits": 2,
+        "coutHotel": 260,
+        "categorieHotel": "Hotel Cluade 9",
+        "appartement": 0,
+        "autresCharges": 0,
+        "coutTotal": 260,
+        "createdAt": "2026-11-10T14:41:00.246Z",
+        "updatedAt": "2026-11-10T14:41:00.246Z"
+      },
+      "after": {
+        "id": "pvc-082",
+        "numero": "PVC-0082",
+        "date": "2026-11-10",
+        "voyageur": "BUHENDWA JERRY",
+        "voyageurMatricule": "70000303",
+        "destination": "Lubudi Lubumbashi Lubudi",
+        "ticketAvion": 0,
+        "visaVolant": 0,
+        "lettreLegaliser": 0,
+        "goPass": 0,
+        "transfert": 0,
+        "hotelNuit": 130,
+        "nbreNuits": 4,
+        "coutHotel": 520,
+        "categorieHotel": "Hotel Cluade 9",
+        "appartement": 0,
+        "autresCharges": 0,
+        "coutTotal": 520,
+        "createdAt": "2026-11-10T14:41:00.246Z",
+        "updatedAt": "2026-11-13T08:32:41.879Z"
+      },
+      "undoable": false,
+      "undone": false
+    },
+    {
       "id": "log-002352",
       "at": "2026-11-13T08:31:47.847Z",
       "userId": "Tresor.Maneka@ppcdrc.cd",
@@ -1254894,5 +1254955,5 @@
       }
     }
   ],
-  "nextSeq": 2353
+  "nextSeq": 2354
 }
