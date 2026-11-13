@@ -2711,12 +2711,12 @@
           "menuId": "audit.points",
           "label": "Audit points",
           "actions": {
-            "view": false,
-            "create": false,
-            "edit": false,
-            "delete": false,
-            "export": false,
-            "undo": false
+            "view": true,
+            "create": true,
+            "edit": true,
+            "delete": true,
+            "export": true,
+            "undo": true
           }
         },
         {
@@ -2756,8 +2756,32 @@
           }
         },
         {
+          "menuId": "charroi.voyages",
+          "label": "Voyage par route",
+          "actions": {
+            "view": false,
+            "create": false,
+            "edit": false,
+            "delete": false,
+            "export": false,
+            "undo": false
+          }
+        },
+        {
           "menuId": "documents.attestation-conge",
           "label": "Attestation de congé",
+          "actions": {
+            "view": true,
+            "create": true,
+            "edit": true,
+            "delete": true,
+            "export": true,
+            "undo": true
+          }
+        },
+        {
+          "menuId": "documents.attestation-residence",
+          "label": "Attestation de résidence",
           "actions": {
             "view": true,
             "create": true,
@@ -2782,6 +2806,18 @@
         {
           "menuId": "travel.etablir",
           "label": "Cash request",
+          "actions": {
+            "view": true,
+            "create": true,
+            "edit": true,
+            "delete": true,
+            "export": true,
+            "undo": true
+          }
+        },
+        {
+          "menuId": "documents.contrat-bail",
+          "label": "Contrat de bail",
           "actions": {
             "view": true,
             "create": true,
@@ -2936,6 +2972,18 @@
           }
         },
         {
+          "menuId": "documents.reponse-demission",
+          "label": "Réponse démission",
+          "actions": {
+            "view": true,
+            "create": true,
+            "edit": true,
+            "delete": true,
+            "export": true,
+            "undo": true
+          }
+        },
+        {
           "menuId": "documents.rrf",
           "label": "RRF",
           "actions": {
@@ -2960,8 +3008,44 @@
           }
         },
         {
+          "menuId": "employes.airtime",
+          "label": "Airtime",
+          "actions": {
+            "view": true,
+            "create": true,
+            "edit": true,
+            "delete": true,
+            "export": true,
+            "undo": true
+          }
+        },
+        {
+          "menuId": "employes.discipline",
+          "label": "Cas disciplinaires",
+          "actions": {
+            "view": true,
+            "create": true,
+            "edit": true,
+            "delete": true,
+            "export": true,
+            "undo": true
+          }
+        },
+        {
           "menuId": "employes.check-documents",
           "label": "Check documents",
+          "actions": {
+            "view": true,
+            "create": true,
+            "edit": true,
+            "delete": true,
+            "export": true,
+            "undo": true
+          }
+        },
+        {
+          "menuId": "employes.classification",
+          "label": "Classification des postes",
           "actions": {
             "view": true,
             "create": true,
@@ -3080,6 +3164,18 @@
           }
         },
         {
+          "menuId": "employes.heures.dept",
+          "label": "HS — Superviseur (départements / services)",
+          "actions": {
+            "view": true,
+            "create": true,
+            "edit": true,
+            "delete": true,
+            "export": true,
+            "undo": true
+          }
+        },
+        {
           "menuId": "employes.heures.validate",
           "label": "HS — Valider OT",
           "actions": {
@@ -3089,18 +3185,6 @@
             "delete": false,
             "export": false,
             "undo": false
-          }
-        },
-        {
-          "menuId": "employes.heures.dept",
-          "label": "HS — Voir mon département",
-          "actions": {
-            "view": true,
-            "create": true,
-            "edit": true,
-            "delete": true,
-            "export": true,
-            "undo": true
           }
         },
         {
@@ -3118,6 +3202,66 @@
         {
           "menuId": "employes.liste",
           "label": "Liste employés",
+          "actions": {
+            "view": true,
+            "create": true,
+            "edit": true,
+            "delete": true,
+            "export": true,
+            "undo": true
+          }
+        },
+        {
+          "menuId": "employes.mouvements",
+          "label": "Mouvements",
+          "actions": {
+            "view": true,
+            "create": true,
+            "edit": true,
+            "delete": true,
+            "export": true,
+            "undo": true
+          }
+        },
+        {
+          "menuId": "employes.offres",
+          "label": "Offres",
+          "actions": {
+            "view": true,
+            "create": true,
+            "edit": true,
+            "delete": true,
+            "export": true,
+            "undo": true
+          }
+        },
+        {
+          "menuId": "employes.organigramme",
+          "label": "Organigramme",
+          "actions": {
+            "view": true,
+            "create": true,
+            "edit": true,
+            "delete": true,
+            "export": true,
+            "undo": true
+          }
+        },
+        {
+          "menuId": "employes.postes",
+          "label": "Postes (API)",
+          "actions": {
+            "view": true,
+            "create": true,
+            "edit": true,
+            "delete": true,
+            "export": true,
+            "undo": true
+          }
+        },
+        {
+          "menuId": "employes.recrutement",
+          "label": "Recrutement",
           "actions": {
             "view": true,
             "create": true,
@@ -3308,6 +3452,30 @@
           }
         },
         {
+          "menuId": "politique.exploitation",
+          "label": "Exploitation",
+          "actions": {
+            "view": true,
+            "create": true,
+            "edit": true,
+            "delete": true,
+            "export": true,
+            "undo": true
+          }
+        },
+        {
+          "menuId": "politique.cas-disciplinaires",
+          "label": "Gestion des cas disciplinaires",
+          "actions": {
+            "view": true,
+            "create": true,
+            "edit": true,
+            "delete": true,
+            "export": true,
+            "undo": true
+          }
+        },
+        {
           "menuId": "politique.harcelement",
           "label": "Harcèlement",
           "actions": {
@@ -3334,6 +3502,18 @@
         {
           "menuId": "politique.longs-etats",
           "label": "Longs états de service",
+          "actions": {
+            "view": true,
+            "create": true,
+            "edit": true,
+            "delete": true,
+            "export": true,
+            "undo": true
+          }
+        },
+        {
+          "menuId": "politique.cellphone",
+          "label": "Politique cellphone",
           "actions": {
             "view": true,
             "create": true,
@@ -3380,56 +3560,8 @@
           }
         },
         {
-          "menuId": "employes.classification",
-          "label": "Classification des postes",
-          "actions": {
-            "view": true,
-            "create": true,
-            "edit": true,
-            "delete": true,
-            "export": true,
-            "undo": true
-          }
-        },
-        {
-          "menuId": "employes.mouvements",
-          "label": "Mouvements",
-          "actions": {
-            "view": true,
-            "create": true,
-            "edit": true,
-            "delete": true,
-            "export": true,
-            "undo": true
-          }
-        },
-        {
-          "menuId": "employes.offres",
-          "label": "Offres",
-          "actions": {
-            "view": true,
-            "create": true,
-            "edit": true,
-            "delete": true,
-            "export": true,
-            "undo": true
-          }
-        },
-        {
-          "menuId": "employes.postes",
-          "label": "Postes",
-          "actions": {
-            "view": true,
-            "create": true,
-            "edit": true,
-            "delete": true,
-            "export": true,
-            "undo": true
-          }
-        },
-        {
-          "menuId": "employes.recrutement",
-          "label": "Recrutement",
+          "menuId": "politique.paie",
+          "label": "SMIG & simulation de paie",
           "actions": {
             "view": true,
             "create": true,
@@ -3473,6 +3605,18 @@
             "delete": true,
             "export": true,
             "undo": true
+          }
+        },
+        {
+          "menuId": "protocol.voyages",
+          "label": "Gestion de voyage",
+          "actions": {
+            "view": false,
+            "create": false,
+            "edit": false,
+            "delete": false,
+            "export": false,
+            "undo": false
           }
         },
         {
@@ -3536,8 +3680,20 @@
           }
         },
         {
-          "menuId": "sante",
-          "label": "Santé",
+          "menuId": "sante.dashboard",
+          "label": "Santé — Dashboard",
+          "actions": {
+            "view": true,
+            "create": true,
+            "edit": true,
+            "delete": true,
+            "export": true,
+            "undo": true
+          }
+        },
+        {
+          "menuId": "sante.donnees",
+          "label": "Santé — Données",
           "actions": {
             "view": true,
             "create": true,
