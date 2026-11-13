@@ -1,6 +1,48 @@
 {
   "entries": [
     {
+      "id": "log-002360",
+      "at": "2026-11-13T08:40:46.154Z",
+      "userId": "karine.mvutu@ppcdrc.cd",
+      "userName": "Karine Mvutu",
+      "userEmail": "karine.mvutu@ppcdrc.cd",
+      "module": "sante",
+      "moduleLabel": "Santé",
+      "action": "create",
+      "actionLabel": "Création",
+      "entityType": "sante.visit",
+      "entityId": "sante-mweq8mh0-s21die",
+      "summary": "Cas santé — NTUMBA  KANKONDE · RHINORHEE",
+      "details": "Cas santé — NTUMBA  KANKONDE · RHINORHEE",
+      "after": {
+        "id": "sante-mweq8mh0-s21die",
+        "date": "2026-11-10",
+        "nom": "NTUMBA",
+        "postnom": "KANKONDE",
+        "sexe": "F",
+        "age": 4,
+        "typeMalade": "ENFANT",
+        "pathologie": "RHINORHEE",
+        "traitement": "",
+        "reference": "NON",
+        "year": 2026,
+        "month": 11,
+        "employeeMatricule": "70000226",
+        "employeeNom": "KANKONDE ILUNGA ALIDOR",
+        "dependantId": 522,
+        "commentaire": "",
+        "contractantId": "",
+        "contractantNom": "",
+        "contractantEmployeeId": "",
+        "createdAt": "2026-11-13T08:40:43.716Z",
+        "updatedAt": "2026-11-13T08:40:43.716Z",
+        "createdBy": "karine.mvutu@ppcdrc.cd",
+        "updatedBy": "karine.mvutu@ppcdrc.cd"
+      },
+      "undoable": false,
+      "undone": false
+    },
+    {
       "id": "log-002359",
       "at": "2026-11-13T08:40:05.321Z",
       "userId": "Tresor.Maneka@ppcdrc.cd",
@@ -1255238,5 +1255280,5 @@
       }
     }
   ],
-  "nextSeq": 2360
+  "nextSeq": 2361
 }
