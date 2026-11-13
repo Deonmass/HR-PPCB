@@ -1,6 +1,21 @@
 {
   "entries": [
     {
+      "id": "log-002369",
+      "at": "2026-11-13T08:49:27.467Z",
+      "userId": "Pelagie.Kinkinia",
+      "userName": "Pelagie Kinkinia",
+      "userEmail": "Pelagie.Kinkinia@ppcdrc.cd",
+      "module": "auth",
+      "moduleLabel": "Authentification",
+      "action": "logout",
+      "actionLabel": "Déconnexion",
+      "summary": "Déconnexion Pelagie.Kinkinia@ppcdrc.cd",
+      "details": "Déconnexion de Pelagie Kinkinia (Pelagie.Kinkinia@ppcdrc.cd)",
+      "undoable": false,
+      "undone": false
+    },
+    {
       "id": "log-002368",
       "at": "2026-11-13T08:48:47.823Z",
       "userId": "Tresor.Maneka@ppcdrc.cd",
@@ -1257858,5 +1257873,5 @@
       }
     }
   ],
-  "nextSeq": 2369
+  "nextSeq": 2370
 }
