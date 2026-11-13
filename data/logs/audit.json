@@ -1,6 +1,48 @@
 {
   "entries": [
     {
+      "id": "log-002345",
+      "at": "2026-11-13T08:15:48.227Z",
+      "userId": "karine.mvutu@ppcdrc.cd",
+      "userName": "Karine Mvutu",
+      "userEmail": "karine.mvutu@ppcdrc.cd",
+      "module": "sante",
+      "moduleLabel": "Santé",
+      "action": "create",
+      "actionLabel": "Création",
+      "entityType": "sante.visit",
+      "entityId": "sante-mwepcjr5-pcqhkm",
+      "summary": "Cas santé — KINKINIA DIAVEZUKA PELAGIE · GASTRO ENTERITE NON FEBRILE",
+      "details": "Cas santé — KINKINIA DIAVEZUKA PELAGIE · GASTRO ENTERITE NON FEBRILE",
+      "after": {
+        "id": "sante-mwepcjr5-pcqhkm",
+        "date": "2026-11-04",
+        "nom": "KINKINIA",
+        "postnom": "DIAVEZUKA PELAGIE",
+        "sexe": "F",
+        "age": 50,
+        "typeMalade": "AGENT",
+        "pathologie": "GASTRO ENTERITE NON FEBRILE",
+        "traitement": "LOPRADE ET SPASFON",
+        "reference": "NON",
+        "year": 2026,
+        "month": 11,
+        "employeeMatricule": "70000295",
+        "employeeNom": "KINKINIA DIAVEZUKA PELAGIE",
+        "dependantId": null,
+        "commentaire": "",
+        "contractantId": "",
+        "contractantNom": "",
+        "contractantEmployeeId": "",
+        "createdAt": "2026-11-13T08:15:47.201Z",
+        "updatedAt": "2026-11-13T08:15:47.201Z",
+        "createdBy": "karine.mvutu@ppcdrc.cd",
+        "updatedBy": "karine.mvutu@ppcdrc.cd"
+      },
+      "undoable": false,
+      "undone": false
+    },
+    {
       "id": "log-002344",
       "at": "2026-11-13T08:14:50.470Z",
       "userId": "karine.mvutu@ppcdrc.cd",
@@ -1254577,5 +1254619,5 @@
       }
     }
   ],
-  "nextSeq": 2345
+  "nextSeq": 2346
 }
