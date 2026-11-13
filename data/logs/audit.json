@@ -1,6 +1,48 @@
 {
   "entries": [
     {
+      "id": "log-002346",
+      "at": "2026-11-13T08:16:32.563Z",
+      "userId": "karine.mvutu@ppcdrc.cd",
+      "userName": "Karine Mvutu",
+      "userEmail": "karine.mvutu@ppcdrc.cd",
+      "module": "sante",
+      "moduleLabel": "Santé",
+      "action": "create",
+      "actionLabel": "Création",
+      "entityType": "sante.visit",
+      "entityId": "sante-mwepdhxh-jvr69q",
+      "summary": "Cas santé — ZIWANUKA KIANGEBENI MITHA · SYNDROME DYSPEPTIQUE",
+      "details": "Cas santé — ZIWANUKA KIANGEBENI MITHA · SYNDROME DYSPEPTIQUE",
+      "after": {
+        "id": "sante-mwepdhxh-jvr69q",
+        "date": "2026-11-09",
+        "nom": "ZIWANUKA",
+        "postnom": "KIANGEBENI MITHA",
+        "sexe": "F",
+        "age": 42,
+        "typeMalade": "AGENT",
+        "pathologie": "SYNDROME DYSPEPTIQUE",
+        "traitement": "ANTI ACIDE",
+        "reference": "NON",
+        "year": 2026,
+        "month": 11,
+        "employeeMatricule": "70000087",
+        "employeeNom": "ZIWANUKA KIANGEBENI MITHA",
+        "dependantId": null,
+        "commentaire": "",
+        "contractantId": "",
+        "contractantNom": "",
+        "contractantEmployeeId": "",
+        "createdAt": "2026-11-13T08:16:31.493Z",
+        "updatedAt": "2026-11-13T08:16:31.493Z",
+        "createdBy": "karine.mvutu@ppcdrc.cd",
+        "updatedBy": "karine.mvutu@ppcdrc.cd"
+      },
+      "undoable": false,
+      "undone": false
+    },
+    {
       "id": "log-002345",
       "at": "2026-11-13T08:15:48.227Z",
       "userId": "karine.mvutu@ppcdrc.cd",
@@ -1254619,5 +1254661,5 @@
       }
     }
   ],
-  "nextSeq": 2346
+  "nextSeq": 2347
 }
