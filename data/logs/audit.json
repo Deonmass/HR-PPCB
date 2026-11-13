@@ -1,6 +1,53 @@
 {
   "entries": [
     {
+      "id": "log-002366",
+      "at": "2026-11-13T08:46:30.962Z",
+      "userId": "Tresor.Maneka@ppcdrc.cd",
+      "userName": "Tresor Maneka",
+      "userEmail": "Tresor.Maneka@ppcdrc.cd",
+      "module": "charroi.voyages",
+      "moduleLabel": "Charroi — Voyages",
+      "action": "create",
+      "actionLabel": "Création",
+      "entityType": "charroi.voyage",
+      "entityId": "vyg-042",
+      "summary": "Demande de voyage VYG-0042 ZAKUANI BAHATI BENNY Zamba (Kimpese) → Matadi",
+      "details": "Demande de voyage VYG-0042 ZAKUANI BAHATI BENNY Zamba (Kimpese) → Matadi",
+      "after": {
+        "id": "vyg-042",
+        "numero": "VYG-0042",
+        "passagerNom": "ZAKUANI BAHATI BENNY",
+        "passagerMatricule": "70000177",
+        "passagerInterne": true,
+        "nombrePersonnes": 1,
+        "depart": "Zamba (Kimpese)",
+        "destination": "Matadi",
+        "dateDepart": "2026-11-12",
+        "heureDepart": "07:00",
+        "dateArrivee": "",
+        "heureArrivee": "",
+        "motif": "Mission Conference a Matdi",
+        "notes": "",
+        "status": "demande",
+        "chauffeurNom": "",
+        "chauffeurMatricule": "",
+        "chauffeurInterne": false,
+        "vehiculeMode": "",
+        "vehiculeId": "",
+        "vehiculeLibelle": "",
+        "foodAllowance": 0,
+        "foodForTheRoad": 0,
+        "tollGate": 0,
+        "confirmedAt": "",
+        "completedAt": "",
+        "createdAt": "2026-11-13T08:46:26.669Z",
+        "updatedAt": "2026-11-13T08:46:26.669Z"
+      },
+      "undoable": false,
+      "undone": false
+    },
+    {
       "id": "log-002365",
       "at": "2026-11-13T08:44:52.817Z",
       "userId": "Tresor.Maneka@ppcdrc.cd",
@@ -1255600,5 +1255647,5 @@
       }
     }
   ],
-  "nextSeq": 2366
+  "nextSeq": 2367
 }
