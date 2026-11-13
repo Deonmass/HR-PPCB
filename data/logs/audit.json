@@ -1,6 +1,67 @@
 {
   "entries": [
     {
+      "id": "log-002349",
+      "at": "2026-11-13T08:28:09.164Z",
+      "userId": "Tresor.Maneka@ppcdrc.cd",
+      "userName": "Tresor Maneka",
+      "userEmail": "Tresor.Maneka@ppcdrc.cd",
+      "module": "protocol.voyages",
+      "moduleLabel": "Gestion de voyage",
+      "action": "update",
+      "actionLabel": "Modification",
+      "entityType": "protocol.voyage",
+      "entityId": "pvc-091",
+      "summary": "Modification voyage PVC-0091 Freddy driver lubudi",
+      "details": "Modification voyage PVC-0091 Freddy driver lubudi",
+      "before": {
+        "id": "pvc-091",
+        "numero": "PVC-0091",
+        "date": "2026-11-11",
+        "voyageur": "Freddy driver lubudi",
+        "voyageurMatricule": "",
+        "destination": "Lubudi Kolwozi",
+        "ticketAvion": 0,
+        "visaVolant": 0,
+        "lettreLegaliser": 0,
+        "goPass": 0,
+        "transfert": 0,
+        "hotelNuit": 1,
+        "nbreNuits": 100,
+        "coutHotel": 100,
+        "categorieHotel": "Hotel le parisien de kolwozi",
+        "appartement": 0,
+        "autresCharges": 0,
+        "coutTotal": 100,
+        "createdAt": "2026-11-11T17:23:12.284Z",
+        "updatedAt": "2026-11-11T17:23:12.284Z"
+      },
+      "after": {
+        "id": "pvc-091",
+        "numero": "PVC-0091",
+        "date": "2026-11-11",
+        "voyageur": "Freddy driver lubudi",
+        "voyageurMatricule": "",
+        "destination": "Lubudi Kolwozi",
+        "ticketAvion": 0,
+        "visaVolant": 0,
+        "lettreLegaliser": 0,
+        "goPass": 0,
+        "transfert": 0,
+        "hotelNuit": 4,
+        "nbreNuits": 100,
+        "coutHotel": 400,
+        "categorieHotel": "Hotel le parisien de kolwozi",
+        "appartement": 0,
+        "autresCharges": 0,
+        "coutTotal": 400,
+        "createdAt": "2026-11-11T17:23:12.284Z",
+        "updatedAt": "2026-11-13T08:28:05.000Z"
+      },
+      "undoable": false,
+      "undone": false
+    },
+    {
       "id": "log-002348",
       "at": "2026-11-13T08:19:04.379Z",
       "userId": "karine.mvutu@ppcdrc.cd",
@@ -1254730,5 +1254791,5 @@
       }
     }
   ],
-  "nextSeq": 2349
+  "nextSeq": 2350
 }
