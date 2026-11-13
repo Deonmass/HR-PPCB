@@ -1,6 +1,38 @@
 {
   "entries": [
     {
+      "id": "log-002350",
+      "at": "2026-11-13T08:28:41.984Z",
+      "userId": "admin",
+      "userName": "Administrateur",
+      "userEmail": "admin",
+      "module": "audit-hr",
+      "moduleLabel": "Audit points",
+      "action": "update",
+      "actionLabel": "Modification",
+      "entityType": "audit-action",
+      "entityId": "aud-seed-001",
+      "summary": "Màj action audit — Complete all missing documents in employee files",
+      "details": "Màj action audit — Complete all missing documents in employee files",
+      "after": {
+        "id": "aud-seed-001",
+        "owner": "Pelagie Kinkinia",
+        "action": "Complete all missing documents in employee files",
+        "issueCreationDate": "2026-03-27",
+        "dueDate": "2027-01-31",
+        "closingDate": "",
+        "confirmationAudit": "Non",
+        "commentaire": "",
+        "severity": "Medium",
+        "createdAt": "2026-08-13T14:05:21.494Z",
+        "updatedAt": "2026-11-13T08:28:39.319Z",
+        "createdBy": "Administrateur",
+        "updatedBy": "Administrateur"
+      },
+      "undoable": false,
+      "undone": false
+    },
+    {
       "id": "log-002349",
       "at": "2026-11-13T08:28:09.164Z",
       "userId": "Tresor.Maneka@ppcdrc.cd",
@@ -1254791,5 +1254823,5 @@
       }
     }
   ],
-  "nextSeq": 2350
+  "nextSeq": 2351
 }
