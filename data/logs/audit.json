@@ -1,6 +1,48 @@
 {
   "entries": [
     {
+      "id": "log-002343",
+      "at": "2026-11-13T08:06:41.717Z",
+      "userId": "karine.mvutu@ppcdrc.cd",
+      "userName": "Karine Mvutu",
+      "userEmail": "karine.mvutu@ppcdrc.cd",
+      "module": "sante",
+      "moduleLabel": "Santé",
+      "action": "create",
+      "actionLabel": "Création",
+      "entityType": "sante.visit",
+      "entityId": "sante-mwep0u7d-h703rr",
+      "summary": "Cas santé — NGOYI MUIKULU MARCEL · RHUMATISME ARTICULAIRE",
+      "details": "Cas santé — NGOYI MUIKULU MARCEL · RHUMATISME ARTICULAIRE",
+      "after": {
+        "id": "sante-mwep0u7d-h703rr",
+        "date": "2026-11-05",
+        "nom": "NGOYI",
+        "postnom": "MUIKULU MARCEL",
+        "sexe": "M",
+        "age": 51,
+        "typeMalade": "AGENT",
+        "pathologie": "RHUMATISME ARTICULAIRE",
+        "traitement": "ANTI INFLAMATOIRE BUVABLE",
+        "reference": "NON",
+        "year": 2026,
+        "month": 11,
+        "employeeMatricule": "70000091",
+        "employeeNom": "NGOYI MUIKULU MARCEL",
+        "dependantId": null,
+        "commentaire": "",
+        "contractantId": "",
+        "contractantNom": "",
+        "contractantEmployeeId": "",
+        "createdAt": "2026-11-13T08:06:40.873Z",
+        "updatedAt": "2026-11-13T08:06:40.873Z",
+        "createdBy": "karine.mvutu@ppcdrc.cd",
+        "updatedBy": "karine.mvutu@ppcdrc.cd"
+      },
+      "undoable": false,
+      "undone": false
+    },
+    {
       "id": "log-002342",
       "at": "2026-11-13T08:05:40.074Z",
       "userId": "karine.mvutu@ppcdrc.cd",
@@ -1254493,5 +1254535,5 @@
       }
     }
   ],
-  "nextSeq": 2343
+  "nextSeq": 2344
 }
