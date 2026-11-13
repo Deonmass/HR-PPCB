@@ -1,6 +1,48 @@
 {
   "entries": [
     {
+      "id": "log-002344",
+      "at": "2026-11-13T08:14:50.470Z",
+      "userId": "karine.mvutu@ppcdrc.cd",
+      "userName": "Karine Mvutu",
+      "userEmail": "karine.mvutu@ppcdrc.cd",
+      "module": "sante",
+      "moduleLabel": "Santé",
+      "action": "create",
+      "actionLabel": "Création",
+      "entityType": "sante.visit",
+      "entityId": "sante-mwepb9z0-2fzh9w",
+      "summary": "Cas santé — BUKONGO PERO · GRIPPE",
+      "details": "Cas santé — BUKONGO PERO · GRIPPE",
+      "after": {
+        "id": "sante-mwepb9z0-2fzh9w",
+        "date": "2026-11-05",
+        "nom": "BUKONGO",
+        "postnom": "PERO",
+        "sexe": "M",
+        "age": 2,
+        "typeMalade": "ENFANT",
+        "pathologie": "GRIPPE",
+        "traitement": "ANTI  GRIPPALE ET GOUTTE NASALE",
+        "reference": "NON",
+        "year": 2026,
+        "month": 11,
+        "employeeMatricule": "70000032",
+        "employeeNom": "NEMWANDJARE PERO PHILEMON",
+        "dependantId": 447,
+        "commentaire": "",
+        "contractantId": "",
+        "contractantNom": "",
+        "contractantEmployeeId": "",
+        "createdAt": "2026-11-13T08:14:47.868Z",
+        "updatedAt": "2026-11-13T08:14:47.868Z",
+        "createdBy": "karine.mvutu@ppcdrc.cd",
+        "updatedBy": "karine.mvutu@ppcdrc.cd"
+      },
+      "undoable": false,
+      "undone": false
+    },
+    {
       "id": "log-002343",
       "at": "2026-11-13T08:06:41.717Z",
       "userId": "karine.mvutu@ppcdrc.cd",
@@ -1254535,5 +1254577,5 @@
       }
     }
   ],
-  "nextSeq": 2344
+  "nextSeq": 2345
 }
