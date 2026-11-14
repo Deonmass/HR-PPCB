@@ -235,6 +235,8 @@ export interface HomeProtocolSection {
     total: number;
     cost: number;
     href: string;
+    byDepartment: HomeBarItem[];
+    byCostCenter: HomeBarItem[];
   };
 }
 

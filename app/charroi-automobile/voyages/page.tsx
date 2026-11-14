@@ -1,6 +1,7 @@
 'use client';
 
 import { useCallback, useEffect, useMemo, useRef, useState, type FormEvent } from 'react';
+import dynamic from 'next/dynamic';
 import VoyageMonthlyChart, { type VoyageMonthRow } from '@/components/charroi/VoyageMonthlyChart';
 import CardActionMenu from '@/components/CardActionMenu';
 import DashboardListModal, {
@@ -22,7 +23,20 @@ import {
   type CharroiVoyageStatus,
 } from '@/lib/charroi-types';
 import { confirmAction, confirmDelete, showError, showSuccess } from '@/lib/swal';
+import type { EmployeeSelection } from '@/components/EmployeePicker';
+import type { TravelFormPrefill, TravelFormPersonPrefill } from '@/components/travel/EtablirTravelForm';
+import {
+  createDefaultBudgetLines,
+  todayInputDate,
+  type TravelFormFields,
+} from '@/lib/travel-form';
+import { suggestMissionSite } from '@/lib/travel-mission-sites';
 import { emptyEmployeeHrProfile, type Employee } from '@/lib/types';
+
+const EtablirTravelForm = dynamic(() => import('@/components/travel/EtablirTravelForm'), {
+  ssr: false,
+  loading: () => <p className="text-muted">Chargement du formulaire…</p>,
+});
 
 const MENU = 'charroi.voyages';
 const VIEW_ANY = [
@@ -54,6 +68,8 @@ type SlimEmployee = {
   departement: string;
   jobTitle: string;
   localisation: string;
+  company?: string;
+  centreCout?: string;
 };
 
 type RequestForm = {
@@ -182,7 +198,111 @@ function toEmployee(row: SlimEmployee): Employee {
     grade: '',
     jobTitle: row.jobTitle,
     localisation: row.localisation,
+    company: row.company || '',
+    centreCout: row.centreCout || '',
     documents: {},
+  };
+}
+
+function personFromCatalog(
+  name: string,
+  matricule: string,
+  catalog: Employee[],
+): { employee: EmployeeSelection; linked?: Employee } {
+  const linked = matricule
+    ? catalog.find((item) => item.matricule === matricule)
+    : catalog.find((item) => item.nom.trim().toLocaleLowerCase('fr-FR') === name.trim().toLocaleLowerCase('fr-FR'));
+  return {
+    linked,
+    employee: {
+      matricule: linked?.matricule || matricule,
+      nom: linked?.nom || name,
+      departement: linked?.departement || '',
+    },
+  };
+}
+
+function tripPrefillFromVoyage(voyage: CharroiVoyage, linked: Employee | undefined): Partial<TravelFormFields> {
+  const names = voyage.passagerNom.split(',').map((part) => part.trim()).filter(Boolean);
+  const budgetLines = createDefaultBudgetLines().map((line) => {
+    const label = line.label.toLowerCase();
+    if (label.includes('food allowance')) return { ...line, amount: voyage.foodAllowance || 0 };
+    if (label.includes('food for the road') || label.includes('trip allowance')) {
+      return { ...line, amount: voyage.foodForTheRoad || line.amount };
+    }
+    if (label.includes('toll')) return { ...line, amount: voyage.tollGate || 0 };
+    return line;
+  });
+  return {
+    documentDate: todayInputDate(),
+    departureDate: voyage.dateDepart,
+    departurePlace: voyage.depart,
+    destinationPlace: voyage.destination,
+    returnDate: voyage.dateArrivee || '',
+    peopleCount: Math.max(1, voyage.nombrePersonnes || names.length || 1),
+    tripPurpose: voyage.motif || `Voyage route ${voyage.numero}`,
+    transportMeans: voyage.vehiculeLibelle
+      ? `Véhicule — ${voyage.vehiculeLibelle}`
+      : 'Véhicule de service',
+    contactPerson: '',
+    department: linked?.departement || '',
+    position: linked?.jobTitle || '',
+    costCenter: linked?.centreCout || '',
+    missionSite: suggestMissionSite(linked),
+    missionObservation: [voyage.numero, voyage.heureDepart && `Heure ${voyage.heureDepart}`, voyage.notes]
+      .filter(Boolean)
+      .join(' · '),
+    budgetLines,
+  };
+}
+
+function prefillFromVoyage(
+  voyage: CharroiVoyage,
+  employees: Employee[],
+  contractants: Employee[] = [],
+): TravelFormPrefill {
+  const names = voyage.passagerNom.split(',').map((part) => part.trim()).filter(Boolean);
+  const mats = voyage.passagerMatricule.split(',').map((part) => part.trim());
+  const firstName = names[0] || voyage.passagerNom.trim();
+  const passenger = personFromCatalog(firstName, mats[0] || '', employees);
+  const catalog = [...employees, ...contractants];
+  const driverName = voyage.chauffeurNom.trim();
+  const driver = driverName
+    ? personFromCatalog(driverName, voyage.chauffeurMatricule.trim(), catalog)
+    : null;
+  const people: TravelFormPersonPrefill[] = [
+    {
+      id: 'passenger',
+      role: 'passenger',
+      label: passenger.employee.nom || 'Passager',
+      employee: passenger.employee,
+      travel: tripPrefillFromVoyage(voyage, passenger.linked),
+    },
+  ];
+  if (driver) {
+    const driverTravel = tripPrefillFromVoyage(voyage, driver.linked);
+    people.push({
+      id: 'driver',
+      role: 'driver',
+      label: driver.employee.nom || 'Chauffeur',
+      employee: driver.employee,
+      travel: {
+        ...driverTravel,
+        peopleCount: 1,
+        contactPerson: '',
+        department: driver.linked?.departement || '',
+        position: driver.linked?.jobTitle || '',
+        costCenter: driver.linked?.centreCout || passenger.linked?.centreCout || driverTravel.costCenter || '',
+        missionSite: suggestMissionSite(driver.linked),
+        paymentOrderSignatory: '',
+      },
+      skipPaymentSignatory: !voyage.chauffeurInterne,
+    });
+  }
+  return {
+    employee: people[0].employee,
+    travel: people[0].travel,
+    people,
   };
 }
 
@@ -428,6 +548,7 @@ function PersonFields({
   nom,
   employees,
   externeEmployees,
+  dependants,
   multiple = false,
   draft = '',
   onDraft,
@@ -440,6 +561,7 @@ function PersonFields({
   nom: string;
   employees: Employee[];
   externeEmployees?: Employee[];
+  dependants?: Employee[];
   multiple?: boolean;
   draft?: string;
   onDraft?: (value: string) => void;
@@ -452,9 +574,10 @@ function PersonFields({
     (name) => !names.some((prev) => prev.toLocaleLowerCase('fr-FR') === name.toLocaleLowerCase('fr-FR')),
   );
   const catalog = interne ? employees : (externeEmployees ?? []);
-  const extra = multiple && names.length > 0
-    ? (interne ? externeEmployees : employees)
-    : undefined;
+  const family = interne ? (dependants ?? []) : [];
+  const extra = interne
+    ? [...family, ...(multiple && names.length > 0 ? (externeEmployees ?? []) : [])]
+    : (multiple && names.length > 0 ? employees : undefined);
 
   const commitDraft = (value: string) => {
     if (!value.includes(',')) {
@@ -511,8 +634,8 @@ function PersonFields({
           employees={catalog}
           extraEmployees={extra}
           excludeNames={multiple ? names : undefined}
-          primaryKind={interne ? 'Employé' : 'Contractant'}
-          extraKind={interne ? 'Contractant' : 'Employé'}
+          primaryKind=""
+          extraKind=""
           multiple={multiple}
           value={multiple ? draft : nom}
           onChange={multiple ? commitDraft : onNom}
@@ -522,9 +645,9 @@ function PersonFields({
             ? (names.length
               ? 'Passager suivant'
               : (interne
-                ? 'Employé — la sélection devient un badge'
+                ? 'Employé ou dépendant — la sélection devient un badge'
                 : 'Contractant — la sélection devient un badge'))
-            : (interne ? 'Nom de l’employé — suggestions internes' : 'Contractant — suggestions, ou saisie libre')}
+            : (interne ? 'Employé, dépendant — suggestions' : 'Contractant — suggestions, ou saisie libre')}
           required={multiple ? names.length === 0 && pendingNames.length === 0 : true}
         />
       ) : (
@@ -559,6 +682,9 @@ export default function CharroiVoyagesPage() {
   const [vehicles, setVehicles] = useState<FleetVehicle[]>([]);
   const [employees, setEmployees] = useState<Employee[]>([]);
   const [contractantDrivers, setContractantDrivers] = useState<Employee[]>([]);
+  const [dependants, setDependants] = useState<Employee[]>([]);
+  const [travelDocsVoyage, setTravelDocsVoyage] = useState<CharroiVoyage | null>(null);
+  const [travelDocsTabsHost, setTravelDocsTabsHost] = useState<HTMLDivElement | null>(null);
   const [loading, setLoading] = useState(true);
   const [refreshing, setRefreshing] = useState(false);
   const [busy, setBusy] = useState(false);
@@ -592,12 +718,14 @@ export default function CharroiVoyagesPage() {
           vehicules?: FleetVehicle[];
           employees?: SlimEmployee[];
           contractants?: SlimEmployee[];
+          dependants?: SlimEmployee[];
         };
         const fleet = Array.isArray(options.vehicules) ? options.vehicules : [];
         fleet.sort((a, b) => String(a.plaque || '').localeCompare(String(b.plaque || ''), 'fr'));
         setVehicles(fleet);
         setEmployees((options.employees ?? []).map(toEmployee));
         setContractantDrivers((options.contractants ?? []).map(toEmployee));
+        setDependants((options.dependants ?? []).map(toEmployee));
       }
     } catch (err) {
       await showError(err instanceof Error ? err.message : 'Chargement impossible');
@@ -947,23 +1075,8 @@ export default function CharroiVoyagesPage() {
     }
   }
 
-  async function downloadDriverDocs(voyage: CharroiVoyage) {
-    setPendingId(voyage.id);
-    try {
-      const response = await fetch(`/api/charroi/voyages/${voyage.id}/documents`);
-      if (!response.ok) throw new Error(await readError(response));
-      const blob = await response.blob();
-      const url = URL.createObjectURL(blob);
-      const link = document.createElement('a');
-      link.href = url;
-      link.download = `Documents voyage chauffeur - ${voyage.numero}.xlsx`;
-      link.click();
-      URL.revokeObjectURL(url);
-    } catch (err) {
-      await showError(err instanceof Error ? err.message : 'Génération impossible');
-    } finally {
-      setPendingId(null);
-    }
+  function openTravelDocuments(voyage: CharroiVoyage) {
+    setTravelDocsVoyage(voyage);
   }
 
   async function remove(voyage: CharroiVoyage) {
@@ -1070,7 +1183,7 @@ export default function CharroiVoyagesPage() {
         id: 'docs',
         label: 'Générer les documents du chauffeur',
         icon: 'doc',
-        onClick: () => void downloadDriverDocs(voyage),
+        onClick: () => openTravelDocuments(voyage),
       });
     }
     if (canEdit && voyage.status === 'effectue') {
@@ -1548,6 +1661,7 @@ export default function CharroiVoyagesPage() {
                       draft={passengerDraft}
                       employees={employees}
                       externeEmployees={contractantDrivers}
+                      dependants={dependants}
                       onDraft={(value) => {
                         passengerDraftRef.current = value;
                         setPassengerDraft(value);
@@ -1839,6 +1953,28 @@ export default function CharroiVoyagesPage() {
                   </ActionButton>
                 </div>
               </form>
+            </div>
+          </div>
+        )}
+
+        {travelDocsVoyage && (
+          <div className="modal-overlay open" onClick={() => setTravelDocsVoyage(null)}>
+            <div className="modal modal-xl modal-form charroi-travel-docs-modal" onClick={(event) => event.stopPropagation()}>
+              <div className="modal-header">
+                <div className="charroi-travel-docs-header">
+                  <h3>Documents de voyage — {travelDocsVoyage.numero}</h3>
+                  <div ref={setTravelDocsTabsHost} className="charroi-travel-docs-tabs" />
+                </div>
+                <button type="button" className="modal-close" onClick={() => setTravelDocsVoyage(null)}>×</button>
+              </div>
+              <div className="modal-body">
+                <EtablirTravelForm
+                  key={travelDocsVoyage.id}
+                  compact
+                  tabsHost={travelDocsTabsHost}
+                  prefill={prefillFromVoyage(travelDocsVoyage, employees, contractantDrivers)}
+                />
+              </div>
             </div>
           </div>
         )}

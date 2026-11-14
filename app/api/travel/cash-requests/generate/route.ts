@@ -36,6 +36,7 @@ export async function POST(request: Request) {
     travel?: TravelFormFields;
     lines?: CashRequestLine[];
     saveDirectory?: string;
+    skipPaymentSignatory?: boolean;
     selectedDocuments?: Array<
       | 'cash-request'
       | 'trip-budget'
@@ -90,6 +91,7 @@ export async function POST(request: Request) {
                 lines: body.lines ?? [],
                 saveDirectory: body.saveDirectory,
                 selectedDocuments: body.selectedDocuments,
+                skipPaymentSignatory: body.skipPaymentSignatory,
               },
               (event) => emit(event),
             ),

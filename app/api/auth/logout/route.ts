@@ -1,6 +1,7 @@
 import { NextResponse } from 'next/server';
 import { cookies } from 'next/headers';
 import { destroySession, getSession, getSessionCookieName } from '@/lib/auth-store';
+import { revokeUserSessions } from '@/lib/params-users-store';
 import { appendAuditLog } from '@/lib/audit-log-store';
 import { actorFromSessionUser } from '@/lib/with-audit';
 
@@ -25,7 +26,10 @@ export async function POST() {
   if (token) {
     // Ne pas bloquer le logout si l’écriture sessions.json est lente.
     await Promise.race([
-      destroySession(token).catch(() => undefined),
+      Promise.all([
+        destroySession(token).catch(() => undefined),
+        session?.userId ? revokeUserSessions(session.userId).catch(() => undefined) : Promise.resolve(),
+      ]),
       new Promise<void>((resolve) => setTimeout(resolve, LOGOUT_BUDGET_MS)),
     ]);
   }

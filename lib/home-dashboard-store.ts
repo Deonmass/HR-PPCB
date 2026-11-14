@@ -43,6 +43,7 @@ import { getPostesBundle } from './postes-store';
 import { getTrainingDashboard } from './training-store';
 import { listWorkVisaDossiers } from './work-visa-store';
 import { listProtocolVoyages } from './protocol-voyage-store';
+import { buildProtocolVoyageOrgLookup, groupProtocolVoyageCosts } from './protocol-voyage-types';
 import { getCongeBundle } from './conge-store';
 import { buildCongeDashboard } from './conge-dashboard';
 import { listPpcDisciplineCases } from './ppc-discipline-store';
@@ -624,11 +625,21 @@ export async function buildHomeDashboard(menus: MenuPermission[]): Promise<HomeD
     }
     if (can(menus, 'protocol.voyages')) {
       try {
-        const voyages = await listProtocolVoyages();
+        const [voyages, bundle] = await Promise.all([
+          listProtocolVoyages(),
+          readEmployeesBundle(),
+        ]);
+        const org = buildProtocolVoyageOrgLookup(bundle.employees);
         protocol.voyages = {
           total: voyages.length,
           cost: Math.round(voyages.reduce((sum, item) => sum + (item.coutTotal || 0), 0) * 100) / 100,
           href: '/protocol/voyages',
+          byDepartment: groupProtocolVoyageCosts(
+            voyages.map((item) => ({ label: org.departementOf(item), value: item.coutTotal })),
+          ),
+          byCostCenter: groupProtocolVoyageCosts(
+            voyages.map((item) => ({ label: org.centreCoutOf(item), value: item.coutTotal })),
+          ),
         };
       } catch {
         // le lien reste disponible

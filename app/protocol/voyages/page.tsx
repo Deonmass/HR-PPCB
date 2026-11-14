@@ -14,13 +14,18 @@ import RowContextMenu, { type ContextMenuItem } from '@/components/RowContextMen
 import { usePermissions } from '@/contexts/PermissionContext';
 import {
   PROTOCOL_VOYAGE_COST_NATURES,
+  PROTOCOL_VOYAGE_UNASSIGNED,
+  buildProtocolVoyageOrgLookup,
   computeCoutHotel,
   computeCoutTotal,
+  groupProtocolVoyageCosts,
   type ProtocolVoyageCout,
   type ProtocolVoyageCostNature,
 } from '@/lib/protocol-voyage-types';
 import { confirmDelete, showError, showSuccess } from '@/lib/swal';
-import type { Employee } from '@/lib/types';
+import type { CostCenterSetting, DepartmentSetting } from '@/lib/auth-types';
+import type { Contractant } from '@/lib/contractants-types';
+import { emptyEmployeeHrProfile, type Employee } from '@/lib/types';
 
 const MENU = 'protocol.voyages';
 const MONTHS = ['Janvier', 'Février', 'Mars', 'Avril', 'Mai', 'Juin', 'Juillet', 'Août', 'Septembre', 'Octobre', 'Novembre', 'Décembre'];
@@ -33,6 +38,8 @@ type FormState = {
   date: string;
   voyageur: string;
   voyageurMatricule: string;
+  departement: string;
+  centreCout: string;
   destination: string;
   ticketAvion: string;
   visaVolant: string;
@@ -49,6 +56,8 @@ type FormState = {
 const DRILL_COLUMNS: DashboardListColumn[] = [
   { key: 'date', label: 'Date' },
   { key: 'voyageur', label: 'Voyageur' },
+  { key: 'departement', label: 'Département' },
+  { key: 'centreCout', label: 'Centre de coût' },
   { key: 'destination', label: 'Destination' },
   { key: 'billets', label: 'Billets', align: 'right' },
   { key: 'hebergement', label: 'Hébergement', align: 'right' },
@@ -89,6 +98,8 @@ function emptyForm(): FormState {
     date: todayIso(),
     voyageur: '',
     voyageurMatricule: '',
+    departement: '',
+    centreCout: '',
     destination: '',
     ticketAvion: '',
     visaVolant: '',
@@ -103,13 +114,85 @@ function emptyForm(): FormState {
   };
 }
 
-function formFrom(item: ProtocolVoyageCout): FormState {
+function isActiveContractant(dateSortie: string): boolean {
+  const raw = dateSortie.trim();
+  if (!/^\d{4}-\d{2}-\d{2}$/.test(raw)) return true;
+  const date = new Date(`${raw}T00:00:00`);
+  return !Number.isNaN(date.getTime()) && date.getTime() > Date.now();
+}
+
+function contractantsToEmployees(contractants: Contractant[]): Employee[] {
+  const seen = new Set<string>();
+  const list: Employee[] = [];
+  for (const company of contractants) {
+    const denomination = company.denomination.trim();
+    for (const item of company.employees) {
+      if (!item.nom.trim() || !isActiveContractant(item.dateSortie)) continue;
+      const ppc = item.matriculePpc.trim();
+      let matricule = ppc || item.id;
+      if (seen.has(matricule)) matricule = `${company.id}-${item.id}`;
+      seen.add(matricule);
+      list.push({
+        ...emptyEmployeeHrProfile(),
+        matricule,
+        nom: item.nom.trim(),
+        departement: item.departement,
+        grade: '',
+        jobTitle: item.fonction,
+        localisation: item.lieuAffectation,
+        company: denomination,
+        centreCout: '',
+        documents: {},
+      });
+    }
+  }
+  return list.sort((a, b) => a.nom.localeCompare(b.nom, 'fr', { sensitivity: 'base' }));
+}
+
+function orgFromEmployee(employee: Pick<Employee, 'departement' | 'centreCout'> | undefined) {
+  return {
+    departement: employee?.departement?.trim() || '',
+    centreCout: employee?.centreCout?.trim() || '',
+  };
+}
+
+function departmentSelectOptions(departments: DepartmentSetting[], current: string): string[] {
+  const names = departments.map((item) => item.name.trim()).filter(Boolean);
+  const extra = current.trim();
+  if (extra && !names.some((name) => name.toLowerCase() === extra.toLowerCase())) names.push(extra);
+  return names.sort((a, b) => a.localeCompare(b, 'fr', { sensitivity: 'base' }));
+}
+
+function costCentersForDepartment(
+  costCenters: CostCenterSetting[],
+  departments: DepartmentSetting[],
+  departmentName: string,
+  current: string,
+): Array<Pick<CostCenterSetting, 'id' | 'code' | 'name'>> {
+  const departmentId = departments.find((item) => item.name === departmentName)?.id;
+  const filtered = departmentId
+    ? costCenters.filter((item) => !item.departmentId || item.departmentId === departmentId)
+    : [...costCenters];
+  const extra = current.trim();
+  if (extra && !filtered.some((item) => item.code === extra || item.name === extra)) {
+    filtered.push({ id: `current-${extra}`, code: extra, name: extra, active: true });
+  }
+  return filtered;
+}
+
+function formFrom(item: ProtocolVoyageCout, employees: Employee[] = []): FormState {
   const text = (value: number) => (value ? String(value) : '');
+  const linked = item.voyageurMatricule
+    ? employees.find((employee) => employee.matricule === item.voyageurMatricule)
+    : undefined;
+  const org = orgFromEmployee(linked);
   return {
     id: item.id,
     date: item.date,
     voyageur: item.voyageur,
     voyageurMatricule: item.voyageurMatricule,
+    departement: item.departement?.trim() || org.departement,
+    centreCout: item.centreCout?.trim() || org.centreCout,
     destination: item.destination,
     ticketAvion: text(item.ticketAvion),
     visaVolant: text(item.visaVolant),
@@ -141,6 +224,9 @@ export default function ProtocolVoyagesPage() {
   const [tab, setTab] = useState<Tab>('dashboard');
   const [items, setItems] = useState<ProtocolVoyageCout[]>([]);
   const [employees, setEmployees] = useState<Employee[]>([]);
+  const [contractants, setContractants] = useState<Employee[]>([]);
+  const [departments, setDepartments] = useState<DepartmentSetting[]>([]);
+  const [costCenters, setCostCenters] = useState<CostCenterSetting[]>([]);
   const [loading, setLoading] = useState(true);
   const [refreshing, setRefreshing] = useState(false);
   const [busy, setBusy] = useState(false);
@@ -154,9 +240,12 @@ export default function ProtocolVoyagesPage() {
     if (silent) setRefreshing(true);
     else setLoading(true);
     try {
-      const [voyagesRes, employeesRes] = await Promise.all([
+      const [voyagesRes, employeesRes, departmentsRes, costCentersRes, contractantsRes] = await Promise.all([
         fetch('/api/protocol/voyages'),
         fetch('/api/employees'),
+        fetch('/api/settings/departments'),
+        fetch('/api/settings/cost-centers'),
+        fetch('/api/employes/contractants'),
       ]);
       if (!voyagesRes.ok) throw new Error(await readError(voyagesRes));
       const voyages = (await voyagesRes.json()) as ProtocolVoyageCout[];
@@ -164,6 +253,18 @@ export default function ProtocolVoyagesPage() {
       if (employeesRes.ok) {
         const people = (await employeesRes.json()) as Employee[];
         setEmployees(Array.isArray(people) ? people : []);
+      }
+      if (departmentsRes.ok) {
+        const list = (await departmentsRes.json()) as DepartmentSetting[];
+        setDepartments(Array.isArray(list) ? list : []);
+      }
+      if (costCentersRes.ok) {
+        const list = (await costCentersRes.json()) as CostCenterSetting[];
+        setCostCenters(Array.isArray(list) ? list : []);
+      }
+      if (contractantsRes.ok) {
+        const data = (await contractantsRes.json()) as { contractants?: Contractant[] };
+        setContractants(contractantsToEmployees(Array.isArray(data.contractants) ? data.contractants : []));
       }
     } catch (err) {
       await showError(err instanceof Error ? err.message : 'Chargement impossible');
@@ -241,13 +342,47 @@ export default function ProtocolVoyagesPage() {
       .map(([label, value]) => ({ label, value }));
   }, [periodItems]);
 
+  const peopleCatalog = useMemo(() => [...employees, ...contractants], [employees, contractants]);
+  const orgLookup = useMemo(() => buildProtocolVoyageOrgLookup(peopleCatalog), [peopleCatalog]);
+
+  const byDepartment = useMemo(() => groupProtocolVoyageCosts(
+    periodItems.map((item) => ({ label: orgLookup.departementOf(item), value: item.coutTotal })),
+  ), [orgLookup, periodItems]);
+
+  const byCostCenter = useMemo(() => groupProtocolVoyageCosts(
+    periodItems.map((item) => ({ label: orgLookup.centreCoutOf(item), value: item.coutTotal })),
+  ), [orgLookup, periodItems]);
+
+  const activeDepartments = useMemo(
+    () => departments.filter((item) => item.active !== false),
+    [departments],
+  );
+
+  const activeCostCenters = useMemo(
+    () => costCenters.filter((item) => item.active !== false),
+    [costCenters],
+  );
+
   const filtered = useMemo(() => {
     const q = search.trim().toLowerCase();
     if (!q) return periodItems;
     return periodItems.filter((item) => [
-      item.numero, item.voyageur, item.destination, item.categorieHotel,
+      item.numero, item.voyageur, item.destination, item.categorieHotel, item.departement, item.centreCout,
     ].join(' ').toLowerCase().includes(q));
   }, [periodItems, search]);
+
+  const formLinked = form?.voyageurMatricule
+    ? peopleCatalog.find((employee) => employee.matricule === form.voyageurMatricule)
+    : undefined;
+  const formLinkedContractant = Boolean(
+    formLinked && contractants.some((item) => item.matricule === formLinked.matricule),
+  );
+  const departmentLocked = Boolean(formLinked?.departement?.trim());
+  const costCenterLocked = Boolean(formLinked?.centreCout?.trim());
+  const formDepartmentOptions = form ? departmentSelectOptions(activeDepartments, form.departement) : [];
+  const formCostCenterOptions = form
+    ? costCentersForDepartment(activeCostCenters, activeDepartments, form.departement, form.centreCout)
+    : [];
 
   const previewHotel = computeCoutHotel(num(form?.hotelNuit ?? ''), Math.round(num(form?.nbreNuits ?? '')));
   const previewTotal = form ? computeCoutTotal({
@@ -271,6 +406,8 @@ export default function ProtocolVoyagesPage() {
       cells: {
         date: formatDate(item.date),
         voyageur: item.voyageur,
+        departement: orgLookup.departementOf(item) || '—',
+        centreCout: orgLookup.centreCoutOf(item) || '—',
         destination: item.destination,
         billets: moneyLabel(item.ticketAvion),
         hebergement: moneyLabel(item.coutHotel + item.appartement),
@@ -286,12 +423,18 @@ export default function ProtocolVoyagesPage() {
   async function save(event: FormEvent) {
     event.preventDefault();
     if (!form || busy) return;
+    if (!form.departement.trim() || !form.centreCout.trim()) {
+      await showError('Département et centre de coût requis');
+      return;
+    }
     setBusy(true);
     try {
       const payload = {
         date: form.date,
         voyageur: form.voyageur.trim(),
         voyageurMatricule: form.voyageurMatricule.trim(),
+        departement: form.departement.trim(),
+        centreCout: form.centreCout.trim(),
         destination: form.destination.trim(),
         ticketAvion: num(form.ticketAvion),
         visaVolant: num(form.visaVolant),
@@ -373,7 +516,7 @@ export default function ProtocolVoyagesPage() {
 
   function menuItems(item: ProtocolVoyageCout): ContextMenuItem[] {
     const actions: ContextMenuItem[] = [];
-    if (canEdit) actions.push({ id: 'edit', label: 'Modifier', icon: 'edit', onClick: () => setForm(formFrom(item)) });
+    if (canEdit) actions.push({ id: 'edit', label: 'Modifier', icon: 'edit', onClick: () => setForm(formFrom(item, peopleCatalog)) });
     if (canDelete) actions.push({ id: 'delete', label: 'Supprimer', icon: 'delete', danger: true, onClick: () => void remove(item) });
     return actions;
   }
@@ -529,13 +672,35 @@ export default function ProtocolVoyagesPage() {
                 onItemClick={(label) => openDrill(label, periodItems.filter((item) => item.voyageur === label))}
               />
             </div>
+            <div className="protocol-voyage-charts protocol-voyage-charts-org">
+              <DependantsBarChart
+                title="Par département"
+                items={byDepartment}
+                compact
+                formatValue={moneyLabel}
+                onItemClick={(label) => openDrill(
+                  label,
+                  periodItems.filter((item) => (orgLookup.departementOf(item) || PROTOCOL_VOYAGE_UNASSIGNED) === label),
+                )}
+              />
+              <DependantsBarChart
+                title="Par centre de coût"
+                items={byCostCenter}
+                compact
+                formatValue={moneyLabel}
+                onItemClick={(label) => openDrill(
+                  label,
+                  periodItems.filter((item) => (orgLookup.centreCoutOf(item) || PROTOCOL_VOYAGE_UNASSIGNED) === label),
+                )}
+              />
+            </div>
           </div>
         )}
 
         {!loading && tab === 'liste' && (
           <>
             <div className="panel docs-filter-bar-compact charroi-filters">
-              <input className="search-input" type="search" placeholder="Rechercher voyageur, destination…" value={search} onChange={(event) => setSearch(event.target.value)} />
+              <input className="search-input" type="search" placeholder="Rechercher voyageur, destination, département…" value={search} onChange={(event) => setSearch(event.target.value)} />
               <span className="text-muted charroi-voyage-hint">Clic droit : actions. {month === 0 ? `Année ${year}` : `${MONTHS[month - 1]} ${year}`}.</span>
             </div>
             {filtered.length === 0 ? (
@@ -555,6 +720,8 @@ export default function ProtocolVoyagesPage() {
                     <tr>
                       <th>Date</th>
                       <th>Voyageur</th>
+                      <th>Département</th>
+                      <th>Centre de coût</th>
                       <th>Destination</th>
                       <th>Billets</th>
                       <th>Hôtel</th>
@@ -576,6 +743,8 @@ export default function ProtocolVoyagesPage() {
                       >
                         <td>{formatDate(item.date)}</td>
                         <td><strong>{item.voyageur}</strong></td>
+                        <td>{orgLookup.departementOf(item) || '—'}</td>
+                        <td>{orgLookup.centreCoutOf(item) || '—'}</td>
                         <td>{item.destination}</td>
                         <td>{moneyLabel(item.ticketAvion)}</td>
                         <td>{moneyLabel(item.coutHotel)}{item.nbreNuits ? <div className="text-muted">{item.nbreNuits} nuit{item.nbreNuits > 1 ? 's' : ''}</div> : null}</td>
@@ -611,12 +780,78 @@ export default function ProtocolVoyagesPage() {
                       <label>Voyageur</label>
                       <EmployeeSuggestInput
                         employees={employees}
+                        extraEmployees={contractants}
+                        extraKind=""
                         value={form.voyageur}
                         required
-                        placeholder="Nom — suggestion interne ou saisie libre"
-                        onChange={(value) => setForm({ ...form, voyageur: value, voyageurMatricule: '' })}
-                        onEmployeeSelect={(employee) => setForm({ ...form, voyageur: employee.nom, voyageurMatricule: employee.matricule })}
+                        placeholder="Employé PPC, contractant ou saisie libre"
+                        onChange={(value) => setForm({
+                          ...form,
+                          voyageur: value,
+                          voyageurMatricule: '',
+                          departement: '',
+                          centreCout: '',
+                        })}
+                        onEmployeeSelect={(employee) => setForm({
+                          ...form,
+                          voyageur: employee.nom,
+                          voyageurMatricule: employee.matricule,
+                          ...orgFromEmployee(employee),
+                        })}
                       />
+                    </div>
+                    <div className="form-group">
+                      <label htmlFor="voyage-departement">Département</label>
+                      <select
+                        id="voyage-departement"
+                        required
+                        disabled={departmentLocked}
+                        value={form.departement}
+                        onChange={(event) => {
+                          const departement = event.target.value;
+                          const nextCenters = costCentersForDepartment(
+                            activeCostCenters,
+                            activeDepartments,
+                            departement,
+                            '',
+                          );
+                          const keepCenter = nextCenters.some((item) => item.code === form.centreCout || item.name === form.centreCout);
+                          setForm({
+                            ...form,
+                            departement,
+                            centreCout: keepCenter ? form.centreCout : '',
+                          });
+                        }}
+                      >
+                        <option value="">{formLinked ? 'Rempli automatiquement' : 'Sélectionner un département'}</option>
+                        {formDepartmentOptions.map((name) => (
+                          <option key={name} value={name}>{name}</option>
+                        ))}
+                      </select>
+                      <span className="text-muted protocol-voyage-org-hint">
+                        {formLinkedContractant
+                          ? 'Contractant : département repris de la fiche. Centre de coût à sélectionner.'
+                          : formLinked
+                            ? 'Agent interne : repris de la fiche employé.'
+                            : 'Voyageur externe : sélection obligatoire.'}
+                      </span>
+                    </div>
+                    <div className="form-group">
+                      <label htmlFor="voyage-centre-cout">Centre de coût</label>
+                      <select
+                        id="voyage-centre-cout"
+                        required
+                        disabled={costCenterLocked}
+                        value={form.centreCout}
+                        onChange={(event) => setForm({ ...form, centreCout: event.target.value })}
+                      >
+                        <option value="">{formLinked ? 'Rempli automatiquement' : 'Sélectionner un centre de coût'}</option>
+                        {formCostCenterOptions.map((item) => (
+                          <option key={item.id} value={item.code}>
+                            {item.name && item.name !== item.code ? `${item.code} — ${item.name}` : item.code}
+                          </option>
+                        ))}
+                      </select>
                     </div>
                     <div className="form-group" style={{ gridColumn: '1 / -1' }}>
                       <label>Destination</label>

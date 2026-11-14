@@ -101,6 +101,8 @@ function normalize(input: ProtocolVoyageCoutInput, seq: number, timestamps?: { c
     date,
     voyageur,
     voyageurMatricule: str(input.voyageurMatricule),
+    departement: str(input.departement),
+    centreCout: str(input.centreCout),
     destination,
     ticketAvion,
     visaVolant,

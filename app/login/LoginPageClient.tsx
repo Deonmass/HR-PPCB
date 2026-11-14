@@ -31,7 +31,10 @@ export default function LoginPageClient() {
         await showError(json.error || t('login.invalid'));
         return;
       }
-      const next = searchParams.get('next') || '/';
+      const requested = searchParams.get('next') || '/';
+      const next = requested.startsWith('/') && !requested.startsWith('//') && !requested.includes('\\') && !requested.includes('://')
+        ? requested
+        : '/';
       router.replace(next);
       router.refresh();
     } catch {

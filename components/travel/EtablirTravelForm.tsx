@@ -2,6 +2,7 @@
 
 import Link from 'next/link';
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import { createPortal } from 'react-dom';
 import { useSearchParams } from 'next/navigation';
 import EmployeePicker, { EmployeeSuggestInput, type EmployeeSelection } from '@/components/EmployeePicker';
 import SaveButton from '@/components/SaveButton';
@@ -96,6 +97,27 @@ function buildGenerationSteps(isInternational: boolean): GenerationStep[] {
   );
 }
 
+function resolveCostCenterValue(
+  stored: string | undefined,
+  costCenters: CostCenterSetting[],
+  departments: DepartmentSetting[],
+  departmentName?: string,
+): string {
+  const raw = String(stored || '').trim();
+  const active = costCenters.filter((item) => item.active !== false);
+  if (raw) {
+    const hit = active.find(
+      (item) => item.code === raw || item.name === raw || `${item.code} — ${item.name}` === raw,
+    );
+    return hit?.code || raw;
+  }
+  const departmentId = departments.find((item) => item.name === departmentName)?.id;
+  const forDepartment = departmentId
+    ? active.filter((item) => !item.departmentId || item.departmentId === departmentId)
+    : active;
+  return forDepartment[0]?.code || '';
+}
+
 function createInitialTravelForm(): TravelFormFields {
   return {
     position: '',
@@ -123,12 +145,39 @@ function createInitialTravelForm(): TravelFormFields {
   };
 }
 
+export interface TravelFormPersonPrefill {
+  id: string;
+  role: 'passenger' | 'driver';
+  label: string;
+  employee: EmployeeSelection;
+  travel?: Partial<TravelFormFields>;
+  skipPaymentSignatory?: boolean;
+}
+
+export interface TravelFormPrefill {
+  employee?: EmployeeSelection | null;
+  travel?: Partial<TravelFormFields>;
+  skipPaymentSignatory?: boolean;
+  people?: TravelFormPersonPrefill[];
+}
+
 interface EtablirTravelFormProps {
   /** Mode « document unique » : le formulaire est réduit aux champs requis. */
   singleDoc?: SingleTravelDocId;
+  /** Données initiales (ex. voyage charroi). */
+  prefill?: TravelFormPrefill;
+  /** Masque l’en-tête page (usage en modal). */
+  compact?: boolean;
+  /** Si fourni, les onglets passager / chauffeur sont rendus dans cet élément (header du modal). */
+  tabsHost?: HTMLElement | null;
 }
 
-export default function EtablirTravelForm({ singleDoc }: EtablirTravelFormProps = {}) {
+export default function EtablirTravelForm({
+  singleDoc,
+  prefill,
+  compact = false,
+  tabsHost,
+}: EtablirTravelFormProps = {}) {
   const searchParams = useSearchParams();
   const { can } = usePermissions();
   const docConfig = singleDoc ? SINGLE_TRAVEL_DOCS[singleDoc] : null;
@@ -144,6 +193,12 @@ export default function EtablirTravelForm({ singleDoc }: EtablirTravelFormProps 
     return [];
   }, [can]);
   const editLoadedRef = useRef(false);
+  const prefillAppliedRef = useRef(false);
+  const [peopleTabs, setPeopleTabs] = useState<TravelFormPersonPrefill[]>(prefill?.people ?? []);
+  const [activePersonId, setActivePersonId] = useState(prefill?.people?.[0]?.id ?? '');
+  const [skipPaymentSignatory, setSkipPaymentSignatory] = useState(
+    Boolean(prefill?.skipPaymentSignatory || prefill?.people?.[0]?.skipPaymentSignatory),
+  );
 
   const [employees, setEmployees] = useState<Employee[]>([]);
   const [loading, setLoading] = useState(true);
@@ -227,6 +282,39 @@ export default function EtablirTravelForm({ singleDoc }: EtablirTravelFormProps 
     setTravel((prev) => ({ ...prev, ...patch }));
   };
 
+  const persistActivePerson = (nextEmployee = employee, nextTravel = travel) => {
+    if (!activePersonId) return;
+    setPeopleTabs((prev) => prev.map((person) => (
+      person.id === activePersonId
+        ? {
+            ...person,
+            employee: nextEmployee ?? person.employee,
+            travel: nextTravel,
+          }
+        : person
+    )));
+  };
+
+  const switchPerson = (id: string) => {
+    if (id === activePersonId) return;
+    persistActivePerson();
+    const next = peopleTabs.find((person) => person.id === id);
+    if (!next) return;
+    setActivePersonId(id);
+    setEmployee(next.employee);
+    setSkipPaymentSignatory(Boolean(next.skipPaymentSignatory));
+    if (next.travel) {
+      setTravel((prev) => ({
+        ...createInitialTravelForm(),
+        ...prev,
+        ...next.travel,
+        contactPerson: next.travel.contactPerson ?? '',
+        budgetLines: next.travel.budgetLines?.length ? next.travel.budgetLines : prev.budgetLines,
+        flightBooking: next.travel.flightBooking ?? prev.flightBooking,
+      }));
+    }
+  };
+
   const handleEmployeeChange = (selection: EmployeeSelection | null) => {
     setEmployee(selection);
     if (!selection) {
@@ -260,10 +348,17 @@ export default function EtablirTravelForm({ singleDoc }: EtablirTravelFormProps 
       permittedSites.some((site) => site.id === suggested)
         ? suggested
         : permittedSites[0]?.id;
+    const costCenter = resolveCostCenterValue(
+      full?.centreCout,
+      costCenters,
+      settingsDepartments,
+      selection.departement || full?.departement,
+    );
     setTravel((prev) => ({
       ...prev,
       department: selection.departement,
       position: position || prev.position,
+      costCenter: costCenter || prev.costCenter,
       missionSite: prev.missionSite || nextSite,
       budgetLines: createDefaultBudgetLines(category),
       flightBooking: {
@@ -337,6 +432,57 @@ export default function EtablirTravelForm({ singleDoc }: EtablirTravelFormProps 
       void loadMissionRef(travel.missionSite, travel.documentDate);
     }
   }, [editRef, travel.missionSite, travel.documentDate, permittedSites, loadMissionRef]);
+
+  useEffect(() => {
+    if (editRef || prefillAppliedRef.current || loading || !prefill) return;
+    prefillAppliedRef.current = true;
+    const people = prefill.people?.length ? prefill.people : [];
+    if (people.length) setPeopleTabs(people);
+    const first = people[0];
+    const sourceEmployee = first?.employee || prefill.employee;
+    const sourceTravel = first?.travel || prefill.travel;
+    setSkipPaymentSignatory(Boolean(first?.skipPaymentSignatory || prefill.skipPaymentSignatory));
+    if (first?.id) setActivePersonId(first.id);
+    if (sourceEmployee) setEmployee(sourceEmployee);
+    if (sourceTravel) {
+      setTravel((prev) => ({
+        ...prev,
+        ...sourceTravel,
+        contactPerson: sourceTravel.contactPerson ?? '',
+        budgetLines: sourceTravel.budgetLines?.length
+          ? sourceTravel.budgetLines
+          : prev.budgetLines,
+        flightBooking: sourceTravel.flightBooking ?? prev.flightBooking,
+      }));
+    }
+  }, [editRef, loading, prefill]);
+
+  useEffect(() => {
+    if (!costCenters.length) return;
+    setTravel((prev) => {
+      if (prev.costCenter.trim()) {
+        return {
+          ...prev,
+          costCenter: resolveCostCenterValue(
+            prev.costCenter,
+            costCenters,
+            settingsDepartments,
+            prev.department,
+          ) || prev.costCenter,
+        };
+      }
+      const full = employee?.matricule
+        ? employees.find((item) => item.matricule === employee.matricule)
+        : undefined;
+      const next = resolveCostCenterValue(
+        full?.centreCout,
+        costCenters,
+        settingsDepartments,
+        prev.department || employee?.departement || full?.departement,
+      );
+      return next ? { ...prev, costCenter: next } : prev;
+    });
+  }, [costCenters, employee, employees, settingsDepartments]);
 
   useEffect(() => {
     if (!editRef || editLoadedRef.current || loading) return;
@@ -496,6 +642,11 @@ export default function EtablirTravelForm({ singleDoc }: EtablirTravelFormProps 
       return;
     }
 
+    if (showField('signatory') && !skipPaymentSignatory && !travel.paymentOrderSignatory.trim()) {
+      await showError('Renseignez le signataire de l’ordre de paiement');
+      return;
+    }
+
     if (docConfig?.id === 'mission-order' && !travel.destinationPlace.trim()) {
       await showError('Renseignez la destination');
       return;
@@ -584,6 +735,7 @@ export default function EtablirTravelForm({ singleDoc }: EtablirTravelFormProps 
           employeeDepartment: travel.department || employee.departement,
           travel: travelPayload,
           selectedDocuments: docIds as TravelFileType[],
+          skipPaymentSignatory,
         }),
       });
 
@@ -675,9 +827,27 @@ export default function EtablirTravelForm({ singleDoc }: EtablirTravelFormProps 
 
   if (loading) return <div className="loading">Chargement...</div>;
 
+  const peopleTabsBar = peopleTabs.length > 1 ? (
+    <div className="tabs header-tabs header-tabs-compact travel-people-tabs">
+      {peopleTabs.map((person) => (
+        <button
+          key={person.id}
+          type="button"
+          className={`tab-btn tab-btn-sm${activePersonId === person.id ? ' active' : ''}`}
+          onClick={() => switchPerson(person.id)}
+        >
+          {person.role === 'driver' ? `Chauffeur — ${person.label}` : person.label}
+        </button>
+      ))}
+    </div>
+  ) : null;
+  const peopleTabsNode = peopleTabsBar
+    ? (tabsHost ? createPortal(peopleTabsBar, tabsHost) : tabsHost === null ? null : peopleTabsBar)
+    : null;
+
   return (
     <div className="cash-request-page">
-      {!docConfig && (
+      {!docConfig && !compact && (
         <div className="cash-request-sticky">
           <div className="page-header page-header-with-tabs">
             <div>
@@ -710,6 +880,7 @@ export default function EtablirTravelForm({ singleDoc }: EtablirTravelFormProps 
       )}
 
       <div className="panel cash-request-panel">
+        {peopleTabsNode}
         <form onSubmit={handleSubmit}>
           <div className="travel-form-grid-3">
             <div className="travel-form-col">
@@ -981,7 +1152,7 @@ export default function EtablirTravelForm({ singleDoc }: EtablirTravelFormProps 
           </div>
 
           <div className="travel-signatory-save-row">
-            {showField('signatory') && (
+            {showField('signatory') && !skipPaymentSignatory && (
               <div className="form-group">
                 <label htmlFor="paymentOrderSignatory">Signataire de l&apos;ordre de paiement</label>
                 <EmployeeSuggestInput

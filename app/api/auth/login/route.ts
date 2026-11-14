@@ -6,11 +6,19 @@ import {
 } from '@/lib/auth-store';
 import { appendAuditLog, logAuditError } from '@/lib/audit-log-store';
 import { actorFromSessionUser } from '@/lib/with-audit';
+import { allowLoginAttempt, clearLoginAttempts } from '@/lib/login-rate-limit';
 
 export async function POST(request: Request) {
   try {
     const body = (await request.json()) as { username?: string; password?: string };
-    const auth = await authenticateUser(body.username ?? '', body.password ?? '');
+    const username = body.username ?? '';
+    if (!allowLoginAttempt(request, username)) {
+      return NextResponse.json(
+        { error: 'Trop de tentatives. Réessayez dans quelques minutes.' },
+        { status: 429 },
+      );
+    }
+    const auth = await authenticateUser(username, body.password ?? '');
     if (!auth) {
       await logAuditError({
         message: 'Identifiants invalides',
@@ -24,6 +32,7 @@ export async function POST(request: Request) {
       return NextResponse.json({ error: 'Identifiants invalides' }, { status: 401 });
     }
 
+    clearLoginAttempts(request, username);
     const session = await createSession(auth.user, auth.menus);
     const actor = actorFromSessionUser(auth.user);
     await appendAuditLog({

@@ -2,7 +2,7 @@ import { NextResponse } from 'next/server';
 import { listContractants } from '@/lib/contractants-store';
 import { readEmployees, readExitedEmployees } from '@/lib/employees-json-store';
 import {
-  buildProtocolVoyageDepartmentLookup,
+  buildProtocolVoyageOrgLookup,
   buildProtocolVoyageExportBuffer,
   buildProtocolVoyageExportFilename,
   filterProtocolVoyagesForExport,
@@ -41,13 +41,14 @@ export async function GET(request: Request) {
     ]);
     const items = filterProtocolVoyagesForExport(voyages, query);
     const summaryItems = filterProtocolVoyagesForSummary(voyages, query);
-    const departmentOf = buildProtocolVoyageDepartmentLookup([
+    const orgOf = buildProtocolVoyageOrgLookup([
       ...employees,
       ...exits,
       ...contractants.flatMap((contractant) => contractant.employees.map((employee) => ({
         matricule: employee.matriculePpc,
         nom: employee.nom,
         departement: employee.departement,
+        centreCout: '',
       }))),
     ]);
     const buffer = await withAudit(
@@ -59,7 +60,11 @@ export async function GET(request: Request) {
         path: '/api/protocol/voyages/export',
         method: 'GET',
       },
-      async () => buildProtocolVoyageExportBuffer(items, query, { summaryItems, departmentOf }),
+      async () => buildProtocolVoyageExportBuffer(items, query, {
+        summaryItems,
+        departmentOf: orgOf.departementOf,
+        centreCoutOf: orgOf.centreCoutOf,
+      }),
     );
     const filename = buildProtocolVoyageExportFilename(query);
     return new NextResponse(new Uint8Array(buffer), {

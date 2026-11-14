@@ -291,6 +291,8 @@ export const fr = {
   'home.protocol.tripsSub': 'Coûts de mission',
   'home.protocol.trips': 'Voyages chiffrés',
   'home.protocol.cost': 'Coût total',
+  'home.protocol.byDepartment': 'Par département',
+  'home.protocol.byCostCenter': 'Par centre de coût',
   'home.fleet.trips': 'Voyages route',
   'home.fleet.pending': 'En attente',
   'home.fleet.done': 'Effectués',

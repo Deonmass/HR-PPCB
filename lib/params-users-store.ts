@@ -11,10 +11,14 @@ import {
   hydrateDurableFile,
   persistDurableFile,
 } from './durable-fs';
+import { hashPassword, isHashedPassword } from './password';
+import { passwordPolicyError } from './password-policy';
 import { canPersistProjectFiles, getWritableAuthDir, getWritableDataRoot } from './runtime-mode';
 
 interface StoredAuthUser extends AuthUser {
   menus?: MenuPermission[];
+  /** Sessions émises avant cette date sont refusées. */
+  sessionRevokedAt?: string;
 }
 
 interface UsersStore {
@@ -50,7 +54,7 @@ function sanitizeUser(user: AuthUser): Omit<AuthUser, 'password'> {
 }
 
 function toPublicUser(user: StoredAuthUser): AuthUser {
-  const { menus: _menus, ...rest } = user;
+  const { menus: _menus, sessionRevokedAt: _revoked, ...rest } = user;
   return rest;
 }
 
@@ -86,18 +90,34 @@ async function resolveLinkedEmployee(matriculeInput?: string): Promise<{
   };
 }
 
+async function hashPlaintextPasswords(store: UsersStore): Promise<boolean> {
+  let changed = false;
+  for (const user of store.users) {
+    const stored = String(user.password || '');
+    if (!stored || isHashedPassword(stored)) continue;
+    user.password = await hashPassword(stored);
+    changed = true;
+  }
+  return changed;
+}
+
 async function readUsersStore(): Promise<UsersStore> {
   const usersPath = resolveUsersPath();
   await hydrateDurableFile(DURABLE_USERS_KEY, usersPath);
+  let store: UsersStore;
   try {
     const raw = await fsPromises.readFile(usersPath, 'utf8');
     const parsed = JSON.parse(raw) as UsersStore;
-    return { users: Array.isArray(parsed.users) ? parsed.users : [] };
+    store = { users: Array.isArray(parsed.users) ? parsed.users : [] };
   } catch (err) {
     const code = (err as NodeJS.ErrnoException)?.code;
     if (code === 'ENOENT') return { users: [] };
     throw err;
   }
+  if (await hashPlaintextPasswords(store)) {
+    await writeUsersStore(store);
+  }
+  return store;
 }
 
 async function writeUsersStore(store: UsersStore): Promise<void> {
@@ -158,7 +178,19 @@ export async function upsertUserInParams(
   }
 
   const existing = existingIndex >= 0 ? store.users[existingIndex] : null;
-  const password = input.password?.trim() || existing?.password || '123';
+  const provided = input.password?.trim() || '';
+  let password = existing?.password || '';
+  if (provided) {
+    if (!isHashedPassword(provided)) {
+      const policyError = passwordPolicyError(provided);
+      if (policyError) throw new Error(policyError);
+      password = await hashPassword(provided);
+    } else {
+      password = provided;
+    }
+  } else if (!existing) {
+    throw new Error('Mot de passe requis');
+  }
 
   const linked =
     input.matricule !== undefined
@@ -192,15 +224,42 @@ export async function upsertUserInParams(
 export async function updateUserPasswordInParams(
   userId: string,
   newPassword: string,
+  opts?: { migrate?: boolean },
 ): Promise<Omit<AuthUser, 'password'>> {
-  const password = newPassword.trim();
-  if (!password) throw new Error('Nouveau mot de passe requis');
+  const plain = newPassword.trim();
+  if (!plain) throw new Error('Nouveau mot de passe requis');
+  if (!opts?.migrate) {
+    const policyError = passwordPolicyError(plain);
+    if (policyError) throw new Error(policyError);
+  }
   const store = await readUsersStore();
   const index = findUserIndex(store.users, userId);
   if (index < 0) throw new Error('Utilisateur introuvable');
-  store.users[index] = { ...store.users[index], password };
+  store.users[index] = {
+    ...store.users[index],
+    password: await hashPassword(plain),
+    ...(opts?.migrate ? {} : { sessionRevokedAt: new Date().toISOString() }),
+  };
   await writeUsersStore(store);
   return sanitizeUser(toPublicUser(store.users[index]));
+}
+
+export async function revokeUserSessions(userId: string): Promise<void> {
+  const store = await readUsersStore();
+  const index = findUserIndex(store.users, userId);
+  if (index < 0) return;
+  store.users[index] = {
+    ...store.users[index],
+    sessionRevokedAt: new Date().toISOString(),
+  };
+  await writeUsersStore(store);
+}
+
+export async function getSessionRevokedAt(userId: string): Promise<string | null> {
+  const store = await readUsersStore();
+  const index = findUserIndex(store.users, userId);
+  if (index < 0) return null;
+  return store.users[index].sessionRevokedAt || null;
 }
 
 export async function deleteUserFromParams(userId: string): Promise<boolean> {

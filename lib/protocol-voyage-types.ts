@@ -4,6 +4,8 @@ export interface ProtocolVoyageCout {
   date: string;
   voyageur: string;
   voyageurMatricule: string;
+  departement: string;
+  centreCout: string;
   destination: string;
   ticketAvion: number;
   visaVolant: number;
@@ -63,4 +65,71 @@ export function computeCoutTotal(input: Pick<
     + input.appartement
     + input.autresCharges,
   );
+}
+
+export const PROTOCOL_VOYAGE_UNASSIGNED = 'Non renseigné';
+
+function normalizePersonName(value: string): string {
+  return value
+    .normalize('NFD')
+    .replace(/[\u0300-\u036f]/g, '')
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, ' ')
+    .trim()
+    .replace(/^(mr|mme|mlle|ms|mrs|dr|m)\s+/, '');
+}
+
+function lookupPersonValue(
+  item: Pick<ProtocolVoyageCout, 'voyageur' | 'voyageurMatricule'>,
+  byMatricule: Map<string, string>,
+  byName: Map<string, string>,
+): string {
+  const matricule = item.voyageurMatricule.trim();
+  if (matricule && byMatricule.has(matricule)) return byMatricule.get(matricule) ?? '';
+  const name = normalizePersonName(item.voyageur);
+  if (name && byName.has(name)) return byName.get(name) ?? '';
+  return '';
+}
+
+export function buildProtocolVoyageOrgLookup(
+  people: { matricule?: string; nom?: string; departement?: string; centreCout?: string }[],
+): {
+  departementOf: (item: ProtocolVoyageCout) => string;
+  centreCoutOf: (item: ProtocolVoyageCout) => string;
+} {
+  const deptByMatricule = new Map<string, string>();
+  const deptByName = new Map<string, string>();
+  const ccByMatricule = new Map<string, string>();
+  const ccByName = new Map<string, string>();
+  for (const person of people) {
+    const matricule = person.matricule?.trim() ?? '';
+    const name = normalizePersonName(person.nom ?? '');
+    const department = person.departement?.trim() ?? '';
+    const centreCout = person.centreCout?.trim() ?? '';
+    if (department) {
+      if (matricule && !deptByMatricule.has(matricule)) deptByMatricule.set(matricule, department);
+      if (name && !deptByName.has(name)) deptByName.set(name, department);
+    }
+    if (centreCout) {
+      if (matricule && !ccByMatricule.has(matricule)) ccByMatricule.set(matricule, centreCout);
+      if (name && !ccByName.has(name)) ccByName.set(name, centreCout);
+    }
+  }
+  return {
+    departementOf: (item) => item.departement?.trim() || lookupPersonValue(item, deptByMatricule, deptByName),
+    centreCoutOf: (item) => item.centreCout?.trim() || lookupPersonValue(item, ccByMatricule, ccByName),
+  };
+}
+
+export function groupProtocolVoyageCosts(
+  items: Array<{ label: string; value: number }>,
+): Array<{ label: string; value: number }> {
+  const map = new Map<string, number>();
+  for (const item of items) {
+    const label = item.label.trim() || PROTOCOL_VOYAGE_UNASSIGNED;
+    map.set(label, (map.get(label) ?? 0) + item.value);
+  }
+  return [...map.entries()]
+    .sort((a, b) => b[1] - a[1] || a[0].localeCompare(b[0], 'fr', { sensitivity: 'base' }))
+    .map(([label, value]) => ({ label, value: roundMoney(value) }));
 }

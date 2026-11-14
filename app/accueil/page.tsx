@@ -1001,10 +1001,40 @@ export default function AccueilPage() {
                     stats={[
                       { label: t('home.protocol.trips'), value: data.protocol.voyages.total },
                       { label: t('home.protocol.cost'), value: formatUsdCompact(data.protocol.voyages.cost) },
+                      {
+                        label: t('home.stat.departments'),
+                        value: data.protocol.voyages.byDepartment.filter((item) => item.label !== 'Non renseigné').length,
+                      },
+                      {
+                        label: t('home.stat.costCenters'),
+                        value: data.protocol.voyages.byCostCenter.filter((item) => item.label !== 'Non renseigné').length,
+                      },
                     ]}
                   />
                 )}
               </div>
+              {data.protocol.voyages && (data.protocol.voyages.byDepartment.length > 0 || data.protocol.voyages.byCostCenter.length > 0) && (
+                <div className="home-sector-full">
+                  <div className="home-protocol-voyage-charts">
+                    {data.protocol.voyages.byDepartment.length > 0 && (
+                      <HomeBarChart
+                        title={t('home.protocol.byDepartment')}
+                        items={data.protocol.voyages.byDepartment}
+                        formatValue={formatUsdCompact}
+                        maxBars={6}
+                      />
+                    )}
+                    {data.protocol.voyages.byCostCenter.length > 0 && (
+                      <HomeBarChart
+                        title={t('home.protocol.byCostCenter')}
+                        items={data.protocol.voyages.byCostCenter}
+                        formatValue={formatUsdCompact}
+                        maxBars={6}
+                      />
+                    )}
+                  </div>
+                </div>
+              )}
               {data.protocol.links.some((item) => item.href !== data.protocol?.workVisas?.href && item.href !== data.protocol?.voyages?.href) && (
                 <div className="home-sector-full">
                   <div className="home-link-cards">

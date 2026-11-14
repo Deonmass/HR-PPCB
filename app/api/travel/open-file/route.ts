@@ -32,6 +32,7 @@ export async function POST(request: Request) {
     return NextResponse.json({ opened: true, filePath: resolved });
   } catch (err) {
     const message = err instanceof Error ? err.message : 'Impossible d\'ouvrir le fichier Excel';
-    return NextResponse.json({ error: message }, { status: 500 });
+    const status = message === 'Chemin refusé' || message === 'Type de fichier non autorisé' ? 400 : 500;
+    return NextResponse.json({ error: message }, { status });
   }
 }

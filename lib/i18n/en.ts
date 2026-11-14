@@ -293,6 +293,8 @@ export const en: Record<MessageKey, string> = {
   'home.protocol.tripsSub': 'Mission costs',
   'home.protocol.trips': 'Costed trips',
   'home.protocol.cost': 'Total cost',
+  'home.protocol.byDepartment': 'By department',
+  'home.protocol.byCostCenter': 'By cost centre',
   'home.fleet.trips': 'Road trips',
   'home.fleet.pending': 'Pending',
   'home.fleet.done': 'Completed',

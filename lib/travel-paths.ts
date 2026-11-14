@@ -76,13 +76,14 @@ export function buildTravelSaveDirectoryPath(employeeName: string, documentDate:
 
 export function resolveTravelSaveDirectoryFromFolderName(folderName: string): string {
   const trimmed = folderName.trim();
-  if (!trimmed) return getTravelSaveBaseDirectory();
-  if (isFullWindowsPath(trimmed)) return path.resolve(trimmed);
-  return path.join(getTravelSaveBaseDirectory(), trimmed);
-}
-
-function isFullWindowsPath(value: string): boolean {
-  return /^[A-Za-z]:\\/.test(value.trim());
+  const base = getTravelSaveBaseDirectory();
+  if (!trimmed) return base;
+  const resolved = path.resolve(base, trimmed);
+  const relative = path.relative(base, resolved);
+  if (relative.startsWith('..') || path.isAbsolute(relative)) {
+    throw new Error('Dossier refusé');
+  }
+  return resolved;
 }
 
 export async function uniqueFilePath(

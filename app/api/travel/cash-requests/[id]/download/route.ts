@@ -1,9 +1,11 @@
 import fs from 'fs/promises';
+import path from 'path';
 import { NextResponse } from 'next/server';
 import { excelErrorResponse } from '@/lib/excel-io';
 import { getCashRequest } from '@/lib/cash-request-store';
 import { checkAnyPermission } from '@/lib/require-permission';
 import type { TravelFileType } from '@/lib/travel-types';
+import { assertAllowedPath } from '@/lib/safe-path';
 import { auditSimpleAction } from '@/lib/with-audit';
 
 type Params = { params: Promise<{ id: string }> };
@@ -56,7 +58,8 @@ export async function GET(request: Request, { params }: Params) {
       return NextResponse.json({ error: 'Fichier introuvable' }, { status: 404 });
     }
 
-    const buffer = await fs.readFile(file.filePath);
+    const safeName = path.basename(file.fileName || 'document').replace(/["\r\n]/g, '');
+    const buffer = await fs.readFile(assertAllowedPath(file.filePath));
 
     await auditSimpleAction({
       module: 'travel.etablir',
@@ -68,7 +71,7 @@ export async function GET(request: Request, { params }: Params) {
     return new NextResponse(buffer, {
       headers: {
         'Content-Type': travelFileContentType(file.fileName),
-        'Content-Disposition': `attachment; filename="${file.fileName}"`,
+        'Content-Disposition': `attachment; filename="${safeName}"`,
       },
     });
   } catch (err) {

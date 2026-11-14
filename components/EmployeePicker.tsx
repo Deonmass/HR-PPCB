@@ -52,6 +52,24 @@ function suggestionMeta(employee: Employee): string {
   ].filter(Boolean).join(' · ');
 }
 
+function isDependantSuggestion(employee: Employee): boolean {
+  if (employee.matricule.startsWith('DEP-')) return true;
+  return /^(conjoint|enfant|époux|épouse|fils|fille)/i.test(employee.jobTitle.trim());
+}
+
+function suggestionBadge(employee: Employee, extra: boolean): string {
+  const company = employee.company?.trim();
+  if (company) return company;
+  if (isDependantSuggestion(employee)) return employee.jobTitle.trim() || 'Dépendant';
+  return extra ? 'Contractant' : 'PPC';
+}
+
+function suggestionBadgeClass(employee: Employee, extra: boolean): string {
+  if (isDependantSuggestion(employee)) return ' is-dependant';
+  if (extra) return ' is-contractant';
+  return '';
+}
+
 function matchesDepartment(employeeDepartment: string, selectedDepartment: string): boolean {
   if (!selectedDepartment.trim()) return true;
   return departmentsEqual(employeeDepartment, selectedDepartment);
@@ -76,7 +94,7 @@ function filterEmployees(
   if (!q) return list.slice(0, 12);
   return list
     .filter((employee) => {
-      const haystack = `${employee.nom} ${employee.matricule} ${employee.departement} ${employee.jobTitle} ${employee.localisation} ${employee.cnss}`.toLowerCase();
+      const haystack = `${employee.nom} ${employee.matricule} ${employee.departement} ${employee.jobTitle} ${employee.localisation} ${employee.cnss} ${employee.company}`.toLowerCase();
       return haystack.includes(q);
     })
     .slice(0, 12);
@@ -237,7 +255,7 @@ export function EmployeeSuggestInput({
 
   const commaAt = multiple ? query.lastIndexOf(',') : -1;
   const tail = commaAt >= 0 ? query.slice(commaAt + 1) : query;
-  const mixExtras = Boolean(extraEmployees?.length) && (!multiple || commaAt >= 0);
+  const mixExtras = Boolean(extraEmployees?.length);
   const extraKeys = useMemo(
     () => new Set((extraEmployees ?? []).map(personKey)),
     [extraEmployees],
@@ -320,9 +338,9 @@ export function EmployeeSuggestInput({
         minWidth={400}
       >
         {suggestions.map((employee) => {
-          const kind = mixExtras
-            ? (extraKeys.has(personKey(employee)) ? extraKind : primaryKind)
-            : '';
+          const extra = extraKeys.has(personKey(employee));
+          const kind = mixExtras ? (extra ? extraKind : primaryKind) : '';
+          const badge = suggestionBadge(employee, extra);
           return (
             <button
               key={personKey(employee)}
@@ -335,7 +353,12 @@ export function EmployeeSuggestInput({
               }}
               onClick={() => selectEmployee(employee)}
             >
-              <span className={`project-picker-name${(employee as { parti?: boolean }).parti ? ' is-left' : ''}`}>{employee.nom}</span>
+              <span className="project-picker-name-row">
+                <span className={`project-picker-name${(employee as { parti?: boolean }).parti ? ' is-left' : ''}`}>{employee.nom}</span>
+                {badge ? (
+                  <span className={`project-picker-badge${suggestionBadgeClass(employee, extra)}`}>{badge}</span>
+                ) : null}
+              </span>
               <span className="project-picker-meta">
                 {[kind, suggestionMeta(employee)].filter(Boolean).join(' · ')}
               </span>

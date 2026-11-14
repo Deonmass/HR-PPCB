@@ -1,6 +1,8 @@
 import { NextResponse } from 'next/server';
 import { listVehicules } from '@/lib/charroi-store';
 import { listContractants } from '@/lib/contractants-store';
+import { readDependantsData } from '@/lib/dependants-json-store';
+import { isDependantSummaryRow, isEmployeeStatut } from '@/lib/dependants-utils';
 import { readEmployeesBundle } from '@/lib/employees-json-store';
 import { checkAnyPermission } from '@/lib/require-permission';
 
@@ -20,10 +22,11 @@ export async function GET() {
   const denied = await checkAnyPermission(VIEW);
   if (denied) return denied;
   try {
-    const [vehicles, bundle, contractants] = await Promise.all([
+    const [vehicles, bundle, contractants, dependantsData] = await Promise.all([
       listVehicules(),
       readEmployeesBundle(),
       listContractants(),
+      readDependantsData().catch(() => ({ dependants: [] })),
     ]);
     const seen = new Set<string>();
     const contractantEmployees = contractants.flatMap((company) => company.employees
@@ -33,16 +36,37 @@ export async function GET() {
         let matricule = ppc || item.id;
         if (seen.has(matricule)) matricule = `${company.id}-${item.id}`;
         seen.add(matricule);
-        const site = [item.lieuAffectation, company.denomination].filter(Boolean).join(' — ');
         return {
           matricule,
           nom: item.nom.trim(),
           departement: item.departement,
           jobTitle: item.fonction,
-          localisation: site,
+          localisation: item.lieuAffectation,
+          company: company.denomination,
         };
       }));
     contractantEmployees.sort((a, b) => a.nom.localeCompare(b.nom, 'fr'));
+    const seenDependants = new Set<string>();
+    const dependants = (dependantsData.dependants ?? [])
+      .filter((item) => {
+        if (isDependantSummaryRow(item) || isEmployeeStatut(item.statut)) return false;
+        return Boolean(item.nom.trim());
+      })
+      .map((item) => {
+        const own = item.ownMatricule?.trim() || '';
+        let matricule = own || `DEP-${item.id}`;
+        if (seenDependants.has(matricule)) matricule = `DEP-${item.id}`;
+        seenDependants.add(matricule);
+        return {
+          matricule,
+          nom: item.nom.trim(),
+          departement: item.departement || '',
+          jobTitle: item.statut.trim() || 'Dépendant',
+          localisation: item.localisation || '',
+          company: item.employeNom.trim() || item.matricule,
+        };
+      })
+      .sort((a, b) => a.nom.localeCompare(b.nom, 'fr'));
     return NextResponse.json({
       vehicules: vehicles.map((item) => ({
         id: item.id,
@@ -60,8 +84,10 @@ export async function GET() {
           departement: item.departement,
           jobTitle: item.jobTitle,
           localisation: item.localisation,
+          centreCout: item.centreCout,
         })),
       contractants: contractantEmployees,
+      dependants,
     });
   } catch (err) {
     const message = err instanceof Error ? err.message : 'Erreur inattendue';

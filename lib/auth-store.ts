@@ -17,9 +17,11 @@ import {
   getUserPermissionsFromParams,
   listUsersFromParams,
   saveUserPermissionsInParams,
+  getSessionRevokedAt,
   updateUserPasswordInParams,
   upsertUserInParams,
 } from './params-users-store';
+import { verifyPassword } from './password';
 import type {
   AuthSession,
   AuthUser,
@@ -121,6 +123,8 @@ async function hydrateStatelessSession(token: string): Promise<AuthSession | nul
 
   const fullUser = await findUserByIdFromParams(ticket.uid);
   if (!fullUser || !fullUser.active) return null;
+  const revokedAt = await getSessionRevokedAt(fullUser.id);
+  if (revokedAt && new Date(ticket.iat).getTime() <= new Date(revokedAt).getTime()) return null;
 
   const menus = await getUserPermissionsFromParams(fullUser.id);
   return {
@@ -186,7 +190,7 @@ export async function authenticateUser(
 ): Promise<AuthenticatedUser | null> {
   const user = await findUserByUsernameFromParams(username);
   if (!user || !user.active) return null;
-  if (user.password !== password) return null;
+  if (!(await verifyPassword(password, user.password))) return null;
   const menus = await getUserPermissionsFromParams(user.id);
   return { user: toSessionUser(user), menus };
 }
@@ -233,6 +237,11 @@ async function findValidSession(token?: string | null): Promise<AuthSession | nu
   const session = sessionsData.sessions.find((item) => item.token === token);
   if (!session) return null;
   if (new Date(session.expiresAt).getTime() < Date.now()) {
+    await destroySession(token);
+    return null;
+  }
+  const revokedAt = await getSessionRevokedAt(session.userId);
+  if (revokedAt && new Date(session.createdAt).getTime() <= new Date(revokedAt).getTime()) {
     await destroySession(token);
     return null;
   }
@@ -338,7 +347,7 @@ export async function changeUserPassword(
 ): Promise<Omit<AuthUser, 'password'>> {
   const user = await findUserByIdFromParams(userId);
   if (!user || !user.active) throw new Error('Utilisateur introuvable');
-  if (user.password !== oldPassword) throw new Error('Ancien mot de passe incorrect');
+  if (!(await verifyPassword(oldPassword, user.password))) throw new Error('Ancien mot de passe incorrect');
   return updateUserPasswordInParams(userId, newPassword);
 }
 

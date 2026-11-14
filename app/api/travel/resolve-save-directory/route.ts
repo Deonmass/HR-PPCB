@@ -18,22 +18,27 @@ export async function GET(request: Request) {
   const employeeName = searchParams.get('employeeName')?.trim();
   const documentDate = searchParams.get('documentDate')?.trim();
 
-  const basePath = getTravelSaveBaseDirectory();
-  let resolvedFolderName = folderName ?? '';
+  try {
+    const basePath = getTravelSaveBaseDirectory();
+    let resolvedFolderName = folderName ?? '';
 
-  if (!resolvedFolderName && employeeName) {
-    resolvedFolderName = buildTravelFolderName(employeeName, documentDate ?? '');
+    if (!resolvedFolderName && employeeName) {
+      resolvedFolderName = buildTravelFolderName(employeeName, documentDate ?? '');
+    }
+
+    const fullPath = resolvedFolderName
+      ? resolveTravelSaveDirectoryFromFolderName(resolvedFolderName)
+      : employeeName && documentDate
+        ? buildTravelSaveDirectoryPath(employeeName, documentDate)
+        : basePath;
+
+    return NextResponse.json({
+      basePath,
+      folderName: resolvedFolderName || null,
+      fullPath,
+    });
+  } catch (err) {
+    const message = err instanceof Error ? err.message : 'Dossier refusé';
+    return NextResponse.json({ error: message }, { status: 400 });
   }
-
-  const fullPath = resolvedFolderName
-    ? resolveTravelSaveDirectoryFromFolderName(resolvedFolderName)
-    : employeeName && documentDate
-      ? buildTravelSaveDirectoryPath(employeeName, documentDate)
-      : basePath;
-
-  return NextResponse.json({
-    basePath,
-    folderName: resolvedFolderName || null,
-    fullPath,
-  });
 }

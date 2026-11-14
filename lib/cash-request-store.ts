@@ -167,6 +167,8 @@ export interface CreateTravelDocumentsInput {
   saveDirectory?: string;
   /** Si fourni, seuls ces types de fichiers sont générés. Sinon : tous. */
   selectedDocuments?: TravelFileType[];
+  /** Chauffeur externe : pas de signataire d’ordre de paiement. */
+  skipPaymentSignatory?: boolean;
 }
 
 export type TravelGenerationProgressEvent = {
@@ -307,7 +309,7 @@ async function createTravelDocumentsInternal(
   if (wants('mission-order') && !travel.transportMeans.trim()) {
     throw new Error('Moyen de transport requis');
   }
-  if (wants('mission-order') && !travel.paymentOrderSignatory.trim()) {
+  if (wants('mission-order') && !input.skipPaymentSignatory && !travel.paymentOrderSignatory.trim()) {
     throw new Error('Signataire de l\'ordre de paiement requis');
   }
   if (wants('mission-order') && !travel.destinationPlace.trim()) {

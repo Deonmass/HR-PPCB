@@ -4,8 +4,11 @@ import JSZip from 'jszip';
 import * as XLSX from 'xlsx-js-style';
 import {
   PROTOCOL_VOYAGE_COST_NATURES,
+  buildProtocolVoyageOrgLookup,
   type ProtocolVoyageCout,
 } from './protocol-voyage-types';
+
+export { buildProtocolVoyageOrgLookup } from './protocol-voyage-types';
 
 const MONTHS = [
   'Janvier', 'Février', 'Mars', 'Avril', 'Mai', 'Juin',
@@ -31,6 +34,7 @@ const HEADERS = [
   'Autres charges',
   'Coût total',
   'Département',
+  'Centre de coût',
   'Mois',
 ] as const;
 
@@ -213,40 +217,17 @@ export function filterProtocolVoyagesForSummary(
       item.voyageur,
       item.destination,
       item.categorieHotel,
+      item.departement,
+      item.centreCout,
     ].join(' ').toLowerCase().includes(q);
   });
 }
 
-function normalizePersonName(value: string): string {
-  return value
-    .normalize('NFD')
-    .replace(/[\u0300-\u036f]/g, '')
-    .toLowerCase()
-    .replace(/[^a-z0-9]+/g, ' ')
-    .trim()
-    .replace(/^(mr|mme|mlle|ms|mrs|dr|m)\s+/, '');
-}
-
+/** @deprecated Prefer buildProtocolVoyageOrgLookup — kept for call-site compatibility. */
 export function buildProtocolVoyageDepartmentLookup(
-  people: { matricule?: string; nom?: string; departement?: string }[],
+  people: { matricule?: string; nom?: string; departement?: string; centreCout?: string }[],
 ): (item: ProtocolVoyageCout) => string {
-  const byMatricule = new Map<string, string>();
-  const byName = new Map<string, string>();
-  for (const person of people) {
-    const department = person.departement?.trim() ?? '';
-    if (!department) continue;
-    const matricule = person.matricule?.trim() ?? '';
-    if (matricule && !byMatricule.has(matricule)) byMatricule.set(matricule, department);
-    const name = normalizePersonName(person.nom ?? '');
-    if (name && !byName.has(name)) byName.set(name, department);
-  }
-  return (item) => {
-    const matricule = item.voyageurMatricule.trim();
-    if (matricule && byMatricule.has(matricule)) return byMatricule.get(matricule) ?? 'Non rattaché';
-    const name = normalizePersonName(item.voyageur);
-    if (name && byName.has(name)) return byName.get(name) ?? 'Non rattaché';
-    return 'Non rattaché';
-  };
+  return buildProtocolVoyageOrgLookup(people).departementOf;
 }
 
 export function filterProtocolVoyagesForExport(
@@ -267,6 +248,8 @@ export function filterProtocolVoyagesForExport(
       item.voyageur,
       item.destination,
       item.categorieHotel,
+      item.departement,
+      item.centreCout,
     ].join(' ').toLowerCase().includes(q);
   });
 }
@@ -285,6 +268,7 @@ function buildVoyagesSheet(
   items: ProtocolVoyageCout[],
   query: ProtocolVoyageExportQuery,
   departmentOf: (item: ProtocolVoyageCout) => string,
+  centreCoutOf: (item: ProtocolVoyageCout) => string,
   now = new Date(),
 ): VoyageSource {
   const search = query.q?.trim();
@@ -321,8 +305,9 @@ function buildVoyagesSheet(
       numberCell(item.appartement, styleAt(14), '#,##0.00'),
       numberCell(item.autresCharges, styleAt(15), '#,##0.00'),
       formulaCell(`F${excelRow}+G${excelRow}+H${excelRow}+I${excelRow}+J${excelRow}+M${excelRow}+O${excelRow}+P${excelRow}`, styleAt(16), '#,##0.00'),
-      textCell(departmentOf(item).trim() || 'Non rattaché', styleAt(17)),
-      formulaCell(`CHOOSE(MONTH(B${excelRow}),${MONTH_FORMULA_LIST})`, styleAt(18)),
+      textCell(departmentOf(item).trim(), styleAt(17)),
+      textCell(centreCoutOf(item).trim(), styleAt(18)),
+      formulaCell(`CHOOSE(MONTH(B${excelRow}),${MONTH_FORMULA_LIST})`, styleAt(19)),
     ]);
   });
 
@@ -338,13 +323,13 @@ function buildVoyagesSheet(
   }));
 
   const ws = XLSX.utils.aoa_to_sheet(rows);
-  ws['!cols'] = [12, 12, 32, 14, 36, 14, 14, 18, 12, 14, 14, 10, 14, 18, 14, 16, 16, 22, 14].map((wch) => ({ wch }));
+  ws['!cols'] = [12, 12, 32, 14, 36, 14, 14, 18, 12, 14, 14, 10, 14, 18, 14, 16, 16, 22, 16, 14].map((wch) => ({ wch }));
   ws['!rows'] = [{ hpt: 24 }, { hpt: 18 }, { hpt: 30 }];
   ws['!merges'] = [
     { s: { r: 0, c: 0 }, e: { r: 0, c: VOYAGE_LAST_COL } },
     { s: { r: 1, c: 0 }, e: { r: 1, c: VOYAGE_LAST_COL } },
   ];
-  ws['!autofilter'] = { ref: `A3:S${Math.max(lastDataRow, 3)}` };
+  ws['!autofilter'] = { ref: `A3:T${Math.max(lastDataRow, 3)}` };
   return { sheet: ws, firstRow: firstDataRow, lastRow: lastDataRow };
 }
 
@@ -418,7 +403,7 @@ function provenRow(
 }
 
 function monthFormula(column: string | 'count', labelCell: string, first: number, last: number): string {
-  const months = colRange('S', first, last);
+  const months = colRange('T', first, last);
   if (column === 'count') return `COUNTIF(${months},${labelCell})`;
   return `SUMIF(${months},${labelCell},${colRange(column, first, last)})`;
 }
@@ -436,7 +421,7 @@ function monthDepartmentFormula(
   first: number,
   last: number,
 ): string {
-  const months = colRange('S', first, last);
+  const months = colRange('T', first, last);
   const departments = colRange('R', first, last);
   if (column === 'count') return `COUNTIFS(${months},${monthCell},${departments},${labelCell})`;
   return `SUMIFS(${colRange(column, first, last)},${months},${monthCell},${departments},${labelCell})`;
@@ -499,7 +484,8 @@ function buildSummarySheet(
 
   const grouped = new Map<string, number>();
   for (const item of items) {
-    const department = departmentOf(item).trim() || 'Non rattaché';
+    const department = departmentOf(item).trim();
+    if (!department) continue;
     grouped.set(department, (grouped.get(department) ?? 0) + item.coutTotal);
   }
   const departments = [...grouped.entries()]
@@ -724,13 +710,15 @@ export async function buildProtocolVoyageExportBuffer(
   options?: {
     summaryItems?: ProtocolVoyageCout[];
     departmentOf?: (item: ProtocolVoyageCout) => string;
+    centreCoutOf?: (item: ProtocolVoyageCout) => string;
     now?: Date;
   },
 ): Promise<Buffer> {
   const now = options?.now ?? new Date();
-  const departmentOf = options?.departmentOf ?? (() => 'Non rattaché');
+  const departmentOf = options?.departmentOf ?? ((item) => item.departement?.trim() || '');
+  const centreCoutOf = options?.centreCoutOf ?? ((item) => item.centreCout?.trim() || '');
   const summaryItems = options?.summaryItems ?? filterProtocolVoyagesForSummary(items, query, now);
-  const source = buildVoyagesSheet(summaryItems, query, departmentOf, now);
+  const source = buildVoyagesSheet(summaryItems, query, departmentOf, centreCoutOf, now);
   const summary = buildSummarySheet(summaryItems, query, departmentOf, source, now);
   const wb = XLSX.utils.book_new();
   XLSX.utils.book_append_sheet(wb, source.sheet, 'Voyages');

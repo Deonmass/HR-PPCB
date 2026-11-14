@@ -19,6 +19,7 @@ export async function GET(request: Request) {
     { menuId: 'employes.liste', action: 'view' },
     { menuId: 'employes.organigramme', action: 'view' },
     { menuId: 'settings.permissions', action: 'view' },
+    { menuId: 'protocol.voyages', action: 'view' },
   ]);
   if (denied) return denied;
 

@@ -2889,11 +2889,44 @@ body:has(.village-pptx-overlay) .project-picker-list-portal {
   background: var(--suggestion-hover, rgba(227, 6, 19, 0.12));
 }
 
+.project-picker-name-row {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  min-width: 0;
+  max-width: 100%;
+}
+
 .project-picker-name {
   font-size: 0.84rem;
   font-weight: 600;
   color: var(--suggestion-text, var(--text));
   white-space: nowrap;
+}
+
+.project-picker-badge {
+  flex: 0 0 auto;
+  max-width: 11rem;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  padding: 0.08rem 0.4rem;
+  border-radius: 999px;
+  font-size: 0.62rem;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  color: #0f2744;
+  background: color-mix(in srgb, #94a3b8 22%, white);
+}
+
+.project-picker-badge.is-contractant {
+  color: #7a1d12;
+  background: color-mix(in srgb, var(--ppc-red, #e30613) 16%, white);
+}
+
+.project-picker-badge.is-dependant {
+  color: #5b21b6;
+  background: color-mix(in srgb, #7c3aed 16%, white);
 }
 
 .project-picker-meta {
@@ -4628,6 +4661,19 @@ body:has(.village-pptx-overlay) .project-picker-list-portal {
 
 .home-sector-full {
   width: 100%;
+}
+
+.home-protocol-voyage-charts {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0.75rem;
+  margin-top: 0.85rem;
+}
+
+@media (max-width: 900px) {
+  .home-protocol-voyage-charts {
+    grid-template-columns: 1fr;
+  }
 }
 
 .home-sector-full > .panel,
@@ -25254,6 +25300,88 @@ html[data-theme='dark'] .guest-house-kimpese-panel {
   gap: 0.75rem;
 }
 
+.protocol-voyage-charts-org {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.protocol-voyage-org-hint {
+  display: block;
+  margin-top: 0.3rem;
+  font-size: 0.72rem;
+}
+
+.modal-overlay:has(.charroi-travel-docs-modal) {
+  align-items: stretch;
+  padding: 0.6rem;
+}
+
+.charroi-travel-docs-modal.modal.modal-form {
+  height: 100%;
+  max-height: none;
+  width: min(1280px, 100%);
+  max-width: min(1280px, 100%);
+  margin: auto;
+}
+
+.charroi-travel-docs-modal .modal-header {
+  align-items: flex-start;
+  gap: 0.75rem;
+  padding-bottom: 0.85rem;
+}
+
+.charroi-travel-docs-header {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.55rem;
+}
+
+.charroi-travel-docs-header h3 {
+  margin: 0;
+}
+
+.charroi-travel-docs-tabs .travel-people-tabs {
+  margin: 0;
+  height: 2.65rem;
+  padding: 4px;
+  gap: 0.3rem;
+  width: fit-content;
+  max-width: 100%;
+}
+
+.charroi-travel-docs-tabs .travel-people-tabs .tab-btn.tab-btn-sm {
+  height: 2.15rem !important;
+  padding: 0 1rem !important;
+  font-size: 0.88rem !important;
+  max-width: 22rem;
+}
+
+.charroi-travel-docs-modal .modal-body {
+  max-height: none;
+  overflow: auto;
+}
+
+.charroi-travel-docs-modal .cash-request-page {
+  padding: 0;
+}
+
+.charroi-travel-docs-modal .cash-request-panel {
+  margin: 0;
+  box-shadow: none;
+}
+
+.travel-people-tabs {
+  margin: 0 0 1rem;
+}
+
+.travel-people-tabs .tab-btn {
+  max-width: 18rem;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
 .protocol-voyage-table th,
 .protocol-voyage-table td {
   padding: 0.55rem 0.65rem;
@@ -25289,7 +25417,8 @@ html[data-theme='dark'] .guest-house-kimpese-panel {
 
 @media (max-width: 1100px) {
   .protocol-voyage-kpis,
-  .protocol-voyage-charts {
+  .protocol-voyage-charts,
+  .protocol-voyage-charts-org {
     grid-template-columns: 1fr;
   }
 }

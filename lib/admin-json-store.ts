@@ -112,7 +112,62 @@ export async function listAdminJsonFiles(): Promise<AdminJsonFileInfo[]> {
   if (path.resolve(writable) !== path.resolve(bundledDataRoot())) {
     await walkJson(writable, '', out);
   }
-  return [...out.values()].sort((a, b) => a.path.localeCompare(b.path, 'fr'));
+  return [...out.values()]
+    .filter((file) => !isBlockedAdminPath(file.path))
+    .sort((a, b) => a.path.localeCompare(b.path, 'fr'));
+}
+
+function isBlockedAdminPath(rel: string): boolean {
+  const normalized = rel.replace(/\\/g, '/').toLowerCase();
+  return normalized === 'auth/sessions.json' || normalized.endsWith('/sessions.json');
+}
+
+function redactSecrets(value: unknown): unknown {
+  if (Array.isArray(value)) return value.map(redactSecrets);
+  if (!value || typeof value !== 'object') return value;
+  const out: Record<string, unknown> = {};
+  for (const [key, child] of Object.entries(value as Record<string, unknown>)) {
+    const folded = key.toLowerCase();
+    if (folded === 'password' || folded === 'token' || folded.endsWith('secret')) {
+      out[key] = '';
+    } else {
+      out[key] = redactSecrets(child);
+    }
+  }
+  return out;
+}
+
+function restoreSecrets(incoming: unknown, previous: unknown): unknown {
+  if (Array.isArray(incoming)) {
+    const prevList = Array.isArray(previous) ? previous : [];
+    return incoming.map((item) => {
+      const id = item && typeof item === 'object' && 'id' in (item as object)
+        ? String((item as { id?: unknown }).id ?? '')
+        : '';
+      const prev = id
+        ? prevList.find((row) => (
+          row && typeof row === 'object' && 'id' in (row as object)
+          && String((row as { id?: unknown }).id ?? '') === id
+        ))
+        : undefined;
+      return restoreSecrets(item, prev);
+    });
+  }
+  if (!incoming || typeof incoming !== 'object') return incoming;
+  const prevObj = previous && typeof previous === 'object' && !Array.isArray(previous)
+    ? previous as Record<string, unknown>
+    : {};
+  const out: Record<string, unknown> = {};
+  for (const [key, child] of Object.entries(incoming as Record<string, unknown>)) {
+    const folded = key.toLowerCase();
+    const secret = folded === 'password' || folded === 'token' || folded.endsWith('secret');
+    if (secret && (child === '' || child == null) && prevObj[key]) {
+      out[key] = prevObj[key];
+    } else {
+      out[key] = restoreSecrets(child, prevObj[key]);
+    }
+  }
+  return out;
 }
 
 export async function readAdminJsonFile(relRaw: string): Promise<{
@@ -123,11 +178,12 @@ export async function readAdminJsonFile(relRaw: string): Promise<{
   sensitive: boolean;
 }> {
   const rel = assertSafeJsonRelPath(relRaw);
+  if (isBlockedAdminPath(rel)) throw new Error('Fichier protégé');
   const local = resolveLocalPath(rel);
   await hydrateDurableFile(repoPath(rel), local);
   const raw = await fsPromises.readFile(local, 'utf8');
   try {
-    const parsed = JSON.parse(raw) as unknown;
+    const parsed = redactSecrets(JSON.parse(raw) as unknown);
     return {
       path: rel,
       text: JSON.stringify(parsed, null, 2),
@@ -151,11 +207,18 @@ export async function writeAdminJsonFile(relRaw: string, text: string): Promise<
   bytes: number;
 }> {
   const rel = assertSafeJsonRelPath(relRaw);
+  if (isBlockedAdminPath(rel)) throw new Error('Fichier protégé');
   let parsed: unknown;
   try {
     parsed = JSON.parse(text);
   } catch {
     throw new Error('JSON invalide — corrections requises avant enregistrement');
+  }
+  try {
+    const previousRaw = await fsPromises.readFile(resolveLocalPath(rel), 'utf8');
+    parsed = restoreSecrets(parsed, JSON.parse(previousRaw) as unknown);
+  } catch {
+    // nouveau fichier
   }
   const local = resolveLocalPath(rel);
   fs.mkdirSync(path.dirname(local), { recursive: true });

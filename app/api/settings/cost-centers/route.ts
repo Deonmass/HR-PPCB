@@ -20,6 +20,7 @@ export async function GET() {
     { menuId: 'travel.mission.zamba-consultant', action: 'view' },
     { menuId: 'travel.mission.lubudi', action: 'view' },
     { menuId: 'factures.fournisseur.factures', action: 'view' },
+    { menuId: 'protocol.voyages', action: 'view' },
   ]);
   if (denied) return denied;
   const costCenters = await listCostCenters();

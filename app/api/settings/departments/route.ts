@@ -27,6 +27,7 @@ export async function GET(request: Request) {
     { menuId: 'travel.historique', action: 'view' },
     { menuId: 'charroi.vehicules', action: 'view' },
     { menuId: 'charroi', action: 'view' },
+    { menuId: 'protocol.voyages', action: 'view' },
   ]);
   if (denied) return denied;
 
