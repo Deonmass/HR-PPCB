@@ -1,6 +1,31 @@
 {
   "entries": [
     {
+      "id": "log-002401",
+      "at": "2026-11-16T09:58:56.706Z",
+      "userId": "admin",
+      "userName": "Administrateur",
+      "userEmail": "admin",
+      "module": "timesheet.overtimes",
+      "moduleLabel": "Timesheet — Heures sup.",
+      "action": "error",
+      "actionLabel": "Erreur",
+      "summary": "Toutes les lignes du fichier étaient déjà importées pour cette semaine",
+      "details": "Échec de l’action « import » sur timesheet.overtimes: Toutes les lignes du fichier étaient déjà importées pour cette semaine",
+      "undoable": false,
+      "undone": false,
+      "error": {
+        "message": "Toutes les lignes du fichier étaient déjà importées pour cette semaine",
+        "stack": "Error: Toutes les lignes du fichier étaient déjà importées pour cette semaine\n    at ao (/var/task/.next/server/chunks/4586.js:1:12942)\n    at async l (/var/task/.next/server/chunks/3003.js:1:1365)\n    at async H (/var/task/.next/server/app/api/timesheet/weekly-ot/route.js:1:7320)\n    at async rH.do (/var/task/node_modules/next/dist/compiled/next-server/app-route.runtime.prod.js:5:21048)\n    at async rH.handle (/var/task/node_modules/next/dist/compiled/next-server/app-route.runtime.prod.js:5:25866)\n    at async k (/var/task/.next/server/app/api/timesheet/weekly-ot/route.js:1:12182)\n    at async rH.handleResponse (/var/task/node_modules/next/dist/compiled/next-server/app-route.runtime.prod.js:1:110770)\n    at async g (/var/task/.next/server/app/api/timesheet/weekly-ot/route.js:1:13185)\n    at async N (/var/task/.next/server/app/api/timesheet/weekly-ot/route.js:1:14307)\n    at async ib.renderToResponseWithComponentsImpl (/var/task/node_modules/next/dist/compiled/next-server/server.runtime.prod.js:13:28532)",
+        "path": "/api/timesheet/weekly-ot",
+        "method": "POST",
+        "context": {
+          "action": "import",
+          "summary": "Import HS bulk semaine 3"
+        }
+      }
+    },
+    {
       "id": "log-002400",
       "at": "2026-11-16T09:52:01.432Z",
       "userId": "admin",
@@ -1258846,5 +1258871,5 @@
       }
     }
   ],
-  "nextSeq": 2401
+  "nextSeq": 2402
 }
