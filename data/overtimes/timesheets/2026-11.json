@@ -1,7 +1,7 @@
 {
   "year": 2026,
   "month": 11,
-  "updatedAt": "2026-11-16T11:59:03.464Z",
+  "updatedAt": "2026-11-16T12:01:36.696Z",
   "agents": {
     "70000111": {
       "matricule": "70000111",
@@ -368,7 +368,7 @@
           "to": "",
           "shiftType": "off",
           "holiday": false,
-          "updatedAt": "2026-11-16T11:59:03.464Z",
+          "updatedAt": "2026-11-16T12:01:36.696Z",
           "updatedBy": "admin"
         },
         "2026-10-13": {
@@ -378,7 +378,7 @@
           "to": "",
           "shiftType": "off",
           "holiday": false,
-          "updatedAt": "2026-11-16T11:59:03.464Z",
+          "updatedAt": "2026-11-16T12:01:36.696Z",
           "updatedBy": "admin"
         },
         "2026-10-14": {
@@ -388,7 +388,7 @@
           "to": "",
           "shiftType": "off",
           "holiday": false,
-          "updatedAt": "2026-11-16T11:59:03.464Z",
+          "updatedAt": "2026-11-16T12:01:36.696Z",
           "updatedBy": "admin"
         },
         "2026-10-15": {
@@ -398,7 +398,7 @@
           "to": "",
           "shiftType": "off",
           "holiday": false,
-          "updatedAt": "2026-11-16T11:59:03.464Z",
+          "updatedAt": "2026-11-16T12:01:36.696Z",
           "updatedBy": "admin"
         },
         "2026-10-16": {
@@ -408,7 +408,7 @@
           "to": "",
           "shiftType": "off",
           "holiday": false,
-          "updatedAt": "2026-11-16T11:59:03.464Z",
+          "updatedAt": "2026-11-16T12:01:36.696Z",
           "updatedBy": "admin"
         },
         "2026-10-17": {
@@ -418,7 +418,7 @@
           "to": "14:00",
           "shiftType": "shift1",
           "holiday": false,
-          "updatedAt": "2026-11-16T11:59:03.464Z",
+          "updatedAt": "2026-11-16T12:01:36.696Z",
           "updatedBy": "admin"
         },
         "2026-10-18": {
@@ -428,7 +428,7 @@
           "to": "14:00",
           "shiftType": "shift1",
           "holiday": false,
-          "updatedAt": "2026-11-16T11:59:03.464Z",
+          "updatedAt": "2026-11-16T12:01:36.696Z",
           "updatedBy": "admin"
         },
         "2026-10-19": {
@@ -438,7 +438,7 @@
           "to": "22:00",
           "shiftType": "shift2",
           "holiday": false,
-          "updatedAt": "2026-11-16T11:59:03.464Z",
+          "updatedAt": "2026-11-16T12:01:36.696Z",
           "updatedBy": "admin"
         },
         "2026-10-20": {
@@ -448,7 +448,7 @@
           "to": "22:00",
           "shiftType": "shift2",
           "holiday": false,
-          "updatedAt": "2026-11-16T11:59:03.464Z",
+          "updatedAt": "2026-11-16T12:01:36.696Z",
           "updatedBy": "admin"
         },
         "2026-10-21": {
@@ -458,7 +458,7 @@
           "to": "06:00",
           "shiftType": "shift3",
           "holiday": false,
-          "updatedAt": "2026-11-16T11:59:03.464Z",
+          "updatedAt": "2026-11-16T12:01:36.696Z",
           "updatedBy": "admin"
         },
         "2026-10-22": {
@@ -468,7 +468,7 @@
           "to": "06:00",
           "shiftType": "shift3",
           "holiday": false,
-          "updatedAt": "2026-11-16T11:59:03.464Z",
+          "updatedAt": "2026-11-16T12:01:36.696Z",
           "updatedBy": "admin"
         },
         "2026-10-23": {
@@ -478,7 +478,7 @@
           "to": "",
           "shiftType": "off",
           "holiday": false,
-          "updatedAt": "2026-11-16T11:59:03.464Z",
+          "updatedAt": "2026-11-16T12:01:36.696Z",
           "updatedBy": "admin"
         },
         "2026-10-24": {
@@ -488,7 +488,7 @@
           "to": "06:00",
           "shiftType": "shift1",
           "holiday": false,
-          "updatedAt": "2026-11-16T11:59:03.464Z",
+          "updatedAt": "2026-11-16T12:01:36.696Z",
           "updatedBy": "admin"
         },
         "2026-10-25": {
@@ -498,7 +498,7 @@
           "to": "06:00",
           "shiftType": "shift1",
           "holiday": false,
-          "updatedAt": "2026-11-16T11:59:03.464Z",
+          "updatedAt": "2026-11-16T12:01:36.696Z",
           "updatedBy": "admin"
         },
         "2026-10-26": {
@@ -508,7 +508,7 @@
           "to": "",
           "shiftType": "off",
           "holiday": false,
-          "updatedAt": "2026-11-16T11:59:03.464Z",
+          "updatedAt": "2026-11-16T12:01:36.696Z",
           "updatedBy": "admin"
         },
         "2026-10-27": {
@@ -518,7 +518,7 @@
           "to": "",
           "shiftType": "off",
           "holiday": false,
-          "updatedAt": "2026-11-16T11:59:03.464Z",
+          "updatedAt": "2026-11-16T12:01:36.696Z",
           "updatedBy": "admin"
         },
         "2026-10-28": {
@@ -528,7 +528,7 @@
           "to": "22:00",
           "shiftType": "shift2",
           "holiday": false,
-          "updatedAt": "2026-11-16T11:59:03.464Z",
+          "updatedAt": "2026-11-16T12:01:36.696Z",
           "updatedBy": "admin"
         },
         "2026-10-29": {
@@ -538,7 +538,7 @@
           "to": "22:00",
           "shiftType": "shift2",
           "holiday": false,
-          "updatedAt": "2026-11-16T11:59:03.464Z",
+          "updatedAt": "2026-11-16T12:01:36.696Z",
           "updatedBy": "admin"
         },
         "2026-10-30": {
@@ -548,7 +548,7 @@
           "to": "22:00",
           "shiftType": "shift3",
           "holiday": false,
-          "updatedAt": "2026-11-16T11:59:03.464Z",
+          "updatedAt": "2026-11-16T12:01:36.696Z",
           "updatedBy": "admin"
         },
         "2026-10-31": {
@@ -558,7 +558,7 @@
           "to": "06:00",
           "shiftType": "shift3",
           "holiday": false,
-          "updatedAt": "2026-11-16T11:59:03.464Z",
+          "updatedAt": "2026-11-16T12:01:36.696Z",
           "updatedBy": "admin"
         },
         "2026-11-01": {
@@ -568,7 +568,7 @@
           "to": "06:00",
           "shiftType": "shift2",
           "holiday": false,
-          "updatedAt": "2026-11-16T11:59:03.464Z",
+          "updatedAt": "2026-11-16T12:01:36.696Z",
           "updatedBy": "admin"
         },
         "2026-11-02": {
@@ -578,7 +578,7 @@
           "to": "",
           "shiftType": "off",
           "holiday": false,
-          "updatedAt": "2026-11-16T11:59:03.464Z",
+          "updatedAt": "2026-11-16T12:01:36.696Z",
           "updatedBy": "admin"
         },
         "2026-11-03": {
@@ -588,7 +588,7 @@
           "to": "",
           "shiftType": "off",
           "holiday": false,
-          "updatedAt": "2026-11-16T11:59:03.464Z",
+          "updatedAt": "2026-11-16T12:01:36.696Z",
           "updatedBy": "admin"
         },
         "2026-11-04": {
@@ -598,7 +598,7 @@
           "to": "22:00",
           "shiftType": "shift2",
           "holiday": false,
-          "updatedAt": "2026-11-16T11:59:03.464Z",
+          "updatedAt": "2026-11-16T12:01:36.696Z",
           "updatedBy": "admin"
         },
         "2026-11-05": {
@@ -608,7 +608,7 @@
           "to": "22:00",
           "shiftType": "shift2",
           "holiday": false,
-          "updatedAt": "2026-11-16T11:59:03.464Z",
+          "updatedAt": "2026-11-16T12:01:36.696Z",
           "updatedBy": "admin"
         },
         "2026-11-06": {
@@ -618,7 +618,7 @@
           "to": "06:00",
           "shiftType": "shift3",
           "holiday": false,
-          "updatedAt": "2026-11-16T11:59:03.464Z",
+          "updatedAt": "2026-11-16T12:01:36.696Z",
           "updatedBy": "admin"
         },
         "2026-11-07": {
@@ -628,7 +628,7 @@
           "to": "06:00",
           "shiftType": "shift3",
           "holiday": false,
-          "updatedAt": "2026-11-16T11:59:03.464Z",
+          "updatedAt": "2026-11-16T12:01:36.696Z",
           "updatedBy": "admin"
         },
         "2026-11-08": {
@@ -638,7 +638,7 @@
           "to": "06:00",
           "shiftType": "shift2",
           "holiday": false,
-          "updatedAt": "2026-11-16T11:59:03.464Z",
+          "updatedAt": "2026-11-16T12:01:36.696Z",
           "updatedBy": "admin"
         },
         "2026-11-09": {
@@ -648,7 +648,7 @@
           "to": "",
           "shiftType": "off",
           "holiday": false,
-          "updatedAt": "2026-11-16T11:59:03.464Z",
+          "updatedAt": "2026-11-16T12:01:36.696Z",
           "updatedBy": "admin"
         },
         "2026-11-10": {
@@ -658,7 +658,7 @@
           "to": "",
           "shiftType": "off",
           "holiday": false,
-          "updatedAt": "2026-11-16T11:59:03.464Z",
+          "updatedAt": "2026-11-16T12:01:36.696Z",
           "updatedBy": "admin"
         },
         "2026-11-11": {
@@ -668,7 +668,7 @@
           "to": "22:00",
           "shiftType": "shift2",
           "holiday": false,
-          "updatedAt": "2026-11-16T11:59:03.464Z",
+          "updatedAt": "2026-11-16T12:01:36.696Z",
           "updatedBy": "admin"
         },
         "2026-11-12": {
@@ -678,7 +678,7 @@
           "to": "06:00",
           "shiftType": "shift3",
           "holiday": false,
-          "updatedAt": "2026-11-16T11:59:03.464Z",
+          "updatedAt": "2026-11-16T12:01:36.696Z",
           "updatedBy": "admin"
         },
         "2026-11-13": {
@@ -688,7 +688,7 @@
           "to": "06:00",
           "shiftType": "shift3",
           "holiday": false,
-          "updatedAt": "2026-11-16T11:59:03.464Z",
+          "updatedAt": "2026-11-16T12:01:36.696Z",
           "updatedBy": "admin"
         },
         "2026-11-14": {
@@ -698,7 +698,7 @@
           "to": "",
           "shiftType": "off",
           "holiday": false,
-          "updatedAt": "2026-11-16T11:59:03.464Z",
+          "updatedAt": "2026-11-16T12:01:36.696Z",
           "updatedBy": "admin"
         },
         "2026-11-15": {
@@ -708,7 +708,7 @@
           "to": "",
           "shiftType": "off",
           "holiday": false,
-          "updatedAt": "2026-11-16T11:59:03.464Z",
+          "updatedAt": "2026-11-16T12:01:36.696Z",
           "updatedBy": "admin"
         }
       }
