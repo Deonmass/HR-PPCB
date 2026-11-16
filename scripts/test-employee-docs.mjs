@@ -81,16 +81,20 @@ function check(name, fn) {
 {
   const xml = await loadXml('Excel/templates/exit/Attestation de fin de service.docx');
   let out = xml;
-  out = check('attestation / civilité+nom', () => replaceDocxText(out, 'Monsieur BAZOLA NDELO Serge', 'Monsieur KAMBA MUKENDI Jean')) ?? out;
-  out = check('attestation / cnss', () => replaceDocxText(out, '102329119830718004', '123456789')) ?? out;
-  out = check('attestation / date embauche', () => replaceDocxText(out, '03 novembre 2025', '1er février 2020')) ?? out;
-  out = check('attestation / date fin (occ 1)', () => replaceDocxText(out, '2 mai 2026', '31 juillet 2026', { occurrence: 1 })) ?? out;
-  out = check('attestation / date document (occ 1 restante)', () => replaceDocxText(out, '2 mai 2026', '31 juillet 2026', { occurrence: 1 })) ?? out;
-  out = check('attestation / fonction', () => replaceDocxText(out, 'Head of Sales & Marketing', 'HR Officer')) ?? out;
+  out = check('attestation / civilité+nom', () => replaceDocxText(out, 'Monsieur Jerry BUHENDWA', 'Monsieur Kamba MUKENDI')) ?? out;
+  out = check('attestation / cnss', () => replaceDocxText(out, '1199046614B', '123456789')) ?? out;
+  out = check('attestation / date embauche', () => replaceDocxText(out, '1er décembre 2025', '1er février 2020')) ?? out;
+  out = check('attestation / date fin', () => replaceDocxText(out, '27 novembre 2026', '31 juillet 2026', { occurrence: 1 })) ?? out;
+  out = check('attestation / date document', () => replaceDocxText(out, '28 octobre 2026', '31 juillet 2026', { occurrence: 1 })) ?? out;
+  out = check('attestation / fonction', () => replaceDocxText(out, 'Supply Chain Officer', 'HR Officer')) ?? out;
   const text = extractText(out);
-  if (text.includes('2 mai 2026')) {
+  if (text.includes('27 novembre 2026') || text.includes('28 octobre 2026') || text.includes('BUHENDWA')) {
     failures += 1;
-    console.log('FAIL  attestation / il reste une date exemple');
+    console.log('FAIL  attestation / il reste une valeur exemple');
+  }
+  if (!text.includes('ATTESTATION DE FIN DE SERVICE') || !text.includes('occupait, à la fin de son service, le poste') || !text.includes('La présente')) {
+    failures += 1;
+    console.log('FAIL  attestation / formulation du modèle absente');
   }
 }
 

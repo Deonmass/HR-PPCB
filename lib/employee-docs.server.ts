@@ -3,6 +3,7 @@ import 'server-only';
 import path from 'path';
 import { fillDocxTemplateToBuffer } from './docx-template';
 import { fillDocxBlankAfterLabel, replaceDocxText } from './docx-fill';
+import { formatAttestationAgentName } from './format-display-name';
 import type { Employee } from './types';
 
 const APPRAISAL_TEMPLATE_PATH = path.join(
@@ -189,21 +190,20 @@ function fillInterview(xml: string, ctx: ExitContext): string {
   return out;
 }
 
-/** Attestation de fin de service — remplace les valeurs d'exemple. */
+/** Attestation de fin de service — remplace les valeurs d'exemple du modèle. */
 function fillAttestation(xml: string, ctx: ExitContext): string {
   const { employee } = ctx;
   let out = xml;
   out = replaceDocxText(
     out,
-    'Monsieur BAZOLA NDELO Serge',
-    `${civilite(employee.gender)} ${safe(employee.nom)}`,
+    'Monsieur Jerry BUHENDWA',
+    `${civilite(employee.gender)} ${formatAttestationAgentName(employee.nom) || safe(employee.nom)}`,
   );
-  out = replaceDocxText(out, '102329119830718004', safe(employee.cnss, '…………………'));
-  out = replaceDocxText(out, '03 novembre 2025', formatLongFr(ctx.hireDate));
-  // 1re occurrence : fin de service — 2e : « Fait à Kinshasa, le … ».
-  out = replaceDocxText(out, '2 mai 2026', formatLongFr(ctx.exitDate), { occurrence: 1 });
-  out = replaceDocxText(out, '2 mai 2026', formatLongFr(ctx.documentDate), { occurrence: 1 });
-  out = replaceDocxText(out, 'Head of Sales & Marketing', safe(employee.jobTitle || employee.position));
+  out = replaceDocxText(out, '1199046614B', safe(employee.cnss, '…………………'));
+  out = replaceDocxText(out, '1er décembre 2025', formatLongFr(ctx.hireDate));
+  out = replaceDocxText(out, '27 novembre 2026', formatLongFr(ctx.exitDate), { occurrence: 1 });
+  out = replaceDocxText(out, '28 octobre 2026', formatLongFr(ctx.documentDate), { occurrence: 1 });
+  out = replaceDocxText(out, 'Supply Chain Officer', safe(employee.jobTitle || employee.position));
   return out;
 }
 
