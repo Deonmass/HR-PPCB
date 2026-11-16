@@ -1,6 +1,7 @@
 'use client';
 
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import Link from 'next/link';
 import {
   calcDocumentCompletion,
   calcRowCellStats,
@@ -1204,6 +1205,17 @@ export default function EmployeeViewModal({ employee, canEdit = false, initialTa
               </div>
               {renderSection("Période d'essai", ESSAI_PERIOD_FIELDS)}
               {renderSection('Évaluation', TRIAL_EVAL_FIELDS)}
+              {can('documents.confirmation-letter', 'view') ? (
+                <div className="employee-essai-docs">
+                  <Link
+                    href={`/documents/lettre-confirmation?matricule=${encodeURIComponent(draft.matricule)}`}
+                    className="btn btn-secondary btn-sm"
+                    prefetch={false}
+                  >
+                    Générer la lettre de confirmation
+                  </Link>
+                </div>
+              ) : null}
             </div>
           )}
 

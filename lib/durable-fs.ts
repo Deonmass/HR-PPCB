@@ -74,6 +74,7 @@ export const DURABLE_CONVENTION_NOTES_KEY = 'data/documents/convention-collectiv
 export const DURABLE_EXCO_REPORTS_KEY = 'data/exco/reports.json';
 export const DURABLE_AUDIT_HR_KEY = 'data/audit/actions.json';
 export const DURABLE_SANTE_VISITS_KEY = 'data/sante/visits.json';
+export const DURABLE_SICK_LEAVE_KEY = 'data/sante/sick-leave.json';
 export const DURABLE_TRAINING_KEY = 'data/training/training.json';
 export const DURABLE_AIRTIME_KEY = 'data/employees/airtime.json';
 

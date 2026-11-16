@@ -278,6 +278,15 @@ const CARDS: DocCard[] = [
     icon: <IconBadgeCheck />,
   },
   {
+    id: 'lettre-confirmation',
+    title: 'Lettre de confirmation',
+    description: 'Notification de confirmation après période d’essai — fonction, société et date d’effet.',
+    href: '/documents/lettre-confirmation',
+    menuId: 'documents.confirmation-letter',
+    accent: '#7c3aed',
+    icon: <IconBadgeCheck />,
+  },
+  {
     id: 'exit-forms',
     title: 'Exit forms',
     description: 'Clearance, exit interview, attestation de fin de service et user removal — remplis depuis la fiche agent.',
@@ -371,6 +380,7 @@ const DOC_I18N: Record<string, { title: MessageKey; desc: MessageKey; badge?: Me
   'attestation-residence': { title: 'docs.card.residence.title', desc: 'docs.card.residence.desc' },
   'payment-voucher': { title: 'docs.card.voucher.title', desc: 'docs.card.voucher.desc' },
   'interim-appraisal': { title: 'docs.card.appraisal.title', desc: 'docs.card.appraisal.desc' },
+  'lettre-confirmation': { title: 'docs.card.confirmation.title', desc: 'docs.card.confirmation.desc' },
   'exit-forms': { title: 'docs.card.exit.title', desc: 'docs.card.exit.desc', badge: 'docs.card.exit.badge' },
   'reponse-demission': { title: 'docs.card.demission.title', desc: 'docs.card.demission.desc' },
   newcomer: { title: 'docs.card.newcomer.title', desc: 'docs.card.newcomer.desc', badge: 'docs.card.newcomer.badge' },

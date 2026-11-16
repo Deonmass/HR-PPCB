@@ -12,8 +12,10 @@ export default function SanteIndexPage() {
     if (isLoading) return;
     const dash = can('sante.dashboard', 'view') || can('sante', 'view');
     const data = can('sante.donnees', 'view') || can('sante', 'view');
+    const sick = can('sante.conge-maladie', 'view') || can('sante', 'view');
     if (dash) router.replace('/sante/dashboard');
     else if (data) router.replace('/sante/donnees');
+    else if (sick) router.replace('/sante/conge-maladie');
   }, [can, isLoading, router]);
 
   return <div className="loading">Redirection…</div>;

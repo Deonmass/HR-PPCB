@@ -15,6 +15,7 @@ export const DOCUMENTS_HUB_MENU_IDS = [
   'travel.attestation',
   'travel.payment-voucher',
   'documents.appraisal',
+  'documents.confirmation-letter',
   'documents.exit',
   'documents.reponse-demission',
   'documents.entetes',
@@ -58,6 +59,7 @@ export const ROUTE_MENU_MAP: RouteMenuEntry[] = [
   { prefix: '/documents/exit', menuId: 'documents.exit' },
   { prefix: '/documents/reponse-demission', menuId: 'documents.reponse-demission' },
   { prefix: '/documents/interim-appraisal', menuId: 'documents.appraisal' },
+  { prefix: '/documents/lettre-confirmation', menuId: 'documents.confirmation-letter' },
   { prefix: '/documents/newcomer', menuId: 'documents.newcomer' },
   { prefix: '/documents/contrat-standard', menuId: 'documents.contrat-standard' },
   { prefix: '/documents/contrat-bail', menuId: 'documents.contrat-bail' },
@@ -131,6 +133,7 @@ export const ROUTE_MENU_MAP: RouteMenuEntry[] = [
   { prefix: '/charroi-automobile/voyages', menuId: 'charroi.voyages' },
   { prefix: '/charroi-automobile', menuId: 'charroi' },
   { prefix: '/employes', menuId: 'employes.liste' },
+  { prefix: '/sante/conge-maladie', menuId: 'sante.conge-maladie' },
   { prefix: '/sante/dashboard', menuId: 'sante.dashboard' },
   { prefix: '/sante/donnees', menuId: 'sante.donnees' },
   { prefix: '/sante', menuId: 'sante' },
@@ -187,8 +190,11 @@ export function routeViewMenuIds(pathname: string): string[] {
   if (normalized === '/sante/donnees' || normalized.startsWith('/sante/donnees/')) {
     return ['sante.donnees', 'sante'];
   }
+  if (normalized === '/sante/conge-maladie' || normalized.startsWith('/sante/conge-maladie/')) {
+    return ['sante.conge-maladie', 'sante'];
+  }
   if (normalized === '/sante') {
-    return ['sante.dashboard', 'sante.donnees', 'sante'];
+    return ['sante.dashboard', 'sante.donnees', 'sante.conge-maladie', 'sante'];
   }
   if (
     normalized === '/charroi-automobile'

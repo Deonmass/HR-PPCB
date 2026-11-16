@@ -409,6 +409,14 @@ export async function buildHomeDashboard(menus: MenuPermission[]): Promise<HomeD
     });
   }
 
+  if (can(menus, 'documents.confirmation-letter')) {
+    placeholders.push({
+      label: 'Lettre de confirmation',
+      description: 'Confirmation de période d’essai',
+      href: '/documents/lettre-confirmation',
+    });
+  }
+
   if (can(menus, 'documents.composition-familiale')) {
     placeholders.push({
       label: 'Composition familiale',

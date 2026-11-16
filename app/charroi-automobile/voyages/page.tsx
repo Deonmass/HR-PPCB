@@ -22,6 +22,7 @@ import {
   type CharroiVoyage,
   type CharroiVoyageStatus,
 } from '@/lib/charroi-types';
+import { charroiVoyagePeriodLabel, downloadCharroiVoyagesExport } from '@/lib/charroi-voyages-export';
 import { confirmAction, confirmDelete, showError, showSuccess } from '@/lib/swal';
 import type { EmployeeSelection } from '@/components/EmployeePicker';
 import type { TravelFormPrefill, TravelFormPersonPrefill } from '@/components/travel/EtablirTravelForm';
@@ -688,6 +689,7 @@ export default function CharroiVoyagesPage() {
   const [loading, setLoading] = useState(true);
   const [refreshing, setRefreshing] = useState(false);
   const [busy, setBusy] = useState(false);
+  const [exporting, setExporting] = useState(false);
   const [search, setSearch] = useState('');
   const [demandeFilter, setDemandeFilter] = useState<DemandeFilter>('toutes');
   const [requestForm, setRequestForm] = useState<RequestForm | null>(null);
@@ -889,6 +891,44 @@ export default function CharroiVoyagesPage() {
     if (item.status !== 'effectue') return false;
     return !query || haystack(item).includes(query);
   }), [periodItems, query]);
+
+  function exportSource(): CharroiVoyage[] {
+    const list = tab === 'demandes' ? demandes : tab === 'effectues' ? effectues : periodItems;
+    if (tab !== 'dashboard' && selectedIds.size > 0) {
+      const chosen = list.filter((item) => selectedIds.has(item.id));
+      if (chosen.length) return chosen;
+    }
+    return list;
+  }
+
+  function exportExcel() {
+    if (exporting) return;
+    const source = exportSource();
+    if (source.length === 0) {
+      void showError('Aucun voyage à exporter');
+      return;
+    }
+    setExporting(true);
+    try {
+      const period = charroiVoyagePeriodLabel(year, month);
+      const scope = selectedIds.size > 0 && tab !== 'dashboard' && source.every((item) => selectedIds.has(item.id))
+        ? 'sélection'
+        : tab === 'demandes'
+          ? 'demandes'
+          : tab === 'effectues'
+            ? 'effectués'
+            : 'période';
+      downloadCharroiVoyagesExport(source, {
+        title: `Voyage par route — ${period}`,
+        filename: `voyage-par-route-${year}-${String(month).padStart(2, '0')}-${scope}.xlsx`,
+      });
+      void showSuccess(`${source.length} voyage${source.length > 1 ? 's' : ''} exporté${source.length > 1 ? 's' : ''}`);
+    } catch (err) {
+      void showError(err instanceof Error ? err.message : 'Export Excel impossible');
+    } finally {
+      setExporting(false);
+    }
+  }
 
   function openDrill(title: string, list: CharroiVoyage[]) {
     setDrill({ title: `Voir la liste — ${title}`, items: list });
@@ -1466,6 +1506,29 @@ export default function CharroiVoyagesPage() {
                   </select>
                 </label>
               </div>
+              <button
+                type="button"
+                className="btn btn-secondary btn-sm btn-with-icon"
+                disabled={exporting || loading}
+                onClick={() => exportExcel()}
+                title={
+                  tab === 'dashboard'
+                    ? 'Exporter les voyages du mois'
+                    : selectedIds.size > 0
+                      ? 'Exporter la sélection'
+                      : 'Exporter les voyages visibles (filtres appliqués)'
+                }
+                aria-label="Exporter Excel"
+              >
+                {exporting ? <span className="btn-spinner" aria-hidden="true" /> : (
+                  <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden>
+                    <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
+                    <polyline points="7 10 12 15 17 10" />
+                    <line x1="12" y1="15" x2="12" y2="3" />
+                  </svg>
+                )}
+                <span>{exporting ? 'Export…' : 'Export Excel'}</span>
+              </button>
               {canCreate && (
                 <button
                   type="button"

@@ -85,6 +85,7 @@ export const PERMISSION_MENU_CATALOG: PermissionMenuGroup[] = withSortedMenus([
       { id: 'travel.attestation', label: 'Attestation de service' },
       { id: 'travel.payment-voucher', label: 'Payment voucher' },
       { id: 'documents.appraisal', label: 'Interim appraisal evaluation' },
+      { id: 'documents.confirmation-letter', label: 'Lettre de confirmation' },
       { id: 'documents.exit', label: 'Exit forms' },
       { id: 'documents.reponse-demission', label: 'Réponse démission' },
       { id: 'documents.entetes', label: 'Entête' },
@@ -146,6 +147,7 @@ export const PERMISSION_MENU_CATALOG: PermissionMenuGroup[] = withSortedMenus([
     items: [
       { id: 'sante.dashboard', label: 'Santé — Dashboard' },
       { id: 'sante.donnees', label: 'Santé — Données' },
+      { id: 'sante.conge-maladie', label: 'Santé — Congé maladie' },
     ],
   },
   {
@@ -297,6 +299,7 @@ export function mergePermissionsWithCatalog(menus: MenuPermission[]): MenuPermis
         defaultMenu.menuId === 'documents.composition-familiale'
         || defaultMenu.menuId === 'documents.mouvement-travailleur'
         || defaultMenu.menuId === 'documents.reponse-demission'
+        || defaultMenu.menuId === 'documents.confirmation-letter'
       ) {
         const donor = menus.find((menu) => menu.menuId === 'documents.contrat-standard')
           || menus.find((menu) => menu.menuId === 'documents.exit')
@@ -339,13 +342,19 @@ export function mergePermissionsWithCatalog(menus: MenuPermission[]): MenuPermis
           };
         }
       }
-      if (defaultMenu.menuId === 'sante.dashboard' || defaultMenu.menuId === 'sante.donnees') {
-        const sante = menus.find((menu) => menu.menuId === 'sante');
-        if (sante) {
+      if (
+        defaultMenu.menuId === 'sante.dashboard'
+        || defaultMenu.menuId === 'sante.donnees'
+        || defaultMenu.menuId === 'sante.conge-maladie'
+      ) {
+        const donor = menus.find((menu) => menu.menuId === 'sante')
+          || menus.find((menu) => menu.menuId === 'sante.dashboard')
+          || menus.find((menu) => menu.menuId === 'sante.donnees');
+        if (donor) {
           return {
             menuId: defaultMenu.menuId,
             label: defaultMenu.label,
-            actions: { ...sante.actions },
+            actions: { ...donor.actions },
           };
         }
       }

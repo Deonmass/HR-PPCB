@@ -7,8 +7,15 @@ const scryptAsync = promisify(scrypt);
 const PREFIX = 'scrypt';
 
 export function isHashedPassword(value: string): boolean {
-  const [scheme, salt, hash] = String(value || '').split('$');
-  return scheme === PREFIX && Boolean(salt) && Boolean(hash);
+  const parts = String(value || '').split('$');
+  return parts.length === 3 && parts[0] === PREFIX && Boolean(parts[1]) && Boolean(parts[2]);
+}
+
+function safeEqualStrings(left: string, right: string): boolean {
+  const a = Buffer.from(left);
+  const b = Buffer.from(right);
+  if (a.length !== b.length) return false;
+  return timingSafeEqual(a, b);
 }
 
 export async function hashPassword(password: string): Promise<string> {
@@ -18,11 +25,19 @@ export async function hashPassword(password: string): Promise<string> {
 }
 
 export async function verifyPassword(password: string, stored: string): Promise<boolean> {
-  if (!stored || !isHashedPassword(stored)) return false;
-  const [, salt, expected] = stored.split('$');
-  if (!salt || !expected) return false;
-  const actual = (await scryptAsync(password, salt, 32)) as Buffer;
-  const expectedBuf = Buffer.from(expected, 'base64url');
-  if (actual.length !== expectedBuf.length) return false;
-  return timingSafeEqual(actual, expectedBuf);
+  const storedValue = String(stored || '');
+  if (!storedValue) return false;
+  if (!isHashedPassword(storedValue)) {
+    return safeEqualStrings(password, storedValue);
+  }
+  try {
+    const [, salt, expected] = storedValue.split('$');
+    if (!salt || !expected) return false;
+    const actual = (await scryptAsync(password, salt, 32)) as Buffer;
+    const expectedBuf = Buffer.from(expected, 'base64url');
+    if (actual.length !== expectedBuf.length) return false;
+    return timingSafeEqual(actual, expectedBuf);
+  } catch {
+    return false;
+  }
 }

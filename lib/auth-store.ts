@@ -21,7 +21,7 @@ import {
   updateUserPasswordInParams,
   upsertUserInParams,
 } from './params-users-store';
-import { verifyPassword } from './password';
+import { isHashedPassword, verifyPassword } from './password';
 import type {
   AuthSession,
   AuthUser,
@@ -188,9 +188,15 @@ export async function authenticateUser(
   username: string,
   password: string,
 ): Promise<AuthenticatedUser | null> {
-  const user = await findUserByUsernameFromParams(username);
+  const user = await findUserByUsernameFromParams(username.trim());
   if (!user || !user.active) return null;
-  if (!(await verifyPassword(password, user.password))) return null;
+  const submitted = (password ?? '').trim();
+  if (!(await verifyPassword(submitted, user.password))) return null;
+  if (submitted && !isHashedPassword(user.password)) {
+    void updateUserPasswordInParams(user.id, submitted, { migrate: true }).catch((err) => {
+      console.error('[auth] password hash upgrade failed', err);
+    });
+  }
   const menus = await getUserPermissionsFromParams(user.id);
   return { user: toSessionUser(user), menus };
 }

@@ -27,6 +27,8 @@ export async function GET(request: Request) {
     { menuId: 'documents.composition-familiale', action: 'view' },
     { menuId: 'documents.mouvement-travailleur', action: 'view' },
     { menuId: 'documents.reponse-demission', action: 'view' },
+    { menuId: 'documents.confirmation-letter', action: 'view' },
+    { menuId: 'documents.appraisal', action: 'view' },
     { menuId: 'settings.utilisateurs', action: 'view' },
     { menuId: 'village.dependants-dashboard', action: 'view' },
     { menuId: 'village.dependants-liste', action: 'view' },

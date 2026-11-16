@@ -90,50 +90,39 @@ async function resolveLinkedEmployee(matriculeInput?: string): Promise<{
   };
 }
 
-async function hashPlaintextPasswords(store: UsersStore): Promise<boolean> {
-  let changed = false;
-  for (const user of store.users) {
-    const stored = String(user.password || '');
-    if (!stored || isHashedPassword(stored)) continue;
-    user.password = await hashPassword(stored);
-    changed = true;
-  }
-  return changed;
-}
-
 async function readUsersStore(): Promise<UsersStore> {
   const usersPath = resolveUsersPath();
   await hydrateDurableFile(DURABLE_USERS_KEY, usersPath);
-  let store: UsersStore;
   try {
     const raw = await fsPromises.readFile(usersPath, 'utf8');
     const parsed = JSON.parse(raw) as UsersStore;
-    store = { users: Array.isArray(parsed.users) ? parsed.users : [] };
+    return { users: Array.isArray(parsed.users) ? parsed.users : [] };
   } catch (err) {
     const code = (err as NodeJS.ErrnoException)?.code;
     if (code === 'ENOENT') return { users: [] };
     throw err;
   }
-  if (await hashPlaintextPasswords(store)) {
-    await writeUsersStore(store);
-  }
-  return store;
 }
 
 async function writeUsersStore(store: UsersStore): Promise<void> {
   const usersPath = resolveUsersPath();
   await fsPromises.mkdir(path.dirname(usersPath), { recursive: true });
   await fsPromises.writeFile(usersPath, JSON.stringify(store, null, 2), 'utf8');
-  await persistDurableFile(DURABLE_USERS_KEY, usersPath);
+  try {
+    await persistDurableFile(DURABLE_USERS_KEY, usersPath);
+  } catch (err) {
+    console.error('[users] persist failed', err);
+  }
 }
 
 function findUserIndex(users: StoredAuthUser[], usernameOrId: string): number {
   const normalized = usernameOrId.trim().toLowerCase();
-  return users.findIndex(
-    (user) =>
-      user.id.trim().toLowerCase() === normalized
-      || user.username.trim().toLowerCase() === normalized,
-  );
+  return users.findIndex((user) => {
+    const id = user.id.trim().toLowerCase();
+    const username = user.username.trim().toLowerCase();
+    const email = String(user.email || '').trim().toLowerCase();
+    return id === normalized || username === normalized || (email !== '' && email === normalized);
+  });
 }
 
 export async function listUsersFromParams(): Promise<Omit<AuthUser, 'password'>[]> {

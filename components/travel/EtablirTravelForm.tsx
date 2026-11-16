@@ -303,14 +303,15 @@ export default function EtablirTravelForm({
     setActivePersonId(id);
     setEmployee(next.employee);
     setSkipPaymentSignatory(Boolean(next.skipPaymentSignatory));
-    if (next.travel) {
+    const travelPrefill = next.travel;
+    if (travelPrefill) {
       setTravel((prev) => ({
         ...createInitialTravelForm(),
         ...prev,
-        ...next.travel,
-        contactPerson: next.travel.contactPerson ?? '',
-        budgetLines: next.travel.budgetLines?.length ? next.travel.budgetLines : prev.budgetLines,
-        flightBooking: next.travel.flightBooking ?? prev.flightBooking,
+        ...travelPrefill,
+        contactPerson: travelPrefill.contactPerson ?? '',
+        budgetLines: travelPrefill.budgetLines?.length ? travelPrefill.budgetLines : prev.budgetLines,
+        flightBooking: travelPrefill.flightBooking ?? prev.flightBooking,
       }));
     }
   };

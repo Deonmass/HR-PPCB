@@ -40455,8 +40455,91 @@ html[data-theme="light"] .conge-day.is-ul { color: #b91c1c; }
   margin-bottom: 1rem;
 }
 
+.main:has(.sante-page.mvt-page-fill) {
+  height: 100vh;
+  max-height: 100vh;
+  overflow: hidden;
+}
+
 .sante-page.mvt-page-fill {
   overflow: hidden;
+  min-height: 0;
+}
+
+.sick-leave-data-view {
+  flex: 1;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+}
+
+.sante-table-wrap.sick-leave-table-wrap {
+  overflow-x: hidden;
+  overflow-y: auto;
+}
+
+.sick-leave-table {
+  table-layout: fixed;
+  width: 100%;
+  min-width: 0;
+}
+
+.sick-leave-table th,
+.sick-leave-table td {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.sick-leave-table .sl-col-mois { width: 8.5rem; }
+.sick-leave-table .sl-col-nom { width: 22%; }
+.sick-leave-table .sl-col-dept { width: 12%; }
+.sick-leave-table .sl-col-site { width: 8%; }
+.sick-leave-table .sl-col-days { width: 5.2rem; }
+.sick-leave-table .sl-col-att { width: 7.2rem; }
+.sick-leave-table .sl-col-bucket { width: 12%; }
+.sick-leave-table .sl-col-prov { width: 9.5rem; }
+.sick-leave-table .sl-col-obs { width: 14%; }
+.sick-leave-table .sl-col-hosp { width: 12%; }
+
+.sick-leave-matr {
+  display: block;
+  font-size: 0.62rem;
+  font-weight: 500;
+  color: var(--muted);
+  letter-spacing: 0.01em;
+}
+
+.sick-leave-row-exit td,
+.sick-leave-name-exit,
+.sick-leave-name-exit .sick-leave-matr {
+  color: #b91c1c;
+}
+
+.sick-leave-name-exit strong {
+  text-decoration: line-through;
+}
+
+.sick-leave-row-missing-att td {
+  background: color-mix(in srgb, #dc2626 10%, transparent);
+}
+
+.sick-leave-missing-att {
+  color: #b91c1c !important;
+  font-weight: 700;
+}
+
+.sick-leave-cell-select {
+  width: 100%;
+  max-width: 100%;
+  height: 26px;
+  padding: 0 0.35rem;
+  font-size: 0.66rem;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  background: var(--bg-elevated, var(--panel));
+  color: inherit;
 }
 
 .sante-page .page-header h2 {
@@ -40513,6 +40596,12 @@ html[data-theme="light"] .conge-day.is-ul { color: #b91c1c; }
   max-width: 128px;
   padding: 0 1.45rem 0 0.45rem;
   font-size: 0.7rem;
+}
+
+.employee-essai-docs {
+  display: flex;
+  gap: 8px;
+  margin-top: 14px;
 }
 
 .sante-btn-add {

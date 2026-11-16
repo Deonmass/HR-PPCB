@@ -554,6 +554,16 @@ export default function EmployesPage() {
               onClick: () => void generateAppraisal(contextMenu.employee),
             }]
           : []),
+        ...(tab === 'essai' && can('documents.confirmation-letter', 'view')
+          ? [{
+              id: 'confirmation-letter',
+              label: 'Lettre de confirmation',
+              icon: 'doc' as const,
+              onClick: () => {
+                router.push(`/documents/lettre-confirmation?matricule=${encodeURIComponent(contextMenu.employee.matricule)}`);
+              },
+            }]
+          : []),
         ...(canEdit
           ? [{
               id: 'edit',
