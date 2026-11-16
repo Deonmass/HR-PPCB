@@ -1,6 +1,53 @@
 {
   "entries": [
     {
+      "id": "log-002391",
+      "at": "2026-11-16T09:37:51.605Z",
+      "userId": "Tresor.Maneka@ppcdrc.cd",
+      "userName": "Tresor Maneka",
+      "userEmail": "Tresor.Maneka@ppcdrc.cd",
+      "module": "charroi.voyages",
+      "moduleLabel": "Charroi — Voyages",
+      "action": "create",
+      "actionLabel": "Création",
+      "entityType": "charroi.voyage",
+      "entityId": "vyg-043",
+      "summary": "Demande de voyage VYG-0043 TENDA DIWASILUA BINGI Zamba (Kimpese) → Kinshasa",
+      "details": "Demande de voyage VYG-0043 TENDA DIWASILUA BINGI Zamba (Kimpese) → Kinshasa",
+      "after": {
+        "id": "vyg-043",
+        "numero": "VYG-0043",
+        "passagerNom": "TENDA DIWASILUA BINGI",
+        "passagerMatricule": "CHRS_PPC0116",
+        "passagerInterne": false,
+        "nombrePersonnes": 1,
+        "depart": "Zamba (Kimpese)",
+        "destination": "Kinshasa",
+        "dateDepart": "2026-11-13",
+        "heureDepart": "05:00",
+        "dateArrivee": "",
+        "heureArrivee": "",
+        "motif": "Mission a Kinshasa avec Benny",
+        "notes": "",
+        "status": "demande",
+        "chauffeurNom": "",
+        "chauffeurMatricule": "",
+        "chauffeurInterne": false,
+        "vehiculeMode": "",
+        "vehiculeId": "",
+        "vehiculeLibelle": "",
+        "foodAllowance": 0,
+        "foodForTheRoad": 0,
+        "tollGate": 0,
+        "confirmedAt": "",
+        "completedAt": "",
+        "createdAt": "2026-11-16T09:37:47.608Z",
+        "updatedAt": "2026-11-16T09:37:47.608Z"
+      },
+      "undoable": false,
+      "undone": false
+    },
+    {
       "id": "log-002390",
       "at": "2026-11-16T09:37:39.284Z",
       "userId": "admin",
@@ -1258518,5 +1258565,5 @@
       }
     }
   ],
-  "nextSeq": 2391
+  "nextSeq": 2392
 }
