@@ -869,7 +869,37 @@
       "completedAt": "2026-11-13T08:48:41.349Z",
       "createdAt": "2026-11-13T08:46:26.669Z",
       "updatedAt": "2026-11-13T08:48:41.349Z"
+    },
+    {
+      "id": "vyg-043",
+      "numero": "VYG-0043",
+      "passagerNom": "TENDA DIWASILUA BINGI",
+      "passagerMatricule": "CHRS_PPC0116",
+      "passagerInterne": false,
+      "nombrePersonnes": 1,
+      "depart": "Zamba (Kimpese)",
+      "destination": "Kinshasa",
+      "dateDepart": "2026-11-13",
+      "heureDepart": "05:00",
+      "dateArrivee": "",
+      "heureArrivee": "",
+      "motif": "Mission a Kinshasa avec Benny",
+      "notes": "",
+      "status": "demande",
+      "chauffeurNom": "",
+      "chauffeurMatricule": "",
+      "chauffeurInterne": false,
+      "vehiculeMode": "",
+      "vehiculeId": "",
+      "vehiculeLibelle": "",
+      "foodAllowance": 0,
+      "foodForTheRoad": 0,
+      "tollGate": 0,
+      "confirmedAt": "",
+      "completedAt": "",
+      "createdAt": "2026-11-16T09:37:47.608Z",
+      "updatedAt": "2026-11-16T09:37:47.608Z"
     }
   ],
-  "nextSeq": 43
+  "nextSeq": 44
 }
