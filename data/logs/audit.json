@@ -1,6 +1,61 @@
 {
   "entries": [
     {
+      "id": "log-002408",
+      "at": "2026-11-16T11:12:20.218Z",
+      "userId": "Serge.Muakasa@ppcdrc.cd",
+      "userName": "Serge Muakasa",
+      "userEmail": "Serge.Muakasa@ppcdrc.cd",
+      "module": "factures-suivi",
+      "moduleLabel": "Factures suivi",
+      "action": "update",
+      "actionLabel": "Modification",
+      "entityType": "facture.suivi",
+      "entityId": "fac-2187",
+      "summary": "Modification facture FACT N° 004/MDS-PPC/09/26",
+      "details": "Modification facture FACT N° 004/MDS-PPC/09/26",
+      "before": {
+        "id": "fac-2187",
+        "date": "01/09/2026",
+        "societe": "MD Services Kinshasa",
+        "facture": "FACT N° 004/MDS-PPC/09/26",
+        "montant": 934,
+        "echeance": "",
+        "pr": "11209902",
+        "datePr": "",
+        "po": "",
+        "datePo": "",
+        "grn": "",
+        "dateGrn": "",
+        "payment": "",
+        "datePym": "",
+        "commentaire": "Au PR — en attente du PO.",
+        "statut": "unpaid",
+        "statutLabel": "unpaid"
+      },
+      "after": {
+        "id": "fac-2187",
+        "date": "01/09/2026",
+        "societe": "MD Services Kinshasa",
+        "facture": "FACT N° 004/MDS-PPC/09/26",
+        "montant": 1083.39,
+        "echeance": "",
+        "pr": "11209902",
+        "datePr": "",
+        "po": "",
+        "datePo": "",
+        "grn": "",
+        "dateGrn": "",
+        "payment": "",
+        "datePym": "",
+        "commentaire": "Au PR — en attente du PO.",
+        "statut": "unpaid",
+        "statutLabel": "unpaid"
+      },
+      "undoable": true,
+      "undone": false
+    },
+    {
       "id": "log-002407",
       "at": "2026-11-16T10:59:50.947Z",
       "userId": "Serge.Muakasa@ppcdrc.cd",
@@ -1259006,5 +1259061,5 @@
       }
     }
   ],
-  "nextSeq": 2408
+  "nextSeq": 2409
 }
