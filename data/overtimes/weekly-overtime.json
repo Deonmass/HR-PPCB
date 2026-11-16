@@ -6271,6 +6271,23 @@
           },
           "updatedAt": "2026-11-16T10:12:49.850Z",
           "updatedBy": "admin"
+        },
+        "Mining::1": {
+          "weekIndex": 1,
+          "department": "Mining",
+          "weekFromTo": "du 19/10/2026 au 26/10/2026",
+          "locked": false,
+          "entries": {
+            "70000097": {
+              "matricule": "70000097",
+              "ot13": 2,
+              "ot16": 4,
+              "ot2": 0,
+              "night": 0
+            }
+          },
+          "updatedAt": "2026-11-16T10:20:41.352Z",
+          "updatedBy": "admin"
         }
       }
     }
