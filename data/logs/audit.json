@@ -1,6 +1,48 @@
 {
   "entries": [
     {
+      "id": "log-002383",
+      "at": "2026-11-16T06:45:57.897Z",
+      "userId": "karine.mvutu@ppcdrc.cd",
+      "userName": "Karine Mvutu",
+      "userEmail": "karine.mvutu@ppcdrc.cd",
+      "module": "sante",
+      "moduleLabel": "Santé",
+      "action": "create",
+      "actionLabel": "Création",
+      "entityType": "sante.visit",
+      "entityId": "sante-mwiwgjfm-dfr53x",
+      "summary": "Cas santé — KANZA FUNDU · AMIBIASE",
+      "details": "Cas santé — KANZA FUNDU · AMIBIASE",
+      "after": {
+        "id": "sante-mwiwgjfm-dfr53x",
+        "date": "2026-11-15",
+        "nom": "KANZA",
+        "postnom": "FUNDU",
+        "sexe": "F",
+        "age": 44,
+        "typeMalade": "EPOUSE",
+        "pathologie": "AMIBIASE",
+        "traitement": "ANTI HELMINTIQUE ET ANTI SPASMODIQUE",
+        "reference": "NON",
+        "year": 2026,
+        "month": 11,
+        "employeeMatricule": "70000008",
+        "employeeNom": "MUAKASA NSONI SERGE",
+        "dependantId": 325,
+        "commentaire": "",
+        "contractantId": "",
+        "contractantNom": "",
+        "contractantEmployeeId": "",
+        "createdAt": "2026-11-16T06:45:55.426Z",
+        "updatedAt": "2026-11-16T06:45:55.426Z",
+        "createdBy": "karine.mvutu@ppcdrc.cd",
+        "updatedBy": "karine.mvutu@ppcdrc.cd"
+      },
+      "undoable": false,
+      "undone": false
+    },
+    {
       "id": "log-002382",
       "at": "2026-11-15T21:21:23.205Z",
       "userId": "Serge.Muakasa@ppcdrc.cd",
@@ -1258249,5 +1258291,5 @@
       }
     }
   ],
-  "nextSeq": 2383
+  "nextSeq": 2384
 }
