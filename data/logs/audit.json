@@ -1,6 +1,47 @@
 {
   "entries": [
     {
+      "id": "log-002421",
+      "at": "2026-11-16T17:10:16.730Z",
+      "userId": "Tresor.Maneka@ppcdrc.cd",
+      "userName": "Tresor Maneka",
+      "userEmail": "Tresor.Maneka@ppcdrc.cd",
+      "module": "protocol.voyages",
+      "moduleLabel": "Gestion de voyage",
+      "action": "create",
+      "actionLabel": "Création",
+      "entityType": "protocol.voyage",
+      "entityId": "pvc-102",
+      "summary": "Voyage PVC-0102 MUNTANDA TUMBA OXANO Kinshasa Lubumbashi lubudi  Kinshasa",
+      "details": "Voyage PVC-0102 MUNTANDA TUMBA OXANO Kinshasa Lubumbashi lubudi  Kinshasa",
+      "after": {
+        "id": "pvc-102",
+        "numero": "PVC-0102",
+        "date": "2026-11-17",
+        "voyageur": "MUNTANDA TUMBA OXANO",
+        "voyageurMatricule": "70000284",
+        "departement": "Engineering",
+        "centreCout": "KM5310",
+        "destination": "Kinshasa Lubumbashi lubudi  Kinshasa",
+        "ticketAvion": 580,
+        "visaVolant": 0,
+        "lettreLegaliser": 0,
+        "goPass": 15,
+        "transfert": 60,
+        "hotelNuit": 100,
+        "nbreNuits": 1,
+        "coutHotel": 100,
+        "categorieHotel": "Hotel Platunium",
+        "appartement": 0,
+        "autresCharges": 0,
+        "coutTotal": 755,
+        "createdAt": "2026-11-16T17:10:11.896Z",
+        "updatedAt": "2026-11-16T17:10:11.896Z"
+      },
+      "undoable": false,
+      "undone": false
+    },
+    {
       "id": "log-002420",
       "at": "2026-11-16T12:33:37.330Z",
       "userId": "admin",
@@ -1259339,5 +1259380,5 @@
       }
     }
   ],
-  "nextSeq": 2421
+  "nextSeq": 2422
 }
