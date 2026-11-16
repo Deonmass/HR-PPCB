@@ -1,6 +1,34 @@
 {
   "entries": [
     {
+      "id": "log-002388",
+      "at": "2026-11-16T09:37:15.485Z",
+      "userId": "admin",
+      "userName": "Administrateur",
+      "userEmail": "admin",
+      "module": "timesheet.overtimes",
+      "moduleLabel": "Timesheet — Heures sup.",
+      "action": "import",
+      "actionLabel": "Import",
+      "summary": "Import HS bulk semaine 1",
+      "details": "Import HS bulk semaine 1",
+      "after": {
+        "results": [
+          {
+            "department": "Quality Assurance",
+            "status": "imported",
+            "imported": 1,
+            "skipped": 0
+          }
+        ],
+        "importedMatriculeKeys": {},
+        "totalImported": 1,
+        "totalSkipped": 0
+      },
+      "undoable": false,
+      "undone": false
+    },
+    {
       "id": "log-002387",
       "at": "2026-11-16T09:35:39.410Z",
       "userId": "Tresor.Maneka@ppcdrc.cd",
@@ -1258444,5 +1258472,5 @@
       }
     }
   ],
-  "nextSeq": 2388
+  "nextSeq": 2389
 }
