@@ -1,6 +1,21 @@
 {
   "entries": [
     {
+      "id": "log-002431",
+      "at": "2026-11-17T07:31:32.532Z",
+      "userId": "admin",
+      "userName": "Administrateur",
+      "userEmail": "admin",
+      "module": "documents.confirmation-letter",
+      "moduleLabel": "Documents",
+      "action": "export",
+      "actionLabel": "Export",
+      "summary": "Lettre de confirmation — MASSADI GEDEON GEDEON (70000308)",
+      "details": "Lettre de confirmation — MASSADI GEDEON GEDEON (70000308)",
+      "undoable": false,
+      "undone": false
+    },
+    {
       "id": "log-002430",
       "at": "2026-11-17T07:27:45.825Z",
       "userId": "admin",
@@ -1259594,5 +1259609,5 @@
       }
     }
   ],
-  "nextSeq": 2431
+  "nextSeq": 2432
 }
