@@ -1,6 +1,21 @@
 {
   "entries": [
     {
+      "id": "log-002430",
+      "at": "2026-11-17T07:27:45.825Z",
+      "userId": "admin",
+      "userName": "Administrateur",
+      "userEmail": "admin",
+      "module": "documents.confirmation-letter",
+      "moduleLabel": "Documents",
+      "action": "export",
+      "actionLabel": "Export",
+      "summary": "Lettre de confirmation — RACHIDI ZOBELA JUDITH (70000310)",
+      "details": "Lettre de confirmation — RACHIDI ZOBELA JUDITH (70000310)",
+      "undoable": false,
+      "undone": false
+    },
+    {
       "id": "log-002429",
       "at": "2026-11-17T07:26:43.019Z",
       "userId": "admin",
@@ -1259579,5 +1259594,5 @@
       }
     }
   ],
-  "nextSeq": 2430
+  "nextSeq": 2431
 }
