@@ -6,13 +6,17 @@ import { useSearchParams } from 'next/navigation';
 import { EmployeeSuggestInput } from '@/components/EmployeePicker';
 import { usePermissions } from '@/contexts/PermissionContext';
 import {
+  buildConfirmationParagraph,
   confirmationCityFromLocalisation,
   confirmationCompanyNames,
+  formatLetterEffectDate,
   parseIsoOrDisplayDate,
   todayIsoDate,
   toIsoDateLocal,
+  wholeMonthsBetween,
 } from '@/lib/confirmation-letter';
 import { localizeJobTitle } from '@/lib/bilingual-title';
+import { resolveDateFinPeriodeEssai } from '@/lib/employees-trial';
 import { civilityFromGender, formatLetterName } from '@/lib/reponse-demission';
 import { showError } from '@/lib/swal';
 import type { Employee } from '@/lib/types';
@@ -41,6 +45,11 @@ function displayToIso(value: string): string {
   return parsed ? toIsoDateLocal(parsed) : todayIsoDate();
 }
 
+function displayToIsoOrEmpty(value: string): string {
+  const parsed = parseIsoOrDisplayDate(value);
+  return parsed ? toIsoDateLocal(parsed) : '';
+}
+
 function fileNameFromResponse(response: Response, fallback: string): string {
   const header = response.headers.get('X-File-Name');
   if (!header) return fallback;
@@ -62,6 +71,8 @@ function ConfirmationLetterPageInner() {
   const [generating, setGenerating] = useState(false);
   const [letterDate, setLetterDate] = useState(todayIsoDate());
   const [confirmationDate, setConfirmationDate] = useState(todayIsoDate());
+  const [trialStartDate, setTrialStartDate] = useState('');
+  const [trialMonths, setTrialMonths] = useState('');
   const [jobTitle, setJobTitle] = useState('');
   const [companyShort, setCompanyShort] = useState('PPC Barnet DRC');
   const [companyLegal, setCompanyLegal] = useState('PPC Barnet DRC Manufacturing S.A');
@@ -102,7 +113,13 @@ function ConfirmationLetterPageInner() {
     setCompanyShort(companies.short);
     setCompanyLegal(companies.legal);
     setCity(confirmationCityFromLocalisation(employee.localisation || ''));
-    setConfirmationDate(displayToIso(employee.dateFinPeriodeEssai || ''));
+    setConfirmationDate(displayToIso(resolveDateFinPeriodeEssai(employee)));
+    setTrialStartDate(displayToIsoOrEmpty(employee.appointmentDate || ''));
+    setTrialMonths(
+      employee.periodeEssaiMois != null && employee.periodeEssaiMois > 0
+        ? String(employee.periodeEssaiMois)
+        : '',
+    );
     setLetterDate(todayIsoDate());
   };
 
@@ -110,6 +127,27 @@ function ConfirmationLetterPageInner() {
     () => (selected ? formatLetterName(selected.nom) || selected.nom : ''),
     [selected],
   );
+
+  const paragraphPreview = useMemo(() => {
+    if (!selected) return '';
+    const typedMonths = Number(trialMonths.replace(',', '.'));
+    const months =
+      Number.isFinite(typedMonths) && typedMonths > 0
+        ? typedMonths
+        : wholeMonthsBetween(
+            parseIsoOrDisplayDate(trialStartDate),
+            parseIsoOrDisplayDate(confirmationDate),
+          );
+    const start = parseIsoOrDisplayDate(trialStartDate);
+    const effect = parseIsoOrDisplayDate(confirmationDate);
+    return buildConfirmationParagraph({
+      trialMonths: months,
+      trialStartLabel: start ? formatLetterEffectDate(start) : '',
+      jobTitle,
+      companyLegal,
+      effectLabel: effect ? formatLetterEffectDate(effect) : '',
+    });
+  }, [selected, trialMonths, trialStartDate, confirmationDate, jobTitle, companyLegal]);
 
   const handleGenerate = async () => {
     if (!selected) return;
@@ -133,6 +171,8 @@ function ConfirmationLetterPageInner() {
           city,
           letterDate,
           confirmationDate,
+          trialStartDate,
+          trialMonths: trialMonths.trim() ? Number(trialMonths.replace(',', '.')) : null,
           signatoryName: signatory ? formatLetterName(signatory.nom) || signatory.nom : '',
           signatoryTitle,
         }),
@@ -171,7 +211,7 @@ function ConfirmationLetterPageInner() {
         <div>
           <h2>Lettre de confirmation</h2>
           <p>
-            Confirmation de période d’essai — identité, fonction et date d’effet sont
+            Confirmation de période d’essai — durée, dates, fonction et société sont
             préremplies depuis la fiche agent.
           </p>
         </div>
@@ -207,6 +247,25 @@ function ConfirmationLetterPageInner() {
               <div className="form-group">
                 <label>Date de la lettre</label>
                 <input type="date" value={letterDate} onChange={(e) => setLetterDate(e.target.value)} />
+              </div>
+              <div className="form-group">
+                <label>Début de la période d’essai</label>
+                <input
+                  type="date"
+                  value={trialStartDate}
+                  onChange={(e) => setTrialStartDate(e.target.value)}
+                />
+              </div>
+              <div className="form-group">
+                <label>Durée d’essai (mois)</label>
+                <input
+                  type="number"
+                  min="0"
+                  step="0.5"
+                  value={trialMonths}
+                  onChange={(e) => setTrialMonths(e.target.value)}
+                  placeholder="Depuis la fiche agent"
+                />
               </div>
               <div className="form-group">
                 <label>Date d’effet / fin d’essai</label>
@@ -261,6 +320,7 @@ function ConfirmationLetterPageInner() {
                 />
               </div>
             </div>
+            <p className="text-muted" style={{ marginTop: 12 }}>{paragraphPreview}</p>
             {canCreate ? (
               <div className="exit-docs-actions">
                 <button

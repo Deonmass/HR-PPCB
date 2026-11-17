@@ -280,7 +280,7 @@ const CARDS: DocCard[] = [
   {
     id: 'lettre-confirmation',
     title: 'Lettre de confirmation',
-    description: 'Notification de confirmation après période d’essai — fonction, société et date d’effet.',
+    description: 'Notification de confirmation après période d’essai — durée, dates, fonction et société remplis depuis le dossier.',
     href: '/documents/lettre-confirmation',
     menuId: 'documents.confirmation-letter',
     accent: '#7c3aed',

@@ -5,11 +5,14 @@ import {
   CONFIRMATION_SIGNATORY_TITLE,
   confirmationCityFromLocalisation,
   confirmationCompanyNames,
+  parseIsoOrDisplayDate,
   todayIsoDate,
+  wholeMonthsBetween,
   type ConfirmationLetterInput,
 } from '@/lib/confirmation-letter';
 import { civilityFromGender, formatLetterName } from '@/lib/reponse-demission';
 import { getEmployee } from '@/lib/employees-json-store';
+import { resolveDateFinPeriodeEssai } from '@/lib/employees-trial';
 import { checkPermission } from '@/lib/require-permission';
 import { auditSimpleAction } from '@/lib/with-audit';
 
@@ -39,6 +42,20 @@ export async function POST(request: Request) {
 
     const companies = confirmationCompanyNames(employee.company || '');
     const displayName = formatLetterName(employee.nom) || employee.nom;
+    const confirmationDate =
+      body.confirmationDate?.trim() || resolveDateFinPeriodeEssai(employee) || todayIsoDate();
+    const trialStartDate = body.trialStartDate?.trim() || employee.appointmentDate || '';
+    const requestedMonths = Number(body.trialMonths);
+    const storedMonths = employee.periodeEssaiMois;
+    const trialMonths =
+      Number.isFinite(requestedMonths) && requestedMonths > 0
+        ? requestedMonths
+        : storedMonths != null && Number.isFinite(storedMonths) && storedMonths > 0
+          ? storedMonths
+          : wholeMonthsBetween(
+              parseIsoOrDisplayDate(trialStartDate),
+              parseIsoOrDisplayDate(confirmationDate),
+            );
     const input: ConfirmationLetterInput = {
       matricule: employee.matricule,
       employeeName: body.employeeName?.trim() || displayName,
@@ -49,7 +66,9 @@ export async function POST(request: Request) {
       companyLegal: body.companyLegal?.trim() || companies.legal,
       city: body.city?.trim() || confirmationCityFromLocalisation(employee.localisation || ''),
       letterDate: body.letterDate?.trim() || todayIsoDate(),
-      confirmationDate: body.confirmationDate?.trim() || employee.dateFinPeriodeEssai || todayIsoDate(),
+      confirmationDate,
+      trialStartDate,
+      trialMonths,
       signatoryName: body.signatoryName?.trim() || CONFIRMATION_SIGNATORY_NAME,
       signatoryTitle: body.signatoryTitle?.trim() || CONFIRMATION_SIGNATORY_TITLE,
     };

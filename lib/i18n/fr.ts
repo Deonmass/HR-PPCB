@@ -479,7 +479,7 @@ export const fr = {
   'docs.card.appraisal.title': 'Interim appraisal evaluation',
   'docs.card.appraisal.desc': 'Évaluation de période d’essai — nom et fonction remplis automatiquement.',
   'docs.card.confirmation.title': 'Lettre de confirmation',
-  'docs.card.confirmation.desc': 'Notification de confirmation après période d’essai — fonction, société et date d’effet.',
+  'docs.card.confirmation.desc': 'Notification de confirmation après période d’essai — durée, dates, fonction et société remplis depuis le dossier.',
   'docs.card.exit.title': 'Exit forms',
   'docs.card.exit.desc': 'Clearance, exit interview, attestation de fin de service et user removal — remplis depuis la fiche agent.',
   'docs.card.exit.badge': '4 documents',

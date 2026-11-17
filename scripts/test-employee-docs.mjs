@@ -4,6 +4,7 @@
  */
 import fs from 'fs';
 import JSZip from 'jszip';
+import { buildConfirmationParagraph } from '../lib/confirmation-letter.ts';
 import { fillDocxBlankAfterLabel, replaceDocxText } from '../lib/docx-fill.ts';
 
 async function loadXml(file) {
@@ -113,6 +114,32 @@ function check(name, fn) {
   out = check('removal / date app (occ 1)', () => replaceDocxText(out, '16.07.2026', '31.07.2026', { occurrence: 1 })) ?? out;
   out = check('removal / date term (occ 1 restante)', () => replaceDocxText(out, '16.07.2026', '30.09.2026', { occurrence: 1 })) ?? out;
   out = check('removal / dates signature (all)', () => replaceDocxText(out, '15.07.2026', '31.07.2026', { occurrence: 'all' })) ?? out;
+}
+
+// ── Lettre de confirmation ──
+{
+  const TEMPLATE_BODY =
+    "Suite à l'évaluation favorable de vos prestations durant la période d'essai prévue à votre contrat de travail, nous avons le plaisir de vous confirmer dans vos fonctions de Revenue & Inventory Controller au sein de PPC Barnet DRC Manufacturing S.A, avec effet au 1 novembre 2026.";
+  const xml = await loadXml('Excel/templates/documents/Template Confirmation letter.docx');
+  const paragraph = buildConfirmationParagraph({
+    trialMonths: 3,
+    trialStartLabel: '12 août 2026',
+    jobTitle: 'Lab Analyst',
+    companyLegal: 'PPC Barnet DRC Manufacturing S.A',
+    effectLabel: '12 novembre 2026',
+  });
+  const out = check('confirmation / paragraphe', () => replaceDocxText(xml, TEMPLATE_BODY, paragraph));
+  const text = out ? extractText(out) : '';
+  const expected =
+    'Suite à l’évaluation satisfaisante de vos performances au cours de la période d’essai de trois (3) mois prévus par votre contrat de travail, débutée le 12 août 2026, nous avons le plaisir de vous confirmer dans vos fonctions de Lab Analyst au sein de PPC Barnet DRC Manufacturing S.A., avec effet au 12 novembre 2026.';
+  if (!text.includes(expected)) {
+    failures += 1;
+    console.log('FAIL  confirmation / phrase attendue absente');
+  }
+  if (text.includes('Revenue') || text.includes('évaluation favorable')) {
+    failures += 1;
+    console.log('FAIL  confirmation / ancien paragraphe encore présent');
+  }
 }
 
 console.log(failures ? `\n${failures} échec(s)` : '\nTous les remplacements matchent.');

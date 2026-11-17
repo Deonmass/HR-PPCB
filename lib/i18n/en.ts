@@ -481,7 +481,7 @@ export const en: Record<MessageKey, string> = {
   'docs.card.appraisal.title': 'Interim appraisal evaluation',
   'docs.card.appraisal.desc': 'Probation evaluation — name and job title filled automatically.',
   'docs.card.confirmation.title': 'Confirmation letter',
-  'docs.card.confirmation.desc': 'Probation confirmation notice — job title, company and effective date.',
+  'docs.card.confirmation.desc': 'Probation confirmation notice — duration, dates, job title and company filled from the employee file.',
   'docs.card.exit.title': 'Exit forms',
   'docs.card.exit.desc': 'Clearance, exit interview, end-of-service attestation and user removal — filled from the employee file.',
   'docs.card.exit.badge': '4 documents',
