@@ -6,7 +6,7 @@ import { useSearchParams } from 'next/navigation';
 import { EmployeeSuggestInput } from '@/components/EmployeePicker';
 import { usePermissions } from '@/contexts/PermissionContext';
 import {
-  buildConfirmationParagraph,
+  buildConfirmationParagraphParts,
   confirmationCityFromLocalisation,
   confirmationCompanyNames,
   formatLetterEffectDate,
@@ -17,16 +17,10 @@ import {
 } from '@/lib/confirmation-letter';
 import { localizeJobTitle } from '@/lib/bilingual-title';
 import { resolveDateFinPeriodeEssai } from '@/lib/employees-trial';
+import { formatAttestationAgentName, formatAttestationNom } from '@/lib/format-display-name';
 import { civilityFromGender, formatLetterName } from '@/lib/reponse-demission';
 import { showError } from '@/lib/swal';
 import type { Employee } from '@/lib/types';
-
-function familyNameFromFull(fullName: string): string {
-  const formatted = formatLetterName(fullName);
-  const parts = formatted.split(/\s+/).filter(Boolean);
-  if (parts.length <= 1) return formatted;
-  return parts.slice(0, -1).join(' ');
-}
 
 function signatoryTitleFromEmployee(employee: Employee): string {
   return localizeJobTitle(employee.jobTitle || employee.position || '', 'fr');
@@ -129,7 +123,7 @@ function ConfirmationLetterPageInner() {
   );
 
   const paragraphPreview = useMemo(() => {
-    if (!selected) return '';
+    if (!selected) return [];
     const typedMonths = Number(trialMonths.replace(',', '.'));
     const months =
       Number.isFinite(typedMonths) && typedMonths > 0
@@ -140,7 +134,7 @@ function ConfirmationLetterPageInner() {
           );
     const start = parseIsoOrDisplayDate(trialStartDate);
     const effect = parseIsoOrDisplayDate(confirmationDate);
-    return buildConfirmationParagraph({
+    return buildConfirmationParagraphParts({
       trialMonths: months,
       trialStartLabel: start ? formatLetterEffectDate(start) : '',
       jobTitle,
@@ -163,7 +157,7 @@ function ConfirmationLetterPageInner() {
         body: JSON.stringify({
           matricule: selected.matricule,
           employeeName: displayName,
-          familyName: familyNameFromFull(selected.nom),
+          familyName: formatAttestationNom(selected.nom),
           civility: civilityFromGender(selected.gender || ''),
           jobTitle,
           companyShort,
@@ -173,7 +167,7 @@ function ConfirmationLetterPageInner() {
           confirmationDate,
           trialStartDate,
           trialMonths: trialMonths.trim() ? Number(trialMonths.replace(',', '.')) : null,
-          signatoryName: signatory ? formatLetterName(signatory.nom) || signatory.nom : '',
+          signatoryName: signatory ? formatAttestationAgentName(signatory.nom) || signatory.nom : '',
           signatoryTitle,
         }),
       });
@@ -320,7 +314,13 @@ function ConfirmationLetterPageInner() {
                 />
               </div>
             </div>
-            <p className="text-muted" style={{ marginTop: 12 }}>{paragraphPreview}</p>
+            <p className="text-muted" style={{ marginTop: 12 }}>
+              {paragraphPreview.map((part, index) => (
+                part.bold
+                  ? <strong key={index}>{part.text}</strong>
+                  : <span key={index}>{part.text}</span>
+              ))}
+            </p>
             {canCreate ? (
               <div className="exit-docs-actions">
                 <button

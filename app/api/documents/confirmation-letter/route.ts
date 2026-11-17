@@ -10,6 +10,7 @@ import {
   wholeMonthsBetween,
   type ConfirmationLetterInput,
 } from '@/lib/confirmation-letter';
+import { formatAttestationAgentName, formatAttestationNom } from '@/lib/format-display-name';
 import { civilityFromGender, formatLetterName } from '@/lib/reponse-demission';
 import { getEmployee } from '@/lib/employees-json-store';
 import { resolveDateFinPeriodeEssai } from '@/lib/employees-trial';
@@ -17,13 +18,6 @@ import { checkPermission } from '@/lib/require-permission';
 import { auditSimpleAction } from '@/lib/with-audit';
 
 const DOCX_MIME = 'application/vnd.openxmlformats-officedocument.wordprocessingml.document';
-
-function familyNameFromFull(fullName: string): string {
-  const formatted = formatLetterName(fullName);
-  const parts = formatted.split(/\s+/).filter(Boolean);
-  if (parts.length <= 1) return formatted;
-  return parts.slice(0, -1).join(' ');
-}
 
 export async function POST(request: Request) {
   const denied = await checkPermission('documents.confirmation-letter', 'create');
@@ -59,7 +53,7 @@ export async function POST(request: Request) {
     const input: ConfirmationLetterInput = {
       matricule: employee.matricule,
       employeeName: body.employeeName?.trim() || displayName,
-      familyName: body.familyName?.trim() || familyNameFromFull(employee.nom),
+      familyName: formatAttestationNom(employee.nom),
       civility: body.civility === 'Madame' ? 'Madame' : civilityFromGender(employee.gender || ''),
       jobTitle: body.jobTitle?.trim() || employee.jobTitle || employee.position || '',
       companyShort: body.companyShort?.trim() || companies.short,
@@ -69,7 +63,8 @@ export async function POST(request: Request) {
       confirmationDate,
       trialStartDate,
       trialMonths,
-      signatoryName: body.signatoryName?.trim() || CONFIRMATION_SIGNATORY_NAME,
+      signatoryName: formatAttestationAgentName(body.signatoryName?.trim() || '')
+        || CONFIRMATION_SIGNATORY_NAME,
       signatoryTitle: body.signatoryTitle?.trim() || CONFIRMATION_SIGNATORY_TITLE,
     };
 

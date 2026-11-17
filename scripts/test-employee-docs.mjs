@@ -4,8 +4,9 @@
  */
 import fs from 'fs';
 import JSZip from 'jszip';
-import { buildConfirmationParagraph } from '../lib/confirmation-letter.ts';
-import { fillDocxBlankAfterLabel, replaceDocxText } from '../lib/docx-fill.ts';
+import { buildConfirmationParagraphParts } from '../lib/confirmation-letter.ts';
+import { fillDocxBlankAfterLabel, replaceDocxSpanWithRuns, replaceDocxText } from '../lib/docx-fill.ts';
+import { formatAttestationAgentName, formatAttestationNom } from '../lib/format-display-name.ts';
 
 async function loadXml(file) {
   const zip = await JSZip.loadAsync(fs.readFileSync(file));
@@ -121,14 +122,14 @@ function check(name, fn) {
   const TEMPLATE_BODY =
     "Suite à l'évaluation favorable de vos prestations durant la période d'essai prévue à votre contrat de travail, nous avons le plaisir de vous confirmer dans vos fonctions de Revenue & Inventory Controller au sein de PPC Barnet DRC Manufacturing S.A, avec effet au 1 novembre 2026.";
   const xml = await loadXml('Excel/templates/documents/Template Confirmation letter.docx');
-  const paragraph = buildConfirmationParagraph({
+  const parts = buildConfirmationParagraphParts({
     trialMonths: 3,
     trialStartLabel: '12 août 2026',
     jobTitle: 'Lab Analyst',
     companyLegal: 'PPC Barnet DRC Manufacturing S.A',
     effectLabel: '12 novembre 2026',
   });
-  const out = check('confirmation / paragraphe', () => replaceDocxText(xml, TEMPLATE_BODY, paragraph));
+  const out = check('confirmation / paragraphe', () => replaceDocxSpanWithRuns(xml, TEMPLATE_BODY, TEMPLATE_BODY, parts));
   const text = out ? extractText(out) : '';
   const expected =
     'Suite à l’évaluation satisfaisante de vos performances au cours de la période d’essai de trois (3) mois prévus par votre contrat de travail, débutée le 12 août 2026, nous avons le plaisir de vous confirmer dans vos fonctions de Lab Analyst au sein de PPC Barnet DRC Manufacturing S.A., avec effet au 12 novembre 2026.';
@@ -139,6 +140,23 @@ function check(name, fn) {
   if (text.includes('Revenue') || text.includes('évaluation favorable')) {
     failures += 1;
     console.log('FAIL  confirmation / ancien paragraphe encore présent');
+  }
+  const boldText = out
+    ? [...out.matchAll(/<w:b\/>[\s\S]*?<w:t[^>]*>([^<]*)<\/w:t>/g)].map((match) => match[1]).join('|')
+    : '';
+  for (const value of ['Lab Analyst', 'PPC Barnet DRC Manufacturing S.A.', '12 novembre 2026']) {
+    if (!boldText.includes(value)) {
+      failures += 1;
+      console.log(`FAIL  confirmation / pas en gras : ${value}`);
+    }
+  }
+  if (formatAttestationAgentName('EWULI SUKA CARINE') !== 'Carine EWULI SUKA') {
+    failures += 1;
+    console.log('FAIL  confirmation / signataire Prenom NOM POSTNOM');
+  }
+  if (formatAttestationNom('MASSADI GEDEON GEDEON') !== 'Massadi') {
+    failures += 1;
+    console.log('FAIL  confirmation / appel nom seul');
   }
 }
 

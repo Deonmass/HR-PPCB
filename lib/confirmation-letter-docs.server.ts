@@ -2,11 +2,12 @@ import 'server-only';
 
 import path from 'path';
 import { fillDocxTemplateToBuffer } from './docx-template';
-import { replaceDocxText } from './docx-fill';
+import { replaceDocxSpanWithRuns, replaceDocxText } from './docx-fill';
+import { formatAttestationAgentName, formatAttestationNom } from './format-display-name';
 import {
   CONFIRMATION_SIGNATORY_NAME,
   CONFIRMATION_SIGNATORY_TITLE,
-  buildConfirmationParagraph,
+  buildConfirmationParagraphParts,
   formatLetterEffectDate,
   formatLetterHeaderDate,
   parseIsoOrDisplayDate,
@@ -46,17 +47,20 @@ export async function generateConfirmationLetter(
       ? input.trialMonths
       : wholeMonthsBetween(trialStart, confirmationDate);
   const name = safe(input.employeeName);
-  const family = safe(input.familyName, name.split(/\s+/)[0] || name);
+  const family = formatAttestationNom(input.familyName)
+    || formatAttestationNom(name)
+    || safe(input.familyName, name.split(/\s+/)[0] || name);
   const civility = input.civility === 'Madame' ? 'Madame' : 'Monsieur';
   const jobTitle = safe(input.jobTitle);
   const companyShort = safe(input.companyShort, 'PPC Barnet DRC');
   const companyLegal = safe(input.companyLegal, 'PPC Barnet DRC Manufacturing S.A');
   const city = safe(input.city, 'Kinshasa');
-  const signatory = safe(input.signatoryName, CONFIRMATION_SIGNATORY_NAME);
+  const signatory = formatAttestationAgentName(input.signatoryName)
+    || CONFIRMATION_SIGNATORY_NAME;
   const signatoryTitle = safe(input.signatoryTitle, CONFIRMATION_SIGNATORY_TITLE);
   const matricule = safe(input.matricule);
 
-  const paragraph = buildConfirmationParagraph({
+  const paragraphParts = buildConfirmationParagraphParts({
     trialMonths,
     trialStartLabel: trialStart ? formatLetterEffectDate(trialStart) : '',
     jobTitle,
@@ -67,7 +71,7 @@ export async function generateConfirmationLetter(
   const buffer = await fillDocxTemplateToBuffer(TEMPLATE_PATH, (xml) => {
     let out = xml;
     out = replaceDocxText(out, 'PPC Barnet DRC', companyShort, { optional: true });
-    out = replaceDocxText(out, TEMPLATE_BODY, paragraph);
+    out = replaceDocxSpanWithRuns(out, TEMPLATE_BODY, TEMPLATE_BODY, paragraphParts);
     out = replaceDocxText(out, 'Kinshasa, le 02 novembre 2026', `${city}, le ${formatLetterHeaderDate(letterDate)}`, {
       optional: true,
     });

@@ -78,3 +78,13 @@ export function formatAttestationAgentName(fullName: string): string {
     .join(' ');
   return `${given} ${family}`;
 }
+
+/** Nom de famille seul, casse titre. « MASSADI GEDEON GEDEON » → « Massadi ». */
+export function formatAttestationNom(fullName: string): string {
+  const formatted = formatAttestationAgentName(fullName);
+  const parts = formatted.split(/\s+/).filter(Boolean);
+  if (!parts.length) return '';
+  const familyIndex = parts.findIndex((part) => isAllUpperToken(part));
+  const nom = familyIndex >= 0 ? parts[familyIndex]! : parts[0]!;
+  return titleCaseToken(nom);
+}

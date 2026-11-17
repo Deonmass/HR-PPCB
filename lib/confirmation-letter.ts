@@ -105,6 +105,37 @@ export function companyLegalWithPeriod(legal: string): string {
   return trimmed;
 }
 
+export interface ConfirmationTextPart {
+  text: string;
+  bold?: boolean;
+}
+
+export function buildConfirmationParagraphParts(input: {
+  trialMonths: number | null | undefined;
+  trialStartLabel: string;
+  jobTitle: string;
+  companyLegal: string;
+  effectLabel: string;
+}): ConfirmationTextPart[] {
+  const duration = formatTrialMonthsPhrase(input.trialMonths);
+  const start = input.trialStartLabel.trim() || BLANK_FIELD;
+  const job = input.jobTitle.trim() || BLANK_FIELD;
+  const company = companyLegalWithPeriod(input.companyLegal);
+  const effect = input.effectLabel.trim() || BLANK_FIELD;
+  return [
+    {
+      text:
+        `Suite à l’évaluation satisfaisante de vos performances au cours de la période d’essai de ${duration} par votre contrat de travail, débutée le ${start}, nous avons le plaisir de vous confirmer dans vos fonctions de `,
+    },
+    { text: job, bold: true },
+    { text: ' au sein de ' },
+    { text: company, bold: true },
+    { text: ', avec effet au ' },
+    { text: effect, bold: true },
+    { text: '.' },
+  ];
+}
+
 export function buildConfirmationParagraph(input: {
   trialMonths: number | null | undefined;
   trialStartLabel: string;
@@ -112,14 +143,7 @@ export function buildConfirmationParagraph(input: {
   companyLegal: string;
   effectLabel: string;
 }): string {
-  const duration = formatTrialMonthsPhrase(input.trialMonths);
-  const start = input.trialStartLabel.trim() || BLANK_FIELD;
-  const job = input.jobTitle.trim() || BLANK_FIELD;
-  const company = companyLegalWithPeriod(input.companyLegal);
-  const effect = input.effectLabel.trim() || BLANK_FIELD;
-  return (
-    `Suite à l’évaluation satisfaisante de vos performances au cours de la période d’essai de ${duration} par votre contrat de travail, débutée le ${start}, nous avons le plaisir de vous confirmer dans vos fonctions de ${job} au sein de ${company}, avec effet au ${effect}.`
-  );
+  return buildConfirmationParagraphParts(input).map((part) => part.text).join('');
 }
 
 export function confirmationCompanyNames(company: string): { short: string; legal: string } {
