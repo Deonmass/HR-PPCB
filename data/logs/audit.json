@@ -1,6 +1,21 @@
 {
   "entries": [
     {
+      "id": "log-002424",
+      "at": "2026-11-17T06:52:48.460Z",
+      "userId": "karine.mvutu@ppcdrc.cd",
+      "userName": "Karine Mvutu",
+      "userEmail": "karine.mvutu@ppcdrc.cd",
+      "module": "auth",
+      "moduleLabel": "Authentification",
+      "action": "login",
+      "actionLabel": "Connexion",
+      "summary": "Connexion karine.mvutu@ppcdrc.cd",
+      "details": "Connexion de Karine Mvutu (karine.mvutu@ppcdrc.cd)",
+      "undoable": false,
+      "undone": false
+    },
+    {
       "id": "log-002423",
       "at": "2026-11-16T17:14:16.906Z",
       "userId": "Tresor.Maneka@ppcdrc.cd",
@@ -1259462,5 +1259477,5 @@
       }
     }
   ],
-  "nextSeq": 2424
+  "nextSeq": 2425
 }
