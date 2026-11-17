@@ -1,6 +1,21 @@
 {
   "entries": [
     {
+      "id": "log-002428",
+      "at": "2026-11-17T07:26:00.763Z",
+      "userId": "admin",
+      "userName": "Administrateur",
+      "userEmail": "admin",
+      "module": "documents.confirmation-letter",
+      "moduleLabel": "Documents",
+      "action": "export",
+      "actionLabel": "Export",
+      "summary": "Lettre de confirmation — MUZO NKIENE BLANCHARD (70000306)",
+      "details": "Lettre de confirmation — MUZO NKIENE BLANCHARD (70000306)",
+      "undoable": false,
+      "undone": false
+    },
+    {
       "id": "log-002427",
       "at": "2026-11-17T07:20:54.729Z",
       "userId": "admin",
@@ -1259549,5 +1259564,5 @@
       }
     }
   ],
-  "nextSeq": 2428
+  "nextSeq": 2429
 }
