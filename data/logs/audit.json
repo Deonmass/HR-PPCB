@@ -1,6 +1,48 @@
 {
   "entries": [
     {
+      "id": "log-002425",
+      "at": "2026-11-17T07:00:18.231Z",
+      "userId": "karine.mvutu@ppcdrc.cd",
+      "userName": "Karine Mvutu",
+      "userEmail": "karine.mvutu@ppcdrc.cd",
+      "module": "sante",
+      "moduleLabel": "Santé",
+      "action": "create",
+      "actionLabel": "Création",
+      "entityType": "sante.visit",
+      "entityId": "sante-mwkcetpq-r71iu8",
+      "summary": "Cas santé — NLANDU TSHIBAMBA JUNIOR · TOUX",
+      "details": "Cas santé — NLANDU TSHIBAMBA JUNIOR · TOUX",
+      "after": {
+        "id": "sante-mwkcetpq-r71iu8",
+        "date": "2026-11-16",
+        "nom": "NLANDU",
+        "postnom": "TSHIBAMBA JUNIOR",
+        "sexe": "M",
+        "age": 41,
+        "typeMalade": "AGENT",
+        "pathologie": "TOUX",
+        "traitement": "",
+        "reference": "NON",
+        "year": 2026,
+        "month": 11,
+        "employeeMatricule": "70000309",
+        "employeeNom": "NLANDU TSHIBAMBA JUNIOR",
+        "dependantId": null,
+        "commentaire": "ANTI TOUSSIF",
+        "contractantId": "",
+        "contractantNom": "",
+        "contractantEmployeeId": "",
+        "createdAt": "2026-11-17T07:00:15.470Z",
+        "updatedAt": "2026-11-17T07:00:15.470Z",
+        "createdBy": "karine.mvutu@ppcdrc.cd",
+        "updatedBy": "karine.mvutu@ppcdrc.cd"
+      },
+      "undoable": false,
+      "undone": false
+    },
+    {
       "id": "log-002424",
       "at": "2026-11-17T06:52:48.460Z",
       "userId": "karine.mvutu@ppcdrc.cd",
@@ -1259477,5 +1259519,5 @@
       }
     }
   ],
-  "nextSeq": 2425
+  "nextSeq": 2426
 }
