@@ -1,6 +1,21 @@
 {
   "entries": [
     {
+      "id": "log-002438",
+      "at": "2026-11-17T08:23:15.920Z",
+      "userId": "admin",
+      "userName": "Administrateur",
+      "userEmail": "admin",
+      "module": "documents.confirmation-letter",
+      "moduleLabel": "Documents",
+      "action": "export",
+      "actionLabel": "Export",
+      "summary": "Lettre de confirmation — MASSADI GEDEON GEDEON (70000308)",
+      "details": "Lettre de confirmation — MASSADI GEDEON GEDEON (70000308)",
+      "undoable": false,
+      "undone": false
+    },
+    {
       "id": "log-002437",
       "at": "2026-11-17T08:13:44.224Z",
       "userId": "karine.mvutu@ppcdrc.cd",
@@ -1259805,5 +1259820,5 @@
       }
     }
   ],
-  "nextSeq": 2438
+  "nextSeq": 2439
 }
