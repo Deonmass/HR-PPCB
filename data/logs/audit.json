@@ -1,6 +1,48 @@
 {
   "entries": [
     {
+      "id": "log-002437",
+      "at": "2026-11-17T08:13:44.224Z",
+      "userId": "karine.mvutu@ppcdrc.cd",
+      "userName": "Karine Mvutu",
+      "userEmail": "karine.mvutu@ppcdrc.cd",
+      "module": "sante",
+      "moduleLabel": "Santé",
+      "action": "create",
+      "actionLabel": "Création",
+      "entityType": "sante.visit",
+      "entityId": "sante-mwkf19jt-0arib3",
+      "summary": "Cas santé — KANAHUNA LUZAYADIO MIRTHA · SYNDROME DYSPEPTIQUE",
+      "details": "Cas santé — KANAHUNA LUZAYADIO MIRTHA · SYNDROME DYSPEPTIQUE",
+      "after": {
+        "id": "sante-mwkf19jt-0arib3",
+        "date": "2026-11-17",
+        "nom": "KANAHUNA",
+        "postnom": "LUZAYADIO MIRTHA",
+        "sexe": "F",
+        "age": 44,
+        "typeMalade": "AGENT",
+        "pathologie": "SYNDROME DYSPEPTIQUE",
+        "traitement": "ANTI SPASMODIQUE ET ANTI ACIDE",
+        "reference": "IME",
+        "year": 2026,
+        "month": 11,
+        "employeeMatricule": "70000101",
+        "employeeNom": "KANAHUNA LUZAYADIO MIRTHA",
+        "dependantId": null,
+        "commentaire": "",
+        "contractantId": "",
+        "contractantNom": "",
+        "contractantEmployeeId": "",
+        "createdAt": "2026-11-17T08:13:41.657Z",
+        "updatedAt": "2026-11-17T08:13:41.657Z",
+        "createdBy": "karine.mvutu@ppcdrc.cd",
+        "updatedBy": "karine.mvutu@ppcdrc.cd"
+      },
+      "undoable": false,
+      "undone": false
+    },
+    {
       "id": "log-002436",
       "at": "2026-11-17T08:07:45.013Z",
       "userId": "admin",
@@ -1259763,5 +1259805,5 @@
       }
     }
   ],
-  "nextSeq": 2437
+  "nextSeq": 2438
 }
