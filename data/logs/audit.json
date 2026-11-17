@@ -1,6 +1,21 @@
 {
   "entries": [
     {
+      "id": "log-002426",
+      "at": "2026-11-17T07:19:02.110Z",
+      "userId": "admin",
+      "userName": "Administrateur",
+      "userEmail": "admin",
+      "module": "documents.appraisal",
+      "moduleLabel": "Documents",
+      "action": "export",
+      "actionLabel": "Export",
+      "summary": "Interim appraisal — MASSADI GEDEON GEDEON (70000308)",
+      "details": "Interim appraisal — MASSADI GEDEON GEDEON (70000308)",
+      "undoable": false,
+      "undone": false
+    },
+    {
       "id": "log-002425",
       "at": "2026-11-17T07:00:18.231Z",
       "userId": "karine.mvutu@ppcdrc.cd",
@@ -1259519,5 +1259534,5 @@
       }
     }
   ],
-  "nextSeq": 2426
+  "nextSeq": 2427
 }
