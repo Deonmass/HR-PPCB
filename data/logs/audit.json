@@ -1,6 +1,48 @@
 {
   "entries": [
     {
+      "id": "log-002435",
+      "at": "2026-11-17T08:07:03.307Z",
+      "userId": "karine.mvutu@ppcdrc.cd",
+      "userName": "Karine Mvutu",
+      "userEmail": "karine.mvutu@ppcdrc.cd",
+      "module": "sante",
+      "moduleLabel": "Santé",
+      "action": "create",
+      "actionLabel": "Création",
+      "entityType": "sante.visit",
+      "entityId": "sante-mwkeso1j-7yt6sh",
+      "summary": "Cas santé — KANAHUNA LUZAYADIO MIRTHA · SYNDROME GRIPPAL",
+      "details": "Cas santé — KANAHUNA LUZAYADIO MIRTHA · SYNDROME GRIPPAL",
+      "after": {
+        "id": "sante-mwkeso1j-7yt6sh",
+        "date": "2026-11-17",
+        "nom": "KANAHUNA",
+        "postnom": "LUZAYADIO MIRTHA",
+        "sexe": "F",
+        "age": 44,
+        "typeMalade": "AGENT",
+        "pathologie": "SYNDROME GRIPPAL",
+        "traitement": "ANTI ACIDE ET ANTI SPASMODIQUE",
+        "reference": "IME",
+        "year": 2026,
+        "month": 11,
+        "employeeMatricule": "70000101",
+        "employeeNom": "KANAHUNA LUZAYADIO MIRTHA",
+        "dependantId": null,
+        "commentaire": "",
+        "contractantId": "",
+        "contractantNom": "",
+        "contractantEmployeeId": "",
+        "createdAt": "2026-11-17T08:07:00.535Z",
+        "updatedAt": "2026-11-17T08:07:00.535Z",
+        "createdBy": "karine.mvutu@ppcdrc.cd",
+        "updatedBy": "karine.mvutu@ppcdrc.cd"
+      },
+      "undoable": false,
+      "undone": false
+    },
+    {
       "id": "log-002434",
       "at": "2026-11-17T08:06:46.973Z",
       "userId": "admin",
@@ -1259693,5 +1259735,5 @@
       }
     }
   ],
-  "nextSeq": 2435
+  "nextSeq": 2436
 }
