@@ -1,6 +1,29 @@
 {
   "entries": [
     {
+      "id": "log-002442",
+      "at": "2026-11-17T09:26:18.250Z",
+      "userId": "admin",
+      "userName": "Administrateur",
+      "userEmail": "admin",
+      "module": "timesheet",
+      "moduleLabel": "Timesheet",
+      "action": "update",
+      "actionLabel": "Modification",
+      "summary": "Enregistrement timesheet 70000102 — Mining (11/2026)",
+      "details": "Enregistrement timesheet 70000102 — Mining (11/2026)",
+      "undoable": false,
+      "undone": false,
+      "meta": {
+        "year": 2026,
+        "month": 11,
+        "department": "Mining",
+        "matricule": "70000102",
+        "mode": "employee-month",
+        "count": 35
+      }
+    },
+    {
       "id": "log-002441",
       "at": "2026-11-17T08:58:11.302Z",
       "userId": "admin",
@@ -1259865,5 +1259888,5 @@
       }
     }
   ],
-  "nextSeq": 2442
+  "nextSeq": 2443
 }
