@@ -1,6 +1,21 @@
 {
   "entries": [
     {
+      "id": "log-002429",
+      "at": "2026-11-17T07:26:43.019Z",
+      "userId": "admin",
+      "userName": "Administrateur",
+      "userEmail": "admin",
+      "module": "documents.confirmation-letter",
+      "moduleLabel": "Documents",
+      "action": "export",
+      "actionLabel": "Export",
+      "summary": "Lettre de confirmation — NLANDU TSHIBAMBA JUNIOR (70000309)",
+      "details": "Lettre de confirmation — NLANDU TSHIBAMBA JUNIOR (70000309)",
+      "undoable": false,
+      "undone": false
+    },
+    {
       "id": "log-002428",
       "at": "2026-11-17T07:26:00.763Z",
       "userId": "admin",
@@ -1259564,5 +1259579,5 @@
       }
     }
   ],
-  "nextSeq": 2429
+  "nextSeq": 2430
 }
