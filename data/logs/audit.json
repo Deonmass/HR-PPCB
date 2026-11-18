@@ -1,6 +1,73 @@
 {
   "entries": [
     {
+      "id": "log-002482",
+      "at": "2026-11-18T14:21:11.993Z",
+      "userId": "karine.mvutu@ppcdrc.cd",
+      "userName": "Karine Mvutu",
+      "userEmail": "karine.mvutu@ppcdrc.cd",
+      "module": "sante",
+      "moduleLabel": "Santé",
+      "action": "delete",
+      "actionLabel": "Suppression",
+      "entityType": "sante.visit",
+      "entityId": "sante-mwkeso1j-7yt6sh",
+      "summary": "Suppression cas santé — KANAHUNA",
+      "details": "Suppression cas santé — KANAHUNA",
+      "before": {
+        "id": "sante-mwkeso1j-7yt6sh",
+        "date": "2026-11-17",
+        "nom": "KANAHUNA",
+        "postnom": "LUZAYADIO MIRTHA",
+        "sexe": "F",
+        "age": 44,
+        "typeMalade": "AGENT",
+        "pathologie": "SYNDROME GRIPPAL",
+        "traitement": "ANTI ACIDE ET ANTI SPASMODIQUE",
+        "reference": "IME",
+        "year": 2026,
+        "month": 11,
+        "employeeMatricule": "70000101",
+        "employeeNom": "KANAHUNA LUZAYADIO MIRTHA",
+        "dependantId": null,
+        "commentaire": "",
+        "contractantId": "",
+        "contractantNom": "",
+        "contractantEmployeeId": "",
+        "createdAt": "2026-11-17T08:07:00.535Z",
+        "updatedAt": "2026-11-17T08:07:00.535Z",
+        "createdBy": "karine.mvutu@ppcdrc.cd",
+        "updatedBy": "karine.mvutu@ppcdrc.cd"
+      },
+      "after": {
+        "id": "sante-mwkeso1j-7yt6sh",
+        "date": "2026-11-17",
+        "nom": "KANAHUNA",
+        "postnom": "LUZAYADIO MIRTHA",
+        "sexe": "F",
+        "age": 44,
+        "typeMalade": "AGENT",
+        "pathologie": "SYNDROME GRIPPAL",
+        "traitement": "ANTI ACIDE ET ANTI SPASMODIQUE",
+        "reference": "IME",
+        "year": 2026,
+        "month": 11,
+        "employeeMatricule": "70000101",
+        "employeeNom": "KANAHUNA LUZAYADIO MIRTHA",
+        "dependantId": null,
+        "commentaire": "",
+        "contractantId": "",
+        "contractantNom": "",
+        "contractantEmployeeId": "",
+        "createdAt": "2026-11-17T08:07:00.535Z",
+        "updatedAt": "2026-11-17T08:07:00.535Z",
+        "createdBy": "karine.mvutu@ppcdrc.cd",
+        "updatedBy": "karine.mvutu@ppcdrc.cd"
+      },
+      "undoable": false,
+      "undone": false
+    },
+    {
       "id": "log-002481",
       "at": "2026-11-18T14:10:43.501Z",
       "userId": "admin",
@@ -1260780,5 +1260847,5 @@
       }
     }
   ],
-  "nextSeq": 2482
+  "nextSeq": 2483
 }
