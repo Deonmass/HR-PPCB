@@ -1,6 +1,48 @@
 {
   "entries": [
     {
+      "id": "log-002485",
+      "at": "2026-11-18T14:30:21.207Z",
+      "userId": "karine.mvutu@ppcdrc.cd",
+      "userName": "Karine Mvutu",
+      "userEmail": "karine.mvutu@ppcdrc.cd",
+      "module": "sante",
+      "moduleLabel": "Santé",
+      "action": "create",
+      "actionLabel": "Création",
+      "entityType": "sante.visit",
+      "entityId": "sante-mwm7xg3w-chrkhk",
+      "summary": "Cas santé — KUABI MASUNDA · FIEVRE A METTRE AU POINT",
+      "details": "Cas santé — KUABI MASUNDA · FIEVRE A METTRE AU POINT",
+      "after": {
+        "id": "sante-mwm7xg3w-chrkhk",
+        "date": "2026-11-17",
+        "nom": "KUABI",
+        "postnom": "MASUNDA",
+        "sexe": "F",
+        "age": 1,
+        "typeMalade": "ENFANT",
+        "pathologie": "FIEVRE A METTRE AU POINT",
+        "traitement": "PERFAC SUPPOSITOIRE",
+        "reference": "CH LAMBA",
+        "year": 2026,
+        "month": 11,
+        "employeeMatricule": "",
+        "employeeNom": "",
+        "dependantId": null,
+        "commentaire": "Voir avis medical pour chercher la cause de la fievre et soigner",
+        "contractantId": "",
+        "contractantNom": "",
+        "contractantEmployeeId": "",
+        "createdAt": "2026-11-18T14:30:18.572Z",
+        "updatedAt": "2026-11-18T14:30:18.572Z",
+        "createdBy": "karine.mvutu@ppcdrc.cd",
+        "updatedBy": "karine.mvutu@ppcdrc.cd"
+      },
+      "undoable": false,
+      "undone": false
+    },
+    {
       "id": "log-002484",
       "at": "2026-11-18T14:28:22.869Z",
       "userId": "karine.mvutu@ppcdrc.cd",
@@ -1260931,5 +1260973,5 @@
       }
     }
   ],
-  "nextSeq": 2485
+  "nextSeq": 2486
 }
