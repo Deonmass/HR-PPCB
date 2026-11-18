@@ -1,6 +1,48 @@
 {
   "entries": [
     {
+      "id": "log-002484",
+      "at": "2026-11-18T14:28:22.869Z",
+      "userId": "karine.mvutu@ppcdrc.cd",
+      "userName": "Karine Mvutu",
+      "userEmail": "karine.mvutu@ppcdrc.cd",
+      "module": "sante",
+      "moduleLabel": "Santé",
+      "action": "create",
+      "actionLabel": "Création",
+      "entityType": "sante.visit",
+      "entityId": "sante-mwm7uwqi-fy1xpf",
+      "summary": "Cas santé — MOLEKA GBANGA FRED · SYNDROME GRIPPAL",
+      "details": "Cas santé — MOLEKA GBANGA FRED · SYNDROME GRIPPAL",
+      "after": {
+        "id": "sante-mwm7uwqi-fy1xpf",
+        "date": "2026-11-17",
+        "nom": "MOLEKA",
+        "postnom": "GBANGA FRED",
+        "sexe": "M",
+        "age": 36,
+        "typeMalade": "AGENT",
+        "pathologie": "SYNDROME GRIPPAL",
+        "traitement": "ANTI  GRIPPALE ET GOUTTE NASALE",
+        "reference": "NON",
+        "year": 2026,
+        "month": 11,
+        "employeeMatricule": "70000109",
+        "employeeNom": "MOLEKA GBANGA FRED",
+        "dependantId": null,
+        "commentaire": "",
+        "contractantId": "",
+        "contractantNom": "",
+        "contractantEmployeeId": "",
+        "createdAt": "2026-11-18T14:28:20.154Z",
+        "updatedAt": "2026-11-18T14:28:20.154Z",
+        "createdBy": "karine.mvutu@ppcdrc.cd",
+        "updatedBy": "karine.mvutu@ppcdrc.cd"
+      },
+      "undoable": false,
+      "undone": false
+    },
+    {
       "id": "log-002483",
       "at": "2026-11-18T14:22:40.949Z",
       "userId": "karine.mvutu@ppcdrc.cd",
@@ -1260889,5 +1260931,5 @@
       }
     }
   ],
-  "nextSeq": 2484
+  "nextSeq": 2485
 }
