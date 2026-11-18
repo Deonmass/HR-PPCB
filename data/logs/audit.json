@@ -1,6 +1,29 @@
 {
   "entries": [
     {
+      "id": "log-002469",
+      "at": "2026-11-18T12:47:44.786Z",
+      "userId": "admin",
+      "userName": "Administrateur",
+      "userEmail": "admin",
+      "module": "timesheet",
+      "moduleLabel": "Timesheet",
+      "action": "update",
+      "actionLabel": "Modification",
+      "summary": "Enregistrement timesheet 70000068 — Production (11/2026)",
+      "details": "Enregistrement timesheet 70000068 — Production (11/2026)",
+      "undoable": false,
+      "undone": false,
+      "meta": {
+        "year": 2026,
+        "month": 11,
+        "department": "Production",
+        "matricule": "70000068",
+        "mode": "employee-month",
+        "count": 35
+      }
+    },
+    {
       "id": "log-002468",
       "at": "2026-11-18T12:46:26.831Z",
       "userId": "admin",
@@ -1260451,5 +1260474,5 @@
       }
     }
   ],
-  "nextSeq": 2469
+  "nextSeq": 2470
 }
