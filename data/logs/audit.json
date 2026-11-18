@@ -1,6 +1,29 @@
 {
   "entries": [
     {
+      "id": "log-002454",
+      "at": "2026-11-18T07:03:32.868Z",
+      "userId": "admin",
+      "userName": "Administrateur",
+      "userEmail": "admin",
+      "module": "timesheet",
+      "moduleLabel": "Timesheet",
+      "action": "update",
+      "actionLabel": "Modification",
+      "summary": "Enregistrement timesheet 70000214 — Production (11/2026)",
+      "details": "Enregistrement timesheet 70000214 — Production (11/2026)",
+      "undoable": false,
+      "undone": false,
+      "meta": {
+        "year": 2026,
+        "month": 11,
+        "department": "Production",
+        "matricule": "70000214",
+        "mode": "employee-month",
+        "count": 35
+      }
+    },
+    {
       "id": "log-002453",
       "at": "2026-11-18T06:30:17.586Z",
       "userId": "karine.mvutu@ppcdrc.cd",
@@ -1260106,5 +1260129,5 @@
       }
     }
   ],
-  "nextSeq": 2454
+  "nextSeq": 2455
 }
