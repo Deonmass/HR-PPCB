@@ -1,6 +1,61 @@
 {
   "entries": [
     {
+      "id": "log-002491",
+      "at": "2026-11-18T17:29:16.441Z",
+      "userId": "Serge.Muakasa@ppcdrc.cd",
+      "userName": "Serge Muakasa",
+      "userEmail": "Serge.Muakasa@ppcdrc.cd",
+      "module": "factures-suivi",
+      "moduleLabel": "Factures suivi",
+      "action": "create",
+      "actionLabel": "Création",
+      "summary": "Création lot de 2 facture(s)",
+      "details": "Création lot de 2 facture(s)",
+      "after": [
+        {
+          "id": "fac-2207",
+          "date": "02/06/2026",
+          "societe": "Fedyza",
+          "facture": "Fact 027/TOP K/FEDEZA/05/2026",
+          "montant": 27,
+          "echeance": "",
+          "pr": "11210463",
+          "datePr": "",
+          "po": "",
+          "datePo": "",
+          "grn": "",
+          "dateGrn": "",
+          "payment": "",
+          "datePym": "",
+          "commentaire": "Au PR — en attente du PO.",
+          "statut": "unpaid",
+          "statutLabel": "unpaid"
+        },
+        {
+          "id": "fac-2208",
+          "date": "02/06/2026",
+          "societe": "Fedyza",
+          "facture": "Fact 029/TOP K/FEDEZA/05/2026",
+          "montant": 18,
+          "echeance": "",
+          "pr": "11210463",
+          "datePr": "",
+          "po": "",
+          "datePo": "",
+          "grn": "",
+          "dateGrn": "",
+          "payment": "",
+          "datePym": "",
+          "commentaire": "Au PR — en attente du PO.",
+          "statut": "unpaid",
+          "statutLabel": "unpaid"
+        }
+      ],
+      "undoable": false,
+      "undone": false
+    },
+    {
       "id": "log-002490",
       "at": "2026-11-18T17:19:47.199Z",
       "userId": "Serge.Muakasa@ppcdrc.cd",
@@ -1261431,5 +1261486,5 @@
       }
     }
   ],
-  "nextSeq": 2491
+  "nextSeq": 2492
 }
