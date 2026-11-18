@@ -1,6 +1,48 @@
 {
   "entries": [
     {
+      "id": "log-002486",
+      "at": "2026-11-18T14:31:22.418Z",
+      "userId": "karine.mvutu@ppcdrc.cd",
+      "userName": "Karine Mvutu",
+      "userEmail": "karine.mvutu@ppcdrc.cd",
+      "module": "sante",
+      "moduleLabel": "Santé",
+      "action": "create",
+      "actionLabel": "Création",
+      "entityType": "sante.visit",
+      "entityId": "sante-mwm7yrdn-vb5jib",
+      "summary": "Cas santé — KUABI PANZU CHRISTIAN · PALUDISME SIMPLE",
+      "details": "Cas santé — KUABI PANZU CHRISTIAN · PALUDISME SIMPLE",
+      "after": {
+        "id": "sante-mwm7yrdn-vb5jib",
+        "date": "2026-11-17",
+        "nom": "KUABI",
+        "postnom": "PANZU CHRISTIAN",
+        "sexe": "M",
+        "age": 38,
+        "typeMalade": "AGENT",
+        "pathologie": "PALUDISME SIMPLE",
+        "traitement": "ANTI PALUDEEN  ET ANTI PYRETIQUE",
+        "reference": "NON",
+        "year": 2026,
+        "month": 11,
+        "employeeMatricule": "70000171",
+        "employeeNom": "KUABI PANZU CHRISTIAN",
+        "dependantId": null,
+        "commentaire": "",
+        "contractantId": "",
+        "contractantNom": "",
+        "contractantEmployeeId": "",
+        "createdAt": "2026-11-18T14:31:19.835Z",
+        "updatedAt": "2026-11-18T14:31:19.835Z",
+        "createdBy": "karine.mvutu@ppcdrc.cd",
+        "updatedBy": "karine.mvutu@ppcdrc.cd"
+      },
+      "undoable": false,
+      "undone": false
+    },
+    {
       "id": "log-002485",
       "at": "2026-11-18T14:30:21.207Z",
       "userId": "karine.mvutu@ppcdrc.cd",
@@ -1260973,5 +1261015,5 @@
       }
     }
   ],
-  "nextSeq": 2486
+  "nextSeq": 2487
 }
