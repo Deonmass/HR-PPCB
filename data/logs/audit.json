@@ -1,6 +1,29 @@
 {
   "entries": [
     {
+      "id": "log-002479",
+      "at": "2026-11-18T14:10:04.115Z",
+      "userId": "admin",
+      "userName": "Administrateur",
+      "userEmail": "admin",
+      "module": "timesheet",
+      "moduleLabel": "Timesheet",
+      "action": "update",
+      "actionLabel": "Modification",
+      "summary": "Enregistrement timesheet 70000247 — SHE (11/2026)",
+      "details": "Enregistrement timesheet 70000247 — SHE (11/2026)",
+      "undoable": false,
+      "undone": false,
+      "meta": {
+        "year": 2026,
+        "month": 11,
+        "department": "SHE",
+        "matricule": "70000247",
+        "mode": "employee-month",
+        "count": 35
+      }
+    },
+    {
       "id": "log-002478",
       "at": "2026-11-18T13:39:35.338Z",
       "userId": "admin",
@@ -1260681,5 +1260704,5 @@
       }
     }
   ],
-  "nextSeq": 2479
+  "nextSeq": 2480
 }
