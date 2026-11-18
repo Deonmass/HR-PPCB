@@ -6523,6 +6523,23 @@
           },
           "updatedAt": "2026-11-18T14:10:20.839Z",
           "updatedBy": "admin"
+        },
+        "SHE::4": {
+          "weekIndex": 4,
+          "department": "SHE",
+          "weekFromTo": "du 09/11/2026 au 16/11/2026",
+          "locked": false,
+          "entries": {
+            "70000247": {
+              "matricule": "70000247",
+              "ot13": 2,
+              "ot16": 2,
+              "ot2": 0,
+              "night": 0.99
+            }
+          },
+          "updatedAt": "2026-11-18T14:10:40.627Z",
+          "updatedBy": "admin"
         }
       }
     }
