@@ -1,6 +1,44 @@
 {
   "entries": [
     {
+      "id": "log-002481",
+      "at": "2026-11-18T14:10:43.501Z",
+      "userId": "admin",
+      "userName": "Administrateur",
+      "userEmail": "admin",
+      "module": "timesheet.overtimes",
+      "moduleLabel": "Timesheet — Heures sup.",
+      "action": "update",
+      "actionLabel": "Modification",
+      "summary": "Enregistrement HS semaine 4 — SHE (11/2026)",
+      "details": "Enregistrement HS semaine 4 — SHE (11/2026)",
+      "after": {
+        "weekIndex": 4,
+        "department": "SHE",
+        "weekFromTo": "du 09/11/2026 au 16/11/2026",
+        "locked": false,
+        "entries": {
+          "70000247": {
+            "matricule": "70000247",
+            "ot13": 2,
+            "ot16": 2,
+            "ot2": 0,
+            "night": 0.99
+          }
+        },
+        "updatedAt": "2026-11-18T14:10:40.627Z",
+        "updatedBy": "admin"
+      },
+      "undoable": false,
+      "undone": false,
+      "meta": {
+        "year": 2026,
+        "month": 11,
+        "department": "SHE",
+        "weekIndex": 4
+      }
+    },
+    {
       "id": "log-002480",
       "at": "2026-11-18T14:10:23.995Z",
       "userId": "admin",
@@ -1260742,5 +1260780,5 @@
       }
     }
   ],
-  "nextSeq": 2481
+  "nextSeq": 2482
 }
