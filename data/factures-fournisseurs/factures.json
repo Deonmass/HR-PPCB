@@ -16130,7 +16130,26 @@
       "commentaire": "Au PR — en attente du PO.",
       "statut": "unpaid",
       "statutLabel": "unpaid"
+    },
+    {
+      "id": "fac-2210",
+      "date": "19/11/2026",
+      "societe": "Capital HR",
+      "facture": "Facture n° FC/CD02002360/1-148/ 2026",
+      "montant": 62.29,
+      "echeance": "",
+      "pr": "11210598",
+      "datePr": "",
+      "po": "",
+      "datePo": "",
+      "grn": "",
+      "dateGrn": "",
+      "payment": "",
+      "datePym": "",
+      "commentaire": "Au PR — en attente du PO.",
+      "statut": "unpaid",
+      "statutLabel": "unpaid"
     }
   ],
-  "nextFactureSeq": 2210
+  "nextFactureSeq": 2211
 }
