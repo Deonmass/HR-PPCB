@@ -1,6 +1,71 @@
 {
   "entries": [
     {
+      "id": "log-002506",
+      "at": "2026-11-19T12:21:13.187Z",
+      "userId": "Tresor.Maneka@ppcdrc.cd",
+      "userName": "Tresor Maneka",
+      "userEmail": "Tresor.Maneka@ppcdrc.cd",
+      "module": "protocol.voyages",
+      "moduleLabel": "Gestion de voyage",
+      "action": "update",
+      "actionLabel": "Modification",
+      "entityType": "protocol.voyage",
+      "entityId": "pvc-081",
+      "summary": "Modification voyage PVC-0081 freddy",
+      "details": "Modification voyage PVC-0081 freddy",
+      "before": {
+        "id": "pvc-081",
+        "numero": "PVC-0081",
+        "date": "2026-11-10",
+        "voyageur": "freddy",
+        "voyageurMatricule": "",
+        "departement": "",
+        "centreCout": "",
+        "destination": "Lubudi Lubumabshi Lubudi",
+        "ticketAvion": 0,
+        "visaVolant": 0,
+        "lettreLegaliser": 0,
+        "goPass": 0,
+        "transfert": 0,
+        "hotelNuit": 115,
+        "nbreNuits": 2,
+        "coutHotel": 230,
+        "categorieHotel": "Hotel Goshen de lubumbashi",
+        "appartement": 0,
+        "autresCharges": 0,
+        "coutTotal": 230,
+        "createdAt": "2026-11-10T14:39:38.478Z",
+        "updatedAt": "2026-11-10T14:39:38.478Z"
+      },
+      "after": {
+        "id": "pvc-081",
+        "numero": "PVC-0081",
+        "date": "2026-11-10",
+        "voyageur": "NDAY MUDIBU FREDDY",
+        "voyageurMatricule": "67",
+        "departement": "Human Resources",
+        "centreCout": "KC8710",
+        "destination": "Lubudi Lubumabshi Lubudi",
+        "ticketAvion": 0,
+        "visaVolant": 0,
+        "lettreLegaliser": 0,
+        "goPass": 0,
+        "transfert": 0,
+        "hotelNuit": 115,
+        "nbreNuits": 2,
+        "coutHotel": 230,
+        "categorieHotel": "Hotel Goshen de lubumbashi",
+        "appartement": 0,
+        "autresCharges": 0,
+        "coutTotal": 230,
+        "createdAt": "2026-11-10T14:39:38.478Z",
+        "updatedAt": "2026-11-19T12:21:08.714Z"
+      },
+      "undoable": false,
+      "undone": false
+    },
+    {
       "id": "log-002505",
       "at": "2026-11-19T12:20:31.823Z",
       "userId": "Tresor.Maneka@ppcdrc.cd",
@@ -1262228,5 +1262293,5 @@
       }
     }
   ],
-  "nextSeq": 2506
+  "nextSeq": 2507
 }
