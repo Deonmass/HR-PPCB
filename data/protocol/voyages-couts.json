@@ -2238,8 +2238,8 @@
       "date": "2026-11-12",
       "voyageur": "Zaghao",
       "voyageurMatricule": "",
-      "departement": "",
-      "centreCout": "",
+      "departement": "Engineering",
+      "centreCout": "KM5310",
       "destination": "Lubumbashi Likasi Lubudi",
       "ticketAvion": 0,
       "visaVolant": 0,
@@ -2254,7 +2254,7 @@
       "autresCharges": 0,
       "coutTotal": 110,
       "createdAt": "2026-11-13T08:36:24.166Z",
-      "updatedAt": "2026-11-13T08:36:24.166Z"
+      "updatedAt": "2026-11-19T12:09:05.578Z"
     },
     {
       "id": "pvc-098",
