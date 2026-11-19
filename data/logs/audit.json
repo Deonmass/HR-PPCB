@@ -1,6 +1,47 @@
 {
   "entries": [
     {
+      "id": "log-002496",
+      "at": "2026-11-19T12:03:14.230Z",
+      "userId": "Tresor.Maneka@ppcdrc.cd",
+      "userName": "Tresor Maneka",
+      "userEmail": "Tresor.Maneka@ppcdrc.cd",
+      "module": "protocol.voyages",
+      "moduleLabel": "Gestion de voyage",
+      "action": "create",
+      "actionLabel": "Création",
+      "entityType": "protocol.voyage",
+      "entityId": "pvc-106",
+      "summary": "Voyage PVC-0106 KINKINIA DIAVEZUKA PELAGIE Zamba Kinshasa Zamba",
+      "details": "Voyage PVC-0106 KINKINIA DIAVEZUKA PELAGIE Zamba Kinshasa Zamba",
+      "after": {
+        "id": "pvc-106",
+        "numero": "PVC-0106",
+        "date": "2026-11-18",
+        "voyageur": "KINKINIA DIAVEZUKA PELAGIE",
+        "voyageurMatricule": "70000295",
+        "departement": "Human Resources",
+        "centreCout": "KM5413",
+        "destination": "Zamba Kinshasa Zamba",
+        "ticketAvion": 0,
+        "visaVolant": 0,
+        "lettreLegaliser": 0,
+        "goPass": 0,
+        "transfert": 0,
+        "hotelNuit": 3,
+        "nbreNuits": 150,
+        "coutHotel": 450,
+        "categorieHotel": "Hotel Royal",
+        "appartement": 0,
+        "autresCharges": 0,
+        "coutTotal": 450,
+        "createdAt": "2026-11-19T12:03:09.694Z",
+        "updatedAt": "2026-11-19T12:03:09.694Z"
+      },
+      "undoable": false,
+      "undone": false
+    },
+    {
       "id": "log-002495",
       "at": "2026-11-19T11:59:34.715Z",
       "userId": "Tresor.Maneka@ppcdrc.cd",
@@ -1261626,5 +1261667,5 @@
       }
     }
   ],
-  "nextSeq": 2496
+  "nextSeq": 2497
 }
