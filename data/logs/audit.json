@@ -1,6 +1,47 @@
 {
   "entries": [
     {
+      "id": "log-002497",
+      "at": "2026-11-19T12:04:53.590Z",
+      "userId": "Tresor.Maneka@ppcdrc.cd",
+      "userName": "Tresor Maneka",
+      "userEmail": "Tresor.Maneka@ppcdrc.cd",
+      "module": "protocol.voyages",
+      "moduleLabel": "Gestion de voyage",
+      "action": "create",
+      "actionLabel": "Création",
+      "entityType": "protocol.voyage",
+      "entityId": "pvc-107",
+      "summary": "Voyage PVC-0107 TENDA DIWASILUA BINGI Zamba Kinshasa Zamba",
+      "details": "Voyage PVC-0107 TENDA DIWASILUA BINGI Zamba Kinshasa Zamba",
+      "after": {
+        "id": "pvc-107",
+        "numero": "PVC-0107",
+        "date": "2026-11-18",
+        "voyageur": "TENDA DIWASILUA BINGI",
+        "voyageurMatricule": "CHRS_PPC0116",
+        "departement": "Human Resources",
+        "centreCout": "KM5413",
+        "destination": "Zamba Kinshasa Zamba",
+        "ticketAvion": 0,
+        "visaVolant": 0,
+        "lettreLegaliser": 0,
+        "goPass": 0,
+        "transfert": 0,
+        "hotelNuit": 100,
+        "nbreNuits": 3,
+        "coutHotel": 300,
+        "categorieHotel": "Hotel Plutonium",
+        "appartement": 0,
+        "autresCharges": 0,
+        "coutTotal": 300,
+        "createdAt": "2026-11-19T12:04:48.962Z",
+        "updatedAt": "2026-11-19T12:04:48.962Z"
+      },
+      "undoable": false,
+      "undone": false
+    },
+    {
       "id": "log-002496",
       "at": "2026-11-19T12:03:14.230Z",
       "userId": "Tresor.Maneka@ppcdrc.cd",
@@ -1261667,5 +1261708,5 @@
       }
     }
   ],
-  "nextSeq": 2497
+  "nextSeq": 2498
 }
