@@ -1782,8 +1782,8 @@
       "date": "2026-11-08",
       "voyageur": "Lionel",
       "voyageurMatricule": "",
-      "departement": "",
-      "centreCout": "",
+      "departement": "Human Resources",
+      "centreCout": "KM5413",
       "destination": "Zamba Kinshasa Zamba",
       "ticketAvion": 0,
       "visaVolant": 0,
@@ -1798,7 +1798,7 @@
       "autresCharges": 0,
       "coutTotal": 100,
       "createdAt": "2026-11-09T12:42:46.372Z",
-      "updatedAt": "2026-11-09T12:42:46.372Z"
+      "updatedAt": "2026-11-19T12:21:52.936Z"
     },
     {
       "id": "pvc-079",
