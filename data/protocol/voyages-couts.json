@@ -2092,10 +2092,10 @@
       "id": "pvc-091",
       "numero": "PVC-0091",
       "date": "2026-11-11",
-      "voyageur": "Freddy driver lubudi",
-      "voyageurMatricule": "",
-      "departement": "",
-      "centreCout": "",
+      "voyageur": "NDAY MUDIBU FREDDY",
+      "voyageurMatricule": "67",
+      "departement": "Human Resources",
+      "centreCout": "KC8710",
       "destination": "Lubudi Kolwozi",
       "ticketAvion": 0,
       "visaVolant": 0,
@@ -2110,7 +2110,7 @@
       "autresCharges": 0,
       "coutTotal": 400,
       "createdAt": "2026-11-11T17:23:12.284Z",
-      "updatedAt": "2026-11-13T08:28:05.000Z"
+      "updatedAt": "2026-11-19T12:20:26.819Z"
     },
     {
       "id": "pvc-092",
