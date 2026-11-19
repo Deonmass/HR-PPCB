@@ -2068,10 +2068,10 @@
       "id": "pvc-090",
       "numero": "PVC-0090",
       "date": "2026-11-11",
-      "voyageur": "Diki driver",
-      "voyageurMatricule": "",
-      "departement": "",
-      "centreCout": "",
+      "voyageur": "DIKI NGANGU",
+      "voyageurMatricule": "CHRS_PPC0023",
+      "departement": "Human Resources",
+      "centreCout": "KM5413",
       "destination": "Zamba Kishasa Zamba",
       "ticketAvion": 0,
       "visaVolant": 0,
@@ -2086,7 +2086,7 @@
       "autresCharges": 0,
       "coutTotal": 200,
       "createdAt": "2026-11-11T17:22:05.151Z",
-      "updatedAt": "2026-11-11T17:22:05.151Z"
+      "updatedAt": "2026-11-19T12:11:27.025Z"
     },
     {
       "id": "pvc-091",
