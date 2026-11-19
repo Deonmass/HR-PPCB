@@ -2212,10 +2212,10 @@
       "id": "pvc-096",
       "numero": "PVC-0096",
       "date": "2026-11-12",
-      "voyageur": "Robert Driver Lubudi",
-      "voyageurMatricule": "",
-      "departement": "",
-      "centreCout": "",
+      "voyageur": "NGUVU MUNYANGI ROBERT",
+      "voyageurMatricule": "768",
+      "departement": "Human Resources",
+      "centreCout": "KC8710",
       "destination": "Lubumabshi Likasi Lubudi",
       "ticketAvion": 0,
       "visaVolant": 0,
@@ -2230,7 +2230,7 @@
       "autresCharges": 0,
       "coutTotal": 110,
       "createdAt": "2026-11-13T08:35:17.091Z",
-      "updatedAt": "2026-11-13T08:35:17.091Z"
+      "updatedAt": "2026-11-19T12:10:46.438Z"
     },
     {
       "id": "pvc-097",
