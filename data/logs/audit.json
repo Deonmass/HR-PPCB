@@ -1,6 +1,47 @@
 {
   "entries": [
     {
+      "id": "log-002495",
+      "at": "2026-11-19T11:59:34.715Z",
+      "userId": "Tresor.Maneka@ppcdrc.cd",
+      "userName": "Tresor Maneka",
+      "userEmail": "Tresor.Maneka@ppcdrc.cd",
+      "module": "protocol.voyages",
+      "moduleLabel": "Gestion de voyage",
+      "action": "create",
+      "actionLabel": "Création",
+      "entityType": "protocol.voyage",
+      "entityId": "pvc-105",
+      "summary": "Voyage PVC-0105 MUTOMBO SHAMBUYI LÉONARD Zamba Matadi Zamba",
+      "details": "Voyage PVC-0105 MUTOMBO SHAMBUYI LÉONARD Zamba Matadi Zamba",
+      "after": {
+        "id": "pvc-105",
+        "numero": "PVC-0105",
+        "date": "2026-11-19",
+        "voyageur": "MUTOMBO SHAMBUYI LÉONARD",
+        "voyageurMatricule": "70000290",
+        "departement": "SHE",
+        "centreCout": "KM5811",
+        "destination": "Zamba Matadi Zamba",
+        "ticketAvion": 0,
+        "visaVolant": 0,
+        "lettreLegaliser": 0,
+        "goPass": 0,
+        "transfert": 0,
+        "hotelNuit": 100,
+        "nbreNuits": 1,
+        "coutHotel": 100,
+        "categorieHotel": "Hotel Fortune Matdi",
+        "appartement": 0,
+        "autresCharges": 0,
+        "coutTotal": 100,
+        "createdAt": "2026-11-19T11:59:30.436Z",
+        "updatedAt": "2026-11-19T11:59:30.436Z"
+      },
+      "undoable": false,
+      "undone": false
+    },
+    {
       "id": "log-002494",
       "at": "2026-11-19T11:10:36.075Z",
       "userId": "gd.mwankana@capitalhrsolutions.net",
@@ -1261585,5 +1261626,5 @@
       }
     }
   ],
-  "nextSeq": 2495
+  "nextSeq": 2496
 }
