@@ -1,6 +1,48 @@
 {
   "entries": [
     {
+      "id": "log-002492",
+      "at": "2026-11-19T09:04:09.028Z",
+      "userId": "karine.mvutu@ppcdrc.cd",
+      "userName": "Karine Mvutu",
+      "userEmail": "karine.mvutu@ppcdrc.cd",
+      "module": "sante",
+      "moduleLabel": "Santé",
+      "action": "create",
+      "actionLabel": "Création",
+      "entityType": "sante.visit",
+      "entityId": "sante-mwnbpso1-ohr5sh",
+      "summary": "Cas santé — MASSADI GEDEON GEDEON · TROUBLE DIGESTIVE /VERMINOSE",
+      "details": "Cas santé — MASSADI GEDEON GEDEON · TROUBLE DIGESTIVE /VERMINOSE",
+      "after": {
+        "id": "sante-mwnbpso1-ohr5sh",
+        "date": "2026-11-19",
+        "nom": "MASSADI",
+        "postnom": "GEDEON GEDEON",
+        "sexe": "M",
+        "age": 32,
+        "typeMalade": "AGENT",
+        "pathologie": "TROUBLE DIGESTIVE /VERMINOSE",
+        "traitement": "VERMIFUGE ET ANTI SPASMODIQUE",
+        "reference": "IME",
+        "year": 2026,
+        "month": 11,
+        "employeeMatricule": "70000308",
+        "employeeNom": "MASSADI GEDEON GEDEON",
+        "dependantId": null,
+        "commentaire": "Persistance de colique abdominale,voir avis medicale pour investigation et prise en charge.",
+        "contractantId": "",
+        "contractantNom": "",
+        "contractantEmployeeId": "",
+        "createdAt": "2026-11-19T09:04:06.241Z",
+        "updatedAt": "2026-11-19T09:04:06.241Z",
+        "createdBy": "karine.mvutu@ppcdrc.cd",
+        "updatedBy": "karine.mvutu@ppcdrc.cd"
+      },
+      "undoable": false,
+      "undone": false
+    },
+    {
       "id": "log-002491",
       "at": "2026-11-18T17:29:16.441Z",
       "userId": "Serge.Muakasa@ppcdrc.cd",
@@ -1261486,5 +1261528,5 @@
       }
     }
   ],
-  "nextSeq": 2492
+  "nextSeq": 2493
 }
