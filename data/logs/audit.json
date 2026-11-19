@@ -1,6 +1,48 @@
 {
   "entries": [
     {
+      "id": "log-002493",
+      "at": "2026-11-19T09:37:17.611Z",
+      "userId": "karine.mvutu@ppcdrc.cd",
+      "userName": "Karine Mvutu",
+      "userEmail": "karine.mvutu@ppcdrc.cd",
+      "module": "sante",
+      "moduleLabel": "Santé",
+      "action": "create",
+      "actionLabel": "Création",
+      "entityType": "sante.visit",
+      "entityId": "sante-mwncwf24-8jwg5b",
+      "summary": "Cas santé — LUBENZO LUKAU · SUSPUCION PALUDISME",
+      "details": "Cas santé — LUBENZO LUKAU · SUSPUCION PALUDISME",
+      "after": {
+        "id": "sante-mwncwf24-8jwg5b",
+        "date": "2026-11-19",
+        "nom": "LUBENZO",
+        "postnom": "LUKAU",
+        "sexe": "F",
+        "age": 32,
+        "typeMalade": "AGENT",
+        "pathologie": "SUSPUCION PALUDISME",
+        "traitement": "ANTI PALUDEEN ET ANTI PYRETIQUE",
+        "reference": "NON",
+        "year": 2026,
+        "month": 11,
+        "employeeMatricule": "",
+        "employeeNom": "",
+        "dependantId": null,
+        "commentaire": "Patiente prise en charge a IME ,TDR negatif mais  persistance des signes de la malaria. Motif du traitement symptomatique.",
+        "contractantId": "",
+        "contractantNom": "",
+        "contractantEmployeeId": "",
+        "createdAt": "2026-11-19T09:37:14.812Z",
+        "updatedAt": "2026-11-19T09:37:14.812Z",
+        "createdBy": "karine.mvutu@ppcdrc.cd",
+        "updatedBy": "karine.mvutu@ppcdrc.cd"
+      },
+      "undoable": false,
+      "undone": false
+    },
+    {
       "id": "log-002492",
       "at": "2026-11-19T09:04:09.028Z",
       "userId": "karine.mvutu@ppcdrc.cd",
@@ -1261528,5 +1261570,5 @@
       }
     }
   ],
-  "nextSeq": 2493
+  "nextSeq": 2494
 }
