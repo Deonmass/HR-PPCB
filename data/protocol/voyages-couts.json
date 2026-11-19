@@ -1806,8 +1806,8 @@
       "date": "2026-11-07",
       "voyageur": ". Zhang Yongtao",
       "voyageurMatricule": "",
-      "departement": "",
-      "centreCout": "",
+      "departement": "Engineering",
+      "centreCout": "KM5310",
       "destination": "Zhengzhou → Lubumbashi → Zhengzhou",
       "ticketAvion": 4576,
       "visaVolant": 0,
@@ -1822,7 +1822,7 @@
       "autresCharges": 0,
       "coutTotal": 4691,
       "createdAt": "2026-11-09T12:51:25.749Z",
-      "updatedAt": "2026-11-10T14:57:23.248Z"
+      "updatedAt": "2026-11-19T12:14:04.289Z"
     },
     {
       "id": "pvc-080",
