@@ -1,6 +1,71 @@
 {
   "entries": [
     {
+      "id": "log-002500",
+      "at": "2026-11-19T12:10:50.821Z",
+      "userId": "Tresor.Maneka@ppcdrc.cd",
+      "userName": "Tresor Maneka",
+      "userEmail": "Tresor.Maneka@ppcdrc.cd",
+      "module": "protocol.voyages",
+      "moduleLabel": "Gestion de voyage",
+      "action": "update",
+      "actionLabel": "Modification",
+      "entityType": "protocol.voyage",
+      "entityId": "pvc-096",
+      "summary": "Modification voyage PVC-0096 Robert Driver Lubudi",
+      "details": "Modification voyage PVC-0096 Robert Driver Lubudi",
+      "before": {
+        "id": "pvc-096",
+        "numero": "PVC-0096",
+        "date": "2026-11-12",
+        "voyageur": "Robert Driver Lubudi",
+        "voyageurMatricule": "",
+        "departement": "",
+        "centreCout": "",
+        "destination": "Lubumabshi Likasi Lubudi",
+        "ticketAvion": 0,
+        "visaVolant": 0,
+        "lettreLegaliser": 0,
+        "goPass": 0,
+        "transfert": 0,
+        "hotelNuit": 110,
+        "nbreNuits": 1,
+        "coutHotel": 110,
+        "categorieHotel": "Hotel Even Likasi",
+        "appartement": 0,
+        "autresCharges": 0,
+        "coutTotal": 110,
+        "createdAt": "2026-11-13T08:35:17.091Z",
+        "updatedAt": "2026-11-13T08:35:17.091Z"
+      },
+      "after": {
+        "id": "pvc-096",
+        "numero": "PVC-0096",
+        "date": "2026-11-12",
+        "voyageur": "NGUVU MUNYANGI ROBERT",
+        "voyageurMatricule": "768",
+        "departement": "Human Resources",
+        "centreCout": "KC8710",
+        "destination": "Lubumabshi Likasi Lubudi",
+        "ticketAvion": 0,
+        "visaVolant": 0,
+        "lettreLegaliser": 0,
+        "goPass": 0,
+        "transfert": 0,
+        "hotelNuit": 110,
+        "nbreNuits": 1,
+        "coutHotel": 110,
+        "categorieHotel": "Hotel Even Likasi",
+        "appartement": 0,
+        "autresCharges": 0,
+        "coutTotal": 110,
+        "createdAt": "2026-11-13T08:35:17.091Z",
+        "updatedAt": "2026-11-19T12:10:46.438Z"
+      },
+      "undoable": false,
+      "undone": false
+    },
+    {
       "id": "log-002499",
       "at": "2026-11-19T12:09:09.958Z",
       "userId": "Tresor.Maneka@ppcdrc.cd",
@@ -1261838,5 +1261903,5 @@
       }
     }
   ],
-  "nextSeq": 2500
+  "nextSeq": 2501
 }
