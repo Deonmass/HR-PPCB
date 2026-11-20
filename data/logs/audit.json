@@ -1,6 +1,21 @@
 {
   "entries": [
     {
+      "id": "log-002524",
+      "at": "2026-11-20T10:53:56.361Z",
+      "userId": "admin",
+      "userName": "Administrateur",
+      "userEmail": "admin",
+      "module": "timesheet.compilation",
+      "moduleLabel": "Timesheet — Compilation",
+      "action": "export",
+      "actionLabel": "Export",
+      "summary": "Export simulation compilation OT 11/2026",
+      "details": "Export Excel simulation compilation OT",
+      "undoable": false,
+      "undone": false
+    },
+    {
       "id": "log-002523",
       "at": "2026-11-20T10:45:49.935Z",
       "userId": "Serge.Muakasa@ppcdrc.cd",
@@ -1262941,5 +1262956,5 @@
       }
     }
   ],
-  "nextSeq": 2524
+  "nextSeq": 2525
 }
