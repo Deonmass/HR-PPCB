@@ -1,6 +1,21 @@
 {
   "entries": [
     {
+      "id": "log-002531",
+      "at": "2026-11-20T14:02:19.660Z",
+      "userId": "Marie.Yowali",
+      "userName": "Marie Yowali",
+      "userEmail": "Marie.Yowali@ppcdrc.cd",
+      "module": "travel.attestation",
+      "moduleLabel": "Attestation de service",
+      "action": "export",
+      "actionLabel": "Export",
+      "summary": "Téléchargement DOCX attestation Dorly NSAKALA MPINDY",
+      "details": "Téléchargement DOCX attestation Dorly NSAKALA MPINDY",
+      "undoable": false,
+      "undone": false
+    },
+    {
       "id": "log-002530",
       "at": "2026-11-20T14:02:05.935Z",
       "userId": "Marie.Yowali",
@@ -1263752,5 +1263767,5 @@
       }
     }
   ],
-  "nextSeq": 2531
+  "nextSeq": 2532
 }
