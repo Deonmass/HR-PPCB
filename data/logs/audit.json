@@ -1,6 +1,47 @@
 {
   "entries": [
     {
+      "id": "log-002541",
+      "at": "2026-11-20T19:11:28.086Z",
+      "userId": "Tresor.Maneka@ppcdrc.cd",
+      "userName": "Tresor Maneka",
+      "userEmail": "Tresor.Maneka@ppcdrc.cd",
+      "module": "protocol.voyages",
+      "moduleLabel": "Gestion de voyage",
+      "action": "create",
+      "actionLabel": "Création",
+      "entityType": "protocol.voyage",
+      "entityId": "pvc-112",
+      "summary": "Voyage PVC-0112 Essam Daoud Maroc Kinshasa Brazzaville",
+      "details": "Voyage PVC-0112 Essam Daoud Maroc Kinshasa Brazzaville",
+      "after": {
+        "id": "pvc-112",
+        "numero": "PVC-0112",
+        "date": "2026-11-20",
+        "voyageur": "Essam Daoud",
+        "voyageurMatricule": "",
+        "departement": "Mining",
+        "centreCout": "KQ1910",
+        "destination": "Maroc Kinshasa Brazzaville",
+        "ticketAvion": 0,
+        "visaVolant": 440,
+        "lettreLegaliser": 0,
+        "goPass": 0,
+        "transfert": 0,
+        "hotelNuit": 0,
+        "nbreNuits": 0,
+        "coutHotel": 0,
+        "categorieHotel": "",
+        "appartement": 0,
+        "autresCharges": 0,
+        "coutTotal": 440,
+        "createdAt": "2026-11-20T19:11:24.167Z",
+        "updatedAt": "2026-11-20T19:11:24.167Z"
+      },
+      "undoable": false,
+      "undone": false
+    },
+    {
       "id": "log-002540",
       "at": "2026-11-20T19:09:51.446Z",
       "userId": "Tresor.Maneka@ppcdrc.cd",
@@ -1264006,5 +1264047,5 @@
       }
     }
   ],
-  "nextSeq": 2541
+  "nextSeq": 2542
 }
