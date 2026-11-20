@@ -1,11 +1,11 @@
 import { NextResponse } from 'next/server';
 import {
   checkTimesheetDepartmentExport,
-  filterTimesheetEmployees,
   isContractantTimesheetMatricule,
   requireTimesheetDepartmentAccess,
   requireTimesheetModuleAccess,
 } from '@/lib/timesheet-access-server';
+import { compilationRoster } from '@/lib/timesheet-compilation-roster.server';
 import { buildCompilationData } from '@/lib/timesheet-compilation.server';
 import { buildCompilationWorkbookBuffer } from '@/lib/timesheet-compilation-export.server';
 import { applyCompilationPolicy } from '@/lib/timesheet-compilation-policy';
@@ -40,20 +40,16 @@ export async function GET(request: Request) {
   if (!department || department === ALL_DEPARTMENTS) {
     const accessResult = await requireTimesheetModuleAccess(COMPILATION_ACCESS);
     if ('error' in accessResult && accessResult.error) return accessResult.error;
-    employees = filterTimesheetEmployees(accessResult);
     label = ALL_DEPARTMENTS;
     userId = accessResult.session.user.id;
+    employees = await compilationRoster(accessResult, year, month, label);
   } else {
     const accessResult = await requireTimesheetDepartmentAccess(department, COMPILATION_ACCESS);
     if ('error' in accessResult && accessResult.error) return accessResult.error;
-    employees = filterTimesheetEmployees(accessResult, department);
     label = department;
     userId = accessResult.session.user.id;
+    employees = await compilationRoster(accessResult, year, month, label, department);
   }
-
-  employees = employees
-    .filter((employee) => employee.nom.trim() && !isContractantTimesheetMatricule(employee.matricule))
-    .sort((a, b) => a.nom.localeCompare(b.nom, 'fr'));
 
   try {
     const existing = await getCompilationSnapshot(year, month, label);

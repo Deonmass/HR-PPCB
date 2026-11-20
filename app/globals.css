@@ -7406,6 +7406,48 @@ html[data-theme="light"] .compilation-table tbody tr:hover td.compilation-sticky
   margin-left: auto;
 }
 
+.compilation-add-modal {
+  width: min(640px, calc(100vw - 2rem));
+}
+
+.compilation-add-list {
+  max-height: 360px;
+  margin-top: 0.75rem;
+  overflow: auto;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+}
+
+.compilation-add-row {
+  display: flex;
+  gap: 0.65rem;
+  align-items: flex-start;
+  padding: 0.5rem 0.75rem;
+  border-bottom: 1px solid var(--border);
+  cursor: pointer;
+}
+
+.compilation-add-row:last-child {
+  border-bottom: 0;
+}
+
+.compilation-add-row-all {
+  margin-top: 0.75rem;
+  border: 1px solid var(--border);
+  border-bottom: 0;
+  border-radius: var(--radius-sm) var(--radius-sm) 0 0;
+}
+
+.compilation-add-row strong,
+.compilation-add-row small {
+  display: block;
+}
+
+.compilation-add-row small {
+  color: var(--text-muted, #94a3b8);
+  font-size: 0.75rem;
+}
+
 /* Simulation modal ? plein ?cran */
 .compilation-sim-overlay {
   z-index: 1200;

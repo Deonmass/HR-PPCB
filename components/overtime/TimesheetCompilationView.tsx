@@ -28,6 +28,7 @@ import {
   type PolicyChange,
 } from '@/lib/timesheet-compilation-policy';
 import TimesheetEmployeeMonthModal from '@/components/overtime/TimesheetEmployeeMonthModal';
+import TimesheetCompilationAddModal from '@/components/overtime/TimesheetCompilationAddModal';
 import TimesheetCompilationSimulationModal from '@/components/overtime/TimesheetCompilationSimulationModal';
 import RefreshButton from '@/components/RefreshButton';
 import { usePermissions } from '@/contexts/PermissionContext';
@@ -173,6 +174,7 @@ export default function TimesheetCompilationView({
   const [data, setData] = useState<CompilationData | null>(null);
   const [loading, setLoading] = useState(false);
   const [exporting, setExporting] = useState(false);
+  const [addOpen, setAddOpen] = useState(false);
   const [closing, setClosing] = useState(false);
   const [reloadTick, setReloadTick] = useState(0);
   const [toolbarReady, setToolbarReady] = useState(false);
@@ -447,7 +449,8 @@ export default function TimesheetCompilationView({
         )
       : null;
     return baseRows.filter((row) => {
-      if (serviceMatricules && !serviceMatricules.has(row.matricule)) return false;
+      const known = employees.some((employee) => employee.matricule === row.matricule);
+      if (serviceMatricules && known && !serviceMatricules.has(row.matricule)) return false;
       if (!q) return true;
       const haystack = `${row.matricule} ${row.nom} ${row.departement} ${row.localisation} ${row.grade}`.toLowerCase();
       return haystack.includes(q);
@@ -696,6 +699,11 @@ export default function TimesheetCompilationView({
           />
         </label>
         <span className="overtime-inline-count">{agentCount} agent(s)</span>
+        {department && data?.snapshot?.source !== 'close' && (frozen || !closed) && (canApplyPolicy || canClose) ? (
+          <button type="button" className="btn btn-primary btn-sm" onClick={() => setAddOpen(true)}>
+            Ajouter
+          </button>
+        ) : null}
         {activeFilterCount > 0 ? (
           <button
             type="button"
@@ -1154,6 +1162,33 @@ export default function TimesheetCompilationView({
           ) : null}
         </div>
       </div>
+
+      <TimesheetCompilationAddModal
+        open={addOpen}
+        year={selectedMonth.year}
+        month={selectedMonth.month}
+        department={department}
+        onClose={() => setAddOpen(false)}
+        onAdded={(added) => {
+          setEmployees((current) => {
+            const known = new Set(current.map((employee) => employee.matricule));
+            const next = added
+              .filter((employee) => !known.has(employee.matricule))
+              .map((employee) => ({
+                matricule: employee.matricule,
+                nom: employee.nom,
+                departement: employee.departement,
+                grade: employee.grade,
+                jobTitle: employee.jobTitle,
+                localisation: employee.localisation,
+                service: employee.service,
+                statut: employee.statut,
+              })) as Employee[];
+            return next.length ? [...current, ...next] : current;
+          });
+          setReloadTick((tick) => tick + 1);
+        }}
+      />
 
       <TimesheetCompilationSimulationModal
         open={simulationOpen}

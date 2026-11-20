@@ -1,12 +1,14 @@
 import { NextResponse } from 'next/server';
 import {
+  checkTimesheetApplyPolicy,
   checkTimesheetCloseMonth,
-  filterTimesheetEmployees,
   isContractantTimesheetMatricule,
   requireTimesheetDepartmentAccess,
   requireTimesheetModuleAccess,
 } from '@/lib/timesheet-access-server';
 import type { CompilationData } from '@/lib/timesheet-compilation';
+import { addCompilationExtraMatricules } from '@/lib/timesheet-compilation-extras-store';
+import { compilationCandidatePool, compilationRoster } from '@/lib/timesheet-compilation-roster.server';
 import { buildCompilationData, compilationWeekIndexes } from '@/lib/timesheet-compilation.server';
 import { applyCompilationPolicy } from '@/lib/timesheet-compilation-policy';
 import {
@@ -18,17 +20,13 @@ import {
 import { resolveTimesheetPeriod } from '@/lib/timesheet-period-bounds-store';
 import { setWeeklyOvertimeMonthClosed } from '@/lib/timesheet-weekly-ot-store';
 import type { Employee } from '@/lib/types';
-import { withAudit } from '@/lib/with-audit';
+import { auditSimpleAction, withAudit } from '@/lib/with-audit';
 
 const ALL_DEPARTMENTS = '__ALL__';
 const COMPILATION_ACCESS = { includeContractants: false } as const;
 
 function isAllDepartments(department: string | undefined | null): boolean {
   return !department || department === ALL_DEPARTMENTS;
-}
-
-function ppcEmployeesOnly(employees: Employee[]): Employee[] {
-  return employees.filter((employee) => !isContractantTimesheetMatricule(employee.matricule));
 }
 
 function ndjsonResponse(produce: (send: (value: unknown) => void) => Promise<void>) {
@@ -70,22 +68,51 @@ export async function GET(request: Request) {
 
   let employees: Employee[];
   let label: string;
+  let accessResult: Awaited<ReturnType<typeof requireTimesheetModuleAccess>>;
 
   if (isAllDepartments(department)) {
-    const accessResult = await requireTimesheetModuleAccess(COMPILATION_ACCESS);
+    accessResult = await requireTimesheetModuleAccess(COMPILATION_ACCESS);
     if ('error' in accessResult && accessResult.error) return accessResult.error;
-    employees = filterTimesheetEmployees(accessResult);
     label = ALL_DEPARTMENTS;
   } else {
-    const accessResult = await requireTimesheetDepartmentAccess(department as string, COMPILATION_ACCESS);
+    accessResult = await requireTimesheetDepartmentAccess(department as string, COMPILATION_ACCESS);
     if ('error' in accessResult && accessResult.error) return accessResult.error;
-    employees = filterTimesheetEmployees(accessResult, department as string);
     label = department as string;
   }
 
-  employees = ppcEmployeesOnly(employees)
-    .filter((employee) => employee.nom.trim())
-    .sort((a, b) => a.nom.localeCompare(b.nom, 'fr'));
+  if (searchParams.get('candidates') === '1') {
+    const roster = await compilationRoster(
+      accessResult,
+      year,
+      month,
+      label,
+      isAllDepartments(department) ? undefined : department,
+    );
+    const snapshot = await getCompilationSnapshot(year, month, label);
+    const present = new Set(roster.map((employee) => employee.matricule));
+    for (const row of snapshot?.data.rows ?? []) present.add(row.matricule);
+    const candidates = compilationCandidatePool(accessResult)
+      .filter((employee) => !present.has(employee.matricule))
+      .map((employee) => ({
+        matricule: employee.matricule,
+        nom: employee.nom,
+        departement: employee.departement,
+        grade: employee.grade,
+        jobTitle: employee.jobTitle,
+        localisation: employee.localisation ?? '',
+        service: employee.service ?? '',
+        statut: employee.statut ?? '',
+      }));
+    return NextResponse.json(candidates);
+  }
+
+  employees = await compilationRoster(
+    accessResult,
+    year,
+    month,
+    label,
+    isAllDepartments(department) ? undefined : department,
+  );
 
   return ndjsonResponse(async (send) => {
     const snapshot = await getCompilationSnapshot(year, month, label);
@@ -130,13 +157,84 @@ export async function POST(request: Request) {
 
   try {
     const body = (await request.json()) as {
-      action?: 'close' | 'reopen';
+      action?: 'close' | 'reopen' | 'add-agents';
       year?: number;
       month?: number;
       department?: string;
+      matricules?: string[];
     };
     const { action, year, month } = body;
     const department = body.department?.trim();
+
+    if (action === 'add-agents') {
+      const policyDenied = await checkTimesheetApplyPolicy();
+      const closeDenied = await checkTimesheetCloseMonth();
+      if (policyDenied && closeDenied) return policyDenied;
+      if (!Number.isFinite(year) || !Number.isFinite(month)) {
+        return NextResponse.json({ error: 'Paramètres year et month requis' }, { status: 400 });
+      }
+      const requested = Array.from(
+        new Set((body.matricules ?? []).map((item) => item.trim()).filter(Boolean)),
+      );
+      if (!requested.length) {
+        return NextResponse.json({ error: 'Sélectionnez au moins un agent' }, { status: 400 });
+      }
+
+      const label = isAllDepartments(department) ? ALL_DEPARTMENTS : (department as string);
+      const accessResult = isAllDepartments(department)
+        ? await requireTimesheetModuleAccess(COMPILATION_ACCESS)
+        : await requireTimesheetDepartmentAccess(department as string, COMPILATION_ACCESS);
+      if ('error' in accessResult && accessResult.error) return accessResult.error;
+
+      const roster = await compilationRoster(
+        accessResult,
+        year as number,
+        month as number,
+        label,
+        isAllDepartments(department) ? undefined : department,
+      );
+      const present = new Set(roster.map((employee) => employee.matricule));
+      const pool = new Map(
+        compilationCandidatePool(accessResult).map((employee) => [employee.matricule, employee]),
+      );
+      const accepted = requested.filter((matricule) => pool.has(matricule) && !present.has(matricule));
+      if (!accepted.length) {
+        return NextResponse.json({ error: 'Ces agents sont déjà dans la compilation' }, { status: 400 });
+      }
+
+      await addCompilationExtraMatricules(year as number, month as number, label, accepted);
+      const addedEmployees = accepted
+        .map((matricule) => pool.get(matricule))
+        .filter((employee): employee is Employee => Boolean(employee));
+      const built = await buildCompilationData(year as number, month as number, label, addedEmployees);
+      const policy = applyCompilationPolicy(built.rows);
+      const snapshot = await getCompilationSnapshot(year as number, month as number, label);
+      if (snapshot) {
+        await saveCompilationSnapshot({
+          year: year as number,
+          month: month as number,
+          department: label,
+          data: {
+            ...snapshot.data,
+            rows: [...snapshot.data.rows, ...built.rows],
+            closed: snapshot.data.closed,
+          },
+          policyRows: [...snapshot.policyRows, ...policy.rows],
+          policyChanges: [...snapshot.policyChanges, ...policy.changes],
+          source: snapshot.source,
+          userId: accessResult.session.user.id,
+        });
+      }
+
+      await auditSimpleAction({
+        module: 'timesheet.compilation',
+        action: 'other',
+        summary: `Ajout compilation OT ${month}/${year} — ${accepted.length} agent(s)`,
+        details: accepted.join(', '),
+      });
+
+      return NextResponse.json({ added: accepted.length, matricules: accepted });
+    }
 
     if (action !== 'close' && action !== 'reopen') {
       return NextResponse.json({ error: 'Action invalide' }, { status: 400 });
@@ -153,7 +251,12 @@ export async function POST(request: Request) {
     let employees: Employee[];
 
     if (isAllDepartments(department)) {
-      employees = filterTimesheetEmployees(userResult);
+      employees = await compilationRoster(
+        userResult,
+        year as number,
+        month as number,
+        ALL_DEPARTMENTS,
+      );
       departments = Array.from(
         new Set(employees.map((employee) => employee.departement?.trim()).filter(Boolean) as string[]),
       );
@@ -166,7 +269,13 @@ export async function POST(request: Request) {
       if ('error' in accessResult && accessResult.error) return accessResult.error;
       departments = [department as string];
       label = department as string;
-      employees = filterTimesheetEmployees(accessResult, department as string);
+      employees = await compilationRoster(
+        accessResult,
+        year as number,
+        month as number,
+        label,
+        department as string,
+      );
     }
 
     for (const dept of departments) {
@@ -181,14 +290,11 @@ export async function POST(request: Request) {
     }
 
     if (action === 'close') {
-      const scopedEmployees = ppcEmployeesOnly(employees)
-        .filter((employee) => employee.nom.trim())
-        .sort((a, b) => a.nom.localeCompare(b.nom, 'fr'));
       const data = await buildCompilationData(
         year as number,
         month as number,
         label,
-        scopedEmployees,
+        employees,
       );
       const policy = applyCompilationPolicy(data.rows);
       await saveCompilationSnapshot({
