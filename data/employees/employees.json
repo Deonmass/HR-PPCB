@@ -4176,7 +4176,7 @@
       "dureeContratMois": null,
       "periodeEssaiMois": 3,
       "dateFinPeriodeEssai": "17/01/2017",
-      "dateFinContrat": "",
+      "dateFinContrat": "06/11/2026",
       "raisonExit": "NA",
       "essaiActions": "",
       "essaiResponsable": "",
@@ -4191,7 +4191,7 @@
       "nif": "B2222551N",
       "telephone": "840609872",
       "createdAt": "2026-07-28T09:40:37.715Z",
-      "updatedAt": "2026-11-10T13:01:33.377Z"
+      "updatedAt": "2026-11-20T12:29:08.758Z"
     },
     {
       "id": "13962c42-5eea-454d-a721-c0cd169173ed",
