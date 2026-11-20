@@ -1,6 +1,47 @@
 {
   "entries": [
     {
+      "id": "log-002540",
+      "at": "2026-11-20T19:09:51.446Z",
+      "userId": "Tresor.Maneka@ppcdrc.cd",
+      "userName": "Tresor Maneka",
+      "userEmail": "Tresor.Maneka@ppcdrc.cd",
+      "module": "protocol.voyages",
+      "moduleLabel": "Gestion de voyage",
+      "action": "create",
+      "actionLabel": "Création",
+      "entityType": "protocol.voyage",
+      "entityId": "pvc-111",
+      "summary": "Voyage PVC-0111 Romain Nerriere France Kinshasa Brazzaville",
+      "details": "Voyage PVC-0111 Romain Nerriere France Kinshasa Brazzaville",
+      "after": {
+        "id": "pvc-111",
+        "numero": "PVC-0111",
+        "date": "2026-11-20",
+        "voyageur": "Romain Nerriere",
+        "voyageurMatricule": "",
+        "departement": "Mining",
+        "centreCout": "KQ1910",
+        "destination": "France Kinshasa Brazzaville",
+        "ticketAvion": 0,
+        "visaVolant": 440,
+        "lettreLegaliser": 0,
+        "goPass": 0,
+        "transfert": 0,
+        "hotelNuit": 0,
+        "nbreNuits": 0,
+        "coutHotel": 0,
+        "categorieHotel": "",
+        "appartement": 0,
+        "autresCharges": 0,
+        "coutTotal": 440,
+        "createdAt": "2026-11-20T19:09:47.102Z",
+        "updatedAt": "2026-11-20T19:09:47.102Z"
+      },
+      "undoable": false,
+      "undone": false
+    },
+    {
       "id": "log-002539",
       "at": "2026-11-20T19:04:56.232Z",
       "userId": "Tresor.Maneka@ppcdrc.cd",
@@ -1263965,5 +1264006,5 @@
       }
     }
   ],
-  "nextSeq": 2540
+  "nextSeq": 2541
 }
