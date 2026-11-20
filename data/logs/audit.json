@@ -1,6 +1,34 @@
 {
   "entries": [
     {
+      "id": "log-002518",
+      "at": "2026-11-20T09:46:57.470Z",
+      "userId": "admin",
+      "userName": "Administrateur",
+      "userEmail": "admin",
+      "module": "timesheet.overtimes",
+      "moduleLabel": "Timesheet — Heures sup.",
+      "action": "import",
+      "actionLabel": "Import",
+      "summary": "Import HS bulk semaine 3",
+      "details": "Import HS bulk semaine 3",
+      "after": {
+        "results": [
+          {
+            "department": "Engineering",
+            "status": "imported",
+            "imported": 10,
+            "skipped": 0
+          }
+        ],
+        "importedMatriculeKeys": {},
+        "totalImported": 10,
+        "totalSkipped": 0
+      },
+      "undoable": false,
+      "undone": false
+    },
+    {
       "id": "log-002517",
       "at": "2026-11-20T09:45:43.626Z",
       "userId": "admin",
@@ -1262611,5 +1262639,5 @@
       }
     }
   ],
-  "nextSeq": 2518
+  "nextSeq": 2519
 }
