@@ -1,0 +1,9048 @@
+{
+  "year": 2026,
+  "month": 11,
+  "department": "__ALL__",
+  "savedAt": "2026-11-20T10:53:50.791Z",
+  "savedBy": "admin",
+  "source": "export",
+  "data": {
+    "year": 2026,
+    "month": 11,
+    "department": "__ALL__",
+    "weeks": [
+      {
+        "index": 0,
+        "label": "Semaine 1",
+        "range": "du 12 oct. au 19 oct. 2026"
+      },
+      {
+        "index": 1,
+        "label": "Semaine 2",
+        "range": "du 19 oct. au 26 oct. 2026"
+      },
+      {
+        "index": 2,
+        "label": "Semaine 3",
+        "range": "du 26 oct. au 02 nov. 2026"
+      },
+      {
+        "index": 3,
+        "label": "Semaine 4",
+        "range": "du 02 nov. au 09 nov. 2026"
+      },
+      {
+        "index": 4,
+        "label": "Semaine 5",
+        "range": "du 09 nov. au 16 nov. 2026"
+      }
+    ],
+    "closed": false,
+    "rows": [
+      {
+        "matricule": "70000112",
+        "nom": "ADHULE NYADRIA JOEL",
+        "departement": "SHE",
+        "localisation": "Zamba",
+        "grade": "D2",
+        "weeks": [
+          {
+            "ot13": 0,
+            "ot16": 0,
+            "ot2": 0,
+            "night": 0
+          },
+          {
+            "ot13": 0,
+            "ot16": 0,
+            "ot2": 0,
+            "night": 0
+          },
+          {
+            "ot13": 0,
+            "ot16": 0,
+            "ot2": 0,
+            "night": 0
+          },
+          {
+            "ot13": 0,
+            "ot16": 0,
+            "ot2": 0,
+            "night": 0
+          },
+          {
+            "ot13": 0,
+            "ot16": 0,
+            "ot2": 0,
+            "night": 0
+          }
+        ],
+        "nightNormal": 0
+      },
+      {
+        "matricule": "70000244",
+        "nom": "BADIBANGA MUTSHIPAYI Leon",
+        "departement": "Production",
+        "localisation": "Zamba",
+        "grade": "C1",
+        "weeks": [
+          {
+            "ot13": 0,
+            "ot16": 0,
+            "ot2": 0,
+            "night": 0
+          },
+          {
+            "ot13": 0,
+            "ot16": 0,
+            "ot2": 8.01,
+            "night": 0
+          },
+          {
+            "ot13": 4,
+            "ot16": 8.02,
+            "ot2": 8.06,
+            "night": 8.21
+          },
+          {
+            "ot13": 4,
+            "ot16": 7.81,
+            "ot2": 8.28,
+            "night": 4.14
+          },
+          {
+            "ot13": 0,
+            "ot16": 0,
+            "ot2": 0,
+            "night": 0
+          }
+        ],
+        "nightNormal": 100
+      },
+      {
+        "matricule": "70000069",
+        "nom": "BAVIBIDILA MUNTANA GERVAIS",
+        "departement": "Production",
+        "localisation": "Zamba",
+        "grade": "B2",
+        "weeks": [
+          {
+            "ot13": 0,
+            "ot16": 0,
+            "ot2": 0,
+            "night": 0
+          },
+          {
+            "ot13": 0,
+            "ot16": 0,
+            "ot2": 0,
+            "night": 0
+          },
+          {
+            "ot13": 0,
+            "ot16": 0,
+            "ot2": 0,
+            "night": 0
+          },
+          {
+            "ot13": 0,
+            "ot16": 0,
+            "ot2": 0,
+            "night": 0
+          },
+          {
+            "ot13": 0,
+            "ot16": 0,
+            "ot2": 0,
+            "night": 0
+          }
+        ],
+        "nightNormal": 96
+      },
+      {
+        "matricule": "70000052",
+        "nom": "BAYISA SIMON DIDIER",
+        "departement": "Engineering",
+        "localisation": "Zamba",
+        "grade": "C2",
+        "weeks": [
+          {
+            "ot13": 0,
+            "ot16": 0,
+            "ot2": 13.25,
+            "night": 0
+          },
+          {
+            "ot13": 2,
+            "ot16": 5.37,
+            "ot2": 0,
+            "night": 7.37
+          },
+          {
+            "ot13": 2,
+            "ot16": 3.6,
+            "ot2": 8,
+            "night": 0
+          },
+          {
+            "ot13": 2,
+            "ot16": 1.75,
+            "ot2": 19,
+            "night": 6.72
+          },
+          {
+            "ot13": 0,
+            "ot16": 0,
+            "ot2": 0,
+            "night": 0
+          }
+        ],
+        "nightNormal": 0
+      },
+      {
+        "matricule": "70000241",
+        "nom": "BIAWILA JEAN ROSTAND",
+        "departement": "Supply Chain",
+        "localisation": "Zamba",
+        "grade": "B3",
+        "weeks": [
+          {
+            "ot13": 1.32,
+            "ot16": 0,
+            "ot2": 13.78,
+            "night": 0
+          },
+          {
+            "ot13": 0,
+            "ot16": 0,
+            "ot2": 0,
+            "night": 0
+          },
+          {
+            "ot13": 0,
+            "ot16": 0,
+            "ot2": 0,
+            "night": 0
+          },
+          {
+            "ot13": 2,
+            "ot16": 3.03,
+            "ot2": 0,
+            "night": 0
+          },
+          {
+            "ot13": 0,
+            "ot16": 0,
+            "ot2": 0,
+            "night": 0
+          }
+        ],
+        "nightNormal": 0
+      },
+      {
+        "matricule": "70000255",
+        "nom": "BILANGA LINGOMA Jonas",
+        "departement": "Supply Chain",
+        "localisation": "Zamba",
+        "grade": "C3",
+        "weeks": [
+          {
+            "ot13": 2,
+            "ot16": 1.79,
+            "ot2": 0,
+            "night": 0.7
+          },
+          {
+            "ot13": 0,
+            "ot16": 0,
+            "ot2": 0,
+            "night": 0
+          },
+          {
+            "ot13": 0,
+            "ot16": 0,
+            "ot2": 14.66,
+            "night": 0.52
+          },
+          {
+            "ot13": 0.5,
+            "ot16": 0,
+            "ot2": 9.53,
+            "night": 0
+          },
+          {
+            "ot13": 0,
+            "ot16": 0,
+            "ot2": 0,
+            "night": 0
+          }
+        ],
+        "nightNormal": 0
+      },
+      {
+        "matricule": "70000215",
+        "nom": "BINDAMA KAMOSIKO ALPHONSE",
+        "departement": "Engineering",
+        "localisation": "Zamba",
+        "grade": "C3",
+        "weeks": [
+          {
+            "ot13": 0,
+            "ot16": 0,
+            "ot2": 15.06,
+            "night": 0
+          },
+          {
+            "ot13": 0,
+            "ot16": 0,
+            "ot2": 0,
+            "night": 0
+          },
+          {
+            "ot13": 0,
+            "ot16": 0,
+            "ot2": 0,
+            "night": 0
+          },
+          {
+            "ot13": 0,
+            "ot16": 0,
+            "ot2": 9.07,
+            "night": 0
+          },
+          {
+            "ot13": 0,
+            "ot16": 0,
+            "ot2": 0,
+            "night": 0
+          }
+        ],
+        "nightNormal": 0
+      },
+      {
+        "matricule": "70000070",
+        "nom": "BITUTU NDUNGU EDER",
+        "departement": "Production",
+        "localisation": "Zamba",
+        "grade": "B2",
+        "weeks": [
+          {
+            "ot13": 0,
+            "ot16": 0,
+            "ot2": 0,
+            "night": 0
+          },
+          {
+            "ot13": 0,
+            "ot16": 0,
+            "ot2": 0,
+            "night": 0
+          },
+          {
+            "ot13": 0,
+            "ot16": 0,
+            "ot2": 0,
+            "night": 0
+          },
+          {
+            "ot13": 0,
+            "ot16": 0,
+            "ot2": 0,
+            "night": 0
+          },
+          {
+            "ot13": 0,
+            "ot16": 0,
+            "ot2": 0,
+            "night": 0
+          }
+        ],
+        "nightNormal": 80
+      },
+      {
+        "matricule": "70000205",
+        "nom": "BOMPETA MPINGO ERICK",
+        "departement": "Sales and Marketing",
+        "localisation": "Zamba",
+        "grade": "C1",
+        "weeks": [
+          {
+            "ot13": 0,
+            "ot16": 0,
+            "ot2": 0,
+            "night": 0
+          },
+          {
+            "ot13": 0,
+            "ot16": 0,
+            "ot2": 0,
+            "night": 0
+          },
+          {
+            "ot13": 0,
+            "ot16": 0,
+            "ot2": 0,
+            "night": 0
+          },
+          {
+            "ot13": 0,
+            "ot16": 0,
+            "ot2": 0,
+            "night": 0
+          },
+          {
+            "ot13": 0,
+            "ot16": 0,
+            "ot2": 0,
+            "night": 0
+          }
+        ],
+        "nightNormal": 0
+      },
+      {
+        "matricule": "70000099",
+        "nom": "DIMENENE LUZAYADIO PAMPHIL",
+        "departement": "Production",
+        "localisation": "Zamba",
+        "grade": "B1",
+        "weeks": [
+          {
+            "ot13": 0,
+            "ot16": 0,
+            "ot2": 0,
+            "night": 0
+          },
+          {
+            "ot13": 0,
+            "ot16": 0,
+            "ot2": 0,
+            "night": 0
+          },
+          {
+            "ot13": 0,
+            "ot16": 0,
+            "ot2": 0,
+            "night": 0
+          },
+          {
+            "ot13": 0,
+            "ot16": 0,
+            "ot2": 0,
+            "night": 0
+          },
+          {
+            "ot13": 0,
+            "ot16": 0,
+            "ot2": 0,
+            "night": 0
+          }
+        ],
+        "nightNormal": 46
+      },
+      {
+        "matricule": "70000079",
+        "nom": "DINANDI MVUMBI PHILIPPE",
+        "departement": "Engineering",
+        "localisation": "Zamba",
+        "grade": "C2",
+        "weeks": [
+          {
+            "ot13": 2,
+            "ot16": 1.09,
+            "ot2": 0,
+            "night": 2.49
+          },
+          {
+            "ot13": 1.44,
+            "ot16": 0,
+            "ot2": 18.52,
+            "night": 4.51
+          },
+          {
+            "ot13": 2,
+            "ot16": 2.69,
+            "ot2": 0,
+            "night": 4.69
+          },
+          {
+            "ot13": 0,
+            "ot16": 0,
+            "ot2": 11.13,
+            "night": 0
+          },
+          {
+            "ot13": 0,
+            "ot16": 0,
+            "ot2": 0,
+            "night": 0
+          }
+        ],
+        "nightNormal": 0
+      },
+      {
+        "matricule": "70000068",
+        "nom": "DUNGA KUEKUBATU PLATINI",
+        "departement": "Production",
+        "localisation": "Zamba",
+        "grade": "C1",
+        "weeks": [
+          {
+            "ot13": 0,
+            "ot16": 0,
+            "ot2": 0,
+            "night": 0
+          },
+          {
+            "ot13": 0,
+            "ot16": 0,
+            "ot2": 0,
+            "night": 0
+          },
+          {
+            "ot13": 0,
+            "ot16": 0,
+            "ot2": 0,
+            "night": 0
+          },
+          {
+            "ot13": 0,
+            "ot16": 0,
+            "ot2": 0,
+            "night": 0
+          },
+          {
+            "ot13": 0,
+            "ot16": 0,
+            "ot2": 0,
+            "night": 0
+          }
+        ],
+        "nightNormal": 83
+      },
+      {
+        "matricule": "70000281",
+        "nom": "ETEME ABOUDI LOUIS MARIE",
+        "departement": "Engineering",
+        "localisation": "Zamba",
+        "grade": "D1",
+        "weeks": [
+          {
+            "ot13": 0,
+            "ot16": 0,
+            "ot2": 0,
+            "night": 0
+          },
+          {
+            "ot13": 0,
+            "ot16": 0,
+            "ot2": 0,
+            "night": 0
+          },
+          {
+            "ot13": 0,
+            "ot16": 0,
+            "ot2": 0,
+            "night": 0
+          },
+          {
+            "ot13": 0,
+            "ot16": 0,
+            "ot2": 0,
+            "night": 0
+          },
+          {
+            "ot13": 0,
+            "ot16": 0,
+            "ot2": 0,
+            "night": 0
+          }
+        ],
+        "nightNormal": 0
+      },
+      {
+        "matricule": "70000082",
+        "nom": "FINKIDI MAYETO EDGARD",
+        "departement": "Quality Assurance",
+        "localisation": "Zamba",
+        "grade": "B3",
+        "weeks": [
+          {
+            "ot13": 0,
+            "ot16": 0,
+            "ot2": 0,
+            "night": 0
+          },
+          {
+            "ot13": 0,
+            "ot16": 0,
+            "ot2": 0,
+            "night": 0
+          },
+          {
+            "ot13": 0,
+            "ot16": 0,
+            "ot2": 0,
+            "night": 0
+          },
+          {
+            "ot13": 0,
+            "ot16": 0,
+            "ot2": 0,
+            "night": 0
+          },
+          {
+            "ot13": 0,
+            "ot16": 0,
+            "ot2": 0,
+            "night": 0
+          }
+        ],
+        "nightNormal": 77
+      },
+      {
+        "matricule": "70000040",
+        "nom": "ILONDO LIKOMBA Jack Lethycien",
+        "departement": "Engineering",
+        "localisation": "Zamba",
+        "grade": "D4",
+        "weeks": [
+          {
+            "ot13": 0,
+            "ot16": 0,
+            "ot2": 0,
+            "night": 0
+          },
+          {
+            "ot13": 0,
+            "ot16": 0,
+            "ot2": 0,
+            "night": 0
+          },
+          {
+            "ot13": 0,
+            "ot16": 0,
+            "ot2": 0,
+            "night": 0
+          },
+          {
+            "ot13": 0,
+            "ot16": 0,
+            "ot2": 0,
+            "night": 0
+          },
+          {
+            "ot13": 0,
+            "ot16": 0,
+            "ot2": 0,
+            "night": 0
+          }
+        ],
+        "nightNormal": 0
+      },
+      {
+        "matricule": "70000026",
+        "nom": "KABANGU MUTAMBAYI CHARLIE",
+        "departement": "Production",
+        "localisation": "Zamba",
+        "grade": "C3",
+        "weeks": [
+          {
+            "ot13": 2,
+            "ot16": 0.75,
+            "ot2": 4.31,
+            "night": 4.31
+          },
+          {
+            "ot13": 0,
+            "ot16": 0,
+            "ot2": 0,
+            "night": 0
+          },
+          {
+            "ot13": 0,
+            "ot16": 0,
+            "ot2": 0,
+            "night": 0
+          },
+          {
+            "ot13": 0,
+            "ot16": 0,
+            "ot2": 0,
+            "night": 0
+          },
+          {
+            "ot13": 0,
+            "ot16": 0,
+            "ot2": 0,
+            "night": 0
+          }
+        ],
+        "nightNormal": 63
+      },
+      {
+        "matricule": "70000027",
+        "nom": "KABEYA KABENGELE Tresor Michel",
+        "departement": "Production",
+        "localisation": "Zamba",
+        "grade": "D4",
+        "weeks": [
+          {
+            "ot13": 0,
+            "ot16": 0,
+            "ot2": 0,
+            "night": 0
+          },
+          {
+            "ot13": 0,
+            "ot16": 0,
+            "ot2": 0,
+            "night": 0
+          },
+          {
+            "ot13": 0,
+            "ot16": 0,
+            "ot2": 0,
+            "night": 0
+          },
+          {
+            "ot13": 0,
+            "ot16": 0,
+            "ot2": 0,
+            "night": 0
+          },
+          {
+            "ot13": 0,
+            "ot16": 0,
+            "ot2": 0,
+            "night": 0
+          }
+        ],
+        "nightNormal": 0
+      },
+      {
+        "matricule": "70000028",
+        "nom": "KADIMOYO ILUNGA YVAN",
+        "departement": "Production",
+        "localisation": "Zamba",
+        "grade": "D1",
+        "weeks": [
+          {
+            "ot13": 0,
+            "ot16": 0,
+            "ot2": 0,
+            "night": 0
+          },
+          {
+            "ot13": 0,
+            "ot16": 0,
+            "ot2": 0,
+            "night": 0
+          },
+          {
+            "ot13": 0,
+            "ot16": 0,
+            "ot2": 0,
+            "night": 0
+          },
+          {
+            "ot13": 0,
+            "ot16": 0,
+            "ot2": 0,
+            "night": 0
+          },
+          {
+            "ot13": 0,
+            "ot16": 0,
+            "ot2": 0,
+            "night": 0
+          }
+        ],
+        "nightNormal": 0
+      },
+      {
+        "matricule": "70000256",
+        "nom": "KAHASHA MBASHA PATRICK",
+        "departement": "MD Office",
+        "localisation": "Zamba",
+        "grade": "E4",
+        "weeks": [
+          {
+            "ot13": 0,
+            "ot16": 0,
+            "ot2": 0,
+            "night": 0
+          },
+          {
+            "ot13": 0,
+            "ot16": 0,
+            "ot2": 0,
+            "night": 0
+          },
+          {
+            "ot13": 0,
+            "ot16": 0,
+            "ot2": 0,
+            "night": 0
+          },
+          {
+            "ot13": 0,
+            "ot16": 0,
+            "ot2": 0,
+            "night": 0
+          },
+          {
+            "ot13": 0,
+            "ot16": 0,
+            "ot2": 0,
+            "night": 0
+          }
+        ],
+        "nightNormal": 0
+      },
+      {
+        "matricule": "70000261",
+        "nom": "KALAMBAY TSHILOMBO YANNICK",
+        "departement": "Engineering",
+        "localisation": "Zamba",
+        "grade": "C3",
+        "weeks": [
+          {
+            "ot13": 0,
+            "ot16": 0,
+            "ot2": 9.01,
+            "night": 0
+          },
+          {
+            "ot13": 2,
+            "ot16": 3.08,
+            "ot2": 0,
+            "night": 0
+          },
+          {
+            "ot13": 2,
+            "ot16": 2.38,
+            "ot2": 0,
+            "night": 0
+          },
+          {
+            "ot13": 0,
+            "ot16": 0,
+            "ot2": 4.28,
+            "night": 0
+          },
+          {
+            "ot13": 0,
+            "ot16": 0,
+            "ot2": 0,
+            "night": 0
+          }
+        ],
+        "nightNormal": 0
+      },
+      {
+        "matricule": "70000064",
+        "nom": "KALUNGA MASELE RAMSES",
+        "departement": "Production",
+        "localisation": "Zamba",
+        "grade": "C1",
+        "weeks": [
+          {
+            "ot13": 0,
+            "ot16": 0,
+            "ot2": 0,
+            "night": 0
+          },
+          {
+            "ot13": 4,
+            "ot16": 8.06,
+            "ot2": 4.01,
+            "night": 4.01
+          },
+          {
+            "ot13": 4,
+            "ot16": 12.09,
+            "ot2": 0,
+            "night": 0
+          },
+          {
+            "ot13": 4,
+            "ot16": 12.07,
+            "ot2": 0,
+            "night": 6.65
+          },
+          {
+            "ot13": 0,
+            "ot16": 0,
+            "ot2": 0,
+            "night": 0
+          }
+        ],
+        "nightNormal": 100
+      },
+      {
+        "matricule": "70000210",
+        "nom": "KAMANDA NYOMBA SOSTHENE",
+        "departement": "Quality Assurance",
+        "localisation": "Zamba",
+        "grade": "C2",
+        "weeks": [
+          {
+            "ot13": 0,
+            "ot16": 0,
+            "ot2": 0,
+            "night": 0
+          },
+          {
+            "ot13": 0,
+            "ot16": 0,
+            "ot2": 0,
+            "night": 0
+          },
+          {
+            "ot13": 0,
+            "ot16": 0,
+            "ot2": 7.93,
+            "night": 0
+          },
+          {
+            "ot13": 0,
+            "ot16": 0,
+            "ot2": 0,
+            "night": 0
+          },
+          {
+            "ot13": 0,
+            "ot16": 0,
+            "ot2": 0,
+            "night": 0
+          }
+        ],
+        "nightNormal": 0
+      },
+      {
+        "matricule": "70000264",
+        "nom": "KAMUNGA KAMUNGA YANNICK",
+        "departement": "Production",
+        "localisation": "Zamba",
+        "grade": "C1",
+        "weeks": [
+          {
+            "ot13": 0,
+            "ot16": 0,
+            "ot2": 0,
+            "night": 0
+          },
+          {
+            "ot13": 0,
+            "ot16": 0,
+            "ot2": 0,
+            "night": 0
+          },
+          {
+            "ot13": 0,
+            "ot16": 0,
+            "ot2": 0,
+            "night": 0
+          },
+          {
+            "ot13": 0,
+            "ot16": 0,
+            "ot2": 0,
+            "night": 0
+          },
+          {
+            "ot13": 0,
+            "ot16": 0,
+            "ot2": 0,
+            "night": 0
+          }
+        ],
+        "nightNormal": 80
+      },
+      {
+        "matricule": "70000101",
+        "nom": "KANAHUNA LUZAYADIO MIRTHA",
+        "departement": "Finance",
+        "localisation": "Zamba",
+        "grade": "B4",
+        "weeks": [
+          {
+            "ot13": 0,
+            "ot16": 0,
+            "ot2": 0,
+            "night": 0
+          },
+          {
+            "ot13": 0,
+            "ot16": 0,
+            "ot2": 0,
+            "night": 0
+          },
+          {
+            "ot13": 0,
+            "ot16": 0,
+            "ot2": 0,
+            "night": 0
+          },
+          {
+            "ot13": 0,
+            "ot16": 0,
+            "ot2": 0,
+            "night": 0
+          },
+          {
+            "ot13": 0,
+            "ot16": 0,
+            "ot2": 0,
+            "night": 0
+          }
+        ],
+        "nightNormal": 0
+      },
+      {
+        "matricule": "70000233",
+        "nom": "KANANGA HASSAN",
+        "departement": "Mining",
+        "localisation": "Zamba",
+        "grade": "C3",
+        "weeks": [
+          {
+            "ot13": 0,
+            "ot16": 0,
+            "ot2": 0,
+            "night": 0
+          },
+          {
+            "ot13": 0,
+            "ot16": 0,
+            "ot2": 0,
+            "night": 0
+          },
+          {
+            "ot13": 0,
+            "ot16": 0,
+            "ot2": 0,
+            "night": 0
+          },
+          {
+            "ot13": 0,
+            "ot16": 0,
+            "ot2": 0,
+            "night": 0
+          },
+          {
+            "ot13": 0,
+            "ot16": 0,
+            "ot2": 0,
+            "night": 0
+          }
+        ],
+        "nightNormal": 0
+      },
+      {
+        "matricule": "70000226",
+        "nom": "KANKONDE ILUNGA ALIDOR",
+        "departement": "Production",
+        "localisation": "Zamba",
+        "grade": "B4",
+        "weeks": [
+          {
+            "ot13": 0,
+            "ot16": 0,
+            "ot2": 0,
+            "night": 0
+          },
+          {
+            "ot13": 0,
+            "ot16": 0,
+            "ot2": 3.27,
+            "night": 0
+          },
+          {
+            "ot13": 0,
+            "ot16": 0,
+            "ot2": 12.15,
+            "night": 0
+          },
+          {
+            "ot13": 0,
+            "ot16": 0,
+            "ot2": 9.26,
+            "night": 0
+          },
+          {
+            "ot13": 0,
+            "ot16": 0,
+            "ot2": 0,
+            "night": 0
+          }
+        ],
+        "nightNormal": 0
+      },
+      {
+        "matricule": "70000293",
+        "nom": "KASEREKA KALENDE GUYLAIN",
+        "departement": "Supply Chain",
+        "localisation": "Zamba",
+        "grade": "D2",
+        "weeks": [
+          {
+            "ot13": 0,
+            "ot16": 0,
+            "ot2": 0,
+            "night": 0
+          },
+          {
+            "ot13": 0,
+            "ot16": 0,
+            "ot2": 0,
+            "night": 0
+          },
+          {
+            "ot13": 0,
+            "ot16": 0,
+            "ot2": 0,
+            "night": 0
+          },
+          {
+            "ot13": 0,
+            "ot16": 0,
+            "ot2": 0,
+            "night": 0
+          },
+          {
+            "ot13": 0,
+            "ot16": 0,
+            "ot2": 0,
+            "night": 0
+          }
+        ],
+        "nightNormal": 0
+      },
+      {
+        "matricule": "70000155",
+        "nom": "KIAMUENEDIOKO KINSOMONA HORNEL",
+        "departement": "Sales and Marketing",
+        "localisation": "Zamba",
+        "grade": "C2",
+        "weeks": [
+          {
+            "ot13": 0,
+            "ot16": 0,
+            "ot2": 0,
+            "night": 0
+          },
+          {
+            "ot13": 0,
+            "ot16": 0,
+            "ot2": 0,
+            "night": 0
+          },
+          {
+            "ot13": 0,
+            "ot16": 0,
+            "ot2": 0,
+            "night": 0
+          },
+          {
+            "ot13": 0,
+            "ot16": 0,
+            "ot2": 0,
+            "night": 0
+          },
+          {
+            "ot13": 0,
+            "ot16": 0,
+            "ot2": 0,
+            "night": 0
+          }
+        ],
+        "nightNormal": 97
+      },
+      {
+        "matricule": "70000275",
+        "nom": "KILONDO WOLENG STEPHANE",
+        "departement": "Legal",
+        "localisation": "Zamba",
+        "grade": "C3",
+        "weeks": [
+          {
+            "ot13": 0,
+            "ot16": 0,
+            "ot2": 0,
+            "night": 0
+          },
+          {
+            "ot13": 0,
+            "ot16": 0,
+            "ot2": 0,
+            "night": 0
+          },
+          {
+            "ot13": 0,
+            "ot16": 0,
+            "ot2": 0,
+            "night": 0
+          },
+          {
+            "ot13": 0,
+            "ot16": 0,
+            "ot2": 0,
+            "night": 0
+          },
+          {
+            "ot13": 0,
+            "ot16": 0,
+            "ot2": 0,
+            "night": 0
+          }
+        ],
+        "nightNormal": 0
+      },
+      {
+        "matricule": "70000129",
+        "nom": "KILUMONIKO DIAWAWANA RACHIE",
+        "departement": "Mining",
+        "localisation": "Zamba",
+        "grade": "B3",
+        "weeks": [
+          {
+            "ot13": 0,
+            "ot16": 0,
+            "ot2": 0,
+            "night": 0
+          },
+          {
+            "ot13": 0,
+            "ot16": 0,
+            "ot2": 0,
+            "night": 0
+          },
+          {
+            "ot13": 0,
+            "ot16": 0,
+            "ot2": 0,
+            "night": 0
+          },
+          {
+            "ot13": 0,
+            "ot16": 0,
+            "ot2": 0,
+            "night": 0
+          },
+          {
+            "ot13": 0,
+            "ot16": 0,
+            "ot2": 0,
+            "night": 0
+          }
+        ],
+        "nightNormal": 73
+      },
+      {
+        "matricule": "70000011",
+        "nom": "KIMBANZI FEINTA BOVICK",
+        "departement": "Sales and Marketing",
+        "localisation": "Zamba",
+        "grade": "C4",
+        "weeks": [
+          {
+            "ot13": 0,
+            "ot16": 0,
+            "ot2": 0,
+            "night": 0
+          },
+          {
+            "ot13": 0,
+            "ot16": 0,
+            "ot2": 0,
+            "night": 0
+          },
+          {
+            "ot13": 0,
+            "ot16": 0,
+            "ot2": 0,
+            "night": 0
+          },
+          {
+            "ot13": 0,
+            "ot16": 0,
+            "ot2": 0,
+            "night": 0
+          },
+          {
+            "ot13": 0,
+            "ot16": 0,
+            "ot2": 0,
+            "night": 0
+          }
+        ],
+        "nightNormal": 0
+      },
+      {
+        "matricule": "70000295",
+        "nom": "KINKINIA DIAVEZUKA PELAGIE",
+        "departement": "Human Resources",
+        "localisation": "Zamba",
+        "grade": "D2",
+        "weeks": [
+          {
+            "ot13": 0,
+            "ot16": 0,
+            "ot2": 0,
+            "night": 0
+          },
+          {
+            "ot13": 0,
+            "ot16": 0,
+            "ot2": 0,
+            "night": 0
+          },
+          {
+            "ot13": 0,
+            "ot16": 0,
+            "ot2": 0,
+            "night": 0
+          },
+          {
+            "ot13": 0,
+            "ot16": 0,
+            "ot2": 0,
+            "night": 0
+          },
+          {
+            "ot13": 0,
+            "ot16": 0,
+            "ot2": 0,
+            "night": 0
+          }
+        ],
+        "nightNormal": 0
+      },
+      {
+        "matricule": "70000024",
+        "nom": "KITAMBO SENEMONA MEDARD",
+        "departement": "Human Resources",
+        "localisation": "Zamba",
+        "grade": "B2",
+        "weeks": [
+          {
+            "ot13": 0,
+            "ot16": 0,
+            "ot2": 0,
+            "night": 0
+          },
+          {
+            "ot13": 0,
+            "ot16": 0,
+            "ot2": 0,
+            "night": 0
+          },
+          {
+            "ot13": 0,
+            "ot16": 0,
+            "ot2": 0,
+            "night": 0
+          },
+          {
+            "ot13": 0,
+            "ot16": 0,
+            "ot2": 0,
+            "night": 0
+          },
+          {
+            "ot13": 0,
+            "ot16": 0,
+            "ot2": 0,
+            "night": 0
+          }
+        ],
+        "nightNormal": 0
+      },
+      {
+        "matricule": "70000171",
+        "nom": "KUABI PANZU CHRISTIAN",
+        "departement": "Production",
+        "localisation": "Zamba",
+        "grade": "C3",
+        "weeks": [
+          {
+            "ot13": 0,
+            "ot16": 0,
+            "ot2": 4.08,
+            "night": 0
+          },
+          {
+            "ot13": 0,
+            "ot16": 0,
+            "ot2": 0,
+            "night": 0
+          },
+          {
+            "ot13": 0,
+            "ot16": 0,
+            "ot2": 4.1,
+            "night": 0
+          },
+          {
+            "ot13": 4,
+            "ot16": 12.05,
+            "ot2": 0,
+            "night": 5.8
+          },
+          {
+            "ot13": 0,
+            "ot16": 0,
+            "ot2": 0,
+            "night": 0
+          }
+        ],
+        "nightNormal": 74
+      },
+      {
+        "matricule": "70000013",
+        "nom": "KUASA KINSIONA CHRISPIN",
+        "departement": "Mining",
+        "localisation": "Zamba",
+        "grade": "B2",
+        "weeks": [
+          {
+            "ot13": 0,
+            "ot16": 0,
+            "ot2": 0,
+            "night": 0
+          },
+          {
+            "ot13": 0,
+            "ot16": 0,
+            "ot2": 0,
+            "night": 0
+          },
+          {
+            "ot13": 0,
+            "ot16": 0,
+            "ot2": 0,
+            "night": 0
+          },
+          {
+            "ot13": 0,
+            "ot16": 0,
+            "ot2": 0,
+            "night": 0
+          },
+          {
+            "ot13": 0,
+            "ot16": 0,
+            "ot2": 0,
+            "night": 0
+          }
+        ],
+        "nightNormal": 80
+      },
+      {
+        "matricule": "70000280",
+        "nom": "LANDU LUYEYE Romuald",
+        "departement": "Engineering",
+        "localisation": "Zamba",
+        "grade": "C4",
+        "weeks": [
+          {
+            "ot13": 0,
+            "ot16": 0,
+            "ot2": 0,
+            "night": 0
+          },
+          {
+            "ot13": 0,
+            "ot16": 0,
+            "ot2": 0,
+            "night": 0
+          },
+          {
+            "ot13": 0,
+            "ot16": 0,
+            "ot2": 0,
+            "night": 0
+          },
+          {
+            "ot13": 0,
+            "ot16": 0,
+            "ot2": 0,
+            "night": 0
+          },
+          {
+            "ot13": 0,
+            "ot16": 0,
+            "ot2": 0,
+            "night": 0
+          }
+        ],
+        "nightNormal": 0
+      },
+      {
+        "matricule": "70000124",
+        "nom": "LONGO ZOLA CHRISPIN",
+        "departement": "Mining",
+        "localisation": "Zamba",
+        "grade": "C3",
+        "weeks": [
+          {
+            "ot13": 0,
+            "ot16": 0,
+            "ot2": 0,
+            "night": 0
+          },
+          {
+            "ot13": 0,
+            "ot16": 0,
+            "ot2": 0,
+            "night": 0
+          },
+          {
+            "ot13": 0,
+            "ot16": 0,
+            "ot2": 0,
+            "night": 0
+          },
+          {
+            "ot13": 0,
+            "ot16": 0,
+            "ot2": 0,
+            "night": 0
+          },
+          {
+            "ot13": 0,
+            "ot16": 0,
+            "ot2": 0,
+            "night": 0
+          }
+        ],
+        "nightNormal": 0
+      },
+      {
+        "matricule": "70000232",
+        "nom": "LUCIO DA CONCEICAO",
+        "departement": "Engineering",
+        "localisation": "Zamba",
+        "grade": "C3",
+        "weeks": [
+          {
+            "ot13": 2,
+            "ot16": 1.24,
+            "ot2": 0,
+            "night": 3.24
+          },
+          {
+            "ot13": 0,
+            "ot16": 0,
+            "ot2": 7.83,
+            "night": 0
+          },
+          {
+            "ot13": 2,
+            "ot16": 2.69,
+            "ot2": 0,
+            "night": 4.69
+          },
+          {
+            "ot13": 0,
+            "ot16": 0,
+            "ot2": 0,
+            "night": 0
+          },
+          {
+            "ot13": 0,
+            "ot16": 0,
+            "ot2": 0,
+            "night": 0
+          }
+        ],
+        "nightNormal": 0
+      },
+      {
+        "matricule": "70000096",
+        "nom": "LUKUAYI MANKUENIA OSEE",
+        "departement": "Production",
+        "localisation": "Zamba",
+        "grade": "B1",
+        "weeks": [
+          {
+            "ot13": 0,
+            "ot16": 0,
+            "ot2": 0,
+            "night": 0
+          },
+          {
+            "ot13": 0,
+            "ot16": 0,
+            "ot2": 0,
+            "night": 0
+          },
+          {
+            "ot13": 0,
+            "ot16": 0,
+            "ot2": 0,
+            "night": 0
+          },
+          {
+            "ot13": 0,
+            "ot16": 0,
+            "ot2": 0,
+            "night": 0
+          },
+          {
+            "ot13": 0,
+            "ot16": 0,
+            "ot2": 0,
+            "night": 0
+          }
+        ],
+        "nightNormal": 23
+      },
+      {
+        "matricule": "70000102",
+        "nom": "LUMANISA WASOLOKELE CEDRICK",
+        "departement": "Mining",
+        "localisation": "Zamba",
+        "grade": "B1",
+        "weeks": [
+          {
+            "ot13": 0,
+            "ot16": 0,
+            "ot2": 0,
+            "night": 0
+          },
+          {
+            "ot13": 0,
+            "ot16": 0,
+            "ot2": 0,
+            "night": 0
+          },
+          {
+            "ot13": 0,
+            "ot16": 0,
+            "ot2": 0,
+            "night": 0
+          },
+          {
+            "ot13": 0,
+            "ot16": 0,
+            "ot2": 3,
+            "night": 0
+          },
+          {
+            "ot13": 0,
+            "ot16": 0,
+            "ot2": 0,
+            "night": 0
+          }
+        ],
+        "nightNormal": 77
+      },
+      {
+        "matricule": "70000057",
+        "nom": "LUTONADIO NGUAWANI OLIVIER",
+        "departement": "Production",
+        "localisation": "Zamba",
+        "grade": "C2",
+        "weeks": [
+          {
+            "ot13": 0,
+            "ot16": 0,
+            "ot2": 0,
+            "night": 0
+          },
+          {
+            "ot13": 0,
+            "ot16": 0,
+            "ot2": 0,
+            "night": 0
+          },
+          {
+            "ot13": 0,
+            "ot16": 0,
+            "ot2": 0,
+            "night": 0
+          },
+          {
+            "ot13": 0,
+            "ot16": 0,
+            "ot2": 0,
+            "night": 0
+          },
+          {
+            "ot13": 0,
+            "ot16": 0,
+            "ot2": 0,
+            "night": 0
+          }
+        ],
+        "nightNormal": 93
+      },
+      {
+        "matricule": "70000059",
+        "nom": "LUZOLAWO MANKELA RODRIGUE",
+        "departement": "Production",
+        "localisation": "Zamba",
+        "grade": "C2",
+        "weeks": [
+          {
+            "ot13": 0,
+            "ot16": 0,
+            "ot2": 0,
+            "night": 0
+          },
+          {
+            "ot13": 0,
+            "ot16": 0,
+            "ot2": 0,
+            "night": 0
+          },
+          {
+            "ot13": 0,
+            "ot16": 0,
+            "ot2": 0,
+            "night": 0
+          },
+          {
+            "ot13": 0,
+            "ot16": 0,
+            "ot2": 0,
+            "night": 0
+          },
+          {
+            "ot13": 0,
+            "ot16": 0,
+            "ot2": 0,
+            "night": 0
+          }
+        ],
+        "nightNormal": 93
+      },
+      {
+        "matricule": "70000015",
+        "nom": "LUZOLO NSEMBOLO THOMAS",
+        "departement": "Engineering",
+        "localisation": "Zamba",
+        "grade": "C2",
+        "weeks": [
+          {
+            "ot13": 0,
+            "ot16": 0,
+            "ot2": 0,
+            "night": 0
+          },
+          {
+            "ot13": 2,
+            "ot16": 3.53,
+            "ot2": 10.82,
+            "night": 0
+          },
+          {
+            "ot13": 0,
+            "ot16": 0,
+            "ot2": 20.3,
+            "night": 0
+          },
+          {
+            "ot13": 0,
+            "ot16": 0,
+            "ot2": 0,
+            "night": 0
+          },
+          {
+            "ot13": 0,
+            "ot16": 0,
+            "ot2": 0,
+            "night": 0
+          }
+        ],
+        "nightNormal": 0
+      },
+      {
+        "matricule": "70000038",
+        "nom": "MACHARIA KINYANJUI SIMON",
+        "departement": "Engineering",
+        "localisation": "Zamba",
+        "grade": "D1",
+        "weeks": [
+          {
+            "ot13": 0,
+            "ot16": 0,
+            "ot2": 0,
+            "night": 0
+          },
+          {
+            "ot13": 0,
+            "ot16": 0,
+            "ot2": 0,
+            "night": 0
+          },
+          {
+            "ot13": 0,
+            "ot16": 0,
+            "ot2": 0,
+            "night": 0
+          },
+          {
+            "ot13": 0,
+            "ot16": 0,
+            "ot2": 0,
+            "night": 0
+          },
+          {
+            "ot13": 0,
+            "ot16": 0,
+            "ot2": 0,
+            "night": 0
+          }
+        ],
+        "nightNormal": 0
+      },
+      {
+        "matricule": "70000043",
+        "nom": "MAKIVOVI KEVENA EDDO",
+        "departement": "Mining",
+        "localisation": "Zamba",
+        "grade": "C2",
+        "weeks": [
+          {
+            "ot13": 0,
+            "ot16": 0,
+            "ot2": 0,
+            "night": 0
+          },
+          {
+            "ot13": 0,
+            "ot16": 0,
+            "ot2": 0,
+            "night": 0
+          },
+          {
+            "ot13": 0,
+            "ot16": 0,
+            "ot2": 0,
+            "night": 0
+          },
+          {
+            "ot13": 0,
+            "ot16": 0,
+            "ot2": 0,
+            "night": 0
+          },
+          {
+            "ot13": 0,
+            "ot16": 0,
+            "ot2": 0,
+            "night": 0
+          }
+        ],
+        "nightNormal": 79
+      },
+      {
+        "matricule": "70000164",
+        "nom": "MALU MALUNGA SEBASTIEN",
+        "departement": "Sales and Marketing",
+        "localisation": "Zamba",
+        "grade": "C2",
+        "weeks": [
+          {
+            "ot13": 0,
+            "ot16": 0,
+            "ot2": 0,
+            "night": 0
+          },
+          {
+            "ot13": 0,
+            "ot16": 0,
+            "ot2": 0,
+            "night": 0
+          },
+          {
+            "ot13": 0,
+            "ot16": 0,
+            "ot2": 0,
+            "night": 0
+          },
+          {
+            "ot13": 0,
+            "ot16": 0,
+            "ot2": 0,
+            "night": 0
+          },
+          {
+            "ot13": 0,
+            "ot16": 0,
+            "ot2": 0,
+            "night": 0
+          }
+        ],
+        "nightNormal": 119
+      },
+      {
+        "matricule": "70000111",
+        "nom": "MANANGA MAMBULU JOSEPH",
+        "departement": "Sales and Marketing",
+        "localisation": "Zamba",
+        "grade": "C1",
+        "weeks": [
+          {
+            "ot13": 0,
+            "ot16": 0,
+            "ot2": 0,
+            "night": 0
+          },
+          {
+            "ot13": 0,
+            "ot16": 0,
+            "ot2": 0,
+            "night": 0
+          },
+          {
+            "ot13": 0,
+            "ot16": 0,
+            "ot2": 0,
+            "night": 0
+          },
+          {
+            "ot13": 0,
+            "ot16": 0,
+            "ot2": 0,
+            "night": 0
+          },
+          {
+            "ot13": 0,
+            "ot16": 0,
+            "ot2": 0,
+            "night": 0
+          }
+        ],
+        "nightNormal": 76
+      },
+      {
+        "matricule": "70000216",
+        "nom": "MANSIAMINA DIANLEMVO PATIENCE",
+        "departement": "Engineering",
+        "localisation": "Zamba",
+        "grade": "C2",
+        "weeks": [
+          {
+            "ot13": 2,
+            "ot16": 15.33,
+            "ot2": 0,
+            "night": 0
+          },
+          {
+            "ot13": 0,
+            "ot16": 0,
+            "ot2": 0,
+            "night": 0
+          },
+          {
+            "ot13": 0,
+            "ot16": 0,
+            "ot2": 0,
+            "night": 0
+          },
+          {
+            "ot13": 0,
+            "ot16": 0,
+            "ot2": 0,
+            "night": 0
+          },
+          {
+            "ot13": 0,
+            "ot16": 0,
+            "ot2": 0,
+            "night": 0
+          }
+        ],
+        "nightNormal": 0
+      },
+      {
+        "matricule": "70000029",
+        "nom": "MAPHASI VANGU PHILIPPE",
+        "departement": "Production",
+        "localisation": "Zamba",
+        "grade": "C3",
+        "weeks": [
+          {
+            "ot13": 2,
+            "ot16": 2.3,
+            "ot2": 10.74,
+            "night": 0
+          },
+          {
+            "ot13": 2,
+            "ot16": 3.03,
+            "ot2": 0,
+            "night": 0
+          },
+          {
+            "ot13": 0,
+            "ot16": 0,
+            "ot2": 4,
+            "night": 0
+          },
+          {
+            "ot13": 2,
+            "ot16": 10.01,
+            "ot2": 8.07,
+            "night": 0
+          },
+          {
+            "ot13": 0,
+            "ot16": 0,
+            "ot2": 0,
+            "night": 0
+          }
+        ],
+        "nightNormal": 91
+      },
+      {
+        "matricule": "70000308",
+        "nom": "MASSADI GEDEON GEDEON",
+        "departement": "Human Resources",
+        "localisation": "Zamba",
+        "grade": "C1",
+        "weeks": [
+          {
+            "ot13": 0,
+            "ot16": 0,
+            "ot2": 0,
+            "night": 0
+          },
+          {
+            "ot13": 0,
+            "ot16": 0,
+            "ot2": 0,
+            "night": 0
+          },
+          {
+            "ot13": 0,
+            "ot16": 0,
+            "ot2": 0,
+            "night": 0
+          },
+          {
+            "ot13": 0,
+            "ot16": 0,
+            "ot2": 0,
+            "night": 0
+          },
+          {
+            "ot13": 0,
+            "ot16": 0,
+            "ot2": 0,
+            "night": 0
+          }
+        ],
+        "nightNormal": 0
+      },
+      {
+        "matricule": "70000214",
+        "nom": "MATOKO PUATI JOEL",
+        "departement": "Production",
+        "localisation": "Zamba",
+        "grade": "C2",
+        "weeks": [
+          {
+            "ot13": 0,
+            "ot16": 0,
+            "ot2": 0,
+            "night": 0
+          },
+          {
+            "ot13": 0,
+            "ot16": 0,
+            "ot2": 0,
+            "night": 0
+          },
+          {
+            "ot13": 0,
+            "ot16": 0,
+            "ot2": 0,
+            "night": 0
+          },
+          {
+            "ot13": 0,
+            "ot16": 0,
+            "ot2": 0,
+            "night": 0
+          },
+          {
+            "ot13": 0,
+            "ot16": 0,
+            "ot2": 0,
+            "night": 0
+          }
+        ],
+        "nightNormal": 97
+      },
+      {
+        "matricule": "70000276",
+        "nom": "MAWETE NSOTA EMMANUEL",
+        "departement": "Quality Assurance",
+        "localisation": "Zamba",
+        "grade": "B5",
+        "weeks": [
+          {
+            "ot13": 0,
+            "ot16": 0,
+            "ot2": 0,
+            "night": 0
+          },
+          {
+            "ot13": 2,
+            "ot16": 5.66,
+            "ot2": 13.22,
+            "night": 0
+          },
+          {
+            "ot13": 0,
+            "ot16": 0,
+            "ot2": 0,
+            "night": 0
+          },
+          {
+            "ot13": 0.37,
+            "ot16": 0,
+            "ot2": 21.86,
+            "night": 0
+          },
+          {
+            "ot13": 0,
+            "ot16": 0,
+            "ot2": 0,
+            "night": 0
+          }
+        ],
+        "nightNormal": 0
+      },
+      {
+        "matricule": "70000240",
+        "nom": "MAYUMBU NZINDU NELSON",
+        "departement": "Finance",
+        "localisation": "Zamba",
+        "grade": "D2",
+        "weeks": [
+          {
+            "ot13": 0,
+            "ot16": 0,
+            "ot2": 0,
+            "night": 0
+          },
+          {
+            "ot13": 0,
+            "ot16": 0,
+            "ot2": 0,
+            "night": 0
+          },
+          {
+            "ot13": 0,
+            "ot16": 0,
+            "ot2": 0,
+            "night": 0
+          },
+          {
+            "ot13": 0,
+            "ot16": 0,
+            "ot2": 0,
+            "night": 0
+          },
+          {
+            "ot13": 0,
+            "ot16": 0,
+            "ot2": 0,
+            "night": 0
+          }
+        ],
+        "nightNormal": 0
+      },
+      {
+        "matricule": "70000093",
+        "nom": "MBANGI MAKULENDA ANDRE",
+        "departement": "Engineering",
+        "localisation": "Zamba",
+        "grade": "B4",
+        "weeks": [
+          {
+            "ot13": 0,
+            "ot16": 0,
+            "ot2": 0,
+            "night": 0
+          },
+          {
+            "ot13": 0,
+            "ot16": 0,
+            "ot2": 0,
+            "night": 0
+          },
+          {
+            "ot13": 0,
+            "ot16": 0,
+            "ot2": 0,
+            "night": 0
+          },
+          {
+            "ot13": 0,
+            "ot16": 0,
+            "ot2": 0,
+            "night": 0
+          },
+          {
+            "ot13": 0,
+            "ot16": 0,
+            "ot2": 0,
+            "night": 0
+          }
+        ],
+        "nightNormal": 0
+      },
+      {
+        "matricule": "70000302",
+        "nom": "MIKINDO KYANGWI PAUL SAMSON",
+        "departement": "MD Office",
+        "localisation": "Lubudi",
+        "grade": "C4",
+        "weeks": [
+          {
+            "ot13": 0,
+            "ot16": 0,
+            "ot2": 0,
+            "night": 0
+          },
+          {
+            "ot13": 0,
+            "ot16": 0,
+            "ot2": 0,
+            "night": 0
+          },
+          {
+            "ot13": 0,
+            "ot16": 0,
+            "ot2": 0,
+            "night": 0
+          },
+          {
+            "ot13": 0,
+            "ot16": 0,
+            "ot2": 0,
+            "night": 0
+          },
+          {
+            "ot13": 0,
+            "ot16": 0,
+            "ot2": 0,
+            "night": 0
+          }
+        ],
+        "nightNormal": 0
+      },
+      {
+        "matricule": "70000247",
+        "nom": "MILAMBU MBENGAY HERVE",
+        "departement": "SHE",
+        "localisation": "Zamba",
+        "grade": "C2",
+        "weeks": [
+          {
+            "ot13": 0,
+            "ot16": 0,
+            "ot2": 0,
+            "night": 0
+          },
+          {
+            "ot13": 2,
+            "ot16": 1,
+            "ot2": 0,
+            "night": 0.3
+          },
+          {
+            "ot13": 0,
+            "ot16": 0,
+            "ot2": 0,
+            "night": 0
+          },
+          {
+            "ot13": 0,
+            "ot16": 0,
+            "ot2": 0,
+            "night": 0
+          },
+          {
+            "ot13": 2,
+            "ot16": 2,
+            "ot2": 0,
+            "night": 0.99
+          }
+        ],
+        "nightNormal": 0
+      },
+      {
+        "matricule": "70000109",
+        "nom": "MOLEKA GBANGA FRED",
+        "departement": "Engineering",
+        "localisation": "Zamba",
+        "grade": "C4",
+        "weeks": [
+          {
+            "ot13": 0,
+            "ot16": 0,
+            "ot2": 0,
+            "night": 0
+          },
+          {
+            "ot13": 0,
+            "ot16": 0,
+            "ot2": 0,
+            "night": 0
+          },
+          {
+            "ot13": 0,
+            "ot16": 0,
+            "ot2": 0,
+            "night": 0
+          },
+          {
+            "ot13": 0,
+            "ot16": 0,
+            "ot2": 0,
+            "night": 0
+          },
+          {
+            "ot13": 0,
+            "ot16": 0,
+            "ot2": 0,
+            "night": 0
+          }
+        ],
+        "nightNormal": 0
+      },
+      {
+        "matricule": "70000252",
+        "nom": "MOLONGA LYONGA ANDREW",
+        "departement": "MD Office",
+        "localisation": "Zamba",
+        "grade": "E1",
+        "weeks": [
+          {
+            "ot13": 0,
+            "ot16": 0,
+            "ot2": 0,
+            "night": 0
+          },
+          {
+            "ot13": 0,
+            "ot16": 0,
+            "ot2": 0,
+            "night": 0
+          },
+          {
+            "ot13": 0,
+            "ot16": 0,
+            "ot2": 0,
+            "night": 0
+          },
+          {
+            "ot13": 0,
+            "ot16": 0,
+            "ot2": 0,
+            "night": 0
+          },
+          {
+            "ot13": 0,
+            "ot16": 0,
+            "ot2": 0,
+            "night": 0
+          }
+        ],
+        "nightNormal": 0
+      },
+      {
+        "matricule": "70000191",
+        "nom": "MPAY MAYELE RUFIN",
+        "departement": "Engineering",
+        "localisation": "Zamba",
+        "grade": "C4",
+        "weeks": [
+          {
+            "ot13": 0,
+            "ot16": 0,
+            "ot2": 0,
+            "night": 0
+          },
+          {
+            "ot13": 0,
+            "ot16": 0,
+            "ot2": 0,
+            "night": 0
+          },
+          {
+            "ot13": 0,
+            "ot16": 0,
+            "ot2": 0,
+            "night": 0
+          },
+          {
+            "ot13": 0,
+            "ot16": 0,
+            "ot2": 0,
+            "night": 0
+          },
+          {
+            "ot13": 0,
+            "ot16": 0,
+            "ot2": 0,
+            "night": 0
+          }
+        ],
+        "nightNormal": 0
+      },
+      {
+        "matricule": "70000067",
+        "nom": "MPONGO KOLONGO LEON",
+        "departement": "Supply Chain",
+        "localisation": "Zamba",
+        "grade": "C3",
+        "weeks": [
+          {
+            "ot13": 0,
+            "ot16": 0,
+            "ot2": 0,
+            "night": 0
+          },
+          {
+            "ot13": 0,
+            "ot16": 0,
+            "ot2": 0,
+            "night": 0
+          },
+          {
+            "ot13": 0,
+            "ot16": 0,
+            "ot2": 0,
+            "night": 0
+          },
+          {
+            "ot13": 0,
+            "ot16": 0,
+            "ot2": 0,
+            "night": 0
+          },
+          {
+            "ot13": 0,
+            "ot16": 0,
+            "ot2": 0,
+            "night": 0
+          }
+        ],
+        "nightNormal": 0
+      },
+      {
+        "matricule": "70000204",
+        "nom": "MPUNGWE KAPEPULA MARQUES",
+        "departement": "Mining",
+        "localisation": "Zamba",
+        "grade": "D1",
+        "weeks": [
+          {
+            "ot13": 0,
+            "ot16": 0,
+            "ot2": 0,
+            "night": 0
+          },
+          {
+            "ot13": 0,
+            "ot16": 0,
+            "ot2": 0,
+            "night": 0
+          },
+          {
+            "ot13": 0,
+            "ot16": 0,
+            "ot2": 0,
+            "night": 0
+          },
+          {
+            "ot13": 0,
+            "ot16": 0,
+            "ot2": 0,
+            "night": 0
+          },
+          {
+            "ot13": 0,
+            "ot16": 0,
+            "ot2": 0,
+            "night": 0
+          }
+        ],
+        "nightNormal": 0
+      },
+      {
+        "matricule": "70000008",
+        "nom": "MUAKASA NSONI SERGE",
+        "departement": "Human Resources",
+        "localisation": "Zamba",
+        "grade": "C4",
+        "weeks": [
+          {
+            "ot13": 0,
+            "ot16": 0,
+            "ot2": 0,
+            "night": 0
+          },
+          {
+            "ot13": 0,
+            "ot16": 0,
+            "ot2": 0,
+            "night": 0
+          },
+          {
+            "ot13": 0,
+            "ot16": 0,
+            "ot2": 0,
+            "night": 0
+          },
+          {
+            "ot13": 0,
+            "ot16": 0,
+            "ot2": 0,
+            "night": 0
+          },
+          {
+            "ot13": 0,
+            "ot16": 0,
+            "ot2": 0,
+            "night": 0
+          }
+        ],
+        "nightNormal": 0
+      },
+      {
+        "matricule": "70000063",
+        "nom": "MUANDA BALOKI JISCA",
+        "departement": "Production",
+        "localisation": "Zamba",
+        "grade": "C3",
+        "weeks": [
+          {
+            "ot13": 0,
+            "ot16": 0,
+            "ot2": 0,
+            "night": 0
+          },
+          {
+            "ot13": 0,
+            "ot16": 0,
+            "ot2": 0,
+            "night": 0
+          },
+          {
+            "ot13": 2,
+            "ot16": 2.01,
+            "ot2": 8.07,
+            "night": 4
+          },
+          {
+            "ot13": 4,
+            "ot16": 8.07,
+            "ot2": 8.01,
+            "night": 4.08
+          },
+          {
+            "ot13": 0,
+            "ot16": 0,
+            "ot2": 0,
+            "night": 0
+          }
+        ],
+        "nightNormal": 86
+      },
+      {
+        "matricule": "70000030",
+        "nom": "MUBA KAYEMBE JEREMIE",
+        "departement": "Production",
+        "localisation": "Zamba",
+        "grade": "C4",
+        "weeks": [
+          {
+            "ot13": 0,
+            "ot16": 0,
+            "ot2": 0,
+            "night": 0
+          },
+          {
+            "ot13": 0,
+            "ot16": 0,
+            "ot2": 0,
+            "night": 0
+          },
+          {
+            "ot13": 0,
+            "ot16": 0,
+            "ot2": 0,
+            "night": 0
+          },
+          {
+            "ot13": 0,
+            "ot16": 0,
+            "ot2": 0,
+            "night": 0
+          },
+          {
+            "ot13": 0,
+            "ot16": 0,
+            "ot2": 0,
+            "night": 0
+          }
+        ],
+        "nightNormal": 0
+      },
+      {
+        "matricule": "70000046",
+        "nom": "MUKENDI KABONGO PATRICK",
+        "departement": "Engineering",
+        "localisation": "Zamba",
+        "grade": "D1",
+        "weeks": [
+          {
+            "ot13": 0,
+            "ot16": 0,
+            "ot2": 0,
+            "night": 0
+          },
+          {
+            "ot13": 0,
+            "ot16": 0,
+            "ot2": 0,
+            "night": 0
+          },
+          {
+            "ot13": 0,
+            "ot16": 0,
+            "ot2": 0,
+            "night": 0
+          },
+          {
+            "ot13": 0,
+            "ot16": 0,
+            "ot2": 0,
+            "night": 0
+          },
+          {
+            "ot13": 0,
+            "ot16": 0,
+            "ot2": 0,
+            "night": 0
+          }
+        ],
+        "nightNormal": 0
+      },
+      {
+        "matricule": "70000243",
+        "nom": "MUKONKOLE KABELE Christian",
+        "departement": "Production",
+        "localisation": "Zamba",
+        "grade": "C1",
+        "weeks": [
+          {
+            "ot13": 0,
+            "ot16": 0,
+            "ot2": 0,
+            "night": 0
+          },
+          {
+            "ot13": 0,
+            "ot16": 0,
+            "ot2": 0,
+            "night": 0
+          },
+          {
+            "ot13": 0,
+            "ot16": 0,
+            "ot2": 0,
+            "night": 0
+          },
+          {
+            "ot13": 0,
+            "ot16": 0,
+            "ot2": 0,
+            "night": 0
+          },
+          {
+            "ot13": 0,
+            "ot16": 0,
+            "ot2": 0,
+            "night": 0
+          }
+        ],
+        "nightNormal": 70
+      },
+      {
+        "matricule": "70000270",
+        "nom": "MULENDA ARCHIPP",
+        "departement": "Finance",
+        "localisation": "Zamba",
+        "grade": "C2",
+        "weeks": [
+          {
+            "ot13": 0,
+            "ot16": 0,
+            "ot2": 0,
+            "night": 0
+          },
+          {
+            "ot13": 0,
+            "ot16": 0,
+            "ot2": 0,
+            "night": 0
+          },
+          {
+            "ot13": 0,
+            "ot16": 0,
+            "ot2": 0,
+            "night": 0
+          },
+          {
+            "ot13": 0,
+            "ot16": 0,
+            "ot2": 0,
+            "night": 0
+          },
+          {
+            "ot13": 0,
+            "ot16": 0,
+            "ot2": 0,
+            "night": 0
+          }
+        ],
+        "nightNormal": 0
+      },
+      {
+        "matricule": "70000284",
+        "nom": "MUNTANDA TUMBA OXANO",
+        "departement": "Engineering",
+        "localisation": "Zamba",
+        "grade": "C2",
+        "weeks": [
+          {
+            "ot13": 2,
+            "ot16": 0.51,
+            "ot2": 9.01,
+            "night": 4.51
+          },
+          {
+            "ot13": 4,
+            "ot16": 17.9,
+            "ot2": 0,
+            "night": 16.61
+          },
+          {
+            "ot13": 0,
+            "ot16": 0,
+            "ot2": 0,
+            "night": 0
+          },
+          {
+            "ot13": 0,
+            "ot16": 0,
+            "ot2": 0,
+            "night": 0
+          },
+          {
+            "ot13": 0,
+            "ot16": 0,
+            "ot2": 0,
+            "night": 0
+          }
+        ],
+        "nightNormal": 0
+      },
+      {
+        "matricule": "70000083",
+        "nom": "MUSAKO KINZONZOLI MOISE",
+        "departement": "Quality Assurance",
+        "localisation": "Zamba",
+        "grade": "C3",
+        "weeks": [
+          {
+            "ot13": 0,
+            "ot16": 0,
+            "ot2": 0,
+            "night": 0
+          },
+          {
+            "ot13": 0,
+            "ot16": 0,
+            "ot2": 0,
+            "night": 0
+          },
+          {
+            "ot13": 0,
+            "ot16": 0,
+            "ot2": 0,
+            "night": 0
+          },
+          {
+            "ot13": 0,
+            "ot16": 0,
+            "ot2": 0,
+            "night": 0
+          },
+          {
+            "ot13": 0,
+            "ot16": 0,
+            "ot2": 0,
+            "night": 0
+          }
+        ],
+        "nightNormal": 0
+      },
+      {
+        "matricule": "70000290",
+        "nom": "MUTOMBO SHAMBUYI LÉONARD",
+        "departement": "SHE",
+        "localisation": "Zamba",
+        "grade": "C4",
+        "weeks": [
+          {
+            "ot13": 0,
+            "ot16": 0,
+            "ot2": 0,
+            "night": 0
+          },
+          {
+            "ot13": 0,
+            "ot16": 0,
+            "ot2": 0,
+            "night": 0
+          },
+          {
+            "ot13": 0,
+            "ot16": 0,
+            "ot2": 0,
+            "night": 0
+          },
+          {
+            "ot13": 0,
+            "ot16": 0,
+            "ot2": 0,
+            "night": 0
+          },
+          {
+            "ot13": 0,
+            "ot16": 0,
+            "ot2": 0,
+            "night": 0
+          }
+        ],
+        "nightNormal": 0
+      },
+      {
+        "matricule": "70000306",
+        "nom": "MUZO NKIENE BLANCHARD",
+        "departement": "Engineering",
+        "localisation": "Zamba",
+        "grade": "C2",
+        "weeks": [
+          {
+            "ot13": 4,
+            "ot16": 11.96,
+            "ot2": 0,
+            "night": 0
+          },
+          {
+            "ot13": 2,
+            "ot16": 7.68,
+            "ot2": 0,
+            "night": 0
+          },
+          {
+            "ot13": 2,
+            "ot16": 1.02,
+            "ot2": 24.71,
+            "night": 12.11
+          },
+          {
+            "ot13": 2,
+            "ot16": 28.99,
+            "ot2": 0,
+            "night": 6.55
+          },
+          {
+            "ot13": 0,
+            "ot16": 0,
+            "ot2": 0,
+            "night": 0
+          }
+        ],
+        "nightNormal": 0
+      },
+      {
+        "matricule": "70000084",
+        "nom": "MVILAMBI BIMPALU DELVIS",
+        "departement": "Quality Assurance",
+        "localisation": "Zamba",
+        "grade": "B3",
+        "weeks": [
+          {
+            "ot13": 0,
+            "ot16": 0,
+            "ot2": 0,
+            "night": 0
+          },
+          {
+            "ot13": 0,
+            "ot16": 0,
+            "ot2": 0,
+            "night": 0
+          },
+          {
+            "ot13": 0,
+            "ot16": 0,
+            "ot2": 0,
+            "night": 0
+          },
+          {
+            "ot13": 0,
+            "ot16": 0,
+            "ot2": 0,
+            "night": 0
+          },
+          {
+            "ot13": 0,
+            "ot16": 0,
+            "ot2": 0,
+            "night": 0
+          }
+        ],
+        "nightNormal": 73
+      },
+      {
+        "matricule": "70000107",
+        "nom": "MVUTU LUTEMBE KARINE",
+        "departement": "Human Resources",
+        "localisation": "Zamba",
+        "grade": "C2",
+        "weeks": [
+          {
+            "ot13": 0,
+            "ot16": 0,
+            "ot2": 0,
+            "night": 0
+          },
+          {
+            "ot13": 0,
+            "ot16": 0,
+            "ot2": 0,
+            "night": 0
+          },
+          {
+            "ot13": 0,
+            "ot16": 0,
+            "ot2": 0,
+            "night": 0
+          },
+          {
+            "ot13": 0,
+            "ot16": 0,
+            "ot2": 0,
+            "night": 0
+          },
+          {
+            "ot13": 0,
+            "ot16": 0,
+            "ot2": 0,
+            "night": 0
+          }
+        ],
+        "nightNormal": 0
+      },
+      {
+        "matricule": "70000072",
+        "nom": "NDONGA NGANGULA NOEL",
+        "departement": "Production",
+        "localisation": "Zamba",
+        "grade": "C1",
+        "weeks": [
+          {
+            "ot13": 0,
+            "ot16": 0,
+            "ot2": 0,
+            "night": 0
+          },
+          {
+            "ot13": 0,
+            "ot16": 0,
+            "ot2": 0,
+            "night": 0
+          },
+          {
+            "ot13": 4,
+            "ot16": 12.02,
+            "ot2": 4.01,
+            "night": 0
+          },
+          {
+            "ot13": 2,
+            "ot16": 10,
+            "ot2": 8.03,
+            "night": 0
+          },
+          {
+            "ot13": 0,
+            "ot16": 0,
+            "ot2": 0,
+            "night": 0
+          }
+        ],
+        "nightNormal": 63
+      },
+      {
+        "matricule": "70000032",
+        "nom": "NEMWANDJARE PERO PHILEMON",
+        "departement": "Optimization",
+        "localisation": "Zamba",
+        "grade": "C5",
+        "weeks": [
+          {
+            "ot13": 0,
+            "ot16": 0,
+            "ot2": 0,
+            "night": 0
+          },
+          {
+            "ot13": 0,
+            "ot16": 0,
+            "ot2": 0,
+            "night": 0
+          },
+          {
+            "ot13": 0,
+            "ot16": 0,
+            "ot2": 0,
+            "night": 0
+          },
+          {
+            "ot13": 0,
+            "ot16": 0,
+            "ot2": 0,
+            "night": 0
+          },
+          {
+            "ot13": 0,
+            "ot16": 0,
+            "ot2": 0,
+            "night": 0
+          }
+        ],
+        "nightNormal": 0
+      },
+      {
+        "matricule": "70000283",
+        "nom": "NGIMBI NSILULU DECLAIRK",
+        "departement": "Engineering",
+        "localisation": "Zamba",
+        "grade": "B2",
+        "weeks": [
+          {
+            "ot13": 0,
+            "ot16": 0,
+            "ot2": 0,
+            "night": 0
+          },
+          {
+            "ot13": 0,
+            "ot16": 0,
+            "ot2": 0,
+            "night": 0
+          },
+          {
+            "ot13": 2,
+            "ot16": 0.46,
+            "ot2": 0,
+            "night": 0
+          },
+          {
+            "ot13": 0,
+            "ot16": 0,
+            "ot2": 0,
+            "night": 0
+          },
+          {
+            "ot13": 0,
+            "ot16": 0,
+            "ot2": 0,
+            "night": 0
+          }
+        ],
+        "nightNormal": 80
+      },
+      {
+        "matricule": "70000104",
+        "nom": "NGOMA NALOLO DIEU",
+        "departement": "Engineering",
+        "localisation": "Zamba",
+        "grade": "C3",
+        "weeks": [
+          {
+            "ot13": 2,
+            "ot16": 0.45,
+            "ot2": 4.94,
+            "night": 2.45
+          },
+          {
+            "ot13": 0,
+            "ot16": 0,
+            "ot2": 6.69,
+            "night": 0
+          },
+          {
+            "ot13": 2,
+            "ot16": 11,
+            "ot2": 12.74,
+            "night": 7.21
+          },
+          {
+            "ot13": 0,
+            "ot16": 0,
+            "ot2": 0,
+            "night": 0
+          },
+          {
+            "ot13": 0,
+            "ot16": 0,
+            "ot2": 0,
+            "night": 0
+          }
+        ],
+        "nightNormal": 0
+      },
+      {
+        "matricule": "70000091",
+        "nom": "NGOYI MUIKULU MARCEL",
+        "departement": "Engineering",
+        "localisation": "Zamba",
+        "grade": "C4",
+        "weeks": [
+          {
+            "ot13": 0,
+            "ot16": 0,
+            "ot2": 0,
+            "night": 0
+          },
+          {
+            "ot13": 0,
+            "ot16": 0,
+            "ot2": 0,
+            "night": 0
+          },
+          {
+            "ot13": 0,
+            "ot16": 0,
+            "ot2": 0,
+            "night": 0
+          },
+          {
+            "ot13": 0,
+            "ot16": 0,
+            "ot2": 0,
+            "night": 0
+          },
+          {
+            "ot13": 0,
+            "ot16": 0,
+            "ot2": 0,
+            "night": 0
+          }
+        ],
+        "nightNormal": 0
+      },
+      {
+        "matricule": "70000097",
+        "nom": "NKOSI LIMA MASUDI BIENVENU",
+        "departement": "Mining",
+        "localisation": "Zamba",
+        "grade": "B2",
+        "weeks": [
+          {
+            "ot13": 0,
+            "ot16": 0,
+            "ot2": 0,
+            "night": 0
+          },
+          {
+            "ot13": 2,
+            "ot16": 4,
+            "ot2": 0,
+            "night": 0
+          },
+          {
+            "ot13": 0,
+            "ot16": 0,
+            "ot2": 0,
+            "night": 0
+          },
+          {
+            "ot13": 0,
+            "ot16": 0,
+            "ot2": 0,
+            "night": 0
+          },
+          {
+            "ot13": 0,
+            "ot16": 0,
+            "ot2": 0,
+            "night": 0
+          }
+        ],
+        "nightNormal": 63
+      },
+      {
+        "matricule": "70000076",
+        "nom": "NLANDU NDONGALA ERICK",
+        "departement": "Quality Assurance",
+        "localisation": "Zamba",
+        "grade": "B5",
+        "weeks": [
+          {
+            "ot13": 0,
+            "ot16": 0,
+            "ot2": 16.67,
+            "night": 0
+          },
+          {
+            "ot13": 0,
+            "ot16": 0,
+            "ot2": 0,
+            "night": 0
+          },
+          {
+            "ot13": 0,
+            "ot16": 0,
+            "ot2": 0,
+            "night": 0
+          },
+          {
+            "ot13": 0,
+            "ot16": 0,
+            "ot2": 0,
+            "night": 0
+          },
+          {
+            "ot13": 0,
+            "ot16": 0,
+            "ot2": 0,
+            "night": 0
+          }
+        ],
+        "nightNormal": 0
+      },
+      {
+        "matricule": "70000309",
+        "nom": "NLANDU TSHIBAMBA JUNIOR",
+        "departement": "Engineering",
+        "localisation": "Zamba",
+        "grade": "C2",
+        "weeks": [
+          {
+            "ot13": 0,
+            "ot16": 0,
+            "ot2": 0,
+            "night": 0
+          },
+          {
+            "ot13": 0,
+            "ot16": 0,
+            "ot2": 5.87,
+            "night": 0
+          },
+          {
+            "ot13": 0,
+            "ot16": 0,
+            "ot2": 3.92,
+            "night": 0
+          },
+          {
+            "ot13": 2,
+            "ot16": 1.33,
+            "ot2": 11.74,
+            "night": 0
+          },
+          {
+            "ot13": 0,
+            "ot16": 0,
+            "ot2": 0,
+            "night": 0
+          }
+        ],
+        "nightNormal": 0
+      },
+      {
+        "matricule": "70000056",
+        "nom": "NSAKALA KUNIEKI GAYLOR",
+        "departement": "Production",
+        "localisation": "Zamba",
+        "grade": "B4",
+        "weeks": [
+          {
+            "ot13": 0,
+            "ot16": 0,
+            "ot2": 0,
+            "night": 0
+          },
+          {
+            "ot13": 0,
+            "ot16": 0,
+            "ot2": 0,
+            "night": 0
+          },
+          {
+            "ot13": 0,
+            "ot16": 0,
+            "ot2": 0,
+            "night": 0
+          },
+          {
+            "ot13": 0,
+            "ot16": 0,
+            "ot2": 0,
+            "night": 0
+          },
+          {
+            "ot13": 0,
+            "ot16": 0,
+            "ot2": 0,
+            "night": 0
+          }
+        ],
+        "nightNormal": 73
+      },
+      {
+        "matricule": "70000080",
+        "nom": "NSILU MALUTA NADEGE",
+        "departement": "Quality Assurance",
+        "localisation": "Zamba",
+        "grade": "B3",
+        "weeks": [
+          {
+            "ot13": 0,
+            "ot16": 0,
+            "ot2": 0,
+            "night": 0
+          },
+          {
+            "ot13": 0,
+            "ot16": 0,
+            "ot2": 0,
+            "night": 0
+          },
+          {
+            "ot13": 0,
+            "ot16": 0,
+            "ot2": 12.46,
+            "night": 0
+          },
+          {
+            "ot13": 0,
+            "ot16": 0,
+            "ot2": 0,
+            "night": 0
+          },
+          {
+            "ot13": 0,
+            "ot16": 0,
+            "ot2": 0,
+            "night": 0
+          }
+        ],
+        "nightNormal": 0
+      },
+      {
+        "matricule": "70000259",
+        "nom": "NSINABAU TAMFUM NATHAN",
+        "departement": "Finance",
+        "localisation": "Zamba",
+        "grade": "C3",
+        "weeks": [
+          {
+            "ot13": 0,
+            "ot16": 0,
+            "ot2": 0,
+            "night": 0
+          },
+          {
+            "ot13": 0,
+            "ot16": 0,
+            "ot2": 0,
+            "night": 0
+          },
+          {
+            "ot13": 0,
+            "ot16": 0,
+            "ot2": 0,
+            "night": 0
+          },
+          {
+            "ot13": 0,
+            "ot16": 0,
+            "ot2": 0,
+            "night": 0
+          },
+          {
+            "ot13": 0,
+            "ot16": 0,
+            "ot2": 0,
+            "night": 0
+          }
+        ],
+        "nightNormal": 0
+      },
+      {
+        "matricule": "70000227",
+        "nom": "NTUNGA PIERRE DIEU-MERCI",
+        "departement": "Engineering",
+        "localisation": "Zamba",
+        "grade": "C3",
+        "weeks": [
+          {
+            "ot13": 0,
+            "ot16": 0,
+            "ot2": 0,
+            "night": 0
+          },
+          {
+            "ot13": 0,
+            "ot16": 0,
+            "ot2": 0,
+            "night": 0
+          },
+          {
+            "ot13": 2,
+            "ot16": 0.35,
+            "ot2": 15.11,
+            "night": 0
+          },
+          {
+            "ot13": 0,
+            "ot16": 0,
+            "ot2": 0,
+            "night": 0
+          },
+          {
+            "ot13": 0,
+            "ot16": 0,
+            "ot2": 0,
+            "night": 0
+          }
+        ],
+        "nightNormal": 0
+      },
+      {
+        "matricule": "70000042",
+        "nom": "NZAZI KALUZAKI TOUBI",
+        "departement": "Mining",
+        "localisation": "Zamba",
+        "grade": "B2",
+        "weeks": [
+          {
+            "ot13": 0,
+            "ot16": 0,
+            "ot2": 0,
+            "night": 0
+          },
+          {
+            "ot13": 0,
+            "ot16": 0,
+            "ot2": 0,
+            "night": 0
+          },
+          {
+            "ot13": 0,
+            "ot16": 0,
+            "ot2": 0,
+            "night": 0
+          },
+          {
+            "ot13": 0,
+            "ot16": 0,
+            "ot2": 0,
+            "night": 0
+          },
+          {
+            "ot13": 0,
+            "ot16": 0,
+            "ot2": 0,
+            "night": 0
+          }
+        ],
+        "nightNormal": 0
+      },
+      {
+        "matricule": "70000116",
+        "nom": "NZUNGU ANTOINE BONHEUR",
+        "departement": "Engineering",
+        "localisation": "Zamba",
+        "grade": "C2",
+        "weeks": [
+          {
+            "ot13": 0,
+            "ot16": 0,
+            "ot2": 0,
+            "night": 0
+          },
+          {
+            "ot13": 2,
+            "ot16": 9.11,
+            "ot2": 0,
+            "night": 15.11
+          },
+          {
+            "ot13": 2,
+            "ot16": 10.44,
+            "ot2": 6,
+            "night": 0
+          },
+          {
+            "ot13": 2,
+            "ot16": 0.16,
+            "ot2": 0,
+            "night": 2.16
+          },
+          {
+            "ot13": 0,
+            "ot16": 0,
+            "ot2": 0,
+            "night": 0
+          }
+        ],
+        "nightNormal": 0
+      },
+      {
+        "matricule": "70000061",
+        "nom": "NZUZI TABILA JOEL",
+        "departement": "Production",
+        "localisation": "Zamba",
+        "grade": "C2",
+        "weeks": [
+          {
+            "ot13": 0,
+            "ot16": 0,
+            "ot2": 0,
+            "night": 0
+          },
+          {
+            "ot13": 0,
+            "ot16": 0,
+            "ot2": 0,
+            "night": 0
+          },
+          {
+            "ot13": 0,
+            "ot16": 0,
+            "ot2": 0,
+            "night": 0
+          },
+          {
+            "ot13": 0,
+            "ot16": 0,
+            "ot2": 0,
+            "night": 0
+          },
+          {
+            "ot13": 0,
+            "ot16": 0,
+            "ot2": 0,
+            "night": 0
+          }
+        ],
+        "nightNormal": 60
+      },
+      {
+        "matricule": "70000115",
+        "nom": "ONOSAMBA LUNDI LUNDI",
+        "departement": "Engineering",
+        "localisation": "Zamba",
+        "grade": "C2",
+        "weeks": [
+          {
+            "ot13": 0,
+            "ot16": 0,
+            "ot2": 0,
+            "night": 0
+          },
+          {
+            "ot13": 0.81,
+            "ot16": 0,
+            "ot2": 22,
+            "night": 4.13
+          },
+          {
+            "ot13": 2,
+            "ot16": 21.82,
+            "ot2": 0,
+            "night": 23.44
+          },
+          {
+            "ot13": 0,
+            "ot16": 0,
+            "ot2": 13.98,
+            "night": 0
+          },
+          {
+            "ot13": 0,
+            "ot16": 0,
+            "ot2": 0,
+            "night": 0
+          }
+        ],
+        "nightNormal": 0
+      },
+      {
+        "matricule": "70000305",
+        "nom": "PANDA KYALEVA PATRICK",
+        "departement": "MD Office",
+        "localisation": "Lubudi",
+        "grade": "C2",
+        "weeks": [
+          {
+            "ot13": 0,
+            "ot16": 0,
+            "ot2": 0,
+            "night": 0
+          },
+          {
+            "ot13": 0,
+            "ot16": 0,
+            "ot2": 0,
+            "night": 0
+          },
+          {
+            "ot13": 0,
+            "ot16": 0,
+            "ot2": 0,
+            "night": 0
+          },
+          {
+            "ot13": 0,
+            "ot16": 0,
+            "ot2": 0,
+            "night": 0
+          },
+          {
+            "ot13": 0,
+            "ot16": 0,
+            "ot2": 0,
+            "night": 0
+          }
+        ],
+        "nightNormal": 0
+      },
+      {
+        "matricule": "70000310",
+        "nom": "RACHIDI ZOBELA JUDITH",
+        "departement": "Quality Assurance",
+        "localisation": "Zamba",
+        "grade": "B5",
+        "weeks": [
+          {
+            "ot13": 0,
+            "ot16": 0,
+            "ot2": 0,
+            "night": 0
+          },
+          {
+            "ot13": 0,
+            "ot16": 0,
+            "ot2": 0,
+            "night": 0
+          },
+          {
+            "ot13": 0,
+            "ot16": 0,
+            "ot2": 0,
+            "night": 0
+          },
+          {
+            "ot13": 0,
+            "ot16": 0,
+            "ot2": 0,
+            "night": 0
+          },
+          {
+            "ot13": 0,
+            "ot16": 0,
+            "ot2": 0,
+            "night": 0
+          }
+        ],
+        "nightNormal": 0
+      },
+      {
+        "matricule": "70000266",
+        "nom": "RUKOMEZA KARHIBULA GISCARD",
+        "departement": "Mining",
+        "localisation": "Zamba",
+        "grade": "D2",
+        "weeks": [
+          {
+            "ot13": 0,
+            "ot16": 0,
+            "ot2": 0,
+            "night": 0
+          },
+          {
+            "ot13": 0,
+            "ot16": 0,
+            "ot2": 0,
+            "night": 0
+          },
+          {
+            "ot13": 0,
+            "ot16": 0,
+            "ot2": 0,
+            "night": 0
+          },
+          {
+            "ot13": 0,
+            "ot16": 0,
+            "ot2": 0,
+            "night": 0
+          },
+          {
+            "ot13": 0,
+            "ot16": 0,
+            "ot2": 0,
+            "night": 0
+          }
+        ],
+        "nightNormal": 0
+      },
+      {
+        "matricule": "70000239",
+        "nom": "SABI DIZITIDI HERVE",
+        "departement": "SHE",
+        "localisation": "Zamba",
+        "grade": "C2",
+        "weeks": [
+          {
+            "ot13": 0,
+            "ot16": 0,
+            "ot2": 0,
+            "night": 0
+          },
+          {
+            "ot13": 0,
+            "ot16": 0,
+            "ot2": 0,
+            "night": 0
+          },
+          {
+            "ot13": 0,
+            "ot16": 0,
+            "ot2": 0,
+            "night": 0
+          },
+          {
+            "ot13": 0,
+            "ot16": 0,
+            "ot2": 0,
+            "night": 0
+          },
+          {
+            "ot13": 0,
+            "ot16": 0,
+            "ot2": 0,
+            "night": 0
+          }
+        ],
+        "nightNormal": 0
+      },
+      {
+        "matricule": "70000238",
+        "nom": "SAIDI MOUSSA TRESOR",
+        "departement": "Sales and Marketing",
+        "localisation": "Zamba",
+        "grade": "C4",
+        "weeks": [
+          {
+            "ot13": 0,
+            "ot16": 0,
+            "ot2": 0,
+            "night": 0
+          },
+          {
+            "ot13": 0,
+            "ot16": 0,
+            "ot2": 0,
+            "night": 0
+          },
+          {
+            "ot13": 0,
+            "ot16": 0,
+            "ot2": 0,
+            "night": 0
+          },
+          {
+            "ot13": 0,
+            "ot16": 0,
+            "ot2": 0,
+            "night": 0
+          },
+          {
+            "ot13": 0,
+            "ot16": 0,
+            "ot2": 0,
+            "night": 0
+          }
+        ],
+        "nightNormal": 0
+      },
+      {
+        "matricule": "70000077",
+        "nom": "SAMBA ZANKEMBO CADET",
+        "departement": "Quality Assurance",
+        "localisation": "Zamba",
+        "grade": "B3",
+        "weeks": [
+          {
+            "ot13": 0,
+            "ot16": 0,
+            "ot2": 0,
+            "night": 0
+          },
+          {
+            "ot13": 0,
+            "ot16": 0,
+            "ot2": 0,
+            "night": 0
+          },
+          {
+            "ot13": 0,
+            "ot16": 0,
+            "ot2": 0,
+            "night": 0
+          },
+          {
+            "ot13": 0,
+            "ot16": 0,
+            "ot2": 0,
+            "night": 0
+          },
+          {
+            "ot13": 0,
+            "ot16": 0,
+            "ot2": 0,
+            "night": 0
+          }
+        ],
+        "nightNormal": 80
+      },
+      {
+        "matricule": "70000081",
+        "nom": "TANDU NKWALA BERTIN",
+        "departement": "Quality Assurance",
+        "localisation": "Zamba",
+        "grade": "B3",
+        "weeks": [
+          {
+            "ot13": 0,
+            "ot16": 0,
+            "ot2": 0,
+            "night": 0
+          },
+          {
+            "ot13": 0,
+            "ot16": 0,
+            "ot2": 0,
+            "night": 0
+          },
+          {
+            "ot13": 0,
+            "ot16": 0,
+            "ot2": 0,
+            "night": 0
+          },
+          {
+            "ot13": 0,
+            "ot16": 0,
+            "ot2": 0,
+            "night": 0
+          },
+          {
+            "ot13": 0,
+            "ot16": 0,
+            "ot2": 0,
+            "night": 0
+          }
+        ],
+        "nightNormal": 87
+      },
+      {
+        "matricule": "70000050",
+        "nom": "TANUI KIPRUTO ELIAS",
+        "departement": "MD Office",
+        "localisation": "Zamba",
+        "grade": "D4",
+        "weeks": [
+          {
+            "ot13": 0,
+            "ot16": 0,
+            "ot2": 0,
+            "night": 0
+          },
+          {
+            "ot13": 0,
+            "ot16": 0,
+            "ot2": 0,
+            "night": 0
+          },
+          {
+            "ot13": 0,
+            "ot16": 0,
+            "ot2": 0,
+            "night": 0
+          },
+          {
+            "ot13": 0,
+            "ot16": 0,
+            "ot2": 0,
+            "night": 0
+          },
+          {
+            "ot13": 0,
+            "ot16": 0,
+            "ot2": 0,
+            "night": 0
+          }
+        ],
+        "nightNormal": 0
+      },
+      {
+        "matricule": "70000211",
+        "nom": "TOKO MATONDO JOEL",
+        "departement": "Production",
+        "localisation": "Zamba",
+        "grade": "C1",
+        "weeks": [
+          {
+            "ot13": 0,
+            "ot16": 0,
+            "ot2": 0,
+            "night": 0
+          },
+          {
+            "ot13": 2,
+            "ot16": 6.04,
+            "ot2": 0,
+            "night": 8.04
+          },
+          {
+            "ot13": 0,
+            "ot16": 0,
+            "ot2": 0,
+            "night": 0
+          },
+          {
+            "ot13": 0,
+            "ot16": 0,
+            "ot2": 0,
+            "night": 0
+          },
+          {
+            "ot13": 0,
+            "ot16": 0,
+            "ot2": 0,
+            "night": 0
+          }
+        ],
+        "nightNormal": 26
+      },
+      {
+        "matricule": "70000242",
+        "nom": "TSHILOLO MWABILA Willy",
+        "departement": "Production",
+        "localisation": "Zamba",
+        "grade": "C1",
+        "weeks": [
+          {
+            "ot13": 0,
+            "ot16": 0,
+            "ot2": 0,
+            "night": 0
+          },
+          {
+            "ot13": 0,
+            "ot16": 0,
+            "ot2": 0,
+            "night": 0
+          },
+          {
+            "ot13": 0,
+            "ot16": 0,
+            "ot2": 0,
+            "night": 0
+          },
+          {
+            "ot13": 0,
+            "ot16": 0,
+            "ot2": 0,
+            "night": 0
+          },
+          {
+            "ot13": 0,
+            "ot16": 0,
+            "ot2": 0,
+            "night": 0
+          }
+        ],
+        "nightNormal": 77
+      },
+      {
+        "matricule": "70000088",
+        "nom": "TULOMBA BALELE OVIE",
+        "departement": "Engineering",
+        "localisation": "Zamba",
+        "grade": "C2",
+        "weeks": [
+          {
+            "ot13": 0,
+            "ot16": 0,
+            "ot2": 20.18,
+            "night": 5.62
+          },
+          {
+            "ot13": 0,
+            "ot16": 0,
+            "ot2": 0,
+            "night": 0
+          },
+          {
+            "ot13": 0,
+            "ot16": 0,
+            "ot2": 0,
+            "night": 0
+          },
+          {
+            "ot13": 0,
+            "ot16": 0,
+            "ot2": 20.18,
+            "night": 5.63
+          },
+          {
+            "ot13": 0,
+            "ot16": 0,
+            "ot2": 0,
+            "night": 0
+          }
+        ],
+        "nightNormal": 0
+      },
+      {
+        "matricule": "70000033",
+        "nom": "UUCHI UMIRAMBE PARICIAN",
+        "departement": "Optimization",
+        "localisation": "Zamba",
+        "grade": "D1",
+        "weeks": [
+          {
+            "ot13": 0,
+            "ot16": 0,
+            "ot2": 0,
+            "night": 0
+          },
+          {
+            "ot13": 0,
+            "ot16": 0,
+            "ot2": 0,
+            "night": 0
+          },
+          {
+            "ot13": 0,
+            "ot16": 0,
+            "ot2": 0,
+            "night": 0
+          },
+          {
+            "ot13": 0,
+            "ot16": 0,
+            "ot2": 0,
+            "night": 0
+          },
+          {
+            "ot13": 0,
+            "ot16": 0,
+            "ot2": 0,
+            "night": 0
+          }
+        ],
+        "nightNormal": 0
+      },
+      {
+        "matricule": "70000212",
+        "nom": "VANGU VANGU ALBERT",
+        "departement": "Production",
+        "localisation": "Zamba",
+        "grade": "B2",
+        "weeks": [
+          {
+            "ot13": 0,
+            "ot16": 0,
+            "ot2": 0,
+            "night": 0
+          },
+          {
+            "ot13": 0,
+            "ot16": 0,
+            "ot2": 4.47,
+            "night": 0
+          },
+          {
+            "ot13": 0,
+            "ot16": 0,
+            "ot2": 0,
+            "night": 0
+          },
+          {
+            "ot13": 0,
+            "ot16": 0,
+            "ot2": 0,
+            "night": 0
+          },
+          {
+            "ot13": 0,
+            "ot16": 0,
+            "ot2": 0,
+            "night": 0
+          }
+        ],
+        "nightNormal": 0
+      },
+      {
+        "matricule": "70000229",
+        "nom": "WAMPANGULUA BUKAKA GUYLAIN",
+        "departement": "Engineering",
+        "localisation": "Zamba",
+        "grade": "B2",
+        "weeks": [
+          {
+            "ot13": 0,
+            "ot16": 0,
+            "ot2": 0,
+            "night": 0
+          },
+          {
+            "ot13": 0,
+            "ot16": 0,
+            "ot2": 0,
+            "night": 0
+          },
+          {
+            "ot13": 0,
+            "ot16": 0,
+            "ot2": 0,
+            "night": 0
+          },
+          {
+            "ot13": 0,
+            "ot16": 0,
+            "ot2": 9.51,
+            "night": 7.55
+          },
+          {
+            "ot13": 0,
+            "ot16": 0,
+            "ot2": 0,
+            "night": 0
+          }
+        ],
+        "nightNormal": 0
+      },
+      {
+        "matricule": "70000087",
+        "nom": "ZIWANUKA KIANGEBENI MITHA",
+        "departement": "Engineering",
+        "localisation": "Zamba",
+        "grade": "B4",
+        "weeks": [
+          {
+            "ot13": 0,
+            "ot16": 0,
+            "ot2": 0,
+            "night": 0
+          },
+          {
+            "ot13": 0,
+            "ot16": 0,
+            "ot2": 0,
+            "night": 0
+          },
+          {
+            "ot13": 0,
+            "ot16": 0,
+            "ot2": 0,
+            "night": 0
+          },
+          {
+            "ot13": 0,
+            "ot16": 0,
+            "ot2": 0,
+            "night": 0
+          },
+          {
+            "ot13": 0,
+            "ot16": 0,
+            "ot2": 0,
+            "night": 0
+          }
+        ],
+        "nightNormal": 0
+      }
+    ],
+    "frozen": true
+  },
+  "policyRows": [
+    {
+      "matricule": "70000112",
+      "nom": "ADHULE NYADRIA JOEL",
+      "departement": "SHE",
+      "localisation": "Zamba",
+      "grade": "D2",
+      "weeks": [
+        {
+          "ot13": 0,
+          "ot16": 0,
+          "ot2": 0,
+          "night": 0
+        },
+        {
+          "ot13": 0,
+          "ot16": 0,
+          "ot2": 0,
+          "night": 0
+        },
+        {
+          "ot13": 0,
+          "ot16": 0,
+          "ot2": 0,
+          "night": 0
+        },
+        {
+          "ot13": 0,
+          "ot16": 0,
+          "ot2": 0,
+          "night": 0
+        },
+        {
+          "ot13": 0,
+          "ot16": 0,
+          "ot2": 0,
+          "night": 0
+        }
+      ],
+      "nightNormal": 0
+    },
+    {
+      "matricule": "70000244",
+      "nom": "BADIBANGA MUTSHIPAYI Leon",
+      "departement": "Production",
+      "localisation": "Zamba",
+      "grade": "C1",
+      "weeks": [
+        {
+          "ot13": 0,
+          "ot16": 0,
+          "ot2": 0,
+          "night": 0
+        },
+        {
+          "ot13": 0,
+          "ot16": 0,
+          "ot2": 8.01,
+          "night": 0
+        },
+        {
+          "ot13": 2,
+          "ot16": 8.02,
+          "ot2": 8.06,
+          "night": 8.21
+        },
+        {
+          "ot13": 2,
+          "ot16": 7.81,
+          "ot2": 8.28,
+          "night": 4.14
+        },
+        {
+          "ot13": 0,
+          "ot16": 0,
+          "ot2": 0,
+          "night": 0
+        }
+      ],
+      "nightNormal": 100
+    },
+    {
+      "matricule": "70000069",
+      "nom": "BAVIBIDILA MUNTANA GERVAIS",
+      "departement": "Production",
+      "localisation": "Zamba",
+      "grade": "B2",
+      "weeks": [
+        {
+          "ot13": 0,
+          "ot16": 0,
+          "ot2": 0,
+          "night": 0
+        },
+        {
+          "ot13": 0,
+          "ot16": 0,
+          "ot2": 0,
+          "night": 0
+        },
+        {
+          "ot13": 0,
+          "ot16": 0,
+          "ot2": 0,
+          "night": 0
+        },
+        {
+          "ot13": 0,
+          "ot16": 0,
+          "ot2": 0,
+          "night": 0
+        },
+        {
+          "ot13": 0,
+          "ot16": 0,
+          "ot2": 0,
+          "night": 0
+        }
+      ],
+      "nightNormal": 96
+    },
+    {
+      "matricule": "70000052",
+      "nom": "BAYISA SIMON DIDIER",
+      "departement": "Engineering",
+      "localisation": "Zamba",
+      "grade": "C2",
+      "weeks": [
+        {
+          "ot13": 0,
+          "ot16": 0,
+          "ot2": 13.25,
+          "night": 0
+        },
+        {
+          "ot13": 2,
+          "ot16": 3.37,
+          "ot2": 0,
+          "night": 7.37
+        },
+        {
+          "ot13": 2,
+          "ot16": 1.6,
+          "ot2": 8,
+          "night": 0
+        },
+        {
+          "ot13": 1.75,
+          "ot16": 0,
+          "ot2": 19,
+          "night": 6.72
+        },
+        {
+          "ot13": 0,
+          "ot16": 0,
+          "ot2": 0,
+          "night": 0
+        }
+      ],
+      "nightNormal": 0
+    },
+    {
+      "matricule": "70000241",
+      "nom": "BIAWILA JEAN ROSTAND",
+      "departement": "Supply Chain",
+      "localisation": "Zamba",
+      "grade": "B3",
+      "weeks": [
+        {
+          "ot13": 0,
+          "ot16": 0,
+          "ot2": 13.78,
+          "night": 0
+        },
+        {
+          "ot13": 0,
+          "ot16": 0,
+          "ot2": 0,
+          "night": 0
+        },
+        {
+          "ot13": 0,
+          "ot16": 0,
+          "ot2": 0,
+          "night": 0
+        },
+        {
+          "ot13": 2,
+          "ot16": 1.03,
+          "ot2": 0,
+          "night": 0
+        },
+        {
+          "ot13": 0,
+          "ot16": 0,
+          "ot2": 0,
+          "night": 0
+        }
+      ],
+      "nightNormal": 0
+    },
+    {
+      "matricule": "70000255",
+      "nom": "BILANGA LINGOMA Jonas",
+      "departement": "Supply Chain",
+      "localisation": "Zamba",
+      "grade": "C3",
+      "weeks": [
+        {
+          "ot13": 1.79,
+          "ot16": 0,
+          "ot2": 0,
+          "night": 0.7
+        },
+        {
+          "ot13": 0,
+          "ot16": 0,
+          "ot2": 0,
+          "night": 0
+        },
+        {
+          "ot13": 0,
+          "ot16": 0,
+          "ot2": 14.66,
+          "night": 0.52
+        },
+        {
+          "ot13": 0,
+          "ot16": 0,
+          "ot2": 9.53,
+          "night": 0
+        },
+        {
+          "ot13": 0,
+          "ot16": 0,
+          "ot2": 0,
+          "night": 0
+        }
+      ],
+      "nightNormal": 0
+    },
+    {
+      "matricule": "70000215",
+      "nom": "BINDAMA KAMOSIKO ALPHONSE",
+      "departement": "Engineering",
+      "localisation": "Zamba",
+      "grade": "C3",
+      "weeks": [
+        {
+          "ot13": 0,
+          "ot16": 0,
+          "ot2": 15.06,
+          "night": 0
+        },
+        {
+          "ot13": 0,
+          "ot16": 0,
+          "ot2": 0,
+          "night": 0
+        },
+        {
+          "ot13": 0,
+          "ot16": 0,
+          "ot2": 0,
+          "night": 0
+        },
+        {
+          "ot13": 0,
+          "ot16": 0,
+          "ot2": 9.07,
+          "night": 0
+        },
+        {
+          "ot13": 0,
+          "ot16": 0,
+          "ot2": 0,
+          "night": 0
+        }
+      ],
+      "nightNormal": 0
+    },
+    {
+      "matricule": "70000070",
+      "nom": "BITUTU NDUNGU EDER",
+      "departement": "Production",
+      "localisation": "Zamba",
+      "grade": "B2",
+      "weeks": [
+        {
+          "ot13": 0,
+          "ot16": 0,
+          "ot2": 0,
+          "night": 0
+        },
+        {
+          "ot13": 0,
+          "ot16": 0,
+          "ot2": 0,
+          "night": 0
+        },
+        {
+          "ot13": 0,
+          "ot16": 0,
+          "ot2": 0,
+          "night": 0
+        },
+        {
+          "ot13": 0,
+          "ot16": 0,
+          "ot2": 0,
+          "night": 0
+        },
+        {
+          "ot13": 0,
+          "ot16": 0,
+          "ot2": 0,
+          "night": 0
+        }
+      ],
+      "nightNormal": 80
+    },
+    {
+      "matricule": "70000205",
+      "nom": "BOMPETA MPINGO ERICK",
+      "departement": "Sales and Marketing",
+      "localisation": "Zamba",
+      "grade": "C1",
+      "weeks": [
+        {
+          "ot13": 0,
+          "ot16": 0,
+          "ot2": 0,
+          "night": 0
+        },
+        {
+          "ot13": 0,
+          "ot16": 0,
+          "ot2": 0,
+          "night": 0
+        },
+        {
+          "ot13": 0,
+          "ot16": 0,
+          "ot2": 0,
+          "night": 0
+        },
+        {
+          "ot13": 0,
+          "ot16": 0,
+          "ot2": 0,
+          "night": 0
+        },
+        {
+          "ot13": 0,
+          "ot16": 0,
+          "ot2": 0,
+          "night": 0
+        }
+      ],
+      "nightNormal": 0
+    },
+    {
+      "matricule": "70000099",
+      "nom": "DIMENENE LUZAYADIO PAMPHIL",
+      "departement": "Production",
+      "localisation": "Zamba",
+      "grade": "B1",
+      "weeks": [
+        {
+          "ot13": 0,
+          "ot16": 0,
+          "ot2": 0,
+          "night": 0
+        },
+        {
+          "ot13": 0,
+          "ot16": 0,
+          "ot2": 0,
+          "night": 0
+        },
+        {
+          "ot13": 0,
+          "ot16": 0,
+          "ot2": 0,
+          "night": 0
+        },
+        {
+          "ot13": 0,
+          "ot16": 0,
+          "ot2": 0,
+          "night": 0
+        },
+        {
+          "ot13": 0,
+          "ot16": 0,
+          "ot2": 0,
+          "night": 0
+        }
+      ],
+      "nightNormal": 46
+    },
+    {
+      "matricule": "70000079",
+      "nom": "DINANDI MVUMBI PHILIPPE",
+      "departement": "Engineering",
+      "localisation": "Zamba",
+      "grade": "C2",
+      "weeks": [
+        {
+          "ot13": 1.09,
+          "ot16": 0,
+          "ot2": 0,
+          "night": 2.49
+        },
+        {
+          "ot13": 0,
+          "ot16": 0,
+          "ot2": 18.52,
+          "night": 4.51
+        },
+        {
+          "ot13": 2,
+          "ot16": 0.69,
+          "ot2": 0,
+          "night": 4.69
+        },
+        {
+          "ot13": 0,
+          "ot16": 0,
+          "ot2": 11.13,
+          "night": 0
+        },
+        {
+          "ot13": 0,
+          "ot16": 0,
+          "ot2": 0,
+          "night": 0
+        }
+      ],
+      "nightNormal": 0
+    },
+    {
+      "matricule": "70000068",
+      "nom": "DUNGA KUEKUBATU PLATINI",
+      "departement": "Production",
+      "localisation": "Zamba",
+      "grade": "C1",
+      "weeks": [
+        {
+          "ot13": 0,
+          "ot16": 0,
+          "ot2": 0,
+          "night": 0
+        },
+        {
+          "ot13": 0,
+          "ot16": 0,
+          "ot2": 0,
+          "night": 0
+        },
+        {
+          "ot13": 0,
+          "ot16": 0,
+          "ot2": 0,
+          "night": 0
+        },
+        {
+          "ot13": 0,
+          "ot16": 0,
+          "ot2": 0,
+          "night": 0
+        },
+        {
+          "ot13": 0,
+          "ot16": 0,
+          "ot2": 0,
+          "night": 0
+        }
+      ],
+      "nightNormal": 83
+    },
+    {
+      "matricule": "70000281",
+      "nom": "ETEME ABOUDI LOUIS MARIE",
+      "departement": "Engineering",
+      "localisation": "Zamba",
+      "grade": "D1",
+      "weeks": [
+        {
+          "ot13": 0,
+          "ot16": 0,
+          "ot2": 0,
+          "night": 0
+        },
+        {
+          "ot13": 0,
+          "ot16": 0,
+          "ot2": 0,
+          "night": 0
+        },
+        {
+          "ot13": 0,
+          "ot16": 0,
+          "ot2": 0,
+          "night": 0
+        },
+        {
+          "ot13": 0,
+          "ot16": 0,
+          "ot2": 0,
+          "night": 0
+        },
+        {
+          "ot13": 0,
+          "ot16": 0,
+          "ot2": 0,
+          "night": 0
+        }
+      ],
+      "nightNormal": 0
+    },
+    {
+      "matricule": "70000082",
+      "nom": "FINKIDI MAYETO EDGARD",
+      "departement": "Quality Assurance",
+      "localisation": "Zamba",
+      "grade": "B3",
+      "weeks": [
+        {
+          "ot13": 0,
+          "ot16": 0,
+          "ot2": 0,
+          "night": 0
+        },
+        {
+          "ot13": 0,
+          "ot16": 0,
+          "ot2": 0,
+          "night": 0
+        },
+        {
+          "ot13": 0,
+          "ot16": 0,
+          "ot2": 0,
+          "night": 0
+        },
+        {
+          "ot13": 0,
+          "ot16": 0,
+          "ot2": 0,
+          "night": 0
+        },
+        {
+          "ot13": 0,
+          "ot16": 0,
+          "ot2": 0,
+          "night": 0
+        }
+      ],
+      "nightNormal": 77
+    },
+    {
+      "matricule": "70000040",
+      "nom": "ILONDO LIKOMBA Jack Lethycien",
+      "departement": "Engineering",
+      "localisation": "Zamba",
+      "grade": "D4",
+      "weeks": [
+        {
+          "ot13": 0,
+          "ot16": 0,
+          "ot2": 0,
+          "night": 0
+        },
+        {
+          "ot13": 0,
+          "ot16": 0,
+          "ot2": 0,
+          "night": 0
+        },
+        {
+          "ot13": 0,
+          "ot16": 0,
+          "ot2": 0,
+          "night": 0
+        },
+        {
+          "ot13": 0,
+          "ot16": 0,
+          "ot2": 0,
+          "night": 0
+        },
+        {
+          "ot13": 0,
+          "ot16": 0,
+          "ot2": 0,
+          "night": 0
+        }
+      ],
+      "nightNormal": 0
+    },
+    {
+      "matricule": "70000026",
+      "nom": "KABANGU MUTAMBAYI CHARLIE",
+      "departement": "Production",
+      "localisation": "Zamba",
+      "grade": "C3",
+      "weeks": [
+        {
+          "ot13": 0.75,
+          "ot16": 0,
+          "ot2": 4.31,
+          "night": 4.31
+        },
+        {
+          "ot13": 0,
+          "ot16": 0,
+          "ot2": 0,
+          "night": 0
+        },
+        {
+          "ot13": 0,
+          "ot16": 0,
+          "ot2": 0,
+          "night": 0
+        },
+        {
+          "ot13": 0,
+          "ot16": 0,
+          "ot2": 0,
+          "night": 0
+        },
+        {
+          "ot13": 0,
+          "ot16": 0,
+          "ot2": 0,
+          "night": 0
+        }
+      ],
+      "nightNormal": 63
+    },
+    {
+      "matricule": "70000027",
+      "nom": "KABEYA KABENGELE Tresor Michel",
+      "departement": "Production",
+      "localisation": "Zamba",
+      "grade": "D4",
+      "weeks": [
+        {
+          "ot13": 0,
+          "ot16": 0,
+          "ot2": 0,
+          "night": 0
+        },
+        {
+          "ot13": 0,
+          "ot16": 0,
+          "ot2": 0,
+          "night": 0
+        },
+        {
+          "ot13": 0,
+          "ot16": 0,
+          "ot2": 0,
+          "night": 0
+        },
+        {
+          "ot13": 0,
+          "ot16": 0,
+          "ot2": 0,
+          "night": 0
+        },
+        {
+          "ot13": 0,
+          "ot16": 0,
+          "ot2": 0,
+          "night": 0
+        }
+      ],
+      "nightNormal": 0
+    },
+    {
+      "matricule": "70000028",
+      "nom": "KADIMOYO ILUNGA YVAN",
+      "departement": "Production",
+      "localisation": "Zamba",
+      "grade": "D1",
+      "weeks": [
+        {
+          "ot13": 0,
+          "ot16": 0,
+          "ot2": 0,
+          "night": 0
+        },
+        {
+          "ot13": 0,
+          "ot16": 0,
+          "ot2": 0,
+          "night": 0
+        },
+        {
+          "ot13": 0,
+          "ot16": 0,
+          "ot2": 0,
+          "night": 0
+        },
+        {
+          "ot13": 0,
+          "ot16": 0,
+          "ot2": 0,
+          "night": 0
+        },
+        {
+          "ot13": 0,
+          "ot16": 0,
+          "ot2": 0,
+          "night": 0
+        }
+      ],
+      "nightNormal": 0
+    },
+    {
+      "matricule": "70000256",
+      "nom": "KAHASHA MBASHA PATRICK",
+      "departement": "MD Office",
+      "localisation": "Zamba",
+      "grade": "E4",
+      "weeks": [
+        {
+          "ot13": 0,
+          "ot16": 0,
+          "ot2": 0,
+          "night": 0
+        },
+        {
+          "ot13": 0,
+          "ot16": 0,
+          "ot2": 0,
+          "night": 0
+        },
+        {
+          "ot13": 0,
+          "ot16": 0,
+          "ot2": 0,
+          "night": 0
+        },
+        {
+          "ot13": 0,
+          "ot16": 0,
+          "ot2": 0,
+          "night": 0
+        },
+        {
+          "ot13": 0,
+          "ot16": 0,
+          "ot2": 0,
+          "night": 0
+        }
+      ],
+      "nightNormal": 0
+    },
+    {
+      "matricule": "70000261",
+      "nom": "KALAMBAY TSHILOMBO YANNICK",
+      "departement": "Engineering",
+      "localisation": "Zamba",
+      "grade": "C3",
+      "weeks": [
+        {
+          "ot13": 0,
+          "ot16": 0,
+          "ot2": 9.01,
+          "night": 0
+        },
+        {
+          "ot13": 2,
+          "ot16": 1.08,
+          "ot2": 0,
+          "night": 0
+        },
+        {
+          "ot13": 2,
+          "ot16": 0.38,
+          "ot2": 0,
+          "night": 0
+        },
+        {
+          "ot13": 0,
+          "ot16": 0,
+          "ot2": 4.28,
+          "night": 0
+        },
+        {
+          "ot13": 0,
+          "ot16": 0,
+          "ot2": 0,
+          "night": 0
+        }
+      ],
+      "nightNormal": 0
+    },
+    {
+      "matricule": "70000064",
+      "nom": "KALUNGA MASELE RAMSES",
+      "departement": "Production",
+      "localisation": "Zamba",
+      "grade": "C1",
+      "weeks": [
+        {
+          "ot13": 0,
+          "ot16": 0,
+          "ot2": 0,
+          "night": 0
+        },
+        {
+          "ot13": 2,
+          "ot16": 8.06,
+          "ot2": 4.01,
+          "night": 4.01
+        },
+        {
+          "ot13": 2,
+          "ot16": 12.09,
+          "ot2": 0,
+          "night": 0
+        },
+        {
+          "ot13": 2,
+          "ot16": 12.07,
+          "ot2": 0,
+          "night": 6.65
+        },
+        {
+          "ot13": 0,
+          "ot16": 0,
+          "ot2": 0,
+          "night": 0
+        }
+      ],
+      "nightNormal": 100
+    },
+    {
+      "matricule": "70000210",
+      "nom": "KAMANDA NYOMBA SOSTHENE",
+      "departement": "Quality Assurance",
+      "localisation": "Zamba",
+      "grade": "C2",
+      "weeks": [
+        {
+          "ot13": 0,
+          "ot16": 0,
+          "ot2": 0,
+          "night": 0
+        },
+        {
+          "ot13": 0,
+          "ot16": 0,
+          "ot2": 0,
+          "night": 0
+        },
+        {
+          "ot13": 0,
+          "ot16": 0,
+          "ot2": 7.93,
+          "night": 0
+        },
+        {
+          "ot13": 0,
+          "ot16": 0,
+          "ot2": 0,
+          "night": 0
+        },
+        {
+          "ot13": 0,
+          "ot16": 0,
+          "ot2": 0,
+          "night": 0
+        }
+      ],
+      "nightNormal": 0
+    },
+    {
+      "matricule": "70000264",
+      "nom": "KAMUNGA KAMUNGA YANNICK",
+      "departement": "Production",
+      "localisation": "Zamba",
+      "grade": "C1",
+      "weeks": [
+        {
+          "ot13": 0,
+          "ot16": 0,
+          "ot2": 0,
+          "night": 0
+        },
+        {
+          "ot13": 0,
+          "ot16": 0,
+          "ot2": 0,
+          "night": 0
+        },
+        {
+          "ot13": 0,
+          "ot16": 0,
+          "ot2": 0,
+          "night": 0
+        },
+        {
+          "ot13": 0,
+          "ot16": 0,
+          "ot2": 0,
+          "night": 0
+        },
+        {
+          "ot13": 0,
+          "ot16": 0,
+          "ot2": 0,
+          "night": 0
+        }
+      ],
+      "nightNormal": 80
+    },
+    {
+      "matricule": "70000101",
+      "nom": "KANAHUNA LUZAYADIO MIRTHA",
+      "departement": "Finance",
+      "localisation": "Zamba",
+      "grade": "B4",
+      "weeks": [
+        {
+          "ot13": 0,
+          "ot16": 0,
+          "ot2": 0,
+          "night": 0
+        },
+        {
+          "ot13": 0,
+          "ot16": 0,
+          "ot2": 0,
+          "night": 0
+        },
+        {
+          "ot13": 0,
+          "ot16": 0,
+          "ot2": 0,
+          "night": 0
+        },
+        {
+          "ot13": 0,
+          "ot16": 0,
+          "ot2": 0,
+          "night": 0
+        },
+        {
+          "ot13": 0,
+          "ot16": 0,
+          "ot2": 0,
+          "night": 0
+        }
+      ],
+      "nightNormal": 0
+    },
+    {
+      "matricule": "70000233",
+      "nom": "KANANGA HASSAN",
+      "departement": "Mining",
+      "localisation": "Zamba",
+      "grade": "C3",
+      "weeks": [
+        {
+          "ot13": 0,
+          "ot16": 0,
+          "ot2": 0,
+          "night": 0
+        },
+        {
+          "ot13": 0,
+          "ot16": 0,
+          "ot2": 0,
+          "night": 0
+        },
+        {
+          "ot13": 0,
+          "ot16": 0,
+          "ot2": 0,
+          "night": 0
+        },
+        {
+          "ot13": 0,
+          "ot16": 0,
+          "ot2": 0,
+          "night": 0
+        },
+        {
+          "ot13": 0,
+          "ot16": 0,
+          "ot2": 0,
+          "night": 0
+        }
+      ],
+      "nightNormal": 0
+    },
+    {
+      "matricule": "70000226",
+      "nom": "KANKONDE ILUNGA ALIDOR",
+      "departement": "Production",
+      "localisation": "Zamba",
+      "grade": "B4",
+      "weeks": [
+        {
+          "ot13": 0,
+          "ot16": 0,
+          "ot2": 0,
+          "night": 0
+        },
+        {
+          "ot13": 0,
+          "ot16": 0,
+          "ot2": 3.27,
+          "night": 0
+        },
+        {
+          "ot13": 0,
+          "ot16": 0,
+          "ot2": 12.15,
+          "night": 0
+        },
+        {
+          "ot13": 0,
+          "ot16": 0,
+          "ot2": 9.26,
+          "night": 0
+        },
+        {
+          "ot13": 0,
+          "ot16": 0,
+          "ot2": 0,
+          "night": 0
+        }
+      ],
+      "nightNormal": 0
+    },
+    {
+      "matricule": "70000293",
+      "nom": "KASEREKA KALENDE GUYLAIN",
+      "departement": "Supply Chain",
+      "localisation": "Zamba",
+      "grade": "D2",
+      "weeks": [
+        {
+          "ot13": 0,
+          "ot16": 0,
+          "ot2": 0,
+          "night": 0
+        },
+        {
+          "ot13": 0,
+          "ot16": 0,
+          "ot2": 0,
+          "night": 0
+        },
+        {
+          "ot13": 0,
+          "ot16": 0,
+          "ot2": 0,
+          "night": 0
+        },
+        {
+          "ot13": 0,
+          "ot16": 0,
+          "ot2": 0,
+          "night": 0
+        },
+        {
+          "ot13": 0,
+          "ot16": 0,
+          "ot2": 0,
+          "night": 0
+        }
+      ],
+      "nightNormal": 0
+    },
+    {
+      "matricule": "70000155",
+      "nom": "KIAMUENEDIOKO KINSOMONA HORNEL",
+      "departement": "Sales and Marketing",
+      "localisation": "Zamba",
+      "grade": "C2",
+      "weeks": [
+        {
+          "ot13": 0,
+          "ot16": 0,
+          "ot2": 0,
+          "night": 0
+        },
+        {
+          "ot13": 0,
+          "ot16": 0,
+          "ot2": 0,
+          "night": 0
+        },
+        {
+          "ot13": 0,
+          "ot16": 0,
+          "ot2": 0,
+          "night": 0
+        },
+        {
+          "ot13": 0,
+          "ot16": 0,
+          "ot2": 0,
+          "night": 0
+        },
+        {
+          "ot13": 0,
+          "ot16": 0,
+          "ot2": 0,
+          "night": 0
+        }
+      ],
+      "nightNormal": 97
+    },
+    {
+      "matricule": "70000275",
+      "nom": "KILONDO WOLENG STEPHANE",
+      "departement": "Legal",
+      "localisation": "Zamba",
+      "grade": "C3",
+      "weeks": [
+        {
+          "ot13": 0,
+          "ot16": 0,
+          "ot2": 0,
+          "night": 0
+        },
+        {
+          "ot13": 0,
+          "ot16": 0,
+          "ot2": 0,
+          "night": 0
+        },
+        {
+          "ot13": 0,
+          "ot16": 0,
+          "ot2": 0,
+          "night": 0
+        },
+        {
+          "ot13": 0,
+          "ot16": 0,
+          "ot2": 0,
+          "night": 0
+        },
+        {
+          "ot13": 0,
+          "ot16": 0,
+          "ot2": 0,
+          "night": 0
+        }
+      ],
+      "nightNormal": 0
+    },
+    {
+      "matricule": "70000129",
+      "nom": "KILUMONIKO DIAWAWANA RACHIE",
+      "departement": "Mining",
+      "localisation": "Zamba",
+      "grade": "B3",
+      "weeks": [
+        {
+          "ot13": 0,
+          "ot16": 0,
+          "ot2": 0,
+          "night": 0
+        },
+        {
+          "ot13": 0,
+          "ot16": 0,
+          "ot2": 0,
+          "night": 0
+        },
+        {
+          "ot13": 0,
+          "ot16": 0,
+          "ot2": 0,
+          "night": 0
+        },
+        {
+          "ot13": 0,
+          "ot16": 0,
+          "ot2": 0,
+          "night": 0
+        },
+        {
+          "ot13": 0,
+          "ot16": 0,
+          "ot2": 0,
+          "night": 0
+        }
+      ],
+      "nightNormal": 73
+    },
+    {
+      "matricule": "70000011",
+      "nom": "KIMBANZI FEINTA BOVICK",
+      "departement": "Sales and Marketing",
+      "localisation": "Zamba",
+      "grade": "C4",
+      "weeks": [
+        {
+          "ot13": 0,
+          "ot16": 0,
+          "ot2": 0,
+          "night": 0
+        },
+        {
+          "ot13": 0,
+          "ot16": 0,
+          "ot2": 0,
+          "night": 0
+        },
+        {
+          "ot13": 0,
+          "ot16": 0,
+          "ot2": 0,
+          "night": 0
+        },
+        {
+          "ot13": 0,
+          "ot16": 0,
+          "ot2": 0,
+          "night": 0
+        },
+        {
+          "ot13": 0,
+          "ot16": 0,
+          "ot2": 0,
+          "night": 0
+        }
+      ],
+      "nightNormal": 0
+    },
+    {
+      "matricule": "70000295",
+      "nom": "KINKINIA DIAVEZUKA PELAGIE",
+      "departement": "Human Resources",
+      "localisation": "Zamba",
+      "grade": "D2",
+      "weeks": [
+        {
+          "ot13": 0,
+          "ot16": 0,
+          "ot2": 0,
+          "night": 0
+        },
+        {
+          "ot13": 0,
+          "ot16": 0,
+          "ot2": 0,
+          "night": 0
+        },
+        {
+          "ot13": 0,
+          "ot16": 0,
+          "ot2": 0,
+          "night": 0
+        },
+        {
+          "ot13": 0,
+          "ot16": 0,
+          "ot2": 0,
+          "night": 0
+        },
+        {
+          "ot13": 0,
+          "ot16": 0,
+          "ot2": 0,
+          "night": 0
+        }
+      ],
+      "nightNormal": 0
+    },
+    {
+      "matricule": "70000024",
+      "nom": "KITAMBO SENEMONA MEDARD",
+      "departement": "Human Resources",
+      "localisation": "Zamba",
+      "grade": "B2",
+      "weeks": [
+        {
+          "ot13": 0,
+          "ot16": 0,
+          "ot2": 0,
+          "night": 0
+        },
+        {
+          "ot13": 0,
+          "ot16": 0,
+          "ot2": 0,
+          "night": 0
+        },
+        {
+          "ot13": 0,
+          "ot16": 0,
+          "ot2": 0,
+          "night": 0
+        },
+        {
+          "ot13": 0,
+          "ot16": 0,
+          "ot2": 0,
+          "night": 0
+        },
+        {
+          "ot13": 0,
+          "ot16": 0,
+          "ot2": 0,
+          "night": 0
+        }
+      ],
+      "nightNormal": 0
+    },
+    {
+      "matricule": "70000171",
+      "nom": "KUABI PANZU CHRISTIAN",
+      "departement": "Production",
+      "localisation": "Zamba",
+      "grade": "C3",
+      "weeks": [
+        {
+          "ot13": 0,
+          "ot16": 0,
+          "ot2": 4.08,
+          "night": 0
+        },
+        {
+          "ot13": 0,
+          "ot16": 0,
+          "ot2": 0,
+          "night": 0
+        },
+        {
+          "ot13": 0,
+          "ot16": 0,
+          "ot2": 4.1,
+          "night": 0
+        },
+        {
+          "ot13": 2,
+          "ot16": 12.05,
+          "ot2": 0,
+          "night": 5.8
+        },
+        {
+          "ot13": 0,
+          "ot16": 0,
+          "ot2": 0,
+          "night": 0
+        }
+      ],
+      "nightNormal": 74
+    },
+    {
+      "matricule": "70000013",
+      "nom": "KUASA KINSIONA CHRISPIN",
+      "departement": "Mining",
+      "localisation": "Zamba",
+      "grade": "B2",
+      "weeks": [
+        {
+          "ot13": 0,
+          "ot16": 0,
+          "ot2": 0,
+          "night": 0
+        },
+        {
+          "ot13": 0,
+          "ot16": 0,
+          "ot2": 0,
+          "night": 0
+        },
+        {
+          "ot13": 0,
+          "ot16": 0,
+          "ot2": 0,
+          "night": 0
+        },
+        {
+          "ot13": 0,
+          "ot16": 0,
+          "ot2": 0,
+          "night": 0
+        },
+        {
+          "ot13": 0,
+          "ot16": 0,
+          "ot2": 0,
+          "night": 0
+        }
+      ],
+      "nightNormal": 80
+    },
+    {
+      "matricule": "70000280",
+      "nom": "LANDU LUYEYE Romuald",
+      "departement": "Engineering",
+      "localisation": "Zamba",
+      "grade": "C4",
+      "weeks": [
+        {
+          "ot13": 0,
+          "ot16": 0,
+          "ot2": 0,
+          "night": 0
+        },
+        {
+          "ot13": 0,
+          "ot16": 0,
+          "ot2": 0,
+          "night": 0
+        },
+        {
+          "ot13": 0,
+          "ot16": 0,
+          "ot2": 0,
+          "night": 0
+        },
+        {
+          "ot13": 0,
+          "ot16": 0,
+          "ot2": 0,
+          "night": 0
+        },
+        {
+          "ot13": 0,
+          "ot16": 0,
+          "ot2": 0,
+          "night": 0
+        }
+      ],
+      "nightNormal": 0
+    },
+    {
+      "matricule": "70000124",
+      "nom": "LONGO ZOLA CHRISPIN",
+      "departement": "Mining",
+      "localisation": "Zamba",
+      "grade": "C3",
+      "weeks": [
+        {
+          "ot13": 0,
+          "ot16": 0,
+          "ot2": 0,
+          "night": 0
+        },
+        {
+          "ot13": 0,
+          "ot16": 0,
+          "ot2": 0,
+          "night": 0
+        },
+        {
+          "ot13": 0,
+          "ot16": 0,
+          "ot2": 0,
+          "night": 0
+        },
+        {
+          "ot13": 0,
+          "ot16": 0,
+          "ot2": 0,
+          "night": 0
+        },
+        {
+          "ot13": 0,
+          "ot16": 0,
+          "ot2": 0,
+          "night": 0
+        }
+      ],
+      "nightNormal": 0
+    },
+    {
+      "matricule": "70000232",
+      "nom": "LUCIO DA CONCEICAO",
+      "departement": "Engineering",
+      "localisation": "Zamba",
+      "grade": "C3",
+      "weeks": [
+        {
+          "ot13": 1.24,
+          "ot16": 0,
+          "ot2": 0,
+          "night": 3.24
+        },
+        {
+          "ot13": 0,
+          "ot16": 0,
+          "ot2": 7.83,
+          "night": 0
+        },
+        {
+          "ot13": 2,
+          "ot16": 0.69,
+          "ot2": 0,
+          "night": 4.69
+        },
+        {
+          "ot13": 0,
+          "ot16": 0,
+          "ot2": 0,
+          "night": 0
+        },
+        {
+          "ot13": 0,
+          "ot16": 0,
+          "ot2": 0,
+          "night": 0
+        }
+      ],
+      "nightNormal": 0
+    },
+    {
+      "matricule": "70000096",
+      "nom": "LUKUAYI MANKUENIA OSEE",
+      "departement": "Production",
+      "localisation": "Zamba",
+      "grade": "B1",
+      "weeks": [
+        {
+          "ot13": 0,
+          "ot16": 0,
+          "ot2": 0,
+          "night": 0
+        },
+        {
+          "ot13": 0,
+          "ot16": 0,
+          "ot2": 0,
+          "night": 0
+        },
+        {
+          "ot13": 0,
+          "ot16": 0,
+          "ot2": 0,
+          "night": 0
+        },
+        {
+          "ot13": 0,
+          "ot16": 0,
+          "ot2": 0,
+          "night": 0
+        },
+        {
+          "ot13": 0,
+          "ot16": 0,
+          "ot2": 0,
+          "night": 0
+        }
+      ],
+      "nightNormal": 23
+    },
+    {
+      "matricule": "70000102",
+      "nom": "LUMANISA WASOLOKELE CEDRICK",
+      "departement": "Mining",
+      "localisation": "Zamba",
+      "grade": "B1",
+      "weeks": [
+        {
+          "ot13": 0,
+          "ot16": 0,
+          "ot2": 0,
+          "night": 0
+        },
+        {
+          "ot13": 0,
+          "ot16": 0,
+          "ot2": 0,
+          "night": 0
+        },
+        {
+          "ot13": 0,
+          "ot16": 0,
+          "ot2": 0,
+          "night": 0
+        },
+        {
+          "ot13": 0,
+          "ot16": 0,
+          "ot2": 3,
+          "night": 0
+        },
+        {
+          "ot13": 0,
+          "ot16": 0,
+          "ot2": 0,
+          "night": 0
+        }
+      ],
+      "nightNormal": 77
+    },
+    {
+      "matricule": "70000057",
+      "nom": "LUTONADIO NGUAWANI OLIVIER",
+      "departement": "Production",
+      "localisation": "Zamba",
+      "grade": "C2",
+      "weeks": [
+        {
+          "ot13": 0,
+          "ot16": 0,
+          "ot2": 0,
+          "night": 0
+        },
+        {
+          "ot13": 0,
+          "ot16": 0,
+          "ot2": 0,
+          "night": 0
+        },
+        {
+          "ot13": 0,
+          "ot16": 0,
+          "ot2": 0,
+          "night": 0
+        },
+        {
+          "ot13": 0,
+          "ot16": 0,
+          "ot2": 0,
+          "night": 0
+        },
+        {
+          "ot13": 0,
+          "ot16": 0,
+          "ot2": 0,
+          "night": 0
+        }
+      ],
+      "nightNormal": 93
+    },
+    {
+      "matricule": "70000059",
+      "nom": "LUZOLAWO MANKELA RODRIGUE",
+      "departement": "Production",
+      "localisation": "Zamba",
+      "grade": "C2",
+      "weeks": [
+        {
+          "ot13": 0,
+          "ot16": 0,
+          "ot2": 0,
+          "night": 0
+        },
+        {
+          "ot13": 0,
+          "ot16": 0,
+          "ot2": 0,
+          "night": 0
+        },
+        {
+          "ot13": 0,
+          "ot16": 0,
+          "ot2": 0,
+          "night": 0
+        },
+        {
+          "ot13": 0,
+          "ot16": 0,
+          "ot2": 0,
+          "night": 0
+        },
+        {
+          "ot13": 0,
+          "ot16": 0,
+          "ot2": 0,
+          "night": 0
+        }
+      ],
+      "nightNormal": 93
+    },
+    {
+      "matricule": "70000015",
+      "nom": "LUZOLO NSEMBOLO THOMAS",
+      "departement": "Engineering",
+      "localisation": "Zamba",
+      "grade": "C2",
+      "weeks": [
+        {
+          "ot13": 0,
+          "ot16": 0,
+          "ot2": 0,
+          "night": 0
+        },
+        {
+          "ot13": 2,
+          "ot16": 1.53,
+          "ot2": 10.82,
+          "night": 0
+        },
+        {
+          "ot13": 0,
+          "ot16": 0,
+          "ot2": 20.3,
+          "night": 0
+        },
+        {
+          "ot13": 0,
+          "ot16": 0,
+          "ot2": 0,
+          "night": 0
+        },
+        {
+          "ot13": 0,
+          "ot16": 0,
+          "ot2": 0,
+          "night": 0
+        }
+      ],
+      "nightNormal": 0
+    },
+    {
+      "matricule": "70000038",
+      "nom": "MACHARIA KINYANJUI SIMON",
+      "departement": "Engineering",
+      "localisation": "Zamba",
+      "grade": "D1",
+      "weeks": [
+        {
+          "ot13": 0,
+          "ot16": 0,
+          "ot2": 0,
+          "night": 0
+        },
+        {
+          "ot13": 0,
+          "ot16": 0,
+          "ot2": 0,
+          "night": 0
+        },
+        {
+          "ot13": 0,
+          "ot16": 0,
+          "ot2": 0,
+          "night": 0
+        },
+        {
+          "ot13": 0,
+          "ot16": 0,
+          "ot2": 0,
+          "night": 0
+        },
+        {
+          "ot13": 0,
+          "ot16": 0,
+          "ot2": 0,
+          "night": 0
+        }
+      ],
+      "nightNormal": 0
+    },
+    {
+      "matricule": "70000043",
+      "nom": "MAKIVOVI KEVENA EDDO",
+      "departement": "Mining",
+      "localisation": "Zamba",
+      "grade": "C2",
+      "weeks": [
+        {
+          "ot13": 0,
+          "ot16": 0,
+          "ot2": 0,
+          "night": 0
+        },
+        {
+          "ot13": 0,
+          "ot16": 0,
+          "ot2": 0,
+          "night": 0
+        },
+        {
+          "ot13": 0,
+          "ot16": 0,
+          "ot2": 0,
+          "night": 0
+        },
+        {
+          "ot13": 0,
+          "ot16": 0,
+          "ot2": 0,
+          "night": 0
+        },
+        {
+          "ot13": 0,
+          "ot16": 0,
+          "ot2": 0,
+          "night": 0
+        }
+      ],
+      "nightNormal": 79
+    },
+    {
+      "matricule": "70000164",
+      "nom": "MALU MALUNGA SEBASTIEN",
+      "departement": "Sales and Marketing",
+      "localisation": "Zamba",
+      "grade": "C2",
+      "weeks": [
+        {
+          "ot13": 0,
+          "ot16": 0,
+          "ot2": 0,
+          "night": 0
+        },
+        {
+          "ot13": 0,
+          "ot16": 0,
+          "ot2": 0,
+          "night": 0
+        },
+        {
+          "ot13": 0,
+          "ot16": 0,
+          "ot2": 0,
+          "night": 0
+        },
+        {
+          "ot13": 0,
+          "ot16": 0,
+          "ot2": 0,
+          "night": 0
+        },
+        {
+          "ot13": 0,
+          "ot16": 0,
+          "ot2": 0,
+          "night": 0
+        }
+      ],
+      "nightNormal": 119
+    },
+    {
+      "matricule": "70000111",
+      "nom": "MANANGA MAMBULU JOSEPH",
+      "departement": "Sales and Marketing",
+      "localisation": "Zamba",
+      "grade": "C1",
+      "weeks": [
+        {
+          "ot13": 0,
+          "ot16": 0,
+          "ot2": 0,
+          "night": 0
+        },
+        {
+          "ot13": 0,
+          "ot16": 0,
+          "ot2": 0,
+          "night": 0
+        },
+        {
+          "ot13": 0,
+          "ot16": 0,
+          "ot2": 0,
+          "night": 0
+        },
+        {
+          "ot13": 0,
+          "ot16": 0,
+          "ot2": 0,
+          "night": 0
+        },
+        {
+          "ot13": 0,
+          "ot16": 0,
+          "ot2": 0,
+          "night": 0
+        }
+      ],
+      "nightNormal": 76
+    },
+    {
+      "matricule": "70000216",
+      "nom": "MANSIAMINA DIANLEMVO PATIENCE",
+      "departement": "Engineering",
+      "localisation": "Zamba",
+      "grade": "C2",
+      "weeks": [
+        {
+          "ot13": 2,
+          "ot16": 13.33,
+          "ot2": 0,
+          "night": 0
+        },
+        {
+          "ot13": 0,
+          "ot16": 0,
+          "ot2": 0,
+          "night": 0
+        },
+        {
+          "ot13": 0,
+          "ot16": 0,
+          "ot2": 0,
+          "night": 0
+        },
+        {
+          "ot13": 0,
+          "ot16": 0,
+          "ot2": 0,
+          "night": 0
+        },
+        {
+          "ot13": 0,
+          "ot16": 0,
+          "ot2": 0,
+          "night": 0
+        }
+      ],
+      "nightNormal": 0
+    },
+    {
+      "matricule": "70000029",
+      "nom": "MAPHASI VANGU PHILIPPE",
+      "departement": "Production",
+      "localisation": "Zamba",
+      "grade": "C3",
+      "weeks": [
+        {
+          "ot13": 2,
+          "ot16": 0.3,
+          "ot2": 10.74,
+          "night": 0
+        },
+        {
+          "ot13": 2,
+          "ot16": 1.03,
+          "ot2": 0,
+          "night": 0
+        },
+        {
+          "ot13": 0,
+          "ot16": 0,
+          "ot2": 4,
+          "night": 0
+        },
+        {
+          "ot13": 2,
+          "ot16": 8.01,
+          "ot2": 8.07,
+          "night": 0
+        },
+        {
+          "ot13": 0,
+          "ot16": 0,
+          "ot2": 0,
+          "night": 0
+        }
+      ],
+      "nightNormal": 91
+    },
+    {
+      "matricule": "70000308",
+      "nom": "MASSADI GEDEON GEDEON",
+      "departement": "Human Resources",
+      "localisation": "Zamba",
+      "grade": "C1",
+      "weeks": [
+        {
+          "ot13": 0,
+          "ot16": 0,
+          "ot2": 0,
+          "night": 0
+        },
+        {
+          "ot13": 0,
+          "ot16": 0,
+          "ot2": 0,
+          "night": 0
+        },
+        {
+          "ot13": 0,
+          "ot16": 0,
+          "ot2": 0,
+          "night": 0
+        },
+        {
+          "ot13": 0,
+          "ot16": 0,
+          "ot2": 0,
+          "night": 0
+        },
+        {
+          "ot13": 0,
+          "ot16": 0,
+          "ot2": 0,
+          "night": 0
+        }
+      ],
+      "nightNormal": 0
+    },
+    {
+      "matricule": "70000214",
+      "nom": "MATOKO PUATI JOEL",
+      "departement": "Production",
+      "localisation": "Zamba",
+      "grade": "C2",
+      "weeks": [
+        {
+          "ot13": 0,
+          "ot16": 0,
+          "ot2": 0,
+          "night": 0
+        },
+        {
+          "ot13": 0,
+          "ot16": 0,
+          "ot2": 0,
+          "night": 0
+        },
+        {
+          "ot13": 0,
+          "ot16": 0,
+          "ot2": 0,
+          "night": 0
+        },
+        {
+          "ot13": 0,
+          "ot16": 0,
+          "ot2": 0,
+          "night": 0
+        },
+        {
+          "ot13": 0,
+          "ot16": 0,
+          "ot2": 0,
+          "night": 0
+        }
+      ],
+      "nightNormal": 97
+    },
+    {
+      "matricule": "70000276",
+      "nom": "MAWETE NSOTA EMMANUEL",
+      "departement": "Quality Assurance",
+      "localisation": "Zamba",
+      "grade": "B5",
+      "weeks": [
+        {
+          "ot13": 0,
+          "ot16": 0,
+          "ot2": 0,
+          "night": 0
+        },
+        {
+          "ot13": 2,
+          "ot16": 3.66,
+          "ot2": 13.22,
+          "night": 0
+        },
+        {
+          "ot13": 0,
+          "ot16": 0,
+          "ot2": 0,
+          "night": 0
+        },
+        {
+          "ot13": 0,
+          "ot16": 0,
+          "ot2": 21.86,
+          "night": 0
+        },
+        {
+          "ot13": 0,
+          "ot16": 0,
+          "ot2": 0,
+          "night": 0
+        }
+      ],
+      "nightNormal": 0
+    },
+    {
+      "matricule": "70000240",
+      "nom": "MAYUMBU NZINDU NELSON",
+      "departement": "Finance",
+      "localisation": "Zamba",
+      "grade": "D2",
+      "weeks": [
+        {
+          "ot13": 0,
+          "ot16": 0,
+          "ot2": 0,
+          "night": 0
+        },
+        {
+          "ot13": 0,
+          "ot16": 0,
+          "ot2": 0,
+          "night": 0
+        },
+        {
+          "ot13": 0,
+          "ot16": 0,
+          "ot2": 0,
+          "night": 0
+        },
+        {
+          "ot13": 0,
+          "ot16": 0,
+          "ot2": 0,
+          "night": 0
+        },
+        {
+          "ot13": 0,
+          "ot16": 0,
+          "ot2": 0,
+          "night": 0
+        }
+      ],
+      "nightNormal": 0
+    },
+    {
+      "matricule": "70000093",
+      "nom": "MBANGI MAKULENDA ANDRE",
+      "departement": "Engineering",
+      "localisation": "Zamba",
+      "grade": "B4",
+      "weeks": [
+        {
+          "ot13": 0,
+          "ot16": 0,
+          "ot2": 0,
+          "night": 0
+        },
+        {
+          "ot13": 0,
+          "ot16": 0,
+          "ot2": 0,
+          "night": 0
+        },
+        {
+          "ot13": 0,
+          "ot16": 0,
+          "ot2": 0,
+          "night": 0
+        },
+        {
+          "ot13": 0,
+          "ot16": 0,
+          "ot2": 0,
+          "night": 0
+        },
+        {
+          "ot13": 0,
+          "ot16": 0,
+          "ot2": 0,
+          "night": 0
+        }
+      ],
+      "nightNormal": 0
+    },
+    {
+      "matricule": "70000302",
+      "nom": "MIKINDO KYANGWI PAUL SAMSON",
+      "departement": "MD Office",
+      "localisation": "Lubudi",
+      "grade": "C4",
+      "weeks": [
+        {
+          "ot13": 0,
+          "ot16": 0,
+          "ot2": 0,
+          "night": 0
+        },
+        {
+          "ot13": 0,
+          "ot16": 0,
+          "ot2": 0,
+          "night": 0
+        },
+        {
+          "ot13": 0,
+          "ot16": 0,
+          "ot2": 0,
+          "night": 0
+        },
+        {
+          "ot13": 0,
+          "ot16": 0,
+          "ot2": 0,
+          "night": 0
+        },
+        {
+          "ot13": 0,
+          "ot16": 0,
+          "ot2": 0,
+          "night": 0
+        }
+      ],
+      "nightNormal": 0
+    },
+    {
+      "matricule": "70000247",
+      "nom": "MILAMBU MBENGAY HERVE",
+      "departement": "SHE",
+      "localisation": "Zamba",
+      "grade": "C2",
+      "weeks": [
+        {
+          "ot13": 0,
+          "ot16": 0,
+          "ot2": 0,
+          "night": 0
+        },
+        {
+          "ot13": 1,
+          "ot16": 0,
+          "ot2": 0,
+          "night": 0.3
+        },
+        {
+          "ot13": 0,
+          "ot16": 0,
+          "ot2": 0,
+          "night": 0
+        },
+        {
+          "ot13": 0,
+          "ot16": 0,
+          "ot2": 0,
+          "night": 0
+        },
+        {
+          "ot13": 2,
+          "ot16": 0,
+          "ot2": 0,
+          "night": 0.99
+        }
+      ],
+      "nightNormal": 0
+    },
+    {
+      "matricule": "70000109",
+      "nom": "MOLEKA GBANGA FRED",
+      "departement": "Engineering",
+      "localisation": "Zamba",
+      "grade": "C4",
+      "weeks": [
+        {
+          "ot13": 0,
+          "ot16": 0,
+          "ot2": 0,
+          "night": 0
+        },
+        {
+          "ot13": 0,
+          "ot16": 0,
+          "ot2": 0,
+          "night": 0
+        },
+        {
+          "ot13": 0,
+          "ot16": 0,
+          "ot2": 0,
+          "night": 0
+        },
+        {
+          "ot13": 0,
+          "ot16": 0,
+          "ot2": 0,
+          "night": 0
+        },
+        {
+          "ot13": 0,
+          "ot16": 0,
+          "ot2": 0,
+          "night": 0
+        }
+      ],
+      "nightNormal": 0
+    },
+    {
+      "matricule": "70000252",
+      "nom": "MOLONGA LYONGA ANDREW",
+      "departement": "MD Office",
+      "localisation": "Zamba",
+      "grade": "E1",
+      "weeks": [
+        {
+          "ot13": 0,
+          "ot16": 0,
+          "ot2": 0,
+          "night": 0
+        },
+        {
+          "ot13": 0,
+          "ot16": 0,
+          "ot2": 0,
+          "night": 0
+        },
+        {
+          "ot13": 0,
+          "ot16": 0,
+          "ot2": 0,
+          "night": 0
+        },
+        {
+          "ot13": 0,
+          "ot16": 0,
+          "ot2": 0,
+          "night": 0
+        },
+        {
+          "ot13": 0,
+          "ot16": 0,
+          "ot2": 0,
+          "night": 0
+        }
+      ],
+      "nightNormal": 0
+    },
+    {
+      "matricule": "70000191",
+      "nom": "MPAY MAYELE RUFIN",
+      "departement": "Engineering",
+      "localisation": "Zamba",
+      "grade": "C4",
+      "weeks": [
+        {
+          "ot13": 0,
+          "ot16": 0,
+          "ot2": 0,
+          "night": 0
+        },
+        {
+          "ot13": 0,
+          "ot16": 0,
+          "ot2": 0,
+          "night": 0
+        },
+        {
+          "ot13": 0,
+          "ot16": 0,
+          "ot2": 0,
+          "night": 0
+        },
+        {
+          "ot13": 0,
+          "ot16": 0,
+          "ot2": 0,
+          "night": 0
+        },
+        {
+          "ot13": 0,
+          "ot16": 0,
+          "ot2": 0,
+          "night": 0
+        }
+      ],
+      "nightNormal": 0
+    },
+    {
+      "matricule": "70000067",
+      "nom": "MPONGO KOLONGO LEON",
+      "departement": "Supply Chain",
+      "localisation": "Zamba",
+      "grade": "C3",
+      "weeks": [
+        {
+          "ot13": 0,
+          "ot16": 0,
+          "ot2": 0,
+          "night": 0
+        },
+        {
+          "ot13": 0,
+          "ot16": 0,
+          "ot2": 0,
+          "night": 0
+        },
+        {
+          "ot13": 0,
+          "ot16": 0,
+          "ot2": 0,
+          "night": 0
+        },
+        {
+          "ot13": 0,
+          "ot16": 0,
+          "ot2": 0,
+          "night": 0
+        },
+        {
+          "ot13": 0,
+          "ot16": 0,
+          "ot2": 0,
+          "night": 0
+        }
+      ],
+      "nightNormal": 0
+    },
+    {
+      "matricule": "70000204",
+      "nom": "MPUNGWE KAPEPULA MARQUES",
+      "departement": "Mining",
+      "localisation": "Zamba",
+      "grade": "D1",
+      "weeks": [
+        {
+          "ot13": 0,
+          "ot16": 0,
+          "ot2": 0,
+          "night": 0
+        },
+        {
+          "ot13": 0,
+          "ot16": 0,
+          "ot2": 0,
+          "night": 0
+        },
+        {
+          "ot13": 0,
+          "ot16": 0,
+          "ot2": 0,
+          "night": 0
+        },
+        {
+          "ot13": 0,
+          "ot16": 0,
+          "ot2": 0,
+          "night": 0
+        },
+        {
+          "ot13": 0,
+          "ot16": 0,
+          "ot2": 0,
+          "night": 0
+        }
+      ],
+      "nightNormal": 0
+    },
+    {
+      "matricule": "70000008",
+      "nom": "MUAKASA NSONI SERGE",
+      "departement": "Human Resources",
+      "localisation": "Zamba",
+      "grade": "C4",
+      "weeks": [
+        {
+          "ot13": 0,
+          "ot16": 0,
+          "ot2": 0,
+          "night": 0
+        },
+        {
+          "ot13": 0,
+          "ot16": 0,
+          "ot2": 0,
+          "night": 0
+        },
+        {
+          "ot13": 0,
+          "ot16": 0,
+          "ot2": 0,
+          "night": 0
+        },
+        {
+          "ot13": 0,
+          "ot16": 0,
+          "ot2": 0,
+          "night": 0
+        },
+        {
+          "ot13": 0,
+          "ot16": 0,
+          "ot2": 0,
+          "night": 0
+        }
+      ],
+      "nightNormal": 0
+    },
+    {
+      "matricule": "70000063",
+      "nom": "MUANDA BALOKI JISCA",
+      "departement": "Production",
+      "localisation": "Zamba",
+      "grade": "C3",
+      "weeks": [
+        {
+          "ot13": 0,
+          "ot16": 0,
+          "ot2": 0,
+          "night": 0
+        },
+        {
+          "ot13": 0,
+          "ot16": 0,
+          "ot2": 0,
+          "night": 0
+        },
+        {
+          "ot13": 2,
+          "ot16": 0.01,
+          "ot2": 8.07,
+          "night": 4
+        },
+        {
+          "ot13": 2,
+          "ot16": 8.07,
+          "ot2": 8.01,
+          "night": 4.08
+        },
+        {
+          "ot13": 0,
+          "ot16": 0,
+          "ot2": 0,
+          "night": 0
+        }
+      ],
+      "nightNormal": 86
+    },
+    {
+      "matricule": "70000030",
+      "nom": "MUBA KAYEMBE JEREMIE",
+      "departement": "Production",
+      "localisation": "Zamba",
+      "grade": "C4",
+      "weeks": [
+        {
+          "ot13": 0,
+          "ot16": 0,
+          "ot2": 0,
+          "night": 0
+        },
+        {
+          "ot13": 0,
+          "ot16": 0,
+          "ot2": 0,
+          "night": 0
+        },
+        {
+          "ot13": 0,
+          "ot16": 0,
+          "ot2": 0,
+          "night": 0
+        },
+        {
+          "ot13": 0,
+          "ot16": 0,
+          "ot2": 0,
+          "night": 0
+        },
+        {
+          "ot13": 0,
+          "ot16": 0,
+          "ot2": 0,
+          "night": 0
+        }
+      ],
+      "nightNormal": 0
+    },
+    {
+      "matricule": "70000046",
+      "nom": "MUKENDI KABONGO PATRICK",
+      "departement": "Engineering",
+      "localisation": "Zamba",
+      "grade": "D1",
+      "weeks": [
+        {
+          "ot13": 0,
+          "ot16": 0,
+          "ot2": 0,
+          "night": 0
+        },
+        {
+          "ot13": 0,
+          "ot16": 0,
+          "ot2": 0,
+          "night": 0
+        },
+        {
+          "ot13": 0,
+          "ot16": 0,
+          "ot2": 0,
+          "night": 0
+        },
+        {
+          "ot13": 0,
+          "ot16": 0,
+          "ot2": 0,
+          "night": 0
+        },
+        {
+          "ot13": 0,
+          "ot16": 0,
+          "ot2": 0,
+          "night": 0
+        }
+      ],
+      "nightNormal": 0
+    },
+    {
+      "matricule": "70000243",
+      "nom": "MUKONKOLE KABELE Christian",
+      "departement": "Production",
+      "localisation": "Zamba",
+      "grade": "C1",
+      "weeks": [
+        {
+          "ot13": 0,
+          "ot16": 0,
+          "ot2": 0,
+          "night": 0
+        },
+        {
+          "ot13": 0,
+          "ot16": 0,
+          "ot2": 0,
+          "night": 0
+        },
+        {
+          "ot13": 0,
+          "ot16": 0,
+          "ot2": 0,
+          "night": 0
+        },
+        {
+          "ot13": 0,
+          "ot16": 0,
+          "ot2": 0,
+          "night": 0
+        },
+        {
+          "ot13": 0,
+          "ot16": 0,
+          "ot2": 0,
+          "night": 0
+        }
+      ],
+      "nightNormal": 70
+    },
+    {
+      "matricule": "70000270",
+      "nom": "MULENDA ARCHIPP",
+      "departement": "Finance",
+      "localisation": "Zamba",
+      "grade": "C2",
+      "weeks": [
+        {
+          "ot13": 0,
+          "ot16": 0,
+          "ot2": 0,
+          "night": 0
+        },
+        {
+          "ot13": 0,
+          "ot16": 0,
+          "ot2": 0,
+          "night": 0
+        },
+        {
+          "ot13": 0,
+          "ot16": 0,
+          "ot2": 0,
+          "night": 0
+        },
+        {
+          "ot13": 0,
+          "ot16": 0,
+          "ot2": 0,
+          "night": 0
+        },
+        {
+          "ot13": 0,
+          "ot16": 0,
+          "ot2": 0,
+          "night": 0
+        }
+      ],
+      "nightNormal": 0
+    },
+    {
+      "matricule": "70000284",
+      "nom": "MUNTANDA TUMBA OXANO",
+      "departement": "Engineering",
+      "localisation": "Zamba",
+      "grade": "C2",
+      "weeks": [
+        {
+          "ot13": 0.51,
+          "ot16": 0,
+          "ot2": 9.01,
+          "night": 4.51
+        },
+        {
+          "ot13": 2,
+          "ot16": 17.9,
+          "ot2": 0,
+          "night": 16.61
+        },
+        {
+          "ot13": 0,
+          "ot16": 0,
+          "ot2": 0,
+          "night": 0
+        },
+        {
+          "ot13": 0,
+          "ot16": 0,
+          "ot2": 0,
+          "night": 0
+        },
+        {
+          "ot13": 0,
+          "ot16": 0,
+          "ot2": 0,
+          "night": 0
+        }
+      ],
+      "nightNormal": 0
+    },
+    {
+      "matricule": "70000083",
+      "nom": "MUSAKO KINZONZOLI MOISE",
+      "departement": "Quality Assurance",
+      "localisation": "Zamba",
+      "grade": "C3",
+      "weeks": [
+        {
+          "ot13": 0,
+          "ot16": 0,
+          "ot2": 0,
+          "night": 0
+        },
+        {
+          "ot13": 0,
+          "ot16": 0,
+          "ot2": 0,
+          "night": 0
+        },
+        {
+          "ot13": 0,
+          "ot16": 0,
+          "ot2": 0,
+          "night": 0
+        },
+        {
+          "ot13": 0,
+          "ot16": 0,
+          "ot2": 0,
+          "night": 0
+        },
+        {
+          "ot13": 0,
+          "ot16": 0,
+          "ot2": 0,
+          "night": 0
+        }
+      ],
+      "nightNormal": 0
+    },
+    {
+      "matricule": "70000290",
+      "nom": "MUTOMBO SHAMBUYI LÉONARD",
+      "departement": "SHE",
+      "localisation": "Zamba",
+      "grade": "C4",
+      "weeks": [
+        {
+          "ot13": 0,
+          "ot16": 0,
+          "ot2": 0,
+          "night": 0
+        },
+        {
+          "ot13": 0,
+          "ot16": 0,
+          "ot2": 0,
+          "night": 0
+        },
+        {
+          "ot13": 0,
+          "ot16": 0,
+          "ot2": 0,
+          "night": 0
+        },
+        {
+          "ot13": 0,
+          "ot16": 0,
+          "ot2": 0,
+          "night": 0
+        },
+        {
+          "ot13": 0,
+          "ot16": 0,
+          "ot2": 0,
+          "night": 0
+        }
+      ],
+      "nightNormal": 0
+    },
+    {
+      "matricule": "70000306",
+      "nom": "MUZO NKIENE BLANCHARD",
+      "departement": "Engineering",
+      "localisation": "Zamba",
+      "grade": "C2",
+      "weeks": [
+        {
+          "ot13": 2,
+          "ot16": 11.96,
+          "ot2": 0,
+          "night": 0
+        },
+        {
+          "ot13": 2,
+          "ot16": 5.68,
+          "ot2": 0,
+          "night": 0
+        },
+        {
+          "ot13": 1.02,
+          "ot16": 0,
+          "ot2": 24.71,
+          "night": 12.11
+        },
+        {
+          "ot13": 2,
+          "ot16": 26.99,
+          "ot2": 0,
+          "night": 6.55
+        },
+        {
+          "ot13": 0,
+          "ot16": 0,
+          "ot2": 0,
+          "night": 0
+        }
+      ],
+      "nightNormal": 0
+    },
+    {
+      "matricule": "70000084",
+      "nom": "MVILAMBI BIMPALU DELVIS",
+      "departement": "Quality Assurance",
+      "localisation": "Zamba",
+      "grade": "B3",
+      "weeks": [
+        {
+          "ot13": 0,
+          "ot16": 0,
+          "ot2": 0,
+          "night": 0
+        },
+        {
+          "ot13": 0,
+          "ot16": 0,
+          "ot2": 0,
+          "night": 0
+        },
+        {
+          "ot13": 0,
+          "ot16": 0,
+          "ot2": 0,
+          "night": 0
+        },
+        {
+          "ot13": 0,
+          "ot16": 0,
+          "ot2": 0,
+          "night": 0
+        },
+        {
+          "ot13": 0,
+          "ot16": 0,
+          "ot2": 0,
+          "night": 0
+        }
+      ],
+      "nightNormal": 73
+    },
+    {
+      "matricule": "70000107",
+      "nom": "MVUTU LUTEMBE KARINE",
+      "departement": "Human Resources",
+      "localisation": "Zamba",
+      "grade": "C2",
+      "weeks": [
+        {
+          "ot13": 0,
+          "ot16": 0,
+          "ot2": 0,
+          "night": 0
+        },
+        {
+          "ot13": 0,
+          "ot16": 0,
+          "ot2": 0,
+          "night": 0
+        },
+        {
+          "ot13": 0,
+          "ot16": 0,
+          "ot2": 0,
+          "night": 0
+        },
+        {
+          "ot13": 0,
+          "ot16": 0,
+          "ot2": 0,
+          "night": 0
+        },
+        {
+          "ot13": 0,
+          "ot16": 0,
+          "ot2": 0,
+          "night": 0
+        }
+      ],
+      "nightNormal": 0
+    },
+    {
+      "matricule": "70000072",
+      "nom": "NDONGA NGANGULA NOEL",
+      "departement": "Production",
+      "localisation": "Zamba",
+      "grade": "C1",
+      "weeks": [
+        {
+          "ot13": 0,
+          "ot16": 0,
+          "ot2": 0,
+          "night": 0
+        },
+        {
+          "ot13": 0,
+          "ot16": 0,
+          "ot2": 0,
+          "night": 0
+        },
+        {
+          "ot13": 2,
+          "ot16": 12.02,
+          "ot2": 4.01,
+          "night": 0
+        },
+        {
+          "ot13": 2,
+          "ot16": 8,
+          "ot2": 8.03,
+          "night": 0
+        },
+        {
+          "ot13": 0,
+          "ot16": 0,
+          "ot2": 0,
+          "night": 0
+        }
+      ],
+      "nightNormal": 63
+    },
+    {
+      "matricule": "70000032",
+      "nom": "NEMWANDJARE PERO PHILEMON",
+      "departement": "Optimization",
+      "localisation": "Zamba",
+      "grade": "C5",
+      "weeks": [
+        {
+          "ot13": 0,
+          "ot16": 0,
+          "ot2": 0,
+          "night": 0
+        },
+        {
+          "ot13": 0,
+          "ot16": 0,
+          "ot2": 0,
+          "night": 0
+        },
+        {
+          "ot13": 0,
+          "ot16": 0,
+          "ot2": 0,
+          "night": 0
+        },
+        {
+          "ot13": 0,
+          "ot16": 0,
+          "ot2": 0,
+          "night": 0
+        },
+        {
+          "ot13": 0,
+          "ot16": 0,
+          "ot2": 0,
+          "night": 0
+        }
+      ],
+      "nightNormal": 0
+    },
+    {
+      "matricule": "70000283",
+      "nom": "NGIMBI NSILULU DECLAIRK",
+      "departement": "Engineering",
+      "localisation": "Zamba",
+      "grade": "B2",
+      "weeks": [
+        {
+          "ot13": 0,
+          "ot16": 0,
+          "ot2": 0,
+          "night": 0
+        },
+        {
+          "ot13": 0,
+          "ot16": 0,
+          "ot2": 0,
+          "night": 0
+        },
+        {
+          "ot13": 0.46,
+          "ot16": 0,
+          "ot2": 0,
+          "night": 0
+        },
+        {
+          "ot13": 0,
+          "ot16": 0,
+          "ot2": 0,
+          "night": 0
+        },
+        {
+          "ot13": 0,
+          "ot16": 0,
+          "ot2": 0,
+          "night": 0
+        }
+      ],
+      "nightNormal": 80
+    },
+    {
+      "matricule": "70000104",
+      "nom": "NGOMA NALOLO DIEU",
+      "departement": "Engineering",
+      "localisation": "Zamba",
+      "grade": "C3",
+      "weeks": [
+        {
+          "ot13": 0.45,
+          "ot16": 0,
+          "ot2": 4.94,
+          "night": 2.45
+        },
+        {
+          "ot13": 0,
+          "ot16": 0,
+          "ot2": 6.69,
+          "night": 0
+        },
+        {
+          "ot13": 2,
+          "ot16": 9,
+          "ot2": 12.74,
+          "night": 7.21
+        },
+        {
+          "ot13": 0,
+          "ot16": 0,
+          "ot2": 0,
+          "night": 0
+        },
+        {
+          "ot13": 0,
+          "ot16": 0,
+          "ot2": 0,
+          "night": 0
+        }
+      ],
+      "nightNormal": 0
+    },
+    {
+      "matricule": "70000091",
+      "nom": "NGOYI MUIKULU MARCEL",
+      "departement": "Engineering",
+      "localisation": "Zamba",
+      "grade": "C4",
+      "weeks": [
+        {
+          "ot13": 0,
+          "ot16": 0,
+          "ot2": 0,
+          "night": 0
+        },
+        {
+          "ot13": 0,
+          "ot16": 0,
+          "ot2": 0,
+          "night": 0
+        },
+        {
+          "ot13": 0,
+          "ot16": 0,
+          "ot2": 0,
+          "night": 0
+        },
+        {
+          "ot13": 0,
+          "ot16": 0,
+          "ot2": 0,
+          "night": 0
+        },
+        {
+          "ot13": 0,
+          "ot16": 0,
+          "ot2": 0,
+          "night": 0
+        }
+      ],
+      "nightNormal": 0
+    },
+    {
+      "matricule": "70000097",
+      "nom": "NKOSI LIMA MASUDI BIENVENU",
+      "departement": "Mining",
+      "localisation": "Zamba",
+      "grade": "B2",
+      "weeks": [
+        {
+          "ot13": 0,
+          "ot16": 0,
+          "ot2": 0,
+          "night": 0
+        },
+        {
+          "ot13": 2,
+          "ot16": 2,
+          "ot2": 0,
+          "night": 0
+        },
+        {
+          "ot13": 0,
+          "ot16": 0,
+          "ot2": 0,
+          "night": 0
+        },
+        {
+          "ot13": 0,
+          "ot16": 0,
+          "ot2": 0,
+          "night": 0
+        },
+        {
+          "ot13": 0,
+          "ot16": 0,
+          "ot2": 0,
+          "night": 0
+        }
+      ],
+      "nightNormal": 63
+    },
+    {
+      "matricule": "70000076",
+      "nom": "NLANDU NDONGALA ERICK",
+      "departement": "Quality Assurance",
+      "localisation": "Zamba",
+      "grade": "B5",
+      "weeks": [
+        {
+          "ot13": 0,
+          "ot16": 0,
+          "ot2": 16.67,
+          "night": 0
+        },
+        {
+          "ot13": 0,
+          "ot16": 0,
+          "ot2": 0,
+          "night": 0
+        },
+        {
+          "ot13": 0,
+          "ot16": 0,
+          "ot2": 0,
+          "night": 0
+        },
+        {
+          "ot13": 0,
+          "ot16": 0,
+          "ot2": 0,
+          "night": 0
+        },
+        {
+          "ot13": 0,
+          "ot16": 0,
+          "ot2": 0,
+          "night": 0
+        }
+      ],
+      "nightNormal": 0
+    },
+    {
+      "matricule": "70000309",
+      "nom": "NLANDU TSHIBAMBA JUNIOR",
+      "departement": "Engineering",
+      "localisation": "Zamba",
+      "grade": "C2",
+      "weeks": [
+        {
+          "ot13": 0,
+          "ot16": 0,
+          "ot2": 0,
+          "night": 0
+        },
+        {
+          "ot13": 0,
+          "ot16": 0,
+          "ot2": 5.87,
+          "night": 0
+        },
+        {
+          "ot13": 0,
+          "ot16": 0,
+          "ot2": 3.92,
+          "night": 0
+        },
+        {
+          "ot13": 1.33,
+          "ot16": 0,
+          "ot2": 11.74,
+          "night": 0
+        },
+        {
+          "ot13": 0,
+          "ot16": 0,
+          "ot2": 0,
+          "night": 0
+        }
+      ],
+      "nightNormal": 0
+    },
+    {
+      "matricule": "70000056",
+      "nom": "NSAKALA KUNIEKI GAYLOR",
+      "departement": "Production",
+      "localisation": "Zamba",
+      "grade": "B4",
+      "weeks": [
+        {
+          "ot13": 0,
+          "ot16": 0,
+          "ot2": 0,
+          "night": 0
+        },
+        {
+          "ot13": 0,
+          "ot16": 0,
+          "ot2": 0,
+          "night": 0
+        },
+        {
+          "ot13": 0,
+          "ot16": 0,
+          "ot2": 0,
+          "night": 0
+        },
+        {
+          "ot13": 0,
+          "ot16": 0,
+          "ot2": 0,
+          "night": 0
+        },
+        {
+          "ot13": 0,
+          "ot16": 0,
+          "ot2": 0,
+          "night": 0
+        }
+      ],
+      "nightNormal": 73
+    },
+    {
+      "matricule": "70000080",
+      "nom": "NSILU MALUTA NADEGE",
+      "departement": "Quality Assurance",
+      "localisation": "Zamba",
+      "grade": "B3",
+      "weeks": [
+        {
+          "ot13": 0,
+          "ot16": 0,
+          "ot2": 0,
+          "night": 0
+        },
+        {
+          "ot13": 0,
+          "ot16": 0,
+          "ot2": 0,
+          "night": 0
+        },
+        {
+          "ot13": 0,
+          "ot16": 0,
+          "ot2": 12.46,
+          "night": 0
+        },
+        {
+          "ot13": 0,
+          "ot16": 0,
+          "ot2": 0,
+          "night": 0
+        },
+        {
+          "ot13": 0,
+          "ot16": 0,
+          "ot2": 0,
+          "night": 0
+        }
+      ],
+      "nightNormal": 0
+    },
+    {
+      "matricule": "70000259",
+      "nom": "NSINABAU TAMFUM NATHAN",
+      "departement": "Finance",
+      "localisation": "Zamba",
+      "grade": "C3",
+      "weeks": [
+        {
+          "ot13": 0,
+          "ot16": 0,
+          "ot2": 0,
+          "night": 0
+        },
+        {
+          "ot13": 0,
+          "ot16": 0,
+          "ot2": 0,
+          "night": 0
+        },
+        {
+          "ot13": 0,
+          "ot16": 0,
+          "ot2": 0,
+          "night": 0
+        },
+        {
+          "ot13": 0,
+          "ot16": 0,
+          "ot2": 0,
+          "night": 0
+        },
+        {
+          "ot13": 0,
+          "ot16": 0,
+          "ot2": 0,
+          "night": 0
+        }
+      ],
+      "nightNormal": 0
+    },
+    {
+      "matricule": "70000227",
+      "nom": "NTUNGA PIERRE DIEU-MERCI",
+      "departement": "Engineering",
+      "localisation": "Zamba",
+      "grade": "C3",
+      "weeks": [
+        {
+          "ot13": 0,
+          "ot16": 0,
+          "ot2": 0,
+          "night": 0
+        },
+        {
+          "ot13": 0,
+          "ot16": 0,
+          "ot2": 0,
+          "night": 0
+        },
+        {
+          "ot13": 0.35,
+          "ot16": 0,
+          "ot2": 15.11,
+          "night": 0
+        },
+        {
+          "ot13": 0,
+          "ot16": 0,
+          "ot2": 0,
+          "night": 0
+        },
+        {
+          "ot13": 0,
+          "ot16": 0,
+          "ot2": 0,
+          "night": 0
+        }
+      ],
+      "nightNormal": 0
+    },
+    {
+      "matricule": "70000042",
+      "nom": "NZAZI KALUZAKI TOUBI",
+      "departement": "Mining",
+      "localisation": "Zamba",
+      "grade": "B2",
+      "weeks": [
+        {
+          "ot13": 0,
+          "ot16": 0,
+          "ot2": 0,
+          "night": 0
+        },
+        {
+          "ot13": 0,
+          "ot16": 0,
+          "ot2": 0,
+          "night": 0
+        },
+        {
+          "ot13": 0,
+          "ot16": 0,
+          "ot2": 0,
+          "night": 0
+        },
+        {
+          "ot13": 0,
+          "ot16": 0,
+          "ot2": 0,
+          "night": 0
+        },
+        {
+          "ot13": 0,
+          "ot16": 0,
+          "ot2": 0,
+          "night": 0
+        }
+      ],
+      "nightNormal": 0
+    },
+    {
+      "matricule": "70000116",
+      "nom": "NZUNGU ANTOINE BONHEUR",
+      "departement": "Engineering",
+      "localisation": "Zamba",
+      "grade": "C2",
+      "weeks": [
+        {
+          "ot13": 0,
+          "ot16": 0,
+          "ot2": 0,
+          "night": 0
+        },
+        {
+          "ot13": 2,
+          "ot16": 7.11,
+          "ot2": 0,
+          "night": 15.11
+        },
+        {
+          "ot13": 2,
+          "ot16": 8.44,
+          "ot2": 6,
+          "night": 0
+        },
+        {
+          "ot13": 0.16,
+          "ot16": 0,
+          "ot2": 0,
+          "night": 2.16
+        },
+        {
+          "ot13": 0,
+          "ot16": 0,
+          "ot2": 0,
+          "night": 0
+        }
+      ],
+      "nightNormal": 0
+    },
+    {
+      "matricule": "70000061",
+      "nom": "NZUZI TABILA JOEL",
+      "departement": "Production",
+      "localisation": "Zamba",
+      "grade": "C2",
+      "weeks": [
+        {
+          "ot13": 0,
+          "ot16": 0,
+          "ot2": 0,
+          "night": 0
+        },
+        {
+          "ot13": 0,
+          "ot16": 0,
+          "ot2": 0,
+          "night": 0
+        },
+        {
+          "ot13": 0,
+          "ot16": 0,
+          "ot2": 0,
+          "night": 0
+        },
+        {
+          "ot13": 0,
+          "ot16": 0,
+          "ot2": 0,
+          "night": 0
+        },
+        {
+          "ot13": 0,
+          "ot16": 0,
+          "ot2": 0,
+          "night": 0
+        }
+      ],
+      "nightNormal": 60
+    },
+    {
+      "matricule": "70000115",
+      "nom": "ONOSAMBA LUNDI LUNDI",
+      "departement": "Engineering",
+      "localisation": "Zamba",
+      "grade": "C2",
+      "weeks": [
+        {
+          "ot13": 0,
+          "ot16": 0,
+          "ot2": 0,
+          "night": 0
+        },
+        {
+          "ot13": 0,
+          "ot16": 0,
+          "ot2": 22,
+          "night": 4.13
+        },
+        {
+          "ot13": 2,
+          "ot16": 19.82,
+          "ot2": 0,
+          "night": 23.44
+        },
+        {
+          "ot13": 0,
+          "ot16": 0,
+          "ot2": 13.98,
+          "night": 0
+        },
+        {
+          "ot13": 0,
+          "ot16": 0,
+          "ot2": 0,
+          "night": 0
+        }
+      ],
+      "nightNormal": 0
+    },
+    {
+      "matricule": "70000305",
+      "nom": "PANDA KYALEVA PATRICK",
+      "departement": "MD Office",
+      "localisation": "Lubudi",
+      "grade": "C2",
+      "weeks": [
+        {
+          "ot13": 0,
+          "ot16": 0,
+          "ot2": 0,
+          "night": 0
+        },
+        {
+          "ot13": 0,
+          "ot16": 0,
+          "ot2": 0,
+          "night": 0
+        },
+        {
+          "ot13": 0,
+          "ot16": 0,
+          "ot2": 0,
+          "night": 0
+        },
+        {
+          "ot13": 0,
+          "ot16": 0,
+          "ot2": 0,
+          "night": 0
+        },
+        {
+          "ot13": 0,
+          "ot16": 0,
+          "ot2": 0,
+          "night": 0
+        }
+      ],
+      "nightNormal": 0
+    },
+    {
+      "matricule": "70000310",
+      "nom": "RACHIDI ZOBELA JUDITH",
+      "departement": "Quality Assurance",
+      "localisation": "Zamba",
+      "grade": "B5",
+      "weeks": [
+        {
+          "ot13": 0,
+          "ot16": 0,
+          "ot2": 0,
+          "night": 0
+        },
+        {
+          "ot13": 0,
+          "ot16": 0,
+          "ot2": 0,
+          "night": 0
+        },
+        {
+          "ot13": 0,
+          "ot16": 0,
+          "ot2": 0,
+          "night": 0
+        },
+        {
+          "ot13": 0,
+          "ot16": 0,
+          "ot2": 0,
+          "night": 0
+        },
+        {
+          "ot13": 0,
+          "ot16": 0,
+          "ot2": 0,
+          "night": 0
+        }
+      ],
+      "nightNormal": 0
+    },
+    {
+      "matricule": "70000266",
+      "nom": "RUKOMEZA KARHIBULA GISCARD",
+      "departement": "Mining",
+      "localisation": "Zamba",
+      "grade": "D2",
+      "weeks": [
+        {
+          "ot13": 0,
+          "ot16": 0,
+          "ot2": 0,
+          "night": 0
+        },
+        {
+          "ot13": 0,
+          "ot16": 0,
+          "ot2": 0,
+          "night": 0
+        },
+        {
+          "ot13": 0,
+          "ot16": 0,
+          "ot2": 0,
+          "night": 0
+        },
+        {
+          "ot13": 0,
+          "ot16": 0,
+          "ot2": 0,
+          "night": 0
+        },
+        {
+          "ot13": 0,
+          "ot16": 0,
+          "ot2": 0,
+          "night": 0
+        }
+      ],
+      "nightNormal": 0
+    },
+    {
+      "matricule": "70000239",
+      "nom": "SABI DIZITIDI HERVE",
+      "departement": "SHE",
+      "localisation": "Zamba",
+      "grade": "C2",
+      "weeks": [
+        {
+          "ot13": 0,
+          "ot16": 0,
+          "ot2": 0,
+          "night": 0
+        },
+        {
+          "ot13": 0,
+          "ot16": 0,
+          "ot2": 0,
+          "night": 0
+        },
+        {
+          "ot13": 0,
+          "ot16": 0,
+          "ot2": 0,
+          "night": 0
+        },
+        {
+          "ot13": 0,
+          "ot16": 0,
+          "ot2": 0,
+          "night": 0
+        },
+        {
+          "ot13": 0,
+          "ot16": 0,
+          "ot2": 0,
+          "night": 0
+        }
+      ],
+      "nightNormal": 0
+    },
+    {
+      "matricule": "70000238",
+      "nom": "SAIDI MOUSSA TRESOR",
+      "departement": "Sales and Marketing",
+      "localisation": "Zamba",
+      "grade": "C4",
+      "weeks": [
+        {
+          "ot13": 0,
+          "ot16": 0,
+          "ot2": 0,
+          "night": 0
+        },
+        {
+          "ot13": 0,
+          "ot16": 0,
+          "ot2": 0,
+          "night": 0
+        },
+        {
+          "ot13": 0,
+          "ot16": 0,
+          "ot2": 0,
+          "night": 0
+        },
+        {
+          "ot13": 0,
+          "ot16": 0,
+          "ot2": 0,
+          "night": 0
+        },
+        {
+          "ot13": 0,
+          "ot16": 0,
+          "ot2": 0,
+          "night": 0
+        }
+      ],
+      "nightNormal": 0
+    },
+    {
+      "matricule": "70000077",
+      "nom": "SAMBA ZANKEMBO CADET",
+      "departement": "Quality Assurance",
+      "localisation": "Zamba",
+      "grade": "B3",
+      "weeks": [
+        {
+          "ot13": 0,
+          "ot16": 0,
+          "ot2": 0,
+          "night": 0
+        },
+        {
+          "ot13": 0,
+          "ot16": 0,
+          "ot2": 0,
+          "night": 0
+        },
+        {
+          "ot13": 0,
+          "ot16": 0,
+          "ot2": 0,
+          "night": 0
+        },
+        {
+          "ot13": 0,
+          "ot16": 0,
+          "ot2": 0,
+          "night": 0
+        },
+        {
+          "ot13": 0,
+          "ot16": 0,
+          "ot2": 0,
+          "night": 0
+        }
+      ],
+      "nightNormal": 80
+    },
+    {
+      "matricule": "70000081",
+      "nom": "TANDU NKWALA BERTIN",
+      "departement": "Quality Assurance",
+      "localisation": "Zamba",
+      "grade": "B3",
+      "weeks": [
+        {
+          "ot13": 0,
+          "ot16": 0,
+          "ot2": 0,
+          "night": 0
+        },
+        {
+          "ot13": 0,
+          "ot16": 0,
+          "ot2": 0,
+          "night": 0
+        },
+        {
+          "ot13": 0,
+          "ot16": 0,
+          "ot2": 0,
+          "night": 0
+        },
+        {
+          "ot13": 0,
+          "ot16": 0,
+          "ot2": 0,
+          "night": 0
+        },
+        {
+          "ot13": 0,
+          "ot16": 0,
+          "ot2": 0,
+          "night": 0
+        }
+      ],
+      "nightNormal": 87
+    },
+    {
+      "matricule": "70000050",
+      "nom": "TANUI KIPRUTO ELIAS",
+      "departement": "MD Office",
+      "localisation": "Zamba",
+      "grade": "D4",
+      "weeks": [
+        {
+          "ot13": 0,
+          "ot16": 0,
+          "ot2": 0,
+          "night": 0
+        },
+        {
+          "ot13": 0,
+          "ot16": 0,
+          "ot2": 0,
+          "night": 0
+        },
+        {
+          "ot13": 0,
+          "ot16": 0,
+          "ot2": 0,
+          "night": 0
+        },
+        {
+          "ot13": 0,
+          "ot16": 0,
+          "ot2": 0,
+          "night": 0
+        },
+        {
+          "ot13": 0,
+          "ot16": 0,
+          "ot2": 0,
+          "night": 0
+        }
+      ],
+      "nightNormal": 0
+    },
+    {
+      "matricule": "70000211",
+      "nom": "TOKO MATONDO JOEL",
+      "departement": "Production",
+      "localisation": "Zamba",
+      "grade": "C1",
+      "weeks": [
+        {
+          "ot13": 0,
+          "ot16": 0,
+          "ot2": 0,
+          "night": 0
+        },
+        {
+          "ot13": 2,
+          "ot16": 4.04,
+          "ot2": 0,
+          "night": 8.04
+        },
+        {
+          "ot13": 0,
+          "ot16": 0,
+          "ot2": 0,
+          "night": 0
+        },
+        {
+          "ot13": 0,
+          "ot16": 0,
+          "ot2": 0,
+          "night": 0
+        },
+        {
+          "ot13": 0,
+          "ot16": 0,
+          "ot2": 0,
+          "night": 0
+        }
+      ],
+      "nightNormal": 26
+    },
+    {
+      "matricule": "70000242",
+      "nom": "TSHILOLO MWABILA Willy",
+      "departement": "Production",
+      "localisation": "Zamba",
+      "grade": "C1",
+      "weeks": [
+        {
+          "ot13": 0,
+          "ot16": 0,
+          "ot2": 0,
+          "night": 0
+        },
+        {
+          "ot13": 0,
+          "ot16": 0,
+          "ot2": 0,
+          "night": 0
+        },
+        {
+          "ot13": 0,
+          "ot16": 0,
+          "ot2": 0,
+          "night": 0
+        },
+        {
+          "ot13": 0,
+          "ot16": 0,
+          "ot2": 0,
+          "night": 0
+        },
+        {
+          "ot13": 0,
+          "ot16": 0,
+          "ot2": 0,
+          "night": 0
+        }
+      ],
+      "nightNormal": 77
+    },
+    {
+      "matricule": "70000088",
+      "nom": "TULOMBA BALELE OVIE",
+      "departement": "Engineering",
+      "localisation": "Zamba",
+      "grade": "C2",
+      "weeks": [
+        {
+          "ot13": 0,
+          "ot16": 0,
+          "ot2": 20.18,
+          "night": 5.62
+        },
+        {
+          "ot13": 0,
+          "ot16": 0,
+          "ot2": 0,
+          "night": 0
+        },
+        {
+          "ot13": 0,
+          "ot16": 0,
+          "ot2": 0,
+          "night": 0
+        },
+        {
+          "ot13": 0,
+          "ot16": 0,
+          "ot2": 20.18,
+          "night": 5.63
+        },
+        {
+          "ot13": 0,
+          "ot16": 0,
+          "ot2": 0,
+          "night": 0
+        }
+      ],
+      "nightNormal": 0
+    },
+    {
+      "matricule": "70000033",
+      "nom": "UUCHI UMIRAMBE PARICIAN",
+      "departement": "Optimization",
+      "localisation": "Zamba",
+      "grade": "D1",
+      "weeks": [
+        {
+          "ot13": 0,
+          "ot16": 0,
+          "ot2": 0,
+          "night": 0
+        },
+        {
+          "ot13": 0,
+          "ot16": 0,
+          "ot2": 0,
+          "night": 0
+        },
+        {
+          "ot13": 0,
+          "ot16": 0,
+          "ot2": 0,
+          "night": 0
+        },
+        {
+          "ot13": 0,
+          "ot16": 0,
+          "ot2": 0,
+          "night": 0
+        },
+        {
+          "ot13": 0,
+          "ot16": 0,
+          "ot2": 0,
+          "night": 0
+        }
+      ],
+      "nightNormal": 0
+    },
+    {
+      "matricule": "70000212",
+      "nom": "VANGU VANGU ALBERT",
+      "departement": "Production",
+      "localisation": "Zamba",
+      "grade": "B2",
+      "weeks": [
+        {
+          "ot13": 0,
+          "ot16": 0,
+          "ot2": 0,
+          "night": 0
+        },
+        {
+          "ot13": 0,
+          "ot16": 0,
+          "ot2": 4.47,
+          "night": 0
+        },
+        {
+          "ot13": 0,
+          "ot16": 0,
+          "ot2": 0,
+          "night": 0
+        },
+        {
+          "ot13": 0,
+          "ot16": 0,
+          "ot2": 0,
+          "night": 0
+        },
+        {
+          "ot13": 0,
+          "ot16": 0,
+          "ot2": 0,
+          "night": 0
+        }
+      ],
+      "nightNormal": 0
+    },
+    {
+      "matricule": "70000229",
+      "nom": "WAMPANGULUA BUKAKA GUYLAIN",
+      "departement": "Engineering",
+      "localisation": "Zamba",
+      "grade": "B2",
+      "weeks": [
+        {
+          "ot13": 0,
+          "ot16": 0,
+          "ot2": 0,
+          "night": 0
+        },
+        {
+          "ot13": 0,
+          "ot16": 0,
+          "ot2": 0,
+          "night": 0
+        },
+        {
+          "ot13": 0,
+          "ot16": 0,
+          "ot2": 0,
+          "night": 0
+        },
+        {
+          "ot13": 0,
+          "ot16": 0,
+          "ot2": 9.51,
+          "night": 7.55
+        },
+        {
+          "ot13": 0,
+          "ot16": 0,
+          "ot2": 0,
+          "night": 0
+        }
+      ],
+      "nightNormal": 0
+    },
+    {
+      "matricule": "70000087",
+      "nom": "ZIWANUKA KIANGEBENI MITHA",
+      "departement": "Engineering",
+      "localisation": "Zamba",
+      "grade": "B4",
+      "weeks": [
+        {
+          "ot13": 0,
+          "ot16": 0,
+          "ot2": 0,
+          "night": 0
+        },
+        {
+          "ot13": 0,
+          "ot16": 0,
+          "ot2": 0,
+          "night": 0
+        },
+        {
+          "ot13": 0,
+          "ot16": 0,
+          "ot2": 0,
+          "night": 0
+        },
+        {
+          "ot13": 0,
+          "ot16": 0,
+          "ot2": 0,
+          "night": 0
+        },
+        {
+          "ot13": 0,
+          "ot16": 0,
+          "ot2": 0,
+          "night": 0
+        }
+      ],
+      "nightNormal": 0
+    }
+  ],
+  "policyChanges": [
+    {
+      "matricule": "70000244",
+      "weekPos": 2,
+      "field": "ot13",
+      "from": 4,
+      "to": 2,
+      "reason": "1.3 plafonné à 2h : 2h reporté vers 1.6"
+    },
+    {
+      "matricule": "70000244",
+      "weekPos": 2,
+      "field": "ot16",
+      "from": 8.02,
+      "to": 10.02,
+      "reason": "1.3 plafonné à 2h : 2h reporté vers 1.6"
+    },
+    {
+      "matricule": "70000244",
+      "weekPos": 2,
+      "field": "ot16",
+      "from": 10.02,
+      "to": 8.02,
+      "reason": "Abattement conventionnel : 2h retranché du 1.6"
+    },
+    {
+      "matricule": "70000244",
+      "weekPos": 3,
+      "field": "ot13",
+      "from": 4,
+      "to": 2,
+      "reason": "1.3 plafonné à 2h : 2h reporté vers 1.6"
+    },
+    {
+      "matricule": "70000244",
+      "weekPos": 3,
+      "field": "ot16",
+      "from": 7.81,
+      "to": 9.81,
+      "reason": "1.3 plafonné à 2h : 2h reporté vers 1.6"
+    },
+    {
+      "matricule": "70000244",
+      "weekPos": 3,
+      "field": "ot16",
+      "from": 9.81,
+      "to": 7.81,
+      "reason": "Abattement conventionnel : 2h retranché du 1.6"
+    },
+    {
+      "matricule": "70000052",
+      "weekPos": 1,
+      "field": "ot16",
+      "from": 5.37,
+      "to": 3.37,
+      "reason": "Abattement conventionnel : 2h retranché du 1.6"
+    },
+    {
+      "matricule": "70000052",
+      "weekPos": 2,
+      "field": "ot16",
+      "from": 3.6,
+      "to": 1.6,
+      "reason": "Abattement conventionnel : 2h retranché du 1.6"
+    },
+    {
+      "matricule": "70000052",
+      "weekPos": 3,
+      "field": "ot16",
+      "from": 1.75,
+      "to": 0,
+      "reason": "Abattement conventionnel : 1.75h retranché du 1.6"
+    },
+    {
+      "matricule": "70000052",
+      "weekPos": 3,
+      "field": "ot13",
+      "from": 2,
+      "to": 1.75,
+      "reason": "Abattement conventionnel : 0.25h retranché du 1.3 (1.6 insuffisant)"
+    },
+    {
+      "matricule": "70000241",
+      "weekPos": 0,
+      "field": "ot13",
+      "from": 1.32,
+      "to": 0,
+      "reason": "Abattement conventionnel : 1.32h retranché du 1.3 (1.6 insuffisant)"
+    },
+    {
+      "matricule": "70000241",
+      "weekPos": 3,
+      "field": "ot16",
+      "from": 3.03,
+      "to": 1.03,
+      "reason": "Abattement conventionnel : 2h retranché du 1.6"
+    },
+    {
+      "matricule": "70000255",
+      "weekPos": 0,
+      "field": "ot16",
+      "from": 1.79,
+      "to": 0,
+      "reason": "Abattement conventionnel : 1.79h retranché du 1.6"
+    },
+    {
+      "matricule": "70000255",
+      "weekPos": 0,
+      "field": "ot13",
+      "from": 2,
+      "to": 1.79,
+      "reason": "Abattement conventionnel : 0.21h retranché du 1.3 (1.6 insuffisant)"
+    },
+    {
+      "matricule": "70000255",
+      "weekPos": 3,
+      "field": "ot13",
+      "from": 0.5,
+      "to": 0,
+      "reason": "Abattement conventionnel : 0.5h retranché du 1.3 (1.6 insuffisant)"
+    },
+    {
+      "matricule": "70000079",
+      "weekPos": 0,
+      "field": "ot16",
+      "from": 1.09,
+      "to": 0,
+      "reason": "Abattement conventionnel : 1.09h retranché du 1.6"
+    },
+    {
+      "matricule": "70000079",
+      "weekPos": 0,
+      "field": "ot13",
+      "from": 2,
+      "to": 1.09,
+      "reason": "Abattement conventionnel : 0.91h retranché du 1.3 (1.6 insuffisant)"
+    },
+    {
+      "matricule": "70000079",
+      "weekPos": 1,
+      "field": "ot13",
+      "from": 1.44,
+      "to": 0,
+      "reason": "Abattement conventionnel : 1.44h retranché du 1.3 (1.6 insuffisant)"
+    },
+    {
+      "matricule": "70000079",
+      "weekPos": 2,
+      "field": "ot16",
+      "from": 2.69,
+      "to": 0.69,
+      "reason": "Abattement conventionnel : 2h retranché du 1.6"
+    },
+    {
+      "matricule": "70000026",
+      "weekPos": 0,
+      "field": "ot16",
+      "from": 0.75,
+      "to": 0,
+      "reason": "Abattement conventionnel : 0.75h retranché du 1.6"
+    },
+    {
+      "matricule": "70000026",
+      "weekPos": 0,
+      "field": "ot13",
+      "from": 2,
+      "to": 0.75,
+      "reason": "Abattement conventionnel : 1.25h retranché du 1.3 (1.6 insuffisant)"
+    },
+    {
+      "matricule": "70000261",
+      "weekPos": 1,
+      "field": "ot16",
+      "from": 3.08,
+      "to": 1.08,
+      "reason": "Abattement conventionnel : 2h retranché du 1.6"
+    },
+    {
+      "matricule": "70000261",
+      "weekPos": 2,
+      "field": "ot16",
+      "from": 2.38,
+      "to": 0.38,
+      "reason": "Abattement conventionnel : 2h retranché du 1.6"
+    },
+    {
+      "matricule": "70000064",
+      "weekPos": 1,
+      "field": "ot13",
+      "from": 4,
+      "to": 2,
+      "reason": "1.3 plafonné à 2h : 2h reporté vers 1.6"
+    },
+    {
+      "matricule": "70000064",
+      "weekPos": 1,
+      "field": "ot16",
+      "from": 8.06,
+      "to": 10.06,
+      "reason": "1.3 plafonné à 2h : 2h reporté vers 1.6"
+    },
+    {
+      "matricule": "70000064",
+      "weekPos": 1,
+      "field": "ot16",
+      "from": 10.06,
+      "to": 8.06,
+      "reason": "Abattement conventionnel : 2h retranché du 1.6"
+    },
+    {
+      "matricule": "70000064",
+      "weekPos": 2,
+      "field": "ot13",
+      "from": 4,
+      "to": 2,
+      "reason": "1.3 plafonné à 2h : 2h reporté vers 1.6"
+    },
+    {
+      "matricule": "70000064",
+      "weekPos": 2,
+      "field": "ot16",
+      "from": 12.09,
+      "to": 14.09,
+      "reason": "1.3 plafonné à 2h : 2h reporté vers 1.6"
+    },
+    {
+      "matricule": "70000064",
+      "weekPos": 2,
+      "field": "ot16",
+      "from": 14.09,
+      "to": 12.09,
+      "reason": "Abattement conventionnel : 2h retranché du 1.6"
+    },
+    {
+      "matricule": "70000064",
+      "weekPos": 3,
+      "field": "ot13",
+      "from": 4,
+      "to": 2,
+      "reason": "1.3 plafonné à 2h : 2h reporté vers 1.6"
+    },
+    {
+      "matricule": "70000064",
+      "weekPos": 3,
+      "field": "ot16",
+      "from": 12.07,
+      "to": 14.07,
+      "reason": "1.3 plafonné à 2h : 2h reporté vers 1.6"
+    },
+    {
+      "matricule": "70000064",
+      "weekPos": 3,
+      "field": "ot16",
+      "from": 14.07,
+      "to": 12.07,
+      "reason": "Abattement conventionnel : 2h retranché du 1.6"
+    },
+    {
+      "matricule": "70000171",
+      "weekPos": 3,
+      "field": "ot13",
+      "from": 4,
+      "to": 2,
+      "reason": "1.3 plafonné à 2h : 2h reporté vers 1.6"
+    },
+    {
+      "matricule": "70000171",
+      "weekPos": 3,
+      "field": "ot16",
+      "from": 12.05,
+      "to": 14.05,
+      "reason": "1.3 plafonné à 2h : 2h reporté vers 1.6"
+    },
+    {
+      "matricule": "70000171",
+      "weekPos": 3,
+      "field": "ot16",
+      "from": 14.05,
+      "to": 12.05,
+      "reason": "Abattement conventionnel : 2h retranché du 1.6"
+    },
+    {
+      "matricule": "70000232",
+      "weekPos": 0,
+      "field": "ot16",
+      "from": 1.24,
+      "to": 0,
+      "reason": "Abattement conventionnel : 1.24h retranché du 1.6"
+    },
+    {
+      "matricule": "70000232",
+      "weekPos": 0,
+      "field": "ot13",
+      "from": 2,
+      "to": 1.24,
+      "reason": "Abattement conventionnel : 0.76h retranché du 1.3 (1.6 insuffisant)"
+    },
+    {
+      "matricule": "70000232",
+      "weekPos": 2,
+      "field": "ot16",
+      "from": 2.69,
+      "to": 0.69,
+      "reason": "Abattement conventionnel : 2h retranché du 1.6"
+    },
+    {
+      "matricule": "70000015",
+      "weekPos": 1,
+      "field": "ot16",
+      "from": 3.53,
+      "to": 1.53,
+      "reason": "Abattement conventionnel : 2h retranché du 1.6"
+    },
+    {
+      "matricule": "70000216",
+      "weekPos": 0,
+      "field": "ot16",
+      "from": 15.33,
+      "to": 13.33,
+      "reason": "Abattement conventionnel : 2h retranché du 1.6"
+    },
+    {
+      "matricule": "70000029",
+      "weekPos": 0,
+      "field": "ot16",
+      "from": 2.3,
+      "to": 0.3,
+      "reason": "Abattement conventionnel : 2h retranché du 1.6"
+    },
+    {
+      "matricule": "70000029",
+      "weekPos": 1,
+      "field": "ot16",
+      "from": 3.03,
+      "to": 1.03,
+      "reason": "Abattement conventionnel : 2h retranché du 1.6"
+    },
+    {
+      "matricule": "70000029",
+      "weekPos": 3,
+      "field": "ot16",
+      "from": 10.01,
+      "to": 8.01,
+      "reason": "Abattement conventionnel : 2h retranché du 1.6"
+    },
+    {
+      "matricule": "70000276",
+      "weekPos": 1,
+      "field": "ot16",
+      "from": 5.66,
+      "to": 3.66,
+      "reason": "Abattement conventionnel : 2h retranché du 1.6"
+    },
+    {
+      "matricule": "70000276",
+      "weekPos": 3,
+      "field": "ot13",
+      "from": 0.37,
+      "to": 0,
+      "reason": "Abattement conventionnel : 0.37h retranché du 1.3 (1.6 insuffisant)"
+    },
+    {
+      "matricule": "70000247",
+      "weekPos": 1,
+      "field": "ot16",
+      "from": 1,
+      "to": 0,
+      "reason": "Abattement conventionnel : 1h retranché du 1.6"
+    },
+    {
+      "matricule": "70000247",
+      "weekPos": 1,
+      "field": "ot13",
+      "from": 2,
+      "to": 1,
+      "reason": "Abattement conventionnel : 1h retranché du 1.3 (1.6 insuffisant)"
+    },
+    {
+      "matricule": "70000247",
+      "weekPos": 4,
+      "field": "ot16",
+      "from": 2,
+      "to": 0,
+      "reason": "Abattement conventionnel : 2h retranché du 1.6"
+    },
+    {
+      "matricule": "70000063",
+      "weekPos": 2,
+      "field": "ot16",
+      "from": 2.01,
+      "to": 0.01,
+      "reason": "Abattement conventionnel : 2h retranché du 1.6"
+    },
+    {
+      "matricule": "70000063",
+      "weekPos": 3,
+      "field": "ot13",
+      "from": 4,
+      "to": 2,
+      "reason": "1.3 plafonné à 2h : 2h reporté vers 1.6"
+    },
+    {
+      "matricule": "70000063",
+      "weekPos": 3,
+      "field": "ot16",
+      "from": 8.07,
+      "to": 10.07,
+      "reason": "1.3 plafonné à 2h : 2h reporté vers 1.6"
+    },
+    {
+      "matricule": "70000063",
+      "weekPos": 3,
+      "field": "ot16",
+      "from": 10.07,
+      "to": 8.07,
+      "reason": "Abattement conventionnel : 2h retranché du 1.6"
+    },
+    {
+      "matricule": "70000284",
+      "weekPos": 0,
+      "field": "ot16",
+      "from": 0.51,
+      "to": 0,
+      "reason": "Abattement conventionnel : 0.51h retranché du 1.6"
+    },
+    {
+      "matricule": "70000284",
+      "weekPos": 0,
+      "field": "ot13",
+      "from": 2,
+      "to": 0.51,
+      "reason": "Abattement conventionnel : 1.49h retranché du 1.3 (1.6 insuffisant)"
+    },
+    {
+      "matricule": "70000284",
+      "weekPos": 1,
+      "field": "ot13",
+      "from": 4,
+      "to": 2,
+      "reason": "1.3 plafonné à 2h : 2h reporté vers 1.6"
+    },
+    {
+      "matricule": "70000284",
+      "weekPos": 1,
+      "field": "ot16",
+      "from": 17.9,
+      "to": 19.9,
+      "reason": "1.3 plafonné à 2h : 2h reporté vers 1.6"
+    },
+    {
+      "matricule": "70000284",
+      "weekPos": 1,
+      "field": "ot16",
+      "from": 19.9,
+      "to": 17.9,
+      "reason": "Abattement conventionnel : 2h retranché du 1.6"
+    },
+    {
+      "matricule": "70000306",
+      "weekPos": 0,
+      "field": "ot13",
+      "from": 4,
+      "to": 2,
+      "reason": "1.3 plafonné à 2h : 2h reporté vers 1.6"
+    },
+    {
+      "matricule": "70000306",
+      "weekPos": 0,
+      "field": "ot16",
+      "from": 11.96,
+      "to": 13.96,
+      "reason": "1.3 plafonné à 2h : 2h reporté vers 1.6"
+    },
+    {
+      "matricule": "70000306",
+      "weekPos": 0,
+      "field": "ot16",
+      "from": 13.96,
+      "to": 11.96,
+      "reason": "Abattement conventionnel : 2h retranché du 1.6"
+    },
+    {
+      "matricule": "70000306",
+      "weekPos": 1,
+      "field": "ot16",
+      "from": 7.68,
+      "to": 5.68,
+      "reason": "Abattement conventionnel : 2h retranché du 1.6"
+    },
+    {
+      "matricule": "70000306",
+      "weekPos": 2,
+      "field": "ot16",
+      "from": 1.02,
+      "to": 0,
+      "reason": "Abattement conventionnel : 1.02h retranché du 1.6"
+    },
+    {
+      "matricule": "70000306",
+      "weekPos": 2,
+      "field": "ot13",
+      "from": 2,
+      "to": 1.02,
+      "reason": "Abattement conventionnel : 0.98h retranché du 1.3 (1.6 insuffisant)"
+    },
+    {
+      "matricule": "70000306",
+      "weekPos": 3,
+      "field": "ot16",
+      "from": 28.99,
+      "to": 26.99,
+      "reason": "Abattement conventionnel : 2h retranché du 1.6"
+    },
+    {
+      "matricule": "70000072",
+      "weekPos": 2,
+      "field": "ot13",
+      "from": 4,
+      "to": 2,
+      "reason": "1.3 plafonné à 2h : 2h reporté vers 1.6"
+    },
+    {
+      "matricule": "70000072",
+      "weekPos": 2,
+      "field": "ot16",
+      "from": 12.02,
+      "to": 14.02,
+      "reason": "1.3 plafonné à 2h : 2h reporté vers 1.6"
+    },
+    {
+      "matricule": "70000072",
+      "weekPos": 2,
+      "field": "ot16",
+      "from": 14.02,
+      "to": 12.02,
+      "reason": "Abattement conventionnel : 2h retranché du 1.6"
+    },
+    {
+      "matricule": "70000072",
+      "weekPos": 3,
+      "field": "ot16",
+      "from": 10,
+      "to": 8,
+      "reason": "Abattement conventionnel : 2h retranché du 1.6"
+    },
+    {
+      "matricule": "70000283",
+      "weekPos": 2,
+      "field": "ot16",
+      "from": 0.46,
+      "to": 0,
+      "reason": "Abattement conventionnel : 0.46h retranché du 1.6"
+    },
+    {
+      "matricule": "70000283",
+      "weekPos": 2,
+      "field": "ot13",
+      "from": 2,
+      "to": 0.46,
+      "reason": "Abattement conventionnel : 1.54h retranché du 1.3 (1.6 insuffisant)"
+    },
+    {
+      "matricule": "70000104",
+      "weekPos": 0,
+      "field": "ot16",
+      "from": 0.45,
+      "to": 0,
+      "reason": "Abattement conventionnel : 0.45h retranché du 1.6"
+    },
+    {
+      "matricule": "70000104",
+      "weekPos": 0,
+      "field": "ot13",
+      "from": 2,
+      "to": 0.45,
+      "reason": "Abattement conventionnel : 1.55h retranché du 1.3 (1.6 insuffisant)"
+    },
+    {
+      "matricule": "70000104",
+      "weekPos": 2,
+      "field": "ot16",
+      "from": 11,
+      "to": 9,
+      "reason": "Abattement conventionnel : 2h retranché du 1.6"
+    },
+    {
+      "matricule": "70000097",
+      "weekPos": 1,
+      "field": "ot16",
+      "from": 4,
+      "to": 2,
+      "reason": "Abattement conventionnel : 2h retranché du 1.6"
+    },
+    {
+      "matricule": "70000309",
+      "weekPos": 3,
+      "field": "ot16",
+      "from": 1.33,
+      "to": 0,
+      "reason": "Abattement conventionnel : 1.33h retranché du 1.6"
+    },
+    {
+      "matricule": "70000309",
+      "weekPos": 3,
+      "field": "ot13",
+      "from": 2,
+      "to": 1.33,
+      "reason": "Abattement conventionnel : 0.67h retranché du 1.3 (1.6 insuffisant)"
+    },
+    {
+      "matricule": "70000227",
+      "weekPos": 2,
+      "field": "ot16",
+      "from": 0.35,
+      "to": 0,
+      "reason": "Abattement conventionnel : 0.35h retranché du 1.6"
+    },
+    {
+      "matricule": "70000227",
+      "weekPos": 2,
+      "field": "ot13",
+      "from": 2,
+      "to": 0.35,
+      "reason": "Abattement conventionnel : 1.65h retranché du 1.3 (1.6 insuffisant)"
+    },
+    {
+      "matricule": "70000116",
+      "weekPos": 1,
+      "field": "ot16",
+      "from": 9.11,
+      "to": 7.11,
+      "reason": "Abattement conventionnel : 2h retranché du 1.6"
+    },
+    {
+      "matricule": "70000116",
+      "weekPos": 2,
+      "field": "ot16",
+      "from": 10.44,
+      "to": 8.44,
+      "reason": "Abattement conventionnel : 2h retranché du 1.6"
+    },
+    {
+      "matricule": "70000116",
+      "weekPos": 3,
+      "field": "ot16",
+      "from": 0.16,
+      "to": 0,
+      "reason": "Abattement conventionnel : 0.16h retranché du 1.6"
+    },
+    {
+      "matricule": "70000116",
+      "weekPos": 3,
+      "field": "ot13",
+      "from": 2,
+      "to": 0.16,
+      "reason": "Abattement conventionnel : 1.84h retranché du 1.3 (1.6 insuffisant)"
+    },
+    {
+      "matricule": "70000115",
+      "weekPos": 1,
+      "field": "ot13",
+      "from": 0.81,
+      "to": 0,
+      "reason": "Abattement conventionnel : 0.81h retranché du 1.3 (1.6 insuffisant)"
+    },
+    {
+      "matricule": "70000115",
+      "weekPos": 2,
+      "field": "ot16",
+      "from": 21.82,
+      "to": 19.82,
+      "reason": "Abattement conventionnel : 2h retranché du 1.6"
+    },
+    {
+      "matricule": "70000211",
+      "weekPos": 1,
+      "field": "ot16",
+      "from": 6.04,
+      "to": 4.04,
+      "reason": "Abattement conventionnel : 2h retranché du 1.6"
+    }
+  ]
+}
