@@ -1,6 +1,21 @@
 {
   "entries": [
     {
+      "id": "log-002535",
+      "at": "2026-11-20T15:00:03.355Z",
+      "userId": "admin",
+      "userName": "Administrateur",
+      "userEmail": "admin",
+      "module": "employes.classification",
+      "moduleLabel": "employes.classification",
+      "action": "export",
+      "actionLabel": "Export",
+      "summary": "Export classification des postes (CLASSIFICATION_GENERALE_DES_EMPLOIS_2026-11-20.xlsx)",
+      "details": "Export classification des postes (CLASSIFICATION_GENERALE_DES_EMPLOIS_2026-11-20.xlsx)",
+      "undoable": false,
+      "undone": false
+    },
+    {
       "id": "log-002534",
       "at": "2026-11-20T14:54:41.936Z",
       "userId": "admin",
@@ -1263812,5 +1263827,5 @@
       }
     }
   ],
-  "nextSeq": 2535
+  "nextSeq": 2536
 }
