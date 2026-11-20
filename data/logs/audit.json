@@ -1,6 +1,47 @@
 {
   "entries": [
     {
+      "id": "log-002539",
+      "at": "2026-11-20T19:04:56.232Z",
+      "userId": "Tresor.Maneka@ppcdrc.cd",
+      "userName": "Tresor Maneka",
+      "userEmail": "Tresor.Maneka@ppcdrc.cd",
+      "module": "protocol.voyages",
+      "moduleLabel": "Gestion de voyage",
+      "action": "create",
+      "actionLabel": "Création",
+      "entityType": "protocol.voyage",
+      "entityId": "pvc-110",
+      "summary": "Voyage PVC-0110 MAKENGELE KISAMBU HENOCK Zamba Matdi Zamba",
+      "details": "Voyage PVC-0110 MAKENGELE KISAMBU HENOCK Zamba Matdi Zamba",
+      "after": {
+        "id": "pvc-110",
+        "numero": "PVC-0110",
+        "date": "2026-11-19",
+        "voyageur": "MAKENGELE KISAMBU HENOCK",
+        "voyageurMatricule": "CHRS_PPC0049",
+        "departement": "Human Resources",
+        "centreCout": "KM5413",
+        "destination": "Zamba Matdi Zamba",
+        "ticketAvion": 0,
+        "visaVolant": 0,
+        "lettreLegaliser": 0,
+        "goPass": 0,
+        "transfert": 0,
+        "hotelNuit": 100,
+        "nbreNuits": 3,
+        "coutHotel": 300,
+        "categorieHotel": "Hotel Fortune Matadi",
+        "appartement": 0,
+        "autresCharges": 0,
+        "coutTotal": 300,
+        "createdAt": "2026-11-20T19:04:51.950Z",
+        "updatedAt": "2026-11-20T19:04:51.950Z"
+      },
+      "undoable": false,
+      "undone": false
+    },
+    {
       "id": "log-002538",
       "at": "2026-11-20T19:03:22.880Z",
       "userId": "Tresor.Maneka@ppcdrc.cd",
@@ -1263924,5 +1263965,5 @@
       }
     }
   ],
-  "nextSeq": 2539
+  "nextSeq": 2540
 }
