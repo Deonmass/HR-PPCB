@@ -1,6 +1,29 @@
 {
   "entries": [
     {
+      "id": "log-002510",
+      "at": "2026-11-20T06:25:51.708Z",
+      "userId": "admin",
+      "userName": "Administrateur",
+      "userEmail": "admin",
+      "module": "timesheet",
+      "moduleLabel": "Timesheet",
+      "action": "update",
+      "actionLabel": "Modification",
+      "summary": "Enregistrement timesheet 70000243 — Production (11/2026)",
+      "details": "Enregistrement timesheet 70000243 — Production (11/2026)",
+      "undoable": false,
+      "undone": false,
+      "meta": {
+        "year": 2026,
+        "month": 11,
+        "department": "Production",
+        "matricule": "70000243",
+        "mode": "employee-month",
+        "count": 35
+      }
+    },
+    {
       "id": "log-002509",
       "at": "2026-11-19T23:56:36.502Z",
       "userId": "Serge.Muakasa@ppcdrc.cd",
@@ -1262430,5 +1262453,5 @@
       }
     }
   ],
-  "nextSeq": 2510
+  "nextSeq": 2511
 }
