@@ -1,6 +1,107 @@
 {
   "entries": [
     {
+      "id": "log-002521",
+      "at": "2026-11-20T10:18:36.276Z",
+      "userId": "admin",
+      "userName": "Administrateur",
+      "userEmail": "admin",
+      "module": "timesheet.overtimes",
+      "moduleLabel": "Timesheet — Heures sup.",
+      "action": "update",
+      "actionLabel": "Modification",
+      "summary": "Enregistrement HS semaine 0 — Engineering (11/2026)",
+      "details": "Enregistrement HS semaine 0 — Engineering (11/2026)",
+      "after": {
+        "weekIndex": 0,
+        "department": "Engineering",
+        "weekFromTo": "du 12/10/2026 au 19/10/2026",
+        "locked": false,
+        "entries": {
+          "70000052": {
+            "matricule": "70000052",
+            "ot13": 0,
+            "ot16": 0,
+            "ot2": 13.252,
+            "night": 0
+          },
+          "70000079": {
+            "matricule": "70000079",
+            "ot13": 2,
+            "ot16": 1.089,
+            "ot2": 0,
+            "night": 2.49
+          },
+          "70000088": {
+            "matricule": "70000088",
+            "ot13": 0,
+            "ot16": 0,
+            "ot2": 20.18,
+            "night": 5.62
+          },
+          "70000104": {
+            "matricule": "70000104",
+            "ot13": 2,
+            "ot16": 0.454,
+            "ot2": 4.938,
+            "night": 2.454
+          },
+          "70000215": {
+            "matricule": "70000215",
+            "ot13": 0,
+            "ot16": 0,
+            "ot2": 15.062,
+            "night": 0
+          },
+          "70000216": {
+            "matricule": "70000216",
+            "ot13": 2,
+            "ot16": 15.33,
+            "ot2": 0,
+            "night": 0
+          },
+          "70000232": {
+            "matricule": "70000232",
+            "ot13": 2,
+            "ot16": 1.238,
+            "ot2": 0,
+            "night": 3.238
+          },
+          "70000261": {
+            "matricule": "70000261",
+            "ot13": 0,
+            "ot16": 0,
+            "ot2": 9.009,
+            "night": 0
+          },
+          "70000284": {
+            "matricule": "70000284",
+            "ot13": 2,
+            "ot16": 0.508,
+            "ot2": 9.009,
+            "night": 4.508
+          },
+          "70000306": {
+            "matricule": "70000306",
+            "ot13": 4,
+            "ot16": 11.958,
+            "ot2": 0,
+            "night": 0
+          }
+        },
+        "updatedAt": "2026-11-20T10:18:32.152Z",
+        "updatedBy": "admin"
+      },
+      "undoable": false,
+      "undone": false,
+      "meta": {
+        "year": 2026,
+        "month": 11,
+        "department": "Engineering",
+        "weekIndex": 0
+      }
+    },
+    {
       "id": "log-002520",
       "at": "2026-11-20T09:59:16.173Z",
       "userId": "admin",
@@ -1262768,5 +1262869,5 @@
       }
     }
   ],
-  "nextSeq": 2521
+  "nextSeq": 2522
 }
