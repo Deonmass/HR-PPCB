@@ -1,6 +1,21 @@
 {
   "entries": [
     {
+      "id": "log-002511",
+      "at": "2026-11-20T07:07:08.554Z",
+      "userId": "admin",
+      "userName": "Administrateur",
+      "userEmail": "admin",
+      "module": "timesheet.compilation",
+      "moduleLabel": "Timesheet — Compilation",
+      "action": "other",
+      "actionLabel": "Autre",
+      "summary": "Ajout compilation OT 11/2026 — 2 agent(s)",
+      "details": "70000302, 70000305",
+      "undoable": false,
+      "undone": false
+    },
+    {
       "id": "log-002510",
       "at": "2026-11-20T06:25:51.708Z",
       "userId": "admin",
@@ -1262453,5 +1262468,5 @@
       }
     }
   ],
-  "nextSeq": 2511
+  "nextSeq": 2512
 }
