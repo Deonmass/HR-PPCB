@@ -885,20 +885,20 @@
       "heureArrivee": "",
       "motif": "Mission a Kinshasa avec Benny",
       "notes": "",
-      "status": "demande",
-      "chauffeurNom": "",
+      "status": "effectue",
+      "chauffeurNom": "TENDA DIWASILUA BINGI",
       "chauffeurMatricule": "",
       "chauffeurInterne": false,
-      "vehiculeMode": "",
-      "vehiculeId": "",
-      "vehiculeLibelle": "",
+      "vehiculeMode": "flotte",
+      "vehiculeId": "veh-029",
+      "vehiculeLibelle": "9261BN01 · Peugeot · Pick up",
       "foodAllowance": 0,
       "foodForTheRoad": 0,
       "tollGate": 0,
-      "confirmedAt": "",
-      "completedAt": "",
+      "confirmedAt": "2026-11-20T19:28:11.304Z",
+      "completedAt": "2026-11-20T19:28:11.305Z",
       "createdAt": "2026-11-16T09:37:47.608Z",
-      "updatedAt": "2026-11-16T09:49:49.396Z"
+      "updatedAt": "2026-11-20T19:28:11.304Z"
     }
   ],
   "nextSeq": 44
