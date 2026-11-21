@@ -3,7 +3,7 @@
     {
       "id": "admin",
       "username": "admin",
-      "password": "123",
+      "password": "scrypt$ufJsrlrrdL12cYyuiOoInQ$8O_sVeDb53R3QcjiNtJn6jNxsuM5fO1wQdNzzUgVB_s",
       "displayName": "Administrateur",
       "initials": "AD",
       "active": true,
