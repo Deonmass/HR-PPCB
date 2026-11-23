@@ -1,6 +1,21 @@
 {
   "entries": [
     {
+      "id": "log-002559",
+      "at": "2026-11-23T16:01:08.081Z",
+      "userId": "Serge.Muakasa@ppcdrc.cd",
+      "userName": "Serge Muakasa",
+      "userEmail": "Serge.Muakasa@ppcdrc.cd",
+      "module": "factures-suivi",
+      "moduleLabel": "Factures suivi",
+      "action": "export",
+      "actionLabel": "Export",
+      "summary": "Export factures (FACTURES_SUIVI_2026-11-23.xlsx)",
+      "details": "Export factures (FACTURES_SUIVI_2026-11-23.xlsx)",
+      "undoable": false,
+      "undone": false
+    },
+    {
       "id": "log-002558",
       "at": "2026-11-23T15:54:50.693Z",
       "userId": "Serge.Muakasa@ppcdrc.cd",
@@ -1264834,5 +1264849,5 @@
       }
     }
   ],
-  "nextSeq": 2559
+  "nextSeq": 2560
 }
