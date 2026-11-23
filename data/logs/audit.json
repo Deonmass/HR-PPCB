@@ -1,6 +1,48 @@
 {
   "entries": [
     {
+      "id": "log-002552",
+      "at": "2026-11-23T13:19:14.335Z",
+      "userId": "karine.mvutu@ppcdrc.cd",
+      "userName": "Karine Mvutu",
+      "userEmail": "karine.mvutu@ppcdrc.cd",
+      "module": "sante",
+      "moduleLabel": "Santé",
+      "action": "create",
+      "actionLabel": "Création",
+      "entityType": "sante.visit",
+      "entityId": "sante-mwtal8u3-6oi2do",
+      "summary": "Cas santé — NEMWADJARE  PERO · PALUDISME SIMPLE",
+      "details": "Cas santé — NEMWADJARE  PERO · PALUDISME SIMPLE",
+      "after": {
+        "id": "sante-mwtal8u3-6oi2do",
+        "date": "2026-11-21",
+        "nom": "NEMWADJARE",
+        "postnom": "PERO",
+        "sexe": "M",
+        "age": 5,
+        "typeMalade": "ENFANT",
+        "pathologie": "PALUDISME SIMPLE",
+        "traitement": "ANTI PALUDEEN  ET ANTI PYRETIQUE",
+        "reference": "NON",
+        "year": 2026,
+        "month": 11,
+        "employeeMatricule": "",
+        "employeeNom": "",
+        "dependantId": null,
+        "commentaire": "",
+        "contractantId": "",
+        "contractantNom": "",
+        "contractantEmployeeId": "",
+        "createdAt": "2026-11-23T13:19:11.355Z",
+        "updatedAt": "2026-11-23T13:19:11.355Z",
+        "createdBy": "karine.mvutu@ppcdrc.cd",
+        "updatedBy": "karine.mvutu@ppcdrc.cd"
+      },
+      "undoable": false,
+      "undone": false
+    },
+    {
       "id": "log-002551",
       "at": "2026-11-23T09:18:23.427Z",
       "userId": "Kiesse.Banguli@ppcdrc.cd",
@@ -1264541,5 +1264583,5 @@
       }
     }
   ],
-  "nextSeq": 2552
+  "nextSeq": 2553
 }
