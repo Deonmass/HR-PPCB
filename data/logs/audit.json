@@ -1,6 +1,47 @@
 {
   "entries": [
     {
+      "id": "log-002568",
+      "at": "2026-11-23T17:45:59.270Z",
+      "userId": "Tresor.Maneka@ppcdrc.cd",
+      "userName": "Tresor Maneka",
+      "userEmail": "Tresor.Maneka@ppcdrc.cd",
+      "module": "protocol.voyages",
+      "moduleLabel": "Gestion de voyage",
+      "action": "create",
+      "actionLabel": "Création",
+      "entityType": "protocol.voyage",
+      "entityId": "pvc-115",
+      "summary": "Voyage PVC-0115 Mr Zhang Yongtao Lubumbashi Chine Changement de la date de voyage",
+      "details": "Voyage PVC-0115 Mr Zhang Yongtao Lubumbashi Chine Changement de la date de voyage",
+      "after": {
+        "id": "pvc-115",
+        "numero": "PVC-0115",
+        "date": "2026-11-26",
+        "voyageur": "Mr Zhang Yongtao",
+        "voyageurMatricule": "",
+        "departement": "Engineering",
+        "centreCout": "KM5310",
+        "destination": "Lubumbashi Chine Changement de la date de voyage",
+        "ticketAvion": 390,
+        "visaVolant": 0,
+        "lettreLegaliser": 0,
+        "goPass": 55,
+        "transfert": 0,
+        "hotelNuit": 0,
+        "nbreNuits": 115,
+        "coutHotel": 0,
+        "categorieHotel": "Hotel Goshen Lubumbashi",
+        "appartement": 0,
+        "autresCharges": 20,
+        "coutTotal": 465,
+        "createdAt": "2026-11-23T17:45:53.213Z",
+        "updatedAt": "2026-11-23T17:45:53.213Z"
+      },
+      "undoable": false,
+      "undone": false
+    },
+    {
       "id": "log-002567",
       "at": "2026-11-23T17:43:20.061Z",
       "userId": "Tresor.Maneka@ppcdrc.cd",
@@ -1265309,5 +1265350,5 @@
       }
     }
   ],
-  "nextSeq": 2568
+  "nextSeq": 2569
 }
