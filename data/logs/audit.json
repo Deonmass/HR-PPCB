@@ -1,6 +1,71 @@
 {
   "entries": [
     {
+      "id": "log-002565",
+      "at": "2026-11-23T17:38:32.784Z",
+      "userId": "Tresor.Maneka@ppcdrc.cd",
+      "userName": "Tresor Maneka",
+      "userEmail": "Tresor.Maneka@ppcdrc.cd",
+      "module": "protocol.voyages",
+      "moduleLabel": "Gestion de voyage",
+      "action": "update",
+      "actionLabel": "Modification",
+      "entityType": "protocol.voyage",
+      "entityId": "pvc-113",
+      "summary": "Modification voyage PVC-0113 TANUI KIPRUTO ELIAS",
+      "details": "Modification voyage PVC-0113 TANUI KIPRUTO ELIAS",
+      "before": {
+        "id": "pvc-113",
+        "numero": "PVC-0113",
+        "date": "2026-11-23",
+        "voyageur": "TANUI KIPRUTO ELIAS",
+        "voyageurMatricule": "70000050",
+        "departement": "MD Office",
+        "centreCout": "KM8910 Project Management",
+        "destination": "Kinshasa Lubumbashi Kinshasa",
+        "ticketAvion": 548,
+        "visaVolant": 0,
+        "lettreLegaliser": 0,
+        "goPass": 30,
+        "transfert": 0,
+        "hotelNuit": 0,
+        "nbreNuits": 0,
+        "coutHotel": 0,
+        "categorieHotel": "",
+        "appartement": 0,
+        "autresCharges": 0,
+        "coutTotal": 578,
+        "createdAt": "2026-11-23T17:36:48.861Z",
+        "updatedAt": "2026-11-23T17:36:48.861Z"
+      },
+      "after": {
+        "id": "pvc-113",
+        "numero": "PVC-0113",
+        "date": "2026-11-23",
+        "voyageur": "TANUI KIPRUTO ELIAS",
+        "voyageurMatricule": "70000050",
+        "departement": "MD Office",
+        "centreCout": "KM8910 Project Management",
+        "destination": "Kinshasa Lubumbashi Kinshasa",
+        "ticketAvion": 548,
+        "visaVolant": 0,
+        "lettreLegaliser": 0,
+        "goPass": 30,
+        "transfert": 0,
+        "hotelNuit": 150,
+        "nbreNuits": 1,
+        "coutHotel": 150,
+        "categorieHotel": "Hotel Royal Kinshasa",
+        "appartement": 0,
+        "autresCharges": 0,
+        "coutTotal": 728,
+        "createdAt": "2026-11-23T17:36:48.861Z",
+        "updatedAt": "2026-11-23T17:38:25.440Z"
+      },
+      "undoable": false,
+      "undone": false
+    },
+    {
       "id": "log-002564",
       "at": "2026-11-23T17:36:54.674Z",
       "userId": "Tresor.Maneka@ppcdrc.cd",
@@ -1265138,5 +1265203,5 @@
       }
     }
   ],
-  "nextSeq": 2565
+  "nextSeq": 2566
 }
