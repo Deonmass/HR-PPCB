@@ -1,6 +1,53 @@
 {
   "entries": [
     {
+      "id": "log-002560",
+      "at": "2026-11-23T17:26:38.134Z",
+      "userId": "Tresor.Maneka@ppcdrc.cd",
+      "userName": "Tresor Maneka",
+      "userEmail": "Tresor.Maneka@ppcdrc.cd",
+      "module": "charroi.voyages",
+      "moduleLabel": "Charroi — Voyages",
+      "action": "create",
+      "actionLabel": "Création",
+      "entityType": "charroi.voyage",
+      "entityId": "vyg-047",
+      "summary": "Demande de voyage VYG-0047 KINKINIA DIAVEZUKA PELAGIE, GLODY BENGESHA ELONGO, MOLONGA LYONGA ANDREW Kinshasa → Zamba (Village)",
+      "details": "Demande de voyage VYG-0047 KINKINIA DIAVEZUKA PELAGIE, GLODY BENGESHA ELONGO, MOLONGA LYONGA ANDREW Kinshasa → Zamba (Village)",
+      "after": {
+        "id": "vyg-047",
+        "numero": "VYG-0047",
+        "passagerNom": "KINKINIA DIAVEZUKA PELAGIE, GLODY BENGESHA ELONGO, MOLONGA LYONGA ANDREW",
+        "passagerMatricule": "70000295, 70000313, 70000252",
+        "passagerInterne": true,
+        "nombrePersonnes": 3,
+        "depart": "Kinshasa",
+        "destination": "Zamba (Village)",
+        "dateDepart": "2026-11-22",
+        "heureDepart": "07:00",
+        "dateArrivee": "",
+        "heureArrivee": "",
+        "motif": "Retour Au village PPC",
+        "notes": "",
+        "status": "demande",
+        "chauffeurNom": "",
+        "chauffeurMatricule": "",
+        "chauffeurInterne": false,
+        "vehiculeMode": "",
+        "vehiculeId": "",
+        "vehiculeLibelle": "",
+        "foodAllowance": 0,
+        "foodForTheRoad": 0,
+        "tollGate": 0,
+        "confirmedAt": "",
+        "completedAt": "",
+        "createdAt": "2026-11-23T17:26:33.196Z",
+        "updatedAt": "2026-11-23T17:26:33.196Z"
+      },
+      "undoable": false,
+      "undone": false
+    },
+    {
       "id": "log-002559",
       "at": "2026-11-23T16:01:08.081Z",
       "userId": "Serge.Muakasa@ppcdrc.cd",
@@ -1264849,5 +1264896,5 @@
       }
     }
   ],
-  "nextSeq": 2560
+  "nextSeq": 2561
 }
