@@ -1,6 +1,48 @@
 {
   "entries": [
     {
+      "id": "log-002554",
+      "at": "2026-11-23T13:21:08.934Z",
+      "userId": "karine.mvutu@ppcdrc.cd",
+      "userName": "Karine Mvutu",
+      "userEmail": "karine.mvutu@ppcdrc.cd",
+      "module": "sante",
+      "moduleLabel": "Santé",
+      "action": "create",
+      "actionLabel": "Création",
+      "entityType": "sante.visit",
+      "entityId": "sante-mwtanqqn-kh75ss",
+      "summary": "Cas santé — LUZOLAWO JOSEPH · FIEVRE A METTRE AU POINT",
+      "details": "Cas santé — LUZOLAWO JOSEPH · FIEVRE A METTRE AU POINT",
+      "after": {
+        "id": "sante-mwtanqqn-kh75ss",
+        "date": "2026-11-21",
+        "nom": "LUZOLAWO",
+        "postnom": "JOSEPH",
+        "sexe": "M",
+        "age": 3,
+        "typeMalade": "ENFANT",
+        "pathologie": "FIEVRE A METTRE AU POINT",
+        "traitement": "PARACETAMOLE",
+        "reference": "IME",
+        "year": 2026,
+        "month": 11,
+        "employeeMatricule": "",
+        "employeeNom": "",
+        "dependantId": null,
+        "commentaire": "Voir avis medical",
+        "contractantId": "",
+        "contractantNom": "",
+        "contractantEmployeeId": "",
+        "createdAt": "2026-11-23T13:21:07.871Z",
+        "updatedAt": "2026-11-23T13:21:07.871Z",
+        "createdBy": "karine.mvutu@ppcdrc.cd",
+        "updatedBy": "karine.mvutu@ppcdrc.cd"
+      },
+      "undoable": false,
+      "undone": false
+    },
+    {
       "id": "log-002553",
       "at": "2026-11-23T13:19:58.468Z",
       "userId": "karine.mvutu@ppcdrc.cd",
@@ -1264625,5 +1264667,5 @@
       }
     }
   ],
-  "nextSeq": 2554
+  "nextSeq": 2555
 }
