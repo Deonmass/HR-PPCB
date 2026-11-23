@@ -1005,20 +1005,20 @@
       "heureArrivee": "",
       "motif": "Retour Au village PPC",
       "notes": "",
-      "status": "demande",
-      "chauffeurNom": "",
+      "status": "effectue",
+      "chauffeurNom": "TENDA DIWASILUA BINGI",
       "chauffeurMatricule": "",
       "chauffeurInterne": false,
-      "vehiculeMode": "",
-      "vehiculeId": "",
-      "vehiculeLibelle": "",
+      "vehiculeMode": "flotte",
+      "vehiculeId": "veh-041",
+      "vehiculeLibelle": "9267BN01 · Peugeot · Pick up",
       "foodAllowance": 0,
       "foodForTheRoad": 0,
       "tollGate": 0,
-      "confirmedAt": "",
-      "completedAt": "",
+      "confirmedAt": "2026-11-23T17:27:39.644Z",
+      "completedAt": "2026-11-23T17:27:39.644Z",
       "createdAt": "2026-11-23T17:26:33.196Z",
-      "updatedAt": "2026-11-23T17:26:33.196Z"
+      "updatedAt": "2026-11-23T17:27:39.644Z"
     }
   ],
   "nextSeq": 48
