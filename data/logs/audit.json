@@ -1,6 +1,47 @@
 {
   "entries": [
     {
+      "id": "log-002566",
+      "at": "2026-11-23T17:41:36.863Z",
+      "userId": "Tresor.Maneka@ppcdrc.cd",
+      "userName": "Tresor Maneka",
+      "userEmail": "Tresor.Maneka@ppcdrc.cd",
+      "module": "protocol.voyages",
+      "moduleLabel": "Gestion de voyage",
+      "action": "create",
+      "actionLabel": "Création",
+      "entityType": "protocol.voyage",
+      "entityId": "pvc-114",
+      "summary": "Voyage PVC-0114 M. Zhang Fangjun Kinshasa Chine Modification de la date",
+      "details": "Voyage PVC-0114 M. Zhang Fangjun Kinshasa Chine Modification de la date",
+      "after": {
+        "id": "pvc-114",
+        "numero": "PVC-0114",
+        "date": "2026-11-25",
+        "voyageur": "M. Zhang Fangjun",
+        "voyageurMatricule": "",
+        "departement": "Engineering",
+        "centreCout": "KM5310",
+        "destination": "Kinshasa Chine Modification de la date",
+        "ticketAvion": 590,
+        "visaVolant": 0,
+        "lettreLegaliser": 0,
+        "goPass": 55,
+        "transfert": 0,
+        "hotelNuit": 100,
+        "nbreNuits": 1,
+        "coutHotel": 100,
+        "categorieHotel": "Hotel Platunium",
+        "appartement": 0,
+        "autresCharges": 0,
+        "coutTotal": 745,
+        "createdAt": "2026-11-23T17:41:31.122Z",
+        "updatedAt": "2026-11-23T17:41:31.122Z"
+      },
+      "undoable": false,
+      "undone": false
+    },
+    {
       "id": "log-002565",
       "at": "2026-11-23T17:38:32.784Z",
       "userId": "Tresor.Maneka@ppcdrc.cd",
@@ -1265203,5 +1265244,5 @@
       }
     }
   ],
-  "nextSeq": 2566
+  "nextSeq": 2567
 }
