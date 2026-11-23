@@ -1,6 +1,61 @@
 {
   "entries": [
     {
+      "id": "log-002557",
+      "at": "2026-11-23T15:52:43.417Z",
+      "userId": "Serge.Muakasa@ppcdrc.cd",
+      "userName": "Serge Muakasa",
+      "userEmail": "Serge.Muakasa@ppcdrc.cd",
+      "module": "factures-suivi",
+      "moduleLabel": "Factures suivi",
+      "action": "update",
+      "actionLabel": "Modification",
+      "entityType": "facture.suivi",
+      "entityId": "fac-2176",
+      "summary": "Modification facture Facture n° FC/CD02002360/1136/ 2026",
+      "details": "Modification facture Facture n° FC/CD02002360/1136/ 2026",
+      "before": {
+        "id": "fac-2176",
+        "date": "02/11/2026",
+        "societe": "Capital HR-Transport",
+        "facture": "Facture n° FC/CD02002360/1136/ 2026",
+        "montant": 9240,
+        "echeance": "",
+        "pr": "11207565",
+        "datePr": "",
+        "po": "",
+        "datePo": "",
+        "grn": "",
+        "dateGrn": "",
+        "payment": "",
+        "datePym": "",
+        "commentaire": "Au PR — en attente du PO.",
+        "statut": "unpaid",
+        "statutLabel": "unpaid"
+      },
+      "after": {
+        "id": "fac-2176",
+        "date": "02/11/2026",
+        "societe": "Capital HR-Transport",
+        "facture": "Facture n° FC/CD02002360/1136/ 2026",
+        "montant": 10718.4,
+        "echeance": "",
+        "pr": "11207565",
+        "datePr": "",
+        "po": "",
+        "datePo": "",
+        "grn": "",
+        "dateGrn": "",
+        "payment": "",
+        "datePym": "",
+        "commentaire": "Au PR — en attente du PO.",
+        "statut": "unpaid",
+        "statutLabel": "unpaid"
+      },
+      "undoable": true,
+      "undone": false
+    },
+    {
       "id": "log-002556",
       "at": "2026-11-23T15:44:56.094Z",
       "userId": "Serge.Muakasa@ppcdrc.cd",
@@ -1264724,5 +1264779,5 @@
       }
     }
   ],
-  "nextSeq": 2557
+  "nextSeq": 2558
 }
