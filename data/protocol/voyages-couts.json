@@ -2630,15 +2630,15 @@
       "lettreLegaliser": 0,
       "goPass": 30,
       "transfert": 0,
-      "hotelNuit": 0,
-      "nbreNuits": 0,
-      "coutHotel": 0,
-      "categorieHotel": "",
+      "hotelNuit": 150,
+      "nbreNuits": 1,
+      "coutHotel": 150,
+      "categorieHotel": "Hotel Royal Kinshasa",
       "appartement": 0,
       "autresCharges": 0,
-      "coutTotal": 578,
+      "coutTotal": 728,
       "createdAt": "2026-11-23T17:36:48.861Z",
-      "updatedAt": "2026-11-23T17:36:48.861Z"
+      "updatedAt": "2026-11-23T17:38:25.440Z"
     }
   ],
   "nextSeq": 114
