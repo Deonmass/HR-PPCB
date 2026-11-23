@@ -1,6 +1,48 @@
 {
   "entries": [
     {
+      "id": "log-002553",
+      "at": "2026-11-23T13:19:58.468Z",
+      "userId": "karine.mvutu@ppcdrc.cd",
+      "userName": "Karine Mvutu",
+      "userEmail": "karine.mvutu@ppcdrc.cd",
+      "module": "sante",
+      "moduleLabel": "Santé",
+      "action": "create",
+      "actionLabel": "Création",
+      "entityType": "sante.visit",
+      "entityId": "sante-mwtam8ct-ocahmc",
+      "summary": "Cas santé — KOLONGO MUKEYINA · PALUDISME SIMPLE",
+      "details": "Cas santé — KOLONGO MUKEYINA · PALUDISME SIMPLE",
+      "after": {
+        "id": "sante-mwtam8ct-ocahmc",
+        "date": "2026-11-21",
+        "nom": "KOLONGO",
+        "postnom": "MUKEYINA",
+        "sexe": "F",
+        "age": 4,
+        "typeMalade": "ENFANT",
+        "pathologie": "PALUDISME SIMPLE",
+        "traitement": "ANTI PALUDEEN  ET ANTI PYRETIQUE",
+        "reference": "NON",
+        "year": 2026,
+        "month": 11,
+        "employeeMatricule": "70000067",
+        "employeeNom": "MPONGO KOLONGO LEON",
+        "dependantId": 320,
+        "commentaire": "",
+        "contractantId": "",
+        "contractantNom": "",
+        "contractantEmployeeId": "",
+        "createdAt": "2026-11-23T13:19:57.389Z",
+        "updatedAt": "2026-11-23T13:19:57.389Z",
+        "createdBy": "karine.mvutu@ppcdrc.cd",
+        "updatedBy": "karine.mvutu@ppcdrc.cd"
+      },
+      "undoable": false,
+      "undone": false
+    },
+    {
       "id": "log-002552",
       "at": "2026-11-23T13:19:14.335Z",
       "userId": "karine.mvutu@ppcdrc.cd",
@@ -1264583,5 +1264625,5 @@
       }
     }
   ],
-  "nextSeq": 2553
+  "nextSeq": 2554
 }
