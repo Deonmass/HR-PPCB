@@ -1,6 +1,48 @@
 {
   "entries": [
     {
+      "id": "log-002555",
+      "at": "2026-11-23T13:22:22.305Z",
+      "userId": "karine.mvutu@ppcdrc.cd",
+      "userName": "Karine Mvutu",
+      "userEmail": "karine.mvutu@ppcdrc.cd",
+      "module": "sante",
+      "moduleLabel": "Santé",
+      "action": "create",
+      "actionLabel": "Création",
+      "entityType": "sante.visit",
+      "entityId": "sante-mwtapa5x-q16ckf",
+      "summary": "Cas santé — KAMUENGI NDEKE · SYNDROME DYSPEPTIQUE",
+      "details": "Cas santé — KAMUENGI NDEKE · SYNDROME DYSPEPTIQUE",
+      "after": {
+        "id": "sante-mwtapa5x-q16ckf",
+        "date": "2026-11-21",
+        "nom": "KAMUENGI",
+        "postnom": "NDEKE",
+        "sexe": "F",
+        "age": 34,
+        "typeMalade": "EPOUSE",
+        "pathologie": "SYNDROME DYSPEPTIQUE",
+        "traitement": "ANTI ACIDE INJECTABLE  IVD LENTE PUIS  BUVABLE",
+        "reference": "NON",
+        "year": 2026,
+        "month": 11,
+        "employeeMatricule": "",
+        "employeeNom": "",
+        "dependantId": null,
+        "commentaire": "",
+        "contractantId": "",
+        "contractantNom": "",
+        "contractantEmployeeId": "",
+        "createdAt": "2026-11-23T13:22:19.701Z",
+        "updatedAt": "2026-11-23T13:22:19.701Z",
+        "createdBy": "karine.mvutu@ppcdrc.cd",
+        "updatedBy": "karine.mvutu@ppcdrc.cd"
+      },
+      "undoable": false,
+      "undone": false
+    },
+    {
       "id": "log-002554",
       "at": "2026-11-23T13:21:08.934Z",
       "userId": "karine.mvutu@ppcdrc.cd",
@@ -1264667,5 +1264709,5 @@
       }
     }
   ],
-  "nextSeq": 2555
+  "nextSeq": 2556
 }
