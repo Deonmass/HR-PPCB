@@ -1,6 +1,53 @@
 {
   "entries": [
     {
+      "id": "log-002562",
+      "at": "2026-11-23T17:30:25.684Z",
+      "userId": "Tresor.Maneka@ppcdrc.cd",
+      "userName": "Tresor Maneka",
+      "userEmail": "Tresor.Maneka@ppcdrc.cd",
+      "module": "charroi.voyages",
+      "moduleLabel": "Charroi — Voyages",
+      "action": "create",
+      "actionLabel": "Création",
+      "entityType": "charroi.voyage",
+      "entityId": "vyg-048",
+      "summary": "Demande de voyage VYG-0048 TANUI KIPRUTO ELIAS Zamba (Village) → Kinshasa Lubudi",
+      "details": "Demande de voyage VYG-0048 TANUI KIPRUTO ELIAS Zamba (Village) → Kinshasa Lubudi",
+      "after": {
+        "id": "vyg-048",
+        "numero": "VYG-0048",
+        "passagerNom": "TANUI KIPRUTO ELIAS",
+        "passagerMatricule": "70000050",
+        "passagerInterne": true,
+        "nombrePersonnes": 1,
+        "depart": "Zamba (Village)",
+        "destination": "Kinshasa Lubudi",
+        "dateDepart": "2026-11-22",
+        "heureDepart": "06:00",
+        "dateArrivee": "",
+        "heureArrivee": "",
+        "motif": "Mission a lubumbashi via lubudi",
+        "notes": "",
+        "status": "demande",
+        "chauffeurNom": "",
+        "chauffeurMatricule": "",
+        "chauffeurInterne": false,
+        "vehiculeMode": "",
+        "vehiculeId": "",
+        "vehiculeLibelle": "",
+        "foodAllowance": 0,
+        "foodForTheRoad": 0,
+        "tollGate": 0,
+        "confirmedAt": "",
+        "completedAt": "",
+        "createdAt": "2026-11-23T17:30:20.317Z",
+        "updatedAt": "2026-11-23T17:30:20.317Z"
+      },
+      "undoable": false,
+      "undone": false
+    },
+    {
       "id": "log-002561",
       "at": "2026-11-23T17:27:44.708Z",
       "userId": "Tresor.Maneka@ppcdrc.cd",
@@ -1264973,5 +1265020,5 @@
       }
     }
   ],
-  "nextSeq": 2562
+  "nextSeq": 2563
 }
