@@ -1,6 +1,21 @@
 {
   "entries": [
     {
+      "id": "log-002569",
+      "at": "2026-11-24T07:27:07.141Z",
+      "userId": "admin",
+      "userName": "Administrateur",
+      "userEmail": "admin",
+      "module": "auth",
+      "moduleLabel": "Authentification",
+      "action": "login",
+      "actionLabel": "Connexion",
+      "summary": "Connexion admin",
+      "details": "Connexion de Administrateur (admin)",
+      "undoable": false,
+      "undone": false
+    },
+    {
       "id": "log-002568",
       "at": "2026-11-23T17:45:59.270Z",
       "userId": "Tresor.Maneka@ppcdrc.cd",
@@ -1265350,5 +1265365,5 @@
       }
     }
   ],
-  "nextSeq": 2569
+  "nextSeq": 2570
 }
