@@ -139,19 +139,138 @@
         "manualKpis": {
           "headcount": 175,
           "turnoverPct": 0,
-          "attritionPct": 0
+          "attritionPct": 0,
+          "staffCost": 799765.02,
+          "volumePerEmp": 292.7,
+          "revenuePerEmp": 54897.27,
+          "staffCostBudgetYtd": 9309679.69,
+          "volumeBudgetYtd": 691748.19,
+          "revenueBudgetYtd": 115207884.1
         },
         "financeByMonth": {
           "10": {
-            "staffCost": 0,
-            "volumePerEmp": 0,
-            "revenuePerEmp": 0,
-            "staffCostBudgetYtd": null,
-            "volumeBudgetYtd": null,
-            "revenueBudgetYtd": null
+            "staffCost": 799765.02,
+            "volumePerEmp": 292.7,
+            "revenuePerEmp": 54897.27,
+            "staffCostBudgetYtd": 9309679.69,
+            "volumeBudgetYtd": 691748.19,
+            "revenueBudgetYtd": 115207884.1
           }
         },
-        "staffCostYtdByMonth": {},
+        "staffCostYtdByMonth": {
+          "1": {
+            "budgetHeadcount": 192,
+            "salariesBudgetYtd": 843888.05,
+            "volumesBudgetYtd": 63581,
+            "revenueBudgetYtd": 10589485.86,
+            "actualHeadcount": 173,
+            "salariesActualYtd": 731318.54,
+            "volumesActualYtd": 52119,
+            "revenueActualYtd": 7620000
+          },
+          "2": {
+            "budgetHeadcount": 192,
+            "salariesBudgetYtd": 1687776.11,
+            "volumesBudgetYtd": 123146,
+            "revenueBudgetYtd": 20649342.64,
+            "actualHeadcount": 174,
+            "salariesActualYtd": 1556588.89,
+            "volumesActualYtd": 96399,
+            "revenueActualYtd": 14630000
+          },
+          "3": {
+            "budgetHeadcount": 192,
+            "salariesBudgetYtd": 2531664.16,
+            "volumesBudgetYtd": 189089.82,
+            "revenueBudgetYtd": 31689814.81,
+            "actualHeadcount": 174,
+            "salariesActualYtd": 2361368.24,
+            "volumesActualYtd": 144455,
+            "revenueActualYtd": 22810000
+          },
+          "4": {
+            "budgetHeadcount": 192,
+            "salariesBudgetYtd": 3553808.9,
+            "volumesBudgetYtd": 254154.02,
+            "revenueBudgetYtd": 40841003.34,
+            "actualHeadcount": 173,
+            "salariesActualYtd": 3219464.88,
+            "volumesActualYtd": 176857,
+            "revenueActualYtd": 28260000
+          },
+          "5": {
+            "budgetHeadcount": 192,
+            "salariesBudgetYtd": 4575953.63,
+            "volumesBudgetYtd": 319747.27,
+            "revenueBudgetYtd": 52435877.63,
+            "actualHeadcount": 173,
+            "salariesActualYtd": 4057601.55,
+            "volumesActualYtd": 239601,
+            "revenueActualYtd": 38560000
+          },
+          "6": {
+            "budgetHeadcount": 192,
+            "salariesBudgetYtd": 5598098.36,
+            "volumesBudgetYtd": 388416.99,
+            "revenueBudgetYtd": 64984366.12,
+            "actualHeadcount": 176,
+            "salariesActualYtd": 4998858.41,
+            "volumesActualYtd": 297246,
+            "revenueActualYtd": 47680000
+          },
+          "7": {
+            "budgetHeadcount": 192,
+            "salariesBudgetYtd": 6525993.7,
+            "volumesBudgetYtd": 470634.35,
+            "revenueBudgetYtd": 77520650.25,
+            "actualHeadcount": 175,
+            "salariesActualYtd": 5866469.05,
+            "volumesActualYtd": 376437,
+            "revenueActualYtd": 60290000
+          },
+          "8": {
+            "budgetHeadcount": 192,
+            "salariesBudgetYtd": 7453889.03,
+            "volumesBudgetYtd": 545302.97,
+            "revenueBudgetYtd": 90453675.73,
+            "actualHeadcount": 175,
+            "salariesActualYtd": 6688397.52,
+            "volumesActualYtd": 450775,
+            "revenueActualYtd": 71859500.84
+          },
+          "9": {
+            "budgetHeadcount": 192,
+            "salariesBudgetYtd": 8381784.36,
+            "volumesBudgetYtd": 607888.61,
+            "revenueBudgetYtd": 102234035.12,
+            "actualHeadcount": 172,
+            "salariesActualYtd": 7585635.98,
+            "volumesActualYtd": 505795,
+            "revenueActualYtd": 81579500.84
+          },
+          "10": {
+            "budgetHeadcount": 192,
+            "salariesBudgetYtd": 9309679.69,
+            "volumesBudgetYtd": 691748.19,
+            "revenueBudgetYtd": 115207884.1,
+            "actualHeadcount": 172,
+            "salariesActualYtd": 8385401,
+            "volumesActualYtd": 556139,
+            "revenueActualYtd": 91021831
+          },
+          "11": {
+            "budgetHeadcount": 192,
+            "salariesBudgetYtd": 9309679.69,
+            "volumesBudgetYtd": 691748.19,
+            "revenueBudgetYtd": 115207884.1
+          },
+          "12": {
+            "budgetHeadcount": 192,
+            "salariesBudgetYtd": 9309679.69,
+            "volumesBudgetYtd": 691748.19,
+            "revenueBudgetYtd": 115207884.1
+          }
+        },
         "staffCostFormulaNotes": {},
         "narrative": {
           "meetingTitle": "EXCO MEETING",
@@ -3295,7 +3414,7 @@
           ]
         }
       },
-      "updatedAt": "2026-11-04T09:04:17.586Z",
+      "updatedAt": "2026-11-25T10:38:10.675Z",
       "updatedBy": "Administrateur"
     },
     {

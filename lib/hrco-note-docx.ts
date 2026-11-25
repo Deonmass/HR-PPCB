@@ -24,8 +24,8 @@ function paragraph(text: string, options?: { bold?: boolean; size?: number; colo
 }
 
 function cellXml(cell: HrcoCell | null, options?: { header?: boolean; total?: boolean }): string {
-  const fill = options?.header ? '1F4E79' : options?.total ? 'F3F4F6' : 'FFFFFF';
-  const color = options?.header ? 'FFFFFF' : '111827';
+  const fill = options?.header ? 'F4F4F5' : options?.total ? 'F3F4F6' : 'FFFFFF';
+  const color = '111111';
   const text = cell?.text || '';
   return `<w:tc>
     <w:tcPr>
@@ -67,7 +67,7 @@ export async function buildHrcoNoteDocx(note: HrcoNote): Promise<Buffer> {
     paragraph(note.title, { bold: true, size: 32, color: '1F4E79', after: 80 }),
     paragraph(`Comité du ${note.committeeDate}`, { size: 22, after: 40 }),
     paragraph(
-      `Effectifs du registre des salariés actifs au ${note.asOfLabel} : ${note.headcount}. Les cellules sans donnée sont laissées vides. Les montants repris de la note d’origine ne sont pas recalculés.`,
+      `Période ${note.periodLabel}. Effectifs en poste au ${note.asOfLabel} : ${note.headcount}. Les cellules sans donnée sont laissées vides. Les montants repris de la note d’origine ne sont pas recalculés.`,
       { size: 20, after: 200 },
     ),
   ];

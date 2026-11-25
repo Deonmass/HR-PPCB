@@ -172,6 +172,21 @@ export function buildStaffCostSheet(args: {
     const prevLabel = i > 0 ? STAFF_COST_FY_LABELS[i - 1] : null;
     const prevCol = i > 0 ? colLetter(i - 1) : null;
     const input = args.ytdByCalendarMonth[calendarMonth] || emptyInput();
+    /**
+     * Avril est le 1er mois du FY, mais la saisie YTD est civile (janvier → décembre).
+     * Si mars est renseigné, il sert de cumul précédent pour que le mois d’avril
+     * soit l’écart, pas le cumul depuis janvier.
+     */
+    const march = i === 0 ? args.ytdByCalendarMonth[3] : undefined;
+    const priorActual = (pick: (row: ExcoStaffCostYtdInput) => number | null | undefined) =>
+      (i === 0 ? n(march ? pick(march) : null) : null);
+    const hasLaterActual = (pick: (row: ExcoStaffCostYtdInput) => number | null | undefined) => {
+      for (let month = calendarMonth + 1; month <= 12; month += 1) {
+        const row = args.ytdByCalendarMonth[month];
+        if (row && n(pick(row)) != null) return true;
+      }
+      return false;
+    };
 
     const actualHc = n(input.actualHeadcount);
     const salYtd = n(input.salariesActualYtd);
@@ -197,45 +212,52 @@ export function buildStaffCostSheet(args: {
       || (prev?.volumeCumul.value != null)
       || (prev?.revenueCumul.value != null);
 
+    const prevStaffCumul = prev?.staffCumul.value ?? priorActual((row) => row.salariesActualYtd);
+    const prevVolumeCumul = prev?.volumeCumul.value ?? priorActual((row) => row.volumesActualYtd);
+    const prevRevenueCumul = prev?.revenueCumul.value ?? priorActual((row) => row.revenueActualYtd);
+
     const staffCostMonth = (() => {
       if (salYtd != null) {
-        return prev?.staffCumul.value != null ? salYtd - prev.staffCumul.value : salYtd;
+        return prevStaffCumul != null ? salYtd - prevStaffCumul : salYtd;
       }
-      if (!actualStarted && prev?.staffCumul.value == null) return null;
-      if (prev?.staffCumul.value != null) return 0 - prev.staffCumul.value;
+      if (!hasLaterActual((row) => row.salariesActualYtd)) return null;
+      if (!actualStarted && prevStaffCumul == null) return null;
+      if (prevStaffCumul != null) return 0 - prevStaffCumul;
       return 0;
     })();
     const staffCumul = (() => {
       if (staffCostMonth == null) return null;
-      if (prev?.staffCumul.value != null) return prev.staffCumul.value + staffCostMonth;
+      if (prevStaffCumul != null) return prevStaffCumul + staffCostMonth;
       return staffCostMonth;
     })();
 
     const volumeMonth = (() => {
       if (volYtd != null) {
-        return prev?.volumeCumul.value != null ? volYtd - prev.volumeCumul.value : volYtd;
+        return prevVolumeCumul != null ? volYtd - prevVolumeCumul : volYtd;
       }
-      if (!actualStarted && prev?.volumeCumul.value == null) return null;
-      if (prev?.volumeCumul.value != null) return 0 - prev.volumeCumul.value;
+      if (!hasLaterActual((row) => row.volumesActualYtd)) return null;
+      if (!actualStarted && prevVolumeCumul == null) return null;
+      if (prevVolumeCumul != null) return 0 - prevVolumeCumul;
       return 0;
     })();
     const volumeCumul = (() => {
       if (volumeMonth == null) return null;
-      if (prev?.volumeCumul.value != null) return prev.volumeCumul.value + volumeMonth;
+      if (prevVolumeCumul != null) return prevVolumeCumul + volumeMonth;
       return volumeMonth;
     })();
 
     const revenueMonth = (() => {
       if (revYtd != null) {
-        return prev?.revenueCumul.value != null ? revYtd - prev.revenueCumul.value : revYtd;
+        return prevRevenueCumul != null ? revYtd - prevRevenueCumul : revYtd;
       }
-      if (!actualStarted && prev?.revenueCumul.value == null) return null;
-      if (prev?.revenueCumul.value != null) return 0 - prev.revenueCumul.value;
+      if (!hasLaterActual((row) => row.revenueActualYtd)) return null;
+      if (!actualStarted && prevRevenueCumul == null) return null;
+      if (prevRevenueCumul != null) return 0 - prevRevenueCumul;
       return 0;
     })();
     const revenueCumul = (() => {
       if (revenueMonth == null) return null;
-      if (prev?.revenueCumul.value != null) return prev.revenueCumul.value + revenueMonth;
+      if (prevRevenueCumul != null) return prevRevenueCumul + revenueMonth;
       return revenueMonth;
     })();
 
@@ -247,19 +269,21 @@ export function buildStaffCostSheet(args: {
       || (prev?.budgetVolumeCumul.value != null)
       || (prev?.budgetRevenueCumul.value != null);
 
+    const prevBudgetStaff = prev?.budgetStaffCumul.value ?? priorActual((row) => row.salariesBudgetYtd);
+    const prevBudgetVolume = prev?.budgetVolumeCumul.value ?? priorActual((row) => row.volumesBudgetYtd);
+    const prevBudgetRevenue = prev?.budgetRevenueCumul.value ?? priorActual((row) => row.revenueBudgetYtd);
+
     const budgetStaffCostMonth = (() => {
       if (salBud != null) {
-        return prev?.budgetStaffCumul.value != null ? salBud - prev.budgetStaffCumul.value : salBud;
+        return prevBudgetStaff != null ? salBud - prevBudgetStaff : salBud;
       }
-      if (!budgetStarted && prev?.budgetStaffCumul.value == null) return null;
-      if (prev?.budgetStaffCumul.value != null) return 0 - prev.budgetStaffCumul.value;
+      if (!budgetStarted && prevBudgetStaff == null) return null;
+      if (prevBudgetStaff != null) return 0 - prevBudgetStaff;
       return 0;
     })();
     const budgetStaffCumul = (() => {
       if (budgetStaffCostMonth == null) return null;
-      if (prev?.budgetStaffCumul.value != null) {
-        return prev.budgetStaffCumul.value + budgetStaffCostMonth;
-      }
+      if (prevBudgetStaff != null) return prevBudgetStaff + budgetStaffCostMonth;
       return budgetStaffCostMonth;
     })();
 
@@ -271,13 +295,11 @@ export function buildStaffCostSheet(args: {
     let budgetVolumeCumul: number | null;
     if (volBud != null) {
       budgetVolumeCarry = false;
-      budgetVolumeMonth =
-        prev?.budgetVolumeCumul.value != null ? volBud - prev.budgetVolumeCumul.value : volBud;
-      budgetVolumeCumul =
-        prev?.budgetVolumeCumul.value != null
-          ? prev.budgetVolumeCumul.value + budgetVolumeMonth
-          : budgetVolumeMonth;
-    } else if (!budgetStarted && prev?.budgetVolumeCumul.value == null) {
+      budgetVolumeMonth = prevBudgetVolume != null ? volBud - prevBudgetVolume : volBud;
+      budgetVolumeCumul = prevBudgetVolume != null
+        ? prevBudgetVolume + budgetVolumeMonth
+        : budgetVolumeMonth;
+    } else if (!budgetStarted && prevBudgetVolume == null) {
       budgetVolumeMonth = null;
       budgetVolumeCumul = null;
     } else if (budgetVolumeCarry && prev?.budgetVolumeCumul.value != null) {
@@ -296,13 +318,11 @@ export function buildStaffCostSheet(args: {
     let budgetRevenueCumul: number | null;
     if (revBud != null) {
       budgetRevenueCarry = false;
-      budgetRevenueMonth =
-        prev?.budgetRevenueCumul.value != null ? revBud - prev.budgetRevenueCumul.value : revBud;
-      budgetRevenueCumul =
-        prev?.budgetRevenueCumul.value != null
-          ? prev.budgetRevenueCumul.value + budgetRevenueMonth
-          : budgetRevenueMonth;
-    } else if (!budgetStarted && prev?.budgetRevenueCumul.value == null) {
+      budgetRevenueMonth = prevBudgetRevenue != null ? revBud - prevBudgetRevenue : revBud;
+      budgetRevenueCumul = prevBudgetRevenue != null
+        ? prevBudgetRevenue + budgetRevenueMonth
+        : budgetRevenueMonth;
+    } else if (!budgetStarted && prevBudgetRevenue == null) {
       budgetRevenueMonth = null;
       budgetRevenueCumul = null;
     } else if (budgetRevenueCarry && prev?.budgetRevenueCumul.value != null) {

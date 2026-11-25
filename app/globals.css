@@ -46735,10 +46735,76 @@ html[data-theme='light'] .org-chart-children > .org-chart-node:last-child::after
   white-space: nowrap;
 }
 
-.hrco-table th {
-  background: #1f4e79;
-  color: #fff;
+.hrco-table thead th,
+html[data-theme="light"] .hrco-table thead th {
+  background: #f4f4f5 !important;
+  color: #111111 !important;
+  font-size: 0.78rem;
+  font-weight: 700;
+  letter-spacing: 0.01em;
+  text-transform: none;
+  border-bottom: 2px solid #111111;
+}
+
+.hrco-exco-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+  margin: 0.75rem 0;
+  padding: 0;
+  list-style: none;
+}
+
+.hrco-exco-list li {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.25rem 0.55rem;
+  background: #f4f4f5;
+  border-radius: 999px;
+  font-size: 0.82rem;
+}
+
+.hrco-exco-list button {
+  border: 0;
+  background: transparent;
+  color: #1d4ed8;
+  font: inherit;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.hrco-exco-add {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  align-items: center;
+}
+
+.hrco-exco-add input,
+.hrco-exco-add select {
+  min-width: 14rem;
+}
+
+.hrco-period {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: end;
+  gap: 0.75rem;
+  margin: 0 0 1.25rem;
+}
+
+.hrco-period label {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  color: #374151;
+  font-size: 0.8rem;
   font-weight: 600;
+}
+
+.hrco-period select {
+  min-width: 9rem;
 }
 
 .hrco-table tr.is-total td {
@@ -46748,6 +46814,62 @@ html[data-theme='light'] .org-chart-children > .org-chart-node:last-child::after
 
 .hrco-table td.is-system {
   color: #1d4ed8;
+}
+
+.hrco-suggest-list {
+  position: fixed;
+  z-index: 40;
+  max-height: 16rem;
+  overflow: auto;
+  margin: 0;
+  padding: 0.25rem;
+  list-style: none;
+  background: #fff;
+  border: 1px solid #d1d5db;
+  border-radius: 8px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
+}
+
+.hrco-suggest-list button {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 0.1rem;
+  width: 100%;
+  border: 0;
+  background: transparent;
+  text-align: left;
+  font: inherit;
+  color: #111827;
+  padding: 0.35rem 0.5rem;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.hrco-suggest-list button.is-active,
+.hrco-suggest-list button:hover {
+  background: #eff6ff;
+}
+
+.hrco-suggest-list span {
+  color: #6b7280;
+  font-size: 0.75rem;
+}
+
+.hrco-cell-input {
+  width: 100%;
+  min-width: 5.5rem;
+  box-sizing: border-box;
+  border: 1px dashed #93c5fd;
+  border-radius: 6px;
+  background: #f8fafc;
+  color: #111827;
+  font: inherit;
+  padding: 0.15rem 0.35rem;
+}
+
+.hrco-table td.is-manual {
+  color: #1e3a8a;
 }
 
 .hrco-count {
