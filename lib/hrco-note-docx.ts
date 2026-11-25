@@ -3,6 +3,7 @@ import type { HrcoCell, HrcoNote, HrcoRow, HrcoTable } from './hrco-note';
 
 function escapeXml(value: string): string {
   return value
+    .replace(/[\u0000-\u0008\u000B\u000C\u000E-\u001F]/g, '')
     .replace(/&/g, '&amp;')
     .replace(/</g, '&lt;')
     .replace(/>/g, '&gt;')
@@ -23,12 +24,17 @@ function paragraph(text: string, options?: { bold?: boolean; size?: number; colo
   return `<w:p><w:pPr><w:spacing w:after="${after}" w:before="0"/></w:pPr>${run(text, options)}</w:p>`;
 }
 
-function cellXml(cell: HrcoCell | null, options?: { header?: boolean; total?: boolean }): string {
+function cellXml(
+  cell: HrcoCell | null,
+  width: number,
+  options?: { header?: boolean; total?: boolean },
+): string {
   const fill = options?.header ? 'F4F4F5' : options?.total ? 'F3F4F6' : 'FFFFFF';
   const color = '111111';
   const text = cell?.text || '';
   return `<w:tc>
     <w:tcPr>
+      <w:tcW w:w="${width}" w:type="dxa"/>
       <w:shd w:val="clear" w:color="auto" w:fill="${fill}"/>
       <w:vAlign w:val="center"/>
     </w:tcPr>
@@ -41,13 +47,21 @@ function cellXml(cell: HrcoCell | null, options?: { header?: boolean; total?: bo
 }
 
 function tableXml(item: HrcoTable): string {
-  const header = `<w:tr>${item.columns.map((column) => cellXml({ text: column, source: 'document' }, { header: true })).join('')}</w:tr>`;
+  const columnCount = Math.max(item.columns.length, 1);
+  const tableWidth = 15400;
+  const columnWidth = Math.max(600, Math.floor(tableWidth / columnCount));
+  const grid = Array.from({ length: columnCount }, () => `<w:gridCol w:w="${columnWidth}"/>`).join('');
+  const header = `<w:tr>${item.columns.map((column) => cellXml({ text: column, source: 'document' }, columnWidth, { header: true })).join('')}</w:tr>`;
   const body = item.rows
-    .map((row: HrcoRow) => `<w:tr>${row.cells.map((cell) => cellXml(cell, { total: row.total })).join('')}</w:tr>`)
+    .map((row: HrcoRow) => {
+      const cells = Array.from({ length: columnCount }, (_, index) => row.cells[index] ?? null);
+      return `<w:tr>${cells.map((cell) => cellXml(cell, columnWidth, { total: row.total })).join('')}</w:tr>`;
+    })
     .join('');
   return `<w:tbl>
     <w:tblPr>
-      <w:tblW w:w="5000" w:type="pct"/>
+      <w:tblW w:w="${columnWidth * columnCount}" w:type="dxa"/>
+      <w:tblLayout w:type="fixed"/>
       <w:tblBorders>
         <w:top w:val="single" w:sz="4" w:space="0" w:color="D1D5DB"/>
         <w:left w:val="single" w:sz="4" w:space="0" w:color="D1D5DB"/>
@@ -57,6 +71,7 @@ function tableXml(item: HrcoTable): string {
         <w:insideV w:val="single" w:sz="4" w:space="0" w:color="E5E7EB"/>
       </w:tblBorders>
     </w:tblPr>
+    <w:tblGrid>${grid}</w:tblGrid>
     ${header}
     ${body}
   </w:tbl>`;
@@ -119,6 +134,15 @@ export async function buildHrcoNoteDocx(note: HrcoNote): Promise<Buffer> {
 </Relationships>`,
   );
   zip.folder('word')?.file('document.xml', documentXml);
-  const buffer = await zip.generateAsync({ type: 'nodebuffer' });
+  zip.folder('word')?.folder('_rels')?.file(
+    'document.xml.rels',
+    `<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<Relationships xmlns="http://schemas.openxmlformats.org/package/2006/relationships"/>`,
+  );
+  const buffer = await zip.generateAsync({
+    type: 'nodebuffer',
+    compression: 'DEFLATE',
+    compressionOptions: { level: 6 },
+  });
   return buffer;
 }

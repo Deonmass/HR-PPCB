@@ -197,11 +197,11 @@ export default function HrcoNotePage() {
       const url = URL.createObjectURL(blob);
       const link = document.createElement('a');
       link.href = url;
-      link.download = 'NOTE PRÉPARATOIRE DU COMITÉ DES RESSOURCES HUMAINES DU 26.docx';
+      link.download = 'note-preparatoire-comite-rh.docx';
       document.body.appendChild(link);
       link.click();
       link.remove();
-      URL.revokeObjectURL(url);
+      window.setTimeout(() => URL.revokeObjectURL(url), 2000);
     } catch (err) {
       showError(err instanceof Error ? err.message : 'Téléchargement impossible');
     } finally {
