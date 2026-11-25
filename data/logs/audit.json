@@ -1,6 +1,48 @@
 {
   "entries": [
     {
+      "id": "log-002582",
+      "at": "2026-11-25T18:30:30.894Z",
+      "userId": "karine.mvutu@ppcdrc.cd",
+      "userName": "Karine Mvutu",
+      "userEmail": "karine.mvutu@ppcdrc.cd",
+      "module": "sante",
+      "moduleLabel": "Santé",
+      "action": "create",
+      "actionLabel": "Création",
+      "entityType": "sante.visit",
+      "entityId": "sante-mwwgl9c8-9i3u0u",
+      "summary": "Cas santé — LUNIMBU NSIAMBI · FIEVRE",
+      "details": "Cas santé — LUNIMBU NSIAMBI · FIEVRE",
+      "after": {
+        "id": "sante-mwwgl9c8-9i3u0u",
+        "date": "2026-11-24",
+        "nom": "LUNIMBU",
+        "postnom": "NSIAMBI",
+        "sexe": "F",
+        "age": 32,
+        "typeMalade": "EPOUSE",
+        "pathologie": "FIEVRE",
+        "traitement": "PARACETAMOLE INJECTABLE",
+        "reference": "NON",
+        "year": 2026,
+        "month": 11,
+        "employeeMatricule": "70000088",
+        "employeeNom": "TULOMBA BALELE OVIE",
+        "dependantId": 485,
+        "commentaire": "Ptiente sous anti paludeen (manalaria/femme alaitante)",
+        "contractantId": "",
+        "contractantNom": "",
+        "contractantEmployeeId": "",
+        "createdAt": "2026-11-25T18:30:28.232Z",
+        "updatedAt": "2026-11-25T18:30:28.232Z",
+        "createdBy": "karine.mvutu@ppcdrc.cd",
+        "updatedBy": "karine.mvutu@ppcdrc.cd"
+      },
+      "undoable": false,
+      "undone": false
+    },
+    {
       "id": "log-002581",
       "at": "2026-11-25T18:27:54.155Z",
       "userId": "karine.mvutu@ppcdrc.cd",
@@ -1265598,5 +1265640,5 @@
       }
     }
   ],
-  "nextSeq": 2582
+  "nextSeq": 2583
 }
