@@ -1,6 +1,21 @@
 {
   "entries": [
     {
+      "id": "log-002584",
+      "at": "2026-11-25T18:46:02.867Z",
+      "userId": "admin",
+      "userName": "Administrateur",
+      "userEmail": "admin",
+      "module": "contractants",
+      "moduleLabel": "contractants",
+      "action": "export",
+      "actionLabel": "Export",
+      "summary": "Export liste contractants (CONTRACTANTS_2026-11-25.xlsx)",
+      "details": "Fichier Excel exporté : CONTRACTANTS_2026-11-25.xlsx",
+      "undoable": false,
+      "undone": false
+    },
+    {
       "id": "log-002583",
       "at": "2026-11-25T18:32:09.862Z",
       "userId": "karine.mvutu@ppcdrc.cd",
@@ -1265682,5 +1265697,5 @@
       }
     }
   ],
-  "nextSeq": 2584
+  "nextSeq": 2585
 }
