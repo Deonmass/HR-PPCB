@@ -1,6 +1,48 @@
 {
   "entries": [
     {
+      "id": "log-002583",
+      "at": "2026-11-25T18:32:09.862Z",
+      "userId": "karine.mvutu@ppcdrc.cd",
+      "userName": "Karine Mvutu",
+      "userEmail": "karine.mvutu@ppcdrc.cd",
+      "module": "sante",
+      "moduleLabel": "Santé",
+      "action": "create",
+      "actionLabel": "Création",
+      "entityType": "sante.visit",
+      "entityId": "sante-mwwgndno-po5ebn",
+      "summary": "Cas santé — KUABI MUSUNDA · FIEVRE",
+      "details": "Cas santé — KUABI MUSUNDA · FIEVRE",
+      "after": {
+        "id": "sante-mwwgndno-po5ebn",
+        "date": "2026-11-25",
+        "nom": "KUABI",
+        "postnom": "MUSUNDA",
+        "sexe": "",
+        "age": 1,
+        "typeMalade": "ENFANT",
+        "pathologie": "FIEVRE",
+        "traitement": "PARACETAMOLE INJECTABLE",
+        "reference": "NON",
+        "year": 2026,
+        "month": 11,
+        "employeeMatricule": "70000171",
+        "employeeNom": "KUABI PANZU CHRISTIAN",
+        "dependantId": 177,
+        "commentaire": "Nourisson sous traitement de grippe depuis CHL",
+        "contractantId": "",
+        "contractantNom": "",
+        "contractantEmployeeId": "",
+        "createdAt": "2026-11-25T18:32:07.140Z",
+        "updatedAt": "2026-11-25T18:32:07.140Z",
+        "createdBy": "karine.mvutu@ppcdrc.cd",
+        "updatedBy": "karine.mvutu@ppcdrc.cd"
+      },
+      "undoable": false,
+      "undone": false
+    },
+    {
       "id": "log-002582",
       "at": "2026-11-25T18:30:30.894Z",
       "userId": "karine.mvutu@ppcdrc.cd",
@@ -1265640,5 +1265682,5 @@
       }
     }
   ],
-  "nextSeq": 2583
+  "nextSeq": 2584
 }
