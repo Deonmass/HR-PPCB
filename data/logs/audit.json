@@ -1,6 +1,33 @@
 {
   "entries": [
     {
+      "id": "log-002578",
+      "at": "2026-11-25T15:02:07.731Z",
+      "userId": "admin",
+      "userName": "Administrateur",
+      "userEmail": "admin",
+      "module": "settings.utilisateurs",
+      "moduleLabel": "Paramètres — Utilisateurs",
+      "action": "error",
+      "actionLabel": "Erreur",
+      "summary": "Mot de passe invalide — manque : au moins 6 caractères, une majuscule (a-z), une minuscule (a-z), un caractère spécial (!@#$%…).",
+      "details": "Échec de l’action « update » sur settings.utilisateurs: Mot de passe invalide — manque : au moins 6 caractères, une majuscule (a-z), une minuscule (a-z), un caractère spécial (!@#$%…).",
+      "undoable": false,
+      "undone": false,
+      "error": {
+        "message": "Mot de passe invalide — manque : au moins 6 caractères, une majuscule (a-z), une minuscule (a-z), un caractère spécial (!@#$%…).",
+        "stack": "Error: Mot de passe invalide — manque : au moins 6 caractères, une majuscule (a-z), une minuscule (a-z), un caractère spécial (!@#$%…).\n    at A (/var/task/.next/server/chunks/3735.js:1:26976)\n    at async S (/var/task/.next/server/chunks/3735.js:2:2529)\n    at async l (/var/task/.next/server/chunks/3003.js:1:1365)\n    at async B (/var/task/.next/server/app/api/auth/users/route.js:1:3308)\n    at async rH.do (/var/task/node_modules/next/dist/compiled/next-server/app-route.runtime.prod.js:5:21048)\n    at async rH.handle (/var/task/node_modules/next/dist/compiled/next-server/app-route.runtime.prod.js:5:25866)\n    at async k (/var/task/.next/server/app/api/auth/users/route.js:1:7163)\n    at async rH.handleResponse (/var/task/node_modules/next/dist/compiled/next-server/app-route.runtime.prod.js:1:110770)\n    at async g (/var/task/.next/server/app/api/auth/users/route.js:1:8166)\n    at async I (/var/task/.next/server/app/api/auth/users/route.js:1:9288)",
+        "path": "/api/auth/users",
+        "method": "PUT",
+        "context": {
+          "action": "update",
+          "entityType": "auth.user",
+          "entityId": "Charite.Tshimanga@ppcdrc.cd",
+          "summary": "Modification utilisateur Charite Tshimanga"
+        }
+      }
+    },
+    {
       "id": "log-002577",
       "at": "2026-11-25T10:58:50.965Z",
       "userId": "admin",
@@ -1265526,5 +1265553,5 @@
       }
     }
   ],
-  "nextSeq": 2578
+  "nextSeq": 2579
 }
