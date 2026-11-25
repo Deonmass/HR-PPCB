@@ -1,6 +1,21 @@
 {
   "entries": [
     {
+      "id": "log-002575",
+      "at": "2026-11-25T10:04:56.883Z",
+      "userId": "admin",
+      "userName": "Administrateur",
+      "userEmail": "admin",
+      "module": "auth",
+      "moduleLabel": "Authentification",
+      "action": "login",
+      "actionLabel": "Connexion",
+      "summary": "Connexion admin",
+      "details": "Connexion de Administrateur (admin)",
+      "undoable": false,
+      "undone": false
+    },
+    {
       "id": "log-002574",
       "at": "2026-11-25T09:35:29.987Z",
       "userId": "Marie.Yowali",
@@ -1265464,5 +1265479,5 @@
       }
     }
   ],
-  "nextSeq": 2575
+  "nextSeq": 2576
 }
