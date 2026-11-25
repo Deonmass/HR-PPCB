@@ -517,6 +517,9 @@ export const fr = {
   'rapport.bilan.title': 'Bilan social',
   'rapport.bilan.desc': 'Indicateurs sociaux annuels — en cours de développement.',
   'rapport.bilan.badge': 'À venir',
+  'rapport.hrco.title': 'HRCO FY26',
+  'rapport.hrco.desc': 'Note préparatoire du comité du 26 novembre 2026 — effectifs à jour et fichier Word.',
+  'rapport.hrco.badge': 'Comité',
 
   'pol.title': 'Politique',
   'pol.subtitle': 'Politiques RH de référence — consultez le document et les agents concernés.',

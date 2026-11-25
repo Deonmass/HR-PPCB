@@ -28,6 +28,16 @@ function IconSlides() {
   );
 }
 
+function IconNote() {
+  return (
+    <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+      <path d="M7 3h8l5 5v13a1 1 0 0 1-1 1H7a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1z" />
+      <path d="M15 3v6h6" />
+      <path d="M9 13h6M9 17h6" />
+    </svg>
+  );
+}
+
 function IconBalance() {
   return (
     <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
@@ -49,6 +59,16 @@ const CARDS: ReportCard[] = [
     accent: '#be123c',
     badge: 'Mensuel',
     icon: <IconSlides />,
+  },
+  {
+    id: 'hrco',
+    title: 'HRCO FY26',
+    description: 'Note préparatoire du comité du 26 novembre 2026 — effectifs à jour et fichier Word.',
+    href: '/rapport/hrco',
+    menuId: 'exco.rapport',
+    accent: '#1f4e79',
+    badge: 'Comité',
+    icon: <IconNote />,
   },
   {
     id: 'bilan-social',
@@ -83,6 +103,14 @@ export default function RapportHubPage() {
               title: t('rapport.exco.title'),
               description: t('rapport.exco.desc'),
               badge: t('rapport.exco.badge'),
+            };
+          }
+          if (card.id === 'hrco') {
+            return {
+              ...card,
+              title: t('rapport.hrco.title'),
+              description: t('rapport.hrco.desc'),
+              badge: t('rapport.hrco.badge'),
             };
           }
           if (card.id === 'bilan-social') {

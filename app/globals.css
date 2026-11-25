@@ -46660,3 +46660,110 @@ html[data-theme='light'] .org-chart-children > .org-chart-node:last-child::after
     print-color-adjust: exact;
   }
 }
+
+.hrco-note .page-header {
+  align-items: flex-start;
+  gap: 1rem;
+}
+
+.hrco-kicker {
+  margin: 0 0 0.35rem;
+  color: #6b7280;
+  font-size: 0.85rem;
+}
+
+.hrco-kicker a {
+  color: #1f4e79;
+  text-decoration: none;
+}
+
+.hrco-section {
+  margin: 1.5rem 0 2rem;
+}
+
+.hrco-section h3 {
+  margin: 0 0 0.4rem;
+  color: #1f4e79;
+}
+
+.hrco-points {
+  margin: 0 0 1rem;
+  padding-left: 1.1rem;
+  color: #374151;
+}
+
+.hrco-card {
+  margin: 0 0 1rem;
+  padding: 0.9rem 1rem 1rem;
+  border: 1px solid #e5e7eb;
+  border-radius: 12px;
+  background: #fff;
+}
+
+.hrco-card h4 {
+  margin: 0;
+  font-size: 1rem;
+}
+
+.hrco-card h4 span,
+.hrco-card p {
+  color: #6b7280;
+  font-weight: 400;
+}
+
+.hrco-card p {
+  margin: 0.25rem 0 0.75rem;
+  font-size: 0.85rem;
+}
+
+.hrco-table-wrap {
+  overflow-x: auto;
+}
+
+.hrco-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.88rem;
+}
+
+.hrco-table th,
+.hrco-table td {
+  padding: 0.45rem 0.55rem;
+  border-bottom: 1px solid #e5e7eb;
+  text-align: left;
+  vertical-align: top;
+  white-space: nowrap;
+}
+
+.hrco-table th {
+  background: #1f4e79;
+  color: #fff;
+  font-weight: 600;
+}
+
+.hrco-table tr.is-total td {
+  font-weight: 700;
+  background: #f3f4f6;
+}
+
+.hrco-table td.is-system {
+  color: #1d4ed8;
+}
+
+.hrco-count {
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: inherit;
+  font: inherit;
+  font-weight: 700;
+  cursor: pointer;
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+
+.hrco-empty-note {
+  margin: 0.25rem 0 0;
+  color: #6b7280;
+  font-size: 0.85rem;
+}

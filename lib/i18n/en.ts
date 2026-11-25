@@ -519,6 +519,9 @@ export const en: Record<MessageKey, string> = {
   'rapport.bilan.title': 'Social balance sheet',
   'rapport.bilan.desc': 'Annual social indicators — under development.',
   'rapport.bilan.badge': 'Coming soon',
+  'rapport.hrco.title': 'HRCO FY26',
+  'rapport.hrco.desc': 'HR committee preparatory note of 26 November 2026 — live headcount and Word download.',
+  'rapport.hrco.badge': 'Committee',
 
   'pol.title': 'Policy',
   'pol.subtitle': 'Reference HR policies — review the document and the employees concerned.',
