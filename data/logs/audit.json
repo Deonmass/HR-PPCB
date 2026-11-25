@@ -1,6 +1,21 @@
 {
   "entries": [
     {
+      "id": "log-002580",
+      "at": "2026-11-25T18:22:51.333Z",
+      "userId": "admin",
+      "userName": "Administrateur",
+      "userEmail": "admin",
+      "module": "employees",
+      "moduleLabel": "Employés",
+      "action": "export",
+      "actionLabel": "Export",
+      "summary": "Export employés (EMPLOYEES_HR_2026-11-25.xlsx)",
+      "details": "Fichier Excel exporté : EMPLOYEES_HR_2026-11-25.xlsx",
+      "undoable": false,
+      "undone": false
+    },
+    {
       "id": "log-002579",
       "at": "2026-11-25T15:02:59.737Z",
       "userId": "Charite.Tshimanga@ppcdrc.cd",
@@ -1265568,5 +1265583,5 @@
       }
     }
   ],
-  "nextSeq": 2580
+  "nextSeq": 2581
 }
