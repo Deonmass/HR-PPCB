@@ -1,6 +1,47 @@
 {
   "entries": [
     {
+      "id": "log-002604",
+      "at": "2026-11-26T15:24:58.090Z",
+      "userId": "Tresor.Maneka@ppcdrc.cd",
+      "userName": "Tresor Maneka",
+      "userEmail": "Tresor.Maneka@ppcdrc.cd",
+      "module": "protocol.voyages",
+      "moduleLabel": "Gestion de voyage",
+      "action": "create",
+      "actionLabel": "Création",
+      "entityType": "protocol.voyage",
+      "entityId": "pvc-120",
+      "summary": "Voyage PVC-0120 DIAWAKANA NKUMANI SEBASTIEN Zamba Matadi Zamba",
+      "details": "Voyage PVC-0120 DIAWAKANA NKUMANI SEBASTIEN Zamba Matadi Zamba",
+      "after": {
+        "id": "pvc-120",
+        "numero": "PVC-0120",
+        "date": "2026-11-24",
+        "voyageur": "DIAWAKANA NKUMANI SEBASTIEN",
+        "voyageurMatricule": "CHRS_PPC0021",
+        "departement": "Human Resources",
+        "centreCout": "KM5413",
+        "destination": "Zamba Matadi Zamba",
+        "ticketAvion": 0,
+        "visaVolant": 0,
+        "lettreLegaliser": 0,
+        "goPass": 0,
+        "transfert": 0,
+        "hotelNuit": 100,
+        "nbreNuits": 2,
+        "coutHotel": 200,
+        "categorieHotel": "Hotel Fortune Matadi",
+        "appartement": 0,
+        "autresCharges": 0,
+        "coutTotal": 200,
+        "createdAt": "2026-11-26T15:24:53.128Z",
+        "updatedAt": "2026-11-26T15:24:53.128Z"
+      },
+      "undoable": false,
+      "undone": false
+    },
+    {
       "id": "log-002603",
       "at": "2026-11-26T15:22:47.201Z",
       "userId": "Tresor.Maneka@ppcdrc.cd",
@@ -1266570,5 +1266611,5 @@
       }
     }
   ],
-  "nextSeq": 2604
+  "nextSeq": 2605
 }
