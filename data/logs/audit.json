@@ -1,6 +1,71 @@
 {
   "entries": [
     {
+      "id": "log-002606",
+      "at": "2026-11-26T15:30:31.361Z",
+      "userId": "Tresor.Maneka@ppcdrc.cd",
+      "userName": "Tresor Maneka",
+      "userEmail": "Tresor.Maneka@ppcdrc.cd",
+      "module": "protocol.voyages",
+      "moduleLabel": "Gestion de voyage",
+      "action": "update",
+      "actionLabel": "Modification",
+      "entityType": "protocol.voyage",
+      "entityId": "pvc-114",
+      "summary": "Modification voyage PVC-0114 M. Zhang Fangjun",
+      "details": "Modification voyage PVC-0114 M. Zhang Fangjun",
+      "before": {
+        "id": "pvc-114",
+        "numero": "PVC-0114",
+        "date": "2026-11-25",
+        "voyageur": "M. Zhang Fangjun",
+        "voyageurMatricule": "",
+        "departement": "Engineering",
+        "centreCout": "KM5310",
+        "destination": "Kinshasa Chine Modification de la date",
+        "ticketAvion": 590,
+        "visaVolant": 0,
+        "lettreLegaliser": 0,
+        "goPass": 55,
+        "transfert": 0,
+        "hotelNuit": 100,
+        "nbreNuits": 1,
+        "coutHotel": 100,
+        "categorieHotel": "Hotel Platunium",
+        "appartement": 0,
+        "autresCharges": 0,
+        "coutTotal": 745,
+        "createdAt": "2026-11-23T17:41:31.122Z",
+        "updatedAt": "2026-11-23T17:41:31.122Z"
+      },
+      "after": {
+        "id": "pvc-114",
+        "numero": "PVC-0114",
+        "date": "2026-11-25",
+        "voyageur": "M. Zhang Fangjun",
+        "voyageurMatricule": "",
+        "departement": "Engineering",
+        "centreCout": "KM5310",
+        "destination": "Kinshasa Chine Modification de la date",
+        "ticketAvion": 590,
+        "visaVolant": 0,
+        "lettreLegaliser": 0,
+        "goPass": 55,
+        "transfert": 60,
+        "hotelNuit": 100,
+        "nbreNuits": 1,
+        "coutHotel": 100,
+        "categorieHotel": "Hotel Platunium",
+        "appartement": 0,
+        "autresCharges": 0,
+        "coutTotal": 805,
+        "createdAt": "2026-11-23T17:41:31.122Z",
+        "updatedAt": "2026-11-26T15:30:26.102Z"
+      },
+      "undoable": false,
+      "undone": false
+    },
+    {
       "id": "log-002605",
       "at": "2026-11-26T15:26:59.145Z",
       "userId": "Tresor.Maneka@ppcdrc.cd",
@@ -1266652,5 +1266717,5 @@
       }
     }
   ],
-  "nextSeq": 2606
+  "nextSeq": 2607
 }
