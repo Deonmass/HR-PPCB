@@ -1,6 +1,83 @@
 {
   "entries": [
     {
+      "id": "log-002597",
+      "at": "2026-11-26T14:26:35.176Z",
+      "userId": "Marie.Yowali",
+      "userName": "Marie Yowali",
+      "userEmail": "Marie.Yowali@ppcdrc.cd",
+      "module": "travel.etablir",
+      "moduleLabel": "Cash request",
+      "action": "create",
+      "actionLabel": "Création",
+      "entityType": "travel.cash-request",
+      "entityId": "cr-1795703192172",
+      "summary": "Génération documents voyage PPCB-DOC-HR-KN 157/11/2026",
+      "details": "Documents générés (SSE) pour GLODY BENGESHA ELONGO (PPCB-DOC-HR-KN 157/11/2026)",
+      "after": {
+        "id": "cr-1795703192172",
+        "type": "cash-request",
+        "createdAt": "2026-11-26T14:26:32.965Z",
+        "missionRef": "PPCB-DOC-HR-KN 157/11/2026",
+        "employeeMatricule": "70000313",
+        "employeeName": "GLODY BENGESHA ELONGO",
+        "employeeDepartment": "Sales and Marketing",
+        "costCenter": "KC6310",
+        "requestorLine": "GLODY BENGESHA ELONGO (70000313)        Department : Sales and Marketing        Coast center : KC6310",
+        "objet": "Journée mondiale de lutte contre le diabète",
+        "requestDate": "2026-11-26",
+        "travel": {
+          "position": "Marketing Officer",
+          "department": "Sales and Marketing",
+          "tripPurpose": "Journée mondiale de lutte contre le diabète",
+          "costCenter": "KC6310",
+          "documentDate": "2026-11-26",
+          "departureDate": "2026-11-23",
+          "departurePlace": "",
+          "destinationPlace": "Zamba",
+          "returnDate": "2026-11-29",
+          "peopleCount": 1,
+          "companyName": "PPC Barnet Manufacturing SA",
+          "departmentToWorkWith": "",
+          "contactPerson": "",
+          "transportMeans": "Voiture",
+          "paymentOrderSignatory": "EWULI SUKA Carine",
+          "budgetLines": [
+            {
+              "label": "N/A",
+              "amount": 0
+            }
+          ],
+          "isInternationalTravel": false,
+          "missionSite": "kinshasa",
+          "missionCategory": "",
+          "missionType": "Other national",
+          "missionObservation": ""
+        },
+        "lines": [
+          {
+            "ref": "1",
+            "description": "N/A",
+            "currency": "USD",
+            "amount": 0
+          }
+        ],
+        "total": 0,
+        "fileName": "Ordre de mission - GLODY BENGESHA ELONGO.docx",
+        "filePath": "/tmp/hr-rh-app/travel/output/Ordre de mission - GLODY BENGESHA ELONGO.docx",
+        "files": [
+          {
+            "type": "mission-order",
+            "fileName": "Ordre de mission - GLODY BENGESHA ELONGO.docx",
+            "filePath": "/tmp/hr-rh-app/travel/output/Ordre de mission - GLODY BENGESHA ELONGO.docx"
+          }
+        ],
+        "saveDirectory": "/tmp/hr-rh-app/travel/output"
+      },
+      "undoable": false,
+      "undone": false
+    },
+    {
       "id": "log-002596",
       "at": "2026-11-26T14:20:14.712Z",
       "userId": "Marie.Yowali",
@@ -1266249,5 +1266326,5 @@
       }
     }
   ],
-  "nextSeq": 2597
+  "nextSeq": 2598
 }
