@@ -1,6 +1,47 @@
 {
   "entries": [
     {
+      "id": "log-002605",
+      "at": "2026-11-26T15:26:59.145Z",
+      "userId": "Tresor.Maneka@ppcdrc.cd",
+      "userName": "Tresor Maneka",
+      "userEmail": "Tresor.Maneka@ppcdrc.cd",
+      "module": "protocol.voyages",
+      "moduleLabel": "Gestion de voyage",
+      "action": "create",
+      "actionLabel": "Création",
+      "entityType": "protocol.voyage",
+      "entityId": "pvc-121",
+      "summary": "Voyage PVC-0121 KAMANDA NYOMBA SOSTHENE Zamba MATDI Zamba",
+      "details": "Voyage PVC-0121 KAMANDA NYOMBA SOSTHENE Zamba MATDI Zamba",
+      "after": {
+        "id": "pvc-121",
+        "numero": "PVC-0121",
+        "date": "2026-11-24",
+        "voyageur": "KAMANDA NYOMBA SOSTHENE",
+        "voyageurMatricule": "70000210",
+        "departement": "Quality Assurance",
+        "centreCout": "KM5510",
+        "destination": "Zamba MATDI Zamba",
+        "ticketAvion": 0,
+        "visaVolant": 0,
+        "lettreLegaliser": 0,
+        "goPass": 0,
+        "transfert": 0,
+        "hotelNuit": 100,
+        "nbreNuits": 2,
+        "coutHotel": 200,
+        "categorieHotel": "Hotel Fortune Matadi",
+        "appartement": 0,
+        "autresCharges": 0,
+        "coutTotal": 200,
+        "createdAt": "2026-11-26T15:26:53.887Z",
+        "updatedAt": "2026-11-26T15:26:53.887Z"
+      },
+      "undoable": false,
+      "undone": false
+    },
+    {
       "id": "log-002604",
       "at": "2026-11-26T15:24:58.090Z",
       "userId": "Tresor.Maneka@ppcdrc.cd",
@@ -1266611,5 +1266652,5 @@
       }
     }
   ],
-  "nextSeq": 2605
+  "nextSeq": 2606
 }
