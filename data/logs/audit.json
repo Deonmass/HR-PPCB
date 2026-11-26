@@ -1,6 +1,47 @@
 {
   "entries": [
     {
+      "id": "log-002599",
+      "at": "2026-11-26T15:14:48.462Z",
+      "userId": "Tresor.Maneka@ppcdrc.cd",
+      "userName": "Tresor Maneka",
+      "userEmail": "Tresor.Maneka@ppcdrc.cd",
+      "module": "protocol.voyages",
+      "moduleLabel": "Gestion de voyage",
+      "action": "create",
+      "actionLabel": "Création",
+      "entityType": "protocol.voyage",
+      "entityId": "pvc-116",
+      "summary": "Voyage PVC-0116 RUKOMEZA KARHIBULA GISCARD Zamba Kinshasa Zamba",
+      "details": "Voyage PVC-0116 RUKOMEZA KARHIBULA GISCARD Zamba Kinshasa Zamba",
+      "after": {
+        "id": "pvc-116",
+        "numero": "PVC-0116",
+        "date": "2026-11-26",
+        "voyageur": "RUKOMEZA KARHIBULA GISCARD",
+        "voyageurMatricule": "70000266",
+        "departement": "Mining",
+        "centreCout": "KQ1910",
+        "destination": "Zamba Kinshasa Zamba",
+        "ticketAvion": 0,
+        "visaVolant": 0,
+        "lettreLegaliser": 0,
+        "goPass": 0,
+        "transfert": 0,
+        "hotelNuit": 150,
+        "nbreNuits": 3,
+        "coutHotel": 450,
+        "categorieHotel": "",
+        "appartement": 0,
+        "autresCharges": 0,
+        "coutTotal": 450,
+        "createdAt": "2026-11-26T15:14:43.042Z",
+        "updatedAt": "2026-11-26T15:14:43.042Z"
+      },
+      "undoable": false,
+      "undone": false
+    },
+    {
       "id": "log-002598",
       "at": "2026-11-26T14:26:51.837Z",
       "userId": "Marie.Yowali",
@@ -1266341,5 +1266382,5 @@
       }
     }
   ],
-  "nextSeq": 2599
+  "nextSeq": 2600
 }
