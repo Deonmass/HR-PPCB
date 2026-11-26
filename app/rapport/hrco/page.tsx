@@ -300,11 +300,6 @@ export default function HrcoNotePage() {
       {note.sections.map((section) => (
           <section key={section.id} className="hrco-section">
             <h3>{section.title}</h3>
-            <ul className="hrco-points">
-              {section.points.map((point) => (
-                <li key={point}>{point}</li>
-              ))}
-            </ul>
             {section.tables.map((item) => (
               <Fragment key={item.id}>
                 <HrcoTableView

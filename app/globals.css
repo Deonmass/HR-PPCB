@@ -29509,6 +29509,53 @@ html[data-theme="dark"] .rrf-sticky {
   grid-template-columns: repeat(6, minmax(0, 1fr));
 }
 
+.mvt-kpi-strip-4 {
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+}
+
+.mvt-dash-toolbar {
+  display: flex;
+  align-items: flex-end;
+  gap: 0.85rem;
+  margin-bottom: 0.85rem;
+}
+
+.mvt-dash-toolbar h3 {
+  margin: 0 0.5rem 0.35rem 0;
+}
+
+.mvt-dash-toolbar label {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  font-size: 0.78rem;
+  color: var(--muted);
+}
+
+.mvt-month-grid {
+  display: grid;
+  grid-template-columns: repeat(6, minmax(0, 1fr));
+  gap: 0.65rem;
+  margin-top: 0.85rem;
+}
+
+.mvt-month-card {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem;
+  width: 100%;
+  padding: 0.75rem 0.9rem;
+  font: inherit;
+  color: inherit;
+  text-align: left;
+  cursor: pointer;
+}
+
+.mvt-month-card strong {
+  font-size: 1.15rem;
+}
+
 .mvt-dashboard button.travel-history-card {
   width: 100%;
   text-align: left;
@@ -29543,8 +29590,10 @@ html[data-theme="dark"] .rrf-sticky {
 }
 
 @media (max-width: 1100px) {
-  .mvt-kpi-strip {
-    grid-template-columns: repeat(3, minmax(0, 1fr));
+  .mvt-kpi-strip,
+  .mvt-kpi-strip-4,
+  .mvt-month-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 }
 

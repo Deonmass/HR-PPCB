@@ -199,7 +199,7 @@ const NAV: NavSection[] = [
         activePrefixes: ['/employes/postes/effectifs'],
       },
       { href: '/employes/recrutement', label: 'Recrutement', icon: 'docs', menuId: 'employes.recrutement' },
-      { href: '/employes/mouvements', label: 'Mouvements', icon: 'users', menuId: 'employes.mouvements' },
+      { href: '/employes/mouvements', label: 'Changements de poste', icon: 'users', menuId: 'employes.mouvements' },
     ],
   },
   {

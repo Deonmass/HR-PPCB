@@ -20,7 +20,7 @@ export const en: Record<MessageKey, string> = {
   'nav.poste.recruitment': 'Recruitment',
   'nav.poste.classification': 'Job classification',
   'nav.poste.offers': 'Offers',
-  'nav.poste.movements': 'Movements',
+  'nav.poste.movements': 'Job changes',
   'nav.project': 'Project',
   'nav.project.dashboard': 'Dashboard',
   'nav.project.csr': 'CSR',

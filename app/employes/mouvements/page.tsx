@@ -1,18 +1,22 @@
 'use client';
 
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import DashboardListModal, {
+  type DashboardListColumn,
+  type DashboardListRow,
+} from '@/components/DashboardListModal';
 import EmployeePicker, { type EmployeeSelection } from '@/components/EmployeePicker';
 import PermissionGate from '@/components/PermissionGate';
 import RefreshButton from '@/components/RefreshButton';
 import RowContextMenu, { type ContextMenuItem } from '@/components/RowContextMenu';
 import TableHeaderFilter from '@/components/TableHeaderFilter';
 import { usePermissions } from '@/contexts/PermissionContext';
+import { triggerDownload } from '@/lib/declaration-download-client';
 import {
   MOUVEMENT_TYPES,
   mouvementTypeLabel,
   compareMouvementsChrono,
   type Mouvement,
-  type MouvementsDashboard,
   type MouvementTypeId,
 } from '@/lib/mouvements-types';
 import {
@@ -23,19 +27,57 @@ import {
 import { confirmDelete, showError, showSuccess } from '@/lib/swal';
 import type { Employee } from '@/lib/types';
 
-type PageTab = 'dashboard' | 'liste';
+type PageTab = 'annuel' | 'mensuel' | 'tableau';
 type ModalMode = 'create' | 'edit' | 'view';
 
-type FilterKey = 'numeroOrdre' | 'agent' | 'posteAvant' | 'posteActuel' | 'date' | 'type';
+type FilterKey =
+  | 'numeroOrdre'
+  | 'agent'
+  | 'gradeAvant'
+  | 'gradeApres'
+  | 'posteAvant'
+  | 'posteActuel'
+  | 'promotion'
+  | 'date'
+  | 'type';
 
 const EMPTY_FILTERS: Record<FilterKey, string[]> = {
   numeroOrdre: [],
   agent: [],
+  gradeAvant: [],
+  gradeApres: [],
   posteAvant: [],
   posteActuel: [],
+  promotion: [],
   date: [],
   type: [],
 };
+
+const MONTH_LABELS = [
+  'Janvier',
+  'Février',
+  'Mars',
+  'Avril',
+  'Mai',
+  'Juin',
+  'Juillet',
+  'Août',
+  'Septembre',
+  'Octobre',
+  'Novembre',
+  'Décembre',
+];
+
+const DRILL_COLUMNS: DashboardListColumn[] = [
+  { key: 'agent', label: 'Agent' },
+  { key: 'matricule', label: 'Matricule' },
+  { key: 'gradeAvant', label: 'Grade avant' },
+  { key: 'gradeApres', label: 'Nouveau grade' },
+  { key: 'posteAvant', label: 'Poste avant' },
+  { key: 'posteActuel', label: 'Nouveau poste' },
+  { key: 'date', label: 'Date' },
+  { key: 'type', label: 'Type' },
+];
 
 function agentFilterValue(m: Mouvement): string {
   return `${m.agentNom} (${m.agentMatricule})`;
@@ -66,6 +108,27 @@ function mouvementMonthKey(date: string): string {
   const d = new Date(s);
   if (Number.isNaN(d.getTime())) return '';
   return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}`;
+}
+
+function promotionText(m: Mouvement): string {
+  if (m.promotionLabel) return m.promotionLabel;
+  return m.type === 'promotion' ? 'Y' : 'N';
+}
+
+function drillRows(items: Mouvement[]): DashboardListRow[] {
+  return items.map((m) => ({
+    id: m.id,
+    cells: {
+      agent: m.agentNom,
+      matricule: m.agentMatricule,
+      gradeAvant: m.gradeAvant || '—',
+      gradeApres: m.gradeApres || '—',
+      posteAvant: m.posteAvant || '—',
+      posteActuel: m.posteActuel || '—',
+      date: formatDate(m.date),
+      type: mouvementTypeLabel(m.type),
+    },
+  }));
 }
 
 function typeBadgeClass(type: string): string {
@@ -542,189 +605,188 @@ function MouvementFormModal({
   );
 }
 
-function DashboardView({
-  dashboard,
-  currentYear,
-  onOpenListe,
-  onKpiClick,
-  onTypeClick,
-  onDeptClick,
+function MovementKpis({
+  items,
+  scopeLabel,
+  onOpen,
 }: {
-  dashboard: MouvementsDashboard | null;
-  currentYear: number;
-  onOpenListe: () => void;
-  onKpiClick: (kind: 'all' | 'year' | 'month' | 'nouvelle_affectation' | 'promotion' | 'changement_transversal') => void;
-  onTypeClick: (typeId: string) => void;
-  onDeptClick: (dept: string) => void;
+  items: Mouvement[];
+  scopeLabel: string;
+  onOpen: (title: string, rows: Mouvement[]) => void;
 }) {
-  if (!dashboard) {
-    return <p className="empty-state">Aucune donnée de dashboard.</p>;
-  }
+  const promotions = items.filter((m) => m.type === 'promotion');
+  const reclassements = items.filter((m) => m.type === 'reclassement');
+  const autres = items.filter((m) => m.type !== 'promotion' && m.type !== 'reclassement');
+  const cards = [
+    { label: 'Changements', rows: items, glow: 'card-glow-red' },
+    { label: 'Promotions', rows: promotions, glow: 'card-glow-amber' },
+    { label: 'Reclassements', rows: reclassements, glow: 'card-glow-violet' },
+    { label: 'Autres changements', rows: autres, glow: 'card-glow-cyan' },
+  ];
+  return (
+    <div className="travel-history-cards mvt-kpi-strip mvt-kpi-strip-4">
+      {cards.map((card) => (
+        <button
+          key={card.label}
+          type="button"
+          className={`card card-glow ${card.glow} travel-history-card is-clickable`}
+          title={`Voir la liste — ${card.label} · ${scopeLabel}`}
+          onClick={() => onOpen(`${card.label} · ${scopeLabel}`, card.rows)}
+        >
+          <div className="card-label">{card.label}</div>
+          <div className="card-value">{card.rows.length}</div>
+        </button>
+      ))}
+    </div>
+  );
+}
 
+function AnnualDashboard({
+  year,
+  years,
+  items,
+  onYear,
+  onOpen,
+}: {
+  year: number;
+  years: number[];
+  items: Mouvement[];
+  onYear: (year: number) => void;
+  onOpen: (title: string, rows: Mouvement[]) => void;
+}) {
+  const yearItems = items.filter((m) => mouvementAnnee(m) === year);
   return (
     <div className="mvt-dashboard">
-      <div className="travel-history-cards mvt-kpi-strip">
-        <button
-          type="button"
-          className="card card-glow card-glow-red travel-history-card is-clickable"
-          title="Voir la liste — Tous les mouvements"
-          onClick={() => onKpiClick('all')}
-        >
-          <div className="card-label">Total mouvements</div>
-          <div className="card-value">{dashboard.total}</div>
-        </button>
-        <button
-          type="button"
-          className="card card-glow card-glow-cyan travel-history-card is-clickable"
-          title={`Voir la liste — ${currentYear} (FY${String(currentYear + 1).slice(-2)})`}
-          onClick={() => onKpiClick('year')}
-        >
-          <div className="card-label">Cette année · {currentYear}</div>
-          <div className="card-value">{dashboard.thisYear}</div>
-          <div className="card-sub">FY{String(currentYear + 1).slice(-2)}</div>
-        </button>
-        <button
-          type="button"
-          className="card card-glow card-glow-violet travel-history-card is-clickable"
-          title="Voir la liste — Ce mois"
-          onClick={() => onKpiClick('month')}
-        >
-          <div className="card-label">Ce mois</div>
-          <div className="card-value">{dashboard.thisMonth}</div>
-        </button>
-        <button
-          type="button"
-          className="card card-glow card-glow-green travel-history-card is-clickable"
-          title="Voir la liste — Nouvelles affectations"
-          onClick={() => onKpiClick('nouvelle_affectation')}
-        >
-          <div className="card-label">Nouvelles affectations</div>
-          <div className="card-value">{dashboard.nouvellesAffectations}</div>
-        </button>
-        <button
-          type="button"
-          className="card card-glow card-glow-amber travel-history-card is-clickable"
-          title="Voir la liste — Promotions"
-          onClick={() => onKpiClick('promotion')}
-        >
-          <div className="card-label">Promotions</div>
-          <div className="card-value">{dashboard.promotions}</div>
-        </button>
-        <button
-          type="button"
-          className="card card-glow card-glow-cyan travel-history-card is-clickable"
-          title="Voir la liste — Transversaux"
-          onClick={() => onKpiClick('changement_transversal')}
-        >
-          <div className="card-label">Transversaux</div>
-          <div className="card-value">{dashboard.transversaux}</div>
-        </button>
+      <div className="mvt-dash-toolbar">
+        <h3>Dashboard annuel</h3>
+        <label>
+          Année
+          <select
+            className="filter-select"
+            value={year}
+            aria-label="Année du dashboard"
+            onChange={(event) => onYear(Number(event.target.value))}
+          >
+            {years.map((value) => (
+              <option key={value} value={value}>{value}</option>
+            ))}
+          </select>
+        </label>
       </div>
-
-      <div className="mvt-dashboard-grid">
-        <section className="panel panel-padded">
-          <div className="panel-head">
-            <h3>Par type</h3>
-          </div>
-          {dashboard.parType.length === 0 ? (
-            <p className="empty-state">Aucun mouvement.</p>
-          ) : (
-            <ul className="mvt-stat-list">
-              {dashboard.parType.map((row) => (
-                <li key={row.id}>
-                  <button
-                    type="button"
-                    className="mvt-stat-click"
-                    title={`Voir la liste — ${row.label}`}
-                    onClick={() => onTypeClick(row.id)}
-                  >
-                    <span className={`mvt-type-badge ${typeBadgeClass(row.id)}`}>{row.label}</span>
-                    <strong>{row.count}</strong>
-                  </button>
-                </li>
-              ))}
-            </ul>
-          )}
-        </section>
-
-        <section className="panel panel-padded">
-          <div className="panel-head">
-            <h3>Par département d’affectation</h3>
-          </div>
-          {dashboard.parDepartementActuel.length === 0 ? (
-            <p className="empty-state">Aucun mouvement.</p>
-          ) : (
-            <ul className="mvt-stat-list">
-              {dashboard.parDepartementActuel.map((row) => (
-                <li key={row.label}>
-                  <button
-                    type="button"
-                    className="mvt-stat-click"
-                    title={`Voir la liste — ${row.label}`}
-                    onClick={() => onDeptClick(row.label)}
-                  >
-                    <span>{row.label}</span>
-                    <strong>{row.count}</strong>
-                  </button>
-                </li>
-              ))}
-            </ul>
-          )}
-        </section>
-
-        <section className="panel panel-padded mvt-recent-panel">
-          <div className="panel-head">
-            <h3>Mouvements récents</h3>
-            <button type="button" className="btn btn-outline btn-sm" onClick={onOpenListe}>
-              Voir tout
+      <MovementKpis items={yearItems} scopeLabel={String(year)} onOpen={onOpen} />
+      <div className="mvt-month-grid">
+        {MONTH_LABELS.map((label, index) => {
+          const month = index + 1;
+          const key = `${year}-${String(month).padStart(2, '0')}`;
+          const rows = yearItems.filter((m) => mouvementMonthKey(m.date) === key);
+          return (
+            <button
+              key={key}
+              type="button"
+              className="card mvt-month-card is-clickable"
+              title={`Voir la liste — ${label} ${year}`}
+              onClick={() => onOpen(`${label} ${year}`, rows)}
+            >
+              <span>{label}</span>
+              <strong>{rows.length}</strong>
             </button>
-          </div>
-          {dashboard.recents.length === 0 ? (
-            <p className="empty-state">Aucun mouvement enregistré.</p>
-          ) : (
-            <div className="table-wrap">
-              <table className="data-table mvt-table">
-                <thead>
-                  <tr>
-                    <th>N°</th>
-                    <th>Agent</th>
-                    <th>Type</th>
-                    <th>Date</th>
-                    <th>Poste actuel</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {dashboard.recents.map((m) => (
-                    <tr key={m.id}>
-                      <td className="col-num">{m.numeroOrdre}</td>
-                      <td>
-                        <div className="mvt-agent-cell">
-                          <strong>{m.agentNom}</strong>
-                          <span>{m.agentMatricule}</span>
-                        </div>
-                      </td>
-                      <td>
-                        <span className={`mvt-type-badge ${typeBadgeClass(m.type)}`}>
-                          {mouvementTypeLabel(m.type)}
-                        </span>
-                      </td>
-                      <td>{formatDate(m.date)}</td>
-                      <td>
-                        <div className="mvt-poste-cell">
-                          <strong>{m.posteActuel || '—'}</strong>
-                          {m.departementActuel && (
-                            <span className="mvt-dept-mini">{m.departementActuel}</span>
-                          )}
-                        </div>
-                      </td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
-            </div>
-          )}
-        </section>
+          );
+        })}
       </div>
+    </div>
+  );
+}
+
+function MonthlyDashboard({
+  year,
+  month,
+  years,
+  items,
+  onYear,
+  onMonth,
+  onOpen,
+}: {
+  year: number;
+  month: number;
+  years: number[];
+  items: Mouvement[];
+  onYear: (year: number) => void;
+  onMonth: (month: number) => void;
+  onOpen: (title: string, rows: Mouvement[]) => void;
+}) {
+  const key = `${year}-${String(month).padStart(2, '0')}`;
+  const monthItems = items.filter((m) => mouvementMonthKey(m.date) === key);
+  const label = `${MONTH_LABELS[month - 1]} ${year}`;
+  return (
+    <div className="mvt-dashboard">
+      <div className="mvt-dash-toolbar">
+        <h3>Dashboard mensuel</h3>
+        <label>
+          Année
+          <select
+            className="filter-select"
+            value={year}
+            aria-label="Année"
+            onChange={(event) => onYear(Number(event.target.value))}
+          >
+            {years.map((value) => (
+              <option key={value} value={value}>{value}</option>
+            ))}
+          </select>
+        </label>
+        <label>
+          Mois
+          <select
+            className="filter-select"
+            value={month}
+            aria-label="Mois"
+            onChange={(event) => onMonth(Number(event.target.value))}
+          >
+            {MONTH_LABELS.map((name, index) => (
+              <option key={name} value={index + 1}>{name}</option>
+            ))}
+          </select>
+        </label>
+      </div>
+      <MovementKpis items={monthItems} scopeLabel={label} onOpen={onOpen} />
+      <section className="panel panel-padded">
+        <div className="panel-head">
+          <h3>{label}</h3>
+        </div>
+        {monthItems.length === 0 ? (
+          <p className="empty-state">Aucun changement de poste ce mois.</p>
+        ) : (
+          <div className="table-wrap">
+            <table className="data-table mvt-table">
+              <thead>
+                <tr>
+                  <th>Agent</th>
+                  <th>Grade</th>
+                  <th>Poste avant</th>
+                  <th>Nouveau poste</th>
+                  <th>Promotion</th>
+                </tr>
+              </thead>
+              <tbody>
+                {monthItems.map((m) => (
+                  <tr key={m.id}>
+                    <td>
+                      <div className="mvt-agent-cell">
+                        <strong>{m.agentNom}</strong>
+                        <span>{m.agentMatricule}</span>
+                      </div>
+                    </td>
+                    <td>{m.gradeAvant || '—'} → {m.gradeApres || '—'}</td>
+                    <td>{m.posteAvant || '—'}</td>
+                    <td>{m.posteActuel || '—'}</td>
+                    <td>{promotionText(m)}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        )}
+      </section>
     </div>
   );
 }
@@ -739,15 +801,18 @@ export default function MouvementsPage() {
   const canEdit = can('employes.mouvements', 'edit') || can('employes.liste', 'edit');
   const canDelete = can('employes.mouvements', 'delete') || can('employes.liste', 'delete');
 
-  const [tab, setTab] = useState<PageTab>('liste');
+  const [tab, setTab] = useState<PageTab>('annuel');
   const listWrapRef = useRef<HTMLDivElement | null>(null);
   const [mouvements, setMouvements] = useState<Mouvement[]>([]);
-  const [dashboard, setDashboard] = useState<MouvementsDashboard | null>(null);
+  const [dashYear, setDashYear] = useState(() => new Date().getFullYear());
+  const [dashMonth, setDashMonth] = useState(() => new Date().getMonth() + 1);
+  const [drill, setDrill] = useState<{ title: string; rows: Mouvement[] } | null>(null);
   const [employees, setEmployees] = useState<Employee[]>([]);
   const [posteOptions, setPosteOptions] = useState<PosteOption[]>([]);
   const [settingsDepartments, setSettingsDepartments] = useState<string[]>([]);
   const [loading, setLoading] = useState(true);
   const [refreshing, setRefreshing] = useState(false);
+  const [exporting, setExporting] = useState(false);
   const [search, setSearch] = useState('');
   const [typeFilter, setTypeFilter] = useState('');
   const [yearFilter, setYearFilter] = useState('');
@@ -774,10 +839,8 @@ export default function MouvementsPage() {
       if (!resMvt.ok) {
         await showError(jsonMvt?.error || 'Chargement impossible');
         setMouvements([]);
-        setDashboard(null);
       } else {
         setMouvements(Array.isArray(jsonMvt.mouvements) ? jsonMvt.mouvements : []);
-        setDashboard(jsonMvt.dashboard ?? null);
       }
       if (resEmp.ok && Array.isArray(jsonEmp)) {
         setEmployees(jsonEmp);
@@ -884,18 +947,17 @@ export default function MouvementsPage() {
     return [...set].sort((a, b) => b - a);
   }, [mouvements]);
 
-  const dashboardDisplay = useMemo(() => {
-    if (!dashboard) return null;
-    const now = new Date();
-    const y = now.getFullYear();
-    const month = `${y}-${String(now.getMonth() + 1).padStart(2, '0')}`;
-    return {
-      ...dashboard,
-      total: mouvements.length,
-      thisYear: mouvements.filter((m) => mouvementAnnee(m) === y).length,
-      thisMonth: mouvements.filter((m) => mouvementMonthKey(m.date) === month).length,
-    };
-  }, [dashboard, mouvements]);
+  useEffect(() => {
+    if (!yearOptions.length) return;
+    setDashYear((current) => (yearOptions.includes(current) ? current : yearOptions[0]));
+  }, [yearOptions]);
+
+  useEffect(() => {
+    const inYear = mouvements.filter((item) => mouvementAnnee(item) === dashYear);
+    const latest = [...(inYear.length ? inYear : mouvements)].sort((a, b) => b.date.localeCompare(a.date))[0];
+    const month = Number(String(latest?.date || '').slice(5, 7));
+    if (month >= 1 && month <= 12) setDashMonth(month);
+  }, [mouvements, dashYear]);
 
   const toolbarFiltered = useMemo(() => {
     const q = search.trim().toLowerCase();
@@ -911,6 +973,9 @@ export default function MouvementsPage() {
         m.agentMatricule,
         m.posteAvant,
         m.posteActuel,
+        m.gradeAvant || '',
+        m.gradeApres || '',
+        promotionText(m),
         m.departementAvant,
         m.departementActuel,
         mouvementTypeLabel(m.type),
@@ -928,8 +993,11 @@ export default function MouvementsPage() {
       buildColumnFilterValues(toolbarFiltered, {
         numeroOrdre: (m) => String(m.numeroOrdre),
         agent: (m) => agentFilterValue(m),
+        gradeAvant: (m) => m.gradeAvant || '—',
+        gradeApres: (m) => m.gradeApres || '—',
         posteAvant: (m) => m.posteAvant,
         posteActuel: (m) => m.posteActuel,
+        promotion: (m) => promotionText(m),
         date: (m) => formatDate(m.date),
         type: (m) => mouvementTypeLabel(m.type),
       }),
@@ -943,8 +1011,11 @@ export default function MouvementsPage() {
           (m) =>
             matchesColumnFilter(colFilters.numeroOrdre, String(m.numeroOrdre)) &&
             matchesColumnFilter(colFilters.agent, agentFilterValue(m)) &&
+            matchesColumnFilter(colFilters.gradeAvant, m.gradeAvant || '—') &&
+            matchesColumnFilter(colFilters.gradeApres, m.gradeApres || '—') &&
             matchesColumnFilter(colFilters.posteAvant, m.posteAvant) &&
             matchesColumnFilter(colFilters.posteActuel, m.posteActuel) &&
+            matchesColumnFilter(colFilters.promotion, promotionText(m)) &&
             matchesColumnFilter(colFilters.date, formatDate(m.date)) &&
             matchesColumnFilter(colFilters.type, mouvementTypeLabel(m.type)),
         )
@@ -959,6 +1030,25 @@ export default function MouvementsPage() {
   useEffect(() => {
     listWrapRef.current?.scrollTo(0, 0);
   }, [tab, search, typeFilter, yearFilter, monthFilter, colFilters]);
+
+  const exportExcel = async () => {
+    setExporting(true);
+    try {
+      const res = await fetch('/api/employes/mouvements/export');
+      if (!res.ok) {
+        const json = await res.json().catch(() => ({}));
+        await showError(json?.error || 'Export impossible');
+        return;
+      }
+      const blob = await res.blob();
+      const headerName = res.headers.get('Content-Disposition')?.match(/filename="([^"]+)"/i)?.[1];
+      triggerDownload(blob, headerName || 'Employee-mvt-promotions.xlsx');
+    } catch {
+      await showError('Export impossible');
+    } finally {
+      setExporting(false);
+    }
+  };
 
   const openCreate = () => {
     setActiveRow(null);
@@ -1103,12 +1193,12 @@ export default function MouvementsPage() {
         <div className="page-header page-header-with-tabs mvt-page-header">
           <div>
             <div className="page-header-title-row">
-              <h2>Mouvements</h2>
+              <h2>Changements de poste</h2>
               <RefreshButton onClick={() => load(true)} loading={refreshing} />
             </div>
             <p className="mvt-page-sub">
-              Historique des affectations, promotions et changements de poste
-              {tab === 'liste' ? (
+              Promotions et changements de fonction, fichier Employee mvt
+              {tab === 'tableau' ? (
                 <span className="mvt-count-pill">
                   {filtered.length}
                   {filtered.length !== mouvements.length ? ` / ${mouvements.length}` : ''}
@@ -1121,22 +1211,39 @@ export default function MouvementsPage() {
               <button
                 type="button"
                 role="tab"
-                aria-selected={tab === 'dashboard'}
-                className={`tab-btn tab-btn-sm mvt-tab-btn${tab === 'dashboard' ? ' active' : ''}`}
-                onClick={() => setTab('dashboard')}
+                aria-selected={tab === 'annuel'}
+                className={`tab-btn tab-btn-sm mvt-tab-btn${tab === 'annuel' ? ' active' : ''}`}
+                onClick={() => setTab('annuel')}
               >
-                Dashboard
+                Annuel
               </button>
               <button
                 type="button"
                 role="tab"
-                aria-selected={tab === 'liste'}
-                className={`tab-btn tab-btn-sm mvt-tab-btn${tab === 'liste' ? ' active' : ''}`}
-                onClick={() => setTab('liste')}
+                aria-selected={tab === 'mensuel'}
+                className={`tab-btn tab-btn-sm mvt-tab-btn${tab === 'mensuel' ? ' active' : ''}`}
+                onClick={() => setTab('mensuel')}
               >
-                Liste
+                Mensuel
+              </button>
+              <button
+                type="button"
+                role="tab"
+                aria-selected={tab === 'tableau'}
+                className={`tab-btn tab-btn-sm mvt-tab-btn${tab === 'tableau' ? ' active' : ''}`}
+                onClick={() => setTab('tableau')}
+              >
+                Tableau
               </button>
             </div>
+            <button
+              type="button"
+              className="btn btn-outline btn-sm"
+              onClick={() => void exportExcel()}
+              disabled={exporting}
+            >
+              {exporting ? 'Export…' : 'Exporter'}
+            </button>
             {canCreate && (
               <button type="button" className="btn btn-primary btn-sm mvt-primary-btn" onClick={openCreate}>
                 + Nouveau mouvement
@@ -1145,52 +1252,29 @@ export default function MouvementsPage() {
           </div>
         </div>
 
-        {tab === 'dashboard' && (
-          <DashboardView
-            dashboard={dashboardDisplay}
-            currentYear={new Date().getFullYear()}
-            onOpenListe={() => setTab('liste')}
-            onKpiClick={(kind) => {
-              setSearch('');
-              setColFilters(EMPTY_FILTERS);
-              setMonthFilter('');
-              if (kind === 'all') {
-                setYearFilter('');
-                setTypeFilter('');
-              } else if (kind === 'year') {
-                setYearFilter(String(new Date().getFullYear()));
-                setTypeFilter('');
-              } else if (kind === 'month') {
-                const now = new Date();
-                setYearFilter('');
-                setTypeFilter('');
-                setMonthFilter(`${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, '0')}`);
-              } else {
-                setYearFilter('');
-                setTypeFilter(kind);
-              }
-              setTab('liste');
-            }}
-            onTypeClick={(typeId) => {
-              setSearch('');
-              setColFilters(EMPTY_FILTERS);
-              setMonthFilter('');
-              setYearFilter('');
-              setTypeFilter(typeId);
-              setTab('liste');
-            }}
-            onDeptClick={(dept) => {
-              setTypeFilter('');
-              setYearFilter('');
-              setMonthFilter('');
-              setColFilters(EMPTY_FILTERS);
-              setSearch(dept === '—' ? '' : dept);
-              setTab('liste');
-            }}
+        {tab === 'annuel' && (
+          <AnnualDashboard
+            year={dashYear}
+            years={yearOptions.length ? yearOptions : [dashYear]}
+            items={mouvements}
+            onYear={setDashYear}
+            onOpen={(title, rows) => setDrill({ title: `Voir la liste — ${title}`, rows })}
           />
         )}
 
-        {tab === 'liste' && (
+        {tab === 'mensuel' && (
+          <MonthlyDashboard
+            year={dashYear}
+            month={dashMonth}
+            years={yearOptions.length ? yearOptions : [dashYear]}
+            items={mouvements}
+            onYear={setDashYear}
+            onMonth={setDashMonth}
+            onOpen={(title, rows) => setDrill({ title: `Voir la liste — ${title}`, rows })}
+          />
+        )}
+
+        {tab === 'tableau' && (
           <div className="mvt-liste">
             <div className="mvt-toolbar">
               <div className="mvt-search">
@@ -1228,7 +1312,7 @@ export default function MouvementsPage() {
                   <option value="">Toutes les années</option>
                   {yearOptions.map((y) => (
                     <option key={y} value={String(y)}>
-                      {y} · FY{String(y + 1).slice(-2)}
+                      {y}
                     </option>
                   ))}
                 </select>
@@ -1288,6 +1372,22 @@ export default function MouvementsPage() {
                         </th>
                         <th className="th-filter">
                           <TableHeaderFilter
+                            label="Grade avant"
+                            values={filterValues.gradeAvant}
+                            selected={colFilters.gradeAvant}
+                            onChange={(next) => setColFilters((p) => ({ ...p, gradeAvant: next }))}
+                          />
+                        </th>
+                        <th className="th-filter">
+                          <TableHeaderFilter
+                            label="Nouveau grade"
+                            values={filterValues.gradeApres}
+                            selected={colFilters.gradeApres}
+                            onChange={(next) => setColFilters((p) => ({ ...p, gradeApres: next }))}
+                          />
+                        </th>
+                        <th className="th-filter">
+                          <TableHeaderFilter
                             label="Poste avant"
                             values={filterValues.posteAvant}
                             selected={colFilters.posteAvant}
@@ -1296,10 +1396,18 @@ export default function MouvementsPage() {
                         </th>
                         <th className="th-filter">
                           <TableHeaderFilter
-                            label="Poste actuel"
+                            label="Nouveau poste"
                             values={filterValues.posteActuel}
                             selected={colFilters.posteActuel}
                             onChange={(next) => setColFilters((p) => ({ ...p, posteActuel: next }))}
+                          />
+                        </th>
+                        <th className="th-filter">
+                          <TableHeaderFilter
+                            label="Promotion"
+                            values={filterValues.promotion}
+                            selected={colFilters.promotion}
+                            onChange={(next) => setColFilters((p) => ({ ...p, promotion: next }))}
                           />
                         </th>
                         <th className="th-filter">
@@ -1338,6 +1446,8 @@ export default function MouvementsPage() {
                               <span>{m.agentMatricule}</span>
                             </div>
                           </td>
+                          <td>{m.gradeAvant || '—'}</td>
+                          <td>{m.gradeApres || '—'}</td>
                           <td>
                             <div className="mvt-poste-cell">
                               <strong>{m.posteAvant || '—'}</strong>
@@ -1354,6 +1464,7 @@ export default function MouvementsPage() {
                               ) : null}
                             </div>
                           </td>
+                          <td>{promotionText(m)}</td>
                           <td>{formatDate(m.date)}</td>
                           <td>
                             <span className={`mvt-type-badge ${typeBadgeClass(m.type)}`}>
@@ -1391,6 +1502,16 @@ export default function MouvementsPage() {
               : undefined
           }
         />
+
+        {drill && (
+          <DashboardListModal
+            title={drill.title}
+            columns={DRILL_COLUMNS}
+            rows={drillRows(drill.rows)}
+            onClose={() => setDrill(null)}
+            searchPlaceholder="Rechercher un agent…"
+          />
+        )}
 
         {contextMenu && (
           <RowContextMenu

@@ -18,7 +18,7 @@ export const fr = {
   'nav.poste.recruitment': 'Recrutement',
   'nav.poste.classification': 'Classification des postes',
   'nav.poste.offers': 'Offres',
-  'nav.poste.movements': 'Mouvements',
+  'nav.poste.movements': 'Changements de poste',
   'nav.project': 'Project',
   'nav.project.dashboard': 'Dashboard',
   'nav.project.csr': 'CSR',

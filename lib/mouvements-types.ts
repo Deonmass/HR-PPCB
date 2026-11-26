@@ -28,6 +28,10 @@ export interface Mouvement {
   annee: number;
   /** Feuille source Excel, ex. Mvt employee-FY27. */
   sourceSheet?: string;
+  gradeAvant?: string;
+  gradeApres?: string;
+  /** Colonne Promotion du fichier (Y, N, ou note de commission). */
+  promotionLabel?: string;
   type: MouvementTypeId;
   notes?: string;
   createdAt: string;

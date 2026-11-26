@@ -89,9 +89,6 @@ export async function buildHrcoNoteDocx(note: HrcoNote): Promise<Buffer> {
 
   for (const section of note.sections) {
     blocks.push(paragraph(section.title, { bold: true, size: 26, color: '1F4E79', after: 80 }));
-    for (const point of section.points) {
-      blocks.push(paragraph(`• ${point}`, { size: 20, after: 40 }));
-    }
     for (const item of section.tables) {
       const owner = item.owner ? ` — ${item.owner}` : '';
       blocks.push(paragraph(`${item.title}${owner}`, { bold: true, size: 21, after: 40 }));
