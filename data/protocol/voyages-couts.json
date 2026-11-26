@@ -2653,16 +2653,16 @@
       "visaVolant": 0,
       "lettreLegaliser": 0,
       "goPass": 55,
-      "transfert": 0,
+      "transfert": 60,
       "hotelNuit": 100,
       "nbreNuits": 1,
       "coutHotel": 100,
       "categorieHotel": "Hotel Platunium",
       "appartement": 0,
       "autresCharges": 0,
-      "coutTotal": 745,
+      "coutTotal": 805,
       "createdAt": "2026-11-23T17:41:31.122Z",
-      "updatedAt": "2026-11-23T17:41:31.122Z"
+      "updatedAt": "2026-11-26T15:30:26.102Z"
     },
     {
       "id": "pvc-115",
