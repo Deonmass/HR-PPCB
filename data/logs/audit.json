@@ -1,6 +1,47 @@
 {
   "entries": [
     {
+      "id": "log-002600",
+      "at": "2026-11-26T15:16:39.504Z",
+      "userId": "Tresor.Maneka@ppcdrc.cd",
+      "userName": "Tresor Maneka",
+      "userEmail": "Tresor.Maneka@ppcdrc.cd",
+      "module": "protocol.voyages",
+      "moduleLabel": "Gestion de voyage",
+      "action": "create",
+      "actionLabel": "Création",
+      "entityType": "protocol.voyage",
+      "entityId": "pvc-117",
+      "summary": "Voyage PVC-0117 MAKENGELE KISAMBU HENOCK Zamba Kinshasa Zamba",
+      "details": "Voyage PVC-0117 MAKENGELE KISAMBU HENOCK Zamba Kinshasa Zamba",
+      "after": {
+        "id": "pvc-117",
+        "numero": "PVC-0117",
+        "date": "2026-11-26",
+        "voyageur": "MAKENGELE KISAMBU HENOCK",
+        "voyageurMatricule": "CHRS_PPC0049",
+        "departement": "Human Resources",
+        "centreCout": "KM5413",
+        "destination": "Zamba Kinshasa Zamba",
+        "ticketAvion": 0,
+        "visaVolant": 0,
+        "lettreLegaliser": 0,
+        "goPass": 0,
+        "transfert": 0,
+        "hotelNuit": 100,
+        "nbreNuits": 3,
+        "coutHotel": 300,
+        "categorieHotel": "Hotel Platunium",
+        "appartement": 0,
+        "autresCharges": 0,
+        "coutTotal": 300,
+        "createdAt": "2026-11-26T15:16:34.112Z",
+        "updatedAt": "2026-11-26T15:16:34.112Z"
+      },
+      "undoable": false,
+      "undone": false
+    },
+    {
       "id": "log-002599",
       "at": "2026-11-26T15:14:48.462Z",
       "userId": "Tresor.Maneka@ppcdrc.cd",
@@ -1266382,5 +1266423,5 @@
       }
     }
   ],
-  "nextSeq": 2600
+  "nextSeq": 2601
 }
