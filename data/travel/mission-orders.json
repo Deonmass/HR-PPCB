@@ -6508,6 +6508,29 @@
       "recordId": "cr-1795702248923",
       "source": "app",
       "createdAt": "2026-11-26T14:10:49.500Z"
+    },
+    {
+      "id": "mo-cr-1795702789639",
+      "site": "kinshasa",
+      "sr": "156",
+      "registerDate": "2026-11-26",
+      "missionRef": "PPCB-DOC-HR-KN 156/11/2026",
+      "matricule": "70000177",
+      "employeeName": "ZAKUANI BAHATI BENNY",
+      "category": "",
+      "title": "Talent & Development Manager",
+      "purpose": "Représenter le MD à la séance de travail sur l’organisation de la visite du chef de l’état à Matadi",
+      "destination": "Matadi",
+      "transportMeans": "Voiture",
+      "departureDate": "2026-11-12",
+      "returnDate": "2026-11-13",
+      "days": 2,
+      "type": "Manager national",
+      "amount": null,
+      "observation": "",
+      "recordId": "cr-1795702789639",
+      "source": "app",
+      "createdAt": "2026-11-26T14:19:50.159Z"
     }
   ]
 }
