@@ -1,6 +1,21 @@
 {
   "entries": [
     {
+      "id": "log-002591",
+      "at": "2026-11-26T11:40:42.633Z",
+      "userId": "admin",
+      "userName": "Administrateur",
+      "userEmail": "admin",
+      "module": "travel.etablir",
+      "moduleLabel": "Cash request",
+      "action": "export",
+      "actionLabel": "Export",
+      "summary": "Téléchargement document voyage PPCB-DOC-HR-ZA/049/11/2026",
+      "details": "Fichier Cash Request - RUKOMEZA KARHIBULA GISCARD.xlsx (cash-request)",
+      "undoable": false,
+      "undone": false
+    },
+    {
       "id": "log-002590",
       "at": "2026-11-26T11:40:24.988Z",
       "userId": "admin",
@@ -1266035,5 +1266050,5 @@
       }
     }
   ],
-  "nextSeq": 2591
+  "nextSeq": 2592
 }
