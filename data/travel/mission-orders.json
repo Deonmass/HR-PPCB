@@ -6439,6 +6439,29 @@
       "recordId": "cr-1794476678038",
       "source": "app",
       "createdAt": "2026-11-12T09:44:38.627Z"
+    },
+    {
+      "id": "mo-cr-1795693116769",
+      "site": "zamba",
+      "sr": "056",
+      "registerDate": "2026-11-26",
+      "missionRef": "PPCB-DOC-HR-ZA/048/11/2026",
+      "matricule": "70000266",
+      "employeeName": "RUKOMEZA KARHIBULA GISCARD",
+      "category": "",
+      "title": "Mining Manager",
+      "purpose": "Mission de service à KINSHASA : Séance de Travail avec la Direction des carrières/Ministère des Mines.",
+      "destination": "Kinshasa",
+      "transportMeans": "Voiture",
+      "departureDate": "2026-11-26",
+      "returnDate": "2026-11-29",
+      "days": 4,
+      "type": "",
+      "amount": 680,
+      "observation": "",
+      "recordId": "cr-1795693116769",
+      "source": "app",
+      "createdAt": "2026-11-26T11:38:37.745Z"
     }
   ]
 }
