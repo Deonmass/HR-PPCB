@@ -1,6 +1,27 @@
 {
   "entries": [
     {
+      "id": "log-002587",
+      "at": "2026-11-26T11:35:40.643Z",
+      "userId": "admin",
+      "userName": "Administrateur",
+      "userEmail": "admin",
+      "module": "travel.etablir",
+      "moduleLabel": "Cash request",
+      "action": "error",
+      "actionLabel": "Erreur",
+      "summary": "Destination requise",
+      "details": "Échec génération documents voyage: Destination requise",
+      "undoable": false,
+      "undone": false,
+      "error": {
+        "message": "Destination requise",
+        "stack": "Error: Destination requise\n    at V (/var/task/.next/server/chunks/4583.js:1:18555)\n    at /var/task/.next/server/chunks/4583.js:1:15348",
+        "path": "/api/travel/cash-requests/generate",
+        "method": "POST"
+      }
+    },
+    {
       "id": "log-002586",
       "at": "2026-11-26T08:50:53.799Z",
       "userId": "admin",
@@ -1265785,5 +1265806,5 @@
       }
     }
   ],
-  "nextSeq": 2587
+  "nextSeq": 2588
 }
