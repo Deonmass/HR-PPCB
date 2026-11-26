@@ -1,6 +1,71 @@
 {
   "entries": [
     {
+      "id": "log-002602",
+      "at": "2026-11-26T15:19:47.052Z",
+      "userId": "Tresor.Maneka@ppcdrc.cd",
+      "userName": "Tresor Maneka",
+      "userEmail": "Tresor.Maneka@ppcdrc.cd",
+      "module": "protocol.voyages",
+      "moduleLabel": "Gestion de voyage",
+      "action": "update",
+      "actionLabel": "Modification",
+      "entityType": "protocol.voyage",
+      "entityId": "pvc-118",
+      "summary": "Modification voyage PVC-0118 NDONDA LUFULUABO PASCAL",
+      "details": "Modification voyage PVC-0118 NDONDA LUFULUABO PASCAL",
+      "before": {
+        "id": "pvc-118",
+        "numero": "PVC-0118",
+        "date": "2026-11-29",
+        "voyageur": "NDONDA LUFULUABO PASCAL",
+        "voyageurMatricule": "70000307",
+        "departement": "Finance",
+        "centreCout": "NaN",
+        "destination": "Kinshasa Kisangani Kinshasa",
+        "ticketAvion": 560,
+        "visaVolant": 0,
+        "lettreLegaliser": 0,
+        "goPass": 15,
+        "transfert": 0,
+        "hotelNuit": 130,
+        "nbreNuits": 5,
+        "coutHotel": 650,
+        "categorieHotel": "Congo Palace de Kisangani",
+        "appartement": 60,
+        "autresCharges": 0,
+        "coutTotal": 1285,
+        "createdAt": "2026-11-26T15:18:53.130Z",
+        "updatedAt": "2026-11-26T15:18:53.130Z"
+      },
+      "after": {
+        "id": "pvc-118",
+        "numero": "PVC-0118",
+        "date": "2026-11-29",
+        "voyageur": "NDONDA LUFULUABO PASCAL",
+        "voyageurMatricule": "70000307",
+        "departement": "Finance",
+        "centreCout": "NaN",
+        "destination": "Kinshasa Kisangani Kinshasa",
+        "ticketAvion": 560,
+        "visaVolant": 0,
+        "lettreLegaliser": 0,
+        "goPass": 30,
+        "transfert": 0,
+        "hotelNuit": 130,
+        "nbreNuits": 5,
+        "coutHotel": 650,
+        "categorieHotel": "Congo Palace de Kisangani",
+        "appartement": 60,
+        "autresCharges": 0,
+        "coutTotal": 1300,
+        "createdAt": "2026-11-26T15:18:53.130Z",
+        "updatedAt": "2026-11-26T15:19:41.732Z"
+      },
+      "undoable": false,
+      "undone": false
+    },
+    {
       "id": "log-002601",
       "at": "2026-11-26T15:18:58.554Z",
       "userId": "Tresor.Maneka@ppcdrc.cd",
@@ -1266464,5 +1266529,5 @@
       }
     }
   ],
-  "nextSeq": 2602
+  "nextSeq": 2603
 }
