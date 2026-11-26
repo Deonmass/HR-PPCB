@@ -6485,6 +6485,29 @@
       "recordId": "cr-1795693221480",
       "source": "app",
       "createdAt": "2026-11-26T11:40:22.313Z"
+    },
+    {
+      "id": "mo-cr-1795702248923",
+      "site": "kinshasa",
+      "sr": "155",
+      "registerDate": "2026-11-26",
+      "missionRef": "PPCB-DOC-HR-KN 155/11/2026",
+      "matricule": "70000307",
+      "employeeName": "NDONDA LUFULUABO PASCAL",
+      "category": "",
+      "title": "Revenue & Inventory Controller",
+      "purpose": "Barge Offloading Supervision and Month-End Physical Stock Count KISANGANI",
+      "destination": "kisangani",
+      "transportMeans": "Avion",
+      "departureDate": "2026-11-29",
+      "returnDate": "2026-12-04",
+      "days": 6,
+      "type": "Other national",
+      "amount": null,
+      "observation": "",
+      "recordId": "cr-1795702248923",
+      "source": "app",
+      "createdAt": "2026-11-26T14:10:49.500Z"
     }
   ]
 }
