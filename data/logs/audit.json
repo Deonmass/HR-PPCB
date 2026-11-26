@@ -1,6 +1,47 @@
 {
   "entries": [
     {
+      "id": "log-002608",
+      "at": "2026-11-26T15:34:31.969Z",
+      "userId": "Tresor.Maneka@ppcdrc.cd",
+      "userName": "Tresor Maneka",
+      "userEmail": "Tresor.Maneka@ppcdrc.cd",
+      "module": "protocol.voyages",
+      "moduleLabel": "Gestion de voyage",
+      "action": "create",
+      "actionLabel": "Création",
+      "entityType": "protocol.voyage",
+      "entityId": "pvc-122",
+      "summary": "Voyage PVC-0122 Tshilondi Malu Anita Zamba Kinshasa Zamba",
+      "details": "Voyage PVC-0122 Tshilondi Malu Anita Zamba Kinshasa Zamba",
+      "after": {
+        "id": "pvc-122",
+        "numero": "PVC-0122",
+        "date": "2026-11-25",
+        "voyageur": "Tshilondi Malu Anita",
+        "voyageurMatricule": "",
+        "departement": "Engineering",
+        "centreCout": "KM5310",
+        "destination": "Zamba Kinshasa Zamba",
+        "ticketAvion": 0,
+        "visaVolant": 0,
+        "lettreLegaliser": 0,
+        "goPass": 0,
+        "transfert": 0,
+        "hotelNuit": 100,
+        "nbreNuits": 3,
+        "coutHotel": 300,
+        "categorieHotel": "Hotel Platunium",
+        "appartement": 0,
+        "autresCharges": 0,
+        "coutTotal": 300,
+        "createdAt": "2026-11-26T15:34:26.510Z",
+        "updatedAt": "2026-11-26T15:34:26.510Z"
+      },
+      "undoable": false,
+      "undone": false
+    },
+    {
       "id": "log-002607",
       "at": "2026-11-26T15:30:50.168Z",
       "userId": "Tresor.Maneka@ppcdrc.cd",
@@ -1266782,5 +1266823,5 @@
       }
     }
   ],
-  "nextSeq": 2608
+  "nextSeq": 2609
 }
