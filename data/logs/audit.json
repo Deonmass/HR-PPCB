@@ -1,6 +1,53 @@
 {
   "entries": [
     {
+      "id": "log-002609",
+      "at": "2026-11-26T15:37:07.633Z",
+      "userId": "Tresor.Maneka@ppcdrc.cd",
+      "userName": "Tresor Maneka",
+      "userEmail": "Tresor.Maneka@ppcdrc.cd",
+      "module": "charroi.voyages",
+      "moduleLabel": "Charroi — Voyages",
+      "action": "create",
+      "actionLabel": "Création",
+      "entityType": "charroi.voyage",
+      "entityId": "vyg-049",
+      "summary": "Demande de voyage VYG-0049 RUKOMEZA KARHIBULA GISCARD Zamba (Village) → Kinshasa",
+      "details": "Demande de voyage VYG-0049 RUKOMEZA KARHIBULA GISCARD Zamba (Village) → Kinshasa",
+      "after": {
+        "id": "vyg-049",
+        "numero": "VYG-0049",
+        "passagerNom": "RUKOMEZA KARHIBULA GISCARD",
+        "passagerMatricule": "70000266",
+        "passagerInterne": true,
+        "nombrePersonnes": 1,
+        "depart": "Zamba (Village)",
+        "destination": "Kinshasa",
+        "dateDepart": "2026-11-26",
+        "heureDepart": "07:00",
+        "dateArrivee": "",
+        "heureArrivee": "",
+        "motif": "Mission de service avec la Camin a Kinshasa",
+        "notes": "",
+        "status": "demande",
+        "chauffeurNom": "",
+        "chauffeurMatricule": "",
+        "chauffeurInterne": false,
+        "vehiculeMode": "",
+        "vehiculeId": "",
+        "vehiculeLibelle": "",
+        "foodAllowance": 0,
+        "foodForTheRoad": 0,
+        "tollGate": 0,
+        "confirmedAt": "",
+        "completedAt": "",
+        "createdAt": "2026-11-26T15:37:01.801Z",
+        "updatedAt": "2026-11-26T15:37:01.801Z"
+      },
+      "undoable": false,
+      "undone": false
+    },
+    {
       "id": "log-002608",
       "at": "2026-11-26T15:34:31.969Z",
       "userId": "Tresor.Maneka@ppcdrc.cd",
@@ -1266823,5 +1266870,5 @@
       }
     }
   ],
-  "nextSeq": 2609
+  "nextSeq": 2610
 }
