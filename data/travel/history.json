@@ -87,7 +87,18 @@
       "tripDays": 4,
       "totalBudget": 680,
       "recordId": "cr-1795693221480"
+    },
+    {
+      "rowIndex": 17,
+      "date": "2026-11-26",
+      "ref": "PPCB-DOC-HR-KN 155/11/2026",
+      "employee": "NDONDA LUFULUABO PASCAL (70000307)",
+      "department": "Finance — Revenue & Inventory Controller",
+      "travelDates": "29/11/2026 → 04/12/2026",
+      "tripDays": 6,
+      "totalBudget": 0,
+      "recordId": "cr-1795702248923"
     }
   ],
-  "nextRowIndex": 17
+  "nextRowIndex": 18
 }
