@@ -6531,6 +6531,29 @@
       "recordId": "cr-1795702789639",
       "source": "app",
       "createdAt": "2026-11-26T14:19:50.159Z"
+    },
+    {
+      "id": "mo-cr-1795703192172",
+      "site": "kinshasa",
+      "sr": "157",
+      "registerDate": "2026-11-26",
+      "missionRef": "PPCB-DOC-HR-KN 157/11/2026",
+      "matricule": "70000313",
+      "employeeName": "GLODY BENGESHA ELONGO",
+      "category": "",
+      "title": "Marketing Officer",
+      "purpose": "Journée mondiale de lutte contre le diabète",
+      "destination": "Zamba",
+      "transportMeans": "Voiture",
+      "departureDate": "2026-11-23",
+      "returnDate": "2026-11-29",
+      "days": 7,
+      "type": "Other national",
+      "amount": null,
+      "observation": "",
+      "recordId": "cr-1795703192172",
+      "source": "app",
+      "createdAt": "2026-11-26T14:26:32.965Z"
     }
   ]
 }
