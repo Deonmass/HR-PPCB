@@ -109,7 +109,18 @@
       "tripDays": 2,
       "totalBudget": 0,
       "recordId": "cr-1795702789639"
+    },
+    {
+      "rowIndex": 19,
+      "date": "2026-11-26",
+      "ref": "PPCB-DOC-HR-KN 157/11/2026",
+      "employee": "GLODY BENGESHA ELONGO (70000313)",
+      "department": "Sales and Marketing — Marketing Officer",
+      "travelDates": "23/11/2026 → 29/11/2026",
+      "tripDays": 7,
+      "totalBudget": 0,
+      "recordId": "cr-1795703192172"
     }
   ],
-  "nextRowIndex": 19
+  "nextRowIndex": 20
 }
