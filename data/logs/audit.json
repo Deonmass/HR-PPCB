@@ -1,6 +1,21 @@
 {
   "entries": [
     {
+      "id": "log-002592",
+      "at": "2026-11-26T11:46:40.505Z",
+      "userId": "admin",
+      "userName": "Administrateur",
+      "userEmail": "admin",
+      "module": "employees",
+      "moduleLabel": "Employés",
+      "action": "export",
+      "actionLabel": "Export",
+      "summary": "Export employés (EMPLOYEES_HR_2026-11-26.xlsx)",
+      "details": "Fichier Excel exporté : EMPLOYEES_HR_2026-11-26.xlsx",
+      "undoable": false,
+      "undone": false
+    },
+    {
       "id": "log-002591",
       "at": "2026-11-26T11:40:42.633Z",
       "userId": "admin",
@@ -1266050,5 +1266065,5 @@
       }
     }
   ],
-  "nextSeq": 2592
+  "nextSeq": 2593
 }
