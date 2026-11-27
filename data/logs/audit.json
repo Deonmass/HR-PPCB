@@ -1,6 +1,48 @@
 {
   "entries": [
     {
+      "id": "log-002621",
+      "at": "2026-11-27T11:39:18.564Z",
+      "userId": "espoir.vuvu@ppcdrc.cd",
+      "userName": "Espoir Vuvu",
+      "userEmail": "espoir.vuvu@ppcdrc.cd",
+      "module": "sante",
+      "moduleLabel": "Santé",
+      "action": "create",
+      "actionLabel": "Création",
+      "entityType": "sante.visit",
+      "entityId": "sante-mwyws6mo-idt5bq",
+      "summary": "Cas santé — MOLEKA Samuel · FIEVRE",
+      "details": "Cas santé — MOLEKA Samuel · FIEVRE",
+      "after": {
+        "id": "sante-mwyws6mo-idt5bq",
+        "date": "2026-11-27",
+        "nom": "MOLEKA",
+        "postnom": "Samuel",
+        "sexe": "F",
+        "age": 8,
+        "typeMalade": "ENFANT",
+        "pathologie": "FIEVRE",
+        "traitement": "PARACETAMOLE INJECTABLE",
+        "reference": "IME",
+        "year": 2026,
+        "month": 11,
+        "employeeMatricule": "70000109",
+        "employeeNom": "MOLEKA GBANGA FRED",
+        "dependantId": 311,
+        "commentaire": "",
+        "contractantId": "",
+        "contractantNom": "",
+        "contractantEmployeeId": "",
+        "createdAt": "2026-11-27T11:39:17.520Z",
+        "updatedAt": "2026-11-27T11:39:17.520Z",
+        "createdBy": "espoir.vuvu@ppcdrc.cd",
+        "updatedBy": "espoir.vuvu@ppcdrc.cd"
+      },
+      "undoable": false,
+      "undone": false
+    },
+    {
       "id": "log-002620",
       "at": "2026-11-27T11:37:40.530Z",
       "userId": "espoir.vuvu@ppcdrc.cd",
@@ -1267196,5 +1267238,5 @@
       }
     }
   ],
-  "nextSeq": 2621
+  "nextSeq": 2622
 }
