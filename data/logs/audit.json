@@ -1,6 +1,29 @@
 {
   "entries": [
     {
+      "id": "log-002614",
+      "at": "2026-11-27T10:52:13.404Z",
+      "userId": "system",
+      "userName": "Système",
+      "module": "auth",
+      "moduleLabel": "Authentification",
+      "action": "error",
+      "actionLabel": "Erreur",
+      "summary": "Identifiants invalides",
+      "details": "Échec de connexion pour « Espoir.Vuvu@ppcdrc.cd »",
+      "undoable": false,
+      "undone": false,
+      "error": {
+        "message": "Identifiants invalides",
+        "path": "/api/auth/login",
+        "method": "POST",
+        "status": 401,
+        "context": {
+          "username": "Espoir.Vuvu@ppcdrc.cd"
+        }
+      }
+    },
+    {
       "id": "log-002613",
       "at": "2026-11-27T10:51:27.354Z",
       "userId": "system",
@@ -1267008,5 +1267031,5 @@
       }
     }
   ],
-  "nextSeq": 2614
+  "nextSeq": 2615
 }
