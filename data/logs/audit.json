@@ -1,6 +1,41 @@
 {
   "entries": [
     {
+      "id": "log-002616",
+      "at": "2026-11-27T10:56:22.631Z",
+      "userId": "admin",
+      "userName": "Administrateur",
+      "userEmail": "admin",
+      "module": "settings.utilisateurs",
+      "moduleLabel": "Paramètres — Utilisateurs",
+      "action": "update",
+      "actionLabel": "Modification",
+      "entityType": "auth.user",
+      "entityId": "espoir.vuvu@ppcdrc.cd",
+      "summary": "Modification utilisateur Espoir Vuvu",
+      "details": "Modification utilisateur Espoir Vuvu",
+      "before": {
+        "id": "espoir.vuvu@ppcdrc.cd",
+        "username": "espoir.vuvu@ppcdrc.cd",
+        "displayName": "Espoir Vuvu",
+        "initials": "EV",
+        "email": "espoir.vuvu@ppcdrc.cd",
+        "active": true,
+        "createdAt": "2026-09-29T13:37:35.879Z"
+      },
+      "after": {
+        "id": "espoir.vuvu@ppcdrc.cd",
+        "username": "espoir.vuvu@ppcdrc.cd",
+        "displayName": "Espoir Vuvu",
+        "initials": "EV",
+        "email": "espoir.vuvu@ppcdrc.cd",
+        "active": true,
+        "createdAt": "2026-09-29T13:37:35.879Z"
+      },
+      "undoable": true,
+      "undone": false
+    },
+    {
       "id": "log-002615",
       "at": "2026-11-27T10:55:19.840Z",
       "userId": "admin",
@@ -1267058,5 +1267093,5 @@
       }
     }
   ],
-  "nextSeq": 2616
+  "nextSeq": 2617
 }
