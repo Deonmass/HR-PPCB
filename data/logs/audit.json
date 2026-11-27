@@ -1,6 +1,21 @@
 {
   "entries": [
     {
+      "id": "log-002619",
+      "at": "2026-11-27T11:25:41.181Z",
+      "userId": "espoir.vuvu@ppcdrc.cd",
+      "userName": "Espoir Vuvu",
+      "userEmail": "espoir.vuvu@ppcdrc.cd",
+      "module": "auth",
+      "moduleLabel": "Authentification",
+      "action": "login",
+      "actionLabel": "Connexion",
+      "summary": "Connexion espoir.vuvu@ppcdrc.cd",
+      "details": "Connexion de Espoir Vuvu (espoir.vuvu@ppcdrc.cd)",
+      "undoable": false,
+      "undone": false
+    },
+    {
       "id": "log-002618",
       "at": "2026-11-27T11:18:28.712Z",
       "userId": "system",
@@ -1267139,5 +1267154,5 @@
       }
     }
   ],
-  "nextSeq": 2619
+  "nextSeq": 2620
 }
